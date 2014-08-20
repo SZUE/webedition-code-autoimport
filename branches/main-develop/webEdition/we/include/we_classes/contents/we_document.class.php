@@ -1008,7 +1008,7 @@ class we_document extends we_root{
 				} catch (Exception $e){
 					$dt = new DateTime('now');
 				}
-				$dt->setTimeZone(new DateTimeZone(@date_default_timezone_get())); //Bug #6335
+				$dt->setTimeZone(new DateTimeZone(date_default_timezone_get())); //Bug #6335
 				return $dt->format(correctDateFormat($format, $dt));
 			case 'select':
 				if(defined('OBJECT_TABLE')){
@@ -1624,7 +1624,7 @@ class we_document extends we_root{
 		if(defined('OBJECT_TABLE')){
 			if(preg_match_all('/href="' . we_base_link::TYPE_OBJ_PREFIX . '(\d+)(\??)("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
 				foreach($regs as $reg){
-					$href = we_objectFile::getObjectHref($reg[1], $pid, $path, null, WYSIWYGLINKS_DIRECTORYINDEX_HIDE, WYSIWYGLINKS_OBJECTSEOURLS);
+					$href = we_objectFile::getObjectHref($reg[1], $pid, $path, $DB_WE, WYSIWYGLINKS_DIRECTORYINDEX_HIDE, WYSIWYGLINKS_OBJECTSEOURLS);
 					if(isset($GLOBALS['we_link_not_published'])){
 						unset($GLOBALS['we_link_not_published']);
 					}

@@ -26,7 +26,6 @@
 
 class we_messaging_messaging extends we_class{
 	/* Flag which is set when the file is not new */
-
 	var $we_transact;
 	var $Folder_ID = -1;
 	var $userid = -1;
@@ -626,10 +625,11 @@ class we_messaging_messaging extends we_class{
 	}
 
 	function send(&$data, $msgobj_name = ''){
-		$results = array();
-		$results['err'] = array();
-		$results['ok'] = array();
-		$results['failed'] = array();
+		$results = array(
+			'err' => array(),
+			'ok' => array(),
+			'failed' => array(),
+		);
 		$rcpt_elems = explode(',', urldecode($data['rcpts_string']));
 		$rcpts = array();
 

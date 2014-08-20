@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  * Not much functionality here, just show the requested frame
  */
 class liveUpdateFrames{
-
 	var $Section;
 	var $Data;
 
@@ -152,13 +150,20 @@ class liveUpdateFrames{
 	function processUpdateLogVariables(){
 
 		$this->Data['amountPerPage'] = 5;
-		$showMsg = we_base_request::_(we_base_request::BOOL, 'messages', true);
-		$showNotice = we_base_request::_(we_base_request::BOOL, 'notices', true);
-		$showErr = we_base_request::_(we_base_request::BOOL, 'errors', true);
-		$condition = ' WHERE 1 ' .
-			($showMsg ? '' : " AND error!=0") .
-			($showNotice ? '' : " AND error!=2") .
-			($showErr ? '' : " AND error!=1");
+		$show = array(
+			'msg' => we_base_request::_(we_base_request::BOOL, 'messages', false),
+			'err' => we_base_request::_(we_base_request::BOOL, 'errors', false),
+			'notice' => we_base_request::_(we_base_request::BOOL, 'notices', false),
+		);
+		$errors = array();
+		$tmp = 0;
+		foreach($show as $cur){
+			if($cur){
+				$errors[] = $tmp;
+			}
+			$tmp++;
+		}
+		$condition = ' WHERE ' . ($errors ? ' error IN (' . implode(',', $errors) . ')' : ' FALSE ');
 
 		/*
 		 * process update_cmd
@@ -166,7 +171,7 @@ class liveUpdateFrames{
 
 		switch(we_base_request::_(we_base_request::STRING, 'log_cmd', '')){
 			case "deleteEntries":
-				$GLOBALS['DB_WE']->query('DELETE FROM ' . UPDATE_LOG_TABLE . " $condition");
+				$GLOBALS['DB_WE']->query('DELETE FROM ' . UPDATE_LOG_TABLE . $condition);
 				$_REQUEST['start'] = 0;
 
 				break;
@@ -190,13 +195,7 @@ class liveUpdateFrames{
 		 */
 		// complete amount
 
-		$this->Data['amountMessages'] = 0;
-		$this->Data['amountNotices'] = 0;
-		$this->Data['amountErrors'] = 0;
-
-		$this->Data['allEntries'] = 0;
-
-		$this->Data['amountEntries'] = 0;
+		$this->Data['amountMessages'] = $this->Data['amountNotices'] = $this->Data['amountErrors'] = $this->Data['allEntries'] = $this->Data['amountEntries'] = 0;
 
 		$GLOBALS['DB_WE']->query('SELECT COUNT(ID) as amount, error FROM ' . UPDATE_LOG_TABLE . ' GROUP BY error');
 		while($GLOBALS['DB_WE']->next_record()){
@@ -205,19 +204,19 @@ class liveUpdateFrames{
 
 			if($GLOBALS['DB_WE']->f('error') == 0){
 				$this->Data['amountMessages'] = $GLOBALS['DB_WE']->f('amount');
-				if($showMsg){
+				if($show['msg']){
 					$this->Data['amountEntries'] += $GLOBALS['DB_WE']->f('amount');
 				}
 			}
 			if($GLOBALS['DB_WE']->f('error') == 1){
 				$this->Data['amountErrors'] = $GLOBALS['DB_WE']->f('amount');
-				if($showErr){
+				if($show['err']){
 					$this->Data['amountEntries'] += $GLOBALS['DB_WE']->f('amount');
 				}
 			}
 			if($GLOBALS['DB_WE']->f('error') == 2){
 				$this->Data['amountNotices'] = $GLOBALS['DB_WE']->f('amount');
-				if($showNotice){
+				if($show['notice']){
 					$this->Data['amountEntries'] += $GLOBALS['DB_WE']->f('amount');
 				}
 			}
@@ -230,10 +229,9 @@ class liveUpdateFrames{
 			 * There are entries available, get them
 			 */
 			$this->Data['logEntries'] = array();
+			$GLOBALS['DB_WE']->query('SELECT DATE_FORMAT(datum, "' . str_replace(' ', '&nbsp;/&nbsp;)', g_l('date', '[format][mysql]')) . '") AS date, aktion, versionsnummer, error FROM ' . UPDATE_LOG_TABLE . ' ' . $condition . ' ORDER BY datum DESC LIMIT ' . abs($_REQUEST['start']) . ',' . abs($this->Data['amountPerPage']));
 
-			$GLOBALS['DB_WE']->query("SELECT DATE_FORMAT(datum, '%d.%m.%y&nbsp;/&nbsp;%H:%i') AS date, aktion, versionsnummer, error FROM " . UPDATE_LOG_TABLE . " $condition ORDER BY datum DESC LIMIT " . abs($_REQUEST['start']) . ", " . abs($this->Data['amountPerPage']));
 			while(($row = $GLOBALS['DB_WE']->next_record())){
-
 				$this->Data['logEntries'][] = array(
 					'date' => $GLOBALS['DB_WE']->f('date'),
 					'action' => $GLOBALS['DB_WE']->f('aktion'),

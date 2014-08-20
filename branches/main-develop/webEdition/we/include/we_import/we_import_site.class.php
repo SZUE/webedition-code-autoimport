@@ -576,7 +576,7 @@ class we_import_site{
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['templateDummy'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.displayTable();");
 
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['templateID'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['templateID'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 
 		$foo = we_html_tools::htmlTextInput('templateDummy', 30, $path, "", ' readonly', "text", 320, 0);
 		return we_html_tools::htmlFormElementTable(
@@ -1050,7 +1050,7 @@ class we_import_site{
 		$path = id_to_path($myid, TEMPLATES_TABLE);
 		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['templateParentID'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['templateDirName'].value");
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['templateParentID'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . session_id() . "')");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['templateParentID'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','')");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("TplPath");

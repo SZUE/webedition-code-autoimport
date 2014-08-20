@@ -29,14 +29,12 @@ echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
 /// config
-$DB_WE->query('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'");
-$DB_WE->next_record();
-$feldnamen = explode("|", $DB_WE->f("strFelder"));
+$feldnamen = explode("|", f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
 
 $waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
 $dbPreisname = "Preis";
 $numberformat = $feldnamen[2];
-$mwst = (!empty($feldnamen[1])) ? (($feldnamen[1] / 100) + 1) : "";
+$mwst = ($feldnamen[1]) ? (($feldnamen[1] / 100) + 1) : "";
 $year = abs(substr($_REQUEST["mid"], -4));
 $month = abs(str_replace($year, "", $_REQUEST["mid"]));
 
@@ -67,7 +65,7 @@ while($DB_WE->next_record()){
 	$orderid = $DB_WE->f("IntOrderID");
 }
 
-$mwst = ($mwst ? $mwst: 1);
+$mwst = ($mwst ? $mwst : 1);
 $info = g_l('modules_shop', '[anzahl]') . ": <b>" . ($f + $r) . "</b><br/>" . g_l('modules_shop', '[unbearb]') . ": " . (($f) ? $f : "0");
 $stat = g_l('modules_shop', '[umsatzgesamt]') . ": <b>" . we_util_Strings::formatNumber(($bezahlt + $unbezahlt) * $mwst) . " $waehr </b><br/><br/>" . g_l('modules_shop', '[schonbezahlt]') . ": " . we_util_Strings::formatNumber($bezahlt * $mwst) . " $waehr <br/>" . g_l('modules_shop', '[unbezahlt]') . ": " . we_util_Strings::formatNumber($unbezahlt * $mwst) . " $waehr";
 echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript(JS_DIR . 'windows.js');

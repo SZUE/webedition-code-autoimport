@@ -36,32 +36,16 @@ function getObjectTags($id, $isField = false){
 }
 
 function getMultiObjectTags($name){
-	if(isset($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][we_objectFile::TYPE_MULTIOBJECT . '_' . $name . "class"]["dat"])){
-		$id = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][we_objectFile::TYPE_MULTIOBJECT . '_' . $name . "class"]["dat"];
-	} else {
+	$cmd3 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 3);
+	if(!isset($_SESSION['weS']['we_data'][$cmd3][0]["elements"][we_objectFile::TYPE_MULTIOBJECT . '_' . $name . "class"]["dat"])){
 		return '';
-
-		/*$newfields = explode(',', $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["neuefelder"]["dat"]);
-		foreach($newfields as $tempname){
-			if($tempname != ""){
-				if($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$tempname]["dat"] == $name){
-					$temp = $tempname;
-					break;
-				}
-			}
-		}
-		if(!isset($temp)){
-			return '';
-		}
-		$id = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$temp . "class"]["dat"];
-
-		 */
 	}
+	$id = $_SESSION['weS']['we_data'][$cmd3][0]["elements"][we_objectFile::TYPE_MULTIOBJECT . '_' . $name . "class"]["dat"];
 	$tableInfo = we_objectFile::getSortedTableInfo($id, true);
 	$content = '<table cellpadding="2" cellspacing="0" border="1" width="400">';
 
 	//FIXME: causes internal server error
-	$regs=array();
+	$regs = array();
 	foreach($tableInfo as $cur){
 		if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
 //			$content .= getTmplTableRow($regs[1], $regs[2], true);
@@ -131,6 +115,8 @@ function getTmplTableRow($type, $name, $isField = false){
 	}
 }
 
+$cmd3 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 3);
+
 echo we_html_tools::getHtmlTop(g_l('weClass', '[generateTemplate]')) .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
  STYLESHEET;
@@ -147,12 +133,12 @@ $tmpl->setParentID(isset($pid) ? $pid : 0 );
 $tmpl->Path = $tmpl->ParentPath . (isset($filename) ? $filename : "") . ".tmpl";
 
 $usedIDs = array(
-	$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["ID"]
+	$_SESSION['weS']['we_data'][$cmd3][0]["ID"]
 );
 
-$sort = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["we_sort"]["dat"];
+$sort = $_SESSION['weS']['we_data'][$cmd3][0]["elements"]["we_sort"]["dat"];
 
-$count = $sort ? $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["Sortgesamt"]["dat"] : 0;
+$count = $sort ? $_SESSION['weS']['we_data'][$cmd3][0]["elements"]["Sortgesamt"]["dat"] : 0;
 
 $content = '<html>
 	<head>
@@ -166,26 +152,26 @@ $content = '<html>
 
 if($sort){
 	foreach($sort as $key => $val){
-		$name = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"]]["dat"];
-		$type = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"] . we_object::ELEMENT_TYPE]["dat"];
+		$name = $_SESSION['weS']['we_data'][$cmd3][0]["elements"][$_SESSION['weS']['we_data'][$cmd3][0]["elements"]["wholename" . $key]["dat"]]["dat"];
+		$type = $_SESSION['weS']['we_data'][$cmd3][0]["elements"][$_SESSION['weS']['we_data'][$cmd3][0]["elements"]["wholename" . $key]["dat"] . we_object::ELEMENT_TYPE]["dat"];
 
 		$content .= getTmplTableRow($type, $name);
 	}
 }
 
 $content .= '</table>';
-if($_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["ID"]){
+if($_SESSION['weS']['we_data'][$cmd3][0]["ID"]){
 	$content .= '
 		<p>
-		<we:listview type="object" classid="' . $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["ID"] . '" rows="10">
+		<we:listview type="object" classid="' . $_SESSION['weS']['we_data'][$cmd3][0]["ID"] . '" rows="10">
 			<we:repeat>
 		<p><table cellpadding="2" cellspacing="0" border="1" width="400">';
 
 
 	if($sort){
 		foreach($sort as $key => $val){
-			$name = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"]]["dat"];
-			$type = $_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"][$_SESSION['weS']['we_data'][$_REQUEST['we_cmd'][3]][0]["elements"]["wholename" . $key]["dat"] . we_object::ELEMENT_TYPE]["dat"];
+			$name = $_SESSION['weS']['we_data'][$cmd3][0]["elements"][$_SESSION['weS']['we_data'][$cmd3][0]["elements"]["wholename" . $key]["dat"]]["dat"];
+			$type = $_SESSION['weS']['we_data'][$cmd3][0]["elements"][$_SESSION['weS']['we_data'][$cmd3][0]["elements"]["wholename" . $key]["dat"] . we_object::ELEMENT_TYPE]["dat"];
 
 			$content .= getTmplTableRow($type, $name, true);
 		}
@@ -226,7 +212,7 @@ $buttons = we_html_button::position_yes_no_cancel(
 
 echo we_html_tools::htmlDialogLayout($tmpl->formPath(), g_l('weClass', '[generateTemplate]'), $buttons) . '
 <input type="hidden" name="SID" value="' . $tmpl->Name . '" />
-<input type="hidden" name="we_cmd[3]" value="' . $_REQUEST['we_cmd'][3] . '" />
-<input type="hidden" name="we_cmd[2]" value="' . $_REQUEST['we_cmd'][2] . '" />
+<input type="hidden" name="we_cmd[3]" value="' . $cmd3 . '" />
+<input type="hidden" name="we_cmd[2]" value="' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) . '" />
 </form>
 </body></html>';

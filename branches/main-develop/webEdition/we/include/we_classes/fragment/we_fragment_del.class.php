@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-class we_base_delFragment extends taskFragment{
+class we_fragment_del extends we_fragment_base{
 
 	private $db;
 	private $table;

@@ -183,7 +183,7 @@ class we_newsletter_view{
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', ' readonly', 'text', $width, 0), '', 'left', 'defaultfont', $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
 	}
@@ -205,7 +205,7 @@ class we_newsletter_view{
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "','','" . $open_doc . "')");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','','" . $open_doc . "')");
 		if(is_object($acObject)){
 
 			$yuiSuggest = $acObject;
@@ -234,7 +234,7 @@ class we_newsletter_view{
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
 		if(is_object($acObject)){
 
 			$yuiSuggest = $acObject;
@@ -264,7 +264,7 @@ class we_newsletter_view{
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "')");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 		if(is_object($acObject)){
 			$yuiSuggest = $acObject;
 			$yuiSuggest->setAcId('PathGroup');

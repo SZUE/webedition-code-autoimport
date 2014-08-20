@@ -314,10 +314,9 @@ class we_workflow_view extends we_workflow_base{
 				$headline[$counter1 + 3] = array('dat' => g_l('modules_workflow', '[user]') . (string) ($counter1 + 1));
 
 				$foo = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($tv->userID), '', $this->db);
-				$wecmdenc1 = we_base_request::encCmd("document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value");
 				$wecmdenc2 = we_base_request::encCmd("document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_usertext.value");
 				$wecmdenc5 = we_base_request::encCmd("document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value");
-				$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','" . $wecmdenc5 . "');");
+				$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('browse_users','document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value','" . $wecmdenc2 . "','','" . $wecmdenc5 . "');");
 
 				$yuiSuggest->setAcId('User_' . $counter . '_' . $counter1);
 				$yuiSuggest->setContentType('0,1');
@@ -442,7 +441,7 @@ class we_workflow_view extends we_workflow_base{
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "')");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'onchange="top.content.setHot();" readonly', "text", $width, 0), "", "left", "defaultfont", $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
 	}
 

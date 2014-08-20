@@ -803,7 +803,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 
 		return $this->View->htmlHidden('copyid', 0) .
 			$this->View->htmlHidden('copyid_text', "") .
-			we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements['copyid'].value,'" . NEWSLETTER_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . get_ws(NEWSLETTER_TABLE) . "')");
+			we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements['copyid'].value,'" . NEWSLETTER_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . get_ws(NEWSLETTER_TABLE) . "')");
 	}
 
 	function getHTMLCustomer($group){
@@ -1905,7 +1905,7 @@ self.focus();
 		$offset = max(we_base_request::_(we_base_request::INT, "offset", 0), 0);
 		$numRows = we_base_request::_(we_base_request::INT, "numRows", 15);
 		$anz = count($emails);
-		$endRow = min($offset + $numRows, anz);
+		$endRow = min($offset + $numRows, $anz);
 
 		function cmp0($a, $b){
 			return strnatcasecmp($a[0], $b[0]);

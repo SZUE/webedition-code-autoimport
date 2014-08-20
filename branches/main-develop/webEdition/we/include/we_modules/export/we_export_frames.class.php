@@ -776,7 +776,7 @@ function closeAllType(){
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "')");
+		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('SelPath');
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);

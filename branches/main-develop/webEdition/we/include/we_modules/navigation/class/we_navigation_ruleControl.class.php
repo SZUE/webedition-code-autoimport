@@ -23,10 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_navigation_ruleControl{
-
 	var $NavigationRule;
 
-	function __construct(){
+	public function __construct(){
 		$this->NavigationRule = new we_navigation_rule();
 	}
 
@@ -187,45 +186,7 @@ $_selectWorkspace";
 	}
 
 	function processVariables(){
-		if(($name = we_base_request::_(we_base_request::STRING, 'CategoriesControl')) && ($cnt = we_base_request::_(we_base_request::INT, 'CategoriesCount')) !== false){
-			$_categories = array();
-
-			for($i = 0; $i < $cnt; $i++){
-				if(($cat = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i)) !== false){
-					$_categories[] = $cat;
-				}
-			}
-
-			$categoryIds = array();
-
-			foreach($_categories as $cat){
-				if(($path = path_to_id($cat, CATEGORY_TABLE))){
-					$categoryIds[] = $path;
-				}
-			}
-			$categoryIds = array_unique($categoryIds);
-			$_catString = '';
-
-			if(!empty($categoryIds)){
-				$_catString = ',';
-
-				foreach($categoryIds as $catId){
-					$_catString .= "$catId,";
-				}
-			}
-
-			$this->NavigationRule->Categories = $_catString;
-		}
-
-		if(is_array($this->NavigationRule->persistent_slots)){
-			foreach($this->NavigationRule->persistent_slots as $val){
-				if(isset($_REQUEST[$val])){
-					$this->NavigationRule->$val = $_REQUEST[$val];
-				}
-			}
-		}
-
-		$this->NavigationRule->isnew = ($this->NavigationRule->ID == 0);
+		$this->NavigationRule->processVariables();
 	}
 
 	static function getAllNavigationRules(){
@@ -235,7 +196,7 @@ $_selectWorkspace";
 		$navigationRules = array();
 
 		while($db->next_record()){
-			$navigationRules[] = new we_navigation_rule(false, $db->Record);
+			$navigationRules[] = new we_navigation_rule($db->Record);
 		}
 		return $navigationRules;
 	}

@@ -32,19 +32,26 @@ $orderBy = we_base_request::_(we_base_request::STRING, 'orderBy', 'IntOrderID');
 $actPage = we_base_request::_(we_base_request::INT, 'actPage', 0);
 
 function orderBy($a, $b){
-	$ret = ($a[$_REQUEST['orderBy']] >= $b[$_REQUEST['orderBy']]);
-	return (isset($_REQUEST['orderDesc']) ? !$ret : $ret);
+	static $ord = null;
+	static $desc = false;
+	if($ord === null){
+		$ord = we_base_request::_(we_base_request::RAW, "orderBy");
+		$desc = we_base_request::_(we_base_request::BOOL, "orderDesc");
+	}
+	$ret = ($a[$ord] >= $b[$ord]);
+	return ($desc ? !$ret : $ret);
 }
 
 function getTitleLink($text, $orderKey){
+	$desc = we_base_request::_(we_base_request::BOOL, "orderDesc");
 	$_href = $_SERVER['SCRIPT_NAME'] .
 		'?ViewYear=' . $GLOBALS['selectedYear'] .
 		'&ViewMonth=' . $GLOBALS['selectedMonth'] .
 		'&orderBy=' . $orderKey .
 		'&actPage=' . $GLOBALS['actPage'] .
-		( ($GLOBALS['orderBy'] == $orderKey && !isset($_REQUEST['orderDesc'])) ? '&orderDesc=true' : '' );
+		( ($GLOBALS['orderBy'] == $orderKey && !$desc) ? '&orderDesc=true' : '' );
 
-	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <img src="' . IMAGE_DIR . 'arrow_sort_' . (isset($_REQUEST['orderDesc']) ? 'desc' : 'asc') . '.gif" />' : '');
+	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <img src="' . IMAGE_DIR . 'arrow_sort_' . ($desc ? 'desc' : 'asc') . '.gif" />' : '');
 }
 
 function getPagerLink(){
@@ -52,7 +59,7 @@ function getPagerLink(){
 		'?ViewYear=' . $GLOBALS['selectedYear'] .
 		'&ViewMonth=' . $GLOBALS['selectedMonth'] .
 		'&orderBy=' . $GLOBALS['orderBy'] .
-		(isset($_REQUEST['orderdesc']) ? '&orderDesc=true' : '' );
+		(we_base_request::_(we_base_request::BOOL, "orderDesc") ? '&orderDesc=true' : '' );
 }
 
 function yearSelect($select_name){
@@ -74,6 +81,7 @@ function monthSelect($select_name, $selectedMonth){
 	return we_class::htmlSelect($select_name, $opts, 1, $selectedMonth, false, array('id' => $select_name));
 }
 
+$mon = we_base_request::_(we_base_request::INT, 'ViewMonth');
 echo we_html_tools::getHtmlTop() .
  STYLESHEET .
  we_html_element::jsElement('
@@ -85,7 +93,7 @@ echo we_html_tools::getHtmlTop() .
 	var countSetTitle = 0;
 	function setHeaderTitle() {
 		pre = "";
-		post = "' . (isset($_REQUEST['ViewMonth']) && $_REQUEST['ViewMonth'] > 0 ? g_l('modules_shop', '[month][' . $_REQUEST['ViewMonth'] . ']') . ' ' : '') . $_REQUEST['ViewYear'] . '";
+		post = "' . ($mon > 0 ? g_l('modules_shop', '[month][' . $mon . ']') . ' ' : '') . we_base_request::_(we_base_request::INT, 'ViewYear') . '";
 		if(parent.edheader && parent.edheader.setTitlePath) {
 			parent.edheader.hasPathGroup = true;
 			parent.edheader.setPathGroup(pre);
@@ -117,7 +125,7 @@ echo we_html_tools::getHtmlTop() .
 <form>';
 
 // get some preferences!
-$feldnamen = explode('|', f('SELECT strFelder from ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $DB_WE));
+$feldnamen = explode('|', f('SELECT strFelder from ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"'));
 $waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
 $numberformat = $feldnamen[2];
 $classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
@@ -327,7 +335,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 
 	// we need functionalitty to order these
 
-	/* if(isset($_REQUEST['orderBy']) && $_REQUEST['orderBy']){
+	/* if(isset(REQUEST['orderBy']) && REQUEST['orderBy']){
 	  usort($orderRows, 'orderBy');
 	  } */
 

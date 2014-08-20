@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_rebuild_fragment extends taskFragment{
+class we_rebuild_fragment extends we_fragment_base{
 
 	function __construct($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = ""){
 		parent::__construct($name, $taskPerFragment, $pause, $bodyAttributes, $initdata);

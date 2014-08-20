@@ -299,14 +299,12 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 		</head>
 
 		<body style="margin:0px;padding:0px;">
-			<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
+			<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post">
 
 				<?php
-				if(count($_REQUEST['we_cmd']) > 3){
-					for($i = 3; $i < count($_REQUEST['we_cmd']); $i++){
-						?>
-						<input type="hidden" name="we_cmd[<?php echo ($i - 3); ?>]" value="<?php echo $_REQUEST['we_cmd'][$i]; ?>">
-						<?php
+				if(($cnt = count($_REQUEST['we_cmd'])) > 3){
+					for($i = 3; $i < $cnt; $i++){
+						echo '<input type="hidden" name="we_cmd[' . ($i - 3) . ']" value="' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', $i) . '">';
 					}
 				}
 				?>
@@ -323,7 +321,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 					//-->
 				</script>
 				<?php
-				echo '<iframe id="glossarycheck" name="glossarycheck" frameborder="0" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&we_cmd[1]=prepare&we_cmd[2]=' . $_REQUEST['we_cmd'][2] . (isset($_REQUEST['we_cmd'][3]) ? '&we_cmd[3]=' . $_REQUEST['we_cmd'][3] : '' ) . '" width="730px" height="400px" style="overflow: hidden;"></iframe>' .
+				echo '<iframe id="glossarycheck" name="glossarycheck" frameborder="0" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '',0). '&we_cmd[1]=prepare&we_cmd[2]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '',2) . (($cmd3=we_base_request::_(we_base_request::RAW, 'we_cmd', false,3))!==false ? '&we_cmd[3]=' . $cmd3 : '' ) . '" width="730px" height="400px" style="overflow: hidden;"></iframe>' .
 				$AppletCode;
 
 //

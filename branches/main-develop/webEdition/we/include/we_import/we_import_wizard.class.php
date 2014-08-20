@@ -1176,7 +1176,7 @@ HTS;
 		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.forms['we_form'].elements['noDocTypeTemplateId'].value");
 		$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.forms['we_form'].elements['v[we_TemplateName]'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('reload_editpage');");
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['noDocTypeTemplateId'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['noDocTypeTemplateId'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		/*		 * ******************************************************************** */
 		$yuiSuggest = & weSuggest::getInstance();
 
@@ -2231,7 +2231,7 @@ HTS;
 		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.forms['we_form'].elements['v[we_TemplateID]'].value");
 		$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.forms['we_form'].elements['v[we_TemplateName]'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('reload_editpage');");
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['v[we_TemplateID]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['v[we_TemplateID]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 
 		$yuiSuggest = & weSuggest::getInstance();
 
@@ -2735,7 +2735,7 @@ function handle_event(evt) {
 
 	function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){
 		$Pathvalue = (empty($Pathvalue) ? f('SELECT Path FROM ' . escape_sql_query($table) . ' WHERE ID=' . intval($IDValue), '', new DB_WE()) : $Pathvalue);
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','document.we_form.elements[\\'" . $IDName . "\\'].value','document.we_form.elements[\\'" . $Pathname . "\\'].value','" . $cmd . "','" . session_id() . "','" . $rootDirID . "')");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','document.we_form.elements[\\'" . $IDName . "\\'].value','document.we_form.elements[\\'" . $Pathname . "\\'].value','" . $cmd . "','','" . $rootDirID . "')");
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => $IDName, 'value' => $IDValue)), we_html_tools::getPixel(20, 4), $button);
 	}
 

@@ -1981,6 +1981,8 @@ we/include/we_classes/we_docTypes.inc.php
 we/include/we_classes/we_docSelector.inc.php
 we/include/we_classes/we_dirSelector.inc.php
 we/include/we_classes/we_delSelector.inc.php
+we/include/we_classes/we_copyFolderFrag.class.php
+we/include/we_classes/we_copyFolderFinishFrag.class.php
 we/include/we_classes/we_codeConvertor.inc.php
 we/include/we_classes/we_class.inc.php
 we/include/we_classes/we_class.class.php
@@ -2021,6 +2023,7 @@ we/include/we_classes/tools/weToolTree.class.php
 we/include/we_classes/tools/weToolModel.class.php
 we/include/we_classes/tools/weToolLookup.class.php
 we/include/we_classes/tools/weToolFrames.class.php
+we/include/we_classes/taskFragment.class.php
 we/include/we_classes/smtp.class.php
 we/include/we_classes/rebuild/we_rebuild_wizard.inc.php
 we/include/we_classes/rebuild/we_rebuild.class.php
@@ -2081,6 +2084,7 @@ we/include/we_classes/base/we_image_edit.class.php
 we/include/we_classes/base/we_image_crop.class.php
 we/include/we_classes/base/we_error_handler.inc.php
 we/include/we_classes/base/we_base_version.class.php
+we/include/we_classes/base/we_base_delFragment.class.php
 we/include/we_classes/base/we_backup.inc.php
 we/include/we_classes/base/weVersion.class.php
 we/include/we_classes/base/weTableItem.class.php

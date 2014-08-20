@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class weModelBase{
-
 	var $db;
 	var $table = '';
 	var $persistent_slots = array();
@@ -38,10 +36,12 @@ class weModelBase{
 	/**
 	 * Default Constructor
 	 */
-	function __construct($table, we_database_base $db = null){
+	function __construct($table, we_database_base $db = null, $load = true){
 		$this->db = ($db ? $db : new DB_WE()); //FIXME: => ?:
 		$this->table = $table;
-		$this->loadPresistents();
+		if($load){
+			$this->loadPresistents();
+		}
 	}
 
 	function loadPresistents(){//fixme: set datatype from db

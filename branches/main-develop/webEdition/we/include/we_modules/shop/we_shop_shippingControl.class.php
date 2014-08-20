@@ -62,15 +62,15 @@ class we_shop_shippingControl{
 		if(isset($req['weShippingId'])){
 
 			$newShipping = new we_shop_shipping(
-				$req['weShippingId'], $req['weShipping_text'], self::makeArrayFromReq($req['weShipping_countries']), $req['weShipping_cartValue'], $req['weShipping_shipping'], ($req['weShipping_default'] == '1' ? 1 : 0)
+				$req['weShippingId'], $req['weShipping_text'], we_shop_vatRule::makeArrayFromReq($req['weShipping_countries']), $req['weShipping_cartValue'], $req['weShipping_shipping'], ($req['weShipping_default'] == '1' ? 1 : 0)
 			);
 			$this->shippings[$req['weShippingId']] = $newShipping;
 
 			if($newShipping->default){
 
-				foreach($this->shippings as $id => $shipping){
+				foreach($this->shippings as $id => &$shipping){
 					if($id != $req['weShippingId']){
-						$this->shippings[$id]->default = 0;
+						$shipping->default = 0;
 					}
 				}
 			}
@@ -148,20 +148,6 @@ class we_shop_shippingControl{
 			return $shipping->shipping[$shippingId];
 		}
 		return 0;
-	}
-
-	function makeArrayFromReq($req){
-
-		$entries = explode("\n", $req);
-		$retArr = array();
-
-		foreach($entries as $entry){
-			if(trim($entry)){
-				$retArr[] = trim($entry);
-			}
-		}
-		array_unique($retArr);
-		return $retArr;
 	}
 
 }

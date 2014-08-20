@@ -24,17 +24,17 @@
  */
 class we_exim_searchPatterns{
 
-	var $doc_patterns = array("id" => array(), "path" => array());
-	var $obj_patterns = array("id" => array(), "path" => array());
-	var $class_patterns = array();
-	var $ext_patterns = array();
-	var $wysiwyg_patterns = array();
-	var $navigation_patterns = array();
-	var $thumbnail_patterns = array();
-	var $tmpl_patterns = array();
-	var $special_patterns = array();
+	public $doc_patterns = array("id" => array(), "path" => array());
+	public $obj_patterns = array("id" => array(), "path" => array());
+	public $class_patterns = array();
+	public $ext_patterns = array();
+	public $wysiwyg_patterns = array();
+	public $navigation_patterns = array();
+	public $thumbnail_patterns = array();
+	public $tmpl_patterns = array();
+	public $special_patterns = array();
 
-	function __construct(){
+	public function __construct(){
 		$this->doc_patterns = array("id" => array(), "path" => array());
 		$this->obj_patterns = array("id" => array(), "path" => array());
 		$this->class_patterns = array();
@@ -78,6 +78,10 @@ class we_exim_searchPatterns{
 		$this->doc_patterns["id"][] = "/<(we:include" . $spacer . "[^>]*[\040|\n|\t|\r]+id" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]+" . $spacer . "type" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]+document[\"|\']+" . $spacer . "[^>]*)>/sie";
 
 		$this->doc_patterns["id"][] = "/<(we:include" . $spacer . "[^>]*[\040|\n|\t|\r]+id" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)[^>]*>/sie";
+
+		//replace #WE:1223#
+		$this->doc_patterns["id"][] = "/#(WE:)(\d+)#/se";
+
 
 		// serach for documents after path
 		$this->doc_patterns["path"][] = "/<(we:include" . $spacer . "[^>]*[\040|\n|\t|\r]+path" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";

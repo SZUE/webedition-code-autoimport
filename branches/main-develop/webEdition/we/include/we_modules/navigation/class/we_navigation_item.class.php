@@ -194,9 +194,7 @@ class we_navigation_item{
 				}
 				if($allfound){
 					$this->setCurrent($weNavigationItems);
-					//t_e('set');
 				} elseif($this->current == true){
-					//t_e('unset');
 					$this->unsetCurrent($weNavigationItems);
 				}
 				return $allfound;

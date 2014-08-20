@@ -584,8 +584,7 @@ class we_customer_EIWizard{
 				');
 
 		$tmptable = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 1);
-		$tmptable->setCol(0, 0, array("valign" => "middle"), $this->formFileChooser(250, "source", $source, "opener." . $this->bodyFrame . ".document.we_form.import_from[0].checked=true;", ($type == we_import_functions::TYPE_GENERIC_XML
-						? we_base_ContentTypes::XML : "")));
+		$tmptable->setCol(0, 0, array("valign" => "middle"), $this->formFileChooser(250, "source", $source, "opener." . $this->bodyFrame . ".document.we_form.import_from[0].checked=true;", ($type == we_import_functions::TYPE_GENERIC_XML ? we_base_ContentTypes::XML : "")));
 		$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
 
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 2);
@@ -771,15 +770,12 @@ class we_customer_EIWizard{
 					$tblSelect->setCol(0, 1, array(), $rcdSelect->getHtml());
 					$tblSelect->setCol(0, 2, array("width" => 20));
 					$tblSelect->setCol(0, 3, array("class" => "defaultfont"), g_l('modules_customer', '[num_data_sets]'));
-					$tblSelect->setCol(0, 4, array(), we_html_tools::htmlTextInput("xml_from", 4, 1, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1))
-									? 1 : 0));
+					$tblSelect->setCol(0, 4, array(), we_html_tools::htmlTextInput("xml_from", 4, 1, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
 					$tblSelect->setCol(0, 5, array("class" => "defaultfont"), g_l('modules_customer', '[to]'));
-					$tblSelect->setCol(0, 6, array(), we_html_tools::htmlTextInput("xml_to", 4, $firstOptVal, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1))
-									? 1 : 0));
+					$tblSelect->setCol(0, 6, array(), we_html_tools::htmlTextInput("xml_to", 4, $firstOptVal, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
 
 					$tblFrame = new we_html_table(array(), 3, 2);
-					$tblFrame->setCol(0, 0, array("colspan" => 2, "class" => "defaultfont"), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[well_formed]') . " " . g_l('modules_customer', '[select_elements]'), we_html_tools::TYPE_INFO, 570)
-								:
+					$tblFrame->setCol(0, 0, array("colspan" => 2, "class" => "defaultfont"), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[well_formed]') . " " . g_l('modules_customer', '[select_elements]'), we_html_tools::TYPE_INFO, 570) :
 							we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[xml_valid_1]') . " $optid " . g_l('modules_customer', '[xml_valid_m2]'), we_html_tools::TYPE_INFO, 570));
 					$tblFrame->setCol(1, 0, array("colspan" => 2));
 					$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
@@ -826,15 +822,16 @@ class we_customer_EIWizard{
 		$field_mappings = we_base_request::_(we_base_request::RAW, "field_mappings", "");
 		$att_mappings = we_base_request::_(we_base_request::RAW, "att_mappings", "");
 
-		$arrgs = array();
 		if($type == self::TYPE_CSV){
-			$arrgs["delimiter"] = $csv_delimiter;
-			$arrgs["enclose"] = $csv_enclose;
-			$arrgs["lineend"] = $csv_lineend;
-			$arrgs["fieldnames"] = $csv_fieldnames;
-			$arrgs["charset"] = $the_charset;
+			$arrgs = array(
+				"delimiter" => $csv_delimiter,
+				"enclose" => $csv_enclose,
+				"lineend" => $csv_lineend,
+				"fieldnames" => $csv_fieldnames,
+				"charset" => $the_charset,
+			);
 		} else {
-			$arrgs["dataset"] = $dataset;
+			$arrgs = array("dataset" => $dataset);
 		}
 
 		$nodes = we_customer_EI::getDataset($type, $filename, $arrgs);
@@ -1186,8 +1183,7 @@ class we_customer_EIWizard{
 
 					foreach($filter_fieldname as $k => $v){
 						$op = $this->getOperator($filter_operator[$k]);
-						$filterarr[] = ($k ? (" " . $filter_logic[$k] . " ") : "") . $filter_fieldname[$k] . " " . $op . " '" . (is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k]
-									: $this->db->escape($filter_fieldvalue[$k])) . "'";
+						$filterarr[] = ($k ? (" " . $filter_logic[$k] . " ") : "") . $filter_fieldname[$k] . " " . $op . " '" . (is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k] : $this->db->escape($filter_fieldvalue[$k])) . "'";
 					}
 
 					$filtersql = implode(" ", $filterarr);
@@ -1572,8 +1568,7 @@ class we_customer_EIWizard{
 		$wecmdenc4 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button("select", "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value,'" . $wecmdenc4 . "');");
 
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES")
-						? $button : "");
+		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -1597,7 +1592,7 @@ class we_customer_EIWizard{
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:formDirChooser('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "')");
+		$button = we_html_button::create_button("select", "javascript:formDirChooser('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
 	}
 
@@ -1605,33 +1600,32 @@ class we_customer_EIWizard{
 
 		switch(we_base_request::_(we_base_request::STRING, "wcmd")){
 			case "add_customer":
-				$arr = we_base_request::_(we_base_request::INTLISTA, "customers");
+				$customers = we_base_request::_(we_base_request::INTLISTA, "customers");
 				if(($ids = we_base_request::_(we_base_request::INTLIST, "cus"))){
 					foreach(makeArrayFromCSV($ids) as $id){
-						if(strlen($id) && (!in_array($id, $arr))){
-							$arr[] = $id;
+						if(strlen($id) && (!in_array($id, $customers))){
+							$customers[] = $id;
 						}
 					}
-					$_REQUEST["customers"] = makeCSVFromArray($arr, true);
 				}
 				break;
 			case "del_customer":
-				$arr = we_base_request::_(we_base_request::INTLISTA, "customers");
+				$customers = we_base_request::_(we_base_request::INTLISTA, "customers");
 				if(($id = we_base_request::_(we_base_request::INT, "cus"))){
-					foreach($arr as $k => $v){
+					foreach($customers as $k => $v){
 						if($v == $id){
-							array_splice($arr, $k, 1);
+							array_splice($customers, $k, 1);
 						}
 					}
-					$_REQUEST["customers"] = makeCSVFromArray($arr, true);
 				}
 				break;
 			case "del_all_customers":
-				$_REQUEST["customers"] = "";
+				$customers = array();
 				break;
 			default:
+				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", '');
 		}
-		$customers = array_filter(we_base_request::_(we_base_request::INTLISTA, "customers", ''));
+		$customers = array_filter($customers);
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement('
 			function selector_cmd(){
@@ -1676,7 +1670,7 @@ class we_customer_EIWizard{
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:selector_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','" . session_id() . "','" . $rootDirID . "')");
+		$button = we_html_button::create_button("select", "javascript:selector_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", 'readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
 	}

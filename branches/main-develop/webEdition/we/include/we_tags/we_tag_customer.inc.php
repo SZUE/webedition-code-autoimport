@@ -65,7 +65,7 @@ function we_tag_customer($attribs){
 		$idname = 'we_' . $we_doc->Name . '_txt[' . $name . ']';
 		$table = CUSTOMER_TABLE;
 		$delbutton = we_html_button::create_button('image:btn_function_trash', "javascript:document.forms[0].elements['" . $idname . "'].value=0;document.forms[0].elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.forms[0].elements['" . $idname . "'].value,'" . $table . "','document.forms[\'we_form\'].elements[\'" . $idname . "\'].value','document.forms[\'we_form\'].elements[\'" . $textname . "\'].value','opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','" . session_id() . "',0,'',1)");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.forms[0].elements['" . $idname . "'].value,'" . $table . "','document.forms[\'we_form\'].elements[\'" . $idname . "\'].value','document.forms[\'we_form\'].elements[\'" . $textname . "\'].value','opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','',0,'',1)");
 
 		if($GLOBALS['we_editmode']){
 			?>

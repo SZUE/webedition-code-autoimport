@@ -355,7 +355,7 @@ self.focus();';
 	protected function getHTMLEditor(){//TODO: Throw out the the exeption for properties/edbody and use parent
 		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=1', 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
 				we_html_element::htmlIFrame('edbody', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users', 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
-				we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter&home=1' . (isset($_REQUEST['sid']) ? '&sid=' . $_REQUEST['sid'] : '&home=1'), 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;')
+				we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter&home=1' . (($sid = we_base_request::_(we_base_request::INT, 'sid')) !== false ? '&sid=' . $sid : '&home=1'), 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;')
 		);
 
 		return $this->getHTMLDocument($body);
@@ -392,15 +392,15 @@ self.focus();';
 			we_html_element::htmlHidden(array("name" => "sd", "value" => 0,));
 
 		if($user_object){
-			if(isset($_REQUEST['oldtab']) && isset($_REQUEST['old_perm_branch'])){
+			if(($oldTab = we_base_request::_(we_base_request::INT, 'oldtab')) !== false && ($oldBranch = we_base_request::_(we_base_request::INT, 'old_perm_branch')) !== false){
 
-				$user_object->preserveState($_REQUEST['oldtab'], $_REQUEST['old_perm_branch']);
+				$user_object->preserveState($oldTab, $oldBranch);
 				$_SESSION["user_session_data"] = $user_object->getState();
 			}
-			if(isset($_REQUEST["seem_start_file"])){
-				$_SESSION["save_user_seem_start_file"][$_REQUEST["uid"]] = $_REQUEST["seem_start_file"];
+			if(($start = we_base_request::_(we_base_request::INT, 'seem_start_file')) !== false){
+				$_SESSION["save_user_seem_start_file"][we_base_request::_(we_base_request::INT, "uid")] = $start;
 			}
-			$_content .= $user_object->formDefinition(we_base_request::_(we_base_request::INT, "tab", 0), we_base_request::_(we_base_request::RAW, "perm_branch", 0));
+			$_content .= $user_object->formDefinition($tab, $permBranch);
 		}
 
 		$_content .= $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs();

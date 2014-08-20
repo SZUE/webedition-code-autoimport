@@ -1,6 +1,6 @@
 <?php
 
-class we_base_sessionHandler implements SessionHandlerInterface{
+class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	//prevent crashed or killed sessions to stay
 	private $execTime;
 	private $sessionName;
@@ -42,7 +42,7 @@ class we_base_sessionHandler implements SessionHandlerInterface{
 
 	function close(){
 		//make sure every access will be an error after close
-		unset($_SESSION);
+		//unset($_SESSION);
 		return true;
 	}
 

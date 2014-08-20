@@ -625,7 +625,7 @@ function setApplet() {
 		);
 
 		$butBrowse = str_replace(array("\n", "\r"), ' ', we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? we_html_button::create_button('browse', 'javascript:void(0)', true, 84, 22) :
-			we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, 286, 22));
+				we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, 286, 22));
 
 		$butReset = str_replace(array("\n", "\r"), ' ', we_html_button::create_button('reset', 'javascript:weClearFileList()', true, (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? 84 : 100), 22, '', '', false));
 
@@ -851,7 +851,7 @@ function setApplet() {
 		if($this->step == 1){
 			$bodyAttribs["onload"] = "next();";
 			$error = $this->importFile();
-			if(!empty($error)){
+			if($error){
 				if(!isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'])){
 					$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] = array();
 				}
@@ -864,8 +864,8 @@ function setApplet() {
 
 			if($this->partNum == $this->partCount){
 				//actual file completed
-				$response['status'] = empty($error) ? 'success' : 'failure';
-				$response['message'] = empty($error) ? '' : g_l('importFiles', "[" . $error['error'] . "]");
+				$response['status'] = $error ? 'failure' : 'success';
+				$response['message'] = $error ? /*g_l('importFiles', "[" .*/$error['error'] /*. "]")*/ : ''; //text in $error is already translated: "Requested lang entry l_importFiles[Fehler beim speichern]"
 
 				//all files done
 				if($formnum == $formcount){
@@ -1109,10 +1109,12 @@ function next() {
 				$matches = array();
 				preg_match('#^(.*)(\..+)$#', $_fn, $matches);
 
-
+				if(!$matches){
+					return array("filename" => $_FILES['we_File']["name"], 'error' => g_l('importFiles', '[save_error]'));
+				}
 				$we_doc->Filename = $matches[1];
 				$we_doc->Extension = strtolower($matches[2]);
-				if(empty($we_doc->Filename)){
+				if(!$we_doc->Filename){
 					$we_doc->Filename = $matches[2];
 					$we_doc->Extension = '';
 				}
@@ -1121,7 +1123,7 @@ function next() {
 				$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
 
 				// if file exists we have to see if we should create a new one or overwrite it!
-				if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($we_doc->Path) . '"', 'ID', $GLOBALS['DB_WE']))){
+				if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($we_doc->Path) . '"'))){
 					if($this->sameName == 'overwrite'){
 						$tmp = $we_doc->ClassName;
 						$we_doc = new $tmp();
@@ -1129,7 +1131,7 @@ function next() {
 					} elseif($this->sameName == "rename"){
 						$z = 0;
 						$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
-						while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->importToID), "ID", $GLOBALS['DB_WE'])){
+						while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->importToID))){
 							$z++;
 							$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
 						}

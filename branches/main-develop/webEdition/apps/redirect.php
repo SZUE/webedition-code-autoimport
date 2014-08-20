@@ -1,11 +1,10 @@
 <?php
-
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 7705 $
+ * $Author: mokraemer $
+ * $Date: 2014-06-10 21:46:56 +0200 (Di, 10. Jun 2014) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -23,14 +22,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-$protect = we_base_moduleInfo::isActive('workflow') && we_users_util::canEditModule('workflow') ? null : array(false);
-we_html_tools::protect($protect);
 
-$what = we_base_request::_(we_base_request::RAW, 'pnt','frameset');
-$mode = we_base_request::_(we_base_request::INT, 'art', 0);
-$type = we_base_request::_(we_base_request::INT, 'type', 0);
+we_html_tools::protect();
+$matches = array();
+//[REQUEST_URI] => /webEdition/apps/redirect.php/wephpmyadmin/index.php/frameset/index
+preg_match('|' . WE_APPS_DIR . 'redirect.php/([^/]+)/([^/]+)(/.*)?$|', $_SERVER['REQUEST_URI'], $matches);
+include_once($_SERVER['DOCUMENT_ROOT'] . WE_APPS_DIR . $matches[1] . '/' . ($matches[2] == 'index.php' ? 'index.php' : (isset($matches[3]) ? $matches[3] : '')));
+/*p_r($matches);
+p_r($_SERVER);
 
-$weFrame = new we_workflow_frames();
-echo $weFrame->getHTMLDocumentHeader();
-$weFrame->process();
-echo $weFrame->getHTML($what, $mode, $type);
+t_e($_REQUEST, $_SERVER);
+ */

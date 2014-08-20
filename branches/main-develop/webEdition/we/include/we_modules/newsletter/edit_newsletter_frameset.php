@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,9 +26,17 @@ $protect = we_base_moduleInfo::isActive('newsletter') && we_users_util::canEditM
 we_html_tools::protect($protect);
 
 $what = we_base_request::_(we_base_request::STRING, 'pnt', 'frameset');
-$mode = we_base_request::_(we_base_request::INT, 'art', 0);
 
 $newsletterFrame = new we_newsletter_frames();
+switch($what){
+	case 'edit_file':
+		$mode = we_base_request::_(we_base_request::FILE, 'art');
+	break;
+	default:
+		$mode = we_base_request::_(we_base_request::INT, 'art', 0);
+		break;
+}
+
 echo $newsletterFrame->getHTMLDocumentHeader($what, $mode);
 
 if(($id = we_base_request::_(we_base_request::INT, 'inid')) !== false){
@@ -60,6 +67,7 @@ switch($what){
 	case 'black_list':
 		break;
 	default:
+		$mode = isset($mode) ? $mode : we_base_request::_(we_base_request::INT, 'art', 0);
 		$newsletterFrame->View->processCommands();
 }
 

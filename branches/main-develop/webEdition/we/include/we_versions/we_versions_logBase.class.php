@@ -54,7 +54,7 @@ abstract class we_versions_logBase{
 
 		$content = array();
 		$tableInfo = $this->db->metadata($this->table);
-		$this->db->query("SELECT ID,timestamp,action,userID FROM " . $this->db->escape($this->table) . " ORDER BY timestamp DESC");
+		$this->db->query('SELECT ID,timestamp,action,userID FROM ' . $this->db->escape($this->table) . ' ORDER BY timestamp DESC');
 		$m = 0;
 		while($this->db->next_record()){
 			for($i = 0; $i < count($tableInfo); $i++){
@@ -70,24 +70,16 @@ abstract class we_versions_logBase{
 	}
 
 	function saveLog(){
-		$keys = $values = array();
+		$set = array();
 
-		foreach($this->persistent_slots as $key => $val){
-
+		foreach($this->persistent_slots as $val){
 			if(isset($this->$val)){
-				$keys[] = '`' . $val . '`';
-				$values[] = "'" . ($this->$val) . "'";
+				$set[$val] = $this->$val;
 			}
 		}
 
-
-		$keys = implode(",", $keys);
-		$values = implode(",", $values);
-
-		if(!empty($keys) && !empty($values)){
-
-			$query = 'INSERT INTO ' . $this->db->escape($this->table) . ' (' . $keys . ') VALUES (' . $values . ')';
-			$this->db->query($query);
+		if($set){
+			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter($set));
 		}
 	}
 

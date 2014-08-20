@@ -24,7 +24,7 @@
  */
 switch($cmd){
 	case 'workflow_finish':
-		return 'we_modules/workflow/we_workflow_finish.inc.php';
+		return 'we_modules/workflow/we_finish_workflow.inc.php';
 	case 'workflow_isIn':
 	case 'workflow_pass':
 	case 'workflow_decline':

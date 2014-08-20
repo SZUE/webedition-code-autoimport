@@ -30,7 +30,7 @@
  * It is needed if you need to do a lot of work, which takes time
  * longer than the timeout of some servers
  */
-class taskFragment{
+class we_fragment_base{
 
 	/**
 	 * Number of all tasks.
@@ -90,7 +90,7 @@ class taskFragment{
 	 * @param      int $bodyAttributes
 	 * @param      array $initdata
 	 */
-	protected function __construct($name, $taskPerFragment, $pause = 1, $bodyAttributes = "", $initdata = ""){
+	public function __construct($name, $taskPerFragment, $pause = 1, $bodyAttributes = "", $initdata = ""){
 		$this->name = $name;
 		$this->taskPerFragment = $taskPerFragment;
 		$this->pause = $pause;

@@ -179,7 +179,7 @@ class we_voting_frames extends weModuleFrames{
 		$del_but = addslashes(we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'btn_function_trash.gif', 'onclick' => 'javascript:top . content . setHot(); #####placeHolder#####', 'style' => 'cursor: pointer; width: 27px;')));
 		$del_but1 = addslashes(we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'btn_function_trash.gif', 'onclick' => 'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();', 'style' => 'cursor: pointer; width: 27px;')));
 
-		$_Imagecmd = addslashes("we_cmd('openDocselector',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','" . session_id() . "',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," .
+		$_Imagecmd = addslashes("we_cmd('openDocselector',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," .
 			(permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1) . ')');
 
 		$sel_but = addslashes(we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'btn_function_trash.gif', 'onclick' => 'javascript:top.content.setHot();', 'style' => 'cursor: pointer; width: 27px;')));
@@ -310,12 +310,11 @@ class we_voting_frames extends weModuleFrames{
 		$table->setColContent(1, 1, we_html_element::htmlDiv(array('id' => 'owners', 'class' => 'blockWrapper', 'style' => 'width: ' . ($this->_width_size - 10) . 'px; height: 60px; border: #AAAAAA solid 1px;')));
 		$idname = 'owner_id';
 		$textname = 'owner_text';
-		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 		$wecmdenc5 = we_base_request::encCmd("fillIDs();opener.we_cmd('users_add_owner',top.allPaths,top.allIsFolder);");
 		$table->setCol(2, 0, array('colspan' => 2, 'align' => 'right'), we_html_element::htmlHidden(array('name' => $idname, 'value' => '')) .
 			we_html_element::htmlHidden(array('name' => $textname, 'value' => '')) .
-			we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);")
+			we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('browse_users','document.forms['we_form'].elements['" . $idname . "'].value','" . $wecmdenc2 . "','',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);")
 		);
 
 		$parts[] = array(

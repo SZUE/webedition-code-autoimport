@@ -25,9 +25,9 @@ we_html_tools::protect();
 
 
 // prepare the queries, 4 as maximum.
-$_ids = explode(",", $_REQUEST['we_cmd'][1]); // we_cmd[1] is commaseperated list of ids
+$_ids =  we_base_request::_(we_base_request::INTLISTA, 'we_cmd', '', 1); // we_cmd[1] is commaseperated list of ids
 $_tables = explode(",", $_REQUEST['we_cmd'][3]); // we_cmd[3] is commaseperated list of tables
-$_transaction = we_base_request::_(we_base_request::RAW, 'we_cmd', null, 4); // we_cmd[4] is a single transaction, to delete data from session
+$_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', null, 4); // we_cmd[4] is a single transaction, to delete data from session
 
 $queries = array();
 

@@ -28,7 +28,7 @@ class rpcGetRssCmd extends rpcCmd{
 	function execute(){
 
 		$sRssUri = we_base_request::_(we_base_request::URL, 'we_cmd', '', 0);
-		$sCfgBinary = we_base_request::_(we_base_request::INT, 'we_cmd', '', 1);
+		$sCfgBinary = we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 1); //note binary content
 		$bCfgTitle = (bool) $sCfgBinary{0};
 		$bCfgLink = (bool) $sCfgBinary{1};
 		$bCfgDesc = (bool) $sCfgBinary{2};
@@ -50,7 +50,7 @@ class rpcGetRssCmd extends rpcCmd{
 				$iNumItems = 50;
 				break;
 		}
-		$sTbBinary = we_base_request::_(we_base_request::INT, 'we_cmd', '', 3);
+		$sTbBinary = we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 3);//binary
 		$bTbLabel = (bool) $sTbBinary{0};
 		$bTbTitel = (bool) $sTbBinary{1};
 		$bTbDesc = (bool) $sTbBinary{2};
@@ -71,6 +71,7 @@ class rpcGetRssCmd extends rpcCmd{
 			$http_response = new we_http_response($http_request->getHttpResponseStr());
 		}
 		$feeddata = $http_response->http_body;
+
 		$oRssParser = new we_xml_rss($feeddata, null, $GLOBALS['WE_BACKENDCHARSET']); // Umstellung in der XML_RSS-Klasse: den string, und nicht die url weiterzugeben
 		$tmp = $oRssParser->parse();
 		$sRssOut = "";
@@ -83,32 +84,41 @@ class rpcGetRssCmd extends rpcCmd{
 			$bShowContEnc = ($bCfgContEnc && isset($item['content:encoded']));
 			$bShowPubdate = ($bCfgPubDate && isset($item['pubdate']));
 			$bShowCategory = ($bCfgCategory && isset($item['category']));
-			if($bShowTitle){
-				$sRssOut .= ($bShowLink) ? we_html_element::htmlA(array("href" => $item['link'], "target" => "_blank"), we_html_element::htmlB($item['title'])) :
-					we_html_element::htmlB($item['title']) .
-					we_html_element::htmlBr() . we_html_tools::getPixel(1, 5) . (($bShowDesc || $bShowContEnc) ? we_html_element::htmlBr() : '');
-			}
-			if($bShowPubdate){
-				$sRssOut .= ($bShowTitle ? we_html_element::htmlBr() : '') . g_l('cockpit', "[published]") . ': ' . date(g_l('date', '[format][default]'), strtotime($item['pubdate']));
-			}
-			if($bShowCategory){
-				$sRssOut .= ($bShowPubdate ? we_html_element::htmlBr() . we_html_tools::getPixel(1, 2) . we_html_element::htmlBr() : "") .
-					g_l('cockpit', "[category]") . ": " . $item['category'];
-			}
-			if($bShowPubdate || $bShowCategory){
-				$sRssOut .= we_html_element::htmlBr() . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr();
-			}
+
 			$sLink = (($bCfgLink && isset($item['link'])) && !$bShowTitle) ? " &nbsp;" .
 				we_html_element::htmlA(array("href" => $item['link'], "target" => "_blank", "style" => "text-decoration:underline;"), g_l('cockpit', '[more]')) : "";
-			$sRssOut .= ($bShowDesc) ? $item['description'] . $sLink . we_html_element::htmlBr() : "";
 			if($bShowContEnc){
 				$contEnc = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 1);
 				$contEnc->setCol(0, 0, null, $item['content:encoded'] . ((!$bCfgDesc) ? $sLink : ""));
-				$sRssOut .= $contEnc->getHTML();
-			} else if(!$bShowDesc){
-				$sRssOut .= $sLink . we_html_element::htmlBr();
 			}
-			$sRssOut .= ($bShowDesc || $bShowContEnc) ? we_html_tools::getPixel(1, 10) . we_html_element::htmlBr() : "";
+
+			$sRssOut .= ($bShowTitle ?
+					($bShowLink ? we_html_element::htmlA(array("href" => $item['link'], "target" => "_blank"), we_html_element::htmlB($item['title'])) :
+						we_html_element::htmlB($item['title']) .
+						we_html_element::htmlBr() . we_html_tools::getPixel(1, 5) . (($bShowDesc || $bShowContEnc) ? we_html_element::htmlBr() : '')) :
+					'') .
+				($bShowPubdate ?
+					($bShowTitle ? we_html_element::htmlBr() : '') . g_l('cockpit', "[published]") . ': ' . date(g_l('date', '[format][default]'), strtotime($item['pubdate'])) :
+					'') .
+				($bShowCategory ?
+					($bShowPubdate ? we_html_element::htmlBr() . we_html_tools::getPixel(1, 2) . we_html_element::htmlBr() : "") .
+					g_l('cockpit', "[category]") . ": " . $item['category'] :
+					'') .
+				($bShowPubdate || $bShowCategory ?
+					we_html_element::htmlBr() . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() :
+					'') .
+				($bShowDesc ?
+					$item['description'] . $sLink . we_html_element::htmlBr() :
+					"") .
+				($bShowContEnc ?
+					$contEnc->getHTML() :
+					(!$bShowDesc ?
+						$sLink . we_html_element::htmlBr() :
+						'')
+				) .
+				($bShowDesc || $bShowContEnc ?
+					we_html_tools::getPixel(1, 10) . we_html_element::htmlBr() :
+					"");
 			if($iNumItems){
 				$iCurrItem++;
 				if($iCurrItem == $iNumItems){
