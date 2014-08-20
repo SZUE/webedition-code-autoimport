@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -46,9 +45,6 @@ if(isset($_REQUEST['update_cmd'])){
 			$parameters[$parameterName] = $_REQUEST[$parameterName];
 		}
 	}
-
-	// this is flag to check if a response was received!
-	$response = false;
 
 	/*
 	 * For command checkConnection, it is not needed to create a session on the
