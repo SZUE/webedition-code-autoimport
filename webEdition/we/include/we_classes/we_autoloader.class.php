@@ -38,6 +38,7 @@ abstract class we_autoloader{
 		'base' => 'we_classes/base',
 		'database' => 'we_classes/database',
 		'captcha' => 'we_classes/captcha',
+		'chooser' => 'we_classes/chooser',
 		'customer' => 'we_modules/customer',
 		'dialog' => 'we_classes/dialog',
 		'editor' => 'we_editors',
@@ -69,6 +70,7 @@ abstract class we_autoloader{
 		'versions' => 'we_versions',
 		'view' => 'we_classes/view',
 		'voting' => 'we_modules/voting',
+		'wizard' => 'we_classes/wizard',
 		'workflow' => 'we_modules/workflow',
 		'wysiwyg' => 'we_classes/wysiwyg',
 		'xml' => 'we_classes/xml',
@@ -76,14 +78,15 @@ abstract class we_autoloader{
 	//fallback classes if local classes do not exist - mostly pear
 	private static $fallBack = array(
 		'Archive_Tar' => 'lib/additional/archive/Archive_Tar.class.php',
+		'Console_Getopt' => 'lib/additional/pear/Getopt.php',
+		'Image_Transform_Driver_GD' => 'lib/additional/pear/Image_Transform_Driver_GD.class.php',
+		'Image_Transform' => 'lib/additional/pear/Image_Transform.class.php',
+		'Image_IPTC' => 'lib/additional/pear/Image_IPTC.class.php',
 		'PEAR5' => 'lib/additional/pear/PEAR5.php',
 		'PEAR_Error' => 'lib/additional/pear/PEAR.php',
 		'PEAR' => 'lib/additional/pear/PEAR.php',
 		'Services_JSON_Error' => 'lib/additional/pear/Services_JSON.class.php',
 		'Services_JSON' => 'lib/additional/pear/Services_JSON.class.php',
-		'Image_Transform_Driver_GD' => 'lib/additional/pear/Image_Transform_Driver_GD.class.php',
-		'Image_Transform' => 'lib/additional/pear/Image_Transform.class.php',
-		'Image_IPTC' => 'lib/additional/pear/Image_IPTC.class.php',
 		'XML_Parser_Error' => 'lib/additional/pear/XML_Parser.class.php',
 		'XML_Parser' => 'lib/additional/pear/XML_Parser.class.php',
 	);
@@ -107,31 +110,28 @@ abstract class we_autoloader{
 			'we_webEditionDocument' => 'we_webEditionDocument.class.php',
 		),
 		'we_classes' => array(
-			'Console_Getopt' => 'Getopt.php',
 			'DB_WE' => 'database/DB_WE.inc.php', //pseudo-element which loads a wrapper, doesn't contain a real class!
 			'metadatatag' => 'listview/metadatatag.class.php',
 			'permissionhandler' => 'permissionhandler/permissionhandler.class.php',
 			'weBinary' => 'weBinary.class.php',
 			'we_category' => 'we_category.class.php',
 			'we_docTypes' => 'we_docTypes.class.php',
-			'we_element' => 'we_element.inc.php',
+			'we_element' => 'we_element.class.php',
 			'we_history' => 'we_history.class.php',
-			'weMainTree' => 'weMainTree.inc.php',
-			'weModelBase' => 'modules/weModelBase.php',
+			'weMainTree' => 'weMainTree.class.php',
+			'weModelBase' => 'modules/weModelBase.class.php',
 			'weModuleFrames' => 'modules/weModuleFrames.php',
 			'weModuleView' => 'modules/weModuleView.class.php',
 			'weModuleTree' => 'modules/weModuleTree.class.php',
 			'weOrderContainer' => 'js_gui/weOrderContainer.class.php',
-			'we_progressBar' => 'we_progressBar.inc.php',
+			'we_progressBar' => 'we_progressBar.class.php',
 			'we_rtf2html' => 'we_rtf2html.inc.php',
-			'we_search' => 'we_search.inc.php',
 			'we_SEEM' => 'SEEM/we_SEEM.class.php',
 			'weSuggest' => 'weSuggest.class.php',
 			'we_tabs' => 'we_tabs.class.php',
 			'we_tab' => 'we_tab.class.php',
-			'weTree' => 'weTree.inc.php',
+			'weTree' => 'weTree.class.php',
 			'we_updater' => 'we_updater.inc.php',
-			'we_widget' => 'we_widget.inc.php',
 			'weToolLookup' => 'tools/we_tool_lookup.class.php',
 		),
 		'we_modules' => array(
@@ -150,10 +150,6 @@ abstract class we_autoloader{
 			'validation' => 'validation.class.php',
 			'validationService' => 'validationService.class.php',
 		),
-		'weCodeWizard/classes' => array(
-			'weCodeWizard' => 'weCodeWizard.inc.php',
-			'weCodeWizardSnippet' => 'weCodeWizardSnippet.inc.php',
-		),
 		'weTagWizard/classes' => array(
 			'weTagData' => 'weTagData.class.php',
 			'weTagDataAttribute' => 'weTagDataAttribute.class.php',
@@ -168,24 +164,12 @@ abstract class we_autoloader{
 			'weTagData_sqlRowAttribute' => 'weTagData_sqlRowAttribute.class.php',
 			'weTagData_textAttribute' => 'weTagData_textAttribute.class.php',
 			'weTagData_typeAttribute' => 'weTagData_typeAttribute.class.php',
-			'weTagWizard' => 'weTagWizard.class.php',
 		),
 		'we_doclist' => array(
 			'doclistView' => 'doclistView.class.php',
 		),
 		'we_message_reporting' => array(
 			'we_message_reporting' => 'we_message_reporting.class.php',
-		),
-		'we_tools' => array(
-			'MultiDirAndTemplateChooser' => 'MultiDirAndTemplateChooser.inc.php',
-			'MultiDirChooser' => 'MultiDirChooser.inc.php',
-			'MultiDirChooser2' => 'MultiDirChooser2.inc.php',
-			'MultiDirTemplateAndDefaultChooser' => 'MultiDirTemplateAndDefaultChooser.inc.php',
-			'MultiFileChooser' => 'MultiFileChooser.inc.php',
-			'treePopup' => 'treePopup.inc.php',
-		),
-		'we_widgets/dlg' => array(
-			'weExportTree' => 'tree.inc.php',
 		),
 	);
 
@@ -224,9 +208,9 @@ abstract class we_autoloader{
 				include(WE_LIB_PATH . 'additional/' . str_replace('_', '/', $class_name) . '.php');
 				return true;
 			case 'PMA':
-				list(,$name)=explode('_', $class_name,2);
+				list(, $name) = explode('_', $class_name, 2);
 				//t_e(WE_APPS_PATH.'wephpmyadmin/phpMyAdmin/libraries/'.$domain.'.class.php');
-				include(WE_APPS_PATH.'wephpmyadmin/phpMyAdmin/libraries/'.$name.'.class.php');
+				include(WE_APPS_PATH . 'wephpmyadmin/phpMyAdmin/libraries/' . $name . '.class.php');
 				return true;
 			case 'Zend':
 				self::loadZend($class_name);

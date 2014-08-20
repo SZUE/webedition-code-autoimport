@@ -33,14 +33,14 @@ class we_import_wizard extends we_import_wizardBase{
 	/* function formCategory($obj, $categories){
 	  $js = (defined('OBJECT_TABLE')) ? "opener.wizbody.document.we_form.elements[\\'v[import_type]\\'][0].checked=true;" : "";
 	  $addbut = we_html_button::create_button('add', "javascript:top.we_cmd('openCatselector',-1,'" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-	  $cats = new MultiDirChooser(410, $categories, 'delete_' . $obj . 'Cat', $addbut, '', 'Icon,Path', CATEGORY_TABLE);
+	  $cats = new we_chooser_multiDir(410, $categories, 'delete_' . $obj . 'Cat', $addbut, '', 'Icon,Path', CATEGORY_TABLE);
 	  return $cats->get();
 	  } */
 
 	private function formCategory2($obj, $categories){
 		$js = (defined('OBJECT_TABLE')) ? "opener.wizbody.document.we_form.elements[\\'v[import_type]\\'][0].checked=true;" : "";
 		$addbut = we_html_button::create_button('add', "javascript:top.we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-		$cats = new MultiDirChooser2(410, $categories, 'delete_' . $obj . 'Cat', $addbut, '', 'Icon,Path', CATEGORY_TABLE);
+		$cats = new we_chooser_multiDirExtended(410, $categories, 'delete_' . $obj . 'Cat', $addbut, '', 'Icon,Path', CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
 		$cats->setCatField("self.document.forms['we_form'].elements['v[" . $obj . "Categories]']");
 		return $cats->get();

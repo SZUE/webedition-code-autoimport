@@ -28,9 +28,9 @@
  * webEdition.php
  *
  */
-class we_message_reporting{
+abstract class we_message_reporting{
 
-// contansts for messaging!
+// constants for messaging!
 // these are binray checked like permissions in unix, DON'T change indexes
 
 	const WE_MESSAGE_INFO = -1;

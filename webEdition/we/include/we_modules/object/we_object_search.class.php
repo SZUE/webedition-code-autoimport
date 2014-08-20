@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_object_search extends we_search{
+class we_object_search extends we_search_base{
 
 	var $height;
 	var $searchname;

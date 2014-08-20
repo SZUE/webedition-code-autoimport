@@ -1648,7 +1648,7 @@ class we_objectFile extends we_document{
 			}
 			$addbut = we_html_tools::htmlSelect($textname, $foo, 1, '', false, array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'object_add_workspace\',this.options[this.selectedIndex].value);'));
 		}
-		$obj = new MultiDirAndTemplateChooser(450, $this->Workspaces, 'object_del_workspace', $addbut, get_ws(FILE_TABLE), $this->Templates, "we_" . $this->Name . "_Templates", $ts, get_ws(TEMPLATES_TABLE));
+		$obj = new we_chooser_multiDirAndTemplate(450, $this->Workspaces, 'object_del_workspace', $addbut, get_ws(FILE_TABLE), $this->Templates, "we_" . $this->Name . "_Templates", $ts, get_ws(TEMPLATES_TABLE));
 
 // Bug Fix #207
 		$obj->isEditable = true; //$this->userIsCreator();
@@ -1758,7 +1758,7 @@ class we_objectFile extends we_document{
 			$addbut = we_html_tools::htmlSelect($textname, $foo, 1, "", false, array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'object_add_extraworkspace\',this.options[this.selectedIndex].value);'));
 		}
 
-		$obj = new MultiDirAndTemplateChooser(450, $this->ExtraWorkspaces, "object_del_extraworkspace", $addbut, get_ws(FILE_TABLE), $this->ExtraTemplates, "we_" . $this->Name . "_ExtraTemplates", $ts, get_ws(TEMPLATES_TABLE));
+		$obj = new we_chooser_multiDirAndTemplate(450, $this->ExtraWorkspaces, "object_del_extraworkspace", $addbut, get_ws(FILE_TABLE), $this->ExtraTemplates, "we_" . $this->Name . "_ExtraTemplates", $ts, get_ws(TEMPLATES_TABLE));
 		$obj->CanDelete = true;
 		return $obj->get();
 	}

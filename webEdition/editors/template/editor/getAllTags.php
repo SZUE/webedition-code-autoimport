@@ -30,7 +30,7 @@ header('Content-Type: text/xml');
 echo '<?xml version="1.0" encoding="utf-8"?>
 <tags>
 ';
-$allWeTags = weTagWizard::getExistingWeTags();
+$allWeTags = we_wizard_tag::getExistingWeTags();
 foreach($allWeTags as $tag){
 	$tagData = weTagData::getTagData($tag);
 	echo "\t" . '<tag needsEndtag="' . ($tagData->needsEndTag() ? "true" : "false") . '" name="' . $tagData->getName() . '" />' . "\n";

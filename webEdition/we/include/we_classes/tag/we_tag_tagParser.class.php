@@ -143,8 +143,8 @@ class we_tag_tagParser{
 
 	private function checkOpenCloseTags(&$code){
 		if(!is_array(self::$CloseTags)){
-			self::$AllKnownTags = weTagWizard::getExistingWeTags();
-			self::$CloseTags = weTagWizard::getTagsWithEndTag();
+			self::$AllKnownTags = we_wizard_tag::getExistingWeTags();
+			self::$CloseTags = we_wizard_tag::getTagsWithEndTag();
 		}
 
 		$Counter = array();

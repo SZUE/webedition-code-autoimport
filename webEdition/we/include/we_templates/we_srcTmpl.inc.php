@@ -548,7 +548,7 @@ switch($_SESSION['prefs']['editorMode']){
 			$allTags = array();
 			$setting = @unserialize($_SESSION['prefs']['editorCodecompletion']);
 			if($weTags && ($css || $setting['WE'])){
-				$allWeTags = weTagWizard::getExistingWeTags($css); //only load deprecated tags if css is requested
+				$allWeTags = we_wizard_tag::getExistingWeTags($css); //only load deprecated tags if css is requested
 				foreach($allWeTags as $tagName){
 					if(($weTag = weTagData::getTagData($tagName))){
 						if($css){
@@ -798,10 +798,10 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 
 		if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 			// Code Wizard
-			$CodeWizard = new weCodeWizard();
-			$allWeTags = weTagWizard::getExistingWeTags();
+			$CodeWizard = new we_wizard_code();
+			$allWeTags = we_wizard_tag::getExistingWeTags();
 
-			$tagGroups = weTagWizard::getWeTagGroups($allWeTags);
+			$tagGroups = we_wizard_tag::getWeTagGroups($allWeTags);
 
 			$groupJs = "tagGroups = new Array();\n";
 			$selectedGroup = isset($we_doc->TagWizardSelection) && $we_doc->TagWizardSelection ? $we_doc->TagWizardSelection : "alltags";

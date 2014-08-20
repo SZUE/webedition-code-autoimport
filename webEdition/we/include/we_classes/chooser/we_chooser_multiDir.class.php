@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class MultiDirChooser{
+class we_chooser_multiDir{
 
 	var $width = 388;
 	var $table = FILE_TABLE;

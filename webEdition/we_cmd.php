@@ -257,7 +257,7 @@ function findInclude($cmd){
 			foreach($mods as $m){
 				if($cmd == $m['name'] . '_edit_ifthere' && !we_base_moduleInfo::isActive($m['name'])){
 					$GLOBALS['moduleName'] = $m['text_short'];
-					return 'messageModuleNotActivated.inc.php';
+					return 'weInfoPages/messageModuleNotActivated.inc.php';
 				}
 			}
 			//	This is ONLY used in the edit-mode of the documents.

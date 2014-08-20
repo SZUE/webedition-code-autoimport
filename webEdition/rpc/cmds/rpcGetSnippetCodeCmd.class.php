@@ -31,12 +31,12 @@ class rpcGetSnippetCodeCmd extends rpcCmd{
 			exit();
 		}
 
-		$CodeWizard = new weCodeWizard();
+		$CodeWizard = new we_wizard_code();
 		if(!is_file($CodeWizard->SnippetPath . $file)){
 			exit();
 		}
 
-		$Snippet = new weCodeWizardSnippet($CodeWizard->SnippetPath . we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1));
+		$Snippet = new we_wizard_codeSnippet($CodeWizard->SnippetPath . we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1));
 		$Code = $Snippet->getCode("UTF-8");
 
 		$resp->setData("data", $Code);
