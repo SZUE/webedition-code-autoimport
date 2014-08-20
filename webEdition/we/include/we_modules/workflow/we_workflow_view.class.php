@@ -314,8 +314,7 @@ class we_workflow_view extends we_workflow_base{
 
 				$foo = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($tv->userID), '', $this->db);
 				$wecmdenc2 = we_base_request::encCmd("document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_usertext.value");
-				$wecmdenc5 = we_base_request::encCmd("document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value");
-				$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('browse_users','document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value','" . $wecmdenc2 . "','','" . $wecmdenc5 . "');");
+				$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('browse_users','document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value','" . $wecmdenc2 . "','','document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value');");
 
 				$yuiSuggest->setAcId('User_' . $counter . '_' . $counter1);
 				$yuiSuggest->setContentType(we_users_user::TYPE_USER . ',' . we_users_user::TYPE_USER_GROUP);
@@ -428,6 +427,9 @@ class we_workflow_view extends we_workflow_base{
 	}
 
 	function htmlHidden($name, $value = ''){
+		if(is_array($value)){
+			t_e('array given',$name,$value);
+		}
 		return '<input type="hidden" name="' . trim($name) . '" value="' . oldHtmlspecialchars($value) . '" />';
 	}
 

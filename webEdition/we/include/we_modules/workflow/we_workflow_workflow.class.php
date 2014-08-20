@@ -74,7 +74,7 @@ class we_workflow_workflow extends we_workflow_base{
 			'ID' => we_base_request::INT,
 			'Text' => we_base_request::STRING,
 			'Type' => we_base_request::INT,
-			'DocType' => we_base_request::INT,
+			'DocType' => we_base_request::INTLIST,
 			'Folders' => we_base_request::INTLIST,
 			'ObjectFileFolders' => we_base_request::INTLIST,
 			'Objects' => we_base_request::INTLIST,
