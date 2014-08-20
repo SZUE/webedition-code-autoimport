@@ -276,10 +276,10 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = 
 	$db = ($db ? $db : new DB_WE());
 
 	if(!is_array($IDs)){
-		$IDs = makeArrayFromCSV($IDs);
+		$IDs = explode(',', trim($IDs, ','));
 	}
 	if(!is_array($wsIDs)){
-		$wsIDs = makeArrayFromCSV($wsIDs);
+		$wsIDs = explode(',', trim($wsIDs, ','));
 	}
 	if(!$wsIDs || (in_array(0, $wsIDs))){
 		return true;
@@ -424,8 +424,7 @@ function pushChildsFromArr(&$arr, $table = FILE_TABLE, $isFolder = ''){
 function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = ''){
 	$db = new DB_WE();
 	$arr[] = $id;
-	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder == 0) ? (' AND IsFolder=' . intval($isFolder))
-				: ''));
+	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder == 0) ? (' AND IsFolder=' . intval($isFolder)) : ''));
 	while($db->next_record()){
 		pushChilds($arr, $db->f('ID'), $table, $isFolder);
 	}
@@ -939,8 +938,7 @@ function CheckAndConvertISObackend($utf8data){
 /* * internal function - do not call */
 
 function g_l_encodeArray($tmp){
-	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET']
-					: $GLOBALS['WE_BACKENDCHARSET']));
+	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $GLOBALS['WE_BACKENDCHARSET']));
 	return (is_array($tmp) ?
 			array_map('g_l_encodeArray', $tmp) :
 			mb_convert_encoding($tmp, $charset, 'UTF-8'));
