@@ -3033,14 +3033,17 @@ class we_objectFile extends we_document{
 			return '';
 		}
 
-		if(!$path){
-			$path = $_SERVER['SCRIPT_NAME'];
-		}
+		$path = $path ? $path : $_SERVER['SCRIPT_NAME'];
 		$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
 
-		$foo = getHash('SELECT Published,Workspaces, ExtraWorkspacesSelected,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id), $DB_WE);
+		$foo = getHash('SELECT of.Published,of.Workspaces,of.ExtraWorkspacesSelected,of.TriggerID,f.Published AS fPub FROM ' . OBJECT_FILES_TABLE . ' of LEFT JOIN ' . FILE_TABLE . ' f ON (of.TriggerID=f.ID AND f.IsDynamic=1) WHERE of.ID=' . intval($id), $DB_WE);
+
 		if(!$foo){
 			return '';
+		}
+		if(!$foo['fPub']){
+			//trigger document is not published - we have to find another one.
+			$foo['TriggerID'] = 0;
 		}
 
 // check if object is published.
@@ -3050,13 +3053,9 @@ class we_objectFile extends we_document{
 		}
 
 		$showLink = false;
-
 		if($foo['Workspaces']){
-			if($foo['TriggerID']){
-				if(in_workspace($foo['TriggerID'], $foo['Workspaces'], FILE_TABLE, $DB_WE) || in_workspace($foo['TriggerID'], $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE)){
-					$showLink = true;
-				}
-			} elseif(in_workspace($pid, $foo['Workspaces'], FILE_TABLE, $DB_WE) || ($foo['ExtraWorkspacesSelected'] && in_workspace($pid, $foo['ExtraWorkspacesSelected'], FILE_TABLE, $DB_WE))){
+			$wsp = array_merge(explode(',', trim($foo['Workspaces'], ',')), explode(',', trim($foo['ExtraWorkspacesSelected'], ',')));
+			if(in_workspace(($foo['TriggerID'] ? $foo['TriggerID'] : $pid), $wsp, FILE_TABLE, $DB_WE)){
 				$showLink = true;
 			}
 		}
@@ -3065,34 +3064,33 @@ class we_objectFile extends we_document{
 			if(!$path){
 				return '';
 			}
+			$pidstr = ($pid ? '?pid=' . intval($pid) : '');
 
-			if(!((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || (isset($GLOBALS['WE_MAIN_EDITMODE']) && $GLOBALS['WE_MAIN_EDITMODE'])) && $hidedirindex){
+			if($hidedirindex && !((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || (isset($GLOBALS['WE_MAIN_EDITMODE']) && $GLOBALS['WE_MAIN_EDITMODE']))){
 				$path_parts = pathinfo($path);
 				if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 			}
-			if(show_SeoLinks() && $objectseourls){
-				$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id) . ' LIMIT 1', $DB_WE);
+			if($objectseourls && show_SeoLinks()){
+				$objectdaten = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id) . ' LIMIT 1', $DB_WE);
 				if($objectdaten['TriggerID']){
 					$path_parts = pathinfo(id_to_path($objectdaten['TriggerID']));
 				}
-			} else {
-				$objectdaten['Url'] = '';
-			}
-			$pidstr = ($pid ? '?pid=' . intval($pid) : '');
 
-			if($objectseourls && $objectdaten['Url']){
-				return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-					($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-						'' :
-						$path_parts['filename'] . '/' ) .
-					$objectdaten['Url'] . $pidstr;
+				if($objectdaten['Url']){
+					return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
+						($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+							'' :
+							$path_parts['filename'] . '/' ) .
+						$objectdaten['Url'] . $pidstr;
+				}
 			}
 			return $path . '?we_objectID=' . intval($id) . str_replace('?', '&amp;', $pidstr);
 		} elseif($foo['Workspaces']){
-			$fooArr = makeArrayFromCSV($foo['Workspaces']);
-			$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape(id_to_path($fooArr[0], FILE_TABLE, $DB_WE)) . '%"', '', $DB_WE);
+			$path = self::getNextDynDoc('', $pid, $foo['Workspaces'], '', $DB_WE);
+			/* $fooArr = makeArrayFromCSV($foo['Workspaces']);
+			  $path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape(id_to_path($fooArr[0], FILE_TABLE, $DB_WE)) . '%" LIMIT 1', '', $DB_WE); */
 			return ($path ? $path . '?we_objectID=' . intval($id) . '&pid=' . intval($pid) : '');
 		}
 
@@ -3100,24 +3098,22 @@ class we_objectFile extends we_document{
 	}
 
 	private static function getNextDynDoc($path, $pid, $ws1, $ws2, we_database_base $DB_WE){
-		if(f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', '', $DB_WE)){
+		if($path && f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', '', $DB_WE)){
 			return $path;
 		}
-		$arr1 = makeArrayFromCSV(id_to_path($ws1, FILE_TABLE, $DB_WE));
-		$arr2 = makeArrayFromCSV(id_to_path($ws2, FILE_TABLE, $DB_WE));
 		$arr3 = makeArrayFromCSV($ws1);
-		$arr4 = makeArrayFromCSV($ws2);
-		foreach($arr1 as $i => $ws){
-			if(in_workspace($pid, $arr3[$i])){
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($ws) . '%" LIMIT 1', '', $DB_WE);
+		foreach($arr3 as $ws){
+			if(in_workspace($pid, $ws, FILE_TABLE, $DB_WE)){
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . id_to_path($ws, FILE_TABLE, $DB_WE) . '%" LIMIT 1', '', $DB_WE);
 				if($path){
 					return $path;
 				}
 			}
 		}
-		foreach($arr2 as $i => $ws){
-			if(in_workspace($pid, $arr4[$i])){
-				return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape($ws) . '%" LIMIT 1', '', $DB_WE);
+		$arr4 = makeArrayFromCSV($ws2);
+		foreach($arr4 as $ws){
+			if(in_workspace($pid, $ws)){
+				return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . id_to_path($ws, FILE_TABLE, $DB_WE) . '%" LIMIT 1', '', $DB_WE);
 			}
 		}
 		return '';
