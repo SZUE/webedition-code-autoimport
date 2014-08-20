@@ -424,7 +424,7 @@ top.content.hloaded=1;
 
 		$extraHead = we_html_element::jsElement('
 			function setStatusCheck(){
-				var a=document.we_form._status_workflow;
+				var a=document.we_form.status_workflow;
 				var b;
 				if(top.content.editor.edbody.loaded) b=top.content.editor.edbody.getStatusContol();
 				else setTimeout("setStatusCheck()",100);
