@@ -771,14 +771,14 @@ class we_document extends we_root{
 
 	protected function i_writeSiteDir($doc){
 		if($this->isMoved()){
-			we_util_File::deleteLocalFile($this->getSitePath(true));
+			we_base_file::deleteLocalFile($this->getSitePath(true));
 		}
 		return we_base_file::save($this->getSitePath(), $doc);
 	}
 
 	protected function i_writeMainDir($doc){
 		if($this->isMoved()){
-			we_util_File::deleteLocalFile($this->getRealPath(true));
+			we_base_file::deleteLocalFile($this->getRealPath(true));
 		}
 		return we_base_file::save($this->getRealPath(), $doc);
 	}

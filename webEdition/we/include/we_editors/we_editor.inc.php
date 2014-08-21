@@ -710,7 +710,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 			}
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 			if(isset($GLOBALS['we_file_to_delete_after_include'])){
-				we_util_File::deleteLocalFile($GLOBALS['we_file_to_delete_after_include']);
+				we_base_file::deleteLocalFile($GLOBALS['we_file_to_delete_after_include']);
 			}
 			if($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_SCHEDULER || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_THUMBNAILS || ($we_doc instanceof we_object && $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)){
 				echo we_html_element::jsElement('setTimeout("doScrollTo();",100);');

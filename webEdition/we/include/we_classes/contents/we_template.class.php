@@ -333,7 +333,7 @@ we_templateInit();?>';
 
 	protected function i_writeMainDir($doc){
 		if($this->isMoved()){
-			we_util_File::deleteLocalFile($this->getRealPath(true));
+			we_base_file::deleteLocalFile($this->getRealPath(true));
 		}
 		return we_base_file::save($this->getRealPath(), $doc);
 	}

@@ -19,10 +19,6 @@
  * @subpackage we_app_controller
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-/*
- * @see Zend_Controller_Action
- */
-Zend_Loader::loadClass('Zend_Controller_Action');
 
 /**
  * Base TreeAction Controller

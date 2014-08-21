@@ -20,16 +20,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 /**
- * @see we_util_Sys
- */
-Zend_Loader::loadClass('we_util_Sys');
-
-/**
- * @see we_util_Sys_Exception
- */
-Zend_Loader::loadClass('we_util_Sys_Exception');
-
-/**
  * Class to check php settings
  *
  * @category   we

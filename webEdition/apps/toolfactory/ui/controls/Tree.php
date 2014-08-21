@@ -25,7 +25,6 @@
 /**
  * @see we_ui_controls_Tree
  */
-Zend_Loader::loadClass('we_ui_controls_Tree');
 
 /**
  * Class to display a tree for toolfactory objects

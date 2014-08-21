@@ -20,10 +20,6 @@
  * @subpackage we_app_service
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-/**
- * @see we_service_AbstractService
- */
-Zend_Loader::loadClass('we_service_AbstractService');
 
 /**
  * Abstract Class for all App Services

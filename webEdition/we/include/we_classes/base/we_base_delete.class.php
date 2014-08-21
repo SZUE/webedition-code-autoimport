@@ -129,10 +129,10 @@ abstract class we_base_delete{
 
 		switch($table){
 			case FILE_TABLE:
-				we_util_File::deleteLocalFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($path, 1));
+				we_base_file::deleteLocalFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($path, 1));
 			//no break
 			case TEMPLATES_TABLE:
-				we_util_File::deleteLocalFile(preg_replace('/\.tmpl$/i', '.php', $file));
+				we_base_file::deleteLocalFile(preg_replace('/\.tmpl$/i', '.php', $file));
 				break;
 		}
 

@@ -25,7 +25,6 @@
 /*
  * @see we_app_controller_IndexAction
  */
-Zend_Loader::loadClass('we_app_controller_IndexAction');
 
 /**
  * Base Index Controller

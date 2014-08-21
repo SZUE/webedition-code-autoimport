@@ -20,10 +20,6 @@
  * @subpackage we_ui_dialog
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-/**
- * @see we_ui_layout_Dialog
- */
-Zend_Loader::loadClass('we_ui_layout_Dialog');
 
 /**
  * Class to build a Dialog with a Ok and Cancel Button.

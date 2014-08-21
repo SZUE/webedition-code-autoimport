@@ -22,9 +22,7 @@
 /**
  * @see we_app_Hook_Reader_Abstract
  */
-Zend_Loader::loadClass('we_app_Hook_Reader_Abstract');
 
-include_once ('Zend/Log.php');
 
 /**
  * class for reading hook code from xml file

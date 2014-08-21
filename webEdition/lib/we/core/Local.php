@@ -73,7 +73,7 @@ class we_core_Local{
 	 */
 	public static function weLangToLocale($lang){
 		//FIXME: remove static list, use Zend instead
-		$locales = array(
+		static $locales = array(
 			'Deutsch' => 'de', 'English' => 'en', 'Dutch' => 'nl', 'Finnish' => 'fi', 'French' => 'fr', 'Polish' => 'pl', 'Russian' => 'ru', 'Spanish' => 'es', 'Norwegian' => 'no');
 
 		$lang = str_replace('_UTF-8', '', $lang);

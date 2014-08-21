@@ -294,6 +294,10 @@ abstract class we_base_file{
 			)) . ' ON DUPLICATE KEY UPDATE Date=' . intval($date));
 	}
 
+	public static function deleteLocalFile($filename){
+		return (file_exists($filename) ? unlink($filename) : false);
+	}
+
 	public static function checkAndMakeFolder($path, $recursive = false){
 		/* if the directory exists, we have nothing to do and then we return true  */
 		if((file_exists($path) && is_dir($path)) || (strtolower(rtrim($_SERVER['DOCUMENT_ROOT'], '/')) == strtolower(rtrim($path, '/')))){
@@ -302,7 +306,7 @@ abstract class we_base_file{
 
 // if instead of the directory a file exists, we delete the file and create the directory
 		if(file_exists($path) && (!is_dir($path))){
-			if(!we_util_File::deleteLocalFile($path)){
+			if(!self::deleteLocalFile($path)){
 				t_e('Warning', "Could not delete File '" . $path . "'");
 			}
 		}
@@ -580,7 +584,7 @@ abstract class we_base_file{
 		while($GLOBALS['DB_WE']->next_record()){
 			$p = $GLOBALS['DB_WE']->f('Path');
 			if(file_exists($p)){
-				we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
+				self::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 			}
 			$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
 		}
@@ -590,7 +594,7 @@ abstract class we_base_file{
 			while($GLOBALS['DB_WE']->next_record()){
 				$p = $GLOBALS['DB_WE']->f('Path');
 				if(file_exists($p)){
-					we_util_File::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
+					self::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
 				}
 				$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
 			}
@@ -601,9 +605,9 @@ abstract class we_base_file{
 				$foo = TEMP_PATH . $entry;
 				if(filemtime($foo) <= (time() - 300)){
 					if(is_dir($foo)){
-						we_util_File::deleteLocalFolder($foo, 1);
+						self::deleteLocalFolder($foo, 1);
 					} elseif(file_exists($foo)){
-						we_util_File::deleteLocalFile($foo);
+						self::deleteLocalFile($foo);
 					}
 				}
 			}
@@ -617,9 +621,9 @@ abstract class we_base_file{
 					$foo = $dstr . $entry;
 					if(filemtime($foo) <= (time() - 300)){
 						if(is_dir($foo)){
-							we_util_File::deleteLocalFolder($foo, 1);
+							self::deleteLocalFolder($foo, 1);
 						} elseif(file_exists($foo) && is_writable($foo)){
-							we_util_File::deleteLocalFile($foo);
+							self::deleteLocalFile($foo);
 						}
 					}
 				}
@@ -634,9 +638,9 @@ abstract class we_base_file{
 				$foo = WE_FRAGMENT_PATH . $entry;
 				if(filemtime($foo) <= (time() - 3600 * 24)){
 					if(is_dir($foo)){
-						we_util_File::deleteLocalFolder($foo, true);
+						self::deleteLocalFolder($foo, true);
 					} elseif(file_exists($foo)){
-						we_util_File::deleteLocalFile($foo);
+						self::deleteLocalFile($foo);
 					}
 				}
 			}

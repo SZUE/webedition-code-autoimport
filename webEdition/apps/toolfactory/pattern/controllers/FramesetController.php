@@ -1,11 +1,10 @@
 /*
  * @see we_app_controller_FramesetAction
  */
-Zend_Loader::loadClass('we_app_controller_FramesetAction');
 
 /**
  * Base Frameset Controller
- * 
+ *
  * @category   app
  * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
@@ -28,6 +27,6 @@ class FramesetController extends we_app_controller_FramesetAction
 		echo $this->view->render('frameset/index.php');
 	}
 
-	
-	
+
+
 }

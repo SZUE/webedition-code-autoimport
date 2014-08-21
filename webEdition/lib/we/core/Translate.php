@@ -22,7 +22,6 @@
 /**
  * @see Zend_Translate
  */
-Zend_Loader::loadClass('Zend_Translate');
 
 /**
  * Base class for translations
@@ -91,7 +90,6 @@ class we_core_Translate extends Zend_Translate{
 				break;
 		}
 
-		@Zend_Loader::loadClass($adapter);
 
 		$this->_adapter = new $adapter($data, $locale, $options);
 		if(!$this->_adapter instanceof Zend_Translate_Adapter){

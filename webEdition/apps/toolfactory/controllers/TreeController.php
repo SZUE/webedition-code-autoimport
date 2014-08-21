@@ -25,7 +25,6 @@
 /*
  * @see we_app_controller_TreeAction
  */
-Zend_Loader::loadClass('we_app_controller_TreeAction');
 
 /**
  * Base Tree Controller
