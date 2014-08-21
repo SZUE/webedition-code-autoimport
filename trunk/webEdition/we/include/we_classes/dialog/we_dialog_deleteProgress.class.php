@@ -30,10 +30,9 @@ abstract class we_dialog_deleteProgress{
 		$WE_PB->setStudLen(490);
 		$WE_PB->addText("", 0, "pb1");
 		$js = $WE_PB->getJSCode();
-		$pb = $WE_PB->getHTML();
 
 		$cancelButton = we_html_button::create_button("cancel", "javascript:top.close();");
-		$pb = we_html_tools::htmlDialogLayout($pb, g_l('delete', "[delete]"), $cancelButton);
+		$pb = we_html_tools::htmlDialogLayout($WE_PB->getHTML(), g_l('delete', "[delete]"), $cancelButton);
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
@@ -46,7 +45,7 @@ abstract class we_dialog_deleteProgress{
 		);
 	}
 
-	public static function frameset($table,$currentID){
+	public static function frameset($table, $currentID){
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "delcmd.location='" . WEBEDITION_DIR . "delFrag.php?frame=cmd" . ($table ? ("&amp;table=" . rawurlencode($table)) : "") . "&currentID=" . $currentID . "';")
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlIFrame('delmain', WEBEDITION_DIR . "delFrag.php?frame=main", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .

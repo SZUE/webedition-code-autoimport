@@ -65,7 +65,7 @@ class rpcDeleteVersionsWizardCmd extends rpcCmd{
 		$WE_PB->setStudLen(200);
 
 		$WE_PB->addText(g_l('versions', '[deleteDateVersionsOK]'), 0, "pb1");
-		$js = $WE_PB->getJSCode();
+		//$js = $WE_PB->getJSCode();
 		$pb = $WE_PB->getHTML();
 
 

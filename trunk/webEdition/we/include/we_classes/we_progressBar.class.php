@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@ define("PROGRESS_V_IMAGE", IMAGE_DIR . 'balken_v.gif');
 define("PROGRESS_V_IMAGE_BG", IMAGE_DIR . 'balken_bg_v.gif');
 
 class we_progressBar{
-
 	var $progress = 0;
 	var $texts = array();
 	var $orientation = 0;
@@ -44,110 +42,89 @@ class we_progressBar{
 	var $callback_timeout = "";
 	var $name = "";
 
-	function __construct($progress = 0, $orientation = 0, $showProgressText = true){
+	public function __construct($progress = 0, $orientation = 0, $showProgressText = true){
 		$this->setProgress($progress);
 		$this->setOrientation($orientation);
 		$this->showProgressText = $showProgressText;
 	}
 
-	function getJS($pgFrame = ''){
-		print $this->getJSCode($pgFrame);
+	public function getJS($pgFrame = ''){
+		echo $this->getJSCode($pgFrame);
 	}
 
-	function getJSCode($pgFrame = ''){
+	public function getJSCode($pgFrame = ''){
 		$frame = $pgFrame ? $pgFrame . '.' : '';
-		$out = '<script type="text/javascript"><!--
-					function setProgressText' . $this->name . '(name,text){
-						if(' . $frame . 'document.getElementById){
-							var div = ' . $frame . 'document.getElementById(name);
-							div.innerHTML = text;
-						}else if(' . $frame . 'document.all){
-							var div = ' . $frame . 'document.all[name];
-							div.innerHTML = text;
-						}
-					}
 
-					function setProgress' . $this->name . '(progress){
-						var koef=' . ($this->stud_len / 100) . ';
-				';
-		if($this->orientation == 1){
-			$out .= $frame . 'document.images["progress_image' . $this->name . '"].height=koef*progress;
-					';
-			if($this->showBack){
-				$out .= $frame . 'document.images["progress_image_bg' . $this->name . '"].height=(koef*100)-(koef*progress);
-						';
-			}
-		} else {
-			$out .= $frame . 'document.images["progress_image' . $this->name . '"].width=koef*progress;
-					';
-			if($this->showBack){
-				$out .= $frame . 'document.images["progress_image_bg' . $this->name . '"].width=(koef*100)-(koef*progress);
-						';
-			}
-		}
+		return we_html_element::jsElement('
+function setProgressText' . $this->name . '(name,text){
+	if(' . $frame . 'document.getElementById){
+		var div = ' . $frame . 'document.getElementById(name);
+		div.innerHTML = text;
+	}else if(' . $frame . 'document.all){
+		var div = ' . $frame . 'document.all[name];
+		div.innerHTML = text;
+	}
+}
 
-		if($this->showProgressText){
-			$out .= 'setProgressText' . $this->name . '("progress_text' . $this->name . '",progress+"%");
-					';
-		}
-		if($this->callback_code != ""){
-			$out .= 'if(progress<100) to=setTimeout(\'' . $this->callback_code . '\',' . $this->callback_timeout . ');
+function setProgress' . $this->name . '(progress){
+	var koef=' . ($this->stud_len / 100) . ';' .
+				$frame . 'document.images["progress_image' . $this->name . '"].' . ($this->orientation ? 'height' : 'width') . '=koef*progress;' .
+				($this->showBack ?
+					$frame . 'document.images["progress_image_bg' . $this->name . '"].' . ($this->orientation ? 'height' : 'width') . '=(koef*100)-(koef*progress);' :
+					''
+				) .
+				($this->showProgressText ?
+					'setProgressText' . $this->name . '("progress_text' . $this->name . '",progress+"%");' :
+					'') .
+				($this->callback_code ?
+					'if(progress<100) to=setTimeout(\'' . $this->callback_code . '\',' . $this->callback_timeout . ');
 							else var to=clearTimeout(to);
-					';
-		}
-		$out .= '}
-				';
-		if($this->callback_code != ""){
-			$out .= 'var to=setTimeout(\'' . $this->callback_code . '\',' . $this->callback_timeout . ');
-					';
-		}
-		$out .= '//--></script>
-				';
-		return $out;
+					' : '') . '
+}' .
+				($this->callback_code ?
+					'var to=setTimeout(\'' . $this->callback_code . '\',' . $this->callback_timeout . ');' :
+					'')
+		);
 	}
 
-	function addText($text = "", $place = 0, $id = "", $class = "small", $color = "#006699", $height = 10, $bold = 1){
+	public function addText($text = "", $place = 0, $id = "", $class = "small", $color = "#006699", $height = 10, $bold = 1){
 		$this->texts[] = array("name" => $id, "text" => $text, "class" => $class, "color" => $color, "bold" => $bold, "italic" => 0, "place" => $place, "height" => $height);
 	}
 
-	function setProgress($progress = 0){
-		$this->progress = ($this->progress > 100 ? 100 : $progress);
+	private function setProgress($progress = 0){
+		$this->progress = min(100, $progress);
 	}
 
-	function setName($name){
+	public function setName($name){
 		$this->name = $name;
 	}
 
-	function setOrientation($ort = 0){
+	private function setOrientation($ort = 0){
 		$this->orientation = $ort;
-		if($ort == 1){
-			$this->setProgresImages(PROGRESS_V_IMAGE, PROGRESS_V_IMAGE_BG);
-		} else {
-			$this->setProgresImages(PROGRESS_H_IMAGE, PROGRESS_H_IMAGE_BG);
-		}
+		$this->setProgresImages(($ort ? PROGRESS_V_IMAGE : PROGRESS_H_IMAGE), ($ort ? PROGRESS_V_IMAGE_BG : PROGRESS_H_IMAGE_BG));
 	}
 
-	function setProgresImages($image = "", $image_bg = ""){
-		if($image != ""){
+	private function setProgresImages($image = "", $image_bg = ""){
+		if($image){
 			$this->progress_image = $image;
 		}
-		if($image_bg != ""){
+		if($image_bg){
 			$this->progress_image_bg = $image_bg;
 		}
 	}
 
-	function setCallback($code, $timeout){
+	public function setCallback($code, $timeout){
 		$this->callback_code = $code;
 		$this->callback_timeout = $code;
 
 		$this->callback = 'var to=setTimeout("' . $code . '",' . $timeout . ');';
 	}
 
-	function setStudWidth($stud_width = 10){
+	public function setStudWidth($stud_width = 10){
 		$this->stud_width = $stud_width;
 	}
 
-	function setStudLen($stud_len = 100){
+	public function setStudLen($stud_len = 100){
 		$this->stud_len = $stud_len;
 	}
 
@@ -155,7 +132,7 @@ class we_progressBar{
 		$this->progressTextPlace = $place;
 	}
 
-	function setProgressLen($len = 100){
+	public function setProgressLen($len = 100){
 		$this->stud_len = $len;
 	}
 
@@ -171,7 +148,7 @@ class we_progressBar{
 		$this->texts = array();
 	}
 
-	function getHTML(){
+	public function getHTML(){
 		$left = $right = $top = $bottom = '';
 
 		if($this->showProgressText){
@@ -202,17 +179,28 @@ class we_progressBar{
 		$rest_len = $this->stud_len - $progress_len;
 
 		return
-			(empty($top) ? '' : '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr>' . $top . '</tr></table>') .
+			($top ?
+				'<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr>' . $top . '</tr></table>' :
+				'') .
 			'<table style="border-spacing: 0px;border-style:none;" cellpadding="0" >
 			<tr>' . ($left ? $left . '<td>' . we_html_tools::getPixel(5, 1) . '</td>' : '') .
-			($this->orientation == 1 ?
+			($this->orientation ?
 				'<td><table border="0" cellpadding="0" cellspacing="0">' . ($this->showBack ? '<tr><td><img name="progress_image_bg" src="' . $this->progress_image_bg . '" height="' . $rest_len . '" width="' . $this->stud_width . '" /></td></tr>' : "") . '<tr><td><img  name="progress_image" src="' . $this->progress_image . '" height="' . $progress_len . '" width="' . $this->stud_width . '" /></td></tr></table></td>' :
-				'<td><img name="progress_image' . $this->name . '" src="' . $this->progress_image . '" width="' . $progress_len . '" height="' . $this->stud_width . '" /></td>' . ($this->showBack ? '<td><img  name="progress_image_bg' . $this->name . '" src="' . $this->progress_image_bg . '" width="' . $rest_len . '" height="' . $this->stud_width . '" /></td>' : "")
+				'<td><img name="progress_image' . $this->name . '" src="' . $this->progress_image . '" width="' . $progress_len . '" height="' . $this->stud_width . '" /></td>' .
+				($this->showBack ?
+					'<td><img  name="progress_image_bg' . $this->name . '" src="' . $this->progress_image_bg . '" width="' . $rest_len . '" height="' . $this->stud_width . '" /></td>' :
+					""
+				)
 			) .
-			($right ? "<td>" . we_html_tools::getPixel(5, 1) . "</td>" . $right : "") .
+			($right ?
+				"<td>" . we_html_tools::getPixel(5, 1) . "</td>" . $right :
+				""
+			) .
 			'</tr></table>' .
-			(empty($bottom) ? '' :
-				'<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr>' . $bottom . '</tr></table>');
+			($bottom ?
+				'<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr>' . $bottom . '</tr></table>' :
+				''
+			);
 	}
 
 }

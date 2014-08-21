@@ -950,11 +950,12 @@ class we_document extends we_root{
 				if(is_array($link)){
 					$img = new we_imageDocument();
 //	set name of image for rollover ...
-					$_useName = '';
 
 					if(isset($attribs['name'])){ //	here we must change the name for a rollover-image
 						$_useName = $attribs['name'] . '_img';
 						$img->setElement('name', $_useName, 'dat');
+					} else {
+						$_useName = '';
 					}
 
 					$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), true, false);
@@ -974,42 +975,22 @@ class we_document extends we_root{
 				}
 				return '';
 			case 'date':
-// it is a date field from the customer module
-//2010-12-12 00:00:00
-				if($val && !is_numeric($val)){
-					$len = strlen($val);
-					if($len == 19 || $len == 10){
+				$val = $val ? $val : time();
+				$format = isset($attribs['format']) && $attribs['format'] ? $attribs['format'] : g_l('date', '[format][default]');
+				Zend_Registry::set('Zend_Locale', new Zend_Locale((isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS["weDefaultFrontendLanguage"])));
+				$zdate = is_numeric($val) ? new Zend_Date($val, Zend_Date::TIMESTAMP) : new Zend_Date($val);
 
-						$_y = substr($val, 0, 4);
-						$_m = substr($val, 5, 2);
-						$_d = substr($val, 8, 2);
-						if($len == 19){
-							$_h = substr($val, 11, 2);
-							$_min = substr($val, 14, 2);
-							$_s = substr($val, 17, 2);
-							$val = mktime($_h, $_min, $_s, $_m, $_d, $_y);
-						} else {
-							$val = mktime(0, 0, 0, $_m, $_d, $_y);
-						}
+				//workaround buggy zend dateformat with \h which duplicates the char
+				$ret = '';
+				for($i = 0; $i < strlen($format); $i++){
+					if($format[$i] == '\\'){
+						$ret.=$format[++$i];
+					} else {
+						$ret.=$zdate->toString($format[$i], 'php');
 					}
 				}
+				return $ret;
 
-				$val = $val ? $val : time();
-
-				$format = isset($attribs['format']) ? $attribs['format'] : g_l('date', '[format][default]');
-//FIXME: zend part doesn't use correctDateFormat & won't work on new Dates
-				if(isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language != 'de_DE' && is_numeric($val)){
-					$zdate = new Zend_Date($val, Zend_Date::TIMESTAMP);
-					return $zdate->toString($format, 'php', $GLOBALS['WE_MAIN_DOC']->Language);
-				}
-				require_once(WE_INCLUDES_PATH . 'we_tags/we_tag_date.inc.php');
-				try{
-					$dt = new DateTime((is_numeric($val) ? '@' : '') . $val);
-				} catch (Exception $e){
-					$dt = new DateTime('now');
-				}
-				$dt->setTimeZone(new DateTimeZone(date_default_timezone_get())); //Bug #6335
-				return $dt->format(correctDateFormat($format, $dt));
 			case 'select':
 				if(defined('OBJECT_TABLE')){
 					if(strlen($val) == 0){
