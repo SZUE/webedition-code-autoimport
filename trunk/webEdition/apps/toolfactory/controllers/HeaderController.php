@@ -25,7 +25,6 @@
 /*
  * @see we_app_controller_HeaderAction
  */
-Zend_Loader::loadClass('we_app_controller_HeaderAction');
 
 /**
  * Base Header Controller

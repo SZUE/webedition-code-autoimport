@@ -25,7 +25,6 @@
 /**
  * @see we_app_TopFrameView
  */
-Zend_Loader::loadClass('we_app_TopFrameView');
 
 /**
  * Base class for TopFrameView

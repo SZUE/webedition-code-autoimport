@@ -22,7 +22,6 @@
 /*
  * @see Zend_Log
  */
-Zend_Loader::loadClass('Zend_Log');
 
 /**
  * abstract class for hook reader classes

@@ -68,7 +68,6 @@ class we_util_Sys_Dependencies extends we_util_Sys{
 		}
 		// check if required we_util_Sys class exists:
 		if(Zend_Loader::isReadable('webEdition/lib/we/util/Sys/' . str_replace("_", "/", $class . ".php"))){
-			Zend_Loader::loadClass('we_util_Sys_' . $class);
 			// check if the required method exists in this class:
 			$reflectionClass = new ReflectionClass('we_util_Sys_' . $class);
 			if(!$reflectionClass->hasMethod($values["operation"])){

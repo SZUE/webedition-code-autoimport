@@ -23,13 +23,6 @@
 /**
  * @see we_util_Sys
  */
-Zend_Loader::loadClass('we_util_Sys');
-
-/**
- * @see we_util_Sys_Exception
- */
-Zend_Loader::loadClass('we_util_Sys_Exception');
-
 /**
  * utility class for various web servers
  *

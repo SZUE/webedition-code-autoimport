@@ -25,17 +25,16 @@
 /**
  * @see we_app_HomePage
  */
-Zend_Loader::loadClass('we_app_HomePage');
 
 /**
  * Class for Home Page View of toolfactory
- * 
+ *
  * @category   toolfactory
  * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class <?php print $TOOLNAME;?>_app_HomePage extends we_app_HomePage
 {
-	
+
 }
 

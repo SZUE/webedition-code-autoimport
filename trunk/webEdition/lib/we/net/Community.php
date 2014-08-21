@@ -20,15 +20,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 include_once ('Zend/Config/Xml.php');
-/**
- * @see we_util_Log
- */
-Zend_Loader::loadClass('we_util_Log');
-
-/**
- * @see we_net_Http
- */
-Zend_Loader::loadClass('we_net_Http');
 
 /**
  * Was diese Klasse können muss:

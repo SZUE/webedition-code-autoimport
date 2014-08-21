@@ -23,7 +23,6 @@
 /**
  * @see we_app_Installer
  */
-Zend_Loader::loadClass('we_app_Installer');
 
 /**
  * dummy class for installation of webEdition applications (formerly known as "tools")

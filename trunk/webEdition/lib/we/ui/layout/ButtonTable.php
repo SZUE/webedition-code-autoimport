@@ -20,10 +20,6 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-/**
- * @see we_ui_layout_Table
- */
-Zend_Loader::loadClass('we_ui_layout_Table');
 
 /**
  * Class to display a ButtonTable

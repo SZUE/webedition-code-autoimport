@@ -19,10 +19,6 @@
  * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-/**
- * @see we_Exception
- */
-Zend_Loader::loadClass('we_Exception');
 
 /**
  *

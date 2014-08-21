@@ -103,7 +103,6 @@ class we_selector_document extends we_selector_directory{
 				$hash = getHash('SELECT o.DefaultTitle,o.ID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.ID=of.TableID WHERE of.ID=' . intval($this->dir), $_db);
 
 				$this->titleName = ($hash ? $hash['DefaultTitle'] : '');
-
 				if($this->titleName && strpos($this->titleName, '_')){
 					$_db->query('SELECT OF_ID, ' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . $hash['ID'] . ' WHERE OF_ParentID=' . intval($this->dir));
 					while($_db->next_record()){

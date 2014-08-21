@@ -23,8 +23,6 @@
 /**
  * @see we_core_AbstractObject
  */
-Zend_Loader::loadClass('we_core_AbstractObject');
-
 /**
  * Base class for all kind of html elements
  *

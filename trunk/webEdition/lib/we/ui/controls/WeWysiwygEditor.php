@@ -20,13 +20,6 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-/**
- * @see we_ui_abstract_AbstractElement
- */
-Zend_Loader::loadClass('we_ui_abstract_AbstractFormElement');
-Zend_Loader::loadClass('we_ui_controls_Button');
-Zend_Loader::loadClass('we_ui_controls_Label');
-Zend_Loader::loadClass('we_ui_layout_Table');
 
 /**
  * Class to display an webEdition Wysiwyg-Editor

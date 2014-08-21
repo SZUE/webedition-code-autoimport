@@ -25,7 +25,6 @@
 /*
  * @see we_app_controller_FramesetAction
  */
-Zend_Loader::loadClass('we_app_controller_FramesetAction');
 
 /**
  * Base Frameset Controller

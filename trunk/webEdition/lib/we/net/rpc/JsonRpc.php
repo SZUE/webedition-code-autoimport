@@ -122,7 +122,6 @@ class we_net_rpc_JsonRpc{
 
 		try{
 			/* Load the class */
-			Zend_Loader::loadClass($serviceClass);
 			/* Instantiate the service */
 			$service = new $serviceClass();
 		} catch (Zend_Exception $e){

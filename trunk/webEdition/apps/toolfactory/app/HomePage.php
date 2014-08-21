@@ -25,7 +25,6 @@
 /**
  * @see we_app_HomePage
  */
-Zend_Loader::loadClass('we_app_HomePage');
 
 /**
  * Class for Home Page View of toolfactory

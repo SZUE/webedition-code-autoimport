@@ -20,10 +20,6 @@
  * @subpackage we_net_LiveUpdate
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-/**
- * @see we_net_Exception
- */
-Zend_Loader::loadClass('we_net_Exception');
 
 class we_net_LiveUpdate_Exception extends we_net_Exception{
 

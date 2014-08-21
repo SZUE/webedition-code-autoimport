@@ -19,10 +19,6 @@
  * @subpackage we_app_controller
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-/*
- * @see Zend_Controller_Action
- */
-Zend_Loader::loadClass('Zend_Controller_Action');
 
 /**
  * Base IndexAction Controller
@@ -42,7 +38,7 @@ class we_app_controller_IndexAction extends Zend_Controller_Action{
 /*		we_html_tools::setHttpCode(307);
 		$tmp=  str_replace('index.php', '', $this->getFrontController()->getBaseUrl());
 		header('Location: '.$tmp.'redirect.php/frameset/index');
- 
+
  */
 		if(strpos($this->getFrontController()->getBaseUrl(), 'index.php') === false){
 			$this->_redirect('index.php/frameset/index');

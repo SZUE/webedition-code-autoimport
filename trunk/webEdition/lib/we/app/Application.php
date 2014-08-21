@@ -24,12 +24,10 @@ require_once 'Zend/Config/Xml.php';
 /**
  * @see we_app_Common
  */
-Zend_Loader::loadClass('we_app_Common');
 
 /**
  * @see we_app_Installer
  */
-Zend_Loader::loadClass('we_app_Installer');
 
 /**
  * class for webEdition applications (formerly known as "tools")

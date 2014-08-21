@@ -20,7 +20,6 @@
  * @subpackage we_util_Sys
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-Zend_Loader::loadClass('we_util_Sys_Server');
 
 /**
  * utility class for apache web server
