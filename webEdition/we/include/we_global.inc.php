@@ -964,8 +964,8 @@ function g_l($name, $specific, $omitErrors = false){
 //cache last accessed lang var
 	static $cache = array();
 //echo $name.$specific;
-	if(isset($cache["l_$name"])){
-		$tmp = getVarArray($cache["l_$name"], $specific);
+	if(isset($cache['l_' . $name])){
+		$tmp = getVarArray($cache['l_' . $name], $specific);
 		if(!($tmp === false)){
 			return ($charset != 'UTF-8' ?
 					(is_array($tmp) ?

@@ -52,7 +52,7 @@ class rpcResponse{
 		$this->DataArray[$name] = $data;
 	}
 
-	function setData($name, $data){
+	public function setData($name, $data){
 		$this->addData($name, $data);
 	}
 

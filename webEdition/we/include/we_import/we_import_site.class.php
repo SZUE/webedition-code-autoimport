@@ -938,7 +938,7 @@ class we_import_site{
 		$pb = new we_progressBar(0);
 		$pb->setStudLen(200);
 		$pb->addText("&nbsp;", 0, "progressTxt");
-		print $pb->getJS();
+		echo $pb->getJS();
 
 		$table = new we_html_table(array(
 			"border" => 0,

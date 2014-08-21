@@ -36,7 +36,7 @@ function we_tag_addDelShopItem($attribs){
 
 	we_base_moduleInfo::isActive('shop');
 
-	$floatfilter = new Zend_Filter_LocalizedToNormalized();
+	$floatfilter = new Zend_Filter_LocalizedToNormalized();//FIXME: no local set, this won't work if server settings not correct or not match document-settings
 	if((isset($_REQUEST['shopname']) && $_REQUEST['shopname'] == $shopname) || !isset($_REQUEST['shopname']) || !($_REQUEST['shopname'])){
 		if(isset($_REQUEST['shop_cart_id']) && is_array($_REQUEST['shop_cart_id'])){
 			if(we_base_request::_(we_base_request::INT, 't', 0) > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0 )){

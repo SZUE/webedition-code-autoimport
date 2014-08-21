@@ -49,7 +49,6 @@ abstract class we_tool_lookup{
 		require_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.inc.php');
 
 		$lang = isset($GLOBALS['WE_LANGUAGE']) ? $GLOBALS['WE_LANGUAGE'] : we_core_Local::getComputedUILang();
-		Zend_Loader::loadClass('we_core_Local');
 
 
 		foreach($_toolsDirs as $_toolDir){
@@ -451,5 +450,5 @@ abstract class we_tool_lookup{
 }
 
 abstract class weToolLookup extends we_tool_lookup{
-	
+
 }
