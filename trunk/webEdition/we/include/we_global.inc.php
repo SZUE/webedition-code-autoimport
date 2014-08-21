@@ -873,7 +873,7 @@ function getWeFrontendLanguagesForBackend(){
 	if(!isset($GLOBALS['weFrontendLanguages'])){
 		return array();
 	}
-	$targetLang = we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']);
+	$targetLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 	if(!Zend_Locale::hasCache()){
 		Zend_Locale::setCache(getWEZendCache());
 	}

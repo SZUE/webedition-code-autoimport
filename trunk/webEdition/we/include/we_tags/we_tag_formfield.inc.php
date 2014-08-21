@@ -259,7 +259,7 @@ function we_tag_formfield($attribs){
 				$docAttr = weTag_getAttribute("doc", $attribs, "self");
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
-				$langcode = (empty($lang) ? we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]) : substr($lang, 0, 2));
+				$langcode = ($lang ? substr($lang, 0, 2) : array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) );
 
 				if(!Zend_Locale::hasCache()){
 					Zend_Locale::setCache(getWEZendCache());
@@ -304,7 +304,7 @@ function we_tag_formfield($attribs){
 				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
-				$langcode = (empty($lang) ? we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]) : substr($lang, 0, 2));
+				$langcode = ($lang ? substr($lang, 0, 2) : array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 				$frontendL = $GLOBALS['weFrontendLanguages'];
 				foreach($frontendL as &$lcvalue){
 					$lccode = explode('_', $lcvalue);

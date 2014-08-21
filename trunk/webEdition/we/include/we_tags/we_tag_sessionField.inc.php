@@ -76,7 +76,7 @@ function we_tag_sessionField($attribs, $content){
 			$lang = $doc->Language;
 			$langcode = ($lang ?
 					substr($lang, 0, 2) :
-					we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
+					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 			if(!Zend_Locale::hasCache()){
 				Zend_Locale::setCache(getWEZendCache());
@@ -125,7 +125,7 @@ function we_tag_sessionField($attribs, $content){
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
-			$langcode = ($lang ? substr($lang, 0, 2) : we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
+			$langcode = ($lang ? substr($lang, 0, 2) : array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 			$frontendL = $GLOBALS['weFrontendLanguages'];
 			foreach($frontendL as &$lcvalue){

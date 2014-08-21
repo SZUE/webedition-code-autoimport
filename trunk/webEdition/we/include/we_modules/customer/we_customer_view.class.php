@@ -1204,7 +1204,7 @@ self.close();');
 
 				return we_html_element::htmlDiv(array('style' => 'height: 80px;overflow: auto;width: 220px;border: 1px solid #000;padding: 3px;background: #FFFFFF;'), $out);
 			case 'country':
-				$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
+				$langcode = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 
 				$countrycode = array_search($langcode, getWECountries());
 				$countryselect = new we_html_select(array('name' => $field, 'size' => 1, 'style' => 'width:240px;', 'class' => 'wetextinput', 'id' => ($field == 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field == 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')));

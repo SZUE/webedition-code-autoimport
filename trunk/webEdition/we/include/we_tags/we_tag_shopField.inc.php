@@ -61,7 +61,7 @@ function we_tag_shopField($attribs){
 			$savedVal = $tmpVal;
 			unset($tmpVal);
 		}
-	} else{
+	} else {
 		$savedVal = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname]->getCartField($name) : '';
 		$isFieldForCheckBox = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname]->hasCartField($name) : false;
 	}
@@ -115,14 +115,14 @@ function we_tag_shopField($attribs){
 			break;
 
 		case 'country':
-			$newAtts = removeAttribs($attribs, array('name', 'type', 'value', 'values','checked', 'mode'));
+			$newAtts = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'checked', 'mode'));
 			$newAtts['name'] = 'we_sscf[' . $name . ']';
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang ?
 					substr($lang, 0, 2) :
-					we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]));
+					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 			if(!Zend_Locale::hasCache()){
 				Zend_Locale::setCache(getWEZendCache());
@@ -166,16 +166,15 @@ function we_tag_shopField($attribs){
 			return getHtmlTag('select', $newAtts, $content, true);
 
 		case 'language':
-			$newAtts = removeAttribs($attribs, array('name', 'type', 'value', 'values','checked', 'mode'));
+			$newAtts = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'checked', 'mode'));
 			$newAtts['name'] = 'we_sscf[' . $name . ']';
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
-			if($lang != ''){
-				$langcode = substr($lang, 0, 2);
-			} else{
-				$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
-			}
+			$langcode = ($lang ?
+					substr($lang, 0, 2) :
+					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+
 			$frontendL = $GLOBALS['weFrontendLanguages'];
 			foreach($frontendL as &$lcvalue){
 				$lccode = explode('_', $lcvalue);
