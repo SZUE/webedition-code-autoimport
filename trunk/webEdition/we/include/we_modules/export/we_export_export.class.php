@@ -102,7 +102,7 @@ class we_export_export extends weModelBase{
 	}
 
 	function save($force_new = false){
-		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::LINK_ICON);
+		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::FILE_ICON);
 		$sets = array();
 		$wheres = array();
 		foreach($this->persistent_slots as $val){
@@ -170,7 +170,7 @@ class we_export_export extends weModelBase{
 	function setDefaults(){
 		$this->ParentID = 0;
 		$this->Text = "weExport_" . time();
-		$this->Icon = we_base_ContentTypes::LINK_ICON;
+		$this->Icon = we_base_ContentTypes::FILE_ICON;
 		$this->Selection = 'auto';
 		$this->SelectionType = 'doctype';
 		$this->Filename = $this->Text . ".xml";

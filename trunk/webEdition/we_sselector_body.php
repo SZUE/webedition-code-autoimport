@@ -26,12 +26,12 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
 
 $supportDebuggingFile = WEBEDITION_PATH . 'we_sselector_inc.php';
-$supportDebugging = false;
+$GLOBALS['supportDebugging'] = false;
 if(file_exists($supportDebuggingFile)){
 	include($supportDebuggingFile);
 	if(defined('SUPPORT_IP') && defined('SUPPORT_DURATION') && defined('SUPPORT_START')){
 		if(SUPPORT_IP == $_SERVER['REMOTE_ADDR'] && (time() - SUPPORT_DURATION) < SUPPORT_START){
-			$supportDebugging = true;
+			$GLOBALS['supportDebugging'] = true;
 		}
 	}
 }
@@ -222,8 +222,6 @@ function _cutText($text, $l){
 					break;
 			}
 
-
-
 			foreach($ordDir as $key => $value){
 				$final[] = $arDir[$key];
 			}
@@ -268,26 +266,26 @@ var i = 0;';
 					$indb = false;
 				}
 				$show = ($entry != '.') && ($entry != '..') && (($_REQUEST["file"] == g_l('contentTypes', '[all_Types]')) || ($type == g_l('contentTypes', '[folder]')) || ($type == $_REQUEST["file"] || $_REQUEST["file"] == ''));
-				$bgcol = ($_REQUEST["curID"] == ($dir . '/' . $entry) && !( $nf == "new_folder")) ? "#DFE9F5" : "white";
-				$onclick = $ondblclick = "";
-				$_cursor = "cursor:default;";
-				if(!(( $nf == "rename_folder" || $nf == "rename_file") && ($entry == $sid) && ($isfolder))){
+				$bgcol = (we_base_request::_(we_base_request::FILE, 'curID') == ($dir . '/' . $entry) && !( $nf == 'new_folder')) ? '#DFE9F5' : 'white';
+				$onclick = $ondblclick = '';
+				$_cursor = 'cursor:default;';
+				if(!(( $nf == 'rename_folder' || $nf == 'rename_file') && ($entry == $sid) && ($isfolder))){
 					if($indb && $isfolder){
 						$onclick = ' onclick="tout=setTimeout(\'if(wasdblclick==0){doClick(\\\'' . $entry . '\\\',1,' . ($indb ? 1 : 0) . ');}else{wasdblclick=0;}\',300);return true;"';
-						$ondblclick = ' onDblClick="wasdblclick=1;clearTimeout(tout);doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');return true;"';
-						$_cursor = "cursor:pointer;";
+						$ondblclick = 'onDblClick="wasdblclick=1;clearTimeout(tout);doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');return true;"';
+						$_cursor = 'cursor:pointer;';
 					} else if(!$indb){
 						if($isfolder){
-							$onclick = ' onclick="if(old==\'' . $entry . '\') mk=setTimeout(\'if(!wasdblclick){clickEdit(old);}\',500); old=\'' . $entry . '\';doSelectFolder(\'' . $entry . '\',' . ($indb ? 1 : 0) . ');"';
-							$ondblclick = ' onDblClick="wasdblclick=1;clearTimeout(tout);clearTimeout(mk);doClick(\'' . $entry . '\',1,0);return true;"';
+							$onclick = 'onclick="if(old==\'' . $entry . '\') mk=setTimeout(\'if(!wasdblclick){clickEdit(old);}\',500); old=\'' . $entry . '\';doSelectFolder(\'' . $entry . '\',' . ($indb ? 1 : 0) . ');"';
+							$ondblclick = 'onDblClick="wasdblclick=1;clearTimeout(tout);clearTimeout(mk);doClick(\'' . $entry . '\',1,0);return true;"';
 						} else {
-							$onclick = ' onclick="if(old==\'' . $entry . '\') mk=setTimeout(\'if(!wasdblclick){ clickEditFile(old);}\',500); old=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
+							$onclick = 'onclick="if(old==\'' . $entry . '\') mk=setTimeout(\'if(!wasdblclick){ clickEditFile(old);}\',500); old=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
 						}
-						$_cursor = "cursor:pointer;";
+						$_cursor = 'cursor:pointer;';
 					}
 				}
 
-				$icon = $isfolder ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::LINK_ICON;
+				$icon = $isfolder ? we_base_ContentTypes::FOLDER_ICON : ( $islink ? we_base_ContentTypes::LINK_ICON : we_base_ContentTypes::FILE_ICON);
 				$filesize = file_exists($dir . '/' . $entry) ? filesize($dir . '/' . $entry) : 0;
 
 				$_size = ($isfolder ?
