@@ -201,7 +201,7 @@ class we_navigation_navigation extends weModelBase{
 		}
 
 		$this->Text = self::encodeSpecChars($this->Text);
-		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::LINK_ICON);
+		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::FILE_ICON);
 
 		$_paths = $this->Categories;
 		$this->Categories = makeCSVFromArray(weConvertToIds($this->Categories, CATEGORY_TABLE), true);

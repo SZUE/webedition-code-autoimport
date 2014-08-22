@@ -26,6 +26,7 @@ class we_base_ContentTypes{
 	const CLASS_FOLDER_ICON = 'class_folder.gif';
 	const FOLDER_ICON = 'folder.gif';
 	const IMAGE_ICON = 'image.gif';
+	const FILE_ICON = 'file.gif';
 	const LINK_ICON = 'link.gif';
 	const IMAGE = 'image/*';
 	const TEMPLATE = 'text/weTmpl';
@@ -63,7 +64,7 @@ class we_base_ContentTypes{
 				'DefaultCode' => '<?xml version="1.0" encoding="' . $charset . '" ?>',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Icon' => self::LINK_ICON,
+				'Icon' => self::FILE_ICON,
 			),
 			self::HTML => array(
 				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml', '.xsl'),
@@ -151,7 +152,7 @@ class we_base_ContentTypes{
 				'DefaultCode' => '',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Icon' => self::LINK_ICON,
+				'Icon' => self::FILE_ICON,
 			),
 			'folder' => array(
 				'Extension' => '',
@@ -196,7 +197,7 @@ class we_base_ContentTypes{
 				'DefaultCode' => '',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Icon' => self::LINK_ICON,
+				'Icon' => self::FILE_ICON,
 			),
 			'object' => array(
 				'Extension' => '',

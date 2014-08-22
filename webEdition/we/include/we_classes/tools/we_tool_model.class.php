@@ -133,7 +133,7 @@ class we_tool_model extends weModelBase{
 
 	function setIsFolder($value){
 		$this->IsFolder = $value;
-		$this->Icon = ($value ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::LINK_ICON);
+		$this->Icon = ($value ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::FILE_ICON);
 	}
 
 	function deleteChilds(){

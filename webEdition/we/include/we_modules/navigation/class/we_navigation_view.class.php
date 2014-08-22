@@ -816,7 +816,7 @@ function submitForm() {
 					}
 					$_items = $this->Model->populateGroup($_old_items);
 					foreach($_items as $_k => $_item){
-						$js .= $this->topFrame . '.makeNewEntry(\'' . we_base_ContentTypes::LINK_ICON . '\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
+						$js .= $this->topFrame . '.makeNewEntry(\'' . we_base_ContentTypes::FILE_ICON . '\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
 					}
 				}
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_NODYNAMIC){
@@ -922,7 +922,7 @@ function submitForm() {
 				$_js = '';
 				foreach($_items as $_k => $_item){
 					$_js .= $this->topFrame . '.deleteEntry(' . $_item['id'] . ');';
-					$_js .= $this->topFrame . '.makeNewEntry(\'' . we_base_ContentTypes::LINK_ICON . '\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
+					$_js .= $this->topFrame . '.makeNewEntry(\'' . we_base_ContentTypes::FILE_ICON . '\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
 				}
 				print we_html_element::jsElement(
 						$_js .

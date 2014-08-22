@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_formfield($attribs){
-
 	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		return $foo;
 	}
@@ -51,9 +50,9 @@ function we_tag_formfield($attribs){
 			'textarea_cols', 'textarea_rows'
 		);
 	}
-
+	$m = array();
 	foreach($attribs as $k => $v){
-		if(preg_match("/^([^_]+)_([^_]+)$/", $k, $m) && ($m[1] == $type_sel)){
+		if(preg_match('/^([^_]+)_([^_]+)$/', $k, $m) && ($m[1] == $type_sel)){
 			if(in_array($k, $attrs)){
 				if(isset($GLOBALS['we_doc']->elements[$name]['ff_' . $type_sel . '_' . $m[2]])){
 					$ff[$m[2]]['value'] = $GLOBALS['we_doc']->getElement($name, 'ff_' . $type_sel . '_' . $m[2]);
@@ -188,163 +187,162 @@ function we_tag_formfield($attribs){
 		}
 		$tbl .= '</table>';
 		$ret .= $tbl;
-	} else {
+		return $ret;
+	}
 
-		$tagEndTag = false;
+	$tagEndTag = false;
 
-		$tagName = '';
-		$tagAtts = array(
-			'xml' => $xml, 'name' => oldHtmlspecialchars($GLOBALS['we_doc']->getElement($attribs["name"], 'ffname'))
-		);
-		$tagContent = '';
+	$tagName = '';
+	$tagAtts = array(
+		'xml' => $xml, 'name' => oldHtmlspecialchars($GLOBALS['we_doc']->getElement($attribs["name"], 'ffname'))
+	);
+	$tagContent = '';
 
-		switch($type_sel){
-			case 'textarea' :
-			case 'select' :
-				$tagName = $type_sel;
-				break;
-			default :
-				$tagName = 'input';
-				$tagAtts['type'] = $type_sel;
-		}
+	switch($type_sel){
+		case 'textarea' :
+		case 'select' :
+			$tagName = $type_sel;
+			break;
+		default :
+			$tagName = 'input';
+			$tagAtts['type'] = $type_sel;
+	}
 
-		foreach(array_keys($ff) as $f){
+	foreach(array_keys($ff) as $f){
 
-			if(!((($f == 'value') && ($type_sel == 'textarea')) || $f == 'type')){
+		if(!((($f == 'value') && ($type_sel == 'textarea')) || $f == 'type')){
 
-				$val = $GLOBALS['we_doc']->getElement($name, 'ff_' . $type_sel . '_' . $f);
-				if($val){
-					$tagAtts[$f] = oldHtmlspecialchars($val);
-				}
+			$val = $GLOBALS['we_doc']->getElement($name, 'ff_' . $type_sel . '_' . $f);
+			if($val){
+				$tagAtts[$f] = oldHtmlspecialchars($val);
 			}
 		}
-
-		switch($type_sel){
-			case 'checkbox':
-			case 'radio':
-				if($GLOBALS['we_doc']->getElement($name, 'ffchecked')){
-					$tagAtts['checked'] = 'checked';
-				}
-				break;
-			case 'textinput': // correct input type="text"
-				$tagAtts['type'] = 'text';
-				break;
-			case 'textarea':
-				$tagEndTag = true;
-				if(isset($ff['value'])){
-					$tagContent = oldHtmlspecialchars($ff['value']['value']);
-				}
-				if(!array_key_exists('cols', $tagAtts)){
-					$tagAtts['cols'] = 20;
-				}
-				if(!array_key_exists('rows', $tagAtts)){
-					$tagAtts['rows'] = 5;
-				}
-				break;
-			case 'select':
-				$selected = $GLOBALS['we_doc']->getElement($name, 'ffdefault');
-				$foo = explode("<_BR_>", str_replace(array("\r\n", "\r", "\n",), '<_BR_>', $GLOBALS['we_doc']->getElement($name, 'ffvalues')));
-				foreach($foo as $v){
-					$_atts = array(
-						'value' => oldHtmlspecialchars($v)
-					);
-					if($selected == $v){
-						$_atts['selected'] = 'selected';
-					}
-					$tagContent .= getHtmlTag('option', $_atts, oldHtmlspecialchars($v));
-				}
-				break;
-			case 'country':
-				$orgVal = $GLOBALS['we_doc']->getElement($name, 'ffdefault');
-				$docAttr = weTag_getAttribute("doc", $attribs, "self");
-				$doc = we_getDocForTag($docAttr);
-				$lang = $doc->Language;
-				$langcode = ($lang ? substr($lang, 0, 2) : array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) );
-
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
-
-				//$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
-				$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
-				foreach($topCountries as $countrykey => &$countryvalue){
-					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
-				}
-				unset($countryvalue);
-				$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
-				foreach($shownCountries as $countrykey => &$countryvalue){
-					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
-				}
-				unset($countryvalue);
-				$oldLocale = setlocale(LC_ALL, NULL);
-				setlocale(LC_ALL, $lang . '.UTF-8');
-				asort($topCountries, SORT_LOCALE_STRING);
-				asort($shownCountries, SORT_LOCALE_STRING);
-				setlocale(LC_ALL, $oldLocale);
-
-				$tagContent = '';
-				if(WE_COUNTRIES_DEFAULT != ''){
-					$tagContent.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
-				}
-				foreach($topCountries as $countrykey => &$countryvalue){
-					$tagContent.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
-				}
-				unset($countryvalue);
-				$tagContent.='<option value="-" disabled="disabled">----</option>';
-				foreach($shownCountries as $countrykey2 => &$countryvalue2){
-					$tagContent.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
-				}
-				unset($countryvalue);
-				$tagAtts['size'] = (isset($attrs['size']) ? $attrs['size'] : 1);
-				//  $newAtts['name'] = $name;
-				$tagName = 'select';
-				break;
-			case 'language':
-				$orgVal = $GLOBALS['we_doc']->getElement($name, 'ffdefault');
-				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
-				$doc = we_getDocForTag($docAttr);
-				$lang = $doc->Language;
-				$langcode = ($lang ? substr($lang, 0, 2) : array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
-				$frontendL = $GLOBALS['weFrontendLanguages'];
-				foreach($frontendL as &$lcvalue){
-					$lccode = explode('_', $lcvalue);
-					$lcvalue = $lccode[0];
-				}
-				unset($lcvalue);
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
-
-				foreach($frontendL as &$lcvalue){
-					$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
-				}
-
-				$oldLocale = setlocale(LC_ALL, NULL);
-				setlocale(LC_ALL, $lang . '.UTF-8');
-				asort($frontendLL, SORT_LOCALE_STRING);
-				setlocale(LC_ALL, $oldLocale);
-
-				$tagContent = '';
-				foreach($frontendLL as $langkey => &$langvalue){
-					$tagContent.='<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>';
-				}
-				unset($langvalue);
-				$tagAtts['size'] = (isset($attrs['size']) ? $attrs['size'] : 1);
-
-				$tagName = 'select';
-				break;
-			case 'file':
-				$ret .= getHtmlTag(
-					'input', array(
-					'type' => 'hidden',
-					'name' => 'MAX_FILE_SIZE',
-					'value' => oldHtmlspecialchars(
-						$GLOBALS['we_doc']->getElement($name, 'ffmaxfilesize')),
-					'xml' => $xml
-				));
-				break;
-		}
-		return getHtmlTag($tagName, $tagAtts, $tagContent, $tagEndTag) . $ret;
 	}
-	return $ret;
+
+	switch($type_sel){
+		case 'checkbox':
+		case 'radio':
+			if($GLOBALS['we_doc']->getElement($name, 'ffchecked')){
+				$tagAtts['checked'] = 'checked';
+			}
+			break;
+		case 'textinput': // correct input type="text"
+			$tagAtts['type'] = 'text';
+			break;
+		case 'textarea':
+			$tagEndTag = true;
+			if(isset($ff['value'])){
+				$tagContent = oldHtmlspecialchars($ff['value']['value']);
+			}
+			if(!array_key_exists('cols', $tagAtts)){
+				$tagAtts['cols'] = 20;
+			}
+			if(!array_key_exists('rows', $tagAtts)){
+				$tagAtts['rows'] = 5;
+			}
+			break;
+		case 'select':
+			$selected = $GLOBALS['we_doc']->getElement($name, 'ffdefault');
+			$foo = explode("<_BR_>", str_replace(array("\r\n", "\r", "\n",), '<_BR_>', $GLOBALS['we_doc']->getElement($name, 'ffvalues')));
+			foreach($foo as $v){
+				$_atts = array(
+					'value' => oldHtmlspecialchars($v)
+				);
+				if($selected == $v){
+					$_atts['selected'] = 'selected';
+				}
+				$tagContent .= getHtmlTag('option', $_atts, oldHtmlspecialchars($v));
+			}
+			break;
+		case 'country':
+			$orgVal = $GLOBALS['we_doc']->getElement($name, 'ffdefault');
+			$docAttr = weTag_getAttribute("doc", $attribs, "self");
+			$doc = we_getDocForTag($docAttr);
+			$lang = $doc->Language;
+			$langcode = ($lang ? substr($lang, 0, 2) : array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) );
+
+			if(!Zend_Locale::hasCache()){
+				Zend_Locale::setCache(getWEZendCache());
+			}
+
+			//$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
+			$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
+			foreach($topCountries as $countrykey => &$countryvalue){
+				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+			}
+			unset($countryvalue);
+			$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
+			foreach($shownCountries as $countrykey => &$countryvalue){
+				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+			}
+			unset($countryvalue);
+			$oldLocale = setlocale(LC_ALL, NULL);
+			setlocale(LC_ALL, $lang . '.UTF-8');
+			asort($topCountries, SORT_LOCALE_STRING);
+			asort($shownCountries, SORT_LOCALE_STRING);
+			setlocale(LC_ALL, $oldLocale);
+
+			$tagContent = '';
+			if(WE_COUNTRIES_DEFAULT != ''){
+				$tagContent.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
+			}
+			foreach($topCountries as $countrykey => &$countryvalue){
+				$tagContent.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
+			}
+			unset($countryvalue);
+			$tagContent.='<option value="-" disabled="disabled">----</option>';
+			foreach($shownCountries as $countrykey2 => &$countryvalue2){
+				$tagContent.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
+			}
+			unset($countryvalue);
+			$tagAtts['size'] = (isset($attrs['size']) ? $attrs['size'] : 1);
+			//  $newAtts['name'] = $name;
+			$tagName = 'select';
+			break;
+		case 'language':
+			$orgVal = $GLOBALS['we_doc']->getElement($name, 'ffdefault');
+			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
+			$doc = we_getDocForTag($docAttr);
+			$lang = $doc->Language;
+			$langcode = ($lang ? substr($lang, 0, 2) : array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+			$frontendL = $GLOBALS['weFrontendLanguages'];
+			foreach($frontendL as &$lcvalue){
+				$lccode = explode('_', $lcvalue);
+				$lcvalue = $lccode[0];
+			}
+			unset($lcvalue);
+			if(!Zend_Locale::hasCache()){
+				Zend_Locale::setCache(getWEZendCache());
+			}
+
+			foreach($frontendL as &$lcvalue){
+				$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
+			}
+
+			$oldLocale = setlocale(LC_ALL, NULL);
+			setlocale(LC_ALL, $lang . '.UTF-8');
+			asort($frontendLL, SORT_LOCALE_STRING);
+			setlocale(LC_ALL, $oldLocale);
+
+			$tagContent = '';
+			foreach($frontendLL as $langkey => &$langvalue){
+				$tagContent.='<option value="' . $langkey . '" ' . ($orgVal == $langkey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($langvalue) . '</option>';
+			}
+			unset($langvalue);
+			$tagAtts['size'] = (isset($attrs['size']) ? $attrs['size'] : 1);
+
+			$tagName = 'select';
+			break;
+		case 'file':
+			$ret .= getHtmlTag(
+				'input', array(
+				'type' => 'hidden',
+				'name' => 'MAX_FILE_SIZE',
+				'value' => oldHtmlspecialchars(
+					$GLOBALS['we_doc']->getElement($name, 'ffmaxfilesize')),
+				'xml' => $xml
+			));
+			break;
+	}
+	return getHtmlTag($tagName, $tagAtts, $tagContent, $tagEndTag) . $ret;
 }
