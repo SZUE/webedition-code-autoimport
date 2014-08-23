@@ -95,7 +95,6 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 				$we_show_response = 1;
 				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
 				$we_responseText = sprintf(g_l('weClass', "[doctype_delete_ok]"), $name);
-				unset($_REQUEST['we_cmd'][1]);
 				$del = true;
 			} else {
 				$we_show_response = 1;

@@ -52,7 +52,7 @@ class we_shop_shippingControl{
 		}
 	}
 
-	function setByRequest($req){
+	function setByRequest($req){//FIXME: bad this is unchecked
 
 		// this function inits a new entry, also it could change existing items
 		$this->stateField = $req['stateField'];

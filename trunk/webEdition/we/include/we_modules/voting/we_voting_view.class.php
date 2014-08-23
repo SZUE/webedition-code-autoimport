@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* the parent class of storagable webEdition classes */
-class we_voting_view extends weModuleView{
+class we_voting_view extends we_modules_view{
 	var $voting;
 	var $editorBodyFrame;
 	var $editorBodyForm;
@@ -537,8 +537,10 @@ function we_cmd(){
 			case "export_csv":
 				$fname = rtrim(we_base_request::_(we_base_request::FILE, 'csv_dir'), '/') . '/voting_' . $this->voting->ID . '_export_' . time() . '.csv';
 
-				$enclose = isset($_REQUEST['csv_enclose']) ? ($_REQUEST['csv_enclose'] == 0 ? '"' : '\'') : '"';
-				$delimiter = isset($_REQUEST['csv_delimiter']) ? ($_REQUEST['csv_delimiter'] == '\t' ? "\t" : $_REQUEST['csv_delimiter']) : ';';
+				$enclose = we_base_request::_(we_base_request::STRING, 'csv_enclose', '"');
+				$enclose = $enclose == 0 ? '"' : '\'';
+				$delimiter = we_base_request::_(we_base_request::STRING, ';');
+				$delimiter = ($delimiter == '\t' ? "\t" : $delimiter);
 				switch(we_base_request::_(we_base_request::STRING, 'csv_lineend')){
 					default:
 					case 'windows':
@@ -553,13 +555,16 @@ function we_cmd(){
 				}
 
 				$content = array();
-				if(isset($_REQUEST['question_name']) && isset($_REQUEST[$_REQUEST['question_name'] . '_item0'])){
-					$content[] = $enclose . addslashes($_REQUEST[$_REQUEST['question_name'] . '_item0']) . $enclose . $delimiter;
+				$questName = we_base_request::_(we_base_request::STRING, 'question_name');
+				if($questName && ($data = we_base_request::_(we_base_request::STRING, $questName . '_item0'))){
+					$content[] = $enclose . addslashes($data) . $enclose . $delimiter;
 				}
-				if(isset($_REQUEST['answers_name']) && isset($_REQUEST['item_count'])){
-					for($i = 0; $i < $_REQUEST['item_count']; $i++){
-						if(isset($_REQUEST[$_REQUEST['answers_name'] . '_item' . $i])){
-							$content[] = $enclose . addslashes($_REQUEST[$_REQUEST['answers_name'] . '_item' . $i]) . $enclose . $delimiter . $this->voting->Scores[$i];
+				$answerName = we_base_request::_(we_base_request::STRING, 'answers_name');
+				$cnt = we_base_request::_(we_base_request::INT, 'item_count');
+				if($answerName && $cnt){
+					for($i = 0; $i < $cnt; $i++){
+						if(($data = we_base_request::_(we_base_request::STRING, $answerName . '_item' . $i))){
+							$content[] = $enclose . addslashes($data) . $enclose . $delimiter . $this->voting->Scores[$i];
 						}
 					}
 				}

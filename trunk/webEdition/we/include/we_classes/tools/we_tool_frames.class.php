@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_tool_frames extends weModuleFrames{
+class we_tool_frames extends we_modules_frame{
 
 	var $View;
 	var $Table;

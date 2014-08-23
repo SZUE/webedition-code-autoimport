@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_shop_frames extends weModuleFrames{
+class we_shop_frames extends we_modules_frame{
 	var $db;
 	var $View;
 	var $frameset;

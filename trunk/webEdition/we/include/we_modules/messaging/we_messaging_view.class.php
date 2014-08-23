@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* the parent class of storagable webEdition classes */
-class we_messaging_view extends weModuleView{
+class we_messaging_view extends we_modules_view{
 
 	private $messaging = null;
 	private $transaction;

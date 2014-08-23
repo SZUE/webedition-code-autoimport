@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_workflow_frames extends weModuleFrames {
+class we_workflow_frames extends we_modules_frame {
 
 	public $module = "workflow";
 	protected $useMainTree = false;

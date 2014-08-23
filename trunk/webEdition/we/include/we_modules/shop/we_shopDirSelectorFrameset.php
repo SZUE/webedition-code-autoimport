@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,9 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-$_REQUEST['id'] = $_REQUEST['we_cmd'][1];
-$_REQUEST['JSIDName'] = $_REQUEST['we_cmd'][2];
-$_REQUEST['JSTextName'] = $_REQUEST['we_cmd'][3];
-$_REQUEST['JSCommand'] = $_REQUEST['we_cmd'][4];
+$_REQUEST['id'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
+$_REQUEST['JSIDName'] = we_base_request::_(we_base_request::JS, 'we_cmd', '', 2);
+$_REQUEST['JSTextName'] = we_base_request::_(we_base_request::JS, 'we_cmd', '', 3);
+$_REQUEST['JSCommand'] = we_base_request::_(we_base_request::JS, 'we_cmd', '', 4);
 
 require_once(WE_MODULES_PATH . 'raw/we_ShopDirSelect.php');

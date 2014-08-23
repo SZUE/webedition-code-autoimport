@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_navigation_frames extends weModuleFrames{
+class we_navigation_frames extends we_modules_frame{
 //class weNavigationFrames extends weToolFramesInterim {
 
 	var $toolDir; //TODO: replace toll/module-wide by $module

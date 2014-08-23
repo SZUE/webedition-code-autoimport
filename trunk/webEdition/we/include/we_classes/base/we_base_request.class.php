@@ -42,6 +42,7 @@ class we_base_request{
 	const TABLE = 'table';
 	const FILE = 'file';
 	const FILELIST = 'filelist';
+	const FILELISTA = 'filelista';
 	const URL = 'url';
 	const STRING = 'string';
 	const HTML = 'html';
@@ -91,7 +92,8 @@ class we_base_request{
 				$var = intval($var);
 				return;
 			case self::FLOAT:
-				$var = floatval($var);
+				//FIXME: check for country dependencies (eg. 1.3333,22)
+				$var = floatval(str_replace(',', '.', $var));
 				return;
 			case self::BOOL:
 				if(is_bool($var)){
@@ -128,6 +130,7 @@ class we_base_request{
 				  return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false); */
 				$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
 				return;
+			case self::FILELISTA:
 			case self::FILELIST:
 				$var = explode(',', trim(strtr($var, array(
 					'../' => '',
@@ -139,7 +142,7 @@ class we_base_request{
 						$cur = isset($GLOBALS['supportDebugging']) ? $cur : '-1';
 					}
 				}
-				$var = implode(',', $var);
+				$var = $type == self::FILELIST ? implode(',', $var) : $var;
 				return;
 			case self::FILE:
 				$var = strtr(filter_var($var, FILTER_SANITIZE_URL), array(
