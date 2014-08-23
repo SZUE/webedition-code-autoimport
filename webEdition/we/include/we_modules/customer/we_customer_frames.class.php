@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_customer_frames extends weModuleFrames{
+class we_customer_frames extends we_modules_frame{
 	var $View;
 	var $jsOut_fieldTypesByName;
 	public $module = 'customer';

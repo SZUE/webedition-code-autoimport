@@ -45,7 +45,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		break;
 
 	case 'saveShipping':
-		$weShippingControl->setByRequest($_REQUEST);
+		$weShippingControl->setByRequest($_REQUEST);//FIXME: bad this is unchecked!!!
 		$weShippingControl->save();
 		if(($sid=we_base_request::_(we_base_request::STRING,'weShippingId'))!==false){
 			$weShipping = $weShippingControl->getShippingById($sid);

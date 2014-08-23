@@ -24,7 +24,7 @@
  */
 //TEST: was it ok to abandon treefooter?
 
-class we_glossary_frames extends weModuleFrames{
+class we_glossary_frames extends we_modules_frame{
 
 	var $_space_size = 150;
 	var $_text_size = 75;

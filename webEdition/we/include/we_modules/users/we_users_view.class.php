@@ -25,7 +25,7 @@
 /* the parent class of storagable webEdition classes */
 
 
-class we_users_view extends weModuleView{
+class we_users_view extends we_modules_view{
 
 	//----------- Utility functions ------------------
 
@@ -277,58 +277,6 @@ function we_cmd() {
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
-		case "new_raw":
-			if(' . $this->topFrame . '.editor.edbody.loaded) {
-				' . $this->topFrame . '.hot = 1;
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = arguments[0];
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value = arguments[1];
-				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value = 1;
-				' . $this->topFrame . '.editor.edbody.submitForm();
-			} else {
-				setTimeout(\'we_cmd("new_raw");\', 10);
-			}
-			break;
-
-		case "delete_raw":
-			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
-			' . (!permissionhandler::hasPerm("DELETE_RAW") ?
-					( we_message_reporting::getShowMessageCall(g_l('modules_shop', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)) :
-					('
-					if (' . $this->topFrame . '.editor.edbody.loaded) {
-						if (confirm("' . g_l('modules_shop', '[delete_alert]') . '")) {
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-							' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-							' . $this->topFrame . '.editor.edbody.submitForm();
-						}
-					} else {
-						' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-					}
-
-			')) . '
-			break;
-
-		case "save_raw":
-			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
-
-
-					if (' . $this->topFrame . '.editor.edbody.loaded) {
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-							' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-
-							' . $this->topFrame . '.editor.edbody.submitForm();
-					} else {
-						' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-					}
-
-			break;
-
-		case "edit_raw":
-			' . $this->topFrame . '.hot=0;
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
-			' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-			' . $this->topFrame . '.editor.edbody.submitForm();
-		break;
 		case "load":
 			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
 		break;
@@ -889,18 +837,6 @@ function we_cmd(){
 	}
 
 	function processVariables(){
-		if(isset($_SESSION['weS']['raw_session'])){
-			$this->raw = unserialize($_SESSION['weS']['raw_session']);
-		}
-
-		if(isset($this->raw) && is_array($this->raw->persistent_slots)){
-			foreach($this->raw->persistent_slots as $val){
-				$varname = $val;
-				if(isset($_REQUEST[$varname])){
-					$this->raw->{$val} = $_REQUEST[$varname];
-				}
-			}
-		}
 
 		if(isset($_REQUEST['page'])){
 			if(isset($_REQUEST['page'])){

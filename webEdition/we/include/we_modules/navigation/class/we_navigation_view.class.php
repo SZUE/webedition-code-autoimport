@@ -24,11 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class we_navigation_view{
-
-	var $db;
-	var $frameset;
-	var $topFrame;
+class we_navigation_view extends we_modules_view{
 	var $navigation;
 	var $editorBodyFrame;
 	var $editorBodyForm;
@@ -40,10 +36,8 @@ class we_navigation_view{
 	var $page = 1;
 	var $Model;
 
-	function __construct($frameset = '', $topframe = 'top'){
-		$this->db = new DB_WE();
-		$this->setFramesetName($frameset);
-		$this->setTopFrame($topframe);
+	public function __construct($frameset = '', $topframe = 'top'){
+		parent::__construct($frameset, $topframe);
 		$this->Model = new we_navigation_navigation();
 		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . 'navigation.gif\" />&nbsp;';
 		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
@@ -943,14 +937,14 @@ function submitForm() {
 				break;
 			case 'dyn_preview':
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-					we_html_element::jsElement('
+				we_html_element::jsElement('
 						url = "' . WE_INCLUDES_DIR . 'we_modules/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
 						new jsWindow(url,"we_navigation_dyn_preview",-1,-1,480,350,true,true,true);'
 				);
 				break;
 			case 'create_template':
 				echo we_html_element::jsElement(
-						$this->topFrame . '.opener.top.we_cmd("new","' . TEMPLATES_TABLE . '","","' . we_base_ContentTypes::TEMPLATE . '","","' . base64_encode($this->Model->previewCode) . '");
+					$this->topFrame . '.opener.top.we_cmd("new","' . TEMPLATES_TABLE . '","","' . we_base_ContentTypes::TEMPLATE . '","","' . base64_encode($this->Model->previewCode) . '");
 					');
 				break;
 			case 'populateFolderWs':

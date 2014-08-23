@@ -22,31 +22,12 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_glossary_view{
-	/**
-	 * Database Instance
-	 *
-	 * @var object
-	 */
-	private $Db;
-
+class we_glossary_view extends we_modules_view{
 	/**
 	 * Glossary Instance
 	 * @var object
 	 */
 	var $Glossary;
-
-	/**
-	 * Name of the frameset
-	 * @var string
-	 */
-	var $FrameSet;
-
-	/**
-	 * Name of the Top-Frame
-	 * @var string
-	 */
-	var $TopFrame;
 
 	/**
 	 * Name of the Editor-Body-Frame
@@ -80,15 +61,12 @@ class we_glossary_view{
 	private $page = 0;
 
 	/**
-	 * @param string $FrameSet
-	 * @param string $TopFrame
+	 * @param string $frameset
+	 * @param string $topframe
 	 */
-	public function __construct($FrameSet = "", $TopFrame = "top.content"){
-		$this->Db = new DB_WE();
+	public function __construct($frameset = "", $topframe = "top.content"){
+		parent::__construct($frameset, $topframe);
 		$this->Glossary = new we_glossary_glossary();
-
-		$this->setFramesetName($FrameSet);
-		$this->setTopFrame($TopFrame);
 
 		$this->ItemPattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . 'prog.gif\" />&nbsp;';
 		$this->GroupPattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
@@ -114,25 +92,16 @@ class we_glossary_view{
 	//-----------------Init -------------------------------
 
 	/**
-	 * set the name of the frameset
-	 *
-	 * @param string $FrameSet
-	 */
-	function setFramesetName($FrameSet){
-		$this->FrameSet = $FrameSet;
-	}
-
-	/**
 	 * set the name of the topframe, editorBodyFrame, editorBodyForm
 	 * and the editorHeaderFrame
 	 *
-	 * @param string $Frame
+	 * @param string $frame
 	 */
-	function setTopFrame($Frame){
-		$this->TopFrame = $Frame;
-		$this->EditorBodyFrame = $Frame . '.editor.edbody';
+	function setTopFrame($frame){
+		parent::setTopFrame($frame);
+		$this->EditorBodyFrame = $frame . '.editor.edbody';
 		$this->EditorBodyForm = $this->EditorBodyFrame . '.document.we_form';
-		$this->EditorHeaderFrame = $Frame . '.editor.edheader';
+		$this->EditorHeaderFrame = $frame . '.editor.edheader';
 	}
 
 	//------------------------------------------------
@@ -194,13 +163,13 @@ function we_cmd() {
 		case "new_glossary_foreignword":
 		case "new_glossary_link":
 		case "new_glossary_textreplacement":
-			if(' . $this->TopFrame . '.editor.edbody.loaded) {
-				' . $this->TopFrame . '.editor.edbody.document.we_form.cmd.value = arguments[0];
+			if(' . $this->topFrame . '.editor.edbody.loaded) {
+				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = arguments[0];
 				if(arguments[1] != undefined) {
-					' . $this->TopFrame . '.editor.edbody.document.we_form.cmdid.value = arguments[1];
+					' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value = arguments[1];
 				}
-				' . $this->TopFrame . '.editor.edbody.document.we_form.tabnr.value = 1;
-				' . $this->TopFrame . '.editor.edbody.submitForm();
+				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value = 1;
+				' . $this->topFrame . '.editor.edbody.submitForm();
 			} else {
 				if(arguments[1] != undefined) {
 					str = \'we_cmd("\' + arguments[0] + \'", "\' + arguments[1] + \'");\';
@@ -213,7 +182,7 @@ function we_cmd() {
 			break;
 
 		case "delete_glossary":
-			var exc = ' . $this->TopFrame . '.editor.edbody.document.we_form.cmdid.value;
+			var exc = ' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value;
 			if (exc.substring(exc.length-10, exc.length)=="_exception") {
 				' . we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 				break;
@@ -231,13 +200,13 @@ function we_cmd() {
 				we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 				) :
 				('
-				if (' . $this->TopFrame . '.editor.edbody.loaded) {
+				if (' . $this->topFrame . '.editor.edbody.loaded) {
 					if (confirm("' . g_l('modules_glossary', "[delete_alert]") . '")) {
-						' . $this->TopFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-						' . $this->TopFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->TopFrame . '.activ_tab;
-						' . $this->EditorHeaderFrame . '.location="' . $this->FrameSet . '?home=1&pnt=edheader";
-						' . $this->TopFrame . '.editor.edfooter.location="' . $this->FrameSet . '?home=1&pnt=edfooter";
-						' . $this->TopFrame . '.editor.edbody.submitForm();
+						' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+						' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+						' . $this->EditorHeaderFrame . '.location="' . $this->frameset . '?home=1&pnt=edheader";
+						' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
+						' . $this->topFrame . '.editor.edbody.submitForm();
 					}
 				} else {
 					' . we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -247,20 +216,20 @@ function we_cmd() {
 
 		case "save_exception":
 		case "save_glossary":
-			var exc = ' . $this->TopFrame . '.editor.edbody.document.we_form.cmdid.value;
+			var exc = ' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value;
 			if (exc.substring(exc.length-10, exc.length)=="_exception") {
 				arguments[0] = "save_exception";
 			}
 			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
 			if(top.content.editor.edbody.document.we_form.cmd.value=="glossary_view_folder") return;
 			if(top.content.editor.edbody.document.we_form.cmd.value=="glossary_view_type") return;
-			if (' . $this->TopFrame . '.editor.edbody.loaded) {
-				' . $this->TopFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-				' . $this->TopFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->TopFrame . '.activ_tab;
+			if (' . $this->topFrame . '.editor.edbody.loaded) {
+				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 				if(top.makeNewEntry==1) {
-					' . $this->TopFrame . '.editor.edbody.submitForm("cmd");
+					' . $this->topFrame . '.editor.edbody.submitForm("cmd");
 				} else {
-					' . $this->TopFrame . '.editor.edbody.submitForm();
+					' . $this->topFrame . '.editor.edbody.submitForm();
 				}
 			} else {
 				' . we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[nothing_to_save]"), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -274,19 +243,19 @@ function we_cmd() {
 		case "glossary_edit_link":
 		case "glossary_edit_textreplacement":
 			' . (!permissionhandler::hasPerm("EDIT_GLOSSARY") ? we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
-			' . $this->TopFrame . '.hot=0;
-			' . $this->TopFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-			' . $this->TopFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
-			' . $this->TopFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->TopFrame . '.activ_tab;
-			' . $this->TopFrame . '.editor.edbody.submitForm();
+			' . $this->topFrame . '.hot=0;
+			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
+			' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+			' . $this->topFrame . '.editor.edbody.submitForm();
 			break;
 
 		case "load":
-			' . $this->TopFrame . '.cmd.location="' . $this->FrameSet . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
+			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
 			break;
 
 		case "home":
-			' . $this->EditorBodyFrame . '.parent.location="' . $this->FrameSet . '?pnt=editor";
+			' . $this->EditorBodyFrame . '.parent.location="' . $this->frameset . '?pnt=editor";
 			break;
 
 		default:
@@ -352,7 +321,7 @@ function we_cmd() {
 
 			function we_cmd(){
 				var args = "";
-				var url = "' . $this->FrameSet . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+				var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 				switch (arguments[0]) {
 					default:
 						for (var i = 0; i < arguments.length; i++) {
@@ -378,7 +347,7 @@ function we_cmd() {
 				if (arguments[1]) {
 					f.action = arguments[1];
 				} else {
-					f.action = "' . $this->FrameSet . '";
+					f.action = "' . $this->frameset . '";
 				}
 
 				if (arguments[2]) {
@@ -393,7 +362,7 @@ function we_cmd() {
 		';
 	}
 
-	function processCommands(){
+	public function processCommands(){
 		$cmdid = we_base_request::_(we_base_request::STRING, "cmdid");
 		switch(($cmd = we_base_request::_(we_base_request::STRING, "cmd"))){
 
@@ -412,8 +381,8 @@ function we_cmd() {
 				$this->Glossary->Type = array_pop(explode('_', $cmd, 4));
 
 				echo we_html_element::jsElement('
-							' . $this->TopFrame . '.editor.edheader.location="' . $this->FrameSet . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
-							' . $this->TopFrame . '.editor.edfooter.location="' . $this->FrameSet . '?pnt=edfooter";
+							' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
+							' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 					');
 				break;
 
@@ -433,8 +402,8 @@ function we_cmd() {
 				$this->Glossary = new we_glossary_glossary($cmdid);
 
 				echo we_html_element::jsElement('
-						' . $this->TopFrame . '.editor.edheader.location="' . $this->FrameSet . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
-						' . $this->TopFrame . '.editor.edfooter.location="' . $this->FrameSet . '?pnt=edfooter";
+						' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
+						' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 					');
 				break;
 
@@ -560,10 +529,10 @@ function we_cmd() {
 					$this->Glossary->Title = htmlentities($this->Glossary->Title, ENT_QUOTES);
 
 					if($isNew){
-						$js = $this->TopFrame . '.makeNewEntry(\'' . $this->Glossary->Icon . '\',\'' . $this->Glossary->ID . '\',\'' . $this->Glossary->Language . '_' . $this->Glossary->Type . '\',\'' . $this->Glossary->Text . '\',0,\'' . ($this->Glossary->IsFolder ? 'folder' : 'item') . '\',\'' . GLOSSARY_TABLE . '\',' . ($this->Glossary->Published > 0 ? 1 : 0) . ');
-								' . $this->TopFrame . '.drawTree();';
+						$js = $this->topFrame . '.makeNewEntry(\'' . $this->Glossary->Icon . '\',\'' . $this->Glossary->ID . '\',\'' . $this->Glossary->Language . '_' . $this->Glossary->Type . '\',\'' . $this->Glossary->Text . '\',0,\'' . ($this->Glossary->IsFolder ? 'folder' : 'item') . '\',\'' . GLOSSARY_TABLE . '\',' . ($this->Glossary->Published > 0 ? 1 : 0) . ');
+								' . $this->topFrame . '.drawTree();';
 					} else {
-						$js = $this->TopFrame . '.updateEntry(' . $this->Glossary->ID . ',"' . $this->Glossary->Text . '","' . $this->Glossary->Language . '_' . $this->Glossary->Type . '",' . ($this->Glossary->Published > 0 ? 1 : 0) . ');' . "\n";
+						$js = $this->topFrame . '.updateEntry(' . $this->Glossary->ID . ',"' . $this->Glossary->Text . '","' . $this->Glossary->Language . '_' . $this->Glossary->Type . '",' . ($this->Glossary->Published > 0 ? 1 : 0) . ');' . "\n";
 					}
 
 					$this->Glossary->Text = html_entity_decode($this->Glossary->Text, ENT_QUOTES);
@@ -585,11 +554,11 @@ function we_cmd() {
 						$js .
 						we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_NOTICE) . '
 							if(top.makeNewEntry==1) {
-								' . $this->TopFrame . '.we_cmd("new_glossary_' . $this->Glossary->Type . '", "' . $this->Glossary->Language . '");
+								' . $this->topFrame . '.we_cmd("new_glossary_' . $this->Glossary->Type . '", "' . $this->Glossary->Language . '");
 							} else {
 								' . $this->EditorHeaderFrame . '.location.reload();
 							}
-							' . $this->TopFrame . '.hot=0;
+							' . $this->topFrame . '.hot=0;
 						');
 
 					// --> Save to Cache
@@ -612,7 +581,7 @@ function we_cmd() {
 				}
 				if($this->Glossary->delete()){
 					echo we_html_element::jsElement('
-								' . $this->TopFrame . '.deleteEntry(' . $this->Glossary->ID . ');
+								' . $this->topFrame . '.deleteEntry(' . $this->Glossary->ID . ');
 								setTimeout(\'' . we_message_reporting::getShowMessageCall(($this->Glossary->IsFolder == 1 ? g_l('modules_glossary', '[group_deleted]') : g_l('modules_glossary', '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);
 							');
 

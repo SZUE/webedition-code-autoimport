@@ -24,7 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class we_customer_view extends weModuleView{
+class we_customer_view extends we_modules_view{
 	var $customer;
 	var $settings;
 

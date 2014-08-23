@@ -39,7 +39,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'load_editor':
 // set default tab for creating new imageDocuments to "metadata":
 		if($we_doc->ContentType == we_base_ContentTypes::IMAGE && $we_doc->ID == 0){
-			$_SESSION['weS']['EditPageNr'] = $we_doc->EditPageNr = $_REQUEST['we_cmd'][1] = we_base_constants::WE_EDITPAGE_CONTENT;
+			$_SESSION['weS']['EditPageNr'] = $we_doc->EditPageNr = /*$_REQUEST['we_cmd'][1] = */we_base_constants::WE_EDITPAGE_CONTENT;
 		}
 		break;
 	case 'resizeImage':

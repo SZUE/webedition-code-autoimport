@@ -160,7 +160,7 @@ class we_glossary_glossary extends weModelBase{
 	 * @param integer $GlossaryId
 	 * @desc Could load a glossary item if $GlossaryId is not 0
 	 */
-	function __construct($GlossaryId = 0){
+	public function __construct($GlossaryId = 0){
 		parent::__construct(GLOSSARY_TABLE);
 		$this->_Serialized = array('Attributes');
 

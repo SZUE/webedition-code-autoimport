@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_navigation_tree extends weModuleTree{
+class we_navigation_tree extends we_modules_tree{
 
 	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);

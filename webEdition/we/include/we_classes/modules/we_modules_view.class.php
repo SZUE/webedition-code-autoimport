@@ -25,14 +25,12 @@
 /* the parent class of storagable webEdition classes */
 
 
-class weModuleView{
-
+class we_modules_view{//FIXME is this really a base class, or is it an interface???
 	var $db;
 	var $frameset;
 	var $topFrame;
-	var $raw;
 
-	function __construct($frameset = '', $topframe = 'top.content'){
+	protected function __construct($frameset = '', $topframe = 'top.content'){
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
@@ -94,87 +92,13 @@ class weModuleView{
 
 	function processCommands(){
 		switch(we_base_request::_(we_base_request::STRING, 'cmd', '')){
-			case 'new_raw':
-				$this->raw = new weShop();
-				echo we_html_element::jsElement(
-					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
-				);
-				break;
-			case 'edit_raw':
-				$this->raw = new weShop(we_base_request::_(we_base_request::INT, 'cmdid', 0));
-				echo we_html_element::jsElement(
-					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
-				);
-				break;
-			case 'save_raw':
-				if($this->raw->filenameNotValid()){
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_shop', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
-					);
-					break;
-				}
-
-				$newone = ($this->raw->ID ? false : true);
-
-				$this->raw->save();
-
-				//$ttrow = getHash('SELECT * FROM ' . RAW_TABLE . ' WHERE ID=' . intval($this->raw->ID), $this->db);
-				$tt = addslashes($tt ? $tt : $this->raw->Text);
-				$js = ($newone ?
-						'
-var attribs = new Array();
-attribs["icon"]="' . $this->raw->Icon . '";
-attribs["id"]="' . $this->raw->ID . '";
-attribs["typ"]="item";
-attribs["parentid"]="0";
-attribs["text"]="' . $tt . '";
-attribs["disable"]=0;
-attribs["tooltip"]="";' .
-						$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));' .
-						$this->topFrame . '.drawTree();' :
-						$this->topFrame . '.updateEntry(' . $this->raw->ID . ',"' . $tt . '");'
-					);
-				echo we_html_element::jsElement(
-					$js .
-					we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_saved_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
-				);
-				break;
-			case 'delete_raw':
-				$js = '' . $this->topFrame . '.deleteEntry(' . $this->raw->ID . ');';
-
-				$this->raw->delete();
-				$this->raw = new weShop();
-
-				echo we_html_element::jsElement(
-					$js .
-					we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
-				);
-				break;
 			case 'switchPage':
 				break;
 			default:
 		}
-
-
-		$_SESSION['weS']['raw_session'] = serialize($this->raw);
 	}
 
 	function processVariables(){
-		if(isset($_SESSION['weS']['raw_session'])){
-			$this->raw = unserialize($_SESSION['weS']['raw_session']);
-		}
-
-		if(is_array($this->raw->persistent_slots)){
-			foreach($this->raw->persistent_slots as $val){
-				$varname = $val;
-				if(($tmp = we_base_request::_(we_base_request::RAW, $varname))){
-					$this->raw->{$val} = $tmp;
-				}
-			}
-		}
-
 		$this->page = we_base_request::_(we_base_request::INT, 'page', $this->page);
 	}
 

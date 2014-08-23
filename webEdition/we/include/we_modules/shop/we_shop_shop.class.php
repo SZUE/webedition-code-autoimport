@@ -41,7 +41,7 @@ class we_shop_shop{
 	const ignoredEditFields = 'ID,Username,Password,MemberSince,LastLogin,LastAccess,ParentID,Path,IsFolder,Icon,Text,AutoLogin,AutoLoginDenied,ModifiedBy,ModifyDate';
 	const ignoredExtraShowFields = 'Forename,Surname';
 
-	function __construct($shoppingCart){
+	public function __construct($shoppingCart){
 		if(is_object($shoppingCart)){
 			$this->ShoppingCart = $shoppingCart;
 			$this->ShoppingCartItems = $shoppingCart->getShoppingItems();

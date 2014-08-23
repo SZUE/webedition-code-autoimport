@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_users_frames extends weModuleFrames{
+class we_users_frames extends we_modules_frame{
 
 	function __construct(){
 		parent::__construct(WE_USERS_MODULE_DIR . "edit_users_frameset.php");

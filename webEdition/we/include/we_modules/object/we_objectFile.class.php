@@ -156,7 +156,7 @@ class we_objectFile extends we_document{
 			}
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
-			$cats = makeIDsFromPathCVS($_REQUEST['we_ui_' . $formname . '_categories'], CATEGORY_TABLE);
+			$cats = makeIDsFromPathCVS(we_base_request::_(we_base_request::FILELISTA, 'we_ui_' . $formname . '_categories'), CATEGORY_TABLE);
 			$GLOBALS['we_object'][$formname]->Category = $cats;
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
@@ -165,8 +165,8 @@ class we_objectFile extends we_document{
 					makeCSVFromArray(makeArrayFromCSV($_REQUEST['we_ui_' . $formname . '_Category']), true));
 		}
 		foreach($GLOBALS['we_object'][$formname]->persistent_slots as $slotname){
-			if($slotname != 'categories' && isset($_REQUEST['we_ui_' . $formname . '_' . $slotname])){
-				$v = we_base_util::rmPhp($_REQUEST['we_ui_' . $formname . '_' . $slotname]);
+			if($slotname != 'categories' && ($tmp = we_base_request::_(we_base_request::RAW, 'we_ui_' . $formname . '_' . $slotname)) !== false){
+				$v = we_base_util::rmPhp($tmp);
 				$GLOBALS['we_object'][$formname]->i_convertElemFromRequest('', $v, $slotname);
 				$GLOBALS['we_object'][$formname]->{$slotname} = $v;
 			}
@@ -2533,7 +2533,7 @@ class we_objectFile extends we_document{
 				$this->Templates = '';
 				$cnt = count(makeArrayFromCSV($this->Workspaces));
 				for($i = 0; $i < $cnt; ++$i){
-					$this->Templates .= $_REQUEST['we_' . $this->Name . '_Templates_' . $i] . ',';
+					$this->Templates .= we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_Templates_' . $i) . ',';
 				}
 				if($this->Templates){
 					$this->Templates = ',' . $this->Templates;
@@ -2543,7 +2543,7 @@ class we_objectFile extends we_document{
 				$this->ExtraTemplates = '';
 				$cnt = count(makeArrayFromCSV($this->ExtraWorkspaces));
 				for($i = 0; $i < $cnt; ++$i){
-					$this->ExtraTemplates .= $_REQUEST['we_' . $this->Name . '_ExtraTemplates_' . $i] . ',';
+					$this->ExtraTemplates .= we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_ExtraTemplates_' . $i) . ',';
 				}
 				if($this->ExtraTemplates){
 					$this->ExtraTemplates = ',' . $this->ExtraTemplates;

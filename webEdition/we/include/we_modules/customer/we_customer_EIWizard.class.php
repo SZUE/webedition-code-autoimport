@@ -638,7 +638,7 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLImportStep3(){
-		$js = "";
+
 		$import_from = we_base_request::_(we_base_request::STRING, "import_from", self::EXPORT_SERVER);
 		$source = we_base_request::_(we_base_request::FILE, "source", "/");
 		$type = we_base_request::_(we_base_request::STRING, "type", "");
@@ -661,138 +661,139 @@ class we_customer_EIWizard{
 
 		$parts = array();
 		if(is_file($filesource) && is_readable($filesource)){
-			if($type == self::TYPE_CSV){
-				$line = we_base_file::loadLine($filesource, 0, 80960);
-				$charsets = array('UTF-8', 'ISO-8859-15', 'ISO-8859-1'); //charsetHandler::getAvailCharsets();
-				$charset = mb_detect_encoding($line, $charsets, true);
-				$charCount = count_chars($line, 0);
+			$js = "";
+			switch($type){
 
-				$csv_delimiters = array(';' => g_l('modules_customer', '[semicolon]'), ',' => g_l('modules_customer', '[comma]'), ':' => g_l('modules_customer', '[colon]'), '\t' => g_l('modules_customer', '[tab]'), ' ' => g_l('modules_customer', '[space]'));
-				$csv_encloses = array('"' => g_l('modules_customer', '[double_quote]'), '\'' => g_l('modules_customer', '[single_quote]'));
-				$max = 0;
-				$csv_delimiter = '';
-				foreach(array_keys($csv_delimiters) as $char){
-					$ord = ord($char);
-					if($charCount[$ord] > $max){
-						$csv_delimiter = $char;
-						$max = $charCount[$ord];
-					}
-				}
-				//leave max
-				$csv_enclose = '';
-				foreach(array_keys($csv_encloses) as $char){
-					$ord = ord($char);
-					if($charCount[$ord] > $max){
-						$csv_enclose = $char;
-						$max = $charCount[$ord];
-					}
-				}
-				$r = $charCount[ord("\r")];
-				$n = $charCount[ord("\n")];
-				$csv_lineend = ($r > 0 && $r == $n ? 'windows' : $r > 0 ? 'mac' : 'unix');
-				$csv_fieldnames = (strpos($line, 'Username') !== false);
+				case self::TYPE_CSV:
+					$line = we_base_file::loadLine($filesource, 0, 80960);
+					$charsets = array('UTF-8', 'ISO-8859-15', 'ISO-8859-1'); //charsetHandler::getAvailCharsets();
+					$charset = mb_detect_encoding($line, $charsets, true);
+					$charCount = count_chars($line, 0);
 
-				//t_e($csv_delimiter, $csv_enclose, $max, $charCount, $r, $n, $csv_lineend, $csv_fieldnames,$line);
-
-				$fileformattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 6, 1);
-
-				$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => 1, "class" => "defaultfont", "style" => "width: 254px;"));
-				$_file_encoding->addOption('windows', g_l('modules_customer', '[windows]'));
-				$_file_encoding->addOption('unix', g_l('modules_customer', '[unix]'));
-				$_file_encoding->addOption('mac', g_l('modules_customer', '[mac]'));
-				$_file_encoding->selectOption($csv_lineend);
-
-				$_charsetHandler = new we_base_charsetHandler();
-				$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
-				//$charset = $GLOBALS['WE_BACKENDCHARSET'];
-				//$GLOBALS['weDefaultCharset'] = get_value("default_charset");
-				$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, ($charset == 'ASCII' ? 'ISO8859-1' : $charset), 255, '', 'text', 100);
-				$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, ($charset == 'ASCII' ? 'ISO8859-1' : $charset), false, array("onchange" => "document.forms[0].elements['the_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 160, "defaultfont", false);
-				$import_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
-
-
-				$fileformattable->setCol(0, 0, array("class" => "defaultfont"), we_html_tools::getPixel(10, 10));
-				$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . we_html_element::htmlBr() . $_file_encoding->getHtml());
-				$fileformattable->setCol(2, 0, array("class" => "defaultfont"), g_l('modules_customer', '[import_charset]') . we_html_element::htmlBr() . $import_Charset);
-				//$fileformattable->setCol(2, 0, array("class" => "defaultfont"), "abc");
-
-				$fileformattable->setColContent(3, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, $csv_delimiters, g_l('modules_customer', '[csv_delimiter]')));
-				$fileformattable->setColContent(4, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, $csv_encloses, g_l('modules_customer', '[csv_enclose]')));
-
-				$fileformattable->setColContent(5, 0, we_html_forms::checkbox($csv_fieldnames, ($csv_fieldnames == 1), "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
-
-				$parts = array(array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), "space" => 150));
-			} else {
-				//invoke parser
-				$xp = new we_xml_parser($filesource);
-				$xmlWellFormed = ($xp->parseError == "") ? true : false;
-
-				if($xmlWellFormed){
-					// Node-set with paths to the child nodes.
-					$node_set = $xp->evaluate("*/child::*");
-					$children = $xp->nodes[$xp->root]["children"];
-
-					$recs = array();
-					foreach($children as $key => $value){
-						$flag = true;
-						for($k = 1; $k < ($value + 1); $k++)
-							if(!$xp->hasChildNodes($xp->root . "/" . $key . "[" . $k . "]"))
-								$flag = false;
-						if($flag)
-							$recs[$key] = $value;
-					}
-					$isSingleNode = (count($recs) == 1);
-					$hasChildNode = (!empty($recs));
-				}
-				if($xmlWellFormed && $hasChildNode){
-					$rcdSelect = new we_html_select(array(
-						'name' => "we_select",
-						'size' => 1,
-						'class' => 'defaultfont',
-						(($isSingleNode) ? "disabled" : "style") => "",
-						'onchange' => "this.form.elements['xml_to'].value=this.options[this.selectedIndex].value; this.form.elements['xml_from'].value=1;this.form.elements['dataset'].value=this.options[this.selectedIndex].text;" .
-						"if(this.options[this.selectedIndex].value==1) {this.form.elements['xml_from'].disabled=true;this.form.elements['xml_to'].disabled=true;} else {this.form.elements['xml_from'].disabled=false;this.form.elements['xml_to'].disabled=false;}")
-					);
-					$optid = 0;
-					foreach($recs as $value => $text){
-						if($optid == 0){
-							$firstItem = $value;
-							$firstOptVal = $text;
+					$csv_delimiters = array(';' => g_l('modules_customer', '[semicolon]'), ',' => g_l('modules_customer', '[comma]'), ':' => g_l('modules_customer', '[colon]'), '\t' => g_l('modules_customer', '[tab]'), ' ' => g_l('modules_customer', '[space]'));
+					$csv_encloses = array('"' => g_l('modules_customer', '[double_quote]'), '\'' => g_l('modules_customer', '[single_quote]'));
+					$max = 0;
+					$csv_delimiter = '';
+					foreach(array_keys($csv_delimiters) as $char){
+						$ord = ord($char);
+						if($charCount[$ord] > $max){
+							$csv_delimiter = $char;
+							$max = $charCount[$ord];
 						}
-						$rcdSelect->addOption($text, $value);
-						if(isset($v["rcd"]))
-							if($text == $v["rcd"])
-								$rcdSelect->selectOption($value);
-						$optid++;
 					}
+					//leave max
+					$csv_enclose = '';
+					foreach(array_keys($csv_encloses) as $char){
+						$ord = ord($char);
+						if($charCount[$ord] > $max){
+							$csv_enclose = $char;
+							$max = $charCount[$ord];
+						}
+					}
+					$r = $charCount[ord("\r")];
+					$n = $charCount[ord("\n")];
+					$csv_lineend = ($r > 0 && $r == $n ? 'windows' : $r > 0 ? 'mac' : 'unix');
+					$csv_fieldnames = (strpos($line, 'Username') !== false);
 
-					$tblSelect = new we_html_table(array(), 1, 7);
-					$tblSelect->setCol(0, 1, array(), $rcdSelect->getHtml());
-					$tblSelect->setCol(0, 2, array("width" => 20));
-					$tblSelect->setCol(0, 3, array("class" => "defaultfont"), g_l('modules_customer', '[num_data_sets]'));
-					$tblSelect->setCol(0, 4, array(), we_html_tools::htmlTextInput("xml_from", 4, 1, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
-					$tblSelect->setCol(0, 5, array("class" => "defaultfont"), g_l('modules_customer', '[to]'));
-					$tblSelect->setCol(0, 6, array(), we_html_tools::htmlTextInput("xml_to", 4, $firstOptVal, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
+					//t_e($csv_delimiter, $csv_enclose, $max, $charCount, $r, $n, $csv_lineend, $csv_fieldnames,$line);
 
-					$tblFrame = new we_html_table(array(), 3, 2);
-					$tblFrame->setCol(0, 0, array("colspan" => 2, "class" => "defaultfont"), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[well_formed]') . " " . g_l('modules_customer', '[select_elements]'), we_html_tools::TYPE_INFO, 570) :
-							we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[xml_valid_1]') . " $optid " . g_l('modules_customer', '[xml_valid_m2]'), we_html_tools::TYPE_INFO, 570));
-					$tblFrame->setCol(1, 0, array("colspan" => 2));
-					$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
+					$fileformattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 6, 1);
 
-					$_REQUEST["dataset"] = $firstItem;
-					$parts = array(array("html" => $tblFrame->getHtml(), "space" => 0, "noline" => 1));
-				}else {
-					$parts = array(array("html" => we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed) ? g_l('modules_customer', '[not_well_formed]') : g_l('modules_customer', '[missing_child_node]'), we_html_tools::TYPE_ALERT, 570), "space" => 0, "noline" => 1));
-					$js = we_html_element::jsElement('
-						' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_IMPORT . '&step=99";
-					');
-				}
+					$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => 1, "class" => "defaultfont", "style" => "width: 254px;"));
+					$_file_encoding->addOption('windows', g_l('modules_customer', '[windows]'));
+					$_file_encoding->addOption('unix', g_l('modules_customer', '[unix]'));
+					$_file_encoding->addOption('mac', g_l('modules_customer', '[mac]'));
+					$_file_encoding->selectOption($csv_lineend);
+
+					$_charsetHandler = new we_base_charsetHandler();
+					$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
+					//$charset = $GLOBALS['WE_BACKENDCHARSET'];
+					//$GLOBALS['weDefaultCharset'] = get_value("default_charset");
+					$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, ($charset == 'ASCII' ? 'ISO8859-1' : $charset), 255, '', 'text', 100);
+					$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, ($charset == 'ASCII' ? 'ISO8859-1' : $charset), false, array("onchange" => "document.forms[0].elements['the_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 160, "defaultfont", false);
+					$import_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
+
+
+					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), we_html_tools::getPixel(10, 10));
+					$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . we_html_element::htmlBr() . $_file_encoding->getHtml());
+					$fileformattable->setCol(2, 0, array("class" => "defaultfont"), g_l('modules_customer', '[import_charset]') . we_html_element::htmlBr() . $import_Charset);
+					//$fileformattable->setCol(2, 0, array("class" => "defaultfont"), "abc");
+
+					$fileformattable->setColContent(3, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, $csv_delimiters, g_l('modules_customer', '[csv_delimiter]')));
+					$fileformattable->setColContent(4, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, $csv_encloses, g_l('modules_customer', '[csv_enclose]')));
+
+					$fileformattable->setColContent(5, 0, we_html_forms::checkbox($csv_fieldnames, ($csv_fieldnames == 1), "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
+
+					$parts = array(array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), "space" => 150));
+					break;
+				case we_import_functions::TYPE_GENERIC_XML:
+					//invoke parser
+					$xp = new we_xml_parser($filesource);
+					$xmlWellFormed = ($xp->parseError == "") ? true : false;
+
+					if($xmlWellFormed){
+						// Node-set with paths to the child nodes.
+						$node_set = $xp->evaluate("*/child::*");
+						$children = $xp->nodes[$xp->root]["children"];
+
+						$recs = array();
+						foreach($children as $key => $value){
+							$flag = true;
+							for($k = 1; $k < ($value + 1); $k++)
+								if(!$xp->hasChildNodes($xp->root . "/" . $key . "[" . $k . "]"))
+									$flag = false;
+							if($flag)
+								$recs[$key] = $value;
+						}
+						$isSingleNode = (count($recs) == 1);
+						$hasChildNode = (!empty($recs));
+					}
+					if($xmlWellFormed && $hasChildNode){
+						$rcdSelect = new we_html_select(array(
+							'name' => "we_select",
+							'size' => 1,
+							'class' => 'defaultfont',
+							(($isSingleNode) ? "disabled" : "style") => "",
+							'onchange' => "this.form.elements['xml_to'].value=this.options[this.selectedIndex].value; this.form.elements['xml_from'].value=1;this.form.elements['dataset'].value=this.options[this.selectedIndex].text;" .
+							"if(this.options[this.selectedIndex].value==1) {this.form.elements['xml_from'].disabled=true;this.form.elements['xml_to'].disabled=true;} else {this.form.elements['xml_from'].disabled=false;this.form.elements['xml_to'].disabled=false;}")
+						);
+						$optid = 0;
+						foreach($recs as $value => $text){
+							if($optid == 0){
+								$firstItem = $value;
+								$firstOptVal = $text;
+							}
+							$rcdSelect->addOption($text, $value);
+							if(isset($v["rcd"]))
+								if($text == $v["rcd"])
+									$rcdSelect->selectOption($value);
+							$optid++;
+						}
+
+						$tblSelect = new we_html_table(array(), 1, 7);
+						$tblSelect->setCol(0, 1, array(), $rcdSelect->getHtml());
+						$tblSelect->setCol(0, 2, array("width" => 20));
+						$tblSelect->setCol(0, 3, array("class" => "defaultfont"), g_l('modules_customer', '[num_data_sets]'));
+						$tblSelect->setCol(0, 4, array(), we_html_tools::htmlTextInput("xml_from", 4, 1, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
+						$tblSelect->setCol(0, 5, array("class" => "defaultfont"), g_l('modules_customer', '[to]'));
+						$tblSelect->setCol(0, 6, array(), we_html_tools::htmlTextInput("xml_to", 4, $firstOptVal, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
+
+						$tblFrame = new we_html_table(array(), 3, 2);
+						$tblFrame->setCol(0, 0, array("colspan" => 2, "class" => "defaultfont"), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[well_formed]') . " " . g_l('modules_customer', '[select_elements]'), we_html_tools::TYPE_INFO, 570) :
+								we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[xml_valid_1]') . " $optid " . g_l('modules_customer', '[xml_valid_m2]'), we_html_tools::TYPE_INFO, 570));
+						$tblFrame->setCol(1, 0, array("colspan" => 2));
+						$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
+
+						$_REQUEST["dataset"] = $firstItem;
+						$parts = array(array("html" => $tblFrame->getHtml(), "space" => 0, "noline" => 1));
+					}else {
+						$parts = array(array("html" => we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed) ? g_l('modules_customer', '[not_well_formed]') : g_l('modules_customer', '[missing_child_node]'), we_html_tools::TYPE_ALERT, 570), "space" => 0, "noline" => 1));
+						$js = we_html_element::jsElement($this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_IMPORT . '&step=99";');
+					}
+					break;
 			}
 		} else {
-			$js = we_html_element::jsElement('
-					' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_IMPORT . '&step=99";
-			');
+			$js = we_html_element::jsElement($this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_IMPORT . '&step=99";');
 			$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[missing_filesource]'), we_html_tools::TYPE_ALERT, 570), "space" => 0, "noline" => 1);
 		}
 

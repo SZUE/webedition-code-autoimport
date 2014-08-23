@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -25,21 +24,15 @@
 /* the parent class of storagable webEdition classes */
 we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
 
-class we_export_view{
-
-	var $db;
-	var $frameset;
-	var $topFrame;
+class we_export_view extends we_modules_view{
 	var $export;
 	var $editorBodyFrame;
 	var $editorBodyDoc;
 	var $editorBodyForm;
 	private $page;
 
-	function __construct($frameset = "", $topframe = "top.content"){
-		$this->db = new DB_WE();
-		$this->setFramesetName($frameset);
-		$this->setTopFrame($topframe);
+	public function __construct($frameset = "", $topframe = "top.content"){
+		parent::__construct($frameset, $topframe);
 		$this->export = new we_export_export();
 	}
 
@@ -519,40 +512,36 @@ class we_export_view{
 					}
 				}
 
-				if($newone){
-					$js = '
-									' . $this->topFrame . '.makeNewEntry(\'' . $this->export->Icon . '\',\'' . $this->export->ID . '\',\'' . $this->export->ParentID . '\',\'' . $this->export->Text . '\',0,\'' . ($this->export->IsFolder ? 'folder' : 'item') . '\',\'' . EXPORT_TABLE . '\');
-							' . $this->topFrame . '.drawTree();';
-				} else {
-					$js = '' . $this->topFrame . '.updateEntry(' . $this->export->ID . ',"' . $this->export->Text . '","' . $this->export->ParentID . '");' . "\n";
-				}
-				print we_html_element::jsElement($js . '
-							' . $this->editorHeaderFrame . '.location.reload();
-							' . we_message_reporting::getShowMessageCall(($this->export->IsFolder == 1 ? g_l('export', "[save_group_ok]") : g_l('export', "[save_ok]")), we_message_reporting::WE_MESSAGE_NOTICE)
-						. $this->topFrame . '.hot=0;
-						');
+				$js = ($newone ?
+						$this->topFrame . '.makeNewEntry(\'' . $this->export->Icon . '\',\'' . $this->export->ID . '\',\'' . $this->export->ParentID . '\',\'' . $this->export->Text . '\',0,\'' . ($this->export->IsFolder ? 'folder' : 'item') . '\',\'' . EXPORT_TABLE . '\');' .
+						$this->topFrame . '.drawTree();' :
+						$this->topFrame . '.updateEntry(' . $this->export->ID . ',"' . $this->export->Text . '","' . $this->export->ParentID . '");'
+					);
+				echo we_html_element::jsElement(
+					$js .
+					$this->editorHeaderFrame . '.location.reload();' .
+					we_message_reporting::getShowMessageCall(($this->export->IsFolder == 1 ? g_l('export', "[save_group_ok]") : g_l('export', "[save_ok]")), we_message_reporting::WE_MESSAGE_NOTICE) .
+					$this->topFrame . '.hot=0;'
+				);
 
 				break;
 			case "delete_export":
 				if(!permissionhandler::hasPerm("DELETE_EXPORT")){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('export', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR));
 					return;
-				} else {
+				}
 
-					if($this->export->delete()){
-						print we_html_element::jsElement('
+				if($this->export->delete()){
+					echo we_html_element::jsElement('
 									' . $this->topFrame . '.deleteEntry(' . $this->export->ID . ');
-									' . we_message_reporting::getShowMessageCall(($this->export->IsFolder == 1 ? g_l('export', "[delete_group_ok]") : g_l('export', "[delete_ok]")), we_message_reporting::WE_MESSAGE_NOTICE) . '
+									' . we_message_reporting::getShowMessageCall(g_l('export', ($this->export->IsFolder ? "[delete_group_ok]" : "[delete_ok]")), we_message_reporting::WE_MESSAGE_NOTICE) . '
 									' . $this->topFrame . '.we_cmd("home");
 							');
-						$this->export = new we_export_export();
-					} else {
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(($this->export->IsFolder == 1 ? g_l('export', "[delete_group_nok]") : g_l('export', "[delete_nok]")), we_message_reporting::WE_MESSAGE_ERROR)
-						);
-					}
+					$this->export = new we_export_export();
+				} else {
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(($this->export->IsFolder == 1 ? g_l('export', "[delete_group_nok]") : g_l('export', "[delete_nok]")), we_message_reporting::WE_MESSAGE_ERROR)
+					);
 				}
 
 				break;
@@ -564,12 +553,10 @@ class we_export_view{
 			default:
 		}
 
-
 		$_SESSION['weS']['ExportSession'] = $this->export;
 	}
 
 	function processVariables(){//FIXME use table datatypes
-
 		if(isset($_SESSION['weS']['ExportSession'])){
 			$this->export = $_SESSION['weS']['ExportSession'];
 		}

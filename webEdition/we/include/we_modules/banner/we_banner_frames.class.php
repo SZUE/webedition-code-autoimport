@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_banner_frames extends weModuleFrames{
+class we_banner_frames extends we_modules_frame{
 
 	var $edit_cmd = "banner_edit";
 	protected $useMainTree = false;

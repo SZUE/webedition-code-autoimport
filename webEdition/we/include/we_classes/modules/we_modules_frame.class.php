@@ -24,7 +24,7 @@
  */
 //TODO in modulesFrames: set module-settings as class properties instead of looping them through as method parameters!
 
-class weModuleFrames{
+class we_modules_frame{
 	var $module;
 	var $db;
 	var $frameset;
