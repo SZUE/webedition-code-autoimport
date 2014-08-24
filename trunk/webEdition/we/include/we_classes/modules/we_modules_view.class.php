@@ -30,7 +30,7 @@ class we_modules_view implements we_modules_viewIF{//FIXME is this really a base
 	var $frameset;
 	var $topFrame;
 
-	protected function __construct($frameset = '', $topframe = 'top.content'){
+	public function __construct($frameset = '', $topframe = 'top.content'){
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
@@ -54,7 +54,6 @@ class we_modules_view implements we_modules_viewIF{//FIXME is this really a base
 
 	//------------------------------------------------
 
-
 	function getCommonHiddens($cmds = array()){
 		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
 			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
@@ -63,7 +62,8 @@ class we_modules_view implements we_modules_viewIF{//FIXME is this really a base
 	}
 
 	function getJSTop_tmp(){//taken from old edit_shop_frameset.php
-		return we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript(JS_DIR . 'windows.js');
+		return we_html_element::jsScript(JS_DIR . 'images.js') .
+			we_html_element::jsScript(JS_DIR . 'windows.js');
 	}
 
 	function getJSTop(){//TODO: is this shop-code or a copy paste from another module?
@@ -80,17 +80,17 @@ class we_modules_view implements we_modules_viewIF{//FIXME is this really a base
 
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
-			function submitForm() {
-				var f = arguments[3] ? self.document.forms[arguments[3]] : self.document.we_form;
-				f.target = arguments[0]?arguments[0]:"' . $def_target . '";
-				f.action = arguments[1]?arguments[1]:"' . $this->frameset . '";
-				f.method = arguments[2]?arguments[2]:"' . $def_method . '";
+function submitForm() {
+	var f = arguments[3] ? self.document.forms[arguments[3]] : self.document.we_form;
+	f.target = arguments[0]?arguments[0]:"' . $def_target . '";
+	f.action = arguments[1]?arguments[1]:"' . $this->frameset . '";
+	f.method = arguments[2]?arguments[2]:"' . $def_method . '";
 
-				f.submit();
-			}';
+	f.submit();
+}';
 	}
 
-	function processCommands(){
+	public function processCommands(){
 		switch(we_base_request::_(we_base_request::STRING, 'cmd', '')){
 			case 'switchPage':
 				break;
@@ -98,7 +98,7 @@ class we_modules_view implements we_modules_viewIF{//FIXME is this really a base
 		}
 	}
 
-	function processVariables(){
+	public function processVariables(){
 		$this->page = we_base_request::_(we_base_request::INT, 'page', $this->page);
 	}
 

@@ -171,11 +171,6 @@ class we_newsletter_view extends we_modules_view{
 		return $out;
 	}
 
-	function htmlHidden($name, $value = ''){
-		//FIXME: remove
-		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
-	}
-
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
 	function formDocChooser($width = '', $rootDirID = 0, $Pathname = 'ParentPath', $Pathvalue = '/', $IDName = 'ParentID', $IDValue = 0, $cmd = ''){
@@ -544,12 +539,12 @@ function submitForm() {
 	}
 
 	function getJSProperty(){
-		if(isset($this->settings['reject_save_malformed']) && $this->settings['reject_save_malformed']){
-			$_mailCheck = "we.validate.email(email);";
-		} else {
-			$_mailCheck = "true";
-		}
-		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
+		$_mailCheck = (isset($this->settings['reject_save_malformed']) && $this->settings['reject_save_malformed'] ?
+				"we.validate.email(email);" :
+				"true");
+
+		return
+			parent::getJSProperty() .
 			we_html_element::jsScript(JS_DIR . "libs/we/weValidate.js") .
 			we_html_element::jsElement('
 function doUnload() {
@@ -1115,13 +1110,10 @@ function mysplice(arr, id) {
 function delEmail(group,id) {
 	var dest = document.forms[0].elements["group"+group+"_Emails"]
 	var str = dest.value;
-
 	var arr = str.split("\n");
 
 	arr.splice(id, 1);
-
 	dest.value = arr.join("\n");
-
 	top.content.hot=1;
 }
 
@@ -1202,8 +1194,6 @@ function set_state_edit_delete_recipient(control) {
 		}
 }');
 		//$js.=we_button::create_state_changer();
-
-		return $js;
 	}
 
 	function processCommands(){

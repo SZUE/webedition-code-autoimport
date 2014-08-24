@@ -43,20 +43,9 @@ class we_navigation_view extends we_modules_view{
 		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
 	}
 
-	//----------- Utility functions ------------------
-
-	function htmlHidden($name, $value = ''){
-		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
-	}
-
-	//-----------------Init -------------------------------
-
-	function setFramesetName($frameset){
-		$this->frameset = $frameset;
-	}
 
 	function setTopFrame($frame){
-		$this->topFrame = $frame;
+		parent::setTopFrame($frame);
 		$this->editorBodyFrame = $frame . '.editor.edbody';
 		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
 		$this->editorHeaderFrame = $frame . '.editor.edheader';
@@ -67,17 +56,17 @@ class we_navigation_view extends we_modules_view{
 
 
 	function getCommonHiddens($cmds = array()){
-		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
-			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
-			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
-			$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')) .
+		return
+			parent::getCommonHiddens($cmds) .
 			$this->htmlHidden('vernr', (isset($cmds['vernr']) ? $cmds['vernr'] : 0)) .
 			$this->htmlHidden('delayCmd', (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : '')) .
 			$this->htmlHidden('delayParam', (isset($cmds['delayParam']) ? $cmds['delayParam'] : ''));
 	}
 
 	function getJSTop(){
-		$js = '
+		return
+			parent::getJSTop() .
+			we_html_element::jsElement('
 var activ_tab = "1";
 var hot = 0;
 var makeNewDoc = false;
@@ -170,10 +159,10 @@ function we_cmd() {
 				return;
 			} }
 			' . (!permissionhandler::hasPerm('DELETE_NAVIGATION') ?
-				(
-				we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-				) :
-				('
+					(
+					we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
+					) :
+					('
 					if (' . $this->topFrame . '.editor.edbody.loaded) {
 						if (confirm("' . g_l('navigation', "[delete_alert]") . '")) {
 							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
@@ -235,13 +224,11 @@ function we_cmd() {
 function mark() {
 	hot=1;
 	' . $this->editorHeaderFrame . '.mark();
-}';
-
-		return we_html_element::jsScript(JS_DIR . "windows.js") . we_html_element::jsElement($js);
+}');
 	}
 
 	function getJSProperty(){
-		$out = we_html_element::jsScript(JS_DIR . "windows.js");
+		$out = parent::getJSProperty();
 		$_objFields = "\n";
 		if($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS){
 			if(defined('OBJECT_TABLE')){

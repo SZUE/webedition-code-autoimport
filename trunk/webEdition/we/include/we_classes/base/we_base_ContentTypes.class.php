@@ -26,8 +26,8 @@ class we_base_ContentTypes{
 	const CLASS_FOLDER_ICON = 'class_folder.gif';
 	const FOLDER_ICON = 'folder.gif';
 	const IMAGE_ICON = 'image.gif';
-	const FILE_ICON = 'file.gif';
-	const LINK_ICON = 'link.gif';
+	const FILE_ICON = 'link.gif';
+	const LINK_ICON = 'symlink.gif';
 	const IMAGE = 'image/*';
 	const TEMPLATE = 'text/weTmpl';
 	const XML = 'text/xml';

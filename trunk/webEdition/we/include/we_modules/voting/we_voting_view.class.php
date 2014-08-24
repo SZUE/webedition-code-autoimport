@@ -39,20 +39,8 @@ class we_voting_view extends we_modules_view{
 		$this->group_pattern = addslashes('<img style="vertical-align: bottom" src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" />&nbsp;');
 	}
 
-	//----------- Utility functions ------------------
-
-	function htmlHidden($name, $value = ""){
-		return we_html_element::htmlHidden(array("name" => trim($name), "value" => oldHtmlspecialchars($value)));
-	}
-
-	//-----------------Init -------------------------------
-
-	function setFramesetName($frameset){
-		$this->frameset = $frameset;
-	}
-
 	function setTopFrame($frame){
-		$this->topFrame = $frame;
+		parent::setTopFrame($frame);
 		$this->editorBodyFrame = $frame . '.editor.edbody';
 		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
 		$this->editorHeaderFrame = $frame . '.editor.edheader';
@@ -62,10 +50,8 @@ class we_voting_view extends we_modules_view{
 
 
 	function getCommonHiddens($cmds = array()){
-		return $this->htmlHidden("cmd", (isset($cmds["cmd"]) ? $cmds["cmd"] : "")) .
-			$this->htmlHidden("cmdid", (isset($cmds["cmdid"]) ? $cmds["cmdid"] : "")) .
-			$this->htmlHidden("pnt", (isset($cmds["pnt"]) ? $cmds["pnt"] : "")) .
-			$this->htmlHidden("tabnr", (isset($cmds["tabnr"]) ? $cmds["tabnr"] : "")) .
+		return
+			parent::getCommonHiddens($cmds) .
 			$this->htmlHidden("vernr", (isset($cmds["vernr"]) ? $cmds["vernr"] : 0)) .
 			$this->htmlHidden("IsFolder", (isset($this->voting->IsFolder) ? $this->voting->IsFolder : '0'));
 	}
@@ -75,7 +61,9 @@ class we_voting_view extends we_modules_view{
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
-		$js = '
+		return
+			parent::getJSTop() .
+			we_html_element::jsElement('
 var get_focus = 1;
 var activ_tab = 1;
 var hot = 0;
@@ -144,10 +132,10 @@ function we_cmd() {
 				return;
 			}
 			' . (!permissionhandler::hasPerm("DELETE_VOTING") ?
-				(
-				we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-				) :
-				('
+					(
+					we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+					) :
+					('
 					if (' . $this->topFrame . '.editor.edbody.loaded) {
 						if (confirm("' . g_l('modules_voting', '[delete_alert]') . '")) {
 							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
@@ -210,13 +198,12 @@ function we_cmd() {
 			}
 			eval("top.opener.top.we_cmd(" + args + ")");
 	}
-}';
-
-		return we_html_element::jsScript(JS_DIR . "windows.js") . we_html_element::jsElement($js);
+}');
 	}
 
 	function getJSProperty(){
-		return we_html_element::jsScript(JS_DIR . "windows.js") .
+		return
+			parent::getJSProperty() .
 			we_html_element::jsElement('
 var loaded=0;
 
