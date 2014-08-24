@@ -42,15 +42,15 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 
 	function close(){
 		//make sure every access will be an error after close
-		//unset($_SESSION);
+		//unset($_SESSION); //navigate tree will not load in phpmyadmin - they use bad code for that...
 		return true;
 	}
 
 	function read($sessID){
 		$sessID = $this->DB->escape(str_pad(self::getSessionID($sessID), 40, '0'));
 
-		while(!(($data = f('SELECT session_data FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\' AND touch+INTERVAL ' . SYSTEM_WE_SESSION_TIME . ' second>NOW()', '', $this->DB)) &&
-		$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="' . $this->id . '",lockTime=NOW() WHERE session_id=x\'' . $sessID . '\' AND (lockid="" OR lockid="' . $this->id . '" OR lockTime+INTERVAL ' . $this->execTime . ' second<NOW())') &&
+		while(!(($data = f('SELECT session_data FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" AND touch+INTERVAL ' . SYSTEM_WE_SESSION_TIME . ' second>NOW()', '', $this->DB)) &&
+		$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="' . $this->id . '",lockTime=NOW() WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" AND (lockid="" OR lockid="' . $this->id . '" OR lockTime+INTERVAL ' . $this->execTime . ' second<NOW())') &&
 		$this->DB->affected_rows()
 		) && $data){
 			usleep(100000);
@@ -77,9 +77,9 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		$sessID = self::getSessionID($sessID);
 
 		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				'sessionName' => $this->sessionName,
 				'session_id' => sql_function('x\'' . $sessID . '\''),
 				'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
-				'sessionName' => $this->sessionName,
 				'lockid' => $lock ? $this->id : '',
 				'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
 				/* 'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
@@ -89,8 +89,10 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	}
 
 	function destroy($sessID){
+		unset($_SESSION);
+		t_e('destroy',$sessID,$this->sessionName);
 		$sessID = $this->DB->escape(str_pad(self::getSessionID($sessID), 40, '0'));
-		$this->DB->query('DELETE FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $this->DB->escape($sessID) . '\'');
+		$this->DB->query('DELETE FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $this->DB->escape($sessID) . '\' AND sessionName="' . $this->sessionName . '"');
 		return true;
 	}
 

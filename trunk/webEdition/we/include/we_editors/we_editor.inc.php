@@ -351,7 +351,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 
 	we_base_file::save($fullName, $contents);
 
-	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?file=' . $tempName);
+	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(WEBEDITION_DIR, '', $tempName));
 } else {
 	$we_JavaScript = '';
 	switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
