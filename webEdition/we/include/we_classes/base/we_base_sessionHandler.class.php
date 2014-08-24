@@ -90,7 +90,6 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 
 	function destroy($sessID){
 		unset($_SESSION);
-		t_e('destroy',$sessID,$this->sessionName);
 		$sessID = $this->DB->escape(str_pad(self::getSessionID($sessID), 40, '0'));
 		$this->DB->query('DELETE FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $this->DB->escape($sessID) . '\' AND sessionName="' . $this->sessionName . '"');
 		return true;
