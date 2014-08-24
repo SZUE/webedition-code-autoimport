@@ -72,23 +72,6 @@ class we_glossary_view extends we_modules_view{
 		$this->GroupPattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
 	}
 
-	//----------- Utility functions ------------------
-
-	/**
-	 * return the html code for a hidden field
-	 *
-	 * @param string $name
-	 * @param string $value
-	 * @return string
-	 */
-	function htmlHidden($name, $value = ""){
-		$hidden = array(
-			'name' => trim($name),
-			'value' => oldHtmlspecialchars($value),
-		);
-		return we_html_element::htmlHidden($hidden);
-	}
-
 	//-----------------Init -------------------------------
 
 	/**
@@ -107,17 +90,17 @@ class we_glossary_view extends we_modules_view{
 	//------------------------------------------------
 
 	function getCommonHiddens($cmds = array()){
-		return $this->htmlHidden("cmd", (isset($cmds["cmd"]) ? $cmds["cmd"] : "")) .
-			$this->htmlHidden("cmdid", (isset($cmds["cmdid"]) ? $cmds["cmdid"] : "")) .
-			$this->htmlHidden("pnt", (isset($cmds["pnt"]) ? $cmds["pnt"] : "")) .
-			$this->htmlHidden("tabnr", (isset($cmds["tabnr"]) ? $cmds["tabnr"] : "")) .
+		return
+			parent::getCommonHiddens($cmds) .
 			$this->htmlHidden("IsFolder", (isset($this->Glossary->IsFolder) ? $this->Glossary->IsFolder : '0'));
 	}
 
 	function getJSTop(){
 		$modData = we_base_moduleInfo::getModuleData(we_base_request::_(we_base_request::STRING, 'mod', ''));
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
-		$js = '
+		return
+			parent::getJSTop() .
+			we_html_element::jsElement('
 var get_focus = 1;
 var activ_tab = 1;
 var hot = 0;
@@ -196,10 +179,10 @@ function we_cmd() {
 				return;
 			}
 			' . (!permissionhandler::hasPerm("DELETE_GLOSSARY") ?
-				(
-				we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-				) :
-				('
+					(
+					we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
+					) :
+					('
 				if (' . $this->topFrame . '.editor.edbody.loaded) {
 					if (confirm("' . g_l('modules_glossary', "[delete_alert]") . '")) {
 						' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
@@ -264,102 +247,90 @@ function we_cmd() {
 			}
 			eval("top.opener.top.we_cmd(" + args + ")");
 	}
-}';
-
-		return we_html_element::jsScript(JS_DIR . "windows.js") . we_html_element::jsElement($js);
+}');
 	}
 
 	function getJSProperty(){
-		$out = we_html_element::jsScript(JS_DIR . "windows.js");
+		return parent::getJSProperty() .
+			we_html_element::jsElement('
+var loaded=0;
 
-		$js = '
-			var loaded=0;
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
 
-			function doUnload() {
-				if (!!jsWindow_count) {
-					for (i = 0; i < jsWindow_count; i++) {
-						eval("jsWindow" + i + "Object.close()");
-					}
-				}
+function we_cmd() {
+	var args = "";
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	switch (arguments[0]) {
+		case "switchPage":
+			document.we_form.cmd.value=arguments[0];
+			document.we_form.tabnr.value=arguments[1];
+			submitForm();
+			break;
+		default:
+			for (var i = 0; i < arguments.length; i++) {
+				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
 			}
-
-			function we_cmd() {
-				var args = "";
-				var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-				switch (arguments[0]) {
-					case "switchPage":
-						document.we_form.cmd.value=arguments[0];
-						document.we_form.tabnr.value=arguments[1];
-						submitForm();
-						break;
-					default:
-						for (var i = 0; i < arguments.length; i++) {
-							args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-						}
-						eval("top.content.we_cmd("+args+")");
-				}
-			}
-			' . $this->getJSSubmitFunction() . '
-
-		';
-
-		$out .= we_html_element::jsElement($js);
-
-		return $out;
+			eval("top.content.we_cmd("+args+")");
+	}
+}
+' . $this->getJSSubmitFunction());
 	}
 
 	function getJSTreeHeader(){
 		return '
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
 
-			function doUnload() {
-				if (!!jsWindow_count) {
-					for (i = 0; i < jsWindow_count; i++) {
-						eval("jsWindow" + i + "Object.close()");
-					}
-				}
+function we_cmd(){
+	var args = "";
+	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	switch (arguments[0]) {
+		default:
+			for (var i = 0; i < arguments.length; i++) {
+				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
 			}
-
-			function we_cmd(){
-				var args = "";
-				var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-				switch (arguments[0]) {
-					default:
-						for (var i = 0; i < arguments.length; i++) {
-							args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-						}
-						eval(\'top.content.we_cmd(\'+args+\')\');
-				}
-			}
-		' . $this->getJSSubmitFunction("cmd");
+			eval(\'top.content.we_cmd(\'+args+\')\');
+	}
+}
+' . $this->getJSSubmitFunction("cmd");
 	}
 
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
-			function submitForm() {
-				var f = self.document.we_form;
+function submitForm() {
+	var f = self.document.we_form;
 
-				if (arguments[0]) {
-					f.target = arguments[0];
-				} else {
-					f.target = "' . $def_target . '";
-				}
+	if (arguments[0]) {
+		f.target = arguments[0];
+	} else {
+		f.target = "' . $def_target . '";
+	}
 
-				if (arguments[1]) {
-					f.action = arguments[1];
-				} else {
-					f.action = "' . $this->frameset . '";
-				}
+	if (arguments[1]) {
+		f.action = arguments[1];
+	} else {
+		f.action = "' . $this->frameset . '";
+	}
 
-				if (arguments[2]) {
-					f.method = arguments[2];
-				} else {
-					f.method = "' . $def_method . '";
-				}
+	if (arguments[2]) {
+		f.method = arguments[2];
+	} else {
+		f.method = "' . $def_method . '";
+	}
 
-				f.submit();
-			}
-
-		';
+	f.submit();
+}';
 	}
 
 	public function processCommands(){
@@ -392,19 +363,16 @@ function we_cmd() {
 			case "glossary_edit_link":
 			case "glossary_edit_textreplacement":
 				if(!permissionhandler::hasPerm("EDIT_GLOSSARY")){
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR));
 					$_REQUEST['home'] = 1;
 					$_REQUEST['pnt'] = 'edbody';
 					break;
 				}
 				$this->Glossary = new we_glossary_glossary($cmdid);
 
-				echo we_html_element::jsElement('
-						' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
-						' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
-					');
+				echo we_html_element::jsElement(
+					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";' .
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 				break;
 
 			case 'populateWorkspaces':

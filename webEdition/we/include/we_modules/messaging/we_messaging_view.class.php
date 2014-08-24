@@ -24,7 +24,6 @@
  */
 /* the parent class of storagable webEdition classes */
 class we_messaging_view extends we_modules_view{
-
 	private $messaging = null;
 	private $transaction;
 	private $weTransaction;
@@ -38,20 +37,11 @@ class we_messaging_view extends we_modules_view{
 		$this->weTransaction = &$weTransaction;
 	}
 
-	//----------- Utility functions ------------------
-
-	function htmlHidden($name, $value = ""){
-		return we_html_element::htmlHidden(array("name" => trim($name), "value" => oldHtmlspecialchars($value)));
-	}
-
 	//-----------------Init -------------------------------
 
-	function setFramesetName($frameset){
-		$this->frameset = $frameset;
-	}
 
 	function setTopFrame($frame){
-		$this->topFrame = $frame;
+		parent::setTopFrame($frame);
 		$this->editorBodyFrame = $frame . '.editor.edbody';
 		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
 		$this->editorHeaderFrame = $frame . '.editor.edheader';
@@ -61,13 +51,10 @@ class we_messaging_view extends we_modules_view{
 
 
 	function getCommonHiddens($cmds = array()){
-		$out = $this->htmlHidden("cmd", (isset($cmds["cmd"]) ? $cmds["cmd"] : ""));
-		$out.=$this->htmlHidden("cmdid", (isset($cmds["cmdid"]) ? $cmds["cmdid"] : ""));
-		$out.=$this->htmlHidden("pnt", (isset($cmds["pnt"]) ? $cmds["pnt"] : ""));
-		$out.=$this->htmlHidden("tabnr", (isset($cmds["tabnr"]) ? $cmds["tabnr"] : ""));
-		$out.=$this->htmlHidden("vernr", (isset($cmds["vernr"]) ? $cmds["vernr"] : 0));
-		$out.=$this->htmlHidden("IsFolder", (isset($this->voting->IsFolder) ? $this->voting->IsFolder : 0));
-		return $out;
+		return
+			parent::getCommonHiddens($cmds) .
+			$this->htmlHidden("vernr", (isset($cmds["vernr"]) ? $cmds["vernr"] : 0)) .
+			$this->htmlHidden("IsFolder", (isset($this->voting->IsFolder) ? $this->voting->IsFolder : 0));
 	}
 
 	function getJSTop(){
@@ -367,7 +354,7 @@ top.content.menuDaten.add(new top.content.self.rootEntry(0,"root","root"));';
 			case 'edit_settings':
 				return we_html_element::jsScript(JS_DIR . 'windows.js') .
 					we_html_element::jsElement('
-					new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_settings.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING,'mode') . '", "messaging_settings",-1,-   1,280,200,true,false,true,false);
+					new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_settings.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING, 'mode') . '", "messaging_settings",-1,-   1,280,200,true,false,true,false);
 					');
 			case 'save_settings':
 				if($ui){
@@ -401,7 +388,7 @@ if (top.content.editor.edbody.msg_mfv.messaging_messages_overview) {
 	}
 
 	private function refresh_work($blank = false){
-		if(($eSel=we_base_request::_(we_base_request::STRING,"entrsel"))){
+		if(($eSel = we_base_request::_(we_base_request::STRING, "entrsel"))){
 			$this->messaging->set_ids_selected($eSel);
 		}
 

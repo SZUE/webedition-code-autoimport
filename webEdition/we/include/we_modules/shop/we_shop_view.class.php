@@ -28,11 +28,6 @@
 class we_shop_view extends we_modules_view{
 	private $CLFields = array(); //
 
-	public function __construct($frameset = '', $topframe = 'top.content'){
-		parent::__construct($frameset, $topframe);
-	}
-
-
 	function getJSTop_tmp(){//taken from old edit_shop_frameset.php
 		// grep the last element from the year-set, wich is the current year
 		$this->db->query('SELECT DATE_FORMAT(DateOrder,"%Y") AS DateOrd FROM ' . SHOP_TABLE . ' ORDER BY DateOrd');
@@ -153,7 +148,9 @@ function we_cmd(){
 	}
 
 	function getJSTop(){//TODO: is this shop-code or a copy paste from another module?
-		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+		return
+			parent::getJSTop() .
+			we_html_element::jsElement('
 var get_focus = 1;
 var activ_tab = 1;
 var hot= 0;
@@ -185,7 +182,8 @@ function we_cmd() {
 	}
 
 	function getJSProperty(){
-		return we_html_element::jsScript(JS_DIR . "windows.js") .
+		return
+			parent::getJSProperty() .
 			we_html_element::jsElement('
 var loaded=0;
 
@@ -1602,7 +1600,6 @@ function we_submit() {
 				break;
 			default:
 		}
-
 	}
 
 	function processVariables(){

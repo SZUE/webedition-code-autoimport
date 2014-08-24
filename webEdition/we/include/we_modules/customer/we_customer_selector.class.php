@@ -46,10 +46,7 @@ class we_customer_selector extends we_users_selector{
 
 	protected function setDefaultDirAndID($setLastDir){
 		if($setLastDir){
-			$this->dir = $_SESSION['weS']['we_fs_lastDir'][$this->table];
-			if($this->dir == ''){
-				$this->dir = '';
-			}
+			$this->dir = isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? $_SESSION['weS']['we_fs_lastDir'][$this->table] : '';
 			return;
 		}
 		if($this->id){
@@ -137,9 +134,9 @@ class we_customer_selector extends we_users_selector{
 		echo '<script type="text/javascript"><!--
 top.clearEntries();
 ' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.fsheader.' . (empty($this->dir) ? 'disable' : 'enable') . 'RootDirButs();';
+		$this->printCmdAddEntriesHTML() .
+		$this->printCMDWriteAndFillSelectorHTML() .
+		'top.fsheader.' . (empty($this->dir) ? 'disable' : 'enable') . 'RootDirButs();';
 
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			if($this->id == 0){
