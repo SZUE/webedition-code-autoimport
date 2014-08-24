@@ -22,8 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-/* the parent class of storagable webEdition classes */
-class we_workflow_view extends we_workflow_base{
+
+class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	// workflow array; format workflow[workflowID]=workflow_name
 	var $workflows = array();
 	//default workflow

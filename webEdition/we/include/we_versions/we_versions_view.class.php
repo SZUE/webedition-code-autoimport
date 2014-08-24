@@ -31,7 +31,7 @@ class we_versions_view{
 	/**
 	 *  Constructor for class 'weVersionsView'
 	 */
-	function __construct(){
+	public function __construct(){
 
 		$this->db = new DB_WE();
 		$this->version = new we_versions_version();
@@ -43,7 +43,7 @@ class we_versions_view{
 	 * @abstract create javascript-Code for versions-tab
 	 * @return string javascript-code
 	 */
-	function getJS(){
+	public function getJS(){
 
 		//add height of each input row to calculate the scrollContent-height
 		$h = 0;
@@ -636,7 +636,7 @@ function delRow(id) {
 	 * @abstract create html-Code for filter-selects
 	 * @return string html-Code
 	 */
-	function getBodyTop(){
+	public function getBodyTop(){
 
 		$out = '<table cellpadding="0" cellspacing="0" id="defSearch" border="0" width="550" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'none' : 'block') . ';">
 <tr>
@@ -753,7 +753,7 @@ function delRow(id) {
 	 * @abstract create html-Code for paging on top
 	 * @return string html-Code
 	 */
-	function getParameterTop($foundItems){
+	public function getParameterTop($foundItems){
 		$anzahl_all = array(
 			10 => 10, 25 => 25, 50 => 50, 100 => 100
 		);
@@ -805,7 +805,7 @@ function delRow(id) {
 	 * @abstract create html-Code for paging on bottom
 	 * @return string html-Code
 	 */
-	function getParameterBottom($foundItems){
+	public function getParameterBottom($foundItems){
 		return '<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
 <tr id="paging_bottom">
  <td>' . we_html_tools::getPixel(19, 12) . '</td>
@@ -820,7 +820,7 @@ function delRow(id) {
 	 * @abstract generates html for 'previous' / 'next'
 	 * @return string html
 	 */
-	function getNextPrev($we_search_anzahl){
+	private function getNextPrev($we_search_anzahl){
 
 		if(isset($GLOBALS['we_cmd_obj'])){
 			$anzahl = $_SESSION['weS']['versions']['anzahl'];
@@ -871,7 +871,7 @@ function delRow(id) {
 	 * @abstract generates content for versions found
 	 * @return array with content
 	 */
-	function getVersionsOfDoc(){
+	public function getVersionsOfDoc(){
 
 		$id = we_base_request::_(we_base_request::INT, 'id', $GLOBALS['we_doc']->ID);
 		$table = we_base_request::_(we_base_request::TABLE, 'table', $GLOBALS['we_doc']->Table);
@@ -950,7 +950,7 @@ function delRow(id) {
 	 * @abstract generates headline-titles for columns
 	 * @return array with headlines
 	 */
-	function makeHeadLines(){
+	public function makeHeadLines(){
 		return array(
 			array("dat" => '<a href="javascript:setOrder(\'version\');">' . g_l('versions', '[version]') . '</a> <span id="version" >' . $this->getSortImage('version') . '</span>'),
 			array("dat" => '<a href="javascript:setOrder(\'modifierID\');">' . g_l('versions', '[user]') . '</a> <span id="modifierID" >' . $this->getSortImage('modifierID') . '</span>'),
@@ -970,19 +970,19 @@ function delRow(id) {
 	 * @abstract sort array in case of 'modifierID'
 	 * @return array
 	 */
-	function sortResultListUserASC($a, $b){
+/*	private function sortResultListUserASC($a, $b){
 		return strnatcasecmp($a['modifierID'], $b['modifierID']);
 	}
 
-	function sortResultListUserDESC($a, $b){
+	private function sortResultListUserDESC($a, $b){
 		return strnatcasecmp($b['modifierID'], $a['modifierID']);
-	}
+	}*/
 
 	/**
 	 * @abstract generate html list for modifications
 	 * @return string
 	 */
-	function getTextForMod($modString, $status){
+	private function getTextForMod($modString, $status){
 		$statusTxt = ($status == "published" ? "<div style='color:#ff0000;'>" . g_l('versions', '[' . $status . ']') . "</div>" : '');
 
 		if($modString == ""){
@@ -1012,7 +1012,7 @@ function delRow(id) {
 	 * @abstract generate html for SortImage
 	 * @return string
 	 */
-	function getSortImage($for){
+	private function getSortImage($for){
 		$order = we_base_request::_(we_base_request::RAW, 'order', $this->searchclass->order);
 
 		if(strpos($order, $for) === 0){
@@ -1029,7 +1029,7 @@ function delRow(id) {
 	 * @abstract generate html for version list
 	 * @return string
 	 */
-	function tblList($content, $headline){
+	public function tblList($content, $headline){
 		$anz = count($headline) - 1;
 		return '
 <table border="0" style="background-color:#fff;" width="100%" cellpadding="5" cellspacing="0">
@@ -1066,7 +1066,6 @@ function delRow(id) {
 	}
 
 	function tblListRow($content){
-
 		$anz = count($content) - 1;
 		return '<td valign="top" style="width:15px;">' . we_html_tools::getPixel(1, 1) . '</td>
 <td valign="top" style="width:110px;height:30px;" class="middlefont">' . ((isset($content[0]["dat"]) && $content[0]["dat"]) ? $content[0]["dat"] : "&nbsp;") . '</td>
@@ -1083,7 +1082,7 @@ function delRow(id) {
 <td valign="top" style="width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont">' . we_html_tools::getPixel(1, 1) . '</td>';
 	}
 
-	function getHTMLforVersions($content){
+	public function getHTMLforVersions($content){
 		$uniqname = md5(uniqid(__FUNCTION__, true));
 
 		$out = '<table width="100%" border="0" cellspacing="0" cellpadding="0">

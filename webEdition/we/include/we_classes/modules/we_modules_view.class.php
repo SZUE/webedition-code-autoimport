@@ -25,7 +25,7 @@
 /* the parent class of storagable webEdition classes */
 
 
-class we_modules_view{//FIXME is this really a base class, or is it an interface???
+class we_modules_view implements we_modules_viewIF{//FIXME is this really a base class, or is it an interface???
 	var $db;
 	var $frameset;
 	var $topFrame;

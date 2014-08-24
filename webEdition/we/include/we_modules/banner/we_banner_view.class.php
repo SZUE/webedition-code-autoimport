@@ -24,7 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class we_banner_view extends we_banner_base{
+class we_banner_view extends we_banner_base implements we_modules_viewIF{
 	// settings array; format settings[setting_name]=settings_value
 	var $settings = array();
 	//default banner

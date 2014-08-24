@@ -25,43 +25,13 @@
 /* the parent class of storagable webEdition classes */
 
 
-class we_shop_view{
-	var $db;
-	var $frameset;
-	var $topFrame;
+class we_shop_view extends we_modules_view{
 	private $CLFields = array(); //
 
 	public function __construct($frameset = '', $topframe = 'top.content'){
-		$this->db = new DB_WE();
-		$this->setFramesetName($frameset);
-		$this->setTopFrame($topframe);
+		parent::__construct($frameset, $topframe);
 	}
 
-	//----------- Utility functions ------------------
-
-	function htmlHidden($name, $value = ''){
-		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
-	}
-
-	//-----------------Init -------------------------------
-
-	function setFramesetName($frameset){
-		$this->frameset = $frameset;
-	}
-
-	function setTopFrame($frame){
-		$this->topFrame = $frame;
-	}
-
-	//------------------------------------------------
-
-
-	function getCommonHiddens($cmds = array()){
-		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
-			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
-			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
-			$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : ''));
-	}
 
 	function getJSTop_tmp(){//taken from old edit_shop_frameset.php
 		// grep the last element from the year-set, wich is the current year

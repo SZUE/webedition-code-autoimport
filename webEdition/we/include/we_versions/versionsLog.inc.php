@@ -31,7 +31,7 @@ echo we_html_tools::getHtmlTop(g_l('versions', '[versions_log]')) .
  we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');
 
-print $versionsLogView->getJS();
+echo $versionsLogView->getJS();
 
 $closeButton = we_html_button::create_button("close", "javascript:window.close();");
 ?>

@@ -28,180 +28,171 @@ class we_versions_logView{
 	public $versionPerPage = 10;
 	private $Model;
 
-	function __construct(){
+	public function __construct(){
 		$this->Model = new we_versions_log();
 	}
 
-	function getJS(){
+	public function getJS(){
+		return we_html_element::jsElement('
+var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
 
-		$js = we_html_element::jsElement('
-			var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
+var currentId = 0;
 
-			var currentId = 0;
+var ajaxCallbackDetails = {
+	success: function(o) {
+	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+		document.getElementById("dataContent_"+currentId+"").innerHTML = o.responseText;
+	}
+},
+	failure: function(o) {
+	}
+}
 
-			var ajaxCallbackDetails = {
-				success: function(o) {
-				if(typeof(o.responseText) != "undefined" && o.responseText != "") {
-					document.getElementById("dataContent_"+currentId+"").innerHTML = o.responseText;
-				}
-			},
-				failure: function(o) {
-				}
-			}
-
-			function openDetails(id) {
-				currentId = id;
-				var dataContent = document.getElementById("dataContent_"+id+"");
-				dataContent.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
-				var otherdataContents = document.getElementsByName("dataContent");
-				for(var i=0;i<otherdataContents.length;i++) {
-					if(otherdataContents[i].id != "dataContent_"+id+""){
-						otherdataContents[i].innerHTML = "";
-					}
-				}
-
-
-				YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackDetails, "protocol=json&cns=logging/versions&cmd=GetLogVersionDetails&id="+id+"");
-
-			}
-
-			function showAll(id) {
-				var Elements = document.getElementsByName(id+"_list");
-				for(var i=0;i<Elements.length;i++) {
-					Elements[i].style.display = "";
-				}
-
-				var newstartNumber = 1;
-				document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
-
-				var newshowNumber = Elements.length;
-				document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
-
-				document.getElementById("showAll_"+id).innerHTML = "' . g_l('logging', '[defaultView]') . '";
-				document.getElementById("showAll_"+id).onclick = function(){
-					showDefault(id);
-				};
-				document.getElementById("back_"+id).style.display = "none";
-				document.getElementById("next_"+id).style.display = "none";
-
-			}
-
-			function showDefault(id) {
-				var Elements = document.getElementsByName(id+"_list");
-				for(var i=0;i<Elements.length;i++) {
-					if(i>=' . $this->versionPerPage . ') {
-						Elements[i].style.display = "none";
-					}
-					else {
-						Elements[i].style.display = "";
-					}
-				}
-
-				var newstartNumber = 1;
-				document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
-
-				var newshowNumber = ' . $this->versionPerPage . ';
-				document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
-
-				document.getElementById("back_"+id).style.display = "none";
-				document.getElementById("next_"+id).style.display = "inline";
-
-				document.getElementById("showAll_"+id).innerHTML = "' . g_l('logging', '[all]') . '";
-				document.getElementById("showAll_"+id).onclick = function(){
-					showAll(id);
-				};
-
-				document.getElementsByName("start_"+id)[0].value = 0;
-
-			}
-
-			function next(id) {
-				var start = document.getElementsByName("start_"+id)[0].value;
-				var newStart = parseInt(start) + ' . $this->versionPerPage . ';
-
-				var Elements = document.getElementsByName(id+"_list");
-				for(var i=0;i<Elements.length;i++) {
-					if(i>=newStart && i<(newStart + ' . $this->versionPerPage . ')) {
-						Elements[i].style.display = "";
-					}
-					else {
-						Elements[i].style.display = "none";
-					}
-
-				}
-
-				if(newStart>(Elements.length-' . $this->versionPerPage . ')) {
-					document.getElementById("next_"+id).style.display = "none";
-				}
-				else {
-					document.getElementById("next_"+id).style.display = "inline";
-				}
-				document.getElementById("back_"+id).style.display = "inline";
-
-				var newstartNumber = newStart+1;
-				document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
-
-				var newshowNumber = Elements.length;
-				if(Elements.length>(newStart+' . $this->versionPerPage . ')) {
-					newshowNumber = (newStart+' . $this->versionPerPage . ');
-				}
-
-				document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
-
-				document.getElementsByName("start_"+id)[0].value = parseInt(newStart);
-
-
-			}
-
-			function back(id) {
-				var start = document.getElementsByName("start_"+id)[0].value;
-				var newStart = parseInt(start) - ' . $this->versionPerPage . ';
-
-				var Elements = document.getElementsByName(id+"_list");
-				for(var i=0;i<Elements.length;i++) {
-					if(i>=newStart && i<(newStart + ' . $this->versionPerPage . ')) {
-						Elements[i].style.display = "";
-					}
-					else {
-						Elements[i].style.display = "none";
-					}
-
-				}
-
-
-				if(newStart==0) {
-					document.getElementById("back_"+id).style.display = "none";
-				}
-				else {
-					document.getElementById("back_"+id).style.display = "inline";
-				}
-				document.getElementById("next_"+id).style.display = "inline";
-
-				var newstartNumber = newStart+1;
-				document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
-
-
-				newshowNumber = (newstartNumber+' . $this->versionPerPage . ');
-				document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
-
-				document.getElementsByName("start_"+id)[0].value = parseInt(newStart);
-
-			}
-
-
-		');
-
-		return $js;
+function openDetails(id) {
+	currentId = id;
+	var dataContent = document.getElementById("dataContent_"+id+"");
+	dataContent.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
+	var otherdataContents = document.getElementsByName("dataContent");
+	for(var i=0;i<otherdataContents.length;i++) {
+		if(otherdataContents[i].id != "dataContent_"+id+""){
+			otherdataContents[i].innerHTML = "";
+		}
 	}
 
-	function getContent(){
 
-		$content = $this->Model->load();
+	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackDetails, "protocol=json&cns=logging/versions&cmd=GetLogVersionDetails&id="+id+"");
 
-		return $content;
+}
+
+function showAll(id) {
+	var Elements = document.getElementsByName(id+"_list");
+	for(var i=0;i<Elements.length;i++) {
+		Elements[i].style.display = "";
 	}
 
-	function printContent(){
+	var newstartNumber = 1;
+	document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
+
+	var newshowNumber = Elements.length;
+	document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
+
+	document.getElementById("showAll_"+id).innerHTML = "' . g_l('logging', '[defaultView]') . '";
+	document.getElementById("showAll_"+id).onclick = function(){
+		showDefault(id);
+	};
+	document.getElementById("back_"+id).style.display = "none";
+	document.getElementById("next_"+id).style.display = "none";
+
+}
+
+function showDefault(id) {
+	var Elements = document.getElementsByName(id+"_list");
+	for(var i=0;i<Elements.length;i++) {
+		if(i>=' . $this->versionPerPage . ') {
+			Elements[i].style.display = "none";
+		}
+		else {
+			Elements[i].style.display = "";
+		}
+	}
+
+	var newstartNumber = 1;
+	document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
+
+	var newshowNumber = ' . $this->versionPerPage . ';
+	document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
+
+	document.getElementById("back_"+id).style.display = "none";
+	document.getElementById("next_"+id).style.display = "inline";
+
+	document.getElementById("showAll_"+id).innerHTML = "' . g_l('logging', '[all]') . '";
+	document.getElementById("showAll_"+id).onclick = function(){
+		showAll(id);
+	};
+
+	document.getElementsByName("start_"+id)[0].value = 0;
+
+}
+
+function next(id) {
+	var start = document.getElementsByName("start_"+id)[0].value;
+	var newStart = parseInt(start) + ' . $this->versionPerPage . ';
+
+	var Elements = document.getElementsByName(id+"_list");
+	for(var i=0;i<Elements.length;i++) {
+		if(i>=newStart && i<(newStart + ' . $this->versionPerPage . ')) {
+			Elements[i].style.display = "";
+		}
+		else {
+			Elements[i].style.display = "none";
+		}
+
+	}
+
+	if(newStart>(Elements.length-' . $this->versionPerPage . ')) {
+		document.getElementById("next_"+id).style.display = "none";
+	}
+	else {
+		document.getElementById("next_"+id).style.display = "inline";
+	}
+	document.getElementById("back_"+id).style.display = "inline";
+
+	var newstartNumber = newStart+1;
+	document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
+
+	var newshowNumber = Elements.length;
+	if(Elements.length>(newStart+' . $this->versionPerPage . ')) {
+		newshowNumber = (newStart+' . $this->versionPerPage . ');
+	}
+
+	document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
+
+	document.getElementsByName("start_"+id)[0].value = parseInt(newStart);
+
+
+}
+
+function back(id) {
+	var start = document.getElementsByName("start_"+id)[0].value;
+	var newStart = parseInt(start) - ' . $this->versionPerPage . ';
+
+	var Elements = document.getElementsByName(id+"_list");
+	for(var i=0;i<Elements.length;i++) {
+		if(i>=newStart && i<(newStart + ' . $this->versionPerPage . ')) {
+			Elements[i].style.display = "";
+		}
+		else {
+			Elements[i].style.display = "none";
+		}
+
+	}
+
+
+	if(newStart==0) {
+		document.getElementById("back_"+id).style.display = "none";
+	}
+	else {
+		document.getElementById("back_"+id).style.display = "inline";
+	}
+	document.getElementById("next_"+id).style.display = "inline";
+
+	var newstartNumber = newStart+1;
+	document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
+
+
+	newshowNumber = (newstartNumber+' . $this->versionPerPage . ');
+	document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
+
+	document.getElementsByName("start_"+id)[0].value = parseInt(newStart);
+
+}');
+	}
+
+	private function getContent(){
+		return $this->Model->load();
+	}
+
+	public function printContent(){
 		$content = $this->getContent();
 		$out = '';
 		$anz = count($content);
@@ -248,7 +239,7 @@ class we_versions_logView{
 		return $out;
 	}
 
-	function showLog($action, $logID){
+	private function showLog($action, $logID){
 		switch($action){
 			case we_versions_log::VERSIONS_DELETE:
 				$title = g_l('logging', '[versions]') . " " . g_l('logging', '[deleted]');
@@ -264,7 +255,7 @@ class we_versions_logView{
 		return $title . '.';
 	}
 
-	function handleData($logId, $start, $anzahl){
+	public static function handleData($logId, $start, $anzahl){
 		$hash = getHash('SELECT data,action FROM `' . VERSIONSLOG_TABLE . '` WHERE ID=' . intval($logId), new DB_WE());
 		$action = $hash['action'];
 		$data = unserialize($hash['data']);
