@@ -265,7 +265,8 @@ var i = 0;';
 				if($supportDebugging){
 					$indb = false;
 				}
-				$show = ($entry != '.') && ($entry != '..') && (($_REQUEST["file"] == g_l('contentTypes', '[all_Types]')) || ($type == g_l('contentTypes', '[folder]')) || ($type == $_REQUEST["file"] || $_REQUEST["file"] == ''));
+				$file = we_base_request::_(we_base_request::FILE, 'file');
+				$show = ($entry != '.') && ($entry != '..') && (($file == g_l('contentTypes', '[all_Types]')) || ($type == g_l('contentTypes', '[folder]')) || ($type == $file || $file == ''));
 				$bgcol = (we_base_request::_(we_base_request::FILE, 'curID') == ($dir . '/' . $entry) && !( $nf == 'new_folder')) ? '#DFE9F5' : 'white';
 				$onclick = $ondblclick = '';
 				$_cursor = 'cursor:default;';
