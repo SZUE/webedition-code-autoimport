@@ -23,7 +23,7 @@
  */
 we_html_tools::protect();
 echo we_html_element::jsElement('top.opener.top.toggleBusy(0);');
-
+$cmd2 = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2);
 if($cmd == 'ok'){
 	$wf_text = we_base_request::_(we_base_request::STRING, 'wf_text');
 	$wf_select = we_base_request::_(we_base_request::INT, 'wf_select');
@@ -36,7 +36,7 @@ if($cmd == 'ok'){
 			$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();';
 		}
 
-		if($_REQUEST['we_cmd'][2]){ // make same new
+		if($cmd2){ // make same new
 			$we_doc->makeSameNew();
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 			$script .= 'opener.top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
@@ -52,9 +52,9 @@ if($cmd == 'ok'){
 			$script = '';
 		}
 	}
-	print we_html_element::jsElement($script . we_message_reporting::getShowMessageCall($msg, $msgType) . 'self.close();');
+	echo we_html_element::jsElement($script . we_message_reporting::getShowMessageCall($msg, $msgType) . 'self.close();');
 }
-print STYLESHEET;
+echo STYLESHEET;
 ?>
 </head>
 
@@ -108,20 +108,18 @@ print STYLESHEET;
 </tr>
 </table>';
 
-					print we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[in_workflow]'), we_html_button::position_yes_no_cancel($okbut, '', $cancelbut)) . '
+					echo we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[in_workflow]'), we_html_button::position_yes_no_cancel($okbut, '', $cancelbut)) . '
 <input type="hidden" name="cmd" value="ok" />
-<input type="hidden" name="we_cmd[0]" value="' . $_REQUEST['we_cmd'][0] . '" />
+<input type="hidden" name="we_cmd[0]" value="' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '" />
 <input type="hidden" name="we_cmd[1]" value="' . $we_transaction . '" />
-<input type="hidden" name="we_cmd[2]" value="' . $_REQUEST['we_cmd'][2] . '" />';
+<input type="hidden" name="we_cmd[2]" value="' . $cmd2 . '" />';
 					?>
 				</form>
-			<?php } else { ?>
-				<script type="text/javascript"><!--
-		<?php print we_message_reporting::getShowMessageCall((($we_doc->Table == FILE_TABLE) ? g_l('modules_workflow', '[no_wf_defined]') : g_l('modules_workflow', '[no_wf_defined_object]')), we_message_reporting::WE_MESSAGE_ERROR); ?>
-		top.close();
-		//-->
-				</script>
 				<?php
+			} else {
+				echo we_html_element::jsElement(
+					we_message_reporting::getShowMessageCall(g_l('modules_workflow', ($we_doc->Table == FILE_TABLE ? '[no_wf_defined]' : '[no_wf_defined_object]')), we_message_reporting::WE_MESSAGE_ERROR) .
+					'top.close();');
 			}
 		}
 		?>

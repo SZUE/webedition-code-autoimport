@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,10 +27,10 @@ we_html_tools::protect();
 //	Header for a none webEdition document opened with webEdition
 
 $_webEditionSiteUrl = getServerUrl() . SITE_DIR;
-
-$_errormsg = (strpos($_REQUEST["url"], $_webEditionSiteUrl) === 0 ?
+$url = we_base_request::_(we_base_request::URL, 'url');
+$_errormsg = (strpos($url, $_webEditionSiteUrl) === 0 ?
 		g_l('SEEM', "[ext_doc_tmp]") :
-		sprintf(g_l('SEEM', "[ext_doc]"), $_REQUEST["url"]));
+		sprintf(g_l('SEEM', "[ext_doc]"), $url));
 
 
 $_table = new we_html_table(array("cellpadding" => 0,
@@ -45,15 +44,12 @@ $_table->setColContent(1, 2, we_html_tools::getPixel(9, 1));
 $_table->setCol(1, 3, array("class" => "middlefontred"), $_errormsg);
 
 
-$_body = $_table->getHtml();
-$_head = STYLESHEET;
-
-
-$_body = we_html_element::htmlBody(array("bgcolor" => "white",
+echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
+	STYLESHEET .
+	we_html_element::htmlBody(array("bgcolor" => "white",
 		"background" => IMAGE_DIR . "backgrounds/header_with_black_lines.gif",
 		"marginwidth" => 0,
 		"marginheight" => 0,
 		"leftmargin" => 0,
-		"topmargin" => 0), $_body);
-
-print we_html_element::htmlDocType() . we_html_element::htmlHtml($_head . $_body);
+		"topmargin" => 0), $_table->getHtml())
+);

@@ -609,9 +609,8 @@ function we_cmd(){
 				}
 				$user_object = new we_users_user();
 				$user_object->setState($_SESSION["user_session_data"]);
-				if(isset($_REQUEST['oldtab']) && isset($_REQUEST['old_perm_branch'])){
-
-					$user_object->preserveState($_REQUEST['oldtab'], $_REQUEST['old_perm_branch']);
+				if(($oldtab = we_base_request::_(we_base_request::INT, 'oldtab')) !== false && ($opb = we_base_request::_(we_base_request::STRING, 'old_perm_branch')) !== false){//FIXME: is latter ever used?
+					$user_object->preserveState($oldtab, $opb);
 					$_SESSION["user_session_data"] = $user_object->getState();
 				}
 
@@ -628,24 +627,24 @@ function we_cmd(){
 						break;
 					}
 					if(!permissionhandler::hasPerm("NEW_USER") && ($user_object->Type == we_users_user::TYPE_USER || $user_object->Type == we_users_user::TYPE_ALIAS) && $user_object->ID == 0){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 					if(!permissionhandler::hasPerm("SAVE_GROUP") && $user_object->Type == we_users_user::TYPE_USER_GROUP && $user_object->ID != 0){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 					if(!permissionhandler::hasPerm("NEW_GROUP") && $user_object->Type == we_users_user::TYPE_USER_GROUP && $user_object->ID == 0){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
-					if(isset($_REQUEST['oldtab'])){
-						$user_object->preserveState(we_base_request::_(we_base_request::INT, 'oldtab'), $_REQUEST['old_perm_branch']);
+					if(($ot = we_base_request::_(we_base_request::INT, 'oldtab'))){
+						$user_object->preserveState($ot, we_base_request::_(we_base_request::STRING, 'old_perm_branch'));
 					}
 
 					$id = $user_object->ID;
 					if($user_object->username == '' && $user_object->Type != we_users_user::TYPE_ALIAS){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[username_empty]"), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[username_empty]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
@@ -670,26 +669,27 @@ function we_cmd(){
 					$_SESSION['user_session_data'] = $user_object->getState();
 
 					//	Save seem_startfile to DB when needed.
-					if(isset($_REQUEST['seem_start_file'])){
-						if(($_REQUEST['seem_start_file'] && $_REQUEST['seem_start_file'] != 0) || (isset($_SESSION['save_user_seem_start_file'][$_REQUEST["uid"]]))){
+					if(($sid = we_base_request::_(we_base_request::INT, 'seem_start_file')) !== false){
+						$uid = we_base_request::_(we_base_request::INT, 'uid');
+						if($sid || (isset($_SESSION['save_user_seem_start_file'][$uid]))){
 							$tmp = new DB_WE();
 
-							if(isset($_REQUEST['seem_start_file'])){
+							if($sid !== false){
 								//	save seem_start_file from REQUEST
-								$seem_start_file = $_REQUEST["seem_start_file"];
+								$seem_start_file = $sid;
 								if($user_object->ID == $_SESSION['user']['ID']){ // change preferences if user edits his own startfile
 									$_SESSION['prefs']['seem_start_file'] = $seem_start_file;
 								}
 							} else {
 								//	Speichere seem_start_file aus SESSION
-								$seem_start_file = $_SESSION['save_user_seem_start_file'][$_REQUEST["uid"]];
+								$seem_start_file = $_SESSION['save_user_seem_start_file'][$uid];
 							}
 
-							$tmp->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . we_base_request::_(we_base_request::INT, 'uid', 0) . ',`key`="seem_start_file",`value`="' . $tmp->escape($seem_start_file) . '"');
+							$tmp->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . $uid . ',`key`="seem_start_file",`value`="' . $tmp->escape($seem_start_file) . '"');
 							unset($tmp);
 							unset($seem_start_file);
-							if(isset($_SESSION['save_user_seem_start_file'][$_REQUEST["uid"]])){
-								unset($_SESSION['save_user_seem_start_file'][$_REQUEST["uid"]]);
+							if(isset($_SESSION['save_user_seem_start_file'][$uid])){
+								unset($_SESSION['save_user_seem_start_file'][$uid]);
 							}
 						}
 					}
@@ -804,9 +804,9 @@ function we_cmd(){
 				break;
 
 			case 'check_user_display':
-				if($_REQUEST['uid']){
+				if(($uid = we_base_request::_(we_base_request::INT, 'uid'))){
 					$mpid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), '', $this->db);
-					$pid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'uid', 0), '', $this->db);
+					$pid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $uid, '', $this->db);
 
 					$search = true;
 					$found = false;
@@ -826,10 +826,10 @@ function we_cmd(){
 						$pid = intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid), 'ParentID', $this->db));
 					}
 
-					print we_html_element::jsElement(
-							($found || permissionhandler::hasPerm('ADMINISTRATOR') ?
-								'top.content.we_cmd(\'display_user\',' . $_REQUEST["uid"] . ')' :
-								we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						($found || permissionhandler::hasPerm('ADMINISTRATOR') ?
+							'top.content.we_cmd(\'display_user\',' . $uid . ')' :
+							we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR)
 					));
 				}
 				break;
@@ -837,11 +837,8 @@ function we_cmd(){
 	}
 
 	function processVariables(){
-
-		if(isset($_REQUEST['page'])){
-			if(isset($_REQUEST['page'])){
-				$this->page = $_REQUEST['page'];
-			}
+		if(($page = we_base_request::_(we_base_request::INT, 'page')) !== false){
+			$this->page = $page;
 		}
 	}
 

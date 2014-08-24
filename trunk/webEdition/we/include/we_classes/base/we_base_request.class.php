@@ -269,7 +269,7 @@ class we_base_request{
 					break;
 				case self::RAW:
 				case self::STRING:
-					if($var){
+					if(WE_VERSION_SUPP && $var){//show this only during development
 						if($var == ('' . intval($oldVar))){
 							t_e('notice', 'variable could be int', $args, $var);
 						} elseif($var == ('' . floatval($oldVar))){

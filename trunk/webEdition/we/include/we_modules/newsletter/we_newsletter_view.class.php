@@ -48,7 +48,7 @@ class we_newsletter_view extends we_modules_view{
 	protected $show_export_box = -1;
 
 	public function __construct(){
-		parent::__construct(WE_NEWSLETTER_MODULE_DIR . 'edit_newsletter_frameset.php','');
+		parent::__construct(WE_NEWSLETTER_MODULE_DIR . 'edit_newsletter_frameset.php', '');
 
 		$this->newsletter = new we_newsletter_newsletter();
 
@@ -1840,8 +1840,8 @@ self.close();');
 						foreach($fields_names as $field){
 							$varname = 'filter_' . $field . '_' . $gkey . '_' . $i;
 
-							if(isset($_REQUEST[$varname])){
-								$new[$field] = $_REQUEST[$varname];
+							if(($tmp = we_base_request::_(we_base_request::RAW, $varname)) !== false){
+								$new[$field] = $tmp;
 							}
 						}
 

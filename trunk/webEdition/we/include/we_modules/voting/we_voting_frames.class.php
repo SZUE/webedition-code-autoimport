@@ -70,7 +70,7 @@ class we_voting_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLEditorHeader(){
-		if(isset($_REQUEST["home"])){
+		if(we_base_request::_(we_base_request::BOOL,"home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
 

@@ -342,7 +342,7 @@ class we_import_site{
 	 * returns HTML of Table with fields and start and end mark
 	 *
 	 * @param	array	$fields array with fields
-	 * @param	array	$values array with values like it comes from $_REQUEST
+	 * @param	array	$values array with values like it comes from REQUEST
 	 *
 	 * @return	string
 	 */

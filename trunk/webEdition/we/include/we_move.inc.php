@@ -24,7 +24,7 @@
 require_once (WE_INCLUDES_PATH . 'we_move_fn.inc.php');
 
 we_html_tools::protect();
-$table = $_REQUEST['we_cmd'][2];
+$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2);
 
 $script = '';
 
@@ -36,17 +36,18 @@ if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("MOVE_TEMPLATE")) |
 }
 
 $yuiSuggest = & weSuggest::getInstance();
-
-if($_REQUEST['we_cmd'][0] == 'do_move' || $_REQUEST['we_cmd'][0] == 'move_single_document'){
+$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
+if($cmd0 == 'do_move' || $cmd0 == 'move_single_document'){
 	$db = new DB_WE();
-	if(isset($_REQUEST['sel']) && $_REQUEST['sel'] && isset($_REQUEST['we_target'])){
+	if(($targetDirectroy = we_base_request::_(we_base_request::INT, 'we_target')) === false){
+		$script .= 'top.toggleBusy(0);' .
+			we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
+	} elseif(($selectedItems = we_base_request::_(we_base_request::INTLISTA, 'sel'))){
 
-		$targetDirectroy = $_REQUEST["we_target"];
 		// list of all item names which should be moved
 		$items2move = array();
 
 		// list of the selected items
-		$selectedItems = explode(',', $_REQUEST['sel']);
 		$retVal = 1;
 		foreach($selectedItems as $selectedItem){
 
@@ -114,14 +115,11 @@ if($_REQUEST['we_cmd'][0] == 'do_move' || $_REQUEST['we_cmd'][0] == 'move_single
 			$script .= 'top.toggleBusy(0);' .
 				we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_ERROR);
 		}
-	} elseif(!isset($_REQUEST["we_target"]) || !$_REQUEST["we_target"]){
-		$script .= 'top.toggleBusy(0);' .
-			we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} else {
 		$script .= 'top.toggleBusy(0);' .
 			we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
-	print we_html_element::jsScript(JS_DIR . 'windows.js') .
+	echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 		we_html_element::jsElement($script);
 	//exit;
 }
@@ -160,7 +158,6 @@ echo $table;
 	}
 
 	function press_ok_move() {
-
 		var sel = "";
 		for (var i = 1; i <= top.treeData.len; i++) {
 			if (top.treeData[i].checked == 1) {
@@ -207,9 +204,7 @@ print $table;
 				_open_move_editors.push(_usedEditors[frameId]);
 			}
 		}
-
 		if (_open_move_editors.length) {
-
 			_openDocs_Str = "";
 
 			for (i = 0; i < _open_move_editors.length; i++) {
@@ -271,7 +266,6 @@ print $table;
 		}
 
 		sel = sel.substring(0, sel.length - 1);
-
 		f.sel.value = sel;
 		f.target = target;
 		f.action = url;
@@ -283,14 +277,13 @@ print $table;
 		for (var i = 0; i < arguments.length; i++) {
 			args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
 		}
-
 		eval('parent.we_cmd(' + args + ')');
 	}
 //-->
 </script>
 <?php
-if($_REQUEST['we_cmd'][0] == "do_move"){
-	print "</head><body></body></html>";
+if($cmd0 == "do_move"){
+	echo "</head><body></body></html>";
 	exit();
 }
 
