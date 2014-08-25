@@ -213,7 +213,7 @@ class we_updater{
 			$_db = new DB_WE();
 			//correct folder properties
 			$_db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET IsClassFolder=IF(ParentID=0,1,0)');
-			
+
 			//all files should have a tableid
 			$_db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET TableID=(SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path=f.Path) WHERE IsClassFolder=1 AND TableID=0');
 			$_db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET TableID=(SELECT ID FROM ' . OBJECT_TABLE . ' WHERE f.Path LIKE CONCAT(Path,"/%") ) WHERE IsClassFolder=0 AND IsFolder=1 AND TableID=0');
@@ -258,22 +258,19 @@ class we_updater{
 				} else {
 					$GLOBALS['DB_WE']->addCol($_table, 'OF_Language', 'VARCHAR(5) DEFAULT NULL', ' AFTER OF_WebUserID ');
 				}
-				//add indices to all objects
+				//remove old indices from all objects
 				self::updateUnindexedCols($_table, we_object::QUERY_PREFIX . '%');
-				$key = 'KEY OF_WebUserID (OF_WebUserID)';
-				if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_WebUserID')){
-					$GLOBALS['DB_WE']->addKey($_table, $key);
+				if($GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_WebUserID')){
+					$GLOBALS['DB_WE']->delKey($_table, 'OF_WebUserID');
 				}
-				$key = 'KEY published (OF_ID,OF_Published,OF_IsSearchable)';
-				if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'published')){
-					$GLOBALS['DB_WE']->addKey($_table, $key);
+				if($GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'published')){
+					$GLOBALS['DB_WE']->addKey($_table, 'published');
 				}
-				$key = 'KEY OF_IsSearchable (OF_IsSearchable)';
-				if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_IsSearchable')){
-					$GLOBALS['DB_WE']->addKey($_table, $key);
+				if($GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_IsSearchable')){
+					$GLOBALS['DB_WE']->addKey($_table, 'OF_IsSearchable');
 				}
-				if($GLOBALS['DB_WE']->isColExist($_table, 'ID')){
 
+				if($GLOBALS['DB_WE']->isColExist($_table, 'ID')){
 					$key = 'UNIQUE KEY OF_ID (OF_ID)';
 					if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_ID')){
 						$GLOBALS['DB_WE']->query('DELETE FROM ' . $_table . ' WHERE OF_ID=0');

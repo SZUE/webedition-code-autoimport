@@ -172,10 +172,7 @@ class we_object extends we_document{
 			);
 
 			$indexe = array(
-				'PRIMARY KEY (OF_ID)',
-				'KEY (OF_WebUserID)',
-				'KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`)',
-				'KEY (`OF_IsSearchable`)',
+				'PRIMARY KEY (OF_ID)'
 			);
 
 			if(isset($this->elements['neuefelder']['dat'])){
