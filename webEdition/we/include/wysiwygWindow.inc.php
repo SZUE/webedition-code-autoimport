@@ -26,11 +26,11 @@ $whiteList = array();
 $_charsets = $_charsetHandler->charsets;
 
 $fields = array(
-	'name' => we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1),
+	'name' => we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 1),
 	'width' => we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2),
 	'height' => we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3),
 	'empty' => we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 4),
-	'propstring' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5),
+	'propstring' => we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 5),
 	'classname' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 6),
 	'fontnames' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 7),
 	'outsidewe' => we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 8),
@@ -85,7 +85,7 @@ if(preg_match('%^.+_te?xt\[.+\]$%i', $fields['name'])){
 	$writeToFrontend = true;
 }
 
-echo we_html_tools::getHtmlTop(sprintf('', $fieldName), $fields['charname']);
+echo we_html_tools::getHtmlTop(sprintf('', $fieldName), $fields['charset']);
 
 if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed')){
 	if(!isset($writeToFrontend)){
