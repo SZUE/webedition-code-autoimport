@@ -149,4 +149,14 @@ class weModelBase{
 		$this->keys = $keys;
 	}
 
+	public function __sleep(){
+		$tmp = get_object_vars($this);
+		unset($tmp['db']);
+		return array_keys($tmp);
+	}
+
+	public function __wakeup(){
+		$this->db = new DB_WE();
+	}
+
 }

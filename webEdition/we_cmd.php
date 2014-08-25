@@ -21,13 +21,13 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 //start autoloader!
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 $cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 if(!$cmd){
+	t_e('call without command, might be an error', $_REQUEST);
 	exit();
 }
 
