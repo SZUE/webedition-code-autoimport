@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -45,8 +44,8 @@ $we_dt = isset($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]) ? $_SESS
 
 // init document
 include (WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-
-if(isset($_REQUEST['cmd']) && $_REQUEST['cmd'] != 'ResetVersion' && $_REQUEST['cmd'] != 'PublishDocs'){
+$cmd = we_base_request::_(we_base_request::STRING, 'cmd');
+if($cmd && $cmd != 'ResetVersion' && $cmd != 'PublishDocs'){
 	if(isset($FROM_WE_SHOW_DOC) && $FROM_WE_SHOW_DOC){ // when called showDoc.php
 		if((!$we_doc->IsDynamic) && (!$tmplID)){ // if the document is not a dynamic php-doc and is published we make a redirect to the static page
 			header('Location: ' . getServerUrl() . ($we_doc->Published ? $we_doc->Path : '/this_file_does_not_exist_on_this_server'));
@@ -54,14 +53,12 @@ if(isset($_REQUEST['cmd']) && $_REQUEST['cmd'] != 'ResetVersion' && $_REQUEST['c
 		}
 	}
 }
-if(isset($_REQUEST['vers_we_obj'])){
-	if($_REQUEST['vers_we_obj']){
-		$f = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . 'tmpSavedObj.txt';
-		$_REQUEST['vers_we_obj'] = false;
-		$tempFile = we_base_file::load($f);
-		$obj = unserialize($tempFile);
-		$we_doc = $obj;
-	}
+if(we_base_request::_(we_base_request::BOOL, 'vers_we_obj')){
+	$f = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . 'tmpSavedObj.txt';
+	$_REQUEST['vers_we_obj'] = false;
+	$tempFile = we_base_file::load($f);
+	$obj = unserialize($tempFile);
+	$we_doc = $obj;
 
 // deal with customerFilter
 // @see we_object_showDocument.inc.php

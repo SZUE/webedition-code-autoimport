@@ -1,11 +1,10 @@
 /*
  * @see we_app_controller_IndexAction
  */
-Zend_Loader::loadClass('we_app_controller_IndexAction');
 
 /**
  * Base Index Controller
- * 
+ *
  * @category   we
  * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
@@ -13,5 +12,5 @@ Zend_Loader::loadClass('we_app_controller_IndexAction');
 class IndexController extends we_app_controller_IndexAction
 {
 
-	
+
 }

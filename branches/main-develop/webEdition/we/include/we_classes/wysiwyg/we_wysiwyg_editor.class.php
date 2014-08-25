@@ -888,8 +888,7 @@ function weWysiwygSetHiddenText(arg) {
 		}
 		$ret = '';
 		foreach($this->filteredElements as $elem){
-			$ret .= $elem->classname == 'we_wysiwyg_ToolbarButton' && $elem->showMeInContextmenu && self::wysiwygCmdToTiny($elem->cmd) ? '"' . self::wysiwygCmdToTiny($elem->cmd) . '":true,'
-					: '';
+			$ret .= $elem->classname == 'we_wysiwyg_ToolbarButton' && $elem->showMeInContextmenu && self::wysiwygCmdToTiny($elem->cmd) ? '"' . self::wysiwygCmdToTiny($elem->cmd) . '":true,' : '';
 		}
 		return trim($ret, ',') !== '' ? '{' . trim($ret, ',') . '}' : 'false';
 	}
@@ -1003,8 +1002,7 @@ function weWysiwygSetHiddenText(arg) {
 			$tmplDoc = new we_document();
 			$tmplDoc->initByID(intval($tmplArr[$i]));
 			if(($tmplDoc->ContentType == we_base_ContentTypes::APPLICATION && ($tmplDoc->Extension == '.html' || $tmplDoc->Extension == '.htm')) || $tmplDoc->ContentType == we_base_ContentTypes::WEDOCUMENT){
-				$templates .= '{title: "' . (isset($tmplDoc->elements['Title']['dat']) && $tmplDoc->elements['Title']['dat'] ? $tmplDoc->elements['Title']['dat'] : "no title " . ($i + 1)) . '", src : "' . $tmplDoc->Path . '", description: "' . (isset($tmplDoc->elements['Description']['dat']) && $tmplDoc->elements['Description']['dat']
-							? $tmplDoc->elements['Description']['dat'] : "no description " . ($i + 1)) . '"},';
+				$templates .= '{title: "' . (isset($tmplDoc->elements['Title']['dat']) && $tmplDoc->elements['Title']['dat'] ? $tmplDoc->elements['Title']['dat'] : "no title " . ($i + 1)) . '", src : "' . $tmplDoc->Path . '", description: "' . (isset($tmplDoc->elements['Description']['dat']) && $tmplDoc->elements['Description']['dat'] ? $tmplDoc->elements['Description']['dat'] : "no description " . ($i + 1)) . '"},';
 			}
 		}
 
@@ -1066,8 +1064,9 @@ function weWysiwygSetHiddenText(arg) {
 					'removeFirstParagraph' => $this->removeFirstParagraph ? "1" : "0",
 				);
 
-				$contentCss = empty($this->contentCss) ? '' : $this->contentCss . ',';
-				$editorLang = we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']);
+				$contentCss = $this->contentCss ? $this->contentCss . ',' : '';
+
+				$editorLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 				$editorLangSuffix = $editorLang == 'de' ? 'de_' : '';
 
 				return we_html_element::jsElement('
@@ -1240,7 +1239,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 
 	setup : function(ed){
 
-		ed.settings.language = "' . we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']) . '";
+		ed.settings.language = "' . array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) . '";
 
 		ed.onInit.add(function(ed, o){
 			//TODO: clean up the mess in here!
@@ -1448,8 +1447,7 @@ tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 					}
 					$min_w = max($min_w, $row_w);
 					$row_w = 0;
-					$out .= '</tr></table></td></tr>' . (($r < count($rows) - 1) ? $linerow : $pixelrow) . '<tr><td ' . (($r < (count($rows) - 1)) ? (' style="background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);"')
-								: '') . ' class="tbButtonWysiwygDefaultStyle' . (($r < (count($rows) - 1)) ? ' tbButtonWysiwygBackground' : '') . '">';
+					$out .= '</tr></table></td></tr>' . (($r < count($rows) - 1) ? $linerow : $pixelrow) . '<tr><td ' . (($r < (count($rows) - 1)) ? (' style="background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);"') : '') . ' class="tbButtonWysiwygDefaultStyle' . (($r < (count($rows) - 1)) ? ' tbButtonWysiwygBackground' : '') . '">';
 				}
 
 				$realWidth = max($min_w, $this->width);
@@ -1460,9 +1458,7 @@ tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 </table></td></tr></table><input type="hidden" id="' . $this->name . '" name="' . $this->name . '" value="' . oldHtmlspecialchars($this->hiddenValue) . '" /><div id="' . $this->ref . 'edit_buffer" style="display: none;"></div>
 ' . we_html_element::jsElement('
 var ' . $this->ref . 'Obj = null;
-' . $this->ref . 'Obj = new weWysiwyg("' . $this->ref . 'edit","' . $this->name . '","' . str_replace("\"", "\\\"", $this->value) . '","' . str_replace("\"", "\\\"", $editValue) . '",\'' . $this->fullscreen . '\',\'' . $this->className . '\',\'' . $this->propstring . '\',\'' . $this->bgcol . '\',' . ($this->outsideWE
-								? "true" : "false") . ',"' . $this->baseHref . '","' . $this->xml . '","' . $this->removeFirstParagraph . '","' . $this->charset . '","' . $this->cssClasses . '","' . $this->Language . '", "' . ($this->isFrontendEdit
-								? 1 : 0) . '");
+' . $this->ref . 'Obj = new weWysiwyg("' . $this->ref . 'edit","' . $this->name . '","' . str_replace("\"", "\\\"", $this->value) . '","' . str_replace("\"", "\\\"", $editValue) . '",\'' . $this->fullscreen . '\',\'' . $this->className . '\',\'' . $this->propstring . '\',\'' . $this->bgcol . '\',' . ($this->outsideWE ? "true" : "false") . ',"' . $this->baseHref . '","' . $this->xml . '","' . $this->removeFirstParagraph . '","' . $this->charset . '","' . $this->cssClasses . '","' . $this->Language . '", "' . ($this->isFrontendEdit ? 1 : 0) . '");
 we_wysiwygs[we_wysiwygs.length] = ' . $this->ref . 'Obj;
 
 function ' . $this->ref . 'editShowContextMenu(event){

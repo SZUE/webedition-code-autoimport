@@ -156,7 +156,7 @@ class we_objectFile extends we_document{
 			}
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
-			$cats = makeIDsFromPathCVS($_REQUEST['we_ui_' . $formname . '_categories'], CATEGORY_TABLE);
+			$cats = makeIDsFromPathCVS(we_base_request::_(we_base_request::FILELISTA, 'we_ui_' . $formname . '_categories'), CATEGORY_TABLE);
 			$GLOBALS['we_object'][$formname]->Category = $cats;
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
@@ -165,8 +165,8 @@ class we_objectFile extends we_document{
 					makeCSVFromArray(makeArrayFromCSV($_REQUEST['we_ui_' . $formname . '_Category']), true));
 		}
 		foreach($GLOBALS['we_object'][$formname]->persistent_slots as $slotname){
-			if($slotname != 'categories' && isset($_REQUEST['we_ui_' . $formname . '_' . $slotname])){
-				$v = we_base_util::rmPhp($_REQUEST['we_ui_' . $formname . '_' . $slotname]);
+			if($slotname != 'categories' && ($tmp = we_base_request::_(we_base_request::RAW, 'we_ui_' . $formname . '_' . $slotname)) !== false){
+				$v = we_base_util::rmPhp($tmp);
 				$GLOBALS['we_object'][$formname]->i_convertElemFromRequest('', $v, $slotname);
 				$GLOBALS['we_object'][$formname]->{$slotname} = $v;
 			}
@@ -1153,7 +1153,7 @@ class we_objectFile extends we_document{
 		$extPath = isset($hrefArr['extPath']) ? $hrefArr['extPath'] : '';
 		$int_elem_Name = 'we_' . $this->Name . '_href[' . $nint . ']';
 		$intPath_elem_Name = 'we_' . $this->Name . '_href[' . $nintPath . ']';
-		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']';
+		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']';//TOFO: should we use #bdid?
 		$ext_elem_Name = 'we_' . $this->Name . '_href[' . $nextPath . ']';
 		switch($type){
 			case we_base_link::TYPE_INT:
@@ -1307,7 +1307,7 @@ class we_objectFile extends we_document{
 	private function getLanguageFieldHTML($name, $attribs, $editable = true, $variant = false){
 		if(!$editable){
 			return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
-				($this->getElement($name) != '--' || $this->getElement($name) ? '<div class="defaultfont">' . CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name), 'language', we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']))) . '</div>' :
+				($this->getElement($name) != '--' || $this->getElement($name) ? '<div class="defaultfont">' . CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name), 'language', array_search($GLOBALS['WE_LANGUAGE'], getWELangs()))) . '</div>' :
 					'');
 		}
 		$frontendL = $GLOBALS["weFrontendLanguages"];
@@ -2533,7 +2533,7 @@ class we_objectFile extends we_document{
 				$this->Templates = '';
 				$cnt = count(makeArrayFromCSV($this->Workspaces));
 				for($i = 0; $i < $cnt; ++$i){
-					$this->Templates .= $_REQUEST['we_' . $this->Name . '_Templates_' . $i] . ',';
+					$this->Templates .= we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_Templates_' . $i) . ',';
 				}
 				if($this->Templates){
 					$this->Templates = ',' . $this->Templates;
@@ -2543,7 +2543,7 @@ class we_objectFile extends we_document{
 				$this->ExtraTemplates = '';
 				$cnt = count(makeArrayFromCSV($this->ExtraWorkspaces));
 				for($i = 0; $i < $cnt; ++$i){
-					$this->ExtraTemplates .= $_REQUEST['we_' . $this->Name . '_ExtraTemplates_' . $i] . ',';
+					$this->ExtraTemplates .= we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_ExtraTemplates_' . $i) . ',';
 				}
 				if($this->ExtraTemplates){
 					$this->ExtraTemplates = ',' . $this->ExtraTemplates;
@@ -2605,20 +2605,22 @@ class we_objectFile extends we_document{
 			foreach($tableInfo as $cur){
 				$regs = explode('_', $cur["name"], 2);
 				if(count($regs) > 1){
-					if($regs[0] != "OF"){
-						$realname = $regs[1];
-						$name = ($regs[0] == self::TYPE_OBJECT ? 'we_object_' : '') . $realname;
-						$this->elements[$name] = array(
-							'dat' => $db->f($cur["name"]),
-							'type' => $regs[0],
-							'len' => $cur["len"]
-						);
+					if($regs[0] == "OF"){
+						continue;
+					}
+					$name = ($regs[0] == self::TYPE_OBJECT ? 'we_object_' : '') . $regs[1];
+					$this->elements[$name] = array(
+						'dat' => $db->f($cur["name"]),
+						'type' => $regs[0],
+						'len' => $cur["len"]
+					);
 //						if($regs[0] == "multiobject"){
 //							$this->elements[$name]["class"] = $db->f($tableInfo[$i]["name"]);
 //						}
-						if($regs[0] == self::TYPE_IMG){
+					switch($regs[0]){
+						case self::TYPE_HREF:
+						case self::TYPE_IMG:
 							$this->elements[$name]["bdid"] = $db->f($cur["name"]);
-						}
 					}
 				}
 			}

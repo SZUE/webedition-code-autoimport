@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,11 +27,12 @@ echo we_html_tools::getHtmlTop(g_l('thumbnails', '[thumbnails]'));
 $reloadUrl = getServerUrl(true) . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThumbs';
 
 // Check if we need to create a new thumbnail
-if(($name = we_base_request::_(we_base_request::STRING, 'newthumbnail'))){
-	if(permissionhandler::hasPerm('ADMINISTRATOR')){
-		$DB_WE->query('INSERT INTO ' . THUMBNAILS_TABLE . ' SET Name="' . $DB_WE->escape($name) . '"');
-		$_REQUEST['id'] = $DB_WE->getInsertId();
-	}
+if(($name = we_base_request::_(we_base_request::STRING, 'newthumbnail')) &&
+	permissionhandler::hasPerm('ADMINISTRATOR')){
+	$DB_WE->query('INSERT INTO ' . THUMBNAILS_TABLE . ' SET Name="' . $DB_WE->escape($name) . '"');
+	$id = $DB_WE->getInsertId();
+} else {
+	$id = we_base_request::_(we_base_request::INT, 'id', 0);
 }
 
 // Check if we need to delete a thumbnail
@@ -47,10 +47,10 @@ if(($delId = we_base_request::_(we_base_request::INT, 'deletethumbnail'))){
 }
 
 // Check which thumbnail to work with
-if(!we_base_request::_(we_base_request::INT, 'id')){
+if(!$id){
 	$tmpid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name LIMIT 1');
 
-	$_REQUEST['id'] = $tmpid ? $tmpid : -1;
+	$id = $tmpid ? $tmpid : -1;
 }
 
 /**
@@ -213,13 +213,13 @@ function add_thumbnail() {';
 }
 
 function delete_thumbnail() {" .
-((permissionhandler::hasPerm('ADMINISTRATOR')) ?
-"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'id', 0))) . "');
+				((permissionhandler::hasPerm('ADMINISTRATOR')) ?
+					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . $id)) . "');
 
 		if (deletion == true) {
-			self.location = '" . $GLOBALS['reloadUrl'] . "&deletethumbnail=" . we_base_request::_(we_base_request::INT, 'id') . "';
+			self.location = '" . $GLOBALS['reloadUrl'] . "&deletethumbnail=" . $id . "';
 		}" :
-"") . "
+					"") . "
 }
 
 function change_thumbnail() {
@@ -252,14 +252,12 @@ function init() {
 			$DB_WE->query('SELECT ID, Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 
 			$_thumbnail_counter_firsttime = true;
-			$id = we_base_request::_(we_base_request::INT, 'id', -1);
 			while($DB_WE->next_record()){
 				$_enabled_buttons = true;
-				//$_thumbnail_counter = $DB_WE->f('ID');
 
 				$_thumbnails->addOption($DB_WE->f('ID'), $DB_WE->f('Name'));
 
-				if($_thumbnail_counter_firsttime && $id == -1){
+				if($_thumbnail_counter_firsttime && !$id){
 					$id = $DB_WE->f('ID');
 
 					$_thumbnails->selectOption($DB_WE->f('ID'));

@@ -97,7 +97,7 @@ class we_banner_banner extends we_banner_base{
 			"showPrice" => we_base_request::RAW,
 			"IsFolder" => we_base_request::BOOL,
 			"Icon" => we_base_request::RAW,
-			"Path" => we_base_request::FILE,
+			"Path" => we_base_request::STRING,
 			"IntHref" => we_base_request::RAW,
 			"FileIDs" => we_base_request::INTLIST,
 			"FolderIDs" => we_base_request::INTLIST,
@@ -112,7 +112,7 @@ class we_banner_banner extends we_banner_base{
 			"views" => we_base_request::INT,
 			"Customers" => we_base_request::RAW,
 			"TagName" => we_base_request::RAW,
-			"weight" => we_base_request::RAW,
+			"weight" => we_base_request::INT,
 		);
 
 		$this->IsFolder = $IsFolder;

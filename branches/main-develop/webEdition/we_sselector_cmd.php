@@ -176,25 +176,25 @@ if(!$cmd || $cmd != "save_last"){
 				}
 			}
 		}
-		if(!@rmdir($dir)){
+		if(!rmdir($dir)){
 			echo we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[delete_nok_folder]"), $dir), we_message_reporting::WE_MESSAGE_ERROR);
 		}
 	}
 
+	$txt = we_base_request::_(we_base_request::FILE, 'txt', '');
 	switch(we_base_request::_(we_base_request::STRING, "cmd")){
 		case "new_folder":
 			echo 'drawDir(top.currentDir);';
-			if(!($_REQUEST["txt"])){
+			if($txt === ''){
 				echo we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
 			}
-			if(preg_match('|[\'"<>/]|', $_REQUEST["txt"])){
+			if(preg_match('|[\'"<>/]|', $txt)){
 				echo we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
 			}
-			$txt=we_base_request::_(we_base_request::FILE,'txt');
-			$path = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . we_base_request::_(we_base_request::FILE,'pat') . '/' . $txt);
-			if(!@is_dir($path)){
+			$path = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . we_base_request::_(we_base_request::FILE, 'pat') . '/' . $txt);
+			if(!is_dir($path)){
 				echo (!we_util_File::createLocalFolder($path) ?
 					we_message_reporting::getShowMessageCall(g_l('alert', "[create_folder_nok]"), we_message_reporting::WE_MESSAGE_ERROR) :
 					'selectFile("' . $txt . '");top.currentID="' . $path . '";');
@@ -203,22 +203,21 @@ if(!$cmd || $cmd != "save_last"){
 			}
 			break;
 		case "rename_folder":
-			if($_REQUEST["txt"] == ''){
+			if($txt === ''){
 				echo we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR) .
 				"drawDir(top.currentDir);";
 				break;
 			}
-			if(preg_match('|[\'"<>/]|', $_REQUEST["txt"])){
+			if(preg_match('|[\'"<>/]|', $txt)){
 				echo we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR) .
 				"drawDir(top.currentDir);";
 				break;
 			}
 			$pat = we_base_request::_(we_base_request::FILE, 'pat');
-			$txt = we_base_request::_(we_base_request::STRING, 'txt');
 			$old = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $pat . '/' . we_base_request::_(we_base_request::FILE, 'sid'));
 			$new = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $pat . '/' . $txt);
 			if($old != $new){
-				if(!@is_dir($new)){
+				if(!is_dir($new)){
 					echo (!rename($old, $new) ?
 						we_message_reporting::getShowMessageCall(g_l('alert', "[rename_folder_nok]"), we_message_reporting::WE_MESSAGE_ERROR) :
 						'selectFile("' . $txt . '");');
@@ -231,12 +230,12 @@ if(!$cmd || $cmd != "save_last"){
 
 			break;
 		case "rename_file":
-			if($_REQUEST["txt"] == ""){
+			if($txt === ''){
 				echo we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR) .
 				"drawDir(top.currentDir);";
 				break;
 			}
-			if(preg_match('|[\'"<>/]|', $_REQUEST["txt"])){
+			if(preg_match('|[\'"<>/]|', $txt)){
 				echo we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR) .
 				"drawDir(top.currentDir);";
 				break;

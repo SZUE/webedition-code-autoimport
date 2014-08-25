@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* the parent class of storagable webEdition classes */
-class we_voting_view extends weModuleView{
+class we_voting_view extends we_modules_view{
 	var $voting;
 	var $editorBodyFrame;
 	var $editorBodyForm;
@@ -39,20 +39,8 @@ class we_voting_view extends weModuleView{
 		$this->group_pattern = addslashes('<img style="vertical-align: bottom" src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" />&nbsp;');
 	}
 
-	//----------- Utility functions ------------------
-
-	function htmlHidden($name, $value = ""){
-		return we_html_element::htmlHidden(array("name" => trim($name), "value" => oldHtmlspecialchars($value)));
-	}
-
-	//-----------------Init -------------------------------
-
-	function setFramesetName($frameset){
-		$this->frameset = $frameset;
-	}
-
 	function setTopFrame($frame){
-		$this->topFrame = $frame;
+		parent::setTopFrame($frame);
 		$this->editorBodyFrame = $frame . '.editor.edbody';
 		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
 		$this->editorHeaderFrame = $frame . '.editor.edheader';
@@ -62,10 +50,8 @@ class we_voting_view extends weModuleView{
 
 
 	function getCommonHiddens($cmds = array()){
-		return $this->htmlHidden("cmd", (isset($cmds["cmd"]) ? $cmds["cmd"] : "")) .
-			$this->htmlHidden("cmdid", (isset($cmds["cmdid"]) ? $cmds["cmdid"] : "")) .
-			$this->htmlHidden("pnt", (isset($cmds["pnt"]) ? $cmds["pnt"] : "")) .
-			$this->htmlHidden("tabnr", (isset($cmds["tabnr"]) ? $cmds["tabnr"] : "")) .
+		return
+			parent::getCommonHiddens($cmds) .
 			$this->htmlHidden("vernr", (isset($cmds["vernr"]) ? $cmds["vernr"] : 0)) .
 			$this->htmlHidden("IsFolder", (isset($this->voting->IsFolder) ? $this->voting->IsFolder : '0'));
 	}
@@ -75,7 +61,9 @@ class we_voting_view extends weModuleView{
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
-		$js = '
+		return
+			parent::getJSTop() .
+			we_html_element::jsElement('
 var get_focus = 1;
 var activ_tab = 1;
 var hot = 0;
@@ -144,10 +132,10 @@ function we_cmd() {
 				return;
 			}
 			' . (!permissionhandler::hasPerm("DELETE_VOTING") ?
-				(
-				we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-				) :
-				('
+					(
+					we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+					) :
+					('
 					if (' . $this->topFrame . '.editor.edbody.loaded) {
 						if (confirm("' . g_l('modules_voting', '[delete_alert]') . '")) {
 							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
@@ -210,13 +198,12 @@ function we_cmd() {
 			}
 			eval("top.opener.top.we_cmd(" + args + ")");
 	}
-}';
-
-		return we_html_element::jsScript(JS_DIR . "windows.js") . we_html_element::jsElement($js);
+}');
 	}
 
 	function getJSProperty(){
-		return we_html_element::jsScript(JS_DIR . "windows.js") .
+		return
+			parent::getJSProperty() .
 			we_html_element::jsElement('
 var loaded=0;
 
@@ -537,8 +524,10 @@ function we_cmd(){
 			case "export_csv":
 				$fname = rtrim(we_base_request::_(we_base_request::FILE, 'csv_dir'), '/') . '/voting_' . $this->voting->ID . '_export_' . time() . '.csv';
 
-				$enclose = isset($_REQUEST['csv_enclose']) ? ($_REQUEST['csv_enclose'] == 0 ? '"' : '\'') : '"';
-				$delimiter = isset($_REQUEST['csv_delimiter']) ? ($_REQUEST['csv_delimiter'] == '\t' ? "\t" : $_REQUEST['csv_delimiter']) : ';';
+				$enclose = we_base_request::_(we_base_request::STRING, 'csv_enclose', '"');
+				$enclose = $enclose == 0 ? '"' : '\'';
+				$delimiter = we_base_request::_(we_base_request::STRING, ';');
+				$delimiter = ($delimiter == '\t' ? "\t" : $delimiter);
 				switch(we_base_request::_(we_base_request::STRING, 'csv_lineend')){
 					default:
 					case 'windows':
@@ -553,13 +542,16 @@ function we_cmd(){
 				}
 
 				$content = array();
-				if(isset($_REQUEST['question_name']) && isset($_REQUEST[$_REQUEST['question_name'] . '_item0'])){
-					$content[] = $enclose . addslashes($_REQUEST[$_REQUEST['question_name'] . '_item0']) . $enclose . $delimiter;
+				$questName = we_base_request::_(we_base_request::STRING, 'question_name');
+				if($questName && ($data = we_base_request::_(we_base_request::STRING, $questName . '_item0'))){
+					$content[] = $enclose . addslashes($data) . $enclose . $delimiter;
 				}
-				if(isset($_REQUEST['answers_name']) && isset($_REQUEST['item_count'])){
-					for($i = 0; $i < $_REQUEST['item_count']; $i++){
-						if(isset($_REQUEST[$_REQUEST['answers_name'] . '_item' . $i])){
-							$content[] = $enclose . addslashes($_REQUEST[$_REQUEST['answers_name'] . '_item' . $i]) . $enclose . $delimiter . $this->voting->Scores[$i];
+				$answerName = we_base_request::_(we_base_request::STRING, 'answers_name');
+				$cnt = we_base_request::_(we_base_request::INT, 'item_count');
+				if($answerName && $cnt){
+					for($i = 0; $i < $cnt; $i++){
+						if(($data = we_base_request::_(we_base_request::STRING, $answerName . '_item' . $i))){
+							$content[] = $enclose . addslashes($data) . $enclose . $delimiter . $this->voting->Scores[$i];
 						}
 					}
 				}
@@ -567,10 +559,12 @@ function we_cmd(){
 				$_REQUEST["lnk"] = $fname;
 				break;
 			case "exportGroup_csv":
-				$fname = ($_REQUEST['csv_dir'] == '/' ? '' : $_REQUEST['csv_dir']) . '/votingGroup_' . $this->voting->ID . '_export_' . time() . '.csv';
+				$fname = '/' . ltrim(we_base_request::_(we_base_request::FILE, 'csv_dir') . '/votingGroup_' . $this->voting->ID . '_export_' . time() . '.csv', '/');
 
-				$enclose = isset($_REQUEST['csv_enclose']) ? ($_REQUEST['csv_enclose'] == 0 ? '"' : '\'') : '"';
-				$delimiter = isset($_REQUEST['csv_delimiter']) ? ($_REQUEST['csv_delimiter'] == '\t' ? "\t" : $_REQUEST['csv_delimiter']) : ';';
+				$enclose = we_base_request::_(we_base_request::STRING, 'csv_enclose', '"');
+				$enclose = $enclose == 0 ? '"' : $enclose;
+				$delimiter = we_base_request::_(we_base_request::STRING, 'csv_delimiter', ';');
+				$delimiter = $delimiter == '\t' ? "\t" : $delimiter;
 				switch(we_base_request::_(we_base_request::STRING, 'csv_lineend')){
 					default:
 					case 'windows':
@@ -673,44 +667,46 @@ function we_cmd(){
 		if(is_array($this->voting->persistent_slots)){
 			foreach($this->voting->persistent_slots as $val){
 				$varname = $val;
-				if(isset($_REQUEST[$varname])){
-					$this->voting->{$val} = $_REQUEST[$varname];
+				if(($v = we_base_request::_(we_base_request::RAW, $varname)) !== false){
+					$this->voting->{$val} = $v;
 				}
 			}
 		}
 
 		if(isset($_REQUEST["page"])){
-			if(isset($_REQUEST["page"])){
-				$this->page = $_REQUEST["page"];
-			}
+			$this->page = $_REQUEST["page"];
 		}
 
 		$qaset = $qaADDset = array();
-		if(isset($_REQUEST['question_name']) && isset($_REQUEST['variant_count']) && isset($_REQUEST['answers_name']) && isset($_REQUEST['item_count'])){
-			for($i = 0; $i < $_REQUEST['variant_count']; $i++){
-				if(isset($_REQUEST[$_REQUEST['question_name'] . '_variant' . $i . '_' . $_REQUEST['question_name'] . '_item0'])){
+		$qname = we_base_request::_(we_base_request::STRING, 'question_name');
+		$vcount = we_base_request::_(we_base_request::INT, 'variant_count');
+		$aname = we_base_request::_(we_base_request::STRING, 'answers_name');
+		$icount = we_base_request::_(we_base_request::INT, 'item_count');
+		if($qname && $vcount && $aname && $icount){
+			for($i = 0; $i < $vcount; $i++){
+				if(($quest = we_base_request::_(we_base_request::STRING . $qname . '_variant' . $i . '_' . $qname . '_item0')) !== false){
 					$set = array(
-						'question' => addslashes($_REQUEST[$_REQUEST['question_name'] . '_variant' . $i . '_' . $_REQUEST['question_name'] . '_item0']),
+						'question' => addslashes($quest),
 						'answers' => array(),
 					);
 
-					$an = $_REQUEST['answers_name'] . '_variant' . $i . '_' . $_REQUEST['answers_name'] . '_item';
+					$an = $aname . '_variant' . $i . '_' . $aname . '_item';
 					$anImage = $an . 'ImageID';
 					$anMedia = $an . 'MediaID';
 					$anSuccessor = $an . 'SuccessorID';
 					$addset = array();
-					for($j = 0; $j < $_REQUEST['item_count']; $j++){
-						if(isset($_REQUEST[$an . $j])){
-							$set['answers'][] = addslashes($_REQUEST[$an . $j]);
+					for($j = 0; $j < $icount; $j++){
+						if(($tmp = we_base_request::_(we_base_request::STRING, $an . $j)) !== false){
+							$set['answers'][] = addslashes($tmp);
 						}
-						if(isset($_REQUEST[$anImage . $j])){
-							$addset['imageID'][] = ($_REQUEST[$anImage . $j] != 'Array' ? addslashes($_REQUEST[$anImage . $j]) : 0);
+						if(($tmp = we_base_request::_(we_base_request::STRING, $anImage . $j)) !== false){
+							$addset['imageID'][] = ($tmp != 'Array' ? addslashes($tmp) : 0);
 						}
-						if(isset($_REQUEST[$anMedia . $j])){
-							$addset['mediaID'][] = ($_REQUEST[$anMedia . $j] != 'Array' ? addslashes($_REQUEST[$anMedia . $j]) : 0);
+						if(($tmp = we_base_request::_(we_base_request::STRING, $anMedia . $j)) !== false){
+							$addset['mediaID'][] = ($tmp != 'Array' ? addslashes($tmp) : 0);
 						}
-						if(isset($_REQUEST[$anSuccessor . $j])){
-							$addset['successorID'][] = ($_REQUEST[$anSuccessor . $j] != 'Array' ? addslashes($_REQUEST[$anSuccessor . $j]) : 0);
+						if(($tmp = we_base_request::_(we_base_request::STRING, $anSuccessor . $j)) !== false){
+							$addset['successorID'][] = ($tmp != 'Array' ? addslashes($tmp) : 0);
 						}
 					}
 					$qaset[] = $set;
@@ -722,41 +718,43 @@ function we_cmd(){
 		$this->voting->QASet = $qaset;
 		$this->voting->QASetAdditions = $qaADDset;
 
-		if(isset($_REQUEST['owners_name']) && isset($_REQUEST['owners_count'])){
+		if(($on = we_base_request::_(we_base_request::STRING, 'owners_name')) && ($oc = we_base_request::_(we_base_request::INT, 'owners_count'))){
 			$this->voting->Owners = array();
-			$an = $_REQUEST['owners_name'] . '_variant0_' . $_REQUEST['owners_name'] . '_item';
-			for($i = 0; $i < $_REQUEST['owners_count']; $i++){
-				$up = str_replace(array(stripslashes($this->item_pattern), stripslashes($this->group_pattern)), '', $_REQUEST[$an . $i]);
-				if(isset($_REQUEST[$an . $i]))
+			$an = $on . '_variant0_' . $on . '_item';
+			for($i = 0; $i < $oc; $i++){
+				if(($tmp = we_base_request::_(we_base_request::STRING, $an . $i))){
+					$up = str_replace(array(stripslashes($this->item_pattern), stripslashes($this->group_pattern)), '', $tmp);
 					$this->voting->Owners[] = path_to_id($up, USER_TABLE);
+				}
 			}
 			$this->voting->Owners = array_unique($this->voting->Owners);
 		}
 
 		$ipset = array();
-		if(isset($_REQUEST['iptable_name']) && isset($_REQUEST['iptable_count'])){
-			$in = $_REQUEST['iptable_name'] . '_variant0_' . $_REQUEST['iptable_name'] . '_item';
-			for($i = 0; $i < $_REQUEST['iptable_count']; $i++){
-				if(isset($_REQUEST[$in . $i]))
-					$ipset[] = addslashes($_REQUEST[$in . $i]);
+		if(($in = we_base_request::_(we_base_request::STRING, 'iptable_name')) && ($ic = we_base_request::_(we_base_request::INT, 'iptable_count'))){
+			$in = $in . '_variant0_' . $in . '_item';
+			for($i = 0; $i < $ic; $i++){
+				if(($tmp = we_base_request::_(we_base_request::STRING, $in . $i)) !== false){
+					$ipset[] = addslashes($tmp);
+				}
 			}
 			$this->voting->BlackList = $ipset;
 		}
 
 
-		if(isset($_REQUEST['PublishDate_day'])){
-			$this->voting->PublishDate = mktime($_REQUEST['PublishDate_hour'], $_REQUEST['PublishDate_minute'], 0, $_REQUEST['PublishDate_month'], $_REQUEST['PublishDate_day'], $_REQUEST['PublishDate_year']);
+		if(($day = we_base_request::_(we_base_request::INT, 'PublishDate_day'))){
+			$this->voting->PublishDate = mktime(we_base_request::_(we_base_request::INT, 'PublishDate_hour'), we_base_request::_(we_base_request::INT, 'PublishDate_minute'), 0, we_base_request::_(we_base_request::INT, 'PublishDate_month'), $day, we_base_request::_(we_base_request::INT, 'PublishDate_year'));
 		}
 
-		if(isset($_REQUEST['Valid_day'])){
-			$this->voting->Valid = mktime($_REQUEST['Valid_hour'], $_REQUEST['Valid_minute'], 0, $_REQUEST['Valid_month'], $_REQUEST['Valid_day'], $_REQUEST['Valid_year']);
+		if(($day = we_base_request::_(we_base_request::INT, 'Valid_day'))){
+			$this->voting->Valid = mktime(we_base_request::_(we_base_request::INT, 'Valid_hour'), we_base_request::_(we_base_request::INT, 'Valid_minute'), 0, we_base_request::_(we_base_request::INT, 'Valid_month'), $day, we_base_request::_(we_base_request::INT, 'Valid_year'));
 		}
 
-		if(isset($_REQUEST['scores_0']) && isset($_REQUEST['item_count']) && isset($_REQUEST['scores_changed']) && $_REQUEST['scores_changed']){
+		if(we_base_request::_(we_base_request::FLOAT, 'scores_0') !== false && ($ic = we_base_request::_(we_base_request::INT, 'item_count')) && we_base_request::_(we_base_request::BOOL, 'scores_changed')){
 			$this->voting->Scores = array();
-			for($j = 0; $j < $_REQUEST['item_count']; $j++){
-				if(isset($_REQUEST['scores_' . $j])){
-					$this->voting->Scores[] = $_REQUEST['scores_' . $j];
+			for($j = 0; $j < $ic; $j++){
+				if(($tmp = we_base_request::_(we_base_request::FLOAT, 'scores_' . $j))){
+					$this->voting->Scores[] = $tmp;
 				}
 			}
 		}

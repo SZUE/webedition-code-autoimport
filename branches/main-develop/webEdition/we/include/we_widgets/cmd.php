@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -24,15 +23,15 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-$cmd1 = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 1); 
-$cmd2 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2);
+$cmd1 = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 1);
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'save' :
 		we_base_preferences::setUserPref('cockpit_dat', $cmd1);
-		we_base_preferences::setUserPref('cockpit_rss', $cmd2);
+		we_base_preferences::setUserPref('cockpit_rss', we_base_request::_(we_base_request::SERIALIZED_KEEP, 'we_cmd', '', 2));
 		break;
 	case 'add' :
 		include_once(WE_INCLUDES_PATH . 'we_widgets/cfg.inc.php');
+		$cmd2 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
 
 		$aProps = array(
 			$cmd1,

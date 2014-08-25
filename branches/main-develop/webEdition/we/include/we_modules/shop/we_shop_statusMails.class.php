@@ -44,7 +44,7 @@ class we_shop_statusMails{
 		$this->FieldsDocuments = $FieldsDocuments;
 	}
 
-	public static function initByRequest($req){
+	public static function initByRequest($req){//FIXME: this is unchecked!!
 
 		return new self(
 			$req['FieldsHidden'], $req['FieldsHiddenCOV'], $req['FieldsText'], $req['FieldsMails'], $req['EMailData'], $req['LanguageData'], $req['FieldsDocuments']

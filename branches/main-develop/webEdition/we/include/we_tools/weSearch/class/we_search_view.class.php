@@ -22,18 +22,32 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_search_view extends we_tool_view{
+class we_search_view{
+	var $Model;
+	var $toolName;
+	var $toolDir;
+	var $toolUrl;
+	var $db;
+	var $frameset;
+	var $topFrame;
+	var $editorBodyFrame;
+	var $editorBodyForm;
+	var $editorHeaderFrame;
+	var $editorFooterFrame;
+	var $icon_pattern = '';
+	var $item_pattern = '';
+	var $group_pattern = '';
+	var $page = 1;
 	var $searchclass;
 	var $searchclassExp;
 
 	public function __construct($frameset = '', $topframe = 'top'){
-		parent::__construct($frameset, $topframe);
 		$this->toolName = 'weSearch';
 		$this->db = new DB_WE();
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
 		$this->Model = new we_search_model();
-		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::LINK_ICON . '\" />&nbsp;';
+		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::FILE_ICON . '\" />&nbsp;';
 		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
 		$this->yuiSuggest = & weSuggest::getInstance();
 		$this->searchclass = new we_search_search();
@@ -2196,7 +2210,7 @@ class we_search_view extends we_tool_view{
 				}
 			}
 			$ext = isset($_result[$f]["Extension"]) ? $_result[$f]["Extension"] : "";
-			$Icon = we_base_ContentTypes::getIcon($_result[$f]["ContentType"], we_base_ContentTypes::LINK_ICON, $ext);
+			$Icon = we_base_ContentTypes::getIcon($_result[$f]["ContentType"], we_base_ContentTypes::FILE_ICON, $ext);
 
 			$foundInVersions = isset($_result[$f]["foundInVersions"]) ? makeArrayFromCSV($_result[$f]["foundInVersions"]) : "";
 
@@ -2716,7 +2730,7 @@ class we_search_view extends we_tool_view{
 		return $out;
 	}
 
-	function tabListContent($view = "", $content = "", $class = "", $whichSearch = ""){
+	public function tabListContent($view = "", $content = "", $class = "", $whichSearch = ""){
 		$x = count($content);
 		if($view == 0){
 			$out = '<table style="table-layout:fixed;white-space:nowrap;border:0px;width:100%;padding:0 0 0 0;margin:0 0 0 0;">
@@ -2933,6 +2947,153 @@ class we_search_view extends we_tool_view{
 			weSuggest::getYuiFiles() .
 			$yuiSuggest->getHTML() .
 			$yuiSuggest->getYuiCode();
+	}
+
+	//----------- Utility functions ------------------
+
+	function htmlHidden($name, $value = ''){
+		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
+	}
+
+	//-----------------Init -------------------------------
+
+	function setFramesetName($frameset){
+		$this->frameset = $frameset;
+	}
+
+	function setTopFrame($frame){
+		$this->topFrame = $frame;
+		$this->editorBodyFrame = $frame . '.resize.right.editor.edbody';
+		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
+		$this->editorHeaderFrame = $frame . '.resize.right.editor.edheader';
+		$this->editorFooterFrame = $frame . '.resize.right.editor.edfooter';
+	}
+
+	//------------------------------------------------
+
+
+	function getCommonHiddens($cmds = array()){
+		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
+			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
+			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
+			$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')) .
+			$this->htmlHidden('vernr', (isset($cmds['vernr']) ? $cmds['vernr'] : 0)) .
+			$this->htmlHidden('delayCmd', (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : '')) .
+			$this->htmlHidden('delayParam', (isset($cmds['delayParam']) ? $cmds['delayParam'] : ''));
+	}
+
+	function getPropertyJSAdditional(){
+		return '';
+	}
+
+	function getJSProperty(){
+		$out = "";
+		$out.=we_html_element::jsScript(JS_DIR . "windows.js");
+
+		$js = '
+			var loaded=0;
+			function we_cmd() {
+				var args = "";
+				var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+				switch (arguments[0]) {
+					case "openDocselector":
+						new jsWindow(url,"we_docselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+						break;
+					case "openSelector":
+						new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+						break;
+					case "openDirselector":
+						new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+						break;
+					case "openCatselector":
+						new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+						break;
+					case "open' . $this->toolName . 'Dirselector":
+						url = "' . WEBEDITION_DIR . 'apps/' . $this->toolName . '/we_' . $this->toolName . 'DirSelect.php?";
+						for(var i = 0; i < arguments.length; i++){
+							url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
+						}
+						new jsWindow(url,"we_' . $this->toolName . '_dirselector",-1,-1,600,400,true,true,true);
+						break;
+						' . $this->getPropertyJSAdditional() . '
+					default:
+						for (var i = 0; i < arguments.length; i++) {
+							args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+						}
+						eval("' . $this->topFrame . '.we_cmd("+args+")");
+				}
+			}
+
+
+			' . $this->getJSSubmitFunction() . '
+
+		';
+
+		$out.=we_html_element::jsElement($js);
+		return $out;
+	}
+
+	function getJSTreeHeader(){
+		return '
+
+				function we_cmd(){
+					var args = "";
+					var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+					switch (arguments[0]) {
+						default:
+							for (var i = 0; i < arguments.length; i++) {
+								args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
+							}
+							eval(\'' . $this->topFrame . '.we_cmd(\'+args+\')\');
+					}
+				}
+
+		' . $this->getJSSubmitFunction('cmd');
+	}
+
+	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
+		return '
+
+				function submitForm() {
+
+					var f = self.document.we_form;
+
+					if (arguments[0]) {
+						f.target = arguments[0];
+					} else {
+						f.target = "' . $def_target . '";
+					}
+
+					if (arguments[1]) {
+						f.action = arguments[1];
+					} else {
+						f.action = "' . $this->frameset . '";
+					}
+
+					if (arguments[2]) {
+						f.method = arguments[2];
+					} else {
+						f.method = "' . $def_method . '";
+					}
+
+					f.submit();
+				}
+
+		';
+	}
+
+	function processVariables(){
+		if(isset($_SESSION['weS'][$this->toolName . '_session'])){
+			$this->Model = unserialize($_SESSION['weS'][$this->toolName . '_session']);
+		}
+
+		if(is_array($this->Model->persistent_slots)){
+			foreach($this->Model->persistent_slots as $val){
+				if(($tmp = we_base_request::_(we_base_request::STRINGC, $val))){
+					$this->Model->$val = $tmp;
+				}
+			}
+		}
 	}
 
 }

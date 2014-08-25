@@ -873,7 +873,7 @@ function getWeFrontendLanguagesForBackend(){
 	if(!isset($GLOBALS['weFrontendLanguages'])){
 		return array();
 	}
-	$targetLang = we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']);
+	$targetLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 	if(!Zend_Locale::hasCache()){
 		Zend_Locale::setCache(getWEZendCache());
 	}
@@ -964,8 +964,8 @@ function g_l($name, $specific, $omitErrors = false){
 //cache last accessed lang var
 	static $cache = array();
 //echo $name.$specific;
-	if(isset($cache["l_$name"])){
-		$tmp = getVarArray($cache["l_$name"], $specific);
+	if(isset($cache['l_' . $name])){
+		$tmp = getVarArray($cache['l_' . $name], $specific);
 		if(!($tmp === false)){
 			return ($charset != 'UTF-8' ?
 					(is_array($tmp) ?

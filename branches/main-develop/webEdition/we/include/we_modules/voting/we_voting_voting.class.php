@@ -144,7 +144,7 @@ class we_voting_voting extends weModelBase{
 
 	function save($with_scores = true){
 
-		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::LINK_ICON);
+		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::FILE_ICON);
 
 		if($this->ActiveTime && $this->Valid < time()){
 			$this->Active = 0;
@@ -175,16 +175,17 @@ class we_voting_voting extends weModelBase{
 			$this->Owners[] = $_SESSION['user']['ID'];
 		}
 
-		/*$_old_QASet = f('SELECT QASet FROM ' . VOTING_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($this->Text) . "'");
-		$_new_QASet = $this->QASet;
-*/
+		/* $_old_QASet = f('SELECT QASet FROM ' . VOTING_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($this->Text) . "'");
+		  $_new_QASet = $this->QASet;
+		 */
 		$this->QASet = serialize($this->QASet);
 		if($with_scores || $this->ID == 0){
 			$this->Scores = serialize($this->Scores);
-		} elseif(isset($_REQUEST['updateScores']) && $_REQUEST['updateScores']){
-			for($_xcount = 0; $_xcount < $_REQUEST['item_count']; $_xcount++){
-				if(isset($_REQUEST['scores_' . $_xcount])){
-					$temp[$_xcount] = $_REQUEST['scores_' . $_xcount];
+		} elseif(we_base_request::_(we_base_request::BOOL, 'updateScores')){
+			$ic = we_base_request::_(we_base_request::INT, 'item_count');
+			for($_xcount = 0; $_xcount < $ic; $_xcount++){
+				if(($tmp = we_base_request::_(we_base_request::FLOAT, 'scores_' . $_xcount))){
+					$temp[$_xcount] = $tmp;
 				}
 				$this->Scores = serialize($temp);
 			}

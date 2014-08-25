@@ -24,7 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class we_customer_view extends weModuleView{
+class we_customer_view extends we_modules_view{
 	var $customer;
 	var $settings;
 
@@ -42,20 +42,6 @@ class we_customer_view extends weModuleView{
 		$this->settings->load();
 	}
 
-	//----------- Utility functions ------------------
-
-	function htmlHidden($name, $value = ''){
-		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
-	}
-
-	function setFramesetName($frameset){
-		$this->frameset = $frameset;
-	}
-
-	function setTopFrame($frame){
-		$this->topFrame = $frame;
-	}
-
 	function getCommonHiddens($cmds = array()){
 		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
 			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
@@ -69,7 +55,9 @@ class we_customer_view extends weModuleView{
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
-		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+		return
+			parent::getJSTop() .
+			we_html_element::jsElement('
 var get_focus = 1;
 var activ_tab = 0;
 var hot= 0;
@@ -187,7 +175,7 @@ function we_cmd() {
 	}
 
 	function getJSProperty(){
-		return we_html_element::jsScript(JS_DIR . 'windows.js') .
+		return parent::getJSProperty() .
 			we_html_element::jsElement('
 var loaded=0;
 
@@ -1204,7 +1192,7 @@ self.close();');
 
 				return we_html_element::htmlDiv(array('style' => 'height: 80px;overflow: auto;width: 220px;border: 1px solid #000;padding: 3px;background: #FFFFFF;'), $out);
 			case 'country':
-				$langcode = we_core_Local::weLangToLocale($GLOBALS["WE_LANGUAGE"]);
+				$langcode = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 
 				$countrycode = array_search($langcode, getWECountries());
 				$countryselect = new we_html_select(array('name' => $field, 'size' => 1, 'style' => 'width:240px;', 'class' => 'wetextinput', 'id' => ($field == 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field == 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')));

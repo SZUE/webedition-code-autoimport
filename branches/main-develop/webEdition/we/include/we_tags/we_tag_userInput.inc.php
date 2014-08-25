@@ -601,7 +601,7 @@ function open_wysiwyg_win(){
 			$lang = $doc->Language;
 			$langcode = ($lang ?
 					substr($lang, 0, 2) :
-					we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']));
+					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 			if(!Zend_Locale::hasCache()){
 				Zend_Locale::setCache(getWEZendCache());
@@ -648,11 +648,10 @@ function open_wysiwyg_win(){
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
-			if($lang != ''){
-				$langcode = substr($lang, 0, 2);
-			} else {
-				$langcode = we_core_Local::weLangToLocale($GLOBALS['WE_LANGUAGE']);
-			}
+			$langcode = ($lang ?
+					substr($lang, 0, 2) :
+					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) );
+			
 			$frontendL = $GLOBALS['weFrontendLanguages'];
 			foreach($frontendL as &$lcvalue){
 				$lccode = explode('_', $lcvalue);

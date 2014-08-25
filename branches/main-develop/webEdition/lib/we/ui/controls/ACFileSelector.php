@@ -20,15 +20,6 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-/**
- * @see we_ui_abstract_AbstractElement
- */
-Zend_Loader::loadClass('we_ui_abstract_AbstractFormElement');
-
-/**
- * @see we_ui_controls_ACSuggest
- */
-Zend_Loader::loadClass('we_ui_controls_ACSuggest');
 
 /**
  * Class to display an Aucompleter with FileSelector

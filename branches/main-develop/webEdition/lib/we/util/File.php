@@ -134,10 +134,6 @@ abstract class we_util_File extends we_base_file{
 		return @rmdir($filename);
 	}
 
-	public static function deleteLocalFile($filename){
-
-		return (file_exists($filename) ? unlink($filename) : false);
-	}
 
 	/**
 	 * recursively deletes a directory with all its contents

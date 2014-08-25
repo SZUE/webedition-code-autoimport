@@ -21,7 +21,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){//FIMXE most of the stuff can be handled via session! transfer is a bit complicated due to elements inside documents
+$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
+switch($cmd0){//FIMXE most of the stuff can be handled via session! transfer is a bit complicated due to elements inside documents
 	case 'openCatselector' :
 		$_REQUEST['noChoose'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 8);
 	case 'openDirselector':
@@ -53,7 +54,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){//FIMXE mos
 		break;
 }
 
-switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
+switch($cmd0){
 	case 'openDirselector' :
 		require_once (WEBEDITION_PATH . 'we_dirSelect.php');
 		break;

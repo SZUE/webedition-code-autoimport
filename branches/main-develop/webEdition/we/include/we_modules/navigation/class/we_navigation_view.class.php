@@ -24,11 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class we_navigation_view{
-
-	var $db;
-	var $frameset;
-	var $topFrame;
+class we_navigation_view extends we_modules_view{
 	var $navigation;
 	var $editorBodyFrame;
 	var $editorBodyForm;
@@ -40,29 +36,16 @@ class we_navigation_view{
 	var $page = 1;
 	var $Model;
 
-	function __construct($frameset = '', $topframe = 'top'){
-		$this->db = new DB_WE();
-		$this->setFramesetName($frameset);
-		$this->setTopFrame($topframe);
+	public function __construct($frameset = '', $topframe = 'top'){
+		parent::__construct($frameset, $topframe);
 		$this->Model = new we_navigation_navigation();
 		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . 'navigation.gif\" />&nbsp;';
 		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
 	}
 
-	//----------- Utility functions ------------------
-
-	function htmlHidden($name, $value = ''){
-		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
-	}
-
-	//-----------------Init -------------------------------
-
-	function setFramesetName($frameset){
-		$this->frameset = $frameset;
-	}
 
 	function setTopFrame($frame){
-		$this->topFrame = $frame;
+		parent::setTopFrame($frame);
 		$this->editorBodyFrame = $frame . '.editor.edbody';
 		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
 		$this->editorHeaderFrame = $frame . '.editor.edheader';
@@ -73,17 +56,17 @@ class we_navigation_view{
 
 
 	function getCommonHiddens($cmds = array()){
-		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
-			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
-			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
-			$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')) .
+		return
+			parent::getCommonHiddens($cmds) .
 			$this->htmlHidden('vernr', (isset($cmds['vernr']) ? $cmds['vernr'] : 0)) .
 			$this->htmlHidden('delayCmd', (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : '')) .
 			$this->htmlHidden('delayParam', (isset($cmds['delayParam']) ? $cmds['delayParam'] : ''));
 	}
 
 	function getJSTop(){
-		$js = '
+		return
+			parent::getJSTop() .
+			we_html_element::jsElement('
 var activ_tab = "1";
 var hot = 0;
 var makeNewDoc = false;
@@ -176,10 +159,10 @@ function we_cmd() {
 				return;
 			} }
 			' . (!permissionhandler::hasPerm('DELETE_NAVIGATION') ?
-				(
-				we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
-				) :
-				('
+					(
+					we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
+					) :
+					('
 					if (' . $this->topFrame . '.editor.edbody.loaded) {
 						if (confirm("' . g_l('navigation', "[delete_alert]") . '")) {
 							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
@@ -241,13 +224,11 @@ function we_cmd() {
 function mark() {
 	hot=1;
 	' . $this->editorHeaderFrame . '.mark();
-}';
-
-		return we_html_element::jsScript(JS_DIR . "windows.js") . we_html_element::jsElement($js);
+}');
 	}
 
 	function getJSProperty(){
-		$out = we_html_element::jsScript(JS_DIR . "windows.js");
+		$out = parent::getJSProperty();
 		$_objFields = "\n";
 		if($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS){
 			if(defined('OBJECT_TABLE')){
@@ -816,7 +797,7 @@ function submitForm() {
 					}
 					$_items = $this->Model->populateGroup($_old_items);
 					foreach($_items as $_k => $_item){
-						$js .= $this->topFrame . '.makeNewEntry(\'' . we_base_ContentTypes::LINK_ICON . '\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
+						$js .= $this->topFrame . '.makeNewEntry(\'' . we_base_ContentTypes::FILE_ICON . '\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
 					}
 				}
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_NODYNAMIC){
@@ -922,7 +903,7 @@ function submitForm() {
 				$_js = '';
 				foreach($_items as $_k => $_item){
 					$_js .= $this->topFrame . '.deleteEntry(' . $_item['id'] . ');';
-					$_js .= $this->topFrame . '.makeNewEntry(\'' . we_base_ContentTypes::LINK_ICON . '\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
+					$_js .= $this->topFrame . '.makeNewEntry(\'' . we_base_ContentTypes::FILE_ICON . '\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
 				}
 				print we_html_element::jsElement(
 						$_js .
@@ -943,14 +924,14 @@ function submitForm() {
 				break;
 			case 'dyn_preview':
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-					we_html_element::jsElement('
+				we_html_element::jsElement('
 						url = "' . WE_INCLUDES_DIR . 'we_modules/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
 						new jsWindow(url,"we_navigation_dyn_preview",-1,-1,480,350,true,true,true);'
 				);
 				break;
 			case 'create_template':
 				echo we_html_element::jsElement(
-						$this->topFrame . '.opener.top.we_cmd("new","' . TEMPLATES_TABLE . '","","' . we_base_ContentTypes::TEMPLATE . '","","' . base64_encode($this->Model->previewCode) . '");
+					$this->topFrame . '.opener.top.we_cmd("new","' . TEMPLATES_TABLE . '","","' . we_base_ContentTypes::TEMPLATE . '","","' . base64_encode($this->Model->previewCode) . '");
 					');
 				break;
 			case 'populateFolderWs':

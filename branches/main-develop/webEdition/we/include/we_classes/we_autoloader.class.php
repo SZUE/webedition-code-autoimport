@@ -55,6 +55,7 @@ abstract class we_autoloader{
 		'main' => 'we_classes/main',
 		'messaging' => 'we_modules/messaging',
 		'metadata' => 'we_classes/weMetaData',
+		'modules' => 'we_classes/modules',
 		'navigation' => 'we_modules/navigation/class',
 		'newsletter' => 'we_modules/newsletter',
 		'object' => 'we_modules/object',
@@ -120,9 +121,6 @@ abstract class we_autoloader{
 			'we_history' => 'we_history.class.php',
 			'weMainTree' => 'weMainTree.class.php',
 			'weModelBase' => 'modules/weModelBase.class.php',
-			'weModuleFrames' => 'modules/weModuleFrames.php',
-			'weModuleView' => 'modules/weModuleView.class.php',
-			'weModuleTree' => 'modules/weModuleTree.class.php',
 			'weOrderContainer' => 'js_gui/weOrderContainer.class.php',
 			'we_progressBar' => 'we_progressBar.class.php',
 			'we_rtf2html' => 'we_rtf2html.inc.php',
@@ -174,7 +172,7 @@ abstract class we_autoloader{
 	);
 
 	public static function loadZend($class_name){
-		//echo 'load zend beacause of'.$class_name;
+		//t_e('load zend beacauseof', $class_name);
 		if(!class_exists('Zend_Loader_Autoloader', false)){
 			require_once('Zend/Loader/Autoloader.php');
 			$loader = Zend_Loader_Autoloader::getInstance(); #3815
@@ -225,7 +223,12 @@ abstract class we_autoloader{
 			}
 		}
 		//might be a zend registered class:
-		self::loadZend($class_name);
+		if(!isset(self::$fallBack[$class_name])){
+			//don't load zend extension, if file is in system or fallback
+			self::loadZend($class_name);
+		} else {// add this loader at the end, if class was not yet found
+			spl_autoload_register('we_autoloader::finalLoad', true);
+		}
 		//will try next auto-loader
 	}
 

@@ -20,10 +20,6 @@
  * @subpackage we_ui_abstract
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-/**
- * @see we_ui_abstract_AbstractElement
- */
-Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
 
 /**
  * Base class for elements in html forms

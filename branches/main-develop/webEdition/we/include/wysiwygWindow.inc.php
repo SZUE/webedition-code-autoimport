@@ -25,52 +25,79 @@ $_charsetHandler = new we_base_charsetHandler();
 $whiteList = array();
 $_charsets = $_charsetHandler->charsets;
 
-if($_charsets && is_array($_charsets)){
-	foreach($_charsets as $k => $v){
-		if(isset($v['charset']) && $v['charset'] != ''){
-			$whiteList[] = strtolower($v['charset']);
+$fields = array(
+	'cmd' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+	'name' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1),
+	'width' => we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2),
+	'height' => we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3),
+	'empty' => we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 4),
+	'propstring' => we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 5),
+	'classname' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 6),
+	'fontnames' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 7),
+	'outsidewe' => we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 8),
+	'tbwidth' => we_base_request::_(we_base_request::INT, 'we_cmd', 0, 9), // (toolbar width)
+	'tbheight' => we_base_request::_(we_base_request::INT, 'we_cmd', 0, 10),
+	'xml' => we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 11),
+	'removeFirstParagraph' => we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 12),
+	'bgcolor' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 13),
+	'baseHref' => we_base_request::_(we_base_request::URL, 'we_cmd', '', 14),
+	'charset' => we_base_request::_(we_base_request::STRING, 'we_cmd', DEFAULT_CHARSET, 15),
+	'cssClasses' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 16),
+	'Language' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 17),
+	'documentCss' => we_base_request::_(we_base_request::CMD, 'we_cmd', '', 18),
+	'origName' => we_base_request::_(we_base_request::CMD, 'we_cmd', '', 19),
+	'tinyParams' => we_base_request::_(we_base_request::CMD, 'we_cmd', '', 20),
+	'contextmenu' => we_base_request::_(we_base_request::CMD, 'we_cmd', '', 21),
+	'isInPopup' => we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 22),
+	'isInFrontend' => we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 23),
+	'templates' => we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 24),
+);
+
+
+if($fields['charset'] != DEFAULT_CHARSET && $_charsets && is_array($_charsets)){
+	$found = false;
+	$tmp = strtolower($fields['charset']);
+	foreach($_charsets as $v){
+		if(isset($v['charset']) && $v['charset']){
+			if(strtolower($v['charset']) == $tmp){
+				$found = true;
+				break;
+			}
 		}
+	}
+	if(!$found){
+		exit();
 	}
 }
 
-if(isset($_REQUEST['we_cmd'][15])){
-	if($_REQUEST['we_cmd'][15]){
-		$_REQUEST['we_cmd'][15] = DEFAULT_CHARSET;
-	} else {
-		if(!in_array(strtolower($_REQUEST['we_cmd'][15]), $whiteList)){
-			exit();
-		}
-	}
-}
 
-we_html_tools::headerCtCharset('text/html', ($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : DEFAULT_CHARSET));
-$cmd4 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
+we_html_tools::headerCtCharset('text/html', $fields['charset']);
 
-if(!(isset($_REQUEST['we_cmd'][23]) && $_REQUEST['we_cmd'][23] == 1 && $cmd4 == 'frontend')){
+if(!($fields['isInFrontend'] && $fields['empty'] == 'frontend')){
 	we_html_tools::protect();
 }
 
-if(preg_match('%^.+_te?xt\[.+\]$%i', $_REQUEST['we_cmd'][1])){
-	$fieldName = preg_replace('/^.+_te?xt\[(.+)\]$/', '\1', $_REQUEST['we_cmd'][1]);
-} else if(preg_match('|^.+_input\[.+\]$|i', $_REQUEST['we_cmd'][1])){
-	$fieldName = preg_replace('/^.+_input\[(.+)\]$/', '\1', $_REQUEST['we_cmd'][1]);
-} else if(preg_match('|^we_ui.+\[.+\]$|i', $_REQUEST['we_cmd'][1])){//we_user_input
-	$fieldName = preg_replace('/^we_ui.+\[(.+)\]$/', '\1', $_REQUEST['we_cmd'][1]);
+if(preg_match('%^.+_te?xt\[.+\]$%i', $fields['name'])){
+	$fieldName = preg_replace('/^.+_te?xt\[(.+)\]$/', '\1', $fields['name']);
+} else if(preg_match('|^.+_input\[.+\]$|i', $fields['name'])){
+	$fieldName = preg_replace('/^.+_input\[(.+)\]$/', '\1', $fields['name']);
+} else if(preg_match('|^we_ui.+\[.+\]$|i', $fields['name'])){//we_user_input
+	$fieldName = preg_replace('/^we_ui.+\[(.+)\]$/', '\1', $fields['name']);
 	$writeToFrontend = true;
 }
 
-echo we_html_tools::getHtmlTop(sprintf('', $fieldName), ($_REQUEST['we_cmd'][15] ? $_REQUEST['we_cmd'][15] : $defaultCharset));
+echo we_html_tools::getHtmlTop(sprintf('', $fieldName), $fields['charset']);
 
-if(isset($fieldName) && isset($_REQUEST['we_okpressed']) && $_REQUEST['we_okpressed']){
+if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed')){
 	if(!isset($writeToFrontend)){
-		if(preg_match('%^(.+_te?xt)\[.+\]$%i', $_REQUEST['we_cmd'][1])){
-			$reqName = preg_replace('/^(.+_te?xt)\[.+\]$/', '\1', $_REQUEST['we_cmd'][1]);
-		} else if(preg_match('|^(.+_input)\[.+\]$|i', $_REQUEST['we_cmd'][1])){
-			$reqName = preg_replace('/^(.+_input)\[.+\]$/', '\1', $_REQUEST['we_cmd'][1]);
+		if(preg_match('%^(.+_te?xt)\[.+\]$%i', $fields['name'])){
+			$reqName = preg_replace('/^(.+_te?xt)\[.+\]$/', '\1', $fields['name']);
+		} else if(preg_match('|^(.+_input)\[.+\]$|i', $fields['name'])){
+			$reqName = preg_replace('/^(.+_input)\[.+\]$/', '\1', $fields['name']);
 		}
 		$openerDocument = 'top.opener.top.weEditorFrameController.getVisibleEditorFrame().document';
 	} else {
-		$reqName = str_replace('[' . $fieldName . ']', '', $_REQUEST['we_cmd'][1]);
+		$reqName = str_replace('[' . $fieldName . ']', '', $fields['name']);
 		$openerDocument = 'top.opener.document';
 	}
 
@@ -85,10 +112,10 @@ if(isset($fieldName) && isset($_REQUEST['we_okpressed']) && $_REQUEST['we_okpres
 
 	echo we_html_element::jsElement('
 try{
-	' . $openerDocument . '.getElementById("' . $_REQUEST['we_cmd'][1] . '").value = \'' . $taValue . '\';
+	' . $openerDocument . '.getElementById("' . $fields['name'] . '").value = \'' . $taValue . '\';
 } catch(err){}
 try{
-	' . $openerDocument . '.getElementById("div_wysiwyg_' . $_REQUEST['we_cmd'][1] . '").innerHTML = \'' . $divValue . '\';
+	' . $openerDocument . '.getElementById("div_wysiwyg_' . $fields['name'] . '").innerHTML=\'' . $divValue . '\';
 } catch(err){}
 try{
 	top.opener.top.weEditorFrameController.getVisibleEditorFrame().seeMode_dealWithLinks();
@@ -111,48 +138,21 @@ top.close();');
 		<form action="<?php print $_SERVER['SCRIPT_NAME']; ?>" name="we_form" method="post">
 			<input type="hidden" name="we_okpressed" value="1" />
 			<?php
-			foreach($_REQUEST['we_cmd'] as $i => $v){
-				echo '<input type="hidden" name="we_cmd[' . $i . ']" value="' . $_REQUEST['we_cmd'][$i] . '" />';
+			$pos = 0;
+			foreach($fields as $v){
+				echo '<input type="hidden" name="we_cmd[' . ($pos++) . ']" value="' . $v . '" />';
 			}
 
-			/*
-			  1 = name
-			  2 = width
-			  3 = height
-			  4 = empty
-			  5 = propstring
-			  6 = classname
-			  7 = fontnames
-			  8 = outsidewe
-			  9 = tbwidth (toolbar width)
-			  10 = tbheight
-			  11 = xml
-			  12 = remove first paragraph
-			  13 = bgcolor
-			  14 = baseHref
-			  15 = charset
-			  16 = cssClasses
-			  17 = Language
-			  18 = documentCss
-			  19 = origName
-			  20 = tinyParams
-			  21 = contextmenu
-			  22 = isInPopup
-			  23 = isInFrontend
-			  24 = templates
-			 *
-			 */
-
 			$e = new we_wysiwyg_editor(
-				$_REQUEST['we_cmd'][1], $_REQUEST['we_cmd'][2], $_REQUEST['we_cmd'][3], $GLOBALS['cmd4'], $_REQUEST['we_cmd'][5], $_REQUEST['we_cmd'][13], '', $_REQUEST['we_cmd'][6], $_REQUEST['we_cmd'][7], $_REQUEST['we_cmd'][8], $_REQUEST['we_cmd'][11], $_REQUEST['we_cmd'][12], true, $_REQUEST['we_cmd'][14], $_REQUEST['we_cmd'][15], $_REQUEST['we_cmd'][16], $_REQUEST['we_cmd'][17], '', true, $_REQUEST['we_cmd'][23], 'top', true, we_base_request::_(we_base_request::CMD, 'we_cmd', '', 18), we_base_request::_(we_base_request::CMD, 'we_cmd', '', 19), we_base_request::_(we_base_request::CMD, 'we_cmd', '', 20), we_base_request::_(we_base_request::CMD, 'we_cmd', '', 21), true, $_REQUEST['we_cmd'][24]
+				$fields['name'], $fields['width'], $fields['height'], $fields['empty'], $fields['propstring'], $fields['bgcolor'], '', $fields['classname'], $fields['fontnames'], $fields['outsidewe'], $fields['xml'], $fields['removeFirstParagraph'], true, $fields['baseHref'], $fields['charset'], $fields['cssClasses'], $fields['Language'], '', true, $fields['isInFrontend'], 'top', true, $fields['documentCss'], $fields['origName'], $fields['tinyParams'], $fields['contextmenu'], true, $fields['templates']
 			);
 
 
 			$cancelBut = we_html_button::create_button('cancel', "javascript:top.close()");
 			$okBut = we_html_button::create_button('ok', "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
 
-			print we_wysiwyg_editor::getHeaderHTML() . $e->getHTML() .
-				'<div style="height:8px"></div>' . we_html_button::position_yes_no_cancel($okBut, $cancelBut);
+			echo we_wysiwyg_editor::getHeaderHTML() . $e->getHTML() .
+			'<div style="height:8px"></div>' . we_html_button::position_yes_no_cancel($okBut, $cancelBut);
 			?>
 		</form>
 		<?php

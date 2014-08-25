@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_voting_frames extends weModuleFrames{
+class we_voting_frames extends we_modules_frame{
 	var $View;
 	var $_space_size = 150;
 	var $_text_size = 75;
@@ -70,7 +70,7 @@ class we_voting_frames extends weModuleFrames{
 	}
 
 	protected function getHTMLEditorHeader(){
-		if(isset($_REQUEST["home"])){
+		if(we_base_request::_(we_base_request::BOOL,"home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
 
@@ -123,7 +123,7 @@ class we_voting_frames extends weModuleFrames{
 
 		$hiddens = array('cmd' => 'voting_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
 
-		if(isset($_REQUEST["home"]) && $_REQUEST["home"]){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			$hiddens["cmd"] = "home";
 			$GLOBALS["we_print_not_htmltop"] = true;
 			$GLOBALS["we_head_insert"] = $this->View->getJSProperty();
@@ -148,7 +148,7 @@ class we_voting_frames extends weModuleFrames{
 
 	protected function getHTMLEditorFooter(){
 
-		if(isset($_REQUEST["home"])){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}
 
@@ -762,7 +762,8 @@ function refreshTexts(){
 	}
 
 	function getHTMLProperties($preselect = ''){// TODO: move to weVotingView
-		$tabNr = isset($_REQUEST["tabnr"]) ? (($this->View->voting->IsFolder && $_REQUEST["tabnr"] != 1) ? 1 : $_REQUEST["tabnr"]) : 1;
+		$t = we_base_request::_(we_base_request::INT, 'tabnr', 1);
+		$tabNr = ($this->View->voting->IsFolder && $t != 1) ? 1 : $t;
 
 		$out = we_html_element::jsElement('
 
@@ -853,10 +854,10 @@ function refreshTexts(){
 	}
 
 	private function getHTMLExportCsvMessage(){
-		if(!isset($_REQUEST["lnk"])){
+		$link = we_base_request::_(we_base_request::FILE, "lnk");
+		if($link === false){
 			return;
 		}
-		$link = $_REQUEST["lnk"];
 		$down = getServerUrl() . $link;
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 7, 1);
@@ -884,10 +885,10 @@ function refreshTexts(){
 	}
 
 	private function getHTMLExportGroupCsvMessage(){
-		if(!isset($_REQUEST["lnk"])){
+		$link = we_base_request::_(we_base_request::FILE, "lnk");
+		if($link === false){
 			return;
 		}
-		$link = $_REQUEST["lnk"];
 		$down = getServerUrl() . $link;
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 7, 1);
 

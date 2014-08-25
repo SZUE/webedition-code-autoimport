@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,14 +21,13 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /**
  * General Definition of WebEdition Export
  *
  */
 we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
-class we_export_export extends weModelBase{
 
+class we_export_export extends weModelBase{
 	//properties
 	var $ID;
 	var $Text;
@@ -102,7 +100,7 @@ class we_export_export extends weModelBase{
 	}
 
 	function save($force_new = false){
-		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::LINK_ICON);
+		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::FILE_ICON);
 		$sets = array();
 		$wheres = array();
 		foreach($this->persistent_slots as $val){
@@ -153,10 +151,12 @@ class we_export_export extends weModelBase{
 	}
 
 	function clearSessionVars(){
-		if(isset($_SESSION['weS']['ExportSession']))
+		if(isset($_SESSION['weS']['ExportSession'])){
 			unset($_SESSION['weS']['ExportSession']);
-		if(isset($_SESSION['weS']['exportVars']))
+		}
+		if(isset($_SESSION['weS']['exportVars'])){
 			unset($_SESSION['weS']['exportVars']);
+		}
 	}
 
 	function filenameNotValid($text){
@@ -170,7 +170,7 @@ class we_export_export extends weModelBase{
 	function setDefaults(){
 		$this->ParentID = 0;
 		$this->Text = "weExport_" . time();
-		$this->Icon = we_base_ContentTypes::LINK_ICON;
+		$this->Icon = we_base_ContentTypes::FILE_ICON;
 		$this->Selection = 'auto';
 		$this->SelectionType = 'doctype';
 		$this->Filename = $this->Text . ".xml";
@@ -194,7 +194,7 @@ class we_export_export extends weModelBase{
 	}
 
 	function pathExists($path){
-		return f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($path) . '" AND ID!=' . intval($this->ID).' LIMIT 1','',$this->db);
+		return f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($path) . '" AND ID!=' . intval($this->ID) . ' LIMIT 1', '', $this->db);
 	}
 
 	function isSelf(){

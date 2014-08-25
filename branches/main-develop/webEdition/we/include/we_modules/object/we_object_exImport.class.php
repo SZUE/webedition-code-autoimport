@@ -57,9 +57,6 @@ class we_object_exImport extends we_object{
 
 			$indexe = array(
 				'PRIMARY KEY (OF_ID)',
-				'KEY OF_WebUserID (OF_WebUserID)',
-				'KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`)',
-				'KEY `OF_IsSearchable` (`OF_IsSearchable`)'
 			);
 
 			$this->SerializedArray = unserialize($this->DefaultValues);

@@ -51,16 +51,16 @@ if(!($isObj OR $isTempl)){
 		$binaryPathNew = f("SELECT binaryPath FROM " . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($newDoc['version']) . " AND documentTable='" . $_db->escape($newDoc['documentTable']) . "' AND documentID=" . intval($newDoc['documentID']) . "  ORDER BY version DESC LIMIT 1 ", "binaryPath", $_db);
 	}
 
-	if(!empty($oldDoc)){
+	if($oldDoc){
 		$binaryPathOld = $oldDoc['binaryPath'];
 		if($binaryPathOld == ''){
-			$binaryPathOld = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($oldDoc['version']) . " AND documentTable='" . $_db->escape($oldDoc['documentTable']) . "' AND documentID=" . intval($oldDoc['documentID']) . " ORDER BY version DESC LIMIT 1 ", "binaryPath", $_db);
+			$binaryPathOld = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($oldDoc['version']) . " AND documentTable='" . $_db->escape($oldDoc['documentTable']) . "' AND documentID=" . intval($oldDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
 		}
 	}
 
 	$filePathNew = $_SERVER['DOCUMENT_ROOT'] . $binaryPathNew;
 	$fileNew = $binaryPathNew;
-	if(!empty($oldDoc)){
+	if($oldDoc){
 		$fileOld = $binaryPathOld;
 	}
 
@@ -137,7 +137,7 @@ $tabsBody = $we_tabs->getHTML() . we_html_element::jsElement('
 $contentNew = $contentOld = $contentDiff = '';
 
 if(!($isObj || $isTempl)){
-	$contentNew = '<iframe frameBorder="0" name="previewNew" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . $fileNew . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
+	$contentNew = '<iframe frameBorder="0" name="previewNew" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(WEBEDITION_DIR, '', $fileNew) . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
 }
 if($isTempl){
 	if($newDoc['documentElements']){
@@ -151,7 +151,7 @@ if($isTempl){
 	$contentNew = '<textarea style="width:99%;height:99%">' . $nDocElements['data']['dat'] . '</textarea>';
 }
 if(!empty($oldDoc) && !($isObj || $isTempl)){
-	$contentOld = '<iframe frameBorder="0" name="previewOld" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . $fileOld . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
+	$contentOld = '<iframe frameBorder="0" name="previewOld" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(WEBEDITION_DIR, '', $fileOld) . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
 }
 if(!empty($oldDoc) && $isTempl){
 	if($oldDoc['documentElements']){

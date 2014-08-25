@@ -39,7 +39,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'load_editor':
 // set default tab for creating new imageDocuments to "metadata":
 		if($we_doc->ContentType == we_base_ContentTypes::IMAGE && $we_doc->ID == 0){
-			$_SESSION['weS']['EditPageNr'] = $we_doc->EditPageNr = $_REQUEST['we_cmd'][1] = we_base_constants::WE_EDITPAGE_CONTENT;
+			$_SESSION['weS']['EditPageNr'] = $we_doc->EditPageNr = /*$_REQUEST['we_cmd'][1] = */we_base_constants::WE_EDITPAGE_CONTENT;
 		}
 
 		//WEEXT
@@ -361,7 +361,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 
 	we_base_file::save($fullName, $contents);
 
-	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?file=' . $tempName);
+	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(WEBEDITION_DIR, '', $tempName));
 } else {
 	$we_JavaScript = '';
 	switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
@@ -763,7 +763,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 			}
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 			if(isset($GLOBALS['we_file_to_delete_after_include'])){
-				we_util_File::deleteLocalFile($GLOBALS['we_file_to_delete_after_include']);
+				we_base_file::deleteLocalFile($GLOBALS['we_file_to_delete_after_include']);
 			}
 			if($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_SCHEDULER || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_THUMBNAILS || ($we_doc instanceof we_object && $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)){
 				echo we_html_element::jsElement('setTimeout("doScrollTo();",100);');

@@ -51,10 +51,10 @@ abstract class we_rebuild_wizard{
 		$WE_PB = new we_progressBar(0, 0, true);
 		$WE_PB->setStudLen($dc ? 490 : 200);
 		$WE_PB->addText("", 0, "pb1");
-		$js = $WE_PB->getJSCode();
 		$pb = $WE_PB->getHTML();
 
-		$js .= we_html_element::jsElement(
+		$js = $WE_PB->getJSCode().
+			we_html_element::jsElement(
 				'function showRefreshButton() {
 				  prevBut = document.getElementById("prev");
 				  nextBut = document.getElementById("next");

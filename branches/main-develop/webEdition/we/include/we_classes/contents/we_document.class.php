@@ -771,14 +771,14 @@ class we_document extends we_root{
 
 	protected function i_writeSiteDir($doc){
 		if($this->isMoved()){
-			we_util_File::deleteLocalFile($this->getSitePath(true));
+			we_base_file::deleteLocalFile($this->getSitePath(true));
 		}
 		return we_base_file::save($this->getSitePath(), $doc);
 	}
 
 	protected function i_writeMainDir($doc){
 		if($this->isMoved()){
-			we_util_File::deleteLocalFile($this->getRealPath(true));
+			we_base_file::deleteLocalFile($this->getRealPath(true));
 		}
 		return we_base_file::save($this->getRealPath(), $doc);
 	}
@@ -950,11 +950,12 @@ class we_document extends we_root{
 				if(is_array($link)){
 					$img = new we_imageDocument();
 //	set name of image for rollover ...
-					$_useName = '';
 
 					if(isset($attribs['name'])){ //	here we must change the name for a rollover-image
 						$_useName = $attribs['name'] . '_img';
 						$img->setElement('name', $_useName, 'dat');
+					} else {
+						$_useName = '';
 					}
 
 					$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), true, false);
@@ -974,42 +975,22 @@ class we_document extends we_root{
 				}
 				return '';
 			case 'date':
-// it is a date field from the customer module
-//2010-12-12 00:00:00
-				if($val && !is_numeric($val)){
-					$len = strlen($val);
-					if($len == 19 || $len == 10){
+				$val = $val ? $val : time();
+				$format = isset($attribs['format']) && $attribs['format'] ? $attribs['format'] : g_l('date', '[format][default]');
+				Zend_Registry::set('Zend_Locale', new Zend_Locale((isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS["weDefaultFrontendLanguage"])));
+				$zdate = is_numeric($val) ? new Zend_Date($val, Zend_Date::TIMESTAMP) : new Zend_Date($val);
 
-						$_y = substr($val, 0, 4);
-						$_m = substr($val, 5, 2);
-						$_d = substr($val, 8, 2);
-						if($len == 19){
-							$_h = substr($val, 11, 2);
-							$_min = substr($val, 14, 2);
-							$_s = substr($val, 17, 2);
-							$val = mktime($_h, $_min, $_s, $_m, $_d, $_y);
-						} else {
-							$val = mktime(0, 0, 0, $_m, $_d, $_y);
-						}
+				//workaround buggy zend dateformat with \h which duplicates the char
+				$ret = '';
+				for($i = 0; $i < strlen($format); $i++){
+					if($format[$i] == '\\'){
+						$ret.=$format[++$i];
+					} else {
+						$ret.=$zdate->toString($format[$i], 'php');
 					}
 				}
+				return $ret;
 
-				$val = $val ? $val : time();
-
-				$format = isset($attribs['format']) ? $attribs['format'] : g_l('date', '[format][default]');
-//FIXME: zend part doesn't use correctDateFormat & won't work on new Dates
-				if(isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language != 'de_DE' && is_numeric($val)){
-					$zdate = new Zend_Date($val, Zend_Date::TIMESTAMP);
-					return $zdate->toString($format, 'php', $GLOBALS['WE_MAIN_DOC']->Language);
-				}
-				require_once(WE_INCLUDES_PATH . 'we_tags/we_tag_date.inc.php');
-				try{
-					$dt = new DateTime((is_numeric($val) ? '@' : '') . $val);
-				} catch (Exception $e){
-					$dt = new DateTime('now');
-				}
-				$dt->setTimeZone(new DateTimeZone(date_default_timezone_get())); //Bug #6335
-				return $dt->format(correctDateFormat($format, $dt));
 			case 'select':
 				if(defined('OBJECT_TABLE')){
 					if(strlen($val) == 0){
@@ -1107,12 +1088,15 @@ class we_document extends we_root{
 					break;
 				}
 				$val = $this->getElement($attribs['name'], 'bdid');
-				if(!$val){
-					$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
-				}
+				$val = $val ? $val : $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
+
 				break;
 			case 'href':
-				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
+				if(!isset($attribs['name'])){
+					return;
+				}
+				$val = $this->getElement($attribs['name'], 'bdid');
+				$val = $val ? $val : $this->getElement($attribs['name']);
 				if($this instanceof we_objectFile){
 					$hrefArr = $val ? unserialize($val) : array();
 					return (is_array($hrefArr) ? self::getHrefByArray($hrefArr) : '');
@@ -1125,11 +1109,11 @@ class we_document extends we_root{
 		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : ($this instanceof we_objectFile ? $this->TableID : ''));
 	}
 
-	private function getValFromSrc($fn, $name){
+	private function getValFromSrc($fn, $name, $key = 'dat'){
 		switch($fn){
 			default:
 			case 'this':
-				return $this->getElement($name);
+				return $this->getElement($name, $key);
 			case 'listview':
 				return $GLOBALS['lv']->f($name);
 		}
@@ -1140,7 +1124,8 @@ class we_document extends we_root{
 		$n = $attribs['name'];
 		$nint = $n . we_base_link::MAGIC_INT_LINK;
 		if($this->getValFromSrc($fn, $nint)){
-			$intID = $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID);
+			$intID = $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID, 'bdid'); //try bdid first
+			$intID = $intID ? $intID : $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID);
 			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), '', $db);
 		}
 		return $this->getValFromSrc($fn, $n);

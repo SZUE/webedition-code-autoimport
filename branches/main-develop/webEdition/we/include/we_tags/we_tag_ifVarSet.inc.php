@@ -59,15 +59,16 @@ function we_isVarSet($name, $orig, $type, $docAttr, $property = false, $formname
 			if($property){
 				return isset($doc->$name) || isset($doc->orig);
 			}
-			if($type == 'href' && isset($doc->elements[$name . we_base_link::MAGIC_INT_LINK]) && $doc->elements[$name . we_base_link::MAGIC_INT_LINK]['dat']){
+			if($type == 'href' && $doc->getElement($name . we_base_link::MAGIC_INT_LINK) == 0){
 				return isset($doc->elements[$name . we_base_link::MAGIC_INT_LINK_PATH]['dat']);
 			}
 			if(isset($doc->elements[$name])){
 				switch(isset($doc->elements[$name]['type']) ? $doc->elements[$name]['type'] : ''){
 					case 'checkbox_feld':
-						return isset($doc->elements[$name]['dat']) && $doc->elements[$name]['dat'] != 0;
+						return intval($doc->getElement($name)) != 0;
 					case 'img':
-						return isset($doc->elements[$name]['bdid']) && $doc->elements[$name]['bdid'] != 0;
+					case 'href':
+						return intval($doc->getElement($name, 'bdid')) != 0;
 					default:
 						return isset($doc->elements[$name]['dat']);
 				}

@@ -25,7 +25,6 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.
 /**
  * @see we_app_Installer
  */
-Zend_Loader::loadClass('we_app_Installer');
 
 /**
  * class for installing and uninstalling webEdition applications (formerly known as "tools")

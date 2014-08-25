@@ -50,14 +50,14 @@ function we_isNotEmpty($attribs){
 			}
 			$int = intval($doc->getElement($match . we_base_link::MAGIC_INT_LINK));
 			if($int){ // for type = href int
-				$intID = $doc->getElement($match . we_base_link::MAGIC_INT_LINK_ID);
+				$intID = $doc->getElement($match . we_base_link::MAGIC_INT_LINK_ID, 'bdid');
 				return (bool) ($intID > 0) && strlen(id_to_path(array($intID)));
-			} else {
-				$hreftmp = $doc->getElement($match);
-				if(substr($hreftmp, 0, 1) == '/'){
-					return (bool) (file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp));
-				}
 			}
+			$hreftmp = $doc->getElement($match);
+			if(substr($hreftmp, 0, 1) == '/'){
+				return (bool) (file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp));
+			}
+
 		default :
 			//   #3938 added this - some php version crashed, when unserialize started with a ?,?,?
 			if((substr($doc->getElement($match), 0, 2) == 'a:')){ //  only unserialize, when $match cluld be an array

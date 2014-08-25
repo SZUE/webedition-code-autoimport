@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_tool_lookup{
-
 	const REGISTRY_NAME = 'weToolsRegistry';
 
 	static function getAllTools($force = false, $addInternTools = false, $includeDisabled = false){
@@ -49,7 +48,6 @@ abstract class we_tool_lookup{
 		require_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.inc.php');
 
 		$lang = isset($GLOBALS['WE_LANGUAGE']) ? $GLOBALS['WE_LANGUAGE'] : we_core_Local::getComputedUILang();
-		Zend_Loader::loadClass('we_core_Local');
 
 
 		foreach($_toolsDirs as $_toolDir){
@@ -255,12 +253,12 @@ abstract class we_tool_lookup{
 	static function getAllToolLanguages($toolname, $subdir = '/lang', $includeDisabled = false){
 		$_founds = array();
 		$_tooldir = WE_APPS_PATH . $toolname . $subdir;
+		$langs = getWELangs();
 		if(self::isTool($toolname, $includeDisabled) && is_dir($_tooldir)){
 			$_d = opendir($_tooldir);
 			while(($_entry = readdir($_d))){
 				if(is_dir($_tooldir . '/' . $_entry) && stristr($_entry, '.') === FALSE){
-					$_tagname = we_core_Local::localeToWeLang($_entry);
-					$_founds[$_tagname] = $_tooldir . '/' . $_entry . '/default.xml';
+					$_founds[$langs[$_entry]] = $_tooldir . '/' . $_entry . '/default.xml';
 				}
 			}
 			closedir($_d);
@@ -451,5 +449,5 @@ abstract class we_tool_lookup{
 }
 
 abstract class weToolLookup extends we_tool_lookup{
-	
+
 }

@@ -25,7 +25,7 @@
 //This is a copy of weToolTree:
 //If this is appropriate for other modules too, make a generic combination of both classes!
 
-class weModuleTree extends weMainTree{
+class we_modules_tree extends weMainTree{
 
 	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
 

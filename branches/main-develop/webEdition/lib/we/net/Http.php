@@ -19,18 +19,6 @@
  * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-/**
- * @see we_net_Exception
- */
-Zend_Loader::loadClass('we_net_Exception');
-
-/**
- * @see we_util_Log
- */
-Zend_Loader::loadClass('we_util_Log');
-
-include_once ('Zend/Uri/Http.php');
-include_once ('Zend/Http/Client.php');
 
 /**
  * class for local installation of webEdition applications (formerly known as "tools")

@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 if(isset($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok'])){
-	$i = 0;
+
 
 	$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 1, 4);
 	$i = 0;
@@ -40,6 +40,7 @@ if(isset($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['del
 	}
 	$table->addRow();
 	$table->setCol( ++$i, 0, null, we_html_tools::getPixel(10, 10));
+	unset($_SESSION['weS']['delete_files_nok']);
 }
 
 
@@ -56,10 +57,11 @@ $parts = array(
 		"space" => 10
 	),
 );
+unset($_SESSION['weS']['delete_files_info']);
 
 $buttons = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont", "align" => "right"), 1, 1);
 $buttons->setCol(0, 0, null, we_html_button::create_button("close", "javascript:self.close();"));
-print we_html_element::htmlDocType() . we_html_element::htmlHtml(
+echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 			//FIXME: missing title
 			we_html_tools::getHtmlInnerHead()

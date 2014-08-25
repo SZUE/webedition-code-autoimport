@@ -21,11 +21,6 @@
  */
 
 /**
- * @see we_ui_abstract_AbstractElement
- */
-Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
-
-/**
  * Class to display a YUI tree
  *
  * @category   we

@@ -631,7 +631,7 @@ class we_thumbnail{
 				}
 			}
 			foreach($filestodelete as $p){
-				we_util_File::deleteLocalFile($p);
+				we_base_file::deleteLocalFile($p);
 			}
 		}
 	}
@@ -657,7 +657,7 @@ class we_thumbnail{
 			}
 		}
 		foreach($filestodelete as $p){
-			we_util_File::deleteLocalFile($p);
+			we_base_file::deleteLocalFile($p);
 		}
 	}
 

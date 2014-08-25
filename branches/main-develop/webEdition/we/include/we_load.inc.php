@@ -142,7 +142,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "closeFolder"
 				$treeItems[] = $item;
 			} else {
 				$treeItems[] = array(
-					"icon" => $ct->getIcon($ContentType, we_base_ContentTypes::LINK_ICON, $DB_WE->f("Extension")),
+				"icon" => $ct->getIcon($ContentType, we_base_ContentTypes::FILE_ICON, $DB_WE->f("Extension")),
 					"id" => $ID,
 					"parentid" => $DB_WE->f("ParentID"),
 					"text" => $DB_WE->f("Text"),

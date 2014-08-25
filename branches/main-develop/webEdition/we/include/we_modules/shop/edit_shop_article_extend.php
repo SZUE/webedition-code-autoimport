@@ -53,7 +53,7 @@ function getPagerLinkObj(){
 		'&orderBy=' . $GLOBALS['orderBy'] .
 		'&ViewClass=' . $GLOBALS['classid'] .
 		'&actPage=' . $GLOBALS['actPage'] .
-		(isset($_REQUEST['orderdesc']) ? '&orderDesc=1' : '' );
+		(we_base_request::_(we_base_request::BOOL, 'orderdesc') ? '&orderDesc=1' : '' );
 }
 
 function getTitleLinkDoc($text, $orderKey){
@@ -85,7 +85,7 @@ function getPagerLinkDoc(){
 		'?typ=' . $GLOBALS['typeDoc'] .
 		'&orderBy=' . $GLOBALS['orderBy'] .
 		'&actPage=' . $GLOBALS['actPage'] .
-		(isset($_REQUEST['orderdesc']) ? '&orderDesc=1' : '' );
+		(we_base_request::_(we_base_request::BOOL, 'orderdesc') ? '&orderDesc=1' : '' );
 }
 
 /* * ************ fuction for orders  ************** */
@@ -198,7 +198,7 @@ if(isset($daten)){
 
 	switch(we_base_request::_(we_base_request::STRING, 'typ')){
 		case "object": //start output object
-			$orderBy = isset($_REQUEST['orderBy']) ? $DB_WE->escape($_REQUEST['orderBy']) : 'obTitle';
+			$orderBy = $DB_WE->escape(we_base_request::_(we_base_request::STRING, 'orderBy', 'obTitle'));
 			$entries = 0;
 			$count_expression = "";
 			$from_expression = "";
@@ -250,7 +250,6 @@ if(isset($daten)){
 				);
 
 				// :: then do the query for objects
-
 //FIXME: is there any reason, why we load the whole table?!
 				$DB_WE->query('SELECT o.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS obTitle,o.OF_ID AS obID,of.CreationDate AS cDate,of.Published AS cPub,of.ModDate AS cMob
                     FROM ' . OBJECT_X_TABLE . $classid . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.OF_ID=of.ID
@@ -262,7 +261,7 @@ if(isset($daten)){
 				while($DB_WE->next_record()){
 					// for the articlelist, we need also all these article, so sve them in array
 					$orderRows[] = array(
-						'articleArray' => array(),//unserialize($DB_WE->f('strSerial')),
+						'articleArray' => array(), //unserialize($DB_WE->f('strSerial')),
 						// save all data in array
 						'obTitle' => $DB_WE->f('obTitle'), // also for ordering
 						'obID' => $DB_WE->f('obID'), // also for ordering
@@ -364,7 +363,7 @@ if(isset($daten)){
 				while($DB_WE->next_record()){
 					// for the articlelist, we need also all these article, so sve them in array
 					$orderRows[] = array(
-						'articleArray' => array(),//unserialize($DB_WE->f('strSerial')),
+						'articleArray' => array(), //unserialize($DB_WE->f('strSerial')),
 						// save all data in array
 						'sql' => $DB_WE->f('sqlDat'), // also for ordering
 						'dd' => $DB_WE->f('dd'), // also for ordering

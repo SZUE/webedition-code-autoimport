@@ -45,7 +45,7 @@ if(!isset($GLOBALS['loginpage'])){
 if(isset($GLOBALS['loginpage']) && WE_LOGIN_HIDEWESTATUS){
 	$_logo = 'info.jpg';
 } else {
-	switch(defined('WE_VERSION_SUPP') ? strtolower(WE_VERSION_SUPP) : ''){
+	switch(strtolower(WE_VERSION_SUPP)){
 		case "rc":
 			$_logo = "info_rc.jpg";
 			break;

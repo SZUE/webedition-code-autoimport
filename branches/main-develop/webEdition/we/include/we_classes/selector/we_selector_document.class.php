@@ -100,10 +100,12 @@ class we_selector_document extends we_selector_directory{
 				while($_path !== '' && dirname($_path) != '\\' && dirname($_path) != '/'){
 					$_path = dirname($_path);
 				}
-				$_cid = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Path='" . $_db->escape($_path) . "'", 'ID', $_db);
-				$this->titleName = f('SELECT DefaultTitle FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($_cid), 'DefaultTitle', $_db);
+
+				$hash = getHash('SELECT o.DefaultTitle,o.ID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.ID=of.TableID WHERE of.ID=' . intval($this->dir), $_db);
+
+				$this->titleName = ($hash ? $hash['DefaultTitle'] : '');
 				if($this->titleName && strpos($this->titleName, '_')){
-					$_db->query('SELECT OF_ID, ' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . intval($_cid) . ' WHERE OF_ParentID=' . intval($this->dir));
+					$_db->query('SELECT OF_ID, ' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . $hash['ID'] . ' WHERE OF_ParentID=' . intval($this->dir));
 					while($_db->next_record()){
 						$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
 					}

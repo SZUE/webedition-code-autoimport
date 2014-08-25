@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_shop_frames extends weModuleFrames{
+class we_shop_frames extends we_modules_frame{
 	var $db;
 	var $View;
 	var $frameset;
@@ -335,7 +335,7 @@ class we_shop_frames extends weModuleFrames{
 			}
 
 
-			print "  menuDaten.add(new urlEntry('" . we_base_ContentTypes::LINK_ICON . "'," . $this->db->f("IntOrderID") . "," . $this->db->f("mdate") . ",'" . $this->db->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $this->db->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($this->db->f("DateShipping") > 0) ? 0 : 1) . "','" . $style . "'));\n";
+			print "  menuDaten.add(new urlEntry('" . we_base_ContentTypes::FILE_ICON . "'," . $this->db->f("IntOrderID") . "," . $this->db->f("mdate") . ",'" . $this->db->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $this->db->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($this->db->f("DateShipping") > 0) ? 0 : 1) . "','" . $style . "'));\n";
 			if($this->db->f('DateShipping') <= 0){
 				if(isset(${'l' . $this->db->f('mdate')})){
 					${'l' . $this->db->f('mdate')} ++;

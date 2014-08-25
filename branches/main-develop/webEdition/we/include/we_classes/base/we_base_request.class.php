@@ -42,6 +42,7 @@ class we_base_request{
 	const TABLE = 'table';
 	const FILE = 'file';
 	const FILELIST = 'filelist';
+	const FILELISTA = 'filelista';
 	const URL = 'url';
 	const STRING = 'string';
 	const HTML = 'html';
@@ -91,7 +92,8 @@ class we_base_request{
 				$var = intval($var);
 				return;
 			case self::FLOAT:
-				$var = floatval($var);
+				//FIXME: check for country dependencies (eg. 1.3333,22)
+				$var = floatval(str_replace(',', '.', $var));
 				return;
 			case self::BOOL:
 				if(is_bool($var)){
@@ -128,15 +130,32 @@ class we_base_request{
 				  return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false); */
 				$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
 				return;
+			case self::FILELISTA:
 			case self::FILELIST:
-				$var = explode(',', trim(str_replace(array('../', '//'), array('', '/'), $var), ','));
+				$var = explode(',', trim(strtr($var, array(
+					'../' => '',
+					'//' => ''
+						)), ','));
 				foreach($var as &$cur){
 					$cur = filter_var($cur, FILTER_SANITIZE_URL);
+					if(strpos($cur, rtrim(WEBEDITION_DIR, '/')) === 0){//file-selector has propably access
+						if(!(strstr($cur, SITE_DIR) || strstr($cur, TEMP_DIR))){//allow site/tmp dir
+							$cur = isset($GLOBALS['supportDebugging']) ? $cur : '-1';
+						}
+					}
 				}
-				$var = implode(',', $var);
+				$var = $type == self::FILELIST ? implode(',', $var) : $var;
 				return;
 			case self::FILE:
-				$var = str_replace(array('../', '//'), array('', '/'), filter_var($var, FILTER_SANITIZE_URL));
+				$var = strtr(filter_var($var, FILTER_SANITIZE_URL), array(
+					'../' => '',
+					'//' => '/'
+				));
+				if(strpos($var, rtrim(WEBEDITION_DIR, '/')) === 0){//file-selector has propably access
+					if(!(strstr($var, SITE_DIR) || strstr($var, TEMP_DIR))){//allow site/tmp dir
+						$var = isset($GLOBALS['supportDebugging']) ? $var : '-1';
+					}
+				}
 				return;
 			case self::URL:
 				$var = filter_var($var, FILTER_SANITIZE_URL);
@@ -254,10 +273,11 @@ class we_base_request{
 					break;
 				case self::RAW:
 				case self::STRING:
-					if($var){
+				case self::JS:
+					if(WE_VERSION_SUPP && $var){//show this only during development
 						if($var == ('' . intval($oldVar))){
-							t_e('notice', 'variable could be int', $args, $var);
-						} elseif($var == ('' . floatval($oldVar))){
+							t_e('notice', 'variable could be int/bool?', $args, $var);
+						} elseif(str_replace(',', '.', $var) == ('' . floatval($oldVar))){
 							t_e('notice', 'variable could be float', $args, $var);
 						} elseif(strpos($var, '@')){
 							t_e('notice', 'variable could be mail', $args, $var);
@@ -267,6 +287,10 @@ class we_base_request{
 							t_e('notice', 'variable could be file', $args, $var);
 						} elseif(count(explode(',', $var)) > 2){
 							t_e('notice', 'variable could be list', $args, $var);
+						} elseif(strpos($var, 'a:') === 0 || strpos($var, 's:') === 0){
+							t_e('notice', 'variable could be serial', $args, $var);
+						} elseif(strpos($var, 'tbl') === 0){
+							t_e('notice', 'variable could be table', $args, $var);
 						}
 					}
 				//no break;

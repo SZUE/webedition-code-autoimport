@@ -20,10 +20,6 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-/**
- * @see we_ui_layout_HTMLPage
- */
-Zend_Loader::loadClass('we_ui_layout_HTMLPage');
 
 /**
  * Base Class for Dialog Windows

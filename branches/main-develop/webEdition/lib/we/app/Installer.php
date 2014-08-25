@@ -19,35 +19,6 @@
  * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-/**
- * @see we_app_Application
- */
-Zend_Loader::loadClass('we_app_Application');
-
-/**
- * @see we_app_Common
- */
-Zend_Loader::loadClass('we_app_Common');
-
-/**
- * @see we_app_Installer_Common
- */
-Zend_Loader::loadClass('we_app_Installer_Common');
-
-/**
- * @see we_app_Hook
- */
-Zend_Loader::loadClass('we_app_Hook');
-
-/**
- * @see we_app_Hook_Reader_Xml
- */
-Zend_Loader::loadClass('we_app_Hook_Reader_Xml');
-
-/**
- * @see we_util_File
- */
-Zend_Loader::loadClass('we_util_File');
 
 /**
  * class for installing and uninstalling webEdition applications (formerly known as "tools")

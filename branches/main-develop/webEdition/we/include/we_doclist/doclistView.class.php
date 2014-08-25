@@ -1119,7 +1119,7 @@ class doclistView{
 				}
 			}
 			$ext = isset($_result [$f]["Extension"]) ? $_result [$f]["Extension"] : "";
-			$Icon = we_base_ContentTypes::inst()->getIcon($_result [$f]["ContentType"], we_base_ContentTypes::LINK_ICON, $ext);
+			$Icon = we_base_ContentTypes::inst()->getIcon($_result [$f]["ContentType"], we_base_ContentTypes::FILE_ICON, $ext);
 
 			if($view == 0){
 				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] == "objectFile") && permissionhandler::hasPerm('PUBLISH')) ? we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '';

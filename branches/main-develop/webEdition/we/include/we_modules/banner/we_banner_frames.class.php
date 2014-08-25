@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_banner_frames extends weModuleFrames{
+class we_banner_frames extends we_modules_frame{
 
 	var $edit_cmd = "banner_edit";
 	protected $useMainTree = false;
@@ -353,7 +353,7 @@ class we_banner_frames extends weModuleFrames{
 		$page = we_base_request::_(we_base_request::INT, "page", 0);
 
 		$headline1 = ($isFolder) ? g_l('modules_banner', '[group]') : g_l('modules_banner', '[banner]');
-		$text = we_base_request::_(we_base_request::FILE, "txt", ($isFolder ? g_l('modules_banner', '[newbannergroup]') : g_l('modules_banner', '[newbanner]')));
+		$text = we_base_request::_(we_base_request::STRING, "txt", ($isFolder ? g_l('modules_banner', '[newbannergroup]') : g_l('modules_banner', '[newbanner]')));
 
 		$we_tabs = new we_tabs();
 

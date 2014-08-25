@@ -24,7 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class we_banner_view extends we_banner_base{
+class we_banner_view extends we_banner_base implements we_modules_viewIF{
 	// settings array; format settings[setting_name]=settings_value
 	var $settings = array();
 	//default banner
@@ -69,7 +69,7 @@ class we_banner_view extends we_banner_base{
 	}
 
 	function htmlHidden($name, $value = "", $id = ""){
-		return '<input type="hidden" name="' . trim($name) . '" value="' . oldHtmlspecialchars($value) . '"' . (empty($id) ? '' : ' id="' . $id . '"') . ' />';
+		return '<input type="hidden" name="' . trim($name) . '" value="' . oldHtmlspecialchars($value) . '"' . ($id ? ' id="' . $id . '"' : '') . ' />';
 	}
 
 	function getProperties(){
@@ -645,7 +645,7 @@ class we_banner_view extends we_banner_base{
 						return;
 					}
 					if(f('SELECT 1 FROM ' . BANNER_TABLE . " WHERE Text='" . $this->db->escape($this->banner->Text) . "' AND ParentID=" . intval($this->banner->ParentID) .
-						($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), '', $this->db)){
+							($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), '', $this->db)){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
 					}
@@ -677,8 +677,7 @@ class we_banner_view extends we_banner_base{
 					$this->banner->save($message);
 					echo we_html_element::jsElement(
 						($newone ?
-							'top.content.makeNewEntry("' . $this->banner->Icon . '",' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",true,"' . ($this->banner->IsFolder
-									? 'folder' : 'file') . '","weBanner",1);' :
+							'top.content.makeNewEntry("' . $this->banner->Icon . '",' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",true,"' . ($this->banner->IsFolder ? 'folder' : 'file') . '","weBanner",1);' :
 							'top.content.updateEntry(' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",1);') .
 						$childs .
 						we_message_reporting::getShowMessageCall(($this->banner->IsFolder ? g_l('modules_banner', '[save_group_ok]') : g_l('modules_banner', '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE));
@@ -731,12 +730,12 @@ class we_banner_view extends we_banner_base{
 
 		if(($day = we_base_request::_(we_base_request::INT, "dateFilter_day"))){
 			$this->FilterDate = mktime(0, 0, 0, we_base_request::_(we_base_request::INT, "dateFilter_month"), $day, we_base_request::_(we_base_request::INT, "dateFilter_year"));
-		} else if(($date = we_base_request::_(we_base_request::STRING, "FilterDate"))){
+		} else if(($date = we_base_request::_(we_base_request::INT, "FilterDate"))){
 			$this->FilterDate = $date;
 		}
 		if(($day = we_base_request::_(we_base_request::INT, "dateFilter2_day"))){
 			$this->FilterDateEnd = mktime(0, 0, 0, we_base_request::_(we_base_request::INT, "dateFilter2_month"), $day, we_base_request::_(we_base_request::INT, "dateFilter2_year"));
-		} else if(($date = we_base_request::_(we_base_request::STRING, "FilterDateEnd"))){
+		} else if(($date = we_base_request::_(we_base_request::INT, "FilterDateEnd"))){
 			$this->FilterDateEnd = $date;
 		}
 
@@ -880,8 +879,7 @@ class we_banner_view extends we_banner_base{
 		);
 		while($GLOBALS["lv"]->next_record()){
 			$rows[] = array(
-				array("dat" => ($GLOBALS["lv"]->f("page") ? '' : '<a href="' . $GLOBALS["lv"]->f("WE_PATH") . '" target="_blank">') . $GLOBALS["lv"]->f("WE_PATH") . ($GLOBALS["lv"]->f("page")
-							? '' : '</a>'), FILE_TABLE),
+				array("dat" => ($GLOBALS["lv"]->f("page") ? '' : '<a href="' . $GLOBALS["lv"]->f("WE_PATH") . '" target="_blank">') . $GLOBALS["lv"]->f("WE_PATH") . ($GLOBALS["lv"]->f("page") ? '' : '</a>'), FILE_TABLE),
 				array("dat" => $GLOBALS["lv"]->f("views")),
 				array("dat" => $GLOBALS["lv"]->f("clicks")),
 				array("dat" => $GLOBALS["lv"]->f("rate") . "%", "align" => "right")

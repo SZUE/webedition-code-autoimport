@@ -20,16 +20,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 /**
- * @see we_net_Http
- */
-Zend_Loader::loadClass('we_net_Http');
-
-/**
- * @see we_net_LiveUpdate_Session
- */
-Zend_Loader::loadClass('we_net_LiveUpdate_Session');
-
-/**
  * class for liveUpdate actions
  *
  * @category   we

@@ -21,7 +21,6 @@
 /**
  * @see Zend_Exception
  */
-Zend_Loader::loadClass('Zend_Exception');
 
 /**
  * class for exceptions

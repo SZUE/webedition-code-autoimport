@@ -22,8 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_workflow_frames extends weModuleFrames {
-
+class we_workflow_frames extends we_modules_frame{
 	public $module = "workflow";
 	protected $useMainTree = false;
 
@@ -120,7 +119,7 @@ class we_workflow_frames extends weModuleFrames {
 						if (nf[ai].name != -1) {
 							fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 						}
-						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]");         ?>\">");
+						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]");           ?>\">");
 						fr.write("</a>");
 						fr.write("&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + (parseInt(nf[ai].published) ? "" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "" : "") + "</A>&nbsp;&nbsp;<br/>\n");
 					} else {
@@ -129,14 +128,14 @@ class we_workflow_frames extends weModuleFrames {
 						var zusatz = (ai == nf.laenge ? "end" : "");
 
 						if (nf[ai].offen == 0) {
-							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]")         ?>\"></A>");
+							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]")           ?>\"></A>");
 							var zusatz2 = "";
 						} else {
-							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[close_statustext]")         ?>\"></A>");
+							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[close_statustext]")           ?>\"></A>");
 							var zusatz2 = "open";
 						}
 						fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
-						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/workflow_folder" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[edit_statustext]");         ?>\">");
+						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/workflow_folder" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[edit_statustext]");           ?>\">");
 						fr.write("</a>");
 						fr.write("<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 						fr.write("&nbsp;<b>" + (!parseInt(nf[ai].published) ? "<font color=\"red\">" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "</font>" : "") + "</b>");
@@ -168,7 +167,7 @@ class we_workflow_frames extends weModuleFrames {
 			function updateEntry(id, pid, text, pub) {
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ == 'folder')){
+					if ((menuDaten[ai].typ == 'folder')) {
 						if (menuDaten[ai].name == id) {
 							menuDaten[ai].vorfahr = pid;
 							menuDaten[ai].text = text;
@@ -184,7 +183,7 @@ class we_workflow_frames extends weModuleFrames {
 				var ai = 1;
 				var ind = 0;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ == type)){
+					if ((menuDaten[ai].typ == type)) {
 						if (menuDaten[ai].name == id) {
 							ind = ai;
 							break;
@@ -208,21 +207,21 @@ class we_workflow_frames extends weModuleFrames {
 				var eintragsIndex = indexOfEntry(name);
 				menuDaten[eintragsIndex].offen = status;
 				/*if (status) {
-					if (!menuDaten[eintragsIndex].loaded) {
-						drawEintraege();
-					} else {
-						drawEintraege();
-					}
-				} else {*/
-					drawEintraege();
+				 if (!menuDaten[eintragsIndex].loaded) {
+				 drawEintraege();
+				 } else {
+				 drawEintraege();
+				 }
+				 } else {*/
+				drawEintraege();
 				//}
 			}
 
 			function indexOfEntry(name) {
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ == 'root') || (menuDaten[ai].typ == 'folder')){
-						if (menuDaten[ai].name == name){
+					if ((menuDaten[ai].typ == 'root') || (menuDaten[ai].typ == 'folder')) {
+						if (menuDaten[ai].name == name) {
 							return ai;
 						}
 					}
@@ -235,8 +234,8 @@ class we_workflow_frames extends weModuleFrames {
 				var nf = new container();
 				var ai = 1;
 				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'file')){
-						if (menuDaten[ai].vorfahr == eintrag){
+					if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'file')) {
+						if (menuDaten[ai].vorfahr == eintrag) {
 							nf.add(menuDaten[ai]);
 						}
 					}
@@ -355,12 +354,11 @@ class we_workflow_frames extends weModuleFrames {
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){
-		if(isset($_REQUEST["home"])){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "F0EFF0"), ""));
 		}
 
 		$page = we_base_request::_(we_base_request::INT, "page", 0);
-
 		$text = we_base_request::_(we_base_request::RAW, 'txt', g_l('modules_workflow', '[new_workflow]'));
 
 		$we_tabs = new we_tabs();
@@ -374,9 +372,8 @@ class we_workflow_frames extends weModuleFrames {
 
 		$we_tabs->onResize();
 		$tab_header = $we_tabs->getHeader('', 22);
-		$page = $page?$page : 0;
 		$textPre = ($mode == 1 ? g_l('modules_workflow', '[document]') : g_l('modules_workflow', '[workflow]'));
-		$textPost = "/" . $text;
+		$textPost = '/' . $text;
 
 		$extraHead = we_html_element::jsElement('
 function setTab(tab){
@@ -418,13 +415,13 @@ top.content.hloaded=1;
 	}
 
 	protected function getHTMLEditorFooter($mode = 0){
-		if(isset($_REQUEST["home"])){
+		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}
 
 		$extraHead = we_html_element::jsElement('
 			function setStatusCheck(){
-				var a=document.we_form._status_workflow;
+				var a=document.we_form.status_workflow;
 				var b;
 				if(top.content.editor.edbody.loaded) b=top.content.editor.edbody.getStatusContol();
 				else setTimeout("setStatusCheck()",100);

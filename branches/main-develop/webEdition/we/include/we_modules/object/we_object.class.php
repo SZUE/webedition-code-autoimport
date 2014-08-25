@@ -172,10 +172,7 @@ class we_object extends we_document{
 			);
 
 			$indexe = array(
-				'PRIMARY KEY (OF_ID)',
-				'KEY (OF_WebUserID)',
-				'KEY `published` (`OF_ID`,`OF_Published`,`OF_IsSearchable`)',
-				'KEY (`OF_IsSearchable`)',
+				'PRIMARY KEY (OF_ID)'
 			);
 
 			if(isset($this->elements['neuefelder']['dat'])){
@@ -1252,7 +1249,7 @@ class we_object extends we_document{
 		$extPath = isset($hrefArr["extPath"]) ? $hrefArr["extPath"] : "";
 		$int_elem_Name = 'we_' . $this->Name . '_href[' . $nint . ']';
 		$intPath_elem_Name = 'we_' . $this->Name . '_href[' . $nintPath . ']';
-		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']';
+		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']';//TOFO: should we use #bdid?
 		$ext_elem_Name = 'we_' . $this->Name . '_href[' . $nextPath . ']';
 
 		switch($type){

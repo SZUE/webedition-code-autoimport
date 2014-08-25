@@ -24,13 +24,10 @@
 we_html_tools::protect();
 if($cmd == "ok"){
 	$wf_text = we_base_request::_(we_base_request::STRING, "wf_text");
-	$wf_select = we_base_request::_(we_base_request::RAW, "wf_select","");
-
+	$wf_select = we_base_request::_(we_base_request::RAW, "wf_select", "");
 	$force = (!we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]));
 
-	$ok = we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"], $wf_text, $force);
-
-	if($ok){
+	if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"], $wf_text, $force)){
 		$msg = g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][pass_workflow_ok]');
 		$msgType = we_message_reporting::WE_MESSAGE_NOTICE;
 
@@ -49,33 +46,32 @@ if($cmd == "ok"){
 		$msgType = we_message_reporting::WE_MESSAGE_ERROR;
 		//	in SEEM-Mode back to Preview page
 		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-
 			$script = "opener.top.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
 		} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 
 			$script = '';
 		}
 	}
-	print we_html_element::jsElement($script . we_message_reporting::getShowMessageCall($msg, $msgType) . ';top.close();');
+	echo we_html_element::jsElement($script . we_message_reporting::getShowMessageCall($msg, $msgType) . ';top.close();');
 }
-print STYLESHEET;
+echo STYLESHEET;
 ?>
 </head>
 <body class="weDialogBody"><center>
-	<?php
-	if($cmd == "ok"){
+		<?php
+		if($cmd == "ok"){
 
-	} else {
-		?>
-		<form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
-			<?php
-			$okbut = we_html_button::create_button("ok", "javascript:document.forms[0].submit()");
-			$cancelbut = we_html_button::create_button("cancel", "javascript:top.close()");
+		} else {
+			?>
+			<form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
+				<?php
+				$okbut = we_html_button::create_button("ok", "javascript:document.forms[0].submit()");
+				$cancelbut = we_html_button::create_button("cancel", "javascript:top.close()");
 
 
-			$content = '<table border="0" cellpadding="0" cellspacing="0">';
-			$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="left:10px;right:10px;height:190px"></textarea>';
-			$content .= '<tr>
+				$content = '<table border="0" cellpadding="0" cellspacing="0">';
+				$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="left:10px;right:10px;height:190px"></textarea>';
+				$content .= '<tr>
 <td class="defaultfont">' . g_l('modules_workflow', '[message]') . '</td>
 </tr>
 <tr>
@@ -83,13 +79,13 @@ print STYLESHEET;
 </tr>
 </table>';
 
-			print we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[pass_workflow]'), we_html_button::position_yes_no_cancel($okbut, "", $cancelbut)) . '
+				echo we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[pass_workflow]'), we_html_button::position_yes_no_cancel($okbut, "", $cancelbut)) . '
 <input type="hidden" name="cmd" value="ok" />
-<input type="hidden" name="we_cmd[0]" value="' . $_REQUEST['we_cmd'][0] . '" />
+<input type="hidden" name="we_cmd[0]" value="' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '" />
 <input type="hidden" name="we_cmd[1]" value="' . $we_transaction . '" />';
-			?>
-		</form>
-	<?php } ?>
-</center>
+				?>
+			</form>
+		<?php } ?>
+	</center>
 </body>
 </html>

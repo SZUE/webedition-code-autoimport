@@ -23,17 +23,14 @@
 /**
  * @see we_app_Application
  */
-Zend_Loader::loadClass('we_app_Application');
 
 /**
  * @see we_app_Common
  */
-Zend_Loader::loadClass('we_app_Common');
 
 /**
  * @see we_app_Installer
  */
-Zend_Loader::loadClass('we_app_Installer');
 
 /**
  * class for remote installation of webEdition applications from update server

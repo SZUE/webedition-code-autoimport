@@ -160,13 +160,13 @@ class we_glossary_glossary extends weModelBase{
 	 * @param integer $GlossaryId
 	 * @desc Could load a glossary item if $GlossaryId is not 0
 	 */
-	function __construct($GlossaryId = 0){
+	public function __construct($GlossaryId = 0){
 		parent::__construct(GLOSSARY_TABLE);
 		$this->_Serialized = array('Attributes');
 
-		if($GlossaryId){
-			$this->ID = $GlossaryId;
-			$this->load($GlossaryId);
+		if(intval($GlossaryId)){
+			$this->ID = intval($GlossaryId);
+			$this->load($this->ID);
 		} else {
 			switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 				case 'new_glossary_abbreviation':
@@ -186,8 +186,8 @@ class we_glossary_glossary extends weModelBase{
 					break;
 			}
 			$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
-			if($cmdid && !preg_match('|^[0-9]|', $cmdid)){
-				$this->View->Glossary->Language = substr($cmdid, 0, 5);
+			if($cmdid && !is_numeric($cmdid)){
+				$this->Language = substr($cmdid, 0, 5);
 			}
 		}
 	}

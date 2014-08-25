@@ -23,9 +23,7 @@
 /**
  * @see we_io_DB
  */
-Zend_Loader::loadClass('we_io_DB');
 
-include_once('Zend/Db.php');
 
 /**
  * class for local installation of webEdition applications (formerly known as "tools")

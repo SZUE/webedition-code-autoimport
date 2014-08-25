@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,13 +21,15 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(!isset($_REQUEST['we_cmd'])){
-	exit();
-}
-
 //start autoloader!
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
+
+$cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
+if(!$cmd){
+	t_e('call without command, might be an error', $_REQUEST);
+	exit();
+}
 
 function findInclude($cmd){
 	switch($cmd){
@@ -268,7 +269,7 @@ function findInclude($cmd){
 	}
 }
 
-if(($inc = findInclude($cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))){
+if(($inc = findInclude($cmd))){
 	//  When pressing a link in edit-mode, the page is being reloaded from
 	//  webedition. If a webedition link was pressed this page shall not be
 	//  reloaded. All entries in this array represent values for we_cmd[0]

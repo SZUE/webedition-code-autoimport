@@ -206,7 +206,10 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 			// get the EditorFrame - this is important due to edit_include_mode!!!!
 			var _ActiveEditor = top.weEditorFrameController.getActiveEditorFrame();
 			if (_ActiveEditor) {
-				top.we_cmd('users_unlock', _ActiveEditor.getEditorDocumentId(), '<?php echo $_SESSION["user"]["ID"]; ?>', _ActiveEditor.getEditorEditorTable(), _ActiveEditor.getEditorTransaction());
+				trans = _ActiveEditor.getEditorTransaction();
+				if (trans) {
+					top.we_cmd('users_unlock', _ActiveEditor.getEditorDocumentId(), '<?php echo $_SESSION["user"]["ID"]; ?>', _ActiveEditor.getEditorEditorTable(), trans);
+				}
 			}
 			top.close();
 		}

@@ -153,7 +153,7 @@ class we_tool_treeDataSource{
 
 		return array(
 			array(
-				'icon' => 'link.gif',
+				'icon' => we_base_ContentTypes::FILE_ICON,
 				'id' => 1,
 				'parentid' => 0,
 				'text' => 'Test 1',
@@ -183,7 +183,7 @@ class we_tool_treeDataSource{
 				'tooltip' => ''
 			),
 			array(
-				'icon' => 'link.gif',
+				'icon' => we_base_ContentTypes::FILE_ICON,
 				'id' => 2,
 				'parentid' => 1,
 				'text' => 'Custom Item',

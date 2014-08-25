@@ -24,7 +24,7 @@
  */
 //TODO: make weMessagingIconbar.class with weMsgIcobnbar.class and weTodoIconbar.class
 
-class we_messaging_frames extends weModuleFrames{
+class we_messaging_frames extends we_modules_frame{
 	var $db;
 	var $View;
 	var $frameset;

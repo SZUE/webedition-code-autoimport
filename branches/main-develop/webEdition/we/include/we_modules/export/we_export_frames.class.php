@@ -25,7 +25,7 @@
 //TEST: was it ok to abandon treefooter?
 we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
 
-class we_export_frames extends weModuleFrames{
+class we_export_frames extends we_modules_frame{
 
 	var $SelectionTree;
 	var $editorBodyFrame;

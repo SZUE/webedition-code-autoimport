@@ -40,7 +40,6 @@ class we_service_Cmd extends we_service_AbstractService{
 			throw new we_service_Exception('No model class name set!');
 		}
 		try{
-			Zend_Loader::loadClass($args[0]);
 			$model = new $args[0]();
 			if(isset($args[1])){
 				$model->load(($args[1]));

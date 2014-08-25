@@ -22,9 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-/* the parent class of storagable webEdition classes */
-class we_workflow_view extends we_workflow_base{
 
+class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	// workflow array; format workflow[workflowID]=workflow_name
 	var $workflows = array();
 	//default workflow
@@ -106,7 +105,7 @@ class we_workflow_view extends we_workflow_base{
 	}
 
 	function getProperties(){
-		if(isset($_REQUEST['home']) && $_REQUEST['home']){ //TODO: find a better solution for this!
+		if(we_base_request::_(we_base_request::BOOL, 'home')){ //TODO: find a better solution for this!
 			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->getPropertyJS();
 			$GLOBALS['we_body_insert'] = '<form name="we_form">' . $this->getHiddens() . '</form>';
@@ -315,11 +314,10 @@ class we_workflow_view extends we_workflow_base{
 
 				$foo = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($tv->userID), '', $this->db);
 				$wecmdenc2 = we_base_request::encCmd("document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_usertext.value");
-				$wecmdenc5 = we_base_request::encCmd("document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value");
-				$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('browse_users','document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value','" . $wecmdenc2 . "','','" . $wecmdenc5 . "');");
+				$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('browse_users','document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value','" . $wecmdenc2 . "','','document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value');");
 
 				$yuiSuggest->setAcId('User_' . $counter . '_' . $counter1);
-				$yuiSuggest->setContentType('0,1');
+				$yuiSuggest->setContentType(we_users_user::TYPE_USER . ',' . we_users_user::TYPE_USER_GROUP);
 				$yuiSuggest->setInput($this->uid . '_task_' . $counter . '_' . $counter1 . '_usertext', $foo, array('onchange' => 'top.content.setHot();'));
 				$yuiSuggest->setMaxResults(10);
 				$yuiSuggest->setMayBeEmpty(false);
@@ -429,7 +427,7 @@ class we_workflow_view extends we_workflow_base{
 	}
 
 	function htmlHidden($name, $value = ''){
-		return '<input type="hidden" name="' . trim($name) . '" value="' . oldHtmlspecialchars($value) . '" />';
+		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -809,8 +807,7 @@ function checkData(){
 				break;
 			case 'add_cat':
 				$arr = makeArrayFromCSV($this->workflowDef->Categories);
-				if(isset($_REQUEST['wcat'])){
-					$ids = makeArrayFromCSV($_REQUEST['wcat']);
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wcat'))){
 					foreach($ids as $id){
 						if(strlen($id) && (!in_array($id, $arr))){
 							array_push($arr, $id);
@@ -821,11 +818,9 @@ function checkData(){
 				break;
 			case 'del_cat':
 				$arr = makeArrayFromCSV($this->workflowDef->Categories);
-				if(isset($_REQUEST['wcat'])){
-					foreach($arr as $k => $v){
-						if($v == $_REQUEST['wcat']){
-							array_splice($arr, $k, 1);
-						}
+				if(($cat = we_base_request::_(we_base_request::INT, 'wcat'))){
+					if(($pos = array_search($cat, $arr)) !== false){
+						unset($arr[$pos]);
 					}
 					$this->workflowDef->Categories = makeCSVFromArray($arr, true);
 				}
@@ -835,10 +830,9 @@ function checkData(){
 				break;
 			case 'add_objcat':
 				$arr = makeArrayFromCSV($this->workflowDef->ObjCategories);
-				if(isset($_REQUEST['wocat'])){
-					$ids = makeArrayFromCSV($_REQUEST['wocat']);
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wocat'))){
 					foreach($ids as $id){
-						if(strlen($id) && (!in_array($id, $arr))){
+						if((!in_array($id, $arr))){
 							$arr[] = $id;
 						}
 					}
@@ -847,13 +841,11 @@ function checkData(){
 				break;
 			case 'del_objcat':
 				$arr = makeArrayFromCSV($this->workflowDef->ObjCategories);
-				if(isset($_REQUEST['wocat'])){
-					foreach($arr as $k => $v){
-						if($v == $_REQUEST['wocat']){
-							array_splice($arr, $k, 1);
-						}
+				if(($cat = we_base_request::_(we_base_request::INT, 'wcat'))){
+					if(($pos = array_search($cat, $arr)) !== false){
+						unset($arr[$pos]);
+						$this->workflowDef->ObjCategories = makeCSVFromArray($arr, true);
 					}
-					$this->workflowDef->ObjCategories = makeCSVFromArray($arr, true);
 				}
 				break;
 			case 'del_all_objcats':
@@ -861,10 +853,9 @@ function checkData(){
 				break;
 			case 'add_folder':
 				$arr = makeArrayFromCSV($this->workflowDef->Folders);
-				if(isset($_REQUEST['wfolder'])){
-					$ids = makeArrayFromCSV($_REQUEST['wfolder']);
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wfolder'))){
 					foreach($ids as $id){
-						if(strlen($id) && (!in_array($id, $arr))){
+						if((!in_array($id, $arr))){
 							$arr[] = $id;
 						}
 					}
@@ -873,13 +864,11 @@ function checkData(){
 				break;
 			case 'del_folder':
 				$arr = makeArrayFromCSV($this->workflowDef->Folders);
-				if(isset($_REQUEST['wfolder'])){
-					foreach($arr as $k => $v){
-						if($v == $_REQUEST['wfolder']){
-							array_splice($arr, $k, 1);
-						}
+				if(($id = we_base_request::_(we_base_request::INT, 'wfolder'))){
+					if(($pos = array_search($id, $arr)) !== false){
+						unset($arr[$pos]);
+						$this->workflowDef->Folders = makeCSVFromArray($arr, true);
 					}
-					$this->workflowDef->Folders = makeCSVFromArray($arr, true);
 				}
 				break;
 			case 'del_all_folders':
@@ -887,10 +876,9 @@ function checkData(){
 				break;
 			case 'add_object_file_folder':
 				$arr = makeArrayFromCSV($this->workflowDef->ObjectFileFolders);
-				if(isset($_REQUEST['woffolder'])){
-					$ids = makeArrayFromCSV($_REQUEST['woffolder']);
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'woffolder'))){
 					foreach($ids as $id){
-						if(strlen($id) && (!in_array($id, $arr))){
+						if((!in_array($id, $arr))){
 							$arr[] = $id;
 						}
 					}
@@ -899,13 +887,11 @@ function checkData(){
 				break;
 			case 'del_object_file_folder':
 				$arr = makeArrayFromCSV($this->workflowDef->ObjectFileFolders);
-				if(isset($_REQUEST['woffolder'])){
-					foreach($arr as $k => $v){
-						if($v == $_REQUEST['woffolder']){
-							array_splice($arr, $k, 1);
-						}
+				if(($id = we_base_request::_(we_base_request::INT, 'woffolder'))){
+					if(($pos = array_search($id, $arr)) !== false){
+						unset($arr[$pos]);
+						$this->workflowDef->ObjectFileFolders = makeCSVFromArray($arr, true);
 					}
-					$this->workflowDef->ObjectFileFolders = makeCSVFromArray($arr, true);
 				}
 				break;
 			case 'del_all_object_file_folders':
@@ -913,20 +899,18 @@ function checkData(){
 				break;
 			case 'add_object':
 				$arr = makeArrayFromCSV($this->workflowDef->Objects);
-				if(isset($_REQUEST['wobject'])){
-					$arr[] = $_REQUEST['wobject'];
+				if(($id = we_base_request::_(we_base_request::INT, 'wobject'))){
+					$arr[] = $id;
 					$this->workflowDef->Objects = makeCSVFromArray($arr, true);
 				}
 				break;
 			case 'del_object':
 				$arr = makeArrayFromCSV($this->workflowDef->Objects);
-				if(isset($_REQUEST['wobject'])){
-					foreach($arr as $k => $v){
-						if($v == $_REQUEST['wobject']){
-							array_splice($arr, $k, 1);
-						}
+				if(($id = we_base_request::_(we_base_request::INT, 'wobject'))){
+					if(($pos = array_search($id, $arr)) !== false){
+						unset($arr[$pos]);
+						$this->workflowDef->Objects = makeCSVFromArray($arr, true);
 					}
-					$this->workflowDef->Objects = makeCSVFromArray($arr, true);
 				}
 				break;
 			case 'del_all_objects':
@@ -940,20 +924,20 @@ function checkData(){
 				break;
 			case 'workflow_edit':
 				$this->show = 0;
-				if(isset($_REQUEST['wid'])){
-					$this->workflowDef = new we_workflow_workflow($_REQUEST['wid']);
+				if(($id = we_base_request::_(we_base_request::INT, 'wid'))){
+					$this->workflowDef = new we_workflow_workflow($id);
 				}
 
 				$_REQUEST['wcmd'] = 'reload';
 				$this->processCommands();
 				break;
 			case 'switchPage':
-				if(isset($_REQUEST['page'])){
-					$this->page = $_REQUEST['page'];
+				if(($page = we_base_request::_(we_base_request::INT, 'page')) !== false){
+					$this->page = $page;
 				}
 				break;
 			case 'save_workflow':
-				if(isset($_REQUEST['wid'])){
+				if(we_base_request::_(we_base_request::INT, 'wid') !== false){
 					$newone = (!$this->workflowDef->ID);
 					$double = intval(f('SELECT COUNT(1) FROM ' . WORKFLOW_TABLE . " WHERE Text='" . $this->db->escape($this->workflowDef->Text) . "'" . ($newone ? '' : ' AND ID!=' . intval($this->workflowDef->ID)), '', $this->db));
 
@@ -971,7 +955,7 @@ function checkData(){
 					}
 					$childs = '';
 					$this->workflowDef->loadDocuments();
-					foreach($this->workflowDef->documents as $k => $v){
+					foreach($this->workflowDef->documents as $v){
 						$childs.="top.content.deleteEntry(" . $v["ID"] . ",'file');";
 					}
 					if(($dts = we_base_request::_(we_base_request::INT, $this->uid . '_DocType')) !== false){
@@ -984,16 +968,16 @@ function checkData(){
 							'top.content.makeNewEntry("workflow_folder",' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '",true,"folder","we_workflow_workflowDef","' . $this->workflowDef->Status . '");' :
 							'top.content.updateEntry(' . $this->workflowDef->ID . ',0,"' . $this->workflowDef->Text . '","' . $this->workflowDef->Status . '");'
 						) . $childs .
-						'top.content.editor.edheader.document.getElementById("headrow").innerHTML="' . we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . oldHtmlspecialchars($this->workflowDef->Text)) . '";' .
+						'top.content.editor.edheader.document.getElementById("headrow").innerHTML="' . addcslashes(we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . oldHtmlspecialchars($this->workflowDef->Text)), '"') . '";' .
 						we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
 					);
 				}
 				break;
 			case 'show_document':
-				if(isset($_REQUEST['wid'])){
+				if(($id = we_base_request::_(we_base_request::INT, 'wid'))){
 					$this->show = 1;
 					$this->page = 0;
-					$this->documentDef->load($_REQUEST['wid']);
+					$this->documentDef->load($id);
 					echo we_html_element::jsElement('
 					top.content.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader&art=1&txt=' . $this->documentDef->document->Text . '";
 					top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter&art=1";
@@ -1001,20 +985,19 @@ function checkData(){
 				}
 				break;
 			case 'delete_workflow':
-				if(isset($_REQUEST['wid'])){
+				if(($id = we_base_request::_(we_base_request::INT, 'wid'))){
 					if(!permissionhandler::hasPerm('DELETE_WORKFLOW')){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
 					} else {
 
-						$this->workflowDef = new we_workflow_workflow($_REQUEST['wid']);
+						$this->workflowDef = new we_workflow_workflow($id);
 						if($this->workflowDef->delete()){
 							$this->workflowDef = new we_workflow_workflow();
-							print we_html_element::jsElement('
-							top.content.deleteEntry(' . $_REQUEST['wid'] . ',"folder");
-							' . we_message_reporting::getShowMessageCall($lg_l('modules_workflow', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE));
+							echo we_html_element::jsElement('top.content.deleteEntry(' . $id . ',"folder");' .
+								we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE));
 						} else {
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
+							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 						}
 					}
 				}
@@ -1024,25 +1007,21 @@ function checkData(){
 				break;
 			case 'empty_log':
 				$stamp = 0;
-				if(isset($_REQUEST['wopt']) && $_REQUEST['wopt']){
-					$t = explode(',', $_REQUEST['wopt']);
+				if(($t = we_base_request::_(we_base_request::INTLISTA, 'wopt'))){
 					$stamp = mktime($t[3], $t[4], 0, $t[1], $t[0], $t[2]);
 				}
 				$this->Log->clearLog($stamp);
-				print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[empty_log_ok]'), we_message_reporting::WE_MESSAGE_NOTICE));
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[empty_log_ok]'), we_message_reporting::WE_MESSAGE_NOTICE));
 				break;
 			default:
 		}
 	}
 
 	function processVariables(){
-		if(isset($_REQUEST['wname'])){
-			$this->uid = $_REQUEST['wname'];
-		}
+		$this->uid = we_base_request::_(we_base_request::STRING, 'wname', $this->uid);
 		foreach($this->workflowDef->persistents as $val => $type){
 			$varname = $this->uid . '_' . $val;
 			if(($tmp = we_base_request::_($type, $varname)) !== false){
-				//$_REQUEST[$varname] = escape_sql_query($_REQUEST[$varname]);
 				$this->workflowDef->$val = $tmp;
 			}
 		}
@@ -1069,55 +1048,40 @@ function checkData(){
 			$this->workflowDef->steps[$skey]->workflowID = $this->workflowDef->ID;
 
 			$varname = $this->uid . '_step' . $skey . '_sid';
-			if(isset($_REQUEST[$varname])){
-				if($_REQUEST[$varname]){
-					$this->workflowDef->steps[$skey]->ID = $_REQUEST[$varname];
-				}
+			if(($tmp = we_base_request::_(we_base_request::RAW, $varname))){
+				$this->workflowDef->steps[$skey]->ID = $tmp;
 			}
 
 			$varname = $this->uid . '_step' . $skey . '_and';
-			if(isset($_REQUEST[$varname])){
-				$this->workflowDef->steps[$skey]->stepCondition = $_REQUEST[$varname] ? 1 : 0;
-			}
+			$this->workflowDef->steps[$skey]->stepCondition = we_base_request::_(we_base_request::BOOL, $varname, $this->workflowDef->steps[$skey]->stepCondition);
 
 			$varname = $this->uid . '_step' . $skey . '_Worktime';
-			if(isset($_REQUEST[$varname])){
-				$this->workflowDef->steps[$skey]->Worktime = $_REQUEST[$varname];
-			}
+			$this->workflowDef->steps[$skey]->Worktime = we_base_request::_(we_base_request::FLOAT, $varname, $this->workflowDef->steps[$skey]->Worktime);
 
 			$varname = $this->uid . '_step' . $skey . '_timeAction';
-			if(isset($_REQUEST[$varname])){
-				$this->workflowDef->steps[$skey]->timeAction = $_REQUEST[$varname];
-			}
+
+			$this->workflowDef->steps[$skey]->timeAction = we_base_request::_(we_base_request::RAW, $varname, $this->workflowDef->steps[$skey]->timeAction);
 
 			foreach(array_keys($this->workflowDef->steps[$skey]->tasks) as $tkey){
-
 				$this->workflowDef->steps[$skey]->tasks[$tkey]->stepID = $this->workflowDef->steps[$skey]->ID;
-
 				$varname = $this->uid . '_task_' . $skey . '_' . $tkey . '_tid';
-				if(isset($_REQUEST[$varname])){
-					$this->workflowDef->steps[$skey]->tasks[$tkey]->ID = $_REQUEST[$varname];
+				if(($id = we_base_request::_(we_base_request::INT, $varname))){
+					$this->workflowDef->steps[$skey]->tasks[$tkey]->ID = $id;
 				}
 
 				$varname = $this->uid . '_task_' . $skey . '_' . $tkey . '_userid';
-				if(isset($_REQUEST[$varname])){
-					$this->workflowDef->steps[$skey]->tasks[$tkey]->userID = $_REQUEST[$varname];
-				}
+				$this->workflowDef->steps[$skey]->tasks[$tkey]->userID = we_base_request::_(we_base_request::INT, $varname, $this->workflowDef->steps[$skey]->tasks[$tkey]->userID);
+
 
 				$varname = $this->uid . '_task_' . $skey . '_' . $tkey . '_usertext';
-				if(isset($_REQUEST[$varname])){
-					$this->workflowDef->steps[$skey]->tasks[$tkey]->username = $_REQUEST[$varname];
-				}
+
+				$this->workflowDef->steps[$skey]->tasks[$tkey]->username = we_base_request::_(we_base_request::STRING, $varname, $this->workflowDef->steps[$skey]->tasks[$tkey]->username);
 
 				$varname = $this->uid . '_task_' . $skey . '_' . $tkey . '_Edit';
-				if(isset($_REQUEST[$varname])){
-					$this->workflowDef->steps[$skey]->tasks[$tkey]->Edit = $_REQUEST[$varname];
-				}
+				$this->workflowDef->steps[$skey]->tasks[$tkey]->Edit = we_base_request::_(we_base_request::RAW, $varname, $this->workflowDef->steps[$skey]->tasks[$tkey]->Edit);
 
 				$varname = $this->uid . '_task_' . $skey . '_' . $tkey . '_Mail';
-				if(isset($_REQUEST[$varname])){
-					$this->workflowDef->steps[$skey]->tasks[$tkey]->Mail = $_REQUEST[$varname];
-				}
+				$this->workflowDef->steps[$skey]->tasks[$tkey]->Mail = we_base_request::_(we_base_request::EMAIL, $varname, $this->workflowDef->steps[$skey]->tasks[$tkey]->Mail);
 			}
 		}
 	}

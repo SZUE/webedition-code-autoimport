@@ -154,7 +154,7 @@ abstract class we_ui_layout_Image{
 	/**
 	 * path of tree icon link
 	 */
-	const kTreeIconLink = '/webEdition/images/tree/icons/link.gif';
+	const kTreeIconLink = '/webEdition/images/tree/icons/file.gif';
 
 	/**
 	 * path of tree icon message draft folder

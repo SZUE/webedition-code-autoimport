@@ -129,10 +129,10 @@ abstract class we_base_delete{
 
 		switch($table){
 			case FILE_TABLE:
-				we_util_File::deleteLocalFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($path, 1));
+				we_base_file::deleteLocalFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($path, 1));
 			//no break
 			case TEMPLATES_TABLE:
-				we_util_File::deleteLocalFile(preg_replace('/\.tmpl$/i', '.php', $file));
+				we_base_file::deleteLocalFile(preg_replace('/\.tmpl$/i', '.php', $file));
 				break;
 		}
 
@@ -147,7 +147,7 @@ abstract class we_base_delete{
 					$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName!="we_objectFile"');
 				}
 
-				$DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="docLink" AND LinkID=' . intval($id));
+				$DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="' . we_navigation_navigation::STPYE_DOCLINK . '" AND LinkID=' . intval($id));
 
 				// Fast Fix for deleting entries from tblLangLink: #5840
 				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblFile" AND IsObject=0 AND IsFolder=0 AND DID=' . intval($id));
@@ -158,6 +158,7 @@ abstract class we_base_delete{
 				$tableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsClassFolder=0 AND ID=' . intval($id), '', $DB_WE);
 				if($tableID){
 					$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . intval($tableID) . ' WHERE OF_ID=' . intval($id));
+					$DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="' . we_navigation_navigation::STPYE_OBJLINK . '" AND LinkID=' . intval($id));
 					//Bug 2892
 					$DB_WE->query('SELECT ID FROM ' . OBJECT_TABLE);
 					$foo = $DB_WE->getAll(true);

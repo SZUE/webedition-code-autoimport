@@ -25,7 +25,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-Zend_Loader::loadClass('we_core_Local');
 
 $title = 'webEdition ';
 $tool = we_base_request::_(we_base_request::STRING, 'tool');

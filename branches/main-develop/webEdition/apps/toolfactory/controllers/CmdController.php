@@ -25,7 +25,6 @@
 /*
  * @see we_app_controller_CmdAction
  */
-Zend_Loader::loadClass('we_app_controller_CmdAction');
 
 /**
  * Base Action Controller

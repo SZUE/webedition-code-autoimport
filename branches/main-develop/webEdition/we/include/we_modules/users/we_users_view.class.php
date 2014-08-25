@@ -25,33 +25,7 @@
 /* the parent class of storagable webEdition classes */
 
 
-class we_users_view extends weModuleView{
-
-	//----------- Utility functions ------------------
-
-	function htmlHidden($name, $value = ''){
-		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
-	}
-
-	//-----------------Init -------------------------------
-
-	function setFramesetName($frameset){
-		$this->frameset = $frameset;
-	}
-
-	function setTopFrame($frame){
-		$this->topFrame = $frame;
-	}
-
-	//------------------------------------------------
-
-
-	function getCommonHiddens($cmds = array()){
-		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
-			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
-			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
-			$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : ''));
-	}
+class we_users_view extends we_modules_view{
 
 	function getJSTop_tmp(){
 		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
@@ -259,7 +233,9 @@ function usetHot() {
 	}
 
 	function getJSTop(){//TODO: is this shop-code or a copy paste from another module?
-		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+		return
+			parent::getJSTop() .
+			we_html_element::jsElement('
 var get_focus = 1;
 var activ_tab = 1;
 var hot= 0;
@@ -277,58 +253,6 @@ function we_cmd() {
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
-		case "new_raw":
-			if(' . $this->topFrame . '.editor.edbody.loaded) {
-				' . $this->topFrame . '.hot = 1;
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = arguments[0];
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value = arguments[1];
-				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value = 1;
-				' . $this->topFrame . '.editor.edbody.submitForm();
-			} else {
-				setTimeout(\'we_cmd("new_raw");\', 10);
-			}
-			break;
-
-		case "delete_raw":
-			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
-			' . (!permissionhandler::hasPerm("DELETE_RAW") ?
-					( we_message_reporting::getShowMessageCall(g_l('modules_shop', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)) :
-					('
-					if (' . $this->topFrame . '.editor.edbody.loaded) {
-						if (confirm("' . g_l('modules_shop', '[delete_alert]') . '")) {
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-							' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-							' . $this->topFrame . '.editor.edbody.submitForm();
-						}
-					} else {
-						' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-					}
-
-			')) . '
-			break;
-
-		case "save_raw":
-			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
-
-
-					if (' . $this->topFrame . '.editor.edbody.loaded) {
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-							' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-
-							' . $this->topFrame . '.editor.edbody.submitForm();
-					} else {
-						' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-					}
-
-			break;
-
-		case "edit_raw":
-			' . $this->topFrame . '.hot=0;
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
-			' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-			' . $this->topFrame . '.editor.edbody.submitForm();
-		break;
 		case "load":
 			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
 		break;
@@ -342,9 +266,10 @@ function we_cmd() {
 	}
 
 	function getJSProperty(){
-		return weSuggest::getYuiFiles() .
+		return
+			parent::getJSProperty() .
+			weSuggest::getYuiFiles() .
 			we_html_element::jsScript(JS_DIR . 'images.js') .
-			we_html_element::jsScript(JS_DIR . 'windows.js') .
 			we_html_element::jsElement('
 var loaded = 0;
 function we_submitForm(target, url) {
@@ -661,9 +586,8 @@ function we_cmd(){
 				}
 				$user_object = new we_users_user();
 				$user_object->setState($_SESSION["user_session_data"]);
-				if(isset($_REQUEST['oldtab']) && isset($_REQUEST['old_perm_branch'])){
-
-					$user_object->preserveState($_REQUEST['oldtab'], $_REQUEST['old_perm_branch']);
+				if(($oldtab = we_base_request::_(we_base_request::INT, 'oldtab')) !== false && ($opb = we_base_request::_(we_base_request::STRING, 'old_perm_branch')) !== false){//FIXME: is latter ever used?
+					$user_object->preserveState($oldtab, $opb);
 					$_SESSION["user_session_data"] = $user_object->getState();
 				}
 
@@ -680,24 +604,24 @@ function we_cmd(){
 						break;
 					}
 					if(!permissionhandler::hasPerm("NEW_USER") && ($user_object->Type == we_users_user::TYPE_USER || $user_object->Type == we_users_user::TYPE_ALIAS) && $user_object->ID == 0){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 					if(!permissionhandler::hasPerm("SAVE_GROUP") && $user_object->Type == we_users_user::TYPE_USER_GROUP && $user_object->ID != 0){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 					if(!permissionhandler::hasPerm("NEW_GROUP") && $user_object->Type == we_users_user::TYPE_USER_GROUP && $user_object->ID == 0){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
-					if(isset($_REQUEST['oldtab'])){
-						$user_object->preserveState(we_base_request::_(we_base_request::INT, 'oldtab'), $_REQUEST['old_perm_branch']);
+					if(($ot = we_base_request::_(we_base_request::INT, 'oldtab'))){
+						$user_object->preserveState($ot, we_base_request::_(we_base_request::STRING, 'old_perm_branch'));
 					}
 
 					$id = $user_object->ID;
 					if($user_object->username == '' && $user_object->Type != we_users_user::TYPE_ALIAS){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[username_empty]"), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[username_empty]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
@@ -722,26 +646,27 @@ function we_cmd(){
 					$_SESSION['user_session_data'] = $user_object->getState();
 
 					//	Save seem_startfile to DB when needed.
-					if(isset($_REQUEST['seem_start_file'])){
-						if(($_REQUEST['seem_start_file'] && $_REQUEST['seem_start_file'] != 0) || (isset($_SESSION['save_user_seem_start_file'][$_REQUEST["uid"]]))){
+					if(($sid = we_base_request::_(we_base_request::INT, 'seem_start_file')) !== false){
+						$uid = we_base_request::_(we_base_request::INT, 'uid');
+						if($sid || (isset($_SESSION['save_user_seem_start_file'][$uid]))){
 							$tmp = new DB_WE();
 
-							if(isset($_REQUEST['seem_start_file'])){
+							if($sid !== false){
 								//	save seem_start_file from REQUEST
-								$seem_start_file = $_REQUEST["seem_start_file"];
+								$seem_start_file = $sid;
 								if($user_object->ID == $_SESSION['user']['ID']){ // change preferences if user edits his own startfile
 									$_SESSION['prefs']['seem_start_file'] = $seem_start_file;
 								}
 							} else {
 								//	Speichere seem_start_file aus SESSION
-								$seem_start_file = $_SESSION['save_user_seem_start_file'][$_REQUEST["uid"]];
+								$seem_start_file = $_SESSION['save_user_seem_start_file'][$uid];
 							}
 
-							$tmp->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . we_base_request::_(we_base_request::INT, 'uid', 0) . ',`key`="seem_start_file",`value`="' . $tmp->escape($seem_start_file) . '"');
+							$tmp->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . $uid . ',`key`="seem_start_file",`value`="' . $tmp->escape($seem_start_file) . '"');
 							unset($tmp);
 							unset($seem_start_file);
-							if(isset($_SESSION['save_user_seem_start_file'][$_REQUEST["uid"]])){
-								unset($_SESSION['save_user_seem_start_file'][$_REQUEST["uid"]]);
+							if(isset($_SESSION['save_user_seem_start_file'][$uid])){
+								unset($_SESSION['save_user_seem_start_file'][$uid]);
 							}
 						}
 					}
@@ -856,9 +781,9 @@ function we_cmd(){
 				break;
 
 			case 'check_user_display':
-				if($_REQUEST['uid']){
+				if(($uid = we_base_request::_(we_base_request::INT, 'uid'))){
 					$mpid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), '', $this->db);
-					$pid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'uid', 0), '', $this->db);
+					$pid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $uid, '', $this->db);
 
 					$search = true;
 					$found = false;
@@ -878,10 +803,10 @@ function we_cmd(){
 						$pid = intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid), 'ParentID', $this->db));
 					}
 
-					print we_html_element::jsElement(
-							($found || permissionhandler::hasPerm('ADMINISTRATOR') ?
-								'top.content.we_cmd(\'display_user\',' . $_REQUEST["uid"] . ')' :
-								we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						($found || permissionhandler::hasPerm('ADMINISTRATOR') ?
+							'top.content.we_cmd(\'display_user\',' . $uid . ')' :
+							we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR)
 					));
 				}
 				break;
@@ -889,23 +814,8 @@ function we_cmd(){
 	}
 
 	function processVariables(){
-		if(isset($_SESSION['weS']['raw_session'])){
-			$this->raw = unserialize($_SESSION['weS']['raw_session']);
-		}
-
-		if(isset($this->raw) && is_array($this->raw->persistent_slots)){
-			foreach($this->raw->persistent_slots as $val){
-				$varname = $val;
-				if(isset($_REQUEST[$varname])){
-					$this->raw->{$val} = $_REQUEST[$varname];
-				}
-			}
-		}
-
-		if(isset($_REQUEST['page'])){
-			if(isset($_REQUEST['page'])){
-				$this->page = $_REQUEST['page'];
-			}
+		if(($page = we_base_request::_(we_base_request::INT, 'page')) !== false){
+			$this->page = $page;
 		}
 	}
 

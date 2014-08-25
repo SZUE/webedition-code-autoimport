@@ -36,7 +36,7 @@ foreach($_REQUEST['we_cmd'] as &$cmdvalue){
 	$cmdvalue = preg_replace('/[^a-z0-9_-]/i', '', strip_tags($cmdvalue));
 }
 
-switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
+switch(($cmd0=we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0))){
 	case "trigger_save_document":
 		echo 'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames[3] && top.weEditorFrameController.getActiveDocumentReference().frames[3].weCanSave){
 	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);
@@ -132,12 +132,12 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 
 	default:
 		$regs = array();
-		if(preg_match('/^new_dtPage(.+)$/', $_REQUEST['we_cmd'][0], $regs)){
+		if(preg_match('/^new_dtPage(.+)$/', $cmd0, $regs)){
 			$dt = $regs[1];
 			echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::WEDOCUMENT . '","' . $dt . '");';
 			break;
 		}
-		if(preg_match('/^new_ClObjectFile(.+)$/', $_REQUEST['we_cmd'][0], $regs)){
+		if(preg_match('/^new_ClObjectFile(.+)$/', $cmd0, $regs)){
 			$clID = $regs[1];
 			echo 'top.we_cmd("new","' . OBJECT_FILES_TABLE . '","","objectFile","' . $clID . '");';
 			break;

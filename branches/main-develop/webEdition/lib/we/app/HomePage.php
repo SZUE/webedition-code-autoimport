@@ -22,7 +22,6 @@
 /**
  * @see we_ui_layout_HTMLPage
  */
-Zend_Loader::loadClass('we_ui_layout_HTMLPage');
 
 /**
  * Basic Class for Home Page View of App

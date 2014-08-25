@@ -24,7 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class we_newsletter_view{
+class we_newsletter_view extends we_modules_view{
 	const MAILS_ALL = 0;
 	const MAILS_CUSTOMER = 1;
 	const MAILS_EMAILS = 2;
@@ -47,10 +47,11 @@ class we_newsletter_view{
 	protected $show_import_box = -1;
 	protected $show_export_box = -1;
 
-	function __construct(){
-		$this->db = new DB_WE();
+	public function __construct(){
+		parent::__construct(WE_NEWSLETTER_MODULE_DIR . 'edit_newsletter_frameset.php', '');
+
 		$this->newsletter = new we_newsletter_newsletter();
-		$this->frameset = WE_NEWSLETTER_MODULE_DIR . 'edit_newsletter_frameset.php';
+
 		$this->settings = self::getSettings();
 		//FIXME: add types for settings
 
@@ -168,11 +169,6 @@ class we_newsletter_view{
 		$out .= $this->htmlHidden('blocks', $counter);
 
 		return $out;
-	}
-
-	function htmlHidden($name, $value = ''){
-		//FIXME: remove
-		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
 	}
 
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -302,23 +298,6 @@ class we_newsletter_view{
 
 		return $foo;
 	}
-
-	/* 	function getObjectFields(){
-	  $ClassName = f("SELECT ClassName FROM " . FILE_TABLE . " WHERE ID=" . intval($id), "ClassName", $this->db);
-
-	  $doc = new $ClassName();
-
-	  $doc->initByID($id);
-	  $tmp = array_keys($doc->elements);
-	  $foo = array();
-
-	  foreach($tmp as $k => $v){
-	  $foo[$v] = $v;
-	  }
-
-	  return $foo;
-	  return array();
-	  } */
 
 	function getJSTopCode(){
 		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
@@ -560,12 +539,12 @@ function submitForm() {
 	}
 
 	function getJSProperty(){
-		if(isset($this->settings['reject_save_malformed']) && $this->settings['reject_save_malformed']){
-			$_mailCheck = "we.validate.email(email);";
-		} else {
-			$_mailCheck = "true";
-		}
-		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
+		$_mailCheck = (isset($this->settings['reject_save_malformed']) && $this->settings['reject_save_malformed'] ?
+				"we.validate.email(email);" :
+				"true");
+
+		return
+			parent::getJSProperty() .
 			we_html_element::jsScript(JS_DIR . "libs/we/weValidate.js") .
 			we_html_element::jsElement('
 function doUnload() {
@@ -1131,13 +1110,10 @@ function mysplice(arr, id) {
 function delEmail(group,id) {
 	var dest = document.forms[0].elements["group"+group+"_Emails"]
 	var str = dest.value;
-
 	var arr = str.split("\n");
 
 	arr.splice(id, 1);
-
 	dest.value = arr.join("\n");
-
 	top.content.hot=1;
 }
 
@@ -1218,8 +1194,6 @@ function set_state_edit_delete_recipient(control) {
 		}
 }');
 		//$js.=we_button::create_state_changer();
-
-		return $js;
 	}
 
 	function processCommands(){
@@ -1731,8 +1705,9 @@ self.close();');
 				break;
 
 			case "do_upload_black":
-				if(isset($_FILES["we_File"]))
+				if(isset($_FILES["we_File"])){
 					$we_File = $_FILES["we_File"];
+				}
 				if(isset($we_File)){
 					$unique = we_base_file::getUniqueId();
 					$tempName = TEMP_PATH . $unique;
@@ -1855,8 +1830,8 @@ self.close();');
 						foreach($fields_names as $field){
 							$varname = 'filter_' . $field . '_' . $gkey . '_' . $i;
 
-							if(isset($_REQUEST[$varname])){
-								$new[$field] = $_REQUEST[$varname];
+							if(($tmp = we_base_request::_(we_base_request::RAW, $varname)) !== false){
+								$new[$field] = $tmp;
 							}
 						}
 

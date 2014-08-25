@@ -379,7 +379,7 @@ abstract class we_textContentDocument extends we_textDocument{
 	}
 
 	public function we_unpublish($skipHook = 0){
-		if(!$this->ID || (file_exists($this->getRealPath(true)) && !we_util_File::deleteLocalFile($this->getRealPath(!$this->isMoved())))){
+		if(!$this->ID || (file_exists($this->getRealPath(true)) && !we_base_file::deleteLocalFile($this->getRealPath(!$this->isMoved())))){
 			return false;
 		}
 		//WEEXT: Refresh ModDate on unpublish too (needed for treesync)

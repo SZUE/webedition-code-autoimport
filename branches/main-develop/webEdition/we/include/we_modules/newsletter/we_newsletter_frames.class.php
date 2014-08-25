@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_newsletter_frames extends weModuleFrames{
+class we_newsletter_frames extends we_modules_frame{
 	const def_width = 450;
 
 	private $weAutoCompleter;

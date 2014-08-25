@@ -30,7 +30,7 @@ if(!$transaction){
 }
 
 echo we_html_tools::getHtmlTop() .
- weModuleFrames::getJSToggleTreeCode('messaging', 204);
+ we_modules_frame::getJSToggleTreeCode('messaging', 204);
 $_treewidth = isset($_COOKIE["treewidth_messaging"]) && ($_COOKIE["treewidth_messaging"] >= weTree::MinWidth) ? $_COOKIE["treewidth_users"] : 204;
 
 $incDecTree = '

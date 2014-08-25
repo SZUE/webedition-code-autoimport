@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -21,8 +20,11 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-
-$filename = $_SERVER['DOCUMENT_ROOT'] . we_base_request::_(we_base_request::FILE, 'file');
+$filename = WEBEDITION_PATH . we_base_request::_(we_base_request::FILE, 'file');
+if(strpos($filename,WE_INCLUDES_PATH)!==false){
+	//nobody should read inside include directory
+	return;
+}
 if(file_exists($filename)){
 	$isCompressed = we_base_file::isCompressed($filename);
 	if(function_exists('finfo_open')){

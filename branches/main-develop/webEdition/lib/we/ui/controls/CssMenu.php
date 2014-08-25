@@ -21,10 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-/**
- * @see we_ui_abstract_AbstractElement
- */
-Zend_Loader::loadClass('we_ui_abstract_AbstractElement');
 
 /**
  * Class to display a JavaMenu

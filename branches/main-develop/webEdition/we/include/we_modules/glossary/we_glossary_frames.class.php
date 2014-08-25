@@ -24,8 +24,7 @@
  */
 //TEST: was it ok to abandon treefooter?
 
-class we_glossary_frames extends weModuleFrames{
-
+class we_glossary_frames extends we_modules_frame{
 	var $_space_size = 150;
 	var $_text_size = 75;
 	var $_width_size = 535;
@@ -54,7 +53,7 @@ class we_glossary_frames extends weModuleFrames{
 			return we_glossary_frameEditorHome::Header($this);
 		}
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
-		if($cmdid && !preg_match('|^[0-9]|', $cmdid)){
+		if($cmdid && !is_numeric($cmdid)){
 			$this->View->Glossary->Language = substr($cmdid, 0, 5);
 		}
 		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
@@ -75,11 +74,11 @@ class we_glossary_frames extends weModuleFrames{
 	}
 
 	protected function getHTMLEditorBody(){
-		if(we_base_request::_(we_base_request::BOOL, "home")){
+		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return we_glossary_frameEditorHome::Body($this);
 		}
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
-		if($cmdid && !preg_match('|^[0-9]|', $cmdid)){
+		if($cmdid && !is_numeric($cmdid)){
 			$this->View->Glossary->Language = substr($cmdid, 0, 5);
 		}
 		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
@@ -104,7 +103,7 @@ class we_glossary_frames extends weModuleFrames{
 			return we_glossary_frameEditorHome::Footer($this);
 		}
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
-		if($cmdid && !preg_match('|^[0-9]|', $cmdid)){
+		if($cmdid && !is_numeric($cmdid)){
 			$this->View->Glossary->Language = substr($cmdid, 0, 5);
 		}
 		switch(we_base_request::_(we_base_request::STRING, 'cmd')){

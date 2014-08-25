@@ -1,3 +1,7 @@
+we/include/we_classes/tools/we_tool_view.class.php
+we/include/we_classes/modules/weModuleFrames.php
+we/include/we_classes/modules/weModuleTree.class.php
+we/include/we_classes/modules/weModuleView.class.php
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js

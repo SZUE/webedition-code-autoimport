@@ -1,10 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 8106 $
+ * $Author: mokraemer $
+ * $Date: 2014-08-23 23:04:44 +0200 (Sa, 23. Aug 2014) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -21,15 +22,15 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+/* the parent class of storagable webEdition classes */
 
-we_html_tools::protect();
-$matches = array();
-//[REQUEST_URI] => /webEdition/apps/redirect.php/wephpmyadmin/index.php/frameset/index
-preg_match('|' . WE_APPS_DIR . 'redirect.php/([^/]+)/([^/]+)(/.*)?$|', $_SERVER['REQUEST_URI'], $matches);
-include_once($_SERVER['DOCUMENT_ROOT'] . WE_APPS_DIR . $matches[1] . '/' . ($matches[2] == 'index.php' ? 'index.php' : (isset($matches[3]) ? $matches[3] : '')));
-/*p_r($matches);
-p_r($_SERVER);
 
-t_e($_REQUEST, $_SERVER);
- */
+interface we_modules_viewIF{//FIXME is this really a base class, or is it an interface???
+	//----------- Utility functions ------------------
+
+	function htmlHidden($name, $value = '');
+
+	function processCommands();
+
+	function processVariables();
+}
