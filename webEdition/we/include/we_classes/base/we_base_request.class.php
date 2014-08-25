@@ -139,7 +139,9 @@ class we_base_request{
 				foreach($var as &$cur){
 					$cur = filter_var($cur, FILTER_SANITIZE_URL);
 					if(strpos($cur, rtrim(WEBEDITION_DIR, '/')) === 0){//file-selector has propably access
-						$cur = isset($GLOBALS['supportDebugging']) ? $cur : '-1';
+						if(!(strstr($cur, SITE_DIR) || strstr($cur, TEMP_DIR))){//allow site/tmp dir
+							$cur = isset($GLOBALS['supportDebugging']) ? $cur : '-1';
+						}
 					}
 				}
 				$var = $type == self::FILELIST ? implode(',', $var) : $var;
@@ -150,7 +152,9 @@ class we_base_request{
 					'//' => '/'
 				));
 				if(strpos($var, rtrim(WEBEDITION_DIR, '/')) === 0){//file-selector has propably access
-					$var = isset($GLOBALS['supportDebugging']) ? $var : '-1';
+					if(!(strstr($var, SITE_DIR) || strstr($var, TEMP_DIR))){//allow site/tmp dir
+						$var = isset($GLOBALS['supportDebugging']) ? $var : '-1';
+					}
 				}
 				return;
 			case self::URL:
