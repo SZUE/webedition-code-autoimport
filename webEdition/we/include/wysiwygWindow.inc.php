@@ -26,7 +26,8 @@ $whiteList = array();
 $_charsets = $_charsetHandler->charsets;
 
 $fields = array(
-	'name' => we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 1),
+	'cmd' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+	'name' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1),
 	'width' => we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2),
 	'height' => we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3),
 	'empty' => we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 4),
@@ -137,7 +138,7 @@ top.close();');
 		<form action="<?php print $_SERVER['SCRIPT_NAME']; ?>" name="we_form" method="post">
 			<input type="hidden" name="we_okpressed" value="1" />
 			<?php
-			$pos = 1;
+			$pos = 0;
 			foreach($fields as $v){
 				echo '<input type="hidden" name="we_cmd[' . ($pos++) . ']" value="' . $v . '" />';
 			}

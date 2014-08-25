@@ -64,7 +64,7 @@ if(typeof arguments[1] != "undefined") {
 width = parseInt(arguments[1]);
 
 } else {
-width = <?php echo SIDEBAR_DEFAULT_WIDTH; ?>;
+width = <?php echo intval(SIDEBAR_DEFAULT_WIDTH); ?>;
 
 }
 if (isNaN( width ) ||  width < 100 ) {
