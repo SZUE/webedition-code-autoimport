@@ -273,10 +273,11 @@ class we_base_request{
 					break;
 				case self::RAW:
 				case self::STRING:
+				case self::JS:
 					if(WE_VERSION_SUPP && $var){//show this only during development
 						if($var == ('' . intval($oldVar))){
-							t_e('notice', 'variable could be int', $args, $var);
-						} elseif($var == ('' . floatval($oldVar))){
+							t_e('notice', 'variable could be int/bool?', $args, $var);
+						} elseif(str_replace(',', '.', $var) == ('' . floatval($oldVar))){
 							t_e('notice', 'variable could be float', $args, $var);
 						} elseif(strpos($var, '@')){
 							t_e('notice', 'variable could be mail', $args, $var);
@@ -286,6 +287,10 @@ class we_base_request{
 							t_e('notice', 'variable could be file', $args, $var);
 						} elseif(count(explode(',', $var)) > 2){
 							t_e('notice', 'variable could be list', $args, $var);
+						} elseif(strpos($var, 'a:') !== false || strpos($var, 's:') !== false){
+							t_e('notice', 'variable could be serial', $args, $var);
+						} elseif(strpos($var, 'tbl') !== 0){
+							t_e('notice', 'variable could be table', $args, $var);
 						}
 					}
 				//no break;
