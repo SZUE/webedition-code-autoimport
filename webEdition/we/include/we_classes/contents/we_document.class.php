@@ -1088,12 +1088,15 @@ class we_document extends we_root{
 					break;
 				}
 				$val = $this->getElement($attribs['name'], 'bdid');
-				if(!$val){
-					$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
-				}
+				$val = $val ? $val : $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
+
 				break;
 			case 'href':
-				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
+				if(!isset($attribs['name'])){
+					return;
+				}
+				$val = $this->getElement($attribs['name'], 'bdid');
+				$val = $val ? $val : $this->getElement($attribs['name']);
 				if($this instanceof we_objectFile){
 					$hrefArr = $val ? unserialize($val) : array();
 					return (is_array($hrefArr) ? self::getHrefByArray($hrefArr) : '');
@@ -1106,11 +1109,11 @@ class we_document extends we_root{
 		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : ($this instanceof we_objectFile ? $this->TableID : ''));
 	}
 
-	private function getValFromSrc($fn, $name){
+	private function getValFromSrc($fn, $name, $key = 'dat'){
 		switch($fn){
 			default:
 			case 'this':
-				return $this->getElement($name);
+				return $this->getElement($name, $key);
 			case 'listview':
 				return $GLOBALS['lv']->f($name);
 		}
@@ -1121,7 +1124,8 @@ class we_document extends we_root{
 		$n = $attribs['name'];
 		$nint = $n . we_base_link::MAGIC_INT_LINK;
 		if($this->getValFromSrc($fn, $nint)){
-			$intID = $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID);
+			$intID = $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID, 'bdid'); //try bdid first
+			$intID = $intID ? $intID : $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID);
 			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), '', $db);
 		}
 		return $this->getValFromSrc($fn, $n);

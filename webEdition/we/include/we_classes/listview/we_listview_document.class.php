@@ -338,13 +338,13 @@ class we_listview_document extends we_listview_base{
 			if($this->calendar_struct['calendar'] == '' || $fetch){
 				$id = $this->IDs[$count];
 				$this->DB_WE->query('SELECT c.BDID,c.Dat,l.Name FROM ' .
-					LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID  WHERE l.DID=' . intval($id) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+					LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID=' . intval($id) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 				$this->Record = array();
 				while($this->DB_WE->next_record()){
 					$tmp = ($this->DB_WE->f('BDID'));
 					$this->Record[$this->DB_WE->f('Name')] = $tmp ? $tmp : $this->DB_WE->f('Dat');
 				}
-				$tmp = getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC);
+				$tmp = getHash('SELECT ID,ParentID,Text,Icon,IsFolder,ContentType,CreationDate,ModDate,Path,TemplateID,Filename,Extension,IsDynamic,IsSearchable,DocType,ClassName,Category,Published,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Language,WebUserID,InGlossar FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC);
 				foreach($tmp as $key => $val){
 					$this->Record['wedoc_' . $key] = $val;
 				}

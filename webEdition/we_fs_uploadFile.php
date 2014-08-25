@@ -106,7 +106,7 @@ if($inputTypeFile->processFileRequest()){
 				$we_doc->setElement('height', $we_size[1], 'attrib');
 				$we_doc->setElement('origwidth', $we_size[0]);
 				$we_doc->setElement('origheight', $we_size[1]);
-				if(we_base_request::_(we_base_request::BOOL,'import_metadata')){
+				if(we_base_request::_(we_base_request::BOOL, 'import_metadata')){
 					$we_doc->importMetaData();
 				}
 			}
@@ -115,10 +115,10 @@ if($inputTypeFile->processFileRequest()){
 			}
 
 			$we_doc->setElement('filesize', $_FILES['we_uploadedFile']['size'], 'attrib');
-			if(($tit=we_base_request::_(we_base_request::STRING,'img_title'))!==false){
+			if(($tit = we_base_request::_(we_base_request::STRING, 'img_title')) !== false){
 				$we_doc->setElement('title', $tit, 'attrib');
 			}
-			if(($alt=we_base_request::_(we_base_request::STRING,'img_alt'))!==false){
+			if(($alt = we_base_request::_(we_base_request::STRING, 'img_alt')) !== false){
 				$we_doc->setElement('alt', $alt, 'attrib');
 			}
 			if(isset($_REQUEST['Thumbnails'])){

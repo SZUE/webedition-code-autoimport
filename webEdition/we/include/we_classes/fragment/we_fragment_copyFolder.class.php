@@ -522,14 +522,14 @@ class we_fragment_copyFolder extends we_fragment_base{
 								$int = ((!isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]['dat'])) || $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]['dat'] == '')
 										? 0 : $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]['dat'];
 								if($int){
-									if(isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['dat'])){
-										$intID = $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['dat'];
+									if(isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['bdid'])){
+										$intID = $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['bdid'];
 										$path = id_to_path($intID, FILE_TABLE, $DB_WE);
 										if($this->mustChange($path)){
 											$pathTo = $this->getNewPath($path);
 											$idTo = $this->getID($pathTo, $DB_WE);
-											$we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['dat'] = $idTo ? $idTo : '##WEPATH##' . $pathTo . ' ###WEPATH###';
-											$we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_PATH]['dat'] = $pathTo;
+											$we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['bdid'] = $idTo ? $idTo : '##WEPATH##' . $pathTo . ' ###WEPATH###';
+											$we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_PATH]['bdid'] = $pathTo;
 										}
 									}
 								} else {
