@@ -29,7 +29,7 @@ echo we_html_tools::getHtmlTop();
 
 $js_load = array('windows', 'utils/dimension', 'utils/prototypes', 'utils/cockpit');
 foreach($js_load as $js){
-	print we_html_element::jsScript(JS_DIR . $js . '.js');
+	echo we_html_element::jsScript(JS_DIR . $js . '.js');
 }
 unset($js_load);
 
