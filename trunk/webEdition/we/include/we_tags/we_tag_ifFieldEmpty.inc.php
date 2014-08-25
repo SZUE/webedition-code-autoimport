@@ -112,7 +112,7 @@ function we_isFieldNotEmpty($attribs){
 			$int = ($GLOBALS['lv']->f($match . we_base_link::MAGIC_INT_LINK) == '') ? 0 : $GLOBALS['lv']->f($match . we_base_link::MAGIC_INT_LINK);
 			if($int){ // for type = href int
 				$intID = $GLOBALS['lv']->f($match . we_base_link::MAGIC_INT_LINK_ID);
-				return ($intID > 0 ? strlen(id_to_path($intID)) > 0 : false);
+				return ($intID ? (bool) id_to_path($intID) : false);
 			} else {
 				$hreftmp = $GLOBALS['lv']->f($match);
 				if(substr($hreftmp, 0, 1) == '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))){

@@ -518,7 +518,7 @@ abstract class we_export_functions{
 										? 0 : $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"];
 
 								if($_int){
-									$_intID = $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]["dat"];
+									$_intID = $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['bdid'];
 
 									$_tag_name = self::correctTagname($k, "link", $_tag_counter);
 									$_file .= self::formatOutput($_tag_name, id_to_path($_intID, FILE_TABLE, $DB_WE), $format, 2, $cdata);

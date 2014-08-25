@@ -1153,7 +1153,7 @@ class we_objectFile extends we_document{
 		$extPath = isset($hrefArr['extPath']) ? $hrefArr['extPath'] : '';
 		$int_elem_Name = 'we_' . $this->Name . '_href[' . $nint . ']';
 		$intPath_elem_Name = 'we_' . $this->Name . '_href[' . $nintPath . ']';
-		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']';
+		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']';//TOFO: should we use #bdid?
 		$ext_elem_Name = 'we_' . $this->Name . '_href[' . $nextPath . ']';
 		switch($type){
 			case we_base_link::TYPE_INT:
@@ -2605,20 +2605,22 @@ class we_objectFile extends we_document{
 			foreach($tableInfo as $cur){
 				$regs = explode('_', $cur["name"], 2);
 				if(count($regs) > 1){
-					if($regs[0] != "OF"){
-						$realname = $regs[1];
-						$name = ($regs[0] == self::TYPE_OBJECT ? 'we_object_' : '') . $realname;
-						$this->elements[$name] = array(
-							'dat' => $db->f($cur["name"]),
-							'type' => $regs[0],
-							'len' => $cur["len"]
-						);
+					if($regs[0] == "OF"){
+						continue;
+					}
+					$name = ($regs[0] == self::TYPE_OBJECT ? 'we_object_' : '') . $regs[1];
+					$this->elements[$name] = array(
+						'dat' => $db->f($cur["name"]),
+						'type' => $regs[0],
+						'len' => $cur["len"]
+					);
 //						if($regs[0] == "multiobject"){
 //							$this->elements[$name]["class"] = $db->f($tableInfo[$i]["name"]);
 //						}
-						if($regs[0] == self::TYPE_IMG){
+					switch($regs[0]){
+						case self::TYPE_HREF:
+						case self::TYPE_IMG:
 							$this->elements[$name]["bdid"] = $db->f($cur["name"]);
-						}
 					}
 				}
 			}
