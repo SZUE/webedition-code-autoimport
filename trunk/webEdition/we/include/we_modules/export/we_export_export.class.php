@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,14 +21,13 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /**
  * General Definition of WebEdition Export
  *
  */
 we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
-class we_export_export extends weModelBase{
 
+class we_export_export extends weModelBase{
 	//properties
 	var $ID;
 	var $Text;
@@ -153,10 +151,12 @@ class we_export_export extends weModelBase{
 	}
 
 	function clearSessionVars(){
-		if(isset($_SESSION['weS']['ExportSession']))
+		if(isset($_SESSION['weS']['ExportSession'])){
 			unset($_SESSION['weS']['ExportSession']);
-		if(isset($_SESSION['weS']['exportVars']))
+		}
+		if(isset($_SESSION['weS']['exportVars'])){
 			unset($_SESSION['weS']['exportVars']);
+		}
 	}
 
 	function filenameNotValid($text){
@@ -194,7 +194,7 @@ class we_export_export extends weModelBase{
 	}
 
 	function pathExists($path){
-		return f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($path) . '" AND ID!=' . intval($this->ID).' LIMIT 1','',$this->db);
+		return f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($path) . '" AND ID!=' . intval($this->ID) . ' LIMIT 1', '', $this->db);
 	}
 
 	function isSelf(){
