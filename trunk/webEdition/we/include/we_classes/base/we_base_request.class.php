@@ -289,7 +289,7 @@ class we_base_request{
 							t_e('notice', 'variable could be list', $args, $var);
 						} elseif(strpos($var, 'a:') !== false || strpos($var, 's:') !== false){
 							t_e('notice', 'variable could be serial', $args, $var);
-						} elseif(strpos($var, 'tbl') !== 0){
+						} elseif(strpos($var, 'tbl') === 0){
 							t_e('notice', 'variable could be table', $args, $var);
 						}
 					}
