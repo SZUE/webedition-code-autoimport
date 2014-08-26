@@ -264,10 +264,10 @@ class we_updater{
 					$GLOBALS['DB_WE']->delKey($_table, 'OF_WebUserID');
 				}
 				if($GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'published')){
-					$GLOBALS['DB_WE']->addKey($_table, 'published');
+					$GLOBALS['DB_WE']->delKey($_table, 'published');
 				}
 				if($GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_IsSearchable')){
-					$GLOBALS['DB_WE']->addKey($_table, 'OF_IsSearchable');
+					$GLOBALS['DB_WE']->delKey($_table, 'OF_IsSearchable');
 				}
 
 				if($GLOBALS['DB_WE']->isColExist($_table, 'ID')){
