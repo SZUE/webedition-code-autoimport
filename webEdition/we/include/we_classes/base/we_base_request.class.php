@@ -285,7 +285,7 @@ class we_base_request{
 							t_e('notice', 'variable could be url', $args, $var);
 						} elseif(strpos($var, '/') === 0){
 							t_e('notice', 'variable could be file', $args, $var);
-						} elseif(count(explode(',', $var)) > 2){
+						} elseif($type != self::JS && count(explode(',', $var)) > 2){
 							t_e('notice', 'variable could be list', $args, $var);
 						} elseif(strpos($var, 'a:') === 0 || strpos($var, 's:') === 0){
 							t_e('notice', 'variable could be serial', $args, $var);

@@ -112,8 +112,7 @@ function we_tag_ifVar($attribs){
 
 		case 'property' :
 			$name = weTag_getAttribute('_name_orig', $attribs);
-			$docAttr = weTag_getAttribute('doc', $attribs);
-			$doc = we_getDocForTag($docAttr, true);
+			$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs), true);
 			$var = $doc->$name;
 			return ($size == 1 && $operator != '' && isset($var) ?
 					_we_tag_ifVar_op($operator, $var, $match) :
@@ -121,8 +120,7 @@ function we_tag_ifVar($attribs){
 
 		case 'document' :
 		default :
-			$docAttr = weTag_getAttribute('doc', $attribs);
-			$doc = we_getDocForTag($docAttr, true);
+			$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs), true);
 			$val = $doc->getField($attribs, $type, true);
 
 			return ($size == 1 && $operator ?
