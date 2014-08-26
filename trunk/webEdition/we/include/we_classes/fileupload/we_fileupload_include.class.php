@@ -23,12 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_include extends we_fileupload_base{
-	protected $callback = '';
-	protected $formFrame = '';
-	protected $drop = true;
-	protected $progress = true;
 	protected $isUploadComplete = false;
-	protected $onclick = '';
 	protected $fileNameTemp = "";
 	protected $fileNameTempParts = array(
 		'path' => TEMP_PATH,
@@ -36,29 +31,6 @@ class we_fileupload_include extends we_fileupload_base{
 		'postfix' => '',
 		'missingDocRoot' => false,
 		'useFilenameFromUpload' => false
-	);
-	protected $externalProgress = array(
-		'isExternalProgress' => false,
-		'parentElemId' => '',
-		'frame' => '',
-		'create' => false,
-		'width' => 200,
-		'name' => '',
-		'additionalParams' => array()
-	);
-	protected $typeCondition = array(
-		'accepted' => array(
-			'mime' => array(),
-			//'mimeGroups' => array(),
-			'extensions' => array(),
-			'all' => array()
-		),
-		'forbidden' => array(
-			'mime' => array(),
-			//'mimeGroups' => array(),
-			'extensions' => array(),
-			'all' => array()
-		)
 	);
 
 	const GET_PATH_ONLY = 1;
@@ -69,16 +41,19 @@ class we_fileupload_include extends we_fileupload_base{
 	const USE_LEGACY_FOR_BACKUP = true;
 	const USE_LEGACY_FOR_WEIMPORT = true;
 
-	public function __construct($name, $formFrame = 'top', $onclick = '', $width = 400, $drop = true, $progress = true, $acceptedMime = '', $acceptedExt = '', $forbiddenMime = '', $forbiddenExt = '', $externalProgress = array(), $maxUploadSize = -1){
-		parent::__construct($name, $width, $maxUploadSize);
-
-		$this->formFrame = $formFrame;
-		$this->onclick = $onclick;
-		$this->drop = (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() == 10) || we_base_browserDetect::isOpera() ? false : $drop;
-		$this->progress = $progress;
+	public function __construct($name, $contentName = '', $footerName = '', $formName = '', $uploadBtnName = '', $callback = 'document.forms[0].submit()', $fileselectOnclick = '', $width = 400, $isDragAndDrop = true, $isInternalProgress = false, $internalProgressWidth = 0, $acceptedMime = '', $acceptedExt = '', $forbiddenMime = '', $forbiddenExt = '', $externalProgress = array(), $maxUploadSize = -1){
+		parent::__construct($name, $width, $maxUploadSize, $isDragAndDrop, $footerName);
+		$this->type = 'inc';
+		$this->contentName = $contentName;
+		$this->footerName = $footerName;
+		$this->uploadBtnName = $uploadBtnName ? $uploadBtnName : 'upload_btn';
+		$this->form['name'] = $formName;
+		$this->callback = $callback;
+		$this->fileselectOnclick = $fileselectOnclick;
+		$this->internalProgress['isInternalProgress'] = $isInternalProgress;
+		$this->internalProgress['width'] = $internalProgressWidth;
 		$this->setTypeCondition('accepted', $acceptedMime, $acceptedExt);
 		$this->setTypeCondition('forbidden', $forbiddenMime, $forbiddenExt);
-		$this->typeConditionJson = json_encode($this->typeCondition);
 		$this->externalProgress = $externalProgress ? $externalProgress : $this->externalProgress;
 		$this->setDimensions(array('marginTop' => 6));
 	}
@@ -109,30 +84,32 @@ class we_fileupload_include extends we_fileupload_base{
 		$this->callback = $callback;
 	}
 
-	public function setExternalProgressbar($isExternalProgress, $parentElemId = '', $create = false, $frame = '', $width = 100, $name = '', $additionalParams = array()){
+	public function setInternalProgress($args = array()){
+		$this->internalProgress = array(
+			'isInternalProgress' => isset($args['isInternalProgress']) ? $args['isInternalProgress'] : $this->internalProgress['isInternalProgress'],
+			'width' => isset($args['width']) ? $args['width'] : $this->internalProgress['width'],
+		);
+	}
+
+	public function setExternalProgress($isExternalProgress, $parentElemId = '', $create = false, $frame = '', $width = 100, $name = '', $additionalParams = array()){
 		$this->externalProgress['isExternalProgress'] = $isExternalProgress;
 		$this->externalProgress['parentElemId'] = $parentElemId;
 		$this->externalProgress['create'] = $create;
-		$this->externalProgress['frame'] = $frame;
 		$this->externalProgress['width'] = $width;
 		$this->externalProgress['name'] = $name;
 		$this->externalProgress['additionalParams'] = $additionalParams;
 	}
 
-	public function setFormFrame($frame = 'top'){
-		$this->formFrame = $frame;
-	}
-
-	public function setUseDragAndDrop($useDragAndDrop = true){
-		$this->drop = $useDragAndDrop;
+	public function setIsDragAndDrop($isDragAndDrop = true){
+		$this->isDragAndDrop = $isDragAndDrop;
 	}
 
 	//TODO: split and move selector to base
-	public function getHTML(){
-		$butBrowse = str_replace(array("\n", "\r"), ' ', we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? we_html_button::create_button('browse', 'javascript:void(0)', true, 84, 22) :
-			we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, ($this->dimensions['width'] - 103), 22));
+	public function getHTML($hiddens = ''){
+		$butBrowse = str_replace(array("\n", "\r"), ' ', we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? we_html_button::create_button('browse', 'javascript:void(0)', true, 84, we_html_button::HEIGHT, '', '', false, false, '_btn') :
+			we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, ($this->dimensions['width'] - 103), we_html_button::HEIGHT, '', '', false, false, '_btn'));
 
-		$butReset = str_replace(array("\n", "\r"), ' ', we_html_button::create_button('reset', 'javascript:weFU.reset()', true, (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? 84 : 100), 22, '', '', false));
+		$butReset = str_replace(array("\n", "\r"), ' ', we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
 
 		$fileInput = we_html_element::htmlInput(array(
 				'class' => 'fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : ''),
@@ -153,14 +130,13 @@ class we_fileupload_include extends we_fileupload_base{
 		<div style="vertical-align: top; display: inline-block; height: 22px">
 			' . $butReset . '
 		</div>
-		' . ($this->drop ? '<div class="we_file_drag" id="div_' . $this->name . '_fileDrag">' . g_l('importFiles', "[dragdrop_text]") . '</div>' : '
-			<div id="div_' . $this->name . '_fileName" style="height:26px;padding-top:10px;display:none"></div>
-		') . '
+		<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" style="display:' . ($this->isDragAndDrop ? 'block' : 'none') . '">' . g_l('importFiles', "[dragdrop_text]") . '</div>
+		<div id="div_' . $this->name . '_fileName" style="height:26px;padding-top:10px;display:' . ($this->isDragAndDrop ? 'none' : 'block') . '"></div>
 		<div style="display:block;">
 			<div id="div_' . $this->name . '_message" style="height:26px;font-size:12px;">
 				&nbsp;
 			</div>
-			' . ($this->progress ? '<div id="div_' . $this->name . '_progress" style="height:26px;display: none">' . $this->getProgressHTML() . '</div>' : '') . '
+			' . ($this->internalProgress['isInternalProgress'] ? '<div id="div_' . $this->name . '_progress" style="height:26px;display: none">' . $this->getProgressHTML() . '</div>' : '') . '
 		</div>
 	</div>
 </div>
@@ -174,17 +150,17 @@ class we_fileupload_include extends we_fileupload_base{
 			we_html_element::htmlInput(array('type' => 'file', 'name' => $this->name)));
 	}
 
+	//FIXME: base intarnal progress on we_progress
 	private function getProgressHTML(){
 		return '
 <table cellpadding="0" style="border-spacing: 0px;border-style:none;"><tbody><tr>
 	<td valign="bottom" width="2"></td>
 	<td valign="middle"><img width="0" height="10" src="/webEdition/images/balken.gif" name="' . $this->name . '_progress_image" valign="top"></td>
-	<td valign="middle"><img width="' . $this->dimensions['progressWidth'] . '" height="10" src="/webEdition/images/balken_bg.gif" name="' . $this->name . '_progress_image_bg" valign="top"></td>
+	<td valign="middle"><img width="' . $this->internalProgress['width'] . '" height="10" src="/webEdition/images/balken_bg.gif" name="' . $this->name . '_progress_image_bg" valign="top"></td>
 	<td valign="bottom" width="8"></td>
 	<td class="small" style="color:#006699;font-weight:bold">
 		<span id="span_' . $this->name . '_progress_text">0%</span><span class="small" id="span_' . $this->name . '_progress_more_text" style="color:#006699;font-weight:bold"></span>
 	</td>
-
 	<td width="14" valign="bottom"></td>
 </tr></tbody></table>
 ';
@@ -213,379 +189,16 @@ class we_fileupload_include extends we_fileupload_base{
 		}
 	}
 
-	protected function _getInitJS(){
-		if($this->useLegacy){
-			return we_html_element::jsElement('
-function weFU(){};
-weFU();
-weFU.legacyMode = true;
-			');
-		}
-
-		$isExternalProgress = $this->externalProgress['isExternalProgress'] && $this->externalProgress['parentElemId'] ? true : false;
-		$createExternalProgress = $isExternalProgress && $this->externalProgress['create'] ? true : false;
-		if($createExternalProgress){
-			$pb = new we_progressBar();
-			$pb->setName($this->externalProgress['name']);
-			$pb->setStudLen($this->externalProgress['width']);
-		}
-
-		return we_html_element::jsElement('
-function weFU(){
-	//vars to be set oninit
-	this.legacyMode = true;
-		this.typeCondition = null;
-		this.maxUploadSize = 0;
-		this.useFileDrag = false;
-		this.isExternalProgress = false;
-		this.elems = {};
-		this.chunkSize = 0;
-		this.form = null;
-		this.action = "' . $this->action . '";
-		this.callback = null;
-		this.error = "";
-
-	//vars to be set when using updater
-	this.originalFiles = null;
-		this.preparedFiles = null;
-		this.currentFile = null; //will PreparedFile object, elem of peraparedFiles
-
-	function onLoad(){
-		var xhrTestObj = new XMLHttpRequest(),
-			xhrTest = xhrTestObj && xhrTestObj.upload ? true : false;
-		if (xhrTest && window.File && window.FileReader && window.FileList && window.Blob) {
-			weFU.legacyMode = false;
-			_init();
-		} else {
-			var fileselect = document.getElementById("' . $this->name . '"),
-				fileselectLegacy = document.getElementById("' . $this->name . '_legacy"),
-				alertbox = document.getElementById("div_' . $this->name . '_alert"),
-				alertboxLegacy = document.getElementById("div_' . $this->name . '_alert_legacy");
-
-			fileselect.id = fileselect.name = "' . $this->name . '_alt";
-			fileselectLegacy.id = fileselectLegacy.name = "' . $this->name . '";
-			document.getElementById("div_' . $this->name . '").style.display = "none";
-			document.getElementById("div_' . $this->name . '_legacy").style.display = "";
-			if(typeof alertbox !== "undefined" && typeof alertboxLegacy !== "undefined"){
-				alertbox.style.display = "none";
-				alertboxLegacy.style.display = "";
-			}
-			weFU.legacyMode = true;
-			' . $this->formFrame . '.document.forms[0].weIsFileInLegacy.value = 1;
-			' . $this->formFrame . '.document.forms[0].weIsUploading.value = 0;
-			//FIXME: change state of hidden fiels weIsFileInLegacy and weIsUploading
-		}
+	public function getJsBtnCmd($btn = 'upload'){
+		return self::getJsBtnCmdStatic($btn, $this->contentName, $this->callback);
 	}
 
-	//we do not need variant document.onload anymore because new uploader is for use in IE>9 only
-	window.addEventListener("load",onLoad);
+	public static function getJsBtnCmdStatic($btn = 'upload', $contentName = '', $callback = ''){
+		$win = $contentName ? 'top.' . $contentName . '.': '';
+		$callback = $callback ? $callback : ($btn == 'upload' ? 'document.forms[0].submit()' : 'window.close()');
+		$call = $win . 'we_FileUpload.' . ($btn == 'upload' ? 'startUpload()' : 'cancelUpload()');
 
-	function _init(){
-		weFU.typeCondition = JSON.parse(\'' . $this->typeConditionJson . '\');
-		weFU.maxUploadSize = ' . $this->maxUploadSizeBytes . ';
-		weFU.chunkSize = ' . self::CHUNK_SIZE . '*1024,
-		weFU.action = "' . $this->action . '",
-		weFU.elems = {
-			message : document.getElementById("div_' . $this->name . '_message"),
-			progress : document.getElementById("div_' . $this->name . '_progress"),
-			progressText : document.getElementById("span_' . $this->name . '_progress_text"),
-			progressMoreText : document.getElementById("span_' . $this->name . '_progress_more_text"),
-			fileDrag : document.getElementById("div_' . $this->name . '_fileDrag"),
-			fileName : document.getElementById("div_' . $this->name . '_fileName"),
-			fileSelect : document.getElementById("' . $this->name . '"),
-			fileInputWrapper : document.getElementById("div_' . $this->name . '_fileInputWrapper")
-		}
-
-		weFU.preparedFiles = new Array(),
-
-		weFU.elems.fileSelect.addEventListener("change", weFU.fileSelectHandler, false);
-		weFU.elems.fileInputWrapper.addEventListener("click", function(){' . $this->onclick . '}, false);
-		if(weFU.elems.fileDrag){
-			weFU.useFileDrag = true;
-			weFU.elems.fileDrag.addEventListener("dragover", weFU.fileDragHover, false);
-			weFU.elems.fileDrag.addEventListener("dragleave", weFU.fileDragHover, false);
-			weFU.elems.fileDrag.addEventListener("drop", weFU.fileSelectHandler, false);
-			weFU.elems.fileDrag.style.display = "' . ($this->drop ? "block" : "none") . '";
-		}
-
-		' . ($createExternalProgress ?
-					'
-		if(' . $this->externalProgress['frame'] . 'document && ' . $this->externalProgress['frame'] . 'document.getElementById("' . $this->externalProgress['parentElemId'] . '")){
-			var externalProgressDocument = ' . $this->externalProgress['frame'] . 'document;
-			weFU.elems.externalProgressDiv = externalProgressDocument.getElementById("' . $this->externalProgress['parentElemId'] . '");
-			weFU.elems.externalProgressDiv.innerHTML = \'' . str_replace("\n", " ", str_replace("\r", " ", $pb->getHTML())) . '\';
-			weFU.isExternalProgress = true;
-		}' : '') . '
-	}
-
-};
-
-weFU();
-
-weFU.isUploading = false;
-weFU.isCancelled = false;
-weFU.legacyMode = true;
-
-weFU.gl = {
-	dropText : "' . g_l('importFiles', "[dragdrop_text]") . '",
-	sizeTextOk: "' . g_l('newFile', '[file_size]') . ': ",
-	sizeTextNok: "' . g_l('newFile', '[file_size]') . ': &gt; ' . $this->maxUploadSizeMBytes . ' MB, ",
-	typeTextOk: "' . g_l('newFile', '[file_type]') . ': ",
-	typeTextNok: "' . g_l('newFile', '[file_type_forbidden]') . ': ",
-
-	errorNoFileSelected: "' . g_l('newFile', '[error_no_file]') . '",
-	errorFileSize: "' . g_l('newFile', '[error_file_size]') . '",
-	errorFileType: "' . g_l('newFile', '[error_file_type]') . '",
-	errorFileSizeType: "' . g_l('newFile', '[error_size_type]') . '"
-};
-		') . ($createExternalProgress ? $pb->getJS() : '');
-	}
-
-	protected function _getSelectorJS(){
-		return we_html_element::jsElement('
-weFU.fileSelectHandler = function(e){
-	var files = e.target.files || e.dataTransfer.files,
-		file = null;
-		tmpFileType = "";
-		fileSizeOk = false,
-		fileTypeOk = false;
-		errorMsg = [
-				weFU.gl.errorNoFileSelected,
-				weFU.gl.errorFileSize,
-				weFU.gl.errorFileType,
-				weFU.gl.errorFileSizeType,
-			]
-
-	weFU.originalFiles = files;
-
-	//the following code is specific for single file upload:
-	//FIXME: pack it to an extra function and call this with weFU.files as aparam!
-	if(files[0]){
-		newFile = {
-			file: files[0],
-			fileNum: 0,
-			uploadConditionsOk: false,
-			error: "",
-			dataArray: null,
-			currentPos: 0,
-			partNum: 0,
-			totalParts: 0,
-			lastChunkSize: 0,
-			currentWeightFile: 0,
-			mimePHP: "none",
-			fileNameTemp: ""
-		}
-
-		weFU.preparedFiles.push(newFile);
-		weFU.totalWeight += newFile.size;
-
-		if(weFU.useFileDrag){
-			if(e.type == "drop"){
-				e.stopPropagation();
-				e.preventDefault();
-				e.target.className = "we_file_drag";
-			}
-			weFU.elems.fileDrag.innerHTML = newFile.file.name;
-		} else {
-			weFU.elems.fileName.innerHTML = newFile.file.name;
-			weFU.elems.fileName.style.display = "";
-		}
-
-		tmpFileType = newFile.file.type ? newFile.file.type : "text/plain";
-		fileSizeOk = newFile.file.size <= ' . $this->maxUploadSizeBytes . ' || !' . $this->maxUploadSizeBytes . ';
-		fileTypeOk = weFU.checkFileType(tmpFileType, newFile.file.name);
-
-		sizeText = fileSizeOk ? weFU.gl.sizeTextOk + weFU.weComputeSize(newFile.file.size) + ", ":
-			\'<span style="color:red;">\' + weFU.gl.sizeTextNok + \'</span>\';
-		typeText = fileTypeOk ? weFU.gl.typeTextOk + tmpFileType :
-			\'<span style="color:red;">\' + weFU.gl.typeTextNok + tmpFileType + \'</span>\';
-
-		weFU.elems.message.innerHTML = sizeText + typeText;
-		newFile.uploadConditionsOk = fileSizeOk && fileTypeOk;
-		newFile.error = errorMsg[fileSizeOk && fileTypeOk ? 0 : (!fileSizeOk && fileTypeOk ? 1 : (fileSizeOk && !fileTypeOk ? 2 : 3))];
-	}
-};
-
-weFU.fileDragHover = function(e){
-	e.stopPropagation();
-	e.preventDefault();
-	e.target.className = (e.type == "dragover" ? "we_file_drag we_file_drag_hover" : "we_file_drag");
-	' . $this->onclick . '
-};
-
-weFU.weComputeSize = function(size){
-	return size = size/1024 > 1023 ? ((size/1024)/1024).toFixed(1) + \' MB\' :
-			(size/1024).toFixed(1) + \' KB\';
-};
-
-weFU.inArray = function(needle, haystack) {
-	var length = haystack.length;
-	for(var i = 0; i < length; i++) {
-		if(haystack[i] == needle){
-			return true;
-		}
-	}
-	return false;
-};
-
-weFU.checkFileType = function(type, name){
-	var ext = name.split(".").pop().toLowerCase(),
-		tc = weFU.typeCondition,
-		typeGroup = type.split("/").shift() + "/*";
-
-	//FIXME: mime- and ext-conditions are OR-conected: implement optional AND
-	if(tc.accepted.mime && tc.accepted.mime.length > 0 && type == ""){
-		return false;
-	}
-	if(tc.accepted.all && tc.accepted.all.length > 0 &&
-			!weFU.inArray(type, tc.accepted.all) &&
-			!weFU.inArray(typeGroup, tc.accepted.all) &&
-			!weFU.inArray(ext, tc.accepted.all)){
-		return false;
-	}
-	if(tc.forbidden.all && tc.forbidden.all.length > 0 &&
-			(weFU.inArray(type, tc.forbidden.all) ||
-				weFU.inArray(typeGroup, tc.forbidden.all) ||
-				weFU.inArray(ext, tc.forbidden.all))){
-		return false;
-	}
-
-	return true;
-};
-
-weFU.setProgressText = function(name, text){
-	var div = document.getElementById("span_' . $this->name . '_" + name);
-	div.innerHTML = text;
-};
-
-weFU.setProgress = function(progress){
-	koef = ' . $this->dimensions['progressWidth'] . ' / 100;
-	document.images["' . $this->name . '_progress_image"].width=koef*progress;
-	document.images["' . $this->name . '_progress_image_bg"].width=(koef*100)-(koef*progress);
-	weFU.setProgressText("progress_text", progress + "%");
-};
-
-weFU.setProgressCompleted = function(success){
-	if(success){
-		weFU.setProgress(100);
-		//document.images["' . $this->name . '_progress_image"].src = "/webEdition/images/fileUpload/balken_gr.gif";
-	} else {
-		document.images["' . $this->name . '_progress_image"].src = "/webEdition/images/fileUpload/balken_red.gif";
-	}
-};
-		');
-	}
-
-	protected function _getSenderJS_additional(){
-		return we_html_element::jsElement('
-weFU.prepareUpload = function(){
-	//will do some of fileSelectHandlers job
-};
-
-weFU.upload = function(form, callback){
-	if(weFU.legacyMode){
-		callback();
-		return;
-	}
-
-	weFU.totalFiles = weFU.preparedFiles.length;
-	weFU.currentWeight = 0;
-
-	weFU.form = form;
-	weFU.callback = callback
-	if(weFU.preparedFiles.length > 0){
-		weFU.action = weFU.action ? weFU.action : form.action;
-		weFU.sendNextFile();
-	} else {
-		weFU.processError({"from" : "gui", "msg" : weFU.gl.errorNoFileSelected});
-	}
-};
-
-weFU.postProcess = function(){
-	var form = weFU.form,
-		callback = weFU.callback,
-		cur = weFU.currentFile;
-
-	form.elements["weFileNameTemp"].value = cur.fileNameTemp;
-	form.elements["weFileCt"].value = cur.mimePHP;
-	form.elements["weFileName"].value = cur.file.name;
-	form.elements["weIsUploadComplete"].value = 1;
-	setTimeout(function(){callback()}, 500);
-};
-
-weFU.repaintGUI = function(arg){
-	switch(arg.what){
-		case "chunkOK":
-			var prog = (100 / weFU.currentFile.file.size) * weFU.currentFile.currentWeightFile,
-				digits = weFU.currentFile.totalParts > 1000 ? 2 : (weFU.currentFile.totalParts > 100 ? 1 : 0);
-			if(weFU.elems.progress){
-				weFU.setProgress(prog.toFixed(digits));
-			}
-			if(weFU.isExternalProgress){
-				setProgress' . $this->externalProgress['name'] . '(prog.toFixed(digits));
-			}
-			break;
-		case "fileOK":
-			if(weFU.elems.progress){
-				weFU.setProgressCompleted(true);
-			}
-			if(weFU.isExternalProgress){
-				setProgress' . $this->externalProgress['name'] . '(100);
-			}
-			break;
-		case "fileNOK":
-			if(weFU.elems.progress){
-				weFU.setProgressCompleted(false);
-			}
-			break;
-		case "startSendFile":
-			if(weFU.elems.progress){
-				weFU.elems.message.style.display = "none";
-				weFU.elems.progress.style.display = "";
-				weFU.elems.progressMoreText.innerHTML = " von " + weFU.weComputeSize(weFU.currentFile.file.size);
-			}
-			if(weFU.isExternalProgress){
-				weFU.elems.externalProgressDiv.style.display = "";
-			}
-			break;
-	}
-};
-
-weFU.processError = function(arg){
-	switch(arg.from){
-		case "gui":
-			top.we_showMessage(arg.msg, 4, window);
-		case "request":
-			weFU.repaintGUI({"what" : "fileNOK"});
-			weFU.reset();
-	}
-};
-
-weFU.reset = function(){
-	weFU.file = null;
-	weFU.preparedFiles = new Array();
-	weFU.uploadConditionsOk = false;
-	if(weFU.elems.fileDrag){
-		weFU.elems.fileDrag.innerHTML = weFU.gl.dropText;
-	}
-	if(weFU.elems.progress){
-		weFU.elems.progress.style.display = "none";
-	}
-	weFU.elems.message.innerHTML = "";
-	weFU.elems.message.innerHTML.display = "none";
-};
-		');
-	}
-
-	public function getJsSubmitCall($callback = ''){
-		$callback = $callback ? $callback : ($this->callback ? $this->callback : '');
-		return self::getJsSubmitCallStatic($this->formFrame, 0, $callback);
-	}
-
-	public static function getJsSubmitCallStatic($formFrame = 'top', $formName = 0, $callback = 'document.forms[0].submit()'){
-		$quotes = is_int($formName) ? '' : '"';
-		$call = $formFrame . '.weFU.upload(' . $formFrame . '.document.forms[' . $quotes . $formName . $quotes . '], function(){' . $callback . '})';
-		return 'if(typeof ' . $formFrame . '.weFU === "undefined" || (' . $formFrame . '.weFU.legacyMode)){' . $callback . ';}else{' . $call . ';}';
+		return 'if(typeof ' . $win . 'we_FileUpload === "undefined" || ' . $win . 'we_FileUpload.isLegacyMode){' . $callback . '}else{' . $call . ';}';
 	}
 
 	public function processFileRequest($retFalseOnFinalError = false){
@@ -623,7 +236,7 @@ weFU.reset = function(){
 						if(($mime = we_base_util::getMimeType('', $tempPath . $tempName, we_base_util::MIME_BY_HEAD))){
 							//IMPORTANT: finfo_file returns text/plain where FILE returns ""!
 							if($mime !== $fileCt){
-								//t_e("Mime type determined by finfo_file differ from type detemined by JS File", $mime, $fileCt);
+									//t_e("Mime type determined by finfo_file differ from type detemined by JS File", $mime, $fileCt);
 							} else {
 								$error = !$this->checkFileType($mime, $fileName) ? 'mime_or extension_not_ok_error' : '';
 							}

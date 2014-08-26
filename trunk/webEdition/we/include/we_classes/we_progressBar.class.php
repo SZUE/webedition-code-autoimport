@@ -48,8 +48,11 @@ class we_progressBar{
 		$this->showProgressText = $showProgressText;
 	}
 
-	public function getJS($pgFrame = ''){
-		echo $this->getJSCode($pgFrame);
+	public function getJS($pgFrame = '', $doReturn = false){
+		if($doReturn){
+			return $this->getJSCode($pgFrame);
+		}
+		print $this->getJSCode($pgFrame);
 	}
 
 	public function getJSCode($pgFrame = ''){
