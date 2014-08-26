@@ -511,7 +511,7 @@ abstract class we_html_tools{
 
 		if(!$format || $_monthPos > -1){
 			$months = getHtmlTag('option', array_merge($_attsOption, array('value' => 0)), '--');
-			;
+
 			$monthType = (strpos($format, 'F') ? 'F' : (strpos($format, 'M') ? 'M' : 0));
 			for($i = 1; $i <= 12; $i++){
 				switch($monthType){//Bug #4095
