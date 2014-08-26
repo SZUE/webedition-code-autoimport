@@ -105,7 +105,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 		$butEdit = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_edit', 'javascript:void(0)');
 		$butTrash = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash', "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);");
 
-		return str_replace(array("\n\r", "\r\n", "\r", "n"), "", '<table cellspacing="0" cellpadding="0" border="0" width="520"><tbody><tr height="28" width="520">
+		return str_replace(array("\n\r", "\r\n", "\r", "\n"), "", '<table cellspacing="0" cellpadding="0" border="0" width="520"><tbody><tr height="28" width="520">
 			<td width="20" valign="bottom"></td>
 			<td class="weMultiIconBoxHeadline" width="80" valign="bottom">' . g_l('importFiles', "[file]") . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span><span style="display:inline-block;width:20px;height:5px;"></span></td>
 			<td valign="bottom" width="270"><input id="name_uploadFiles_WEFORMNUM" display:inline-block; type="text" size="' . (we_base_browserDetect::isOpera() ? 34 : 38) . '" readonly="readonly" value="FILENAME" /></td>
