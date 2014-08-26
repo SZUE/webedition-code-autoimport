@@ -48,7 +48,7 @@ class we_object extends we_document{
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_WORKSPACE, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT); // ,we_base_constants::WE_EDITPAGE_PREVIEW
 		}
-		$this->setElement('Charset', DEFAULT_CHARSET);
+		$this->setElement('Charset', DEFAULT_CHARSET, 'attrib');
 		$this->Icon = 'object.gif';
 		$this->Table = OBJECT_TABLE;
 		$this->Published = 1;
@@ -1959,7 +1959,7 @@ class we_object extends we_document{
 
 	function we_initSessDat($sessDat){
 		//	charset must be in other namespace -> for header !!!
-		$this->setElement('Charset', (isset($sessDat["0"]["SerializedArray"]["elements"]["Charset"]) ? $sessDat["0"]["SerializedArray"]["elements"]["Charset"]["dat"] : ""));
+		$this->setElement('Charset', (isset($sessDat["0"]["SerializedArray"]["elements"]["Charset"]) ? $sessDat["0"]["SerializedArray"]["elements"]["Charset"]["dat"] : ""), 'attrib');
 		parent::we_initSessDat($sessDat);
 		$this->setSort();
 	}

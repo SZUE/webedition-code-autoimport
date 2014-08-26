@@ -24,7 +24,6 @@
  */
 abstract class we_textContentDocument extends we_textDocument{
 	/* Doc-Type of the document */
-
 	public $DocType = '';
 
 	function __construct(){
@@ -67,31 +66,12 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->Extension = $Extension;
 	}
 
-	function insertAtIndex(){
+	public function insertAtIndex(array $only = null, array $fieldTypes = null){
 		if(!($this->IsSearchable && $this->Published)){
 			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 			return true;
 		}
 		$text = '';
-
-		if($this->ContentType == we_base_ContentTypes::WEDOCUMENT){
-			$allUsedElements = $this->getUsedElements(true);
-			if(!$allUsedElements){//FIXME:needed for rebuild, since tags are unintialized
-				// dont save unneeded fields in index-table
-				//FIXME: it is better to use $this->getUsedElements - only we:input type="date" is not handled... => this will call the TP which is not desired since this method is called on save in frontend
-				$fieldTypes = we_webEditionDocument::getFieldTypes($this->getTemplateCode(), false);
-				$fieldTypes = array_keys($fieldTypes, 'txt');
-				array_push($fieldTypes, 'Title', 'Description', 'Keywords');
-				foreach($fieldTypes as $field){//for #230: if variables are used in fieldnames we cannot determine these types
-					if($field && ($field[0] == '$' || isset($field[1]) && $field[1] == '$')){
-						unset($fieldTypes);
-						break;
-					}
-				}
-			} else {
-				array_push($allUsedElements, 'Title', 'Description', 'Keywords');
-			}
-		}
 
 		$this->resetElements();
 		while((list($k, $v) = $this->nextElement(''))){
@@ -101,7 +81,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				continue;
 			}
 
-			if((!is_array($_dat) || (isset($_dat['text']) && $_dat['text'])) && isset($fieldTypes) && is_array($fieldTypes)){
+			if((!is_array($_dat) || (isset($_dat['text']) && $_dat['text'])) && $fieldTypes){
 //rebuild variant
 				foreach($fieldTypes as $name){
 					if(preg_match('|^' . $name . '$|i', $k)){
@@ -112,9 +92,9 @@ abstract class we_textContentDocument extends we_textDocument{
 						}
 					}
 				}
-			} elseif((!is_array($_dat) || (isset($_dat['text']) && $_dat['text'])) && isset($allUsedElements) && is_array($allUsedElements)){
+			} elseif((!is_array($_dat) || (isset($_dat['text']) && $_dat['text'])) && $only){
 //normal save of we_doc
-				if(in_array($k, $allUsedElements)){
+				if(in_array($k, $only)){
 					if(is_array($_dat) && !empty($_dat['text'])){
 						$text .= ' ' . $_dat['text'];
 					} elseif($v['type'] == 'txt'){

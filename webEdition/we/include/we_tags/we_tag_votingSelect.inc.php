@@ -37,8 +37,9 @@ function we_tag_votingSelect($attribs, $content){
 
 		$select_name = $GLOBALS['_we_voting_namespace'];
 
-		$newAttribs = array();
-		$newAttribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $select_name . ']';
+		$newAttribs = array(
+			'name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $select_name . ']'
+		);
 
 		$val = oldHtmlspecialchars(isset($GLOBALS['we_doc']->elements[$select_name]["dat"]) ? $GLOBALS['we_doc']->getElement($select_name) : 0);
 

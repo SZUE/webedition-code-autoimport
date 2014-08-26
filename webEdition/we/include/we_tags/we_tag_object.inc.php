@@ -67,8 +67,8 @@ function we_tag_object($attribs){
 		$rootDirID = ($classid ? f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path=(SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid) . ')') : 0);
 
 		$path = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $we_oid);
-		$textname = 'we_' . $we_doc->Name . '_txt[' . $name . '_path]';
-		$idname = 'we_' . $we_doc->Name . '_txt[' . $name . ']';
+		$textname = 'we_' . $we_doc->Name . '_object[' . $name . '_path]';
+		$idname = 'we_' . $we_doc->Name . '_object[' . $name . ']';
 		$table = OBJECT_FILES_TABLE;
 
 		if($GLOBALS['we_editmode']){
