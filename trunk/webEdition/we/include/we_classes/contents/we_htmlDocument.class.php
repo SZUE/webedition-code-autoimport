@@ -42,7 +42,7 @@ class we_htmlDocument extends we_textContentDocument{
 				$this->setElement('Keywords', $metas['keywords']);
 			}
 			if(isset($metas['charset']) && $metas['charset']){
-				$this->setElement('Charset', $metas['charset']);
+				$this->setElement('Charset', $metas['charset'], 'attrib');
 			}
 		}
 		return parent::i_saveContentDataInDB();

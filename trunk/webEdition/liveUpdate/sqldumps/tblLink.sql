@@ -14,12 +14,15 @@ type field - current known
 application
 attrib
 block
+customer
 date
 formfield
+href
 img
 input
 linklist
 list
+object
 text
 txt
 variant
