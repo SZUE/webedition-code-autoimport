@@ -103,13 +103,12 @@ class we_imageDocument extends we_binaryDocument{
 		if(!$this->DocChanged && $this->ID){
 			if($this->getElement('origwidth') && $this->getElement('origheight') && ($calculateNew == false)){
 				return array($this->getElement('origwidth'), $this->getElement('origheight'), 0, '');
-			} else {
-				// we have to calculate the path, because maybe the document was renamed
-				$path = $this->getParentPath() . '/' . $this->Filename . $this->Extension;
-				return we_thumbnail::getimagesize($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
 			}
-		} else if(isset($this->elements['data']['dat']) && $this->elements['data']['dat']){
-			$arr = we_thumbnail::getimagesize($this->elements['data']['dat']);
+			// we have to calculate the path, because maybe the document was renamed
+			//$path = $this->getParentPath() . '/' . $this->Filename . $this->Extension;
+			return we_thumbnail::getimagesize($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
+		} else if(($tmp = $this->getElement('data'))){
+			$arr = we_thumbnail::getimagesize($tmp);
 		}
 		return $arr;
 	}
@@ -424,29 +423,31 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 				($this->getElement('LinkType') == we_base_link::TYPE_INT ? (we_isHttps() ? '' : BASE_IMG) : '') .
 				$img_path;
 
-			if(isset($this->elements['sizingrel'])){
-				$this->setElement('width', round($this->elements['width']['dat'] * $this->elements['sizingrel']['dat']), 'attrib');
-				$this->setElement('height', round($this->elements['height']['dat'] * $this->elements['sizingrel']['dat']), 'attrib');
+			if($this->issetElement('sizingrel')){
+				$this->setElement('width', round($this->getElement('width') * $this->getElement('sizingrel')), 'attrib');
+				$this->setElement('height', round($this->getElement('height') * $this->getElement('sizingrel')), 'attrib');
 				unset($this->elements['sizingrel']);
 			}
 
-			$sizingbase = (isset($this->elements['sizingbase']) && $this->elements['sizingbase']['dat'] != 16 ? $this->elements['sizingbase']['dat'] : 16);
-
-			if(isset($this->elements['sizingbase'])){
+			if($this->issetElement('sizingbase')){
+				$sizingbase = $this->getElement('sizingbase');
 				unset($this->elements['sizingbase']);
+			} else {
+				$sizingbase = 16;
 			}
 
-			if(isset($this->elements['sizingstyle'])){
-				$sizingstyle = ($this->elements['sizingstyle']['dat'] == 'none' ? false : $this->elements['sizingstyle']['dat']);
+			if($this->issetElement('sizingstyle')){
+				$sizingstyle = $this->getElement('sizingstyle');
+				$sizingstyle = $sizingstyle == 'none' ? false : $sizingstyle;
 				unset($this->elements['sizingstyle']);
 			} else {
 				$sizingstyle = false;
 			}
 
 			if($sizingstyle){
-				$style_width = round($this->elements['width']['dat'] / $sizingbase, 6);
-				$style_height = round($this->elements['height']['dat'] / $sizingbase, 6);
-				$newstyle = (isset($this->elements['style']) ? $this->elements['style']['dat'] : '');
+				$style_width = round($this->getElement('width') / $sizingbase, 6);
+				$style_height = round($this->getElement('height') / $sizingbase, 6);
+				$newstyle = $this->getElement('style');
 
 				$newstyle.=';width:' . $style_width . $sizingstyle . ';height:' . $style_height . $sizingstyle . ';';
 				$this->setElement('style', $newstyle, 'attrib');

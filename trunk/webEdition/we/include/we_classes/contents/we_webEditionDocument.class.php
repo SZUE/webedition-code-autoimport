@@ -721,8 +721,8 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			if(!empty($variationFields)){
 				$i = 0;
-				while(isset($this->elements[WE_SHOP_VARIANTS_PREFIX . $i])){
-					if(!trim($this->elements[WE_SHOP_VARIANTS_PREFIX . $i++]['dat'])){
+				while($this->issetElement(WE_SHOP_VARIANTS_PREFIX . $i)){
+					if(!trim($this->getElement(WE_SHOP_VARIANTS_PREFIX . $i++))){
 						return false;
 					}
 				}
@@ -992,20 +992,18 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		}
 
 		if($this->InWebEdition){
-			$this->hasVariants = (f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($this->TemplateID) . ' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%") LIMIT 1', '', $this->DB_WE));
-		} else {
-			if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) && is_array($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])){
-				$this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = serialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
-			}
-			if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && substr($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) == 'a:'){
-				$_vars = unserialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
-				$this->hasVariants = (is_array($_vars) && $_vars);
-			} else {
-				$this->hasVariants = false;
-			}
+			return ($this->hasVariants = (f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($this->TemplateID) . ' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%") LIMIT 1', '', $this->DB_WE)));
 		}
-
-		return $this->hasVariants;
+		$tmp = $this->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME);
+		if(is_array($tmp)){
+			$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, serialize($tmp), 'variant');
+			return ($this->hasVariants = !empty($tmp));
+		}
+		if(substr($tmp, 0, 2) == 'a:'){
+			$_vars = unserialize($tmp);
+			return ($this->hasVariants = (is_array($_vars) && $_vars));
+		}
+		return ($this->hasVariants = false);
 	}
 
 	function correctVariantFields(){
@@ -1015,11 +1013,11 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	}
 
 	function initVariantDataFromDb(){
-		if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && $this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']){
+		if(($tmp = $this->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME))){
 
 			// unserialize the variant data when loading the model
 			//if(!is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])) {
-			$this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = unserialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
+			$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, unserialize($tmp), 'variant');
 			//}
 			// now register variant fields in document
 			we_shop_variants::setVariantDataForModel($this);

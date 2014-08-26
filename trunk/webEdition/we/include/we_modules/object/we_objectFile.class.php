@@ -461,7 +461,7 @@ class we_objectFile extends we_document{
 							unset($foo[0]);
 							$name = implode('_', $foo);
 							$n = ($type == self::TYPE_OBJECT ? 'we_object_' . $name : (isset($name) ? $name : ''));
-							$this->setElement($n, isset($field['default']) ? $field['default'] : '', $type, 0, (isset($field['autobr']) && $field['autobr'] == 'on') ? 'on' : 'off');
+							$this->setElement($n, isset($field['default']) ? $field['default'] : '', $type, 'dat', (isset($field['autobr']) && $field['autobr'] == 'on' ? 'on' : 'off'));
 							if($type == self::TYPE_MULTIOBJECT){
 								$temp = array(
 									'class' => $field['class'],
@@ -535,8 +535,8 @@ class we_objectFile extends we_document{
 
 		if(!empty($variationFields)){
 			$i = 0;
-			while(isset($this->elements[WE_SHOP_VARIANTS_PREFIX . $i])){
-				if(!trim($this->elements[WE_SHOP_VARIANTS_PREFIX . $i++]['dat'])){
+			while($this->issetElement(WE_SHOP_VARIANTS_PREFIX . $i)){
+				if(!trim($this->getElement(WE_SHOP_VARIANTS_PREFIX . $i++))){
 					return false;
 				}
 			}
@@ -1153,7 +1153,7 @@ class we_objectFile extends we_document{
 		$extPath = isset($hrefArr['extPath']) ? $hrefArr['extPath'] : '';
 		$int_elem_Name = 'we_' . $this->Name . '_href[' . $nint . ']';
 		$intPath_elem_Name = 'we_' . $this->Name . '_href[' . $nintPath . ']';
-		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']';//TOFO: should we use #bdid?
+		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']'; //TOFO: should we use #bdid?
 		$ext_elem_Name = 'we_' . $this->Name . '_href[' . $nextPath . ']';
 		switch($type){
 			case we_base_link::TYPE_INT:
@@ -2300,8 +2300,7 @@ class we_objectFile extends we_document{
 			if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
 				if($regs[1] != 'OF'){
 					$name = $regs[2];
-					$this->elements[$name]["type"] = $regs[1];
-					$this->elements[$name]["len"] = $cur["len"];
+					$this->setElement($name, $cur["len"], $regs[1], 'len');
 				}
 			}
 		}
@@ -2890,8 +2889,8 @@ class we_objectFile extends we_document{
 
 	public function initByID($we_ID, $we_Table = OBJECT_FILES_TABLE, $from = we_class::LOAD_MAID_DB){
 		parent::initByID(intval($we_ID), $we_Table, $from);
-		if(isset($this->elements['Charset'])){
-			$this->Charset = $this->elements['Charset']['dat'];
+		if($this->issetElement('Charset')){
+			$this->Charset = $this->getElement('Charset');
 			unset($this->elements['Charset']);
 		}
 
@@ -2903,9 +2902,10 @@ class we_objectFile extends we_document{
 
 	function initVariantDataFromDb(){
 		if(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
-			if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && $this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] && !is_array($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])){
+			$dat = $this->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME);
+			if($dat && !is_array($dat)){
 // unserialize the variant data when loading the model
-				$this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = unserialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
+				$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, unserialize($dat));
 			}
 			we_shop_variants::setVariantDataForModel($this);
 		}

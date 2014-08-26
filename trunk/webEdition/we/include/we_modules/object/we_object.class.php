@@ -48,7 +48,7 @@ class we_object extends we_document{
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_WORKSPACE, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT); // ,we_base_constants::WE_EDITPAGE_PREVIEW
 		}
-		$this->elements['Charset']['dat'] = DEFAULT_CHARSET;
+		$this->setElement('Charset', DEFAULT_CHARSET);
 		$this->Icon = 'object.gif';
 		$this->Table = OBJECT_TABLE;
 		$this->Published = 1;
@@ -109,43 +109,50 @@ class we_object extends we_document{
 			'WorkspaceFlag' => $this->WorkspaceFlag,
 			//	Save charsets in defaultvalues
 			//	charset must be in other namespace -> for header !!!
-			'elements' => array('Charset' => array('dat' => $this->elements['Charset']['dat'])),
+			'elements' => array('Charset' => array('dat' => $this->getElement('Charset'))),
 		);
 
 		$this->wasUpdate = $this->ID > 0;
-		if(isset($this->elements['Defaultanzahl']['dat'])){
+
+		if(($def = $this->getElement('Defaultanzahl')) !== ''){
 			$this->DefaultText = '';
 
-			for($i = 0; $i <= $this->elements['Defaultanzahl']['dat']; $i++){
+			for($i = 0; $i <= $def; $i++){
 				$was = 'DefaultText_' . $i;
-				if($this->elements[$was]['dat'] != ''){ //&& in_array($this->elements[$was]["dat"],$var_flip)
-					if(stristr($this->elements[$was]['dat'], 'unique')){
-						$this->elements[$was]['dat'] = '%' . str_replace('%', '', $this->elements[$was]['dat']) . (($this->elements['unique_' . $i]['dat'] > 0) ? $this->elements['unique_' . $i]['dat'] : '16') . '%';
-						//echo $this->elements[$was]['dat'];
+				if(($dat = $this->getElement($was)) != ''){ //&& in_array($this->getElement($was),$var_flip)
+					if(stristr($dat, 'unique')){
+						$unique = $this->getElement('unique_' . $i);
+						$dat = '%' . str_replace('%', '', $dat) . (($unique > 0) ? $unique : 16) . '%';
+						$this->elements[$was]['dat'] = $dat;
 					}
-					$this->DefaultText .= $this->elements[$was]['dat'];
+					$this->DefaultText .= $dat;
 				}
 			}
 		}
-		if(isset($this->elements['DefaultanzahlUrl']['dat'])){
+		if(($def = $this->getElement('DefaultanzahlUrl')) !== ''){
 			$this->DefaultUrl = '';
 
-			for($i = 0; $i <= $this->elements['DefaultanzahlUrl']['dat']; $i++){
+			for($i = 0; $i <= $def; $i++){
 				$was = 'DefaultUrl_' . $i;
-				if($this->elements[$was]['dat'] != ''){ //&& in_array($this->elements[$was]['dat'],$var_flip)
-					if(stristr($this->elements[$was]['dat'], 'urlunique')){
-						$this->elements[$was]['dat'] = '%' . str_replace('%', '', $this->elements[$was]['dat']) . (($this->elements['urlunique_' . $i]['dat'] > 0) ? $this->elements['urlunique_' . $i]['dat'] : '16') . '%';
+				if(($dat = $this->getElement($was)) != ''){ //&& in_array($this->getElement($was),$var_flip)
+					if(stristr($dat, 'urlunique')){
+						$unique = $this->getElement('urlunique_' . $i);
+						$dat = '%' . str_replace('%', '', $dat) . (($unique > 0) ? $unique : 16) . '%';
 					}
-					if(stristr($this->elements[$was]['dat'], 'urlfield1')){
-						$this->elements[$was]['dat'] = '%' . str_replace('%', '', $this->elements[$was]['dat']) . (($this->elements['urlfield1_' . $i]['dat'] > 0) ? $this->elements['urlfield1_' . $i]['dat'] : '64') . '%';
+					if(stristr($dat, 'urlfield1')){
+						$unique = $this->getElement('urlfield1_' . $i);
+						$dat = '%' . str_replace('%', '', $dat) . (($unique > 0) ? $unique : 64) . '%';
 					}
-					if(stristr($this->elements[$was]['dat'], 'urlfield2')){
-						$this->elements[$was]['dat'] = '%' . str_replace('%', '', $this->elements[$was]['dat']) . (($this->elements['urlfield2_' . $i]['dat'] > 0) ? $this->elements['urlfield2_' . $i]['dat'] : '64') . '%';
+					if(stristr($dat, 'urlfield2')){
+						$unique = $this->getElement('urlfield2_' . $i);
+						$dat = '%' . str_replace('%', '', $dat) . (($unique > 0) ? $unique : 64) . '%';
 					}
-					if(stristr($this->elements[$was]['dat'], 'urlfield3')){
-						$this->elements[$was]['dat'] = '%' . str_replace('%', '', $this->elements[$was]['dat']) . (($this->elements['urlfield3_' . $i]['dat'] > 0) ? $this->elements['urlfield3_' . $i]['dat'] : '64') . '%';
+					if(stristr($dat, 'urlfield3')){
+						$unique = $this->getElement('urlfield3_' . $i);
+						$dat = '%' . str_replace('%', '', $dat) . (($unique > 0) ? $unique : 64) . '%';
 					}
-					$this->DefaultUrl .= $this->elements[$was]['dat'];
+					$this->elements[$was]['dat'] = $dat;
+					$this->DefaultUrl .= $dat;
 				}
 			}
 		}
@@ -175,50 +182,50 @@ class we_object extends we_document{
 				'PRIMARY KEY (OF_ID)'
 			);
 
-			if(isset($this->elements['neuefelder']['dat'])){
+			if(($neu = $this->getElement('neuefelder'))){
 
-				$neu = explode(',', $this->elements['neuefelder']['dat']);
+				$neu = explode(',', $neu);
 				foreach($neu as $cur){
 					if($cur){
 						$name = $this->getElement($cur . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($cur, 'dat');
 						$arrt[$name] = array(
-							'default' => isset($this->elements[$cur . 'default']['dat']) ? $this->elements[$cur . 'default']['dat'] : '',
-							'defaultThumb' => isset($this->elements[$cur . 'defaultThumb']['dat']) ? $this->elements[$cur . 'defaultThumb']['dat'] : '',
-							'defaultdir' => isset($this->elements[$cur . 'defaultdir']['dat']) ? $this->elements[$cur . 'defaultdir']['dat'] : '',
-							'rootdir' => isset($this->elements[$cur . 'rootdir']['dat']) ? $this->elements[$cur . 'rootdir']['dat'] : '',
-							'autobr' => isset($this->elements[$cur . 'autobr']['dat']) ? $this->elements[$cur . 'autobr']['dat'] : '',
-							'dhtmledit' => isset($this->elements[$cur . 'dhtmledit']['dat']) ? $this->elements[$cur . 'dhtmledit']['dat'] : '',
-							'commands' => isset($this->elements[$cur . 'commands']['dat']) ? $this->elements[$cur . 'commands']['dat'] : '',
-							'contextmenu' => isset($this->elements[$cur . 'contextmenu']['dat']) ? $this->elements[$cur . 'contextmenu']['dat'] : '',
-							'height' => isset($this->elements[$cur . 'height']['dat']) ? $this->elements[$cur . 'height']['dat'] : '',
-							self::ELEMENT_WIDTH => isset($this->elements[$cur . self::ELEMENT_WIDTH]['dat']) ? $this->elements[$cur . self::ELEMENT_WIDTH]['dat'] : '',
-							'bgcolor' => isset($this->elements[$cur . 'bgcolor']['dat']) ? $this->elements[$cur . 'bgcolor']['dat'] : '',
-							'class' => isset($this->elements[$cur . 'class']['dat']) ? $this->elements[$cur . 'class']['dat'] : '',
-							'max' => isset($this->elements[$cur . 'max']['dat']) ? $this->elements[$cur . 'max']['dat'] : '',
-							'cssClasses' => isset($this->elements[$cur . 'cssClasses']['dat']) ? $this->elements[$cur . 'cssClasses']['dat'] : '',
-							'tinyparams' => isset($this->elements[$cur . 'tinyparams']['dat']) ? $this->elements[$cur . 'tinyparams']['dat'] : '',
-							'templates' => isset($this->elements[$cur . 'templates']['dat']) ? $this->elements[$cur . 'templates']['dat'] : '',
-							'xml' => isset($this->elements[$cur . 'xml']['dat']) ? $this->elements[$cur . 'xml']['dat'] : '',
-							'removefirstparagraph' => isset($this->elements[$cur . 'removefirstparagraph']['dat']) ? $this->elements[$cur . 'removefirstparagraph']['dat'] : '',
-							'showmenus' => isset($this->elements[$cur . 'showmenus']['dat']) ? $this->elements[$cur . 'showmenus']['dat'] : 'off',
-							'forbidhtml' => isset($this->elements[$cur . 'forbidhtml']['dat']) ? $this->elements[$cur . 'forbidhtml']['dat'] : 'off',
-							'forbidphp' => isset($this->elements[$cur . 'forbidphp']['dat']) ? $this->elements[$cur . 'forbidphp']['dat'] : 'off',
-							'inlineedit' => isset($this->elements[$cur . 'inlineedit']['dat']) ? $this->elements[$cur . 'inlineedit']['dat'] : '',
-							'users' => isset($this->elements[$cur . 'users']['dat']) ? $this->elements[$cur . 'users']['dat'] : '',
-							'required' => isset($this->elements[$cur . 'required']['dat']) ? $this->elements[$cur . 'required']['dat'] : '',
-							'editdescription' => isset($this->elements[$cur . 'editdescription']['dat']) ? $this->elements[$cur . 'editdescription']['dat'] : '',
-							'int' => isset($this->elements[$cur . 'int']['dat']) ? $this->elements[$cur . 'int']['dat'] : '',
-							'intID' => isset($this->elements[$cur . 'intID']['dat']) ? $this->elements[$cur . 'intID']['dat'] : '',
-							'intPath' => isset($this->elements[$cur . 'intPath']['dat']) ? $this->elements[$cur . 'intPath']['dat'] : '',
-							'hreftype' => isset($this->elements[$cur . 'hreftype']['dat']) ? $this->elements[$cur . 'hreftype']['dat'] : '',
-							'hrefdirectory' => isset($this->elements[$cur . 'hrefdirectory']['dat']) ? $this->elements[$cur . 'hrefdirectory']['dat'] : 'false',
-							'hreffile' => isset($this->elements[$cur . 'hreffile']['dat']) ? $this->elements[$cur . 'hreffile']['dat'] : 'true',
+							'default' => $this->getElement($cur . 'default'),
+							'defaultThumb' => $this->getElement($cur . 'defaultThumb'),
+							'defaultdir' => $this->getElement($cur . 'defaultdir'),
+							'rootdir' => $this->getElement($cur . 'rootdir'),
+							'autobr' => $this->getElement($cur . 'autobr'),
+							'dhtmledit' => $this->getElement($cur . 'dhtmledit'),
+							'commands' => $this->getElement($cur . 'commands'),
+							'contextmenu' => $this->getElement($cur . 'contextmenu'),
+							'height' => $this->getElement($cur . 'height'),
+							self::ELEMENT_WIDTH => $this->getElement($cur . self::ELEMENT_WIDTH),
+							'bgcolor' => $this->getElement($cur . 'bgcolor'),
+							'class' => $this->getElement($cur . 'class'),
+							'max' => $this->getElement($cur . 'max'),
+							'cssClasses' => $this->getElement($cur . 'cssClasses'),
+							'tinyparams' => $this->getElement($cur . 'tinyparams'),
+							'templates' => $this->getElement($cur . 'templates'),
+							'xml' => $this->getElement($cur . 'xml'),
+							'removefirstparagraph' => $this->getElement($cur . 'removefirstparagraph'),
+							'showmenus' => $this->getElement($cur . 'showmenus', 'dat', 'off'),
+							'forbidhtml' => $this->getElement($cur . 'forbidhtml', 'dat', 'off'),
+							'forbidphp' => $this->getElement($cur . 'forbidphp', 'dat', 'off'),
+							'inlineedit' => $this->getElement($cur . 'inlineedit'),
+							'users' => $this->getElement($cur . 'users'),
+							'required' => $this->getElement($cur . 'required'),
+							'editdescription' => $this->getElement($cur . 'editdescription'),
+							'int' => $this->getElement($cur . 'int'),
+							'intID' => $this->getElement($cur . 'intID'),
+							'intPath' => $this->getElement($cur . 'intPath'),
+							'hreftype' => $this->getElement($cur . 'hreftype'),
+							'hrefdirectory' => $this->getElement($cur . 'hrefdirectory', 'dat', 'false'),
+							'hreffile' => $this->getElement($cur . 'hreffile', 'dat', 'true'),
 							'uniqueID' => md5(uniqid(__FILE__, true)),
 						);
 
-						if($this->isVariantField($cur) && isset($this->elements[$cur . 'variant']['dat']) && $this->elements[$cur . 'variant']['dat'] == 1){
-							$arrt[$name]['variant'] = $this->elements[$cur . 'variant']['dat'];
-						} else if(isset($this->elements[$cur . 'variant'])){
+						if($this->isVariantField($cur) && $this->getElement($cur . 'variant') == 1){
+							$arrt[$name]['variant'] = 1;
+						} else if($this->issetElement($cur . 'variant')){
 							unset($this->elements[$cur . 'variant']);
 						}
 
@@ -227,13 +234,14 @@ class we_object extends we_document{
 						}
 
 						//  First time a field is added
-						for($f = 0; $f <= ( isset($this->elements[$cur . 'count']['dat']) ? $this->elements[$cur . 'count']['dat'] : 0 ); $f++){
-							$_val = (isset($this->elements[$cur . 'defaultvalue' . $f]['dat']) && $this->elements[$cur . 'defaultvalue' . $f]['dat'] != $cur . 'defaultvalue' . $f) ? $this->elements[$cur . 'defaultvalue' . $f]['dat'] : '';
+						for($f = 0; $f <= $this->getElement($cur . 'count', 'dat', 0); $f++){
+							$_val = $this->getElement($cur . 'defaultvalue' . $f);
+							$_val = ($_val != $cur . 'defaultvalue' . $f) ? $_val : '';
 							if(substr($name, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
 								$arrt[$name]['meta'][] = $_val;
 							} else {
-								if(isset($this->elements[$cur . 'defaultkey' . $f]['dat'])){
-									$arrt[$name]['meta'][$this->elements[$cur . 'defaultkey' . $f]['dat']] = $_val;
+								if(($key = $this->getElement($cur . 'defaultkey' . $f))){
+									$arrt[$name]['meta'][$key] = $_val;
 								}
 							}
 						}
@@ -250,16 +258,16 @@ class we_object extends we_document{
 			$arrt['WE_CSS_FOR_CLASS'] = $this->CSS;
 			$this->DefaultValues = serialize($arrt);
 
-			$this->DefaultTitle = isset($this->elements['title']['dat']) ? $this->getElement($this->elements['title']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['title']['dat'], 'dat') : '_';
-			$this->DefaultDesc = isset($this->elements['desc']['dat']) ? $this->getElement($this->elements['desc']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['desc']['dat'], 'dat') : '_';
-			$this->DefaultKeywords = isset($this->elements['keywords']['dat']) ? $this->getElement($this->elements['keywords']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['keywords']['dat'], 'dat') : '_';
+			$this->DefaultTitle = ($tmp = $this->getElement('title')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
+			$this->DefaultDesc = ($tmp = $this->getElement('desc')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
+			$this->DefaultKeywords = ($tmp = $this->getElement('keywords')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
 
 
-			$this->DefaultUrlfield0 = isset($this->elements['urlfield0']['dat']) ? $this->getElement($this->elements['urlfield0']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield0']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield1 = isset($this->elements['urlfield1']['dat']) ? $this->getElement($this->elements['urlfield1']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield1']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield2 = isset($this->elements['urlfield2']['dat']) ? $this->getElement($this->elements['urlfield2']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield2']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield3 = isset($this->elements['urlfield3']['dat']) ? $this->getElement($this->elements['urlfield3']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield3']['dat'], 'dat') : '_';
-			$this->DefaultTriggerID = isset($this->elements['triggerid']['dat']) ? $this->getElement($this->elements['triggerid']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['triggerid']['dat'], 'dat') : '0';
+			$this->DefaultUrlfield0 = ($tmp = $this->getElement('urlfield0')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
+			$this->DefaultUrlfield1 = ($tmp = $this->getElement('urlfield1')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($this->elements['urlfield1']['dat'], 'dat') : '_';
+			$this->DefaultUrlfield2 = ($tmp = $this->getElement('urlfield2')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
+			$this->DefaultUrlfield3 = ($tmp = $this->getElement('urlfield3')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
+			$this->DefaultTriggerID = ($tmp = $this->getElement('triggerid')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '0';
 
 
 			$this->strOrder = implode(',', $this->getElement('we_sort'));
@@ -284,7 +292,8 @@ class we_object extends we_document{
 			$ctable = OBJECT_X_TABLE . intval($this->ID);
 			$tableInfo = $this->DB_WE->metadata($ctable);
 			$q = $regs = array();
-			$fieldsToDelete = isset($this->elements['felderloeschen']['dat']) ? explode(',', $this->elements['felderloeschen']['dat']) : array();
+			$fieldsToDelete = $this->getElement('felderloeschen');
+			$fieldsToDelete = $fieldsToDelete ? explode(',', $fieldsToDelete) : array();
 			foreach($tableInfo as $info){
 				if(preg_match('/(.+?)_(.*)/', $info['name'], $regs)){
 
@@ -307,55 +316,57 @@ class we_object extends we_document{
 								'default' => (strpos($info['name'], 'date_') === 0 ?
 									($this->elements[$info['name'] . 'defaultThumb']['dat'] ? '' : $this->elements[$info['name'] . 'default']['dat']) :
 									$this->elements[$info['name'] . 'default']['dat']),
-								'defaultThumb' => $this->elements[$info['name'] . 'defaultThumb']['dat'],
-								'autobr' => $this->elements[$info['name'] . 'autobr']['dat'],
-								'defaultdir' => $this->elements[$info['name'] . 'defaultdir']['dat'],
-								'rootdir' => $this->elements[$info['name'] . 'rootdir']['dat'],
-								'dhtmledit' => $this->elements[$info['name'] . 'dhtmledit']['dat'],
-								'showmenus' => $this->elements[$info['name'] . 'showmenus']['dat'],
-								'commands' => $this->elements[$info['name'] . 'commands']['dat'],
-								'contextmenu' => $this->elements[$info['name'] . 'contextmenu']['dat'],
-								'height' => $this->elements[$info['name'] . 'height']['dat'],
-								self::ELEMENT_WIDTH => $this->elements[$info['name'] . self::ELEMENT_WIDTH]['dat'],
-								'bgcolor' => $this->elements[$info['name'] . 'bgcolor']['dat'],
-								'class' => $this->elements[$info['name'] . 'class']['dat'],
-								'max' => $this->elements[$info['name'] . 'max']['dat'],
-								'cssClasses' => $this->elements[$info['name'] . 'cssClasses']['dat'],
-								'tinyparams' => $this->elements[$info['name'] . 'tinyparams']['dat'],
-								'templates' => $this->elements[$info['name'] . 'templates']['dat'],
-								'xml' => $this->elements[$info['name'] . 'xml']['dat'],
-								'removefirstparagraph' => $this->elements[$info['name'] . 'removefirstparagraph']['dat'],
-								'forbidhtml' => $this->elements[$info['name'] . 'forbidhtml']['dat'],
-								'forbidphp' => $this->elements[$info['name'] . 'forbidphp']['dat'],
-								'inlineedit' => $this->elements[$info['name'] . 'inlineedit']['dat'],
-								'users' => $this->elements[$info['name'] . 'users']['dat'],
-								'required' => $this->elements[$info['name'] . 'required']['dat'],
-								'editdescription' => $this->elements[$info['name'] . 'editdescription']['dat'],
-								'int' => $this->elements[$info['name'] . 'int']['dat'],
-								'intID' => $this->elements[$info['name'] . 'intID']['dat'],
-								'intPath' => $this->elements[$info['name'] . 'intPath']['dat'],
-								'hreftype' => $this->elements[$info['name'] . 'hreftype']['dat'],
-								'hrefdirectory' => $this->elements[$info['name'] . 'hrefdirectory']['dat'],
-								'hreffile' => $this->elements[$info['name'] . 'hreffile']['dat'],
+								'defaultThumb' => $this->getElement($info['name'] . 'defaultThumb'),
+								'autobr' => $this->getElement($info['name'] . 'autobr'),
+								'defaultdir' => $this->getElement($info['name'] . 'defaultdir'),
+								'rootdir' => $this->getElement($info['name'] . 'rootdir'),
+								'dhtmledit' => $this->getElement($info['name'] . 'dhtmledit'),
+								'showmenus' => $this->getElement($info['name'] . 'showmenus'),
+								'commands' => $this->getElement($info['name'] . 'commands'),
+								'contextmenu' => $this->getElement($info['name'] . 'contextmenu'),
+								'height' => $this->getElement($info['name'] . 'height'),
+								self::ELEMENT_WIDTH => $this->getElement($info['name'] . self::ELEMENT_WIDTH),
+								'bgcolor' => $this->getElement($info['name'] . 'bgcolor'),
+								'class' => $this->getElement($info['name'] . 'class'),
+								'max' => $this->getElement($info['name'] . 'max'),
+								'cssClasses' => $this->getElement($info['name'] . 'cssClasses'),
+								'tinyparams' => $this->getElement($info['name'] . 'tinyparams'),
+								'templates' => $this->getElement($info['name'] . 'templates'),
+								'xml' => $this->getElement($info['name'] . 'xml'),
+								'removefirstparagraph' => $this->getElement($info['name'] . 'removefirstparagraph'),
+								'forbidhtml' => $this->getElement($info['name'] . 'forbidhtml'),
+								'forbidphp' => $this->getElement($info['name'] . 'forbidphp'),
+								'inlineedit' => $this->getElement($info['name'] . 'inlineedit'),
+								'users' => $this->getElement($info['name'] . 'users'),
+								'required' => $this->getElement($info['name'] . 'required'),
+								'editdescription' => $this->getElement($info['name'] . 'editdescription'),
+								'int' => $this->getElement($info['name'] . 'int'),
+								'intID' => $this->getElement($info['name'] . 'intID'),
+								'intPath' => $this->getElement($info['name'] . 'intPath'),
+								'hreftype' => $this->getElement($info['name'] . 'hreftype'),
+								'hrefdirectory' => $this->getElement($info['name'] . 'hrefdirectory'),
+								'hreffile' => $this->getElement($info['name'] . 'hreffile'),
 								'uniqueID' => $this->SerializedArray[$info['name']]['uniqueID'] ? $this->SerializedArray[$info['name']]['uniqueID'] : md5(uniqid(__FILE__, true)),
 							);
-							if($this->isVariantField($info['name']) && isset($this->elements[$info['name'] . 'variant']['dat']) && $this->elements[$info['name'] . 'variant']['dat'] == 1){
-								$arrt[$nam]['variant'] = $this->elements[$info['name'] . 'variant']['dat'];
-							} else if(isset($this->elements[$info['name'] . 'variant'])){
+							if($this->isVariantField($info['name']) && $this->getElement($info['name'] . 'variant') == 1){
+								$arrt[$nam]['variant'] = 1;
+							} else if($this->issetElement($info['name'] . 'variant')){
 								unset($this->elements[$info['name'] . 'variant']);
 							}
-							if(isset($this->elements[$info['name'] . 'count'])){
-								for($f = 0; $f <= $this->elements[$info['name'] . 'count']['dat']; ++$f){
+							if(($cnt = $this->getElement($info['name'] . 'count')) !== ''){
+								for($f = 0; $f <= $cnt; ++$f){
 
-									if(isset($this->elements[$info['name'] . 'defaultkey' . $f])){
+									if($this->issetElement($info['name'] . 'defaultkey' . $f)){
 										if((!isset($arrt[$nam]['meta'])) || (!is_array($arrt[$nam]['meta']))){
 											$arrt[$nam]['meta'] = array();
 										}
-										$_val = (isset($this->elements[$info['name'] . 'defaultvalue' . $f]) && $this->elements[$info['name'] . 'defaultvalue' . $f] != $info['name'] . 'defaultvalue' . $f ) ? $this->elements[$info['name'] . 'defaultvalue' . $f]['dat'] : '';
+
+										$_val = $this->getElement($info['name'] . 'defaultvalue' . $f);
+										$_val = ($_val != $info['name'] . 'defaultvalue' . $f ? $_val : '');
 										if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
 											$arrt[$nam]['meta'][] = $_val;
 										} else {
-											$arrt[$nam]['meta'][$this->elements[$info['name'] . 'defaultkey' . $f]['dat']] = $_val;
+											$arrt[$nam]['meta'][$this->getElement($info['name'] . 'defaultkey' . $f)] = $_val;
 										}
 									}
 								}
@@ -365,62 +376,62 @@ class we_object extends we_document{
 				}
 			}
 
-			$neu = explode(',', (isset($this->elements['neuefelder']['dat']) ? $this->elements['neuefelder']['dat'] : ''));
+			$neu = explode(',', $this->getElement('neuefelder'));
 
 			foreach($neu as $cur){
 				if(isset($cur) && $cur != ''){
-					$nam = $this->getElement($cur . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($cur, 'dat');
+					$nam = $this->getElement($cur . self::ELEMENT_TYPE) . '_' . $this->getElement($cur);
 					$arrt[$nam] = array(
-						'default' => isset($this->elements[$cur . 'default']['dat']) ? $this->elements[$cur . 'default']['dat'] : '',
-						'defaultThumb' => isset($this->elements[$cur . 'defaultThumb']['dat']) ? $this->elements[$cur . 'defaultThumb']['dat'] : '',
-						'defaultdir' => isset($this->elements[$cur . 'defaultdir']['dat']) ? $this->elements[$cur . 'defaultdir']['dat'] : '',
-						'rootdir' => isset($this->elements[$cur . 'rootdir']['dat']) ? $this->elements[$cur . 'rootdir']['dat'] : '',
-						'autobr' => isset($this->elements[$cur . 'autobr']['dat']) ? $this->elements[$cur . 'autobr']['dat'] : '',
-						'dhtmledit' => isset($this->elements[$cur . 'dhtmledit']['dat']) ? $this->elements[$cur . 'dhtmledit']['dat'] : '',
-						'showmenues' => isset($this->elements[$cur . 'showmenues']['dat']) ? $this->elements[$cur . 'showmenues']['dat'] : '',
-						'commands' => isset($this->elements[$cur . 'commands']['dat']) ? $this->elements[$cur . 'commands']['dat'] : '',
-						'contextmenu' => isset($this->elements[$cur . 'contextmenu']['dat']) ? $this->elements[$cur . 'contextmenu']['dat'] : '',
-						'height' => isset($this->elements[$cur . 'height']['dat']) ? $this->elements[$cur . 'height']['dat'] : 200,
-						self::ELEMENT_WIDTH => isset($this->elements[$cur . self::ELEMENT_WIDTH]['dat']) ? $this->elements[$cur . self::ELEMENT_WIDTH]['dat'] : 618,
-						'bgcolor' => isset($this->elements[$cur . 'bgcolor']['dat']) ? $this->elements[$cur . 'bgcolor']['dat'] : '',
-						'class' => isset($this->elements[$cur . 'class']['dat']) ? $this->elements[$cur . 'class']['dat'] : '',
-						'max' => isset($this->elements[$cur . 'max']['dat']) ? $this->elements[$cur . 'max']['dat'] : '',
-						'cssClasses' => isset($this->elements[$cur . 'cssClasses']['dat']) ? $this->elements[$cur . 'cssClasses']['dat'] : '',
-						'tinyparams' => isset($this->elements[$cur . 'tinyparams']['dat']) ? $this->elements[$cur . 'tinyparams']['dat'] : '',
-						'templates' => isset($this->elements[$cur . 'templates']['dat']) ? $this->elements[$cur . 'templates']['dat'] : '',
-						'xml' => isset($this->elements[$cur . 'xml']['dat']) ? $this->elements[$cur . 'xml']['dat'] : '',
-						'removefirstparagraph' => isset($this->elements[$cur . 'removefirstparagraph']['dat']) ? $this->elements[$cur . 'removefirstparagraph']['dat'] : '',
-						'forbidhtml' => isset($this->elements[$cur . 'forbidhtml']['dat']) ? $this->elements[$cur . 'forbidhtml']['dat'] : '',
-						'forbidphp' => isset($this->elements[$cur . 'forbidphp']['dat']) ? $this->elements[$cur . 'forbidphp']['dat'] : '',
-						'inlineedit' => isset($this->elements[$cur . 'inlineedit']['dat']) ? $this->elements[$cur . 'inlineedit']['dat'] : '',
-						'users' => isset($this->elements[$cur . 'users']['dat']) ? $this->elements[$cur . 'users']['dat'] : '',
-						'required' => isset($this->elements[$cur . 'required']['dat']) ? $this->elements[$cur . 'required']['dat'] : '',
-						'editdescription' => isset($this->elements[$cur . 'editdescription']['dat']) ? $this->elements[$cur . 'editdescription']['dat'] : '',
-						'int' => isset($this->elements[$cur . 'int']['dat']) ? $this->elements[$cur . 'int']['dat'] : '',
-						'intID' => isset($this->elements[$cur . 'intID']['dat']) ? $this->elements[$cur . 'intID']['dat'] : '',
-						'intPath' => isset($this->elements[$cur . 'intPath']['dat']) ? $this->elements[$cur . 'intPath']['dat'] : '',
-						'hreftype' => isset($this->elements[$cur . 'hreftype']['dat']) ? $this->elements[$cur . 'hreftype']['dat'] : '',
-						'hrefdirectory' => isset($this->elements[$cur . 'hrefdirectory']['dat']) ? $this->elements[$cur . 'hrefdirectory']['dat'] : 'false',
-						'hreffile' => isset($this->elements[$cur . 'hreffile']['dat']) ? $this->elements[$cur . 'hreffile']['dat'] : 'true',
+						'default' => $this->getElement($cur . 'default'),
+						'defaultThumb' => $this->getElement($cur . 'defaultThumb'),
+						'defaultdir' => $this->getElement($cur . 'defaultdir'),
+						'rootdir' => $this->getElement($cur . 'rootdir'),
+						'autobr' => $this->getElement($cur . 'autobr'),
+						'dhtmledit' => $this->getElement($cur . 'dhtmledit'),
+						'showmenues' => $this->getElement($cur . 'showmenues'),
+						'commands' => $this->getElement($cur . 'commands'),
+						'contextmenu' => $this->getElement($cur . 'contextmenu'),
+						'height' => $this->getElement($cur . 'height', 'dat', 200),
+						self::ELEMENT_WIDTH => $this->getElement($cur . self::ELEMENT_WIDTH, 'dat', 618),
+						'bgcolor' => $this->getElement($cur . 'bgcolor'),
+						'class' => $this->getElement($cur . 'class'),
+						'max' => $this->getElement($cur . 'max'),
+						'cssClasses' => $this->getElement($cur . 'cssClasses'),
+						'tinyparams' => $this->getElement($cur . 'tinyparams'),
+						'templates' => $this->getElement($cur . 'templates'),
+						'xml' => $this->getElement($cur . 'xml'),
+						'removefirstparagraph' => $this->getElement($cur . 'removefirstparagraph'),
+						'forbidhtml' => $this->getElement($cur . 'forbidhtml'),
+						'forbidphp' => $this->getElement($cur . 'forbidphp'),
+						'inlineedit' => $this->getElement($cur . 'inlineedit'),
+						'users' => $this->getElement($cur . 'users'),
+						'required' => $this->getElement($cur . 'required'),
+						'editdescription' => $this->getElement($cur . 'editdescription'),
+						'int' => $this->getElement($cur . 'int'),
+						'intID' => $this->getElement($cur . 'intID'),
+						'intPath' => $this->getElement($cur . 'intPath'),
+						'hreftype' => $this->getElement($cur . 'hreftype'),
+						'hrefdirectory' => $this->getElement($cur . 'hrefdirectory', 'dat', 'false'),
+						'hreffile' => $this->getElement($cur . 'hreffile', 'dat', 'true'),
 						'uniqueID' => md5(uniqid(__FILE__, true)),
 					);
-//					$arrt[$nam]['variant'] = (isset($this->elements[$cur.'variant']['dat']) && $this->elements[$cur.'variant']['dat']==1) ? $this->elements[$cur.'variant']['dat'] : '';
-					if($this->isVariantField($cur) && isset($this->elements[$cur . 'variant']['dat']) && $this->elements[$cur . 'variant']['dat'] == 1){
-						$arrt[$nam]['variant'] = $this->elements[$cur . 'variant']['dat'];
-					} else if(isset($this->elements[$cur . 'variant'])){
+//					$arrt[$nam]['variant'] = (isset($this->getElement($cur.'variant')) && $this->getElement($cur.'variant')==1) ? $this->getElement($cur.'variant') : '';
+					if($this->isVariantField($cur) && $this->getElement($cur . 'variant') == 1){
+						$arrt[$nam]['variant'] = 1;
+					} else if($this->issetElement($cur . 'variant')){
 						unset($this->elements[$cur . 'variant']);
 					}
 
-					for($f = 0; $f <= (isset($this->elements[$cur . 'count']['dat']) ? $this->elements[$cur . 'count']['dat'] : 0); $f++){
-						$_val = isset($this->elements[$cur . 'defaultvalue' . $f]['dat']) ? $this->elements[$cur . 'defaultvalue' . $f]['dat'] : '';
+					for($f = 0; $f <= $this->getElement($cur . 'count', 'dat', 0); $f++){
+						$_val = $this->getElement($cur . 'defaultvalue' . $f);
 						if((!isset($arrt[$nam]['meta'])) || (!is_array($arrt[$nam]['meta']))){
 							$arrt[$nam]['meta'] = array();
 						}
 						if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
 							$arrt[$nam]['meta'][] = $_val;
 						} else {
-							if(isset($this->elements[$cur . 'defaultkey' . $f]['dat'])){
-								$arrt[$nam]['meta'][$this->elements[$cur . 'defaultkey' . $f]['dat']] = $_val;
+							if(($key = $this->getElement($cur . 'defaultkey' . $f))){
+								$arrt[$nam]['meta'][$key] = $_val;
 							} else {
 								$arrt[$nam]['meta'][$nam . 'defaultkey' . $f] = $_val;
 							}
@@ -437,16 +448,16 @@ class we_object extends we_document{
 
 			$this->DefaultCategory = $this->Category;
 
-			$this->DefaultTitle = $this->getElement($this->elements['title']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['title']['dat'], 'dat');
-			$this->DefaultDesc = $this->getElement($this->elements['desc']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['desc']['dat'], 'dat');
-			$this->DefaultKeywords = $this->getElement($this->elements['keywords']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['keywords']['dat'], 'dat');
+			$this->DefaultTitle = $this->getElement(($tmp = $this->getElement('title')) . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp);
+			$this->DefaultDesc = $this->getElement(($tmp = $this->getElement('desc')) . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp);
+			$this->DefaultKeywords = $this->getElement(($tmp = $this->getElement('keywords')) . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp);
 
 
-			$this->DefaultUrlfield0 = isset($this->elements['urlfield0']['dat']) ? $this->getElement($this->elements['urlfield0']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield0']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield1 = isset($this->elements['urlfield1']['dat']) ? $this->getElement($this->elements['urlfield1']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield1']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield2 = isset($this->elements['urlfield2']['dat']) ? $this->getElement($this->elements['urlfield2']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield2']['dat'], 'dat') : '_';
-			$this->DefaultUrlfield3 = isset($this->elements['urlfield3']['dat']) ? $this->getElement($this->elements['urlfield3']['dat'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($this->elements['urlfield3']['dat'], 'dat') : '_';
-			//$this->DefaultTriggerID = isset($this->elements['triggerid']['dat']) ? $this->getElement($this->elements['triggerid']['dat'].'dtype','dat').'_'.$this->getElement($this->elements['urlfield3']['dat'],'dat') : '0';
+			$this->DefaultUrlfield0 = ($tmp = $this->getElement('urlfield0')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
+			$this->DefaultUrlfield1 = ($tmp = $this->getElement('urlfield1')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
+			$this->DefaultUrlfield2 = ($tmp = $this->getElement('urlfield2')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
+			$this->DefaultUrlfield3 = ($tmp = $this->getElement('urlfield3')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
+			//$this->DefaultTriggerID = ($tmp = $this->getElement('triggerid')) ? $this->getElement($tmp.'dtype').'_'.$this->getElement($tmp) : '0';
 
 			$arrt['WE_CSS_FOR_CLASS'] = $this->CSS;
 
@@ -668,11 +679,7 @@ class we_object extends we_document{
 		$this->elements[$uid . self::ELEMENT_MAX]["dat"] = "";
 		$this->elements["wholename" . $identifier]["dat"] = $uid;
 
-		if(!isset($this->elements["neuefelder"]["dat"])){
-			$this->elements["neuefelder"]["dat"] = "";
-		}
-
-		$this->elements["neuefelder"]["dat"] .= "," . $uid;
+		$this->setElement("neuefelder", $this->getElement("neuefelder") . "," . $uid);
 
 		if(isset($after) && in_array($after, array_keys($sort))){
 			$pos = $sort[$after];
@@ -699,15 +706,12 @@ class we_object extends we_document{
 		$sort = $this->getElement("we_sort");
 		$max = $this->getElement("Sortgesamt");
 
-		$uid = $this->elements["wholename" . $identifier]["dat"];
+		$uid = $this->getElement("wholename" . $identifier);
 
-		if(stristr((isset($this->elements['neuefelder']['dat']) ? $this->elements['neuefelder']['dat'] : ''), ',' . $uid)){
-			$this->elements["neuefelder"]["dat"] = str_replace("," . $uid, "", $this->elements["neuefelder"]["dat"]);
+		if(stristr(($nf = $this->getElement('neuefelder')), ',' . $uid)){
+			$this->setElement("neuefelder", str_replace("," . $uid, "", $nf));
 		} else {
-			if(!isset($this->elements["felderloeschen"]["dat"])){
-				$this->elements["felderloeschen"]["dat"] = "";
-			}
-			$this->elements["felderloeschen"]["dat"] .= "," . $uid;
+			$this->setElement("felderloeschen", $this->getElement("felderloeschen") . "," . $uid);
 		}
 
 		unset($this->elements["wholename" . $identifier]["dat"]);
@@ -782,15 +786,15 @@ class we_object extends we_document{
 
 		for($i = 0; $i < $this->elements[$name . "count"]["dat"]; $i++){
 			if($i >= $nr){
-				$this->elements[$name . "defaultkey" . $i]["dat"] = ($this->getElement($name . "defaultkey" . ($i + 1), "dat"));
-				$this->elements[$name . "defaultvalue" . $i]["dat"] = ($this->getElement($name . "defaultvalue" . ($i + 1), "dat"));
+				$this->elements[$name . "defaultkey" . $i]["dat"] = ($this->getElement($name . "defaultkey" . ($i + 1)));
+				$this->elements[$name . "defaultvalue" . $i]["dat"] = ($this->getElement($name . "defaultvalue" . ($i + 1)));
 			}
 		}
 		$this->elements[$name . "defaultkey" . $i]["dat"] = "";
 		$this->elements[$name . "defaultvalue" . $i]["dat"] = "";
 		### end move elements ####
 
-		$this->elements[$name . "count"]["dat"] = ($this->elements[$name . "count"]["dat"] > 0) ? $this->elements[$name . "count"]["dat"] - 1 : 0;
+		$this->elements[$name . "count"]["dat"] = max($this->elements[$name . "count"]["dat"] - 1, 0);
 	}
 
 	function getEmptyDefaultFields(){
@@ -927,7 +931,7 @@ class we_object extends we_document{
 					$count++;
 				}
 				asort($vals);
-				if(!isset($this->elements[$name . "class"]["dat"]) || $this->elements[$name . "class"]["dat"] == ""){
+				if($this->getElement($name . "class") == ""){
 					$this->setElement($name . "class", array_shift(array_flip($vals)));
 				}
 				$content .= $this->htmlSelect("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "class]", $vals, 1, $this->getElement($name . 'class', "dat"), "", array('onchange' => 'if(this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\']){this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'object_change_multiobject_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\',\'' . $name . '\')'), "value", 388) .
@@ -938,10 +942,10 @@ class we_object extends we_document{
 					</tr>
 						<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>
 						<td width="170" class="defaultfont"><table border="0">';
-				if(!isset($this->elements[$name . "count"]["dat"])){
-					$this->elements[$name . "count"]["dat"] = 0;
+				if(!$this->issetElement($name . "count")){
+					$this->setElement($name . "count", 0);
 				}
-				for($f = 0; $f <= $this->elements[$name . "count"]["dat"]; $f++){
+				for($f = 0; $f <= $this->getElement($name . "count"); $f++){
 					$content .= $this->getMultiObjectFieldHTML($name, $identifier, $f);
 				}
 
@@ -1075,8 +1079,8 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_META:
 				$content .= '<tr valign="top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
 					'<td width="170" class="defaultfont"><table border="0"><tr><td class="defaultfont">Key</td><td class="defaultfont">Value</td><td></td></tr>';
-				if(!isset($this->elements[$name . "count"]["dat"])){
-					$this->elements[$name . "count"]["dat"] = 0;
+				if(!$this->issetElement($name . "count")){
+					$this->setElement($name . "count", 0);
 				}
 
 				$addArray = array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10);
@@ -1225,9 +1229,7 @@ class we_object extends we_document{
 	}
 
 	function htmlHref($n){
-		$type = isset($this->elements[$n . "hreftype"]["dat"]) ?
-			$this->elements[$n . "hreftype"]["dat"] :
-			"";
+		$type = $this->getElement($n . "hreftype");
 
 		$n .= 'default';
 		$hrefArr = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
@@ -1249,7 +1251,7 @@ class we_object extends we_document{
 		$extPath = isset($hrefArr["extPath"]) ? $hrefArr["extPath"] : "";
 		$int_elem_Name = 'we_' . $this->Name . '_href[' . $nint . ']';
 		$intPath_elem_Name = 'we_' . $this->Name . '_href[' . $nintPath . ']';
-		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']';//TOFO: should we use #bdid?
+		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']'; //TOFO: should we use #bdid?
 		$ext_elem_Name = 'we_' . $this->Name . '_href[' . $nextPath . ']';
 
 		switch($type){
@@ -1390,38 +1392,35 @@ class we_object extends we_document{
 	}
 
 	function getWysiwygArea($name){
-		$rmfp = isset($this->elements[$name . "removefirstparagraph"]["dat"]) &&
-			($this->elements[$name . "removefirstparagraph"]["dat"] == 'on' || $this->elements[$name . "removefirstparagraph"]["dat"] == 'off') ? ($this->elements[$name . "removefirstparagraph"]["dat"] == 'on' ? true : false) :
-			(defined('REMOVEFIRSTPARAGRAPH_DEFAULT') ? REMOVEFIRSTPARAGRAPH_DEFAULT : true);
-		$commands = isset($this->elements[$name . "commands"]["dat"]) && $this->elements[$name . "commands"]["dat"] ? $this->elements[$name . "commands"]["dat"] :
-			(defined('COMMANDS_DEFAULT') ? COMMANDS_DEFAULT : '');
+		$rmfp = $this->getElement($name . "removefirstparagraph");
+		$commands = $this->getElement($name . "commands");
 		$attribs = array(
-			"removefirstparagraph" => $rmfp,
-			"xml" => isset($this->elements[$name . "xml"]["dat"]) ? $this->elements[$name . "xml"]["dat"] : "",
-			"dhtmledit" => isset($this->elements[$name . "dhtmledit"]["dat"]) ? $this->elements[$name . "dhtmledit"]["dat"] : "",
-			"wysiwyg" => isset($this->elements[$name . "dhtmledit"]["dat"]) ? $this->elements[$name . "dhtmledit"]["dat"] : "",
-			"showmenus" => isset($this->elements[$name . "showmenus"]["dat"]) ? $this->elements[$name . "showmenus"]["dat"] : "off",
-			"commands" => $commands,
-			"contextmenu" => isset($this->elements[$name . "contextmenu"]["dat"]) ? $this->elements[$name . "contextmenu"]["dat"] : "",
-			"classes" => isset($this->elements[$name . "cssClasses"]["dat"]) ? $this->elements[$name . "cssClasses"]["dat"] : "",
-			"width" => 386, //isset($this->elements[$name."width"]["dat"]) ? $this->elements[$name."width"]["dat"] : 618,
-			"height" => 52, //isset($this->elements[$name."height"]["dat"]) ? $this->elements[$name."height"]["dat"] : 200,
+			"removefirstparagraph" => $rmfp ? $rmfp == 'on' : REMOVEFIRSTPARAGRAPH_DEFAULT,
+			"xml" => $this->getElement($name . "xml"),
+			"dhtmledit" => $this->getElement($name . "dhtmledit"),
+			"wysiwyg" => $this->getElement($name . "dhtmledit"),
+			"showmenus" => $this->getElement($name . "showmenus", "dat", "off"),
+			"commands" => $commands ? $commands : COMMANDS_DEFAULT,
+			"contextmenu" => $this->getElement($name . "contextmenu"),
+			"classes" => $this->getElement($name . "cssClasses"),
+			"width" => 386, //$this->getElement($name."width","dat",618),
+			"height" => 52, //$this->getElement($name."height","dat",200),
 			"rows" => 3,
-			"bgcolor" => isset($this->elements[$name . "bgcolor"]["dat"]) ? $this->elements[$name . "bgcolor"]["dat"] : (WYSIWYG_TYPE == 'tinyMCE' ? '' : 'white'),
-			"tinyparams" => isset($this->elements[$name . "tinyparams"]["dat"]) ? $this->elements[$name . "tinyparams"]["dat"] : "",
-			"templates" => isset($this->elements[$name . "templates"]["dat"]) ? $this->elements[$name . "templates"]["dat"] : "",
-			"class" => isset($this->elements[$name . "class"]["dat"]) ? $this->elements[$name . "class"]["dat"] : "",
+			"bgcolor" => $this->getElement($name . "bgcolor", "dat", (WYSIWYG_TYPE == 'tinyMCE' ? '' : 'white')),
+			"tinyparams" => $this->getElement($name . "tinyparams"),
+			"templates" => $this->getElement($name . "templates"),
+			"class" => $this->getElement($name . "class"),
 			"cols" => 30,
-			"inlineedit" => isset($this->elements[$name . "inlineedit"]["dat"]) ? $this->elements[$name . "inlineedit"]["dat"] : "",
+			"inlineedit" => $this->getElement($name . "inlineedit"),
 			"stylesheets" => $this->CSS,
 			"spellchecker" => true,
 		);
 
-		$autobr = isset($this->elements[$name . "autobr"]["dat"]) ? $this->elements[$name . "autobr"]["dat"] : "";
+		$autobr = $this->getElement($name . "autobr");
 		$autobrName = 'we_' . $this->Name . '_input[' . $name . 'autobr]';
 
 		$value = $this->getElement($name . "default", "dat");
-		return we_html_forms::weTextarea("we_" . $this->Name . "_input[" . $name . "default]", $value, $attribs, $autobr, $autobrName, true, "", (($this->CSS || $attribs["classes"]) ? false : true), false, false, $rmfp, "");
+		return we_html_forms::weTextarea("we_" . $this->Name . "_input[" . $name . "default]", $value, $attribs, $autobr, $autobrName, true, "", (($this->CSS || $attribs["classes"]) ? false : true), false, false, ($rmfp ? $rmfp == 'on' : REMOVEFIRSTPARAGRAPH_DEFAULT), "");
 	}
 
 	function add_user_to_field($id, $name){
@@ -1574,9 +1573,8 @@ class we_object extends we_document{
 		if(!empty($thumbList)){
 			$content .= "<br />" . g_l('modules_object', '[use_thumbnail_preview]') . ":<br />";
 			array_unshift($thumbList, '-');
-			$currentSelection = (isset($this->elements["" . $name . "Thumb"]) && isset($this->elements["" . $name . "Thumb"]["dat"]) && isset($thumbList[$this->elements["" . $name . "Thumb"]["dat"]]) ?
-					$this->elements["" . $name . "Thumb"]["dat"] :
-					'');
+			$tmp = $this->getElement($name . "Thumb");
+			$currentSelection = ($tmp && isset($thumbList[$tmp]) ? $tmp : '');
 
 			$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . "Thumb]", $thumbList, 1, $currentSelection, "", array('onchange' => "_EditorFrame.setEditorIsHot(true);"), "value", 388);
 		}
@@ -1646,16 +1644,18 @@ class we_object extends we_document{
 
 	function formDefault(){
 		$select = '';
-		if(isset($this->elements["Defaultanzahl"]["dat"])){
+		if(($anz = $this->getElement("Defaultanzahl")) !== ''){
 			$this->DefaultText = '';
 
-			for($i = 0; $i <= $this->elements["Defaultanzahl"]["dat"]; $i++){
+			for($i = 0; $i <= $anz; $i++){
 				$was = "DefaultText_" . $i;
-				if($this->elements[$was]["dat"] != ""){
-					if(stristr($this->elements[$was]["dat"], 'unique')){
-						$this->elements[$was]["dat"] = "%" . str_replace("%", "", $this->elements[$was]["dat"]) . (( isset($this->elements["unique_" . $i]["dat"]) && $this->elements["unique_" . $i]["dat"] > 0 ) ? $this->elements["unique_" . $i]["dat"] : 16) . "%";
+				if(($dat = $this->getElement($was)) != ""){
+					if(stristr($dat, 'unique')){
+						$unique = $this->getElement("unique_" . $i);
+						$dat = "%" . str_replace("%", "", $dat) . ( $unique > 0 ? $unique : 16) . "%";
+						$this->elements[$was]["dat"] = $dat;
 					}
-					$this->DefaultText .= $this->elements[$was]["dat"];
+					$this->DefaultText .= $dat;
 				}
 			}
 		}
@@ -1665,7 +1665,7 @@ class we_object extends we_document{
 		$zahl = 0;
 		$regs = array();
 
-		while(!empty($all)){
+		while($all){
 			if(preg_match('/^%([^%]+)%/', $all, $regs)){
 				$all = substr($all, strlen($regs[1]) + 2);
 				$key = $regs[1];
@@ -1887,11 +1887,7 @@ class we_object extends we_document{
 			$this->elements = $doc->elements;
 			foreach($this->elements as $n => $e){
 				if(strtolower(substr($n, 0, 9)) == 'wholename'){
-					if(isset($this->elements['neuefelder']) && is_array($this->elements['neuefelder'])){
-						$this->elements['neuefelder']['dat'] .= "," . $e['dat'];
-					} else {
-						$this->elements['neuefelder']['dat'] = "," . $e['dat'];
-					}
+					$this->setElement('neuefelder', $this->getElement('neuefelder') . ',' . $e['dat']);
 				}
 			}
 			$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
@@ -1963,7 +1959,7 @@ class we_object extends we_document{
 
 	function we_initSessDat($sessDat){
 		//	charset must be in other namespace -> for header !!!
-		$this->elements["Charset"]["dat"] = (isset($sessDat["0"]["SerializedArray"]["elements"]["Charset"]) ? $sessDat["0"]["SerializedArray"]["elements"]["Charset"]["dat"] : "");
+		$this->setElement('Charset', (isset($sessDat["0"]["SerializedArray"]["elements"]["Charset"]) ? $sessDat["0"]["SerializedArray"]["elements"]["Charset"]["dat"] : ""));
 		parent::we_initSessDat($sessDat);
 		$this->setSort();
 	}
@@ -2004,21 +2000,21 @@ class we_object extends we_document{
 			$this->SerializedArray = unserialize($rec["DefaultValues"]);
 
 			//	charset must be in other namespace -> for header !!!
-			$this->elements["Charset"]["dat"] = (isset($this->SerializedArray["elements"]["Charset"]["dat"]) ? $this->SerializedArray["elements"]["Charset"]["dat"] : "");
+			$this->setElement("Charset", (isset($this->SerializedArray["elements"]["Charset"]["dat"]) ? $this->SerializedArray["elements"]["Charset"]["dat"] : ""));
 
 			$this->WorkspaceFlag = isset($this->SerializedArray["WorkspaceFlag"]) ? $this->SerializedArray["WorkspaceFlag"] : "";
-			$this->elements["title"]["dat"] = $rec["DefaultTitle"];
-			$this->elements["desc"]["dat"] = $rec["DefaultDesc"];
-			$this->elements["keywords"]["dat"] = $rec["DefaultKeywords"];
+			$this->setElement("title", $rec["DefaultTitle"]);
+			$this->setElement("desc", $rec["DefaultDesc"]);
+			$this->setElement("keywords", $rec["DefaultKeywords"]);
 
 			$this->DefaultText = $rec["DefaultText"];
 			$this->DefaultUrl = $rec["DefaultUrl"];
 
-			$this->elements["urlfield0"]["dat"] = $rec["DefaultUrlfield0"];
-			$this->elements["urlfield1"]["dat"] = $rec["DefaultUrlfield1"];
-			$this->elements["urlfield2"]["dat"] = $rec["DefaultUrlfield2"];
-			$this->elements["urlfield3"]["dat"] = $rec["DefaultUrlfield3"];
-			$this->elements["triggerid"]["dat"] = $rec["DefaultTriggerID"];
+			$this->setElement("urlfield0", $rec["DefaultUrlfield0"]);
+			$this->setElement("urlfield1", $rec["DefaultUrlfield1"]);
+			$this->setElement("urlfield2", $rec["DefaultUrlfield2"]);
+			$this->setElement("urlfield3", $rec["DefaultUrlfield3"]);
+			$this->setElement("triggerid", $rec["DefaultTriggerID"]);
 			$this->DefaultTriggerID = $rec["DefaultTriggerID"];
 
 			$ctable = OBJECT_X_TABLE . intval($this->ID);

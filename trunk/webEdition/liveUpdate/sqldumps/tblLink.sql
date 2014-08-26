@@ -9,3 +9,19 @@ CREATE TABLE ###TBLPREFIX###tblLink (
   KEY Name (Name(4)),
   KEY `Type` (`Type`)
 ) ENGINE=MyISAM;
+/*
+type field - current known
+application
+attrib
+block
+date
+formfield
+img
+input
+linklist
+list
+text
+txt
+variant
+variants
+*/
