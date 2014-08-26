@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -32,7 +31,13 @@ if(isset($_SERVER['REDIRECT_QUERY_STRING']) && $_SERVER['REDIRECT_QUERY_STRING']
 	parse_str($zw[1], $myRequest);
 }
 
-define('WE_REDIRECTED_SEO', isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME']); //url without query string
+define('WE_REDIRECTED_SEO', (isset($_SERVER['REDIRECT_URL']) ?
+		$_SERVER['REDIRECT_URL'] :
+		(isset($_SERVER['PHP_SELF']) ?
+			$_SERVER['PHP_SELF'] :
+			$_SERVER['SCRIPT_NAME'])
+	)
+); //url without query string
 // get attributes
 $error404doc = (ERROR_DOCUMENT_NO_OBJECTFILE ? ERROR_DOCUMENT_NO_OBJECTFILE : 0);
 
