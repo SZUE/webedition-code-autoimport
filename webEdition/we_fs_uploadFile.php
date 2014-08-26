@@ -36,8 +36,8 @@ switch($we_ContentType){
 		$allowedContentTypes = $we_ContentType;
 }
 
-$inputTypeFile = new we_fileupload_include('we_uploadedFile', 'top', '', 330, true, false, $allowedContentTypes, '', '', 'php, php4, php5, htaccess', array(), -1);
-$inputTypeFile->setExternalProgressbar(true, 'progressbar', true, 'top.', 120, '');
+$inputTypeFile = new we_fileupload_include('we_uploadedFile', '', '', '', '', 'document.forms[0].submit()', '', 330, true, false, 0, $allowedContentTypes, '', '', 'php, php4, php5, htaccess', array(), -1);
+$inputTypeFile->setExternalProgress(true, 'progressbar', true, 'top.', 120, '');
 
 if($inputTypeFile->processFileRequest()){
 	$tempName = $inputTypeFile->getFileNameTemp();
@@ -140,8 +140,8 @@ if($inputTypeFile->processFileRequest()){
 	// find out the smallest possible upload size
 	$maxsize = getUploadMaxFilesize(false);
 
-	$yes_button = we_html_button::create_button('upload', 'javascript:' . we_fileupload_include::getJsSubmitCallStatic("top", 0, "document.forms[0].submit()"));
-	$cancel_button = we_html_button::create_button('cancel', 'javascript:self.close();');
+	$yes_button = we_html_button::create_button('upload', 'javascript:' . $inputTypeFile->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_btn');
+	$cancel_button = we_html_button::create_button('cancel', 'javascript:' . $inputTypeFile->getJsBtnCmd('cancel'));
 	$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 	$buttonsTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);
 	$buttonsTable->setCol(0, 0, $attribs = array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));

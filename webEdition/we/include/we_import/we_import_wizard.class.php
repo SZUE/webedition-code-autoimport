@@ -321,7 +321,7 @@ function handle_event(evt) {
 			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_WE_XML . "';
 			break;
 		case 'next':
-			" . ($this->fileUploader ? $this->fileUploader->getJsSubmitCall("handle_eventNext()") :
+			" . ($this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') :
 					"handle_eventNext();") . "
 			break;
 		case 'cancel':
@@ -334,7 +334,7 @@ function handle_eventNext(){
 		fs = f.elements['v[fserver]'].value,
 		ext = '',
 		fl = f.elements['uploaded_xml_file'].value;
-		" . ($this->fileUploader ? "fl = weFU && !weFU.legacyMode ? 'dummy.xml' : fl" : "") . "
+		" . ($this->fileUploader ? "fl = typeof we_fileUpload !== 'undefined' && !we_fileUpload.getIsLegacyMode() ? 'dummy.xml' : fl" : "") . "
 
 	if (f.elements['v[rdofloc]'][0].checked==true && fs!='/') {
 		if (fs.match(/\.\./)=='..') { " . (we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR)) . "; return; }
@@ -412,7 +412,7 @@ function handle_event(evt) {
 
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
-			$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlMaxUploadSizeAlert(410) :
+			$importLocs->setCol(4, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlMaxUploadSizeAlert(410) :
 					we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
 		} else {
 			$maxsize = getUploadMaxFilesize(false);
@@ -952,7 +952,7 @@ function handle_event(evt) {
 			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_GENERIC_XML . "';
 			break;
 		case 'next':
-			" . ($this->fileUploader ? $this->fileUploader->getJsSubmitCall("handle_eventNext()") :
+			" . ($this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') :
 					"handle_eventNext();") . "
 			break;
 		case 'cancel':
@@ -970,7 +970,7 @@ function handle_eventNext(){
 	var fs = f.elements['v[fserver]'].value;
 	var fl = f.elements['uploaded_xml_file'].value,
 		ext = '';
-	" . ($this->fileUploader ? "fl = weFU && !weFU.legacyMode ? 'dummy.xml' : fl" : "") . "
+	" . ($this->fileUploader ? "fl = typeof we_fileUpload !== 'undefined' && !we_fileUpload.getIsLegacyMode() ? 'dummy.xml' : fl" : "") . "
 
 	if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
 		if (fs.match(/\.\./)=='..') {
@@ -1807,7 +1807,7 @@ function handle_event(evt) {
 			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_CSV . "';
 			break;
 		case 'next':
-			" . ($this->fileUploader ? $this->fileUploader->getJsSubmitCall("handle_eventNext()") :
+			" . ($this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') :
 					"handle_eventNext();") . "
 			break;
 		case 'cancel':
@@ -1821,7 +1821,7 @@ function handle_eventNext(){
 		fs = f.elements['v[fserver]'].value,
 		fl = f.elements['uploaded_csv_file'].value,
 		ext = '';
-		" . ($this->fileUploader ? "fl = weFU && !weFU.legacyMode ? 'dummy.xml' : fl" : "") . "
+		" . ($this->fileUploader ? "fl = typeof we_fileUpload !== 'undefined' && !we_fileUpload.getIsLegacyMode() ? 'dummy.xml' : fl" : "") . "
 
 	if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
 		if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR) . " return; }

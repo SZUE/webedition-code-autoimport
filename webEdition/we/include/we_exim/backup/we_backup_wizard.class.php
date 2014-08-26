@@ -1232,7 +1232,7 @@ function press_yes() {
 					case 3:
 						//FIXME: delete condition when new uploader is stable
 						if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
-							$startImportCall = $this->fileUploader ? $this->fileUploader->getJsSubmitCall("top.body.startImport(true)") : "top.body.startImport();";
+							$startImportCall = $this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') : "top.body.startImport();";
 							if(defined('WORKFLOW_TABLE')){
 								$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined('OBJECT_FILES_TABLE') && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE)) > 0) ?
 										we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) " . $startImportCall . ";") :

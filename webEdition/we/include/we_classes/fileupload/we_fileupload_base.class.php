@@ -23,51 +23,80 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_fileupload_base{
+	protected $type = '';
 	protected $name = 'weFileSelect';
+	protected $form = array(
+		'name' => '',
+		'action' => ''
+	);
+	protected $fileselectOnclick = '';
+	protected $isDragAndDrop = true;
+	protected $callback = '';
+	protected $maxUploadSizeMBytes = 0;
+	protected $maxUploadSizeBytes = 0;
 	protected $dimensions = array(
 		'width' => 400,
 		'dragHeight' => 30,
-		'progressWidth' => 200,
 		'alertBoxWidth' => 390,
 		'marginTop' => 0,
 		'marginBottom' => 0
 	);
-	protected $action = '';
-	protected $typeConditionJson = '';
-	protected $maxUploadSizeMBytes = 0;
-	protected $maxUploadSizeBytes = 0;
-	protected $maxChunkCount;
+	protected $footerName = '';
+	protected $contentName = '';
+	protected $uploadBtnName = 'upload_btn';
+	protected $internalProgress = array(
+		'isInternalProgress' => false,
+		'width' => 0,
+	);
+	protected $externalProgress = array(
+		'isExternalProgress' => false,
+		'parentElemId' => '',
+		'create' => false,
+		'html' => '',
+		'width' => 0,
+		'name' => '',
+		'additionalParams' => array()
+	);
+	protected $typeCondition = array(
+		'accepted' => array(
+			'mime' => array(),
+			'extensions' => array(),
+			'all' => array()
+		),
+		'forbidden' => array(
+			'mime' => array(),
+			'extensions' => array(),
+			'all' => array()
+		)
+	);
+	protected $isGdOk = true;
+	protected $fileTable = '';
 	public $useLegacy = false;
 
-	const CHUNK_SIZE = 256;
+	const CHUNK_SIZE = 128;
 	const ON_ERROR_RETURN = true;
 	const ON_ERROR_DIE = true;
 
-	abstract protected function _getSenderJS_additional();
+	abstract protected function getHTML($hiddens = '');
 
-	abstract protected function _getInitJS();
-
-	abstract protected function _getSelectorJS();
-
-	protected function __construct($name, $width = 400, $maxUploadSize = -1){
+	protected function __construct($name, $width = 400, $maxUploadSize = -1, $isDragAndDrop = true){
 		$this->name = $name;
+		$this->isDragAndDrop = (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11) || we_base_browserDetect::isOpera() ? false : $isDragAndDrop;
 		$this->dimensions['width'] = $width;
 		$this->maxUploadSizeMBytes = intval($maxUploadSize != -1 ? $maxUploadSize : (defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 0));
 		$this->maxUploadSizeBytes = $this->maxUploadSizeMBytes * 1048576;
 		$this->maxChunkCount = $this->maxUploadSizeMBytes * 1024 / self::CHUNK_SIZE;
-		$this->useLegacy = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10 ? true :
-				(defined('FILE_UPLOAD_USE_LEGACY') ? FILE_UPLOAD_USE_LEGACY : false);
+		$this->useLegacy = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10 ? true : (defined('FILE_UPLOAD_USE_LEGACY') ? FILE_UPLOAD_USE_LEGACY : false);
 	}
 
 	public function setAction($action){
-		$this->action = $action;
+		$this->form['action'] = $action;
 	}
 
 	public function setDimensions($args = array()){
 		$this->dimensions = array(
 			'width' => isset($args['width']) ? $args['width'] : $this->dimensions['width'],
 			'dragHeight' => isset($args['dragHeight']) ? $args['dragHeight'] : $this->dimensions['dragHeight'],
-			'progressWidth' => isset($args['progressWidth']) ? $args['progressWidth'] : $this->dimensions['progressWidth'],
 			'alertBoxWidth' => isset($args['alertBoxWidth']) ? $args['alertBoxWidth'] : $this->dimensions['alertBoxWidth'],
 			'marginTop' => isset($args['marginTop']) ? $args['marginTop'] : $this->dimensions['marginTop'],
 			'marginBottom' => isset($args['marginBottom']) ? $args['marginBottom'] : $this->dimensions['marginBottom']
@@ -112,6 +141,10 @@ abstract class we_fileupload_base{
 			'</div>';
 	}
 
+	protected function getHtmlFileRow(){
+		return '';
+	}
+
 	public function getCss(){
 		return $this->useLegacy ? '' : we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::cssElement('
 			div.we_file_drag{
@@ -120,161 +153,58 @@ abstract class we_fileupload_base{
 			}');
 	}
 
-	public function getJs($init = true, $selector = true, $sender = true){
-		return implodeJS(($init ? $this->_getInitJS() : '') .
-			($selector ? $this->_getSelectorJS() : '') .
-			($sender ? $this->_getSenderJS_core() . $this->_getSenderJS_additional() : '')
-		);
-	}
-
-	protected function _getSenderJS_core(){
-		return we_html_element::jsElement('
-weFU.sendNextFile = function(){
-	var cur;
-	if(cur = weFU.preparedFiles.shift()){
-		weFU.currentFile = cur;
-		if(cur.uploadConditionsOk){
-			weFU.isUploading = true;
-			weFU.repaintGUI({"what" : "startSendFile"});
-
-			if(cur.file.size <= weFU.chunkSize){
-				weFU.sendNextChunk(false);
-			} else {
-				//when all chunks of currentFile are done, we will submit the original form without file
-				//FIXME: move this out of core functions
-				if(weFU.elems.fileSelect && weFU.elems.fileSelect.value){
-					weFU.elems.fileSelect.value = "";
-				}
-
-				var fr = new FileReader();
-				fr.onload = function(e){
-					var content = e.target.result;
-					cur.dataArray = new Uint8Array(content);
-
-					//prepare currentFile-data used for splitting
-					cur.totalParts = Math.ceil(cur.dataArray.length / weFU.chunkSize);
-					cur.lastChunkSize = cur.dataArray.length % weFU.chunkSize;
-					cur.currentPos = 0;
-					cur.partNum = 0;
-
-					weFU.sendNextChunk(true);
-				};
-				fr.readAsArrayBuffer(cur.file);
-			}
-		} else {
-			weFU.processError({"from" : "gui", "msg" : cur.error});
+	public function getJs(){
+		$this->externalProgress['create'] = $this->externalProgress['create'] && $this->externalProgress['isExternalProgress'] && $this->externalProgress['parentElemId'];
+		if($this->externalProgress['create']){
+			$progressbar = new we_progressBar();
+			$progressbar->setName($this->externalProgress['name']);
+			$progressbar->setStudLen($this->externalProgress['width']);
+			$this->externalProgress['html'] = str_replace(array("\r", "\n"), " ", $progressbar->getHTML());
 		}
 
-	} else {
-		//all uploads done
-		weFU.isUploading = false;
-		weFU.postProcess();
-	}
-};
-
-weFU.sendNextChunk = function(split){
-	if(weFU.isCancelled){
-		weFU.isCancelled = false;
-		return;
-	}
-
-	var cur = weFU.currentFile,
-		resp = "";
-
-	if(split){
-		if(cur.partNum < cur.totalParts){
-			var pos = cur.currentPos,
-				file = cur.file,
-				blob;
-
-			cur.partNum++;
-			cur.currentPos = pos + weFU.chunkSize;
-			blob = new Blob([cur.dataArray.subarray(pos, cur.currentPos)]);
-
-			weFU.sendChunk(
-				blob,
-				file.name,
-				(cur.mimePHP !== "none" ? cur.mimePHP : file.type),
-				(cur.partNum === cur.totalParts ? cur.lastChunkSize : weFU.chunkSize),
-				cur.partNum,
-				cur.totalParts,
-				cur.fileNameTemp
-			);
-		}
-	} else {
-		weFU.sendChunk(cur.file, cur.file.name, cur.file.type, cur.file.size, 1, 1, "");
-	}
-};
-
-weFU.sendChunk = function(part, fileName, fileCt, partSize, partNum, totalParts, fileNameTemp){
-	var xhr = new XMLHttpRequest(),
-		fd = new FormData(),
-		cur = weFU.currentFile;
-
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == 4) {
-			if(xhr.status === 200){
-				weFU.processResponse(JSON.parse(xhr.responseText), {"partSize" : partSize, "partNum" : partNum, "totalParts" : totalParts});
-			} else {
-				weFU.processError({"type" : "request", "msg" : "http request failed",});
-			}
-		}
+		return we_html_element::jsScript('/webEdition/js/weFileUpload.js') .
+			we_html_element::jsElement('
+			we_FileUpload = new weFileUpload("' . $this->type . '");
+			we_FileUpload.init({
+				fieldName : "' . $this->name . '",
+				form : ' . json_encode($this->form) . ',
+				footerName : "' . $this->footerName . '",
+				uploadBtnName : "' . $this->uploadBtnName . '",
+				maxUploadSize : ' . $this->maxUploadSizeBytes . ',
+				typeCondition : ' . str_replace(array("\r", "\n"), " ", json_encode($this->typeCondition)) . ',
+				isDragAndDrop : ' . ($this->isDragAndDrop ? 'true' : 'false') . ',
+				isLegacyMode : ' . ($this->useLegacy ? 'true' : 'false') . ',
+				callback : function(){' . $this->callback . '},
+				fileselectOnclick : function(){' . $this->fileselectOnclick . '},
+				chunkSize : ' . self::CHUNK_SIZE . ',
+				intProgress : ' . json_encode($this->internalProgress) . ',
+				extProgress : ' . json_encode($this->externalProgress) . ',
+				gl: ' . $this->_getJsGl() . ',
+				isGdOk : ' . ($this->isGdOk ? 'true' : 'false') . ',
+				htmlFileRow : \'' . $this->getHtmlFileRow() . '\',
+				fileTable : "' . $this->fileTable . '",
+			});
+		') . ($this->externalProgress['create'] ? implodeJS($progressbar->getJS('', true)) : '');
 	}
 
-	fileCt = fileCt ? fileCt : "text/plain";
-	fd.append("uploadParts", 1);
-	fd.append("wePartNum", partNum);
-	fd.append("wePartCount", totalParts);
-	fd.append("weFileNameTemp", fileNameTemp);
-	fd.append("weFileName", fileName);
-	fd.append("weFileCt", fileCt);
-	fd.append("' . $this->name . '", part, fileName);
-	fd.append("weIsUploading", 1);
-	if(typeof weFU.appendMoreData === "function"){
-		fd = weFU.appendMoreData(fd);
+	protected function _getJsGl(){
+		return '{
+					dropText : "' . g_l('importFiles', "[dragdrop_text]") . '",
+					sizeTextOk : "' . g_l('newFile', '[file_size]') . ': ",
+					sizeTextNok : "' . g_l('newFile', '[file_size]') . ': &gt; ' . $this->maxUploadSizeMBytes . ' MB, ",
+					typeTextOk : "' . g_l('newFile', '[file_type]') . ': ",
+					typeTextNok : "' . g_l('newFile', '[file_type_forbidden]') . ': ",
+					errorNoFileSelected : "' . g_l('newFile', '[error_no_file]') . '",
+					errorFileSize : "' . g_l('newFile', '[error_file_size]') . '",
+					errorFileType : "' . g_l('newFile', '[error_file_type]') . '",
+					errorFileSizeType : "' . g_l('newFile', '[error_size_type]') . '",
+					uploadCancelled : "' . g_l('importFiles', '[upload_cancelled]') . '",
+					cancelled : "' . g_l('importFiles', "[cancelled]") . '",
+					doImport : "' . g_l('importFiles', "[do_import]") . '",
+					file : "' . g_l('importFiles', "[file]") . '",
+					btnClose : "' . g_l('button', '[close][value]') . '",
+					btnCancel : "' . g_l('button', '[cancel][value]') . '",
+					btnUpload : "' . g_l('button', "[upload][value]") . '"
+				}';
 	}
-	xhr.open("POST", weFU.action ? weFU.action : window.location.href, true);
-	xhr.send(fd);
-};
-
-weFU.processResponse = function(resp, args){
-	if(!weFU.isCancelled){
-		var cur = weFU.currentFile;
-
-		cur.fileNameTemp = resp.fileNameTemp;
-		cur.mimePHP = resp.mimePhp;
-		cur.currentWeightFile += args.partSize;
-		weFU.currentWeight += args.partSize;
-
-		switch(resp.status){
-			case "continue":
-				weFU.repaintGUI({"what" : "chunkOK"});
-				weFU.sendNextChunk(true);
-				break;
-			case "success":
-				weFU.currentWeightTag = weFU.currentWeight;
-				weFU.repaintGUI({"what" : "chunkOK"});
-				weFU.repaintGUI({"what" : "fileOK"});
-				if(weFU.preparedFiles.length !== 0){
-					weFU.sendNextFile();
-				} else {
-					weFU.postProcess(resp);
-				}
-				break;
-			case "failure":
-				weFU.currentWeight = weFU.currentWeightTag + cur.file.size;
-				weFU.currentWeightTag = weFU.currentWeight;
-				weFU.repaintGUI({"what" : "chunkNOK", "message" : resp.message});
-				if(weFU.preparedFiles.length !== 0){
-					weFU.sendNextFile();
-				} else {
-					weFU.postProcess(resp);
-				}
-				break;
-		}
-	}
-};
-		');
-	}
-
 }

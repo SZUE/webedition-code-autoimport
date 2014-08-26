@@ -279,7 +279,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 
 		$cancelButton = we_html_button::create_button("cancel", "javascript:parent.wizbody.handle_event('cancel');", false, 0, 0, '', '', false, false);
 		$prevButton = we_html_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);
-		$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", false, false);
+		$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", false, false, '_btn');
 		$closeButton = we_html_button::create_button("close", "javascript:parent.wizbody.handle_event('cancel');", true, 0, 0, "", "", false, false);
 
 		$prevNextButtons = $prevButton ? we_html_button::create_button_table(array($prevButton, $nextButton)) : null;
