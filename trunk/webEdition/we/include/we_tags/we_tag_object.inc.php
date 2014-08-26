@@ -68,7 +68,7 @@ function we_tag_object($attribs){
 
 		$path = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $we_oid);
 		$textname = 'we_' . $we_doc->Name . '_object[' . $name . '_path]';
-		$idname = 'we_' . $we_doc->Name . '_object[' . $name . ']';
+		$idname = 'we_' . $we_doc->Name . '_object[' . $name . '#bdid]';
 		$table = OBJECT_FILES_TABLE;
 
 		if($GLOBALS['we_editmode']){

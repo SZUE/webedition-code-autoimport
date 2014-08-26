@@ -483,7 +483,7 @@ abstract class we_root extends we_class{
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);");
-	//	$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)");
+		//	$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)");
 //		$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputTriggerID');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 
 		$yuiSuggest->setAcId('TriggerID');
@@ -568,6 +568,9 @@ abstract class we_root extends we_class{
 	function setElement($name, $data, $type = 'txt', $key = 'dat', $autobr = false){
 		$this->elements[$name][$key] = $data;
 		$this->elements[$name]['type'] = $type;
+		if($key == 'bdid' && isset($this->elements[$name]['dat'])){//remove dat if bdid is set
+			unset($this->elements[$name]['dat']);
+		}
 		if($autobr){
 			$this->elements[$name]['autobr'] = $autobr;
 		}
