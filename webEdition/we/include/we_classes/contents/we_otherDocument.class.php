@@ -115,9 +115,10 @@ class we_otherDocument extends we_binaryDocument{
 			case '.otf':
 			case '.otp':
 			case '.otg':
-				if(class_exists('ZipArchive') && (isset($this->elements['data']['dat']) && file_exists($this->elements['data']['dat']))){
+				$name=$this->getElement('data');
+				if(class_exists('ZipArchive') && file_exists($name)){
 					$zip = new ZipArchive;
-					if($zip->open($this->elements['data']['dat']) === TRUE){
+					if($zip->open($name) === TRUE){
 						$content = CheckAndConvertISOfrontend(strip_tags(preg_replace(array('|</text[^>]*>|', '|<text[^/>]*/>|'), ' ', str_replace(array('&#x0d;', '&#x0a;'), ' ', $zip->getFromName('content.xml')))));
 						$zip->close();
 						break;
@@ -126,7 +127,7 @@ class we_otherDocument extends we_binaryDocument{
 				$content = '';
 				break;
 			case '.pdf':
-				$name = $this->elements['data']['dat'];
+				$name = $this->getElement('data');
 				if(file_exists($name) && (filesize($name) * 2 < we_convertIniSizes(ini_get('memory_limit')))){
 					$pdf = new we_helpers_pdf2text($name);
 					$content = CheckAndConvertISOfrontend($pdf->processText());

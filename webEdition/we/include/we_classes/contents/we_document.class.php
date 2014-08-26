@@ -806,7 +806,7 @@ class we_document extends we_root{
 	}
 
 	function i_getDocument($includepath = ''){
-		return isset($this->elements['data']['dat']) ? $this->elements['data']['dat'] : '';
+		return $this->getElement('data');
 	}
 
 	function i_setDocument($value){
@@ -1480,7 +1480,7 @@ class we_document extends we_root{
 	 * @param	boolean
 	 */
 	function formCharset($withHeadline = false){
-		$value = (isset($this->elements['Charset']['dat']) ? $this->elements['Charset']['dat'] : '');
+		$value = $this->getElement('Charset');
 
 		$_charsetHandler = new we_base_charsetHandler();
 

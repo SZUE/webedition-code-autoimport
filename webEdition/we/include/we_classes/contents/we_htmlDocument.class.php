@@ -30,8 +30,7 @@ class we_htmlDocument extends we_textContentDocument{
 	}
 
 	function i_saveContentDataInDB(){
-		if(is_array($this->elements['data']) && isset($this->elements['data']['dat'])){
-			$code = $this->elements['data']['dat'];
+		if(($code = $this->getElement('data'))){
 			$metas = $this->getMetas($code);
 			if(isset($metas['title']) && $metas['title']){
 				$this->setElement('Title', $metas['title']);
@@ -62,9 +61,8 @@ class we_htmlDocument extends we_textContentDocument{
 
 	function getDocumentCode(){
 		$code = $this->getElement('data');
-
-		if(isset($this->elements['Charset']['dat']) && $this->elements['Charset']['dat']){
-			$code = preg_replace('|<meta http-equiv="Content-Type" content=".*>|i', we_html_tools::htmlMetaCtCharset('text/html', $this->elements['Charset']['dat']), $code);
+		if(($cs = $this->getElement('Charset'))){
+			$code = preg_replace('|<meta http-equiv="Content-Type" content=".*>|i', we_html_tools::htmlMetaCtCharset('text/html', $cs), $code);
 		}
 		return $code;
 	}

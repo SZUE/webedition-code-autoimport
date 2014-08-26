@@ -26,7 +26,6 @@
 
 class we_quicktimeDocument extends we_binaryDocument{
 	/* Parameternames which are placed within the object-Tag */
-
 	var $ObjectParamNames = array("width", "height", "name", "vspace", "hspace", "style");
 
 	/* Constructor */
@@ -53,8 +52,8 @@ class we_quicktimeDocument extends we_binaryDocument{
 	// is not written yet
 	function initByAttribs($attribs){
 		if(isset($attribs["sizingrel"])){
-			$orig_w = (isset($attribs["width"]) ? $attribs["width"] : $this->elements["width"]["dat"]);
-			$orig_h = (isset($attribs["height"]) ? $attribs["height"] : $this->elements["height"]["dat"]);
+			$orig_w = (isset($attribs["width"]) ? $attribs["width"] : $this->getElement("width"));
+			$orig_h = (isset($attribs["height"]) ? $attribs["height"] : $this->getElement("height"));
 
 			$attribs["width"] = round($orig_w * $attribs["sizingrel"]);
 			$attribs["height"] = round($orig_h * $attribs["sizingrel"]);
@@ -111,7 +110,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 			$filter = array("filesize", "type", "xml");
 			$noAtts = array("scale", "volume"); //  no atts for xml
 			// fix. older versions of webEdition bgcolor was type txt and not attrib
-			if(isset($this->elements["bgcolor"])){
+			if($this->issetElement("bgcolor")){
 				$this->elements["bgcolor"]["type"] = "attrib";
 			}
 
@@ -252,38 +251,38 @@ class we_quicktimeDocument extends we_binaryDocument{
 		$_hspace = $this->getElement('hspace');
 		$_vspace = $this->getElement('vspace');
 		$_name = $this->getElement('name');
-		$_autoplay = $this->getElement("autoplay");
-		$_controller = $this->getElement("controller");
-		$_bgcolor = $this->getElement("bgcolor");
-		$_volume = $this->getElement("volume");
-		$_hidden = $this->getElement("hidden");
-		$_loop = $this->getElement("loop");
+		$_autoplay = $this->getElement('autoplay');
+		$_controller = $this->getElement('controller');
+		$_bgcolor = $this->getElement('bgcolor');
+		$_volume = $this->getElement('volume');
+		$_hidden = $this->getElement('hidden');
+		$_loop = $this->getElement('loop');
 
 		$this->setElement('width', 150, 'attrib');
-		$this->setElement("height", 100, 'attrib');
-		$this->setElement("scale", "aspect", "attrib");
-		$this->setElement("hspace", "", "attrib");
-		$this->setElement("vspace", "", "attrib");
-		$this->setElement("name", "", "attrib");
-		$this->setElement("autoplay", "true", "attrib");
-		$this->setElement("controller", "false", "attrib");
-		$this->setElement("bgcolor", "", "attrib");
-		$this->setElement("volume", "", "attrib");
-		$this->setElement("hidden", "", "attrib");
-		$this->setElement("loop", "", "attrib");
+		$this->setElement('height', 100, 'attrib');
+		$this->setElement('scale', 'aspect', 'attrib');
+		$this->setElement('hspace', '', 'attrib');
+		$this->setElement('vspace', '', 'attrib');
+		$this->setElement('name', '', 'attrib');
+		$this->setElement('autoplay', 'true', 'attrib');
+		$this->setElement('controller', 'false', 'attrib');
+		$this->setElement('bgcolor', '', 'attrib');
+		$this->setElement('volume', '', 'attrib');
+		$this->setElement('hidden', '', 'attrib');
+		$this->setElement('loop', '', 'attrib');
 		$html = $this->getHtml(true);
-		$this->setElement("width", $_width, "attrib");
-		$this->setElement("height", $_height, "attrib");
-		$this->setElement("scale", $_scale, "attrib");
-		$this->setElement("hspace", $_hspace, "attrib");
-		$this->setElement("vspace", $_vspace, "attrib");
-		$this->setElement("name", $_name, "attrib");
-		$this->setElement("autoplay", $_autoplay, "attrib");
-		$this->setElement("controller", $_controller, "attrib");
-		$this->setElement("bgcolor", $_bgcolor, "attrib");
-		$this->setElement("volume", $_volume, "attrib");
-		$this->setElement("hidden", $_hidden, "attrib");
-		$this->setElement("loop", $_loop, "attrib");
+		$this->setElement('width', $_width, 'attrib');
+		$this->setElement('height', $_height, 'attrib');
+		$this->setElement('scale', $_scale, 'attrib');
+		$this->setElement('hspace', $_hspace, 'attrib');
+		$this->setElement('vspace', $_vspace, 'attrib');
+		$this->setElement('name', $_name, 'attrib');
+		$this->setElement('autoplay', $_autoplay, 'attrib');
+		$this->setElement('controller', $_controller, 'attrib');
+		$this->setElement('bgcolor', $_bgcolor, 'attrib');
+		$this->setElement('volume', $_volume, 'attrib');
+		$this->setElement('hidden', $_hidden, 'attrib');
+		$this->setElement('loop', $_loop, 'attrib');
 		return $html;
 	}
 
@@ -310,7 +309,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 						$quicktimeId = intval($GLOBALS[$key][$formname]->getElement($quicktimeName));
 
 						// move document from upload location to tmp dir
-						$_SESSION[$_quicktimeDataId]["serverPath"] = TEMP_PATH  . we_base_file::getUniqueId();
+						$_SESSION[$_quicktimeDataId]["serverPath"] = TEMP_PATH . we_base_file::getUniqueId();
 						move_uploaded_file($_FILES["we_ui_$formname"]["tmp_name"][$quicktimeName], $_SESSION[$_quicktimeDataId]["serverPath"]);
 
 

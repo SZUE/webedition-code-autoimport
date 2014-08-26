@@ -26,7 +26,6 @@
 
 class we_flashDocument extends we_binaryDocument{
 	/* Parameternames which are placed within the object-Tag */
-
 	var $ObjectParamNames = array('align', 'border', 'id', 'height', 'hspace', 'name', 'width', 'vspace', 'only', 'style');
 
 	function __construct(){
@@ -52,8 +51,8 @@ class we_flashDocument extends we_binaryDocument{
 	function initByAttribs($attribs){
 		$sizingrel = weTag_getAttribute('sizingrel', $attribs, 0);
 		if(!empty($sizingrel)){
-			$orig_w = weTag_getAttribute('width', $attribs, $this->elements['width']['dat']);
-			$orig_h = weTag_getAttribute('height', $attribs, $this->elements['height']['dat']);
+			$orig_w = weTag_getAttribute('width', $attribs, $this->getElement('width'));
+			$orig_h = weTag_getAttribute('height', $attribs, $this->getElement('height'));
 			$attribs['width'] = round($orig_w * $sizingrel);
 			$attribs['height'] = round($orig_h * $sizingrel);
 		}
@@ -91,7 +90,7 @@ class we_flashDocument extends we_binaryDocument{
 			$codebase = $this->getElement('Codebase') ? $this->getElement('Codebase') : 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0';
 
 			// fix. older versions of webEdition bgcolor was type txt and not attrib
-			if(isset($this->elements['bgcolor'])){
+			if($this->issetElement('bgcolor')){
 				$this->elements['bgcolor']['type'] = 'attrib';
 			}
 
@@ -100,8 +99,7 @@ class we_flashDocument extends we_binaryDocument{
 			$src = $dyn ?
 				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . $randval :
 				$this->Path;
-			$attribs = array();
-			$params = array();
+			$attribs = $params = array();
 			$this->html = '';
 
 			/*			 * ****************************************************************************
@@ -387,8 +385,8 @@ class we_flashDocument extends we_binaryDocument{
 				$path = $this->getParentPath() . '/' . $this->Filename . $this->Extension;
 				return $this->getimagesize($_SERVER['DOCUMENT_ROOT'] . (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
 			}
-		} else if(isset($this->elements['data']['dat']) && $this->elements['data']['dat']){
-			$arr = $this->getimagesize($this->elements['data']['dat']);
+		} else if(($tmp = $this->getElement('data'))){
+			$arr = $this->getimagesize($tmp);
 		}
 		return $arr;
 	}
