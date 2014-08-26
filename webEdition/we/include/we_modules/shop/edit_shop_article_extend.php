@@ -346,7 +346,7 @@ if(isset($daten)){
 			break;
 		case "document": //start output doc
 			$orderBy = we_base_request::_(we_base_request::RAW, 'orderBy', 'sql');
-			$entries = f('SELECT COUNT(Name) FROM ' . LINK_TABLE . ' WHERE Name ="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '"'); // Pager: determine the number of records;
+			$entries = f('SELECT COUNT(Name) FROM ' . LINK_TABLE . ' WHERE Name="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '"'); // Pager: determine the number of records;
 			$active_page = we_base_request::_(we_base_request::RAW, 'page', 0); // Pager: determine the number of records;
 			$docType = we_base_ContentTypes::WEDOCUMENT; // Pager: determine the current page
 			$typeAlias = isset($typeAlias) ? "document" : "document"; // Pager: determine the current page
@@ -357,7 +357,7 @@ if(isset($daten)){
 				$DB_WE->query(
 					'SELECT c.dat AS sqlDat,l.DID AS dd,f.CreationDate AS dDate,f.Published AS dPub,f.ModDate AS dMod
             FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID' .
-					' WHERE  l.Name="' . WE_SHOP_TITLE_FIELD_NAME . '" ORDER BY dd'); // get the shop-documents from DB;
+					' WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.Name="' . WE_SHOP_TITLE_FIELD_NAME . '" ORDER BY dd'); // get the shop-documents from DB;
 				// build the table
 				$orderRows = array();
 				while($DB_WE->next_record()){
