@@ -1059,11 +1059,10 @@ function submitForm() {
 				$cancelBut = we_html_button::create_button('cancel', 'javascript:window.close();');
 				$searchBut = we_html_button::create_button('search', 'javascript:searchArticles();');
 				$searchArticle = we_base_request::_(we_base_request::STRING, 'searchArticle');
-
+			//FIXME:why do we do this expensive search??!
 				// first get all shop documents
 				$this->db->query('SELECT c.dat AS shopTitle, ' . LINK_TABLE . '.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID' .
-					' WHERE l.Name = "' . WE_SHOP_TITLE_FIELD_NAME . '"
-							AND l.DocumentTable!=s"tblTemplates" ' .
+					' WHERE l.Name="' . WE_SHOP_TITLE_FIELD_NAME . '" AND  l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" ' .
 					($searchArticle ?
 						' AND c.Dat LIKE "%' . $this->db->escape($searchArticle) . '%"' :
 						'')

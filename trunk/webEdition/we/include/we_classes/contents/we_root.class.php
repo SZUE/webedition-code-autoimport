@@ -893,8 +893,7 @@ abstract class we_root extends we_class{
 
 	protected function i_getContentData(){
 
-		$this->DB_WE->query('SELECT * FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID ' .
-			'WHERE l.DID=' . intval($this->ID) .
+		$this->DB_WE->query('SELECT * FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->ID) .
 			' AND l.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '"'
 		);
 		$filter = array('Name', 'DID', 'Ord');

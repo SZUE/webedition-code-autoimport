@@ -39,5 +39,7 @@ CREATE TABLE ###TBLPREFIX###tblFile (
 	PRIMARY KEY  (ID),
   KEY Path (Path),
   KEY WebUserID (WebUserID),
-	KEY urlMap (urlMap)
+	KEY urlMap (urlMap),
+	KEY TemplateID (TemplateID,IsDynamic),
+	KEY ParentID(ParentID)
 ) ENGINE=MyISAM;
