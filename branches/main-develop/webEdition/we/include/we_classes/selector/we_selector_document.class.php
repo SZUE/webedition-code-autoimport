@@ -88,8 +88,7 @@ class we_selector_document extends we_selector_directory{
 		$_db = new DB_WE();
 		switch($this->table){
 			case FILE_TABLE:
-
-				$_db->query('SELECT f.ID, c.Dat FROM (' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID)) JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE f.ParentID=' . intval($this->dir) . ' AND l.Name="Title"');
+				$_db->query('SELECT f.ID, c.Dat FROM (' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID)) JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND f.ParentID=' . intval($this->dir) . ' AND l.Name="Title"');
 
 				while($_db->next_record()){
 					$this->titles[$_db->f('ID')] = $_db->f('Dat');

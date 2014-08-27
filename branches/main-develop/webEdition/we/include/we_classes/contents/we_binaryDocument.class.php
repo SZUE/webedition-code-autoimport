@@ -26,7 +26,6 @@
 
 class we_binaryDocument extends we_document{
 	/* The HTML-Code which can be included in a HTML Document */
-
 	protected $html = '';
 
 	/**
@@ -98,54 +97,60 @@ class we_binaryDocument extends we_document{
 	}
 
 	public function we_save($resave = 0){
-		if(!isset($this->elements['data']['dat'])){
+		if(!$this->issetElement('data')){
 			$this->i_getContentData();
 		}
 		if($this->getFilesize() == 0){
-			print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('metadata', '[file_size_0]'), we_message_reporting::WE_MESSAGE_ERROR));
+			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('metadata', '[file_size_0]'), we_message_reporting::WE_MESSAGE_ERROR));
 			return false;
-		} else {
-			if(parent::we_save($resave)){
-				$this->DocChanged = false;
-				$this->elements["data"]["dat"] = $this->getSitePath();
-				return $this->insertAtIndex();
-			} else {
-				return false;
-			}
 		}
+		if(parent::we_save($resave)){
+			$this->DocChanged = false;
+			$this->setElement("data", $this->getSitePath());
+			return $this->insertAtIndex();
+		}
+
+		return false;
 	}
 
 	function i_getDocument($size = -1){
-		return (isset($this->elements['data']['dat']) && file_exists($this->elements["data"]["dat"])) ? ($size == -1 ? we_base_file::load($this->elements["data"]["dat"]) : we_base_file::loadPart($this->elements["data"]["dat"], 0, $size)) : '';
+		$file = $this->getElement('data');
+		return ($file && file_exists($file) ?
+				($size == -1 ?
+					we_base_file::load($file) :
+					we_base_file::loadPart($file, 0, $size)
+				) :
+				'');
 	}
 
 	protected function i_writeDocument(){
-		if(isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
-			if($this->elements["data"]["dat"] != $this->getSitePath()){
-				if(!we_util_File::copyFile($this->elements["data"]["dat"], $this->getSitePath())){
-					return false;
-				}
-			}
-			if(!we_util_File::copyFile($this->elements["data"]["dat"], $this->getRealPath())){
-				return false;
-			}
-			if($this->isMoved()){
-				we_util_File::delete($this->getRealPath(true));
-				we_util_File::delete($this->getSitePath(true));
-				$this->rewriteNavigation();
-			}
-			$this->update_filehash();
-		} else {
+		$file = $this->getElement('data');
+		if(!($file && file_exists($file))){
 			return false;
 		}
+		if($file != $this->getSitePath()){
+			if(!we_util_File::copyFile($file, $this->getSitePath())){
+				return false;
+			}
+		}
+		if(!we_util_File::copyFile($file, $this->getRealPath())){
+			return false;
+		}
+		if($this->isMoved()){
+			we_util_File::delete($this->getRealPath(true));
+			we_util_File::delete($this->getSitePath(true));
+			$this->rewriteNavigation();
+		}
+		$this->update_filehash();
 
 		return true;
 	}
 
 	private function writeFile($to, $old){
 		$is_ok = false;
-		if(isset($this->elements["data"]["dat"]) && file_exists($this->elements["data"]["dat"])){
-			$is_ok = we_util_File::copyFile($this->elements["data"]["dat"], $to);
+		$file = $this->getElement('data');
+		if($file && file_exists($file)){
+			$is_ok = we_util_File::copyFile($file, $to);
 			if($this->isMoved()){
 				we_util_File::delete($old);
 			}
@@ -163,7 +168,8 @@ class we_binaryDocument extends we_document{
 
 	/** gets the filesize of the document */
 	function getFilesize(){
-		return (file_exists($this->elements['data']['dat']) ? filesize($this->elements['data']['dat']) : 0);
+		$file = $this->getElement('data');
+		return (file_exists($file) ? filesize($file) : 0);
 	}
 
 	function insertAtIndex(){
@@ -365,4 +371,5 @@ class we_binaryDocument extends we_document{
 	public function isBinary(){
 		return true;
 	}
+
 }

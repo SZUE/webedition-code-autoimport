@@ -404,9 +404,9 @@ class we_webEditionDocument extends we_textContentDocument{
 			$name = 'Charset';
 
 			//	This is the input field for the charset
-			$inputName = 'we_' . $this->Name . "_txt[$name]";
+			$inputName = 'we_' . $this->Name . "_attrib[$name]";
 
-			$chars = explode(',', $GLOBALS["meta"]["Charset"]["defined"]);
+			$chars = explode(',', $GLOBALS['meta']['Charset']['defined']);
 
 			//	input field - check value
 			$value = ($this->getElement($name) ?
@@ -481,6 +481,10 @@ class we_webEditionDocument extends we_textContentDocument{
 			case 'img':
 			case 'linklist':
 			case 'block':
+			case 'link':
+			case 'object':
+			case 'href':
+			case 'customer':
 				return $tagname;
 			case 'input':
 				return (strpos($tag, 'type="date"') !== false) ?
@@ -504,6 +508,28 @@ class we_webEditionDocument extends we_textContentDocument{
 		return str_replace('####BLOCKNR####', '[0-9]+', $out);
 	}
 
+	public function insertAtIndex(array $only = null, array $fieldTypes = array()){
+		if($this->ContentType == we_base_ContentTypes::WEDOCUMENT){
+			$only = $this->getUsedElements(true);
+			if(!$only){//FIXME:needed for rebuild, since tags are unintialized
+				// dont save unneeded fields in index-table
+				//FIXME: it is better to use $this->getUsedElements - only we:input type="date" is not handled... => this will call the TP which is not desired since this method is called on save in frontend
+				$fieldTypes = we_webEditionDocument::getFieldTypes($this->getTemplateCode(), false);
+				$fieldTypes = array_keys($fieldTypes, 'txt');
+				array_push($fieldTypes, 'Title', 'Description', 'Keywords');
+				foreach($fieldTypes as $field){//for #230: if variables are used in fieldnames we cannot determine these types
+					if($field && ($field[0] == '$' || isset($field[1]) && $field[1] == '$')){
+						unset($fieldTypes);
+						break;
+					}
+				}
+			} else {
+				array_push($only, 'Title', 'Description', 'Keywords');
+			}
+		}
+		return parent::insertAtIndex($only, $fieldTypes);
+	}
+
 	/**
 	 * @return string
 	 * @desc this function returns the code of the template this document bases on
@@ -512,7 +538,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($this->TemplateID) . ' AND l.Name="' . ($completeCode ? 'completeData' : 'data') . '"', '', $this->DB_WE);
 	}
 
-	function getFieldTypes($templateCode, $useTextarea = false){
+	protected function getFieldTypes($templateCode, $useTextarea = false){
 		$tp = new we_tag_tagParser($templateCode, $this->getPath());
 		$tags = $tp->getAllTags();
 		$blocks = array();
@@ -524,7 +550,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				$tagname = $regs[1];
 				if(($tagname != 'var') && ($tagname != 'field') && preg_match('|name="([^"]+)"|i', $tag, $regs)){ // name found
 					$name = str_replace(array('[', ']'), array('\[', '\]'), $regs[1]);
-					if(!empty($blocks)){
+					if($blocks){
 						$foo = end($blocks);
 						$blockname = $foo['name'];
 						$blocktype = $foo['type'];
@@ -558,7 +584,7 @@ class we_webEditionDocument extends we_textContentDocument{
 					case 'block':
 					case 'list':
 					case 'linklist':
-						if(!empty($blocks)){
+						if($blocks){
 							array_pop($blocks);
 						}
 						break;
@@ -592,7 +618,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 		}
 		//FIXME: it is better to use $this->getUsedElements - only we:input type="date" is not handled... => this will call the TP which is not desired since this method is called on save in frontend
-		$types = self::getFieldTypes($this->getTemplateCode());
+		$types = $this->getFieldTypes($this->getTemplateCode());
 
 		foreach($this->elements as $k => $v){
 			switch(isset($v['type']) ? $v['type'] : ''){
@@ -607,7 +633,11 @@ class we_webEditionDocument extends we_textContentDocument{
 				case 'date':
 				case 'image':
 				case 'linklist':
+				case 'link':
 				case 'img':
+				case 'href':
+				case 'object':
+				case 'customer':
 					if(isset($types[$k])){
 						$this->elements[$k]['type'] = $types[$k];
 					}
@@ -686,18 +716,19 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->InWebEdition = false;
 		$this->EditPageNr = we_base_constants::WE_EDITPAGE_PREVIEW;
 		$we_include = $includepath ? $includepath : $this->editor();
-		ob_start();
 		if(is_file($we_include)){
+			ob_start();
 			include($we_include);
+			$contents = ob_get_contents();
+			ob_end_clean();
 		} else {
 			t_e('File ' . $we_include . ' not found!');
+			$contents = '';
 		}
-		$contents = ob_get_contents();
-		ob_end_clean();
 		$this->EditPageNr = $editpageSave;
 		$this->InWebEdition = $inWebEditonSave;
 
-		if((version_compare(phpversion(), '5.0') >= 0) && isset($we_EDITOR) && $we_EDITOR){ //  fix for php5, in editor we_doc was replaced by $GLOBALS['we_doc'] from we:include tags
+		if(isset($we_EDITOR) && $we_EDITOR){ //  fix for php5, in editor we_doc was replaced by $GLOBALS['we_doc'] from we:include tags
 			$GLOBALS['we_doc'] = $this;
 		}
 
@@ -721,8 +752,8 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			if(!empty($variationFields)){
 				$i = 0;
-				while(isset($this->elements[WE_SHOP_VARIANTS_PREFIX . $i])){
-					if(!trim($this->elements[WE_SHOP_VARIANTS_PREFIX . $i++]['dat'])){
+				while($this->issetElement(WE_SHOP_VARIANTS_PREFIX . $i)){
+					if(!trim($this->getElement(WE_SHOP_VARIANTS_PREFIX . $i++))){
 						return false;
 					}
 				}
@@ -992,20 +1023,18 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		}
 
 		if($this->InWebEdition){
-			$this->hasVariants = (f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($this->TemplateID) . ' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%") LIMIT 1', '', $this->DB_WE));
-		} else {
-			if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) && is_array($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])){
-				$this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = serialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
-			}
-			if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && substr($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) == 'a:'){
-				$_vars = unserialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
-				$this->hasVariants = (is_array($_vars) && $_vars);
-			} else {
-				$this->hasVariants = false;
-			}
+			return ($this->hasVariants = (f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($this->TemplateID) . ' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%") LIMIT 1', '', $this->DB_WE)));
 		}
-
-		return $this->hasVariants;
+		$tmp = $this->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME);
+		if(is_array($tmp)){
+			$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, serialize($tmp), 'variant');
+			return ($this->hasVariants = !empty($tmp));
+		}
+		if(substr($tmp, 0, 2) == 'a:'){
+			$_vars = unserialize($tmp);
+			return ($this->hasVariants = (is_array($_vars) && $_vars));
+		}
+		return ($this->hasVariants = false);
 	}
 
 	function correctVariantFields(){
@@ -1015,11 +1044,11 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	}
 
 	function initVariantDataFromDb(){
-		if(isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && $this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']){
+		if(($tmp = $this->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME))){
 
 			// unserialize the variant data when loading the model
 			//if(!is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])) {
-			$this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = unserialize($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
+			$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, unserialize($tmp), 'variant');
 			//}
 			// now register variant fields in document
 			we_shop_variants::setVariantDataForModel($this);

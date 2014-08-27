@@ -135,8 +135,8 @@ if (
 				$we_doc->setElement('data', $tempName, 'image');
 				$_dim = we_thumbnail::getimagesize($tempName);
 				if(is_array($_dim) && count($_dim) > 0){
-					$we_doc->setElement('width', $_dim[0], 'dat');
-					$we_doc->setElement('height', $_dim[1], 'dat');
+					$we_doc->setElement('width', $_dim[0],'attrib');
+					$we_doc->setElement('height', $_dim[1],'attrib');
 				}
 			} else {
 				$we_doc->setElement('data', $tempName, 'dat');

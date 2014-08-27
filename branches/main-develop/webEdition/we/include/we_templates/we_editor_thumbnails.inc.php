@@ -47,7 +47,7 @@ echo STYLESHEET .
 				} else if(we_base_imageEdit::is_imagetype_read_supported($imgType)){
 
 					// look if the fields origwidth & origheight exixts. If not get and set the values
-					if((!isset($we_doc->elements['origwidth']['dat'])) || (!isset($we_doc->elements['origheight']['dat']))){
+					if((!$we_doc->issetElement('origwidth')) || (!$we_doc->issetElement('origheight'))){
 						$arr = $we_doc->getOrigSize();
 						$we_doc->setElement('origwidth', $arr[0], 'attrib');
 						$we_doc->setElement('origheight', $arr[1], 'attrib');

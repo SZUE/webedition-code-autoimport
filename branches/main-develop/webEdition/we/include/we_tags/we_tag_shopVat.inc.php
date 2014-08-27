@@ -59,13 +59,11 @@ function we_tag_shopVat($attribs){
 	// use a defined name for this
 	if($GLOBALS['we_editmode']){
 
-		switch($type){
-			default:
-				$fieldname = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
-				return $GLOBALS['we_doc']->htmlSelect($fieldname, $values, 1, $val);
-				break;
-		}
-	} else {
-		return ( isset($allVats[$val]) ? $allVats[$val]->vat : $standardVal );
+		/* 		switch($type){
+		  default: */
+		$fieldname = 'we_' . $GLOBALS['we_doc']->Name . '_attrib[' . $name . ']';
+		return $GLOBALS['we_doc']->htmlSelect($fieldname, $values, 1, $val);
+		//}
 	}
+	return ( isset($allVats[$val]) ? $allVats[$val]->vat : $standardVal );
 }

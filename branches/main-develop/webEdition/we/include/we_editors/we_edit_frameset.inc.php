@@ -238,11 +238,11 @@ if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 }
 
 // get default code
-if(!isset($we_doc->elements['data']['dat'])){
-	$we_doc->elements['data']['dat'] = ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && ($cmd10 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 10))
-				?
+if(!$we_doc->getElement('data')){
+	$we_doc->setElement('data', ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && ($cmd10 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 10)) ?
 			base64_decode($cmd10) :
-			we_base_ContentTypes::inst()->getDefaultCode($we_doc->ContentType));
+			we_base_ContentTypes::inst()->getDefaultCode($we_doc->ContentType))
+	);
 }
 
 //WEEXT

@@ -31,7 +31,7 @@ class we_textDocument extends we_document{
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_VALIDATION, we_base_constants::WE_EDITPAGE_VERSIONS);
 		}
-		$this->elements['Charset']['dat'] = DEFAULT_CHARSET;
+		$this->setElement('Charset', DEFAULT_CHARSET,'attrib');
 		$this->Icon = we_base_ContentTypes::FILE_ICON;
 	}
 

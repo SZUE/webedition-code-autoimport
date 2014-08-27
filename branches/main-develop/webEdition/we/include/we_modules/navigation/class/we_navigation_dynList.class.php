@@ -118,9 +118,14 @@ abstract class we_navigation_dynList{
 
 		$dirpath = we_base_file::clearPath($dirpath . '/');
 
-		$_db->query('SELECT ' . implode(',', $select) . ' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID WHERE (' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0) ' . ($doctype ? ' AND ' . FILE_TABLE . '.DocType=' . $_db->escape($doctype) : '') . (count(
-				$_cats) ? (' AND (' . implode(" $catlogic ", $_cats) . ')') : '') . ($dirpath != '/' ? (' AND Path LIKE "' . $_db->escape($dirpath) . '%"') : '') . ' ' . ($condition ? (' AND ' . implode(
-					' AND ', $condition)) : '') . ' ' . ($order ? (' ORDER BY ' . $order) : '') . '  LIMIT ' . $offset . ',' . $count);
+		$_db->query('SELECT ' . implode(',', $select) . ' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID WHERE (' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0) ' .
+			'AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" ' .
+			($doctype ? ' AND ' . FILE_TABLE . '.DocType=' . $_db->escape($doctype) : '') .
+			($_cats ? (' AND (' . implode(" $catlogic ", $_cats) . ')') : '') .
+			($dirpath != '/' ? (' AND Path LIKE "' . $_db->escape($dirpath) . '%"') : '') . ' ' .
+			($condition ? (' AND ' . implode(' AND ', $condition)) : '') . ' ' .
+			($order ? (' ORDER BY ' . $order) : '') .
+			'  LIMIT ' . $offset . ',' . $count);
 
 
 		return $_db;

@@ -41,7 +41,7 @@ class we_template extends we_document{
 		$this->Table = TEMPLATES_TABLE;
 
 		array_push($this->persistent_slots, 'MasterTemplateID', 'IncludedTemplates', 'TagWizardCode', 'TagWizardSelection');
-		$this->elements['Charset']['dat'] = DEFAULT_CHARSET;
+		$this->setElement('Charset', DEFAULT_CHARSET,'attrib');
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE, we_base_constants::WE_EDITPAGE_VARIANTS, we_base_constants::WE_EDITPAGE_VERSIONS);
 		}
@@ -303,7 +303,15 @@ we_templateInit();?>';
 ### NEU###
 
 	protected function i_isElement($Name){
-		return (substr($Name, 0, 8) == "variant_" || $Name == "data" || $Name == "Charset" || $Name == "completeData" || $Name == "allVariants");
+		switch($Name){
+			case "data":
+			case "Charset":
+			case "completeData":
+			case "allVariants":
+				return true;
+			default:
+				return (substr($Name, 0, 8) == "variant_");
+		}
 	}
 
 	protected function i_setElementsFromHTTP(){
@@ -313,8 +321,8 @@ we_templateInit();?>';
 		foreach($_REQUEST as $n => $v){
 			if(is_array($v) && preg_match('|^we_' . $this->Name . '_variant|', $n, $regs)){
 				foreach($v as $n2 => $v2){
-					if(isset($this->elements[$n2]) && $this->elements[$n2]['type'] == 'variant' && $v2 == 0){
-						unset($this->elements[$n2]);
+					if($this->getElement($n2, 'type') == 'variant' && $v2 == 0){
+						$this->delElement($n2);
 					}
 				}
 			}
@@ -324,7 +332,7 @@ we_templateInit();?>';
 	function i_getDocument(){
 		$this->_updateCompleteCode();
 		/* remove unwanted/-needed start/stop parser tags (?><php) */
-		return preg_replace(array("/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?= ?/si","/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?php ?/si"),array( "\\1\n\\2 echo ","\\1\n\\2"), $this->parseTemplate());
+		return preg_replace(array("/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?= ?/si", "/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?php ?/si"), array("\\1\n\\2 echo ", "\\1\n\\2"), $this->parseTemplate());
 	}
 
 	protected function i_writeSiteDir(){
@@ -399,7 +407,7 @@ we_templateInit();?>';
 	 * @param	none
 	 */
 	function getAllVariantFields(){
-		return (isset($this->elements['allVariants']) ? $this->elements['allVariants']['dat'] : array());
+		return (($val = $this->getElement('allVariants')) ? $val : array());
 	}
 
 	/**
@@ -730,10 +738,7 @@ we_templateInit();?>';
 		if($updateCode){
 			$this->_updateCompleteCode(true);
 			if(defined('SHOP_TABLE')){
-				$this->elements['allVariants'] = array(
-					'type' => 'variants',
-					'dat' => serialize($this->readAllVariantFields($this->elements['completeData']['dat']))
-				);
+				$this->setElement('allVariants', serialize($this->readAllVariantFields($this->getElement('completeData'))), 'variants');
 			}
 		} else {
 			$this->doUpdateCode = false;
@@ -748,7 +753,7 @@ we_templateInit();?>';
 			t_e('save template failed', $this->Path);
 		}
 		if(defined('SHOP_TABLE')){
-			$this->elements['allVariants']['dat'] = unserialize($this->elements['allVariants']['dat']);
+			$this->setElement('allVariants', unserialize($this->getElement('allVariants')), 'variants');
 		}
 		return $_ret;
 	}
@@ -765,11 +770,12 @@ we_templateInit();?>';
 		parent::we_load($from);
 		$this->Extension = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::TEMPLATE);
 		$this->_updateCompleteCode();
-		if(defined('SHOP_TABLE') && isset($this->elements['allVariants'])){
-			$this->elements['allVariants']['dat'] = @unserialize($this->elements['allVariants']['dat']);
-			if(!is_array($this->elements['allVariants']['dat'])){
-				$this->elements['allVariants']['dat'] = $this->readAllVariantFields($this->elements['completeData']['dat']);
-			}
+		if(defined('SHOP_TABLE') && ($tmp = $this->getElement('allVariants'))){
+			$tmp = @unserialize($tmp);
+			$this->setElement('allVariants', (is_array($tmp) ?
+					$tmp :
+					$this->readAllVariantFields($this->getElement('completeData'))
+				), 'variants');
 		}
 	}
 

@@ -196,7 +196,7 @@ class we_exim_XMLExIm{
 		}
 	}
 
-	function resetContenID(&$object){
+	function resetContenID(&$object){//FIXME unused?
 		if(isset($object->elements) && is_array($object->elements)){
 			foreach($object->elements as $ek => $ev){
 				$object->elements[$ek]["id"] = 0;

@@ -217,8 +217,8 @@ function we_saveCustomerImages(){
 
 						$imgDocument->setElement('width', $_imgwidth, 'attrib');
 						$imgDocument->setElement('height', $_imgheight, 'attrib');
-						$imgDocument->setElement('origwidth', $_imgwidth);
-						$imgDocument->setElement('origheight', $_imgheight);
+						$imgDocument->setElement('origwidth', $_imgwidth,'attrib');
+						$imgDocument->setElement('origheight', $_imgheight,'attrib');
 						$imgDocument->setElement('type', we_base_ContentTypes::IMAGE, 'attrib');
 
 						$imgDocument->setElement('data', $_serverPath, 'image');

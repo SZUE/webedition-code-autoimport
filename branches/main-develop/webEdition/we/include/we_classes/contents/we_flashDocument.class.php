@@ -26,7 +26,6 @@
 
 class we_flashDocument extends we_binaryDocument{
 	/* Parameternames which are placed within the object-Tag */
-
 	var $ObjectParamNames = array('align', 'border', 'id', 'height', 'hspace', 'name', 'width', 'vspace', 'only', 'style');
 
 	function __construct(){
@@ -52,8 +51,8 @@ class we_flashDocument extends we_binaryDocument{
 	function initByAttribs($attribs){
 		$sizingrel = weTag_getAttribute('sizingrel', $attribs, 0);
 		if(!empty($sizingrel)){
-			$orig_w = weTag_getAttribute('width', $attribs, $this->elements['width']['dat']);
-			$orig_h = weTag_getAttribute('height', $attribs, $this->elements['height']['dat']);
+			$orig_w = weTag_getAttribute('width', $attribs, $this->getElement('width'));
+			$orig_h = weTag_getAttribute('height', $attribs, $this->getElement('height'));
 			$attribs['width'] = round($orig_w * $sizingrel);
 			$attribs['height'] = round($orig_h * $sizingrel);
 		}
@@ -91,7 +90,7 @@ class we_flashDocument extends we_binaryDocument{
 			$codebase = $this->getElement('Codebase') ? $this->getElement('Codebase') : 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0';
 
 			// fix. older versions of webEdition bgcolor was type txt and not attrib
-			if(isset($this->elements['bgcolor'])){
+			if($this->issetElement('bgcolor')){
 				$this->elements['bgcolor']['type'] = 'attrib';
 			}
 
@@ -100,8 +99,7 @@ class we_flashDocument extends we_binaryDocument{
 			$src = $dyn ?
 				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . $randval :
 				$this->Path;
-			$attribs = array();
-			$params = array();
+			$attribs = $params = array();
 			$this->html = '';
 
 			/*			 * ****************************************************************************
@@ -114,8 +112,8 @@ class we_flashDocument extends we_binaryDocument{
 			$alt = $this->getElement('alt');
 			$altContent = '';
 			if($alt){
-				if(isset($GLOBALS['we_doc']->elements[$alt]) && isset($GLOBALS['we_doc']->elements[$alt]['type'])){
-					$altContent = $GLOBALS['we_doc']->getField(array('name' => $alt, 'xml' => $xml), $GLOBALS['we_doc']->elements[$alt]['type']);
+				if(($type = $GLOBALS['we_doc']->elements[$alt]['type'])){
+					$altContent = $GLOBALS['we_doc']->getField(array('name' => $alt, 'xml' => $xml), $type);
 				}
 			}
 
@@ -339,14 +337,14 @@ class we_flashDocument extends we_binaryDocument{
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
 		$origw = $this->getElement('origwidth');
-		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0);
-		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0);
+		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0, 'attrib');
+		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0, 'attrib');
 		//if ($origw != $this->getElement('origwidth')){$this->DocChanged = true;}
 		if($this->getElement('width') == ''){
-			$this->setElement('width', $this->getElement('origwidth'));
+			$this->setElement('width', $this->getElement('origwidth'), 'attrib');
 		}
 		if($this->getElement('height') == ''){
-			$this->setElement('height', $this->getElement('origheight'));
+			$this->setElement('height', $this->getElement('origheight'), 'attrib');
 		}
 		if($this->Icon == ''){
 			$this->Icon = we_base_ContentTypes::inst()->getIcon($this->ContentType);
@@ -387,8 +385,8 @@ class we_flashDocument extends we_binaryDocument{
 				$path = $this->getParentPath() . '/' . $this->Filename . $this->Extension;
 				return $this->getimagesize($_SERVER['DOCUMENT_ROOT'] . (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
 			}
-		} else if(isset($this->elements['data']['dat']) && $this->elements['data']['dat']){
-			$arr = $this->getimagesize($this->elements['data']['dat']);
+		} else if(($tmp = $this->getElement('data'))){
+			$arr = $this->getimagesize($tmp);
 		}
 		return $arr;
 	}

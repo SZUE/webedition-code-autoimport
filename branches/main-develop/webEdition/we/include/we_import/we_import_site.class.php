@@ -1712,8 +1712,8 @@ class we_import_site{
 				$foo = $GLOBALS["we_doc"]->getimagesize($path);
 				$GLOBALS["we_doc"]->setElement("width", $foo[0], "attrib");
 				$GLOBALS["we_doc"]->setElement("height", $foo[1], "attrib");
-				$GLOBALS["we_doc"]->setElement("origwidth", $foo[0]);
-				$GLOBALS["we_doc"]->setElement("origheight", $foo[1]);
+				$GLOBALS["we_doc"]->setElement("origwidth", $foo[0], 'attrib');
+				$GLOBALS["we_doc"]->setElement("origheight", $foo[1], 'attrib');
 			// no break!! because we need to do the same after the following case
 			case we_base_ContentTypes::APPLICATION:
 			case we_base_ContentTypes::FLASH:

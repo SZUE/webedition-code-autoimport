@@ -36,8 +36,8 @@ switch($we_ContentType){
 		$allowedContentTypes = $we_ContentType;
 }
 
-$inputTypeFile = new we_fileupload_include('we_uploadedFile', 'top', '', 330, true, false, $allowedContentTypes, '', '', 'php, php4, php5, htaccess', array(), -1);
-$inputTypeFile->setExternalProgressbar(true, 'progressbar', true, 'top.', 120, '');
+$inputTypeFile = new we_fileupload_include('we_uploadedFile', '', '', '', '', 'document.forms[0].submit()', '', 330, true, false, 0, $allowedContentTypes, '', '', 'php, php4, php5, htaccess', array(), -1);
+$inputTypeFile->setExternalProgress(true, 'progressbar', true, 'top.', 120, '');
 
 if($inputTypeFile->processFileRequest()){
 	$tempName = $inputTypeFile->getFileNameTemp();
@@ -104,8 +104,8 @@ if($inputTypeFile->processFileRequest()){
 				$we_size = $we_doc->getimagesize($tempName);
 				$we_doc->setElement('width', $we_size[0], 'attrib');
 				$we_doc->setElement('height', $we_size[1], 'attrib');
-				$we_doc->setElement('origwidth', $we_size[0]);
-				$we_doc->setElement('origheight', $we_size[1]);
+				$we_doc->setElement('origwidth', $we_size[0], 'attrib');
+				$we_doc->setElement('origheight', $we_size[1], 'attrib');
 				if(we_base_request::_(we_base_request::BOOL, 'import_metadata')){
 					$we_doc->importMetaData();
 				}
@@ -140,8 +140,8 @@ if($inputTypeFile->processFileRequest()){
 	// find out the smallest possible upload size
 	$maxsize = getUploadMaxFilesize(false);
 
-	$yes_button = we_html_button::create_button('upload', 'javascript:' . we_fileupload_include::getJsSubmitCallStatic("top", 0, "document.forms[0].submit()"));
-	$cancel_button = we_html_button::create_button('cancel', 'javascript:self.close();');
+	$yes_button = we_html_button::create_button('upload', 'javascript:' . $inputTypeFile->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_btn');
+	$cancel_button = we_html_button::create_button('cancel', 'javascript:' . $inputTypeFile->getJsBtnCmd('cancel'));
 	$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 	$buttonsTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);
 	$buttonsTable->setCol(0, 0, $attribs = array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
@@ -188,14 +188,14 @@ if($inputTypeFile->processFileRequest()){
 				?>
 				var ref;
 				if (opener.top.opener && opener.top.opener.top.makeNewEntry) {
-				ref = opener.top.opener.top;
+					ref = opener.top.opener.top;
 				} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.makeNewEntry) {
-				ref = opener.top.opener.top.opener.top;
+					ref = opener.top.opener.top.opener.top;
 				} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener.top.makeNewEntry) {
-				ref = opener.top.opener.top.opener.top.opener.top;
+					ref = opener.top.opener.top.opener.top.opener.top;
 				}
 				if (ref.makeNewEntry) {
-				ref.makeNewEntry(<?php echo '"' . $we_doc->Icon . '", "' . $we_doc->ID . '", "' . $we_doc->ParentID . '", "' . $we_doc->Text . '", 1, "' . $we_doc->ContentType . '", "' . $we_doc->Table . '"'; ?>);
+					ref.makeNewEntry(<?php echo '"' . $we_doc->Icon . '", "' . $we_doc->ID . '", "' . $we_doc->ParentID . '", "' . $we_doc->Text . '", 1, "' . $we_doc->ContentType . '", "' . $we_doc->Table . '"'; ?>);
 				}
 				<?php
 			}

@@ -569,7 +569,7 @@ class we_thumbnail{
 	 * @private
 	 */
 	private function getImageData($getBinary = false){
-		$this->db->query('SELECT l.Name,c.Dat FROM ' . CONTENT_TABLE . ' c  JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->imageID) .
+		$this->db->query('SELECT l.Name,c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->imageID) .
 			' AND l.DocumentTable="tblFile"');
 
 		while($this->db->next_record()){

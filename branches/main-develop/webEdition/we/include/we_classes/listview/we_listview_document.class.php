@@ -160,8 +160,7 @@ class we_listview_document extends we_listview_base{
 		$joinstring = implode('', $joins);
 		$orderwhereString = implode(' AND ', $orderWhere) . (empty($orderWhere) ? '' : ' AND ');
 
-		$sql_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, FILE_TABLE, $this->catOr, $this->DB_WE, 'Category', true, $this->categoryids)
-					: '');
+		$sql_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, FILE_TABLE, $this->catOr, $this->DB_WE, 'Category', true, $this->categoryids) : '');
 
 		$dt = ($this->docType) ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $this->DB_WE->escape($this->docType) . '"', 'ID', $this->DB_WE) : '#NODOCTYPE#';
 
@@ -179,7 +178,7 @@ class we_listview_document extends we_listview_base{
 		}
 
 		if($this->customers && $this->customers !== '*'){
-			foreach(explode(',',$this->customers) as $cid){
+			foreach(explode(',', $this->customers) as $cid){
 				$customerData = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($cid), $this->DB_WE);
 				$this->customerArray['cid_' . $customerData['ID']] = $customerData;
 			}
@@ -231,11 +230,9 @@ class we_listview_document extends we_listview_base{
 			}
 
 			if(isset($bedingungen_sql) && count($bedingungen_sql) > 0){
-				$bedingung_sql1 = ' ( ' . implode(' AND ', $bedingungen_sql) . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (' AND ' . implode(' AND ', $bedingungen3_sql))
-							: '') . ' ) ';
+				$bedingung_sql1 = ' ( ' . implode(' AND ', $bedingungen_sql) . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (' AND ' . implode(' AND ', $bedingungen3_sql)) : '') . ' ) ';
 			} else if(isset($bedingungen2_sql) && count($bedingungen2_sql) > 0){
-				$bedingung_sql2 = ' ( ( ' . implode(' OR ', $bedingungen2_sql) . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (' ) AND ' . implode(' AND ', $bedingungen3_sql))
-							: ' ) ') . ' ) ';
+				$bedingung_sql2 = ' ( ( ' . implode(' OR ', $bedingungen2_sql) . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (' ) AND ' . implode(' AND ', $bedingungen3_sql)) : ' ) ') . ' ) ';
 			} else if(isset($bedingungen3_sql) && count($bedingungen3_sql) > 0){
 				$bedingung_sql2 = implode(' AND ', $bedingungen3_sql);
 			}
@@ -350,8 +347,8 @@ class we_listview_document extends we_listview_base{
 				}
 
 				$this->Record['WE_SHOPVARIANTS'] = 0;
-				if(isset($this->Record['weInternVariantElement'])){
-					$ShopVariants = @unserialize($this->Record['weInternVariantElement']);
+				if(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && isset($this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME])){
+					$ShopVariants = @unserialize($this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME]);
 					if(is_array($ShopVariants) && count($ShopVariants) > 0){
 						$this->Record['WE_SHOPVARIANTS'] = count($ShopVariants);
 					}

@@ -35,9 +35,7 @@ $mode = we_base_request::_(we_base_request::INT,"mode",0);
 
 //FIXME: delete condition and else branch when new uploader is stable
 if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
-	if($type && (!defined('FILE_UPLOAD_USE_LEGACY') || FILE_UPLOAD_USE_LEGACY == false) &&
-			((($step == 1 || $step == 2) && $what == 'wizbody') || ($what == 'wizbusy'))){
-
+	if($type && (!defined('FILE_UPLOAD_USE_LEGACY') || FILE_UPLOAD_USE_LEGACY == false) && ($step == 1 || $step == 2) && $what == 'wizbody'){
 		switch($type){
 			case we_import_functions::TYPE_GENERIC_XML:
 				$fileNameTempGxml = array('prefix' => 'we_xml_', 'postfix' => '.xml', 'path' => TEMP_DIR, 'missingDocRoot' => we_fileupload_include::MISSING_DOC_ROOT);
@@ -57,7 +55,7 @@ if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
 				break;
 		}
 
-		$wizard->fileUploader = new we_fileupload_include($name, 'top.wizbody', "self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;", 330, true, true, $acceptedMime, $acceptedExt, '', '', array(), -1);
+		$wizard->fileUploader = new we_fileupload_include($name, 'wizbody', '', 'we_form', 'next_btn', 'top.wizbody.handle_eventNext()', "self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;", 330, true, true, 200, $acceptedMime, $acceptedExt, '', '', array(), -1);
 		$wizard->fileUploader->setAction($wizard->path . '?pnt=wizbody&step=1&type=' . $type);
 		$wizard->fileUploader->setFileNameTemp($type == we_import_functions::TYPE_GENERIC_XML ? $fileNameTempGxml : $fileNameTemp);
 	}

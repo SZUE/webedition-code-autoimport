@@ -69,8 +69,8 @@ function getRevRelSelect($type, $value){
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
-if(isset($we_doc->elements['Charset']['dat'])){ //	send charset which might be determined in template
-	we_html_tools::headerCtCharset('text/html', $we_doc->elements['Charset']['dat']);
+if(($charset = $we_doc->getElement('Charset'))){ //	send charset which might be determined in template
+	we_html_tools::headerCtCharset('text/html', $charset);
 }
 
 $name = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
@@ -329,7 +329,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 	}
 }
 
-echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), isset($we_doc->elements['Charset']['dat']) ? $we_doc->elements['Charset']['dat'] : '');
+echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'),  $we_doc->getElement('Charset'));
 $yuiSuggest = & weSuggest::getInstance();
 echo $yuiSuggest->getYuiCssFiles() .
  $yuiSuggest->getYuiJsFiles() .

@@ -39,7 +39,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'load_editor':
 // set default tab for creating new imageDocuments to "metadata":
 		if($we_doc->ContentType == we_base_ContentTypes::IMAGE && $we_doc->ID == 0){
-			$_SESSION['weS']['EditPageNr'] = $we_doc->EditPageNr = /*$_REQUEST['we_cmd'][1] = */we_base_constants::WE_EDITPAGE_CONTENT;
+			$_SESSION['weS']['EditPageNr'] = $we_doc->EditPageNr = /* $_REQUEST['we_cmd'][1] = */we_base_constants::WE_EDITPAGE_CONTENT;
 		}
 
 		//WEEXT
@@ -171,9 +171,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		break;
 	case 'delete_link':
 		$name = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
-		if(isset($we_doc->elements[$name])){
-			unset($we_doc->elements[$name]);
-		}
+		$we_doc->delElement($name);
 		break;
 	case 'add_cat':
 		$we_doc->addCat(we_base_request::_(we_base_request::INTLIST, 'we_cmd', 0, 1));
@@ -646,8 +644,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 						switch($_SESSION['weS']['we_mode']){
 							case we_base_constants::MODE_SEE:
 								$_showAlert = true; //	don't show confirm box in editor_save.inc
-								$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . (permissionhandler::hasPerm('CAN_SEE_PROPERTIES') ? we_base_constants::WE_EDITPAGE_PROPERTIES
-											: $we_doc->EditPageNr) . '","' . $we_transaction . '");';
+								$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . (permissionhandler::hasPerm('CAN_SEE_PROPERTIES') ? we_base_constants::WE_EDITPAGE_PROPERTIES : $we_doc->EditPageNr) . '","' . $we_transaction . '");';
 								break;
 							case we_base_constants::MODE_NORMAL:
 								$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
@@ -729,8 +726,9 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 
 				ob_start();
 				if(!defined('WE_CONTENT_TYPE_SET')){
-					$charset = (isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat']) ? //	send charset which might be determined in template
-						$we_doc->elements['Charset']['dat'] :
+					$charset = $we_doc->getElement('Charset');
+					$charset = $charset ? //	send charset which might be determined in template
+						$charset :
 						DEFAULT_CHARSET;
 					define('WE_CONTENT_TYPE_SET', 1);
 					we_html_tools::headerCtCharset('text/html', $charset);

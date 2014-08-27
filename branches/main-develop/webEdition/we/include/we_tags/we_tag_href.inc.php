@@ -121,10 +121,10 @@ function we_tag_href($attribs){
 		$rootdir = '';
 	}
 
-	$int_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $nint . ']';
-	$intPath_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $nintPath . ']';
-	$intID_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $nintID . '#bdid]';
-	$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
+	$int_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_href[' . $nint . ']';
+	$intPath_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_href[' . $nintPath . ']';
+	$intID_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_href[' . $nintID . '#bdid]';
+	$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_href[' . $name . ']';
 
 	$trashbut = we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value = ''; document.we_form.elements['" . $intPath_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);" . (($include || $reload) ? "setScrollTo(); top.we_cmd('reload_editpage');" : ''), true);
 	$span = '<span style="color: black;font-size:' . ((we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px")) . ';font-family:' . g_l('css', '[font_family]') . ';">';
