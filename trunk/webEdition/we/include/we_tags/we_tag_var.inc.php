@@ -52,7 +52,7 @@ function we_tag_var($attribs){
 			return $htmlspecialchars ? oldHtmlspecialchars($return) : ($format ? date($format, intval($return)) : $return);
 		case 'multiobject' :
 			$data = unserialize($doc->getField($attribs, $type, true));
-			return (isset($data['objects']) && !empty($data['objects']) ? implode(',', $data['objects']) : '');
+			return (isset($data['objects']) && $data['objects'] ? implode(',', $data['objects']) : '');
 
 		case 'property' :
 			$return = (isset($GLOBALS['we_obj']) ?
