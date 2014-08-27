@@ -61,7 +61,7 @@ function we_tag_setVar($attribs){
 					$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->$nameFrom) ? $GLOBALS['WE_MAIN_DOC']->$nameFrom : '';
 				} else {
 					$valueFrom = $GLOBALS['WE_MAIN_DOC']->issetElement($nameFrom . ($typeFrom == 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
-						$GLOBALS['WE_MAIN_DOC']->getField(array('name' => $nameFrom), (strpos($nameFrom, we_base_link::MAGIC_INT_LINK_ID) ? 'href' : $typeFrom), true) :
+						$GLOBALS['WE_MAIN_DOC']->getField(array('name' => $nameFrom), $typeFrom, true) :
 						'';
 				}
 				break;
@@ -70,7 +70,7 @@ function we_tag_setVar($attribs){
 					$valueFrom = isset($GLOBALS['we_doc']->$nameFrom) ? $GLOBALS['we_doc']->$nameFrom : '';
 				} else {
 					$valueFrom = $GLOBALS['we_doc']->issetElement($nameFrom . ($typeFrom == 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
-						$GLOBALS['we_doc']->getField(array('name' => $nameFrom), (strpos($nameFrom, we_base_link::MAGIC_INT_LINK_ID) ? 'href' : $typeFrom), true) :
+						$GLOBALS['we_doc']->getField(array('name' => $nameFrom), $typeFrom, true) :
 						'';
 				}
 				break;
@@ -104,7 +104,7 @@ function we_tag_setVar($attribs){
 				$valueFrom = $GLOBALS['WE_MAIN_DOC']->issetElement($nameFrom) ? $GLOBALS['WE_MAIN_DOC']->getField(
 						array(
 						'name' => $nameFrom
-						), (strpos($nameFrom, we_base_link::MAGIC_INT_LINK_ID) ? 'href' : $typeFrom), true) : '';
+						), $typeFrom, true) : '';
 				break;
 			case 'listdir' :
 				$valueFrom = isset($GLOBALS['we_position']['listdir'][$nameFrom]) ? $GLOBALS['we_position']['listdir'][$nameFrom] : '';
