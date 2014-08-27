@@ -50,7 +50,7 @@ class rpcGetRssCmd extends rpcCmd{
 				$iNumItems = 50;
 				break;
 		}
-		$sTbBinary = we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 3);//binary
+		$sTbBinary = we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 3); //binary
 		$bTbLabel = (bool) $sTbBinary{0};
 		$bTbTitel = (bool) $sTbBinary{1};
 		$bTbDesc = (bool) $sTbBinary{2};
@@ -94,18 +94,18 @@ class rpcGetRssCmd extends rpcCmd{
 
 			$sRssOut .= ($bShowTitle ?
 					($bShowLink ? we_html_element::htmlA(array("href" => $item['link'], "target" => "_blank"), we_html_element::htmlB($item['title'])) :
-						we_html_element::htmlB($item['title']) .
-						we_html_element::htmlBr() . we_html_tools::getPixel(1, 5) . (($bShowDesc || $bShowContEnc) ? we_html_element::htmlBr() : '')) :
+						we_html_element::htmlB($item['title'])) .
+					($bShowPubdate ? ' ' : we_html_element::htmlBr()) :
 					'') .
 				($bShowPubdate ?
-					($bShowTitle ? we_html_element::htmlBr() : '') . g_l('cockpit', "[published]") . ': ' . date(g_l('date', '[format][default]'), strtotime($item['pubdate'])) :
+					g_l('cockpit', "[published]") . ': ' . date(g_l('date', '[format][default]'), strtotime($item['pubdate'])) :
 					'') .
 				($bShowCategory ?
-					($bShowPubdate ? we_html_element::htmlBr() . we_html_tools::getPixel(1, 2) . we_html_element::htmlBr() : "") .
+					($bShowPubdate ? we_html_element::htmlBr() : "") .
 					g_l('cockpit', "[category]") . ": " . $item['category'] :
 					'') .
 				($bShowPubdate || $bShowCategory ?
-					we_html_element::htmlBr() . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() :
+					we_html_element::htmlBr() :
 					'') .
 				($bShowDesc ?
 					$item['description'] . $sLink . we_html_element::htmlBr() :

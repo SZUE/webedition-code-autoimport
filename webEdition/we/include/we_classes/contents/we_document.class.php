@@ -573,7 +573,7 @@ class we_document extends we_root{
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
-	function changeLink($name){
+	function changeLink($name){//FIXME: can we store info in bdid? add info on type, if it is object or file?
 		$this->setElement($name, serialize($_SESSION['weS']['WE_LINK']), 'link');
 		unset($_SESSION['weS']['WE_LINK']);
 	}
