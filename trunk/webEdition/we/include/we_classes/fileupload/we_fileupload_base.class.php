@@ -159,7 +159,7 @@ abstract class we_fileupload_base{
 			$progressbar = new we_progressBar();
 			$progressbar->setName($this->externalProgress['name']);
 			$progressbar->setStudLen($this->externalProgress['width']);
-			$this->externalProgress['html'] = str_replace(array("\r", "\n"), " ", $progressbar->getHTML());
+			$this->externalProgress['html'] = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $progressbar->getHTML());
 		}
 
 		return we_html_element::jsScript('/webEdition/js/weFileUpload.js') .
@@ -171,7 +171,7 @@ abstract class we_fileupload_base{
 				footerName : "' . $this->footerName . '",
 				uploadBtnName : "' . $this->uploadBtnName . '",
 				maxUploadSize : ' . $this->maxUploadSizeBytes . ',
-				typeCondition : ' . str_replace(array("\r", "\n"), " ", json_encode($this->typeCondition)) . ',
+				typeCondition : ' . str_replace(array("\n\r", "\r\n", "\r", "\n"), "", json_encode($this->typeCondition)) . ',
 				isDragAndDrop : ' . ($this->isDragAndDrop ? 'true' : 'false') . ',
 				isLegacyMode : ' . ($this->useLegacy ? 'true' : 'false') . ',
 				callback : function(){' . $this->callback . '},

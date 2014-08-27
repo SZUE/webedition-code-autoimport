@@ -29,7 +29,7 @@ function weFile($f){
 }
 
 $inputTypeFile = new we_fileupload_include('we_uploadFile', '', '', 'we_form', '', 'document.forms["we_form"].submit()', '', 330, true, false, 0);
-$inputTypeFile->setExternalProgress(true, 'progressbar', true, 'top.', 120, '');
+$inputTypeFile->setExternalProgress(true, 'progressbar', true, 120);
 
 if($inputTypeFile->processFileRequest()){
 	$tempName = $inputTypeFile->getFileNameTemp();
@@ -81,8 +81,7 @@ if($inputTypeFile->processFileRequest()){
 	}
 	$maxsize = getUploadMaxFilesize(false);
 
-
-	$yes_button = we_html_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "} else {" . $inputTypeFile->getJsBtnCmdStatic('upload') . "}", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_btn');
+	$yes_button = we_html_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "} else {" . $inputTypeFile->getJsBtnCmdStatic($btn = 'upload', '', "document.forms['we_form'].submit()") . "}", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_btn');
 	$cancel_button = we_html_button::create_button("cancel", "javascript:" . $inputTypeFile->getJsBtnCmdStatic('cancel'));
 	$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 	$buttonsTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);

@@ -634,7 +634,9 @@ function next() {
 		cf.document.we_startform.jsRequirementsOk.value = " . ($this->jsRequirementsOk ? 1 : 0) . ";
 		cf.document.we_startform.submit();
 	} else {
-		cf.we_FileUpload.startUpload();
+		if(cf.we_FileUpload !== 'undefined')
+			cf.we_FileUpload.startUpload();
+		}
 	}
 }";
 
