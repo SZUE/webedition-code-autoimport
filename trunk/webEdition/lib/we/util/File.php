@@ -26,7 +26,7 @@
  * @todo check if needed and if, then complete it and DON'T use old stuff like DB and other
  * */
 abstract class we_util_File extends we_base_file{
-
+const test='a';
 	public static function save($filename, $content, $flags = "wb", $create_path = false){
 		if(($create_path && !self::mkpath(dirname($filename))) || (!is_writable(dirname($filename)))){
 			return false;
