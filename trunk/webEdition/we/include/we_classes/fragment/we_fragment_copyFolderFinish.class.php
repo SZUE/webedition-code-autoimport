@@ -38,12 +38,12 @@ class we_fragment_copyFolderFinish extends we_fragment_copyFolder{
 		if($this->correctTemplate()){
 
 			$pbText = sprintf(
-					g_l('copyFolder', "[correctTemplate]"), basename(id_to_path($this->data, TEMPLATES_TABLE)));
+				g_l('copyFolder', "[correctTemplate]"), basename(id_to_path($this->data, TEMPLATES_TABLE)));
 
 			print we_html_element::jsElement(
-							'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
-									$this->alldata)) * ($this->currentTask + 1))) . ');parent.setProgressText("pbar1","' . addslashes(
-									$pbText) . '");');
+					'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
+						$this->alldata)) * ($this->currentTask + 1))) . ');parent.setProgressText("pbar1","' . addslashes(
+						$pbText) . '");');
 			flush();
 		} else {
 			exit("Error correctiing Template with id: " . $this->data);
@@ -52,9 +52,9 @@ class we_fragment_copyFolderFinish extends we_fragment_copyFolder{
 
 	function correctTemplate(){
 		$templ = new we_template();
-		;
+
 		$templ->initByID($this->data, TEMPLATES_TABLE);
-		$content = $templ->elements["data"]["dat"];
+		$content = $templ->getElement("data");
 
 		if(preg_match_all('/##WEPATH##([^ ]+) ###WEPATH###/i', $content, $regs, PREG_SET_ORDER)){
 			foreach($regs as $cur){
@@ -73,8 +73,8 @@ class we_fragment_copyFolderFinish extends we_fragment_copyFolder{
 			unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		}
 		print we_html_element::jsElement(
-						'top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
-								g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
+				'top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
+					g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
 	}
 
 	function printHeader(){

@@ -574,12 +574,12 @@ class we_document extends we_root{
 	}
 
 	function changeLink($name){
-		$this->setElement($name, serialize($_SESSION['weS']['WE_LINK']),'link');
+		$this->setElement($name, serialize($_SESSION['weS']['WE_LINK']), 'link');
 		unset($_SESSION['weS']['WE_LINK']);
 	}
 
 	function changeLinklist($name){
-		$this->setElement($name, $_SESSION['weS']['WE_LINKLIST'] ,'linklist');
+		$this->setElement($name, $_SESSION['weS']['WE_LINKLIST'], 'linklist');
 		unset($_SESSION['weS']['WE_LINKLIST']);
 	}
 
@@ -1101,6 +1101,11 @@ class we_document extends we_root{
 					$hrefArr = $val ? unserialize($val) : array();
 					return (is_array($hrefArr) ? self::getHrefByArray($hrefArr) : '');
 				}
+				break;
+			case 'object':
+			case 'customer':
+				$val = $this->getElement($attribs['name'], 'bdid');
+				$val = $val ? $val : $this->getElement($attribs['name']);
 				break;
 			default:
 				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_linklist{
-
 	private $name = "";
 	private $sString = "";
 	private $listArray;
@@ -552,7 +551,7 @@ class we_base_linklist{
 		$realNr = $this->listArray[$nr]['nr'];
 		$namesArray = $names ? explode(',', $names) : array();
 		foreach($namesArray as $n){
-			unset($GLOBALS['we_doc']->elements[$n . $name . '_TAGS_' . $realNr]);
+			$GLOBALS['we_doc']->delElement($n . $name . '_TAGS_' . $realNr);
 		}
 		array_splice($this->listArray, $nr, 1);
 	}

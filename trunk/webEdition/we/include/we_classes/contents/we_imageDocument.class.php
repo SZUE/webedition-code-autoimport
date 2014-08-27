@@ -426,12 +426,12 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 			if($this->issetElement('sizingrel')){
 				$this->setElement('width', round($this->getElement('width') * $this->getElement('sizingrel')), 'attrib');
 				$this->setElement('height', round($this->getElement('height') * $this->getElement('sizingrel')), 'attrib');
-				unset($this->elements['sizingrel']);
+				$this->delElement('sizingrel');
 			}
 
 			if($this->issetElement('sizingbase')){
 				$sizingbase = $this->getElement('sizingbase');
-				unset($this->elements['sizingbase']);
+				$this->delElement('sizingbase');
 			} else {
 				$sizingbase = 16;
 			}
@@ -439,7 +439,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 			if($this->issetElement('sizingstyle')){
 				$sizingstyle = $this->getElement('sizingstyle');
 				$sizingstyle = $sizingstyle == 'none' ? false : $sizingstyle;
-				unset($this->elements['sizingstyle']);
+				$this->delElement('sizingstyle');
 			} else {
 				$sizingstyle = false;
 			}
@@ -451,8 +451,8 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 
 				$newstyle.=';width:' . $style_width . $sizingstyle . ';height:' . $style_height . $sizingstyle . ';';
 				$this->setElement('style', $newstyle, 'attrib');
-				unset($this->elements['width']);
-				unset($this->elements['height']);
+				$this->delElement('width');
+				$this->delElement('height');
 			}
 
 			$this->resetElements();

@@ -147,8 +147,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 			} else {
 				if($this->copyObjects()){
 					echo we_html_element::jsElement(
-						'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(sprintf(g_l('copyFolder', $this->data['IsFolder']
-											? '[copyFolder]' : '[copyFile]'), basename($this->data["Path"]))) . '");');
+						'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(sprintf(g_l('copyFolder', $this->data['IsFolder'] ? '[copyFolder]' : '[copyFile]'), basename($this->data["Path"]))) . '");');
 					flush();
 				} else {
 					exit('Error importing Object: ' . $this->data['Path']);
@@ -400,7 +399,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 				}
 				if($CreateIncludedTemplate && !empty($templ->IncludedTemplates)){
 					$includedTemplates = explode(',', $templ->IncludedTemplates);
-					$code = $templ->elements['data']['dat'];
+					$code = $templ->getElement('data');
 					foreach($includedTemplates as $incTempl){
 						if(!empty($incTempl) && $incTempl > 0){
 							if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'][trim($incTempl)])){
@@ -446,10 +445,9 @@ class we_fragment_copyFolder extends we_fragment_base{
 		return $templVars;
 	}
 
-	private function ParseTemplate(&$we_doc){
+	private function ParseTemplate(we_template &$we_doc){
 		// parse hard  coded  links in template  :TODO: check for ="/Path ='Path and =Path
-		$we_doc->elements['data']['dat'] = str_replace(
-			$this->data['CopyFromPath'] . '/', $this->copyToPath . '/', $we_doc->elements['data']['dat']);
+		$we_doc->elements['data']['dat'] = str_replace($this->data['CopyFromPath'] . '/', $this->copyToPath . '/', $we_doc->getElement('data'));
 
 		$ChangeTags = array(
 			'a' => array('id'),
@@ -477,7 +475,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 		$changed = false;
 		$regs = array();
-		$tp = new we_tag_tagParser($we_doc->elements['data']['dat']);
+		$tp = new we_tag_tagParser($we_doc->getElement('data'));
 		$tags = $tp->getAllTags();
 		foreach($tags as $tag){
 			$destTag = $tag;
@@ -502,75 +500,78 @@ class we_fragment_copyFolder extends we_fragment_base{
 			}
 			if($changed){
 				$changed = false;
-				$we_doc->elements['data']['dat'] = str_replace($tag, $destTag, $we_doc->elements['data']['dat']);
+				$we_doc->elements['data']['dat'] = str_replace($tag, $destTag, $we_doc->getElement('data'));
 			}
 		}
 	}
 
-	private function parseWeDocument(&$we_doc){
+	private function parseWeDocument(we_document &$we_doc){
 		$DB_WE = new DB_WE();
 
 		$hrefs = array();
 		foreach($we_doc->elements as $k => $v){
+
 			if(isset($v['type'])){
 				switch($v['type']){
 					case 'txt' :
+					case 'link'://since old fields are txt we have to handle it here
 						$regs = array();
+						$elem = $we_doc->getElement($k);
 						if(preg_match('|(.+)' . we_base_link::MAGIC_INFIX . '(.+)|', $k, $regs)){ // is a we:href field
-							if(!in_array($regs[1], $hrefs)){
-								$hrefs[] = $regs[1];
-								$int = ((!isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]['dat'])) || $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]['dat'] == '')
-										? 0 : $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]['dat'];
-								if($int){
-									if(isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['bdid'])){
-										$intID = $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['bdid'];
-										$path = id_to_path($intID, FILE_TABLE, $DB_WE);
-										if($this->mustChange($path)){
-											$pathTo = $this->getNewPath($path);
-											$idTo = $this->getID($pathTo, $DB_WE);
-											$we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['bdid'] = $idTo ? $idTo : '##WEPATH##' . $pathTo . ' ###WEPATH###';
-											$we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_PATH]['bdid'] = $pathTo;
-										}
-									}
-								} else {
-									if(isset($we_doc->elements[$regs[1]]['dat'])){
-										$path = $we_doc->elements[$regs[1]]['dat'];
-										if($this->mustChange($path)){
-											$we_doc->elements[$regs[1]]['dat'] = $this->getNewPath($path);
-										}
-									}
-								}
-							}
-						} elseif(substr($we_doc->elements[$k]['dat'], 0, 2) == 'a:' && is_array(
-								unserialize($we_doc->elements[$k]['dat']))){ // is a we:link field
-							$link = unserialize($we_doc->elements[$k]['dat']);
+							$v['type'] = 'href';
+						} elseif(substr($elem, 0, 2) == 'a:' && is_array($link = unserialize($elem))){ // is a we:link field
 							if(isset($link['type']) && ($link['type'] == we_base_link::TYPE_INT)){
 								$intID = $link['id'];
 								$path = id_to_path($intID, FILE_TABLE, $DB_WE);
 								if($this->mustChange($path)){
 									$pathTo = $this->getNewPath($path);
 									$link['id'] = $this->getID($pathTo, $DB_WE);
-									$we_doc->elements[$k]['dat'] = serialize($link);
+									$we_doc->setElement($k, serialize($link), 'link');
 								}
 							}
-						} else { // iis a normal  text field
-							$this->parseInternalLinks($we_doc->elements[$k]['dat'], $DB_WE);
+						} else { // its a normal  text field
+							$this->parseInternalLinks($we_doc->getElement($k), $DB_WE);
 							// :TODO: check for ="/Path ='Path and =Path
 							$we_doc->elements[$k]['dat'] = str_replace(
-								$this->data['CopyFromPath'] . '/', $this->copyToPath . '/', $we_doc->elements[$k]['dat']);
+								$this->data['CopyFromPath'] . '/', $this->copyToPath . '/', $we_doc->getElement($k));
+						}
+						if($v['type'] != 'href'){
+							break;
+						}//fall through to correct field
+					case 'href':
+						$regs = array();
+						if(preg_match('|(.+)' . we_base_link::MAGIC_INFIX . '(.+)|', $k, $regs) && // is a we:href field
+							!in_array($regs[1], $hrefs)){//already scanned?
+							$hrefs[] = $regs[1];
+							$int = intval($we_doc->getElement($regs[1] . we_base_link::MAGIC_INT_LINK));
+							if($int){
+								if(($intID = $we_doc->getElement($regs[1] . we_base_link::MAGIC_INT_LINK_ID, 'bdid'))){
+									$path = id_to_path($intID, FILE_TABLE, $DB_WE);
+									if($this->mustChange($path)){
+										$pathTo = $this->getNewPath($path);
+										$idTo = $this->getID($pathTo, $DB_WE);
+										$we_doc->setElement($regs[1] . we_base_link::MAGIC_INT_LINK_ID, ( $idTo ? $idTo : '##WEPATH##' . $pathTo . ' ###WEPATH###'), 'href', 'bdid');
+										$we_doc->setElement($regs[1] . we_base_link::MAGIC_INT_LINK_PATH, $pathTo, 'href', 'bdid');
+									}
+								}
+							} elseif(($path = $we_doc->getElement($regs[1]))){
+								if($this->mustChange($path)){
+									$we_doc->setElement($regs[1], $this->getNewPath($path));
+								}
+							}
 						}
 						break;
+
 					case 'img' :
-						$path = id_to_path(
-							isset($we_doc->elements[$k]['bdid']) ? $we_doc->elements[$k]['bdid'] : 0, FILE_TABLE, $DB_WE);
+						$path = id_to_path($we_doc->getElement($k, 'bdid', 0), FILE_TABLE, $DB_WE);
 						if($this->mustChange($path)){
 							$pathTo = $this->getNewPath($path);
 							$idTo = $this->getID($pathTo, $DB_WE);
-							$we_doc->elements[$k]['bdid'] = $idTo ? $idTo : '##WEPATH##' . $pathTo . ' ###WEPATH###';
+							$we_doc->setElement($k, ($idTo ? $idTo : '##WEPATH##' . $pathTo . ' ###WEPATH###'), 'img', 'bdid');
 						}
 						break;
 					case 'linklist' :
-						$ll = new we_base_linklist($we_doc->elements[$k]['dat']);
+						$ll = new we_base_linklist($we_doc->getElement($k));
 						$changed = false;
 						$cnt = $ll->length();
 						for($i = 0; $i < $cnt; $i++){
@@ -585,7 +586,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 						}
 
 						if($changed){
-							$we_doc->elements[$k]['dat'] = $ll->getString();
+							$we_doc->setElement($k, $ll->getString(), 'linklist');
 						}
 
 						break;
@@ -606,7 +607,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 		return substr($path, 0, strlen($this->data['CopyFromPath'])) == $this->data['CopyFromPath'];
 	}
 
-	function parseTextDocument(&$we_doc){
+	function parseTextDocument(we_document &$we_doc){
 		//:TODO: check for ='/Path ='Path and =Path
 		$doc = str_replace($this->data['CopyFromPath'] . '/', $this->copyToPath . '/', $we_doc->i_getDocument());
 		$we_doc->i_setDocument($doc);
