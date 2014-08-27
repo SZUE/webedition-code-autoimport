@@ -37,7 +37,7 @@ switch($we_ContentType){
 }
 
 $inputTypeFile = new we_fileupload_include('we_uploadedFile', '', '', '', '', 'document.forms[0].submit()', '', 330, true, false, 0, $allowedContentTypes, '', '', 'php, php4, php5, htaccess', array(), -1);
-$inputTypeFile->setExternalProgress(true, 'progressbar', true, 'top.', 120, '');
+$inputTypeFile->setExternalProgress(true, 'progressbar', true, 120);
 
 if($inputTypeFile->processFileRequest()){
 	$tempName = $inputTypeFile->getFileNameTemp();
