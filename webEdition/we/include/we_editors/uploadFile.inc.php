@@ -61,7 +61,7 @@ if($inputTypeFile->processFileRequest()){
 	$we_maxfilesize_text = sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB));
 
 	echo we_html_tools::getHtmlTop(g_l('newFile', "[import_File_from_hd_title]")) .
-	 STYLESHEET . we_html_element::jsElement('parent.openedWithWE = 1;') . $inputTypeFile->getJS() . $inputTypeFile->getCss();
+	STYLESHEET . we_html_element::jsElement('parent.openedWithWE = 1;') . $inputTypeFile->getJS() . $inputTypeFile->getCss();
 
 	if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 		$we_alerttext = $we_maxfilesize_text;
@@ -93,8 +93,8 @@ if($inputTypeFile->processFileRequest()){
 					$we_size = $we_doc->getimagesize($we_File);
 					$we_doc->setElement('width', $we_size[0], 'attrib');
 					$we_doc->setElement('height', $we_size[1], 'attrib');
-					$we_doc->setElement('origwidth', $we_size[0]);
-					$we_doc->setElement('origheight', $we_size[1]);
+					$we_doc->setElement('origwidth', $we_size[0], 'attrib');
+					$we_doc->setElement('origheight', $we_size[1], 'attrib');
 				}
 				$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
 				$we_doc->Path = $we_doc->getPath();
@@ -127,9 +127,8 @@ if($inputTypeFile->processFileRequest()){
 	$content .= '</table>';
 
 	$_buttons = we_html_button::position_yes_no_cancel(
-			we_html_button::create_button("upload", "javascript:" . $inputTypeFile->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_btn'), "", 
-			we_html_button::create_button("cancel", "javascript:" . $inputTypeFile->getJsBtnCmd('cancel'))
-		);
+			we_html_button::create_button("upload", "javascript:" . $inputTypeFile->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_btn'), "", we_html_button::create_button("cancel", "javascript:" . $inputTypeFile->getJsBtnCmd('cancel'))
+	);
 	$buttonsTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);
 	$buttonsTable->setCol(0, 0, $attribs = array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
 	$buttonsTable->setCol(0, 1, $attribs = array('align' => 'right'), $_buttons);
@@ -168,4 +167,5 @@ if($inputTypeFile->processFileRequest()){
 	</body>
 
 	</html>
-<?php }
+<?php
+}

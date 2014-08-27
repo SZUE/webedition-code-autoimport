@@ -337,14 +337,14 @@ class we_flashDocument extends we_binaryDocument{
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
 		$origw = $this->getElement('origwidth');
-		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0);
-		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0);
+		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0, 'attrib');
+		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0, 'attrib');
 		//if ($origw != $this->getElement('origwidth')){$this->DocChanged = true;}
 		if($this->getElement('width') == ''){
-			$this->setElement('width', $this->getElement('origwidth'));
+			$this->setElement('width', $this->getElement('origwidth'), 'attrib');
 		}
 		if($this->getElement('height') == ''){
-			$this->setElement('height', $this->getElement('origheight'));
+			$this->setElement('height', $this->getElement('origheight'), 'attrib');
 		}
 		if($this->Icon == ''){
 			$this->Icon = we_base_ContentTypes::inst()->getIcon($this->ContentType);

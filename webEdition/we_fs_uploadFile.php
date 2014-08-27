@@ -104,8 +104,8 @@ if($inputTypeFile->processFileRequest()){
 				$we_size = $we_doc->getimagesize($tempName);
 				$we_doc->setElement('width', $we_size[0], 'attrib');
 				$we_doc->setElement('height', $we_size[1], 'attrib');
-				$we_doc->setElement('origwidth', $we_size[0]);
-				$we_doc->setElement('origheight', $we_size[1]);
+				$we_doc->setElement('origwidth', $we_size[0], 'attrib');
+				$we_doc->setElement('origheight', $we_size[1], 'attrib');
 				if(we_base_request::_(we_base_request::BOOL, 'import_metadata')){
 					$we_doc->importMetaData();
 				}
@@ -188,14 +188,14 @@ if($inputTypeFile->processFileRequest()){
 				?>
 				var ref;
 				if (opener.top.opener && opener.top.opener.top.makeNewEntry) {
-				ref = opener.top.opener.top;
+					ref = opener.top.opener.top;
 				} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.makeNewEntry) {
-				ref = opener.top.opener.top.opener.top;
+					ref = opener.top.opener.top.opener.top;
 				} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener.top.makeNewEntry) {
-				ref = opener.top.opener.top.opener.top.opener.top;
+					ref = opener.top.opener.top.opener.top.opener.top;
 				}
 				if (ref.makeNewEntry) {
-				ref.makeNewEntry(<?php echo '"' . $we_doc->Icon . '", "' . $we_doc->ID . '", "' . $we_doc->ParentID . '", "' . $we_doc->Text . '", 1, "' . $we_doc->ContentType . '", "' . $we_doc->Table . '"'; ?>);
+					ref.makeNewEntry(<?php echo '"' . $we_doc->Icon . '", "' . $we_doc->ID . '", "' . $we_doc->ParentID . '", "' . $we_doc->Text . '", 1, "' . $we_doc->ContentType . '", "' . $we_doc->Table . '"'; ?>);
 				}
 				<?php
 			}

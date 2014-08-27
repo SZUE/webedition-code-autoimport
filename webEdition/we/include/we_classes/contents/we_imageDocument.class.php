@@ -66,8 +66,8 @@ class we_imageDocument extends we_binaryDocument{
 	public function we_save($resave = 0){
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
-		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0);
-		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0);
+		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0, 'attrib');
+		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0, 'attrib');
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
 		if(parent::we_save($resave)){
 			$thumbs = $this->getThumbs();
@@ -330,10 +330,10 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		}
 		$this->setElement('data', $dataPath);
 
-		$this->setElement('width', $_resized_image[1]);
+		$this->setElement('width', $_resized_image[1], 'attrib');
 		$this->setElement('origwidth', $_resized_image[1], 'attrib');
 
-		$this->setElement('height', $_resized_image[2]);
+		$this->setElement('height', $_resized_image[2], 'attrib');
 		$this->setElement('origheight', $_resized_image[2], 'attrib');
 
 		$this->DocChanged = true;
@@ -622,7 +622,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$_content->setCol(6, 3, null, we_html_tools::getPixel(18, 1));
 		$_titleField = 'we_' . $this->Name . '_attrib[title]';
 		$_metaTitleField = 'we_' . $this->Name . '_txt[Title]';
-		$useMetaTitle = 'we_' . $this->Name . '_txt[useMetaTitle]';
+		$useMetaTitle = 'we_' . $this->Name . '_attrib[useMetaTitle]';
 		//	disable field 'title' when checked or not.   on checked true: document.forms[0]['$_titleField'].value='$this->getElement('Title')' and  onchecked false: document.forms[0]['$_titleField'].value='' added to fix bug #5814
 		$_content->setCol(6, 4, array('valign' => 'bottom'), we_html_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['" . $_titleField . "'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['" . $_titleField . "'].value = '" . $this->getElement('Title') . "'; }else{ document.forms[0]['" . $_titleField . "'].removeAttribute('readonly', 'false'); document.forms[0]['" . $_titleField . "'].value='';}_EditorFrame.setEditorIsHot(true);"));
 
