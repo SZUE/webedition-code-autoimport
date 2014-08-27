@@ -2633,7 +2633,7 @@ self.close();');
 
 	function saveToCache($content, $filename){
 		if(!is_dir(WE_NEWSLETTER_CACHE_DIR)){
-			we_util_File::createLocalFolder(WE_NEWSLETTER_CACHE_DIR);
+			we_base_file::createLocalFolder(WE_NEWSLETTER_CACHE_DIR);
 		}
 
 		$filename = WE_NEWSLETTER_CACHE_DIR . basename($filename);

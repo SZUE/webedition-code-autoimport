@@ -157,11 +157,11 @@ function cleanWEZendCache(){
  * CLEAN Temporary Data left over from last logout  bug #4240
  * *************************************************************************** */
 if(is_dir(WEBEDITION_PATH . 'we/cache')){
-	we_util_File::deleteLocalFolder(WEBEDITION_PATH . 'we/cache', true);
+	we_base_file::deleteLocalFolder(WEBEDITION_PATH . 'we/cache', true);
 }
 //FIXME: remove? => updater?
 if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
-	we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
+	we_base_file::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
 }
 
 we_base_file::cleanTempFiles(true);

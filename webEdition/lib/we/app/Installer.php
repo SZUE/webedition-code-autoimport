@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -28,7 +27,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_app_Installer{
-
 	/**
 	 * @var instance of the used installer class
 	 */
@@ -104,7 +102,7 @@ class we_app_Installer{
 
 		// check $source for identifying installer class:
 		if(is_dir($source) && is_readable($source)){
-			$source = we_util_File::addTrailingSlash(realpath($source));
+			$source = rtrim(realpath($source), '/') . '/';
 			$appname = @we_app_Common::getManifestElement($source . "conf/manifest.xml", "/info/name");
 			if(!is_readable($source . 'conf/manifest.xml') || !$appname){
 				$this->_instance = null;
@@ -166,7 +164,7 @@ class we_app_Installer{
 			$this->_instance->_source = $source;
 			$this->_instance->_config = &we_app_Common::readConfig();
 			$this->_instance->_toc = &we_app_Common::readAppTOCsxmle();
-			$this->_instance->_tmpDir = we_util_File::addTrailingSlash($_SERVER['DOCUMENT_ROOT'] . $this->_instance->_config->tmp_installer);
+			$this->_instance->_tmpDir = rtrim($_SERVER['DOCUMENT_ROOT'] . $this->_instance->_config->tmp_installer, '/') . '/';
 			$applicationPath = we_app_Common::getConfigElement("applicationpath") . $this->_instance->_appname . "/";
 			$this->_instance->_configFiles = array(
 				$applicationPath . "conf/toc.xml",
@@ -220,13 +218,13 @@ class we_app_Installer{
 		 * - inserts application entry into application toc
 		 */
 		if(
-				!$this->_preInstall() ||
-				!$this->_executeHook("preInstall") ||
-				!$this->_installFiles() ||
-				!$this->_executeQueries("install") ||
-				!we_app_Common::rebuildAppTOC($this->_appname) ||
-				!$this->_removeInstallationFiles() ||
-				!$this->_postInstall() || !$this->_executeHook("postInstall")){
+			!$this->_preInstall() ||
+			!$this->_executeHook("preInstall") ||
+			!$this->_installFiles() ||
+			!$this->_executeQueries("install") ||
+			!we_app_Common::rebuildAppTOC($this->_appname) ||
+			!$this->_removeInstallationFiles() ||
+			!$this->_postInstall() || !$this->_executeHook("postInstall")){
 			return false;
 		}
 		return true;
@@ -299,13 +297,13 @@ class we_app_Installer{
 		 */
 		//if(!$this->_executeQueries("uninstall")) return false;
 		if(
-				!$this->_preUninstall() ||
-				!$this->_executeHook("preUninstall") ||
-				!$this->_uninstallFiles() ||
-				!$this->_postUninstall() ||
-				!$this->_executeHook("postUninstall") ||
-				!$this->_removeAppConfig() ||
-				!we_app_Common::rebuildAppTOC($this->_appname)){
+			!$this->_preUninstall() ||
+			!$this->_executeHook("preUninstall") ||
+			!$this->_uninstallFiles() ||
+			!$this->_postUninstall() ||
+			!$this->_executeHook("postUninstall") ||
+			!$this->_removeAppConfig() ||
+			!we_app_Common::rebuildAppTOC($this->_appname)){
 			return false;
 		}
 	}
@@ -343,41 +341,41 @@ class we_app_Installer{
 		}
 		error_log("preparing installation files.");
 		// checking readability of installation archive and writablility of the temp directory
-		we_util_File::createLocalFolderByPath($_SERVER['DOCUMENT_ROOT'] . $this->_config->tmp_installer);
-		//$this->_tmpDir = we_util_File::addTrailingSlash($_SERVER['DOCUMENT_ROOT'].$this->_config->tmp_installer);
+		we_base_file::createLocalFolderByPath($_SERVER['DOCUMENT_ROOT'] . $this->_config->tmp_installer);
 		// check if there is already a directory with the same name:
 		if(is_dir($this->_tmpDir)){
 			error_log("removing existing directory.");
 			//$this->_removeInstallationFiles();
 		}
 		if(is_writable($this->_tmpDir) && is_writable($source)){
-			error_log("ready to move the installation files to tmp");
+			t_e("ready to move the installation files to tmp");
 			$fileinfo = pathinfo($source);
 			//echo $tmpDir.$fileinfo["basename"];
 			if(is_dir($source)){
 				//return we_util_File::moveDir($source,$this->_tmpDir);
-				error_log($this->_tmpDir);
-				//$this->_tmpDir = we_util_File::addTrailingSlash($this->_tmpDir);
-				$this->_tmpDir .= we_util_File::addTrailingSlash(substr(strrchr(we_util_File::removeTrailingSlash($source), "/"), 1));
+				t_e($this->_tmpDir);
+				$this->_tmpDir .= substr(strrchr(rtrim($source, '/'), "/"), 1) . '/';
 				//error_log("temporary installation directory: ".$this->_tmpDir);
 				if(!we_util_File::moveDir($source, $this->_tmpDir)){
-					error_log("ERROR moving installation files to temporary directory.");
+					t_e("ERROR moving installation files to temporary directory.");
 					return false;
 				}
 				return true;
-			} else if(is_file($source)){
-				return we_util_File::moveFile($source, $this->_tmpDir . $fileinfo["basename"]);
-			} else if($fileinfo["extension"] == "zip"){
-				if(!we_util_File::hasZip()){
+			}
+			if(is_file($source)){
+				return we_base_file::moveFile($source, $this->_tmpDir . $fileinfo["basename"]);
+			}
+			if($fileinfo["extension"] == "zip"){
+				if(!we_base_file::hasZip()){
 					error_log("zip support for local installation needed.");
 					return false;
 				}
-				return we_util_File::extract($this->_tmpDir . $fileinfo["basename"]);
+				return we_util_File::decompressDirectory($this->_tmpDir . $fileinfo["basename"], $this->_tmpDir);
 			}
-			error_log("unsupported installation medium.");
+			t_e("unsupported installation medium.");
 			return false;
 		}
-		error_log("could not find installation archive " . $source);
+		t_e("could not find installation archive " . $source);
 		return false;
 	}
 
@@ -456,12 +454,12 @@ class we_app_Installer{
 				error_log("no destination directory specified for file " . $entry->source);
 			} else {
 				$srcinfo = pathinfo($entry->source);
-				$destDir = we_util_File::addTrailingSlash($_SERVER['DOCUMENT_ROOT'] . $entry->destination . $srcinfo["dirname"]);
+				$destDir = rtrim($_SERVER['DOCUMENT_ROOT'] . $entry->destination . $srcinfo["dirname"], '/') . '/';
 				$destFile = $srcinfo["basename"];
-				we_util_File::checkAndMakeFolder($destDir, true);
+				we_base_file::checkAndMakeFolder($destDir, true);
 				if(we_util_File::checkWritePermissions($destDir)){
 					error_log("copying file " . $this->_tmpDir . $entry->source . " to " . $destDir . $destFile);
-					if(we_util_File::copyFile($this->_tmpDir . $entry->source, $destDir . $destFile)){
+					if(we_base_file::copyFile($this->_tmpDir . $entry->source, $destDir . $destFile)){
 						error_log("successfully moved file " . $destDir . $destFile . " to " . $entry->source);
 					} else {
 						error_log("FAILED moving file " . $destDir . $destFile . " to " . $entry->source);
@@ -486,12 +484,12 @@ class we_app_Installer{
 				error_log("no destination directory specified for file " . $entry->source);
 			} else {
 				$srcinfo = pathinfo($entry->source);
-				$destDir = we_util_File::addTrailingSlash($entry->destination . $srcinfo["dirname"]);
+				$destDir = rtrim($entry->destination . $srcinfo["dirname"], '/') . '/';
 				$destFile = $srcinfo["basename"];
-				we_util_File::checkAndMakeFolder($destDir, true);
+				we_base_file::checkAndMakeFolder($destDir, true);
 				if(we_util_File::checkWritePermissions($destDir)){
 					error_log("copying file " . $this->_tmpDir . $entry->source . " to " . $destDir . $destFile);
-					if(we_util_File::copyFile($this->_tmpDir . $entry->source, $destDir . $destFile)){
+					if(we_base_file::copyFile($this->_tmpDir . $entry->source, $destDir . $destFile)){
 						error_log("successfully moved file " . $destDir . $destFile . " to " . $entry->source);
 					} else {
 						error_log("FAILED moving file " . $destDir . $destFile . " to " . $entry->source);
@@ -510,9 +508,10 @@ class we_app_Installer{
 	}
 
 	protected function _removeInstallationFiles(){
-		error_log(we_util_File::removeTrailingSlash($this->_tmpDir));
-		if(!@we_util_File::rmdirr(we_util_File::addTrailingSlash($this->_tmpDir))){
-			error_log("could not remove installation files from " . we_util_File::addTrailingSlash($this->_tmpDir));
+		$dir = rtrim($this->_tmpDir, '/');
+		error_log($dir);
+		if(!@we_util_File::rmdirr($dir . '/')){
+			error_log("could not remove installation files from " . $dir);
 			return false;
 		}
 		error_log("installation files removed successfully.");
@@ -553,7 +552,7 @@ class we_app_Installer{
 				error_log("this query is for another operation, skipping.");
 			} else if(is_readable($srcdir . $entry->source)){
 				error_log($entry->source . " found.");
-				if(!$query = we_util_File::load($srcdir . $entry->source)){
+				if(!$query = we_base_file::load($srcdir . $entry->source)){
 					error_log("ERROR: failed reading file " . $entry->source . ".");
 					$failedQueries[] = (string) $entry->source;
 				} else {

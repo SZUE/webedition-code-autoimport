@@ -98,7 +98,7 @@ abstract class we_base_delete{
 		}
 		$file = ((!$isTemplateFolder) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATES_PATH) . $path;
 		if($table == TEMPLATES_TABLE || $table == FILE_TABLE){
-			if(!we_util_File::deleteLocalFolder($file)){
+			if(!we_base_file::deleteLocalFolder($file)){
 				if(isset($GLOBALS['we_folder_not_del']) && is_array($GLOBALS['we_folder_not_del'])){
 					$GLOBALS['we_folder_not_del'][] = $file;
 				}
@@ -107,7 +107,7 @@ abstract class we_base_delete{
 		switch($table){
 			case FILE_TABLE:
 				$file = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($path, 1);
-				we_util_File::deleteLocalFolder($file, 1);
+				we_base_file::deleteLocalFolder($file, 1);
 				break;
 			case (defined('OBJECT_TABLE') && defined('OBJECT_FILES_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 				if(($ofID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '"', 'ID', $DB_WE))){

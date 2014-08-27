@@ -72,7 +72,7 @@ class weBinary{
 			return false;
 		}
 		if(!is_dir(dirname($path))){
-			we_util_File::createLocalFolderByPath(dirname($path));
+			we_base_file::createLocalFolderByPath(dirname($path));
 		}
 		we_base_file::save($path, $this->Data, ($this->SeqN == 0 ? 'wb' : 'ab'));
 		return true;

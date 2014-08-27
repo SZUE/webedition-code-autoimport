@@ -55,10 +55,10 @@ class we_xml_browser extends we_xml_parser{
 		}
 
 		if(!is_dir(dirname($cache))){
-			we_util_File::createLocalFolder(dirname($cache));
+			we_base_file::createLocalFolder(dirname($cache));
 		}
 		if(we_base_file::save($cache, serialize($this->nodes))){
-			we_util_File::insertIntoCleanUp($cache, $expire);
+			we_base_file::insertIntoCleanUp($cache, $expire);
 		}
 	}
 
