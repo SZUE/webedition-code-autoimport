@@ -1095,17 +1095,11 @@ class we_document extends we_root{
 				if(!isset($attribs['name'])){
 					return;
 				}
-				$val = $this->getElement($attribs['name'], 'bdid');
-				$val = $val ? $val : $this->getElement($attribs['name']);
+				$val = $this->getElement($attribs['name']);
 				if($this instanceof we_objectFile){
 					$hrefArr = $val ? unserialize($val) : array();
 					return (is_array($hrefArr) ? self::getHrefByArray($hrefArr) : '');
 				}
-				break;
-			case 'object':
-			case 'customer':
-				$val = $this->getElement($attribs['name'], 'bdid');
-				$val = $val ? $val : $this->getElement($attribs['name']);
 				break;
 			default:
 				//check bdid first
@@ -1543,10 +1537,10 @@ class we_document extends we_root{
 		}
 	}
 
-	private function i_deleteNavigation(){
+	/*private function i_deleteNavigation(){
 		$this->DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE ' . we_navigation_navigation::getNavCondition($this->ID, $this->Table));
 		return true;
-	}
+	}*/
 
 	/**
 	 * get styles for textarea or object
