@@ -614,7 +614,7 @@ abstract class we_base_file{
 		}
 		$d->close();
 		$dstr = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/';
-		if(we_util_File::checkAndMakeFolder($dstr)){
+		if(self::checkAndMakeFolder($dstr)){
 			$d = dir($dstr);
 			while(false !== ($entry = $d->read())){
 				if($entry != '.' && $entry != '..'){
@@ -658,6 +658,52 @@ abstract class we_base_file{
 
 	public static function replaceInFile($string1, $string2, $file){
 		self::save($file, preg_replace('/' . preg_quote($string1, '/') . '/i', $string2, self::load($file, 'r')), 'w');
+	}
+
+	public static function deleteLocalFolder($filename, $delAll = false){
+		if(!file_exists($filename)){
+			return false;
+		}
+		if($delAll){
+			$foo = (substr($filename, -1) == "/") ? $filename : ($filename . "/");
+			$d = dir($filename);
+			while(false !== ($entry = $d->read())){
+				if($entry != ".." && $entry != "."){
+					$path = $foo . $entry;
+					if(is_dir($path)){
+						self::deleteLocalFolder($path, 1);
+					} else {
+						self::deleteLocalFile($path);
+					}
+				}
+			}
+			$d->close();
+		}
+		return @rmdir($filename);
+	}
+
+	/**
+	 * copy a file
+	 * due to windows limitations, the file has to be copied and the old file deleted afterwards.
+	 * if $new exists already, windows will not rename the file $old
+	 */
+	public static function copyFile($old, $new){
+		return (@copy($old, $new));
+	}
+
+	/**
+	 * move/rename a file
+	 * due to windows limitations, the file has to be copied and the old file deleted afterwards.
+	 * if $new exists already, windows will not rename the file $old
+	 */
+	public static function moveFile($old, $new){
+		if(!@rename($old, $new)){
+			if(!copy($old, $new)){
+				return false;
+			}
+			unlink($old);
+		}
+		return true;
 	}
 
 }

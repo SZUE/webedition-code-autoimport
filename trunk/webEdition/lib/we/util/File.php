@@ -26,7 +26,7 @@
  * @todo check if needed and if, then complete it and DON'T use old stuff like DB and other
  * */
 abstract class we_util_File extends we_base_file{
-const test='a';
+
 	public static function save($filename, $content, $flags = "wb", $create_path = false){
 		if(($create_path && !self::mkpath(dirname($filename))) || (!is_writable(dirname($filename)))){
 			return false;
@@ -58,40 +58,11 @@ const test='a';
 		return (is_writable($path));
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public static function insertIntoErrorLog($text){
 		t_e('warning', $text);
-	}
-
-	/**
-	 * @deprecated since - 05.06.2008
-	 * please use moveFile() instead
-	 */
-	public static function renameFile($old, $new){
-		return self::moveFile($old, $new);
-	}
-
-	/**
-	 * copy a file
-	 * due to windows limitations, the file has to be copied and the old file deleted afterwards.
-	 * if $new exists already, windows will not rename the file $old
-	 */
-	public static function copyFile($old, $new){
-		return (@copy($old, $new));
-	}
-
-	/**
-	 * move/rename a file
-	 * due to windows limitations, the file has to be copied and the old file deleted afterwards.
-	 * if $new exists already, windows will not rename the file $old
-	 */
-	public static function moveFile($old, $new){
-		if(!@rename($old, $new)){
-			if(!copy($old, $new)){
-				return false;
-			}
-			unlink($old);
-		}
-		return true;
 	}
 
 	/**
@@ -99,41 +70,18 @@ const test='a';
 	 * it will only move $dir if there is no directory in $target with the same name
 	 */
 	public static function moveDir($dir, $target){
-		$dir = self::removeTrailingSlash($dir);
-		$target = self::addTrailingSlash($target);
-		if(self::removeTrailingSlash($dir) == self::removeTrailingSlash($target)){
+		$dir = rtrim($dir, '/');
+		$target = rtrim($target, '/');
+		if($dir == $target){
 			t_e('notice', "source and destination are the same.");
 			return true;
 		}
-		if(!rename($dir, self::addTrailingSlash($target))){
-			t_e('warning', "could not move directory " . $dir . " to " . self::addTrailingSlash($target) . ".");
+		if(!rename($dir, $target . '/')){
+			t_e('warning', "could not move directory " . $dir . " to " . $target . ".");
 			return false;
 		}
 		return true;
 	}
-
-	public static function deleteLocalFolder($filename, $delAll = false){
-		if(!file_exists($filename)){
-			return false;
-		}
-		if($delAll){
-			$foo = (substr($filename, -1) == "/") ? $filename : ($filename . "/");
-			$d = dir($filename);
-			while(false !== ($entry = $d->read())){
-				if($entry != ".." && $entry != "."){
-					$path = $foo . $entry;
-					if(is_dir($path)){
-						self::deleteLocalFolder($path, 1);
-					} else {
-						self::deleteLocalFile($path);
-					}
-				}
-			}
-			$d->close();
-		}
-		return @rmdir($filename);
-	}
-
 
 	/**
 	 * recursively deletes a directory with all its contents
@@ -177,10 +125,16 @@ const test='a';
 		return @rmdir($path);
 	}
 
+	/**
+	 * @deprecated since version 6.3.8
+	 */
 	public static function addTrailingSlash($value){
-		return self::removeTrailingSlash($value) . '/';
+		return rtrim($value, '/') . '/';
 	}
 
+	/**
+	 * @deprecated since version 6.3.8
+	 */
 	public static function removeTrailingSlash($value){
 		return rtrim($value, '/');
 	}

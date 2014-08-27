@@ -785,7 +785,7 @@ class Archive_Tar {
     else {
       // ----- Remove the local tarname file
       //@drupal_unlink($this->_tarname);
-	  //we_util_File::delete($this->_tarname);
+	  //we_base_file::delete($this->_tarname);
     }
     $this->_tarname = '';
 
