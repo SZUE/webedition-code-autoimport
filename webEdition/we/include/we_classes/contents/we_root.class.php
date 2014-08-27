@@ -576,6 +576,10 @@ abstract class we_root extends we_class{
 		}
 	}
 
+	function delElement($name){
+		unset($this->elements[$name]);
+	}
+
 	/* get the data from an element */
 
 	function getElement($name, $key = 'dat', $default = ''){

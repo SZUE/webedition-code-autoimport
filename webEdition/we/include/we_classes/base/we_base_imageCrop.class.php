@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -31,10 +30,10 @@
 abstract class we_base_imageCrop{
 
 	static function getJS(){
-		if(!isset($GLOBALS['we_doc']->elements["origwidth"])){
+		if(!$GLOBALS['we_doc']->issetElement("origwidth")){
 			$GLOBALS['we_doc']->setElement("origwidth", $GLOBALS['we_doc']->getElement("width"));
 		}
-		if(!isset($GLOBALS['we_doc']->elements["origheight"])){
+		if(!$GLOBALS['we_doc']->issetElement("origheight")){
 			$GLOBALS['we_doc']->setElement("origheight", $GLOBALS['we_doc']->getElement("height"));
 		}
 
@@ -46,8 +45,8 @@ var CropTool = {
 	imgH : 0,
 	defW : 0,
 	defH : 0,
-	origW : ' . ((isset($GLOBALS['we_doc']->elements["origwidth"]["dat"])) ? $GLOBALS['we_doc']->elements["origwidth"]["dat"] : 'document.getElementById("weImage") ? document.getElementById("weImage").width : 0') . ',
-	origH : ' . ((isset($GLOBALS['we_doc']->elements["origheight"]["dat"])) ? $GLOBALS['we_doc']->elements["origheight"]["dat"] : 'document.getElementById("weImage") ? document.getElementById("weImage").height : 0') . ',
+	origW : ' . ($GLOBALS['we_doc']->getElement("origwidth", "dat", 'document.getElementById("weImage") ? document.getElementById("weImage").width : 0') . ',
+	origH : ' . ($GLOBALS['we_doc']->getElement("origheight", "dat", 'document.getElementById("weImage") ? document.getElementById("weImage").height : 0') . ',
 	imgDiv : "weImgDiv",
 	imgBorder : "weImagePanelBorder",
 	imgPanel : "weImagePanel",

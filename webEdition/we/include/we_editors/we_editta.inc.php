@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -33,28 +32,28 @@ $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS'][
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 if(we_base_request::_(we_base_request::BOOL, "ok")){
-	$we_doc->elements[$name . 'inlineedit']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'inlineedit');
-	$we_doc->elements[$name . 'forbidphp']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'forbidphp');
-	$we_doc->elements[$name . 'forbidhtml']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'forbidhtml');
-	$we_doc->elements[$name . 'removefirstparagraph']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'removefirstparagraph');
-	$we_doc->elements[$name . 'xml']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'xml');
-	$we_doc->elements[$name . 'dhtmledit']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'dhtmledit');
-	$we_doc->elements[$name . 'showmenus']['dat'] = we_base_request::_(we_base_request::TOGGLE, 'showmenus');
-	$we_doc->elements[$name . 'commands']['dat'] = we_base_request::_(we_base_request::STRINGC, 'commands');
-	$we_doc->elements[$name . 'contextmenu']['dat'] = we_base_request::_(we_base_request::STRINGC, 'contextmenu');
-	$we_doc->elements[$name . 'height']['dat'] = we_base_request::_(we_base_request::INT, 'height', 50);
-	$we_doc->elements[$name . 'width']['dat'] = we_base_request::_(we_base_request::INT, 'width', 200);
-	$we_doc->elements[$name . 'bgcolor']['dat'] = we_base_request::_(we_base_request::STRING, 'bgcolor', '');
-	$we_doc->elements[$name . 'class']['dat'] = we_base_request::_(we_base_request::STRING, 'class', '');
-	$we_doc->elements[$name . 'cssClasses']['dat'] = we_base_request::_(we_base_request::RAW, 'cssClasses', '');
-	$we_doc->elements[$name . 'tinyparams']['dat'] = we_base_request::_(we_base_request::RAW, 'tinyparams', '');
-	$we_doc->elements[$name . 'templates']['dat'] = we_base_request::_(we_base_request::RAW, 'templates', '');
+	$we_doc->setElement($name . 'inlineedit', we_base_request::_(we_base_request::TOGGLE, 'inlineedit'));
+	$we_doc->setElement($name . 'forbidphp', we_base_request::_(we_base_request::TOGGLE, 'forbidphp'));
+	$we_doc->setElement($name . 'forbidhtml', we_base_request::_(we_base_request::TOGGLE, 'forbidhtml'));
+	$we_doc->setElement($name . 'removefirstparagraph', we_base_request::_(we_base_request::TOGGLE, 'removefirstparagraph'));
+	$we_doc->setElement($name . 'xml', we_base_request::_(we_base_request::TOGGLE, 'xml'));
+	$we_doc->setElement($name . 'dhtmledit', we_base_request::_(we_base_request::TOGGLE, 'dhtmledit'));
+	$we_doc->setElement($name . 'showmenus', we_base_request::_(we_base_request::TOGGLE, 'showmenus'));
+	$we_doc->setElement($name . 'commands', we_base_request::_(we_base_request::STRINGC, 'commands'));
+	$we_doc->setElement($name . 'contextmenu', we_base_request::_(we_base_request::STRINGC, 'contextmenu'));
+	$we_doc->setElement($name . 'height', we_base_request::_(we_base_request::INT, 'height', 50));
+	$we_doc->setElement($name . 'width', we_base_request::_(we_base_request::INT, 'width', 200));
+	$we_doc->setElement($name . 'bgcolor', we_base_request::_(we_base_request::STRING, 'bgcolor', ''));
+	$we_doc->setElement($name . 'class', we_base_request::_(we_base_request::STRING, 'class', ''));
+	$we_doc->setElement($name . 'cssClasses', we_base_request::_(we_base_request::RAW, 'cssClasses', ''));
+	$we_doc->setElement($name . 'tinyparams', we_base_request::_(we_base_request::RAW, 'tinyparams', ''));
+	$we_doc->setElement($name . 'templates', we_base_request::_(we_base_request::RAW, 'templates', ''));
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
 	$js = 'opener._EditorFrame.setEditorIsHot(true);'
 		. ((we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) &&
-		$we_doc->elements[$name . 'dhtmledit']['dat'] == 'on' &&
-		$we_doc->elements[$name . 'inlineedit']['dat'] == 'on' ? 'opener.setScrollTo();opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' :
+		$we_doc->getElement($name . 'dhtmledit') == 'on' &&
+		$we_doc->getElement($name . 'inlineedit') == 'on' ? 'opener.setScrollTo();opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' :
 			'opener.we_cmd("object_reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");')
 		. 'top.close();';
 } else {
@@ -74,13 +73,13 @@ foreach($_REQUEST['we_cmd'] as $k => $v){
 
 // WYSIWYG && FORBIDHTML && FORBIDPHP
 $onOffVals = array('off' => 'false', 'on' => 'true');
-$selected = (isset($we_doc->elements[$name . "dhtmledit"]) && isset($we_doc->elements[$name . "dhtmledit"]["dat"]) && $we_doc->elements[$name . "dhtmledit"]["dat"] == "on") ? 'on' : 'off';
+$selected = $we_doc->getElement($name . "dhtmledit") == "on" ? 'on' : 'off';
 $wysiwyg = we_html_tools::htmlSelect("dhtmledit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60) . we_html_tools::hidden('dhtmledit_orig', $we_doc->elements[$name . "dhtmledit"]["dat"]);
 
-$selected = (isset($we_doc->elements[$name . "forbidhtml"]) && isset($we_doc->elements[$name . "forbidhtml"]["dat"]) && $we_doc->elements[$name . "forbidhtml"]["dat"] == "on") ? 'on' : 'off';
+$selected = $we_doc->getElement($name . "forbidhtml") == "on" ? 'on' : 'off';
 $forbidhtml = we_html_tools::htmlSelect("forbidhtml", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
-$selected = ( (!isset($we_doc->elements[$name . "forbidphp"]["dat"])) || $we_doc->elements[$name . "forbidphp"]["dat"] == "on" ? 'on' : 'off');
+$selected = $we_doc->getElement($name . "forbidphp", "dat", 'on') == "on" ? 'on' : 'off';
 $forbidphp = we_html_tools::htmlSelect("forbidphp", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $table = '<table border="0" cellpadding="0" cellspacing="0">
@@ -107,10 +106,10 @@ $parts = array(
 );
 
 // XML && REMOVEFIRSTPARAGRAPH
-$selected = ( (!isset($we_doc->elements[$name . "xml"]["dat"])) || $we_doc->elements[$name . "xml"]["dat"] == "on" ? 'on' : 'off');
+$selected = $we_doc->getElement($name . "xml", "dat", 'on') == "on" ? 'on' : 'off';
 $xml = we_html_tools::htmlSelect("xml", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
-$selected = ( (!isset($we_doc->elements[$name . "removefirstparagraph"]["dat"])) || $we_doc->elements[$name . "removefirstparagraph"]["dat"] == "on" ? 'on' : 'off');
+$selected = $we_doc->getElement($name . "removefirstparagraph", "dat", 'on') == "on" ? 'on' : 'off';
 $removefirstparagraph = we_html_tools::htmlSelect("removefirstparagraph", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $table = '<table border="0" cellpadding="0" cellspacing="0">
@@ -137,10 +136,10 @@ $parts[] = array(
 
 
 // INLINEEDIT && SHOWMENUS
-$selected = ( (!isset($we_doc->elements[$name . "inlineedit"]["dat"])) || $we_doc->elements[$name . "inlineedit"]["dat"] == "on" ? 'on' : 'off');
+$selected = $we_doc->getElement($name . "inlineedit", "dat", 'on') == "on" ? 'on' : 'off';
 $inlineedit = we_html_tools::htmlSelect("inlineedit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60) . we_html_tools::hidden('inlineedit_orig', $we_doc->elements[$name . "inlineedit"]["dat"]);
 
-$selected = ( (!isset($we_doc->elements[$name . "showmenus"]["dat"])) || $we_doc->elements[$name . "showmenus"]["dat"] == "on" ? 'on' : 'off');
+$selected = $we_doc->getElement($name . "showmenus", "dat", 'on') == "on" ? 'on' : 'off';
 $showmenus = we_html_tools::htmlSelect("showmenus", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $table = '<table border="0" cellpadding="0" cellspacing="0">
@@ -169,9 +168,9 @@ $parts[] = array(
 // WIDTH & HEIGHT & BGCOLOR
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont" align="right">width&nbsp;</td><td>' . we_html_tools::htmlTextInput('width', 24, $we_doc->elements[$name . "width"]["dat"], 5, '', 'number', 60, 0) . '</td>
-		<td class="defaultfont" align="right">height&nbsp;</td><td>' . we_html_tools::htmlTextInput('height', 24, $we_doc->elements[$name . "height"]["dat"], 5, '', 'number', 60, 0) . '</td>
-		<td class="defaultfont" align="right">bgcolor&nbsp;</td><td>' . we_html_tools::htmlTextInput('bgcolor', 24, $we_doc->elements[$name . "bgcolor"]["dat"], 20, '', 'text', 60, 0) . '</td>
+		<td class="defaultfont" align="right">width&nbsp;</td><td>' . we_html_tools::htmlTextInput('width', 24, $we_doc->getElement($name . "width"), 5, '', 'number', 60, 0) . '</td>
+		<td class="defaultfont" align="right">height&nbsp;</td><td>' . we_html_tools::htmlTextInput('height', 24, $we_doc->getElement($name . "height"), 5, '', 'number', 60, 0) . '</td>
+		<td class="defaultfont" align="right">bgcolor&nbsp;</td><td>' . we_html_tools::htmlTextInput('bgcolor', 24, $we_doc->getElement($name . "bgcolor"), 20, '', 'text', 60, 0) . '</td>
 		<td class="defaultfont" align="right"></td><td></td>
 	</tr>
 	<tr>
@@ -183,7 +182,7 @@ $table = '<table border="0" cellpadding="0" cellspacing="0">
 		<td>' . we_html_tools::getPixel(60, 6) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultfont" align="right">class&nbsp;</td><td>' . we_html_tools::htmlTextInput('class', 24, $we_doc->elements[$name . "class"]["dat"], 20, '', 'text', 60, 0) . '</td>
+		<td class="defaultfont" align="right">class&nbsp;</td><td>' . we_html_tools::htmlTextInput('class', 24, $we_doc->getElement($name . "class"), 20, '', 'text', 60, 0) . '</td>
 		<td class="defaultfont" align="right"></td><td></td>
 	</tr>
 	<tr>
@@ -206,7 +205,7 @@ $parts[] = array(
 // CLASSES
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont" valign="top" align="right">classes&nbsp;</td><td colspan="5">' . we_class::htmlTextArea("cssClasses", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "cssClasses"]["dat"]) ? $we_doc->elements[$name . "cssClasses"]["dat"] : "")), array('style' => "width:415px;height:50px")) . '</td>
+		<td class="defaultfont" valign="top" align="right">classes&nbsp;</td><td colspan="5">' . we_class::htmlTextArea("cssClasses", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "cssClasses")), array('style' => "width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(90, 1) . '</td>
@@ -226,14 +225,14 @@ $select_cm = we_html_tools::htmlSelect('tmp_contextmenu', we_wysiwyg_editor::get
 
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "commands"]["dat"]) ? $we_doc->elements[$name . "commands"]["dat"] : "")), array('id' => "commands", 'style' => "width:415px;height:50px")) . '</td>
+		<td class="defaultfont" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "commands")), array('id' => "commands", 'style' => "width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(90, 10) . '</td>
 		<td>' . we_html_tools::getPixel(395, 10) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br/>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars((isset($we_doc->elements[$name . "contextmenu"]["dat"]) ? $we_doc->elements[$name . "contextmenu"]["dat"] : "")), array('id' => "contextmenu", 'style' => "width:415px;height:50px")) . '</td>
+		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br/>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "contextmenu")), array('id' => "contextmenu", 'style' => "width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(90, 1) . '</td>
@@ -250,7 +249,7 @@ $parts[] = array(
 // TINYPARAMS
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont" valign="top" align="right">tinyparams&nbsp;</td><td colspan="5">' . we_html_tools::htmlTextInput('tinyparams', 24, $we_doc->elements[$name . "tinyparams"]["dat"], 1024, '', 'text', 350, 0) . '</td>
+		<td class="defaultfont" valign="top" align="right">tinyparams&nbsp;</td><td colspan="5">' . we_html_tools::htmlTextInput('tinyparams', 24, $we_doc->getElement($name . "tinyparams"), 1024, '', 'text', 350, 0) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(90, 1) . '</td>
@@ -268,7 +267,7 @@ $parts[] = array(
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="defaultfont" valign="top" align="right">templates&nbsp;</td>
-		<td colspan="5">' . we_html_tools::htmlTextInput('templates', 24, $we_doc->elements[$name . "templates"]["dat"], 1024, '', 'text', 350, 0) . '</td>
+		<td colspan="5">' . we_html_tools::htmlTextInput('templates', 24, $we_doc->getElement($name . "templates"), 1024, '', 'text', 350, 0) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(90, 1) . '</td>
@@ -285,7 +284,7 @@ $parts[] = array(
 $cancel_button = we_html_button::create_button("cancel", "javascript:top.close()");
 $okbut = we_html_button::create_button("ok", "javascript:okFn();");
 $buttons = we_html_button::position_yes_no_cancel($okbut, null, $cancel_button);
-$out .= we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('modules_object', '[textarea_field]') . ' "' . $we_doc->elements[$name]['dat'] . '" - ' . g_l('modules_object', '[attributes]')) .
+$out .= we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('modules_object', '[textarea_field]') . ' "' . $we_doc->getElement($name) . '" - ' . g_l('modules_object', '[attributes]')) .
 	'</form></body></html>';
 
 print $out;

@@ -322,7 +322,7 @@ we_templateInit();?>';
 			if(is_array($v) && preg_match('|^we_' . $this->Name . '_variant|', $n, $regs)){
 				foreach($v as $n2 => $v2){
 					if($this->getElement($n2, 'type') == 'variant' && $v2 == 0){
-						unset($this->elements[$n2]);
+						$this->delElement($n2);
 					}
 				}
 			}
