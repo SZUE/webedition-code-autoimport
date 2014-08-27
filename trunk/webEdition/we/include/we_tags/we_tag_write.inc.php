@@ -296,8 +296,8 @@ function checkAndCreateFlashmovie($formname, $type = 'we_document'){
 
 					$flashDocument->setElement('width', $_SESSION[$_flashmovieDataId]['imgwidth'], 'attrib');
 					$flashDocument->setElement('height', $_SESSION[$_flashmovieDataId]['imgheight'], 'attrib');
-					$flashDocument->setElement('origwidth', $_SESSION[$_flashmovieDataId]['imgwidth']);
-					$flashDocument->setElement('origheight', $_SESSION[$_flashmovieDataId]['imgheight']);
+					$flashDocument->setElement('origwidth', $_SESSION[$_flashmovieDataId]['imgwidth'],'attrib');
+					$flashDocument->setElement('origheight', $_SESSION[$_flashmovieDataId]['imgheight'],'attrib');
 
 					$flashDocument->setElement('type', we_base_ContentTypes::FLASH, 'attrib');
 
@@ -444,8 +444,8 @@ function checkAndCreateImage($formname, $type = 'we_document'){
 
 					$imgDocument->setElement('width', $_SESSION[$_imgDataId]['imgwidth'], 'attrib');
 					$imgDocument->setElement('height', $_SESSION[$_imgDataId]['imgheight'], 'attrib');
-					$imgDocument->setElement('origwidth', $_SESSION[$_imgDataId]['imgwidth']);
-					$imgDocument->setElement('origheight', $_SESSION[$_imgDataId]['imgheight']);
+					$imgDocument->setElement('origwidth', $_SESSION[$_imgDataId]['imgwidth'],'attrib');
+					$imgDocument->setElement('origheight', $_SESSION[$_imgDataId]['imgheight'],'attrib');
 
 					$imgDocument->setElement('type', we_base_ContentTypes::IMAGE, 'attrib');
 

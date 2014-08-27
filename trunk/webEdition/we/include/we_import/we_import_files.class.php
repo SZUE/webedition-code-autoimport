@@ -140,7 +140,7 @@ function refreshTree() {
 function uploadFinished() {
 	refreshTree();
 	' . we_message_reporting::getShowMessageCall(
-					g_l('importFiles', "[finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
+						g_l('importFiles', "[finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
 }
 
 function checkFileinput(){
@@ -558,8 +558,7 @@ function setApplet() {
 			if($this->partNum == $this->partCount){
 				//actual file completed
 				$response['status'] = $error ? 'failure' : 'success';
-				$response['message'] = $error ? /*g_l('importFiles', "[" .*/$error['error'] /*. "]")*/ : ''; //text in $error is already translated: "Requested lang entry l_importFiles[Fehler beim speichern]"
-
+				$response['message'] = $error ? /* g_l('importFiles', "[" . */$error['error'] /* . "]") */ : ''; //text in $error is already translated: "Requested lang entry l_importFiles[Fehler beim speichern]"
 				//all files done
 				if($formnum == $formcount){
 					if(isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']) && $formnum != 0){
@@ -841,8 +840,8 @@ function next() {
 					if(is_array($we_size) && count($we_size) >= 2){
 						$we_doc->setElement("width", $we_size[0], "attrib");
 						$we_doc->setElement("height", $we_size[1], "attrib");
-						$we_doc->setElement("origwidth", $we_size[0]);
-						$we_doc->setElement("origheight", $we_size[1]);
+						$we_doc->setElement("origwidth", $we_size[0], 'attrib');
+						$we_doc->setElement("origheight", $we_size[1], 'attrib');
 					}
 				}
 				if($we_doc->Extension == '.pdf'){
@@ -894,9 +893,11 @@ function next() {
 
 					if($this->degrees){
 						$we_doc->rotateImage(
-							($this->degrees % 180 == 0) ? $we_doc->getElement('origwidth') : $we_doc->getElement(
-									"origheight"), ($this->degrees % 180 == 0) ? $we_doc->getElement("origheight") : $we_doc->getElement(
-									"origwidth"), $this->degrees, $this->quality);
+							($this->degrees % 180 == 0) ?
+								$we_doc->getElement('origwidth') :
+								$we_doc->getElement("origheight"), ($this->degrees % 180 == 0 ?
+								$we_doc->getElement("origheight") :
+								$we_doc->getElement("origwidth")), $this->degrees, $this->quality);
 					}
 					$we_doc->DocChanged = true;
 				}
