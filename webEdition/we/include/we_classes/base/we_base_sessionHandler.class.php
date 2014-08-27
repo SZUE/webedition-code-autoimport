@@ -7,6 +7,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	private $DB;
 	private $id = 0;
 	private $crypt = false;
+	private $hash = '';
 
 	function __construct(){
 		if(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION && !$this->id){
@@ -59,7 +60,9 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			$data = ($data[0] == '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data);
 			if($data && $data[0] == 'x'){
 				//valid gzip
-				return gzuncompress($data);
+				$data = gzuncompress($data);
+				$this->hash = md5($sessID . $data);
+				return $data;
 			}//else we need a new sessionid; if decrypt failed we might else destroy an existing valid session
 		}
 
@@ -72,6 +75,17 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		if(!$sessData && !$lock){
 			return $this->destroy($sessID);
 		}
+		if(md5($sessID . $sessData) == $this->hash){//if nothing changed,we don't have to bother the db
+			$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'lockid' => $lock ? $this->id : '',
+					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
+				)) . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
+
+			if($this->DB->affected_rows()){//make sure we had an successfull update
+				return true;
+			}
+		}
+
 
 		$sessData = SYSTEM_WE_SESSION_CRYPT && $this->crypt ? we_customer_customer::cryptData(gzcompress($sessData, 4), $this->crypt, true) : gzcompress($sessData, 4);
 		$sessID = self::getSessionID($sessID);
