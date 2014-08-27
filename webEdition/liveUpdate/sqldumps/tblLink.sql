@@ -29,6 +29,7 @@ formfield
 href
 img
 input
+LanguageDocName
 linklist
 object
 txt

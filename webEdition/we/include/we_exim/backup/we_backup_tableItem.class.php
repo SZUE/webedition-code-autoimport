@@ -148,7 +148,7 @@ class we_backup_tableItem extends weModelBase{
 	static function convertSCharsetEncoding($fromC, $toC, $string){
 		if($fromC != '' && $toC != ''){
 			if(function_exists('iconv')){
-				return iconv($fromC, $toC . '//TRANSLATE', $string);
+				return iconv($fromC, $toC . '//TRANSLIT', $string);
 			} elseif($fromC == 'UTF-8' && $toC == 'ISO-8859-1'){
 				return utf8_decode($string);
 			} elseif($fromC == 'ISO-8859-1' && $toC == 'UTF-8'){
