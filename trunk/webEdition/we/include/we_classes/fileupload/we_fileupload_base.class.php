@@ -77,7 +77,7 @@ abstract class we_fileupload_base{
 	const ON_ERROR_RETURN = true;
 	const ON_ERROR_DIE = true;
 
-	abstract protected function getHTML($hiddens = '');
+	abstract public function getHTML($hiddens = '');
 
 	protected function __construct($name, $width = 400, $maxUploadSize = -1, $isDragAndDrop = true){
 		$this->name = $name;
