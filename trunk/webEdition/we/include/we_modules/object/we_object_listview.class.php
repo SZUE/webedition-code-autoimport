@@ -83,16 +83,9 @@ class we_object_listview extends we_listview_base{
 
 		$_obxTable = OBJECT_X_TABLE . intval($this->classID);
 
-		$where_lang = '';
-
-		if($this->languages){
-			$where_lang = array();
-			$langArray = makeArrayFromCSV($this->languages);
-			foreach($langArray as $lang){
-				$where_lang [] = $_obxTable . '.OF_Language = "' . $lang . '"';
-			}
-			$where_lang = ' AND (' . implode(' OR ', $where_lang) . ' ) ';
-		}
+		$where_lang = ($this->languages ?
+				' AND ' . $_obxTable . '.OF_Language IN ("' . implode('","', explode(',', $this->languages)) . '")' :
+				'');
 
 		if($this->desc && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';
