@@ -25,7 +25,7 @@
 class we_versions_logView{
 
 	public $actionView;
-	public $versionPerPage = 10;
+	const versionPerPage = 10;
 	private $Model;
 
 	public function __construct(){
@@ -88,7 +88,7 @@ function showAll(id) {
 function showDefault(id) {
 	var Elements = document.getElementsByName(id+"_list");
 	for(var i=0;i<Elements.length;i++) {
-		if(i>=' . $this->versionPerPage . ') {
+		if(i>=' . self::versionPerPage . ') {
 			Elements[i].style.display = "none";
 		}
 		else {
@@ -99,7 +99,7 @@ function showDefault(id) {
 	var newstartNumber = 1;
 	document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
 
-	var newshowNumber = ' . $this->versionPerPage . ';
+	var newshowNumber = ' . self::versionPerPage . ';
 	document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
 
 	document.getElementById("back_"+id).style.display = "none";
@@ -116,11 +116,11 @@ function showDefault(id) {
 
 function next(id) {
 	var start = document.getElementsByName("start_"+id)[0].value;
-	var newStart = parseInt(start) + ' . $this->versionPerPage . ';
+	var newStart = parseInt(start) + ' . self::versionPerPage . ';
 
 	var Elements = document.getElementsByName(id+"_list");
 	for(var i=0;i<Elements.length;i++) {
-		if(i>=newStart && i<(newStart + ' . $this->versionPerPage . ')) {
+		if(i>=newStart && i<(newStart + ' . self::versionPerPage . ')) {
 			Elements[i].style.display = "";
 		}
 		else {
@@ -129,7 +129,7 @@ function next(id) {
 
 	}
 
-	if(newStart>(Elements.length-' . $this->versionPerPage . ')) {
+	if(newStart>(Elements.length-' . self::versionPerPage . ')) {
 		document.getElementById("next_"+id).style.display = "none";
 	}
 	else {
@@ -141,8 +141,8 @@ function next(id) {
 	document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
 
 	var newshowNumber = Elements.length;
-	if(Elements.length>(newStart+' . $this->versionPerPage . ')) {
-		newshowNumber = (newStart+' . $this->versionPerPage . ');
+	if(Elements.length>(newStart+' . self::versionPerPage . ')) {
+		newshowNumber = (newStart+' . self::versionPerPage . ');
 	}
 
 	document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
@@ -154,11 +154,11 @@ function next(id) {
 
 function back(id) {
 	var start = document.getElementsByName("start_"+id)[0].value;
-	var newStart = parseInt(start) - ' . $this->versionPerPage . ';
+	var newStart = parseInt(start) - ' . self::versionPerPage . ';
 
 	var Elements = document.getElementsByName(id+"_list");
 	for(var i=0;i<Elements.length;i++) {
-		if(i>=newStart && i<(newStart + ' . $this->versionPerPage . ')) {
+		if(i>=newStart && i<(newStart + ' . self::versionPerPage . ')) {
 			Elements[i].style.display = "";
 		}
 		else {
@@ -180,7 +180,7 @@ function back(id) {
 	document.getElementById("startNumber_"+id).innerHTML = newstartNumber;
 
 
-	newshowNumber = (newstartNumber+' . $this->versionPerPage . ');
+	newshowNumber = (newstartNumber+' . self::versionPerPage . ');
 	document.getElementById("showNumber_"+id).innerHTML = newshowNumber;
 
 	document.getElementsByName("start_"+id)[0].value = parseInt(newStart);
@@ -226,7 +226,7 @@ function back(id) {
 					g_l('logging', '[logEntry]') . ':</td><td width="auto">' .
 					$this->showLog($content[$i]['action'], $content[$i]['ID']) . '</td></tr>' .
 					'<tr><td colspan="3" style="padding:5px 15px 5px 15px;"><div id="dataContent_' . $content[$i]['ID'] . '" name="dataContent">' .
-					$this->handleData($content[$i]['ID'], 0, $this->versionPerPage) . '</div>' .
+					$this->handleData($content[$i]['ID'], 0, self::versionPerPage) . '</div>' .
 					'<div style="border-top:1px solid #000;margin-top:20px;margin-bottom:20px;">' . we_html_tools::getPixel(1, 1) .
 					'</div></td></tr>';
 			}
@@ -303,9 +303,9 @@ function back(id) {
 			$out .= '<tr style="background-color:#dddddd;">
 				<td style="border-top:1px solid #BBBAB9;padding:3px 5px 3px 3px;" align="right" colspan="6">
 				<span id="startNumber_' . $logId . '">' . ($start + 1) . '</span> - <span id="showNumber_' . $logId . '">' . $showNumber . '</span> <span>' . g_l('logging', '[of]') . '</span> <span style="margin-right:20px;">' . $anzGesamt . '</span>' .
-				(($anzGesamt > $this->versionPerPage) ? '<span style="margin-right:20px;"><a id="showAll_' . $logId . '" href="#" onclick="showAll(' . $logId . ');">' . g_l('logging', '[all]') . '</a></span>' : '') .
+				(($anzGesamt > self::versionPerPage) ? '<span style="margin-right:20px;"><a id="showAll_' . $logId . '" href="#" onclick="showAll(' . $logId . ');">' . g_l('logging', '[all]') . '</a></span>' : '') .
 				'<span style="margin-right:5px;"><a title="' . g_l('logging', '[back]') . '" href="#" onclick="back(' . $logId . ');"><img src=\'' . IMAGE_DIR . 'navigation/button_arrow_left.gif\' id="back_' . $logId . '" style="display:none;border:2px solid #DDD;"  /></a></span>' .
-				(($anzGesamt > $this->versionPerPage) ? '<span style="margin-right:5px;"><a title="' . g_l('logging', '[next]') . '" href="#" onclick="next(' . $logId . ');"><img src=\'' . IMAGE_DIR . 'navigation/button_arrow_right.gif\' id="next_' . $logId . '" style="border:2px solid #DDD;" /></a></span>' : '') .
+				(($anzGesamt > self::versionPerPage) ? '<span style="margin-right:5px;"><a title="' . g_l('logging', '[next]') . '" href="#" onclick="next(' . $logId . ');"><img src=\'' . IMAGE_DIR . 'navigation/button_arrow_right.gif\' id="next_' . $logId . '" style="border:2px solid #DDD;" /></a></span>' : '') .
 				we_html_tools::hidden("start_" . $logId, $start) . '</td></tr>
 				</table>';
 		} elseif($action == we_versions_log::VERSIONS_PREFS){
