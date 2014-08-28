@@ -413,7 +413,8 @@ function handle_event(evt) {
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
 			$importLocs->setCol(4, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlMaxUploadSizeAlert(410) :
-					we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
+				(defined('FILE_UPLOAD_USE_LEGACY') && FILE_UPLOAD_USE_LEGACY == false ? we_fileupload_base::getHtmlFallbackAlert(410) : 
+					we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410)));
 		} else {
 			$maxsize = getUploadMaxFilesize(false);
 			$importLocs->setCol(4, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
@@ -1134,7 +1135,8 @@ HTS;
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
 			$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlMaxUploadSizeAlert(410) :
-					we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
+				(defined('FILE_UPLOAD_USE_LEGACY') && FILE_UPLOAD_USE_LEGACY == false ? we_fileupload_base::getHtmlFallbackAlert(410) : 
+					we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410)));
 		} else {
 			$maxsize = getUploadMaxFilesize(false);
 			$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
@@ -1905,7 +1907,8 @@ function handle_event(evt) {
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
 			$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlMaxUploadSizeAlert(410) :
-					we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
+				(defined('FILE_UPLOAD_USE_LEGACY') && FILE_UPLOAD_USE_LEGACY == false ? we_fileupload_base::getHtmlFallbackAlert(410) : 
+					we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410)));
 		} else {
 			$maxsize = getUploadMaxFilesize(false);
 			$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));

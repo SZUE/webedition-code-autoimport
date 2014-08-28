@@ -38,8 +38,8 @@ class we_fileupload_include extends we_fileupload_base{
 	const FORCE_DOC_ROOT = true;
 	const MISSING_DOC_ROOT = true;
 	const USE_FILENAME_FROM_UPLOAD = true;
-	const USE_LEGACY_FOR_BACKUP = true;
-	const USE_LEGACY_FOR_WEIMPORT = true;
+	const USE_LEGACY_FOR_BACKUP = false;
+	const USE_LEGACY_FOR_WEIMPORT = false;
 
 	public function __construct($name, $contentName = '', $footerName = '', $formName = '', $uploadBtnName = '', $callback = 'document.forms[0].submit()', $fileselectOnclick = '', $width = 400, $isDragAndDrop = true, $isInternalProgress = false, $internalProgressWidth = 0, $acceptedMime = '', $acceptedExt = '', $forbiddenMime = '', $forbiddenExt = '', $externalProgress = array(), $maxUploadSize = -1){
 		parent::__construct($name, $width, $maxUploadSize, $isDragAndDrop);
@@ -105,7 +105,7 @@ class we_fileupload_include extends we_fileupload_base{
 	}
 
 	//TODO: split and move selector to base
-	public function getHTML($hiddens = ''){
+	public function getHTML(){
 		$butBrowse = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? we_html_button::create_button('browse', 'javascript:void(0)', true, 84, we_html_button::HEIGHT, '', '', false, false, '_btn') :
 			we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, ($this->dimensions['width'] - 103), we_html_button::HEIGHT, '', '', false, false, '_btn'));
 
@@ -195,10 +195,10 @@ class we_fileupload_include extends we_fileupload_base{
 
 	public static function getJsBtnCmdStatic($btn = 'upload', $contentName = '', $callback = ''){
 		$win = $contentName ? 'top.' . $contentName . '.': '';
-		$callback = $callback ? $callback : ($btn == 'upload' ? 'document.forms[0].submit()' : 'window.close()');
+		$callback = $btn == 'upload' ? ($callback ? $callback : 'document.forms[0].submit()') : 'top.close()';
 		$call = $win . 'we_FileUpload.' . ($btn == 'upload' ? 'startUpload()' : 'cancelUpload()');
 
-		return 'if(typeof ' . $win . 'we_FileUpload === "undefined" || ' . $win . 'we_FileUpload.isLegacyMode){' . $callback . '}else{' . $call . ';}';
+		return 'if(typeof ' . $win . 'we_FileUpload === "undefined" || ' . $win . 'we_FileUpload.isLegacyMode){' . $callback . ';}else{' . $call . ';}';
 	}
 
 	public function processFileRequest($retFalseOnFinalError = false){

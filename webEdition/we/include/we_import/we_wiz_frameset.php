@@ -35,7 +35,7 @@ $mode = we_base_request::_(we_base_request::INT,"mode",0);
 
 //FIXME: delete condition and else branch when new uploader is stable
 if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
-	if($type && (!defined('FILE_UPLOAD_USE_LEGACY') || FILE_UPLOAD_USE_LEGACY == false) && ($step == 1 || $step == 2) && $what == 'wizbody'){
+	if($type && !we_fileupload_include::mustUseLegacy() && ($step == 1 || $step == 2) && $what == 'wizbody'){
 		switch($type){
 			case we_import_functions::TYPE_GENERIC_XML:
 				$fileNameTempGxml = array('prefix' => 'we_xml_', 'postfix' => '.xml', 'path' => TEMP_DIR, 'missingDocRoot' => we_fileupload_include::MISSING_DOC_ROOT);

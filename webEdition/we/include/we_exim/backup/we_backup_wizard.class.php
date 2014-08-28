@@ -444,8 +444,9 @@ self.focus();
 					if(!(DEFAULT_CHARSET != '')){
 						$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[defaultcharset_warning]"), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
 					}
-					$parts[] = array("headline" => "", "html" => ($this->fileUploader ? $this->fileUploader->getHtmlMaxUploadSizeAlert(600) :
-							we_html_tools::htmlAlertAttentionBox($alertMaxSize, we_html_tools::TYPE_ALERT, 600)), "space" => 0, "noline" => 1);
+					$parts[] = array("headline" => "", "html" => ($this->fileUploader ? $this->fileUploader->getHtmlMaxUploadSizeAlert(600) : 
+						(defined('FILE_UPLOAD_USE_LEGACY') && FILE_UPLOAD_USE_LEGACY == false ? we_fileupload_base::getHtmlFallbackAlert(600) : 
+							we_html_tools::htmlAlertAttentionBox($alertMaxSize, we_html_tools::TYPE_ALERT, 600))), "space" => 0, "noline" => 1);
 					$parts[] = array("headline" => "", "html" => $inputTypeFile, "space" => 0, "noline" => 1);
 					$parts[] = array("headline" => "", "html" => we_html_tools::getPixel(1, 1), "space" => 0, "noline" => 1);
 				} else {
@@ -1233,7 +1234,15 @@ function press_yes() {
 					case 3:
 						//FIXME: delete condition when new uploader is stable
 						if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
-							$startImportCall = $this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') : "top.body.startImport();";
+							//$startImportCall = $this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') : "top.body.startImport();";
+							if(!we_fileupload_include::mustUseLegacy()){
+								$startImportCall = we_fileupload_include::getJsBtnCmdStatic('upload', 'body', 'top.body.startImport()');
+								$cancelCall = we_fileupload_include::getJsBtnCmdStatic('cancel', 'body');
+							} else {
+								$startImportCall = 'top.body.startImport()';
+								$cancelCall = 'top.close()';
+							}
+
 							if(defined('WORKFLOW_TABLE')){
 								$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined('OBJECT_FILES_TABLE') && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE)) > 0) ?
 										we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) " . $startImportCall . ";") :
@@ -1254,8 +1263,7 @@ function press_yes() {
 						$nextprevbuts = we_html_button::create_button_table(array(
 								we_html_button::create_button("back", "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';"),
 								$nextbut));
-						$buttons = we_html_button::position_yes_no_cancel($nextprevbuts, null, we_html_button::create_button("cancel", "javascript:top.close();"));
-
+						$buttons = we_html_button::position_yes_no_cancel($nextprevbuts, null, we_html_button::create_button("cancel", "javascript:" . $cancelCall));
 
 						$table->setCol(0, 2, null, we_html_tools::getPixel(240, 5));
 						$table->setCol(0, 3, null, $buttons);

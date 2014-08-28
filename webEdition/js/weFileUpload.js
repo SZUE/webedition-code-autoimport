@@ -437,7 +437,7 @@ var weFileUpload = (function(){
 
 					if(s){
 						this.setInternalProgress(100, i);
-						//document.images[_.fieldName + '_progress_image'].src = '/webEdition/images/fileUpload/balken_gr.gif';
+						document.images[_.fieldName + '_progress_image'].src = '/webEdition/images/fileUpload/balken_gr.gif';
 					} else {
 						document.images[_.fieldName + '_progress_image' + p].src = '/webEdition/images/fileUpload/balken_red.gif';
 					}
@@ -630,7 +630,7 @@ var weFileUpload = (function(){
 				this.form.form.elements["weFileCt"].value = cur.mimePHP;
 				this.form.form.elements["weFileName"].value = cur.file.name;
 				this.form.form.elements["weIsUploadComplete"].value = 1;
-				setTimeout(function(){that.callback();}, 500);
+				setTimeout(function(){that.callback();}, 100);
 			};
 
 			this.processError = function(arg){
