@@ -474,23 +474,18 @@ if (top.wizbody && top.wizbody.addLog){
 
 								if($xmlExIm->RefTable->current == 0){
 									echo we_html_element::jsElement('
-										if (top.wizbody.addLog){
-											top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[update_links]')) . '");
-										}');
+if (top.wizbody.addLog){
+	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[update_links]')) . '");
+}');
 									flush();
 								}
 
 								$ref = null;
 
-								for($i = 0; $i < $xmlExIm->UpdateItemsCount; $i++){
-									$ref = $xmlExIm->RefTable->getNext();
-									if($ref){
-										if(isset($ref->ContentType) && isset($ref->ID)){
-											$doc = we_exim_contentProvider::getInstance($ref->ContentType, $ref->ID, $ref->Table);
-										}
+								while(($ref = $xmlExIm->RefTable->getNext()) !== null){
+									if(isset($ref->ContentType) && isset($ref->ID)){
+										$doc = we_exim_contentProvider::getInstance($ref->ContentType, $ref->ID, $ref->Table);
 										$xmlExIm->updateObject($doc);
-									} else {
-										break;
 									}
 								}
 

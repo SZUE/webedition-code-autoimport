@@ -80,7 +80,7 @@ class we_exim_searchPatterns{
 		$this->doc_patterns["id"][] = "/<(we:include" . $spacer . "[^>]*[\040|\n|\t|\r]+id" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)[^>]*>/sie";
 
 		//replace #WE:1223#
-		$this->doc_patterns["id"][] = "/#(WE:)(\d+)#/se";
+		$this->doc_patterns["id"][] = "/(#WE:)(\d+)(#)/se";
 
 
 		// serach for documents after path
