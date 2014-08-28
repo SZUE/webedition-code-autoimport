@@ -252,22 +252,19 @@ abstract class we_backup_preparer{
 			return $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $backup_select;
 		}
 
+		if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
+			$isFileAllreadyHere = false;
+			if(!we_fileupload_include::mustUseLegacy()){
+				$uploader = new we_fileupload_include('we_upload_file');
+				$uploader->setTypeCondition('accepted', '', 'xml, gz, tgz, zip');
+				$uploader->setFileNameTemp(array('path' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
+				$isFileAllreadyHere = $uploader->processFileRequest(we_fileupload_include::ON_ERROR_RETURN);
+			}
+		}
+
 		$we_upload_file = (isset($_FILES['we_upload_file']) && $_FILES['we_upload_file']) ? $_FILES['we_upload_file'] : '';
 		if($we_upload_file && ($we_upload_file != 'none')){
-
 			$_SESSION['weS']['weBackupVars']['options']['upload'] = 1;
-
-			//FIXME: delete condition when new uploader is stable
-			if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
-				$isFileAllreadyHere = false;
-				if((!defined('FILE_UPLOAD_USE_LEGACY') || FILE_UPLOAD_USE_LEGACY == false)){
-					$uploader = new we_fileupload_include('we_upload_file');
-					$uploader->setTypeCondition('accepted', '', 'xml, gz, tgz, zip');
-					$uploader->setFileNameTemp(array('path' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
-					$isFileAllreadyHere = $uploader->processFileRequest(we_fileupload_include::ON_ERROR_RETURN);
-				}
-			}
-
 			if(empty($_FILES['we_upload_file']['tmp_name']) || $_FILES['we_upload_file']['error']){
 				return false;
 			}

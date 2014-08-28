@@ -32,7 +32,7 @@ $weBackupWizard = new we_backup_wizard(WE_INCLUDES_DIR . 'we_editors/we_recover_
 
 //FIXME: delete condition when new uploader is stable
 if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
-	if((!defined('FILE_UPLOAD_USE_LEGACY') || FILE_UPLOAD_USE_LEGACY == false) && ($what == 'cmd' || (($what == 'body' || $what == 'busy')&& $step == 3))){
+	if(!we_fileupload_include::mustUseLegacy() && ($what == 'cmd' || ($what == 'body' && $step == 3))){
 		$fileUploader = new we_fileupload_include('we_upload_file', 'body', '', 'we_form', '', 'top.body.startImport(true)', '', 400, true, true, 200, '', 'xml, gz, tgz');
 		$fileUploader->setAction($weBackupWizard->frameset . '?pnt=cmd&operation_mode=import');
 		$fileUploader->setInternalProgress(array('width' => 300));
