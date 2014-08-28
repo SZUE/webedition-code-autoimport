@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_contentProvider{
-
 	const CODING_ENCODE = 'encode';
 	const CODING_SERIALIZE = 'serial';
 	const CODING_ATTRIBUTE = 'coding';
@@ -171,8 +170,8 @@ class we_exim_contentProvider{
 			return true;
 		}
 
-		if($data != self::CODING_OLD){
-			return preg_match('!^[^a-zA-Z0-9]+$!', $data);
+		if($data !== self::CODING_OLD){
+			return preg_match('![\\x0-\x08\x0e-\x19\x11\x12<>&]!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
 		}
 
 		$encoded = array(
@@ -258,7 +257,7 @@ class we_exim_contentProvider{
 
 	static function binary2file(&$object, $file, $fwrite = 'fwrite'){
 		$attribs = '';
-		foreach($object->persistent_slots as $k => $v){
+		foreach($object->persistent_slots as $v){
 			if($v != 'Data' && $v != 'SeqN'){
 				$coding = self::CODING_NONE;
 				if(isset($object->$v)){
@@ -285,7 +284,7 @@ class we_exim_contentProvider{
 					$path = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $object->Path;
 				}
 				$data = we_base_file::loadPart($path, $offset, $rsize);
-				if(!empty($data)){
+				if($data){
 					$fwrite($file, '<we:binary>' . $attribs .
 						we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
 						we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
@@ -419,7 +418,8 @@ class we_exim_contentProvider{
 			} else if(self::needCdata($classname, $v, $content)){
 				$content = self::getCDATA($content);
 			}
-			$write.=we_xml_composer::we_xmlElement($v, $content, $coding);
+
+			$write.= we_xml_composer::we_xmlElement($v, $content, $coding);
 		}
 		$fwrite($file, $write);
 
@@ -427,40 +427,41 @@ class we_exim_contentProvider{
 			$elements_ids = array_keys($object->elements);
 
 			foreach($elements_ids as $ck){
-				if($object->ClassName == 'we_backup_table' || $object->ClassName == 'we_backup_tableAdv'){
-					if($object->ClassName == 'we_backup_table'){
+				switch($object->ClassName){
+					case 'we_backup_table':
 						$contentObj = new we_element(false, $object->elements[$ck]);
-					} else {
+						break;
+					case 'we_backup_tableAdv':
 						array_unshift($object->elements[$ck], ' ');
 						$contentObj = new we_element(false, $object->elements[$ck]);
 						foreach($object->elements[$ck] as $okey => $ov){
 							$contentObj->$okey = trim($ov);
 						};
-					}
-				} else {
-					$options = array(
-						'ClassName' => 'we_element',
-						'Name' => $ck,
-						'Dat' => isset($object->elements[$ck]['dat']) ? $object->elements[$ck]['dat'] : ''
-					);
+						break;
 
-					if(isset($object->elements[$ck]['type'])){
-						$options['Type'] = $object->elements[$ck]['type'];
-					}
-					if(isset($object->elements[$ck]['len'])){
-						$options['Len'] = $object->elements[$ck]['len'];
-					}
-					if(isset($object->elements[$ck]['bdid'])){
-						$options['BDID'] = $object->elements[$ck]['bdid'];
-					}
+					default:
+						$options = array(
+							'ClassName' => 'we_element',
+							'Name' => $ck,
+							'Dat' => isset($object->elements[$ck]['dat']) ? $object->elements[$ck]['dat'] : ''
+						);
 
-					$contentObj = new we_element(false, $options);
+						if(isset($object->elements[$ck]['type'])){
+							$options['Type'] = $object->elements[$ck]['type'];
+						}
+						if(isset($object->elements[$ck]['len'])){
+							$options['Len'] = $object->elements[$ck]['len'];
+						}
+						if(isset($object->elements[$ck]['bdid'])){
+							$options['BDID'] = $object->elements[$ck]['bdid'];
+						}
+
+						$contentObj = new we_element(false, $options);
 				}
 
 				self::object2xml($contentObj, $file);
 			}
-			unset($elements_ids);
-			unset($contentObj);
+			unset($elements_ids, $contentObj);
 			//$out.=$elements_out;
 		}
 
@@ -468,8 +469,7 @@ class we_exim_contentProvider{
 		$fwrite($file, '</' . self::getTagName($object) . '>');
 	}
 
-	static function file2xml($file, $fh){
-
+	static function file2xml($file, $fh){//FIXME: unused?
 		$bin = self::getInstance('weBinary', 0);
 		$bin->Path = $file;
 
