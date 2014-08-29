@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_versions_view{
-
 	public $db;
 	public $version;
 	public $searchclass;
@@ -759,13 +758,13 @@ function delRow(id) {
 		);
 
 		$order = we_base_request::_(we_base_request::RAW, 'we_cmd', $this->searchclass->order, 'order');
-		$mode = we_base_request::_(we_base_request::RAW, 'we_cmd', $this->searchclass->mode, 'mode');
-		$height = we_base_request::_(we_base_request::RAW, 'we_cmd', $this->searchclass->height, 'height');
-		$_anzahl = we_base_request::_(we_base_request::RAW, 'we_cmd', $this->searchclass->anzahl, 'anzahl');
+		$mode = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchclass->mode, 'mode');
+		$height = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchclass->height, 'height');
+		$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchclass->anzahl, 'anzahl');
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $GLOBALS['we_transaction'], 'we_transaction');
 		$Text = we_base_request::_(we_base_request::RAW, 'text', $GLOBALS['we_doc']->Text);
-		$ID = we_base_request::_(we_base_request::RAW, 'id', $GLOBALS['we_doc']->ID);
-		$Path = we_base_request::_(we_base_request::RAW, 'path', $GLOBALS['we_doc']->Path);
+		$ID = we_base_request::_(we_base_request::INT, 'id', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->ID : 0);
+		$Path = we_base_request::_(we_base_request::FILE, 'path', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '/');
 
 
 		return we_html_tools::hidden("we_transaction", $we_transaction) .
@@ -873,8 +872,8 @@ function delRow(id) {
 	 */
 	public function getVersionsOfDoc(){
 
-		$id = we_base_request::_(we_base_request::INT, 'id', $GLOBALS['we_doc']->ID);
-		$table = we_base_request::_(we_base_request::TABLE, 'table', $GLOBALS['we_doc']->Table);
+		$id = we_base_request::_(we_base_request::INT, 'id', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->ID : 0);
+		$table = we_base_request::_(we_base_request::TABLE, 'table', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Table : FILE_TABLE);
 		$_order = we_base_request::_(we_base_request::RAW, 'we_cmd', $this->searchclass->order, 'order');
 
 		$content = array();
@@ -970,13 +969,13 @@ function delRow(id) {
 	 * @abstract sort array in case of 'modifierID'
 	 * @return array
 	 */
-/*	private function sortResultListUserASC($a, $b){
-		return strnatcasecmp($a['modifierID'], $b['modifierID']);
-	}
+	/* 	private function sortResultListUserASC($a, $b){
+	  return strnatcasecmp($a['modifierID'], $b['modifierID']);
+	  }
 
-	private function sortResultListUserDESC($a, $b){
-		return strnatcasecmp($b['modifierID'], $a['modifierID']);
-	}*/
+	  private function sortResultListUserDESC($a, $b){
+	  return strnatcasecmp($b['modifierID'], $a['modifierID']);
+	  } */
 
 	/**
 	 * @abstract generate html list for modifications
