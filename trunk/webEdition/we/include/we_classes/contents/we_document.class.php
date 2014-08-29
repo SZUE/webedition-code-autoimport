@@ -1625,8 +1625,8 @@ class we_document extends we_root{
 								str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
 					} else {
 						$text = preg_replace(array(
-							'|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>(.*)</a>|Ui',
-							'|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>|Ui',
+							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
+							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>-Ui',
 							), array(
 							'\1',
 							''
