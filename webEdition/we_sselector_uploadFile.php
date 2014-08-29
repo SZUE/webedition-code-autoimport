@@ -28,14 +28,14 @@ function weFile($f){
 	return f('SELECT 1 FROM ' . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($f) . "'");
 }
 
-$inputTypeFile = new we_fileupload_include('we_uploadFile', '', '', 'we_form', '', 'document.forms["we_form"].submit()', '', 330, true, false, 0);
-$inputTypeFile->setExternalProgress(true, 'progressbar', true, 120);
+$weFileupload = new we_fileupload_include('we_uploadFile', '', '', 'we_form', '', 'document.forms["we_form"].submit()', '', 330, true, false, 0);
+$weFileupload->setExternalProgress(true, 'progressbar', true, 120);
 
-if($inputTypeFile->processFileRequest()){
-	$tempName = $inputTypeFile->getFileNameTemp();
+if($weFileupload->processFileRequest()){
+	$tempName = $weFileupload->getFileNameTemp();
 	echo we_html_tools::getHtmlTop() .
 		STYLESHEET .
-		$inputTypeFile->getCss() . $inputTypeFile->getJs();
+		$weFileupload->getCss() . $weFileupload->getJs();
 
 	$path = we_base_request::_(we_base_request::FILE,'pat');
 	$cpat = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $path);
@@ -81,16 +81,16 @@ if($inputTypeFile->processFileRequest()){
 	}
 	$maxsize = getUploadMaxFilesize(false);
 
-	$yes_button = we_html_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "} else {" . $inputTypeFile->getJsBtnCmdStatic($btn = 'upload', '', "document.forms['we_form'].submit()") . "}", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_btn');
-	$cancel_button = we_html_button::create_button("cancel", "javascript:" . $inputTypeFile->getJsBtnCmdStatic('cancel'));
+	$yes_button = we_html_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "} else {" . $weFileupload->getJsBtnCmdStatic($btn = 'upload', '', "document.forms['we_form'].submit()") . "}", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_btn');
+	$cancel_button = we_html_button::create_button("cancel", "javascript:" . $weFileupload->getJsBtnCmdStatic('cancel'));
 	$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 	$buttonsTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);
 	$buttonsTable->setCol(0, 0, $attribs = array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
 	$buttonsTable->setCol(0, 1, $attribs = array('align' => 'right'), $buttons);
 
 	$content = '<table border="0" cellpadding="0" cellspacing="0">' .
-			($maxsize ? ('<tr><td>' . $inputTypeFile->getHtmlMaxUploadSizeAlert() . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
-				<tr><td>' . $inputTypeFile->getHTML() . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
+			($maxsize ? ('<tr><td>' . $weFileupload->getHtmlAlertBoxes() . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
+				<tr><td>' . $weFileupload->getHTML() . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
 				<tr><td class="defaultfont">' . g_l('newFile', '[caseFileExists]') . '</td></tr><tr><td>' .
 			we_html_forms::radiobutton("1", true, "overwrite", g_l('newFile', '[overwriteFile]')) .
 			we_html_forms::radiobutton("0", false, "overwrite", g_l('newFile', '[renameFile]')) . '</td></tr></table>';

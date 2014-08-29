@@ -380,7 +380,7 @@ if(isset($GLOBALS['we_doc'])){
 				new jsWindow(url, "edit_object_text", -1, -1, 550, 455, true, false, true);
 				break;
 			case "editor_uploadFile":
-				new jsWindow("", "we_uploadFile", -1, -1, 450, 310, true, true, true);
+				new jsWindow("", "we_uploadFile", -1, -1, 450, 320, true, true, true);
 				if (contentEditor.we_submitForm)
 					contentEditor.we_submitForm("we_uploadFile", url);
 				break;

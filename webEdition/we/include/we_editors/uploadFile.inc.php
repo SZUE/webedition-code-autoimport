@@ -52,16 +52,16 @@ switch($contentType){
 		$allowedExtensions = '';
 }
 
-$inputTypeFile = new we_fileupload_include('we_File', '', '', '', '', 'document.forms[0].submit();', '', 330, true, false, 200, $allowedContentTypes, $allowedExtensions, '', '', array(), -1);
-$inputTypeFile->setExternalProgress(true, 'progressbar', true, 120);
+$weFileupload = new we_fileupload_include('we_File', '', '', '', '', 'document.forms[0].submit();', '', 330, true, false, 200, $allowedContentTypes, $allowedExtensions, '', '', array(), -1);
+$weFileupload->setExternalProgress(true, 'progressbar', true, 120);
 
-if($inputTypeFile->processFileRequest()){
-	$we_File = $inputTypeFile->getFileNameTemp();
-	$maxsize = $inputTypeFile->getMaxUploadSize();
+if($weFileupload->processFileRequest()){
+	$we_File = $weFileupload->getFileNameTemp();
+	$maxsize = $weFileupload->getMaxUploadSize();
 	$we_maxfilesize_text = sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB));
 
 	echo we_html_tools::getHtmlTop(g_l('newFile', "[import_File_from_hd_title]")) .
-	STYLESHEET . we_html_element::jsElement('parent.openedWithWE = 1;') . $inputTypeFile->getJS() . $inputTypeFile->getCss();
+	STYLESHEET . we_html_element::jsElement('parent.openedWithWE = 1;') . $weFileupload->getJS() . $weFileupload->getCss();
 
 	if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 		$we_alerttext = $we_maxfilesize_text;
@@ -117,9 +117,9 @@ if($inputTypeFile->processFileRequest()){
 		}
 	}
 
-	$content = '<table border="0" cellpadding="0" cellspacing="0">' .
-		($maxsize ? ('<tr><td>' . $inputTypeFile->getHtmlMaxUploadSizeAlert() . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
-					<tr><td>' . $inputTypeFile->getHtml() . '</td></tr>
+	$content = '<table border="0" cellpadding="0" cellspacing="0">
+					<tr><td>' . $weFileupload->getHtmlAlertBoxes() . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
+					<tr><td>' . $weFileupload->getHtml() . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>';
 	if($we_doc->ContentType == we_base_ContentTypes::IMAGE){
 		$content .= '<tr><td>' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', "[import_metadata_at_upload]")) . '</td></tr>';
@@ -127,7 +127,7 @@ if($inputTypeFile->processFileRequest()){
 	$content .= '</table>';
 
 	$_buttons = we_html_button::position_yes_no_cancel(
-			we_html_button::create_button("upload", "javascript:" . $inputTypeFile->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_btn'), "", we_html_button::create_button("cancel", "javascript:" . $inputTypeFile->getJsBtnCmd('cancel'))
+			we_html_button::create_button("upload", "javascript:" . $weFileupload->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_btn'), "", we_html_button::create_button("cancel", "javascript:" . $weFileupload->getJsBtnCmd('cancel'))
 	);
 	$buttonsTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);
 	$buttonsTable->setCol(0, 0, $attribs = array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
