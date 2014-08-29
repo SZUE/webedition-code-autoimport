@@ -986,7 +986,7 @@ var weFileUpload = (function(){
 
 			this.resetSender = function(){
 				for(var i = 0; i < _.sender.preparedFiles.length; i++){
-					if(!this.isCancelled){
+					if(!this.isCancelled && _.sender.preparedFiles[i]){
 						_.sender.preparedFiles[i].isUploadable = false;
 					} else {
 						_.sender.preparedFiles[i] = null;
@@ -998,6 +998,8 @@ var weFileUpload = (function(){
 				this.totalFiles = _.sender.totalWeight = _.sender.currentWeight = _.sender.currentWeightTag = 0;
 				_.view.elems.footer.setProgress(0);
 				_.view.elems.extProgressDiv.style.display = 'none';
+				_.controller.setWeButtonState('reset_btn', true);
+				_.controller.setWeButtonState('browse_harddisk_btn', true);
 			};
 
 		}

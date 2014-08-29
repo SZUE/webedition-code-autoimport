@@ -71,7 +71,6 @@ abstract class we_fileupload_base{
 	);
 	protected $isGdOk = true;
 	protected $fileTable = '';
-	public $useLegacy = false;
 
 	const CHUNK_SIZE = 128;
 	const ON_ERROR_RETURN = true;
@@ -86,7 +85,6 @@ abstract class we_fileupload_base{
 		$this->maxUploadSizeMBytes = intval($maxUploadSize != -1 ? $maxUploadSize : (defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 0));
 		$this->maxUploadSizeBytes = $this->maxUploadSizeMBytes * 1048576;
 		$this->maxChunkCount = $this->maxUploadSizeMBytes * 1024 / self::CHUNK_SIZE;
-		$this->useLegacy = self::mustUseLegacy();
 	}
 
 	public function setAction($action){
@@ -108,55 +106,58 @@ abstract class we_fileupload_base{
 		$this->maxUploadSizeBytes = $this->maxUploadSizeMBytes * 1048576;
 	}
 
-	public function setUseLegacy($useLegacy = true){
-		$this->useLegacy = $useLegacy;
-	}
-
 	public function getName(){
 		return $this->name;
 	}
 
+	public static function isFallback(){
+		return we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10;
+	}
+
+	public static function isLegacyMode(){
+		return defined('FILE_UPLOAD_USE_LEGACY') && FILE_UPLOAD_USE_LEGACY == true;
+	}
+
 	public function getMaxUploadSize(){
-		return $this->useLegacy ? getUploadMaxFilesize(false) : $this->maxUploadSizeBytes;
+		return self::isFallback() || self::isLegacyMode() ? getUploadMaxFilesize(false) : $this->maxUploadSizeBytes;
 	}
 
-	public function getMaxUploadSizeText(){
-		$field = $this->useLegacy ? '[max_possible_size]' : ($this->getMaxUploadSize() ? '[size_limit_set_to]' : '[no_size_limit]');
-		return $field == '[no_size_limit]' ? g_l('newFile', $field) :
-			sprintf(g_l('newFile', $field), we_base_file::getHumanFileSize($this->getMaxUploadSize(), we_base_file::SZ_MB));
+	public function getHtmlAlertBoxes(){
+		return self::getHtmlAlertBoxesStatic($this->dimensions['width'], $this->maxUploadSizeMBytes, true);
 	}
 
-	//FIXME: clean up this system of fallbacks!
-	public function getHtmlMaxUploadSizeAlert($width = -1){
-		$width = $width == -1 ? $this->dimensions['alertBoxWidth'] : $width;
-		$type = $this->useLegacy ? we_html_tools::TYPE_ALERT : we_html_tools::TYPE_INFO;
+	public static function getHtmlAlertBoxesStatic($width = 410, $maxSize = -1, $isSizeReady = false){
+		if(self::isLegacyMode()){
+			$text = sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB));
 
-		return we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10 && defined('FILE_UPLOAD_USE_LEGACY') && FILE_UPLOAD_USE_LEGACY == false ?
-			'<div id="div_' . $this->name . '_alert_legacy">' .
-				we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, $width) .
-				'<div style="margin-top: 4px"></div>' .
-				we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[fallback_text]'), we_html_tools::TYPE_ALERT, $width, false, 9) .
-			'</div>' :
-			'<div id="div_' . $this->name . '_alert">' .
-				we_html_tools::htmlAlertAttentionBox($this->getMaxUploadSizeText(), $type, $width) .
+			return '<div id="div_alert">' .
+				we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_ALERT, $width) .
 			'</div>';
-	}
+		} else {
+			if(self::isFallback()){
 
-	public static function getHtmlFallbackAlert($width = 600){
-
-		return '<div id="div_alert_legacy" style="display: ' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10 ? '' : 'none') . '">' .
-				we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, $width) .
+				return '<div id="div_alert">' .
+					we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, $width) .
 				'<div style="margin-top: 4px"></div>' .
-				we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[fallback_text]'), we_html_tools::TYPE_ALERT, $width, false, 9) .
-			'</div>';
+					we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[fallback_text]'), we_html_tools::TYPE_ALERT, $width, false, 9) .
+				'</div>';
+			} else {
+				$size = $isSizeReady ? $maxSize : (intval($maxSize !== -1 ? $maxSize : (defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 0)));
+				$text = $size ? sprintf(g_l('newFile', '[size_limit_set_to]'), $size) : g_l('newFile', '[no_size_limit]');
+
+				return '<div id="div_alert">' .
+					we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_INFO, $width) .
+				'</div>';
+			}
+		}
 	}
 
-	protected function getHtmlFileRow(){
+	protected function _getHtmlFileRow(){
 		return '';
 	}
 
 	public function getCss(){
-		return $this->useLegacy ? '' : we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::cssElement('
+		return self::isFallback() || self::isLegacyMode() ? '' : we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::cssElement('
 			div.we_file_drag{
 				padding-top: ' . (($this->dimensions['dragHeight'] - 10) / 2) . 'px;
 				height: ' . $this->dimensions['dragHeight'] . 'px;
@@ -172,7 +173,7 @@ abstract class we_fileupload_base{
 			$this->externalProgress['html'] = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $progressbar->getHTML());
 		}
 
-		return $this->useLegacy ? '' : (we_html_element::jsScript('/webEdition/js/weFileUpload.js') .
+		return self::isFallback() || self::isLegacyMode() ? '' : (we_html_element::jsScript('/webEdition/js/weFileUpload.js') .
 			we_html_element::jsElement('
 			we_FileUpload = new weFileUpload("' . $this->type . '");
 			we_FileUpload.init({
@@ -183,7 +184,7 @@ abstract class we_fileupload_base{
 				maxUploadSize : ' . $this->maxUploadSizeBytes . ',
 				typeCondition : ' . str_replace(array("\n\r", "\r\n", "\r", "\n"), "", json_encode($this->typeCondition)) . ',
 				isDragAndDrop : ' . ($this->isDragAndDrop ? 'true' : 'false') . ',
-				isLegacyMode : ' . ($this->useLegacy ? 'true' : 'false') . ',
+				isLegacyMode : false,
 				callback : function(){' . $this->callback . '},
 				fileselectOnclick : function(){' . $this->fileselectOnclick . '},
 				chunkSize : ' . self::CHUNK_SIZE . ',
@@ -191,7 +192,7 @@ abstract class we_fileupload_base{
 				extProgress : ' . json_encode($this->externalProgress) . ',
 				gl: ' . $this->_getJsGl() . ',
 				isGdOk : ' . ($this->isGdOk ? 'true' : 'false') . ',
-				htmlFileRow : \'' . $this->getHtmlFileRow() . '\',
+				htmlFileRow : \'' . $this->_getHtmlFileRow() . '\',
 				fileTable : "' . $this->fileTable . '",
 			});
 		') . ($this->externalProgress['create'] ? implodeJS($progressbar->getJS('', true)) : ''));
@@ -216,10 +217,5 @@ abstract class we_fileupload_base{
 					btnCancel : "' . g_l('button', '[cancel][value]') . '",
 					btnUpload : "' . g_l('button', "[upload][value]") . '"
 				}';
-	}
-
-	public static function mustUseLegacy(){
-
-		return (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10) || (defined('FILE_UPLOAD_USE_LEGACY') && FILE_UPLOAD_USE_LEGACY == true);
 	}
 }

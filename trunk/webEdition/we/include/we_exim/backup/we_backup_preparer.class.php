@@ -254,7 +254,7 @@ abstract class we_backup_preparer{
 
 		if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
 			$isFileAllreadyHere = false;
-			if(!we_fileupload_include::mustUseLegacy()){
+			if(!(we_fileupload_include::isFallback() || we_fileupload_base::isLegacyMode())){
 				$uploader = new we_fileupload_include('we_upload_file');
 				$uploader->setTypeCondition('accepted', '', 'xml, gz, tgz, zip');
 				$uploader->setFileNameTemp(array('path' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
