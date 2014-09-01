@@ -198,13 +198,6 @@ class we_base_request{
 	 * @return mixed default, if value not set, the filtered value else
 	 */
 	public static function _($type, $name, $default = false){
-		/* static $requests = array();
-		  if(isset($requests[$name][$index])){
-		  t_e('rerequest ', $args, $requests[$name][$index]);
-		  } else {
-		  $requests[$name][$index] = debug_backtrace();
-		  } */
-
 
 		$var = $_REQUEST;
 		$args = func_get_args();
@@ -214,6 +207,16 @@ class we_base_request{
 		}
 		/* end fix */
 		unset($args[0], $args[2]);
+		if(false && isset($_SESSION['user']['isWeSession']) && $_SESSION['user']['isWeSession'] && WE_VERSION_SUPP){
+			$argname = implode('.', $args);
+			//reduce duplicate requests on the same global scope
+			static $requests = array();
+			$requests[$name][$argname][] = getBacktrace(array('error_showDevice', 'error_handler', 'getBacktrace', 'display_error_message'));
+			if(count($requests[$name][$argname]) > 1){
+				t_e('rerequest ', $name, $args, $requests[$name][$argname]);
+			}
+		}
+
 		foreach($args as $arg){
 			if(is_string($var) || !is_array($var) || !isset($var[$arg])){
 				return $default;

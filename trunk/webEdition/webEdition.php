@@ -1424,7 +1424,8 @@ pWebEdition_JSFunctions();
 //-->
 </script>
 <?php
-we_main_header::pCSS();
+$SEEM_edit_include=we_base_request::_(we_base_request::BOOL, "SEEM_edit_include");
+we_main_header::pCSS($SEEM_edit_include);
 ?>
 </head>
 <body style="background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;" onbeforeunload="doUnload()">
@@ -1432,7 +1433,7 @@ we_main_header::pCSS();
 	flush();
 //	get the frameset for the actual mode.
 	pWebEdition_Frameset();
-	we_main_header::pJS();
+	we_main_header::pJS($SEEM_edit_include);
 //	get the Treefunctions for docselector
 	pWebEdition_Tree();
 	?>
