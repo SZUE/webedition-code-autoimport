@@ -356,12 +356,10 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 	'unblock'=>'freigeben',
 	
 	'upload'=>array(
-		'jupload'=>'Java-Upload benutzen',
-		'maxsize'=>'Neuer File Upload:<br/>Maximale Filegröße in MB (0 = unbegrenzt)',
 		'title'=>'Datei-Upload',
 		'use_legacy'=>'bisherigen Uploader nutzen (deprecated)',
-		'we_max_size'=>'Maximale Upload Größe<br/>in Hinweistexten',
-		'we_max_size_hint'=>'(in MByte, 0=automatisch)',
+		'we_max_size'=>'Maximale Upload Größe',
+		'we_max_size_hint'=>'(0 = unbegrenzt)',
 	),
 	'urlencode_objectseourls'=>'URLencode die SEO-Links',
 	'use_it'=>'Benutzen',
@@ -416,4 +414,3 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 	'xhtml_show_wrong_js_html'=>'Als JavaScript-Meldung',
 	'xhtml_show_wrong_text_html'=>'Als Text',
 	'yes'=>'ja',
-);

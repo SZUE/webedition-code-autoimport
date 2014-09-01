@@ -356,11 +356,9 @@ The difference between symmetric encryption and hash is, that it is possible to 
 	'unblock'=>'Unblock',
 	
 	'upload'=>array(
-		'jupload'=>'Use java upload',
-		'maxsize'=>'New File Upload:<br/>Maximum filesize (0 = no limit)',
 		'title'=>'File upload',
 		'use_legacy'=>'use legacy HTML File Upload',
-		'we_max_size'=>'Maksymalna wielkość uploadu w<br/>tekstach wskazówek',
+		'we_max_size'=>'Maksymalna wielkość uploadu w',
 		'we_max_size_hint'=>'(w MB, 0=automatycznie)',
 	),
 	'urlencode_objectseourls'=>'URLencode the SEO-urls',
@@ -416,4 +414,3 @@ The difference between symmetric encryption and hash is, that it is possible to 
 	'xhtml_show_wrong_js_html'=>'Jako komunikat JavaScript',
 	'xhtml_show_wrong_text_html'=>'Jako tekst',
 	'yes'=>'yes',
-);
