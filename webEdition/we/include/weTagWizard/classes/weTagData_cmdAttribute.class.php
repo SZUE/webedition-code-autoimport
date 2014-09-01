@@ -19,7 +19,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weTagData_cmdAttribute extends weTagDataAttribute{
-
 	/**
 	 * @var array
 	 */
@@ -34,7 +33,7 @@ class weTagData_cmdAttribute extends weTagDataAttribute{
 	 * @param string $name
 	 * @param boolean $required
 	 */
-	function __construct($name, $required = false, $module = '', $Options, $Text, $description = '', $deprecated = false){
+	function __construct($name, $required = false, $module = '', array $Options = array(), $Text = '', $description = '', $deprecated = false){
 		parent::__construct($name, $required, $module, $description, $deprecated);
 		$this->Options = $Options;
 		$this->Text = $Text;

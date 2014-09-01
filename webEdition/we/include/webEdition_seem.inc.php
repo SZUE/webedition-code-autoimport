@@ -153,7 +153,7 @@ function pWebEdition_Frameset(){
 	}
 	?>
 	<div style="position:absolute;top:0px;left:0px;right:0px;height:32px;border-bottom: 1px solid black;">
-		<?php we_main_header::pbody(); ?>
+		<?php we_main_header::pbody($SEEM_edit_include); ?>
 	</div>
 	<div style="position:absolute;top:32px;left:0px;right:0px;bottom:0px;border: 0px;">
 		<iframe src="<?php echo WEBEDITION_DIR; ?>resizeframe.php?<?php echo $we_cmds ?>" style="border:0px;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>

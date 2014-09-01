@@ -6,6 +6,8 @@
 /* query separator */
 ###UPDATEONLY### UPDATE ###TBLPREFIX###tblLink l SET l.Type="block" WHERE l.Type='list'
 /* query separator */
+###UPDATEDROPKEY(Type,###TBLPREFIX###tblLink)###
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblLink (
   DID int(11) unsigned NOT NULL default '0',
@@ -16,5 +18,4 @@ CREATE TABLE ###TBLPREFIX###tblLink (
   PRIMARY KEY (CID),
   KEY DID (DID,DocumentTable),
   KEY Name (Name(4)),
-  KEY `Type` (`Type`,DocumentTable)
 ) ENGINE=MyISAM;
