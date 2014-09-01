@@ -81,7 +81,7 @@ class we_import_files{
 		$this->fileNameTemp = we_base_request::_(we_base_request::RAW, "weFileNameTemp", '');
 		$this->maxUploadSizeMB = defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 8; //FIMXE: 8???
 		$this->maxUploadSizeB = $this->maxUploadSizeMB * 1048576;
-		$this->isWeFileupload = !USE_JUPLOAD && $this->jsRequirementsOk && !(defined('FILE_UPLOAD_USE_LEGACY') && FILE_UPLOAD_USE_LEGACY);
+		$this->isWeFileupload = $this->jsRequirementsOk && !(defined('FILE_UPLOAD_USE_LEGACY') && FILE_UPLOAD_USE_LEGACY);
 	}
 
 	function getHTML(){
@@ -434,7 +434,7 @@ function setApplet() {
 		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') .
 			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
 			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl]"), $maxsize), we_html_tools::TYPE_INFO, 520, false)) .
-			((we_fileupload_base::isFallback() || !$this->jsRequirementsOk) && !we_fileupload_base::isLegacyMode() && !USE_JUPLOAD ? we_html_element::htmlDiv(array('id' => 'desc', 'style' => 'margin-top: 4px;'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[fallback_text]"), we_html_tools::TYPE_ALERT, 520, false)) : '') .
+			((we_fileupload_base::isFallback() || !$this->jsRequirementsOk) && !we_fileupload_base::isLegacyMode() ? we_html_element::htmlDiv(array('id' => 'desc', 'style' => 'margin-top: 4px;'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[fallback_text]"), we_html_tools::TYPE_ALERT, 520, false)) : '') .
 			we_html_element::htmlDiv(array('id' => 'descJupload', 'style' => 'display:none;'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl_jupload]"), $maxsize), we_html_tools::TYPE_INFO, 520, false));
 
 
@@ -464,21 +464,12 @@ function setApplet() {
 				"target" => "imgimportbuttons"
 				), $form_content);
 
-		// JUpload part0
-		if(USE_JUPLOAD){
-			$_weju = new we_import_jUpload();
-			$formhtml = $_weju->getAppletTag($formhtml, 530, 300);
-		}
-
 		$parts[] = array(
 			"headline" => '', "html" => $formhtml, "space" => 0
 		);
 
 		$content = we_html_element::htmlDiv(
-				array("id" => "forms", "style" => "display:block"), (USE_JUPLOAD ? we_html_element::htmlForm(array(
-						"name" => "JUploadForm"
-						), '') : '') .
-				we_html_element::htmlForm(
+				array("id" => "forms", "style" => "display:block"), we_html_element::htmlForm(
 					array(
 					"action" => WEBEDITION_DIR . "we_cmd.php",
 					"name" => "we_startform",
@@ -624,7 +615,7 @@ function cancel() {
 }
 		';
 
-		$js .= (USE_JUPLOAD || FILE_UPLOAD_USE_LEGACY || !$this->jsRequirementsOk) ? $this->_getJsFnNextLegacy($formcount, $formcount) : "
+		$js .= (FILE_UPLOAD_USE_LEGACY || !$this->jsRequirementsOk) ? $this->_getJsFnNextLegacy($formcount, $formcount) : "
 function next() {
 	var cf = top.imgimportcontent;
 
