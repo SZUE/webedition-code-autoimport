@@ -677,9 +677,9 @@ function getUploadMaxFilesize($mysql = false, we_database_base $db = null){
 	$upload_max_filesize = we_convertIniSizes(ini_get('upload_max_filesize'));
 	$min = min($post_max_size, $upload_max_filesize, ($mysql ? $db->getMaxAllowedPacket() : PHP_INT_MAX));
 
-	return (intval(WE_MAX_UPLOAD_SIZE) == 0 ?
+	return (intval(FILE_UPLOAD_MAX_UPLOAD_SIZE) == 0 ?
 			$min :
-			min(WE_MAX_UPLOAD_SIZE * 1024 * 1024, $min));
+			min(FILE_UPLOAD_MAX_UPLOAD_SIZE * 1024 * 1024, $min));
 }
 
 /**

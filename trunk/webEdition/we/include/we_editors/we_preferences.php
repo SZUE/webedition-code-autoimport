@@ -2247,7 +2247,7 @@ function formmailBlockOnOff() {
 			}
 
 			$_we_max_upload_size = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-				we_html_tools::htmlTextInput("newconf[WE_MAX_UPLOAD_SIZE]", 22, abs(get_value("WE_MAX_UPLOAD_SIZE")), "", ' onkeypress="return IsDigit(event);"', "number", 60) . '(deprecated)</td><td style="padding-left:20px;" class="small">' .
+				we_html_tools::htmlTextInput("newconf[FILE_UPLOAD_MAX_UPLOAD_SIZE]", 22, get_value("FILE_UPLOAD_MAX_UPLOAD_SIZE"), "", ' onkeypress="return IsDigit(event);"', "number", 60) . '</td><td style="padding-left:20px;" class="small">' .
 				g_l('prefs', '[upload][we_max_size_hint]') .
 				'</td></tr></table>';
 			$_needed_JavaScript = we_html_element::jsElement('function IsDigit(e) {
@@ -2257,13 +2257,6 @@ function formmailBlockOnOff() {
 
 			// FILE UPLOAD
 			$_fileuploader_use_legacy = we_html_forms::checkbox(1, get_value('FILE_UPLOAD_USE_LEGACY'), 'newconf[FILE_UPLOAD_USE_LEGACY]', g_l('prefs', '[upload][use_legacy]'), false, 'defaultfont', '');
-			$_fileuploader_max_size = we_html_tools::htmlTextInput('newconf[FILE_UPLOAD_MAX_UPLOAD_SIZE]', 8, get_value('FILE_UPLOAD_MAX_UPLOAD_SIZE'), 255, "", 'number', 150);
-
-			$_fileuploader_html2 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'file_upload_options', 'style' => 'display: block'), 4, 3);
-			$_fileuploader_html2->setCol(0, 0, array('colspan' => 3, 'height' => 10), $_fileuploader_use_legacy);
-			$_fileuploader_html2->setCol(1, 0, array('colspan' => 3, 'height' => 15), '');
-			$_fileuploader_html2->setCol(2, 0, array('colspan' => 3, 'height' => 10), g_l('prefs', '[upload][maxsize]'));
-			$_fileuploader_html2->setCol(3, 0, null, $_fileuploader_max_size . ' MB');
 
 			$_we_new_folder_mod = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
 				we_html_tools::htmlTextInput("newconf[WE_NEW_FOLDER_MOD]", 22, get_value("WE_NEW_FOLDER_MOD"), 3, ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
@@ -2391,7 +2384,7 @@ function set_state_auth() {
 
 			$_settings = array(
 				array("headline" => g_l('prefs', '[upload][we_max_size]'), "html" => $_we_max_upload_size, "space" => 200),
-				array('headline' => g_l('prefs', '[upload][title]'), 'html' => $_fileuploader_html2->getHtml(), 'space' => 200),
+				array('headline' => g_l('prefs', '[upload][title]'), 'html' => $_fileuploader_use_legacy, 'space' => 200),
 				array("headline" => g_l('prefs', '[we_new_folder_mod]'), "html" => $_we_new_folder_mod, "space" => 200),
 				array("headline" => g_l('prefs', '[db_connect]'), "html" => $_db_connect->getHtml(), "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[db_set_charset]'), "html" => $html_db_charset_information . $_db_set_charset->getHtml() . $html_db_charset_warning, "space" => 200),
