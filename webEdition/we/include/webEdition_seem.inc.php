@@ -140,7 +140,7 @@ function pWebEdition_JSwe_cmds(){
  * @return void
  * @desc the frameset for the SeeMode
  */
-function pWebEdition_Frameset(){
+function pWebEdition_Frameset($SEEM_edit_include){
 	$we_cmds = $seem = '';
 	if(isset($GLOBALS["SEEM_edit_include"]) && $GLOBALS["SEEM_edit_include"]){ // edit include file
 		$_REQUEST["SEEM_edit_include"] = true;
