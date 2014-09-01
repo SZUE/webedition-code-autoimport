@@ -76,14 +76,14 @@ if(we_base_request::_(we_base_request::BOOL, 'vers_we_obj')){
 			$_errorDocId = $we_doc->documentCustomerFilter->getErrorDoc($_visitorHasAccess);
 			if(($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))){ // use given document instead !
 				if($_errorDocId){
+					we_html_tools::setHttpCode(401);
 					unset($_errorDocId);
 					@include($_SERVER['DOCUMENT_ROOT'] . $_errorDocPath);
 					unset($_errorDocPath);
 				}
 				return;
-			} else {
-				die('Customer has no access to this document');
 			}
+			die('Customer has no access to this document');
 		}
 	}
 }
