@@ -1432,7 +1432,7 @@ we_main_header::pCSS($SEEM_edit_include);
 	<?php
 	flush();
 //	get the frameset for the actual mode.
-	pWebEdition_Frameset();
+	pWebEdition_Frameset($SEEM_edit_include);
 	we_main_header::pJS($SEEM_edit_include);
 //	get the Treefunctions for docselector
 	pWebEdition_Tree();
