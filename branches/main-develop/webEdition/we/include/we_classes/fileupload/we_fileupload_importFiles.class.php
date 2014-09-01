@@ -37,7 +37,6 @@ class we_fileupload_importFiles extends we_fileupload_base{
 		parent::__construct($name);
 		$this->type = 'imp';
 		$this->jsRequirementsOk = we_base_request::_(we_base_request::BOOL, "jsRequirementsOk", false);
-		$this->useLegacy = !$this->jsRequirementsOk ? false : $this->useLegacy;
 		$this->setDimensions(array('width' => 400, 'dragHeight' => 44));
 		$this->isGdOk = we_base_imageEdit::gd_version() > 0;
 		$this->internalProgress = array(
@@ -62,9 +61,9 @@ class we_fileupload_importFiles extends we_fileupload_base{
 			array("headline" => "", "html" => $alert, "space" => 0)
 		);
 
-		$butBrowse = str_replace(array("\n", "\r"), ' ', we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? we_html_button::create_button('browse', 'javascript:void(0)', true, 84, we_html_button::HEIGHT, '', '', false, false, '_btn') :
+		$butBrowse = str_replace(array(array("\n\r", "\r\n", "\r", "\n")), "", we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? we_html_button::create_button('browse', 'javascript:void(0)', true, 84, we_html_button::HEIGHT, '', '', false, false, '_btn') :
 				we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, 286, we_html_button::HEIGHT, '', '', false, false, '_btn'));
-		$butReset = str_replace(array("\n", "\r"), ' ', we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
+		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
 		$fileselect = '
 		<div style="float:left;">
 		<form id="filechooser" action="" method="" enctype="multipart/form-data">
@@ -101,7 +100,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 		return we_html_element::htmlBody(array("class" => "weDialogBody"), $content);
 	}
 
-	protected function getHtmlFileRow(){
+	protected function _getHtmlFileRow(){
 		$butEdit = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_edit', 'javascript:void(0)');
 		$butTrash = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash', "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);");
 
@@ -139,5 +138,4 @@ class we_fileupload_importFiles extends we_fileupload_base{
 			<td>
 		</tr></tbody></table>');
 	}
-
 }

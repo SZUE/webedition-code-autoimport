@@ -135,7 +135,7 @@ abstract class we_backup_preparer{
 		$_SESSION['weS']['weBackupVars']['options']['compress'] = we_base_file::isCompressed($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION;
 		if($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION){
 			$_SESSION['weS']['weBackupVars']['backup_file'] = self::makeCleanGzip($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']);
-			we_util_File::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], time() + (8 * 3600)); //valid for 8 hours
+			we_base_file::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], time() + (8 * 3600)); //valid for 8 hours
 			$_SESSION['weS']['weBackupVars']['offset'] = 0;
 		}
 
@@ -252,22 +252,19 @@ abstract class we_backup_preparer{
 			return $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $backup_select;
 		}
 
+		if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
+			$isFileAllreadyHere = false;
+			if(!(we_fileupload_include::isFallback() || we_fileupload_base::isLegacyMode())){
+				$uploader = new we_fileupload_include('we_upload_file');
+				$uploader->setTypeCondition('accepted', '', 'xml, gz, tgz, zip');
+				$uploader->setFileNameTemp(array('path' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
+				$isFileAllreadyHere = $uploader->processFileRequest(we_fileupload_include::ON_ERROR_RETURN);
+			}
+		}
+
 		$we_upload_file = (isset($_FILES['we_upload_file']) && $_FILES['we_upload_file']) ? $_FILES['we_upload_file'] : '';
 		if($we_upload_file && ($we_upload_file != 'none')){
-
 			$_SESSION['weS']['weBackupVars']['options']['upload'] = 1;
-
-			//FIXME: delete condition when new uploader is stable
-			if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
-				$isFileAllreadyHere = false;
-				if((!defined('FILE_UPLOAD_USE_LEGACY') || FILE_UPLOAD_USE_LEGACY == false)){
-					$uploader = new we_fileupload_include('we_upload_file');
-					$uploader->setTypeCondition('accepted', '', 'xml, gz, tgz, zip');
-					$uploader->setFileNameTemp(array('path' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
-					$isFileAllreadyHere = $uploader->processFileRequest(we_fileupload_include::ON_ERROR_RETURN);
-				}
-			}
-
 			if(empty($_FILES['we_upload_file']['tmp_name']) || $_FILES['we_upload_file']['error']){
 				return false;
 			}
@@ -277,12 +274,12 @@ abstract class we_backup_preparer{
 			//FIXME: delete condition when new uploader is stable
 			if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
 				if($isFileAllreadyHere || move_uploaded_file($_FILES['we_upload_file']['tmp_name'], $filename)){
-					we_util_File::insertIntoCleanUp($filename, time());
+					we_base_file::insertIntoCleanUp($filename, time());
 					return $filename;
 				}
 			} else {
 				if(move_uploaded_file($_FILES['we_upload_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_FILES['we_upload_file']['name'])){
-					we_util_File::insertIntoCleanUp($filename, time());
+					we_base_file::insertIntoCleanUp($filename, time());
 					return $filename;
 				}
 			}

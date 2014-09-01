@@ -321,8 +321,12 @@ function handle_event(evt) {
 			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_WE_XML . "';
 			break;
 		case 'next':
-			" . ($this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') :
-					"handle_eventNext();") . "
+			" . ($this->fileUploader ? "if(f.elements['v[rdofloc]'][1].checked===true){
+				" . $this->fileUploader->getJsBtnCmd('upload') . "}
+			else {
+				handle_eventNext();
+			}" :
+			"handle_eventNext();") . "
 			break;
 		case 'cancel':
 			top.close();
@@ -334,14 +338,15 @@ function handle_eventNext(){
 		fs = f.elements['v[fserver]'].value,
 		ext = '',
 		fl = f.elements['uploaded_xml_file'].value;
-		" . ($this->fileUploader ? "fl = typeof we_fileUpload !== 'undefined' && !we_fileUpload.getIsLegacyMode() ? 'dummy.xml' : fl" : "") . "
+		" . ($this->fileUploader ? "fl = typeof we_FileUpload !== 'undefined' && !we_FileUpload.getIsLegacyMode() ? 'placeholder.xml' : fl" : "") . ";
 
-	if (f.elements['v[rdofloc]'][0].checked==true && fs!='/') {
+	if (f.elements['v[rdofloc]'][0].checked==true && fs!=='/') {
 		if (fs.match(/\.\./)=='..') { " . (we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR)) . "; return; }
 		ext = fs.substr(fs.length-4,4);
 		f.elements['v[import_from]'].value = fs;
+		
 	}
-	else if (f.elements['v[rdofloc]'][1].checked==true && fl!='') {
+	else if (f.elements['v[rdofloc]'][1].checked==true && fl!=='') {
 		ext = fl.substr(fl.length-4,4);
 		f.elements['v[import_from]'].value = fl;
 	}
@@ -412,8 +417,7 @@ function handle_event(evt) {
 
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
-			$importLocs->setCol(4, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlMaxUploadSizeAlert(410) :
-					we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
+			$importLocs->setCol(4, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlAlertBoxes() : we_fileupload_base::getHtmlAlertBoxesStatic(410));
 		} else {
 			$maxsize = getUploadMaxFilesize(false);
 			$importLocs->setCol(4, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', "[filesize_local]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
@@ -952,8 +956,12 @@ function handle_event(evt) {
 			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_GENERIC_XML . "';
 			break;
 		case 'next':
-			" . ($this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') :
-					"handle_eventNext();") . "
+			" . ($this->fileUploader ? "if(f.elements['v[rdofloc]'][1].checked===true){
+				" . $this->fileUploader->getJsBtnCmd('upload') . "}
+			else {
+					handle_eventNext();
+			}" :
+			"handle_eventNext();") . "
 			break;
 		case 'cancel':
 			top.close();
@@ -970,7 +978,7 @@ function handle_eventNext(){
 	var fs = f.elements['v[fserver]'].value;
 	var fl = f.elements['uploaded_xml_file'].value,
 		ext = '';
-	" . ($this->fileUploader ? "fl = typeof we_fileUpload !== 'undefined' && !we_fileUpload.getIsLegacyMode() ? 'dummy.xml' : fl" : "") . "
+	" . ($this->fileUploader ? "fl = typeof we_FileUpload !== 'undefined' && !we_FileUpload.getIsLegacyMode() ? 'placeholder.xml' : fl" : "") . "
 
 	if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
 		if (fs.match(/\.\./)=='..') {
@@ -1133,8 +1141,7 @@ HTS;
 
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
-			$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlMaxUploadSizeAlert(410) :
-					we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
+			$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlAlertBoxes() : we_fileupload_base::getHtmlAlertBoxesStatic(410));
 		} else {
 			$maxsize = getUploadMaxFilesize(false);
 			$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
@@ -1807,8 +1814,12 @@ function handle_event(evt) {
 			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_CSV . "';
 			break;
 		case 'next':
-			" . ($this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') :
-					"handle_eventNext();") . "
+			" . ($this->fileUploader ? "if(f.elements['v[rdofloc]'][1].checked===true){
+				" . $this->fileUploader->getJsBtnCmd('upload') . "}
+			else {
+				handle_eventNext();
+			}" :
+				"handle_eventNext();") . "
 			break;
 		case 'cancel':
 			top.close();
@@ -1821,7 +1832,7 @@ function handle_eventNext(){
 		fs = f.elements['v[fserver]'].value,
 		fl = f.elements['uploaded_csv_file'].value,
 		ext = '';
-		" . ($this->fileUploader ? "fl = typeof we_fileUpload !== 'undefined' && !we_fileUpload.getIsLegacyMode() ? 'dummy.xml' : fl" : "") . "
+		" . ($this->fileUploader ? "fl = typeof we_FileUpload !== 'undefined' && !we_FileUpload.getIsLegacyMode() ? 'placeholder.xml' : fl" : "") . "
 
 	if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
 		if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR) . " return; }
@@ -1904,8 +1915,7 @@ function handle_event(evt) {
 
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
-			$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlMaxUploadSizeAlert(410) :
-					we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
+			$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlAlertBoxes() : we_fileupload_base::getHtmlAlertBoxesStatic(410));
 		} else {
 			$maxsize = getUploadMaxFilesize(false);
 			$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('import', '[filesize_local]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 410));
@@ -1964,7 +1974,6 @@ function handle_event(evt) {
 				'space' => 120,
 				'noline' => 1)
 		);
-
 
 		$content = we_html_element::htmlHidden(array('name' => 'v[csv_fieldnames]', 'value' => (isset($v['csv_fieldnames'])) ? $v['csv_fieldnames'] : 1)) .
 			we_html_element::htmlHidden(array('name' => 'v[import_from]', 'value' => (isset($v['import_from']) ? $v['import_from'] : ''))) .

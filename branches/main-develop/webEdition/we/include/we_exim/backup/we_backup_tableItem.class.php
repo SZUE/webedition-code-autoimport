@@ -58,7 +58,7 @@ class we_backup_tableItem extends weModelBase{
 		}
 		//read Primary key from installed default files
 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/sqldumps/' . stripTblPrefix($table) . '.sql')){
-			$lines = we_util_File::loadLines($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/sqldumps/' . stripTblPrefix($table) . '.sql', 2, 999);
+			$lines = we_base_file::loadLines($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/sqldumps/' . stripTblPrefix($table) . '.sql', 2, 999);
 			$cache[$table] = $GLOBALS['DB_WE']->getPrimaryKeys($table, $lines);
 		}
 		if(!isset($cache[$table]) || !$cache[$table]){//fallback, or for external tables
@@ -148,7 +148,7 @@ class we_backup_tableItem extends weModelBase{
 	static function convertSCharsetEncoding($fromC, $toC, $string){
 		if($fromC != '' && $toC != ''){
 			if(function_exists('iconv')){
-				return iconv($fromC, $toC . '//TRANSLATE', $string);
+				return iconv($fromC, $toC . '//TRANSLIT', $string);
 			} elseif($fromC == 'UTF-8' && $toC == 'ISO-8859-1'){
 				return utf8_decode($string);
 			} elseif($fromC == 'ISO-8859-1' && $toC == 'UTF-8'){

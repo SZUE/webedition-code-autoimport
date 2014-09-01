@@ -437,7 +437,7 @@ var weFileUpload = (function(){
 
 					if(s){
 						this.setInternalProgress(100, i);
-						//document.images[_.fieldName + '_progress_image'].src = '/webEdition/images/fileUpload/balken_gr.gif';
+						document.images[_.fieldName + '_progress_image'].src = '/webEdition/images/fileUpload/balken_gr.gif';
 					} else {
 						document.images[_.fieldName + '_progress_image' + p].src = '/webEdition/images/fileUpload/balken_red.gif';
 					}
@@ -630,7 +630,7 @@ var weFileUpload = (function(){
 				this.form.form.elements["weFileCt"].value = cur.mimePHP;
 				this.form.form.elements["weFileName"].value = cur.file.name;
 				this.form.form.elements["weIsUploadComplete"].value = 1;
-				setTimeout(function(){that.callback();}, 500);
+				setTimeout(function(){that.callback();}, 100);
 			};
 
 			this.processError = function(arg){
@@ -986,7 +986,7 @@ var weFileUpload = (function(){
 
 			this.resetSender = function(){
 				for(var i = 0; i < _.sender.preparedFiles.length; i++){
-					if(!this.isCancelled){
+					if(!this.isCancelled && _.sender.preparedFiles[i]){
 						_.sender.preparedFiles[i].isUploadable = false;
 					} else {
 						_.sender.preparedFiles[i] = null;
@@ -998,6 +998,8 @@ var weFileUpload = (function(){
 				this.totalFiles = _.sender.totalWeight = _.sender.currentWeight = _.sender.currentWeightTag = 0;
 				_.view.elems.footer.setProgress(0);
 				_.view.elems.extProgressDiv.style.display = 'none';
+				_.controller.setWeButtonState('reset_btn', true);
+				_.controller.setWeButtonState('browse_harddisk_btn', true);
 			};
 
 		}

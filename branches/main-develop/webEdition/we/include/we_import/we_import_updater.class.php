@@ -32,7 +32,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		parent::__construct();
 	}
 
-	public function updateObject(&$object){
+	public function updateObject(we_document &$object){
 
 		if($this->debug){
 			t_e("Updating object", $object->ID, (isset($object->Path) ? $object->Path : ''), (isset($object->Table) ? $object->Table : ''));
@@ -53,8 +53,22 @@ class we_import_updater extends we_exim_XMLExIm{
 			}
 		}
 
-		if(isset($object->ClassName) && $object->ClassName == "we_template"){
-			$this->updateTemplate($object);
+		switch(isset($object->ClassName) ? $object->ClassName : ''){
+			case 'we_textDocument'://JS, CSS
+				$this->updateText($object);
+				break;
+			case "we_template":
+				$this->updateTemplate($object);
+				break;
+			case "we_docTypes":
+				$this->updateDocType($object);
+				break;
+			case 'we_object':
+				// update class for embedded object
+				if(preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+|', implode(',', array_keys($object->SerializedArray)))){
+					$this->updateObjectModuleData($object);
+				}
+				break;
 		}
 
 		if($this->debug){
@@ -120,15 +134,11 @@ class we_import_updater extends we_exim_XMLExIm{
 					$newcats[] = $ref->ID;
 				}
 			}
-			if(!empty($newcats)){
+			if($newcats){
 				$object->Category = makeCSVFromArray($newcats);
 			}
 		}
 
-		// update class for embedded object
-		if(isset($object->ClassName) && ($object->ClassName == 'we_object') && preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+|', implode(',', array_keys($object->SerializedArray)))){
-			$this->updateObjectModuleData($object);
-		}
 
 		//update binary elements
 		if(isset($object->elements)){
@@ -139,9 +149,6 @@ class we_import_updater extends we_exim_XMLExIm{
 			$this->updateNavigation($object);
 		}
 
-		if($object->ClassName == "we_docTypes"){
-			$this->updateDocType($object);
-		}
 
 		if($this->debug){
 			t_e("Saving object...");
@@ -290,7 +297,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		if(isset($object->ContentType) && ($object->ContentType == we_base_ContentTypes::WEDOCUMENT || $object->ContentType == we_base_ContentTypes::HTML)){
 			if(isset($object->elements["data"])){
 				if($this->debug){
-					debug("Updating webEdition and html documents for external links\n");
+					t_e("Updating webEdition and html documents for external links\n");
 				}
 				$source = $object->getElement("data");
 				$this->updateSource($this->Patterns->ext_patterns, $source, "Path");
@@ -301,7 +308,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		// update elements serialized data
 		if($object->isBinary() != 1){
 			if($this->debug){
-				debug("Updating serialized data in elements\n");
+				t_e("Updating serialized data in elements\n");
 			}
 			foreach($object->elements as $ek => $ev){
 				if($this->debug){
@@ -325,13 +332,19 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 	}
 
-	private function updateTemplate(&$object){
-		if(!(isset($object->ClassName) && $object->ClassName == "we_template")){
-			return;
+	private function updateText(we_textDocument &$object){
+		if($this->debug){
+			t_e("Updating text-doc source...\n");
 		}
 
+		$source = $object->getElement("data");
+		$this->updateSource(array("/(#WE:)(\d+)(#)/se"), $source, 'ID',FILE_TABLE);
+		$object->setElement("data", $source);
+	}
+
+	private function updateTemplate(we_template &$object){
 		if($this->debug){
-			debug("Updating template source...\n");
+			t_e("Updating template source...\n");
 		}
 
 		$source = $object->getElement("data");
@@ -354,176 +367,157 @@ class we_import_updater extends we_exim_XMLExIm{
 		$object->setElement("data", $source);
 	}
 
-	private function updateObjectModuleData(&$object){
-
-		if(isset($object->ClassName) && ($object->ClassName == "we_object") && preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+|', implode(',', array_keys($object->SerializedArray)))){
-			if($this->debug){
-				debug("Updating object module data...\n");
-			}
-			$new = array();
-			$del = array();
-			foreach($object->SerializedArray as $elkey => $elvalue){
-				if(preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+|', $elkey, $regs)){
-					if(count($regs) > 1){
-						$ref = $this->RefTable->getRef(
-							array(
-								'OldID' => $regs[1],
-								'Table' => OBJECT_TABLE
-							)
-						);
-						if($ref){
-							$new[we_object::QUERY_PREFIX . $ref->ID] = array_merge_recursive($object->SerializedArray[$elkey]);
-						}
-						$del[] = $elkey;
-					}
-				}
-			}
-			foreach($del as $d){
-				unset($object->SerializedArray[$d]);
-			}
-			$object->SerializedArray = array_merge($object->SerializedArray, $new);
-			$object->DefaultValues = serialize($object->SerializedArray);
+	private function updateObjectModuleData(we_object &$object){
+		if($this->debug){
+			t_e("Updating object module data...\n");
 		}
-	}
-
-	private function updateDocType(&$object){
-
-		if($object->ClassName == "we_docTypes"){
-			if($this->debug){
-				debug("Updating doctype object...\n");
-			}
-			// quick fix for fsw
-			if(isset($object->ParentPath) && $object->ParentPath){
-				$_new_id = path_to_id($object->ParentPath);
-				if($_new_id){
-					$object->ParentID = $_new_id;
-				} else {
-					$object->ParentID = 0;
-					$object->ParentPath = '/';
-				}
-			}
-
-			if(isset($object->Templates) && strlen($object->Templates) > 0){
-
-				$_tids = makeArrayFromCSV($object->Templates);
-				$_new_tids = array();
-				foreach($_tids as $_tid){
-					$_ref = $this->RefTable->getRef(
+		$new = $del = $regs = array();
+		foreach($object->SerializedArray as $elkey => $elvalue){
+			if(preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+|', $elkey, $regs)){
+				if(count($regs) > 1){
+					$ref = $this->RefTable->getRef(
 						array(
-							'OldID' => $_tid,
-							'Table' => TEMPLATES_TABLE
+							'OldID' => $regs[1],
+							'Table' => OBJECT_TABLE
 						)
 					);
-					if($_ref){
-						$_new_tids[] = $_ref->ID;
+					if($ref){
+						$new[we_object::QUERY_PREFIX . $ref->ID] = array_merge_recursive($elvalue);
 					}
+					$del[] = $elkey;
 				}
-				$object->Templates = makeCSVFromArray($_new_tids);
 			}
 		}
+		foreach($del as $d){
+			unset($object->SerializedArray[$d]);
+		}
+		$object->SerializedArray = array_merge($object->SerializedArray, $new);
+		$object->DefaultValues = serialize($object->SerializedArray);
 	}
 
-	private function updateNavigation(&$object){
-		if(isset($object->ContentType) && $object->ContentType == 'weNavigation'){
-			if($this->debug){
-				debug("Updating navigation...\n");
-			}
-			if($object->IsFolder){
-				$this->updateField($object, 'LinkID', FILE_TABLE);
-			}
-			if(isset($object->Selection) && $object->Selection == 'dynamic'){
-
-				switch($object->SelectionType){
-
-					case 'doctype':
-						$this->updateField($object, 'DocTypeID', DOC_TYPES_TABLE);
-						$this->updateField($object, 'FolderID', FILE_TABLE);
-						break;
-
-					case 'classname':
-						if(defined('OBJECT_TABLE')){
-							$this->updateField($object, 'ClassID', OBJECT_TABLE);
-							$this->updateField($object, 'FolderID', OBJECT_FILES_TABLE);
-							$this->updateField($object, 'WorkspaceID', OBJECT_FILES_TABLE);
-						}
-						break;
-
-					case 'category':
-						$this->updateField($object, 'FolderID', CATEGORY_TABLE);
-						if($object->LinkSelection == 'intern'){
-							$this->updateField($object, 'UrlID', FILE_TABLE);
-						}
-						break;
-				}
-			}
-
-			if(isset($object->Selection) && $object->Selection == 'static'){
-
-
-
-				switch($object->SelectionType){
-
-					case 'docLink' :
-						$this->updateField($object, 'LinkID', FILE_TABLE);
-						break;
-					case 'objLink' :
-						$this->updateField($object, 'LinkID', OBJECT_FILES_TABLE);
-						break;
-					case 'catLink' :
-						$this->updateField($object, 'LinkID', CATEGORY_TABLE);
-						if($object->LinkSelection == 'intern'){
-							$this->updateField($object, 'UrlID', FILE_TABLE);
-						}
-						break;
-				}
+	private function updateDocType(we_docTypes &$object){
+		if($this->debug){
+			t_e("Updating doctype object...\n");
+		}
+		// quick fix for fsw
+		if(isset($object->ParentPath) && $object->ParentPath){
+			$_new_id = path_to_id($object->ParentPath);
+			if($_new_id){
+				$object->ParentID = $_new_id;
+			} else {
+				$object->ParentID = 0;
+				$object->ParentPath = '/';
 			}
 		}
 
-		if(isset($object->ContentType) && $object->ContentType == 'weNavigationRule'){
+		if(isset($object->Templates) && strlen($object->Templates) > 0){
 
-			$this->updateField($object, 'NavigationID', NAVIGATION_TABLE);
-			$this->updateField($object, 'DoctypeID', DOC_TYPES_TABLE);
-
-			if($object->SelectionType == 'classname'){
-				if(defined('OBJECT_TABLE')){
-					$this->updateField($object, 'FolderID', OBJECT_FILES_TABLE);
-				}
-			} else {
-				$this->updateField($object, 'FolderID', FILE_TABLE);
-			}
-
-			if(defined('OBJECT_TABLE')){
-				$this->updateField($object, 'ClassID', OBJECT_TABLE);
-				$this->updateField($object, 'WorkspaceID', OBJECT_FILES_TABLE);
-			}
-		}
-
-		if(isset($object->ContentType) && ($object->ContentType == 'weNavigation' || $object->ContentType == 'weNavigationRule')){
-			if(isset($object->Categories) && is_array($object->Categories)){
-				$_cats = $object->Categories;
-			} else if(isset($object->Categories)){
-				$_cats = makeArrayFromCSV($object->Categories);
-			} else {
-				$_cats = array();
-			}
-			$_new_cats = array();
-			foreach($_cats as $_cat){
+			$_tids = makeArrayFromCSV($object->Templates);
+			$_new_tids = array();
+			foreach($_tids as $_tid){
 				$_ref = $this->RefTable->getRef(
 					array(
-						'OldID' => isset($object->$_cat) ? $object->$_cat : 0,
-						'Table' => CATEGORY_TABLE
+						'OldID' => $_tid,
+						'Table' => TEMPLATES_TABLE
 					)
 				);
 				if($_ref){
-					$_new_cats[] = $_ref->ID;
-				} else {
-					$_new_cats[] = $_cat;
+					$_new_tids[] = $_ref->ID;
 				}
 			}
+			$object->Templates = makeCSVFromArray($_new_tids);
 		}
 	}
 
-	private function updateField(&$object, $field, $table){
+	private function updateNavigation(we_document &$object){
+		switch($object->ContentType){
+			case 'weNavigation':
+				if($this->debug){
+					t_e("Updating navigation...\n");
+				}
+				if($object->IsFolder){
+					$this->updateField($object, 'LinkID', FILE_TABLE);
+				}
+				switch(isset($object->Selection) ? $object->Selection : ''){
+					case 'dynamic':
+						switch($object->SelectionType){
+							case 'doctype':
+								$this->updateField($object, 'DocTypeID', DOC_TYPES_TABLE);
+								$this->updateField($object, 'FolderID', FILE_TABLE);
+								break;
+
+							case 'classname':
+								if(defined('OBJECT_TABLE')){
+									$this->updateField($object, 'ClassID', OBJECT_TABLE);
+									$this->updateField($object, 'FolderID', OBJECT_FILES_TABLE);
+									$this->updateField($object, 'WorkspaceID', OBJECT_FILES_TABLE);
+								}
+								break;
+
+							case 'category':
+								$this->updateField($object, 'FolderID', CATEGORY_TABLE);
+								if($object->LinkSelection == 'intern'){
+									$this->updateField($object, 'UrlID', FILE_TABLE);
+								}
+								break;
+						}
+						break;
+
+					case 'static':
+						switch($object->SelectionType){
+							case 'docLink' :
+								$this->updateField($object, 'LinkID', FILE_TABLE);
+								break;
+							case 'objLink' :
+								$this->updateField($object, 'LinkID', OBJECT_FILES_TABLE);
+								break;
+							case 'catLink' :
+								$this->updateField($object, 'LinkID', CATEGORY_TABLE);
+								if($object->LinkSelection == 'intern'){
+									$this->updateField($object, 'UrlID', FILE_TABLE);
+								}
+								break;
+						}
+				}
+				break;
+
+			case 'weNavigationRule':
+
+				$this->updateField($object, 'NavigationID', NAVIGATION_TABLE);
+				$this->updateField($object, 'DoctypeID', DOC_TYPES_TABLE);
+
+				if($object->SelectionType == 'classname'){
+					if(defined('OBJECT_TABLE')){
+						$this->updateField($object, 'FolderID', OBJECT_FILES_TABLE);
+					}
+				} else {
+					$this->updateField($object, 'FolderID', FILE_TABLE);
+				}
+
+				if(defined('OBJECT_TABLE')){
+					$this->updateField($object, 'ClassID', OBJECT_TABLE);
+					$this->updateField($object, 'WorkspaceID', OBJECT_FILES_TABLE);
+				}
+		}
+
+		if(isset($object->Categories)){
+			$_cats = is_array($object->Categories) ? $object->Categories : makeArrayFromCSV($object->Categories);
+		} else {
+			$_cats = array();
+		}
+		$_new_cats = array();
+		foreach($_cats as $_cat){
+			$_ref = $this->RefTable->getRef(
+				array(
+					'OldID' => isset($object->$_cat) ? $object->$_cat : 0,
+					'Table' => CATEGORY_TABLE
+				)
+			);
+			$_new_cats[] = ($_ref ? $_ref->ID : $_cat);
+		}
+	}
+
+	private function updateField(we_document &$object, $field, $table){
 
 		$_ref = $this->RefTable->getRef(
 			array(
@@ -537,7 +531,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 	}
 
-	private function updateArray(&$array){
+	private function updateArray(array &$array){
 		foreach($array as $key => $value){
 			// the condition is passed for key=0 ??!!??
 			if(is_array($value)){
@@ -556,7 +550,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 	}
 
-	private function updateSource($patterns, &$source, $field = "ID", $table = FILE_TABLE){
+	private function updateSource(array $patterns, &$source, $field = "ID", $table = FILE_TABLE){
 		if(is_array($source)){ // shop exception - handle array in the content
 			foreach($source as $_k1 => $_item1){
 				if(!is_array($_item1)){

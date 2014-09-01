@@ -648,7 +648,7 @@ class we_folder extends we_root{
 				$path = $this->getPath();
 
 				// creates the folder on the local machine in the root-dir
-				if(!we_util_File::createLocalFolder(($isTemplFolder ? TEMPLATES_PATH : $_SERVER['DOCUMENT_ROOT']), $path)){
+				if(!we_base_file::createLocalFolder(($isTemplFolder ? TEMPLATES_PATH : $_SERVER['DOCUMENT_ROOT']), $path)){
 					return false;
 				}
 				if(!$isTemplFolder && $this->urlMap){
@@ -661,7 +661,7 @@ class we_folder extends we_root{
 				}
 
 				// creates the folder on the local machine in the root-dir+site-dir
-				if(!$isTemplFolder && !we_util_File::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . SITE_DIR, $path)){
+				if(!$isTemplFolder && !we_base_file::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . SITE_DIR, $path)){
 					return false;
 				}
 			default:

@@ -428,12 +428,11 @@ self.focus();
 		}
 
 		if(we_base_request::_(we_base_request::STRING, "import_from") == 'import_upload'){
-			if($maxsize){
-				//FIXME: delete condition when new uploader is stable
+			if($maxsize || $this->fileUploader){
+				//FIXME: delete condition and else branch when new uploader is stable
 				if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
 					if($this->fileUploader){
 						$fileUploaderHead = $this->fileUploader->getCss() . $this->fileUploader->getJs();
-						$alertMaxSize = $this->fileUploader->getMaxUploadSizeText();
 						$inputTypeFile = $this->fileUploader->getHTML();
 					} else {
 						$alertMaxSize = sprintf(g_l('newFile', "[max_possible_size]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB));
@@ -444,8 +443,7 @@ self.focus();
 					if(!(DEFAULT_CHARSET != '')){
 						$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[defaultcharset_warning]"), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
 					}
-					$parts[] = array("headline" => "", "html" => ($this->fileUploader ? $this->fileUploader->getHtmlMaxUploadSizeAlert(600) :
-							we_html_tools::htmlAlertAttentionBox($alertMaxSize, we_html_tools::TYPE_ALERT, 600)), "space" => 0, "noline" => 1);
+					$parts[] = array("headline" => "", "html" => we_fileupload_base::getHtmlAlertBoxesStatic(600), "space" => 0, "noline" => 1);
 					$parts[] = array("headline" => "", "html" => $inputTypeFile, "space" => 0, "noline" => 1);
 					$parts[] = array("headline" => "", "html" => we_html_tools::getPixel(1, 1), "space" => 0, "noline" => 1);
 				} else {
@@ -471,6 +469,7 @@ extra_files_desc=new Array();';
 
 			$files = array();
 			$extra_files = array();
+			$dateformat = g_l('date', '[format][default]');
 			for($i = 0; $i <= 1; $i++){
 				$adddatadir = ($i == 0 ? '' : 'data/');
 				$dstr = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $adddatadir;
@@ -478,34 +477,34 @@ extra_files_desc=new Array();';
 				while(($entry = $d->read())){
 					if($entry != '.' && $entry != '..' && $entry != 'CVS' && $entry != 'download' && $entry != 'tmp' && $entry != 'lastlog.php' && $entry != '.htaccess' && !@is_dir($dstr . $entry)){
 						$filename = $dstr . $entry;
-						$filesize = round(filesize($filename) / 1024, 2);
-						$filedate = date("d.m.Y H:i:s.", filemtime($filename));
-						if(strpos($entry, 'weBackup_') === 0){
-							$ts = str_replace(array('.php', '.xml', '.gz', '.bz', '.zip'), '', preg_replace('|^weBackup_|', '', $entry));
-
-							if(is_numeric($ts) || (substr_count($ts, '_') == 6)){
-								if(!($ts < 1004569200)){
-									$comp = we_base_file::getCompression($entry);
-									$files[$adddatadir . $entry] = g_l('backup', "[backup_form]") . ' ' . date("d.m.Y H:i", $ts) . ($comp && $comp != "none" ? " ($comp)" : "") . " " . $filesize . " KB";
-								} else if((substr_count($ts, '_') == 6)){
-									$comp = we_base_file::getCompression($entry);
-									$_dateParts = explode('__', $ts);
-									$_date = array_reverse(explode('_', $_dateParts[0]));
-									$url = '';
-									if(isset($_date[3])){
-										$url = $_date[3];
-										unset($_date[3]);
-									}
-									$files[$adddatadir . $entry] = g_l('backup', "[backup_form]") . ' ' . ( implode('.', $_date) . ' ' . implode(':', explode('_', $_dateParts[1])) ) . ($url ? ' - ' . $url : '') . ($comp && $comp != "none" ? " ($comp)" : "") . " " . $filesize . " KB";
-								} else {
-									$extra_files[$adddatadir . $entry] = $entry . " $filedate $filesize KB";
-								}
-							} else {
-								$extra_files[$adddatadir . $entry] = $entry . " $filedate $filesize KB";
-							}
-						} else {
-							$extra_files[$adddatadir . $entry] = $entry . " $filedate $filesize KB";
+						$filesize = we_base_file::getHumanFileSize(filesize($filename));
+						$filedate = date($dateformat, filemtime($filename));
+						if(strpos($entry, 'weBackup_') !== 0){
+							$extra_files[$adddatadir . $entry] = $entry . " $filedate $filesize";
+							continue;
 						}
+						$ts = str_replace(array('.php', '.xml', '.gz', '.bz', '.zip'), '', preg_replace('|^weBackup_|', '', $entry));
+
+						if(is_numeric($ts) && !($ts < 1004569200)){//old Backup
+							$comp = we_base_file::getCompression($entry);
+							$files[$adddatadir . $entry] = /* g_l('backup', "[backup_form]") . ' ' . */ date($dateformat, $ts) . ($comp && $comp != "none" ? " ($comp)" : "") . " " . $filesize;
+							continue;
+						}
+
+						if(substr_count($ts, '_') > 5){
+							$matches = array();
+							if(preg_match('|([^_]*)_(\d{4})_(\d{1,2})_(\d{1,2})__(\d{1,2})_(\d{1,2})_?([\d-]*)|', $ts, $matches)){
+								list(, $url, $year, $month, $day, $hour, $min, $wever) = $matches;
+								$filedate = date($dateformat, mktime($hour, $min, 0, $month, $day, $year));
+							} else {
+								$url = $wever = '';
+							}
+							$comp = we_base_file::getCompression($entry);
+							$files[$adddatadir . $entry] = /* g_l('backup', "[backup_form]") . ' ' . */ $filedate . ($url ? ' - ' . $url : '') . ($wever ? ' (WE: ' . str_replace('-', '.', $wever) . ')' : '') . ($comp && $comp != 'none' ? ' (' . $comp . ')' : '') . " " . $filesize;
+							continue;
+						}
+
+						$extra_files[$adddatadir . $entry] = $entry . " $filedate $filesize";
 					}
 				}
 			}
@@ -878,7 +877,7 @@ self.focus();');
 
 		$parts = array(
 			array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(($compression ? g_l('backup', "[filename_compression]") : g_l('backup', "[filename_info]")), we_html_tools::TYPE_INFO, 600, false), "space" => 0, "noline" => 1),
-			array("headline" => g_l('backup', "[filename]") . ":&nbsp;&nbsp;", "html" => we_html_tools::htmlTextInput("filename", 60, "weBackup_" . str_replace('.', '-', $_SERVER['SERVER_NAME']) . '_' . date("Y_m_d__H_i", time()) . ".xml", "", "", "text"), "space" => 100, "noline" => 1)
+			array("headline" => g_l('backup', "[filename]") . ":&nbsp;&nbsp;", "html" => we_html_tools::htmlTextInput("filename", 60, 'weBackup_' . str_replace('.', '-', $_SERVER['SERVER_NAME']) . '_' . date("Y_m_d__H_i", time()) . '_' . str_replace('.', '-', WE_VERSION) . ".xml", "", "", "text"), "space" => 100, "noline" => 1)
 		);
 
 		if($compression){
@@ -1232,7 +1231,15 @@ function press_yes() {
 					case 3:
 						//FIXME: delete condition when new uploader is stable
 						if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
-							$startImportCall = $this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') : "top.body.startImport();";
+							//$startImportCall = $this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') : "top.body.startImport();";
+							if(!(we_fileupload_include::isFallback() || we_fileupload_base::isLegacyMode())){
+								$startImportCall = we_fileupload_include::getJsBtnCmdStatic('upload', 'body', 'top.body.startImport()');
+								$cancelCall = we_fileupload_include::getJsBtnCmdStatic('cancel', 'body');
+							} else {
+								$startImportCall = 'top.body.startImport()';
+								$cancelCall = 'top.close()';
+							}
+
 							if(defined('WORKFLOW_TABLE')){
 								$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined('OBJECT_FILES_TABLE') && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE)) > 0) ?
 										we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) " . $startImportCall . ";") :
@@ -1253,8 +1260,7 @@ function press_yes() {
 						$nextprevbuts = we_html_button::create_button_table(array(
 								we_html_button::create_button("back", "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';"),
 								$nextbut));
-						$buttons = we_html_button::position_yes_no_cancel($nextprevbuts, null, we_html_button::create_button("cancel", "javascript:top.close();"));
-
+						$buttons = we_html_button::position_yes_no_cancel($nextprevbuts, null, we_html_button::create_button("cancel", "javascript:" . $cancelCall));
 
 						$table->setCol(0, 2, null, we_html_tools::getPixel(240, 5));
 						$table->setCol(0, 3, null, $buttons);
@@ -1320,7 +1326,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 					$we_backup_obj->convert_charset = we_base_request::_(we_base_request::BOOL, "convert_charset");
 					$we_backup_obj->export2server = we_base_request::_(we_base_request::BOOL, "export_server");
 					$we_backup_obj->export2send = we_base_request::_(we_base_request::BOOL, "export_send");
-					$we_backup_obj->filename = we_base_request::_(we_base_request::FILE, "filename", 'weBackup_' . time() . ".xml");
+					$we_backup_obj->filename = we_base_request::_(we_base_request::FILE, "filename");
 					$we_backup_obj->compress = we_base_request::_(we_base_request::STRING, 'compress', we_backup_base::NO_COMPRESSION);
 					$we_backup_obj->backup_binary = we_base_request::_(we_base_request::BOOL, "handle_binary");
 

@@ -223,12 +223,15 @@ abstract class we_autoloader{
 			}
 		}
 		//might be a zend registered class:
-		if(!isset(self::$fallBack[$class_name])){
-			//don't load zend extension, if file is in system or fallback
-			self::loadZend($class_name);
-		} else {// add this loader at the end, if class was not yet found
-			spl_autoload_register('we_autoloader::finalLoad', true);
+		if(isset(self::$fallBack[$class_name])){
+			include(WEBEDITION_PATH . self::$fallBack[$class_name]);
+			return true;
 		}
+		//don't load zend extension, if file is in system or fallback
+		self::loadZend($class_name);
+		//} else {// add this loader at the end, if class was not yet found
+		spl_autoload_register('we_autoloader::finalLoad', true);
+		//}
 		//will try next auto-loader
 	}
 

@@ -110,7 +110,7 @@ class we_document extends we_root{
 	function initLanguageFromParent(){
 		$ParentID = $this->ParentID;
 		$i = 0;
-		while(empty($this->Language)){
+		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
 				$this->Language = self::getDefaultLanguage();
@@ -573,7 +573,7 @@ class we_document extends we_root{
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
-	function changeLink($name){
+	function changeLink($name){//FIXME: can we store info in bdid? add info on type, if it is object or file?
 		$this->setElement($name, serialize($_SESSION['weS']['WE_LINK']), 'link');
 		unset($_SESSION['weS']['WE_LINK']);
 	}
@@ -1095,20 +1095,16 @@ class we_document extends we_root{
 				if(!isset($attribs['name'])){
 					return;
 				}
-				$val = $this->getElement($attribs['name'], 'bdid');
-				$val = $val ? $val : $this->getElement($attribs['name']);
+				$val = $this->getElement($attribs['name']);
 				if($this instanceof we_objectFile){
 					$hrefArr = $val ? unserialize($val) : array();
 					return (is_array($hrefArr) ? self::getHrefByArray($hrefArr) : '');
 				}
 				break;
-			case 'object':
-			case 'customer':
-				$val = $this->getElement($attribs['name'], 'bdid');
-				$val = $val ? $val : $this->getElement($attribs['name']);
-				break;
 			default:
-				$val = $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
+				//check bdid first
+				$val = $this->getElement($attribs['name'], 'bdid');
+				$val = $val ? $val : $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
 		}
 
 		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : ($this instanceof we_objectFile ? $this->TableID : ''));
@@ -1541,10 +1537,10 @@ class we_document extends we_root{
 		}
 	}
 
-	private function i_deleteNavigation(){
-		$this->DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE ' . we_navigation_navigation::getNavCondition($this->ID, $this->Table));
-		return true;
-	}
+	/* private function i_deleteNavigation(){
+	  $this->DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE ' . we_navigation_navigation::getNavCondition($this->ID, $this->Table));
+	  return true;
+	  } */
 
 	/**
 	 * get styles for textarea or object
@@ -1595,19 +1591,24 @@ class we_document extends we_root{
 					$text = str_replace($reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . ($doBaseReplace && $foo['isImage'] ? BASE_IMG : '') . $foo['Path'] . ($reg[3] ? '?' : '') . $reg[4], $text);
 				} else {
 					$text = preg_replace(array(
-						'|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '"[^>]*>(.*)</a>|Ui', '|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '"[^>]*>|Ui', '|<img [^>]*src="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '"[^>]*>|Ui'), array(
-						'\1', '', ''), $text);
+						'-<(a|img) [^>]*' . $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
+						'-<(a|img) [^>]*' . $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '(\?|&|&amp;|")[^>]*>-Ui',
+						), array(
+						'\3',
+						''
+						), $text);
 				}
 			}
 		}
-		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '([^" ]+)"/i', $text, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '(\d+),(\d+)"/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				list($imgID, $thumbID) = explode(',', $reg[1]);
+				$imgID = $reg[1];
+				$thumbID = $reg[2];
 				$thumbObj = new we_thumbnail();
 				if($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)){
-					$text = str_replace('src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', 'src="' . ($doBaseReplace ? BASE_IMG : '') . $thumbObj->getOutputPath(false, true) . '"', $text);
+					$text = str_replace('src="' . we_base_link::TYPE_THUMB_PREFIX . $imgID . ',' . $thumbID . '"', 'src="' . ($doBaseReplace ? BASE_IMG : '') . $thumbObj->getOutputPath(false, true) . '"', $text);
 				} else {
-					$text = preg_replace('|<img[^>]+src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '[^>]+>|Ui', '', $text);
+					$text = preg_replace('|<img[^>]+src="' . we_base_link::TYPE_THUMB_PREFIX . $imgID . ',' . $thumbID . '"[^>]+>|Ui', '', $text);
 				}
 			}
 		}
@@ -1623,8 +1624,13 @@ class we_document extends we_root{
 								str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
 								str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
 					} else {
-						$text = preg_replace(array('|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>(.*)</a>|Ui',
-							'|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>|Ui',), array('\1'), $text);
+						$text = preg_replace(array(
+							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
+							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>-Ui',
+							), array(
+							'\1',
+							''
+							), $text);
 					}
 				}
 			}

@@ -89,7 +89,7 @@ class we_binaryDocument extends we_document{
 		$_sitePath = $this->getSitePath();
 		$_realPath = $this->getRealPath();
 		if(!file_exists($_sitePath) && file_exists($_realPath)){
-			we_util_File::copyFile($_realPath, $this->getSitePath());
+			we_base_file::copyFile($_realPath, $this->getSitePath());
 		}
 		if(file_exists($_sitePath) && filesize($_sitePath)){
 			$this->setElement('data', $_sitePath, 'image');
@@ -129,16 +129,16 @@ class we_binaryDocument extends we_document{
 			return false;
 		}
 		if($file != $this->getSitePath()){
-			if(!we_util_File::copyFile($file, $this->getSitePath())){
+			if(!we_base_file::copyFile($file, $this->getSitePath())){
 				return false;
 			}
 		}
-		if(!we_util_File::copyFile($file, $this->getRealPath())){
+		if(!we_base_file::copyFile($file, $this->getRealPath())){
 			return false;
 		}
 		if($this->isMoved()){
-			we_util_File::delete($this->getRealPath(true));
-			we_util_File::delete($this->getSitePath(true));
+			we_base_file::delete($this->getRealPath(true));
+			we_base_file::delete($this->getSitePath(true));
 			$this->rewriteNavigation();
 		}
 		$this->update_filehash();
@@ -150,9 +150,9 @@ class we_binaryDocument extends we_document{
 		$is_ok = false;
 		$file = $this->getElement('data');
 		if($file && file_exists($file)){
-			$is_ok = we_util_File::copyFile($file, $to);
+			$is_ok = we_base_file::copyFile($file, $to);
 			if($this->isMoved()){
-				we_util_File::delete($old);
+				we_base_file::delete($old);
 			}
 		}
 		return $is_ok;

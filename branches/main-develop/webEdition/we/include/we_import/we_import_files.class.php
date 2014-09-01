@@ -38,8 +38,7 @@ class we_import_files{
 	var $degrees = 0;
 	var $categories = '';
 	private $jsRequirementsOk = false;
-	private $useLegacyUpload = false;
-	private $useJsUpload = false;
+	private $isWeFileupload = false;
 	private $maxUploadSizeMB = 8;
 	private $maxUploadSizeB = 0;
 	private $fileNameTemp = '';
@@ -82,8 +81,7 @@ class we_import_files{
 		$this->fileNameTemp = we_base_request::_(we_base_request::RAW, "weFileNameTemp", '');
 		$this->maxUploadSizeMB = defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 8; //FIMXE: 8???
 		$this->maxUploadSizeB = $this->maxUploadSizeMB * 1048576;
-		$this->useLegacyUpload = defined('FILE_UPLOAD_USE_LEGACY') ? FILE_UPLOAD_USE_LEGACY : false;
-		$this->useJsUpload = !USE_JUPLOAD && $this->jsRequirementsOk && !$this->useLegacyUpload;
+		$this->isWeFileupload = !USE_JUPLOAD && $this->jsRequirementsOk && !(defined('FILE_UPLOAD_USE_LEGACY') && FILE_UPLOAD_USE_LEGACY);
 	}
 
 	function getHTML(){
@@ -130,7 +128,7 @@ function we_cmd(){
 		break;
 	}
 }" . 'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace(array("\n", "\r"), " ", $this->_getHiddens("buttons", $this->step + 1) . $fileinput) . '</form>\';
-			') . we_html_element::jsElement(!$this->useJsUpload ? '
+			') . we_html_element::jsElement(!$this->isWeFileupload ? '
 
 function refreshTree() {
 	//FIXME: this won\'t work in current version
@@ -400,7 +398,7 @@ function setApplet() {
 	function getStep2(){
 		$this->savePropsInSession();
 
-		if(!$this->useJsUpload){
+		if(!$this->isWeFileupload){
 			return $this->getStep2Legacy();
 		}
 
@@ -436,8 +434,9 @@ function setApplet() {
 		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') .
 			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
 			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl]"), $maxsize), we_html_tools::TYPE_INFO, 520, false)) .
-			(!$this->useLegacyUpload && !USE_JUPLOAD ? we_html_element::htmlDiv(array('id' => 'desc', 'style' => 'margin-top: 4px;'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[fallback_text]"), we_html_tools::TYPE_ALERT, 520, false)) : '') .
+			((we_fileupload_base::isFallback() || !$this->jsRequirementsOk) && !we_fileupload_base::isLegacyMode() && !USE_JUPLOAD ? we_html_element::htmlDiv(array('id' => 'desc', 'style' => 'margin-top: 4px;'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[fallback_text]"), we_html_tools::TYPE_ALERT, 520, false)) : '') .
 			we_html_element::htmlDiv(array('id' => 'descJupload', 'style' => 'display:none;'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl_jupload]"), $maxsize), we_html_tools::TYPE_INFO, 520, false));
+
 
 		$parts = array(
 			array("headline" => "", "html" => $content, "space" => 0)
@@ -553,7 +552,7 @@ function setApplet() {
 			}
 		}
 
-		if($formcount && $this->useJsUpload){
+		if($formcount && $this->isWeFileupload){
 			$response = array('status' => '', 'fileNameTemp' => '', 'mimePhp' => 'none', 'message' => '', 'completed' => '');
 			if($this->partNum == $this->partCount){
 				//actual file completed
@@ -629,13 +628,16 @@ function cancel() {
 function next() {
 	var cf = top.imgimportcontent;
 
-	if (cf.document.getElementById('start') && top.imgimportcontent.document.getElementById('start').style.display != 'none') {
+	if (cf.document.getElementById('start') && cf.document.getElementById('start') && cf.document.getElementById('start').style.display != 'none') {
 		" . (permissionhandler::hasPerm('EDIT_KATEGORIE') ? "top.imgimportcontent.selectCategories();" : "") . "
 		cf.document.we_startform.jsRequirementsOk.value = " . ($this->jsRequirementsOk ? 1 : 0) . ";
 		cf.document.we_startform.submit();
 	} else {
-		cf.we_FileUpload.startUpload();
+		if(cf.we_FileUpload !== 'undefined'){
+			cf.we_FileUpload.startUpload();
+		}
 	}
+
 }";
 
 		$js = we_html_element::jsElement($js);
@@ -763,7 +765,7 @@ function next() {
 	function importFile(){
 		if(isset($_FILES['we_File']) && strlen($_FILES['we_File']["tmp_name"])){
 			$we_ContentType = getContentTypeFromFile($_FILES['we_File']["name"]);
-			if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($we_ContentType)) || ($this->useJsUpload && $this->partNum == $this->showErrorAtChunkNr)){
+			if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($we_ContentType)) || ($this->isWeFileupload && $this->partNum == $this->showErrorAtChunkNr)){
 
 				return array(
 					'filename' => $_FILES['we_File']['name'], 'error' => 'no_perms'

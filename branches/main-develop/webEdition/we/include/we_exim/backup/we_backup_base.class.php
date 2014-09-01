@@ -597,11 +597,11 @@ abstract class we_backup_base{
 					$dir = $_SERVER['DOCUMENT_ROOT'] . $line["Path"];
 					$sdir = str_replace("\\", "/", dirname($dir));
 					while((!file_exists($sdir)) && ($sdir != "/")){
-						we_util_File::createLocalFolder($sdir);
+						we_base_file::createLocalFolder($sdir);
 						$sdir = str_replace("\\", "/", dirname($sdir));
 					}
 					if(!file_exists($dir)){
-						we_util_File::createLocalFolder($dir);
+						we_base_file::createLocalFolder($dir);
 					}
 				} else {
 					$sdir = str_replace("\\", "/", dirname($_SERVER['DOCUMENT_ROOT'] . $line["Path"]));
@@ -853,8 +853,7 @@ abstract class we_backup_base{
 			$this->backup_db->query('SHOW COLUMNS FROM ' . $this->backup_db->escape($tab));
 			while($this->backup_db->next_record()){
 				if(!in_array(strtolower($this->backup_db->f("Field")), $fnames)){
-					$fupdate[] = "ALTER TABLE " . $this->backup_db->escape($tab) . ' ADD ' . $this->backup_db->f("Field") . ' ' . $this->backup_db->f("Type") . " DEFAULT '" . $this->backup_db->f("Default") . "'" . ($this->backup_db->f("Null") == "YES"
-								? " NOT NULL" : '');
+					$fupdate[] = "ALTER TABLE " . $this->backup_db->escape($tab) . ' ADD ' . $this->backup_db->f("Field") . ' ' . $this->backup_db->f("Type") . " DEFAULT '" . $this->backup_db->f("Default") . "'" . ($this->backup_db->f("Null") == "YES" ? " NOT NULL" : '');
 				}
 			}
 		}
@@ -1093,11 +1092,10 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 	function getDownloadFile(){
 		$download_filename = "weBackup_" . $_SESSION["user"]["Username"] . ".sql";
 		if(copy($this->dumpfilename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename)){
-			we_util_File::insertIntoCleanUp($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename, time());
+			we_base_file::insertIntoCleanUp($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename, time());
 			return $download_filename;
-		} else {
-			return '';
 		}
+		return '';
 	}
 
 	function clearOldTmp(){

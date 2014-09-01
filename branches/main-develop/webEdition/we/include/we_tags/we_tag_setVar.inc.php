@@ -60,7 +60,7 @@ function we_tag_setVar($attribs){
 				if($propertyFrom){
 					$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->$nameFrom) ? $GLOBALS['WE_MAIN_DOC']->$nameFrom : '';
 				} else {
-					$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->elements[$nameFrom . ($typeFrom == 'href' ? we_base_link::MAGIC_INT_LINK : '')]) ?
+					$valueFrom = $GLOBALS['WE_MAIN_DOC']->issetElement($nameFrom . ($typeFrom == 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
 						$GLOBALS['WE_MAIN_DOC']->getField(array('name' => $nameFrom), $typeFrom, true) :
 						'';
 				}
@@ -69,7 +69,7 @@ function we_tag_setVar($attribs){
 				if($propertyFrom){
 					$valueFrom = isset($GLOBALS['we_doc']->$nameFrom) ? $GLOBALS['we_doc']->$nameFrom : '';
 				} else {
-					$valueFrom = isset($GLOBALS['we_doc']->elements[$nameFrom . ($typeFrom == 'href' ? we_base_link::MAGIC_INT_LINK : '')]) ?
+					$valueFrom = $GLOBALS['we_doc']->issetElement($nameFrom . ($typeFrom == 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
 						$GLOBALS['we_doc']->getField(array('name' => $nameFrom), $typeFrom, true) :
 						'';
 				}
@@ -78,7 +78,7 @@ function we_tag_setVar($attribs){
 			case 'document' :
 				$valueFrom = ($propertyFrom ?
 						(isset($GLOBALS['we_' . $from][$formnameFrom]->$nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->$nameFrom : '') :
-						(isset($GLOBALS['we_' . $from][$formnameFrom]->elements[$nameFrom]) ? $GLOBALS['we_' . $from][$formnameFrom]->getElement($nameFrom) : ''));
+						($GLOBALS['we_' . $from][$formnameFrom]->issetElement($nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->getElement($nameFrom) : ''));
 
 				break;
 			case 'sessionfield' :
@@ -97,11 +97,11 @@ function we_tag_setVar($attribs){
 				$nameFrom = we_tag_getPostName($nameFrom);
 				if($typeFrom == 'href'){
 
-					if($GLOBALS['we_doc']->elements[$nameFrom . we_base_link::MAGIC_INT_LINK]['dat']){
+					if($GLOBALS['we_doc']->issetElement($nameFrom . we_base_link::MAGIC_INT_LINK)){
 						$nameFrom .= we_base_link::MAGIC_INT_LINK_PATH;
 					}
 				}
-				$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->elements[$nameFrom]) ? $GLOBALS['WE_MAIN_DOC']->getField(
+				$valueFrom = $GLOBALS['WE_MAIN_DOC']->issetElement($nameFrom) ? $GLOBALS['WE_MAIN_DOC']->getField(
 						array(
 						'name' => $nameFrom
 						), $typeFrom, true) : '';

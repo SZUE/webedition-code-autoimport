@@ -447,12 +447,12 @@ abstract class we_textContentDocument extends we_textDocument{
 		$realPath = $this->getRealPath();
 		$parent = str_replace('\\', '/', dirname($realPath));
 		$cf = array();
-		while(!we_util_File::checkAndMakeFolder($parent, true)){
+		while(!we_base_file::checkAndMakeFolder($parent, true)){
 			$cf[] = $parent;
 			$parent = str_replace('\\', '/', dirname($parent));
 		}
 		for($i = (count($cf) - 1); $i >= 0; $i--){
-			we_util_File::createLocalFolder($cf[$i]);
+			we_base_file::createLocalFolder($cf[$i]);
 		}
 		$doc = $this->i_getDocumentToSave();
 		return parent::i_writeMainDir($doc);

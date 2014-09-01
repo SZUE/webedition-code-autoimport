@@ -48,11 +48,6 @@ class we_htmlDocument extends we_textContentDocument{
 		return parent::i_saveContentDataInDB();
 	}
 
-	public function makeSameNew(){
-		parent::makeSameNew();
-		$this->Icon = 'prog.gif';
-	}
-
 	function i_publInScheduleTable(){
 		return (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ?
 				we_schedpro::publInScheduleTable($this, $this->DB_WE) :
