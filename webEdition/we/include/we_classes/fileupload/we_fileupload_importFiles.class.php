@@ -84,10 +84,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 		$topParts[] = array("headline" => g_l('importFiles', "[select_files]"), "html" => $fileselect, "space" => 130);
 
 		$content = we_html_element::htmlDiv(
-				array("id" => "forms", "style" => "display:block"), (USE_JUPLOAD ? we_html_element::htmlForm(array(
-						"name" => "JUploadForm"
-						), '') : '') .
-				we_html_element::htmlForm(
+				array("id" => "forms", "style" => "display:block"), we_html_element::htmlForm(
 					array(
 					"action" => WEBEDITION_DIR . "we_cmd.php",
 					"name" => "we_startform",
@@ -138,4 +135,5 @@ class we_fileupload_importFiles extends we_fileupload_base{
 			<td>
 		</tr></tbody></table>');
 	}
+
 }
