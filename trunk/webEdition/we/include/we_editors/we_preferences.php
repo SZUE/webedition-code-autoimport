@@ -268,25 +268,24 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 
 				// editor tooltip font has changed - mark all editors to reload!
 				$save_javascript .= '
-					if (!_multiEditorreload) {
-						var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
-							for (frameId in _usedEditors) {
+if (!_multiEditorreload) {
+	var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+		for (frameId in _usedEditors) {
 
-								if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
-									_usedEditors[frameId].getEditorEditPageNr() == ' . we_base_constants::WE_EDITPAGE_CONTENT . ' ) {
+			if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
+				_usedEditors[frameId].getEditorEditPageNr() == ' . we_base_constants::WE_EDITPAGE_CONTENT . ' ) {
 
-									if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-										_usedEditors[frameId].setEditorReloadNeeded(true);
-										_usedEditors[frameId].setEditorIsActive(true);
+				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
+					_usedEditors[frameId].setEditorReloadNeeded(true);
+					_usedEditors[frameId].setEditorIsActive(true);
 
-									} else {
-										_usedEditors[frameId].setEditorReloadNeeded(true);
-									}
-								}
-							}
-					}
-					_multiEditorreload = true;
-					';
+				} else {
+					_usedEditors[frameId].setEditorReloadNeeded(true);
+				}
+			}
+		}
+}
+_multiEditorreload = true;';
 			}
 
 			return;
@@ -300,19 +299,19 @@ function remember_value($settingvalue, $settingname, $comment = ''){
 
 				// complete webEdition reload: anpassen nach Wegfall der Frames
 				$save_javascript .= "
-						// reload current document => reload all open Editors on demand
-						var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
-						for (frameId in _usedEditors) {
+// reload current document => reload all open Editors on demand
+var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+for (frameId in _usedEditors) {
 
-							if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-								_usedEditors[frameId].setEditorReloadAllNeeded(true);
-								_usedEditors[frameId].setEditorIsActive(true);
+	if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
+		_usedEditors[frameId].setEditorReloadAllNeeded(true);
+		_usedEditors[frameId].setEditorIsActive(true);
 
-							} else {
-								_usedEditors[frameId].setEditorReloadAllNeeded(true);
-							}
-						}
-						_multiEditorreload = true;";
+	} else {
+		_usedEditors[frameId].setEditorReloadAllNeeded(true);
+	}
+}
+_multiEditorreload = true;";
 			}
 
 		case 'locale_locales':
@@ -491,7 +490,6 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 					$_file = we_base_preferences::changeSourceCode('define', $_file, 'HTTP_PASSWORD', 'myPassword', false);
 				}
 			}
-
 			return;
 
 		case 'HTTP_USERNAME':
@@ -530,7 +528,6 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 			if(WE_ERROR_MAIL_ADDRESS != $settingvalue){
 				$_file = we_base_preferences::changeSourceCode('define', $_file, 'WE_ERROR_MAIL_ADDRESS', $settingvalue, true, $comment);
 			}
-
 			return;
 
 		case 'ERROR_DOCUMENT_NO_OBJECTFILE':
@@ -626,7 +623,6 @@ function build_dialog($selected_setting = 'ui'){
 
 		case 'ui':
 			//LANGUAGE
-
 			$_settings = array();
 
 			//	Look which languages are installed ...
@@ -2259,9 +2255,7 @@ function formmailBlockOnOff() {
 					return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
 				}');
 
-
 			// FILE UPLOAD
-
 			$_fileuploader_use_legacy = we_html_forms::checkbox(1, get_value('FILE_UPLOAD_USE_LEGACY'), 'newconf[FILE_UPLOAD_USE_LEGACY]', g_l('prefs', '[upload][use_legacy]'), false, 'defaultfont', '');
 			$_fileuploader_max_size = we_html_tools::htmlTextInput('newconf[FILE_UPLOAD_MAX_UPLOAD_SIZE]', 8, get_value('FILE_UPLOAD_MAX_UPLOAD_SIZE'), 255, "", 'number', 150);
 
@@ -2271,9 +2265,8 @@ function formmailBlockOnOff() {
 			$_fileuploader_html2->setCol(2, 0, array('colspan' => 3, 'height' => 10), g_l('prefs', '[upload][maxsize]'));
 			$_fileuploader_html2->setCol(3, 0, null, $_fileuploader_max_size . ' MB');
 
-			$_we_new_folder_mod = get_value("WE_NEW_FOLDER_MOD");
 			$_we_new_folder_mod = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-				we_html_tools::htmlTextInput("newconf[WE_NEW_FOLDER_MOD]", 22, $_we_new_folder_mod, 3, ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
+				we_html_tools::htmlTextInput("newconf[WE_NEW_FOLDER_MOD]", 22, get_value("WE_NEW_FOLDER_MOD"), 3, ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
 				g_l('prefs', '[we_new_folder_mod_hint]') .
 				'</td></tr></table>';
 
@@ -2282,8 +2275,7 @@ function formmailBlockOnOff() {
 			if(class_exists('mysqli', false)){
 				$_db_connect->addOption('mysqli_connect', 'mysqli_connect');
 				$_db_connect->addOption('mysqli_pconnect', 'mysqli_pconnect');
-			}
-			if(function_exists('mysql_connect')){ //only allow old connection method if new is not available
+			} elseif(function_exists('mysql_connect')){ //only allow old connection method if new is not available
 				$_db_connect->addOption('connect', 'connect (deprecated)');
 				$_db_connect->addOption('pconnect', 'pconnect (deprecated)');
 			}
@@ -2319,18 +2311,18 @@ function formmailBlockOnOff() {
 
 			// Generate needed JS
 			$_needed_JavaScript .= we_html_element::jsElement("
-							function set_state_auth() {
-								if (document.getElementsByName('useauthEnabler')[0].checked == true) {
-                                    document.getElementsByName('newconf[useauth]')[0].value = 1;
-									_new_state = false;
-								} else {
-                                    document.getElementsByName('newconf[useauth]')[0].value = 0;
-									_new_state = true;
-								}
+function set_state_auth() {
+	if (document.getElementsByName('useauthEnabler')[0].checked == true) {
+		document.getElementsByName('newconf[useauth]')[0].value = 1;
+		_new_state = false;
+	} else {
+		document.getElementsByName('newconf[useauth]')[0].value = 0;
+		_new_state = true;
+	}
 
-								document.getElementsByName('newconf[HTTP_USERNAME]')[0].disabled = _new_state;
-								document.getElementsByName('newconf[HTTP_PASSWORD]')[0].disabled = _new_state;
-							}");
+	document.getElementsByName('newconf[HTTP_USERNAME]')[0].disabled = _new_state;
+	document.getElementsByName('newconf[HTTP_PASSWORD]')[0].disabled = _new_state;
+}");
 
 			// Check authentication settings  ...
 			$_auth = get_value("HTTP_USERNAME");
@@ -2532,44 +2524,44 @@ function formmailBlockOnOff() {
 
 			// Generate needed JS
 			$_needed_JavaScript = we_html_element::jsElement("
-							function set_state_error_handler() {
-								if (document.getElementsByName('newconf[WE_ERROR_HANDLER]')[0].checked == true) {
-									_new_state = false;
-									_new_style = 'black';
-									_new_cursor = document.all ? 'hand' : 'pointer';
-								} else {
-									_new_state = true;
-									_new_style = 'gray';
-									_new_cursor = '';
-								}
+function set_state_error_handler() {
+	if (document.getElementsByName('newconf[WE_ERROR_HANDLER]')[0].checked == true) {
+		_new_state = false;
+		_new_style = 'black';
+		_new_cursor = document.all ? 'hand' : 'pointer';
+	} else {
+		_new_state = true;
+		_new_style = 'gray';
+		_new_cursor = '';
+	}
 
-								document.getElementsByName('newconf[WE_ERROR_NOTICES]')[0].disabled = _new_state;
-								document.getElementsByName('newconf[WE_ERROR_WARNINGS]')[0].disabled = _new_state;
-								document.getElementsByName('newconf[WE_ERROR_ERRORS]')[0].disabled = _new_state;
-								document.getElementsByName('newconf[WE_ERROR_DEPRECATED]')[0].disabled = _new_state;
+	document.getElementsByName('newconf[WE_ERROR_NOTICES]')[0].disabled = _new_state;
+	document.getElementsByName('newconf[WE_ERROR_WARNINGS]')[0].disabled = _new_state;
+	document.getElementsByName('newconf[WE_ERROR_ERRORS]')[0].disabled = _new_state;
+	document.getElementsByName('newconf[WE_ERROR_DEPRECATED]')[0].disabled = _new_state;
 
-								document.getElementById('label_newconf[WE_ERROR_NOTICES]').style.color = _new_style;
-								document.getElementById('label_newconf[WE_ERROR_WARNINGS]').style.color = _new_style;
-								document.getElementById('label_newconf[WE_ERROR_ERRORS]').style.color = _new_style;
-								document.getElementById('label_newconf[WE_ERROR_DEPRECATED]').style.color = _new_style;
+	document.getElementById('label_newconf[WE_ERROR_NOTICES]').style.color = _new_style;
+	document.getElementById('label_newconf[WE_ERROR_WARNINGS]').style.color = _new_style;
+	document.getElementById('label_newconf[WE_ERROR_ERRORS]').style.color = _new_style;
+	document.getElementById('label_newconf[WE_ERROR_DEPRECATED]').style.color = _new_style;
 
-								document.getElementById('label_newconf[WE_ERROR_NOTICES]').style.cursor = _new_cursor;
-								document.getElementById('label_newconf[WE_ERROR_WARNINGS]').style.cursor = _new_cursor;
-								document.getElementById('label_newconf[WE_ERROR_ERRORS]').style.cursor = _new_cursor;
-								document.getElementById('label_newconf[WE_ERROR_DEPRECATED]').style.cursor = _new_cursor;
+	document.getElementById('label_newconf[WE_ERROR_NOTICES]').style.cursor = _new_cursor;
+	document.getElementById('label_newconf[WE_ERROR_WARNINGS]').style.cursor = _new_cursor;
+	document.getElementById('label_newconf[WE_ERROR_ERRORS]').style.cursor = _new_cursor;
+	document.getElementById('label_newconf[WE_ERROR_DEPRECATED]').style.cursor = _new_cursor;
 
-								document.getElementsByName('newconf[WE_ERROR_SHOW]')[0].disabled = _new_state;
-								document.getElementsByName('newconf[WE_ERROR_LOG]')[0].disabled = _new_state;
-								document.getElementsByName('newconf[WE_ERROR_MAIL]')[0].disabled = _new_state;
+	document.getElementsByName('newconf[WE_ERROR_SHOW]')[0].disabled = _new_state;
+	document.getElementsByName('newconf[WE_ERROR_LOG]')[0].disabled = _new_state;
+	document.getElementsByName('newconf[WE_ERROR_MAIL]')[0].disabled = _new_state;
 
-								document.getElementById('label_newconf[WE_ERROR_SHOW]').style.color = _new_style;
-								document.getElementById('label_newconf[WE_ERROR_LOG]').style.color = _new_style;
-								document.getElementById('label_newconf[WE_ERROR_MAIL]').style.color = _new_style;
+	document.getElementById('label_newconf[WE_ERROR_SHOW]').style.color = _new_style;
+	document.getElementById('label_newconf[WE_ERROR_LOG]').style.color = _new_style;
+	document.getElementById('label_newconf[WE_ERROR_MAIL]').style.color = _new_style;
 
-								document.getElementById('label_newconf[WE_ERROR_SHOW]').style.cursor = _new_cursor;
-								document.getElementById('label_newconf[WE_ERROR_LOG]').style.cursor = _new_cursor;
-								document.getElementById('label_newconf[WE_ERROR_MAIL]').style.cursor = _new_cursor;
-							}");
+	document.getElementById('label_newconf[WE_ERROR_SHOW]').style.cursor = _new_cursor;
+	document.getElementById('label_newconf[WE_ERROR_LOG]').style.cursor = _new_cursor;
+	document.getElementById('label_newconf[WE_ERROR_MAIL]').style.cursor = _new_cursor;
+}");
 
 			/**
 			 * Error handler
@@ -2670,28 +2662,28 @@ function formmailBlockOnOff() {
 			}
 
 			$js = we_html_element::jsElement('
-            mainXhtmlFields  = Array("setXhtml_remove_wrong","setXhtml_show_wrong");
-            showXhtmlFields = Array("setXhtml_show_wrong_text","setXhtml_show_wrong_js","setXhtml_show_wrong_error_log");
+mainXhtmlFields  = Array("setXhtml_remove_wrong","setXhtml_show_wrong");
+showXhtmlFields = Array("setXhtml_show_wrong_text","setXhtml_show_wrong_js","setXhtml_show_wrong_error_log");
 
-            function disable_xhtml_fields(val,fields){
-                for(i=0;i<fields.length;i++){
-                    elem = document.forms[0][fields[i]];
-                    label = document.getElementById("label_" + fields[i]);
-                    if(val == 1){
-                        elem.disabled = false;
-                        label.style.color = "black";
-                        label.style.cursor = document.all ? "hand" : "pointer";
-                    } else {
-                        elem.disabled = true;
-                        label.style.color = "grey";
-                        label.style.cursor = "";
-                    }
-                }
-            }
+function disable_xhtml_fields(val,fields){
+		for(i=0;i<fields.length;i++){
+				elem = document.forms[0][fields[i]];
+				label = document.getElementById("label_" + fields[i]);
+				if(val == 1){
+						elem.disabled = false;
+						label.style.color = "black";
+						label.style.cursor = document.all ? "hand" : "pointer";
+				} else {
+						elem.disabled = true;
+						label.style.color = "grey";
+						label.style.cursor = "";
+				}
+		}
+}
 
-            function set_xhtml_field(val, field){
-                document.forms[0][field].value = (val ? 1 : 0);
-            }');
+function set_xhtml_field(val, field){
+		document.forms[0][field].value = (val ? 1 : 0);
+}');
 
 			//  activate xhtml_debug
 			$_xhtml_debug = we_html_forms::checkbox(1, get_value('XHTML_DEBUG'), 'setXhtml_debug', g_l('prefs', '[xhtml_debug_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[XHTML_DEBUG]\');disable_xhtml_fields(this.checked, mainXhtmlFields);disable_xhtml_fields((document.forms[0][\'setXhtml_show_wrong\'].checked && this.checked), showXhtmlFields);') .
@@ -2739,20 +2731,20 @@ function formmailBlockOnOff() {
 			$customer_table->setCol($row, 0, array('class' => 'defaultfont', 'width' => '20px'), '');
 			$customer_table->setCol($row, 1, array('class' => 'defaultfont', 'colspan' => 5), g_l('prefs', '[security][customer][disableLogins]') . ':');
 			$customer_table->setCol($row, 6, array('width' => 300));
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
 			$customer_table->setCol($row, 2, array('width' => '20px'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'width:2em;text-align:center'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'text-align:center;'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
 
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements['SECURITY_LIMIT_CUSTOMER_REDIRECT_text'].value");
@@ -2770,11 +2762,11 @@ function formmailBlockOnOff() {
 
 			$customer_table->setCol($row, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array(), 's');
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
 
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('SECURITY_DELETE_SESSION')));
 
