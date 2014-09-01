@@ -39,7 +39,7 @@ class we_fileupload_include extends we_fileupload_base{
 	const MISSING_DOC_ROOT = true;
 	const USE_FILENAME_FROM_UPLOAD = true;
 	const USE_LEGACY_FOR_BACKUP = false;
-	const USE_LEGACY_FOR_WEIMPORT = true;
+	const USE_LEGACY_FOR_WEIMPORT = false;
 
 	public function __construct($name, $contentName = '', $footerName = '', $formName = '', $uploadBtnName = '', $callback = 'document.forms[0].submit()', $fileselectOnclick = '', $width = 400, $isDragAndDrop = true, $isInternalProgress = false, $internalProgressWidth = 0, $acceptedMime = '', $acceptedExt = '', $forbiddenMime = '', $forbiddenExt = '', $externalProgress = array(), $maxUploadSize = -1){
 		parent::__construct($name, $width, $maxUploadSize, $isDragAndDrop);
