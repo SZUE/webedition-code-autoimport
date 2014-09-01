@@ -1,7 +1,10 @@
 <?php
-
 /**
  * webEdition SDK
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of the webEdition SDK. The webEdition SDK is
  * free software; you can redistribute it and/or modify
@@ -30,7 +33,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_JavaMenu extends we_ui_abstract_AbstractElement{
-
 	/**
 	 * _entries attribute
 	 *
