@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -375,15 +374,14 @@ if(defined('OBJECT_TABLE')){
 	$_seltype['classname'] = g_l('cockpit', '[objects]');
 }
 
-$tree = new we_export_tree();
-$tree->init('treeCmd.php', 'top', 'top', 'cmd');
+$tree = new we_export_tree('treeCmd.php', 'top', 'top', 'cmd');
 
 $divStatic = we_html_element::htmlDiv(
 		array(
 		"id" => "static", "style" => ($_selection ? "display:block;" : "display:none;")
 		), we_html_element::htmlDiv(array(
 			"id" => "treeContainer"
-			), $tree->getHTMLMultiExplorer(420, 180)) . "<iframe name=\"cmd\" src=\"about:blank\" style=\"visibility:hidden; width: 0px; height: 0px;\"></iframe>");
+			), $tree->getHTMLMultiExplorer(420, 180,false)) . "<iframe name=\"cmd\" src=\"about:blank\" style=\"visibility:hidden; width: 0px; height: 0px;\"></iframe>");
 
 $captions = array();
 if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
@@ -422,28 +420,27 @@ $preview_button = we_html_button::create_button("preview", "javascript:preview()
 $cancel_button = we_html_button::create_button("close", "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-$sTblWidget = we_html_multiIconBox::getHTML(
-		"mdcProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[my_documents]'));
+$sTblWidget = we_html_multiIconBox::getHTML("mdcProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[my_documents]'));
 
-print we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[my_documents]')) . weSuggest::getYuiFiles() . STYLESHEET .
-			we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-			we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsElement($jsPrefs . $jsCode)) .
-		we_html_element::htmlBody(
-			array(
-			"class" => "weDialogBody", "onload" => "init();startInit();"
-			), we_html_element::htmlForm(
-				"", we_html_element::htmlHidden(array(
-					"name" => "table", "value" => ""
-				)) . we_html_element::htmlHidden(array(
-					"name" => "FolderID", "value" => 0
-				)) . we_html_element::htmlHidden(
-					array(
-						"name" => "CategoriesControl",
-						"value" => we_base_request::_(we_base_request::INT, 'CategoriesCount', 0)
-				)) . $sTblWidget . we_html_element::jsElement($jsTree))));
+echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
+	we_html_element::htmlHead(
+		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[my_documents]')) . weSuggest::getYuiFiles() . STYLESHEET .
+		we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+		we_html_element::jsScript(JS_DIR . "windows.js") .
+		we_html_element::jsElement($jsPrefs . $jsCode)) .
+	we_html_element::htmlBody(
+		array(
+		"class" => "weDialogBody", "onload" => "init();startInit();"
+		), we_html_element::htmlForm(
+			"", we_html_element::htmlHidden(array(
+				"name" => "table", "value" => ""
+			)) . we_html_element::htmlHidden(array(
+				"name" => "FolderID", "value" => 0
+			)) . we_html_element::htmlHidden(
+				array(
+					"name" => "CategoriesControl",
+					"value" => we_base_request::_(we_base_request::INT, 'CategoriesCount', 0)
+			)) . $sTblWidget . we_html_element::jsElement($jsTree))));
 if($showAC){
 	print $yuiSuggest->getYuiCss();
 	print $yuiSuggest->getYuiJs();

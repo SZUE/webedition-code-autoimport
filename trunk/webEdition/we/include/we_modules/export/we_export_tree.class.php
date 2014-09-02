@@ -24,6 +24,10 @@
  */
 class we_export_tree extends weMainTree{
 
+	public function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
+		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
+	}
+
 	function getJSInfo(){
 		return 'function info(text) {}';
 	}
@@ -168,41 +172,43 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 				top.content.hot=1;
 			}
 		}
-		if(!document.images) drawTree();
+		if(!document.images){
+		 drawTree();
+		}
 		}';
 	}
 
-	function getHTMLMultiExplorer($width = 500, $height = 250){
+	function getHTMLMultiExplorer($width = 500, $height = 250, $useSelector = true){
 		$js = $this->getJSTreeCode() . we_html_element::jsElement('
-			function populate(id,table){
+function populate(id,table){
 
-			}
+}
 
-			function setHead(tab){
-				' . $this->topFrame . '.table=tab;
-				' . $this->topFrame . '.document.we_form.table.value=tab;
-				setTimeout("' . $this->topFrame . '.startTree()",100);
-			}
+function setHead(tab){
+	' . $this->topFrame . '.table=tab;
+	' . $this->topFrame . '.document.we_form.table.value=tab;
+	setTimeout("' . $this->topFrame . '.startTree()",100);
+}
 
-			var SelectedItems= new Array();
-			SelectedItems["' . FILE_TABLE . '"]=new Array();' .
+var SelectedItems= new Array();
+SelectedItems["' . FILE_TABLE . '"]=new Array();' .
 				(defined('OBJECT_FILES_TABLE') ? (
 					'SelectedItems["' . OBJECT_FILES_TABLE . '"]=new Array();
-				SelectedItems["' . OBJECT_TABLE . '"]=new Array();
-				') : '') . '
+	SelectedItems["' . OBJECT_TABLE . '"]=new Array();
+	') : '') . '
 
-			SelectedItems["' . TEMPLATES_TABLE . '"]=new Array();
+SelectedItems["' . TEMPLATES_TABLE . '"]=new Array();
 
-			var openFolders= new Array();
-			openFolders["' . FILE_TABLE . '"]="";' .
+var openFolders= new Array();
+openFolders["' . FILE_TABLE . '"]="";' .
 				(defined('OBJECT_FILES_TABLE') ? ('
-			openFolders["' . OBJECT_FILES_TABLE . '"]="";
-			openFolders["' . OBJECT_TABLE . '"]="";
-			') : '') . '
-			openFolders["' . TEMPLATES_TABLE . '"]="";
+openFolders["' . OBJECT_FILES_TABLE . '"]="";
+openFolders["' . OBJECT_TABLE . '"]="";
+') : '') . '
+openFolders["' . TEMPLATES_TABLE . '"]="";
 
 
-		' . $this->getJSStartTree());
+' . $this->getJSStartTree());
 
 		$style_code = "";
 		if(isset($this->SelectionTree->styles)){
@@ -211,29 +217,32 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 			}
 		}
 
-		$header = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+		if($useSelector){
+			$header = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 
-		$header->setCol(0, 0, array("bgcolor" => "white"), we_html_tools::getPixel(5, 5));
+			$header->setCol(0, 0, array("bgcolor" => "white"), we_html_tools::getPixel(5, 5));
+			$captions = array();
 
-		$captions = array();
+			if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
+				$captions[FILE_TABLE] = g_l('export', "[documents]");
+			}
+			if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
+				$captions[TEMPLATES_TABLE] = g_l('export', "[templates]");
+			}
+			if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+				$captions[OBJECT_FILES_TABLE] = g_l('export', "[objects]");
+			}
+			if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
+				$captions[OBJECT_TABLE] = g_l('export', "[classes]");
+			}
 
-		if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
-			$captions[FILE_TABLE] = g_l('export', "[documents]");
+			$header->setColContent(1, 0, we_html_tools::htmlSelect('headerSwitch', $captions, 1, we_base_request::_(we_base_request::RAW, 'headerSwitch', 0), false, array('onchange' => "setHead(this.value);"), 'value', $width));
+			$header->setColContent(2, 0, we_html_tools::getPixel(5, 5));
+			$header = $header->getHtml();
+		} else {
+			$header = '';
 		}
-		if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
-			$captions[TEMPLATES_TABLE] = g_l('export', "[templates]");
-		}
-		if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
-			$captions[OBJECT_FILES_TABLE] = g_l('export', "[objects]");
-		}
-		if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
-			$captions[OBJECT_TABLE] = g_l('export', "[classes]");
-		}
-
-		$header->setColContent(1, 0, we_html_tools::htmlSelect('headerSwitch', $captions, 1, we_base_request::_(we_base_request::RAW, 'headerSwitch', 0), false, array('onchange' => "setHead(this.value);"), 'value', $width));
-		$header->setColContent(2, 0, we_html_tools::getPixel(5, 5));
-
-		return $js . $header->getHtml() . we_html_element::htmlDiv(array('id' => 'treetable', 'class' => 'blockwrapper', 'style' => 'width: ' . $width . 'px; height: ' . $height . 'px; border:1px #dce6f2 solid;'), '');
+		return $js . $header . we_html_element::htmlDiv(array('id' => 'treetable', 'class' => 'blockWrapper', 'style' => 'width: ' . $width . 'px; height: ' . $height . 'px; border:1px #dce6f2 solid;'), ''); //fixme:
 	}
 
 	private static function getQueryParents($path){
@@ -251,8 +260,7 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 		$DB_WE = new DB_WE();
 		$where = ' WHERE  ParentID=' . intval($ParentID) . ' AND((1' . we_users_util::makeOwnersSql() . ')' . $GLOBALS['wsQuery'] . ')';
 		//if($GLOBALS['table']==FILE_TABLE) $where .= " AND (ClassName='we_webEditionDocument' OR ClassName='we_folder')";
-		$elem = 'ID,ParentID,Path,Text,Icon,IsFolder,ModDate' . (($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE))
-					? ",Published" : "") . ((defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) ? ",IsClassFolder" : "");
+		$elem = 'ID,ParentID,Path,Text,Icon,IsFolder,ModDate' . (($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE)) ? ",Published" : "") . ((defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) ? ",IsClassFolder" : "");
 
 		switch($table){
 			case FILE_TABLE :

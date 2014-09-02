@@ -514,7 +514,7 @@ function we_submit(){
 			),
 			array(
 				"headline" => "",
-				"html" => $header->getHtml() . we_html_element::htmlDiv(array("id" => "treetable", "class" => "blockwrapper", "style" => "width: 540px; height: 250px; border:1px #dce6f2 solid;"), ""),
+				"html" => $header->getHtml() . we_html_element::htmlDiv(array("id" => "treetable", "class" => "blockWrapper", "style" => "width: 540px; height: 250px; border:1px #dce6f2 solid;"), ""),
 				"space" => 0
 			)
 		);
