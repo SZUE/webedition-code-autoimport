@@ -392,7 +392,7 @@ self.focus();';
 			we_html_element::htmlHidden(array("name" => "sd", "value" => 0,));
 
 		if($user_object){
-			if(($oldTab = we_base_request::_(we_base_request::INT, 'oldtab')) !== false && ($oldBranch = we_base_request::_(we_base_request::INT, 'old_perm_branch')) !== false){
+			if(($oldTab = we_base_request::_(we_base_request::INT, 'oldtab')) !== false && ($oldBranch = we_base_request::_(we_base_request::STRING, 'old_perm_branch')) !== false){
 
 				$user_object->preserveState($oldTab, $oldBranch);
 				$_SESSION["user_session_data"] = $user_object->getState();
