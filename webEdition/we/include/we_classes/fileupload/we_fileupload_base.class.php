@@ -111,7 +111,8 @@ abstract class we_fileupload_base{
 	}
 
 	public static function isFallback(){
-		return we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10;
+		return (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10) ||
+			(we_base_browserDetect::isSafari() && intval(we_base_browserDetect::getBrowserVersion()) < 7);
 	}
 
 	public static function isLegacyMode(){
