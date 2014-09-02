@@ -17,5 +17,5 @@ CREATE TABLE ###TBLPREFIX###tblLink (
   DocumentTable enum('tblFile','tblTemplates','tblWebUser') NOT NULL,
   PRIMARY KEY (CID),
   KEY DID (DID,DocumentTable),
-  KEY Name (Name(4)),
+  KEY Name (Name(4))
 ) ENGINE=MyISAM;
