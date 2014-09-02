@@ -24,7 +24,6 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
-require_once (WE_INCLUDES_PATH . 'we_widgets/dlg/tree.inc.php');
 
 we_html_tools::protect();
 $yuiSuggest = new weSuggest();
