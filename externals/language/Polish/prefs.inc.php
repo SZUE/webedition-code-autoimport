@@ -414,3 +414,4 @@ The difference between symmetric encryption and hash is, that it is possible to 
 	'xhtml_show_wrong_js_html'=>'Jako komunikat JavaScript',
 	'xhtml_show_wrong_text_html'=>'Jako tekst',
 	'yes'=>'yes',
+);
