@@ -53,7 +53,7 @@ $parts = array(
 		"noline" => 1),
 	array(
 		"headline" => "",
-		"html" => we_html_element::htmlDiv(array("class" => "blockwrapper", "style" => "width: 475px; height: 350px; border:1px #dce6f2 solid;"), $table->getHtml()),
+		"html" => we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 475px; height: 350px; border:1px #dce6f2 solid;"), $table->getHtml()),
 		"space" => 10),
 );
 

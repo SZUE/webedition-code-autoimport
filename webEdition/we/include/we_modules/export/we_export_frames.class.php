@@ -399,7 +399,7 @@ function closeAllType(){
 		return array(
 			array(
 				"headline" => '',
-				"html" => we_html_element::htmlDiv(array('class' => 'blockwrapper', 'style' => 'width: 650px; height: 400px; border:1px #dce6f2 solid;', 'id' => 'log'), ''),
+				"html" => we_html_element::htmlDiv(array('class' => 'blockWrapper', 'style' => 'width: 650px; height: 400px; border:1px #dce6f2 solid;', 'id' => 'log'), ''),
 				"space" => 0)
 		);
 	}
