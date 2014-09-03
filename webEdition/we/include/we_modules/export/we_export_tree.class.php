@@ -236,13 +236,13 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 				$captions[OBJECT_TABLE] = g_l('export', "[classes]");
 			}
 
-			$header->setColContent(1, 0, we_html_tools::htmlSelect('headerSwitch', $captions, 1, we_base_request::_(we_base_request::RAW, 'headerSwitch', 0), false, array('onchange' => "setHead(this.value);"), 'value', $width));
+			$header->setColContent(1, 0, we_html_tools::htmlSelect('headerSwitch', $captions, 1, we_base_request::_(we_base_request::TABLE, 'headerSwitch', 0), false, array('onchange' => "setHead(this.value);"), 'value', $width));
 			$header->setColContent(2, 0, we_html_tools::getPixel(5, 5));
 			$header = $header->getHtml();
 		} else {
 			$header = '';
 		}
-		return $js . $header . we_html_element::htmlDiv(array('id' => 'treetable', 'class' => 'blockWrapper', 'style' => 'width: ' . $width . 'px; height: ' . $height . 'px; border:1px #dce6f2 solid;'), ''); //fixme:
+		return $js . $header . we_html_element::htmlDiv(array('id' => 'treetable', 'class' => 'blockWrapper', 'style' => 'width: ' . $width . 'px; height: ' . $height . 'px; border:1px #dce6f2 solid;'), '');
 	}
 
 	private static function getQueryParents($path){
