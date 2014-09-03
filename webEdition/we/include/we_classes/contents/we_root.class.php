@@ -582,7 +582,7 @@ abstract class we_root extends we_class{
 
 	/* get the data from an element */
 
-	function getElement($name, $key = 'dat', $default = ''){
+	function getElement($name, $key = 'dat', $default = ''){//FIXME should we bother bdid?
 		return (isset($this->elements[$name][$key]) ? $this->elements[$name][$key] : $default);
 	}
 
