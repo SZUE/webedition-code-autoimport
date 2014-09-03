@@ -95,14 +95,14 @@ function we_isFieldNotEmpty($attribs){
 				case 'we_object_listview':
 				case 'we_object_tag':
 					$hrefArr = $GLOBALS['lv']->f($match) ? unserialize($GLOBALS['lv']->f($match)) : array();
-					if(!is_array($hrefArr)){
-						$hrefArr = array();
-					}
-					$hreftmp = trim(we_document::getHrefByArray($hrefArr));
-					if(substr($hreftmp, 0, 1) == '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))){
+					if(!$hrefArr){
 						return false;
 					}
-					return (bool) $hreftmp;
+					$hreftmp = trim(we_document::getHrefByArray($hrefArr));
+					if(!$hreftmp || $hreftmp{0} === '/' || (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))){
+						return false;
+					}
+					return true;
 			}
 
 			// we must check $match . we_base_link::MAGIC_INT_LINK for block-Postfix instead of $match (which exists only for href type = ext): #6422

@@ -65,9 +65,9 @@ class we_versions_version{
 	protected $ExtraTemplates;
 	protected $MasterTemplateID;
 	protected $TableID;
-	protected $ObjectID;//FIXME: remove??
+	protected $ObjectID; //FIXME: remove??
 	protected $IsClassFolder;
-	protected $IsNotEditable;//FIXME: remove??
+	protected $IsNotEditable; //FIXME: remove??
 	protected $Charset;
 	protected $active;
 	protected $fromScheduler;
@@ -1108,11 +1108,10 @@ class we_versions_version{
 
 			foreach($tblversionsFields as $fieldName){
 				if($fieldName != 'ID'){
-					if(isset($document[$fieldName])){
-						$set[$fieldName] = $document[$fieldName];
-					} else {
-						$set[$fieldName] = $this->makePersistentEntry($fieldName, $status, $document, $documentObj);
-					}
+					$set[$fieldName] = (isset($document[$fieldName]) ?
+							$document[$fieldName] :
+							$this->makePersistentEntry($fieldName, $status, $document, $documentObj)
+						);
 				}
 			}
 
@@ -1338,8 +1337,7 @@ class we_versions_version{
 				$entry = ($modConstants ? $modConstants : '');
 				break;
 			case 'modifierID':
-				$modifierID = (isset($_SESSION['user']['ID'])) ? $_SESSION['user']['ID'] : '';
-				$entry = $modifierID;
+				$entry = (isset($_SESSION['user']['ID'])) ? $_SESSION['user']['ID'] : '';
 				break;
 			case 'IP':
 				$ip = $_SERVER['REMOTE_ADDR'];
