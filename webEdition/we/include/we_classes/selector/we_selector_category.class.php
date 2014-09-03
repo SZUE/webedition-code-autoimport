@@ -882,8 +882,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 			we_html_tools::protect();
 			echo we_html_tools::getHtmlTop() .
 			we_html_element::jsElement($js . 'top.setDir(top.fsheader.document.we_form.elements[\'lookin\'].value);' .
-				($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_ok]"), $category), we_message_reporting::WE_MESSAGE_NOTICE)
-						: we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_notok]"), $category), we_message_reporting::WE_MESSAGE_ERROR) )
+				($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_ok]"), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_notok]"), $category), we_message_reporting::WE_MESSAGE_ERROR) )
 			) .
 			'</head><body></body></html>';
 		}
@@ -892,8 +891,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 	function printPropertiesHTML(){
 		$showPrefs = we_base_request::_(we_base_request::INT, 'catid', 0);
 
-		$path = '';
-		$title = '';
+		$path = $title = '';
 		$variant = isset($_SESSION['weS']["we_catVariant"]) ? $_SESSION['weS']["we_catVariant"] : "default";
 		$_SESSION['weS']["we_catVariant"] = $variant;
 		$description = "";
@@ -983,8 +981,9 @@ function we_checkName() {
 	<form onsubmit="weWysiwygSetHiddenText();"; action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />
 		' . $table->getHtml() . "<br/>" . $ta . "<br/>" . $saveBut . '
 	</div>' : '' ) .
-		$yuiSuggest->getYuiCss() .
-		$yuiSuggest->getYuiJs() .
+		(isset($yuiSuggest) ?
+			$yuiSuggest->getYuiCss() .
+			$yuiSuggest->getYuiJs() : '') .
 		'</body></html>';
 	}
 
