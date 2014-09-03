@@ -99,7 +99,8 @@ function we_isFieldNotEmpty($attribs){
 						return false;
 					}
 					$hreftmp = trim(we_document::getHrefByArray($hrefArr));
-					if(!$hreftmp || $hreftmp{0} === '/' || (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))){
+					p_r($hreftmp );
+					if(!$hreftmp || $hreftmp === '/' || (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))){
 						return false;
 					}
 					return true;
