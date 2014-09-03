@@ -148,8 +148,8 @@ class we_dialog_image extends we_dialog_base{
 	function initByHttp(){
 		we_dialog_base::initByHttp();
 		$src = $this->getHttpVar(we_base_request::URL, 'src');
-		$width = $this->getHttpVar(we_base_request::INT, 'width');
-		$height = $this->getHttpVar(we_base_request::INT, 'height');
+		$width = $this->getHttpVar(we_base_request::UNIT, 'width');
+		$height = $this->getHttpVar(we_base_request::UNIT, 'height');
 		$hspace = $this->getHttpVar(we_base_request::INT, 'hspace');
 		$vspace = $this->getHttpVar(we_base_request::INT, 'vspace');
 		$class = $this->getHttpVar(we_base_request::STRING, 'class');
