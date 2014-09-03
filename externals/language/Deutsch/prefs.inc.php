@@ -294,7 +294,7 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 		'crypt'=>'Sitzung für jeden Benutzer transparent verschlüsseln',
 		'information'=>'webEdition kann selbst die Verwaltung von php-Sessions übernehmen. Die Sitzungen werden dann in der Datenbank gespeichert. Zusätzlich besteht die Möglichkeit die Sitzungsdaten pro Sitzung transparent zu verschlüsseln (empfohlen). Beachten Sie daß jede Änderung der Einstellungen hier ALLE angemeldeten Benutzer UND Kunden aus dem System wirft!',
 		'time'=>'Gültigkeit der Sitzung in Sekunden',
-		'title'=>'Sessionmanagement',
+		'title'=>'WE-Sessionmanagement',
 	),
 	'show'=>'anzeigen',
 	'show_debug_frame'=>'Debug-Frame anzeigen',
