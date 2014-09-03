@@ -141,6 +141,7 @@ function save_all_values(){
 
 function build_dialog($selected_setting = 'ui'){
 	$DB_WE = $GLOBALS['DB_WE'];
+	$id = $GLOBALS['id'];
 
 	switch($selected_setting){
 		case 'save':
@@ -214,7 +215,7 @@ function add_thumbnail() {';
 
 function delete_thumbnail() {" .
 				((permissionhandler::hasPerm('ADMINISTRATOR')) ?
-					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . $id)) . "');
+					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($id))) . "');
 
 		if (deletion == true) {
 			self.location = '" . $GLOBALS['reloadUrl'] . "&deletethumbnail=" . $id . "';
