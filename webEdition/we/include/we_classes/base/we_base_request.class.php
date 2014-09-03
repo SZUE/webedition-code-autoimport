@@ -86,7 +86,7 @@ class we_base_request{
 					base64_decode(urldecode(substr($var, 9))) :
 					$var;
 			case self::UNIT:
-				//FIMXE: check for %d[em,ex,pt,...]?
+				//FIMXE: check for %d[em,ex,pt,%...]?
 				return;
 			case self::INT:
 				$var = intval($var);
