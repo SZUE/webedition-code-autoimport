@@ -583,7 +583,17 @@ abstract class we_root extends we_class{
 	/* get the data from an element */
 
 	function getElement($name, $key = 'dat', $default = ''){//FIXME should we bother bdid?
-		return (isset($this->elements[$name][$key]) ? $this->elements[$name][$key] : $default);
+		switch($key){
+			case 'dat':
+				//check bdid first
+				return (isset($this->elements[$name]['bdid']) && $this->elements[$name]['bdid'] ?
+						$this->elements[$name]['bdid'] :
+						(isset($this->elements[$name]['dat']) ?
+							$this->elements[$name]['dat'] :
+							$default));
+			default:
+				return (isset($this->elements[$name][$key]) ? $this->elements[$name][$key] : $default);
+		}
 	}
 
 	/* reset the array-pointer (for use with nextElement()) */
