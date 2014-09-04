@@ -35,7 +35,7 @@ header('Pragma: ', true);
 .weSelect {
 border: #AAAAAA solid 1px;
 color: black;
-box-sizing: border-box;
+box-sizing: border-box;<?php /*NOTE: FF doesn't know this*/?>
 font-size: <?php echo (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }

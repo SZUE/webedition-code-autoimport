@@ -1211,3 +1211,11 @@ function getWECountries(){
 function getMysqlVer($nodots = true){
 	return we_database_base::getMysqlVer($nodots);
 }
+
+if(!function_exists('hex2bin')){//FIXME: remove if php > 5.3
+
+	function hex2bin($hex_string){
+		return pack("H*", $hex_string);
+	}
+
+}
