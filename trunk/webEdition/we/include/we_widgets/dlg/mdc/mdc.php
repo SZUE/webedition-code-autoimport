@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // widget MY DOCUMENTS
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 list($dir, $dt_tid, $cats) = explode(";", we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1));
 $aCsv = array(

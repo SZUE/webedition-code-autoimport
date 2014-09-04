@@ -24,6 +24,8 @@
  */
 // widget LAST MODIFIED
 //$aCols = $_REQUEST['we_cmd'];
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+
 $newSCurrId = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5);
 require_once('../../mod/fdl.php');
 
