@@ -158,7 +158,7 @@ class we_base_request{
 				}
 				return;
 			case self::URL:
-				$var = filter_var($var, FILTER_SANITIZE_URL);
+				$var = filter_var(urldecode($var), FILTER_SANITIZE_URL);
 				return;
 			case self::STRINGC:
 			case self::STRING://strips tags
