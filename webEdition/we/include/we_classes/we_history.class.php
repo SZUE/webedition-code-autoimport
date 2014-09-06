@@ -40,7 +40,7 @@ abstract class we_history{
 	static function insertIntoHistory(&$object, $action = 'save'){
 		$db = new DB_WE();
 		$table = $db->escape(stripTblPrefix($object->Table));
-		$cnt = f('SELECT COUNT(1) AS cnt FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '"', 'cnt', $db);
+		$cnt = f('SELECT COUNT(1) AS cnt FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '"', '', $db);
 		if($cnt > self::MAX){
 			$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND DocumentTable="' . $table . '" ORDER BY ModDate DESC LIMIT ' . ($cnt - self::MAX));
 		}
