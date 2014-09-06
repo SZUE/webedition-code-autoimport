@@ -2284,7 +2284,7 @@ class we_search_view{
 							$thumbpath = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result[$f]["Extension"]);
 							$imageView = "<img src='" . $thumbpath . "' border='0' /></a>";
 						} else {
-							$imageView = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"] . "' border='0' /></a>";
+							$imageView = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"] . "' border='0' /></a>";
 						}
 						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result[$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result[$f]["Extension"]))){
 							$thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result[$f]["Extension"]);
