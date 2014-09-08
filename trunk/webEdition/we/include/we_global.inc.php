@@ -533,7 +533,7 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
 
 	if($ws == ''){
 		$wsA = makeArrayFromCSV(get_ws($table, $prePostKomma));
-		return (!empty($wsA) ? $wsA[0] : '');
+		return ($wsA ? $wsA[0] : '');
 	}
 	return $ws;
 }

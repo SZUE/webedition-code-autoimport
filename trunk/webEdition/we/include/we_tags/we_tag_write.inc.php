@@ -296,8 +296,8 @@ function checkAndCreateFlashmovie($formname, $type = 'we_document'){
 
 					$flashDocument->setElement('width', $_SESSION[$_flashmovieDataId]['imgwidth'], 'attrib');
 					$flashDocument->setElement('height', $_SESSION[$_flashmovieDataId]['imgheight'], 'attrib');
-					$flashDocument->setElement('origwidth', $_SESSION[$_flashmovieDataId]['imgwidth'],'attrib');
-					$flashDocument->setElement('origheight', $_SESSION[$_flashmovieDataId]['imgheight'],'attrib');
+					$flashDocument->setElement('origwidth', $_SESSION[$_flashmovieDataId]['imgwidth'], 'attrib');
+					$flashDocument->setElement('origheight', $_SESSION[$_flashmovieDataId]['imgheight'], 'attrib');
 
 					$flashDocument->setElement('type', we_base_ContentTypes::FLASH, 'attrib');
 
@@ -429,28 +429,22 @@ function checkAndCreateImage($formname, $type = 'we_document'){
 					if($imgId){
 						// document has already an image
 						// so change binary data
-						$imgDocument->initByID(
-							$imgId);
+						$imgDocument->initByID($imgId);
+					} else {
+						$imgDocument->setParentID($_SESSION[$_imgDataId]['parentid']);
 					}
 
 					$imgDocument->Filename = $_SESSION[$_imgDataId]['fileName'];
 					$imgDocument->Extension = $_SESSION[$_imgDataId]['extension'];
 					$imgDocument->Text = $_SESSION[$_imgDataId]['text'];
-
-					if(!$imgId){
-						$imgDocument->setParentID($_SESSION[$_imgDataId]['parentid']);
-					}
 					$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != '/') ? '/' : '') . $imgDocument->Text;
 
 					$imgDocument->setElement('width', $_SESSION[$_imgDataId]['imgwidth'], 'attrib');
 					$imgDocument->setElement('height', $_SESSION[$_imgDataId]['imgheight'], 'attrib');
-					$imgDocument->setElement('origwidth', $_SESSION[$_imgDataId]['imgwidth'],'attrib');
-					$imgDocument->setElement('origheight', $_SESSION[$_imgDataId]['imgheight'],'attrib');
-
+					$imgDocument->setElement('origwidth', $_SESSION[$_imgDataId]['imgwidth'], 'attrib');
+					$imgDocument->setElement('origheight', $_SESSION[$_imgDataId]['imgheight'], 'attrib');
 					$imgDocument->setElement('type', we_base_ContentTypes::IMAGE, 'attrib');
-
 					$imgDocument->setElement('data', $_SESSION[$_imgDataId]['serverPath'], 'image');
-
 					$imgDocument->setElement('filesize', $_SESSION[$_imgDataId]['size'], 'attrib');
 
 					$imgDocument->Table = FILE_TABLE;
