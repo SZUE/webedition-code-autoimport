@@ -35,7 +35,7 @@ $height = we_base_request::_(we_base_request::INT, "height", 0);
 $width = we_base_request::_(we_base_request::INT, "width", 0);
 $bannerclick = we_base_request::_(we_base_request::URL, "bannerclick", WEBEDITION_DIR . 'bannerclick.php');
 $referer = we_base_request::_(we_base_request::RAW, "referer", "");
-$type = we_base_request::_(we_base_request::RAW, "type", "");
+$type = we_base_request::_(we_base_request::STRING, "type", "");
 $cats = we_base_request::_(we_base_request::RAW, "cats", "");
 $dt = we_base_request::_(we_base_request::RAW, "dt", "");
 $link = we_base_request::_(we_base_request::BOOL, "link", 1);
@@ -66,13 +66,11 @@ switch($type){
 			$bannerData = we_banner_banner::getBannerData($did, $paths, $dt, $cats, $bannername, $GLOBALS['DB_WE']);
 			$id = $bannerData["ID"];
 			$bid = $bannerData["bannerID"];
-			t_e($bannerData);
 		}
 		if(!$bid){
 			$id = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'");
 			$bid = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id));
 		}
-		t_e($id,$bid);
 
 		$bannerpath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($bid));
 
