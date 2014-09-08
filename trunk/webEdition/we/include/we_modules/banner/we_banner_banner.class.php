@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_banner_banner extends we_banner_base{
-
 	const PAGE_PROPERTY = 0;
 	const PAGE_PLACEMENT = 1;
 	const PAGE_STATISTICS = 2;
@@ -201,30 +199,30 @@ class we_banner_banner extends we_banner_base{
 	static function getBannerData($did, $paths, $dt, $cats, $bannername, we_database_base $db){
 		$parents = array();
 
-		we_readParents($did, $parents, FILE_TABLE);
+		we_readParents($did, $parents, FILE_TABLE, 'ContentType', 'folder', $db);
 
-		$where = 'IsActive=1 AND IsFolder=0 AND ( FileIDs LIKE "%,' . intval($did) . ',%" OR FileIDs="" )';
+		$where = 'IsActive=1 AND IsFolder=0 AND ( FIND_IN_SET('.intval($did).',FileIDs) OR FileIDs="" OR FileIDs="0" )';
 		$foo = '';
 		foreach($parents as $p){
-			$foo .= ' FolderIDs LIKE "%,' . intval($p) . ',%" OR ';
+			$foo .= ' FIND_IN_SET(' . intval($p) . ',FolderIDs) OR ';
 		}
-		$where .= ' AND (' . $foo . ' FolderIDs="" ) ';
+		$where .= ' AND (' . $foo . ' FolderIDs="" OR FolderIDs="0") ';
 
-		$dtArr = makeArrayFromCSV($dt);
+		$dtArr = explode(',', $dt);
 
 		$foo = '';
 		foreach($dtArr as $d){
-			$foo .= ' DoctypeIDs LIKE "%,' . intval($d) . ',%" OR ';
+			$foo .= ' FIND_IN_SET(' . intval($d) . ',DoctypeIDs) OR ';
 		}
-		$where .= ' AND (' . $foo . ' DoctypeIDs="" ) ';
+		$where .= ' AND (' . $foo . ' DoctypeIDs="" OR DoctypeIDs="0") ';
 
-		$catArr = makeArrayFromCSV($cats);
+		$catArr = explode(',', $cats);
 
 		$foo = '';
 		foreach($catArr as $c){
-			$foo .= ' CategoryIDs LIKE "%,' . intval($c) . ',%" OR ';
+			$foo .= ' FIND_IN_SET(' . intval($c) . ',CategoryIDs) OR ';
 		}
-		$where .= ' AND (' . $foo . ' CategoryIDs="" ) ';
+		$where .= ' AND (' . $foo . ' CategoryIDs="" OR CategoryIDs="0") ';
 
 		if($paths){
 			$foo = array();
@@ -237,12 +235,11 @@ class we_banner_banner extends we_banner_base{
 
 		$where .= ' AND ( (StartOk=0 OR StartDate <= UNIX_TIMESTAMP() ) AND (EndOk=0 OR EndDate > UNIX_TIMESTAMP()) ) AND (maxShow=0 OR views<maxShow) AND (maxClicks=0 OR clicks<=maxClicks) ';
 
-		$maxweight = f('SELECT MAX(weight) as maxweight FROM ' . BANNER_TABLE, 'maxweight', $db);
+		$maxweight = f('SELECT MAX(weight) FROM ' . BANNER_TABLE, '', $db);
 
 		srand((double) microtime() * 1000000);
 		$weight = rand(0, intval($maxweight));
 		$anz = 0;
-
 		while($anz == 0 && $weight <= $maxweight){
 			$db->query('SELECT ID, bannerID FROM ' . BANNER_TABLE . " WHERE $where AND weight <= $weight AND (TagName='' OR TagName='" . $db->escape($bannername) . "')");
 			$anz = $db->num_rows();
@@ -257,7 +254,7 @@ class we_banner_banner extends we_banner_base{
 				$offset = rand(0, $anz - 1);
 				$db->seek($offset);
 			}
-			if($db->next_record()){
+			if($db->next_record(MYSQL_ASSOC)){
 				return $db->getRecord();
 			}
 		}
@@ -293,7 +290,7 @@ class we_banner_banner extends we_banner_base{
 		} else {
 			$id = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . ' WHERE pref_name="DefaultBannerID"', '', $db);
 
-			$bannerID = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id), "", $db);
+			$bannerID = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id), '', $db);
 			if($bannerID){
 				$bannersrc = getServerUrl() . id_to_path($bannerID);
 				$attsImage = array_merge($attsImage, self::getImageInfos($bannerID));

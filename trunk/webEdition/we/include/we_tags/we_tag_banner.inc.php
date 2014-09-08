@@ -29,7 +29,7 @@ function we_tag_banner($attribs, $content){
 
 	$bannername = weTag_getAttribute("name", $attribs);
 	$paths = weTag_getAttribute("paths", $attribs);
-	$type = weTag_getAttribute("type", $attribs, "js");
+	$type = weTag_getAttribute("type", $attribs, 'js');
 	$target = weTag_getAttribute("target", $attribs);
 	$width = weTag_getAttribute("width", $attribs, ($type == "pixel") ? "1" : "");
 	$height = weTag_getAttribute("height", $attribs, ($type == "pixel") ? "1" : "");
@@ -44,7 +44,7 @@ function we_tag_banner($attribs, $content){
 	if($type == "pixel"){
 
 		$newAttribs['src'] = $getbanner . '?' .
-			http_build_query(array_filter(array(
+			http_build_query(array(
 				($nocount ? 'nocount' : '') => $nocount,
 				'type' => 'pixel',
 				'paths' => $paths,
@@ -54,7 +54,7 @@ function we_tag_banner($attribs, $content){
 				($page ? 'page' : '') => $page,
 				(!$page ? 'did' : '') => $GLOBALS["WE_MAIN_DOC"]->ID,
 				'xml' => $xml ? "1" : "0",
-		)));
+		));
 		$newAttribs['border'] = 0;
 		$newAttribs['alt'] = '';
 		$newAttribs['width'] = 1;
@@ -68,7 +68,7 @@ function we_tag_banner($attribs, $content){
 	// building noscript
 	// here build image with link(opt)
 	$imgAtts['src'] = $getbanner . '?' .
-		http_build_query(array_filter(array(
+		http_build_query(array(
 			'c' => 1,
 			'bannername' => $bannername,
 			'cats' => isset($GLOBALS["WE_MAIN_DOC"]->Category) ? $GLOBALS["WE_MAIN_DOC"]->Category : "",
@@ -78,7 +78,7 @@ function we_tag_banner($attribs, $content){
 			(!$page ? 'did' : '') => $GLOBALS["WE_MAIN_DOC"]->ID,
 			'bannerclick' => $bannerclick,
 			'xml' => ($xml ? "1" : "0")
-	)));
+	));
 	$imgAtts['alt'] = '';
 	$imgAtts['border'] = 0;
 	if($width){
@@ -90,13 +90,14 @@ function we_tag_banner($attribs, $content){
 	$img = getHtmlTag('img', $imgAtts);
 
 	if($link){ //  with link
-		$linkAtts['href'] = $bannerclick . '?' . http_build_query(array_filter(array(
+		$linkAtts['href'] = $bannerclick . '?' . http_build_query(array(
 				($nocount ? 'nocount' : '') => $nocount,
 				'u' => $uniq,
 				'bannername' => $bannername,
+				'type' => $type,
 				($page ? 'page' : '') => $page,
 				(!$page ? 'did' : '') => $GLOBALS["WE_MAIN_DOC"]->ID
-		)));
+		));
 		if($target){
 			$linkAtts['target'] = $target;
 		}
@@ -112,7 +113,7 @@ function we_tag_banner($attribs, $content){
 		$newAttribs['xml'] = $xml ? "true" : "false";
 		$newAttribs['width'] = $width ? $width : 468;
 		$newAttribs['height'] = $height ? $height : 60;
-		$newAttribs['src'] = $getbanner . '?' . http_build_query(array_filter(array(
+		$newAttribs['src'] = $getbanner . '?' . http_build_query(array(
 				($nocount ? 'nocount' : '') => $nocount,
 				'bannername' => $bannername,
 				'cats' => $GLOBALS["WE_MAIN_DOC"]->Category,
@@ -126,7 +127,7 @@ function we_tag_banner($attribs, $content){
 				'width' => $width,
 				'height' => $height,
 				'xml' => ($xml ? "1" : "0")
-		)));
+		));
 
 		// content
 		//$content = getHtmlTag('ilayer',$newAttribs, '',true) . getHtmlTag('nolayer', array(),$noscript);    // WITH ilayer not conform !!!
