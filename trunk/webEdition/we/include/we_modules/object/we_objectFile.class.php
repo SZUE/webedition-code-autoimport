@@ -195,14 +195,15 @@ class we_objectFile extends we_document{
 		$Charset = $this->Charset;
 		$Url = $this->Url;
 		$TriggerID = $this->TriggerID;
+
+		$this->DefaultInit = true;
 		we_root::makeSameNew();
 		$this->Category = $Category;
 		$this->TableID = $TableID;
 		$this->rootDirID = $rootDirID;
 		$this->RootDirPath = $RootDirPath;
-		$this->DefaultInit = false;
-
 		$this->i_objectFileInit(true);
+		$this->DefaultInit = false;
 
 		$this->Url = $Url;
 		$this->TriggerID = $TriggerID;
@@ -1432,7 +1433,7 @@ class we_objectFile extends we_document{
 				$_imgHeight = $thumbObj->getOutputHeight();
 				$_imgWight = $thumbObj->getOutputWidth();
 			} else {
-				$_imgSrc = IMAGE_DIR . 'icons/no_image.gif';
+				$_imgSrc = ICON_DIR . 'no_image.gif';
 				$_imgHeight = 64;
 				$_imgWight = 64;
 			}
