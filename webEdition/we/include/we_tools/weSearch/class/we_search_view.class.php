@@ -126,9 +126,9 @@ class we_search_view{
 			case 'tool_weSearch_new_forTemplates' :
 			case 'tool_weSearch_new_forObjects' :
 			case 'tool_weSearch_new_advSearch' :
-			case 'tool_weSearch_new_group' :
+			//case 'tool_weSearch_new_group' :
 				$this->Model = new we_search_model();
-				$this->Model->setIsFolder($cmd == 'tool_weSearch_new_group' ? 1 : 0);
+				$this->Model->setIsFolder(/*$cmd == 'tool_weSearch_new_group' ? 1 :*/ 0);
 				$tab = we_base_request::_(we_base_request::INT, 'tabnr');
 
 				echo we_html_element::jsElement(
@@ -1938,11 +1938,11 @@ function calendarSetup(x){
 										$docTableChecked = (in_array(FILE_TABLE, $_tables)) ? true : false;
 										$objTableChecked = (defined('OBJECT_FILES_TABLE') && (in_array(OBJECT_FILES_TABLE, $_tables))) ? true : false;
 										if($objTableChecked && $docTableChecked){
-											$w .= ' AND (' . $_table . ".documentTable= '" . FILE_TABLE . "' OR documentTable= '" . OBJECT_FILES_TABLE . "') ";
+											$w .= ' AND (v.documentTable="' . FILE_TABLE . '" OR documentTable="' . OBJECT_FILES_TABLE . '") ';
 										} elseif($docTableChecked){
-											$w .= ' AND ' . $_table . ".documentTable= '" . FILE_TABLE . "' ";
+											$w .= ' AND v.documentTable="' . FILE_TABLE . '" ';
 										} elseif($objTableChecked){
-											$w .= ' AND ' . $_table . ".documentTable= '" . OBJECT_FILES_TABLE . "' ";
+											$w .= ' AND v.documentTable="' . OBJECT_FILES_TABLE . '" ';
 										}
 									}
 									$where .= $w;

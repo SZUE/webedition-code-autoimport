@@ -430,7 +430,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 			foreach($all as $uid => $cnt){
 				$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE UID=' . $uid . ' ORDER BY ModDate DESC LIMIT ' . ($cnt - we_history::MAX));
 			}
-			$db->query('DROP old' . HISTORY_TABLE);
+			$db->query('DROP TABLE old' . HISTORY_TABLE);
 		}
 	}
 
