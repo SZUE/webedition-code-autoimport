@@ -235,6 +235,10 @@ class we_base_request{
 			self::_weRequest($var, '', array($type, $default));
 
 			switch($type){
+				case self::URL:
+					$oldVar = urldecode($var);
+					$cmp = '' . $var;
+					break;
 				case self::CMD://this must change&is ok!
 				case self::RAW_CHECKED:
 				case self::STRINGC:

@@ -1126,7 +1126,7 @@ class doclistView{
 
 				$content[$f] = array(
 					array("dat" => $publishCheckbox),
-					array("dat" => '<img src="' . ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
+					array("dat" => '<img src="' . TREE_ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';" class="middlefont" title="' . $_result [$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result [$f]["Text"], $we_PathLength)),
 					array("dat" => '<nobr>' . g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']') . '</nobr>'),
 					array("dat" => '<nobr>' . we_util_Strings::shortenPath($_result [$f]["SiteTitle"], $we_PathLength) . '</nobr>'),
@@ -1143,28 +1143,25 @@ class doclistView{
 
 					if($fs > 0){
 						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result [$f]["Path"]);
-						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result [$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result [$f]["Extension"]))){
-							$thumbpath = WE_THUMB_PREVIEW_DIR . $_result [$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result [$f]["Extension"]);
-							$imageView = "<img src='" . $thumbpath . "' border='0' /></a>";
-						} else {
-							$imageView = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result [$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result [$f]["Path"]) . "&extension=" . $_result [$f]["Extension"] . "' border='0' /></a>";
-						}
-						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result [$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result [$f]["Extension"]))){
-							$thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result [$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result [$f]["Extension"]);
-							$imageViewPopup = "<img src='" . $thumbpathPopup . "' border='0' /></a>";
-						} else {
-							$imageViewPopup = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result [$f]["docID"] . "&size=" . $bigSize . "&path=" . urlencode($_result [$f]["Path"]) . "&extension=" . $_result [$f]["Extension"] . "' border='0' /></a>";
-						}
+						$imageView = "<img src='" . (file_exists($thumbpath = WE_THUMB_PREVIEW_DIR . $_result [$f]["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($_result [$f]['Extension'])) ?
+								$thumbpath :
+								WEBEDITION_DIR . 'thumbnail.php?id=' . $_result [$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result [$f]["Path"]) . "&extension=" . $_result [$f]["Extension"]
+							) . "' border='0' /></a>";
+
+						$imageViewPopup = "<img src='" . (file_exists($thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result [$f]["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($_result [$f]["Extension"])) ?
+								$thumbpathPopup :
+								WEBEDITION_DIR . "thumbnail.php?id=" . $_result [$f]["docID"] . "&size=" . $bigSize . "&path=" . urlencode($_result [$f]["Path"]) . "&extension=" . $_result [$f]["Extension"]
+							) . "' border='0' /></a>";
 					} else {
 						$imagesize = array(0, 0);
-						$thumbpath = IMAGE_DIR . 'icons/doclist/' . we_base_ContentTypes::IMAGE_ICON;
+						$thumbpath = ICON_DIR . 'doclist/' . we_base_ContentTypes::IMAGE_ICON;
 						$imageView = "<img src='" . $thumbpath . "' border='0' />";
 						$imageViewPopup = "<img src='" . $thumbpath . "' border='0' />";
 					}
 				} else {
 					$imagesize = array(0, 0);
-					$imageView = '<img src="' . IMAGE_DIR . "icons/doclist/" . $Icon . '" border="0" width="64" height="64" />';
-					$imageViewPopup = '<img src="' . IMAGE_DIR . "icons/doclist/" . $Icon . '" border="0" width="64" height="64" />';
+					$imageView = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
+					$imageViewPopup = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
 				}
 
 				$content [$f][0]["dat"] = '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result [$f]["Text"] . '">' . $imageView . '</a>';
@@ -1256,7 +1253,7 @@ class doclistView{
 		<td class="defaultgray" style="width:60px;">' . we_html_tools::htmlSelect("anzahl", $anzahl, 1, $_anzahl, "", array('onchange' => 'this.form.elements[\'searchstart\'].value=0;search(false);')) . '</td>
 		<td>' . $this->getNextPrev($foundItems) . '</td>
 		<td>' . we_html_tools::getPixel(10, 12) . '</td>
-		<td style="width:50px;">' . we_html_button::create_button("image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','".we_base_ContentTypes::FOLDER."','','" . $id . "')", true, 40, "", "", "", false) . '</td>
+		<td style="width:50px;">' . we_html_button::create_button("image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $id . "')", true, 40, "", "", "", false) . '</td>
 		<td>' . we_html_button::create_button("image:iconview", "javascript:setview(1);", true, 40, "", "", "", false) . '</td>
 		<td>' . we_html_button::create_button("image:listview", "javascript:setview(0);", true, 40, "", "", "", false) . '</td>
 	</tr>
@@ -1349,7 +1346,7 @@ class doclistView{
 
 		foreach($content as $i => $c){
 			$_forceRightHeadline = (isset($c ["forceRightHeadline"]) && $c ["forceRightHeadline"]);
-			$icon = (isset($c ["icon"]) && $c ["icon"]) ? ('<img src="' . IMAGE_DIR . 'icons/' . $c ["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />') : "";
+			$icon = (isset($c ["icon"]) && $c ["icon"]) ? ('<img src="' . ICON_DIR . $c ["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />') : "";
 			$headline = (isset($c ["headline"]) && $c ["headline"]) ? ('<div class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c ["headline"] . '</div>') : "";
 			$mainContent = (isset($c ["html"]) && $c ["html"]) ? $c ["html"] : "";
 			$leftWidth = (isset($c ["space"]) && $c ["space"]) ? abs($c ["space"]) : 0;

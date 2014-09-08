@@ -151,7 +151,7 @@ echo we_html_tools::getHtmlTop() .
 				if (nf[ai].name != -1) {
 					fr.write("<a name='_" + nf[ai].name + "' href=\"javascript:doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=\"0\">");
 				}
-				fr.write("<IMG SRC=<?php print ICON_DIR; ?>" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
+				fr.write("<IMG SRC=<?php print TREE_ICON_DIR; ?>" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
 				fr.write("</a>");
 
 				if (nf[ai].checked) {
@@ -175,7 +175,7 @@ echo we_html_tools::getHtmlTop() .
 					var zusatz2 = "open";
 				}
 				fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
-				fr.write("<IMG SRC=<?php print ICON_DIR; ?>usergroup" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
+				fr.write("<IMG SRC=<?php print TREE_ICON_DIR; ?>usergroup" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
 				fr.write("</a>");
 				fr.write("<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 				fr.write("&nbsp;<b>" + nf[ai].text + "</b>");

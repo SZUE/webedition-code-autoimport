@@ -30,8 +30,8 @@ class we_messaging_view extends we_modules_view{
 
 	function __construct($frameset = "", $topframe = "top.content", $reqTransaction = 0, &$weTransaction = 0){
 		parent::__construct($frameset, $topframe);
-		$this->item_pattern = addslashes('<img style="vertical-align: bottom" src="' . ICON_DIR . 'user.gif" />&nbsp;');
-		$this->group_pattern = addslashes('<img style="vertical-align: bottom" src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" />&nbsp;');
+		$this->item_pattern = addslashes('<img style="vertical-align: bottom" src="' . TREE_ICON_DIR . 'user.gif" />&nbsp;');
+		$this->group_pattern = addslashes('<img style="vertical-align: bottom" src="' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" />&nbsp;');
 
 		$this->transaction = $reqTransaction;
 		$this->weTransaction = &$weTransaction;

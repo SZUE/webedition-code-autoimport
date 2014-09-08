@@ -100,13 +100,13 @@ f1_o_img = new Image();
 f3_o_img = new Image();
 f5_o_img = new Image();
 
-f1_img.src = "' . ICON_DIR . 'msg_folder.gif";
-f3_img.src = "' . ICON_DIR . 'msg_in_folder.gif";
-f5_img.src = "' . ICON_DIR . 'msg_sent_folder.gif";
+f1_img.src = "' . TREE_ICON_DIR . 'msg_folder.gif";
+f3_img.src = "' . TREE_ICON_DIR . 'msg_in_folder.gif";
+f5_img.src = "' . TREE_ICON_DIR . 'msg_sent_folder.gif";
 
-f1_o_img.src = "' . ICON_DIR . 'msg_folder_open.gif";
-f3_o_img.src = "' . ICON_DIR . 'msg_in_folder_open.gif";
-f5_o_img.src = "' . ICON_DIR . 'msg_sent_folder_open.gif";
+f1_o_img.src = "' . TREE_ICON_DIR . 'msg_folder_open.gif";
+f3_o_img.src = "' . TREE_ICON_DIR . 'msg_in_folder_open.gif";
+f5_o_img.src = "' . TREE_ICON_DIR . 'msg_sent_folder_open.gif";
 
 // todo folders
 tf1_img = new Image();
@@ -119,15 +119,15 @@ tf3_o_img = new Image();
 tf13_o_img = new Image();
 tf11_o_img = new Image();
 
-tf1_img.src = "' . ICON_DIR . 'todo_folder.gif";
-tf3_img.src = "' . ICON_DIR . 'todo_in_folder.gif";
-tf13_img.src = "' . ICON_DIR . 'todo_done_folder.gif";
-tf11_img.src = "' . ICON_DIR . 'todo_reject_folder.gif";
+tf1_img.src = "' . TREE_ICON_DIR . 'todo_folder.gif";
+tf3_img.src = "' . TREE_ICON_DIR . 'todo_in_folder.gif";
+tf13_img.src = "' . TREE_ICON_DIR . 'todo_done_folder.gif";
+tf11_img.src = "' . TREE_ICON_DIR . 'todo_reject_folder.gif";
 
-tf1_o_img.src = "' . ICON_DIR . 'todo_folder_open.gif";
-tf3_o_img.src = "' . ICON_DIR . 'todo_in_folder_open.gif";
-tf13_o_img.src = "' . ICON_DIR . 'todo_done_folder_open.gif";
-tf11_o_img.src = "' . ICON_DIR . 'todo_reject_folder_open.gif";
+tf1_o_img.src = "' . TREE_ICON_DIR . 'todo_folder_open.gif";
+tf3_o_img.src = "' . TREE_ICON_DIR . 'todo_in_folder_open.gif";
+tf13_o_img.src = "' . TREE_ICON_DIR . 'todo_done_folder_open.gif";
+tf11_o_img.src = "' . TREE_ICON_DIR . 'todo_reject_folder_open.gif";
 
 function check(img) {
 	var i;
@@ -438,7 +438,7 @@ function zeichne(startEntry, zweigEintrag) {
 				}
 			} else {
 				fr.write("<a name=\"_"+nf[ai].name+"\" href=\"javascript://\" onclick=\"doClick("+nf[ai].name+");return true;\" BORDER=0>");
-				fr.write("<IMG SRC=' . ICON_DIR . '"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"' . g_l('tree', '[edit_statustext]') . '\">");
+				fr.write("<IMG SRC=' . TREE_ICON_DIR . '"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"' . g_l('tree', '[edit_statustext]') . '\">");
 				fr.write("</a>");
 				trg = "doClick("+nf[ai].name+");return true;"
 			}
@@ -467,7 +467,7 @@ function zeichne(startEntry, zweigEintrag) {
 			}
 
 			fr.write("<a name=\'_"+nf[ai].name+"\' href=\"javascript://\" onclick=\"" + trg + "\" BORDER=0>");
-			fr.write("<IMG SRC=' . ICON_DIR . '" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\'' . g_l('tree', '[edit_statustext]') . '\'>");
+			fr.write("<IMG SRC=' . TREE_ICON_DIR . '" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\'' . g_l('tree', '[edit_statustext]') . '\'>");
 			fr.write("</a>");
 
 			fr.write("<A name=\"_"+nf[ai].name+"\" HREF=\"javascript://\" onclick=\"" + trg + "\">");

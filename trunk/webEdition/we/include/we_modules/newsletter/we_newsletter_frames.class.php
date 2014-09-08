@@ -415,7 +415,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 			$table->setColContent(1, 0, we_html_element::htmlSpan(array('id' => 'blacklist_' . $key), g_l('modules_newsletter', '[reporting][mailing_emails_are_black]')));
 			$table->setColContent(1, 1, $pbByB->getJS() . $pbByB->getHTML());
 			$table->setCol(1, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'blacklist_total', 'style' => 'color:' . (($allBlockedByBlacklist > 0) ? 'red' : 'green') . ';'), $allBlockedByBlacklist));
-			$table->setCol(1, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (($allBlockedByBlacklist == 0) ? "valid.gif" : "invalid.gif"))));
+			$table->setCol(1, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => ICON_DIR . (($allBlockedByBlacklist == 0) ? "valid.gif" : "invalid.gif"))));
 			//todo: statt show black list, sollte show_log begrenzt auf Log=email_is_black + $start_send + start_end
 			$table->setCol(1, 4, array('style' => 'width: 35px'), (($allBlockedByBlacklist == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('" . WEBEDITION_DIR . "we_lcmd.php?we_cmd[0]=black_list')"))));
 
@@ -432,7 +432,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 			$table->setColContent(2, 0, we_html_element::htmlSpan(array('id' => 'domain_' . $key), g_l('modules_newsletter', '[reporting][mailing_emails_nok]')));
 			$table->setColContent(2, 1, $pbBbD->getJS() . $pbBbD->getHTML());
 			$table->setCol(2, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'domain_total', 'style' => 'color:' . (($allBlockedByDomainCheck > 0) ? 'red' : 'green') . ';'), $allBlockedByDomainCheck));
-			$table->setCol(2, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (($allBlockedByDomainCheck == 0) ? "valid.gif" : "invalid.gif"))));
+			$table->setCol(2, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => ICON_DIR . (($allBlockedByDomainCheck == 0) ? "valid.gif" : "invalid.gif"))));
 			//todo: statt domain, sollte show_log begrenzt auf Log=domain_nok + $start_send + start_end
 			$table->setCol(2, 4, array('style' => 'width: 35px'), (($allBlockedByDomainCheck == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('" . WEBEDITION_DIR . "we_lcmd.php?we_cmd[0]=domain_check')"))));
 
@@ -2019,7 +2019,7 @@ self.focus();
 						"align" => "left",
 					),
 					array(
-						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (we_check_email($cols[0]) ? "valid.gif" : "invalid.gif")))),
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), we_html_element::htmlImg(array("src" => ICON_DIR . (we_check_email($cols[0]) ? "valid.gif" : "invalid.gif")))),
 						"height" => "",
 						"align" => "center",
 					)

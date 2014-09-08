@@ -559,7 +559,7 @@ abstract class we_base_imageEdit{
 
 	public static function createPreviewThumb($imgSrc, $imgID, $width, $height, $outputFormat = "jpg", $outputQuality = 75, $tmpName = ""){
 		if(self::gd_version() == 0){
-			return IMAGE_DIR . 'icons/doclist/image.gif';
+			return ICON_DIR . 'doclist/image.gif';
 		}
 		if(substr($imgSrc, 0, strlen($_SERVER['DOCUMENT_ROOT'])) == $_SERVER['DOCUMENT_ROOT']){ // it is no src, it is a server path
 			$imgSrc = substr($imgSrc, strlen($_SERVER['DOCUMENT_ROOT']));
