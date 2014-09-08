@@ -21,18 +21,22 @@
 //FIXME: remove this file almost complete; at least all DB queries. Replace by Update-Script calls on DB-Files.
 class we_updater{
 
-	static function replayUpdateDB(){
+	static function replayUpdateDB($specFile = ''){
 		include_once(WEBEDITION_PATH . 'liveUpdate/conf/conf.inc.php');
 		include_once(WEBEDITION_PATH . 'liveUpdate/classes/liveUpdateFunctions.class.php');
 		$lf = new liveUpdateFunctions();
 		$GLOBALS['we']['errorhandler']['sql'] = false;
-		$d = dir(LIVEUPDATE_CLIENT_DOCUMENT_DIR . 'sqldumps');
-		while(false !== ($entry = $d->read())){
-			if(substr($entry, -4) == '.sql'){
-				$lf->executeQueriesInFiles(LIVEUPDATE_CLIENT_DOCUMENT_DIR . 'sqldumps/' . $entry);
+		if($specFile){
+			$lf->executeQueriesInFiles(LIVEUPDATE_CLIENT_DOCUMENT_DIR . 'sqldumps/' . $specFile);
+		} else {
+			$d = dir(LIVEUPDATE_CLIENT_DOCUMENT_DIR . 'sqldumps');
+			while(false !== ($entry = $d->read())){
+				if(substr($entry, -4) == '.sql'){
+					$lf->executeQueriesInFiles(LIVEUPDATE_CLIENT_DOCUMENT_DIR . 'sqldumps/' . $entry);
+				}
 			}
+			$d->close();
 		}
-		$d->close();
 		$GLOBALS['we']['errorhandler']['sql'] = true;
 		$entries = $lf->getQueryLog('error');
 		if(!empty($entries)){
@@ -342,13 +346,13 @@ class we_updater{
 				}
 
 				// copy links from documents, document-folders and object-folders (to documents) back to tblLangLink only if LDID and Locale are consistent with Language in tblFile
-				$db->query("INSERT IGNORE INTO " . LANGLINK_TABLE . " SELECT tmpLangLink.* FROM tmpLangLink, " . FILE_TABLE . " WHERE tmpLangLink.LDID = " . FILE_TABLE . ".ID AND tmpLangLink.Locale = " . FILE_TABLE . ".Language AND tmpLangLink.IsObject = 0 AND tmpLangLink.DocumentTable = 'tblFile' ORDER BY tmpLangLink.ID DESC");
+				$db->query('INSERT IGNORE INTO ' . LANGLINK_TABLE . ' SELECT tmpLangLink.* FROM tmpLangLink, ' . FILE_TABLE . " WHERE tmpLangLink.LDID = " . FILE_TABLE . ".ID AND tmpLangLink.Locale = " . FILE_TABLE . ".Language AND tmpLangLink.IsObject=0 AND tmpLangLink.DocumentTable = 'tblFile' ORDER BY tmpLangLink.ID DESC");
 
 				// copy links from objects (to objects) back to tblLangLink only if LDID and Locale are consistent with Language in tblFile
-				$db->query("INSERT IGNORE INTO " . LANGLINK_TABLE . " SELECT tmpLangLink.* FROM tmpLangLink, " . OBJECT_FILES_TABLE . " WHERE tmpLangLink.LDID = " . OBJECT_FILES_TABLE . ".ID AND tmpLangLink.Locale = " . OBJECT_FILES_TABLE . ".Language AND tmpLangLink.IsObject = 1 ORDER BY tmpLangLink.ID DESC");
+				$db->query('INSERT IGNORE INTO ' . LANGLINK_TABLE . " SELECT tmpLangLink.* FROM tmpLangLink, " . OBJECT_FILES_TABLE . " WHERE tmpLangLink.LDID = " . OBJECT_FILES_TABLE . ".ID AND tmpLangLink.Locale = " . OBJECT_FILES_TABLE . ".Language AND tmpLangLink.IsObject = 1 ORDER BY tmpLangLink.ID DESC");
 
 				// copy links from doctypes (to doctypes) back to tblLangLink only if LDID and Locale are consistent with Language in tblFile
-				$db->query("INSERT IGNORE INTO " . LANGLINK_TABLE . " SELECT tmpLangLink.* FROM tmpLangLink, " . DOC_TYPES_TABLE . " WHERE tmpLangLink.LDID = " . DOC_TYPES_TABLE . ".ID AND tmpLangLink.Locale = " . DOC_TYPES_TABLE . ".Language AND tmpLangLink.DocumentTable = 'tblDocTypes' ORDER BY tmpLangLink.ID DESC");
+				$db->query('INSERT IGNORE INTO ' . LANGLINK_TABLE . " SELECT tmpLangLink.* FROM tmpLangLink, " . DOC_TYPES_TABLE . " WHERE tmpLangLink.LDID = " . DOC_TYPES_TABLE . ".ID AND tmpLangLink.Locale = " . DOC_TYPES_TABLE . ".Language AND tmpLangLink.DocumentTable = 'tblDocTypes' ORDER BY tmpLangLink.ID DESC");
 			} else {
 				t_e('no rights to create temp-table');
 			}
@@ -366,26 +370,18 @@ class we_updater{
 		}
 	}
 
-	private static function getAllIDFromQuery($sql){
-		$db = $GLOBALS['DB_WE'];
-		$db->query($sql);
-		return $db->getAll(true);
-	}
-
 	static function fixInconsistentTables(){
 		$db = $GLOBALS['DB_WE'];
-		$del = self::getAllIDFromQuery('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')');
-		$del = array_merge($del, self::getAllIDFromQuery('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NOT IN(SELECT ID FROM ' . TEMPLATES_TABLE . ')'));
+		$db->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')
+UNION
+SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NOT IN(SELECT ID FROM ' . TEMPLATES_TABLE . ')', true);
+		$del = $db->getAll(true);
 
-		if(!empty($del)){
+		if($del){
 			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE CID IN (' . implode(',', $del) . ')');
 		}
 
-		$db->query('SELECT ID FROM ' . CONTENT_TABLE . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLE . ')');
-		$del = $db->getAll(true);
-		if(!empty($del)){
-			$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . implode(',', $del) . ')');
-		}
+		$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLE . ')');
 
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE ClassName != "we_objectFile" AND DID NOT IN (SELECT ID FROM ' . FILE_TABLE . ')');
@@ -414,14 +410,27 @@ class we_updater{
 		if($db->isColExist(HISTORY_TABLE, 'ID')){
 			$db->query('SELECT h1.ID FROM ' . HISTORY_TABLE . ' h1 LEFT JOIN ' . HISTORY_TABLE . ' h2 ON h1.DID = h2.DID AND h1.DocumentTable = h2.DocumentTable AND h1.ModDate = h2.ModDate WHERE h1.ID < h2.ID');
 			$tmp = $db->getAll(true);
-			if(!empty($tmp)){
+			if($tmp){
 				$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE ID IN (' . implode(',', $tmp) . ')');
 			}
 			$db->delCol(HISTORY_TABLE, 'ID');
 			if($db->isKeyExistAtAll(HISTORY_TABLE, 'DID')){
 				$db->delKey(HISTORY_TABLE, 'DID');
 			}
-			self::replayUpdateDB();
+			self::replayUpdateDB('tblhistory.sql');
+		}
+		if(f('SELECT COUNT(1) c FROM ' . HISTORY_TABLE . ' GROUP BY UID HAVING c>' . we_history::MAX . ' LIMIT 1')){
+			$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE ModDate="0000-00-00 00:00:00"');
+			$db->query('RENAME TABLE ' . HISTORY_TABLE . ' TO old' . HISTORY_TABLE);
+			//create clean table
+			self::replayUpdateDB('tblhistory.sql');
+			$db->query('INSERT IGNORE INTO ' . HISTORY_TABLE . ' (DID,DocumentTable,ContentType,ModDate,UserName,UID) SELECT DID,DocumentTable,ContentType,MAX(ModDate),UserName,UID FROM old' . HISTORY_TABLE . ' GROUP BY UID,DID,DocumentTable');
+			$db->query('SELECT UID,COUNT(1) c FROM ' . HISTORY_TABLE . ' GROUP BY UID HAVING c>' . we_history::MAX);
+			$all = $db->getAllFirst(false);
+			foreach($all as $uid => $cnt){
+				$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE UID=' . $uid . ' ORDER BY ModDate DESC LIMIT ' . ($cnt - we_history::MAX));
+			}
+			$db->query('DROP old' . HISTORY_TABLE);
 		}
 	}
 

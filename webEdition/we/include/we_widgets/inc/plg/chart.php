@@ -79,5 +79,3 @@ function getPLogGraph($gf){
 	)));
 	return $_graph;
 }
-
-?>

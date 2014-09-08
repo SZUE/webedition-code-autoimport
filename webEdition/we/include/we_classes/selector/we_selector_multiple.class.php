@@ -127,7 +127,7 @@ top.unselectAllFiles();') . '
 					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 					d.writeln('<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;cursor:pointer;"' : '') + ' id="line_' + entries[i].ID + '" style="cursor:pointer;"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >');
 					d.writeln('<td class="selector" width="25" align="center">');
-					d.writeln('<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
+					d.writeln('<img src="<?php print TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
 					d.writeln('</td>');
 					d.writeln('<td class="selector"  title="' + entries[i].text + '">');
 					d.writeln(cutText(entries[i].text, 80));

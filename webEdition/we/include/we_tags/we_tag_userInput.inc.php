@@ -218,7 +218,7 @@ function we_tag_userInput($attribs, $content){
 					// Include Flash class
 					$flashmovieTag = (isset($attribs['id']) && $attribs['id'] ?
 							$GLOBALS['we_doc']->getField($attribs, 'flashmovie') :
-							'<img src="' . IMAGE_DIR . 'icons/no_flashmovie.gif" alt="" width="64" height="64" />');
+							'<img src="' . ICON_DIR . 'no_flashmovie.gif" alt="" width="64" height="64" />');
 				}
 
 				$checked = (isset($_SESSION[$_flashmovieDataId]['doDelete']) && $_SESSION[$_flashmovieDataId]['doDelete'] ? ' checked' : '');
@@ -299,7 +299,7 @@ function we_tag_userInput($attribs, $content){
 					unset($attribs['height']);
 					$quicktimeTag = (isset($attribs['id']) && $attribs['id'] ?
 							$GLOBALS['we_doc']->getField($attribs, 'quicktime') :
-							'<img src="' . IMAGE_DIR . 'icons/no_quicktime.gif" alt="" width="64" height="64" />');
+							'<img src="' . ICON_DIR . 'no_quicktime.gif" alt="" width="64" height="64" />');
 				}
 
 				$checked = (isset($_SESSION[$_quicktimeDataId]["doDelete"]) && $_SESSION[$_quicktimeDataId]["doDelete"] ? ' checked' : '');
@@ -651,7 +651,7 @@ function open_wysiwyg_win(){
 			$langcode = ($lang ?
 					substr($lang, 0, 2) :
 					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) );
-			
+
 			$frontendL = $GLOBALS['weFrontendLanguages'];
 			foreach($frontendL as &$lcvalue){
 				$lccode = explode('_', $lcvalue);

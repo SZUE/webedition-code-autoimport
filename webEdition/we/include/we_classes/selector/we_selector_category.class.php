@@ -234,12 +234,12 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles
 				d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 				if (makeNewFolder) {
 					d.writeln('<tr style="background-color:#DFE9F5;">');
-					d.writeln('<td align="center"><img src="<?php print ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>');
+					d.writeln('<td align="center"><img src="<?php print TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>');
 					d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print g_l('fileselector', "[new_folder_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print g_l('fileselector', "[new_folder_name]") ?>" class="wetextinput" style="width:100%" /></td>');
 					d.writeln('</tr>');
 				} else if (makeNewCat) {
 					d.writeln('<tr style="background-color:#DFE9F5;">');
-					d.writeln('<td align="center"><img src="<?php print ICON_DIR ?>cat.gif" width="16" height="18" border="0" /></td>');
+					d.writeln('<td align="center"><img src="<?php print TREE_ICON_DIR ?>cat.gif" width="16" height="18" border="0" /></td>');
 					d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print g_l('fileselector', "[new_cat_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print g_l('fileselector', "[new_cat_name]") ?>" class="wetextinput" style="width:100%" /></td>');
 					d.writeln('</tr>');
 				}
@@ -249,12 +249,12 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles
 					d.writeln('<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >');
 					d.writeln('<td class="selector" width="25" align="center">');
 					if (we_editCatID == entries[i].ID) {
-						d.writeln('<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
+						d.writeln('<img src="<?php print TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
 						d.writeln('</td>');
 						d.writeln('<td class="selector">');
 						d.writeln('<input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />');
 					} else {
-						d.writeln('<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
+						d.writeln('<img src="<?php print TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
 						d.writeln('</td>');
 						d.writeln('<td class="selector"' + (we_editCatID ? '' : '') + ' title="' + entries[i].text + '">');
 						d.writeln(cutText(entries[i].text, 80));

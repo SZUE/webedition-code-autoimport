@@ -140,7 +140,7 @@ top.unselectAllFiles();') . '
 				d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 				if (makeNewFolder) {
 					d.writeln('<tr style="background-color:#DFE9F5;">');
-					d.writeln('<td align="center"><img src="<?php print ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>');
+					d.writeln('<td align="center"><img src="<?php print TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>');
 					d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print g_l('export', "[newFolder]") ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print g_l('export', "[newFolder]") ?>"  class="wetextinput" style="width:100%" /></td>');
 					d.writeln('</tr>');
 				}
@@ -149,7 +149,7 @@ top.unselectAllFiles();') . '
 					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 					d.writeln('<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? 'background-color:#DFE9F5;' : '') + 'cursor:pointer;' + ((we_editDirID != entries[i].ID) ? '' : '') + '"' + ((we_editDirID || makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >');
 					d.writeln('<td class="selector" width="25" align="center">');
-					d.writeln('<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
+					d.writeln('<img src="<?php print TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
 					d.writeln('</td>');
 					if (we_editDirID == entries[i].ID) {
 						d.writeln('<td class="selector">');

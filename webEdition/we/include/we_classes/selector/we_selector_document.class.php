@@ -243,7 +243,7 @@ function weonclick(e){
 	<table border="0" cellpadding="0" cellspacing="0" width="100%">
 #if(makeNewFolder){
 	<tr>
-		<td align="center"><img src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" border="0"></td>
+		<td align="center"><img src="' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" border="0"></td>
 		<td><input type="hidden" name="we_FolderText" value="' . g_l('fileselector', "[new_folder_name]") . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('fileselector', "[new_folder_name]") . '" class="wetextinput" style="width:100%" /></td>
 		<td class="selector">' . g_l('contentTypes', "[folder]") . '</td>
 		<td class="selector">' . date(g_l('date', '[format][default]')) . '</td>
@@ -254,7 +254,7 @@ function weonclick(e){
 #		var onclick = #\' onclick="weonclick(' . (we_base_browserDetect::isIE() ? "this" : "event") . ');tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(#\'+entries[i].ID+#\',0);}else{top.wasdblclick=0;}\',300);return true"#\';
 #		var ondblclick = #\' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(#\'+entries[i].ID+#\',1);return true;"#\';
 	<tr#\' + ((entries[i].ID == top.currentID)  ? #\' style="background-color:#DFE9F5;cursor:pointer;"#\' : "") + #\' id="line_#\'+entries[i].ID+#\'" style="cursor:pointer;" #\'+((we_editDirID || makeNewFolder) ? "" : onclick)+ (entries[i].isFolder ? ondblclick : "") + #\'>
-		<td class="selector" align="center"><img src="' . ICON_DIR . '#\'+entries[i].icon+#\'" width="16" height="18" border="0" /></td>
+		<td class="selector" align="center"><img src="' . TREE_ICON_DIR . '#\'+entries[i].icon+#\'" width="16" height="18" border="0" /></td>
 		<td class="selector"#\'+(entries[i].published==0 && entries[i].isFolder==0 ? #\' style="color: red;"#\' : "")+#\' title="#\'+entries[i].text+#\'">
 
 #	if(we_editDirID == entries[i].ID){
@@ -644,11 +644,16 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			if($result['ContentType'] == we_base_ContentTypes::IMAGE && file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){
 				if($fs === 0){
 					$_imagesize = array(0, 0);
-					$_thumbpath = IMAGE_DIR . 'icons/no_image.gif';
+					$_thumbpath = ICON_DIR . 'no_image.gif';
 					$_imagepreview = "<img src='" . $_thumbpath . "' border='0' id='previewpic'><p>" . g_l('fileselector', "[image_not_uploaded]") . "</p>";
 				} else {
 					$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
-					$_thumbpath = WEBEDITION_DIR . 'thumbnail.php?id=' . $this->id . '&size=150&path=' . urlencode(str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path'])) . '&extension=' . $result['Extension'] . '&size2=200';
+					$_thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
+							'id' => $this->id,
+							'size' => 150,
+							'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']),
+							'extension' => $result['Extension'],
+							'size2' => 200));
 					$_imagepreview = "<a href='" . $result['Path'] . "' target='_blank' align='center'><img src='" . $_thumbpath . "' border='0' id='previewpic'></a>";
 				}
 			}
@@ -666,7 +671,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				"caption" => g_l('fileselector', "[name]"),
 				"content" => (
 				$showPriview ? "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='" . getServerUrl(true) . $result['Path'] .
-					"' target='_blank' style='color:black'><img src='" . ICON_DIR . "browser.gif' border='0' vspace='0' hspace='0'></a></div>" : ""
+					"' target='_blank' style='color:black'><img src='" . TREE_ICON_DIR . "browser.gif' border='0' vspace='0' hspace='0'></a></div>" : ""
 				) . "<div style='margin-right:14px'>" . (
 				$showPriview ? "<a href='" . getServerUrl(true) . $result['Path'] . "' target='_blank' style='color:black'>" . $result['Text'] . "</a>" : $result['Text']
 				) . "</div>"
@@ -676,7 +681,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				"caption" => "ID",
 				"content" => "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
 					<div style='float:left; vertical-align:baseline; margin-right:4px;'>
-					<img src='" . ICON_DIR . "bearbeiten.gif' border='0' vspace='0' hspace='0'>
+					<img src='" . TREE_ICON_DIR . "bearbeiten.gif' border='0' vspace='0' hspace='0'>
 					</div></a>
 					<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
 						<div>" . $this->id . "</div>

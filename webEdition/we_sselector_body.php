@@ -240,7 +240,7 @@ var i = 0;';
 			if($nf == "new_folder"){
 				?>
 				<tr style="background-color:#DFE9F5;">
-					<td align="center" width="25"><img src="<?php print ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0"></td>
+					<td align="center" width="25"><img src="<?php print TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0"></td>
 					<td class="selector" width="200"><?php print we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', "[new_folder_name]"), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
 					<td class="selector" width="150"><?php print g_l('fileselector', "[folder]") ?></td>
 					<td class="selector"><?php echo date("d.m.Y H:i:s") ?></td>
@@ -320,7 +320,7 @@ var i = 0;';
 
 				if($show){
 					echo '<tr id="' . oldHtmlspecialchars($entry) . '"' . $ondblclick . $onclick . ' style="background-color:' . $bgcol . ';' . $_cursor . ($set_rename ? "" : "") . '"' . ($set_rename ? '' : '') . '>
-	<td class="selector" align="center" width="25"><img src="' . ICON_DIR . $icon . '" width="16" height="18" border="0"></td>
+	<td class="selector" align="center" width="25"><img src="' . TREE_ICON_DIR . $icon . '" width="16" height="18" border="0"></td>
 	<td class="selector" width="200">' . $_text_to_show . '</td>
 	<td class="selector" width="150">' . $_type . '</td>
 	<td class="selector" width="200">' . $_date . '</td>

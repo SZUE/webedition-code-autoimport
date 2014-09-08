@@ -35,7 +35,7 @@ if(isset($_SESSION['weS']['move_files_nok']) && is_array($_SESSION['weS']['move_
 		$table->addRow();
 		$i++;
 		$table->setCol($i, 0, null, we_html_tools::getPixel(10, 2));
-		$table->setCol($i, 1, null, (isset($data["icon"]) ? we_html_element::htmlImg(array("src" => ICON_DIR . $data["icon"])) : ""));
+		$table->setCol($i, 1, null, (isset($data["icon"]) ? we_html_element::htmlImg(array("src" => TREE_ICON_DIR . $data["icon"])) : ""));
 		$table->setCol($i, 2, null, we_html_tools::getPixel(10, 2));
 		$table->setCol($i, 3, null, str_replace($_SERVER['DOCUMENT_ROOT'], "", $data["path"]));
 	}
