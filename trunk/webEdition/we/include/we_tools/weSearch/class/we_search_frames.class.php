@@ -150,7 +150,7 @@ class we_search_frames extends we_tool_frames{
 
 		$setActiveTabJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
 
-		$Text = $this->Model->getLangText($this->Model->Path, $this->Model->Text);
+		$Text = we_search_model::getLangText($this->Model->Path, $this->Model->Text);
 
 		$body = we_html_element::htmlBody(
 				array(
@@ -289,7 +289,7 @@ class we_search_frames extends we_tool_frames{
 	function getHTMLGeneral(){
 		$disabled = true;
 
-		$this->Model->Text = $this->Model->getLangText($this->Model->Path, $this->Model->Text);
+		$this->Model->Text = we_search_model::getLangText($this->Model->Path, $this->Model->Text);
 
 		return array(
 			array(

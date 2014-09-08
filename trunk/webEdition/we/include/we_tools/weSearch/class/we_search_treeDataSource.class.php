@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_search_treeDataSource extends we_tool_treeDataSource{
-
 	var $treeItems = array();
 
 	function __construct($ds){
@@ -46,7 +45,7 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 		}
 
 		$wsQuery = '';
-		$prevoffset = max(0,$offset - $segment);
+		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$this->treeItems[] = array(
 				'icon' => 'arrowup.gif',
@@ -100,8 +99,9 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 				$fields = array();
 
 				foreach($db->Record as $k => $v){
-					if(!is_numeric($k))
+					if(!is_numeric($k)){
 						$fields[strtolower($k)] = $v;
+					}
 				}
 
 				$_text = oldHtmlspecialchars(we_search_model::getLangText($db->f('Path'), $db->f('Text')));
@@ -110,8 +110,9 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 
 				$this->treeItems[] = array_merge($fields, $typ);
 
-				if($typ['typ'] == "group" && $OpenCloseStatus == 1)
+				if($typ['typ'] == "group" && $OpenCloseStatus == 1){
 					$this->getItemsFromDB($db->f('ID'), 0, $segment);
+				}
 			}
 		}
 
