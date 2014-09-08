@@ -480,11 +480,11 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				break;
 
 			case "openUnpublishedObjects":
-				we_cmd("tool_weSearch_edit", "", 3, 7);
+				we_cmd("tool_weSearch_edit", "", "", 7, 3);
 				break;
 
 			case "openUnpublishedPages":
-				we_cmd("tool_weSearch_edit", "", 3, 4);
+				we_cmd("tool_weSearch_edit", "", "", 4, 3);
 				break;
 
 			case "openCatselector":
@@ -1424,7 +1424,7 @@ pWebEdition_JSFunctions();
 //-->
 </script>
 <?php
-$SEEM_edit_include=we_base_request::_(we_base_request::BOOL, "SEEM_edit_include");
+$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, "SEEM_edit_include");
 we_main_header::pCSS($SEEM_edit_include);
 ?>
 </head>
