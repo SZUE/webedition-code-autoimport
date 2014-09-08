@@ -139,6 +139,8 @@ class we_search_model extends we_tool_model{
 		if($weSearchID){
 			$this->ID = $weSearchID;
 			$this->load($weSearchID);
+		} else {
+			$this->ID = 0;
 		}
 	}
 
@@ -162,31 +164,33 @@ class we_search_model extends we_tool_model{
 
 	static function getLangText($path, $text){
 		switch($path){
-			case '/Vordefinierte Suchanfragen' :
+			case '/_PREDEF_':
 				return g_l('searchtool', '[vordefinierteSuchanfragen]');
-			case '/Vordefinierte Suchanfragen/Dokumente' :
+			case '/_PREDEF_/document':
 				return g_l('searchtool', '[dokumente]');
-			case '/Vordefinierte Suchanfragen/Objekte' :
-				return g_l('searchtool', '[objekte]');
-			case substr($path, 0, 43) == '/Vordefinierte Suchanfragen/Dokumente/Unver' :
+			case '/_PREDEF_/document/unpublished':
 				return g_l('searchtool', '[unveroeffentlicheDokumente]');
-			case '/Vordefinierte Suchanfragen/Dokumente/Statische Dokumente' :
+			case '/_PREDEF_/document/static':
 				return g_l('searchtool', '[statischeDokumente]');
-			case '/Vordefinierte Suchanfragen/Dokumente/Dynamische Dokumente' :
+			case '/_PREDEF_/document/dynamic':
 				return g_l('searchtool', '[dynamischeDokumente]');
-			case substr($path, 0, 41) == '/Vordefinierte Suchanfragen/Objekte/Unver' :
-				return g_l('searchtool', '[unveroeffentlicheObjekte]');
-			case '/Eigene Suchanfragen' :
-				return g_l('searchtool', '[eigeneSuchanfragen]');
-			case '/Versionen' :
-				return g_l('searchtool', '[versionen]');
-			case '/Versionen/Dokumente' :
-				return g_l('searchtool', '[dokumente]');
-			case '/Versionen/Objekte' :
+
+			case '/_PREDEF_/object':
 				return g_l('searchtool', '[objekte]');
-			case substr($path, 0, 24) == '/Versionen/Dokumente/gel' :
+			case '/_PREDEF_/object/unpublished':
+				return g_l('searchtool', '[unveroeffentlicheObjekte]');
+			case '/_CUSTOM_':
+				return g_l('searchtool', '[eigeneSuchanfragen]');
+			case '/_VERSION_':
+				return g_l('searchtool', '[versionen]');
+			case '/_VERSION_/document':
+				return g_l('searchtool', '[dokumente]');
+			case '/_VERSION_/document/deleted':
 				return g_l('searchtool', '[geloeschteDokumente]');
-			case substr($path, 0, 22) == '/Versionen/Objekte/gel' :
+
+			case '/_VERSION_/object':
+				return g_l('searchtool', '[objekte]');
+			case '/_VERSION_/object/deleted':
 				return g_l('searchtool', '[geloeschteObjekte]');
 			default:
 				return $text;
