@@ -984,7 +984,7 @@ function we_checkName() {
 		(isset($yuiSuggest) ?
 			$yuiSuggest->getYuiCss() .
 			$yuiSuggest->getYuiJs() : '') .
-		'</body></html>';
+		'</body></html>'; 
 	}
 
 }
