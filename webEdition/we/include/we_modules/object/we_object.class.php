@@ -239,14 +239,12 @@ class we_object extends we_document{
 							$_val = ($_val != $cur . 'defaultvalue' . $f) ? $_val : '';
 							if(substr($name, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
 								$arrt[$name]['meta'][] = $_val;
-							} else {
-								if(($key = $this->getElement($cur . 'defaultkey' . $f))){
-									$arrt[$name]['meta'][$key] = $_val;
-								}
+							} elseif(($key = $this->getElement($cur . 'defaultkey' . $f))){
+								$arrt[$name]['meta'][$key] = $_val;
 							}
 						}
 						$q[] = '`' . $name . '` ' . $this->switchtypes($cur);
-						t_e($this);
+						
 						//add index for complex queries
 						if($this->getElement($cur . self::ELEMENT_TYPE, 'dat') == we_objectFile::TYPE_OBJECT){
 							$indexe[] = 'KEY (`' . $name . '`)';
@@ -765,17 +763,18 @@ class we_object extends we_document{
 		$amount = we_base_request::_(we_base_request::INT, "amount_insert_meta_at_class_" . $name . $pos, 1);
 
 		// set new amount
-		$this->elements[$name . "count"]["dat"] += $amount;
+		$cnt = $this->getElement($name . "count") + $amount;
+		$this->setElement($name . "count", $cnt);
 
 		// move elements - add new elements
-		for($i = $this->elements[$name . "count"]["dat"]; 0 <= $i; $i--){
+		for($i = $cnt; 0 <= $i; $i--){
 
 			if(($pos + $amount) < $i){// move existing fields
-				$this->elements[$name . "defaultkey" . ($i)]["dat"] = ($this->getElement($name . "defaultkey" . ($i - $amount), "dat"));
-				$this->elements[$name . "defaultvalue" . ($i)]["dat"] = ($this->getElement($name . "defaultvalue" . ($i - $amount), "dat"));
+				$this->setElement($name . "defaultkey" . $i, ($this->getElement($name . "defaultkey" . ($i - $amount))));
+				$this->setElement($name . "defaultvalue" . $i, ($this->getElement($name . "defaultvalue" . ($i - $amount))));
 			} else if($pos < $i && $i <= ($pos + $amount)){ // add new fields
-				$this->elements[$name . "defaultkey" . $i]["dat"] = "";
-				$this->elements[$name . "defaultvalue" . $i]["dat"] = "";
+				$this->setElement($name . "defaultkey" . $i, "");
+				$this->setElement($name . "defaultvalue" . $i, "");
 			}
 		}
 	}
@@ -783,18 +782,18 @@ class we_object extends we_document{
 	function removeMetaFromClass($name, $nr){
 
 		### move elements ####
-
-		for($i = 0; $i < $this->elements[$name . "count"]["dat"]; $i++){
+		$cnt = $this->getElement($name . "count");
+		for($i = 0; $i < $cnt; $i++){
 			if($i >= $nr){
-				$this->elements[$name . "defaultkey" . $i]["dat"] = ($this->getElement($name . "defaultkey" . ($i + 1)));
-				$this->elements[$name . "defaultvalue" . $i]["dat"] = ($this->getElement($name . "defaultvalue" . ($i + 1)));
+				$this->setElement($name . "defaultkey" . $i, ($this->getElement($name . "defaultkey" . ($i + 1))));
+				$this->setElement($name . "defaultvalue" . $i, ($this->getElement($name . "defaultvalue" . ($i + 1))));
 			}
 		}
-		$this->elements[$name . "defaultkey" . $i]["dat"] = "";
-		$this->elements[$name . "defaultvalue" . $i]["dat"] = "";
+		$this->setElement($name . "defaultkey" . $i, "");
+		$this->setElement($name . "defaultvalue" . $i, "");
 		### end move elements ####
 
-		$this->elements[$name . "count"]["dat"] = max($this->elements[$name . "count"]["dat"] - 1, 0);
+		$this->setElement($name . "count", max($cnt - 1, 0));
 	}
 
 	function getEmptyDefaultFields(){
@@ -825,8 +824,7 @@ class we_object extends we_document{
 				if($all[$count]["table_name"] != OBJECT_FILES_TABLE && $all[$count]["table_name"] != OBJECT_FILES_TABLE){
 					if(preg_match('/^(.+)_(\d+)$/', $all[$count]["table_name"], $regs)){
 						if($this->ID != $regs[2]){
-							$path = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $regs[2], '', $this->DB_WE);
-							if($path !== ''){
+							if(($path = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $regs[2], '', $this->DB_WE))){
 								$vals[$regs[2]] = $path;
 							}
 						}
@@ -921,10 +919,8 @@ class we_object extends we_document{
 				while($count < count($all)){
 					if($all[$count]["table_name"] != OBJECT_FILES_TABLE && $all[$count]["table_name"] != OBJECT_FILES_TABLE){
 						if(preg_match('/^(.+)_(\d+)$/', $all[$count]["table_name"], $regs)){
-							$this->DB_WE->query('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID = ' . intval($regs[2]));
-							$this->DB_WE->next_record();
-							if($this->DB_WE->f("Path") !== ''){
-								$vals[$regs[2]] = $this->DB_WE->f("Path");
+							if(($path = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($regs[2]), '', $this->DB_WE))){
+								$vals[$regs[2]] = $path;
 							}
 						}
 					}
@@ -1085,9 +1081,9 @@ class we_object extends we_document{
 
 				$addArray = array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10);
 
-				for($f = 0; $f <= $this->elements[$name . "count"]["dat"]; $f++){
-					$content .= '<tr><td>' . $this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "defaultkey" . $f . "]", 40, $this->getElement($name . "defaultkey" . $f, "dat"), 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 105) .
-						'</td><td>' . $this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "defaultvalue" . $f . "]", 40, $this->getElement($name . "defaultvalue" . $f, "dat"), 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 105);
+				for($f = 0; $f <= $this->elements[$name . 'count']['dat']; $f++){
+					$content .= '<tr><td>' . $this->htmlTextInput('we_' . $this->Name . '_input[' . $name . 'defaultkey' . $f . ']', 40, $this->getElement($name . "defaultkey" . $f), 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 105) .
+						'</td><td>' . $this->htmlTextInput("we_" . $this->Name . "_input[" . $name . "defaultvalue" . $f . "]", 40, $this->getElement($name . "defaultvalue" . $f), 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 105);
 
 					$upbut = we_html_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
 					$upbutDis = we_html_button::create_button("image:btn_direction_up", "#", true, 0, 0, "", "", true);
@@ -1444,11 +1440,11 @@ class we_object extends we_document{
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 		if(empty($users)){
-			$content .= '<tr><td><img src="' . ICON_DIR . 'usergroup.gif" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[everybody]") . '</td><td>' . we_html_tools::getPixel(26, 18) . '</td></tr>';
+			$content .= '<tr><td><img src="' . TREE_ICON_DIR . 'usergroup.gif" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[everybody]") . '</td><td>' . we_html_tools::getPixel(26, 18) . '</td></tr>';
 		} else {
 			for($i = 1; $i < (count($users) - 1); $i++){
 				$foo = getHash('SELECT Path,Icon FROM ' . USER_TABLE . ' WHERE ID=' . intval($users[$i]), $this->DB_WE);
-				$content .= '<tr><td>' . (empty($foo) ? '' : '<img src="' . ICON_DIR . $foo["Icon"] . '" width="16" height="18" />') . '</td><td class="defaultfont">' . (empty($foo) ? 'Unknown' : $foo["Path"]) . '</td><td>' . we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_del_user_from_field','" . $GLOBALS['we_transaction'] . "','" . $nr . "'," . $users[$i] . ",'" . $name . "');") . '</td></tr>';
+				$content .= '<tr><td>' . (empty($foo) ? '' : '<img src="' . TREE_ICON_DIR . $foo["Icon"] . '" width="16" height="18" />') . '</td><td class="defaultfont">' . (empty($foo) ? 'Unknown' : $foo["Path"]) . '</td><td>' . we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_del_user_from_field','" . $GLOBALS['we_transaction'] . "','" . $nr . "'," . $users[$i] . ",'" . $name . "');") . '</td></tr>';
 			}
 		}
 		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
@@ -1473,13 +1469,13 @@ class we_object extends we_document{
 			$this->DB_WE->query('SELECT ID,Path,Icon FROM ' . USER_TABLE . ' WHERE ID IN(' . implode(',', $users) . ')');
 			$allUsers = $this->DB_WE->getAllFirst();
 			foreach($users as $user){
-				$content .= '<tr><td>' . (isset($allUsers[$user]) ? '<img src="' . ICON_DIR . $allUsers[$user]["Icon"] . '" width="16" height="18" />' : '') . '</td><td class="defaultfont">' . (isset($allUsers[$user]) ? $allUsers[$user]["Path"] : 'Unknown' ) . '</td><td>' .
+				$content .= '<tr><td>' . (isset($allUsers[$user]) ? '<img src="' . TREE_ICON_DIR . $allUsers[$user]["Icon"] . '" width="16" height="18" />' : '') . '</td><td class="defaultfont">' . (isset($allUsers[$user]) ? $allUsers[$user]["Path"] : 'Unknown' ) . '</td><td>' .
 					($canChange ?
 						$this->htmlHidden('we_users_read_only[' . $user . ']', (isset($usersReadOnly[$user]) && $usersReadOnly[$user]) ? $usersReadOnly[$user] : "" ) . '<input type="checkbox" value="1" name="wetmp_users_read_only[' . $user . ']"' . ( (isset($usersReadOnly[$user]) && $usersReadOnly[$user] ) ? ' checked' : '') . ' onclick="this.form.elements[\'we_users_read_only[' . $user . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
 						'<img src="' . TREE_IMAGE_DIR . ($usersReadOnly[$user] ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" />') . '</td><td class="defaultfont">' . g_l('weClass', "[readOnly]") . '</td><td>' . ($canChange ? we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('users_del_user','" . $user . "');_EditorFrame.setEditorIsHot(true);") : "") . '</td></tr>';
 			}
 		} else {
-			$content .= '<tr><td><img src="' . ICON_DIR . 'user.gif" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[onlyOwner]") . '</td><td></td></tr>';
+			$content .= '<tr><td><img src="' . TREE_ICON_DIR . 'user.gif" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[onlyOwner]") . '</td><td></td></tr>';
 		}
 		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(333, 2) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(80, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
 
@@ -1932,29 +1928,10 @@ class we_object extends we_document{
 				break;
 			}
 		}
-		$tempArr = array();
 
-		foreach($workspaces as $ws){
-			$tempArr[] = $ws;
-		}
-
-		$this->Workspaces = makeCSVFromArray($tempArr, true);
-
-		$tempArr = array();
-
-		foreach($defaultWorkspaces as $t){
-			$tempArr[] = $t;
-		}
-
-		$this->DefaultWorkspaces = makeCSVFromArray($tempArr, true);
-
-		$tempArr = array();
-
-		foreach($Templates as $t){
-			$tempArr[] = $t;
-		}
-
-		$this->Templates = makeCSVFromArray($tempArr, true);
+		$this->Workspaces = makeCSVFromArray($workspaces, true);
+		$this->DefaultWorkspaces = makeCSVFromArray($defaultWorkspaces, true);
+		$this->Templates = makeCSVFromArray($Templates, true);
 	}
 
 	function we_initSessDat($sessDat){
@@ -1983,13 +1960,13 @@ class we_object extends we_document{
 					$this->CSS = $vals[$name];
 				}
 				if(isset($vals[$name]) && is_array($vals[$name])){
-					$this->elements[$name . "count"]["dat"] = (( isset($vals[$name]["meta"]) && $vals[$name]["meta"]) ? (count($vals[$name]["meta"]) - 1) : 0);
+					$this->setElement($name . "count", (( isset($vals[$name]["meta"]) && $vals[$name]["meta"]) ? (count($vals[$name]["meta"]) - 1) : 0));
 					if(isset($vals[$name]["meta"]) && is_array($vals[$name]["meta"])){
 						$keynames = array_keys($vals[$name]["meta"]);
 
 						for($ll = 0; $ll <= count($vals[$name]["meta"]); $ll++){
-							$this->elements[$name . "defaultkey" . $ll]["dat"] = isset($keynames[$ll]) ? $keynames[$ll] : "";
-							$this->elements[$name . "defaultvalue" . $ll]["dat"] = isset($keynames[$ll]) ? $vals[$name]["meta"][$keynames[$ll]] : "";
+							$this->setElement($name . "defaultkey" . $ll, (isset($keynames[$ll]) ? $keynames[$ll] : ""));
+							$this->setElement($name . "defaultvalue" . $ll, (isset($keynames[$ll]) ? $vals[$name]["meta"][$keynames[$ll]] : ""));
 						}
 					}
 				}
