@@ -533,7 +533,7 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
 
 	if($ws == ''){
 		$wsA = makeArrayFromCSV(get_ws($table, $prePostKomma));
-		return (!empty($wsA) ? $wsA[0] : '');
+		return ($wsA ? $wsA[0] : '');
 	}
 	return $ws;
 }
@@ -677,9 +677,9 @@ function getUploadMaxFilesize($mysql = false, we_database_base $db = null){
 	$upload_max_filesize = we_convertIniSizes(ini_get('upload_max_filesize'));
 	$min = min($post_max_size, $upload_max_filesize, ($mysql ? $db->getMaxAllowedPacket() : PHP_INT_MAX));
 
-	return (intval(WE_MAX_UPLOAD_SIZE) == 0 ?
+	return (intval(FILE_UPLOAD_MAX_UPLOAD_SIZE) == 0 ?
 			$min :
-			min(WE_MAX_UPLOAD_SIZE * 1024 * 1024, $min));
+			min(FILE_UPLOAD_MAX_UPLOAD_SIZE * 1024 * 1024, $min));
 }
 
 /**
@@ -1210,4 +1210,12 @@ function getWECountries(){
 
 function getMysqlVer($nodots = true){
 	return we_database_base::getMysqlVer($nodots);
+}
+
+if(!function_exists('hex2bin')){//FIXME: remove if php > 5.3
+
+	function hex2bin($hex_string){
+		return pack("H*", $hex_string);
+	}
+
 }

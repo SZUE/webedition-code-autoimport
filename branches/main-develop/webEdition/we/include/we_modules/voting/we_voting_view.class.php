@@ -35,8 +35,8 @@ class we_voting_view extends we_modules_view{
 	function __construct($frameset = "", $topframe = "top.content"){
 		parent::__construct($frameset, $topframe);
 		$this->voting = new we_voting_voting();
-		$this->item_pattern = addslashes('<img style="vertical-align: bottom" src="' . ICON_DIR . 'user.gif" />&nbsp;');
-		$this->group_pattern = addslashes('<img style="vertical-align: bottom" src="' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" />&nbsp;');
+		$this->item_pattern = addslashes('<img style="vertical-align: bottom" src="' . TREE_ICON_DIR . 'user.gif" />&nbsp;');
+		$this->group_pattern = addslashes('<img style="vertical-align: bottom" src="' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" />&nbsp;');
 	}
 
 	function setTopFrame($frame){

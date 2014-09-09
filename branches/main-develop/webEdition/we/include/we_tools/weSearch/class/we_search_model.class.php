@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -25,14 +24,9 @@
 /**
  * class representing the model data of the search
  */
-// remove trailing slash
-if(isset($_SERVER["DOCUMENT" . "_ROOT"]) && substr($_SERVER['DOCUMENT_ROOT'], -1) == "/"){
-	$_SERVER["DOCUMENT" . "_ROOT"] = substr($_SERVER['DOCUMENT_ROOT'], 0, -1);
-}
 require_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
 
 class we_search_model extends we_tool_model{
-
 	/**
 	 * @var integer: default ParentId in which own searches are saved
 	 */
@@ -145,72 +139,63 @@ class we_search_model extends we_tool_model{
 		if($weSearchID){
 			$this->ID = $weSearchID;
 			$this->load($weSearchID);
+		} else {
+			$this->ID = 0;
+		}
+	}
+
+	function load($id = 0){
+		parent::load($id);
+		$array = get_object_vars($this);
+		foreach($array as $key => &$cur){
+			if(is_string($cur) && substr($cur, 0, 2) == 'a:'){
+				$this->{$key} = unserialize($cur);
+			}
 		}
 	}
 
 	function setIsFolder($value){
-
 		$this->IsFolder = $value;
-
-		$this->Icon = ($value ?
-				we_base_ContentTypes::FOLDER_ICON :
-				'Suche.gif');
+		$this->Icon = ($value ? we_base_ContentTypes::FOLDER_ICON : 'Suche.gif');
 	}
 
 	function filenameNotValid($text){
 		return preg_match('|[^a-z0-9._-]|i', $text);
 	}
 
-	function getLangText($path, $text){
+	static function getLangText($path, $text){
+		switch($path){
+			case '/_PREDEF_':
+				return g_l('searchtool', '[vordefinierteSuchanfragen]');
+			case '/_PREDEF_/document':
+				return g_l('searchtool', '[dokumente]');
+			case '/_PREDEF_/document/unpublished':
+				return g_l('searchtool', '[unveroeffentlicheDokumente]');
+			case '/_PREDEF_/document/static':
+				return g_l('searchtool', '[statischeDokumente]');
+			case '/_PREDEF_/document/dynamic':
+				return g_l('searchtool', '[dynamischeDokumente]');
 
-		$_text = $text;
-		if($_text != ''){
-			switch($path){
-				case '/Vordefinierte Suchanfragen' :
-					$_text = g_l('searchtool', '[vordefinierteSuchanfragen]');
-					break;
-				case '/Vordefinierte Suchanfragen/Dokumente' :
-					$_text = g_l('searchtool', '[dokumente]');
-					break;
-				case '/Vordefinierte Suchanfragen/Objekte' :
-					$_text = g_l('searchtool', '[objekte]');
-					break;
-				case substr($path, 0, 43) == '/Vordefinierte Suchanfragen/Dokumente/Unver' :
-					$_text = g_l('searchtool', '[unveroeffentlicheDokumente]');
-					break;
-				case '/Vordefinierte Suchanfragen/Dokumente/Statische Dokumente' :
-					$_text = g_l('searchtool', '[statischeDokumente]');
-					break;
-				case '/Vordefinierte Suchanfragen/Dokumente/Dynamische Dokumente' :
-					$_text = g_l('searchtool', '[dynamischeDokumente]');
-					break;
-				case substr($path, 0, 41) == '/Vordefinierte Suchanfragen/Objekte/Unver' :
-					$_text = g_l('searchtool', '[unveroeffentlicheObjekte]');
-					break;
-				case '/Eigene Suchanfragen' :
-					$_text = g_l('searchtool', '[eigeneSuchanfragen]');
-					break;
-				case '/Versionen' :
-					$_text = g_l('searchtool', '[versionen]');
-					break;
-				case '/Versionen/Dokumente' :
-					$_text = g_l('searchtool', '[dokumente]');
-					break;
-				case '/Versionen/Objekte' :
-					$_text = g_l('searchtool', '[objekte]');
-					break;
-				case substr($path, 0, 24) == '/Versionen/Dokumente/gel' :
-					$_text = g_l('searchtool', '[geloeschteDokumente]');
-					break;
-				case substr($path, 0, 22) == '/Versionen/Objekte/gel' :
-					$_text = g_l('searchtool', '[geloeschteObjekte]');
-					break;
-				default:
-					$_text = $text;
-			}
+			case '/_PREDEF_/object':
+				return g_l('searchtool', '[objekte]');
+			case '/_PREDEF_/object/unpublished':
+				return g_l('searchtool', '[unveroeffentlicheObjekte]');
+			case '/_CUSTOM_':
+				return g_l('searchtool', '[eigeneSuchanfragen]');
+			case '/_VERSION_':
+				return g_l('searchtool', '[versionen]');
+			case '/_VERSION_/document':
+				return g_l('searchtool', '[dokumente]');
+			case '/_VERSION_/document/deleted':
+				return g_l('searchtool', '[geloeschteDokumente]');
+
+			case '/_VERSION_/object':
+				return g_l('searchtool', '[objekte]');
+			case '/_VERSION_/object/deleted':
+				return g_l('searchtool', '[geloeschteObjekte]');
+			default:
+				return $text;
 		}
-
-		return $_text;
 	}
 
 }

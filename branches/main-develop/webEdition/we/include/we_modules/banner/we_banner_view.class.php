@@ -77,8 +77,8 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			$GLOBALS["we_print_not_htmltop"] = true;
 			$GLOBALS["we_head_insert"] = $this->getJSProperty();
-			$GLOBALS["we_body_insert"] = '<form name="we_form">' . "\n";
-			$GLOBALS["we_body_insert"] .= $this->getHiddens() . '</form>' . "\n";
+			$GLOBALS["we_body_insert"] = '<form name="we_form">';
+			$GLOBALS["we_body_insert"] .= $this->getHiddens() . '</form>';
 			$GLOBALS["mod"] = "banner";
 			ob_start();
 
@@ -340,7 +340,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 
 			function we_cmd() {
 				var args = "";
-				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
+				var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
 					url += "we_cmd[" + i + "]=" + escape(arguments[i]);
 					if (i < (arguments.length - 1)) {

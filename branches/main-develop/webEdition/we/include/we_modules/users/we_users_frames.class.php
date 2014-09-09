@@ -86,7 +86,7 @@ function zeichne(startEntry,zweigEintrag) {
 			if(nf[ai].name != -1) {
 				fr.write("<a name=\'_"+nf[ai].name+"\' href=\"javascript://\" onclick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\" BORDER=0>");
 			}
-			fr.write("<IMG SRC=' . ICON_DIR . '"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"' . g_l('tree', '[edit_statustext]') . '\">");
+			fr.write("<IMG SRC=' . TREE_ICON_DIR . '"+nf[ai].icon+" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"' . g_l('tree', '[edit_statustext]') . '\">");
 			fr.write("</a>");
 			fr.write("&nbsp;<a name=\'_"+nf[ai].name+"\' href=\"javascript://\" onclick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\"><font color=\""+((nf[ai].contentType=="alias") ? "#006DB8" : (parseInt(nf[ai].denied)?"red":"black")) +"\">"+(parseInt(nf[ai].published) ? "<b>" : "") + "<label title=\'"+nf[ai].name+"\'>" + nf[ai].text + "</label>" +(parseInt(nf[ai].published) ? "</b>" : "")+ "</font></A>&nbsp;&nbsp;<br/>\n");
 		}
@@ -102,7 +102,7 @@ function zeichne(startEntry,zweigEintrag) {
 				var zusatz2 = "open";
 			}
 			fr.write("<a name=\'_"+nf[ai].name+"\' href=\"javascript://\" onclick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\" BORDER=0>");
-			fr.write("<IMG SRC=' . ICON_DIR . 'usergroup"+zusatz2+".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"' . g_l('tree', '[edit_statustext]') . '\">");
+			fr.write("<IMG SRC=' . TREE_ICON_DIR . 'usergroup"+zusatz2+".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"' . g_l('tree', '[edit_statustext]') . '\">");
 			fr.write("</a>");
 			fr.write("<A name=\'_"+nf[ai].name+"\' HREF=\"javascript://\" onclick=\"doClick("+nf[ai].name+",\'"+nf[ai].contentType+"\',\'"+nf[ai].table+"\');return true;\">");
 			fr.write("&nbsp;<b><label title=\'"+nf[ai].name+"\'>" + nf[ai].text + "</label></b>");
@@ -392,7 +392,7 @@ self.focus();';
 			we_html_element::htmlHidden(array("name" => "sd", "value" => 0,));
 
 		if($user_object){
-			if(($oldTab = we_base_request::_(we_base_request::INT, 'oldtab')) !== false && ($oldBranch = we_base_request::_(we_base_request::INT, 'old_perm_branch')) !== false){
+			if(($oldTab = we_base_request::_(we_base_request::INT, 'oldtab')) !== false && ($oldBranch = we_base_request::_(we_base_request::STRING, 'old_perm_branch')) !== false){
 
 				$user_object->preserveState($oldTab, $oldBranch);
 				$_SESSION["user_session_data"] = $user_object->getState();

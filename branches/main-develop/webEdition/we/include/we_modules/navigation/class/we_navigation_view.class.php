@@ -39,8 +39,8 @@ class we_navigation_view extends we_modules_view{
 	public function __construct($frameset = '', $topframe = 'top'){
 		parent::__construct($frameset, $topframe);
 		$this->Model = new we_navigation_navigation();
-		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . 'navigation.gif\" />&nbsp;';
-		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
+		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . TREE_ICON_DIR . 'navigation.gif\" />&nbsp;';
+		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
 	}
 
 

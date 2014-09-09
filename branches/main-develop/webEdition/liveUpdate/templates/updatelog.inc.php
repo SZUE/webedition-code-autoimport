@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -46,14 +45,13 @@
  */
 
 $content = g_l('liveUpdate', '[updatelog][logIsEmpty]');
-$buttons = '';
 
 /*
  * items found - show them in table
  */
 if($this->Data['allEntries']){ // entries exist
 	// there are entries available -> show them in table
-	$start = we_base_request::_(we_base_request::INT, 'start', 0);
+	$start = $this->Data['start'];
 	$content = '
 <form name="we_form">
 <input type="hidden" name="section" value="' . we_base_request::_(we_base_request::STRING, 'section') . '" />
@@ -65,13 +63,12 @@ if($this->Data['allEntries']){ // entries exist
 	<td class="alignRight">' . g_l('liveUpdate', '[updatelog][page]') . ' ' . (($start / $this->Data['amountPerPage']) + 1) . '/ ' . ((ceil($this->Data['amountEntries'] / $this->Data['amountPerPage'])) ? ceil($this->Data['amountEntries'] / $this->Data['amountPerPage']) : 1) . '</td>
 </tr>
 </table>
-<div class="defaultfont">
-	' . we_html_forms::checkbox(1, we_base_request::_(we_base_request::BOOL, 'messages'), 'messages', "<span class=\"logMessage\">" . g_l('liveUpdate', '[updatelog][legendMessages]') . " (" . $this->Data['amountMessages'] . ")</span>", false, "small", "document.we_form.submit();") . '
-	' . we_html_forms::checkbox(1, we_base_request::_(we_base_request::BOOL, 'notices'), 'notices', "<span class=\"logNotice\">" . g_l('liveUpdate', '[updatelog][legendNotices]') . " (" . $this->Data['amountNotices'] . ")</span>", false, "small", "document.we_form.submit();") . '
-	' . we_html_forms::checkbox(1, we_base_request::_(we_base_request::BOOL, 'errors'), 'errors', "<span class=\"logError\">" . g_l('liveUpdate', '[updatelog][legendErrors]') . " (" . $this->Data['amountErrors'] . ")</span>", false, "small", "document.we_form.submit();") . '
+<div class="defaultfont">' .
+		we_html_forms::checkbox(1, we_base_request::_(we_base_request::BOOL, 'messages'), 'messages', "<span class=\"logMessage\">" . g_l('liveUpdate', '[updatelog][legendMessages]') . " (" . $this->Data['amountMessages'] . ")</span>", false, "small", "document.we_form.submit();") .
+		we_html_forms::checkbox(1, we_base_request::_(we_base_request::BOOL, 'notices'), 'notices', "<span class=\"logNotice\">" . g_l('liveUpdate', '[updatelog][legendNotices]') . " (" . $this->Data['amountNotices'] . ")</span>", false, "small", "document.we_form.submit();") .
+		we_html_forms::checkbox(1, we_base_request::_(we_base_request::BOOL, 'errors'), 'errors', "<span class=\"logError\">" . g_l('liveUpdate', '[updatelog][legendErrors]') . " (" . $this->Data['amountErrors'] . ")</span>", false, "small", "document.we_form.submit();") . '
 </div>
-<br />
-';
+<br />';
 
 	if(($this->Data['logEntries'])){ // entries match filter
 		$content .= '
@@ -95,12 +92,11 @@ if($this->Data['allEntries']){ // entries exist
 					$classStr = ' class="logMessage"';
 			}
 
-			$content .= "
-	<tr$classStr>
-		<td valign=\"top\">" . $logEntry['date'] . "</td>
-		<td>" . $logEntry['action'] . "</td>
-		<td valign=\"top\">" . $logEntry['version'] . "</td>
-	</tr>";
+			$content .= '<tr' . $classStr . '>
+		<td valign="top">' . $logEntry['date'] . '</td>
+		<td>' . $logEntry['action'] . '</td>
+		<td valign="top">' . $logEntry['version'] . '</td>
+	</tr>';
 		}
 
 		/*
@@ -122,6 +118,7 @@ if($this->Data['allEntries']){ // entries exist
 		$content .= '
 </table>';
 	} else {
+		$buttons = '';
 		$content .= '
 <table class="defaultfont">
 <tr>
@@ -157,4 +154,4 @@ $jsHead = we_html_element::jsElement('
 	}');
 
 
-print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[updatelog][headline]'), $content, $jsHead, $buttons);
+echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[updatelog][headline]'), $content, $jsHead, $buttons);

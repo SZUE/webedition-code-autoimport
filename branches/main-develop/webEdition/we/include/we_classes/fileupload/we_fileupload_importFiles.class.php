@@ -61,7 +61,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 			array("headline" => "", "html" => $alert, "space" => 0)
 		);
 
-		$butBrowse = str_replace(array(array("\n\r", "\r\n", "\r", "\n")), "", we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? we_html_button::create_button('browse', 'javascript:void(0)', true, 84, we_html_button::HEIGHT, '', '', false, false, '_btn') :
+		$butBrowse = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? we_html_button::create_button('browse', 'javascript:void(0)', true, 84, we_html_button::HEIGHT, '', '', false, false, '_btn') :
 				we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, 286, we_html_button::HEIGHT, '', '', false, false, '_btn'));
 		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
 		$fileselect = '
@@ -84,10 +84,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 		$topParts[] = array("headline" => g_l('importFiles', "[select_files]"), "html" => $fileselect, "space" => 130);
 
 		$content = we_html_element::htmlDiv(
-				array("id" => "forms", "style" => "display:block"), (USE_JUPLOAD ? we_html_element::htmlForm(array(
-						"name" => "JUploadForm"
-						), '') : '') .
-				we_html_element::htmlForm(
+				array("id" => "forms", "style" => "display:block"), we_html_element::htmlForm(
 					array(
 					"action" => WEBEDITION_DIR . "we_cmd.php",
 					"name" => "we_startform",
@@ -138,4 +135,5 @@ class we_fileupload_importFiles extends we_fileupload_base{
 			<td>
 		</tr></tbody></table>');
 	}
+
 }

@@ -435,11 +435,17 @@ class we_users_user{
 						$this->rememberPreference('weapp', 'seem_start_type') .
 						$this->rememberPreference(0, 'seem_start_file');
 					break;
-				default:
+				case 'document':
 					$save_javascript .=
 						$this->rememberPreference(isset($this->Preferences['seem_start_document']) ? $this->Preferences['seem_start_document'] : 0, 'seem_start_file') .
 						$this->rememberPreference('document', 'seem_start_type') .
 						$this->rememberPreference('', 'seem_start_weapp');
+					break;
+				default:
+					$save_javascript .=
+						$this->rememberPreference('0', 'seem_start_type') .
+						$this->rememberPreference('', 'seem_start_weapp') .
+						$this->rememberPreference(0, 'seem_start_file');
 			}
 		}
 
@@ -799,10 +805,13 @@ _multiEditorreload = true;";
 							$_SESSION['prefs']['seem_start_weapp'] = we_base_request::_(we_base_request::STRING, 'seem_start_weapp');
 							$_SESSION['prefs']['seem_start_type'] = 'weapp';
 							break;
-						default:
+						case 'document':
 							$_SESSION['prefs']['seem_start_file'] = we_base_request::_(we_base_request::INT, 'seem_start_document', 0);
 							$_SESSION['prefs']['seem_start_type'] = 'document';
 							break;
+						default:
+							$_SESSION['prefs']['seem_start_file'] = 0;
+							$_SESSION['prefs']['seem_start_type'] = '0';
 					}
 					break;
 
@@ -1091,9 +1100,12 @@ _multiEditorreload = true;";
 						$this->setPreference('seem_start_weapp', we_base_request::_(we_base_request::STRING, 'seem_start_weapp'));
 						$this->setPreference('seem_start_type', 'weapp');
 						break;
-					default:
+					case 'document':
 						$this->setPreference('seem_start_file', we_base_request::_(we_base_request::INT, 'seem_start_document'));
 						$this->setPreference('seem_start_type', 'document');
+					default:
+						$this->setPreference('seem_start_file', 0);
+						$this->setPreference('seem_start_type', '0');
 				}
 				break;
 		}
@@ -1385,24 +1397,24 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_tableObj = new we_html_table($_attr, 12, 2);
 		$line = 0;
 		$_tableObj->setCol($line, 0, null, $this->getUserfield('Salutation', 'salutation'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('First', 'first_name'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('First', 'first_name'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Second', 'second_name'));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Address', 'address'));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Address', 'address'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('HouseNo', 'houseno'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('PLZ', 'PLZ', 'text', 16, true));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('City', 'city'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('State', 'state'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('State', 'state'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Country', 'country'));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(560, 20));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Tel_preselection', 'tel_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Telephone', 'telephone'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Fax_preselection', 'fax_pre'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Fax', 'fax'));
-		$_tableObj->setCol( ++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
+		$_tableObj->setCol(++$line, 0, null, $this->getUserfield('Handy', 'mobile'));
 		$_tableObj->setCol($line, 1, null, $this->getUserfield('Email', 'email'));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
-		$_tableObj->setCol( ++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::getPixel(520, 4));
+		$_tableObj->setCol(++$line, 0, array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
 
 
 		$parts = array(

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -23,6 +22,7 @@
 /**
  * @see we_core_AbstractObject
  */
+
 /**
  * Base class for all kind of html elements
  *
@@ -32,7 +32,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject{
-
 	/**
 	 * id attribute
 	 *
@@ -192,7 +191,6 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject{
 	 * @return string
 	 */
 	protected function _getComputedStyleAttrib($additionalStyles = array(), $widthOffset = 0, $heightOffset = 0, $leftOffset = 0, $topOffset = 0){
-		$style = '';
 		$w = abs($this->_width) + $widthOffset;
 		$wUnit = (strpos($this->_width, "%") === false) ? 'px' : '%';
 
@@ -200,46 +198,33 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject{
 		$hUnit = (strpos($this->_height, "%") === false) ? 'px' : '%';
 
 		$top = abs($this->_top) + $topOffset;
-		;
+
 		$topUnit = (strpos($this->_top, "%") === false) ? 'px' : '%';
 
 		$left = abs($this->_left) + $leftOffset;
-		;
+
 		$leftUnit = (strpos($this->_left, "%") === false) ? 'px' : '%';
 
-		if($w > 0){
-			$style .= "width:{$w}$wUnit;";
-		}
-
-		if($h > 0){
-			$style .= "height:{$h}$hUnit;";
-		}
-
-		if($top > 0){
-			$style .= "top:{$top}$topUnit;";
-		}
-
-		if($left > 0){
-			$style .= "left:{$left}$leftUnit;";
-		}
-
-		if($this->_overflow !== ''){
-			$style .= "overflow:$this->_overflow;";
-		}
-
-		if($this->_position !== ''){
-			$style .= "position:$this->_position;";
-		}
+		$style = ($w > 0 ?
+				"width:{$w}$wUnit;" : '') .
+			($h > 0 ?
+				"height:{$h}$hUnit;" : '') .
+			($top > 0 ?
+				"top:{$top}$topUnit;" : '') .
+			($left > 0 ?
+				"left:{$left}$leftUnit;" : '') .
+			($this->_overflow !== '' ?
+				"overflow:$this->_overflow;" : '') .
+			($this->_position !== '' ?
+				"position:$this->_position;" : '');
 
 		foreach($additionalStyles as $n => $k){
 			$style .= "$n:$k;";
 		}
 
 		$style .= $this->getStyle();
-		if($style !== ''){
-			return ' style="' . oldHtmlspecialchars($style) . '"';
-		}
-		return '';
+		return ($style ?
+				' style="' . oldHtmlspecialchars($style) . '"' : '');
 	}
 
 	/**

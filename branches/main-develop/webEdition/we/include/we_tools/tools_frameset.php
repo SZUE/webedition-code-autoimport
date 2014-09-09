@@ -68,7 +68,7 @@ if($tool == "weSearch"){
 		$_SESSION['weS']['weSearch']["keyword"] = $cmd1;
 	}
 	//look which search is activ
-	switch(($cmd2 = we_base_request::_(we_base_request::TABLE, 'we_cmd', 1, 2))){
+	switch(($cmd2 = we_base_request::_(we_base_request::TABLE, 'we_cmd', "", 2))){//FIXME: bad to have different types at one query
 		case FILE_TABLE:
 			$tab = 1;
 			$_SESSION['weS']['weSearch']["checkWhich"] = 1;
@@ -87,7 +87,7 @@ if($tool == "weSearch"){
 			break;
 
 		default:
-			$tab = $cmd2;
+			$tab = we_base_request::_(we_base_request::INT, 'we_cmd', 1, 4);
 	}
 
 	$modelid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3);
@@ -95,7 +95,7 @@ if($tool == "weSearch"){
 	$tab = $modelid = false;
 }
 
-print we_html_element::jsScript(JS_DIR . "keyListener.js") .
+echo we_html_element::jsScript(JS_DIR . "keyListener.js") .
 	we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
 	we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
 	we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js");

@@ -24,26 +24,26 @@
  */
 class we_main_header{
 
-	static function pCSS(){
+	static function pCSS($SEEM_edit_include){
 		we_main_headermenu::pCSS();
-		if(self::hasMsg()){
+		if(self::hasMsg($SEEM_edit_include)){
 			we_messaging_headerMsg::pCSS();
 		}
 	}
 
-	static function pJS(){
+	static function pJS($SEEM_edit_include){
 		we_main_headermenu::pJS();
-		if(self::hasMsg()){
+		if(self::hasMsg($SEEM_edit_include)){
 			we_messaging_headerMsg::pJS();
 		}
 	}
 
-	private static function hasMsg(){
-		return (defined('MESSAGING_SYSTEM') && !we_base_request::_(we_base_request::BOOL, "SEEM_edit_include"));
+	private static function hasMsg($SEEM_edit_include){
+		return (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);
 	}
 
-	static function pbody(){
-		$msg = self::hasMsg();
+	static function pbody($SEEM_edit_include){
+		$msg = self::hasMsg($SEEM_edit_include);
 		?>
 		<div style="position:absolute;top:0px;left:0px;right:0px;bottom:0px;border:0px;background-color:#efefef;background-image: url(<?php print IMAGE_DIR ?>java_menu/background.gif); background-repeat: repeat-x;">
 			<div style="position:absolute;top:0px;bottom:0px;left:0px;right:<?php echo $msg ? 60 : 0 ?>px;"><?php

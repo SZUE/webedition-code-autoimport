@@ -276,7 +276,7 @@ print we_html_element::jsElement($content = $_contentTypes);
 				if (_Contentypes[this.contentType[frameId]]) {
 					var _text = this.myDoc.getElementById('text_' + frameId).innerHTML;
 					var _ext = _text ? _text.replace(/^.*\./, ".") : "";
-					this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(<?php echo ICON_DIR; ?>" + _getIcon(this.contentType[frameId], _ext) + ")";
+					this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(<?php echo TREE_ICON_DIR; ?>" + _getIcon(this.contentType[frameId], _ext) + ")";
 				} else {
 					this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(<?php echo IMAGE_DIR; ?>pixel.gif)";
 				}

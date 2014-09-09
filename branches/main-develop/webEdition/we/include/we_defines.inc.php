@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -36,6 +35,7 @@ define('CSS_DIR', WEBEDITION_DIR . 'css/');
 define('WE_APPS_DIR', WEBEDITION_DIR . 'apps/');
 define('SITE_DIR', WEBEDITION_DIR . 'site/');
 define('IMAGE_DIR', WEBEDITION_DIR . 'images/');
+define('ICON_DIR', IMAGE_DIR . 'icons/');
 define('HTML_DIR', WEBEDITION_DIR . 'html/');
 define('JS_DIR', WEBEDITION_DIR . 'js/');
 define('BACKUP_DIR', WEBEDITION_DIR . 'we_backup/');
@@ -46,10 +46,9 @@ define('TINYMCE_JS_DIR', WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny
 define('WE_USERS_MODULE_DIR', WE_MODULES_DIR . 'users/');
 
 define('TREE_IMAGE_DIR', IMAGE_DIR . 'tree/');
-define('ICON_DIR', TREE_IMAGE_DIR . 'icons/');
+define('TREE_ICON_DIR', TREE_IMAGE_DIR . 'icons/');
 define('EDIT_IMAGE_DIR', IMAGE_DIR . 'edit/');
 define('BUTTONS_DIR', IMAGE_DIR . 'button/');
-
 
 //all paths
 define('WEBEDITION_PATH', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR);

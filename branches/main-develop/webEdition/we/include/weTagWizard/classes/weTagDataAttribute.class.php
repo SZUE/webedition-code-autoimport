@@ -1,5 +1,4 @@
 <?php
-
 include_once(WE_INCLUDES_PATH . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/taged.inc.php');
 
 /**
@@ -25,7 +24,6 @@ include_once(WE_INCLUDES_PATH . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/tag
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weTagDataAttribute{
-
 	/**
 	 * @var string
 	 */
@@ -58,14 +56,14 @@ class weTagDataAttribute{
 	 * @param boolean $required
 	 * @param string $module
 	 */
-	function __construct($name, $required = false, $module = '', $description = '', $deprecated = false){
+	public function __construct($name, $required = false, $module = '', $description = '', $deprecated = false){
 		static $count = 0;
 		$this->Id = ++$count;
 		$this->Name = $name;
 		$this->Required = $required;
 		$this->Module = $module;
 		// set value occasionally
-		$this->Value = we_base_request::_(we_base_request::STRING, 'attributes', false,$name);
+		$this->Value = we_base_request::_(we_base_request::STRING, 'attributes', false, $name);
 		$this->Description = $description;
 		$this->Deprecated = $deprecated;
 	}
@@ -79,7 +77,7 @@ class weTagDataAttribute{
 			'class' => 'defaultfont',
 			'for' => $this->getIdName()
 		);
-		if($this->Description != ''){
+		if($this->Description){
 			$tmp['style'] = 'border-bottom-style: dotted;border-bottom-width: 1px;border-spacing: 2px;cursor:help;';
 			$tmp['title'] = $this->Description;
 		}

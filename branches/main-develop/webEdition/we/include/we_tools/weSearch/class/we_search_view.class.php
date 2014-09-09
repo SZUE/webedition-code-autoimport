@@ -47,8 +47,8 @@ class we_search_view{
 		$this->setFramesetName($frameset);
 		$this->setTopFrame($topframe);
 		$this->Model = new we_search_model();
-		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::FILE_ICON . '\" />&nbsp;';
-		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
+		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . TREE_ICON_DIR . we_base_ContentTypes::FILE_ICON . '\" />&nbsp;';
+		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
 		$this->yuiSuggest = & weSuggest::getInstance();
 		$this->searchclass = new we_search_search();
 		$this->searchclassExp = new we_search_exp();
@@ -126,9 +126,9 @@ class we_search_view{
 			case 'tool_weSearch_new_forTemplates' :
 			case 'tool_weSearch_new_forObjects' :
 			case 'tool_weSearch_new_advSearch' :
-			case 'tool_weSearch_new_group' :
+			//case 'tool_weSearch_new_group' :
 				$this->Model = new we_search_model();
-				$this->Model->setIsFolder($cmd == 'tool_weSearch_new_group' ? 1 : 0);
+				$this->Model->setIsFolder(/*$cmd == 'tool_weSearch_new_group' ? 1 :*/ 0);
 				$tab = we_base_request::_(we_base_request::INT, 'tabnr');
 
 				echo we_html_element::jsElement(
@@ -195,33 +195,17 @@ class we_search_view{
 					break;
 				}
 
-				$js = '';
-
-				$newone = $this->Model->ID == '0';
-
-				$this->Model->searchDocSearch = serialize($this->Model->searchDocSearch);
-				$this->Model->searchTmplSearch = serialize($this->Model->searchTmplSearch);
-				$this->Model->searchAdvSearch = serialize($this->Model->searchAdvSearch);
-				$this->Model->locationDocSearch = serialize($this->Model->locationDocSearch);
-				$this->Model->locationTmplSearch = serialize($this->Model->locationTmplSearch);
-				$this->Model->locationAdvSearch = serialize($this->Model->locationAdvSearch);
-				$this->Model->searchFieldsAdvSearch = (isset($_REQUEST['searchFieldsAdvSearch']) ? serialize($this->Model->searchFieldsAdvSearch) : '');
-				$this->Model->search_tables_advSearch = serialize($this->Model->search_tables_advSearch);
+				$newone = $this->Model->ID == 0;
 
 				if($this->Model->save()){
 					$this->Model->updateChildPaths($oldpath);
 
-					if($newone){
-						$js = $this->topFrame . '.makeNewEntry(\'' . $this->Model->Icon . '\',\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes(
-								$this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . SUCHE_TABLE . '\',0,0);';
-					} else {
-						$js = $this->topFrame . '.updateEntry(\'' . $this->Model->ID . '\',\'' . $this->Model->Text . '\',\'' . $this->Model->ParentID . '\',0,0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . SUCHE_TABLE . '\',0,0);';
-					}
-
-					$js = we_html_element::jsElement(
-							$js . $this->editorHeaderFrame . '.location.reload();' .
+					$js = we_html_element::jsElement(($newone ?
+								$this->topFrame . '.makeNewEntry(\'' . $this->Model->Icon . '\',\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes($this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . SUCHE_TABLE . '\',0,0);' :
+								$this->topFrame . '.updateEntry(\'' . $this->Model->ID . '\',\'' . $this->Model->Text . '\',\'' . $this->Model->ParentID . '\',0,0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . SUCHE_TABLE . '\',0,0);') .
+							$this->editorHeaderFrame . '.location.reload();' .
 							we_message_reporting::getShowMessageCall(
-								($this->Model->IsFolder == 1 ? g_l('searchtool', "[save_group_ok]") : g_l('searchtool', "[save_ok]")), we_message_reporting::WE_MESSAGE_NOTICE) .
+								g_l('searchtool', ($this->Model->IsFolder == 1 ? "[save_group_ok]" : "[save_ok]")), we_message_reporting::WE_MESSAGE_NOTICE) .
 							$this->topFrame . '.hot=0;'
 					);
 
@@ -241,168 +225,148 @@ class we_search_view{
 				}
 
 				echo $js;
-				$this->Model->searchDocSearch = unserialize($this->Model->searchDocSearch);
-				$this->Model->searchTmplSearch = unserialize($this->Model->searchTmplSearch);
-				$this->Model->searchAdvSearch = unserialize($this->Model->searchAdvSearch);
-				$this->Model->locationDocSearch = unserialize($this->Model->locationDocSearch);
-				$this->Model->locationTmplSearch = unserialize($this->Model->locationTmplSearch);
-				$this->Model->locationAdvSearch = unserialize($this->Model->locationAdvSearch);
-				$this->Model->searchFieldsAdvSearch = (!is_array($this->Model->searchFieldsAdvSearch) && $this->Model->searchFieldsAdvSearch != "") ?
-					unserialize($this->Model->searchFieldsAdvSearch) :
-					array();
 
-				$this->Model->search_tables_advSearch = unserialize($this->Model->search_tables_advSearch);
 				break;
 			case 'tool_weSearch_delete' :
-				print we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
+				echo we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 				if($this->Model->delete()){
-					print
-						we_html_element::jsElement($this->topFrame . '.deleteEntry("' . $this->Model->ID . '");
+					echo we_html_element::jsElement(
+						$this->topFrame . '.deleteEntry("' . $this->Model->ID . '");
         setTimeout(\'' . we_message_reporting::getShowMessageCall(
-								($this->Model->IsFolder == 1 ? g_l('tools', '[group_deleted]') : g_l('tools', '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);'
+							g_l('tools', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);' .
+						$this->topFrame . '.we_cmd("tool_weSearch_edit");'
 					);
 					$this->Model = new we_search_model();
 					$_REQUEST['pnt'] = 'edbody';
-
-					print we_html_element::jsElement($this->topFrame . '.we_cmd("tool_weSearch_edit");');
 				}
 				break;
 
 			default :
 		}
 
-		$_SESSION["weSearch_session"] = serialize($this->Model);
+		$_SESSION["weSearch_session"] = $this->Model;
 	}
 
 	function getTopJSAdditional(){
-
 		return '
-   case "tool_weSearch_save":
-    if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {
-     ' . we_message_reporting::getShowMessageCall(
+case "tool_weSearch_save":
+ if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {
+	' . we_message_reporting::getShowMessageCall(
 				g_l('searchtool', '[predefinedSearchmodify]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-     break;
-    }
-    else if (' . $this->editorBodyFrame . '.loaded) {
-     if(' . $this->editorBodyFrame . '.document.we_form.newone.value==1) {
-      var name = prompt("' . g_l('searchtool', '[nameForSearch]') . '", "");
-      if (name == null) {
-       break;
-      } else {
-       ' . $this->editorBodyFrame . '.document.we_form.savedSearchName.value=name;
-      }
-     }
-     ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
-	 //' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-     ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-     ' . $this->editorBodyFrame . '.submitForm();
-    }
-    else {
-     ' . we_message_reporting::getShowMessageCall(
+	break;
+ }else if (' . $this->editorBodyFrame . '.loaded) {
+	if(' . $this->editorBodyFrame . '.document.we_form.newone.value==1) {
+	 var name = prompt("' . g_l('searchtool', '[nameForSearch]') . '", "");
+	 if (name == null) {
+		break;
+	 } else {
+		' . $this->editorBodyFrame . '.document.we_form.savedSearchName.value=name;
+	 }
+	}
+	' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+//' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+	' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
+	' . $this->editorBodyFrame . '.submitForm();
+ }else {
+	' . we_message_reporting::getShowMessageCall(
 				g_l('tools', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-    }
+ }
 
-    break;
+ break;
 
-   case "tool_weSearch_delete":
-    if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {
-     ' . we_message_reporting::getShowMessageCall(
-				g_l('searchtool', '[predefinedSearchdelete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-     return;
-    }
-    if(' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.newone.value==1){
-     ' . we_message_reporting::getShowMessageCall(
-				g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-     return;
-    }
-    ' . (!permissionhandler::hasPerm("DELETE_" . strtoupper($this->toolName)) ? (we_message_reporting::getShowMessageCall(
+case "tool_weSearch_delete":
+ if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {' .
+			we_message_reporting::getShowMessageCall(g_l('searchtool', '[predefinedSearchdelete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+	return;
+ }
+ if(' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.newone.value==1){
+	' . we_message_reporting::getShowMessageCall(g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+	return;
+ }
+ ' . (!permissionhandler::hasPerm("DELETE_" . strtoupper($this->toolName)) ? (we_message_reporting::getShowMessageCall(
 					g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)) : ('
-        if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
+		 if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
 
-         if (confirm("' . g_l('searchtool', '[confirmDel]') . '")) {
+			if (confirm("' . g_l('searchtool', '[confirmDel]') . '")) {
+			 ' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
+			 ' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+			 ' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?home=0&pnt=edheader";
+			 ' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?home=0&pnt=edfooter";
+			 ' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
 
-          ' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-          ' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-          ' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?home=0&pnt=edheader";
-          ' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?home=0&pnt=edfooter";
-          ' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+			}
 
-         }
+		 } else {' .
+				we_message_reporting::getShowMessageCall(g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+		 }
 
-        } else {
-         ' . we_message_reporting::getShowMessageCall(
-					g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-        }
+	 ')) . '
+			 break;
 
-      ')) . '
-          break;
+case "tool_weSearch_new_forDocuments":
+	if (' . $this->editorBodyFrame . '.loaded) {
+		' . $this->topFrame . '.hot = 0;
+		' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+		' . $this->topFrame . '.activ_tab=1;
+		' . $this->editorBodyFrame . '.document.we_form.tabnr.value=1;
+		' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
+		' . $this->editorBodyFrame . '.submitForm();
+	} else {
+		setTimeout(\'we_cmd("tool_' . $this->toolName . '_new_forDocuments");\', 10);
+	}
+	if(treeData){
+		treeData.unselectnode();
+	}
+	break;
 
-         case "tool_weSearch_new_forDocuments":
-    if (' . $this->editorBodyFrame . '.loaded) {
-     ' . $this->topFrame . '.hot = 0;
-        ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
-        ' . $this->topFrame . '.activ_tab=1;
-           ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=1;
-           ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-           ' . $this->editorBodyFrame . '.submitForm();
+case "tool_weSearch_new_forTemplates":
+	if (' . $this->editorBodyFrame . '.loaded) {
+		' . $this->topFrame . '.hot = 0;
+		' . $this->topFrame . '.activ_tab=2;
+		' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+		' . $this->editorBodyFrame . '.document.we_form.tabnr.value=2;
+		' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
+		' . $this->editorBodyFrame . '.submitForm();
+	} else {
+		setTimeout(\'we_cmd("tool_' . $this->toolName . '_new_forTemplates");\', 10);
+ }
+	if(treeData){
+	treeData.unselectnode();
+	}
+	break;
 
-       } else {
-     setTimeout(\'we_cmd("tool_' . $this->toolName . '_new_forDocuments");\', 10);
-    }
-       if(treeData){
-     treeData.unselectnode();
-    }
-       break;
-
-         case "tool_weSearch_new_forTemplates":
-    if (' . $this->editorBodyFrame . '.loaded) {
-     ' . $this->topFrame . '.hot = 0;
-     ' . $this->topFrame . '.activ_tab=2;
-        ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
-           ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=2;
-           ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-           ' . $this->editorBodyFrame . '.submitForm();
-       } else {
-     setTimeout(\'we_cmd("tool_' . $this->toolName . '_new_forTemplates");\', 10);
-    }
-       if(treeData){
-     treeData.unselectnode();
-    }
-       break;
-
-         case "tool_weSearch_new_forObjects":
-    if (' . $this->editorBodyFrame . '.loaded) {
-     ' . $this->topFrame . '.hot = 0;
-     ' . $this->topFrame . '.activ_tab=3;
-        ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
-           ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=3;
-           ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-           ' . $this->editorBodyFrame . '.submitForm();
-       } else {
-     setTimeout(\'we_cmd("tool_' . $this->toolName . '_new_forObjects");\', 10);
-    }
-       if(treeData){
-     treeData.unselectnode();
-    }
-       break;
+case "tool_weSearch_new_forObjects":
+ if (' . $this->editorBodyFrame . '.loaded) {
+	' . $this->topFrame . '.hot = 0;
+	' . $this->topFrame . '.activ_tab=3;
+		 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+				' . $this->editorBodyFrame . '.document.we_form.tabnr.value=3;
+				' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
+				' . $this->editorBodyFrame . '.submitForm();
+		} else {
+	setTimeout(\'we_cmd("tool_' . $this->toolName . '_new_forObjects");\', 10);
+ }
+		if(treeData){
+	treeData.unselectnode();
+ }
+		break;
 
 
-         case "tool_weSearch_new_advSearch":
-    if (' . $this->editorBodyFrame . '.loaded) {
-     ' . $this->topFrame . '.hot = 0;
-     ' . $this->topFrame . '.activ_tab=3;
-        ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
-           ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=3;
-           ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-           ' . $this->editorBodyFrame . '.submitForm();
-       } else {
-     setTimeout(\'we_cmd("tool_' . $this->toolName . '_new_advSearch");\', 10);
-    }
-       if(treeData){
-     treeData.unselectnode();
-    }
-       break;
-       ';
+			case "tool_weSearch_new_advSearch":
+ if (' . $this->editorBodyFrame . '.loaded) {
+	' . $this->topFrame . '.hot = 0;
+	' . $this->topFrame . '.activ_tab=3;
+		 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+				' . $this->editorBodyFrame . '.document.we_form.tabnr.value=3;
+				' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
+				' . $this->editorBodyFrame . '.submitForm();
+		} else {
+	setTimeout(\'we_cmd("tool_' . $this->toolName . '_new_advSearch");\', 10);
+ }
+	if(treeData){
+		treeData.unselectnode();
+	}
+	break;';
 	}
 
 	function getSearchJS($whichSearch){
@@ -421,28 +385,27 @@ class we_search_view{
 
 
 		$scrollContentFunction = ($this->Model->IsFolder == 0 ? '
-    if (' . $this->editorBodyFrame . '.loaded) {
-     var elem = document.getElementById("filterTableAdvSearch");
-     newID = elem.rows.length-1;
+if (' . $this->editorBodyFrame . '.loaded) {
+ var elem = document.getElementById("filterTableAdvSearch");
+ newID = elem.rows.length-1;
 
-     scrollheight = ' . $h . ';' .
+ scrollheight = ' . $h . ';' .
 				$addinputRows . '
-     var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-     var scrollContent = document.getElementById("scrollContent_' . $whichSearch . '");
+ var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+ var scrollContent = document.getElementById("scrollContent_' . $whichSearch . '");
 
-     var heightDiv = ' . (we_base_browserDetect::isIE() ? 200 : 180) . ';
+ var heightDiv = ' . (we_base_browserDetect::isIE() ? 200 : 180) . ';
 
-     if((h - heightDiv)>0){
-      scrollContent.style.height = h - heightDiv;
-     }
+ if((h - heightDiv)>0){
+	scrollContent.style.height = h - heightDiv;
+ }
 
-     if((scrollContent.offsetHeight - scrollheight)>0){
-      scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) +"px";
-     }
-    }
-    else {
-     setTimeout(\'sizeScrollContent();\', 1000);
-    }' :
+ if((scrollContent.offsetHeight - scrollheight)>0){
+	scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) +"px";
+ }
+}else {
+ setTimeout(\'sizeScrollContent();\', 1000);
+}' :
 				'');
 
 		switch($whichSearch){
@@ -467,901 +430,888 @@ class we_search_view{
 
 
 		$_js = we_html_element::jsElement('
-   var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
-   var ajaxCallbackResultList = {
-    success: function(o) {
-     if(typeof(o.responseText) != "undefined" && o.responseText != "") {
-      ' . $this->editorBodyFrame . '.document.getElementById("scrollContent_' . $whichSearch . '").innerHTML = o.responseText;
-      makeAjaxRequestParametersTop();
-      makeAjaxRequestParametersBottom();
+var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
+var ajaxCallbackResultList = {
+ success: function(o) {
+	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+	 ' . $this->editorBodyFrame . '.document.getElementById("scrollContent_' . $whichSearch . '").innerHTML = o.responseText;
+	 makeAjaxRequestParametersTop();
+	 makeAjaxRequestParametersBottom();
 
-     }
-    },
-    failure: function(o) {
-     //alert("Failure");
-    }
-   }
-   var ajaxCallbackParametersTop = {
-    success: function(o) {
-     if(typeof(o.responseText) != "undefined" && o.responseText != "") {
-      ' . $this->editorBodyFrame . '.document.getElementById("parametersTop_' . $whichSearch . '").innerHTML = o.responseText;
-     }
-    },
-    failure: function(o) {
-     //alert("Failure");
-    }
-   }
-   var ajaxCallbackParametersBottom = {
-    success: function(o) {
-     if(typeof(o.responseText) != "undefined" && o.responseText != "") {
-      ' . $this->editorBodyFrame . '.document.getElementById("parametersBottom_' . $whichSearch . '").innerHTML = o.responseText;
-     }
-    },
-    failure: function(o) {
-     //alert("Failure");
-    }
-   }
-   var ajaxCallbackgetMouseOverDivs = {
-    success: function(o) {
-     if(typeof(o.responseText) != "undefined" && o.responseText != "") {
-      ' . $this->editorBodyFrame . '.document.getElementById("mouseOverDivs_' . $whichSearch . '").innerHTML = o.responseText;
-     }
-    },
-    failure: function(o) {
-     //alert("Failure");
-    }
-   }
+	}
+ },
+ failure: function(o) {
+	//alert("Failure");
+ }
+}
+var ajaxCallbackParametersTop = {
+ success: function(o) {
+	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+	 ' . $this->editorBodyFrame . '.document.getElementById("parametersTop_' . $whichSearch . '").innerHTML = o.responseText;
+	}
+ },
+ failure: function(o) {
+	//alert("Failure");
+ }
+}
+var ajaxCallbackParametersBottom = {
+ success: function(o) {
+	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+	 ' . $this->editorBodyFrame . '.document.getElementById("parametersBottom_' . $whichSearch . '").innerHTML = o.responseText;
+	}
+ },
+ failure: function(o) {
+	//alert("Failure");
+ }
+}
+var ajaxCallbackgetMouseOverDivs = {
+ success: function(o) {
+	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+	 ' . $this->editorBodyFrame . '.document.getElementById("mouseOverDivs_' . $whichSearch . '").innerHTML = o.responseText;
+	}
+ },
+ failure: function(o) {
+	//alert("Failure");
+ }
+}
 
 
-   function search(newSearch) {
-   		if(' . intval(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()) . ') {
-   			' . we_message_reporting::getShowMessageCall(
-					g_l('searchtool', "[noTempTableRightsSearch]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
-      	}
-   		else {
-		    var Checks = new Array();
+function search(newSearch) {
+	' . (intval(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()) ?
+					we_message_reporting::getShowMessageCall(g_l('searchtool', "[noTempTableRightsSearch]"), we_message_reporting::WE_MESSAGE_NOTICE) : '
 
-		    if("' . $whichSearch . '"=="AdvSearch") {
-		      var m = 0;
-		       for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-		         var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-		         if(table.substring(0,23)=="search_tables_advSearch") {
-		           if(escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
-		             Checks[m] = escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
-		             m++;
-		           }
-		         }
-		      }
-		      if(Checks.length==0) {
-		     ' . we_message_reporting::getShowMessageCall(
-					g_l('searchtool', "[nothingCheckedAdv]"), we_message_reporting::WE_MESSAGE_ERROR) . '
-		    }
-		     }
-		     if("' . $whichSearch . '"=="DocSearch") {
-		      var m = 0;
-		       for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-		         var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-		         if(table=="searchForTextDocSearch" || table=="searchForTitleDocSearch" || table=="searchForContentDocSearch") {
-		           if(escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
-		             Checks[m] = escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
-		             m++;
-		           }
-		         }
-		      }
-		       if(Checks.length==0) {
-		     ' . we_message_reporting::getShowMessageCall(
-					g_l('searchtool', "[nothingCheckedTmplDoc]"), we_message_reporting::WE_MESSAGE_ERROR) . '
-		    }
-		     }
-		     if("' . $whichSearch . '"=="TmplSearch") {
-		      var m = 0;
-		       for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-		         var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-		         if(table=="searchForTextTmplSearch" || table=="searchForContentTmplSearch") {
-		           if(escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
-		             Checks[m] = escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
-		             m++;
-		           }
-		         }
-		      }
-		       if(Checks.length==0) {
-		     ' . we_message_reporting::getShowMessageCall(
-					g_l('searchtool', "[nothingCheckedTmplDoc]"), we_message_reporting::WE_MESSAGE_ERROR) . '
-		    }
-		     }
+		var Checks = new Array();
+		' . ($whichSearch == "AdvSearch" ? '
 
-		    if(Checks.length!=0) {
-		      if(newSearch) {
-		       ' . $this->editorBodyFrame . '.document.we_form.searchstart' . $whichSearch . '.value=0;
-		      }
-		      makeAjaxRequestDoclist();
-		  }
+		var m = 0;
+		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
+			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
+			if(table.substring(0,23)=="search_tables_advSearch") {
+				if(escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
+					Checks[m] = escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+					m++;
+				}
+			}
 		}
+		if(Checks.length==0) {' .
+						we_message_reporting::getShowMessageCall(g_l('searchtool', "[nothingCheckedAdv]"), we_message_reporting::WE_MESSAGE_ERROR) . '
+		}' : '') .
+					($whichSearch == "DocSearch" ? '
+		var m = 0;
+		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
+			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
+			if(table=="searchForTextDocSearch" || table=="searchForTitleDocSearch" || table=="searchForContentDocSearch") {
+				if(escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
+					Checks[m] = escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+					m++;
+				}
+			}
+		}
+		if(Checks.length==0) {' .
+						we_message_reporting::getShowMessageCall(g_l('searchtool', "[nothingCheckedTmplDoc]"), we_message_reporting::WE_MESSAGE_ERROR) . '
+		}' : '') .
+					($whichSearch == "TmplSearch" ? '
+		var m = 0;
+		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
+			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
+			if(table=="searchForTextTmplSearch" || table=="searchForContentTmplSearch") {
+				if(escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
+					Checks[m] = escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+					m++;
+				}
+			}
+		}
+		if(Checks.length==0) {' .
+						we_message_reporting::getShowMessageCall(g_l('searchtool', "[nothingCheckedTmplDoc]"), we_message_reporting::WE_MESSAGE_ERROR) . '
+		}' : '') . '
+		 if(Checks.length!=0) {
+			 if(newSearch) {' .
+					$this->editorBodyFrame . '.document.we_form.searchstart' . $whichSearch . '.value=0;
+			 }
+			 makeAjaxRequestDoclist();
+	}') . '
+}
 
-   }
+function makeAjaxRequestDoclist() {
+ getMouseOverDivs();
+ var args = "";
+ var newString = "";
+ for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
+	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
+	args += "&we_cmd["+escape(newString)+"]="+escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+ }
+ ' . $this->editorBodyFrame . '.document.getElementById("scrollContent_' . $whichSearch . '").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
+ YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchResult&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
+}
 
-   function makeAjaxRequestDoclist() {
-    getMouseOverDivs();
-    var args = "";
-    var newString = "";
-    for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-     newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-     args += "&we_cmd["+escape(newString)+"]="+escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
-    }
-    ' . $this->editorBodyFrame . '.document.getElementById("scrollContent_' . $whichSearch . '").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
-		YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchResult&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
-   }
+function makeAjaxRequestParametersTop() {
+ var args = "";
+ var newString = "";
+ for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
+	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
+	args += "&we_cmd["+escape(newString)+"]="+escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+ }
+	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchParameters&position=top&whichsearch=' . $whichSearch . '&classname' . $this->Model->ModelClassName . '=&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
+}
 
-   function makeAjaxRequestParametersTop() {
-    var args = "";
-    var newString = "";
-    for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-     newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-     args += "&we_cmd["+escape(newString)+"]="+escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
-    }
-     YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchParameters&position=top&whichsearch=' . $whichSearch . '&classname' . $this->Model->ModelClassName . '=&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
-   }
+function makeAjaxRequestParametersBottom() {
+ var args = "";
+ var newString = "";
+ for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
+	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
+	args += "&we_cmd["+escape(newString)+"]="+escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+ }
+	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchParameters&position=bottom&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
+}
 
-   function makeAjaxRequestParametersBottom() {
-    var args = "";
-    var newString = "";
-    for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-     newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-     args += "&we_cmd["+escape(newString)+"]="+escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
-    }
-     YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchParameters&position=bottom&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
-   }
+function getMouseOverDivs() {
+ var args = "";
+ var newString = "";
+ for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
+	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
+	args += "&we_cmd["+escape(newString)+"]="+escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+ }
+ YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackgetMouseOverDivs, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetMouseOverDivs&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
+}
 
-   function getMouseOverDivs() {
-    var args = "";
-    var newString = "";
-    for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-     newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-     args += "&we_cmd["+escape(newString)+"]="+escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
-    }
-    YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackgetMouseOverDivs, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetMouseOverDivs&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
-   }
+function setView(value){
+ ' . $this->editorBodyFrame . '.document.we_form.setView' . $whichSearch . '.value=value;
+ search(false);
+}
 
-   function setView(value){
+elem = null;
 
-    ' . $this->editorBodyFrame . '.document.we_form.setView' . $whichSearch . '.value=value;
+function showImageDetails(picID){
+ elem = document.getElementById(picID);
+ elem.style.visibility = "visible";
+}
 
-    search(false);
-
-   }
-
-
-   elem = null;
-
-   function showImageDetails(picID){
-    elem = document.getElementById(picID);
-    elem.style.visibility = "visible";
-
-   }
-
-   function hideImageDetails(picID){
-    elem = document.getElementById(picID);
-    elem.style.visibility = "hidden";
-    elem.style.left = "-9999px";
-    ' . $showSelects . '
-   }
-
-
-   document.onmousemove = updateElem;
-
-   function updateElem(e) {
-
-    var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-    var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
-    x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX;
-    y = (document.all) ? window.event.y + document.body.scrollTop  : e.pageY;
-
-    if (elem != null && elem.style.visibility == "visible") {
-
-       elemWidth = elem.offsetWidth;
-       elemHeight = elem.offsetHeight;
-       elem.style.left = (x + 10) + "px";
-       elem.style.top = (y - 120) + "px";
-
-       if((w-x)<400 && (h-y)<250) {
-        elem.style.left = (x - elemWidth - 10) + "px";
-        elem.style.top = (y - elemHeight - 10) + "px";
-       }
-       else if((w-x)<400) {
-        elem.style.left = (x - elemWidth - 10) + "px";
-       }
-       else if((h-y)<250) {
-        elem.style.top = (y - elemHeight - 10) + "px";
-       }
-       ' . $showHideSelects . '
-    }
-   }
-
-   function absLeft(el) {
-       return (el.offsetParent)?
-      el.offsetLeft+absLeft(el.offsetParent) : el.offsetLeft;
-    }
-
-   function absTop(el) {
-      return (el.offsetParent)?
-      el.offsetTop+absTop(el.offsetParent) : el.offsetTop;
-    }
+function hideImageDetails(picID){
+ elem = document.getElementById(picID);
+ elem.style.visibility = "hidden";
+ elem.style.left = "-9999px";
+ ' . $showSelects . '
+}
 
 
-   function next(anzahl){
-   var scrollActive = document.getElementById("scrollActive");
-   if(scrollActive==null) {
+document.onmousemove = updateElem;
 
-     ' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value) + anzahl;
+function updateElem(e) {
+ var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+ var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
+ x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX;
+ y = (document.all) ? window.event.y + document.body.scrollTop  : e.pageY;
 
-     search(false);
+ if (elem != null && elem.style.visibility == "visible") {
+		elemWidth = elem.offsetWidth;
+		elemHeight = elem.offsetHeight;
+		elem.style.left = (x + 10) + "px";
+		elem.style.top = (y - 120) + "px";
 
-    }
-   }
+		if((w-x)<400 && (h-y)<250) {
+		 elem.style.left = (x - elemWidth - 10) + "px";
+		 elem.style.top = (y - elemHeight - 10) + "px";
+		}
+		else if((w-x)<400) {
+		 elem.style.left = (x - elemWidth - 10) + "px";
+		}
+		else if((h-y)<250) {
+		 elem.style.top = (y - elemHeight - 10) + "px";
+		}
+		' . $showHideSelects . '
+ }
+}
 
-   function back(anzahl){
-	   var scrollActive = document.getElementById("scrollActive");
-	   if(scrollActive==null) {
+function absLeft(el) {
+		return (el.offsetParent)?
+	 el.offsetLeft+absLeft(el.offsetParent) : el.offsetLeft;
+ }
 
-	     ' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value) - anzahl;
-
-	     search(false);
-
-
-	   }
-   }
-
-   function openToEdit(tab,id,contentType){
-    if(top.opener && top.opener.top.weEditorFrameController) {
-     top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
-    } else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
-     top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
-    } else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
-     top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
-    }
-   }
+function absTop(el) {
+	 return (el.offsetParent)?
+	 el.offsetTop+absTop(el.offsetParent) : el.offsetTop;
+ }
 
 
-   function setOrder(order, whichSearch){
+function next(anzahl){
+var scrollActive = document.getElementById("scrollActive");
+if(scrollActive==null) {' .
+				$this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value) + anzahl;
+	search(false);
 
-     columns = new Array("Text", "SiteTitle", "CreationDate", "ModDate");
-     for(var i=0;i<columns.length;i++) {
-      if(order!=columns[i]) {
-       deleteArrow = document.getElementById(""+columns[i]+"_"+whichSearch);
-       deleteArrow.innerHTML = "";
-      }
-     }
-     arrow = document.getElementById(order+"_"+whichSearch);
-     foo = document.we_form.elements["Order"+whichSearch].value;
+ }
+}
 
-     if(order+" DESC"==foo){
-      document.we_form.elements["Order"+whichSearch].value=order;
-      arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_asc.gif\" />";
-     }else{
-      document.we_form.elements["Order"+whichSearch].value=order+" DESC";
-      arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_desc.gif\" />";
-     }
-     search(false);
-   }
+function back(anzahl){
+	var scrollActive = document.getElementById("scrollActive");
+	if(scrollActive==null) {' .
+				$this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value) - anzahl;
+		search(false);
+	}
+}
 
-   function sizeScrollContent() {
-    ' . $scrollContentFunction . '
-   }
+function openToEdit(tab,id,contentType){
+ if(top.opener && top.opener.top.weEditorFrameController) {
+	top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
+ } else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
+	top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
+ } else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
+	top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
+ }
+}
 
-   function init() {
-    if (' . $this->editorBodyFrame . '.loaded) {
-     sizeScrollContent();
-       } else {
-     setTimeout(\'init());\', 10);
-    }
-   }
 
-   var rows = ' . (isset($_REQUEST["searchFieldsAdvSearch"]) ? count($_REQUEST["searchFieldsAdvSearch"]) - 1 : 0) . ';
+function setOrder(order, whichSearch){
 
-   function newinputAdvSearch() {
+	columns = new Array("Text", "SiteTitle", "CreationDate", "ModDate");
+	for(var i=0;i<columns.length;i++) {
+	 if(order!=columns[i]) {
+		deleteArrow = document.getElementById(""+columns[i]+"_"+whichSearch);
+		deleteArrow.innerHTML = "";
+	 }
+	}
+	arrow = document.getElementById(order+"_"+whichSearch);
+	foo = document.we_form.elements["Order"+whichSearch].value;
 
-    var searchFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
-    var locationFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
-    var search = "' . addslashes(we_html_tools::htmlTextInput('searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
+	if(order+" DESC"==foo){
+	 document.we_form.elements["Order"+whichSearch].value=order;
+	 arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_asc.gif\" />";
+	}else{
+	 document.we_form.elements["Order"+whichSearch].value=order+" DESC";
+	 arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_desc.gif\" />";
+	}
+	search(false);
+}
 
-    var elem = document.getElementById("filterTableAdvSearch");
-    newID = elem.rows.length-1;
-    rows++;
+function sizeScrollContent() {
+ ' . $scrollContentFunction . '
+}
 
-    var scrollContent = document.getElementById("scrollContent_' . $whichSearch . '");
-    //scrollContent.style.height = scrollContent.offsetHeight - 28 +"px";
+function init() {
+ if (' . $this->editorBodyFrame . '.loaded) {
+	sizeScrollContent();
+		} else {
+	setTimeout(\'init());\', 10);
+ }
+}
 
-    if(elem){
-     var newRow = document.createElement("TR");
-        newRow.setAttribute("id", "filterRow_" + rows);
+var rows = ' . (isset($_REQUEST["searchFieldsAdvSearch"]) ? count($_REQUEST["searchFieldsAdvSearch"]) - 1 : 0) . ';
 
-        var cell = document.createElement("TD");
-        cell.innerHTML=searchFields.replace(/__we_new_id__/g,rows)+"<input type=\"hidden\" value=\"\" name=\"hidden_searchFieldsAdvSearch["+rows+"]\"";;
-     newRow.appendChild(cell);
+function newinputAdvSearch() {
 
-     cell = document.createElement("TD");
-     cell.setAttribute("id", "td_locationAdvSearch["+rows+"]");
-        cell.innerHTML=locationFields.replace(/__we_new_id__/g,rows);
-        newRow.appendChild(cell);
+ var searchFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
+ var locationFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
+ var search = "' . addslashes(we_html_tools::htmlTextInput('searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
 
-     cell = document.createElement("TD");
-     cell.setAttribute("id", "td_searchAdvSearch["+rows+"]");
-        cell.innerHTML=search.replace(/__we_new_id__/g,rows);
-        newRow.appendChild(cell);
+ var elem = document.getElementById("filterTableAdvSearch");
+ newID = elem.rows.length-1;
+ rows++;
 
-        cell = document.createElement("TD");
-        cell.setAttribute("id", "td_delButton["+rows+"]");
-        cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rows+')") . '\';
-        newRow.appendChild(cell);
+ var scrollContent = document.getElementById("scrollContent_' . $whichSearch . '");
+ //scrollContent.style.height = scrollContent.offsetHeight - 28 +"px";
 
-     elem.appendChild(newRow);
-    }
-   }
+ if(elem){
+	var newRow = document.createElement("TR");
+		 newRow.setAttribute("id", "filterRow_" + rows);
 
-   function delRow(id) {
-    var scrollContent = document.getElementById("scrollContent_' . $whichSearch . '");
-    //scrollContent.style.height = scrollContent.offsetHeight + 28 +"px";
+		 var cell = document.createElement("TD");
+		 cell.innerHTML=searchFields.replace(/__we_new_id__/g,rows)+"<input type=\"hidden\" value=\"\" name=\"hidden_searchFieldsAdvSearch["+rows+"]\"";;
+	newRow.appendChild(cell);
 
-    var elem = document.getElementById("filterTableAdvSearch");
-    if(elem){
-     trows = elem.rows;
-     rowID = "filterRow_" + id;
-           for (i=0;i<trows.length;i++) {
-            if(rowID == trows[i].id) {
-             elem.deleteRow(i);
-            }
-           }
-    }
-   }
+	cell = document.createElement("TD");
+	cell.setAttribute("id", "td_locationAdvSearch["+rows+"]");
+		 cell.innerHTML=locationFields.replace(/__we_new_id__/g,rows);
+		 newRow.appendChild(cell);
 
-   function changeit(value, rowNr){
-   	var setValue = document.getElementsByName("searchAdvSearch["+rowNr+"]")[0].value;
-    var from = document.getElementsByName("hidden_searchFieldsAdvSearch["+rowNr+"]")[0].value;
+	cell = document.createElement("TD");
+	cell.setAttribute("id", "td_searchAdvSearch["+rows+"]");
+		 cell.innerHTML=search.replace(/__we_new_id__/g,rows);
+		 newRow.appendChild(cell);
 
-    var searchFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
-    var locationFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
-    var search = "' . addslashes(we_html_tools::htmlTextInput('searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
+		 cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_delButton["+rows+"]");
+		 cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rows+')") . '\';
+		 newRow.appendChild(cell);
 
-    var row = document.getElementById("filterRow_"+rowNr);
-    var locationTD = document.getElementById("td_locationAdvSearch["+rowNr+"]");
-    var searchTD = document.getElementById("td_searchAdvSearch["+rowNr+"]");
-    var delButtonTD = document.getElementById("td_delButton["+rowNr+"]");
-    var location = document.getElementById("locationAdvSearch["+rowNr+"]");
+	elem.appendChild(newRow);
+ }
+}
 
-    if(value=="Content") {
-     if (locationTD!=null) {
-      location.disabled = true;
-     }
-     row.removeChild(searchTD);
+function delRow(id) {
+ var scrollContent = document.getElementById("scrollContent_' . $whichSearch . '");
+ //scrollContent.style.height = scrollContent.offsetHeight + 28 +"px";
 
-     if (delButtonTD!=null) {
-      row.removeChild(delButtonTD);
-     }
-     cell = document.createElement("TD");
-     cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-        cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-        row.appendChild(cell);
+ var elem = document.getElementById("filterTableAdvSearch");
+ if(elem){
+	trows = elem.rows;
+	rowID = "filterRow_" + id;
+	for (i=0;i<trows.length;i++) {
+	 if(rowID == trows[i].id) {
+		elem.deleteRow(i);
+	 }
+	}
+ }
+}
 
-        cell = document.createElement("TD");
-        cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_html_button::create_button(
+function changeit(value, rowNr){
+ var setValue = document.getElementsByName("searchAdvSearch["+rowNr+"]")[0].value;
+ var from = document.getElementsByName("hidden_searchFieldsAdvSearch["+rowNr+"]")[0].value;
+
+ var searchFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
+ var locationFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
+ var search = "' . addslashes(we_html_tools::htmlTextInput('searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
+
+ var row = document.getElementById("filterRow_"+rowNr);
+ var locationTD = document.getElementById("td_locationAdvSearch["+rowNr+"]");
+ var searchTD = document.getElementById("td_searchAdvSearch["+rowNr+"]");
+ var delButtonTD = document.getElementById("td_delButton["+rowNr+"]");
+ var location = document.getElementById("locationAdvSearch["+rowNr+"]");
+
+ if(value=="Content") {
+	if (locationTD!=null) {
+	 location.disabled = true;
+	}
+	row.removeChild(searchTD);
+
+	if (delButtonTD!=null) {
+	 row.removeChild(delButtonTD);
+	}
+	cell = document.createElement("TD");
+	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
+		 row.appendChild(cell);
+
+		 cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
+		 cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-        row.appendChild(cell);
-        document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
+		 row.appendChild(cell);
+		 document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
 
-    }
-    else if(value=="temp_category") {
-     if (locationTD!=null) {
-      location.disabled = true;
-     }
-     row.removeChild(searchTD);
+ }
+ else if(value=="temp_category") {
+	if (locationTD!=null) {
+	 location.disabled = true;
+	}
+	row.removeChild(searchTD);
 
-     var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>"
-       + "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" type=\"text\" />"
-       + "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\"></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>"
-       + "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openCatselector\',document.we_form.elements[\'searchAdvSearchParentID["+rowNr+"]\'].value,\'' . CATEGORY_TABLE . '\',\'document.we_form.elements[\\\\\'searchAdvSearchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'searchAdvSearch["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">"
-       + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">"
-       + "' . g_l('button', '[select][value]') . '"
-       + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>";
+	var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>"
+		+ "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" type=\"text\" />"
+		+ "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\"></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>"
+		+ "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openCatselector\',document.we_form.elements[\'searchAdvSearchParentID["+rowNr+"]\'].value,\'' . CATEGORY_TABLE . '\',\'document.we_form.elements[\\\\\'searchAdvSearchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'searchAdvSearch["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">"
+		+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">"
+		+ "' . g_l('button', '[select][value]') . '"
+		+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>";
 
 
-     cell = document.createElement("TD");
-     cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-        cell.innerHTML=innerhtml;
-        row.appendChild(cell);
+	cell = document.createElement("TD");
+	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+		 cell.innerHTML=innerhtml;
+		 row.appendChild(cell);
 
-     if (delButtonTD!=null) {
-      row.removeChild(delButtonTD);
-     }
+	if (delButtonTD!=null) {
+	 row.removeChild(delButtonTD);
+	}
 
-     cell = document.createElement("TD");
-        cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_html_button::create_button(
+	cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
+		 cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-        row.appendChild(cell);
-    }
-    else if(value=="temp_template_id" || value=="MasterTemplateID") {
-     if (locationTD!=null) {
-      location.disabled = true;
-     }
-     row.removeChild(searchTD);
+		 row.appendChild(cell);
+ }
+ else if(value=="temp_template_id" || value=="MasterTemplateID") {
+	if (locationTD!=null) {
+	 location.disabled = true;
+	}
+	row.removeChild(searchTD);
 
-     var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>"
-       + "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" type=\"text\" />"
-       + "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>"
-       + "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openDocselector\',document.we_form.elements[\'searchAdvSearchParentID["+rowNr+"]\'].value,\'' . TEMPLATES_TABLE . '\',\'document.we_form.elements[\\\\\'searchAdvSearchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'searchAdvSearch["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">"
-       + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">"
-       + "' . g_l('button', '[select][value]') . '"
-       + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>";
+	var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>"
+		+ "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" type=\"text\" />"
+		+ "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>"
+		+ "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openDocselector\',document.we_form.elements[\'searchAdvSearchParentID["+rowNr+"]\'].value,\'' . TEMPLATES_TABLE . '\',\'document.we_form.elements[\\\\\'searchAdvSearchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'searchAdvSearch["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">"
+		+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">"
+		+ "' . g_l('button', '[select][value]') . '"
+		+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>";
 
 
-     cell = document.createElement("TD");
-     cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-        cell.innerHTML=innerhtml;
-        row.appendChild(cell);
+	cell = document.createElement("TD");
+	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+		 cell.innerHTML=innerhtml;
+		 row.appendChild(cell);
 
-     if (delButtonTD!=null) {
-      row.removeChild(delButtonTD);
-     }
+	if (delButtonTD!=null) {
+	 row.removeChild(delButtonTD);
+	}
 
-     cell = document.createElement("TD");
-        cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_html_button::create_button(
+	cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
+		 cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-        row.appendChild(cell);
-    }
-    else if(value=="ParentIDDoc" || value=="ParentIDObj" || value=="ParentIDTmpl") {
-     if (locationTD!=null) {
-      location.disabled = true;
-     }
-     row.removeChild(searchTD);
+		 row.appendChild(cell);
+ }
+ else if(value=="ParentIDDoc" || value=="ParentIDObj" || value=="ParentIDTmpl") {
+	if (locationTD!=null) {
+	 location.disabled = true;
+	}
+	row.removeChild(searchTD);
 
-     var table;
+	var table;
 
-     if (value=="ParentIDDoc") {
-      table = "' . FILE_TABLE . '";
-     }
-     else if (value=="ParentIDObj") {
-      table = "' . $objectFilesTable . '";
-     }
-     else if (value=="ParentIDTmpl") {
-      table = "' . TEMPLATES_TABLE . '";
-     }
+	if (value=="ParentIDDoc") {
+	 table = "' . FILE_TABLE . '";
+	}
+	else if (value=="ParentIDObj") {
+	 table = "' . $objectFilesTable . '";
+	}
+	else if (value=="ParentIDTmpl") {
+	 table = "' . TEMPLATES_TABLE . '";
+	}
 
-     var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>\n"
-       + "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" type=\"text\" />\n"
-       + "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>\n"
-       + "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openDirselector\',document.we_form.elements[\'searchAdvSearchParentID["+rowNr+"]\'].value,\'"+table+"\',\'document.we_form.elements[\\\\\'searchAdvSearchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'searchAdvSearch["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
-       + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">"
-       + "' . g_l('button', '[select][value]') . '\n"
-       + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>\n";
+	var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>"
+		+ "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" type=\"text\" />"
+		+ "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>"
+		+ "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openDirselector\',document.we_form.elements[\'searchAdvSearchParentID["+rowNr+"]\'].value,\'"+table+"\',\'document.we_form.elements[\\\\\'searchAdvSearchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'searchAdvSearch["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">"
+		+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">"
+		+ "' . g_l('button', '[select][value]') . '"
+		+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>";
 
 
-     cell = document.createElement("TD");
-     cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-        cell.innerHTML=innerhtml;
-        row.appendChild(cell);
+	cell = document.createElement("TD");
+	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+		 cell.innerHTML=innerhtml;
+		 row.appendChild(cell);
 
-     if (delButtonTD!=null) {
-      row.removeChild(delButtonTD);
-     }
+	if (delButtonTD!=null) {
+	 row.removeChild(delButtonTD);
+	}
 
-     cell = document.createElement("TD");
-        cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_html_button::create_button(
+	cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
+		 cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-        row.appendChild(cell);
-    }
-    else if(value=="temp_doc_type") {
-     if (locationTD!=null) {
-      location.disabled = true;
-     }
-     row.removeChild(searchTD);
-     if (delButtonTD!=null) {
-      row.removeChild(delButtonTD);
-     }
+		 row.appendChild(cell);
+ }
+ else if(value=="temp_doc_type") {
+	if (locationTD!=null) {
+	 location.disabled = true;
+	}
+	row.removeChild(searchTD);
+	if (delButtonTD!=null) {
+	 row.removeChild(delButtonTD);
+	}
 
-     search = "' . str_replace(
+	search = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'searchAdvSearch[__we_new_id__]', $this->searchclass->getDoctypes(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
 
-     var cell = document.createElement("TD");
-        cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-        cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-     row.appendChild(cell);
+	var cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
+	row.appendChild(cell);
 
-     cell = document.createElement("TD");
-        cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_html_button::create_button(
+	cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
+		 cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-        row.appendChild(cell);
+		 row.appendChild(cell);
 
-    }
-    else if(value=="Status") {
-     if (locationTD!=null) {
-      location.disabled = true;
-     }
-     row.removeChild(searchTD);
-     if (delButtonTD!=null) {
-      row.removeChild(delButtonTD);
-     }
+ }
+ else if(value=="Status") {
+	if (locationTD!=null) {
+	 location.disabled = true;
+	}
+	row.removeChild(searchTD);
+	if (delButtonTD!=null) {
+	 row.removeChild(delButtonTD);
+	}
 
-     search = "' . str_replace(
+	search = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
 
-     var cell = document.createElement("TD");
-        cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-        cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-     row.appendChild(cell);
+	var cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
+	row.appendChild(cell);
 
-     cell = document.createElement("TD");
-        cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_html_button::create_button(
+	cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
+		 cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-        row.appendChild(cell);
+		 row.appendChild(cell);
 
-    }
-    else if(value=="Speicherart") {
-     if (locationTD!=null) {
-      location.disabled = true;
-     }
-     row.removeChild(searchTD);
-     if (delButtonTD!=null) {
-      row.removeChild(delButtonTD);
-     }
+ }
+ else if(value=="Speicherart") {
+	if (locationTD!=null) {
+	 location.disabled = true;
+	}
+	row.removeChild(searchTD);
+	if (delButtonTD!=null) {
+	 row.removeChild(delButtonTD);
+	}
 
-     search = "' . str_replace(
+	search = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
 
-     var cell = document.createElement("TD");
-        cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-        cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-     row.appendChild(cell);
+	var cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
+	row.appendChild(cell);
 
-     cell = document.createElement("TD");
-        cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_html_button::create_button(
+	cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
+		 cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-        row.appendChild(cell);
+		 row.appendChild(cell);
 
-    }
-    else if(value=="Published" || value=="CreationDate" || value=="ModDate") {
+ }
+ else if(value=="Published" || value=="CreationDate" || value=="ModDate") {
 
-     row.removeChild(locationTD);
+	row.removeChild(locationTD);
 
-     locationFields = "' . str_replace(
+	locationFields = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'locationAdvSearch[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
 
-     var cell = document.createElement("TD");
-        cell.setAttribute("id", "td_locationAdvSearch["+rowNr+"]");
-        cell.innerHTML=locationFields.replace(/__we_new_id__/g,rowNr);
-     row.appendChild(cell);
+	var cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_locationAdvSearch["+rowNr+"]");
+		 cell.innerHTML=locationFields.replace(/__we_new_id__/g,rowNr);
+	row.appendChild(cell);
 
-     row.removeChild(searchTD);
+	row.removeChild(searchTD);
 
-     var innerhtml= "<table id=\"searchAdvSearch["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>\n"
-       + "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 100px;\" type=\"text\" />\n"
-       + "</td><td>&nbsp;</td><td><a href=\"#\">\n"
-       + "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
-       + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\">"
-       + "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>"
-       + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>";
+	var innerhtml= "<table id=\"searchAdvSearch["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>"
+		+ "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 100px;\" type=\"text\" />"
+		+ "</td><td>&nbsp;</td><td><a href=\"#\">"
+		+ "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">"
+		+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\">"
+		+ "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>"
+		+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>";
 
 
-     cell = document.createElement("TD");
-     cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-        cell.innerHTML=innerhtml;
-        row.appendChild(cell);
+	cell = document.createElement("TD");
+	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+		 cell.innerHTML=innerhtml;
+		 row.appendChild(cell);
 
-        Calendar.setup({inputField:"searchAdvSearch["+rowNr+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+rowNr+"",align:"Tl",singleClick:true});
+		 Calendar.setup({inputField:"searchAdvSearch["+rowNr+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+rowNr+"",align:"Tl",singleClick:true});
 
-     if (delButtonTD!=null) {
-      row.removeChild(delButtonTD);
-     }
+	if (delButtonTD!=null) {
+	 row.removeChild(delButtonTD);
+	}
 
-     cell = document.createElement("TD");
-        cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_html_button::create_button(
+	cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
+		 cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-        row.appendChild(cell);
+		 row.appendChild(cell);
 
-    }
-    else if(value=="allModsIn") {
-	if (locationTD!=null) {
-      location.disabled = true;
-     }
-     row.removeChild(searchTD);
-     if (delButtonTD!=null) {
-      row.removeChild(delButtonTD);
-     }
+ }
+ else if(value=="allModsIn") {
+if (locationTD!=null) {
+	 location.disabled = true;
+	}
+	row.removeChild(searchTD);
+	if (delButtonTD!=null) {
+	 row.removeChild(delButtonTD);
+	}
 
-     search = "' . str_replace(
+	search = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'searchAdvSearch[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
 
-     var cell = document.createElement("TD");
-        cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-        cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-     row.appendChild(cell);
+	var cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
+	row.appendChild(cell);
 
-     cell = document.createElement("TD");
-        cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_html_button::create_button(
+	cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
+		 cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-        row.appendChild(cell);
-    }
+		 row.appendChild(cell);
+ }
 
-	else if(value=="modifierID") {
-		if (locationTD!=null) {
-      location.disabled = true;
-     }
-     row.removeChild(searchTD);
-     if (delButtonTD!=null) {
-      row.removeChild(delButtonTD);
-     }
+else if(value=="modifierID") {
+ if (locationTD!=null) {
+	 location.disabled = true;
+	}
+	row.removeChild(searchTD);
+	if (delButtonTD!=null) {
+	 row.removeChild(delButtonTD);
+	}
 
-     search = "' . str_replace(
+	search = "' . str_replace(
 					"\n", '\n', addslashes(
 						we_html_tools::htmlSelect(
 							'searchAdvSearch[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
 
-     var cell = document.createElement("TD");
-        cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-        cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-     row.appendChild(cell);
+	var cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
+	row.appendChild(cell);
 
-     cell = document.createElement("TD");
-        cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_html_button::create_button(
+	cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
+		 cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-        row.appendChild(cell);
+		 row.appendChild(cell);
 
+}
+ else {
+	row.removeChild(searchTD);
+
+	if (locationTD!=null) {
+	 row.removeChild(locationTD);
 	}
-    else {
-     row.removeChild(searchTD);
+	if (delButtonTD!=null) {
+	 row.removeChild(delButtonTD);
+	}
 
-     if (locationTD!=null) {
-      row.removeChild(locationTD);
-     }
-     if (delButtonTD!=null) {
-      row.removeChild(delButtonTD);
-     }
+	cell = document.createElement("TD");
+	cell.setAttribute("id", "td_locationAdvSearch["+rowNr+"]");
+		 cell.innerHTML=locationFields.replace(/__we_new_id__/g,rowNr);
+		 row.appendChild(cell);
 
-     cell = document.createElement("TD");
-     cell.setAttribute("id", "td_locationAdvSearch["+rowNr+"]");
-        cell.innerHTML=locationFields.replace(/__we_new_id__/g,rowNr);
-        row.appendChild(cell);
+	cell = document.createElement("TD");
+	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
+		 row.appendChild(cell);
 
-     cell = document.createElement("TD");
-     cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-        cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-        row.appendChild(cell);
-
-        cell = document.createElement("TD");
-        cell.setAttribute("id", "td_delButton["+rowNr+"]");
-        cell.innerHTML=\'' . we_html_button::create_button(
+		 cell = document.createElement("TD");
+		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
+		 cell.innerHTML=\'' . we_html_button::create_button(
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-        row.appendChild(cell);
+		 row.appendChild(cell);
 
-        document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
+		 document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
 
-    }
+ }
 
-    if(from=="allModsIn" || from=="MasterTemplateID" || from=="ParentIDTmpl" || from=="ParentIDObj" || from=="ParentIDDoc" || from=="temp_template_id" || from=="ContentType" || from=="temp_doc_type" || from=="temp_category" || from=="Status" || from=="Speicherart" || from=="Published" || from=="CreationDate" || from=="ModDate"
-        || value =="allModsIn" || value =="MasterTemplateID" || value=="ParentIDTmpl" || value=="ParentIDObj" || value=="ParentIDDoc" || value=="temp_template_id" || value=="ContentType" || value=="temp_doc_type" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {
-        document.getElementById("searchAdvSearch["+rowNr+"]").value = "";
-	}
-	else {
-	    document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
-	}
+ switch(from){
+ case "allModsIn":
+ case "MasterTemplateID":
+ case "ParentIDTmpl":
+ case "ParentIDObj":
+ case "ParentIDDoc":
+ case "temp_template_id":
+ case "ContentType":
+ case "temp_doc_type":
+ case "temp_category":
+ case "Status":
+ case "Speicherart":
+ case "Published":
+ case "CreationDate":
+ case "ModDate":
+	 document.getElementById("searchAdvSearch["+rowNr+"]").value = "";
+		 /*|| value =="allModsIn" || value =="MasterTemplateID" || value=="ParentIDTmpl" || value=="ParentIDObj" || value=="ParentIDDoc" || value=="temp_template_id" || value=="ContentType" || value=="temp_doc_type" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {*/
 
-    document.getElementsByName("hidden_searchFieldsAdvSearch["+rowNr+"]")[0].value = value;
+ default:
+	 document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
+}
 
-   }
+ document.getElementsByName("hidden_searchFieldsAdvSearch["+rowNr+"]")[0].value = value;
 
-   var ajaxCallbackResetVersion = {
-		success: function(o) {
-			//top.we_cmd("save_document","' . $GLOBALS['we_transaction'] . '","0","1","0", "","");
-			' . we_message_reporting::getShowMessageCall(
+}
+
+var ajaxCallbackResetVersion = {
+ success: function(o) {
+	 //top.we_cmd("save_document","' . $GLOBALS['we_transaction'] . '","0","1","0", "","");
+	 ' . we_message_reporting::getShowMessageCall(
 					g_l('versions', '[resetAllVersionsOK]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-			// reload current document => reload all open Editors on demand
+	 // reload current document => reload all open Editors on demand
 
-			var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
-			for (frameId in _usedEditors) {
+	 var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+	 for (frameId in _usedEditors) {
 
-				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-					_usedEditors[frameId].setEditorReloadAllNeeded(true);
-					_usedEditors[frameId].setEditorIsActive(true);
+		 if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
+			 _usedEditors[frameId].setEditorReloadAllNeeded(true);
+			 _usedEditors[frameId].setEditorIsActive(true);
 
-				} else {
-					_usedEditors[frameId].setEditorReloadAllNeeded(true);
-				}
-			}
-			_multiEditorreload = true;
+		 } else {
+			 _usedEditors[frameId].setEditorReloadAllNeeded(true);
+		 }
+	 }
+	 _multiEditorreload = true;
 
-			//reload tree
-			if(top.opener.treeData) {
-				top.opener.we_cmd("load", top.opener.treeData.table ,0);
-			}
-			document.getElementById("resetBusyAdvSearch").innerHTML = "";
-		},
-		failure: function(o) {
-		}
-	}
+	 //reload tree
+	 if(top.opener.treeData) {
+		 top.opener.we_cmd("load", top.opener.treeData.table ,0);
+	 }
+	 document.getElementById("resetBusyAdvSearch").innerHTML = "";
+ },
+ failure: function(o) {
+ }
+}
 
-	function resetVersionAjax(id, documentID, version, table) {
-		document.getElementById("resetBusyAdvSearch").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
+function resetVersionAjax(id, documentID, version, table) {
+ document.getElementById("resetBusyAdvSearch").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
 
-		YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id="+id+"&documentID="+documentID+"&version="+version+"&documentTable="+table+"&we_transaction=' . $GLOBALS['we_transaction'] . '");
+ YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id="+id+"&documentID="+documentID+"&version="+version+"&documentTable="+table+"&we_transaction=' . $GLOBALS['we_transaction'] . '");
 
-	}
+}
 
-	function resetVersions() {
+function resetVersions() {
 
-		var checkboxes = new Array();
-		check = false;
-		var m = 0;
-	       for(var i = 0; i < document.we_form.elements.length; i++) {
-	         var table = document.we_form.elements[i].name;
-	         if(table.substring(0,12)=="resetVersion") {
-	           if(document.we_form.elements[i].checked == true) {
-	             checkboxes[m] = document.we_form.elements[i].value;
-	             check = true;
-	             m++;
-	           }
-	         }
-	      }
-
-
-		if(check==false) {
-			' . we_message_reporting::getShowMessageCall(
-					g_l('versions', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-		}
-		else {
-			Check = confirm("' . g_l('versions', '[resetVersionsSearchtool]') . '");
-			if (Check == true) {
-				var vals = "";
-				for(var i = 0; i < checkboxes.length; i++) {
-					if(vals!="") vals += ",";
-					vals += checkboxes[i];
-					if(document.getElementById("publishVersion_"+checkboxes[i])!=null) {
-						if(document.getElementById("publishVersion_"+checkboxes[i]).checked) {
-							vals += "___1";
-						}
-						else {
-							vals += "___0";
-						}
+ var checkboxes = new Array();
+ check = false;
+ var m = 0;
+			for(var i = 0; i < document.we_form.elements.length; i++) {
+				var table = document.we_form.elements[i].name;
+				if(table.substring(0,12)=="resetVersion") {
+					if(document.we_form.elements[i].checked == true) {
+						checkboxes[m] = document.we_form.elements[i].value;
+						check = true;
+						m++;
 					}
 				}
-				resetVersionAjax(vals, 0, 0, 0);
+		 }
 
-			}
 
-		}
+ if(check==false) {
+	 ' . we_message_reporting::getShowMessageCall(
+					g_l('versions', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+ }
+ else {
+	 Check = confirm("' . g_l('versions', '[resetVersionsSearchtool]') . '");
+	 if (Check == true) {
+		 var vals = "";
+		 for(var i = 0; i < checkboxes.length; i++) {
+			 if(vals!="") vals += ",";
+			 vals += checkboxes[i];
+			 if(document.getElementById("publishVersion_"+checkboxes[i])!=null) {
+				 if(document.getElementById("publishVersion_"+checkboxes[i]).checked) {
+					 vals += "___1";
+				 }
+				 else {
+					 vals += "___0";
+				 }
+			 }
+		 }
+		 resetVersionAjax(vals, 0, 0, 0);
 
-	}
-
-	function checkAllPubChecks(whichSearch) {
-
-		var checkAll = document.getElementsByName("publish_all_"+whichSearch);
-		var checkboxes = document.getElementsByName("publish_docs_"+whichSearch);
-		var check = false;
-
-		if(checkAll[0].checked) {
-			check = true;
-		}
-		for(var i = 0; i < checkboxes.length; i++) {
-			checkboxes[i].checked = check;
-		}
-
-	}
-
-	function publishDocs(whichSearch) {
-
-		var checkAll = document.getElementsByName("publish_all_"+whichSearch);
-		var checkboxes = document.getElementsByName("publish_docs_"+whichSearch);
-		var check = false;
-
-		for(var i = 0; i < checkboxes.length; i++) {
-			if(checkboxes[i].checked) {
-				check = true;
-				break;
-			}
-		}
-
-		if(checkboxes.length==0) {
-			check = false;
-		}
-
-		if(check==false) {
-			' . we_message_reporting::getShowMessageCall(
-					g_l('searchtool', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-		}
-		else {
-
-			Check = confirm("' . g_l('searchtool', '[publish_docs]') . '");
-				if (Check == true) {
-					publishDocsAjax(whichSearch);
-				}
-		}
-	}
-
-	 var ajaxCallbackPublishDocs = {
-	    success: function(o) {
-
-	     	// reload current document => reload all open Editors on demand
-
-			var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
-			for (frameId in _usedEditors) {
-
-				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-					_usedEditors[frameId].setEditorReloadAllNeeded(true);
-					_usedEditors[frameId].setEditorIsActive(true);
-
-				} else {
-					_usedEditors[frameId].setEditorReloadAllNeeded(true);
-				}
-			}
-			_multiEditorreload = true;
-
-			//reload tree
-			if(top.opener.treeData) {
-				top.opener.we_cmd("load", top.opener.treeData.table ,0);
-			}
-			document.getElementById("resetBusyAdvSearch").innerHTML = "";
-	     	document.getElementById("resetBusyDocSearch").innerHTML = "";
-	     	' . we_message_reporting::getShowMessageCall(
-					g_l('searchtool', '[publishOK]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-
-	    },
-	    failure: function(o) {
-	     alert("Failure");
-	    }
 	 }
 
-	function publishDocsAjax(whichSearch) {
+ }
 
-		var args = "";
-		var check = "";
-		var checkboxes = document.getElementsByName("publish_docs_"+whichSearch);
-		for(var i = 0; i < checkboxes.length; i++) {
-			if(checkboxes[i].checked) {
-		    	if(check!="") check += ",";
-		    	check += checkboxes[i].value;
-			}
+}
+
+function checkAllPubChecks(whichSearch) {
+
+ var checkAll = document.getElementsByName("publish_all_"+whichSearch);
+ var checkboxes = document.getElementsByName("publish_docs_"+whichSearch);
+ var check = false;
+
+ if(checkAll[0].checked) {
+	 check = true;
+ }
+ for(var i = 0; i < checkboxes.length; i++) {
+	 checkboxes[i].checked = check;
+ }
+
+}
+
+function publishDocs(whichSearch) {
+
+ var checkAll = document.getElementsByName("publish_all_"+whichSearch);
+ var checkboxes = document.getElementsByName("publish_docs_"+whichSearch);
+ var check = false;
+
+ for(var i = 0; i < checkboxes.length; i++) {
+	 if(checkboxes[i].checked) {
+		 check = true;
+		 break;
+	 }
+ }
+
+ if(checkboxes.length==0) {
+	 check = false;
+ }
+
+ if(check==false) {
+	 ' . we_message_reporting::getShowMessageCall(
+					g_l('searchtool', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+ }
+ else {
+
+	 Check = confirm("' . g_l('searchtool', '[publish_docs]') . '");
+		 if (Check == true) {
+			 publishDocsAjax(whichSearch);
+		 }
+ }
+}
+
+var ajaxCallbackPublishDocs = {
+	 success: function(o) {
+
+		 // reload current document => reload all open Editors on demand
+
+	 var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+	 for (frameId in _usedEditors) {
+
+		 if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
+			 _usedEditors[frameId].setEditorReloadAllNeeded(true);
+			 _usedEditors[frameId].setEditorIsActive(true);
+
+		 } else {
+			 _usedEditors[frameId].setEditorReloadAllNeeded(true);
+		 }
+	 }
+	 _multiEditorreload = true;
+
+	 //reload tree
+	 if(top.opener.treeData) {
+		 top.opener.we_cmd("load", top.opener.treeData.table ,0);
+	 }
+	 document.getElementById("resetBusyAdvSearch").innerHTML = "";
+		 document.getElementById("resetBusyDocSearch").innerHTML = "";
+		 ' . we_message_reporting::getShowMessageCall(
+					g_l('searchtool', '[publishOK]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+
+	 },
+	 failure: function(o) {
+		alert("Failure");
+	 }
+}
+
+function publishDocsAjax(whichSearch) {
+
+	var args = "";
+	var check = "";
+	var checkboxes = document.getElementsByName("publish_docs_"+whichSearch);
+	for(var i = 0; i < checkboxes.length; i++) {
+		if(checkboxes[i].checked) {
+				if(check!="") check += ",";
+				check += checkboxes[i].value;
 		}
-		args += "&we_cmd[0]="+escape(check);
-		var scroll = document.getElementById("resetBusy"+whichSearch);
-		scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
-
-		YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&"+args+"");
-
 	}
+	args += "&we_cmd[0]="+escape(check);
+	var scroll = document.getElementById("resetBusy"+whichSearch);
+	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
 
-   function previewVersion(ID) {
-		top.we_cmd("versions_preview", ID, 0);
-		//new jsWindow("' . WEBEDITION_DIR . 'we/include/we_versions/weVersionsPreview.php?ID="+ID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
+	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&"+args+"");
 
+}
+
+ function previewVersion(ID) {
+	top.we_cmd("versions_preview", ID, 0);
+	//new jsWindow("' . WEBEDITION_DIR . 'we/include/we_versions/weVersionsPreview.php?ID="+ID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
+
+}
+
+function calendarSetup(x){
+ for(i=0;i<x;i++) {
+	if(document.getElementById("date_picker_from"+i+"") != null) {
+	 Calendar.setup({inputField:"searchAdvSearch["+i+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+i+"",align:"Tl",singleClick:true});
 	}
-
-   function calendarSetup(x){
-    for(i=0;i<x;i++) {
-     if(document.getElementById("date_picker_from"+i+"") != null) {
-      Calendar.setup({inputField:"searchAdvSearch["+i+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+i+"",align:"Tl",singleClick:true});
-     }
-    }
-   }
-
-  ');
+ }
+}');
 
 		return $_js;
 	}
@@ -1454,33 +1404,21 @@ class we_search_view{
 
 		switch($whichSearch){
 			case "DocSearch" :
-				$_table->setCol(
-					0, 0, array(), we_html_forms::checkboxWithHidden(
-						$this->Model->searchForTextDocSearch ? true : false, "searchForTextDocSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextDocSearch ? true : false, "searchForTextDocSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
 
-				$_table->setCol(
-					1, 0, array(), we_html_forms::checkboxWithHidden(
-						$this->Model->searchForTitleDocSearch ? true : false, "searchForTitleDocSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleDocSearch ? true : false, "searchForTitleDocSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
 
-				$_table->setCol(
-					2, 0, array(), we_html_forms::checkboxWithHidden(
-						$this->Model->searchForContentDocSearch ? true : false, "searchForContentDocSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				$_table->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentDocSearch ? true : false, "searchForContentDocSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 
 				break;
 			case "TmplSearch" :
-				$_table->setCol(
-					0, 0, array(), we_html_forms::checkboxWithHidden(
-						$this->Model->searchForTextTmplSearch ? true : false, "searchForTextTmplSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextTmplSearch ? true : false, "searchForTextTmplSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
 
-				$_table->setCol(
-					1, 0, array(), we_html_forms::checkboxWithHidden(
-						$this->Model->searchForContentTmplSearch ? true : false, "searchForContentTmplSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentTmplSearch ? true : false, "searchForContentTmplSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 
 				break;
 		}
-		$_table->setCol(2, 1, array(
-			'align' => 'right'
-			), we_html_button::create_button("search", "javascript:search(true);"));
+		$_table->setCol(2, 1, array('align' => 'right'), we_html_button::create_button("search", "javascript:search(true);"));
 
 		return $_table->getHtml();
 	}
@@ -1672,9 +1610,7 @@ class we_search_view{
 					$this->Model->searchDocSearch = unserialize($this->Model->searchDocSearch);
 				}
 
-				$searchInput = we_html_tools::htmlTextInput(
-						$searchTextName, 30, (isset($this->Model->searchDocSearch) && is_array($this->Model->searchDocSearch) && isset(
-							$this->Model->searchDocSearch[0]) ? $this->Model->searchDocSearch[0] : ''), "", "", "search", 380);
+				$searchInput = we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchDocSearch) && is_array($this->Model->searchDocSearch) && isset($this->Model->searchDocSearch[0]) ? $this->Model->searchDocSearch[0] : ''), "", "", "search", 380);
 
 				break;
 			case "TmplSearch" :
@@ -1715,20 +1651,19 @@ class we_search_view{
 		}
 
 		return '<div id="mouseOverDivs_' . $whichSearch . '"></div><table cellpadding="0" cellspacing="0" border="0">
-
-    <tbody>
-    <tr>
-     <td></td>
-     <td></td>
-     <td></td>
-     <td></td>
-     <td></td>
-    </tr>
-    <tr>
-     <td>' . $searchInput . '</td>
-     <td>' . we_html_tools::hidden($locationName, 'CONTAIN') . '</td>
-     <td>' . we_html_tools::hidden($searchTables, 1) . '</td>
-    </tr></tbody></table>';
+<tbody>
+<tr>
+ <td></td>
+ <td></td>
+ <td></td>
+ <td></td>
+ <td></td>
+</tr>
+<tr>
+ <td>' . $searchInput . '</td>
+ <td>' . we_html_tools::hidden($locationName, 'CONTAIN') . '</td>
+ <td>' . we_html_tools::hidden($searchTables, 1) . '</td>
+</tr></tbody></table>';
 	}
 
 	function searchProperties($whichSearch){
@@ -1738,8 +1673,6 @@ class we_search_view{
 
 		if(isset($GLOBALS['we_cmd_obj'])){
 			$obj = $GLOBALS['we_cmd_obj'];
-
-			$searchFields = $location = array();
 
 			foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){
 				if(stristr($k, 'searchFields' . $whichSearch . '[') && !stristr($k, 'hidden_')){
@@ -1857,7 +1790,7 @@ class we_search_view{
 					$_anzahl = $obj->anzahlTmplSearch;
 					break;
 				case 'AdvSearch':
-					$obj->searchstartAdvSearch = we_base_request::_(we_base_request::STRING, "searchstartAdvSearch", $obj->searchstartAdvSearch);
+					$obj->searchstartAdvSearch = we_base_request::_(we_base_request::INT, "searchstartAdvSearch", $obj->searchstartAdvSearch);
 					if(!($obj->searchFieldsAdvSearch)){
 						$obj->searchFieldsAdvSearch = array("ID");
 					}
@@ -2005,11 +1938,11 @@ class we_search_view{
 										$docTableChecked = (in_array(FILE_TABLE, $_tables)) ? true : false;
 										$objTableChecked = (defined('OBJECT_FILES_TABLE') && (in_array(OBJECT_FILES_TABLE, $_tables))) ? true : false;
 										if($objTableChecked && $docTableChecked){
-											$w .= ' AND (' . $_table . ".documentTable= '" . FILE_TABLE . "' OR documentTable= '" . OBJECT_FILES_TABLE . "') ";
+											$w .= ' AND (v.documentTable="' . FILE_TABLE . '" OR documentTable="' . OBJECT_FILES_TABLE . '") ';
 										} elseif($docTableChecked){
-											$w .= ' AND ' . $_table . ".documentTable= '" . FILE_TABLE . "' ";
+											$w .= ' AND v.documentTable="' . FILE_TABLE . '" ';
 										} elseif($objTableChecked){
-											$w .= ' AND ' . $_table . ".documentTable= '" . OBJECT_FILES_TABLE . "' ";
+											$w .= ' AND v.documentTable="' . OBJECT_FILES_TABLE . '" ';
 										}
 									}
 									$where .= $w;
@@ -2189,8 +2122,6 @@ class we_search_view{
 	function makeContent($_result, $view, $whichSearch){
 		$DB_WE = new DB_WE();
 
-		$we_PathLength = 30;
-
 		$content = array();
 		$resultCount = count($_result);
 
@@ -2276,7 +2207,7 @@ class we_search_view{
 
 				$content[$f] = array(
 					array("dat" => we_html_tools::getPixel(20, 1) . $publishCheckbox),
-					array("dat" => '<img src="' . ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
+					array("dat" => '<img src="' . TREE_ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';"  title="' . $_result[$f]["Text"] . '"><u>' . $_result[$f]["Text"]),
 					array("dat" => $_result[$f]["SiteTitle"]),
 					array("dat" => $checkTable = isset($_result[$f]["VersionID"]) && $_result[$f]["VersionID"] ? "-" : ($_result[$f]["CreationDate"] ? date(
@@ -2293,38 +2224,37 @@ class we_search_view{
 
 					if($fs > 0){
 						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]);
-						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result[$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result[$f]["Extension"]))){
-							$thumbpath = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . "_'.$smallSize.'_'.$smallSize.'" . strtolower($_result[$f]["Extension"]);
+						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result[$f]["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($_result[$f]["Extension"]))){
+							$thumbpath = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($_result[$f]["Extension"]);
 							$imageView = "<img src='" . $thumbpath . "' border='0' /></a>";
 						} else {
-							$imageView = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"] . "' border='0' /></a>";
+							$imageView = "<img src='" . WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"] . "' border='0' /></a>";
 						}
-						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result[$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result[$f]["Extension"]))){
-							$thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . "_'.$bigSize.'_'.$bigSize.'" . strtolower($_result[$f]["Extension"]);
+						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result[$f]["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($_result[$f]["Extension"]))){
+							$thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($_result[$f]["Extension"]);
 							$imageViewPopup = "<img src='" . $thumbpathPopup . "' border='0' /></a>";
 						} else {
 							$imageViewPopup = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"] . "' border='0' /></a>";
 						}
 					} else {
 						$imagesize = array(0, 0);
-						$thumbpath = IMAGE_DIR . 'icons/doclist/' . we_base_ContentTypes::IMAGE_ICON;
+						$thumbpath = ICON_DIR . 'doclist/' . we_base_ContentTypes::IMAGE_ICON;
 						$imageView = "<img src='" . $thumbpath . "' border='0' />";
 						$imageViewPopup = "<img src='" . $thumbpath . "' border='0' />";
 					}
 				} else {
 					$imagesize = array(0, 0);
-					$imageView = '<img src="' . IMAGE_DIR . "icons/doclist/" . $Icon . '" border="0" width="64" height="64" />';
-					$imageViewPopup = '<img src="' . IMAGE_DIR . "icons/doclist/" . $Icon . '" border="0" width="64" height="64" />';
+					$imageView = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
+					$imageViewPopup = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
 				}
 
 				$creator = $_result[$f]["CreatorID"] ? id_to_path($_result[$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', "[nobody]");
 
 				if($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT && $_result[$f]["Table"] != VERSIONS_TABLE){
-					if($_result[$f]["Published"] >= $_result[$f]["ModDate"] && $_result[$f]["Published"] != 0){
-						$templateID = $_result[$f]["TemplateID"];
-					} else {
-						$templateID = $_result[$f]["temp_template_id"];
-					}
+					$templateID = ($_result[$f]["Published"] >= $_result[$f]["ModDate"] && $_result[$f]["Published"] != 0 ?
+							$_result[$f]["TemplateID"] :
+							$_result[$f]["temp_template_id"]);
+
 					$templateText = g_l('searchtool', "[no_template]");
 					if($templateID){
 						$DB_WE->query('SELECT ID, Text FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($templateID));
@@ -2422,77 +2352,58 @@ class we_search_view{
 			}
 		}
 
-		$values = array(
-			10 => 10, 25 => 25, 50 => 50, 100 => 100
-		);
+		$values = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
 		return '
-   <input type="hidden" name="' . $view . '" value="' . $_view . '" />
-   <input type="hidden" name="position" />
-   <input type="hidden" name="' . $order . '" value="' . $_order . '" />
-   <input type="hidden" name="do" />
-   <table border="0" cellpadding="0" cellspacing="0">
-   <tr>
-   <td>' . we_html_tools::getPixel(30, 12) . '</td>
-   <td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
-   <td class="defaultgray" style="width:60px;">
-   ' . we_html_tools::htmlSelect($anzahl, $values, 1, $_anzahl, "", array('onchange' => 'this.form.elements["' . $searchstart . '"].value=0;search(false);')) . '</td>
-   <td style="width:400px;">' . $this->getNextPrev(
-				$foundItems, $whichSearch) . '</td>
-   <td style="width:35px;">' . we_html_button::create_button("image:iconview", "javascript:setView(1);", true, "", "", "", "", false) . '</td>
-   <td>' . we_html_button::create_button("image:listview", "javascript:setView(0);", true, "", "", "", "", false) . '</td>
-   </tr>
-   <tr>
-    <td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td>
-   </tr>
-   </table>';
+<input type="hidden" name="' . $view . '" value="' . $_view . '" />
+<input type="hidden" name="position" />
+<input type="hidden" name="' . $order . '" value="' . $_order . '" />
+<input type="hidden" name="do" />
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+ <td>' . we_html_tools::getPixel(30, 12) . '</td>
+ <td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
+ <td class="defaultgray" style="width:60px;">
+ ' . we_html_tools::htmlSelect($anzahl, $values, 1, $_anzahl, "", array('onchange' => 'this.form.elements["' . $searchstart . '"].value=0;search(false);')) . '</td>
+ <td style="width:400px;">' . $this->getNextPrev($foundItems, $whichSearch) . '</td>
+ <td style="width:35px;">' . we_html_button::create_button("image:iconview", "javascript:setView(1);", true, "", "", "", "", false) . '</td>
+ <td>' . we_html_button::create_button("image:listview", "javascript:setView(0);", true, "", "", "", "", false) . '</td>
+</tr>
+<tr>
+	<td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td>
+</tr>
+</table>';
 	}
 
 	function getSearchParameterBottom($foundItems, $whichSearch){
-		$resetButton = "";
-		$publishButton = "";
-		$publishButtonCheckboxAll = "";
-		if(permissionhandler::hasPerm('RESET_VERSIONS') && $whichSearch == "AdvSearch"){
-			$resetButton = we_html_button::create_button("reset", "javascript:resetVersions();", true, 100, 22, "", "");
-			;
-		}
+		$resetButton = (permissionhandler::hasPerm('RESET_VERSIONS') && $whichSearch == "AdvSearch" ?
+				we_html_button::create_button("reset", "javascript:resetVersions();", true, 100, 22, "", "") :
+				'');
 		if(permissionhandler::hasPerm('PUBLISH') && ($whichSearch == "AdvSearch" || $whichSearch == "DocSearch")){
 			$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all_" . $whichSearch, "", false, "middlefont", "checkAllPubChecks('" . $whichSearch . "')");
 			$publishButton = we_html_button::create_button("publish", "javascript:publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
+		} else {
+			$publishButton = $publishButtonCheckboxAll = "";
 		}
 
 		return '<table border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
-       			<tr>
-	             <td>' . $publishButtonCheckboxAll . '</td>
-					     <td style="font-size:12px;width:140px;">' . $publishButton . '</td>
-					     <td style="width:60px;" id="resetBusy' . $whichSearch . '"></td>
-					     <td style="width:400px;">' . $resetButton . '</td>
-             			</tr>
-
-     <tr> <td>' . we_html_tools::getPixel(10, 12) . '</td>
-     </tr>
-     <tr>
-     <td>' . we_html_tools::getPixel(19, 12) . '</td>
-     <td style="font-size:12px;width:140px;">' . we_html_tools::getPixel(30, 12) . '</td>
-     <td class="defaultgray" style="width:60px;">' . we_html_tools::getPixel(30, 12) . '</td>
-     <td style="width:400px;">' . $this->getNextPrev($foundItems, $whichSearch, false) . '</td>
-    </tr>
-    </table>';
+<tr>
+	 <td>' . $publishButtonCheckboxAll . '</td>
+	 <td style="font-size:12px;width:140px;">' . $publishButton . '</td>
+	 <td style="width:60px;" id="resetBusy' . $whichSearch . '"></td>
+	 <td style="width:400px;">' . $resetButton . '</td>
+</tr>
+<tr><td>' . we_html_tools::getPixel(10, 12) . '</td>	</tr>
+<tr>
+	<td>' . we_html_tools::getPixel(19, 12) . '</td>
+	<td style="font-size:12px;width:140px;">' . we_html_tools::getPixel(30, 12) . '</td>
+	<td class="defaultgray" style="width:60px;">' . we_html_tools::getPixel(30, 12) . '</td>
+	<td style="width:400px;">' . $this->getNextPrev($foundItems, $whichSearch, false) . '</td>
+</tr>
+</table>';
 	}
 
 	function getSearchDialogAdvSearch(){
-		if(!is_array($this->Model->searchFieldsAdvSearch)){
-			$this->Model->searchFieldsAdvSearch = unserialize($this->Model->searchFieldsAdvSearch);
-		}
-
-		if(!is_array($this->Model->locationAdvSearch)){
-			$this->Model->locationAdvSearch = unserialize($this->Model->locationAdvSearch);
-		}
-
-		if(!is_array($this->Model->searchAdvSearch)){
-			$this->Model->searchAdvSearch = unserialize($this->Model->searchAdvSearch);
-		}
-
 		if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && (we_base_request::_(we_base_request::INT, "tab") == 3)){
 			$this->Model->searchAdvSearch[0] = $_SESSION['weS']['weSearch']["keyword"];
 			if($GLOBALS['WE_BACKENDCHARSET'] == "UTF-8"){
@@ -2536,149 +2447,144 @@ class we_search_view{
 		}
 
 		$out = '<div style="margin-left:123px;"><div id="mouseOverDivs_AdvSearch"></div><table cellpadding="3" cellspacing="0" border="0">
-    <tbody id="filterTableAdvSearch">
-    <tr>
-     <td></td>
-     <td></td>
-     <td></td>
-     <td></td>
-     <td></td>
-
-     </tr>';
+<tbody id="filterTableAdvSearch">
+<tr>
+ <td></td>
+ <td></td>
+ <td></td>
+ <td></td>
+ <td></td>
+</tr>';
 
 		$locationAdvSearch = we_base_request::_(we_base_request::STRING, 'locationAdvSearch');
 		$this->Model->locationAdvSearch = ($locationAdvSearch && is_array($locationAdvSearch) ?
 				$locationAdvSearch :
-				array_values($this->Model->locationAdvSearch));
+				array_values($this->Model->locationAdvSearch) );
 
-		$this->Model->searchAdvSearch = $this->Model->searchFieldsAdvSearch = is_array($this->Model->searchFieldsAdvSearch) ?
+		$this->Model->searchAdvSearch = is_array($this->Model->searchAdvSearch) ?
+			array_values($this->Model->searchAdvSearch) :
+			array();
+
+		$this->Model->searchFieldsAdvSearch = is_array($this->Model->searchFieldsAdvSearch) ?
 			array_values($this->Model->searchFieldsAdvSearch) :
 			array();
 
 		for($i = 0; $i < $this->searchclass->height; $i++){
-			$button = we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow(" . $i . ");", true, "", "", "", "", false);
+			$button = we_html_button::create_button("image:btn_function_trash", 'javascript:delRow(' . $i . ');', true, '', '', '', '', false);
 
-			$locationDisabled = "";
-			$handle = "";
+			$locationDisabled = $handle = '';
 
-			$searchInput = we_html_tools::htmlTextInput(
-					"searchAdvSearch[" . $i . "]", 30, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset(
-						$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ''), "", " class=\"wetextinput\"  id=\"searchAdvSearch['.$i.']\" ", "search", 170);
+			$searchInput = we_html_tools::htmlTextInput('searchAdvSearch[' . $i . ']', 30, ( isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset($this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ''), "", " class=\"wetextinput\"  id=\"searchAdvSearch[" . $i . "]\" ", "search", 170);
 
 			if(isset($this->Model->searchFieldsAdvSearch[$i])){
-				if($this->Model->searchFieldsAdvSearch[$i] == "ParentIDDoc" || $this->Model->searchFieldsAdvSearch[$i] == "ParentIDObj" || $this->Model->searchFieldsAdvSearch[$i] == "ParentIDTmpl" || $this->Model->searchFieldsAdvSearch[$i] == "Content" || $this->Model->searchFieldsAdvSearch[$i] == "Status" || $this->Model->searchFieldsAdvSearch[$i] == "Speicherart" || $this->Model->searchFieldsAdvSearch[$i] == "MasterTemplateID" || $this->Model->searchFieldsAdvSearch[$i] == "temp_template_id" || $this->Model->searchFieldsAdvSearch[$i] == "temp_doc_type" || $this->Model->searchFieldsAdvSearch[$i] == "temp_category"){
-					$locationDisabled = "disabled";
+				switch($this->Model->searchFieldsAdvSearch[$i]){
+					case "ParentIDDoc":
+					case "ParentIDObj":
+					case "ParentIDTmpl":
+					case "Content":
+					case "Status":
+					case "Speicherart":
+					case "MasterTemplateID":
+					case "temp_template_id":
+					case "temp_doc_type":
+					case "temp_category":
+						$locationDisabled = "disabled";
 				}
 
-				if($this->Model->searchFieldsAdvSearch[$i] == "allModsIn"){
-					$searchInput = we_html_tools::htmlSelect(
-							"searchAdvSearch[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset(
-								$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
-				}
+				switch($this->Model->searchFieldsAdvSearch[$i]){
+					case "allModsIn":
+						$searchInput = we_html_tools::htmlSelect("searchAdvSearch[" . $i . "]", $this->searchclass->getModFields(), 1, ( isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset($this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
+						break;
 
-				if($this->Model->searchFieldsAdvSearch[$i] == "Status"){
-					$searchInput = we_html_tools::htmlSelect(
-							"searchAdvSearch[" . $i . "]", $this->searchclass->getFieldsStatus(), 1, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset(
-								$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
-				}
+					case "Status":
+						$searchInput = we_html_tools::htmlSelect("searchAdvSearch[" . $i . "]", $this->searchclass->getFieldsStatus(), 1, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset($this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
+						break;
 
-				if($this->Model->searchFieldsAdvSearch[$i] == "Speicherart"){
-					$searchInput = we_html_tools::htmlSelect(
-							"searchAdvSearch[" . $i . "]", $this->searchclass->getFieldsSpeicherart(), 1, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset(
-								$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
-				}
+					case "Speicherart":
+						$searchInput = we_html_tools::htmlSelect("searchAdvSearch[" . $i . "]", $this->searchclass->getFieldsSpeicherart(), 1, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset($this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
+						break;
 
-				if($this->Model->searchFieldsAdvSearch[$i] == "Published" || $this->Model->searchFieldsAdvSearch[$i] == "CreationDate" || $this->Model->searchFieldsAdvSearch[$i] == "ModDate"){
-					$handle = "date";
-					$searchInput = we_html_tools::getDateSelector("searchAdvSearch[" . $i . "]", "_from" . $i, $this->Model->searchAdvSearch[$i]);
-				}
+					case "Published":
+					case "CreationDate":
+					case "ModDate":
+						$handle = "date";
+						$searchInput = we_html_tools::getDateSelector("searchAdvSearch[" . $i . "]", "_from" . $i, $this->Model->searchAdvSearch[$i]);
+						break;
 
-				if($this->Model->searchFieldsAdvSearch[$i] == "temp_doc_type"){
-					$searchInput = we_html_tools::htmlSelect(
-							"searchAdvSearch[" . $i . "]", $this->searchclass->getDocTypes(), 1, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset(
-								$this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
-				}
+					case "temp_doc_type":
+						$searchInput = we_html_tools::htmlSelect("searchAdvSearch[" . $i . "]", $this->searchclass->getDocTypes(), 1, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset($this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
+						break;
 
-				if($this->Model->searchFieldsAdvSearch[$i] == "ParentIDDoc" || $this->Model->searchFieldsAdvSearch[$i] == "ParentIDObj" || $this->Model->searchFieldsAdvSearch[$i] == "ParentIDTmpl"){
-					$_linkPath = $this->Model->searchAdvSearch[$i];
+					case "ParentIDDoc":
+					case "ParentIDObj":
+					case "ParentIDTmpl":
+						$_linkPath = $this->Model->searchAdvSearch[$i];
 
-					$_rootDirID = 0;
-					$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
-					$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
-					$wecmdenc3 = '';
-					$_cmd = "javascript:we_cmd('openDirselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','')";
-					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
-					$selector = we_html_tools::htmlFormElementTable(
-							we_html_tools::htmlTextInput(
-								'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
-								array(
-									'name' => 'searchAdvSearchParentID[' . $i . ']', "value" => ""
-							)), we_html_tools::getPixel(5, 4), $_button);
+						$_rootDirID = 0;
+						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
+						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
+						$_cmd = "javascript:we_cmd('openDirselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','')";
+						$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
+						$selector = we_html_tools::htmlFormElementTable(
+								we_html_tools::htmlTextInput('searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'searchAdvSearchParentID[' . $i . ']', "value" => "")), we_html_tools::getPixel(5, 4), $_button);
 
-					$searchInput = $selector;
-				}
-				if($this->Model->searchFieldsAdvSearch[$i] == "MasterTemplateID" || $this->Model->searchFieldsAdvSearch[$i] == "temp_template_id"){
-					$_linkPath = $this->Model->searchAdvSearch[$i];
+						$searchInput = $selector;
+						break;
+					case "MasterTemplateID":
+					case "temp_template_id":
+						$_linkPath = $this->Model->searchAdvSearch[$i];
 
-					$_rootDirID = 0;
-					$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
-					$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
-					$wecmdenc3 = '';
-					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
-					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
-					$selector = we_html_tools::htmlFormElementTable(
-							we_html_tools::htmlTextInput(
-								'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
-								array(
-									'name' => 'searchAdvSearchParentID[' . $i . ']', "value" => ""
-							)), we_html_tools::getPixel(5, 4), $_button);
+						$_rootDirID = 0;
+						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
+						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
 
-					$searchInput = $selector;
-				}
-				if($this->Model->searchFieldsAdvSearch[$i] == "temp_category"){
-					$_linkPath = $this->Model->searchAdvSearch[$i];
+						$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
+						$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
+						$selector = we_html_tools::htmlFormElementTable(
+								we_html_tools::htmlTextInput(
+									'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
+									array(
+										'name' => 'searchAdvSearchParentID[' . $i . ']', "value" => ""
+								)), we_html_tools::getPixel(5, 4), $_button);
 
-					$_rootDirID = 0;
+						$searchInput = $selector;
+						break;
+					case "temp_category":
+						$_linkPath = $this->Model->searchAdvSearch[$i];
+						$_rootDirID = 0;
 
-					$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
-					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
-					$selector = we_html_tools::htmlFormElementTable(
-							we_html_tools::htmlTextInput(
-								'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
-								array(
-									'name' => 'searchAdvSearchParentID[' . $i . ']', "value" => ""
-							)), we_html_tools::getPixel(5, 4), $_button);
+						$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
+						$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
+						$selector = we_html_tools::htmlFormElementTable(
+								we_html_tools::htmlTextInput(
+									'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
+									array(
+										'name' => 'searchAdvSearchParentID[' . $i . ']', "value" => ""
+								)), we_html_tools::getPixel(5, 4), $_button);
 
-					$searchInput = $selector;
+						$searchInput = $selector;
 				}
 			}
 
 			$out .= '<tr id="filterRow_' . $i . '">
-     <td>' . we_html_tools::hidden(
-					"hidden_searchFieldsAdvSearch[" . $i . "]", isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : "") . we_html_tools::htmlSelect(
-					"searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, ""), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset(
-						$this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) . '</td>
-     <td id="td_locationAdvSearch[' . $i . ']">' . we_html_tools::htmlSelect(
-					"locationAdvSearch[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch) && isset(
-						$this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'locationAdvSearch[' . $i . ']')) . '</td>
+     <td>' . we_html_tools::hidden("hidden_searchFieldsAdvSearch[" . $i . "]", isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : "") .
+				we_html_tools::htmlSelect("searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, ""), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) .
+				'</td>
+     <td id="td_locationAdvSearch[' . $i . ']">' . we_html_tools::htmlSelect("locationAdvSearch[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch) && isset($this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'locationAdvSearch[' . $i . ']')) . '</td>
      <td id="td_searchAdvSearch[' . $i . ']">' . $searchInput . '</td>
      <td id="td_delButton[' . $i . ']">' . $button . '</td>
-    </tr>
-    ';
+    </tr>';
 		}
 
 		$out .= '</tbody></table>' .
 			'<table>
-     <tr>
-      <td>' . we_html_button::create_button(
-				"add", "javascript:newinputAdvSearch();") . '</td>
-      <td>' . we_html_tools::getPixel(10, 10) . '</td>
-      <td colspan="7" align="right"></td>
-     </tr>
-    </table></div>';
-
-		$out .= we_html_element::jsElement("calendarSetup(" . $this->searchclass->height . ");");
+<tr>
+ <td>' . we_html_button::create_button("add", "javascript:newinputAdvSearch();") . '</td>
+ <td>' . we_html_tools::getPixel(10, 10) . '</td>
+ <td colspan="7" align="right"></td>
+</tr>
+</table></div>' .
+			we_html_element::jsElement("calendarSetup(" . $this->searchclass->height . ");");
 
 		return $out;
 	}
@@ -2749,26 +2655,27 @@ class we_search_view{
 						we_search_view::tblListRow($content[$m])) . '</tr>';
 			}
 			$out .= '</tbody></table>';
-		} else {
-			$out = '<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="center">';
-
-			for($m = 0; $m < $x; $m++){
-				$out .= '<div style="float:left;width:180px;height:100px;margin:20px 0px 0px 20px;z-index:1;">' .
-					($whichSearch != "doclist" ?
-						$this->tblListRowIconView($content[$m], $class, $m, $whichSearch) :
-						we_search_view::tblListRowIconView($content[$m], $class, $m, $whichSearch)
-					) . '</div>';
-			}
-
-			$out .= '</td></tr></table>';
-
-			$allDivs = ($whichSearch != "doclist" ?
-					$this->makeMouseOverDivs($x, $content, $whichSearch) :
-					we_search_view::makeMouseOverDivs($x, $content, $whichSearch));
-
-
-			$out .= we_html_element::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes($allDivs) . "';");
+			return $out;
 		}
+		$out = '<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="center">';
+
+		for($m = 0; $m < $x; $m++){
+			$out .= '<div style="float:left;width:180px;height:100px;margin:20px 0px 0px 20px;z-index:1;">' .
+				($whichSearch != "doclist" ?
+					$this->tblListRowIconView($content[$m], $class, $m, $whichSearch) :
+					we_search_view::tblListRowIconView($content[$m], $class, $m, $whichSearch)
+				) . '</div>';
+		}
+
+		$out .= '</td></tr></table>';
+
+		$allDivs = ($whichSearch != "doclist" ?
+				$this->makeMouseOverDivs($x, $content, $whichSearch) :
+				we_search_view::makeMouseOverDivs($x, $content, $whichSearch));
+
+
+		$out .= we_html_element::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes($allDivs) . "';");
+
 		return $out;
 	}
 
@@ -2792,28 +2699,21 @@ class we_search_view{
 			<table style="font-size:10px;" border="0" cellspacing="0" cellpadding="3">
 			<tr>
 			<td colspan="2" style="font-size:12px;">' . $content[$n][9]["dat"] . '<br/><br/></td></tr>
-			<tr><td valign="top">' . g_l('searchtool', "[idDiv]") . ': </td>
-			<td>' . $content[$n][16]["dat"] . '</td></tr>
-			<tr><td valign="top">' . g_l('searchtool', "[dateityp]") . ': </td>
-			<td>' . $content[$n][8]["dat"] . '</td></tr>';
+			<tr><td valign="top">' . g_l('searchtool', "[idDiv]") . ': </td><td>' . $content[$n][16]["dat"] . '</td></tr>
+			<tr><td valign="top">' . g_l('searchtool', "[dateityp]") . ': </td><td>' . $content[$n][8]["dat"] . '</td></tr>';
 			if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE || $content[$n][12]["dat"] == we_base_ContentTypes::APPLICATION){
-				$outDivs .= '<tr><td valign="top">' . g_l('searchtool', "[groesse]") . ': </td>
-				<td>' . $content[$n][6]["dat"] . '</td></tr>';
+				$outDivs .= '<tr><td valign="top">' . g_l('searchtool', "[groesse]") . ': </td><td>' . $content[$n][6]["dat"] . '</td></tr>';
 				if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE){
-					$outDivs .= '<tr><td valign="top">' . g_l('searchtool', "[aufloesung]") . ': </td>
-					<td>' . $content[$n][7]["dat"] . '</td></tr>';
+					$outDivs .= '<tr><td valign="top">' . g_l('searchtool', "[aufloesung]") . ': </td><td>' . $content[$n][7]["dat"] . '</td></tr>';
 				}
 			}
 			if($content[$n][12]["dat"] == we_base_ContentTypes::WEDOCUMENT){
 				$outDivs .= '<tr><td valign="top">' . g_l('searchtool', "[template]") . ': ' . '</td>
 					<td>' . $content[$n][14]["dat"] . '</td></tr>';
 			}
-			$outDivs .= '<tr><td valign="top">' . g_l('searchtool', "[creator]") . ': </td>
-			<td>' . $content[$n][13]["dat"] . '</td></tr>
-			<tr><td valign="top">' . g_l('searchtool', "[created]") . ': </td>
-			<td>' . $content[$n][3]["dat"] . '</td></tr>
-			<tr><td valign="top">' . g_l('searchtool', "[modified]") . ': </td>
-			<td>' . $content[$n][4]["dat"] . '</td></tr></table>
+			$outDivs .= '<tr><td valign="top">' . g_l('searchtool', "[creator]") . ': </td><td>' . $content[$n][13]["dat"] . '</td></tr>
+			<tr><td valign="top">' . g_l('searchtool', "[created]") . ': </td><td>' . $content[$n][3]["dat"] . '</td></tr>
+			<tr><td valign="top">' . g_l('searchtool', "[modified]") . ': </td><td>' . $content[$n][4]["dat"] . '</td></tr></table>
 			</div>
 			<div style="padding:0px 0px 6px 15px;position:relative;top:0px;left:0px;width:360px;">';
 			if($content[$n][11]["dat"] != ""){
@@ -2825,12 +2725,10 @@ class we_search_view{
 			$outDivs .= '</div>
 				</div>';
 			if($content[$n][15]["dat"]){
-				$outDivs .= '<div style="width:100%;position:relative;top:0px;height:1px;overflow:hidden;background-color:#DDDDDD;">
-					</div>
-					<div style="width:100%;position:relative;top:0px;height:1px;overflow:hidden;background-color:#FFF;">
-					</div>
+				$outDivs .= '<div style="width:100%;position:relative;top:0px;height:1px;overflow:hidden;background-color:#DDDDDD;"></div>
+					<div style="width:100%;position:relative;top:0px;height:1px;overflow:hidden;background-color:#FFF;"></div>
 					<div style="width:100%;position:relative;top:0px;height:20px;overflow:hidden;background-color:#DDDDDD;">
-					<div style="margin:5px 0px 0px 15px">' . g_l('searchtool', "[metafelder]") . ':</div>
+						<div style="margin:5px 0px 0px 15px">' . g_l('searchtool', "[metafelder]") . ':</div>
 						</div>
 						<div style="width:100%;position:relative;top:0px;background-color:#FFF;">
 						<div style="padding:10px 0px 10px 15px;">
@@ -2866,29 +2764,25 @@ class we_search_view{
 
 		$out = '';
 		for($f = 0; $f < $anz; $f++){
-			$style = ($f < 2 ? '' : 'style="font-weight:bold;height:30px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;"');
-			$out .= '<td ' . $style . '>' . ((isset($content[$f]["dat"]) && $content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") . '</td>';
+			$out .= '<td ' . ($f < 2 ? '' : 'style="font-weight:bold;height:30px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;"') . '>' . ((isset($content[$f]["dat"]) && $content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") . '</td>';
 		}
 
 		if(isset($content[0]["version"])){
-			$anzahlVersions = count($content[0]["version"]);
-
-			foreach($content[0]["version"] as $k => $v){
-				$out .= '</tr><tr>
-					<td style="width:20px;">' . we_html_tools::getPixel(20, 10) . '</td>';
+			foreach(array_keys($content[0]["version"]) as $k){
+				$out .= '</tr><tr><td style="width:20px;">' . we_html_tools::getPixel(20, 10) . '</td>';
 				for($y = 0; $y < $anz; $y++){
-					$width = ($f == 0 ? "width:30px;" : '');
-					$out .= '<td style="font-weight:bold;font-size:11px;' . $width . '">' . we_html_tools::getPixel(5, 10) . $content[$y]["version"][$k] . '</td>';
+					$out .= '<td style="font-weight:bold;font-size:11px;' . ($f == 0 ? "width:30px;" : '') . '">' .
+						we_html_tools::getPixel(5, 10) .
+						$content[$y]["version"][$k] .
+						'</td>';
 				}
 
-				$out .= '</tr><tr>
-					<td style="width:20px;">' . we_html_tools::getPixel(20, 10) . '</td>';
+				$out .= '</tr><tr><td style="width:20px;">' . we_html_tools::getPixel(20, 10) . '</td>';
 				for($y = 0; $y < $anz; $y++){
-
-					$width = ($f == 0 ? "width:30px;" : '');
-					$out .= ($y == 2 ?
-							'<td style="font-weight:bold;font-size:11px;' . $width . '">' . $content[5]["version"][$k] . '<br/></td>' :
-							'<td style="font-weight:bold;font-size:11px;' . $width . '">' . we_html_tools::getPixel(1, 1) . '</td>');
+					$out .= '<td style="font-weight:bold;font-size:11px;' . ($f == 0 ? "width:30px;" : '') . '">' . ($y == 2 ?
+							$content[5]["version"][$k] . '<br/>' :
+							we_html_tools::getPixel(1, 1)
+						) . '</td>';
 				}
 			}
 		}
@@ -2897,13 +2791,14 @@ class we_search_view{
 	}
 
 	function tblListRowIconView($content, $class = "defaultfont", $i, $whichSearch){
-		return '<table border="0" width="100%" cellpadding="0" cellspacing="0" class="' . $class . '"><tr>
-			<td width="75" valign="top" align="center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
+		return '<table border="0" width="100%" cellpadding="0" cellspacing="0" class="' . $class . '">
+<tr>
+	<td width="75" valign="top" align="center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
 			((isset($content[0]["dat"]) && $content[0]["dat"]) ? $content[0]["dat"] : "&nbsp;") . '</td>
-				<td width="105" valign="top" style="line-height:20px;">
-				<span>' . ((isset($content[2]["dat"]) && $content[2]["dat"]) ? $content[2]["dat"] : "&nbsp;") . '</span><br/><br/>
-				<span>' . ((isset($content[1]["dat"]) && $content[1]["dat"]) ? $content[1]["dat"] : "&nbsp;") . '</span></td>
-				</tr></table>';
+		<td width="105" valign="top" style="line-height:20px;">
+		<span>' . ((isset($content[2]["dat"]) && $content[2]["dat"]) ? $content[2]["dat"] : "&nbsp;") . '</span><br/><br/>
+		<span>' . ((isset($content[1]["dat"]) && $content[1]["dat"]) ? $content[1]["dat"] : "&nbsp;") . '</span></td>
+</tr></table>';
 	}
 
 	function getDirSelector($whichSearch){
@@ -2940,8 +2835,7 @@ class we_search_view{
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $folderID . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $folderPath . "'].value");
 		$yuiSuggest->setSelectButton(
-			we_html_button::create_button(
-				"select", "javascript:we_cmd('openDirselector',document.we_form.elements['" . $folderID . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));
+			we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['" . $folderID . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));
 
 		return
 			weSuggest::getYuiFiles() .
@@ -2955,8 +2849,6 @@ class we_search_view{
 		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
 	}
 
-	//-----------------Init -------------------------------
-
 	function setFramesetName($frameset){
 		$this->frameset = $frameset;
 	}
@@ -2968,9 +2860,6 @@ class we_search_view{
 		$this->editorHeaderFrame = $frame . '.resize.right.editor.edheader';
 		$this->editorFooterFrame = $frame . '.resize.right.editor.edfooter';
 	}
-
-	//------------------------------------------------
-
 
 	function getCommonHiddens($cmds = array()){
 		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
@@ -2987,99 +2876,67 @@ class we_search_view{
 	}
 
 	function getJSProperty(){
-		$out = "";
-		$out.=we_html_element::jsScript(JS_DIR . "windows.js");
-
-		$js = '
-			var loaded=0;
-			function we_cmd() {
-				var args = "";
-				var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-				switch (arguments[0]) {
-					case "openDocselector":
-						new jsWindow(url,"we_docselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
-						break;
-					case "openSelector":
-						new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
-						break;
-					case "openDirselector":
-						new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
-						break;
-					case "openCatselector":
-						new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
-						break;
-					case "open' . $this->toolName . 'Dirselector":
-						url = "' . WEBEDITION_DIR . 'apps/' . $this->toolName . '/we_' . $this->toolName . 'DirSelect.php?";
-						for(var i = 0; i < arguments.length; i++){
-							url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
-						}
-						new jsWindow(url,"we_' . $this->toolName . '_dirselector",-1,-1,600,400,true,true,true);
-						break;
-						' . $this->getPropertyJSAdditional() . '
-					default:
-						for (var i = 0; i < arguments.length; i++) {
-							args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-						}
-						eval("' . $this->topFrame . '.we_cmd("+args+")");
-				}
+		return we_html_element::jsScript(JS_DIR . "windows.js") .
+			we_html_element::jsElement('
+var loaded=0;
+function we_cmd() {
+	var args = "";
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	switch (arguments[0]) {
+		case "openDocselector":
+			new jsWindow(url,"we_docselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+			break;
+		case "openSelector":
+			new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+			break;
+		case "openDirselector":
+			new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+			break;
+		case "openCatselector":
+			new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+			break;
+		case "open' . $this->toolName . 'Dirselector":
+			url = "' . WEBEDITION_DIR . 'apps/' . $this->toolName . '/we_' . $this->toolName . 'DirSelect.php?";
+			for(var i = 0; i < arguments.length; i++){
+				url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 			}
-
-
-			' . $this->getJSSubmitFunction() . '
-
-		';
-
-		$out.=we_html_element::jsElement($js);
-		return $out;
+			new jsWindow(url,"we_' . $this->toolName . '_dirselector",-1,-1,600,400,true,true,true);
+			break;
+			' . $this->getPropertyJSAdditional() . '
+		default:
+			for (var i = 0; i < arguments.length; i++) {
+				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+			}
+			eval("' . $this->topFrame . '.we_cmd("+args+")");
+	}
+}' .
+				$this->getJSSubmitFunction());
 	}
 
 	function getJSTreeHeader(){
 		return '
-
-				function we_cmd(){
-					var args = "";
-					var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-					switch (arguments[0]) {
-						default:
-							for (var i = 0; i < arguments.length; i++) {
-								args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-							}
-							eval(\'' . $this->topFrame . '.we_cmd(\'+args+\')\');
-					}
-				}
-
-		' . $this->getJSSubmitFunction('cmd');
+function we_cmd(){
+	var args = "";
+	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	switch (arguments[0]) {
+		default:
+			for (var i = 0; i < arguments.length; i++) {
+				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
+			}
+			eval(\'' . $this->topFrame . '.we_cmd(\'+args+\')\');
+	}
+}' . $this->getJSSubmitFunction('cmd');
 	}
 
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
-
-				function submitForm() {
-
-					var f = self.document.we_form;
-
-					if (arguments[0]) {
-						f.target = arguments[0];
-					} else {
-						f.target = "' . $def_target . '";
-					}
-
-					if (arguments[1]) {
-						f.action = arguments[1];
-					} else {
-						f.action = "' . $this->frameset . '";
-					}
-
-					if (arguments[2]) {
-						f.method = arguments[2];
-					} else {
-						f.method = "' . $def_method . '";
-					}
-
-					f.submit();
-				}
-
-		';
+function submitForm() {
+	var f = self.document.we_form;
+	f.target = (arguments[0]?arguments[0]:"' . $def_target . '");
+	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
+	f.method = (arguments[2]?arguments[2]:"' . $def_method . '");
+	f.submit();
+}';
 	}
 
 	function processVariables(){

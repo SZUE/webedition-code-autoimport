@@ -24,6 +24,8 @@
  */
 // widget LAST MODIFIED
 //$aCols = $_REQUEST['we_cmd'];
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+
 $newSCurrId = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5);
 require_once('../../mod/fdl.php');
 
@@ -36,7 +38,7 @@ function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 }";
 
-print we_html_element::htmlDocType() . we_html_element::htmlHtml(
+echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[kv_failedLogins][headline]') . ' (' . $maxRows . ')') . STYLESHEET . we_html_element::jsElement(
 				$sJsCode)) . we_html_element::htmlBody(

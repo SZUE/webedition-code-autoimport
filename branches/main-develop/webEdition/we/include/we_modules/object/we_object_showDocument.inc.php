@@ -175,13 +175,13 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 			if(($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))){ // use given document instead !
 				if($_errorDocId){
 					unset($_errorDocId);
+					we_html_tools::setHttpCode(401);
 					include($_SERVER['DOCUMENT_ROOT'] . $_errorDocPath);
 					unset($_errorDocPath);
 				}
 				return;
-			} else {
-				die('Customer has no access to this document');
 			}
+			die('Customer has no access to this document');
 		}
 	}
 }

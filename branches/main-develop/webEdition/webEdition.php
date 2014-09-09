@@ -480,11 +480,11 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				break;
 
 			case "openUnpublishedObjects":
-				we_cmd("tool_weSearch_edit", "", 3, 7);
+				we_cmd("tool_weSearch_edit", "", "", 7, 3);
 				break;
 
 			case "openUnpublishedPages":
-				we_cmd("tool_weSearch_edit", "", 3, 4);
+				we_cmd("tool_weSearch_edit", "", "", 4, 3);
 				break;
 
 			case "openCatselector":
@@ -1424,7 +1424,8 @@ pWebEdition_JSFunctions();
 //-->
 </script>
 <?php
-we_main_header::pCSS();
+$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, "SEEM_edit_include");
+we_main_header::pCSS($SEEM_edit_include);
 
 //WEEXT
 if(defined('USE_EXT') && USE_EXT){
@@ -1436,8 +1437,8 @@ if(defined('USE_EXT') && USE_EXT){
 	<body style="background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;" onbeforeunload="doUnload()">';
 	flush();
 	//	get the frameset for the actual mode.
-	pWebEdition_Frameset();
-	we_main_header::pJS();
+	pWebEdition_Frameset($SEEM_edit_include);
+	we_main_header::pJS($SEEM_edit_include);
 	//	get the Treefunctions for docselector
 	pWebEdition_Tree();
 	echo '</body>';

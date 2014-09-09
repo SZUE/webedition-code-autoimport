@@ -29,16 +29,16 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $id = we_base_request::_(we_base_request::INT, "id", 0);
 $bid = we_base_request::_(we_base_request::INT, "bid", 0);
 $did = we_base_request::_(we_base_request::INT, "did", 0);
-$paths = we_base_request::_(we_base_request::RAW, "paths", "");
+$paths = we_base_request::_(we_base_request::FILELIST, "paths", "");
 $target = we_base_request::_(we_base_request::RAW, "target", "");
 $height = we_base_request::_(we_base_request::INT, "height", 0);
 $width = we_base_request::_(we_base_request::INT, "width", 0);
 $bannerclick = we_base_request::_(we_base_request::URL, "bannerclick", WEBEDITION_DIR . 'bannerclick.php');
 $referer = we_base_request::_(we_base_request::RAW, "referer", "");
-$type = we_base_request::_(we_base_request::RAW, "type", "");
+$type = we_base_request::_(we_base_request::STRING, "type", "");
 $cats = we_base_request::_(we_base_request::RAW, "cats", "");
 $dt = we_base_request::_(we_base_request::RAW, "dt", "");
-$link = we_base_request::_(we_base_request::RAW, "link", 1);
+$link = we_base_request::_(we_base_request::BOOL, "link", 1);
 $bannername = we_base_request::_(we_base_request::RAW, "bannername", "");
 $page = we_base_request::_(we_base_request::RAW, "page", "");
 $nocount = we_base_request::_(we_base_request::BOOL, "nocount");
@@ -54,24 +54,25 @@ switch($type){
 		header("Content-type: application/x-javascript");
 
 		foreach($jsarr as $line){
-			print "document.writeln('" . $line . "');\n";
+			echo "document.writeln('" . $line . "');";
 		}
 		break;
 	case "iframe":
-		print $code;
+		echo $code;
 		break;
 	default:
+
 		if(!$id){
 			$bannerData = we_banner_banner::getBannerData($did, $paths, $dt, $cats, $bannername, $GLOBALS['DB_WE']);
 			$id = $bannerData["ID"];
 			$bid = $bannerData["bannerID"];
 		}
 		if(!$bid){
-			$id = f("SELECT pref_value FROM " . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'");
+			$id = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'");
 			$bid = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id));
 		}
 
-		$bannerpath = f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($bid));
+		$bannerpath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($bid));
 
 		if(($type == 'pixel' || (!$nocount) && $id && $c)){
 			$GLOBALS['DB_WE']->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter(array(

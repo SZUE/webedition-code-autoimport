@@ -24,7 +24,7 @@ function we_tag_customerResetPasswordLink(array $attribs, $content){
 	}
 
 
-	if($GLOBALS['ERROR']['customerResetPassword'] != we_customer_customer::PWD_ALL_OK){
+	if(isset($GLOBALS['ERROR']['customerResetPassword']) && $GLOBALS['ERROR']['customerResetPassword'] != we_customer_customer::PWD_ALL_OK || !isset($_SESSION['webuser'])){
 		return '';
 	}
 	$id = weTag_getAttribute('id', $attribs);

@@ -67,7 +67,7 @@ class weTree{
 	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
 		$this->db = new DB_WE();
 		$this->setTreeImageDir(TREE_IMAGE_DIR);
-		$this->setTreeIconDir(ICON_DIR);
+		$this->setTreeIconDir(TREE_ICON_DIR);
 		if($frameset != '' && $topFrame != '' && $treeFrame != '' && $cmdFrame != ''){
 			$this->init($frameset, $topFrame, $treeFrame, $cmdFrame);
 		}

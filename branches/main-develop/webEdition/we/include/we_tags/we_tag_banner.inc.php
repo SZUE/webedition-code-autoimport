@@ -29,7 +29,7 @@ function we_tag_banner($attribs, $content){
 
 	$bannername = weTag_getAttribute("name", $attribs);
 	$paths = weTag_getAttribute("paths", $attribs);
-	$type = weTag_getAttribute("type", $attribs, "js");
+	$type = weTag_getAttribute("type", $attribs, 'js');
 	$target = weTag_getAttribute("target", $attribs);
 	$width = weTag_getAttribute("width", $attribs, ($type == "pixel") ? "1" : "");
 	$height = weTag_getAttribute("height", $attribs, ($type == "pixel") ? "1" : "");
@@ -43,7 +43,18 @@ function we_tag_banner($attribs, $content){
 
 	if($type == "pixel"){
 
-		$newAttribs['src'] = $getbanner . '?' . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . 'type=pixel&amp;paths=' . rawurlencode($paths) . '&amp;bannername=' . rawurlencode($bannername) . '&amp;cats=' . rawurlencode($GLOBALS["WE_MAIN_DOC"]->Category) . '&amp;dt=' . (isset($GLOBALS["WE_MAIN_DOC"]->DocType) ? rawurlencode($GLOBALS["WE_MAIN_DOC"]->DocType) : "") . ($page ? ('&amp;page=' . rawurlencode($page)) : ('&amp;did=' . $GLOBALS["WE_MAIN_DOC"]->ID)) . '&amp;xml=' . ($xml ? "1" : "0");
+		$newAttribs['src'] = $getbanner . '?' .
+			http_build_query(array(
+				($nocount ? 'nocount' : '') => $nocount,
+				'type' => 'pixel',
+				'paths' => $paths,
+				'bannername' => $bannername,
+				'cats' => $GLOBALS["WE_MAIN_DOC"]->Category,
+				'dt' => (isset($GLOBALS["WE_MAIN_DOC"]->DocType) ? $GLOBALS["WE_MAIN_DOC"]->DocType : ""),
+				($page ? 'page' : '') => $page,
+				(!$page ? 'did' : '') => $GLOBALS["WE_MAIN_DOC"]->ID,
+				'xml' => $xml ? "1" : "0",
+		));
 		$newAttribs['border'] = 0;
 		$newAttribs['alt'] = '';
 		$newAttribs['width'] = 1;
@@ -56,7 +67,18 @@ function we_tag_banner($attribs, $content){
 
 	// building noscript
 	// here build image with link(opt)
-	$imgAtts['src'] = $getbanner . '?c=1&amp;bannername=' . rawurlencode($bannername) . '&amp;cats=' . rawurlencode(isset($GLOBALS["WE_MAIN_DOC"]->Category) ? $GLOBALS["WE_MAIN_DOC"]->Category : "") . '&amp;dt=' . rawurlencode(isset($GLOBALS["WE_MAIN_DOC"]->DocType) ? $GLOBALS["WE_MAIN_DOC"]->DocType : "") . '&amp;paths=' . rawurlencode($paths) . ($page ? ('&amp;page=' . rawurlencode($page)) : ('&amp;did=' . $GLOBALS["WE_MAIN_DOC"]->ID)) . '&amp;bannerclick=' . rawurlencode($bannerclick) . '&amp;xml=' . ($xml ? "1" : "0");
+	$imgAtts['src'] = $getbanner . '?' .
+		http_build_query(array(
+			'c' => 1,
+			'bannername' => $bannername,
+			'cats' => isset($GLOBALS["WE_MAIN_DOC"]->Category) ? $GLOBALS["WE_MAIN_DOC"]->Category : "",
+			'dt' => isset($GLOBALS["WE_MAIN_DOC"]->DocType) ? $GLOBALS["WE_MAIN_DOC"]->DocType : "",
+			'paths' => $paths,
+			($page ? 'page' : '') => $page,
+			(!$page ? 'did' : '') => $GLOBALS["WE_MAIN_DOC"]->ID,
+			'bannerclick' => $bannerclick,
+			'xml' => ($xml ? "1" : "0")
+	));
 	$imgAtts['alt'] = '';
 	$imgAtts['border'] = 0;
 	if($width){
@@ -68,7 +90,14 @@ function we_tag_banner($attribs, $content){
 	$img = getHtmlTag('img', $imgAtts);
 
 	if($link){ //  with link
-		$linkAtts['href'] = $bannerclick . '?' . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . 'u=' . $uniq . '&amp;bannername=' . rawurlencode($bannername) . ($page ? ('&amp;page=' . rawurlencode($page)) : ('&amp;did=' . $GLOBALS["WE_MAIN_DOC"]->ID));
+		$linkAtts['href'] = $bannerclick . '?' . http_build_query(array(
+				($nocount ? 'nocount' : '') => $nocount,
+				'u' => $uniq,
+				'bannername' => $bannername,
+				'type' => $type,
+				($page ? 'page' : '') => $page,
+				(!$page ? 'did' : '') => $GLOBALS["WE_MAIN_DOC"]->ID
+		));
 		if($target){
 			$linkAtts['target'] = $target;
 		}
@@ -79,13 +108,26 @@ function we_tag_banner($attribs, $content){
 
 
 	if($type == "iframe"){
-
 		// stuff for iframe  and ilayer
 		$newAttribs = removeAttribs($attribs, array('name', 'paths', 'type', 'target', 'link', 'clickscript', 'getscript', 'page'));
 		$newAttribs['xml'] = $xml ? "true" : "false";
 		$newAttribs['width'] = $width ? $width : 468;
 		$newAttribs['height'] = $height ? $height : 60;
-		$newAttribs['src'] = $getbanner . '?' . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . 'bannername=' . rawurlencode($bannername) . '&amp;cats=' . rawurlencode($GLOBALS["WE_MAIN_DOC"]->Category) . '&amp;link=' . ($link ? 1 : 0) . '&amp;type=iframe' . ($page ? ('&amp;page=' . rawurlencode($page)) : ('&amp;did=' . $GLOBALS["WE_MAIN_DOC"]->ID . '&amp;paths=' . rawurlencode($paths))) . '&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($bannerclick) . '&amp;width=' . rawurlencode($width) . '&amp;height=' . rawurlencode($height) . '&amp;xml=' . ($xml ? "1" : "0");
+		$newAttribs['src'] = $getbanner . '?' . http_build_query(array(
+				($nocount ? 'nocount' : '') => $nocount,
+				'bannername' => $bannername,
+				'cats' => $GLOBALS["WE_MAIN_DOC"]->Category,
+				'link' => ($link ? 1 : 0),
+				'type' => 'iframe',
+				($page ? 'page' : '') => $page,
+				(!$page ? 'did' : '') => $GLOBALS["WE_MAIN_DOC"]->ID,
+				'paths' => $paths,
+				'target' => $target,
+				'bannerclick' => $bannerclick,
+				'width' => $width,
+				'height' => $height,
+				'xml' => ($xml ? "1" : "0")
+		));
 
 		// content
 		//$content = getHtmlTag('ilayer',$newAttribs, '',true) . getHtmlTag('nolayer', array(),$noscript);    // WITH ilayer not conform !!!

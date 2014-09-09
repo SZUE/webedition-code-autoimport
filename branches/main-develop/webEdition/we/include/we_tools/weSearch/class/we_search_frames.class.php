@@ -150,7 +150,7 @@ class we_search_frames extends we_tool_frames{
 
 		$setActiveTabJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
 
-		$Text = $this->Model->getLangText($this->Model->Path, $this->Model->Text);
+		$Text = we_search_model::getLangText($this->Model->Path, $this->Model->Text);
 
 		$body = we_html_element::htmlBody(
 				array(
@@ -289,14 +289,13 @@ class we_search_frames extends we_tool_frames{
 	function getHTMLGeneral(){
 		$disabled = true;
 
-		$this->Model->Text = $this->Model->getLangText($this->Model->Path, $this->Model->Text);
+		$this->Model->Text = we_search_model::getLangText($this->Model->Path, $this->Model->Text);
 
 		return array(
 			array(
 				'headline' => g_l('searchtool', '[general]'),
 				'html' => we_html_tools::htmlFormElementTable(
-					we_html_tools::htmlTextInput(
-						'Text', '', $this->Model->Text, '', 'style="width: ' . $this->_width_size . '" );"', '', '', '', '', $disabled), g_l('searchtool', '[dir]')),
+					we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: ' . $this->_width_size . '" );"', '', '', '', '', $disabled), g_l('searchtool', '[dir]')),
 				'space' => $this->_space_size,
 				'noline' => 1
 		));
@@ -408,7 +407,9 @@ class we_search_frames extends we_tool_frames{
 
 		foreach($content as $i => $c){
 			$_forceRightHeadline = (isset($c['forceRightHeadline']) && $c['forceRightHeadline']);
-			$icon = (isset($c['icon']) && $c['icon']) ? ('<img src="' . IMAGE_DIR . 'icons/' . $c["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />') : "";
+			$icon = (isset($c['icon']) && $c['icon'] ?
+					'<img src="' . ICON_DIR . $c["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />' :
+					"");
 			$headline = (isset($c['headline']) && $c['headline']) ? ('<div  class="weMultiIconBoxHeadline" style="margin-bottom:10px;margin-left:30px;">' . $c["headline"] . '</div>') : "";
 			$mainContent = (isset($c['html']) && $c['html']) ? $c['html'] : '';
 			$leftWidth = (isset($c['space']) && $c['space']) ? abs($c['space']) : 0;
@@ -423,9 +424,10 @@ class we_search_frames extends we_tool_frames{
 			}
 
 			$out .= $rightContent .
-				($i < (count($content) - 1) && (!isset($c['noline'])) ?
-					'<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' :
-					'<div style="margin:10px 0;clear:both;"></div>');
+				'<div style="clear:both;' . ($i < (count($content) - 1) && (!isset($c['noline'])) ?
+					'border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;' :
+					'margin:10px 0;'
+				) . '"></div>';
 		}
 
 		return $out;

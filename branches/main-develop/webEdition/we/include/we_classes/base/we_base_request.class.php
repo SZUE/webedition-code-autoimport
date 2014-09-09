@@ -86,7 +86,12 @@ class we_base_request{
 					base64_decode(urldecode(substr($var, 9))) :
 					$var;
 			case self::UNIT:
-				//FIMXE: check for %d[em,ex,pt,...]?
+				$regs = array(); //FIMXE: check for %d[em,ex,pt,%...]?
+				if(preg_match('/(\d+) ?(em|ex|pt|px|%)/', $var, $regs)){
+					$var = $regs[1] . $regs[2];
+				} else {
+					$var = 0;
+				}
 				return;
 			case self::INT:
 				$var = intval($var);
@@ -158,7 +163,7 @@ class we_base_request{
 				}
 				return;
 			case self::URL:
-				$var = filter_var($var, FILTER_SANITIZE_URL);
+				$var = filter_var(urldecode($var), FILTER_SANITIZE_URL);
 				return;
 			case self::STRINGC:
 			case self::STRING://strips tags
@@ -198,13 +203,6 @@ class we_base_request{
 	 * @return mixed default, if value not set, the filtered value else
 	 */
 	public static function _($type, $name, $default = false){
-		/* static $requests = array();
-		  if(isset($requests[$name][$index])){
-		  t_e('rerequest ', $args, $requests[$name][$index]);
-		  } else {
-		  $requests[$name][$index] = debug_backtrace();
-		  } */
-
 
 		$var = $_REQUEST;
 		$args = func_get_args();
@@ -214,6 +212,16 @@ class we_base_request{
 		}
 		/* end fix */
 		unset($args[0], $args[2]);
+		if(false && isset($_SESSION['user']['isWeSession']) && $_SESSION['user']['isWeSession'] && WE_VERSION_SUPP){
+			$argname = implode('.', $args);
+			//reduce duplicate requests on the same global scope
+			static $requests = array();
+			$requests[$name][$argname][] = getBacktrace(array('error_showDevice', 'error_handler', 'getBacktrace', 'display_error_message'));
+			if(count($requests[$name][$argname]) > 1){
+				t_e('rerequest ', $name, $args, $requests[$name][$argname]);
+			}
+		}
+
 		foreach($args as $arg){
 			if(is_string($var) || !is_array($var) || !isset($var[$arg])){
 				return $default;
@@ -232,6 +240,10 @@ class we_base_request{
 			self::_weRequest($var, '', array($type, $default));
 
 			switch($type){
+				case self::URL:
+					$oldVar = urldecode($var);
+					$cmp = '' . $var;
+					break;
 				case self::CMD://this must change&is ok!
 				case self::RAW_CHECKED:
 				case self::STRINGC:

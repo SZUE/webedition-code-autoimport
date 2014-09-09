@@ -484,7 +484,7 @@ function queryString(what,id,o){
 						link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 					}
 					link += ' onclick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
-					d.writeln(link + '<img src="<?php print ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
+					d.writeln(link + '<img src="<?php print TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
 					d.writeln('</td>');
 					d.writeln('<td class="selector" title="' + entries[i].text + '">');
 					d.writeln(link + cutText(entries[i].text, 70) + '</a>');

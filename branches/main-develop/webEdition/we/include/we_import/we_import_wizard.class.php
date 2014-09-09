@@ -344,7 +344,7 @@ function handle_eventNext(){
 		if (fs.match(/\.\./)=='..') { " . (we_message_reporting::getShowMessageCall(g_l('import', "[invalid_path]"), we_message_reporting::WE_MESSAGE_ERROR)) . "; return; }
 		ext = fs.substr(fs.length-4,4);
 		f.elements['v[import_from]'].value = fs;
-		
+
 	}
 	else if (f.elements['v[rdofloc]'][1].checked==true && fl!=='') {
 		ext = fl.substr(fl.length-4,4);
@@ -860,7 +860,7 @@ function handle_event(evt) {
 		$parts = array(
 			array(
 				'headline' => '',
-				'html' => we_html_element::htmlDiv(array('class' => 'blockwrapper', 'style' => 'width: 520px; height: 400px; border:1px #dce6f2 solid;', 'id' => 'log'), ''),
+				'html' => we_html_element::htmlDiv(array('class' => 'blockWrapper', 'style' => 'width: 520px; height: 400px; border:1px #dce6f2 solid;', 'id' => 'log'), ''),
 				'space' => 0)
 		);
 		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, '100%', $parts, 30, '', -1, '', '', false, g_l('import', '[log]'));

@@ -201,7 +201,7 @@ function pWebEdition_JSwe_cmds(){
  * @return void
  * @desc the frameset for the SeeMode
  */
-function pWebEdition_Frameset(){
+function pWebEdition_Frameset($SEEM_edit_include){
 	//WEEXT: set menu.display: none when not wehybrid.
 	//TODO: stop creating menus as soon we can avoid js conflicts (when fns attempt to manipulate tree, eg. delete, save etc.)
 	$displayMenu = !USE_EXT || (USE_EXT && USE_EXT_WEHYBRID);
@@ -209,7 +209,7 @@ function pWebEdition_Frameset(){
 
 	if($displayMenu){ ?>
 	<div style="position:absolute;top:0px;left:0px;right:0px;height:32px;border-bottom: 1px solid black;">
-		<?php we_main_header::pbody(); ?>
+		<?php we_main_header::pbody($SEEM_edit_include); ?>
 	</div>
 	<?php } ?>
 	<div style="position:absolute;top:<?php print $displayMenu ? '32px' : 0; ?>;left:0px;right:0px;bottom:0px;border: 0;">

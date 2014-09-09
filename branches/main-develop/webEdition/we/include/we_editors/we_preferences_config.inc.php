@@ -87,10 +87,8 @@ $GLOBALS['configs'] = array(
 		'XHTML_DEBUG' => array('Enable XHTML debug', we_base_request::BOOL, false),
 		'XHTML_REMOVE_WRONG' => array('Remove wrong xhtml attributes from we:tags', we_base_request::BOOL, false),
 //system
-		'WE_MAX_UPLOAD_SIZE' => array('Maximal possible uploadsize', we_base_request::INT, 0),
 		'FILE_UPLOAD_MAX_UPLOAD_SIZE' => array('Set the maximum size a file can have', we_base_request::INT, 128),
 		'FILE_UPLOAD_USE_LEGACY' => array('If the old uploader without d&d should be used (deprecated)', we_base_request::BOOL, false),
-		'USE_JUPLOAD' => array('Use Java Upload', we_base_request::BOOL, false), //deprecated
 		'WE_NEW_FOLDER_MOD' => array('File permissions when creating a new directory', we_base_request::INT, 755), //this should be string but deny access by user doesn't make sense
 		'WE_DOCTYPE_WORKSPACE_BEHAVIOR' => array('Which Doctypes should be shown for which workspace false=normal behaviour , true=new behaviour', we_base_request::BOOL, false),
 		'SCHEDULER_TRIGGER' => array('decide how the scheduler works', we_base_request::INT, 1), //postdoc
@@ -239,11 +237,9 @@ $GLOBALS['configs'] = array(
 		'editorHeight' => array(we_base_request::INT, 0),
 		'editorSizeOpt' => array(we_base_request::BOOL, false),
 		'editorWidth' => array(we_base_request::INT, 0),
-		//'FileFilter' => array(we_base_request::RAW, 0), //????
 		'force_glossary_action' => array(we_base_request::BOOL, false),
 		'force_glossary_check' => array(we_base_request::BOOL, false),
 		'import_from' => array(we_base_request::FILE, ''),
-		'juploadPath' => array(we_base_request::FILE, ''),
 		'openFolders_tblFile' => array(we_base_request::INTLIST, ''),
 		'openFolders_tblObject' => array(we_base_request::INTLIST, ''),
 		'openFolders_tblObjectFiles' => array(we_base_request::INTLIST, ''),
