@@ -51,7 +51,7 @@ switch($cmd0){//FIMXE most of the stuff can be handled via session! transfer is 
 		$_REQUEST['JSTextName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
 		$_REQUEST['JSCommand'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5);
 		$_REQUEST['rootDirID'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 7);
-		$_REQUEST['filter'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 8);
+		$_REQUEST['filter'] = we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 8);
 		$_REQUEST['open_doc'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 9);
 		$_REQUEST['multiple'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 10);
 		$_REQUEST['canSelectDir'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 11);
