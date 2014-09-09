@@ -973,9 +973,9 @@ EOF;
 					$this->DB_WE->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $tid);
 
 					$obj = new we_objectFile();
-					$obj->initByID($ofid, OBJECT_FILES_TABLE);
+					$obj->initByID($tid, OBJECT_FILES_TABLE);
 
-					we_temporaryDocument::delete($ofid, OBJECT_FILES_TABLE, $this->DB_WE);
+					we_temporaryDocument::delete($tid, OBJECT_FILES_TABLE, $this->DB_WE);
 					$javascript .= 'top.deleteEntry(' . $obj->ID . ');';
 
 					$deletedItems[] = $obj->ID;
