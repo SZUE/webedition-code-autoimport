@@ -85,13 +85,10 @@ class we_base_request{
 				$var = strpos($var, 'WECMDENC_') !== false ?
 					base64_decode(urldecode(substr($var, 9))) :
 					$var;
+				return;
 			case self::UNIT:
 				$regs = array(); //FIMXE: check for %d[em,ex,pt,%...]?
-				if(preg_match('/(\d+) ?(em|ex|pt|px|%)/', $var, $regs)){
-					$var = $regs[1] . $regs[2];
-				} else {
-					$var = 0;
-				}
+				$var = (preg_match('/(\d+) ?(em|ex|pt|px|%)/', $var, $regs) ? $regs[1] . $regs[2] : 0 );
 				return;
 			case self::INT:
 				$var = intval($var);
