@@ -59,7 +59,7 @@ if($_csv){
 				$_categories)) ? ' AND (' . implode(' OR ', $_categories) . ')' : '') . ' AND IsFolder=0;';
 	}
 
-	if($query && $DB_WE->query($_query)){
+	if($_query && $DB_WE->query($_query)){
 		$mdc .= '<table cellspacing="0" cellpadding="0" border="0">';
 		while($DB_WE->next_record()){
 			$mdc .= '<tr><td width="20" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(

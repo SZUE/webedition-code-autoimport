@@ -80,8 +80,10 @@ function we_tag_var($attribs){
 			$name = ($type == 'select' && $normVal == '' ? $name_orig : $name);
 			$selectKey = weTag_getAttribute('key', $attribs, false, true);
 			if($type == 'select' && $selectKey){
-				return $htmlspecialchars ? oldHtmlspecialchars($doc->getElement($name)) :
-					($format ? date($format, intval($doc->getElement($name))) : $doc->getElement($name));
+				p_r($GLOBALS['we_obj']);
+				return $htmlspecialchars ?
+					oldHtmlspecialchars($doc->getElement($name)) :
+					$doc->getElement($name);
 			}
 
 			if(isset($doc->DefArray) && is_array($doc->DefArray)){
@@ -92,8 +94,12 @@ function we_tag_var($attribs){
 					}
 
 					if($normVal != ''){
-						return $htmlspecialchars ? oldHtmlspecialchars($normVal) :
-							($format ? date($format, intval($normVal)) : $normVal);
+						return $htmlspecialchars ?
+							oldHtmlspecialchars($normVal) :
+							($format ?
+								date($format, intval($normVal)) :
+								$normVal
+								);
 					}
 				}
 			}

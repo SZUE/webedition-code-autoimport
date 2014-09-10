@@ -21,20 +21,17 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//
-//	---> Includes
-//
-require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 we_html_tools::protect();
+require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 //
 //	---> Initalize the document
 //
 
-$cmd = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0);
+$cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we_transaction, 1);
 
-$identifier = we_base_request::_(we_base_request::RAW, 'we_cmd', false, 2);
+$identifier = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 2);
 
 $jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "objectEntry");
 
@@ -77,9 +74,8 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>
 
-<body>
+<body><?php
 
-	<?php
 	switch($cmd){
 		case "object_reload_entry_at_object":
 		case 'object_up_meta_at_object':
