@@ -1103,11 +1103,10 @@ class we_document extends we_root{
 				break;
 			default:
 				//check bdid first
-				$val = $this->getElement($attribs['name'], 'bdid');
-				$val = $val ? $val : $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
+				$val = $this->getElement($attribs['name']);
 		}
 
-		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : ($this instanceof we_objectFile ? $this->TableID : ''));
+		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : '')); //not instance due to we_showObject
 	}
 
 	private function getValFromSrc($fn, $name, $key = 'dat'){
