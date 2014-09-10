@@ -39,8 +39,9 @@ echo we_html_tools::getHtmlTop() .
 	function editFile() {
 		if (!top.dirsel) {
 			if ((top.currentID != "") && (document.forms["we_form"].elements["fname"].value != "")) {
-				if (document.forms["we_form"].elements["fname"].value != top.currentName)
+				if (document.forms["we_form"].elements["fname"].value != top.currentName){
 					top.currentID = top.sitepath + top.rootDir + top.currentDir + "/" + document.forms["we_form"].elements["fname"].value;
+				}
 				url = "we_sselector_editFile.php?id=" + top.currentID;
 				new jsWindow(url, "we_fseditFile", -1, -1, 600, 500, true, false, true, true);
 			}
