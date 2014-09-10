@@ -80,7 +80,7 @@ function we_tag_var($attribs){
 			$name = ($type == 'select' && $normVal == '' ? $name_orig : $name);
 			$selectKey = weTag_getAttribute('key', $attribs, false, true);
 			if($type == 'select' && $selectKey){
-				p_r($GLOBALS['we_obj']);
+				
 				return $htmlspecialchars ?
 					oldHtmlspecialchars($doc->getElement($name)) :
 					$doc->getElement($name);
