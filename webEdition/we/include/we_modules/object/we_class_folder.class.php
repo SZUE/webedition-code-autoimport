@@ -957,7 +957,7 @@ EOF;
 		));
 	}
 
-	function deleteObjects(){
+	public function deleteObjects(){
 		$this->setClassProp(); //4076
 		$javascript = '';
 		$deletedItems = array();

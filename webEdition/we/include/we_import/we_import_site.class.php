@@ -591,8 +591,9 @@ class we_import_site{
 	private function _getContentHTML(){
 		// Suorce Directory
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['from'].value");
-		$_from_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(
-				"select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "','" . we_base_ContentTypes::FOLDER . "',document.we_form.elements['from'].value)") : "";
+		$_from_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
+			we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "','" . we_base_ContentTypes::FOLDER . "',document.we_form.elements['from'].value)") :
+			"";
 
 		$_input = we_html_tools::htmlTextInput("from", 30, $this->from, "", "readonly", "text", 300);
 
