@@ -128,7 +128,7 @@ function we_tag_href($attribs){
 
 	$trashbut = we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value = ''; document.we_form.elements['" . $intPath_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);" . (($include || $reload) ? "setScrollTo(); top.we_cmd('reload_editpage');" : ''), true);
 	$span = '<span style="color: black;font-size:' . ((we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px")) . ';font-family:' . g_l('css', '[font_family]') . ';">';
-	$attr = we_make_attribs($attribs, 'name,value,type,onkeydown,onKeyDown');
+
 	$size = 5 * intval(weTag_getAttribute('size', $attribs, 20));
 
 	$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $intID_elem_Name . "'].value");
@@ -169,7 +169,16 @@ function we_tag_href($attribs){
 		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_EXT ? '
 <tr>
 	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_html_forms::radiobutton(0, !$int, $int_elem_Name, $span . g_l('tags', '[ext_href]') . ':</span>') : $span . g_l('tags', '[ext_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="0" />') . '</td>
-	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px"><input style="width:' . ($size) . 'px;"' . ($type == we_base_link::TYPE_ALL ? 'onchange="this.form.elements[\'' . $int_elem_Name . '\'][1].checked = true;"' : '') . ' type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" placeholder="http://example.org" value="' . $extPath . '" ' . $attr . ' /></td>
+	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' .
+			getHtmlTag('input', array_merge(removeAttribs($attribs, array('onkeydown', 'onKeyDown')), array(
+				'style' => 'width:' . ($size) . 'px;',
+				'onchange' => ($type == we_base_link::TYPE_ALL ? 'this.form.elements[\'' . $int_elem_Name . '\'][1].checked=true;' : ''),
+				'type' => "text",
+				'name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']',
+				'placeholder' => "http://example.org",
+				'value' => $extPath
+			)))
+			. '</td>
 	<td class="weEditmodeStyle">' . $but2 . '</td>
 	<td class="weEditmodeStyle">' . $trashbut2 . '</td>
 </tr>' : '') . '

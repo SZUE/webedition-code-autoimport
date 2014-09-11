@@ -48,7 +48,7 @@ echo we_html_element::htmlDocType();
 			echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		} else {
-			print we_tag('textarea', array('name' => 'HEAD'));
+			echo we_tag('textarea', array('name' => 'HEAD'));
 		}
 		?>
 	</head>
@@ -72,12 +72,12 @@ echo we_html_element::htmlDocType();
 ' . we_tag('textarea', array('name' => 'BODY', 'rows' => 15, 'cols' => 80, 'wrap' => 'virtual', 'style' => 'width: 600px;')) . '
 <pre class="defaultfont">	&lt;/body&gt;
 &lt;/html&gt;</pre>';
-				print we_html_tools::htmlMessageBox(667, 650, $foo);
+				echo we_html_tools::htmlMessageBox(667, 650, $foo);
 				?>
 			</form>
 		</body>
 	<?php } else { ?>
-		<body<?php print ' ' . we_tag('input', array('name' => 'BODYTAG')); ?>>
+		<body <?php echo we_tag('input', array('name' => 'BODYTAG')); ?>>
 			<?php printElement(we_tag('textarea', array('name' => 'BODY'), '')); ?>
 		</body>
 	<?php } ?>

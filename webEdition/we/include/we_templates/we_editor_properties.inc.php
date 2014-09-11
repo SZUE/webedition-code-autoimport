@@ -23,13 +23,11 @@
  */
 $yuiSuggest = & weSuggest::getInstance();
 
-if($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES){
-	//	send charset, if one is set:
-	$charset = $we_doc->getElement('Charset');
-	$charset = $charset ? $charset : DEFAULT_CHARSET;
-} else {
-	$charset = $GLOBALS['WE_BACKENDCHARSET'];
-}
+$charset = ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES ?
+		//	send charset, if one is set:
+		$we_doc->getElement('Charset', 'dat', DEFAULT_CHARSET) :
+		$GLOBALS['WE_BACKENDCHARSET']);
+
 we_html_tools::headerCtCharset('text/html', $charset);
 echo we_html_tools::getHtmlTop('', $charset) .
  we_html_element::jsScript(JS_DIR . 'windows.js');
@@ -39,51 +37,51 @@ echo STYLESHEET;
 </head>
 <body class="weEditorBody" onunload="doUnload()">
 	<form name="we_form" method="post" action="" onsubmit="return false;"><?php
-		echo we_class::hiddenTrans();
-		$implementYuiAC = false;
-		switch($we_doc->ContentType){
-			case we_base_ContentTypes::FOLDER:
-				include(WE_INCLUDES_PATH . 'we_templates/we_folder_properties.inc.php');
-				$implementYuiAC = true;
-				break;
-			case we_base_ContentTypes::WEDOCUMENT:
-				include(WE_INCLUDES_PATH . 'we_templates/we_webedition_properties.inc.php');
-				break;
-			case we_base_ContentTypes::XML:
-			case we_base_ContentTypes::CSS:
-			case we_base_ContentTypes::JS:
-			case we_base_ContentTypes::HTACESS:
-			case we_base_ContentTypes::TEXT:
-				include(WE_INCLUDES_PATH . 'we_templates/we_textfile_properties.inc.php');
-				break;
-			case we_base_ContentTypes::HTML:
-				include(WE_INCLUDES_PATH . 'we_templates/we_htmlfile_properties.inc.php');
-				break;
-			case we_base_ContentTypes::TEMPLATE:
-				include(WE_INCLUDES_PATH . 'we_templates/we_template_properties.inc.php');
-				break;
-			case we_base_ContentTypes::IMAGE:
-				include(WE_INCLUDES_PATH . 'we_templates/we_image_properties.inc.php');
-				break;
-			case we_base_ContentTypes::QUICKTIME:
-			case we_base_ContentTypes::FLASH:
-				include(WE_INCLUDES_PATH . 'we_templates/we_flash_properties.inc.php');
-				break;
-			case we_base_ContentTypes::APPLICATION:
-				include(WE_INCLUDES_PATH . 'we_templates/we_other_properties.inc.php');
-				break;
-			default:
+echo we_class::hiddenTrans();
+$implementYuiAC = false;
+switch($we_doc->ContentType){
+	case we_base_ContentTypes::FOLDER:
+		include(WE_INCLUDES_PATH . 'we_templates/we_folder_properties.inc.php');
+		$implementYuiAC = true;
+		break;
+	case we_base_ContentTypes::WEDOCUMENT:
+		include(WE_INCLUDES_PATH . 'we_templates/we_webedition_properties.inc.php');
+		break;
+	case we_base_ContentTypes::XML:
+	case we_base_ContentTypes::CSS:
+	case we_base_ContentTypes::JS:
+	case we_base_ContentTypes::HTACESS:
+	case we_base_ContentTypes::TEXT:
+		include(WE_INCLUDES_PATH . 'we_templates/we_textfile_properties.inc.php');
+		break;
+	case we_base_ContentTypes::HTML:
+		include(WE_INCLUDES_PATH . 'we_templates/we_htmlfile_properties.inc.php');
+		break;
+	case we_base_ContentTypes::TEMPLATE:
+		include(WE_INCLUDES_PATH . 'we_templates/we_template_properties.inc.php');
+		break;
+	case we_base_ContentTypes::IMAGE:
+		include(WE_INCLUDES_PATH . 'we_templates/we_image_properties.inc.php');
+		break;
+	case we_base_ContentTypes::QUICKTIME:
+	case we_base_ContentTypes::FLASH:
+		include(WE_INCLUDES_PATH . 'we_templates/we_flash_properties.inc.php');
+		break;
+	case we_base_ContentTypes::APPLICATION:
+		include(WE_INCLUDES_PATH . 'we_templates/we_other_properties.inc.php');
+		break;
+	default:
 
-				$moduleDir = we_base_moduleInfo::we_getModuleNameByContentType($we_doc->ContentType);
-				$moduleDir=$moduleDir?$moduleDir.'/':'';
+		$moduleDir = we_base_moduleInfo::we_getModuleNameByContentType($we_doc->ContentType);
+		$moduleDir = $moduleDir ? $moduleDir . '/' : '';
 
-				if(file_exists(WE_MODULES_PATH . $moduleDir . 'we_' . $we_doc->ContentType . '_properties.inc.php')){
-					include(WE_MODULES_PATH . $moduleDir . 'we_' . $we_doc->ContentType . '_properties.inc.php');
-				} else {
-					exit('Can NOT include property File');
-				}
+		if(file_exists(WE_MODULES_PATH . $moduleDir . 'we_' . $we_doc->ContentType . '_properties.inc.php')){
+			include(WE_MODULES_PATH . $moduleDir . 'we_' . $we_doc->ContentType . '_properties.inc.php');
+		} else {
+			exit('Can NOT include property File');
 		}
-		?>
+}
+?>
 		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 	<?php

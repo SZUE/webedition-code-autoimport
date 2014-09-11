@@ -47,7 +47,7 @@ echo STYLESHEET;
 				break;
 
 			default:
-				print $we_doc->ContentType . ' not available (' . __FILE__ . ' ) ';
+				echo $we_doc->ContentType . ' not available (' . __FILE__ . ' ) ';
 				break;
 		}
 		?>
