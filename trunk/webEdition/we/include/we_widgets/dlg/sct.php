@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -37,13 +36,14 @@ if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 		if($ws){
 			$b = makeArrayFromCSV($ws);
 			foreach($b as $k => $v){
-				$DB_WE->query("SELECT ID,Path FROM " . FILE_TABLE . " WHERE ID=" . intval($v));
-				while($DB_WE->next_record())
+				$DB_WE->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v));
+				while($DB_WE->next_record()){
 					$paths[] = "(ParentPath = '" . $DB_WE->escape($DB_WE->f("Path")) . "' || ParentPath LIKE '" . $DB_WE->escape($DB_WE->f("Path")) . "/%')";
+				}
 			}
 		}
 		if(is_array($paths) && count($paths) > 0){
-			$q = "WHERE (" . implode(" OR ", $paths) . ") OR ParentPath='' ORDER BY DocType";
+			$q = 'WHERE (' . implode(" OR ", $paths) . ") OR ParentPath='' ORDER BY DocType";
 		}
 		$DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
 		if($DB_WE->next_record()){
@@ -520,7 +520,7 @@ function exit_close(){
 }
 ";
 
-print we_html_element::htmlDocType() . we_html_element::htmlHtml(
+echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[shortcuts]')) . STYLESHEET . we_html_element::cssElement(
 				"select,textarea{border:#AAAAAA solid 1px}") . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .

@@ -123,10 +123,6 @@ echo we_html_element::jsScript(JS_DIR . 'keyListener.js') . we_html_element::jsE
 ");
 
 // $yesCmd: $_REQUEST['we_cmd'][6] => next-EditCommand, JS-Function Call !! after save document.
-$yesCmd = "pressed_yes();";
-$noCmd = "pressed_no();";
-$cancelCmd = "pressed_cancel();";
-
 
 
 echo STYLESHEET;
@@ -134,7 +130,7 @@ echo STYLESHEET;
 </head>
 
 <body onunload="window_closed();" class="weEditorBody" onload="self.focus();" onblur="self.focus();">
-	<?php echo we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[' . stripTblPrefix($_documentTable) . '][exit_doc_question]'), IMAGE_DIR . "alert.gif", true, true, true, $yesCmd, $noCmd, $cancelCmd); ?>
+	<?php echo we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[' . stripTblPrefix($_documentTable) . '][exit_doc_question]'), IMAGE_DIR . "alert.gif", true, true, true, "pressed_yes();", "pressed_no();", "pressed_cancel();"); ?>
 </body>
 
 </html>

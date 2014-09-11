@@ -131,10 +131,11 @@ class we_selector_file{
 			return true;
 		}
 		$db = ($db ? $db : new DB_WE());
-		$pid = f('SELECT ParentID FROM ' . $db->escape($this->table) . ' WHERE ID=' . intval($ID), 'ParentID', $db);
+		$pid = f('SELECT ParentID FROM ' . $db->escape($this->table) . ' WHERE ID=' . intval($ID), '', $db);
 		if($pid == $folderID){
 			return true;
-		} else if($pid != 0){
+		}
+		if($pid != 0){
 			return $this->isIDInFolder($pid, $folderID);
 		}
 		return false;

@@ -32,5 +32,5 @@ $parts = array(
 	array("icon" => "hyperlink.gif", "headline" => g_l('weClass', "[hyperlink]"), "html" => $GLOBALS['we_doc']->formLink(), "space" => 140),
 );
 
-print we_html_multiIconBox::getJS() .
+echo we_html_multiIconBox::getJS() .
 	we_html_multiIconBox::getHTML("weImgProp", "100%", $parts, 20);

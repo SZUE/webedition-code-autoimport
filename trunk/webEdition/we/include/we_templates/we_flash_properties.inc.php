@@ -26,5 +26,5 @@ $parts = array(
 	array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $GLOBALS['we_doc']->formPath(), 'space' => 140),
 	array('icon' => 'default.gif', 'headline' => g_l('weClass', '[other]'), 'html' => $GLOBALS['we_doc']->formOther(), 'space' => 140));
 
-print we_html_multiIconBox::getJS() .
+echo we_html_multiIconBox::getJS() .
 	we_html_multiIconBox::getHTML('weVideoProp', '100%', $parts, 20);

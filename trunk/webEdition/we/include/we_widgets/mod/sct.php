@@ -38,11 +38,12 @@ if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 			$b = makeArrayFromCSV($ws);
 			foreach($b as $k => $v){
 				$DB_WE->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v));
-				while($DB_WE->next_record())
+				while($DB_WE->next_record()){
 					$paths[] = "(ParentPath = '" . $DB_WE->escape($DB_WE->f("Path")) . "' || ParentPath LIKE '" . $DB_WE->escape($DB_WE->f("Path")) . "/%')";
+				}
 			}
 		}
-		if(!empty($paths)){
+		if($paths){
 			$q = 'WHERE (' . implode(' OR ', $paths) . ") OR ParentPath='' ORDER BY DocType";
 		}
 		$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);

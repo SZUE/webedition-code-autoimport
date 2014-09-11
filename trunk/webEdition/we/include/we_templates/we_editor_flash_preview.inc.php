@@ -25,14 +25,11 @@ echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-print STYLESHEET;
+echo STYLESHEET;
 ?>
 </head>
 
-<body class="weEditorBody" style="margin:20px;">
-	<?php
-	print $we_doc->getHtml(true);
-	?>
-</body>
-
+<body class="weEditorBody" style="margin:20px;"><?php
+	echo $we_doc->getHtml(true);
+	?></body>
 </html>

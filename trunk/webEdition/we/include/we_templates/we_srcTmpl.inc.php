@@ -73,8 +73,9 @@ if(!isset($_SESSION['weS']['we_wrapcheck'])){
 
 		if (editarea) {
 			editarea.style.width = editorWidth + "px";
-			if (editarea.nextSibling != undefined && editarea.nextSibling.style)
+			if (editarea.nextSibling != undefined && editarea.nextSibling.style){
 				editarea.nextSibling.style.width = editorWidth + "px";
+			}
 		}
 
 		if (document.weEditorApplet && typeof (document.weEditorApplet.width) != undefined) {
@@ -129,8 +130,9 @@ if(we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9){
 			} else {
 				if (editarea) {
 					editarea.style.height = (h - wizardHeight.closed) + "px";
-					if (editarea.nextSibling != undefined && editarea.nextSibling.style)
+					if (editarea.nextSibling != undefined && editarea.nextSibling.style){
 						editarea.nextSibling.style.height = (h - wizardHeight.closed) + "px";
+					}
 				}
 
 				if (window.editor && window.editor.frame) {

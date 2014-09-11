@@ -161,25 +161,10 @@ function weRequest($type, $name, $default = false, $index = null){
 	return we_base_request::_($type, $name, $default, $index);
 }
 
-function we_makeHiddenFields($filter = ''){
-	$filterArr = explode(',', $filter);
-	$hidden = '';
-	if($_REQUEST){
-		foreach($_REQUEST as $key => $val){
-			if(!in_array($key, $filterArr)){
-				if(is_array($val)){
-					foreach($val as $v){
-						$hidden .= '<input type="hidden" name="' . $key . '" value="' . oldHtmlspecialchars($v) . '" />';
-					}
-				} else {
-					$hidden .= '<input type="hidden" name="' . $key . '" value="' . oldHtmlspecialchars($val) . '" />';
-				}
-			}
-		}
-	}
-	return $hidden;
-}
-
+/**
+ * @deprecated since version 6.3.9
+ *
+ */
 function we_make_attribs($attribs, $doNotUse = ''){
 	$attr = '';
 	$fil = explode(',', $doNotUse);
@@ -198,6 +183,11 @@ function we_make_attribs($attribs, $doNotUse = ''){
 }
 
 //FIXME: remove in 6.5
+/**remove in 6.5
+ * @deprecated since version 6.3.7
+ * @param type $perm
+ * @return type
+ */
 function we_hasPerm($perm){
 	t_e('deprecated', 'call of ' . __FUNCTION__);
 	return permissionhandler::hasPerm($perm);
@@ -1158,7 +1148,7 @@ function implodeJS($js){
  * @deprecated since version 6.3.0
  */
 function update_time_limit($newLimit){
-	if($newLimit == 0 || intval(ini_get('memory_limit')) < $newLimit){
+	if($newLimit == 0 || intval(ini_get('max_execution_time')) < $newLimit){
 		@set_time_limit($newLimit);
 	}
 }
