@@ -91,7 +91,7 @@ class we_base_request{
 				$var = (preg_match('/(\d+) ?(em|ex|pt|px|%)/', $var, $regs) ? $regs[1] . $regs[2] : '' );
 				return;
 			case self::INT:
-				$var = intval($var);
+				$var = ($var === '' ? $default : intval($var));
 				return;
 			case self::FLOAT:
 				//FIXME: check for country dependencies (eg. 1.3333,22)
