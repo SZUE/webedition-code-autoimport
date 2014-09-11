@@ -29,12 +29,10 @@ if(($id = we_base_request::_(we_base_request::INT, 'url'))){
 	$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID=' . $id);
 	if($path){
 		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
-		if($urlReplace){
-			$http = preg_replace($urlReplace, array_keys($urlReplace), $path, -1, $cnt);
-			$loc = ($cnt ? 'http:' : getServerUrl()) . $http . '?r=' . rand();
-		} else {
-			$loc = getServerUrl() . $path . '?r=' . rand();
-		}
+		$loc = ($urlReplace ?
+				(($http = preg_replace($urlReplace, array_keys($urlReplace), $path, -1, $cnt)) && $cnt ? 'http:' : getServerUrl()) . $http :
+				getServerUrl() . $path
+			) . '?r=' . rand();
 	} else {
 		$loc = getServerUrl() . WEBEDITION_DIR . 'notPublished.php';
 	}
