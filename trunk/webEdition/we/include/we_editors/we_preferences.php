@@ -923,7 +923,7 @@ function build_dialog($selected_setting = 'ui'){
 					$_seem_object_chooser = we_html_button::create_button_table(array($yuiSuggest->getHTML()), 0, array('id' => 'seem_start_object', 'style' => 'display:none'));
 					$permitedStartTypes[] = 'object';
 				}
-				$_start_weapp = new we_html_select(array('name' => 'newconf[seem_start_weapp]', 'class' => 'weSelect', 'id' => 'seem_start_weapp', 'onchange' => 'top.content.setHot();'));
+				$_start_weapp = new we_html_select(array('name' => 'newconf[seem_start_weapp]', 'class' => 'weSelect', 'id' => 'seem_start_weapp'));
 				$_tools = we_tool_lookup::getAllTools(true, false);
 				foreach($_tools as $_tool){
 					if(!$_tool['appdisabled'] && permissionhandler::hasPerm($_tool['startpermission'])){
