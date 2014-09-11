@@ -348,7 +348,7 @@ class we_document extends we_root{
 			}
 
 			$_naviItem = new we_navigation_navigation($id);
-			$_old_path = ($id ? $_naviItem->Path : '');
+			//$_old_path = ($id ? $_naviItem->Path : '');
 
 			$_naviItem->Ordn = $_ord;
 			$_naviItem->ParentID = $parentid;
@@ -402,6 +402,7 @@ class we_document extends we_root{
 
 	function delAllNavi(){
 //		$navis = makeArrayFromCSV($this->NavigationItems);
+		$navis=$this->getNavigationItems();
 		foreach($navis as $_path){
 			$_id = path_to_id($_path, NAVIGATION_TABLE);
 			$_naviItem = new we_navigation_navigation($_id);
