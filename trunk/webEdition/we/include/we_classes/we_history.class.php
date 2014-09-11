@@ -37,11 +37,10 @@ abstract class we_history{
 
 	static function insertIntoHistory(&$object){
 		$db = new DB_WE();
-
 		$uid = (isset($GLOBALS['we']['Scheduler_active']) ? 0 : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0));
 		$cnt = f('SELECT COUNT(1) FROM ' . HISTORY_TABLE . ' WHERE UID=' . $uid, '', $db);
 		if($cnt > self::MAX){
-			$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE UID=' . $uid . ' ORDER BY ModDate DESC LIMIT ' . ($cnt - self::MAX));
+			$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE UID=' . $uid . ' ORDER BY ModDate ASC LIMIT ' . ($cnt - self::MAX));
 		}
 
 		$db->query('REPLACE INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter(array(

@@ -79,7 +79,7 @@ class we_otherDocument extends we_binaryDocument{
 				false);
 	}
 
-	public function insertAtIndex(){
+	public function insertAtIndex(array $only = null, array $fieldTypes = null){
 		if(!($this->IsSearchable && $this->Published)){
 			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
 			return true;
