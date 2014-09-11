@@ -44,7 +44,7 @@ class we_base_linklist{
 		$this->objectseourls = $objectseourls;
 		$this->docName = $docName;
 		$this->attribs = $attribs;
-		$this->listArray = $sString ? unserialize($sString) : array();
+		$this->listArray = $sString && $sString{0} == 'a' ? unserialize($sString) : array();
 		if(!is_array($this->listArray)){
 			$this->listArray = array();
 		} else {

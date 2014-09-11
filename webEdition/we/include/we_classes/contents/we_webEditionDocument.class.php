@@ -519,7 +519,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				array_push($fieldTypes, 'Title', 'Description', 'Keywords');
 				foreach($fieldTypes as $field){//for #230: if variables are used in fieldnames we cannot determine these types
 					if($field && ($field[0] == '$' || isset($field[1]) && $field[1] == '$')){
-						unset($fieldTypes);
+						$fieldTypes = array();
 						break;
 					}
 				}

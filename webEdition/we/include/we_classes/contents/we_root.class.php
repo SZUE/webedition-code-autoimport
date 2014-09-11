@@ -1258,7 +1258,7 @@ abstract class we_root extends we_class{
 		return array();
 	}
 
-	public function insertAtIndex(){
+	public function insertAtIndex(array $only = null, array $fieldTypes = null){
 
 	}
 

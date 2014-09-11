@@ -1989,7 +1989,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	public function insertAtIndex(){
+	public function insertAtIndex(array $only = null, array $fieldTypes = null){
 		if(!($this->IsSearchable && $this->Published)){
 			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($this->ID));
 			return true;
