@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -25,7 +24,6 @@
  *
  */
 class we_util_Mailer extends Zend_Mail{
-
 	/**
 	 * Type of Message, either text/html or text/plain
 	 *
@@ -139,8 +137,8 @@ class we_util_Mailer extends Zend_Mail{
 				} else {
 					$_sender = $this->parseEmailUser($sender);
 					$tr = (isset($_sender['email']) && $_sender['email'] != '' && !$safeMode && !$suhosin ?
-									new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
-									new Zend_Mail_Transport_Sendmail());
+							new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
+							new Zend_Mail_Transport_Sendmail());
 				}
 				Zend_Mail::setDefaultTransport($tr);
 				break;
@@ -269,8 +267,8 @@ class we_util_Mailer extends Zend_Mail{
 								$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
 							}
 							$this->basedir = ($this->basedir ? $this->basedir : $_SERVER['DOCUMENT_ROOT']) .
-									((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
-									((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
+								((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
+								((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
 							$attachmentpath = $this->basedir . $directory . $filename;
 							$attachmentpath = str_replace('//', '/', $attachmentpath);
 							$cid = 'cid:' . $this->doaddAttachmentInline($attachmentpath);
@@ -396,111 +394,113 @@ class we_util_Mailer extends Zend_Mail{
 	 * Replacement for  finfo_file, available only for >= PHP 5.3
 	 * Da Zend Mail keinen name="yxz" übergibt, kann man den hier einfach anhängen
 	 */
-	public static function get_mime_type($ext, $name = '', $filepath = '', $useLegacy = false){
-		if(!$useLegacy){
-			return we_base_util::getMimeType($ext, $filepath = '', we_base_util::MIME_BY_HEAD_THEN_EXTENSION);
-		}
+	public static function get_mime_type($ext, $name = '', $filepath = ''/*, $useLegacy = false*/){
+		//if(!$useLegacy){
+			return (($mt = we_base_util::getMimeType($ext, $filepath, we_base_util::MIME_BY_HEAD_THEN_EXTENSION)) ? $mt : 'application/octet-stream') . '; name="' . $name . '"';
+			;
+		//}
 
 		//keep legacy function for test purposes. FIXME: throw it out as soon as possible
-		if($filepath && function_exists('finfo_open')){
-			$finfo = finfo_open(FILEINFO_MIME_TYPE);
-			$mime = finfo_file($finfo, $filepath);
-			finfo_close($finfo);
-			if($mime){
-				return $mime . '; name="' . $name . '"';
-			}
-			//fall back to old version
-		}
-		$mimetypes = array(
-			'hqx' => 'application/mac-binhex40',
-			'cpt' => 'application/mac-compactpro',
-			'doc' => 'application/msword',
-			'bin' => 'application/macbinary',
-			'dms' => 'application/octet-stream',
-			'lha' => 'application/octet-stream',
-			'lzh' => 'application/octet-stream',
-			'exe' => 'application/octet-stream',
-			'class' => 'application/octet-stream',
-			'psd' => 'application/octet-stream',
-			'so' => 'application/octet-stream',
-			'sea' => 'application/octet-stream',
-			'dll' => 'application/octet-stream',
-			'oda' => 'application/oda',
-			'pdf' => 'application/pdf',
-			'ai' => 'application/postscript',
-			'eps' => 'application/postscript',
-			'ps' => 'application/postscript',
-			'smi' => 'application/smil',
-			'smil' => 'application/smil',
-			'mif' => 'application/vnd.mif',
-			'xls' => 'application/vnd.ms-excel',
-			'ppt' => 'application/vnd.ms-powerpoint',
-			'wbxml' => 'application/vnd.wap.wbxml',
-			'wmlc' => 'application/vnd.wap.wmlc',
-			'dcr' => 'application/x-director',
-			'dir' => 'application/x-director',
-			'dxr' => 'application/x-director',
-			'dvi' => 'application/x-dvi',
-			'gtar' => 'application/x-gtar',
-			'php' => 'application/x-httpd-php',
-			'php4' => 'application/x-httpd-php',
-			'php3' => 'application/x-httpd-php',
-			'phtml' => 'application/x-httpd-php',
-			'phps' => 'application/x-httpd-php-source',
-			'js' => 'application/x-javascript',
-			'swf' => 'application/x-shockwave-flash',
-			'sit' => 'application/x-stuffit',
-			'tar' => 'application/x-tar',
-			'tgz' => 'application/x-tar',
-			'xhtml' => 'application/xhtml+xml',
-			'xht' => 'application/xhtml+xml',
-			'zip' => 'application/zip',
-			'mid' => 'audio/midi',
-			'midi' => 'audio/midi',
-			'mpga' => 'audio/mpeg',
-			'mp2' => 'audio/mpeg',
-			'mp3' => 'audio/mpeg',
-			'aif' => 'audio/x-aiff',
-			'aiff' => 'audio/x-aiff',
-			'aifc' => 'audio/x-aiff',
-			'ram' => 'audio/x-pn-realaudio',
-			'rm' => 'audio/x-pn-realaudio',
-			'rpm' => 'audio/x-pn-realaudio-plugin',
-			'ra' => 'audio/x-realaudio',
-			'rv' => 'video/vnd.rn-realvideo',
-			'wav' => 'audio/x-wav',
-			'bmp' => 'image/bmp',
-			'gif' => 'image/gif',
-			'jpeg' => 'image/jpeg',
-			'jpg' => 'image/jpeg',
-			'jpe' => 'image/jpeg',
-			'png' => 'image/png',
-			'tiff' => 'image/tiff',
-			'tif' => 'image/tiff',
-			'css' => 'text/css',
-			'html' => 'text/html',
-			'htm' => 'text/html',
-			'shtml' => 'text/html',
-			'txt' => 'text/plain',
-			'text' => 'text/plain',
-			'log' => 'text/plain',
-			'rtx' => 'text/richtext',
-			'rtf' => 'text/rtf',
-			'xml' => 'text/xml',
-			'xsl' => 'text/xml',
-			'mpeg' => 'video/mpeg',
-			'mpg' => 'video/mpeg',
-			'mpe' => 'video/mpeg',
-			'qt' => 'video/quicktime',
-			'mov' => 'video/quicktime',
-			'avi' => 'video/x-msvideo',
-			'movie' => 'video/x-sgi-movie',
-			'doc' => 'application/msword',
-			'word' => 'application/msword',
-			'xl' => 'application/excel',
-			'eml' => 'message/rfc822'
-		);
-		return (!isset($mimetypes[strtolower($ext)])) ? 'application/octet-stream' : $mimetypes[strtolower($ext)] . '; name="' . $name . '"';
+		/* if($filepath && function_exists('finfo_open')){
+		  $finfo = finfo_open(FILEINFO_MIME_TYPE);
+		  $mime = finfo_file($finfo, $filepath);
+		  finfo_close($finfo);
+		  if($mime){
+		  return $mime . '; name="' . $name . '"';
+		  }
+		  //fall back to old version
+		  }
+		  $mimetypes = array(
+		  'hqx' => 'application/mac-binhex40',
+		  'cpt' => 'application/mac-compactpro',
+		  'doc' => 'application/msword',
+		  'bin' => 'application/macbinary',
+		  'dms' => 'application/octet-stream',
+		  'lha' => 'application/octet-stream',
+		  'lzh' => 'application/octet-stream',
+		  'exe' => 'application/octet-stream',
+		  'class' => 'application/octet-stream',
+		  'psd' => 'application/octet-stream',
+		  'so' => 'application/octet-stream',
+		  'sea' => 'application/octet-stream',
+		  'dll' => 'application/octet-stream',
+		  'oda' => 'application/oda',
+		  'pdf' => 'application/pdf',
+		  'ai' => 'application/postscript',
+		  'eps' => 'application/postscript',
+		  'ps' => 'application/postscript',
+		  'smi' => 'application/smil',
+		  'smil' => 'application/smil',
+		  'mif' => 'application/vnd.mif',
+		  'xls' => 'application/vnd.ms-excel',
+		  'ppt' => 'application/vnd.ms-powerpoint',
+		  'wbxml' => 'application/vnd.wap.wbxml',
+		  'wmlc' => 'application/vnd.wap.wmlc',
+		  'dcr' => 'application/x-director',
+		  'dir' => 'application/x-director',
+		  'dxr' => 'application/x-director',
+		  'dvi' => 'application/x-dvi',
+		  'gtar' => 'application/x-gtar',
+		  'php' => 'application/x-httpd-php',
+		  'php4' => 'application/x-httpd-php',
+		  'php3' => 'application/x-httpd-php',
+		  'phtml' => 'application/x-httpd-php',
+		  'phps' => 'application/x-httpd-php-source',
+		  'js' => 'application/x-javascript',
+		  'swf' => 'application/x-shockwave-flash',
+		  'sit' => 'application/x-stuffit',
+		  'tar' => 'application/x-tar',
+		  'tgz' => 'application/x-tar',
+		  'xhtml' => 'application/xhtml+xml',
+		  'xht' => 'application/xhtml+xml',
+		  'zip' => 'application/zip',
+		  'mid' => 'audio/midi',
+		  'midi' => 'audio/midi',
+		  'mpga' => 'audio/mpeg',
+		  'mp2' => 'audio/mpeg',
+		  'mp3' => 'audio/mpeg',
+		  'aif' => 'audio/x-aiff',
+		  'aiff' => 'audio/x-aiff',
+		  'aifc' => 'audio/x-aiff',
+		  'ram' => 'audio/x-pn-realaudio',
+		  'rm' => 'audio/x-pn-realaudio',
+		  'rpm' => 'audio/x-pn-realaudio-plugin',
+		  'ra' => 'audio/x-realaudio',
+		  'rv' => 'video/vnd.rn-realvideo',
+		  'wav' => 'audio/x-wav',
+		  'bmp' => 'image/bmp',
+		  'gif' => 'image/gif',
+		  'jpeg' => 'image/jpeg',
+		  'jpg' => 'image/jpeg',
+		  'jpe' => 'image/jpeg',
+		  'png' => 'image/png',
+		  'tiff' => 'image/tiff',
+		  'tif' => 'image/tiff',
+		  'css' => 'text/css',
+		  'html' => 'text/html',
+		  'htm' => 'text/html',
+		  'shtml' => 'text/html',
+		  'txt' => 'text/plain',
+		  'text' => 'text/plain',
+		  'log' => 'text/plain',
+		  'rtx' => 'text/richtext',
+		  'rtf' => 'text/rtf',
+		  'xml' => 'text/xml',
+		  'xsl' => 'text/xml',
+		  'mpeg' => 'video/mpeg',
+		  'mpg' => 'video/mpeg',
+		  'mpe' => 'video/mpeg',
+		  'qt' => 'video/quicktime',
+		  'mov' => 'video/quicktime',
+		  'avi' => 'video/x-msvideo',
+		  'movie' => 'video/x-sgi-movie',
+		  'doc' => 'application/msword',
+		  'word' => 'application/msword',
+		  'xl' => 'application/excel',
+		  'eml' => 'message/rfc822'
+		  );
+		  return (!isset($mimetypes[strtolower($ext)])) ? 'application/octet-stream' : $mimetypes[strtolower($ext)] . '; name="' . $name . '"';
+		 */
 	}
 
 	/*	 * ******************************************
@@ -574,7 +574,7 @@ class we_util_Mailer extends Zend_Mail{
 	public function Send(){
 		try{
 			$t = parent::send();
-		}catch(Zend_Exception $e){
+		} catch (Zend_Exception $e){
 			t_e('warning', 'Error while sending mail: ', $e);
 			return false;
 		}
