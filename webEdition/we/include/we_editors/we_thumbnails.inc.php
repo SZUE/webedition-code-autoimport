@@ -30,9 +30,9 @@ $reloadUrl = getServerUrl(true) . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThu
 if(($name = we_base_request::_(we_base_request::STRING, 'newthumbnail')) &&
 	permissionhandler::hasPerm('ADMINISTRATOR')){
 	$DB_WE->query('INSERT INTO ' . THUMBNAILS_TABLE . ' SET Name="' . $DB_WE->escape($name) . '"');
-	$id = $DB_WE->getInsertId();
+	$GLOBALS['id'] = $DB_WE->getInsertId();
 } else {
-	$id = we_base_request::_(we_base_request::INT, 'id', 0);
+	$GLOBALS['id'] = we_base_request::_(we_base_request::INT, 'id', 0);
 }
 
 // Check if we need to delete a thumbnail
