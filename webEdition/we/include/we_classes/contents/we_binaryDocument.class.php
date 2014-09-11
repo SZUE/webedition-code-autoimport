@@ -133,7 +133,7 @@ class we_binaryDocument extends we_document{
 				return false;
 			}
 		}
-		if(!we_base_file::copyFile($file, $this->getRealPath())){
+		if(!we_base_file::makeHardLink($file, $this->getRealPath())){
 			return false;
 		}
 		if($this->isMoved()){
@@ -146,24 +146,12 @@ class we_binaryDocument extends we_document{
 		return true;
 	}
 
-	private function writeFile($to, $old){
-		$is_ok = false;
-		$file = $this->getElement('data');
-		if($file && file_exists($file)){
-			$is_ok = we_base_file::copyFile($file, $to);
-			if($this->isMoved()){
-				we_base_file::delete($old);
-			}
-		}
-		return $is_ok;
-	}
-
 	protected function i_writeSiteDir(){
-		return $this->writeFile($this->getSitePath(), $this->getSitePath(true));
+		//do nothing - remove functionality added
 	}
 
 	protected function i_writeMainDir(){
-		return $this->writeFile($this->getRealPath(), $this->getRealPath(true));
+		//do nothing - remove functionality added
 	}
 
 	/** gets the filesize of the document */
@@ -180,7 +168,7 @@ class we_binaryDocument extends we_document{
 
 		$text = "";
 		$this->resetElements();
-		while((list($k, $v) = $this->nextElement(""))){
+		while((list($k, $v) = $this->nextElement(''))){
 			$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) == "a:") ? unserialize($v["dat"]) : "";
 			if(!is_array($foo)){
 				if(isset($v["type"]) && $v["type"] == "txt"){

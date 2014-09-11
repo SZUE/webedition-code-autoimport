@@ -201,7 +201,7 @@ class we_folder extends we_root{
 				if($this->ID == $pid){
 					return true;
 				}
-				$pid = f('SELECT ParentID FROM ' . $db->escape($this->Table) . '  WHERE ID=' . intval($pid), 'ParentID', $db);
+				$pid = f('SELECT ParentID FROM ' . $db->escape($this->Table) . '  WHERE ID=' . intval($pid), '', $db);
 			}
 		}
 		return false;
