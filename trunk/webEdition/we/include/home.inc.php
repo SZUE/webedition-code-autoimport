@@ -155,8 +155,13 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 				var oChild = oNode.childNodes[i];
 				if (oChild.tagName == 'DIV' && oChild.className == 'le_widget') {
 					var sAttrId = oChild.getAttribute('id');
-					aNodeSet[k] = {'type': gel(sAttrId + '_type').value, 'cls': gel(sAttrId + '_cls').value,
-						'res': gel(sAttrId + '_res').value, 'csv': gel(sAttrId + '_csv').value, 'id': sAttrId}
+					aNodeSet[k] = {
+						'type': gel(sAttrId + '_type').value,
+						'cls': gel(sAttrId + '_cls').value,
+						'res': gel(sAttrId + '_res').value,
+						'csv': gel(sAttrId + '_csv').value,
+						'id': sAttrId
+					}
 					k++;
 				}
 			}
@@ -195,7 +200,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 		reset($d);
 		while((list(, $v) = each($d))){
 			$i++;
-			echo "{'type':'" . $v[0] . "','cls':'" . $v[1] . "','res':" . $v[2] . ",'csv':'" . $v[3] . "'}" . (($i < $count_i) ? "," : "");
+			echo "{'type':'" . $v[0] . "','cls':'" . $v[1] . "','res':'" . $v[2] . "','csv':'" . $v[3] . "'}" . (($i < $count_i) ? "," : ""). "\n";
 		}
 		$j++;
 		echo "]" . (($j < $count_j) ? "," : "") . "\n";
