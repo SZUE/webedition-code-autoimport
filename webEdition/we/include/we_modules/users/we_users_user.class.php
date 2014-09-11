@@ -214,10 +214,10 @@ class we_users_user{
 	private $permissions_defaults = array();
 	// Preferences array
 	private $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', 'force_glossary_action', 'force_glossary_check', 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'cockpit_rss_feed_url', 'editorMode');
-	private $UseSalt = self::SALT_CRYPT;
+
 
 	// Constructor
-	function __construct(){
+	public function __construct(){
 		$GLOBALS['editor_reloaded'] = false;
 
 		$this->Name = 'user_' . md5(uniqid(__FILE__, true));
@@ -225,17 +225,14 @@ class we_users_user{
 		$this->DB_WE = new DB_WE();
 
 		if(defined('OBJECT_TABLE')){
-			$this->workspaces[OBJECT_FILES_TABLE] = array();
-			$this->workspaces_defaults[OBJECT_FILES_TABLE] = array();
+			$this->workspaces[OBJECT_FILES_TABLE] = $this->workspaces_defaults[OBJECT_FILES_TABLE] = array();
 		}
 		if(defined('NEWSLETTER_TABLE')){
-			$this->workspaces[NEWSLETTER_TABLE] = array();
-			$this->workspaces_defaults[NEWSLETTER_TABLE] = array();
+			$this->workspaces[NEWSLETTER_TABLE] = $this->workspaces_defaults[NEWSLETTER_TABLE] = array();
 		}
 
 		if(defined('CUSTOMER_TABLE')){
-			$this->workspaces[CUSTOMER_TABLE] = array();
-			$this->workspaces_defaults[CUSTOMER_TABLE] = array();
+			$this->workspaces[CUSTOMER_TABLE] = $this->workspaces_defaults[CUSTOMER_TABLE] = array();
 		}
 
 		foreach($this->preference_slots as $val){
@@ -431,7 +428,7 @@ class we_users_user{
 					break;
 				case 'weapp':
 					$save_javascript .=
-						$this->rememberPreference(isset($this->Preferences['seem_start_weapp']) ? $this->Preferences['seem_start_weapp'] : '', 'seem_start_weapp') .
+						$this->rememberPreference((isset($this->Preferences['seem_start_weapp']) ? $this->Preferences['seem_start_weapp'] : ''), 'seem_start_weapp') .
 						$this->rememberPreference('weapp', 'seem_start_type') .
 						$this->rememberPreference(0, 'seem_start_file');
 					break;
@@ -686,6 +683,7 @@ class we_users_user{
 			$updt['openFolders_tblTemplates'] = '';
 			$updt['DefaultTemplateID'] = '0';
 		}
+
 		self::writePrefs(intval($this->ID), $this->DB_WE, $updt);
 		$_SESSION["prefs"] = ($_SESSION["prefs"]["userID"] == intval($this->ID) ? self::readPrefs(intval($this->ID), $this->DB_WE) : $_SESSION["prefs"]);
 	}
@@ -802,7 +800,7 @@ _multiEditorreload = true;";
 							$_SESSION['prefs']['seem_start_type'] = 'object';
 							break;
 						case 'weapp':
-							$_SESSION['prefs']['seem_start_weapp'] = we_base_request::_(we_base_request::STRING, 'seem_start_weapp');
+							$_SESSION['prefs']['seem_start_weapp'] = we_base_request::_(we_base_request::STRING, 'seem_start_weapp', '');
 							$_SESSION['prefs']['seem_start_type'] = 'weapp';
 							break;
 						case 'document':
@@ -1103,6 +1101,7 @@ _multiEditorreload = true;";
 					case 'document':
 						$this->setPreference('seem_start_file', we_base_request::_(we_base_request::INT, 'seem_start_document'));
 						$this->setPreference('seem_start_type', 'document');
+						break;
 					default:
 						$this->setPreference('seem_start_file', 0);
 						$this->setPreference('seem_start_type', '0');
@@ -1971,9 +1970,6 @@ function show_seem_chooser(val) {
 				break;
 			case 'weapp':
 				$_seem_start_type = 'weapp';
-				if($this->Preferences['seem_start_file'] != 0){
-
-				}
 				break;
 			// Document
 			case 'document':
@@ -1997,19 +1993,20 @@ function show_seem_chooser(val) {
 		}
 
 		//weapp
+
 		$_start_weapp = new we_html_select(array('name' => 'seem_start_weapp', 'class' => 'weSelect', 'id' => 'seem_start_weapp', 'onchange' => 'top.content.setHot();'));
 		$_tools = we_tool_lookup::getAllTools(true, false);
 		foreach($_tools as $_tool){
-			if(!$_tool['appdisabled'] && isset($this->permissions_slots[$_tool['name']][$_tool['startpermission']]) && $this->permissions_slots[$_tool['name']][$_tool['startpermission']]){
+			if(!$_tool['appdisabled'] && permissionhandler::hasPerm($_tool['startpermission'])){
 				$_start_weapp->addOption($_tool['name'], $_tool['text']);
 			}
 		}
-
 		if($_start_weapp->getOptionNum()){
 			$_start_type->addOption('weapp', g_l('prefs', '[seem_start_type_weapp]'));
 		}
 
 		$_start_type->selectOption($_seem_start_type);
+
 		$_start_weapp->selectOption($this->Preferences['seem_start_weapp']);
 		$weAPPSelector = $_start_weapp->getHtml();
 
