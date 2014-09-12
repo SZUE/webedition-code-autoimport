@@ -52,7 +52,6 @@ function we_isVarNotEmpty($attribs){
 		case 'sessionfield' :
 			return (strlen($_SESSION['webuser'][$match_orig]) > 0);
 		default :
-			$doc = false;
 			switch($docAttr){
 				case 'object' :
 				case 'document' :

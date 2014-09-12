@@ -31,14 +31,17 @@ class we_shop_shipping{
 	var $shipping = array();
 	var $default = false;
 
-	function __construct($id = '', $text = '', $countries, $cartValue, $shipping, $default){
-
+	public function __construct($id, $text, $countries, $cartValue, $shipping, $default){
 		$this->id = $id;
 		$this->text = $text;
 		$this->countries = $countries;
 		$this->cartValue = $cartValue;
 		$this->shipping = $shipping;
 		$this->default = $default;
+	}
+
+	public static function getNewEmptyShipping(){
+		return new self('weShipping_' . md5(uniqid('', true)), g_l('modules_shop', '[new_entry]'), array('Deutschland'), array(10, 20, 100), array(15, 5, 0), 0);
 	}
 
 }
