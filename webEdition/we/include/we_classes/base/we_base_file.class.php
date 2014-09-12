@@ -541,7 +541,7 @@ abstract class we_base_file{
 		if(is_file($link)){
 			unlink($link);
 		}
-		if(link($destination, $link)){
+		if(@link($destination, $link)){
 			return true;
 		}
 		return self::copyFile($destination, $link);
