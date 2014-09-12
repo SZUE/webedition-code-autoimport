@@ -119,7 +119,7 @@ echo we_html_tools::getHtmlTop() .
 
 
 /* * ************ some config  ************** */
-$feldnamen = explode("|", f("SELECT strFelder from " . WE_SHOP_PREFS_TABLE . " WHERE strDateiname = 'shop_pref'", "strFelder", $DB_WE));
+$feldnamen = explode("|", f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
 $waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
 $dbPreisname = "Preis";
 $numberformat = $feldnamen[2];

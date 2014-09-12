@@ -37,7 +37,7 @@ class we_shop_view extends we_modules_view{
 		}
 		// print $yearTrans;
 		/// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', 'strFelder', $this->db));
+		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $this->db));
 		for($i = 0; $i <= 3; $i++){
 			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 		}
@@ -223,7 +223,7 @@ function we_cmd() {
 		$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
 
 		// Get Country and Lanfield Data
-		$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $this->db);
+		$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', '', $this->db);
 		if($strFelder !== ''){
 			$CLFields = unserialize($strFelder);
 		} else {
@@ -234,7 +234,7 @@ function we_cmd() {
 		}
 		$this->CLFields = $CLFields; //imi
 		// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $this->db));
+		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', '', $this->db));
 
 		$waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
 		$dbPreisname = 'price';
@@ -828,7 +828,7 @@ function we_cmd() {
 				function we_cmd() {
 
 					var args = "";
-					var url = "<?php print WE_SHOP_MODULE_DIR . 'edit_shop_properties.php'; ?>?";
+					var url = "<?php echo WE_SHOP_MODULE_DIR . 'edit_shop_properties.php'; ?>?";
 
 					for (var i = 0; i < arguments.length; i++) {
 						url += "we_cmd[" + i + "]=" + escape(arguments[i]);

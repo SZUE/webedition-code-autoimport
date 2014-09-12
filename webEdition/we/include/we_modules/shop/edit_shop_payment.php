@@ -43,7 +43,7 @@ if(($fname = we_base_request::_(we_base_request::STRING, "fieldForname"))){ //	s
 
 
 //	NumberFormat - currency and taxes
-$feldnamen = explode("|", f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname = 'payment_details'"));
+$feldnamen = explode("|", f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='payment_details'"));
 
 for($i = 0; $i <= 18; $i++){
 	$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';

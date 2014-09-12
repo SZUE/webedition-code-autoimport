@@ -183,7 +183,7 @@ function we_make_attribs($attribs, $doNotUse = ''){
 }
 
 //FIXME: remove in 6.5
-/**remove in 6.5
+/* * remove in 6.5
  * @deprecated since version 6.3.7
  * @param type $perm
  * @return type
@@ -201,6 +201,11 @@ function we_getParentIDs($table, $id, &$ids, we_database_base $db = null){
 	}
 }
 
+/**
+ * @deprecated since version 6.3.8
+ * @param type $csv
+ * @return type
+ */
 function makeArrayFromCSV($csv){
 	$csv = trim(str_replace('\\,', '###komma###', $csv), ',');
 
@@ -215,6 +220,13 @@ function makeArrayFromCSV($csv){
 	return $foo;
 }
 
+/**
+ * @deprecated since version 6.3.8
+ * @param type $arr
+ * @param type $prePostKomma
+ * @param type $sep
+ * @return string
+ */
 function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
 	if(!$arr){
 		return '';

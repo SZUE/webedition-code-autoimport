@@ -13,7 +13,7 @@ class we_shop_vatRule{
 	var $conditionalRules;
 	var $defaultValue = 'true';
 
-	function __construct($defaultValue, $stateField, $liableToVat, $notLiableToVat, $conditionalRules, $stateFieldIsISO = '0'){
+	private function __construct($defaultValue, $stateField, $liableToVat, $notLiableToVat, $conditionalRules, $stateFieldIsISO = '0'){
 
 		$this->defaultValue = $defaultValue;
 		$this->stateField = $stateField;
@@ -23,7 +23,7 @@ class we_shop_vatRule{
 		$this->conditionalRules = $conditionalRules;
 	}
 
-	function executeVatRule($customer = false){
+	public function executeVatRule($customer = false){
 		// now check all rules for the vat
 
 		if($customer){
@@ -61,27 +61,25 @@ class we_shop_vatRule{
 	}
 
 	public static function initByRequest(&$req){//FIXME: this is unchecked
-
-		return new we_shop_vatRule(
+		return new self(
 			$req['defaultValue'], $req['stateField'], self::makeArrayFromReq($req['liableToVat']), self::makeArrayFromReq($req['notLiableToVat']), self::makeArrayFromConditionField($req), $req['stateFieldIsISO']
 		);
 	}
 
-	function getShopVatRule(){
+	public static function getShopVatRule(){
 		if(($strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShopVatRule"'))){
 			//FIX old class names
 			return unserialize(strtr($strFelder, array('O:13:"weShopVatRule":' => 'O:15:"we_shop_vatRule":')));
-		} else {
-			return new we_shop_vatRule('true', '', array(), array(), array(
-				array(
-					'states' => array(),
-					'customerField' => '',
-					'condition' => '',
-					'returnValue' => 1
-				)
-				), 0
-			);
 		}
+		return new self('true', '', array(), array(), array(
+			array(
+				'states' => array(),
+				'customerField' => '',
+				'condition' => '',
+				'returnValue' => 1
+			)
+			), 0
+		);
 	}
 
 	private static function makeArrayFromConditionField($req){
@@ -106,7 +104,7 @@ class we_shop_vatRule{
 		$DB_WE = $GLOBALS['DB_WE'];
 
 		if($DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(serialize($this)) . '", strDateiname="weShopVatRule"')){
-			$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $DB_WE);
+			$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', '', $DB_WE);
 			if($strFelder !== ''){
 				$DB_WE->next_record();
 				$CLFields = unserialize($strFelder);
@@ -116,9 +114,8 @@ class we_shop_vatRule{
 			}
 
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 }
