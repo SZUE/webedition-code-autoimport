@@ -38,14 +38,15 @@ abstract class we_history{
 	static function insertIntoHistory(&$object){
 		$db = new DB_WE();
 		$uid = (isset($GLOBALS['we']['Scheduler_active']) ? 0 : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0));
-		$cnt = f('SELECT COUNT(1) FROM ' . HISTORY_TABLE . ' WHERE UID=' . $uid, '', $db);
+		$tab=stripTblPrefix($object->Table);
+		$cnt = f('SELECT COUNT(1) FROM ' . HISTORY_TABLE . ' WHERE DocumentTable="'.$tab.'" AND UID=' . $uid, '', $db);
 		if($cnt > self::MAX){
-			$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE UID=' . $uid . ' ORDER BY ModDate ASC LIMIT ' . ($cnt - self::MAX));
+			$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DocumentTable="'.$tab.'" AND UID=' . $uid . ' ORDER BY ModDate ASC LIMIT ' . ($cnt - self::MAX));
 		}
 
 		$db->query('REPLACE INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'DID' => intval($object->ID),
-				'DocumentTable' => stripTblPrefix($object->Table),
+				'DocumentTable' => $tab,
 				'ContentType' => $object->ContentType,
 				'UserName' => (isset($GLOBALS['we']['Scheduler_active']) ? 'Scheduler' : (isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : (isset($_SESSION['webuser']['Username']) ? $_SESSION['webuser']['Username'] : 'Unknown'))),
 				'UID' => $uid,
