@@ -463,7 +463,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 				'src' => $src
 			);
 
-			$filter = array('filesize', 'type', 'id', 'showcontrol', 'showthumbcontrol', 'thumbnail', 'href', 'longdescid', 'showimage', 'showinputs', 'listviewname', 'parentid', 'startid'); //  dont use these array-entries
+			$filter = array('filesize', 'type', 'id', 'showcontrol', 'showthumbcontrol', 'thumbnail', 'href', 'longdescid', 'showimage', 'showinputs', 'listviewname', 'parentid', 'startid','origwidth','origheight'); //  dont use these array-entries
 
 			if(defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT){
 				$filter[] = 'name';
@@ -497,7 +497,8 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 
 			if(isset($attribs['only'])){
 				return (array_key_exists($attribs['only'], $attribs) ? $attribs[$attribs['only']] : '');
-			} else if(isset($attribs['pathonly']) && $attribs['pathonly']){
+			}
+			if(isset($attribs['pathonly']) && $attribs['pathonly']){
 				return $attribs['src'];
 			}
 
