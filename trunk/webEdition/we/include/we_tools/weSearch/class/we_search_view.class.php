@@ -126,9 +126,9 @@ class we_search_view{
 			case 'tool_weSearch_new_forTemplates' :
 			case 'tool_weSearch_new_forObjects' :
 			case 'tool_weSearch_new_advSearch' :
-			//case 'tool_weSearch_new_group' :
+				//case 'tool_weSearch_new_group' :
 				$this->Model = new we_search_model();
-				$this->Model->setIsFolder(/*$cmd == 'tool_weSearch_new_group' ? 1 :*/ 0);
+				$this->Model->setIsFolder(/* $cmd == 'tool_weSearch_new_group' ? 1 : */ 0);
 				$tab = we_base_request::_(we_base_request::INT, 'tabnr');
 
 				echo we_html_element::jsElement(
@@ -1429,29 +1429,30 @@ function calendarSetup(x){
 			if(is_array($this->Model->search_tables_advSearch)){
 				//tablenames are hardcoded in the tblsearchtool, get the real tablenames if they have a prefix
 				foreach($this->Model->search_tables_advSearch as $k => $v){
-					if($k == "tblFile"){
-						unset($this->Model->search_tables_advSearch[$k]);
-						$this->Model->search_tables_advSearch[FILE_TABLE] = $v;
-					}
-					if($k == "tblTemplates"){
-						unset($this->Model->search_tables_advSearch[$k]);
-						$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = $v;
-					}
-					if($k == "tblObjectFiles"){
-						if(defined('OBJECT_FILES_TABLE')){
+					switch($k){
+						case "tblFile":
 							unset($this->Model->search_tables_advSearch[$k]);
-							$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = $v;
-						}
-					}
-					if($k == "tblObject"){
-						if(defined('OBJECT_TABLE')){
+							$this->Model->search_tables_advSearch[FILE_TABLE] = $v;
+							break;
+						case "tblTemplates":
 							unset($this->Model->search_tables_advSearch[$k]);
-							$this->Model->search_tables_advSearch[OBJECT_TABLE] = $v;
-						}
-					}
-					if($k == "tblversions"){
-						unset($this->Model->search_tables_advSearch[$k]);
-						$this->Model->search_tables_advSearch[VERSIONS_TABLE] = $v;
+							$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = $v;
+							break;
+						case "tblObjectFiles":
+							if(defined('OBJECT_FILES_TABLE')){
+								unset($this->Model->search_tables_advSearch[$k]);
+								$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = $v;
+							}
+							break;
+						case "tblObject":
+							if(defined('OBJECT_TABLE')){
+								unset($this->Model->search_tables_advSearch[$k]);
+								$this->Model->search_tables_advSearch[OBJECT_TABLE] = $v;
+							}
+							break;
+						case "tblversions":
+							unset($this->Model->search_tables_advSearch[$k]);
+							$this->Model->search_tables_advSearch[VERSIONS_TABLE] = $v;
 					}
 				}
 			}

@@ -1503,42 +1503,27 @@ class we_versions_version{
 		if(!isset($_SESSION["user"]["ID"])){
 			return;
 		}
-		$lastEntry = self::getLastEntry($docID, $docTable, $db);
-
-		$lastEntry['timestamp'] = time();
-		$lastEntry['status'] = "deleted";
+		$lastEntry = array_merge(self::getLastEntry($docID, $docTable, $db), array(
+			'timestamp' => time(),
+			'status' => "deleted",
+			'modifications' => 1,
+			'modifierID' => $_SESSION["user"]["ID"],
+			'IP' => $_SERVER['REMOTE_ADDR'],
+			'Browser' => $_SERVER['HTTP_USER_AGENT'],
+			'active' => 1,
+			'fromScheduler' => $this->IsScheduler(),
+		));
 		$lastEntry['version'] = (isset($lastEntry['version'])) ? $lastEntry['version'] + 1 : 1;
-		$lastEntry['modifications'] = 1;
-		$lastEntry['modifierID'] = $_SESSION["user"]["ID"];
-		$lastEntry['IP'] = $_SERVER['REMOTE_ADDR'];
-		$lastEntry['Browser'] = $_SERVER['HTTP_USER_AGENT'];
-		$lastEntry['active'] = 1;
-		$lastEntry['fromScheduler'] = $this->IsScheduler();
 
-		$keys = array();
-		$vals = array();
-		$db = new DB_WE();
+		unset($lastEntry['ID']);
 
-		foreach($lastEntry as $k => $v){
-			if($k != "ID"){
-				$keys[] = $db->escape($k);
-				$vals[] = '"' . $db->escape($v) . '"';
-			}
-		}
+		//preferences
+		$doDelete = $this->CheckPreferencesCtypes($ct);
 
-		$doDelete = true;
-//preferences
-		if(!$this->CheckPreferencesCtypes($ct)){
-			$doDelete = false;
-		}
-
-		if(defined('VERSIONS_CREATE') && VERSIONS_CREATE){
-			$doDelete = false;
-		}
-
-		if($keys && $vals && $doDelete){
-			$db->query('INSERT INTO ' . VERSIONS_TABLE . ' (' . implode(',', $keys) . ') VALUES(' . implode(',', $vals) . ')');
-			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET active=0 WHERE documentID=' . intval($docID) . " AND documentTable = '" . $db->escape($docTable) . "' AND version!=" . intval($lastEntry['version']));
+		// always write delete versions, if enabled, so ignore VERSIONS_CREATE
+		if($lastEntry && $doDelete){
+			$db->query('INSERT INTO ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter($lastEntry));
+			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET active=0 WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '" AND version!=' . intval($lastEntry['version']));
 		}
 
 		$this->CheckPreferencesTime($docID, $docTable);
