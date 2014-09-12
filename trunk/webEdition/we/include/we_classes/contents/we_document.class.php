@@ -1088,9 +1088,7 @@ class we_document extends we_root{
 					$val = $attribs['id'];
 					break;
 				}
-				$val = $this->getElement($attribs['name'], 'bdid');
-				$val = $val ? $val : $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
-
+				$val = $this->getElement($attribs['name']);
 				break;
 			case 'href':
 				if(!isset($attribs['name'])){

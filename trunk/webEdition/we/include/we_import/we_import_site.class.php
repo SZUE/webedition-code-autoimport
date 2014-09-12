@@ -93,7 +93,7 @@ class we_import_site{
 		}
 
 		$this->sameName = we_base_request::_(we_base_request::RAW, 'sameName', $this->sameName);
-		$this->importMetadata = we_base_request::_(we_base_request::RAW, 'importMetadata', $this->importMetadata);
+		$this->importMetadata = we_base_request::_(we_base_request::BOOL, 'importMetadata', $this->importMetadata);
 		$this->thumbs = ($thumbs = we_base_request::_(we_base_request::RAW, 'thumbs')) !== false ? makeCSVFromArray($thumbs) : $this->thumbs;
 		$this->width = we_base_request::_(we_base_request::INT, 'width', $this->width);
 		$this->height = we_base_request::_(we_base_request::INT, 'height', $this->height);

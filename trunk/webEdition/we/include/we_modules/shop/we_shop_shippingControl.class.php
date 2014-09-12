@@ -23,13 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_shippingControl{
+
 	var $stateField = '';
 	var $isNet = true;
 	var $vatId = 0;
 	var $shippings = array();
 	var $vatRate = 0;
 
-	function __construct($stateField, $isNet, $vatId, $shippings){
+	private function __construct($stateField, $isNet, $vatId, $shippings){
 		$this->stateField = $stateField;
 		$this->isNet = $isNet;
 		$this->vatId = $vatId;
@@ -58,12 +59,11 @@ class we_shop_shippingControl{
 		if(isset($req['weShippingId'])){
 
 			$newShipping = new we_shop_shipping(
-				$req['weShippingId'], $req['weShipping_text'], we_shop_vatRule::makeArrayFromReq($req['weShipping_countries']), $req['weShipping_cartValue'], $req['weShipping_shipping'], ($req['weShipping_default'] == '1' ? 1 : 0)
+					$req['weShippingId'], $req['weShipping_text'], we_shop_vatRule::makeArrayFromReq($req['weShipping_countries']), $req['weShipping_cartValue'], $req['weShipping_shipping'], ($req['weShipping_default'] == '1' ? 1 : 0)
 			);
 			$this->shippings[$req['weShippingId']] = $newShipping;
 
 			if($newShipping->default){
-
 				foreach($this->shippings as $id => &$shipping){
 					if($id != $req['weShippingId']){
 						$shipping->default = 0;
@@ -73,19 +73,13 @@ class we_shop_shippingControl{
 		}
 	}
 
-	function getNewEmptyShipping(){
-		return new we_shop_shipping(
-			'weShipping_' . md5(uniqid('', true)), g_l('modules_shop', '[new_entry]'), array('Deutschland'), array(10, 20, 100), array(15, 5, 0), 0
-		);
-	}
-
 	function save(){
 		$DB_WE = $GLOBALS['DB_WE'];
 
 		return $DB_WE->query('REPLACE INTO ' . WE_SHOP_PREFS_TABLE . ' SET ' .
-				we_database_base::arraySetter(array(
-					'strDateiname' => 'weShippingControl',
-					'strFelder' => serialize($this)
+						we_database_base::arraySetter(array(
+							'strDateiname' => 'weShippingControl',
+							'strFelder' => serialize($this)
 		)));
 	}
 
