@@ -43,7 +43,7 @@ abstract class we_util_Strings{
 
 	/**
 	 * Returns cvs of array values
-	 *
+	 *@deprecated since version 6.3.8
 	 * @param string $arr
 	 * @param string $prePostKomma
 	 * @param string $sep
@@ -73,7 +73,7 @@ abstract class we_util_Strings{
 
 	/**
 	 * Returns an array of cvs values
-	 *
+	 *@deprecated since version 6.3.8
 	 * @param string $csv
 	 * @return array
 	 */

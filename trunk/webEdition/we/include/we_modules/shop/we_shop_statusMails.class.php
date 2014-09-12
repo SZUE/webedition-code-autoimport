@@ -339,7 +339,7 @@ class we_shop_statusMails{
 		$DB_WE = $GLOBALS['DB_WE'];
 
 		if($DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strFelder="' . $DB_WE->escape(serialize($this)) . '",strDateiname="weShopStatusMails"')){
-			$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $DB_WE);
+			$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', '', $DB_WE);
 			if($strFelder !== ''){
 				$CLFields = unserialize($strFelder);
 				$CLFields['languageField'] = $this->LanguageData['languageField'];

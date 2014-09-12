@@ -82,17 +82,17 @@ if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data
 	//	Close window when finished
 	echo we_html_element::jsElement('self.close();');
 	exit;
-} else {
-	$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $DB_WE);
-	if($strFelder !== ''){
-		$CLFields = unserialize($strFelder);
-	} else {
-		$CLFields['stateField'] = '-';
-		$CLFields['stateFieldIsISO'] = 0;
-		$CLFields['languageField'] = '-';
-		$CLFields['languageFieldIsISO'] = 0;
-	}
 }
+$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"');
+if($strFelder !== ''){
+	$CLFields = unserialize($strFelder);
+} else {
+	$CLFields['stateField'] = '-';
+	$CLFields['stateFieldIsISO'] = 0;
+	$CLFields['languageField'] = '-';
+	$CLFields['languageFieldIsISO'] = 0;
+}
+
 
 //	generate html-output table
 $_htmlTable = new we_html_table(array(
@@ -104,7 +104,7 @@ $_htmlTable = new we_html_table(array(
 
 
 //	NumberFormat - currency and taxes
-$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $DB_WE));
+$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"'));
 
 $fe = (isset($feldnamen[3]) ? explode(',', $feldnamen[3]) : array());
 
@@ -167,7 +167,7 @@ foreach($extraIgnore as $cur){
 
 
 //	get the already selected fields ...
-$_entry = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"', 'strFelder', $DB_WE);
+$_entry = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"');
 
 // ...
 if(($fields = @unserialize($_entry))){

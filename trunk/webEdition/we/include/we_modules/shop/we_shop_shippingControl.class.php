@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_shippingControl{
-
 	var $stateField = '';
 	var $isNet = true;
 	var $vatId = 0;
@@ -31,7 +30,6 @@ class we_shop_shippingControl{
 	var $vatRate = 0;
 
 	function __construct($stateField, $isNet, $vatId, $shippings){
-
 		$this->stateField = $stateField;
 		$this->isNet = $isNet;
 		$this->vatId = $vatId;
@@ -40,20 +38,18 @@ class we_shop_shippingControl{
 		$this->vatRate = we_shop_vats::getVatRateForSite($vatId);
 	}
 
-	function getShippingControl(){
+	public static function getShippingControl(){
 		$data = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShippingControl"');
 
 		if($data){
 			$shippingControl = unserialize(strtr($data, array('O:17:"weShippingControl"' => 'O:' . strlen(__CLASS__) . ':"' . __CLASS__ . '"', 'O:10:"weShipping"' => 'O:' . strlen('we_shop_shipping') . ':"we_shop_shipping"')));
 			$shippingControl->vatRate = we_shop_vats::getVatRateForSite($shippingControl->vatId);
 			return $shippingControl;
-		} else {
-			return new we_shop_shippingControl('', 1, 1, array());
 		}
+		return new self('', 1, 1, array());
 	}
 
 	function setByRequest($req){//FIXME: bad this is unchecked
-
 		// this function inits a new entry, also it could change existing items
 		$this->stateField = $req['stateField'];
 		$this->isNet = $req['isNet'];
