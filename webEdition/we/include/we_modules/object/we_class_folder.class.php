@@ -59,7 +59,7 @@ class we_class_folder extends we_folder{
 
 	function we_rewrite(){
 		$this->ClassName = __CLASS__;
-		$this->we_save(0, 1);
+		return $this->we_save(0, 1);
 	}
 
 	function we_initSessDat($sessDat){
