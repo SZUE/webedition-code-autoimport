@@ -724,7 +724,7 @@ class we_document extends we_root{
 	  } */
 
 // reverse function to saveInSession !!!
-	function we_initSessDat($sessDat){
+	public function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			if(

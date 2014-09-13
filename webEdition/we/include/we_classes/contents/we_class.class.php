@@ -69,7 +69,7 @@ abstract class we_class{
 	}
 
 	//Overwrite
-	function we_initSessDat($sessDat){
+	public function we_initSessDat($sessDat){
 
 	}
 

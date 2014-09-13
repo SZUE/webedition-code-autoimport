@@ -59,7 +59,7 @@ class we_messaging_format extends we_class{
 	}
 
 //overwrite abstract method
-	function we_initSessDat($sessDat){
+	public function we_initSessDat($sessDat){
 
 	}
 

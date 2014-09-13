@@ -1932,7 +1932,7 @@ class we_object extends we_document{
 		$this->Templates = makeCSVFromArray($Templates, true);
 	}
 
-	function we_initSessDat($sessDat){
+	public function we_initSessDat($sessDat){
 		//	charset must be in other namespace -> for header !!!
 		$this->setElement('Charset', (isset($sessDat["0"]["SerializedArray"]["elements"]["Charset"]) ? $sessDat["0"]["SerializedArray"]["elements"]["Charset"]["dat"] : ""), 'attrib');
 		parent::we_initSessDat($sessDat);
