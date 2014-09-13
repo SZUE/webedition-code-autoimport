@@ -68,7 +68,7 @@ class we_folder extends we_root{
 		}
 	}
 
-	function we_initSessDat($sessDat){
+	public function we_initSessDat($sessDat){
 		we_root::we_initSessDat($sessDat);
 
 		if($this->Table == FILE_TABLE || $this->Table == OBJECT_FILES_TABLE){
@@ -137,7 +137,7 @@ class we_folder extends we_root{
 		}
 	}
 
-	function initByPath($path, $tblName = FILE_TABLE){
+	public function initByPath($path, $tblName = FILE_TABLE){
 		if(substr($path, -1) == '/'){
 			$path = substr($path, 0, strlen($path) - 1);
 		}
@@ -672,7 +672,7 @@ class we_folder extends we_root{
 	/**
 	 * Beseitigt #Bug 3705: sorgt daf�r, das auch leere Dokumentenordner bei einem REbuild angelegt werden
 	 */
-	function we_rewrite(){
+	public function we_rewrite(){
 		if(parent::we_rewrite()){
 			return ($this->Table == FILE_TABLE ? $this->we_save(1) : true);
 		}

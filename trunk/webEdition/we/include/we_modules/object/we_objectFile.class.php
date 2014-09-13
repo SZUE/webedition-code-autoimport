@@ -2130,7 +2130,7 @@ class we_objectFile extends we_document{
 		parent::i_convertElemFromRequest($type, $v, $k);
 	}
 
-	function we_initSessDat($sessDat){
+	public function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
 		$this->DefArray = $this->getDefaultValueArray();
 		$this->i_objectFileInit();

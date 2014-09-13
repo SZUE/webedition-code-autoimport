@@ -735,7 +735,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return $contents;
 	}
 
-	function we_initSessDat($sessDat){
+	public function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
 		$this->setTemplatePath();
 	}
