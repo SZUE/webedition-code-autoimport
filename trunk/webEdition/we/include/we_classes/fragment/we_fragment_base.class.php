@@ -121,7 +121,8 @@ class we_fragment_base{
 			if($i > 0){
 				$this->currentTask++; // before: currentTask was incremented with $i;
 			}
-			if($this->currentTask == $this->numberOfTasks){
+				if($this->currentTask == $this->numberOfTasks){
+
 				unlink($filename);
 				$this->finish();
 				break;
