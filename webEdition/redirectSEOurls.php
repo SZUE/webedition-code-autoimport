@@ -51,15 +51,15 @@ $prefix = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE urlMap="' . $DB_WE->escap
 
 $path_parts = array();
 if(isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL'] != ''){
-	$path_parts = pathinfo($prefix . $_SERVER['SCRIPT_URL']);
+	$path_parts = pathinfo($prefix . urldecode($_SERVER['SCRIPT_URL']));
 } elseif(isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] && $_SERVER['REDIRECT_URL'] != WEBEDITION_DIR . 'redirectSEOurls.php'){
-	$path_parts = pathinfo($prefix . $_SERVER['REDIRECT_URL']);
+	$path_parts = pathinfo($prefix . urldecode($_SERVER['REDIRECT_URL']));
 } elseif(isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI']){
 	if(strpos($_SERVER['REQUEST_URI'], '?') !== false){
-		$zw2 = explode('?', $_SERVER['REQUEST_URI']);
+		$zw2 = explode('?', urldecode($_SERVER['REQUEST_URI']));
 		$path_parts = pathinfo($prefix . $zw2[0]);
 	} else {
-		$path_parts = pathinfo($prefix . $_SERVER['REQUEST_URI']);
+		$path_parts = pathinfo($prefix . urldecode($_SERVER['REQUEST_URI']));
 	}
 }
 
@@ -67,8 +67,7 @@ if((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 	return;
 }
 $db = $GLOBALS['DB_WE'];
-$displayid = 0;
-$objectid = 0;
+$displayid = $objectid = 0;
 $searchfor = '';
 $notfound = true;
 

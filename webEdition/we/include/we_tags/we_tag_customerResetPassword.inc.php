@@ -67,7 +67,7 @@ function we_tag_customerResetPassword(array $attribs){
 		return;
 	}
 //cleanup table
-	$GLOBALS['DB_WE']->query('DELETE FROM ' . PWDRESET_TABLE . ' WHERE expires < NOW()');
+	$GLOBALS['DB_WE']->query('DELETE FROM ' . PWDRESET_TABLE . ' WHERE expires<NOW()');
 
 	$required = array_unique(explode(',', weTag_getAttribute('required', $attribs)));
 	$loadFields = array_unique(explode(',', weTag_getAttribute('loadFields', $attribs)));
@@ -115,7 +115,7 @@ function we_tag_customerResetPassword(array $attribs){
 			break;
 		case 'resetFromMail':
 			//if optional required field is given, check them
-			if($required && !checkRequired($required, $loadFields)){
+			if($required[0] !== '' && !checkRequired($required, $loadFields)){
 				return;
 			}
 			$user = we_base_request::_(we_base_request::INT, 'user');
