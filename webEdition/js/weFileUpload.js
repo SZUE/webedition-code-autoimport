@@ -1156,8 +1156,10 @@ var weFileUpload = (function(){
 					this.setInternalProgress(100, index);
 					document.images[_.fieldName + '_progress_image_' + index].src = "/webEdition/images/fileUpload/balken_gr.gif";
 				} else {
-					document.images["alert_img_" + index].style.visibility  = "visible ";
-					document.images["alert_img_" + index].title = txt;
+					if(typeof document.images["alert_img_" + index] !== 'undefined'){
+						document.images["alert_img_" + index].style.visibility = "visible ";
+						document.images["alert_img_" + index].title = txt;
+					}
 					document.images[_.fieldName + '_progress_image_' + index].src = "/webEdition/images/fileUpload/balken_red.gif";
 				}
 			};
