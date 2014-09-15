@@ -1258,7 +1258,7 @@ class we_versions_version{
 								switch($val){
 									case 'documentElements':
 //TODO: imi: check if we need next-level information from nested arrays
-										if(!empty($document["elements"])){
+										if($document["elements"]){
 											$newData = $document["elements"];
 											foreach($newData as $k => $vl){
 												if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
