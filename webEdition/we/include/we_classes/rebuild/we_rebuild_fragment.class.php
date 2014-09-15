@@ -24,7 +24,7 @@
  */
 class we_rebuild_fragment extends we_fragment_base{
 
-	function __construct($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = ""){
+	public function __construct($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = ""){
 		parent::__construct($name, $taskPerFragment, $pause, $bodyAttributes, $initdata);
 	}
 
@@ -35,14 +35,14 @@ class we_rebuild_fragment extends we_fragment_base{
 
 	function updateProgressBar(){
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
-		print we_html_element::jsElement('if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(we_util_Strings::shortenPath($this->data["path"], 33)) . '" : "' . g_l('rebuild', "[savingDocument]") . addslashes(we_util_Strings::shortenPath($this->data["path"], 60)) . '") );parent.wizbusy.setProgress(' . $percent . ');');
+		echo we_html_element::jsElement('if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(we_util_Strings::shortenPath($this->data["path"], 33)) . '" : "' . g_l('rebuild', "[savingDocument]") . addslashes(we_util_Strings::shortenPath($this->data["path"], 60)) . '") );parent.wizbusy.setProgress(' . $percent . ');');
 		flush();
 	}
 
 	function finish(){
 		$responseText = we_base_request::_(we_base_request::STRING, 'responseText','');
 
-		print we_html_element::jsElement(we_message_reporting::getShowMessageCall(addslashes($responseText ? $responseText : g_l('rebuild', "[finished]")), we_message_reporting::WE_MESSAGE_NOTICE) . '
+		echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(addslashes($responseText ? $responseText : g_l('rebuild', "[finished]")), we_message_reporting::WE_MESSAGE_NOTICE) . '
 			top.close();');
 	}
 
