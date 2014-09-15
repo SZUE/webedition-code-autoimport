@@ -97,6 +97,7 @@ class we_fragment_base{
 		if($initdata){
 			$this->initdata = $initdata;
 		}
+		//FIXME: make this DB entries; create method for early creation, since the whole data might be too much for memory!
 		$filename = WE_FRAGMENT_PATH . $this->name;
 		$this->currentTask = we_base_request::_(we_base_request::INT, "fr_" . $this->name . "_ct", 0);
 		if(file_exists($filename) && $this->currentTask){
