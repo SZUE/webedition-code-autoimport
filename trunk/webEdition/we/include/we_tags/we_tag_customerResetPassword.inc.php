@@ -67,7 +67,7 @@ function we_tag_customerResetPassword(array $attribs){
 		return;
 	}
 //cleanup table
-	$GLOBALS['DB_WE']->query('DELETE FROM ' . PWDRESET_TABLE . ' WHERE expires<NOW');
+	$GLOBALS['DB_WE']->query('DELETE FROM ' . PWDRESET_TABLE . ' WHERE expires < NOW()');
 
 	$required = array_unique(explode(',', weTag_getAttribute('required', $attribs)));
 	$loadFields = array_unique(explode(',', weTag_getAttribute('loadFields', $attribs)));
