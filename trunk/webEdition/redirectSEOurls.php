@@ -47,18 +47,19 @@ if(NAVIGATION_DIRECTORYINDEX_NAMES && ( NAVIGATION_DIRECTORYINDEX_HIDE || WYSIWY
 	$dirindexarray = array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES));
 	$hiddendirindex = true;
 }
+$prefix = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE urlMap="' . $DB_WE->escape($_SERVER["HTTP_HOST"]) . '"');
 
 $path_parts = array();
 if(isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL'] != ''){
-	$path_parts = pathinfo($_SERVER['SCRIPT_URL']);
+	$path_parts = pathinfo($prefix . $_SERVER['SCRIPT_URL']);
 } elseif(isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] && $_SERVER['REDIRECT_URL'] != WEBEDITION_DIR . 'redirectSEOurls.php'){
-	$path_parts = pathinfo($_SERVER['REDIRECT_URL']);
+	$path_parts = pathinfo($prefix . $_SERVER['REDIRECT_URL']);
 } elseif(isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI']){
 	if(strpos($_SERVER['REQUEST_URI'], '?') !== false){
 		$zw2 = explode('?', $_SERVER['REQUEST_URI']);
-		$path_parts = pathinfo($zw2[0]);
+		$path_parts = pathinfo($prefix . $zw2[0]);
 	} else {
-		$path_parts = pathinfo($_SERVER['REQUEST_URI']);
+		$path_parts = pathinfo($prefix . $_SERVER['REQUEST_URI']);
 	}
 }
 
@@ -140,13 +141,13 @@ if(!$notfound){
 	$_SERVER['SCRIPT_NAME'] = $display;
 	we_html_tools::setHttpCode(200);
 
-	include($_SERVER['DOCUMENT_ROOT'] . $display);
+	include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $display);
 
 	exit;
 } elseif($error404doc){
 	we_html_tools::setHttpCode(SUPPRESS404CODE ? 200 : 404);
 	if(($doc = id_to_path($error404doc, FILE_TABLE))){
-		include($_SERVER['DOCUMENT_ROOT'] . $doc);
+		include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $doc);
 	}
 	exit;
 }
