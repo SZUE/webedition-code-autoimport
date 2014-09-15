@@ -108,7 +108,7 @@ function we_tag_customerResetPassword(array $attribs){
 					'UserTable' => 'tblWebUser',
 					'password' => $pwd ? we_customer_customer::cryptPassword($pwd) : '',
 					'expires' => sql_function('NOW()+ INTERVAL ' . intval(weTag_getAttribute('expireToken', $attribs, 3600)) . ' SECOND'),
-					'token' => $_SESSION['webuser']['token']
+					'token' => $_SESSION['webuser']['WE_token']
 			)));
 			$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_ALL_OK;
 
