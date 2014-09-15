@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -53,7 +52,7 @@ abstract class we_rebuild_wizard{
 		$WE_PB->addText("", 0, "pb1");
 		$pb = $WE_PB->getHTML();
 
-		$js = $WE_PB->getJSCode().
+		$js = $WE_PB->getJSCode() .
 			we_html_element::jsElement(
 				'function showRefreshButton() {
 				  prevBut = document.getElementById("prev");
@@ -287,7 +286,7 @@ abstract class we_rebuild_wizard{
 
 		$metaFieldsHidden = "";
 		foreach($metaFields as $_key => $_val){
-			$metaFieldsHidden .= we_html_element::htmlHidden(array("name" => '_field['.$_key.']', "value" => $_val));
+			$metaFieldsHidden .= we_html_element::htmlHidden(array("name" => '_field[' . $_key . ']', "value" => $_val));
 		}
 
 		return array($js, we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('rebuild', "[rebuild]")) .
@@ -388,7 +387,28 @@ abstract class we_rebuild_wizard{
 			}
 			return array($js . we_message_reporting::getShowMessageCall(g_l('rebuild', '[nothing_to_rebuild]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.wizbusy.showPrevNextButton();', "");
 		}
-		$fr = new we_rebuild_fragment($taskname, 5, 0, array());
+		switch(we_base_request::_(we_base_request::STRING, "type", "rebuild_documents")){
+			case 'rebuild_documents':
+			case 'rebuild_thumbnails':
+				$count = 4;
+				break;
+			case 'rebuild_index':
+				$count = 8;
+				break;
+			case 'rebuild_objects':
+				$count = 10;
+				break;
+			case 'rebuild_navigation':
+				if(we_base_request::_(we_base_request::BOOL, 'rebuildStaticAfterNavi')){//static documents consume more time, we have to be patient
+					$count = 4;
+					break;
+				}
+			case 'rebuild_metadata':
+				$count = 15;
+				break;
+		}
+
+		$fr = new we_rebuild_fragment($taskname, $count, 0, array());
 
 		return array();
 	}
