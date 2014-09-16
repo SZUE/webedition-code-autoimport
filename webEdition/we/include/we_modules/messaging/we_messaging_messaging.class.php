@@ -168,10 +168,11 @@ class we_messaging_messaging extends we_class{
 	function update_last_id(){
 		$this->last_id = -1;
 
-		foreach($this->selected_set as $elem)
+		foreach($this->selected_set as $elem){
 			if($elem['ID'] > $this->last_id){
 				$this->last_id = $elem['ID'];
 			}
+		}
 	}
 
 	function poll_for_new(){
@@ -333,10 +334,11 @@ class we_messaging_messaging extends we_class{
 	}
 
 	function delete_items(){
+		$s_hash = array();
 		foreach($this->ids_selected as $id){
 			$offset = self::array_ksearch('ID', $id, $this->selected_set);
 			$cn = $this->selected_set[$offset]['hdrs']['ClassName'];
-			if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
+			if(isset($s_hash[$cn])){
 				$s_hash[$cn][] = array('ID' => $id, 'hdrs' => $this->selected_set[$offset]['int_hdrs']);
 			} else {
 				$s_hash[$cn] = array(array('ID' => $id, 'hdrs' => $this->selected_set[$offset]['int_hdrs']));
@@ -345,16 +347,18 @@ class we_messaging_messaging extends we_class{
 
 		foreach($s_hash as $cn => $val){
 			$kvals = self::array_get_kvals('hdrs', $val);
-			$di = $this->used_msgobjs[$cn]->delete_items($kvals);
-			if($di == 1){
-				$ids = self::array_get_kvals('ID', $val);
-				foreach($ids as $id){
-					array_splice($this->selected_set, self::array_ksearch('ID', $id, $this->selected_set), 1);
-					$this->update_last_id();
+			if(is_object($this->used_msgobjs[$cn])){
+				$di = $this->used_msgobjs[$cn]->delete_items($kvals);
+				if($di == 1){
+					$ids = self::array_get_kvals('ID', $val);
+					foreach($ids as $id){
+						array_splice($this->selected_set, self::array_ksearch('ID', $id, $this->selected_set), 1);
+						$this->update_last_id();
+					}
+					continue;
 				}
-			} else {
-				echo 'Couldn\'t delete Message ID = ' . $val['ID'] . '<br/>';
 			}
+			echo 'Couldn\'t delete Message ID = ' . $val['ID'] . '<br/>';
 		}
 	}
 
@@ -571,7 +575,7 @@ class we_messaging_messaging extends we_class{
 	}
 
 	function sort_set(){
-		if(!empty($this->selected_set)){
+		if($this->selected_set){
 			if(($this->last_sortfield != $this->sortfield) || $this->sortorder != 'desc'){
 				usort($this->selected_set, array($this, 'cmp_desc'));
 				$this->sortorder = 'desc';
@@ -669,7 +673,6 @@ class we_messaging_messaging extends we_class{
 		} else {
 			$this->selected_set = array();
 			$this->last_id = -1;
-			$search_cond = array();
 
 			if($id != ''){
 				$this->cont_from_folder = 1;
@@ -742,7 +745,7 @@ class we_messaging_messaging extends we_class{
 			if(self::array_ksearch('ID', $id, $this->selected_set) != "-1"){
 				$m = $this->selected_set[self::array_ksearch('ID', $id, $this->selected_set)];
 			}
-			if(!empty($m)){
+			if($m){
 				$arr = array($m['int_hdrs']);
 				$this->selected_message = array_pop($this->used_msgobjs[$m['hdrs']['ClassName']]->retrieve_items($arr));
 			}

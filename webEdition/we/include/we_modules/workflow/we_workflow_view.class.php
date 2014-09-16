@@ -112,9 +112,6 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 			$GLOBALS['mod'] = 'workflow';
 			ob_start();
 			include(WE_MODULES_PATH . 'home.inc.php');
-			return ob_get_clean();
-
-			return $out;
 		}
 		$content = '<form name="we_form" onsubmit="return false">' .
 			$this->getHiddens();
@@ -1435,7 +1432,7 @@ function checkData(){
 		</table>';
 	}
 
-	static function getLogForDocument($docID, $type = 0){
+	static function getLogForDocument($docID, $type = 0){//type is an string-array
 		$db = new DB_WE();
 
 		$content = array();
@@ -1451,8 +1448,7 @@ function checkData(){
 		$counter = 0;
 
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
-		$art = we_base_request::_(we_base_request::RAW, 'art', '');
-		$type = we_base_request::_(we_base_request::RAW, 'type', '');
+		$art = we_base_request::_(we_base_request::INT, 'art', '');
 		$numRows = we_workflow_log::NUMBER_LOGS;
 		$anz = $GLOBALS['ANZ_LOGS'];
 

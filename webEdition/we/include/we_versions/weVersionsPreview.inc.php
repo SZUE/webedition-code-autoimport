@@ -280,7 +280,7 @@ if($newDocElements){
 			continue;
 		}
 
-		$newVal = ($k == (defined(WE_SHOP_VARIANTS_ELEMENT_NAME) ? WE_SHOP_VARIANTS_ELEMENT_NAME : 'weInternVariantElement') ?
+		$newVal = ($k == (defined('WE_SHOP_VARIANTS_ELEMENT_NAME') ? WE_SHOP_VARIANTS_ELEMENT_NAME : 'weInternVariantElement') ?
 				we_versions_version::showValue($k, $newDocElements[$k]['dat']) :
 				(isset($v['dat']) && $v['dat'] != "" ? $v['dat'] : we_html_tools::getPixel(1, 1))
 			);
