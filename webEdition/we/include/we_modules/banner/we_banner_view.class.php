@@ -83,9 +83,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 			ob_start();
 
 			include(WE_MODULES_PATH . 'home.inc.php');
-			$out = ob_get_contents();
-			ob_end_clean();
-			return $out;
+			return ob_get_clean();
 		}
 		$out = STYLESHEET . $this->getJSProperty() . weSuggest::getYuiJsFiles() . '
 				</head>

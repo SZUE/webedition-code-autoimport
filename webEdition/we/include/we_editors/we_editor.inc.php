@@ -285,8 +285,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 	include((substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT']) ?
 			'' : WE_INCLUDES_PATH) .
 		$we_include);
-	$contents = ob_get_contents();
-	ob_end_clean();
+	$contents = ob_get_clean();
 	//usedElementNames is set after include
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 //  SEEM the file
@@ -316,8 +315,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 	ob_start();
 	//FIXME:eval
 	eval('?>' . str_replace('<?xml', '<?php print \'<?xml\'; ?>', $contents));
-	$contents = ob_get_contents();
-	ob_end_clean();
+	$contents = ob_get_clean();
 //
 // --> Glossary Replacement
 //
@@ -681,8 +679,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 					we_html_tools::headerCtCharset('text/html', $charset);
 				}
 				include($we_include);
-				$contents = ob_get_contents();
-				ob_end_clean();
+				$contents = ob_get_clean();
 
 //  SEEM the file
 //  but only, if we are not in the template-editor

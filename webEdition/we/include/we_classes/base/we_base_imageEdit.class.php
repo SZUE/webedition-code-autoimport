@@ -57,10 +57,7 @@ abstract class we_base_imageEdit{
 			phpinfo();
 
 			// Read output of the function phpinfo()
-			$_returned_phpinfo = ob_get_contents();
-
-			// Clean output buffer
-			ob_end_clean();
+			$_returned_phpinfo = ob_get_clean();
 
 			// Fill informations of PHP
 			$_phpinfo = explode("\n", $_returned_phpinfo);

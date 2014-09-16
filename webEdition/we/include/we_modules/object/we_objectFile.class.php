@@ -2774,8 +2774,7 @@ class we_objectFile extends we_document{
 		$we_include = $includepath ? $includepath : $GLOBALS['we_doc']->TemplatePath;
 		ob_start();
 		include($we_include);
-		$contents = ob_get_contents();
-		ob_end_clean();
+		$contents = ob_get_clean();
 		if(isset($backupdoc)){
 			$GLOBALS['we_doc'] = $backupdoc;
 		}

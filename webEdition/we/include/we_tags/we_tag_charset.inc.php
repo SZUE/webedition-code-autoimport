@@ -24,8 +24,16 @@
  */
 function we_tag_charset($attribs, $content){
 	$content = isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : $content;
+	if($GLOBALS['we_editmode']){
+		//set meta data & exit
+		$GLOBALS['meta']['Charset'] = array(
+			'default' => $content,
+			'defined' => weTag_getAttribute('defined', $attribs),
+		);
+		return;
+	}
 
-	if(!empty($content)){ //	set charset
+	if($content){ //	set charset
 		$attribs['http-equiv'] = 'Content-Type';
 		$attribs['content'] = 'text/html; charset=' . $content;
 

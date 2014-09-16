@@ -111,8 +111,8 @@ if(($we_include = $we_doc->editor())){
 		}
 		include($we_include);
 		if($useBuffer){
-			$content = ob_get_contents();
-			ob_end_clean();
+			$content = ob_get_clean();
+
 			if($useGlossary){
 				$content = we_glossary_replace::replace($content, $GLOBALS['we_doc']->Language);
 			}

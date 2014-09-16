@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_select($attribs, $content){
-	return '<?php if($GLOBALS[\'we_editmode\']){ ob_start();?>' . $content . '<?php $we_select_content=ob_get_contents();ob_end_clean();}else{$we_select_content=\'\';}'
+	return '<?php if($GLOBALS[\'we_editmode\']){ ob_start();?>' . $content . '<?php $we_select_content=ob_get_clean();}else{$we_select_content=\'\';}'
 		. 'printElement(' . we_tag_tagParser::printTag('select', $attribs, '$we_select_content') . ');?>';
 }
 

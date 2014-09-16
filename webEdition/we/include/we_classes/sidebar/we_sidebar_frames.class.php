@@ -109,8 +109,7 @@ class we_sidebar_frames{
 		ob_start();
 		include($_SERVER['DOCUMENT_ROOT'] . $file);
 
-		$SrcCode = ob_get_contents();
-		ob_end_clean();
+		$SrcCode = ob_get_clean();
 
 		echo we_SEEM::parseDocument($SrcCode);
 

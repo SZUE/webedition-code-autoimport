@@ -132,13 +132,11 @@ class we_voting_frames extends we_modules_frame{
 			$GLOBALS["mod"] = "voting";
 			ob_start();
 			include(WE_MODULES_PATH . 'home.inc.php');
-			$out = ob_get_contents();
-			ob_end_clean();
 			return
 				we_html_element::jsElement('
 			' . $this->topFrame . '.editor.edheader.location = "' . $this->frameset . '?pnt=edheader&home=1";
 			' . $this->topFrame . '.editor.edfooter.location = "' . $this->frameset . '?pnt=edfooter&home=1";
-			') . $out;
+			') . ob_get_clean();
 		}
 
 		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;setMultiEdits();", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "return false"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()));

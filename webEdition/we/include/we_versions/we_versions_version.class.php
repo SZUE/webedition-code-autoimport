@@ -1461,8 +1461,7 @@ class we_versions_version{
 
 				ob_start();
 				@include($includepath);
-				$contents = ob_get_contents();
-				ob_end_clean();
+				$contents = ob_get_clean();
 			}
 		} else {
 			ob_start();
@@ -1476,8 +1475,7 @@ class we_versions_version{
 			$_REQUEST['we_cmd'][1] = $we_doc->ID;
 			$FROM_WE_SHOW_DOC = true;
 			include(WE_INCLUDES_PATH . 'we_showDocument.inc.php');
-			$contents = ob_get_contents();
-			ob_end_clean();
+			$contents = ob_get_clean();
 		}
 
 		$GLOBALS['we_doc'] = $docBackup;
