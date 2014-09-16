@@ -114,13 +114,13 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_CONTENT;
 		break;
 	case 'users_add_owner':
-		$we_doc->add_owner(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
+		$we_doc->add_owner(we_base_request::_(we_base_request::INTLIST, 'we_cmd', 0, 1));
 		break;
 	case 'users_del_owner':
 		$we_doc->del_owner(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 		break;
 	case 'users_add_user':
-		$we_doc->add_user(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
+		$we_doc->add_user(we_base_request::_(we_base_request::INTLIST, 'we_cmd', 0, 1));
 		break;
 	case 'users_del_user':
 		$we_doc->del_user(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
