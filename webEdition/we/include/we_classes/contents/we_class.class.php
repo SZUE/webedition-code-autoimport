@@ -488,9 +488,9 @@ abstract class we_class{
 							}
 						}
 						if($deleteIt){
-							$DB_WE2->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE LDID = ' . $this->DB_WE->Record['LDID'] . ' AND DID = ' . $this->DB_WE->Record['DID'] . ' AND IsFolder = 1');
+							$DB_WE2->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE LDID=' . $this->DB_WE->Record['LDID'] . ' AND DID = ' . $this->DB_WE->Record['DID'] . ' AND IsFolder = 1');
 						} else {
-							$DB_WE2->query('UPDATE ' . LANGLINK_TABLE . ' SET LOCALE="' . $DB_WE2->escape($newLang) . '" WHERE LDID = ' . $this->DB_WE->Record['LDID'] . ' AND DID=' . $this->DB_WE->Record['DID'] . ' AND IsFolder = 1');
+							$DB_WE2->query('UPDATE ' . LANGLINK_TABLE . ' SET LOCALE="' . $DB_WE2->escape($newLang) . '" WHERE LDID = ' . $this->DB_WE->Record['LDID'] . ' AND DID=' . $this->DB_WE->Record['DID'] . ' AND IsFolder=1');
 						}
 					}
 
@@ -675,7 +675,6 @@ abstract class we_class{
 				}
 
 				if(!$isfolder && $LDID && $LDID != $this->ID){
-					$q = '';
 					if(($ID = f('SELECT ID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='" . $this->DB_WE->escape($type) . "' AND DID=" . intval($LDID) . " AND Locale='" . $this->DB_WE->escape($this->Language) . "' AND IsObject=" . intval($isobject), 'ID', $this->DB_WE))){
 						if($LDID > 0){
 							$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET DID=' . intval($LDID) . ", DLocale='" . $this->DB_WE->escape($locale) . "', LDID=" . intval($this->ID) . ",Locale='" . $this->DB_WE->escape($this->Language) . "' WHERE ID=" . intval($ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
@@ -698,7 +697,7 @@ abstract class we_class{
 				foreach($LangLinkArray as $locale => $LDID){
 					if($LDID > 0){
 						$rows = array();
-						$this->DB_WE->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE  DID=' . intval($this->ID) . "  AND DocumentTable='" . $this->DB_WE->escape($type) . "' AND IsObject=" . intval($isobject));
+						$this->DB_WE->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE  DID=' . intval($this->ID) . " AND DocumentTable='" . $this->DB_WE->escape($type) . "' AND IsObject=" . intval($isobject));
 						while($this->DB_WE->next_record()){
 							$rows[] = $this->DB_WE->Record;
 						}
@@ -720,7 +719,7 @@ abstract class we_class{
 								while($this->DB_WE->next_record()){
 									$ids[] = $this->DB_WE->Record['ID'];
 								}
-								if(!empty($ids)){
+								if($ids){
 									$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET LDID=0 WHERE ID IN(' . implode(',', $ids) . ') AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
 								}
 							}
