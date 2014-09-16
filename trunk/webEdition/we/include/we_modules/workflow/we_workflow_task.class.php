@@ -31,6 +31,7 @@ class we_workflow_task extends we_workflow_base{
 	var $ID = 0;
 	var $stepID = 0;
 	var $userID = 0;
+	var $username='';
 	var $Edit = 0;
 	var $Mail = 0;
 
