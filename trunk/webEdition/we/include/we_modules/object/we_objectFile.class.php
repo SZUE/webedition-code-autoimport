@@ -264,36 +264,31 @@ class we_objectFile extends we_document{
 
 	function formLanguage(){
 		we_loadLanguageConfig();
-
 		$value = (isset($this->Language) ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
-
 		$inputName = 'we_' . $this->Name . '_Language';
-
 		$_languages = getWeFrontendLanguagesForBackend();
 		$this->setRootDirID(true);
 
 		if(LANGLINK_SUPPORT){
-			$htmlzw = '';
+			$htmlzw = we_html_element::htmlBr();
 			foreach($_languages as $langkey => $lang){
 				$LDID = intval(f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND DID=' . intval($this->ID) . ' AND Locale="' . $langkey . '"', '', $this->DB_WE));
 				$divname = 'we_' . $this->Name . '_LanguageDocDiv[' . $langkey . ']';
 				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formLanguageDocument($lang, $langkey, $LDID, $this->Table, $this->rootDirID) . '</div>';
 				$langkeys[] = $langkey;
 			}
-
-			return '<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
-				<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
-				<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
-			</table>' .
-				we_html_element::htmlBr() . $htmlzw;
 		} else {
-			return '<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
-			</table>';
+			$htmlzw = '';
 		}
+
+		return '<table border="0" cellpadding="0" cellspacing="0">
+				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>' .
+			(LANGLINK_SUPPORT ?
+				'<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
+					<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>' :
+				'') .
+			'</table>' . $htmlzw;
 	}
 
 	function copyDoc($id){
