@@ -366,9 +366,13 @@ class we_webEditionDocument extends we_textContentDocument{
 	 */
 	function formMetaInfos(){
 		//	Collect data from meta-tags
-		$_code = $this->getTemplateCode();
-
-		we_tag_tagParser::getMetaTags($_code);
+		//will evaluate the tags => we get meta data set
+		$oldEdit = $this->EditPageNr;//FIXME: cache data
+		$this->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
+		ob_start();
+		include($this->editor());
+		ob_end_clean();
+		$this->EditPageNr = $oldEdit;
 
 		//	if a meta-tag is set all information are in array $GLOBALS["meta"]
 		return '
@@ -405,7 +409,6 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			//	This is the input field for the charset
 			$inputName = 'we_' . $this->Name . "_attrib[$name]";
-
 			$chars = explode(',', $GLOBALS['meta']['Charset']['defined']);
 
 			//	input field - check value
@@ -719,8 +722,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		if(is_file($we_include)){
 			ob_start();
 			include($we_include);
-			$contents = ob_get_contents();
-			ob_end_clean();
+			$contents = ob_get_clean();
 		} else {
 			t_e('File ' . $we_include . ' not found!');
 			$contents = '';

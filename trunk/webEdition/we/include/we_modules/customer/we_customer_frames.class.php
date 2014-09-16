@@ -199,9 +199,7 @@ top.content.hloaded = 1;');
 			$GLOBALS['mod'] = 'customer';
 			ob_start();
 			include(WE_MODULES_PATH . 'home.inc.php');
-			$out = ob_get_contents();
-			ob_end_clean();
-			return $out;
+			return ob_get_clean();
 		}
 
 		$branch = we_base_request::_(we_base_request::STRING, 'branch', g_l('modules_customer', '[common]'));

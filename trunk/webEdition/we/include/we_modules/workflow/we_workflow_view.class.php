@@ -112,8 +112,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 			$GLOBALS['mod'] = 'workflow';
 			ob_start();
 			include(WE_MODULES_PATH . 'home.inc.php');
-			$out = ob_get_contents();
-			ob_end_clean();
+			return ob_get_clean();
 
 			return $out;
 		}

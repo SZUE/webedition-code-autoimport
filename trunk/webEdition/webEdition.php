@@ -458,11 +458,9 @@ if(($_jsincludes = we_tool_lookup::getJsCmdInclude())){
 		include($_jsinclude);
 	}
 }
-$modSwitch = str_replace(explode("\n", we_html_element::jsElement()), '', ob_get_contents());
-ob_end_clean();
+$modSwitch = str_replace(explode("\n", we_html_element::jsElement()), '', ob_get_clean());
 
-echo $modSwitch . '// deal with not activated modules
-';
+echo $modSwitch ; // deal with not activated modules
 
 foreach(array_diff(array_keys(we_base_moduleInfo::getAllModules()), $GLOBALS['_we_active_integrated_modules']) as $m){
 	echo 'case "' . $m . '_edit_ifthere":

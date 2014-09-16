@@ -250,8 +250,7 @@ class we_navigation_item{
 		ob_start();
 		//FIXME:eval
 		eval('?>' . $weNavigationItems->getTemplate($this));
-		$executeContent = ob_get_contents();
-		ob_end_clean();
+		$executeContent = ob_get_clean();
 
 		array_pop($GLOBALS['weNavigationItemArray']);
 

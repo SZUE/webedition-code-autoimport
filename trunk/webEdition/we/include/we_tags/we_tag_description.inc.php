@@ -34,9 +34,15 @@ function we_tag_description($attribs, $content){
 		ob_start();
 		//FIXME:eval
 		eval('?>' . $content);
-		$descr = ob_get_contents();
-		ob_end_clean();
+		$descr = ob_get_clean();
 	}
+
+	if($GLOBALS['we_editmode']){
+		//set meta data & exit
+		$GLOBALS['meta']['Description']['default'] = $descr;
+		return;
+	}
+
 	$attribs["name"] = "description";
 	$descr = $htmlspecialchars ? oldHtmlspecialchars(strip_tags($descr)) : strip_tags($descr);
 	$attribs["content"] = $max ? cutText($descr, $max, true) : $descr;
