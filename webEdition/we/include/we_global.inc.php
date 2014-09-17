@@ -816,15 +816,12 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 		$_xmlClose = true;
 
 		if(XHTML_DEBUG){ //  check if XHTML_DEBUG is activated - system pref
-			require_once (WE_INCLUDES_PATH . 'validation/xhtml.inc.php');
-
-			$showWrong = (isset($_SESSION['prefs']['xhtml_show_wrong']) && $_SESSION['prefs']['xhtml_show_wrong'] && isset(
-					$GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
+			$showWrong = (isset($_SESSION['prefs']['xhtml_show_wrong']) && $_SESSION['prefs']['xhtml_show_wrong'] && isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
 // at the moment only transitional is supported
 			$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional');
 			$attribs = removeAttribs($attribs, $removeAttribs);
 
-			validateXhtmlAttribs($element, $attribs, $xhtmlType, $showWrong, XHTML_REMOVE_WRONG);
+			validation::validateXhtmlAttribs($element, $attribs, $xhtmlType, $showWrong, XHTML_REMOVE_WRONG);
 		} else {
 			$attribs = removeAttribs($attribs, $removeAttribs);
 		}
