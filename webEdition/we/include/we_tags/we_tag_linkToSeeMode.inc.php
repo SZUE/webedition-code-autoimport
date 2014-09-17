@@ -30,6 +30,7 @@ function we_tag_linkToSeeMode($attribs){
 
 	$xml = weTag_getAttribute("xml", $attribs);
 
+	return '';//this feature is currently unsupported
 	// check for value attribute
 	if(($foo = attributFehltError($attribs, "value", __FUNCTION__))){
 		return $foo;
@@ -37,20 +38,17 @@ function we_tag_linkToSeeMode($attribs){
 
 	$value = weTag_getAttribute("value", $attribs);
 
-	if(isset($id) && !empty($id)){
+	if(isset($id) && $id){
 
 		$type = 'document';
 	} elseif(isset($GLOBALS['we_obj']) || $oid){ // use object if possible
 		$type = 'object';
 		if($oid){
 			$id = $oid;
-		} else {
-			if(isset($GLOBALS['we_obj'])){
-				$id = $GLOBALS['we_obj']->ID;
-			}
+		} elseif(isset($GLOBALS['we_obj'])){
+			$id = $GLOBALS['we_obj']->ID;
 		}
 	} else {
-
 		$type = 'document';
 		$doc = we_getDocForTag($docAttr, true); // check if we should use the top document or the  included document
 		$id = $doc->ID;

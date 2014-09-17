@@ -198,13 +198,13 @@ if($count >= we_base_constants::LOGIN_FAILED_NR){
 $login = LOGIN_DENIED;
 if(isset($GLOBALS['userLoginDenied'])){
 	$login = LOGIN_DENIED;
-} else if(isset($_SESSION['user']['Username']) && isset($_POST['password']) && isset($_POST['username'])){
+} else if(isset($_SESSION['user']['Username']) && isset($_POST['WE_LOGIN_password']) && isset($_POST['WE_LOGIN_username'])){
 	$login = LOGIN_OK;
 	if(($mode = we_base_request::_(we_base_request::STRING, 'mode'))){
 		setcookie('we_mode', $mode, time() + 2592000); //	Cookie remembers the last selected mode, it will expire in one Month !!!
 	}
 	setcookie('we_popup', we_base_request::_(we_base_request::BOOL, 'popup'), time() + 2592000);
-} else if(isset($_POST['password']) && isset($_POST['username'])){
+} else if(isset($_POST['WE_LOGIN_password']) && isset($_POST['WE_LOGIN_username'])){
 	$login = LOGIN_CREDENTIALS_INVALID;
 } else {
 	$login = LOGIN_UNKNOWN;
@@ -448,7 +448,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 			}
 			break;
 		case LOGIN_CREDENTIALS_INVALID:
-			we_users_user::logLoginFailed('tblUser', we_base_request::_(we_base_request::STRING, 'username'));
+			we_users_user::logLoginFailed('tblUser', we_base_request::_(we_base_request::STRING, 'WE_LOGIN_username'));
 
 			//CHECK FOR FAILED LOGIN ATTEMPTS
 			$cnt = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate > DATE_SUB(NOW(), INTERVAL ' . intval(we_base_constants::LOGIN_FAILED_TIME) . ' MINUTE)');
@@ -472,5 +472,5 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	$_layout = we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'), $_hidden_values . $dialogtable));
 
 	printHeader($login, (isset($httpCode) ? $httpCode : 401));
-	echo we_html_element::htmlBody(array('style' => 'background-color:#386AAB; height:100%;', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.username.focus();document.loginForm.username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
+	echo we_html_element::htmlBody(array('style' => 'background-color:#386AAB; height:100%;', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.WE_LOGIN_username.focus();document.loginForm.WE_LOGIN_username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
 }
