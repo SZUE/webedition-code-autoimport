@@ -29,7 +29,7 @@ echo we_html_tools::getHtmlTop();
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 echo STYLESHEET .
-	we_html_element::jsScript(JS_DIR . 'windows.js');
+ we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 </head>
 <body  class="weEditorBody" onload="checkFooter()" onunload="doUnload()">
@@ -53,8 +53,8 @@ echo STYLESHEET .
 			'space' => 0
 		);
 		echo we_html_multiIconBox::getJS() .
-			we_schedpro::getMainJS($we_doc) .
-			we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
+		we_schedpro::getMainJS($we_doc) .
+		we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
 		?>
 		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>

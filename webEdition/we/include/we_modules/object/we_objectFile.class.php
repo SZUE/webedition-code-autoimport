@@ -554,19 +554,19 @@ class we_objectFile extends we_document{
 			case we_base_constants::WE_EDITPAGE_WORKSPACE:
 				return 'we_templates/we_editor_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_INFO:
-				return 'we_modules/object/we_editor_info_objectFile.inc.php';
+				return 'we_editors/we_editor_info_objectFile.inc.php';
 			case we_base_constants::WE_EDITPAGE_CONTENT:
-				return 'we_modules/object/we_editor_contentobjectFile.inc.php';
+				return 'we_editors/we_editor_contentobjectFile.inc.php';
 			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				return 'we_modules/object/we_object_showDocument.inc.php';
 			case we_base_constants::WE_EDITPAGE_SCHEDULER:
-				return 'we_modules/schedule/we_editor_schedpro.inc.php';
+				return 'we_editors/we_editor_schedpro.inc.php';
 			case we_base_constants::WE_EDITPAGE_VARIANTS:
 				return 'we_templates/we_editor_variants.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
-				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
+				return 'we_editors/editor_weDocumentCustomerFilter.inc.php';
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
-				return 'we_versions/we_editor_versions.inc.php';
+				return 'we_editors/we_editor_versions.inc.php';
 			default:
 				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;

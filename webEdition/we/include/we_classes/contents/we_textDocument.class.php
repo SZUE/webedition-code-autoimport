@@ -59,7 +59,7 @@ class we_textDocument extends we_document{
 			case we_base_constants::WE_EDITPAGE_VALIDATION:
 				return 'we_templates/validateDocument.inc.php';
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
-				return 'we_versions/we_editor_versions.inc.php';
+				return 'we_editors/we_editor_versions.inc.php';
 			default:
 				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;

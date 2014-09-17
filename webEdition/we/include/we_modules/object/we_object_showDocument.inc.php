@@ -41,7 +41,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
  */
 function showContent(){
 	$_previewMode = 1;
-	require_once(WE_OBJECT_MODULE_PATH . 'we_editor_contentobjectFile.inc.php');
+	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_contentobjectFile.inc.php');
 	exit;
 }
 
