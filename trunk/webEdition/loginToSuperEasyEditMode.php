@@ -22,6 +22,12 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+echo '<h1>Sorry, this feature is currently unsupported</h1>';
+exit();
+/*
+
+  */
 // Activate the webEdition error handler
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
 we_error_handler(false);
@@ -34,7 +40,7 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 
 	$_SESSION['weS']['we_set_registered'] = true;
 
-	$_POST["password"] = $_SESSION["webuser"]["Password"];
+	$_POST["WE_LOGIN_password"] = $_SESSION["webuser"]["Password"];
 
 	//	Login
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
