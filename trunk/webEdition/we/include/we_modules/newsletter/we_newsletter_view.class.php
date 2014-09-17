@@ -2426,7 +2426,7 @@ self.close();');
 		$db = new DB_WE();
 		$name = $db->escape($name);
 		$value = $db->escape($value);
-		$db->query('INSERT IGNORE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => $name, pref_value => $value)));
+		$db->query('INSERT IGNORE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => $name, 'pref_value' => $value)));
 	}
 
 	function saveSettings(){
