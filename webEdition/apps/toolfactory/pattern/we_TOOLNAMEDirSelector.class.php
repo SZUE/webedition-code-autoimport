@@ -26,7 +26,7 @@ require_once ($_SERVER['DOCUMENT_ROOT']. '/webEdition/lib/we/core/autoload.inc.p
 
 include_once('conf/define.conf.php');
 
-class we_<?php print $TOOLNAME; ?>DirSelector extends we_dirSelector{
+class we_<?php echo $TOOLNAME; ?>DirSelector extends we_dirSelector{
 
 var $fields = 'ID,ParentID,Text,Path,IsFolder,ContentType';
 
