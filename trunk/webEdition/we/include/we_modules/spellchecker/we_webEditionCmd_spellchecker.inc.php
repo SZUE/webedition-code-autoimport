@@ -23,10 +23,12 @@
  */
 ?>
 <script type="text/javascript"><!--
+	switch (WE_REMOVE) {
 
-	case "spellchecker_edit":
-					case "spellchecker_edit_ifthere":
-					new jsWindow(url, "spellcheckadmin", - 1, - 1, 470, 510, true, false, true, false);
-					break;
-//-->
+		case "spellchecker_edit":
+		case "spellchecker_edit_ifthere":
+			new jsWindow(url, "spellcheckadmin", -1, -1, 470, 510, true, false, true, false);
+			break;
+	}//WE_REMOVE
+	//-->
 </script>

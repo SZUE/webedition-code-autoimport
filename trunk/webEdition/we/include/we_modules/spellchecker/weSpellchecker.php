@@ -134,7 +134,6 @@ if($editname !== false){
 		top:0px;
 		background: white;
 		filter: alpha(opacity=80);
-		KhtmlOpacity: .8;
 		opacity: .8;
 	}
 

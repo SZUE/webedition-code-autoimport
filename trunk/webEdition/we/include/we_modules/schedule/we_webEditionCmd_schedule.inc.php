@@ -23,10 +23,12 @@
  */
 ?>
 <script type="text/javascript"><!--
+	switch (WE_REMOVE) {
 
-	case "edit_schedule":
-					case "schedule_edit_ifthere":
-					new jsWindow(url, "edit_module", -1, -1, 380, 250, true, true, true, true);
-	break;
+		case "edit_schedule":
+		case "schedule_edit_ifthere":
+			new jsWindow(url, "edit_module", -1, -1, 380, 250, true, true, true, true);
+			break;
+	}//WE_REMOVE
 //-->
 </script>
