@@ -53,7 +53,7 @@ echo we_html_tools::getHtmlTop('', $charset, 5);
 if($GLOBALS['we_doc']->CSS){
 	$cssArr = makeArrayFromCSV($GLOBALS['we_doc']->CSS);
 	foreach($cssArr as $cs){
-		print we_html_element::cssLink(id_to_path($cs));
+		echo we_html_element::cssLink(id_to_path($cs));
 	}
 }
 

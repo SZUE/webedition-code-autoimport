@@ -108,7 +108,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 				$GLOBALS["we_editmode"] = true;
 				return 'we_templates/we_editor_variants.inc.php';
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
-				return "we_versions/we_editor_versions.inc.php";
+				return "we_editors/we_editor_versions.inc.php";
 			default:
 				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;

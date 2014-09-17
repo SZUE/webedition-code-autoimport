@@ -73,10 +73,9 @@ class we_binaryDocument extends we_document{
 			case we_base_constants::WE_EDITPAGE_CONTENT:
 				return 'we_templates/we_editor_binaryContent.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
-				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
+				return 'we_editors/editor_weDocumentCustomerFilter.inc.php';
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
-				return 'we_versions/we_editor_versions.inc.php';
-				break;
+				return 'we_editors/we_editor_versions.inc.php';
 			default:
 				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;

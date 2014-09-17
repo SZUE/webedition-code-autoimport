@@ -167,7 +167,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			case we_base_constants::WE_EDITPAGE_VARIANTS:
 				return 'we_templates/we_editor_variants.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
-				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
+				return 'we_editors/editor_weDocumentCustomerFilter.inc.php';
 			default:
 				return parent::editor();
 		}

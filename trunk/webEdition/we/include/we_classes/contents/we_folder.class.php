@@ -431,7 +431,7 @@ class we_folder extends we_root{
 			case we_base_constants::WE_EDITPAGE_INFO:
 				return 'we_templates/we_editor_info.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
-				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
+				return 'we_editors/editor_weDocumentCustomerFilter.inc.php';
 			case we_base_constants::WE_EDITPAGE_DOCLIST:
 				return 'we_doclist/we_editor_doclist.inc.php';
 			default:
