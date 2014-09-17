@@ -171,6 +171,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			default:
 				return parent::editor();
 		}
+
 		return preg_replace('/.tmpl$/i', '.php', $this->TemplatePath); // .tmpl mod
 	}
 
@@ -367,11 +368,14 @@ class we_webEditionDocument extends we_textContentDocument{
 	function formMetaInfos(){
 		//	Collect data from meta-tags
 		//will evaluate the tags => we get meta data set
-		$oldEdit = $this->EditPageNr;//FIXME: cache data
+		$oldEdit = $this->EditPageNr; //FIXME: cache data
 		$this->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
-		ob_start();
-		include($this->editor());
-		ob_end_clean();
+		$include = $this->editor();
+		if($include && $include != WE_INCLUDES_PATH . 'we_templates/' . we_template::NO_TEMPLATE_INC){
+			ob_start();
+			include($include);
+			ob_end_clean();
+		}
 		$this->EditPageNr = $oldEdit;
 
 		//	if a meta-tag is set all information are in array $GLOBALS["meta"]
