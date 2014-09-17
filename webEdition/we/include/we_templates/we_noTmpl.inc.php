@@ -28,10 +28,10 @@ echo we_html_element::htmlDocType();
 	<head>
 		<?php
 		if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
-			print STYLESHEET;
+			echo STYLESHEET;
 		}
 		if($we_doc->getElement('Charset')){
-			print we_html_tools::htmlMetaCtCharset('text/html', $we_doc->getElement('Charset'));
+			echo we_html_tools::htmlMetaCtCharset('text/html', $we_doc->getElement('Charset'));
 		}
 		if($we_doc->getElement('Keywords')){
 			?>
@@ -42,7 +42,7 @@ echo we_html_element::htmlDocType();
 			?>
 			<meta name="description" content="<?php print $we_doc->getElement('Description') ?>">
 		<?php } ?>
-		<title><?php print $we_doc->getElement('Title') ?></title>
+		<title><?php echo $we_doc->getElement('Title') ?></title>
 		<?php
 		if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 			echo we_html_element::jsScript(JS_DIR . 'windows.js');

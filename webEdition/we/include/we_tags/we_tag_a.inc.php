@@ -78,7 +78,7 @@ function we_tag_a($attribs, $content){
 	}
 
 	if((!$url) && ($GLOBALS['WE_MAIN_DOC']->ClassName != 'we_template')){
-		return ($GLOBALS['we_editmode'] ? parseError('in we:a attribute id not exists!') : '');
+return ($GLOBALS['we_editmode'] ? parseError('in we:a attribute id not exists!') : '');
 	}
 
 	switch($edit){
@@ -180,6 +180,7 @@ function we_tag_a($attribs, $content){
 			$oid = ($listview ?
 					(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_ID') ? $GLOBALS['lv']->f('WE_ID') : 0) :
 					(isset($GLOBALS['we_obj']) && isset($GLOBALS['we_obj']->ID) && $editself ? $GLOBALS['we_obj']->ID : 0));
+			//$oid = $oid ? $oid : $id;
 
 			if($delete){
 				if($oid){
@@ -188,6 +189,7 @@ function we_tag_a($attribs, $content){
 			} else {
 				$param[] = ($oid ? 'we_editObject_ID=' . $oid : 'edit_object=1');
 			}
+
 			break;
 		case 'document':
 			$did = ($listview ?
@@ -209,7 +211,7 @@ function we_tag_a($attribs, $content){
 	}
 
 	if($hrefonly){
-		return $url . (empty($param) ? '' : '?' . implode('&', $param));
+		return $url . ($param ? '?' . implode('&', $param) : '');
 	}
 
 	//	remove unneeded attributes from array
@@ -234,7 +236,8 @@ function we_tag_a($attribs, $content){
 	if($button){ //	show button
 		$attribs['type'] = 'button';
 		$attribs['value'] = oldHtmlspecialchars($content);
-		$attribs['onclick'] = ($target ? ("var wind=window.open('','" . $target . "');wind") : 'self') . ".document.location='$url" . oldHtmlspecialchars((empty($param) ? '' : '?' . implode('&', $param))) . "';";
+		$attribs['onclick'] = ($target ? "var wind=window.open('','" . $target . "');wind" : 'self') .
+			".document.location='" . $url . oldHtmlspecialchars(($param ? '?' . implode('&', $param) : '')) . "';";
 
 		$attribs = removeAttribs($attribs, array('target')); //	not html - valid
 
@@ -244,13 +247,13 @@ function we_tag_a($attribs, $content){
 			$attribs['onclick'] = 'if(confirm(\'' . $confirm . '\')){' . $attribs['onclick'] . '}';
 		}
 		return getHtmlTag('input', $attribs);
-	} else { //	show normal link
-		$attribs['href'] = $url . (empty($param) ? '' : oldHtmlspecialchars('?' . implode('&', $param)));
-
-		if($confirm){
-			$attribs['onclick'] = 'if(confirm(\'' . $confirm . '\')){return true;}else{return false;}';
-		}
-
-		return getHtmlTag('a', $attribs, $content, true);
 	}
+//	show normal link
+	$attribs['href'] = $url . ($param ? oldHtmlspecialchars('?' . implode('&', $param)) : '');
+
+	if($confirm){
+		$attribs['onclick'] = 'if(confirm(\'' . $confirm . '\')){return true;}else{return false;}';
+	}
+
+	return getHtmlTag('a', $attribs, $content, true);
 }
