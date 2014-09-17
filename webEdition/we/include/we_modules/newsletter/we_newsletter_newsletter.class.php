@@ -91,7 +91,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 			'Offset' => we_base_request::RAW,
 			'IsFolder' => we_base_request::BOOL,
 			'Charset' => we_base_request::RAW,
-			'isEmbedImages' => we_base_request::RAW,
+			'isEmbedImages' => we_base_request::BOOL,
 		);
 		$this->Charset = $GLOBALS['WE_BACKENDCHARSET'];
 
