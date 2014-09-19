@@ -283,12 +283,12 @@ class we_webEditionDocument extends we_textContentDocument{
 			$myid = intval($this->TemplateID ? $this->TemplateID : 0);
 			$path = ($myid ? f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($myid), '', $this->DB_WE) : '');
 
-			$ueberschrift = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
+			/*$ueberschrift = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 					'<a href="javascript:goTemplate(' . $myid . ')">' . g_l('weClass', '[template]') . '</a>' :
-					g_l('weClass', '[template]'));
+					g_l('weClass', '[template]'));*/
 
 			if($this->DocType){
-				return (empty($templateFromDoctype) ?
+				return (!$templateFromDoctype ?
 						we_html_tools::htmlFormElementTable($path, g_l('weClass', '[template]'), 'left', 'defaultfont') :
 						$this->xformTemplatePopup(388));
 			}

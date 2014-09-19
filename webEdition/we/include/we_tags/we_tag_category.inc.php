@@ -68,7 +68,7 @@ function we_tag_category($attribs){
 	$catIDs = implode(',', array_map('intval', explode(',', $catIDs)));
 	$category = array_filter(we_category::we_getCatsFromIDs($catIDs, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir, true));
 
-	if(empty($category)){
+	if(!$category){
 		return '';
 	}
 

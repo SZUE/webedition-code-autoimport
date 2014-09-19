@@ -252,7 +252,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 //	if document is locked - only Preview mode is possible. otherwise show warning.
 $_userID = $we_doc->isLockedByUser();
 if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // document is locked
-	if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)){
+	if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)&& !$we_doc instanceof we_template){
 		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_PREVIEW;
 		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
 	} else {

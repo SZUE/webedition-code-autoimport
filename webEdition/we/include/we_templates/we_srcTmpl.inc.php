@@ -32,10 +32,14 @@ if(isset($we_doc->elements["Charset"]["dat"])){ //	send charset which might be d
 if(!$GLOBALS['we_editmode']){
 	exit();
 }
+
+
 echo we_html_tools::getHtmlTop('', isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '') .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 echo STYLESHEET;
+
+
 
 $_useJavaEditor = ($_SESSION['prefs']['editorMode'] == 'java');
 if(!isset($_SESSION['weS']['we_wrapcheck'])){
@@ -73,7 +77,7 @@ if(!isset($_SESSION['weS']['we_wrapcheck'])){
 
 		if (editarea) {
 			editarea.style.width = editorWidth + "px";
-			if (editarea.nextSibling != undefined && editarea.nextSibling.style){
+			if (editarea.nextSibling != undefined && editarea.nextSibling.style) {
 				editarea.nextSibling.style.width = editorWidth + "px";
 			}
 		}
@@ -130,7 +134,7 @@ if(we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9){
 			} else {
 				if (editarea) {
 					editarea.style.height = (h - wizardHeight.closed) + "px";
-					if (editarea.nextSibling != undefined && editarea.nextSibling.style){
+					if (editarea.nextSibling != undefined && editarea.nextSibling.style) {
 						editarea.nextSibling.style.height = (h - wizardHeight.closed) + "px";
 					}
 				}
@@ -188,7 +192,7 @@ switch($_SESSION['prefs']['editorMode']){
 								hlLine = editor.addLineClass(cur, "background", "activeline");
 							}
 						});
-		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....                    ?>
+		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....                     ?>
 						hlLine = editor.addLineClass(0, "background", "");
 
 		<?php } ?>

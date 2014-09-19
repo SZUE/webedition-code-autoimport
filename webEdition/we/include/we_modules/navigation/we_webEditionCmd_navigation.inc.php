@@ -42,8 +42,9 @@
 					if (fo)
 						break;
 				}
-				if (wind && arguments[0] != "empty_log")
+				if (wind && arguments[0] != "empty_log"){
 					wind.focus();
+				}
 			}
 			break;
 		case "module_navigation_rules":
@@ -57,10 +58,10 @@
 				if (wind)
 					wind.focus();
 			}
-			new jsWindow("<?php print WE_INCLUDES_DIR; ?>we_modules/navigation/edit_navigation_rules_frameset.php", "tool_navigation_rules", -1, -1, 680, 580, true, true, true, true);
+			new jsWindow("<?php echo WE_INCLUDES_DIR; ?>we_modules/navigation/edit_navigation_rules_frameset.php", "tool_navigation_rules", -1, -1, 680, 580, true, true, true, true);
 			break;
 		case "module_navigation_edit_navi":
-			new jsWindow("<?php print WE_INCLUDES_DIR; ?>we_modules/navigation/weNaviEditor.php?we_cmd[1]=" + arguments[1], "we_navieditor", -1, -1, 600, 350, true, false, true, true);
+			new jsWindow("<?php echo WE_INCLUDES_DIR; ?>we_modules/navigation/weNaviEditor.php?we_cmd[1]=" + arguments[1], "we_navieditor", -1, -1, 600, 350, true, false, true, true);
 			break;
 		case "module_navigation_do_reset_customer_filter":
 			we_repl(self.load, url, arguments[0]);
