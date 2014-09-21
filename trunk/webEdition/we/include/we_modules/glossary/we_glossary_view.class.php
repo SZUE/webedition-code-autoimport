@@ -586,7 +586,7 @@ function submitForm() {
 		if(is_array($this->Glossary->persistent_slots)){
 			foreach($this->Glossary->persistent_slots as $val){
 				if(isset($_REQUEST[$val])){
-					if($val == "Published"){
+					if($val == 'Published'){
 						if($this->Glossary->Published == 0 && $isPublished){
 							$this->Glossary->Published = time();
 						} elseif(!$isPublished){

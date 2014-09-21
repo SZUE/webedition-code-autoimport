@@ -178,8 +178,8 @@ if(!$useSvg){
 ?>
 		}
 <?php
-if(isset($_REQUEST["table"]) && $_REQUEST["table"]){
-	echo "var defTab = '" . $_REQUEST["table"] . "';";
+if(($tab = we_base_request::_(we_base_request::STRING, "table"))){
+	echo "var defTab = '" . $tab . "';";
 } else {
 	$ok = false;
 	foreach($vtab as $tab => $val){

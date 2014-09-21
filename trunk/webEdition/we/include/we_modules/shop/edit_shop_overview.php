@@ -31,8 +31,8 @@ echo we_html_tools::getHtmlTop() .
 /// config
 $feldnamen = explode("|", f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
 
-$waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
-$dbPreisname = "Preis";
+$waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
+$dbPreisname = 'Preis';
 $numberformat = $feldnamen[2];
 $mwst = ($feldnamen[1]) ? (($feldnamen[1] / 100) + 1) : "";
 $year = abs(substr($_REQUEST["mid"], -4));
@@ -41,9 +41,9 @@ $month = abs(str_replace($year, "", $_REQUEST["mid"]));
 $bezahlt = $unbezahlt = $r = $f = 0;
 
 
-$DB_WE->query('SELECT IntOrderID, Price, IntQuantity, DateShipping,DatePayment FROM ' . SHOP_TABLE . " WHERE DateOrder >= '$year" . (($month < 10) ? "0" . $month : $month) . "01000000' and DateOrder <= '$year" . (($month < 10) ? "0" . $month : $month) . date("t", mktime(0, 0, 0, $month, 1, $year)) . "000000' ORDER BY IntOrderID");
+$DB_WE->query('SELECT IntOrderID, Price, IntQuantity, DateShipping,DatePayment FROM ' . SHOP_TABLE . ' WHERE DateOrder>="' . $year . (($month < 10) ? "0" . $month : $month) . '01000000" AND DateOrder<="' . $year . (($month < 10) ? '0' . $month : $month) . date('t', mktime(0, 0, 0, $month, 1, $year)) . '000000" ORDER BY IntOrderID');
 while($DB_WE->next_record()){
-	if($DB_WE->f("DatePayment") != 0){
+	if($DB_WE->f('DatePayment') != 0){
 		if(!isset($bezahlt)){
 			$bezahlt = 0;
 		}

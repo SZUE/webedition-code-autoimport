@@ -122,7 +122,7 @@ echo we_html_element::jsScript(JS_DIR . 'keyListener.js') . we_html_element::jsE
 	}
 ");
 
-// $yesCmd: $_REQUEST['we_cmd'][6] => next-EditCommand, JS-Function Call !! after save document.
+// $yesCmd: $REQUEST['we_cmd'][6] => next-EditCommand, JS-Function Call !! after save document.
 
 
 echo STYLESHEET;

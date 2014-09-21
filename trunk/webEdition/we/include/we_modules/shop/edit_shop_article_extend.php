@@ -31,7 +31,11 @@ $typeDoc = we_base_request::_(we_base_request::STRING, 'type', 'document');
 $actPage = we_base_request::_(we_base_request::INT, 'actPage', 0);
 
 function orderBy($a, $b){
-	return ($a[$_REQUEST['orderBy']] >= $b[$_REQUEST['orderBy']] ? !we_base_request::_(we_base_request::BOOL, 'orderDesc') : we_base_request::_(we_base_request::BOOL, 'orderDesc'));
+	static $ob = false;
+	if($ob === false){
+		$ob = we_base_request::_(we_base_request::STRINGC, 'orderBy');
+	}
+	return ($a[$ob] >= $b[$ob] ? !we_base_request::_(we_base_request::BOOL, 'orderDesc') : we_base_request::_(we_base_request::BOOL, 'orderDesc'));
 }
 
 function getTitleLinkObj($text, $orderKey){

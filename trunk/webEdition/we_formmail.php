@@ -81,7 +81,7 @@ function contains_bad_str($str_to_test){
 			print_error('Email dispatch blocked / Email Versand blockiert!');
 		}
 	}
-	if(preg_match('|multipart/mixed|i', $str_to_test)){
+	if(stristr($str_to_test, 'multipart/mixed')){
 		print_error('Email dispatch blocked / Email Versand blockiert!');
 	}
 }
@@ -200,9 +200,9 @@ $_order = we_base_request::_(we_base_request::RAW, 'order', '');
 $we_orderarray = array();
 if($_order){
 	$we_orderarray = explode(',', $_order);
-	for($i = 0; $i < count($we_orderarray); $i++){
-		if(!in_array($we_orderarray[$i], $we_reserved)){
-			$output[$we_orderarray[$i]] = $_REQUEST[$we_orderarray[$i]];
+	foreach($we_orderarray as $cur){
+		if(!in_array($cur, $we_reserved)){
+			$output[$cur] = we_base_request::_(we_base_request::RAW, $cur);
 		}
 	}
 }
@@ -300,8 +300,8 @@ if($recipient){
 	}
 
 	$recipients = makeArrayFromCSV($recipient);
-	$senderForename = we_base_request::_(we_base_request::STRING,'forename', '');
-	$senderSurname = we_base_request::_(we_base_request::STRING,'surname', '');
+	$senderForename = we_base_request::_(we_base_request::STRING, 'forename', '');
+	$senderSurname = we_base_request::_(we_base_request::STRING, 'surname', '');
 	$sender = ($senderForename != '' || $senderSurname ? $senderForename . ' ' . $senderSurname . '<' . $fromMail . '>' : $fromMail);
 
 	$phpmail = new we_util_Mailer('', $subject, $sender);

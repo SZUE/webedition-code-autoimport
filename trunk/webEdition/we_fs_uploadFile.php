@@ -121,10 +121,10 @@ if($weFileupload->processFileRequest()){
 			if(($alt = we_base_request::_(we_base_request::STRING, 'img_alt')) !== false){
 				$we_doc->setElement('alt', $alt, 'attrib');
 			}
-			if(isset($_REQUEST['Thumbnails'])){
-				$we_doc->Thumbs = (is_array($_REQUEST['Thumbnails']) ?
-						makeCSVFromArray($_REQUEST['Thumbnails'], true) :
-						$_REQUEST['Thumbnails']);
+			if(($thumbs = we_base_request::_(we_base_request::INT, 'Thumbnails'))){
+				$we_doc->Thumbs = (is_array($thumbs) ?
+						makeCSVFromArray($thumbs, true) :
+						$thumbs);
 			}
 			$we_doc->Table = we_base_request::_(we_base_request::TABLE, 'tab');
 			$we_doc->Published = time();

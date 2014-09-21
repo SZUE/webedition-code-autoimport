@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_versions_search{
-
 	public $db;
 	public $searchFields = array();
 	public $location = array();
@@ -46,7 +45,7 @@ class we_versions_search{
 	}
 
 	/**
-	 * @abstract initialize data from $_REQUEST
+	 * @abstract initialize data from $REQUEST
 	 */
 	function initData(){
 		$this->mode = we_base_request::_(we_base_request::INT, "mode", $this->mode);
@@ -97,9 +96,9 @@ class we_versions_search{
 							}
 							break;
 						case "timestamp":
-							if(($loc = we_base_request::_(we_base_request::RAW, 'location', '', $k)) && isset($_REQUEST['search'][$k]) && $_REQUEST['search'][$k] != ""){
+							if(($loc = we_base_request::_(we_base_request::RAW, 'location', '', $k)) && ($search = we_base_request::_(we_base_request::STRING, 'search', '', $k))){
 
-								$date = explode(".", $_REQUEST['search'][$k]);
+								$date = explode('.', $search);
 								$day = $date[0];
 								$month = $date[1];
 								$year = $date[2];
@@ -108,26 +107,26 @@ class we_versions_search{
 
 								switch($loc){
 									case "IS":
-										$where .= " AND " . $v . " BETWEEN " . intval($timestampStart) . " AND " . intval($timestampEnd);
+										$where .= ' AND ' . $v . ' BETWEEN ' . intval($timestampStart) . " AND " . intval($timestampEnd);
 										break;
 									case "<":
-										$where .= " AND " . $v . $loc . ' ' . intval($timestampStart);
+										$where .= ' AND ' . $v . $loc . ' ' . intval($timestampStart);
 										break;
 									case "<=":
-										$where .= " AND " . $v . $loc . ' ' . intval($timestampEnd);
+										$where .= ' AND ' . $v . $loc . ' ' . intval($timestampEnd);
 										break;
 									case ">":
-										$where .= " AND " . $v . $loc . ' ' . intval($timestampEnd);
+										$where .= ' AND ' . $v . $loc . ' ' . intval($timestampEnd);
 										break;
 									case ">=":
-										$where .= " AND " . $v . $loc . ' ' . intval($timestampStart);
+										$where .= ' AND ' . $v . $loc . ' ' . intval($timestampStart);
 										break;
 								}
 							}
 							break;
-						case "allModsIn":
-							if(isset($_REQUEST['search'][$k])){
-								$modConst[] = $this->version->modFields[$_REQUEST['search'][$k]]['const'];
+						case 'allModsIn':
+							if(($search = we_base_request::_(we_base_request::STRING, 'search', false, $k)) !== false){
+								$modConst[] = $this->version->modFields[$search]['const'];
 							}
 							break;
 					}

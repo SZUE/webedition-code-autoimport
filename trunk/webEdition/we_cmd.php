@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 $cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 if(!$cmd){
-	t_e('call without command, might be an error', $_REQUEST);
+	t_e('call without command, might be an error');
 	exit();
 }
 

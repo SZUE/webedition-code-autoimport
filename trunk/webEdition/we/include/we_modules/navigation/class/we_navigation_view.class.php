@@ -43,7 +43,6 @@ class we_navigation_view extends we_modules_view{
 		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
 	}
 
-
 	function setTopFrame($frame){
 		parent::setTopFrame($frame);
 		$this->editorBodyFrame = $frame . '.editor.edbody';
@@ -1088,9 +1087,9 @@ function submitForm() {
 		}
 
 		if(is_array($this->Model->persistent_slots)){
-			foreach($this->Model->persistent_slots as $val){
-				if(isset($_REQUEST[$val])){
-					$this->Model->$val = $_REQUEST[$val];
+			foreach($this->Model->persistent_slots as $key){
+				if(($val = we_base_request::_(we_base_request::RAW, $key, '-1')) !== '-1'){
+					$this->Model->$key = $val;
 				}
 			}
 		}

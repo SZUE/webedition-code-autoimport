@@ -34,7 +34,7 @@
  */
 function weCustomHook_customer_preLogin($param){
 	$hookHandler = $param['hookHandler'];
-	$data = &$param['customer']; //contains $_REQUEST['s'] which is the submitted login-data
+	$data = &$param['customer']; //contains $REQUEST['s'] which is the submitted login-data
 	switch($param['type']){
 		case 'normal':
 		case 'autoLogin':

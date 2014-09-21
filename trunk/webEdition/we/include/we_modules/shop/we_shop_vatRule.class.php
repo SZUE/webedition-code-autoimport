@@ -60,9 +60,9 @@ class we_shop_vatRule{
 		return ($this->defaultValue == 'true' ? true : false);
 	}
 
-	public static function initByRequest(&$req){//FIXME: this is unchecked
+	public static function initByRequest(){//FIXME: this is unchecked
 		return new self(
-			$req['defaultValue'], $req['stateField'], self::makeArrayFromReq($req['liableToVat']), self::makeArrayFromReq($req['notLiableToVat']), self::makeArrayFromConditionField($req), $req['stateFieldIsISO']
+			we_base_request::_(we_base_request::STRING, 'defaultValue'), we_base_request::_(we_base_request::STRING, 'stateField'), self::makeArrayFromReq(we_base_request::_(we_base_request::STRING, 'liableToVat')), self::makeArrayFromReq(we_base_request::_(we_base_request::STRING, 'notLiableToVat')), self::makeArrayFromConditionField(), we_base_request::_(we_base_request::STRING, 'stateFieldIsISO')
 		);
 	}
 
@@ -82,15 +82,18 @@ class we_shop_vatRule{
 		);
 	}
 
-	private static function makeArrayFromConditionField($req){
+	private static function makeArrayFromConditionField(){
 		$retArr = array();
-
-		for($i = 0; $i < count($req['conditionalStates']); $i++){
+		$conditionalStates = we_base_request::_(we_base_request::STRING, 'conditionalStates');
+		$conditionalCustomerField = we_base_request::_(we_base_request::STRING, 'conditionalCustomerField');
+		$conditionalCondition = we_base_request::_(we_base_request::STRING, 'conditionalCondition');
+		$conditionalReturn = we_base_request::_(we_base_request::STRING, 'conditionalReturn');
+		foreach($conditionalStates as $i => $cs){
 			$retArr[] = array(
-				'states' => self::makeArrayFromReq($req['conditionalStates'][$i]),
-				'customerField' => $req['conditionalCustomerField'][$i],
-				'condition' => $req['conditionalCondition'][$i],
-				'returnValue' => $req['conditionalReturn'][$i],
+				'states' => self::makeArrayFromReq($cs),
+				'customerField' => $conditionalCustomerField[$i],
+				'condition' => $conditionalCondition[$i],
+				'returnValue' => $conditionalReturn[$i],
 			);
 		}
 		return $retArr;
