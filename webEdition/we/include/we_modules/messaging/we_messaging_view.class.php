@@ -289,7 +289,7 @@ class we_messaging_view extends we_modules_view{
 
 			case 'save_folder_settings':
 				if(($id = we_base_request::_(we_base_request::INT, 'id')) !== false){
-					//$mcount = $_REQUEST['mode'] == 'new' ? 0 : $this->messaging->get_message_count($_REQUEST['id'], '');
+					//$mcount = $REQUEST['mode'] == 'new' ? 0 : $this->messaging->get_message_count($REQUEST['id'], '');
 					if(($mode = we_base_request::_(we_base_request::STRING, "mode")) == 'new'){
 						$parent = we_base_request::_(we_base_request::INT, 'parent_id', 0);
 						$type = we_base_request::_(we_base_request::STRING, 'type');

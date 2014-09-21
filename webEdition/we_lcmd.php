@@ -29,14 +29,14 @@ echo we_html_tools::getHtmlTop('command-bridge', '', 5);
 	// bugfix WE-356
 	self.focus();
 <?php
-if(isset($_REQUEST['wecmd0'])){ // when calling from applet (we can not call directly we_cmd[0] with the applet =>  Safari OSX doesn't support live connect)
-	$_REQUEST['we_cmd'][0] = $_REQUEST['wecmd0'];
+if(($cmd0 = we_base_request::_(we_base_request::STRING, 'wecmd0')) !== false){ // when calling from applet (we can not call directly we_cmd[0] with the applet =>  Safari OSX doesn't support live connect)
+	$_REQUEST['we_cmd'][0] = $cmd0;
 }
 foreach($_REQUEST['we_cmd'] as &$cmdvalue){
 	$cmdvalue = preg_replace('/[^a-z0-9_-]/i', '', strip_tags($cmdvalue));
 }
 
-switch(($cmd0=we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0))){
+switch(($cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0))){
 	case "trigger_save_document":
 		echo 'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames[3] && top.weEditorFrameController.getActiveDocumentReference().frames[3].weCanSave){
 	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);

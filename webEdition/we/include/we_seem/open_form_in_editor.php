@@ -30,7 +30,7 @@ echo we_html_tools::getHtmlTop();
 	<?php
 	// build url from REQUEST ...
 	$paraStr = we_SEEM::arrayToParameters($_REQUEST, "", array("we_cmd", "original_action"));
-	$action = $_REQUEST['original_action'] . "?1" . $paraStr;
+	$action = $_REQUEST['original_action'] . '?1' . $paraStr;
 
 	//	The following will translate a given URL to a we_cmd.
 	//	When pressing a link in edit-mode this functionality

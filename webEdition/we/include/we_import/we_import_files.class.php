@@ -27,12 +27,12 @@ class we_import_files{
 	var $step = 0;
 	var $sameName = "overwrite";
 	var $importMetadata = true;
-	var $cmd = "";
-	var $thumbs = "";
-	var $width = "";
-	var $height = "";
-	var $widthSelect = "pixel";
-	var $heightSelect = "pixel";
+	var $cmd = '';
+	var $thumbs = '';
+	var $width = '';
+	var $height = '';
+	var $widthSelect = 'pixel';
+	var $heightSelect = 'pixel';
 	var $keepRatio = 1;
 	var $quality = 8;
 	var $degrees = 0;
@@ -63,7 +63,7 @@ class we_import_files{
 
 		$this->categories = we_base_request::_(we_base_request::RAW, "categories", $this->categories);
 		$this->importToID = we_base_request::_(we_base_request::INT, "importToID", $this->importToID);
-		$this->sameName = we_base_request::_(we_base_request::RAW, "sameName", $this->sameName);
+		$this->sameName = we_base_request::_(we_base_request::STRING, "sameName", $this->sameName);
 		$this->importMetadata = we_base_request::_(we_base_request::INT, "importMetadata", $this->importMetadata);
 		$this->step = we_base_request::_(we_base_request::INT, "step", $this->step);
 		$this->cmd = we_base_request::_(we_base_request::RAW, "cmd", $this->cmd);
@@ -78,7 +78,7 @@ class we_import_files{
 		$this->jsRequirementsOk = we_base_request::_(we_base_request::BOOL, "jsRequirementsOk", false);
 		$this->partNum = we_base_request::_(we_base_request::INT, "wePartNum", 0);
 		$this->partCount = we_base_request::_(we_base_request::INT, "wePartCount", 0);
-		$this->fileNameTemp = we_base_request::_(we_base_request::RAW, "weFileNameTemp", '');
+		$this->fileNameTemp = we_base_request::_(we_base_request::FILE, "weFileNameTemp", '');
 		$this->maxUploadSizeMB = defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 8; //FIMXE: 8???
 		$this->maxUploadSizeB = $this->maxUploadSizeMB * 1048576;
 		$this->isWeFileupload = $this->jsRequirementsOk && !(defined('FILE_UPLOAD_USE_LEGACY') && FILE_UPLOAD_USE_LEGACY);

@@ -1059,7 +1059,7 @@ function submitForm() {
 				$cancelBut = we_html_button::create_button('cancel', 'javascript:window.close();');
 				$searchBut = we_html_button::create_button('search', 'javascript:searchArticles();');
 				$searchArticle = we_base_request::_(we_base_request::STRING, 'searchArticle');
-			//FIXME:why do we do this expensive search??!
+				//FIXME:why do we do this expensive search??!
 				// first get all shop documents
 				$this->db->query('SELECT c.dat AS shopTitle, ' . LINK_TABLE . '.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID' .
 					' WHERE l.Name="' . WE_SHOP_TITLE_FIELD_NAME . '" AND  l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" ' .
@@ -1418,7 +1418,7 @@ function we_submit() {
 				echo '</head>
 						<body class="weDialogBody">
 						<form name="we_form" target="edbody">' .
-				we_html_tools::hidden('bid', $_REQUEST['bid']) .
+				we_html_tools::hidden('bid', we_base_request::_(we_base_request::INT, 'bid')) .
 				we_html_tools::hidden("we_cmd[]", 'save_shipping_cost') .
 				we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
 				'</form></body></html>';

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class we_class_folder extends we_folder{
 	var $ClassPath = ''; //#4076
 	var $RootfolderID = ''; //#4076
@@ -40,7 +40,7 @@ class we_class_folder extends we_folder{
 		$this->IsClassFolder = 1;
 		array_push($this->persistent_slots, 'searchclass', 'searchclass_class', 'TriggerID', 'TableID');
 		if(isWE()){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, /*we_base_constants::WE_EDITPAGE_CFWORKSPACE, */we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, /* we_base_constants::WE_EDITPAGE_CFWORKSPACE, */ we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
 		}
 		$this->Icon = we_base_ContentTypes::FOLDER_ICON;
 		$this->ContentType = we_base_ContentTypes::FOLDER;
@@ -263,7 +263,7 @@ class we_class_folder extends we_folder{
 					array(
 						"align" => "center",
 						"dat" => ((permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE")) && permissionhandler::checkIfRestrictUserIsAllowed($this->searchclass->f("OF_ID"), OBJECT_FILES_TABLE, $this->DB_WE) ?
-							'<input type="checkbox" name="weg' . $this->searchclass->f("OF_ID") . '" />' :
+							'<input type="checkbox" name="weg[' . $this->searchclass->f("OF_ID") . ']" />' :
 							'<img src="' . TREE_IMAGE_DIR . 'check0_disabled.gif" />')),
 					array(
 						"align" => "center",
@@ -286,7 +286,7 @@ class we_class_folder extends we_folder{
 					array("dat" => $this->searchclass->f("OF_Language")),
 				);
 
-				$javascriptAll .= "var flo=document.we_form.elements['weg" . $this->searchclass->f("OF_ID") . "'].checked=true;";
+				$javascriptAll .= "var flo=document.we_form.elements['weg[" . $this->searchclass->f("OF_ID") . "]'].checked=true;";
 			}
 		} else {
 			//echo "Leider nichts gefunden!";
@@ -331,15 +331,10 @@ class we_class_folder extends we_folder{
 		$this->setClassProp();
 
 		if(we_base_request::_(we_base_request::STRING, 'do') == 'delete'){
-			foreach(array_keys($_REQUEST) as $f){//FIXME: this is not save
-				if(substr($f, 0, 3) == "weg"){
-					$ofid = intval(substr($f, 3));
-					if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
-						$this->DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . $this->TableID . ' WHERE OF_ID=' . $ofid);
-						$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $ofid);
-						$this->DB_WE->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $ofid);
-						we_temporaryDocument::delete($ofid, OBJECT_FILES_TABLE, $this->DB_WE);
-					}
+			$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
+			foreach(array_keys($weg) as $ofid){//FIXME: this is not save
+				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
+					we_base_delete::deleteEntry($ofid, OBJECT_FILES_TABLE, $this->DB_WE);
 				}
 			}
 		}
@@ -431,13 +426,13 @@ class we_class_folder extends we_folder{
 					$count = $i;
 				}
 
-				$javascriptAll .= "var flo=document.we_form.elements['weg" . $this->searchclass->f("OF_ID") . "'].checked=true;";
+				$javascriptAll .= "var flo=document.we_form.elements['weg[" . $this->searchclass->f("OF_ID") . "]'].checked=true;";
 				$content[$f] = array(
 					array(
 						"height" => 35,
 						"align" => "center",
 						"dat" => (permissionhandler::hasPerm("DELETE_OBJECTFILE") ?
-							'<input type="checkbox" name="weg' . $this->searchclass->f("OF_ID") . '" />' :
+							'<input type="checkbox" name="weg[' . $this->searchclass->f("OF_ID") . ']" />' :
 							'<img src="' . TREE_IMAGE_DIR . 'check0_disabled.gif" />'
 						)),
 					array(
@@ -950,22 +945,12 @@ EOF;
 		$javascript = '';
 		$deletedItems = array();
 
-		foreach(array_keys($_REQUEST) as $f){
-			if(substr($f, 0, 3) == 'weg'){
-				$tid = intval(substr($f, 3));
-				if(permissionhandler::checkIfRestrictUserIsAllowed($tid, OBJECT_FILES_TABLE, $this->DB_WE)){
-					$this->DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . $this->TableID . ' WHERE OF_ID=' . $tid);
-					$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . $tid);
-					$this->DB_WE->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $tid);
-
-					$obj = new we_objectFile();
-					$obj->initByID($tid, OBJECT_FILES_TABLE);
-
-					we_temporaryDocument::delete($tid, OBJECT_FILES_TABLE, $this->DB_WE);
-					$javascript .= 'top.deleteEntry(' . $obj->ID . ');';
-
-					$deletedItems[] = $obj->ID;
-				}
+		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
+		foreach(array_keys($weg) as $tid){
+			if(permissionhandler::checkIfRestrictUserIsAllowed($tid, OBJECT_FILES_TABLE, $this->DB_WE)){
+				we_base_delete::deleteEntry($tid, OBJECT_FILES_TABLE, $this->DB_WE);
+				$javascript .= 'top.deleteEntry(' . $tid . ');';
+				$deletedItems[] = $tid;
 			}
 		}
 
@@ -991,23 +976,21 @@ for ( frameId in _usedEditors ) {
 		$this->setClassProp(); //4076
 		$foo = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 
-		foreach(array_keys($_REQUEST) as $f){
-			if(substr($f, 0, 3) == "weg"){
-				$ofid = intval(substr($f, 3));
-				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
-					$obj = new we_objectFile();
-					$obj->initByID($ofid, OBJECT_FILES_TABLE);
-					$obj->getContentDataFromTemporaryDocs($ofid);
-					$obj->Workspaces = $foo["Workspaces"];
-					$obj->Templates = $foo["Templates"];
-					$obj->ExtraTemplates = "";
-					$obj->ExtraWorkspaces = "";
-					$obj->ExtraWorkspacesSelected = "";
-					$oldModDate = $obj->ModDate;
-					$obj->we_save(0, 1);
-					if($obj->Published != 0 && $obj->Published == $oldModDate){
-						$obj->we_publish(0, 1, 1);
-					}
+		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
+		foreach(array_keys($weg) as $ofid){
+			if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
+				$obj = new we_objectFile();
+				$obj->initByID($ofid, OBJECT_FILES_TABLE);
+				$obj->getContentDataFromTemporaryDocs($ofid);
+				$obj->Workspaces = $foo["Workspaces"];
+				$obj->Templates = $foo["Templates"];
+				$obj->ExtraTemplates = "";
+				$obj->ExtraWorkspaces = "";
+				$obj->ExtraWorkspacesSelected = "";
+				$oldModDate = $obj->ModDate;
+				$obj->we_save(0, 1);
+				if($obj->Published != 0 && $obj->Published == $oldModDate){
+					$obj->we_publish(0, 1, 1);
 				}
 			}
 		}
@@ -1019,19 +1002,18 @@ for ( frameId in _usedEditors ) {
 		$fooo = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, '', $this->DB_WE));
 		$Charset = (isset($fooo["elements"]["Charset"]["dat"]) ? $fooo["elements"]["Charset"]["dat"] : DEFAULT_CHARSET );
 
-		foreach(array_keys($_REQUEST) as $f){
-			if(substr($f, 0, 3) == "weg"){
-				$ofid = intval(substr($f, 3));
-				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
-					$obj = new we_objectFile();
-					$obj->initByID($ofid, OBJECT_FILES_TABLE);
-					$obj->getContentDataFromTemporaryDocs($ofid);
-					$obj->Charset = $Charset;
-					$oldModDate = $obj->ModDate;
-					$obj->we_save(0, 1);
-					if($obj->Published != 0 && $obj->Published == $oldModDate){
-						$obj->we_publish(0, 1, 1);
-					}
+		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
+
+		foreach(array_keys($weg) as $ofid){
+			if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
+				$obj = new we_objectFile();
+				$obj->initByID($ofid, OBJECT_FILES_TABLE);
+				$obj->getContentDataFromTemporaryDocs($ofid);
+				$obj->Charset = $Charset;
+				$oldModDate = $obj->ModDate;
+				$obj->we_save(0, 1);
+				if($obj->Published != 0 && $obj->Published == $oldModDate){
+					$obj->we_publish(0, 1, 1);
 				}
 			}
 		}
@@ -1042,19 +1024,17 @@ for ( frameId in _usedEditors ) {
 		$this->setClassProp();
 		$DefaultTriggerID = getHash('SELECT DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
 
-		foreach(array_keys($_REQUEST) as $f){
-			if(substr($f, 0, 3) == "weg"){
-				$ofid = intval(substr($f, 3));
-				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
-					$obj = new we_objectFile();
-					$obj->initByID($ofid, OBJECT_FILES_TABLE);
-					$obj->getContentDataFromTemporaryDocs($ofid);
-					$obj->TriggerID = $DefaultTriggerID;
-					$oldModDate = $obj->ModDate;
-					$obj->we_save(0, 1);
-					if($obj->Published != 0 && $obj->Published == $oldModDate){
-						$obj->we_publish(0, 1, 1);
-					}
+		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
+		foreach(array_keys($weg) as $ofid){
+			if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
+				$obj = new we_objectFile();
+				$obj->initByID($ofid, OBJECT_FILES_TABLE);
+				$obj->getContentDataFromTemporaryDocs($ofid);
+				$obj->TriggerID = $DefaultTriggerID;
+				$oldModDate = $obj->ModDate;
+				$obj->we_save(0, 1);
+				if($obj->Published != 0 && $obj->Published == $oldModDate){
+					$obj->we_publish(0, 1, 1);
 				}
 			}
 		}
@@ -1064,20 +1044,18 @@ for ( frameId in _usedEditors ) {
 	function searchableObjects($searchable = true){
 		$this->setClassProp();
 
-		foreach(array_keys($_REQUEST) as $f){
-			if(substr($f, 0, 3) == 'weg'){
-				$ofid = intval(substr($f, 3));
+		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
+		foreach(array_keys($weg) as $ofid){
 
-				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
-					$obj = new we_objectFile();
-					$obj->initByID($ofid, OBJECT_FILES_TABLE);
-					$obj->getContentDataFromTemporaryDocs($ofid);
-					$obj->IsSearchable = ($searchable != true ? 0 : 1);
-					$oldModDate = $obj->ModDate;
-					$obj->we_save(0, 1);
-					if($obj->Published != 0 && $obj->Published == $oldModDate){
-						$obj->we_publish(0, 1, 1);
-					}
+			if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
+				$obj = new we_objectFile();
+				$obj->initByID($ofid, OBJECT_FILES_TABLE);
+				$obj->getContentDataFromTemporaryDocs($ofid);
+				$obj->IsSearchable = ($searchable != true ? 0 : 1);
+				$oldModDate = $obj->ModDate;
+				$obj->we_save(0, 1);
+				if($obj->Published != 0 && $obj->Published == $oldModDate){
+					$obj->we_publish(0, 1, 1);
 				}
 			}
 		}
@@ -1088,42 +1066,39 @@ for ( frameId in _usedEditors ) {
 	function publishObjects($publish = true){
 		$this->setClassProp();
 		$javascript = "";
+		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
 
-		foreach(array_keys($_REQUEST) as $f){//FIXME: this is not save
-			if(substr($f, 0, 3) == 'weg'){
-				$ofid = intval(substr($f, 3));
+		foreach(array_keys($weg) as $ofid){//FIXME: this is not save
+			if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
+				if($publish != true){
 
-				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
-					if($publish != true){
+					$obj = new we_objectFile();
+					$obj->initByID($ofid, OBJECT_FILES_TABLE);
 
-						$obj = new we_objectFile();
-						$obj->initByID($ofid, OBJECT_FILES_TABLE);
-
-						if($obj->we_unpublish()){
-							$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();" .
-								//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
-								$obj->getUpdateTreeScript(false) . "
+					if($obj->we_unpublish()){
+						$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();" .
+							//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
+							$obj->getUpdateTreeScript(false) . "
 if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
 	 top.rframe.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
 }
 weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
-						}
-					} else {
+					}
+				} else {
 
-						$obj = new we_objectFile();
-						$obj->initByID($ofid, OBJECT_FILES_TABLE);
+					$obj = new we_objectFile();
+					$obj->initByID($ofid, OBJECT_FILES_TABLE);
 
-						$obj->getContentDataFromTemporaryDocs($ofid);
+					$obj->getContentDataFromTemporaryDocs($ofid);
 
-						if($obj->we_publish()){
-							$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();" .
-								//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
-								$obj->getUpdateTreeScript(false) . "
+					if($obj->we_publish()){
+						$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();" .
+							//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
+							$obj->getUpdateTreeScript(false) . "
 if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
 	top.rframe.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
 }
 weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
-						}
 					}
 				}
 			}
