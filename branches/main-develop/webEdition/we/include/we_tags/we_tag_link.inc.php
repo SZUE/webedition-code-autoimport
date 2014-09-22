@@ -32,6 +32,9 @@ function we_tag_link($attribs, $content){
 		}
 		return $linkcontent;
 	}
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
+		return $foo;
+	}
 	$name = weTag_getAttribute('name', $attribs);
 	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, true);
 	$text = weTag_getAttribute('text', $attribs);
@@ -50,8 +53,8 @@ function we_tag_link($attribs, $content){
 	}
 
 	$attribs = removeAttribs($attribs, array('text', 'id', 'imageid', 'to', 'nameto'));
-
-	$link = $GLOBALS['we_doc']->getElement($name) ? unserialize($GLOBALS['we_doc']->getElement($name)) : array();
+	$data = $GLOBALS['we_doc']->getElement($name);
+	$link = $data && $data{0} == 'a' ? unserialize($GLOBALS['we_doc']->getElement($name)) : array();
 
 	if(!$GLOBALS['we_editmode']){
 		return $GLOBALS['we_doc']->getField($attribs, 'link');
@@ -92,9 +95,10 @@ function we_tag_link($attribs, $content){
 		$delbut = we_html_button::create_button('image:btn_function_trash', "javascript:setScrollTo(); we_cmd('delete_link', '" . $name . "')", true);
 
 		return we_html_button::create_button_table(
-				array(
-				($startTag ? $startTag : '') . ($content ? $content : $text) . ($startTag ? '</a>' : ''), $editbut, $delbut
-				), 5);
+						array(
+					($startTag ? $startTag : '') . ($content ? $content : $text) . ($startTag ? '</a>' : ''), $editbut, $delbut
+						), 5);
 	}
+
 	return '';
 }

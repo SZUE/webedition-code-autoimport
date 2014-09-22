@@ -50,8 +50,7 @@ function we_tag_checkForm($attribs, $content){
 	ob_start();
 	//FIXME:eval
 	eval('?>' . $content);
-	$content = ob_get_contents();
-	ob_end_clean();
+	$content = ob_get_clean();
 
 	// get fields of $attribs
 	$match = weTag_getAttribute("match", $attribs);

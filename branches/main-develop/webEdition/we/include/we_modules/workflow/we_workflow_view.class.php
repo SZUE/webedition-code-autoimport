@@ -112,10 +112,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 			$GLOBALS['mod'] = 'workflow';
 			ob_start();
 			include(WE_MODULES_PATH . 'home.inc.php');
-			$out = ob_get_contents();
-			ob_end_clean();
-
-			return $out;
+			return;
 		}
 		$content = '<form name="we_form" onsubmit="return false">' .
 			$this->getHiddens();
@@ -314,7 +311,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 
 				$foo = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($tv->userID), '', $this->db);
 				$wecmdenc2 = we_base_request::encCmd("document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_usertext.value");
-				$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('browse_users','document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value','" . $wecmdenc2 . "','','document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value');");
+				$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('browse_users','document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value','" . $wecmdenc2 . "','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);");
 
 				$yuiSuggest->setAcId('User_' . $counter . '_' . $counter1);
 				$yuiSuggest->setContentType(we_users_user::TYPE_USER . ',' . we_users_user::TYPE_USER_GROUP);
@@ -1047,41 +1044,30 @@ function checkData(){
 		foreach(array_keys($this->workflowDef->steps) as $skey){
 			$this->workflowDef->steps[$skey]->workflowID = $this->workflowDef->ID;
 
-			$varname = $this->uid . '_step' . $skey . '_sid';
-			if(($tmp = we_base_request::_(we_base_request::RAW, $varname))){
+			if(($tmp = we_base_request::_(we_base_request::INT, $this->uid . '_step' . $skey . '_sid'))){
 				$this->workflowDef->steps[$skey]->ID = $tmp;
 			}
 
-			$varname = $this->uid . '_step' . $skey . '_and';
-			$this->workflowDef->steps[$skey]->stepCondition = we_base_request::_(we_base_request::BOOL, $varname, $this->workflowDef->steps[$skey]->stepCondition);
+			$this->workflowDef->steps[$skey]->stepCondition = we_base_request::_(we_base_request::BOOL, $this->uid . '_step' . $skey . '_and', $this->workflowDef->steps[$skey]->stepCondition);
 
-			$varname = $this->uid . '_step' . $skey . '_Worktime';
-			$this->workflowDef->steps[$skey]->Worktime = we_base_request::_(we_base_request::FLOAT, $varname, $this->workflowDef->steps[$skey]->Worktime);
+			$this->workflowDef->steps[$skey]->Worktime = we_base_request::_(we_base_request::FLOAT, $this->uid . '_step' . $skey . '_Worktime', $this->workflowDef->steps[$skey]->Worktime);
 
-			$varname = $this->uid . '_step' . $skey . '_timeAction';
 
-			$this->workflowDef->steps[$skey]->timeAction = we_base_request::_(we_base_request::RAW, $varname, $this->workflowDef->steps[$skey]->timeAction);
+			$this->workflowDef->steps[$skey]->timeAction = we_base_request::_(we_base_request::BOOL, $this->uid . '_step' . $skey . '_timeAction', $this->workflowDef->steps[$skey]->timeAction);
 
 			foreach(array_keys($this->workflowDef->steps[$skey]->tasks) as $tkey){
 				$this->workflowDef->steps[$skey]->tasks[$tkey]->stepID = $this->workflowDef->steps[$skey]->ID;
-				$varname = $this->uid . '_task_' . $skey . '_' . $tkey . '_tid';
-				if(($id = we_base_request::_(we_base_request::INT, $varname))){
+				if(($id = we_base_request::_(we_base_request::INT, $this->uid . '_task_' . $skey . '_' . $tkey . '_tid'))){
 					$this->workflowDef->steps[$skey]->tasks[$tkey]->ID = $id;
 				}
 
-				$varname = $this->uid . '_task_' . $skey . '_' . $tkey . '_userid';
-				$this->workflowDef->steps[$skey]->tasks[$tkey]->userID = we_base_request::_(we_base_request::INT, $varname, $this->workflowDef->steps[$skey]->tasks[$tkey]->userID);
+				$this->workflowDef->steps[$skey]->tasks[$tkey]->userID = we_base_request::_(we_base_request::INT, $this->uid . '_task_' . $skey . '_' . $tkey . '_userid', $this->workflowDef->steps[$skey]->tasks[$tkey]->userID);
 
+			$this->workflowDef->steps[$skey]->tasks[$tkey]->username = we_base_request::_(we_base_request::STRINGC, $this->uid . '_task_' . $skey . '_' . $tkey . '_usertext', $this->workflowDef->steps[$skey]->tasks[$tkey]->username); //FIXME: this is a path to a user
 
-				$varname = $this->uid . '_task_' . $skey . '_' . $tkey . '_usertext';
+				$this->workflowDef->steps[$skey]->tasks[$tkey]->Edit = we_base_request::_(we_base_request::BOOL, $this->uid . '_task_' . $skey . '_' . $tkey . '_Edit', $this->workflowDef->steps[$skey]->tasks[$tkey]->Edit);
 
-				$this->workflowDef->steps[$skey]->tasks[$tkey]->username = we_base_request::_(we_base_request::STRING, $varname, $this->workflowDef->steps[$skey]->tasks[$tkey]->username);
-
-				$varname = $this->uid . '_task_' . $skey . '_' . $tkey . '_Edit';
-				$this->workflowDef->steps[$skey]->tasks[$tkey]->Edit = we_base_request::_(we_base_request::RAW, $varname, $this->workflowDef->steps[$skey]->tasks[$tkey]->Edit);
-
-				$varname = $this->uid . '_task_' . $skey . '_' . $tkey . '_Mail';
-				$this->workflowDef->steps[$skey]->tasks[$tkey]->Mail = we_base_request::_(we_base_request::EMAIL, $varname, $this->workflowDef->steps[$skey]->tasks[$tkey]->Mail);
+				$this->workflowDef->steps[$skey]->tasks[$tkey]->Mail = we_base_request::_(we_base_request::BOOL, $this->uid . '_task_' . $skey . '_' . $tkey . '_Mail', $this->workflowDef->steps[$skey]->tasks[$tkey]->Mail);
 			}
 		}
 	}
@@ -1436,7 +1422,7 @@ function checkData(){
 		</table>';
 	}
 
-	static function getLogForDocument($docID, $type = 0){
+	static function getLogForDocument($docID, $type = 0){//type is an string-array
 		$db = new DB_WE();
 
 		$content = array();
@@ -1452,8 +1438,7 @@ function checkData(){
 		$counter = 0;
 
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
-		$art = we_base_request::_(we_base_request::RAW, 'art', '');
-		$type = we_base_request::_(we_base_request::RAW, 'type', '');
+		$art = we_base_request::_(we_base_request::INT, 'art', '');
 		$numRows = we_workflow_log::NUMBER_LOGS;
 		$anz = $GLOBALS['ANZ_LOGS'];
 

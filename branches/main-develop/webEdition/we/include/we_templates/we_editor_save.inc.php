@@ -153,8 +153,8 @@ if($we_responseText){
 	} else { //	alert in normal mode
 		$_jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
 			//	JavaScript: generated in we_editor.inc.php
-			$GLOBALS['we_responseJS'].
-			we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5);//should be empty
+			(isset($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : '') .//fixme: isset only because of workflow_finish as command
+			we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5); //should be empty
 	}
 	echo $_jsCommand;
 }

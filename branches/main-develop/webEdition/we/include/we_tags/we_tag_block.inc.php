@@ -102,7 +102,7 @@ function we_tag_block($attribs){
 
 	$list = (isset($GLOBALS['lv'])) ? $GLOBALS['lv']->f($name) : $GLOBALS['we_doc']->getElement($name);
 
-	if($list){
+	if($list && is_string($list) && $list{0} == 'a'){
 		$list = unserialize($list);
 		if(is_array($list) && count($list) && ((count($list) - 1) != max(array_keys($list)))){
 			//reorder list!
@@ -172,8 +172,7 @@ function we_tag_blockControls($attribs){
 		}
 		$tabArray[] = (($attribs['pos'] > 0) ?
 				//enabled upBtn
-				we_html_button::create_button('image:btn_direction_up', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "'," . $jsSelector . ")")
-					:
+				we_html_button::create_button('image:btn_direction_up', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "'," . $jsSelector . ")") :
 				//disabled upBtn
 				we_html_button::create_button('image:btn_direction_up', '', true, 0, 0, '', '', true));
 		$tabArray[] = (($attribs['pos'] == $attribs['listSize'] - 1) ?

@@ -5,8 +5,8 @@ div.we_file_drag{
 	text-align: center;
 	margin: 1em 0;
 	color: #555;
-	border: 2px dashed #555;
-	border-radius: 7px;
+	border: 2px dotted #555;
+	/*border-radius: 7px;*/
 	cursor: default;
 	background-color: white;
 }

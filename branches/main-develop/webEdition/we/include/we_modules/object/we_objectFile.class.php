@@ -264,36 +264,31 @@ class we_objectFile extends we_document{
 
 	function formLanguage(){
 		we_loadLanguageConfig();
-
 		$value = (isset($this->Language) ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
-
 		$inputName = 'we_' . $this->Name . '_Language';
-
 		$_languages = getWeFrontendLanguagesForBackend();
 		$this->setRootDirID(true);
 
 		if(LANGLINK_SUPPORT){
-			$htmlzw = '';
+			$htmlzw = we_html_element::htmlBr();
 			foreach($_languages as $langkey => $lang){
 				$LDID = intval(f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND DID=' . intval($this->ID) . ' AND Locale="' . $langkey . '"', '', $this->DB_WE));
 				$divname = 'we_' . $this->Name . '_LanguageDocDiv[' . $langkey . ']';
 				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formLanguageDocument($lang, $langkey, $LDID, $this->Table, $this->rootDirID) . '</div>';
 				$langkeys[] = $langkey;
 			}
-
-			return '<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
-				<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
-				<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
-			</table>' .
-				we_html_element::htmlBr() . $htmlzw;
 		} else {
-			return '<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
-			</table>';
+			$htmlzw = '';
 		}
+
+		return '<table border="0" cellpadding="0" cellspacing="0">
+				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>' .
+			(LANGLINK_SUPPORT ?
+				'<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
+					<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>' :
+				'') .
+			'</table>' . $htmlzw;
 	}
 
 	function copyDoc($id){
@@ -559,19 +554,19 @@ class we_objectFile extends we_document{
 			case we_base_constants::WE_EDITPAGE_WORKSPACE:
 				return 'we_templates/we_editor_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_INFO:
-				return 'we_modules/object/we_editor_info_objectFile.inc.php';
+				return 'we_editors/we_editor_info_objectFile.inc.php';
 			case we_base_constants::WE_EDITPAGE_CONTENT:
-				return 'we_modules/object/we_editor_contentobjectFile.inc.php';
+				return 'we_editors/we_editor_contentobjectFile.inc.php';
 			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				return 'we_modules/object/we_object_showDocument.inc.php';
 			case we_base_constants::WE_EDITPAGE_SCHEDULER:
-				return 'we_modules/schedule/we_editor_schedpro.inc.php';
+				return 'we_editors/we_editor_schedpro.inc.php';
 			case we_base_constants::WE_EDITPAGE_VARIANTS:
 				return 'we_templates/we_editor_variants.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
-				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
+				return 'we_editors/editor_weDocumentCustomerFilter.inc.php';
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
-				return 'we_versions/we_editor_versions.inc.php';
+				return 'we_editors/we_editor_versions.inc.php';
 			default:
 				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
@@ -1989,7 +1984,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	public function insertAtIndex(){
+	public function insertAtIndex(array $only = null, array $fieldTypes = null){
 		if(!($this->IsSearchable && $this->Published)){
 			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($this->ID));
 			return true;
@@ -2130,7 +2125,7 @@ class we_objectFile extends we_document{
 		parent::i_convertElemFromRequest($type, $v, $k);
 	}
 
-	function we_initSessDat($sessDat){
+	public function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
 		$this->DefArray = $this->getDefaultValueArray();
 		$this->i_objectFileInit();
@@ -2774,8 +2769,7 @@ class we_objectFile extends we_document{
 		$we_include = $includepath ? $includepath : $GLOBALS['we_doc']->TemplatePath;
 		ob_start();
 		include($we_include);
-		$contents = ob_get_contents();
-		ob_end_clean();
+		$contents = ob_get_clean();
 		if(isset($backupdoc)){
 			$GLOBALS['we_doc'] = $backupdoc;
 		}

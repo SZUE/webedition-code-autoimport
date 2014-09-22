@@ -463,7 +463,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 				'src' => $src
 			);
 
-			$filter = array('filesize', 'type', 'id', 'showcontrol', 'showthumbcontrol', 'thumbnail', 'href', 'longdescid', 'showimage', 'showinputs', 'listviewname', 'parentid', 'startid'); //  dont use these array-entries
+			$filter = array('filesize', 'type', 'id', 'showcontrol', 'showthumbcontrol', 'thumbnail', 'href', 'longdescid', 'showimage', 'showinputs', 'listviewname', 'parentid', 'startid','origwidth','origheight'); //  dont use these array-entries
 
 			if(defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT){
 				$filter[] = 'name';
@@ -497,7 +497,8 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 
 			if(isset($attribs['only'])){
 				return (array_key_exists($attribs['only'], $attribs) ? $attribs[$attribs['only']] : '');
-			} else if(isset($attribs['pathonly']) && $attribs['pathonly']){
+			}
+			if(isset($attribs['pathonly']) && $attribs['pathonly']){
 				return $attribs['src'];
 			}
 
@@ -692,15 +693,15 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$this->DocChanged = true;
 	}
 
-	function getThumbnail(){
+	function getThumbnail($size = 150, $size2 = 200){
 		return ($this->getElement('data') && is_readable($this->getElement('data')) ? ($this->isSvg() ?
 					'<svg id="' . we_base_file::getUniqueId() . '" height="150" width="150" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><image x="0" y="0" height="150" width="150"  xlink:href="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(array($_SERVER['DOCUMENT_ROOT'], WEBEDITION_DIR), '', $this->getElement('data')) . '" /></svg>' :
 					'<img src="' . WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
 						'id' => $this->ID,
-						'size' => 150,
+						'size' => $size,
 						'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')),
 						'extension' => $this->Extension,
-						'size2' => 200)) . '" border="0" /></a>' ) :
+						'size2' => $size2)) . '" border="0" /></a>' ) :
 				$this->getHtml());
 	}
 

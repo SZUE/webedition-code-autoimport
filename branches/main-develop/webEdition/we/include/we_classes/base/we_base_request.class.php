@@ -88,10 +88,10 @@ class we_base_request{
 				return;
 			case self::UNIT:
 				$regs = array(); //FIMXE: check for %d[em,ex,pt,%...]?
-				$var = (preg_match('/(\d+) ?(em|ex|pt|px|%)/', $var, $regs) ? $regs[1] . $regs[2] : 0 );
+				$var = (preg_match('/(\d+) ?(em|ex|pt|px|%)?/', $var, $regs) ? $regs[1] . (isset($regs[2]) ? $regs[2] : '') : '' );
 				return;
 			case self::INT:
-				$var = intval($var);
+				$var = ($var === '' ? $default : intval($var));
 				return;
 			case self::FLOAT:
 				//FIXME: check for country dependencies (eg. 1.3333,22)

@@ -38,8 +38,7 @@ function we_tag_calculate($attribs, $content){
 			ob_start();
 			return;
 		case 'stop':
-			$content = ob_get_contents();
-			ob_end_clean();
+			$content = ob_get_clean();
 			unset($GLOBALS['calculate']);
 			$sum = weTag_getAttribute('sum', $attribs);
 			$num_format = weTag_getAttribute('num_format', $attribs);

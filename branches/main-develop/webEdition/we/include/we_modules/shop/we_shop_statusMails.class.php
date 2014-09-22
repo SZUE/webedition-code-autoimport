@@ -44,10 +44,9 @@ class we_shop_statusMails{
 		$this->FieldsDocuments = $FieldsDocuments;
 	}
 
-	public static function initByRequest($req){//FIXME: this is unchecked!!
-
+	public static function initByRequest(){//FIXME: this is unchecked!!
 		return new self(
-			$req['FieldsHidden'], $req['FieldsHiddenCOV'], $req['FieldsText'], $req['FieldsMails'], $req['EMailData'], $req['LanguageData'], $req['FieldsDocuments']
+			we_base_request::_(we_base_request::STRING, 'FieldsHidden'), we_base_request::_(we_base_request::STRING, 'FieldsHiddenCOV'), we_base_request::_(we_base_request::STRING, 'FieldsText'), we_base_request::_(we_base_request::STRING, 'FieldsMails'), we_base_request::_(we_base_request::STRING, 'EMailData'), we_base_request::_(we_base_request::STRING, 'LanguageData'), we_base_request::_(we_base_request::STRING, 'FieldsDocuments')
 		);
 	}
 
@@ -339,7 +338,7 @@ class we_shop_statusMails{
 		$DB_WE = $GLOBALS['DB_WE'];
 
 		if($DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strFelder="' . $DB_WE->escape(serialize($this)) . '",strDateiname="weShopStatusMails"')){
-			$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $DB_WE);
+			$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', '', $DB_WE);
 			if($strFelder !== ''){
 				$CLFields = unserialize($strFelder);
 				$CLFields['languageField'] = $this->LanguageData['languageField'];

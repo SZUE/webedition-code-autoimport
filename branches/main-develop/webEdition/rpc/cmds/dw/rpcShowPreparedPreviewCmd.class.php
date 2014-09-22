@@ -32,7 +32,7 @@ class rpcShowPreparedPreviewCmd extends rpcCmd{
 
 		$_REQUEST['we_cmd'][0] = "";
 
-		if(($dt=we_base_request::_(we_base_request::STRING, 'we_dt', ''))){
+		if(($dt = we_base_request::_(we_base_request::STRING, 'we_dt', ''))){
 			$we_dt = isset($_SESSION['weS']['we_data'][$dt]) ? $_SESSION['weS']['we_data'][$dt] : '';
 		}
 
@@ -42,14 +42,13 @@ class rpcShowPreparedPreviewCmd extends rpcCmd{
 		$GLOBALS['we_doc']->setElement("data", stripslashes($_SESSION['weS']['rpc_previewCode']));
 		unset($_SESSION['weS']['rpc_previewCode']);
 
-		$GLOBALS['we_doc']->EditPageNr = (we_base_request::_(we_base_request::STRING, 'mode', '')== "preview" ? we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE : we_base_constants::WE_EDITPAGE_PREVIEW);
+		$GLOBALS['we_doc']->EditPageNr = (we_base_request::_(we_base_request::STRING, 'mode', '') == "preview" ? we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE : we_base_constants::WE_EDITPAGE_PREVIEW);
 
 		$we_doc = $GLOBALS['we_doc'];
 
 		ob_start();
 		include( $GLOBALS['we_doc']->editor() );
-		$data = ob_get_contents();
-		ob_end_clean();
+		$data = ob_get_clean();
 
 		$resp->addData("data", $data);
 

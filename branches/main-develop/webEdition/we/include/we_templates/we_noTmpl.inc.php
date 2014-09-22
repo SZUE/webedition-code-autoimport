@@ -28,10 +28,10 @@ echo we_html_element::htmlDocType();
 	<head>
 		<?php
 		if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
-			print STYLESHEET;
+			echo STYLESHEET;
 		}
 		if($we_doc->getElement('Charset')){
-			print we_html_tools::htmlMetaCtCharset('text/html', $we_doc->getElement('Charset'));
+			echo we_html_tools::htmlMetaCtCharset('text/html', $we_doc->getElement('Charset'));
 		}
 		if($we_doc->getElement('Keywords')){
 			?>
@@ -42,13 +42,13 @@ echo we_html_element::htmlDocType();
 			?>
 			<meta name="description" content="<?php print $we_doc->getElement('Description') ?>">
 		<?php } ?>
-		<title><?php print $we_doc->getElement('Title') ?></title>
+		<title><?php echo $we_doc->getElement('Title') ?></title>
 		<?php
 		if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 			echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		} else {
-			print we_tag('textarea', array('name' => 'HEAD'));
+			echo we_tag('textarea', array('name' => 'HEAD'));
 		}
 		?>
 	</head>
@@ -72,12 +72,12 @@ echo we_html_element::htmlDocType();
 ' . we_tag('textarea', array('name' => 'BODY', 'rows' => 15, 'cols' => 80, 'wrap' => 'virtual', 'style' => 'width: 600px;')) . '
 <pre class="defaultfont">	&lt;/body&gt;
 &lt;/html&gt;</pre>';
-				print we_html_tools::htmlMessageBox(667, 650, $foo);
+				echo we_html_tools::htmlMessageBox(667, 650, $foo);
 				?>
 			</form>
 		</body>
 	<?php } else { ?>
-		<body<?php print ' ' . we_tag('input', array('name' => 'BODYTAG')); ?>>
+		<body <?php echo we_tag('input', array('name' => 'BODYTAG')); ?>>
 			<?php printElement(we_tag('textarea', array('name' => 'BODY'), '')); ?>
 		</body>
 	<?php } ?>

@@ -37,7 +37,7 @@ class we_shop_view extends we_modules_view{
 		}
 		// print $yearTrans;
 		/// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', 'strFelder', $this->db));
+		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $this->db));
 		for($i = 0; $i <= 3; $i++){
 			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 		}
@@ -223,7 +223,7 @@ function we_cmd() {
 		$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
 
 		// Get Country and Lanfield Data
-		$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $this->db);
+		$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', '', $this->db);
 		if($strFelder !== ''){
 			$CLFields = unserialize($strFelder);
 		} else {
@@ -234,7 +234,7 @@ function we_cmd() {
 		}
 		$this->CLFields = $CLFields; //imi
 		// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $this->db));
+		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', '', $this->db));
 
 		$waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
 		$dbPreisname = 'price';
@@ -828,7 +828,7 @@ function we_cmd() {
 				function we_cmd() {
 
 					var args = "";
-					var url = "<?php print WE_SHOP_MODULE_DIR . 'edit_shop_properties.php'; ?>?";
+					var url = "<?php echo WE_SHOP_MODULE_DIR . 'edit_shop_properties.php'; ?>?";
 
 					for (var i = 0; i < arguments.length; i++) {
 						url += "we_cmd[" + i + "]=" + escape(arguments[i]);
@@ -1059,7 +1059,7 @@ function submitForm() {
 				$cancelBut = we_html_button::create_button('cancel', 'javascript:window.close();');
 				$searchBut = we_html_button::create_button('search', 'javascript:searchArticles();');
 				$searchArticle = we_base_request::_(we_base_request::STRING, 'searchArticle');
-			//FIXME:why do we do this expensive search??!
+				//FIXME:why do we do this expensive search??!
 				// first get all shop documents
 				$this->db->query('SELECT c.dat AS shopTitle, ' . LINK_TABLE . '.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID' .
 					' WHERE l.Name="' . WE_SHOP_TITLE_FIELD_NAME . '" AND  l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" ' .
@@ -1418,7 +1418,7 @@ function we_submit() {
 				echo '</head>
 						<body class="weDialogBody">
 						<form name="we_form" target="edbody">' .
-				we_html_tools::hidden('bid', $_REQUEST['bid']) .
+				we_html_tools::hidden('bid', we_base_request::_(we_base_request::INT, 'bid')) .
 				we_html_tools::hidden("we_cmd[]", 'save_shipping_cost') .
 				we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
 				'</form></body></html>';

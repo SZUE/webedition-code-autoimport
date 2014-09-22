@@ -13,7 +13,7 @@ class we_shop_vatRule{
 	var $conditionalRules;
 	var $defaultValue = 'true';
 
-	function __construct($defaultValue, $stateField, $liableToVat, $notLiableToVat, $conditionalRules, $stateFieldIsISO = '0'){
+	private function __construct($defaultValue, $stateField, $liableToVat, $notLiableToVat, $conditionalRules, $stateFieldIsISO = '0'){
 
 		$this->defaultValue = $defaultValue;
 		$this->stateField = $stateField;
@@ -23,7 +23,7 @@ class we_shop_vatRule{
 		$this->conditionalRules = $conditionalRules;
 	}
 
-	function executeVatRule($customer = false){
+	public function executeVatRule($customer = false){
 		// now check all rules for the vat
 
 		if($customer){
@@ -60,39 +60,40 @@ class we_shop_vatRule{
 		return ($this->defaultValue == 'true' ? true : false);
 	}
 
-	public static function initByRequest(&$req){//FIXME: this is unchecked
-
-		return new we_shop_vatRule(
-			$req['defaultValue'], $req['stateField'], self::makeArrayFromReq($req['liableToVat']), self::makeArrayFromReq($req['notLiableToVat']), self::makeArrayFromConditionField($req), $req['stateFieldIsISO']
+	public static function initByRequest(){//FIXME: this is unchecked
+		return new self(
+			we_base_request::_(we_base_request::STRING, 'defaultValue'), we_base_request::_(we_base_request::STRING, 'stateField'), self::makeArrayFromReq(we_base_request::_(we_base_request::STRING, 'liableToVat')), self::makeArrayFromReq(we_base_request::_(we_base_request::STRING, 'notLiableToVat')), self::makeArrayFromConditionField(), we_base_request::_(we_base_request::STRING, 'stateFieldIsISO')
 		);
 	}
 
-	function getShopVatRule(){
+	public static function getShopVatRule(){
 		if(($strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShopVatRule"'))){
 			//FIX old class names
 			return unserialize(strtr($strFelder, array('O:13:"weShopVatRule":' => 'O:15:"we_shop_vatRule":')));
-		} else {
-			return new we_shop_vatRule('true', '', array(), array(), array(
-				array(
-					'states' => array(),
-					'customerField' => '',
-					'condition' => '',
-					'returnValue' => 1
-				)
-				), 0
-			);
 		}
+		return new self('true', '', array(), array(), array(
+			array(
+				'states' => array(),
+				'customerField' => '',
+				'condition' => '',
+				'returnValue' => 1
+			)
+			), 0
+		);
 	}
 
-	private static function makeArrayFromConditionField($req){
+	private static function makeArrayFromConditionField(){
 		$retArr = array();
-
-		for($i = 0; $i < count($req['conditionalStates']); $i++){
+		$conditionalStates = we_base_request::_(we_base_request::STRING, 'conditionalStates');
+		$conditionalCustomerField = we_base_request::_(we_base_request::STRING, 'conditionalCustomerField');
+		$conditionalCondition = we_base_request::_(we_base_request::STRING, 'conditionalCondition');
+		$conditionalReturn = we_base_request::_(we_base_request::STRING, 'conditionalReturn');
+		foreach($conditionalStates as $i => $cs){
 			$retArr[] = array(
-				'states' => self::makeArrayFromReq($req['conditionalStates'][$i]),
-				'customerField' => $req['conditionalCustomerField'][$i],
-				'condition' => $req['conditionalCondition'][$i],
-				'returnValue' => $req['conditionalReturn'][$i],
+				'states' => self::makeArrayFromReq($cs),
+				'customerField' => $conditionalCustomerField[$i],
+				'condition' => $conditionalCondition[$i],
+				'returnValue' => $conditionalReturn[$i],
 			);
 		}
 		return $retArr;
@@ -106,7 +107,7 @@ class we_shop_vatRule{
 		$DB_WE = $GLOBALS['DB_WE'];
 
 		if($DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(serialize($this)) . '", strDateiname="weShopVatRule"')){
-			$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $DB_WE);
+			$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', '', $DB_WE);
 			if($strFelder !== ''){
 				$DB_WE->next_record();
 				$CLFields = unserialize($strFelder);
@@ -116,9 +117,8 @@ class we_shop_vatRule{
 			}
 
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 }

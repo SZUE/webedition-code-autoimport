@@ -167,10 +167,11 @@ class we_webEditionDocument extends we_textContentDocument{
 			case we_base_constants::WE_EDITPAGE_VARIANTS:
 				return 'we_templates/we_editor_variants.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
-				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
+				return 'we_editors/editor_weDocumentCustomerFilter.inc.php';
 			default:
 				return parent::editor();
 		}
+
 		return preg_replace('/.tmpl$/i', '.php', $this->TemplatePath); // .tmpl mod
 	}
 
@@ -282,12 +283,12 @@ class we_webEditionDocument extends we_textContentDocument{
 			$myid = intval($this->TemplateID ? $this->TemplateID : 0);
 			$path = ($myid ? f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($myid), '', $this->DB_WE) : '');
 
-			$ueberschrift = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
+			/*$ueberschrift = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 					'<a href="javascript:goTemplate(' . $myid . ')">' . g_l('weClass', '[template]') . '</a>' :
-					g_l('weClass', '[template]'));
+					g_l('weClass', '[template]'));*/
 
 			if($this->DocType){
-				return (empty($templateFromDoctype) ?
+				return (!$templateFromDoctype ?
 						we_html_tools::htmlFormElementTable($path, g_l('weClass', '[template]'), 'left', 'defaultfont') :
 						$this->xformTemplatePopup(388));
 			}
@@ -366,9 +367,16 @@ class we_webEditionDocument extends we_textContentDocument{
 	 */
 	function formMetaInfos(){
 		//	Collect data from meta-tags
-		$_code = $this->getTemplateCode();
-
-		we_tag_tagParser::getMetaTags($_code);
+		//will evaluate the tags => we get meta data set
+		$oldEdit = $this->EditPageNr; //FIXME: cache data
+		$this->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
+		$include = $this->editor();
+		if($include && $include != WE_INCLUDES_PATH . 'we_templates/' . we_template::NO_TEMPLATE_INC){
+			ob_start();
+			include($include);
+			ob_end_clean();
+		}
+		$this->EditPageNr = $oldEdit;
 
 		//	if a meta-tag is set all information are in array $GLOBALS["meta"]
 		return '
@@ -405,7 +413,6 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			//	This is the input field for the charset
 			$inputName = 'we_' . $this->Name . "_attrib[$name]";
-
 			$chars = explode(',', $GLOBALS['meta']['Charset']['defined']);
 
 			//	input field - check value
@@ -519,7 +526,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				array_push($fieldTypes, 'Title', 'Description', 'Keywords');
 				foreach($fieldTypes as $field){//for #230: if variables are used in fieldnames we cannot determine these types
 					if($field && ($field[0] == '$' || isset($field[1]) && $field[1] == '$')){
-						unset($fieldTypes);
+						$fieldTypes = array();
 						break;
 					}
 				}
@@ -719,8 +726,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		if(is_file($we_include)){
 			ob_start();
 			include($we_include);
-			$contents = ob_get_contents();
-			ob_end_clean();
+			$contents = ob_get_clean();
 		} else {
 			t_e('File ' . $we_include . ' not found!');
 			$contents = '';
@@ -735,7 +741,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return $contents;
 	}
 
-	function we_initSessDat($sessDat){
+	public function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
 		$this->setTemplatePath();
 	}

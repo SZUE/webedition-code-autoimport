@@ -39,15 +39,15 @@ echo STYLESHEET;
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::WEDOCUMENT:
 			case 'objectFile':
-				we_shop_variants::edit(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),$we_doc);
+				we_shop_variants::edit(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), $we_doc);
 				break;
 
 			case we_base_ContentTypes::TEMPLATE:
-				include(WE_MODULES_PATH . 'shop/we_template_variant.inc.php');
+				include(TEMPLATES_DIR . 'we_template_variant.inc.php');
 				break;
 
 			default:
-				print $we_doc->ContentType . ' not available (' . __FILE__ . ' ) ';
+				echo $we_doc->ContentType . ' not available (' . __FILE__ . ' ) ';
 				break;
 		}
 		?>

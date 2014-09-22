@@ -62,7 +62,7 @@ $jsFunction = '
 // initialise the shopStatusMails Object
 if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'saveShopStatusMails'){
 	// initialise the vatRule by request
-	$weShopStatusMails = we_shop_statusMails::initByRequest($_REQUEST);//FIXME: this is unchecked
+	$weShopStatusMails = we_shop_statusMails::initByRequest();
 	$weShopStatusMails->save();
 } else {
 

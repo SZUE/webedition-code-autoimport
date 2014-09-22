@@ -244,7 +244,7 @@ class we_object extends we_document{
 							}
 						}
 						$q[] = '`' . $name . '` ' . $this->switchtypes($cur);
-						
+
 						//add index for complex queries
 						if($this->getElement($cur . self::ELEMENT_TYPE, 'dat') == we_objectFile::TYPE_OBJECT){
 							$indexe[] = 'KEY (`' . $name . '`)';
@@ -427,12 +427,10 @@ class we_object extends we_document{
 						}
 						if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
 							$arrt[$nam]['meta'][] = $_val;
+						} elseif(($key = $this->getElement($cur . 'defaultkey' . $f))){
+							$arrt[$nam]['meta'][$key] = $_val;
 						} else {
-							if(($key = $this->getElement($cur . 'defaultkey' . $f))){
-								$arrt[$nam]['meta'][$key] = $_val;
-							} else {
-								$arrt[$nam]['meta'][$nam . 'defaultkey' . $f] = $_val;
-							}
+							$arrt[$nam]['meta'][''] = $_val;
 						}
 					}
 
@@ -1934,7 +1932,7 @@ class we_object extends we_document{
 		$this->Templates = makeCSVFromArray($Templates, true);
 	}
 
-	function we_initSessDat($sessDat){
+	public function we_initSessDat($sessDat){
 		//	charset must be in other namespace -> for header !!!
 		$this->setElement('Charset', (isset($sessDat["0"]["SerializedArray"]["elements"]["Charset"]) ? $sessDat["0"]["SerializedArray"]["elements"]["Charset"]["dat"] : ""), 'attrib');
 		parent::we_initSessDat($sessDat);
@@ -1963,7 +1961,6 @@ class we_object extends we_document{
 					$this->setElement($name . "count", (( isset($vals[$name]["meta"]) && $vals[$name]["meta"]) ? (count($vals[$name]["meta"]) - 1) : 0));
 					if(isset($vals[$name]["meta"]) && is_array($vals[$name]["meta"])){
 						$keynames = array_keys($vals[$name]["meta"]);
-
 						for($ll = 0; $ll <= count($vals[$name]["meta"]); $ll++){
 							$this->setElement($name . "defaultkey" . $ll, (isset($keynames[$ll]) ? $keynames[$ll] : ""));
 							$this->setElement($name . "defaultvalue" . $ll, (isset($keynames[$ll]) ? $vals[$name]["meta"][$keynames[$ll]] : ""));

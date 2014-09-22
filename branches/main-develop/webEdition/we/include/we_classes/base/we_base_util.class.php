@@ -32,9 +32,10 @@
  * @static
  */
 abstract class we_base_util{
+	const MIME_BY_HEAD_THEN_EXTENSION = 0;
 	const MIME_BY_EXTENSION = 1;
 	const MIME_BY_HEAD = 2;
-	const MIME_BY_HEAD_THEN_EXTENSION = 0;
+	const MIME_BY_DATA = 3;
 
 	//FIXME: add more extensions
 	//NOTICE: WE contenttypes differ strongly from the following mime types!
@@ -391,24 +392,46 @@ abstract class we_base_util{
 		}
 	}
 
-	public static function getMimeType($ext, $filepath = '', $method = 0){
-		if($method == self::MIME_BY_HEAD || $method == self::MIME_BY_HEAD_THEN_EXTENSION){
-			if($filepath && function_exists('finfo_open')){
-				$finfo = finfo_open(FILEINFO_MIME_TYPE);
-				$mime = finfo_file($finfo, $filepath);
-				finfo_close($finfo);
-
-				return $mime ? $mime : false;
-			} else if($filepath && function_exists('mime_content_type')){
-				return $mime = mime_content_type($filepath) ? $mime : false;
-			}
+	public static function getMimeType($ext, $filepath = '', $method = self::MIME_BY_HEAD_THEN_EXTENSION){
+		switch($filepath ? $method : self::MIME_BY_EXTENSION){
+			case self::MIME_BY_DATA:
+				if(function_exists('finfo_open')){
+					$finfo = finfo_open(FILEINFO_MIME_TYPE);
+					$mime = finfo_buffer($finfo, $filepath);
+					finfo_close($finfo);
+					if($mime){
+						return $mime;
+					}
+				}
+				break;
+			case self::MIME_BY_HEAD:
+			case self::MIME_BY_HEAD_THEN_EXTENSION:
+				if(function_exists('finfo_open')){
+					$finfo = finfo_open(FILEINFO_MIME_TYPE);
+					$mime = finfo_file($finfo, $filepath);
+					finfo_close($finfo);
+					if($mime || $method == self::MIME_BY_HEAD){
+						return $mime ? $mime : false;
+					}
+				}
+				if(function_exists('mime_content_type')){
+					$mime = mime_content_type($filepath);
+					if($mime || $method == self::MIME_BY_HEAD){
+						return $mime ? $mime : false;
+					}
+				}
+				if($method == self::MIME_BY_HEAD){
+					return false;
+				}
+				break;
+			case self::MIME_BY_EXTENSION:
+				break;
+			default:
+				//false means: no info about MIME type can be determined
+				return false;
 		}
-		if($method == self::MIME_BY_EXTENSION || $method == self::MIME_BY_HEAD_THEN_EXTENSION){
-			return (!isset(self::$mimetypes[strtolower($ext)])) ? 'application/octet-stream' : self::$mimetypes[strtolower($ext)];
-		}
-
-		//false means: no info about MIME type can be determined
-		return false;
+		//self::MIME_BY_EXTENSION
+		return (!isset(self::$mimetypes[strtolower($ext)])) ? 'application/octet-stream' : self::$mimetypes[strtolower($ext)];
 	}
 
 	public static function extension2mime($ext){

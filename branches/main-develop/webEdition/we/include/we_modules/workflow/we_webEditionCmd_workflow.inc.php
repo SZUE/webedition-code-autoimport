@@ -23,38 +23,41 @@
  */
 ?>
 <script type="text/javascript"><!--
-case "workflow_isIn":
-					case "workflow_pass":
-					case "workflow_decline":
-					new jsWindow(url, "choose_workflow", -1, -1, 420, 320, true, true, true, true);
-	break;
-					case "workflow_finish":
-					we_repl(self.load, url, arguments[0]);
-	break;
-					case "workflow_edit":
-					case "workflow_edit_ifthere":
-					new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
-	break;
-					case "new_user":
-					case "exit_workflow":
+		switch (WE_REMOVE) {
+
+		case "workflow_isIn":
+		case "workflow_pass":
+		case "workflow_decline":
+			new jsWindow(url, "choose_workflow", -1, -1, 420, 320, true, true, true, true);
+			break;
+		case "workflow_finish":
+			we_repl(self.load, url, arguments[0]);
+			break;
+		case "workflow_edit":
+		case "workflow_edit_ifthere":
+			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+			break;
+		case "new_user":
+		case "exit_workflow":
 //case "reload_workflow":
-					case "save_workflow":
-					case "new_workflow":
-					case "delete_workflow":
-					case "empty_log":
-					var fo = false;
-	if (jsWindow_count) {
-		for (var k = jsWindow_count - 1; k > -1; k--) {
-			eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + arguments[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-			if (fo)
-				break;
-		}
+		case "save_workflow":
+		case "new_workflow":
+		case "delete_workflow":
+		case "empty_log":
+			var fo = false;
+			if (jsWindow_count) {
+				for (var k = jsWindow_count - 1; k > -1; k--) {
+					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + arguments[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
+					if (fo)
+						break;
+				}
 <?php
 if(we_base_browserDetect::isIE()){
 	echo "wind.focus();";
 }
 ?>
-	}
-	break;
+			}
+			break;
+	}//WE_REMOVE
 //-->
 </script>

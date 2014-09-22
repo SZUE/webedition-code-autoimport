@@ -124,13 +124,13 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_CONTENT;
 		break;
 	case 'users_add_owner':
-		$we_doc->add_owner(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
+		$we_doc->add_owner(we_base_request::_(we_base_request::INTLIST, 'we_cmd', 0, 1));
 		break;
 	case 'users_del_owner':
 		$we_doc->del_owner(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 		break;
 	case 'users_add_user':
-		$we_doc->add_user(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
+		$we_doc->add_user(we_base_request::_(we_base_request::INTLIST, 'we_cmd', 0, 1));
 		break;
 	case 'users_del_user':
 		$we_doc->del_user(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
@@ -262,7 +262,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 //	if document is locked - only Preview mode is possible. otherwise show warning.
 $_userID = $we_doc->isLockedByUser();
 if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // document is locked
-	if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)){
+	if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)&& !$we_doc instanceof we_template){
 		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_PREVIEW;
 		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
 	} else {
@@ -295,8 +295,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 	include((substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT']) ?
 			'' : WE_INCLUDES_PATH) .
 		$we_include);
-	$contents = ob_get_contents();
-	ob_end_clean();
+	$contents = ob_get_clean();
 	//usedElementNames is set after include
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 //  SEEM the file
@@ -326,8 +325,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 	ob_start();
 	//FIXME:eval
 	eval('?>' . str_replace('<?xml', '<?php print \'<?xml\'; ?>', $contents));
-	$contents = ob_get_contents();
-	ob_end_clean();
+	$contents = ob_get_clean();
 //
 // --> Glossary Replacement
 //
@@ -734,8 +732,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 					we_html_tools::headerCtCharset('text/html', $charset);
 				}
 				include($we_include);
-				$contents = ob_get_contents();
-				ob_end_clean();
+				$contents = ob_get_clean();
 
 //  SEEM the file
 //  but only, if we are not in the template-editor

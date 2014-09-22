@@ -23,27 +23,30 @@
  */
 ?>
 <script type="text/javascript"><!--
+	switch (WE_REMOVE) {
 
-	case "voting_edit":
-					case "voting_edit_ifthere":
-					new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
-	break;
-					case "new_voting":
-					case "new_voting_group":
-					case "save_voting":
-					case "exit_voting":
-					case "delete_voting":
-					var fo = false;
-	if (jsWindow_count){
-	for (var k = jsWindow_count - 1; k > - 1; k--){
-	eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + arguments[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo) break;
-					}
-	wind.focus();
-					}
-	break;
-					case "unlock"://FIXME:???
-					we_repl(self.load, url, arguments[0]);
-	break;
+		case "voting_edit":
+		case "voting_edit_ifthere":
+			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+			break;
+		case "new_voting":
+		case "new_voting_group":
+		case "save_voting":
+		case "exit_voting":
+		case "delete_voting":
+			var fo = false;
+			if (jsWindow_count) {
+				for (var k = jsWindow_count - 1; k > -1; k--) {
+					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + arguments[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
+					if (fo)
+						break;
+				}
+				wind.focus();
+			}
+			break;
+		case "unlock"://FIXME:???
+			we_repl(self.load, url, arguments[0]);
+			break;
+	}//WE_REMOVE
 //-->
 </script>

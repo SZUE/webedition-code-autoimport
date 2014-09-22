@@ -5,7 +5,7 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   ID bigint(20) unsigned NOT NULL auto_increment,
   documentID int(11) unsigned NOT NULL,
   documentTable varchar(64) NOT NULL,
-  documentElements blob NOT NULL,
+  documentElements longblob NOT NULL,
   documentScheduler blob NOT NULL,
   documentCustomFilter blob NOT NULL,
   `timestamp` int(10) unsigned NOT NULL,

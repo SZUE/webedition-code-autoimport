@@ -73,10 +73,9 @@ class we_binaryDocument extends we_document{
 			case we_base_constants::WE_EDITPAGE_CONTENT:
 				return 'we_templates/we_editor_binaryContent.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
-				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
+				return 'we_editors/editor_weDocumentCustomerFilter.inc.php';
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
-				return 'we_versions/we_editor_versions.inc.php';
-				break;
+				return 'we_editors/we_editor_versions.inc.php';
 			default:
 				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
@@ -133,7 +132,7 @@ class we_binaryDocument extends we_document{
 				return false;
 			}
 		}
-		if(!we_base_file::copyFile($file, $this->getRealPath())){
+		if(!we_base_file::makeHardLink($file, $this->getRealPath())){
 			return false;
 		}
 		if($this->isMoved()){
@@ -146,24 +145,12 @@ class we_binaryDocument extends we_document{
 		return true;
 	}
 
-	private function writeFile($to, $old){
-		$is_ok = false;
-		$file = $this->getElement('data');
-		if($file && file_exists($file)){
-			$is_ok = we_base_file::copyFile($file, $to);
-			if($this->isMoved()){
-				we_base_file::delete($old);
-			}
-		}
-		return $is_ok;
-	}
-
 	protected function i_writeSiteDir(){
-		return $this->writeFile($this->getSitePath(), $this->getSitePath(true));
+		//do nothing - remove functionality added
 	}
 
 	protected function i_writeMainDir(){
-		return $this->writeFile($this->getRealPath(), $this->getRealPath(true));
+		//do nothing - remove functionality added
 	}
 
 	/** gets the filesize of the document */
@@ -180,7 +167,7 @@ class we_binaryDocument extends we_document{
 
 		$text = "";
 		$this->resetElements();
-		while((list($k, $v) = $this->nextElement(""))){
+		while((list($k, $v) = $this->nextElement(''))){
 			$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) == "a:") ? unserialize($v["dat"]) : "";
 			if(!is_array($foo)){
 				if(isset($v["type"]) && $v["type"] == "txt"){
@@ -315,7 +302,6 @@ class we_binaryDocument extends we_document{
 	 * Returns HTML code for Upload Button and infotext
 	 */
 	function formUpload(){
-		$uploadButton = we_html_button::create_button("upload", "javascript:we_cmd('editor_uploadFile','" . $this->ContentType . "')", true, 150, 22, "", "", false, true, "", true);
 		$fs = $GLOBALS['we_doc']->getFilesize();
 		$fs = g_l('metadata', "[filesize]") . ": " . round(($fs / 1024), 2) . "&nbsp;KB";
 		$_metaData = $this->getMetaData();
@@ -333,7 +319,7 @@ class we_binaryDocument extends we_document{
 			}
 		}
 
-		$filetype = g_l('metadata', '[filetype]') . ': ' . (empty($this->Extension) ? '' : substr($this->Extension, 1));
+		$ft = g_l('metadata', '[filetype]') . ': ' . (empty($this->Extension) ? '' : substr($this->Extension, 1));
 
 		$md = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
 				'' :
@@ -342,18 +328,9 @@ class we_binaryDocument extends we_document{
 				(count($_mdtypes) > 0 ? implode(', ', $_mdtypes) : g_l('metadata', "[none]")) .
 				'</a>');
 
+		$fileUpload = new we_fileupload_binaryDocument($this->ContentType, $this->Extension);
 
-		return '<table cellpadding="0" cellspacing="0" border="0" width="500">
-			<tr style="vertical-align:top;"><td class="defaultfont">' .
-			$uploadButton . '<br />' .
-			$fs . '<br />' .
-			$filetype . '<br />' .
-			$md . '</td><td width="100px" style="text-align:right;">' .
-			$this->getThumbnail() .
-			'</td></tr>
-			<tr><td colspan="2">' . we_html_tools::getPixel(4, 20) . '</td></tr>
-			<tr><td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', ($GLOBALS['we_doc']->getFilesize() ? "[upload_will_replace]" : "[upload_single_files]")), we_html_tools::TYPE_ALERT, 508) . '</td></tr>
-			</table>';
+		return $fileUpload->getHTML($fs, $ft, $md, $this->getThumbnail(100, 100), $this->getThumbnail());
 	}
 
 	function getThumbnail(){

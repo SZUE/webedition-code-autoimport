@@ -514,7 +514,7 @@ abstract class we_base_file{
 	 * @destination string where the link should point to (fullqualified)
 	 * @link string	fullqualified linkname
 	 */
-	static function makeSymbolicLink($destination, $link){
+	public static function makeSymbolicLink($destination, $link){
 		//basename+dirname
 		$destinationPath = str_replace($_SERVER['DOCUMENT_ROOT'], '', rtrim($destination, '/'));
 		$linktarget = realpath(is_link($link) ? dirname($link) . '/' . readlink($link) : $destination);
@@ -530,6 +530,24 @@ abstract class we_base_file{
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * creates a hard link to the target - if not possible, make a copy
+	 * @param type $destination
+	 * @param type $link
+	 */
+	public static function makeHardLink($destination, $link){
+		if(is_file($link)){
+			unlink($link);
+		}
+		if(!is_file($destination)){
+			t_e('destination not naming a file', $destination, $link);
+		}
+		if(@link($destination, $link)){
+			return true;
+		}
+		return self::copyFile($destination, $link);
 	}
 
 	static function lock($id){

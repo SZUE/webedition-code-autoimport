@@ -241,8 +241,8 @@ function setTab(tab) {
 			$tool = $GLOBALS['tool'] = $this->toolName;
 			ob_start();
 			include($this->toolDir . 'home.inc.php');
-			$out = ob_get_contents();
-			ob_end_clean();
+			$out = ob_get_clean();
+			
 			return
 				we_html_element::jsElement('
 								' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&home=1";

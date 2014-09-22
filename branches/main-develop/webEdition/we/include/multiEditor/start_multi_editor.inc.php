@@ -44,7 +44,7 @@ function _buildJsCommand($cmdArray = array('', '', 'cockpit', 'open_cockpit', ''
 	return 'if(top && top.weEditorFrameController) top.weEditorFrameController.openDocument("' . implode('", "', $cmdArray) . '");';
 }
 
-$jsCommand = _buildJsCommand();
+
 if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) == 'SEEM_edit_include'){ // Edit-Include-Mode
 // in multiEditorFrameset we_cmd[1] can be set to reach this
 	$directCmd = array();
@@ -66,6 +66,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) == 'SEEM_edit_in
 					$jsCommand = _buildJsCommand($directCmd);
 				} else {
 					t_e('invalid start doc ' . $_SESSION['weS']['SEEM']['startId']);
+					$jsCommand = _buildJsCommand();
 				}
 				break;
 			case 'object':
@@ -78,55 +79,53 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) == 'SEEM_edit_in
 					$jsCommand = _buildJsCommand($directCmd);
 				} else {
 					t_e('invalid start doc ' . $_SESSION['weS']['SEEM']['startId']);
+					$jsCommand = _buildJsCommand();
 				}
 				break;
+			default:
+				$jsCommand = _buildJsCommand();
 		}
 		unset($_SESSION['weS']['SEEM']['open_selected']);
 	} else {// normal mode, start document depends on settings
 		switch($_SESSION['prefs']['seem_start_type']){
 			case 'object':
 				if($_SESSION['prefs']['seem_start_file'] != 0 && checkIfValidStartdocument($_SESSION['prefs']['seem_start_file'], 'object')){ //	if a stardocument is already selected - show this
-					$directCmd = array(
+					$jsCommand = _buildJsCommand(array(
 						OBJECT_FILES_TABLE,
 						$_SESSION['prefs']['seem_start_file'],
 						'objectFile',
-					);
-					$jsCommand = _buildJsCommand($directCmd);
+					));
 				} else {
-					t_e('start doc not valid');
+					t_e('start doc not valid', $_SESSION['prefs']['seem_start_file']);
+					$jsCommand = _buildJsCommand();
 				}
 				break;
+			default:
+			case 'cockpit':
+				$jsCommand = _buildJsCommand();
+				break;
 			case '0':
-				$_SESSION['prefs']['seem_start_type'] = '0';
+				$jsCommand = 'top.weEditorFrameController.toggleFrames();';
 				break;
 			case 'document':
 				if($_SESSION['prefs']['seem_start_file'] != 0 && checkIfValidStartdocument($_SESSION['prefs']['seem_start_file'])){ //	if a stardocument is already selected - show this
-					$directCmd = array(
+					$jsCommand = _buildJsCommand(array(
 						FILE_TABLE,
 						$_SESSION['prefs']['seem_start_file'],
 						we_base_ContentTypes::WEDOCUMENT,
-					);
-					$jsCommand = _buildJsCommand($directCmd);
-				} else {
-					if($_SESSION['prefs']['seem_start_file'] != 0){
-						t_e('start doc not valid', $_SESSION['prefs']['seem_start_file']);
-					}
+					));
+				} elseif($_SESSION['prefs']['seem_start_file'] != 0){
+					t_e('start doc not valid', $_SESSION['prefs']['seem_start_file']);
+					$jsCommand = _buildJsCommand();
 				}
 				break;
 			case 'weapp':
 				if($_SESSION['prefs']['seem_start_weapp'] != ''){ //	if a we-app is choosen
-					$directCmd = array(
-						'', '', '', 'tool_' . $_SESSION['prefs']['seem_start_weapp'] . '_edit'
-					);
 					$jsCommand = _buildJsCommand() .
-						_buildJsCommand($directCmd);
+						_buildJsCommand(array('', '', '', 'tool_' . $_SESSION['prefs']['seem_start_weapp'] . '_edit'));
 				}
 				break;
 		}
 	}
 }
-if($_SESSION['prefs']['seem_start_type'] !== '0'){
-	print we_html_element::jsElement($jsCommand);
-} else {
-	print we_html_element::jsElement('top.weEditorFrameController.toggleFrames();');
-}
+echo 	we_html_element::jsElement($jsCommand);

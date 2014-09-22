@@ -1,10 +1,11 @@
 <?php
+
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 8097 $
+ * $Author: mokraemer $
+ * $Date: 2014-08-21 00:05:11 +0200 (Do, 21. Aug 2014) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -21,14 +22,12 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-?>
-<script type="text/javascript"><!--
-	switch (WE_REMOVE) {
+class we_view_document extends we_view_base{
 
-		case "edit_schedule":
-		case "schedule_edit_ifthere":
-			new jsWindow(url, "edit_module", -1, -1, 380, 250, true, true, true, true);
-			break;
-	}//WE_REMOVE
-//-->
-</script>
+	public function __construct(){
+		if(!$this->doc){
+			$this->doc = new we_document();
+		}
+	}
+
+}

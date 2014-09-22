@@ -161,25 +161,10 @@ function weRequest($type, $name, $default = false, $index = null){
 	return we_base_request::_($type, $name, $default, $index);
 }
 
-function we_makeHiddenFields($filter = ''){
-	$filterArr = explode(',', $filter);
-	$hidden = '';
-	if($_REQUEST){
-		foreach($_REQUEST as $key => $val){
-			if(!in_array($key, $filterArr)){
-				if(is_array($val)){
-					foreach($val as $v){
-						$hidden .= '<input type="hidden" name="' . $key . '" value="' . oldHtmlspecialchars($v) . '" />';
-					}
-				} else {
-					$hidden .= '<input type="hidden" name="' . $key . '" value="' . oldHtmlspecialchars($val) . '" />';
-				}
-			}
-		}
-	}
-	return $hidden;
-}
-
+/**
+ * @deprecated since version 6.3.9
+ *
+ */
 function we_make_attribs($attribs, $doNotUse = ''){
 	$attr = '';
 	$fil = explode(',', $doNotUse);
@@ -198,6 +183,11 @@ function we_make_attribs($attribs, $doNotUse = ''){
 }
 
 //FIXME: remove in 6.5
+/* * remove in 6.5
+ * @deprecated since version 6.3.7
+ * @param type $perm
+ * @return type
+ */
 function we_hasPerm($perm){
 	t_e('deprecated', 'call of ' . __FUNCTION__);
 	return permissionhandler::hasPerm($perm);
@@ -211,6 +201,11 @@ function we_getParentIDs($table, $id, &$ids, we_database_base $db = null){
 	}
 }
 
+/**
+ * @deprecated since version 6.3.8
+ * @param type $csv
+ * @return type
+ */
 function makeArrayFromCSV($csv){
 	$csv = trim(str_replace('\\,', '###komma###', $csv), ',');
 
@@ -225,6 +220,13 @@ function makeArrayFromCSV($csv){
 	return $foo;
 }
 
+/**
+ * @deprecated since version 6.3.8
+ * @param type $arr
+ * @param type $prePostKomma
+ * @param type $sep
+ * @return string
+ */
 function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
 	if(!$arr){
 		return '';
@@ -814,15 +816,12 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 		$_xmlClose = true;
 
 		if(XHTML_DEBUG){ //  check if XHTML_DEBUG is activated - system pref
-			require_once (WE_INCLUDES_PATH . 'validation/xhtml.inc.php');
-
-			$showWrong = (isset($_SESSION['prefs']['xhtml_show_wrong']) && $_SESSION['prefs']['xhtml_show_wrong'] && isset(
-					$GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
+			$showWrong = (isset($_SESSION['prefs']['xhtml_show_wrong']) && $_SESSION['prefs']['xhtml_show_wrong'] && isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
 // at the moment only transitional is supported
 			$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional');
 			$attribs = removeAttribs($attribs, $removeAttribs);
 
-			validateXhtmlAttribs($element, $attribs, $xhtmlType, $showWrong, XHTML_REMOVE_WRONG);
+			validation::validateXhtmlAttribs($element, $attribs, $xhtmlType, $showWrong, XHTML_REMOVE_WRONG);
 		} else {
 			$attribs = removeAttribs($attribs, $removeAttribs);
 		}
@@ -1158,7 +1157,7 @@ function implodeJS($js){
  * @deprecated since version 6.3.0
  */
 function update_time_limit($newLimit){
-	if($newLimit == 0 || intval(ini_get('memory_limit')) < $newLimit){
+	if($newLimit == 0 || intval(ini_get('max_execution_time')) < $newLimit){
 		@set_time_limit($newLimit);
 	}
 }

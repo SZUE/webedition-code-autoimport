@@ -22,6 +22,7 @@ we_vtabs.php
 we_backup/download/dummy
 we_ajaxcmd.php
 we/templates/dummy
+we/include/xhtml.inc.php
 we/include/we_widgets/mod/usr.inc.php
 we/include/we_widgets/mod/upb.inc.php
 we/include/we_widgets/mod/sct.inc.php
@@ -65,6 +66,7 @@ we/include/we_widgets/dlg/mfd.inc.php
 we/include/we_widgets/dlg/mdc/mdc.inc.php
 we/include/we_widgets/dlg/mdc.inc.php
 we/include/we_widgets/cmd.inc.php
+we/include/we_versions/we_editor_versions.inc.php
 we/include/we_versions/weVersionsView.class.php
 we/include/we_versions/weVersionsView.class.inc.php
 we/include/we_versions/weVersionsSearch.class.php
@@ -227,6 +229,7 @@ we/include/we_modules/users/edit_users_edheader.php
 we/include/we_modules/users/edit_users_edfooter.php
 we/include/we_modules/users/edit_users_cmd.php
 we/include/we_modules/users/edit_users_bcmd.php
+we/include/we_modules/shop/we_template_variant.inc.php
 we/include/we_modules/shop/we_shopDirSelector.php
 we/include/we_modules/shop/we_pager_class.inc.php
 we/include/we_modules/shop/we_listview_shopVariants.class.php
@@ -250,6 +253,7 @@ we/include/we_modules/shop/edit_shop_editorFrameset.php
 we/include/we_modules/schedule/we_schedule_prop.inc.php
 we/include/we_modules/schedule/we_schedpro_defines.inc.php
 we/include/we_modules/schedule/we_schedpro.inc.php
+we/include/we_modules/schedule/we_editor_schedpro.inc.php
 we/include/we_modules/object/we_searchobject_class.inc.php
 we/include/we_modules/object/we_objecttag.inc.php
 we/include/we_modules/object/we_objectFile.inc.php
@@ -257,6 +261,8 @@ we/include/we_modules/object/we_objectEx.inc.php
 we/include/we_modules/object/we_object.inc.php
 we/include/we_modules/object/we_listview_object.class.php
 we/include/we_modules/object/we_listview_multiobject.class.php
+we/include/we_modules/object/we_editor_info_objectFile.inc.php
+we/include/we_modules/object/we_editor_contentobjectFile.inc.php
 we/include/we_modules/object/we_class_folder.inc.php
 we/include/we_modules/newsletter/weNewsletterView.php
 we/include/we_modules/newsletter/weNewsletterTreeLoader.php
@@ -340,6 +346,7 @@ we/include/we_modules/customer/weCustomerEI.php
 we/include/we_modules/customer/weCustomerAdd.php
 we/include/we_modules/customer/weCustomer.php
 we/include/we_modules/customer/weAbstractCustomerFilter.class.php
+we/include/we_modules/customer/editor_weDocumentCustomerFilter.inc.php
 we/include/we_modules/customer/copyWeDocumentCustomerFilter.inc.php
 we/include/we_modules/banner/we_listview_banner.inc.php
 we/include/we_modules/banner/we_bannerSelectorFrameset.php

@@ -343,10 +343,7 @@ abstract class we_rebuild_base{
 			return array();
 		}
 		$data = array();
-		$_cat_query = '';
-		$_doctype_query = '';
-		$_folders_query = '';
-		$_template_query = '';
+		$_cat_query = $_doctype_query = $_folders_query = $_template_query = '';
 
 		if($categories){
 			$_foo = makeArrayFromCSV($categories);
@@ -358,17 +355,13 @@ abstract class we_rebuild_base{
 		}
 		if($doctypes){
 			$_foo = makeArrayFromCSV($doctypes);
-			$tmp = array();
-			foreach($_foo as $doctypeID){
-				$tmp [] = ' Doctype = "' . escape_sql_query($doctypeID) . '"';
-			}
-			$_doctype_query = '(' . implode(' OR ', $tmp) . ')';
+			$_doctype_query = 'Doctype IN (' . implode(',', $_foo) . ')';
 		}
 		if($folders){
 			$_foo = makeArrayFromCSV($folders);
 			$_foldersList = array();
 			foreach($_foo as $folderID){
-				$_foldersList[] = makeCSVFromArray(we_base_util::getFoldersInFolder($folderID));
+				$_foldersList = array_merge($_foldersList, we_base_util::getFoldersInFolder($folderID));
 			}
 			$_folders_query = '( ParentID IN(' . implode(',', $_foldersList) . '))';
 		}

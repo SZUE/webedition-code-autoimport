@@ -348,7 +348,7 @@ abstract class we_root extends we_class{
 		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 		$wecmdenc5 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('users_add_owner',top.allIDs);");
 		$addbut = $canChange ?
-			$this->htmlHidden($idname, '') . $this->htmlHidden($textname, '') . we_html_button::create_button('add', "javascript:we_cmd('browse_users','document.forms['we_form'].elements['" . $idname . "'].value','" . $wecmdenc2 . "','',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);") : "";
+			$this->htmlHidden($idname, '') . $this->htmlHidden($textname, '') . we_html_button::create_button('add', "javascript:we_cmd('browse_users','document.forms[\'we_form\'].elements[\'" . $idname . "\'].value','" . $wecmdenc2 . "','',document.forms['we_form'].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);") : "";
 
 		$content = '<table style="border-spacing: 0px;border-style:none;width:500px;" cellpadding="0">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
@@ -754,7 +754,7 @@ abstract class we_root extends we_class{
 		return f('SELECT MAX(ID) FROM ' . $this->DB_WE->escape($this->Table), '', $this->DB_WE) + 1;
 	}
 
-	function we_initSessDat($sessDat){//FIXME: use __wakeup
+	public function we_initSessDat($sessDat){//FIXME: use __wakeup
 		parent::we_initSessDat($sessDat);
 		if(is_array($sessDat)){
 			foreach($this->persistent_slots as $cur){
@@ -1144,7 +1144,7 @@ abstract class we_root extends we_class{
 		return we_root::we_save(1, 1);
 	}
 
-	function we_rewrite(){
+	public function we_rewrite(){
 		return true;
 	}
 
@@ -1258,7 +1258,7 @@ abstract class we_root extends we_class{
 		return array();
 	}
 
-	public function insertAtIndex(){
+	public function insertAtIndex(array $only = null, array $fieldTypes = null){
 
 	}
 

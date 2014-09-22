@@ -52,7 +52,7 @@ class we_progressBar{
 		if($doReturn){
 			return $this->getJSCode($pgFrame);
 		}
-		print $this->getJSCode($pgFrame);
+		echo $this->getJSCode($pgFrame);
 	}
 
 	public function getJSCode($pgFrame = ''){

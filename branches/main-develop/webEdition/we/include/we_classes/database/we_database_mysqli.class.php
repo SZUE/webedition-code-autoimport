@@ -136,7 +136,61 @@ class DB_WE extends we_database_base{
 	}
 
 	public function field_type($no){
-		return (is_object($this->Query_ID) ? $this->Query_ID->fetch_field_direct($no)->type : '');
+		switch(is_object($this->Query_ID) ? $this->Query_ID->fetch_field_direct($no)->type : 0){
+			case MYSQLI_TYPE_CHAR:
+				return 'tinyint';
+			case MYSQLI_TYPE_SHORT:
+				return 'smallint';
+			case MYSQLI_TYPE_LONG:
+				return 'int';
+			case MYSQLI_TYPE_FLOAT:
+				return 'float';
+			case MYSQLI_TYPE_DOUBLE:
+				return 'double';
+			case MYSQLI_TYPE_NULL:
+				return 'null';
+			case MYSQLI_TYPE_TIMESTAMP:
+				return 'timestamp';
+			case MYSQLI_TYPE_LONGLONG:
+				return 'bigint';
+			case MYSQLI_TYPE_INT24:
+				return 'mediumint';
+			case MYSQLI_TYPE_DATE:
+				return 'date';
+			case MYSQLI_TYPE_TIME:
+				return 'time';
+			case MYSQLI_TYPE_DATETIME:
+				return 'datetime';
+			case MYSQLI_TYPE_YEAR:
+				return 'year';
+			case MYSQLI_TYPE_NEWDATE:
+				return '';
+			case MYSQLI_TYPE_BIT:
+				return 'bit';
+			case MYSQLI_TYPE_NEWDECIMAL:
+				return 'decimal';
+			case MYSQLI_TYPE_ENUM:
+				return 'enum';
+			case MYSQLI_TYPE_SET:
+				return 'set';
+			case MYSQLI_TYPE_TINY_BLOB:
+				return 'tinyblob';
+			case MYSQLI_TYPE_MEDIUM_BLOB:
+				return 'mediumblob';
+			case MYSQLI_TYPE_LONG_BLOB:
+				return 'longblob';
+			case MYSQLI_TYPE_BLOB:
+				return 'blob';
+			case MYSQLI_TYPE_GEOMETRY:
+				return 'geometry';
+			//252 is currently mapped to all text and blob types (MySQL 5.0.51a)
+			case MYSQLI_TYPE_VAR_STRING:
+				return 'varchar';
+			case MYSQLI_TYPE_STRING:
+				return 'char';
+			default:
+				return '';
+		}
 	}
 
 	protected function _getInsertId(){

@@ -29,4 +29,4 @@ $parts = array(
 	array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $GLOBALS['we_doc']->formCreatorOwners(), 'space' => 120),
 	array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copy' . $GLOBALS['we_doc']->ContentType . ']'), 'html' => $GLOBALS['we_doc']->formCopyDocument(), 'space' => 120));
 
-print we_html_multiIconBox::getHTML('', '100%', $parts, 30);
+echo we_html_multiIconBox::getHTML('', '100%', $parts, 30);

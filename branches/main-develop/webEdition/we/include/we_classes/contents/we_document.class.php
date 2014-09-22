@@ -348,7 +348,7 @@ class we_document extends we_root{
 			}
 
 			$_naviItem = new we_navigation_navigation($id);
-			$_old_path = ($id ? $_naviItem->Path : '');
+			//$_old_path = ($id ? $_naviItem->Path : '');
 
 			$_naviItem->Ordn = $_ord;
 			$_naviItem->ParentID = $parentid;
@@ -402,6 +402,7 @@ class we_document extends we_root{
 
 	function delAllNavi(){
 //		$navis = makeArrayFromCSV($this->NavigationItems);
+		$navis=$this->getNavigationItems();
 		foreach($navis as $_path){
 			$_id = path_to_id($_path, NAVIGATION_TABLE);
 			$_naviItem = new we_navigation_navigation($_id);
@@ -723,7 +724,7 @@ class we_document extends we_root{
 	  } */
 
 // reverse function to saveInSession !!!
-	function we_initSessDat($sessDat){
+	public function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			if(
@@ -1087,9 +1088,7 @@ class we_document extends we_root{
 					$val = $attribs['id'];
 					break;
 				}
-				$val = $this->getElement($attribs['name'], 'bdid');
-				$val = $val ? $val : $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
-
+				$val = $this->getElement($attribs['name']);
 				break;
 			case 'href':
 				if(!isset($attribs['name'])){
@@ -1103,11 +1102,10 @@ class we_document extends we_root{
 				break;
 			default:
 				//check bdid first
-				$val = $this->getElement($attribs['name'], 'bdid');
-				$val = $val ? $val : $this->getElement(isset($attribs['name']) ? $attribs['name'] : '');
+				$val = $this->getElement($attribs['name']);
 		}
 
-		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : ($this instanceof we_objectFile ? $this->TableID : ''));
+		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : '')); //not instance due to we_showObject
 	}
 
 	private function getValFromSrc($fn, $name, $key = 'dat'){

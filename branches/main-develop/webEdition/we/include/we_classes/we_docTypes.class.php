@@ -83,7 +83,7 @@ class we_docTypes extends we_class{
 		}
 	}
 
-	function we_initSessDat($sessDat){
+	public function we_initSessDat($sessDat){
 		we_class::we_initSessDat($sessDat);
 		if(is_array($sessDat)){
 			foreach($this->persistent_slots as $cur){

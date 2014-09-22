@@ -55,8 +55,7 @@ class we_glossary_frameEditorHome{
 
 		ob_start();
 		include(WE_MODULES_PATH . 'home.inc.php');
-		$out = ob_get_contents();
-		ob_end_clean();
+		$out = ob_get_clean();
 
 		$content = we_html_element::jsElement($weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&home=1";' .
 				$weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&home=1";') .

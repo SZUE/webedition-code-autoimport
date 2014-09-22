@@ -42,7 +42,12 @@ if($_csv){
 		foreach($_paths as $_path){
 			$_where[] = 'Path LIKE "' . $_path . '%" ';
 		}
-		$_query = $_where ? 'SELECT ID,Path,Icon,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0' . ((!$ct["image"]) ? ' AND ContentType!="' . we_base_ContentTypes::IMAGE . '"' : '') : false;
+		$_query = ($_where ?
+				'SELECT ID,Path,Icon,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0' . ((!$ct["image"]) ?
+					' AND ContentType!="' . we_base_ContentTypes::IMAGE . '"' :
+					''
+				) :
+				false);
 	} else {
 		list($folderID, $folderPath) = explode(",", $_csv);
 		$q_path = 'Path LIKE "' . $folderPath . '%"';
@@ -59,7 +64,7 @@ if($_csv){
 				$_categories)) ? ' AND (' . implode(' OR ', $_categories) . ')' : '') . ' AND IsFolder=0;';
 	}
 
-	if($query && $DB_WE->query($_query)){
+	if($_query && $DB_WE->query($_query)){
 		$mdc .= '<table cellspacing="0" cellpadding="0" border="0">';
 		while($DB_WE->next_record()){
 			$mdc .= '<tr><td width="20" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(

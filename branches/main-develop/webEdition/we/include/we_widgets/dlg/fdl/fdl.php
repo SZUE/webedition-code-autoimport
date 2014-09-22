@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // widget LAST MODIFIED
-//$aCols = $_REQUEST['we_cmd'];
+//$aCols = $REQUEST['we_cmd'];
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $newSCurrId = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5);

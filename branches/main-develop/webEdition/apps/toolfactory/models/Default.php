@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -31,7 +30,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class toolfactory_models_Default extends we_app_Model{
-
 	/**
 	 * id attribute
 	 *
@@ -307,15 +305,11 @@ class toolfactory_models_Default extends we_app_Model{
 					if($_ext == '.sql'){
 						ob_start();
 						include($_file);
-						$_content = ob_get_contents();
-						ob_end_clean();
+						$_content = ob_get_clean();
 					} elseif($_ext == '.css'){
 						ob_start();
 						include($_file);
-						$_content = ob_get_contents();
-						ob_end_clean();
-						$_content = str_replace('{$TOOLNAME}', $TOOLNAME, $_content);
-						$_content = str_replace('{$TOOLNAMELANG}', $TOOLNAMELANG, $_content);
+						$_content = strtr(ob_get_clean(), array('{$TOOLNAME}' => $TOOLNAME, '{$TOOLNAMELANG}' => $TOOLNAMELANG));
 					} else {
 						$_content = we_base_file::load($_file);
 					}
@@ -331,13 +325,12 @@ class toolfactory_models_Default extends we_app_Model{
 						$_content = str_replace('{$SDKVERSION}', $SDKVERSION, $_content);
 					}
 				} else {
-					$_content = '<?php' . PHP_EOL;
 					ob_start();
 					include($_file);
-					$_content .= ob_get_contents();
-					ob_end_clean();
-
-					$_content .= PHP_EOL . '?>';
+					$_content = '<?php' .
+						PHP_EOL .
+						ob_get_clean() .
+						PHP_EOL . '?>';
 				}
 
 				if(!is_dir(dirname($_newname))){

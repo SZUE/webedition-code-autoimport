@@ -191,8 +191,8 @@ _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
 <?php //WEEXT: registerWeIframe ?>
 <body id="eHeaderBody" style="background: #C8D8EC url(<?php print IMAGE_DIR; ?>backgrounds/header.gif);margin: 0px 0px 0px 0px;" onLoad="if(typeof top.WE !== 'undefined'){top.WE.app.getController('Bridge').registerWeIframe(this, true);}" onresize="setFrameSize()">
 	<div id="main" ><?php
-		echo '<div style="margin:3px 0px 3px 5px;" id="headrow">&nbsp;' . we_html_element::htmlB(str_replace(' ', '&nbsp;', ($we_doc->ContentType ? g_l('contentTypes', '[' . $we_doc->ContentType . ']') : ''))) . ': ' .
-		($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="javascript:top.wasdblclick=1;top.doClick(\'' . $we_doc->ID . '\');">' : '') .
+		echo '<div style="margin:3px 0px 3px 5px;" id="headrow">&nbsp;' . we_html_element::htmlB(str_replace(' ', '&nbsp;', ($we_doc->ContentType ? g_l('contentTypes', '[' . $we_doc->ContentType . ']') : ''))) .': '.
+		($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="' . WEBEDITION_DIR . 'openBrowser.php?url=' . $we_doc->ID . '" target="browser">' : '') .
 		'<span id="h_path"></span>' . ($we_doc->Table == FILE_TABLE && $we_doc->ID ? '</a>' : '') . ' (ID: <span id="h_id"></span>)';
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::WEDOCUMENT:

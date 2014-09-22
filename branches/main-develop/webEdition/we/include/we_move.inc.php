@@ -132,7 +132,7 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.we_cmd('start_multi_editor');" :
 			we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
 
-	print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($js)));
+	echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement($js)));
 	exit();
 }
 
@@ -166,7 +166,7 @@ echo $table;
 		}
 		if (!sel) {
 			top.toggleBusy(0);
-<?php print we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR) ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR) ?>
 			return;
 		}
 
@@ -180,7 +180,7 @@ echo $table;
 				setTimeout('press_ok_move()', 100);
 				return;
 			} else if (!acStatus.valid) {
-<?php print we_message_reporting::getShowMessageCall(g_l('weClass', "[notValidFolder]"), we_message_reporting::WE_MESSAGE_ERROR) ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('weClass', "[notValidFolder]"), we_message_reporting::WE_MESSAGE_ERROR) ?>
 				return;
 			}
 		}
@@ -193,7 +193,7 @@ echo $table;
 		var _usedEditors = top.weEditorFrameController.getEditorsInUse();
 
 		var _move_table = "<?php
-print $table;
+echo $table;
 ?>";
 		var _move_ids = "," + sel;
 
@@ -227,7 +227,7 @@ switch($table){
 			if (confirm("<?php
 printf(g_l('alert', "[move_exit_open_docs_question]"), $_type, $_type);
 ?>" + _openDocs_Str + "\n<?php
-print g_l('alert', "[move_exit_open_docs_continue]");
+echo g_l('alert', "[move_exit_open_docs_continue]");
 ?>")) {
 
 				for (i = 0; i < _open_move_editors.length; i++) {
@@ -236,17 +236,17 @@ print g_l('alert', "[move_exit_open_docs_continue]");
 
 				}
 				we_cmd('do_move', '', '<?php
-print $table;
+echo $table;
 ?>');
 			}
 
 		} else {
 
 			if (confirm('<?php
-print g_l('alert', "[move]");
+echo g_l('alert', "[move]");
 ?>')) {
 				we_cmd('do_move', '', '<?php
-print $table;
+echo $table;
 ?>');
 			}
 		}
@@ -261,7 +261,7 @@ print $table;
 		}
 		if (!sel) {
 			top.toggleBusy(0);
-<?php print we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR) ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR) ?>
 			return;
 		}
 
@@ -319,7 +319,7 @@ $weAcSelector = $yuiSuggest->getHTML();
 $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:press_ok_move();"), "", we_html_button::create_button("quit_move", "javascript:we_cmd('exit_move','','" . $table . "')"), 10, "left");
 
 
-print
+echo
 	'</head><body class="weTreeHeaderMove">
 <form name="we_form" method="post" onsubmit="return false">
 <div style="width:460px;">

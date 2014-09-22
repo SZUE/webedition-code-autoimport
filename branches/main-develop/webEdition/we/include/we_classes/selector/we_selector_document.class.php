@@ -124,7 +124,9 @@ class we_selector_document extends we_selector_directory{
 	}
 
 	function getExitOpenWe(){
-		$frameRef = $this->JSTextName && strpos($this->JSTextName, ".document.") > 0 ? substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) : '';
+		$frameRef = $this->JSTextName && strpos($this->JSTextName, ".document.") > 0 ?
+			substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) :
+			'';
 		return '
 function exit_open() {//alert("exit_open standard on docselector");
 	if(currentID) {' . ($this->JSIDName ?

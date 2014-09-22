@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_navigation_navigation extends weModelBase{
-
 	const SELECTION_STATIC = 'static';
 	const SELECTION_DYNAMIC = 'dynamic';
 	const SELECTION_NODYNAMIC = 'nodynamic';
@@ -114,7 +112,55 @@ class we_navigation_navigation extends weModelBase{
 	 * Can load or create new navigation depends of parameter
 	 */
 	function __construct($navigationID = 0){
-		parent::__construct(NAVIGATION_TABLE);
+		parent::__construct(NAVIGATION_TABLE, null, false);
+		$this->persistent_slots = array(
+			'ID' => we_base_request::INT,
+			'ParentID' => we_base_request::INT,
+			'Path' => we_base_request::STRING,
+			'Published' => we_base_request::BOOL,
+			'Text' => we_base_request::STRING,
+			'Display' => we_base_request::STRING,
+			'ContentType' => we_base_request::STRING,
+			'Icon' => we_base_request::STRING,
+			'IsFolder' => we_base_request::BOOL,
+			'TitleField' => we_base_request::STRING,
+			'IconID' => we_base_request::INT,
+			'Selection' => we_base_request::STRING,
+			'LinkID' => we_base_request::INT,
+			'CurrentOnUrlPar' => we_base_request::BOOL,
+			'CurrentOnAnker' => we_base_request::BOOL,
+			'SelectionType' => we_base_request::STRING,
+			'FolderID' => we_base_request::INT,
+			'DocTypeID' => we_base_request::INT,
+			'ClassID' => we_base_request::INT,
+			'Categories' => we_base_request::STRING,
+			'CatAnd' => we_base_request::BOOL,
+			'Sort' => we_base_request::STRING,
+			'ShowCount' => we_base_request::INT,
+			'Ordn' => we_base_request::INT,
+			'Depended' => we_base_request::BOOL,
+			'WorkspaceID' => we_base_request::INT,
+			'CatParameter' => we_base_request::RAW,
+			'Parameter' => we_base_request::RAW,
+			'LinkSelection' => we_base_request::RAW,
+			'Url' => we_base_request::URL,
+			'UrlID' => we_base_request::INT,
+			'Charset' => we_base_request::STRING,
+			'Attributes' => we_base_request::RAW,
+			'FolderSelection' => we_base_request::STRING,
+			'FolderWsID' => we_base_request::INT,
+			'FolderParameter' => we_base_request::RAW,
+			'FolderUrl' => we_base_request::URL,
+			'LimitAccess' => we_base_request::INT,
+			'AllCustomers' => we_base_request::INT,
+			'ApplyFilter' => we_base_request::INT,
+			'Customers' => we_base_request::RAW,
+			'CustomerFilter' => we_base_request::RAW,
+			'BlackList' => we_base_request::RAW,
+			'WhiteList' => we_base_request::RAW,
+			'UseDocumentFilter' => we_base_request::BOOL,
+		);
+
 
 		if(($ws = get_ws(NAVIGATION_TABLE))){
 			list($this->ParentID) = makeArrayFromCSV($ws);

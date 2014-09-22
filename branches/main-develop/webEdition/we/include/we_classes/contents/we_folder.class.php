@@ -68,7 +68,7 @@ class we_folder extends we_root{
 		}
 	}
 
-	function we_initSessDat($sessDat){
+	public function we_initSessDat($sessDat){
 		we_root::we_initSessDat($sessDat);
 
 		if($this->Table == FILE_TABLE || $this->Table == OBJECT_FILES_TABLE){
@@ -137,7 +137,7 @@ class we_folder extends we_root{
 		}
 	}
 
-	function initByPath($path, $tblName = FILE_TABLE){
+	public function initByPath($path, $tblName = FILE_TABLE){
 		if(substr($path, -1) == '/'){
 			$path = substr($path, 0, strlen($path) - 1);
 		}
@@ -201,7 +201,7 @@ class we_folder extends we_root{
 				if($this->ID == $pid){
 					return true;
 				}
-				$pid = f('SELECT ParentID FROM ' . $db->escape($this->Table) . '  WHERE ID=' . intval($pid), 'ParentID', $db);
+				$pid = f('SELECT ParentID FROM ' . $db->escape($this->Table) . '  WHERE ID=' . intval($pid), '', $db);
 			}
 		}
 		return false;
@@ -431,7 +431,7 @@ class we_folder extends we_root{
 			case we_base_constants::WE_EDITPAGE_INFO:
 				return 'we_templates/we_editor_info.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
-				return 'we_modules/customer/editor_weDocumentCustomerFilter.inc.php';
+				return 'we_editors/editor_weDocumentCustomerFilter.inc.php';
 			case we_base_constants::WE_EDITPAGE_DOCLIST:
 				return 'we_doclist/we_editor_doclist.inc.php';
 			default:
@@ -672,7 +672,7 @@ class we_folder extends we_root{
 	/**
 	 * Beseitigt #Bug 3705: sorgt daf�r, das auch leere Dokumentenordner bei einem REbuild angelegt werden
 	 */
-	function we_rewrite(){
+	public function we_rewrite(){
 		if(parent::we_rewrite()){
 			return ($this->Table == FILE_TABLE ? $this->we_save(1) : true);
 		}

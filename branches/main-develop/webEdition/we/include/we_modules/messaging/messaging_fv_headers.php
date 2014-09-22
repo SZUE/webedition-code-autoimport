@@ -24,7 +24,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-$transaction = $_REQUEST['we_transaction'] = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $we_transaction);
+$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $we_transaction);
 
 echo we_html_tools::getHtmlTop() .
  we_html_element::jsElement('

@@ -54,14 +54,14 @@ if(!isset($_SESSION['weS']['we_data'])){
 
 $_SESSION['weS']['EditPageNr'] = (isset($_SESSION['weS']['EditPageNr']) && (($_SESSION['weS']['EditPageNr'] != '') || ($_SESSION['weS']['EditPageNr'] == 0))) ? $_SESSION['weS']['EditPageNr'] : 1;
 
-if(!(isset($_POST['username']) && isset($_POST['password']))){
+if(!(isset($_POST['WE_LOGIN_username']) && isset($_POST['WE_LOGIN_password']))){
 	return;
 }
 
-$userdata = getHash('SELECT UseSalt, passwd, username, LoginDenied, ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['username']) . '"');
+$userdata = getHash('SELECT UseSalt, passwd, username, LoginDenied, ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['WE_LOGIN_username']) . '"');
 
 // only if username exists !!
-if(!$userdata || (!we_users_user::comparePasswords($userdata['UseSalt'], $_POST['username'], $userdata['passwd'], $_POST['password']))){
+if(!$userdata || (!we_users_user::comparePasswords($userdata['UseSalt'], $_POST['WE_LOGIN_username'], $userdata['passwd'], $_POST['WE_LOGIN_password']))){
 	session_destroy();
 	return;
 }
@@ -73,9 +73,9 @@ if($userdata['LoginDenied']){ // userlogin is denied
 }
 
 if(($userdata['UseSalt'] != we_users_user::SALT_CRYPT)){ //will cause update on old php-versions every time. since md5 doesn't cost much, ignore this.
-	$salted = we_users_user::makeSaltedPassword($userdata['UseSalt'], $_POST['username'], $_POST['password']);
+	$salted = we_users_user::makeSaltedPassword($userdata['UseSalt'], $_POST['WE_LOGIN_username'], $_POST['WE_LOGIN_password']);
 	// UPDATE Password with SALT
-	$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $DB_WE->escape($salted) . '",UseSalt=' . intval($userdata['UseSalt']) . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST["username"]) . '" AND ID=' . $userdata['ID']);
+	$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $DB_WE->escape($salted) . '",UseSalt=' . intval($userdata['UseSalt']) . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST["WE_LOGIN_username"]) . '" AND ID=' . $userdata['ID']);
 }
 
 if(!(isset($_SESSION['user']) && is_array($_SESSION['user']))){

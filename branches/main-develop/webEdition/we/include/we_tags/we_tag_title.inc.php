@@ -34,9 +34,15 @@ function we_tag_title($attribs, $content){
 		ob_start();
 		//FIXME:eval
 		eval('?>' . $content);
-		$title = ob_get_contents();
-		ob_end_clean();
+		$title = ob_get_clean();
 	}
+
+	if($GLOBALS['we_editmode']){
+		//set meta data & exit
+		$GLOBALS['meta']['Title']['default'] = $title;
+		return;
+	}
+
 	$title = ($prefix ? $prefix . ($title ? $delimiter : '') : '') . $title . ($suffix ? ($title ? $delimiter : ($prefix ? $delimiter : '')) . $suffix : '');
 	return getHtmlTag('title', $attribs, $htmlspecialchars ? oldHtmlspecialchars(strip_tags($title)) : strip_tags($title), true) . "\n";
 }

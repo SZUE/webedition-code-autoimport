@@ -30,7 +30,7 @@
  */
 abstract class we_base_imageEdit{
 
-	const IMAGE_CONTENT_TYPES = 'image/jpeg,image/pjpeg,image/gif,image/png,image/x-png,image/svg+xml,image/x-citrix-pjpeg';
+	const IMAGE_CONTENT_TYPES = 'image/jpeg,image/pjpeg,image/gif,image/png,image/x-png,image/svg+xml,image/svg-xml,image/x-citrix-pjpeg';
 	const IMAGE_EXTENSIONS = 'svgz';
 
 	public static $GDIMAGE_TYPE = array('.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png');
@@ -57,10 +57,7 @@ abstract class we_base_imageEdit{
 			phpinfo();
 
 			// Read output of the function phpinfo()
-			$_returned_phpinfo = ob_get_contents();
-
-			// Clean output buffer
-			ob_end_clean();
+			$_returned_phpinfo = ob_get_clean();
 
 			// Fill informations of PHP
 			$_phpinfo = explode("\n", $_returned_phpinfo);

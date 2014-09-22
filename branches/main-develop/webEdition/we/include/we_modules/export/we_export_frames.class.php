@@ -148,9 +148,7 @@ class we_export_frames extends we_modules_frame{
 			$GLOBALS["mod"] = "export";
 			ob_start();
 			include(WE_MODULES_PATH . 'home.inc.php');
-			$out = ob_get_contents();
-			ob_end_clean();
-			return $out;
+			return ob_get_clean();
 		}
 		$yuiSuggest = & weSuggest::getInstance();
 		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;start();", "onunload" => "doUnload()"), weSuggest::getYuiJsFiles() . we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()) . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs()

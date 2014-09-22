@@ -48,8 +48,18 @@ function we_tag_input($attribs, $content){
 				$d = abs($GLOBALS['we_doc']->getElement($name));
 				return we_html_tools::getDateInput2('we_' . $GLOBALS['we_doc']->Name . '_date[' . $name . ']', ($d ? $d : time()), true, $format);
 			case 'checkbox':
-				$attr = we_make_attribs($attribs, 'name,value,type,_name_orig');
-				return '<input onclick="_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : \'\');' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '" type="checkbox" name="we_' . $GLOBALS['we_doc']->Name . '_attrib_' . $name . '" value="1"' . ($attr ? " $attr" : "") . ($val ? " checked" : "") . ' /><input type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '" />';
+				$attribs = removeAttribs($attribs, array('name', 'value', 'type', '_name_orig', 'reload'));
+				$attribs['type'] = "checkbox";
+				$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_attrib_' . $name;
+				$attribs['value'] = 1;
+				$attribs['onclick'] = '_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : \'\');' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '');
+				if($val){
+					$attribs['checked'] = 'checked';
+				}
+
+				return we_html_element::htmlHidden(array('name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']', 'value' => $val)) .
+					getHtmlTag('input', $attribs);
+
 			case 'country':
 				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
 				$newAtts['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
@@ -134,18 +144,24 @@ function we_tag_input($attribs, $content){
 					$vals = explode($seperator, $values);
 
 					$onChange = ($mode == 'add' ?
-							"this.form.elements['".$tagname."'].value += ((this.form.elements['".$tagname."'].value ? ' ' : '')+this.options[this.selectedIndex].text);" :
-							"this.form.elements['".$tagname."'].value = this.options[this.selectedIndex].text;") .
+							"this.form.elements['" . $tagname . "'].value += ((this.form.elements['" . $tagname . "'].value ? ' ' : '')+this.options[this.selectedIndex].text);" :
+							"this.form.elements['" . $tagname . "'].value = this.options[this.selectedIndex].text;") .
 						($reload ? 'setScrollTo();top.we_cmd(\'reload_editpage\');' : '');
 
-					$sel = '<select  class="defaultfont" name="we_choice_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" size="1" onchange="' . $onChange . ';this.selectedIndex=0;_EditorFrame.setEditorIsHot(true);"><option></option>' .
-						(!empty($vals) ? '<option>' . implode('</option><option>', $vals) . '</option>' : '') .
-						'</select>';
+					$sel = getHtmlTag('select', array(
+						'class' => "defaultfont",
+						'name' => 'we_choice_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']',
+						'size' => 1,
+						'onchange' => $onChange . ';this.selectedIndex=0;_EditorFrame.setEditorIsHot(true);'
+						), ($vals ? '<option>' . implode('</option><option>', $vals) . '</option>' : ''), true);
 				}
-				$attr = we_make_attribs($attribs, 'name,value,type,onchange,mode,values,_name_orig');
 
-				return '<input onchange="_EditorFrame.setEditorIsHot(true);" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />' . "&nbsp;" .
-					(isset($sel) ? $sel : '');
+				$attribs['onchange'] = '_EditorFrame.setEditorIsHot(true);';
+				$attribs['type'] = "text";
+				$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
+				$attribs['value'] = $val;
+
+				return getHtmlTag('input', removeAttribs($attribs, array('mode', 'values', '_name_orig'))) . "&nbsp;" . (isset($sel) ? $sel : '');
 			case 'select':
 				//NOTE: this tag is for objects only
 				return $GLOBALS['we_doc']->getField($attribs, 'select');
@@ -153,20 +169,23 @@ function we_tag_input($attribs, $content){
 				return $val;
 			case 'text':
 			default:
-				$attr = we_make_attribs($attribs, 'name,value,type,html,_name_orig');
-
-				if(defined('SPELLCHECKER') && $spellcheck == 'true'){
-					return '<table class="weEditTable padding0 spacing0 border0">
+				$attribs['onchange'] = '_EditorFrame.setEditorIsHot(true);';
+				$attribs['class'] = "wetextinput";
+				$attribs['type'] = "text";
+				$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
+				$attribs['value'] = $val;
+				$input = getHtmlTag('input', removeAttribs($attribs, array('mode', 'values', '_name_orig')));
+				return (defined('SPELLCHECKER') && $spellcheck == 'true' ?
+						'<table class="weEditTable padding0 spacing0 border0">
 	<tr>
-			<td class="weEditmodeStyle"><input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? ' ' . $attr : '') . ' /></td>
+			<td class="weEditmodeStyle">' . $input . '</td>
 			<td class="weEditmodeStyle">' . we_html_tools::getPixel(6, 4) . '</td>
 			<td class="weEditmodeStyle">' . we_html_button::create_button(
 							'image:spellcheck', 'javascript:we_cmd("spellcheck","we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']")') . '</td>
 	</tr>
-</table>';
-				} else {
-					return '<input onchange="_EditorFrame.setEditorIsHot(true);" class="wetextinput" type="text" name="we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']" value="' . $val . '"' . ($attr ? " $attr" : "") . ' />';
-				}
+</table>' :
+						$input
+					);
 		}
 	} else {
 		//not-editmode
