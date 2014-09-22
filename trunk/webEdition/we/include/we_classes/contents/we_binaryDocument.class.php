@@ -302,7 +302,6 @@ class we_binaryDocument extends we_document{
 	 * Returns HTML code for Upload Button and infotext
 	 */
 	function formUpload(){
-		$uploadButton = we_html_button::create_button("upload", "javascript:we_cmd('editor_uploadFile','" . $this->ContentType . "')", true, 150, 22, "", "", false, true, "", true);
 		$fs = $GLOBALS['we_doc']->getFilesize();
 		$fs = g_l('metadata', "[filesize]") . ": " . round(($fs / 1024), 2) . "&nbsp;KB";
 		$_metaData = $this->getMetaData();
@@ -320,7 +319,7 @@ class we_binaryDocument extends we_document{
 			}
 		}
 
-		$filetype = g_l('metadata', '[filetype]') . ': ' . (empty($this->Extension) ? '' : substr($this->Extension, 1));
+		$ft = g_l('metadata', '[filetype]') . ': ' . (empty($this->Extension) ? '' : substr($this->Extension, 1));
 
 		$md = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
 				'' :
@@ -329,18 +328,9 @@ class we_binaryDocument extends we_document{
 				(count($_mdtypes) > 0 ? implode(', ', $_mdtypes) : g_l('metadata', "[none]")) .
 				'</a>');
 
+		$fileUpload = new we_fileupload_binaryDocument($this->ContentType, $this->Extension);
 
-		return '<table cellpadding="0" cellspacing="0" border="0" width="500">
-			<tr style="vertical-align:top;"><td class="defaultfont">' .
-			$uploadButton . '<br />' .
-			$fs . '<br />' .
-			$filetype . '<br />' .
-			$md . '</td><td width="100px" style="text-align:right;">' .
-			$this->getThumbnail() .
-			'</td></tr>
-			<tr><td colspan="2">' . we_html_tools::getPixel(4, 20) . '</td></tr>
-			<tr><td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', ($GLOBALS['we_doc']->getFilesize() ? "[upload_will_replace]" : "[upload_single_files]")), we_html_tools::TYPE_ALERT, 508) . '</td></tr>
-			</table>';
+		return $fileUpload->getHTML($fs, $ft, $md, $this->getThumbnail(100, 100), $this->getThumbnail());
 	}
 
 	function getThumbnail(){

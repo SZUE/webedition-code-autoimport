@@ -21,6 +21,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+//TODO: let do we_fileuploade_binaryDocument::processFileRequest() do the job!
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
@@ -52,7 +55,9 @@ switch($contentType){
 		$allowedExtensions = '';
 }
 
+$mode = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 $weFileupload = new we_fileupload_include('we_File', '', '', '', '', 'document.forms[0].submit();', '', 330, true, false, 200, $allowedContentTypes, $allowedExtensions, '', '', array(), -1);
+$weFileupload->setIsFallback($mode == 'legacy' ? true : true);
 $weFileupload->setExternalProgress(true, 'progressbar', true, 120);
 
 if($weFileupload->processFileRequest()){

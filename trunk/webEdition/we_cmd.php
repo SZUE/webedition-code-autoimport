@@ -191,6 +191,8 @@ function findInclude($cmd){
 			return 'we_move.inc.php';
 		case 'editor_uploadFile':
 			return 'we_editors/uploadFile.inc.php';
+		case 'do_upload_file':
+			return 'we_fileupload.inc.php';
 		case 'show_binaryDoc':
 			return 'we_editors/we_showBinaryDoc.inc.php';
 		case 'pref_ext_changed':
@@ -275,7 +277,7 @@ if(($inc = findInclude($cmd))){
 	//  reloaded. All entries in this array represent values for we_cmd[0]
 	//  when the javascript command shall NOT be inserted (p.ex while saving the file.)
 	//	This is ONLY used in the edit-mode of the documents.
-	$cmds_no_js = array('siteImport', 'mod_home', 'import_images', 'getWeDocFromID', 'rebuild', 'open_url_in_editor', 'open_form_in_editor', 'users_unlock', 'edit_document', 'load_editor', 'load_edit_header', 'load_edit_footer', 'exchange', 'validateDocument', 'show', 'editor_uploadFile');
+	$cmds_no_js = array('siteImport', 'mod_home', 'import_images', 'getWeDocFromID', 'rebuild', 'open_url_in_editor', 'open_form_in_editor', 'users_unlock', 'edit_document', 'load_editor', 'load_edit_header', 'load_edit_footer', 'exchange', 'validateDocument', 'show', 'editor_uploadFile', 'do_upload_file');
 
 	require((substr($inc, 0, 5) == 'apps/' ? WEBEDITION_PATH : WE_INCLUDES_PATH) . $inc);
 	//  This statement prevents the page from being reloaded

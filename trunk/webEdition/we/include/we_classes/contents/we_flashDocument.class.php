@@ -250,7 +250,7 @@ class we_flashDocument extends we_binaryDocument{
 ';
 	}
 
-	function getThumbnail(){
+	function getThumbnail($width = 150, $height = 100){
 		$_width = $this->getElement('width');
 		$_height = $this->getElement('height');
 		$_scale = $this->getElement('scale');
@@ -267,8 +267,8 @@ class we_flashDocument extends we_binaryDocument{
 		$_origwidth = $this->getElement('origwidth');
 		$_origheight = $this->getElement('origheight');
 
-		$this->setElement('width', 150, 'attrib');
-		$this->setElement('height', 100, 'attrib');
+		$this->setElement('width', $width, 'attrib');
+		$this->setElement('height', $height, 'attrib');
 		$this->setElement('scale', '', 'attrib');
 		$this->setElement('hspace', '', 'attrib');
 		$this->setElement('vspace', '', 'attrib');

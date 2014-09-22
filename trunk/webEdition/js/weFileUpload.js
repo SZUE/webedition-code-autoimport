@@ -23,7 +23,7 @@ webEdition CMS
 
 (function(win){
 	win.we_FileUpload_addListeners = false;
-	win.addEventListener("load",function(){
+	win.addEventListener('load',function(){
 		win.we_FileUpload_addListeners = true;
 	}, false);
 
@@ -47,6 +47,17 @@ var weFileUpload = (function(){
 				weFileUpload_imp.prototype = new weFileUpload_abstract;
 				weFileUpload_imp.prototype.constructor = weFileUpload_imp;
 				return new weFileUpload_imp;
+			case 'tag' :
+				//for userInput typ img
+				/*
+				weFileUpload_tag.prototype = new weFileUpload_abstract;
+				weFileUpload_tag.prototype.constructor = weFileUpload_tag;
+				return new weFileUpload_tag;
+				*/
+			case 'binDoc' :
+				weFileUpload_binDoc.prototype = new weFileUpload_abstract;
+				weFileUpload_binDoc.prototype.constructor = weFileUpload_binDoc;
+				return new weFileUpload_binDoc;
 		}
 	}
 
@@ -63,7 +74,7 @@ var weFileUpload = (function(){
 				_.onload(that);
 			} else {
 				//if not, we add listener now
-				window.addEventListener("load", function(e){
+				window.addEventListener('load', function(e){
 						_.onload(that);
 					}, true);
 			}
@@ -76,7 +87,6 @@ var weFileUpload = (function(){
 				s.typeCondition = conf.typeCondition || s.typeCondition;
 				_.fieldName = conf.fieldName || _.fieldName;
 				_.isLegacyMode = !_.utils.checkBrowserCompatibility() || conf.isLegacyMode;
-
 				c.fileselectOnclick = conf.fileselectOnclick || _.controller.fileselectOnclick;
 				s.chunkSize = typeof conf.chunkSize !== 'undefined' ? (conf.chunkSize * 1024) : s.chunkSize;
 				s.callback = conf.callback || s.callback;
@@ -126,15 +136,17 @@ var weFileUpload = (function(){
 
 			//add eventhandlers for some html elements
 			if(v.elems.fileSelect){
-				v.elems.fileSelect.addEventListener("change", _.controller.fileSelectHandler, false);
-				v.elems.fileInputWrapper.addEventListener("click", _.controller.fileselectOnclick, false);
-				if(v.elems.fileDrag && _.view.isDragAndDrop){
-					v.elems.fileDrag.addEventListener("dragover", _.controller.fileDragHover, false);
-					v.elems.fileDrag.addEventListener("dragleave", _.controller.fileDragHover, false);
-					v.elems.fileDrag.addEventListener("drop", _.controller.fileSelectHandler, false);
-					v.elems.fileDrag.style.display = 'block';
-				} else {
-					v.isDragAndDrop = false;
+				v.elems.fileSelect.addEventListener('change', _.controller.fileSelectHandler, false);
+				v.elems.fileInputWrapper.addEventListener('click', _.controller.fileselectOnclick, false);
+			}
+			if(v.elems.fileDrag && _.view.isDragAndDrop){
+				v.elems.fileDrag.addEventListener('dragover', _.controller.fileDragHover, false);
+				v.elems.fileDrag.addEventListener('dragleave', _.controller.fileDragHover, false);
+				v.elems.fileDrag.addEventListener('drop', _.controller.fileSelectHandler, false);
+				v.elems.fileDrag.style.display = 'block';
+			} else {
+				v.isDragAndDrop = false;
+				if(v.elems.fileDrag){
 					v.elems.fileDrag.style.display = 'none';
 				}
 			}
@@ -159,11 +171,11 @@ var weFileUpload = (function(){
 							_.view.addFile(f, _.sender.preparedFiles.length);
 						}
 					}
-					if(e.type === "drop"){
+					if(e.type === 'drop'){
 						e.stopPropagation();
 						e.preventDefault();
-						e.target.className = "we_file_drag";
-						that.fileselectOnclick();
+						e.target.className = 'we_file_drag';
+						//that.fileselectOnclick();
 					}
 				}
 			};
@@ -175,7 +187,7 @@ var weFileUpload = (function(){
 			};
 
 			this.prepareFile = function(f, isUploadable){
-				var type = f.type ? f.type : "text/plain",
+				var type = f.type ? f.type : 'text/plain',
 					u = isUploadable || true,
 					isTypeOk = _.utils.checkFileType(type, f.name),
 					isSizeOk = (f.size <= _.sender.maxUploadSize || !_.sender.maxUploadSize) ? true : false,
@@ -309,7 +321,7 @@ var weFileUpload = (function(){
 						);
 					}
 				} else {
-					this.sendChunk(cur.file, cur.file.name, cur.file.type, cur.file.size, 1, 1, "");
+					this.sendChunk(cur.file, cur.file.name, cur.file.type, cur.file.size, 1, 1, '');
 				}
 			};
 
@@ -321,7 +333,7 @@ var weFileUpload = (function(){
 				xhr.onreadystatechange = function() {
 					if (xhr.readyState === 4) {
 						if(xhr.status === 200){
-							that.processResponse(JSON.parse(xhr.responseText), {"partSize" : partSize, "partNum" : partNum, "totalParts" : totalParts});
+							that.processResponse(JSON.parse(xhr.responseText), {partSize : partSize, partNum : partNum, totalParts : totalParts});
 						} else {
 							that.processError({type : 'request', msg : 'http request failed'});
 						}
@@ -335,7 +347,7 @@ var weFileUpload = (function(){
 				fd.append('weFileNameTemp', fileNameTemp);
 				fd.append('weFileName', fileName);
 				fd.append('weFileCt', fileCt);
-				fd.append(_.fieldName, part, fileName);
+				fd.append(typeof this.currentFile.field !== 'undefined' ? this.currentFile.field : _.fieldName, part, fileName);//FIXME: take fieldname allways from cur!
 				fd.append('weIsUploading', 1);
 				fd = this.appendMoreData(fd);
 				xhr.open('POST', this.form.action, true);
@@ -364,13 +376,14 @@ var weFileUpload = (function(){
 							this.currentWeightTag = this.currentWeight;
 							_.view.repaintGUI({what : 'chunkOK'});
 							_.view.repaintGUI({what : 'fileOK'});
+							this.doOnFileFinished(resp);//FIXME: make this part of postProcess(resp, fileonly=true)
 							if(this.uploadFiles.length !== 0){
 								this.sendNextFile();
 							} else {
 								this.postProcess(resp);
 							}
 							return;
-						case "failure":
+						case 'failure':
 							this.currentWeight = this.currentWeightTag + cur.file.size;
 							this.currentWeightTag = this.currentWeight;
 							_.view.repaintGUI({what : 'chunkNOK', message : resp.message});
@@ -384,6 +397,10 @@ var weFileUpload = (function(){
 							return;
 					}
 				}
+			};
+			
+			this.doOnFileFinished = function(){
+				//to be overridden
 			};
 
 			this.postProcess = function(resp){
@@ -414,6 +431,7 @@ var weFileUpload = (function(){
 
 			this.repaintGUI = function(arg){};
 
+			//TODO: adapt these progress fns to standard progressbars
 			this.setInternalProgressText = function(name, text, index){
 				var p = typeof index === 'undefined' || index === false ? '' : '_' + index;
 
@@ -473,7 +491,7 @@ var weFileUpload = (function(){
 
 			this.containsFiles = function(arr){
 				for (var i = 0; i < arr.length; i++){
-					if(typeof arr[i] === "object" && arr[i] !== null){
+					if(typeof arr[i] === 'object' && arr[i] !== null){
 						return true;
 					}
 				}
@@ -626,10 +644,10 @@ var weFileUpload = (function(){
 				var that = _.sender,
 					cur = this.currentFile;
 
-				this.form.form.elements["weFileNameTemp"].value = cur.fileNameTemp;
-				this.form.form.elements["weFileCt"].value = cur.mimePHP;
-				this.form.form.elements["weFileName"].value = cur.file.name;
-				this.form.form.elements["weIsUploadComplete"].value = 1;
+				this.form.form.elements['weFileNameTemp'].value = cur.fileNameTemp;
+				this.form.form.elements['weFileCt'].value = cur.mimePHP;
+				this.form.form.elements['weFileName'].value = cur.file.name;
+				this.form.form.elements['weIsUploadComplete'].value = 1;
 				setTimeout(function(){that.callback();}, 100);
 			};
 
@@ -730,6 +748,7 @@ var weFileUpload = (function(){
 					case 'startSendFile' :
 						if(this.elems.progress){
 							this.elems.message.style.display = 'none';
+							document.images[_.fieldName + '_progress_image'].src = '/webEdition/images/balken.gif';
 							this.elems.progress.style.display = '';
 							this.elems.progressMoreText.style.display = '';
 							this.elems.progressMoreText.innerHTML = ' / ' + _.utils.computeSize(_.sender.currentFile.file.size);
@@ -783,11 +802,11 @@ var weFileUpload = (function(){
 
 				fs.id = fs.name = _.fieldName + '_alt';
 				fsLegacy.id = fsLegacy.name = _.fieldName;
-				document.getElementById(_.fieldName).style.display = "none";
-				document.getElementById(_.fieldName + '_legacy').style.display = "";
-				if(typeof alertbox !== "undefined" && typeof alertboxLegacy !== "undefined"){
-					alertbox.style.display = "none";
-					alertboxLegacy.style.display = "";
+				document.getElementById(_.fieldName).style.display = 'none';
+				document.getElementById(_.fieldName + '_legacy').style.display = '';
+				if(typeof alertbox !== 'undefined' && typeof alertboxLegacy !== 'undefined'){
+					alertbox.style.display = 'none';
+					alertboxLegacy.style.display = '';
 				}
 				_.sender.form.form.weIsFileInLegacy.value = 1;//FIXME: do we need this?
 				_.sender.form.form.weIsUploading.value = 0;
@@ -840,10 +859,10 @@ var weFileUpload = (function(){
 
 				if(files[0] instanceof File && !_.utils.contains(_.sender.preparedFiles, files[0])){
 					var f = _.controller.prepareFile(files[0]),
-						inputId = "fileInput_uploadFiles_",
+						inputId = 'fileInput_uploadFiles_',
 						index = e.target.id.substring(inputId.length),
-						nameField = document.getElementById("name_uploadFiles_" + index),
-						sizeField = document.getElementById("size_uploadFiles_" + index);
+						nameField = document.getElementById('name_uploadFiles_' + index),
+						sizeField = document.getElementById('size_uploadFiles_' + index);
 
 					_.sender.preparedFiles[index] = f.isSizeOk ? f : null;
 					nameField.value = f.file.name;
@@ -933,24 +952,24 @@ var weFileUpload = (function(){
 				var sf = document.we_startform,
 					cur = this.currentFile;
 
-				fd.append("weFormNum", cur.fileNum + 1);
-				fd.append("weFormCount", this.totalFiles);
-				fd.append("we_cmd[0]", "import_files");
-				fd.append("cmd", "buttons");
-				fd.append("jsRequirementsOk", 1);
-				fd.append("step", 1);
-				fd.append("importToID", sf.importToID.value);
+				fd.append('weFormNum', cur.fileNum + 1);
+				fd.append('weFormCount', this.totalFiles);
+				fd.append('we_cmd[0]', 'import_files');
+				fd.append('cmd', 'buttons');
+				fd.append('jsRequirementsOk', 1);
+				fd.append('step', 1);
+				fd.append('importToID', sf.importToID.value);
 
 				if(cur.partNum === cur.totalParts && this.isGdOk){
-					fd.append("thumbs", sf.thumbs.value);
-					fd.append("width", sf.width.value);
-					fd.append("height", sf.height.value);
-					fd.append("widthSelect", sf.widthSelect.value);
-					fd.append("heightSelect", sf.heightSelect.value);
-					fd.append("keepRatio", sf.keepRatio.value);
-					fd.append("quality", sf.quality.value);
-					fd.append("sameName", sf.sameName.value);
-					fd.append("degrees", sf.degrees.value);
+					fd.append('thumbs', sf.thumbs.value);
+					fd.append('width', sf.width.value);
+					fd.append('height', sf.height.value);
+					fd.append('widthSelect', sf.widthSelect.value);
+					fd.append('heightSelect', sf.heightSelect.value);
+					fd.append('keepRatio', sf.keepRatio.value);
+					fd.append('quality', sf.quality.value);
+					fd.append('sameName', sf.sameName.value);
+					fd.append('degrees', sf.degrees.value);
 				}
 
 				return fd;
@@ -1021,12 +1040,12 @@ var weFileUpload = (function(){
 					replace(/FILENAME/g,(f.file.name)) . 
 					replace(/FILESIZE/g,(f.isSizeOk ? _.utils.computeSize(f.file.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize/1024)/1024) + ' MB</span>'));
 
-				weAppendMultiboxRow(row,"",0,0,0,-1);
+				weAppendMultiboxRow(row,'',0,0,0,-1);
 
-				div = document.getElementById("div_upload_files");
+				div = document.getElementById('div_upload_files');
 				div.scrollTop = div.scrollHeight;
-				document.getElementById("fileInput_uploadFiles_" + index).addEventListener("change", _.controller.replaceSelectionHandler, false);
-				this.elems.extProgressDiv.style.display = "none";
+				document.getElementById('fileInput_uploadFiles_' + index).addEventListener('change', _.controller.replaceSelectionHandler, false);
+				this.elems.extProgressDiv.style.display = 'none';
 				_.controller.setWeButtonText('cancel', 'cancel');
 
 				if(f.isSizeOk){
@@ -1042,12 +1061,12 @@ var weFileUpload = (function(){
 			};
 
 			this.deleteRow = function(index, button){
-				var prefix = "div_uploadFiles_",
+				var prefix = 'div_uploadFiles_',
 					num = 0,
 					z = 1,
 					i,
 					sp,
-					divs = document.getElementsByTagName("DIV");
+					divs = document.getElementsByTagName('DIV');
 
 				_.sender.preparedFiles[index] = null;
 				weDelMultiboxRow(index);
@@ -1055,7 +1074,7 @@ var weFileUpload = (function(){
 				for(i = 0; i < divs.length; i++){
 					if(divs[i].id.length > prefix.length && divs[i].id.substring(0,prefix.length) === prefix){
 						num = divs[i].id.substring(prefix.length,divs[i].id.length);
-						sp = document.getElementById("headline_uploadFiles_" + num);
+						sp = document.getElementById('headline_uploadFiles_' + num);
 						if(sp){
 							sp.innerHTML = z;
 						}
@@ -1154,18 +1173,381 @@ var weFileUpload = (function(){
 			this.setInternalProgressCompleted = function(success, index, txt){
 				if(success){
 					this.setInternalProgress(100, index);
-					document.images[_.fieldName + '_progress_image_' + index].src = "/webEdition/images/fileUpload/balken_gr.gif";
+					document.images[_.fieldName + '_progress_image_' + index].src = '/webEdition/images/fileUpload/balken_gr.gif';
 				} else {
-					if(typeof document.images["alert_img_" + index] !== 'undefined'){
-						document.images["alert_img_" + index].style.visibility = "visible ";
-						document.images["alert_img_" + index].title = txt;
+					if(typeof document.images['alert_img_' + index] !== 'undefined'){
+						document.images['alert_img_' + index].style.visibility = 'visible';
+						document.images['alert_img_' + index].title = txt;
 					}
-					document.images[_.fieldName + '_progress_image_' + index].src = "/webEdition/images/fileUpload/balken_red.gif";
+					document.images[_.fieldName + '_progress_image_' + index].src = '/webEdition/images/fileUpload/balken_red.gif';
 				}
 			};
 		}
 
 		function Utils(){}
+	}
+
+	function weFileUpload_binDoc(){
+		(function(){
+			weFileUpload_abstract.call(this);
+
+			Controller.prototype = this.getAbstractController();
+			Sender.prototype = this.getAbstractSender();
+			View.prototype = this.getAbstractView();
+			Utils.prototype = this.getAbstractUtils();
+
+			_.self = this;
+			_.controller = new Controller();
+			_.sender = new Sender();
+			_.view = new View();
+			_.utils = new Utils();
+		})();
+
+		this.init = function(conf){
+			_.init_abstract(conf);
+			_.view.uploadBtnName = conf.uploadBtnName || _.view.uploadBtnName;
+			_.fieldName = 'we_File';
+			if(typeof conf.binDocProperties !== 'undefined'){
+				_.view.icon = conf.binDocProperties.icon || _.view.icon;
+				_.view.binDocType = conf.binDocProperties.type || _.view.binDocType;
+			}
+			_.view.icon = conf.icon || _.view.icon;
+		};
+
+		_.onload = function(scope){
+			var that = scope,
+				v = _.view;
+			_.onload_abstract(that);
+
+			for(var i = 0; i < document.forms.length; i++){
+				document.forms[i].addEventListener('submit', _.controller.formHandler, false);
+			}
+			var inputs = document.getElementsByTagName('input');
+			for(var i = 0; i < inputs.length; i++){
+				if(inputs[i].type === 'file'){
+					inputs[i].addEventListener('change', _.controller.fileSelectHandler, false);
+				}
+			}
+			_.sender.form.action = '/webEdition/we_cmd.php?we_cmd[0]=do_upload_file&we_cmd[1]=binaryDoc';
+
+			v.elems.fileDrag_state_0 = document.getElementById('div_fileupload_fileDrag_state_0');
+			v.elems.fileDrag_state_1 = document.getElementById('div_fileupload_fileDrag_state_1');
+			v.elems.dragInnerRight = document.getElementById('div_upload_fileDrag_innerRight');
+			v.elems.divRight = document.getElementById('div_fileupload_right');
+			v.elems.divRightLegacy = document.getElementById('div_fileupload_right_legacy');
+			v.elems.txtFilename = document.getElementById('span_fileDrag_inner_filename');
+			v.elems.txtFilename_1 = document.getElementById('span_fileDrag_inner_filename_1');//??
+			v.elems.txtSize = document.getElementById('span_fileDrag_inner_size');
+			v.elems.txtType = document.getElementById('span_fileDrag_inner_type');
+			v.elems.divBtnReset = document.getElementById('div_fileupload_btnReset');
+			v.elems.divBtnCancel = document.getElementById('div_fileupload_btnCancel');
+			v.elems.divBtnUpload = document.getElementById('div_fileupload_btnUpload');
+			v.elems.divBtnUploadLegacy = document.getElementById('div_fileupload_btnUploadLegacy');
+			v.elems.divProgressBar = document.getElementById('div_fileupload_progressBar');
+			v.elems.divButtons = document.getElementById('div_fileupload_buttons');
+
+			v.spinner = new Image();
+			v.spinner.src = '/webEdition/images/pd/busy.gif';
+
+			if(_.isLegacyMode){
+				_.utils.makeLegacy();
+			}
+		};
+
+		function Controller(){
+			this.doSubmit = false;
+
+		}
+
+		function Sender(){
+			this.totalWeight = 0;
+
+			this.doOnFileFinished = function(resp){};
+
+			this.postProcess = function(resp){
+				if(resp.status === 'success'){
+					var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
+					window.we_cmd('update_file');
+					_EditorFrame.getDocumentReference().frames[0].we_setPath(resp.weDoc.path, resp.weDoc.text);
+				}
+			};
+
+			this.processError = function(arg){
+				switch(arg.from){
+					case 'gui' :
+						top.we_showMessage(arg.msg, 4, window);
+						return;
+					case 'request' :
+						_.view.repaintGUI({what : 'fileNOK'});
+						_.view.repaintGUI({what : 'resetGui'});
+						return;
+					default :
+						return;
+				}
+			};
+
+			this.resetParams = function(){
+				this.preparedFiles = [];
+				this.totalWeight = 0;
+				this.isCancelled = false;
+				_.view.repaintGUI({what : 'resetGui'});
+			};
+
+			this.prepareUpload = function(){
+				if(this.preparedFiles.length < 1){
+					return false;
+				}
+
+				if(typeof this.preparedFiles[0] === 'object' && this.preparedFiles[0] !== null && this.preparedFiles[0].isUploadable){
+					this.preparedFiles[0].fileNum = 0;
+					this.uploadFiles.push(this.preparedFiles[0]);
+					this.totalWeight = this.preparedFiles[0].file.size;
+				}
+
+				this.totalFiles = this.uploadFiles.length;
+
+				if(this.totalFiles > 0){
+					this.currentWeight = 0;
+					this.totalChunks = this.totalWeight / this.chunkSize;
+					this.currentWeight = 0;
+					this.currentWeightTag = 0;
+
+					return true;
+				}
+			};
+
+			this.appendMoreData = function(fd){
+				var cur = this.currentFile;
+
+				fd.append('we_transaction', document.we_form.we_transaction.value);
+				fd.append('import_metadata', (typeof document.we_form.import_metadata !== 'undefined' &&
+					document.we_form.import_metadata.checked) ? 1 : 0);
+				fd.append('we_doc_ct', document.we_form.we_doc_ct.value);
+				fd.append('we_doc_ext', document.we_form.we_doc_ext.value);
+
+				return fd;
+			};
+
+			this.cancel = function(){
+				this.isCancelled = true;
+				this.isUploading = false;
+				_.view.repaintGUI({what : 'resetGui'});
+			};
+		}
+
+		function View(){
+			this.uploadBtnName = '';
+			this.icon = '/webEdition/images/icons/doc.gif'
+			this.binDocType = 'other';
+			this.preview = null;
+			this.STATE_RESET = 0;
+			this.STATE_PREVIEW_OK = 1;
+			this.STATE_PREVIEW_NOK = 2;
+			this.STATE_UPLOAD = 3;
+
+			this.addFile = function(f){
+				var sizeText = f.isSizeOk ? _.utils.gl.sizeTextOk + _.utils.computeSize(f.file.size) + ', ' : 
+						'<span style="color:red;">' + _.utils.gl.sizeTextNok + '</span>';
+				var typeText = f.isTypeOk ? _.utils.gl.typeTextOk + f.type :
+						'<span style="color:red;">' + _.utils.gl.typeTextNok + f.type + '</span>';
+
+				this.elems.fileDrag_state_1.style.backgroundColor = 'rgb(243, 247, 255)';
+				this.elems.txtFilename.innerHTML = f.file.name.substring(0,19) + (f.file.name.lenght > 20 ? '...' : '');
+				this.elems.txtSize.innerHTML = sizeText;
+				this.elems.txtType.innerHTML = typeText;
+				this.setDisplay('fileDrag_state_0', 'none');
+				this.setDisplay('fileDrag_state_1', '');
+				this.elems.dragInnerRight.innerHTML = '';
+
+				if(this.binDocType === 'image' && f.uploadConditionsOk && f.file.size < 4194304){
+						var reader = new FileReader();
+						reader.onloadstart = function(e) {
+							_.view.elems.dragInnerRight.appendChild(_.view.spinner);
+						};
+
+						reader.onload = function(e) {
+							var maxSize = 100,
+								mode = 'resize',
+								image = new Image();
+
+							image.onload = function (){
+								if(mode !== 'resize'){
+									if(image.width > image.height){
+										image.width = maxSize;
+									} else {
+										image.height = maxSize;
+									}
+									_.view.preview = image;
+									_.view.elems.dragInnerRight.innerHTML = '';
+									_.view.elems.dragInnerRight.appendChild(_.view.preview);
+								} else {
+									var width = image.width,
+										height = image.height,
+										cv = document.createElement('canvas');
+
+									if (width > height) {
+										if (width > maxSize) {
+											height *= maxSize / width;
+											width = maxSize;
+										}
+									} else {
+										if (height > maxSize) {
+											width *= maxSize / height;
+											height = maxSize;
+										}
+									}
+									cv.width = width;
+									cv.height = height;
+									cv.getContext('2d').drawImage(image, 0, 0, width, height);
+
+									_.view.preview = new Image();
+									_.view.preview.src= cv.toDataURL('image/jpeg', 0.8);
+									_.view.elems.dragInnerRight.innerHTML = '';
+									_.view.elems.dragInnerRight.appendChild(_.view.preview);
+								}
+								_.view.setGuiState(f.uploadConditionsOk ? _.view.STATE_PREVIEW_OK : _.view.STATE_PREVIEW_NOK);
+							};
+							image.src = e.target.result;
+						};
+
+						if(f.file.size < 4194304){
+							reader.readAsDataURL(f.file);
+						} else {
+							this.preview = new Image();
+							this.preview.onload = function (){
+								_.view.elems.dragInnerRight.appendChild(_.view.preview);
+							};
+							this.preview.src = this.icon;
+							this.setGuiState(this.STATE_PREVIEW_OK);
+						}
+				} else {
+					if(f.uploadConditionsOk){
+						this.preview = new Image();
+						this.preview.onload = function (){
+							_.view.elems.dragInnerRight.appendChild(_.view.preview);
+						};
+						this.preview.src = this.icon;
+						this.setGuiState(this.STATE_PREVIEW_OK);
+					} else {
+						this.elems.dragInnerRight.innerHTML = '<div style="margin:0px 0 0 30px;height:62px;width:54px;border:dotted 1px gray;padding-top:14px;text-align:center;background-color:#f9f9f9;color:#ddd;font-size:32px;font-weight:bold">!?</div>';
+						this.setGuiState(this.STATE_PREVIEW_NOK);
+					}
+				}
+			};
+
+			this.setGuiState = function(state){
+				switch(state){
+					case this.STATE_RESET:
+						this.setDisplay('fileDrag_state_0', '');
+						this.setDisplay('fileDrag_state_1', 'none');
+						this.setDisplay('fileInputWrapper', '');
+						if(this.isDragAndDrop && this.elems.fileDragfileDrag){
+							this.elems.fileDrag.style.display = '';
+						}
+						this.setDisplay('fileInputWrapper', '');
+						this.setDisplay('divBtnReset', 'none');
+						this.setDisplay('divBtnUpload', '');
+						this.setDisplay('divProgressBar', 'none');
+						this.setDisplay('divBtnCancel', 'none');
+						this.setDisplay('dragInnerRight', '');
+						_.controller.setWeButtonState(_.view.uploadBtnName, false, true);
+						_.controller.setWeButtonState('browse_harddisk_btn', true, true);
+						return;
+					case this.STATE_PREVIEW_OK:
+						this.setDisplay('fileInputWrapper', 'none');
+						this.setDisplay('divBtnReset', '');
+						_.controller.setWeButtonState('reset_btn', true);
+						_.controller.setWeButtonState(_.view.uploadBtnName, true, true);
+						return;
+					case this.STATE_PREVIEW_NOK:
+						this.setDisplay('fileInputWrapper', 'none');
+						this.setDisplay('divBtnReset', '');
+						_.controller.setWeButtonState('reset_btn', true);
+						_.controller.setWeButtonState(_.view.uploadBtnName, false, true);
+						return;
+					case this.STATE_UPLOAD: 
+						_.controller.setWeButtonState(_.view.uploadBtnName, false, true);
+						_.controller.setWeButtonState('reset_btn', false, true);
+						this.setDisplay('fileInputWrapper', 'none');
+						this.setDisplay('divBtnReset', 'none');
+						this.setDisplay('divBtnUpload', 'none');
+						this.setDisplay('divProgressBar', '');
+						this.setDisplay('divBtnCancel', '');
+						if(this.preview){
+							this.preview.style.opacity = 0.05;
+						}
+						_.controller.setWeButtonState('browse_harddisk_btn', false, true);
+						this.setDisplay('divBtnReset', 'none');
+				}
+			};
+
+			this.repaintGUI = function(arg){
+				var cur = _.sender.currentFile,
+					fileProg = 0,
+					digits = 0,
+					opacity = 0;
+
+				switch(arg.what){
+					case 'chunkOK' :
+						digits = cur.totalParts > 1000 ? 2 : (cur.totalParts > 100 ? 1 : 0);//FIXME: make fn on UtilsAbstract
+						fileProg = (100 / cur.file.size) * cur.currentWeightFile;
+						this.setInternalProgress(fileProg.toFixed(digits));
+						opacity = fileProg / 100;
+						if(this.preview){
+							this.preview.style.opacity = opacity.toFixed(2);
+						}
+						return;
+					case 'fileOK' :
+						if(this.preview){
+							this.preview.style.opacity = 1;
+						}
+						return;
+					case 'startSendFile' :
+						this.setInternalProgress(0);
+						this.setGuiState(this.STATE_UPLOAD);
+						return;
+					case 'chunkNOK' :
+						_.sender.processError({from : 'gui', msg : arg.message});
+					case 'initGui' :
+					case 'fileNOK' :
+					case 'cancelUpload' :
+					case 'resetGui' :
+					default:
+						_.sender.preparedFiles = [];
+						_.sender.currentFile = -1;
+						this.setInternalProgress(0);
+						this.setGuiState(this.STATE_RESET);
+						return;
+				}
+			};
+
+			//TODO: use progress fns from abstract after adapting them to standard progress
+			this.setInternalProgress = function(progress, index){
+				var coef = this.intProgress.width / 100,
+					mt = typeof _.sender.currentFile === 'object' ? ' / ' + _.utils.computeSize(_.sender.currentFile.file.size) : '';
+
+				document.images['progress_image_fileupload'].width = coef * progress;
+				document.images['progress_image_bg_fileupload'].width = (coef * 100) - (coef * progress);
+				document.getElementById('progress_text_fileupload').innerHTML = progress + '%' + mt;
+			};
+			
+			this.setDisplay = function(elem, val){
+				if(this.elems[elem]){
+					this.elems[elem].style.display = val;
+				}
+			};
+		}
+
+		function Utils(){
+			this.makeLegacy = function(){
+				var v = _.view;
+				_.controller.setWeButtonState('upload_legacy_btn', true, true);
+				v.setDisplay('divRight', 'none');
+				v.setDisplay('divButtons', 'none');
+				v.setDisplay('divRightLegacy', '');
+				v.setDisplay('divBtnUploadLegacy', '');
+			};
+		}
 	}
 
 	return Fabric;
