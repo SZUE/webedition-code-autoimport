@@ -117,7 +117,7 @@ function print_error($errortext){
 	we_html_tools::htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultgray'), $content), $headline) .
 	'</body></html>';
 
-	exit;
+	exit();
 }
 
 function check_required($required){
@@ -145,7 +145,7 @@ function ok_page(){
 		redirect($ok_page);
 	} else {
 		echo 'Vielen Dank, Ihre Formulardaten sind bei uns angekommen! / Thank you, we received your form data!';
-		exit;
+		exit();
 	}
 }
 
@@ -154,7 +154,7 @@ function redirect($url, $_emosScontact = ''){
 		$url = $url . (strpos($url, '?') ? '&' : '?') . 'emosScontact=' . urlencode($_emosScontact);
 	}
 	header('Location: ' . getServerUrl() . $url);
-	exit;
+	exit();
 }
 
 function check_recipient($email){
@@ -187,7 +187,7 @@ $output = array();
 
 $we_reserved = array('from', 'we_remove', 'captchaname', 'we_mode', 'charset', 'required', 'order', 'ok_page', 'error_page', 'captcha_error_page', 'mail_error_page', 'recipient', 'subject', 'mimetype', 'confirm_mail', 'pre_confirm', 'post_confirm', 'MAX_FILE_SIZE', session_name(), 'cookie', 'recipient_error_page', 'forcefrom');
 
-if(($removeArr = we_base_request::_(we_base_request::INTLISTA, 'we_remove'))){
+if(($removeArr = array_filter(we_base_request::_(we_base_request::INTLISTA, 'we_remove')))){
 	foreach($removeArr as $val){
 		$we_reserved[] = $val;
 	}
@@ -196,17 +196,17 @@ if(($removeArr = we_base_request::_(we_base_request::INTLISTA, 'we_remove'))){
 $we_txt = '';
 $we_html = '<table>';
 
-$_order = we_base_request::_(we_base_request::RAW, 'order', '');
-$we_orderarray = array();
-if($_order){
+if(($_order = we_base_request::_(we_base_request::RAW, 'order', ''))){
 	$we_orderarray = explode(',', $_order);
+
 	foreach($we_orderarray as $cur){
 		if(!in_array($cur, $we_reserved)){
 			$output[$cur] = we_base_request::_(we_base_request::RAW, $cur);
 		}
 	}
+} else {
+	$we_orderarray = array();
 }
-
 //FIXME: change
 if(isset($_REQUEST)){
 	foreach($_REQUEST as $n => $v){
