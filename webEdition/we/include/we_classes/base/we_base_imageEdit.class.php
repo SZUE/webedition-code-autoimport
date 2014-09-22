@@ -30,7 +30,7 @@
  */
 abstract class we_base_imageEdit{
 
-	const IMAGE_CONTENT_TYPES = 'image/jpeg,image/pjpeg,image/gif,image/png,image/x-png,image/svg+xml,image/x-citrix-pjpeg';
+	const IMAGE_CONTENT_TYPES = 'image/jpeg,image/pjpeg,image/gif,image/png,image/x-png,image/svg+xml,image/svg-xml,image/x-citrix-pjpeg';
 	const IMAGE_EXTENSIONS = 'svgz';
 
 	public static $GDIMAGE_TYPE = array('.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png');

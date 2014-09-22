@@ -37,7 +37,7 @@ abstract class we_fileupload_base{
 	protected $dimensions = array(
 		'width' => 400,
 		'dragHeight' => 30,
-		'alertBoxWidth' => 390,
+		'alertBoxWidth' => 0,
 		'marginTop' => 0,
 		'marginBottom' => 0
 	);
@@ -71,6 +71,8 @@ abstract class we_fileupload_base{
 	);
 	protected $isGdOk = true;
 	protected $fileTable = '';
+	protected $binDocProperties = array();
+	public static $isFallback = false;
 
 	const CHUNK_SIZE = 128;
 	const ON_ERROR_RETURN = true;
@@ -106,12 +108,21 @@ abstract class we_fileupload_base{
 		$this->maxUploadSizeBytes = $this->maxUploadSizeMBytes * 1048576;
 	}
 
+	public function setIsDragAndDrop($isDragAndDrop = true){
+		$this->isDragAndDrop = $isDragAndDrop;
+	}
+	
+	public function setIsFallback($isFallback = false){
+		self::$isFallback = $isFallback;
+	}
+
 	public function getName(){
 		return $this->name;
 	}
 
 	public static function isFallback(){
-		return (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10) ||
+		return self::$isFallback ||
+			(we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10) ||
 			(we_base_browserDetect::isSafari() && intval(we_base_browserDetect::getBrowserVersion()) < 7);
 	}
 
@@ -124,7 +135,7 @@ abstract class we_fileupload_base{
 	}
 
 	public function getHtmlAlertBoxes(){
-		return self::getHtmlAlertBoxesStatic($this->dimensions['width'], $this->maxUploadSizeMBytes, true);
+		return self::getHtmlAlertBoxesStatic($this->dimensions['alertBoxWidth'] ? $this->dimensions['alertBoxWidth'] : $this->dimensions['width'], $this->maxUploadSizeMBytes, true, $mainOnly);
 	}
 
 	public static function getHtmlAlertBoxesStatic($width = 410, $maxSize = -1, $isSizeReady = false){
@@ -195,6 +206,7 @@ abstract class we_fileupload_base{
 				isGdOk : ' . ($this->isGdOk ? 'true' : 'false') . ',
 				htmlFileRow : \'' . $this->_getHtmlFileRow() . '\',
 				fileTable : "' . $this->fileTable . '",
+				binDocProperties : ' . json_encode($this->binDocProperties) . '
 			});
 		') . ($this->externalProgress['create'] ? implodeJS($progressbar->getJS('', true)) : ''));
 	}
