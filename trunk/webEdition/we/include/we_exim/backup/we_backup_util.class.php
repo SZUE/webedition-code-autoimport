@@ -124,11 +124,12 @@ abstract class we_backup_util{
 	}
 
 	static function getProgressJS($percent, $description){
-		return
-			'if(top.busy && top.busy.setProgressText && top.busy.setProgress){
-								top.busy.setProgressText("current_description", "' . $description . '");
-								top.busy.setProgress(' . $percent . ');
-							}';
+		return '
+if(top.busy && top.busy.setProgressText && top.busy.setProgress){
+		top.busy.setProgressText("current_description", "' . $description . '");
+		top.busy.setProgress(' . $percent . ');
+}
+';
 	}
 
 	static function getExportPercent(){

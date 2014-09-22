@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_object_search extends we_search_base{
-
 	var $height;
 	var $searchname;
 	var $searchlocation;
@@ -53,42 +52,42 @@ class we_object_search extends we_search_base{
 
 	function getFields($name = 'obj_searchField', $size = 1, $select = "", $Path, $multi = ""){
 
-		$objID = f('SELECT ID FROM ' . OBJECT_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($Path) . "'");
+		$objID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($Path) . '"');
 		$opts = '';
+		$all = array();
 		$tableInfo = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $objID);
-		$all = "";
-		for($i = 0; $i < count($tableInfo); $i++){
-			if($tableInfo[$i]["name"] != 'ID' && substr($tableInfo[$i]["name"], 0, 3) != "OF_" && stripos($tableInfo[$i]["name"], we_objectFile::TYPE_MULTIOBJECT) !== 0 && stripos($tableInfo[$i]["name"], "object") !== 0){
-				$regs = explode('_', $tableInfo[$i]["name"], 2);
+		foreach($tableInfo as $cur){
+			if($cur["name"] != 'ID' && substr($cur["name"], 0, 3) != "OF_" && stripos($cur["name"], we_objectFile::TYPE_MULTIOBJECT) !== 0 && stripos($cur["name"], "object") !== 0){
+				$regs = explode('_', $cur["name"], 2);
 				if(count($regs) == 2){
-					$opts .= '<option value="' . $tableInfo[$i]["name"] . '" '
-						. (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>'
+					$opts .= '<option value="' . $cur["name"] . '" '
+						. (($select == $cur["name"]) ? "selected" : "") . '>'
 						. $regs[1] . '</option>';
 				}
-				$all .= $tableInfo[$i]["name"] . ",";
+				$all [] = $cur["name"];
 			} else {
-				switch($tableInfo[$i]["name"]){
+				switch($cur["name"]){
 					case 'OF_Text':
-						$opts .= '<option value="' . $tableInfo[$i]["name"] . '" ' . (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectname]') . '</option>' . "\n";
-						$all .= $tableInfo[$i]["name"] . ",";
+						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectname]') . '</option>';
+						$all [] = $cur["name"];
 						break;
 					case 'OF_Path':
-						$opts .= '<option value="' . $tableInfo[$i]["name"] . '" ' . (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectpath]') . '</option>' . "\n";
-						$all .= $tableInfo[$i]["name"] . ",";
+						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectpath]') . '</option>';
+						$all [] = $cur["name"];
 						break;
 					case 'OF_ID':
-						$opts .= '<option value="' . $tableInfo[$i]["name"] . '" ' . (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectid]') . '</option>' . "\n";
-						$all .= $tableInfo[$i]["name"] . ",";
+						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectid]') . '</option>';
+						$all [] = $cur["name"];
 						break;
 					case 'OF_Url':
-						$opts .= '<option value="' . $tableInfo[$i]["name"] . '" ' . (($select == $tableInfo[$i]["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objecturl]') . '</option>' . "\n";
-						$all .= $tableInfo[$i]["name"] . ",";
+						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objecturl]') . '</option>';
+						$all [] = $cur["name"];
 						break;
 				}
 			}
 		}
-		$all = rtrim($all, ',');
-		$opts = '<option value="' . $all . '">' . g_l('modules_object', '[allFields]') . '</option>' . $opts;
+
+		$opts = '<option value="' . implode(',', $all) . '">' . g_l('modules_object', '[allFields]') . '</option>' . $opts;
 		$onchange = (substr($select, 0, 4) != "meta" && substr($select, 0, 4) != "date" && substr($select, 0, 8) != "checkbox" ? 'onchange="changeit(this.value);"' : 'onchange="changeitanyway(this.value);"');
 		return '<select name="' . $name . '" class="weSelect" size="' . $size . '" ' . $multi . ' ' . $onchange . '>' . $opts . '</select>';
 	}
