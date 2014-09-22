@@ -755,11 +755,11 @@ UNIQUE KEY k (docID,docTable)
 		}
 
 		//filter fields for each table
-		for($y = 0; $y < count($tableInfo); $y++){
+		foreach($tableInfo as $cur){
 			if($tablename == VERSIONS_TABLE){
 				switch($searchfield){
 					case 'ID' :
-						$tableInfo[$y]['name'] = 'documentID';
+						$cur['name'] = 'documentID';
 						$searchfield = 'documentID';
 						break;
 					case 'temp_template_id' :
@@ -774,8 +774,8 @@ UNIQUE KEY k (docID,docTable)
 				}
 			}
 
-			if($searchfield == $tableInfo[$y]['name']){
-				$searchfield = $tablename . '.' . $tableInfo[$y]['name'];
+			if($searchfield == $cur['name']){
+				$searchfield = $tablename . '.' . $cur['name'];
 
 				if(isset($searchname) && $searchname != ''){
 					if(($whatParentID == 'ParentIDDoc' && ($this->table == FILE_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID == 'ParentIDObj' && ($this->table == OBJECT_FILES_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID == 'ParentIDTmpl' && $this->table == TEMPLATES_TABLE)){
