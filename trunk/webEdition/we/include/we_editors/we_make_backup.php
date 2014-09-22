@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -26,32 +25,32 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$what = we_base_request::_(we_base_request::STRING,"pnt",'frameset');
+$what = we_base_request::_(we_base_request::STRING, "pnt", 'frameset');
 
-$step = we_base_request::_(we_base_request::INT,"step",1);
+$step = we_base_request::_(we_base_request::INT, "step", 1);
 
 $weBackupWizard = new we_backup_wizard(WE_INCLUDES_DIR . 'we_editors/we_make_backup.php', we_backup_wizard::BACKUP);
 
 switch($what){
 	case "frameset":
-		print $weBackupWizard->getHTMLFrameset();
+		echo $weBackupWizard->getHTMLFrameset();
 		break;
 	case "body":
-		print $weBackupWizard->getHTMLStep($step);
+		echo $weBackupWizard->getHTMLStep($step);
 		break;
 	case "cmd":
-		print $weBackupWizard->getHTMLCmd();
+		echo $weBackupWizard->getHTMLCmd();
 		break;
 	case "busy":
-		print $weBackupWizard->getHTMLBusy();
+		echo $weBackupWizard->getHTMLBusy();
 		break;
 	case "extern":
-		print $weBackupWizard->getHTMLExtern();
+		echo $weBackupWizard->getHTMLExtern();
 		break;
 	case "checker":
-		print $weBackupWizard->getHTMLChecker();
+		echo $weBackupWizard->getHTMLChecker();
 		break;
 	default:
-		t_e(__FILE__ . " unknown reference: $what");
+		t_e(__FILE__ . ' unknown reference: ' . $what);
 }
 
