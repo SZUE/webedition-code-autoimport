@@ -1136,7 +1136,7 @@ function startStep(){
 			$progress = new we_progressBar(we_base_request::_(we_base_request::INT, "percent", 0));
 			$progress->setStudLen(200);
 			$progress->addText($text, 0, "current_description");
-			$head.=$progress->getJSCode();
+			$head.=$progress->getJSCode('busy');
 			$body.=$progress->getHtml();
 			$table->setCol(0, 1, null, $body);
 			$table->setCol(1, 1, null, we_html_tools::getPixel(250, 1));
