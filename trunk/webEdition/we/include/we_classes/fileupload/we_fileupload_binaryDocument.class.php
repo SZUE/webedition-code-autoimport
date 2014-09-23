@@ -142,7 +142,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 	}
 
 	public function getHTML($fs = '', $ft = '', $md = '', $thumbnailSmall = '', $thumbnailBig = ''){
-		$newText = $this->isDragAndDrop ? "Drag-n-Drop Upload<br />Datei hierher ziehen" : "no drag and drop in this browser";//FIXME: gl()!!
+		$newText = $this->isDragAndDrop ? g_l('newFile ', "[drop_text_ok]") : g_l('newFile ', "[drop_text_nok]");
 
 		$btnBrowse = we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, 170, we_html_button::HEIGHT, '', '', false, false, '_btn');
 		$btnUpload = we_html_button::create_button("upload", "javascript:" . $this->getJsBtnCmd('upload'), true, 170, 22, "", "", true, false, "_btn", true);

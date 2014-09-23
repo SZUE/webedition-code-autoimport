@@ -26,6 +26,7 @@ $protect = we_base_moduleInfo::isActive('newsletter') && we_users_util::canEditM
 we_html_tools::protect($protect);
 
 $what = we_base_request::_(we_base_request::STRING, 'pnt', 'frameset');
+$ncmd = we_base_request::_(we_base_request::STRING, 'ncmd', '');
 
 $newsletterFrame = new we_newsletter_frames();
 switch($what){
@@ -37,7 +38,13 @@ switch($what){
 		break;
 }
 
-echo $newsletterFrame->getHTMLDocumentHeader($what, $mode);
+switch($ncmd){
+	case 'do_upload_csv':
+	case 'do_upload_black':
+		break;
+	default:
+		echo $newsletterFrame->getHTMLDocumentHeader($what, $mode);
+}
 
 if(($id = we_base_request::_(we_base_request::INT, 'inid')) !== false){
 	$newsletterFrame->View->newsletter = new we_newsletter_newsletter($id);
@@ -71,4 +78,6 @@ switch($what){
 		$newsletterFrame->View->processCommands();
 }
 
-echo $newsletterFrame->getHTML($what, $mode);
+if(!$newsletterFrame->View->isJsonOnly()){
+	echo $newsletterFrame->getHTML($what, $mode);
+}

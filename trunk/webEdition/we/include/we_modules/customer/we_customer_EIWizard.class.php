@@ -574,14 +574,18 @@ class we_customer_EIWizard{
 		$source = we_base_request::_(we_base_request::FILE, "source", "/");
 		$type = we_base_request::_(we_base_request::STRING, "type", "");
 
-		$parts = array();
+		$fileUploader = new we_fileupload_include('upload', 'body', 'footer', 'we_form', 'next_footer', 'top.load.doNextAction()', 'document.we_form.import_from[1].checked = true;', 369, true, true, 200);
+		$fileUploader->setAction($this->frameset . '?pnt=eibody&art=import&step=3&import_from=' . self::EXPORT_LOCAL . '&type=' . $type);
+		$fileUploader->setDimensions(array('alertBoxWidth' => 430, 'marginTop' => 10));
 
+		$parts = array();
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement('
 					function callBack(){
 						document.we_form.import_from[1].checked=true;
 					}
-				');
+				') . $fileUploader->getJs();
+		$css = STYLESHEET . $fileUploader->getCss();
 
 		$tmptable = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 1);
 		$tmptable->setCol(0, 0, array("valign" => "middle"), $this->formFileChooser(250, "source", $source, "opener." . $this->bodyFrame . ".document.we_form.import_from[0].checked=true;", ($type == we_import_functions::TYPE_GENERIC_XML ? we_base_ContentTypes::XML : "")));
@@ -600,18 +604,13 @@ class we_customer_EIWizard{
 		);
 
 		//upload table
-		$maxsize = getUploadMaxFilesize(true, $GLOBALS['DB_WE']);
-		if($maxsize){
-			$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
-			$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
-		} else {
-			$tmptable->setCol(0, 0, array(), we_html_tools::getPixel(2, 5));
-			$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
-		}
-		//$tmptable->setCol(2,0,array("valign"=>"middle"),we_html_element::htmlInput(array("name"=>"upload","type"=>"file","size"=>35,"value"=>$upload)));
-		$tmptable->setCol(2, 0, array("valign" => "middle"), we_html_tools::htmlTextInput("upload", 35, "", 255, "onclick=\"document.we_form.import_from[1].checked=true;\"", "file"));
+		//$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
+		$tmptable->setCol(0, 0, array(), $fileUploader->getHtmlAlertBoxes());
+		$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
+
+		//$tmptable->setCol(2, 0, array("valign" => "middle"), we_html_tools::htmlTextInput("upload", 35, "", 255, "onclick=\"document.we_form.import_from[1].checked=true;\"", "file"));
+		$tmptable->setCol(2, 0, array("valign" => "middle"), $fileUploader->getHTML());
 		$tmptable->setCol(3, 0, array(), we_html_tools::getPixel(2, 5));
-		//
 
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 2);
 		$table->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(self::EXPORT_LOCAL, ($import_from == self::EXPORT_LOCAL), "import_from", g_l('modules_customer', '[upload_import]'), true, "defaultfont", ""));
@@ -625,9 +624,8 @@ class we_customer_EIWizard{
 			"noline" => 1
 		);
 
-
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . STYLESHEET . $js) .
+				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . $css . $js) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "enctype" => "multipart/form-data"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 2)) .
 							we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step2]'))
@@ -638,21 +636,32 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLImportStep3(){
-
 		$import_from = we_base_request::_(we_base_request::STRING, "import_from", self::EXPORT_SERVER);
 		$source = we_base_request::_(we_base_request::FILE, "source", "/");
 		$type = we_base_request::_(we_base_request::STRING, "type", "");
 		$ext = $type == self::TYPE_CSV ? ".csv" : ".xml";
-
 		$filename = "";
 		$filesource = "";
 
 		if($import_from == self::EXPORT_LOCAL){
-			if(isset($_FILES['upload']) && $_FILES["upload"]["size"]){
-				// creating a temp name and copy the file to the we tmp directory with the new temp name
-				$filename = TEMP_DIR . we_base_file::getUniqueId() . $ext;
-				$filesource = $_SERVER['DOCUMENT_ROOT'] . $filename;
-				move_uploaded_file($_FILES['upload']["tmp_name"], $filesource);
+			$fileUploader = new we_fileupload_include('upload');
+			$fileUploader->setFileNameTemp(array('postfix' => $ext));
+
+			if($fileUploader->processFileRequest()){
+				//we have finished upload or we are in fallback mode
+				$filesource = $fileUploader->getFileNameTemp();
+				$filename = str_replace($_SERVER['DOCUMENT_ROOT'], '', $filesource);
+
+				if(!$filename && isset($_FILES['upload']) && $_FILES["upload"]["size"]){
+					//fallback mode
+					$filename = TEMP_DIR . we_base_file::getUniqueId() . $ext;
+					$filesource = $_SERVER['DOCUMENT_ROOT'] . $filename;
+					move_uploaded_file($_FILES['upload']["tmp_name"], $filesource);
+				}
+
+			} else {
+				//ajax response allready written: return here to send response only
+				return;
 			}
 		} else {
 			$filename = $source;
@@ -1026,6 +1035,14 @@ class we_customer_EIWizard{
 						), we_html_button::create_button("cancel", "javascript:top.close();")
 				);
 				break;
+			case "2":
+				$buttons = we_html_button::position_yes_no_cancel(
+						we_html_button::create_button_table(array(
+							we_html_button::create_button("back", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_back&step=" . $step . "';"),
+							we_html_button::create_button("next", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_next&step=" . $step . "';", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer'))
+						), we_html_button::create_button("cancel", "javascript:" . we_fileupload_include::getJsBtnCmdStatic('cancel', 'body'))
+				);
+				break;
 			case "5":
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button_table(array(
@@ -1339,6 +1356,16 @@ class we_customer_EIWizard{
 				if(we_base_request::_(we_base_request::INT, "step") !== false){
 					$js = we_html_element::jsElement('
 									function doNext(){
+										if(' . $this->bodyFrame . '.document.we_form.step.value === "2" &&
+												typeof ' . $this->bodyFrame . '.we_FileUpload !== "undefined" &&
+												' . $this->bodyFrame . '.document.we_form.import_from[1].checked){
+											' . we_fileupload_include::getJsBtnCmdStatic('upload', 'body', 'doNextAction();') . '
+											return;
+										}
+										doNextAction();
+									}
+
+									function doNextAction(){
 										' . $this->bodyFrame . '.document.we_form.step.value++;
 										' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_IMPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
 										if(' . $this->bodyFrame . '.document.we_form.step.value>4){
