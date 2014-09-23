@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -75,13 +74,17 @@ echo we_html_element::cssLink(JS_DIR . 'jscalendar/skins/aqua/theme.css') .
 #deleteVersion{display: none; }
 #deleteAllVersions{display: none; }
 #label_deleteAllVersions{display: none; }
-#deleteButton{display: none; }', array('media' => 'print')) . '
+#deleteButton{display: none; }', array('media' => 'print'));
+?>
 </head>
-<body class="weEditorBody" onunload="doUnload()" onkeypress="javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);" onload="setTimeout(\'init();\',200)" onresize="sizeScrollContent();">
-<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;">' .
- $_view->getHTMLforVersions(array(
-	array("html" => "<div id='searchTable'>" . $_view->getBodyTop() . "</div>"),
-	array("html" => "<div id='parametersTop'>" . $_view->getParameterTop($foundItems) . "</div>" . $_view->tblList($content, $_view->makeHeadLines()) . "<div id='parametersBottom'>" . $_view->getParameterBottom($foundItems) . "</div>")
-)) .
- '</form>
+<body class="weEditorBody" onunload="doUnload()" onkeypress="javascript:if (event.keyCode == \'13\' || event.keyCode==\'3\') search(true);" onload="setTimeout(\'init();\',200)" onresize="sizeScrollContent();">
+	<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;">
+		<?php
+		echo $_view->getHTMLforVersions(array(
+			array("html" => "<div id='searchTable'>" . $_view->getBodyTop() . "</div>"),
+			array("html" => "<div id='parametersTop'>" . $_view->getParameterTop($foundItems) . "</div>" . $_view->tblList($content, $_view->makeHeadLines()) . "<div id='parametersBottom'>" . $_view->getParameterBottom($foundItems) . "</div>")
+		));
+		?>
+		<input type="hidden" name="we_complete_request" value="1"/>
+	</form>
 </body></html>';
