@@ -24,7 +24,7 @@
  */
 function we_tag_ifEqual($attribs){
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
-		print($foo);
+		echo $foo;
 		return false;
 	}
 	$name = weTag_getAttribute('name', $attribs);
@@ -33,18 +33,19 @@ function we_tag_ifEqual($attribs){
 
 	if(!$eqname){
 		if(($foo = attributFehltError($attribs, 'value', __FUNCTION__))){
-			print($foo);
+			echo $foo;
 			return false;
 		}
 		return ($GLOBALS['we_doc']->getElement($name) == $value);
 	}
 
 	if(($foo = attributFehltError($attribs, 'eqname', __FUNCTION__))){
-		print($foo);
+		echo $foo;
 		return false;
 	}
 	$elem = $GLOBALS['we_doc']->getElement($name);
 	$blockeq = we_tag_getPostName($eqname);
+
 	if($GLOBALS["WE_MAIN_DOC"]->getElement($blockeq)){//check if eqname is present in block
 		return ($elem == $GLOBALS["WE_MAIN_DOC"]->getElement($blockeq));
 	} elseif($GLOBALS["WE_MAIN_DOC"]->getElement($eqname)){//check if eqname is present in document

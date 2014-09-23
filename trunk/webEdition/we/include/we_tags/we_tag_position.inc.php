@@ -27,7 +27,7 @@ function we_tag_position($attribs){
 
 	//	type is required !!!
 	if(($missingAttrib = attributFehltError($attribs, "type", __FUNCTION__))){
-		print $missingAttrib;
+		echo $missingAttrib;
 		return '';
 	}
 

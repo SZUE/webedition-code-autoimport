@@ -43,7 +43,7 @@ function we_tag_checkForm($attribs, $content){
 
 	//  check required Fields
 	if(($missingAttrib = attributFehltError($attribs, array("match" => false, 'type' => false), __FUNCTION__))){
-		print $missingAttrib;
+		echo $missingAttrib;
 		return '';
 	}
 

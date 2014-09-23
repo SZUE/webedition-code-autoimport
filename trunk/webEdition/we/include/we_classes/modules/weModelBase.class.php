@@ -86,13 +86,13 @@ class weModelBase{
 	/**
 	 * save entry in database
 	 */
-	function save($force_new = false){
+	function save($force_new = false, $isAdvanced = false){
 		$sets = array();
 		if($force_new){
 			$this->isnew = true;
 		}
-		foreach($this->persistent_slots as $val){
-			//if(!in_array($val,$this->keys))
+		foreach($this->persistent_slots as $key => $val){
+			$val = ($isAdvanced ? $key : $val);
 			if(isset($this->{$val})){
 				$sets[$val] = is_array($this->{$val}) ? serialize($this->{$val}) : $this->{$val};
 			}
