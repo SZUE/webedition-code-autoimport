@@ -133,7 +133,6 @@ abstract class we_backup_util{
 		}
 
 		echo we_html_element::jsElement($ret);
-		ob_flush();
 		flush();
 	}
 
