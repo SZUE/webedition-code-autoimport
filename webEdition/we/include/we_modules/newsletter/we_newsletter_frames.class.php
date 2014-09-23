@@ -85,9 +85,9 @@ class we_newsletter_frames extends we_modules_frame{
 			case 'black_list':
 				return $this->getHTMLBlackList();
 			case 'upload_black':
-				return $this->getHTMLUploadCsv("javascript:we_cmd('do_upload_black');");
+				return $this->getHTMLUploadCsv($what);
 			case 'upload_csv':
-				return $this->getHTMLUploadCsv();
+				return $this->getHTMLUploadCsv($what);
 			case 'export_csv_mes':
 				return $this->getHTMLExportCsvMessage();
 			case 'edit_file':
@@ -415,7 +415,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 			$table->setColContent(1, 0, we_html_element::htmlSpan(array('id' => 'blacklist_' . $key), g_l('modules_newsletter', '[reporting][mailing_emails_are_black]')));
 			$table->setColContent(1, 1, $pbByB->getJS() . $pbByB->getHTML());
 			$table->setCol(1, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'blacklist_total', 'style' => 'color:' . (($allBlockedByBlacklist > 0) ? 'red' : 'green') . ';'), $allBlockedByBlacklist));
-			$table->setCol(1, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => ICON_DIR . (($allBlockedByBlacklist == 0) ? "valid.gif" : "invalid.gif"))));
+			$table->setCol(1, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (($allBlockedByBlacklist == 0) ? "valid.gif" : "invalid.gif"))));
 			//todo: statt show black list, sollte show_log begrenzt auf Log=email_is_black + $start_send + start_end
 			$table->setCol(1, 4, array('style' => 'width: 35px'), (($allBlockedByBlacklist == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('" . WEBEDITION_DIR . "we_lcmd.php?we_cmd[0]=black_list')"))));
 
@@ -432,7 +432,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 			$table->setColContent(2, 0, we_html_element::htmlSpan(array('id' => 'domain_' . $key), g_l('modules_newsletter', '[reporting][mailing_emails_nok]')));
 			$table->setColContent(2, 1, $pbBbD->getJS() . $pbBbD->getHTML());
 			$table->setCol(2, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'domain_total', 'style' => 'color:' . (($allBlockedByDomainCheck > 0) ? 'red' : 'green') . ';'), $allBlockedByDomainCheck));
-			$table->setCol(2, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => ICON_DIR . (($allBlockedByDomainCheck == 0) ? "valid.gif" : "invalid.gif"))));
+			$table->setCol(2, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (($allBlockedByDomainCheck == 0) ? "valid.gif" : "invalid.gif"))));
 			//todo: statt domain, sollte show_log begrenzt auf Log=domain_nok + $start_send + start_end
 			$table->setCol(2, 4, array('style' => 'width: 35px'), (($allBlockedByDomainCheck == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('" . WEBEDITION_DIR . "we_lcmd.php?we_cmd[0]=domain_check')"))));
 
@@ -1250,7 +1250,9 @@ window.onload=extraInit;');
 			$GLOBALS['mod'] = 'newsletter';
 			ob_start();
 			include(WE_MODULES_PATH . 'home.inc.php');
-			return ob_get_clean();
+			$out = ob_get_contents();
+			ob_end_clean();
+			return $out;
 		}
 
 		$js = $this->View->getJSProperty() .
@@ -1771,38 +1773,41 @@ self.focus();
 		return $this->getHTMLDocument($body, $js);
 	}
 
-	function getHTMLUploadCsv($js = "javascript:we_cmd('do_upload_csv');"){
-		$cancel = we_html_button::create_button("cancel", "javascript:self.close();");
-		$upload = we_html_button::create_button("upload", $js);
+	function getHTMLUploadCsv($what){
+		$weFileupload = new we_fileupload_include('we_File', '', '', 'we_form', 'upload_footer', "we_cmd('do_" . $what . "');", '', 330, true, false, 0);
+		$weFileupload->setExternalProgress(true, 'progressbar', true, 120);
+		$weFileupload->setAction($this->frameset . '?' . ($what == 'upload_csv' ? 'pnt=upload_csv&grp=0&ncmd=do_upload_csv' :
+				($what == 'upload_black' ? 'pnt=upload_black&grp=undefined&ncmd=do_upload_black' : '')));
+
+		$cancel = we_html_button::create_button("cancel", "javascript:" . $weFileupload->getJsBtnCmd('cancel'));
+		$upload = we_html_button::create_button("upload", "javascript:" . $weFileupload->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer');
 
 		$buttons = we_html_button::create_button_table(array($cancel, $upload));
+		$footerTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);
+		$footerTable->setCol(0, 0, $attribs = array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
+		$footerTable->setCol(0, 1, $attribs = array('align' => 'right'), $buttons);
 
 		$js = $this->View->getJSProperty() .
 			we_html_element::jsElement('
 					self.focus();
-		');
-
-		$maxsize = getUploadMaxFilesize(true, $GLOBALS['DB_WE']);
+		') . $weFileupload->getJs();
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 1);
-		if($maxsize){
-			$table->setCol(0, 0, array("style" => "padding-right:30px"), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT));
-		} else {
-			$table->setCol(0, 0, array(), we_html_tools::getPixel(2, 10));
-		}
+		$table->setCol(0, 0, array("style" => "padding-right:30px"), $weFileupload->getHtmlAlertBoxes());
 		$table->setCol(1, 0, array(), we_html_tools::getPixel(2, 10));
-		$table->setCol(2, 0, array("valign" => "middle"), we_html_element::htmlInput(array('name' => 'we_File', 'TYPE' => 'file', 'size' => 35)));
+		//$table->setCol(2, 0, array("valign" => "middle"), we_html_element::htmlInput(array('name' => 'we_File', 'TYPE' => 'file', 'size' => 35)));
+		$table->setCol(2, 0, array("valign" => "middle"), $weFileupload->getHTML());
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "enctype" => "multipart/form-data"), we_html_element::htmlCenter(
 						$this->View->getHiddens() .
 						(($grp = we_base_request::_(we_base_request::STRING, 'grp')) !== false ? $this->View->htmlHidden("group", $grp) : '') .
-						$this->View->htmlHidden("MAX_FILE_SIZE", 8388608) .
-						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_newsletter', '[csv_upload]'), $buttons, "100%", 30, "", "hidden")
+						$this->View->htmlHidden("MAX_FILE_SIZE", $weFileupload->getMaxUploadSize()) .
+						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_newsletter', '[csv_upload]'), $footerTable->getHTML(), "100%", 30, "", "hidden")
 					)
 				)
 		);
 
-		return $this->getHTMLDocument($body, $js);
+		return $this->getHTMLDocument($body, $weFileupload->getCSS() . $js);
 	}
 
 	private function getHTMLExportCsvMessage($allowClear = false){
@@ -2017,7 +2022,7 @@ self.focus();
 						"align" => "left",
 					),
 					array(
-						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), we_html_element::htmlImg(array("src" => ICON_DIR . (we_check_email($cols[0]) ? "valid.gif" : "invalid.gif")))),
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (we_check_email($cols[0]) ? "valid.gif" : "invalid.gif")))),
 						"height" => "",
 						"align" => "center",
 					)

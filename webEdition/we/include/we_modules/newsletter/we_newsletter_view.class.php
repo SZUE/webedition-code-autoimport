@@ -44,6 +44,7 @@ class we_newsletter_view extends we_modules_view{
 	var $topFrame;
 	var $treeFrame;
 	var $cmdFrame;
+	protected $jsonOnly = false;
 	protected $show_import_box = -1;
 	protected $show_export_box = -1;
 
@@ -1197,7 +1198,8 @@ function set_state_edit_delete_recipient(control) {
 	}
 
 	function processCommands(){
-		switch(we_base_request::_(we_base_request::STRING, "ncmd")){
+		$ncmd = we_base_request::_(we_base_request::STRING, "ncmd");
+		switch($ncmd){
 			case "new_newsletter":
 				$this->newsletter = new we_newsletter_newsletter();
 				$this->newsletter->Text = g_l('modules_newsletter', '[new_newsletter]');
@@ -1681,50 +1683,43 @@ edf.populateGroups();');
 				break;
 
 			case "do_upload_csv":
-				if(isset($_FILES["we_File"])){
-					$we_File = $_FILES["we_File"];
-				}
+			case "do_upload_black":
 				$group = we_base_request::_(we_base_request::INT, "group", 0);
+				$weFileupload = new we_fileupload_include('we_File');
+				if(!$weFileupload->processFileRequest()){
+					//ajax resonse allready written: return here to send response only
+					$this->jsonOnly = true;
 
-				if(isset($we_File)){
-					$unique = we_base_file::getUniqueId();
-					$tempName = TEMP_PATH . $unique;
+					return;
+				}
 
-					if(move_uploaded_file($we_File["tmp_name"], $tempName)){
-						$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $tempName);
-						print we_html_element::jsElement('
+				//set header we avoided when sending JSON only
+				we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
+				print we_html_tools::getHtmlTop('newsletter') . STYLESHEET;
+
+				//we have finished upload or we are in fallback mode
+				$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $weFileupload->getFileNameTemp());
+				if(!$tempName && isset($_FILES["we_File"]) && $_FILES["we_File"]["size"]){
+					//fallback or legacy mode
+					$we_File = $_FILES["we_File"];
+					$tempName = TEMP_PATH . we_base_file::getUniqueId();
+
+					if(!move_uploaded_file($we_File["tmp_name"], $tempName)){
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[upload_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
+						return;
+					}
+					$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $tempName);
+				}
+
+				//print next command
+				print we_html_element::jsElement($ncmd == 'do_upload_csv' ? '
 opener.document.we_form.csv_file' . $group . '.value="' . $tempName . '";
 opener.we_cmd("import_csv");
-self.close();');
-					} else {
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[upload_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
-					}
-				}
-				break;
-
-			case "do_upload_black":
-				if(isset($_FILES["we_File"])){
-					$we_File = $_FILES["we_File"];
-				}
-				if(isset($we_File)){
-					$unique = we_base_file::getUniqueId();
-					$tempName = TEMP_PATH . $unique;
-
-					if(move_uploaded_file($we_File["tmp_name"], $tempName)){
-						$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $tempName);
-						print we_html_element::jsElement('
+self.close();' : '
 opener.document.we_form.csv_file.value="' . $tempName . '";
 opener.document.we_form.sib.value=0;
 opener.we_cmd("import_black");
 self.close();');
-					} else {
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[upload_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
-					}
-				}
 				break;
 
 			case "save_email_file":
@@ -1877,6 +1872,10 @@ self.close();');
 		);
 		$ret["min"] -= ($ret["hour"] * 60);
 		return $ret;
+	}
+
+	public function isJsonOnly(){
+		return $this->jsonOnly;
 	}
 
 	/**
@@ -2418,7 +2417,7 @@ self.close();');
 
 	function putSetting($name, $value){
 		$db = new DB_WE();
-		$db->query('INSERT IGNORE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => $name, 'pref_value' => $value)));
+		$db->query('INSERT IGNORE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => $name, pref_value => $value)));
 	}
 
 	function saveSettings(){

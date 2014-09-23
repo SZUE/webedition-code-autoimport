@@ -175,7 +175,7 @@ var weFileUpload = (function(){
 						e.stopPropagation();
 						e.preventDefault();
 						e.target.className = 'we_file_drag';
-						//that.fileselectOnclick();
+						_.controller.fileselectOnclick();
 					}
 				}
 			};
