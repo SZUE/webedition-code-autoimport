@@ -33,7 +33,7 @@ if(substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) =
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-print STYLESHEET;
+echo STYLESHEET;
 ?>
 </head>
 
@@ -49,18 +49,23 @@ print STYLESHEET;
 
 		echo '<table cellpadding="0" cellspacing="0" border="0">
 ' . ($we_doc->EditPageNr == 15 ?
-				'<tr><td><select name="editmenue" size="1" onchange="var cmnd = this.options[this.selectedIndex].value; if(cmnd){if(cmnd==\'doImage_convertPNG\' || cmnd==\'doImage_convertGIF\'){_EditorFrame.setEditorIsHot(true);};we_cmd(cmnd,\'' . $we_transaction . '\');}this.selectedIndex=0"' . (($we_doc->getElement("data") && we_base_imageEdit::is_imagetype_read_supported($_gdtype) && we_base_imageEdit::gd_version() > 0) ? "" : ' disabled="disabled"') . '>
+			'<tr><td><select name="editmenue" size="1" onchange="var cmnd = this.options[this.selectedIndex].value; if(cmnd){if(cmnd==\'doImage_convertPNG\' || cmnd==\'doImage_convertGIF\'){_EditorFrame.setEditorIsHot(true);};we_cmd(cmnd,\'' . $we_transaction . '\');}this.selectedIndex=0"' . (($we_doc->getElement("data") && we_base_imageEdit::is_imagetype_read_supported($_gdtype) && we_base_imageEdit::gd_version() > 0) ? "" : ' disabled="disabled"') . '>
 <option value="">' . g_l('weClass', "[edit]") . '</option>
 <option value="image_resize">' . g_l('weClass', "[resize]") . '&hellip;</option>
 <option value="image_rotate">' . g_l('weClass', "[rotate]") . '&hellip;</option>
 <option value="image_crop">' . g_l('weClass', "[crop]") . '&hellip;</option>
 <option value="" disabled="disabled" style="color:grey">' . g_l('weClass', "[convert]") . '</option>' .
-				((in_array("jpg", we_base_imageEdit::supported_image_types())) ? '<option value="image_convertJPEG">&nbsp;&nbsp;' . g_l('weClass', "[convert_jpg]") . '...</option>' : '') .
-				(($_gdtype != "gif" && in_array("gif", we_base_imageEdit::supported_image_types())) ? '<option value="doImage_convertGIF">&nbsp;&nbsp;' . g_l('weClass', "[convert_gif]") . '</option>' : '') .
-				(($_gdtype != "png" && in_array("png", we_base_imageEdit::supported_image_types())) ? '<option value="doImage_convertPNG">&nbsp;&nbsp;' . g_l('weClass', "[convert_png]") . '</option>' : '') .
-				'</select></td></tr>
+			((in_array("jpg", we_base_imageEdit::supported_image_types())) ? '<option value="image_convertJPEG">&nbsp;&nbsp;' . g_l('weClass', "[convert_jpg]") . '...</option>' : '') .
+			(($_gdtype != "gif" && in_array("gif", we_base_imageEdit::supported_image_types())) ? '<option value="doImage_convertGIF">&nbsp;&nbsp;' . g_l('weClass', "[convert_gif]") . '</option>' : '') .
+			(($_gdtype != "png" && in_array("png", we_base_imageEdit::supported_image_types())) ? '<option value="doImage_convertPNG">&nbsp;&nbsp;' . g_l('weClass', "[convert_png]") . '</option>' : '') .
+			'</select></td></tr>
 <tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
 <tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>' :
-				''
+			''
 		) . '<tr><td>' . $we_doc->getHtml(true) . '</td></tr>'
 		. '</table>';
+		?>
+		<input type="hidden" name="we_complete_request" value="1"/>
+	</form>
+</body>
+</html>
