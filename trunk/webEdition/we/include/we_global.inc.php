@@ -1112,6 +1112,9 @@ function we_templatePost(){
 			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
 			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
 		){ //is set to Post or not set (new default)
+			if(function_exists('fastcgi_finish_request')){
+				fastcgi_finish_request();
+			}
 			session_write_close();
 			we_schedpro::trigger_schedule();
 		}

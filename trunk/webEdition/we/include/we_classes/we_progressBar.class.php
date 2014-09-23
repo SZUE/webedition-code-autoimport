@@ -53,6 +53,7 @@ class we_progressBar{
 			return $this->getJSCode($pgFrame);
 		}
 		echo $this->getJSCode($pgFrame);
+		flush();
 	}
 
 	public function getJSCode($pgFrame = ''){
@@ -62,10 +63,14 @@ class we_progressBar{
 function setProgressText' . $this->name . '(name,text){
 	if(' . $frame . 'document.getElementById){
 		var div = ' . $frame . 'document.getElementById(name);
-		div.innerHTML = text;
+		if(div){
+			div.innerHTML = text;
+		}
 	}else if(' . $frame . 'document.all){
 		var div = ' . $frame . 'document.all[name];
-		div.innerHTML = text;
+		if(div){
+			div.innerHTML = text;
+		}
 	}
 }
 

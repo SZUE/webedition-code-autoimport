@@ -1136,7 +1136,7 @@ function startStep(){
 			$progress = new we_progressBar(we_base_request::_(we_base_request::INT, "percent", 0));
 			$progress->setStudLen(200);
 			$progress->addText($text, 0, "current_description");
-			$head.=$progress->getJSCode('busy');
+			$head.=$progress->getJSCode('top.busy');
 			$body.=$progress->getHtml();
 			$table->setCol(0, 1, null, $body);
 			$table->setCol(1, 1, null, we_html_tools::getPixel(250, 1));
@@ -1156,8 +1156,7 @@ function setLocation(loc){
 function doExport() {
 	if((!top.body.document.we_form.export_send.checked) && (!top.body.document.we_form.export_server.checked)) {
 		' . we_message_reporting::getShowMessageCall(g_l('backup', "[save_not_checked]"), we_message_reporting::WE_MESSAGE_WARNING) . '
-	}
-	else {
+	}else {
 		top.busy.location="' . $this->frameset . '?pnt=busy&operation_mode=busy&step=2";
 		top.body.we_submitForm("cmd","' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php");
 	}
@@ -1352,15 +1351,13 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 						echo we_html_element::jsElement('
 if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . $we_backup_obj->current_description . '");
 if(top.busy.setProgress) top.busy.setProgress(' . $percent . ');
-top.cmd.location="' . $this->frameset . '?pnt=cmd&operation_mode=backup&do_import_after_backup=' . $do_import_after_backup . '&temp_filename=' . $temp_filename . '";
-									');
+top.cmd.location="' . $this->frameset . '?pnt=cmd&operation_mode=backup&do_import_after_backup=' . $do_import_after_backup . '&temp_filename=' . $temp_filename . '";');
 						break;
 					case -1:
 						echo we_html_element::jsElement('
 if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . g_l('backup', "[finished]") . '");
 if(top.busy.setProgress) top.busy.setProgress(100);
-top.body.location="' . $this->frameset . '?pnt=body&step=2&ok=false&do_import_after_backup=' . $do_import_after_backup . '&temp_filename=' . $temp_filename . '";
-									');
+top.body.location="' . $this->frameset . '?pnt=body&step=2&ok=false&do_import_after_backup=' . $do_import_after_backup . '&temp_filename=' . $temp_filename . '";');
 						break;
 					default:
 						$we_backup_obj->writeFooter();
@@ -1375,6 +1372,7 @@ top.body.location="' . $this->frameset . '?pnt=body&step=2&ok=false&do_import_af
 
 						break;
 				}
+				flush();
 				unset($we_backup_obj);
 				break;
 			case "rebuild":
@@ -1499,11 +1497,12 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 						}
 						$temp_filename = $we_backup_obj->saveState($temp_filename);
 						$percent = $we_backup_obj->getImportPercent();
-						print we_html_element::jsElement('
+						echo we_html_element::jsElement('
 	if(top.busy.setProgressText) top.busy.setProgressText("current_description", "' . g_l('backup', "[delete_old_files]") . '");
 	if(top.busy.setProgress) top.busy.setProgress(' . $percent . ');
 	top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=import&temp_filename=' . $temp_filename . '";
 								');
+						flush();
 					} else if($we_backup_obj->file_counter < $we_backup_obj->file_end){
 						$filename_tmp = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . basename($we_backup_obj->filename) . "_" . $we_backup_obj->file_counter;
 						$we_backup_obj->file_counter++;
@@ -1520,23 +1519,24 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 								$we_backup_obj->current_description = g_l('backup', "[working]");
 							}
 
-							print we_html_element::jsElement('
+							echo we_html_element::jsElement('
 	if(top.busy.setProgressText) top.busy.setProgressText("current_description", "' . $we_backup_obj->current_description . '");
 	if(top.busy.setProgress) top.busy.setProgress(' . $percent . ');
 	top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=import&temp_filename=' . $temp_filename . '";'
 							);
 						} else {
-							print we_html_element::jsElement('
+							echo we_html_element::jsElement('
 	top.busy.location = "' . $this->frameset . '?pnt=busy";
 	top.body.location = "' . $this->frameset . '?pnt=body&step=4&temp_filename=' . $temp_filename . '";'
 							);
 						}
+						flush();
 					} else {
 						$we_backup_obj->doUpdate();
 						if(is_file($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $temp_filename) && $we_backup_obj->rebuild && empty($we_backup_obj->errors)){
 							unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $temp_filename);
 						}
-						print we_html_element::jsElement('
+						echo we_html_element::jsElement('
 	top.opener.top.we_cmd("load", "' . FILE_TABLE . '");
 	top.opener.top.we_cmd("exit_delete");
 	top.busy.location = "' . $this->frameset . '?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', "[finished]") . '&percent=100";' .
@@ -1544,6 +1544,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 									'top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=rebuild";' :
 									'top.body.location = "' . $this->frameset . '?pnt=body&step=4&temp_filename=' . $temp_filename . '";')
 						);
+						flush();
 					}
 				}
 				break;
