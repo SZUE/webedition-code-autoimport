@@ -2411,21 +2411,13 @@ self.close();');
 			$ret[$db->f("pref_name")] = $db->f("pref_value");
 		}
 		//make sure blacklist is correct
-		$tmp = explode(',', $ret['black_list']);
-		if(is_array($tmp)){
-			foreach($tmp as &$t){
-				$t = trim($t);
-			}
-		}
-		$ret['black_list'] = implode(',', $tmp);
+		$ret['black_list'] = implode(',', array_map('trim', explode(',', $ret['black_list'])));
 
 		return $ret;
 	}
 
 	function putSetting($name, $value){
 		$db = new DB_WE();
-		$name = $db->escape($name);
-		$value = $db->escape($value);
 		$db->query('INSERT IGNORE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => $name, 'pref_value' => $value)));
 	}
 

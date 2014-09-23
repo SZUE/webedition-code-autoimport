@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_newsletter_base{
-
 	const STATUS_ERROR = -1;
 	const STATUS_SUCCESS = 0;
 	const STATUS_EMAIL_EXISTS = 1;
@@ -212,7 +210,7 @@ class we_newsletter_base{
 	 * @param int $status (0=all; 1=invalid; 2=valid )
 	 * @return unknown
 	 */
-	function getEmailsFromExtern2($files, $emails_only = 0, $group = 0, array $blocks = array(), $status = 0, &$emailkey){
+	function getEmailsFromExtern2($files, $emails_only, $group, array $blocks, $status, &$emailkey){
 		$arr = makeArrayFromCSV($files);
 		if(!$arr){
 			return array();
