@@ -135,7 +135,7 @@ abstract class we_fileupload_base{
 	}
 
 	public function getHtmlAlertBoxes(){
-		return self::getHtmlAlertBoxesStatic($this->dimensions['alertBoxWidth'] ? $this->dimensions['alertBoxWidth'] : $this->dimensions['width'], $this->maxUploadSizeMBytes, true, $mainOnly);
+		return self::getHtmlAlertBoxesStatic($this->dimensions['alertBoxWidth'] ? $this->dimensions['alertBoxWidth'] : $this->dimensions['width'], $this->maxUploadSizeMBytes, true);
 	}
 
 	public static function getHtmlAlertBoxesStatic($width = 410, $maxSize = -1, $isSizeReady = false){
