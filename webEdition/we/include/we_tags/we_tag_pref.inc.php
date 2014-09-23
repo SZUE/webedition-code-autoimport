@@ -26,6 +26,31 @@ function we_tag_pref($attribs){
 
 	switch(($type = weTag_getAttribute('type', $attribs))){
 		case 'shop':
+			if(($foo = attributFehltError($attribs, array('field' => false), __FUNCTION__))){
+				return $foo;
+			}
+			$field = weTag_getAttribute('field', $attribs);
+			switch($name){
+				case 'vatRule':
+					$vat = we_shop_vatRule::getShopVatRule();
+					if(isset($vat->$field)){
+						return $vat->$field;
+					}
+					break;
+				case 'shippingControl':
+					$ship = we_shop_shippingControl::getShippingControl();
+					if(isset($ship->$field)){
+						return $ship->$field;
+					}
+					break;
+				case 'statusMails':
+					$ship = we_shop_statusMails::getShopStatusMails();
+					if(isset($ship->$field)){
+						return $ship->$field;
+					}
+					break;
+			}
+
 			break;
 		case 'banner':
 			switch($name){
@@ -42,5 +67,5 @@ function we_tag_pref($attribs){
 			}
 			break;
 	}
-	t_e('pref ' . $name . 'not found in module ' . $type);
+	t_e('pref not found in module', $attribs);
 }
