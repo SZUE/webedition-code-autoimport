@@ -2784,9 +2784,10 @@ class we_objectFile extends we_document{
 			$regs = array();
 			$hrefFields = false;
 			$multiobjectFields = false;
+			$imgFields = false;
 
 			foreach(array_keys($_REQUEST) as $n){
-				if(preg_match('/^we_' . $this->Name . '_(' . self::TYPE_HREF . '|' . self::TYPE_MULTIOBJECT . ')$/', $n, $regs)){
+				if(preg_match('/^we_' . $this->Name . '_(' . self::TYPE_HREF . '|' . self::TYPE_MULTIOBJECT . '|' . self::TYPE_IMG . ')$/', $n, $regs)){
 					${$regs[1] . 'Fields'}|=true;
 				}
 			}
@@ -2801,7 +2802,14 @@ class we_objectFile extends we_document{
 
 				foreach($hrefs as $k => $v){
 					$href = array_merge($empty, $v);
+					//$this->setElement($k, $href['intID'], self::TYPE_HREF, 'bdid');//FIXME: move intID to bdid?
 					$this->setElement($k, serialize($href), self::TYPE_HREF);
+				}
+			}
+
+			if($imgFields){
+				foreach($_REQUEST['we_' . $this->Name . '_' . self::TYPE_IMG] as $k => $val){
+					$this->setElement($k, $val, self::TYPE_IMG, 'bdid');
 				}
 			}
 
