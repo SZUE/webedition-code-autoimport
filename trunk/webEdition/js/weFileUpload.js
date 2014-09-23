@@ -1401,7 +1401,7 @@ var weFileUpload = (function(){
 									cv.getContext('2d').drawImage(image, 0, 0, width, height);
 
 									_.view.preview = new Image();
-									_.view.preview.src= cv.toDataURL('image/jpeg', 0.8);
+									_.view.preview.src= cv.toDataURL('image/png');
 									_.view.elems.dragInnerRight.innerHTML = '';
 									_.view.elems.dragInnerRight.appendChild(_.view.preview);
 								}
