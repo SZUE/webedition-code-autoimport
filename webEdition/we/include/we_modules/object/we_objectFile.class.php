@@ -269,7 +269,7 @@ class we_objectFile extends we_document{
 		$_languages = getWeFrontendLanguagesForBackend();
 		$this->setRootDirID(true);
 		$langkeys = array();
-		
+
 		if(LANGLINK_SUPPORT){
 			$htmlzw = we_html_element::htmlBr();
 			foreach($_languages as $langkey => $lang){
@@ -2605,19 +2605,23 @@ class we_objectFile extends we_document{
 						continue;
 					}
 					$name = ($regs[0] == self::TYPE_OBJECT ? 'we_object_' : '') . $regs[1];
+					switch($regs[0]){
+						case self::TYPE_HREF:
+						case self::TYPE_IMG:
+							$key = "bdid";
+							break;
+						default:
+							$key = 'dat';
+					}
+
 					$this->elements[$name] = array(
-						'dat' => $db->f($cur["name"]),
+						$key => $db->f($cur["name"]),
 						'type' => $regs[0],
 						'len' => $cur["len"]
 					);
 //						if($regs[0] == "multiobject"){
 //							$this->elements[$name]["class"] = $db->f($tableInfo[$i]["name"]);
 //						}
-					switch($regs[0]){
-						case self::TYPE_HREF:
-						case self::TYPE_IMG:
-							$this->elements[$name]["bdid"] = $db->f($cur["name"]);
-					}
 				}
 			}
 // add variant data if available
