@@ -176,7 +176,7 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function load($id = 0){
-		if(parent::load($id)){
+		if(parent::load($id,true)){
 			$this->CategoryIDs = $this->Categories;
 
 			if(!is_array($this->Categories)){
