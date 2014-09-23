@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -36,7 +35,6 @@ if(!isset($GLOBALS['WE_BACKENDCHARSET'])){
 }
 
 class we_core_Local{
-
 	/**
 	 * lang attribute
 	 *
@@ -72,9 +70,7 @@ class we_core_Local{
 	 * @return string
 	 */
 	public static function weLangToLocale($lang){
-		//FIXME: remove static list, use Zend instead
-		static $locales = array(
-			'Deutsch' => 'de', 'English' => 'en', 'Dutch' => 'nl', 'Finnish' => 'fi', 'French' => 'fr', 'Polish' => 'pl', 'Russian' => 'ru', 'Spanish' => 'es', 'Norwegian' => 'no');
+		$locales = array_flip(getWELangs());
 
 		$lang = str_replace('_UTF-8', '', $lang);
 
@@ -91,8 +87,7 @@ class we_core_Local{
 	 * @return string
 	 */
 	public static function localeToWeLang($locale){
-		$langs = array(
-			'de' => 'Deutsch', 'en' => 'English', 'nl' => 'Dutch', 'fi' => 'Finnish', 'fr' => 'French', 'pl' => 'Polish', 'ru' => 'Russian', 'es' => 'Spanish', 'no' => 'Norwegian');
+		$langs = getWELangs();
 
 		$locale = substr($locale, 0, 2);
 
