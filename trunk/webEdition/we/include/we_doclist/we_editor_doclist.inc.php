@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -39,26 +38,28 @@ $headCal = we_html_element::cssLink(JS_DIR . "jscalendar/skins/aqua/theme.css") 
 
 echo $headCal .
  doclistView::getSearchJS() .
- STYLESHEET .
- '</head>
+ STYLESHEET
+?>
+</head>
 
-<body class="weEditorBody" onunload="doUnload()" onkeypress="javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);" onload="setTimeout(\'init();\',200)" onresize="sizeScrollContent();">
-<div id="mouseOverDivs_doclist"></div>
-<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;">';
+<body class="weEditorBody" onunload="doUnload()" onkeypress="javascript:if (event.keyCode == 13 || event.keyCode == 3)
+			search(true);" onload="setTimeout('init();', 200)" onresize="sizeScrollContent();">
+	<div id="mouseOverDivs_doclist"></div>
+	<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;"><?php
+		$docl = new doclistView();
+		$view = new we_search_view();
+		$content = $docl->searchProperties();
+		$headline = $docl->makeHeadLines();
+		$foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
+		$_parts = array(
+			array("html" => doclistView::getSearchDialog()),
+			array("html" => "<div id='parametersTop'>" . $docl->getSearchParameterTop($foundItems) . "</div>" . $view->tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . $docl->getSearchParameterBottom($foundItems) . "</div>"),
+		);
 
-$docl = new doclistView();
-$view = new we_search_view();
-$content = $docl->searchProperties();
-$headline = $docl->makeHeadLines();
-$foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
-$_parts = array(
-	array("html" => doclistView::getSearchDialog()),
-	array("html" => "<div id='parametersTop'>" . $docl->getSearchParameterTop($foundItems) . "</div>" . $view->tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . $docl->getSearchParameterBottom($foundItems) . "</div>"),
-);
-
-echo doclistView::getHTMLforDoclist($_parts) . '
-<input type="hidden" name="obj" value="1"/>
-<input type="hidden" name="we_complete_request" value="1"/>
-</form>
+		echo doclistView::getHTMLforDoclist($_parts);
+		?>
+		<input type="hidden" name="obj" value="1"/>
+		<input type="hidden" name="we_complete_request" value="1"/>
+	</form>
 </body>
-</html>';
+</html>
