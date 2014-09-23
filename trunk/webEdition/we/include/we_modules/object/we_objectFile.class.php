@@ -268,7 +268,8 @@ class we_objectFile extends we_document{
 		$inputName = 'we_' . $this->Name . '_Language';
 		$_languages = getWeFrontendLanguagesForBackend();
 		$this->setRootDirID(true);
-
+		$langkeys = array();
+		
 		if(LANGLINK_SUPPORT){
 			$htmlzw = we_html_element::htmlBr();
 			foreach($_languages as $langkey => $lang){

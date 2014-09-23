@@ -25,7 +25,7 @@
 class rpcResetVersionCmd extends rpcCmd{
 
 	function execute(){
-		$id = we_base_request::_(we_base_request::RAW, 'id');
+		$id = we_base_request::_(we_base_request::INT, 'id');
 
 		we_html_tools::protect();
 
@@ -42,19 +42,19 @@ class rpcResetVersionCmd extends rpcCmd{
 			$parts = array();
 
 			if(stristr($id, '___')){
-				$parts = explode("___", $id);
+				$parts = explode('___', $id);
 			}
 			$id = isset($parts[0]) ? $parts[0] : $id;
 			$publish = isset($parts[1]) ? $parts[1] : 0;
 
-			if(($version = we_base_request::_(we_base_request::INT, "version", 0)) == 0){
-				$version = f('SELECT version FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($id));
+			if(($version = we_base_request::_(we_base_request::INT, 'version', false)) === false){
+				$version = f('SELECT version FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($id) . ' ORDER BY version DESC LIMIT 1');
 			}
 
 			we_versions_version::resetVersion($id, $version, $publish);
 		}
 
-		if(!empty($_SESSION['weS']['versions']['logResetIds'])){
+		if($_SESSION['weS']['versions']['logResetIds']){
 			$versionslog = new we_versions_log();
 			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'], we_versions_log::VERSIONS_RESET);
 		}

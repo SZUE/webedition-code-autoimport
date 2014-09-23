@@ -50,9 +50,9 @@ class we_versions_view{
 		if($this->searchclass->mode){
 			$h += 37;
 			$addinputRows = '
-							for(i=0;i<newID;i++) {
-								scrollheight = scrollheight + 26;
-							}';
+for(i=0;i<newID;i++) {
+	scrollheight = scrollheight + 26;
+}';
 		}
 
 		return we_html_element::jsElement('
@@ -228,8 +228,7 @@ function deleteVers() {
 	}
 
 	if(check==false) {
-		' . we_message_reporting::getShowMessageCall(
-					g_l('versions', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+		' . we_message_reporting::getShowMessageCall(g_l('versions', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 	}else {
 		Check = confirm("' . g_l('versions', '[deleteVersions]') . '");
 		if (Check == true) {
@@ -279,11 +278,10 @@ function checkAll() {
 
 }
 
-		var ajaxCallbackResetVersion = {
+var ajaxCallbackResetVersion = {
 	success: function(o) {
 		if(typeof(o.responseText) != "undefined") {
 			//top.we_cmd("save_document","' . $GLOBALS['we_transaction'] . '","0","1","0", "","");
-
 			setTimeout(\'search(false);\', 500);
 			// reload current document => reload all open Editors on demand
 
@@ -293,9 +291,8 @@ function checkAll() {
 				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
 					_usedEditors[frameId].setEditorReloadAllNeeded(true);
 					_usedEditors[frameId].setEditorIsActive(true);
-
 				} else {
-					_usedEditors[frameId].setEditorReloadAllNeeded(true);
+//					_usedEditors[frameId].setEditorReloadAllNeeded(true);
 				}
 			}
 			_multiEditorreload = true;
@@ -420,8 +417,7 @@ function setOrder(order){
 }
 
 
-var rows = ' . (isset(
-					$_REQUEST["searchFields"]) ? count($_REQUEST["searchFields"]) - 1 : 0) . ';
+var rows = ' . (isset($_REQUEST["searchFields"]) ? count($_REQUEST["searchFields"]) - 1 : 0) . ';
 
 function newinput() {
 	var searchFields = "' . str_replace(
@@ -575,8 +571,7 @@ function changeit(value, rowNr){
 
 		cell = document.createElement("TD");
 		cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+		cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 		row.appendChild(cell);
 	}else if(value=="status") {
 		if (locationTD!=null) {
@@ -599,8 +594,7 @@ function changeit(value, rowNr){
 
 		cell = document.createElement("TD");
 		cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+		cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 		row.appendChild(cell);
 	}
 		}
@@ -686,8 +680,7 @@ function delRow(id) {
 			$button = we_html_button::create_button("image:btn_function_trash", "javascript:delRow(" . $i . ");", true, "", "", "", "", false);
 
 			$search = we_html_tools::htmlSelect(
-					"search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset(
-						$this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
+					"search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset($this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 
 			$locationDisabled = "disabled";
 			$handle = "";
@@ -696,18 +689,15 @@ function delRow(id) {
 
 				if($this->searchclass->searchFields[$i] == "allModsIn"){
 					$search = we_html_tools::htmlSelect(
-							"search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset(
-								$this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
+							"search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset($this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 				}
 				if($this->searchclass->searchFields[$i] == "modifierID"){
 					$search = we_html_tools::htmlSelect(
-							"search[" . $i . "]", $this->searchclass->getUsers(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset(
-								$this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
+							"search[" . $i . "]", $this->searchclass->getUsers(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset($this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 				}
 				if($this->searchclass->searchFields[$i] == "status"){
 					$search = we_html_tools::htmlSelect(
-							"search[" . $i . "]", $this->searchclass->getStats(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset(
-								$this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
+							"search[" . $i . "]", $this->searchclass->getStats(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset($this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 				}
 				if($this->searchclass->searchFields[$i] == "timestamp"){
 					$locationDisabled = "";
@@ -719,11 +709,9 @@ function delRow(id) {
 			$out .= '
 				<tr id="filterRow_' . $i . '">
 					<td>' . we_html_tools::htmlSelect(
-					"searchFields[" . $i . "]", $this->searchclass->getFields(), 1, (isset($this->searchclass->searchFields) && is_array($this->searchclass->searchFields) && isset(
-						$this->searchclass->searchFields[$i]) ? $this->searchclass->searchFields[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFields[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) . '</td>
+					"searchFields[" . $i . "]", $this->searchclass->getFields(), 1, (isset($this->searchclass->searchFields) && is_array($this->searchclass->searchFields) && isset($this->searchclass->searchFields[$i]) ? $this->searchclass->searchFields[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFields[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) . '</td>
 					<td id="td_location[' . $i . ']">' . we_html_tools::htmlSelect(
-					"location[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->searchclass->location) && is_array($this->searchclass->location) && isset(
-						$this->searchclass->location[$i]) ? $this->searchclass->location[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'location[' . $i . ']')) . '</td>
+					"location[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->searchclass->location) && is_array($this->searchclass->location) && isset($this->searchclass->location[$i]) ? $this->searchclass->location[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'location[' . $i . ']')) . '</td>
 					<td id="td_search[' . $i . ']">' . $search . '</td>
 					<td id="td_delButton[' . $i . ']">' . $button . '</td>
 				</tr>
@@ -887,8 +875,8 @@ function delRow(id) {
 		if($resultCount > 0){
 			$sortierung = explode(' ', $_order);
 
-			foreach($_versions as $k => $v){
-				$_Result[] = $_versions[$k];
+			foreach($_versions as $v){
+				$_Result[] = $v;
 			}
 
 			if($sortierung[0] == "modifierID"){
@@ -992,7 +980,7 @@ function delRow(id) {
 
 		$modifications = makeArrayFromCSV($modString);
 		$m = 0;
-		foreach($modifications as $k => $v){
+		foreach($modifications as $v){
 			foreach($this->version->modFields as $key => $val){
 				if($v == $val){
 					$out .= "<strong>- " . g_l('versions', '[' . $key . ']') . '</strong><br/>';
@@ -1029,7 +1017,7 @@ function delRow(id) {
 	 * @return string
 	 */
 	public function tblList($content, $headline){
-		$anz = count($headline) - 1;
+		//$anz = count($headline) - 1;
 		return '
 <table border="0" style="background-color:#fff;" width="100%" cellpadding="5" cellspacing="0">
 <tr>
@@ -1065,7 +1053,7 @@ function delRow(id) {
 	}
 
 	function tblListRow($content){
-		$anz = count($content) - 1;
+		//$anz = count($content) - 1;
 		return '<td valign="top" style="width:15px;">' . we_html_tools::getPixel(1, 1) . '</td>
 <td valign="top" style="width:110px;height:30px;" class="middlefont">' . ((isset($content[0]["dat"]) && $content[0]["dat"]) ? $content[0]["dat"] : "&nbsp;") . '</td>
 <td valign="top" style="width:15em;" class="middlefont">' . ((isset($content[1]["dat"]) && $content[1]["dat"]) ? $content[1]["dat"] : "&nbsp;") . '</td>

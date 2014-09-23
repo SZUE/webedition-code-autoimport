@@ -1126,7 +1126,6 @@ var ajaxCallbackResetVersion = {
 	 ' . we_message_reporting::getShowMessageCall(
 					g_l('versions', '[resetAllVersionsOK]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 	 // reload current document => reload all open Editors on demand
-
 	 var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
 	 for (frameId in _usedEditors) {
 
@@ -1153,7 +1152,7 @@ var ajaxCallbackResetVersion = {
 function resetVersionAjax(id, documentID, version, table) {
  document.getElementById("resetBusyAdvSearch").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
 
- YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id="+id+"&documentID="+documentID+"&version="+version+"&documentTable="+table+"&we_transaction=' . $GLOBALS['we_transaction'] . '");
+YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id="+id+"&documentID="+documentID+"&version="+version+"&documentTable="+table+"&we_transaction=' . $GLOBALS['we_transaction'] . '");
 
 }
 
@@ -1177,8 +1176,7 @@ function resetVersions() {
  if(check==false) {
 	 ' . we_message_reporting::getShowMessageCall(
 					g_l('versions', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
- }
- else {
+ }else {
 	 Check = confirm("' . g_l('versions', '[resetVersionsSearchtool]') . '");
 	 if (Check == true) {
 		 var vals = "";
@@ -1276,7 +1274,7 @@ var ajaxCallbackPublishDocs = {
 
 	 },
 	 failure: function(o) {
-		alert("Failure");
+		//alert("Failure");
 	 }
 }
 
