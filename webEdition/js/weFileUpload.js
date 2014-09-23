@@ -1,4 +1,4 @@
-/** 
+/**
 webEdition CMS
  *
  * $Rev$
@@ -39,7 +39,7 @@ var weFileUpload = (function(){
 			return false;
 		}
 		switch(type){
-			case 'inc' : 
+			case 'inc' :
 				weFileUpload_inc.prototype = new weFileUpload_abstract;
 				weFileUpload_inc.prototype.constructor = weFileUpload_inc;
 				return new weFileUpload_inc;
@@ -254,7 +254,7 @@ var weFileUpload = (function(){
 			this.currentWeightTag = 0;//FIXME: find better name
 
 			this.resetParams = function(){};
-			
+
 			this.prepareUpload = function(){
 				return true;
 			};
@@ -398,7 +398,7 @@ var weFileUpload = (function(){
 					}
 				}
 			};
-			
+
 			this.doOnFileFinished = function(){
 				//to be overridden
 			};
@@ -406,7 +406,7 @@ var weFileUpload = (function(){
 			this.postProcess = function(resp){
 				//to be overriden
 			};
-			
+
 			this.cancel = function(){
 				//to be overridden
 			};
@@ -525,7 +525,7 @@ var weFileUpload = (function(){
 					return false;
 				}
 				if(tc.forbidden.all && tc.forbidden.all.length > 0 &&
-						(this.inArray(type, tc.forbidden.all) || 
+						(this.inArray(type, tc.forbidden.all) ||
 							this.inArray(typeGroup, tc.forbidden.all) ||
 							this.inArray(ext, tc.forbidden.all))){
 					return false;
@@ -591,7 +591,7 @@ var weFileUpload = (function(){
 		this.deleteRow = function(index,but){
 			_.view.deleteRow(index, but);
 		};
-		
+
 		this.getIsLegacyMode = function(){
 			return _.isLegacyMode;
 		};
@@ -697,7 +697,7 @@ var weFileUpload = (function(){
 			this.uploadBtnName = '';
 
 			this.addFile = function(f){
-				var sizeText = f.isSizeOk ? _.utils.gl.sizeTextOk + _.utils.computeSize(f.file.size) + ', ' : 
+				var sizeText = f.isSizeOk ? _.utils.gl.sizeTextOk + _.utils.computeSize(f.file.size) + ', ' :
 						'<span style="color:red;">' + _.utils.gl.sizeTextNok + '</span>';
 				var typeText = f.isTypeOk ? _.utils.gl.typeTextOk + f.type :
 						'<span style="color:red;">' + _.utils.gl.typeTextNok + f.type + '</span>';
@@ -812,7 +812,7 @@ var weFileUpload = (function(){
 				_.sender.form.form.weIsUploading.value = 0;
 			};
 		}
-		
+
 	}
 
 	function weFileUpload_imp(){
@@ -828,7 +828,7 @@ var weFileUpload = (function(){
 			_.sender = new Sender();
 			_.view = new View();
 			_.utils = new Utils();
-			
+
 		})();
 
 		this.init = function(conf){
@@ -892,7 +892,7 @@ var weFileUpload = (function(){
 					case 'cancel' :
 						replace = _.utils.gl.btnCancel;
 						break;
-					case 'upload' : 
+					case 'upload' :
 						replace = _.utils.gl.btnUpload;
 				}
 
@@ -910,7 +910,7 @@ var weFileUpload = (function(){
 
 			this.prepareUpload = function(){
 				if(this.currentFile === -1){
-					this.uploadFiles = []; 
+					this.uploadFiles = [];
 					this.mapFiles = [];
 					for(var i = 0, c = 0; i < this.preparedFiles.length; i++){
 						if(typeof this.preparedFiles[i] === 'object' && this.preparedFiles[i] !== null && this.preparedFiles[i].isUploadable){
@@ -1035,9 +1035,9 @@ var weFileUpload = (function(){
 
 			this.appendRow = function(f, index){
 				var div,
-					row = this.htmlFileRow.replace(/WEFORMNUM/g,index) . 
-					replace(/WE_FORM_NUM/g,(this.nextTitleNr++)) . 
-					replace(/FILENAME/g,(f.file.name)) . 
+					row = this.htmlFileRow.replace(/WEFORMNUM/g,index) .
+					replace(/WE_FORM_NUM/g,(this.nextTitleNr++)) .
+					replace(/FILENAME/g,(f.file.name)) .
 					replace(/FILESIZE/g,(f.isSizeOk ? _.utils.computeSize(f.file.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize/1024)/1024) + ' MB</span>'));
 
 				weAppendMultiboxRow(row,'',0,0,0,-1);
@@ -1337,7 +1337,7 @@ var weFileUpload = (function(){
 
 		function View(){
 			this.uploadBtnName = '';
-			this.icon = '/webEdition/images/icons/doc.gif'
+			this.icon = '/webEdition/images/icons/doc.gif';
 			this.binDocType = 'other';
 			this.preview = null;
 			this.STATE_RESET = 0;
@@ -1346,7 +1346,7 @@ var weFileUpload = (function(){
 			this.STATE_UPLOAD = 3;
 
 			this.addFile = function(f){
-				var sizeText = f.isSizeOk ? _.utils.gl.sizeTextOk + _.utils.computeSize(f.file.size) + ', ' : 
+				var sizeText = f.isSizeOk ? _.utils.gl.sizeTextOk + _.utils.computeSize(f.file.size) + ', ' :
 						'<span style="color:red;">' + _.utils.gl.sizeTextNok + '</span>';
 				var typeText = f.isTypeOk ? _.utils.gl.typeTextOk + f.type :
 						'<span style="color:red;">' + _.utils.gl.typeTextNok + f.type + '</span>';
@@ -1465,7 +1465,7 @@ var weFileUpload = (function(){
 						_.controller.setWeButtonState('reset_btn', true);
 						_.controller.setWeButtonState(_.view.uploadBtnName, false, true);
 						return;
-					case this.STATE_UPLOAD: 
+					case this.STATE_UPLOAD:
 						_.controller.setWeButtonState(_.view.uploadBtnName, false, true);
 						_.controller.setWeButtonState('reset_btn', false, true);
 						this.setDisplay('fileInputWrapper', 'none');
@@ -1530,7 +1530,7 @@ var weFileUpload = (function(){
 				document.images['progress_image_bg_fileupload'].width = (coef * 100) - (coef * progress);
 				document.getElementById('progress_text_fileupload').innerHTML = progress + '%' + mt;
 			};
-			
+
 			this.setDisplay = function(elem, val){
 				if(this.elems[elem]){
 					this.elems[elem].style.display = val;
