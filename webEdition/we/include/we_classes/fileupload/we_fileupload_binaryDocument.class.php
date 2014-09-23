@@ -53,7 +53,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		$this->setDimensions(array('dragHeight' => 116));
 		$this->binDocProperties = $this->getDocProperties();
 		$this->dimensions['alertBoxWidth'] = 507;
-				
+
 	}
 
 	public function setTypeCondition(){
@@ -113,11 +113,11 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 	}
 
 	public function getCss(){
-		
+
 		return self::isFallback() || self::isLegacyMode() ? '' : we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::cssElement('
 			div.we_file_drag{
 				width: 300px;
-				border-radius: 0px; 
+				border-radius: 0px;
 				border: dotted 2px gray;
 				height: 116px;
 			}
@@ -142,7 +142,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 	}
 
 	public function getHTML($fs = '', $ft = '', $md = '', $thumbnailSmall = '', $thumbnailBig = ''){
-		$newText = $this->isDragAndDrop ? g_l('newFile ', "[drop_text_ok]") : g_l('newFile ', "[drop_text_nok]");
+		$newText = $this->isDragAndDrop ? g_l('newFile', "[drop_text_ok]") : g_l('newFile', "[drop_text_nok]");
 
 		$btnBrowse = we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, 170, we_html_button::HEIGHT, '', '', false, false, '_btn');
 		$btnUpload = we_html_button::create_button("upload", "javascript:" . $this->getJsBtnCmd('upload'), true, 170, 22, "", "", true, false, "_btn", true);
@@ -170,7 +170,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:204px'), $divFileInput .
 			$divProgressbar .
 			$divBtnReset .
-			$divBtnUpload . 
+			$divBtnUpload .
 			$divBtnCancel
 		);
 
@@ -333,7 +333,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		}
 		echo json_encode($response);
 	}
-	
+
 	private function postProcess($fileNameTemp, $fileName = '', $fileCt = ''){
 		if(!isset($_SESSION['weS']['we_data'][$this->transaction])){
 			return 'some error response';
