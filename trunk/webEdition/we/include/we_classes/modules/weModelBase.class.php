@@ -59,7 +59,7 @@ class weModelBase{
 	/**
 	 * Load entry from database
 	 */
-	function load($id = 0){
+	function load($id = 0, $isAdvanced = false){
 		if($id){
 			$this->ID = $id;
 		}
@@ -72,7 +72,7 @@ class weModelBase{
 
 			if(($data = getHash('SELECT * FROM `' . $this->table . '` WHERE ' . $this->getKeyWhere(), $this->db, MYSQL_ASSOC))){
 				foreach($data as $fieldName => $value){
-					if(in_array($fieldName, $this->persistent_slots)){
+					if(($isAdvanced ? isset($this->persistent_slots[$fieldName]) : in_array($fieldName, $this->persistent_slots))){
 						$this->{$fieldName} = $value;
 					}
 				}
