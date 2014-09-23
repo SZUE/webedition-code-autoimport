@@ -1150,7 +1150,7 @@ class we_objectFile extends we_document{
 		$extPath = isset($hrefArr['extPath']) ? $hrefArr['extPath'] : '';
 		$int_elem_Name = 'we_' . $this->Name . '_href[' . $nint . ']';
 		$intPath_elem_Name = 'we_' . $this->Name . '_href[' . $nintPath . ']';
-		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']'; //TOFO: should we use #bdid?
+		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']';
 		$ext_elem_Name = 'we_' . $this->Name . '_href[' . $nextPath . ']';
 		switch($type){
 			case we_base_link::TYPE_INT:
@@ -2606,9 +2606,9 @@ class we_objectFile extends we_document{
 					}
 					$name = ($regs[0] == self::TYPE_OBJECT ? 'we_object_' : '') . $regs[1];
 					switch($regs[0]){
-						case self::TYPE_HREF:
+//						case self::TYPE_HREF:
 						case self::TYPE_IMG:
-							$key = "bdid";
+							$key = 'bdid';
 							break;
 						default:
 							$key = 'dat';
@@ -2806,7 +2806,6 @@ class we_objectFile extends we_document{
 
 				foreach($hrefs as $k => $v){
 					$href = array_merge($empty, $v);
-					//$this->setElement($k, $href['intID'], self::TYPE_HREF, 'bdid');//FIXME: move intID to bdid?
 					$this->setElement($k, serialize($href), self::TYPE_HREF);
 				}
 			}
