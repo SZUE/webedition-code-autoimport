@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -309,9 +308,11 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		we_util_File::decompressDirectory($appdata['source'], $_app_directory_string = WE_APPS_PATH . '/' . $appdata['classname']);
 
 		we_base_file::delete($appdata['source']);
-		$model = $session->model;
 
-		$model->ID = $appdata['classname'];
+		$model = $session->model;
+		if(is_object($model)){
+			$model->ID = $appdata['classname'];
+		}
 		$newBeforeSaving = 0;
 		we_app_Common::rebuildAppTOC();
 		return array(
