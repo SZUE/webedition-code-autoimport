@@ -50,7 +50,7 @@ class we_shop_statusMails{
 		);
 	}
 
-	function getShopStatusMails(){
+	static function getShopStatusMails(){
 		global $DB_WE;
 		$documentsarray = array(
 			'default' => array(
