@@ -99,25 +99,10 @@ class we_updater{
 		}
 	}
 
-	static function convertPerms(){
-		/* don't use, this will damage new Permission entries
-		 * 		global $DB_WE;
-		  $db_tmp = new DB_WE();
-		  $DB_WE->query('SELECT ID,username,Permissions FROM ' . USER_TABLE . ' WHERE Permissions NOT LIKE "%ADMINISTRATOR%"');
-		  while($DB_WE->next_record()){
-		  $perms_slot = array();
-		  $pstr = $DB_WE->f("Permissions");
-		  $perms_slot["ADMINISTRATOR"] = $pstr[0];
-		  $perms_slot["PUBLISH"] = $pstr[1];
-		  if(!empty($perms_slot)){
-		  $db_tmp->query('UPDATE ' . USER_TABLE . " SET Permissions='" . $db_tmp->escape(serialize($perms_slot)) . "' WHERE ID=" . intval($DB_WE->f("ID")));
-		  }
-		  } */
-	}
 
-	static function fix_path(){
+	static function fix_user(){
 		$db = new DB_WE();
-		$db2 = new DB_WE();
+				$db2 = new DB_WE();
 		$db->query('SELECT ID,username,ParentID,Path FROM ' . USER_TABLE);
 		while($db->next_record()){
 			update_time_limit(30);
@@ -137,19 +122,12 @@ class we_updater{
 				$db2->query('UPDATE ' . USER_TABLE . " SET Path='" . $db2->escape($path) . "' WHERE ID=" . intval($id));
 			}
 		}
-	}
-
-	static function fix_icon(){
-		$db = new DB_WE();
+		$db->query('UPDATE ' . USER_TABLE . ' SET Text=username');
 		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user_alias.gif' WHERE Type=" . we_users_user::TYPE_ALIAS);
 		$db->query('UPDATE ' . USER_TABLE . " SET Icon='usergroup.gif' WHERE Type=" . we_users_user::TYPE_USER_GROUP);
 		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user.gif' WHERE Type=" . we_users_user::TYPE_USER);
 	}
 
-	static function fix_text(){
-		$db = new DB_WE();
-		$db->query('UPDATE ' . USER_TABLE . ' SET Text=username');
-	}
 
 	static function updateUnindexedCols($tab, $col){
 		global $DB_WE;
@@ -167,36 +145,33 @@ class we_updater{
 
 	static function updateUsers(){
 		global $DB_WE;
-		self::convertPerms();
-
-		self::fix_path();
-		self::fix_text();
-		self::fix_icon();
-
 		$DB_WE->query('UPDATE ' . USER_TABLE . " SET IsFolder=1 WHERE Type=" . we_users_user::TYPE_USER_GROUP);
 
+		self::fix_user();
+
+
 		self::fix_icon();
-		$GLOBALS['DB_WE']->query('SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value NOT LIKE "%_UTF-8%" OR value!="") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
+		$GLOBALS['DB_WE']->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value NOT LIKE "%_UTF-8%" OR value!="") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
 		$users = $GLOBALS['DB_WE']->getAll(true);
-		if(!empty($users)){
+		if($users){
 			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="ISO-8859-1" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
 		}
-		$GLOBALS['DB_WE']->query('SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value LIKE "%_UTF-8%") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
+		$GLOBALS['DB_WE']->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value LIKE "%_UTF-8%") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
 		$users = $GLOBALS['DB_WE']->getAll(true);
-		if(!empty($users)){
+		if($users){
 			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="UTF-8" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
 			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value=REPLACE(value,"_UTF-8","") WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
 		}
-		$GLOBALS['DB_WE']->query('SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND value="" AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
+		$GLOBALS['DB_WE']->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND value="" AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
 		$users = $GLOBALS['DB_WE']->getAll(true);
-		if(!empty($users)){
+		if($users){
 			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="UTF-8" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
 			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
 			//$_SESSION['prefs'] = we_user::readPrefs($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
 		}
-		$GLOBALS['DB_WE']->query('SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND value=""');
+		$GLOBALS['DB_WE']->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND value=""');
 		$users = $GLOBALS['DB_WE']->getAll(true);
-		if(!empty($users)){
+		if($users){
 			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
 		}
 		$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
@@ -391,7 +366,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 			}
 		}
 		//FIXME: clean customerfilter
-		//FIXME: clean history
 		//FIXME: clean inconsistent objects
 	}
 
@@ -419,7 +393,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 			}
 			self::replayUpdateDB('tblhistory.sql');
 		}
-		if(f('SELECT COUNT(1) c FROM ' . HISTORY_TABLE . ' GROUP BY UID HAVING c>' . we_history::MAX . ' LIMIT 1')){
+		if(f('SELECT COUNT(1) FROM ' . HISTORY_TABLE . ' GROUP BY UID HAVING c>' . we_history::MAX . ' LIMIT 1')){
 			$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE ModDate="0000-00-00 00:00:00"');
 			$db->query('RENAME TABLE ' . HISTORY_TABLE . ' TO old' . HISTORY_TABLE);
 			//create clean table
