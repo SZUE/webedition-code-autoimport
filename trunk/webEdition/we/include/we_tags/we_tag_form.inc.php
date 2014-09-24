@@ -153,6 +153,7 @@ function we_tag_form($attribs){
 			}
 			break;
 		case 'formmail' :
+			$formAttribs['method'] = 'post';//don't allow anything else
 			$confirmmail = weTag_getAttribute('confirmmail', $attribs, false, true);
 			$preconfirm = weTag_getAttribute('preconfirm', $attribs);
 			$postconfirm = weTag_getAttribute('postconfirm', $attribs);

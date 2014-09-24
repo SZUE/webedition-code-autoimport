@@ -208,8 +208,8 @@ if(($_order = we_base_request::_(we_base_request::RAW, 'order', ''))){
 	$we_orderarray = array();
 }
 //FIXME: change
-if(isset($_REQUEST)){
-	foreach($_REQUEST as $n => $v){
+if(isset($_POST)){
+	foreach($_POST as $n => $v){
 		if((!in_array($n, $we_reserved)) && (!in_array($n, $we_orderarray)) && (!is_array($v))){
 			$output[$n] = $v;
 		}
