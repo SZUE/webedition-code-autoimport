@@ -99,10 +99,9 @@ class we_updater{
 		}
 	}
 
-
 	static function fix_user(){
 		$db = new DB_WE();
-				$db2 = new DB_WE();
+		$db2 = new DB_WE();
 		$db->query('SELECT ID,username,ParentID,Path FROM ' . USER_TABLE);
 		while($db->next_record()){
 			update_time_limit(30);
@@ -128,7 +127,6 @@ class we_updater{
 		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user.gif' WHERE Type=" . we_users_user::TYPE_USER);
 	}
 
-
 	static function updateUnindexedCols($tab, $col){
 		global $DB_WE;
 		$DB_WE->query("SHOW COLUMNS FROM " . $DB_WE->escape($tab) . " LIKE '" . $DB_WE->escape($col) . "'");
@@ -149,8 +147,6 @@ class we_updater{
 
 		self::fix_user();
 
-
-		self::fix_icon();
 		$GLOBALS['DB_WE']->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value NOT LIKE "%_UTF-8%" OR value!="") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
 		$users = $GLOBALS['DB_WE']->getAll(true);
 		if($users){
