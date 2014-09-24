@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -51,8 +52,8 @@ if(FORMMAIL_LOG){
 				$_blocked = true;
 				// insert in block table
 				$GLOBALS['DB_WE']->query('REPLACE INTO ' . FORMMAIL_BLOCK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'ip' => $_SERVER['REMOTE_ADDR'],
-						'blockedUntil' => (FORMMAIL_BLOCKTIME == -1 ? -1 : sql_function('(UNIX_TIMESTAMP()+' . intval(FORMMAIL_BLOCKTIME) . ')'))
+							'ip' => $_SERVER['REMOTE_ADDR'],
+							'blockedUntil' => (FORMMAIL_BLOCKTIME == -1 ? -1 : sql_function('(UNIX_TIMESTAMP()+' . intval(FORMMAIL_BLOCKTIME) . ')'))
 				)));
 			}
 		}
@@ -163,8 +164,8 @@ function check_recipient($email){
 
 function check_captcha(){
 	return ($name = we_base_request::_(we_base_request::STRING, we_base_request::_(we_base_request::STRING, 'captchaname', '__NOT_SET__')) ?
-		we_captcha_captcha::check($name) :
-		false);
+			we_captcha_captcha::check($name) :
+			false);
 }
 
 $_req = we_base_request::_(we_base_request::RAW, 'required', '');
@@ -207,11 +208,13 @@ if(($_order = we_base_request::_(we_base_request::RAW, 'order', ''))){
 } else {
 	$we_orderarray = array();
 }
-//FIXME: change
+
 if(isset($_POST)){
 	foreach($_POST as $n => $v){
 		if((!in_array($n, $we_reserved)) && (!in_array($n, $we_orderarray)) && (!is_array($v))){
-			$output[$n] = $v;
+			if(!(isset($_COOKIE[$n]) && $_COOKIE[$n] == $v)){//for some reason cookies are transfered as POST's, so filter them, if the data matches in case the field names are the same.
+				$output[$n] = $v;
+			}
 		}
 	}
 }
@@ -259,10 +262,10 @@ if(isset($_REQUEST['email']) && $_REQUEST['email']){
 }
 
 $email = (isset($_REQUEST['email']) && $_REQUEST['email']) ?
-	$_REQUEST['email'] :
-	((isset($_REQUEST['from']) && $_REQUEST['from']) ?
-		$_REQUEST['from'] :
-		WE_DEFAULT_EMAIL);
+		$_REQUEST['email'] :
+		((isset($_REQUEST['from']) && $_REQUEST['from']) ?
+				$_REQUEST['from'] :
+				WE_DEFAULT_EMAIL);
 
 $subject = we_base_request::_(we_base_request::STRING, 'subject', WE_DEFAULT_SUBJECT);
 $charset = str_replace(array("\n", "\r"), '', we_base_request::_(we_base_request::STRING, 'charset', $GLOBALS['WE_BACKENDCHARSET']));
@@ -303,9 +306,9 @@ if($recipient){
 	foreach($recipients as $recipientID){
 
 		$recipient = preg_replace("/(\\n+|\\r+)/", '', (is_numeric($recipientID) ?
-				f('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($recipientID), 'Email', $GLOBALS['DB_WE']) :
-				// backward compatible
-				$recipientID)
+						f('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($recipientID), 'Email', $GLOBALS['DB_WE']) :
+						// backward compatible
+						$recipientID)
 		);
 
 		if(!$recipient){

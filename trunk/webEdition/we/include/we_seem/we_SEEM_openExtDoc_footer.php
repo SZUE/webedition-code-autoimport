@@ -24,39 +24,24 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-
-
 we_html_tools::protect();
 //	footer for a none webEdition-Document opened with webEdition
 //	the back button is only activated when there are documents in
 //	the navigation history
 
 
-$_head = "";
-$_body = "";
-
-$_head = STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
-
-$_backbutton = we_html_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();");
-
-
-
 $_table = new we_html_table(array("cellpadding" => 0,
 	"cellspacing" => 0,
 	"border" => 0), 2, 2);
 $_table->setColContent(0, 0, we_html_tools::getPixel(20, 6));
-$_table->setColContent(1, 1, $_backbutton);
-
-
-$_body = $_table->getHtml();
-$_head = STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY;
+$_table->setColContent(1, 1, we_html_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();"));
 
 
 $_body = we_html_element::htmlBody(array("bgcolor" => "white",
-		"background" => EDIT_IMAGE_DIR . "editfooterback.gif",
-		"marginwidth" => 0,
-		"marginheight" => 0,
-		"leftmargin" => 0,
-		"topmargin" => 0), $_body);
+			"background" => EDIT_IMAGE_DIR . "editfooterback.gif",
+			"marginwidth" => 0,
+			"marginheight" => 0,
+			"leftmargin" => 0,
+			"topmargin" => 0), $_table->getHtml());
 
-print we_html_element::htmlDocType() . we_html_element::htmlHtml($_head . $_body);
+echo we_html_element::htmlDocType() . we_html_element::htmlHtml(STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY . $_body);
