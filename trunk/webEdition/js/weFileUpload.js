@@ -1569,10 +1569,12 @@ var weFileUpload = (function(){
 		}
 
 		this.doUploadIfReady = function(callback){
-			if(_.sender.preparedFiles.length > 0){
+			if(_.sender.preparedFiles.length > 0 && _.sender.preparedFiles[0].uploadConditionsOk){
 				_.sender.callback = callback;
 				this.startUpload();
 			} else {
+				//there may be a file in preview with uploadConditions nok!
+				_.view.repaintGUI({what : 'resetGui'});
 				callback();
 			}
 		};
