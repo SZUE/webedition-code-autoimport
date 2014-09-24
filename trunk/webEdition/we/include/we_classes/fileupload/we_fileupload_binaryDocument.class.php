@@ -240,6 +240,20 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		return 'if(typeof window.we_FileUpload === "undefined" || window.we_FileUpload.getIsLegacyMode()){' . $callback . ';}else{' . $call . ';}';
 	}
 
+	public static function getJsUploadBeforeLeave($type = 'save',$callback){
+		if(self::isFallback() || self::isLegacyMode()){
+			return '';
+		}
+
+		/* use this when implementing upload on switch_editor_tab
+		 * $parentObj = $type == 'switch_tab' ? '_visibleEditorFrame' : '_EditorFrame';
+		 * $frame = $type == 'switch_tab' ? '_visibleEditorFrame' : '_EditorFrame.getContentEditor()';
+		 * return 'console.log(); var fileupload;if(typeof ' . $parentObj . ' !== "undefined" && typeof (fileUpload = ' . $frame . '.we_FileUpload) !== "undefined" && fileUpload.fileuploadType === "binDoc" && !fileUpload.getIsLegacyMode()){fileUpload.doUploadIfReady(function(){' . $callback . '})}else{' . $callback . '}';
+		 */
+
+		return 'var fileupload;if(typeof (fileUpload = _EditorFrame.getContentEditor().we_FileUpload) !== "undefined" && !fileUpload.getIsLegacyMode()){fileUpload.doUploadIfReady(function(){' . $callback . '})}else{' . $callback . '}';
+	}
+
 	public function processFileRequest(){
 		$this->transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', '');
 		$partNum = we_base_request::_(we_base_request::INT, 'wePartNum', 0);

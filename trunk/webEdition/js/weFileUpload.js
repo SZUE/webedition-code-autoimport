@@ -595,11 +595,18 @@ var weFileUpload = (function(){
 		this.getIsLegacyMode = function(){
 			return _.isLegacyMode;
 		};
+
+		this.doUploadIfReady = function(callback){
+			callback();
+			return;
+		};
 	}
 
 	function weFileUpload_inc(){
 		(function(){
 			weFileUpload_abstract.call(this);
+			this.fileuploadType = 'inc';
+
 			Controller.prototype = this.getAbstractController();
 			Sender.prototype = this.getAbstractSender();
 			View.prototype = this.getAbstractView();
@@ -817,6 +824,8 @@ var weFileUpload = (function(){
 	function weFileUpload_imp(){
 		(function(){
 			weFileUpload_abstract.call(this);
+			this.fileuploadType = 'imp';
+
 			Controller.prototype = this.getAbstractController();
 			Sender.prototype = this.getAbstractSender();
 			View.prototype = this.getAbstractView();
@@ -1188,6 +1197,7 @@ var weFileUpload = (function(){
 	function weFileUpload_binDoc(){
 		(function(){
 			weFileUpload_abstract.call(this);
+			this.fileuploadType = 'binDoc';
 
 			Controller.prototype = this.getAbstractController();
 			Sender.prototype = this.getAbstractSender();
@@ -1260,14 +1270,21 @@ var weFileUpload = (function(){
 
 		function Sender(){
 			this.totalWeight = 0;
+			this.callback = null;
 
 			this.doOnFileFinished = function(resp){};
 
 			this.postProcess = function(resp){
+				_.sender.preparedFiles = [];
 				if(resp.status === 'success'){
-					var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
+					var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame(),
+						c = _.sender.callback;
 					window.we_cmd('update_file');
 					_EditorFrame.getDocumentReference().frames[0].we_setPath(resp.weDoc.path, resp.weDoc.text);
+					if(c){
+						_.sender.callback = null;
+						c();
+					}
 				}
 			};
 
@@ -1498,6 +1515,7 @@ var weFileUpload = (function(){
 						}
 						return;
 					case 'fileOK' :
+						_.sender.preparedFiles = [];
 						if(this.preview){
 							this.preview.style.opacity = 1;
 						}
@@ -1515,6 +1533,7 @@ var weFileUpload = (function(){
 					default:
 						_.sender.preparedFiles = [];
 						_.sender.currentFile = -1;
+						_.sender.callback = null;
 						this.setInternalProgress(0);
 						this.setGuiState(this.STATE_RESET);
 						return;
@@ -1548,6 +1567,15 @@ var weFileUpload = (function(){
 				v.setDisplay('divBtnUploadLegacy', '');
 			};
 		}
+
+		this.doUploadIfReady = function(callback){
+			if(_.sender.preparedFiles.length > 0){
+				_.sender.callback = callback;
+				this.startUpload();
+			} else {
+				callback();
+			}
+		};
 	}
 
 	return Fabric;
