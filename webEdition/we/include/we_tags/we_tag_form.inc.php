@@ -21,8 +21,8 @@
 function we_parse_tag_form($attribs, $content){
 	return '<?php if(!isset($GLOBALS[\'we_editmode\']) || !$GLOBALS[\'we_editmode\']){
 		printElement(' . we_tag_tagParser::printTag('form', $attribs) . ');}?>' .
-		$content .
-		'<?php if(!isset($GLOBALS[\'we_editmode\']) || !$GLOBALS[\'we_editmode\']){ echo \'</form>\';unset($GLOBALS[\'WE_FORM\']); if (isset($GLOBALS[\'we_form_action\'])) {unset($GLOBALS[\'we_form_action\']);}}?>';
+			$content .
+			'<?php if(!isset($GLOBALS[\'we_editmode\']) || !$GLOBALS[\'we_editmode\']){ echo \'</form>\';unset($GLOBALS[\'WE_FORM\']); if (isset($GLOBALS[\'we_form_action\'])) {unset($GLOBALS[\'we_form_action\']);}}?>';
 }
 
 function we_tag_form($attribs){
@@ -59,8 +59,8 @@ function we_tag_form($attribs){
 	$formAttribs['method'] = $method;
 
 	$GLOBALS['we_form_action'] = ($id ?
-			($id == 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
-			($action ? $action : $_SERVER['SCRIPT_NAME']));
+					($id == 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
+					($action ? $action : $_SERVER['SCRIPT_NAME']));
 
 	if($type != 'search'){
 		$regs = array();
@@ -76,38 +76,38 @@ function we_tag_form($attribs){
 			$formAttribs['name'] = 'form' . ((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1]) && strlen($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1])) ? $GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] : $GLOBALS['we_doc']->ID);
 			if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
 				$ret = getHtmlTag('form', $formAttribs, '', false, true) .
-					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'type',
-						'value' => (
-						isset($GLOBALS['lv']->classID) ?
-							we_shop_shop::OBJECT :
-							(isset($GLOBALS['lv']->ID) ?
-								we_shop_shop::DOCUMENT :
-								($GLOBALS['we_doc'] instanceof we_objectFile) ?
+						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'type',
+							'value' => (
+							isset($GLOBALS['lv']->classID) ?
 									we_shop_shop::OBJECT :
-									we_shop_shop::DOCUMENT
-							)
-						),
-					)) .
-					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
-						'value' => (isset($GLOBALS['lv']->classID) || isset($GLOBALS['we_doc']->ClassID)) ?
-							((isset($GLOBALS['lv']) && $GLOBALS['lv']->getDBf('OF_ID') != '') ?
-								$GLOBALS['lv']->getDBf('OF_ID') :
-								($GLOBALS['we_doc']->getDBf('OF_ID') ?
-									$GLOBALS['we_doc']->getDBf('OF_ID') :
-									(isset($GLOBALS['we_doc']->OF_ID) ?
-										$GLOBALS['we_doc']->OF_ID :
-										$GLOBALS['we_doc']->ID))) :
-							((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1]) && $GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] != '') ?
-								$GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] :
-								$GLOBALS['we_doc']->ID)
-					)) .
-					getHtmlTag('input', array(
-						'xml' => $xml,
-						'type' => 'hidden',
-						'name' => 'we_variant',
-						'value' => (isset($GLOBALS['we_doc']->Variant) ? $GLOBALS['we_doc']->Variant : ''),
-					)) .
-					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 't', 'value' => time(),));
+									(isset($GLOBALS['lv']->ID) ?
+											we_shop_shop::DOCUMENT :
+											($GLOBALS['we_doc'] instanceof we_objectFile) ?
+													we_shop_shop::OBJECT :
+													we_shop_shop::DOCUMENT
+									)
+							),
+						)) .
+						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
+							'value' => (isset($GLOBALS['lv']->classID) || isset($GLOBALS['we_doc']->ClassID)) ?
+									((isset($GLOBALS['lv']) && $GLOBALS['lv']->getDBf('OF_ID') != '') ?
+											$GLOBALS['lv']->getDBf('OF_ID') :
+											($GLOBALS['we_doc']->getDBf('OF_ID') ?
+													$GLOBALS['we_doc']->getDBf('OF_ID') :
+													(isset($GLOBALS['we_doc']->OF_ID) ?
+															$GLOBALS['we_doc']->OF_ID :
+															$GLOBALS['we_doc']->ID))) :
+									((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1]) && $GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] != '') ?
+											$GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] :
+											$GLOBALS['we_doc']->ID)
+						)) .
+						getHtmlTag('input', array(
+							'xml' => $xml,
+							'type' => 'hidden',
+							'name' => 'we_variant',
+							'value' => (isset($GLOBALS['we_doc']->Variant) ? $GLOBALS['we_doc']->Variant : ''),
+						)) .
+						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 't', 'value' => time(),));
 			}
 			break;
 		case 'object' :
@@ -141,9 +141,9 @@ function we_tag_form($attribs){
 
 				if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
 					$ret.=getHtmlTag('form', $formAttribs, '', false, true) .
-						getHtmlTag('input', array('type' => 'hidden', 'name' => 'edit_' . $type, 'value' => 1, 'xml' => $xml)) .
-						getHtmlTag('input', array('type' => 'hidden', 'name' => 'we_edit' . $typetmp . '_ID', 'xml' => $xml,
-							'value' => we_base_request::_(we_base_request::INT, 'we_edit' . $typetmp . '_ID', 0),
+							getHtmlTag('input', array('type' => 'hidden', 'name' => 'edit_' . $type, 'value' => 1, 'xml' => $xml)) .
+							getHtmlTag('input', array('type' => 'hidden', 'name' => 'we_edit' . $typetmp . '_ID', 'xml' => $xml,
+								'value' => we_base_request::_(we_base_request::INT, 'we_edit' . $typetmp . '_ID', 0),
 					));
 				}
 			} else {
@@ -153,7 +153,6 @@ function we_tag_form($attribs){
 			}
 			break;
 		case 'formmail' :
-			$formAttribs['method'] = 'post';//don't allow anything else
 			$confirmmail = weTag_getAttribute('confirmmail', $attribs, false, true);
 			$preconfirm = weTag_getAttribute('preconfirm', $attribs);
 			$postconfirm = weTag_getAttribute('postconfirm', $attribs);
@@ -164,12 +163,6 @@ function we_tag_form($attribs){
 			$oncaptchaerror = weTag_getAttribute('oncaptchaerror', $attribs);
 			$recipient = weTag_getAttribute('recipient', $attribs);
 
-			$successpage = $onsuccess ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onsuccess)) : '';
-			$errorpage = $onerror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onerror)) : '';
-			$mailerrorpage = $onmailerror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onmailerror)) : '';
-			$recipienterrorpage = $onrecipienterror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onrecipienterror)) : '';
-			$captchaerrorpage = $oncaptchaerror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($oncaptchaerror)) : '';
-
 			$preconfirm = $confirmmail && $preconfirm ? str_replace("'", "\\'", $GLOBALS['we_doc']->getElement($preconfirm)) : '';
 			$postconfirm = $confirmmail && $postconfirm ? str_replace("'", "\\'", $GLOBALS['we_doc']->getElement($postconfirm)) : '';
 			if($enctype){
@@ -179,51 +172,52 @@ function we_tag_form($attribs){
 				$formAttribs['target'] = $target;
 			}
 
+			$formAttribs['method'] = 'post'; //don't allow anything else
 			$formAttribs['name'] = $formname;
 			$formAttribs['onsubmit'] = $onsubmit;
-			$formAttribs['action'] = WEBEDITION_DIR . 'we_formmail.php';
-			if($id){
-				$formAttribs['action'] = ($id == 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)));
-			}
+			$formAttribs['action'] = ($id == 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : ($id ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) : WEBEDITION_DIR . 'we_formmail.php'));
 
 
 			//  now prepare all needed hidden-fields:
 			if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
-				$ret.=getHtmlTag('form', $formAttribs, '', false, true);
 				$_recipientArray = explode(',', $recipient);
-				foreach($_recipientArray as $_key => $_val){
-					$_recipientArray[$_key] = '"' . trim($_val) . '"';
-				}
-				$_recipientString = implode(',', $_recipientArray);
-
-				$_ids = array();
-				$GLOBALS['DB_WE']->query('SELECT ID FROM ' . RECIPIENTS_TABLE . ' WHERE Email IN(' . $_recipientString . ')');
-				while($GLOBALS['DB_WE']->next_record()){
-					$_ids[] = $GLOBALS['DB_WE']->f('ID');
+				foreach($_recipientArray as $key => $val){
+					$_recipientArray[$key] = '"' . trim($val) . '"';
 				}
 
-				$_recipientIdString = (empty($_ids) ? '' : implode(',', $_ids));
+				$GLOBALS['DB_WE']->query('SELECT ID FROM ' . RECIPIENTS_TABLE . ' WHERE Email IN(' . implode(',', $_recipientArray) . ')');
+				$_ids = $GLOBALS['DB_WE']->getAll(true);
 
-				$ret.='<div class="weHide" style="display: none;">' .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'order', 'value' => weTag_getAttribute('order', $attribs), 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'required', 'value' => weTag_getAttribute('required', $attribs), 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'subject', 'value' => weTag_getAttribute('subject', $attribs), 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'recipient', 'value' => $_recipientIdString, 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'mimetype', 'value' => weTag_getAttribute('mimetype', $attribs), 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'from', 'value' => weTag_getAttribute('from', $attribs), 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'error_page', 'value' => $errorpage, 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'mail_error_page', 'value' => $mailerrorpage, 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'recipient_error_page', 'value' => $recipienterrorpage, 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'ok_page', 'value' => $successpage, 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'charset', 'value' => weTag_getAttribute('charset', $attribs), 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'confirm_mail', 'value' => $confirmmail, 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'pre_confirm', 'value' => $preconfirm, 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'post_confirm', 'value' => $postconfirm, 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'we_remove', 'value' => $remove, 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'forcefrom', 'value' => weTag_getAttribute('forcefrom', $attribs), 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'captcha_error_page', 'value' => $captchaerrorpage, 'xml' => $xml)) .
-					getHtmlTag('input', array('type' => 'hidden', 'name' => 'captchaname', 'value' => $captchaname, 'xml' => $xml)) .
-					'</div>';
+				$data = array(
+					'order' => weTag_getAttribute('order', $attribs),
+					'required' => weTag_getAttribute('required', $attribs),
+					'subject' => weTag_getAttribute('subject', $attribs),
+					'recipient' => ($_ids ? implode(',', $_ids) : ''),
+					'mimetype' => weTag_getAttribute('mimetype', $attribs),
+					'from' => weTag_getAttribute('from', $attribs),
+					'error_page' => $onerror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onerror)) : '',
+					'mail_error_page' => $onmailerror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onmailerror)) : '',
+					'recipient_error_page' => $onrecipienterror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onrecipienterror)) : '',
+					'ok_page' => $onsuccess ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($onsuccess)) : '',
+					'charset' => weTag_getAttribute('charset', $attribs),
+					'confirm_mail' => $confirmmail,
+					'pre_confirm' => $preconfirm,
+					'post_confirm' => $postconfirm,
+					'we_remove' => $remove,
+					'forcefrom' => weTag_getAttribute('forcefrom', $attribs),
+					'captcha_error_page' => $oncaptchaerror ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($oncaptchaerror)) : '',
+					'captchaname' => $captchaname,
+				);
+
+				$ret = getHtmlTag('form', $formAttribs, '', false, true) .
+						'<div class="weHide" style="display: none;">';
+				foreach($data as $name => $val){
+					if($val){
+						$ret.=getHtmlTag('input', array('type' => 'hidden', 'name' => $name, 'value' => $val, 'xml' => $xml));
+					}
+				}
+
+				$ret.= '</div>';
 			}
 			break;
 		default :
