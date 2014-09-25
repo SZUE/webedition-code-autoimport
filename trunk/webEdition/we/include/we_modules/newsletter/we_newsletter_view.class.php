@@ -1326,14 +1326,14 @@ function set_state_edit_delete_recipient(control) {
 				$newone = false;
 
 				if($this->newsletter->filenameNotValid()){
-					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR));
 					return;
 				}
 
 				if($this->newsletter->ParentID > 0){
 					$weAcResult = $weAcQuery->getItemById($this->newsletter->ParentID, NEWSLETTER_TABLE, array("IsFolder"), false);
 					if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
 					}
 				}
@@ -1825,7 +1825,7 @@ self.close();');
 						foreach($fields_names as $field){
 							$varname = 'filter_' . $field . '_' . $gkey . '_' . $i;
 
-							if(($tmp = we_base_request::_(we_base_request::RAW, $varname)) !== false){
+							if(($tmp = we_base_request::_(we_base_request::RAW_CHECKED, $varname)) !== false){
 								$new[$field] = $tmp;
 							}
 						}
@@ -2061,8 +2061,13 @@ self.close();');
 		if($hm){
 			if($block->Type != we_newsletter_block::URL){
 				$spacer = '[\040|\n|\t|\r]*';
+
 				we_document::parseInternalLinks($content, 0);
 
+				$urlReplace = we_folder::getUrlReplacements($this->db);
+				if($urlReplace){
+					$content = preg_replace('-(["\'])//-', '\\1' . $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
+				}
 				$content = preg_replace(array(
 					'-(<[^>]+src' . $spacer . '=' . $spacer . '[\'"]?)(/)-i',
 					'-(<[^>]+href' . $spacer . '=' . $spacer . '[\'"]?)(/)-i',
@@ -2078,6 +2083,10 @@ self.close();');
 					), $content);
 			}
 		} else {
+			$urlReplace = we_folder::getUrlReplacements($this->db, true);
+			if($urlReplace){
+				$content = preg_replace('-(["\'])//-', '\\1' . $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
+			}
 			$newplain = preg_replace(array('|<br */? *>|', '|<title>.*</title>|i',), "\n", $content);
 			if($block->Type != we_newsletter_block::TEXT){
 				$newplain = strip_tags($newplain);

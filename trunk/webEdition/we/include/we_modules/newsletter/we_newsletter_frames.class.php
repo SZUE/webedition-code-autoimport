@@ -1129,6 +1129,7 @@ function extraInit(){
 	loaded = 1;
 }
 window.onload=extraInit;');
+					
 					break;
 
 				case we_newsletter_block::ATTACHMENT:
@@ -2595,13 +2596,6 @@ self.focus();');
 
 			$content_plain = str_replace(we_newsletter_base::EMAIL_REPLACE_TEXT, $email, $content_plain);
 			$content = str_replace(we_newsletter_base::EMAIL_REPLACE_TEXT, $email, $content);
-
-			$urlReplace = we_folder::getUrlReplacements($this->db);
-			if($urlReplace){
-				$urlReplacePlain = we_folder::getUrlReplacements($this->db, true);
-				$content = preg_replace($urlReplace, array_keys($urlReplace), $content);
-				$content_plain = preg_replace($urlReplacePlain, array_keys($urlReplacePlain), $content_plain);
-			}
 
 			// damd: Newsletter Platzhalter ersetzten
 			$this->replacePlaceholder($content, $content_plain, $emails[$j]);
