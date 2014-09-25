@@ -2,7 +2,7 @@
 #DIR=`pwd`/../../..
 #DIR=`readlink -f ${DIR}`
 DIR=$1
-LOG=`pwd`/log.txt
+LOG=/tmp/log.txt
 
 find ${DIR} \( -path ${DIR}/webEdition/lib/Zend -o -path ${DIR}/webEdition/lib/phpMailer \) -prune -o -name \*.php -exec svn propset svn:keywords "Date Author Revision" {} \;> ${LOG}
 find ${DIR} -name \*.js -exec svn propset svn:keywords "Date Author Revision" {} \;>> ${LOG}
