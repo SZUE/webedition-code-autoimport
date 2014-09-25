@@ -1364,7 +1364,7 @@ function set_state_edit_delete_recipient(control) {
 								);
 								return;
 							}
-							if(($field = intval(we_base_request::_(we_base_request::STRING, 'block' . $i . '_Field')))){
+							if(($field = we_base_request::_(we_base_request::INT, 'block' . $i . '_Field'))){
 								$weAcResult = $weAcQuery->getItemById($field, TEMPLATES_TABLE, array("IsFolder"));
 								if(!is_array($weAcResult) || !$weAcResult || $weAcResult[0]['IsFolder'] == 1){
 									echo we_html_element::jsElement(
@@ -1726,7 +1726,7 @@ self.close();');
 				$csv_file = we_base_request::_(we_base_request::FILE, "csv_file", '');
 				$nrid = we_base_request::_(we_base_request::INT, "nrid", '');
 				$email = we_base_request::_(we_base_request::EMAIL, "email", '');
-				$htmlmail = we_base_request::_(we_base_request::RAW, "htmlmail", '');
+				$htmlmail = we_base_request::_(we_base_request::BOOL, "htmlmail", '');
 				$salutation = we_base_request::_(we_base_request::STRING, "salutation", '');
 				$title = we_base_request::_(we_base_request::STRING, "title", '');
 				$firstname = we_base_request::_(we_base_request::STRING, "firstname", '');
