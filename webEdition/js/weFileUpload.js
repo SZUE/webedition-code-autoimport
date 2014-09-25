@@ -64,6 +64,7 @@ var weFileUpload = (function(){
 	function weFileUpload_abstract(){
 		//declare "protected" members: they are accessible from weFileUpload_include/imp too!
 		_.fieldName = '';
+		_.fileuploadType = 'abstract';
 		_.isLegacyMode = false;
 
 		_.init_abstract = function(conf){
@@ -596,6 +597,10 @@ var weFileUpload = (function(){
 			return _.isLegacyMode;
 		};
 
+		this.getType = function(){
+			return _.fileuploadType;
+		};
+
 		this.doUploadIfReady = function(callback){
 			callback();
 			return;
@@ -605,13 +610,13 @@ var weFileUpload = (function(){
 	function weFileUpload_inc(){
 		(function(){
 			weFileUpload_abstract.call(this);
-			this.fileuploadType = 'inc';
 
 			Controller.prototype = this.getAbstractController();
 			Sender.prototype = this.getAbstractSender();
 			View.prototype = this.getAbstractView();
 			Utils.prototype = this.getAbstractUtils();
 
+			_.fileuploadType = 'inc';
 			_.self = this;
 			_.controller = new Controller();
 			_.sender = new Sender();
@@ -824,13 +829,13 @@ var weFileUpload = (function(){
 	function weFileUpload_imp(){
 		(function(){
 			weFileUpload_abstract.call(this);
-			this.fileuploadType = 'imp';
 
 			Controller.prototype = this.getAbstractController();
 			Sender.prototype = this.getAbstractSender();
 			View.prototype = this.getAbstractView();
 			Utils.prototype = this.getAbstractUtils();
 
+			_.fileuploadType = 'imp';
 			_.self = this;
 			_.controller = new Controller();
 			_.sender = new Sender();
@@ -1197,13 +1202,13 @@ var weFileUpload = (function(){
 	function weFileUpload_binDoc(){
 		(function(){
 			weFileUpload_abstract.call(this);
-			this.fileuploadType = 'binDoc';
 
 			Controller.prototype = this.getAbstractController();
 			Sender.prototype = this.getAbstractSender();
 			View.prototype = this.getAbstractView();
 			Utils.prototype = this.getAbstractUtils();
 
+			_.fileuploadType = 'binDoc';
 			_.self = this;
 			_.controller = new Controller();
 			_.sender = new Sender();

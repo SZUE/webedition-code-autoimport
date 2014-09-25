@@ -141,7 +141,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 	}
 
 	public function getHTML($fs = '', $ft = '', $md = '', $thumbnailSmall = '', $thumbnailBig = ''){
-		$newText = $this->isDragAndDrop ? g_l('newFile', "[drop_text_ok]") : g_l('newFile', "[drop_text_nok]");
+		$dropText = $this->isDragAndDrop ? g_l('newFile', "[drop_text_ok]") : g_l('newFile', "[drop_text_nok]");
 
 		$btnBrowse = we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, 170, we_html_button::HEIGHT, '', '', false, false, '_btn');
 		$btnUpload = we_html_button::create_button("upload", "javascript:" . $this->getJsBtnCmd('upload'), true, 170, 22, "", "", true, false, "_btn", true);
@@ -182,8 +182,8 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		//TODO: clean out css and use more we_html_element
 		$divDropzone = !(self::isFallback() || self::isLegacyMode()) ? ('
 			<div class="we_file_drag we_file_drag_binDoc" id="div_fileupload_fileDrag_state_0" style="' . (!$this->isDragAndDrop ? 'border-color:white;' : '') . '">
-				<div style="display:table-cell;width:178px;height:116px;padding-left:4px;vertical-align:middle;color:#cccccc;font-weight:normal;font-size:16px">' .
-			$newText . '
+				<div style="display:table-cell;width:178px;height:116px;padding-left:4px;vertical-align:middle;color:#cccccc;font-weight:normal;font-size:' . ($this->isDragAndDrop ? 16 : 14) . 'px">' .
+					$dropText . '
 				</div>' .
 			we_html_element::htmlDiv(array('class' => 'dropzone_right'), ($thumbnailSmall ? $thumbnailSmall : we_html_element::htmlImg(array('src' => $this->binDocProperties['icon'])))) . '
 			</div>
@@ -240,18 +240,20 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		return 'if(typeof window.we_FileUpload === "undefined" || window.we_FileUpload.getIsLegacyMode()){' . $callback . ';}else{' . $call . ';}';
 	}
 
-	public static function getJsUploadBeforeLeave($type = 'save', $callback){
+	public static function getJsOnLeave($callback, $type = 'switch_tab'){
 		if(self::isFallback() || self::isLegacyMode()){
 			return '';
 		}
 
-		/* use this when implementing upload on switch_editor_tab
-		 * $parentObj = $type == 'switch_tab' ? 'top._visibleEditorFrame' : '_EditorFrame';
-		 * $frame = $type == 'switch_tab' ? 'top._visibleEditorFrame' : '_EditorFrame.getContentEditor()';
-		 * return 'var fileupload;if(typeof ' . $parentObj . ' !== "undefined" && typeof (fileUpload = ' . $frame . '.we_FileUpload) !== "undefined" && fileUpload.fileuploadType === "binDoc" && !fileUpload.getIsLegacyMode()){fileUpload.doUploadIfReady(function(){' . $callback . '})}else{' . $callback . '}';
-		 */
+		if($type == 'switch_tab'){
+			$parentObj = 'top.weEditorFrameController';
+			$frame = 'top.weEditorFrameController.getVisibleEditorFrame()';
+		} else {
+			$parentObj = '_EditorFrame';
+			$frame = '_EditorFrame.getContentEditor()';
+		}
 
-		return 'var fileupload;if(typeof (fileUpload = _EditorFrame.getContentEditor().we_FileUpload) !== "undefined" && !fileUpload.getIsLegacyMode()){fileUpload.doUploadIfReady(function(){' . $callback . '})}else{' . $callback . '}';
+		return "var fileupload;if(typeof " . $parentObj . " !== 'undefined' && typeof (fileUpload = " . $frame . ".we_FileUpload) !== 'undefined' && fileUpload.getType() === 'binDoc' && !fileUpload.getIsLegacyMode()){fileUpload.doUploadIfReady(function(){" . $callback . "})}else{" . $callback . "}";
 	}
 
 	public function processFileRequest(){
