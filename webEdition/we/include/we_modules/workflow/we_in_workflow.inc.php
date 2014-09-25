@@ -24,6 +24,7 @@
 we_html_tools::protect();
 echo we_html_element::jsElement('top.opener.top.toggleBusy(0);');
 $cmd2 = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2);
+
 if($cmd == 'ok'){
 	$wf_text = we_base_request::_(we_base_request::STRING, 'wf_text');
 	$wf_select = we_base_request::_(we_base_request::INT, 'wf_select');
@@ -62,16 +63,17 @@ echo STYLESHEET;
 	<center>
 		<?php
 		if($cmd != 'ok'){
+			$all = array();
 			$wfDoc = ($we_doc->Table == FILE_TABLE ?
-					we_workflow_utility::getWorkflowDocumentForDoc($GLOBALS['DB_WE'], $we_doc->DocType, $we_doc->Category, $we_doc->ParentID) :
+					we_workflow_utility::getWorkflowDocumentForDoc($GLOBALS['DB_WE'], $we_doc->DocType, $we_doc->Category, $we_doc->ParentID, $all) :
 					we_workflow_utility::getWorkflowDocumentForObject($GLOBALS['DB_WE'], $we_doc->TableID, $we_doc->Category, $we_doc->ParentID));
 			$wfID = $wfDoc->workflowID;
 			if($wfID){
 				?>
-				<form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
+				<form action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post">
 					<?php
 					$wf_select = '<select name="wf_select" size="1">';
-					$wfs = we_workflow_utility::getAllWorkflows(we_workflow_workflow::STATE_ACTIVE, $we_doc->Table);
+					$wfs = we_workflow_utility::getAllWorkflows(we_workflow_workflow::STATE_ACTIVE, $we_doc->Table, $all);
 					foreach($wfs as $wID => $wfname){
 						$wf_select .= '<option value="' . $wID . '"' . (($wID == $wfID) ? ' selected' : '') . '>' . oldHtmlspecialchars($wfname) . "</option>\n";
 					}
