@@ -88,6 +88,9 @@ $l_weTag=array(
 	'css'=>array(
 		'description'=>'Das we:css-Tag erzeugt ein HTML-Tag, das auf ein webEdition-internes CSS Stylesheet mit der unten angegebenen ID verweist. Dadurch können Sie Stylesheets in einer separaten Datei definieren.',
 	),
+	'customerResetPassword'=>array(
+		'description'=>'Mit diesem Tag kann ein Kundenpasswort zurückgesetzt werden. Das Passwort kann dabei direkt über ein Formular, oder per Mail übermittelt werden.',
+	),
 	'customer'=>array(
 		'description'=>'Mit Hilfe dieses Tags kann man einen Kunden auf einer webEdition darstellen. Die Kundenfelder werden wie bei einer Listview und beim &lt;we:object&gt; Tag mit dem Tag &lt;we:field&gt; dargestellt.<br/><br/>Durch Kombination der Attribute kann das Tag 3 verschiedene Funktionen erfüllen:<br/>Wenn name gesetzt ist, dann kann der Redakteur einen Kunden per Customer-Selector auswählen. Dieser Kunde wird dann im Dokument unter dem in nam angegeben Feld gespeichert.<br/>Wenn name nicht gesetzt ist, dafür aber id, wird der Kunde mit dieser ID angezeigt<br/>Wenn weder name noch id gesetzt ist, erwartet das Tag, dass die id des Kunden per Request Parameter übermittelt wird. Dies tut zB. die Customer-Listview wenn das Attribut hyperlink="true" im &lt;we:field&gt; Tag gesetzt ist. Der Name des Request Parameters lautet we_cid',
 	),
@@ -156,6 +159,9 @@ $l_weTag=array(
 	),
 	'ifCurrentDate'=>array(
 		'description'=>'Dieses Tag highlighted den aktuellen Tag innerhalb einer Calendar-listview.',
+	),
+	'ifCustomerResetPasswordFailed'=>array(
+		'description'=>'Falls das Zurücksetzen des Kundenpasswortes mittels we:customerResetPassword nicht möglich war, wird der Inhalt des Tags ausgegeben.',
 	),
 	'ifDeleted'=>array(
 		'description'=>'Dieses Tag dient dazu, um webEdition-Dokumente bzw. Objekte die über &lt;we:a edit="true" delete="true"&gt; aufgerufen wurden zu löschen.<br/><br/><strong>ACHTUNG: Dieses Tag sollte nur in Verbindung mit der Kundenverwaltung und den Attributen admin bzw. userid und/oder mit den Attributen doctype, pid und classid benutzt werden. Ansonsten ist es theoretisch möglich, dass Unbefugte mit Aufruf des entsprechenden URL webEdition-Dokumente bzw. Objekte löschen können.</strong>',

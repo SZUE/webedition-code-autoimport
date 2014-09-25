@@ -88,6 +88,9 @@ $l_weTag=array(
 	'css'=>array(
 		'description'=>'The css tag creates an HTML tag that references an internal webEdition CSS style sheet that has the ID listed below. You can define style sheets in a separate file.',
 	),
+	'customerResetPassword'=>array(
+		'description'=>'Use this tag to reset a customer password via an html formular or by mail.',
+	),
 	'customer'=>array(
 		'description'=>'Using this tag, data from any customer can be displayed. The customer data are displayed as in a listview or within the &lt;we:object&gt; tag with the tag &lt;we:field&gt;.<br/><br/>Combining the attributes, this tag can be utilized in three ways:<br/>If name is set, the editor can select a customer by using a customer-select-Field. This customer is stored in the document within the field name.<br/>If name is not set but instead the id, the customer with this id is displayed.<br/>If neither name nor id is set, the tag expects the id of the customer by a request parameter. This is i.e. used by the customer-listview when the attribut hyperlink="true" in the &lt;we:field&gt; tag is used. The name of the request parameter is we_cid.',
 	),
@@ -156,6 +159,9 @@ $l_weTag=array(
 	),
 	'ifCurrentDate'=>array(
 		'description'=>'This tag highlights the current day within a calendar-listview.',
+	),
+	'ifCustomerResetPasswordFailed'=>array(
+		'description'=>'If reset of the customer password via we:customerResetPassword failed, the content of this tag is printed.',
 	),
 	'ifDeleted'=>array(
 		'description'=>'Content enclosed by the start and end tags of this tag are only displayed if a particular document or object was deleted using &lt;we:delete/&gt;',

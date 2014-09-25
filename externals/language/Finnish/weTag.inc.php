@@ -88,6 +88,9 @@ $l_weTag=array(
 	'css'=>array(
 		'description'=>'Css tagi luo HTML-tagin joka viittaa ID:llä määriteltyyn webEditionin sisäiseen CSS-tiedostoon.',
 	),
+	'customerResetPassword'=>array(
+		'description'=>'Use this tag to reset a customer password via an html formular or by mail.',
+	),
 	'customer'=>array(
 		'description'=>'Using this tag, data from any customer can be displayed. The customer data are displayed as in a listview or within the &lt;we:object&gt; tag with the tag &lt;we:field&gt;.<br/><br/>Combining the attributes, this tag can be utilized in three ways:<br/>If name is set, the editor can select a customer by using a customer-select-Field. This customer is stored in the document within the field name.<br/>If name is not set but instead the id, the customer with this id is displayed.<br/>If neither name nor id is set, the tag expects the id of the customer by a request parameter. This is i.e. used by the customer-listview when the attribut hyperlink="true" in the &lt;we:field&gt; tag is used. The name of the request parameter is we_cid.',
 	),
@@ -156,6 +159,9 @@ $l_weTag=array(
 	),
 	'ifCurrentDate'=>array(
 		'description'=>'Tämä tagi korostaa halutun päivän kalenteri-listview:ssä',
+	),
+	'ifCustomerResetPasswordFailed'=>array(
+		'description'=>'If reset of the customer password via we:customerResetPassword failed, the content of this tag is printed.',
 	),
 	'ifDeleted'=>array(
 		'description'=>'Tämän tagin sisällä oleva tieto näytetään jos dokumentti tai objekti poistettiin käyttämällä we:delete -tagia',
