@@ -67,7 +67,7 @@ if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data
 	$CLFields['languageFieldIsISO'] = we_base_request::_(we_base_request::RAW, 'languageFieldIsISO', 0);
 
 	// check if field exists
-	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strDateiname ="shop_CountryLanguage", strFelder = "' . $DB_WE->escape(serialize($CLFields)) . '"');
+	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strDateiname="shop_CountryLanguage", strFelder = "' . $DB_WE->escape(serialize($CLFields)) . '"');
 	// Update Country Field in weShopVatRule
 	$weShopVatRule = we_shop_vatRule::getShopVatRule();
 	$weShopVatRule->stateField = $CLFields['stateField'];
@@ -104,7 +104,7 @@ $_htmlTable = new we_html_table(array(
 
 
 //	NumberFormat - currency and taxes
-$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"'));
+$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"'));
 
 $fe = (isset($feldnamen[3]) ? explode(',', $feldnamen[3]) : array());
 

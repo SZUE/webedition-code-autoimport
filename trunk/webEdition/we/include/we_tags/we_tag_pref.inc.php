@@ -34,21 +34,23 @@ function we_tag_pref($attribs){
 				case 'vatRule':
 					$vat = we_shop_vatRule::getShopVatRule();
 					if(isset($vat->$field)){
-						return $vat->$field;
+						return is_array($vat->$field) ? implode(',', $vat->$field) : '';
 					}
 					break;
 				case 'shippingControl':
 					$ship = we_shop_shippingControl::getShippingControl();
 					if(isset($ship->$field)){
-						return $ship->$field;
+						return is_array($ship->$field) ? implode(',', $ship->$field) : '';
 					}
 					break;
 				case 'statusMails':
 					$ship = we_shop_statusMails::getShopStatusMails();
 					if(isset($ship->$field)){
-						return $ship->$field;
+						return is_array($ship->$field) ? implode(',', $ship->$field) : '';
 					}
 					break;
+					case 'pref':
+
 			}
 
 			break;

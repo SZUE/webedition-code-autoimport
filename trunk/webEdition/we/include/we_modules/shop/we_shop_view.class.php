@@ -321,7 +321,7 @@ function we_cmd() {
 		}
 		$this->CLFields = $CLFields; //imi
 		// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $this->db));
+		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', 'strFelder', $this->db));
 		$waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
 		$dbPreisname = 'price';
 		$numberformat = $feldnamen[2];
@@ -1165,9 +1165,9 @@ function submitForm() {
 					// now get all shop objects
 					foreach($this->classIds as $_classId){
 						$_classId = intval($_classId);
-						$this->db->query('SELECT o.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle, o.OF_ID as objectId 
-							FROM ' . OBJECT_X_TABLE . $_classId . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.OF_ID=of.ID ' . 
-							(we_base_request::_(we_base_request::BOOL, 'searchArticle') ? 
+						$this->db->query('SELECT o.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle, o.OF_ID as objectId
+							FROM ' . OBJECT_X_TABLE . $_classId . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.OF_ID=of.ID ' .
+							(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
 								' WHERE ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($searchArticle) . '%"' :
 							'')
 						);
