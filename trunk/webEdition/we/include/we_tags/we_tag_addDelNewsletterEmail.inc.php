@@ -141,8 +141,11 @@ function we_tag_addDelNewsletterEmail($attribs){
 						if(empty($lists)){// subscriber exists in all lists
 							$emailExistsInOneOfTheLists = true;
 						}
-					}
 					// #5589 end
+					}else{
+						$lists = $abos; //#9002	
+					}
+					
 
 					break;
 				case 'csv':
