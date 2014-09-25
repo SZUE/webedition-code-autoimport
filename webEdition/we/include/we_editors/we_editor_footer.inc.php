@@ -118,7 +118,7 @@ $_js_we_save_document = "
 			// Nothing
 		}
 
-		if (  _EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
+		if (_EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
 			we_cmd('glossary_check', '', '" . $we_transaction . "');
 		} else {
 			acStatus = '';
@@ -159,9 +159,10 @@ if($we_doc->userCanSave()){
 		$pass_publish = " _EditorFrame.getEditorPublishWhenSave() ";
 	}
 
-	$_js_we_save_document .= "
-		we_cmd('save_document','','','',''," . $pass_publish . ',addCmd);
-	' . ($reloadPage ? "setTimeout('saveReload()',1500);" : '');
+	$js_we_save_cmd = "we_cmd('save_document','','','',''," . $pass_publish . ",addCmd);";
+	$_js_we_save_document .= $we_doc->isBinary() ? we_fileupload_binaryDocument::getJsOnLeave($js_we_save_cmd) : $js_we_save_cmd;
+	//$_js_we_save_document .= $js_we_save_cmd;
+	$_js_we_save_document .= ($reloadPage ? "setTimeout('saveReload()',1500);" : '');
 }
 
 $_js_we_save_document .= '

@@ -253,6 +253,7 @@ var weFileUpload = (function(){
 			this.totalWeight = 0;
 			this.currentWeight = 0;
 			this.currentWeightTag = 0;//FIXME: find better name
+			this.isAutostartPermitted = false;
 
 			this.resetParams = function(){};
 
@@ -1272,6 +1273,9 @@ var weFileUpload = (function(){
 		function Controller(){
 			this.doSubmit = false;
 
+			this.setEditorIsHot = function(){
+				top.weEditorFrameController.setEditorIsHot(true, top.weEditorFrameController.ActiveEditorFrameId);
+			};
 		}
 
 		function Sender(){
@@ -1391,6 +1395,13 @@ var weFileUpload = (function(){
 				this.setDisplay('fileDrag_state_0', 'none');
 				this.setDisplay('fileDrag_state_1', '');
 				this.elems.dragInnerRight.innerHTML = '';
+				
+				if(f.uploadConditionsOk){
+					_.sender.isAutostartPermitted = true;
+					_.controller.setEditorIsHot();
+				} else {
+					_.sender.isAutostartPermitted = false;
+				}
 
 				if(this.binDocType === 'image' && f.uploadConditionsOk && f.file.size < 4194304){
 					var reader = new FileReader();
@@ -1586,8 +1597,9 @@ var weFileUpload = (function(){
 		}
 
 		this.doUploadIfReady = function(callback){
-			if(_.sender.preparedFiles.length > 0 && _.sender.preparedFiles[0].uploadConditionsOk){
+			if(_.sender.isAutostartPermitted && _.sender.preparedFiles.length > 0 && _.sender.preparedFiles[0].uploadConditionsOk){
 				_.sender.callback = callback;
+				_.sender.isAutostartPermitted = false;
 				this.startUpload();
 			} else {
 				//there may be a file in preview with uploadConditions nok!
