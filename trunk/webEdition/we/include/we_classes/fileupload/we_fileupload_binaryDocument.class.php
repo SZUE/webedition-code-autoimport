@@ -253,7 +253,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 			$frame = '_EditorFrame.getContentEditor()';
 		}
 
-		return "var fileupload;if(typeof " . $parentObj . " !== 'undefined' && typeof (fileUpload = " . $frame . ".we_FileUpload) !== 'undefined' && fileUpload.getType() === 'binDoc' && !fileUpload.getIsLegacyMode()){fileUpload.doUploadIfReady(function(){" . $callback . "})}else{" . $callback . "}";
+		return "var fileupload; if(typeof " . $parentObj . " !== 'undefined' && typeof (fileUpload = " . $frame . ".we_FileUpload) !== 'undefined' && fileUpload.getType() === 'binDoc' && !fileUpload.getIsLegacyMode()){fileUpload.doUploadIfReady(function(){" . $callback . "})}else{" . $callback . "}";
 	}
 
 	public function processFileRequest(){
