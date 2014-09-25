@@ -861,7 +861,7 @@ function checkData(){
 				break;
 			case 'del_folder':
 				$arr = makeArrayFromCSV($this->workflowDef->Folders);
-				if(($id = we_base_request::_(we_base_request::INT, 'wfolder'))){
+				if(($id = we_base_request::_(we_base_request::INT, 'wfolder'))!==false){
 					if(($pos = array_search($id, $arr)) !== false){
 						unset($arr[$pos]);
 						$this->workflowDef->Folders = makeCSVFromArray($arr, true);
