@@ -28,7 +28,16 @@ we_html_tools::protect();
 $_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "newsletter/we_newsletterDirSelector.php";
 
 $fs = new we_newsletter_dirSelector(
-	isset($id) ? $id : we_base_request::_(we_base_request::INT, "id", 0), we_base_request::_(we_base_request::CMD, "JSIDName", ''), we_base_request::_(we_base_request::CMD, "JSTextName", ''), we_base_request::_(we_base_request::CMD, "JSCommand", ''), we_base_request::_(we_base_request::RAW, "order", ''), 0, we_base_request::_(we_base_request::INT, "we_editDirID", 0), we_base_request::_(we_base_request::RAW, "we_FolderText", ''), we_base_request::_(we_base_request::INT, "rootDirID", 0), we_base_request::_(we_base_request::BOOL, "multiple")
+	isset($id) ? $id : we_base_request::_(we_base_request::INT, "id", 0), 
+	isset($JSIDName) ? $JSIDName : we_base_request::_(we_base_request::CMD, "JSIDName", ''), 
+	isset($JSTextName) ? $JSTextName : we_base_request::_(we_base_request::CMD, "JSTextName", ''), 
+	isset($JSCommand) ? $JSCommand : we_base_request::_(we_base_request::CMD, "JSCommand", ''), 
+	we_base_request::_(we_base_request::RAW, "order", ''), 
+	0, 
+	we_base_request::_(we_base_request::RAW, "we_editDirID", 0), 
+	we_base_request::_(we_base_request::RAW, "we_FolderText", ''), 
+	isset($rootDirID) ? $rootDirID : we_base_request::_(we_base_request::RAW, "rootDirID", 0), 
+	isset($multiple) ? $multiple : we_base_request::_(we_base_request::RAW, "multiple")
 );
 
 $fs->printHTML(we_base_request::_(we_base_request::INT, "what", we_selector_file::FRAMESET));
