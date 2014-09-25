@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,10 +21,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 we_base_moduleInfo::isActive('workflow');
 
-abstract class we_workflow_utility {
+abstract class we_workflow_utility{
 
 	private static function getTypeForTable($table){
 		switch($table){
@@ -130,8 +128,8 @@ abstract class we_workflow_utility {
 	  Functions tries to find workflow for defined
 	  documents parameters and returns new document object
 	 */
-	static function getWorkflowDocumentForDoc($db, $doctype = 0, $categories = '', $folder = -1){
-		$workflowID = we_workflow_workflow::getDocumentWorkflow($doctype, $categories, $folder, $db);
+	static function getWorkflowDocumentForDoc($db, $doctype, $categories, $folder, array &$all){
+		$workflowID = we_workflow_workflow::getDocumentWorkflow($doctype, $categories, $folder, $db, $all);
 		$newDoc = new we_workflow_document();
 		$newDoc->workflowID = $workflowID;
 		$newDoc->steps = we_workflow_documentStep::__createAllSteps($workflowID);
@@ -142,8 +140,8 @@ abstract class we_workflow_utility {
 	  Functions tries to find workflow for defined
 	  objects parametars and returns new document object
 	 */
-	static function getWorkflowDocumentForObject($db, $object, $categories = '', $folderID = 0){
-		$workflowID = we_workflow_workflow::getObjectWorkflow($object, $categories, $folderID, $db);
+	static function getWorkflowDocumentForObject($db, $object, $categories, $folderID, array &$all){
+		$workflowID = we_workflow_workflow::getObjectWorkflow($object, $categories, $folderID, $db, $all);
 		$newDoc = new we_workflow_document();
 		$newDoc->workflowID = $workflowID;
 		$newDoc->steps = we_workflow_documentStep::__createAllSteps($workflowID);
@@ -160,9 +158,9 @@ abstract class we_workflow_utility {
 		return array_search($workflowName, $foo);
 	}
 
-	static function getAllWorkflows($status = we_workflow_workflow::STATE_ACTIVE, $table = FILE_TABLE){ // returns hash array with ID as key and Name as value
+	static function getAllWorkflows($status = we_workflow_workflow::STATE_ACTIVE, $table = FILE_TABLE, array $all = null){ // returns hash array with ID as key and Name as value
 		$type = self::getTypeForTable($table);
-		return we_workflow_workflow::getAllWorkflowsInfo($status, $type);
+		return we_workflow_workflow::getAllWorkflowsInfo($status, $type, $all);
 	}
 
 	static function inWorkflow($docID, $table){
@@ -224,12 +222,12 @@ abstract class we_workflow_utility {
 	}
 
 	static function getWorkflowDocsForUser($userID, $table, $isAdmin = false, $permPublish = false, $ws = ""){
-		$db=new DB_WE();
+		$db = new DB_WE();
 		if($isAdmin){
-			return self::getAllWorkflowDocs($table,$db);
+			return self::getAllWorkflowDocs($table, $db);
 		}
 		$ids = ($permPublish ? self::getWorkflowDocsFromWorkspace($table, $ws) : array());
-		$wids = self::getAllWorkflowDocs($table,$db);
+		$wids = self::getAllWorkflowDocs($table, $db);
 
 		foreach($wids as $id){
 			if(!in_array($id, $ids)){
@@ -242,13 +240,13 @@ abstract class we_workflow_utility {
 		return $ids;
 	}
 
-	static function getAllWorkflowDocs($table, we_database_base $db=null){
+	static function getAllWorkflowDocs($table, we_database_base $db = null){
 		$db = $db ? $db : new DB_WE();
 		$db->query('SELECT DISTINCT ' . WORKFLOW_DOC_TABLE . '.documentID as ID FROM ' . WORKFLOW_DOC_TABLE . ' LEFT JOIN ' . WORKFLOW_TABLE . ' ON ' . WORKFLOW_DOC_TABLE . ".workflowID=" . WORKFLOW_TABLE . '.ID WHERE ' . WORKFLOW_DOC_TABLE . '.Status = ' . we_workflow_document::STATUS_UNKNOWN . ' AND ' . WORKFLOW_TABLE . '.Type IN(' . self::getTypeForTable($table) . ')');
 		return array_unique($db->getAll(true));
 	}
 
-	private static function getWorkflowDocsFromWorkspace($table, $ws, we_database_base $db=null){
+	private static function getWorkflowDocsFromWorkspace($table, $ws, we_database_base $db = null){
 		$wids = self::getAllWorkflowDocs($table);
 		$ids = array();
 		$db = $db ? $db : new DB_WE();
