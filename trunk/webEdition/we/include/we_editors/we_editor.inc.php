@@ -52,7 +52,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$we_doc->del_thumbnails(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 		break;
 	case 'do_add_thumbnails':
-		$we_doc->add_thumbnails(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
+		$we_doc->add_thumbnails(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', 0, 1));
 		break;
 	case 'copyDocument':
 		$we_doc->copyDoc(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
