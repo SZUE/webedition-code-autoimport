@@ -1282,14 +1282,11 @@ var weFileUpload = (function(){
 			this.postProcess = function(resp){
 				_.sender.preparedFiles = [];
 				if(resp.status === 'success'){
-					var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame(),
-						c = _.sender.callback;
+					var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
+
 					window.we_cmd('update_file');
 					_EditorFrame.getDocumentReference().frames[0].we_setPath(resp.weDoc.path, resp.weDoc.text);
-					if(c){
-						_.sender.callback = null;
-						c();
-					}
+					this.fireCallback();
 				}
 			};
 
@@ -1353,7 +1350,18 @@ var weFileUpload = (function(){
 			this.cancel = function(){
 				this.isCancelled = true;
 				this.isUploading = false;
+				var c = _.sender.callback;
 				_.view.repaintGUI({what : 'resetGui'});
+				this.fireCallback(c);
+			};
+
+			this.fireCallback = function(c){
+				var cb = c || _.sender.callback;
+
+				if(cb){
+					_.sender.callback = null;
+					cb();
+				}
 			};
 		}
 
