@@ -96,7 +96,7 @@ function we_tag_paypal($attribs){
 
 		//	NumberFormat - currency and taxes
 		if($currency == ''){
-			$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', '', $DB_WE));
+			$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $DB_WE));
 			if(!isset($feldnamen[0])){ // determine the currency
 				$feldnamen[0] = -1;
 			}

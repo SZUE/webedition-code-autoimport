@@ -22,7 +22,18 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php');
+
+/// config
+$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
+for($i = 0; $i <= 3; $i++){
+	$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
+}
+$fe = explode(',', $feldnamen[3]);
+$classid = $fe[0];
+
+$resultO = array_shift($fe);
+
+$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1');
 
 
 $prefshop = we_html_button::create_button("pref_shop", "javascript:top.opener.top.we_cmd('pref_shop');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER"));

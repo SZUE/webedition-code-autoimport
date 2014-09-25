@@ -235,7 +235,7 @@ $shopDashboardTable->setCol(9, 2, array("class" => "middlefont", "align" => "rig
 $shopDashboard = '<div style="width:60%;float:left;">' .
 	$shopDashboardTable->getHtml() .
 	'</div>'
-	. '<div style="width:40%;float:right;"><b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_util_Strings::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b>' .
+	. '<div style="width:40%;float:right;"><b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_util_Strings::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b><br/>' .
 	'<canvas id="chart" width="160" height="160"></canvas>' .
 	'</div><br style="clear:both;"/>';
 
