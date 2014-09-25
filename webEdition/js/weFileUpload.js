@@ -261,7 +261,7 @@ var weFileUpload = (function(){
 			};
 
 			this.sendNextFile = function(){
-				var cur, fr, cnt,
+				var cur, fr = null, cnt,
 					that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
 
 				if(this.uploadFiles.length > 0){
@@ -290,6 +290,7 @@ var weFileUpload = (function(){
 					}
 				} else {
 					//all uploads done
+					this.currentFile = null;
 					this.isUploading = false;
 					this.postProcess();
 				}
@@ -1281,6 +1282,7 @@ var weFileUpload = (function(){
 
 			this.postProcess = function(resp){
 				_.sender.preparedFiles = [];
+				_.sender.currentFile = null;
 				if(resp.status === 'success'){
 					var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
 
@@ -1348,6 +1350,7 @@ var weFileUpload = (function(){
 			};
 
 			this.cancel = function(){
+				this.currentFile = -1;
 				this.isCancelled = true;
 				this.isUploading = false;
 				var c = _.sender.callback;
@@ -1436,6 +1439,7 @@ var weFileUpload = (function(){
 								_.view.elems.dragInnerRight.appendChild(_.view.preview);
 							}
 							_.view.setGuiState(f.uploadConditionsOk ? _.view.STATE_PREVIEW_OK : _.view.STATE_PREVIEW_NOK);
+							image = reader = null;
 						};
 						image.src = e.target.result;
 					};
