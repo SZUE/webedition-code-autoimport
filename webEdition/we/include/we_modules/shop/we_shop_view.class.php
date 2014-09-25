@@ -32,6 +32,7 @@ class we_shop_view{
 	var $topFrame;
 	var $raw;
 	private $CLFields = array(); //
+	private $classIds = array();
 
 	function __construct($frameset = '', $topframe = 'top.content'){
 		$this->db = new DB_WE();
@@ -321,12 +322,11 @@ function we_cmd() {
 		$this->CLFields = $CLFields; //imi
 		// config
 		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname = "shop_pref"', 'strFelder', $this->db));
-		t_e($feldnamen);
 		$waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
 		$dbPreisname = 'price';
 		$numberformat = $feldnamen[2];
 		$classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
-		$classIds = makeArrayFromCSV($classid);
+		$this->classIds = makeArrayFromCSV($classid);
 		$mwst = ($feldnamen[1] ? $feldnamen[1] : '');
 		$notInc = 'tblTemplates';
 
@@ -1163,15 +1163,13 @@ function submitForm() {
 
 				if(defined('OBJECT_TABLE')){
 					// now get all shop objects
-					foreach($classIds as $_classId){
+					foreach($this->classIds as $_classId){
 						$_classId = intval($_classId);
-						$this->db->query('SELECT  ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle, ' . OBJECT_X_TABLE . $_classId . '.OF_ID as objectId
-								FROM ' . OBJECT_X_TABLE . $_classId . ', ' . OBJECT_FILES_TABLE . '
-								WHERE ' . OBJECT_X_TABLE . $_classId . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID
-									AND ' . OBJECT_X_TABLE . $_classId . '.ID = ' . OBJECT_FILES_TABLE . '.ObjectID ' .
-							(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
-								' AND ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
-								'')
+						$this->db->query('SELECT o.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle, o.OF_ID as objectId 
+							FROM ' . OBJECT_X_TABLE . $_classId . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.OF_ID=of.ID ' . 
+							(we_base_request::_(we_base_request::BOOL, 'searchArticle') ? 
+								' WHERE ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($searchArticle) . '%"' :
+							'')
 						);
 
 						while($this->db->next_record()){
@@ -1235,7 +1233,8 @@ function submitForm() {
 						'html' => '
 		<form name="we_intern_form">' . we_html_tools::hidden('bid', $_REQUEST['bid']) . we_html_tools::hidden('we_cmd[]', 'add_new_article') . '
 			<table border="0" cellpadding="0" cellspacing="0">
-			<tr><td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, we_base_request::_(we_base_request::RAW, 'add_article', ''), false, 'onchange="selectArticle(this.options[this.selectedIndex].value);"', 'value', '380') . '</td>
+			<tr>
+			<td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, we_base_request::_(we_base_request::RAW, 'add_article', ''), false, array("onchange"=>"selectArticle(this.options[this.selectedIndex].value)"), 'value', '380') . '</td>
 			<td>' . we_html_tools::getPixel(10, 1) . '</td>
 			<td valign="top">' . $backBut . '<div style="margin:5px 0"></div>' . $nextBut . '</td>
 			</tr>
@@ -1314,7 +1313,7 @@ function submitForm() {
 					$parts[] = array(
 						'headline' => g_l('modules_shop', '[variant]'),
 						'space' => 100,
-						'html' => we_class::htmlSelect(WE_SHOP_VARIANT_REQUEST, $variantOptions, 1, '', false, '', 'value', 380),
+						'html' => we_class::htmlSelect(WE_SHOP_VARIANT_REQUEST, $variantOptions, 1, '', false, array(), 'value', 380),
 						'noline' => 1
 					);
 
