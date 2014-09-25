@@ -2592,8 +2592,16 @@ self.focus();');
 				$content_plain = $content_plainDefault;
 			}
 
+
 			$content_plain = str_replace(we_newsletter_base::EMAIL_REPLACE_TEXT, $email, $content_plain);
 			$content = str_replace(we_newsletter_base::EMAIL_REPLACE_TEXT, $email, $content);
+
+			$urlReplace = we_folder::getUrlReplacements($this->db);
+			if($urlReplace){
+				$urlReplacePlain = we_folder::getUrlReplacements($this->db, true);
+				$content = preg_replace($urlReplace, array_keys($urlReplace), $content);
+				$content_plain = preg_replace($urlReplacePlain, array_keys($urlReplacePlain), $content_plain);
+			}
 
 			// damd: Newsletter Platzhalter ersetzten
 			$this->replacePlaceholder($content, $content_plain, $emails[$j]);
@@ -2642,9 +2650,7 @@ self.focus();');
 						if($this->View->settings["log_sending"]){
 							$this->View->newsletter->addLog("mail_failed", $email);
 						}
-						echo we_html_element::jsElement('
-										updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[error]') . ": " . g_l('modules_newsletter', '[mail_failed]'), $email)) . '");
-									');
+						echo we_html_element::jsElement('updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[error]') . ": " . g_l('modules_newsletter', '[mail_failed]'), $email)) . '");');
 						flush();
 					}
 					$this->View->db->query('UPDATE ' . NEWSLETTER_TABLE . ' SET Step=' . intval($egc) . ',Offset=' . intval($j) . ' WHERE ID=' . $this->View->newsletter->ID);
@@ -2654,35 +2660,32 @@ self.focus();');
 					$this->View->newsletter->addLog("email_malformed", $email);
 				}
 				echo we_html_element::jsElement('
-								updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[error]') . ": " . g_l('modules_newsletter', '[email_malformed]'), $email)) . '");
-								updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[mail_not_sent]'), $email)) . '");
-							');
+updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[error]') . ": " . g_l('modules_newsletter', '[email_malformed]'), $email)) . '");
+updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[mail_not_sent]'), $email)) . '");');
 				flush();
 			} elseif(!$verified){
 				if(!$test && $this->View->settings["log_sending"]){
 					$this->View->newsletter->addLog("domain_nok", $email);
 				}
 				echo we_html_element::jsElement('
-								updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[warning]') . ": " . g_l('modules_newsletter', '[domain_nok]'), $domain)) . '");
-								updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[mail_not_sent]'), $email)) . '");
-							');
+updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[warning]') . ": " . g_l('modules_newsletter', '[domain_nok]'), $domain)) . '");
+updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[mail_not_sent]'), $email)) . '");');
 				flush();
 			} elseif(!$not_black){
 				if(!$test && $this->View->settings["log_sending"]){
 					$this->View->newsletter->addLog("email_is_black", $email);
 				}
 				echo we_html_element::jsElement('
-								updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[warning]') . ": " . g_l('modules_newsletter', '[email_is_black]'), $email)) . '");
-								updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[mail_not_sent]'), $email)) . '");
+updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[warning]') . ": " . g_l('modules_newsletter', '[email_is_black]'), $email)) . '");
+updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[mail_not_sent]'), $email)) . '");
 							');
 				flush();
 			}
 			$ecs++;
 
 			echo we_html_element::jsElement('
-				document.we_form.ecs.value=' . $ecs . ';
-				top.send_control.document.we_form.ecs.value=' . $ecs . ';
-			');
+document.we_form.ecs.value=' . $ecs . ';
+top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 
 			$pro = ($ecount ? ($ecs / $ecount) * 100 : 0);
 
@@ -2694,12 +2697,10 @@ self.focus();');
 		//$laststep = ceil(we_base_request::_(we_base_request::INT, "ecount", 0) / $this->View->settings["send_step"]);
 		if(isset($this->View->settings["send_wait"]) && is_numeric($this->View->settings["send_wait"]) && $this->View->settings["send_wait"] && $egc > 0 && isset($this->View->settings["send_step"]) && is_numeric($this->View->settings["send_step"]) && $egc < ceil($ecount / $this->View->settings["send_step"])){
 			echo we_html_element::jsElement('
-				setTimeout("document.we_form.submit()",' . $this->View->settings["send_wait"] . ');
+setTimeout("document.we_form.submit()",' . $this->View->settings["send_wait"] . ');
 			');
 		} else {
-			echo we_html_element::jsElement('
-				document.we_form.submit();
-			');
+			echo we_html_element::jsElement('document.we_form.submit();');
 		}
 		flush();
 	}

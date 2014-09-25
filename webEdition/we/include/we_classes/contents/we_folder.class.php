@@ -700,7 +700,6 @@ class we_folder extends we_root{
 	}
 
 	public static function getUrlReplacements(we_database_base $db, $onlyUrl = false){
-		//TODO: cache this!
 		static $ret = -1;
 		if($ret == -1){
 			$ret = array('full' => array(), 'url' => array());
