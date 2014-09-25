@@ -314,8 +314,7 @@ class we_search_frames extends we_tool_frames{
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
 
 		$_searchResult_block = '<div>
-      <div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop(
-				$foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
+      <div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
       </div>';
 
 		return array(
