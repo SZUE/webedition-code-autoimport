@@ -258,7 +258,7 @@ class we_newsletter_base{
 		reset($values);
 		$ret = '<select class="' . $cls . '" name="' . trim($name) . '" size=' . abs($size) . ' ' . ($multiple ? " multiple" : "") . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>';
 		$selIndex = makeArrayFromCSV($selectedIndex);
-		while(list($value, $text) = each($values)){
+		foreach($values as $value => $text){
 			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare == "value") ? $value : $text), $selIndex) ? " selected" : "") . (we_check_email($text) ? ' class="markValid"' : ' class="markNotValid"') . '>' . $text . "</option>";
 		}
 		$ret .= '</select>';
