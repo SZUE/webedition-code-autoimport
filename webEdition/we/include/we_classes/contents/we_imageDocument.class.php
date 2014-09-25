@@ -158,10 +158,9 @@ class we_imageDocument extends we_binaryDocument{
 	 * adds thumbnails to the image document
 	 *
 	 * @return void
-	 * @param string $thumbnails
+	 * @param string $thumbsToAdd
 	 */
-	function add_thumbnails($thumbnails){
-		$thumbsToAdd = makeArrayFromCSV($thumbnails);
+	function add_thumbnails($thumbsToAdd){
 		$thumbsArray = ($this->Thumbs == -1) ? array() : makeArrayFromCSV($this->Thumbs);
 
 		foreach($thumbsToAdd as $t){
