@@ -88,6 +88,10 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) == 'SEEM_edit_in
 		unset($_SESSION['weS']['SEEM']['open_selected']);
 	} else {// normal mode, start document depends on settings
 		switch($_SESSION['prefs']['seem_start_type']){
+			default:
+			case 'cockpit':
+				$jsCommand = _buildJsCommand();
+				break;
 			case 'object':
 				if($_SESSION['prefs']['seem_start_file'] != 0 && checkIfValidStartdocument($_SESSION['prefs']['seem_start_file'], 'object')){ //	if a stardocument is already selected - show this
 					$jsCommand = _buildJsCommand(array(
@@ -99,10 +103,6 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) == 'SEEM_edit_in
 					t_e('start doc not valid', $_SESSION['prefs']['seem_start_file']);
 					$jsCommand = _buildJsCommand();
 				}
-				break;
-			default:
-			case 'cockpit':
-				$jsCommand = _buildJsCommand();
 				break;
 			case '0':
 				$jsCommand = 'top.weEditorFrameController.toggleFrames();';
