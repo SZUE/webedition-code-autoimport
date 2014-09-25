@@ -49,7 +49,7 @@ foreach($customerTableFields as $tblField){
 if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data in arrays ..
 	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array(
 			'strDateiname' => "shop_pref",
-			'strFelder' => we_base_request::_(we_base_request::STRING, "waehr") . '|' . we_base_request::_(we_base_request::STRING, "mwst") . '|' . $format . '|' . we_base_request::_(we_base_request::INT, "classID", 0) . '|' . we_base_request::_(we_base_request::STRING, "pag")
+			'strFelder' => we_base_request::_(we_base_request::STRING, "waehr") . '|' . we_base_request::_(we_base_request::STRING, "mwst") . '|' . $format . '|' . we_base_request::_(we_base_request::STRING, "classID", 0) . '|' . we_base_request::_(we_base_request::STRING, "pag")
 	)));
 
 	$fields['customerFields'] = we_base_request::_(we_base_request::STRING, 'orderfields', array());
