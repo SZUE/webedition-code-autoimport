@@ -141,11 +141,11 @@ function we_tag_addDelNewsletterEmail($attribs){
 						if(empty($lists)){// subscriber exists in all lists
 							$emailExistsInOneOfTheLists = true;
 						}
-					// #5589 end
-					}else{
-						$lists = $abos; //#9002	
+						// #5589 end
+					} else {
+						$lists = $abos; //#9002
 					}
-					
+
 
 					break;
 				case 'csv':
@@ -209,9 +209,15 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$port = $use_https_refer ? 443 : 80;
 				$basehref = $protocol . $_SERVER['SERVER_NAME'] . ':' . $port;
 
+				$cnt = 0;
 				$confirmLink = ($id ? id_to_path($id, FILE_TABLE) : $_SERVER['SCRIPT_NAME']) . '?confirmID=' . $confirmID . '&mail=' . rawurlencode($f['subscribe_mail']);
+				$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
+				if($urlReplace){
 
-				$confirmLink = $protocol . $_SERVER['SERVER_NAME'] . (($port && ($port != 80)) ? ':' . $port : '') . $confirmLink;
+					$confirmLink = preg_replace('-(["\'])//-', '\\1' . $protocol, preg_replace($urlReplace, array_keys($urlReplace), $confirmLink, -1, $cnt));
+				}
+
+				$confirmLink = ($cnt == 0 ? $protocol . $_SERVER['SERVER_NAME'] . (($port && ($port != 80)) ? ':' . $port : '') : '') . $confirmLink;
 				$GLOBALS['WE_MAIL'] = $f['subscribe_mail'];
 				$GLOBALS['WE_TITLE'] = '###TITLE###';
 				$GLOBALS['WE_SALUTATION'] = $f['subscribe_salutation'];
