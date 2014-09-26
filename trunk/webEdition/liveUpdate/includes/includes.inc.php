@@ -29,9 +29,9 @@ if(function_exists('we_error_setHandleAll')){
 }
 we_error_handler();
 
-if(!isset($_COOKIE[SESSION_NAME]) && isset($_REQUEST['PHPSESSID'])){
+if(!isset($_COOKIE[SESSION_NAME]) && isset($_COOKIE['PHPSESSID'])){
 	session_name('PHPSESSID');
-	session_id($_REQUEST['PHPSESSID']);
+	session_id($_COOKIE['PHPSESSID']);
 	unset($_REQUEST['PHPSESSID'], $_GET['PHPSESSID'], $_POST['PHPSESSID']);
 //note due to session upgrade: in session are serialized classes so an autoloader is needed before starting the session
 	require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
