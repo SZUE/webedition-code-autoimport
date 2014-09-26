@@ -2085,7 +2085,7 @@ self.close();');
 		} else {
 			$urlReplace = we_folder::getUrlReplacements($this->db, true);
 			if($urlReplace){
-				$content = preg_replace('-(["\'])//-', '\\1' . $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
+				$content = str_replace('//', $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
 			}
 			$newplain = preg_replace(array('|<br */? *>|', '|<title>.*</title>|i',), "\n", $content);
 			if($block->Type != we_newsletter_block::TEXT){
