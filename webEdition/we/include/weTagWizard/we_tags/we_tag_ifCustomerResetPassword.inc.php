@@ -12,3 +12,4 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('required'),
 	new weTagDataOption('token'),
 	), true, '');
+
