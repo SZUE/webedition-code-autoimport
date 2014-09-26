@@ -211,9 +211,8 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 				$cnt = 0;
 				$confirmLink = ($id ? id_to_path($id, FILE_TABLE) : $_SERVER['SCRIPT_NAME']) . '?confirmID=' . $confirmID . '&mail=' . rawurlencode($f['subscribe_mail']);
-				$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
+				$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
 				if($urlReplace){
-
 					$confirmLink = preg_replace('-(["\'])//-', '\\1' . $protocol, preg_replace($urlReplace, array_keys($urlReplace), $confirmLink, -1, $cnt));
 				}
 
