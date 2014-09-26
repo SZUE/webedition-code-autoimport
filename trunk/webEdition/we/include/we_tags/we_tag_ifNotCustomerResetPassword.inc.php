@@ -18,7 +18,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifCustomerResetPasswordFailed(array $attribs){
+function we_tag_ifNotCustomerResetPassword(array $attribs){
 	$type = weTag_getAttribute('type', $attribs, 'all');
 	switch($type){
 		case 'all':
