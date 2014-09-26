@@ -213,10 +213,10 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$confirmLink = ($id ? id_to_path($id, FILE_TABLE) : $_SERVER['SCRIPT_NAME']) . '?confirmID=' . $confirmID . '&mail=' . rawurlencode($f['subscribe_mail']);
 				$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
 				if($urlReplace){
-					$confirmLink = str_replace('//', $protocol, preg_replace($urlReplace, array_keys($urlReplace), $confirmLink, -1, $cnt));
+					$confirmLink = preg_replace($urlReplace, array_keys($urlReplace), $confirmLink, -1, $cnt);
 				}
 
-				$confirmLink = ($cnt == 0 ? $protocol . $_SERVER['SERVER_NAME'] . (($port && ($port != 80)) ? ':' . $port : '') : '') . $confirmLink;
+				$confirmLink = $protocol . $_SERVER['SERVER_NAME'] . (($port && ($port != 80)) ? ':' . $port : '') . $confirmLink;
 				$GLOBALS['WE_MAIL'] = $f['subscribe_mail'];
 				$GLOBALS['WE_TITLE'] = '###TITLE###';
 				$GLOBALS['WE_SALUTATION'] = $f['subscribe_salutation'];
