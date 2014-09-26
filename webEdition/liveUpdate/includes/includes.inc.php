@@ -29,6 +29,8 @@ if(function_exists('we_error_setHandleAll')){
 	we_error_setHandleAll();
 }
 we_error_handler();
+
+//note due to session upgrade: in session are serialized classes so an autoloader is needed before starting the session
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
 
 if(!isset($_COOKIE[SESSION_NAME]) && isset($_REQUEST['PHPSESSID'])){
