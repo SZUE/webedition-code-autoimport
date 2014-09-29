@@ -144,8 +144,7 @@ class we_selector_file{
 	function query(){
 		$wsQuery = $this->table == NAVIGATION_TABLE && get_ws($this->table) ? ' ' . getWsQueryForSelector($this->table) : '';
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
-			( ($this->filter ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ')
-					: '' ) . $wsQuery ) .
+			( ($this->filter ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
 			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
@@ -522,7 +521,7 @@ function clearEntries(){
 	}
 
 	function printBodyHTML(){
-		echo we_html_element::htmlDocType() . '<html><head></head>
+		echo we_html_element::htmlDocType() . '<html><head>' . we_html_tools::getJSErrorHandler() . '</head>
 				<body bgcolor="white" onload="top.writeBody(self.document);"></body></html>';
 	}
 

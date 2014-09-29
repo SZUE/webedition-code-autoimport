@@ -83,4 +83,4 @@ $body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin
 			we_html_element::htmlExIFrame('we_preferences_footer', getPreferencesFooter(), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;')
 	));
 
-print we_html_element::htmlBody(array(), $body) . getPreferencesJS() . getPreferencesFooterJS() . '</html>';
+echo we_html_element::htmlBody(array(), $body) . getPreferencesJS() . getPreferencesFooterJS() . '</html>';

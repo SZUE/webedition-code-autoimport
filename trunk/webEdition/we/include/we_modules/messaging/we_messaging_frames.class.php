@@ -390,7 +390,7 @@ function drawEintraege() {
 	fr.open();
 	fr.writeln("<html><head>");
 	fr.writeln("<script type=\"text/javascript\"><!--");
-
+	fr.writeln("' . we_html_tools::getJSErrorHandler(true) . '");
 	fr.writeln("clickCount=0;");
 	fr.writeln("wasdblclick=0;");
 	fr.writeln("tout=null");

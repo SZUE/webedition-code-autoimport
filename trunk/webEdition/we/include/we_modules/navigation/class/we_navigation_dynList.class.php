@@ -113,7 +113,7 @@ abstract class we_navigation_dynList{
 		$_cats = array();
 		foreach($categories as $cat){
 			$cat = is_numeric($cat) ? $cat : $_db->escape(path_to_id($cat, CATEGORY_TABLE));
-			$_cats[] = 'Category LIKE "%,' . $cat . ',%"'; //bug #6729
+			$_cats[] = 'FIND_IN_SET('.$cat.',Category)'; //bug #6729
 		}
 
 		$dirpath = we_base_file::clearPath($dirpath . '/');
@@ -165,7 +165,7 @@ abstract class we_navigation_dynList{
 		$_cats = array();
 		foreach($categories as $cat){
 			$cat = is_numeric($cat) ? $cat : $_db->escape(path_to_id($cat, CATEGORY_TABLE));
-			$_cats[] = 'OF_Category LIKE "%,' . $cat . ',%"'; //bug #6729
+			$_cats[] = 'FIND_IN_SET('.$cat.',OF_Category)'; //bug #6729
 		}
 
 		$_where = array();

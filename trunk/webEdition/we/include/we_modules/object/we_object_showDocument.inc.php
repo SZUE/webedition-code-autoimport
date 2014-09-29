@@ -219,11 +219,9 @@ if((!defined('WE_CONTENT_TYPE_SET')) && isset($GLOBALS['we_doc']->Charset) && $G
 
 //	If in webEdition, parse the document !!!!
 if(isset($_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition']) && $_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition']){ //	In webEdition, parse the file.
-	$contentOrig = implode('', file(TEMPLATES_PATH . $tmplPath));
-
 	ob_start();
-	//FIXME:eval
-	eval('?>' . $contentOrig);
+	include(TEMPLATES_PATH . $tmplPath);
+
 	$contents = ob_get_clean();
 
 	echo we_SEEM::parseDocument($contents);

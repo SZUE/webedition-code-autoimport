@@ -313,7 +313,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 	we_base_file::insertIntoCleanUp($fullName, time());
 
 	ob_start();
-	//FIXME:eval
+	//FIXME: eval, document was included, what needs to evaluated
 	eval('?>' . str_replace('<?xml', '<?php print \'<?xml\'; ?>', $contents));
 	$contents = ob_get_clean();
 //

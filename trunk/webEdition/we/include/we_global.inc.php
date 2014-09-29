@@ -57,7 +57,7 @@ function makePIDTail($pid, $cid, we_database_base $db = null, $table = FILE_TABL
 		$pid_tail[] = OBJECT_X_TABLE . intval($cid) . '.OF_Workspaces=""';
 	}
 	foreach($parentIDs as $pid){
-		$pid_tail[] = OBJECT_X_TABLE . intval($cid) . '.OF_Workspaces LIKE "%,' . intval($pid) . ',%" OR ' . OBJECT_X_TABLE . intval($cid) . '.OF_ExtraWorkspacesSelected LIKE "%,' . intval($pid) . ',%"';
+		$pid_tail[] = 'FIND_IN_SET(' . intval($pid) . ',' . OBJECT_X_TABLE . intval($cid) . '.OF_Workspaces) OR FIND_IN_SET(' . intval($pid) . ',' . OBJECT_X_TABLE . intval($cid) . '.OF_ExtraWorkspacesSelected)';
 	}
 	return ($pid_tail ? ' (' . implode(' OR ', $pid_tail) . ') ' : 1);
 }
@@ -1066,6 +1066,7 @@ function we_templateHead($fullHeader = false){
 	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' : '') . STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY .
 	we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() .
 	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
+	we_html_tools::getJSErrorHandler() .
 	we_html_element::jsElement('parent.openedWithWE = 1;');
 	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	if($fullHeader){

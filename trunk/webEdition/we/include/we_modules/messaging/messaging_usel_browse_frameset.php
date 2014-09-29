@@ -82,12 +82,13 @@ echo we_html_tools::getHtmlTop() .
 		fr.writeln("<script type=\"text/javascript\" src=\"<?php echo JS_DIR . 'messaging_std.js'; ?>\"></" + "script>");
 
 		fr.writeln("<script type=\"text/javascript\">");
+		fr.writeln("<?php echo we_html_tools::getJSErrorHandler(true); ?>");
 		fr.writeln("clickCount=0;");
 		fr.writeln("wasdblclick=0;");
 		fr.writeln("tout=null");
 		fr.writeln("top.loaded=1;");
 		fr.writeln("</" + "script>");
-		fr.writeln('<?php print STYLESHEET_SCRIPT; ?>');
+		fr.writeln('<?php echo STYLESHEET_SCRIPT; ?>');
 		fr.write("</head>");
 		fr.write("<body class=\"weEditorBody\" LINK=\"#000000\" ALINK=\"#000000\" VLINK=\"#000000\" leftmargin=\"10\" topmargin=\"0\" marginheight=\"0\" marginwidth=\"10\" onunload=\"doUnload()\">");
 		fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<NOBR>\n");
@@ -213,7 +214,7 @@ echo we_html_tools::getHtmlTop() .
 	function updateEntry(id, pid, text, pub) {
 		var ai = 1;
 		while (ai <= menuDaten.laenge) {
-			if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'user')){
+			if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'user')) {
 				if (menuDaten[ai].name == id) {
 					menuDaten[ai].vorfahr = pid;
 					menuDaten[ai].text = text;
@@ -265,8 +266,8 @@ echo we_html_tools::getHtmlTop() .
 	function indexOfEntry(name) {
 		var ai = 1;
 		while (ai <= menuDaten.laenge) {
-			if ((menuDaten[ai].typ == 'root') || (menuDaten[ai].typ == 'folder')){
-				if (menuDaten[ai].name == name){
+			if ((menuDaten[ai].typ == 'root') || (menuDaten[ai].typ == 'folder')) {
+				if (menuDaten[ai].name == name) {
 					return ai;
 				}
 			}
@@ -279,8 +280,8 @@ echo we_html_tools::getHtmlTop() .
 		var nf = new container();
 		var ai = 1;
 		while (ai <= menuDaten.laenge) {
-			if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'user')){
-				if (menuDaten[ai].vorfahr == eintrag){
+			if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'user')) {
+				if (menuDaten[ai].vorfahr == eintrag) {
 					nf.add(menuDaten[ai]);
 				}
 			}
@@ -359,7 +360,6 @@ echo we_html_tools::getHtmlTop() .
 		menuDaten.clear();
 
 <?php
-
 $entries = array();
 $DB_WE->query("SELECT ID,ParentID,username,Permissions,Type FROM " . USER_TABLE . " ORDER BY username ASC");
 echo "startloc=0 ;
@@ -406,7 +406,7 @@ while($DB_WE->next_record()){
 		var i;
 
 		for (i = 0; i < haystack.length; i++) {
-			if (needle == haystack[i]){
+			if (needle == haystack[i]) {
 				return i;
 			}
 		}

@@ -39,14 +39,14 @@ function dieWithError($text, $protocol){
 			$resp->setStatus(false);
 			$resp->setData('data', $text);
 			$errorView = new rpcJsonView();
-			print $errorView->getResponse($resp);
+			echo $errorView->getResponse($resp);
 			exit;
 		case 'text':
 			$resp = new rpcResponse();
 			$resp->setStatus(false);
 			$resp->setData('data', $text);
 			$errorView = new rpcView();
-			print $errorView->getResponse($resp);
+			echo $errorView->getResponse($resp);
 			exit;
 		default:
 			die($text);

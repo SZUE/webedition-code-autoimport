@@ -303,7 +303,7 @@ function we_cmd() {
 
 	function getProperties(){
 		we_html_tools::protect();
-		print STYLESHEET;
+		echo STYLESHEET;
 
 		//$weShopVatRule = weShopVatRule::getShopVatRule();
 
@@ -464,7 +464,7 @@ function we_cmd() {
 			// no get information about complete order
 			// - pay VAT?
 			// - prices are net?
-			if(!empty($ArticleId)){
+			if($ArticleId){
 
 				// first unserialize order-data
 				if(!empty($SerialOrder[0])){
@@ -988,7 +988,7 @@ function we_cmd() {
 					);
 				}
 
-				print we_html_multiIconBox::getHTML('', '100%', $parts, 30);
+				echo we_html_multiIconBox::getHTML('', '100%', $parts, 30);
 
 				//
 				// "Html output for order with articles"
@@ -1003,13 +1003,14 @@ function we_cmd() {
 			}
 
 			$js = '
-					// init the used calendars
+// init the used calendars
 
-					function CalendarChanged(calObject) {
-						// field:
-						_field = calObject.params.inputField;
-						document.location = "' . $_SERVER['SCRIPT_NAME'] . '?pnt=edbody&bid=' . $_REQUEST['bid'] . '&" + _field.name + "=" + _field.value;
-					}';
+function CalendarChanged(calObject) {
+	// field:
+	_field = calObject.params.inputField;
+	document.location = "' . $_SERVER['SCRIPT_NAME'] . '?pnt=edbody&bid=' . $_REQUEST['bid'] . '&" + _field.name + "=" + _field.value;
+}
+';
 
 			foreach(we_shop_statusMails::$StatusFields as $cur){
 				if(!$weShopStatusMails->FieldsHidden[$cur]){
