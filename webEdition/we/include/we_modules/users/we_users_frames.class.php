@@ -51,7 +51,8 @@ function drawEintraege() {
 	fr.open();
 	fr.charset = "' . DEFAULT_CHARSET . '";
 	fr.writeln("<HTML><HEAD>' . addslashes(we_html_element::htmlMeta(array('http-equiv' => 'content-type', 'content' => 'text/html; charset=' . DEFAULT_CHARSET))) . '");
-	fr.writeln("<SCRIPT type = \"text/javascript\"><!--");
+	fr.writeln("<script type = \"text/javascript\"><!--");
+	fr.writeln("' . we_html_tools::getJSErrorHandler(true) . '");
 	fr.writeln("clickCount=0;");
 	fr.writeln("wasdblclick=0;");
 	fr.writeln("tout=null");
@@ -60,7 +61,7 @@ function drawEintraege() {
 	fr.writeln("}");
 	fr.writeln("top.content.loaded=1;");
 	fr.writeln("//-->");
-	fr.writeln("</"+"SCRIPT>");
+	fr.writeln("</"+"script>");
 	fr.writeln("<LINK type=\"text/css\" rel=\"styleSheet\" href=\"' . CSS_DIR . 'global.php\">");
 	fr.writeln("<LINK type=\"text/css\" rel=\"styleSheet\" href=\"' . CSS_DIR . 'we_button.css\">");
 	fr.write("</HEAD>");

@@ -75,23 +75,24 @@ class we_banner_frames extends we_modules_frame{
 			var menuDaten = new container();
 			var count = 0;
 			var folder = 0;
-			var table = "<?php print BANNER_TABLE; ?>";
+			var table = "<?php echo BANNER_TABLE; ?>";
 
 			function drawEintraege() {
 				fr = top.content.tree.document;
 				fr.open();
 				fr.writeln("<html><head>");
 				fr.writeln("<script type=\"text/javascript\">");
+				fr.writeln("<?php echo we_html_tools::getJSErrorHandler(true); ?>");
 				fr.writeln("clickCount=0;");
 				fr.writeln("wasdblclick=0;");
 				fr.writeln("tout=null");
 				fr.writeln("function doClick(id,ct,table){");
 				//fr.writeln("if(ct=='folder') top.content.we_cmd('newsletter_edit',id,ct,table); else if(ct=='file') top.content.we_cmd('show_document',id,ct,table);");
-				fr.writeln("top.content.we_cmd('<?php print $this->edit_cmd; ?>',id,ct,table);");
+				fr.writeln("top.content.we_cmd('<?php echo $this->edit_cmd; ?>',id,ct,table);");
 				fr.writeln("}");
 				fr.writeln("top.content.loaded=1;");
 				fr.writeln("</" + "script>");
-				fr.writeln('<?php print STYLESHEET_SCRIPT; ?>');
+				fr.writeln('<?php echo STYLESHEET_SCRIPT; ?>');
 				fr.write("</head>\n");
 				fr.write("<body bgcolor=\"#F3F7FF\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" leftmargin=5 topmargin=5 marginheight=5 marginwidth=5>\n");
 				fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<nobr>\n");

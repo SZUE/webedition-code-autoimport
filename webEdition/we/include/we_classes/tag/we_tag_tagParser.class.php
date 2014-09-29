@@ -219,9 +219,8 @@ class we_tag_tagParser{
 	}
 
 	public static function makeArrayFromAttribs($attr){
-		//FIXME: is this not equal to self::parseAttribs($attr, true)??
 		$arr = array();
-		@eval('$arr = array(' . self::parseAttribs($attr, false) . ');');
+		@eval('$arr = array(' . self::parseAttribs($attr, false) . ');');//FIXME: can we remove this eval?
 		return $arr;
 	}
 

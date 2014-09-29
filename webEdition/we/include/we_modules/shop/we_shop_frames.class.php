@@ -46,33 +46,34 @@ class we_shop_frames extends we_modules_frame{
 			var menuDaten = new container();
 			var count = 0;
 			var folder = 0;
-			var table = "<?php print SHOP_TABLE; ?>";
+			var table = "<?php echo SHOP_TABLE; ?>";
 
 			function drawEintraege() {
 				fr = top.content.tree.window.document;//TODO: when frame tree is eliminated change adress to ...getElementById('tree')!!!
 				fr.open();
 				fr.writeln("<html><head>");
 				fr.writeln("<script type=\"text/javascript\">");
+				fr.writeln("<?php echo we_html_tools::getJSErrorHandler(true); ?>");
 				fr.writeln("clickCount=0;");
 				fr.writeln("wasdblclick=0;");
 				fr.writeln("tout=null");
 				fr.writeln("function doClick(id,ct,table){");
-				fr.writeln("top.content.editor.location='<?php print WE_SHOP_MODULE_DIR ?>edit_shop_frameset.php?pnt=editor&bid='+id;");
+				fr.writeln("top.content.editor.location='<?php echo WE_SHOP_MODULE_DIR ?>edit_shop_frameset.php?pnt=editor&bid='+id;");
 				fr.writeln("}");
 				fr.writeln("function doFolderClick(id,ct,table){");
-				fr.writeln("top.content.editor.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&mid='+id;");
+				fr.writeln("top.content.editor.location='<?php echo WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&mid='+id;");
 				fr.writeln("}");
 
 				fr.writeln("function doYearClick(yearView){");
-				fr.writeln("top.content.editor.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&ViewYear='+yearView;");
+				fr.writeln("top.content.editor.location='<?php echo WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&ViewYear='+yearView;");
 				fr.writeln("}");
 
 				fr.writeln("</" + "script>");
-				fr.writeln('<?php print STYLESHEET_SCRIPT; ?>');
+				fr.writeln('<?php echo STYLESHEET_SCRIPT; ?>');
 				fr.write("</head>");
 				fr.write("<body bgcolor=\"#F3F7FF\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" leftmargin=\"5\" topmargin=\"0\" marginheight=\"0\" marginwidth=\"5\">");
 				fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\"><nobr>");
-				fr.write("<tr><td class=\"tree\"><nobr><a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"<?php echo g_l('modules_shop', '[treeYearClick]'); ?>\" ><?php print g_l('modules_shop', '[treeYear]'); ?>: <strong>" + top.yearshop + " </strong></a> <br/>");
+				fr.write("<tr><td class=\"tree\"><nobr><a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"<?php echo g_l('modules_shop', '[treeYearClick]'); ?>\" ><?php echo g_l('modules_shop', '[treeYear]'); ?>: <strong>" + top.yearshop + " </strong></a> <br/>");
 
 				zeichne(0, "");
 				fr.write("</nobr></td></tr></table>");
@@ -87,16 +88,16 @@ class we_shop_frames extends we_modules_frame{
 					fr.write(zweigEintrag);
 					if (nf[ai].typ === 'shop') {
 						if (ai === nf.laenge) {
-							fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzungend.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
+							fr.write("&nbsp;&nbsp;<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>kreuzungend.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
 						} else {
-							fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
+							fr.write("&nbsp;&nbsp;<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
 						}
 		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?> // make  in tree clickable
 							if (nf[ai].name !== -1) {
 								fr.write("<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 							}
 		<?php } ?>
-						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
+						fr.write("<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
 		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?>
 							fr.write("</a>");
 		<?php } ?>
@@ -117,7 +118,7 @@ class we_shop_frames extends we_modules_frame{
 						var zusatz = (ai === nf.laenge) ? "end" : "";
 
 						if (nf[ai].offen === 0) {
-							fr.write("&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" border=0><img src=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[open_statustext]") ?>\"></a>");
+							fr.write("&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" border=0><img src=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php echo g_l('tree', "[open_statustext]") ?>\"></a>");
 							var zusatz2 = "";
 						} else {
 							fr.write("&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" border=0><img src=<?php print TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[close_statustext]") ?>\"></a>");

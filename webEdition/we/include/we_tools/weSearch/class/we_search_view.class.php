@@ -1986,7 +1986,7 @@ function calendarSetup(x){
 					$whereQuery = '1 ' . $where;
 
 					//query for restrict users for FILE_TABLE, VERSIONS_TABLE AND OBJECT_FILES_TABLE
-					$restrictUserQuery = ' AND ((' . escape_sql_query($_table) . '.RestrictOwners=0 OR ' . escape_sql_query($_table) . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (' . escape_sql_query($_table) . '.Owners LIKE "%,' . intval($_SESSION["user"]["ID"]) . ',%"))';
+					$restrictUserQuery = ' AND ((' . escape_sql_query($_table) . '.RestrictOwners=0 OR ' . escape_sql_query($_table) . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',' . escape_sql_query($_table) . '.Owners)))';
 
 					switch($_table){
 						case FILE_TABLE:
@@ -1998,7 +1998,7 @@ function calendarSetup(x){
 							break;
 
 						case (defined('OBJECT_TABLE') ? OBJECT_TABLE : -2):
-							$whereQuery .= ' AND ((' . $this->db->escape($_table) . '.RestrictUsers=0 OR ' . $this->db->escape($_table) . ".RestrictUsers=" . intval($_SESSION["user"]["ID"]) . ") OR (" . $this->db->escape($_table) . ".Users LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%')) ";
+							$whereQuery .= ' AND ((' . $this->db->escape($_table) . '.RestrictUsers=0 OR ' . $this->db->escape($_table) . '.RestrictUsers=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',' . $this->db->escape($_table) . '.Users))) ';
 							break;
 						case VERSIONS_TABLE:
 							if(isset($GLOBALS['we_cmd_obj'])){
@@ -2011,8 +2011,8 @@ function calendarSetup(x){
 							$_SESSION['weS']['weSearch']['onlyObjects'] = true;
 							$_SESSION['weS']['weSearch']['onlyDocs'] = true;
 							$_SESSION['weS']['weSearch']['ObjectsAndDocs'] = true;
-							$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] = ' AND ((' . OBJECT_FILES_TABLE . '.RestrictOwners=0 OR ' . OBJECT_FILES_TABLE . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (' . OBJECT_FILES_TABLE . ".Owners LIKE '%," . $_SESSION["user"]["ID"] . ",%'))";
-							$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] = ' AND ((' . FILE_TABLE . '.RestrictOwners=0 OR ' . FILE_TABLE . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (' . FILE_TABLE . ".Owners LIKE '%," . $_SESSION["user"]["ID"] . ",%'))";
+							$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] = ' AND ((' . OBJECT_FILES_TABLE . '.RestrictOwners=0 OR ' . OBJECT_FILES_TABLE . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',' . OBJECT_FILES_TABLE . '.Owners)))';
+							$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] = ' AND ((' . FILE_TABLE . '.RestrictOwners=0 OR ' . FILE_TABLE . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',' . FILE_TABLE . '.Owners)))';
 							if(!empty($workspacesTblFile)){
 								$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] .= $where = ' ' . $this->searchclass->ofFolderAndChildsOnly($workspacesTblFile[0], $_table);
 							}

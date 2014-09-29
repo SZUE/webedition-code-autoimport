@@ -126,9 +126,9 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 	}
 
 	var setPageNrCallback = {
-		success: function(o) {
+		success: function (o) {
 		},
-		failure: function(o) {
+		failure: function (o) {
 			alert("<?php echo g_l('global', "[unable_to_call_setpagenr]"); ?>");
 		}
 	};

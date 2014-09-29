@@ -1075,12 +1075,11 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 	 */
 	function restoreState($temp_filename){
 		//FIXME: use __sleep/__wakeup + serialize/unserialize
-		if(($save = we_base_file::load($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename, "rb")) !== false){
-			eval($save);
+		if(file_exists($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename)){
+			include($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename);
 			return $temp_filename;
-		} else {
-			return 0;
 		}
+		return 0;
 	}
 
 	/**

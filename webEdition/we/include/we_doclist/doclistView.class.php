@@ -1018,13 +1018,13 @@ class doclistView{
 				$whereQuery = "1 " . $where;
 				switch($_table){
 					case FILE_TABLE:
-						$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . intval($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%'))";
+						$whereQuery .= ' AND ((RestrictOwners=0 OR RestrictOwners=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners)))';
 						break;
 					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-						$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . intval($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%'))";
+						$whereQuery .= ' AND ((RestrictOwners=0 OR RestrictOwners=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners)))';
 						break;
 					case (defined('OBJECT_TABLE') ? OBJECT_TABLE : OBJECT_TABLE):
-						$whereQuery .= "AND ((RestrictUsers='0' OR RestrictUsers= '" . intval($_SESSION["user"]["ID"]) . "') OR (Users LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%')) ";
+						$whereQuery .= 'AND ((RestrictUsers=0 OR RestrictUsers= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))) ';
 						break;
 				}
 
