@@ -2064,7 +2064,7 @@ self.close();');
 
 				we_document::parseInternalLinks($content, 0);
 
-				$urlReplace = we_folder::getUrlReplacements($this->db);
+				$urlReplace = we_folder::getUrlReplacements($this->db, false, true);
 				if($urlReplace){
 					$content = preg_replace('-(["\'])//-', '\\1' . $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
 				}
@@ -2083,7 +2083,7 @@ self.close();');
 					), $content);
 			}
 		} else {
-			$urlReplace = we_folder::getUrlReplacements($this->db, true);
+			$urlReplace = we_folder::getUrlReplacements($this->db, true, true);
 			if($urlReplace){
 				$content = str_replace('//', $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
 			}
