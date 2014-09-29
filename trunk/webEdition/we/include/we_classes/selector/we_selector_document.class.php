@@ -844,7 +844,9 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		return we_html_element::jsElement('
 function setDir(id) {
 	showPreview(id);
-	top.fspreview.document.body.innerHTML = "";
+	if(top.fspreview.document.body){
+		top.fspreview.document.body.innerHTML = "";
+	}
 	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',id));
 	e = getEntry(id);
 	fspath.document.body.innerHTML = e.path;
@@ -889,7 +891,9 @@ function selectFile(id){
 	protected function printFramesetJSDoClickFn(){
 		return we_html_element::jsElement('
 function doClick(id,ct){
-	top.fspreview.document.body.innerHTML = "";
+	if(top.fspreview.document.body){
+		top.fspreview.document.body.innerHTML = "";
+	}
 	if(ct==1){
 		if(wasdblclick){
 			setDir(id);

@@ -167,7 +167,9 @@ function submitFolderMods(){
 }
 document.onclick = weonclick;
 function weonclick(e){
-	top.fspreview.document.body.innerHTML = "";
+	if(top.fspreview.document.body){
+		top.fspreview.document.body.innerHTML = "";
+	}
 #	if(makeNewFolder ||  we_editDirID){
 		if(!inputklick){
 			document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);document.we_form.submit();
@@ -493,7 +495,9 @@ function showPreview(id) {
 }
 
 function doClick(id,ct){
-	top.fspreview.document.body.innerHTML = "";
+	if(top.fspreview.document.body){
+		top.fspreview.document.body.innerHTML = "";
+	}
 	if(ct==1){
 		if(wasdblclick){
 			setDir(id);
@@ -545,7 +549,9 @@ function doClick(id,ct){
 		return we_html_element::jsElement('
 function setDir(id){
 	showPreview(id);
-	top.fspreview.document.body.innerHTML = "";
+	if(top.fspreview.document.body){
+		top.fspreview.document.body.innerHTML = "";
+	}
 	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',id));
 	e = getEntry(id);
 	fspath.document.body.innerHTML = e.path;
