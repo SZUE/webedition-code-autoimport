@@ -124,12 +124,13 @@ class we_base_request{
 				$var = $var && in_array($var, self::$allTables) ? $var : $default;
 				return;
 			case self::EMAIL://removes mailto:
-				//FIXME: add email format
-				/* 		if(($pos = strpos($email, '<'))){// format "xxx xx" <test@test.de>
-				  ++$pos;
-				  $email = substr($email, $pos, strrpos($email, '>') - $pos);
-				  }
-				  return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false); */
+				$regs = array();
+				if(preg_match('-("[\S ]+"|\S+) <(\S+@\S+)>-', $var, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
+					if(filter_var($regs[2], FILTER_VALIDATE_EMAIL) !== false){
+						return;
+					}
+				}//if format didn't match, filter the whole var as one address
+
 				$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
 				return;
 			case self::FILELISTA:
