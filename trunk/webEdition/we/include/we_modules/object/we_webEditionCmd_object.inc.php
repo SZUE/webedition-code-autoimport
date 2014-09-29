@@ -30,16 +30,16 @@
 			new jsWindow(url, "edit_module", -1, -1, 380, 250, true, true, true, true);
 			break;
 		case "new_objectFile":
-			we_cmd("new", "<?php print OBJECT_FILES_TABLE; ?>", "", "objectFile");
+			we_cmd("new", "<?php echo OBJECT_FILES_TABLE; ?>", "", "objectFile");
 			break;
 		case "new_objectfile_folder":
-			we_cmd("new", "<?php print OBJECT_FILES_TABLE; ?>", "", "class_folder");
+			we_cmd("new", "<?php echo OBJECT_FILES_TABLE; ?>", "", "class_folder");
 			break;
 		case "new_object":
-			we_cmd("new", "<?php print OBJECT_TABLE; ?>", "", "object");
+			we_cmd("new", "<?php echo OBJECT_TABLE; ?>", "", "object");
 			break;
 		case "new_object_folder":
-			we_cmd("new", "<?php print OBJECT_TABLE; ?>", "", "folder");
+			we_cmd("new", "<?php echo OBJECT_TABLE; ?>", "", "folder");
 			break;
 		case "object_change_link_at_class":
 			top.load.location = url;
@@ -94,13 +94,13 @@
 			we_repl(self.load, url, arguments[0]);
 			break;
 		case "delete_object":
-			top.we_cmd("del", 1, "<?php print OBJECT_TABLE; ?>");
+			top.we_cmd("del", 1, "<?php echo OBJECT_TABLE; ?>");
 			break;
 		case "delete_objectfile":
-			top.we_cmd("del", 1, "<?php print OBJECT_FILES_TABLE; ?>");
+			top.we_cmd("del", 1, "<?php echo OBJECT_FILES_TABLE; ?>");
 			break;
 		case "move_objectfile":
-			top.we_cmd("mv", 1, "<?php print OBJECT_FILES_TABLE; ?>");
+			top.we_cmd("mv", 1, "<?php echo OBJECT_FILES_TABLE; ?>");
 			break;
 		case "object_preview_objectFile":
 			new jsWindow(url, "preview_object", -1, -1, 1600, 1200, true, true, true, true);
@@ -109,13 +109,13 @@
 			new jsWindow(url, "tmpfromClass", -1, -1, 580, 200, true, false, true, false);
 			break;
 		case "open_object":
-			we_cmd("load", "<?php print OBJECT_TABLE; ?>");
-			url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=object&we_cmd[2]=<?php echo OBJECT_TABLE; ?>&we_cmd[5]=<?php echo rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
+			we_cmd("load", "<?php echo OBJECT_TABLE; ?>");
+			url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=object&we_cmd[2]=<?php echo OBJECT_TABLE; ?>&we_cmd[5]=<?php echo rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
 			new jsWindow(url, "we_dirChooser", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true);
 			break;
 		case "open_objectFile":
-			we_cmd("load", "<?php print OBJECT_FILES_TABLE; ?>");
-			url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=objectFile&we_cmd[2]=<?php print OBJECT_FILES_TABLE; ?>&we_cmd[5]=<?php echo rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
+			we_cmd("load", "<?php echo OBJECT_FILES_TABLE; ?>");
+			url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=objectFile&we_cmd[2]=<?php echo OBJECT_FILES_TABLE; ?>&we_cmd[5]=<?php echo rawurlencode("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)"); ?>&we_cmd[9]=1";
 			new jsWindow(url, "we_dirChooser", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true);
 			break;
 	}//WE_REMOVE

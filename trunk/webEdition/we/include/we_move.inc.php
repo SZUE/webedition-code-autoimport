@@ -120,7 +120,7 @@ if($cmd0 == 'do_move' || $cmd0 == 'move_single_document'){
 			we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 	echo we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsElement($script);
+	we_html_element::jsElement($script);
 	//exit;
 }
 
@@ -141,19 +141,11 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 ?>
 <script type="text/javascript"><!--
 	top.treeData.setstate(top.treeData.tree_states["selectitem"]);
-	if (top.treeData.table != "<?php
-echo $table;
-?>") {
-		top.treeData.table = "<?php
-echo $table;
-?>";
-		we_cmd("load", "<?php
-echo $table;
-?>");
+	if (top.treeData.table != "<?php echo $table; ?>") {
+		top.treeData.table = "<?php echo $table; ?>";
+		we_cmd("load", "<?php echo $table; ?>");
 	} else {
-		we_cmd("load", "<?php
-echo $table;
-?>");
+		we_cmd("load", "<?php echo $table; ?>");
 		top.drawTree();
 	}
 
@@ -320,16 +312,16 @@ $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button
 
 
 echo
-	'</head><body class="weTreeHeaderMove">
+'</head><body class="weTreeHeaderMove">
 <form name="we_form" method="post" onsubmit="return false">
 <div style="width:460px;">
 <h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(
-		g_l('newFile', "[title_move]")) . '</h1>
+	g_l('newFile', "[title_move]")) . '</h1>
 <p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile', "[move_text]") . '</span>
 			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . '</p></p>
 <div>' . $_buttons . '</div></div>' . we_html_tools::hidden("sel", "") .
-	'</form>' .
-	$yuiSuggest->getYuiCss() .
-	$yuiSuggest->getYuiJs() .
-	'</body>
+ '</form>' .
+ $yuiSuggest->getYuiCss() .
+ $yuiSuggest->getYuiJs() .
+ '</body>
 </html>';

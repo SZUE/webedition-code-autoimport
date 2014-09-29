@@ -1409,7 +1409,7 @@ if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 }
 
 if($_table_to_load){
-	echo 'we_cmd("load","' . $_table_to_load . '");' . "\n";
+	echo 'we_cmd("load","' . $_table_to_load . '");';
 }
 ?>
 	}
