@@ -638,6 +638,23 @@ abstract class we_html_tools{
 				, $closeHtml);
 	}
 
+	public static function getJSErrorHandler($plain = false){
+		$ret = 'try{window.onerror=function(msg, file, line){
+	postData=\'we_cmd[]=\'+msg+\'&we_cmd[]=\'+file+\'&we_cmd[]=\'+line;
+	lcaller=arguments.callee.caller;
+	while(lcaller){
+		postData+=\'we_cmd[]=\'+lcaller.name;
+		lcaller=lcaller.caller;
+	}
+	xmlhttp=new XMLHttpRequest();
+	xmlhttp.open(\'POST\',\'' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=TriggerJSError&cns=error\',true);
+	xmlhttp.setRequestHeader(\'Content-type\',\'application/x-www-form-urlencoded\');
+	xmlhttp.send(postData);
+	return true;
+}}catch(e){}';
+		return ($plain ? str_replace("\n", '', $ret) : we_html_element::jsElement($ret));
+	}
+
 	public static function getHtmlInnerHead($title = 'webEdition', $charset = '', $expand = false){
 		if(!$expand){
 			self::headerCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET']));
@@ -655,7 +672,8 @@ abstract class we_html_tools{
 				we_html_element::jsElement(we_base_file::load(JS_PATH . 'attachKeyListener.js')) :
 				we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 				we_html_element::jsScript(JS_DIR . 'attachKeyListener.js')
-			);
+
+			) . self::getJSErrorHandler();
 	}
 
 	static function htmlMetaCtCharset($content, $charset){
