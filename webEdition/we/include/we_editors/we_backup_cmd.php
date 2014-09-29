@@ -346,7 +346,7 @@ run();');
 			echo we_html_element::jsElement('
 top.checker.location = "' . HTML_DIR . 'white.html";
 var op = top.opener.top.makeFoldersOpenString();
-top.opener.top.we_cmd("load", top . opener . top . treeData . table);
+top.opener.top.we_cmd("load", top.opener.top.treeData.table);
 ' . we_main_headermenu::getMenuReloadCode() . '
 top.busy.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";
 ' . ( $_SESSION['weS']['weBackupVars']['options']['rebuild'] ?
