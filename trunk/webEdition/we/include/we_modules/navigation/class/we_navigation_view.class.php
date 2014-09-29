@@ -74,8 +74,8 @@ function we_cmd() {
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	if(' . $this->topFrame . '.hot && (arguments[0]=="module_navigation_edit" || arguments[0]=="module_navigation_new" || arguments[0]=="module_navigation_new_group" || arguments[0]=="module_navigation_exit")){
-		' . $this->editorBodyFrame . '.document.we_form.delayCmd.value = arguments[0];
-		' . $this->editorBodyFrame . '.document.we_form.delayParam.value = arguments[1];
+		' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value = arguments[0];
+		' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value = arguments[1];
 		arguments[0] = "exit_doc_question";
 	}
 	switch (arguments[0]) {
@@ -203,7 +203,7 @@ function we_cmd() {
 			top.close();
 		break;
 		case "exit_doc_question":
-			url = "' . $this->frameset . '?pnt=exit_doc_question&delayCmd="+' . $this->editorBodyFrame . '.document.we_form.delayCmd.value+"&delayParam="+' . $this->editorBodyFrame . '.document.we_form.delayParam.value;
+			url = "' . $this->frameset . '?pnt=exit_doc_question&delayCmd="+' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value+"&delayParam="+' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value;
 			new jsWindow(url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
 		break;
 

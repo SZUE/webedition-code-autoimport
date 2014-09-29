@@ -100,7 +100,7 @@ class we_search_view{
       top.close();
      break;
      case "exit_doc_question":
-      url = "' . $this->frameset . '?pnt=exit_doc_question&delayCmd="+' . $this->editorBodyFrame . '.document.we_form.delayCmd.value+"&delayParam="+' . $this->editorBodyFrame . '.document.we_form.delayParam.value;
+      url = "' . $this->frameset . '?pnt=exit_doc_question&delayCmd="+' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value+"&delayParam="+' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value;
       new jsWindow(url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
      break;
      ' . $this->getTopJSAdditional() . '
