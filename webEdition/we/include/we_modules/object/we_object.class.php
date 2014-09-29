@@ -497,7 +497,7 @@ class we_object extends we_document{
 		//$this->initByID($this->ID,$this->Table);
 	}
 
-	function switchtypes($name){
+	private function switchtypes($name){
 		switch($this->getElement($name . self::ELEMENT_TYPE, 'dat')){
 			case we_objectFile::TYPE_META:
 				return ' VARCHAR(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 255)) ? $this->getElement($name . 'length', 'dat') : 255) . ') NOT NULL ';
@@ -513,14 +513,13 @@ class we_object extends we_document{
 				return ' TEXT NOT NULL ';
 			case we_objectFile::TYPE_TEXT:
 				return ' LONGTEXT NOT NULL ';
-				break;
 			case we_objectFile::TYPE_IMG:
 			case we_objectFile::TYPE_FLASHMOVIE:
 			case we_objectFile::TYPE_QUICKTIME:
 			case we_objectFile::TYPE_BINARY:
 				return ' INT(11) DEFAULT "0" NOT NULL ';
 			case we_objectFile::TYPE_CHECKBOX:
-				return ' INT(1) DEFAULT "' . ($this->getElement($name . 'default', 'dat') == 1 ? '1' : '0') . '" NOT NULL ';
+				return ' TINYINT(1) DEFAULT "' . ($this->getElement($name . 'default', 'dat') == 1 ? '1' : '0') . '" NOT NULL ';
 			case we_objectFile::TYPE_INT:
 				return ' INT(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 256)) ? $this->getElement($name . 'length', 'dat') : '11') . ') DEFAULT NULL ';
 			case we_objectFile::TYPE_FLOAT:
