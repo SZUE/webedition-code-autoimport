@@ -626,8 +626,9 @@ function setDir(id){
 		$db = $db ? $db : new DB_WE();
 		$db->query('SELECT ID,IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($id));
 		$updates = $db->getAllFirst(false);
+		$path = f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($id));
 		foreach($updates as $curId => $IsFolder){
-			$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT((SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($id) . '),"/",Text) WHERE ID=' . $curId);
+			$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("' . $path . '","/",Text) WHERE ID=' . $curId);
 			if($IsFolder){
 				$this->renameChildrenPath($curId, $db);
 			}
@@ -639,10 +640,10 @@ function setDir(id){
 		if($IsDir){
 			return $this->DirInUse($id, $db);
 		}
-		if(f('SELECT 1  FROM ' . FILE_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' OR temp_category like '%," . intval($id) . ",%' LIMIT 1", '', $db)){
+		if(f('SELECT 1  FROM ' . FILE_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) OR FIND_IN_SET(' . intval($id) . ',temp_category) LIMIT 1', '', $db)){
 			return true;
 		}
-		if(defined('OBJECT_TABLE') && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' LIMIT 1", '', $db)){
+		if(defined('OBJECT_TABLE') && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) LIMIT 1', '', $db)){
 			return true;
 		}
 
@@ -984,7 +985,7 @@ function we_checkName() {
 		(isset($yuiSuggest) ?
 			$yuiSuggest->getYuiCss() .
 			$yuiSuggest->getYuiJs() : '') .
-		'</body></html>'; 
+		'</body></html>';
 	}
 
 }
