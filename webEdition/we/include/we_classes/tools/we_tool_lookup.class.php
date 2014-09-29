@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
 abstract class we_tool_lookup{
 	const REGISTRY_NAME = 'weToolsRegistry';
 
@@ -446,4 +447,8 @@ abstract class we_tool_lookup{
 		return '';
 	}
 
+}
+
+abstract class weToolLookup extends we_tool_lookup{
+	
 }
