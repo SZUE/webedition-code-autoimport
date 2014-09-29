@@ -388,7 +388,7 @@ function we_cmd() {
 		}
 
 		if(($article = we_base_request::_(we_base_request::INT, 'article'))){
-			if(($preis = we_base_request::_(we_base_request::FLOAT, 'preis', 0)) !== false){
+			if(($preis = we_base_request::_(we_base_request::FLOAT, 'preis')) !== false){
 				$this->db->query('UPDATE ' . SHOP_TABLE . ' SET Price=' . abs($preis) . ' WHERE IntID=' . $article);
 			} else if(($anz = we_base_request::_(we_base_request::FLOAT, 'anzahl')) !== false){
 				$this->db->query('UPDATE ' . SHOP_TABLE . ' SET IntQuantity=' . abs($anz) . ' WHERE IntID=' . $article);
