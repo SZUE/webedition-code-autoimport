@@ -639,13 +639,23 @@ abstract class we_html_tools{
 	}
 
 	public static function getJSErrorHandler($plain = false){
-		$ret = 'try{window.onerror=function(msg, file, line){
-	postData=\'we_cmd[]=\'+msg+\'&we_cmd[]=\'+file+\'&we_cmd[]=\'+line;
+		$ret = 'try{
+	window.onerror=function(msg, file, line, col, errObj){
+	postData=\'we_cmd[msg]=\'+encodeURIComponent(msg);
+	postData+=\'&we_cmd[file]=\'+encodeURIComponent(file)
+	postData+=\'&we_cmd[line]=\'+encodeURIComponent(line);
+	postData+=\'&we_cmd[col]=\'+encodeURIComponent(col);
+	if(errObj){
+		postData+=\'&we_cmd[errObj]=\'+encodeURIComponent(errObj.stack);
+	}
 	lcaller=arguments.callee.caller;
 	while(lcaller){
-		postData+=\'we_cmd[]=\'+lcaller.name;
+		postData+=\'&we_cmd[]=\'+encodeURIComponent(lcaller.name);
 		lcaller=lcaller.caller;
 	}
+	postData+=\'&we_cmd[App]=\'+encodeURIComponent(navigator.appName);
+	postData+=\'&we_cmd[Ver]=\'+encodeURIComponent(navigator.appVersion);
+	postData+=\'&we_cmd[UA]=\'+encodeURIComponent(navigator.userAgent);
 	xmlhttp=new XMLHttpRequest();
 	xmlhttp.open(\'POST\',\'' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=TriggerJSError&cns=error\',true);
 	xmlhttp.setRequestHeader(\'Content-type\',\'application/x-www-form-urlencoded\');
