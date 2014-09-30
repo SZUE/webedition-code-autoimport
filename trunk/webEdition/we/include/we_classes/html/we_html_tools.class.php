@@ -642,7 +642,7 @@ abstract class we_html_tools{
 		$ret = 'try{
 	window.onerror=function(msg, file, line, col, errObj){
 	postData=\'we_cmd[msg]=\'+encodeURIComponent(msg);
-	postData+=\'&we_cmd[file]=\'+encodeURIComponent(file)
+	postData+=\'&we_cmd[file]=\'+encodeURIComponent(file);
 	postData+=\'&we_cmd[line]=\'+encodeURIComponent(line);
 	if(col){
 		postData+=\'&we_cmd[col]=\'+encodeURIComponent(col);
