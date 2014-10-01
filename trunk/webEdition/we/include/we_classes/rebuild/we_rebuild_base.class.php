@@ -68,7 +68,7 @@ abstract class we_rebuild_base{
 				$imgdoc = new we_imageDocument();
 				$imgdoc->initByID($data['id']);
 				if($printIt){
-					print ('Rebulding meta data for image: ' . $imgdoc->Path);
+					echo ('Rebulding meta data for image: ' . $imgdoc->Path);
 					flush();
 				}
 

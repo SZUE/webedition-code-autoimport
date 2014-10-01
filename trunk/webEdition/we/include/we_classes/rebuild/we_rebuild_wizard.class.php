@@ -389,6 +389,8 @@ abstract class we_rebuild_wizard{
 		}
 		switch(we_base_request::_(we_base_request::STRING, "type", "rebuild_documents")){
 			case 'rebuild_documents':
+				$count = 1; //FIXME: we need a solution for static documents with e.g. <we:ifSelf> in navigation
+				break;
 			case 'rebuild_thumbnails':
 				$count = 4;
 				break;
