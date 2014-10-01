@@ -1212,9 +1212,9 @@ function weInputInArray(arr, val) {
 	function getHTML(){
 
 		$selectButtonSpace = $this->selectButtonSpace;
-		$inputId = empty($this->inputId) ? "yuiAcInput" . $this->acId : $this->inputId;
-		$resultId = empty($this->resultId) ? "yuiAcResult" . $this->acId : $this->resultId;
-		$containerWidth = (empty($this->containerWidth) ? $this->width : $this->containerWidth);
+		$inputId = $this->inputId ? $this->inputId : 'yuiAcInput' . $this->acId;
+		$resultId = $this->resultId ? $this->resultId : 'yuiAcResult' . $this->acId;
+		$containerWidth = $this->containerWidth ? $this->containerWidth : $this->width;
 
 		$client = we_ui_Client::getInstance();
 
@@ -1233,7 +1233,7 @@ function weInputInArray(arr, val) {
 		$inputField = $input->getHTML();
 		$resultField = we_ui_layout_Form::hidden($this->resultName, $this->resultValue, array('id' => $resultId));
 
-		$autoSuggest = "<div style=\"width:" . $this->width . "px;\" id=\"yuiAcLayer{$this->acId}\" >" . $inputField . "<div id=\"yuiAcContainer{$this->acId}\"></div></div>";
+		$autoSuggest = '<div style="width:' . $this->width . "px;\" id=\"yuiAcLayer{$this->acId}\" >" . $inputField . "<div id=\"yuiAcContainer{$this->acId}\"></div></div>";
 
 		$table = new we_ui_layout_Table();
 		$table->addHTML($resultField . $autoSuggest, 0, 0);
