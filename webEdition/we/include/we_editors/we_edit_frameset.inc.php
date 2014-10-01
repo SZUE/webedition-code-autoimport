@@ -244,7 +244,7 @@ if(!$we_doc->getElement('data')){
 			we_base_ContentTypes::inst()->getDefaultCode($we_doc->ContentType))
 	);
 }
-echo we_html_tools::getHtmlTop();
+echo we_html_tools::getHtmlTop('','','frameset');
 ?>
 <script  type="text/javascript">
 	<!--

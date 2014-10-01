@@ -26,7 +26,7 @@ if(!$_SESSION['user']['Username']){
 }
 
 we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
-echo we_html_tools::getHtmlTop();
+echo we_html_tools::getHtmlTop('','','frameset');
 
 $docroot = str_replace('\\', '/', rtrim($_SERVER['DOCUMENT_ROOT'], '/'));
 $cmd1 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);

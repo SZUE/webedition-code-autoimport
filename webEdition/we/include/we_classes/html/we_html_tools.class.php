@@ -639,6 +639,8 @@ abstract class we_html_tools{
 	}
 
 	public static function getJSErrorHandler($plain = false){
+		return '';
+		//FIXME: currently deactivated
 		$ret = 'try{
 	window.onerror=function(msg, file, line, col, errObj){
 	postData=\'we_cmd[msg]=\'+encodeURIComponent(msg);
