@@ -64,6 +64,11 @@ class we_base_request{
 	 * @return type
 	 */
 	private static function _weRequest(&$var, $key, array $data){
+		if(is_array($var)){
+			array_walk($var, 'we_base_request::_weRequest', $data);
+			return;
+		}
+
 		list($type, $default) = $data;
 		switch($type){
 			case self::TRANSACTION:
