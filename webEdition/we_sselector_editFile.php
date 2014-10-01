@@ -38,7 +38,7 @@ if(we_base_request::_(we_base_request::STRING, "cmd") == "save"){
 	if(($data = we_base_request::_(we_base_request::RAW_CHECKED, "editFile")) !== false){
 		we_base_file::save($id, $data);
 	}
-	$we_fileData = stripslashes(we_base_request::_(we_base_request::RAW,"editFile"));
+	$we_fileData = stripslashes(we_base_request::_(we_base_request::RAW, "editFile"));
 } else if($id){
 
 	$id = str_replace("//", "/", $id);
@@ -56,8 +56,8 @@ $content = '<textarea name="editFile" id="editFile" style="width:540px;height:38
 <script type="text/javascript"><!--
 	function setSize() {
 		var ta = document.getElementById("editFile");
-		ta.style.width = document.body.offsetWidth - 60;
-		ta.style.height = document.body.offsetHeight - 118;
+		ta.style.width = (document.body.offsetWidth - 60) + "px";
+		ta.style.height = (document.body.offsetHeight - 118) + "px";
 	}
 <?php
 if(isset($we_alerttext)){

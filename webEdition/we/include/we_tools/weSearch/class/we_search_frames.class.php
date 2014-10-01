@@ -295,7 +295,7 @@ class we_search_frames extends we_tool_frames{
 			array(
 				'headline' => g_l('searchtool', '[general]'),
 				'html' => we_html_tools::htmlFormElementTable(
-					we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: ' . $this->_width_size . '" );"', '', '', '', '', $disabled), g_l('searchtool', '[dir]')),
+					we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: ' . $this->_width_size . 'px" );"', '', '', '', '', $disabled), g_l('searchtool', '[dir]')),
 				'space' => $this->_space_size,
 				'noline' => 1
 		));

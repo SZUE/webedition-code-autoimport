@@ -180,9 +180,9 @@ print STYLESHEET;
 		w = Math.max(w, 680);
 		var iframeWidth = w - 52;
 		var validiframe = document.getElementById("validation");
-		validiframe.style.width = iframeWidth;
+		validiframe.style.width = iframeWidth + "px";
 		if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
-			validiframe.style.height = h - 185;
+			validiframe.style.height = (h - 185) + "px";
 		}
 	}
 //-->
@@ -215,4 +215,4 @@ $body = '<form name="we_form">'
 	'</form>';
 
 echo we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'), $body) .
-	'</html>';
+ '</html>';

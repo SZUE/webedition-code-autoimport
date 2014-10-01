@@ -397,7 +397,7 @@ if (' . $this->editorBodyFrame . '.loaded) {
  var heightDiv = ' . (we_base_browserDetect::isIE() ? 200 : 180) . ';
 
  if((h - heightDiv)>0){
-	scrollContent.style.height = h - heightDiv;
+	scrollContent.style.height = (h - heightDiv)+"px";
  }
 
  if((scrollContent.offsetHeight - scrollheight)>0){
