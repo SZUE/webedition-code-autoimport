@@ -25,7 +25,8 @@
 class rpcTriggerJSErrorCmd extends rpcCmd{
 
 	function execute(){
-		t_e('JavaScript error found', $_REQUEST['we_cmd']);
+//currently deactivated
+//				t_e('JavaScript error found', $_REQUEST['we_cmd']);
 	}
 
 }

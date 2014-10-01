@@ -44,7 +44,7 @@ switch($tool){
 		break;
 }
 
-echo we_html_tools::getHtmlTop($title) .
+echo we_html_tools::getHtmlTop($title, '', 'frameset') .
  we_html_element::jsElement('
 	top.weToolWindow = true;
 
@@ -96,9 +96,9 @@ if($tool == "weSearch"){
 }
 
 echo we_html_element::jsScript(JS_DIR . "keyListener.js") .
-	we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
-	we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
-	we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js");
+ we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
+ we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
+ we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js");
 ?>
 </head>
 <frameset rows="26,*" border="0" framespacing="0" frameborder="no">');

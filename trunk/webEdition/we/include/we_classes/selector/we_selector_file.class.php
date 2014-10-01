@@ -220,7 +220,7 @@ function closeOnEscape() {
 	}
 
 	function printFramesetHTML(){
-		echo we_html_tools::getHtmlTop($this->title) .
+		echo we_html_tools::getHtmlTop($this->title, '', 'frameset') .
 		implodeJS(
 			we_html_element::jsScript(JS_DIR . 'keyListener.js') .
 			$this->getFramesetJavaScriptIncludes() .

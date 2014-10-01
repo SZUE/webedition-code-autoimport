@@ -247,7 +247,7 @@ class liveUpdateFrames{
 		$show = "?section=$activeTab";
 		$active = "&active=$activeTab";
 		we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
-		return we_html_tools::getHtmlTop('webEdition Update') . '
+		return we_html_tools::getHtmlTop('webEdition Update','','frameset') . '
 </head>
 <frameset rows="30, *, 0" border="0" framespacing="0" frameborder="no">
 	<frame name="updatetabs" src="' . $_SERVER['SCRIPT_NAME'] . '?section=tabs' . $active . '"  noresize scrolling="no" />
