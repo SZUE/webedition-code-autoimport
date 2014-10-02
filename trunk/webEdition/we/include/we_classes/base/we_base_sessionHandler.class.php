@@ -118,10 +118,12 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	}
 
 	private static function getSessionID($sessID){
-		if($sessID && preg_match('|^([a-f0-9]){32,40}$|i', $sessID)){
-			return $sessID;
-		}
-		if(!$sessID){
+		if($sessID){
+			if(preg_match('|^([a-f0-9]){32,40}$|i', $sessID)){
+				return $sessID;
+			}
+			$cnt = ini_get('session.hash_bits_per_character');
+		} else {
 			session_regenerate_id();
 			$cnt = ini_get('session.hash_bits_per_character');
 			if($cnt == 4){//this is easy, since this is set as hex
