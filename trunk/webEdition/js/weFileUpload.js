@@ -1495,24 +1495,24 @@ var weFileUpload = (function(){
 						this.setDisplay('divProgressBar', 'none');
 						this.setDisplay('divBtnCancel', 'none');
 						this.setDisplay('dragInnerRight', '');
-						_.controller.setWeButtonState(_.view.uploadBtnName, false, true);
-						_.controller.setWeButtonState('browse_harddisk_btn', true, true);
+						_.controller.setWeButtonState(_.view.uploadBtnName, false);
+						_.controller.setWeButtonState('browse_harddisk_btn', true);
 						return;
 					case this.STATE_PREVIEW_OK:
 						this.setDisplay('fileInputWrapper', 'none');
 						this.setDisplay('divBtnReset', '');
-						_.controller.setWeButtonState('reset_btn', true);
-						_.controller.setWeButtonState(_.view.uploadBtnName, true, true);
+						_.controller.setWeButtonState('reset_btn', false);
+						_.controller.setWeButtonState(_.view.uploadBtnName, true);
 						return;
 					case this.STATE_PREVIEW_NOK:
 						this.setDisplay('fileInputWrapper', 'none');
 						this.setDisplay('divBtnReset', '');
-						_.controller.setWeButtonState('reset_btn', true);
-						_.controller.setWeButtonState(_.view.uploadBtnName, false, true);
+						_.controller.setWeButtonState('reset_btn', false);
+						_.controller.setWeButtonState(_.view.uploadBtnName, false);
 						return;
 					case this.STATE_UPLOAD:
-						_.controller.setWeButtonState(_.view.uploadBtnName, false, true);
-						_.controller.setWeButtonState('reset_btn', false, true);
+						_.controller.setWeButtonState(_.view.uploadBtnName, false);
+						_.controller.setWeButtonState('reset_btn', false);
 						this.setDisplay('fileInputWrapper', 'none');
 						this.setDisplay('divBtnReset', 'none');
 						this.setDisplay('divBtnUpload', 'none');
@@ -1521,7 +1521,7 @@ var weFileUpload = (function(){
 						if(this.preview){
 							this.preview.style.opacity = 0.05;
 						}
-						_.controller.setWeButtonState('browse_harddisk_btn', false, true);
+						_.controller.setWeButtonState('browse_harddisk_btn', false);
 						this.setDisplay('divBtnReset', 'none');
 				}
 			};
@@ -1588,7 +1588,7 @@ var weFileUpload = (function(){
 		function Utils(){
 			this.makeLegacy = function(){
 				var v = _.view;
-				_.controller.setWeButtonState('upload_legacy_btn', true, true);
+				_.controller.setWeButtonState('upload_legacy_btn', true);
 				v.setDisplay('divRight', 'none');
 				v.setDisplay('divButtons', 'none');
 				v.setDisplay('divRightLegacy', '');
