@@ -453,7 +453,7 @@ abstract class we_backup_preparer{
 	static function getErrorMessage(){
 		$_mess = '';
 
-		if(empty($_SESSION['weS']['weBackupVars']['backup_file'])){
+		if(!($_SESSION['weS']['weBackupVars']['backup_file'])){
 			if(isset($_SESSION['weS']['weBackupVars']['options']['upload'])){
 				$maxsize = getUploadMaxFilesize();
 				$_mess = sprintf(g_l('backup', '[upload_failed]'), we_base_file::getHumanFileSize($fs, we_base_file::SZ_MB));
@@ -476,7 +476,7 @@ abstract class we_backup_preparer{
 			$_mess = g_l('backup', '[unspecified_error]');
 		}
 
-		if($_SESSION['weS']['weBackupVars']['backup_log']){
+		if(isset($_SESSION['weS']['weBackupVars']['backup_log'])&&$_SESSION['weS']['weBackupVars']['backup_log']){
 			we_backup_util::addLog('Error: ' . $_mess);
 		}
 

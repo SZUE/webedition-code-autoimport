@@ -1642,9 +1642,7 @@ function calendarSetup(x){
 					$this->Model->searchTmplSearch = unserialize($this->Model->searchTmplSearch);
 				}
 
-				$searchInput = we_html_tools::htmlTextInput(
-						$searchTextName, 30, (isset($this->Model->searchTmplSearch) && is_array($this->Model->searchTmplSearch) && isset(
-							$this->Model->searchTmplSearch[0]) ? $this->Model->searchTmplSearch[0] : ''), "", "", "search", 380);
+				$searchInput = we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchTmplSearch) && is_array($this->Model->searchTmplSearch) && isset($this->Model->searchTmplSearch[0]) ? $this->Model->searchTmplSearch[0] : ''), "", "", "search", 380);
 
 				break;
 		}
@@ -1749,7 +1747,7 @@ function calendarSetup(x){
 
 			$searchFields = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'searchFields' . $whichSearch);
 			$location = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'location' . $whichSearch);
-			$searchText = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch); //allow to search for tags
+			$searchText = urldecode(we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch)); //allow to search for tags
 
 			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'Order' . $whichSearch);
 			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'setView' . $whichSearch);
