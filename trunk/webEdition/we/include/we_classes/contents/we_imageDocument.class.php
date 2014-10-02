@@ -706,7 +706,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 				}
 			}
 
-			return '<svg id="' . we_base_file::getUniqueId() . '" height="' . intval($size2) . '" width="' . intval($size) . '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><image x="0" y="0" height="150" width="150"  xlink:href="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(array($_SERVER['DOCUMENT_ROOT'], WEBEDITION_DIR), '', $this->getElement('data')) . '" /></svg>';
+			return '<svg id="' . we_base_file::getUniqueId() . '" height="' . intval($size2) . '" width="' . intval($size) . '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><image x="0" y="0" height="' . intval($size2) . '" width="' . intval($size) . '"  xlink:href="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(array($_SERVER['DOCUMENT_ROOT'], WEBEDITION_DIR), '', $this->getElement('data')) . '" /></svg>';
 		}
 
 		return '<img src="' . WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
