@@ -28,8 +28,6 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			}
 		}
 		session_start();
-		//if we have a non conforming session id, it will be corrected here.
-		$this->getSessionID(session_id());
 	}
 
 	function __destruct(){
