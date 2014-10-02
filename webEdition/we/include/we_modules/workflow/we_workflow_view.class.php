@@ -455,19 +455,19 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 				}
 			}
 
-			parent.document.title = "<?php print $title; ?>";
+			parent.document.title = "<?php echo $title; ?>";
 
 			function we_cmd() {
 				var args = "";
 				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
-					url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+					url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
 					if (i < (arguments.length - 1)) {
 						url += "&";
 					}
 				}
 				if (hot == "1" && arguments[0] != "save_workflow") {
-					var hotConfirmMsg = confirm("<?php print g_l('modules_workflow', '[save_changed_workflow]') ?>");
+					var hotConfirmMsg = confirm("<?php echo g_l('modules_workflow', '[save_changed_workflow]') ?>");
 					if (hotConfirmMsg == true) {
 						arguments[0] = "save_workflow";
 						top.content.usetHot();
@@ -579,7 +579,7 @@ function doUnload() {
 
 function we_cmd(){
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
 		case "browse_users":
 			new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);

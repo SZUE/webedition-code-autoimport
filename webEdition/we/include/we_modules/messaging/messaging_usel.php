@@ -121,7 +121,7 @@ function browse_users_window() {
 			if (addrbook_sel.length > 0) {
 				for (i = 0; i < addrbook_sel.length; i++) {
 					for (j = 0; j < addrbook_sel[i].length; j++) {
-						submit_str += escape(addrbook_sel[i][j]) + ',';
+						submit_str += encodeURI(addrbook_sel[i][j]) + ',';
 					}
 					submit_str = submit_str.substr(0, submit_str.length - 1);
 

@@ -62,7 +62,7 @@ class we_search_view{
 
    function we_cmd() {
     var args = "";
-    var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+    var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
     if(' . $this->topFrame . '.hot && (arguments[0]=="tool_' . $this->toolName . '_edit" || arguments[0]=="tool_' . $this->toolName . '_new" || arguments[0]=="tool_' . $this->toolName . '_new_group" || arguments[0]=="tool_' . $this->toolName . '_exit")){
      ' . $this->editorBodyFrame . '.document.we_form.delayCmd.value = arguments[0];
      ' . $this->editorBodyFrame . '.document.we_form.delayParam.value = arguments[1];
@@ -487,8 +487,8 @@ function search(newSearch) {
 		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
 			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
 			if(table.substring(0,23)=="search_tables_advSearch") {
-				if(escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
-					Checks[m] = escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+				if(encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
+					Checks[m] = encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
 					m++;
 				}
 			}
@@ -501,8 +501,8 @@ function search(newSearch) {
 		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
 			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
 			if(table=="searchForTextDocSearch" || table=="searchForTitleDocSearch" || table=="searchForContentDocSearch") {
-				if(escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
-					Checks[m] = escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+				if(encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
+					Checks[m] = encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
 					m++;
 				}
 			}
@@ -515,8 +515,8 @@ function search(newSearch) {
 		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
 			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
 			if(table=="searchForTextTmplSearch" || table=="searchForContentTmplSearch") {
-				if(escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
-					Checks[m] = escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+				if(encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
+					Checks[m] = encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
 					m++;
 				}
 			}
@@ -538,7 +538,7 @@ function makeAjaxRequestDoclist() {
  var newString = "";
  for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
 	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-	args += "&we_cmd["+escape(newString)+"]="+escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
  }
  ' . $this->editorBodyFrame . '.document.getElementById("scrollContent_' . $whichSearch . '").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
  YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchResult&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
@@ -549,7 +549,7 @@ function makeAjaxRequestParametersTop() {
  var newString = "";
  for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
 	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-	args += "&we_cmd["+escape(newString)+"]="+escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
  }
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchParameters&position=top&whichsearch=' . $whichSearch . '&classname' . $this->Model->ModelClassName . '=&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
 }
@@ -559,7 +559,7 @@ function makeAjaxRequestParametersBottom() {
  var newString = "";
  for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
 	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-	args += "&we_cmd["+escape(newString)+"]="+escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
  }
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchParameters&position=bottom&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
 }
@@ -569,7 +569,7 @@ function getMouseOverDivs() {
  var newString = "";
  for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
 	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-	args += "&we_cmd["+escape(newString)+"]="+escape(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
  }
  YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackgetMouseOverDivs, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetMouseOverDivs&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
 }
@@ -1289,7 +1289,7 @@ function publishDocsAjax(whichSearch) {
 				check += checkboxes[i].value;
 		}
 	}
-	args += "&we_cmd[0]="+escape(check);
+	args += "&we_cmd[0]="+encodeURI(check);
 	var scroll = document.getElementById("resetBusy"+whichSearch);
 	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
 
@@ -1747,7 +1747,7 @@ function calendarSetup(x){
 
 			$searchFields = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'searchFields' . $whichSearch);
 			$location = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'location' . $whichSearch);
-			$searchText = urldecode(we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch)); //allow to search for tags
+			$searchText = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch); //allow to search for tags
 
 			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'Order' . $whichSearch);
 			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'setView' . $whichSearch);
@@ -2878,7 +2878,7 @@ function calendarSetup(x){
 var loaded=0;
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		case "openDocselector":
 			new jsWindow(url,"we_docselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
@@ -2895,7 +2895,7 @@ function we_cmd() {
 		case "open' . $this->toolName . 'Dirselector":
 			url = "' . WEBEDITION_DIR . 'apps/' . $this->toolName . '/we_' . $this->toolName . 'DirSelect.php?";
 			for(var i = 0; i < arguments.length; i++){
-				url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
+				url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 			}
 			new jsWindow(url,"we_' . $this->toolName . '_dirselector",-1,-1,600,400,true,true,true);
 			break;
@@ -2914,7 +2914,7 @@ function we_cmd() {
 		return '
 function we_cmd(){
 	var args = "";
-	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		default:
 			for (var i = 0; i < arguments.length; i++) {

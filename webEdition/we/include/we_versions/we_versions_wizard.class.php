@@ -27,7 +27,7 @@
  * rebuild dialog and the rebuild function
  * @static
  */
-abstract class we_versions_wizard{ 
+abstract class we_versions_wizard{
 	const DELETE_VERSIONS = 'delete_versions';
 	const RESET_VERSIONS = 'reset_versions';
 
@@ -371,7 +371,7 @@ set_button_state(false);';
 				$jsCheckboxCheckAll .= 'document.getElementById("version_delete_' . $k . '").checked = checked;';
 			}
 			$jsCheckboxCtIf .= (empty($jsCheckboxCtIf) ? '' : ' && ') . 'document.getElementById("version_delete_' . $k . '").checked==0';
-			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+escape(document.getElementById("version_delete_' . $k . '").checked);';
+			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+encodeURI(document.getElementById("version_delete_' . $k . '").checked);';
 		}
 
 		$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event(\"next\");", true, 0, 0, "", "", "", false);
@@ -610,7 +610,7 @@ set_button_state(false);';
 			if($jsCheckboxCtIf != "")
 				$jsCheckboxCtIf .= " && ";
 			$jsCheckboxCtIf .= 'document.getElementById("version_reset_' . $k . '").checked==0';
-			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+escape(document.getElementById("version_reset_' . $k . '").checked);';
+			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+encodeURI(document.getElementById("version_reset_' . $k . '").checked);';
 		}
 
 		$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event(\"next\");", true, 0, 0, "", "", "", false);

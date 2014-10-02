@@ -259,7 +259,7 @@ if(defined('MESSAGING_SYSTEM')){
 
 	function weSetCookie(name, value, expires, path, domain) {
 		var doc = self.document;
-		doc.cookie = name + "=" + escape(value) +
+		doc.cookie = name + "=" + encodeURI(value) +
 						((expires === null) ? "" : "; expires=" + expires.toGMTString()) +
 						((path === null) ? "" : "; path=" + path) +
 						((domain === null) ? "" : "; domain=" + domain);
@@ -414,7 +414,7 @@ if(defined('MESSAGING_SYSTEM')){
 		var hasPerm = false;
 		var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 		for (var i = 0; i < arguments.length; i++) {
-			url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+			url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 			if (i < (arguments.length - 1))
 				url += "&";
 		}
@@ -1419,7 +1419,7 @@ if($_table_to_load){
 			url = "/";
 		}
 		try {
-			browserwind = window.open("<?php echo WEBEDITION_DIR; ?>openBrowser.php?url=" + escape(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
+			browserwind = window.open("<?php echo WEBEDITION_DIR; ?>openBrowser.php?url=" + encodeURI(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
 		} catch (e) {
 <?php echo we_message_reporting::getShowMessageCall(g_l('alert', "[browser_crashed]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 		}

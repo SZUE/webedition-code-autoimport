@@ -190,7 +190,7 @@ class we_import_wizard extends we_import_wizardBase{
 				var args = '';
 				var url = '" . WEBEDITION_DIR . "we_cmd.php?';
 				for(var i = 0; i < arguments.length; i++) {
-					url += 'we_cmd['+i+']='+escape(arguments[i]);
+					url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
 					if(i < (arguments.length - 1)) {
 						url += '&';
 					}
@@ -287,7 +287,7 @@ function we_cmd() {
 	var args = '';
 	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
 	for(var i = 0; i < arguments.length; i++) {
-		url += 'we_cmd['+i+']='+escape(arguments[i]);
+		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
 		if(i < (arguments.length - 1)) {
 			url += '&';
 		}
@@ -516,7 +516,7 @@ function we_cmd() {
 	var args = '';
 	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
 	for(var i = 0; i < arguments.length; i++) {
-		url += 'we_cmd['+i+']='+escape(arguments[i]);
+		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
 		if(i < (arguments.length - 1)) {
 			url += '&';
 		}
@@ -525,7 +525,7 @@ function we_cmd() {
 		case "openNavigationDirselector":
 				url = "' . WE_INCLUDES_DIR . 'we_tools/navigation/we_navigationDirSelect.php?";
 				for(var i = 0; i < arguments.length; i++){
-					url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
+					url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 				}
 				new jsWindow(url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
 			break;' . "
@@ -911,7 +911,7 @@ function we_cmd() {
 	var args = '';
 	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
 	for(var i = 0; i < arguments.length; i++) {
-		url += 'we_cmd['+i+']='+escape(arguments[i]);
+		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
 		if(i < (arguments.length - 1)) {
 			url += '&';
 		}
@@ -1779,7 +1779,7 @@ function we_cmd() {
 	var args = '';
 	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
 	for(var i = 0; i < arguments.length; i++) {
-		url += 'we_cmd['+i+']='+escape(arguments[i]);
+		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
 		if(i < (arguments.length - 1)) {
 			url += '&';
 		}
@@ -2068,7 +2068,7 @@ function we_cmd() {
 	var args = '';
 	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
 	for(var i = 0; i < arguments.length; i++) {
-		url += 'we_cmd['+i+']='+escape(arguments[i]);
+		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
 		if(i < (arguments.length - 1)) {
 			url += '&';
 		}

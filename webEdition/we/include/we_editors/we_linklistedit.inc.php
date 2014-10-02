@@ -409,7 +409,7 @@ echo $yuiSuggest->getYuiCssFiles() .
 	}
 
 	function openColorChooser(name, value) {
-		var win = new jsWindow("colorDialog.php?we_dialog_args[type]=dialog&we_dialog_args[name]=" + escape(name) + "&we_dialog_args[color]=" + escape(value), "colordialog", -1, -1, 400, 380, true, false, true, false);
+		var win = new jsWindow("colorDialog.php?we_dialog_args[type]=dialog&we_dialog_args[name]=" +encodeURI(name) + "&we_dialog_args[color]=" +encodeURI(value), "colordialog", -1, -1, 400, 380, true, false, true, false);
 	}
 
 	function IsDigitPercent(e) {
@@ -472,7 +472,7 @@ if($ok && $cmd == "edit_link_at_class"){
 			var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 
 			for (var i = 0; i < arguments.length; i++) {
-				url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+				url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
 				if (i < (arguments.length - 1)) {
 					url += "&";
 				}

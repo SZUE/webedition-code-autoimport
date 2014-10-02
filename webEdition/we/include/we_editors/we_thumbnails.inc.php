@@ -208,7 +208,7 @@ function add_thumbnail() {';
 		} else if (in_array(thumbnail_names, name)) {
 			" . we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 		} else {
-			self.location = '" . $GLOBALS['reloadUrl'] . "&newthumbnail=' + escape(name);
+			self.location = '" . $GLOBALS['reloadUrl'] . "&newthumbnail=' +encodeURI(name);
 		}
 	}
 }

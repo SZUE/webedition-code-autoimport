@@ -141,7 +141,7 @@ class doclistView{
         var newString = "";
         for(var i = 0; i < document.we_form.elements.length; i++) {
           newString = document.we_form.elements[i].name;
-          args += "&we_cmd["+escape(newString)+"]="+escape(document.we_form.elements[i].value);
+          args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
         }
         var scroll = document.getElementById("scrollContent_doclist");
         scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
@@ -153,7 +153,7 @@ class doclistView{
         var newString = "";
         for(var i = 0; i < document.we_form.elements.length; i++) {
           newString = document.we_form.elements[i].name;
-          args += "&we_cmd["+escape(newString)+"]="+escape(document.we_form.elements[i].value);
+          args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
         }
           YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=top&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
       }
@@ -163,7 +163,7 @@ class doclistView{
         var newString = "";
         for(var i = 0; i < document.we_form.elements.length; i++) {
           newString = document.we_form.elements[i].name;
-          args += "&we_cmd["+escape(newString)+"]="+escape(document.we_form.elements[i].value);
+          args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
         }
           YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=bottom&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
       }
@@ -173,7 +173,7 @@ class doclistView{
         var newString = "";
         for(var i = 0; i < document.we_form.elements.length; i++) {
           newString = document.we_form.elements[i].name;
-          args += "&we_cmd["+escape(newString)+"]="+escape(document.we_form.elements[i].value);
+          args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
         }
         YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackgetMouseOverDivs, "protocol=json&cns=doclist&cmd=GetMouseOverDivs&whichsearch=doclist&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
       }
@@ -724,7 +724,7 @@ class doclistView{
 		    	check += checkboxes[i].value;
 			}
 		}
-		args += "&we_cmd[0]="+escape(check);
+		args += "&we_cmd[0]="+encodeURI(check);
 		var scroll = document.getElementById("resetBusy");
 		scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
 

@@ -59,7 +59,7 @@ we_ui_controls_ACFileSelector.openSelector = function()
 	var args = "";
 	var url = "/webEdition/we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+		url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
@@ -88,7 +88,7 @@ we_ui_controls_ACFileSelector.openToolSelector = function()
 	var args = "";
 	var url = "/webEdition/we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+		url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
@@ -97,7 +97,7 @@ we_ui_controls_ACFileSelector.openToolSelector = function()
 		case "open" + arguments[5] + "Dirselector":
 			url = "/webEdition/apps/" + arguments[5] + "/we_" + arguments[5] + "DirSelect.php?";
 			for (var i = 0; i < arguments.length; i++) {
-				url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+				url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
 				if (i < (arguments.length - 1)) {
 					url += "&";
 				}
