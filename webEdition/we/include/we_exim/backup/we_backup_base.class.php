@@ -255,7 +255,7 @@ abstract class we_backup_base{
 				strtolower(FILE_TABLE) => g_l('backup', '[export_files]'),
 				strtolower(DOC_TYPES_TABLE) => g_l('backup', '[export_doctypes]'),
 				strtolower(USER_TABLE) => g_l('backup', '[export_user_data]'),
-				defined('CUSTOMER_TABLE') ? strtolower(CUSTOMER_TABLE) : 'CUSTOMER_TABLE' => g_l('backup', '[export_customers_data]'),
+				defined('CUSTOMER_TABLE') ? strtolower(CUSTOMER_TABLE) : 'CUSTOMER_TABLE' => g_l('backup', '[export_customer_data]'),
 				defined('SHOP_TABLE') ? strtolower(SHOP_TABLE) : 'SHOP_TABLE' => g_l('backup', '[export_shop_data]'),
 				defined('WE_SHOP_PREFS_TABLE') ? strtolower(WE_SHOP_PREFS_TABLE) : 'WE_SHOP_PREFS_TABLE' => g_l('backup', '[export_prefs]'),
 				strtolower(TEMPLATES_TABLE) => g_l('backup', '[export_templates]'),
