@@ -239,7 +239,7 @@ if(top.checker != "undefined"){
 				if($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION && !we_base_file::hasGzip()){
 					$_err = we_backup_preparer::getErrorMessage();
 					unset($_SESSION['weS']['weBackupVars']);
-					print $_err;
+					echo $_err;
 					exit();
 				}
 
@@ -254,7 +254,7 @@ if(top.checker != "undefined"){
 
 				we_backup_util::writeLog();
 				unset($_SESSION['weS']['weBackupVars']);
-				print $_err;
+				echo $_err;
 				exit();
 			}
 
