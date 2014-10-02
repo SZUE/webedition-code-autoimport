@@ -462,7 +462,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 				'src' => $src
 			);
 
-			$filter = array('filesize', 'type', 'id', 'showcontrol', 'showthumbcontrol', 'thumbnail', 'href', 'longdescid', 'showimage', 'showinputs', 'listviewname', 'parentid', 'startid','origwidth','origheight'); //  dont use these array-entries
+			$filter = array('filesize', 'type', 'id', 'showcontrol', 'showthumbcontrol', 'thumbnail', 'href', 'longdescid', 'showimage', 'showinputs', 'listviewname', 'parentid', 'startid', 'origwidth', 'origheight'); //  dont use these array-entries
 
 			if(defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT){
 				$filter[] = 'name';
@@ -698,23 +698,23 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		}
 
 		if($this->isSvg()){
-			if(($w = $this->getElement('width')) && ($h = $this->getElement('height'))){
-				if(($tmpH = $h * ($size / $w)) <= $size2){
-					$size2 = $tmpH;
-				} else {
-					$size = $w * ($size2 / $h);
-				}
-			}
-
-			return '<svg id="' . we_base_file::getUniqueId() . '" height="' . intval($size2) . '" width="' . intval($size) . '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><image x="0" y="0" height="' . intval($size2) . '" width="' . intval($size) . '"  xlink:href="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(array($_SERVER['DOCUMENT_ROOT'], WEBEDITION_DIR), '', $this->getElement('data')) . '" /></svg>';
+			/* if(($w = $this->getElement('width')) && ($h = $this->getElement('height'))){
+			  if(($tmpH = $h * ($size / $w)) <= $size2){
+			  $size2 = $tmpH;
+			  } else {
+			  $size = $w * ($size2 / $h);
+			  }
+			  } */
+			return '<image style="max-width:100px;max-height:100px;" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(array($_SERVER['DOCUMENT_ROOT'], WEBEDITION_DIR), '', $this->getElement('data')) . '" />';
+			//return '<svg id="' . we_base_file::getUniqueId() . '" height="' . intval($size2) . '" width="' . intval($size) . '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><image x="0" y="0" height="150" width="150"  xlink:href="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(array($_SERVER['DOCUMENT_ROOT'], WEBEDITION_DIR), '', $this->getElement('data')) . '" /></svg>';
 		}
 
 		return '<img src="' . WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
-			'id' => $this->ID,
-			'size' => $size,
-			'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')),
-			'extension' => $this->Extension,
-			'size2' => $size2)) . '" border="0" />';
+				'id' => $this->ID,
+				'size' => $size,
+				'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')),
+				'extension' => $this->Extension,
+				'size2' => $size2)) . '" border="0" />';
 	}
 
 	protected function getMetaDataReader($force = false){
