@@ -112,7 +112,7 @@ function doUnload() {
 function we_cmd(){
 	var args = "";
 
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
 		case "new_shop":
 			' . $this->topFrame . '.editor.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor";
@@ -203,7 +203,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		case "new_raw":
 			if(' . $this->topFrame . '.editor.edbody.loaded) {
@@ -284,7 +284,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		case "switchPage":
 			document.we_form.cmd.value=arguments[0];
@@ -921,7 +921,7 @@ function we_cmd() {
 					var url = "<?php print WE_SHOP_MODULE_DIR . 'edit_shop_properties.php'; ?>?";
 
 					for (var i = 0; i < arguments.length; i++) {
-						url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+						url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
 						if (i < (arguments.length - 1)) {
 							url += "&";
 						}
@@ -1043,7 +1043,7 @@ function doUnload() {
 
 function we_cmd(){
 	var args = "";
-	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		default:
 			for (var i = 0; i < arguments.length; i++) {

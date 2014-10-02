@@ -172,7 +172,7 @@ abstract class we_html_multiIconBox{
 				vals[name] = value;
 				c = "";
 				for (var i in vals) {
-					c += escape(i)+"="+escape(vals[i])+"&";
+					c += encodeURI(i)+"="+encodeURI(vals[i])+"&";
 				}
 				if(c.length > 0){
 					c=c.substring(0,c.length-1);
@@ -181,7 +181,7 @@ abstract class we_html_multiIconBox{
 			}
 			function weSetCookie(name, value, expires, path, domain){
 				var doc = (top.name == "edit_module") ? top.opener.top.document : top.document;
-				doc.cookie = name + "=" + escape(value) +
+				doc.cookie = name + "=" +encodeURI(value) +
 				((expires == null) ? "" : "; expires=" + expires.toGMTString()) +
 				((path == null)    ? "" : "; path=" + path) +
 				((domain == null)  ? "" : "; domain=" + domain);

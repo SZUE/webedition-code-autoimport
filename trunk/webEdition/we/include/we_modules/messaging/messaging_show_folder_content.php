@@ -144,7 +144,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 	}
 
 	function newMessage(username) {
-		new jsWindow('<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_newmessage.php?we_transaction=<?php echo $transaction; ?>&mode=u_' + escape(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
+		new jsWindow('<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_newmessage.php?we_transaction=<?php echo $transaction; ?>&mode=u_' +encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
 	}
 //-->
 </script>

@@ -96,7 +96,7 @@ parent.document.title = "' . $title . '";
 
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	if(hot == "1" && arguments[0] != "save_export") {
 		if(confirm("' . g_l('export', "[save_changed_export]") . '")) {
 			arguments[0] = "save_export";
@@ -257,7 +257,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	switch (arguments[0]) {
 		case "switchPage":
@@ -267,7 +267,7 @@ function we_cmd() {
 			break;
 		case "export_openDirselector":
 			url="' . WE_MODULES_DIR . 'export/we_exportDirSelectorFrameset.php?";
-			for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+			for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 			new jsWindow(url,"we_exportselector",-1,-1,600,350,true,true,true);
 			break;
 		case "openCatselector":
@@ -311,7 +311,7 @@ function doUnload() {
 
 function we_cmd(){
 	var args = "";
-	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		default:
 			for (var i = 0; i < arguments.length; i++) {

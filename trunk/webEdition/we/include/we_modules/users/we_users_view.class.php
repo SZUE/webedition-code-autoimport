@@ -60,7 +60,7 @@ function we_cmd() {
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
 
 	for(var i = 0; i < arguments.length; i++) {
-		url += "we_cmd["+i+"]="+escape(arguments[i]);
+		url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
 		if(i < (arguments.length - 1)) {
 			url += "&";
 		}
@@ -251,7 +251,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		case "load":
 			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
@@ -319,7 +319,7 @@ function we_cmd() {
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+		url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
@@ -361,7 +361,7 @@ function we_cmd() {
 				url = "' . WE_INCLUDES_DIR . 'we_modules/navigation/we_navigationDirSelect.php?";
 			}
 			for (var i = 0; i < arguments.length; i++) {
-				url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+				url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
 				if (i < (arguments.length - 1)) {
 					url += "&";
 				}
@@ -391,7 +391,7 @@ function doUnload() {
 
 function we_cmd(){
 	var args = "";
-	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		default:
 			for (var i = 0; i < arguments.length; i++) {

@@ -83,7 +83,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	if(hot == "1" && arguments[0] != "save_customer") {
 		if(confirm("' . g_l('modules_customer', '[save_changed_customer]') . '")) {
 			arguments[0] = "save_customer";
@@ -189,7 +189,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	switch (arguments[0]) {
 		case "browse_users":
@@ -312,7 +312,7 @@ function doUnload() {
 
 function we_cmd(){
 	var args = "";
-	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	switch (arguments[0]) {
 		case "open_add_field":
@@ -454,7 +454,7 @@ function doUnload() {
 //this function was used to loop treeheader.we_cmd() to content.we_cmd: obsolete, because all treeheader-JS was moved to content
 function we_cmd(){
 	var args = "";
-	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		default:
 			for (var i = 0; i < arguments.length; i++) {
@@ -483,7 +483,7 @@ function doUnload() {
 
 function we_cmd(){
 	var args = "";
-	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		case "save_settings":
 			document.we_form.cmd.value=arguments[0];

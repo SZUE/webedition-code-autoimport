@@ -300,7 +300,7 @@ function IsDigit(e) {
 }
 
 function openColorChooser(name,value) {
-	var win = new jsWindow("colorDialog.php?we_dialog_args[type]=dialog&we_dialog_args[name]="+escape(name)+"&we_dialog_args[color]="+escape(value),"colordialog",-1,-1,400,380,true,false,true,false);
+	var win = new jsWindow("colorDialog.php?we_dialog_args[type]=dialog&we_dialog_args[name]="+encodeURI(name)+"&we_dialog_args[color]="+encodeURI(value),"colordialog",-1,-1,400,380,true,false,true,false);
 }
 
 function IsDigitPercent(e) {

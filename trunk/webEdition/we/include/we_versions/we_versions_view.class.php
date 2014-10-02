@@ -152,7 +152,7 @@ function makeAjaxRequestDoclist() {
 	var newString = "";
 	for(var i = 0; i < document.we_form.elements.length; i++) {
 		newString = document.we_form.elements[i].name;
-		args += "&we_cmd["+escape(newString)+"]="+escape(document.we_form.elements[i].value);
+		args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
 	}
 	var scroll = document.getElementById("scrollContent");
 	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
@@ -165,7 +165,7 @@ function makeAjaxRequestParametersTop() {
 	var newString = "";
 	for(var i = 0; i < document.we_form.elements.length; i++) {
 		newString = document.we_form.elements[i].name;
-		args += "&we_cmd["+escape(newString)+"]="+escape(document.we_form.elements[i].value);
+		args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
 	}
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&position=top&cns=versionlist&cmd=GetSearchParameters&path=' . $GLOBALS['we_doc']->Path . '&text=' . $GLOBALS['we_doc']->Text . '&classname=' . $GLOBALS['we_doc']->ClassName . '&id=' . $GLOBALS['we_doc']->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
 
@@ -176,7 +176,7 @@ function makeAjaxRequestParametersBottom() {
 	var newString = "";
 	for(var i = 0; i < document.we_form.elements.length; i++) {
 		newString = document.we_form.elements[i].name;
-		args += "&we_cmd["+escape(newString)+"]="+escape(document.we_form.elements[i].value);
+		args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
 	}
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&position=bottom&cns=versionlist&cmd=GetSearchParameters&classname=' . $GLOBALS['we_doc']->ClassName . '&id=' . $GLOBALS['we_doc']->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
 
@@ -202,7 +202,7 @@ function deleteVersionAjax() {
 					newString = checkboxes[i].name;
 		}
 	}
-	args += "&we_cmd["+escape(newString)+"]="+escape(check);
+	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(check);
 	var scroll = document.getElementById("scrollContent");
 	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
 

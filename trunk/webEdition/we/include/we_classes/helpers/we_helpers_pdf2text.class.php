@@ -30,7 +30,6 @@
 //ini_set('memory_limit', '21M');
 
 class we_helpers_pdf2text{
-
 	const READPORTION = 512000;
 	const NL = "\n";
 	const SPACE = ' ';
@@ -412,7 +411,7 @@ class we_helpers_pdf2text{
 		// previous val
 		$prev_index = 0;
 		// while we encounter EOD marker (257), read code_length bits
-		while(($data_length > 0) AND (($index = bindec(substr($bitstring, 0, $bitlen))) != 257)){
+		while(($data_length > 0) AND ( ($index = bindec(substr($bitstring, 0, $bitlen))) != 257)){
 			// remove read bits from string
 			$bitstring = substr($bitstring, $bitlen);
 			// update number of bits
@@ -549,9 +548,8 @@ class we_helpers_pdf2text{
 				$ret.=mb_convert_encoding('&#x' . $cur . ';', 'UTF-8', 'HTML-ENTITIES');
 			}
 			return $ret;
-		} else {
-			return mb_convert_encoding('&#' . intval($u) . ';', 'UTF-8', 'HTML-ENTITIES');
 		}
+		return mb_convert_encoding('&#' . intval($u) . ';', 'UTF-8', 'HTML-ENTITIES');
 	}
 
 	private function setupFont(){

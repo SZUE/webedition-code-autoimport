@@ -128,26 +128,26 @@ if(!$cmd || $cmd != "save_last"){
 		}
 
 		function reorderDir(dir, order) {
-			setTimeout('top.fsbody.location="we_sselector_body.php?dir=' + dir + '&ord=' + order + '&file=' + top.currentFilter + '&curID=' + escape(top.currentID) + '"', 100);
+			setTimeout('top.fsbody.location="we_sselector_body.php?dir=' + dir + '&ord=' + order + '&file=' + top.currentFilter + '&curID=' +encodeURI(top.currentID) + '"', 100);
 		}
 
 		function drawDir(dir) {
 			switch (arguments[1]) {
 				case "new_folder":
-					top.fsbody.location = "we_sselector_body.php?dir=" + escape(top.rootDir + dir) + "&nf=new_folder&file=" + top.currentFilter + "&curID=" + escape(top.currentID);
+					top.fsbody.location = "we_sselector_body.php?dir=" +encodeURI(top.rootDir + dir) + "&nf=new_folder&file=" + top.currentFilter + "&curID=" +encodeURI(top.currentID);
 					break;
 				case "rename_folder":
 					if (arguments[2]) {
-						top.fsbody.location = "we_sselector_body.php?dir=" + escape(top.rootDir + dir) + "&nf=rename_folder&sid=" + escape(arguments[2]) + "&file=" + top.currentFilter + "&curID=" + escape(top.currentID);
+						top.fsbody.location = "we_sselector_body.php?dir=" +encodeURI(top.rootDir + dir) + "&nf=rename_folder&sid=" +encodeURI(arguments[2]) + "&file=" + top.currentFilter + "&curID=" +encodeURI(top.currentID);
 					}
 					break;
 				case "rename_file":
 					if (arguments[2]) {
-						top.fsbody.location = "we_sselector_body.php?dir=" + escape(top.rootDir + dir) + "&nf=rename_file&sid=" + escape(arguments[2]) + "&file=" + top.currentFilter + "&curID=" + escape(top.currentID);
+						top.fsbody.location = "we_sselector_body.php?dir=" +encodeURI(top.rootDir + dir) + "&nf=rename_file&sid=" +encodeURI(arguments[2]) + "&file=" + top.currentFilter + "&curID=" +encodeURI(top.currentID);
 					}
 					break;
 				default:
-					setTimeout('top.fsbody.location="we_sselector_body.php?dir=' + escape(top.rootDir + dir) + '&file=' + top.currentFilter + '&curID=' + escape(top.currentID) + '"', 100);
+					setTimeout('top.fsbody.location="we_sselector_body.php?dir=' +encodeURI(top.rootDir + dir) + '&file=' + top.currentFilter + '&curID=' +encodeURI(top.currentID) + '"', 100);
 			}
 		}
 
@@ -155,7 +155,7 @@ if(!$cmd || $cmd != "save_last"){
 			if ((top.currentID !== "") && (top.fsfooter.document.forms["we_form"].elements["fname"].value !== "")) {
 				top.fscmd.location = "we_sselector_cmd.php?cmd=delete_file&fid=" + top.currentID + "&ask=" + arguments[0];
 			} else {
-	<?php print we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+	<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			}
 		}
 

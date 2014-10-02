@@ -936,7 +936,7 @@ function CheckAndConvertISObackend($utf8data){
 
 /* * internal function - do not call */
 
-function g_l_encodeArray($tmp){
+function g_l_encodeArray($tmp){//FIXME: move to closure as of php 5.3
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $GLOBALS['WE_BACKENDCHARSET']));
 	return (is_array($tmp) ?
 			array_map('g_l_encodeArray', $tmp) :

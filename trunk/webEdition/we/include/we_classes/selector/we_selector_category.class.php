@@ -309,7 +309,7 @@ function deleteEntry(){
 		if (todel) {
 			todel = "," + todel;
 		}
-		top.fscmd.location.replace(top.queryString(' . self::DEL . ',top.currentID)+"&todel="+escape(todel));
+		top.fscmd.location.replace(top.queryString(' . self::DEL . ',top.currentID)+"&todel="+encodeURI(todel));
 		if(top.fsvalues) top.fsvalues.location.replace(top.queryString(' . self::PROPERTIES . ',0));
 		top.fsheader.disableDelBut();
 	}
@@ -955,7 +955,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		STYLESHEET . we_html_element::jsScript(JS_DIR . 'we_textarea.js') . we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 function we_cmd(){
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	switch (arguments[0]){
 		case "openSelector":

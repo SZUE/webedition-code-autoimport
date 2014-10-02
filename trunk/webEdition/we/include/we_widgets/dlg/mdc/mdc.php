@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -25,7 +24,7 @@
 // widget MY DOCUMENTS
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-list($dir, $dt_tid, $cats) = explode(";", we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1));
+list($dir, $dt_tid, $cats) = explode(';', we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1));
 $aCsv = array(
 	0, //unused - compatibility
 	we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
@@ -43,21 +42,23 @@ var _sTb='" . ($cmd4 ? $cmd4 : (($_binary{1}) ? g_l('cockpit', '[my_objects]') :
 
 function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
-}
-";
+}";
 
-print we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[my_documents]')) . STYLESHEET . we_html_element::jsElement(
-				$js)) . we_html_element::htmlBody(
-			array(
-			"marginwidth" => 15,
-			"marginheight" => 10,
-			"leftmargin" => 15,
-			"topmargin" => 10,
-			"onload" => "if(parent!=self)init();"
-			), we_html_element::htmlDiv(array(
-				"id" => "mdc"
-				), $mdc)));
+echo we_html_element::htmlDocType() .
+ we_html_element::htmlHtml(
+	we_html_element::htmlHead(
+		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[my_documents]')) .
+		STYLESHEET .
+		we_html_element::jsElement($js)
+	) . we_html_element::htmlBody(
+		array(
+		"marginwidth" => 15,
+		"marginheight" => 10,
+		"leftmargin" => 15,
+		"topmargin" => 10,
+		"onload" => "if(parent!=self)init();"
+		), we_html_element::htmlDiv(array(
+			"id" => "mdc"
+			), $mdc)));
 
 

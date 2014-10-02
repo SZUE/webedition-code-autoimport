@@ -87,7 +87,7 @@ parent.document.title = "' . $title . '";
 
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	if(hot == "1" && arguments[0] != "save_voting") {
 		if(confirm("' . g_l('modules_voting', '[save_changed_voting]') . '")) {
 			arguments[0] = "save_voting";
@@ -217,7 +217,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		case "switchPage":
 			document.we_form.cmd.value=arguments[0];
@@ -226,7 +226,7 @@ function we_cmd() {
 		break;
 		case "voting_openDirselector":
 			url="' . WE_VOTING_MODULE_DIR . 'we_votingDirSelectorFrameset.php?";
-			for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+			for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 			new jsWindow(url,"we_votingSelector",-1,-1,600,350,true,true,true);
 		break;
 		case "browse_server":
@@ -317,7 +317,7 @@ function doUnload() {
 
 function we_cmd(){
 	var args = "";
-	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		default:
 			for (var i = 0; i < arguments.length; i++) {

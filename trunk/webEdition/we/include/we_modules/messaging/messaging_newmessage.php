@@ -56,14 +56,14 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 	}
 
 	function selectRecipient() {
-		var rs = escape(document.compose_form.mn_recipients.value);
+		var rs = encodeURI(document.compose_form.mn_recipients.value);
 
 		new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php?we_transaction=<?php echo $transaction; ?>&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
 		//	    opener.top.add_win(msg_usel);
 	}
 
 	function do_send() {
-		rcpt_s = escape(document.compose_form.mn_recipients.value);
+		rcpt_s = encodeURI(document.compose_form.mn_recipients.value);
 		document.compose_form.rcpts_string.value = rcpt_s;
 		document.compose_form.submit();
 	}

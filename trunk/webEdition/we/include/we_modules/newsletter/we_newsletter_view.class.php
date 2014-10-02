@@ -332,7 +332,7 @@ parent.document.title = "' . $title . '";
 	*/
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	if(hot == "1" && arguments[0] != "save_newsletter") {
 		if(confirm("' . g_l('modules_newsletter', '[save_changed_newsletter]') . '")) {
@@ -513,7 +513,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	switch (arguments[0]) {
 		case "empty_log":
@@ -562,7 +562,7 @@ function doUnload() {
 function we_cmd() {
 
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	if (arguments[0] != "switchPage") {
 		self.setScrollTo();
@@ -588,7 +588,7 @@ function we_cmd() {
 		case "openNewsletterDirselector":
 			url = "' . WE_MODULES_DIR . 'newsletter/we_dirfs.php?";
 			for(var i = 0; i < arguments.length; i++){
-				url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
+				url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 			}
 			new jsWindow(url,"we_newsletter_dirselector",-1,-1,600,400,true,true,true);
 			break;
