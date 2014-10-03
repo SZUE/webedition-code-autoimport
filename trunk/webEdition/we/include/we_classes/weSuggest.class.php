@@ -32,15 +32,15 @@
  * 			we_button::create_button("select", "javascript:select_seem_start()", true, 100, 22, "", "", false, false),					// Auswahl-Button
  * 			we_html_tools::htmlTextInput("seem_start_document_name", 11, $_document_path, "", " id='yuiAcInputDoc'", "text", 190, 0, "", false),		// Input-Feld
  * 			'yuiAcInputDoc',																											// Input-Feld-Id. Die Id besteht aus 'yuiAcInput' und AC-Id
- * 			we_html_element::htmlHidden(array("name" => "seem_start_document", "value" => $_document_id, "id"=>"yuiAcResultDoc")),		// Result-Field (hidden) f�r die Document-, Folder-, Object-,...ID
+ * 			we_html_element::htmlHidden(array("name" => "seem_start_document", "value" => $_document_id, "id"=>"yuiAcResultDoc")),		// Result-Field (hidden) für die Document-, Folder-, Object-,...ID
  * 			'yuiAcResultDoc', 																											// Result-Feld-Id. Die Id besteht aus 'yuiAcResult' und AC-Id
- * 			'',																															// Label: steht �ber dem Inputfeld
- * 			FILE_TABLE, 																												// Name der Tabele in f�r die Query
- * 			"folder,text/webedition,image/*,text/js,text/css,text/html,application/*,video/quicktime", 													// ContentTypen f�r die Query: sie entsprechende Tabele
+ * 			'',																															// Label: steht über dem Inputfeld
+ * 			FILE_TABLE, 																												// Name der Tabele in für die Query
+ * 			"folder,text/webedition,image/*,text/js,text/css,text/html,application/*,video/quicktime", 													// ContentTypen für die Query: sie entsprechende Tabele
  * 			"docSelector", 																												// docSelector | dirSelector : ob nach folder oder doc gesucht wird
- * 			20, 																														// Anzahl der Vorschl�ge
- * 			0, 																															// Verz�gerung f�r das ausl�sen des AutoCompletion
- * 			true, 																														// Soll eine Erg�bis�berpr�fung stattfinden
+ * 			20, 																														// Anzahl der Vorschläge
+ * 			0, 																															// Verzögerung für das auslösen des AutoCompletion
+ * 			true, 																														// Soll eine Ergebnisüberprüfung stattfinden
  * 			"190", 																														// Container-Breite
  * 			"true",																														// Feld darf leer bleiben
  * 			10																															// Abstand zwischen Input-Feld und Button
@@ -69,51 +69,51 @@ class weSuggest{
 	var $_doOnTextfieldBlur = array();
 	var $preCheck = "";
 	/*	 * ************************************* */
-	var $acId = "";
+	var $acId = '';
 	var $checkFieldValue = true;
-	var $containerWidth = "";
+	var $containerWidth = '';
 	var $containerWidthForAll = 0;
 	var $contentType = "folder";
 	var $inputAttribs = 0;
 	var $inputDisabled = 0;
-	var $inputId = "";
-	var $inputName = "";
-	var $inputValue = "";
-	var $label = "";
+	var $inputId = '';
+	var $inputName = '';
+	var $inputValue = '';
+	var $label = '';
 	var $maxResults = 20;
 	var $mayBeEmpty = 1;
-	var $resultName = "";
-	var $resultValue = "";
-	var $resultId = "";
-	var $rootDir = "";
-	var $selectButton = "";
-	var $selectButtonSpace = "";
-	var $selector = "Dir";//FIXME: self::DirSelector???
-	var $trashButton = "";
-	var $trashButtonSpace = "";
-	var $openButton = "";
-	var $openButtonSpace = "";
-	var $createButton = "";
-	var $createButtonSpace = "";
+	var $resultName = '';
+	var $resultValue = '';
+	var $resultId = '';
+	var $rootDir = '';
+	var $selectButton = '';
+	var $selectButtonSpace = '';
+	var $selector = "Dir"; //FIXME: self::DirSelector???
+	var $trashButton = '';
+	var $trashButtonSpace = '';
+	var $openButton = '';
+	var $openButtonSpace = '';
+	var $createButton = '';
+	var $createButtonSpace = '';
 	var $table = FILE_TABLE;
 	var $width = 280;
 	/*	 * ************************************* */
-	var $addJS = "";
-	var $doOnItemSelect = "";
-	var $doOnTextfieldBlur = "";
+	var $addJS = '';
+	var $doOnItemSelect = '';
+	var $doOnTextfieldBlur = '';
+	private static $giveStatic = true;
 
 	static function &getInstance(){
 		static $inst = null;
 		if(!is_object($inst)){
 			$inst = new self();
 		}
-		return $inst;
+		return (self::$giveStatic ? $inst : new self());
 	}
 
 	function getErrorMarkPlaceHolder($id = "errormark", $space = 3, $w = 4, $h = 20){
 		$s = $w + $space;
-		return '<img id="' . $id . '" src="' . ICON_DIR . 'errormark.gif" width="' . $w . '" height="' . $h . '" border="0" style="position:relative; left:-' . $s . 'px; visibility: hidden;' . (we_base_browserDetect::isIE()
-					? 'top:4px; z-index:1000000' : '') . '" />';
+		return '<img id="' . $id . '" src="' . ICON_DIR . 'errormark.gif" width="' . $w . '" height="' . $h . '" border="0" style="position:relative; left:-' . $s . 'px; visibility: hidden;' . (we_base_browserDetect::isIE() ? 'top:4px; z-index:1000000' : '') . '" />';
 	}
 
 	static function getYuiFiles(){
@@ -163,10 +163,8 @@ class weSuggest{
 		 * 			4. ?
 		 * 			5. id
 		 */
-		$weSelfContentType = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ContentType))
-				? $GLOBALS['we_doc']->ContentType : '';
-		$weSelfID = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID)) ? $GLOBALS['we_doc']->ID
-				: '';
+		$weSelfContentType = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ContentType)) ? $GLOBALS['we_doc']->ContentType : '';
+		$weSelfID = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID)) ? $GLOBALS['we_doc']->ID : '';
 
 		if(is_array($this->inputfields) && empty($this->inputfields)){
 			return;
@@ -213,7 +211,7 @@ HTS;
 					$ix++;
 				}
 			}
-			$weFieldWS .= "weWorkspacePathArray[$i] = new Array($weWorkspacePathArrayJS);";
+			$weFieldWS .= 'weWorkspacePathArray[' . $i . '] = new Array(' . $weWorkspacePathArrayJS . ');';
 
 			$weAcFields .= <<<HTS
 
@@ -851,8 +849,7 @@ function weInputInArray(arr, val) {
 		for($i = 0; $i < count($this->inputfields); $i++){
 			$inputfields .= ($i > 0 ? ", " : "") . "#" . $this->inputfields[$i];
 			$containerfields .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i];
-			$yuiAcContent .= "#" . $this->containerfields[$i] . " .yui-ac-content {position:absolute;left:0px;width:" . (we_base_browserDetect::isIE()
-						? $this->containerwidth[$i] : ($this->containerwidth[$i] + 4)) . "px;border:1px solid #404040;background:#fff;overflow:hidden;z-index:9050; margin-top:-10px}";
+			$yuiAcContent .= "#" . $this->containerfields[$i] . " .yui-ac-content {position:absolute;left:0px;width:" . (we_base_browserDetect::isIE() ? $this->containerwidth[$i] : ($this->containerwidth[$i] + 4)) . "px;border:1px solid #404040;background:#fff;overflow:hidden;z-index:9050; margin-top:-10px}";
 			$ysearchquery .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " .ysearchquery";
 			$yuiAcShadow .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " .yui-ac-shadow";
 			$ul .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " ul";
@@ -903,8 +900,7 @@ function weInputInArray(arr, val) {
 		$resultId = $this->resultId ? $this->resultId : 'yuiAcResult' . $this->acId;
 		$containerWidth = $this->containerWidth ? $this->containerWidth : $this->width;
 
-		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, (we_base_browserDetect::isIE()
-					? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir);
+		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir);
 		$inputField = $this->_htmlTextInput($this->inputName, 30, $this->inputValue, "", 'id="' . $inputId . '" ' . $this->inputAttribs, "text", $this->width, 0, "", $this->inputDisabled);
 		$resultField = we_html_tools::hidden($this->resultName, $this->resultValue, array('id' => $resultId));
 		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer">' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
@@ -912,13 +908,11 @@ function weInputInArray(arr, val) {
 
 		$html = we_html_tools::htmlFormElementTable(
 				array(
-				"text" => $resultField . $autoSuggest . ($this->selectButton ? we_html_tools::getPixel(intval($selectButtonSpace), 4)
-						: ''),
+				"text" => $resultField . $autoSuggest . ($this->selectButton ? we_html_tools::getPixel(intval($selectButtonSpace), 4) : ''),
 				"valign" => "top",
 				"style" => "height:10px"), $this->label, 'left', 'defaultfont', (
 				$this->selectButton ?
-					array("text" => "<div style=''>" . $this->selectButton . "</div>", "valign" => "top")
-						:
+					array("text" => "<div style=''>" . $this->selectButton . "</div>", "valign" => "top") :
 					''
 				), we_html_tools::getPixel(intval($this->trashButtonSpace), 4), (
 				empty($this->trashButton) ?
@@ -965,11 +959,8 @@ function weInputInArray(arr, val) {
 	}
 
 	function _htmlTextInput($name, $size = 20, $value = "", $maxlength = "", $attribs = "", $type = "text", $width = 0, $height = 0, $markHot = "", $disabled = false){
-		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . ((strpos($width, "px") || strpos($width, "%"))
-						? "" : "px") . ';') : '') . ($height ? ('height: ' . $height . ((strpos($height, "px") || strpos($height, "%"))
-						? "" : "px") . ';') : '') . '"') : '';
-		return '<input type="' . trim($type) . '" name="' . trim($name) . '" size="' . abs($size) . '" value="' . oldHtmlspecialchars($value) . '" ' . ($maxlength
-					? (' maxlength="' . abs($maxlength) . '"') : '') . $attribs . $style . ' />';
+		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . ((strpos($width, "px") || strpos($width, "%")) ? "" : "px") . ';') : '') . ($height ? ('height: ' . $height . ((strpos($height, "px") || strpos($height, "%")) ? "" : "px") . ';') : '') . '"') : '';
+		return '<input type="' . trim($type) . '" name="' . trim($name) . '" size="' . abs($size) . '" value="' . oldHtmlspecialchars($value) . '" ' . ($maxlength ? (' maxlength="' . abs($maxlength) . '"') : '') . $attribs . $style . ' />';
 	}
 
 	//setter
@@ -1037,8 +1028,7 @@ function weInputInArray(arr, val) {
 						break;
 					case "onchange":
 						$_onchange = 1;
-						$this->inputAttribs .= $key . '="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1}'
-									: '') . $val . '" ';
+						$this->inputAttribs .= $key . '="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1}' : '') . $val . '" ';
 						break;
 					case "class":
 						$_class = 1;
@@ -1053,12 +1043,10 @@ function weInputInArray(arr, val) {
 				$this->inputAttribs .= 'class="wetextinput" ';
 			}
 			if(!isset($_onchange)){
-				$this->inputAttribs .= ' onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1}; '
-							: '') . '" ';
+				$this->inputAttribs .= ' onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1}; ' : '') . '" ';
 			}
 		} else {
-			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1;}'
-						: '') . '" ';
+			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1;}' : '') . '" ';
 		}
 		if($this->inputId == ''){
 			$this->setInputId();
@@ -1202,9 +1190,18 @@ function weInputInArray(arr, val) {
 				break;
 		}
 		$this->_doOnItemSelect[] = $this->doOnItemSelect;
-		$this->doOnItemSelect = "";
+		$this->doOnItemSelect = '';
 		$this->_doOnTextfieldBlur[] = $this->doOnTextfieldBlur;
-		$this->doOnTextfieldBlur = "";
+		$this->doOnTextfieldBlur = '';
+	}
+
+	/**
+	 * needed to suppress giving the same instance
+	 * If sth. is included & the main instance should not be modified, set this to false
+	 * @param bool $staticInstance false, if the results should be omitted; don't forget to reset
+	 */
+	public static function setStaticInstance($staticInstance){
+		self::$giveStatic=$staticInstance;
 	}
 
 }
