@@ -95,6 +95,10 @@ if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("NEW_OBJECT") && $_SESS
 if(permissionhandler::hasPerm("EDIT_SETTINGS")){
 	$js["preferences"] = "top.we_cmd('openPreferences');";
 }
+if(permissionhandler::hasPerm('NEW_GRAFIK')){
+	$js['btn_add_image'] = "top.we_cmd('new','tblFile','','image/*')";
+}
+
 
 $shortcuts = array();
 foreach($aCols as $sCol){

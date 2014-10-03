@@ -91,8 +91,11 @@ if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('NEW_OBJECTFILE')
 if(defined('OBJECT_TABLE') && permissionhandler::hasPerm('NEW_OBJECT')){
 	$shortcuts['new_class'] = g_l('button', '[new_class][value]');
 }
-if(permissionhandler::hasPerm("EDIT_SETTINGS")){
+if(permissionhandler::hasPerm('EDIT_SETTINGS')){
 	$shortcuts['preferences'] = g_l('button', '[preferences][value]');
+}
+if(permissionhandler::hasPerm('NEW_GRAFIK')){
+	$shortcuts['btn_add_image'] = g_l('button', '[btn_add_image][alt]');
 }
 
 $jsLang = "";
@@ -106,11 +109,12 @@ $oSctPool = new we_html_select(
 	"size" => 1,
 	"class" => "defaultfont",
 	"onchange" => "addBtn(_fo['list11'],this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,true);this.options[0].selected=true;"
-	));
-$oSctPool->insertOption(0, " ", "");
+	)
+);
+$oSctPool->insertOption(0, " ", "",true);
 $iCurrOpt = 1;
 foreach($shortcuts as $key => $value){
-	$oSctPool->insertOption($iCurrOpt, $key, $value);
+	$oSctPool->insertOption($iCurrOpt, $key, $value,true);
 	$iCurrOpt++;
 }
 
