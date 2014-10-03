@@ -80,6 +80,7 @@ $l_buttons_global=array(
 	),
 	'btn_add_image'=>array(
 		'alt'=>'Add image',
+		'value'=>'Add image',
 	),
 	'btn_add_link'=>array(
 		'alt'=>'Add hyperlink',
