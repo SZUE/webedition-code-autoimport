@@ -27,7 +27,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 list($dir, $dt_tid, $cats) = explode(';', we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1));
 $aCsv = array(
 	0, //unused - compatibility
-	we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+	we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 0),
 	$dir,
 	$dt_tid,
 	$cats
