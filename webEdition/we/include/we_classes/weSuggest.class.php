@@ -108,7 +108,11 @@ class weSuggest{
 		if(!is_object($inst)){
 			$inst = new self();
 		}
-		return (self::$giveStatic ? $inst : new self());
+		if(self::$giveStatic){
+			return $inst;
+		}
+		$void = new self();
+		return $void;
 	}
 
 	function getErrorMarkPlaceHolder($id = "errormark", $space = 3, $w = 4, $h = 20){
@@ -1201,7 +1205,7 @@ function weInputInArray(arr, val) {
 	 * @param bool $staticInstance false, if the results should be omitted; don't forget to reset
 	 */
 	public static function setStaticInstance($staticInstance){
-		self::$giveStatic=$staticInstance;
+		self::$giveStatic = $staticInstance;
 	}
 
 }
