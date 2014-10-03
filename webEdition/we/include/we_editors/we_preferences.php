@@ -1164,7 +1164,7 @@ function build_dialog($selected_setting = 'ui'){
 				array('headline' => g_l('prefs', '[default_php_setting]'), 'html' => $WE_PHP_DEFAULT->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[xhtml_default]'), 'html' => $_xhtml_setting->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[inlineedit_default]'), 'html' => $INLINEEDIT_DEFAULT->getHtml(), 'space' => 200),
-				array('headline' => g_l('prefs', '[inlineedit_default]'), 'html' => '<div>' . $commands_default_tmp . '</div><div style="margin-top:4px">' . $COMMANDS_DEFAULT . '</div>', 'space' => 200),
+				array('headline' => g_l('prefs', '[commands_default]'), 'html' => '<div>' . $commands_default_tmp . '</div><div style="margin-top:4px">' . $COMMANDS_DEFAULT . '</div>', 'space' => 200),
 				array('headline' => g_l('prefs', '[removefirstparagraph_default]'), 'html' => $REMOVEFIRSTPARAGRAPH_DEFAULT->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[showinputs_default]'), 'html' => $SHOWINPUTS_DEFAULT->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[hidenameattribinweimg_default]'), 'html' => $HIDENAMEATTRIBINWEIMG_DEFAULT->getHtml(), 'space' => 200),
