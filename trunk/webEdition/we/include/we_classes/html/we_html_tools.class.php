@@ -639,7 +639,9 @@ abstract class we_html_tools{
 	}
 
 	public static function getJSErrorHandler($plain = false){
-		return '';
+		$ret='	window.onerror=function(msg, file, line, col, errObj){return true;}'; //prevent JS errors to have influence
+		return ($plain ? str_replace("\n", '', $ret) : we_html_element::jsElement($ret));
+
 		//FIXME: currently deactivated
 		$ret = 'try{
 	window.onerror=function(msg, file, line, col, errObj){
