@@ -62,7 +62,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$we_doc->del_thumbnails(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 		break;
 	case 'do_add_thumbnails':
-		$we_doc->add_thumbnails(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
+		$we_doc->add_thumbnails(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', 0, 1));
 		break;
 	case 'copyDocument':
 		$we_doc->copyDoc(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
@@ -323,7 +323,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 	we_base_file::insertIntoCleanUp($fullName, time());
 
 	ob_start();
-	//FIXME:eval
+	//FIXME: eval, document was included, what needs to evaluated
 	eval('?>' . str_replace('<?xml', '<?php print \'<?xml\'; ?>', $contents));
 	$contents = ob_get_clean();
 //

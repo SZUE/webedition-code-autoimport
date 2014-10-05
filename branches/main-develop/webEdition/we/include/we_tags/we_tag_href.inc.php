@@ -50,7 +50,7 @@ function we_tag_href($attribs){
 	$nint = $name . we_base_link::MAGIC_INT_LINK;
 	$nintID = $name . we_base_link::MAGIC_INT_LINK_ID;
 	$nintPath = $name . we_base_link::MAGIC_INT_LINK_PATH;
-	// we have to use a html_entity_decode first in case a user has set &amp, &uuml; by himself
+// we have to use a html_entity_decode first in case a user has set &amp, &uuml; by himself
 	$extPath = oldHtmlspecialchars(html_entity_decode($GLOBALS['we_doc']->getElement($name)));
 
 	switch($type){
@@ -79,7 +79,7 @@ function we_tag_href($attribs){
 				}
 				break;
 			}
-		//no break;
+//no break;
 		case we_base_link::TYPE_EXT:
 			$int = false;
 			$href = $extPath;
@@ -111,12 +111,10 @@ function we_tag_href($attribs){
 		$rootdirid = $rootdir;
 		$rootdir = id_to_path($rootdir, FILE_TABLE);
 	} else {
-		if($rootdir != '/'){
-			$rootdir = rtrim($rootdir, '/');
-		}
+		$rootdir = ($rootdir == '/' ? $rootdir : rtrim($rootdir, '/'));
 		$rootdirid = path_to_id($rootdir, FILE_TABLE);
 	}
-	// Bug Fix #7045
+// Bug Fix #7045
 	if($rootdir == '/'){
 		$rootdir = '';
 	}
@@ -151,7 +149,7 @@ function we_tag_href($attribs){
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($intID_elem_Name, $intID);
-		$yuiSuggest->setSelector(weSuggest::DocSelector);
+		$yuiSuggest->setSelector($directory ? weSuggest::DirSelector : weSuggest::DocSelector);
 		$yuiSuggest->setTable(FILE_TABLE);
 		$yuiSuggest->setWidth($size);
 	}

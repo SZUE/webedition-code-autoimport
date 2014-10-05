@@ -244,13 +244,12 @@ if(!$we_doc->getElement('data')){
 			we_base_ContentTypes::inst()->getDefaultCode($we_doc->ContentType))
 	);
 }
-
 //WEEXT
 if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
 	// tell we_cmd_ext that nothing bad happened and let it do the rest
 	$aborted = false; 
 } else {
-echo we_html_tools::getHtmlTop();
+echo we_html_tools::getHtmlTop('','','frameset');
 ?>
 <script  type="text/javascript">
 	<!--

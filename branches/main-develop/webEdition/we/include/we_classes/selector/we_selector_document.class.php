@@ -567,7 +567,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	function setInfoSize() {
 		infoSize = document.body.clientHeight;
 		if(infoElem=document.getElementById("info")) {
-			infoElem.style.height = document.body.clientHeight - (prieviewpic = document.getElementById("previewpic") ? 160 : 0 );
+			infoElem.style.height = document.body.clientHeight - (prieviewpic = document.getElementById("previewpic") ? 160 : 0 )+"px";
 		}
 	}
 	function openToEdit(tab,id,contentType){
@@ -845,7 +845,9 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		return we_html_element::jsElement('
 function setDir(id) {
 	showPreview(id);
-	top.fspreview.document.body.innerHTML = "";
+	if(top.fspreview.document.body){
+		top.fspreview.document.body.innerHTML = "";
+	}
 	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',id));
 	e = getEntry(id);
 	fspath.document.body.innerHTML = e.path;
@@ -890,7 +892,9 @@ function selectFile(id){
 	protected function printFramesetJSDoClickFn(){
 		return we_html_element::jsElement('
 function doClick(id,ct){
-	top.fspreview.document.body.innerHTML = "";
+	if(top.fspreview.document.body){
+		top.fspreview.document.body.innerHTML = "";
+	}
 	if(ct==1){
 		if(wasdblclick){
 			setDir(id);

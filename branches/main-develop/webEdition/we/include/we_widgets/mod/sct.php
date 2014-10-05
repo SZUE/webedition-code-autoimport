@@ -95,6 +95,10 @@ if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("NEW_OBJECT") && $_SESS
 if(permissionhandler::hasPerm("EDIT_SETTINGS")){
 	$js["preferences"] = "top.we_cmd('openPreferences');";
 }
+if(permissionhandler::hasPerm('NEW_GRAFIK')){
+	$js['btn_add_image'] = "top.we_cmd('new','tblFile','','image/*')";
+}
+
 
 $shortcuts = array();
 foreach($aCols as $sCol){
@@ -134,12 +138,8 @@ foreach($shortcuts as $sctCol){
 	$_col++;
 }
 
-$sc = new we_html_table(array(
-	"width" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0
-	), 1, 1);
-$sc->setCol(0, 0, array(
-	"align" => "center", "valign" => "top"
-	), $sSctOut);
+$sc = new we_html_table(array("width" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 1);
+$sc->setCol(0, 0, array("align" => "center", "valign" => "top"), $sSctOut);
 
 if(!isset($aProps)){
 	we_html_tools::protect();
@@ -150,20 +150,21 @@ if(!isset($aProps)){
 	var _sTb='" . g_l('cockpit', '[shortcuts]') . "';
 	function init(){
 		parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
-	}
-	";
+	}";
 
-	print we_html_element::htmlDocType() . we_html_element::htmlHtml(
-			we_html_element::htmlHead(
-				we_html_tools::getHtmlInnerHead(g_l('cockpit', '[shortcuts]')) . STYLESHEET . we_html_element::jsElement(
-					$sJsCode)) . we_html_element::htmlBody(
-				array(
-				"marginwidth" => 15,
-				"marginheight" => 10,
-				"leftmargin" => 15,
-				"topmargin" => 10,
-				"onload" => "if(parent!=self)init();"
-				), we_html_element::htmlDiv(array(
-					"id" => "sct"
-					), $sc->getHtml())));
+	echo we_html_element::htmlDocType() .
+	we_html_element::htmlHtml(
+		we_html_element::htmlHead(
+			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[shortcuts]')) .
+			STYLESHEET . we_html_element::jsElement($sJsCode)) .
+		we_html_element::htmlBody(
+			array(
+			"marginwidth" => 15,
+			"marginheight" => 10,
+			"leftmargin" => 15,
+			"topmargin" => 10,
+			"onload" => "if(parent!=self)init();"
+			), we_html_element::htmlDiv(array(
+				"id" => "sct"
+				), $sc->getHtml())));
 }

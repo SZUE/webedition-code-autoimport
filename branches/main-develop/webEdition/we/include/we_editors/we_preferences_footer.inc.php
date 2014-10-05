@@ -52,7 +52,7 @@ function we_save() {
 	document.getElementById('content').contentDocument.we_form.save_settings.value = 1;
 
 	document.getElementById('content').contentDocument.we_form.submit();
-}
+ }
 
 END_OF_SCRIPT;
 	return we_html_element::jsElement($_javascript);

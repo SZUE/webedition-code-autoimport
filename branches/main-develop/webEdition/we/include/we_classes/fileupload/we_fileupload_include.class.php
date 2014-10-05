@@ -41,13 +41,14 @@ class we_fileupload_include extends we_fileupload_base{
 	const USE_LEGACY_FOR_BACKUP = false;
 	const USE_LEGACY_FOR_WEIMPORT = false;
 
-	public function __construct($name, $contentName = '', $footerName = '', $formName = '', $uploadBtnName = '', $callback = 'document.forms[0].submit()', $fileselectOnclick = '', $width = 400, $isDragAndDrop = true, $isInternalProgress = false, $internalProgressWidth = 0, $acceptedMime = '', $acceptedExt = '', $forbiddenMime = '', $forbiddenExt = '', $externalProgress = array(), $maxUploadSize = -1){
+	public function __construct($name, $contentName = '', $footerName = '', $formName = '', $uploadBtnName = '', $callback = 'document.forms[0].submit()', $fileselectOnclick = '', $width = 400, $isDragAndDrop = true, $isInternalProgress = false, $internalProgressWidth = 0, $acceptedMime = '', $acceptedExt = '', $forbiddenMime = '', $forbiddenExt = '', $externalProgress = array(), $maxUploadSize = -1, $formAction = ''){
 		parent::__construct($name, $width, $maxUploadSize, $isDragAndDrop);
 		$this->type = 'inc';
 		$this->contentName = $contentName;
 		$this->footerName = $footerName;
 		$this->uploadBtnName = $uploadBtnName ? $uploadBtnName : 'upload_btn';
 		$this->form['name'] = $formName;
+		$this->form['action'] = $formAction;
 		$this->callback = $callback;
 		$this->fileselectOnclick = $fileselectOnclick;
 		$this->internalProgress['isInternalProgress'] = $isInternalProgress;

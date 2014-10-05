@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class we_users_util {
+abstract class we_users_util{
 
 	private static function getGroupList($id){
 		if(!$id){
@@ -135,7 +135,7 @@ abstract class we_users_util {
 
 		$where = array();
 		foreach($ids as $id){
-			$where[] = $wsField . ' LIKE "%,' . $id . ',%"';
+			$where[] = 'FIND_IN_SET(' . intval($id) . ',' . $wsField . ')';
 		}
 
 		$db->query('SELECT ID,username FROM ' . USER_TABLE . ' WHERE ' . implode(' OR ', $where));
@@ -197,7 +197,7 @@ abstract class we_users_util {
 			$q[] = 'CreatorID IN ("' . implode('","', $aliases) . '")';
 		}
 		foreach($aliases as $id){
-			$q [] = 'Owners LIKE "%,' . intval($id) . ',%"';
+			$q [] = 'FIND_IN_SET(' . intval($id) . ',Owners)';
 		}
 		$groups = array($_SESSION['user']['ID']);
 		we_getParentIDs(USER_TABLE, $_SESSION['user']['ID'], $groups, $GLOBALS['DB_WE']);
@@ -206,7 +206,7 @@ abstract class we_users_util {
 		}
 
 		foreach($groups as $id){
-			$q[] = "Owners LIKE '%," . intval($id) . ",%'";
+			$q[] = 'FIND_IN_SET(' . intval($id) . ',Owners)';
 		}
 		return ' AND ( RestrictOwners=0 OR (RestrictOwners=1 AND (' . implode(' OR ', $q) . '))) ';
 	}

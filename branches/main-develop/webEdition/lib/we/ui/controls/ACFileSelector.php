@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -30,7 +29,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
-
 	/**
 	 * object of the suggestClass
 	 *
@@ -412,10 +410,10 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 		$idFieldNameString = 'document.getElementById("yuiAcResult_' . $this->getId() . '").id';
 		$pathFieldName = '"document.getElementById(\\\'yuiAcInput_' . $this->getId() . '\\\').value"';
 		//TODO
-		$onChange = '"opener.weEventController.fire(\'docChanged\')"';
+		//$onChange = '"opener.weEventController.fire(\'docChanged\')"';
 		$onChange = '""';
 
-		$contentTypes = array();
+		//$contentTypes = array();
 		$contentTypesString = $this->getContentType();
 		$contentTypesArray = explode(",", $contentTypesString);
 		$countCTs = count($contentTypesArray);
@@ -434,12 +432,10 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 			return 'we_ui_controls_ACFileSelector.openToolSelector(' . $selector . ',' . $idFieldNameInteger . ',' . $idFieldNameString . ',' . $pathFieldName . ', ' . $onChange . ', "' . $appname . '")';
 		}
 
-		if($this->getTable()){
-			$table = '"' . (defined('TBL_PREFIX') ? TBL_PREFIX : '') . $this->getTable() . '"';
-			$onClick = 'we_ui_controls_ACFileSelector.openSelector(' . $selector . ',' . $idFieldNameInteger . ',' . $table . ',' . $idFieldNameString . ',' . $pathFieldName . ', ' . $onChange . ',"","","' . $contentTypesString . '");';
-		} else {
-			$onClick = 'we_ui_controls_ACFileSelector.openSelector("browse_server",' . $pathFieldName . ', "' . $contentTypesString . '","' . $this->getFolderPathValue() . '","");';
-		}
+		$onClick = ($this->getTable() ?
+				'we_ui_controls_ACFileSelector.openSelector(' . $selector . ',' . $idFieldNameInteger . ',' . '"' . (defined('TBL_PREFIX') ? TBL_PREFIX : '') . $this->getTable() . '"' . ',' . $idFieldNameString . ',' . $pathFieldName . ', ' . $onChange . ',"","","' . $contentTypesString . '");' :
+				'we_ui_controls_ACFileSelector.openSelector("browse_server",' . $pathFieldName . ', "' . $contentTypesString . '","' . $this->getFolderPathValue() . '","");');
+
 		return $onClick;
 	}
 

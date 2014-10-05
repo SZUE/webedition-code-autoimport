@@ -2476,7 +2476,7 @@ class we_xml_parser{
 				$str .= ", \$args[" . $i . "]";
 			}
 
-			eval($str);
+			eval($str);//FIXME: remove eval
 		}
 
 		// show error message

@@ -120,11 +120,13 @@ function we_tag_setVar($attribs){
 		case 'object' :
 		case 'document' :
 			if($propertyTo){
-				if(isset($GLOBALS['we_' . $to][$formnameTo]))
+				if(isset($GLOBALS['we_' . $to][$formnameTo])){
 					$GLOBALS['we_' . $to][$formnameTo]->$nameTo = $valueFrom;
+				}
 			} else {
-				if(isset($GLOBALS['we_' . $to][$formnameTo]))
+				if(isset($GLOBALS['we_' . $to][$formnameTo])){
 					$GLOBALS['we_' . $to][$formnameTo]->setElement($nameTo, $valueFrom);
+				}
 			}
 			break;
 		case 'top' :

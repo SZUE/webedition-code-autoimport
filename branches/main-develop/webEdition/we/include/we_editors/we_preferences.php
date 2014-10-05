@@ -1164,7 +1164,7 @@ function build_dialog($selected_setting = 'ui'){
 				array('headline' => g_l('prefs', '[default_php_setting]'), 'html' => $WE_PHP_DEFAULT->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[xhtml_default]'), 'html' => $_xhtml_setting->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[inlineedit_default]'), 'html' => $INLINEEDIT_DEFAULT->getHtml(), 'space' => 200),
-				array('headline' => g_l('prefs', '[inlineedit_default]'), 'html' => '<div>' . $commands_default_tmp . '</div><div style="margin-top:4px">' . $COMMANDS_DEFAULT . '</div>', 'space' => 200),
+				array('headline' => g_l('prefs', '[commands_default]'), 'html' => '<div>' . $commands_default_tmp . '</div><div style="margin-top:4px">' . $COMMANDS_DEFAULT . '</div>', 'space' => 200),
 				array('headline' => g_l('prefs', '[removefirstparagraph_default]'), 'html' => $REMOVEFIRSTPARAGRAPH_DEFAULT->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[showinputs_default]'), 'html' => $SHOWINPUTS_DEFAULT->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[hidenameattribinweimg_default]'), 'html' => $HIDENAMEATTRIBINWEIMG_DEFAULT->getHtml(), 'space' => 200),
@@ -3202,7 +3202,7 @@ setTimeout(function(){
 	$_we_cmd_js = we_html_element::jsElement('function we_cmd(){
 
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
 		case "browse_server":
             new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);

@@ -283,9 +283,9 @@ class we_webEditionDocument extends we_textContentDocument{
 			$myid = intval($this->TemplateID ? $this->TemplateID : 0);
 			$path = ($myid ? f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($myid), '', $this->DB_WE) : '');
 
-			/*$ueberschrift = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
-					'<a href="javascript:goTemplate(' . $myid . ')">' . g_l('weClass', '[template]') . '</a>' :
-					g_l('weClass', '[template]'));*/
+			/* $ueberschrift = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
+			  '<a href="javascript:goTemplate(' . $myid . ')">' . g_l('weClass', '[template]') . '</a>' :
+			  g_l('weClass', '[template]')); */
 
 			if($this->DocType){
 				return (!$templateFromDoctype ?
@@ -370,6 +370,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		//will evaluate the tags => we get meta data set
 		$oldEdit = $this->EditPageNr; //FIXME: cache data
 		$this->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
+		weSuggest::setStaticInstance(false); //avoid modification on suggestor
 		$include = $this->editor();
 		if($include && $include != WE_INCLUDES_PATH . 'we_templates/' . we_template::NO_TEMPLATE_INC){
 			ob_start();
@@ -377,6 +378,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			ob_end_clean();
 		}
 		$this->EditPageNr = $oldEdit;
+		weSuggest::setStaticInstance(true);
 
 		//	if a meta-tag is set all information are in array $GLOBALS["meta"]
 		return '
@@ -438,24 +440,19 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			//	Last step: get Information about the charsets
 			$retSelect = $this->htmlSelect('we_tmp_' . $name, $_charsetHandler->getCharsetsByArray($chars), 1, $value, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;'), 'value', 254);
-
-			return '<tr><td colspan="2">' . we_html_tools::getPixel(2, 4) . '</td></tr>
+		} else {
+			//	charset-tag NOT available
+			$retInput = $this->htmlTextInput("dummi", 40, g_l('charset', '[error][no_charset_tag]'), '', ' readonly disabled', 'text', 254);
+			$retSelect = $this->htmlSelect("dummi2", array(g_l('charset', '[error][no_charset_available]')), 1, DEFAULT_CHARSET, false, array('disabled' => 'disabled'), 'value', 254);
+		}
+		//getCharsets
+		return '<tr><td colspan="2">' . we_html_tools::getPixel(2, 4) . '</td></tr>
 <tr><td>
 	<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 		<tr><td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
 		<tr><td>' . $retInput . '</td><td>' . $retSelect . '</td></tr>
 	</table>
 </td></tr>';
-		} else { //	charset-tag NOT available
-			//getCharsets
-			return '<tr><td colspan="2">' . we_html_tools::getPixel(2, 4) . '</td></tr>
-<tr><td>
-	<table style="border-spacing: 0px;border-style:none" cellpadding="0">
-		<tr><td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
-		<tr><td>' . $this->htmlTextInput("dummi", 40, g_l('charset', "[error][no_charset_tag]"), "", " readonly disabled", "text", 254) . '</td><td>' . $this->htmlSelect("dummi2", array(g_l('charset', "[error][no_charset_available]")), 1, DEFAULT_CHARSET, false, array("disabled" => 'disabled'), "value", 254) . '</td></tr>
-	</table>
-</td></tr>';
-		}
 	}
 
 	// for internal use

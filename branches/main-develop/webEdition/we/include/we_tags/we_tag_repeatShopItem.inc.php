@@ -33,7 +33,7 @@ function we_parse_tag_repeatShopItem($a, $content, $attribs){
 
 function we_tag_repeatShopItem($attribs){
 	if(!defined('SHOP_TABLE')){
-		print modulFehltError('Shop', __FUNCTION__);
+		echo modulFehltError('Shop', __FUNCTION__);
 		return;
 	}
 	$shopname = weTag_getAttribute("shopname", $attribs);

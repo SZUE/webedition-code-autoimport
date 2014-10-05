@@ -23,7 +23,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-echo we_html_tools::getHtmlTop() .
+echo we_html_tools::getHtmlTop('', '', 'frameset') .
  STYLESHEET;
 ?>
 </head>

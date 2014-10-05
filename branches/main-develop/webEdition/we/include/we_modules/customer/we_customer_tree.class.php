@@ -119,15 +119,11 @@ function openClose(id){
 	treeData[eintragsIndex].open=openstatus;
 
 	if(openstatus && treeData[eintragsIndex].loaded!=1){
-		id = escape(id);
-		sort = escape(sort);
+		id = encodeURI(id);
+		sort = encodeURI(sort);
 		id = id.replace(/\+/g,"%2B");
 		sort = sort.replace(/\+/g,"%2B");
-		if(sort!=""){
-			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+"&sort="+sort;
-		}else{
-			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id;
-		}
+		' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+(sort!=""?"&sort="+sort:"");
 	}else{
 		drawTree();
 	}

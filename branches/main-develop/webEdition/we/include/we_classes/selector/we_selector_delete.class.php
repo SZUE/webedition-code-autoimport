@@ -85,7 +85,7 @@ function deleteEntry(){
 			todel = "," + todel;
 		}
 
-		top.fscmd.location.replace(top.queryString(' . self::DEL . ',top.currentID)+"&todel="+escape(todel));
+		top.fscmd.location.replace(top.queryString(' . self::DEL . ',top.currentID)+"&todel="+encodeURI(todel));
 		top.fsfooter.disableDelBut();
 
 		if(docIsOpen) {

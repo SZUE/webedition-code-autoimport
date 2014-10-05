@@ -651,7 +651,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 				if (i != 0) {
 					out += delimeter;
 				}
-				out += enclosure + escape(arr[i]) + enclosure;
+				out += enclosure +encodeURI(arr[i]) + enclosure;
 			}
 			return out;
 		}
@@ -767,7 +767,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 
 			var args = '';
 			for (var i = 0; i < arguments.length; i++) {
-				args += '&we_cmd[' + i + ']=' + escape(arguments[i]);
+				args += '&we_cmd[' + i + ']=' +encodeURI(arguments[i]);
 			}
 
 			var _cmdName = null;
@@ -910,7 +910,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 	$_transact = md5(uniqid(__FILE__, true));
 
 	echo "function newMessage(username){" . ( defined('WE_MESSAGING_MODULE_DIR') ?
-		"	new jsWindow('" . WE_MESSAGING_MODULE_DIR . "messaging_newmessage.php?we_transaction=" . $_transact . "&mode=u_'+escape(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);" : ''
+		"	new jsWindow('" . WE_MESSAGING_MODULE_DIR . "messaging_newmessage.php?we_transaction=" . $_transact . "&mode=u_'+encodeURI(username),'messaging_new_message',-1,-1,670,530,true,false,true,false);" : ''
 	) . "}";
 	?>
 
@@ -957,7 +957,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 		function getUser() {
 			var url = '<?php echo WEBEDITION_DIR; ?>we_cmd.php?';
 			for (var i = 0; i < arguments.length; i++) {
-				url += 'we_cmd[' + i + ']=' + escape(arguments[i]);
+				url += 'we_cmd[' + i + ']=' +encodeURI(arguments[i]);
 				if (i < (arguments.length - 1)) {
 					url += '&';
 				}

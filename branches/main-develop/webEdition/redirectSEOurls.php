@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -32,11 +33,11 @@ if(isset($_SERVER['REDIRECT_QUERY_STRING']) && $_SERVER['REDIRECT_QUERY_STRING']
 }
 
 define('WE_REDIRECTED_SEO', (isset($_SERVER['REDIRECT_URL']) ?
-		$_SERVER['REDIRECT_URL'] :
-		(isset($_SERVER['PHP_SELF']) ?
-			$_SERVER['PHP_SELF'] :
-			$_SERVER['SCRIPT_NAME'])
-	)
+				$_SERVER['REDIRECT_URL'] :
+				(isset($_SERVER['PHP_SELF']) ?
+						$_SERVER['PHP_SELF'] :
+						$_SERVER['SCRIPT_NAME'])
+		)
 ); //url without query string
 // get attributes
 $error404doc = (ERROR_DOCUMENT_NO_OBJECTFILE ? ERROR_DOCUMENT_NO_OBJECTFILE : 0);
@@ -91,9 +92,9 @@ while($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] != '/
 	}
 	if($displayid){
 		$searchforInternal = (URLENCODE_OBJECTSEOURLS ?
-				strtr(urlencode($searchfor), array('%2F' => '/', '//' => '/')) :
-				strtr($searchfor, array('//' => '/'))
-			);
+						strtr(urlencode($searchfor), array('%2F' => '/', '//' => '/')) :
+						strtr($searchfor, array('//' => '/'))
+				);
 
 		$objectid = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 AND Url="' . $db->escape($searchforInternal) . '" LIMIT 1'));
 		if($objectid){
@@ -122,9 +123,9 @@ if($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] == '/' &
 	}
 	if($displayid){
 		$searchforInternal = (URLENCODE_OBJECTSEOURLS ?
-				strtr(urlencode($searchfor), array('%2F' => '/')) :
-				$searchfor
-			);
+						strtr(urlencode($searchfor), array('%2F' => '/')) :
+						$searchfor
+				);
 
 		$objectid = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 AND Url="' . $db->escape($searchforInternal) . '" LIMIT 1'));
 		if($objectid){
@@ -133,6 +134,13 @@ if($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] == '/' &
 	}
 }
 if(!$notfound){
+	$ro = ini_get('request_order');
+	if(stripos('C', $ro ? $ro : ini_get('variables_order'))){
+		//unset all cookies from request
+		foreach(array_keys($_COOKIE) as $name){
+			unset($_REQUEST[$name]);
+		}
+	}
 	$_REQUEST = array_merge($_REQUEST, $myRequest);
 	$_REQUEST['we_objectID'] = $objectid;
 	$_REQUEST['we_oid'] = $objectid;

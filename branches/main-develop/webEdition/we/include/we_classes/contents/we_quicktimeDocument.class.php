@@ -244,7 +244,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 ';
 	}
 
-	function getThumbnail($width = 150, height = 100){
+	function getThumbnail($width = 150, $height = 100){
 		$_width = $this->getElement('width');
 		$_height = $this->getElement('height');
 		$_scale = $this->getElement('scale');

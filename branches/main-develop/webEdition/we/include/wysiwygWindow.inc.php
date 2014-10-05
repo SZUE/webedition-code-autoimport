@@ -101,7 +101,7 @@ if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed'
 		$openerDocument = 'top.opener.document';
 	}
 
-	$value = preg_replace('|(</?)script([^>]*>)|i', '\\1scr"+"ipt\\2', strtr(we_base_request::_(we_base_request::RAWC, $reqName, '', $fieldName), array("\r" => '\r', "\n" => '\n', "'" => '&#039;')));
+	$value = preg_replace('|(</?)script([^>]*>)|i', '\\1scr"+"ipt\\2', strtr(we_base_request::_(we_base_request::RAW_CHECKED, $reqName, '', $fieldName), array("\r" => '\r', "\n" => '\n', "'" => '&#039;')));
 	$replacements = array(
 		'"' => '\"',
 		"\xe2\x80\xa8" => '',

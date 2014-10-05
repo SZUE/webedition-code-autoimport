@@ -155,7 +155,7 @@ abstract class we_html_tools{
 	static function htmlTextInput($name, $size = 24, $value = '', $maxlength = '', $attribs = '', $type = 'text', $width = 0, $height = 0, $markHot = '', $disabled = false){
 		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . (is_numeric($width) ? 'px' : '') . ';') : '') .
 			($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
-		return '<input' . ($markHot ? ' onchange="if(_EditorFrame){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') .
+		return '<input' . ($markHot ? ' onchange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') .
 			(strstr($attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) .
 			'" size="' . intval($size) . '" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . intval($maxlength) . '"') : '') . ($attribs ? ' ' . $attribs : '') . $style . ($disabled ? (' disabled="true"') : '') . ' />';
 	}
@@ -638,6 +638,39 @@ abstract class we_html_tools{
 				, $closeHtml);
 	}
 
+	public static function getJSErrorHandler($plain = false){
+		$ret='	window.onerror=function(msg, file, line, col, errObj){return true;}'; //prevent JS errors to have influence
+		return ($plain ? str_replace("\n", '', $ret) : we_html_element::jsElement($ret));
+
+		//FIXME: currently deactivated
+		$ret = 'try{
+	window.onerror=function(msg, file, line, col, errObj){
+	postData=\'we_cmd[msg]=\'+encodeURIComponent(msg);
+	postData+=\'&we_cmd[file]=\'+encodeURIComponent(file);
+	postData+=\'&we_cmd[line]=\'+encodeURIComponent(line);
+	if(col){
+		postData+=\'&we_cmd[col]=\'+encodeURIComponent(col);
+	}
+	if(errObj){
+		postData+=\'&we_cmd[errObj]=\'+encodeURIComponent(errObj.stack);
+	}
+	lcaller=arguments.callee.caller;
+	while(lcaller){
+		postData+=\'&we_cmd[]=\'+encodeURIComponent(lcaller.name);
+		lcaller=lcaller.caller;
+	}
+	postData+=\'&we_cmd[App]=\'+encodeURIComponent(navigator.appName);
+	postData+=\'&we_cmd[Ver]=\'+encodeURIComponent(navigator.appVersion);
+	postData+=\'&we_cmd[UA]=\'+encodeURIComponent(navigator.userAgent);
+	xmlhttp=new XMLHttpRequest();
+	xmlhttp.open(\'POST\',\'' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=TriggerJSError&cns=error\',true);
+	xmlhttp.setRequestHeader(\'Content-type\',\'application/x-www-form-urlencoded\');
+	xmlhttp.send(postData);
+	return true;
+}}catch(e){}';
+		return ($plain ? str_replace("\n", '', $ret) : we_html_element::jsElement($ret));
+	}
+
 	public static function getHtmlInnerHead($title = 'webEdition', $charset = '', $expand = false){
 		if(!$expand){
 			self::headerCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET']));
@@ -655,7 +688,8 @@ abstract class we_html_tools{
 				we_html_element::jsElement(we_base_file::load(JS_PATH . 'attachKeyListener.js')) :
 				we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 				we_html_element::jsScript(JS_DIR . 'attachKeyListener.js')
-			);
+
+			) . self::getJSErrorHandler();
 	}
 
 	static function htmlMetaCtCharset($content, $charset){

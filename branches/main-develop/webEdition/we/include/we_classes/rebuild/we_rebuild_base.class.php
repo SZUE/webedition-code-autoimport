@@ -68,7 +68,7 @@ abstract class we_rebuild_base{
 				$imgdoc = new we_imageDocument();
 				$imgdoc->initByID($data['id']);
 				if($printIt){
-					print ('Rebulding meta data for image: ' . $imgdoc->Path);
+					echo ('Rebulding meta data for image: ' . $imgdoc->Path);
 					flush();
 				}
 
@@ -349,7 +349,7 @@ abstract class we_rebuild_base{
 			$_foo = makeArrayFromCSV($categories);
 			$tmp = array();
 			foreach($_foo as $catID){
-				$tmp [] = ' Category LIKE "%,' . intval($catID) . ',%"';
+				$tmp [] = ' FIND_IN_SET(' . intval($catID) . ',Category)';
 			}
 			$_cat_query = '(' . implode(' ' . ($catAnd ? ' AND ' : ' OR ') . ' ', $tmp) . ')';
 		}
@@ -557,10 +557,10 @@ abstract class we_rebuild_base{
 	}
 
 	private static function getTemplatesOfTemplate($id, &$arr){
-		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . intval($id) . " OR IncludedTemplates LIKE '%," . intval($id) . ",%' " . (empty($arr) ? '' : 'AND ID NOT IN (' . implode($arr) . ')'));
+		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE MasterTemplateID=' . intval($id) . ' OR FIND_IN_SET(' . intval($id) . ',IncludedTemplates) ' . ($arr ? 'AND ID NOT IN (' . implode($arr) . ')' : ''));
 		$foo = $GLOBALS['DB_WE']->getAll(true);
 
-		if(empty($foo)){
+		if(!$foo){
 			return;
 		}
 

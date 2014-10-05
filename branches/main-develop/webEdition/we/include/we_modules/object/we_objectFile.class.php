@@ -268,6 +268,7 @@ class we_objectFile extends we_document{
 		$inputName = 'we_' . $this->Name . '_Language';
 		$_languages = getWeFrontendLanguagesForBackend();
 		$this->setRootDirID(true);
+		$langkeys = array();
 
 		if(LANGLINK_SUPPORT){
 			$htmlzw = we_html_element::htmlBr();
@@ -1149,7 +1150,7 @@ class we_objectFile extends we_document{
 		$extPath = isset($hrefArr['extPath']) ? $hrefArr['extPath'] : '';
 		$int_elem_Name = 'we_' . $this->Name . '_href[' . $nint . ']';
 		$intPath_elem_Name = 'we_' . $this->Name . '_href[' . $nintPath . ']';
-		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']'; //TOFO: should we use #bdid?
+		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']';
 		$ext_elem_Name = 'we_' . $this->Name . '_href[' . $nextPath . ']';
 		switch($type){
 			case we_base_link::TYPE_INT:
@@ -2604,19 +2605,23 @@ class we_objectFile extends we_document{
 						continue;
 					}
 					$name = ($regs[0] == self::TYPE_OBJECT ? 'we_object_' : '') . $regs[1];
+					switch($regs[0]){
+//						case self::TYPE_HREF:
+						case self::TYPE_IMG:
+							$key = 'bdid';
+							break;
+						default:
+							$key = 'dat';
+					}
+
 					$this->elements[$name] = array(
-						'dat' => $db->f($cur["name"]),
+						$key => $db->f($cur["name"]),
 						'type' => $regs[0],
 						'len' => $cur["len"]
 					);
 //						if($regs[0] == "multiobject"){
 //							$this->elements[$name]["class"] = $db->f($tableInfo[$i]["name"]);
 //						}
-					switch($regs[0]){
-						case self::TYPE_HREF:
-						case self::TYPE_IMG:
-							$this->elements[$name]["bdid"] = $db->f($cur["name"]);
-					}
 				}
 			}
 // add variant data if available
@@ -2783,9 +2788,10 @@ class we_objectFile extends we_document{
 			$regs = array();
 			$hrefFields = false;
 			$multiobjectFields = false;
+			$imgFields = false;
 
 			foreach(array_keys($_REQUEST) as $n){
-				if(preg_match('/^we_' . $this->Name . '_(' . self::TYPE_HREF . '|' . self::TYPE_MULTIOBJECT . ')$/', $n, $regs)){
+				if(preg_match('/^we_' . $this->Name . '_(' . self::TYPE_HREF . '|' . self::TYPE_MULTIOBJECT . '|' . self::TYPE_IMG . ')$/', $n, $regs)){
 					${$regs[1] . 'Fields'}|=true;
 				}
 			}
@@ -2801,6 +2807,12 @@ class we_objectFile extends we_document{
 				foreach($hrefs as $k => $v){
 					$href = array_merge($empty, $v);
 					$this->setElement($k, serialize($href), self::TYPE_HREF);
+				}
+			}
+
+			if($imgFields){
+				foreach($_REQUEST['we_' . $this->Name . '_' . self::TYPE_IMG] as $k => $val){
+					$this->setElement($k, $val, self::TYPE_IMG, 'bdid');
 				}
 			}
 

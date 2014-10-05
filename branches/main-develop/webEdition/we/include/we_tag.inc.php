@@ -558,6 +558,10 @@ function we_tag_ifFound(){
 	return isset($GLOBALS['lv']) && $GLOBALS['lv']->anz;
 }
 
+function we_tag_ifCustomerResetPassword($attribs, $content){
+	return !we_tag('ifNotCustomerResetPassword', $attribs, $content);
+}
+
 function we_tag_ifIsNotDomain($attribs){
 	return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || !we_tag('ifIsDomain', $attribs);
 }

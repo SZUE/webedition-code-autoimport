@@ -42,7 +42,7 @@ $newUrl = $arr["scheme"] . "://" . $arr["host"] . ( isset($arr["port"]) ? (":" .
 
 
 //	we also need some functionality here to check if the location of the doc was cahnged
-echo we_html_tools::getHtmlTop();
+echo we_html_tools::getHtmlTop('','','frameset');
 ?>
 <script type="text/javascript"><!--
 
@@ -94,7 +94,7 @@ echo we_html_tools::getHtmlTop();
 			);
 
 			extDocHeader.location = "about:blank";
-			extDocFooter.location = "<?php print WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_footer.php" ?>";
+			extDocFooter.location = "<?php echo WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_footer.php" ?>";
 		}
 	}
 	//-->
@@ -102,11 +102,11 @@ echo we_html_tools::getHtmlTop();
 </head>
 <frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="40,*,40" framespacing="0" border="0" frameborder="NO">
 
-	<frame src="<?php print WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_header.php?filepath=<?php print urlencode($_url); ?>&url=<?php print $newUrl ?>" name="extDocHeader" noresize scrolling="no">
+	<frame src="<?php print WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_header.php?filepath=<?php echo urlencode($_url); ?>&url=<?php echo $newUrl ?>" name="extDocHeader" noresize scrolling="no">
 	<frame onload="if (openedWithWE == 0) {
 				checkDocument();
 			}
-			openedWithWE = 0;" src="<?php print WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_content.php?filepath=<?php print urlencode($_url); ?>&url=<?php print $newUrl ?>&paras=<?php print (isset($parastr) ? urlencode($parastr) : ""); ?>" name="extDocContent" noresize>
-	<frame src="<?php print WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_footer.php" name="extDocFooter" noresize>
+			openedWithWE = 0;" src="<?php echo WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_content.php?filepath=<?php echo urlencode($_url); ?>&url=<?php echo $newUrl ?>&paras=<?php echo (isset($parastr) ? urlencode($parastr) : ""); ?>" name="extDocContent" noresize>
+	<frame src="<?php echo WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_footer.php" name="extDocFooter" noresize>
 </frameset><noframes></noframes>
 </html>

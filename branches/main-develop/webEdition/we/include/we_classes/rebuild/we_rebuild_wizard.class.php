@@ -389,6 +389,8 @@ abstract class we_rebuild_wizard{
 		}
 		switch(we_base_request::_(we_base_request::STRING, "type", "rebuild_documents")){
 			case 'rebuild_documents':
+				$count = 1; //FIXME: we need a solution for static documents with e.g. <we:ifSelf> in navigation
+				break;
 			case 'rebuild_thumbnails':
 				$count = 4;
 				break;
@@ -819,7 +821,7 @@ abstract class we_rebuild_wizard{
 			function we_cmd() {
 				f = document.we_form;
 				var args = "";
-				var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+				var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 				switch (arguments[0]) {
 				case "openDirselector":
 					new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);

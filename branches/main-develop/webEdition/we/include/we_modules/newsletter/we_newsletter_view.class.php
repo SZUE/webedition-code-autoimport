@@ -44,6 +44,7 @@ class we_newsletter_view extends we_modules_view{
 	var $topFrame;
 	var $treeFrame;
 	var $cmdFrame;
+	protected $jsonOnly = false;
 	protected $show_import_box = -1;
 	protected $show_export_box = -1;
 
@@ -331,7 +332,7 @@ parent.document.title = "' . $title . '";
 	*/
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	if(hot == "1" && arguments[0] != "save_newsletter") {
 		if(confirm("' . g_l('modules_newsletter', '[save_changed_newsletter]') . '")) {
@@ -512,7 +513,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	switch (arguments[0]) {
 		case "empty_log":
@@ -561,7 +562,7 @@ function doUnload() {
 function we_cmd() {
 
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	if (arguments[0] != "switchPage") {
 		self.setScrollTo();
@@ -587,7 +588,7 @@ function we_cmd() {
 		case "openNewsletterDirselector":
 			url = "' . WE_MODULES_DIR . 'newsletter/we_dirfs.php?";
 			for(var i = 0; i < arguments.length; i++){
-				url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
+				url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 			}
 			new jsWindow(url,"we_newsletter_dirselector",-1,-1,600,400,true,true,true);
 			break;
@@ -1197,7 +1198,8 @@ function set_state_edit_delete_recipient(control) {
 	}
 
 	function processCommands(){
-		switch(we_base_request::_(we_base_request::STRING, "ncmd")){
+		$ncmd = we_base_request::_(we_base_request::STRING, "ncmd");
+		switch($ncmd){
 			case "new_newsletter":
 				$this->newsletter = new we_newsletter_newsletter();
 				$this->newsletter->Text = g_l('modules_newsletter', '[new_newsletter]');
@@ -1324,14 +1326,14 @@ function set_state_edit_delete_recipient(control) {
 				$newone = false;
 
 				if($this->newsletter->filenameNotValid()){
-					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR));
 					return;
 				}
 
 				if($this->newsletter->ParentID > 0){
 					$weAcResult = $weAcQuery->getItemById($this->newsletter->ParentID, NEWSLETTER_TABLE, array("IsFolder"), false);
 					if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
 					}
 				}
@@ -1362,7 +1364,7 @@ function set_state_edit_delete_recipient(control) {
 								);
 								return;
 							}
-							if(($field = intval(we_base_request::_(we_base_request::STRING, 'block' . $i . '_Field')))){
+							if(($field = we_base_request::_(we_base_request::INT, 'block' . $i . '_Field'))){
 								$weAcResult = $weAcQuery->getItemById($field, TEMPLATES_TABLE, array("IsFolder"));
 								if(!is_array($weAcResult) || !$weAcResult || $weAcResult[0]['IsFolder'] == 1){
 									echo we_html_element::jsElement(
@@ -1681,57 +1683,50 @@ edf.populateGroups();');
 				break;
 
 			case "do_upload_csv":
-				if(isset($_FILES["we_File"])){
-					$we_File = $_FILES["we_File"];
-				}
+			case "do_upload_black":
 				$group = we_base_request::_(we_base_request::INT, "group", 0);
+				$weFileupload = new we_fileupload_include('we_File');
+				if(!$weFileupload->processFileRequest()){
+					//ajax resonse allready written: return here to send response only
+					$this->jsonOnly = true;
 
-				if(isset($we_File)){
-					$unique = we_base_file::getUniqueId();
-					$tempName = TEMP_PATH . $unique;
+					return;
+				}
 
-					if(move_uploaded_file($we_File["tmp_name"], $tempName)){
-						$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $tempName);
-						print we_html_element::jsElement('
+				//set header we avoided when sending JSON only
+				we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
+				print we_html_tools::getHtmlTop('newsletter') . STYLESHEET;
+
+				//we have finished upload or we are in fallback mode
+				$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $weFileupload->getFileNameTemp());
+				if(!$tempName && isset($_FILES["we_File"]) && $_FILES["we_File"]["size"]){
+					//fallback or legacy mode
+					$we_File = $_FILES["we_File"];
+					$tempName = TEMP_PATH . we_base_file::getUniqueId();
+
+					if(!move_uploaded_file($we_File["tmp_name"], $tempName)){
+						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[upload_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
+						return;
+					}
+					$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $tempName);
+				}
+
+				//print next command
+				print we_html_element::jsElement($ncmd == 'do_upload_csv' ? '
 opener.document.we_form.csv_file' . $group . '.value="' . $tempName . '";
 opener.we_cmd("import_csv");
-self.close();');
-					} else {
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[upload_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
-					}
-				}
-				break;
-
-			case "do_upload_black":
-				if(isset($_FILES["we_File"])){
-					$we_File = $_FILES["we_File"];
-				}
-				if(isset($we_File)){
-					$unique = we_base_file::getUniqueId();
-					$tempName = TEMP_PATH . $unique;
-
-					if(move_uploaded_file($we_File["tmp_name"], $tempName)){
-						$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $tempName);
-						print we_html_element::jsElement('
+self.close();' : '
 opener.document.we_form.csv_file.value="' . $tempName . '";
 opener.document.we_form.sib.value=0;
 opener.we_cmd("import_black");
 self.close();');
-					} else {
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[upload_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
-					}
-				}
 				break;
 
 			case "save_email_file":
 				$csv_file = we_base_request::_(we_base_request::FILE, "csv_file", '');
 				$nrid = we_base_request::_(we_base_request::INT, "nrid", '');
 				$email = we_base_request::_(we_base_request::EMAIL, "email", '');
-				$htmlmail = we_base_request::_(we_base_request::RAW, "htmlmail", '');
+				$htmlmail = we_base_request::_(we_base_request::BOOL, "htmlmail", '');
 				$salutation = we_base_request::_(we_base_request::STRING, "salutation", '');
 				$title = we_base_request::_(we_base_request::STRING, "title", '');
 				$firstname = we_base_request::_(we_base_request::STRING, "firstname", '');
@@ -1830,7 +1825,7 @@ self.close();');
 						foreach($fields_names as $field){
 							$varname = 'filter_' . $field . '_' . $gkey . '_' . $i;
 
-							if(($tmp = we_base_request::_(we_base_request::RAW, $varname)) !== false){
+							if(($tmp = we_base_request::_(we_base_request::RAW_CHECKED, $varname)) !== false){
 								$new[$field] = $tmp;
 							}
 						}
@@ -1877,6 +1872,10 @@ self.close();');
 		);
 		$ret["min"] -= ($ret["hour"] * 60);
 		return $ret;
+	}
+
+	public function isJsonOnly(){
+		return $this->jsonOnly;
 	}
 
 	/**
@@ -2062,8 +2061,13 @@ self.close();');
 		if($hm){
 			if($block->Type != we_newsletter_block::URL){
 				$spacer = '[\040|\n|\t|\r]*';
+
 				we_document::parseInternalLinks($content, 0);
 
+				$urlReplace = we_folder::getUrlReplacements($this->db, false, true);
+				if($urlReplace){
+					$content = preg_replace('-(["\'])//-', '\\1' . $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
+				}
 				$content = preg_replace(array(
 					'-(<[^>]+src' . $spacer . '=' . $spacer . '[\'"]?)(/)-i',
 					'-(<[^>]+href' . $spacer . '=' . $spacer . '[\'"]?)(/)-i',
@@ -2079,6 +2083,10 @@ self.close();');
 					), $content);
 			}
 		} else {
+			$urlReplace = we_folder::getUrlReplacements($this->db, true, true);
+			if($urlReplace){
+				$content = str_replace('//', $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
+			}
 			$newplain = preg_replace(array('|<br */? *>|', '|<title>.*</title>|i',), "\n", $content);
 			if($block->Type != we_newsletter_block::TEXT){
 				$newplain = strip_tags($newplain);
@@ -2174,11 +2182,11 @@ self.close();');
 	function getAttachments($group){
 		$atts = array();
 		$dbtmp = new DB_WE();
-		$this->db->query('SELECT LinkID FROM ' . NEWSLETTER_BLOCK_TABLE . ' WHERE NewsletterID=' . $this->newsletter->ID . ' AND Type=' . we_newsletter_block::ATTACHMENT . ($group ? " AND Groups LIKE '%," . $this->db->escape($group) . ",%'" : ''));
+		$this->db->query('SELECT LinkID FROM ' . NEWSLETTER_BLOCK_TABLE . ' WHERE NewsletterID=' . $this->newsletter->ID . ' AND Type=' . we_newsletter_block::ATTACHMENT . ($group ? ' AND FIND_IN_SET("' . $this->db->escape($group) . '",Groups)' : ''));
 
 		while($this->db->next_record()){
 			if($this->db->f("LinkID")){
-				$path = f('SELECT Path FROM ' . FILE_TABLE . " WHERE ID=" . $this->db->f("LinkID"), "Path", $dbtmp);
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . $this->db->f("LinkID"), '', $dbtmp);
 
 				if($path){
 					$atts[] = $_SERVER['DOCUMENT_ROOT'] . $path;
@@ -2411,22 +2419,14 @@ self.close();');
 			$ret[$db->f("pref_name")] = $db->f("pref_value");
 		}
 		//make sure blacklist is correct
-		$tmp = explode(',', $ret['black_list']);
-		if(is_array($tmp)){
-			foreach($tmp as &$t){
-				$t = trim($t);
-			}
-		}
-		$ret['black_list'] = implode(',', $tmp);
+		$ret['black_list'] = implode(',', array_map('trim', explode(',', $ret['black_list'])));
 
 		return $ret;
 	}
 
 	function putSetting($name, $value){
 		$db = new DB_WE();
-		$name = $db->escape($name);
-		$value = $db->escape($value);
-		$db->query('INSERT IGNORE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => $name, 'pref_value' => $value)));
+		$db->query('INSERT IGNORE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => $name, pref_value => $value)));
 	}
 
 	function saveSettings(){

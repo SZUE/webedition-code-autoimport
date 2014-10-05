@@ -116,21 +116,24 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	}
 
 	private static function getSessionID($sessID){
-		if($sessID && preg_match('|^([a-f0-9]){32,40}$|i', $sessID)){
-			return $sessID;
-		}
-		session_regenerate_id();
-		$cnt = ini_get('session.hash_bits_per_character');
-		if($cnt == 4){//this is easy, since this is set as hex
-			//a 4 bit value didn't match, we neeed a new id
-			return session_id();
+		if($sessID){
+			if(preg_match('|^([a-f0-9]){32,40}$|i', $sessID)){
+				return $sessID;
+			}
+			$cnt = ini_get('session.hash_bits_per_character');
+		} else {
+			session_regenerate_id();
+			$cnt = ini_get('session.hash_bits_per_character');
+			if($cnt == 4){//this is easy, since this is set as hex
+				//a 4 bit value didn't match, we neeed a new id
+				return session_id();
+			}
 		}
 		//we have to deal with bad php settings
 		static $sessStr = array(
 			5 => '0123456789abcdefghijklmnopqrstuv',
 			6 => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-,',
 		);
-		$sessID = session_id();
 		$newID = '';
 		$tmp = '';
 		for($pos = 0; $pos < strlen($sessID); $pos++){

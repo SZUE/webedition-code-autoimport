@@ -59,7 +59,7 @@ class weModelBase{
 	/**
 	 * Load entry from database
 	 */
-	function load($id = 0){
+	function load($id = 0, $isAdvanced = false){
 		if($id){
 			$this->ID = $id;
 		}
@@ -72,7 +72,7 @@ class weModelBase{
 
 			if(($data = getHash('SELECT * FROM `' . $this->table . '` WHERE ' . $this->getKeyWhere(), $this->db, MYSQL_ASSOC))){
 				foreach($data as $fieldName => $value){
-					if(in_array($fieldName, $this->persistent_slots)){
+					if(($isAdvanced ? isset($this->persistent_slots[$fieldName]) : in_array($fieldName, $this->persistent_slots))){
 						$this->{$fieldName} = $value;
 					}
 				}
@@ -86,13 +86,13 @@ class weModelBase{
 	/**
 	 * save entry in database
 	 */
-	function save($force_new = false){
+	function save($force_new = false, $isAdvanced = false){
 		$sets = array();
 		if($force_new){
 			$this->isnew = true;
 		}
-		foreach($this->persistent_slots as $val){
-			//if(!in_array($val,$this->keys))
+		foreach($this->persistent_slots as $key => $val){
+			$val = ($isAdvanced ? $key : $val);
 			if(isset($this->{$val})){
 				$sets[$val] = is_array($this->{$val}) ? serialize($this->{$val}) : $this->{$val};
 			}

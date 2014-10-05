@@ -130,7 +130,7 @@ print STYLESHEET;
 		var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 
 		for (var i = 0; i < arguments.length; i++) {
-			url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+			url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
 			if (i < (arguments.length - 1)) {
 				url += "&";
 			}
@@ -180,9 +180,9 @@ print STYLESHEET;
 		w = Math.max(w, 680);
 		var iframeWidth = w - 52;
 		var validiframe = document.getElementById("validation");
-		validiframe.style.width = iframeWidth;
+		validiframe.style.width = iframeWidth + "px";
 		if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
-			validiframe.style.height = h - 185;
+			validiframe.style.height = (h - 185) + "px";
 		}
 	}
 //-->
@@ -215,4 +215,4 @@ $body = '<form name="we_form">'
 	'</form>';
 
 echo we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'), $body) .
-	'</html>';
+ '</html>';

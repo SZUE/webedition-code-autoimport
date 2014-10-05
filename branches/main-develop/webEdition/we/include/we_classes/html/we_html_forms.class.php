@@ -161,7 +161,7 @@ abstract class we_html_forms{
 
 		//first prepare stylesheets from textarea-attribute editorcss (templates) or class-css (classes): csv of ids. then (if document) get document-css, defined by we:css
 
-		$contentCss = array_filter(array_merge((isset($GLOBALS['we_doc']) && !$ignoredocumentcss ? $GLOBALS['we_doc']->getDocumentCss() : array()), $editorcss));
+		$contentCss = array_filter(array_merge((isset($GLOBALS['we_doc'])&&  is_object($GLOBALS['we_doc']) && !$ignoredocumentcss ? $GLOBALS['we_doc']->getDocumentCss() : array()), $editorcss));
 		$contentCss = ($contentCss ? implode('?' . time() . ',', $contentCss) . '?' . time() : '');
 
 		if($buttonpos){

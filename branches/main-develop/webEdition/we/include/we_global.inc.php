@@ -57,7 +57,7 @@ function makePIDTail($pid, $cid, we_database_base $db = null, $table = FILE_TABL
 		$pid_tail[] = OBJECT_X_TABLE . intval($cid) . '.OF_Workspaces=""';
 	}
 	foreach($parentIDs as $pid){
-		$pid_tail[] = OBJECT_X_TABLE . intval($cid) . '.OF_Workspaces LIKE "%,' . intval($pid) . ',%" OR ' . OBJECT_X_TABLE . intval($cid) . '.OF_ExtraWorkspacesSelected LIKE "%,' . intval($pid) . ',%"';
+		$pid_tail[] = 'FIND_IN_SET(' . intval($pid) . ',' . OBJECT_X_TABLE . intval($cid) . '.OF_Workspaces) OR FIND_IN_SET(' . intval($pid) . ',' . OBJECT_X_TABLE . intval($cid) . '.OF_ExtraWorkspacesSelected)';
 	}
 	return ($pid_tail ? ' (' . implode(' OR ', $pid_tail) . ') ' : 1);
 }
@@ -936,7 +936,7 @@ function CheckAndConvertISObackend($utf8data){
 
 /* * internal function - do not call */
 
-function g_l_encodeArray($tmp){
+function g_l_encodeArray($tmp){//FIXME: move to closure as of php 5.3
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $GLOBALS['WE_BACKENDCHARSET']));
 	return (is_array($tmp) ?
 			array_map('g_l_encodeArray', $tmp) :
@@ -1066,6 +1066,7 @@ function we_templateHead($fullHeader = false){
 	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' : '') . STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY .
 	we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() .
 	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
+	we_html_tools::getJSErrorHandler() .
 	we_html_element::jsElement('parent.openedWithWE = 1;');
 	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	if($fullHeader){
@@ -1112,6 +1113,9 @@ function we_templatePost(){
 			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
 			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
 		){ //is set to Post or not set (new default)
+			if(function_exists('fastcgi_finish_request')){
+				fastcgi_finish_request();
+			}
 			session_write_close();
 			we_schedpro::trigger_schedule();
 		}

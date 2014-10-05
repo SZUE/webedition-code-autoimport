@@ -163,6 +163,9 @@ if(is_dir(WEBEDITION_PATH . 'we/cache')){
 if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
 	we_base_file::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
 }
+if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller.php')){
+	we_base_file::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller.php', true);
+}
 
 we_base_file::cleanTempFiles(true);
 cleanWEZendCache();

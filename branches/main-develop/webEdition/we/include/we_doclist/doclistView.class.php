@@ -141,7 +141,7 @@ class doclistView{
         var newString = "";
         for(var i = 0; i < document.we_form.elements.length; i++) {
           newString = document.we_form.elements[i].name;
-          args += "&we_cmd["+escape(newString)+"]="+escape(document.we_form.elements[i].value);
+          args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
         }
         var scroll = document.getElementById("scrollContent_doclist");
         scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
@@ -153,7 +153,7 @@ class doclistView{
         var newString = "";
         for(var i = 0; i < document.we_form.elements.length; i++) {
           newString = document.we_form.elements[i].name;
-          args += "&we_cmd["+escape(newString)+"]="+escape(document.we_form.elements[i].value);
+          args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
         }
           YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=top&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
       }
@@ -163,7 +163,7 @@ class doclistView{
         var newString = "";
         for(var i = 0; i < document.we_form.elements.length; i++) {
           newString = document.we_form.elements[i].name;
-          args += "&we_cmd["+escape(newString)+"]="+escape(document.we_form.elements[i].value);
+          args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
         }
           YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=bottom&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
       }
@@ -173,7 +173,7 @@ class doclistView{
         var newString = "";
         for(var i = 0; i < document.we_form.elements.length; i++) {
           newString = document.we_form.elements[i].name;
-          args += "&we_cmd["+escape(newString)+"]="+escape(document.we_form.elements[i].value);
+          args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
         }
         YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackgetMouseOverDivs, "protocol=json&cns=doclist&cmd=GetMouseOverDivs&whichsearch=doclist&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
       }
@@ -724,7 +724,7 @@ class doclistView{
 		    	check += checkboxes[i].value;
 			}
 		}
-		args += "&we_cmd[0]="+escape(check);
+		args += "&we_cmd[0]="+encodeURI(check);
 		var scroll = document.getElementById("resetBusy");
 		scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
 
@@ -1018,13 +1018,13 @@ class doclistView{
 				$whereQuery = "1 " . $where;
 				switch($_table){
 					case FILE_TABLE:
-						$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . intval($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%'))";
+						$whereQuery .= ' AND ((RestrictOwners=0 OR RestrictOwners=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners)))';
 						break;
 					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-						$whereQuery .= " AND ((RestrictOwners='0' OR RestrictOwners= '" . intval($_SESSION["user"]["ID"]) . "') OR (Owners LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%'))";
+						$whereQuery .= ' AND ((RestrictOwners=0 OR RestrictOwners=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners)))';
 						break;
 					case (defined('OBJECT_TABLE') ? OBJECT_TABLE : OBJECT_TABLE):
-						$whereQuery .= "AND ((RestrictUsers='0' OR RestrictUsers= '" . intval($_SESSION["user"]["ID"]) . "') OR (Users LIKE '%," . intval($_SESSION["user"]["ID"]) . ",%')) ";
+						$whereQuery .= 'AND ((RestrictUsers=0 OR RestrictUsers= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))) ';
 						break;
 				}
 
@@ -1164,18 +1164,16 @@ class doclistView{
 					$imageViewPopup = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
 				}
 
-				$content [$f][0]["dat"] = '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result [$f]["Text"] . '">' . $imageView . '</a>';
-
 				$creator = $_result [$f]["CreatorID"] ? id_to_path($_result [$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', "[nobody]");
 
 				if($_result [$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
-					$templateID = ($_result [$f]["Published"] >= $_result [$f]["ModDate"] && $_result [$f]["Published"] ?
+					$templateID = ($_result [$f]["Published"] >= $_result[$f]["ModDate"] && $_result[$f]["Published"] ?
 							$_result [$f]["TemplateID"] :
 							$_result [$f]["temp_template_id"]);
 
 					$templateText = g_l('searchtool', "[no_template]");
 					if($templateID){
-						$DB_WE->query("SELECT ID, Text FROM " . TEMPLATES_TABLE . " WHERE ID = " . intval($templateID));
+						$DB_WE->query('SELECT ID, Text FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($templateID));
 						while($DB_WE->next_record()){
 							$templateText = we_util_Strings::shortenPath($DB_WE->f('Text'), 20) . " (ID=" . $DB_WE->f('ID') . ")";
 						}
@@ -1193,32 +1191,33 @@ class doclistView{
 				for($i = 0; $i < $_fieldcount; $i++){
 					$_tagName = $_defined_fields [$i]["tag"];
 
-					if(we_exim_contentProvider::isBinary($_result [$f]["docID"])){
+					if(we_exim_contentProvider::isBinary($_result[$f]["docID"])){
 						$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result [$f]["docID"]) . " AND b.Name='" . $DB_WE->escape($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
 						$metafields [$_tagName] = "";
 						while($DB_WE->next_record()){
-							$metafields [$_tagName] = we_util_Strings::shortenPath($DB_WE->f('Dat'), 45);
+							$metafields[$_tagName] = we_util_Strings::shortenPath($DB_WE->f('Dat'), 45);
 						}
 					}
 				}
 
 				$content[$f] = array(
-					1 => array("dat" => we_util_Strings::shortenPath($_result [$f]["SiteTitle"], 17)),
-					2 => array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';"  title="' . $_result [$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result [$f]["Text"], 17) . '</u></a>'),
-					3 => array("dat" => '<nobr>' . ($_result [$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f]["CreationDate"]) : "-") . '</nobr>'),
-					4 => array("dat" => '<nobr>' . ($_result [$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f]["ModDate"]) : "-") . '</nobr>'),
-					5 => array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result [$f]["Text"] . '">' . $imageViewPopup . '</a>'),
-					6 => array("dat" => $filesize),
-					7 => array("dat" => $imagesize [0] . " x " . $imagesize [1]),
-					8 => array("dat" => we_util_Strings::shortenPath(g_l('contentTypes', '[' . ($_result [$f]['ContentType']) . ']'), 22)),
-					9 => array("dat" => '<span style="color:' . $fontColor . ';">' . we_util_Strings::shortenPath($_result [$f]["Text"], 30) . '</span>'),
-					10 => array("dat" => we_util_Strings::shortenPath($_result [$f]["SiteTitle"], 45)),
-					11 => array("dat" => we_util_Strings::shortenPath($_result [$f]["Description"], 100)),
-					12 => array("dat" => $_result [$f]['ContentType']),
-					13 => array("dat" => we_util_Strings::shortenPath($creator, 22)),
-					14 => array("dat" => $templateText),
-					15 => array("dat" => $metafields),
-					16 => array("dat" => $_result [$f]["docID"]),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result [$f]["Text"] . '">' . $imageView . '</a>'),
+					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 17)),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';"  title="' . $_result [$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result [$f]["Text"], 17) . '</u></a>'),
+					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f]["CreationDate"]) : "-") . '</nobr>'),
+					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f]["ModDate"]) : "-") . '</nobr>'),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result [$f]["Text"] . '">' . $imageViewPopup . '</a>'),
+					array("dat" => $filesize),
+					array("dat" => $imagesize [0] . " x " . $imagesize [1]),
+					array("dat" => we_util_Strings::shortenPath(g_l('contentTypes', '[' . ($_result [$f]['ContentType']) . ']'), 22)),
+					array("dat" => '<span style="color:' . $fontColor . ';">' . we_util_Strings::shortenPath($_result [$f]["Text"], 30) . '</span>'),
+					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 45)),
+					array("dat" => we_util_Strings::shortenPath($_result[$f]["Description"], 100)),
+					array("dat" => $_result[$f]['ContentType']),
+					array("dat" => we_util_Strings::shortenPath($creator, 22)),
+					array("dat" => $templateText),
+					array("dat" => $metafields),
+					array("dat" => $_result[$f]["docID"]),
 				);
 			}
 		}

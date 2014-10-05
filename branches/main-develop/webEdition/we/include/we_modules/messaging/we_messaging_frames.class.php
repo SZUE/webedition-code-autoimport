@@ -281,7 +281,7 @@ function we_cmd() {
 var args = "";
 var url = "' . WEBEDITION_DIR . 'we_cmd.php?we_transaction=' . $this->transaction . '&";
 for(var i = 0; i < arguments.length; i++) {
-	url += "we_cmd["+i+"]="+escape(arguments[i]);
+	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
 	if(i < (arguments.length - 1)) {
 		url += "&";
 	}
@@ -390,7 +390,7 @@ function drawEintraege() {
 	fr.open();
 	fr.writeln("<html><head>");
 	fr.writeln("<script type=\"text/javascript\"><!--");
-
+	fr.writeln("' . we_html_tools::getJSErrorHandler(true) . '");
 	fr.writeln("clickCount=0;");
 	fr.writeln("wasdblclick=0;");
 	fr.writeln("tout=null");

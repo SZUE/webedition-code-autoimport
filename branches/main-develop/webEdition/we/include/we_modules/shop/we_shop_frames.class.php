@@ -46,33 +46,34 @@ class we_shop_frames extends we_modules_frame{
 			var menuDaten = new container();
 			var count = 0;
 			var folder = 0;
-			var table = "<?php print SHOP_TABLE; ?>";
+			var table = "<?php echo SHOP_TABLE; ?>";
 
 			function drawEintraege() {
 				fr = top.content.tree.window.document;//TODO: when frame tree is eliminated change adress to ...getElementById('tree')!!!
 				fr.open();
 				fr.writeln("<html><head>");
 				fr.writeln("<script type=\"text/javascript\">");
+				fr.writeln("<?php echo we_html_tools::getJSErrorHandler(true); ?>");
 				fr.writeln("clickCount=0;");
 				fr.writeln("wasdblclick=0;");
 				fr.writeln("tout=null");
 				fr.writeln("function doClick(id,ct,table){");
-				fr.writeln("top.content.editor.location='<?php print WE_SHOP_MODULE_DIR ?>edit_shop_frameset.php?pnt=editor&bid='+id;");
+				fr.writeln("top.content.editor.location='<?php echo WE_SHOP_MODULE_DIR ?>edit_shop_frameset.php?pnt=editor&bid='+id;");
 				fr.writeln("}");
 				fr.writeln("function doFolderClick(id,ct,table){");
-				fr.writeln("top.content.editor.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&mid='+id;");
+				fr.writeln("top.content.editor.location='<?php echo WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&mid='+id;");
 				fr.writeln("}");
 
 				fr.writeln("function doYearClick(yearView){");
-				fr.writeln("top.content.editor.location='<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&ViewYear='+yearView;");
+				fr.writeln("top.content.editor.location='<?php echo WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&ViewYear='+yearView;");
 				fr.writeln("}");
 
 				fr.writeln("</" + "script>");
-				fr.writeln('<?php print STYLESHEET_SCRIPT; ?>');
+				fr.writeln('<?php echo STYLESHEET_SCRIPT; ?>');
 				fr.write("</head>");
 				fr.write("<body bgcolor=\"#F3F7FF\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" leftmargin=\"5\" topmargin=\"0\" marginheight=\"0\" marginwidth=\"5\">");
 				fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\"><nobr>");
-				fr.write("<tr><td class=\"tree\"><nobr><a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"<?php echo g_l('modules_shop', '[treeYearClick]'); ?>\" ><?php print g_l('modules_shop', '[treeYear]'); ?>: <strong>" + top.yearshop + " </strong></a> <br/>");
+				fr.write("<tr><td class=\"tree\"><nobr><a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"<?php echo g_l('modules_shop', '[treeYearClick]'); ?>\" ><?php echo g_l('modules_shop', '[treeYear]'); ?>: <strong>" + top.yearshop + " </strong></a> <br/>");
 
 				zeichne(0, "");
 				fr.write("</nobr></td></tr></table>");
@@ -87,16 +88,16 @@ class we_shop_frames extends we_modules_frame{
 					fr.write(zweigEintrag);
 					if (nf[ai].typ === 'shop') {
 						if (ai === nf.laenge) {
-							fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzungend.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
+							fr.write("&nbsp;&nbsp;<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>kreuzungend.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
 						} else {
-							fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
+							fr.write("&nbsp;&nbsp;<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
 						}
 		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?> // make  in tree clickable
 							if (nf[ai].name !== -1) {
 								fr.write("<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 							}
 		<?php } ?>
-						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
+						fr.write("<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
 		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?>
 							fr.write("</a>");
 		<?php } ?>
@@ -117,7 +118,7 @@ class we_shop_frames extends we_modules_frame{
 						var zusatz = (ai === nf.laenge) ? "end" : "";
 
 						if (nf[ai].offen === 0) {
-							fr.write("&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" border=0><img src=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[open_statustext]") ?>\"></a>");
+							fr.write("&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" border=0><img src=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php echo g_l('tree', "[open_statustext]") ?>\"></a>");
 							var zusatz2 = "";
 						} else {
 							fr.write("&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" border=0><img src=<?php print TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[close_statustext]") ?>\"></a>");
@@ -409,28 +410,24 @@ function we_cmd() {
 
 		');
 
-		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
-		$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db);
+		//	$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
+		//	$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db);
 		$this->db->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
 
 		$headline = $this->db->next_record() ? '<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $this->db->f("IntOrderID") . ',\'shop\',\'' . SHOP_TABLE . '\');">' . sprintf(g_l('modules_shop', '[lastOrder]'), $this->db->f("IntOrderID"), $this->db->f("orddate")) . '</a>' : '';
 
-		// grep the last element from the year-set, wich is the current year
-		//$yearTrans = f('SELECT DATE_FORMAT(DateOrder,"%Y") AS DateOrd FROM ' . SHOP_TABLE . ' ORDER BY DateOrd DESC LIMIT 1','DateOrd',$this->db);
-		// print $yearTrans;
 		/// config
 		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $this->db));
 		for($i = 0; $i <= 3; $i++){
 			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 		}
 		$fe = explode(',', $feldnamen[3]);
-		if(empty($classid)){
-			$classid = $fe[0];
-		}
+
+		$classid = $fe[0];
+
 
 		/* TODO: we have this or similar code at least four times!! */
 
-		//$resultO = count($fe);
 		$resultO = array_shift($fe);
 
 		// wether the resultset ist empty?
@@ -455,7 +452,7 @@ function we_cmd() {
 
 		if($headline){
 			$iconBarTable->addCol();
-			$iconBarTable->setCol(0, $c++, array('align' => 'right', 'class' => 'header_shop'), '<span style="margin-left:15px">' . @$headline . '</span>');
+			$iconBarTable->setCol(0, $c++, array('align' => 'right', 'class' => 'header_shop'), '<span style="margin-left:15px">' . $headline . '</span>');
 		}
 
 		$body = we_html_element::htmlBody(array('background' => IMAGE_DIR . 'backgrounds/iconbarBack.gif', 'marginwidth' => 0, 'topmargin' => 5, 'marginheight' => 5, 'leftmargin' => 0), $iconBarTable->getHTML());
@@ -474,7 +471,6 @@ function we_cmd() {
 			return $this->getHTMLEditorTop();
 		}
 
-		//$DB_WE = $this->db; //TODO: why does it not work without this?
 		//do what have been done in edit_shop_editorFrameset before
 
 		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
@@ -504,7 +500,7 @@ function we_cmd() {
 
 	function getHTMLEditorTop(){// TODO: merge getHTMLRight and getHTMLRightTop
 		$DB_WE = $this->db;
-		require_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php');
+
 		$home = we_base_request::_(we_base_request::BOOL, "home");
 		$mid = we_base_request::_(we_base_request::INT, "mid", 0);
 		$bid = we_base_request::_(we_base_request::INT, "bid", 0);
@@ -516,10 +512,9 @@ function we_cmd() {
 		}
 		$fe = explode(',', $feldnamen[3]);
 
-		$classid = $classid ? $classid : $fe[0];
+		$classid = $fe[0];
 
 
-		// $resultO = count ($fe);
 		$resultO = array_shift($fe);
 
 		// wether the resultset ist empty?
@@ -563,8 +558,8 @@ function we_cmd() {
 		$hash = getHash('SELECT IntCustomerID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") AS d FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, $DB_WE);
 		$cid = $hash['IntCustomerID'];
 		$cdat = $hash['d'];
-		$order = getHash('SELECT IntOrderID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") as orddate FROM ' . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC LIMIT 1', $DB_WE);
-		$headline = ($order ? sprintf(g_l('modules_shop', '[lastOrder]'), $order["IntOrderID"], $order["orddate"]) : '');
+		//$order = getHash('SELECT IntOrderID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") as orddate FROM ' . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC LIMIT 1', $DB_WE);
+		//$headline = ($order ? sprintf(g_l('modules_shop', '[lastOrder]'), $order["IntOrderID"], $order["orddate"]) : '');
 
 		$we_tabs = new we_tabs();
 
@@ -604,11 +599,10 @@ top.content.hloaded = 1;
 
 	function getHTMLEditorHeaderTop(){
 		$DB_WE = $this->db;
-		require_once(WE_MODULES_PATH . 'shop/handle_shop_dbitemConnect.php'); //TODO: make function out of this: do we need it or does the following code the same?
 
-		$yid = we_base_request::_(we_base_request::INT, "ViewYear", date("Y"));
-		$bid = we_base_request::_(we_base_request::INT, "bid", 0);
-		$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), "IntCustomerID", $this->db);
+		//$yid = we_base_request::_(we_base_request::INT, "ViewYear", date("Y"));
+		//$bid = we_base_request::_(we_base_request::INT, "bid", 0);
+		//$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), "IntCustomerID", $this->db);
 		$this->db->query("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
 		$headline = ($this->db->next_record() ? sprintf(g_l('modules_shop', '[lastOrder]'), $this->db->f("IntOrderID"), $this->db->f("orddate")) : '');
 
@@ -616,8 +610,7 @@ top.content.hloaded = 1;
 		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $DB_WE));
 		$fe = isset($feldnamen[3]) ? explode(",", $feldnamen[3]) : array(0);
 
-		$classid = $classid ? $classid : $fe[0];
-		//$resultO = count($fe);
+		$classid = $fe[0];
 		$resultO = array_shift($fe);
 
 		// wether the resultset ist empty?
@@ -626,14 +619,7 @@ top.content.hloaded = 1;
 		// grep the last element from the year-set, wich is the current year
 		$yearTrans = f('SELECT DATE_FORMAT(DateOrder,"%Y") AS DateOrd FROM ' . SHOP_TABLE . ' ORDER BY DateOrd DESC LIMIT 1', 'DateOrd', $this->db);
 
-		/*
-		  $this->db->query("SELECT COUNT(".SHOP_TABLE.".IntID) as db FROM ".SHOP_TABLE." WHERE YEAR(".SHOP_TABLE.".DateOrder) = $yid ");
-		  while($this->db->next_record()){
-		  $entries = $this->db->f("db");
 
-		  }
-		 */
-		//print $entries;
 		$we_tabs = new we_tabs();
 		if(isset($_REQUEST["mid"]) && $_REQUEST["mid"]){
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][overview]"), we_tab::ACTIVE, "//"));

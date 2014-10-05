@@ -309,7 +309,7 @@ function deleteEntry(){
 		if (todel) {
 			todel = "," + todel;
 		}
-		top.fscmd.location.replace(top.queryString(' . self::DEL . ',top.currentID)+"&todel="+escape(todel));
+		top.fscmd.location.replace(top.queryString(' . self::DEL . ',top.currentID)+"&todel="+encodeURI(todel));
 		if(top.fsvalues) top.fsvalues.location.replace(top.queryString(' . self::PROPERTIES . ',0));
 		top.fsheader.disableDelBut();
 	}
@@ -626,8 +626,9 @@ function setDir(id){
 		$db = $db ? $db : new DB_WE();
 		$db->query('SELECT ID,IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($id));
 		$updates = $db->getAllFirst(false);
+		$path = f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($id));
 		foreach($updates as $curId => $IsFolder){
-			$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT((SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($id) . '),"/",Text) WHERE ID=' . $curId);
+			$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("' . $path . '","/",Text) WHERE ID=' . $curId);
 			if($IsFolder){
 				$this->renameChildrenPath($curId, $db);
 			}
@@ -639,10 +640,10 @@ function setDir(id){
 		if($IsDir){
 			return $this->DirInUse($id, $db);
 		}
-		if(f('SELECT 1  FROM ' . FILE_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' OR temp_category like '%," . intval($id) . ",%' LIMIT 1", '', $db)){
+		if(f('SELECT 1  FROM ' . FILE_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) OR FIND_IN_SET(' . intval($id) . ',temp_category) LIMIT 1', '', $db)){
 			return true;
 		}
-		if(defined('OBJECT_TABLE') && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . " WHERE Category LIKE '%," . intval($id) . ",%' LIMIT 1", '', $db)){
+		if(defined('OBJECT_TABLE') && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) LIMIT 1', '', $db)){
 			return true;
 		}
 
@@ -954,7 +955,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		STYLESHEET . we_html_element::jsScript(JS_DIR . 'we_textarea.js') . we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 function we_cmd(){
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	switch (arguments[0]){
 		case "openSelector":
@@ -984,7 +985,7 @@ function we_checkName() {
 		(isset($yuiSuggest) ?
 			$yuiSuggest->getYuiCss() .
 			$yuiSuggest->getYuiJs() : '') .
-		'</body></html>'; 
+		'</body></html>';
 	}
 
 }

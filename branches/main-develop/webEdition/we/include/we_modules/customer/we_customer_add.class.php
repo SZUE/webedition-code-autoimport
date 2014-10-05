@@ -183,7 +183,7 @@ function doUnload() {
 
 function we_cmd(){
 	var args = "";
-	var url = "' . $pob->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . $pob->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	switch (arguments[0]) {
 
@@ -247,7 +247,7 @@ function doUnload() {
 
 function we_cmd(){
 	var args = "";
-	var url = "' . $pob->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . $pob->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	if(document.we_form.mode.value=="1") transferDateFields();
 	switch (arguments[0]) {
 		case "selectBranch":

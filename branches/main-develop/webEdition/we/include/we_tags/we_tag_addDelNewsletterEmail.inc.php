@@ -98,7 +98,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 	if($isSubscribe){
 		$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_SUCCESS;
 		$err = we_newsletter_base::STATUS_SUCCESS;
-		$f = getNewsletterFields(we_base_request::_(we_base_request::STRING, 'confirmID', 0), $err, we_base_request::_(we_base_request::RAW, 'mail', '')); //FIXME: use data from above
+		$f = getNewsletterFields(we_base_request::_(we_base_request::STRING, 'confirmID', 0), $err, we_base_request::_(we_base_request::EMAIL, 'mail', '')); //FIXME: use data from above
 		// Setting Globals FOR WE-Tags
 		$GLOBALS['WE_NEWSLETTER_EMAIL'] = isset($f['subscribe_mail']) ? $f['subscribe_mail'] : '';
 		$GLOBALS['WE_SALUTATION'] = isset($f['subscribe_salutation']) ? $f['subscribe_salutation'] : '';
@@ -141,8 +141,11 @@ function we_tag_addDelNewsletterEmail($attribs){
 						if(empty($lists)){// subscriber exists in all lists
 							$emailExistsInOneOfTheLists = true;
 						}
+						// #5589 end
+					} else {
+						$lists = $abos; //#9002
 					}
-					// #5589 end
+
 
 					break;
 				case 'csv':
@@ -206,9 +209,14 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$port = $use_https_refer ? 443 : 80;
 				$basehref = $protocol . $_SERVER['SERVER_NAME'] . ':' . $port;
 
+				$cnt = 0;
 				$confirmLink = ($id ? id_to_path($id, FILE_TABLE) : $_SERVER['SCRIPT_NAME']) . '?confirmID=' . $confirmID . '&mail=' . rawurlencode($f['subscribe_mail']);
+				$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true, true);
+				if($urlReplace){
+					$confirmLink = str_replace('//', $protocol, preg_replace($urlReplace, array_keys($urlReplace), $confirmLink, -1, $cnt));
+				}
 
-				$confirmLink = $protocol . $_SERVER['SERVER_NAME'] . (($port && ($port != 80)) ? ':' . $port : '') . $confirmLink;
+				$confirmLink = ($cnt == 0 ? $protocol . $_SERVER['SERVER_NAME'] . (($port && ($port != 80)) ? ':' . $port : '') : '') . $confirmLink;
 				$GLOBALS['WE_MAIL'] = $f['subscribe_mail'];
 				$GLOBALS['WE_TITLE'] = '###TITLE###';
 				$GLOBALS['WE_SALUTATION'] = $f['subscribe_salutation'];

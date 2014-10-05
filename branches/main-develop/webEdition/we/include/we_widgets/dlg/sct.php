@@ -91,8 +91,11 @@ if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('NEW_OBJECTFILE')
 if(defined('OBJECT_TABLE') && permissionhandler::hasPerm('NEW_OBJECT')){
 	$shortcuts['new_class'] = g_l('button', '[new_class][value]');
 }
-if(permissionhandler::hasPerm("EDIT_SETTINGS")){
+if(permissionhandler::hasPerm('EDIT_SETTINGS')){
 	$shortcuts['preferences'] = g_l('button', '[preferences][value]');
+}
+if(permissionhandler::hasPerm('NEW_GRAFIK')){
+	$shortcuts['btn_add_image'] = g_l('button', '[btn_add_image][alt]');
 }
 
 $jsLang = "";
@@ -106,11 +109,12 @@ $oSctPool = new we_html_select(
 	"size" => 1,
 	"class" => "defaultfont",
 	"onchange" => "addBtn(_fo['list11'],this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,true);this.options[0].selected=true;"
-	));
-$oSctPool->insertOption(0, " ", "");
+	)
+);
+$oSctPool->insertOption(0, " ", "",true);
 $iCurrOpt = 1;
 foreach($shortcuts as $key => $value){
-	$oSctPool->insertOption($iCurrOpt, $key, $value);
+	$oSctPool->insertOption($iCurrOpt, $key, $value,true);
 	$iCurrOpt++;
 }
 
@@ -517,15 +521,17 @@ function exit_close(){
 	}
 	exitPrefs();
 	self.close();
-}
-";
+}";
 
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[shortcuts]')) . STYLESHEET . we_html_element::cssElement(
-				"select,textarea{border:#AAAAAA solid 1px}") . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-			we_html_element::jsElement(
-				$jsPrefs . $jsCode . we_html_button::create_state_changer(false))) . we_html_element::htmlBody(
-			array(
-			"class" => "weDialogBody", "onload" => "init();"
-			), we_html_element::htmlForm("", $sTblWidget)));
+echo we_html_element::htmlDocType() .
+ we_html_element::htmlHtml(
+	we_html_element::htmlHead(
+		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[shortcuts]')) .
+		STYLESHEET .
+		we_html_element::cssElement("select,textarea{border:#AAAAAA solid 1px}") .
+		we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+		we_html_element::jsElement($jsPrefs . $jsCode . we_html_button::create_state_changer(false))) .
+	we_html_element::htmlBody(
+		array(
+		"class" => "weDialogBody", "onload" => "init();"
+		), we_html_element::htmlForm("", $sTblWidget)));

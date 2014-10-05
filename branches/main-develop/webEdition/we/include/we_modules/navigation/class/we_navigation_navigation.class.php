@@ -176,10 +176,12 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function load($id = 0){
-		if(parent::load($id)){
+		if(parent::load($id,true)){
 			$this->CategoryIDs = $this->Categories;
 
-			$this->Categories = makeArrayFromCSV($this->Categories);
+			if(!is_array($this->Categories)){
+				$this->Categories = makeArrayFromCSV($this->Categories);
+			}
 			$this->Categories = $this->convertToPaths($this->Categories, CATEGORY_TABLE);
 
 			$this->Sort = $this->Sort ? @unserialize($this->Sort) : '';
@@ -297,7 +299,7 @@ class we_navigation_navigation extends weModelBase{
 			$this->CustomerFilter = '';
 		}
 
-		parent::save();
+		parent::save(false, true);
 
 		if($order && isset($_oldPid) && $_oldPid != $this->ParentID){
 			// the entry has been moved

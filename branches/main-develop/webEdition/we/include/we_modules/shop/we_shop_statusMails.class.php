@@ -34,7 +34,6 @@ class we_shop_statusMails{
 	public static $MailFields = array('MailShipping', 'MailPayment', 'MailOrder', 'MailConfirmation', 'MailCustomA', 'MailCustomB', 'MailCustomC', 'MailCustomD', 'MailCustomE', 'MailCustomF', 'MailCustomG', 'MailCustomH', 'MailCustomI', 'MailCustomJ', 'MailCancellation', 'MailFinished');
 
 	function __construct(array $FieldsHidden, array $FieldsHiddenCOV, array $FieldsText, array $FieldsMails, array $EMailData, array $LanguageData, array $FieldsDocuments){
-
 		$this->FieldsHidden = $FieldsHidden;
 		$this->FieldsHiddenCOV = $FieldsHiddenCOV;
 		$this->FieldsText = $FieldsText;
@@ -46,11 +45,11 @@ class we_shop_statusMails{
 
 	public static function initByRequest(){//FIXME: this is unchecked!!
 		return new self(
-			we_base_request::_(we_base_request::STRING, 'FieldsHidden'), we_base_request::_(we_base_request::STRING, 'FieldsHiddenCOV'), we_base_request::_(we_base_request::STRING, 'FieldsText'), we_base_request::_(we_base_request::STRING, 'FieldsMails'), we_base_request::_(we_base_request::STRING, 'EMailData'), we_base_request::_(we_base_request::STRING, 'LanguageData'), we_base_request::_(we_base_request::STRING, 'FieldsDocuments')
+			we_base_request::_(we_base_request::STRING, 'FieldsHidden'), we_base_request::_(we_base_request::STRING, 'FieldsHiddenCOV'), we_base_request::_(we_base_request::STRING, 'FieldsText'), we_base_request::_(we_base_request::STRING, 'FieldsMails'), we_base_request::_(we_base_request::STRING, 'EMailData'), we_base_request::_(we_base_request::STRING, 'LanguageData'), we_base_request::_(we_base_request::INT, 'FieldsDocuments', 0)
 		);
 	}
 
-	function getShopStatusMails(){
+	static function getShopStatusMails(){
 		global $DB_WE;
 		$documentsarray = array(
 			'default' => array(

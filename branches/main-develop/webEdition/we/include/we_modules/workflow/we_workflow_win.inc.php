@@ -24,8 +24,8 @@
  */
 we_html_tools::protect();
 
-$cmd = we_base_request::_(we_base_request::RAW, "cmd", "");
-$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0), 1);
+$cmd = we_base_request::_(we_base_request::RAW, 'cmd', '');
+$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0), 1);
 
 $wf_select = we_base_request::_(we_base_request::INT, 'wf_select', 0);
 $wf_text = we_base_request::_(we_base_request::STRING, 'wf_text', '');
@@ -38,13 +38,13 @@ include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 echo we_html_tools::getHtmlTop();
 
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
-	case "workflow_isIn":
-		include(WE_WORKFLOW_MODULE_PATH . "we_in_workflow.inc.php");
+	case 'workflow_isIn':
+		include(WE_WORKFLOW_MODULE_PATH . 'we_in_workflow.inc.php');
 		break;
-	case "workflow_pass":
-		include(WE_WORKFLOW_MODULE_PATH . "we_pass_workflow.inc.php");
+	case 'workflow_pass':
+		include(WE_WORKFLOW_MODULE_PATH . 'we_pass_workflow.inc.php');
 		break;
-	case "workflow_decline":
-		include(WE_WORKFLOW_MODULE_PATH . "we_decline_workflow.inc.php");
+	case 'workflow_decline':
+		include(WE_WORKFLOW_MODULE_PATH . 'we_decline_workflow.inc.php');
 		break;
 }

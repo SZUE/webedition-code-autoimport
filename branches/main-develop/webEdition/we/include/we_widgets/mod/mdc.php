@@ -26,7 +26,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 $mdc = "";
-$ct["image"] = true;
+//$ct["image"] = true;
 if(!isset($aCsv)){
 	$aCsv = explode(';', $aProps[3]);
 }
@@ -43,10 +43,10 @@ if($_csv){
 			$_where[] = 'Path LIKE "' . $_path . '%" ';
 		}
 		$_query = ($_where ?
-				'SELECT ID,Path,Icon,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0' . ((!$ct["image"]) ?
-					' AND ContentType!="' . we_base_ContentTypes::IMAGE . '"' :
-					''
-				) :
+				'SELECT ID,Path,Icon,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0'/* . ($ct["image"] ?
+					'' :
+					' AND ContentType!="' . we_base_ContentTypes::IMAGE . '"'
+				)*/ :
 				false);
 	} else {
 		list($folderID, $folderPath) = explode(",", $_csv);

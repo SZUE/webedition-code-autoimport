@@ -187,14 +187,14 @@ class we_object_exImport extends we_object{
 		return '';
 	}
 
-	function switchtypes2($type, $len = 0){
+	private function switchtypes2($type, $len = 0){
 		switch($type){
 			case "meta":
-				return " VARCHAR(" . (($len > 0 && ($len < 256)) ? $len : "255") . ") NOT NULL ";
+				return " VARCHAR(" . (($len > 0 && ($len < 256)) ? $len : 255) . ") NOT NULL ";
 			case "date":
 				return " INT(11) NOT NULL ";
 			case "input":
-				return " VARCHAR(" . (($len > 0 && ($len < 4096)) ? $len : "255") . ") NOT NULL ";
+				return " VARCHAR(" . (($len > 0 && ($len < 4096)) ? $len : 255) . ") NOT NULL ";
 			case "country":
 			case "language":
 				return " VARCHAR(2) NOT NULL ";
