@@ -1238,8 +1238,12 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		});
 	},
 
-	paste_preprocess : function(pl, o) {console.log(o);
-		o.content = o.content.replace(/<br\s?\/?\>s*<br\s?\/?>/g, "<p>");
+	paste_text_sticky : true,
+
+	paste_preprocess : function(pl, o){
+		if(!pl.editor.pasteAsPlainText){
+			o.content = o.content.replace(/<br\s?\/?\>s*<br\s?\/?>/g, "<p>");
+		}
 	},
 
 	setup : function(ed){
