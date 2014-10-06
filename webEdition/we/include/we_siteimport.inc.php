@@ -35,4 +35,4 @@ function we_siteimport_sort($a, $b){
 
 $import_object = new we_import_site();
 
-print $import_object->getHTML();
+echo $import_object->getHTML();
