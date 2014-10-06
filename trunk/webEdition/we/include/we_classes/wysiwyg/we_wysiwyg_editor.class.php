@@ -1238,6 +1238,10 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		});
 	},
 
+	paste_preprocess : function(pl, o) {console.log(o);
+		o.content = o.content.replace(/<br\s?\/?\>s*<br\s?\/?>/g, "<p>");
+	},
+
 	setup : function(ed){
 
 		ed.settings.language = "' . array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) . '";
