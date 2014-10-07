@@ -2,6 +2,7 @@
 
 class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	//prevent crashed or killed sessions to stay
+
 	private $execTime;
 	private $sessionName;
 	private $DB;
@@ -77,9 +78,9 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		}
 		if(md5($sessID . $sessData) == $this->hash){//if nothing changed,we don't have to bother the db
 			$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'lockid' => $lock ? $this->id : '',
-					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-				)) . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
+						'lockid' => $lock ? $this->id : '',
+						'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
+					)) . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
 
 			if($this->DB->affected_rows()){//make sure we had an successfull update
 				return true;
@@ -91,13 +92,13 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		$sessID = self::getSessionID($sessID);
 
 		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'sessionName' => $this->sessionName,
-				'session_id' => sql_function('x\'' . $sessID . '\''),
-				'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
-				'lockid' => $lock ? $this->id : '',
-				'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-				/* 'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
-				  -				'tmp' => serialize($_SESSION), */
+					'sessionName' => $this->sessionName,
+					'session_id' => sql_function('x\'' . $sessID . '\''),
+					'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
+					'lockid' => $lock ? $this->id : '',
+					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
+						/* 'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
+						  -				'tmp' => serialize($_SESSION), */
 		)));
 		return true;
 	}
@@ -121,6 +122,9 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 				return $sessID;
 			}
 			$cnt = ini_get('session.hash_bits_per_character');
+			if($cnt == 4){//session was generated somewhere else. convert session-id
+				$cnt = 6; //assume maximum, will have a bad session id
+			}
 		} else {
 			session_regenerate_id();
 			$cnt = ini_get('session.hash_bits_per_character');

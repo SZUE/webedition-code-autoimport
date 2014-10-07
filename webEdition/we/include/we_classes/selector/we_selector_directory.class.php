@@ -91,7 +91,7 @@ class we_selector_directory extends we_selector_multiple{
 
 	function printCmdHTML(){
 
-		print we_html_element::jsElement('
+		echo we_html_element::jsElement('
 top.clearEntries();' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
@@ -613,7 +613,7 @@ function selectFile(id){
 	function printNewFolderHTML(){
 		echo '<script type="text/javascript"><!--
 top.clearEntries();
-top.makeNewFolder=1;' .
+top.makeNewFolder = 1;' .
 		$this->printCmdAddEntriesHTML() .
 		$this->printCMDWriteAndFillSelectorHTML() . '
 top.makeNewFolder = 0;

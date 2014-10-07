@@ -327,7 +327,7 @@ function RenameEntry(id){
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 var makeNewFolder=0;
 var hot=0; // this is hot for category edit!!
-var makeNewCat=0;
+var makeNewCat=false;
 var we_editCatID="";
 var old=0;');
 	}
