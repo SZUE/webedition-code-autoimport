@@ -563,7 +563,7 @@ class we_object extends we_document{
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 
 	function editor(){
-		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "save_document"){
+		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "save_document"){
 			$GLOBALS['we_JavaScript'] = '';
 			$this->save();
 			$GLOBALS['we_responseText'] = sprintf(g_l('weClass', "[response_save_ok]"), $this->Path);
@@ -924,7 +924,7 @@ class we_object extends we_document{
 					$count++;
 				}
 				asort($vals);
-				if($this->getElement($name . "class") == ""){
+				if($this->getElement($name . "class") === ""){
 					$this->setElement($name . "class", array_shift(array_flip($vals)));
 				}
 				$content .= $this->htmlSelect("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "class]", $vals, 1, $this->getElement($name . 'class', "dat"), "", array('onchange' => 'if(this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\']){this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'object_change_multiobject_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\',\'' . $name . '\')'), "value", 388) .
@@ -948,21 +948,21 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_HREF:
 				$typeVal = $this->getElement($name . 'hreftype', 'dat');
 				$typeSelect = '<select class="weSelect" id="we_' . $this->Name . '_input[' . $name . 'hreftype]" name="we_' . $this->Name . '_input[' . $name . 'hreftype]" onchange="_EditorFrame.setEditorIsHot(true);we_cmd(\'object_reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\');">
-			<option' . (($typeVal == we_base_link::TYPE_ALL || $typeVal == "") ? " selected" : "") . ' value="' . we_base_link::TYPE_ALL . '">all
+			<option' . (($typeVal == we_base_link::TYPE_ALL || !$typeVal) ? " selected" : "") . ' value="' . we_base_link::TYPE_ALL . '">all
 			<option' . (($typeVal == we_base_link::TYPE_INT) ? " selected" : "") . ' value="' . we_base_link::TYPE_INT . '">int
 			<option' . (($typeVal == we_base_link::TYPE_EXT) ? " selected" : "") . ' value="' . we_base_link::TYPE_EXT . '">ext
 			</select>';
 				$fileVal = $this->getElement($name . "hreffile", "dat");
 				$fileVal = $fileVal ? $fileVal : "true";
 				$fileSelect = '<select class="weSelect" id="we_' . $this->Name . '_input[' . $name . 'hreffile]" name="we_' . $this->Name . '_input[' . $name . 'hreffile]">
-			<option' . (($fileVal == "true") ? " selected" : "") . ' value="true">true
-			<option' . (($fileVal == "false") ? " selected" : "") . ' value="false">false
+			<option' . (($fileVal === "true") ? " selected" : "") . ' value="true">true
+			<option' . (($fileVal === "false") ? " selected" : "") . ' value="false">false
 			</select>';
 				$dirVal = $this->getElement($name . "hrefdirectory", "dat");
 				$dirVal = $dirVal ? $dirVal : "false"; // options anzeige umgedreht wegen 4363
 				$dirSelect = '<select class="weSelect" id="we_' . $this->Name . '_input[' . $name . 'hrefdirectory]" name="we_' . $this->Name . '_input[' . $name . 'hrefdirectory]">
-			<option' . (($dirVal == "true") ? " selected" : "") . ' value="true">false
-			<option' . (($dirVal == "false") ? " selected" : "") . ' value="false">true
+			<option' . (($dirVal === "true") ? " selected" : "") . ' value="true">false
+			<option' . (($dirVal === "false") ? " selected" : "") . ' value="false">true
 			</select>';
 				$content .= '<tr valign="top"><td  width="100" class="defaultfont"  valign="top"></td>' .
 					'<td class="defaultfont">type' . we_html_tools::getPixel(8, 2) .
@@ -1388,7 +1388,7 @@ class we_object extends we_document{
 		$rmfp = $this->getElement($name . "removefirstparagraph");
 		$commands = $this->getElement($name . "commands");
 		$attribs = array(
-			"removefirstparagraph" => $rmfp ? $rmfp == 'on' : REMOVEFIRSTPARAGRAPH_DEFAULT,
+			"removefirstparagraph" => $rmfp ? $rmfp === 'on' : REMOVEFIRSTPARAGRAPH_DEFAULT,
 			"xml" => $this->getElement($name . "xml"),
 			"dhtmledit" => $this->getElement($name . "dhtmledit"),
 			"wysiwyg" => $this->getElement($name . "dhtmledit"),
@@ -1399,7 +1399,7 @@ class we_object extends we_document{
 			"width" => 386, //$this->getElement($name."width","dat",618),
 			"height" => 52, //$this->getElement($name."height","dat",200),
 			"rows" => 3,
-			"bgcolor" => $this->getElement($name . "bgcolor", "dat", (WYSIWYG_TYPE == 'tinyMCE' ? '' : 'white')),
+			"bgcolor" => $this->getElement($name . "bgcolor", "dat", (WYSIWYG_TYPE === 'tinyMCE' ? '' : 'white')),
 			"tinyparams" => $this->getElement($name . "tinyparams"),
 			"templates" => $this->getElement($name . "templates"),
 			"class" => $this->getElement($name . "class"),
@@ -1413,7 +1413,7 @@ class we_object extends we_document{
 		$autobrName = 'we_' . $this->Name . '_input[' . $name . 'autobr]';
 
 		$value = $this->getElement($name . "default", "dat");
-		return we_html_forms::weTextarea("we_" . $this->Name . "_input[" . $name . "default]", $value, $attribs, $autobr, $autobrName, true, "", (($this->CSS || $attribs["classes"]) ? false : true), false, false, ($rmfp ? $rmfp == 'on' : REMOVEFIRSTPARAGRAPH_DEFAULT), "");
+		return we_html_forms::weTextarea("we_" . $this->Name . "_input[" . $name . "default]", $value, $attribs, $autobr, $autobrName, true, "", (($this->CSS || $attribs["classes"]) ? false : true), false, false, ($rmfp ? $rmfp === 'on' : REMOVEFIRSTPARAGRAPH_DEFAULT), "");
 	}
 
 	function add_user_to_field($id, $name){
@@ -1429,7 +1429,7 @@ class we_object extends we_document{
 
 	function del_user_from_field($id, $name){
 		$csv = str_replace($id . ',', '', $this->getElement($name . "users", "dat"));
-		$this->elements[$name . "users"]["dat"] = ($csv == ',' ? '' : $csv);
+		$this->elements[$name . "users"]["dat"] = ($csv === ',' ? '' : $csv);
 	}
 
 	function formUsers1($name, $nr = 0){
@@ -1492,7 +1492,7 @@ class we_object extends we_document{
 	}
 
 	function del_all_users($name){
-		if($name == ''){
+		if($name === ''){
 			$this->Users = '';
 		} else {
 			$this->elements[$name . "users"]["dat"] = '';
@@ -1879,7 +1879,7 @@ class we_object extends we_document{
 			}
 			$this->elements = $doc->elements;
 			foreach($this->elements as $n => $e){
-				if(strtolower(substr($n, 0, 9)) == 'wholename'){
+				if(strtolower(substr($n, 0, 9)) === 'wholename'){
 					$this->setElement('neuefelder', $this->getElement('neuefelder') . ',' . $e['dat']);
 				}
 			}
@@ -1953,7 +1953,7 @@ class we_object extends we_document{
 			$names = (is_array($vals) ? array_keys($vals) : array());
 
 			foreach($names as $name){
-				if($name == "WE_CSS_FOR_CLASS"){
+				if($name === "WE_CSS_FOR_CLASS"){
 					$this->CSS = $vals[$name];
 				}
 				if(isset($vals[$name]) && is_array($vals[$name])){
@@ -2051,7 +2051,7 @@ class we_object extends we_document{
 	protected function i_set_PersistentSlot($name, $value){
 		if(in_array($name, $this->persistent_slots)){
 			$this->$name = $value;
-		} elseif($name == "Templates_0"){
+		} elseif($name === "Templates_0"){
 			$this->Templates = "";
 			$cnt = count(makeArrayFromCSV($this->Workspaces));
 			for($i = 0; $i < $cnt; $i++){
@@ -2078,13 +2078,13 @@ class we_object extends we_document{
 	}
 
 	function i_filenameEmpty(){
-		return ($this->Text == '');
+		return ($this->Text === '');
 	}
 
 	function i_filenameNotValid(){
 		$defTextValid = false;
 		foreach($this->elements as $k => $v){
-			if(is_string($k) && substr($k, 0, 12) == 'DefaultText_'){
+			if(is_string($k) && substr($k, 0, 12) === 'DefaultText_'){
 				$end = substr($k, 12, strlen($k));
 				if(isset($_REQUEST['textwert_' . $end]) && isset($v['dat']) && $v['dat'] != '' && preg_match('/[^\w\-.]/', $v['dat'])){
 					$defTextValid = true;
