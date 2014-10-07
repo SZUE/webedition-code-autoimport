@@ -381,7 +381,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 		$newsletterMailOrdersCnt = 0;
 
 		while($this->View->db->next_record()){
-			if($this->View->db->f("Log") == "log_start_send"){
+			if($this->View->db->f("Log") === "log_start_send"){
 				$newsletterMailOrdersCnt++;
 				$newsletterMailOrders[$newsletterMailOrdersCnt]['start_send'] = $this->View->db->f("LogTime");
 			} else {
@@ -604,7 +604,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 
 		$closeflag = false;
 
-		if(we_base_request::_(we_base_request::STRING, "ncmd") == 'save_settings'){
+		if(we_base_request::_(we_base_request::STRING, "ncmd") === 'save_settings'){
 			$this->View->processCommands();
 			$closeflag = true;
 		}
@@ -634,7 +634,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 
 			$table->addRow();
 			$c++;
-			if($text == 'default_reply' || $text == we_newsletter_newsletter::MALE_SALUTATION_FIELD){
+			if($text === 'default_reply' || $text == we_newsletter_newsletter::MALE_SALUTATION_FIELD){
 				$table->setCol($c, 0, array('colspan' => 3), we_html_tools::getPixel(5, 10));
 			} else {
 				$table->setCol($c, 0, array('colspan' => 3), we_html_tools::getPixel(5, 3));
@@ -896,7 +896,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 				$table->addRow();
 				$table->setCol($c, 0, array(), we_html_tools::htmlSelect("filter_fieldname_" . $group . "_" . $k, $custfields, 1, $v["fieldname"], false, array('onchange' => 'top.content.hot=1;changeFieldValue(this.val,\'filter_fieldvalue_' . $group . '_' . $k . '\');'), "value", 170));
 				$table->setCol($c, 1, array(), we_html_tools::htmlSelect("filter_operator_" . $group . "_" . $k, $operators, 1, $v["operator"], false, array('onchange' => "top.content.hot=1;"), "value", 80));
-				if($v['fieldname'] == "MemberSince" || $v['fieldname'] == "LastLogin" || $v['fieldname'] == "LastAccess"){
+				if($v['fieldname'] === "MemberSince" || $v['fieldname'] === "LastLogin" || $v['fieldname'] === "LastAccess"){
 					$table->setCol($c, 2, array("id" => "td_value_fields_" . $group . "_" . $k), we_html_tools::getDateSelector("filter_fieldvalue_" . $group . "_" . $k, "_from_" . $group . "_" . $k, isset($v["fieldvalue"]) && $v["fieldvalue"] ? !stristr($v["fieldvalue"], ".") ? date("d.m.Y", $v["fieldvalue"]) : $v["fieldvalue"] : ""));
 					$table->setCol($c, 3, array(), we_html_tools::htmlSelect("filter_hours_" . $group . "_" . $k, $hours, 1, isset($v["hours"]) ? $v["hours"] : "", false, array('onchange' => 'top.content.hot=1;')));
 					$table->setCol($c, 4, array("class" => "defaultfont"), "&nbsp;h :");
@@ -1129,7 +1129,7 @@ function extraInit(){
 	loaded = 1;
 }
 window.onload=extraInit;');
-					
+
 					break;
 
 				case we_newsletter_block::ATTACHMENT:
@@ -1183,7 +1183,7 @@ window.onload=extraInit;');
 
 			$wepos = weGetCookieVariable("but_newsletter_group_box_$i");
 
-			$out.= we_html_multiIconBox::getHTML("newsletter_group_box_$i", "100%", $parts, 30, "", 0, "", "", (($wepos == "down") || ($count < 2 ? true : false)), sprintf(g_l('modules_newsletter', '[mailing_list]'), ($i + 1))) .
+			$out.= we_html_multiIconBox::getHTML("newsletter_group_box_$i", "100%", $parts, 30, "", 0, "", "", (($wepos === "down") || ($count < 2 ? true : false)), sprintf(g_l('modules_newsletter', '[mailing_list]'), ($i + 1))) .
 				we_html_element::htmlBr() . '<div style="margin-right:30px;">' . $buttons . '</div>';
 		}
 
@@ -1543,7 +1543,7 @@ function changeFieldValue(val,valueField) {
 		$this->View->settings["black_list"] = we_base_request::_(we_base_request::STRING, "black_list", $this->View->settings["black_list"]);
 
 		if(($ncmd = we_base_request::_(we_base_request::STRING, 'ncmd'))){
-			if($ncmd == "save_black"){
+			if($ncmd === "save_black"){
 				$this->View->processCommands();
 			}
 		}
@@ -1655,7 +1655,7 @@ self.focus();
 					if($fh){
 						while(($dat = fgetcsv($fh, 1000, $delimiter))){
 							$_alldat = implode("", $dat);
-							if(str_replace(" ", "", $_alldat) == ""){
+							if(str_replace(" ", "", $_alldat) === ''){
 								continue;
 							}
 							$row[] = $dat[$col];
