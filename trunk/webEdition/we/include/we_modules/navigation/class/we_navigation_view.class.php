@@ -683,7 +683,7 @@ function submitForm() {
 					break;
 				}
 				$this->Model = new we_navigation_navigation();
-				$this->Model->IsFolder = we_base_request::_(we_base_request::STRING, 'cmd') == 'module_navigation_new_group' ? 1 : 0;
+				$this->Model->IsFolder = we_base_request::_(we_base_request::STRING, 'cmd') === 'module_navigation_new_group' ? 1 : 0;
 				$this->Model->ParentID = we_base_request::_(we_base_request::INT, 'ParentID', 0);
 				print we_html_element::jsElement(
 						$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Model->Text) . '";' .
@@ -727,8 +727,8 @@ function submitForm() {
 					break;
 				}
 
-				if(trim($this->Model->Text) == ''){
-					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
+				if(!trim($this->Model->Text)){
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 

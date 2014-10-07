@@ -759,7 +759,7 @@ class we_navigation_navigation extends weModelBase{
 					}
 
 					$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
-					$_path = ($_path == '/' ? '' : $_path);
+					$_path = ($_path === '/' ? '' : $_path);
 					if(NAVIGATION_OBJECTSEOURLS && isset($objecturl) && $objecturl != ''){
 						$path_parts = pathinfo($_path);
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . (
@@ -806,9 +806,6 @@ class we_navigation_navigation extends weModelBase{
 	function findCharset($pid){
 		$_charset = '';
 		$_count = 0;
-		if($pid == ''){
-			$pid = 0;
-		}
 		$_db = new DB_WE();
 		while(!$_charset){
 			$_hash = getHash('SELECT ParentID,Charset FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($pid), $_db);

@@ -39,8 +39,8 @@ top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
-		if($txt == ""){
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
+		if(!$txt){
+			echo we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->we_new();
@@ -98,8 +98,8 @@ top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
-		if($txt == ""){
-			print we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
+		if(!$txt){
+			echo we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);

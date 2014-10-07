@@ -374,7 +374,7 @@ class we_objectFile extends we_document{
 
 	function resetParentID(){
 		$len = strlen($this->RootDirPath . '/');
-		if($this->ParentPath == '/' || (substr($this->ParentPath . '/', 0, $len) != substr($this->RootDirPath . '/', 0, $len))){
+		if($this->ParentPath === '/' || (substr($this->ParentPath . '/', 0, $len) != substr($this->RootDirPath . '/', 0, $len))){
 			$this->setParentID($this->rootDirID);
 		}
 // adjust to bug #376 regarding workspace
@@ -458,7 +458,7 @@ class we_objectFile extends we_document{
 							unset($foo[0]);
 							$name = implode('_', $foo);
 							$n = ($type == self::TYPE_OBJECT ? 'we_object_' . $name : (isset($name) ? $name : ''));
-							$this->setElement($n, isset($field['default']) ? $field['default'] : '', $type, 'dat', (isset($field['autobr']) && $field['autobr'] == 'on' ? 'on' : 'off'));
+							$this->setElement($n, isset($field['default']) ? $field['default'] : '', $type, 'dat', (isset($field['autobr']) && $field['autobr'] === 'on' ? 'on' : 'off'));
 							if($type == self::TYPE_MULTIOBJECT){
 								$temp = array(
 									'class' => $field['class'],
@@ -876,7 +876,7 @@ class we_objectFile extends we_document{
 			$path = $tmp['Path'];
 			$npubl = $tmp['Published'];
 		}
-		if($path == ''){
+		if($path === ''){
 			$myid = 0;
 			$npubl = 1;
 		}
@@ -1134,8 +1134,8 @@ class we_objectFile extends we_document{
 		}
 
 		$type = isset($attribs['hreftype']) ? $attribs['hreftype'] : '';
-		$directory = (isset($attribs['hrefdirectory']) && $attribs['hrefdirectory'] == 'true') ? false : true;
-		$file = (isset($attribs['hreffile']) && $attribs['hreffile'] == 'false') ? false : true;
+		$directory = (isset($attribs['hrefdirectory']) && $attribs['hrefdirectory'] === 'true') ? false : true;
+		$file = (isset($attribs['hreffile']) && $attribs['hreffile'] === 'false') ? false : true;
 
 		$nint = $n . we_base_link::MAGIC_INT_LINK;
 		$nintID = $n . we_base_link::MAGIC_INT_LINK_ID;

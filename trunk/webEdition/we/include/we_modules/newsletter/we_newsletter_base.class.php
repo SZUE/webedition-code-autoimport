@@ -179,7 +179,7 @@ class we_newsletter_base{
 					foreach($dataArr as $value){
 						$dat = makeArrayFromCSV($value);
 						$_alldat = implode("", $dat);
-						if(str_replace(" ", "", $_alldat) == ""){
+						if(str_replace(" ", "", $_alldat) === ''){
 							continue;
 						}
 						switch($emails_only){
