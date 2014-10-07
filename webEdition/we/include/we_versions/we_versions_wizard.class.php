@@ -144,7 +144,7 @@ abstract class we_versions_wizard{
 			$version_reset[$k] = we_base_request::_(we_base_request::BOOL, 'version_reset_' . $k);
 		}
 
-		$def = (we_base_request::_(we_base_request::STRING, 'type') == 'reset_versions');
+		$def = (we_base_request::_(we_base_request::STRING, 'type') === 'reset_versions');
 		$version_reset['reset_doPublish'] = we_base_request::_(we_base_request::BOOL, 'reset_doPublish', $def);
 
 		$parts = array(
@@ -263,7 +263,7 @@ set_button_state(false);';
 			$name = "version_delete_" . $k;
 			$val = "version_delete_" . $k;
 			$checked = we_base_request::_(we_base_request::RAW, $k, 0);
-			if($k == "all"){
+			if($k === "all"){
 				$jvs = "checkAll(this);";
 				$content .= we_html_forms::checkbox($val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
 			} else {
@@ -490,7 +490,7 @@ set_button_state(false);';
 			$name = "version_reset_" . $k;
 			$val = "version_reset_" . $k;
 			$checked = we_base_request::_(we_base_request::RAW, $k, 0);
-			if($k == "all"){
+			if($k === "all"){
 				$jvs = "checkAll(this);";
 				$content .= we_html_forms::checkbox($val, $checked, $name, g_l('versions', '[versions_all]'), false, "defaultfont", $jvs) . "<br/>";
 			} else {
@@ -763,7 +763,7 @@ set_button_state(false);';
 		$version_reset['reset_minutes'] = we_base_request::_(we_base_request::RAW, "reset_minutes", 0);
 		$version_reset['reset_seconds'] = we_base_request::_(we_base_request::RAW, "reset_seconds", 0);
 
-		$def = (we_base_request::_(we_base_request::STRING, 'type') == 'reset_versions');
+		$def = (we_base_request::_(we_base_request::STRING, 'type') === 'reset_versions');
 		$version_reset['reset_doPublish'] = we_base_request::_(we_base_request::BOOL, 'reset_doPublish', $def);
 
 		$taskname = md5(session_id() . "_version_wizard");
@@ -948,7 +948,7 @@ set_button_state(false);';
 			$version_reset[$k] = we_base_request::_(we_base_request::BOOL, "version_reset_" . $k);
 		}
 
-		$def = (we_base_request::_(we_base_request::STRING, 'type') == 'reset_versions');
+		$def = (we_base_request::_(we_base_request::STRING, 'type') === 'reset_versions');
 		$version_reset['reset_doPublish'] = we_base_request::_(we_base_request::BOOL, 'reset_doPublish', $def);
 
 		if($version_reset['reset_date'] != ""){
@@ -1123,7 +1123,7 @@ set_button_state(false);';
 	static function getPage2Js($cont, $action, $folders = "folders"){
 		$disabled = !$cont;
 		//reset
-		$act = ($action == "delete" ? 0 : 1);
+		$act = ($action === "delete" ? 0 : 1);
 
 		$nextButton = we_html_button::create_button("go", 'javascript:parent.wizbody.handle_event("next");', true, 0, 0, "", "", $disabled, false);
 		$publish = we_base_request::_(we_base_request::BOOL, 'reset_doPublish');

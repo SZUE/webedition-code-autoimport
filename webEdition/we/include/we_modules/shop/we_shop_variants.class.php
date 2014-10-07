@@ -143,7 +143,7 @@ abstract class we_shop_variants{
 			$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) ?
 				$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] :
 				(
-				(substr($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) == "a:") ?
+				(substr($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) === "a:") ?
 					unserialize($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) :
 					array()
 				);
@@ -247,7 +247,7 @@ abstract class we_shop_variants{
 
 	private static function moveVariant(&$model, $pos, $direction){
 		// check if a move is possible
-		self::changeVariantPosition($pos, ($pos + ($direction == 'up' ? -1 : 1)), $model);
+		self::changeVariantPosition($pos, ($pos + ($direction === 'up' ? -1 : 1)), $model);
 	}
 
 	/**
@@ -496,7 +496,7 @@ abstract class we_shop_variants{
 			foreach($variant as $variantName => $variantData){
 				if($variantName == $name){
 					foreach($variantData as $elementName => $elementData){
-						$record[$elementName] = ($elementData['type'] == 'img' ? $elementData['bdid'] : $elementData['dat']);
+						$record[$elementName] = ($elementData['type'] === 'img' ? $elementData['bdid'] : $elementData['dat']);
 					}
 				}
 			}
@@ -526,7 +526,7 @@ abstract class we_shop_variants{
 				if($variantName == $name){
 					foreach($variantData as $elementName => $elementData){
 						// fields have the prefix we_
-						$record['we_' . $elementName] = ($elementData['type'] == 'img' ? (isset($elementData['bdid']) ? $elementData['bdid'] : '') : (isset($elementData['dat']) ? $elementData['dat'] : ''));
+						$record['we_' . $elementName] = ($elementData['type'] === 'img' ? (isset($elementData['bdid']) ? $elementData['bdid'] : '') : (isset($elementData['dat']) ? $elementData['dat'] : ''));
 					}
 				}
 			}

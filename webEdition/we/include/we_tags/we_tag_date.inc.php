@@ -150,7 +150,7 @@ function getDateWord(f,dateObj){
 			//workaround buggy zend dateformat with \h which duplicates the char
 			$ret = '';
 			for($i = 0; $i < strlen($format); $i++){
-				if($format[$i] == '\\'){
+				if($format[$i] === '\\'){
 					$ret.=$format[++$i];
 				} else {
 					$ret.=$zdate->toString($format[$i], 'php');

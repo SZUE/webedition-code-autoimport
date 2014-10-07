@@ -687,19 +687,19 @@ function delRow(id) {
 
 			if(isset($this->searchclass->searchFields[$i])){
 
-				if($this->searchclass->searchFields[$i] == "allModsIn"){
+				if($this->searchclass->searchFields[$i] === "allModsIn"){
 					$search = we_html_tools::htmlSelect(
 							"search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset($this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 				}
-				if($this->searchclass->searchFields[$i] == "modifierID"){
+				if($this->searchclass->searchFields[$i] === "modifierID"){
 					$search = we_html_tools::htmlSelect(
 							"search[" . $i . "]", $this->searchclass->getUsers(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset($this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 				}
-				if($this->searchclass->searchFields[$i] == "status"){
+				if($this->searchclass->searchFields[$i] === "status"){
 					$search = we_html_tools::htmlSelect(
 							"search[" . $i . "]", $this->searchclass->getStats(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset($this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 				}
-				if($this->searchclass->searchFields[$i] == "timestamp"){
+				if($this->searchclass->searchFields[$i] === "timestamp"){
 					$locationDisabled = "";
 					$handle = "date";
 					$search = we_html_tools::getDateSelector("search[" . $i . "]", "_from" . $i, $this->searchclass->search[$i]);
@@ -879,7 +879,7 @@ function delRow(id) {
 				$_Result[] = $v;
 			}
 
-			if($sortierung[0] == "modifierID"){
+			if($sortierung[0] === "modifierID"){
 				usort($_Result, array($this, 'sortResultListUser' . (isset($sortierung[1]) ? 'DESC' : 'ASC')));
 			} else {
 				$sortText = $sortierung[0];
@@ -923,7 +923,7 @@ function delRow(id) {
 				array("dat" => "<span class='printShow'>" . we_html_button::create_button("reset", "javascript:resetVersion('" . $_versions[$f]["ID"] . "','" . $_versions[$f]["documentID"] . "','" . $_versions[$f]["version"] . "','" . $_versions[$f]["documentTable"] . "');", true, 100, 22, "", "", $disabledReset) . "</span>"),
 				array("dat" => "<span class='printShow'>" . we_html_button::create_button("preview", "javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>" . we_html_tools::getPixel(1, 1)),
 				array("dat" => "<span class='printShow'>" .
-					(($_versions[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_versions[$f]["ContentType"] == we_base_ContentTypes::HTML || $_versions[$f]["ContentType"] == "objectFile") ?
+					(($_versions[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_versions[$f]["ContentType"] == we_base_ContentTypes::HTML || $_versions[$f]["ContentType"] === "objectFile") ?
 						we_html_forms::checkbox($_versions[$f]["ID"], 0, "publishVersion_" . $_versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
 						'') .
 					'</span>' . we_html_tools::getPixel(1, 1)),
@@ -970,7 +970,7 @@ function delRow(id) {
 	 * @return string
 	 */
 	private function getTextForMod($modString, $status){
-		$statusTxt = ($status == "published" ? "<div style='color:#ff0000;'>" . g_l('versions', '[' . $status . ']') . "</div>" : '');
+		$statusTxt = ($status === "published" ? "<div style='color:#ff0000;'>" . g_l('versions', '[' . $status . ']') . "</div>" : '');
 
 		if($modString == ""){
 			return $statusTxt;

@@ -50,7 +50,7 @@ if($weFileupload->processFileRequest()){
 			g_l('alert', '[upload_targetDir_notallowed]') :
 			'');
 
-	if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploadedFile']['type'] && (($allowedContentTypes == '') || (!(strpos($allowedContentTypes, $_FILES['we_uploadedFile']['type']) === false)))){
+	if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploadedFile']['type'] && (($allowedContentTypes === '') || (!(strpos($allowedContentTypes, $_FILES['we_uploadedFile']['type']) === false)))){
 		if(!$we_ContentType){
 			$we_ContentType = getContentTypeFromFile($_FILES['we_uploadedFile']['name']);
 		}
@@ -75,7 +75,7 @@ if($weFileupload->processFileRequest()){
 
 		// if file exists we have to see if we should create a new one or overwrite it!
 		if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($we_doc->Path) . "'"))){
-			if($overwrite == 'yes'){
+			if($overwrite === 'yes'){
 				$tmp = $we_doc->ClassName;
 				$we_doc = new $tmp();
 				$we_doc->initByID($file_id, FILE_TABLE);
@@ -110,7 +110,7 @@ if($weFileupload->processFileRequest()){
 					$we_doc->importMetaData();
 				}
 			}
-			if($we_doc->Extension == '.pdf'){
+			if($we_doc->Extension === '.pdf'){
 				$we_doc->setMetaDataFromFile($tempName);
 			}
 

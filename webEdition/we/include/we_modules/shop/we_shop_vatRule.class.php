@@ -42,7 +42,7 @@ class we_shop_vatRule{
 
 				// now check additional fields
 				foreach($this->conditionalRules as $rule){
-					$ret = $rule['returnValue'] == 'true' ? true : false;
+					$ret = $rule['returnValue'] === 'true' ? true : false;
 					$field = $customer[$rule['customerField']];
 
 					if(in_array($state, $rule['states'])){
@@ -57,7 +57,7 @@ class we_shop_vatRule{
 			}
 		}
 
-		return ($this->defaultValue == 'true' ? true : false);
+		return ($this->defaultValue === 'true' ? true : false);
 	}
 
 	public static function initByRequest(){//FIXME: this is unchecked

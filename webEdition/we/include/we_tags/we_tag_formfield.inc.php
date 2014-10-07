@@ -210,7 +210,7 @@ function we_tag_formfield($attribs){
 
 	foreach(array_keys($ff) as $f){
 
-		if(!((($f == 'value') && ($type_sel == 'textarea')) || $f == 'type')){
+		if(!((($f === 'value') && ($type_sel === 'textarea')) || $f === 'type')){
 
 			$val = $GLOBALS['we_doc']->getElement($name, 'ff_' . $type_sel . '_' . $f);
 			if($val){
@@ -284,7 +284,7 @@ function we_tag_formfield($attribs){
 
 			$tagContent = '';
 			if(WE_COUNTRIES_DEFAULT != ''){
-				$tagContent.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
+				$tagContent.='<option value="--" ' . ($orgVal === '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
 			}
 			foreach($topCountries as $countrykey => &$countryvalue){
 				$tagContent.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';

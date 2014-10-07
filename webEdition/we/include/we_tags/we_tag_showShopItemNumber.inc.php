@@ -52,7 +52,7 @@ function we_tag_showShopItemNumber($attribs){
 			$GLOBALS[$shopname]->Get_Item_Quantity($GLOBALS['lv']->ShoppingCartKey) :
 			0);
 
-	if($option || ($type == 'select')){
+	if($option || ($type === 'select')){
 
 		$start = weTag_getAttribute('start', $attribs, 0);
 		$stop = weTag_getAttribute('stop', $attribs, 10);
@@ -74,7 +74,7 @@ function we_tag_showShopItemNumber($attribs){
 			$start = $start + $step;
 		}
 		return getHtmlTag('select', $attr, $out, true) . getHtmlTag('input', array('type' => 'hidden', 'name' => 't', 'value' => time()));
-	} else if($inputfield || ($type == 'textinput')){
+	} else if($inputfield || ($type === 'textinput')){
 		$itemQuantity = ($floatquantities ? we_util_Strings::formatNumber($itemQuantity, $num_format, 2) : intval($itemQuantity));
 		$attr = array_merge($attr, array('type' => 'text', 'name' => 'shop_cart_id[' . $GLOBALS['lv']->ShoppingCartKey . ']', 'size' => 2, 'value' => $itemQuantity));
 		return getHtmlTag('input', $attr) . getHtmlTag('input', array('type' => 'hidden', 'name' => 't', 'value' => time()));

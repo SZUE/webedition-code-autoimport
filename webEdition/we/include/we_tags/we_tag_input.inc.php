@@ -58,7 +58,7 @@ function we_tag_input($attribs, $content){
 				}
 
 				return we_html_element::htmlHidden(array('name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']', 'value' => $val)) .
-					getHtmlTag('input', $attribs);
+						getHtmlTag('input', $attribs);
 
 			case 'country':
 				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
@@ -92,7 +92,7 @@ function we_tag_input($attribs, $content){
 				$orgVal = $GLOBALS['we_doc']->getElement($name);
 				$content = '';
 				if(WE_COUNTRIES_DEFAULT != ''){
-					$content.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
+					$content.='<option value="--" ' . ($orgVal === '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
 				}
 				foreach($topCountries as $countrykey => &$countryvalue){
 					$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
@@ -143,17 +143,17 @@ function we_tag_input($attribs, $content){
 					$tagname = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 					$vals = explode($seperator, $values);
 
-					$onChange = ($mode == 'add' ?
-							"this.form.elements['" . $tagname . "'].value += ((this.form.elements['" . $tagname . "'].value ? ' ' : '')+this.options[this.selectedIndex].text);" :
-							"this.form.elements['" . $tagname . "'].value = this.options[this.selectedIndex].text;") .
-						($reload ? 'setScrollTo();top.we_cmd(\'reload_editpage\');' : '');
+					$onChange = ($mode === 'add' ?
+									"this.form.elements['" . $tagname . "'].value += ((this.form.elements['" . $tagname . "'].value ? ' ' : '')+this.options[this.selectedIndex].text);" :
+									"this.form.elements['" . $tagname . "'].value = this.options[this.selectedIndex].text;") .
+							($reload ? 'setScrollTo();top.we_cmd(\'reload_editpage\');' : '');
 
 					$sel = getHtmlTag('select', array(
 						'class' => "defaultfont",
 						'name' => 'we_choice_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']',
 						'size' => 1,
 						'onchange' => $onChange . ';this.selectedIndex=0;_EditorFrame.setEditorIsHot(true);'
-						), ($vals ? '<option>' . implode('</option><option>', $vals) . '</option>' : ''), true);
+							), ($vals ? '<option>' . implode('</option><option>', $vals) . '</option>' : ''), true);
 				}
 
 				$attribs['onchange'] = '_EditorFrame.setEditorIsHot(true);';
@@ -175,17 +175,17 @@ function we_tag_input($attribs, $content){
 				$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 				$attribs['value'] = $val;
 				$input = getHtmlTag('input', removeAttribs($attribs, array('mode', 'values', '_name_orig')));
-				return (defined('SPELLCHECKER') && $spellcheck == 'true' ?
-						'<table class="weEditTable padding0 spacing0 border0">
+				return (defined('SPELLCHECKER') && $spellcheck === 'true' ?
+								'<table class="weEditTable padding0 spacing0 border0">
 	<tr>
 			<td class="weEditmodeStyle">' . $input . '</td>
 			<td class="weEditmodeStyle">' . we_html_tools::getPixel(6, 4) . '</td>
 			<td class="weEditmodeStyle">' . we_html_button::create_button(
-							'image:spellcheck', 'javascript:we_cmd("spellcheck","we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']")') . '</td>
+										'image:spellcheck', 'javascript:we_cmd("spellcheck","we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']")') . '</td>
 	</tr>
 </table>' :
-						$input
-					);
+								$input
+						);
 		}
 	} else {
 		//not-editmode
@@ -196,33 +196,32 @@ function we_tag_input($attribs, $content){
 				return $GLOBALS['we_doc']->getElement($name);
 			case 'country':
 				$lang = weTag_getAttribute('outputlanguage', $attribs);
-				if($lang == ''){
+				if(!$lang){
 					$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 					$doc = we_getDocForTag($docAttr);
 					$lang = $doc->Language;
 				}
 				$langcode = substr($lang, 0, 2);
-				if($lang == ''){
+				if(!$lang){
 					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 					$langcode = array_search($lang[0], getWELangs());
 				}
-				if($GLOBALS['we_doc']->getElement($name) == '--'){
+				if($GLOBALS['we_doc']->getElement($name) === '--'){
 					return '';
-				} else {
-					if(!Zend_Locale::hasCache()){
-						Zend_Locale::setCache(getWEZendCache());
-					}
-					return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['we_doc']->getElement($name), 'territory', $langcode));
 				}
+				if(!Zend_Locale::hasCache()){
+					Zend_Locale::setCache(getWEZendCache());
+				}
+				return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['we_doc']->getElement($name), 'territory', $langcode));
 			case 'language':
 				$lang = weTag_getAttribute('outputlanguage', $attribs);
-				if($lang == ''){
+				if(!$lang){
 					$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 					$doc = we_getDocForTag($docAttr);
 					$lang = $doc->Language;
 				}
 				$langcode = substr($lang, 0, 2);
-				if($lang == ''){
+				if(!$lang){
 					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 					$langcode = array_search($lang[0], getWELangs());
 				}

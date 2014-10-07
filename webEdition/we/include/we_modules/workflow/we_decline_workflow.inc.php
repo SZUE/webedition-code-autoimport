@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-if($cmd == "ok"){
+if($cmd === "ok"){
 	$wf_text = we_base_request::_(we_base_request::STRING, "wf_text");
 	$wf_select = we_base_request::_(we_base_request::RAW, "wf_select", "");
 	$force = (!we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]));

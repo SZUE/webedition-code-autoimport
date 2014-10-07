@@ -48,41 +48,43 @@ echo we_html_tools::getHtmlTop() .
 
 	function reorder(name) {
 		var order = 0;
-		if (name == "name") {
-			if (name_ord == 1) {
-				order = 10;
-				name_ord = 0;
-			} else {
-				order = 11;
-				name_ord = 1;
-			}
-		}
-		if (name == "type") {
-			if (type_ord == 1) {
-				order = 20;
-				type_ord = 0;
-			} else {
-				order = 21;
-				type_ord = 1;
-			}
-		}
-		if (name == "date") {
-			if (date_ord == 1) {
-				order = 30;
-				date_ord = 0;
-			} else {
-				order = 31;
-				date_ord = 1;
-			}
-		}
-		if (name == "size") {
-			if (size_ord == 1) {
-				order = 40;
-				size_ord = 0;
-			} else {
-				order = 41;
-				size_ord = 1;
-			}
+		switch (name) {
+			case "name":
+				if (name_ord == 1) {
+					order = 10;
+					name_ord = 0;
+				} else {
+					order = 11;
+					name_ord = 1;
+				}
+				break;
+			case "type":
+				if (type_ord == 1) {
+					order = 20;
+					type_ord = 0;
+				} else {
+					order = 21;
+					type_ord = 1;
+				}
+				break;
+			case "date":
+				if (date_ord == 1) {
+					order = 30;
+					date_ord = 0;
+				} else {
+					order = 31;
+					date_ord = 1;
+				}
+				break;
+			case "size":
+				if (size_ord == 1) {
+					order = 40;
+					size_ord = 0;
+				} else {
+					order = 41;
+					size_ord = 1;
+				}
+				break;
 		}
 		top.fscmd.reorderDir(top.currentDir, order);
 	}

@@ -104,7 +104,7 @@ class we_shop_listviewShopVariants extends we_listview_base{
 			list($key, $vardata) = each($ret);
 			foreach($vardata as $name => $value){
 
-				$ret[$name] = (isset($value['type']) && $value['type'] == 'img' ?
+				$ret[$name] = (isset($value['type']) && $value['type'] === 'img' ?
 						// there is a difference between objects and webEdition Documents
 						isset($value['bdid']) ? $value['bdid'] : $value['dat'] :
 						(isset($value['dat']) ? $value['dat'] : '')

@@ -51,7 +51,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$newSCurrId = $cmd2;
 		$iWidth = $aPrefs[$aProps[0]]['width'];
 		if($aProps[0] != 'rss' && $aProps[0] != 'pad'){
-			if($aProps[0] == 'msg'){
+			if($aProps[0] === 'msg'){
 				$_transact = md5(uniqid(__FUNCTION__, true));
 			}
 			include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.php');

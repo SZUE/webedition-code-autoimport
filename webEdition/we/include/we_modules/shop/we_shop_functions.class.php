@@ -28,7 +28,7 @@ class we_shop_functions{
 		$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
 
 		// get orderdata of user here
-		$da = ( $GLOBALS['WE_LANGUAGE'] == 'Deutsch') ? '%d.%m.%Y' : '%m/%d/%Y';
+		$da = ( $GLOBALS['WE_LANGUAGE'] === 'Deutsch') ? '%d.%m.%Y' : '%m/%d/%Y';
 
 		$format = array();
 		foreach(we_shop_statusMails::$StatusFields as $field){

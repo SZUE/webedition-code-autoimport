@@ -70,7 +70,7 @@ class we_object_exImport extends we_object{
 					if(!empty($type)){
 						$qarr[] = $key . $type;
 						//add index for complex queries
-						if($arr[0] == 'object'){
+						if($arr[0] === 'object'){
 							$indexe [] = 'KEY ' . $key . ' (' . $key . ')';
 						}
 					}
@@ -114,7 +114,7 @@ class we_object_exImport extends we_object{
 				$fieldtype = $this->getFieldType($arr[0]);
 				$len = (isset($value['length']) ? $value['length'] : 0);
 				$type = $this->switchtypes2($arr[0], $len);
-				$isObject = ($arr[0] == 'object');
+				$isObject = ($arr[0] === 'object');
 
 				if(isset($tableInfo['meta'][$fieldname])){
 					$props = $tableInfo[$tableInfo['meta'][$fieldname]];
@@ -234,7 +234,7 @@ class we_object_exImport extends we_object{
 			$fieldtype = $arr[0];
 			unset($arr[0]);
 			$fieldname = implode('_', $arr);
-			if($type == ''){
+			if($type === ''){
 				if($fieldname == $name){
 					return true;
 				}
@@ -359,7 +359,7 @@ class we_object_exImport extends we_object{
 			$fieldtype = $arr[0];
 			unset($arr[0]);
 			$fieldname = implode('_', $arr);
-			if($type == ''){
+			if($type === ''){
 				if($fieldname == $name){
 					unset($this->SerializedArray[$field]);
 					$isfound = true;
@@ -444,14 +444,14 @@ class we_object_exImport extends we_object{
 		if(is_array($order) && $writeToDB){
 			$last = '';
 			foreach($order as $oval){
-				if($last == ''){
+				if($last === ''){
 					$last = 'OF_Language';
 				}
 				$ovalname = $this->getFieldPrefix($oval) . '_' . $oval;
 				if(array_key_exists($ovalname, $metadata['meta'])){
 					$nummer = $metadata['meta'][$ovalname];
 					$type = $metadata[$nummer]['type'];
-					if($type == 'string'){
+					if($type === 'string'){
 						$len = $metadata[$nummer]['len'];
 						$type = 'VARCHAR(' . $len . ')';
 					}

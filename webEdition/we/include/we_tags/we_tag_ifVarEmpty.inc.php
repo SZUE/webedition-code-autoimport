@@ -88,11 +88,11 @@ function we_isVarNotEmpty($attribs){
 					return (!empty($temp->Record));
 				default :
 					$type = $doc->getElement($match, 'type');
-					$foo = $doc->getElement($match, $type == 'img' ? 'bdid' : 'dat');
+					$foo = $doc->getElement($match, $type === 'img' ? 'bdid' : 'dat');
 
 					if(!$foo){
 						$type = $doc->getElement($match_orig, 'type');
-						$foo = $doc->getElement($match_orig, $type == 'img' ? 'bdid' : 'dat');
+						$foo = $doc->getElement($match_orig, $type === 'img' ? 'bdid' : 'dat');
 					}
 			}
 			return (strlen($foo) > 0);

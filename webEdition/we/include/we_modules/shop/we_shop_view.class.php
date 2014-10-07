@@ -62,9 +62,9 @@ class we_shop_view{
 
 	function getCommonHiddens($cmds = array()){
 		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
-			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
-			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
-			$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : ''));
+				$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
+				$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
+				$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : ''));
 	}
 
 	function getJSTop_tmp(){//taken from old edit_shop_frameset.php
@@ -136,8 +136,8 @@ function we_cmd(){
 		case "revenue_view":
 		//FIXME: this is not correct; document doesnt work like this
 			' . ($resultD ? $this->topFrame . '.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document";' :
-				(!empty($resultO) ? $this->topFrame . '.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=' . $classid . '";' :
-					$this->topFrame . '.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document";')) . '
+						(!empty($resultO) ? $this->topFrame . '.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=' . $classid . '";' :
+								$this->topFrame . '.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document";')) . '
 			break;
 		';
 
@@ -183,7 +183,7 @@ function we_cmd(){
 		';
 
 		return we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsElement($out);
+				we_html_element::jsElement($out);
 	}
 
 	function getJSTop(){//TODO: is this shop-code or a copy paste from another module?
@@ -220,8 +220,8 @@ function we_cmd() {
 		case "delete_raw":
 			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
 			' . (!permissionhandler::hasPerm("DELETE_RAW") ?
-					( we_message_reporting::getShowMessageCall(g_l('modules_shop', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)) :
-					('
+								( we_message_reporting::getShowMessageCall(g_l('modules_shop', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)) :
+								('
 					if (' . $this->topFrame . '.editor.edbody.loaded) {
 						if (confirm("' . g_l('modules_shop', '[delete_alert]') . '")) {
 							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
@@ -271,7 +271,7 @@ function we_cmd() {
 
 	function getJSProperty(){
 		return we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsElement('
+				we_html_element::jsElement('
 var loaded=0;
 
 function doUnload() {
@@ -534,8 +534,8 @@ function we_cmd() {
 					$EMailhandler = $weShopStatusMails->getEMailHandlerCode(substr($field, 4), $_REQUEST[$field]);
 					$orderDataTable .= '
 			<tr height="25">
-				<td class="defaultfont" width="86" valign="top" height="25">' . ($field == 'DateOrder' ? g_l('modules_shop', '[bestellnr]') : '') . '</td>
-				<td class="defaultfont" valign="top" width="40" height="25"><b>' . ($field == 'DateOrder' ? $_REQUEST['bid'] : '') . '</b></td>
+				<td class="defaultfont" width="86" valign="top" height="25">' . ($field === 'DateOrder' ? g_l('modules_shop', '[bestellnr]') : '') . '</td>
+				<td class="defaultfont" valign="top" width="40" height="25"><b>' . ($field === 'DateOrder' ? $_REQUEST['bid'] : '') . '</b></td>
 				<td width="20" height="25">' . we_html_tools::getPixel(34, 15) . '</td>
 				<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText[$field] . '</td>
 				<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
@@ -603,7 +603,7 @@ function we_cmd() {
 				<th class="defaultgray" height="25">' . g_l('modules_shop', '[Preis]') . '</th>
 				<td>' . $pixelImg . '</td>
 				<th class="defaultgray" height="25">' . g_l('modules_shop', '[Gesamt]') . '</th>' .
-				($calcVat ? '<td>' . $pixelImg . '</td><th class="defaultgray" height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
+					($calcVat ? '<td>' . $pixelImg . '</td><th class="defaultgray" height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
 			</tr>';
 
 
@@ -615,10 +615,10 @@ function we_cmd() {
 
 				// now init each article
 				$shopArticleObject = (empty($Serial[$i]) ? // output 'document-articles' if $Serial[$d] is empty. This is when an order has been extended
-						// this should not happen any more
-						we_shop_Basket::getserial($ArticleId[$i], we_shop_shop::DOCUMENT) :
-						// output if $Serial[$i] is not empty. This is when a user ordered an article online
-						@unserialize($Serial[$i]));
+								// this should not happen any more
+								we_shop_Basket::getserial($ArticleId[$i], we_shop_shop::DOCUMENT) :
+								// output if $Serial[$i] is not empty. This is when a user ordered an article online
+								@unserialize($Serial[$i]));
 
 				if($shopArticleObject === false){
 					t_e('Error in DB-data', $ArticleId[$i], $Serial[$i]);
@@ -627,10 +627,10 @@ function we_cmd() {
 
 				// now determine VAT
 				$articleVat = (isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME]) ?
-						$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
-						((isset($mwst)) ?
-							$mwst :
-							0));
+								$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
+								((isset($mwst)) ?
+										$mwst :
+										0));
 
 				// determine taxes - correct price, etc.
 				$Price[$i]/=($pricesAreNet || $calcVat ? 1 : (100 + $articleVat) / 100);
@@ -661,7 +661,7 @@ function we_cmd() {
 			<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('" . g_l('modules_shop', '[jsbetrag]') . "','" . $Price[$i] . "'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . "}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . we_util_Strings::formatNumber($Price[$i]) . "</a>" . $waehr . '</td>
 			<td></td>
 			<td class="shopContentfontR">' . we_util_Strings::formatNumber($articlePrice) . $waehr . '</td>' .
-					($calcVat ? '<td></td><td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_util_Strings::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
+						($calcVat ? '<td></td><td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_util_Strings::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
 			<td>' . $pixelImg . '</td>
 			<td>' . we_html_button::create_button('image:btn_function_trash', "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&bid=" . $_REQUEST["bid"] . "&deleteaarticle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !permissionhandler::hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 		</tr>';
@@ -921,7 +921,7 @@ function we_cmd() {
 					var url = "<?php print WE_SHOP_MODULE_DIR . 'edit_shop_properties.php'; ?>?";
 
 					for (var i = 0; i < arguments.length; i++) {
-						url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
+						url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 						if (i < (arguments.length - 1)) {
 							url += "&";
 						}
@@ -1052,7 +1052,7 @@ function we_cmd(){
 			eval(\'top.content.we_cmd(\'+args+\')\');
 	}
 }' .
-			$this->getJSSubmitFunction("cmd");
+				$this->getJSSubmitFunction("cmd");
 	}
 
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
@@ -1123,18 +1123,18 @@ function submitForm() {
 					// now insert article to order:
 					$row = getHash('SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment, IntPayment_Type FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . we_base_request::_(we_base_request::INT, 'bid'), $this->db);
 					$this->db->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
-						we_database_base::arraySetter((array(
-							'IntArticleID' => $id,
-							'IntQuantity' => we_base_request::_(we_base_request::FLOAT, 'anzahl', 0),
-							'Price' => we_base_util::std_numberformat(self::getFieldFromShoparticle($serialDoc, $pricename)),
-							'IntOrderID' => $row['IntOrderID'],
-							'IntCustomerID' => $row['IntCustomerID'],
-							'DateOrder' => $row['DateOrder'],
-							'DateShipping' => $row['DateShipping'],
-							'Datepayment' => $row['Datepayment'],
-							'IntPayment_Type' => $row['IntPayment_Type'],
-							'strSerial' => serialize($serialDoc),
-							'strSerialOrder' => $_strSerialOrder
+							we_database_base::arraySetter((array(
+								'IntArticleID' => $id,
+								'IntQuantity' => we_base_request::_(we_base_request::FLOAT, 'anzahl', 0),
+								'Price' => we_base_util::std_numberformat(self::getFieldFromShoparticle($serialDoc, $pricename)),
+								'IntOrderID' => $row['IntOrderID'],
+								'IntCustomerID' => $row['IntCustomerID'],
+								'DateOrder' => $row['DateOrder'],
+								'DateShipping' => $row['DateShipping'],
+								'Datepayment' => $row['Datepayment'],
+								'IntPayment_Type' => $row['IntPayment_Type'],
+								'strSerial' => serialize($serialDoc),
+								'strSerialOrder' => $_strSerialOrder
 					))));
 				} else {
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true));
@@ -1151,11 +1151,11 @@ function submitForm() {
 
 				// first get all shop documents
 				$this->db->query('SELECT c.dat AS shopTitle, l.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID' .
-					' WHERE l.Name = "' . WE_SHOP_TITLE_FIELD_NAME . '"
+						' WHERE l.Name = "' . WE_SHOP_TITLE_FIELD_NAME . '"
 							AND l.DocumentTable!="tblTemplates" ' .
-					(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
-						' AND c.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
-						'')
+						(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
+								' AND c.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
+								'')
 				);
 
 				while($this->db->next_record()){
@@ -1168,9 +1168,9 @@ function submitForm() {
 						$_classId = intval($_classId);
 						$this->db->query('SELECT o.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle, o.OF_ID as objectId
 							FROM ' . OBJECT_X_TABLE . $_classId . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.OF_ID=of.ID ' .
-							(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
-								' WHERE ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($searchArticle) . '%"' :
-							'')
+								(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
+										' WHERE ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($searchArticle) . '%"' :
+										'')
 						);
 
 						while($this->db->next_record()){
@@ -1194,12 +1194,12 @@ function submitForm() {
 				$end_entry = (($page * $MAX_PER_PAGE + $MAX_PER_PAGE < $AMOUNT_ARTICLES) ? ($page * $MAX_PER_PAGE + $MAX_PER_PAGE) : $AMOUNT_ARTICLES );
 
 				$backBut = ($start_entry - $MAX_PER_PAGE > 0 ?
-						we_html_button::create_button('back', 'javascript:switchEntriesPage(' . ($page - 1) . ');') :
-						we_html_button::create_button('back', '#', true, 100, 22, '', '', true));
+								we_html_button::create_button('back', 'javascript:switchEntriesPage(' . ($page - 1) . ');') :
+								we_html_button::create_button('back', '#', true, 100, 22, '', '', true));
 
 				$nextBut = (($end_entry) < $AMOUNT_ARTICLES ?
-						we_html_button::create_button('next', 'javascript:switchEntriesPage(' . ($page + 1) . ');') :
-						we_html_button::create_button('next', '#', true, 100, 22, '', '', true));
+								we_html_button::create_button('next', 'javascript:switchEntriesPage(' . ($page + 1) . ');') :
+								we_html_button::create_button('next', '#', true, 100, 22, '', '', true));
 
 
 				$shopArticlesSelect = $shopArticlesParts[$page];
@@ -1228,14 +1228,14 @@ function submitForm() {
 
 				$parts = array(
 					($AMOUNT_ARTICLES > 0 ?
-						array(
+							array(
 						'headline' => g_l('modules_shop', '[Artikel]'),
 						'space' => 100,
 						'html' => '
 		<form name="we_intern_form">' . we_html_tools::hidden('bid', $_REQUEST['bid']) . we_html_tools::hidden('we_cmd[]', 'add_new_article') . '
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
-			<td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, we_base_request::_(we_base_request::RAW, 'add_article', ''), false, array("onchange"=>"selectArticle(this.options[this.selectedIndex].value)"), 'value', '380') . '</td>
+			<td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, we_base_request::_(we_base_request::RAW, 'add_article', ''), false, array("onchange" => "selectArticle(this.options[this.selectedIndex].value)"), 'value', '380') . '</td>
 			<td>' . we_html_tools::getPixel(10, 1) . '</td>
 			<td valign="top">' . $backBut . '<div style="margin:5px 0"></div>' . $nextBut . '</td>
 			</tr>
@@ -1244,12 +1244,12 @@ function submitForm() {
 			</tr>
 			</table>',
 						'noline' => 1
-						) :
-						array(
+							) :
+							array(
 						'headline' => g_l('modules_shop', '[Artikel]'),
 						'space' => 100,
 						'html' => g_l('modules_shop', '[add_article][empty_articles]')
-						)
+							)
 					)
 				);
 
@@ -1334,7 +1334,7 @@ function submitForm() {
 
 
 				print we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
-					'</form>
+						'</form>
 		</body>
 		</html>';
 				exit;
@@ -1345,7 +1345,7 @@ function submitForm() {
 				$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
 
 				$serialOrder = @unserialize($strSerialOrder);
-				$serialOrder[WE_SHOP_CALC_VAT] = $_REQUEST['pay'] == '1' ? 1 : 0;
+				$serialOrder[WE_SHOP_CALC_VAT] = we_base_request::_(we_base_request::INT, 'pay', 0);
 
 				// update all orders with this orderId
 				if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))){
@@ -1453,7 +1453,7 @@ function submitForm() {
 					if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))){
 						//TODO: check JS-adress!!
 						$jsCmd = 'top.opener.top.content.tree.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");' .
-							we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
+								we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
 					} else {
 						$jsCmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
 					}
@@ -1462,7 +1462,7 @@ function submitForm() {
 				}
 
 				print we_html_element::jsElement($jsCmd . 'window.close();') .
-					'</head><body></body></html>';
+						'</head><body></body></html>';
 				unset($serialOrder);
 				unset($strSerialOrder);
 				exit;
@@ -1473,8 +1473,8 @@ function submitForm() {
 
 				foreach($shopVats as $k => $shopVat){
 					$shippingVats[$shopVat->vat] = (strlen($shopVat->vat . ' - ' . $shopVat->text) > 20 ?
-							substr($shopVat->vat . ' - ' . $shopVat->text, 0, 16) . ' ...' :
-							$shopVat->vat . ' - ' . $shopVat->text);
+									substr($shopVat->vat . ' - ' . $shopVat->text, 0, 16) . ' ...' :
+									$shopVat->vat . ' - ' . $shopVat->text);
 				}
 
 				unset($shopVat);
@@ -1523,10 +1523,10 @@ function submitForm() {
 				print '</head>
 						<body class="weDialogBody">
 						<form name="we_form" target="edbody">' .
-					we_html_tools::hidden('bid', $_REQUEST['bid']) .
-					we_html_tools::hidden("we_cmd[]", 'save_shipping_cost') .
-					we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
-					'</form></body></html>';
+						we_html_tools::hidden('bid', $_REQUEST['bid']) .
+						we_html_tools::hidden("we_cmd[]", 'save_shipping_cost') .
+						we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
+						'</form></body></html>';
 				exit;
 				break;
 
@@ -1671,10 +1671,10 @@ function submitForm() {
 				print '</head>
 						<body class="weDialogBody">
 						<form name="we_form" target="edbody">' .
-					we_html_tools::hidden('bid', $_REQUEST['bid']) .
-					we_html_tools::hidden('we_cmd[]', 'save_order_customer') .
-					we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[preferences][customerdata]'), '', 560) .
-					'</form>
+						we_html_tools::hidden('bid', $_REQUEST['bid']) .
+						we_html_tools::hidden('we_cmd[]', 'save_order_customer') .
+						we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[preferences][customerdata]'), '', 560) .
+						'</form>
 						</body>
 						</html>';
 				exit;
@@ -1709,21 +1709,21 @@ function submitForm() {
 			case 'new_raw':
 				$this->raw = new weShop();
 				print we_html_element::jsElement(
-						$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+								$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
+								$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 				);
 				break;
 			case 'edit_raw':
 				$this->raw = new weShop($_REQUEST['cmdid']);
 				echo we_html_element::jsElement(
-					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+						$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
+						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 				);
 				break;
 			case 'save_raw':
 				if($this->raw->filenameNotValid()){
 					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_shop', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
+									we_message_reporting::getShowMessageCall(g_l('modules_shop', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
@@ -1735,7 +1735,7 @@ function submitForm() {
 				//$ttrow = getHash('SELECT * FROM ' . RAW_TABLE . ' WHERE ID=' . intval($this->raw->ID), $this->db);
 				$tt = addslashes($tt ? $tt : $this->raw->Text);
 				$js = ($newone ?
-						'
+								'
 var attribs = new Array();
 attribs["icon"]="' . $this->raw->Icon . '";
 attribs["id"]="' . $this->raw->ID . '";
@@ -1744,13 +1744,13 @@ attribs["parentid"]="0";
 attribs["text"]="' . $tt . '";
 attribs["disable"]=0;
 attribs["tooltip"]="";' .
-						$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));' .
-						$this->topFrame . '.drawTree();' :
-						$this->topFrame . '.updateEntry(' . $this->raw->ID . ',"' . $tt . '");'
-					);
+								$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));' .
+								$this->topFrame . '.drawTree();' :
+								$this->topFrame . '.updateEntry(' . $this->raw->ID . ',"' . $tt . '");'
+						);
 				print we_html_element::jsElement(
-						$js .
-						we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_saved_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
+								$js .
+								we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_saved_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 				break;
 			case 'delete_raw':
@@ -1760,8 +1760,8 @@ attribs["tooltip"]="";' .
 				$this->raw = new weShop();
 
 				print we_html_element::jsElement(
-						$js .
-						we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
+								$js .
+								we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 				break;
 			case 'switchPage':
@@ -1798,8 +1798,8 @@ attribs["tooltip"]="";' .
 		$val = ( isset($array['we_' . $name]) ? $array['we_' . $name] : (isset($array[$name]) ? $array[$name] : '' ) );
 
 		return ($length && ($length < strlen($val)) ?
-				substr($val, 0, $length) . '...' :
-				$val);
+						substr($val, 0, $length) . '...' :
+						$val);
 	}
 
 	private function getOrderCustomerData($orderId, array $strFelder = array()){

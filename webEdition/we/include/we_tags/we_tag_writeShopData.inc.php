@@ -145,7 +145,7 @@ function we_tag_writeShopData($attribs){
 			WE_SHOP_PRICE_IS_NET_NAME => $netprices, // add netprice flag to article
 			WE_SHOP_CART_CUSTOMER_FIELD => $_customer, // add netprice flag to article
 			WE_SHOP_PRICENAME => $pricename,
-			WE_SHOP_SHIPPING => ($shipping == '' ?
+			WE_SHOP_SHIPPING => ($shipping === '' ?
 				array(
 				'costs' => $weShippingControl->getShippingCostByOrderValue($totPrice, $_customer),
 				'isNet' => $weShippingControl->isNet,

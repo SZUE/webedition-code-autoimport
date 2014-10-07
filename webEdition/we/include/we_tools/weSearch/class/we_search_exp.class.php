@@ -116,7 +116,7 @@ class we_search_exp extends we_search_base{
 
 			$word .= $keyword[$i];
 
-			if($keyword[$i] == ' '){
+			if($keyword[$i] === ' '){
 
 				switch(strtolower(trim($word))){
 					case 'and' :
@@ -173,11 +173,11 @@ class we_search_exp extends we_search_base{
 					'operand2' => trim($this->replaceSpecChars(stripslashes($_arr[1])))
 				);
 
-				if($_expr['operator'] == '=' && strpos($_expr['operand2'], '%') !== false){
+				if($_expr['operator'] === '=' && strpos($_expr['operand2'], '%') !== false){
 					$_expr['operator'] = 'LIKE';
 				}
 
-				if(($_expr['operator'] == '!=' || $_expr['operator'] == '<>') && strpos($_expr['operand2'], '%') !== false){
+				if(($_expr['operator'] === '!=' || $_expr['operator'] === '<>') && strpos($_expr['operand2'], '%') !== false){
 					$_expr['operator'] = 'NOT LIKE';
 				}
 
@@ -202,28 +202,28 @@ class we_search_exp extends we_search_base{
 
 	function getTransaltedExpression(&$_expr){
 
-		if(($_expr['operand1'] == 'DocType')){
+		if(($_expr['operand1'] === 'DocType')){
 			if(strpos($_expr['operand2'], '\*') !== false){
 				$_expr['operand2'] = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . str_replace("*", "%", $_expr['operand2']) . '"', 'ID', new DB_WE());
 			} else {
 				$_expr['operand2'] = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $_expr['operand2'] . '"', 'ID', new DB_WE());
 			}
 			// if operand2 is empty make some impossible condition
-			if(empty($_expr['operand2']) && ($_expr['operator'] == 'LIKE' || $_expr['operator'] == '=')){
+			if(empty($_expr['operand2']) && ($_expr['operator'] === 'LIKE' || $_expr['operator'] === '=')){
 				$_expr['operand2'] = md5(uniqid(__FUNCTION__, true));
 			}
 		}
 
-		if(($_expr['operand1'] == 'Category')){
+		if(($_expr['operand1'] === 'Category')){
 			$_expr['operand2'] = ',' . f('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Text="' . $_expr['operand2'] . '"', 'ID', new DB_WE()) . ',';
-			if($_expr['operator'] == '='){
+			if($_expr['operator'] === '='){
 				$_expr['operator'] = 'LIKE';
 			}
-			if($_expr['operator'] == '!='){
+			if($_expr['operator'] === '!='){
 				$_expr['operator'] = 'NOT LIKE';
 			}
 			// if operand2 is empty make some impossible condition
-			if(empty($_expr['operand2']) && $_expr['operator'] == 'LIKE'){
+			if(empty($_expr['operand2']) && $_expr['operator'] === 'LIKE'){
 				$_expr['operand2'] = md5(uniqid(__FUNCTION__, true));
 			}
 		}

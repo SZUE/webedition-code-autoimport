@@ -133,7 +133,7 @@ class we_voting_voting extends weModelBase{
 			if(empty($this->LogData)){
 				$this->LogDB = true;
 			} else {
-				if($this->LogData == 'a:0:{}'){
+				if($this->LogData === 'a:0:{}'){
 					$this->LogDB = true;
 				} else {
 					$this->switchToLogDataDB();

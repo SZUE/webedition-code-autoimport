@@ -89,7 +89,7 @@ for (frameId in _usedEditors) {
 				''
 			) .
 			'} else {' :
-			(($isObject = $we_doc->ContentType == 'object' && (permissionhandler::hasPerm('NEW_OBJECTFILE') || permissionhandler::hasPerm("ADMINISTRATOR"))) ?
+			(($isObject = $we_doc->ContentType === 'object' && (permissionhandler::hasPerm('NEW_OBJECTFILE') || permissionhandler::hasPerm("ADMINISTRATOR"))) ?
 				"if( _EditorFrame.getEditorMakeNewDoc() == true ) {
 				top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');
 			} else {" : '')) .

@@ -40,7 +40,7 @@ function we_tag_ifCat($attribs){
 	$match = $categories ? $categories : $category;
 	$matchArray = makeArrayFromCSV($match);
 
-	if($docAttr == 'listview' && isset($GLOBALS['lv'])){
+	if($docAttr === 'listview' && isset($GLOBALS['lv'])){
 		$cat = $GLOBALS['lv']->f('wedoc_Category');
 	} else {
 		$doc = we_getDocForTag($docAttr);

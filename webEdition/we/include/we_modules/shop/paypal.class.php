@@ -123,10 +123,10 @@ class paypal_class{
 		// "Please wait, your order is being processed..." and then immediately
 		// is redirected to paypal.
 
-		if($messageAuto == ''){
+		if(!$messageAuto){
 			$messageAuto = g_l('modules_shop', '[paypal][redirect_auto]');
 		}
-		if($messageMan == ''){
+		if(!$messageMan){
 			$messageMan = g_l('modules_shop', '[paypal][redirect_man]');
 		}
 		if($formTagOnly){

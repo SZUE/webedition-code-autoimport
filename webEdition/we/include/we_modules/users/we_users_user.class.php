@@ -297,14 +297,14 @@ class we_users_user{
 
 		foreach($tableInfo as $t){
 			$fieldName = $t['name'];
-			$val = ($fieldName == 'UseSalt' && $useSalt > 0 ?
+			$val = ($fieldName === 'UseSalt' && $useSalt > 0 ?
 					$useSalt :
 					(isset($this->$fieldName) ? $this->$fieldName : 0)
 				);
 			if($fieldName != 'ID'){
-				if($fieldName == 'editorFontname' && $this->Preferences['editorFont'] == '0'){
+				if($fieldName === 'editorFontname' && $this->Preferences['editorFont'] == '0'){
 					$val = 'none';
-				} elseif($fieldName == 'editorFontsize' && $this->Preferences['editorFont'] == '0'){
+				} elseif($fieldName === 'editorFontsize' && $this->Preferences['editorFont'] == '0'){
 					$val = '-1';
 				}
 				if($fieldName !== 'passwd' || $val !== ''){
@@ -474,7 +474,7 @@ class we_users_user{
 
 		$d = dir(WE_USERS_MODULE_PATH . 'perms');
 		while(($file = $d->read())){
-			if(substr($file, 0, 9) == 'we_perms_'){
+			if(substr($file, 0, 9) === 'we_perms_'){
 				$entries[] = WE_USERS_MODULE_PATH . 'perms/' . $file;
 			}
 		}
@@ -486,7 +486,7 @@ class we_users_user{
 			$perm_values = $perm_titles = $perm_group_title = array();
 
 			include($entry);
-			if(!($perm_group_name == 'administrator' && $this->Type != self::TYPE_USER) && $perm_group_name){
+			if(!($perm_group_name === 'administrator' && $this->Type != self::TYPE_USER) && $perm_group_name){
 				if(!isset($this->permissions_main_titles[$perm_group_name])){
 					$this->permissions_main_titles[$perm_group_name] = '';
 				}
@@ -1043,7 +1043,7 @@ _multiEditorreload = true;";
 					}
 					$obj = $this->Name . '_Workspace_' . $k . '_AddDel';
 					if(($val = we_base_request::_(we_base_request::RAW, $obj, '')) != ''){
-						if($val == 'new'){//add
+						if($val === 'new'){//add
 							$this->workspaces[$k][] = 0;
 						} else {
 							unset($this->workspaces[$k][$val]);
@@ -1584,7 +1584,7 @@ function toggleRebuildPerm(disabledOnly) {';
 				$content = '
 <table cellpadding="0" cellspacing="0" border="0" width="500">
 	<tr><td>' . we_html_tools::getPixel(1, 5) . '</td></tr>
-	<tr><td>' . we_html_forms::checkbox(1, $v, $this->Name . "_Permission_" . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k == 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>
+	<tr><td>' . we_html_forms::checkbox(1, $v, $this->Name . "_Permission_" . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k === 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>
 </table>';
 			}
 			$parts[] = array(
@@ -1872,7 +1872,7 @@ function delElement(elvalues,elem) {
 
 		//AMOUNT Number of Columns
 		$_amount = new we_html_select(array('name' => $this->Name . '_Preference_cockpit_amount_columns', 'class' => 'weSelect', 'onchange' => "top.content.setHot();"));
-		if($this->Preferences['cockpit_amount_columns'] == ''){
+		if(!$this->Preferences['cockpit_amount_columns']){
 			$this->Preferences['cockpit_amount_columns'] = 3;
 		}
 		for($i = 1; $i <= 10; $i++){
@@ -2213,7 +2213,7 @@ function show_seem_chooser(val) {
 			$_template_editor_font_select_box->addOption($tf, $tf);
 
 			if(!$_template_editor_font_specify){
-				if($tf == "Courier New"){
+				if($tf === "Courier New"){
 					$_template_editor_font_select_box->selectOption($tf);
 				}
 			} else {

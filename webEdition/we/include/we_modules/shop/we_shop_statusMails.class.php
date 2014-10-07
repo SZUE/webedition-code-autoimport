@@ -263,7 +263,7 @@ class we_shop_statusMails{
 
 
 		$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField']);
-		if($subject == ''){
+		if(!$subject){
 			$subject = 'no subject given';
 		}
 		if($recipientOK && $this->EMailData['address'] != '' && we_check_email($this->EMailData['address'])){
