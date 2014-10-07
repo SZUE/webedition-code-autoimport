@@ -54,8 +54,7 @@ function exitPrefs(){
 		sTheme=_oSctCls[_iInitCls].value;
 		opener.setTheme(_sObjId,sTheme);
 	}
-}
-";
+}";
 
 $oSctCls = new we_html_select(
 	array(
