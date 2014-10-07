@@ -58,8 +58,8 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			usleep(100000);
 		}
 		if($data){
-			$data = ($data[0] == '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data);
-			if($data && $data[0] == 'x'){
+			$data = ($data[0] === '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data);
+			if($data && $data[0] === 'x'){
 				//valid gzip
 				$data = gzuncompress($data);
 				$this->hash = md5($sessID . $data);

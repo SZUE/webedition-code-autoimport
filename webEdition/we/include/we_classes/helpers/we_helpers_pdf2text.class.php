@@ -105,7 +105,7 @@ class we_helpers_pdf2text{
 			preg_match_all('#/(\w+)[ \r\n]{0,2}(\d+ \d+) R[\r\n]*#s', $match[1], $match, PREG_SET_ORDER);
 
 			foreach($match as $cur){
-				if($cur[1] == 'Info'){
+				if($cur[1] === 'Info'){
 					$info = $cur[2];
 					break;
 				}
@@ -156,7 +156,7 @@ class we_helpers_pdf2text{
 			$elem = &$this->data[$cur];
 			$elem['charMap'] = array();
 			$encoding = (isset($elem['Encoding']) ? $elem['Encoding'] : '');
-			if(substr($encoding, -1) == 'R'){
+			if(substr($encoding, -1) === 'R'){
 				$id = rtrim($encoding, self::TRIM_REF);
 				$this->unset[] = rtrim($encoding, self::TRIM_REF);
 				$this->processFontDictionary($this->data[$id], $elem);
@@ -734,7 +734,7 @@ class we_helpers_pdf2text{
 
 	private function getPageFonts(array &$fonts, array $elem){
 		foreach($elem as $key => $cur){
-			if($key == 'stream'){
+			if($key === 'stream'){
 				continue;
 			}
 			$cur = rtrim($cur, self::TRIM_REF);
@@ -749,7 +749,7 @@ class we_helpers_pdf2text{
 		foreach($this->objects as $cur){
 			$elem = $this->data[$cur];
 			unset($this->data[$cur]);
-			if(isset($elem['Type']) && $elem['Type'] == '/FontRessource'){
+			if(isset($elem['Type']) && $elem['Type'] === '/FontRessource'){
 				$this->currentFontRessource = $elem;
 				continue;
 			}
@@ -817,7 +817,7 @@ class we_helpers_pdf2text{
 	private function applyTextChars($text, $selectedFont){
 		$text = str_replace(array('\\\\', '\(', '\)'), array('\\\\', '(', ')'), $text);
 
-		if($selectedFont == ''){
+		if(!$selectedFont){
 			$this->text.=$text;
 			return;
 		}

@@ -74,7 +74,7 @@ class we_otherDocument extends we_binaryDocument{
 	 * create instance of weMetaData to access metadata functionality:
 	 */
 	protected function getMetaDataReader($force = false){
-		return ($this->Extension == '.pdf' ?
+		return ($this->Extension === '.pdf' ?
 				parent::getMetaDataReader(true) :
 				false);
 	}
@@ -88,9 +88,9 @@ class we_otherDocument extends we_binaryDocument{
 		$text = '';
 		$this->resetElements();
 		while((list($k, $v) = $this->nextElement(''))){
-			$foo = (isset($v['dat']) && substr($v['dat'], 0, 2) == 'a:') ? unserialize($v['dat']) : '';
+			$foo = (isset($v['dat']) && substr($v['dat'], 0, 2) === 'a:') ? unserialize($v['dat']) : '';
 			if(!is_array($foo)){
-				if(isset($v['type']) && $v['type'] == 'txt' && isset($v['dat'])){
+				if(isset($v['type']) && $v['type'] === 'txt' && isset($v['dat'])){
 					$text .= ' ' . trim($v['dat']);
 				}
 			}

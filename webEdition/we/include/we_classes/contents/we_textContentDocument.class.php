@@ -75,8 +75,8 @@ abstract class we_textContentDocument extends we_textDocument{
 
 		$this->resetElements();
 		while((list($k, $v) = $this->nextElement(''))){
-			$_dat = (isset($v['dat']) && is_string($v['dat']) && substr($v['dat'], 0, 2) == 'a:') ? unserialize($v['dat']) : (isset($v['dat']) ? $v['dat'] : '');
-			if($k[0] === '$' || (isset($k[1]) && $k[1] === '$') || $k == 'Charset' || empty($_dat)){
+			$_dat = (isset($v['dat']) && is_string($v['dat']) && substr($v['dat'], 0, 2) === 'a:') ? unserialize($v['dat']) : (isset($v['dat']) ? $v['dat'] : '');
+			if($k[0] === '$' || (isset($k[1]) && $k[1] === '$') || $k === 'Charset' || empty($_dat)){
 				//skip elements whose names are variables or if element is empty
 				continue;
 			}
@@ -87,7 +87,7 @@ abstract class we_textContentDocument extends we_textDocument{
 					if(preg_match('|^' . $name . '$|i', $k)){
 						if(is_array($_dat) && !empty($_dat['text'])){
 							$text .= ' ' . $_dat['text'];
-						} elseif($v['type'] == 'txt'){
+						} elseif($v['type'] === 'txt'){
 							$text .= ' ' . $_dat;
 						}
 					}
@@ -97,13 +97,13 @@ abstract class we_textContentDocument extends we_textDocument{
 				if(in_array($k, $only)){
 					if(is_array($_dat) && !empty($_dat['text'])){
 						$text .= ' ' . $_dat['text'];
-					} elseif($v['type'] == 'txt'){
+					} elseif($v['type'] === 'txt'){
 						$text .= ' ' . $_dat;
 					}
 				}
 			} else if(!is_array($_dat)){
 //save of text_document
-				if(isset($v['type']) && $v['type'] == 'txt'){
+				if(isset($v['type']) && $v['type'] === 'txt'){
 					$text .= ' ' . $_dat;
 				}
 			}
@@ -160,7 +160,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				$this->IsSearchable = $rec['IsSearchable'];
 				$this->Category = $rec['Category'];
 				$this->Language = $rec['Language'];
-				$_pathFirstPart = substr($this->ParentPath, -1) == '/' ? '' : '/';
+				$_pathFirstPart = substr($this->ParentPath, -1) === '/' ? '' : '/';
 				switch($rec['SubDir']){
 					case self::SUB_DIR_YEAR:
 						$this->ParentPath .= $_pathFirstPart . date('Y');

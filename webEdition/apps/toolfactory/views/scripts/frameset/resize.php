@@ -36,7 +36,7 @@ $param = ($this->tab ?
 		'/modelId/' . $this->modelId :
 		'');
 
-if($client->getBrowser() == we_ui_Client::kBrowserGecko){
+if($client->getBrowser() === we_ui_Client::kBrowserGecko){
 	$frameAttribs = array(
 		'cols' => '200,*',
 		'border' => 1,
@@ -53,7 +53,7 @@ if($client->getBrowser() == we_ui_Client::kBrowserGecko){
 
 $frameset = new we_ui_layout_Frameset($frameAttribs);
 
-if($client->getBrowser() == we_ui_Client::kBrowserIE){
+if($client->getBrowser() === we_ui_Client::kBrowserIE){
 	$frameset->addFrame(array(
 		'src' => $appDir . '/index.php/frameset/left' . $param,
 		'name' => 'left',

@@ -83,7 +83,7 @@ abstract class we_base_moduleInfo{
 	 */
 	static function isModuleInstalled($mKey){
 		self::init();
-		return (in_array($mKey, self::$we_available_modules) || $mKey == 'editor');
+		return (in_array($mKey, self::$we_available_modules) || $mKey === 'editor');
 	}
 
 	/**

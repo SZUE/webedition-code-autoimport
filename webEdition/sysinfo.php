@@ -104,7 +104,7 @@ function ini_get_message($val){
 
 function parseValue($name, $value){
 	if(in_array($name, array_keys($GLOBALS['_types']))){
-		if($GLOBALS['_types'][$name] == 'bytes' && $value){
+		if($GLOBALS['_types'][$name] === 'bytes' && $value){
 
 			$value = we_convertIniSizes($value);
 			return convertToMb($value) . ' (' . $value . ' Bytes)';
@@ -268,7 +268,7 @@ $_info = array(
 		g_l('sysinfo', '[crypt]') => (function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, '')) ? getOK() : getWarning(g_l('sysinfo', '[crypt_warning]')))
 	),
 	'Deprecated' => array(
-		'we:saveRegisteredUser register=' => (defined('CUSTOMER_TABLE') && f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"', 'Value', $GLOBALS['DB_WE']) == 'true'
+		'we:saveRegisteredUser register=' => (defined('CUSTOMER_TABLE') && f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"', 'Value', $GLOBALS['DB_WE']) === 'true'
 				? getWarning('Deprecated', 'true') : getOk('', defined('CUSTOMER_TABLE') ? 'false' : '?')),
 	),
 );

@@ -43,7 +43,7 @@ $LU_Variables = array(
 	'clientServerSoftware' => $_SERVER['SERVER_SOFTWARE'],
 	'clientUid' => (defined('UID') ? UID : false),
 	'clientSyslng' => WE_LANGUAGE,
-	'clientLng' => $GLOBALS['WE_LANGUAGE'] . ($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' ? '_UTF-8' : ''),
+	'clientLng' => $GLOBALS['WE_LANGUAGE'] . ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8' ? '_UTF-8' : ''),
 	'clientExtension' => '.php',
 	'clientDomain' => urlencode($_SERVER['SERVER_NAME']),
 	'clientInstalledModules' => $GLOBALS['_we_active_integrated_modules'],

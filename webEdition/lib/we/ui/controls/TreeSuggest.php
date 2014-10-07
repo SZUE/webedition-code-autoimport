@@ -67,7 +67,7 @@ if($sessionName && $id){
 		return;
 	}
 
-	if($table && $datasource == 'table' && is_object($tree)){
+	if($table && $datasource === 'table' && is_object($tree)){
 
 		$nodes = $tree->doSelect($table, $id);
 

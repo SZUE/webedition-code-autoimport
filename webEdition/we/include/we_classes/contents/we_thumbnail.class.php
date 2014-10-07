@@ -559,7 +559,7 @@ class we_thumbnail{
 	 * @return boolean
 	 */
 	private function hasOriginalType(){
-		return (strtolower($this->imageExtension) == '.' . $this->outputFormat);
+		return (strtolower($this->imageExtension) === '.' . $this->outputFormat);
 	}
 
 	/**
@@ -573,9 +573,9 @@ class we_thumbnail{
 			' AND l.DocumentTable="tblFile"');
 
 		while($this->db->next_record()){
-			if($this->db->f('Name') == 'origwidth'){
+			if($this->db->f('Name') === 'origwidth'){
 				$this->imageWidth = $this->db->f('Dat');
-			} else if($this->db->f('Name') == 'origheight'){
+			} else if($this->db->f('Name') === 'origheight'){
 				$this->imageHeight = $this->db->f('Dat');
 			}
 		}

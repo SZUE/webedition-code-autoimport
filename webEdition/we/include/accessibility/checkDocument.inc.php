@@ -59,7 +59,7 @@ if(($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_trans
 	$filename = '/' . $we_transaction . $extension;
 
 	//  check what should happen with document
-	if(we_base_request::_(we_base_request::STRING, 'checkvia') == 'fileupload'){ //  submit via fileupload
+	if(we_base_request::_(we_base_request::STRING, 'checkvia') === 'fileupload'){ //  submit via fileupload
 		$http_request->addFileByContent($varname, $content, $contentType, $filename);
 	} else { //  submit via onlinecheck - site must be available online
 		// when it is a dynamic document, remove <?xml when short_open_tags are allowed.

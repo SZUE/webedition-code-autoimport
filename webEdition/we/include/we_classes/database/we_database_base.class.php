@@ -279,7 +279,7 @@ abstract class we_database_base{
 	 * @return bool true, if the query was successfull
 	 */
 	public function query($Query_String, $allowUnion = false, $unbuffered = false){
-		if($Query_String == ''){
+		if(!$Query_String){
 			return true;
 		}
 		if(self::$Trigger_cnt){
@@ -317,8 +317,8 @@ abstract class we_database_base{
 				$active = !empty($active);
 				switch($char){
 					case '/':
-						if(!$active && $queryToCheck[$i + 1] == '*'){
-							if($queryToCheck[$i + 2] == '!'){/* mysql specific code */
+						if(!$active && $queryToCheck[$i + 1] === '*'){
+							if($queryToCheck[$i + 2] === '!'){/* mysql specific code */
 								if(defined('ERROR_LOG_TABLE')){
 									t_e('error', 'No MySQL specific syntax allowed!', $Query_String);
 								}
@@ -332,7 +332,7 @@ abstract class we_database_base{
 						}
 						break;
 					case '*':
-						if($quotes['/*'] && $queryToCheck[$i + 1] == '/'){//no nested comments
+						if($quotes['/*'] && $queryToCheck[$i + 1] === '/'){//no nested comments
 							$quotes['/*'] = false;
 							$i++;
 							continue;
@@ -343,7 +343,7 @@ abstract class we_database_base{
 							$quotes['#'] = false;
 						}
 					case '-':
-						if(!$active && $queryToCheck[$i + 1] == '-'){
+						if(!$active && $queryToCheck[$i + 1] === '-'){
 							$quotes['#'] = true;
 							$active = true;
 							$i++;
@@ -738,8 +738,8 @@ abstract class we_database_base{
 			$query = array();
 			foreach($table as $key => $value){
 				$query[] = (is_numeric($key) ?
-						$value . ' ' . $mode :
-						$key . ' ' . $value);
+								$value . ' ' . $mode :
+								$key . ' ' . $value);
 			}
 			$query = implode(',', $query);
 		} else {
@@ -802,7 +802,7 @@ abstract class we_database_base{
 	}
 
 	public function isColExist($tab, $col){
-		if($tab == '' || $col == ''){
+		if(!$tab || !$col){
 			return false;
 		}
 		$col = trim($col, '`');
@@ -869,8 +869,8 @@ abstract class we_database_base{
 	function getTableCreateArray($tab){
 		$this->query('SHOW CREATE TABLE ' . $this->escape($tab));
 		return ($this->next_record()) ?
-			explode("\n", $this->f("Create Table")) :
-			false;
+				explode("\n", $this->f("Create Table")) :
+				false;
 	}
 
 	public function getTableKeyArray($tab){

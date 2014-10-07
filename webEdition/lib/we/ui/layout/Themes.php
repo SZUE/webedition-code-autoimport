@@ -44,7 +44,7 @@ class we_ui_layout_Themes{
 	 * @var string
 	 */
 	static public function computeCSSURL($classname, $filename = 'style.css'){
-		if(substr($classname, 0, 3) == 'we_'){
+		if(substr($classname, 0, 3) === 'we_'){
 			$relPath = WE_THEMES_DIR . '/' . WE_THEME_NAME . '/' . $classname . '/' . $filename;
 			if(file_exists(WE_LIB_PATH . $relPath)){
 				return LIB_DIR . $relPath;

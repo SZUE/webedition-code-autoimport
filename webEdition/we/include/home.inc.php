@@ -971,7 +971,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 	<?php
 	we_base_moduleInfo::isActive(we_base_moduleInfo::USERS);
 	$aCmd = explode('_', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0));
-	if($aCmd[0] == 'new'){
+	if($aCmd[0] === 'new'){
 		$in = array(substr($aCmd[2], -3), 1, 1);
 		$aDat[0] = array_merge(array_slice($aDat[0], 0, 0), array($in), array_slice($aDat[0], 0));
 	}
@@ -1007,7 +1007,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 			if(!in_array($aProps[0], $aDiscard)){
 				switch($aProps[0]){
 					case 'upb':
-						if($aProps[3] == ''){
+						if($aProps[3] === ''){
 							$aProps[3] = (defined('OBJECT_TABLE') ? '11' : '10');
 						}
 						break;

@@ -343,32 +343,28 @@ if(!empty($this->model->ID)){
 			if(!empty($this->model->appconfig->dependencies->sdkversion)){
 				$html .= '<br/>' . $translate->_('SdkVersion') . ': <strong>' . we_util_Strings::number2version($this->model->appconfig->dependencies->sdkversion, false) . '</strong>';
 			}
-			if($this->model->appconfig){
-				$html .= '<br/>' . $translate->_('The application manifest is available');
-			} else {
-				$html .= '<br/>' . $translate->_('The application manifest is not available');
-			}
-			if($this->model->appconfig->info->deactivatable == "true"){
-				$html .= '<br/>' . $translate->_('The application can be deactivated.');
-			} else {
-				$html .= '<br/>' . $translate->_('The application can not be deactivated!');
-			}
-			if($this->model->appconfig->info->deinstallable == "true"){
-				$html .= '<br/>' . $translate->_('The application is deletable.');
-			} else {
-				$html .= '<br/>' . $translate->_('The application can not be deleted!');
-			}
-			if($this->model->appconfig->info->updatable == "true"){
-				$html .= '<br/>' . $translate->_('The application can be updated.');
-			} else {
-				$html .= '<br/>' . $translate->_('The application can not be updated.');
-			}
-			$html .= '<br/>' . $translate->_('AppStatus') . ': <strong>';
-			if(!we_app_Common::isActive($this->model->classname)){
-				$html .= $translate->_('AppStatusDiabled') . '</strong>';
-			} else {
-				$html .= $translate->_('AppStatusActive') . '</strong>';
-			}
+			$html .= '<br/>' . ($this->model->appconfig ?
+							$translate->_('The application manifest is available') :
+							$translate->_('The application manifest is not available')
+					) .
+					'<br/>' . ($this->model->appconfig->info->deactivatable == "true" ?
+							$translate->_('The application can be deactivated.') :
+							$translate->_('The application can not be deactivated!')
+					) .
+					'<br/>' . ($this->model->appconfig->info->deinstallable == "true" ?
+							$translate->_('The application is deletable.') :
+							$translate->_('The application can not be deleted!')
+					) .
+					'<br/>' . ($this->model->appconfig->info->updatable == "true" ?
+							$translate->_('The application can be updated.') :
+							$translate->_('The application can not be updated.')
+					) .
+					'<br/>' . $translate->_('AppStatus') . ': <strong>' .
+					(!we_app_Common::isActive($this->model->classname) ?
+							$translate->_('AppStatusDiabled') :
+							$translate->_('AppStatusActive')
+					) . '</strong>';
+
 			//$html .= we_util_Strings::p_r($this->model->appconfig,true);
 			$rowVersion->addHTML($html);
 			$tableVersion = new we_ui_layout_HeadlineIconTable();
@@ -509,17 +505,17 @@ $htmlPage->addJSFile(LIB_DIR . 'we/core/JsonRpc.js');
 
 $filenameEmptyMessage = we_util_Strings::quoteForJSString($translate->_('The name must not be empty!'), false);
 $filenameEmptyMessageCall = we_core_MessageReporting::getShowMessageCall(
-		$filenameEmptyMessage, we_core_MessageReporting::kMessageWarning
+				$filenameEmptyMessage, we_core_MessageReporting::kMessageWarning
 );
 
 $classnameEmptyMessage = we_util_Strings::quoteForJSString($translate->_('The name of the model class could not be empty!'), false);
 $classnameEmptyMessageCall = we_core_MessageReporting::getShowMessageCall(
-		$classnameEmptyMessage, we_core_MessageReporting::kMessageWarning
+				$classnameEmptyMessage, we_core_MessageReporting::kMessageWarning
 );
 
 $noTablenameMessage = we_util_Strings::quoteForJSString($translate->_('The tablename is missing.'), false);
 $noTablenameMessageCall = we_core_MessageReporting::getShowMessageCall(
-		$noTablenameMessage, we_core_MessageReporting::kMessageWarning
+				$noTablenameMessage, we_core_MessageReporting::kMessageWarning
 );
 
 

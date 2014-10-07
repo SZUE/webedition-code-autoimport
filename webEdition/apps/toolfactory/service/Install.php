@@ -38,7 +38,7 @@ class toolfactory_service_Install extends we_app_service_AbstractCmd{
 		while(false !== ($entry = $_app_directory->read())){
 			if($entry != "." && $entry != ".."){
 				$path_parts = pathinfo($entry);
-				if(isset($path_parts['extension']) && $path_parts['extension'] == 'tgz'){
+				if(isset($path_parts['extension']) && $path_parts['extension'] === 'tgz'){
 					$appdata = explode('_', $path_parts['filename']);
 					if(isset($appdata[0]) && $appdata[1]){
 						$app = array('source' => $_app_directory_string . '/' . $entry, 'classname' => $appdata[0], 'version' => $appdata[1]);
@@ -54,7 +54,7 @@ class toolfactory_service_Install extends we_app_service_AbstractCmd{
 			while(false !== ($entry = $_app_directory->read())){
 				if($entry != "." && $entry != ".."){
 					$path_parts = pathinfo($entry);
-					if(isset($path_parts['extension']) && $path_parts['extension'] == 'tgz'){
+					if(isset($path_parts['extension']) && $path_parts['extension'] === 'tgz'){
 						$appdata = explode('_', $path_parts['filename']);
 						if(isset($appdata[0]) && $appdata[1]){
 							$app = array('source' => $_app_directory_string . '/' . $entry, 'classname' => $appdata[0], 'version' => $appdata[1]);

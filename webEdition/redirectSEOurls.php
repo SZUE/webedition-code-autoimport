@@ -107,7 +107,7 @@ while($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] != '/
 	}
 }
 
-if($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] == '/' && $hiddendirindex){
+if($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] === '/' && $hiddendirindex){
 	$searchfor = $path_parts['basename'] . ($searchfor ? '/' . $searchfor : '');
 
 	//z109

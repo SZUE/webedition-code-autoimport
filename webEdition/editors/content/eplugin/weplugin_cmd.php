@@ -41,7 +41,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$_ct = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
 		$_source = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '###EDITORPLUGIN:EMPTYSTRING###', 4);
 
-		if($_source == '###EDITORPLUGIN:EMPTYSTRING###'){
+		if($_source === '###EDITORPLUGIN:EMPTYSTRING###'){
 			$_source = $_SESSION['weS']['we_data'][$_we_transaction][0]['elements']['data']['dat'];
 		}
 
@@ -131,7 +131,7 @@ if (
 
 
 			$we_doc->we_initSessDat($we_dt);
-			if($we_ContentType == we_base_ContentTypes::IMAGE){
+			if($we_ContentType === we_base_ContentTypes::IMAGE){
 				$we_doc->setElement('data', $tempName, 'image');
 				$_dim = we_thumbnail::getimagesize($tempName);
 				if(is_array($_dim) && count($_dim) > 0){

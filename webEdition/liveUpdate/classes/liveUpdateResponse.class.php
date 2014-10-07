@@ -57,7 +57,7 @@ class liveUpdateResponse{
 	}
 
 	function isError(){
-		return ($this->Type == 'state' && $this->State == 'error');
+		return ($this->Type === 'state' && $this->State === 'error');
 	}
 
 	function getField($fieldname){

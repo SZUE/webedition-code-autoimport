@@ -196,7 +196,7 @@ class we_document extends we_root{
 	}
 
 	function formInGlossar(){
-		return (we_base_moduleInfo::we_getModuleNameByContentType('glossary') == 'glossary' ?
+		return (we_base_moduleInfo::we_getModuleNameByContentType('glossary') === 'glossary' ?
 				we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
 				'');
 	}
@@ -208,7 +208,7 @@ class we_document extends we_root{
 	function formExtension2(){
 		$doctype = isset($this->DocType) ? $this->DocType : '';
 
-		if($this->ID == 0 && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'load_editor' && $doctype == ''){ //	Neues Dokument oder Dokument ohne DocType
+		if($this->ID == 0 && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'load_editor' && $doctype == ''){ //	Neues Dokument oder Dokument ohne DocType
 			switch($this->ContentType){
 				case we_base_ContentTypes::HTML: //	is HTML-File
 					$selected = DEFAULT_HTML_EXT;
@@ -334,7 +334,7 @@ class we_document extends we_root{
 			if(is_numeric($ordn)){
 				$ordn--;
 			}
-			$_ord = ($ordn == 'end' ? 10000 : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
+			$_ord = ($ordn === 'end' ? 10000 : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
 
 			$_ppath = id_to_path($parentid, NAVIGATION_TABLE);
 			$_new_path = rtrim($_ppath, '/') . '/' . $text;
@@ -868,7 +868,7 @@ class we_document extends we_root{
 				if(isset($attribs['title'])){
 					$attribs['title'] = oldHtmlspecialchars($attribs['title']);
 				}
-				if(!(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'reload_editpage' && ($img->Name === we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1)) && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) == 'change_image') && isset($GLOBALS['we_doc']->elements[$altField])){
+				if(!(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'reload_editpage' && ($img->Name === we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1)) && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) === 'change_image') && isset($GLOBALS['we_doc']->elements[$altField])){
 					if(!isset($GLOBALS['lv'])){
 						$attribs['alt'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($altField));
 						$attribs['title'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($titleField));
@@ -938,7 +938,7 @@ class we_document extends we_root{
 				$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
 				$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
 
-				if($pathOnly || $only == 'href'){
+				if($pathOnly || $only === 'href'){
 					$return = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
 
 					if((isset($GLOBALS['we_link_not_published'])) && ($GLOBALS['we_link_not_published'])){
@@ -962,7 +962,7 @@ class we_document extends we_root{
 					$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), true, false);
 					$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, true, true);
 					if($only){
-						return ($only == 'content' ?
+						return ($only === 'content' ?
 								self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls) :
 								isset($link[$only]) ? $link[$only] : ''); // #3636
 					}
@@ -984,7 +984,7 @@ class we_document extends we_root{
 				//workaround buggy zend dateformat with \h which duplicates the char
 				$ret = '';
 				for($i = 0; $i < strlen($format); $i++){
-					if($format[$i] == '\\'){
+					if($format[$i] === '\\'){
 						$ret.=$format[++$i];
 					} else {
 						$ret.=$zdate->toString($format[$i], 'php');
@@ -1038,7 +1038,7 @@ class we_document extends we_root{
 				if(weTag_getAttribute('win2iso', $attribs, false, true)){
 
 					$charset = ( isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'])) ? $GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'] : '';
-					if(trim(strtolower(substr($charset, 0, 3))) == 'iso' || $charset == ''){
+					if(trim(strtolower(substr($charset, 0, 3))) === 'iso' || $charset == ''){
 						$retval = strtr($retval, array(
 							chr(128) => '&#8364;',
 							chr(130) => '&#8218;',
@@ -1105,7 +1105,7 @@ class we_document extends we_root{
 				$val = $this->getElement($attribs['name']);
 		}
 
-		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : '')); //not instance due to we_showObject
+		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] === 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : '')); //not instance due to we_showObject
 	}
 
 	private function getValFromSrc($fn, $name, $key = 'dat'){
@@ -1401,13 +1401,13 @@ class we_document extends we_root{
 							$dates[$nr][$sw[1]] = $v;
 							break;
 						default:
-							if(substr($sw[0], 0, 5) == 'month'){
+							if(substr($sw[0], 0, 5) === 'month'){
 								$d = intval(substr($sw[0], 5));
 								$this->schedArr[$nr]['months'][$d - 1] = $v;
-							} else if(substr($sw[0], 0, 3) == 'day'){
+							} else if(substr($sw[0], 0, 3) === 'day'){
 								$d = intval(substr($sw[0], 3));
 								$this->schedArr[$nr]['days'][$d - 1] = $v;
-							} else if(substr($sw[0], 0, 4) == 'wday'){
+							} else if(substr($sw[0], 0, 4) === 'wday'){
 								$d = intval(substr($sw[0], 4));
 								$this->schedArr[$nr]['weekdays'][$d - 1] = $v;
 							}

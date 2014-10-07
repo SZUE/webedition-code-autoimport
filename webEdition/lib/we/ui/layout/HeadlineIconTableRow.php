@@ -228,7 +228,7 @@ class we_ui_layout_HeadlineIconTableRow extends we_ui_abstract_AbstractElement{
 		}
 		$headlineHTML = ($this->_title !== '') ? ('<div class="' . we_ui_layout_HeadlineIconTable::kRowTitle . '" style="margin-bottom:10px;">' . $folderHTML . oldHtmlspecialchars($this->_title) . '</div>') : "";
 
-		$leftContent = ($iconHTML !== '') ? $iconHTML : (($this->_leftWidth && ($this->_titlePosition == 'left')) ? $headlineHTML : "");
+		$leftContent = ($iconHTML !== '') ? $iconHTML : (($this->_leftWidth && ($this->_titlePosition === 'left')) ? $headlineHTML : "");
 
 		$rightContent = '<div style="float:left;">' . ((($iconHTML && $headlineHTML) || ($leftContent === "") || ($this->_titlePosition != 'left')) ? ($headlineHTML . '<div>' . $this->_contentHTML . '</div>') : '<div id="' . $divID . '" ' . ($this->_isFolded ? 'style="display:none"' : '') . ' >' . $this->_contentHTML . '</div>') . '</div>';
 

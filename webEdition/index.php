@@ -253,7 +253,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 
 	printHeader($login, 400);
 	echo we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
-} else if(!we_database_base::hasDB() || $GLOBALS['DB_WE']->Error == 'No database selected'){
+} else if(!we_database_base::hasDB() || $GLOBALS['DB_WE']->Error === 'No database selected'){
 	$_layout = getError(g_l('start', '[no_db_connection]'));
 
 	printHeader($login, 503);

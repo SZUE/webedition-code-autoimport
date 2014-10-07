@@ -93,7 +93,7 @@ abstract class we_base_delete{
 		}
 
 		self::deleteContentFromDB($id, $table, $DB_WE);
-		if(substr($path, 0, 3) == '/..'){
+		if(substr($path, 0, 3) === '/..'){
 			return;
 		}
 		$file = ((!$isTemplateFolder) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATES_PATH) . $path;

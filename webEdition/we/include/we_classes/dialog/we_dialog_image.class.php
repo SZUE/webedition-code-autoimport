@@ -98,7 +98,7 @@ class we_dialog_image extends we_dialog_base{
 		if(count($tokkens) == 2){
 			$foo = explode('=', $tokkens[1]);
 			if(count($foo) == 2){
-				if($foo[0] == 'id'){
+				if($foo[0] === 'id'){
 					$longdescid = $foo[1];
 				}
 			}
@@ -368,7 +368,7 @@ class we_dialog_image extends we_dialog_base{
 			'<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
 	</table>';
 
-		if($this->args["editor"] == 'tinyMce'){
+		if($this->args["editor"] === 'tinyMce'){
 			$classSelect = we_html_tools::htmlFormElementTable($this->getClassSelect(), g_l('wysiwyg', "[css_style]"));
 		} else {
 			$foo = we_html_element::jsElement('showclasss("we_dialog_args[class]","' . (isset($this->args["class"]) ? $this->args["class"] : "") . '","");');

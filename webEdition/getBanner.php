@@ -74,7 +74,7 @@ switch($type){
 
 		$bannerpath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($bid));
 
-		if(($type == 'pixel' || (!$nocount) && $id && $c)){
+		if(($type === 'pixel' || (!$nocount) && $id && $c)){
 			$GLOBALS['DB_WE']->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => intval($id),
 					'Timestamp' => sql_function('UNIX_TIMESTAMP()'),
