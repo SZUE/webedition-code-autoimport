@@ -38,8 +38,8 @@ abstract class we_glossary_replace{
 	 */
 	public static function replace($content, $language){
 		return (self::useAutomatic() ?
-				self::doReplace($content, $language) :
-				$content);
+						self::doReplace($content, $language) :
+						$content);
 	}
 
 	/**
@@ -52,7 +52,7 @@ abstract class we_glossary_replace{
 	 * @internal
 	 */
 	public static function doReplace($src, $language){
-		if($language == ''){
+		if(!$language){
 			we_loadLanguageConfig();
 			$language = $GLOBALS['weDefaultFrontendLanguage'];
 		}
@@ -98,7 +98,7 @@ abstract class we_glossary_replace{
 			if($piece && $piece[0] != '<' && stripos($before, '<script') === FALSE){
 				//this will generate invalid code: $piece = str_replace('&quot;', '"', $piece);
 				foreach($replace as $tag => $words){
-					if($tag == '' || stripos($before, $tag) === FALSE){
+					if(!$tag || stripos($before, $tag) === FALSE){
 						$piece = self::doReplaceWords($piece, $words);
 					}
 				}
@@ -109,8 +109,8 @@ abstract class we_glossary_replace{
 
 		$replBody = strtr($replBody, array('@@@we@@@' => '\''));
 		return (isset($matches[1]) ?
-				str_replace($srcBody, $replBody, $src) :
-				$replBody);
+						str_replace($srcBody, $replBody, $src) :
+						$replBody);
 	}
 
 	/**

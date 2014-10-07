@@ -362,7 +362,7 @@ function init() {
 					$_thumbnail_format_select->addOption($_k, $_v);
 
 					// Check if added option is selected
-					if($_thumbnail_format == $_k || (($_thumbnail_format == '') && ($_k === 'none'))){
+					if($_thumbnail_format == $_k || (!$_thumbnail_format && ($_k === 'none'))){
 						$_thumbnail_format_select->selectOption($_k);
 					}
 				}

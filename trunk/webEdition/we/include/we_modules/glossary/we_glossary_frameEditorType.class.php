@@ -269,7 +269,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 							$mode = g_l('modules_glossary', '[link_object]');
 							break;
 						case 'category':
-							if($values['modeCategory'] == "extern"){
+							if($values['modeCategory'] === "extern"){
 								$url = $values['CategoryUrl'];
 							} else {
 								$url = $values['CategoryInternLinkPath'];

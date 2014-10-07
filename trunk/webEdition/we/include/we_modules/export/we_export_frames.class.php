@@ -260,7 +260,7 @@ function addLog(text){
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 		$table->setColContent(0, 0, we_html_tools::htmlSelect('ExportTo', array('local' => g_l('export', '[export_to_local]'), "server" => g_l('export', "[export_to_server]")), 1, $this->View->export->ExportTo, false, array('onchange' => 'toggle(\'save_to\');' . $this->topFrame . '.hot=1;'), 'value', $this->_width_size));
 		$table->setColContent(1, 0, we_html_tools::getPixel(10, 10));
-		$table->setCol(2, 0, array("id" => "save_to", "style" => ($this->View->export->ExportTo == 'server' ? 'display:block' : 'display: none')), we_html_tools::htmlFormElementTable($this->formFileChooser(($this->_width_size - 120), "ServerPath", $this->View->export->ServerPath, "", "folder"), g_l('export', "[save_to]")));
+		$table->setCol(2, 0, array("id" => "save_to", "style" => ($this->View->export->ExportTo === 'server' ? 'display:block' : 'display: none')), we_html_tools::htmlFormElementTable($this->formFileChooser(($this->_width_size - 120), "ServerPath", $this->View->export->ServerPath, "", "folder"), g_l('export', "[save_to]")));
 
 
 		$parts[] = array(
@@ -303,11 +303,11 @@ function closeAllType(){
 
 		$table->setColContent(0, 0, we_html_tools::htmlSelect('SelectionType', $seltype, 1, $this->View->export->SelectionType, false, array('onchange' => "closeAllType();toggle(this.value);' . $this->topFrame . '.hot=1;"), 'value', $this->_width_size));
 		$table->setColContent(1, 0, we_html_tools::getPixel(5, 5));
-		$table->setCol(2, 0, array("id" => "doctype", "style" => ($this->View->export->SelectionType == 'doctype' ? 'display:block' : 'display: none')), we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, array('onchange' => $this->topFrame . '.hot=1;'), 'value', $this->_width_size) .
+		$table->setCol(2, 0, array("id" => "doctype", "style" => ($this->View->export->SelectionType === 'doctype' ? 'display:block' : 'display: none')), we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, array('onchange' => $this->topFrame . '.hot=1;'), 'value', $this->_width_size) .
 			we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, ($this->_width_size - 120), 0, 'Folder', $this->View->export->Folder, 'FolderPath', $FolderPath), g_l('export', '[dir]'))
 		);
 		if(defined('OBJECT_TABLE')){
-			$table->setCol(3, 0, array("id" => "classname", "style" => ($this->View->export->SelectionType == "classname" ? "display:block" : "display: none")), we_html_tools::htmlSelect('ClassName', $classNames, 1, $this->View->export->ClassName, false, array('onchange' => $this->topFrame . '.hot=1;'), 'value', $this->_width_size)
+			$table->setCol(3, 0, array("id" => "classname", "style" => ($this->View->export->SelectionType === "classname" ? "display:block" : "display: none")), we_html_tools::htmlSelect('ClassName', $classNames, 1, $this->View->export->ClassName, false, array('onchange' => $this->topFrame . '.hot=1;'), 'value', $this->_width_size)
 			);
 		}
 
@@ -318,11 +318,11 @@ function closeAllType(){
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 1);
 		$table->setColContent(0, 0, we_html_tools::htmlSelect('Selection', array('auto' => g_l('export', "[auto_selection]"), "manual" => g_l('export', "[manual_selection]")), 1, $this->View->export->Selection, false, array('onchange' => 'closeAllSelection();toggle(this.value);closeAllType();toggle(\'doctype\');' . $this->topFrame . '.hot=1;'), 'value', $this->_width_size));
 		$table->setColContent(1, 0, we_html_tools::getPixel(5, 5));
-		$table->setCol(2, 0, array('id' => 'auto', 'style' => ($this->View->export->Selection == 'auto' ? 'display:block' : 'display: none')), we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_auto_selection]'), we_html_tools::TYPE_INFO, $this->_width_size) .
+		$table->setCol(2, 0, array('id' => 'auto', 'style' => ($this->View->export->Selection === 'auto' ? 'display:block' : 'display: none')), we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_auto_selection]'), we_html_tools::TYPE_INFO, $this->_width_size) .
 			$selectionTypeHtml
 		);
 
-		$table->setCol(3, 0, array('id' => 'manual', "style" => ($this->View->export->Selection == 'manual' ? "display:block" : "display: none")), we_html_tools::htmlAlertAttentionBox(g_l('export', "[txt_manual_selection]") . " " . g_l('export', "[select_export]"), we_html_tools::TYPE_INFO, $this->_width_size) .
+		$table->setCol(3, 0, array('id' => 'manual', "style" => ($this->View->export->Selection === 'manual' ? "display:block" : "display: none")), we_html_tools::htmlAlertAttentionBox(g_l('export', "[txt_manual_selection]") . " " . g_l('export', "[select_export]"), we_html_tools::TYPE_INFO, $this->_width_size) .
 			$this->SelectionTree->getHTMLMultiExplorer($this->_width_size, 200)
 		);
 
@@ -481,7 +481,7 @@ function closeAllType(){
 				$exports = 0;
 				if(!isset($_SESSION['weS']['ExImRefTable'])){
 
-					if($this->View->export->Selection == 'manual'){
+					if($this->View->export->Selection === 'manual'){
 						$finalDocs = makeArrayFromCSV($this->View->export->selDocs);
 						$finalTempl = makeArrayFromCSV($this->View->export->selTempl);
 						$finalObjs = makeArrayFromCSV($this->View->export->selObjs);
@@ -590,7 +590,7 @@ function closeAllType(){
 
 					if($ref->ID && $ref->ContentType){
 						$table = $this->db->escape($ref->Table);
-						$exists = ($ref->ContentType == 'weBinary') || f('SELECT 1 FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
+						$exists = ($ref->ContentType === 'weBinary') || f('SELECT 1 FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
 
 						if($exists){
 							$xmlExIm->export($ref->ID, $ref->ContentType, $this->View->export->ExportFilename);
@@ -668,7 +668,7 @@ function closeAllType(){
 									if (' . $this->topFrame . '.editor.edfooter.doProgress) ' . $this->topFrame . '.editor.edfooter.doProgress(100);
 									if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("<br/>' . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('export', '[end_export]') . ' - ' . date("d.m.Y H:i:s"))) . '<br/><br/>");
 							') . "\n" .
-							($this->View->export->ExportTo == 'local' ?
+							($this->View->export->ExportTo === 'local' ?
 								we_html_element::jsElement($this->editorBodyFrame . '.addLog(\'' .
 									we_html_element::htmlSpan(array("class" => "defaultfont"), addslashes(we_html_tools::getPixel(10, 1) . g_l('export', "[backup_finished]")) . "<br/>" .
 										addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', "[download_starting2]") . "<br/><br/>" .
@@ -691,7 +691,7 @@ function closeAllType(){
 										"leftmargin" => 5,
 										"topmargin" => 5,
 										"onload" =>
-										($this->View->export->ExportTo == 'local' ?
+										($this->View->export->ExportTo === 'local' ?
 											($this->cmdFrame . ".location='" . $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") :
 											'showEndStatus();') .
 										$this->topFrame . ".editor.edfooter.hideProgress();"

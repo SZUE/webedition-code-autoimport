@@ -327,7 +327,7 @@ class we_messaging_proto extends we_class{
 	}
 
 	function save_sortstuff($id, $sortfield, $sortorder){
-		$sortorder = $sortorder == 'asc' ? 'desc' : 'asc';
+		$sortorder = $sortorder === 'asc' ? 'desc' : 'asc';
 
 		$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->folder_tbl) . ' SET sortItem="' . $this->DB_WE->escape($sortfield) . '", sortOrder="' . $this->DB_WE->escape($sortorder) . '" WHERE ID=' . intval($id) . ' AND UserID=' . intval($this->userid));
 	}
@@ -341,7 +341,7 @@ class we_messaging_proto extends we_class{
 		}
 
 		if(($this->DB_WE->f('sortOrder'))){
-			$this->sortorder = ($this->DB_WE->f('sortOrder') == 'asc') ? 'desc' : 'asc';
+			$this->sortorder = ($this->DB_WE->f('sortOrder') === 'asc') ? 'desc' : 'asc';
 		}
 
 		$this->cached[] = 'sortfield';

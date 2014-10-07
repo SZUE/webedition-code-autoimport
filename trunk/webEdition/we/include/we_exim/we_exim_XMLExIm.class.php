@@ -286,7 +286,7 @@ class we_exim_XMLExIm{
 
 	function getSelectedItems($selection, $extype, $art, $type, $doctype, $classname, $categories, $dir, &$selDocs, &$selTempl, &$selObjs, &$selClasses){
 		$db = new DB_WE();
-		if($selection == 'manual'){
+		if($selection === 'manual'){
 			if($extype == we_import_functions::TYPE_WE_XML){
 				$selDocs = $this->getIDs($selDocs, FILE_TABLE, false);
 				$selTempl = $this->getIDs($selTempl, TEMPLATES_TABLE, false);
@@ -344,7 +344,7 @@ class we_exim_XMLExIm{
 				$object->savebinarydata();
 			}
 
-			if($object->ClassName == 'we_docTypes'){
+			if($object->ClassName === 'we_docTypes'){
 				$ret = $object->we_save_exim();
 			} else {
 				$GLOBALS['we_doc'] = $object;

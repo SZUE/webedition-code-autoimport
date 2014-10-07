@@ -161,7 +161,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 			echo '<tr onclick="check(\'' . $val['ID'] . '\')" style="cursor:pointer">
 		<td id="td_' . $val['ID'] . '_cb" width="18" align="left" class="defaultfont"></td>';
 
-			if($val['hdrs']['ClassName'] == 'we_todo'){
+			if($val['hdrs']['ClassName'] === 'we_todo'){
 				if($val['hdrs']['Deadline'] < time()){
 					$dl_passed = 1;
 					$passed_dls[] = $val['ID'];

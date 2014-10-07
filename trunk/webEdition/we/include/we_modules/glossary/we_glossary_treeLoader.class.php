@@ -179,7 +179,7 @@ abstract class we_glossary_treeLoader{
 			}
 
 			foreach($Db->Record as $Key => $Val){
-				$Item[strtolower($Key)] = (strtolower($Key) == 'text' ? oldHtmlspecialchars($Val) : $Val);
+				$Item[strtolower($Key)] = (strtolower($Key) === 'text' ? oldHtmlspecialchars($Val) : $Val);
 			}
 
 			$Items[] = $Item;

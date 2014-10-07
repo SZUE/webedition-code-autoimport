@@ -83,11 +83,11 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 <body class="weDialogBody" onload="document.compose_form.mn_body.focus()" onunload="doUnload();">
 	<?php
 	$mode = we_base_request::_(we_base_request::STRING, 'mode');
-	if($mode == 're'){
+	if($mode === 're'){
 		$compose = new we_messaging_format('re', $messaging->selected_message);
 		$heading = g_l('modules_messaging', '[reply_message]');
 	} else {
-		if(substr($mode, 0, 2) == 'u_'){
+		if(substr($mode, 0, 2) === 'u_'){
 			$_u = str_replace(substr($mode, 0, 2), '', $mode);
 		}
 		$compose = new we_messaging_format('new');

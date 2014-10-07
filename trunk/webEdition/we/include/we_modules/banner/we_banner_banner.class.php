@@ -139,7 +139,7 @@ class we_banner_banner extends we_banner_base{
 		}
 		parent::load();
 		$ppath = id_to_path($this->ParentID, BANNER_TABLE);
-		$this->Path = ($ppath == '/') ? $ppath . $this->Text : $ppath . '/' . $this->Text;
+		$this->Path = ($ppath === '/') ? $ppath . $this->Text : $ppath . '/' . $this->Text;
 		return true;
 	}
 
@@ -162,7 +162,7 @@ class we_banner_banner extends we_banner_base{
 	 */
 	public function save(){
 		$ppath = id_to_path($this->ParentID, BANNER_TABLE);
-		$this->Path = ($ppath == "/") ? $ppath . $this->Text : $ppath . '/' . $this->Text;
+		$this->Path = ($ppath === "/") ? $ppath . $this->Text : $ppath . '/' . $this->Text;
 		parent::save();
 	}
 
@@ -178,7 +178,7 @@ class we_banner_banner extends we_banner_base{
 		$this->db->query('DELETE FROM ' . BANNER_VIEWS_TABLE . ' WHERE ID=' . intval($this->ID));
 		$this->db->query('DELETE FROM ' . BANNER_CLICKS_TABLE . ' WHERE ID=' . intval($this->ID));
 		if($this->IsFolder){
-			$path = (substr($this->Path, -1) == "/") ? $this->Path : $this->Path . "/";
+			$path = (substr($this->Path, -1) === "/") ? $this->Path : $this->Path . "/";
 			$this->db->query('SELECT ID FROM ' . BANNER_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%"');
 			$ids = array();
 			while($this->db->next_record()){
@@ -336,7 +336,7 @@ class we_banner_banner extends we_banner_base{
 			$linkAtts['href'] = $bannerlink;
 			if($target){
 				$linkAtts['target'] = $target;
-			} else if($type == 'iframe'){
+			} else if($type === 'iframe'){
 				$linkAtts['target'] = '_parent';
 			}
 

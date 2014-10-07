@@ -149,9 +149,9 @@ class we_backup_tableItem extends weModelBase{
 		if($fromC != '' && $toC != ''){
 			if(function_exists('iconv')){
 				return iconv($fromC, $toC . '//TRANSLIT', $string);
-			} elseif($fromC == 'UTF-8' && $toC == 'ISO-8859-1'){
+			} elseif($fromC === 'UTF-8' && $toC === 'ISO-8859-1'){
 				return utf8_decode($string);
-			} elseif($fromC == 'ISO-8859-1' && $toC == 'UTF-8'){
+			} elseif($fromC === 'ISO-8859-1' && $toC === 'UTF-8'){
 				return utf8_encode($string);
 			}
 		}

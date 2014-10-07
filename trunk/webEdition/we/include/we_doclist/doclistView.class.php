@@ -825,25 +825,25 @@ class doclistView{
 
 			$searchInput = we_html_tools::htmlTextInput("search[" . $i . "]", 30, (isset($GLOBALS ['we_doc']->searchclassFolder->search) && is_array($GLOBALS ['we_doc']->searchclassFolder->search) && isset($GLOBALS ['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->search [$i] : ''), "", " class=\"wetextinput\"  id=\"search['.$i.']\" ", "text", 190);
 
-			$locationDisabled = (isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i]) && ($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Content" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Status" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Speicherart" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_template_id" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_doc_type" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_category") ?
+			$locationDisabled = (isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i]) && ($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Content" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Status" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Speicherart" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "temp_template_id" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "temp_doc_type" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "temp_category") ?
 					'disabled' : '');
 
 			if(isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i])){
-				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Status"){
+				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Status"){
 					$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS ['we_doc']->searchclassFolder->getFieldsStatus(), 1, (isset($GLOBALS ['we_doc']->searchclassFolder->search) && is_array($GLOBALS ['we_doc']->searchclassFolder->search) && isset($GLOBALS ['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
 				}
-				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Speicherart"){
+				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Speicherart"){
 					$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS ['we_doc']->searchclassFolder->getFieldsSpeicherart(), 1, (isset($GLOBALS ['we_doc']->searchclassFolder->search) && is_array($GLOBALS ['we_doc']->searchclassFolder->search) && isset($GLOBALS ['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
 				}
-				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "Published" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "CreationDate" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "ModDate"){
+				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Published" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "CreationDate" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "ModDate"){
 					$handle = "date";
 					$searchInput = we_html_tools::getDateSelector("search[" . $i . "]", "_from" . $i, $GLOBALS ['we_doc']->searchclassFolder->search [$i]);
 				}
-				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_doc_type"){
+				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "temp_doc_type"){
 					$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS ['we_doc']->searchclassFolder->getDocTypes(), 1, (isset($GLOBALS ['we_doc']->searchclassFolder->search) && is_array($GLOBALS ['we_doc']->searchclassFolder->search) && isset($GLOBALS ['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
 				}
 
-				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "MasterTemplateID" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_template_id"){
+				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "MasterTemplateID" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "temp_template_id"){
 					$_linkPath = $GLOBALS ['we_doc']->searchclassFolder->search [$i];
 
 					$_rootDirID = 0;
@@ -856,7 +856,7 @@ class doclistView{
 
 					$searchInput = $selector;
 				}
-				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] == "temp_category"){
+				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "temp_category"){
 					$_linkPath = $GLOBALS ['we_doc']->searchclassFolder->search [$i];
 
 					$_rootDirID = 0;
@@ -975,37 +975,37 @@ class doclistView{
 							break;
 					}
 
-					if($searchFields [$i] == "Content"){
+					if($searchFields [$i] === "Content"){
 						$w = $obj->searchclassFolder->searchContent($searchString, $_table);
-						if($where == ""){
+						if(!$where){
 							$where .= " AND " . ($w ? $w : '0');
 						} elseif($w != ""){
 							$where .= $op . " " . $w;
 						}
 					}
 
-					if($searchFields [$i] == 'Title'){
+					if($searchFields [$i] === 'Title'){
 						$w = $obj->searchclassFolder->searchInTitle($searchString, $_table);
-						if($where == ""){
+						if(!$where){
 							$where .= " AND " . ($w ? $w : '0');
 						} elseif($w != ""){
 							$where .= $op . " " . $w;
 						}
 					}
 
-					if($searchString != "" && ($searchFields [$i] == "Status" || $searchFields [$i] == "Speicherart")){
+					if($searchString != "" && ($searchFields [$i] === "Status" || $searchFields [$i] === "Speicherart")){
 						if($_table == FILE_TABLE){
 							$w = $obj->searchclassFolder->getStatusFiles($searchString, $_table);
 							$where .= $w;
 						}
 					}
 
-					if($searchString != "" && ($searchFields [$i] == "CreatorName" || $searchFields [$i] == "WebUserName")){
+					if($searchString != "" && ($searchFields [$i] === "CreatorName" || $searchFields [$i] === "WebUserName")){
 						$w = $obj->searchclassFolder->searchSpecial($searchString, $_table, $searchFields [$i], $location [$i]);
 						$where .= $w;
 					}
 
-					if($searchFields [$i] == "temp_category"){
+					if($searchFields [$i] === "temp_category"){
 						$w = $obj->searchclassFolder->searchCategory($searchString, $_table, $searchFields [$i]);
 						$where .= $w;
 					}
@@ -1106,7 +1106,7 @@ class doclistView{
 		for($f = 0; $f < $resultCount; $f++){
 			$fontColor = "black";
 			if(isset($_result [$f]["Published"])){
-				$published = ((($_result [$f]["Published"] != 0) && ($_result [$f]["Published"] < $_result [$f]["ModDate"]) && ($_result [$f]["ContentType"] == we_base_ContentTypes::HTML || $_result [$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result [$f]["ContentType"] == "objectFile")) ? - 1 : $_result [$f]["Published"]);
+				$published = ((($_result [$f]["Published"] != 0) && ($_result [$f]["Published"] < $_result [$f]["ModDate"]) && ($_result [$f]["ContentType"] == we_base_ContentTypes::HTML || $_result [$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result [$f]["ContentType"] === "objectFile")) ? - 1 : $_result [$f]["Published"]);
 				$showPubCheckbox = true;
 				if($_result [$f]["ContentType"] != "folder"){
 					if($published == 0){
@@ -1122,7 +1122,7 @@ class doclistView{
 			$Icon = we_base_ContentTypes::inst()->getIcon($_result [$f]["ContentType"], we_base_ContentTypes::FILE_ICON, $ext);
 
 			if($view == 0){
-				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] == "objectFile") && permissionhandler::hasPerm('PUBLISH')) ? we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '';
+				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] === "objectFile") && permissionhandler::hasPerm('PUBLISH')) ? we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '';
 
 				$content[$f] = array(
 					array("dat" => $publishCheckbox),

@@ -76,9 +76,9 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case 'caption':
 			case 'removecaption':
 			case 'edittable':
-				return we_wysiwyg_editor::$editorType == 'tinyMCE' ? false : parent::hasProp('', $contextMenu) || parent::hasProp('table', $contextMenu);
+				return we_wysiwyg_editor::$editorType === 'tinyMCE' ? false : parent::hasProp('', $contextMenu) || parent::hasProp('table', $contextMenu);
 			case 'importrtf':
-				return we_wysiwyg_editor::$editorType == 'tinyMCE' ? false : parent::hasProp('', $contextMenu);
+				return we_wysiwyg_editor::$editorType === 'tinyMCE' ? false : parent::hasProp('', $contextMenu);
 			case 'fontname':
 			case 'fontsize':
 				return parent::hasProp('', $contextMenu) || parent::hasProp('font', $contextMenu);
@@ -121,7 +121,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 				$this->editor->setPlugin('lists', parent::hasProp('', $contextMenu) || parent::hasProp('list', $contextMenu));
 				return $this->editor->setPlugin('advlist', parent::hasProp('', $contextMenu) || parent::hasProp('list', $contextMenu));
 			case 'blockquote':
-				return we_wysiwyg_editor::$editorType == 'tinyMCE' && (parent::hasProp('', $contextMenu) || parent::hasProp('list', $contextMenu));
+				return we_wysiwyg_editor::$editorType === 'tinyMCE' && (parent::hasProp('', $contextMenu) || parent::hasProp('list', $contextMenu));
 			case 'anchor':
 			case 'createlink':
 			case 'unlink':
@@ -171,14 +171,14 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case 'replace':
 				return $this->editor->setPlugin('searchreplace', parent::hasProp('', $contextMenu) || parent::hasProp('essential', $contextMenu));
 			case 'fullscreen':
-				return !$this->editor->getIsFrontendEdit() && we_wysiwyg_editor::$editorType == 'tinyMCE' && (parent::hasProp('', $contextMenu) || parent::hasProp('essential', $contextMenu));
-			case 'editsource': 
+				return !$this->editor->getIsFrontendEdit() && we_wysiwyg_editor::$editorType === 'tinyMCE' && (parent::hasProp('', $contextMenu) || parent::hasProp('essential', $contextMenu));
+			case 'editsource':
 				return parent::hasProp('', $contextMenu) || parent::hasProp('advanced', $contextMenu);
 			case 'template':
-				return we_wysiwyg_editor::$editorType == 'tinyMCE' && (parent::hasProp('', $contextMenu) || parent::hasProp('advanced', $contextMenu));
+				return we_wysiwyg_editor::$editorType === 'tinyMCE' && (parent::hasProp('', $contextMenu) || parent::hasProp('advanced', $contextMenu));
 			default:
 				//FIXME: find the command using this case!
-				return we_wysiwyg_editor::$editorType == 'tinyMCE' ? false : parent::hasProp('', $contextMenu);
+				return we_wysiwyg_editor::$editorType === 'tinyMCE' ? false : parent::hasProp('', $contextMenu);
 		}
 	}
 

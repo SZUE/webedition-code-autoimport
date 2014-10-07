@@ -78,7 +78,7 @@ var attribs=new Array();' .
 
 			$js.="if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){ \n";
 			foreach($item as $k => $v){
-				if(strtolower($k) == "checked"){
+				if(strtolower($k) === "checked"){
 					$js.='
 if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["id"] . '")){
 	attribs["' . strtolower($k) . '"]=\'1\';
@@ -322,7 +322,7 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 				"tooltip" => $ID
 			);
 
-			if($typ == "group" && $OpenCloseStatus == 1){
+			if($typ === "group" && $OpenCloseStatus == 1){
 				self::getItems($table, $ID, $treeItems);
 			}
 		}

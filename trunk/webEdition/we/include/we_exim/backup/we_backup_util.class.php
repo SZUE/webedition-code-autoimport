@@ -284,7 +284,7 @@ abstract class we_backup_util{
 			return 'unknown';
 		}
 		$_hasbinary = false;
-		while($_found == 'unknown' && $_try < $_count){
+		while($_found === 'unknown' && $_try < $_count){
 			if(preg_match('/.*' . we_backup_backup::weXmlExImHead . '.*type="backup".*>/', $_part)){
 				return 'backup';
 			} elseif(preg_match('/<we:(document|template|class|object|info|navigation)/i', $_part)){
@@ -304,7 +304,7 @@ abstract class we_backup_util{
 			$_try++;
 		}
 
-		if($_found == 'unknown' && $_hasbinary){
+		if($_found === 'unknown' && $_hasbinary){
 			return 'weimport';
 		}
 

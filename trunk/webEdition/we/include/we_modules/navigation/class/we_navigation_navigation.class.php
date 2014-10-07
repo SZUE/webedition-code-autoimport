@@ -697,7 +697,7 @@ class we_navigation_navigation extends weModelBase{
 							$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->LinkID) . ' LIMIT 1', $_db);
 							$objecturl = isset($objectdaten['Url']) ? $objectdaten['Url'] : '';
 							$objecttriggerid = isset($objectdaten['TriggerID']) ? $objectdaten['TriggerID'] : 0;
-							if($objecturl == ''){
+							if(!$objecturl){
 								$_param = 'we_objectID=' . $this->LinkID . ($_param ? '&' : '') . $_param;
 							}
 						} else {
@@ -708,7 +708,7 @@ class we_navigation_navigation extends weModelBase{
 						$_id = $this->LinkID;
 					}
 					$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
-					$_path = ($_path == '/' ? '' : $_path);
+					$_path = ($_path === '/' ? '' : $_path);
 					if(NAVIGATION_OBJECTSEOURLS && $objecturl != ''){
 						$path_parts = pathinfo($_path);
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
@@ -730,7 +730,7 @@ class we_navigation_navigation extends weModelBase{
 					break;
 				case self::STPYE_CATEGORY:
 				case self::STPYE_CATLINK:
-					$_path = $this->LinkSelection == 'extern' ? $this->Url : ($_path = isset($storage[$this->UrlID]) ? $storage[$this->UrlID] : id_to_path($this->UrlID, FILE_TABLE));
+					$_path = $this->LinkSelection === 'extern' ? $this->Url : ($_path = isset($storage[$this->UrlID]) ? $storage[$this->UrlID] : id_to_path($this->UrlID, FILE_TABLE));
 					if(!empty($this->CatParameter)){
 						$_param = $this->CatParameter . '=' . $_id . (!empty($_param) ? '&' : '') . $_param;
 					}
@@ -748,11 +748,11 @@ class we_navigation_navigation extends weModelBase{
 								$objecturl = '';
 								$objecttriggerid = '';
 							}
-							if($objecturl == ''){
-								$_param = 'we_objectID=' . $_id . (!empty($_param) ? '&' : '') . $_param;
+							if(!$objecturl){
+								$_param = 'we_objectID=' . $_id . ($_param ? '&' : '') . $_param;
 							}
 						} else {
-							$_param = 'we_objectID=' . $_id . (!empty($_param) ? '&' : '') . $_param;
+							$_param = 'we_objectID=' . $_id . ($_param ? '&' : '') . $_param;
 							$objecttriggerid = '';
 						}
 						$_id = ($objecttriggerid ? $objecttriggerid : we_navigation_dynList::getFirstDynDocument($this->WorkspaceID));

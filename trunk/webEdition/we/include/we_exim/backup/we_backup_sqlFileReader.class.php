@@ -29,7 +29,7 @@ class we_backup_sqlFileReader{
 		// set the number of lines
 		$lines = 1;
 
-		if($filename == '' || !is_readable($filename)){
+		if(!$filename || !is_readable($filename)){
 			return false;
 		}
 

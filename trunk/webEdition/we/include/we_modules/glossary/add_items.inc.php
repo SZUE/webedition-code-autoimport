@@ -95,7 +95,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				case 'Charset':
 				default:
 					if(isset($we_doc->elements[$key]['type']) && (
-						$we_doc->elements[$key]['type'] == "txt" || $we_doc->elements[$key]['type'] == "input"
+						$we_doc->elements[$key]['type'] === "txt" || $we_doc->elements[$key]['type'] === "input"
 						)
 					){
 						$SrcBody .= $we_doc->elements[$key]['dat'] . " ";
@@ -794,7 +794,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 
 					// Only glossary check
-					if($cmd3 == "checkOnly"){
+					if($cmd3 === "checkOnly"){
 						$CancelButton = we_html_button::create_button("close", "javascript:top.close();", true, 120, 22, "", "", false, false);
 						$PublishButton = "";
 
@@ -852,7 +852,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 								case 'correct':
 									foreach($we_doc->elements as &$val){
 										if(isset($val['type']) && (
-											$val['type'] == 'txt' || $val['type'] == 'input'
+											$val['type'] === 'txt' || $val['type'] === 'input'
 											)
 										){
 											$val['dat'] = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Key, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}' . $Entry['title'] . '${3}', $temp);
@@ -903,7 +903,7 @@ var AddWords = "";
 top.add();' .
 						($cmd3 != 'checkOnly' ? "top.we_save_document();" : '') .
 						we_message_reporting::getShowMessageCall(
-							g_l('modules_glossary', ($cmd4 == 'checkOnly' ?
+							g_l('modules_glossary', ($cmd4 === 'checkOnly' ?
 									'[check_successful]' :
 									// glossary check with publishing
 									'[check_successful_and_publish]')), we_message_reporting::WE_MESSAGE_NOTICE, false, true) .

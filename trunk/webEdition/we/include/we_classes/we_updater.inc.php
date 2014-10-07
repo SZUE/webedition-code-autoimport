@@ -31,7 +31,7 @@ class we_updater{
 		} else {
 			$d = dir(LIVEUPDATE_CLIENT_DOCUMENT_DIR . 'sqldumps');
 			while(false !== ($entry = $d->read())){
-				if(substr($entry, -4) == '.sql'){
+				if(substr($entry, -4) === '.sql'){
 					$lf->executeQueriesInFiles(LIVEUPDATE_CLIENT_DOCUMENT_DIR . 'sqldumps/' . $entry);
 				}
 			}
@@ -132,7 +132,7 @@ class we_updater{
 		$DB_WE->query("SHOW COLUMNS FROM " . $DB_WE->escape($tab) . " LIKE '" . $DB_WE->escape($col) . "'");
 		$query = array();
 		while($DB_WE->next_record()){
-			if($DB_WE->f('Key') == ''){
+			if(!$DB_WE->f('Key')){
 				$query[] = 'ADD INDEX (' . $DB_WE->f('Field') . ')';
 			}
 		}

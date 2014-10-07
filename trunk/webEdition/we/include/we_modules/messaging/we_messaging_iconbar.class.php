@@ -62,7 +62,7 @@ class we_messaging_iconbar{
 	}
 
 	private function getJSCode(){
-		return we_html_element::jsScript(JS_DIR . 'windows.js') . ($this->viewclass == 'todo' ? $this->getJSCodeTodo() : $this->getJSCodeMsg());
+		return we_html_element::jsScript(JS_DIR . 'windows.js') . ($this->viewclass === 'todo' ? $this->getJSCodeTodo() : $this->getJSCodeMsg());
 	}
 
 	private function getJSCodeTodo(){
@@ -180,7 +180,7 @@ class we_messaging_iconbar{
 	}
 
 	private function getHTMLBody(){
-		$buttons = $this->viewclass == 'todo' ? $this->buttonsTodo : $this->buttonsMsg;
+		$buttons = $this->viewclass === 'todo' ? $this->buttonsTodo : $this->buttonsMsg;
 
 		$j = 0;
 		$table = new we_html_table(array('border' => 0, 'cellpadding' => 8, 'cellspacing' => 0, 'width' => 'auto', 'style' => 'margin-top: 5px'), 1, count($buttons));

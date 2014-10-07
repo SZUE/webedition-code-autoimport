@@ -88,7 +88,7 @@ function get_value($settingname){
 			return (isset($_SESSION['prefs'][$settingname]) ? $_SESSION['prefs'][$settingname] : 1);
 
 		case 'seem_start_type':
-			if(($_SESSION['prefs']['seem_start_type'] == 'document' || $_SESSION['prefs']['seem_start_type'] == 'object') && $_SESSION['prefs']['seem_start_file'] == 0){
+			if(($_SESSION['prefs']['seem_start_type'] === 'document' || $_SESSION['prefs']['seem_start_type'] === 'object') && $_SESSION['prefs']['seem_start_file'] == 0){
 				return 'cockpit';
 			}
 			return $_SESSION['prefs']['seem_start_type'];
@@ -392,7 +392,7 @@ _multiEditorreload = true;";
 					foreach($_recipients as $_recipient){
 						$_single_recipient = explode('<#>', $_recipient);
 
-						if(isset($_single_recipient[0]) && ($_single_recipient[0] == '#')){
+						if(isset($_single_recipient[0]) && ($_single_recipient[0] === '#')){
 							if(isset($_single_recipient[1]) && $_single_recipient[1]){
 								$DB_WE->query('INSERT INTO ' . RECIPIENTS_TABLE . ' (Email) VALUES("' . $DB_WE->escape($_single_recipient[1]) . '")');
 							}
@@ -2802,7 +2802,7 @@ function set_xhtml_field(val, field){
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
 				$_emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('WE_MAILER'), false, array("onchange" => "var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';"), 'value', 300, 'defaultfont');
 
-				$_smtp_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') == 'php') ? 'none' : 'block') . ';'), 9, 3);
+				$_smtp_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') === 'php') ? 'none' : 'block') . ';'), 9, 3);
 				$_smtp_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_server]'));
 				$_smtp_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 5));
 				$_smtp_table->setCol(0, 2, array('align' => 'right'), we_html_tools::htmlTextInput('newconf[SMTP_SERVER]', 24, get_value('SMTP_SERVER'), 180, '', 'text', 180));
@@ -3092,7 +3092,7 @@ function render_dialog(){
 	$ret = '';
 
 	foreach($tabs as $tab){
-		$ret .= we_html_element::htmlDiv(array('id' => 'setting_' . $tab, 'style' => ($GLOBALS['tabname'] == 'setting_' . $tab ? '' : 'display: none;')), build_dialog($tab));
+		$ret .= we_html_element::htmlDiv(array('id' => 'setting_' . $tab, 'style' => ($GLOBALS['tabname'] === 'setting_' . $tab ? '' : 'display: none;')), build_dialog($tab));
 	}
 	return $ret;
 	// Hide preload screen

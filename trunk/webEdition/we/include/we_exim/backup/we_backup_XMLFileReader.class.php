@@ -38,7 +38,7 @@ abstract class we_backup_XMLFileReader{
 		$eof = $prefix . 'eof';
 
 		if(empty(self::$file)){
-			if($filename == '' || !is_readable($filename)){
+			if(!$filename || !is_readable($filename)){
 				return false;
 			}
 			if(!($fp = $open($filename, 'rb'))){

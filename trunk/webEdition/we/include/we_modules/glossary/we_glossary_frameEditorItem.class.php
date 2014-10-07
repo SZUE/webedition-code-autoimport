@@ -177,10 +177,10 @@ function submitForm() {
 			we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', "100%", self::getHTMLTabProperties($weGlossaryFrames), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false)) .
 			we_html_element::jsElement(
 				$js = 'showType("' . $weGlossaryFrames->View->Glossary->Type . '");' .
-				($weGlossaryFrames->View->Glossary->Type == "link" ?
+				($weGlossaryFrames->View->Glossary->Type === "link" ?
 					'showLinkMode("' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') ? $weGlossaryFrames->View->Glossary->getAttribute('mode') : "intern") . '");' :
 					'') .
-				($weGlossaryFrames->View->Glossary->getAttribute('mode') == "category" ?
+				($weGlossaryFrames->View->Glossary->getAttribute('mode') === "category" ?
 					'showLinkModeCategory("' . ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ? $weGlossaryFrames->View->Glossary->getAttribute('modeCategory') : "intern") . '");' :
 					'')
 		);
@@ -393,7 +393,7 @@ function we_save() {
 		$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][InternLinkID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "')";
 		$_button = we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', false);
 
-		if($weGlossaryFrames->View->Glossary->Type == "link" && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "intern"){
+		if($weGlossaryFrames->View->Glossary->Type === "link" && $weGlossaryFrames->View->Glossary->getAttribute('mode') === "intern"){
 			//$_linkPath = $weGlossaryFrames->View->Glossary->getAttribute('InternLinkPath');
 			$_linkID = $weGlossaryFrames->View->Glossary->getAttribute('InternLinkID');
 			$_linkPath = id_to_path($_linkID);
@@ -416,7 +416,7 @@ function we_save() {
 	}
 
 	function getHTMLExtern(&$weGlossaryFrames){
-		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_LINK && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "extern"){
+		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_LINK && $weGlossaryFrames->View->Glossary->getAttribute('mode') === "extern"){
 			$_url = $weGlossaryFrames->View->Glossary->getAttribute('ExternUrl');
 			$_parameter = $weGlossaryFrames->View->Glossary->getAttribute('ExternParameter');
 		} else {
@@ -436,7 +436,7 @@ function we_save() {
 	}
 
 	function getHTMLObject(&$weGlossaryFrames){
-		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_LINK && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "object"){
+		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_LINK && $weGlossaryFrames->View->Glossary->getAttribute('mode') === "object"){
 			$_linkPath = $weGlossaryFrames->View->Glossary->getAttribute('ObjectLinkPath');
 			$_linkID = $weGlossaryFrames->View->Glossary->getAttribute('ObjectLinkID');
 			$_workspaceID = $weGlossaryFrames->View->Glossary->getAttribute('ObjectWorkspaceID');
@@ -476,7 +476,7 @@ function we_save() {
 	}
 
 	function getHTMLCategory(&$weGlossaryFrames){
-		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_LINK && $weGlossaryFrames->View->Glossary->getAttribute('mode') == "category"){
+		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_LINK && $weGlossaryFrames->View->Glossary->getAttribute('mode') === "category"){
 			$_linkPath = $weGlossaryFrames->View->Glossary->getAttribute('CategoryLinkPath');
 			$_linkID = $weGlossaryFrames->View->Glossary->getAttribute('CategoryLinkID');
 			$_internLinkPath = $weGlossaryFrames->View->Glossary->getAttribute('CategoryInternLinkPath');

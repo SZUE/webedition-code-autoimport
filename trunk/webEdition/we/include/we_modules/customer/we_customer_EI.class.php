@@ -29,7 +29,7 @@ abstract class we_customer_EI{
 		if($options['format'] == we_import_functions::TYPE_GENERIC_XML){
 			$code = self::exportXML($options);
 		}
-		if($options['format'] == 'csv'){
+		if($options['format'] === 'csv'){
 			$code = self::exportCSV($options);
 		}
 		// write to file
@@ -157,7 +157,7 @@ abstract class we_customer_EI{
 			$csv_out = '';
 			$enclose = trim($options['csv_enclose']);
 			$lineend = trim($options['csv_lineend']);
-			$delimiter = $enclose . ($options['csv_delimiter'] == '\t' ? "\t" : trim($options['csv_delimiter'])) . $enclose;
+			$delimiter = $enclose . ($options['csv_delimiter'] === '\t' ? "\t" : trim($options['csv_delimiter'])) . $enclose;
 
 			if($options['csv_fieldnames']){
 				$csv_out.=$enclose . implode($delimiter, $field_names) . $enclose . ($lineend == g_l('modules_customer', '[unix]') ? "\n" : ($lineend == g_l('modules_customer', '[mac]') ? "\r" : "\r\n"));
@@ -173,10 +173,10 @@ abstract class we_customer_EI{
 	}
 
 	function getCSVDataset($filename, $delimiter, $enclose, $lineend, $fieldnames, $charset){
-		if($charset == ''){
+		if(!$charset){
 			$charset = DEFAULT_CHARSET;
 		}
-		if($delimiter == '\t'){
+		if($delimiter === '\t'){
 			$delimiter = "\t";
 		}
 		$csvFile = $_SERVER['DOCUMENT_ROOT'] . $filename;
@@ -185,7 +185,7 @@ abstract class we_customer_EI{
 		if(file_exists($csvFile) && is_readable($csvFile)){
 			$recs = array();
 
-			if($lineend == 'mac'){
+			if($lineend === 'mac'){
 				we_base_file::replaceInFile("\r", "\n", $csvFile);
 			}
 
@@ -193,7 +193,7 @@ abstract class we_customer_EI{
 			$cp->setFile($csvFile);
 			$cp->setDelim($delimiter);
 			$cp->setFromCharset($charset);
-			$cp->setEnclosure(($enclose == '') ? '"' : $enclose);
+			$cp->setEnclosure(($enclose === '') ? '"' : $enclose);
 			$cp->parseCSV();
 			$num = count($cp->FieldNames);
 			$recs = array();

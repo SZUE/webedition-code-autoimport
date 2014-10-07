@@ -242,7 +242,7 @@ function setTab(tab) {
 			ob_start();
 			include($this->toolDir . 'home.inc.php');
 			$out = ob_get_clean();
-			
+
 			return
 				we_html_element::jsElement('
 								' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&home=1";
@@ -295,7 +295,7 @@ function setTab(tab) {
 		// name and folder block
 		// icen selector block
 		$uniqname = 'weIconNaviAttrib';
-		$wepos = (weGetCookieVariable("but_weIconNaviAttrib") == 'down' ? 'down' : 'right');
+		$wepos = (weGetCookieVariable("but_weIconNaviAttrib") === 'down' ? 'down' : 'right');
 
 		return array(
 			array(
@@ -320,13 +320,13 @@ function setTab(tab) {
 					$uniqname, "weToggleBox('" . $uniqname . "','" . addslashes(g_l('navigation', '[icon_properties_out]')) . "','" . addslashes(
 						g_l('navigation', '[icon_properties]')) . "')", $wepos, g_l('global', "[openCloseBox]")) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(
 					g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(
-					g_l('navigation', '[icon_properties]')) . '\');" >' . ($wepos == 'down' ? g_l('navigation', '[icon_properties_out]') : g_l('navigation', '[icon_properties]')) . '</span></td></tr></table>',
+					g_l('navigation', '[icon_properties]')) . '\');" >' . ($wepos === 'down' ? g_l('navigation', '[icon_properties_out]') : g_l('navigation', '[icon_properties]')) . '</span></td></tr></table>',
 				'space' => $this->_space_size,
 				'noline' => 1
 			),
 			array(
 				'headline' => '',
-				'html' => '<div id="table_' . $uniqname . '" style="display: ' . ($wepos == 'down' ? 'block' : 'none') . ';">' . $this->getHTMLImageAttributes() . '</div>',
+				'html' => '<div id="table_' . $uniqname . '" style="display: ' . ($wepos === 'down' ? 'block' : 'none') . ';">' . $this->getHTMLImageAttributes() . '</div>',
 				'space' => $this->_space_size + 50,
 				'noline' => 1
 			),
@@ -714,7 +714,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 		$yuiSuggest->setContentType(
 			$this->Model->SelectionType == we_navigation_navigation::STPYE_DOCLINK ?
 				implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME)) :
-				($this->Model->SelectionType == 'folder,objectFile' ? OBJECT_FILES_TABLE : ''));
+				($this->Model->SelectionType === 'folder,objectFile' ? OBJECT_FILES_TABLE : ''));
 		$yuiSuggest->setInput('LinkPath', $_path, array(
 			"onchange" => $this->topFrame . ".mark();"
 		));
@@ -785,7 +785,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 	function getHTMLContentInfo(){
 		$_sort = array();
 		foreach($this->Model->Sort as $_i){
-			$_sort[] = $_i['field'] . '&nbsp;(' . ($_i['order'] == 'DESC' ? g_l('navigation', '[descending]') : g_l('navigation', '[ascending]')) . ')';
+			$_sort[] = $_i['field'] . '&nbsp;(' . ($_i['order'] === 'DESC' ? g_l('navigation', '[descending]') : g_l('navigation', '[ascending]')) . ')';
 		}
 
 		$_table = new we_html_table(
@@ -1041,7 +1041,7 @@ function onSelectionClassChangeJS(value) {
 		);
 
 		$yuiSuggest = & weSuggest::getInstance();
-		if($tabNr == 'preview'){
+		if($tabNr === 'preview'){
 			$out .= $this->getHTMLEditorPreview();
 		} else {
 			// Property tab content
@@ -1087,7 +1087,7 @@ function onSelectionClassChangeJS(value) {
 		$_disabled = !(($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS && $this->Model->ClassID != 0) || ($this->Model->SelectionType == we_navigation_navigation::STPYE_DOCTYPE && $this->Model->DocTypeID != 0));
 		$_cmd = "javascript:var st=document.we_form.SelectionType.options[document.we_form.SelectionType.selectedIndex].value; var s=(st=='" . we_navigation_navigation::STPYE_DOCTYPE . "' ? document.we_form.DocTypeID.options[document.we_form.DocTypeID.selectedIndex].value : document.we_form.ClassID.options[document.we_form.ClassID.selectedIndex].value); we_cmd('openFieldSelector','" . $cmd . "',st,s,0)";
 		$_button = we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', $_disabled, false, "_$name");
-		if($extraField == ""){
+		if(!$extraField){
 			$showValue = stristr($value, "_") ? substr($value, strpos($value, "_") + 1) : $value;
 			return we_html_tools::htmlFormElementTable(
 					we_html_tools::hidden($name, $value) . $this->htmlTextInput(
@@ -1136,7 +1136,7 @@ function onSelectionClassChangeJS(value) {
 		}
 
 		if($_selector == weSuggest::DocSelector){
-			$_path = $_path == '/' ? "" : $_path;
+			$_path = $_path === '/' ? "" : $_path;
 			$mayBeEmpty = 1;
 		} else {
 			$mayBeEmpty = 0;
@@ -1458,7 +1458,7 @@ function selectItem() {
 	function getHTMLWorkspace($type = 'object', $defClassID = 0, $field = 'WorkspaceID'){
 		$_wsid = array();
 
-		if($type == 'class'){
+		if($type === 'class'){
 
 			if($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS && $this->Model->ClassID){
 				$_wsid = we_navigation_dynList::getWorkspacesForClass($this->Model->ClassID);
@@ -1471,7 +1471,7 @@ function selectItem() {
 						'WorkspaceIDClass', $_wsid, 1, $this->Model->WorkspaceID, false, array('style' => 'width: ' . $this->_width_size . 'px;', 'onchange' => $this->topFrame . '.mark();'), 'value'), g_l('navigation', '[workspace]')) . '</div>';
 		} else {
 
-			if($field == 'WorkspaceID'){
+			if($field === 'WorkspaceID'){
 				if($this->Model->SelectionType == we_navigation_navigation::STPYE_OBJLINK && $this->Model->LinkID){
 					$_wsid = we_navigation_dynList::getWorkspacesForObject($this->Model->LinkID);
 				}
@@ -1524,10 +1524,10 @@ function ' . $prefix . 'setLinkSelection(value){
 					'intern' => g_l('navigation', '[intern]'),
 					'extern' => g_l('navigation', '[extern]')
 					), 1, $this->Model->LinkSelection, false, array('style' => 'width: ' . $this->_width_size . 'px;', 'onchange' => $prefix . 'setLinkSelection(this.value);' . $this->topFrame . '.mark();'), 'value'), g_l('navigation', '[linkSelection]')) . '</div>
-				<div id="' . $prefix . 'intern" style="display: ' . (($this->Model->LinkSelection == 'intern' && $this->Model->SelectionType != we_navigation_navigation::STYPE_URLLINK) ? 'block' : 'none') . ';margin-top: 5px;">
+				<div id="' . $prefix . 'intern" style="display: ' . (($this->Model->LinkSelection === 'intern' && $this->Model->SelectionType != we_navigation_navigation::STYPE_URLLINK) ? 'block' : 'none') . ';margin-top: 5px;">
 				' . $weAcSelector . '
 				</div>
-				<div id="' . $prefix . 'extern" style="display: ' . (($this->Model->LinkSelection == 'extern' || $this->Model->SelectionType == we_navigation_navigation::STYPE_URLLINK) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlTextInput(
+				<div id="' . $prefix . 'extern" style="display: ' . (($this->Model->LinkSelection === 'extern' || $this->Model->SelectionType == we_navigation_navigation::STYPE_URLLINK) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlTextInput(
 				$prefix . 'Url', 58, $this->Model->Url, '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $this->_width_size) . '</div>
 				<div style="margin-top: 5px;">' . we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(
@@ -1687,7 +1687,7 @@ function ' . $prefix . 'setLinkSelection(value){
 		);
 
 		$wepos = weGetCookieVariable("but_weNaviAttrib");
-		return we_html_multiIconBox::getHTML('weNaviAttrib', '100%', $_parts, 30, '', 0, g_l('navigation', '[more_attributes]'), g_l('navigation', '[less_attributes]'), ($wepos == 'down'));
+		return we_html_multiIconBox::getHTML('weNaviAttrib', '100%', $_parts, 30, '', 0, g_l('navigation', '[more_attributes]'), g_l('navigation', '[less_attributes]'), ($wepos === 'down'));
 	}
 
 	function getHTMLImageAttributes(){

@@ -57,7 +57,7 @@ class weHook{
 			if(function_exists($this->func)){
 				$f = $this->func;
 				$f($this->param);
-				return ($this->errStr == '');
+				return ($this->errStr === '');
 			}
 		}
 		return true;

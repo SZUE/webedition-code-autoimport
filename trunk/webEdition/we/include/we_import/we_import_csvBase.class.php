@@ -70,15 +70,15 @@ class we_import_csvBase{
 	function CSVFetchArray($resultTyp = "BOTH"){
 		if($this->fetchCursor <= ($this->CSVNumRows()) - 1){
 
-			if(($resultTyp == "NUM") || ($resultTyp == "BOTH")){
+			if(($resultTyp === "NUM") || ($resultTyp === "BOTH")){
 				$r = $this->CSVFetchRow();
-				if($resultTyp == "NUM"){
+				if($resultTyp === "NUM"){
 					return $r;
 				}
 
 				$this->fetchCursor--;
 			}
-			if(($resultTyp == "ASSOC") || ($resultTyp == "BOTH")){
+			if(($resultTyp === "ASSOC") || ($resultTyp === "BOTH")){
 
 				if(is_array($this->Fields[$this->fetchCursor])){
 					reset($this->Fields[$this->fetchCursor]);

@@ -51,7 +51,7 @@ function getLoad(){
 	$newpasswd = we_base_request::_(we_base_request::RAW, 'newpasswd', '');
 	$newpasswd2 = we_base_request::_(we_base_request::RAW, 'newpasswd2', '');
 
-	if(we_base_request::_(we_base_request::STRING, 'cmd') == 'ok'){
+	if(we_base_request::_(we_base_request::STRING, 'cmd') === 'ok'){
 		$userData = getHash('SELECT UseSalt,passwd FROM ' . USER_TABLE . ' WHERE username="' . $DB_WE->escape($_SESSION['user']['Username']) . '"');
 
 		if(!we_users_user::comparePasswords($userData['UseSalt'], $_SESSION['user']['Username'], $userData['passwd'], $oldpasswd)){

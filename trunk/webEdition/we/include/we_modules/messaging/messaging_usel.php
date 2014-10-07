@@ -40,7 +40,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[sel_rcpts]')) .
 ?>
 <script type="text/javascript"><!--
 <?php
-if(we_base_request::_(we_base_request::STRING, 'mode') == 'save_addrbook'){
+if(we_base_request::_(we_base_request::STRING, 'mode') === 'save_addrbook'){
 	$addrbook = array();
 	$t_arr = array();
 	$addrbook_arr = we_base_request::_(we_base_request::STRINGC, 'addrbook_arr');

@@ -64,7 +64,7 @@ if(isset($GLOBALS['we_doc'])){
 }
 // Dreamweaver RPC Command ShowPreparedPreview
 // disable javascript errors
-if(we_base_request::_(we_base_request::STRING, 'cmd') == 'ShowPreparedPreview'){
+if(we_base_request::_(we_base_request::STRING, 'cmd') === 'ShowPreparedPreview'){
 
 	echo we_html_element::jsElement('
 // overwrite/disable some functions in javascript!!!!
@@ -394,7 +394,7 @@ if(isset($GLOBALS['we_doc'])){
 				break;
 
 
-<?php if(defined('GLOSSARY_TABLE') && isset($we_doc) && ($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType == "objectFile")){ ?>
+<?php if(defined('GLOSSARY_TABLE') && isset($we_doc) && ($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === "objectFile")){ ?>
 				case "glossary_check":
 					new jsWindow(url, "glossary_check", -1, -1, 730, 400, true, false, true);
 					break;
@@ -411,7 +411,7 @@ if(isset($we_doc) && $we_doc->ContentType == we_base_ContentTypes::IMAGE){
 					if (typeof CropTool == 'object' && CropTool.triggered)
 						CropTool.drop();
 	<?php if($we_doc->gd_support()){ ?>
-						new jsWindow(url, "we_image_resize", -1, -1, 260,<?php echo ($we_doc->getGDType() == "jpg") ? 250 : 190; ?>, true, false, true);
+						new jsWindow(url, "we_image_resize", -1, -1, 260,<?php echo ($we_doc->getGDType() === "jpg") ? 250 : 190; ?>, true, false, true);
 		<?php
 	} else {
 		echo we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', "[type_not_supported_hint]"), g_l('weClass', '[convert_' . $we_doc->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
@@ -433,7 +433,7 @@ if(isset($we_doc) && $we_doc->ContentType == we_base_ContentTypes::IMAGE){
 
 		if($we_doc->gd_support()){
 			?>
-							new jsWindow(url, "we_rotate", -1, -1, 300,<?php echo ($we_doc->getGDType() == "jpg") ? 230 : 170; ?>, true, false, true);
+							new jsWindow(url, "we_rotate", -1, -1, 300,<?php echo ($we_doc->getGDType() === "jpg") ? 230 : 170; ?>, true, false, true);
 			<?php
 		} else {
 			echo we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', "[type_not_supported_hint]"), g_l('weClass', '[convert_' . $we_doc->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
@@ -486,7 +486,7 @@ if(isset($we_doc) && $we_doc->ContentType == we_base_ContentTypes::IMAGE){
 		var _retVal = true;
 		var objFieldErrorMsg = "";
 <?php
-if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ContentType == "object"){
+if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ContentType === "object"){
 	echo "
 	_checkFields = true;";
 }

@@ -131,7 +131,7 @@ class we_glossary_cache{
 				'Fullword' => $DB_WE->f('Fullword')
 			);
 
-			if($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8' && isset($GLOBALS['we_doc']->elements['Charset']['dat']) && $GLOBALS['we_doc']->elements['Charset']['dat'] != 'UTF-8'){
+			if($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8' && isset($GLOBALS['we_doc']->elements['Charset']['dat']) && $GLOBALS['we_doc']->elements['Charset']['dat'] != 'UTF-8'){
 				$Text = utf8_decode($Text);
 				$Title = utf8_decode($Title);
 			}
@@ -208,7 +208,7 @@ class we_glossary_cache{
 						case 'category':// Category Link
 
 							$temp['href'] = '';
-							if(isset($Attributes['modeCategory']) && trim($Attributes['modeCategory']) == "intern"){
+							if(isset($Attributes['modeCategory']) && trim($Attributes['modeCategory']) === "intern"){
 
 								// LinkID
 								if(isset($Attributes['CategoryInternLinkID']) && trim($Attributes['CategoryInternLinkID']) != ""){
@@ -383,7 +383,7 @@ if (window.screen) {
 
 				if($Type != we_glossary_glossary::TYPE_TEXTREPLACE){
 					foreach($AttributeList as $Attribute => $Val){
-						$prefix .= ($Attribute == 'attribute' ? $Val : ' ' . $Attribute . '="' . $Val . '"');
+						$prefix .= ($Attribute === 'attribute' ? $Val : ' ' . $Attribute . '="' . $Val . '"');
 					}
 				} else {
 					$prefix .=$AttributeList['title'];
@@ -427,7 +427,7 @@ if (window.screen) {
 					return array();
 				}
 			}
-			if(we_base_file::load($cacheFilename, 'rb', 5) == '<?php'){
+			if(we_base_file::load($cacheFilename, 'rb', 5) === '<?php'){
 				include($cacheFilename);
 				$this->content = $content;
 			} else {

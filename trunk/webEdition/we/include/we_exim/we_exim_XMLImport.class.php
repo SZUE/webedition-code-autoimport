@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_XMLImport extends we_exim_XMLExIm{
+
 	var $nodehierarchy = array();
 
 	function __construct(){
@@ -80,39 +81,48 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$extra["ContentType"] = "doctype";
 					$dtid = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $db->escape($object->DocType) . '"', '', $db);
 					if($dtid){
-						if($this->options["handle_collision"] == 'replace'){
-							$object->ID = $dtid;
-						} else if($this->options["handle_collision"] == 'rename'){
-							$this->getNewName($object, $dtid, "DocType");
-						} else {
-							$save = false;
-							continue;
+						switch($this->options["handle_collision"]){
+							case 'replace':
+								$object->ID = $dtid;
+								break;
+							case 'rename':
+								$this->getNewName($object, $dtid, "DocType");
+								break;
+							default:
+								$save = false;
+								continue;
 						}
 					}
 					break;
 				case "weNavigationRule":
 					$nid = f('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName="' . $db->escape($object->NavigationName) . '"', '', $db);
 					if($nid){
-						if($this->options["handle_collision"] == "replace"){
-							$object->ID = $nid;
-						} else if($this->options["handle_collision"] == "rename"){
-							$this->getNewName($object, $nid, "NavigationName");
-						} else {
-							$save = false;
-							continue;
+						switch($this->options["handle_collision"]){
+							case "replace":
+								$object->ID = $nid;
+								break;
+							case "rename":
+								$this->getNewName($object, $nid, "NavigationName");
+								break;
+							default:
+								$save = false;
+								continue;
 						}
 					}
 					break;
 				case "we_thumbnailEx":
 					$nid = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name='" . $db->escape($object->Name) . "'", "", $db);
 					if($nid){
-						if($this->options["handle_collision"] == "replace"){
-							$object->ID = $nid;
-						} else if($this->options["handle_collision"] == "rename"){
-							$this->getNewName($object, $nid, "Name");
-						} else {
-							$save = false;
-							continue;
+						switch($this->options["handle_collision"]){
+							case "replace":
+								$object->ID = $nid;
+								break;
+							case "rename":
+								$this->getNewName($object, $nid, "Name");
+								break;
+							default:
+								$save = false;
+								continue;
 						}
 					}
 					break;
@@ -127,16 +137,16 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 								$prefix = id_to_path($this->options["document_path"], FILE_TABLE, $db);
 							}
 							$object->Path = $prefix . ($this->options["restore_doc_path"] ?
-									$object->Path :
-									"/" . $object->Text);
+											$object->Path :
+											"/" . $object->Text);
 							break;
 						case TEMPLATES_TABLE:
 							if($this->options["template_path"]){
 								$prefix = id_to_path($this->options["template_path"], TEMPLATES_TABLE, $db);
 							}
 							$object->Path = $prefix . ($this->options["restore_tpl_path"] ?
-									$object->Path :
-									"/" . $object->Text);
+											$object->Path :
+											"/" . $object->Text);
 							break;
 						case NAVIGATION_TABLE:
 							if($this->options["navigation_path"]){
@@ -153,14 +163,14 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$id = path_to_id($object->Path, $object->Table);
 
 					if($id){
-						if($this->options["handle_collision"] == "replace" ||
-							($object->ClassName == "we_folder" && $this->RefTable->exists(array("OldID" => $object->ID, "Table" => $object->Table)))
+						if($this->options["handle_collision"] === "replace" ||
+								($object->ClassName == "we_folder" && $this->RefTable->exists(array("OldID" => $object->ID, "Table" => $object->Table)))
 						){
 							$object->ID = $id;
 							if(isset($object->isnew)){
 								$object->isnew = 0;
 							}
-						} else if($this->options["handle_collision"] == "rename"){
+						} else if($this->options["handle_collision"] === "rename"){
 							$this->getNewName($object, $id, "Path");
 						} else {
 							$save = false;
@@ -179,7 +189,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$pathids = array();
 					$_old_pid = $object->ParentID;
 					$owner = ($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']) ? $this->options['owners_overwrite_id'] : 0;
-					if(defined('OBJECT_TABLE') && $object->ClassName == 'we_objectFile'){
+					if(defined('OBJECT_TABLE') && $object->ClassName === 'we_objectFile'){
 						//dont create Path in objects if the class doesn't exist
 						$match = array();
 						preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
@@ -197,33 +207,33 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 						$h = getHash('SELECT ParentID,Path FROM ' . $db->escape($object->Table) . ' WHERE ID=' . intval($pid), $db);
 						if(!$this->RefTable->exists(array("ID" => $pid, "ContentType" => "folder"))){
 							$this->RefTable->add2(
-								array(
-									"ID" => $pid,
-									"ParentID" => $h["ParentID"],
-									"Path" => $h["Path"],
-									"Table" => $object->Table,
-									"ContentType" => "folder",
-									"OldID" => ($pid == $object->ParentID) ? $_old_pid : null,
-									"OldParentID" => null,
-									"OldPath" => null,
-									"OldTemplatePath" => null,
-									"Examined" => 0,
-								)
+									array(
+										"ID" => $pid,
+										"ParentID" => $h["ParentID"],
+										"Path" => $h["Path"],
+										"Table" => $object->Table,
+										"ContentType" => "folder",
+										"OldID" => ($pid == $object->ParentID) ? $_old_pid : null,
+										"OldParentID" => null,
+										"OldPath" => null,
+										"OldTemplatePath" => null,
+										"Examined" => 0,
+									)
 							);
 						}
 					}
 				}
 
-				if($object->ClassName == 'weBinary'){
+				if($object->ClassName === 'weBinary'){
 					if(is_file($_SERVER['DOCUMENT_ROOT'] . $object->Path)){
-						if($this->options['handle_collision'] == 'replace'){
+						if($this->options['handle_collision'] === 'replace'){
 							$save = true;
-						} else if($this->options['handle_collision'] == 'rename'){
+						} else if($this->options['handle_collision'] === 'rename'){
 							$_c = 1;
 							do{
 								$_path = $object->Path . '_' . $_c;
 								$_c++;
-							} while(is_file($_SERVER['DOCUMENT_ROOT'] . $_path));
+							}while(is_file($_SERVER['DOCUMENT_ROOT'] . $_path));
 							$object->Path = $_path;
 							unset($_path);
 							unset($_c);
@@ -234,23 +244,23 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 
 					if($save && !$this->RefTable->exists(array('ID' => $object->ID, 'Path' => $object->Path, 'ContentType' => 'weBinary'))){
 						$this->RefTable->add2(
-							array('ID' => $object->ID,
-								'ParentID' => 0,
-								'Path' => $object->Path,
-								'Table' => $object->Table,
-								'ContentType' => 'weBinary'
-							)
+								array('ID' => $object->ID,
+									'ParentID' => 0,
+									'Path' => $object->Path,
+									'Table' => $object->Table,
+									'ContentType' => 'weBinary'
+								)
 						);
 					}
 				}
 			}
 
-			if(defined('OBJECT_TABLE') && ($object->ClassName == 'we_objectFile' || $object->ClassName == 'we_class_folder')){
+			if(defined('OBJECT_TABLE') && ($object->ClassName === 'we_objectFile' || $object->ClassName === 'we_class_folder')){
 				$ref = $this->RefTable->getRef(
-					array(
-						'OldID' => $object->TableID,
-						'ContentType' => "object"
-					)
+						array(
+							'OldID' => $object->TableID,
+							'ContentType' => "object"
+						)
 				);
 				if($ref){
 					// assign TableID and ParentID from reference
@@ -283,8 +293,8 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		do{
 			$c++;
 
-			$newname = ($object->ClassName == "we_docTypes" || $object->ClassName == "weNavigationRule" || $object->ClassName == "we_thumbnailEx" ?
-					$object->$prop : basename($object->$prop));
+			$newname = ($object->ClassName === "we_docTypes" || $object->ClassName === "weNavigationRule" || $object->ClassName === "we_thumbnailEx" ?
+							$object->$prop : basename($object->$prop));
 
 			if($newid){
 				$newname = $c . "_" . $newname;
@@ -302,30 +312,29 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				default:
 					$newid = path_to_id(we_base_file::clearPath(dirname($object->Path) . "/" . $newname), $object->Table);
 			}
-		} while($newid);
+		}while($newid);
 		$this->renameObject($object, $newname);
 	}
 
 	function renameObject(&$object, $new_name){
-		if($object->ClassName == "we_docTypes"){
-			$object->DocType = $new_name;
-			return;
-		}
-		if($object->ClassName == "weNavigationRule"){
-			$object->NavigationName = $new_name;
-			return;
-		}
-		if($object->ClassName == "we_thumbnailEx"){
-			$object->Name = $new_name;
-			return;
+		switch($object->ClassName){
+			case "we_docTypes":
+				$object->DocType = $new_name;
+				return;
+			case "weNavigationRule":
+				$object->NavigationName = $new_name;
+				return;
+			case "we_thumbnailEx":
+				$object->Name = $new_name;
+				return;
 		}
 		if(isset($object->Path)){
 			$_path = dirname($object->Path);
 			$_ref = $this->RefTable->getRef(
-				array(
-					'OldID' => $object->ParentID,
-					'ContentType' => 'weNavigation'
-				)
+					array(
+						'OldID' => $object->ParentID,
+						'ContentType' => 'weNavigation'
+					)
 			);
 			if($_ref){
 				$object->ParentID = $_ref->ID;
@@ -405,7 +414,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					default:
 						$node_data[$nodname] = $noddata;
 						$node_coding[$nodname] = $GLOBALS['isNewImport'] ? (isset($attributes[we_exim_contentProvider::CODING_ATTRIBUTE]) ? $attributes[we_exim_contentProvider::CODING_ATTRIBUTE] : we_exim_contentProvider::CODING_NONE) :
-							(we_exim_contentProvider::needCoding($node_data['ClassName'], $nodname, we_exim_contentProvider::CODING_OLD) ? we_exim_contentProvider::CODING_ENCODE : we_exim_contentProvider::CODING_NONE);
+								(we_exim_contentProvider::needCoding($node_data['ClassName'], $nodname, we_exim_contentProvider::CODING_OLD) ? we_exim_contentProvider::CODING_ENCODE : we_exim_contentProvider::CODING_NONE);
 				}
 			}
 		}
@@ -446,7 +455,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$usv = unserialize($value);
 					if(is_array($usv)){
 						foreach($usv as &$av){
-							if($this->options['xml_encoding'] == 'ISO-8859-1'){
+							if($this->options['xml_encoding'] === 'ISO-8859-1'){
 								$av = utf8_encode($av);
 							} else {
 								$av = utf8_decode($av);
@@ -457,9 +466,9 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					}
 					return $value;
 				}
-				return ($this->options['xml_encoding'] == 'ISO-8859-1' ?
-						utf8_encode($value) :
-						utf8_decode($value));
+				return ($this->options['xml_encoding'] === 'ISO-8859-1' ?
+								utf8_encode($value) :
+								utf8_decode($value));
 			}
 		}
 		return $value;
@@ -548,7 +557,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 	}
 
 	function splitFile($filename, $tmppath, $count){
-		if($filename == ""){
+		if(!$filename){
 			return -1;
 		}
 
@@ -558,7 +567,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		$pattern = basename($filename) . "_%s";
 
 		$compress = (we_base_file::isCompressed($filename) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION);
-		$head = we_base_file::loadPart($filename, 0, 256, $compress == 'gzip');
+		$head = we_base_file::loadPart($filename, 0, 256, $compress === 'gzip');
 
 		$encoding = we_xml_parser::getEncoding('', $head);
 		$_SESSION['weS']['weXMLimportCharset'] = $encoding;
@@ -585,7 +594,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 
 				while($findline == false && !@feof($fh)){
 					$line .= ($compress != we_backup_base::NO_COMPRESSION ? @gzgets($fh, 4096) : @fgets($fh, 4096));
-					if(substr($line, -1) == "\n"){
+					if(substr($line, -1) === "\n"){
 						$findline = true;
 					}
 				}
@@ -630,7 +639,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							$buff = "";
 						}
 					} else {
-						if(((substr($line, 0, 2) == "<?") || (substr($line, 0, 11) == we_backup_backup::weXmlExImHead)) && $num == 0){
+						if(((substr($line, 0, 2) === "<?") || (substr($line, 0, 11) == we_backup_backup::weXmlExImHead)) && $num == 0){
 							$header.=$line;
 							fwrite($fh_temp, $line);
 						}
