@@ -202,7 +202,7 @@ function startTree(){
 		foreach($treeItems as $item){
 			$js.='if(' . $this->topFrame . '.indexOfEntry(\'' . str_replace(array("\n", "\r", '\''), '', $item["id"]) . '\')<0){';
 			foreach($item as $k => $v){
-				if($k == 'text'){
+				if($k === 'text'){
 					if(in_array($v, array_keys($days))){
 						$v = g_l('date', '[day][long][' . $days[$v] . ']');
 					}

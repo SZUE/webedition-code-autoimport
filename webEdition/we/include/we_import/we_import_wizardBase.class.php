@@ -625,7 +625,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 							if($v['pfx_fn'] == 1){
 								$v['rcd_pfx'] = $xp->getData($xp->root . '/' . $v["rcd_pfx"] . "[1]");
 								if($v['rcd_pfx'] == ''){
-									$v['rcd_pfx'] = g_l('import', ($v['import_type'] == 'documents' ? '[pfx_doc]' : '[pfx_obj]'));
+									$v['rcd_pfx'] = g_l('import', ($v['import_type'] === 'documents' ? '[pfx_doc]' : '[pfx_obj]'));
 								}
 							}
 							break;
@@ -662,7 +662,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 								$v['rcd_pfx'] = $recs[$v['rcd_pfx']];
 
 								if($v['rcd_pfx'] == ''){
-									$v['rcd_pfx'] = g_l('import', ($v['import_type'] == 'documents' ? '[pfx_doc]' : '[pfx_obj]'));
+									$v['rcd_pfx'] = g_l('import', ($v['import_type'] === 'documents' ? '[pfx_doc]' : '[pfx_obj]'));
 								}
 							}
 					}
@@ -670,7 +670,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 					if($v['type'] != we_import_functions::TYPE_WE_XML){
 						if(isset($v["dateFields"])){
 							$dateFields = makeArrayFromCSV($v["dateFields"]);
-							if(($v["sTimeStamp"] == "Format" && $v["timestamp"] != "") || ($v["sTimeStamp"] == "GMT")){
+							if(($v["sTimeStamp"] === "Format" && $v["timestamp"] != "") || ($v["sTimeStamp"] === "GMT")){
 								foreach($dateFields as $dateField){
 									$fields[$dateField] = we_import_functions::date2Timestamp($fields[$dateField], ($v["sTimeStamp"] != "GMT") ? $v["timestamp"] : "");
 								}

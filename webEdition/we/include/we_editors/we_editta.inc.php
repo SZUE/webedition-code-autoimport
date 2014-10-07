@@ -52,8 +52,8 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 
 	$js = 'opener._EditorFrame.setEditorIsHot(true);'
 		. ((we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) &&
-		$we_doc->getElement($name . 'dhtmledit') == 'on' &&
-		$we_doc->getElement($name . 'inlineedit') == 'on' ? 'opener.setScrollTo();opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' :
+		$we_doc->getElement($name . 'dhtmledit') === 'on' &&
+		$we_doc->getElement($name . 'inlineedit') === 'on' ? 'opener.setScrollTo();opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' :
 			'opener.we_cmd("object_reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");')
 		. 'top.close();';
 } else {
@@ -73,13 +73,13 @@ foreach($_REQUEST['we_cmd'] as $k => $v){
 
 // WYSIWYG && FORBIDHTML && FORBIDPHP
 $onOffVals = array('off' => 'false', 'on' => 'true');
-$selected = $we_doc->getElement($name . "dhtmledit") == "on" ? 'on' : 'off';
+$selected = $we_doc->getElement($name . "dhtmledit") === "on" ? 'on' : 'off';
 $wysiwyg = we_html_tools::htmlSelect("dhtmledit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60) . we_html_tools::hidden('dhtmledit_orig', $we_doc->elements[$name . "dhtmledit"]["dat"]);
 
-$selected = $we_doc->getElement($name . "forbidhtml") == "on" ? 'on' : 'off';
+$selected = $we_doc->getElement($name . "forbidhtml") === "on" ? 'on' : 'off';
 $forbidhtml = we_html_tools::htmlSelect("forbidhtml", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
-$selected = $we_doc->getElement($name . "forbidphp", "dat", 'on') == "on" ? 'on' : 'off';
+$selected = $we_doc->getElement($name . "forbidphp", "dat", 'on') === "on" ? 'on' : 'off';
 $forbidphp = we_html_tools::htmlSelect("forbidphp", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $table = '<table border="0" cellpadding="0" cellspacing="0">
@@ -106,10 +106,10 @@ $parts = array(
 );
 
 // XML && REMOVEFIRSTPARAGRAPH
-$selected = $we_doc->getElement($name . "xml", "dat", 'on') == "on" ? 'on' : 'off';
+$selected = $we_doc->getElement($name . "xml", "dat", 'on') === "on" ? 'on' : 'off';
 $xml = we_html_tools::htmlSelect("xml", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
-$selected = $we_doc->getElement($name . "removefirstparagraph", "dat", 'on') == "on" ? 'on' : 'off';
+$selected = $we_doc->getElement($name . "removefirstparagraph", "dat", 'on') === "on" ? 'on' : 'off';
 $removefirstparagraph = we_html_tools::htmlSelect("removefirstparagraph", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $table = '<table border="0" cellpadding="0" cellspacing="0">
@@ -136,10 +136,10 @@ $parts[] = array(
 
 
 // INLINEEDIT && SHOWMENUS
-$selected = $we_doc->getElement($name . "inlineedit", "dat", 'on') == "on" ? 'on' : 'off';
+$selected = $we_doc->getElement($name . "inlineedit", "dat", 'on') === "on" ? 'on' : 'off';
 $inlineedit = we_html_tools::htmlSelect("inlineedit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60) . we_html_tools::hidden('inlineedit_orig', $we_doc->elements[$name . "inlineedit"]["dat"]);
 
-$selected = $we_doc->getElement($name . "showmenus", "dat", 'on') == "on" ? 'on' : 'off';
+$selected = $we_doc->getElement($name . "showmenus", "dat", 'on') === "on" ? 'on' : 'off';
 $showmenus = we_html_tools::htmlSelect("showmenus", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $table = '<table border="0" cellpadding="0" cellspacing="0">

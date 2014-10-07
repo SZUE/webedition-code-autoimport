@@ -26,6 +26,7 @@
 
 class we_messaging_messaging extends we_class{
 	/* Flag which is set when the file is not new */
+
 	var $we_transact;
 	var $Folder_ID = -1;
 	var $userid = -1;
@@ -146,7 +147,7 @@ class we_messaging_messaging extends we_class{
 	}
 
 	function get_sortorder(){
-		return $this->sortorder == 'desc' ? 'asc' : 'desc';
+		return $this->sortorder === 'desc' ? 'asc' : 'desc';
 	}
 
 	function get_ids_selected(){
@@ -242,13 +243,13 @@ class we_messaging_messaging extends we_class{
 		$cn = $f['ClassName'];
 
 		if(isset($s_hash[$cn])){
-			if($this->clipboard_action == 'cut'){
+			if($this->clipboard_action === 'cut'){
 				$this->used_msgobjs[$cn]->clipboard_cut($s_hash[$cn], $this->Folder_ID);
-			} else if($this->clipboard_action == 'copy'){
+			} else if($this->clipboard_action === 'copy'){
 				$this->used_msgobjs[$cn]->clipboard_copy($s_hash[$cn], $this->Folder_ID);
 			}
 
-			if($this->clipboard_action == 'cut'){
+			if($this->clipboard_action === 'cut'){
 				$this->reset_clipboard();
 			}
 		}
@@ -519,8 +520,8 @@ class we_messaging_messaging extends we_class{
 	function get_message_count($folderid, $classname = ''){
 		$classname = $this->available_folders[self::array_ksearch('ID', $folderid, $this->available_folders)]['ClassName'];
 		return (isset($classname) ?
-				$this->used_msgobjs[$classname]->get_count($folderid) :
-				-1);
+						$this->used_msgobjs[$classname]->get_count($folderid) :
+						-1);
 	}
 
 	function delete_folders($ids){
@@ -663,7 +664,7 @@ class we_messaging_messaging extends we_class{
 
 	function get_fc_data($id, $sortitem, $searchterm, $usecache = 1){
 		$sortfield = isset($this->si2sf[$sortitem]) ? $this->si2sf[$sortitem] : "";
-		if($id == '' && empty($searchterm) && $usecache){
+		if(!$id && !$searchterm && $usecache){
 			$this->cont_from_folder = 0;
 			if(!empty($sortfield)){
 				$this->sortfield = $sortfield;
@@ -674,7 +675,7 @@ class we_messaging_messaging extends we_class{
 			$this->selected_set = array();
 			$this->last_id = -1;
 
-			if($id != ''){
+			if($id){
 				$this->cont_from_folder = 1;
 				$this->Folder_ID = $id;
 				if($this->search_folder_ids[0] == -1){
@@ -682,10 +683,10 @@ class we_messaging_messaging extends we_class{
 				}
 			}
 
-			if(!empty($searchterm) && !empty($this->search_fields)){
+			if($searchterm && $this->search_fields){
 				$this->Folder_ID = -1;
 				$s_hash = array();
-				if($id == ''){
+				if(!$id){
 					foreach($this->available_folders as $afolder){
 						$cn = $afolder['ClassName'];
 						if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
@@ -946,12 +947,12 @@ class we_messaging_messaging extends we_class{
 		$matchArray = array("Name" => $fooArray);
 
 		$mergedArray = array_merge(
-			array(
+				array(
 			array(
 				'ID' => 0,
 				'Name' => "-- " . g_l('modules_messaging', "[nofolder]") . " --"
 			)
-			), self::array_hash_construct($this->available_folders, array('ID', 'Name'), $matchArray)
+				), self::array_hash_construct($this->available_folders, array('ID', 'Name'), $matchArray)
 		);
 
 		$_arr1 = array('ID', 'Name');

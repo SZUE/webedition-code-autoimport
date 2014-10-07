@@ -61,8 +61,8 @@ echo we_html_tools::getHtmlTop() .
 	var menuDaten = new container();
 	var count = 0;
 	var folder = 0;
-	var table = "<?php print USER_TABLE; ?>";
-	NN4 = <?php echo $browser->getBrowser() == 'nn' && $browser->getBrowserVersion() <= 4 ? 'true' : 'false' ?>;
+	var table = "<?php echo USER_TABLE; ?>";
+	NN4 = <?php echo $browser->getBrowser() === 'nn' && $browser->getBrowserVersion() <= 4 ? 'true' : 'false' ?>;
 
 	check0_img = new Image();
 	check1_img = new Image();

@@ -29,7 +29,7 @@ abstract class we_wizard_tag{
 		$main = self::getMainTagModules($useDeprecated);
 		foreach($main as $modulename => $tags){
 
-			if($modulename == 'basis' || $modulename == 'navigation' || we_base_moduleInfo::isActive($modulename)){
+			if($modulename === 'basis' || $modulename === 'navigation' || we_base_moduleInfo::isActive($modulename)){
 				$retTags = array_merge($retTags, $tags);
 			}
 		}
@@ -56,7 +56,7 @@ abstract class we_wizard_tag{
 		// 1st make grps based on modules
 		foreach($main as $modulename => $tags){
 
-			if($modulename == 'basis'){
+			if($modulename === 'basis'){
 				$taggroups['alltags'] = $tags;
 			}
 

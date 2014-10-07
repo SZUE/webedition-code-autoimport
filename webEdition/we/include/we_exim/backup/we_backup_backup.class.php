@@ -69,10 +69,10 @@ class we_backup_backup extends we_backup_base{
 	}
 
 	function splitFile2(){
-		if($this->filename == ''){
+		if(!$this->filename){
 			return -1;
 		}
-		if($this->mode == 'sql'){
+		if($this->mode === 'sql'){
 			return parent::splitFile($this->filename);
 		}
 		t_e('this should not happen');
@@ -129,7 +129,7 @@ class we_backup_backup extends we_backup_base{
 				$node_set3 = $xmlBrowser->getSet($set2);
 				foreach($node_set3 as $nsv){
 					$tmp = $xmlBrowser->nodeName($nsv);
-					if($tmp == "Field"){
+					if($tmp === "Field"){
 						$name = $xmlBrowser->getData($nsv);
 					}
 					$object->elements[$name][$tmp] = $xmlBrowser->getData($nsv);
@@ -407,7 +407,7 @@ class we_backup_backup extends we_backup_base{
 			return false;
 		}
 
-		return ($this->mode == 'sql' ?
+		return ($this->mode === 'sql' ?
 				parent::restoreFromBackup($filename, $this->backup_extern) :
 				$this->recover($filename));
 	}

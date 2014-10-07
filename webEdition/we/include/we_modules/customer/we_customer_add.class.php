@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_customer_add{
+
 	static $operators = array('=', '<>', '<', '<=', '>', '>=', 'LIKE');
 
 	static function getHTMLSortEditor(we_customer_frames &$pob){
@@ -56,8 +57,8 @@ abstract class we_customer_add{
 				if(!$sort["branch"]){
 					$branches_names = $pob->View->customer->getBranchesNames();
 					$sort["branch"] = (isset($branches_names[0]) ?
-							$branches_names[0] :
-							g_l('modules_customer', '[common]'));
+									$branches_names[0] :
+									g_l('modules_customer', '[common]'));
 				}
 
 				$branch->setAttributes(array("name" => "branch_" . $counter . "_" . $fcounter, "class" => "weSelect", "onchange" => "we_cmd('selectBranch')", "style" => "width:180px;"));
@@ -134,8 +135,8 @@ abstract class we_customer_add{
 			$fhidden.=we_html_element::htmlHidden(array("name" => "fcounter_" . $counter, "value" => "$fcounter"));
 
 			$_htmlCode = $pob->getHTMLBox(we_html_element::htmlInput(array("name" => "sort_" . $counter, "value" => $k, "size" => 40)), g_l('modules_customer', '[name]'), 100, 50, 25, 0, 0, 50) .
-				$sort_table->getHtml() .
-				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort','" . $k . "')");
+					$sort_table->getHtml() .
+					we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort','" . $k . "')");
 
 			$_parts[] = array('html' => $_htmlCode, 'headline' => $k);
 
@@ -151,21 +152,21 @@ abstract class we_customer_add{
 		$_parts[] = array('html' => $add_button);
 
 		$sort_code = we_html_multiIconBox::getHTML("", "100%", $_parts, 30, $_buttons, -1, "", "", false, "", "", 459) .
-			we_html_element::htmlComment("hiddens start") .
-			we_html_element::htmlHidden(array("name" => "pnt", "value" => "sort_admin")) .
-			we_html_element::htmlHidden(array("name" => "cmd", "value" => "")) .
-			we_html_element::htmlHidden(array("name" => "counter", "value" => "$counter")) .
-			we_html_element::htmlHidden(array("name" => "sortindex", "value" => "")) .
-			we_html_element::htmlHidden(array("name" => "fieldindex", "value" => "")) .
-			$fhidden .
-			we_html_element::htmlComment("hiddens ends");
+				we_html_element::htmlComment("hiddens start") .
+				we_html_element::htmlHidden(array("name" => "pnt", "value" => "sort_admin")) .
+				we_html_element::htmlHidden(array("name" => "cmd", "value" => "")) .
+				we_html_element::htmlHidden(array("name" => "counter", "value" => "$counter")) .
+				we_html_element::htmlHidden(array("name" => "sortindex", "value" => "")) .
+				we_html_element::htmlHidden(array("name" => "fieldindex", "value" => "")) .
+				$fhidden .
+				we_html_element::htmlComment("hiddens ends");
 
 
 
 
 		$out = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "doScrollTo()"), we_html_element::jsElement($pob->View->getJSSortAdmin()) .
-				we_html_element::htmlForm(array("name" => "we_form"), $sort_code
-				)
+						we_html_element::htmlForm(array("name" => "we_form"), $sort_code
+						)
 		);
 
 		return $pob->getHTMLDocument($out);
@@ -316,9 +317,9 @@ function we_cmd(){
 
 			if(isset($search_arr["branch_" . $i])){
 				$branch->selectOption($search_arr["branch_" . $i]);
-				$field = ($search_arr["branch_" . $i] == "" ?
-						$pob->getHTMLFieldsSelect(g_l('modules_customer', '[common]')) :
-						$pob->getHTMLFieldsSelect($search_arr["branch_" . $i]));
+				$field = (!$search_arr["branch_" . $i] ?
+								$pob->getHTMLFieldsSelect(g_l('modules_customer', '[common]')) :
+								$pob->getHTMLFieldsSelect($search_arr["branch_" . $i]));
 			}
 
 			if(isset($search_arr["field_" . $i])){
@@ -348,24 +349,24 @@ function we_cmd(){
 		$advsearch->setCol($c, 0, array("colspan" => $colspan), we_html_tools::getPixel(5, 5));
 
 		$advsearch->addRow();
-		$advsearch->setCol( ++$c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array(
-				we_html_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_search')"),
-				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_search')")
+		$advsearch->setCol(++$c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array(
+					we_html_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_search')"),
+					we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_search')")
+						)
 				)
-			)
 		);
 
 		$search->setCol(1, 0, array(), we_html_element::htmlHidden(array("name" => "count", "value" => $count)) .
-			$advsearch->getHtml()
+				$advsearch->getHtml()
 		);
 		$search->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
 		$search->setCol(3, 0, array("align" => "right", "colspan" => $colspan), "<table border='0' cellpadding='0' cellspacing='0'><tr><td>" . we_html_button::create_button_table(
-				array(
-					we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_customer', '[simple_search]')),
-					we_html_button::create_button("image:btn_direction_left", "javascript:we_cmd('switchToSimple')"),
-					$search_but
-				)
-			) . '</td><td>&nbsp;</td></tr></table>'
+						array(
+							we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_customer', '[simple_search]')),
+							we_html_button::create_button("image:btn_direction_left", "javascript:we_cmd('switchToSimple')"),
+							$search_but
+						)
+				) . '</td><td>&nbsp;</td></tr></table>'
 		);
 		$max_res = $pob->View->settings->getMaxSearchResults();
 		$result = ($search_arr && we_base_request::_(we_base_request::BOOL, 'search') ? self::getAdvSearchResults($pob->db, $search_arr, $count, $max_res) : array());
@@ -384,10 +385,10 @@ function we_cmd(){
 			}
 			if(isset($keywords["field_" . $i]) && isset($keywords["operator_" . $i]) && isset($keywords["value_" . $i])){
 				$where.=
-					(isset($keywords['logic_' . $i]) ? ' ' . $keywords['logic_' . $i] . ' ' : '') .
-					$keywords['field_' . $i] . ' ' . self::$operators[$keywords['operator_' . $i]] . " '" .
-					(is_numeric($keywords['value_' . $i]) ? $keywords['value_' . $i] : $db->escape($keywords['value_' . $i])) .
-					"'";
+						(isset($keywords['logic_' . $i]) ? ' ' . $keywords['logic_' . $i] . ' ' : '') .
+						$keywords['field_' . $i] . ' ' . self::$operators[$keywords['operator_' . $i]] . " '" .
+						(is_numeric($keywords['value_' . $i]) ? $keywords['value_' . $i] : $db->escape($keywords['value_' . $i])) .
+						"'";
 			}
 		}
 
@@ -411,10 +412,10 @@ function we_cmd(){
 		$table->setCol(0, 2, array("nowrap" => null, "class" => "small"), we_html_button::create_button("image:btn_edit_edit", "javascript:we_cmd('show_sort_admin')"));
 
 		return we_html_element::htmlForm(array("name" => "we_form_treeheader"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "treeheader")) .
-				we_html_element::htmlHidden(array("name" => "pid", "value" => 0)) .
-				we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd")) .
-				$table1->getHtml() .
-				$table->getHtml()
+						we_html_element::htmlHidden(array("name" => "pid", "value" => 0)) .
+						we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd")) .
+						$table1->getHtml() .
+						$table->getHtml()
 		);
 	}
 

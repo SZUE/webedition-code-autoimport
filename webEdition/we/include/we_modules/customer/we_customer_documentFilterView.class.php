@@ -37,7 +37,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 	function getFilterHTML(){
 		return parent::getFilterHTML() . '<div style="height: 20px;"></div>' .
 			$this->getAccessControlHTML() .
-			(($GLOBALS['we_doc']->ContentType == "folder") ? ('<div style="height: 20px;"></div>' . $this->getFolderApplyHTML()) : "");
+			(($GLOBALS['we_doc']->ContentType === "folder") ? ('<div style="height: 20px;"></div>' . $this->getFolderApplyHTML()) : "");
 	}
 
 	/**

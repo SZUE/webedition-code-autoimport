@@ -427,7 +427,7 @@ self.focus();
 			$maxsize = getUploadMaxFilesize();
 		}
 
-		if(we_base_request::_(we_base_request::STRING, "import_from") == 'import_upload'){
+		if(we_base_request::_(we_base_request::STRING, "import_from") === 'import_upload'){
 			if($maxsize || $this->fileUploader){
 				//FIXME: delete condition and else branch when new uploader is stable
 				if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
@@ -637,7 +637,7 @@ extra_files_desc=new Array();';
 
 		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[tools_import_desc]"), we_html_tools::TYPE_INFO, 600, false), "space" => 70, "noline" => 1);
 		foreach($_tools as $_tool){
-			$text = ($_tool == 'weSearch' ?
+			$text = ($_tool === 'weSearch' ?
 					g_l('searchtool', '[import_tool_' . $_tool . '_data]') :
 					g_l('backup', "[import][weapp]") . ' ' . $_tool);
 
@@ -672,7 +672,7 @@ function startImport(isFileReady) {
 	}
 	top.opener.top.weEditorFrameController.closeAllDocuments();
 
-	' . ((we_base_request::_(we_base_request::STRING, "import_from") == "import_upload") ? ('
+	' . ((we_base_request::_(we_base_request::STRING, "import_from") === "import_upload") ? ('
 	if(isFileReady || document.we_form.we_upload_file.value) {
 		startBusy();
 		top.body.delete_enabled = top.body.switch_button_state("delete", "delete_enabled", "disabled");
@@ -740,7 +740,7 @@ function delSelItem(){
 
 self.focus();');
 
-		$form_attribs = (we_base_request::_(we_base_request::STRING, "import_from") == "import_upload" ?
+		$form_attribs = (we_base_request::_(we_base_request::STRING, "import_from") === "import_upload" ?
 				array("name" => "we_form", "method" => "post", "action" => $this->frameset, "target" => "cmd", "enctype" => "multipart/form-data") :
 				array("name" => "we_form", "method" => "post", "action" => $this->frameset, "target" => "cmd")
 			);
@@ -914,7 +914,7 @@ self.focus();');
 				break;
 			';
 			if($k > 2 && $k < 101){
-				if($v == "handle_versions_binarys"){
+				if($v === "handle_versions_binarys"){
 					$boxNr = 1;
 					$checked = false;
 				} else {
@@ -937,7 +937,7 @@ self.focus();');
 		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', "[tools_export_desc]"), we_html_tools::TYPE_INFO, 600, false), "space" => 70, "noline" => 1);
 		$k = 700;
 		foreach($_tools as $_tool){
-			$text = ($_tool == 'weSearch' ?
+			$text = ($_tool === 'weSearch' ?
 					g_l('searchtool', '[import_tool_' . $_tool . '_data]') :
 					g_l('backup', "[export][weapp]") . ' ' . $_tool);
 
@@ -977,7 +977,7 @@ function setLocation(loc){
 					we_html_element::htmlHidden(array("name" => "operation_mode", "value" => "backup")) .
 					we_html_element::htmlHidden(array("name" => "do_import_after_backup", "value" => we_base_request::_(we_base_request::BOOL, "do_import_after_backup"))) .
 					we_html_multiIconBox::getJS() .
-					we_html_multiIconBox::getHTML("backup_options1", 580, $parts, 30, "", $switchbut, g_l('backup', "[option]"), "<b>" . g_l('backup', "[option]") . "</b>", $_edit_cookie != false ? ($_edit_cookie == "down") : $_edit_cookie, g_l('backup', "[export_step1]"))
+					we_html_multiIconBox::getHTML("backup_options1", 580, $parts, 30, "", $switchbut, g_l('backup', "[option]"), "<b>" . g_l('backup', "[option]") . "</b>", $_edit_cookie != false ? ($_edit_cookie === "down") : $_edit_cookie, g_l('backup', "[export_step1]"))
 				)
 		);
 
@@ -1130,7 +1130,7 @@ function startStep(){
 		$table = new we_html_table(array("border" => 0, "align" => "right", "cellpadding" => 0, "cellspacing" => 0), 2, 4);
 		$table->setCol(0, 0, null, we_html_tools::getPixel(15, 5));
 
-		if(we_base_request::_(we_base_request::STRING, "operation_mode") == "busy"){
+		if(we_base_request::_(we_base_request::STRING, "operation_mode") === "busy"){
 			$text = we_base_request::_(we_base_request::BOOL, "current_description", g_l('backup', "[working]"));
 
 			$progress = new we_progressBar(we_base_request::_(we_base_request::INT, "percent", 0));
@@ -1515,7 +1515,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 							if($percent == 100){
 								$we_backup_obj->current_description = g_l('backup', "[finished]");
 							}
-							if($we_backup_obj->current_description == ""){
+							if(!$we_backup_obj->current_description){
 								$we_backup_obj->current_description = g_l('backup', "[working]");
 							}
 

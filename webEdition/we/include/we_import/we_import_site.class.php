@@ -422,8 +422,8 @@ function doUnload() {
 		);
 		$_dateFormatHTML = '<div id="dateFormatDiv" style="display:' . ($hasDateFields ? 'block' : 'none') . ';margin-bottom:10px;"><table style="margin:10px 0 10px 0" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
 						g_l('siteimport', "[dateFormat]"), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
-						"dateFormat", $dateformatvals, 1, $_valueDateFormat, false, array('onchange' => "dateFormatChanged(this);")) . '</td><td id="ownValueInput" style="padding-left:10px;display:' . (($_valueDateFormat == "own") ? 'block' : 'none') . '">' . we_html_tools::htmlTextInput(
-						"dateformatField", 20, $_valueDateFormatField) . '</td><td id="ownValueInputHelp" style="padding-bottom:1px;padding-left:10px;display:' . (($_valueDateFormat == "own") ? 'block' : 'none') . '">' . $date_help_button . '</td></tr></table></div>';
+						"dateFormat", $dateformatvals, 1, $_valueDateFormat, false, array('onchange' => "dateFormatChanged(this);")) . '</td><td id="ownValueInput" style="padding-left:10px;display:' . (($_valueDateFormat === "own") ? 'block' : 'none') . '">' . we_html_tools::htmlTextInput(
+						"dateformatField", 20, $_valueDateFormatField) . '</td><td id="ownValueInputHelp" style="padding-bottom:1px;padding-left:10px;display:' . (($_valueDateFormat === "own") ? 'block' : 'none') . '">' . $date_help_button . '</td></tr></table></div>';
 
 		$table = '<div style="overflow:auto;height:330px; margin-top:5px;"><div style="width:450px;" id="tablediv">' . $this->_getSiteImportTableHTML($_templateFields, $_valueFieldValues) . '</div></div>';
 
@@ -437,8 +437,8 @@ function doUnload() {
 
 		$_html = '<table style="margin-bottom:10px" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
 						g_l('siteimport', "[importKind]"), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
-						"createType", $vals, 1, $_valueCreateType, false, array('onchange' => "createTypeChanged(this);")) . '</td></tr></table><div id="ctauto" style="display:' . (($_valueCreateType == "auto") ? 'block' : 'none') . '">' . we_html_tools::htmlAlertAttentionBox(
-						g_l('siteimport', "[autoExpl]"), we_html_tools::TYPE_INFO, 450) . self::_formPathHTML($_valueTemplateName, $_valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($_valueCreateType == "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
+						"createType", $vals, 1, $_valueCreateType, false, array('onchange' => "createTypeChanged(this);")) . '</td></tr></table><div id="ctauto" style="display:' . (($_valueCreateType === "auto") ? 'block' : 'none') . '">' . we_html_tools::htmlAlertAttentionBox(
+						g_l('siteimport', "[autoExpl]"), we_html_tools::TYPE_INFO, 450) . self::_formPathHTML($_valueTemplateName, $_valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($_valueCreateType === "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
 
 		$_html = '<div style="height:480px">' . $_html . '</div>';
 
@@ -779,8 +779,8 @@ function doUnload() {
 				$widthInput = we_html_tools::htmlTextInput("width", 10, $this->width, "", '', "text", 60);
 				$heightInput = we_html_tools::htmlTextInput("height", 10, $this->height, "", '', "text", 60);
 
-				$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect == "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->widthSelect == "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
-				$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect == "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->heightSelect == "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
+				$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->widthSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
+				$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->heightSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
 
 				$ratio_checkbox = we_html_forms::checkbox(
 								1, $this->keepRatio, "keepRatio", g_l('thumbnails', "[ratio]"));
@@ -837,7 +837,7 @@ function doUnload() {
 		$wepos = weGetCookieVariable("but_wesiteimport");
 		$content = we_html_multiIconBox::getJS() .
 				we_html_multiIconBox::getHTML(
-						"wesiteimport", "100%", $parts, 30, "", $foldAT, g_l('importFiles', "[image_options_open]"), g_l('importFiles', "[image_options_close]"), ($wepos == "down"), g_l('siteimport', "[siteimport]")) . $this->_getHiddensHTML();
+						"wesiteimport", "100%", $parts, 30, "", $foldAT, g_l('importFiles', "[image_options_open]"), g_l('importFiles', "[image_options_close]"), ($wepos === "down"), g_l('siteimport', "[siteimport]")) . $this->_getHiddensHTML();
 
 		$content = we_html_element::htmlForm(
 						array(
@@ -968,7 +968,7 @@ function doUnload() {
 
 		$content = self::_makeAbsolutPathOfContent($content, $sourcePath, $we_doc->ParentPath);
 
-		if($_valueCreateType == "auto"){
+		if($_valueCreateType === "auto"){
 			self::_importAuto($content, $we_doc, $_valueTemplateName, $_valueTemplateParentID);
 		} else {
 			self::_importSpecify($content, $we_doc, $_valueTemplateId, $_valueUseRegex, $_valueFieldValues, $_valueDateFormat, $_valueDateFormatField);
@@ -992,7 +992,7 @@ function doUnload() {
 			$newLinkPath .= '../';
 		}
 		$rest = substr($linkpath, strlen($parentPath));
-		if(substr($rest, 0, 1) == '/'){
+		if(substr($rest, 0, 1) === '/'){
 			$rest = substr($rest, 1);
 		}
 		return $newLinkPath . $rest;
@@ -1009,15 +1009,15 @@ function doUnload() {
 	 */
 	private static function _makeAbsolutePath($path, $sourcePath, $parentPath){
 		if(!preg_match('|^[a-z]+://|i', $path)){
-			if(substr($path, 0, 1) == '/'){
+			if(substr($path, 0, 1) === '/'){
 				// if href is an absolute URL convert it into a relative URL
 				$path = self::makeRelativePath($sourcePath, $path);
-			} elseif(substr($path, 0, 2) == './'){
+			} elseif(substr($path, 0, 2) === './'){
 				// if href is a relative URL starting with "./" remove the "./"
 				$path = substr($path, 2);
 			}
 			// Make absolute Path out of it
-			while(substr($path, 0, 3) == '../' && strlen($parentPath) > 0 && $parentPath != '/'){
+			while(substr($path, 0, 3) === '../' && strlen($parentPath) > 0 && $parentPath != '/'){
 				$parentPath = dirname($parentPath);
 				$path = substr($path, 3);
 			}
@@ -1384,7 +1384,7 @@ function doUnload() {
 				// only set field if field exists in template
 				if(isset($_templateFields[$field["name"]])){
 
-					if($_templateFields[$field["name"]] == "date"){ // import date fields
+					if($_templateFields[$field["name"]] === "date"){ // import date fields
 						switch($dateFormat){
 							case "unix" :
 								$fieldval = abs($fieldval);
@@ -1399,7 +1399,7 @@ function doUnload() {
 								break;
 						}
 						$we_doc->setElement($field["name"], abs($fieldval), "date");
-					} elseif($_templateFields[$field["name"]] == "img"){ // import image fields
+					} elseif($_templateFields[$field["name"]] === "img"){ // import image fields
 						if(preg_match('/<[^>]+src=["\']?([^"\' >]+)[^"\'>]?[^>]*>/i', $fieldval, $regs)){ // only if image tag has a src attribute
 							$src = $regs[1];
 							$imgId = path_to_id($src);
@@ -1426,7 +1426,7 @@ function doUnload() {
 	private static function _makeInternalLink($href){
 		$ct = '';
 		$id = path_to_id_ct($href, FILE_TABLE, $ct);
-		if(substr($ct, 0, 5) == "text/"){
+		if(substr($ct, 0, 5) === "text/"){
 			$href = we_base_link::TYPE_INT_PREFIX . $id;
 		} elseif($ct == we_base_ContentTypes::IMAGE){
 			if(strpos($href, "?") === false){
@@ -1560,7 +1560,7 @@ function doUnload() {
 		$sizeofdocroot = strlen(rtrim($_SERVER['DOCUMENT_ROOT'], '/')); // make sure that no ending slash is there
 		$sizeofsourcePath = strlen(rtrim($sourcePath, '/')); // make sure that no ending slash is there
 		$destinationDir = id_to_path($destinationDirID);
-		if($destinationDir == "/"){
+		if($destinationDir === "/"){
 			$destinationDir = "";
 		}
 		$destinationPath = $destinationDir . substr($path, $sizeofdocroot + $sizeofsourcePath);
@@ -1626,7 +1626,7 @@ function doUnload() {
 		$sizeofdocroot = strlen(rtrim($_SERVER['DOCUMENT_ROOT'], '/')); // make sure that no ending slash is there
 		$sizeofsourcePath = strlen(rtrim($sourcePath, '/')); // make sure that no ending slash is there
 		$destinationDir = id_to_path($destinationDirID);
-		if($destinationDir == '/'){
+		if($destinationDir === '/'){
 			$destinationDir = '';
 		}
 		$destinationPath = $destinationDir . '/' . we_import_functions::correctFilename(substr($path, $sizeofdocroot + $sizeofsourcePath), true);
@@ -1652,7 +1652,7 @@ function doUnload() {
 		}
 
 		$regs = array();
-		if($contentType == "folder"){
+		if($contentType === "folder"){
 			$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Text;
 		} elseif(preg_match('|^(.+)(\.[^\.]+)$|', $GLOBALS["we_doc"]->Text, $regs)){
 			$GLOBALS["we_doc"]->Extension = $regs[2];
@@ -1667,9 +1667,9 @@ function doUnload() {
 		$id = path_to_id($GLOBALS["we_doc"]->Path);
 
 		if($id){
-			if($sameName == "overwrite" || $contentType == "folder"){ // folders we dont have to rename => we can use the existing folder
+			if($sameName === "overwrite" || $contentType === "folder"){ // folders we dont have to rename => we can use the existing folder
 				$GLOBALS["we_doc"]->initByID($id, FILE_TABLE);
-			} elseif($sameName == "rename"){
+			} elseif($sameName === "rename"){
 				$z = 0;
 				$footext = $GLOBALS["we_doc"]->Filename . "_" . $z . $GLOBALS["we_doc"]->Extension;
 				while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID='" . intval($parentID) . "'", "ID", $GLOBALS['DB_WE'])){
@@ -1722,11 +1722,11 @@ function doUnload() {
 
 		if($contentType == we_base_ContentTypes::IMAGE){
 			$GLOBALS["we_doc"]->Thumbs = $thumbs;
-			$newWidth = ($width && $widthSelect == "percent" ?
+			$newWidth = ($width && $widthSelect === "percent" ?
 							round(($GLOBALS["we_doc"]->getElement("origwidth") / 100) * $width) :
 							$width);
 
-			$newHeight = ($height && $widthSelect == "percent" ?
+			$newHeight = ($height && $widthSelect === "percent" ?
 							round(($GLOBALS["we_doc"]->getElement("origheight") / 100) * $height) :
 							$height);
 
@@ -1784,7 +1784,7 @@ function doUnload() {
 
 		$tmp = array();
 		foreach($this->_files as $e){
-			if($e["contentType"] == "folder"){
+			if($e["contentType"] === "folder"){
 				$tmp[] = $e;
 			}
 		}
@@ -1822,7 +1822,7 @@ function doUnload() {
 		// go throuh all files of the directory
 		$d = dir($importDirectory);
 		while(false !== ($entry = $d->read())){
-			if($entry == '.' || $entry == '..' || ((strlen($entry) >= 2) && substr($entry, 0, 2) == "._")){
+			if($entry === '.' || $entry === '..' || ((strlen($entry) >= 2) && substr($entry, 0, 2) === "._")){
 				continue;
 			}
 			// now we have to check if the file should be imported
@@ -1909,7 +1909,7 @@ function doUnload() {
 					"importMetadata" => $this->importMetadata
 				);
 			}
-			if($contentType == "folder"){
+			if($contentType === "folder"){
 				if(($this->depth == -1) || (abs($this->depth) > $this->_depth)){
 					$this->_files[] = array(
 						"path" => $PathOfEntry,

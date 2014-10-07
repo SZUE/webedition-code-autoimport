@@ -75,7 +75,7 @@ class we_wysiwyg_editor{
 	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = ''){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->restrictContextmenu = $contextmenu ? ',' . $contextmenu . ',' : '';
-		$this->createContextmenu = trim($contextmenu, " ,'") == 'none' || trim($contextmenu, " ,'") == 'false' ? false : true;
+		$this->createContextmenu = trim($contextmenu, " ,'") === 'none' || trim($contextmenu, " ,'") === 'false' ? false : true;
 		$this->name = $name;
 		if(preg_match('|^.+\[.+\]$|i', $this->name)){
 			$this->fieldName = preg_replace('/^.+\[(.+)\]$/', '\1', $this->name);
@@ -86,18 +86,18 @@ class we_wysiwyg_editor{
 		$this->tinyParams = str_replace('\'', '"', trim($tinyParams, ' ,'));
 		$this->templates = trim($templates, ',');
 		$this->xml = $xml;
-		if(self::$editorType == 'tinyMCE'){
+		if(self::$editorType === 'tinyMCE'){
 			$this->xml = $this->xml ? "xhtml" : "html";
 		}
 		$this->removeFirstParagraph = $removeFirstParagraph;
 		$this->inlineedit = $inlineedit;
 		$this->fullscreen = $fullscreen;
 		$this->className = $className;
-		$this->buttonpos = (self::$editorType == 'tinyMCE' ? $buttonpos : 'top');
+		$this->buttonpos = (self::$editorType === 'tinyMCE' ? $buttonpos : 'top');
 		$this->statuspos = $this->buttonpos != 'external' ? $this->buttonpos : 'bottom';
 		$this->outsideWE = $outsideWE;
 		$this->fontnamesCSV = $fontnames;
-		if(self::$editorType == 'tinyMCE'){
+		if(self::$editorType === 'tinyMCE'){
 			if($fontnames){
 				$fn = explode(',', $fontnames);
 				$tf = '';
@@ -124,7 +124,7 @@ class we_wysiwyg_editor{
 		}
 		$this->cssClasses = $cssClasses;
 		$this->cssClassesCSV = $cssClasses;
-		if($this->cssClasses != '' && self::$editorType == 'tinyMCE'){
+		if($this->cssClasses != '' && self::$editorType === 'tinyMCE'){
 			$cc = explode(',', $this->cssClasses);
 			$tf = '';
 			$jsCl = '';
@@ -156,7 +156,7 @@ class we_wysiwyg_editor{
 
 		if($inlineedit){
 			if($value){
-				if(self::$editorType == 'tinyMCE'){
+				if(self::$editorType === 'tinyMCE'){
 					//FIXME: what to do with scripts??
 				} else {
 					$value = strtr($value, array("\\" => "\\\\", "\n" => '\n', "\r" => '\r'));
@@ -225,7 +225,7 @@ class we_wysiwyg_editor{
 	function getMaxGroupWidth(){
 		$w = 0;
 		foreach($this->filteredElements as $i => $v){
-			if($v->classname == 'we_wysiwyg_ToolbarSeparator'){
+			if($v->classname === 'we_wysiwyg_ToolbarSeparator'){
 				$this->maxGroupWidth = max($w, $this->maxGroupWidth);
 				$w = 0;
 			} else {
@@ -233,7 +233,7 @@ class we_wysiwyg_editor{
 			}
 		}
 		$this->maxGroupWidth = max($w, $this->maxGroupWidth);
-		$this->maxGroupWidth += self::$editorType == 'tinyMCE' ? 2 : 0;
+		$this->maxGroupWidth += self::$editorType === 'tinyMCE' ? 2 : 0;
 	}
 
 	static function getHeaderHTML($loadDialogRegistry = false){
@@ -523,7 +523,7 @@ function weWysiwygSetHiddenText(arg) {
 			'lang'
 		);
 
-		if(self::$editorType == 'tinyMCE'){
+		if(self::$editorType === 'tinyMCE'){
 			array_push($arr, 'absolute', 'blockquote', 'cite', 'del', 'emotions', 'hr', 'ins', 'insertdate', 'insertlayer', 'inserttime', 'ltr', 'movebackward', 'moveforward', 'nonbreaking', 'pastetext', 'pasteword', 'replace', 'rtl', 'search', 'styleprops', 'template', 'editrow', 'deletetable', 'selectall');
 		} else {
 			array_push($arr, 'edittable', 'caption', 'removecaption', 'importrtf');
@@ -621,7 +621,7 @@ function weWysiwygSetHiddenText(arg) {
 				//group: prop
 				new we_wysiwyg_ToolbarSelect($this, "formatblock", g_l('wysiwyg', "[format]"), $formatblockArr, 92),
 				($this->width < 194 ? $sep : false),
-				new we_wysiwyg_ToolbarSelect($this, "applystyle", g_l('wysiwyg', "[css_style]"), array(), self::$editorType == 'tinyMCE' ? 92 : 120 ),
+				new we_wysiwyg_ToolbarSelect($this, "applystyle", g_l('wysiwyg', "[css_style]"), array(), self::$editorType === 'tinyMCE' ? 92 : 120 ),
 				$sep,
 				new we_wysiwyg_ToolbarButton($this, "bold", $this->_image_languagePath . "bold.gif", g_l('wysiwyg', "[bold]")),
 				new we_wysiwyg_ToolbarButton($this, "italic", $this->_image_languagePath . "italic.gif", g_l('wysiwyg', "[italic]")),
@@ -738,7 +738,7 @@ function weWysiwygSetHiddenText(arg) {
 		//if legacy editor remove conditional seperators
 		if(self::$editorType != 'tinyMCE'){
 			for($i = 0; $i < count($this->elements); $i++){
-				if($this->elements[$i]->classname == 'we_wysiwyg_ToolbarSeparator' && $this->elements[$i]->conditional){
+				if($this->elements[$i]->classname === 'we_wysiwyg_ToolbarSeparator' && $this->elements[$i]->conditional){
 					unset($this->elements[$i]);
 				}
 			}
@@ -760,11 +760,11 @@ function weWysiwygSetHiddenText(arg) {
 				if((!$lastSep) || ($elem->classname != "we_wysiwyg_ToolbarSeparator")){
 					$this->filteredElements[] = $elem;
 				}
-				$lastSep = ($elem->classname == "we_wysiwyg_ToolbarSeparator");
+				$lastSep = ($elem->classname === "we_wysiwyg_ToolbarSeparator");
 			}
 		}
 		if($this->filteredElements){
-			if($this->filteredElements[count($this->filteredElements) - 1]->classname == 'we_wysiwyg_ToolbarSeparator'){
+			if($this->filteredElements[count($this->filteredElements) - 1]->classname === 'we_wysiwyg_ToolbarSeparator'){
 				array_pop($this->filteredElements);
 			}
 		}
@@ -772,7 +772,7 @@ function weWysiwygSetHiddenText(arg) {
 
 	function hasSep($rowArr){
 		foreach($rowArr as $i => $elem){
-			if($elem->classname == "we_wysiwyg_ToolbarSeparator"){
+			if($elem->classname === "we_wysiwyg_ToolbarSeparator"){
 				return true;
 			}
 		}
@@ -785,7 +785,7 @@ function weWysiwygSetHiddenText(arg) {
 
 	function getEditButtonHTML($value = ''){
 		list($tbwidth, $tbheight) = $this->getToolbarWidthAndHeight();
-		$tbheight += self::$editorType == 'tinyMCE' ? 18 : 0;
+		$tbheight += self::$editorType === 'tinyMCE' ? 18 : 0;
 		$fns = '';
 		foreach($this->fontnames as $fn){
 			$fns .= str_replace(",", ";", $fn) . ",";
@@ -842,7 +842,7 @@ function weWysiwygSetHiddenText(arg) {
 				$rowwidth += $rows[$rownr][count($rows[$rownr]) - 1]->width;
 			} else {
 				if(!empty($rows[$rownr])){
-					if($rows[$rownr][count($rows[$rownr]) - 1]->classname == "we_wysiwyg_ToolbarSeparator"){
+					if($rows[$rownr][count($rows[$rownr]) - 1]->classname === "we_wysiwyg_ToolbarSeparator"){
 						array_pop($rows[$rownr]);
 						$rownr++;
 						$rowwidth = 0;
@@ -889,7 +889,7 @@ function weWysiwygSetHiddenText(arg) {
 		}
 		$ret = '';
 		foreach($this->filteredElements as $elem){
-			$ret .= $elem->classname == 'we_wysiwyg_ToolbarButton' && $elem->showMeInContextmenu && self::wysiwygCmdToTiny($elem->cmd) ? '"' . self::wysiwygCmdToTiny($elem->cmd) . '":true,' : '';
+			$ret .= $elem->classname === 'we_wysiwyg_ToolbarButton' && $elem->showMeInContextmenu && self::wysiwygCmdToTiny($elem->cmd) ? '"' . self::wysiwygCmdToTiny($elem->cmd) . '":true,' : '';
 		}
 		return trim($ret, ',') !== '' ? '{' . trim($ret, ',') . '}' : 'false';
 	}
@@ -1002,7 +1002,7 @@ function weWysiwygSetHiddenText(arg) {
 		for($i = 0; $i < count($tmplArr); $i++){
 			$tmplDoc = new we_document();
 			$tmplDoc->initByID(intval($tmplArr[$i]));
-			if(($tmplDoc->ContentType == we_base_ContentTypes::APPLICATION && ($tmplDoc->Extension == '.html' || $tmplDoc->Extension == '.htm')) || $tmplDoc->ContentType == we_base_ContentTypes::WEDOCUMENT){
+			if(($tmplDoc->ContentType == we_base_ContentTypes::APPLICATION && ($tmplDoc->Extension === '.html' || $tmplDoc->Extension === '.htm')) || $tmplDoc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 				$templates .= '{title: "' . (isset($tmplDoc->elements['Title']['dat']) && $tmplDoc->elements['Title']['dat'] ? $tmplDoc->elements['Title']['dat'] : "no title " . ($i + 1)) . '", src : "' . $tmplDoc->Path . '", description: "' . (isset($tmplDoc->elements['Description']['dat']) && $tmplDoc->elements['Description']['dat'] ? $tmplDoc->elements['Description']['dat'] : "no description " . ($i + 1)) . '"},';
 			}
 		}
@@ -1029,7 +1029,7 @@ function weWysiwygSetHiddenText(arg) {
 					$tinyRows .= 'theme_advanced_buttons' . $k . ' : "';
 					$j = 0;
 					foreach($outer as $inner){
-						if($rows[$i][$j]->cmd == ''){
+						if(!$rows[$i][$j]->cmd){
 							$tinyRows .= $rows[$i][$j]->conditional ? '' : 'separator,';
 						} else if(self::wysiwygCmdToTiny($rows[$i][$j]->cmd)){
 							$tinyRows .= self::wysiwygCmdToTiny($rows[$i][$j]->cmd) . ',';
@@ -1050,7 +1050,7 @@ function weWysiwygSetHiddenText(arg) {
 					($this->wePlugins ? $this->wePlugins . ',' : '') .
 					'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
 				//fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
-				$toolBarHeight = $this->buttonpos == 'external' ? 0 : ($k - 1) * 26 + 22 - $k * 3;
+				$toolBarHeight = $this->buttonpos === 'external' ? 0 : ($k - 1) * 26 + 22 - $k * 3;
 				$this->height += $toolBarHeight;
 
 				if(preg_match('/^#[a-f0-9]{6}$/i', $this->bgcol)){
@@ -1068,7 +1068,7 @@ function weWysiwygSetHiddenText(arg) {
 				$contentCss = $this->contentCss ? $this->contentCss . ',' : '';
 
 				$editorLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
-				$editorLangSuffix = $editorLang == 'de' ? 'de_' : '';
+				$editorLangSuffix = $editorLang === 'de' ? 'de_' : '';
 
 				return we_html_element::jsElement('
 					' . ($this->fieldName ? '

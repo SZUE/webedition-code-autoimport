@@ -868,7 +868,7 @@ class we_xml_parser{
 			}
 
 			// Check if it is an abbreviated syntax.
-			if($step == '*'){
+			if($step === '*'){
 				// Use the child axis and select all children.
 				$axis['axis'] = 'child';
 				$axis['node-test'] = '*';
@@ -901,15 +901,15 @@ class we_xml_parser{
 				// Use the attribute axis and select the attribute.
 				$axis['axis'] = 'attribute';
 				$axis['node-test'] = substr($step, 1);
-			} else if(substr($step, -1) == ']'){
+			} else if(substr($step, -1) === ']'){
 				// Use the child axis and select a position.
 				$axis['axis'] = 'child';
 				$axis['node-test'] = substr($step, strpos($step, '['));
-			} else if($step == '.'){
+			} else if($step === '.'){
 				// Select the self axis.
 				$axis['axis'] = 'self';
 				$axis['node-test'] = '*';
-			} else if($step == '..'){
+			} else if($step === '..'){
 				// Select the parent axis.
 				$axis['axis'] = 'parent';
 				$axis['node-test'] = '*';
@@ -952,10 +952,10 @@ class we_xml_parser{
 			$char = substr($term, $pos, 1);
 
 			// Check if char is a bracket.
-			if(($char == '(') || ($char == '[')){
+			if(($char === '(') || ($char === '[')){
 				// Increase the number of brackets.
 				$brackets++;
-			} else if(($char == ')') || ($char == ']')){
+			} else if(($char === ')') || ($char === ']')){
 				// Decrease the number of brackets.
 				$brackets--;
 			} else if($brackets == 0){
@@ -1013,7 +1013,7 @@ class we_xml_parser{
 			$axis = $this->getAxis($step, $context);
 
 			// Check if it is a function.
-			if($axis['axis'] == 'function'){
+			if($axis['axis'] === 'function'){
 				// Check if an array was returned.
 				if(is_array($axis['node-test'])){
 					// Add the results to the list of contexts.
@@ -1102,7 +1102,7 @@ class we_xml_parser{
 					$operator = $expression;
 
 					// Check if it is the equal operator.
-					if($operator == '='){
+					if($operator === '='){
 						// Also look for other operators containing the equal
 						// sign.
 						if($this->inString($predicate, '!=') ==
@@ -1135,7 +1135,7 @@ class we_xml_parser{
 		}
 
 		// Check if the operator is a '-' sign.
-		if($operator == '-'){
+		if($operator === '-'){
 			// Check if it is not a method containing a '-' sign.
 			foreach($this->XPathFunctions as $function){
 				// Check if there is a - sign in the function name.
@@ -1154,12 +1154,12 @@ class we_xml_parser{
 					}
 				}
 			}
-		} else if($operator == '*'){
+		} else if($operator === '*'){
 			$character = substr($predicate, $position - 1, 1);
 			$attribute = substr($predicate, $position - 11, 11);
 
 			// Check if it is an attribute selection.
-			if(($character == '@') || ($attribute == 'attribute::')){
+			if(($character === '@') || ($attribute === 'attribute::')){
 				// Don't use the operator.
 				$operator = '';
 				$position = -1;
@@ -1419,7 +1419,7 @@ class we_xml_parser{
 				default:
 					return FALSE;
 			}
-		} else if($nodeTest == '*'){
+		} else if($nodeTest === '*'){
 			// Add this node to the list of nodes.
 			return TRUE;
 		} else if(preg_match('|^[a-zA-Z0-9\_-]+|', $nodeTest)){ // bugfix #1665 for php 4.1.2: "-" moved to the end of the regex-pattern
@@ -1535,7 +1535,7 @@ class we_xml_parser{
 		$selectedNodes = array();
 
 		// Check if all nodes should be selected.
-		if($axis['node-test'] == '*'){
+		if($axis['node-test'] === '*'){
 			// Check if there are attributes.
 			if(!empty($this->nodes[$contextNode]['attributes'])){
 				// Run through the attributes.

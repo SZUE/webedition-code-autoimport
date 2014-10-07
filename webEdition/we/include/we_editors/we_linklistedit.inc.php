@@ -94,19 +94,19 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 	$type = we_base_request::_(we_base_request::STRING, 'type');
 
 	//	accept anchor with or without '#', when saving the link
-	$anchor = (!$anchor || $anchor{0} == '#' ? $anchor : '#' . $anchor);
+	$anchor = (!$anchor || $anchor{0} === '#' ? $anchor : '#' . $anchor);
 
 	if(strlen($params) > 0){ //	accept parameters with or without '?', when saving the link
 		//	when type=object we need a '&'
 		switch(we_base_request::_(we_base_request::STRING, 'type')){
 			case we_base_link::TYPE_OBJ:
 				if(substr($params, 0, 1) != '&'){
-					$params = (substr($params, 0, 1) == '?' ? '&' . substr($params, 1) : '&' . $params);
+					$params = (substr($params, 0, 1) === '?' ? '&' . substr($params, 1) : '&' . $params);
 				}
 				break;
 			default:
 				if(substr($params, 0, 1) != '?'){
-					$params = (substr($params, 0, 1) == '&' ? '?' . substr($params, 1) : '?' . $params);
+					$params = (substr($params, 0, 1) === '&' ? '?' . substr($params, 1) : '?' . $params);
 				}
 		}
 	}
@@ -438,7 +438,7 @@ $ok = we_base_request::_(we_base_request::BOOL, "ok");
 $cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $name = we_base_request::_(we_base_request::STRING, 'name', $name);
 
-if($ok && $cmd == "edit_link_at_class"){
+if($ok && $cmd === "edit_link_at_class"){
 	$_SESSION['weS']['WE_LINK'] = $link;
 	//FIXME: we_field XSS
 	?>
@@ -446,7 +446,7 @@ if($ok && $cmd == "edit_link_at_class"){
 		opener.we_cmd("object_change_link_at_class", "<?php echo $trans; ?>", "<?php echo we_base_request::_(we_base_request::STRING, "we_field"); ?>", "<?php echo $name; ?>");
 		top.close();
 	<?php
-} else if($ok && $cmd == "edit_link_at_object"){
+} else if($ok && $cmd === "edit_link_at_object"){
 	$_SESSION['weS']['WE_LINK'] = $link;
 	?>
 		opener.setScrollTo();
@@ -694,15 +694,15 @@ if($ok && $cmd == "edit_link_at_class"){
 		<td>
 			<select class="defaultfont" name="align" size="1">
 			<option value="">Default</option>
-			<option value="top"' . (($align == "top") ? "selected" : "") . '>Top</option>
-			<option value="middle"' . (($align == "middle") ? "selected" : "") . '>Middle</option>
-			<option value="bottom"' . (($align == "bottom") ? "selected" : "") . '>Bottom</option>
-			<option value="left"' . (($align == "left") ? "selected" : "") . '>Left</option>
-			<option value="right"' . (($align == "right") ? "selected" : "") . '>Right</option>
-			<option value="texttop"' . (($align == "texttop") ? "selected" : "") . '>Text Top</option>
-			<option value="absmiddle"' . (($align == "absmiddle") ? "selected" : "") . '>Abs Middle</option>
-			<option value="baseline"' . (($align == "baseline") ? "selected" : "") . '>Baseline</option>
-			<option value="absbottom"' . (($align == "absbottom") ? "selected" : "") . '>Abs Bottom</option>
+			<option value="top"' . (($align === "top") ? "selected" : "") . '>Top</option>
+			<option value="middle"' . (($align === "middle") ? "selected" : "") . '>Middle</option>
+			<option value="bottom"' . (($align === "bottom") ? "selected" : "") . '>Bottom</option>
+			<option value="left"' . (($align === "left") ? "selected" : "") . '>Left</option>
+			<option value="right"' . (($align === "right") ? "selected" : "") . '>Right</option>
+			<option value="texttop"' . (($align === "texttop") ? "selected" : "") . '>Text Top</option>
+			<option value="absmiddle"' . (($align === "absmiddle") ? "selected" : "") . '>Abs Middle</option>
+			<option value="baseline"' . (($align === "baseline") ? "selected" : "") . '>Baseline</option>
+			<option value="absbottom"' . (($align === "absbottom") ? "selected" : "") . '>Abs Bottom</option>
 		</select></td>
 	</tr>
 	<tr><td colspan="12">' . we_html_tools::getPixel(2, 2) . '</td></tr>

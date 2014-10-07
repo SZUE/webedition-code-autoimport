@@ -39,7 +39,7 @@ class we_customer_frames extends we_modules_frame{
 
 	public function getHTMLDocumentHeader($what = '', $mode = ''){
 		//We need to set this (and in corresponding frames, since the data in database is formated this way
-		if(!($mode == 'export' && we_base_request::_(we_base_request::INT, "step") == 5)){
+		if(!($mode === 'export' && we_base_request::_(we_base_request::INT, "step") == 5)){
 			return we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET) .
 				we_html_tools::getHtmlTop('', DEFAULT_CHARSET);
 		}
@@ -295,11 +295,11 @@ top.content.hloaded = 1;');
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd")) .
 			we_html_element::htmlHidden(array("name" => "branch", "value" => "$branch")) .
 			we_html_element::htmlHidden(array("name" => "art", "value" => "$mode")) .
-			($type == "field" ? we_html_element::htmlHidden(array("name" => "field", "value" => "$field")) : '');
+			($type === "field" ? we_html_element::htmlHidden(array("name" => "field", "value" => "$field")) : '');
 
 		$cancel = we_html_button::create_button("cancel", "javascript:self.close();");
 
-		if($type == "branch"){
+		if($type === "branch"){
 			$hiddens.=we_html_element::htmlHidden(array("name" => "pnt", "value" => "branch_editor"));
 			$edit = new we_html_table(array("border" => 0, "cellpadding" => 3, "cellspacing" => 3, "width" => 300), 1, 2);
 			$edit->setCol(0, 0, array("valign" => "middle", "class" => "defaultgray"), g_l('modules_customer', '[field_name]'));
@@ -339,9 +339,9 @@ top.content.hloaded = 1;');
 					we_html_element::jsElement("self.focus();") .
 					we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						we_html_tools::htmlDialogLayout($edit->getHtml(), (
-							$type == "branch" ?
+							$type === "branch" ?
 								(g_l('modules_customer', '[edit_branche]')) :
-								($mode == "edit" ? g_l('modules_customer', '[edit_field]') : g_l('modules_customer', '[add_field]'))
+								($mode === "edit" ? g_l('modules_customer', '[edit_field]') : g_l('modules_customer', '[add_field]'))
 							), we_html_button::position_yes_no_cancel($save, null, $cancel)
 						)
 					)
@@ -352,7 +352,7 @@ top.content.hloaded = 1;');
 	function getHTMLCmd(){
 		$p = we_base_request::_(we_base_request::RAW, 'pid');
 		if($p !== false){
-			$pid = ($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8') ?
+			$pid = ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8') ?
 				utf8_encode($p) :
 				$p;
 		} else {
@@ -509,7 +509,7 @@ top.content.hloaded = 1;');
 	}
 
 	function getHTMLSettings(){
-		if(we_base_request::_(we_base_request::STRING, "cmd") == "save_settings"){
+		if(we_base_request::_(we_base_request::STRING, "cmd") === "save_settings"){
 			$this->View->processCommands();
 			$closeflag = true;
 		} else {
@@ -538,7 +538,7 @@ top.content.hloaded = 1;');
 		$default_order = new we_html_select(array('name' => 'default_order', 'style' => 'width:250px;', 'class' => 'weSelect'));
 		$default_order->addOption('', g_l('modules_customer', '[none]'));
 		foreach($this->View->settings->OrderTable as $ord){
-			$ordval = ($ord == 'ASC') ? g_l('modules_customer', '[ASC]') : g_l('modules_customer', '[DESC]');
+			$ordval = ($ord === 'ASC') ? g_l('modules_customer', '[ASC]') : g_l('modules_customer', '[DESC]');
 			$default_order->addOption($ord, $ordval);
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));

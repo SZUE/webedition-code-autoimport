@@ -144,7 +144,7 @@ function oldHtmlspecialchars($string, $flags = -1, $encoding = 'ISO-8859-1', $do
  */
 function filterXss($var, $type = 'string'){
 	if(!is_array($var)){
-		return ($type == 'string' ? oldHtmlspecialchars(strip_tags($var)) : intval($var));
+		return ($type === 'string' ? oldHtmlspecialchars(strip_tags($var)) : intval($var));
 	}
 	$ret = array();
 	foreach($var as $key => $val){
@@ -302,7 +302,7 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = 
 
 function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null){
 	//FIXME: make them all use $db at call
-	if($path == '/'){
+	if($path === '/'){
 		return 0;
 	}
 	$db = ($db ? $db : new DB_WE());
@@ -322,7 +322,7 @@ function weConvertToIds($paths, $table){
 }
 
 function path_to_id_ct($path, $table, &$contentType){
-	if($path == '/'){
+	if($path === '/'){
 		return 0;
 	}
 	$db = new DB_WE();
@@ -528,12 +528,11 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		return '';
 	}
-	$ws = '';
 
 	$foo = f('SELECT workSpaceDef FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), '', new DB_WE());
 	$ws = makeCSVFromArray(makeArrayFromCSV($foo), $prePostKomma);
 
-	if($ws == ''){
+	if(!$ws){
 		$wsA = makeArrayFromCSV(get_ws($table, $prePostKomma));
 		return ($wsA ? $wsA[0] : '');
 	}
@@ -834,7 +833,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	$tag = '<' . $element;
 
 	foreach($attribs as $k => $v){
-		$tag .= ' ' . ($k == 'link_attribute' ? // Bug #3741
+		$tag .= ' ' . ($k === 'link_attribute' ? // Bug #3741
 				$v :
 				str_replace('pass_', '', $k) . '="' . $v . '"');
 	}
@@ -862,7 +861,7 @@ function removeAttribs($attribs, array $remove = array()){
 function we_loadLanguageConfig(){
 	$file = WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php';
 	if(!file_exists($file) || !is_file($file)){
-		we_writeLanguageConfig((WE_LANGUAGE == 'Deutsch' || WE_LANGUAGE == 'Deutsch_UTF-8' ? 'de_DE' : 'en_GB'), array('de_DE', 'en_GB'));
+		we_writeLanguageConfig((WE_LANGUAGE === 'Deutsch' || WE_LANGUAGE === 'Deutsch_UTF-8' ? 'de_DE' : 'en_GB'), array('de_DE', 'en_GB'));
 	}
 	include_once ($file);
 }
@@ -904,7 +903,7 @@ $GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
 }
 
 function we_isHttps(){
-	return isset($_SERVER['HTTPS']) && (strtoupper($_SERVER['HTTPS']) == 'ON' || $_SERVER['HTTPS'] == 1);
+	return isset($_SERVER['HTTPS']) && (strtoupper($_SERVER['HTTPS']) === 'ON' || $_SERVER['HTTPS'] == 1);
 }
 
 function getVarArray($arr, $string){
@@ -926,12 +925,12 @@ function getVarArray($arr, $string){
 
 function CheckAndConvertISOfrontend($utf8data){
 	$to = (isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET);
-	return ($to == 'UTF-8' ? $utf8data : mb_convert_encoding($utf8data, $to, 'UTF-8'));
+	return ($to === 'UTF-8' ? $utf8data : mb_convert_encoding($utf8data, $to, 'UTF-8'));
 }
 
 function CheckAndConvertISObackend($utf8data){
 	$to = (isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']);
-	return ($to == 'UTF-8' ? $utf8data : mb_convert_encoding($utf8data, $to, 'UTF-8'));
+	return ($to === 'UTF-8' ? $utf8data : mb_convert_encoding($utf8data, $to, 'UTF-8'));
 }
 
 /* * internal function - do not call */

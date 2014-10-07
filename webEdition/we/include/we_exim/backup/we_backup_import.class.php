@@ -113,11 +113,11 @@ class we_backup_import{
 					}
 
 					//correct table name in tblversions
-					if(isset($object->table) && $object->table == "tblversions" && isset($object->documentTable)){
-						if(strtolower(substr($object->documentTable, -14)) == "tblobjectfiles"){
+					if(isset($object->table) && $object->table === "tblversions" && isset($object->documentTable)){
+						if(strtolower(substr($object->documentTable, -14)) === "tblobjectfiles"){
 							$object->documentTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'tblobjectfiles';
 						}
-						if(strtolower(substr($object->documentTable, -7)) == "tblfile"){
+						if(strtolower(substr($object->documentTable, -7)) === "tblfile"){
 							$object->documentTable = defined('FILE_TABLE') ? FILE_TABLE : 'tblfile';
 						}
 					}

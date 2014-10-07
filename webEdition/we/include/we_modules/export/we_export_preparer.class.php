@@ -203,13 +203,14 @@ class we_export_preparer extends we_exim_XMLExIm{
 	}
 
 	function addToDepArray($level, $id, $ct = "", $table = ""){
-		if($ct == ""){
-			if($table == ""){
+		if(!$ct){
+			if(!$table){
 				$table = FILE_TABLE;
 			}
 			$ct = f('SELECT ContentType FROM ' . escape_sql_query($table) . ' WHERE ID=' . intval($id), 'ContentType', new DB_WE());
 		}
-		if($ct != ""){
+
+		if($ct){
 			$new = array(
 				'ID' => $id,
 				'ContentType' => $ct,
@@ -284,7 +285,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 							foreach($elarray as $elk => $elv){
 								foreach($elv as $id){
 									if(!empty($id)){
-										if($elk == "docs"){
+										if($elk === "docs"){
 											$this->addToDepArray($level, $id);
 										} else {
 											$this->addToDepArray($level, $id, "objectFile");
@@ -356,7 +357,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 			}
 		}
 
-		if(defined('OBJECT_TABLE') && isset($object->ClassName) && $object->ClassName == 'we_objectFile' && $this->options['handle_object_embeds']){
+		if(defined('OBJECT_TABLE') && isset($object->ClassName) && $object->ClassName === 'we_objectFile' && $this->options['handle_object_embeds']){
 			foreach($object->elements as $key => $value){
 				if(preg_match('|we_object_[0-9]+|', $key)){
 					if(isset($value['dat'])){
@@ -369,7 +370,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 					}
 				}
 
-				if(isset($value['type']) && ($value['type'] == 'img' || $value['type'] == 'binary')){
+				if(isset($value['type']) && ($value['type'] === 'img' || $value['type'] === 'binary')){
 					$this->addToDepArray($level, $value['dat']);
 				}
 			}
@@ -436,10 +437,10 @@ class we_export_preparer extends we_exim_XMLExIm{
 		we_updater::fixInconsistentTables();
 
 		if($this->options['handle_def_templates'] || $this->options['handle_doctypes'] ||
-			$this->options['handle_categorys'] || $this->options['handle_def_classes'] ||
-			$this->options['handle_document_includes'] || $this->options['handle_document_linked'] ||
-			$this->options['handle_object_includes'] || $this->options['handle_object_embeds'] ||
-			$this->options['handle_class_defs'] || $this->options['handle_owners'] || $this->options['handle_navigation'] || $this->options['handle_thumbnails']
+				$this->options['handle_categorys'] || $this->options['handle_def_classes'] ||
+				$this->options['handle_document_includes'] || $this->options['handle_document_linked'] ||
+				$this->options['handle_object_includes'] || $this->options['handle_object_embeds'] ||
+				$this->options['handle_class_defs'] || $this->options['handle_owners'] || $this->options['handle_navigation'] || $this->options['handle_thumbnails']
 		){
 
 			$this->makeExportList();

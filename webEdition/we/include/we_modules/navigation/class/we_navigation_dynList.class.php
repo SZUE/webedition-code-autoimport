@@ -62,7 +62,7 @@ abstract class we_navigation_dynList{
 						$_doc[$_sort['field']] :
 						$_fields[$_id]);
 			}
-			if($_sort['order'] == 'DESC'){
+			if($_sort['order'] === 'DESC'){
 				natcasesort($_arr[$_k]);
 				$_arr[$_k] = array_reverse($_arr[$_k]);
 			} else {

@@ -333,7 +333,7 @@ echo we_html_tools::getHtmlTop('','','frameset');
 	var openedWithWE = 1;
 
 <?php
-if(isset($parastr) && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == "edit_document_with_parameters"){
+if(isset($parastr) && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "edit_document_with_parameters"){
 	echo 'var parameters = "' . $parastr . '";';
 }
 

@@ -486,7 +486,7 @@ class we_navigation_items{
 			$this->Storage['items'][] = $_tmpItem;
 			unset($_tmpItem);
 
-			if($_db->Record['IsFolder'] == 1 && ($_db->Record['FolderSelection'] == '' || $_db->Record['FolderSelection'] == we_navigation_navigation::STPYE_DOCLINK)){
+			if($_db->Record['IsFolder'] == 1 && ($_db->Record['FolderSelection'] === '' || $_db->Record['FolderSelection'] == we_navigation_navigation::STPYE_DOCLINK)){
 				$_ids[] = $_db->Record['LinkID'];
 			} elseif($_db->Record['Selection'] == we_navigation_navigation::SELECTION_STATIC && $_db->Record['SelectionType'] == we_navigation_navigation::STPYE_DOCLINK){
 				$_ids[] = $_db->Record['LinkID'];

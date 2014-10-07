@@ -461,7 +461,7 @@ if(!$wfchk && $wecmd0 != "delete"){
 	echo $wfchk_html;
 	exit();
 }
-if($wecmd0 == "do_delete"){
+if($wecmd0 === "do_delete"){
 	echo '</head><body></body></html>';
 	exit();
 }

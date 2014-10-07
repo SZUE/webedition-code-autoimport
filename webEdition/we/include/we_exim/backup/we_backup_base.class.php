@@ -413,9 +413,9 @@ abstract class we_backup_base{
 		}
 		while((list($k, $v) = @each($index))){
 			$foo .= ",$nl";
-			if($k == "PRIMARY"){
+			if($k === "PRIMARY"){
 				$foo .= "   PRIMARY KEY (" . implode($v, ", ") . ")";
-			} else if(substr($k, 0, 6) == "UNIQUE"){
+			} else if(substr($k, 0, 6) === "UNIQUE"){
 				$foo .= "   UNIQUE " . substr($k, 7) . " (" . implode($v, ", ") . ")";
 			} else {
 				$foo .= "   KEY $k (" . implode($v, ", ") . ")";
@@ -644,7 +644,7 @@ abstract class we_backup_base{
 
 				while($findline == false && !@feof($fh)){
 					$line .= @fgets($fh, 4096);
-					if(substr($line, -1) == "\n"){
+					if(substr($line, -1) === "\n"){
 						$findline = true;
 					}
 				}
@@ -658,7 +658,7 @@ abstract class we_backup_base{
 				if($fh_temp){
 					if(substr($line, 0, 1) != "#"){
 						$buff.=$line;
-						if((substr($buff, -2) == ";\n") || (substr($buff, -3) == ";\r\n")){
+						if((substr($buff, -2) === ";\n") || (substr($buff, -3) === ";\r\n")){
 							$fsize+=strlen($buff);
 							fwrite($fh_temp, $buff);
 							if($fsize > $this->default_split_size){
@@ -708,14 +708,14 @@ abstract class we_backup_base{
 
 				while($findline == false && !@feof($fh)){
 					$line .= @fgets($fh, 4096);
-					if(substr($line, -1) == "\n"){
+					if(substr($line, -1) === "\n"){
 						$findline = true;
 					}
 				}
 
 				if(substr($line, 0, 1) != "#"){
 					$buff.=$line;
-					if((substr($buff, -2) == ";\n") || (substr($buff, -3) == ";\r\n")){
+					if((substr($buff, -2) === ";\n") || (substr($buff, -3) === ";\r\n")){
 						if(preg_match("/;\r?\n.?$/", $buff)){
 							$buff = preg_replace("/\r?\n/", " ", $buff);
 						}
@@ -735,14 +735,14 @@ abstract class we_backup_base{
 									$clear_name = $this->fixTableName($ctbl . $itbl);
 									if(trim($clear_name) != ""){
 										$buff = str_replace($ctbl . $itbl, $clear_name, $buff);
-										if(($ctbl != "") && (strtolower(substr($buff, 0, 6)) == "create")){
+										if(($ctbl != "") && (strtolower(substr($buff, 0, 6)) === "create")){
 											if(defined('OBJECT_X_TABLE') && substr(strtolower($ctbl), 0, 10) != strtolower(OBJECT_X_TABLE)){
 												$this->getDiff($buff, $clear_name, $upd);
 											}
 											$this->backup_db->query("DROP TABLE IF EXISTS " . $this->backup_db->escape($clear_name) . ";");
 											$this->backup_db->query($buff);
 										}
-										if(($itbl != "") && (strtolower(substr($buff, 0, 6)) == "insert")){
+										if(($itbl != "") && (strtolower(substr($buff, 0, 6)) === "insert")){
 											if(defined('OBJECT_X_TABLE') && substr(strtolower($itbl), 0, 10) == strtolower(OBJECT_X_TABLE)){
 												if(preg_match("|VALUES[[:space:]]*\([[:space:]]*\'?0\'?[[:space:]]*,[[:space:]]*\'?0\'?[[:space:]]*,|i", $buff)){
 													$this->dummy[] = $buff;
@@ -822,10 +822,10 @@ abstract class we_backup_base{
 		$br = 0;
 		$run = 0;
 		for($i = 0; $i < $len; $i++){
-			if($q[$i] == "("){
+			if($q[$i] === "("){
 				$run = 1;
 				$br++;
-			} else if($q[$i] == ")"){
+			} else if($q[$i] === ")"){
 				$br--;
 			} else if($br > 0){
 				$fields.=$q[$i];
@@ -853,7 +853,7 @@ abstract class we_backup_base{
 			$this->backup_db->query('SHOW COLUMNS FROM ' . $this->backup_db->escape($tab));
 			while($this->backup_db->next_record()){
 				if(!in_array(strtolower($this->backup_db->f("Field")), $fnames)){
-					$fupdate[] = "ALTER TABLE " . $this->backup_db->escape($tab) . ' ADD ' . $this->backup_db->f("Field") . ' ' . $this->backup_db->f("Type") . " DEFAULT '" . $this->backup_db->f("Default") . "'" . ($this->backup_db->f("Null") == "YES" ? " NOT NULL" : '');
+					$fupdate[] = "ALTER TABLE " . $this->backup_db->escape($tab) . ' ADD ' . $this->backup_db->f("Field") . ' ' . $this->backup_db->f("Type") . " DEFAULT '" . $this->backup_db->f("Default") . "'" . ($this->backup_db->f("Null") === "YES" ? " NOT NULL" : '');
 				}
 			}
 		}
@@ -895,7 +895,7 @@ abstract class we_backup_base{
 	function fixTableName($tabname){
 		$tabname = strtolower($tabname);
 
-		if(substr($tabname, 0, 10) == "tblobject_" && defined('OBJECT_X_TABLE')){
+		if(substr($tabname, 0, 10) === "tblobject_" && defined('OBJECT_X_TABLE')){
 			return str_ireplace("tblobject_", OBJECT_X_TABLE, $tabname);
 		}
 

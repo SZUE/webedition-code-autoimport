@@ -434,7 +434,7 @@ class we_customer_EIWizard{
 							we_html_element::htmlHidden(array("name" => "xml_from", "value" => $xml_from)) .
 							we_html_element::htmlHidden(array("name" => "xml_to", "value" => $xml_to)) .
 							we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
-							'<input type="hidden" name="csv_enclose" value=' . ($csv_enclose == '"' ? "'\"'" : "\"$csv_enclose\"") . ' />' .
+							'<input type="hidden" name="csv_enclose" value=' . ($csv_enclose === '"' ? "'\"'" : "\"$csv_enclose\"") . ' />' .
 							we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
 							we_html_element::htmlHidden(array("name" => "the_charset", "value" => $the_charset)) .
 							we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames)) .
@@ -718,8 +718,8 @@ class we_customer_EIWizard{
 					$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
 					//$charset = $GLOBALS['WE_BACKENDCHARSET'];
 					//$GLOBALS['weDefaultCharset'] = get_value("default_charset");
-					$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, ($charset == 'ASCII' ? 'ISO8859-1' : $charset), 255, '', 'text', 100);
-					$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, ($charset == 'ASCII' ? 'ISO8859-1' : $charset), false, array("onchange" => "document.forms[0].elements['the_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 160, "defaultfont", false);
+					$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, ($charset === 'ASCII' ? 'ISO8859-1' : $charset), 255, '', 'text', 100);
+					$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, ($charset === 'ASCII' ? 'ISO8859-1' : $charset), false, array("onchange" => "document.forms[0].elements['the_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 160, "defaultfont", false);
 					$import_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
 
 
@@ -738,7 +738,7 @@ class we_customer_EIWizard{
 				case we_import_functions::TYPE_GENERIC_XML:
 					//invoke parser
 					$xp = new we_xml_parser($filesource);
-					$xmlWellFormed = ($xp->parseError == "") ? true : false;
+					$xmlWellFormed = ($xp->parseError === "");
 
 					if($xmlWellFormed){
 						// Node-set with paths to the child nodes.
@@ -894,9 +894,9 @@ class we_customer_EIWizard{
 		}
 
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 1);
-		$table->setColContent(0, 0, we_html_forms::radiobutton("rename", ($same == "rename"), "same", g_l('modules_customer', '[same_rename]'), true, "defaultfont", ""));
-		$table->setColContent(1, 0, we_html_forms::radiobutton("overwrite", ($same == "overwrite"), "same", g_l('modules_customer', '[same_overwrite]'), true, "defaultfont", ""));
-		$table->setColContent(2, 0, we_html_forms::radiobutton("skip", ($same == "skip"), "same", g_l('modules_customer', '[same_skip]'), true, "defaultfont", ""));
+		$table->setColContent(0, 0, we_html_forms::radiobutton("rename", ($same === "rename"), "same", g_l('modules_customer', '[same_rename]'), true, "defaultfont", ""));
+		$table->setColContent(1, 0, we_html_forms::radiobutton("overwrite", ($same === "overwrite"), "same", g_l('modules_customer', '[same_overwrite]'), true, "defaultfont", ""));
+		$table->setColContent(2, 0, we_html_forms::radiobutton("skip", ($same === "skip"), "same", g_l('modules_customer', '[same_skip]'), true, "defaultfont", ""));
 
 		$parts = array(
 			array(
@@ -1226,7 +1226,7 @@ class we_customer_EIWizard{
 
 				if($file_format == self::TYPE_CSV){
 					$hiddens.=we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
-						($csv_enclose == '"' ?
+						($csv_enclose === '"' ?
 							"<input type='hidden' name='csv_enclose' value='" . $csv_enclose . "' />" :
 							we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose))
 						) .
@@ -1267,7 +1267,7 @@ class we_customer_EIWizard{
 					$csv_fieldnames = we_base_request::_(we_base_request::STRING, "csv_fieldnames", '');
 
 					$hiddens.=we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
-						($csv_enclose == '"' ?
+						($csv_enclose === '"' ?
 							"<input type='hidden' name='csv_enclose' value='" . $csv_enclose . "' />" :
 							we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose))
 						) .
@@ -1691,8 +1691,8 @@ class we_customer_EIWizard{
 	}
 
 	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = 0, $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
-		if($Pathvalue == ""){
-			$Pathvalue = f("SELECT Path FROM " . $this->db->escape($table) . " WHERE ID=" . intval($IDValue) . ";", "Path", $this->db);
+		if(!$Pathvalue){
+			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), "Path", $this->db);
 		}
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");

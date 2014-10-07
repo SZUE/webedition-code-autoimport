@@ -70,7 +70,7 @@ class we_customer_listview extends we_listview_base{
 		}
 
 		$orderstring = $extra = '';
-		if($this->order == 'random()'){
+		if($this->order === 'random()'){
 			$extra = ', RAND() as RANDOM';
 			$orderstring = ' ORDER BY RANDOM';
 		} else if($this->order != ''){

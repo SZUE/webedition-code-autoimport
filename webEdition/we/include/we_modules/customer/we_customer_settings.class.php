@@ -288,7 +288,7 @@ class we_customer_settings{
 			foreach($this->FieldAdds as $k => $v){
 				if(in_array($k, $customer->persistent_slots) && isset($v['default'])){
 					$value = $v['default'];
-					if($this->getFieldType($k) == 'select'){
+					if($this->getFieldType($k) === 'select'){
 						$tmp = explode(',', $value);
 						$value = $tmp[0];
 					}

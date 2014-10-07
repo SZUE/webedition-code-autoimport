@@ -397,7 +397,7 @@ class we_glossary_glossary extends weModelBase{
 	}
 
 	function addToException($language, $entry = ""){
-		if(trim($entry) == ''){
+		if(trim($entry) === ''){
 			return true;
 		}
 

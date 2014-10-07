@@ -36,13 +36,13 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[folder_settings]'));
 <script type="text/javascript"><!--
 <?php
 $mode = we_base_request::_(we_base_request::STRING, 'mode');
-if(we_base_request::_(we_base_request::STRING, 'mcmd') == 'save_folder_settings'){
+if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'save_folder_settings'){
 	$foldername = we_base_request::_(we_base_request::FILE, 'folder_name');
 	$parentfolder = we_base_request::_(we_base_request::INT, 'parent_folder');
 	$types = we_base_request::_(we_base_request::STRING, 'foldertypes');
-	if($mode == 'new'){
+	if($mode === 'new'){
 		$res = $messaging->create_folder($foldername, $parentfolder, $types);
-	} elseif($mode == 'edit'){
+	} elseif($mode === 'edit'){
 		$res = $messaging->modify_folder(we_base_request::_(we_base_request::INT, 'fid'), $foldername, $parentfolder);
 	}
 	$ID = array_shift($res);
@@ -60,7 +60,7 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') == 'save_folder_settings'
 		<?php
 		exit;
 	} else {
-		print we_message_reporting::getShowMessageCall($res[0], we_message_reporting::WE_MESSAGE_ERROR);
+		echo we_message_reporting::getShowMessageCall($res[0], we_message_reporting::WE_MESSAGE_ERROR);
 	}
 }
 ?>

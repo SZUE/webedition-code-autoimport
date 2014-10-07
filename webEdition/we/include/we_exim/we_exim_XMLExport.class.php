@@ -65,7 +65,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 
 		$classname = (isset($doc->Pseudo) ? $doc->Pseudo : $doc->ClassName);
 
-		if($classname == "weBinary" && !is_numeric($id)){
+		if($classname === "weBinary" && !is_numeric($id)){
 			$doc->Path = $doc->ID;
 			$doc->ID = 0;
 		}
@@ -90,7 +90,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 
 		fwrite($fh, we_backup_backup::backupMarker . "\n");
 
-		if($classname == "we_backup_tableItem" && $export_binary &&
+		if($classname === "we_backup_tableItem" && $export_binary &&
 			strtolower($doc->table) == strtolower(FILE_TABLE) &&
 			($doc->ContentType == we_base_ContentTypes::IMAGE || stripos($doc->ContentType, "application/") !== false)){
 			$bin = we_exim_contentProvider::getInstance("weBinary", $doc->ID);

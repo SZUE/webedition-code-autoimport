@@ -26,6 +26,7 @@
 
 class we_messaging_message extends we_messaging_proto{
 	/* Flag which is set when the file is not new */
+
 	var $selected_message = array();
 	var $selected_set = array();
 	var $search_fields = array('m.headerSubject', 'm.headerFrom', 'm.MessageText');
@@ -113,18 +114,18 @@ class we_messaging_message extends we_messaging_proto{
 			}
 
 			$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
-					'ParentID' => intval($target_fid),
-					'UserID' => $this->userid,
-					'msg_type' => $tmp['msg_type'],
-					'obj_type' => $tmp['obj_type'],
-					'headerDate' => $tmp['headerDate'],
-					'headerSubject' => $tmp['headerSubject'],
-					'headerUserID' => $tmp['headerUserID'],
-					'headerFrom' => $tmp['headerFrom'],
-					'Priority' => $tmp['Priority'],
-					'MessageText' => $tmp['MessageText'],
-					'seenStatus' => $tmp['seenStatus'],
-					'tag' => $tmp['tag'],
+						'ParentID' => intval($target_fid),
+						'UserID' => $this->userid,
+						'msg_type' => $tmp['msg_type'],
+						'obj_type' => $tmp['obj_type'],
+						'headerDate' => $tmp['headerDate'],
+						'headerSubject' => $tmp['headerSubject'],
+						'headerUserID' => $tmp['headerUserID'],
+						'headerFrom' => $tmp['headerFrom'],
+						'Priority' => $tmp['Priority'],
+						'MessageText' => $tmp['MessageText'],
+						'seenStatus' => $tmp['seenStatus'],
+						'tag' => $tmp['tag'],
 			)));
 
 			//$pending_ids[] = $this->DB_WE->getInsertId();
@@ -150,14 +151,14 @@ class we_messaging_message extends we_messaging_proto{
 			}
 
 			/* FIXME: replace this by default_folders[inbox] or something */
-			$in_folder = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid), '', $this->DB_WE);
-			if($in_folder == ''){
+			$in_folder = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type=' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid), '', $this->DB_WE);
+			if(!$in_folder){
 				/* Create default Folders for target user */
 				if(we_messaging_messaging::createFolders($userid) == 1){
-					$this->DB_WE->query('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid));
+					$this->DB_WE->query('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type=' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($userid));
 					$this->DB_WE->next_record();
 					$in_folder = $this->DB_WE->f('ID');
-					if(!isset($in_folder) || $in_folder == ''){
+					if(!isset($in_folder) || !$in_folder){
 						$results['err'][] = g_l('modules_messaging', '[no_inbox_folder]');
 						$results['failed'][] = $rcpt;
 						continue;
@@ -222,7 +223,7 @@ class we_messaging_message extends we_messaging_proto{
 		$this->selected_set = array();
 		$this->DB_WE->query('SELECT m.ID, m.ParentID, m.headerDate, m.headerSubject, m.headerUserID, m.Priority, m.seenStatus, u.username
 		FROM ' . $this->DB_WE->escape($this->table) . ' AS m, ' . USER_TABLE . ' AS u
-		WHERE ((m.msg_type = ' . intval($this->sql_class_nr) . ' AND m.obj_type = ' . we_messaging_proto::MESSAGE_NR . ') ' . ($sfield_cond == '' ? '' : " AND ($sfield_cond)") . ($folders_cond ? " AND (m.ParentID=$folders_cond)" : '') . ( isset($message_ids_cond) && $message_ids_cond ? " AND (m.ID=$message_ids_cond)" : '') . ") AND m.UserID=" . $this->userid . " AND m.headerUserID=u.ID
+		WHERE ((m.msg_type = ' . intval($this->sql_class_nr) . ' AND m.obj_type = ' . we_messaging_proto::MESSAGE_NR . ') ' . ($sfield_cond ? " AND ($sfield_cond)" : '') . ($folders_cond ? " AND (m.ParentID=$folders_cond)" : '') . ( isset($message_ids_cond) && $message_ids_cond ? " AND (m.ID=$message_ids_cond)" : '') . ") AND m.UserID=" . $this->userid . " AND m.headerUserID=u.ID
 		ORDER BY " . $this->sortfield . ' ' . $this->so2sqlso[$this->sortorder]);
 
 		$i = isset($criteria['start_id']) ? $criteria['start_id'] + 1 : 0;

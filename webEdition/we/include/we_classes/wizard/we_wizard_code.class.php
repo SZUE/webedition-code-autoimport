@@ -75,7 +75,7 @@ class we_wizard_code{
 		while(false !== ($_entry = $_dir->read())){
 
 			// ignore files . and ..
-			if($_entry == "." || $_entry == ".."){
+			if($_entry === "." || $_entry === ".."){
 				// ignore these
 				// get the snippets by file if extension is xml
 			} elseif(!is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && substr_compare($_entry, ".xml", -4, 4, true) == 0){
@@ -139,17 +139,17 @@ class we_wizard_code{
 
 		$_select = "<select id=\"codesnippet_" . $type . "\" name=\"codesnippet_" . $type . "\"  size=\"7\" style=\"width:250px; height: 100px; display: none;\" ondblclick=\"YUIdoAjax(this.value);\" onchange=\"weButton.enable('btn_direction_right_applyCode')\">\n";
 		foreach($_options as $option){
-			if($option['type'] == 'optgroup' && count($option['value']) > 0){
+			if($option['type'] === 'optgroup' && count($option['value']) > 0){
 				$_select .= "<optgroup label=\"" . $option['name'] . "\">\n";
 
 				foreach($option['value'] as $optgroupoption){
 
-					if($optgroupoption['type'] == 'option'){
+					if($optgroupoption['type'] === 'option'){
 						$_select .= "<option value=\"" . $optgroupoption['value'] . "\">" . $optgroupoption['name'] . "</option>\n";
 					}
 				}
 				$_select .= "</optgroup>\n";
-			} elseif($option['type'] == 'option'){
+			} elseif($option['type'] === 'option'){
 				$_select .= "<option value=\"" . $option['value'] . "\">" . $option['name'] . "</option>\n";
 			}
 		}

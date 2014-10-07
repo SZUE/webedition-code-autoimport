@@ -267,17 +267,17 @@ class we_navigation_item{
 					(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] ?
 						$this->attributes[$fieldname] :
 						''));
-			return ($fieldname == 'title' ? oldHtmlspecialchars($val) : $val);
+			return ($fieldname === 'title' ? oldHtmlspecialchars($val) : $val);
 		}
 
 		// complete
 		if($_compl){
 			unset($attribs['complete']);
-			if((($_compl == 'link' && isset($this->text)) || ($_compl == 'image' && isset($this->icon) && $this->icon != '/'))){
+			if((($_compl === 'link' && isset($this->text)) || ($_compl === 'image' && isset($this->icon) && $this->icon != '/'))){
 				unset($attribs['complete']);
 				$attribs['attributes'] = $_compl;
 				$attribs = $this->getNavigationFieldAttributes($attribs);
-				return ($_compl == 'image' ?
+				return ($_compl === 'image' ?
 						getHtmlTag('img', $attribs) :
 						(isset($attribs['href']) && !empty($attribs['href']) ? getHtmlTag('a', $attribs, $this->text) : $this->text));
 			}
@@ -289,7 +289,7 @@ class we_navigation_item{
 		if(isset($attribs['attributes'])){
 			$_attributes = $this->getNavigationFieldAttributes($attribs);
 			foreach($_attributes as $key => $value){
-				$code .= ' ' . ($key == 'link_attribute' ? $value : $key . '="' . $value . '"');
+				$code .= ' ' . ($key === 'link_attribute' ? $value : $key . '="' . $value . '"');
 			}
 		}
 		return $code;
@@ -320,11 +320,11 @@ class we_navigation_item{
 						);
 						foreach($useFields as $field){
 							if(isset($this->$field) && $this->$field != ''){
-								$attribs[$field] = ($field == 'title' ?
+								$attribs[$field] = ($field === 'title' ?
 										oldHtmlspecialchars($this->$field) :
 										$this->$field);
 							} elseif(isset($this->attributes[$field]) && $this->attributes[$field] != ''){
-								$attribs[$field] = ($field == 'link_attribute' ? // Bug #3741
+								$attribs[$field] = ($field === 'link_attribute' ? // Bug #3741
 										$this->attributes[$field] :
 										oldHtmlspecialchars($this->attributes[$field]));
 							}

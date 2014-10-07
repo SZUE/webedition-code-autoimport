@@ -144,7 +144,7 @@ class we_xml_rss extends XML_Parser{
 	 *                default encoding (ISO-8859-1)
 	 * @return void
 	 */
-	function we_xml_rss($handle = '', $srcenc = null, $tgtenc = null){
+	function __construct($handle = '', $srcenc = null, $tgtenc = null){
 		/* if ($srcenc === null && $tgtenc === null) {
 		  parent::__construct();
 		  } else { */
@@ -174,7 +174,7 @@ class we_xml_rss extends XML_Parser{
 	 * @return void
 	 */
 	function startHandler($parser, $element, $attribs){
-		if(substr($element, 0, 4) == "RSS:"){
+		if(substr($element, 0, 4) === "RSS:"){
 			$element = substr($element, 4);
 		}
 
@@ -213,7 +213,7 @@ class we_xml_rss extends XML_Parser{
 	 * @return void
 	 */
 	function endHandler($parser, $element){
-		if(substr($element, 0, 4) == "RSS:"){
+		if(substr($element, 0, 4) === "RSS:"){
 			$element = substr($element, 4);
 		}
 
@@ -224,28 +224,29 @@ class we_xml_rss extends XML_Parser{
 			$this->struct[] = array_merge(array('type' => strtolower($element)), $this->last);
 		}
 
-		if($element == 'ITEM'){
-			$this->items[] = $this->item;
-			$this->item = '';
-		}
+		switch($element){
+			case 'ITEM':
+				$this->items[] = $this->item;
+				$this->item = '';
+				break;
+			case 'IMAGE':
+				$this->images[] = $this->image;
+				$this->image = '';
+				break;
 
-		if($element == 'IMAGE'){
-			$this->images[] = $this->image;
-			$this->image = '';
-		}
+			case 'TEXTINPUT':
+				$this->textinputs = $this->textinput;
+				$this->textinput = '';
+				break;
 
-		if($element == 'TEXTINPUT'){
-			$this->textinputs = $this->textinput;
-			$this->textinput = '';
-		}
+			case 'ENCLOSURE':
+				if(!isset($this->item['enclosures'])){
+					$this->item['enclosures'] = array();
+				}
 
-		if($element == 'ENCLOSURE'){
-			if(!isset($this->item['enclosures'])){
-				$this->item['enclosures'] = array();
-			}
-
-			$this->item['enclosures'][] = array_change_key_case($this->attribs, CASE_LOWER);
-			$this->attribs = array();
+				$this->item['enclosures'][] = array_change_key_case($this->attribs, CASE_LOWER);
+				$this->attribs = array();
+				break;
 		}
 
 		$this->activeTag = '';
@@ -268,7 +269,7 @@ class we_xml_rss extends XML_Parser{
 			$var = $this->{$tagName . 'Tags'};
 
 			if(in_array($this->activeTag, $var) ||
-				in_array($this->activeTag, $this->moduleTags)){
+					in_array($this->activeTag, $this->moduleTags)){
 				$this->_add($tagName, strtolower($this->activeTag), $cdata);
 			}
 		}

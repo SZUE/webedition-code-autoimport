@@ -72,7 +72,7 @@ class we_backup_XMLParser{
 
 		foreach($this->Nodes as $k => $v){
 
-			if($v['type'] == 'open' || $v['type'] == 'complete'){
+			if($v['type'] === 'open' || $v['type'] === 'complete'){
 
 				$new = array();
 
@@ -96,7 +96,7 @@ class we_backup_XMLParser{
 				$count++;
 			}
 
-			if($v['type'] == 'close'){
+			if($v['type'] === 'close'){
 				array_pop($level);
 			}
 		}
@@ -120,7 +120,7 @@ class we_backup_XMLParser{
 
 		foreach($this->Nodes as $k => $v){
 
-			if($v['type'] == 'open' || $v['type'] == 'complete'){
+			if($v['type'] === 'open' || $v['type'] === 'complete'){
 
 				$new = array();
 
@@ -157,7 +157,7 @@ class we_backup_XMLParser{
 				//$_xpaths[$_xpath] = $count;
 				$_xpaths[$count] = $_xpath;
 
-				if($v['type'] == 'open'){
+				if($v['type'] === 'open'){
 					$_parent_xpaths[$v['level']] = $_xpath;
 				}
 				// xpath ends -----------------------------
@@ -169,7 +169,7 @@ class we_backup_XMLParser{
 				$count++;
 			}
 
-			if($v['type'] == 'close'){
+			if($v['type'] === 'close'){
 				array_pop($level);
 				// xpath --------------
 				array_pop($_parent_xpaths);

@@ -167,7 +167,7 @@ class we_exim_contentProvider{
 	}
 
 	static function needCoding($classname, $prop, $data){
-		if($prop == 'schedArr'){
+		if($prop === 'schedArr'){
 			return true;
 		}
 
@@ -211,7 +211,7 @@ class we_exim_contentProvider{
 		if(isset($nocoding[$classname])){
 			return in_array($prop, $nocoding[$classname]);
 		}
-		if(in_array($wedocClass[0], $nocodingDocClasses) && $objectname == 'data' && isset($nocoding2[$classname])){
+		if(in_array($wedocClass[0], $nocodingDocClasses) && $objectname === 'data' && isset($nocoding2[$classname])){
 			return in_array($prop, $nocoding2[$classname]);
 		}
 		return false;
@@ -225,7 +225,7 @@ class we_exim_contentProvider{
 		if(!isset($object->$prop)){
 			return false;
 		}
-		if($prop == 'schedArr' || is_array($object->$prop)){
+		if($prop === 'schedArr' || is_array($object->$prop)){
 			return true;
 		}
 		$serialize = array(
@@ -233,7 +233,7 @@ class we_exim_contentProvider{
 			'we_objectFile' => array('DefArray', 'schedArr')
 		);
 
-		if($prop == 'Dat' && $classname == 'we_element' && defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $object->Name == WE_SHOP_VARIANTS_ELEMENT_NAME){
+		if($prop === 'Dat' && $classname === 'we_element' && defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $object->Name == WE_SHOP_VARIANTS_ELEMENT_NAME){
 			// exception for shop - handling arrays in the content
 			return true;
 		}
@@ -401,7 +401,7 @@ class we_exim_contentProvider{
 
 
 		foreach($object->persistent_slots as $v){
-			if($v == 'elements' || $v == 'usedElementNames'){
+			if($v === 'elements' || $v === 'usedElementNames'){
 				continue;
 			}
 			if(self::needSerialize($object, $classname, $v)){
