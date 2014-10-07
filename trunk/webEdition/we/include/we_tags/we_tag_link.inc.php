@@ -54,7 +54,7 @@ function we_tag_link($attribs, $content){
 
 	$attribs = removeAttribs($attribs, array('text', 'id', 'imageid', 'to', 'nameto'));
 	$data = $GLOBALS['we_doc']->getElement($name);
-	$link = $data && $data{0} == 'a' ? unserialize($GLOBALS['we_doc']->getElement($name)) : array();
+	$link = $data && $data{0} === 'a' ? unserialize($GLOBALS['we_doc']->getElement($name)) : array();
 
 	if(!$GLOBALS['we_editmode']){
 		return $GLOBALS['we_doc']->getField($attribs, 'link');

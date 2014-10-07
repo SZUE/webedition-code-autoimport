@@ -620,7 +620,7 @@ function we_cmd(){
 					}
 
 					$id = $user_object->ID;
-					if($user_object->username == '' && $user_object->Type != we_users_user::TYPE_ALIAS){
+					if(!$user_object->username && $user_object->Type != we_users_user::TYPE_ALIAS){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[username_empty]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}

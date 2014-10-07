@@ -119,7 +119,7 @@ function queryString(what,id,o){
 	function printFramesetJSsetDir(){
 		return we_html_element::jsElement('
 function setDir(id){' .
-				($this->filter == "user" ? '
+				($this->filter === "user" ? '
 	currentDir = id;
 	top.fscmd.location.replace(top.queryString(' . we_selector_file::CMD . ',id));' : '
 	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',id));'
@@ -159,7 +159,7 @@ top.parentID = "' . $this->values["ParentID"] . '";';
 function selectFile(id){
 	if(id){
 		e=top.getEntry(id);' .
-				($this->filter == "user" ? '
+				($this->filter === "user" ? '
 			if(!e.isFolder){' : ''
 				) . '
 				if( top.fsfooter.document.we_form.fname.value != e.text &&
@@ -174,7 +174,7 @@ function selectFile(id){
 				top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
 				currentPath = e.path;
 				currentID = id;' .
-				($this->filter == "user" ? '
+				($this->filter === "user" ? '
 			}' : ''
 				) . '
 

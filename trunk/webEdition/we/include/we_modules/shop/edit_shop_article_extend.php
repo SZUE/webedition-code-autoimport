@@ -141,7 +141,7 @@ if(empty($classid)){
 if(!isset($nrOfPage)){
 	$nrOfPage = isset($feldnamen[4]) ? $feldnamen[4] : 20;
 }
-if($nrOfPage == "default"){
+if($nrOfPage === "default"){
 	$nrOfPage = 20;
 }
 if(!isset($val)){
@@ -161,9 +161,9 @@ if(isset($daten)){
 
 	/*	 * ************ some initialisation  ************** */
 	$mwst = (!empty($feldnamen[1])) ? (($feldnamen[1] / 100) + 1) : "";
-	$da = ( $GLOBALS["WE_LANGUAGE"] == "Deutsch" ) ? "%d.%m.%y" : "%m/%d/%y";
-	$dateform = ( $GLOBALS["WE_LANGUAGE"] == "Deutsch" ) ? "00.00.00" : "00/00/00";
-	$datereg = ( $GLOBALS["WE_LANGUAGE"] == "Deutsch" ) ? "/\d\d\.\d\d\.\d\d/" : "/\d\d\\/\d\d\\/\d\d/";
+	$da = ( $GLOBALS["WE_LANGUAGE"] === "Deutsch" ) ? "%d.%m.%y" : "%m/%d/%y";
+	$dateform = ( $GLOBALS["WE_LANGUAGE"] === "Deutsch" ) ? "00.00.00" : "00/00/00";
+	$datereg = ( $GLOBALS["WE_LANGUAGE"] === "Deutsch" ) ? "/\d\d\.\d\d\.\d\d/" : "/\d\d\\/\d\d\\/\d\d/";
 	if(!isset($_REQUEST['sort'])){
 		$_REQUEST['sort'] = "";
 	}

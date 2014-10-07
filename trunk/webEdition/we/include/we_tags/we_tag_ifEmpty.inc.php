@@ -43,7 +43,7 @@ function we_isNotEmpty($attribs){
 					return true;
 				}
 				$hreftmp = trim(we_document::getHrefByArray($hreftmp));
-				if(substr($hreftmp, 0, 1) == '/'){
+				if(substr($hreftmp, 0, 1) === '/'){
 					return (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp));
 				}
 				return $hreftmp ? true : false;
@@ -54,13 +54,13 @@ function we_isNotEmpty($attribs){
 				return (bool) ($intID > 0) && strlen(id_to_path(array($intID)));
 			}
 			$hreftmp = $doc->getElement($match);
-			if(substr($hreftmp, 0, 1) == '/'){
+			if(substr($hreftmp, 0, 1) === '/'){
 				return (bool) (file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp));
 			}
 
 		default :
 			//   #3938 added this - some php version crashed, when unserialize started with a ?,?,?
-			if((substr($doc->getElement($match), 0, 2) == 'a:')){ //  only unserialize, when $match cluld be an array
+			if((substr($doc->getElement($match), 0, 2) === 'a:')){ //  only unserialize, when $match cluld be an array
 				// Added @-operator in front of the unserialze function because there
 				// were some PHP notices that had no effect on the output of the function
 				// remark holeg: when it is a serialized array, the function looks if it is not empty

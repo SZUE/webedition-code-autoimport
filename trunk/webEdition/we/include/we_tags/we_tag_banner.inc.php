@@ -31,8 +31,8 @@ function we_tag_banner($attribs, $content){
 	$paths = weTag_getAttribute("paths", $attribs);
 	$type = weTag_getAttribute("type", $attribs, 'js');
 	$target = weTag_getAttribute("target", $attribs);
-	$width = weTag_getAttribute("width", $attribs, ($type == "pixel") ? "1" : "");
-	$height = weTag_getAttribute("height", $attribs, ($type == "pixel") ? "1" : "");
+	$width = weTag_getAttribute("width", $attribs, ($type === "pixel") ? "1" : "");
+	$height = weTag_getAttribute("height", $attribs, ($type === "pixel") ? "1" : "");
 	$link = weTag_getAttribute("link", $attribs, true, true);
 	$page = weTag_getAttribute("page", $attribs);
 	$bannerclick = weTag_getAttribute("clickscript", $attribs, WEBEDITION_DIR . "bannerclick.php");
@@ -41,7 +41,7 @@ function we_tag_banner($attribs, $content){
 
 	$nocount = $GLOBALS["WE_MAIN_DOC"]->InWebEdition;
 
-	if($type == "pixel"){
+	if($type === "pixel"){
 
 		$newAttribs['src'] = $getbanner . '?' .
 			http_build_query(array(
@@ -107,7 +107,7 @@ function we_tag_banner($attribs, $content){
 	}
 
 
-	if($type == "iframe"){
+	if($type === "iframe"){
 		// stuff for iframe  and ilayer
 		$newAttribs = removeAttribs($attribs, array('name', 'paths', 'type', 'target', 'link', 'clickscript', 'getscript', 'page'));
 		$newAttribs['xml'] = $xml ? "true" : "false";
@@ -144,7 +144,7 @@ function we_tag_banner($attribs, $content){
 	}
 	return ($GLOBALS["WE_MAIN_DOC"]->IsDynamic ?
 			we_banner_banner::getBannerCode($GLOBALS["WE_MAIN_DOC"]->ID, $paths, $target, $width, $height, $GLOBALS["WE_MAIN_DOC"]->DocType, $GLOBALS["WE_MAIN_DOC"]->Category, $bannername, $link, "", $bannerclick, $getbanner, "", $page, $GLOBALS["WE_MAIN_DOC"]->InWebEdition, $xml) :
-			($type == "cookie" ?
+			($type === "cookie" ?
 				$noscript :
 				we_html_element::jsElement('r = Math.random();document.write ("<" + "script type=\"text/javascript\"src=\"' . $getbanner . '?' . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . 'r="+r+"&amp;link=' . ($link ? 1 : 0) . '&amp;bannername=' . rawurlencode($bannername) . '&amp;type=js' . ($page ? ('&amp;page=' . rawurlencode($page)) : ('&amp;did=' . $GLOBALS["WE_MAIN_DOC"]->ID . '&amp;paths=' . rawurlencode($paths))) . '&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($bannerclick) . '&amp;height=' . rawurlencode($height) . '&amp;width=' . rawurlencode($width) . '"+(document.referer ? ("&amp;referer="+encodeURI(document.referer)) : "")+"\"><" + "/script>");') . '<noscript>' . $noscript . '</noscript>'
 			)

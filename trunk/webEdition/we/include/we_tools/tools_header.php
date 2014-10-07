@@ -34,7 +34,7 @@ $tool = we_base_request::_(we_base_request::STRING, 'tool');
 
 foreach($_menuItems as $_menuItem){
 	$text = $_menuItem["text"];
-	if($_menuItem["name"] == 'toolfactory'){
+	if($_menuItem["name"] === 'toolfactory'){
 		if(permissionhandler::hasPerm($_menuItem['startpermission'])){
 			$we_tabs->addTab(new we_tab("#", $text, ($tool == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
 		}

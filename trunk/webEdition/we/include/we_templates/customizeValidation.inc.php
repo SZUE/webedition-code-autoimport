@@ -111,7 +111,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 
 	//  get all custom services from the database - new service select it
 	$services = validation::getValidationServices('edit');
-	if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1) == 'newService' && $selectedService){
+	if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1) === 'newService' && $selectedService){
 		$services[] = $selectedService;
 	}
 

@@ -32,7 +32,7 @@ function we_tag_ifField($attribs){
 	$type = weTag_getAttribute('type', $attribs);
 
 	//Bug #4815
-	if($type == 'float' || $type == 'int'){
+	if($type === 'float' || $type === 'int'){
 		$attribs['type'] = 'text';
 	}
 

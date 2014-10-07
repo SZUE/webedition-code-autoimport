@@ -73,7 +73,7 @@ if($fields['charset'] != DEFAULT_CHARSET && $_charsets && is_array($_charsets)){
 
 we_html_tools::headerCtCharset('text/html', $fields['charset']);
 
-if(!($fields['isInFrontend'] && $fields['empty'] == 'frontend')){
+if(!($fields['isInFrontend'] && $fields['empty'] === 'frontend')){
 	we_html_tools::protect();
 }
 

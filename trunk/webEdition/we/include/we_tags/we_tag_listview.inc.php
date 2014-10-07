@@ -39,7 +39,7 @@ function we_parse_tag_listview($attribs, $content, array $arr){
 			if(defined('OBJECT_TABLE')){
 				$predefinedSQL = weTag_getParserAttribute('predefinedSQL', $arr, '');
 
-				if(($foo = attributFehltError($arr, 'classid', __FUNCTION__)) && $predefinedSQL == ''){
+				if(($foo = attributFehltError($arr, 'classid', __FUNCTION__)) && !$predefinedSQL){
 					return $foo;
 				}
 			}
@@ -132,7 +132,7 @@ function we_tag_listview($attribs){
 	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 
-	if($we_lv_languages == 'self' || $we_lv_languages == 'top'){
+	if($we_lv_languages === 'self' || $we_lv_languages === 'top'){
 		$we_lv_langguagesdoc = we_getDocForTag($we_lv_languages);
 		$we_lv_languages = $we_lv_langguagesdoc->Language;
 		unset($we_lv_langguagesdoc);
@@ -143,7 +143,7 @@ function we_tag_listview($attribs){
 	$we_lv_date = we_base_request::_(we_base_request::RAW, 'we_lv_date_' . $name, ($date ? $date : date('Y-m-d')));
 	$we_lv_weekstart = we_base_request::_(we_base_request::RAW, 'we_lv_weekstart_' . $name, $weekstart);
 
-	if($we_lv_cats == 'we_doc'){
+	if($we_lv_cats === 'we_doc'){
 		$we_lv_cats = we_category::we_getCatsFromDoc($GLOBALS['we_doc'], ',', true, $GLOBALS['DB_WE']);
 	}
 	$we_offset = intval($offset);
@@ -180,11 +180,11 @@ function we_tag_listview($attribs){
 					$record = $GLOBALS['lv'] instanceof we_object_listview ? $GLOBALS['lv']->getDBRecord() : $GLOBALS['lv']->getObject()->getDBRecord();
 					$we_lv_pageID = $record['OF_ID'];
 					$we_lv_linktype = 'tblObjectFile';
-					$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' ? $record['OF_Language'] : ($we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);
+					$we_lv_pagelanguage = $we_lv_pagelanguage === 'self' ? $record['OF_Language'] : ($we_lv_pagelanguage === 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);
 					$we_lv_ownlanguage = $record['OF_Language'];
 					break;
 				default:
-					$we_lv_pagelanguage = $we_lv_pagelanguage == 'self' || $we_lv_pagelanguage == 'top' ? $we_lv_ownlanguage : we_getDocForTag($docAttr)->Language;
+					$we_lv_pagelanguage = $we_lv_pagelanguage === 'self' || $we_lv_pagelanguage === 'top' ? $we_lv_ownlanguage : we_getDocForTag($docAttr)->Language;
 
 					if($we_lv_langguagesdoc instanceof we_objectFile){
 						$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;

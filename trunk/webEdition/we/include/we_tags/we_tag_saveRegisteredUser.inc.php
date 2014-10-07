@@ -23,7 +23,7 @@ function we_tag_saveRegisteredUser($attribs){
 	$userempty = weTag_getAttribute('userempty', $attribs);
 	$passempty = weTag_getAttribute('passempty', $attribs);
 	$changesessiondata = weTag_getAttribute('changesessiondata', $attribs, true, true);
-	$default_register = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"') == 'true';
+	$default_register = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"') === 'true';
 	$registerallowed = (isset($attribs['register']) ? weTag_getAttribute('register', $attribs, $default_register, true) : $default_register);
 	$protected = makeArrayFromCSV(weTag_getAttribute('protected', $attribs));
 	$allowed = makeArrayFromCSV(weTag_getAttribute('allowed', $attribs));
@@ -275,10 +275,10 @@ function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
 			default:
 				if(($protected && in_array($name, $protected)) ||
 					($allowed && !in_array($name, $allowed)) ||
-					($name == 'Password' && $val == we_customer_customer::NOPWD_CHANGE)){
+					($name === 'Password' && $val == we_customer_customer::NOPWD_CHANGE)){
 					continue;
 				}
-				$set[$name] = ($name == 'Password' ?
+				$set[$name] = ($name === 'Password' ?
 						we_customer_customer::cryptPassword($val) :
 						we_base_util::rmPhp($val));
 				break;

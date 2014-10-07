@@ -31,7 +31,7 @@ function we_tag_ifDoctype($attribs){
 
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 
-	if($docAttr == 'listview' && isset($GLOBALS['lv'])){
+	if($docAttr === 'listview' && isset($GLOBALS['lv'])){
 		$doctype = $GLOBALS['lv']->f('wedoc_DocType');
 	} else {
 		$doc = we_getDocForTag($docAttr);

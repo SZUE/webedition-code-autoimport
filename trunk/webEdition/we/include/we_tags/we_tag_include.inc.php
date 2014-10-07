@@ -24,10 +24,10 @@
  */
 function we_parse_tag_include($attribs, $c, array $attr){
 	$type = weTag_getParserAttribute('type', $attr, 'document');
-	if($type == 'template'){
+	if($type === 'template'){
 		$attr['_parsed'] = 'true';
 	}
-	return ($type != 'template' ?
+	return ($type !== 'template' ?
 			'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' : //include documents
 			//(($path ?
 			'<?php if(($we_inc=' . we_tag_tagParser::printTag('include', $attr) . ')){include' . (weTag_getParserAttribute('once', $attr, false, true) ? '_once' : '') . '($we_inc);}; ?>'//include templates of ID's
@@ -93,7 +93,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 	$id = intval(weTag_getAttribute('id', $attribs));
 	$path = weTag_getAttribute('path', $attribs);
 
-	if(weTag_getAttribute('type', $attribs) == 'template'){
+	if(weTag_getAttribute('type', $attribs) === 'template'){
 		if(!isset($attribs['_parsed'])){
 			echo 'cannot use we:include with type="template" dynamically';
 			return '';

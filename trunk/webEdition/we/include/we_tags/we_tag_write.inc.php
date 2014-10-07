@@ -54,7 +54,7 @@ function we_tag_write($attribs){
 	$forceedit = weTag_getAttribute('forceedit', $attribs, false, true);
 	$workspaces = weTag_getAttribute('workspaces', $attribs);
 	$objname = preg_replace('/[^a-z0-9_-]/i', '', weTag_getAttribute('name', $attribs));
-	$onduplicate = ($objname == '' ? 'overwrite' : weTag_getAttribute('onduplicate', $attribs, 'increment'));
+	$onduplicate = ($objname === '' ? 'overwrite' : weTag_getAttribute('onduplicate', $attribs, 'increment'));
 	$onpredefinedname = weTag_getAttribute('onpredefinedname', $attribs, 'appendto');
 	$workflowname = weTag_getAttribute('workflowname', $attribs);
 	$workflowuserid = weTag_getAttribute('workflowuserid', $attribs, 0);
@@ -104,13 +104,13 @@ function we_tag_write($attribs){
 					}
 				}
 				$GLOBALS['we_' . $type . '_write_ok'] = true;
-				checkAndCreateImage($name, ($type == 'document') ? 'we_document' : 'we_object');
-				checkAndCreateFlashmovie($name, ($type == 'document') ? 'we_document' : 'we_object');
-				checkAndCreateQuicktime($name, ($type == 'document') ? 'we_document' : 'we_object');
-				checkAndCreateBinary($name, ($type == 'document') ? 'we_document' : 'we_object');
+				checkAndCreateImage($name, ($type === 'document') ? 'we_document' : 'we_object');
+				checkAndCreateFlashmovie($name, ($type === 'document') ? 'we_document' : 'we_object');
+				checkAndCreateQuicktime($name, ($type === 'document') ? 'we_document' : 'we_object');
+				checkAndCreateBinary($name, ($type === 'document') ? 'we_document' : 'we_object');
 
 				$GLOBALS['we_' . $type][$name]->i_checkPathDiffAndCreate();
-				if($objname == ''){
+				if(!$objname){
 					$GLOBALS['we_' . $type][$name]->i_correctDoublePath();
 				}
 				if(isset($GLOBALS['we_doc'])){
@@ -118,7 +118,7 @@ function we_tag_write($attribs){
 				}
 				$GLOBALS['we_doc'] = &$GLOBALS['we_' . $type][$name];
 				$GLOBALS['we_doc']->IsSearchable = $searchable;
-				if(strlen($workspaces) > 0 && $type == 'object'){
+				if(strlen($workspaces) > 0 && $type === 'object'){
 					$wsArr = makeArrayFromCSV($workspaces);
 					$tmplArray = array();
 					foreach($wsArr as $wsId){
@@ -130,9 +130,9 @@ function we_tag_write($attribs){
 
 				$GLOBALS['we_' . $type][$name]->Path = $GLOBALS['we_' . $type][$name]->getPath();
 
-				if(defined('OBJECT_FILES_TABLE') && $type == 'object'){
-					if($GLOBALS['we_' . $type][$name]->Text == ''){
-						if($objname == ''){
+				if(defined('OBJECT_FILES_TABLE') && $type === 'object'){
+					if($GLOBALS['we_' . $type][$name]->Text === ''){
+						if($objname === ''){
 							$objname = 1 + intval(f('SELECT MAX(ID) AS ID FROM ' . OBJECT_FILES_TABLE));
 						}
 					} else {
@@ -144,14 +144,14 @@ function we_tag_write($attribs){
 								$objname .= ($objname ? '_' . $GLOBALS['we_' . $type][$name]->Text : $GLOBALS['we_' . $type][$name]->Text);
 								break;
 							case 'overwrite':
-								if($objname == ''){
+								if($objname === ''){
 									$objname = $GLOBALS['we_' . $type][$name]->Text;
 								}
 								break;
 						}
 					}
 					$objexists = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname)) . '"');
-					if($objexists == ''){
+					if(!$objexists){
 						$GLOBALS['we_' . $type][$name]->Text = $objname;
 						$GLOBALS['we_' . $type][$name]->Path = str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname);
 					} else {
@@ -181,7 +181,7 @@ function we_tag_write($attribs){
 				if($doWrite){
 					$ret = $GLOBALS['we_' . $type][$name]->we_save();
 					if($publish && !$doworkflow){
-						if($type == 'document' && (!$GLOBALS['we_' . $type][$name]->IsDynamic) && isset($GLOBALS['we_doc'])){ // on static HTML Documents we have to do it different
+						if($type === 'document' && (!$GLOBALS['we_' . $type][$name]->IsDynamic) && isset($GLOBALS['we_doc'])){ // on static HTML Documents we have to do it different
 							$ret1 = $GLOBALS['we_doc']->we_publish();
 						} else {
 							$ret1 = $GLOBALS['we_' . $type][$name]->we_publish();
@@ -423,7 +423,7 @@ function checkAndCreateImage($formname, $type = 'we_document'){
 					}
 				}
 			} elseif(isset($_SESSION[$_imgDataId]['serverPath'])){
-				if(substr($_SESSION[$_imgDataId]['type'], 0, 6) == 'image/'){
+				if(substr($_SESSION[$_imgDataId]['type'], 0, 6) === 'image/'){
 					$imgDocument = new we_imageDocument();
 
 					if($imgId){
@@ -491,7 +491,7 @@ function checkAndCreateBinary($formname, $type = 'we_document'){
 					}
 				}
 			} elseif(isset($_SESSION[$_binaryDataId]['serverPath'])){
-				if(substr($_SESSION[$_binaryDataId]['type'], 0, 12) == 'application/'){
+				if(substr($_SESSION[$_binaryDataId]['type'], 0, 12) === 'application/'){
 					$binaryDocument = new we_otherDocument();
 
 					if($binaryId){

@@ -33,7 +33,7 @@ echo we_html_tools::getHtmlTop() .
 	}
 
 
-<?php if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'revert_published'){ ?>
+<?php if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'revert_published'){ ?>
 
 		var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?php print $GLOBALS['we_transaction']; ?>");
 
@@ -183,7 +183,7 @@ echo we_html_tools::getHtmlTop() .
 				$_metaDataTable .= '</table>';
 				break;
 			case we_base_ContentTypes::APPLICATION:
-				if($GLOBALS['we_doc']->Extension == '.pdf'){
+				if($GLOBALS['we_doc']->Extension === '.pdf'){
 					$metaData = $GLOBALS['we_doc']->getMetaData();
 					$_metaDataTable = '
 <table style="border:0px;padding:0px;" cellspacing="0">

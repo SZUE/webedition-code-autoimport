@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_search_treeDataSource extends we_tool_treeDataSource{
+
 	var $treeItems = array();
 
 	function __construct($ds){
@@ -65,14 +66,14 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 
 		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . " " . $addWhere;
 
-		$db->query("SELECT $elem, LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr from " . $db->escape($table) . " $where ORDER BY isNr DESC,Nr,lowtext,Text " . ($segment ? "LIMIT " . abs($offset) . "," . abs($segment) . ";" : ";"));
+		$db->query("SELECT $elem, LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr FROM " . $db->escape($table) . " $where ORDER BY isNr DESC,Nr,lowtext,Text " . ($segment ? "LIMIT " . abs($offset) . "," . abs($segment) : ''));
 
-		while($db->next_record()){
+		while($db->next_record()){//FIXME: this is no good code
 			if(($db->f('ID') == 3 || $db->f('ID') == 7) && (!defined('OBJECT_FILES_TABLE') || !defined('OBJECT_TABLE') || !permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'))){
 
 			} elseif(($db->f('ID') == 2 || $db->f('ID') == 4 || $db->f('ID') == 5 || $db->f('ID') == 6) && !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 
-			} elseif(($db->f('Path') == '/Versionen' || $db->f('Path') == '/Versionen/Dokumente' || $db->f('Path') == '/Versionen/Objekte' || $db->f('Path') == '/Versionen/Dokumente/gel�schte Dokumente' || $db->f('Path') == '/Versionen/Objekte/gel�schte Objekte') && !permissionhandler::hasPerm('SEE_VERSIONS')){
+			} elseif(strpos($db->f('Path'), '/Versionen') === 0 && !permissionhandler::hasPerm('SEE_VERSIONS')){
 
 			} else {
 				$OpenCloseStatus = (in_array($db->f('ID'), $openFolders) ? 1 : 0);
@@ -110,7 +111,7 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 
 				$this->treeItems[] = array_merge($fields, $typ);
 
-				if($typ['typ'] == "group" && $OpenCloseStatus == 1){
+				if($typ['typ'] === "group" && $OpenCloseStatus == 1){
 					$this->getItemsFromDB($db->f('ID'), 0, $segment);
 				}
 			}

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // force the download of this document
-if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3) == 'download'){
+if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3) === 'download'){
 	$file = (file_exists($_SERVER['DOCUMENT_ROOT'] . $we_doc->Path) ? $_SERVER['DOCUMENT_ROOT'] . $we_doc->Path : $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $we_doc->Path);
 	$_filename = $we_doc->Filename . $we_doc->Extension;
 	if(file_exists($file)){
@@ -48,7 +48,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3) == 'download'){
 
 
 echo we_html_tools::getHtmlTop() .
- (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) == 'doImage_convert' ?
+ (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
 	we_html_element::jsElement('parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");') : ''
 ) .
  we_html_element::jsScript(JS_DIR . 'windows.js');

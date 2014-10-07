@@ -28,7 +28,7 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop() . STYLESHEET;
 $cmd = we_base_request::_(we_base_request::STRING, 'cmd');
 
-if($cmd == "save_last"){
+if($cmd === "save_last"){
 	$_SESSION["user"]["LastDir"] = $last;
 }
 if(!$cmd || $cmd != "save_last"){

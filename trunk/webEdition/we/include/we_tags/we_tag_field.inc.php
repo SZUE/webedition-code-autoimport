@@ -142,8 +142,8 @@ function we_tag_field($attribs){
 	}
 
 	$lvname = isset($GLOBALS['lv']->name) ? $GLOBALS['lv']->name : '';
-	$alt = ($orgAlt == 'we_path' ? 'WE_PATH' : ($orgAlt == 'we_text' ? 'WE_TEXT' : $alt));
-	$name = ($orgName == 'we_path' ? 'WE_PATH' : ($orgName == 'we_text' ? 'WE_TEXT' : $name));
+	$alt = ($orgAlt === 'we_path' ? 'WE_PATH' : ($orgAlt === 'we_text' ? 'WE_TEXT' : $alt));
+	$name = ($orgName === 'we_path' ? 'WE_PATH' : ($orgName === 'we_text' ? 'WE_TEXT' : $name));
 
 	//listview of documents, document with a block. Try to access by blockname.
 	$name = ($GLOBALS['lv']->f($name) ? $name : $orgName);
@@ -166,7 +166,7 @@ function we_tag_field($attribs){
 	$isImageDoc = (isset($GLOBALS['lv']->Record['wedoc_ContentType']) && $GLOBALS['lv']->Record['wedoc_ContentType'] == we_base_ContentTypes::IMAGE);
 	$isCalendar = (isset($GLOBALS['lv']->calendar_struct['calendar']) && $GLOBALS['lv']->calendar_struct['calendar'] != '' && $GLOBALS['lv']->isCalendarField($type));
 
-	if((!$GLOBALS['lv']->f('WE_ID') && property_exists($GLOBALS['lv'], 'calendar_struct') && $GLOBALS['lv']->calendar_struct['calendar'] == '')){
+	if((!$GLOBALS['lv']->f('WE_ID') && property_exists($GLOBALS['lv'], 'calendar_struct') && $GLOBALS['lv']->calendar_struct['calendar'] === '')){
 		return '';
 	}
 
@@ -222,9 +222,9 @@ function we_tag_field($attribs){
 		case 'date' :
 		case 'float' :
 		case 'checkbox' :
-			$idd = ($isImageDoc && $type == 'img' ) ? $GLOBALS['lv']->Record['wedoc_ID'] : $GLOBALS['lv']->f($name);
-			$out = ($idd == 0 ? '' : $GLOBALS['we_doc']->getFieldByVal($idd, $type, $attribs, ($only == 'src'), $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'));
-			if($type == 'img' && empty($out)){
+			$idd = ($isImageDoc && $type === 'img' ) ? $GLOBALS['lv']->Record['wedoc_ID'] : $GLOBALS['lv']->f($name);
+			$out = ($idd == 0 ? '' : $GLOBALS['we_doc']->getFieldByVal($idd, $type, $attribs, ($only === 'src'), $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'));
+			if($type === 'img' && empty($out)){
 				return '';
 			}
 			break;
@@ -248,17 +248,17 @@ function we_tag_field($attribs){
 			break;
 		case 'country' :
 			$lang = weTag_getAttribute('outputlanguage', $attribs);
-			if($lang == ''){
+			if(!$lang){
 				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
 			}
 			$langcode = substr($lang, 0, 2);
-			if($lang == ''){
+			if(!$lang){
 				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 				$langcode = array_search($lang[0], getWELangs());
 			}
-			if(WE_COUNTRIES_DEFAULT != '' && $GLOBALS['lv']->f($name) == '--'){
+			if(WE_COUNTRIES_DEFAULT != '' && $GLOBALS['lv']->f($name) === '--'){
 				$out = WE_COUNTRIES_DEFAULT;
 			} else {
 				if(!Zend_Locale::hasCache()){
@@ -269,13 +269,13 @@ function we_tag_field($attribs){
 			break;
 		case 'language' :
 			$lang = weTag_getAttribute('outputlanguage', $attribs);
-			if($lang == ''){
+			if(!$lang){
 				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 				$doc = we_getDocForTag($docAttr);
 				$lang = $doc->Language;
 			}
 			$langcode = substr($lang, 0, 2);
-			if($lang == ''){
+			if(!$lang){
 				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 				$langcode = array_search($lang[0], getWELangs());
 			}
@@ -316,7 +316,7 @@ function we_tag_field($attribs){
 			}
 		default : // FIXME: treat type="select" as separate case, and clean up the mess with all this little fixes
 
-			if($name == 'WE_PATH' && $triggerid && in_array(get_class($GLOBALS['lv']), array('we_listview_search', 'we_object_listview', 'we_object_listviewMultiobject', 'we_object_tag'))){
+			if($name === 'WE_PATH' && $triggerid && in_array(get_class($GLOBALS['lv']), array('we_listview_search', 'we_object_listview', 'we_object_listviewMultiobject', 'we_object_tag'))){
 				$triggerpath = id_to_path($triggerid);
 				$triggerpath_parts = pathinfo($triggerpath);
 				$normVal = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' .
@@ -324,17 +324,17 @@ function we_tag_field($attribs){
 						'' : $triggerpath_parts['filename'] . '/' ) .
 					$GLOBALS['lv']->f('WE_URL');
 			} else {
-				$testtype = ($type == 'select' && $usekey) ? 'text' : $type;
+				$testtype = ($type === 'select' && $usekey) ? 'text' : $type;
 				switch(get_class($GLOBALS['lv'])){
 					case 'we_object_listview':
 					case 'we_object_tag':
-						if($type == 'select'){// bugfix #6399
+						if($type === 'select'){// bugfix #6399
 							$attribs['name'] = $attribs['_name_orig'];
 						}
 				}
 
 				$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht inLV, #4648
-				if($name == 'WE_PATH'){
+				if($name === 'WE_PATH'){
 					$path_parts = pathinfo($normVal);
 					if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition && NAVIGATION_DIRECTORYINDEX_NAMES && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$normVal = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
@@ -345,10 +345,10 @@ function we_tag_field($attribs){
 			// wenn die Abfrage im Aktuellen Objekt kein Ergebnis liefert
 			// wird in den eingebundenen Objekten ueberprueft ob das Feld existiert
 
-			if($type == 'select' && $normVal == ''){
+			if($type === 'select' && $normVal === ''){
 				$dbRecord = array_keys(($GLOBALS['lv'] instanceof we_object_tag) ? $GLOBALS['lv']->getObject()->getDBRecord() : $GLOBALS['lv']->getDBRecord()); // bugfix #6399
 				foreach($dbRecord as $_glob_key){
-					if(substr($_glob_key, 0, 13) == 'we_we_object_'){
+					if(substr($_glob_key, 0, 13) === 'we_we_object_'){
 						$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), ($usekey ? 'text' : 'select'), $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 13), 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					}
 
@@ -361,13 +361,13 @@ function we_tag_field($attribs){
 
 
 			if($name && $name != 'we_href'){
-				if($normVal == ''){
+				if($normVal === ''){
 					$altVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($alt), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
-					if($altVal == ''){
+					if($altVal === ''){
 						return '';
 					}
 
-					if($alt == 'WE_PATH'){
+					if($alt === 'WE_PATH'){
 						$path_parts = pathinfo($altVal);
 						if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 							$altVal = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
@@ -383,7 +383,7 @@ function we_tag_field($attribs){
 			}
 	}
 
-	if($hyperlink || $name == 'we_href'){
+	if($hyperlink || $name === 'we_href'){
 
 		$_linkAttribs = array('xml' => $xml);
 		if($target && !$winprops){ //  save atts in array
@@ -466,13 +466,13 @@ function we_tag_field($attribs){
 				if(isset($GLOBALS['lv']->calendar_struct['storage']) && !empty($GLOBALS['lv']->calendar_struct['storage'])){
 					$found = false;
 					foreach($GLOBALS['lv']->calendar_struct['storage'] as $date){
-						if((($GLOBALS['lv']->calendar_struct['calendarCount'] > 0 || ($GLOBALS['lv']->calendar_struct['calendar'] == 'day' && $GLOBALS['lv']->calendar_struct['calendarCount'] >= 0)) && $GLOBALS['lv']->calendar_struct['calendarCount'] <= $GLOBALS['lv']->calendar_struct['numofentries']) && ((int) $date >= (int) $GLOBALS['lv']->calendar_struct['start_date'] && (int) $date <= (int) $GLOBALS['lv']->calendar_struct['end_date'])){
+						if((($GLOBALS['lv']->calendar_struct['calendarCount'] > 0 || ($GLOBALS['lv']->calendar_struct['calendar'] === 'day' && $GLOBALS['lv']->calendar_struct['calendarCount'] >= 0)) && $GLOBALS['lv']->calendar_struct['calendarCount'] <= $GLOBALS['lv']->calendar_struct['numofentries']) && ((int) $date >= (int) $GLOBALS['lv']->calendar_struct['start_date'] && (int) $date <= (int) $GLOBALS['lv']->calendar_struct['end_date'])){
 							$found = true;
 							break;
 						}
 					}
 					if($found){
-						$show = ($GLOBALS['lv']->calendar_struct['calendar'] == 'year' ? 'month' : 'day');
+						$show = ($GLOBALS['lv']->calendar_struct['calendar'] === 'year' ? 'month' : 'day');
 						$listviewname = weTag_getAttribute('listviewname', $attribs, $lvname);
 
 						$_linkAttribs['href'] = id_to_path($id) . '?' .
@@ -539,7 +539,7 @@ function we_tag_field($attribs){
 					}
 					$_linkAttribs['href'] = $_linkAttribs['href'] . $tail;
 
-					$out = ($name == 'we_href' ?
+					$out = ($name === 'we_href' ?
 							$_linkAttribs['href'] :
 							getHtmlTag('a', $_linkAttribs, $out, true) //  output of link-tag
 						);
@@ -547,7 +547,7 @@ function we_tag_field($attribs){
 					$parentidname = weTag_getAttribute('parentidname', $attribs, 'we_parentid');
 					$_linkAttribs['href'] = $_SERVER['SCRIPT_NAME'] . '?' . $parentidname . '=' . $GLOBALS['lv']->f('ID');
 
-					$out = ($name == 'we_href' ?
+					$out = ($name === 'we_href' ?
 							$_linkAttribs['href'] :
 							getHtmlTag('a', $_linkAttribs, $out, true) //  output of link-tag
 						);
@@ -625,7 +625,7 @@ function we_tag_field($attribs){
 							}
 						}
 
-						$out = ($name == 'we_href' ? //  return href for this object
+						$out = ($name === 'we_href' ? //  return href for this object
 								$_linkAttribs['href'] :
 								$out = getHtmlTag('a', $_linkAttribs, $out, true));
 					}

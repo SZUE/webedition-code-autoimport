@@ -261,7 +261,7 @@ class we_object_listviewMultiobject extends we_listview_base{
 			if(preg_match('/(.+?)_(.*)/', $fieldInfo["name"], $regs)){
 				$type = $regs[1];
 				$name = $regs[2];
-				if($type == "object" && $name != $this->classID){
+				if($type === "object" && $name != $this->classID){
 					if(!isset($matrix["we_object_" . $name]["type"]) || !$matrix["we_object_" . $name]["type"]){
 						$matrix["we_object_" . $name]["type"] = $type;
 						$matrix["we_object_" . $name]["table"] = $table;
@@ -294,7 +294,7 @@ class we_object_listviewMultiobject extends we_listview_base{
 			foreach($foo as $f){
 				$g = explode(' ', trim($f));
 				$orderArr[] = $g[0];
-				$descArr[] = intval(isset($g[1]) && strtolower(trim($g[1])) == 'desc');
+				$descArr[] = intval(isset($g[1]) && strtolower(trim($g[1])) === 'desc');
 			}
 		}
 
@@ -303,7 +303,7 @@ class we_object_listviewMultiobject extends we_listview_base{
 		$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords,CreationDate,ModDate FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classID, $this->DB_WE);
 		$_selFields = '';
 		foreach($_fieldnames as $_key => $_val){
-			if(!$_val || $_val == '_'){ // bug #4657
+			if(!$_val || $_val === '_'){ // bug #4657
 				continue;
 			}
 			if(!is_numeric($_key) && $_val){
@@ -324,7 +324,7 @@ class we_object_listviewMultiobject extends we_listview_base{
 		$f = OBJECT_X_TABLE . $classID . '.OF_ID as ID,' . OBJECT_X_TABLE . $classID . '.OF_Templates as OF_Templates,' . OBJECT_X_TABLE . $classID . ".OF_ID as OF_ID," . OBJECT_X_TABLE . $classID . ".OF_Category as OF_Category," . OBJECT_X_TABLE . $classID . ".OF_Text as OF_Text," . OBJECT_X_TABLE . $classID . ".OF_Url as OF_Url," . OBJECT_X_TABLE . $classID . ".OF_TriggerID as OF_TriggerID," . OBJECT_X_TABLE . $classID . ".OF_WebUserID as OF_WebUserID," . OBJECT_X_TABLE . $classID . ".OF_Language as OF_Language," . $_selFields;
 		foreach($matrix as $n => $p){
 			$n2 = $n;
-			if(substr($n, 0, 10) == 'we_object_'){
+			if(substr($n, 0, 10) === 'we_object_'){
 				$n = substr($n, 10);
 			}
 			$f .= $p['table'] . '.`' . $p['type'] . '_' . $n . '` AS `we_' . $n2 . '`,';
@@ -374,7 +374,7 @@ class we_object_listviewMultiobject extends we_listview_base{
 			"fields" => rtrim($f, ','),
 			"publ_cond" => array(),
 		);
-		if($order == ' ORDER BY RANDOM '){
+		if($order === ' ORDER BY RANDOM '){
 			$out['fields'] .= ',RAND() AS RANDOM ';
 		}
 		foreach($tb as $t){

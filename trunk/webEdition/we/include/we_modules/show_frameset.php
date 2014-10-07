@@ -48,7 +48,7 @@ function we_cmd() {
 
 
 //when opened by navigation hook
-	if(we_base_request::_(we_base_request::STRING, 'tool') == 'navigation'){
+	if(we_base_request::_(we_base_request::STRING, 'tool') === 'navigation'){
 		$_REQUEST['mod'] = $mod = 'navigation';
 	}
 	$sid = we_base_request::_(we_base_request::RAW, 'sid');

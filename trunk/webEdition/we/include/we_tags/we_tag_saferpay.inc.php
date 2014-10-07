@@ -24,7 +24,6 @@
  */
 we_base_moduleInfo::isActive('shop');
 
-
 /**
  * This function writes the shop data (order) to the database and send values to saferpay
  *
@@ -79,27 +78,32 @@ function we_tag_saferpay($attribs){
 		$shoppingItems = $basket->getShoppingItems();
 		$cartFields = $basket->getCartFields();
 
-		if(empty($shoppingItems)){
+		if(!($shoppingItems)){
 			return;
 		}
 		/*		 * ***** get the currency ******* */
 		$feldnamen = explode("|", f("SELECT strFelder FROM " . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
-		if(isset($feldnamen[0])){ // determine the currency
-			if($feldnamen[0] == "$" || $feldnamen[0] == "USD"){
+		switch(isset($feldnamen[0]) ? $feldnamen[0] : 'x'){ // determine the currency
+			case "$":
+			case "USD":
 				$currency = "USD";
-			} elseif($feldnamen[0] == "�" || $feldnamen[0] == "GBP"){
+				break;
+			case "�":
+			case "GBP":
 				$currency = "GBP";
-			} elseif($feldnamen[0] == "AUD"){
+				break;
+			case "AUD":
 				$currency = "AUD";
-			} elseif($feldnamen[0] == "CHF" || $feldnamen[0] == "SFR"){
+				break;
+			case "CHF":
+			case "SFR":
 				$currency = "CHF";
-			} elseif($feldnamen[0] == "CAD"){
+				break;
+			case "CAD":
 				$currency = "CAD";
-			} else {
+				break;
+			default:
 				$currency = "EUR";
-			}
-		} else {
-			$currency = "EUR";
 		}
 		/*		 * ***** get the currency ******* */
 
@@ -191,9 +195,9 @@ function we_tag_saferpay($attribs){
 		$weShippingControl = we_shop_shippingControl::getShippingControl();
 
 		$customer = (we_tag('ifRegisteredUser') ? // check if user is registered
-				$_SESSION['webuser'] : false);
+						$_SESSION['webuser'] : false);
 
-		if($shipping == ''){
+		if($shipping === ''){
 			$cartField[WE_SHOP_SHIPPING] = array(
 				'costs' => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
 				'isNet' => $weShippingControl->isNet,
@@ -275,8 +279,8 @@ function we_tag_saferpay($attribs){
 		$command = $execPath . "saferpay -payinit -p $confPath $strAttributes";
 
 		if(!$execPath || !$confPath){
-			echo g_l('modules_shop', '[saferpayError]').
-				$strAttributes;
+			echo g_l('modules_shop', '[saferpayError]') .
+			$strAttributes;
 			exit;
 		} else {
 
@@ -287,7 +291,7 @@ function we_tag_saferpay($attribs){
 
 		if($payinit_url){
 			echo $processOK .
-				we_html_element::jsElement('	OpenSaferpayWindowJScript(\'' . $payinit_url . '\');');
+			we_html_element::jsElement('	OpenSaferpayWindowJScript(\'' . $payinit_url . '\');');
 		} else {
 			echo $processError;
 		}

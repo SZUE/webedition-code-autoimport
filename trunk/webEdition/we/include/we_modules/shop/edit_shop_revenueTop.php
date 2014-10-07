@@ -135,7 +135,7 @@ if(!isset($nrOfPage)){
 
 	$nrOfPage = isset($feldnamen[4]) ? $feldnamen[4] : 20;
 }
-if($nrOfPage == "default"){
+if($nrOfPage === "default"){
 	$nrOfPage = 20;
 }
 

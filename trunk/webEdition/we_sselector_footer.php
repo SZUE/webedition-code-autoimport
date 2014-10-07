@@ -81,7 +81,7 @@ echo we_html_tools::getHtmlTop() .
 				$down_button = null; //we_button::create_button("download", "javascript:downloadFile();");
 			}
 			$buttons = we_html_button::position_yes_no_cancel($yes_button, $down_button, $cancel_button);
-			if(we_base_request::_(we_base_request::STRING, "filter") == "all_Types"){
+			if(we_base_request::_(we_base_request::STRING, "filter") === "all_Types"){
 				?>
 				<tr>
 					<td></td>

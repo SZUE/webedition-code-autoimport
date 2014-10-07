@@ -25,7 +25,7 @@ we_html_tools::protect();
 echo we_html_element::jsElement('top.opener.top.toggleBusy(0);');
 $cmd2 = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2);
 
-if($cmd == 'ok'){
+if($cmd === 'ok'){
 	$wf_text = we_base_request::_(we_base_request::STRING, 'wf_text');
 	$wf_select = we_base_request::_(we_base_request::INT, 'wf_select');
 	if(we_workflow_utility::insertDocInWorkflow($we_doc->ID, $we_doc->Table, $wf_select, $_SESSION["user"]["ID"], $wf_text)){

@@ -57,7 +57,7 @@ class we_workflow_base{
 	function save(){
 		$sets = $wheres = array();
 		foreach(array_keys($this->persistents) as $val){
-			if($val == "ID"){
+			if($val === "ID"){
 				$wheres[] = $val . '=' . intval($this->{$val});
 			} else {
 				$sets[$val] = $this->{$val};

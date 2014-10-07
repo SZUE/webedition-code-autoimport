@@ -27,7 +27,7 @@ function we_tag_sessionLogout($attribs, $content){
 		return $foo;
 	}
 	$id = weTag_getAttribute('id', $attribs);
-	$id = ($id == 'self') ? $GLOBALS['WE_MAIN_DOC']->ID : $id;
+	$id = ($id === 'self') ? $GLOBALS['WE_MAIN_DOC']->ID : $id;
 	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
 
 	$url = ($row ? $row['Path'] . ($row['IsFolder'] ? '/' : '') : '');

@@ -37,12 +37,12 @@ function we_tag_sessionField($attribs, $content){
 	$size = weTag_getAttribute('size', $attribs);
 	$dateformat = weTag_getAttribute('dateformat', $attribs);
 	$value = weTag_getAttribute('value', $attribs);
-	$orgVal = (isset($_SESSION['webuser'][$name]) && (strlen($_SESSION['webuser'][$name]) > 0)) ? $_SESSION['webuser'][$name] : (($type == 'radio') ? '' : $value);
+	$orgVal = (isset($_SESSION['webuser'][$name]) && (strlen($_SESSION['webuser'][$name]) > 0)) ? $_SESSION['webuser'][$name] : (($type === 'radio') ? '' : $value);
 
 
 	$autofill = weTag_getAttribute('autofill', $attribs, false, true);
 	if($autofill){
-		$condition = ($name == 'Username' ?
+		$condition = ($name === 'Username' ?
 				array('caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0) :
 				array('caps' => 3, 'small' => 4, 'nums' => 3, 'specs' => 2));
 
@@ -102,7 +102,7 @@ function we_tag_sessionField($attribs, $content){
 
 			$content = '';
 			if(WE_COUNTRIES_DEFAULT != ''){
-				$content.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
+				$content.='<option value="--" ' . ($orgVal === '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
 			}
 			foreach($topCountries as $countrykey => &$countryvalue){
 				$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
@@ -229,16 +229,16 @@ function we_tag_sessionField($attribs, $content){
 				}
 
 				$lang = weTag_getAttribute('outputlanguage', $attribs);
-				if($lang == ''){
+				if(!$lang){
 					$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self'));
 					$lang = $doc->Language;
 				}
 				$langcode = substr($lang, 0, 2);
-				if($lang == ''){
+				if(!$lang){
 					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 					$langcode = array_search($lang[0], getWELangs());
 				}
-				return ($ascountry && $orgVal == '--' ? '' : CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, ($ascountry ? 'territory' : 'language'), $langcode)));
+				return ($ascountry && $orgVal === '--' ? '' : CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, ($ascountry ? 'territory' : 'language'), $langcode)));
 			}
 			if($dateformat){
 				try{

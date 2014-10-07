@@ -62,7 +62,7 @@ function we_tag_writeVoting($attribs){
 
 
 	foreach($_voting as $id => $value){
-		if($writeto == 'voting'){
+		if($writeto === 'voting'){
 			$voting = new we_voting_voting($id);
 			if($voting->IsRequired && implode('', $value) == ''){
 
@@ -86,13 +86,10 @@ function we_tag_writeVoting($attribs){
 			if($voting->IsRequired && implode('', $value) == ''){
 
 				$GLOBALS['_we_voting_status'] = we_voting_voting::ERROR;
-				if(isset($_SESSION['_we_voting_sessionID'])){
-					$votingsession = $_SESSION['_we_voting_sessionID'];
-				} else {
-					$votingsession = 0;
-				}
-				if($voting->Log)
+				$votingsession = (isset($_SESSION['_we_voting_sessionID']) ? $_SESSION['_we_voting_sessionID'] : 0);
+				if($voting->Log){
 					$voting->logVoting(we_voting_voting::ERROR, $votingsession, '', '', '');
+				}
 				break;
 			}
 

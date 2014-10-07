@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_tracker($attribs){
+function we_tag_tracker($attribs){//FIXME: remove this file in 6.4!
 	if($GLOBALS['we_doc']->InWebEdition){
 		return "";
 	}
@@ -36,19 +36,19 @@ function we_tag_tracker($attribs){
 	$websitename = weTag_getAttribute("websitename", $attribs, $_SERVER['SERVER_NAME']);
 	$trackname = weTag_getAttribute("trackname", $attribs);
 
-	if($trackname == "WE_PATH"){
+	if($trackname === "WE_PATH"){
 		if(($objID=we_base_request::_(we_base_request::INT,'we_objectID'))){
 			$trackname = "/object" . id_to_path($objID, OBJECT_FILES_TABLE);
 		} else {
 			$trackname = $GLOBALS["WE_MAIN_DOC"]->Path;
 		}
-	} elseif($trackname == "WE_TITLE"){
+	} elseif($trackname === "WE_TITLE"){
 		$trackname = $GLOBALS["WE_MAIN_DOC"]->getElement("Title");
 	}
 
 	$trackerurl = getServerUrl() . WE_TRACKER_DIR;
 
-	if($type == 'standard'){
+	if($type === 'standard'){
 		return '<!-- pageLogger Code BEGIN -->' . we_html_element::jsScript($trackerurl . '/scripts/picmodejs.js') . '
 <script type="text/javascript"><!--
 _my_stat_write(\'' . $websitename . '\',\'' . $trackerurl . '\'' . ($trackname ? (",'" . addslashes(

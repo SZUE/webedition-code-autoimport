@@ -60,7 +60,7 @@ function we_tag_setVar($attribs){
 				if($propertyFrom){
 					$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->$nameFrom) ? $GLOBALS['WE_MAIN_DOC']->$nameFrom : '';
 				} else {
-					$valueFrom = $GLOBALS['WE_MAIN_DOC']->issetElement($nameFrom . ($typeFrom == 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
+					$valueFrom = $GLOBALS['WE_MAIN_DOC']->issetElement($nameFrom . ($typeFrom === 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
 						$GLOBALS['WE_MAIN_DOC']->getField(array('name' => $nameFrom), $typeFrom, true) :
 						'';
 				}
@@ -69,7 +69,7 @@ function we_tag_setVar($attribs){
 				if($propertyFrom){
 					$valueFrom = isset($GLOBALS['we_doc']->$nameFrom) ? $GLOBALS['we_doc']->$nameFrom : '';
 				} else {
-					$valueFrom = $GLOBALS['we_doc']->issetElement($nameFrom . ($typeFrom == 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
+					$valueFrom = $GLOBALS['we_doc']->issetElement($nameFrom . ($typeFrom === 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
 						$GLOBALS['we_doc']->getField(array('name' => $nameFrom), $typeFrom, true) :
 						'';
 				}
@@ -95,7 +95,7 @@ function we_tag_setVar($attribs){
 				break;
 			case 'block' :
 				$nameFrom = we_tag_getPostName($nameFrom);
-				if($typeFrom == 'href'){
+				if($typeFrom === 'href'){
 
 					if($GLOBALS['we_doc']->issetElement($nameFrom . we_base_link::MAGIC_INT_LINK)){
 						$nameFrom .= we_base_link::MAGIC_INT_LINK_PATH;
@@ -132,7 +132,7 @@ function we_tag_setVar($attribs){
 		case 'top' :
 		case 'self' :
 			if($propertyTo){
-				$GLOBALS[($to == 'top' ? 'WE_MAIN_DOC_REF' : 'we_doc')]->$nameTo = $valueFrom;
+				$GLOBALS[($to === 'top' ? 'WE_MAIN_DOC_REF' : 'we_doc')]->$nameTo = $valueFrom;
 				break;
 			}
 		default:

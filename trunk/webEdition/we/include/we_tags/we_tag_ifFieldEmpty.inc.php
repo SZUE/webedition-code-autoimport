@@ -63,10 +63,10 @@ function we_isFieldNotEmpty($attribs){
 			return false;
 		case 'multiobject':
 			$data = (isset($GLOBALS['lv']) ?
-					(method_exists($GLOBALS['lv'], 'getObject') || ($GLOBALS['lv'] instanceof we_shop_shop) ?
-						unserialize($GLOBALS['lv']->getObject()->f($orig_match)) :
-						unserialize($GLOBALS['lv']->getDBf('we_' . $orig_match))) :
-					unserialize($GLOBALS['we_doc']->getElement($orig_match)));
+							(method_exists($GLOBALS['lv'], 'getObject') || ($GLOBALS['lv'] instanceof we_shop_shop) ?
+									unserialize($GLOBALS['lv']->getObject()->f($orig_match)) :
+									unserialize($GLOBALS['lv']->getDBf('we_' . $orig_match))) :
+							unserialize($GLOBALS['we_doc']->getElement($orig_match)));
 
 			if(isset($data['objects']) && is_array($data['objects']) && !empty($data['objects'])){
 				$test = array_count_values($data['objects']);
@@ -99,7 +99,7 @@ function we_isFieldNotEmpty($attribs){
 						return false;
 					}
 					$hreftmp = trim(we_document::getHrefByArray($hrefArr));
-					if(!$hreftmp || $hreftmp === '/' || $hreftmp{0} === '/' &&(!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))){
+					if(!$hreftmp || $hreftmp === '/' || $hreftmp{0} === '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))){
 						return false;
 					}
 					return true;
@@ -113,12 +113,12 @@ function we_isFieldNotEmpty($attribs){
 			if($int){ // for type = href int
 				$intID = $GLOBALS['lv']->f($match . we_base_link::MAGIC_INT_LINK_ID);
 				return ($intID ? (bool) id_to_path($intID) : false);
-			} else {
-				$hreftmp = $GLOBALS['lv']->f($match);
-				if(substr($hreftmp, 0, 1) == '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))){
-					return false;
-				}
 			}
+			$hreftmp = $GLOBALS['lv']->f($match);
+			if(substr($hreftmp, 0, 1) == '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))){
+				return false;
+			}
+
 			break; //see return of function
 		default :
 			$_tmp = @unserialize($GLOBALS['lv']->f($match));

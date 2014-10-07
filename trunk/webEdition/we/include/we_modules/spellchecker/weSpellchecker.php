@@ -6,7 +6,7 @@ we_html_tools::protect($protect);
 
 $editname = we_base_request::_(we_base_request::STRING, 'we_dialog_args', false, 'editname');
 echo we_html_tools::getHtmlTop() .
- ($editname == 'tinyMce' ?
+ ($editname === 'tinyMce' ?
 	we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js') .
 	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/mctabs.js') .
 	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/form_utils.js') .
@@ -57,7 +57,7 @@ $_applet_code = we_html_element::htmlApplet(array(
 
 
 if($editname !== false){
-	$_mode = ($editname == 'tinyMce' ? 'tinyMce' : 'wysiwyg');
+	$_mode = ($editname === 'tinyMce' ? 'tinyMce' : 'wysiwyg');
 }
 ?>
 
@@ -167,10 +167,10 @@ if($editname !== false){
 	}
 
 	function setDialog() {
-<?php if($_mode == 'tinyMce'){ ?>
+<?php if($_mode === 'tinyMce'){ ?>
 			editorObj = tinyMCEPopup.editor;
 			var text = editorObj.selection.isCollapsed() ? editorObj.getContent({format: "html"}) : editorObj.selection.getContent({format: "html"});
-<?php } else if($_mode == 'wysiwyg'){ ?>
+<?php } else if($_mode === 'wysiwyg'){ ?>
 			editorObj = top.opener.weWysiwygObject_<?php echo $editname ?>;
 			var text = getTextFromWysiwyg();
 <?php } else { ?>
@@ -189,7 +189,7 @@ if($editname !== false){
 
 	function getTextFromWysiwyg() {
 		var text = "";
-<?php if($_mode == 'wysiwyg'){ ?>
+<?php if($_mode === 'wysiwyg'){ ?>
 			editorObj = top.opener.weWysiwygObject_<?php echo $editname ?>;
 <?php } else { ?>
 			var elements = top.opener.document.getElementsByName("<?php echo $editname ?>");
@@ -233,13 +233,13 @@ if($editname !== false){
 	}
 
 	function apply() { // imi
-<?php if($_mode == 'tinyMce'){ ?>
+<?php if($_mode === 'tinyMce'){ ?>
 			if (editorObj.selection.isCollapsed()) {
 				editorObj.execCommand('mceSetContent', false, orginal);
 			} else {
 				editorObj.execCommand('mceInsertContent', false, orginal);
 			}
-<?php } else if($_mode == 'wysiwyg'){ ?>
+<?php } else if($_mode === 'wysiwyg'){ ?>
 			if (rangeSelection) {
 				editorObj.replaceText(orginal);
 			} else {
@@ -517,7 +517,7 @@ echo we_html_button::create_state_changer(false);
 
 	<form name="we_form" action="' . WE_SPELLCHECKER_MODULE_DIR . 'weSpellchecker.php" method="post" target="_self">
 
-	<input name="' . ($_mode == 'wysiwyg' ? 'we_dialog_args[editname]' : 'editname') . '" value="' . $editname . '" type="hidden" />
+	<input name="' . ($_mode === 'wysiwyg' ? 'we_dialog_args[editname]' : 'editname') . '" value="' . $editname . '" type="hidden" />
 	<div id="mainPanel">' .
 	we_html_multiIconBox::getHTML('', "100%", $_parts, 30, $_buttons_bottom, -1, '', '', false, g_l('modules_spellchecker', '[spellchecker]')) . '
 	</div>
