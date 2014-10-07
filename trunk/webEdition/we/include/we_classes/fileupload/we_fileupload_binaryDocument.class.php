@@ -242,7 +242,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 
 	public static function getJsOnLeave($callback, $type = 'switch_tab'){
 		if(self::isFallback() || self::isLegacyMode()){
-			return '';
+			return $callback;
 		}
 
 		if($type === 'switch_tab'){
