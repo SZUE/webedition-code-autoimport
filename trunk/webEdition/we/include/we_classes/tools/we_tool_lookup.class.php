@@ -133,7 +133,7 @@ abstract class we_tool_lookup{
 		foreach($_tools as $_tool){
 			if(stripos($cmd0, 'tool_' . $_tool['name'] . '_') === 0){
 				$_REQUEST['tool'] = $_tool['name'];
-				return ($_tool['name'] == 'weSearch' || $_tool['name'] == 'navigation' ?
+				return ($_tool['name'] === 'weSearch' || $_tool['name'] === 'navigation' ?
 						'we_tools/' : 'apps/' ) .
 					$_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
 			}
@@ -147,7 +147,7 @@ abstract class we_tool_lookup{
 		$_inc = array();
 		$_tools = self::getAllTools(true, true);
 		foreach($_tools as $_tool){
-			if(($_tool['name'] == 'weSearch' || $_tool['name'] == 'navigation') && file_exists(WE_INCLUDES_PATH . 'we_tools/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php')){
+			if(($_tool['name'] === 'weSearch' || $_tool['name'] === 'navigation') && file_exists(WE_INCLUDES_PATH . 'we_tools/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php')){
 				$_inc[] = WE_INCLUDES_PATH . 'we_tools/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php';
 			} elseif(file_exists(WEBEDITION_PATH . 'apps/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php')){
 				$_inc[] = WEBEDITION_PATH . 'apps/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php';
@@ -367,7 +367,7 @@ abstract class we_tool_lookup{
 	}
 
 	static function getBackupTables($name){
-		$toolFolder = (($name == 'weSearch' || $name == 'navigation') ?
+		$toolFolder = (($name === 'weSearch' || $name === 'navigation') ?
 				WE_INCLUDES_PATH . 'we_tools/' :
 				WE_APPS_PATH);
 		if(file_exists($toolFolder . $name . '/conf/backup.conf.php')){
@@ -434,7 +434,7 @@ abstract class we_tool_lookup{
 	}
 
 	static function getModelClassName($name){
-		if($name == 'weSearch' || $name == 'navigation'){
+		if($name === 'weSearch' || $name === 'navigation'){
 			include(WE_INCLUDES_PATH . 'we_tools/' . $name . '/conf/meta.conf.php');
 			return $metaInfo['classname'];
 		}
@@ -450,5 +450,5 @@ abstract class we_tool_lookup{
 }
 
 abstract class weToolLookup extends we_tool_lookup{
-	
+
 }

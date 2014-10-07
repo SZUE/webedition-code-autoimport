@@ -378,7 +378,7 @@ abstract class we_base_imageEdit{
 
 	public static function edit_image($imagedata, $output_format = "jpg", $output_filename = "", $output_quality = 75, $width = "", $height = "", $keep_aspect_ratio = true, $interlace = true, $crop_x = 0, $crop_y = 0, $crop_width = -1, $crop_height = -1, $rotate_angle = 0, $fitinside = false){
 		$output_format = strtolower($output_format);
-		if($output_format == "jpeg"){
+		if($output_format === 'jpeg'){
 			$output_format = "jpg";
 		}
 
@@ -434,7 +434,7 @@ abstract class we_base_imageEdit{
 
 				$GDInfo = self::gd_info();
 				// DEBIAN EDGE FIX => crashes at imagefill, so use old Method
-				if($GDInfo["GD Version"] == "2.0 or higher" && !function_exists("imagerotate")){
+				if($GDInfo["GD Version"] === '2.0 or higher' && !function_exists("imagerotate")){
 					// set black to transparent!
 					if($output_format === 'gif' || $output_format === 'png'){ // transparency with gifs
 						imagecolortransparent($_output_gdimg, imagecolorallocate($_output_gdimg, 0, 0, 0)); // set this color to transparent - done

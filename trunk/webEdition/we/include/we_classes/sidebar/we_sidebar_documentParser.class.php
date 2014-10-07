@@ -35,7 +35,7 @@ abstract class we_sidebar_documentParser{
 
 		$json = new Services_JSON();
 
-		if($linkPrefix == '/'){
+		if($linkPrefix === '/'){
 			$linkPrefix = '';
 		}
 
@@ -77,7 +77,7 @@ abstract class we_sidebar_documentParser{
 		// get the doctype
 		if(isset($parameters->dt)){
 			$db = new DB_WE();
-			if($parameters->dt == "/"){
+			if($parameters->dt === "/"){
 				return 0;
 			}
 			$parameters->dt = intval(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'", "ID", $db));
@@ -95,7 +95,7 @@ abstract class we_sidebar_documentParser{
 		// get the doctype
 		if(isset($parameters->dt)){
 			$db = new DB_WE();
-			if($parameters->dt == "/"){
+			if($parameters->dt === "/"){
 				return 0;
 			}
 			$parameters->dt = intval(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'", "ID", $db));
@@ -114,7 +114,7 @@ abstract class we_sidebar_documentParser{
 		// get the doctype
 		if(isset($parameters->dt)){
 			$db = new DB_WE();
-			if($parameters->dt == "/"){
+			if($parameters->dt === "/"){
 				return 0;
 			}
 			$parameters->dt = intval(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'", "ID", $db));
@@ -133,7 +133,7 @@ abstract class we_sidebar_documentParser{
 		// get the doctype
 		if(isset($parameters->dt)){
 			$db = new DB_WE();
-			if($parameters->dt == "/"){
+			if($parameters->dt === "/"){
 				return 0;
 			}
 			$parameters->dt = intval(f("SELECT ID FROM " . DOC_TYPES_TABLE . " WHERE DocType='" . $db->escape($parameters->dt) . "'", "ID", $db));

@@ -78,7 +78,7 @@ abstract class we_html_tools{
 				$tmp = '<td';
 				if(is_array($var)){
 					foreach($var as $key => $val){
-						$key == 'text' ? $colText = $val : $tmp .= ' ' . $key . '=\'' . $val . '\'';
+						$key === 'text' ? $colText = $val : $tmp .= ' ' . $key . '=\'' . $val . '\'';
 					}
 				} else {
 					$colText = $var;
@@ -278,7 +278,7 @@ abstract class we_html_tools{
 				continue;
 			}
 			$ret .= '<option value="' . ($oldHtmlspecialchars ? oldHtmlspecialchars($value) : $value) . '"' . (in_array(
-							(($compare == "value") ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . ($oldHtmlspecialchars ? oldHtmlspecialchars($text) : $text) . '</option>';
+							(($compare === "value") ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . ($oldHtmlspecialchars ? oldHtmlspecialchars($text) : $text) . '</option>';
 		}
 		$ret .= ($optgroup ? '</optgroup>' : '');
 
@@ -328,7 +328,7 @@ abstract class we_html_tools{
 		if(isset($atts['id'])){ //  use another ID!!!!
 			$atts['id'] = 'tmp_' . $atts['id'];
 		}
-		$atts['onchange'] = 'this.form.elements[\'' . $name . '\'].value' . ($mode == 'add' ?
+		$atts['onchange'] = 'this.form.elements[\'' . $name . '\'].value' . ($mode === 'add' ?
 						' += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);' :
 						'=this.options[this.selectedIndex].value;'
 				) . 'this.selectedIndex=0;';
@@ -387,12 +387,6 @@ abstract class we_html_tools{
 		}
 		if($h == ''){
 			$h = 0;
-		}
-		/* 		if(!is_numeric($w) && $h == 1){
-		  t_e('x');
-		  } */
-		if($w === 'text'){
-			t_e('Pixel called with text attribute');
 		}
 		return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '"></span>';
 	}
@@ -640,8 +634,8 @@ abstract class we_html_tools{
 	}
 
 	public static function getJSErrorHandler($plain = false){
-		$ret = 'try{'.
-				 'window.onerror=function(msg, file, line, col, errObj){'.
+		$ret = 'try{' .
+				'window.onerror=function(msg, file, line, col, errObj){' .
 				(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ?
 						'
 	postData=\'we_cmd[msg]=\'+encodeURIComponent(msg);
@@ -668,7 +662,7 @@ abstract class we_html_tools{
 	return true;
 ' :
 						'return true;'//prevent JS errors to have influence
-				).'}}catch(e){}';
+				) . '}}catch(e){}';
 
 		return ($plain ? str_replace("\n", '', $ret) : we_html_element::jsElement($ret));
 	}
@@ -773,7 +767,7 @@ abstract class we_html_tools{
 		$attr = $matches = array();
 		preg_match_all('|(\w+)\s*=\s*(["\'])([^\2]*)\2|U', $attribs, $matches, PREG_SET_ORDER);
 		foreach($matches as $match){
-			$attr[$match[1]] = ($match[2] == '\'' ? str_replace('"', '\"', $match[3]) : $match[3]);
+			$attr[$match[1]] = ($match[2] === '\'' ? str_replace('"', '\"', $match[3]) : $match[3]);
 		}
 		return $attr;
 	}

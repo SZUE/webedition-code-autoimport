@@ -810,7 +810,7 @@ abstract class we_database_base{
 	}
 
 	public function isTabExist($tab){
-		if($tab == ''){
+		if($tab === ''){
 			return false;
 		}
 		$this->query('SHOW TABLES LIKE "' . $this->escape($tab) . '"');
@@ -961,7 +961,7 @@ abstract class we_database_base{
 	 * @param string $keyname ONLY the keyname is wanted here
 	 */
 	public function delKey($tab, $keyname){
-		$this->query('ALTER TABLE ' . $this->escape($tab) . ' DROP ' . ($keyname == 'PRIMARY' ? 'PRIMARY KEY' : 'INDEX `' . $keyname . '`'));
+		$this->query('ALTER TABLE ' . $this->escape($tab) . ' DROP ' . ($keyname === 'PRIMARY' ? 'PRIMARY KEY' : 'INDEX `' . $keyname . '`'));
 	}
 
 	/**
@@ -996,7 +996,7 @@ abstract class we_database_base{
 			}
 		}
 		if($found){
-			return $this->query('ALTER TABLE ' . $tab . ' MODIFY ' . $found . ' ' . ($newPos == 'FIRST' ? 'FIRST' : 'AFTER `' . trim($newPos, '`') . '`'));
+			return $this->query('ALTER TABLE ' . $tab . ' MODIFY ' . $found . ' ' . ($newPos === 'FIRST' ? 'FIRST' : 'AFTER `' . trim($newPos, '`') . '`'));
 		}
 		return false;
 	}

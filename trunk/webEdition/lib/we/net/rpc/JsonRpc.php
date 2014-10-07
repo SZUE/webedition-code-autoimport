@@ -31,7 +31,7 @@ class we_net_rpc_JsonRpc{
 	public static function getReply($namespace = 'we'){
 		$error = new we_net_rpc_JsonRpcError();
 
-		if($_SERVER["REQUEST_METHOD"] == "POST"){
+		if($_SERVER["REQUEST_METHOD"] === 'POST'){
 			/*
 			 * For POST data, the only acceptable content type is application/json.
 			 */
@@ -246,7 +246,7 @@ class we_net_rpc_JsonRpc{
 		}
 
 		/* See if the result of the function was actually an error */
-		if(is_object($output) && get_class($output) == "we_net_rpc_JsonRpcError"){
+		if(is_object($output) && get_class($output) === 'we_net_rpc_JsonRpcError'){
 			/* Yup, it was.  Return the error */
 			return $error->getError();
 			/* never gets here */

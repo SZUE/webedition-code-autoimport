@@ -77,17 +77,17 @@ class we_dialog_cell extends we_dialog_base{
 
 		$foo = '<select class="defaultfont" name="we_dialog_args[align]" size="1">
 							<option value="">Default</option>
-							<option value="left"' . ((isset($this->args["align"]) && $this->args["align"] == "left") ? "selected" : "") . '>Left</option>
-							<option value="center"' . ((isset($this->args["align"]) && $this->args["align"] == "center") ? "selected" : "") . '>Center</option>
-							<option value="right"' . ((isset($this->args["align"]) && $this->args["align"] == "right") ? "selected" : "") . '>Right</option>
+							<option value="left"' . ((isset($this->args["align"]) && $this->args["align"] === "left") ? "selected" : "") . '>Left</option>
+							<option value="center"' . ((isset($this->args["align"]) && $this->args["align"] === "center") ? "selected" : "") . '>Center</option>
+							<option value="right"' . ((isset($this->args["align"]) && $this->args["align"] === "right") ? "selected" : "") . '>Right</option>
 						</select>';
 		$align = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[halignment]"));
 
 		$foo = '<select class="defaultfont" name="we_dialog_args[valign]" size="1">
 							<option value="">Default</option>
-							<option value="top"' . ((isset($this->args["valign"]) && $this->args["valign"] == "top") ? "selected" : "") . '>Top</option>
-							<option value="middle"' . ((isset($this->args["valign"]) && $this->args["valign"] == "middle") ? "selected" : "") . '>Middle</option>
-							<option value="bottom"' . ((isset($this->args["valign"]) && $this->args["valign"] == "bottom") ? "selected" : "") . '>Bottom</option>
+							<option value="top"' . ((isset($this->args["valign"]) && $this->args["valign"] === "top") ? "selected" : "") . '>Top</option>
+							<option value="middle"' . ((isset($this->args["valign"]) && $this->args["valign"] === "middle") ? "selected" : "") . '>Middle</option>
+							<option value="bottom"' . ((isset($this->args["valign"]) && $this->args["valign"] === "bottom") ? "selected" : "") . '>Bottom</option>
 						</select>';
 		$valign = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[valignment]"));
 
@@ -104,10 +104,10 @@ class we_dialog_cell extends we_dialog_base{
 
 		$foo = '<select class="defaultfont" name="we_dialog_args[scope]" size="1">
 							<option value="">Default</option>
-							<option value="row"' . ((isset($this->args["scope"]) && $this->args["scope"] == "row") ? "selected" : "") . '>row</option>
-							<option value="col"' . ((isset($this->args["scope"]) && $this->args["scope"] == "col") ? "selected" : "") . '>col</option>
-							<option value="rowgroup"' . ((isset($this->args["scope"]) && $this->args["scope"] == "rowgroup") ? "selected" : "") . '>rowgroup</option>
-							<option value="colgroup"' . ((isset($this->args["scope"]) && $this->args["scope"] == "colgroup") ? "selected" : "") . '>colgroup</option>
+							<option value="row"' . ((isset($this->args["scope"]) && $this->args["scope"] === "row") ? "selected" : "") . '>row</option>
+							<option value="col"' . ((isset($this->args["scope"]) && $this->args["scope"] === "col") ? "selected" : "") . '>col</option>
+							<option value="rowgroup"' . ((isset($this->args["scope"]) && $this->args["scope"] === "rowgroup") ? "selected" : "") . '>rowgroup</option>
+							<option value="colgroup"' . ((isset($this->args["scope"]) && $this->args["scope"] === "colgroup") ? "selected" : "") . '>colgroup</option>
 						</select>';
 		$_scope = we_html_tools::htmlFormElementTable($foo, "scope");
 

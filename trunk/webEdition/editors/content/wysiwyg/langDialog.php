@@ -45,7 +45,7 @@ if(defined('GLOSSARY_TABLE') && we_base_request::_(we_base_request::BOOL, 'weSav
 	$Glossary->setAttribute('lang', we_base_request::_(we_base_request::STRING, 'we_dialog_args', '', 'lang'));
 	$Glossary->setPath();
 
-	if($Glossary->Text == "" || $Glossary->getAttribute('lang') == ""){
+	if($Glossary->Text === "" || $Glossary->getAttribute('lang') === ""){
 		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
 	} else if($Glossary->pathExists($Glossary->Path)){
 		$appendJS = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR));

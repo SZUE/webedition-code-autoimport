@@ -83,7 +83,7 @@ class we_listview_search extends we_listview_base{
 		$orderArr = array();
 		$random = false;
 		if($this->order){
-			if($this->order == "we_id" || $this->order == "we_creationdate" || $this->order == 'we_filename'){
+			if($this->order === "we_id" || $this->order === "we_creationdate" || $this->order === 'we_filename'){
 
 				$ord = str_replace('we_id', INDEX_TABLE . ".DID" . ($this->desc ? " DESC" : "") . ',' . INDEX_TABLE . ".OID" . ($this->desc ? " DESC" : ""), $this->order);
 				//$ord = str_replace("we_creationdate",FILE_TABLE . ".CreationDate",$ord); // NOTE: this won't work, cause Indextable doesn't know this field & filetable is not used in this query
@@ -113,7 +113,7 @@ class we_listview_search extends we_listview_base{
 							case "ID":
 							case "Workspace":
 							case "Description":
-								$this->order .= $o["oname"] . ((trim(strtolower($o["otype"])) == "desc") ? " DESC" : "") . ",";
+								$this->order .= $o["oname"] . ((trim(strtolower($o["otype"])) === "desc") ? " DESC" : "") . ",";
 						}
 					}
 					$this->order = rtrim($this->order, ',');

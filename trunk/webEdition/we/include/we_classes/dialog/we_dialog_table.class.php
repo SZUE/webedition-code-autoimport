@@ -97,14 +97,14 @@ class we_dialog_table extends we_dialog_base{
 
 		$foo = '<select class="defaultfont" name="we_dialog_args[align]" size="1" style="width:110px">
 							<option value="">Default</option>
-							<option value="top"' . ((isset($this->args["align"]) && $this->args["align"] == "top") ? "selected" : "") . '>Top</option>
-							<option value="center"' . ((isset($this->args["align"]) && $this->args["align"] == "center") ? "selected" : "") . '>Center</option>
-							<option value="bottom"' . ((isset($this->args["align"]) && $this->args["align"] == "bottom") ? "selected" : "") . '>Bottom</option>
-							<option value="left"' . ((isset($this->args["align"]) && $this->args["align"] == "left") ? "selected" : "") . '>Left</option>
-							<option value="right"' . ((isset($this->args["align"]) && $this->args["align"] == "right") ? "selected" : "") . '>Right</option>
-							<option value="texttop"' . ((isset($this->args["align"]) && $this->args["align"] == "texttop") ? "selected" : "") . '>Text Top</option>
-							<option value="baseline"' . ((isset($this->args["align"]) && $this->args["align"] == "baseline") ? "selected" : "") . '>Baseline</option>
-							<option value="absbottom"' . ((isset($this->args["align"]) && $this->args["align"] == "absbottom") ? "selected" : "") . '>Abs Bottom</option>
+							<option value="top"' . ((isset($this->args["align"]) && $this->args["align"] === "top") ? "selected" : "") . '>Top</option>
+							<option value="center"' . ((isset($this->args["align"]) && $this->args["align"] === "center") ? "selected" : "") . '>Center</option>
+							<option value="bottom"' . ((isset($this->args["align"]) && $this->args["align"] === "bottom") ? "selected" : "") . '>Bottom</option>
+							<option value="left"' . ((isset($this->args["align"]) && $this->args["align"] === "left") ? "selected" : "") . '>Left</option>
+							<option value="right"' . ((isset($this->args["align"]) && $this->args["align"] === "right") ? "selected" : "") . '>Right</option>
+							<option value="texttop"' . ((isset($this->args["align"]) && $this->args["align"] === "texttop") ? "selected" : "") . '>Text Top</option>
+							<option value="baseline"' . ((isset($this->args["align"]) && $this->args["align"] === "baseline") ? "selected" : "") . '>Baseline</option>
+							<option value="absbottom"' . ((isset($this->args["align"]) && $this->args["align"] === "absbottom") ? "selected" : "") . '>Abs Bottom</option>
 						</select>';
 		$align = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[alignment]"));
 

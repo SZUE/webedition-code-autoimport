@@ -746,14 +746,14 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	 * @return string
 	 */
 	public function _getWrapperStart(){
-		if($this->getType() == "href"){
+		if($this->getType() === 'href'){
 
 			$onClick = ($this->getDisabled() ? "return false;" : "return true;");
 
 			return '<div style="width:' . $this->getWidth() . 'px;
 			height:' . $this->getHeight() . 'px;"><a onclick="' . $onClick . '" id="a_' . $this->getId() . '" border="0" style="text-decoration:none;display:block;"  ' . $this->_getNonBooleanAttribs('href,target,title') . '>';
 		}
-		if($this->getType() == "submit"){
+		if($this->getType() === 'submit'){
 			return '<div style="position:relative;z-index:1;width:' . $this->getWidth() . 'px;
 				height:' . $this->getHeight() . 'px;">
 				<input id="input_' . $this->getId() . '" ' . $this->_getBooleanAttribs('disabled') . ' ' . $this->_getNonBooleanAttribs('onMouseDown,onMouseOut') . '
@@ -771,11 +771,11 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	 * @return string
 	 */
 	public function _getWrapperEnd(){
-		if($this->getType() == "href"){
-			return '</a></div>';
-		}
-		if($this->getType() == "submit"){
-			return '</div>';
+		switch($this->getType()){
+			case 'href':
+				return '</a></div>';
+			case 'submit':
+				return '</div>';
 		}
 
 		return "";
@@ -864,10 +864,10 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 			}
 			if(isset($this->$internalName) && $this->$internalName !== ''){
 				$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="' .
-					($internalName === "_onClick" ?
-						'if(we_ui_controls_Button.up(\'' . $this->getId() . '\')) {' . oldHtmlspecialchars($this->$internalName) . '}' :
-						oldHtmlspecialchars($this->$internalName)) .
-					'"';
+						($internalName === "_onClick" ?
+								'if(we_ui_controls_Button.up(\'' . $this->getId() . '\')) {' . oldHtmlspecialchars($this->$internalName) . '}' :
+								oldHtmlspecialchars($this->$internalName)) .
+						'"';
 			}
 		}
 		return $attribs;

@@ -64,7 +64,7 @@ echo we_html_tools::getHtmlTop('sideBar') .
 					?>
 					<tr><td colspan="2"><?php we_html_tools::pPixel(1, 5); ?></td></tr>
 					<tr><?php
-						if($icon == ""){
+						if(!$icon){
 							?>
 							<td class="defaultfont" valign="top" colspan="2">
 								<strong><?php echo $headline; ?></strong><br />

@@ -63,7 +63,7 @@ class we_util_Sys_Dependencies extends we_util_Sys{
 			return false;
 		}
 		// set default operator for versionCompare operations:
-		if($values["operation"] == "versionCompare" && (!isset($values["operator"]) || empty($values["operator"]))){
+		if($values["operation"] === 'versionCompare' && (!isset($values["operator"]) || empty($values["operator"]))){
 			$values["operator"] = ">=";
 		}
 		// check if required we_util_Sys class exists:

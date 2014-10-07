@@ -347,15 +347,15 @@ if(!empty($this->model->ID)){
 							$translate->_('The application manifest is available') :
 							$translate->_('The application manifest is not available')
 					) .
-					'<br/>' . ($this->model->appconfig->info->deactivatable == "true" ?
+					'<br/>' . ($this->model->appconfig->info->deactivatable === 'true' ?
 							$translate->_('The application can be deactivated.') :
 							$translate->_('The application can not be deactivated!')
 					) .
-					'<br/>' . ($this->model->appconfig->info->deinstallable == "true" ?
+					'<br/>' . ($this->model->appconfig->info->deinstallable === 'true' ?
 							$translate->_('The application is deletable.') :
 							$translate->_('The application can not be deleted!')
 					) .
-					'<br/>' . ($this->model->appconfig->info->updatable == "true" ?
+					'<br/>' . ($this->model->appconfig->info->updatable === 'true' ?
 							$translate->_('The application can be updated.') :
 							$translate->_('The application can not be updated.')
 					) .

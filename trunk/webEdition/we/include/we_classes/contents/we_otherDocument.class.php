@@ -165,17 +165,17 @@ class we_otherDocument extends we_binaryDocument{
 	}
 
 	public function setMetaDataFromFile($file){
-		if($this->Extension == '.pdf' && file_exists($file)){
+		if($this->Extension === '.pdf' && file_exists($file)){
 			$pdf = new we_helpers_pdf2text($file);
 			$metaData = $pdf->getInfo();
-			if(!empty($metaData)){
-				if(isset($metaData['Title']) && ($this->getElement('Title') == '')){
+			if($metaData){
+				if(isset($metaData['Title']) && !$this->getElement('Title')){
 					$this->setElement('Title', $metaData['Title']);
 				}
-				if(isset($metaData['Keywords']) && ($this->getElement('Keywords') == '')){
+				if(isset($metaData['Keywords']) && !$this->getElement('Keywords')){
 					$this->setElement('Keywords', $metaData['Keywords']);
 				}
-				if(isset($metaData['Subject']) && ($this->getElement('Description') == '')){
+				if(isset($metaData['Subject']) && !$this->getElement('Description')){
 					$this->setElement('Description', $metaData['Subject']);
 				}
 			}

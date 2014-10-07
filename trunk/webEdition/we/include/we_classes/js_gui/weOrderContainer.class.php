@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weOrderContainer{
+
 	// DEBUG
 	var $debug = false;
 	// private Target Frame
@@ -62,7 +63,7 @@ class weOrderContainer{
 		}
 
 		$src = '<' . $this->containerType . ' id="' . $this->containerId . '"' . $style . $attrib . '>'
-			. '</' . $this->containerType . '>';
+				. '</' . $this->containerType . '>';
 
 		return $src;
 	}
@@ -105,20 +106,20 @@ class weOrderContainer{
 	function getResponse($mode, $uniqueid, $string = "", $afterid = false){
 
 		$cmd = $this->getCmd($mode, $uniqueid, $afterid);
-		if($cmd == ""){
+		if(!$cmd){
 			return "";
 		}
 
 		$style = ($this->debug ?
-				' style="display: block; width: 90%; height: 90%; overflow: auto; border: 1px #ff0000 solid; font-family: verdana, arial; font-size: 11px; color: #000000; padding: 5px;"' :
-				' style="display: none;"');
+						' style="display: block; width: 90%; height: 90%; overflow: auto; border: 1px #ff0000 solid; font-family: verdana, arial; font-size: 11px; color: #000000; padding: 5px;"' :
+						' style="display: none;"');
 
 		return ($string != "" || $this->debug ?
-				'<' . $this->containerType . ' id="' . $this->containerId . '"' . $style . '>'
-				. $string
-				. '</' . $this->containerType . '>' : '') .
-			we_html_element::jsElement($cmd) .
-			$this->getDisableButtonJS();
+						'<' . $this->containerType . ' id="' . $this->containerId . '"' . $style . '>'
+						. $string
+						. '</' . $this->containerType . '>' : '') .
+				we_html_element::jsElement($cmd) .
+				$this->getDisableButtonJS();
 	}
 
 // end: getResponse

@@ -1038,7 +1038,7 @@ class we_document extends we_root{
 				if(weTag_getAttribute('win2iso', $attribs, false, true)){
 
 					$charset = ( isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'])) ? $GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'] : '';
-					if(trim(strtolower(substr($charset, 0, 3))) === 'iso' || $charset == ''){
+					if(trim(strtolower(substr($charset, 0, 3))) === 'iso' || $charset === ''){
 						$retval = strtr($retval, array(
 							chr(128) => '&#8364;',
 							chr(130) => '&#8218;',
@@ -1618,7 +1618,7 @@ class we_document extends we_root{
 						unset($GLOBALS['we_link_not_published']);
 					}
 					if($href){
-						$text = ($reg[2] == '?' ?
+						$text = ($reg[2] === '?' ?
 								str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
 								str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
 					} else {

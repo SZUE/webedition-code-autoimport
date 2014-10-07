@@ -683,7 +683,7 @@ abstract class we_base_file{
 			return false;
 		}
 		if($delAll){
-			$foo = (substr($filename, -1) == "/") ? $filename : ($filename . "/");
+			$foo = (substr($filename, -1) === '/') ? $filename : ($filename . '/');
 			$d = dir($filename);
 			while(false !== ($entry = $d->read())){
 				if($entry != ".." && $entry != "."){

@@ -63,9 +63,9 @@ class we_dialog_rule extends we_dialog_base{
 
 		$foo = '<select class="defaultfont" name="we_dialog_args[align]" size="1">
 							<option value="">Default</option>
-							<option value="left"' . ((isset($this->args["align"]) && $this->args["align"] == "left") ? "selected" : "") . '>Left</option>
-							<option value="center"' . ((isset($this->args["align"]) && $this->args["align"] == "center") ? "selected" : "") . '>Center</option>
-							<option value="right"' . ((isset($this->args["align"]) && $this->args["align"] == "right") ? "selected" : "") . '>Right</option>
+							<option value="left"' . ((isset($this->args["align"]) && $this->args["align"] === "left") ? "selected" : "") . '>Left</option>
+							<option value="center"' . ((isset($this->args["align"]) && $this->args["align"] === "center") ? "selected" : "") . '>Center</option>
+							<option value="right"' . ((isset($this->args["align"]) && $this->args["align"] === "right") ? "selected" : "") . '>Right</option>
 						</select>';
 		$align = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[halignment]"));
 

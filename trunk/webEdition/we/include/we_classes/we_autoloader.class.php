@@ -217,7 +217,7 @@ abstract class we_autoloader{
 
 		foreach(self::$classes as $path => $array){
 			if(array_key_exists($class_name, $array)){
-				$path = (substr($path, 0, 1) == '/' ? $_SERVER['DOCUMENT_ROOT'] . $path : WE_INCLUDES_PATH . $path . '/');
+				$path = (substr($path, 0, 1) === '/' ? $_SERVER['DOCUMENT_ROOT'] . $path : WE_INCLUDES_PATH . $path . '/');
 				include_once($path . $array[$class_name]);
 				return true;
 			}

@@ -117,11 +117,11 @@ class we_folder extends we_root{
 
 		$ParentID = $this->ParentID;
 		$i = 0;
-		while($this->Language == ''){
+		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
 				$this->Language = $GLOBALS['weDefaultFrontendLanguage'];
-				if($this->Language == ''){
+				if(!$this->Language){
 					$this->Language = 'de_DE';
 				}
 			} else {
@@ -413,7 +413,7 @@ class we_folder extends we_root{
 
 	function i_filenameEmpty(){
 		$fn = ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? $this->Filename : $this->Text;
-		return ($fn == '') ? true : false;
+		return ($fn === '');
 	}
 
 	/* returns 0 because it is a directory */
@@ -450,7 +450,7 @@ class we_folder extends we_root{
 		}
 
 		$userCanChange = permissionhandler::hasPerm('CHANGE_DOC_FOLDER_PATH') || ($this->CreatorID == $_SESSION['user']['ID']) || (!$this->ID);
-		if($this->ID != 0 && $this->ParentID == 0 && $this->ParentPath == '/' && defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE){
+		if($this->ID != 0 && $this->ParentID == 0 && $this->ParentPath === '/' && defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE){
 			$userCanChange = false;
 		}
 		return (!$userCanChange ? '<table border="0" cellpadding="0" cellspacing="0"><tr><td><span class="defaultfont">' . $this->Path . '</span></td></tr>' :

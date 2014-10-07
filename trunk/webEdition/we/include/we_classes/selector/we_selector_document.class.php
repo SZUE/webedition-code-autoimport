@@ -317,7 +317,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 			while($this->next_record()){
 				$title = isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : '&nbsp;';
 				$title = strip_tags(str_replace(array('\\', '"', "\n",), array('\\\\', '\"', ' '), $title));
-				$title = $title == '&nbsp;' ? '-' : oldHtmlspecialchars($title);
+				$title = $title === '&nbsp;' ? '-' : oldHtmlspecialchars($title);
 				$published = ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? $this->f("Published") : 1);
 				$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . addcslashes($title, '"') . '");';
 			}
@@ -457,7 +457,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr><td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td></tr>
 	<tr><td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td></tr>';
-		if($this->filter == ''){
+		if(!$this->filter){
 			$ret.= '
 	<tr>
 		<td></td>
@@ -477,7 +477,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		}
 		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:press_ok_button();"), null, we_html_button::create_button("cancel", "javascript:top.exit_close();"));
 
-		$seval = $this->values["Text"] == "/" ? "" : $this->values["Text"];
+		$seval = $this->values["Text"] === '/' ? "" : $this->values["Text"];
 		$ret.= '
 	<tr>
 		<td></td>
@@ -588,7 +588,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 </head>
 <body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">';
 		if(isset($result['ContentType']) && !empty($result['ContentType'])){
-			if($result['ContentType'] == "folder"){
+			if($result['ContentType'] === "folder"){
 				$this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
 				$folderFolders = array();
 				$folderFiles = array();
@@ -605,7 +605,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 						$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($result['TableID']), $this->db, MYSQL_ASSOC);
 						$_selFields = array();
 						foreach($_fieldnames as $_key => $_val){
-							if(!$_val || $_val == '_'){ // bug #4657
+							if(!$_val || $_val === '_'){ // bug #4657
 								continue;
 							}
 							switch($_key){

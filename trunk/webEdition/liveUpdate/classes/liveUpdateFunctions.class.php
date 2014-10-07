@@ -462,11 +462,11 @@ class liveUpdateFunctions{
 
 			$default = '';
 
-			$null = (strtoupper($fieldInfo['Null']) == "YES" ? ' NULL' : ' NOT NULL');
+			$null = (strtoupper($fieldInfo['Null']) === 'YES' ? ' NULL' : ' NOT NULL');
 
 			if(($fieldInfo['Default']) != ""){
 				$default = 'DEFAULT ' . (($fieldInfo['Default']) === 'CURRENT_TIMESTAMP' ? 'CURRENT_TIMESTAMP' : '\'' . $fieldInfo['Default'] . '\'');
-			} elseif(strtoupper($fieldInfo['Null']) == "YES"){
+			} elseif(strtoupper($fieldInfo['Null']) === "YES"){
 				$default = ' DEFAULT NULL';
 			}
 			$extra = strtoupper($fieldInfo['Extra']);
