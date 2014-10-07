@@ -57,20 +57,20 @@ function we_tag_object($attribs){
 
 	if($name){
 		if(strpos($name, ' ') !== false){
-			print parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
+			echo parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
 			return false;
 		}
 
 		$we_doc = $GLOBALS['we_doc'];
 		//handle listview of documents
 		$we_oid = (isset($GLOBALS['lv']) && is_object($GLOBALS['lv']) && $GLOBALS['lv']->f($name) ?
-				$GLOBALS['lv']->f($name) :
-				($we_doc->getElement($name, 'bdid') ?
-					$we_doc->getElement($name, 'bdid') :
-					($we_doc->getElement($name) ?
-						$we_doc->getElement($name) :
-						$we_oid)
-				));
+						$GLOBALS['lv']->f($name) :
+						($we_doc->getElement($name, 'bdid') ?
+								$we_doc->getElement($name, 'bdid') :
+								($we_doc->getElement($name) ?
+										$we_doc->getElement($name) :
+										$we_oid)
+						));
 		$rootDirID = ($classid ? f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path=(SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid) . ')') : 0);
 
 		$path = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $we_oid);
@@ -99,11 +99,10 @@ function we_tag_object($attribs){
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td class="weEditmodeStyle" style="padding:0 6px;"><span style="font-weight: bold;"><?php echo weTag_getAttribute('text', $attribs, weTag_getAttribute('_name_orig', $attribs)); ?></span></td>
-					<?php echo '<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' . $yuiSuggest->getHTML() . '</td>'; ?>
+					<td class="weEditmodeStyle" style="width: <?php echo ($size + 20); ?>px"><?php echo $yuiSuggest->getHTML(); ?></td>'
 					<td class="weEditmodeStyle"><?php echo $button; ?></td>
 					<td class="weEditmodeStyle"><?php echo $open; ?></td>
 					<td class="weEditmodeStyle"><?php echo $delbutton; ?></td>
-
 				</tr>
 			</table><?php
 		}
