@@ -102,7 +102,7 @@ class we_textDocument extends we_document{
 	}
 
 	function getPath(){
-		if($this->parseFile && $this->ContentType == we_base_ContentTypes::CSS && ($this->Extension == '.less' || $this->Extension == '.scss')){
+		if($this->parseFile && $this->ContentType == we_base_ContentTypes::CSS && ($this->Extension === '.less' || $this->Extension === '.scss')){
 			return rtrim($this->getParentPath(), '/') . '/' . ( isset($this->Filename) ? $this->Filename : '' ) . '.css';
 		}
 		return parent::getPath();

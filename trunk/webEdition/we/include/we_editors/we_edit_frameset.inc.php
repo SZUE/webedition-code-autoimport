@@ -124,7 +124,7 @@ if(($tid = we_base_request::_(we_base_request::INT, 'we_cmd', false, 10)) !== fa
 }
 
 //predefine ParentPath
-if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'new_document' && ($pid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 5)) && $we_doc->ParentID == 0){
+if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'new_document' && ($pid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 5)) && $we_doc->ParentID == 0){
 	if($we_doc->ContentType == we_base_ContentTypes::FOLDER){
 		$we_doc->setParentID($pid);
 	}
@@ -134,7 +134,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'new_document
 if(($doct = we_base_request::_(we_base_request::INT, 'we_cmd', false, 8)) !== false && ($we_Table == FILE_TABLE) && ($we_ContentType == we_base_ContentTypes::WEDOCUMENT)){
 	$we_doc->changeDoctype($doct);
 	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 1);
-} else if($doct !== false && (defined('OBJECT_FILES_TABLE') && $we_Table == OBJECT_FILES_TABLE) && ($we_ContentType == 'objectFile')){
+} else if($doct !== false && (defined('OBJECT_FILES_TABLE') && $we_Table == OBJECT_FILES_TABLE) && ($we_ContentType === 'objectFile')){
 	$we_doc->TableID = $doct;
 	$we_doc->setRootDirID(true);
 	$we_doc->restoreDefaults();
@@ -223,7 +223,7 @@ if(!isset($we_doc->IsClassFolder)){
 		}
 	}
 
-	if($we_doc->ContentType == 'objectFile' && (!$we_doc->canMakeNew())){ // at this time only in objectFiles
+	if($we_doc->ContentType === 'objectFile' && (!$we_doc->canMakeNew())){ // at this time only in objectFiles
 		$we_message = g_l('alert', '[no_new][objectFile]');
 		include(WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 		exit;
@@ -426,7 +426,7 @@ switch($_SESSION['weS']['we_mode']){
 		break;
 	case we_base_constants::MODE_NORMAL:
 	default:
-		$showContentEditor = ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && substr($we_doc->ContentType, 0, 5) == 'text/' && $we_doc->ContentType != we_base_ContentTypes::WEDOCUMENT);
+		$showContentEditor = ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && substr($we_doc->ContentType, 0, 5) === 'text/' && $we_doc->ContentType != we_base_ContentTypes::WEDOCUMENT);
 		?>
 		<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="39,<?php echo $showContentEditor ? "0,*" : "*,0"; ?>,40" framespacing="0" border="0" frameborder="NO" onunload="doUnload();">
 			<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>

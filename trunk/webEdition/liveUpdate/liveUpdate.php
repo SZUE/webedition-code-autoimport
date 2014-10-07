@@ -50,7 +50,7 @@ if(isset($_REQUEST['update_cmd'])){
 	 * For command checkConnection, it is not needed to create a session on the
 	 * server. Therefore treat this command in a special way.
 	 */
-	if($_REQUEST['update_cmd'] == 'checkConnection'){
+	if($_REQUEST['update_cmd'] === 'checkConnection'){
 
 		$response = liveUpdateHttp::getHttpResponse(LIVEUPDATE_SERVER, LIVEUPDATE_SERVER_SCRIPT, $parameters);
 		$liveUpdateResponse = new liveUpdateResponse();

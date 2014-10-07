@@ -49,7 +49,7 @@ class we_http_request{
 
 		$this->http_path = $path;
 		$this->http_host = $host;
-		$this->http_method = (strtoupper($method) == 'GET' ? 'GET' : 'POST'); //  only get or post is allowed
+		$this->http_method = (strtoupper($method) === 'GET' ? 'GET' : 'POST'); //  only get or post is allowed
 
 		$this->http_protocol = $protocol;
 		$this->http_headers['Host'] = $host;
@@ -162,7 +162,7 @@ class we_http_request{
 		$_header[] = $this->http_body;
 
 		$_session = curl_init();
-		curl_setopt($_session, CURLOPT_URL, 'http://' . $this->http_host . ($this->http_method == 'GET' ? $path : $this->http_path));
+		curl_setopt($_session, CURLOPT_URL, 'http://' . $this->http_host . ($this->http_method === 'GET' ? $path : $this->http_path));
 		curl_setopt($_session, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($_session, CURLOPT_CUSTOMREQUEST, $this->http_method);
 		curl_setopt($_session, CURLOPT_HEADER, 1);
@@ -240,7 +240,7 @@ class we_http_request{
 		if($_sizeFiles || $_sizeVars){
 
 			//  it is necessary to differ from POST/GET requests
-			if($this->http_method == 'POST'){ //  method 'POST'
+			if($this->http_method === 'POST'){ //  method 'POST'
 				//  boundary to seperate between different content blocks
 				$boundary = 'accessibility_webEdition' . str_replace('.', '', uniqid('', true));
 

@@ -35,7 +35,7 @@ $cmd1 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);
 $filter = we_base_request::_(we_base_request::STRING, 'we_cmd', 'all_Types', 2);
 $url = we_base_request::_(we_base_request::URL, 'we_cmd', '', 3);
 $currentDir = str_replace('\\', '/', ( $url ?
-		($url == '/' ? '' :
+		($url === '/' ? '' :
 			( parse_url($url) === FALSE && is_dir($docroot . $url) ?
 				$url :
 				dirname($url))) :
@@ -46,7 +46,7 @@ if(!file_exists($docroot . $currentDir . '/' . $currentName)){
 	$currentName = '';
 }
 
-$currentID = $docroot . $currentDir . ($filter == we_base_ContentTypes::FOLDER || $filter == 'filefolder' ? '' : (($currentDir != '') ? '/' : '') . $currentName);
+$currentID = $docroot . $currentDir . ($filter == we_base_ContentTypes::FOLDER || $filter === 'filefolder' ? '' : (($currentDir != '') ? '/' : '') . $currentName);
 
 $currentID = str_replace('\\', '/', $currentID);
 

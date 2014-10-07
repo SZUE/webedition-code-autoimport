@@ -194,7 +194,7 @@ function switch_button_state(element, button, state, type) {
 				// Check if the link has to be opened in a different frame or in a new window
 				$_button_link = ($target ? // The link will be opened in a different frame or in a new window
 						// Check if the link has to be opend in a frame or a window
-						($target == '_blank' ? // The link will be opened in a new window
+						($target === '_blank' ? // The link will be opened in a new window
 							"window.open('" . $href . "', '" . $target . "');" :
 							// The link will be opened in a different frame
 							"target_frame = eval('parent.' + " . $target . ");target_frame.location.href='" . $href . "';") :
@@ -315,7 +315,7 @@ function switch_button_state(element, button, state, type) {
 		//	Create default attributes for table
 		$align = $align ? 'right' : 'right';
 		$attr = array(
-			'style' => 'border-style:none; padding-top:0px;padding-bottom:0px;padding-left:' . ($align == 'left' ? $aligngap : 0) . 'px;padding-right:' . ($align == 'right' ? $aligngap : 0) . 'px;border-spacing:0px;',
+			'style' => 'border-style:none; padding-top:0px;padding-bottom:0px;padding-left:' . ($align === 'left' ? $aligngap : 0) . 'px;padding-right:' . ($align === 'right' ? $aligngap : 0) . 'px;border-spacing:0px;',
 			'align' => $align,
 		);
 

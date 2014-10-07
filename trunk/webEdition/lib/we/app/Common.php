@@ -412,7 +412,7 @@ class we_app_Common{
 		$tocentry = self::getAppTOCEntry($appname);
 		$element = $tocentry && $tocentry->name == $appname && isset($tocentry->usejmenu) ? (string) $tocentry->usejmenu : 'false';
 
-		return $element == 'true' ? true : false;
+		return $element === 'true';
 	}
 
 	/**

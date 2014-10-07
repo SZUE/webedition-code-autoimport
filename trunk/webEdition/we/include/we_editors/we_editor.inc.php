@@ -501,7 +501,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 								$we_doc->lockDocument();
 							}
 							$wasSaved = true;
-							if($we_doc->ContentType == 'object'){
+							if($we_doc->ContentType === 'object'){
 //FIXME: removed: top.header.document.location.reload(); - what should be reloaded?!
 								$we_JavaScript .= "if(top.treeData.table=='" . OBJECT_FILES_TABLE . "'){top.we_cmd('load', 'tblObjectFiles', 0);}";
 							}
@@ -578,7 +578,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 								$we_JavaScript .= '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');';
 							}
 
-							if(($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType == 'objectFile') && $we_doc->canHaveVariants(true)){
+							if(($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === 'objectFile') && $we_doc->canHaveVariants(true)){
 								we_shop_variants::setVariantDataForModel($we_doc, true);
 							}
 						} else {
@@ -611,7 +611,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 				}
 			}
 			$we_responseText.=$we_doc->getErrMsg();
-			if($_SERVER['REQUEST_METHOD'] == 'POST' && !we_base_request::_(we_base_request::BOOL, 'we_complete_request')){
+			if($_SERVER['REQUEST_METHOD'] === 'POST' && !we_base_request::_(we_base_request::BOOL, 'we_complete_request')){
 				$we_responseText = g_l('weEditor', '[incompleteRequest]');
 				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 			} else {
@@ -642,7 +642,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 					$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_unpublish_notok]'), $we_doc->Path);
 					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				}
-				if($_SERVER['REQUEST_METHOD'] == 'POST' && !we_base_request::_(we_base_request::BOOL, 'we_complete_request')){
+				if($_SERVER['REQUEST_METHOD'] === 'POST' && !we_base_request::_(we_base_request::BOOL, 'we_complete_request')){
 					$we_responseText = g_l('weEditor', '[incompleteRequest]');
 					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				} else {

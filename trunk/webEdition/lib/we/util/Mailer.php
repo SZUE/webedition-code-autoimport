@@ -262,7 +262,7 @@ class we_util_Mailer extends Zend_Mail{
 
 						if(in_array($ext, $this->embedImages)){
 							$directory = str_replace('..', '', dirname($url) . '/');
-							$directory = ($directory == '.' ? '' : $directory);
+							$directory = ($directory === '.' ? '' : $directory);
 							if(($pos = stripos($directory, $_SERVER['SERVER_NAME']))){
 								$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
 							}
@@ -281,7 +281,7 @@ class we_util_Mailer extends Zend_Mail{
 			}
 
 			if($this->isUseBaseHref){//Bug #3735
-				if($this->ContentType == 'text/html' && !strpos($this->Body, "<base")){
+				if($this->ContentType === 'text/html' && !strpos($this->Body, "<base")){
 					$this->Body = str_replace('</head>', "<base href='" . getServerUrl() . "' />\n</head>", $this->Body);
 				}
 			}

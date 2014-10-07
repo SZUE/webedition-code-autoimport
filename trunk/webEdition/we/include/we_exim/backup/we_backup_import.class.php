@@ -77,14 +77,14 @@ class we_backup_import{
 					$name = $parser->getNodeName();
 
 					//import elements
-					if($name == 'we:content'){
+					if($name === 'we:content'){
 
 						$parser->addMark('second');
 						$parser->next();
 
 						do{
 							$element_value = $parser->getNodeName();
-							if($element_value == 'Field'){
+							if($element_value === 'Field'){
 								$element_name = $parser->getNodeData();
 							}
 							if($element_name){

@@ -59,7 +59,7 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 
 		foreach($this->Options as $option){
 			$keys[] = $option->Value;
-			$values[] = ($option->getName() == '-' ? '' : $option->getName());
+			$values[] = ($option->getName() === '-' ? '' : $option->getName());
 		}
 
 		$js = "we_cmd('switch_type', this.value);";

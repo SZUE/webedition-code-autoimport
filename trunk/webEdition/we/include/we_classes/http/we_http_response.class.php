@@ -93,7 +93,7 @@ class we_http_response{
 
 			//  is output chunked ?
 			//temporary disabled
-			if(false && isset($this->http_headers['Transfer-Encoding']) && $this->http_headers['Transfer-Encoding'] == 'chunked'){
+			if(false && isset($this->http_headers['Transfer-Encoding']) && $this->http_headers['Transfer-Encoding'] === 'chunked'){
 
 				$body = "";
 

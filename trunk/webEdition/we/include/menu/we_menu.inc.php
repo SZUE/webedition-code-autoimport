@@ -779,7 +779,7 @@ foreach($allModules as $m){
 
 	if(we_base_moduleInfo::showModuleInMenu($m['name'])){
 		// workarround (old module names) for not installed Modules WIndow
-		/* 	if($m['name'] == 'customer'){
+		/* 	if($m['name'] === 'customer'){
 		  $moduleList .= 'customerpro|';
 		  }
 		  $moduleList .= $m['name'] . '|'; */

@@ -216,7 +216,7 @@ class we_imageDocument extends we_binaryDocument{
 	}
 
 	public function isSvg(){
-		return ($this->Extension == '.svg' || $this->Extension == '.svgz');
+		return ($this->Extension === '.svg' || $this->Extension === '.svgz');
 	}
 
 	private function checkDisableEditpages(){
@@ -437,7 +437,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 
 			if($this->issetElement('sizingstyle')){
 				$sizingstyle = $this->getElement('sizingstyle');
-				$sizingstyle = $sizingstyle == 'none' ? false : $sizingstyle;
+				$sizingstyle = $sizingstyle === 'none' ? false : $sizingstyle;
 				$this->delElement('sizingstyle');
 			} else {
 				$sizingstyle = false;
@@ -759,7 +759,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 				foreach($_arr as $_impFr){
 					if(isset($this->metaData[$_impFr[0]][$_impFr[1]]) && !empty($this->metaData[$_impFr[0]][$_impFr[1]])){
 						$_val = $this->metaData[$_impFr[0]][$_impFr[1]];
-						if($_impFr[2] == 'date'){
+						if($_impFr[2] === 'date'){
 							// here we need to parse the date
 							if(preg_match('|^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})$|', $_val, $regs)){
 								$_val = sprintf('%016d', mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]));

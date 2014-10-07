@@ -226,7 +226,7 @@ class we_binaryDocument extends we_document{
 
 	protected function i_setElementsFromHTTP(){
 		// preventing fields from override
-		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'update_file'){
+		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'update_file'){
 			return;
 		}
 		parent::i_setElementsFromHTTP();

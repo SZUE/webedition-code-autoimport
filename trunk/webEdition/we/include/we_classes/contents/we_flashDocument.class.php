@@ -58,7 +58,7 @@ class we_flashDocument extends we_binaryDocument{
 		}
 		$sizingbase = weTag_getAttribute('sizingbase', $attribs, 16);
 		$sizingstyle = weTag_getAttribute('sizingstyle', $attribs, false);
-		if($sizingstyle == 'none'){
+		if($sizingstyle === 'none'){
 			$sizingstyle = false;
 		}
 		$removeAttribs = array('sizingrel', 'sizingbase', 'sizingstyle', 'xml');
@@ -75,7 +75,7 @@ class we_flashDocument extends we_binaryDocument{
 
 		foreach($attribs as $a => $b){
 			if($b != ''){
-				$this->setElement($a, $b, ($a == 'Pluginspage' || $a == 'Codebase' ? 'txt' : 'attrib'));
+				$this->setElement($a, $b, ($a === 'Pluginspage' || $a === 'Codebase' ? 'txt' : 'attrib'));
 			}
 		}
 	}

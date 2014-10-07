@@ -55,7 +55,7 @@ class we_helpers_scss extends scssc {
 	public function findImport($url){
 		if(preg_match('|#WE:(\d+)#|', $url, $matches)){
 			$url = intval($matches[1]);
-			return (f('SELECT Extension FROM ' . FILE_TABLE . ' WHERE ID=' . $url) == '.scss' ? $url : null);
+			return (f('SELECT Extension FROM ' . FILE_TABLE . ' WHERE ID=' . $url) === '.scss' ? $url : null);
 		}
 		return parent::findImport($url);
 	}

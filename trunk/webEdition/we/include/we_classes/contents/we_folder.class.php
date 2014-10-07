@@ -138,7 +138,7 @@ class we_folder extends we_root{
 	}
 
 	public function initByPath($path, $tblName = FILE_TABLE){
-		if(substr($path, -1) == '/'){
+		if(substr($path, -1) === '/'){
 			$path = substr($path, 0, strlen($path) - 1);
 		}
 		$id = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $this->DB_WE->escape($path) . '" AND IsFolder=1', '', $this->DB_WE);

@@ -55,7 +55,7 @@ class we_base_browserDetect{
 
 	function __construct($ua = ''){
 		//prevent from redetecting the same strings
-		if(self::$detected && $ua == ''){
+		if(self::$detected && $ua === ''){
 			return;
 		}
 		if($ua != ''){
@@ -82,10 +82,10 @@ class we_base_browserDetect{
 					break;
 				case 'mozilla':
 					$java = explode('/', trim($post));
-					if($java[0] == 'Java'){
+					if($java[0] === 'Java'){
 						self::$br = self::JAVA;
 						self::$v = $java[1];
-					} elseif(preg_match('/msie (.*)$/i', $bracket, $regs) && (trim($post) == '' || preg_match('/\.net/i', $post)) || preg_match('/Trident.*rv:(\d+\.?\d?)/i', $bracket, $regs)){
+					} elseif(preg_match('/msie (.*)$/i', $bracket, $regs) && (trim($post) === '' || preg_match('/\.net/i', $post)) || preg_match('/Trident.*rv:(\d+\.?\d?)/i', $bracket, $regs)){
 						self::$br = self::IE;
 						self::$v = isset($regs[1]) ? $regs[1] : 0;
 					} elseif(preg_match('/konqueror\/(.*)$/i', $bracket, $regs)){

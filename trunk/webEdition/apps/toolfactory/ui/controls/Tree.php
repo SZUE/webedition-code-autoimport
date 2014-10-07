@@ -59,7 +59,7 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree{
 	 * @return string
 	 */
 	public function getNodeObject($id, $text, $Published, $Status){
-		if(isset($Published) && $Published == 0){
+		if(isset($Published) && $Published === 0){
 			$outClasses[] = 'unpublished';
 		}
 		if(isset($Status) && $Status != ''){

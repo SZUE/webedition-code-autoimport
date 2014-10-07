@@ -93,7 +93,7 @@ class we_core_Local{
 
 		if(isset($langs[$locale])){
 			$charset = self::getComputedUICharset();
-			if($charset == 'UTF-8'){
+			if($charset === 'UTF-8'){
 				return $langs[$locale] . '_UTF-8';
 			}
 			return $langs[$locale];

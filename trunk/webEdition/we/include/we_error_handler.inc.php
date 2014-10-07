@@ -152,7 +152,7 @@ function getBacktrace($skip){
 	$found = false;
 	//error handler called directly caused by an error
 	foreach($_backtrace as $no => $arr){
-		if($arr['function'] == 't_e'){
+		if($arr['function'] === 't_e'){
 			unset($_backtrace[$no - 1]);
 			$found = true;
 

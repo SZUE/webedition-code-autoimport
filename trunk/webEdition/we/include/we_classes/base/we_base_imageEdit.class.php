@@ -100,7 +100,7 @@ abstract class we_base_imageEdit{
 			case "\x89" . 'PN':
 				return 'png';
 			default:
-				if(substr($imagedata, 0, 2) == 'BM'){
+				if(substr($imagedata, 0, 2) === 'BM'){
 					return 'bmp';
 				}
 				return '';
@@ -387,7 +387,7 @@ abstract class we_base_imageEdit{
 		// Output format is available
 		if(in_array($output_format, self::supported_image_types())){
 			// Set quality for JPG images
-			if($output_format == 'jpg'){
+			if($output_format === 'jpg'){
 				// Keep quality between 1 and 99
 				$output_quality = max(1, min(99, (is_int($output_quality) ? $output_quality : 75)));
 			}
@@ -436,7 +436,7 @@ abstract class we_base_imageEdit{
 				// DEBIAN EDGE FIX => crashes at imagefill, so use old Method
 				if($GDInfo["GD Version"] == "2.0 or higher" && !function_exists("imagerotate")){
 					// set black to transparent!
-					if($output_format == 'gif' || $output_format == 'png'){ // transparency with gifs
+					if($output_format === 'gif' || $output_format === 'png'){ // transparency with gifs
 						imagecolortransparent($_output_gdimg, imagecolorallocate($_output_gdimg, 0, 0, 0)); // set this color to transparent - done
 					}
 				} else {

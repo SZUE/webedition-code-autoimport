@@ -32,7 +32,7 @@ abstract class we_backup_fileReader extends we_backup_XMLFileReader{
 			$attributes = explode('=', $match[2]);
 			$attributes[0] = trim($attributes[0]);
 
-			if($attributes[0] == 'name' || $attributes[0] == 'table'){
+			if($attributes[0] === 'name' || $attributes[0] === 'table'){
 				$attributes[1] = trim(str_replace(array('"', '\''), '', $attributes[1]));
 
 				// if the table should't be imported

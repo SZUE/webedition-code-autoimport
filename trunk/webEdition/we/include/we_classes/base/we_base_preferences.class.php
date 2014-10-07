@@ -171,7 +171,7 @@ class we_base_preferences{
 
 	private static function makeDefine($key, $val, $active = true, $comment = ''){
 		return ($comment ? '//' . $comment . "\n" : '') . ($active ? '' : "//") . 'define(\'' . $key . '\', ' .
-			(is_bool($val) || $val == 'true' || $val == 'false' ? ($val ? 'true' : 'false') :
+			(is_bool($val) || $val === 'true' || $val === 'false' ? ($val ? 'true' : 'false') :
 				(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val))) . ');';
 	}
 

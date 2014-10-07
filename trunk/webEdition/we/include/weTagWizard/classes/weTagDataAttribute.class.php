@@ -121,7 +121,7 @@ class weTagDataAttribute{
 	 * @return boolean
 	 */
 	function useAttribute(){
-		return ($this->Module == '' || we_base_moduleInfo::isActive($this->Module));
+		return ($this->Module === '' || we_base_moduleInfo::isActive($this->Module));
 	}
 
 	/**

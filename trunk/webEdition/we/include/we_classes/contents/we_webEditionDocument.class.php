@@ -522,7 +522,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				$fieldTypes = array_keys($fieldTypes, 'txt');
 				array_push($fieldTypes, 'Title', 'Description', 'Keywords');
 				foreach($fieldTypes as $field){//for #230: if variables are used in fieldnames we cannot determine these types
-					if($field && ($field[0] == '$' || isset($field[1]) && $field[1] == '$')){
+					if($field && ($field[0] === '$' || isset($field[1]) && $field[1] === '$')){
 						$fieldTypes = array();
 						break;
 					}
@@ -1033,7 +1033,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, serialize($tmp), 'variant');
 			return ($this->hasVariants = !empty($tmp));
 		}
-		if(substr($tmp, 0, 2) == 'a:'){
+		if(substr($tmp, 0, 2) === 'a:'){
 			$_vars = unserialize($tmp);
 			return ($this->hasVariants = (is_array($_vars) && $_vars));
 		}

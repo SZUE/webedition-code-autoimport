@@ -205,7 +205,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		if(!is_array($parsed)){
 			return false;
 		}
-		return ($parsed['scheme'] ? $parsed['scheme'] . ':' . ((strtolower($parsed['scheme']) == 'mailto') ? '' : '//') : '') .
+		return ($parsed['scheme'] ? $parsed['scheme'] . ':' . ((strtolower($parsed['scheme']) === 'mailto') ? '' : '//') : '') .
 			($parsed['user'] ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '') .
 			($parsed['host'] ? $parsed['host'] : '') .
 			($parsed['port'] ? ':' . $parsed['port'] : '') .
@@ -383,7 +383,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			}
 		}
 
-		$_anchorSel = (isset($this->args["editor"]) && $this->args["editor"] == 'tinyMce') ? '<div id="anchorlistcontainer"></div>' : we_html_element::jsElement('showanchors("anchors","","this.form.elements[\'we_dialog_args[anchor]\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;")');
+		$_anchorSel = (isset($this->args["editor"]) && $this->args["editor"] === 'tinyMce') ? '<div id="anchorlistcontainer"></div>' : we_html_element::jsElement('showanchors("anchors","","this.form.elements[\'we_dialog_args[anchor]\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;")');
 		$_anchorInput = we_html_tools::htmlTextInput("we_dialog_args[anchor]", 30, $this->args["anchor"], "", 'onblur="checkAnchor(this)"', "text", 300);
 
 		$_anchor = we_html_tools::htmlFormElementTable($_anchorInput, "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_anchorSel, "", "", "", 0);
@@ -391,7 +391,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		$_param = we_html_tools::htmlTextInput("we_dialog_args[param]", 30, htmlspecialchars(urldecode(utf8_decode($this->args["param"]))), '', '', 'text', 300);
 
 		// CSS STYLE
-		$classSelect = $this->args["editor"] == 'tinyMce' ? $this->getClassSelect() : we_html_element::jsElement('showclasss("we_dialog_args[class]", "' . $this->args["class"] . '", "");');
+		$classSelect = $this->args["editor"] === 'tinyMce' ? $this->getClassSelect() : we_html_element::jsElement('showclasss("we_dialog_args[class]", "' . $this->args["class"] . '", "");');
 
 
 		// lang
