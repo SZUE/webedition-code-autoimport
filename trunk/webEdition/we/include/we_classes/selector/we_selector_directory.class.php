@@ -680,7 +680,7 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";' : '');
 		}
 
 
-		print
+		echo
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() .
 			'top.makeNewFolder = 0;
