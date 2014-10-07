@@ -73,14 +73,14 @@ class we_util_Log{
 				return false;
 			} else {
 				$writer = new Zend_Log_Writer_Stream($logCheck);
-				if($filename == "syslog"){
+				if($filename === 'syslog'){
 					self::$_syslog = new Zend_Log($writer);
 				} else {
 					self::$_logfile = new Zend_Log($writer);
 				}
 			}
 		}
-		if($filename == "syslog"){
+		if($filename === 'syslog'){
 			self::$_syslog->log($message, $errorlevel);
 		} else {
 			self::$_logfile->log($message, $errorlevel);

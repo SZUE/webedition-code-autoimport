@@ -66,7 +66,7 @@ class we_rtf2html{
 		$this->colectInfo();
 
 		$this->current = -1;
-		if(substr($this->fileContent, 0, 5) == "{\\rtf"){ //##TODO## have to check if this clause is correct!!!
+		if(substr($this->fileContent, 0, 5) === "{\\rtf"){ //##TODO## have to check if this clause is correct!!!
 			$this->parseRtf();
 			$this->correctLists();
 		} else {
@@ -195,13 +195,13 @@ class we_rtf2html{
 		while($ch != EOF){
 			switch($ch){
 				case '{':
-					if(substr($infocon, 0, 7) == "fonttbl"){
+					if(substr($infocon, 0, 7) === "fonttbl"){
 						$kind = 1;
 						$g = 1;
 						$tableproc = true;
 						$infocon = "";
 					}
-					if(substr($infocon, 0, 8) == "colortbl"){
+					if(substr($infocon, 0, 8) === "colortbl"){
 						$kind = 2;
 						$g = 1;
 						$tableproc = true;
@@ -233,23 +233,23 @@ class we_rtf2html{
 					}
 					break;
 				case '\\':
-					if(substr($infocon, 0, 7) == "fonttbl"){
+					if(substr($infocon, 0, 7) === "fonttbl"){
 						$kind = 1;
 						$g = 1;
 						$tableproc = true;
 						$infocon = "";
 					}
-					if(substr($infocon, 0, 8) == "colortbl"){
+					if(substr($infocon, 0, 8) === "colortbl"){
 						$kind = 2;
 						$g = 1;
 						$tableproc = true;
 						$infocon = "";
 					}
-					if(substr($infocon, 0, 7) == "ansicpg"){
+					if(substr($infocon, 0, 7) === "ansicpg"){
 						$this->codepage = substr($infocon, 7);
 						$infocon = "";
 					}
-					if($infocon == "mac"){
+					if($infocon === "mac"){
 						$this->standard = $infocon;
 						$infocon = "";
 					}
@@ -446,7 +446,7 @@ class we_rtf2html{
 
 		$ch = $this->getNextCh();
 
-		if($ch == "\r" || $ch == "\n"){
+		if($ch === "\r" || $ch === "\n"){
 			return $this->analyzeControl($ch, $para);
 		}
 
@@ -455,9 +455,9 @@ class we_rtf2html{
 			return $this->analyzeControl($control, $para);
 		}
 
-		$sfch = ($ch == "'" ? true : false);
+		$sfch = ($ch === "'");
 
-		while(($this->isletter($ch)) || ($ch == "'") || ($ch == "B")){
+		while(($this->isletter($ch)) || ($ch === "'") || ($ch === "B")){
 			$control.=$ch;
 			$ch = $this->getNextCh();
 			if($sfch){
@@ -469,7 +469,7 @@ class we_rtf2html{
 
 		$neg = false;
 
-		if($ch == '-'){
+		if($ch === '-'){
 			$neg = true;
 			$ch = $this->getNextCh();
 		}
@@ -484,7 +484,7 @@ class we_rtf2html{
 			$ch = $this->getNextCh();
 		}
 
-		if($ch == "?"){
+		if($ch === "?"){
 			$para.=$ch; #exceptions for the unicode chars which are coded like "\uN?"
 		}
 		if($neg){
@@ -493,11 +493,11 @@ class we_rtf2html{
 		if($ch != ' ' && $ch != "?"){
 			$ch = $this->getPrevCh();
 		}
-		if($sfch && $ch == ' '){
+		if($sfch && $ch === ' '){
 			$ch = $this->getPrevCh();
 		}
 
-		if(substr($control, 0, 1) == "'"){
+		if(substr($control, 0, 1) === "'"){
 			$para = substr($control, 1) . $para;
 			$control = "'";
 		}

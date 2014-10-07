@@ -461,7 +461,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 					we_message_reporting::getShowMessageCall(g_l('alert', "[login_failed]"), we_message_reporting::WE_MESSAGE_ERROR));
 			break;
 		case 3:
-			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', "[login_failed_security]"), we_message_reporting::WE_MESSAGE_ERROR) . "document.location='" . WEBEDITION_DIR . "index.php" . (($ignore_browser || (isset($_COOKIE["ignore_browser"]) && $_COOKIE["ignore_browser"] == "true")) ? "&ignore_browser=" . (isset($_COOKIE["ignore_browser"]) ? $_COOKIE["ignore_browser"] : ($ignore_browser ? 1 : 0)) : "") . "';";
+			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', "[login_failed_security]"), we_message_reporting::WE_MESSAGE_ERROR) . "document.location='" . WEBEDITION_DIR . "index.php" . (($ignore_browser || (isset($_COOKIE["ignore_browser"]) && $_COOKIE["ignore_browser"] === "true")) ? "&ignore_browser=" . (isset($_COOKIE["ignore_browser"]) ? $_COOKIE["ignore_browser"] : ($ignore_browser ? 1 : 0)) : "") . "';";
 			break;
 		case LOGIN_DENIED:
 			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', "[login_denied_for_user]"), we_message_reporting::WE_MESSAGE_ERROR);

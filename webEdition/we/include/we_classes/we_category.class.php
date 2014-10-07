@@ -131,11 +131,11 @@ class we_category extends weModelBase{
 		$db->query('SELECT ID,Path,Category,Catfields FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . trim($catIDs, ',') . ')');
 		while($db->next_record()){
 			$data = $db->getRecord();
-			if($field == 'Title' || $field == 'Description'){
+			if($field === 'Title' || $field === 'Description'){
 				if($data['Catfields']){
 					$_arr = unserialize($data['Catfields']);
 					if(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
-						$cats[] = ($field == 'Description') ? we_document::parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field];
+						$cats[] = ($field === 'Description') ? we_document::parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field];
 					}
 				} elseif(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
 					$cats[] = '';
@@ -144,7 +144,7 @@ class we_category extends weModelBase{
 				$cats[] = $data[$field];
 			}
 		}
-		if(($showpath || $catfield == 'Path') && strlen($rootdir)){
+		if(($showpath || $catfield === 'Path') && strlen($rootdir)){
 			foreach($cats as &$cat){
 				if(substr($cat, 0, strlen($rootdir)) == $rootdir){
 					$cat = substr($cat, strlen($rootdir));

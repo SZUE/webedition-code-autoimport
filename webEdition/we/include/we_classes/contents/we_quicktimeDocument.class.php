@@ -65,7 +65,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 		}
 
 		if(isset($attribs['sizingstyle'])){
-			$sizingstyle = ($attribs['sizingstyle'] == "none" ? false : $attribs['sizingstyle']);
+			$sizingstyle = ($attribs['sizingstyle'] === 'none' ? false : $attribs['sizingstyle']);
 			unset($attribs['sizingstyle']);
 		} else {
 			$sizingstyle = false;
@@ -84,7 +84,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 
 		foreach($attribs as $a => $b){
 			if($b != ""){
-				$this->setElement($a, $b, ($a == "Pluginspage" || $a == "Codebase" ? "txt" : "attrib"));
+				$this->setElement($a, $b, ($a === 'Pluginspage' || $a === 'Codebase' ? 'txt' : 'attrib'));
 			}
 		}
 	}
@@ -133,7 +133,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 			//  <params>
 			$_params = "\n" . getHtmlTag('param', array('name' => 'src', 'value' => $src, 'xml' => $_xml)) . "\n";
 
-			if($_xml == "true"){ //  only object tag
+			if($_xml === 'true'){ //  only object tag
 				$_objectAtts['type'] = 'video/quicktime';
 				$_objectAtts['data'] = $src;
 

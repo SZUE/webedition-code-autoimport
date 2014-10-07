@@ -116,7 +116,7 @@ abstract class validation{
 	 */
 	public static function validateXhtmlAttribs($element, &$attribs, $xhtmlType, $showWrong, $removeWrong){
 
-		if($xhtmlType == "transitional"){ //	use xml-transitional
+		if($xhtmlType === 'transitional'){ //	use xml-transitional
 			include(WE_INCLUDES_PATH . 'validation/xhtml_10_transitional.inc.php');
 			//   the array $_validAtts and $_reqAtts are set inside this include-file
 		} else {		//	use xml-strict

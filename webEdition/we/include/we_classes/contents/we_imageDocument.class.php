@@ -480,7 +480,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 				$attribs['title'] = $this->getElement('Title');
 			}
 
-			if(($this->getElement('alt') == '')){ //  always use alt-Text -> can be empty
+			if(($this->getElement('alt') === '')){ //  always use alt-Text -> can be empty
 				$attribs['alt'] = ' ';
 			}
 
@@ -573,7 +573,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 	 * @return string
 	 */
 	function formInput2($width, $name, $size = 25, $type = 'txt', $attribs = '', $text = ''){
-		$text = $text == '' ? $name : $text;
+		$text = $text === '' ? $name : $text;
 		return $this->formInputField($type, $name, (g_l('weClass', '[' . $text . ']', true) != false ? g_l('weClass', '[' . $text . ']') : $text), $size, $width, '', $attribs);
 	}
 
@@ -825,7 +825,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$_content = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), (defined('OBJECT_TABLE') ? 11 : 9), 2);
 
 		// No link
-		$_content->setCol(0, 0, array('valign' => 'top'), we_html_forms::radiobutton('no', ($linkType == 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$_content->setCol(0, 0, array('valign' => 'top'), we_html_forms::radiobutton('no', ($linkType === 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
 		$_content->setCol(0, 1, null, '');
 
 		// Space

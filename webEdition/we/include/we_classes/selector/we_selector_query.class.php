@@ -147,7 +147,7 @@ class we_selector_query{
 				$typeField = "ContentType";
 		}
 
-		$rootOnly = $rootDir && ($search == "/" || strpos($rootDir, $search) === 0);
+		$rootOnly = $rootDir && ($search === "/" || strpos($rootDir, $search) === 0);
 		$where = $rootOnly ? "Path LIKE '" . $rootDir . "'" :
 			"Path REGEXP '^" . preg_quote(preg_quote($search)) . "[^/]*$'" . (($rootDir) ? " AND (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" : "");
 

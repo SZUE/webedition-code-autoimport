@@ -310,7 +310,7 @@ we_templateInit();?>';
 			case "allVariants":
 				return true;
 			default:
-				return (substr($Name, 0, 8) == "variant_");
+				return (substr($Name, 0, 8) === 'variant_');
 		}
 	}
 

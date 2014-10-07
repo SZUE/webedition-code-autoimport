@@ -340,13 +340,13 @@ class we_flashDocument extends we_binaryDocument{
 		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0, 'attrib');
 		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0, 'attrib');
 		//if ($origw != $this->getElement('origwidth')){$this->DocChanged = true;}
-		if($this->getElement('width') == ''){
+		if(!$this->getElement('width')){
 			$this->setElement('width', $this->getElement('origwidth'), 'attrib');
 		}
-		if($this->getElement('height') == ''){
+		if(!$this->getElement('height')){
 			$this->setElement('height', $this->getElement('origheight'), 'attrib');
 		}
-		if($this->Icon == ''){
+		if(!$this->Icon){
 			$this->Icon = we_base_ContentTypes::inst()->getIcon($this->ContentType);
 		}
 

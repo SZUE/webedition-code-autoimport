@@ -512,7 +512,7 @@ abstract class we_root extends we_class{
 		$ackeyshort = 'LanguageDoc' . str_replace('_', '', $langkey);
 		$myid = $LDID ? $LDID : '';
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
-		if($rootDirID && $path == ''){
+		if($rootDirID && !$path){
 			$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($rootDirID), '', $this->DB_WE);
 		}
 		$yuiSuggest->setAcId($ackeyshort, $path);
@@ -951,7 +951,7 @@ abstract class we_root extends we_class{
 							// Artjom garbage fix
 						}
 
-						if(!isset($v['type']) || $v['type'] == ''){
+						if(!isset($v['type']) || !$v['type']){
 							$v['type'] = 'txt';
 						}
 						if($v['type'] === 'date'){
@@ -1041,7 +1041,7 @@ abstract class we_root extends we_class{
 							substr($this->Extension, 1) :
 							$this->Extension);
 
-			return !(preg_match('/^[a-zA-Z0-9]+$/iD', $ext) || $ext == '');
+			return !(preg_match('/^[a-zA-Z0-9]+$/iD', $ext) || !$ext);
 		}
 		return false;
 	}

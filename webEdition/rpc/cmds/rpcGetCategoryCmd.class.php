@@ -34,7 +34,7 @@ class rpcGetCategoryCmd extends rpcCmd{
 		if(!we_base_request::_(we_base_request::STRING, 'cats')){
 			$_error[] = "Missing field cats";
 		}
-		if(we_base_request::_(we_base_request::STRING, 'part') == "table" && (!we_base_request::_(we_base_request::BOOL, 'target'))){
+		if(we_base_request::_(we_base_request::STRING, 'part') === 'table' && (!we_base_request::_(we_base_request::BOOL, 'target'))){
 			$_error[] = "Missing target for table";
 		}
 

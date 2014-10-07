@@ -38,7 +38,7 @@ class we_helpers_lessc extends lessc{
 		$matches = array();
 		if(preg_match('|#WE:(\d+)#|', $url, $matches)){
 			$url = intval($matches[1]);
-			return f('SELECT Extension FROM ' . FILE_TABLE . ' WHERE ID=' . $url) == '.less';
+			return f('SELECT Extension FROM ' . FILE_TABLE . ' WHERE ID=' . $url) === '.less';
 		} elseif(substr_compare($url, '.css', -4, 4) === 0){
 			return false;
 		}
@@ -47,7 +47,7 @@ class we_helpers_lessc extends lessc{
 	}
 
 	protected function tryImport($importPath, $parentBlock, $out){
-		if($importPath[0] == 'function' && $importPath[1] == 'url'){
+		if($importPath[0] === 'function' && $importPath[1] === 'url'){
 			$importPath = $this->flattenList($importPath[2]);
 		}
 
@@ -86,7 +86,7 @@ class we_helpers_lessc extends lessc{
 
 		// set the parents of all the block props
 		foreach($root->props as $prop){
-			if($prop[0] == 'block'){
+			if($prop[0] === 'block'){
 				$prop[1]->parent = $parentBlock;
 			}
 		}

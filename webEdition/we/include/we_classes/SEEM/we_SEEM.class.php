@@ -282,7 +282,7 @@ abstract class we_SEEM{
 			$tmpInput = '<input onclick="#"';
 
 			foreach($attribs as $key => $value){
-				$tmpInput .= ' ' . $key . '="' . (strtolower($key) == "type" && strtolower($value) == "submit" ? 'button' : $value) . '"';
+				$tmpInput .= ' ' . $key . '="' . (strtolower($key) === 'type' && strtolower($value) === 'submit' ? 'button' : $value) . '"';
 			}
 			$tmpInput .= '>';
 			$code = str_replace($cur, $tmpInput, $code);
@@ -306,7 +306,7 @@ abstract class we_SEEM{
 			$attribs = self::getAttributesFromTag($cur);
 			$we_form = false;
 			foreach($attribs as $key => $value){
-				if($key == "name" && $value == "we_form"){
+				if($key === 'name' && $value === 'we_form'){
 					$we_form = true;
 				}
 			}
@@ -741,7 +741,7 @@ abstract class we_SEEM{
 
 		$attribs = array();
 
-		if(substr($paraStr, 0, 1) == "?"){
+		if(substr($paraStr, 0, 1) === '?'){
 			$paraStr = "&" . substr($paraStr, 1) . "&";
 		}
 		preg_match_all('/([^&]*=[^&]*)&/U', $paraStr, $parameters);
@@ -815,7 +815,7 @@ abstract class we_SEEM{
 						" onsubmit='if(confirm(\"" . g_l('SEEM', "[ext_form_target_we_server]") . "\")){return true;} else {return false;};'");
 
 				foreach($theAttribs as $key => $value){
-					if(strtolower($key) == "target" || strtolower($key) == "action"){
+					if(strtolower($key) === 'target' || strtolower($key) === 'action'){
 
 					} else {
 						$newForm .= ' ' . $key . '="' . $value . '"';

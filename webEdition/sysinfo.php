@@ -41,7 +41,7 @@ function getInfoTable($_infoArr, $name){
 		$_i++;
 
 		// highlight some values:
-		if($name == "PHP"){
+		if($name === 'PHP'){
 			if($_i == 3 && ini_get_bool('register_globals')){
 				$_table->setColAttributes(2, 1, array("style" => "border:1px solid red;"));
 			}

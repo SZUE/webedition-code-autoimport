@@ -56,7 +56,7 @@ body{
 
 if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 	$iLayoutCols = isset($_SESSION["prefs"]["cockpit_amount_columns"]) ? $_SESSION["prefs"]["cockpit_amount_columns"] : 3;
-	$bResetProps = (we_base_request::_(we_base_request::STRING, 'we_cmd') == "reset_home") ? true : false;
+	$bResetProps = (we_base_request::_(we_base_request::STRING, 'we_cmd') === 'reset_home') ? true : false;
 	if(!$bResetProps && $iLayoutCols){
 
 		$aDatTblPref = we_base_preferences::getUserPref('cockpit_dat'); // array as saved in the prefs

@@ -152,7 +152,7 @@ class we_net_Community{
 		} catch (we_net_Exception $e){
 			return "fehlermeldung";
 		}
-		if($responseText == "true"){
+		if($responseText === 'true'){
 			return true;
 		}
 

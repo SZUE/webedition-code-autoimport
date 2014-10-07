@@ -95,7 +95,7 @@ class we_app_Installer{
 		$classdir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Installer' . DIRECTORY_SEPARATOR;
 		$installerList = scandir($classdir);
 		foreach($installerList as $installerClass){
-			if(substr($installerClass, 0, 1) != "." && !is_link($classdir . $installerClass) && !is_dir($classdir . $installerClass) && is_readable($classdir . $installerClass) && substr($installerClass, -4) == ".php"){
+			if(substr($installerClass, 0, 1) != "." && !is_link($classdir . $installerClass) && !is_dir($classdir . $installerClass) && is_readable($classdir . $installerClass) && substr($installerClass, -4) === '.php'){
 				$validInstallerClasses[] = $installerClass;
 			}
 		}
@@ -178,7 +178,7 @@ class we_app_Installer{
 	 * returns the capitalized name of the installer without the "we_app_Installer_" prefix
 	 */
 	public function __toString(){
-		if(get_class($this) == "we_app_Installer"){
+		if(get_class($this) === 'we_app_Installer'){
 			return "";
 		} else if(stristr(get_class($this), "we_app_Installer_")){
 			return str_replace("we_app_Installer_", "", get_class($this));
@@ -365,7 +365,7 @@ class we_app_Installer{
 			if(is_file($source)){
 				return we_base_file::moveFile($source, $this->_tmpDir . $fileinfo["basename"]);
 			}
-			if($fileinfo["extension"] == "zip"){
+			if($fileinfo["extension"] === 'zip'){
 				if(!we_base_file::hasZip()){
 					error_log("zip support for local installation needed.");
 					return false;

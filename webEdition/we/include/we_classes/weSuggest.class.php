@@ -1052,7 +1052,7 @@ function weInputInArray(arr, val) {
 		} else {
 			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1;}' : '') . '" ';
 		}
-		if($this->inputId == ''){
+		if(!$this->inputId){
 			$this->setInputId();
 		}
 		$this->inputDisabled = $disabled;

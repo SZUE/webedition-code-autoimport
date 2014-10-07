@@ -156,7 +156,7 @@ class we_net_Http{
 				$this->setUri($value);
 				break;
 			case "protocol" :
-				if($value == "1.0" || $value == "1.1"){
+				if($value === '1.0' || $value === '1.1'){
 					$this->_protocol = $value;
 				}
 				break;
@@ -174,7 +174,7 @@ class we_net_Http{
 			return false;
 		} else {
 			$this->_uriObj = Zend_Uri_Http::factory($uri);
-			if($this->_uriObj->getScheme() == "http" || $this->_uriObj->getScheme() == "https"){
+			if($this->_uriObj->getScheme() === 'http' || $this->_uriObj->getScheme() === 'https'){
 				$this->_fragment = $this->_uriObj->getFragment();
 				$this->_host = $this->_uriObj->getHost();
 				$this->_password = $this->_uriObj->getPassword();

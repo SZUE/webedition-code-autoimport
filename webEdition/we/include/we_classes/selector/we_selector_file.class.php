@@ -436,7 +436,7 @@ function queryString(what,id,o){
 		$html = explode("\n", str_replace(array("'", 'script', '#\\\'',), array("\\'", "scr' + 'ipt", '\''), implodeJS($html)));
 		$ret = '';
 		foreach($html as $cur){
-			$ret.=(substr($cur, 0, 1) == '#' ? substr($cur, 1) : "d.writeln('" . $cur . "');") . "\n";
+			$ret.=(substr($cur, 0, 1) === '#' ? substr($cur, 1) : "d.writeln('" . $cur . "');");
 		}
 		return $ret;
 	}

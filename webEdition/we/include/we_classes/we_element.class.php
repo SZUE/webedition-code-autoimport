@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_element{ 
+class we_element{
 
 	var $ClassName = __CLASS__;
 	var $DID = 0;
@@ -43,7 +43,7 @@ class we_element{
 	static $db = '';
 
 	function __construct($link_props = true, $options = array()){
-		if(self::$db == ''){
+		if(!is_object(self::$db)){
 			self::$db = new DB_WE();
 		}
 		$this->DID = 0;

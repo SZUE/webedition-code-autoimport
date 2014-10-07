@@ -94,7 +94,7 @@ class we_docTypes extends we_class{
 		}
 		$this->i_setElementsFromHTTP();
 
-		if($this->Language == ''){
+		if(!$this->Language){
 			$this->initLanguageFromParent();
 		}
 	}
@@ -102,7 +102,7 @@ class we_docTypes extends we_class{
 	function initLanguageFromParent(){
 		$ParentID = $this->ParentID;
 		$i = 0;
-		while($this->Language == ''){
+		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
 				$this->Language = ($GLOBALS['weDefaultFrontendLanguage'] ? $GLOBALS['weDefaultFrontendLanguage'] : 'de_DE');
