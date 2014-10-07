@@ -1664,7 +1664,7 @@ self.focus();
 						fclose($fh);
 
 						if(!empty($row)){
-							if($this->View->settings["black_list"] == ''){
+							if($this->View->settings["black_list"] === ''){
 								$this->View->settings["black_list"] = makeCSVFromArray($row);
 							} else {
 								$this->View->settings["black_list"].="," . makeCSVFromArray($row);
@@ -1777,8 +1777,8 @@ self.focus();
 	function getHTMLUploadCsv($what){
 		$weFileupload = new we_fileupload_include('we_File', '', '', 'we_form', 'upload_footer', "we_cmd('do_" . $what . "');", '', 330, true, false, 0);
 		$weFileupload->setExternalProgress(true, 'progressbar', true, 120);
-		$weFileupload->setAction($this->frameset . '?' . ($what == 'upload_csv' ? 'pnt=upload_csv&grp=0&ncmd=do_upload_csv' :
-				($what == 'upload_black' ? 'pnt=upload_black&grp=undefined&ncmd=do_upload_black' : '')));
+		$weFileupload->setAction($this->frameset . '?' . ($what === 'upload_csv' ? 'pnt=upload_csv&grp=0&ncmd=do_upload_csv' :
+				($what === 'upload_black' ? 'pnt=upload_black&grp=undefined&ncmd=do_upload_black' : '')));
 
 		$cancel = we_html_button::create_button("cancel", "javascript:" . $weFileupload->getJsBtnCmd('cancel'));
 		$upload = we_html_button::create_button("upload", "javascript:" . $weFileupload->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer');
@@ -2203,7 +2203,7 @@ function postSelectorSelect(wePssCmd) {
 	function getHTMLClearLog(){
 		we_html_tools::protect();
 
-		if(we_base_request::_(we_base_request::STRING, "ncmd") == "do_clear_log"){
+		if(we_base_request::_(we_base_request::STRING, "ncmd") === "do_clear_log"){
 			$this->View->db->query("DELETE FROM " . NEWSLETTER_LOG_TABLE);
 			return
 				we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
@@ -2481,7 +2481,7 @@ self.focus();');
 			$firstname = isset($emails[$j][4]) ? str_replace("\r", "", str_replace("\n", "", $emails[$j][4])) : "";
 			$lastname = isset($emails[$j][5]) ? str_replace("\r", "", str_replace("\n", "", $emails[$j][5])) : "";
 			$customerid = isset($emails[$j][8]) ? str_replace("\r", "", str_replace("\n", "", $emails[$j][8])) : "";
-			$iscustomer = (isset($emails[$j][9]) && $emails[$j][9] == 'customer' ? 'C' : '');
+			$iscustomer = (isset($emails[$j][9]) && $emails[$j][9] === 'customer' ? 'C' : '');
 
 			$contentDefault = $content_plainDefault = $contentF = $contentF_plain = $contentM = $contentM_plain = $contentTFL = $contentTFL_plain = $contentTL = $contentTL_plain = $contentFL = $contentFL_plain = $contentLN = $contentLN_plain = $contentFN = $contentFN_plain = '';
 
@@ -2806,7 +2806,7 @@ self.focus();');
 
 		$fromCustomer = false;
 		$placeholderReplaceValue = "";
-		if(is_array($customerInfos) && isset($customerInfos[8]) && isset($customerInfos[9]) && $customerInfos[9] == 'customer'){
+		if(is_array($customerInfos) && isset($customerInfos[8]) && isset($customerInfos[9]) && $customerInfos[9] === 'customer'){
 			$fromCustomer = true;
 			$this->View->db->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($customerInfos[8]));
 			$this->View->db->next_record();

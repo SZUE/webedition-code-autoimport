@@ -2266,7 +2266,7 @@ self.close();');
 
 	function getFilterSQL($filter){
 		$filterSQL = $filter["fieldname"];
-		if($filter["fieldname"] == 'MemberSince' || $filter["fieldname"] == 'LastLogin' || $filter["fieldname"] == 'LastAccess'){
+		if($filter["fieldname"] === 'MemberSince' || $filter["fieldname"] === 'LastLogin' || $filter["fieldname"] === 'LastAccess'){
 			if(stristr($filter['fieldvalue'], '.')){
 				$date = explode(".", $filter['fieldvalue']);
 				$day = $date[0];
