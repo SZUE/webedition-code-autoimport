@@ -126,9 +126,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 				$cnt = 6; //assume maximum, will have a bad session id
 			}
 		} else {
-			if(!session_regenerate_id()){
-				t_e('no ssess');
-			}
+			session_regenerate_id();
 			$cnt = ini_get('session.hash_bits_per_character');
 			if($cnt == 4){//this is easy, since this is set as hex
 				//a 4 bit value didn't match, we neeed a new id
