@@ -126,12 +126,15 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 				$cnt = 6; //assume maximum, will have a bad session id
 			}
 		} else {
-			session_regenerate_id();
+			if(!session_regenerate_id()){
+				t_e('no ssess');
+			}
 			$cnt = ini_get('session.hash_bits_per_character');
 			if($cnt == 4){//this is easy, since this is set as hex
 				//a 4 bit value didn't match, we neeed a new id
 				return session_id();
 			}
+			$sessID = session_id();
 		}
 		//we have to deal with bad php settings
 		static $sessStr = array(
@@ -147,7 +150,8 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 				$tmp = 0;
 			}
 		}
-		session_id(str_pad($newID, 40, $newID));
+
+		session_id(str_pad($newID, 40, '0'));
 		//note: id in cookie will still be delivered in 5/6 bits!
 		return session_id();
 	}

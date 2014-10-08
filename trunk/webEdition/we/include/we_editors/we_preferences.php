@@ -2365,7 +2365,7 @@ function set_state_auth() {
 			$hooksHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[hooks_information]'), we_html_tools::TYPE_INFO, 450, false) . '<br/>' .
 				$EXECUTE_HOOKS->getHtml();
 
-			$useSession = new we_html_select(array("name" => "newconf[SYSTEM_WE_SESSION]", "class" => "weSelect", 'onchange'=>'Bitte beachten Sie, daß beim Speichern dieser Einstellung alle Benutzer und Kunden vom System abgemeldet werden!'));
+			$useSession = new we_html_select(array("name" => "newconf[SYSTEM_WE_SESSION]", "class" => "weSelect", 'onchange'=>'alert(\'Bitte beachten Sie, daß beim Speichern dieser Einstellung alle Benutzer und Kunden vom System abgemeldet werden!\')'));
 			$useSession->addOption(0, g_l('prefs', '[no]'));
 			$useSession->addOption(1, g_l('prefs', '[yes]'));
 			$useSession->selectOption(get_value("SYSTEM_WE_SESSION") ? 1 : 0);
