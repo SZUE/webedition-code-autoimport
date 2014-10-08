@@ -24,7 +24,7 @@
  */
 function we_tag_charset($attribs, $content){
 	$content = isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : $content;
-	if($GLOBALS['we_editmode']){
+	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		//set meta data & exit
 		$GLOBALS['meta']['Charset'] = array(
 			'default' => $content,

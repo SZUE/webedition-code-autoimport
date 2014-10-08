@@ -37,7 +37,7 @@ function we_tag_description($attribs, $content){
 		$descr = ob_get_clean();
 	}
 
-	if($GLOBALS['we_editmode']){
+	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		//set meta data & exit
 		$GLOBALS['meta']['Description']['default'] = $descr;
 		return;
