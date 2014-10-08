@@ -810,7 +810,7 @@ abstract class we_database_base{
 	}
 
 	public function isTabExist($tab){
-		if($tab === ''){
+		if(!$tab){
 			return false;
 		}
 		$this->query('SHOW TABLES LIKE "' . $this->escape($tab) . '"');
