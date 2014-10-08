@@ -201,12 +201,11 @@ class we_banner_banner extends we_banner_base{
 
 		we_readParents($did, $parents, FILE_TABLE, 'ContentType', 'folder', $db);
 
-		$where = 'IsActive=1 AND IsFolder=0 AND ( FIND_IN_SET('.intval($did).',FileIDs) OR FileIDs="" OR FileIDs="0" )';
 		$foo = '';
 		foreach($parents as $p){
 			$foo .= ' FIND_IN_SET(' . intval($p) . ',FolderIDs) OR ';
 		}
-		$where .= ' AND (' . $foo . ' FolderIDs="" OR FolderIDs="0") ';
+		$where = 'IsActive=1 AND IsFolder=0 AND ( FIND_IN_SET(' . intval($did) . ',FileIDs) OR FileIDs="" OR FileIDs="0" ) AND (' . $foo . ' FolderIDs="" OR FolderIDs="0") ';
 
 		$dtArr = explode(',', $dt);
 
