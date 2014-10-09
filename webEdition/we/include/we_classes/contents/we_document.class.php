@@ -1574,7 +1574,7 @@ class we_document extends we_root{
 	}
 
 	public static function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
-		$doBaseReplace&=we_isHttps();
+		$doBaseReplace&=we_isHttps();//FIXME:remove
 		$DB_WE = new DB_WE();
 		$regs = array();
 		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
