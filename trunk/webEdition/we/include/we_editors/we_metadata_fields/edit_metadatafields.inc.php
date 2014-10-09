@@ -337,7 +337,7 @@ function getMainDialog(){
 	} else {
 		return
 			we_html_element::htmlForm(
-				array('name' => 'we_form', 'method' => 'post', 'action' => getServerUrl(true) . $_SERVER['REQUEST_URI']), we_html_element::htmlHidden(array('name' => 'save_metadatafields', 'value' => 'false')) . render_dialog())
+				array('name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['REQUEST_URI']), we_html_element::htmlHidden(array('name' => 'save_metadatafields', 'value' => 'false')) . render_dialog())
 			. we_html_element::jsElement('init();');
 	}
 }

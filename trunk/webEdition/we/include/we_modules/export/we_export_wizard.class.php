@@ -749,7 +749,6 @@ function setState(a) {
 	}
 
 	private function getHTMLStep50(){
-		$preurl = getServerUrl();
 		if(we_base_request::_(we_base_request::BOOL, "exportfile")){
 			$_filename = basename(urldecode(we_base_request::_(we_base_request::RAW, "exportfile")));
 
@@ -769,11 +768,11 @@ function setState(a) {
 
 				exit;
 			} else {
-				header("Location: " . $preurl . $this->frameset . "?pnt=body&step=99&error=download_failed");
+				header("Location: " .  $this->frameset . "?pnt=body&step=99&error=download_failed");
 				exit;
 			}
 		} else {
-			header("Location: " . $preurl . $this->frameset . "?pnt=body&step=99&error=download_failed");
+			header("Location: " .  $this->frameset . "?pnt=body&step=99&error=download_failed");
 			exit;
 		}
 	}

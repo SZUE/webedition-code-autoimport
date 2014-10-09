@@ -153,7 +153,7 @@ function redirect($url, $_emosScontact = ''){
 	if($_emosScontact != ''){
 		$url = $url . (strpos($url, '?') ? '&' : '?') . 'emosScontact=' . urlencode($_emosScontact);
 	}
-	header('Location: ' . getServerUrl() . $url);
+	header('Location: ' . $url);
 	exit();
 }
 

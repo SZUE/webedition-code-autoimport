@@ -35,8 +35,8 @@ $target = we_base_request::_(we_base_request::RAW, "target", "");
 $width = we_base_request::_(we_base_request::INT, "width", 468);
 $height = we_base_request::_(we_base_request::INT, "height", 60);
 $paths = we_base_request::_(we_base_request::RAW, "paths", "");
-$getscript = we_base_request::_(we_base_request::URL, "getscript", getServerUrl() . WEBEDITION_DIR . "getBanner.php");
-$clickscript = we_base_request::_(we_base_request::URL, "clickscript", getServerUrl() . WEBEDITION_DIR . "bannerclick.php");
+$getscript = we_base_request::_(we_base_request::URL, "getscript", WEBEDITION_DIR . "getBanner.php");
+$clickscript = we_base_request::_(we_base_request::URL, "clickscript", WEBEDITION_DIR . "bannerclick.php");
 
 if($ok){
 //FIXME: replace by call of jsScript

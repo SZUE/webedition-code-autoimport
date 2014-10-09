@@ -24,7 +24,7 @@
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop(g_l('thumbnails', '[thumbnails]'));
 
-$reloadUrl = getServerUrl(true) . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThumbs';
+$reloadUrl = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThumbs';
 
 // Check if we need to create a new thumbnail
 if(($name = we_base_request::_(we_base_request::STRING, 'newthumbnail')) &&

@@ -48,7 +48,7 @@ $cmd = we_base_request::_(we_base_request::STRING, 'cmd');
 if($cmd && $cmd != 'ResetVersion' && $cmd != 'PublishDocs'){
 	if(isset($FROM_WE_SHOW_DOC) && $FROM_WE_SHOW_DOC){ // when called showDoc.php
 		if((!$we_doc->IsDynamic) && (!$tmplID)){ // if the document is not a dynamic php-doc and is published we make a redirect to the static page
-			header('Location: ' . getServerUrl() . ($we_doc->Published ? $we_doc->Path : '/this_file_does_not_exist_on_this_server'));
+			header('Location: ' . ($we_doc->Published ? $we_doc->Path : '/this_file_does_not_exist_on_this_server'));
 			exit();
 		}
 	}

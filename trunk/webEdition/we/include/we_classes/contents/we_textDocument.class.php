@@ -31,7 +31,7 @@ class we_textDocument extends we_document{
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_VALIDATION, we_base_constants::WE_EDITPAGE_VERSIONS);
 		}
-		$this->setElement('Charset', DEFAULT_CHARSET,'attrib');
+		$this->setElement('Charset', DEFAULT_CHARSET, 'attrib');
 		$this->Icon = we_base_ContentTypes::FILE_ICON;
 	}
 
@@ -92,6 +92,7 @@ class we_textDocument extends we_document{
 			foreach($matches as $match){
 				$path = id_to_path($match, FILE_TABLE, $GLOBALS['DB_WE']);
 				if($urlReplace){
+					$cnt = 0;
 					$http = preg_replace($urlReplace, array_keys($urlReplace), $path, -1, $cnt);
 					$path = ($cnt ? 'http:' : getServerUrl()) . $http;
 				}
@@ -123,7 +124,7 @@ class we_textDocument extends we_document{
 							$less->setFormatter('classic');
 							try{
 								$doc = $less->compile($doc);
-							} catch (exception $e){
+							}catch(exception $e){
 								$this->errMsg = $e->getMessage();
 								return false;
 							}
@@ -135,7 +136,7 @@ class we_textDocument extends we_document{
 							$scss->setImportPaths(array_unique(array('', $_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(), $_SERVER['DOCUMENT_ROOT'] . '/')));
 							try{
 								$doc = $scss->compile($doc);
-							} catch (exception $e){
+							}catch(exception $e){
 								$this->errMsg = $e->getMessage();
 								return false;
 							}
