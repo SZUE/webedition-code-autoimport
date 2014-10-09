@@ -26,16 +26,9 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3) === 'download'){
 	$file = (file_exists($_SERVER['DOCUMENT_ROOT'] . $we_doc->Path) ? $_SERVER['DOCUMENT_ROOT'] . $we_doc->Path : $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $we_doc->Path);
 	$_filename = $we_doc->Filename . $we_doc->Extension;
 	if(file_exists($file)){
-		if(we_isHttps()){ // Additional headers to make downloads work using IE in HTTPS mode.
-			header('Pragma: ');
-			header('Cache-Control: ');
-			header('Expires: ' . gmdate("D, d M Y H:i:s") . ' GMT');
-			header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT');
-			header('Cache-Control: no-store, no-cache, must-revalidate'); // HTTP 1.1
-			header('Cache-Control: post-check=0, pre-check=0', false);
-		} else {
-			header('Cache-control: private, max-age=0, must-revalidate');
-		}
+		header("Pragma: public");
+		header("Expires: 0");
+		header("Cache-control: private, max-age=0, must-revalidate");
 
 		header('Content-Type: application/octet-stream');
 		header('Content-Disposition: attachment; filename="' . trim(htmlentities($_filename)) . '"');
@@ -49,12 +42,12 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3) === 'download'){
 
 echo we_html_tools::getHtmlTop() .
  (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
-	we_html_element::jsElement('parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");') : ''
+		we_html_element::jsElement('parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");') : ''
 ) .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-echo STYLESHEET.we_html_element::cssElement('
+echo STYLESHEET . we_html_element::cssElement('
 	html,body,form,#previewDiv,iframe{
 	height:100%;
 	}

@@ -337,15 +337,7 @@ class we_customer_EIWizard{
 				$_size = filesize(TEMP_PATH . $_filename);
 
 				header("Pragma: public");
-				header("Expires: 0"/* . gmdate("D, d M Y H:i:s") . " GMT" */);
-				/* 				if(we_isHttps()){ // Additional headers to make downloads work using IE in HTTPS mode.
-				  //					header("Cache-Control: ");
-				  header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-				  header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP 1.1
-				  header("Cache-Control: post-check=0, pre-check=0", false);
-				  } else{
-				  } */
-
+				header("Expires: 0");
 				header("Cache-control: private, max-age=0, must-revalidate");
 
 				header('Content-Type: application/octet-stream');
