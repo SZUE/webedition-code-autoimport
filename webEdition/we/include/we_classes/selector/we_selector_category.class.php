@@ -175,6 +175,7 @@ function enableDelBut(){
 	}
 
 	function printFramesetJSFunctioWriteBody(){
+		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
 				d.open();
@@ -224,23 +225,23 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles
 					if (makeNewFolder) {
 						d.writeln('<input type="hidden" name="what" value="<?php print self::CREATEFOLDER; ?>" />');
 					} else {
-						d.writeln('<input type="hidden" name="what" value="<?php print self::CREATE_CAT; ?>" />');
+						d.writeln('<input type="hidden" name="what" value="<?php echo self::CREATE_CAT; ?>" />');
 					}
 				}
 				d.writeln('<input type="hidden" name="order" value="' + top.order + '" />');
-				d.writeln('<input type="hidden" name="rootDirID" value="<?php print $this->rootDirID; ?>" />');
-				d.writeln('<input type="hidden" name="table" value="<?php print $this->table; ?>" />');
+				d.writeln('<input type="hidden" name="rootDirID" value="<?php echo $this->rootDirID; ?>" />');
+				d.writeln('<input type="hidden" name="table" value="<?php echo $this->table; ?>" />');
 				d.writeln('<input type="hidden" name="id" value="' + top.currentDir + '" />');
 				d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 				if (makeNewFolder) {
 					d.writeln('<tr style="background-color:#DFE9F5;">');
-					d.writeln('<td align="center"><img src="<?php print TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>');
-					d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print g_l('fileselector', "[new_folder_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print g_l('fileselector', "[new_folder_name]") ?>" class="wetextinput" style="width:100%" /></td>');
+					d.writeln('<td align="center"><img src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>');
+					d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print g_l('fileselector', "[new_folder_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php echo g_l('fileselector', "[new_folder_name]") ?>" class="wetextinput" style="width:100%" /></td>');
 					d.writeln('</tr>');
 				} else if (makeNewCat) {
 					d.writeln('<tr style="background-color:#DFE9F5;">');
-					d.writeln('<td align="center"><img src="<?php print TREE_ICON_DIR ?>cat.gif" width="16" height="18" border="0" /></td>');
-					d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print g_l('fileselector', "[new_cat_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php print g_l('fileselector', "[new_cat_name]") ?>" class="wetextinput" style="width:100%" /></td>');
+					d.writeln('<td align="center"><img src="<?php echo TREE_ICON_DIR ?>cat.gif" width="16" height="18" border="0" /></td>');
+					d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print g_l('fileselector', "[new_cat_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php echo g_l('fileselector', "[new_cat_name]") ?>" class="wetextinput" style="width:100%" /></td>');
 					d.writeln('</tr>');
 				}
 				for (i = 0; i < entries.length; i++) {
@@ -249,22 +250,22 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles
 					d.writeln('<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >');
 					d.writeln('<td class="selector" width="25" align="center">');
 					if (we_editCatID == entries[i].ID) {
-						d.writeln('<img src="<?php print TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
+						d.writeln('<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
 						d.writeln('</td>');
 						d.writeln('<td class="selector">');
 						d.writeln('<input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />');
 					} else {
-						d.writeln('<img src="<?php print TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
+						d.writeln('<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
 						d.writeln('</td>');
 						d.writeln('<td class="selector"' + (we_editCatID ? '' : '') + ' title="' + entries[i].text + '">');
 						d.writeln(cutText(entries[i].text, 80));
 					}
 					d.writeln('</td>');
-					d.writeln('</tr><tr><td colspan="2"><?php print we_html_tools::getPixel(2, 1); ?></td></tr>');
+					d.writeln('</tr><tr><td colspan="2"><?php echo we_html_tools::getPixel(2, 1); ?></td></tr>');
 				}
 				d.writeln('<tr>');
-				d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
-				d.writeln('<td><?php print we_html_tools::getPixel(150, 2) ?></td>');
+				d.writeln('<td width="25"><?php echo we_html_tools::getPixel(25, 2) ?></td>');
+				d.writeln('<td><?php echo we_html_tools::getPixel(150, 2) ?></td>');
 				d.writeln('</tr>');
 				d.writeln('</table></form>');
 				d.writeln('</body>');
@@ -273,6 +274,7 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles
 			//-->
 		</script>
 		<?php
+		return ob_get_clean();
 	}
 
 	function printFramesetJSFunctionQueryString(){

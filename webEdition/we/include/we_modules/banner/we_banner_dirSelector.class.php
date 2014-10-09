@@ -93,6 +93,7 @@ class we_banner_dirSelector extends we_selector_directory{
 	}
 
 	function printFramesetJSFunctioWriteBody(){
+		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
 				d.open();
@@ -175,6 +176,7 @@ top.unselectAllFiles();') . '
 			//-->
 		</script>
 		<?php
+		return ob_get_clean();
 	}
 
 	function printFramesetJSFunctionQueryString(){

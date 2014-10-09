@@ -441,7 +441,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 	}
 
 	public static function isSerialized($str){
-		return ($str == serialize(false) || @unserialize($str) !== false);
+		return ($str === serialize(false) || @unserialize($str) !== false);
 	}
 
 	function changeEncoding($value){

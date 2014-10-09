@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_selector_directory extends we_selector_multiple{
+
 	const NEWFOLDER = 7;
 	const RENAMEFOLDER = 9;
 	const DORENAMEFOLDER = 10;
@@ -96,8 +97,8 @@ top.clearEntries();' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
 				(intval($this->dir) == intval($this->rootDirID) ?
-					'top.fsheader.disableRootDirButs();' :
-					'top.fsheader.enableRootDirButs();') .
+						'top.fsheader.disableRootDirButs();' :
+						'top.fsheader.enableRootDirButs();') .
 				'top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 ');
@@ -105,7 +106,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 
 	function query(){
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' AND((1' . we_users_util::makeOwnersSql() . ') ' .
-			getWsQueryForSelector($this->table) . ')' . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
+				getWsQueryForSelector($this->table) . ')' . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 	}
 
 	protected function setDefaultDirAndID($setLastDir){
@@ -136,8 +137,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	}
 
 	function getFsQueryString($what){
-		return $_SERVER["SCRIPT_NAME"] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . (isset($this->open_doc)
-					? ("&open_doc=" . $this->open_doc) : "");
+		return $_SERVER["SCRIPT_NAME"] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . (isset($this->open_doc) ? ("&open_doc=" . $this->open_doc) : "");
 	}
 
 	function printFramesetJSFunctions(){
@@ -153,10 +153,10 @@ function RenameFolder(id){
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		echo we_html_element::jsElement('
+		return we_html_element::jsElement('
 function writeBody(d){
 	d.open();' .
-			self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
+				self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
 var ctrlpressed=false
 var shiftpressed=false
 var inputklick=false
@@ -242,9 +242,9 @@ d.close();
 		if(!o) o=top.order;
 		if(!we_editDirID) we_editDirID="";
 		return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&rootDirID=' .
-				$this->rootDirID . (isset($this->open_doc) ?
-					"&open_doc=" . $this->open_doc : '') .
-				'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
+						$this->rootDirID . (isset($this->open_doc) ?
+								"&open_doc=" . $this->open_doc : '') .
+						'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 		}');
 	}
 
@@ -270,8 +270,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 	function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		while($this->next_record()){
-			$ret.='addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate"))
-							? $this->f("ModDate") : 0)) . '");';
+			$ret.='addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate")) ? $this->f("ModDate") : 0)) . '");';
 		}
 		return we_html_element::jsElement($ret);
 	}
@@ -280,8 +279,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 		$this->query();
 		$ret = '';
 		while($this->next_record()){
-			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate"))
-							? $this->f("ModDate") : 0)) . '");';
+			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate")) ? $this->f("ModDate") : 0)) . '");';
 		}
 		$ret.='top.fsheader.' . ($this->userCanMakeNewDir() ? 'enable' : 'disable') . 'NewFolderBut();';
 		return $ret;
@@ -306,12 +304,12 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 
 	function printHeaderJSDef(){
 		return parent::printHeaderJSDef() .
-			'var makefolderState = ' . ($this->userCanMakeNewFolder ? 1 : 0) . ';';
+				'var makefolderState = ' . ($this->userCanMakeNewFolder ? 1 : 0) . ';';
 	}
 
 	function printHeaderJS(){
 		return parent::printHeaderJS() .
-			we_html_button::create_state_changer(false) . '
+				we_html_button::create_state_changer(false) . '
 function disableNewFolderBut(){
 	btn_new_dir_enabled = switch_button_state("btn_new_dir", "new_directory_enabled", "disabled", "image");
 	makefolderState = 0;
@@ -421,35 +419,35 @@ function setRootDir(){
 		return '
 top.writeBody(top.fsbody.document);
 top.fsheader.clearOptions();' .
-			($this->rootDirID ? '' : '
+				($this->rootDirID ? '' : '
 top.fsheader.addOption("/",0);') .
-			$out . '
+				$out . '
 top.fsheader.selectIt();';
 	}
 
 	function printHeaderTable(){
 		return '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">' .
-			$this->printHeaderTableSpaceRow() . '
+				$this->printHeaderTableSpaceRow() . '
 	<tr valign="middle">
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="70" class="defaultfont"><b>' . g_l('fileselector', "[lookin]") . '</b></td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td><select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' .
-			$this->printHeaderOptions() . '
+				$this->printHeaderOptions() . '
 			</select>' .
-			((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ? '
+				((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ? '
 		</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="40">' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="40">' . we_html_button::create_button("image:btn_fs_back", "javascript:if(rootDirButsState){top.goBackDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>' .
-				$this->printHeaderTableExtraCols() :
-				''
-			) . '
+						$this->printHeaderTableExtraCols() :
+						''
+				) . '
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 	</tr>' .
-			$this->printHeaderTableSpaceRow() . '
+				$this->printHeaderTableSpaceRow() . '
 </table>';
 	}
 
@@ -478,8 +476,8 @@ top.fsheader.selectIt();';
 
 	function printHeaderTableExtraCols(){
 		return '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
-			we_html_button::create_button("image:btn_new_dir", "javascript:top.drawNewFolder();", true, 0, 0, '', '', !$this->userCanMakeNewDir(), false) .
-			'</td>';
+				we_html_button::create_button("image:btn_new_dir", "javascript:top.drawNewFolder();", true, 0, 0, '', '', !$this->userCanMakeNewDir(), false) .
+				'</td>';
 	}
 
 	function printHeaderTableSpaceRow(){
@@ -505,10 +503,10 @@ function doClick(id,ct){
 		}
 	}else{
 		if(top.currentID == id && (!fsbody.ctrlpressed)){' .
-				($this->userCanRenameFolder ? 'top.RenameFolder(id);' : 'selectFile(id);') . '
+						($this->userCanRenameFolder ? 'top.RenameFolder(id);' : 'selectFile(id);') . '
 
 		}else{' .
-				($this->multiple ? '
+						($this->multiple ? '
 				if(fsbody.shiftpressed){
 					var oldid = currentID;
 					var currendPos = getPositionByID(id);
@@ -531,7 +529,7 @@ function doClick(id,ct){
 					}else{' : '') . '
 
 					selectFile(id);' .
-				($this->multiple ? '
+						($this->multiple ? '
 					}
 				}' : '') . '
 		}
@@ -640,8 +638,8 @@ top.clearEntries();';
 			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notAllowed]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
-					new we_class_folder() :
-					new we_folder());
+							new we_class_folder() :
+							new we_folder());
 
 			$folder->we_new();
 			$folder->setParentID($this->dir);
@@ -671,7 +669,7 @@ if(top.opener.top.makeNewEntry){
 	ref = top.opener.top.opener.top;
 }
 ref.makeNewEntry("' . $folder->Icon . '",' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1,"' . $folder->ContentType . '","' . $this->table . '");' .
-						($this->canSelectDir ? '
+					($this->canSelectDir ? '
 top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";' : '');
@@ -681,9 +679,9 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";' : '');
 
 
 		echo
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.makeNewFolder = 0;
+		$this->printCmdAddEntriesHTML() .
+		$this->printCMDWriteAndFillSelectorHTML() .
+		'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 //-->
 </script>
@@ -695,8 +693,7 @@ top.selectFile(top.currentID);
 	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
 	<frameset cols="605,*" border="1">
 		<frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" noresize scrolling="auto">
-		<frame src="' . $this->getFsQueryString(self::PREVIEW) . '" name="fspreview" noresize scrolling="no"' . ((!we_base_browserDetect::isGecko()) ? ' style="border-left:1px solid black"'
-					: '') . '>
+		<frame src="' . $this->getFsQueryString(self::PREVIEW) . '" name="fspreview" noresize scrolling="no"' . ((!we_base_browserDetect::isGecko()) ? ' style="border-left:1px solid black"' : '') . '>
 	</frameset>
 	<frame src="' . $this->getFsQueryString(we_selector_file::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
 	<frame src="' . HTML_DIR . 'gray2.html"  name="fspath" noresize scrolling="no">
@@ -738,8 +735,8 @@ top.clearEntries();';
 			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
-					new we_class_folder() :
-					new we_folder());
+							new we_class_folder() :
+							new we_folder());
 
 			$folder->initByID($this->we_editDirID, $this->table);
 			$folder->Text = $txt;
@@ -763,7 +760,7 @@ top.clearEntries();';
 if(top.opener.top.makeNewEntry) ref = top.opener.top;
 else if(top.opener.top.opener) ref = top.opener.top.opener.top;
 ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '","' . $this->table . '");' .
-							($this->canSelectDir ? '
+								($this->canSelectDir ? '
 top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
@@ -775,8 +772,8 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 
 
 		print
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() . '
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() . '
 top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 //-->
@@ -805,7 +802,7 @@ top.selectFile(top.currentID);
 			}
 			$path = f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), "Path", $this->db);
 			$out = we_html_tools::getHtmlTop() .
-				STYLESHEET . we_html_element::cssElement('
+					STYLESHEET . we_html_element::cssElement('
 	body {
 		margin:0px;
 		padding:0px;
@@ -861,7 +858,7 @@ top.selectFile(top.currentID);
 		else if(weCountWriteBC<10) setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
 		weCountWriteBC++;
 	}') .
-				'</head>
+					'</head>
 <body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">';
 			if(isset($result['ContentType']) && !empty($result['ContentType'])){
 				if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
@@ -897,8 +894,7 @@ top.selectFile(top.currentID);
 				if($result['ModDate']){
 					$previewDefauts .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', "[modified]") . ": </td><td>" . date(g_l('date', '[format][default]'), $result['ModDate']) . "</td></tr>";
 				}
-				$previewDefauts .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', "[type]") . ": </td><td>" . (g_l('contentTypes', '[' . $result['ContentType'] . ']', true) !== false
-							? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType']) . "</td></tr>";
+				$previewDefauts .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', "[type]") . ": </td><td>" . (g_l('contentTypes', '[' . $result['ContentType'] . ']', true) !== false ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType']) . "</td></tr>";
 
 				$out .= '<table cellpadding="0" cellspacing="0" height="100%" width="100%">';
 				switch($result['ContentType']){
@@ -917,7 +913,7 @@ top.selectFile(top.currentID);
 							}
 
 							$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='" . getServerUrl(true) . $result['Path'] . "' target='_blank' align='center'><img src='" . $thumbpath . "' border='0' id='previewpic'></a></td></tr>" .
-								$previewDefauts . "
+									$previewDefauts . "
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[width]") . " x " . g_l('weClass', "[height]") . ": </td><td>" . $imagesize[0] . " x " . $imagesize[1] . " px </td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', "[filesize]") . ": </td><td>" . $filesize . "</td></tr>";
 
@@ -925,10 +921,8 @@ top.selectFile(top.currentID);
 							$out .= "
 <tr><td colspan='2' class='headline'>" . g_l('weClass', "[metainfo]") . "</td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Title]") . ": </td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>
-<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Description]") . ": </td><td>" . (isset($metainfos['Description']) ? $metainfos['Description']
-										: '') . "</td></tr>
-<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Keywords]") . ": </td><td>" . (isset($metainfos['Keywords']) ? $metainfos['Keywords']
-										: '') . "</td></tr>";
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Description]") . ": </td><td>" . (isset($metainfos['Description']) ? $metainfos['Description'] : '') . "</td></tr>
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Keywords]") . ": </td><td>" . (isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '') . "</td></tr>";
 
 							$next = 0;
 							$out .= "
@@ -936,8 +930,7 @@ top.selectFile(top.currentID);
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Title]") . ": </td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[name]") . ": </td><td>" . (isset($metainfos['name']) ? $metainfos['name'] : '') . "</td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[alt]") . ": </td><td>" . (isset($metainfos['alt']) ? $metainfos['alt'] : '') . "</td></tr>
-<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[width]") . " x " . g_l('weClass', "[height]") . ": </td><td>" . (isset($metainfos['width'])
-										? $metainfos['width'] : '') . " x " . (isset($metainfos['height']) ? $metainfos['height'] : '') . " px </td></tr>";
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[width]") . " x " . g_l('weClass', "[height]") . ": </td><td>" . (isset($metainfos['width']) ? $metainfos['width'] : '') . " x " . (isset($metainfos['height']) ? $metainfos['height'] : '') . " px </td></tr>";
 						}
 						break;
 					case "folder":
@@ -974,12 +967,9 @@ top.selectFile(top.currentID);
 						$next = 0;
 						$out .= "
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Title]") . ":</td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>
-<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Charset]") . ":</td><td>" . (isset($metainfos['Charset']) ? $metainfos['Charset']
-									: '') . "</td></tr>
-<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Keywords]") . ":</td><td>" . (isset($metainfos['Keywords']) ? $metainfos['Keywords']
-									: '') . "</td></tr>
-<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Description]") . ":</td><td>" . (isset($metainfos['Description']) ? $metainfos['Description']
-									: '') . "</td></tr>";
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Charset]") . ":</td><td>" . (isset($metainfos['Charset']) ? $metainfos['Charset'] : '') . "</td></tr>
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Keywords]") . ":</td><td>" . (isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '') . "</td></tr>
+<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', "[Description]") . ":</td><td>" . (isset($metainfos['Description']) ? $metainfos['Description'] : '') . "</td></tr>";
 						break;
 					case we_base_ContentTypes::HTML:
 					case we_base_ContentTypes::CSS:
