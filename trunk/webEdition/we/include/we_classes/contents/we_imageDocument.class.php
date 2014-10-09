@@ -244,7 +244,7 @@ class we_imageDocument extends we_binaryDocument{
 			return '';
 		}
 		if(!$src){
-			$src = (we_isHttps() ? '' : BASE_IMG) . $this->Path;
+			$src = (we_isHttps() ? '' : BASE_IMG) . $this->Path;//FIXME:remove BASE_IMG
 		}
 
 		if(!$src_over){
