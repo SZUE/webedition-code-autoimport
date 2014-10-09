@@ -78,7 +78,7 @@ echo STYLESHEET . we_html_element::cssElement('
 
 			if($we_doc->ID){
 				$_we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
-				$link = "<a href='" . getServerUrl() . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=" . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . "&we_cmd[1]=" . we_base_request::_(we_base_request::INT, 'we_cmd', '', 1) . "&we_cmd[2]=" . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) . "&we_cmd[3]=download&we_transaction=" . $_we_transaction . "'>" . $http = $we_doc->getHttpPath() . "</a>";
+				$link = "<a href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=" . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . "&we_cmd[1]=" . we_base_request::_(we_base_request::INT, 'we_cmd', '', 1) . "&we_cmd[2]=" . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) . "&we_cmd[3]=download&we_transaction=" . $_we_transaction . "'>" . $http = $we_doc->getHttpPath() . "</a>";
 			} else {
 				$link = g_l('weClass', "[file_not_saved]");
 			}

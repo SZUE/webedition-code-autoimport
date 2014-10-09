@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,6 +28,7 @@
  *
  */
 class we_banner_banner extends we_banner_base{
+
 	const PAGE_PROPERTY = 0;
 	const PAGE_PLACEMENT = 1;
 	const PAGE_STATISTICS = 2;
@@ -277,7 +279,7 @@ class we_banner_banner extends we_banner_base{
 
 		if(($id = $bannerData["ID"])){
 			if($bannerData["bannerID"]){
-				$bannersrc = getServerUrl() . id_to_path($bannerData["bannerID"]);
+				$bannersrc = id_to_path($bannerData["bannerID"]);
 				$attsImage = array_merge($attsImage, self::getImageInfos($bannerData["bannerID"]));
 				if(isset($attsImage['longdescid'])){
 					unset($attsImage['longdescid']);
@@ -291,7 +293,7 @@ class we_banner_banner extends we_banner_base{
 
 			$bannerID = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id), '', $db);
 			if($bannerID){
-				$bannersrc = getServerUrl() . id_to_path($bannerID);
+				$bannersrc = id_to_path($bannerID);
 				$attsImage = array_merge($attsImage, self::getImageInfos($bannerID));
 				if(isset($attsImage['longdescid'])){
 					unset($attsImage['longdescid']);
@@ -304,12 +306,12 @@ class we_banner_banner extends we_banner_base{
 		}
 		if(!$nocount){
 			$db->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'ID' => intval($id),
-					'Timestamp' => sql_function('UNIX_TIMESTAMP()'),
-					'IP' => $_SERVER['REMOTE_ADDR'],
-					'Referer' => $referer ? $referer : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : ""),
-					'DID' => intval($did),
-					'Page' => $page
+						'ID' => intval($id),
+						'Timestamp' => sql_function('UNIX_TIMESTAMP()'),
+						'IP' => $_SERVER['REMOTE_ADDR'],
+						'Referer' => $referer ? $referer : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : ""),
+						'DID' => intval($did),
+						'Page' => $page
 			)));
 			$db->query('UPDATE ' . BANNER_TABLE . ' SET views=views+1 WHERE ID=' . intval($id));
 		}
@@ -347,7 +349,7 @@ class we_banner_banner extends we_banner_base{
 
 	public static function getBannerURL($bid){
 		$h = getHash('SELECT IntHref,bannerIntID,bannerURL FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($bid));
-		return $h['IntHref'] ? getServerUrl() . id_to_path($h['bannerIntID'], FILE_TABLE) : $h['bannerURL'];
+		return $h['IntHref'] ? id_to_path($h['bannerIntID'], FILE_TABLE) : $h['bannerURL'];
 	}
 
 	public static function customerOwnsBanner($customerID, $bannerID, we_database_base $db){

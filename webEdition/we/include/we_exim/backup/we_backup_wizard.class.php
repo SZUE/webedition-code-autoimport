@@ -1001,7 +1001,7 @@ function setLocation(loc){
 		if($_SESSION['weS']['weBackupVars']['options']['export2send']){
 			$_down = $_SESSION['weS']['weBackupVars']['backup_file'];
 			if(is_file($_SESSION['weS']['weBackupVars']['backup_file'])){
-
+//Note: we show a link for external download - do we need this?
 				$_link = getServerUrl(true) . str_replace($_SERVER['DOCUMENT_ROOT'], '', $_down);
 
 				$table->setCol(2, 0, array('class' => 'defaultfont'), self::getDownloadLinkText() . '<br/><br/>' .

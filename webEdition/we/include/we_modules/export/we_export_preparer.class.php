@@ -226,19 +226,19 @@ class we_export_preparer extends we_exim_XMLExIm{
 
 		$ret = array("docs" => array(), "objs" => array());
 
-		if(isset($array['id']) && !empty($array['id'])){
+		if(isset($array['id']) && $array['id']){
 			$ret["docs"][] = $array['id'];
 		}
 
-		if(isset($array['img_id']) && !empty($array['id'])){
+		if(isset($array['img_id']) && $array['id']){
 			$ret["docs"][] = $array['img_id'];
 		}
 
-		if(isset($array['obj_id']) && !empty($array['obj_id'])){
+		if(isset($array['obj_id']) && $array['obj_id']){
 			$ret["objs"][] = $array['obj_id'];
 		} else {
 			foreach($array as $key => $value){
-				if(!empty($value)){
+				if($value){
 					if(is_array($value)){
 						$ret = array_merge_recursive($ret, $this->getDepFromArray($array[$key]));
 					}

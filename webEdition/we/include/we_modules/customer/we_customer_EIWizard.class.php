@@ -305,7 +305,7 @@ class we_customer_EIWizard{
 			);
 			return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 					we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET . $js .
-						we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; URL=" . getServerUrl() . $this->frameset . "?pnt=eibody&art=" . self::ART_EXPORT . "&step=5&exportfile=" . $filename))
+						we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; URL=" . $this->frameset . "?pnt=eibody&art=" . self::ART_EXPORT . "&step=5&exportfile=" . $filename))
 					) .
 					we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 							we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
@@ -350,7 +350,7 @@ class we_customer_EIWizard{
 				exit;
 			}
 		}
-		header("Location: " . getServerUrl() . $this->frameset . "?pnt=body&step=99&error=download_failed");
+		header("Location: " . $this->frameset . "?pnt=body&step=99&error=download_failed");
 		exit;
 	}
 

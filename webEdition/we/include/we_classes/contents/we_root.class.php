@@ -680,6 +680,7 @@ abstract class we_root extends we_class{
 		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
 		$http = $this->getPath();
 		if($urlReplace){
+			$cnt = 0;
 			$http = preg_replace($urlReplace, array_keys($urlReplace), $http, -1, $cnt);
 			return ($cnt ? 'http:' : getServerUrl()) . $http;
 		}

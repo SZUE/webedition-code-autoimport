@@ -703,7 +703,7 @@ function closeAllType(){
 				}
 				break;
 			case 'upload':
-				$preurl = getServerUrl();
+
 				if(($_filename = we_base_request::_(we_base_request::FILE, "exportfile"))){
 					$_filename = basename(urldecode($_filename));
 
@@ -723,11 +723,11 @@ function closeAllType(){
 						readfile(TEMP_PATH . $_filename);
 						exit;
 					} else {
-						header("Location: " . $preurl . $this->frameset . "?pnt=cmd&cmd=upload_failed");
+						header("Location: " . $this->frameset . "?pnt=cmd&cmd=upload_failed");
 						exit;
 					}
 				} else {
-					header("Location: " . $preurl . $this->frameset . "?pnt=cmd&cmd=error=upload_failed");
+					header("Location: " . $this->frameset . "?pnt=cmd&cmd=error=upload_failed");
 					exit;
 				}
 

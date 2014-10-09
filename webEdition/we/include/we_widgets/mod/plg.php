@@ -28,7 +28,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc
 
 we_html_tools::protect();
 
-$_url = getServerUrl() . WE_INCLUDES_DIR . 'we_widgets/inc/plg/';
+$_url = WE_INCLUDES_DIR . 'we_widgets/inc/plg/';
 
 $_isPrev = !isset($aProps);
 
