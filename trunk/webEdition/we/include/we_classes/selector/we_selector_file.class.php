@@ -442,6 +442,7 @@ function queryString(what,id,o){
 	}
 
 	function printFramesetJSFunctioWriteBody(){
+		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
 				d.open();
@@ -474,6 +475,7 @@ function queryString(what,id,o){
 			//-->
 		</script>
 		<?php
+		return ob_get_clean();
 	}
 
 	function printFramesetJSFunctionEntry(){

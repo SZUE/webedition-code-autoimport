@@ -198,7 +198,7 @@ function reloadDir() {
 	}
 
 	function printFramesetJSFunctioWriteBody(){
-		echo we_html_element::jsElement('
+		return we_html_element::jsElement('
 function writeBody(d){
 	d.open();' .
 			self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('

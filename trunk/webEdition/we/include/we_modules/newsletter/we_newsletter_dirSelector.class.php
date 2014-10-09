@@ -197,6 +197,7 @@ top.selectFile(top.currentID);
 	}
 
 	function printFramesetJSFunctioWriteBody(){
+		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
 				d.open();
@@ -284,6 +285,7 @@ top.unselectAllFiles();') . '
 		//-->
 		</script>
 		<?php
+		return ob_get_clean();
 	}
 
 	protected function userCanSeeDir($showAll = false){
