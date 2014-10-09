@@ -68,8 +68,8 @@ class we_html_baseElement{
 	 *
 	 * @return     we_html_baseElement
 	 */
-	function copy(){
-		return unserialize(serialize($this));
+	protected function copy(){
+		return clone $this;
 	}
 
 	/**
