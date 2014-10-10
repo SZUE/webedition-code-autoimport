@@ -354,7 +354,7 @@ var mk=null;');
 	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
     <frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" noresize scrolling="auto">
     <frame src="' . $this->getFsQueryString(we_selector_file::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
-    <frame src="' . HTML_DIR . 'white.html"  name="fscmd" noresize scrolling="no">
+    <frame src="about:blank"  name="fscmd" noresize scrolling="no">
 </frameset>
 <body>
 </body>

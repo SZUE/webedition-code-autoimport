@@ -831,7 +831,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
     	<frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" scrolling="auto">
 ' . ($isMainChooser ? '<frame src="' . $this->getFsQueryString(self::PROPERTIES) . '" name="fsvalues"  scrolling="auto"></frameset>' : '') . '
     <frame src="' . $this->getFsQueryString(we_selector_file::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
-    <frame src="' . HTML_DIR . 'white.html"  name="fscmd" noresize scrolling="no">
+    <frame src="about:blank"  name="fscmd" noresize scrolling="no">
 </frameset>
 <body>
 </body>

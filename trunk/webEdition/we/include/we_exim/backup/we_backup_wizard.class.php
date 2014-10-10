@@ -325,7 +325,7 @@ function doClick(opt) {
 								, we_html_element::htmlIFrame('body', $this->frameset . "?pnt=body", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto', 'border:0px;width:100%;height:100%;overflow: auto;') .
 								we_html_element::htmlIFrame('busy', $this->frameset, 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden') .
 								we_html_element::htmlIFrame('cmd', $this->frameset . "?pnt=cmd", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
-								we_html_element::htmlIFrame('checker', HTML_DIR . 'white.html', 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+								we_html_element::htmlIFrame('checker', 'about:blank', 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		));
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(

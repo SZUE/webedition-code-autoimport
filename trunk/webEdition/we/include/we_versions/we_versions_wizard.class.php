@@ -1096,7 +1096,7 @@ set_button_state(false);';
 					'onload' => "wizcmd.location='" . WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(query) . "';")
 					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 						, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd[0]' => 'versions_wizard', 'fr' => 'busy', 'dc' => 1)), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
-						we_html_element::htmlIFrame('wizcmd', HTML_DIR . "white.html", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+						we_html_element::htmlIFrame('wizcmd',  "about:blank", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 			));
 		} else {
 			$body = we_html_element::htmlBody(array('style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;')

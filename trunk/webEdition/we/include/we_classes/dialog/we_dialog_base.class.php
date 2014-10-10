@@ -150,7 +150,7 @@ class we_dialog_base{
 				we_html_element::htmlBody(array('class' => 'weDialogBody', 'style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onunload' => 'doUnload()')
 						, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 								, we_html_element::htmlExIFrame('navi', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
-								we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', HTML_DIR . 'white.html', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+								we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 		));
 	}
 

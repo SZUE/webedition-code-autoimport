@@ -33,7 +33,7 @@ var wait_retry = 40;
 
 function nojava() {
 		alert("' . g_l('eplugin', '[no_java]') . '");
-		top.opener.top.plugin.location="' . WEBEDITION_DIR . 'html/white.html";
+		top.opener.top.plugin.location="about:blank";
 		self.close();
 }
 

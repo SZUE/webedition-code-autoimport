@@ -2442,7 +2442,7 @@ self.focus();');
 				$cc++;
 			}
 			echo we_html_element::jsElement('
-				top.send_control.location="' . HTML_DIR . 'white.html";
+				top.send_control.location="about:blank";
 				top.send_body.setProgress(100);
 				top.send_body.setProgressText("title","<font color=\"#006699\"><b>' . g_l('modules_newsletter', '[finished]') . '</b></font>",2);
 				updateText("' . g_l('modules_newsletter', '[campaign_ends]') . '");

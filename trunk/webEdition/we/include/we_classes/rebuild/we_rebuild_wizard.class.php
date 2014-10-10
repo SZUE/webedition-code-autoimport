@@ -770,7 +770,7 @@ abstract class we_rebuild_wizard{
 			$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "wizcmd.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body" . $tail . "';")
 					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 						, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy&amp;dc=1", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
-						we_html_element::htmlIFrame('wizcmd', HTML_DIR . "white.html", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+						we_html_element::htmlIFrame('wizcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 			));
 		} else {
 			$height = (we_base_browserDetect::isFF() ? 60 : 40);
