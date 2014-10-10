@@ -61,7 +61,7 @@ class we_backup_table{
 		}
 	}
 
-	function getColumns(){
+	public function getColumns(){
 		if($this->db->isTabExist($this->table)){
 			$this->db->query("SHOW COLUMNS FROM $this->table;");
 			while($this->db->next_record()){

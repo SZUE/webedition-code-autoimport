@@ -99,6 +99,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		}
 
 		fclose($fh);
+
 		unset($doc);
 	}
 
