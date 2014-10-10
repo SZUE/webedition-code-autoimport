@@ -141,12 +141,12 @@ abstract class we_shop_variants{
 
 		if($unserialize){
 			$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) ?
-				$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] :
-				(
-				(substr($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) === "a:") ?
-					unserialize($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) :
-					array()
-				);
+					$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] :
+					(
+					(substr($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) === "a:") ?
+							unserialize($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) :
+							array()
+					);
 
 			$elements = $model->elements;
 		}
@@ -186,8 +186,8 @@ abstract class we_shop_variants{
 
 	public static function getNumberOfVariants(&$model){
 		return (isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) ?
-				count($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) :
-				0);
+						count($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) :
+						0);
 	}
 
 	private static function insertVariant(&$model, $position){
@@ -288,7 +288,7 @@ abstract class we_shop_variants{
 
 	private static function getNameForPosition($name, $pos){
 		return WE_SHOP_VARIANTS_PREFIX . $pos .
-			(($fieldName = self::getFieldNameFromElemName($name)) ? '_' . self::getFieldNameFromElemName($name) : '');
+				(($fieldName = self::getFieldNameFromElemName($name)) ? '_' . self::getFieldNameFromElemName($name) : '');
 	}
 
 	private static function removeVariant(&$model, $delPos){
@@ -316,11 +316,9 @@ abstract class we_shop_variants{
 
 		$count = we_shop_variants::getNumberOfVariants($model);
 
-		$i = 0;
-		$parts = array();
+		$parts = $regs = array();
 
 		if($count > 0){
-
 			for($i = 0; $i < $count; $i++){
 				$plusBut = we_html_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');", true, 40);
 				$upbut = ($i == 0 ? we_html_button::create_button("image:btn_direction_up", "", true, 21, 22, "", "", true) : we_html_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_up','" . ($i) . "');"));
@@ -373,14 +371,13 @@ abstract class we_shop_variants{
 					'space' => 0
 				);
 			}
+		}else{
+			$i=0;
 		}
-		$plusBut = we_html_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');");
-		$content = $plusBut;
-
 
 		$parts[] = array(
 			'headline' => '',
-			'html' => $content,
+			'html' => we_html_button::create_button("image:btn_add_field", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');"),
 			'space' => 0
 		);
 		return $parts;
@@ -541,6 +538,9 @@ abstract class we_shop_variants{
 		// add default data to listview
 		$elements = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
 		//this elemets contains only the variant fields, not the non-variant fields of the object
+		if(!is_array($elements) && $elements{0} == 'a'){
+			$elements = unserialize($elements);
+		}
 
 		$newPos = count($elements);
 
@@ -568,7 +568,7 @@ abstract class we_shop_variants{
 		// attemot to add the other fields
 		$modelelemets = $model->elements; //get a copy of the non variant fields
 		unset($modelelemets[WE_SHOP_VARIANTS_ELEMENT_NAME]); // get rid of some keys
-		foreach($modelelemets as $key => $value){
+		foreach(array_keys($modelelemets) as $key){
 			if(strpos($key, WE_SHOP_VARIANTS_PREFIX) !== false && strpos($key, WE_SHOP_VARIANTS_PREFIX) == 0){
 				unset($modelelemets[$key]);
 			}
@@ -585,21 +585,21 @@ abstract class we_shop_variants{
 		return $elements;
 	}
 
-	public static function edit($command, $we_doc){
+	public static function edit($isObject, $command, $we_doc){
 		switch($command){
 			case 'shop_insert_variant':
 				self::insertVariant($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
 				break;
-			case "shop_move_variant_up":
+			case 'shop_move_variant_up':
 				self::moveVariant($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), 'up');
 				break;
-			case "shop_move_variant_down":
+			case 'shop_move_variant_down':
 				self::moveVariant($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), 'down');
 				break;
-			case "shop_remove_variant":
+			case 'shop_remove_variant':
 				self::removeVariant($we_doc, we_base_request::_(we_base_request::STRING . 'we_cmd', '', 1));
 				break;
-			case "shop_preview_variant":
+			case 'shop_preview_variant':
 				self::correctModelFields($we_doc, false);
 				self::useVariant($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2));
 
@@ -608,7 +608,7 @@ abstract class we_shop_variants{
 		}
 		$GLOBALS['we_editmode'] = true;
 
-		echo we_html_multiIconBox::getHTML('', '100%', we_shop_variants::getVariantsEditorMultiBoxArrayObjectFile($we_doc), 30, '', -1, '', '', false);
+		echo we_html_multiIconBox::getHTML('', '100%', ($isObject ? self::getVariantsEditorMultiBoxArrayObjectFile($we_doc) : self::getVariantsEditorMultiBoxArray($we_doc)), 30, '', -1, '', '', false);
 	}
 
 }

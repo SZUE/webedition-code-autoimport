@@ -26,7 +26,7 @@ class we_backup_tableAdv extends we_backup_table{
 
 	var $ClassName = __CLASS__;
 
-	function getColumns(){
+	public function getColumns(){
 		if($this->db->isTabExist($this->table)){
 			$this->db->query('SHOW CREATE TABLE ' . $this->table);
 			if($this->db->next_record()){

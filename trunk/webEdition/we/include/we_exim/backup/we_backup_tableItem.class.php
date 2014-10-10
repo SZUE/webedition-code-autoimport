@@ -68,6 +68,7 @@ class we_backup_tableItem extends weModelBase{
 	}
 
 	function getFieldType($fieldname){
+		$regs = array();
 		return (preg_match('/(.+?)_(.*)/', $fieldname, $regs) ? $regs[1] : '');
 	}
 

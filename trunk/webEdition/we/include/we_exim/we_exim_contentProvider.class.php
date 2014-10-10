@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_contentProvider{
+
 	const CODING_ENCODE = 'encode';
 	const CODING_SERIALIZE = 'serial';
 	const CODING_ATTRIBUTE = 'coding';
@@ -107,9 +108,8 @@ class we_exim_contentProvider{
 					default:
 						$we_Table = FILE_TABLE;
 				}
-				$dontMakeGlobal=true;
+				$dontMakeGlobal = true;
 				include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-
 		}
 
 		return $we_doc;
@@ -172,7 +172,7 @@ class we_exim_contentProvider{
 		}
 
 		if($data !== self::CODING_OLD){
-			return preg_match('![\\x0-\x08\x0e-\x19\x11\x12<>&]!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
+			return preg_match('!(^a:\d+:{)|(^s:\d+:)|([\\x0-\x08\x0e-\x19\x11\x12<>&])!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
 		}
 
 		$encoded = array(
@@ -218,7 +218,7 @@ class we_exim_contentProvider{
 	}
 
 	static function needCdata($classname, $prop, $content){
-		return strpos($content, '<') !== FALSE || strpos($content, '>') !== FALSE || strpos($content, '&') !== FALSE;
+		return preg_match('-[<>&]-', $content);
 	}
 
 	static function needSerialize(&$object, $classname, $prop){
@@ -252,8 +252,8 @@ class we_exim_contentProvider{
 
 		$noexport = array(); //future use
 		return (isset($noexport[$classname]) ?
-				!in_array($prop, $noexport[$classname]) :
-				true);
+						!in_array($prop, $noexport[$classname]) :
+						true);
 	}
 
 	static function binary2file(&$object, $file, $fwrite = 'fwrite'){
@@ -264,11 +264,9 @@ class we_exim_contentProvider{
 				if(isset($object->$v)){
 					$content = $object->$v;
 				}
-				if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($object->ClassName, $v, $content)){//fix for faulty parser
+				if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($object->ClassName, $v, $content) || self::needSerialize($object->ClassName, $v, $content)){//fix for faulty parser
 					$content = self::getCDATA(self::encode($content));
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
-				} else if(self::needSerialize($object->ClassName, $v, $content)){
-					$content = self::getCDATA($content);
 				}
 				$attribs .= we_xml_composer::we_xmlElement($v, $content, $coding);
 			}
@@ -287,9 +285,9 @@ class we_exim_contentProvider{
 				$data = we_base_file::loadPart($path, $offset, $rsize);
 				if($data){
 					$fwrite($file, '<we:binary>' . $attribs .
-						we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
-						we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
-						'</we:binary>' . we_backup_backup::backupMarker . "\n");
+							we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
+							we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
+							'</we:binary>' . we_backup_backup::backupMarker . "\n");
 					$offset+=$rsize;
 					$object->SeqN++;
 				}
@@ -297,7 +295,7 @@ class we_exim_contentProvider{
 				/* if(filesize($path)<$offset){
 				  $data = null;
 				  } */
-			} while($data);
+			}while($data);
 		}
 	}
 
@@ -332,9 +330,9 @@ class we_exim_contentProvider{
 
 				if(!empty($data)){
 					$fwrite($file, '<we:version>' . $attribs .
-						we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
-						we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
-						'</we:version>' . we_backup_backup::backupMarker . "\n");
+							we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
+							we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
+							'</we:version>' . we_backup_backup::backupMarker . "\n");
 					$offset+=$rsize;
 					$object->SeqN++;
 				}
@@ -342,7 +340,7 @@ class we_exim_contentProvider{
 				/* if(filesize($path)<$offset){
 				  $data = null;
 				  } */
-			} while($data);
+			}while($data);
 		}
 	}
 
@@ -371,7 +369,7 @@ class we_exim_contentProvider{
 		}
 
 		//write tag name
-		$write = '<' . self::getTagName($object) . (!empty($attribs) ? we_xml_composer::buildAttributesFromArray($attribs) : '') . '>';
+		$write = '<' . self::getTagName($object) . ($attribs ? we_xml_composer::buildAttributesFromArray($attribs) : '') . '>';
 
 		// fix for classes; insert missing field length into default values ---
 		switch($classname){
@@ -433,11 +431,11 @@ class we_exim_contentProvider{
 						$contentObj = new we_element(false, $object->elements[$ck]);
 						break;
 					case 'we_backup_tableAdv':
-						array_unshift($object->elements[$ck], ' ');
+						//array_unshift($object->elements[$ck], ' '); //don't know why this line was active, sicne it creates an element <0></0> which is invalid, deacativated
 						$contentObj = new we_element(false, $object->elements[$ck]);
 						foreach($object->elements[$ck] as $okey => $ov){
 							$contentObj->$okey = trim($ov);
-						};
+						}
 						break;
 
 					default:
