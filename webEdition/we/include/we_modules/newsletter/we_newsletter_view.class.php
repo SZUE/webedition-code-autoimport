@@ -859,7 +859,7 @@ function popAndSubmit(wname, pnt, width, height) {
 	old = document.we_form.pnt.value;
 	document.we_form.pnt.value=pnt;
 
-	new jsWindow("' . HTML_DIR . 'white.html",wname,-1,-1,width,height,true,true,true,true);
+	new jsWindow("about:blank",wname,-1,-1,width,height,true,true,true,true);
 
 
 	' . (((we_base_browserDetect::isMAC()) && (we_base_browserDetect::isIE())) ? '

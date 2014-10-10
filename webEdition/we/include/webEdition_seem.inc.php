@@ -160,21 +160,21 @@ function pWebEdition_Frameset($SEEM_edit_include){
 	</div>
 	<div style="position:absolute;left:0px;right:0px;bottom:0px;height:1px;border: 1px solid;">
 		<div style="height:100%;float:left;width:25%;border:0px;">
-			<iframe src="<?php echo HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load"></iframe>
+			<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load"></iframe>
 		</div>
 		<div style="height:100%;float:left;width:25%;border:0px;">
-			<iframe src="<?php echo HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load2"></iframe>
+			<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load2"></iframe>
 		</div>
 		<!-- Bugfix Opera >=10.5  target name is always "ad" -->
 		<div style="height:100%;float:left;width:10%;border:0px;">
-			<iframe src="<?php echo HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
+			<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
 		</div>
 		<div style="height:100%;float:left;width:10%;border:0px;"><?php include(WE_USERS_MODULE_PATH . 'we_users_ping.inc.php'); ?></div>
 		<div style="height:100%;float:left;width:10%;border:0px;">
-			<iframe src="<?php echo HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
+			<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
 		</div>
 		<div style="height:100%;float:left;width:10%;border:0px;">
-			<iframe src="<?php echo HTML_DIR ?>white.html" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="plugin"></iframe>
+			<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="plugin"></iframe>
 		</div>
 	</div>
 	<?php

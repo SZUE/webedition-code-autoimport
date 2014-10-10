@@ -424,7 +424,7 @@ while($DB_WE->next_record()){
 <?php
 echo we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf;background-repeat:repeat;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
 	, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-		, we_html_element::htmlIFrame('messaging_usel_main', HTML_DIR . 'white.html', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
+		, we_html_element::htmlIFrame('messaging_usel_main',  'about:blank', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
 		we_html_element::htmlDiv(array('style' => 'position:absolute;height:20px;bottom:0px;left:0px;right:0px;overflow: hidden;padding:10px;background-repeat:repeat;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);'), we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_selupdate();"), "", we_html_button::create_button("cancel", "javascript:close();")
 		))
 ));

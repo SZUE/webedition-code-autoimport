@@ -192,7 +192,7 @@ function we_cmd(){
 				return we_html_element::jsElement('
 				top.content.editor.edbody.entries_selected = new Array();
 				top.content.editor.edbody.msg_mfv.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
-				top.content.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html"
+				top.content.editor.edbody.msg_mfv.messaging_msg_view.location="about:blank"
 				');
 			case 'update_todo':
 				if($this->messaging->selected_message){
@@ -228,7 +228,7 @@ function we_cmd(){
 				top.content.editor.edbody.entries_selected = new Array();
 				top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
 				top.content.editor.edbody.msg_mfv.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
-				top.content.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html";
+				top.content.editor.edbody.msg_mfv.messaging_msg_view.location="about:blank";
 				';
 
 				$aid = $this->messaging->Folder_ID;
@@ -252,7 +252,7 @@ function we_cmd(){
 				//we_class::2xok
 				top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
 				top.content.editor.edbody.msg_mfv.messaging_messages_overview.location=" ' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
-				top.content.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html";
+				top.content.editor.edbody.msg_mfv.messaging_msg_view.location="about:blank";
 				';
 
 				$aid = $this->messaging->Folder_ID;
@@ -383,7 +383,7 @@ top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this
 if (top.content.editor.edbody.msg_mfv.messaging_messages_overview) {
 	top.content.editor.edbody.msg_mfv.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . "messaging_show_folder_content.php") . '";
 }' .
-						($blank ? 'top.content.editor.edbody.msg_mfv.messaging_msg_view.location="' . HTML_DIR . 'white.html";' : '')
+						($blank ? 'top.content.editor.edbody.msg_mfv.messaging_msg_view.location="about:blank";' : '')
 		);
 	}
 

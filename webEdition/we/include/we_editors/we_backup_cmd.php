@@ -214,12 +214,12 @@ run();');
 
 			echo we_html_element::jsElement(we_backup_util::getProgressJS(100, g_l('backup', "[finished]"), true) . '
 top.body.setLocation("' . WE_INCLUDES_DIR . 'we_editors/we_make_backup.php?pnt=body&step=2");
-top.cmd.location = "' . HTML_DIR . 'white.html";
+top.cmd.location = "about:blank";
 if(top.checker != "undefined"){
 	if(typeof top.checker.setLocation == "function") {
-		top.checker.setLocation("' . HTML_DIR . 'white.html");
+		top.checker.setLocation("about:blank");
 	}else{
-		top.checker.location = "' . HTML_DIR . 'white.html";
+		top.checker.location = "about:blank";
 	}
 }');
 			flush();
@@ -344,7 +344,7 @@ run();');
 			$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $DB_WE);
 
 			echo we_html_element::jsElement('
-top.checker.location = "' . HTML_DIR . 'white.html";
+top.checker.location = "about:blank";
 var op = top.opener.top.makeFoldersOpenString();
 top.opener.top.we_cmd("load", top.opener.top.treeData.table);
 ' . we_main_headermenu::getMenuReloadCode() . '

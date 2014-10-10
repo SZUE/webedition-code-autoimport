@@ -305,7 +305,6 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 
 		if($object instanceof we_template){
-			$tlinked = array();
 			if($this->options["handle_def_templates"] && $object->MasterTemplateID){
 				$this->addToDepArray($level, $object->MasterTemplateID, we_base_ContentTypes::TEMPLATE);
 			}
@@ -371,7 +370,11 @@ class we_export_preparer extends we_exim_XMLExIm{
 				}
 
 				if(isset($value['type']) && ($value['type'] === 'img' || $value['type'] === 'binary')){
-					$this->addToDepArray($level, $value['dat']);
+					if(isset($value['bdid'])){
+						$this->addToDepArray($level, $value['bdid']);
+					}elseif(isset($value['dat'])){
+						$this->addToDepArray($level, $value['dat']);
+					}
 				}
 			}
 		}
