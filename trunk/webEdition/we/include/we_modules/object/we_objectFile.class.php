@@ -2565,8 +2565,9 @@ class we_objectFile extends we_document{
 				if($regs[1] != 'OF'){
 					if($regs[1] == self::TYPE_OBJECT){
 						$id = $this->getElement('we_' . $cur['name']);
-						if($id)
+						if($id){
 							$linkObjects[] = $id;
+						}
 					}
 				}
 			}
@@ -2820,7 +2821,7 @@ class we_objectFile extends we_document{
 				$this->resetElements();
 				$multiobjects = array();
 				while((list($k, $v) = $this->nextElement(self::TYPE_MULTIOBJECT))){
-					$old = @unserialize($v['dat']);
+					$old = unserialize($v['dat']);
 					if(is_array($old) && isset($old['class'])){
 						$multiobjects[$k] = array(
 							'class' => $old['class'],
@@ -2912,7 +2913,7 @@ class we_objectFile extends we_document{
 			$dat = $this->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME);
 			if($dat && !is_array($dat)){
 // unserialize the variant data when loading the model
-				$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, unserialize($dat));
+				$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, unserialize($dat), 'variant');
 			}
 			we_shop_variants::setVariantDataForModel($this);
 		}
