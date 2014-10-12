@@ -66,7 +66,7 @@ class we_shop_listviewShopVariants extends we_listview_base{
 
 			// check if its a document or a objectFile
 			if($GLOBALS['we_doc'] instanceof we_objectFile){ // is an objectFile can this happen??!
-				$this->Id = $GLOBALS['we_doc']->OF_ID;
+				$this->Id = $GLOBALS['we_doc']->ID;
 				$this->IsObjectFile = true;
 
 				$doc = $GLOBALS['we_doc'];
