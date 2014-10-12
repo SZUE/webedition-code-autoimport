@@ -132,10 +132,7 @@ abstract class we_shop_variants{
 	public static function setVariantDataForModel(&$model, $unserialize = false){
 
 		// set variation data from array and
-
-		$elements = $model->elements;
-
-		if(!isset($elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
+		if(!isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
 			return;
 		}
 
@@ -147,9 +144,9 @@ abstract class we_shop_variants{
 							unserialize($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) :
 							array()
 					);
-
-			$elements = $model->elements;
 		}
+
+		$elements = $model->elements;
 
 		$variations = $elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
 		if(!$variations || !is_array($variations)){
@@ -371,8 +368,8 @@ abstract class we_shop_variants{
 					'space' => 0
 				);
 			}
-		}else{
-			$i=0;
+		} else {
+			$i = 0;
 		}
 
 		$parts[] = array(
@@ -573,7 +570,7 @@ abstract class we_shop_variants{
 				unset($modelelemets[$key]);
 			}
 		}
-		if($newPos > 0 && !empty($elements)){ //Fix #6883 - not sure if this has an impact
+		if($newPos > 0 && $elements){ //Fix #6883 - not sure if this has an impact
 			foreach($elements as $name => &$varArr){//now add the elements
 				foreach($varArr as $key => &$fieldArr){
 					$fieldArr = array_merge($modelelemets, $fieldArr);
