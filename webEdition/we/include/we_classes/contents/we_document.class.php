@@ -1095,7 +1095,7 @@ class we_document extends we_root{
 					return;
 				}
 				$val = $this->getElement($attribs['name']);
-				if($this instanceof we_objectFile){
+				if($this instanceof we_objectFile||(is_string($val)&& $val{0}=='a')){
 					$hrefArr = $val ? unserialize($val) : array();
 					return (is_array($hrefArr) ? self::getHrefByArray($hrefArr) : '');
 				}
