@@ -1953,7 +1953,7 @@ class we_object extends we_document{
 			$names = (is_array($vals) ? array_keys($vals) : array());
 
 			foreach($names as $name){
-				if($name === "WE_CSS_FOR_CLASS"){
+				if($name === 'WE_CSS_FOR_CLASS'){
 					$this->CSS = $vals[$name];
 				}
 				if(isset($vals[$name]) && is_array($vals[$name])){
