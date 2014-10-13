@@ -26,34 +26,35 @@ class we_base_request{
 
 	private static $allTables = array();
 
-	const TRANSACTION = 'transaction';
-	const INTLIST = 'intList';
 	/* converts an csv of ints to an array */
+
 	const INTLISTA = 'intListA';
-	const CMD = 'cmd';
-	const UNIT = 'unit';
 	const INT = 'int';
 	const FLOAT = 'float';
 	const BOOL = 'bool';
+	const RAW = 'raw';
+	const URL = 'url';
+	const EMAIL = 'email';
+	const STRING = 'string';
+	const HTML = 'html';
 
 	/**
 	 * @internal
 	 */
+	const TRANSACTION = 'transaction';
+	const INTLIST = 'intList';
+	const CMD = 'cmd';
+	const UNIT = 'unit';
 	const TOGGLE = 'toggle';
 	const TABLE = 'table';
 	const FILE = 'file';
 	const FILELIST = 'filelist';
 	const FILELISTA = 'filelista';
-	const URL = 'url';
-	const STRING = 'string';
-	const HTML = 'html';
-	const EMAIL = 'email';
 //only temporary
 	const STRINGC = 'stringC';
 	const RAW_CHECKED = 'rawC';
 //remove these types!!!
 	const JS = 'js';
-	const RAW = 'raw';
 	const SERIALIZED = 'serial';
 	const SERIALIZED_KEEP = 'serialK';
 
@@ -176,25 +177,30 @@ class we_base_request{
 			case self::HTML:
 				$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
 				return;
-			default:
-				t_e('unknown filter type ' . $type);
 			case self::JS://for information!
 			case self::RAW:
 			case self::RAW_CHECKED:
 				//do nothing - used as placeholder for all types not yet known
 				return;
+			default:
+				t_e('unknown filter type ' . $type);
 		}
 		$var = $default;
 	}
 
-	function we_defineTables(array $tables){
-		if(!isset($GLOBALS['we']['allTables'])){
-			$GLOBALS['we']['allTables'] = array();
-		}
-		foreach($tables as $tab => $name){
-			define($tab, TBL_PREFIX . $name);
-			$GLOBALS['we']['allTables'][$tab] = TBL_PREFIX . $name;
-		}
+	/* function we_defineTables(array $tables){
+	  if(!isset($GLOBALS['we']['allTables'])){
+	  $GLOBALS['we']['allTables'] = array();
+	  }
+	  foreach($tables as $tab => $name){
+	  define($tab, TBL_PREFIX . $name);
+	  $GLOBALS['we']['allTables'][$tab] = TBL_PREFIX . $name;
+	  }
+	  } */
+
+	public static function filterVar($var, $varType, $default = ''){
+		self::_weRequest($var, '', array($varType, $default));
+		return $var;
 	}
 
 	/**

@@ -746,10 +746,10 @@ function submitForm() {
 				}
 
 				if($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS && $this->Model->TitleField != ""){
-					$_classFields = unserialize(f("SELECT DefaultValues FROM " . OBJECT_TABLE . " WHERE ID=" . intval($this->Model->ClassID), "DefaultValues", $this->db));
+					$_classFields = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . " WHERE ID=" . intval($this->Model->ClassID), "DefaultValues", $this->db));
 					if(is_array($_classFields) && count($_classFields) > 0){
 						$_fieldsByNamePart = array();
-						foreach($_classFields as $_key => $_val){
+						foreach(array_keys($_classFields) as $_key){
 							if(($_pos = strpos($_key, "_")) && (substr($_key, 0, $_pos) != "object")){
 								$_fieldsByNamePart[substr($_key, $_pos + 1)] = $_key;
 							}
@@ -1036,7 +1036,7 @@ function submitForm() {
 					$_cat->Catfields = unserialize($_cat->Catfields);
 
 					if(isset($_cat->Catfields['default']['Title'])){
-						print we_html_element::jsElement($this->editorBodyForm . '.Text.value = "' . addslashes($_cat->Catfields['default']['Title']) . '";');
+						echo we_html_element::jsElement($this->editorBodyForm . '.Text.value = "' . addslashes($_cat->Catfields['default']['Title']) . '";');
 					}
 				}
 				break;

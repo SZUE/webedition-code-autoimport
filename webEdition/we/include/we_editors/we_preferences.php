@@ -2268,7 +2268,8 @@ function formmailBlockOnOff() {
 			if(class_exists('mysqli', false)){
 				$_db_connect->addOption('mysqli_connect', 'mysqli_connect');
 				$_db_connect->addOption('mysqli_pconnect', 'mysqli_pconnect');
-			} elseif(function_exists('mysql_connect')){ //only allow old connection method if new is not available
+			}
+			if(function_exists('mysql_connect')){ //only allow old connection method if new is not available
 				$_db_connect->addOption('connect', 'connect (deprecated)');
 				$_db_connect->addOption('pconnect', 'pconnect (deprecated)');
 			}

@@ -37,32 +37,27 @@ function we_tag_setVar($attribs){
 	$striptags = weTag_getAttribute('striptags', $attribs, false, true);
 	$formnameTo = weTag_getAttribute('formnameto', $attribs, 'we_global_form');
 	$formnameFrom = weTag_getAttribute('formnamefrom', $attribs, 'we_global_form');
+	$varType = $typeFrom === 'href' ? we_base_request::URL : weTag_getAttribute('varType', $attribs, we_base_request::STRING);
+	$prepareSQL = weTag_getAttribute('prepareSQL', $attribs, false, true);
+
 	if(isset($attribs['value'])){
 		$valueFrom = weTag_getAttribute('value', $attribs);
 	} else {
 		switch($from){
 			case 'request' :
-				$valueFrom = getArrayValue($_REQUEST, null, $nameFrom);
-				break;
 			case 'post' :
-				$valueFrom = getArrayValue($_POST, null, $nameFrom);
-				break;
 			case 'get' :
-				$valueFrom = getArrayValue($_GET, null, $nameFrom);
-				break;
 			case 'global' :
-				$valueFrom = getArrayValue($GLOBALS, null, $nameFrom);
-				break;
 			case 'session' :
-				$valueFrom = getArrayValue($_SESSION, null, $nameFrom);
+				$valueFrom = we_tag_var(array('type' => $from, '_name_orig' => $nameFrom, 'name' => $nameFrom, 'varType' => $varType));
 				break;
 			case 'top' :
 				if($propertyFrom){
 					$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->$nameFrom) ? $GLOBALS['WE_MAIN_DOC']->$nameFrom : '';
 				} else {
 					$valueFrom = $GLOBALS['WE_MAIN_DOC']->issetElement($nameFrom . ($typeFrom === 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
-						$GLOBALS['WE_MAIN_DOC']->getField(array('name' => $nameFrom), $typeFrom, true) :
-						'';
+							$GLOBALS['WE_MAIN_DOC']->getField(array('name' => $nameFrom), $typeFrom, true) :
+							'';
 				}
 				break;
 			case 'self' :
@@ -70,15 +65,15 @@ function we_tag_setVar($attribs){
 					$valueFrom = isset($GLOBALS['we_doc']->$nameFrom) ? $GLOBALS['we_doc']->$nameFrom : '';
 				} else {
 					$valueFrom = $GLOBALS['we_doc']->issetElement($nameFrom . ($typeFrom === 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
-						$GLOBALS['we_doc']->getField(array('name' => $nameFrom), $typeFrom, true) :
-						'';
+							$GLOBALS['we_doc']->getField(array('name' => $nameFrom), $typeFrom, true) :
+							'';
 				}
 				break;
 			case 'object' :
 			case 'document' :
 				$valueFrom = ($propertyFrom ?
-						(isset($GLOBALS['we_' . $from][$formnameFrom]->$nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->$nameFrom : '') :
-						($GLOBALS['we_' . $from][$formnameFrom]->issetElement($nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->getElement($nameFrom) : ''));
+								(isset($GLOBALS['we_' . $from][$formnameFrom]->$nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->$nameFrom : '') :
+								($GLOBALS['we_' . $from][$formnameFrom]->issetElement($nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->getElement($nameFrom) : ''));
 
 				break;
 			case 'sessionfield' :
@@ -102,9 +97,9 @@ function we_tag_setVar($attribs){
 					}
 				}
 				$valueFrom = $GLOBALS['WE_MAIN_DOC']->issetElement($nameFrom) ? $GLOBALS['WE_MAIN_DOC']->getField(
-						array(
-						'name' => $nameFrom
-						), $typeFrom, true) : '';
+								array(
+							'name' => $nameFrom
+								), $typeFrom, true) : '';
 				break;
 			case 'listdir' :
 				$valueFrom = isset($GLOBALS['we_position']['listdir'][$nameFrom]) ? $GLOBALS['we_position']['listdir'][$nameFrom] : '';
@@ -113,9 +108,10 @@ function we_tag_setVar($attribs){
 				$valueFrom = '';
 		}
 	}
-	if($striptags){
-		$valueFrom = strip_tags($valueFrom);
-	}
+
+	$valueFrom = ($striptags ? strip_tags($valueFrom) : $valueFrom);
+	$valueFrom = ($prepareSQL ? $GLOBALS['DB_WE']->escape($valueFrom) : $valueFrom);
+
 	switch($to){
 		case 'object' :
 		case 'document' :
