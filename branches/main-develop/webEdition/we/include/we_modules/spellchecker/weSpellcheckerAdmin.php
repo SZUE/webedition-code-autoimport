@@ -6,8 +6,8 @@ we_html_tools::protect($protect);
 
 if(!permissionhandler::hasPerm('SPELLCHECKER_ADMIN')){
 	echo we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR) .
-					'self.close();
+			we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR) .
+			'self.close();
 		');
 	exit();
 }
@@ -17,30 +17,30 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 $_width = 600;
 $space = 5;
 
-$l_param['l_dictAdmin'] = g_l('modules_spellchecker', '[dictAdmin]');
-$l_param['l_userDictAdmin'] = g_l('modules_spellchecker', '[userDictAdmin]');
-$l_param['l_select'] = g_l('modules_spellchecker', '[select]');
-$l_param['l_select_words'] = g_l('modules_spellchecker', '[select_words]');
-$l_param['l_select_phonetic'] = g_l('modules_spellchecker', '[select_phonetic]');
-$l_param['l_build'] = g_l('modules_spellchecker', '[build]');
-$l_param['l_close'] = g_l('modules_spellchecker', '[close]');
-$l_param['l_encoding'] = g_l('modules_spellchecker', '[encoding]');
-$l_param['l_dictname'] = g_l('modules_spellchecker', '[dictname]');
-$l_param['l_enc_warning'] = g_l('modules_spellchecker', '[enc_warning]');
-$l_param['l_filename_nok'] = g_l('modules_spellchecker', '[filename_nok]');
-$l_param['l_filename_warning'] = g_l('modules_spellchecker', '[filename_warning]');
-$l_param['l_phonetic_nok'] = g_l('modules_spellchecker', '[phonetic_nok]');
-$l_param['l_phonetic_warning'] = g_l('modules_spellchecker', '[phonetic_warning]');
-$l_param['l_enc_warning'] = g_l('modules_spellchecker', '[enc_warning]');
-$l_param['l_name_warning'] = g_l('modules_spellchecker', '[name_warning]');
-$l_param['l_building'] = g_l('modules_spellchecker', '[building]');
-$l_param['l_packing'] = g_l('modules_spellchecker', '[packing]');
-$l_param['l_uploading'] = g_l('modules_spellchecker', '[uploading]');
-$l_param['l_finished'] = g_l('modules_spellchecker', '[end]');
-
-$l_param['upload_size'] = getUploadMaxFilesize();
-$l_param['upload_url'] = getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php';
-
+$l_param = array(
+	'l_dictAdmin' => g_l('modules_spellchecker', '[dictAdmin]'),
+	'l_userDictAdmin' => g_l('modules_spellchecker', '[userDictAdmin]'),
+	'l_select' => g_l('modules_spellchecker', '[select]'),
+	'l_select_words' => g_l('modules_spellchecker', '[select_words]'),
+	'l_select_phonetic' => g_l('modules_spellchecker', '[select_phonetic]'),
+	'l_build' => g_l('modules_spellchecker', '[build]'),
+	'l_close' => g_l('modules_spellchecker', '[close]'),
+	'l_encoding' => g_l('modules_spellchecker', '[encoding]'),
+	'l_dictname' => g_l('modules_spellchecker', '[dictname]'),
+	'l_enc_warning' => g_l('modules_spellchecker', '[enc_warning]'),
+	'l_filename_nok' => g_l('modules_spellchecker', '[filename_nok]'),
+	'l_filename_warning' => g_l('modules_spellchecker', '[filename_warning]'),
+	'l_phonetic_nok' => g_l('modules_spellchecker', '[phonetic_nok]'),
+	'l_phonetic_warning' => g_l('modules_spellchecker', '[phonetic_warning]'),
+	'l_enc_warning' => g_l('modules_spellchecker', '[enc_warning]'),
+	'l_name_warning' => g_l('modules_spellchecker', '[name_warning]'),
+	'l_building' => g_l('modules_spellchecker', '[building]'),
+	'l_packing' => g_l('modules_spellchecker', '[packing]'),
+	'l_uploading' => g_l('modules_spellchecker', '[uploading]'),
+	'l_finished' => g_l('modules_spellchecker', '[end]'),
+	'upload_size' => getUploadMaxFilesize(),
+	'upload_url' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php',
+);
 
 // ----------------------
 if(we_base_browserDetect::isMAC() && we_base_browserDetect::isGecko()){
@@ -144,14 +144,14 @@ $_applet_code = we_html_element::htmlApplet(array(
 			'name' => 'spellchecker',
 			'code' => 'com/livinge/spellchecker/swing/DictEditor.class',
 			'archive' => 'lespellchecker.jar',
-			'codebase' => getServerUrl() . WE_SPELLCHECKER_MODULE_DIR,
+			'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
 			'width' => 400,
 			'height' => 220,
 				), '
 <param name="code" value="com/livinge/spellchecker/swing/DictEditor.class"/>
 <param name="archive" value="lespellchecker.jar"/>
 <param name="type" value="application/x-java-applet;version=1.1"/>
-<param name="dictBase" value="' . getServerUrl() . WE_SPELLCHECKER_MODULE_DIR . '/dict/"/>
+<param name="dictBase" value="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . '/dict/"/>
 <param name="dictionary" value="' . (isset($_SESSION['weS']['dictLang']) ? $_SESSION['weS']['dictLang'] : 'Deutsch') . '"/>
 <param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"/>
 <param name="udSize" value="' . (is_file(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '.dict') ? filesize(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '.dict') : '0') . '"/>' .
@@ -160,7 +160,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 			'name' => "spellcheckerCmd",
 			'code' => "LeSpellchecker.class",
 			'archive' => "lespellchecker.jar",
-			'codebase' => getServerUrl() . WE_SPELLCHECKER_MODULE_DIR,
+			'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
 			'width' => 20,
 			'height' => 20,), '
 <param name="scriptable" value="true"/>
@@ -168,7 +168,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 <param name="CODE" value="LeSpellchecker.class"/>
 <param name="ARCHIVE" value="lespellchecker.jar"/>
 <param name="type" value="application/x-java-applet;version=1.1"/>
-<param name="dictBase" value="' . getServerUrl() . WE_SPELLCHECKER_MODULE_DIR . '/dict/"/>
+<param name="dictBase" value="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . '/dict/"/>
 <param name="dictionary" value="' . (isset($_SESSION['weS']['dictLang']) ? $_SESSION['weS']['dictLang'] : 'Deutsch') . '"/>
 <param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"/>
 <param name="udSize" value="' . (is_file(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') ? filesize(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') : '0') . '"/>');
@@ -323,15 +323,15 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 
 <body onload="loadTable()" class="weDialogBody">
 
-	<?php print $tabsBody; ?>
+<?php print $tabsBody; ?>
 
 	<div id="content" style="margin: 10px; width: 450px;">
 		<div id="tab1" style="display:block;">
-			<?php print $_tab_1 ?>
+<?php print $_tab_1 ?>
 
 		</div>
 		<div id="tab2" style="display:none;">
-			<?php print $_tab_2 ?>
+<?php print $_tab_2 ?>
 		</div>
 
 	</div>

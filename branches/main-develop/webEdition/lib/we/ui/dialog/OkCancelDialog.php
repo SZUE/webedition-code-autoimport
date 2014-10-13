@@ -100,7 +100,7 @@ class we_ui_dialog_OkCancelDialog extends we_ui_layout_Dialog{
 		// TODO localize buttons
 		$buttonOk = new we_ui_controls_Button(array('text' => $translate->_('Ok'), 'onClick' => $this->_okAction . '; ' . ($this->_topClose ? 'top.close()' : ''), 'type' => 'onClick', 'width' => 100));
 
-		if($this->_okAction == ""){
+		if(!$this->_okAction){
 			$buttonOk->setDisabled(true);
 		}
 

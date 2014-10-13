@@ -79,25 +79,23 @@ function getNoteList($_sql, $bDate, $bDisplay){
 	while($DB_WE->next_record()){
 		foreach($_fields as $_fld){
 			$dbf = $DB_WE->f($_fld);
-			$_fldValue = ($_fld == 'ValidUntil' && ($dbf == '3000-01-01' || $dbf == '0000-00-00' || empty($dbf)) ?
-					'' : $dbf);
 
-			$_fldValue = CheckAndConvertISObackend(str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), $_fldValue));
+			$_fldValue = CheckAndConvertISObackend(str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), ($_fld === 'ValidUntil' && ($dbf === '3000-01-01' || $dbf === '0000-00-00' || !$dbf) ? '' : $dbf)));
 			$_notes .= we_html_element::htmlHidden(
-					array(
-						'id' => $_rcd . '_' . $_fld,
-						'style' => 'display:none;',
-						'value' => $_fldValue
+							array(
+								'id' => $_rcd . '_' . $_fld,
+								'style' => 'display:none;',
+								'value' => $_fldValue
 			));
 		}
 
 		$validity = $DB_WE->f("Valid");
 		switch($bDate){
 			case 1 :
-				$showDate = ($validity == 'always' ? '-' : convertDate($DB_WE->f("ValidFrom")));
+				$showDate = ($validity === 'always' ? '-' : convertDate($DB_WE->f("ValidFrom")));
 				break;
 			case 2 :
-				$showDate = ($validity == 'always' || $validity == 'date' ? '-' : convertDate($DB_WE->f("ValidUntil")));
+				$showDate = ($validity === 'always' || $validity === 'date' ? '-' : convertDate($DB_WE->f("ValidUntil")));
 				break;
 			default :
 				$showDate = convertDate($DB_WE->f("CreationDate"));
@@ -107,7 +105,7 @@ function getNoteList($_sql, $bDate, $bDisplay){
 		$vFrom = str_replace('-', '', $DB_WE->f("ValidFrom"));
 		$vTill = str_replace('-', '', $DB_WE->f("ValidUntil"));
 		if($bDisplay == 1 && $DB_WE->f("Valid") != 'always'){
-			if($DB_WE->f('Valid') == 'date'){
+			if($DB_WE->f('Valid') === 'date'){
 				if($today < $vFrom){
 					continue;
 				}
@@ -121,11 +119,11 @@ function getNoteList($_sql, $bDate, $bDisplay){
 		$_notes .= '<tr style="cursor:pointer;" id="' . $_rcd . '_tr" onmouseover="fo=document.forms[0];if(fo.elements[\'mark\'].value==\'\'){setColor(this,' . $_rcd . ',\'#EDEDED\');}" onmouseout="fo=document.forms[0];if(fo.elements[\'mark\'].value==\'\'){setColor(this,' . $_rcd . ',\'#FFFFFF\');}" onmousedown="selectNote(' . $_rcd . ');">
 		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
 		<td width="15" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(
-				array(
-					"src" => IMAGE_DIR . "pd/prio_" . $DB_WE->f("Priority") . ".gif",
-					"width" => 13,
-					"height" => 14
-			)) . '</td>
+						array(
+							"src" => IMAGE_DIR . "pd/prio_" . $DB_WE->f("Priority") . ".gif",
+							"width" => 13,
+							"height" => 14
+				)) . '</td>
 		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
 		<td width="60" valign="middle" class="middlefont" align="center">' . $showDate . '</td>
 		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>

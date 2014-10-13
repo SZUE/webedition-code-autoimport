@@ -24,7 +24,7 @@
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop(g_l('thumbnails', '[thumbnails]'));
 
-$reloadUrl = getServerUrl(true) . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThumbs';
+$reloadUrl = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThumbs';
 
 // Check if we need to create a new thumbnail
 if(($name = we_base_request::_(we_base_request::STRING, 'newthumbnail')) &&
@@ -73,7 +73,7 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = '', $
 		($JS ? $JS : '') .
 		($expand != -1 ? we_html_multiIconBox::getJS() : '') .
 		// Return HTML code of dialog
-		we_html_multiIconBox::getHTML($name, '100%', $content, 30, '', $expand, $show_text, $hide_text, $cookie != false ? ($cookie == 'down') : $cookie, $title);
+		we_html_multiIconBox::getHTML($name, '100%', $content, 30, '', $expand, $show_text, $hide_text, $cookie != false ? ($cookie === 'down') : $cookie, $title);
 }
 
 /**
@@ -95,7 +95,7 @@ function remember_value(array &$setArray, $settingvalue, $settingname){
 				$setArray[$settingname] = $settingvalue;
 				break;
 			case 'Format':
-				$setArray[$settingname] = (($settingvalue == 'none') ? '' : $settingvalue);
+				$setArray[$settingname] = (($settingvalue === 'none') ? '' : $settingvalue);
 				break;
 			default:
 				$setArray[$settingname] = abs($settingvalue);
@@ -358,11 +358,11 @@ function init() {
 			$_thumbnail_format_select = new we_html_select($_thumbnail_format_select_attribs);
 
 			foreach($_thumbnails_formats as $_k => $_v){
-				if(in_array($_k, we_base_imageEdit::supported_image_types()) || $_k == 'none'){
+				if(in_array($_k, we_base_imageEdit::supported_image_types()) || $_k === 'none'){
 					$_thumbnail_format_select->addOption($_k, $_v);
 
 					// Check if added option is selected
-					if($_thumbnail_format == $_k || (($_thumbnail_format == '') && ($_k == 'none'))){
+					if($_thumbnail_format == $_k || (!$_thumbnail_format && ($_k === 'none'))){
 						$_thumbnail_format_select->selectOption($_k);
 					}
 				}

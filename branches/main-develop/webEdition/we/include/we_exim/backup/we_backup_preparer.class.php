@@ -147,7 +147,7 @@ abstract class we_backup_preparer{
 
 		$_SESSION['weS']['weBackupVars']['offset_end'] = we_backup_util::getEndOffset($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION);
 
-		if($_SESSION['weS']['weBackupVars']['options']['format'] == 'xml'){
+		if($_SESSION['weS']['weBackupVars']['options']['format'] === 'xml'){
 			$_SESSION['weS']['weBackupVars']['options']['xmltype'] = we_backup_util::getXMLImportType($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION, $_SESSION['weS']['weBackupVars']['offset_end']);
 			if($_SESSION['weS']['weBackupVars']['options']['xmltype'] != 'backup'){
 				return false;
@@ -303,7 +303,7 @@ abstract class we_backup_preparer{
 	}
 
 	private static function getFileList(array &$list, $dir = '', $with_dirs = false, $rem_doc_root = true){
-		$dir = ($dir == '' ? $_SERVER['DOCUMENT_ROOT'] : $dir);
+		$dir = ($dir ? $dir : $_SERVER['DOCUMENT_ROOT']);
 		if(!is_readable($dir) || !is_dir($dir)){
 			return false;
 		}
@@ -439,14 +439,14 @@ abstract class we_backup_preparer{
 							}');
 				} else {
 					return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
-							'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+									'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 				}
 			case 'customer':
 				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
-						'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+								'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 			default:
 				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[format_unknown]'), we_message_reporting::WE_MESSAGE_WARNING) .
-						'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+								'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 		}
 	}
 
@@ -476,7 +476,7 @@ abstract class we_backup_preparer{
 			$_mess = g_l('backup', '[unspecified_error]');
 		}
 
-		if(isset($_SESSION['weS']['weBackupVars']['backup_log'])&&$_SESSION['weS']['weBackupVars']['backup_log']){
+		if(isset($_SESSION['weS']['weBackupVars']['backup_log']) && $_SESSION['weS']['weBackupVars']['backup_log']){
 			we_backup_util::addLog('Error: ' . $_mess);
 		}
 
@@ -499,7 +499,7 @@ abstract class we_backup_preparer{
 							break;
 						}
 						fwrite($fp, $data);
-					} while(true);
+					}while(true);
 					fclose($fp);
 				} else {
 					fclose($fs);

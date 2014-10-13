@@ -37,7 +37,7 @@ if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("MOVE_TEMPLATE")) |
 
 $yuiSuggest = & weSuggest::getInstance();
 $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
-if($cmd0 == 'do_move' || $cmd0 == 'move_single_document'){
+if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 	$db = new DB_WE();
 	if(($targetDirectroy = we_base_request::_(we_base_request::INT, 'we_target')) === false){
 		$script .= 'top.toggleBusy(0);' .
@@ -274,7 +274,7 @@ echo $table;
 //-->
 </script>
 <?php
-if($cmd0 == "do_move"){
+if($cmd0 === "do_move"){
 	echo "</head><body></body></html>";
 	exit();
 }

@@ -63,7 +63,7 @@ echo we_html_tools::getHtmlTop($title, '', 'frameset') .
 	}
 ');
 
-if($tool == "weSearch"){
+if($tool === "weSearch"){
 	if(($cmd1 = we_base_request::_(we_base_request::STRINGC, 'we_cmd', false, 1))){
 		$_SESSION['weS']['weSearch']["keyword"] = $cmd1;
 	}

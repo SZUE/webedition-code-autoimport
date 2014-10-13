@@ -182,7 +182,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 		}
 
 		$out.= we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML($itsname, "100%", $parts, 30, "", $znr, $openText, $closeText, ($wepos == "down")) .
+			we_html_multiIconBox::getHTML($itsname, "100%", $parts, 30, "", $znr, $openText, $closeText, ($wepos === "down")) .
 			'</form>' .
 			$yuiSuggest->getYuiCss() .
 			$yuiSuggest->getYuiJs() .
@@ -238,7 +238,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				var args = "";
 				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
-					url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
+					url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 					if (i < (arguments.length - 1)) {
 						url += "&";
 					}
@@ -340,7 +340,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				var args = "";
 				var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
-					url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
+					url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 					if (i < (arguments.length - 1)) {
 						url += "&";
 					}
@@ -392,7 +392,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				var args = "";
 				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
-					url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
+					url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 					if (i < (arguments.length - 1)) {
 						url += "&";
 					}
@@ -549,17 +549,16 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				break;
 			case "del_file":
 				$arr = makeArrayFromCSV($this->banner->FileIDs);
-				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue"))){
-					foreach($arr as $k => $v){
-						if($v == $id){
-							array_splice($arr, $k, 1);
-						}
+				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue")) !== false){
+					$k = array_search($id, $arr);
+					if($k !== false){
+						unset($arr[$k]);
 					}
 					$this->banner->FileIDs = makeCSVFromArray($arr, true);
 				}
 				break;
 			case "del_all_files":
-				$this->banner->FileIDs = "";
+				$this->banner->FileIDs = '';
 				break;
 			case "add_folder":
 				$arr = makeArrayFromCSV($this->banner->FolderIDs);

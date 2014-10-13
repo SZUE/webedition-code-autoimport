@@ -39,10 +39,10 @@ function we_tag_url($attribs){
 		$url = '/';
 	} else {
 		$urlNotSet = true;
-		if(($id == 'self' || $id == 'top') && $type == 'document'){
+		if(($id === 'self' || $id === 'top') && $type === 'document'){
 			$doc = we_getDocForTag($id, true); // check if we should use the top document or the  included document
 			$testid = $doc->ID;
-			if($id == 'top'){//check for object
+			if($id === 'top'){//check for object
 				if($GLOBALS['WE_MAIN_DOC'] instanceof we_objectFile){//ein object
 					$triggerid = ($triggerid ? $triggerid : $GLOBALS['WE_MAIN_DOC']->ID);
 
@@ -64,7 +64,7 @@ function we_tag_url($attribs){
 			$testid = $id;
 		}
 		if($urlNotSet){
-			if($type == 'document'){
+			if($type === 'document'){
 				$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($testid), $GLOBALS['DB_WE']);
 				$url = isset($row['Path']) ? ($row['Path'] . ($row['IsFolder'] ? '/' : '')) : '';
 				$path_parts = pathinfo($url);

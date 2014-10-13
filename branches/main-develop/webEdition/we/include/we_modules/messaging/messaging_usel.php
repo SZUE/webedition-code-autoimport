@@ -40,10 +40,10 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[sel_rcpts]')) .
 ?>
 <script type="text/javascript"><!--
 <?php
-if(we_base_request::_(we_base_request::STRING, 'mode') == 'save_addrbook'){
+if(we_base_request::_(we_base_request::STRING, 'mode') === 'save_addrbook'){
 	$addrbook = array();
 	$t_arr = array();
-	$addrbook_arr = we_base_request::_(we_base_request::STRING, 'addrbook_arr');
+	$addrbook_arr = we_base_request::_(we_base_request::STRINGC, 'addrbook_arr');
 	if($addrbook_arr != ''){
 		$t_arr = explode("\t", $addrbook_arr);
 	}
@@ -58,14 +58,14 @@ if(we_base_request::_(we_base_request::STRING, 'mode') == 'save_addrbook'){
 		$i++;
 	}
 
-	if($messaging->save_addresses($addrbook)){
-		print "function doOnLoad() {\n" . we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[addr_book_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . "\n}\n";
-	} else {
-		print "function doOnLoad() {\n" . we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[error_occured]'), we_message_reporting::WE_MESSAGE_ERROR) . "\n}\n";
-	}
+	echo 'function doOnLoad() {' .
+	($messaging->save_addresses($addrbook) ?
+			we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[addr_book_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) :
+			we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[error_occured]'), we_message_reporting::WE_MESSAGE_ERROR)
+	) . '}';
 } else {
 
-	print ' function doOnLoad() {
+	echo ' function doOnLoad() {
 // do nothing
 }
 ';
@@ -81,20 +81,19 @@ if(!empty($t_arr)){
 	$addrbook_str = substr($addrbook_str, 0, -1);
 }
 
-$rcpts_str = '';
+$rcpts_str = array();
 $rcpts = explode(',', we_base_request::_(we_base_request::RAW, "rs", ''));
 $db = new DB_WE();
 foreach($rcpts as $rcpt){
 	if(($uid = we_users_user::getUserID($rcpt, $db)) != -1){
-		$rcpts_str .= 'new Array("we_messaging","' . $uid . '","' . $rcpt . '"),';
+		$rcpts_str[]= 'new Array("we_messaging","' . $uid . '","' . $rcpt . '")';
 	}
 }
-$rcpts_str = substr($rcpts_str, 0, -1);
 ?>
 
 delta_sel = new Array();
 addrbook_sel = new Array(<?php echo $addrbook_str ?>);
-current_sel = new Array(<?php echo $rcpts_str ?>);
+current_sel = new Array(<?php echo implode(',',$rcpts_str); ?>);
 
 function init() {
 	var i;
@@ -309,9 +308,9 @@ if($maxsel){
 	</form>
 	<form action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php" method="post" name="addrbook_data">
 		<?php
-		echo we_html_tools::hidden('mode', 'save_addrbook').
-			we_html_tools::hidden('we_transaction', $transaction).
-			we_html_tools::hidden('addrbook_arr', '');
+		echo we_html_tools::hidden('mode', 'save_addrbook') .
+		we_html_tools::hidden('we_transaction', $transaction) .
+		we_html_tools::hidden('addrbook_arr', '');
 		?>
 	</form><?php echo we_html_element::jsElement('init();'); ?>
 </body>

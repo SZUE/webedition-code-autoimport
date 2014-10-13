@@ -57,7 +57,7 @@ switch($contentType){
 
 $mode = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 $weFileupload = new we_fileupload_include('we_File', '', '', '', '', 'document.forms[0].submit();', '', 330, true, false, 200, $allowedContentTypes, $allowedExtensions, '', '', array(), -1);
-$weFileupload->setIsFallback($mode == 'legacy' ? true : true);
+$weFileupload->setIsFallback($mode === 'legacy' ? true : true);
 $weFileupload->setExternalProgress(true, 'progressbar', true, 120);
 
 if($weFileupload->processFileRequest()){
@@ -105,7 +105,7 @@ if($weFileupload->processFileRequest()){
 				$we_doc->Path = $we_doc->getPath();
 				$we_doc->DocChanged = true;
 
-				if($we_doc->Extension == '.pdf'){
+				if($we_doc->Extension === '.pdf'){
 					$we_doc->setMetaDataFromFile($we_File);
 				}
 

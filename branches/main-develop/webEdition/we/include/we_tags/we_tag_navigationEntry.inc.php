@@ -47,7 +47,7 @@ function we_tag_navigationEntry($attribs, $content){
 	}
 
 	foreach($positions as $position){
-		if($position == 'first'){
+		if($position === 'first'){
 			$position = 1;
 		}
 		$GLOBALS['we_navigation'][$navigationName]->setTemplate($content, $type, $level, $current, $position);

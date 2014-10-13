@@ -60,9 +60,9 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		$model = $session->model;
 		$model->setFields($formData);
 
-		$newBeforeSaving = $model->ID == 0;
+		$newBeforeSaving = $model->ID === 0;
 		// check if user has the permissions to create new entries
-		if($model->ID == 0 && !we_core_Permissions::hasPerm('NEW_APP_' . strtoupper($appName))){
+		if($model->ID === 0 && !we_core_Permissions::hasPerm('NEW_APP_' . strtoupper($appName))){
 			$ex = new we_service_Exception(
 				$translate->_(
 					'You do not have the permission to create new entries or folders!'));
@@ -87,7 +87,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		}
 
 		// check if it is a folder saving in itself
-		if($model->IsFolder && $model->ID > 0 && $model->ParentID == $model->ID){
+		if($model->IsFolder && $model->ID > 0 && $model->ParentID === $model->ID){
 			$ex = new we_service_Exception(
 				$translate->_('The folder cannot be saved in the chosen folder!'), we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');

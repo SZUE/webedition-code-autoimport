@@ -217,7 +217,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 			(self::isFallback() || self::isLegacyMode() ? '' : '
 						<div id="div_fileupload_right">' .
 				$divDropzone .
-				($this->binDocProperties['type'] == 'image' ? '<br />' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', "[import_metadata_at_upload]")) : '') . '
+				($this->binDocProperties['type'] === 'image' ? '<br />' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', "[import_metadata_at_upload]")) : '') . '
 						</div>'
 			) . '
 					<div id="div_fileupload_right_legacy" style="text-align:right;display:' . (self::isFallback() || self::isLegacyMode() ? '' : 'none' ) . '">' .
@@ -234,7 +234,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 	}
 
 	public function getJsBtnCmd($btn = 'upload'){
-		$call = 'window.we_FileUpload.' . ($btn == 'upload' ? 'startUpload()' : 'cancelUpload()');
+		$call = 'window.we_FileUpload.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');
 		$callback = 'we_cmd(\'editor_uploadFile\', \'legacy\');';
 
 		return 'if(typeof window.we_FileUpload === "undefined" || window.we_FileUpload.getIsLegacyMode()){' . $callback . ';}else{' . $call . ';}';
@@ -242,10 +242,10 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 
 	public static function getJsOnLeave($callback, $type = 'switch_tab'){
 		if(self::isFallback() || self::isLegacyMode()){
-			return '';
+			return $callback;
 		}
 
-		if($type == 'switch_tab'){
+		if($type === 'switch_tab'){
 			$parentObj = 'top.weEditorFrameController';
 			$frame = 'top.weEditorFrameController.getVisibleEditorFrame()';
 		} else {
@@ -380,7 +380,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 				$we_doc->Path = $we_doc->getPath();
 				$we_doc->DocChanged = true;
 
-				if($we_doc->Extension == '.pdf'){
+				if($we_doc->Extension === '.pdf'){
 					$we_doc->setMetaDataFromFile($we_File);
 				}
 

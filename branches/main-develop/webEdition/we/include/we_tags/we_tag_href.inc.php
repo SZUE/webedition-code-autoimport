@@ -111,11 +111,11 @@ function we_tag_href($attribs){
 		$rootdirid = $rootdir;
 		$rootdir = id_to_path($rootdir, FILE_TABLE);
 	} else {
-		$rootdir = ($rootdir == '/' ? $rootdir : rtrim($rootdir, '/'));
+		$rootdir = ($rootdir === '/' ? $rootdir : rtrim($rootdir, '/'));
 		$rootdirid = path_to_id($rootdir, FILE_TABLE);
 	}
 // Bug Fix #7045
-	if($rootdir == '/'){
+	if($rootdir === '/'){
 		$rootdir = '';
 	}
 

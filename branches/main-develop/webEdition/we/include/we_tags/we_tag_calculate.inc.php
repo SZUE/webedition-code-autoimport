@@ -48,7 +48,7 @@ function we_tag_calculate($attribs, $content){
 				$result = 0;
 			}
 
-			if(!empty($sum)){
+			if($sum){
 				if(!isset($GLOBALS['summe'][$sum])){
 					$GLOBALS['summe'][$sum] = 0;
 				}

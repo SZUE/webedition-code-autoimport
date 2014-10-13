@@ -57,7 +57,7 @@ class we_customer_CSVImport extends we_import_CSV{
 						$akt_char = '';
 						$akt_field++;
 						$akt_field_value = '';
-					} else if(($akt_char == '\\') && $field_input){
+					} else if(($akt_char === '\\') && $field_input){
 						$field_input++;
 						$quote++;
 					} else if($akt_char == $this->Enclosure){
@@ -68,7 +68,7 @@ class we_customer_CSVImport extends we_import_CSV{
 						} else {
 							$field_input++;
 						}
-					} else if($akt_char == "\n"){
+					} else if($akt_char === "\n"){
 						if($head_complete && (($akt_field + 1) > $this->CSVNumFields())){
 							$this->CSVError[] = 'Fehler in <b>Zeile ' . ($akt_line + 2) . '</b>';
 						}
@@ -83,7 +83,7 @@ class we_customer_CSVImport extends we_import_CSV{
 				}
 
 				$last_char = $akt_char;
-				if($akt_char == '\\'){
+				if($akt_char === '\\'){
 					$akt_char = '';
 				}
 				$akt_field_value .= $akt_char;

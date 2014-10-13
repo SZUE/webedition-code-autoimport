@@ -125,7 +125,7 @@ class we_messaging_format extends we_class{
 
 	static function get_nameline($id, $addr = 'username'){
 		$db2 = new DB_WE();
-		if($addr == 'username'){
+		if($addr === 'username'){
 			$data = getHash('SELECT First, Second, Username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), $db2);
 			if($data){
 				return $data['Username'] . (($data['First'] || $data['Second']) ? ' (' . $data['First'] . ' ' . $data['Second'] . ')' : '');
@@ -160,7 +160,7 @@ class we_messaging_format extends we_class{
 	function get_assigner(){
 		$ret = '';
 
-		if($this->msg_obj == 'we_todo'){
+		if($this->msg_obj === 'we_todo'){
 			if(!empty($this->sel_msg['hdrs']['Assigner'])){
 				$ret = $this->sel_msg['hdrs']['Assigner'];
 			} else {
@@ -173,7 +173,7 @@ class we_messaging_format extends we_class{
 
 	function get_priority(){
 		$ret = '';
-		if($this->msg_obj == 'we_todo'){
+		if($this->msg_obj === 'we_todo'){
 			$ret = $this->sel_msg['hdrs']['Priority'];
 		}
 
@@ -272,7 +272,7 @@ class we_messaging_format extends we_class{
 				break;
 			case 'view':
 			case 'update':
-				if(isset($this->sel_msg['hdrs']['Content_Type']) && $this->sel_msg['hdrs']['Content_Type'] == 'html'){
+				if(isset($this->sel_msg['hdrs']['Content_Type']) && $this->sel_msg['hdrs']['Content_Type'] === 'html'){
 					$ret .= $this->sel_msg['body']['MessageText'];
 				} else {
 					if($this->highlight_quoting){

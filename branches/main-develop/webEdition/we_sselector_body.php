@@ -237,7 +237,7 @@ var i = 0;';
 			echo we_html_element::jsElement($js);
 			$set_rename = false;
 
-			if($nf == "new_folder"){
+			if($nf === "new_folder"){
 				?>
 				<tr style="background-color:#DFE9F5;">
 					<td align="center" width="25"><img src="<?php print TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0"></td>
@@ -259,7 +259,7 @@ var i = 0;';
 				$type = $isfolder ? g_l('contentTypes', '[folder]') : getDataType($dir . '/' . $entry);
 
 				$indb = $DB_WE->next_record();
-				if($entry == 'webEdition' || ((preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry == "download" || $entry == "tmp")) || $entry == WE_THUMBNAIL_DIRECTORY || $entry == $thumbFold){
+				if($entry === 'webEdition' || ((preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry === "download" || $entry === "tmp")) || $entry === WE_THUMBNAIL_DIRECTORY || $entry === $thumbFold){
 					$indb = true;
 				}
 				if($supportDebugging){
@@ -267,10 +267,10 @@ var i = 0;';
 				}
 				$file = we_base_request::_(we_base_request::STRING, 'file');//FIXME: totaler nonsense!!
 				$show = ($entry != '.') && ($entry != '..') && (($file == g_l('contentTypes', '[all_Types]')) || ($type == g_l('contentTypes', '[folder]')) || ($type == $file || $file == ''));
-				$bgcol = (we_base_request::_(we_base_request::FILE, 'curID') == ($dir . '/' . $entry) && !( $nf == 'new_folder')) ? '#DFE9F5' : 'white';
+				$bgcol = (we_base_request::_(we_base_request::FILE, 'curID') == ($dir . '/' . $entry) && !( $nf === 'new_folder')) ? '#DFE9F5' : 'white';
 				$onclick = $ondblclick = '';
 				$_cursor = 'cursor:default;';
-				if(!(( $nf == 'rename_folder' || $nf == 'rename_file') && ($entry == $sid) && ($isfolder))){
+				if(!(( $nf === 'rename_folder' || $nf === 'rename_file') && ($entry == $sid) && ($isfolder))){
 					if($indb && $isfolder){
 						$onclick = ' onclick="tout=setTimeout(\'if(wasdblclick==0){doClick(\\\'' . $entry . '\\\',1,' . ($indb ? 1 : 0) . ');}else{wasdblclick=0;}\',300);return true;"';
 						$ondblclick = 'onDblClick="wasdblclick=1;clearTimeout(tout);doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');return true;"';
@@ -341,22 +341,22 @@ var i = 0;';
 
 		</table>
 		<?php
-		if(( $nf == "new_folder") || (( $nf == "rename_folder" || $nf == "rename_file") && $set_rename)){
+		if(( $nf === "new_folder") || (( $nf === "rename_folder" || $nf === "rename_file") && $set_rename)){
 			?>
-			<input type="hidden" name="cmd" value="<?php print $nf; ?>" />
-			<?php if($nf == "rename_folder" || $nf == "rename_file"){ ?><input type="hidden" name="sid" value="<?php echo $sid; ?>" />
+			<input type="hidden" name="cmd" value="<?php echo $nf; ?>" />
+			<?php if($nf === "rename_folder" || $nf === "rename_file"){ ?><input type="hidden" name="sid" value="<?php echo $sid; ?>" />
 				<input type="hidden" name="oldtxt" value="" /><?php } ?>
-			<input type="hidden" name="pat" value="<?php print we_base_request::_(we_base_request::RAW, "pat", ""); ?>" />
+			<input type="hidden" name="pat" value="<?php echo we_base_request::_(we_base_request::RAW, "pat", ""); ?>" />
 		<?php } ?>
 	</form>
 
 	<?php
-	if($nf == "new_folder" || (( $nf == "rename_folder" || $nf == "rename_file") && $set_rename)){
+	if($nf === "new_folder" || (( $nf === "rename_folder" || $nf === "rename_file") && $set_rename)){
 		?>
 		<script  type="text/javascript"><!--
 		document.forms["we_form"].elements["txt"].focus();
 			document.forms["we_form"].elements["txt"].select();
-	<?php if($nf == "rename_folder" || $nf == "rename_file"){ ?>
+	<?php if($nf === "rename_folder" || $nf === "rename_file"){ ?>
 				document.forms["we_form"].elements["oldtxt"].value = document.forms["we_form"].elements["txt"].value;
 	<?php } ?>
 			document.forms["we_form"].elements["pat"].value = top.currentDir;
@@ -364,7 +364,7 @@ var i = 0;';
 		</script>
 		<?php
 	}
-	if($nf == "new_folder" || (( $nf == "rename_folder" || $nf == "rename_file") && $set_rename)){
+	if($nf === "new_folder" || (( $nf === "rename_folder" || $nf === "rename_file") && $set_rename)){
 
 	}
 	?>

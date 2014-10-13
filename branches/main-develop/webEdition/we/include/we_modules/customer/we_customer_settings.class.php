@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -29,6 +30,7 @@ define('DATE_FORMAT', 'Y-m-d H:i:s');
 define('DATE_ONLY_FORMAT', 'Y-m-d');
 
 class we_customer_settings{
+
 	private $db;
 	private $table = CUSTOMER_ADMIN_TABLE;
 	public $customer;
@@ -147,7 +149,7 @@ class we_customer_settings{
 		}
 
 		if(isset($this->properties['SortView'])){
-			$this->SortView = @unserialize($this->properties['SortView']);
+			$this->SortView = unserialize($this->properties['SortView']);
 		}
 		if(!is_array($this->SortView)){
 			$this->SortView = array();
@@ -163,7 +165,7 @@ class we_customer_settings{
 
 
 		if(isset($this->properties['FieldAdds'])){
-			$this->FieldAdds = @unserialize($this->properties['FieldAdds']);
+			$this->FieldAdds = unserialize($this->properties['FieldAdds']);
 			//check if all fields are set
 			$fields = $this->customer->getFieldset();
 			foreach($fields as $name){
@@ -177,7 +179,7 @@ class we_customer_settings{
 
 		$defprefs = $this->Prefs;
 		if(isset($this->properties['Prefs'])){
-			$this->Prefs = @unserialize($this->properties['Prefs']);
+			$this->Prefs = unserialize($this->properties['Prefs']);
 		}
 
 		foreach($defprefs as $k => $v){
@@ -237,14 +239,14 @@ class we_customer_settings{
 		$fieldprops = $this->customer->getFieldDbProperties($field);
 
 		$fieldtype = $this->getFieldType($fieldprops['Type']);
-		if($fieldtype != '')
+		if($fieldtype != ''){
 			foreach($this->TypeFunction as $fk => $fv){
 				$tmp = explode(',', $fv);
 				if(($fk == $function) && (in_array($fieldtype, $tmp))){
 					return true;
 				}
 			}
-
+		}
 		return false;
 	}
 
@@ -288,7 +290,7 @@ class we_customer_settings{
 			foreach($this->FieldAdds as $k => $v){
 				if(in_array($k, $customer->persistent_slots) && isset($v['default'])){
 					$value = $v['default'];
-					if($this->getFieldType($k) == 'select'){
+					if($this->getFieldType($k) === 'select'){
 						$tmp = explode(',', $value);
 						$value = $tmp[0];
 					}
@@ -325,7 +327,7 @@ class we_customer_settings{
 		return $this->MaxSearchResults;
 	}
 
-		function isReserved($field){
+	function isReserved($field){
 		return in_array(trim(strtolower($field)), $this->reservedWords);
 	}
 

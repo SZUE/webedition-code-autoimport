@@ -153,7 +153,7 @@ function redirect($url, $_emosScontact = ''){
 	if($_emosScontact != ''){
 		$url = $url . (strpos($url, '?') ? '&' : '?') . 'emosScontact=' . urlencode($_emosScontact);
 	}
-	header('Location: ' . getServerUrl() . $url);
+	header('Location: ' . $url);
 	exit();
 }
 
@@ -228,7 +228,7 @@ foreach($output as $n => $v){
 		$foo = replace_bad_str($v);
 		$n = replace_bad_str($n);
 		$we_txt .= $n . ': ' . $foo . "\n" . ($foo ? '' : "\n");
-		$we_html .= '<tr><td valign="top" align="right"><b>' . $n . ':</b></td><td>' . ($n == 'email' ? '<a href="mailto:' . $foo . '">' . $foo . '</a>' : nl2br($foo)) . '</td></tr>';
+		$we_html .= '<tr><td valign="top" align="right"><b>' . $n . ':</b></td><td>' . ($n === 'email' ? '<a href="mailto:' . $foo . '">' . $foo . '</a>' : nl2br($foo)) . '</td></tr>';
 	}
 }
 
@@ -328,7 +328,7 @@ if($recipient){
 			}
 		}
 		$phpmail->addAddressList($recipientsList);
-		if($mimetype == 'text/html'){
+		if($mimetype === 'text/html'){
 			$phpmail->addHTMLPart($we_html);
 		} else {
 			$phpmail->addTextPart($we_txt);
@@ -347,7 +347,7 @@ if($recipient){
 			}
 			$phpmail = new we_util_Mailer($email, $subject, $from);
 			$phpmail->setCharSet($charset);
-			if($mimetype == 'text/html'){
+			if($mimetype === 'text/html'){
 				$phpmail->addHTMLPart($we_html_confirm);
 			} else {
 				$phpmail->addTextPart($we_txt_confirm);

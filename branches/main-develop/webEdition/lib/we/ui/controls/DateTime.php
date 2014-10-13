@@ -495,9 +495,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 	 * @return string
 	 */
 	protected function _renderHTML(){
-
-
-		if($this->getValue() == 0 || $this->getValue() == ''){
+		if(!$this->getValue()){
 			$t = time();
 			if($this->getInitDayBefore()){
 				$t = $t - 86400;

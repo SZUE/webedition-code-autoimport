@@ -65,7 +65,7 @@ $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 	}
 
 <?php
-if(we_base_request::_(we_base_request::STRING, 'mcmd') == 'delete_folders'){
+if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'delete_folders'){
 	$folders = we_base_request::_(we_base_request::INTLISTA, 'folders');
 
 	if($folders[0] != ""){

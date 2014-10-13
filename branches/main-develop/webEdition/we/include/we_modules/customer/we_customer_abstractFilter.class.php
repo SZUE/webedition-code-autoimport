@@ -174,7 +174,7 @@ abstract class we_customer_abstractFilter{
 				$invalidFields[] = $_filter['field'];
 				continue;
 			}
-			if($flag && $_filter['logic'] == 'AND'){
+			if($flag && $_filter['logic'] === 'AND'){
 				$hasPermission&=self::evalSingleFilter($_filter['operation'], $_filter['field'], $_filter['value']);
 			} else {
 				if($hasPermission){
@@ -253,7 +253,7 @@ abstract class we_customer_abstractFilter{
 
 				if(trim(($val = we_base_request::_(we_base_request::STRINGC, 'filterValue_' . $count)))){
 					$filter[] = array(
-						'logic' => (we_base_request::_(we_base_request::STRING, 'filterLogic_' . $count) == 'OR' ? ' OR ' : ' AND '),
+						'logic' => (we_base_request::_(we_base_request::STRING, 'filterLogic_' . $count) === 'OR' ? ' OR ' : ' AND '),
 						'field' => $field,
 						'operation' => we_base_request::_(we_base_request::INT, 'filterOperation_' . $count),
 						'value' => $val

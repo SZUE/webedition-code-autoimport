@@ -800,7 +800,7 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				new jsWindow(url, "help", -1, -1, 720, 600, true, false, true, true);
 				break;
 			case "help_documentation":
-				new jsWindow("http://documentation.webedition.org/wiki/<?php echo ($GLOBALS["WE_LANGUAGE"] == 'Deutsch' ? 'de' : 'en'); ?>/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
+				new jsWindow("http://documentation.webedition.org/wiki/<?php echo ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'); ?>/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
 				break;
 			case "help_forum":
 				new jsWindow("http://forum.webedition.org", "help_forum", -1, -1, 960, 700, true, true, true, true);
@@ -809,10 +809,10 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				new jsWindow("http://qa.webedition.org/tracker/", "help_bugtracker", -1, -1, 960, 700, true, true, true, true);
 				break;
 			case "help_tagreference":
-				new jsWindow("http://tags.webedition.org/<?php echo ($GLOBALS["WE_LANGUAGE"] == 'Deutsch' ? 'de' : 'en'); ?>/", "help_tagreference", -1, -1, 960, 700, true, true, true, true);
+				new jsWindow("http://tags.webedition.org/<?php echo ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'); ?>/", "help_tagreference", -1, -1, 960, 700, true, true, true, true);
 				break;
 			case "help_demo":
-				new jsWindow("http://demo.webedition.org/<?php echo ($GLOBALS["WE_LANGUAGE"] == 'Deutsch' ? 'de' : 'en'); ?>/", "help_demo", -1, -1, 960, 700, true, true, true, true);
+				new jsWindow("http://demo.webedition.org/<?php echo ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'); ?>/", "help_demo", -1, -1, 960, 700, true, true, true, true);
 				break;
 			case "help_changelog":
 				new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/", "help_changelog", -1, -1, 960, 700, true, true, true, true);
@@ -1324,7 +1324,7 @@ if(defined('WE_MESSAGING_MODULE_DIR')){
 				return 0;
 				break;
 			case "open_tagreference":
-				var docupath = "http://tags.webedition.org/<?php echo ($GLOBALS['WE_LANGUAGE'] == 'Deutsch') ? 'de' : 'en' ?>/" + arguments[1];
+				var docupath = "http://tags.webedition.org/<?php echo ($GLOBALS['WE_LANGUAGE'] === 'Deutsch') ? 'de' : 'en' ?>/" + arguments[1];
 				new jsWindow(docupath, "we_tagreference", -1, -1, 1024, 768, true, true, true);
 				break;
 <?php

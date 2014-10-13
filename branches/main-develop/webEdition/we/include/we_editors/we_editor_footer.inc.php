@@ -95,7 +95,7 @@ switch($we_doc->ContentType){
 // load Glossary Settings
 
 $showGlossaryCheck = (isset($_SESSION['prefs']['force_glossary_check']) && $_SESSION['prefs']['force_glossary_check'] == 1 && (
-	$we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType == "objectFile"
+	$we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === "objectFile"
 	) ? 1 : 0);
 
 

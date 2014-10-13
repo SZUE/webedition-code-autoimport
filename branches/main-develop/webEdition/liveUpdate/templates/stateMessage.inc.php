@@ -27,7 +27,7 @@
  * different ways.
  */
 
-$description = ($this->State == 'true' ?
+$description = ($this->State === 'true' ?
 		g_l('liveUpdate', '[state][descriptionTrue]') :
 		g_l('liveUpdate', '[state][descriptionError]'));
 

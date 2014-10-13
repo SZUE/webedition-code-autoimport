@@ -221,7 +221,7 @@ function checkFooter(){
 				$path = id_to_path($this->ParentID, $GLOBALS['we_doc']->Table);
 
 				if($GLOBALS['we_doc'] instanceof we_objectFile){
-					if($path == '/'){ //	impossible for documents
+					if($path === '/'){ //	impossible for documents
 						$path = $GLOBALS['we_doc']->RootDirPath;
 					}
 					$_rootDirID = $GLOBALS['we_doc']->rootDirID;
@@ -491,7 +491,7 @@ function checkFooter(){
 					'value' => array($s),
 					'ClassName' => $rec['ClassName'],
 					'Wann' => $rec['Wann'],
-					'table' => $rec['ClassName'] == 'we_objectFile' ? OBJECT_FILES_TABLE : FILE_TABLE,
+					'table' => $rec['ClassName'] === 'we_objectFile' ? OBJECT_FILES_TABLE : FILE_TABLE,
 				);
 				self::processSchedule($rec['DID'], $tmp, $now, $DB_WE);
 			} else {

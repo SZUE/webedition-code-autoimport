@@ -700,7 +700,7 @@ function zeichne(startEntry,zweigEintrag){
 	}
 
 	function getJSCustomDraw($click_handler = ''){
-		if($click_handler == ''){
+		if(!$click_handler){
 			$click_handler = '
 if(treeData.selection_table==treeData.table && nf[ai].id==treeData.selection) nf[ai].selected=1;
 

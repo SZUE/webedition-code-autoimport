@@ -230,7 +230,7 @@ print we_html_element('<script type="text/javascript">
 													$txt = rawurldecode(we_base_request::_(we_base_request::RAW, 'we_FolderText_tmp'));
 																	}
 													if ($txt == ''){
-													print we_message_reporting::getShowMessageCall(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+													echo we_message_reporting::getShowMessageCall(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 																	} else{
 													$folder = new we_folder();
 																	$folder - > we_new();
@@ -241,10 +241,10 @@ print we_html_element('<script type="text/javascript">
 																	$folder - > Path = $folder - > getPath();
 																	$this - > db - > query("SELECT ID FROM ".$this - > db - > escape($this - > table)." WHERE Path='".$this - > db - > escape($folder - > Path)."'");
 																	if ($this - > db - > next_record()){
-													print we_message_reporting::getShowMessageCall(g_l('tools', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+													echo we_message_reporting::getShowMessageCall(g_l('tools', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 													} else{
-													if (<?php print $CLASSNAME; ?>::textNotValid($folder - > Text)){
-													print we_message_reporting::getShowMessageCall(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+													if (<?php echo $CLASSNAME; ?>::textNotValid($folder - > Text)){
+													echo we_message_reporting::getShowMessageCall(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 													} else{
 													$folder - > we_save();
 																	print 'var ref = top.opener.top.content;
@@ -253,7 +253,7 @@ print we_html_element('<script type="text/javascript">
 																	}
 													';
 																	if ($this - > canSelectDir){
-													print 'top.currentPath = "'.$folder - > Path.'";
+													echo 'top.currentPath = "'.$folder - > Path.'";
 																	top.currentID = "'.$folder->ID.'";
 																	top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
 																	';

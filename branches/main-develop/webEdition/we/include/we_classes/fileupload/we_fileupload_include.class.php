@@ -196,8 +196,8 @@ class we_fileupload_include extends we_fileupload_base{
 
 	public static function getJsBtnCmdStatic($btn = 'upload', $contentName = '', $callback = ''){
 		$win = $contentName ? 'top.' . $contentName . '.': '';
-		$callback = $btn == 'upload' ? ($callback ? $callback : 'document.forms[0].submit()') : 'top.close()';
-		$call = $win . 'we_FileUpload.' . ($btn == 'upload' ? 'startUpload()' : 'cancelUpload()');
+		$callback = $btn === 'upload' ? ($callback ? $callback : 'document.forms[0].submit()') : 'top.close()';
+		$call = $win . 'we_FileUpload.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');
 
 		return 'if(typeof ' . $win . 'we_FileUpload === "undefined" || ' . $win . 'we_FileUpload.isLegacyMode){' . $callback . ';}else{' . $call . ';}';
 	}

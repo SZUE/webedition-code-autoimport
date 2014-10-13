@@ -92,6 +92,7 @@ class we_navigation_dirSelector extends we_selector_directory{
 	}
 
 	function printFramesetJSFunctioWriteBody(){
+		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
 						d.open();
@@ -177,6 +178,7 @@ top.unselectAllFiles();') . '
 		//-->
 		</script>
 		<?php
+		return ob_get_clean();
 	}
 
 	function printFramesetJSFunctionQueryString(){
@@ -245,7 +247,7 @@ top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = rawurldecode(we_base_request::_(we_base_request::FILE, 'we_FolderText_tmp', ''));
 
-		if($txt == ''){
+		if(!$txt){
 			echo we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
@@ -302,8 +304,8 @@ top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
-		if($txt == ''){
-			print we_message_reporting::getShowMessageCall(g_l('navigation', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+		if(!$txt){
+			echo we_message_reporting::getShowMessageCall(g_l('navigation', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);

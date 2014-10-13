@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,6 +28,7 @@
  *
  */
 class we_customer_customer extends weModelBase{
+
 	const NOPWD_CHANGE = '__WE__PWD_NO_CHANGE';
 	const ENCRYPT_NONE = 0;
 	const ENCRYPT_SYMMETRIC = 1;
@@ -202,7 +204,7 @@ class we_customer_customer extends weModelBase{
 
 		$arr = array();
 
-		if($branch == ''){
+		if(!$branch){
 			$branch = g_l('modules_customer', '[other]');
 		}
 
@@ -338,12 +340,12 @@ class we_customer_customer extends weModelBase{
 				$useSalt = 0;
 				$pwd = we_users_user::makeSaltedPassword($useSalt, '', $pass, 8);
 				return ($useSalt != we_users_user::SALT_CRYPT ?
-						$pass : $pwd);
+								$pass : $pwd);
 		}
 	}
 
 	public static function comparePassword($storedPassword, $clearPassword){
-		if($storedPassword == '' || $clearPassword == ''){
+		if(!$storedPassword || !$clearPassword){
 			return false;
 		}
 		if(!preg_match('|^\$([^$]{2,4})\$([^$]*)\$(.*)$|', $storedPassword, $matches)){

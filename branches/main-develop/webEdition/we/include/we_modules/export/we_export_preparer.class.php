@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_export_preparer extends we_exim_XMLExIm{
-
 	var $RefTable;
 	var $options;
 	var $PatternSearch;
@@ -203,13 +202,14 @@ class we_export_preparer extends we_exim_XMLExIm{
 	}
 
 	function addToDepArray($level, $id, $ct = "", $table = ""){
-		if($ct == ""){
-			if($table == ""){
+		if(!$ct){
+			if(!$table){
 				$table = FILE_TABLE;
 			}
 			$ct = f('SELECT ContentType FROM ' . escape_sql_query($table) . ' WHERE ID=' . intval($id), 'ContentType', new DB_WE());
 		}
-		if($ct != ""){
+
+		if($ct){
 			$new = array(
 				'ID' => $id,
 				'ContentType' => $ct,
@@ -225,19 +225,19 @@ class we_export_preparer extends we_exim_XMLExIm{
 
 		$ret = array("docs" => array(), "objs" => array());
 
-		if(isset($array['id']) && !empty($array['id'])){
+		if(isset($array['id']) && $array['id']){
 			$ret["docs"][] = $array['id'];
 		}
 
-		if(isset($array['img_id']) && !empty($array['id'])){
+		if(isset($array['img_id']) && $array['id']){
 			$ret["docs"][] = $array['img_id'];
 		}
 
-		if(isset($array['obj_id']) && !empty($array['obj_id'])){
+		if(isset($array['obj_id']) && $array['obj_id']){
 			$ret["objs"][] = $array['obj_id'];
 		} else {
 			foreach($array as $key => $value){
-				if(!empty($value)){
+				if($value){
 					if(is_array($value)){
 						$ret = array_merge_recursive($ret, $this->getDepFromArray($array[$key]));
 					}
@@ -284,7 +284,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 							foreach($elarray as $elk => $elv){
 								foreach($elv as $id){
 									if(!empty($id)){
-										if($elk == "docs"){
+										if($elk === "docs"){
 											$this->addToDepArray($level, $id);
 										} else {
 											$this->addToDepArray($level, $id, "objectFile");
@@ -304,7 +304,6 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 
 		if($object instanceof we_template){
-			$tlinked = array();
 			if($this->options["handle_def_templates"] && $object->MasterTemplateID){
 				$this->addToDepArray($level, $object->MasterTemplateID, we_base_ContentTypes::TEMPLATE);
 			}
@@ -356,7 +355,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 			}
 		}
 
-		if(defined('OBJECT_TABLE') && isset($object->ClassName) && $object->ClassName == 'we_objectFile' && $this->options['handle_object_embeds']){
+		if(defined('OBJECT_TABLE') && isset($object->ClassName) && $object->ClassName === 'we_objectFile' && $this->options['handle_object_embeds']){
 			foreach($object->elements as $key => $value){
 				if(preg_match('|we_object_[0-9]+|', $key)){
 					if(isset($value['dat'])){
@@ -369,8 +368,8 @@ class we_export_preparer extends we_exim_XMLExIm{
 					}
 				}
 
-				if(isset($value['type']) && ($value['type'] == 'img' || $value['type'] == 'binary')){
-					$this->addToDepArray($level, $value['dat']);
+				if(isset($value['type']) && ($value['type'] === 'img' || $value['type'] === 'binary')){
+					$this->addToDepArray($level, isset($value['bdid']) ? $value['dat'] : $value['dat']);
 				}
 			}
 		}

@@ -98,7 +98,7 @@ function we_tag_customerResetPassword(array $attribs){
 				return parseError('For security reasons: in email mode, attribute <b>required</b> needs at least one field!');
 			}
 			$customerEmailField = weTag_getAttribute('customerEmailField', $attribs);
-			if(($type == 'emailPassword' && !checkPwds()) || !($uid = checkRequired($required, $loadFields, $customerEmailField))){
+			if(($type === 'emailPassword' && !checkPwds()) || !($uid = checkRequired($required, $loadFields, $customerEmailField))){
 				return;
 			}
 			$pwd = we_base_request::_(we_base_request::STRING, 's', '', 'Password');

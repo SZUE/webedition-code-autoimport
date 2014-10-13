@@ -53,7 +53,7 @@ class we_navigation_ruleFrames{
 			we_html_element::htmlBody(array('style' => 'background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlIFrame('content', $this->Frameset . '?pnt=content', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
-					we_html_element::htmlIFrame('cmdFrame', HTML_DIR . "white.html", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+					we_html_element::htmlIFrame('cmdFrame',  "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 			)) .
 			'</html>';
 	}

@@ -158,7 +158,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 	function getObjectPid($path, we_database_base $db){
 		$path = dirname($path);
-		if($path == '/'){
+		if($path === '/'){
 			return 0;
 		}
 		return f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $db->escape($path) . '"', '', $db);
@@ -186,7 +186,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 			if($ObjectExists && $this->data['OverwriteObjects'] == 'nothing'){
 				return true;
 			}
-			if($ObjectExists && $this->data['OverwriteObjects'] == 'rename'){
+			if($ObjectExists && $this->data['OverwriteObjects'] === 'rename'){
 				$GLOBALS['we_doc']->Text = $GLOBALS['we_doc']->Text . '_copy';
 				$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->Path . '_copy';
 				while($this->CheckForSameObjectName($GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'])){
@@ -194,7 +194,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 					$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->Path . '_copy';
 				}
 			}
-			if($ObjectExists && $this->data['OverwriteObjects'] == 'overwrite'){
+			if($ObjectExists && $this->data['OverwriteObjects'] === 'overwrite'){
 				$GLOBALS['we_doc']->ID = $ObjectExists;
 			}
 			if(!$GLOBALS['we_doc']->we_save()){
@@ -422,7 +422,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 										$attributes = $regs[1];
 										preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_PATTERN_ORDER);
 										foreach($foo[1] as $k => $v){
-											if(trim($v) == 'id'){
+											if(trim($v) === 'id'){
 												$xid = abs(str_replace('"', '', $foo[2][$k]));
 												break;
 											}
@@ -519,7 +519,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 						$elem = $we_doc->getElement($k);
 						if(preg_match('|(.+)' . we_base_link::MAGIC_INFIX . '(.+)|', $k, $regs)){ // is a we:href field
 							$v['type'] = 'href';
-						} elseif(substr($elem, 0, 2) == 'a:' && is_array($link = unserialize($elem))){ // is a we:link field
+						} elseif(substr($elem, 0, 2) === 'a:' && is_array($link = unserialize($elem))){ // is a we:link field
 							if(isset($link['type']) && ($link['type'] == we_base_link::TYPE_INT)){
 								$intID = $link['id'];
 								$path = id_to_path($intID, FILE_TABLE, $DB_WE);
@@ -637,7 +637,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 	function getPid($path, we_database_base $db){
 		$path = dirname($path);
-		if($path == "/"){
+		if($path === "/"){
 			return 0;
 		}
 		return f('SELECT ID FROM ' . FILE_TABLE . " WHERE Path='" . $db->escape($path) . "'", '', $db);

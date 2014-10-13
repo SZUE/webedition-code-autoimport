@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -26,6 +27,7 @@ we_base_moduleInfo::isActive('messaging');
 
 class we_messaging_todo extends we_messaging_proto{
 	/* Flag which is set when the file is not new */
+
 	var $selected_message = array();
 	var $selected_set = array();
 	var $search_fields = array('m.headerSubject', 'm.headerCreator', 'm.MessageText');
@@ -159,14 +161,14 @@ class we_messaging_todo extends we_messaging_proto{
 
 	function history_update($id, $userid, $fromuserid, $comment, $action, $status = -1){
 		return $this->DB_WE->query('INSERT INTO ' . MSG_TODOHISTORY_TABLE . ' ' .
-				we_database_base::arraySetter(array(
-					'ParentID' => $id,
-					'UserID' => $userid,
-					'fromUserID' => $fromuserid,
-					'Comment' => $comment,
-					'Created' => sql_function('UNIX_TIMESTAMP()'),
-					'action' => $action,
-					'status' => ($status < 0 ? sql_function('NULL') : $status)
+						we_database_base::arraySetter(array(
+							'ParentID' => $id,
+							'UserID' => $userid,
+							'fromUserID' => $fromuserid,
+							'Comment' => $comment,
+							'Created' => sql_function('UNIX_TIMESTAMP()'),
+							'action' => $action,
+							'status' => ($status < 0 ? sql_function('NULL') : $status)
 		)));
 	}
 
@@ -179,7 +181,7 @@ class we_messaging_todo extends we_messaging_proto{
 		$ret['changed'] = 0;
 		$set_query = array();
 
-		if($userid == ''){
+		if(!$userid){
 			$userid = $this->userid;
 		}
 
@@ -267,7 +269,7 @@ class we_messaging_todo extends we_messaging_proto{
 		}
 
 		$in_folder = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type=' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($userid), 'ID', $this->DB_WE);
-		if($in_folder == ''){
+		if(!$in_folder){
 			$results['err'][] = g_l('modules_messaging', '[no_inbox_folder]');
 			$results['failed'][] = $rcpt;
 			return $results;
@@ -376,11 +378,11 @@ class we_messaging_todo extends we_messaging_proto{
 			}
 
 			$in_folder = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type=' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($userid), 'ID', $this->DB_WE);
-			if($in_folder == ''){
+			if(!$in_folder){
 				/* Create default Folders for target user */
 				if(we_messaging_messaging::createFolders($userid) == 1){
 					$in_folder = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type=' . we_messaging_proto::FOLDER_INBOX . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($userid), 'ID', $this->DB_WE);
-					if($in_folder == ''){
+					if(!$in_folder){
 						$results['err'][] = g_l('modules_messaging', '[no_inbox_folder]');
 						$results['failed'][] = $rcpt;
 						continue;
@@ -393,20 +395,20 @@ class we_messaging_todo extends we_messaging_proto{
 			}
 
 			$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
-					'ParentID' => intval($in_folder),
-					'UserID' => intval($userid),
-					'msg_type' => $this->sql_class_nr,
-					'obj_type' => we_messaging_proto::TODO_NR,
-					'headerDate' => sql_function('UNIX_TIMESTAMP()'),
-					'headerSubject' => $data['subject'],
-					'headerCreator' => intval(intval($this->userid) ? $this->userid : $userid),
-					'headerStatus' => 0,
-					'headerDeadline' => $data['deadline'],
-					'Properties' => we_messaging_proto::TODO_PROP_NONE,
-					'MessageText' => $data['body'],
-					'seenStatus' => 0,
-					'Priority' => $data['priority'] ? $data['priority'] : sql_function('NULL'),
-					'Content_Type' => isset($data['Content_Type']) && $data['Content_Type'] ? $data['Content_Type'] : sql_function('NULL')
+						'ParentID' => intval($in_folder),
+						'UserID' => intval($userid),
+						'msg_type' => $this->sql_class_nr,
+						'obj_type' => we_messaging_proto::TODO_NR,
+						'headerDate' => sql_function('UNIX_TIMESTAMP()'),
+						'headerSubject' => $data['subject'],
+						'headerCreator' => intval(intval($this->userid) ? $this->userid : $userid),
+						'headerStatus' => 0,
+						'headerDeadline' => $data['deadline'],
+						'Properties' => we_messaging_proto::TODO_PROP_NONE,
+						'MessageText' => $data['body'],
+						'seenStatus' => 0,
+						'Priority' => $data['priority'] ? $data['priority'] : sql_function('NULL'),
+						'Content_Type' => isset($data['Content_Type']) && $data['Content_Type'] ? $data['Content_Type'] : sql_function('NULL')
 			)));
 
 			$results['id'] = $this->DB_WE->getInsertId();
@@ -456,7 +458,7 @@ class we_messaging_todo extends we_messaging_proto{
 		$this->selected_set = array();
 		$query = 'SELECT m.ID, m.ParentID, m.headerDeadline, m.headerSubject, m.headerCreator, m.Priority, m.seenStatus, m.headerStatus, u.username
 		FROM ' . $this->table . ' as m, ' . USER_TABLE . ' as u
-		WHERE ((m.msg_type=' . intval($this->sql_class_nr) . ' AND m.obj_type=' . we_messaging_proto::TODO_NR . ') ' . ($sfield_cond == '' ? '' : " AND ($sfield_cond)") . ($folders_cond == '' ? '' : " AND (m.ParentID=$folders_cond)") . ( (!isset($message_ids_cond) || $message_ids_cond == '') ? '' : " AND (m.ID=$message_ids_cond)") . ") AND m.UserID=" . $this->userid . " AND m.headerCreator=u.ID
+		WHERE ((m.msg_type=' . intval($this->sql_class_nr) . ' AND m.obj_type=' . we_messaging_proto::TODO_NR . ') ' . ($sfield_cond ? " AND ($sfield_cond)" : '') . ($folders_cond ? " AND (m.ParentID=$folders_cond)" : '') . ( (!isset($message_ids_cond) || !$message_ids_cond ) ? '' : " AND (m.ID=$message_ids_cond)") . ") AND m.UserID=" . $this->userid . " AND m.headerCreator=u.ID
 		ORDER BY " . $this->sortfield . ' ' . $this->so2sqlso[$this->sortorder];
 		$this->DB_WE->query($query);
 

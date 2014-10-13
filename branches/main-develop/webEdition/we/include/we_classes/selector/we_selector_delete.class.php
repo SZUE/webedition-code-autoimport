@@ -234,7 +234,7 @@ top.close();');
 	}
 
 	function printFooterTable(){
-		if($this->values["Text"] == "/"){
+		if($this->values["Text"] === "/"){
 			$this->values["Text"] = "";
 		}
 		$okBut = we_html_button::create_button("delete", "javascript:if(document.we_form.fname.value==''){top.exit_close();}else{top.deleteEntry();}", true, 100, 22, "", "", true, false);

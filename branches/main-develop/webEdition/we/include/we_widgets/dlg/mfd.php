@@ -200,7 +200,7 @@ $oShowUser = we_html_tools::htmlFormElementTable($sUsrContent, g_l('cockpit', '[
 while(strlen($sType) < 4){
 	$sType .= '0';
 }
-if($sType{0} == '0' && $sType{1} == '0' && $sType{2} == '0' && $sType{3} == '0'){
+if($sType === '0000'){
 	$sType = '1111';
 }
 

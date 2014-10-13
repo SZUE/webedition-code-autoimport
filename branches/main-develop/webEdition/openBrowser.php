@@ -34,7 +34,7 @@ if(($id = we_base_request::_(we_base_request::INT, 'url'))){
 				getServerUrl() . $path
 			) . '?r=' . rand();
 	} else {
-		$loc = getServerUrl() . WEBEDITION_DIR . 'notPublished.php';
+		$loc =  WEBEDITION_DIR . 'notPublished.php';
 	}
 } else {
 	$loc = we_base_request::_(we_base_request::URL, 'url', '');

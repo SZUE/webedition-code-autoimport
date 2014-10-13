@@ -192,7 +192,7 @@ abstract class we_class{
 				continue;
 			}
 
-			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare == 'value') ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . $text . '</option>';
+			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare === 'value') ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . $text . '</option>';
 		}
 		return we_html_element::htmlSelect(array_merge($attribs, array(
 				'id' => trim($name),
@@ -332,7 +332,7 @@ abstract class we_class{
 			// do not set REQUEST VARS into the document
 			$cmd0 = we_base_request::_(we_base_request::STRING, 'cmd', '', 0);
 
-			if(($cmd0 == 'switch_edit_page' && we_base_request::_(we_base_request::STRING, 'we_cmd', false, 3)) || ($cmd0 == 'save_document' && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 7) == 'save_document')){
+			if(($cmd0 === 'switch_edit_page' && we_base_request::_(we_base_request::STRING, 'we_cmd', false, 3)) || ($cmd0 === 'save_document' && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 7) === 'save_document')){
 				return true;
 			}
 			$regs = array();
@@ -377,13 +377,13 @@ abstract class we_class{
 			if(in_array($fieldName, $feldArr)){
 				$val = isset($this->$fieldName) ? $this->$fieldName : '';
 
-				if($fieldName == 'Category'){ // Category-Fix!
+				if($fieldName === 'Category'){ // Category-Fix!
 					$val = $this->i_fixCSVPrePost($val);
 				}
 				if($fieldName != 'ID'){
 					$fields[$fieldName] = $val;
 				}
-				if(!$this->wasUpdate && $this->insertID && $fieldName == 'ID'){//for Apps to be able to manipulate Insert-ID
+				if(!$this->wasUpdate && $this->insertID && $fieldName === 'ID'){//for Apps to be able to manipulate Insert-ID
 					$fields['ID'] = $this->insertID;
 					$this->insertID = 0;
 				}
@@ -428,7 +428,7 @@ abstract class we_class{
 	protected function checkRemoteLanguage($table, $isfolder = false){
 		if(($newLang = we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_Language'))){
 			$type = stripTblPrefix($table);
-			$isobject = ($type == 'tblObjectFile') ? 1 : 0;
+			$isobject = ($type === 'tblObjectFile') ? 1 : 0;
 			$type = ($isfolder && $isobject) ? 'tblFile' : ($isobject ? 'tblObjectFile' : $type);
 
 			$this->DB_WE->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape($type) . '" AND IsObject = ' . intval($isobject) . ' AND IsFolder = ' . intval($isfolder) . ' AND DID=' . intval($this->ID));
@@ -457,7 +457,7 @@ abstract class we_class{
 		$newLang = $oldLang = '';
 		if(($newLang = we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_Language'))){
 			$db = new DB_WE();
-			$documentTable = ($type == 'tblObjectFile') ? 'tblObjectFiles' : $type;
+			$documentTable = ($type === 'tblObjectFile') ? 'tblObjectFiles' : $type;
 			$ownDocumentTable = ($isfolder && $isobject) ? FILE_TABLE : addTblPrefix($documentTable);
 			$origLinks = array();
 
@@ -520,8 +520,8 @@ abstract class we_class{
 	 * 1) We only write new or changed LangLinks to db, if LangLink-Locale and Locale of the targe-document/object fit together.
 	 * 2) In recursive-mode we only one document/object to another, if their respective link-chains are not in conflict.
 	 */
-	private function prepareSetLanguageLink($LangLinkArray, $origLinks, $langChange = false, $ownLocale, $type, $isfolder = false, $isobject = false, $ownDocumentTable){
-		$documentTable = ($type == 'tblObjectFile') ? 'tblObjectFiles' : $type; // we could take these  from setLanguageLink()...
+	private function prepareSetLanguageLink($LangLinkArray, $origLinks, $langChange, $ownLocale, $type, $isfolder, $isobject, $ownDocumentTable){
+		$documentTable = ($type === 'tblObjectFile') ? 'tblObjectFiles' : $type; // we could take these  from setLanguageLink()...
 		$ownDocumentTable = ($isfolder && $isobject) ? FILE_TABLE : addTblPrefix($documentTable);
 
 		if(in_array(0, $LangLinkArray) || in_array('', $LangLinkArray)){

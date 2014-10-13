@@ -88,7 +88,7 @@ class we_ui_layout_Form extends we_ui_abstract_AbstractFormElement{
 	 * @return string
 	 */
 	protected function _renderHTML(){
-		$attribs = $this->_enctype == "" ? 'id,name,method,onSubmit,action' : 'id,name,method,onSubmit,action,enctype';
+		$attribs = $this->_enctype ? 'id,name,method,onSubmit,action,enctype' : 'id,name,method,onSubmit,action';
 		return '<form' . $this->_getNonBooleanAttribs($attribs) . '>' . $this->_formHTML . '</form>';
 	}
 

@@ -216,7 +216,7 @@ class we_imageDocument extends we_binaryDocument{
 	}
 
 	public function isSvg(){
-		return ($this->Extension == '.svg' || $this->Extension == '.svgz');
+		return ($this->Extension === '.svg' || $this->Extension === '.svgz');
 	}
 
 	private function checkDisableEditpages(){
@@ -244,7 +244,7 @@ class we_imageDocument extends we_binaryDocument{
 			return '';
 		}
 		if(!$src){
-			$src = (we_isHttps() ? '' : BASE_IMG) . $this->Path;
+			$src = (we_isHttps() ? '' : BASE_IMG) . $this->Path;//FIXME:remove BASE_IMG
 		}
 
 		if(!$src_over){
@@ -437,7 +437,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 
 			if($this->issetElement('sizingstyle')){
 				$sizingstyle = $this->getElement('sizingstyle');
-				$sizingstyle = $sizingstyle == 'none' ? false : $sizingstyle;
+				$sizingstyle = $sizingstyle === 'none' ? false : $sizingstyle;
 				$this->delElement('sizingstyle');
 			} else {
 				$sizingstyle = false;
@@ -480,7 +480,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 				$attribs['title'] = $this->getElement('Title');
 			}
 
-			if(($this->getElement('alt') == '')){ //  always use alt-Text -> can be empty
+			if(($this->getElement('alt') === '')){ //  always use alt-Text -> can be empty
 				$attribs['alt'] = ' ';
 			}
 
@@ -573,7 +573,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 	 * @return string
 	 */
 	function formInput2($width, $name, $size = 25, $type = 'txt', $attribs = '', $text = ''){
-		$text = $text == '' ? $name : $text;
+		$text = $text === '' ? $name : $text;
 		return $this->formInputField($type, $name, (g_l('weClass', '[' . $text . ']', true) != false ? g_l('weClass', '[' . $text . ']') : $text), $size, $width, '', $attribs);
 	}
 
@@ -759,7 +759,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 				foreach($_arr as $_impFr){
 					if(isset($this->metaData[$_impFr[0]][$_impFr[1]]) && !empty($this->metaData[$_impFr[0]][$_impFr[1]])){
 						$_val = $this->metaData[$_impFr[0]][$_impFr[1]];
-						if($_impFr[2] == 'date'){
+						if($_impFr[2] === 'date'){
 							// here we need to parse the date
 							if(preg_match('|^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})$|', $_val, $regs)){
 								$_val = sprintf('%016d', mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]));
@@ -825,7 +825,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$_content = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), (defined('OBJECT_TABLE') ? 11 : 9), 2);
 
 		// No link
-		$_content->setCol(0, 0, array('valign' => 'top'), we_html_forms::radiobutton('no', ($linkType == 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$_content->setCol(0, 0, array('valign' => 'top'), we_html_forms::radiobutton('no', ($linkType === 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
 		$_content->setCol(0, 1, null, '');
 
 		// Space

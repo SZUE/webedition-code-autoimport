@@ -157,7 +157,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		$regs = array();
 		for($i = $nr; $i >= 0; $i--){
 			if(preg_match('%<(/?)we:if([[:alpha:]]+)( *[[:alpha:]]+ *= *"[^"]*")* */?>?%i', $tags[$i], $regs)){
-				if($regs[1] == '/'){
+				if($regs[1] === '/'){
 					$foo[$regs[2]] = isset($foo[$regs[2]]) ? $foo[$regs[2]] + 1 : 1;
 				} else {
 					if(empty($foo)){
@@ -213,7 +213,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 	}
 
 	public function handleShutdown($code){
-		if($GLOBALS['we']['errorhandler']['shutdown'] == 'template'){
+		if($GLOBALS['we']['errorhandler']['shutdown'] === 'template'){
 			$error = error_get_last();
 			$tmp = explode("\n", $code);
 			$errCode = "\n";
@@ -310,7 +310,7 @@ we_templateInit();?>';
 			case "allVariants":
 				return true;
 			default:
-				return (substr($Name, 0, 8) == "variant_");
+				return (substr($Name, 0, 8) === 'variant_');
 		}
 	}
 
@@ -321,7 +321,7 @@ we_templateInit();?>';
 		foreach($_REQUEST as $n => $v){
 			if(is_array($v) && preg_match('|^we_' . $this->Name . '_variant|', $n, $regs)){
 				foreach($v as $n2 => $v2){
-					if($this->getElement($n2, 'type') == 'variant' && $v2 == 0){
+					if($this->getElement($n2, 'type') === 'variant' && $v2 == 0){
 						$this->delElement($n2);
 					}
 				}
@@ -448,7 +448,7 @@ we_templateInit();?>';
 					$att = we_tag_tagParser::makeArrayFromAttribs(str_ireplace('<we:' . $tagname, '', $tag));
 
 					if(in_array($tagname, $variant_tags)){
-						if($tagname == 'input' && isset($att['type']) && $att['type'] == 'date' && !$includedatefield){
+						if($tagname === 'input' && isset($att['type']) && $att['type'] === 'date' && !$includedatefield){
 							// do nothing
 						} else {
 							$out[$name] = array(
@@ -457,7 +457,7 @@ we_templateInit();?>';
 							);
 						}
 						//additional parsing for selects
-						if($tagname == 'select'){
+						if($tagname === 'select'){
 							$spacer = "[\040|\n|\t|\r]*";
 							$selregs = array();
 							//FIXME: this regex is not correct [^name] will not match any of those chars
@@ -687,7 +687,7 @@ we_templateInit();?>';
 				// get attributes of tag
 				$att = we_tag_tagParser::parseAttribs($regs[1], true);
 				// if type-attribute is equal to "template"
-				if(isset($att['type']) && $att['type'] == 'template'){
+				if(isset($att['type']) && $att['type'] === 'template'){
 
 					// if path is set - look for the id of the template
 					if(isset($att['path']) && $att['path']){

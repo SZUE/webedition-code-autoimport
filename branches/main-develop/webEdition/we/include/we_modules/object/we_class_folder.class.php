@@ -268,7 +268,7 @@ class we_class_folder extends we_folder{
 					array(
 						"align" => "center",
 						"height" => 35,
-						"dat" => ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") == "" && $ok)) ?
+						"dat" => ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok)) ?
 							'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" />' :
 							'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" />')),
 					array("dat" => ($this->searchclass->f("OF_IsSearchable") ?
@@ -330,7 +330,7 @@ class we_class_folder extends we_folder{
 		//#4076
 		$this->setClassProp();
 
-		if(we_base_request::_(we_base_request::STRING, 'do') == 'delete'){
+		if(we_base_request::_(we_base_request::STRING, 'do') === 'delete'){
 			$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
 			foreach(array_keys($weg) as $ofid){//FIXME: this is not save
 				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
@@ -437,7 +437,7 @@ class we_class_folder extends we_folder{
 						)),
 					array(
 						"align" => "center",
-						"dat" => '<img src="' . IMAGE_DIR . ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") == "" && $ok)) ?
+						"dat" => '<img src="' . IMAGE_DIR . ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok)) ?
 							'we_boebbel_blau.gif' :
 							'we_boebbel_grau.gif'
 						) . '" width="16" height="18" />'
@@ -541,10 +541,10 @@ class we_class_folder extends we_folder{
 				);
 
 
-			if(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && (substr($this->searchclass->objsearchField[$i], 0, 4) == "meta" || substr($this->searchclass->objsearchField[$i], 0, 8) == "checkbox")){
+			if(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && (substr($this->searchclass->objsearchField[$i], 0, 4) === "meta" || substr($this->searchclass->objsearchField[$i], 0, 8) === "checkbox")){
 				$DefaultValues = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
 
-				$values = (substr($this->searchclass->objsearchField[$i], 0, 4) == "meta" ?
+				$values = (substr($this->searchclass->objsearchField[$i], 0, 4) === "meta" ?
 						$DefaultValues[$this->searchclass->objsearchField[$i]]["meta"] :
 						array(
 						0 => g_l('global', '[no]'),
@@ -565,7 +565,7 @@ class we_class_folder extends we_folder{
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td align="right">' . $button . '</td>
 </tr>';
-			} elseif(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && substr($this->searchclass->objsearchField[$i], 0, 4) == "date"){
+			} elseif(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && substr($this->searchclass->objsearchField[$i], 0, 4) === "date"){
 				$DefaultValues = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), 'DefaultValues', $this->DB_WE));
 
 				$month = array('' => '');
@@ -1108,7 +1108,7 @@ weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
 	}
 
 	function i_pathNotValid(){
-		return parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath == '/';
+		return parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath === '/';
 	}
 
 }

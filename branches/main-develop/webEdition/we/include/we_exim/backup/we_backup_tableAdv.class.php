@@ -26,7 +26,7 @@ class we_backup_tableAdv extends we_backup_table{
 
 	var $ClassName = __CLASS__;
 
-	function getColumns(){
+	public function getColumns(){
 		if($this->db->isTabExist($this->table)){
 			$this->db->query('SHOW CREATE TABLE ' . $this->table);
 			if($this->db->next_record()){
@@ -59,7 +59,7 @@ class we_backup_tableAdv extends we_backup_table{
 		$myarray = $this->elements['create'];
 		unset($myarray['Field']);
 		foreach($myarray as &$cur){
-			if(substr($cur, 0, 6) == 'CREATE'){
+			if(substr($cur, 0, 6) === 'CREATE'){
 				//Regex because of backups <6.2.4
 				$cur = preg_replace('/(CREATE *\w* *`?)\w*' . stripTblPrefix($this->table) . '/i', '\\1' . $this->table, $cur, 1);
 			}

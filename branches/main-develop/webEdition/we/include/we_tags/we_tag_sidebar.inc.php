@@ -38,7 +38,7 @@ function we_tag_sidebar($attribs, $content){
 
 	removeAttribs($attribs, array('id', 'file', 'url', 'width', 'href', 'params', 'anchor'));
 
-	if(trim($content) == ''){
+	if(!trim($content)){
 		$content = g_l('tags', '[open_sidebar]');
 	}
 

@@ -521,7 +521,7 @@ function open_wysiwyg_win(){
 			$charset = weTag_getAttribute('charset', $attribs, 'iso-8859-1');
 			//FIXME: currently we use a separate preference-option for frontend editor (where tinyMCE is labelled beta)
 			$tmp = we_wysiwyg_editor::$editorType;
-			we_wysiwyg_editor::$editorType = WYSIWYG_TYPE_FRONTEND == 'tinyMCE' ? 'tinyMCE' : 'default';
+			we_wysiwyg_editor::$editorType = WYSIWYG_TYPE_FRONTEND === 'tinyMCE' ? 'tinyMCE' : 'default';
 			$ret = we_html_forms::weTextarea($fieldname, ($content ? $content : $value), $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
 			we_wysiwyg_editor::$editorType = $tmp;
 			return $ret;
@@ -626,7 +626,7 @@ function open_wysiwyg_win(){
 
 			$options = '';
 			if(WE_COUNTRIES_DEFAULT != ''){
-				$options.='<option value="--" ' . ($orgVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
+				$options.='<option value="--" ' . ($orgVal === '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
 			}
 			foreach($topCountries as $countrykey => &$countryvalue){
 				$options.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';

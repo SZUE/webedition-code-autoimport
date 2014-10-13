@@ -80,10 +80,10 @@ abstract class we_util_Strings{
 	static function makeArrayFromCSV($csv){
 		$csv = str_replace("\\,", "###komma###", $csv);
 
-		if(substr($csv, 0, 1) == ","){
+		if(substr($csv, 0, 1) === ','){
 			$csv = substr($csv, 1);
 		}
-		if(substr($csv, -1) == ","){
+		if(substr($csv, -1) === ','){
 			$csv = substr($csv, 0, strlen($csv) - 1);
 		}
 		if($csv == '' && $csv != '0'){

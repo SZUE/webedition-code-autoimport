@@ -74,7 +74,7 @@ class we_otherDocument extends we_binaryDocument{
 	 * create instance of weMetaData to access metadata functionality:
 	 */
 	protected function getMetaDataReader($force = false){
-		return ($this->Extension == '.pdf' ?
+		return ($this->Extension === '.pdf' ?
 				parent::getMetaDataReader(true) :
 				false);
 	}
@@ -88,9 +88,9 @@ class we_otherDocument extends we_binaryDocument{
 		$text = '';
 		$this->resetElements();
 		while((list($k, $v) = $this->nextElement(''))){
-			$foo = (isset($v['dat']) && substr($v['dat'], 0, 2) == 'a:') ? unserialize($v['dat']) : '';
+			$foo = (isset($v['dat']) && substr($v['dat'], 0, 2) === 'a:') ? unserialize($v['dat']) : '';
 			if(!is_array($foo)){
-				if(isset($v['type']) && $v['type'] == 'txt' && isset($v['dat'])){
+				if(isset($v['type']) && $v['type'] === 'txt' && isset($v['dat'])){
 					$text .= ' ' . trim($v['dat']);
 				}
 			}
@@ -165,17 +165,17 @@ class we_otherDocument extends we_binaryDocument{
 	}
 
 	public function setMetaDataFromFile($file){
-		if($this->Extension == '.pdf' && file_exists($file)){
+		if($this->Extension === '.pdf' && file_exists($file)){
 			$pdf = new we_helpers_pdf2text($file);
 			$metaData = $pdf->getInfo();
-			if(!empty($metaData)){
-				if(isset($metaData['Title']) && ($this->getElement('Title') == '')){
+			if($metaData){
+				if(isset($metaData['Title']) && !$this->getElement('Title')){
 					$this->setElement('Title', $metaData['Title']);
 				}
-				if(isset($metaData['Keywords']) && ($this->getElement('Keywords') == '')){
+				if(isset($metaData['Keywords']) && !$this->getElement('Keywords')){
 					$this->setElement('Keywords', $metaData['Keywords']);
 				}
-				if(isset($metaData['Subject']) && ($this->getElement('Description') == '')){
+				if(isset($metaData['Subject']) && !$this->getElement('Description')){
 					$this->setElement('Description', $metaData['Subject']);
 				}
 			}

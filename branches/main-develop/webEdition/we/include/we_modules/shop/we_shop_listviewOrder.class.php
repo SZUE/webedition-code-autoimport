@@ -90,7 +90,7 @@ class we_shop_listviewOrder extends we_listview_base{
 		}
 
 		if($this->order != ''){
-			if(trim($this->order) == 'ID' || trim($this->order) == 'CustomerID' || trim($this->order) == 'ArticleID' || trim($this->order) == 'Quantity' || trim($this->order) == 'Payment_Type'){
+			if(trim($this->order) === 'ID' || trim($this->order) === 'CustomerID' || trim($this->order) === 'ArticleID' || trim($this->order) === 'Quantity' || trim($this->order) === 'Payment_Type'){
 				$this->order = 'Int' . $this->order;
 			}
 			$orderstring = " ORDER BY " . $this->order . " ";

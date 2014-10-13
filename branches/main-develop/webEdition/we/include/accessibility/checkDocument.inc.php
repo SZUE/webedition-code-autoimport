@@ -59,11 +59,11 @@ if(($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_trans
 	$filename = '/' . $we_transaction . $extension;
 
 	//  check what should happen with document
-	if(we_base_request::_(we_base_request::STRING, 'checkvia') == 'fileupload'){ //  submit via fileupload
+	if(we_base_request::_(we_base_request::STRING, 'checkvia') === 'fileupload'){ //  submit via fileupload
 		$http_request->addFileByContent($varname, $content, $contentType, $filename);
 	} else { //  submit via onlinecheck - site must be available online
 		// when it is a dynamic document, remove <?xml when short_open_tags are allowed.
-		if(ini_get("short_open_tag") == 1 && $GLOBALS['we_doc']->IsDynamic && $contentType == "text/html"){
+		if(ini_get("short_open_tag") == 1 && $GLOBALS['we_doc']->IsDynamic && $contentType === 'text/html'){
 			$content = str_replace("<?xml", '<?php print "<?xml"; ?>', $content);
 		}
 
@@ -83,17 +83,15 @@ if(($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_trans
 
 		$http_response = new we_http_response($http_request->getHttpResponseStr());
 
-		if($http_response->getHttp_answer('code') == 200){
-			//  change base href -> css of included page is loaded correctly
-			echo str_replace('<head>', '<head><base href="http://' . $host . '" />', $http_response->http_body);
-		} else { //  no correct answer
-			echo we_html_tools::getHtmlTop() .
-			STYLESHEET .
-			'</head>
-                <body>' .
-			we_html_tools::htmlAlertAttentionBox(sprintf(g_l('validation', '[connection_problems]'), $http_response->getHttp_answer()), we_html_tools::TYPE_ALERT, 0, false) .
-			'</body></html>';
-		}
+		echo ($http_response->getHttp_answer('code') == 200 ?
+				//  change base href -> css of included page is loaded correctly
+				str_replace('<head>', '<head><base href="http://' . $host . '" />', $http_response->http_body) :
+//  no correct answer
+				we_html_tools::getHtmlTop() .
+				STYLESHEET .
+				'</head><body>' .
+				we_html_tools::htmlAlertAttentionBox(sprintf(g_l('validation', '[connection_problems]'), $http_response->getHttp_answer()), we_html_tools::TYPE_ALERT, 0, false) .
+				'</body></html>');
 	} else {
 		echo $http_request->errno . ": " . $http_request->errstr . "<br/>";
 	}

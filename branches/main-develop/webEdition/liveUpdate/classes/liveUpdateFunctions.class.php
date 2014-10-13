@@ -27,7 +27,7 @@
  * This class contains all functions needed for the update process
  * TBD if we divide this class in several classes
  */
-class liveUpdateFunctions {
+class liveUpdateFunctions{
 
 	private $QueryLog = array(
 		'success' => array(),
@@ -42,9 +42,9 @@ class liveUpdateFunctions {
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . we_database_base::arraySetter(array(
-				'aktion' => $action,
-				'versionsnummer' => $version,
-				'error' => $errorCode
+					'aktion' => $action,
+					'versionsnummer' => $version,
+					'error' => $errorCode
 		)));
 	}
 
@@ -119,7 +119,7 @@ class liveUpdateFunctions {
 				"\$_SERVER[\"DOCUMENT_ROOT\"]",
 				'$GLOBALS[\'DOCUMENT_ROOT\']',
 				"\$GLOBALS[\"DOCUMENT_ROOT\]",
-				), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+					), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 		}
 		return $content;
 	}
@@ -322,9 +322,12 @@ class liveUpdateFunctions {
 		$pattern = "/\.([^\..]+)$/";
 		$matches = array();
 		if(preg_match($pattern, $path, $matches)){
-			$ext = strtolower($matches[1]);
-			if(($ext == 'jpg' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'sql')){
-				return false;
+			switch(strtolower($matches[1])){
+				case 'jpg':
+				case 'gif':
+				case 'jpeg':
+				case 'sql':
+					return false;
 			}
 		}
 		return true;
@@ -424,9 +427,9 @@ class liveUpdateFunctions {
 		$keysOfTable = array();
 		$db->query('SHOW INDEX FROM ' . $db->escape($tableName));
 		while($db->next_record()){
-			if($db->f('Key_name') == 'PRIMARY'){
+			if($db->f('Key_name') === 'PRIMARY'){
 				$indexType = 'PRIMARY';
-			} else if($db->f('Comment') == 'FULLTEXT' || $db->f('Index_type') == 'FULLTEXT'){// this also depends on mysqlVersion
+			} else if($db->f('Comment') === 'FULLTEXT' || $db->f('Index_type') === 'FULLTEXT'){// this also depends on mysqlVersion
 				$indexType = 'FULLTEXT';
 			} else if($db->f('Non_unique') == 0){
 				$indexType = 'UNIQUE';
@@ -459,11 +462,11 @@ class liveUpdateFunctions {
 
 			$default = '';
 
-			$null = (strtoupper($fieldInfo['Null']) == "YES" ? ' NULL' : ' NOT NULL');
+			$null = (strtoupper($fieldInfo['Null']) === 'YES' ? ' NULL' : ' NOT NULL');
 
 			if(($fieldInfo['Default']) != ""){
-				$default = 'DEFAULT ' . (($fieldInfo['Default']) == 'CURRENT_TIMESTAMP' ? 'CURRENT_TIMESTAMP' : '\'' . $fieldInfo['Default'] . '\'');
-			} elseif(strtoupper($fieldInfo['Null']) == "YES"){
+				$default = 'DEFAULT ' . (($fieldInfo['Default']) === 'CURRENT_TIMESTAMP' ? 'CURRENT_TIMESTAMP' : '\'' . $fieldInfo['Default'] . '\'');
+			} elseif(strtoupper($fieldInfo['Null']) === "YES"){
 				$default = ' DEFAULT NULL';
 			}
 			$extra = strtoupper($fieldInfo['Extra']);
@@ -512,7 +515,7 @@ class liveUpdateFunctions {
 
 			$type = $indexes['index'];
 			$mysl = '`';
-			if($type == 'PRIMARY'){
+			if($type === 'PRIMARY'){
 				$key = 'KEY';
 				$mysl = '';
 			}
@@ -526,7 +529,7 @@ class liveUpdateFunctions {
 					$myindexes[] = '`' . str_replace('(', '`(', $index);
 				}
 			}
-			$queries[] = 'ALTER TABLE ' . $tableName . ' ' . ($isNew ? '' : ' DROP ' . ($type == 'PRIMARY' ? $type : 'INDEX') . ' ' . $mysl . $key . $mysl . ' , ') . ' ADD ' . $type . ' ' . $mysl . $key . $mysl . ' (' . implode(',', $myindexes) . ')';
+			$queries[] = 'ALTER TABLE ' . $tableName . ' ' . ($isNew ? '' : ' DROP ' . ($type === 'PRIMARY' ? $type : 'INDEX') . ' ' . $mysl . $key . $mysl . ' , ') . ' ADD ' . $type . ' ' . $mysl . $key . $mysl . ' (' . implode(',', $myindexes) . ')';
 		}
 		return $queries;
 	}
@@ -617,17 +620,17 @@ class liveUpdateFunctions {
 		$Collation = we_database_base::getCollation();
 		if($Charset != '' && $Collation != ''){
 			if(stripos($query, "CREATE TABLE ") === 0){
-				if(strtoupper($Charset) == 'UTF-8'){//#4661
+				if(strtoupper($Charset) === 'UTF-8'){//#4661
 					$Charset = 'utf8';
 				}
-				if(strtoupper($Collation) == 'UTF-8'){//#4661
+				if(strtoupper($Collation) === 'UTF-8'){//#4661
 					$Collation = 'utf8_general_ci';
 				}
 				$query = preg_replace('/;$/', ' CHARACTER SET ' . $Charset . ' COLLATE ' . $Collation . ';', $query, 1);
 			}
 		}
 
-		if($query == '' || $db->query($query)){
+		if(!$query || $db->query($query)){
 			return true;
 		} else {
 

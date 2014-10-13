@@ -68,8 +68,8 @@ class we_html_baseElement{
 	 *
 	 * @return     we_html_baseElement
 	 */
-	function copy(){
-		return unserialize(serialize($this));
+	protected function copy(){
+		return clone $this;
 	}
 
 	/**
@@ -103,7 +103,7 @@ class we_html_baseElement{
 	 */
 
 	function setAttributes($attribs){
-		$widthHeightNotInStyle = $this->tag_name == 'applet' ? true : false;
+		$widthHeightNotInStyle = $this->tag_name === 'applet';
 		if(is_array($attribs)){
 			foreach($attribs as $k => $v){
 				if(!empty($k)){
@@ -212,7 +212,7 @@ class we_html_baseElement{
 	function getHTML(){
 		$out = '<' . $this->tag_name;
 		foreach($this->attribs as $k => $v){
-			if($k == 'style'){
+			if($k === 'style'){
 				if(!empty($v)){
 					$out.=' ' . $k . '="';
 					foreach($v as $kk => $vv){

@@ -67,7 +67,7 @@ class we_search_base{
 
 			if($searchname[$i]){
 				$regs = explode('_', $searchfield[$i], 2); //bug #3694
-				if((count($regs) == 2) && $regs[0] == 'date'){ //bug #3694
+				if((count($regs) == 2) && $regs[0] === 'date'){ //bug #3694
 					$year = ($searchname[$i]['year'] && $searchname[$i]['year'] ? $searchname[$i]['year'] : date('Y'));
 					$month = ($searchname[$i]['month'] && $searchname[$i]['month'] ? $searchname[$i]['month'] : '');
 					$day = ($searchname[$i]['day'] && $searchname[$i]['day'] ? $searchname[$i]['day'] : '');

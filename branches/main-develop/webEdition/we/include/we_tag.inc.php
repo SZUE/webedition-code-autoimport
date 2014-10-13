@@ -69,7 +69,7 @@ function we_tag($name, $attribs = array(), $content = ''){
 	$user = weTag_getAttribute('user', $attribs);
 
 	//make sure comment attribute is never shown
-	if($name == 'setVar' || $name == 'xmlnode'){//special handling inside tag setVar and xmlnode
+	if($name === 'setVar' || $name === 'xmlnode'){//special handling inside tag setVar and xmlnode
 		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'user'));
 		$nameTo = '';
 		$to = 'screen';
@@ -195,7 +195,7 @@ function we_redirect_tagoutput($returnvalue, $nameTo, $to = 'screen'){
 }
 
 function mta($hash, $key){
-	return (isset($hash[$key]) && ($hash[$key] != '' || $key == 'alt')) ? (' ' . $key . '="' . $hash[$key] . '"') : '';
+	return (isset($hash[$key]) && ($hash[$key] != '' || $key === 'alt')) ? (' ' . $key . '="' . $hash[$key] . '"') : '';
 }
 
 function printElement($code){
@@ -411,7 +411,7 @@ function attributFehltError($attribs, $attrs, $tag, $canBeEmpty = false){
  */
 function removeEmptyAttribs($atts, $ignore = array()){
 	foreach($atts as $k => $v){
-		if($v == '' && !in_array($k, $ignore)){
+		if($v === '' && !in_array($k, $ignore)){
 			unset($atts[$k]);
 		}
 	}
@@ -572,7 +572,7 @@ function we_tag_ifLastCol(){
 
 function we_tag_ifNew($attribs){
 	$type = weTag_getAttribute('type', $attribs);
-	return !we_base_request::_(we_base_request::BOOL, 'we_edit' . ($type == 'object' ? 'Object' : 'Document') . '_ID');
+	return !we_base_request::_(we_base_request::BOOL, 'we_edit' . ($type === 'object' ? 'Object' : 'Document') . '_ID');
 }
 
 function we_tag_ifNotNew($attribs, $content){

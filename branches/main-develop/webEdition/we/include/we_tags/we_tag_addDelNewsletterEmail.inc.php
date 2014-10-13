@@ -150,7 +150,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 					break;
 				case 'csv':
 					foreach($paths as $p){
-						$realPath = realpath((substr($p, 0, 1) == '/') ? ($_SERVER['DOCUMENT_ROOT'] . $p) : ($_SERVER['DOCUMENT_ROOT'] . '/' . $p));
+						$realPath = realpath((substr($p, 0, 1) === '/') ? ($_SERVER['DOCUMENT_ROOT'] . $p) : ($_SERVER['DOCUMENT_ROOT'] . '/' . $p));
 						if(file_exists($realPath)){
 							$file = we_base_file::load($realPath);
 							if($file !== false){// #5135
@@ -265,12 +265,12 @@ function we_tag_addDelNewsletterEmail($attribs){
 				unset($placeholderfieldsmatches);
 
 				$placeholderReplaceValue = '';
-				if($type == 'customer'){
+				if($type === 'customer'){
 					$customerHash = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . "='" . $db->escape($f['subscribe_mail']) . "'", $db);
 				}
 				if(is_array($placeholderfields)){
 					foreach($placeholderfields as $phf){
-						$placeholderReplaceValue = ($type == 'customer' && isset($customerHash[$phf])) ? $customerHash[$phf] : '';
+						$placeholderReplaceValue = ($type === 'customer' && isset($customerHash[$phf])) ? $customerHash[$phf] : '';
 						$mailtext = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:' . $phf . '####', $placeholderReplaceValue, $mailtext);
 						$mailtextHTML = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:' . $phf . '####', $placeholderReplaceValue, $mailtextHTML);
 					}
@@ -443,7 +443,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				case 'csv':
 					//in die Liste eintragen
 					foreach($paths as $p){
-						$realPath = realpath((substr($p, 0, 1) == '/') ? ($_SERVER['DOCUMENT_ROOT'] . $p) : ($_SERVER['DOCUMENT_ROOT'] . '/' . $p));
+						$realPath = realpath((substr($p, 0, 1) === '/') ? ($_SERVER['DOCUMENT_ROOT'] . $p) : ($_SERVER['DOCUMENT_ROOT'] . '/' . $p));
 						if(!file_exists(dirname($realPath)) || strpos(realpath($realPath), realpath($_SERVER['DOCUMENT_ROOT'])) === FALSE){
 							$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_ERROR; // FATAL ERROR
 							$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_ERROR; // FATAL ERROR
@@ -488,7 +488,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 	//NEWSLETTER UNSUBSCTIPTION
 	if($isUnsubscribe){
-		if(!we_unsubscribeNL($db, $type == 'customer', $_customerFieldPrefs, $abos, $paths)){
+		if(!we_unsubscribeNL($db, $type === 'customer', $_customerFieldPrefs, $abos, $paths)){
 			return;
 		}
 	}

@@ -47,7 +47,7 @@ function we_tag_categorySelect($attribs, $content){
 		}
 		$valuesArray = makeArrayFromCSV(id_to_path($values, CATEGORY_TABLE));
 	} else {
-		if($type == 'request'){
+		if($type === 'request'){
 			// Bug Fix #750
 			$values = filterXss(isset($_REQUEST[$name]) ?
 					(is_array($_REQUEST[$name]) ?
@@ -83,7 +83,7 @@ function we_tag_categorySelect($attribs, $content){
 		$db = $GLOBALS['DB_WE'];
 		$dbfield = $showpath || $indent ? 'Path' : 'Category';
 		$valueField = (weTag_getAttribute('fromTag', $attribs, false, true) ? 'ID' : 'Path');
-		$db->query('SELECT ID,Path,Category FROM ' . CATEGORY_TABLE . ' WHERE ' . ($rootdir == '/' ? 1 : ' Path LIKE "' . $db->escape($rootdir) . '%"') . ' ORDER BY ' . $dbfield);
+		$db->query('SELECT ID,Path,Category FROM ' . CATEGORY_TABLE . ' WHERE ' . ($rootdir === '/' ? 1 : ' Path LIKE "' . $db->escape($rootdir) . '%"') . ' ORDER BY ' . $dbfield);
 		while($db->next_record()){
 			$deep = count(explode('/', $db->f('Path'))) - 2;
 			$field = ($rootdir && ($rootdir != '/') && $showpath ?

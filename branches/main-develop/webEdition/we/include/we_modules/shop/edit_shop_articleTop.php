@@ -27,7 +27,7 @@ we_html_tools::protect($protect);
 
 echo we_html_tools::getHtmlTop() . STYLESHEET;
 
-$da = ( $GLOBALS["WE_LANGUAGE"] == "Deutsch" ) ? "%d.%m.%y" : "%m/%d/%y";
+$da = ( $GLOBALS["WE_LANGUAGE"] === "Deutsch" ) ? "%d.%m.%y" : "%m/%d/%y";
 if(($cid = we_base_request::_(we_base_request::INT, 'cid'))){
 	$Kundenname = f('SELECT CONCAT(Forename," ",Surname) AS Name FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $cid);
 

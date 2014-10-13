@@ -737,8 +737,8 @@ function loadData() {
 		foreach($this->messaging->available_folders as $folder){
 			switch($folder['obj_type']){
 				case we_messaging_proto::FOLDER_INBOX:
-					$iconbasename = $folder['ClassName'] == 'we_todo' ? 'todo_in_folder' : 'msg_in_folder';
-					$folder['Name'] = $folder['ClassName'] == 'we_todo' ? g_l('modules_messaging', '[ToDo]') : g_l('modules_messaging', '[Mitteilungen]');
+					$iconbasename = $folder['ClassName'] === 'we_todo' ? 'todo_in_folder' : 'msg_in_folder';
+					$folder['Name'] = $folder['ClassName'] === 'we_todo' ? g_l('modules_messaging', '[ToDo]') : g_l('modules_messaging', '[Mitteilungen]');
 					break;
 				case we_messaging_proto::FOLDER_SENT:
 					$iconbasename = 'msg_sent_folder';
@@ -753,7 +753,7 @@ function loadData() {
 					$folder['Name'] = g_l('modules_messaging', '[Zurueckgewiesen]');
 					break;
 				default:
-					$iconbasename = $folder['ClassName'] == 'we_todo' ? 'todo_folder' : 'msg_folder';
+					$iconbasename = $folder['ClassName'] === 'we_todo' ? 'todo_folder' : 'msg_folder';
 					break;
 			}
 			if(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'], '')) >= 0){
@@ -850,7 +850,7 @@ function msg_start() {
 			}
 		') . we_html_element::jsScript(JS_DIR . 'windows.js');
 
-		$searchlabel = $this->viewclass == 'todo' ? '[search_todos]' : '[search_messages]';
+		$searchlabel = $this->viewclass === 'todo' ? '[search_todos]' : '[search_messages]';
 		$hidden = we_html_tools::hidden('we_transaction', $this->transaction);
 		$table = new we_html_table(array('style' => 'margin: 4px 0px 0px 7px;', 'border' => 0), 1, 2);
 

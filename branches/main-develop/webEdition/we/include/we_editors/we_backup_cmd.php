@@ -40,7 +40,7 @@ if(!$cmd){
 	exit();
 }
 
-if(($cmd == 'export' || $cmd == 'import') && isset($_SESSION['weS']['weBackupVars'])){
+if(($cmd === 'export' || $cmd === 'import') && isset($_SESSION['weS']['weBackupVars'])){
 	$last = $_SESSION['weS']['weBackupVars']['limits']['requestTime'];
 	$_SESSION['weS']['weBackupVars']['limits']['requestTime'] = (isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] :
 			//we don't have the time of the request, assume some time is already spent.
@@ -165,7 +165,7 @@ run();');
 				$_files[] = WE_SPELLCHECKER_MODULE_DIR . 'spellchecker.conf.inc.php';
 				$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 				while(false !== ($entry = $_dir->read())){
-					if($entry == '.' || $entry == '..' || (substr($entry, -4) == '.zip') || is_dir(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $entry)){
+					if($entry === '.' || $entry === '..' || (substr($entry, -4) === '.zip') || is_dir(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $entry)){
 						continue;
 					}
 					$_files[] = WE_SPELLCHECKER_MODULE_DIR . 'dict/' . $entry;
@@ -214,12 +214,12 @@ run();');
 
 			echo we_html_element::jsElement(we_backup_util::getProgressJS(100, g_l('backup', "[finished]"), true) . '
 top.body.setLocation("' . WE_INCLUDES_DIR . 'we_editors/we_make_backup.php?pnt=body&step=2");
-top.cmd.location = "' . HTML_DIR . 'white.html";
+top.cmd.location = "about:blank";
 if(top.checker != "undefined"){
 	if(typeof top.checker.setLocation == "function") {
-		top.checker.setLocation("' . HTML_DIR . 'white.html");
+		top.checker.setLocation("about:blank");
 	}else{
-		top.checker.location = "' . HTML_DIR . 'white.html";
+		top.checker.location = "about:blank";
 	}
 }');
 			flush();
@@ -278,7 +278,7 @@ if(top.checker != "undefined"){
 				}
 			} while(!empty($_SESSION['weS']['weBackupVars']['files_to_delete']) && we_backup_backup::limitsReached('', microtime(true) - $start));
 		} elseif(($_SESSION['weS']['weBackupVars']['offset'] < $_SESSION['weS']['weBackupVars']['offset_end'])){
-			if($_SESSION['weS']['weBackupVars']['options']['format'] == 'xml'){
+			if($_SESSION['weS']['weBackupVars']['options']['format'] === 'xml'){
 				$oldPercent = 0;
 				$percent = we_backup_util::getImportPercent();
 				$description = we_backup_util::getDescription($_SESSION['weS']['weBackupVars']['current_table'], 'import');
@@ -332,7 +332,7 @@ run();');
 			$updater = new we_updater();
 			$updater->doUpdate();
 
-			if($_SESSION['weS']['weBackupVars']['options']['format'] == 'sql'){
+			if($_SESSION['weS']['weBackupVars']['options']['format'] === 'sql'){
 				we_backup_importSql::delBackupTable();
 			}
 
@@ -344,7 +344,7 @@ run();');
 			$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $DB_WE);
 
 			echo we_html_element::jsElement('
-top.checker.location = "' . HTML_DIR . 'white.html";
+top.checker.location = "about:blank";
 var op = top.opener.top.makeFoldersOpenString();
 top.opener.top.we_cmd("load", top.opener.top.treeData.table);
 ' . we_main_headermenu::getMenuReloadCode() . '

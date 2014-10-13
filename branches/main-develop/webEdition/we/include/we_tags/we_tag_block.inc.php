@@ -102,7 +102,7 @@ function we_tag_block($attribs){
 
 	$list = (isset($GLOBALS['lv'])) ? $GLOBALS['lv']->f($name) : $GLOBALS['we_doc']->getElement($name);
 
-	if($list && is_string($list) && $list{0} == 'a'){
+	if($list && is_string($list) && $list{0} === 'a'){
 		$list = unserialize($list);
 		if(is_array($list) && count($list) && ((count($list) - 1) != max(array_keys($list)))){
 			//reorder list!

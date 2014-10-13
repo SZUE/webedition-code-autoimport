@@ -24,7 +24,13 @@
 // widget MY DOCUMENTS
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-list($dir, $dt_tid, $cats) = explode(';', we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1));
+$all = explode(';', we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1));
+if(count($all) > 1){
+	list($dir, $dt_tid, $cats) = $all;
+} else {
+	$dir = $all[0];
+	$dt_tid = $cats = '';
+}
 $aCsv = array(
 	0, //unused - compatibility
 	we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 0),

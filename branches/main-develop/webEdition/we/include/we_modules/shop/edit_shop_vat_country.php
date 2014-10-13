@@ -65,7 +65,7 @@ $jsFunction = '
 
 
 // initialise the vatRuleObject
-if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'saveVatRule'){
+if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'saveVatRule'){
 
 	// initialise the vatRule by request
 	$weShopVatRule = we_shop_vatRule::initByRequest();

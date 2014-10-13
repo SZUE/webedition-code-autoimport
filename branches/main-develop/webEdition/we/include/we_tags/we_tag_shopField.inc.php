@@ -34,7 +34,7 @@ function we_tag_shopField($attribs){
 
 	$type = weTag_getAttribute("type", $attribs);
 
-	if($type == 'checkbox' && ($missingAttrib = attributFehltError($attribs, 'value', __FUNCTION__))){
+	if($type === 'checkbox' && ($missingAttrib = attributFehltError($attribs, 'value', __FUNCTION__))){
 		print $missingAttrib;
 	}
 
@@ -49,11 +49,11 @@ function we_tag_shopField($attribs){
 
 	$xml = weTag_getAttribute("xml", $attribs);
 
-	$fieldname = ($reference == 'article' ? WE_SHOP_ARTICLE_CUSTOM_FIELD : WE_SHOP_CART_CUSTOM_FIELD) . '[' . $name . ']';
+	$fieldname = ($reference === 'article' ? WE_SHOP_ARTICLE_CUSTOM_FIELD : WE_SHOP_CART_CUSTOM_FIELD) . '[' . $name . ']';
 	$savedVal = '';
 	$isFieldForCheckBox = false;
 
-	if($reference == 'article'){ // name depends on value
+	if($reference === 'article'){ // name depends on value
 		$savedVal = (!$shopname) && isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD][$name]) ? filterXss($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD][$name]) : '';
 		// does not exist here - we are only in article - custom fields are not stored on documents
 
@@ -92,27 +92,21 @@ function we_tag_shopField($attribs){
 
 			// added we_html_tools::hidden #6544
 			return getHtmlTag('input', $atts) . we_html_tools::hidden($fieldname, $savedVal);
-			break;
 
 		case 'choice':
 			$reference = weTag_getAttribute("mode", $attribs);
 
 			return we_html_tools::htmlInputChoiceField($fieldname, $savedVal, $values, $atts, $mode);
 
-			break;
-
 		case 'hidden':
 			$atts = removeAttribs($atts, array('reference'));
 			return we_html_tools::hidden($fieldname, $savedVal, $atts);
-			break;
 
 		case 'print':
 			return $savedVal;
-			break;
 
 		case 'select':
 			return we_getSelectField($fieldname, $savedVal, $values, $atts, false);
-			break;
 
 		case 'country':
 			$newAtts = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'checked', 'mode'));
@@ -121,8 +115,8 @@ function we_tag_shopField($attribs){
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang ?
-					substr($lang, 0, 2) :
-					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+							substr($lang, 0, 2) :
+							array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 			if(!Zend_Locale::hasCache()){
 				Zend_Locale::setCache(getWEZendCache());
@@ -148,7 +142,7 @@ function we_tag_shopField($attribs){
 
 			$content = '';
 			if(WE_COUNTRIES_DEFAULT != ''){
-				$content.='<option value="--" ' . ($savedVal == '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
+				$content.='<option value="--" ' . ($savedVal === '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
 			}
 			foreach($topCountries as $countrykey => &$countryvalue){
 				$content.='<option value="' . $countrykey . '" ' . ($savedVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
@@ -172,8 +166,8 @@ function we_tag_shopField($attribs){
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang ?
-					substr($lang, 0, 2) :
-					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+							substr($lang, 0, 2) :
+							array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 			$frontendL = $GLOBALS['weFrontendLanguages'];
 			foreach($frontendL as &$lcvalue){
@@ -202,18 +196,15 @@ function we_tag_shopField($attribs){
 
 		case 'textarea':
 			return we_getTextareaField($fieldname, $savedVal, $atts);
-			break;
 
 		case 'radio':
-			if($checked && $savedVal == ''){
+			if($checked && $savedVal === ''){
 				$atts['checked'] = 'checked';
 			}
 			return we_getInputRadioField($fieldname, $savedVal, $value, $atts);
-			break;
 
 		case 'textinput':
 		default:
 			return we_getInputTextInputField($fieldname, $savedVal, $atts);
-			break;
 	}
 }

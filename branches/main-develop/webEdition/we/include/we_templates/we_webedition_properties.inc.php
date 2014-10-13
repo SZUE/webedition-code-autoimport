@@ -37,4 +37,4 @@ $znr = 5;
 
 
 echo we_html_multiIconBox::getJS() .
-	we_html_multiIconBox::getHTML('weDocProp', '100%', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos == 'down'));
+	we_html_multiIconBox::getHTML('weDocProp', '100%', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'));

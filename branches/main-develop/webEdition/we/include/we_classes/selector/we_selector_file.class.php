@@ -355,7 +355,7 @@ var mk=null;');
 	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
     <frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" noresize scrolling="auto">
     <frame src="' . $this->getFsQueryString(we_selector_file::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
-    <frame src="' . HTML_DIR . 'white.html"  name="fscmd" noresize scrolling="no">
+    <frame src="about:blank"  name="fscmd" noresize scrolling="no">
 </frameset>
 <body>
 </body>
@@ -461,12 +461,13 @@ function queryString(what,id,o){
 		$html = explode("\n", str_replace(array("'", 'script', '#\\\'',), array("\\'", "scr' + 'ipt", '\''), implodeJS($html)));
 		$ret = '';
 		foreach($html as $cur){
-			$ret.=(substr($cur, 0, 1) == '#' ? substr($cur, 1) : "d.writeln('" . $cur . "');") . "\n";
+			$ret.=(substr($cur, 0, 1) === '#' ? substr($cur, 1) : "d.writeln('" . $cur . "');");
 		}
 		return $ret;
 	}
 
 	function printFramesetJSFunctioWriteBody(){
+		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
 				d.open();
@@ -499,6 +500,7 @@ function queryString(what,id,o){
 			//-->
 		</script>
 		<?php
+		return ob_get_clean();
 	}
 
 	function printFramesetJSFunctionEntry(){

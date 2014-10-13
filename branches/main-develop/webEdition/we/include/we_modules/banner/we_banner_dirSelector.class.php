@@ -87,12 +87,13 @@ class we_banner_dirSelector extends we_selector_directory{
 	function printHeaderTableExtraCols(){
 		$makefolderState = permissionhandler::hasPerm("NEW_BANNER");
 		return '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
-			we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
-			we_html_button::create_button("image:btn_new_bannergroup", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
-			'</td>';
+				we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
+				we_html_button::create_button("image:btn_new_bannergroup", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+				'</td>';
 	}
 
 	function printFramesetJSFunctioWriteBody(){
+		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
 				d.open();
@@ -175,6 +176,7 @@ top.unselectAllFiles();') . '
 			//-->
 		</script>
 		<?php
+		return ob_get_clean();
 	}
 
 	function printFramesetJSFunctionQueryString(){
@@ -183,9 +185,9 @@ top.unselectAllFiles();') . '
 		if(!o) o=top.order;
 		if(!we_editDirID) we_editDirID="";
 		return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&rootDirID=' .
-				$this->rootDirID . (isset($this->open_doc) ?
-					"&open_doc=" . $this->open_doc : '') .
-				'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
+						$this->rootDirID . (isset($this->open_doc) ?
+								"&open_doc=" . $this->open_doc : '') .
+						'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 		}');
 	}
 
@@ -232,8 +234,8 @@ top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
-		if($txt == ""){
-			print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[group_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+		if(!$txt){
+			echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[group_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->we_new();
@@ -245,21 +247,21 @@ top.clearEntries();
 			$this->db->query("SELECT ID FROM " . $this->table . " WHERE Path='" . $this->db->escape($folder->Path) . "'");
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('modules_banner', '[group_path_exists]'), $folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('/[%/\\"\']/', $folder->Text)){
 					$we_responseText = g_l('modules_banner', '[wrongtext]');
-					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				} else {
 					$folder->we_save();
-					print 'var ref;
+					echo 'var ref;
 if(top.opener.top.content.makeNewEntry){
 	ref = top.opener.top.content;
 	ref.makeNewEntry("banner_folder.gif",' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1,"folder","' . $this->table . '",1);
 }
 ';
 					if($this->canSelectDir){
-						print 'top.currentPath = "' . $folder->Path . '";
+						echo 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 ';
@@ -269,14 +271,13 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 		}
 
 
-		print $this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.makeNewFolder = 0;
+		echo $this->printCmdAddEntriesHTML() .
+		$this->printCMDWriteAndFillSelectorHTML() .
+		'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 //-->
 </script>
-';
-		print '</head><body></body></html>';
+</head><body></body></html>';
 	}
 
 	function query(){
@@ -291,8 +292,8 @@ top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
-		if($txt == ""){
-			print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[group_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+		if(!$txt){
+			echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[group_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);
@@ -326,8 +327,8 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 		}
 
 		print
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() . '
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() . '
 top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 //-->

@@ -24,7 +24,7 @@
  */
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
 
-$isUTF8 = ($GLOBALS['WE_BACKENDCHARSET'] == 'UTF-8');
+$isUTF8 = ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8');
 
 $translate = we_core_Local::addTranslation('default.xml', 'toolfactory');
 

@@ -23,36 +23,38 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_request{
+
 	private static $allTables = array();
 
-	const TRANSACTION = 'transaction';
-	const INTLIST = 'intList';
 	/* converts an csv of ints to an array */
+
 	const INTLISTA = 'intListA';
-	const CMD = 'cmd';
-	const UNIT = 'unit';
 	const INT = 'int';
 	const FLOAT = 'float';
 	const BOOL = 'bool';
+	const RAW = 'raw';
+	const URL = 'url';
+	const EMAIL = 'email';
+	const STRING = 'string';
+	const HTML = 'html';
 
 	/**
 	 * @internal
 	 */
+	const TRANSACTION = 'transaction';
+	const INTLIST = 'intList';
+	const CMD = 'cmd';
+	const UNIT = 'unit';
 	const TOGGLE = 'toggle';
 	const TABLE = 'table';
 	const FILE = 'file';
 	const FILELIST = 'filelist';
 	const FILELISTA = 'filelista';
-	const URL = 'url';
-	const STRING = 'string';
-	const HTML = 'html';
-	const EMAIL = 'email';
 //only temporary
 	const STRINGC = 'stringC';
 	const RAW_CHECKED = 'rawC';
 //remove these types!!!
 	const JS = 'js';
-	const RAW = 'raw';
 	const SERIALIZED = 'serial';
 	const SERIALIZED_KEEP = 'serialK';
 
@@ -88,8 +90,8 @@ class we_base_request{
 				return;
 			case self::CMD:
 				$var = strpos($var, 'WECMDENC_') !== false ?
-					base64_decode(urldecode(substr($var, 9))) :
-					$var;
+						base64_decode(urldecode(substr($var, 9))) :
+						$var;
 				return;
 			case self::UNIT:
 				$regs = array(); //FIMXE: check for %d[em,ex,pt,%...]?
@@ -123,7 +125,7 @@ class we_base_request{
 				}
 
 			case self::TOGGLE: //FIXME: temporary type => whenever possible use 'bool'
-				$var = $var == 'on' || $var == 'off' || $var == '1' || $var == '0' ? $var : (bool) $var;
+				$var = $var === 'on' || $var === 'off' || $var == '1' || $var == '0' ? $var : (bool) $var;
 				return;
 			case self::TABLE: //FIXME: this doesn't hold for OBJECT_X_TABLE - make sure we don't use them in requests
 				$var = $var && in_array($var, self::$allTables) ? $var : $default;
@@ -143,7 +145,7 @@ class we_base_request{
 				$var = explode(',', trim(strtr($var, array(
 					'../' => '',
 					'//' => ''
-						)), ','));
+								)), ','));
 				foreach($var as &$cur){
 					$cur = filter_var($cur, FILTER_SANITIZE_URL);
 					if(strpos($cur, rtrim(WEBEDITION_DIR, '/')) === 0){//file-selector has propably access
@@ -175,25 +177,30 @@ class we_base_request{
 			case self::HTML:
 				$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
 				return;
-			default:
-				t_e('unknown filter type ' . $type);
 			case self::JS://for information!
 			case self::RAW:
 			case self::RAW_CHECKED:
 				//do nothing - used as placeholder for all types not yet known
 				return;
+			default:
+				t_e('unknown filter type ' . $type);
 		}
 		$var = $default;
 	}
 
-	function we_defineTables(array $tables){
-		if(!isset($GLOBALS['we']['allTables'])){
-			$GLOBALS['we']['allTables'] = array();
-		}
-		foreach($tables as $tab => $name){
-			define($tab, TBL_PREFIX . $name);
-			$GLOBALS['we']['allTables'][$tab] = TBL_PREFIX . $name;
-		}
+	/* function we_defineTables(array $tables){
+	  if(!isset($GLOBALS['we']['allTables'])){
+	  $GLOBALS['we']['allTables'] = array();
+	  }
+	  foreach($tables as $tab => $name){
+	  define($tab, TBL_PREFIX . $name);
+	  $GLOBALS['we']['allTables'][$tab] = TBL_PREFIX . $name;
+	  }
+	  } */
+
+	public static function filterVar($var, $varType, $default = ''){
+		self::_weRequest($var, '', array($varType, $default));
+		return $var;
 	}
 
 	/**
@@ -289,7 +296,7 @@ class we_base_request{
 				case self::RAW:
 				case self::STRING:
 				case self::JS:
-					if(WE_VERSION_SUPP && $var){//show this only during development
+					if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP && $var){//show this only during development
 						if($var == ('' . intval($oldVar))){
 							t_e('notice', 'variable could be int/bool?', $args, $var);
 						} elseif(str_replace(',', '.', $var) == ('' . floatval($oldVar))){

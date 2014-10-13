@@ -90,6 +90,7 @@ class we_voting_dirSelector extends we_selector_directory{
 	}
 
 	function printFramesetJSFunctioWriteBody(){
+		ob_start();
 		?><script type="text/javascript"><!--
 			function writeBody(d) {
 				d.open();
@@ -171,6 +172,7 @@ top.unselectAllFiles();') . '
 			//-->
 		</script>
 		<?php
+		return ob_get_clean();
 	}
 
 	function printFramesetJSFunctionQueryString(){
@@ -308,7 +310,7 @@ top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
-		if($txt == ""){
+		if(!$txt){
 			print we_message_reporting::getShowMessageCall(g_l('modules_voting', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();

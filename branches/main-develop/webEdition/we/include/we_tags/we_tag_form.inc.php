@@ -59,7 +59,7 @@ function we_tag_form($attribs){
 	$formAttribs['method'] = $method;
 
 	$GLOBALS['we_form_action'] = ($id ?
-					($id == 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
+					($id === 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
 					($action ? $action : $_SERVER['SCRIPT_NAME']));
 
 	if($type != 'search'){
@@ -131,13 +131,13 @@ function we_tag_form($attribs){
 			if($classid || $doctype){
 				$GLOBALS['WE_FORM'] = $formname;
 				if(!$GLOBALS['we_doc']->InWebEdition){
-					if($type == 'object'){
+					if($type === 'object'){
 						we_objectFile::initObject($classid, $formname, $categories, intval($parentid));
 					} else {
 						we_webEditionDocument::initDocument($formname, $tid, $doctype, $categories);
 					}
 				}
-				$typetmp = (($type == 'object') ? 'Object' : 'Document');
+				$typetmp = (($type === 'object') ? 'Object' : 'Document');
 
 				if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
 					$ret.=getHtmlTag('form', $formAttribs, '', false, true) .
@@ -175,7 +175,7 @@ function we_tag_form($attribs){
 			$formAttribs['method'] = 'post'; //don't allow anything else
 			$formAttribs['name'] = $formname;
 			$formAttribs['onsubmit'] = $onsubmit;
-			$formAttribs['action'] = ($id == 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : ($id ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) : WEBEDITION_DIR . 'we_formmail.php'));
+			$formAttribs['action'] = ($id === 'self' ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : ($id ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) : WEBEDITION_DIR . 'we_formmail.php'));
 
 
 			//  now prepare all needed hidden-fields:

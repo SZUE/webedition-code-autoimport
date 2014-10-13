@@ -374,7 +374,7 @@ class we_objectFile extends we_document{
 
 	function resetParentID(){
 		$len = strlen($this->RootDirPath . '/');
-		if($this->ParentPath == '/' || (substr($this->ParentPath . '/', 0, $len) != substr($this->RootDirPath . '/', 0, $len))){
+		if($this->ParentPath === '/' || (substr($this->ParentPath . '/', 0, $len) != substr($this->RootDirPath . '/', 0, $len))){
 			$this->setParentID($this->rootDirID);
 		}
 // adjust to bug #376 regarding workspace
@@ -458,7 +458,7 @@ class we_objectFile extends we_document{
 							unset($foo[0]);
 							$name = implode('_', $foo);
 							$n = ($type == self::TYPE_OBJECT ? 'we_object_' . $name : (isset($name) ? $name : ''));
-							$this->setElement($n, isset($field['default']) ? $field['default'] : '', $type, 'dat', (isset($field['autobr']) && $field['autobr'] == 'on' ? 'on' : 'off'));
+							$this->setElement($n, isset($field['default']) ? $field['default'] : '', $type, 'dat', (isset($field['autobr']) && $field['autobr'] === 'on' ? 'on' : 'off'));
 							if($type == self::TYPE_MULTIOBJECT){
 								$temp = array(
 									'class' => $field['class'],
@@ -876,7 +876,7 @@ class we_objectFile extends we_document{
 			$path = $tmp['Path'];
 			$npubl = $tmp['Published'];
 		}
-		if($path == ''){
+		if($path === ''){
 			$myid = 0;
 			$npubl = 1;
 		}
@@ -1134,8 +1134,8 @@ class we_objectFile extends we_document{
 		}
 
 		$type = isset($attribs['hreftype']) ? $attribs['hreftype'] : '';
-		$directory = (isset($attribs['hrefdirectory']) && $attribs['hrefdirectory'] == 'true') ? false : true;
-		$file = (isset($attribs['hreffile']) && $attribs['hreffile'] == 'false') ? false : true;
+		$directory = (isset($attribs['hrefdirectory']) && $attribs['hrefdirectory'] === 'true') ? false : true;
+		$file = (isset($attribs['hreffile']) && $attribs['hreffile'] === 'false') ? false : true;
 
 		$nint = $n . we_base_link::MAGIC_INT_LINK;
 		$nintID = $n . we_base_link::MAGIC_INT_LINK_ID;
@@ -1382,7 +1382,7 @@ class we_objectFile extends we_document{
 		$attribs["height"] = isset($attribs["height"]) ? $attribs["height"] : 200;
 		$attribs["rows"] = 10;
 		$attribs["cols"] = 60;
-		$attribs['bgcolor'] = isset($attribs["bgcolor"]) ? $attribs["bgcolor"] : (WYSIWYG_TYPE == 'tinyMCE' ? '' : 'white');
+		$attribs['bgcolor'] = isset($attribs["bgcolor"]) ? $attribs["bgcolor"] : (WYSIWYG_TYPE === 'tinyMCE' ? '' : 'white');
 		$attribs['tinyparams'] = isset($attribs["tinyparams"]) ? $attribs["tinyparams"] : "";
 		$attribs['templates'] = isset($attribs["templates"]) ? $attribs["templates"] : "";
 		$attribs["class"] = isset($attribs["class"]) ? $attribs["class"] : "";
@@ -1390,8 +1390,8 @@ class we_objectFile extends we_document{
 			$attribs["classes"] = $attribs["cssClasses"];
 		}
 
-		$removefirstparagraph = ((!isset($attribs["removefirstparagraph"])) || ($attribs["removefirstparagraph"] == "on")) ? true : false;
-		$xml = (isset($attribs["xml"]) && ($attribs["xml"] == "on")) ? true : false;
+		$removefirstparagraph = ((!isset($attribs["removefirstparagraph"])) || ($attribs["removefirstparagraph"] === "on")) ? true : false;
+		$xml = (isset($attribs["xml"]) && ($attribs["xml"] === "on")) ? true : false;
 
 		$autobr = $this->getElement($name, "autobr") ? $this->getElement($name, "autobr") : (isset($attribs["autobr"]) ? $attribs["autobr"] : "");
 		$autobrName = 'we_' . $this->Name . '_text[' . $name . '#autobr]';
@@ -2177,7 +2177,7 @@ class we_objectFile extends we_document{
 	}
 
 	function i_pathNotValid(){
-		return parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath == '/' || strpos($this->Path, $this->RootDirPath) !== 0;
+		return parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath === '/' || strpos($this->Path, $this->RootDirPath) !== 0;
 	}
 
 	public function we_save($resave = 0, $skipHook = 0){
@@ -2195,7 +2195,7 @@ class we_objectFile extends we_document{
 
 		foreach($this->elements as $n => $elem){
 			if(isset($elem["type"]) && $elem["type"] == self::TYPE_TEXT){
-				if(isset($dv["text_$n"]["xml"]) && $dv["text_$n"]["xml"] == "on"){
+				if(isset($dv["text_$n"]["xml"]) && $dv["text_$n"]["xml"] === "on"){
 					$this->elements[$n] = $elem;
 				}
 			}
@@ -2247,7 +2247,7 @@ class we_objectFile extends we_document{
 		}
 		$a = $this->i_saveTmp();
 // version
-		if($this->ContentType == 'objectFile' && defined('VERSIONING_OBJECT') && VERSIONING_OBJECT){
+		if($this->ContentType === 'objectFile' && defined('VERSIONING_OBJECT') && VERSIONING_OBJECT){
 			$version = new we_versions_version();
 			$version->save($this);
 		}
@@ -2437,7 +2437,7 @@ class we_objectFile extends we_document{
 		}
 
 		/* version */
-		if($this->ContentType == 'objectFile' && defined('VERSIONING_OBJECT') && VERSIONING_OBJECT){
+		if($this->ContentType === 'objectFile' && defined('VERSIONING_OBJECT') && VERSIONING_OBJECT){
 			$version = new we_versions_version();
 			$version->save($this, 'unpublished');
 		}
@@ -2497,7 +2497,7 @@ class we_objectFile extends we_document{
 				$_initWeDocumentCustomerFilter = true;
 			}
 
-			if($this->Charset == "" && isset($this->DefArray['elements']['Charset'])){
+			if(!$this->Charset && isset($this->DefArray['elements']['Charset'])){
 				$this->Charset = $this->DefArray['elements']['Charset']['dat'];
 			}
 
@@ -2565,8 +2565,9 @@ class we_objectFile extends we_document{
 				if($regs[1] != 'OF'){
 					if($regs[1] == self::TYPE_OBJECT){
 						$id = $this->getElement('we_' . $cur['name']);
-						if($id)
+						if($id){
 							$linkObjects[] = $id;
+						}
 					}
 				}
 			}
@@ -2601,7 +2602,7 @@ class we_objectFile extends we_document{
 			foreach($tableInfo as $cur){
 				$regs = explode('_', $cur["name"], 2);
 				if(count($regs) > 1){
-					if($regs[0] == "OF"){
+					if($regs[0] === "OF"){
 						continue;
 					}
 					$name = ($regs[0] == self::TYPE_OBJECT ? 'we_object_' : '') . $regs[1];
@@ -2645,7 +2646,7 @@ class we_objectFile extends we_document{
 	}
 
 	function i_filenameEmpty(){
-		return ($this->Text == '');
+		return ($this->Text === '');
 	}
 
 	function i_filenameNotValid(){
@@ -2724,7 +2725,7 @@ class we_objectFile extends we_document{
 			$regs = explode('_', $cur['name'], 2);
 			if(count($regs) > 1){
 				$name = $regs[1];
-				if($regs[0] == 'OF'){
+				if($regs[0] === 'OF'){
 					$data[$cur['name']] = (isset($this->$name) ? $this->$name : '');
 				} else {
 					$name = ($regs[0] == self::TYPE_OBJECT) ? ('we_object_' . $name) : $name;
@@ -2820,7 +2821,7 @@ class we_objectFile extends we_document{
 				$this->resetElements();
 				$multiobjects = array();
 				while((list($k, $v) = $this->nextElement(self::TYPE_MULTIOBJECT))){
-					$old = @unserialize($v['dat']);
+					$old = unserialize($v['dat']);
 					if(is_array($old) && isset($old['class'])){
 						$multiobjects[$k] = array(
 							'class' => $old['class'],
@@ -2912,7 +2913,7 @@ class we_objectFile extends we_document{
 			$dat = $this->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME);
 			if($dat && !is_array($dat)){
 // unserialize the variant data when loading the model
-				$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, unserialize($dat));
+				$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, unserialize($dat), 'variant');
 			}
 			we_shop_variants::setVariantDataForModel($this);
 		}

@@ -666,7 +666,7 @@ class we_captcha_image{
 			}
 		}
 
-		if($this->align == 'random'){
+		if($this->align === 'random'){
 			$temp = array('left', 'right', 'center');
 			$this->align = $temp[rand(0, 2)];
 		}

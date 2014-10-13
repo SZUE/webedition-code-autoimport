@@ -282,7 +282,7 @@ abstract class we_SEEM{
 			$tmpInput = '<input onclick="#"';
 
 			foreach($attribs as $key => $value){
-				$tmpInput .= ' ' . $key . '="' . (strtolower($key) == "type" && strtolower($value) == "submit" ? 'button' : $value) . '"';
+				$tmpInput .= ' ' . $key . '="' . (strtolower($key) === 'type' && strtolower($value) === 'submit' ? 'button' : $value) . '"';
 			}
 			$tmpInput .= '>';
 			$code = str_replace($cur, $tmpInput, $code);
@@ -306,7 +306,7 @@ abstract class we_SEEM{
 			$attribs = self::getAttributesFromTag($cur);
 			$we_form = false;
 			foreach($attribs as $key => $value){
-				if($key == "name" && $value == "we_form"){
+				if($key === 'name' && $value === 'we_form'){
 					$we_form = true;
 				}
 			}
@@ -579,7 +579,7 @@ abstract class we_SEEM{
 		//  extern or as absolut recognized paths shall not be changed.
 		if(substr($path, 0, 1) != "/" && strpos($path, "http://") === FALSE && strpos($path, "https://") === FALSE){
 			$tmpPath = substr($tmpPath, 0, strrpos($tmpPath, '/'));
-			while(substr($path, 0, 3) == '../'){
+			while(substr($path, 0, 3) === '../'){
 				$path = substr($path, 3);
 				$tmpPath = substr($tmpPath, 0, strrpos($tmpPath, '/'));
 			}
@@ -624,7 +624,7 @@ abstract class we_SEEM{
 		//FIXME: does this work for SEO Url's???
 		$db = ($db ? $db : new DB_WE());
 		$docPath = $db->escape(trim($docPath));
-		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && $docPath[strlen($docPath) - 1] == '/'){
+		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && $docPath[strlen($docPath) - 1] === '/'){
 			$indexFileNames = array_map('trim', explode(',', $db->escape(NAVIGATION_DIRECTORYINDEX_NAMES)));
 			$docPath = $docPath . implode('","' . $docPath, $indexFileNames);
 		}
@@ -672,7 +672,7 @@ abstract class we_SEEM{
 		foreach($oldArray[2] as $i => $cur){
 			if(
 				$cur &&
-				($cur{0} == '#' ||
+				($cur{0} === '#' ||
 				strpos($cur, "javascript") === 0 && strpos($cur, "javascript:history") === FALSE || strpos($cur, we_base_link::TYPE_MAIL_PREFIX) === 0 ||
 				strpos($cur, we_base_link::TYPE_INT_PREFIX) === 0 ||
 				strpos($cur, we_base_link::TYPE_OBJ_PREFIX) === 0)){
@@ -741,7 +741,7 @@ abstract class we_SEEM{
 
 		$attribs = array();
 
-		if(substr($paraStr, 0, 1) == "?"){
+		if(substr($paraStr, 0, 1) === '?'){
 			$paraStr = "&" . substr($paraStr, 1) . "&";
 		}
 		preg_match_all('/([^&]*=[^&]*)&/U', $paraStr, $parameters);
@@ -815,7 +815,7 @@ abstract class we_SEEM{
 						" onsubmit='if(confirm(\"" . g_l('SEEM', "[ext_form_target_we_server]") . "\")){return true;} else {return false;};'");
 
 				foreach($theAttribs as $key => $value){
-					if(strtolower($key) == "target" || strtolower($key) == "action"){
+					if(strtolower($key) === 'target' || strtolower($key) === 'action'){
 
 					} else {
 						$newForm .= ' ' . $key . '="' . $value . '"';
@@ -1012,7 +1012,7 @@ abstract class we_SEEM{
 		  return "";
 		  } */
 	}
-	
+
 	static function getSeemAnchors($id = 0, $seem = ''){
 			//return anchor defined by params
 			if($id && $seem){
@@ -1021,7 +1021,7 @@ abstract class we_SEEM{
 
 			//find out what anchor is needed by examining context
 			if(isset($GLOBALS['lv']) && isset($GLOBALS['lv']->ClassName) && $GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
-				if($GLOBALS['lv']->ClassName == 'we_object_listview'){
+				if($GLOBALS['lv']->ClassName === 'we_object_listview'){
 					return '<a href="' . $GLOBALS['lv']->getDBf('OF_ID') . '" seem="object"></a>';
 				}
 				if((isset($GLOBALS['lv']->Record['wedoc_ContentType']) && $GLOBALS['lv']->Record['wedoc_ContentType'] == we_base_ContentTypes::IMAGE)){

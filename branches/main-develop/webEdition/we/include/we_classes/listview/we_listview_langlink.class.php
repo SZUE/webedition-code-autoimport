@@ -93,7 +93,7 @@ class we_listview_langlink extends we_listview_base{
 		$this->order = trim($this->order);
 
 		$orderstring = $this->order ? (' ORDER BY ' . LANGLINK_TABLE . '.' . $this->order . ($this->desc ? ' DESC' : '')) : '';
-		if($this->order == 'Locale'){
+		if($this->order === 'Locale'){
 			if($this->desc){
 				krsort($_languages);
 			} else {
@@ -101,9 +101,9 @@ class we_listview_langlink extends we_listview_base{
 			}
 		}
 
-		if($this->id && ($this->linkType == 'tblFile' || $this->linkType == 'tblObjectFile')){
+		if($this->id && ($this->linkType === 'tblFile' || $this->linkType === 'tblObjectFile')){
 			foreach(array_keys($_languages) as $langkey){
-				if($this->linkType == 'tblFile'){
+				if($this->linkType === 'tblFile'){
 					$this->dirsearchtable = FILE_TABLE;
 					$extraSelect = ',' . $this->dirsearchtable . '.ParentID ';
 				} else {
@@ -131,8 +131,8 @@ class we_listview_langlink extends we_listview_base{
 			// if($this->showself == true)
 			// if($this->showself == false && $this->pagelanguage != $this->ownlanguage)
 			if($this->showself || (!$this->showself && $this->pagelanguage != $this->ownlanguage)){
-				$dt = array('DID' => $this->id, 'DLocale' => $this->ownlanguage, 'LDID' => $this->id, 'Locale' => $this->ownlanguage, 'DocumentTable' => (($this->linkType == 'tblFile') ? 'tblFile' : 'tblObjectFile'), 'IsObject' => (($this->linkType == 'tblFile') ? 0 : 1), 'IsFolder' => 0);
-				if($this->linkType == 'tblFile'){
+				$dt = array('DID' => $this->id, 'DLocale' => $this->ownlanguage, 'LDID' => $this->id, 'Locale' => $this->ownlanguage, 'DocumentTable' => (($this->linkType === 'tblFile') ? 'tblFile' : 'tblObjectFile'), 'IsObject' => (($this->linkType === 'tblFile') ? 0 : 1), 'IsFolder' => 0);
+				if($this->linkType === 'tblFile'){
 					$dt['Path'] = id_to_path($this->id, FILE_TABLE);
 				} else {
 					$dt['Path'] = id_to_path($this->id, OBJECT_FILES_TABLE);
@@ -144,9 +144,9 @@ class we_listview_langlink extends we_listview_base{
 			}
 
 			// sort array
-			if($this->order == "random()"){
+			if($this->order === "random()"){
 				shuffle($this->foundlinks);
-			} else if($this->order == "Locale"){
+			} else if($this->order === "Locale"){
 				if($this->desc){
 					krsort($this->foundlinks);
 				} else {
@@ -191,7 +191,7 @@ class we_listview_langlink extends we_listview_base{
 		$pid = f('SELECT ParentID FROM ' . $this->dirsearchtable . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
 
 		if($pid){
-			$extraSelect = ($this->linkType == 'tblFile' ?
+			$extraSelect = ($this->linkType === 'tblFile' ?
 					',' . $this->dirsearchtable . '.ParentID ' :
 					', ' . $this->dirsearchtable . '.Url, ' . $this->dirsearchtable . '.TriggerID ');
 
@@ -229,7 +229,7 @@ class we_listview_langlink extends we_listview_base{
 			$this->Record['WE_TARGETLANGUAGE_NAME'] = $this->Record["WE_TARGETLANGUAGE"] ? Zend_Locale::getTranslation($this->Record["WE_TARGETLANGUAGE"], 'language', $this->Record["WE_TARGETLANGUAGE"]) : '';
 			$this->Record['WE_TARGETCOUNTRY_NAME'] = $this->Record["WE_TARGETLANGUAGE"] ? Zend_Locale::getTranslation($this->Record["WE_TARGETCOUNTRY"], 'country', $this->Record["WE_TARGETCOUNTRY"]) : '';
 
-			if($this->foundlinks[$count]['DocumentTable'] == 'tblFile'){
+			if($this->foundlinks[$count]['DocumentTable'] === 'tblFile'){
 				$this->Record["WE_PATH"] = $this->foundlinks[$count]["Path"];
 			} else {
 

@@ -64,7 +64,7 @@ abstract class we_import_functions{
 		$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->getParentPath() . (($GLOBALS['we_doc']->getParentPath() != "/") ? "/" : "") . $GLOBALS['we_doc']->Text;
 		// IF NAME OF OBJECT EXISTS, WE HAVE TO CREATE A NEW NAME
 		if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($GLOBALS['we_doc']->Path) . "'"))){
-			if($conflict == 'rename'){
+			if($conflict === 'rename'){
 				$z = 0;
 				$footext = $GLOBALS['we_doc']->Filename . "_" . $z . $GLOBALS['we_doc']->Extension;
 				while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($GLOBALS['we_doc']->ParentID))){
@@ -75,7 +75,7 @@ abstract class we_import_functions{
 
 				$GLOBALS['we_doc']->Text = $footext;
 				$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->getParentPath() . (($GLOBALS['we_doc']->getParentPath() != "/") ? "/" : "") . $GLOBALS['we_doc']->Text;
-			} else if($conflict == 'replace'){
+			} else if($conflict === 'replace'){
 				$GLOBALS['we_doc']->initById($file_id);
 			} else {
 				return true;
@@ -143,9 +143,9 @@ abstract class we_import_functions{
 			// IF NAME OF OBJECT EXISTS, WE HAVE TO CREATE A NEW NAME
 			if(($file_id = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($object->Path) . "'"))){
 				$name_exists = true;
-				if($conflict == 'replace'){
+				if($conflict === 'replace'){
 					$object->initByID($file_id, OBJECT_FILES_TABLE);
-				} else if($conflict == 'rename'){
+				} else if($conflict === 'rename'){
 					$z = 0;
 					$footext = $object->Text . '_' . $z;
 					while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($object->ParentID))){

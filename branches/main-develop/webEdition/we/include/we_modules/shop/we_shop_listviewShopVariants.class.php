@@ -65,18 +65,23 @@ class we_shop_listviewShopVariants extends we_listview_base{
 		} else {
 
 			// check if its a document or a objectFile
-			if($GLOBALS['we_doc'] instanceof we_objectFile){ // is an objectFile
-				$this->Id = $GLOBALS['we_doc']->OF_ID;
+			if($GLOBALS['we_doc'] instanceof we_objectFile){ // is an objectFile can this happen??!
+				$this->Id = $GLOBALS['we_doc']->ID;
 				$this->IsObjectFile = true;
 
-				$doc = new we_objectFile();
-				$doc->initByID($this->Id, OBJECT_FILES_TABLE);
-			} else {
+				$doc = $GLOBALS['we_doc'];
+				//$doc->initByID($this->Id, OBJECT_FILES_TABLE);
+			} elseif(isset($GLOBALS['we_obj'])){
+				$this->Id = $GLOBALS['we_obj']->ID;
+				$this->IsObjectFile = true;
+
+				$doc = $GLOBALS['we_obj'];
+
+			}	else{
 
 				$this->Id = $GLOBALS['we_doc']->ID;
-
-				$doc = new we_webEditionDocument();
-				$doc->initByID($this->Id);
+				$doc = $GLOBALS['we_doc'];//new we_webEditionDocument();
+//				$doc->initByID($this->Id);
 			}
 		}
 
@@ -104,7 +109,7 @@ class we_shop_listviewShopVariants extends we_listview_base{
 			list($key, $vardata) = each($ret);
 			foreach($vardata as $name => $value){
 
-				$ret[$name] = (isset($value['type']) && $value['type'] == 'img' ?
+				$ret[$name] = (isset($value['type']) && $value['type'] === 'img' ?
 						// there is a difference between objects and webEdition Documents
 						isset($value['bdid']) ? $value['bdid'] : $value['dat'] :
 						(isset($value['dat']) ? $value['dat'] : '')

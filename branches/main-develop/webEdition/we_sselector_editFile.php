@@ -34,7 +34,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 $we_fileData = "";
 
 $id = we_base_request::_(we_base_request::FILE, 'id');
-if(we_base_request::_(we_base_request::STRING, "cmd") == "save"){
+if(we_base_request::_(we_base_request::STRING, "cmd") === "save"){
 	if(($data = we_base_request::_(we_base_request::RAW_CHECKED, "editFile")) !== false){
 		we_base_file::save($id, $data);
 	}

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -29,6 +30,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_ACSuggest{
+
 	/**
 	 * inputfields attribute
 	 *
@@ -1342,11 +1344,7 @@ function weInputInArray(arr, val) {
 	 * @param unknown_type $val
 	 */
 	function setInputId($val = ''){
-		if($val == ''){
-			$this->inputId = "yuiAcInput" . $this->acId;
-		} else {
-			$this->inputId = $val;
-		}
+		$this->inputId = ($val === '' ? "yuiAcInput" . $this->acId : $val);
 	}
 
 	/**

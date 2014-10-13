@@ -41,7 +41,7 @@ echo STYLESHEET;
 
 
 
-$_useJavaEditor = ($_SESSION['prefs']['editorMode'] == 'java');
+$_useJavaEditor = ($_SESSION['prefs']['editorMode'] === 'java');
 if(!isset($_SESSION['weS']['we_wrapcheck'])){
 	$_SESSION['weS']['we_wrapcheck'] = $_SESSION['prefs']['editorWrap'];
 }
@@ -64,7 +64,7 @@ if(!isset($_SESSION['weS']['we_wrapcheck'])){
 		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 		var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
 		w = Math.max(w, 350);
-		var editorWidth = w - <?php echo ($_SESSION['prefs']['editorMode'] == 'codemirror2' ? 60 : 37); ?>;
+		var editorWidth = w - <?php echo ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? 60 : 37); ?>;
 		var wizardOpen = weGetCookieVariable("but_weTMPLDocEdit") == "right";
 
 		var editarea = document.getElementById("editarea");
@@ -352,7 +352,7 @@ switch($_SESSION['prefs']['editorMode']){
 	// ############ EDITOR PLUGIN ################
 
 	function setSource(source) {
-		document.forms['we_form'].elements['we_<?php print $we_doc->Name; ?>_txt[data]'].value = source;
+		document.forms['we_form'].elements['we_<?php echo $we_doc->Name; ?>_txt[data]'].value = source;
 		//Codemirror
 		if (editor != undefined && editor != null && typeof editor == 'object') {
 			editor.setValue(source);
@@ -365,7 +365,7 @@ switch($_SESSION['prefs']['editorMode']){
 		if (document.weEditorApplet && typeof (document.weEditorApplet.getCode) != undefined) {
 			return document.weEditorApplet.getCode();
 		} else {
-			return document.forms['we_form'].elements['we_<?php print $we_doc->Name; ?>_txt[data]'].value;
+			return document.forms['we_form'].elements['we_<?php echo $we_doc->Name; ?>_txt[data]'].value;
 		}
 	}
 
@@ -512,7 +512,7 @@ switch($_SESSION['prefs']['editorMode']){
 
 			foreach($tags as $tag){
 				if(isset($tag['attribs']['id']) && intval($tag['attribs']['id'])){
-					$type = (isset($tag['attribs']['type']) ? $tag['attribs']['type'] : ($tag['name'] == 'object' ? 'object' : 'document'));
+					$type = (isset($tag['attribs']['type']) ? $tag['attribs']['type'] : ($tag['name'] === 'object' ? 'object' : 'document'));
 					$query[$type][] = intval($tag['attribs']['id']);
 				}
 			}
@@ -772,9 +772,9 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$maineditor .= '<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") .
 				'-moz-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -o-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -webkit-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; tab-size:' . $_SESSION['prefs']['editorTabSize'] . ';' .
 				'" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' .
-				((!we_base_browserDetect::isGecko() && !$_SESSION['weS']['we_wrapcheck']) ? '' : ' rows="20" cols="80"') . ' onchange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] == 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"')) . '>'
+				((!we_base_browserDetect::isGecko() && !$_SESSION['weS']['we_wrapcheck']) ? '' : ' rows="20" cols="80"') . ' onchange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"')) . '>'
 				. oldHtmlspecialchars($code) . '</textarea>';
-			if($_SESSION['prefs']['editorMode'] == 'codemirror2'){ //Syntax-Highlighting
+			if($_SESSION['prefs']['editorMode'] === 'codemirror2'){ //Syntax-Highlighting
 				$maineditor .= we_getCodeMirror2Code();
 			}
 		}
@@ -785,7 +785,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			we_html_tools::getPixel(2, 10) . '<br/><table cellspacing="0" style="border:0px;width:100%;padding:0px;">
 	    <tr>
 <td align="left" class="defaultfont">' .
-			(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '
+			(substr($_SESSION['prefs']['editorMode'], 0, 10) === 'codemirror' ? '
 <input type="text" style="width: 10em;float:left;" id="query" onkeydown="cmSearch(event);"/><div style="float:left;">' . we_html_button::create_button("search", 'javascript:cmSearch(null);') . '</div>
 <input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace" onkeydown="cmReplace(event);"/><div style="float:left;">' . we_html_button::create_button("replace", 'javascript:cmReplace(null);') . '</div>' .
 				we_html_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
@@ -793,8 +793,8 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			) . '
 					</td>
 					<td align="right" class="defaultfont">' .
-			($_useJavaEditor ? '' : we_html_forms::checkbox(1, ($_SESSION['weS']['we_wrapcheck'] == 1), 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", ($_SESSION['prefs']['editorMode'] == 'codemirror2' ? 'editor.setOption(\'lineWrapping\',this.checked);' : "we_cmd('wrap_on_off',this.checked)"), false, '', 0, 0, '', 'display:inline-block;')) .
-			(substr($_SESSION['prefs']['editorMode'], 0, 10) == 'codemirror' ? '<div id="reindentButton" style="display:inline-block;margin-left:10px;margin-top:-3px;">' . we_html_button::create_button("reindent", 'javascript:reindent();') . '</div>' : '') .
+			($_useJavaEditor ? '' : we_html_forms::checkbox(1, ($_SESSION['weS']['we_wrapcheck'] == 1), 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? 'editor.setOption(\'lineWrapping\',this.checked);' : "we_cmd('wrap_on_off',this.checked)"), false, '', 0, 0, '', 'display:inline-block;')) .
+			(substr($_SESSION['prefs']['editorMode'], 0, 10) === 'codemirror' ? '<div id="reindentButton" style="display:inline-block;margin-left:10px;margin-top:-3px;">' . we_html_button::create_button("reindent", 'javascript:reindent();') . '</div>' : '') .
 			'</td>	</tr>
         </table></td></tr></table>';
 		$znr = -1;
@@ -813,20 +813,20 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$selectedGroup = isset($we_doc->TagWizardSelection) && $we_doc->TagWizardSelection ? $we_doc->TagWizardSelection : "alltags";
 			$groupselect = '<select class="weSelect" style="width: 250px;" id="weTagGroupSelect" name="we_' . $we_doc->Name . '_TagWizardSelection" onchange="selectTagGroup(this.value);">
 <optgroup label="' . g_l('weCodeWizard', '[snippets]') . '">
-<option value="snippet_standard" ' . ($selectedGroup == "snippet_standard" ? "selected" : "") . '>' . g_l('weCodeWizard', '[standard_snippets]') . '</option>
-		<option value="snippet_custom" ' . ($selectedGroup == "snippet_custom" ? "selected" : "") . '>' . g_l('weCodeWizard', '[custom_snippets]') . '</option>
+<option value="snippet_standard" ' . ($selectedGroup === "snippet_standard" ? "selected" : "") . '>' . g_l('weCodeWizard', '[standard_snippets]') . '</option>
+		<option value="snippet_custom" ' . ($selectedGroup === "snippet_custom" ? "selected" : "") . '>' . g_l('weCodeWizard', '[custom_snippets]') . '</option>
 		</optgroup>
 		<optgroup label="we:tags">';
 
 			foreach($tagGroups as $tagGroupName => $tags){
-				if($tagGroupName == 'custom_tags'){
+				if($tagGroupName === 'custom_tags'){
 					$tagGroupName = 'custom';
 				}
-				if($tagGroupName == 'custom'){
+				if($tagGroupName === 'custom'){
 					$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 				}
 				$groupselect .= '<option value="' . $tagGroupName . '"' . ($tagGroupName == $selectedGroup ? ' selected="selected"' : '') . '">' . (we_base_moduleInfo::isActive($tagGroupName) ? g_l('javaMenu_moduleInformation', '[' . $tagGroupName . '][text]') : g_l('weTagGroups', '[' . $tagGroupName . ']')) . '</option>';
-				if($tagGroupName == 'alltags'){
+				if($tagGroupName === 'alltags'){
 					$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 				}
 				$groupJs .= "tagGroups['" . $tagGroupName . "'] = new Array('" . implode("', '", $tags) . "');\n";
@@ -1032,7 +1032,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$znr = 1;
 		}
 		echo we_html_multiIconBox::getJS() .
-		'<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] == 'java' ? '' : 'style="display:none;"') . '>' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos == "down"), "", 'toggleTagWizard();') . '</div>';
+		'<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] === 'java' ? '' : 'style="display:none;"') . '>' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos === "down"), "", 'toggleTagWizard();') . '</div>';
 		?>
 		<input type="hidden" name="we_complete_request" value="1"/>
 	</form></body>

@@ -32,7 +32,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		parent::__construct();
 	}
 
-	public function updateObject(we_document &$object){
+	public function updateObject(/*we_document*/ &$object){ //FIXME: imported types are not of type we_document
 
 		if($this->debug){
 			t_e("Updating object", $object->ID, (isset($object->Path) ? $object->Path : ''), (isset($object->Table) ? $object->Table : ''));
@@ -145,7 +145,7 @@ class we_import_updater extends we_exim_XMLExIm{
 			$this->updateElements($object);
 		}
 
-		if(isset($object->ContentType) && ($object->ContentType == 'weNavigation' || $object->ContentType == 'weNavigationRule')){
+		if(isset($object->ContentType) && ($object->ContentType === 'weNavigation' || $object->ContentType === 'weNavigationRule')){
 			$this->updateNavigation($object);
 		}
 
@@ -169,7 +169,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		if($this->debug){
 			t_e("Updating elements");
 		}
-		if(isset($object->ClassName) && $object->ClassName == "we_objectFile"){
+		if(isset($object->ClassName) && $object->ClassName === "we_objectFile"){
 			$regs = array();
 			$del_elements = array();
 			$new_elements = array();
@@ -205,7 +205,7 @@ class we_import_updater extends we_exim_XMLExIm{
 				$element['bdid'] = ($ref ? $ref->ID : 0);
 			}
 
-			if(isset($object->ClassName) && ($object->ClassName == "we_objectFile")){
+			if(isset($object->ClassName) && ($object->ClassName === "we_objectFile")){
 
 				if(preg_match('|we_object_([0-9])+_path|', $k, $regs)){
 					$ref = $this->RefTable->getRef(
@@ -246,7 +246,7 @@ class we_import_updater extends we_exim_XMLExIm{
 					}
 				}
 
-				if($element['type'] == 'img' || $element['type'] == 'binary'){
+				if($element['type'] === 'img' || $element['type'] === 'binary'){
 					$objref = $this->RefTable->getRef(
 						array(
 							'OldID' => $element['dat'],
@@ -260,7 +260,7 @@ class we_import_updater extends we_exim_XMLExIm{
 				}
 			}
 
-			if(isset($object->ClassName) && ($object->ClassName == "we_object") && preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+([a-zA-Z]*[0-9]*)|', $k, $regs)){
+			if(isset($object->ClassName) && ($object->ClassName === "we_object") && preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+([a-zA-Z]*[0-9]*)|', $k, $regs)){
 				if(count($regs) > 2 && isset($object->elements[we_object::QUERY_PREFIX . $regs[1] . $regs[2]])){
 					$ref = $this->RefTable->getRef(
 						array(
@@ -456,7 +456,7 @@ class we_import_updater extends we_exim_XMLExIm{
 
 							case 'category':
 								$this->updateField($object, 'FolderID', CATEGORY_TABLE);
-								if($object->LinkSelection == 'intern'){
+								if($object->LinkSelection === 'intern'){
 									$this->updateField($object, 'UrlID', FILE_TABLE);
 								}
 								break;
@@ -473,7 +473,7 @@ class we_import_updater extends we_exim_XMLExIm{
 								break;
 							case 'catLink' :
 								$this->updateField($object, 'LinkID', CATEGORY_TABLE);
-								if($object->LinkSelection == 'intern'){
+								if($object->LinkSelection === 'intern'){
 									$this->updateField($object, 'UrlID', FILE_TABLE);
 								}
 								break;
@@ -486,7 +486,7 @@ class we_import_updater extends we_exim_XMLExIm{
 				$this->updateField($object, 'NavigationID', NAVIGATION_TABLE);
 				$this->updateField($object, 'DoctypeID', DOC_TYPES_TABLE);
 
-				if($object->SelectionType == 'classname'){
+				if($object->SelectionType === 'classname'){
 					if(defined('OBJECT_TABLE')){
 						$this->updateField($object, 'FolderID', OBJECT_FILES_TABLE);
 					}
@@ -536,11 +536,11 @@ class we_import_updater extends we_exim_XMLExIm{
 			// the condition is passed for key=0 ??!!??
 			if(is_array($value)){
 				$this->updateArray($array[$key]);
-			} else if(($key == "id") || ($key == "img_id") || ($key == "obj_id")){
+			} else if(($key === "id") || ($key === "img_id") || ($key === "obj_id")){
 				$ref = $this->RefTable->getRef(
 					array(
 						"OldID" => $value,
-						"Table" => (($key == "obj_id" && defined('OBJECT_FILES_TABLE')) ? OBJECT_FILES_TABLE : FILE_TABLE)
+						"Table" => (($key === "obj_id" && defined('OBJECT_FILES_TABLE')) ? OBJECT_FILES_TABLE : FILE_TABLE)
 					)
 				);
 				if($ref){

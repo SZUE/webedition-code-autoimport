@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -28,6 +29,7 @@
  *
  */
 abstract class we_listview_base{
+
 	var $DB_WE; /* Main DB Object */
 	var $name; /* name of listview */
 	var $rows = -1; /* Number of rows */
@@ -51,7 +53,7 @@ abstract class we_listview_base{
 	var $customerFilterType = false; // shall we control customer-filter?
 	var $calendar_struct = array();
 	var $id = 0;
-	protected $hidedirindex = false;
+	public $hidedirindex = false; //since $lv->hidedirindex is accessed at output
 
 	/**
 	 * listviewBase()
@@ -72,13 +74,12 @@ abstract class we_listview_base{
 
 		$this->name = $name;
 		//? strange setting - comes from we_tag_search
-		$this->search = (!($val = we_base_request::_(we_base_request::STRING, 'we_lv_search_' . $this->name, '')) && we_base_request::_(we_base_request::BOOL, 'we_from_search_' . $this->name))
-				? -1 : $val;
+		$this->search = (!($val = we_base_request::_(we_base_request::STRING, 'we_lv_search_' . $this->name, '')) && we_base_request::_(we_base_request::BOOL, 'we_from_search_' . $this->name)) ? -1 : $val;
 		$this->search = trim(str_replace(array('"', '\\"'), '', $this->search));
 		$this->DB_WE = new DB_WE();
 		$this->rows = $rows;
 		$this->maxItemsPerPage = $cols ? ($rows * $cols) : $rows;
-		$this->cols = (($cols == '' && ($calendar == 'month' || $calendar == 'month_table')) ? 7 : $cols);
+		$this->cols = (($cols == '' && ($calendar === 'month' || $calendar === 'month_table')) ? 7 : $cols);
 		$this->offset = abs($offset);
 		$this->start = we_base_request::_(we_base_request::INT, 'we_lv_start_' . $this->name, 0);
 		if($this->start == 0){
@@ -109,7 +110,7 @@ abstract class we_listview_base{
 		);
 		if($calendar != ''){
 			$this->calendar_struct['datefield'] = $datefield ? $datefield : '###Published###';
-			$this->calendar_struct['defaultDate'] = ($date == '' ? time() : strtotime($date));
+			$this->calendar_struct['defaultDate'] = ($date ? strtotime($date) : time());
 			if($weekstart != ''){
 				$wdays = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday');
 				$match = array_search($weekstart, $wdays);
@@ -137,7 +138,7 @@ abstract class we_listview_base{
 			$this->calendar_struct['count'] = $this->count;
 			$this->calendar_struct['forceFetch'] = false;
 			$calendarCount = $this->calendar_struct['calendarCount'];
-			if(($calendarCount > 0 || ($this->calendar_struct['calendar'] == 'day' && $calendarCount >= 0)) && $calendarCount <= $this->calendar_struct['numofentries']){
+			if(($calendarCount > 0 || ($this->calendar_struct['calendar'] === 'day' && $calendarCount >= 0)) && $calendarCount <= $this->calendar_struct['numofentries']){
 				if($this->calendar_struct['date'] < 0){
 					$this->calendar_struct['date'] = $this->calendar_struct['defaultDate'];
 				}
@@ -314,7 +315,7 @@ abstract class we_listview_base{
 			'pv_tid',
 			'bsuniquevid',
 			's'//password-form
-			), ($filter ? explode(',', $filter) : array()), array_keys($_COOKIE));
+				), ($filter ? explode(',', $filter) : array()), array_keys($_COOKIE));
 		if($queryString){
 			$foo = explode('&', $queryString);
 			$queryString = '';
@@ -418,7 +419,7 @@ abstract class we_listview_base{
 	public static function getCalendarField($calendar, $type){
 		switch($type){
 			case 'day':
-				if($calendar == 'day'){
+				if($calendar === 'day'){
 					return date('j', $GLOBALS['lv']->calendar_struct['defaultDate']);
 				} else {
 					return ($GLOBALS['lv']->calendar_struct['date'] > 0 ? date('j', $GLOBALS['lv']->calendar_struct['date']) : '');
@@ -517,18 +518,17 @@ abstract class we_listview_base{
 			$this->calendar_struct['end_date'] = $end_date;
 
 
-			if($this->calendar_struct['datefield'] == '' || $this->calendar_struct['datefield'] == '###Published###'){
+			if(!$this->calendar_struct['datefield'] || $this->calendar_struct['datefield'] === '###Published###'){
 				$this->calendar_struct['datefield'] = '###Published###';
 				$calendar_select = ',' . FILE_TABLE . '.Published AS Calendar ';
 				$calendar_where = ' AND (' . FILE_TABLE . '.Published>=' . $start_date . ' AND ' . FILE_TABLE . '.Published<=' . $end_date . ') ';
 			} else {
 				$field = (!empty($matrix) && in_array($this->calendar_struct['datefield'], array_keys($matrix))) ?
-					$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield']
-						:
-					CONTENT_TABLE . '.Dat';
+						$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
+						CONTENT_TABLE . '.Dat';
 
 				$calendar_select = ',' . $field . ' AS Calendar ';
-				$condition = ($condition == '' ? '' : $condition . ' AND ') . $this->calendar_struct['datefield'] . '>=' . $start_date . ' AND ' . $this->calendar_struct['datefield'] . '<=' . $end_date;
+				$condition = ($condition ? $condition . ' AND ' : '') . $this->calendar_struct['datefield'] . '>=' . $start_date . ' AND ' . $this->calendar_struct['datefield'] . '<=' . $end_date;
 			}
 		}
 	}
@@ -536,7 +536,7 @@ abstract class we_listview_base{
 	function postFetchCalendar(){
 		if($this->calendar_struct['calendar'] != ''){
 			$start = 0;
-			if($this->calendar_struct['calendar'] == 'month_table'){
+			if($this->calendar_struct['calendar'] === 'month_table'){
 				$start = (int) date('w', strtotime(date('Y', $this->calendar_struct['defaultDate']) . '-' . date('m', $this->calendar_struct['defaultDate']) . '-1'));
 				if($this->calendar_struct['weekstart'] != ''){
 					$start = $start - $this->calendar_struct['weekstart'];

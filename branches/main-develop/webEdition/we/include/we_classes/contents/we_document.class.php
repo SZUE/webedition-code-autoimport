@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -26,6 +27,7 @@ require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 /* the parent class for documents */
 
 class we_document extends we_root{
+
 //Extension of the document
 	var $Extension = '';
 //Array of possible filename extensions for the document
@@ -196,9 +198,9 @@ class we_document extends we_root{
 	}
 
 	function formInGlossar(){
-		return (we_base_moduleInfo::we_getModuleNameByContentType('glossary') == 'glossary' ?
-				we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
-				'');
+		return (we_base_moduleInfo::we_getModuleNameByContentType('glossary') === 'glossary' ?
+						we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
+						'');
 	}
 
 	function formIsSearchable(){
@@ -208,7 +210,7 @@ class we_document extends we_root{
 	function formExtension2(){
 		$doctype = isset($this->DocType) ? $this->DocType : '';
 
-		if($this->ID == 0 && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'load_editor' && $doctype == ''){ //	Neues Dokument oder Dokument ohne DocType
+		if($this->ID == 0 && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'load_editor' && $doctype == ''){ //	Neues Dokument oder Dokument ohne DocType
 			switch($this->ContentType){
 				case we_base_ContentTypes::HTML: //	is HTML-File
 					$selected = DEFAULT_HTML_EXT;
@@ -259,7 +261,7 @@ class we_document extends we_root{
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 </table>' .
-			($this->ContentType == we_base_ContentTypes::IMAGE ? $this->formCharset(true) : '');
+				($this->ContentType == we_base_ContentTypes::IMAGE ? $this->formCharset(true) : '');
 	}
 
 	function formCategory(){
@@ -334,7 +336,7 @@ class we_document extends we_root{
 			if(is_numeric($ordn)){
 				$ordn--;
 			}
-			$_ord = ($ordn == 'end' ? 10000 : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
+			$_ord = ($ordn === 'end' ? 10000 : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
 
 			$_ppath = id_to_path($parentid, NAVIGATION_TABLE);
 			$_new_path = rtrim($_ppath, '/') . '/' . $text;
@@ -402,7 +404,7 @@ class we_document extends we_root{
 
 	function delAllNavi(){
 //		$navis = makeArrayFromCSV($this->NavigationItems);
-		$navis=$this->getNavigationItems();
+		$navis = $this->getNavigationItems();
 		foreach($navis as $_path){
 			$_id = path_to_id($_path, NAVIGATION_TABLE);
 			$_naviItem = new we_navigation_navigation($_id);
@@ -728,11 +730,11 @@ class we_document extends we_root{
 		parent::we_initSessDat($sessDat);
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			if(
-				($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_minute')) !== false){
+					($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_minute')) !== false){
 				$this->From = mktime($hour, $min, 0, $month, $day, $year);
 			}
 			if(
-				($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_minute')) !== false){
+					($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_minute')) !== false){
 				$this->To = mktime($hour, $min, 0, $month, $day, $year);
 			}
 		}
@@ -868,7 +870,7 @@ class we_document extends we_root{
 				if(isset($attribs['title'])){
 					$attribs['title'] = oldHtmlspecialchars($attribs['title']);
 				}
-				if(!(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'reload_editpage' && ($img->Name === we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1)) && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) == 'change_image') && isset($GLOBALS['we_doc']->elements[$altField])){
+				if(!(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'reload_editpage' && ($img->Name === we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1)) && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) === 'change_image') && isset($GLOBALS['we_doc']->elements[$altField])){
 					if(!isset($GLOBALS['lv'])){
 						$attribs['alt'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($altField));
 						$attribs['title'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($titleField));
@@ -938,7 +940,7 @@ class we_document extends we_root{
 				$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
 				$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
 
-				if($pathOnly || $only == 'href'){
+				if($pathOnly || $only === 'href'){
 					$return = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
 
 					if((isset($GLOBALS['we_link_not_published'])) && ($GLOBALS['we_link_not_published'])){
@@ -962,9 +964,9 @@ class we_document extends we_root{
 					$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), true, false);
 					$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, true, true);
 					if($only){
-						return ($only == 'content' ?
-								self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls) :
-								isset($link[$only]) ? $link[$only] : ''); // #3636
+						return ($only === 'content' ?
+										self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls) :
+										isset($link[$only]) ? $link[$only] : ''); // #3636
 					}
 
 					if(($content = self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls))){
@@ -984,7 +986,7 @@ class we_document extends we_root{
 				//workaround buggy zend dateformat with \h which duplicates the char
 				$ret = '';
 				for($i = 0; $i < strlen($format); $i++){
-					if($format[$i] == '\\'){
+					if($format[$i] === '\\'){
 						$ret.=$format[++$i];
 					} else {
 						$ret.=$zdate->toString($format[$i], 'php');
@@ -1038,7 +1040,7 @@ class we_document extends we_root{
 				if(weTag_getAttribute('win2iso', $attribs, false, true)){
 
 					$charset = ( isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'])) ? $GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'] : '';
-					if(trim(strtolower(substr($charset, 0, 3))) == 'iso' || $charset == ''){
+					if(trim(strtolower(substr($charset, 0, 3))) === 'iso' || $charset === ''){
 						$retval = strtr($retval, array(
 							chr(128) => '&#8364;',
 							chr(130) => '&#8218;',
@@ -1095,7 +1097,7 @@ class we_document extends we_root{
 					return;
 				}
 				$val = $this->getElement($attribs['name']);
-				if($this instanceof we_objectFile){
+				if($this instanceof we_objectFile || (is_string($val) && $val{0} == 'a')){
 					$hrefArr = $val ? unserialize($val) : array();
 					return (is_array($hrefArr) ? self::getHrefByArray($hrefArr) : '');
 				}
@@ -1105,7 +1107,7 @@ class we_document extends we_root{
 				$val = $this->getElement($attribs['name']);
 		}
 
-		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] == 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : '')); //not instance due to we_showObject
+		return $this->getFieldByVal($val, $type, $attribs, $pathOnly, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->ParentID : $this->ParentID, isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : $this->Path, $this->DB_WE, (isset($attribs['classid']) && isset($attribs['type']) && $attribs['type'] === 'select') ? $attribs['classid'] : (isset($this->TableID) ? $this->TableID : '')); //not instance due to we_showObject
 	}
 
 	private function getValFromSrc($fn, $name, $key = 'dat'){
@@ -1230,7 +1232,7 @@ class we_document extends we_root{
 			case we_base_link::CONTENT_TEXT:
 // Workarround => We have to find another solution
 				return (($xml || $htmlspecialchars) ?
-						oldHtmlspecialchars(html_entity_decode($link['text'])) : $link['text']);
+								oldHtmlspecialchars(html_entity_decode($link['text'])) : $link['text']);
 		}
 	}
 
@@ -1328,15 +1330,15 @@ class we_document extends we_root{
 					}
 				}
 				$js.=
-					(isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] ?
-						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $_popUpCtrl["jswidth"] . '\';' : '') .
-					(isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"] ?
-						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';' : '') . 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (isset($_popUpCtrl["jsstatus"]) && $_popUpCtrl["jsstatus"] ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . (isset($_popUpCtrl["jsscrollbars"]) && $_popUpCtrl["jsscrollbars"] ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . (isset($_popUpCtrl["jsmenubar"]) && $_popUpCtrl["jsmenubar"] ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=' . (isset($_popUpCtrl["jsresizable"]) && $_popUpCtrl["jsresizable"] ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=' . (isset($_popUpCtrl["jslocation"]) && $_popUpCtrl["jslocation"] ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=' . (isset($_popUpCtrl["jstoolbar"]) && $_popUpCtrl["jstoolbar"] ? 'yes' : 'no') . '\';';
+						(isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] ?
+								'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $_popUpCtrl["jswidth"] . '\';' : '') .
+						(isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"] ?
+								'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';' : '') . 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (isset($_popUpCtrl["jsstatus"]) && $_popUpCtrl["jsstatus"] ? 'yes' : 'no') . '\';' .
+						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . (isset($_popUpCtrl["jsscrollbars"]) && $_popUpCtrl["jsscrollbars"] ? 'yes' : 'no') . '\';' .
+						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . (isset($_popUpCtrl["jsmenubar"]) && $_popUpCtrl["jsmenubar"] ? 'yes' : 'no') . '\';' .
+						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=' . (isset($_popUpCtrl["jsresizable"]) && $_popUpCtrl["jsresizable"] ? 'yes' : 'no') . '\';' .
+						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=' . (isset($_popUpCtrl["jslocation"]) && $_popUpCtrl["jslocation"] ? 'yes' : 'no') . '\';' .
+						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=' . (isset($_popUpCtrl["jstoolbar"]) && $_popUpCtrl["jstoolbar"] ? 'yes' : 'no') . '\';';
 				$foo = $js . "var we_win = window.open('','we_" . (isset($attribs["name"]) ? $attribs["name"] : "") . "',we_winOpts);";
 
 				$_linkAttribs['target'] = 'we_' . (isset($attribs["name"]) ? $attribs["name"] : "");
@@ -1401,13 +1403,13 @@ class we_document extends we_root{
 							$dates[$nr][$sw[1]] = $v;
 							break;
 						default:
-							if(substr($sw[0], 0, 5) == 'month'){
+							if(substr($sw[0], 0, 5) === 'month'){
 								$d = intval(substr($sw[0], 5));
 								$this->schedArr[$nr]['months'][$d - 1] = $v;
-							} else if(substr($sw[0], 0, 3) == 'day'){
+							} else if(substr($sw[0], 0, 3) === 'day'){
 								$d = intval(substr($sw[0], 3));
 								$this->schedArr[$nr]['days'][$d - 1] = $v;
-							} else if(substr($sw[0], 0, 4) == 'wday'){
+							} else if(substr($sw[0], 0, 4) === 'wday'){
 								$d = intval(substr($sw[0], 4));
 								$this->schedArr[$nr]['weekdays'][$d - 1] = $v;
 							}
@@ -1416,7 +1418,7 @@ class we_document extends we_root{
 			}
 			foreach($dates as $nr => $v){
 				$this->schedArr[$nr]['time'] = mktime(
-					$dates[$nr]['hour'], $dates[$nr]['minute'], 0, $dates[$nr]['month'], $dates[$nr]['day'], $dates[$nr]['year']);
+						$dates[$nr]['hour'], $dates[$nr]['minute'], 0, $dates[$nr]['month'], $dates[$nr]['day'], $dates[$nr]['year']);
 			}
 		}
 		$this->Path = $this->getPath();
@@ -1494,9 +1496,9 @@ class we_document extends we_root{
 
 
 		return '<table border="0" cellpadding="0" cellspacing="0">' .
-			($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
-			'<tr><td>' . $this->htmlTextInput($inputName, 24, $value) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"), "value", 330) . '</td></tr>' .
-			'</table>';
+				($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
+				'<tr><td>' . $this->htmlTextInput($inputName, 24, $value) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"), "value", 330) . '</td></tr>' .
+				'</table>';
 	}
 
 	/**
@@ -1565,16 +1567,16 @@ class we_document extends we_root{
 		}
 		$this->wasUpdate = $this->ID > 0;
 		$usepath = ($this->Table == TEMPLATES_TABLE ?
-				(strpos($this->Path, '.tmpl') === false ? TEMPLATES_PATH . $this->Path : TEMPLATES_PATH . substr_replace($this->Path, '.php', -5)) :
-				$_SERVER['DOCUMENT_ROOT'] . $this->Path
-			);
+						(strpos($this->Path, '.tmpl') === false ? TEMPLATES_PATH . $this->Path : TEMPLATES_PATH . substr_replace($this->Path, '.php', -5)) :
+						$_SERVER['DOCUMENT_ROOT'] . $this->Path
+				);
 
 		$this->Filehash = (file_exists($usepath) && is_file($usepath) ? sha1_file($usepath) : '');
 		$this->i_savePersistentSlotsToDB('Filehash,RebuildDate');
 	}
 
 	public static function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
-		$doBaseReplace&=we_isHttps();
+		$doBaseReplace&=we_isHttps(); //FIXME:remove
 		$DB_WE = new DB_WE();
 		$regs = array();
 		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
@@ -1591,10 +1593,10 @@ class we_document extends we_root{
 					$text = preg_replace(array(
 						'-<(a|img) [^>]*' . $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
 						'-<(a|img) [^>]*' . $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '(\?|&|&amp;|")[^>]*>-Ui',
-						), array(
+							), array(
 						'\3',
 						''
-						), $text);
+							), $text);
 				}
 			}
 		}
@@ -1618,17 +1620,17 @@ class we_document extends we_root{
 						unset($GLOBALS['we_link_not_published']);
 					}
 					if($href){
-						$text = ($reg[2] == '?' ?
-								str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
-								str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
+						$text = ($reg[2] === '?' ?
+										str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
+										str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
 					} else {
 						$text = preg_replace(array(
 							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
 							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>-Ui',
-							), array(
+								), array(
 							'\1',
 							''
-							), $text);
+								), $text);
 					}
 				}
 			}

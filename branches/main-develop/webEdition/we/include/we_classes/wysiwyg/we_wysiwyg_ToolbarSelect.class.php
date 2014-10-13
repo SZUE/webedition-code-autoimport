@@ -37,7 +37,7 @@ class we_wysiwyg_ToolbarSelect extends we_wysiwyg_ToolbarElement{
 				return parent::hasProp('', $contextMenu) || parent::hasProp('font', $contextMenu);
 			case 'formatblock':
 			case 'applystyle':
-				return parent::hasProp('', $contextMenu) || parent::hasProp('prop', $contextMenu);				
+				return parent::hasProp('', $contextMenu) || parent::hasProp('prop', $contextMenu);
 			default:
 				return parent::hasProp();
 		}
@@ -57,7 +57,7 @@ class we_wysiwyg_ToolbarSelect extends we_wysiwyg_ToolbarElement{
 		<td width="' . ($this->width - 20) . '" style="padding-left:10px;background-image: url(' . IMAGE_DIR . 'wysiwyg/menuback.gif);"  class="tbButtonWysiwygDefaultStyle"><input value="' . oldHtmlspecialchars($this->title) . '" type="text" name="' . $this->editor->ref . '_seli_' . $this->cmd . '" id="' . $this->editor->ref . '_seli_' . $this->cmd . '" readonly="readonly" style="cursor:pointer;height:16px;width:' . ($this->width - 30) . 'px;border:0px;background-color:transparent;color:black;font: 10px Verdana, Arial, Helvetica, sans-serif;" /></td>
 		<td width="20" class="tbButtonWysiwygDefaultStyle"><img src="' . IMAGE_DIR . 'wysiwyg/menudown.gif" width="20" height="20" alt="" /></td>
 	</tr>
-</table><iframe src="' . HTML_DIR . 'white.html" width="280" height="160" id="' . $this->editor->ref . 'edit_' . $this->cmd . '" style=" z-index: 100000;position: absolute; display:none;"></iframe>';
+</table><iframe src="about:blank" width="280" height="160" id="' . $this->editor->ref . 'edit_' . $this->cmd . '" style=" z-index: 100000;position: absolute; display:none;"></iframe>';
 
 			$js = 'wePopupMenuArray[wefoo]["' . $this->cmd . '"] = new Array();';
 			foreach($this->vals as $val => $txt){

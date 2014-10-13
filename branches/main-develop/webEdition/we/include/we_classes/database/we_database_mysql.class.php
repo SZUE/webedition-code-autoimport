@@ -133,7 +133,7 @@ class DB_WE extends we_database_base{
 		//fix faulty lenght on text-types with connection in utf-8
 		$len = intval(@mysql_field_len($this->Query_ID, $no));
 		$type = $this->field_type($no);
-		if(DB_SET_CHARSET == 'utf8' && strtolower($type) == 'string'){
+		if(DB_SET_CHARSET === 'utf8' && strtolower($type) === 'string'){
 			$len/=3;
 		}
 		return $len;

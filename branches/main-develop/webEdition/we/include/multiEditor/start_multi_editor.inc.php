@@ -30,9 +30,9 @@ we_html_tools::protect();
  */
 function checkIfValidStartdocument($id, $type = 'document'){
 
-	return ($type == 'object' ?
-			(f('SELECT ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id)) == 'objectFile') :
-			(f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) == we_base_ContentTypes::WEDOCUMENT));
+	return ($type === 'object' ?
+			(f('SELECT ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id)) === 'objectFile') :
+			(f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) === we_base_ContentTypes::WEDOCUMENT));
 }
 
 //	Here begins the code for showing the correct frameset.
@@ -45,7 +45,7 @@ function _buildJsCommand($cmdArray = array('', '', 'cockpit', 'open_cockpit', ''
 }
 
 
-if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) == 'SEEM_edit_include'){ // Edit-Include-Mode
+if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_include'){ // Edit-Include-Mode
 // in multiEditorFrameset we_cmd[1] can be set to reach this
 	$directCmd = array();
 	for($i = 1;/* $i < count($_REQUEST['we_cmd']) && */ $i < 4; $i++){

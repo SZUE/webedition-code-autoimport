@@ -29,13 +29,13 @@ abstract class we_backup_util{
 		$match = array();
 		if(preg_match("|tblobject_([0-9]*)$|", $table, $match)){
 			return (isset($_SESSION['weS']['weBackupVars']['tables']['tblobject_']) ?
-					$_SESSION['weS']['weBackupVars']['tables']['tblobject_'] . $match[1] :
-					false);
+							$_SESSION['weS']['weBackupVars']['tables']['tblobject_'] . $match[1] :
+							false);
 		}
 
 		return (isset($_SESSION['weS']['weBackupVars']['tables'][$table]) ?
-				$_SESSION['weS']['weBackupVars']['tables'][$table] :
-				false);
+						$_SESSION['weS']['weBackupVars']['tables'][$table] :
+						false);
 	}
 
 	static function getDefaultTableName($table){
@@ -117,8 +117,8 @@ abstract class we_backup_util{
 		}
 
 		$percent = round(((float)
-			(intval($_SESSION['weS']['weBackupVars']['offset'] + $rest1) /
-			intval($_SESSION['weS']['weBackupVars']['offset_end'] + $rest2))) * 100, 2);
+				(intval($_SESSION['weS']['weBackupVars']['offset'] + $rest1) /
+				intval($_SESSION['weS']['weBackupVars']['offset_end'] + $rest2))) * 100, 2);
 
 		return max(min($percent, 100), 0);
 	}
@@ -220,7 +220,7 @@ abstract class we_backup_util{
 				$_SESSION['weS']['weBackupVars']['current_table'] = false;
 				$_do = false;
 			}
-		} while($_do);
+		}while($_do);
 
 		return $_SESSION['weS']['weBackupVars']['current_table'];
 	}
@@ -245,20 +245,14 @@ abstract class we_backup_util{
 		$_SESSION['weS']['weBackupVars']['backup_log_data'] = '';
 	}
 
-	static function getHttpLink($server, $url, $port = '', $username = '', $password = ''){
-		return getServerProtocol(true) . (($username && $password) ? "$username:$password@" : '') . $server . ($port ? ':' . $port : '') . $url;
-	}
-
 	static function getFormat($file, $iscompr = 0){
 		$_part = we_base_file::loadPart($file, 0, 512, $iscompr);
 
-		if(preg_match('|<\?xml |i', $_part)){
-			return 'xml';
-		} else if(stripos($_part, 'create table') !== false){
-			return 'sql';
-		}
-
-		return 'unknown';
+		return (preg_match('|<\?xml |i', $_part) ?
+						'xml' :
+						(stripos($_part, 'create table') !== false ?
+								'sql' :
+								'unknown'));
 	}
 
 	static function getXMLImportType($file, $iscompr = 0, $end_off = 0){
@@ -284,7 +278,7 @@ abstract class we_backup_util{
 			return 'unknown';
 		}
 		$_hasbinary = false;
-		while($_found == 'unknown' && $_try < $_count){
+		while($_found === 'unknown' && $_try < $_count){
 			if(preg_match('/.*' . we_backup_backup::weXmlExImHead . '.*type="backup".*>/', $_part)){
 				return 'backup';
 			} elseif(preg_match('/<we:(document|template|class|object|info|navigation)/i', $_part)){
@@ -304,7 +298,7 @@ abstract class we_backup_util{
 			$_try++;
 		}
 
-		if($_found == 'unknown' && $_hasbinary){
+		if($_found === 'unknown' && $_hasbinary){
 			return 'weimport';
 		}
 

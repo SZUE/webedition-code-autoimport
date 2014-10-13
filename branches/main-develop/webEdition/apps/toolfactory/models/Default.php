@@ -261,7 +261,7 @@ class toolfactory_models_Default extends we_app_Model{
 		$TABLENAMENOPREFIX = $this->maintable;
 		$TABLECONSTANT = ($this->maintable) ? strtoupper($this->classname) . '_TABLE' : '';
 		$DATASOURCE = ($this->maintable) ? 'table:' . $this->maintable : 'custom:';
-		if($DATASOURCE == 'table:' . $this->maintable){
+		if($DATASOURCE === 'table:' . $this->maintable){
 			$TABLEEXISTS = true;
 			$this->makeTable = true;
 		} else {
@@ -299,21 +299,21 @@ class toolfactory_models_Default extends we_app_Model{
 			if($this->shouldInclude($_newname)){
 
 				$_ext = substr($_file, -4);
-				$is_php = $_ext == '.php' ? true : false;
+				$is_php = ($_ext === '.php');
 
 				if(!$is_php){
-					if($_ext == '.sql'){
+					if($_ext === '.sql'){
 						ob_start();
 						include($_file);
 						$_content = ob_get_clean();
-					} elseif($_ext == '.css'){
+					} elseif($_ext === '.css'){
 						ob_start();
 						include($_file);
 						$_content = strtr(ob_get_clean(), array('{$TOOLNAME}' => $TOOLNAME, '{$TOOLNAMELANG}' => $TOOLNAMELANG));
 					} else {
 						$_content = we_base_file::load($_file);
 					}
-					if($_ext == '.xml'){
+					if($_ext === '.xml'){
 						$_content = we_base_file::load($_file);
 						$start = strpos($_content, '<?xml ');
 						$end = strpos($_content, '</tmx>') + $start;
@@ -397,29 +397,29 @@ class toolfactory_models_Default extends we_app_Model{
 			return true;
 		}
 
-		if($this->makePerms && $_bn == 'permission.conf.php'){
+		if($this->makePerms && $_bn === 'permission.conf.php'){
 			return true;
 		}
-		if($this->makeBackup && $_bn == 'backup.conf.php'){
-			return true;
-		}
-
-		if($this->makeTags && ($_dn == WE_APPS_PATH . $this->Text . '/tags')){
-			return true;
-		}
-		if($this->makeTags && ($_dn == WE_APPS_PATH . $this->Text . '/tagwizard')){
+		if($this->makeBackup && $_bn === 'backup.conf.php'){
 			return true;
 		}
 
-		if($this->makeServices && ($_dn == WE_APPS_PATH . $this->Text . '/service/cmds' || $_dn == WE_APPS_PATH . $this->Text . '/service/views')){
+		if($this->makeTags && ($_dn === WE_APPS_PATH . $this->Text . '/tags')){
+			return true;
+		}
+		if($this->makeTags && ($_dn === WE_APPS_PATH . $this->Text . '/tagwizard')){
 			return true;
 		}
 
-		if($this->makeServices && ($_dn == WE_APPS_PATH . $this->Text . '/service/views/text' || $_dn == WE_APPS_PATH . $this->Text . '/service/views/json')){
+		if($this->makeServices && ($_dn === WE_APPS_PATH . $this->Text . '/service/cmds' || $_dn === WE_APPS_PATH . $this->Text . '/service/views')){
 			return true;
 		}
 
-		if($this->makeTable && $_bn == $this->Text . '.sql'){
+		if($this->makeServices && ($_dn === WE_APPS_PATH . $this->Text . '/service/views/text' || $_dn === WE_APPS_PATH . $this->Text . '/service/views/json')){
+			return true;
+		}
+
+		if($this->makeTable && $_bn === $this->Text . '.sql'){
 			return true;
 		}
 

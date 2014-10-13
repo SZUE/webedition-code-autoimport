@@ -127,7 +127,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		return
 			(we_base_request::_(we_base_request::INT, 'wecf_mode') === we_customer_abstractFilter::OFF ?
 				self::getEmptyDocumentCustomerFilter() :
-				new self(intval($id), $ct, $table, (we_base_request::_(we_base_request::STRING, 'wecf_accessControlOnTemplate') == "onTemplate") ? 1 : 0, we_base_request::_(we_base_request::INT, 'wecf_noLoginId', 0), we_base_request::_(we_base_request::INT, 'wecf_noAccessId', 0), we_base_request::_(we_base_request::INT, 'wecf_mode', 0), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
+				new self(intval($id), $ct, $table, (we_base_request::_(we_base_request::STRING, 'wecf_accessControlOnTemplate') === "onTemplate") ? 1 : 0, we_base_request::_(we_base_request::INT, 'wecf_noLoginId', 0), we_base_request::_(we_base_request::INT, 'wecf_noAccessId', 0), we_base_request::_(we_base_request::INT, 'wecf_mode', 0), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
 				)
 			);
 	}
@@ -167,7 +167,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 			return '';
 		}
 		if(!self::customerIsLogedIn()){ //we don't show any documents with an customerfilter
-			if($classname == 'we_listview_search'){ // search
+			if($classname === 'we_listview_search'){ // search
 				return ' AND DID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '")' .
 					' AND OID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")';
 			}
@@ -183,7 +183,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		// if customer is not logged in, all documents/objects with filters must be hidden
 		$_restrictedFilesForCustomer = self::_getFilesWithRestrictionsOfCustomer($classname, $filter, $classID);
 
-		if($classname == 'we_listview_search'){ // search
+		if($classname === 'we_listview_search'){ // search
 			// build query from restricted files, regard search and normal listview
 			foreach($_restrictedFilesForCustomer as $ct => $_fileArray){
 				if($_fileArray){

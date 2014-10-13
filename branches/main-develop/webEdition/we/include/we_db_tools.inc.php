@@ -28,7 +28,7 @@
  */
 function getHash($query = '', we_database_base $DB_WE = NULL, $resultType = MYSQL_ASSOC){
 	static $cache = array();
-	if($query == ''){
+	if(!$query){
 		$cache = array();
 		return $cache;
 	}
@@ -78,7 +78,7 @@ function sql_function($name){
 	if(!$data){
 		$data = md5(uniqid(__FUNCTION__, true));
 	}
-	return (is_array($name) ? isset($name['sqlFunction']) && $name['sqlFunction'] == $data :
+	return (is_array($name) ? isset($name['sqlFunction']) && $name['sqlFunction'] === $data :
 			array('sqlFunction' => $data, 'val' => $name));
 }
 

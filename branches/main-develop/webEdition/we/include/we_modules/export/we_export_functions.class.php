@@ -42,7 +42,7 @@ abstract class we_export_functions{
 	static function fileCreate($format = we_import_functions::TYPE_GENERIC_XML, $filename, $path){
 		switch($format){
 			case we_import_functions::TYPE_GENERIC_XML:
-				$_file_name = ($path == "###temp###" ? TEMP_PATH : $_SERVER['DOCUMENT_ROOT'] . $path) . $filename;
+				$_file_name = ($path === "###temp###" ? TEMP_PATH : $_SERVER['DOCUMENT_ROOT'] . $path) . $filename;
 
 				$_continue = true;
 
@@ -58,7 +58,7 @@ abstract class we_export_functions{
 
 				break;
 			case "csv":
-				$_file_name = ($path == "###temp###" ? TEMP_PATH : $_SERVER['DOCUMENT_ROOT'] . $path) . $filename;
+				$_file_name = ($path === "###temp###" ? TEMP_PATH : $_SERVER['DOCUMENT_ROOT'] . $path) . $filename;
 
 				$_continue = true;
 
@@ -151,8 +151,7 @@ abstract class we_export_functions{
 				break;
 		}
 
-		return array("file" => $_file, "filename" => ($_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? TEMP_DIR : $path) . $filename), "doctype" => ((isset($doctype) && $doctype != null)
-					? $_doctype : ""), "tableid" => ($tableid ? $tableid : ""));
+		return array("file" => $_file, "filename" => ($_SERVER['DOCUMENT_ROOT'] . ($path === "###temp###" ? TEMP_DIR : $path) . $filename), "doctype" => ((isset($doctype) && $doctype != null) ? $_doctype : ""), "tableid" => ($tableid ? $tableid : ""));
 	}
 
 	/**
@@ -213,9 +212,8 @@ abstract class we_export_functions{
 		}
 
 		// Set alternative name if no name is now present present
-		return ($tagname == "" ?
-				(($alternative_number != -1) ? $alternative_name . $alternative_number : $alternative_name) :
-				$tagname);
+		return ($tagname ? $tagname :
+						(($alternative_number != -1) ? $alternative_name . $alternative_number : $alternative_name) );
 	}
 
 	/**
@@ -329,7 +327,7 @@ abstract class we_export_functions{
 
 		// Escape
 		$_corrected_content = (self::checkCompatibility($content, $csv_delimiter, $csv_enclose, "escape") ?
-				self::correctEscape($content) : $content);
+						self::correctEscape($content) : $content);
 
 
 		// Enclose
@@ -389,13 +387,13 @@ abstract class we_export_functions{
 
 				// Generate XML output if content is given
 				return $_tabs . "<" . $tagname . ($content ?
-						'>' . ($fix_content ? ($cdata ? ('<![CDATA[' . $content . "]]>") : oldHtmlspecialchars($content, ENT_QUOTES)) : $content) . "</" . $tagname . ">\n" :
-						"/>\n");
+								'>' . ($fix_content ? ($cdata ? ('<![CDATA[' . $content . "]]>") : oldHtmlspecialchars($content, ENT_QUOTES)) : $content) . "</" . $tagname . ">\n" :
+								"/>\n");
 
 			case "csv":
 				// Generate XML output if content is given
 				return ($content ?
-						self::correctCSV($content, $csv_delimiter, $csv_enclose, $csv_lineend) . $csv_delimiter : $csv_delimiter);
+								self::correctCSV($content, $csv_delimiter, $csv_enclose, $csv_lineend) . $csv_delimiter : $csv_delimiter);
 			case "cdata":
 				// Generate CDATA XML output if content is given
 				return ($content ? '<![CDATA[' . $content . ']]>' : '');
@@ -485,8 +483,7 @@ abstract class we_export_functions{
 
 			$hrefs = array();
 
-			$_file_values = self::fileInit($format, $filename, $path, ((isset($we_doc->DocType) && ($we_doc->DocType != "") && ($we_doc->DocType != 0)) ? $we_doc->DocType
-							: "document"));
+			$_file_values = self::fileInit($format, $filename, $path, ((isset($we_doc->DocType) && ($we_doc->DocType != "") && ($we_doc->DocType != 0)) ? $we_doc->DocType : "document"));
 
 			$_file = $_file_values["file"];
 			$_file_name = $_file_values["filename"];
@@ -514,8 +511,7 @@ abstract class we_export_functions{
 							if(!in_array($regs[1], $hrefs)){
 								$hrefs[] = $regs[1];
 
-								$_int = ((!isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"])) || $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"] == "")
-										? 0 : $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"];
+								$_int = ((!isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"])) || $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"] == "") ? 0 : $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"];
 
 								if($_int){
 									$_intID = $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['bdid'];
@@ -537,7 +533,7 @@ abstract class we_export_functions{
 									}
 								}
 							}
-						} else if(substr($we_doc->elements[$k]["dat"], 0, 2) == "a:" && is_array(unserialize($we_doc->elements[$k]["dat"]))){ // is a we:link field
+						} else if(substr($we_doc->elements[$k]["dat"], 0, 2) === "a:" && is_array(unserialize($we_doc->elements[$k]["dat"]))){ // is a we:link field
 							$_tag_name = self::correctTagname($k, "link", $_tag_counter);
 							$_file .= self::formatOutput($_tag_name, self::formatOutput("", $we_doc->getFieldByVal($we_doc->elements[$k]["dat"], "link"), "cdata"), $format, 2, $cdata);
 
@@ -567,7 +563,7 @@ abstract class we_export_functions{
 
 			self::fileFinish($format, $_file, $_doctype, $_file_name);
 		}
-		$_tmp_file_name = $_SERVER['DOCUMENT_ROOT'] . ($path == "###temp###" ? TEMP_DIR : $path) . $filename;
+		$_tmp_file_name = $_SERVER['DOCUMENT_ROOT'] . ($path === "###temp###" ? TEMP_DIR : $path) . $filename;
 
 		if($file_complete){
 			self::fileComplete($format, $_tmp_file_name);
@@ -602,7 +598,7 @@ abstract class we_export_functions{
 	static function exportObject($ID, $format, $filename, $path, $file_create = false, $file_complete = false, $cdata = false, $csv_delimiter = ",", $csv_enclose = "'", $csv_lineend = "\\n", $csv_fieldnames = false){
 		$_export_success = false;
 
-		if($csv_delimiter == '\t'){
+		if($csv_delimiter === '\t'){
 			$csv_delimiter = "\t";
 		}
 
@@ -668,7 +664,7 @@ abstract class we_export_functions{
 			}
 		}
 
-		self::fileFinish($format, $_file, $_tableid, $_file_name, ($format == "csv" ? $csv_lineend : ""));
+		self::fileFinish($format, $_file, $_tableid, $_file_name, ($format === "csv" ? $csv_lineend : ""));
 
 		if($file_complete){
 			self::fileComplete($format, $_file_name);

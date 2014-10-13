@@ -46,7 +46,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 		list($q_ID, $q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
 		$entTitle = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Title));
 		$entText = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Text));
-		if($q_Valid == "always" || $q_Valid == "date"){
+		if($q_Valid === "always" || $q_Valid === "date"){
 			$q_ValidUntil = "3000-01-01";
 		}
 		$DB_WE->query('UPDATE ' . NOTEPAD_TABLE . ' SET ' . we_database_base::arraySetter(array(
@@ -59,10 +59,10 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 		break;
 	case 'insert' :
 		list($q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
-		if($q_Valid == "always"){
+		if($q_Valid === "always"){
 			$q_ValidUntil = "3000-01-01";
 			$q_ValidFrom = date("Y-m-d");
-		} elseif($q_Valid == "date"){
+		} elseif($q_Valid === "date"){
 			$q_ValidUntil = "3000-01-01";
 		}
 
@@ -300,7 +300,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
 			we_html_button::create_state_changer() . we_html_element::jsElement(
-				(($type == "pad/pad") ? "
+				(($type === "pad/pad") ? "
 			var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';
 			var _sCls_=parent.gel(_sObjId+'_cls').value;
 			var _sType='pad';
@@ -592,7 +592,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			"marginheight" => 0,
 			"leftmargin" => 0,
 			"topmargin" => 0,
-			"onload" => (($type == "pad/pad") ? "if(parent!=self)init();" : "")
+			"onload" => (($type === "pad/pad") ? "if(parent!=self)init();" : "")
 			), we_html_element::htmlForm(array("style" => "display:inline;"), we_html_element::htmlDiv(
 					array("id" => "pad"), $_notepad .
 					we_html_element::htmlHidden(array("name" => "mark", "value" => "")) .

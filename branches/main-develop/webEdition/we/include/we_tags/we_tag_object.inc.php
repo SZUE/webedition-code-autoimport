@@ -57,20 +57,20 @@ function we_tag_object($attribs){
 
 	if($name){
 		if(strpos($name, ' ') !== false){
-			print parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
+			echo parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
 			return false;
 		}
 
 		$we_doc = $GLOBALS['we_doc'];
 		//handle listview of documents
 		$we_oid = (isset($GLOBALS['lv']) && is_object($GLOBALS['lv']) && $GLOBALS['lv']->f($name) ?
-				$GLOBALS['lv']->f($name) :
-				($we_doc->getElement($name, 'bdid') ?
-					$we_doc->getElement($name, 'bdid') :
-					($we_doc->getElement($name) ?
-						$we_doc->getElement($name) :
-						$we_oid)
-				));
+						$GLOBALS['lv']->f($name) :
+						($we_doc->getElement($name, 'bdid') ?
+								$we_doc->getElement($name, 'bdid') :
+								($we_doc->getElement($name) ?
+										$we_doc->getElement($name) :
+										$we_oid)
+						));
 		$rootDirID = ($classid ? f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path=(SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid) . ')') : 0);
 
 		$path = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $we_oid);
@@ -81,8 +81,12 @@ function we_tag_object($attribs){
 		if($GLOBALS['we_editmode']){
 			$delbutton = we_html_button::create_button('image:btn_function_trash', "javascript:document.forms[0].elements['" . $idname . "'].value=0;document.forms[0].elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
 			$open = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', "javascript:if(document.forms[0].elements['" . $idname . "'].value){top.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "', document.forms[0].elements['" . $idname . "'].value,'');}");
+			$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
+			$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
+			$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('reload_editpage');opener._EditorFrame.setEditorIsHot(true);");
 
-			$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['" . $idname . "'].value,'" . $table . "','document.forms[\'we_form\'].elements[\'" . $idname . "\'].value','document.forms[\'we_form\'].elements[\'" . $textname . "\'].value','opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','','" . $rootDirID . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+
+			$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
 
 			$yuiSuggest = &weSuggest::getInstance();
@@ -99,11 +103,10 @@ function we_tag_object($attribs){
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td class="weEditmodeStyle" style="padding:0 6px;"><span style="font-weight: bold;"><?php echo weTag_getAttribute('text', $attribs, weTag_getAttribute('_name_orig', $attribs)); ?></span></td>
-					<?php echo '<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' . $yuiSuggest->getHTML() . '</td>'; ?>
+					<td class="weEditmodeStyle" style="width: <?php echo ($size + 20); ?>px"><?php echo $yuiSuggest->getHTML(); ?></td>
 					<td class="weEditmodeStyle"><?php echo $button; ?></td>
 					<td class="weEditmodeStyle"><?php echo $open; ?></td>
 					<td class="weEditmodeStyle"><?php echo $delbutton; ?></td>
-
 				</tr>
 			</table><?php
 		}

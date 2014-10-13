@@ -46,11 +46,11 @@ function we_tag_paypal($attribs){
 	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs, false, true);
 	$shippingVatRate = weTag_getAttribute('shippingvatrate', $attribs);
 	$messageRedirectAuto = weTag_getAttribute('messageredirectAuto', $attribs);
-	if($messageRedirectAuto == ''){
+	if(!$messageRedirectAuto){
 		$messageRedirectAuto = weTag_getAttribute('messageredirectauto', $attribs);
 	}
 	$messageRedirectMan = weTag_getAttribute('messageredirectMan', $attribs);
-	if($messageRedirectMan == ''){
+	if(!$messageRedirectMan){
 		$messageRedirectMan = weTag_getAttribute('messageredirectman', $attribs);
 	}
 	$formTagOnly = weTag_getAttribute('formtagonly', $attribs, false, true);
@@ -95,7 +95,7 @@ function we_tag_paypal($attribs){
 
 
 		//	NumberFormat - currency and taxes
-		if($currency == ''){
+		if(!$currency){
 			$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $DB_WE));
 			if(!isset($feldnamen[0])){ // determine the currency
 				$feldnamen[0] = -1;
@@ -150,7 +150,7 @@ function we_tag_paypal($attribs){
 			$paypalEmail = $formField[6];
 		}
 		if(isset($formField[7])){ // todo
-			if($formField[7] == 'default'){
+			if($formField[7] === 'default'){
 				$paypalURL = 'https://www.paypal.com/cgi-bin/webscr';
 			} else {
 				$paypalURL = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
@@ -168,7 +168,7 @@ function we_tag_paypal($attribs){
 
 // if there is not action variable, set the default action of 'process'
 
-		switch(we_base_request::_(we_base_request::RAW, 'action','process')){
+		switch(we_base_request::_(we_base_request::RAW, 'action', 'process')){
 
 			case 'process': // Process and order
 				// There should be no output at this point.  To process the POST data,
@@ -196,7 +196,7 @@ function we_tag_paypal($attribs){
 					$p->add_field('cancel_return', $this_script . '?action=cancel');
 					$p->add_field('notify_url', $this_script . '?action=ipn');
 					$p->add_field('currency_code', $currency);
-					$p->add_field('lc', ($languagecode == '' ? $lc : $languagecode));
+					$p->add_field('lc', ($languagecode ? $languagecode : $lc));
 
 					// get user details
 					$p->add_field('first_name', $sendForename);
@@ -268,16 +268,16 @@ function we_tag_paypal($attribs){
 				// check if user is registered
 				$customer = (we_tag('ifRegisteredUser') ? $_SESSION['webuser'] : false);
 
-				$cartField[WE_SHOP_SHIPPING] = ($shipping == '' ?
-						array(
-						'costs' => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
-						'isNet' => $weShippingControl->isNet,
-						'vatRate' => $weShippingControl->vatRate
-						) :
-						array(
-						'costs' => $shipping,
-						'isNet' => $shippingIsNet,
-						'vatRate' => $shippingVatRate
+				$cartField[WE_SHOP_SHIPPING] = ($shipping === '' ?
+								array(
+							'costs' => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
+							'isNet' => $weShippingControl->isNet,
+							'vatRate' => $weShippingControl->vatRate
+								) :
+								array(
+							'costs' => $shipping,
+							'isNet' => $shippingIsNet,
+							'vatRate' => $shippingVatRate
 				));
 
 				$shippingCosts = $cartField[WE_SHOP_SHIPPING]['costs'];

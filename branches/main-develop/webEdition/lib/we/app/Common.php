@@ -76,7 +76,7 @@ class we_app_Common{
 		$retval = array();
 		$tocZC = self::readAppTOC();
 		foreach($tocZC->applications as $app){
-			if($app->active == "true"){
+			if($app->active === "true"){
 				$retval[] = $app->name;
 			}
 		}
@@ -412,7 +412,7 @@ class we_app_Common{
 		$tocentry = self::getAppTOCEntry($appname);
 		$element = $tocentry && $tocentry->name == $appname && isset($tocentry->usejmenu) ? (string) $tocentry->usejmenu : 'false';
 
-		return $element == 'true' ? true : false;
+		return $element === 'true';
 	}
 
 	/**
@@ -520,7 +520,7 @@ class we_app_Common{
 		self::readConfig();
 		$manifest = self::getManifestXml($filename, $query);
 		// add "/manifest" to relative xpath queries:
-		if(substr($query, 0, 1) == "/"){
+		if(substr($query, 0, 1) === "/"){
 			$query = "/manifest" . $query;
 		}
 		$result = @$manifest->xpath($query);

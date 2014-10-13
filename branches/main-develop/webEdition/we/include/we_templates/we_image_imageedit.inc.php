@@ -26,7 +26,7 @@ define("WE_EDIT_IMAGE", true);
 
 echo we_html_tools::getHtmlTop();
 
-if(substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) == "doImage_convert"){
+if(substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === "doImage_convert"){
 	echo we_html_element::jsElement('parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");');
 }
 

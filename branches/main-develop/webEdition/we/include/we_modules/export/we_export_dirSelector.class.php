@@ -86,12 +86,13 @@ class we_export_dirSelector extends we_selector_directory{
 	function printHeaderTableExtraCols(){
 		$makefolderState = permissionhandler::hasPerm("NEW_EXPORT");
 		return '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
-			we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
-			we_html_button::create_button("image:btn_new_dir", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
-			'</td>';
+				we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
+				we_html_button::create_button("image:btn_new_dir", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+				'</td>';
 	}
 
 	function printFramesetJSFunctioWriteBody(){
+		ob_start();
 		?><script type="text/javascript"><!--
 			function writeBody(d) {
 				d.open();
@@ -175,6 +176,7 @@ top.unselectAllFiles();') . '
 			//-->
 		</script>
 		<?php
+		return ob_get_clean();
 	}
 
 	function printFramesetJSFunctionQueryString(){
@@ -183,9 +185,9 @@ top.unselectAllFiles();') . '
 		if(!o) o=top.order;
 		if(!we_editDirID) we_editDirID="";
 		return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&rootDirID=' .
-				$this->rootDirID . (isset($this->open_doc) ?
-					"&open_doc=" . $this->open_doc : '') .
-				'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
+						$this->rootDirID . (isset($this->open_doc) ?
+								"&open_doc=" . $this->open_doc : '') .
+						'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 		}');
 	}
 
@@ -265,8 +267,8 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 
 
 		echo $this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.makeNewFolder = 0;
+		$this->printCMDWriteAndFillSelectorHTML() .
+		'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 //-->
 </script>
@@ -285,8 +287,8 @@ top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
-		if($txt == ""){
-			print we_message_reporting::getShowMessageCall(g_l('export', "[folder_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
+		if(!$txt){
+			echo we_message_reporting::getShowMessageCall(g_l('export', "[folder_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);
@@ -296,15 +298,15 @@ top.clearEntries();
 			$this->db->query("SELECT ID,Text FROM " . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "' AND ID != " . intval($this->we_editDirID));
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('export', "[folder_exists]"), $folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('/[%/\\"\']/', $folder->Text)){
 					$we_responseText = g_l('export', "[wrongtext]");
-					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				} else {
 					if(f("SELECT Text FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->we_editDirID), "Text", $this->db) != $txt){
 						$folder->we_save();
-						print 'var ref;
+						echo 'var ref;
 if(top.opener.top.content.updateEntry){
 	ref = top.opener.top.content;
 	ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '");
@@ -322,9 +324,9 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 		}
 
 		print
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.makeNewFolder = 0;
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() .
+				'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 //-->
 </script>

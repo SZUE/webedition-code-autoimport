@@ -29,7 +29,7 @@ abstract class we_base_file{
 	const SZ_MB = 3;
 
 	static function load($filename, $flags = 'rb', $rsize = 8192, $iscompressed = false){
-		if($filename == ''){
+		if($filename === ''){
 			return false;
 		}
 		if(!self::hasURL($filename)){
@@ -65,7 +65,7 @@ abstract class we_base_file{
 	}
 
 	static function loadLine($filename, $offset = 0, $rsize = 8192, $iscompressed = false){
-		if($filename == '' || self::hasURL($filename) || !is_readable($filename)){
+		if($filename === '' || self::hasURL($filename) || !is_readable($filename)){
 			return false;
 		}
 		$filename = realpath($filename);
@@ -94,7 +94,7 @@ abstract class we_base_file{
 	}
 
 	static function loadLines($filename, $from, $to, $iscompressed = false){
-		if($filename == '' || self::hasURL($filename) || !is_readable($filename)){
+		if($filename === '' || self::hasURL($filename) || !is_readable($filename)){
 			return false;
 		}
 		$filename = realpath($filename);
@@ -123,7 +123,7 @@ abstract class we_base_file{
 	}
 
 	static function loadPart($filename, $offset = 0, $rsize = 8192, $iscompressed = false){
-		if($filename == '' || self::hasURL($filename) || !is_readable($filename)){
+		if($filename === '' || self::hasURL($filename) || !is_readable($filename)){
 			return false;
 		}
 		$filename = realpath($filename);
@@ -171,7 +171,7 @@ abstract class we_base_file{
 	}
 
 	static function saveTemp($content, $filename = '', $flags = 'wb'){
-		if($filename == ''){
+		if($filename === ''){
 			$filename = self::getUniqueId();
 		}
 		$filename = TEMP_PATH . $filename;
@@ -189,7 +189,7 @@ abstract class we_base_file{
 	}
 
 	static function hasURL($filename){
-		return ((strtolower(substr($filename, 0, 4)) == 'http') || (strtolower(substr($filename, 0, 3)) == 'ftp'));
+		return ((strtolower(substr($filename, 0, 4)) === 'http') || (strtolower(substr($filename, 0, 3)) === 'ftp'));
 	}
 
 	static function getUniqueId($md5 = true){
@@ -683,7 +683,7 @@ abstract class we_base_file{
 			return false;
 		}
 		if($delAll){
-			$foo = (substr($filename, -1) == "/") ? $filename : ($filename . "/");
+			$foo = (substr($filename, -1) === '/') ? $filename : ($filename . '/');
 			$d = dir($filename);
 			while(false !== ($entry = $d->read())){
 				if($entry != ".." && $entry != "."){

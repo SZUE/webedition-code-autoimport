@@ -43,7 +43,7 @@ class we_import_siteFrag extends we_fragment_base{
 		$progress = intval((100 / count($this->alldata)) * $this->currentTask);
 		$progressText = we_util_Strings::shortenPath($path, 30);
 
-		if($this->data["contentType"] == "post/process"){
+		if($this->data["contentType"] === "post/process"){
 			we_import_site::postprocessFile($this->data["path"], $this->data["sourceDir"], $this->data["destDirID"]);
 		} else {
 			$ret = we_import_site::importFile($this->data["path"], $this->data["contentType"], $this->data["sourceDir"], $this->data["destDirID"], $this->data["sameName"], $this->data["thumbs"], $this->data["width"], $this->data["height"], $this->data["widthSelect"], $this->data["heightSelect"], $this->data["keepRatio"], $this->data["quality"], $this->data["degrees"], $this->data["importMetadata"]);

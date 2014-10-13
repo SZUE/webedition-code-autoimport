@@ -156,11 +156,11 @@ class we_tag_tagParser{
 						$Counter[$_matches[2][0]] = 0;
 					}
 
-					if($_matches[1][0] == '/'){
+					if($_matches[1][0] === '/'){
 						$Counter[$_matches[2][0]] --;
 					} else {
 						//selfclosing-Tag
-						if($_matches[4][0] == '/'){
+						if($_matches[4][0] === '/'){
 							continue;
 						}
 						$Counter[$_matches[2][0]] ++;
@@ -350,7 +350,7 @@ class we_tag_tagParser{
 			$code = substr($code, 0, $tagPos) .
 				$content .
 				substr($code, (isset($endeEndTagPos) ? $endeEndTagPos : $endeStartTag));
-		} elseif(substr($tagname, 0, 2) == 'if' && $tagname != 'ifNoJavaScript'){
+		} elseif(substr($tagname, 0, 2) === 'if' && $tagname !== 'ifNoJavaScript'){
 			if(!isset($endeEndTagPos)){
 				return parseError(sprintf(g_l('parser', '[selfclosingIf]'), $tagname), $tag);
 			}
@@ -374,7 +374,7 @@ class we_tag_tagParser{
 
 	//FIXME: GLOBALS as "\$xx" should be set here directly? using isset??
 	public static function printTag($name, $attribs = '', $content = '', $cslash = false){
-		$attr = (is_array($attribs) ? self::printArray($attribs, false) : ($attribs == 'array()' ? '' : $attribs));
+		$attr = (is_array($attribs) ? self::printArray($attribs, false) : ($attribs === 'array()' ? '' : $attribs));
 		return 'we_tag(\'' . $name . '\'' .
 			($attr ? ',' . $attr : ($content ? ',array()' : '')) .
 			($content ? ',"' . ($cslash ? addcslashes($content, '"') : $content) . '"' : '') . ')';

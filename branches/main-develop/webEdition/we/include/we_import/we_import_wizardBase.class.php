@@ -51,8 +51,8 @@ abstract class we_import_wizardBase{
 
 		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "wiz_next('wizbody', '" . $this->path . "?" . $args . "');")
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlIFrame('wizbody', HTML_DIR . "white.html", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto') .
-					we_html_element::htmlIFrame('wizbusy', HTML_DIR . "white.html", 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
+					, we_html_element::htmlIFrame('wizbody',  "about:blank", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto') .
+					we_html_element::htmlIFrame('wizbusy',  "about:blank", 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
 					we_html_element::htmlIFrame('wizcmd', $this->path . "?pnt=wizcmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		));
 
@@ -625,7 +625,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 							if($v['pfx_fn'] == 1){
 								$v['rcd_pfx'] = $xp->getData($xp->root . '/' . $v["rcd_pfx"] . "[1]");
 								if($v['rcd_pfx'] == ''){
-									$v['rcd_pfx'] = g_l('import', ($v['import_type'] == 'documents' ? '[pfx_doc]' : '[pfx_obj]'));
+									$v['rcd_pfx'] = g_l('import', ($v['import_type'] === 'documents' ? '[pfx_doc]' : '[pfx_obj]'));
 								}
 							}
 							break;
@@ -662,7 +662,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 								$v['rcd_pfx'] = $recs[$v['rcd_pfx']];
 
 								if($v['rcd_pfx'] == ''){
-									$v['rcd_pfx'] = g_l('import', ($v['import_type'] == 'documents' ? '[pfx_doc]' : '[pfx_obj]'));
+									$v['rcd_pfx'] = g_l('import', ($v['import_type'] === 'documents' ? '[pfx_doc]' : '[pfx_obj]'));
 								}
 							}
 					}
@@ -670,7 +670,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 					if($v['type'] != we_import_functions::TYPE_WE_XML){
 						if(isset($v["dateFields"])){
 							$dateFields = makeArrayFromCSV($v["dateFields"]);
-							if(($v["sTimeStamp"] == "Format" && $v["timestamp"] != "") || ($v["sTimeStamp"] == "GMT")){
+							if(($v["sTimeStamp"] === "Format" && $v["timestamp"] != "") || ($v["sTimeStamp"] === "GMT")){
 								foreach($dateFields as $dateField){
 									$fields[$dateField] = we_import_functions::date2Timestamp($fields[$dateField], ($v["sTimeStamp"] != "GMT") ? $v["timestamp"] : "");
 								}

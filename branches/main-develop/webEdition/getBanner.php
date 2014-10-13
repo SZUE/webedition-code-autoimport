@@ -46,7 +46,7 @@ $xml = we_base_request::_(we_base_request::BOOL, "xml");
 $c = we_base_request::_(we_base_request::RAW, "c", 0);
 
 if($type && $type != "pixel"){
-	$code = we_banner_banner::getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link, $referer, $bannerclick, getServerUrl() . $_SERVER['SCRIPT_NAME'], $type, $page, $nocount, $xml);
+	$code = we_banner_banner::getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link, $referer, $bannerclick, $_SERVER['SCRIPT_NAME'], $type, $page, $nocount, $xml);
 }
 switch($type){
 	case "js":
@@ -74,7 +74,7 @@ switch($type){
 
 		$bannerpath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($bid));
 
-		if(($type == 'pixel' || (!$nocount) && $id && $c)){
+		if(($type === 'pixel' || (!$nocount) && $id && $c)){
 			$GLOBALS['DB_WE']->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => intval($id),
 					'Timestamp' => sql_function('UNIX_TIMESTAMP()'),

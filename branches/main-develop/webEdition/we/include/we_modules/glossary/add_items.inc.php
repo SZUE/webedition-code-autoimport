@@ -48,8 +48,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 		$Language = $we_doc->Language;
 
-		$DictBase = getServerUrl() . WE_SPELLCHECKER_MODULE_DIR . 'dict/';
-
 		$LanguageDict = null;
 		if(isset($spellcheckerConf['lang']) && is_array($spellcheckerConf['lang'])){
 			$LanguageDict = array_search($Language, $spellcheckerConf['lang']);
@@ -65,7 +63,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				'name' => "spellchecker",
 				'code' => "LeSpellchecker.class",
 				'archive' => "lespellchecker.jar",
-				'codebase' => getServerUrl() . WE_SPELLCHECKER_MODULE_DIR,
+				'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
 				'width' => 2,
 				'height' => 2,
 				'id' => "applet",
@@ -74,7 +72,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 <param name="code" value="LeSpellchecker.class"/>
 <param name="archive" value="lespellchecker.jar"/>
 <param name="type" value="application/x-java-applet;version=1.1"/>
-<param name="dictBase" value="' . $DictBase . '"/>
+<param name="dictBase" value="' . getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . 'dict/' . '"/>
 <param name="dictionary" value="' . $LanguageDict . '"/>
 <param name="debug" value="off"/>
 <param name="user" value="' . $_SESSION['user']['Username'] . '@' . $_SERVER['SERVER_NAME'] . '"/>
@@ -95,7 +93,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				case 'Charset':
 				default:
 					if(isset($we_doc->elements[$key]['type']) && (
-						$we_doc->elements[$key]['type'] == "txt" || $we_doc->elements[$key]['type'] == "input"
+						$we_doc->elements[$key]['type'] === "txt" || $we_doc->elements[$key]['type'] === "input"
 						)
 					){
 						$SrcBody .= $we_doc->elements[$key]['dat'] . " ";
@@ -794,7 +792,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 
 					// Only glossary check
-					if($cmd3 == "checkOnly"){
+					if($cmd3 === "checkOnly"){
 						$CancelButton = we_html_button::create_button("close", "javascript:top.close();", true, 120, 22, "", "", false, false);
 						$PublishButton = "";
 
@@ -852,7 +850,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 								case 'correct':
 									foreach($we_doc->elements as &$val){
 										if(isset($val['type']) && (
-											$val['type'] == 'txt' || $val['type'] == 'input'
+											$val['type'] === 'txt' || $val['type'] === 'input'
 											)
 										){
 											$val['dat'] = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Key, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}' . $Entry['title'] . '${3}', $temp);
@@ -903,7 +901,7 @@ var AddWords = "";
 top.add();' .
 						($cmd3 != 'checkOnly' ? "top.we_save_document();" : '') .
 						we_message_reporting::getShowMessageCall(
-							g_l('modules_glossary', ($cmd4 == 'checkOnly' ?
+							g_l('modules_glossary', ($cmd4 === 'checkOnly' ?
 									'[check_successful]' :
 									// glossary check with publishing
 									'[check_successful_and_publish]')), we_message_reporting::WE_MESSAGE_NOTICE, false, true) .

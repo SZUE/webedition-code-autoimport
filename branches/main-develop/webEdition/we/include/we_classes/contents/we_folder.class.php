@@ -117,11 +117,11 @@ class we_folder extends we_root{
 
 		$ParentID = $this->ParentID;
 		$i = 0;
-		while($this->Language == ''){
+		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
 				$this->Language = $GLOBALS['weDefaultFrontendLanguage'];
-				if($this->Language == ''){
+				if(!$this->Language){
 					$this->Language = 'de_DE';
 				}
 			} else {
@@ -138,7 +138,7 @@ class we_folder extends we_root{
 	}
 
 	public function initByPath($path, $tblName = FILE_TABLE){
-		if(substr($path, -1) == '/'){
+		if(substr($path, -1) === '/'){
 			$path = substr($path, 0, strlen($path) - 1);
 		}
 		$id = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $this->DB_WE->escape($path) . '" AND IsFolder=1', '', $this->DB_WE);
@@ -332,14 +332,14 @@ class we_folder extends we_root{
 			return false;
 		}
 		while($DB_WE->next_record()){
-			$DocumentObject = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID = ' . intval($DB_WE->f('ID')) . ' AND DocTable = "' . stripTblPrefix($this->Table) . '" AND Active = 1', 'DocumentObject', $DB_WE2);
+			$DocumentObject = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable="' . stripTblPrefix($this->Table) . '" AND Active=1', '', $DB_WE2);
 			if($DocumentObject != ''){
 				$DocumentObject = unserialize($DocumentObject);
 				$DocumentObject[0]['Language'] = $this->Language;
 				$DocumentObject = serialize($DocumentObject);
 				$DocumentObject = str_replace("'", "\'", $DocumentObject);
 
-				if(!$DB_WE2->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $DB_WE->escape($DocumentObject) . '" WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable = "' . stripTblPrefix($this->Table) . '" AND Active = 1')){
+				if(!$DB_WE2->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $DB_WE->escape($DocumentObject) . '" WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable="' . stripTblPrefix($this->Table) . '" AND Active=1')){
 					return false;
 				}
 			}
@@ -413,7 +413,7 @@ class we_folder extends we_root{
 
 	function i_filenameEmpty(){
 		$fn = ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? $this->Filename : $this->Text;
-		return ($fn == '') ? true : false;
+		return ($fn === '');
 	}
 
 	/* returns 0 because it is a directory */
@@ -450,7 +450,7 @@ class we_folder extends we_root{
 		}
 
 		$userCanChange = permissionhandler::hasPerm('CHANGE_DOC_FOLDER_PATH') || ($this->CreatorID == $_SESSION['user']['ID']) || (!$this->ID);
-		if($this->ID != 0 && $this->ParentID == 0 && $this->ParentPath == '/' && defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE){
+		if($this->ID != 0 && $this->ParentID == 0 && $this->ParentPath === '/' && defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE){
 			$userCanChange = false;
 		}
 		return (!$userCanChange ? '<table border="0" cellpadding="0" cellspacing="0"><tr><td><span class="defaultfont">' . $this->Path . '</span></td></tr>' :

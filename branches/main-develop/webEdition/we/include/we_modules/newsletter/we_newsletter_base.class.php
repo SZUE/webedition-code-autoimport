@@ -179,7 +179,7 @@ class we_newsletter_base{
 					foreach($dataArr as $value){
 						$dat = makeArrayFromCSV($value);
 						$_alldat = implode("", $dat);
-						if(str_replace(" ", "", $_alldat) == ""){
+						if(str_replace(" ", "", $_alldat) === ''){
 							continue;
 						}
 						switch($emails_only){
@@ -226,7 +226,7 @@ class we_newsletter_base{
 					foreach($dataArr as $value){
 						$dat = makeArrayFromCSV($value);
 						$_alldat = implode("", $dat);
-						if(str_replace(" ", "", $_alldat) == ""){
+						if(str_replace(" ", "", $_alldat) === ''){
 							continue;
 						}
 						$countEMails++;
@@ -259,7 +259,7 @@ class we_newsletter_base{
 		$ret = '<select class="' . $cls . '" name="' . trim($name) . '" size=' . abs($size) . ' ' . ($multiple ? " multiple" : "") . ($attribs ? " $attribs" : "") . ($width ? ' style="width: ' . $width . 'px"' : '') . '>';
 		$selIndex = makeArrayFromCSV($selectedIndex);
 		foreach($values as $value => $text){
-			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare == "value") ? $value : $text), $selIndex) ? " selected" : "") . (we_check_email($text) ? ' class="markValid"' : ' class="markNotValid"') . '>' . $text . "</option>";
+			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare === "value") ? $value : $text), $selIndex) ? " selected" : "") . (we_check_email($text) ? ' class="markValid"' : ' class="markNotValid"') . '>' . $text . "</option>";
 		}
 		$ret .= '</select>';
 		return $ret;
