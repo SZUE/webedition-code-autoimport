@@ -1668,11 +1668,11 @@ function calendarSetup(x){
 		$DB_WE = new DB_WE();
 		$workspaces = $_result = $versionsFound = $saveArrayIds = $_tables = $searchText = array();
 		$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = 0;
-
+		$request = we_base_request::_(we_base_request::RAW, 'we_cmd'); //FIXME: due to search for <"
 		if(isset($GLOBALS['we_cmd_obj'])){
 			$obj = $GLOBALS['we_cmd_obj'];
 
-			foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){
+			foreach($request as $k => $v){
 				if(stristr($k, 'searchFields' . $whichSearch . '[') && !stristr($k, 'hidden_')){
 					$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = $v;
 				}
@@ -1688,7 +1688,7 @@ function calendarSetup(x){
 				case 'DocSearch':
 					$_tables[0] = FILE_TABLE;
 					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDDoc');
-					foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){
+					foreach(we_base_request::_(we_base_request::RAW, 'we_cmd') as $k => $v){
 						if(is_string($v) && $v == 1){
 							switch($k){
 								case 'searchForTextDocSearch':
@@ -1707,7 +1707,7 @@ function calendarSetup(x){
 				case 'TmplSearch':
 					$_tables[0] = TEMPLATES_TABLE;
 					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDTmpl');
-					foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){
+					foreach(we_base_request::_(we_base_request::RAW, 'we_cmd') as $k => $v){
 						if(is_string($v) && $v == 1){
 							switch($k){
 								case 'searchForTextTmplSearch':
@@ -1721,7 +1721,7 @@ function calendarSetup(x){
 					}
 					break;
 				default:
-					foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){
+					foreach(we_base_request::_(we_base_request::RAW, 'we_cmd') as $k => $v){
 						if($v){
 							switch($k){
 								case 'search_tables_advSearch[' . FILE_TABLE:
@@ -1749,7 +1749,7 @@ function calendarSetup(x){
 			$searchFields = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'searchFields' . $whichSearch);
 			$location = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'location' . $whichSearch);
 			$searchText = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch); //allow to search for tags
-
+			t_e($searchText);
 			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'Order' . $whichSearch);
 			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'setView' . $whichSearch);
 
