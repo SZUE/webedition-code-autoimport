@@ -64,7 +64,7 @@ class we_exim_contentProvider{
 				break;
 			case 'we_backup_tableItem':
 				$we_doc = new we_backup_tableItem($table);
-				if(!empty($ID)){
+				if($ID){
 					$we_doc->load($ID);
 				}
 				break;

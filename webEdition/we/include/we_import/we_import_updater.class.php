@@ -32,7 +32,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		parent::__construct();
 	}
 
-	public function updateObject(we_document &$object){
+	public function updateObject(/*we_document*/ &$object){ //FIXME: imported types are not of type we_document
 
 		if($this->debug){
 			t_e("Updating object", $object->ID, (isset($object->Path) ? $object->Path : ''), (isset($object->Table) ? $object->Table : ''));

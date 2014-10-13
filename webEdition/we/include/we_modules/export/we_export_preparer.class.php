@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_export_preparer extends we_exim_XMLExIm{
-
 	var $RefTable;
 	var $options;
 	var $PatternSearch;
@@ -370,11 +369,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 				}
 
 				if(isset($value['type']) && ($value['type'] === 'img' || $value['type'] === 'binary')){
-					if(isset($value['bdid'])){
-						$this->addToDepArray($level, $value['bdid']);
-					}elseif(isset($value['dat'])){
-						$this->addToDepArray($level, $value['dat']);
-					}
+					$this->addToDepArray($level, isset($value['bdid']) ? $value['dat'] : $value['dat']);
 				}
 			}
 		}
@@ -440,10 +435,10 @@ class we_export_preparer extends we_exim_XMLExIm{
 		we_updater::fixInconsistentTables();
 
 		if($this->options['handle_def_templates'] || $this->options['handle_doctypes'] ||
-				$this->options['handle_categorys'] || $this->options['handle_def_classes'] ||
-				$this->options['handle_document_includes'] || $this->options['handle_document_linked'] ||
-				$this->options['handle_object_includes'] || $this->options['handle_object_embeds'] ||
-				$this->options['handle_class_defs'] || $this->options['handle_owners'] || $this->options['handle_navigation'] || $this->options['handle_thumbnails']
+			$this->options['handle_categorys'] || $this->options['handle_def_classes'] ||
+			$this->options['handle_document_includes'] || $this->options['handle_document_linked'] ||
+			$this->options['handle_object_includes'] || $this->options['handle_object_embeds'] ||
+			$this->options['handle_class_defs'] || $this->options['handle_owners'] || $this->options['handle_navigation'] || $this->options['handle_thumbnails']
 		){
 
 			$this->makeExportList();
