@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,6 +28,7 @@
  *
  */
 class we_navigation_customerFilter extends we_customer_abstractFilter{
+
 	var $_useDocumentFilter = true;
 
 	public function __construct(){
@@ -182,11 +184,7 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 	}
 
 	function updateByFilter(&$filterObj, $id, $table){
-		$_limitAccess = 0;
-		$_applyFilter = 0;
-		$_allCustomers = 0;
 		switch($filterObj->getMode()){
-
 			case we_customer_abstractFilter::FILTER:
 				$_limitAccess = 1;
 				$_applyFilter = 1;
@@ -210,26 +208,25 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 				$_applyFilter = 0;
 				$_allCustomers = 0;
 				break;
+			default:
+				$_limitAccess = 0;
+				$_applyFilter = 0;
+				$_allCustomers = 0;
 		}
 
 
-		$_customers = makeCSVFromArray($filterObj->getSpecificCustomers(), true);
-		$_whiteList = makeCSVFromArray($filterObj->getWhiteList(), true);
-		$_blackList = makeCSVFromArray($filterObj->getBlackList(), true);
-		$_filter = serialize($filterObj->getFilter());
-
 		$DB_WE = new DB_WE();
 		$DB_WE->query('UPDATE ' . NAVIGATION_TABLE . ' SET ' .
-			we_database_base::arraySetter(array(
-				'LimitAccess' => $_limitAccess,
-				'ApplyFilter' => $_applyFilter,
-				'AllCustomers' => $_allCustomers,
-				'Customers' => $_customers,
-				'CustomerFilter' => $_filter,
-				'BlackList' => $_blackList,
-				'WhiteList' => $_whiteList
-			)) .
-			' WHERE UseDocumentFilter=1 AND ' . we_navigation_navigation::getNavCondition($id, $table));
+				we_database_base::arraySetter(array(
+					'LimitAccess' => $_limitAccess,
+					'ApplyFilter' => $_applyFilter,
+					'AllCustomers' => $_allCustomers,
+					'Customers' => makeCSVFromArray($filterObj->getSpecificCustomers(), true),
+					'CustomerFilter' => serialize($filterObj->getFilter()),
+					'BlackList' => makeCSVFromArray($filterObj->getBlackList(), true),
+					'WhiteList' => makeCSVFromArray($filterObj->getWhiteList(), true)
+				)) .
+				' WHERE UseDocumentFilter=1 AND ' . we_navigation_navigation::getNavCondition($id, $table));
 	}
 
 }

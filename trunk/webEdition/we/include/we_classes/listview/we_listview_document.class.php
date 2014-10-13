@@ -350,7 +350,7 @@ class we_listview_document extends we_listview_base{
 
 				$this->Record['WE_SHOPVARIANTS'] = 0;
 				if(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && isset($this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME])){
-					$ShopVariants = @unserialize($this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME]);
+					$ShopVariants = is_string($this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME]) && $this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME]{0} == 'a' ? unserialize($this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME]) : array();
 					if(is_array($ShopVariants) && count($ShopVariants) > 0){
 						$this->Record['WE_SHOPVARIANTS'] = count($ShopVariants);
 					}
