@@ -193,6 +193,8 @@ $luSystemLanguage['installer']['tableExists'] = 'Table already exists';
 $luSystemLanguage['installer']['tableChanged'] = 'Altered Table';
 $luSystemLanguage['installer']['entryAlreadyExists'] = 'Entries already exist';
 $luSystemLanguage['installer']['errorExecutingQuery'] = 'Could not execute several queries.';
+$luSystemLanguage['installer']['fileNotWritableError'] = 'weBedition does not have write access for the following file, and the installer was not able to adjust the access rights by itself:<br />\\\n<code class=\\\\\"errorText\\\\\">%s</code><br />\\\nPlease adjust the rights manually and click on the button \\\\\"Load again\\\\\" to continue installation.';
+
 
 $luSystemLanguage['register']['registrationError'] = 'Error during Registration process';
 $luSystemLanguage['register']['finished'] = 'Registration finished';

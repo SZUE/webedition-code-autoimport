@@ -196,6 +196,24 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	}
 
 	/**
+	 * This function checks if a given file is writable and tries to chmod() if necessary
+	 *
+	 * @param string $filePath
+	 * @return boolean
+	 */
+	function checkMakeFileWritable($filePath = '', $mod = 0750){
+		$filePath = LIVEUPDATE_SOFTWARE_DIR . $filePath;
+
+		if(file_exists($filePath) && !is_writable($filePath)){
+				if(!chmod($filePath, $mod)){
+					return false;
+				}
+		}
+
+		return true;
+	}
+
+	/**
 	 * This function checks if given dir exists, if not tries to create it
 	 *
 	 * @param string $dirPath
@@ -307,7 +325,6 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function replaceCode($filePath, $replace, $needle = ''){
-
 		// decode parameters
 		$needle = $this->decodeCode($needle);
 		$replace = $this->decodeCode($replace);
@@ -474,7 +491,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 				$queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			} else{
 				//Bug #4431
-				// das  mysql_real_escape_string bei $fieldInfo['Type'] f�hrt f�r enum dazu, das die ' escaped werden und ein Syntaxfehler entsteht (nicht abgeschlossene Zeichenkette
+				// das  mysql_real_escape_string bei $fieldInfo['Type'] f?hrt f?r enum dazu, das die ' escaped werden und ein Syntaxfehler entsteht (nicht abgeschlossene Zeichenkette
 				$queries[] = "ALTER TABLE `$tableName` CHANGE `" . $fieldInfo['Field'] . '` `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			}
 		}
@@ -579,7 +596,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 		$query = trim($query);
 
-		if(strpos($query, '###INSTALLONLY###') !== false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf�hren
+		if(strpos($query, '###INSTALLONLY###') !== false){// potenzielles Sicherheitsproblem, nur im LiveUpdate nicht ausf?hren
 			return true;
 		}
 
@@ -857,6 +874,14 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			}
 			unlink($path . 'del.files');
 			file_put_contents($path . 'deleted.files', ($all ? "Deleted Files: " . count($delFiles) . "\n\n" . implode("\n", $delFiles) : "File del.files empty"));
+		}
+
+		return true;
+	}
+
+	function removeDirOnlineInstaller(){
+		if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
+			we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
 		}
 
 		return true;

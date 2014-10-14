@@ -263,11 +263,17 @@ class installer extends installerBase {
 
 			if ($success) {
 
-				if ($liveUpdateFnc->filePutContent( $path, $liveUpdateFnc->decodeCode($content) ) ) {
-					$successFiles[] = $path;
-				} else {
-					$errorFile = $path;
+				$testPath = ltrim(str_replace(LIVEUPDATE_CLIENT_DOCUMENT_DIR, "", $path), "/");
+				$testPath = strpos($testPath, "tmp/files") === 0 ? "/". ltrim(str_replace("tmp/files", "", $testPath), "/") : false;
+
+				if(!$liveUpdateFnc->filePutContent( $path, $liveUpdateFnc->decodeCode($content))) {
 					$success = false;
+					' . installer::getErrorMessageResponsePart('', '$path') . '
+				} else if($testPath && method_exists($liveUpdateFnc, "checkMakeFileWritable") && !$liveUpdateFnc->checkMakeFileWritable($testPath)) {
+					$success = false;
+					' . installer::getErrorMessageResponsePart('', '$testPath', 'notWritableError') . '
+				} else {
+					$successFiles[] = $path;
 				}
 			}
 		}
@@ -285,9 +291,6 @@ class installer extends installerBase {
 
 			?>' . installer::getProceedNextCommandResponsePart($nextUrl, $progress, '<?php print $message; ?>') . '<?php
 
-		} else {
-
-			' . installer::getErrorMessageResponsePart() . '
 		}
 ?>';
 
@@ -337,16 +340,16 @@ class installer extends installerBase {
 			}
 
 		}
-		
+
 		$Content = "";
 		for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
 			$Content .= $liveUpdateFnc->getFileContent(' . $Realname . '."part" . $i);
 
 		}
-		
+
 		if ($liveUpdateFnc->filePutContent( ' . $Realname . ', $Content ) ) {
 			$successFiles[] = $path;
-			
+
 		}
 		for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
 			$liveUpdateFnc->deleteFile(' . $Realname . '."part" . $i);
@@ -371,7 +374,7 @@ class installer extends installerBase {
 
 		}
 ?>';
-		
+
 		return $retArray;
 
 	}
@@ -383,7 +386,6 @@ class installer extends installerBase {
 	 * @return string
 	 */
 	function getGetChangesResponse($nextUrl='' ) {
-
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 
 		$message =	'<div>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges'])) . '<br />' .
@@ -579,7 +581,7 @@ class installer extends installerBase {
 
 		$allFiles = array();
 		$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
-		
+
 		$donotcopy = array(
 			LIVEUPDATE_SOFTWARE_DIR ."/webEdition/we/include/we_hook/custom_hooks/weCustomHook_delete.inc.php",
 			LIVEUPDATE_SOFTWARE_DIR ."/webEdition/we/include/we_hook/custom_hooks/weCustomHook_publish.inc.php",
@@ -594,12 +596,12 @@ class installer extends installerBase {
 				$text = ((strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text).": -";
 				$message .= "<div>...$text</div>";
 				$success = $liveUpdateFnc->deleteFile($allFiles[$i]);
-			
+
 			} else {
 				$text = basename($allFiles[$i]);
 				$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
 				$message .= "<div>...$text</div>";
-	
+
 				$success = $liveUpdateFnc->moveFile($allFiles[$i], LIVEUPDATE_SOFTWARE_DIR . substr($allFiles[$i], $preLength));
 			}
 		}
@@ -641,6 +643,9 @@ class installer extends installerBase {
 		}
 		if(is_file($delDir . "del.files") && method_exists($liveUpdateFnc, "removeObsoleteFiles")){
 			$liveUpdateFnc->removeObsoleteFiles($delDir);
+		}
+		if(method_exists($liveUpdateFnc, "removeDirOnlineInstaller")){
+			$liveUpdateFnc->removeDirOnlineInstaller();
 		}
 
 		$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/patches/";
@@ -752,9 +757,9 @@ class installer extends installerBase {
 			$NextUpdateDetail = installer::getNextUpdateDetail();
 			if(key_exists($NextUpdateDetail, $GLOBALS['lang']['installer'])) {
 				$message .= "<br /><strong>" . $GLOBALS['lang']['installer'][$NextUpdateDetail] . "</strong>";
-				
+
 			}
-			
+
 			$activateStep = '
 			top.frames["updatecontent"].finishLiInstallerStep("' . $_REQUEST['detail'] . '");
 			top.frames["updatecontent"].activateLiInstallerStep("' . installer::getNextUpdateDetail() . '");';
@@ -784,11 +789,11 @@ class installer extends installerBase {
 	 * @param string $message
 	 * @return string
 	 */
-	function getErrorMessageResponsePart($headline='', $message='') {
+	function getErrorMessageResponsePart($headline='', $message='', $type='') {
 
 		return '
 
-		$errorMessage = ' . installer::getErrorMessage($headline, $message) . ';
+		$errorMessage = ' . installer::getErrorMessage($headline, $message, $type) . ';
 
 		$liveUpdateFnc->insertUpdateLogEntry($errorMessage, "' . (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : $_SESSION['clientVersion']) . '", 1);
 
@@ -838,32 +843,31 @@ class installer extends installerBase {
 	 * @param string $headline
 	 * @return string
 	 */
-	function getErrorMessage($headline='', $message='') {
+	function getErrorMessage($headline='', $message='', $type='') {
 
-		if (!$headline) {
-			$headline = "<br /><strong class=\'errorText\'>" . $GLOBALS['luSystemLanguage']['installer'][$_REQUEST['detail'] . 'Error'] . '</strong>';
+		$headline = !$headline ? "<br /><strong class=\'errorText\'>" . $GLOBALS['luSystemLanguage']['installer'][$_REQUEST['detail'] . 'Error'] . '</strong>' : $headline;
+		$message .= $message ? '<br />\\\n' : '';
 
-		}
+		switch($type){
+			case "notWritableError":
+				$errorMessage = '"<div class=\'errorDiv\'>" . "' . sprintf($GLOBALS['luSystemLanguage']['installer']['fileNotWritableError'], $message) . '" . "</div>\\\n"';
+				break;
 
-		if ($message) {
-			$message .= '<br />\\\n';
-
-		}
-
-		$errorMessage = '"<div class=\'errorDiv\'>"
-				. "' . $headline . '<br />\\\n"
-				. "' . $message . '"
-				. ($GLOBALS["liveUpdateError"]["errorString"] ?	"' . $GLOBALS['luSystemLanguage']['installer']['errorMessage'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorString"] . "</code><br />\\\n"
-				.												"' . $GLOBALS['luSystemLanguage']['installer']['errorIn'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorFile"] . "</code><br />\\\n"
-				. 												"' . $GLOBALS['luSystemLanguage']['installer']['errorLine'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorLine"] . "</code>\\\n"
-															   : "")
-				. "</div>\\\n"';
+			default:
+				$errorMessage = '"<div class=\'errorDiv\'>"
+						. "' . $headline . '<br />\\\n"
+						. "' . $message . '"
+						. ($GLOBALS["liveUpdateError"]["errorString"] ?	"' . $GLOBALS['luSystemLanguage']['installer']['errorMessage'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorString"] . "</code><br />\\\n"
+						.												"' . $GLOBALS['luSystemLanguage']['installer']['errorIn'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorFile"] . "</code><br />\\\n"
+						. 												"' . $GLOBALS['luSystemLanguage']['installer']['errorLine'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorLine"] . "</code>\\\n"
+																	   : "")
+						. "</div>\\\n"';
+			}
 
 		return $errorMessage;
-
 	}
-	
-	
+
+
 	function getDownloadChangesResponse() {
 
 		// current position
@@ -875,99 +879,99 @@ class installer extends installerBase {
 
 		$fileArray = array();
 		$Position = $_REQUEST['position'];
-		
+
 		$Content = updateUtil::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 		$FileSize = strlen($Content);
-			
+
 		// If file is too large to transfer in one request, split it!
 		// when first part(s) are transfered do the next part until complete
 		// file is transfered
-		
+
 		if(		(isset($_REQUEST['part']) && $_REQUEST['part'] > 0)
 			||	$FileSize > $_SESSION['DOWNLOAD_KBYTES_PER_STEP']*1024) {
-				
+
 			// Check which part have to be transfered
 			$Part = isset($_REQUEST['part']) ? $_REQUEST['part'] : 0;
-			
+
 			// get offset and length of the substr from the file
 			$Start = ($Part * $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 			$Length = ($_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
-			
+
 			// filename on the client
 			$Index = $Paths[$Position] . ".part" . $Part;
-			
+
 			// value of the part -> must be base64_encoded
 			$Value = updateUtil::encodeCode(substr($Content, $Start, $Length));
-			
+
 			$fileArray[$Paths[$Position] . ".part" . $Part] = $Value;
-			
+
 			if($Start + $Length >= $FileSize) {
 				if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])) {
 					$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail() );
-			
+
 					// :IMPORTANT:
 					return updateUtil::getResponseString(installer::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent(), $Paths[$Position], $Part));
-				
+
 				} else {
 					$Position++;
 					$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail'] ) . "&position=" . $Position;
-					
+
 					// :IMPORTANT:
 					return updateUtil::getResponseString(installer::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent(), $Paths[$Position-1], $Part));
-					
+
 				}
 
-				
+
 			} else {
 				$Part += 1;
 				$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail'] ) . "&part=" . $Part . "&position=" . $Position;
-				
+
 				// :IMPORTANT:
 				return updateUtil::getResponseString(installer::_getDownloadFilesResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent()));
 
 			}
-			
+
 		// Only whole files	with max. $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] kbytes per step
 		} else {
-			
+
 			$ResponseSize = 0;
 			do {
-				
+
 				if($Position >= sizeof($Paths)) {
 					break;
-					
+
 				}
-				
+
 				$FileSize = filesize($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
-				
+
 				// response + size of next file < max size for response
 				if( $ResponseSize + $FileSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024 ) {
 					$ResponseSize += $FileSize;
-					
+
 					$fileArray[$Paths[$Position]] = updateUtil::getFileContentEncoded($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 					$Position++;
-					
+
 				} else {
 					break;
-					
+
 				}
-				
+
 			} while ( $ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024 );
 
 			if ( $Position >= sizeof($_SESSION['clientChanges']['allChanges']) ) {
 				$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail() );
-		
+
 			} else {
 				$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail'] ) . "&position=$Position";
-			
+
 			}
-	
+
 			// :IMPORTANT:
 			return updateUtil::getResponseString(installer::_getDownloadFilesResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent()));
-			
+
 		}
 
-		
+
 	}
 
 }

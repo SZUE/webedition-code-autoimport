@@ -101,7 +101,7 @@ $lang['update']['confirmRepeatUpdateText'] = 'Sie haben momentan Version&nbsp;%s
 $lang['update']['confirmRepeatUpdateMessage'] = 'Bei einer Update Wiederholung werden alle webEdition Programmdateien durch die Original webEdition Dateien ersetzt. Dieser Vorgang kann unter Umständen einige Zeit in Anspruch nehmen.';
 $lang['update']['finished'] = 'Update abgeschlossen';
 $lang['update']['we51Notification'] = '<h2>Wichtige Informationen vor dem Update!</h2><p>Diese Informationen sind für Sie relevant, wenn Sie von webEdition 5.0 auf Version 5.1 oder höher aktualisieren.</p><ul><li><b>Änderungen an der Benutzeroberfläche:</b> Die Oberfläche wurde verbessert, genaue Informationen entnehmen Sie bitte der <a target="_blank" href="http://documentation.webedition.org/wiki/de/webedition/change-log/version-5/start">Versionshistorie</a>.</li><li><b>Geänderte Systemvoraussetzungen:</b> webEdition benötigt ab Version 5.1 mindestens PHP 4.3. Sie können die auf Ihrem Server installierte PHP Version innerhalb von webEdition über den Menüpunkt Hilfe => Systeminformationen feststellen.</li><li><b>Navigationstool:</b> Ist die Kundenverwaltung installiert, kann es nötig sein, die Zugriffsrechte für Kunden im Navigationstool neu zu setzen. Die Filter wurden vollständig überarbeitet, teilweise können die Einstellungen aus 5.0 beim Update nicht automatisch vollständig übernommen werden.</li></ul>';
-$lang['update']['spenden'] = 'Diese webEdition Version wurde ermöglicht durch die Arbeit des gemeinnützigen webEdition e.V. Unterstützen Sie die kostenlose und freiwillige Arbeit der der Vereins- und Community-Mitglieder. 
+$lang['update']['spenden'] = 'Diese webEdition Version wurde ermöglicht durch die Arbeit des gemeinnützigen webEdition e.V. Unterstützen Sie die kostenlose und freiwillige Arbeit der der Vereins- und Community-Mitglieder.
 <br>Ermöglichen Sie durch Ihre Spende, dass:<ul>
 <li>der webEdition e.V. professionelle Entwickler einstellen kann</li>
 <li>die Beseitigung von Fehlern sowie die Entwicklung<br>
@@ -195,6 +195,7 @@ $luSystemLanguage['installer']['tableExists'] = 'Tabelle existiert bereits';
 $luSystemLanguage['installer']['tableChanged'] = 'Tabelle wurde aktualisiert';
 $luSystemLanguage['installer']['entryAlreadyExists'] = 'Einträge sind schon vorhanden';
 $luSystemLanguage['installer']['errorExecutingQuery'] = 'Einige Datenbankanfragen konnten nicht durchgeführt werden.';
+$luSystemLanguage['installer']['fileNotWritableError'] = 'Auf folgende Datei kann nicht schreibend zugegriffen werden:<br />\\\n<code class=\\\\\"errorText\\\\\">%s</code><br />\\\nDa webEdition die Zugriffsrechte der Datei nicht anpassen konnte, machen Sie dies bitte manuell auf Ihrem Server. Danach klicken Sie zum Fortsetzen der Installation auf \\\\\"Neu laden\\\\\".';
 
 $luSystemLanguage['register']['registrationError'] = 'Bei der Registrierung trat ein Fehler auf';
 $luSystemLanguage['register']['finished'] = 'Registrierung abgeschlossen';
