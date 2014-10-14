@@ -172,7 +172,7 @@ class we_listview_document extends we_listview_base{
 			$this->contentTypes = str_replace(array('img', 'wepage', 'binary'), array(we_base_ContentTypes::IMAGE, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::APPLICATION), $this->contentTypes);
 			$CtArr = makeArrayFromCSV($this->contentTypes);
 			foreach($CtArr as $ct){
-				$sql_tail .= ' AND ' . FILE_TABLE . '.ContentType = "' . $this->DB_WE->escape($ct) . '"';
+				$sql_tail .= ' AND ' . FILE_TABLE . '.ContentType="' . $this->DB_WE->escape($ct) . '"';
 			}
 		}
 		if(defined('CUSTOMER_FILTER_TABLE')){
