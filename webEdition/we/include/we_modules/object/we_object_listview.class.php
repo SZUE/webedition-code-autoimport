@@ -121,7 +121,7 @@ class we_object_listview extends we_listview_base{
 		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", true, $this->categoryids) : '');
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName, $this->classID) :
+				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName, $this->classID, $id) :
 				'');
 
 		$webUserID_tail = '';
@@ -148,8 +148,8 @@ class we_object_listview extends we_listview_base{
 				if($this->workspaceID != ''){
 					$workspaces = makeArrayFromCSV($this->workspaceID);
 					$cond = array();
-					foreach($workspaces as $id){
-						$workspace = id_to_path($id, OBJECT_FILES_TABLE, $this->DB_WE);
+					foreach($workspaces as $wid){
+						$workspace = id_to_path($wid, OBJECT_FILES_TABLE, $this->DB_WE);
 						$cond[] = $_obxTable . '.OF_Path LIKE "' . $workspace . '/%"';
 						$cond[] = $_obxTable . '.OF_Path="' . $workspace . '"';
 					}
@@ -396,7 +396,7 @@ class we_object_listview extends we_listview_base{
 					if(!$this->triggerID && $this->DB_WE->Record['OF_TriggerID'] != 0){
 						$path_parts = pathinfo(id_to_path($this->DB_WE->f('OF_TriggerID')));
 					}
-					$this->DB_WE->Record['we_WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
+					$this->DB_WE->Record['we_WE_PATH'] = ($path_parts && $path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 						(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 							'' :
 							$path_parts['filename'] . '/' ) .
