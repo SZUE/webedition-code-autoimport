@@ -54,11 +54,11 @@ class we_users_user{
 		'PLZ' => we_base_request::STRING, //leading 0
 		'State' => we_base_request::STRING,
 		'Country' => we_base_request::STRING,
-		'Tel_preselection' => we_base_request::STRING,
-		'Telephone' => we_base_request::STRING,
-		'Fax' => we_base_request::STRING,
-		'Fax_preselection' => we_base_request::STRING,
-		'Handy' => we_base_request::STRING,
+		'Tel_preselection' => we_base_request::STRINGC,
+		'Telephone' => we_base_request::STRINGC,
+		'Fax' => we_base_request::STRINGC,
+		'Fax_preselection' => we_base_request::STRINGC,
+		'Handy' => we_base_request::STRINGC,
 		'Email' => we_base_request::EMAIL,
 		'username' => we_base_request::STRING,
 		'passwd' => we_base_request::STRING,
@@ -2439,7 +2439,7 @@ top.content.hloaded=1;') .
 		$fields = array('ParentID');
 		foreach($workspaces as $cur){
 			$fields[] = $cur['key'];
-			$fields[] = ($onlyParent ? '1 AS ' : '') . $cur['parentKey'];
+			$fields[] = $cur['parentKey'];
 		}
 		$fields = implode(',', $fields);
 
