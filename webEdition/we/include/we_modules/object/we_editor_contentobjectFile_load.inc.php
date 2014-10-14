@@ -21,7 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 we_html_tools::protect();
 require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 //
@@ -75,53 +74,52 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 </head>
 
 <body><?php
+switch($cmd){
+	case "object_reload_entry_at_object":
+	case 'object_up_meta_at_object':
+	case 'object_down_meta_at_object':
+	case 'object_insert_meta_at_object':
+	case 'object_delete_meta_at_object':
+	case 'object_change_objectlink':
+	case 'object_remove_image_at_object':
+	case 'object_delete_link_at_object':
+	case 'object_change_link_at_object':
+		$temp = explode("_", $identifier);
+		$type = array_shift($temp);
+		$name = implode("_", $temp);
 
-	switch($cmd){
-		case "object_reload_entry_at_object":
-		case 'object_up_meta_at_object':
-		case 'object_down_meta_at_object':
-		case 'object_insert_meta_at_object':
-		case 'object_delete_meta_at_object':
-		case 'object_change_objectlink':
-		case 'object_remove_image_at_object':
-		case 'object_delete_link_at_object':
-		case 'object_change_link_at_object':
-			$temp = explode("_", $identifier);
-			$type = array_shift($temp);
-			$name = implode("_", $temp);
+		$db = new DB_WE();
+		$table = OBJECT_FILES_TABLE;
+		switch($cmd){
+			case 'object_insert_meta_at_object':
+				$we_doc->addMetaToObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
+				break;
+			case "object_delete_meta_at_object":
+				$we_doc->removeMetaFromObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
+				break;
+			case "object_down_meta_at_object":
+				$we_doc->downMetaAtObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
+				break;
+			case "object_up_meta_at_object":
+				$we_doc->upMetaAtObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
+				break;
+			case "object_change_objectlink":
+				$we_doc->i_getLinkedObjects();
+				break;
+			case "object_remove_image_at_object":
+				$we_doc->remove_image($name);
+				break;
+			case "object_delete_link_at_object":
+				if(isset($we_doc->elements[$name])){
+					unset($we_doc->elements[$name]);
+				}
+				break;
+			case "object_change_link_at_object":
+				$we_doc->changeLink($name);
+				break;
+		}
 
-			$db = new DB_WE();
-			$table = OBJECT_FILES_TABLE;
-			switch($cmd){
-				case "object_insert_meta_at_object":
-					$we_doc->addMetaToObject($name, we_base_request::_(we_base_request::INT,'we_cmd',0,3));
-					break;
-				case "object_delete_meta_at_object":
-					$we_doc->removeMetaFromObject($name, we_base_request::_(we_base_request::INT,'we_cmd',0,3));
-					break;
-				case "object_down_meta_at_object":
-					$we_doc->downMetaAtObject($name, we_base_request::_(we_base_request::INT,'we_cmd',0,3));
-					break;
-				case "object_up_meta_at_object":
-					$we_doc->upMetaAtObject($name, we_base_request::_(we_base_request::INT,'we_cmd',3));
-					break;
-				case "object_change_objectlink":
-					$we_doc->i_getLinkedObjects();
-					break;
-				case "object_remove_image_at_object":
-					$we_doc->remove_image($name);
-					break;
-				case "object_delete_link_at_object":
-					if(isset($we_doc->elements[$name])){
-						unset($we_doc->elements[$name]);
-					}
-					break;
-				case "object_change_link_at_object":
-					$we_doc->changeLink($name);
-					break;
-			}
-
-			$content = '
+		$content = '
 <div id="' . $identifier . '">
 	<a name="f' . $identifier . '"></a>
 	<table cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -134,15 +132,15 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	</table>
 </div>';
 
-			echo $jsGUI->getResponse('reload', $identifier, $content);
+		echo $jsGUI->getResponse('reload', $identifier, $content);
 
-			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-			break;
+		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
+		break;
 
-		default:
-			break;
-	}
-	?>
+	default:
+		break;
+}
+?>
 
 </body>
 
