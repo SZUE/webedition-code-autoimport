@@ -62,13 +62,13 @@ $userdata = getHash('SELECT UseSalt, passwd, username, LoginDenied, ID FROM ' . 
 
 // only if username exists !!
 if(!$userdata || (!we_users_user::comparePasswords($userdata['UseSalt'], $_POST['WE_LOGIN_username'], $userdata['passwd'], $_POST['WE_LOGIN_password']))){
-	session_destroy();
+	we_base_sessionHandler::makeNewID(true);
 	return;
 }
 
 if($userdata['LoginDenied']){ // userlogin is denied
 	$GLOBALS['userLoginDenied'] = true;
-	session_destroy();
+	we_base_sessionHandler::makeNewID(true);
 	return;
 }
 
