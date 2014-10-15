@@ -35,7 +35,7 @@ header('Pragma: ', true);
 .weSelect {
 border: #AAAAAA solid 1px;
 color: black;
-box-sizing: border-box;<?php /*NOTE: FF doesn't know this*/?>
+box-sizing: border-box;<?php /* NOTE: FF doesn't know this */ ?>
 font-size: <?php echo (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
@@ -134,15 +134,32 @@ max-width:50em;
 
 .npdefaultfont {
 color: red;
-font-size: <?php echo (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
+font-size: <?php echo (we_base_browserDetect::isMAC() ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12)); ?>px;
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
 
 .changeddefaultfont {
 color: blue;
-font-size: <?php echo (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
+font-size: <?php echo (we_base_browserDetect::isMAC() ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12)); ?>px;
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
+
+.changed, a.changed{ /*elements which are saved & published*/
+color: #3366CC;
+cursor: pointer;
+}
+.changed a {
+text-decoration:none;
+}
+.notpublished, a.notpublished {
+color: red;
+cursor: pointer;
+}
+.notpublished a{
+text-decoration:none;
+}
+
+
 
 .npdefaultfont a {
 color: red;
