@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_importFiles extends we_fileupload_base{
-	private $jsRequirementsOk = false;
+	private $jsRequirementsOk = false;//obsolete
 	protected $dimensions = array(
 		'width' => 400,
 		'dragHeight' => 30,
