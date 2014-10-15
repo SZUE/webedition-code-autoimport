@@ -67,7 +67,7 @@ if($tool === "weSearch"){
 	if(($cmd1 = we_base_request::_(we_base_request::STRINGC, 'we_cmd', false, 1))){
 		$_SESSION['weS']['weSearch']["keyword"] = $cmd1;
 	}
-	//look which search is activ
+	//look which search is active
 	switch(($cmd2 = we_base_request::_(we_base_request::TABLE, 'we_cmd', "", 2))){//FIXME: bad to have different types at one query
 		case FILE_TABLE:
 			$tab = 1;
