@@ -37,7 +37,7 @@ class we_import_files{
 	var $quality = 8;
 	var $degrees = 0;
 	var $categories = '';
-	private $jsRequirementsOk = false;
+	private $jsRequirementsOk = false;//obsolete: we use browserdetection now
 	private $isWeFileupload = false;
 	private $maxUploadSizeMB = 8;
 	private $maxUploadSizeB = 0;
@@ -81,7 +81,7 @@ class we_import_files{
 		$this->fileNameTemp = we_base_request::_(we_base_request::FILE, "weFileNameTemp", '');
 		$this->maxUploadSizeMB = defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 8; //FIMXE: 8???
 		$this->maxUploadSizeB = $this->maxUploadSizeMB * 1048576;
-		$this->isWeFileupload = $this->jsRequirementsOk && !(defined('FILE_UPLOAD_USE_LEGACY') && FILE_UPLOAD_USE_LEGACY);
+		$this->isWeFileupload = !we_fileupload_base::isFallback() && !we_fileupload_base::isLegacyMode();
 	}
 
 	function getHTML(){
@@ -434,7 +434,7 @@ function setApplet() {
 		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') .
 			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
 			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl]"), $maxsize), we_html_tools::TYPE_INFO, 520, false)) .
-			((we_fileupload_base::isFallback() || !$this->jsRequirementsOk) && !we_fileupload_base::isLegacyMode() ? we_html_element::htmlDiv(array('id' => 'desc', 'style' => 'margin-top: 4px;'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[fallback_text]"), we_html_tools::TYPE_ALERT, 520, false)) : '') .
+			(we_fileupload_base::isFallback() && !we_fileupload_base::isLegacyMode() ? we_html_element::htmlDiv(array('id' => 'desc', 'style' => 'margin-top: 4px;'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[fallback_text]"), we_html_tools::TYPE_ALERT, 520, false)) : '') .
 			we_html_element::htmlDiv(array('id' => 'descJupload', 'style' => 'display:none;'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl_jupload]"), $maxsize), we_html_tools::TYPE_INFO, 520, false));
 
 
@@ -614,7 +614,7 @@ function cancel() {
 		top.close();
 	}
 }
-		' . ((FILE_UPLOAD_USE_LEGACY || !$this->jsRequirementsOk) ? $this->_getJsFnNextLegacy($formcount, $formcount) : "
+		' . ((we_fileupload_base::isFallback() || we_fileupload_base::isLegacyMode()) ? $this->_getJsFnNextLegacy($formcount, $formcount) : "
 function next() {
 	var cf = top.imgimportcontent;
 
