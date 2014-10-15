@@ -36,8 +36,6 @@ class we_modules_tree extends weMainTree{
 			'.item a { text-decoration:none;}',
 			'.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? '11px' : '9px')) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
 			'.group a { text-decoration:none;}',
-			'.notpublished {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}',
-			'.notpublished a { text-decoration:none;}',
 			'.selected_item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
 			'.selected_item a { text-decoration:none;}',
 			'.selected_notpublished_item {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',

@@ -2135,19 +2135,27 @@ function calendarSetup(x){
 		$resultCount = count($_result);
 
 		for($f = 0; $f < $resultCount; $f++){
-			$fontColor = "black";
+			$fontColor = '';
 			$showPubCheckbox = true;
 			if(isset($_result[$f]["Published"])){
-				$published = ((($_result[$f]["Published"] != 0) && ($_result[$f]["Published"] < $_result[$f]["ModDate"]) && ($_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] === "objectFile")) ? -1 : $_result[$f]["Published"]);
-				if($_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] === "objectFile" || $_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
-					if($published == 0){
-						$fontColor = "red";
-						$showPubCheckbox = false;
-					} elseif($published == -1){
-						$fontColor = "#3366CC";
-						$showPubCheckbox = false;
-					}
+				switch($_result[$f]["ContentType"]){
+					case we_base_ContentTypes::HTML:
+					case we_base_ContentTypes::WEDOCUMENT:
+					case "objectFile":
+						$published = ((($_result[$f]["Published"] != 0) && ($_result[$f]["Published"] < $_result[$f]["ModDate"])) ? -1 : $_result[$f]["Published"]);
+						if($published == 0){
+							$fontColor = 'notpublished';
+							$showPubCheckbox = false;
+						} elseif($published == -1){
+							$fontColor = 'changed';
+							$showPubCheckbox = false;
+						}
+						break;
+					default:
+						$published = $_result[$f]["Published"];
 				}
+			} else {
+				$published = 1;
 			}
 			$ext = isset($_result[$f]["Extension"]) ? $_result[$f]["Extension"] : "";
 			$Icon = we_base_ContentTypes::getIcon($_result[$f]["ContentType"], we_base_ContentTypes::FILE_ICON, $ext);
@@ -2217,10 +2225,10 @@ function calendarSetup(x){
 				$content[$f] = array(
 					array("dat" => we_html_tools::getPixel(20, 1) . $publishCheckbox),
 					array("dat" => '<img src="' . TREE_ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
-					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';"  title="' . $_result[$f]["Text"] . '"><u>' . $_result[$f]["Text"]),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]["Path"] . '"><u>' . $_result[$f]["Text"]),
 					array("dat" => $_result[$f]["SiteTitle"]),
-					array("dat" => $checkTable = isset($_result[$f]["VersionID"]) && $_result[$f]["VersionID"] ? "-" : ($_result[$f]["CreationDate"] ? date(
-								g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-")),
+					array("dat" => isset($_result[$f]["VersionID"]) && $_result[$f]["VersionID"] ? "-" : ($_result[$f]["CreationDate"] ? date(
+									g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-")),
 					array("dat" => ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-")),
 				);
 			} else {
@@ -2296,14 +2304,14 @@ function calendarSetup(x){
 				$content[$f] = array(
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageView . '</a>'),
 					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 17)),
-					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';" class="middlefont" title="' . $_result[$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result[$f]["Text"], 20) . '</u></a>'),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . $_result[$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result[$f]["Text"], 20) . '</u></a>'),
 					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
 					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-") . '</nobr>'),
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageViewPopup . '</a>'),
 					array("dat" => $filesize),
 					array("dat" => $imagesize[0] . " x " . $imagesize[1]),
 					array("dat" => we_util_Strings::shortenPath(g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']'), 22)),
-					array("dat" => '<span style="color:' . $fontColor . ';">' . we_util_Strings::shortenPath($_result[$f]["Text"], 30) . '</span>'),
+					array("dat" => '<span class="' . $fontColor . '">' . we_util_Strings::shortenPath($_result[$f]["Text"], 30) . '</span>'),
 					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 45)),
 					array("dat" => we_util_Strings::shortenPath($_result[$f]["Description"], 100)),
 					array("dat" => $_result[$f]['ContentType']),
