@@ -1507,7 +1507,7 @@ var weFileUpload = (function(){
 					case this.STATE_PREVIEW_NOK:
 						this.setDisplay('fileInputWrapper', 'none');
 						this.setDisplay('divBtnReset', '');
-						_.controller.setWeButtonState('reset_btn', false);
+						_.controller.setWeButtonState('reset_btn', true);
 						_.controller.setWeButtonState(_.view.uploadBtnName, false);
 						return;
 					case this.STATE_UPLOAD:
