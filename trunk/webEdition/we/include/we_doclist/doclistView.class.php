@@ -1242,7 +1242,7 @@ class doclistView{
 		$anzahl = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
 		$order = we_base_request::_(we_base_request::STRING, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->order : '', 'order');
-		$mode = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->mode : '', 'mode');
+		$mode = we_base_request::_(we_base_request::BOOL, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->mode : '', 'mode');
 		$setView = we_base_request::_(we_base_request::INT, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->setView : '', 'setView');
 		$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->anzahl : '', 'anzahl');
 		$id = we_base_request::_(we_base_request::INT, 'id', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->ID : '');
