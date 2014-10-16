@@ -493,10 +493,7 @@ class we_document extends we_root{
 			return;
 		}
 		$listarray = unserialize($list);
-		$newPos = $nr - $number;
-		if($newPos < 0){
-			$newPos = 0;
-		}
+		$newPos = max($nr - $number, 0);
 		$temp = $listarray[$newPos];
 		$listarray[$newPos] = $listarray[$nr];
 		$listarray[$nr] = $temp;
@@ -510,10 +507,7 @@ class we_document extends we_root{
 			return;
 		}
 		$listarray = unserialize($list);
-		$newPos = $nr + $number;
-		if($newPos > count($listarray) - 1){
-			$newPos = count($listarray) - 1;
-		}
+		$newPos = min($nr + $number, count($listarray) - 1);
 		$temp = $listarray[$newPos];
 		$listarray[$newPos] = $listarray[$nr];
 		$listarray[$nr] = $temp;
