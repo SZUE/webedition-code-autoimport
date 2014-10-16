@@ -89,14 +89,9 @@ class we_textDocument extends we_document{
 				return $doc;
 			}
 			$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
-			foreach($matches as $match){
-				$path = id_to_path($match, FILE_TABLE, $GLOBALS['DB_WE']);
-				if($urlReplace){
-					$cnt = 0;
-					$http = preg_replace($urlReplace, array_keys($urlReplace), $path, -1, $cnt);
-					$path = ($cnt ? 'http:' : getServerUrl()) . $http;
-				}
-				$doc = str_replace('#WE:' . $match . '#', $path, $doc);
+			$paths = id_to_path($matches, FILE_TABLE, $GLOBALS['DB_WE'], false, true);
+			foreach($paths as $match => $path){
+				$doc = str_replace('#WE:' . $match . '#', ($urlReplace ? preg_replace($urlReplace, array_keys($urlReplace), $path) : $path), $doc);
 			}
 		}
 		return $doc;
