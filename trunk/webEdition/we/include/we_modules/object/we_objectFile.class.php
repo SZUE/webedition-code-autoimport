@@ -1864,7 +1864,7 @@ class we_objectFile extends we_document{
 					return '';
 				}
 			case self::TYPE_META:
-				if(!$this->DefArray){
+				if(!$this->DefArray||!is_array($this->DefArray)){
 					$this->DefArray = $this->getDefaultValueArray();
 				}
 				$vals = $this->DefArray["meta_" . $t]["meta"];
