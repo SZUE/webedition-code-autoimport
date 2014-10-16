@@ -489,8 +489,8 @@ function weonsubmit() {
 	<tr' . $show_accessible_class . '>
 		<td colspan="2">' . we_html_tools::getPixel(110, 10) . '</td>
 	</tr>
-	<tr' . $show_accessible_class . '>
-		<td class="defaultgray" valign="top">' . g_l('wysiwyg', '[title]') . '</td>
+	<tr>
+		<td class="defaultgray" valign="top" width="100">' . g_l('wysiwyg', '[title]') . '</td>
 		<td>' . $_title . '</td>
 	</tr>
 	<tr' . $show_accessible_class . '>
