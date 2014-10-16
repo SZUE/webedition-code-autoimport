@@ -66,10 +66,10 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$we_doc->insertEntryAtList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::STRINGC, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 1, 3));
 		break;
 	case 'up_entry_at_list':
-		$we_doc->upEntryAtList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::STRINGC, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 1, 3));
+		$we_doc->upEntryAtList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::STRINGC, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 1, 4));
 		break;
 	case 'down_entry_at_list':
-		$we_doc->downEntryAtList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::STRINGC, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 1, 3));
+		$we_doc->downEntryAtList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::STRINGC, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 1, 4));
 		break;
 	case 'up_link_at_list':
 		$we_doc->upEntryAtLinklist(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2));
