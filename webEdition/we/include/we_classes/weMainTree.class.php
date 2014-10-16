@@ -79,16 +79,13 @@ class weMainTree extends weTree{
 	}
 
 	function getJSOpenClose(){
-
 		return '
 function openClose(id) {
-
-	if(id=="") return;
+	if(id==""){
+		return;
+	}
 	var eintragsIndex = indexOfEntry(id);
-	var status;
-
-	if(treeData[eintragsIndex].open==0) openstatus=1;
-	else openstatus=0;
+	var openstatus = (treeData[eintragsIndex].open==0 ? 1:0);
 	treeData[eintragsIndex].open=openstatus;
 	if(openstatus && treeData[eintragsIndex].loaded!=1){
 		we_cmd("loadFolder",top.treeData.table,treeData[eintragsIndex].id);
@@ -97,7 +94,9 @@ function openClose(id) {
 		we_cmd("closeFolder",top.treeData.table,treeData[eintragsIndex].id);
 		drawTree();
 	}
-	if(openstatus==1) treeData[eintragsIndex].loaded=1;
+	if(openstatus==1){
+		treeData[eintragsIndex].loaded=1;
+	}
 }';
 	}
 
