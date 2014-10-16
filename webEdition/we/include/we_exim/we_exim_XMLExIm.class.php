@@ -123,6 +123,7 @@ class we_exim_XMLExIm{
 			case 'weNavigationRule':
 				return NAVIGATION_RULE_TABLE;
 			case 'we_thumbnailEx':
+			case 'we_thumbnail':
 				return THUMBNAILS_TABLE;
 			case 'weBinary':
 				return '';
@@ -215,7 +216,7 @@ class we_exim_XMLExIm{
 		$encoding = ($encoding ? $encoding : $GLOBALS['WE_BACKENDCHARSET']);
 
 		return '<?xml version="1.0" encoding="' . $encoding . '" standalone="yes"?>' . "\n" .
-			we_backup_backup::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
+				we_backup_backup::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
 	}
 
 	static function getFooter(){
