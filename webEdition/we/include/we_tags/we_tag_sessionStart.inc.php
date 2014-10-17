@@ -60,9 +60,8 @@ function we_tag_sessionStart($attribs){
 					'registered' => false
 				);
 			}
-			if(!$_SESSION['webuser']['registered'] && isset($_REQUEST['s']['Username']) && isset($_REQUEST['s']['Password']) && !(isset($_REQUEST['s']['ID']))
-				&&!isset($_REQUEST['s']['Password2'])//if set, we assume it is a password reset or use of an forgotten password routine, so we don't try to do an login
-				){
+			if(!$_SESSION['webuser']['registered'] && isset($_REQUEST['s']['Username']) && isset($_REQUEST['s']['Password']) && !(isset($_REQUEST['s']['ID'])) && !isset($_REQUEST['s']['Password2'])//if set, we assume it is a password reset or use of an forgotten password routine, so we don't try to do an login
+			){
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND LoginDate < DATE_SUB(NOW(), INTERVAL ' . we_base_constants::LOGIN_FAILED_HOLDTIME . ' DAY)');
 				$hook = new weHook('customer_preLogin', '', array('customer' => &$_REQUEST['s'], 'type' => 'normal', 'tagname' => 'sessionStart'));
 				$hook->executeHook();
@@ -133,6 +132,9 @@ function wetagsessionHandleFailedLogin(){
 		we_users_user::logLoginFailed('tblWebUser', $_REQUEST['s']['Username']);
 	}
 	sleep(SECURITY_DELAY_FAILED_LOGIN);
+	//make it harder to guess salt/password
+	usleep(rand(0, 1000000));
+
 
 	if(
 		intval(f('SELECT COUNT(1)  FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||

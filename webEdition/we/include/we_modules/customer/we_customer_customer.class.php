@@ -295,8 +295,9 @@ class we_customer_customer extends weModelBase{
 	}
 
 	function clearSessionVars(){
-		if(isset($_SESSION['weS']['customer_session']))
+		if(isset($_SESSION['weS']['customer_session'])){
 			unset($_SESSION['weS']['customer_session']);
+		}
 	}
 
 	static function customerNameExist($name, we_database_base $db = null){
