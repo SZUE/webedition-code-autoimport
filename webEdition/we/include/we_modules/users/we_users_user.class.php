@@ -2541,18 +2541,21 @@ top.content.hloaded=1;') .
 		return ($passwd === $storedPassword);
 	}
 
-	static function makeSaltedPassword(&$useSalt, $username, $passwd, $strength = 15){
-		$WE_SALTCHARS = './0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$passwd = substr($passwd, 0, 64);
-		$passwd = substr($passwd, 0, 64);
-		if(version_compare(PHP_VERSION, '5.3.7') >= 0){
-			$salt = '$2y$' . sprintf('%02d', $strength) . '$';
-			for($i = 0; $i <= 21; $i++){
+	public static function getHashIV($len){
+		static $WE_SALTCHARS = './0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$salt='';
+		for($i = 0; $i < $len; $i++){
 				$tmp_str = str_shuffle($WE_SALTCHARS);
 				$salt .= $tmp_str[0];
 			}
+		return $salt;
+	}
+
+	public static function makeSaltedPassword(&$useSalt, $username, $passwd, $strength = 15){
+		$passwd = substr($passwd, 0, 64);
+		if(version_compare(PHP_VERSION, '5.3.7') >= 0){
 			$useSalt = self::SALT_CRYPT;
-			return crypt($passwd, $salt);
+			return crypt($passwd, '$2y$' . sprintf('%02d', $strength) . '$'.self::getHashIV(22));
 		} else {
 			$useSalt = self::SALT_MD5;
 			return md5($passwd . md5($username));
