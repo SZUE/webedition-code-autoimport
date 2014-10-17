@@ -95,12 +95,20 @@ function we_condition_tag_block(&$block){
 }
 
 function we_tag_block($attribs){
+	$origName = weTag_getAttribute('_name_orig', $attribs);
 	$name = weTag_getAttribute('name', $attribs);
 	$showselect = weTag_getAttribute('showselect', $attribs, true, true);
 	$start = weTag_getAttribute('start', $attribs);
 	$limit = weTag_getAttribute('limit', $attribs);
 
-	$list = (isset($GLOBALS['lv'])) ? $GLOBALS['lv']->f($name) : $GLOBALS['we_doc']->getElement($name);
+	if(isset($GLOBALS['lv'])){
+		if(!$list = $GLOBALS['lv']->f($name)){
+			$list = $GLOBALS['lv']->f($origName);
+			$name = $origName;
+		}
+	} else {
+		$list = $GLOBALS['we_doc']->getElement($name);
+	}
 
 	if($list && is_string($list) && $list{0} === 'a'){
 		$list = unserialize($list);
