@@ -59,7 +59,7 @@ function we_isVarSet($name, $orig, $type, $docAttr, $property = false, $formname
 			if($property){
 				return isset($doc->$name) || isset($doc->orig);
 			}
-			if($type === 'href' && $doc->getElement($name . we_base_link::MAGIC_INT_LINK) == 0){
+			if($type === 'href' && $doc->getElement($name . we_base_link::MAGIC_INT_LINK, 'dat', -1) == 0){
 				return isset($doc->elements[$name . we_base_link::MAGIC_INT_LINK_PATH]['dat']);
 			}
 			if(isset($doc->elements[$name])){
@@ -67,13 +67,15 @@ function we_isVarSet($name, $orig, $type, $docAttr, $property = false, $formname
 					case 'checkbox_feld':
 						return intval($doc->getElement($name)) != 0;
 					case 'img':
-					case 'href':
 						return intval($doc->getElement($name, 'bdid')) != 0;
+					case 'href'://can be serialized
+						return intval($doc->getElement($name, 'bdid')) != 0 || $doc->getElement($name, 'dat');
 					default:
 						return isset($doc->elements[$name]['dat']);
 				}
 			}
 	}
+	return false;
 }
 
 function we_tag_ifVarSet($attribs){
