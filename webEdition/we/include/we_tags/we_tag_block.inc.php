@@ -102,7 +102,7 @@ function we_tag_block($attribs){
 	$limit = weTag_getAttribute('limit', $attribs);
 
 	if(isset($GLOBALS['lv'])){
-		if(!$list = $GLOBALS['lv']->f($name)){
+		if(!($list = $GLOBALS['lv']->f($name))){
 			$list = $GLOBALS['lv']->f($origName);
 			$name = $origName;
 		}
