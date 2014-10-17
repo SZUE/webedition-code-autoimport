@@ -386,7 +386,7 @@ class we_customer_customer extends weModelBase{
 		$data = substr($data, strlen($matches[0]));
 		switch($matches[1]){
 			case '-1':
-				$matches[3] = hex2bin($data);
+				$data = hex2bin($data);
 			case '-1a':
 				if(function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
 					mcrypt_generic_init($res, hex2bin($key), hex2bin($matches[2]));
