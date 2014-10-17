@@ -291,8 +291,11 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 	'seoinside_hideinwebedition'=>'In der Vorschau unterdrücken',
 	
 	'session'=>array(
-		'crypt'=>'Sitzung für jeden Benutzer transparent verschlüsseln',
-		'information'=>'webEdition kann selbst die Verwaltung von php-Sessions übernehmen. Die Sitzungen werden dann in der Datenbank gespeichert. Zusätzlich besteht die Möglichkeit die Sitzungsdaten pro Sitzung transparent zu verschlüsseln (empfohlen). Beachten Sie daß jede Änderung der Einstellungen hier ALLE angemeldeten Benutzer UND Kunden aus dem System wirft!',
+		'crypt'=>array(
+			'alert'=>'Bitte beachten Sie, daß durch das Ändern dieser Option alle Benutzer und Kunden vom System abgemeldet werden!',
+			'title'=>'Sitzung für jeden Benutzer verschlüsseln',
+		),
+		'information'=>'webEdition kann selbst die Verwaltung von php-Sessions übernehmen. Die Sitzungen werden dann in der Datenbank gespeichert. Zusätzlich besteht die Möglichkeit die Sitzungsdaten pro Sitzung transparent oder per zusätzlichem Cookie zu verschlüsseln (empfohlen). Beachten Sie daß jede Änderung der Einstellungen hier ALLE angemeldeten Benutzer UND Kunden aus dem System wirft!',
 		'time'=>'Gültigkeit der Sitzung in Sekunden',
 		'title'=>'WE-Sessionmanagement',
 	),
