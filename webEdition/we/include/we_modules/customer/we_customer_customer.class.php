@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_customer_customer extends weModelBase{
-
 	const NOPWD_CHANGE = '__WE__PWD_NO_CHANGE';
 	const ENCRYPT_NONE = 0;
 	const ENCRYPT_SYMMETRIC = 1;
@@ -318,7 +316,7 @@ class we_customer_customer extends weModelBase{
 	function getFieldset(){
 		$result = array();
 		$fields = $this->getFieldsDbProperties();
-		foreach($fields as $k => $v){
+		foreach(array_keys($fields) as $k){
 			if(!$this->isProtected($k)){
 				$result[] = $k;
 			}
@@ -338,9 +336,9 @@ class we_customer_customer extends weModelBase{
 				return self::cryptData($pass);
 			case self::ENCRYPT_HASH:
 				$useSalt = 0;
-				$pwd = we_users_user::makeSaltedPassword($useSalt, '', $pass, 8);
+				$pwd = we_users_user::makeSaltedPassword($useSalt, '', $pass, 10);
 				return ($useSalt != we_users_user::SALT_CRYPT ?
-								$pass : $pwd);
+						$pass : $pwd);
 		}
 	}
 
