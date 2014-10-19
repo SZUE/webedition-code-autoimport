@@ -298,10 +298,6 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		do{
 			$c++;
 
-<<<<<<< .mine
-			$newname = ($object->ClassName === "we_docTypes" || $object->ClassName === "weNavigationRule" || $object->ClassName === "we_thumbnailEx" ?
-					$object->$prop : basename($object->$prop));
-=======
 			switch($object->ClassName){
 				case "we_docTypes" :
 				case "weNavigationRule":
@@ -312,7 +308,6 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				default:
 					$newname = basename($object->$prop);
 			}
->>>>>>> .r8428
 
 			if($newid){
 				$newname = $c . "_" . $newname;
