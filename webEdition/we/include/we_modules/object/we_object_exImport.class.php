@@ -60,6 +60,7 @@ class we_object_exImport extends we_object{
 			);
 
 			$this->SerializedArray = unserialize($this->DefaultValues);
+			$this->SerializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : array();
 
 			$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
 			foreach($this->SerializedArray as $key => $value){
@@ -97,6 +98,7 @@ class we_object_exImport extends we_object{
 			////// resave the line O to O.....
 		} else {
 			$this->SerializedArray = unserialize($this->DefaultValues);
+			$this->SerializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : array();
 
 			$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
 			$tableInfo = $this->DB_WE->metadata($ctable, true);
@@ -108,8 +110,9 @@ class we_object_exImport extends we_object{
 			foreach($this->SerializedArray as $fieldname => $value){
 
 				$arr = explode('_', $fieldname);
-				if(!isset($arr[0]))
+				if(!isset($arr[0])){
 					continue;
+				}
 
 				$fieldtype = $this->getFieldType($arr[0]);
 				$len = (isset($value['length']) ? $value['length'] : 0);

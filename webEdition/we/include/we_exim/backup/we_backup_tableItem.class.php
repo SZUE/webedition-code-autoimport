@@ -30,7 +30,7 @@
  */
 class we_backup_tableItem extends weModelBase{
 
-	var $Pseudo = 'we_backup_tableItem';
+	var $Pseudo = __CLASS__;
 	var $attribute_slots = array();
 
 	function __construct($table){
