@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -75,10 +76,10 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$we_doc->insertEntryAtList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::STRINGC, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 1, 3));
 		break;
 	case 'up_entry_at_list':
-		$we_doc->upEntryAtList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::STRINGC, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 1, 3));
+		$we_doc->upEntryAtList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::STRINGC, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 1, 4));
 		break;
 	case 'down_entry_at_list':
-		$we_doc->downEntryAtList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::STRINGC, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 1, 3));
+		$we_doc->downEntryAtList(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::STRINGC, 'we_cmd', 0, 2), we_base_request::_(we_base_request::INT, 'we_cmd', 1, 4));
 		break;
 	case 'up_link_at_list':
 		$we_doc->upEntryAtLinklist(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2));
@@ -262,7 +263,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 //	if document is locked - only Preview mode is possible. otherwise show warning.
 $_userID = $we_doc->isLockedByUser();
 if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // document is locked
-	if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)&& !$we_doc instanceof we_template){
+	if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs) && !$we_doc instanceof we_template){
 		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_PREVIEW;
 		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
 	} else {
@@ -293,8 +294,8 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 		$we_doc->resetUsedElements();
 	}
 	include((substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT']) ?
-			'' : WE_INCLUDES_PATH) .
-		$we_include);
+					'' : WE_INCLUDES_PATH) .
+			$we_include);
 	$contents = ob_get_clean();
 	//usedElementNames is set after include
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
@@ -304,8 +305,8 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 		$contents = we_SEEM::parseDocument($contents);
 
 		$contents = (strpos($contents, '</head>') ?
-				str_replace('</head>', $_insertReloadFooter . '</head>', $contents) :
-				$_insertReloadFooter . $contents);
+						str_replace('</head>', $_insertReloadFooter . '</head>', $contents) :
+						$_insertReloadFooter . $contents);
 	}
 	switch($we_doc->Extension){
 		case '.js':
@@ -454,7 +455,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 							$wasSaved = true;
 							$wasNew = (intval($we_doc->ID) == 0) ? true : false;
 							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "', '" . $we_doc->Text . "', '" . $we_doc->ID . "');" .
-								'_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
+									'_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 			
@@ -609,7 +610,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 							if($wasNew || (!$wasPubl)){
 
 								$we_JavaScript .= ($we_doc->ContentType === "folder" ? 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");' : '') .
-									'_EditorFrame.getDocumentReference().frames[3].location.reload();';
+										'_EditorFrame.getDocumentReference().frames[3].location.reload();';
 							}
 							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
 
@@ -634,6 +635,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 					}
 					if(($js = we_base_request::_(we_base_request::JS, 'we_cmd', '', 6))){
 						$we_JavaScript .= $js;
+						$isClose =preg_match('|closeDocument|',$js);
 					} else if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4) && (!$wf_flag)){
 
 						$we_doc->makeSameNew();
@@ -726,11 +728,12 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 				if(!defined('WE_CONTENT_TYPE_SET')){
 					$charset = $we_doc->getElement('Charset');
 					$charset = $charset ? //	send charset which might be determined in template
-						$charset :
-						DEFAULT_CHARSET;
+							$charset :
+							DEFAULT_CHARSET;
 					define('WE_CONTENT_TYPE_SET', 1);
 					we_html_tools::headerCtCharset('text/html', $charset);
 				}
+				$we_include = (file_exists($we_include) ? $we_include : WE_INCLUDES_PATH . 'we_templates/' . we_template::NO_TEMPLATE_INC);
 				include($we_include);
 				$contents = ob_get_clean();
 
@@ -741,8 +744,8 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 
 // insert $_reloadFooter at right place
 					$tmpCntnt = (strpos($tmpCntnt, '</head>')) ?
-						str_replace('</head>', $_insertReloadFooter . '</head>', $tmpCntnt) :
-						$_insertReloadFooter . $tmpCntnt;
+							str_replace('</head>', $_insertReloadFooter . '</head>', $tmpCntnt) :
+							$_insertReloadFooter . $tmpCntnt;
 
 // --> Start Glossary Replacement
 

@@ -20,7 +20,7 @@
  * @category   webEdition
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */
+ */ 
 
 /**
  * This class deals with the frames for the liveUpdate

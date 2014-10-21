@@ -302,7 +302,7 @@ class we_util_Mailer extends Zend_Mail{
 		 */
 		if($this->Body){ // es gibt einen HTML-Part
 			if($this->inlineAtt){ // es gibt Inline-Bilder
-				$this->setType(Zend_Mime::MULTIPART_RELATED); // dann brauchen wir diesen Typ
+				//$this->setType(Zend_Mime::MULTIPART_RELATED); // dann brauchen wir diesen Typ - wird in aktuellen Zend Versionen nicht mehr benötigt
 				foreach($this->inlineAtt as $at){
 					$this->addAttachment($at);
 				}

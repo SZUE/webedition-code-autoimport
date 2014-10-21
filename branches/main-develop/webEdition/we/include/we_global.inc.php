@@ -1106,8 +1106,22 @@ function we_templatePost(){
 		if(defined('DEBUG_MEM')){
 			weMemDebug();
 		}
+		if(ob_get_level()){//if still document active, we have to do url replacements
+			$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
+// --> Glossary Replacement
+			$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID)) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && we_glossary_replace::useAutomatic());
+			$content = ob_get_clean();
+
+			if($useGlossary){
+				$content = we_glossary_replace::replace($content, $GLOBALS['we_doc']->Language);
+			}
+			if($urlReplace){
+				$content = preg_replace($urlReplace, array_keys($urlReplace), $content);
+			}
+			echo $content;
+		}
 		flush();
-//check for Trigger
+		//check for Trigger
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
 			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
 			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc

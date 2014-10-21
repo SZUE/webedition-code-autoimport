@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -827,7 +826,7 @@ class doclistView{
 			$searchInput = we_html_tools::htmlTextInput("search[" . $i . "]", 30, (isset($GLOBALS ['we_doc']->searchclassFolder->search) && is_array($GLOBALS ['we_doc']->searchclassFolder->search) && isset($GLOBALS ['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->search [$i] : ''), "", " class=\"wetextinput\"  id=\"search['.$i.']\" ", "text", 190);
 
 			$locationDisabled = (isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i]) && ($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Content" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Status" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Speicherart" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "temp_template_id" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "temp_doc_type" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "temp_category") ?
-							'disabled' : '');
+					'disabled' : '');
 
 			if(isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i])){
 				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Status"){
@@ -893,7 +892,7 @@ class doclistView{
         </tr>
 
         </table>' .
-				we_html_element::jsElement('calendarSetup(' . $GLOBALS ['we_doc']->searchclassFolder->height . ');');
+			we_html_element::jsElement('calendarSetup(' . $GLOBALS ['we_doc']->searchclassFolder->height . ');');
 
 		return $out;
 	}
@@ -1105,20 +1104,29 @@ class doclistView{
 		$content = array();
 
 		for($f = 0; $f < $resultCount; $f++){
-			$fontColor = "black";
-			if(isset($_result [$f]["Published"])){
-				$published = ((($_result [$f]["Published"] != 0) && ($_result [$f]["Published"] < $_result [$f]["ModDate"]) && ($_result [$f]["ContentType"] == we_base_ContentTypes::HTML || $_result [$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result [$f]["ContentType"] === "objectFile")) ? - 1 : $_result [$f]["Published"]);
-				$showPubCheckbox = true;
-				if($_result [$f]["ContentType"] != "folder"){
-					if($published == 0){
-						$fontColor = "red";
-						$showPubCheckbox = false;
-					} elseif($published == - 1){
-						$fontColor = "#3366CC";
-						$showPubCheckbox = false;
-					}
+			$fontColor = '';
+			$showPubCheckbox = true;
+			if(isset($_result[$f]["Published"])){
+				switch($_result[$f]["ContentType"]){
+					case we_base_ContentTypes::HTML:
+					case we_base_ContentTypes::WEDOCUMENT:
+					case "objectFile":
+						$published = ((($_result[$f]["Published"] != 0) && ($_result[$f]["Published"] < $_result[$f]["ModDate"])) ? -1 : $_result[$f]["Published"]);
+						if($published == 0){
+							$fontColor = 'notpublished';
+							$showPubCheckbox = false;
+						} elseif($published == -1){
+							$fontColor = 'changed';
+							$showPubCheckbox = false;
+						}
+						break;
+					default:
+						$published = $_result[$f]["Published"];
 				}
+			} else {
+				$published = 1;
 			}
+
 			$ext = isset($_result [$f]["Extension"]) ? $_result [$f]["Extension"] : "";
 			$Icon = we_base_ContentTypes::inst()->getIcon($_result [$f]["ContentType"], we_base_ContentTypes::FILE_ICON, $ext);
 
@@ -1128,7 +1136,7 @@ class doclistView{
 				$content[$f] = array(
 					array("dat" => $publishCheckbox),
 					array("dat" => '<img src="' . TREE_ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
-					array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';" class="middlefont" title="' . $_result [$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result [$f]["Text"], $we_PathLength)),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" class="'.$fontColor . ' middlefont" title="' . $_result [$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result [$f]["Text"], $we_PathLength)),
 					array("dat" => '<nobr>' . g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']') . '</nobr>'),
 					array("dat" => '<nobr>' . we_util_Strings::shortenPath($_result [$f]["SiteTitle"], $we_PathLength) . '</nobr>'),
 					array("dat" => '<nobr>' . ($_result [$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f]["CreationDate"]) : "-") . '</nobr>'),
@@ -1145,14 +1153,14 @@ class doclistView{
 					if($fs > 0){
 						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result [$f]["Path"]);
 						$imageView = "<img src='" . (file_exists($thumbpath = WE_THUMB_PREVIEW_DIR . $_result [$f]["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($_result [$f]['Extension'])) ?
-										$thumbpath :
-										WEBEDITION_DIR . 'thumbnail.php?id=' . $_result [$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result [$f]["Path"]) . "&extension=" . $_result [$f]["Extension"]
-								) . "' border='0' /></a>";
+								$thumbpath :
+								WEBEDITION_DIR . 'thumbnail.php?id=' . $_result [$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result [$f]["Path"]) . "&extension=" . $_result [$f]["Extension"]
+							) . "' border='0' /></a>";
 
 						$imageViewPopup = "<img src='" . (file_exists($thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result [$f]["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($_result [$f]["Extension"])) ?
-										$thumbpathPopup :
-										WEBEDITION_DIR . "thumbnail.php?id=" . $_result [$f]["docID"] . "&size=" . $bigSize . "&path=" . urlencode($_result [$f]["Path"]) . "&extension=" . $_result [$f]["Extension"]
-								) . "' border='0' /></a>";
+								$thumbpathPopup :
+								WEBEDITION_DIR . "thumbnail.php?id=" . $_result [$f]["docID"] . "&size=" . $bigSize . "&path=" . urlencode($_result [$f]["Path"]) . "&extension=" . $_result [$f]["Extension"]
+							) . "' border='0' /></a>";
 					} else {
 						$imagesize = array(0, 0);
 						$thumbpath = ICON_DIR . 'doclist/' . we_base_ContentTypes::IMAGE_ICON;
@@ -1169,8 +1177,8 @@ class doclistView{
 
 				if($_result [$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
 					$templateID = ($_result [$f]["Published"] >= $_result[$f]["ModDate"] && $_result[$f]["Published"] ?
-									$_result [$f]["TemplateID"] :
-									$_result [$f]["temp_template_id"]);
+							$_result [$f]["TemplateID"] :
+							$_result [$f]["temp_template_id"]);
 
 					$templateText = g_l('searchtool', "[no_template]");
 					if($templateID){
@@ -1204,14 +1212,14 @@ class doclistView{
 				$content[$f] = array(
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result [$f]["Text"] . '">' . $imageView . '</a>'),
 					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 17)),
-					array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none;color:' . $fontColor . ';"  title="' . $_result [$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result [$f]["Text"], 17) . '</u></a>'),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result [$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result [$f]["Text"], 17) . '</u></a>'),
 					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f]["CreationDate"]) : "-") . '</nobr>'),
 					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f]["ModDate"]) : "-") . '</nobr>'),
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result [$f]["Text"] . '">' . $imageViewPopup . '</a>'),
 					array("dat" => $filesize),
 					array("dat" => $imagesize [0] . " x " . $imagesize [1]),
 					array("dat" => we_util_Strings::shortenPath(g_l('contentTypes', '[' . ($_result [$f]['ContentType']) . ']'), 22)),
-					array("dat" => '<span style="color:' . $fontColor . ';">' . we_util_Strings::shortenPath($_result [$f]["Text"], 30) . '</span>'),
+					array("dat" => '<span class="' . $fontColor . '">' . we_util_Strings::shortenPath($_result [$f]["Text"], 30) . '</span>'),
 					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 45)),
 					array("dat" => we_util_Strings::shortenPath($_result[$f]["Description"], 100)),
 					array("dat" => $_result[$f]['ContentType']),
@@ -1234,19 +1242,19 @@ class doclistView{
 		$anzahl = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
 		$order = we_base_request::_(we_base_request::STRING, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->order : '', 'order');
-		$mode = we_base_request::_(we_base_request::RAW, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->mode : '', 'mode');
+		$mode = we_base_request::_(we_base_request::BOOL, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->mode : '', 'mode');
 		$setView = we_base_request::_(we_base_request::INT, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->setView : '', 'setView');
 		$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->anzahl : '', 'anzahl');
 		$id = we_base_request::_(we_base_request::INT, 'id', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->ID : '');
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', (isset($GLOBALS ['we_transaction']) ? $GLOBALS ['we_transaction'] : 0));
 
 		return
-				we_html_tools::hidden("we_transaction", $we_transaction) .
-				we_html_tools::hidden("order", $order) .
-				we_html_tools::hidden("todo", "") .
-				we_html_tools::hidden("mode", $mode) .
-				we_html_tools::hidden("setView", $setView) .
-				'<table border="0" cellpadding="0" cellspacing="0">
+			we_html_tools::hidden("we_transaction", $we_transaction) .
+			we_html_tools::hidden("order", $order) .
+			we_html_tools::hidden("todo", "") .
+			we_html_tools::hidden("mode", $mode) .
+			we_html_tools::hidden("setView", $setView) .
+			'<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>' . we_html_tools::getPixel(19, 12) . '</td>
 		<td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
@@ -1271,7 +1279,7 @@ class doclistView{
 		}
 
 		return
-				'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+			'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
 	<tr>
 	 <td>' . $publishButtonCheckboxAll . '</td>
 	 <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
@@ -1296,19 +1304,19 @@ class doclistView{
 		}
 
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
-				($searchstart ?
-						we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
-						we_html_button::create_button("back", "", true, 100, 22, "", "", true)
-				) .
-				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
+			($searchstart ?
+				we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
+				we_html_button::create_button("back", "", true, 100, 22, "", "", true)
+			) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
         <td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
-				(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
-				' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
-				(($searchstart + $anzahl) < $we_search_anzahl ?
-						we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
-						we_html_button::create_button("next", "", true, 100, 22, "", "", true)
-				) .
-				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
+			(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
+			' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
+			(($searchstart + $anzahl) < $we_search_anzahl ?
+				we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
+				we_html_button::create_button("next", "", true, 100, 22, "", "", true)
+			) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
 		if($anzahl){
@@ -1327,7 +1335,7 @@ class doclistView{
 		}
 
 		$out .= $select .
-				'</td></tr></table>';
+			'</td></tr></table>';
 
 		return $out;
 	}
@@ -1363,7 +1371,7 @@ class doclistView{
 			}
 
 			$out .= $rightContent .
-					'</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
+				'</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
 
 			if($i < (count($content) - 1) && (!isset($c ["noline"]))){
 				$out .= '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>';

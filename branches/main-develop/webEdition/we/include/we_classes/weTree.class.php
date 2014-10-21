@@ -395,25 +395,25 @@ function node(attribs){
 	function getJSSelectNode(){
 		return '
 function selectNode(){
-		if(arguments[0]){
-					var ind;
-			if(treeData.selection!="" && treeData.selection_table==treeData.table){
-				ind=indexOfEntry(treeData.selection);
-				if(ind!=-1){
-					var oldnode=get(treeData.selection);
-					oldnode.selected=0;
-					oldnode.applylayout();
-				}
-			}
-			ind=indexOfEntry(arguments[0]);
+	if(arguments[0]){
+				var ind;
+		if(treeData.selection!="" && treeData.selection_table==treeData.table){
+			ind=indexOfEntry(treeData.selection);
 			if(ind!=-1){
-				var newnode=get(arguments[0]);
-				newnode.selected=1;
-				newnode.applylayout();
+				var oldnode=get(treeData.selection);
+				oldnode.selected=0;
+				oldnode.applylayout();
 			}
-			treeData.selection=arguments[0];
-			treeData.selection_table=treeData.table;
 		}
+		ind=indexOfEntry(arguments[0]);
+		if(ind!=-1){
+			var newnode=get(arguments[0]);
+			newnode.selected=1;
+			newnode.applylayout();
+		}
+		treeData.selection=arguments[0];
+		treeData.selection_table=treeData.table;
+	}
 }';
 	}
 
@@ -455,12 +455,12 @@ function clearItems(){
 				deleted+=treeData[ai].clear();
 			}else{
 				ind=ai;
-					while (ind <= treeData.len-1) {
-												treeData[ind]=treeData[ind+1];
-												ind++;
-								}
-								treeData.len[treeData.len]=null;
-								treeData.len--;
+				while (ind <= treeData.len-1) {
+					treeData[ind]=treeData[ind+1];
+					ind++;
+				}
+				treeData.len[treeData.len]=null;
+				treeData.len--;
 			}
 			deleted++;
 		}else{
@@ -514,7 +514,6 @@ function container(){
 
 	' . $ts . '
 	' . $tl . '
-	' . (isset($ns) ? $ns : "") . '
 	' . $nl . '
 
 	this.check0_img=new Image();

@@ -369,7 +369,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 				}
 
 				if(isset($value['type']) && ($value['type'] === 'img' || $value['type'] === 'binary')){
-					$this->addToDepArray($level, isset($value['bdid']) ? $value['dat'] : $value['dat']);
+					$this->addToDepArray($level, isset($value['bdid']) ? $value['bdid'] : $value['dat']);
 				}
 			}
 		}

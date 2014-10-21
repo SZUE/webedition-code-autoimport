@@ -49,7 +49,7 @@ function we_tag_setVar($attribs){
 			case 'get' :
 			case 'global' :
 			case 'session' :
-				$valueFrom = we_tag_var(array('type' => $from, '_name_orig' => $nameFrom, 'name' => $nameFrom, 'varType' => $varType));
+				$valueFrom = we_tag('var',array('type' => $from, '_name_orig' => $nameFrom, 'name' => $nameFrom, 'varType' => $varType));
 				break;
 			case 'top' :
 				if($propertyFrom){

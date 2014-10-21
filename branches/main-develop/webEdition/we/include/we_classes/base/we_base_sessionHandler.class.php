@@ -2,7 +2,6 @@
 
 class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	//prevent crashed or killed sessions to stay
-
 	private $execTime;
 	private $sessionName;
 	private $DB;
@@ -21,9 +20,17 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			$this->execTime = get_cfg_var('max_execution_time');
 			$this->execTime = ($this->execTime > 60 ? 60 : $this->execTime); //time might be wrong (1&1)
 			$this->id = uniqid('', true);
-			if(!(extension_loaded('suhosin') && ini_get('suhosin.session.encrypt'))){//make it possible to keep users when switching
+			if(!(extension_loaded('suhosin') && ini_get('suhosin.session.encrypt')) && defined('SYSTEM_WE_SESSION_CRYPT') && SYSTEM_WE_SESSION_CRYPT){
+				$key = $_SERVER['DOCUMENT_ROOT'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : 'HTTP_USER_AGENT');
+				if(SYSTEM_WE_SESSION_CRYPT == 2){
+					if(!isset($_COOKIE['secure'])){
+						$_COOKIE['secure'] = we_users_user::getHashIV(30);
+						setcookie('secure', $_COOKIE['secure'], 0, '/');
+					}
+					$key.=$_COOKIE['secure'];
+				}
 				// due to IE we can't use HTTP_ACCEPT_LANGUAGE, HTTP_ACCEPT_ENCODING - they change the string on each request
-				$this->crypt = hash('haval224,4', $_SERVER['DOCUMENT_ROOT'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : 'HTTP_USER_AGENT'));
+				$this->crypt = hash('haval224,4', $key);
 				//double key size is needed
 				$this->crypt .=$this->crypt;
 			}
@@ -78,9 +85,9 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		}
 		if(md5($sessID . $sessData) == $this->hash){//if nothing changed,we don't have to bother the db
 			$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'lockid' => $lock ? $this->id : '',
-						'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-					)) . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
+					'lockid' => $lock ? $this->id : '',
+					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
+				)) . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
 
 			if($this->DB->affected_rows()){//make sure we had an successfull update
 				return true;
@@ -92,13 +99,13 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		$sessID = self::getSessionID($sessID);
 
 		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'sessionName' => $this->sessionName,
-					'session_id' => sql_function('x\'' . $sessID . '\''),
-					'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
-					'lockid' => $lock ? $this->id : '',
-					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-						/* 'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
-						  -				'tmp' => serialize($_SESSION), */
+				'sessionName' => $this->sessionName,
+				'session_id' => sql_function('x\'' . $sessID . '\''),
+				'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
+				'lockid' => $lock ? $this->id : '',
+				'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
+				/* 'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
+				  -				'tmp' => serialize($_SESSION), */
 		)));
 		return true;
 	}
@@ -158,6 +165,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		session_regenerate_id(true);
 		if($destroy){
 			session_destroy();
+			$_SESSION = array();
 		} else {
 			//we need a new lock on the generated id, since partial data is sent to the browser, subsequent calls with the new sessionid might happen
 			session_write_close();

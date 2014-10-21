@@ -941,7 +941,7 @@ class we_objectFile extends we_document{
 			$_buttons[] = $_but;
 		}
 
-		$_buttons[] = we_html_button::create_button("image:btn_function_trash", "javascript:document.forms['we_form'].elements['" . $idname . "'].value=0;document.forms['we_form'].elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $pid . "')");
+		$_buttons[] = we_html_button::create_button("image:btn_function_trash", "javascript:document.forms['we_form'].elements['" . $idname . "'].value=0;document.forms['we_form'].elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $ObjectID . "')");
 
 		$button = we_html_button::create_button_table($_buttons, 5);
 
@@ -1864,7 +1864,7 @@ class we_objectFile extends we_document{
 					return '';
 				}
 			case self::TYPE_META:
-				if(!$this->DefArray){
+				if(!$this->DefArray||!is_array($this->DefArray)){
 					$this->DefArray = $this->getDefaultValueArray();
 				}
 				$vals = $this->DefArray["meta_" . $t]["meta"];
@@ -2821,7 +2821,7 @@ class we_objectFile extends we_document{
 				$this->resetElements();
 				$multiobjects = array();
 				while((list($k, $v) = $this->nextElement(self::TYPE_MULTIOBJECT))){
-					$old = unserialize($v['dat']);
+					$old = is_string($v['dat']) && $v['dat']{0} == 'a' ? unserialize($v['dat']) : '';
 					if(is_array($old) && isset($old['class'])){
 						$multiobjects[$k] = array(
 							'class' => $old['class'],

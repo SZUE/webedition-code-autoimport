@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_customer_customer extends weModelBase{
-
 	const NOPWD_CHANGE = '__WE__PWD_NO_CHANGE';
 	const ENCRYPT_NONE = 0;
 	const ENCRYPT_SYMMETRIC = 1;
@@ -297,8 +295,9 @@ class we_customer_customer extends weModelBase{
 	}
 
 	function clearSessionVars(){
-		if(isset($_SESSION['weS']['customer_session']))
+		if(isset($_SESSION['weS']['customer_session'])){
 			unset($_SESSION['weS']['customer_session']);
+		}
 	}
 
 	static function customerNameExist($name, we_database_base $db = null){
@@ -318,7 +317,7 @@ class we_customer_customer extends weModelBase{
 	function getFieldset(){
 		$result = array();
 		$fields = $this->getFieldsDbProperties();
-		foreach($fields as $k => $v){
+		foreach(array_keys($fields) as $k){
 			if(!$this->isProtected($k)){
 				$result[] = $k;
 			}
@@ -338,9 +337,9 @@ class we_customer_customer extends weModelBase{
 				return self::cryptData($pass);
 			case self::ENCRYPT_HASH:
 				$useSalt = 0;
-				$pwd = we_users_user::makeSaltedPassword($useSalt, '', $pass, 8);
+				$pwd = we_users_user::makeSaltedPassword($useSalt, '', $pass, 10);
 				return ($useSalt != we_users_user::SALT_CRYPT ?
-								$pass : $pwd);
+						$pass : $pwd);
 		}
 	}
 
@@ -387,7 +386,7 @@ class we_customer_customer extends weModelBase{
 		$data = substr($data, strlen($matches[0]));
 		switch($matches[1]){
 			case '-1':
-				$matches[3] = hex2bin($data);
+				$data = hex2bin($data);
 			case '-1a':
 				if(function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
 					mcrypt_generic_init($res, hex2bin($key), hex2bin($matches[2]));

@@ -32,7 +32,7 @@ class weBinary{
 
 	var $db;
 	var $ClassName = __CLASS__;
-	var $Pseudo = "weBinary";
+	var $Pseudo = 'weBinary';
 	var $attribute_slots = array();
 	var $persistent_slots = array('ID', 'ClassName', 'Path', 'Data', 'SeqN');
 	var $ID = 0;

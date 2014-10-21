@@ -134,7 +134,7 @@ class we_exim_contentProvider{
 	}
 
 	static function getTagName($object){
-		switch((isset($object->Pseudo) ? $object->Pseudo : $object->ClassName)){
+		switch((isset($object->Pseudo) ? $object->Pseudo : (isset($object->ClassName) ? $object->ClassName : get_class($object)))){//FIXME can we savely use get_class?
 			case 'we_template':
 				return 'we:template';
 			case 'we_element':
@@ -159,6 +159,7 @@ class we_exim_contentProvider{
 				return 'we:navigation';
 			case 'weNavigationRule':
 				return 'we:navigationrule';
+			case 'we_thumbnail':
 			case 'we_thumbnailEx':
 				return 'we:thumbnail';
 			default:
@@ -355,13 +356,19 @@ class we_exim_contentProvider{
 	}
 
 	static function object2xml(&$object, $file, $attribs = array(), $fwrite = 'fwrite'){
-		$classname = (isset($object->Pseudo) ? $object->Pseudo : $object->ClassName);
+		$classname = (isset($object->Pseudo) ? $object->Pseudo : (isset($object->ClassName) ? $object->ClassName : get_class($object)));
+
+		if(!isset($object->ClassName)){//make sure we have this information
+			$object->ClassName = get_class($object);
+			$object->persistent_slots = array_merge(array('ClassName'), $object->persistent_slots);
+		}
 
 		switch($classname){
 			case 'we_category':
 			case 'weNavigation':
 			case 'weNavigationRule':
 			case 'we_thumbnailEx':
+			case 'we_thumbnail':
 				$object->persistent_slots = array_merge(array('ClassName'), $object->persistent_slots);
 				break;
 			default:
@@ -388,7 +395,7 @@ class we_exim_contentProvider{
 
 			case 'we_webEditionDocument':
 				$object->TemplatePath = we_base_file::clearPath('/' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $object->TemplatePath));
-				$object->DocTypeName = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $object->DocType);
+				$object->DocTypeName = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($object->DocType));
 				$object->persistent_slots[] = 'DocTypeName';
 				break;
 		}
@@ -442,8 +449,11 @@ class we_exim_contentProvider{
 						$options = array(
 							'ClassName' => 'we_element',
 							'Name' => $ck,
-							'Dat' => isset($object->elements[$ck]['dat']) ? $object->elements[$ck]['dat'] : ''
 						);
+
+						if(isset($object->elements[$ck]['dat'])){
+							$options['Dat'] = $object->elements[$ck]['dat'];
+						}
 
 						if(isset($object->elements[$ck]['type'])){
 							$options['Type'] = $object->elements[$ck]['type'];

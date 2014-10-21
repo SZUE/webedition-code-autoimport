@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_XMLImport extends we_exim_XMLExIm{
-
 	var $nodehierarchy = array();
 
 	function __construct(){
@@ -49,7 +48,12 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				$this->xmlBrowser->seek($node);
 
 				if($this->handleTag($this->xmlBrowser->getNodeName($node))){
-					$objects[] = $this->importNodeSet($node);
+					$tmp = $this->importNodeSet($node);
+					if(!is_object($tmp)){
+						t_e('error in xml-node', $node, $tmp);
+					} else {
+						$objects[] = $tmp;
+					}
 				}
 			}
 		}
@@ -110,8 +114,9 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 						}
 					}
 					break;
-				case "we_thumbnailEx":
-					$nid = f("SELECT ID FROM " . THUMBNAILS_TABLE . " WHERE Name='" . $db->escape($object->Name) . "'", "", $db);
+				case 'we_thumbnail':
+				case 'we_thumbnailEx':
+					$nid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $db->escape($object->Name) . '"', "", $db);
 					if($nid){
 						switch($this->options["handle_collision"]){
 							case "replace":
@@ -137,16 +142,16 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 								$prefix = id_to_path($this->options["document_path"], FILE_TABLE, $db);
 							}
 							$object->Path = $prefix . ($this->options["restore_doc_path"] ?
-											$object->Path :
-											"/" . $object->Text);
+									$object->Path :
+									"/" . $object->Text);
 							break;
 						case TEMPLATES_TABLE:
 							if($this->options["template_path"]){
 								$prefix = id_to_path($this->options["template_path"], TEMPLATES_TABLE, $db);
 							}
 							$object->Path = $prefix . ($this->options["restore_tpl_path"] ?
-											$object->Path :
-											"/" . $object->Text);
+									$object->Path :
+									"/" . $object->Text);
 							break;
 						case NAVIGATION_TABLE:
 							if($this->options["navigation_path"]){
@@ -164,7 +169,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 
 					if($id){
 						if($this->options["handle_collision"] === "replace" ||
-								($object->ClassName == "we_folder" && $this->RefTable->exists(array("OldID" => $object->ID, "Table" => $object->Table)))
+							($object->ClassName == "we_folder" && $this->RefTable->exists(array("OldID" => $object->ID, "Table" => $object->Table)))
 						){
 							$object->ID = $id;
 							if(isset($object->isnew)){
@@ -207,18 +212,18 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 						$h = getHash('SELECT ParentID,Path FROM ' . $db->escape($object->Table) . ' WHERE ID=' . intval($pid), $db);
 						if(!$this->RefTable->exists(array("ID" => $pid, "ContentType" => "folder"))){
 							$this->RefTable->add2(
-									array(
-										"ID" => $pid,
-										"ParentID" => $h["ParentID"],
-										"Path" => $h["Path"],
-										"Table" => $object->Table,
-										"ContentType" => "folder",
-										"OldID" => ($pid == $object->ParentID) ? $_old_pid : null,
-										"OldParentID" => null,
-										"OldPath" => null,
-										"OldTemplatePath" => null,
-										"Examined" => 0,
-									)
+								array(
+									"ID" => $pid,
+									"ParentID" => $h["ParentID"],
+									"Path" => $h["Path"],
+									"Table" => $object->Table,
+									"ContentType" => "folder",
+									"OldID" => ($pid == $object->ParentID) ? $_old_pid : null,
+									"OldParentID" => null,
+									"OldPath" => null,
+									"OldTemplatePath" => null,
+									"Examined" => 0,
+								)
 							);
 						}
 					}
@@ -233,7 +238,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							do{
 								$_path = $object->Path . '_' . $_c;
 								$_c++;
-							}while(is_file($_SERVER['DOCUMENT_ROOT'] . $_path));
+							} while(is_file($_SERVER['DOCUMENT_ROOT'] . $_path));
 							$object->Path = $_path;
 							unset($_path);
 							unset($_c);
@@ -244,12 +249,12 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 
 					if($save && !$this->RefTable->exists(array('ID' => $object->ID, 'Path' => $object->Path, 'ContentType' => 'weBinary'))){
 						$this->RefTable->add2(
-								array('ID' => $object->ID,
-									'ParentID' => 0,
-									'Path' => $object->Path,
-									'Table' => $object->Table,
-									'ContentType' => 'weBinary'
-								)
+							array('ID' => $object->ID,
+								'ParentID' => 0,
+								'Path' => $object->Path,
+								'Table' => $object->Table,
+								'ContentType' => 'weBinary'
+							)
 						);
 					}
 				}
@@ -257,10 +262,10 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 
 			if(defined('OBJECT_TABLE') && ($object->ClassName === 'we_objectFile' || $object->ClassName === 'we_class_folder')){
 				$ref = $this->RefTable->getRef(
-						array(
-							'OldID' => $object->TableID,
-							'ContentType' => "object"
-						)
+					array(
+						'OldID' => $object->TableID,
+						'ContentType' => "object"
+					)
 				);
 				if($ref){
 					// assign TableID and ParentID from reference
@@ -293,8 +298,16 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		do{
 			$c++;
 
-			$newname = ($object->ClassName === "we_docTypes" || $object->ClassName === "weNavigationRule" || $object->ClassName === "we_thumbnailEx" ?
-							$object->$prop : basename($object->$prop));
+			switch($object->ClassName){
+				case "we_docTypes" :
+				case "weNavigationRule":
+				case "we_thumbnail":
+				case "we_thumbnailEx":
+					$newname = $object->$prop;
+					break;
+				default:
+					$newname = basename($object->$prop);
+			}
 
 			if($newid){
 				$newname = $c . "_" . $newname;
@@ -306,13 +319,14 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				case 'weNavigationRule':
 					$newid = f('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . " WHERE NavigationName='" . escape_sql_query($newname) . "'", "", new DB_WE());
 					break;
+				case 'we_thumbnail':
 				case 'we_thumbnailEx':
 					$newid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . " WHERE Name='" . escape_sql_query($newname) . "'", "", new DB_WE());
 					break;
 				default:
 					$newid = path_to_id(we_base_file::clearPath(dirname($object->Path) . "/" . $newname), $object->Table);
 			}
-		}while($newid);
+		} while($newid);
 		$this->renameObject($object, $newname);
 	}
 
@@ -324,6 +338,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 			case "weNavigationRule":
 				$object->NavigationName = $new_name;
 				return;
+			case 'we_thumbnail':
 			case "we_thumbnailEx":
 				$object->Name = $new_name;
 				return;
@@ -331,10 +346,10 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		if(isset($object->Path)){
 			$_path = dirname($object->Path);
 			$_ref = $this->RefTable->getRef(
-					array(
-						'OldID' => $object->ParentID,
-						'ContentType' => 'weNavigation'
-					)
+				array(
+					'OldID' => $object->ParentID,
+					'ContentType' => 'weNavigation'
+				)
 			);
 			if($_ref){
 				$object->ParentID = $_ref->ID;
@@ -379,22 +394,26 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 						$this->xmlBrowser->addMark('we:content');
 						$content = $this->importNodeSet($node);
 						$this->xmlBrowser->gotoMark('we:content');
-						$object->elements = array_merge($object->elements, $content->getElement());
+						if(!is_object($object)){
+							t_e($this->xmlBrowser, $nodname, $noddata, $attributes);
+						}
+						if($object){
+							$object->elements = array_merge($object->elements, $content->getElement());
+						}
 						break;
 					case 'ClassName':
 						$this->nodehierarchy[] = $noddata;
 						switch($noddata){
 							case "we_object":
-								if(defined('OBJECT_TABLE')){
-									$object = new we_object_exImport();
-								}
+								$object = (defined('OBJECT_TABLE') ? new we_object_exImport() : '');
+
 								break;
 							case "we_objectFile":
-								if(defined('OBJECT_FILES_TABLE')){
-									$object = new we_objectFile();
-								}
+								$object = (defined('OBJECT_FILES_TABLE') ? new we_objectFile() : '');
+
 								break;
 							case 'we_class_folder': //Bug 3857 sonderbehandlung hinzugef�gt, da es sonst hier beim letzten else zum Absturz kommt, es wird nichts geladen, da eigentlich alles geladen ist
+								$object = (defined('OBJECT_FILES_TABLE') ? new we_class_folder() : '');
 								break;
 							case 'weNavigation':
 								$object = new we_navigation_navigation();
@@ -402,6 +421,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							case 'weNavigationRule':
 								$object = new we_navigation_rule();
 								break;
+							case 'we_thumbnail':
 							case 'we_thumbnailEx':
 								$object = new we_exim_thumbnailExport();
 								break;
@@ -414,7 +434,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					default:
 						$node_data[$nodname] = $noddata;
 						$node_coding[$nodname] = $GLOBALS['isNewImport'] ? (isset($attributes[we_exim_contentProvider::CODING_ATTRIBUTE]) ? $attributes[we_exim_contentProvider::CODING_ATTRIBUTE] : we_exim_contentProvider::CODING_NONE) :
-								(we_exim_contentProvider::needCoding($node_data['ClassName'], $nodname, we_exim_contentProvider::CODING_OLD) ? we_exim_contentProvider::CODING_ENCODE : we_exim_contentProvider::CODING_NONE);
+							(we_exim_contentProvider::needCoding($node_data['ClassName'], $nodname, we_exim_contentProvider::CODING_OLD) ? we_exim_contentProvider::CODING_ENCODE : we_exim_contentProvider::CODING_NONE);
 				}
 			}
 		}
@@ -467,8 +487,8 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					return $value;
 				}
 				return ($this->options['xml_encoding'] === 'ISO-8859-1' ?
-								utf8_encode($value) :
-								utf8_decode($value));
+						utf8_encode($value) :
+						utf8_decode($value));
 			}
 		}
 		return $value;
@@ -574,15 +594,12 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		$header = ''; //weXMLExIm::getHeader($encoding);
 		$footer = we_exim_XMLExIm::getFooter();
 
-		$buff = "";
-		$filename_tmp = "";
+		$buff = $filename_tmp = "";
 		$fh = ($compress != we_backup_base::NO_COMPRESSION ? gzopen($filename, "rb") : @fopen($filename, "rb"));
 
 		$num = -1;
-		$open_new = true;
-		$fsize = 0;
-
-		$elnum = 0;
+		$fsize = $elnum = 0;
+		$fh_temp = 0;
 
 		$marker_size = strlen($marker);
 		$marker2_size = strlen($marker2); //Backup 5089
@@ -599,20 +616,22 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					}
 				}
 
-				if($open_new && $line && trim($line) != we_backup_backup::weXmlExImFooter){
+				if(!$fh_temp && $line && trim($line) != we_backup_backup::weXmlExImFooter){
 					$num++;
 					$filename_tmp = sprintf($path . $pattern, $num);
 					$fh_temp = fopen($filename_tmp, "wb");
+					if(!$fh_temp){
+						return -1;
+					}
 					if($header){
 						fwrite($fh_temp, $header);
 					}
 					/* if($num == 0){
 					  $header = "";
 					  } */
-					$open_new = false;
 				}
 
-				if(isset($fh_temp) && $fh_temp){
+				if($fh_temp){
 					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != we_backup_backup::weXmlExImHead) && (substr($line, 0, 12) != we_backup_backup::weXmlExImFooter)){
 
 						$buff.=$line;
@@ -630,9 +649,9 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 								$elnum++;
 								if($elnum >= $count){
 									$elnum = 0;
-									$open_new = true;
 									fwrite($fh_temp, $footer);
 									fclose($fh_temp);
+									$fh_temp = 0;
 								}
 								$fsize = 0;
 							}
@@ -644,8 +663,6 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							fwrite($fh_temp, $line);
 						}
 					}
-				} else {
-					return -1;
 				}
 			}
 		} else {
@@ -657,11 +674,13 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 			}
 			fwrite($fh_temp, $footer);
 			fclose($fh_temp);
+			$fh_temp = 0;
 		}
 		if($compress != we_backup_base::NO_COMPRESSION){
 			gzclose($fh);
 		} else {
 			fclose($fh);
+			$fh_temp = 0;
 		}
 
 		return $num + 1;
@@ -669,33 +688,37 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 
 	private function handleTag($tag){
 		switch($tag){
-			case "we:document":
-				return $this->options["handle_documents"];
-			case "we:template":
-				return $this->options["handle_templates"];
-			case "we:class":
-				return $this->options["handle_classes"];
-			case "we:object":
-				return $this->options["handle_objects"];
-			case "we:doctype":
-				return $this->options["handle_doctypes"];
-			case "we:category":
-				return $this->options["handle_categorys"];
-			case "we:content":
-				return $this->options["handle_content"];
-			case "we:table":
-				return $this->options["handle_table"];
-			case "we:tableitem":
-				return $this->options["handle_tableitems"];
-			case "we:binary":
-				return $this->options["handle_binarys"];
-			case "we:navigation":
-				return $this->options["handle_navigation"];
-			case "we:navigationrule":
-				return $this->options["handle_navigation"];
-			case "we:thumbnail":
-				return $this->options["handle_thumbnails"];
-			default: return 1;
+			case 'we:document':
+				return $this->options['handle_documents'];
+			case 'we:template':
+				return $this->options['handle_templates'];
+			case 'we:class':
+				return $this->options['handle_classes'];
+			case 'we:object':
+				return $this->options['handle_objects'];
+			case 'we:doctype':
+				return $this->options['handle_doctypes'];
+			case 'we:category':
+				return $this->options['handle_categorys'];
+			case 'we:content':
+				return $this->options['handle_content'];
+			case 'we:table':
+				return $this->options['handle_table'];
+			case 'we:tableitem':
+				return $this->options['handle_tableitems'];
+			case 'we:binary':
+				return $this->options['handle_binarys'];
+			case 'we:navigation':
+				return $this->options['handle_navigation'];
+			case 'we:navigationrule':
+				return $this->options['handle_navigation'];
+			case 'we:thumbnail':
+				return $this->options['handle_thumbnails'];
+			case 'we:map'://internal
+			case 'we:info':
+				return false;
+			default:
+				return true;
 		}
 	}
 

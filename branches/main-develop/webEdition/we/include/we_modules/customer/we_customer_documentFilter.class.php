@@ -111,8 +111,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	private static function getFilterByDbHash($hash){
 		$f = $hash['filter'] ? unserialize($hash['filter']) : array();
 		return new self(
-			intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), is_array($f)
-					? $f : array(), makeArrayFromCSV($hash['whiteList']), makeArrayFromCSV($hash['blackList'])
+			intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), is_array($f) ? $f : array(), makeArrayFromCSV($hash['whiteList']), makeArrayFromCSV($hash['blackList'])
 		);
 	}
 
@@ -162,7 +161,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 *
 	 * @return string
 	 */
-	function getConditionForListviewQuery($filter, $classname, $classID = 0){
+	function getConditionForListviewQuery($filter, $classname, $classID = 0, $ids = ''){
 		if($filter === 'off' || $filter === 'false' || $filter === false || $filter === 'all'){
 			return '';
 		}
@@ -172,8 +171,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 					' AND OID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")';
 			}
 			return ($classID ?
-					' AND ' . OBJECT_X_TABLE . $classID . '.OF_ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")'
-						:
+					' AND ' . OBJECT_X_TABLE . $classID . '.OF_ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")' :
 					' AND ' . FILE_TABLE . '.ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '")'
 				);
 		}
@@ -181,13 +179,13 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		$_queryTail = '';
 
 		// if customer is not logged in, all documents/objects with filters must be hidden
-		$_restrictedFilesForCustomer = self::_getFilesWithRestrictionsOfCustomer($classname, $filter, $classID);
+		$_restrictedFilesForCustomer = self::_getFilesWithRestrictionsOfCustomer($classname, $filter, $classID, $ids);
 
 		if($classname === 'we_listview_search'){ // search
 			// build query from restricted files, regard search and normal listview
-			foreach($_restrictedFilesForCustomer as $ct => $_fileArray){
+			foreach($_restrictedFilesForCustomer as $tab => $_fileArray){
 				if($_fileArray){
-					$_idField = ($ct == we_base_ContentTypes::WEDOCUMENT ? 'DID' : 'OID');
+					$_idField = ($tab === 'tblObjectFiles' ? 'OID' : 'DID');
 					$_queryTail .= ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
 				}
 			}
@@ -195,11 +193,11 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		}
 		$_fileArray = array();
 		// build query from restricted files, regard search and normal listview
-		foreach($_restrictedFilesForCustomer as $ct => $_fileArray){
+		foreach($_restrictedFilesForCustomer as $tab => $_fileArray){
 			if($_fileArray){
-				$_idField = ($ct == we_base_ContentTypes::WEDOCUMENT ?
-						FILE_TABLE . '.ID' :
-						OBJECT_X_TABLE . $classID . '.OF_ID');
+				$_idField = ($classID && $tab === 'tblObjectFiles' ?
+						OBJECT_X_TABLE . $classID . '.OF_ID' :
+						FILE_TABLE . '.ID');
 				$_queryTail .= ' AND ' . $_idField . ' NOT IN(' . implode(', ', $_fileArray) . ')';
 			}
 		}
@@ -337,11 +335,11 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 			return;
 		}
 		$_db = new DB_WE();
-		$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET specificCustomers=REPLACE(specificCustomers,",' . intval($webUser) . ',",",") WHERE FIND_IN_SET('.intval($webUser).',specificCustomers)');
+		$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET specificCustomers=REPLACE(specificCustomers,",' . intval($webUser) . ',",",") WHERE FIND_IN_SET(' . intval($webUser) . ',specificCustomers)');
 		$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET specificCustomers="" WHERE specificCustomers=","');
-		$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET whiteList=REPLACE(whiteList,",' . intval($webUser) . ',",",") WHERE FIND_IN_SET('.intval($webUser).',whiteList)');
+		$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET whiteList=REPLACE(whiteList,",' . intval($webUser) . ',",",") WHERE FIND_IN_SET(' . intval($webUser) . ',whiteList)');
 		$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET whiteList="" WHERE whiteList=","');
-		$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET blackList=REPLACE(blackList,",' . intval($webUser) . ',",",") WHERE FIND_IN_SET('.intval($webUser).',blackList)');
+		$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET blackList=REPLACE(blackList,",' . intval($webUser) . ',",",") WHERE FIND_IN_SET(' . intval($webUser) . ',blackList)');
 		$_db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET blackList="" WHERE blackList=","');
 	}
 
@@ -363,22 +361,22 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param we_listview_document $listview
 	 * @return array
 	 */
-	private static function _getFilesWithRestrictionsOfCustomer($classname, $filter, $classID){
+	private static function _getFilesWithRestrictionsOfCustomer($classname, $filter, $classID, $ids){
 		//FIXME: this will query ALL documents with restrictions - this is definately not what we want!
 		$_db = new DB_WE();
 		$_cid = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 		$_filesWithRestrictionsForCustomer = array();
 
-		$listQuery = ' (mode=' . we_customer_abstractFilter::FILTER . " AND !FIND_IN_SET($_cid,whiteList) ) ";//FIND_IN_SET($_cid,blackList) AND
+		$listQuery = ' (mode=' . we_customer_abstractFilter::FILTER . ' AND !FIND_IN_SET(' . $_cid . ',whiteList) ) '; //FIND_IN_SET($_cid,blackList) AND
 		$_specificCustomersQuery = ' (mode=' . we_customer_abstractFilter::SPECIFIC . " AND !FIND_IN_SET($_cid,specificCustomers)) ";
 
 		// detect all files/objects with restrictions
 		switch($classname){
 			case 'we_listview_search':
-				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f WHERE modelType IN("objectFile","text/webedition") AND (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
+				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f WHERE modelType!="folder" AND (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
 				break;
 			case 'we_listview_document': // type="document"
-				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . " f WHERE modelTable='" . stripTblPrefix(FILE_TABLE) . "' AND ($listQuery OR $_specificCustomersQuery )";
+				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '" AND (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
 				break;
 			case 'we_object_listview':
 			case 'we_object_listviewMultiobject': // type="object"
@@ -391,23 +389,23 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		// execute the query (get all existing filters)
 
 
-		$_db->query('SELECT f.* ' . $_queryForIds);
+		$_db->query('SELECT f.* ' . $_queryForIds . ($ids ? ' AND modelId IN (' . array_map('intval', explode(',', $ids)) . ')' : ''));
 // visitor is logged in
-		$_filters = array();
+		$filters = array();
 		while($_db->next_record()){
-			$_filters[] = self::getFilterByDbHash($_db->getRecord());
+			$filters[] = self::getFilterByDbHash($_db->getRecord());
 		}
 
-		foreach($_filters as $filter){
-			$_perm = $filter->accessForVisitor($filter->getModelId(), $filter->getModelType(), false, true);
+		foreach($filters as $filter){
+			$_perm = $filter->accessForVisitor($filter->getModelId(), $filter->getModelTable(), false, true);
 			switch($_perm){
 				case self::NO_ACCESS:
 				case self::NO_LOGIN:
-					$_filesWithRestrictionsForCustomer[$filter->getModelType()][] = $filter->getModelId();
+					$_filesWithRestrictionsForCustomer[$filter->getModelTable()][] = $filter->getModelId();
 					break;
 				case self::CONTROLONTEMPLATE:
 					if($filter === 'all' || $filter === 'true' || $filter === true){
-						$_filesWithRestrictionsForCustomer[$filter->getModelType()][] = $filter->getModelId();
+						$_filesWithRestrictionsForCustomer[$filter->getModelTable()][] = $filter->getModelId();
 					}
 					break;
 			}

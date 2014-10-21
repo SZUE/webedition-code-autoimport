@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,32 +28,30 @@ function we_isVarNotEmpty($attribs){
 	$match_orig = weTag_getAttribute('match', $attribs);
 	$match = we_tag_getPostName($match_orig); //#6367
 
-	$type = weTag_getAttribute('type', $attribs, 'txt');
-	$formname = weTag_getAttribute('formname', $attribs, 'we_global_form');
-	$property = weTag_getAttribute('property', $attribs, false, true);
+	$type = weTag_getAttribute('type', $attribs);
 
-	if(!we_isVarSet($match, $match_orig, $type, $docAttr, $property, $formname)){
-		return false;
-	}
+	/* 	if(!we_isVarSet($match, $match_orig, $type, $docAttr, $property, $formname)){
+	  return false;
+	  } */
 
 	switch($type){
 		case 'request' :
-			return (strlen($_REQUEST[$match_orig]) > 0);
+			return isset($_REQUEST[$match_orig]) && (strlen($_REQUEST[$match_orig]) > 0);
 		case 'post' :
-			return (strlen($_POST[$match_orig]) > 0);
+			return isset($_POST[$match_orig]) && (strlen($_POST[$match_orig]) > 0);
 		case 'get' :
-			return (strlen($_GET[$match_orig]) > 0);
+			return isset($_GET[$match_orig]) && (strlen($_GET[$match_orig]) > 0);
 		case 'global' :
-			return (strlen($GLOBALS[$match_orig]) > 0);
+			return isset($GLOBALS[$match_orig]) && (strlen($GLOBALS[$match_orig]) > 0);
 		case 'session' :
-			$foo = isset($_SESSION[$match_orig]) ? $_SESSION[$match_orig] : '';
-			return (strlen($foo) > 0);
+			return isset($_SESSION[$match_orig]) && (strlen($_SESSION[$match_orig]) > 0);
 		case 'sessionfield' :
-			return (strlen($_SESSION['webuser'][$match_orig]) > 0);
+			return isset($_SESSION['webuser'][$match_orig]) && (strlen($_SESSION['webuser'][$match_orig]) > 0);
 		default :
 			switch($docAttr){
 				case 'object' :
 				case 'document' :
+					$formname = weTag_getAttribute('formname', $attribs, 'we_global_form');
 					$doc = isset($GLOBALS['we_' . $docAttr][$formname]) ? $GLOBALS['we_' . $docAttr][$formname] : false;
 					break;
 				case 'top' :
@@ -66,15 +63,16 @@ function we_isVarNotEmpty($attribs){
 			if(!$doc){
 				return false;
 			}
-			if($property){
-				return isset($doc->$match_orig) ? $doc->$match_orig : '';
+			if(weTag_getAttribute('property', $attribs, false, true)){
+				return isset($doc->$match_orig) ? !empty($doc->$match_orig) : false;
 			}
 
+			$type = $type ? $type : $doc->getElement($match_orig, 'type');
 			switch($type){
 				case 'href' :
 					$attribs['name'] = $match;
 					$attribs['_name_orig'] = $match_orig;
-					$foo = $doc->getField($attribs, $type, true);
+					$foo = $doc->getField($attribs, 'href', true);
 					break;
 				case 'multiobject':
 					//FIXME: this makes no sense
