@@ -176,7 +176,7 @@ class we_backup_import{
 				if($table !== false){
 					we_backup_util::setBackupVar('current_table', $table);
 					$object = new we_backup_table($table);
-					$classname = 'we_backup_table';
+					$classname = get_class($object);
 					return true;
 				}
 				return false;
@@ -186,7 +186,7 @@ class we_backup_import{
 				if($table !== false){
 					we_backup_util::setBackupVar('current_table', $table);
 					$object = new we_backup_tableAdv($table);
-					$classname = 'we_backup_tableAdv';
+					$classname = get_class($object);
 					return true;
 				}
 				return false;
@@ -196,14 +196,14 @@ class we_backup_import{
 				if($table !== false){
 					we_backup_util::setBackupVar('current_table', $table);
 					$object = new we_backup_tableItem($table);
-					$classname = 'we_backup_tableItem';
+					$classname = get_class($object);
 					return true;
 				}
 				return false;
 
 			case 'we:binary':
 				$object = new weBinary();
-				$classname = 'weBinary';
+				$classname = get_class($object);
 				return true;
 
 			case 'we:version':
