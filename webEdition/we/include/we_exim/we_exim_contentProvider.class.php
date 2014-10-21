@@ -172,8 +172,8 @@ class we_exim_contentProvider{
 			return true;
 		}
 
-		if($data !== self::CODING_OLD){
-			return preg_match('!(^a:\d+:{)|(^s:\d+:)|([\\x0-\x08\x0e-\x19\x11\x12<>&])!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
+		if($data !== self::CODING_OLD){//all arrays, strings & objects can be changed due to line-ending conversion
+			return preg_match('!(^a:\d+:{)|(^s:\d+:)|(^O:\d+:)|([\\x0-\x08\x0e-\x19\x11\x12<>&])!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
 		}
 
 		$encoded = array(
@@ -357,11 +357,6 @@ class we_exim_contentProvider{
 
 	static function object2xml(&$object, $file, $attribs = array(), $fwrite = 'fwrite'){
 		$classname = (isset($object->Pseudo) ? $object->Pseudo : (isset($object->ClassName) ? $object->ClassName : get_class($object)));
-
-		if(!isset($object->ClassName)){//make sure we have this information
-			$object->ClassName = get_class($object);
-			$object->persistent_slots = array_merge(array('ClassName'), $object->persistent_slots);
-		}
 
 		switch($classname){
 			case 'we_category':

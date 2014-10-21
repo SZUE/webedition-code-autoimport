@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_import_updater extends we_exim_XMLExIm{
-
 	var $RefTable;
 	var $UpdateItemsCount = 1;
 	var $Patterns;
@@ -42,10 +41,10 @@ class we_import_updater extends we_exim_XMLExIm{
 
 		if(isset($object->MasterTemplateID) && $object->MasterTemplateID){
 			$ref = $this->RefTable->getRef(
-					array(
-						'OldID' => $object->MasterTemplateID,
-						'ContentType' => we_base_ContentTypes::TEMPLATE
-					)
+				array(
+					'OldID' => $object->MasterTemplateID,
+					'ContentType' => we_base_ContentTypes::TEMPLATE
+				)
 			);
 			if($ref){
 				$object->MasterTemplateID = $ref->ID;
@@ -65,7 +64,7 @@ class we_import_updater extends we_exim_XMLExIm{
 				break;
 			case 'we_object':
 				// update class for embedded object
-				if(preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+|', implode(',', array_keys($object->SerializedArray)))){
+				if(is_array($object->SerializedArray) && preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+|', implode(',', array_keys($object->SerializedArray)))){
 					$this->updateObjectModuleData($object);
 				}
 				break;
@@ -76,19 +75,19 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 		if(isset($object->TemplateID) && $object->TemplateID){
 			$ref = $this->RefTable->getRef(
-					array(
-						"OldID" => $object->TemplateID,
-						"ContentType" => we_base_ContentTypes::TEMPLATE
-					)
+				array(
+					"OldID" => $object->TemplateID,
+					"ContentType" => we_base_ContentTypes::TEMPLATE
+				)
 			);
 			if($ref){
 				$object->TemplateID = $ref->ID;
 			} else if(isset($object->TemplatePath) && $object->TemplatePath){
 				$ref = $this->RefTable->getRef(
-						array(
-							"ID" => $object->ID,
-							"Table" => $object->Table
-						)
+					array(
+						"ID" => $object->ID,
+						"Table" => $object->Table
+					)
 				);
 				if($ref && isset($ref->OldTemplatePath)){
 					$tpath = we_base_file::clearPath(preg_replace('|^.+' . ltrim(TEMPLATES_DIR, '/') . '|i', '', $ref->OldTemplatePath));
@@ -105,10 +104,10 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 		if(isset($object->DocType) && $object->ClassName != "we_docTypes"){
 			$ref = $this->RefTable->getRef(
-					array(
-						"OldID" => $object->DocType,
-						"ContentType" => "doctype"
-					)
+				array(
+					"OldID" => $object->DocType,
+					"ContentType" => "doctype"
+				)
 			);
 			if($ref){
 				$object->DocType = $ref->ID;
@@ -125,10 +124,10 @@ class we_import_updater extends we_exim_XMLExIm{
 			$newcats = array();
 			foreach($cats as $cat){
 				$ref = $this->RefTable->getRef(
-						array(
-							"OldID" => $cat,
-							"ContentType" => "category"
-						)
+					array(
+						"OldID" => $cat,
+						"ContentType" => "category"
+					)
 				);
 				if($ref){
 					$newcats[] = $ref->ID;
@@ -185,10 +184,10 @@ class we_import_updater extends we_exim_XMLExIm{
 			if(strpos($k, 'intID') !== false || strpos($k, 'LinkID') !== false || strpos($k, 'RollOverID') !== false){
 				if(isset($element['dat'])){
 					$ref = $this->RefTable->getRef(
-							array(
-								'OldID' => $element['dat'],
-								'Table' => FILE_TABLE
-							)
+						array(
+							'OldID' => $element['dat'],
+							'Table' => FILE_TABLE
+						)
 					);
 					$element['dat'] = ($ref ? $ref->ID : 0);
 				}
@@ -196,10 +195,10 @@ class we_import_updater extends we_exim_XMLExIm{
 
 			if(isset($element["bdid"])){
 				$ref = $this->RefTable->getRef(
-						array(
-							'OldID' => $element['bdid'],
-							'Table' => FILE_TABLE
-						)
+					array(
+						'OldID' => $element['bdid'],
+						'Table' => FILE_TABLE
+					)
 				);
 
 				$element['bdid'] = ($ref ? $ref->ID : 0);
@@ -209,20 +208,20 @@ class we_import_updater extends we_exim_XMLExIm{
 				case "we_objectFile":
 					if(preg_match('|we_object_([0-9])+_path|', $k, $regs)){
 						$ref = $this->RefTable->getRef(
-								array(
-									'OldID' => $regs[1],
-									'Table' => OBJECT_TABLE
-								)
+							array(
+								'OldID' => $regs[1],
+								'Table' => OBJECT_TABLE
+							)
 						);
 						if($ref){
 							//$classid = $ref->ID;
 							$objid = $object->elements['we_object_' . $regs[1]]['dat'];
 							$objpath = $object->elements['we_object_' . $regs[1] . '_path']['dat'];
 							$objref = $this->RefTable->getRef(
-									array(
-										'OldID' => $objid,
-										'Table' => OBJECT_FILES_TABLE
-									)
+								array(
+									'OldID' => $objid,
+									'Table' => OBJECT_FILES_TABLE
+								)
 							);
 							if($objref){
 								$objid = $objref->ID;
@@ -250,10 +249,10 @@ class we_import_updater extends we_exim_XMLExIm{
 						case 'img':
 						case 'binary'://FIXME: do we still have this field?
 							$objref = $this->RefTable->getRef(
-									array(
-										'OldID' => isset($element['bdid']) ? $element['bdid'] : $element['dat'],
-										'Table' => FILE_TABLE
-									)
+								array(
+									'OldID' => isset($element['bdid']) ? $element['bdid'] : $element['dat'],
+									'Table' => FILE_TABLE
+								)
 							);
 
 							if($objref){
@@ -267,10 +266,10 @@ class we_import_updater extends we_exim_XMLExIm{
 					if(preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+([a-zA-Z]*[0-9]*)|', $k, $regs)){
 						if(count($regs) > 2 && isset($object->elements[we_object::QUERY_PREFIX . $regs[1] . $regs[2]])){
 							$ref = $this->RefTable->getRef(
-									array(
-										'OldID' => $regs[1],
-										'Table' => OBJECT_TABLE
-									)
+								array(
+									'OldID' => $regs[1],
+									'Table' => OBJECT_TABLE
+								)
 							);
 							if($ref){
 								$object->elements[we_object::QUERY_PREFIX . $ref->ID . $regs[2]] = array_merge_recursive($object->elements[we_object::QUERY_PREFIX . $regs[1] . $regs[2]]);
@@ -382,10 +381,10 @@ class we_import_updater extends we_exim_XMLExIm{
 			if(preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+|', $elkey, $regs)){
 				if(count($regs) > 1){
 					$ref = $this->RefTable->getRef(
-							array(
-								'OldID' => $regs[1],
-								'Table' => OBJECT_TABLE
-							)
+						array(
+							'OldID' => $regs[1],
+							'Table' => OBJECT_TABLE
+						)
 					);
 					if($ref){
 						$new[we_object::QUERY_PREFIX . $ref->ID] = array_merge_recursive($elvalue);
@@ -422,10 +421,10 @@ class we_import_updater extends we_exim_XMLExIm{
 			$_new_tids = array();
 			foreach($_tids as $_tid){
 				$_ref = $this->RefTable->getRef(
-						array(
-							'OldID' => $_tid,
-							'Table' => TEMPLATES_TABLE
-						)
+					array(
+						'OldID' => $_tid,
+						'Table' => TEMPLATES_TABLE
+					)
 				);
 				if($_ref){
 					$_new_tids[] = $_ref->ID;
@@ -514,10 +513,10 @@ class we_import_updater extends we_exim_XMLExIm{
 		$_new_cats = array();
 		foreach($_cats as $_cat){
 			$_ref = $this->RefTable->getRef(
-					array(
-						'OldID' => isset($object->$_cat) ? $object->$_cat : 0,
-						'Table' => CATEGORY_TABLE
-					)
+				array(
+					'OldID' => isset($object->$_cat) ? $object->$_cat : 0,
+					'Table' => CATEGORY_TABLE
+				)
 			);
 			$_new_cats[] = ($_ref ? $_ref->ID : $_cat);
 		}
@@ -526,10 +525,10 @@ class we_import_updater extends we_exim_XMLExIm{
 	private function updateField(we_document &$object, $field, $table){
 
 		$_ref = $this->RefTable->getRef(
-				array(
-					'OldID' => isset($object->$field) ? $object->$field : 0,
-					'Table' => $table
-				)
+			array(
+				'OldID' => isset($object->$field) ? $object->$field : 0,
+				'Table' => $table
+			)
 		);
 
 		if($_ref){
@@ -544,10 +543,10 @@ class we_import_updater extends we_exim_XMLExIm{
 				$this->updateArray($array[$key]);
 			} else if(($key === "id") || ($key === "img_id") || ($key === "obj_id")){
 				$ref = $this->RefTable->getRef(
-						array(
-							"OldID" => $value,
-							"Table" => (($key === "obj_id" && defined('OBJECT_FILES_TABLE')) ? OBJECT_FILES_TABLE : FILE_TABLE)
-						)
+					array(
+						"OldID" => $value,
+						"Table" => (($key === "obj_id" && defined('OBJECT_FILES_TABLE')) ? OBJECT_FILES_TABLE : FILE_TABLE)
+					)
 				);
 				if($ref){
 					$array[$key] = $ref->ID;
@@ -569,10 +568,10 @@ class we_import_updater extends we_exim_XMLExIm{
 					foreach($_item2 as $_k3 => $_item3){
 						if(in_array('bdid', array_keys($_item3)) && $_item3['bdid']){
 							$ref = $this->RefTable->getRef(
-									array(
-										'OldID' => $_item3['bdid'],
-										'Table' => $table
-									)
+								array(
+									'OldID' => $_item3['bdid'],
+									'Table' => $table
+								)
 							);
 							if($ref){
 								$source[$_k1][$_k2][$_k3]['bdid'] = $ref->ID;
@@ -596,10 +595,10 @@ class we_import_updater extends we_exim_XMLExIm{
 						$source = str_replace($match[1][$k] . $match[2][$k] . $match[3][$k], $match[1][$k] . $_new_id . $match[3][$k], $source);
 					} else {
 						$ref = $this->RefTable->getRef(
-								array(
-									"Old" . $field => $include,
-									"Table" => $table
-								)
+							array(
+								"Old" . $field => $include,
+								"Table" => $table
+							)
 						);
 						if($ref && isset($match[3][$k])){
 							$source = str_replace($match[1][$k] . $match[2][$k] . $match[3][$k], $match[1][$k] . $ref->$field . $match[3][$k], $source);
