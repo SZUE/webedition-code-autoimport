@@ -22,7 +22,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			$this->id = uniqid('', true);
 			if(!(extension_loaded('suhosin') && ini_get('suhosin.session.encrypt')) && defined('SYSTEM_WE_SESSION_CRYPT') && SYSTEM_WE_SESSION_CRYPT){
 				$key = $_SERVER['DOCUMENT_ROOT'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : 'HTTP_USER_AGENT');
-				if(SYSTEM_WE_SESSION_CRYPT == 2){
+				if(SYSTEM_WE_SESSION_CRYPT === 2){
 					if(!isset($_COOKIE['secure'])){
 						$_COOKIE['secure'] = we_users_user::getHashIV(30);
 						setcookie('secure', $_COOKIE['secure'], 0, '/');
