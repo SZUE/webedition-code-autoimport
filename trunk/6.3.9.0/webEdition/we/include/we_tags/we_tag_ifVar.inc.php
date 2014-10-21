@@ -1,0 +1,130 @@
+<?php
+
+/**
+ * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package none
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+function _we_tag_ifVar_op($operator, $first, $match){
+	switch($operator){
+		default:
+		case 'equal':
+			return $first == $match;
+		case 'less':
+			return $first < $match;
+		case 'less|equal':
+			return $first <= $match;
+		case 'greater':
+			return $first > $match;
+		case 'greater|equal':
+			return $first >= $match;
+		case 'contains':
+			return (strpos($first, $match) !== false);
+	}
+}
+
+function we_tag_ifVar($attribs){
+	if(($foo = attributFehltError($attribs, array('name' => false, 'match' => true), __FUNCTION__))){
+		print($foo);
+		return false;
+	}
+
+	$match = weTag_getAttribute('match', $attribs);
+	$type = weTag_getAttribute('type', $attribs);
+	$operator = weTag_getAttribute('operator', $attribs, 'equal');
+
+	if(is_bool($match)){
+		$size = 1;
+	} else {
+		$matchArray = makeArrayFromCSV($match);
+		$size = count($matchArray);
+	}
+
+	switch($type){
+		case 'customer' :
+		case 'sessionfield' :
+			$name = weTag_getAttribute('_name_orig', $attribs);
+
+			return ($size == 1 && $operator != '' && isset($_SESSION['webuser'][$name]) ?
+					_we_tag_ifVar_op($operator, $_SESSION['webuser'][$name], $match) :
+					(isset($_SESSION['webuser'][$name]) && in_array($_SESSION['webuser'][$name], $matchArray)));
+
+		case 'global' :
+			$name = weTag_getAttribute('_name_orig', $attribs);
+			//$name = isset($GLOBALS[$name]) ? $name : (isset($GLOBALS[$name_orig]) ? $name_orig : $name);
+			$var = getArrayValue($GLOBALS, null, $name);
+			return ($size == 1 && $operator ?
+					_we_tag_ifVar_op($operator, $var, $match) :
+					(!empty($var) && in_array($var, $matchArray)));
+
+		case 'request' :
+			$name = weTag_getAttribute('_name_orig', $attribs);
+			if(!isset($_REQUEST[$name])){
+				return false;
+			}
+			return ($size == 1 && $operator ?
+					_we_tag_ifVar_op($operator, $_REQUEST[$name], $match) :
+					( in_array($_REQUEST[$name], $matchArray)));
+
+		case 'post' :
+			$name = weTag_getAttribute('_name_orig', $attribs);
+			if(!isset($_POST[$name])){
+				return false;
+			}
+			return ($size == 1 && $operator ?
+					_we_tag_ifVar_op($operator, $_POST[$name], $match) :
+					( in_array($_POST[$name], $matchArray)));
+
+		case 'get' :
+			$name = weTag_getAttribute('_name_orig', $attribs);
+			if(!isset($_GET[$name])){
+				return false;
+			}
+			return ($size == 1 && $operator ?
+					_we_tag_ifVar_op($operator, $_GET[$name], $match) :
+					(in_array($_GET[$name], $matchArray)));
+
+		case 'session' :
+			$name = weTag_getAttribute('_name_orig', $attribs);
+			if(!isset($_SESSION[$name])){
+				return false;
+			}
+			return ($size == 1 && $operator ?
+					_we_tag_ifVar_op($operator, $_SESSION[$name], $match) :
+					(in_array($_SESSION[$name], $matchArray)));
+
+		case 'property' :
+			$name = weTag_getAttribute('_name_orig', $attribs);
+			$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs), true);
+			$var = $doc->$name;
+			return ($size == 1 && $operator != '' && isset($var) ?
+					_we_tag_ifVar_op($operator, $var, $match) :
+					in_array($var, $matchArray));
+
+		case 'document' :
+		default :
+			$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs), true);
+			$val = $doc->getField($attribs, $type, true);
+
+			return ($size == 1 && $operator ?
+					_we_tag_ifVar_op($operator, $val, $match) :
+					in_array($val, $matchArray));
+	}
+}
