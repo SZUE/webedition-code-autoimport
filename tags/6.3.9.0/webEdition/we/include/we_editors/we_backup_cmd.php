@@ -150,8 +150,8 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 
 			echo we_html_element::jsElement('
 function run(){' . we_backup_util::getProgressJS($percent, $description, true) . '
-	top.cmd.location = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=export";
 	top.checker.location = "' . WE_INCLUDES_DIR . 'we_editors/we_make_backup.php?pnt=checker";
+	top.cmd.location = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=export";
 }
 run();');
 			flush();
@@ -320,8 +320,8 @@ if(top.checker != "undefined"){
 
 			echo we_html_element::jsElement('
 function run(){' . we_backup_util::getProgressJS(we_backup_util::getImportPercent(), $description, true) . '
-	top.cmd.location = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=import";
 	top.checker.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=checker";
+	top.cmd.location = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=import";
 }
 
 run();');
