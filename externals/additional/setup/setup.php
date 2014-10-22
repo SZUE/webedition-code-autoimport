@@ -27,7 +27,7 @@
  * - debugoff	turn off debug messages
  * - phpinfo	show phpinfo() instead of the setup screen
  * example:		http://yourdomain/setup.php?debug
- * 				http://yourdomain/setup.php?phpinfo
+ *				http://yourdomain/setup.php?phpinfo
  */
 
 // some utility features:
