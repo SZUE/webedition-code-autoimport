@@ -239,7 +239,7 @@ class we_listview_document extends we_listview_base{
 
 			$bedingung_sql = (isset($bedingung_sql1) ? $bedingung_sql1 : $bedingung_sql2);
 
-			$extraSelect = ($random ? ', RAND() as RANDOM ' : $ranking . ' AS ranking ') . $calendar_select;
+			$extraSelect = ',' . ($random ? ' RAND() as RANDOM ' : $ranking . ' AS ranking ') . $calendar_select;
 			$limit = (($this->maxItemsPerPage > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : '');
 		} else {
 			if($this->workspaceID != ''){
