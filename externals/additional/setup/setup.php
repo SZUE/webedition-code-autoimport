@@ -46,12 +46,16 @@ if(version_compare(PHP_VERSION,"5.2.4","<")) {
 if(
 	!is_readable('./webEdition/we/include/we_version.php') ||
 	!is_readable('./webEdition/we/include/conf/we_conf.inc.php.default') ||
+	!is_readable('./webEdition/we/include/conf/we_conf_global.inc.php.default') ||
 	!is_dir('./webEdition') ||
 	!is_dir('./webEdition/lib/we')) {
 	die("No webEdition installation found. This script has to be placed in your DOCUMENT_ROOT besides your webEdition folder!");
 }
 if(!is_readable('./webEdition/we/include/conf/we_conf.inc.php')){
 	copy('./webEdition/we/include/conf/we_conf.inc.php.default', './webEdition/we/include/conf/we_conf.inc.php');
+}
+if(!is_readable('./webEdition/we/include/conf/we_conf_global.inc.php')){
+	copy('./webEdition/we/include/conf/we_conf_global.inc.php.default', './webEdition/we/include/conf/we_conf_global.inc.php');
 }
 
 include_once './webEdition/we/include/we_version.php';
