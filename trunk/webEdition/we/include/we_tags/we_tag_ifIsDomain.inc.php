@@ -55,7 +55,7 @@ function we_tag_ifIsDomain($attribs){
 			$len = strlen($servername);
 			foreach($domain as $d){
 				$pos = strpos($servername, $d);
-				if($pos !== FALSE && ($pos + strlen($d)) == $len){
+				if($pos !== FALSE && ($pos + strlen($d)) === $len){
 					return true;
 				}
 			}

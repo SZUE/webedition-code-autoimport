@@ -347,7 +347,8 @@ class we_customer_customer extends weModelBase{
 		if(!$storedPassword || !$clearPassword){
 			return false;
 		}
-		if(!preg_match('|^\$([^$]{2,4})\$([^$]*)\$(.*)$|', $storedPassword, $matches)){
+		$matches=array();
+		if(!preg_match('|^\$([^$]{2,4})\$([^$]+)\$(.+)$|', $storedPassword, $matches)){
 			return $storedPassword === $clearPassword;
 		}
 		switch($matches[1]){
