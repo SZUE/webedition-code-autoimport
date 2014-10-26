@@ -156,7 +156,7 @@ function wetagsessionHandleFailedLogin(){
 	}
 }
 
-function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){
+function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){ //FIXME: check for last time =>(cuncurrent logins)
 	if($_REQUEST['s']['Username'] && $_REQUEST['s']['Password']){
 		if(
 			intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||

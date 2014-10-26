@@ -203,7 +203,7 @@ class we_listview_document extends we_listview_base{
 
 			$ranking = '0';
 			$spalten = array(($this->casesensitive ? 'BINARY ' : '') . INDEX_TABLE . '.Text');
-			reset($bedingungen);
+			
 			foreach($bedingungen as $v1){
 				if(preg_match('|^[-\+]|', $v1)){
 					$not = (preg_match('^-', $v1));
