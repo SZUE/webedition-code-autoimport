@@ -188,8 +188,16 @@ function weonclick(e){
 		if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
 		top.unselectAllFiles();') . '
 #	}
-}') . '</head>
-<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"#\'+((makeNewFolder || top.we_editDirID) ? #\'  onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"#\' : "")+#\'>
+}') . '<style type="text/css">
+body{
+	background-color:white;
+	margin:0px;
+}
+a:link,a:visited,a:hover,a:active
+{color:#000;}
+</style>
+</head>
+<body #\'+((makeNewFolder || top.we_editDirID) ? #\' onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"#\' : "")+#\'>
 <form name="we_form" target="fscmd" action="' . $_SERVER["SCRIPT_NAME"] . '" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">
 #if(we_editDirID){
 	<input type="hidden" name="what" value="' . self::DORENAMEFOLDER . '" />
@@ -688,7 +696,7 @@ top.selectFile(top.currentID);
 </head><body></body></html>';
 	}
 
-	function getFrameset(){
+	protected function getFrameset(){
 		return '<frameset rows="67,*,65,20,0" border="0">
 	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
 	<frameset cols="605,*" border="1">

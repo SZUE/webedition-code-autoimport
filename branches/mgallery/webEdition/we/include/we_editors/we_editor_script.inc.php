@@ -362,6 +362,7 @@ if(isset($GLOBALS['we_doc'])){
 				break;
 			case "openDirselector":
 			case "openDocselector":
+			case "openImgselector":
 				new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ", " . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
 			case "openSelector":

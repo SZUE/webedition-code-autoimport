@@ -280,7 +280,7 @@ function cutText(text,l){
 		?>
 		</head>
 		<?php
-		print $this->getFrameset();
+		echo $this->getFrameset();
 	}
 
 	function printFramesetUnselectFileHTML(){
@@ -349,7 +349,7 @@ var tout=null;
 var mk=null;');
 	}
 
-	function getFrameset(){
+	protected function getFrameset(){
 		return '<frameset rows="67,*,65,0" border="0">
 	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
     <frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" noresize scrolling="auto">
@@ -433,7 +433,7 @@ function queryString(what,id,o){
 	}
 
 	protected static function makeWriteDoc($html){
-		$html = explode("\n", str_replace(array("'", 'script', '#\\\'',), array("\\'", "scr' + 'ipt", '\''), implodeJS($html)));
+		$html = explode("\n", strtr(implodeJS($html), array("'" => "\\'", 'script' => "scr' + 'ipt", '#\\\'' => '\'',)));
 		$ret = '';
 		foreach($html as $cur){
 			$ret.=(substr($cur, 0, 1) === '#' ? substr($cur, 1) : "d.writeln('" . $cur . "');");
@@ -448,8 +448,16 @@ function queryString(what,id,o){
 				d.open();
 		<?php
 		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . '
+<style type="text/css">
+body{
+background-color:white;
+margin:0px;
+}
+a:link,a:visited,a:hover,a:active
+{color:#000;}
+</style>
 </head>
-<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
+<body>
 <table border="0" cellpadding="0" cellspacing="0">');
 		?>
 				for (i = 0; i < entries.length; i++) {
@@ -553,7 +561,17 @@ function selectIt(){
 		a.selectedIndex=a.options.length-1;
 }') . '
 </head>
-	<body background="' . IMAGE_DIR . 'backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+<style type="text/css">
+body{
+	background-image:url(\'' . IMAGE_DIR . 'backgrounds/radient.gif\');
+	background-color:#bfbfbf;
+	background-repeat:repeat;
+	margin:0px;
+}
+a:link,a:visited,a:hover,a:active
+{color:#000;}
+</style>
+	<body>
 		<form name="we_form" method="post">' .
 		((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ?
 			$this->printHeaderTable() .
@@ -714,8 +732,18 @@ top.fsheader.selectIt();';
 			$this->printFooterJSIncluddes() .
 			$this->printFooterJSDef() .
 			$this->printFooterJS()) . '
+<style type="text/css">
+body{
+	margin:0px;
+	background-color:#bfbfbf;
+	background-repeat:repeat;
+	background-image: url(\'' . IMAGE_DIR . 'backgrounds/radient.gif\');
+}
+a:link,a:visited,a:hover,a:active
+{color:#000;}
+</style>
 </head>
-	<body background="' . IMAGE_DIR . 'backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+	<body>
 	<form name="we_form" target="fscmd">' .
 		$this->printFooterTable() . '
 	</form>

@@ -45,6 +45,7 @@ switch($cmd0){//FIMXE most of the stuff can be handled via session! transfer is 
 		$_REQUEST['multiple'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 9);
 		break;
 	case 'openDocselector':
+	case 'openImgselector':
 		$_REQUEST['id'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 		$_REQUEST['table'] = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2);
 		$_REQUEST['JSIDName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
@@ -59,19 +60,22 @@ switch($cmd0){//FIMXE most of the stuff can be handled via session! transfer is 
 }
 
 switch($cmd0){
-	case 'openDirselector' :
+	case 'openDirselector':
 		require_once (WEBEDITION_PATH . 'we_dirSelect.php');
 		break;
-	case 'openSelector' :
+	case 'openSelector':
 		require_once (WEBEDITION_PATH . ($table == CUSTOMER_TABLE ? 'we_customerSelect.php' : 'we_fs.php'));
 		break;
-	case 'openDocselector' :
+	case 'openDocselector':
 		require_once (WEBEDITION_PATH . 'we_docSelect.php');
 		break;
-	case 'openCatselector' :
+	case 'openImgselector':
+		require_once (WEBEDITION_PATH . 'we_imgSelect.php');
+		break;
+	case 'openCatselector':
 		require_once (WEBEDITION_PATH . 'we_catSelect.php');
 		break;
-	case 'openDelSelector' :
+	case 'openDelSelector':
 		require_once (WEBEDITION_PATH . 'we_delSelect.php');
 		break;
 }

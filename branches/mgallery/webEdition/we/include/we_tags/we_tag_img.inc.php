@@ -186,7 +186,7 @@ function we_tag_img($attribs){
 		$out .= we_html_button::create_button_table(
 				array(
 				$_editButton,
-				we_html_button::create_button("image:btn_select_image", "javascript:we_cmd('openDocselector', '" . ($id ? $id : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "',''," . $parentid . ",'" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true),
+				we_html_button::create_button("image:btn_select_image", "javascript:we_cmd('openImgselector', '" . ($id ? $id : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "',''," . $parentid . ",'" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true),
 				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image', '" . $name . "')", true)
 				), 5) . '</td></tr></table>';
 	}

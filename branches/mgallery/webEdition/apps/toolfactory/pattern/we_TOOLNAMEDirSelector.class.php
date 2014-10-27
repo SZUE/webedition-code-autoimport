@@ -114,7 +114,7 @@ echo '<?php self::makeWriteDoc($html); ?>';
 									d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 									if (makeNewFolder){
 					d.writeln('<tr style="background-color:#DFE9F5;">');
-									d.writeln('<td align="center"><img src="<?php print '<?php print WE_APPS_DIR;?>' . $TOOLNAME; ?>/ui/themes/default/shared/icons/small/folder.gif" width="16" height="18" border="0"></td>');
+									d.writeln('<td align="center"><img src="<?php echo '<?php print WE_APPS_DIR;?>' . $TOOLNAME; ?>/ui/themes/default/shared/icons/small/folder.gif" width="16" height="18" border="0"></td>');
 									d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print g_l('tools', '[newFolder]'); ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print g_l('tools', '[newFolder]'); ?>"  class="wetextinput" style="width:100%" /></td>');
 									d.writeln('</tr>');
 									}

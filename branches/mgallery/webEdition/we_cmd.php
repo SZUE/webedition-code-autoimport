@@ -58,6 +58,7 @@ function findInclude($cmd){
 		case 'openDocselector':
 		case 'openCatselector':
 		case 'openDelSelector':
+		case 'openImgselector':
 			return 'we_fs.inc.php';
 		case 'open_tag_wizzard':
 			return 'weTagWizard/we_tag_wizzard.inc.php';

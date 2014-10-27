@@ -119,8 +119,17 @@ if(e.shiftKey){ shiftpressed=true;}
 }' . ($this->multiple ? '
 if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
 top.unselectAllFiles();') . '
-}') . '</head>
-<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
+}') . '
+<style type="text/css">
+body{
+	background-color:white;
+	margin:0px;
+}
+a:link,a:visited,a:hover,a:active
+{color:#000;}
+</style>
+</head>
+<body>
 <table style="border-spacing: 0px;border-style:none;width:100%" cellpadding="0">');
 		?>
 				for (i = 0; i < entries.length; i++) {
