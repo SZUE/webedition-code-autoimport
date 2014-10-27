@@ -83,11 +83,11 @@ class we_selector_category extends we_selector_multiple{
 		}
 	}
 
-	function getFsQueryString($what){
+	protected function getFsQueryString($what){
 		return $_SERVER["SCRIPT_NAME"] . "?what=$what&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&noChoose=" . $this->noChoose;
 	}
 
-	function printHeaderTable(){
+	protected function printHeaderTable(){
 		return '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">' .
 			$this->printHeaderTableSpaceRow() . '
@@ -114,7 +114,7 @@ class we_selector_category extends we_selector_multiple{
 </table>';
 	}
 
-	function printHeaderTableSpaceRow(){
+	protected function printHeaderTableSpaceRow(){
 		return '<tr><td colspan="15">' . we_html_tools::getPixel(5, 10) . '</td></tr>';
 	}
 
@@ -126,11 +126,11 @@ class we_selector_category extends we_selector_multiple{
 		return ($this->userCanEditCat() && $this->id > 0);
 	}
 
-	function printHeaderJSDef(){
+	protected function printHeaderJSDef(){
 		return 'var changeCatState=' . ($this->userCanChangeCat() ? 1 : 0) . ';';
 	}
 
-	function printHeaderJS(){
+	protected function printHeaderJS(){
 		return we_html_button::create_state_changer(false) . '
 
 function disableRootDirButs(){
@@ -174,7 +174,7 @@ function enableDelBut(){
 	}');
 	}
 
-	function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){
 		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
@@ -277,7 +277,7 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles
 		return ob_get_clean();
 	}
 
-	function printFramesetJSFunctionQueryString(){
+	protected function printFramesetJSFunctionQueryString(){
 		return we_html_element::jsElement('
 		function queryString(what,id,o,we_editCatID){
 		if(!o) o=top.order;
@@ -286,7 +286,7 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles
 		}');
 	}
 
-	function printFramesetJSFunctions(){
+	protected function printFramesetJSFunctions(){
 		return parent::printFramesetJSFunctions() . we_html_element::jsElement('
 function drawNewFolder(){
 	unselectAllFiles();
@@ -510,7 +510,7 @@ function hidePref() {
 }');
 	}
 
-	function printCmdHTML(){
+	protected function printCmdHTML(){
 		echo we_html_element::jsElement('
 top.clearEntries();' .
 			$this->printCmdAddEntriesHTML() .
@@ -610,7 +610,7 @@ function selectFile(id){
 }');
 	}
 
-	function printFramesetJSsetDir(){
+	protected function printFramesetJSsetDir(){
 		return we_html_element::jsElement('
 function setDir(id){
 	e = getEntry(id);
@@ -784,7 +784,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ID IN (' . (is_array($id) ? implode(',', $id) : intval($id)) . ')');
 	}
 
-	function printFooterTable(){
+	protected function printFooterTable(){
 		if($this->values['Text'] === '/'){
 			$this->values['Text'] = '';
 		}

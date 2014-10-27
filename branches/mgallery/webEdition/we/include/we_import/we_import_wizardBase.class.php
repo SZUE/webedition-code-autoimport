@@ -125,6 +125,7 @@ function we_cmd() {
 	}
 	switch (arguments[0]) {
 		case 'openDirselector':
+		case 'openImgselector':
 		case 'openDocselector':
 			new jsWindow(url,'we_fileselector',-1,-1," . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ",true,true,true);
 			break;

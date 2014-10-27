@@ -39,7 +39,7 @@ class we_selector_multiple extends we_selector_file{
 		$this->multiple = $multiple;
 	}
 
-	function printFramesetJSFunctions(){
+	protected function printFramesetJSFunctions(){
 		return parent::printFramesetJSFunctions() . we_html_element::jsElement('
 var allIDs ="";
 var allPaths ="";
@@ -97,7 +97,7 @@ function we_makeTextFromPath(path){
 }');
 	}
 
-	function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){
 		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {

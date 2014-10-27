@@ -578,6 +578,7 @@ function we_cmd() {
 			new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
 			break;
 
+		case "openImgselector":
 		case "openDocselector":
 			new jsWindow(url,"we_docselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
 			break;

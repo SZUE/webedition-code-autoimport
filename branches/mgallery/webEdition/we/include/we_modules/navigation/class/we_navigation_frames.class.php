@@ -1137,7 +1137,7 @@ function onSelectionClassChangeJS(value) {
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.$IDName.value");
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.$PathName.value");
 			$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-			$_cmd = "javascript:we_cmd('" . ($filter === we_base_ContentTypes::IMAGE ? 'openImgselector' : 'openDocselector') . "',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
+			$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 			$_selector = weSuggest::DocSelector;
 		}
 

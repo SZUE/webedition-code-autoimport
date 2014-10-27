@@ -823,6 +823,7 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 			case "openDirselector":
 				new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;
+			case "openImgselector":
 			case "openDocselector":
 				new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 				break;

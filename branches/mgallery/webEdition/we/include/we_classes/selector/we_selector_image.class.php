@@ -46,11 +46,11 @@ class we_selector_image extends we_selector_document{
 </html>';
 	}
 
-	public function printFooterTable(){
+	protected function printFooterTable(){
 		return parent::printFooterTable('<input type="range" name="zoom" min="50" step="25" max="250" onchange="top.document.frames[\'fsbody\'].document.body.style.fontSize=this.value+\'%\';"/>');
 	}
 
-	function printFramesetJSFunctioWriteBody(){
+		protected function printFramesetJSFunctioWriteBody(){
 		return we_html_element::jsElement('
 function writeBody(d){
 	d.open();' .

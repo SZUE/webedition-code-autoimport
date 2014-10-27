@@ -65,7 +65,7 @@ function doClick(id,ct){
 </table>';
 	}
 
-	function printFramesetJSsetDir(){
+	protected function printFramesetJSsetDir(){
 		return we_html_element::jsElement('
 function setDir(id){
 	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',id));

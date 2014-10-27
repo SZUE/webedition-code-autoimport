@@ -404,6 +404,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 					case "openCatselector":
 						new jsWindow(url, "we_catselector", -1, -1,<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH . "," . we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>, true, true, true, true);
 						break;
+					case "openImgselector":
 					case "openDocselector":
 						new jsWindow(url, "we_docselector", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 						break;

@@ -324,6 +324,7 @@ function we_cmd(){
 		case "openSelector":
 			new jsWindow(url,arguments[0],-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 		break;
+		case "openImgselector":
 		case "openDocselector":
 			new jsWindow(url,arguments[0],-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
 		break;

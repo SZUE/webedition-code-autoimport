@@ -90,7 +90,7 @@ class we_selector_directory extends we_selector_multiple{
 		}
 	}
 
-	function printCmdHTML(){
+	protected function printCmdHTML(){
 
 		echo we_html_element::jsElement('
 top.clearEntries();' .
@@ -136,11 +136,11 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			'CreatorID' => 0);
 	}
 
-	function getFsQueryString($what){
+	protected function getFsQueryString($what){
 		return $_SERVER["SCRIPT_NAME"] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . (isset($this->open_doc) ? ("&open_doc=" . $this->open_doc) : "");
 	}
 
-	function printFramesetJSFunctions(){
+	protected function printFramesetJSFunctions(){
 		return parent::printFramesetJSFunctions() . we_html_element::jsElement('
 function drawNewFolder(){
 	unselectAllFiles();
@@ -152,7 +152,7 @@ function RenameFolder(id){
 }');
 	}
 
-	function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){
 		return we_html_element::jsElement('
 function writeBody(d){
 	d.open();' .
@@ -244,7 +244,7 @@ d.close();
 }');
 	}
 
-	function printFramesetJSFunctionQueryString(){
+	protected function printFramesetJSFunctionQueryString(){
 		return we_html_element::jsElement('
 		function queryString(what,id,o,we_editDirID){
 		if(!o) o=top.order;
@@ -256,7 +256,7 @@ d.close();
 		}');
 	}
 
-	function printFramesetJSFunctionEntry(){
+	protected function printFramesetJSFunctionEntry(){
 		return we_html_element::jsElement('
 function entry(ID,icon,text,isFolder,path,modDate){
 	this.ID=ID;
@@ -268,14 +268,14 @@ function entry(ID,icon,text,isFolder,path,modDate){
 }');
 	}
 
-	function printFramesetJSFunctionAddEntry(){
+	protected function printFramesetJSFunctionAddEntry(){
 		return we_html_element::jsElement('
 function addEntry(ID,icon,text,isFolder,path,modDate){
 	entries[entries.length] = new entry(ID,icon,text,isFolder,path,modDate);
 }');
 	}
 
-	function printFramesetJSFunctionAddEntries(){
+	protected function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		while($this->next_record()){
 			$ret.='addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->f("ModDate")) ? $this->f("ModDate") : 0)) . '");';
@@ -310,12 +310,12 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 </table>';
 	}
 
-	function printHeaderJSDef(){
+	protected function printHeaderJSDef(){
 		return parent::printHeaderJSDef() .
 				'var makefolderState = ' . ($this->userCanMakeNewFolder ? 1 : 0) . ';';
 	}
 
-	function printHeaderJS(){
+	protected function printHeaderJS(){
 		return parent::printHeaderJS() .
 				we_html_button::create_state_changer(false) . '
 function disableNewFolderBut(){
@@ -404,7 +404,7 @@ function setRootDir(){
 }');
 	}
 
-	function printCMDWriteAndFillSelectorHTML(){
+	protected function printCMDWriteAndFillSelectorHTML(){
 		$pid = $this->dir;
 		$out = '';
 		$c = 0;
@@ -433,7 +433,7 @@ top.fsheader.addOption("/",0);') .
 top.fsheader.selectIt();';
 	}
 
-	function printHeaderTable(){
+	protected function printHeaderTable(){
 		return '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">' .
 				$this->printHeaderTableSpaceRow() . '
@@ -459,7 +459,7 @@ top.fsheader.selectIt();';
 </table>';
 	}
 
-	function printHeaderOptions(){
+	protected function printHeaderOptions(){
 		$pid = $this->dir;
 		$out = '';
 		$c = 0;
@@ -482,14 +482,14 @@ top.fsheader.selectIt();';
 		return ($this->rootDirID ? '' : '<option value="0">/</option>') . $out;
 	}
 
-	function printHeaderTableExtraCols(){
+	protected function printHeaderTableExtraCols(){
 		return '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
 				we_html_button::create_button("image:btn_new_dir", "javascript:top.drawNewFolder();", true, 0, 0, '', '', !$this->userCanMakeNewDir(), false) .
 				'</td>';
 	}
 
-	function printHeaderTableSpaceRow(){
-		return '<tr>	<td colspan="11">' . we_html_tools::getPixel(5, 10) . '</td></tr>';
+	protected function printHeaderTableSpaceRow(){
+		return '<tr><td colspan="11">' . we_html_tools::getPixel(5, 10) . '</td></tr>';
 	}
 
 	protected function printFramesetJSDoClickFn(){
@@ -551,7 +551,7 @@ function doClick(id,ct){
 }');
 	}
 
-	function printFramesetJSsetDir(){
+	protected function printFramesetJSsetDir(){
 		return we_html_element::jsElement('
 function setDir(id){
 	showPreview(id);

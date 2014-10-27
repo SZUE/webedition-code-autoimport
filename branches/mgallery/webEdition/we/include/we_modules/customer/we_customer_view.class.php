@@ -196,6 +196,7 @@ function we_cmd() {
 		case "browse_users":
 			new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
 		break;
+		case "openImgselector":
 		case "openDocselector":
 			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
 		break;

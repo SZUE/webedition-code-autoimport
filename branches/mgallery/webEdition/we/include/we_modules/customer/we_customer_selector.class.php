@@ -153,7 +153,7 @@ top.currentID = "' . $this->id . '";';
 </script>';
 	}
 
-	function printFramesetJSsetDir(){
+	protected function printFramesetJSsetDir(){
 		return we_html_element::jsElement('
 function setDir(id){
 	if(id>=0 || id<0){
@@ -181,7 +181,7 @@ function setDir(id){
 		return $out;
 	}
 
-	function printHeaderOptions(){
+	protected function printHeaderOptions(){
 		$elem = $this->getHeaderElements();
 		end($elem);
 		$last = key($elem);
@@ -192,7 +192,7 @@ function setDir(id){
 		return $out;
 	}
 
-	function printCMDWriteAndFillSelectorHTML(){
+	protected function printCMDWriteAndFillSelectorHTML(){
 		$elem = $this->getHeaderElements();
 		$out = '';
 		foreach($elem as $key => $val){

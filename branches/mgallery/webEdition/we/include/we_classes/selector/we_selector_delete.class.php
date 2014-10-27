@@ -52,7 +52,7 @@ class we_selector_delete extends we_selector_multiple{
 		}
 	}
 
-	function printFooterJS(){
+	protected function printFooterJS(){
 		return we_html_button::create_state_changer() . we_html_element::jsElement('
 function disableDelBut(){
 	delete_enabled = switch_button_state("delete", "delete_enabled", "disabled");
@@ -63,7 +63,7 @@ function enableDelBut(){
 ');
 	}
 
-	function printFramesetJSFunctions(){
+	protected function printFramesetJSFunctions(){
 		$tmp = (isset($_SESSION['weS']['seemForOpenDelSelector']['ID']) ? $_SESSION['weS']['seemForOpenDelSelector']['ID'] : 0);
 		unset($_SESSION['weS']['seemForOpenDelSelector']['ID']);
 
@@ -140,7 +140,7 @@ function doClick(id,ct){
 }');
 	}
 
-	function printCmdHTML(){
+	protected function printCmdHTML(){
 		print we_html_element::jsElement('
 top.clearEntries();' .
 				$this->printCmdAddEntriesHTML() .
@@ -193,7 +193,7 @@ function unselectAllFiles(){
 }');
 	}
 
-	function printFramesetJSsetDir(){
+	protected function printFramesetJSsetDir(){
 		return we_html_element::jsElement('
 function setDir(id){
 	e = getEntry(id);
@@ -233,7 +233,7 @@ top.close();');
 		echo '</head><body></body></html>';
 	}
 
-	function printFooterTable(){
+	protected function printFooterTable(){
 		if($this->values["Text"] === "/"){
 			$this->values["Text"] = "";
 		}

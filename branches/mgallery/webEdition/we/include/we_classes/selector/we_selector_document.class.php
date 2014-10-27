@@ -122,7 +122,7 @@ class we_selector_document extends we_selector_directory{
 		}
 	}
 
-	function getExitOpen(){
+	protected function getExitOpen(){
 		$frameRef = $this->JSTextName && strpos($this->JSTextName, ".document.") > 0 ?
 			substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) :
 			'';
@@ -163,11 +163,11 @@ function exit_open() {
 		$this->id = '';
 	}
 
-	function getFsQueryString($what){
+	protected function getFsQueryString($what){
 		return $_SERVER['SCRIPT_NAME'] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&filter=" . $this->filter . (isset($this->open_doc) ? ("&open_doc=" . $this->open_doc) : "");
 	}
 
-	function printFramesetJSFunctions(){
+	protected function printFramesetJSFunctions(){
 		$out = '
 var contentTypes = new Array();';
 		$ct = we_base_ContentTypes::inst();
@@ -197,7 +197,7 @@ function reloadDir() {
 }');
 	}
 
-	function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){
 		return we_html_element::jsElement('
 function writeBody(d){
 	d.open();' .
@@ -285,7 +285,7 @@ a:link,a:visited,a:hover,a:active
 }');
 	}
 
-	function printFramesetJSFunctionQueryString(){
+	protected function printFramesetJSFunctionQueryString(){
 		return we_html_element::jsElement('
 function queryString(what,id,o,we_editDirID,filter){
 	if(!o) o=top.order;
@@ -298,7 +298,7 @@ function queryString(what,id,o,we_editDirID,filter){
 }');
 	}
 
-	function printFramesetJSFunctionEntry(){
+	protected function printFramesetJSFunctionEntry(){
 		return we_html_element::jsElement('
 function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 	this.ID=ID;
@@ -313,14 +313,14 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 }');
 	}
 
-	function printFramesetJSFunctionAddEntry(){
+	protected function printFramesetJSFunctionAddEntry(){
 		return we_html_element::jsElement('
 		function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 		entries[entries.length] = new entry(ID,icon,text,isFolder,path,modDate,contentType,published,title);
 		}');
 	}
 
-	function printFramesetJSFunctionAddEntries(){
+	protected function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		if($this->userCanSeeDir(true)){
 			while($this->next_record()){
@@ -333,7 +333,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 		return we_html_element::jsElement($ret);
 	}
 
-	function printCmdAddEntriesHTML(){
+	protected function printCmdAddEntriesHTML(){
 		$ret = '';
 		$this->query();
 		while($this->next_record()){
@@ -367,7 +367,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 </table>';
 	}
 
-	function printHeaderTableExtraCols(){
+	protected function printHeaderTableExtraCols(){
 		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
 		return parent::printHeaderTableExtraCols() .
 			($this->filter != we_base_ContentTypes::TEMPLATE && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != we_base_ContentTypes::WEDOCUMENT ?
@@ -379,7 +379,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 				'</td>' : '');
 	}
 
-	function printHeaderJSDef(){
+	protected function printHeaderJSDef(){
 		$ret = parent::printHeaderJSDef();
 		if($this->filter != we_base_ContentTypes::TEMPLATE && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != we_base_ContentTypes::WEDOCUMENT){
 			$ret.= '
@@ -443,7 +443,7 @@ function enableNewFileBut() {
 		return true;
 	}
 
-	function printHeaderTableSpaceRow(){
+	protected function printHeaderTableSpaceRow(){
 		return '<tr><td colspan="13">' . we_html_tools::getPixel(5, 10) . '</td></tr>';
 	}
 
@@ -460,7 +460,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
-	function printFooterTable($more = ''){
+	protected function printFooterTable($more = ''){
 		$ret = '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr><td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td></tr>
@@ -848,7 +848,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		echo $out;
 	}
 
-	function printFramesetJSsetDir(){
+	protected function printFramesetJSsetDir(){
 		return we_html_element::jsElement('
 function setDir(id) {
 	showPreview(id);
