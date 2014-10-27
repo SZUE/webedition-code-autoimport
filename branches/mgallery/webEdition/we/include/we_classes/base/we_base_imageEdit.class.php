@@ -430,7 +430,7 @@ abstract class we_base_imageEdit{
 				// Now create the image
 				$_output_gdimg = $_image_create_function($_outsize["width"], $_outsize["height"]); // this image is always black
 
-				$GDInfo = self::gd_info();
+				/*$GDInfo = self::gd_info();
 				// DEBIAN EDGE FIX => crashes at imagefill, so use old Method
 				if($GDInfo["GD Version"] === '2.0 or higher' && !function_exists("imagerotate")){
 					// set black to transparent!
@@ -438,7 +438,7 @@ abstract class we_base_imageEdit{
 						imagecolortransparent($_output_gdimg, imagecolorallocate($_output_gdimg, 0, 0, 0)); // set this color to transparent - done
 					}
 				} else {
-
+*/
 					// preserve transparency of png and gif images:
 					switch($output_format){
 						case "gif":
@@ -457,7 +457,7 @@ abstract class we_base_imageEdit{
 							break;
 						default:
 					}
-				}
+				//}
 				// Resize image
 				//if($_outsize["width"] == "1")
 				if($fitinside && $keep_aspect_ratio && $width && $height){
