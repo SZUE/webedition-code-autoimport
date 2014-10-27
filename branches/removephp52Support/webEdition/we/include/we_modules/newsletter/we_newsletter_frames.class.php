@@ -1053,7 +1053,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 				$values[$i] = sprintf(g_l('modules_newsletter', '[mailing_list]'), $i);
 			}
 
-			$selected = $block->Groups ? $block->Groups : "1";
+			$selected = $block->Groups ? : "1";
 			$content.=$this->View->htmlHidden("block" . $counter . "_Groups", $selected) .
 					$this->View->htmlHidden("block" . $counter . "_Pack", $block->Pack) .
 					we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_GroupsSel", $values, 5, $selected, true, array("style" => 'width:440px;', "onchange" => "PopulateMultipleVar(document.we_form.block" . $counter . "_GroupsSel,document.we_form.block" . $counter . "_Groups);top.content.hot=1")), g_l('modules_newsletter', '[block_lists]'));
@@ -1527,7 +1527,7 @@ function changeFieldValue(val,valueField) {
 
 		header("Pragma: no-cache;");
 		header("Cache-Control: post-check=0, post-check=0, false");
-		we_html_tools::headerCtCharset('text/html', ($this->View->newsletter->Charset ? $this->View->newsletter->Charset : $GLOBALS['WE_BACKENDCHARSET']));
+		we_html_tools::headerCtCharset('text/html', ($this->View->newsletter->Charset ? : $GLOBALS['WE_BACKENDCHARSET']));
 
 
 		if(!$hm){
@@ -1987,7 +1987,7 @@ self.focus();
 						"align" => "",
 					),
 					array(
-						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[0] ? $cols[0] : "&nbsp;")),
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[0] ? : "&nbsp;")),
 						"height" => "",
 						"align" => "",
 					),
@@ -1997,22 +1997,22 @@ self.focus();
 						"align" => "",
 					),
 					array(
-						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[2] ? $cols[2] : "&nbsp;")),
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[2] ? : "&nbsp;")),
 						"height" => "",
 						"align" => "right",
 					),
 					array(
-						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[3] ? $cols[3] : "&nbsp;")),
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[3] ? : "&nbsp;")),
 						"height" => "",
 						"align" => "left",
 					),
 					array(
-						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[4] ? $cols[4] : "&nbsp;")),
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[4] ? : "&nbsp;")),
 						"height" => "",
 						"align" => "left",
 					),
 					array(
-						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[5] ? $cols[5] : "&nbsp;")),
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[5] ? : "&nbsp;")),
 						"height" => "",
 						"align" => "left",
 					),
@@ -2094,7 +2094,7 @@ function postSelectorSelect(wePssCmd) {
 
 		$chooser = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 2, 1);
 		$chooser->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
-		$chooser->setCol(1, 0, array(), $this->View->formFileChooser(420, "csv_file", ($open_file ? $open_file : ($csv_file ? $csv_file : "/")), "", "", 'readonly="readonly" onchange="alert(100)"'));
+		$chooser->setCol(1, 0, array(), $this->View->formFileChooser(420, "csv_file", ($open_file ? : ($csv_file ?: "/")), "", "", 'readonly="readonly" onchange="alert(100)"'));
 		//$chooser->setCol(2,0,array(),we_html_tools::getPixel(5,15));
 		//$chooser->setCol(3,0,array(),we_button::create_button_table(array($close,$edit)));
 		//$chooser->setCol(4,0,array(),we_html_tools::getPixel(5,15));
@@ -2611,7 +2611,7 @@ self.focus();');
 				$emailName = $email;
 			}
 			$phpmail = new we_util_Mailer($emailName, $this->View->newsletter->Subject, $this->View->newsletter->Sender, $this->View->newsletter->Reply, $this->View->newsletter->isEmbedImages);
-			$phpmail->setCharSet($this->View->newsletter->Charset ? $this->View->newsletter->Charset : $GLOBALS["_language"]["charset"]);
+			$phpmail->setCharSet($this->View->newsletter->Charset ? : $GLOBALS["_language"]["charset"]);
 
 			if($htmlmail){
 				$phpmail->addHTMLPart($content);

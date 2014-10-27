@@ -595,7 +595,7 @@ class we_helpers_pdf2text{
 			return'';
 		}
 
-		$file = $file ? $file : fopen($fname, 'r');
+		$file = $file ? : fopen($fname, 'r');
 		$data = '';
 		while(($read = fread($file, self::READPORTION))){
 			$data.=$read;

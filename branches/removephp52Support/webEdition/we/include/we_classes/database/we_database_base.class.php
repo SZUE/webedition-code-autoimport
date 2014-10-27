@@ -892,7 +892,7 @@ abstract class we_database_base{
 	}
 
 	public function getPrimaryKeys($tab, array $create = array()){
-		$zw = $create ? $create : $this->getTableCreateArray($tab);
+		$zw = $create ? : $this->getTableCreateArray($tab);
 		if(!$zw){
 			return false;
 		}

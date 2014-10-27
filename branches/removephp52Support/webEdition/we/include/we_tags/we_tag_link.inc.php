@@ -96,7 +96,7 @@ function we_tag_link($attribs, $content){
 
 		return we_html_button::create_button_table(
 						array(
-					($startTag ? $startTag : '') . ($content ? $content : $text) . ($startTag ? '</a>' : ''), $editbut, $delbut
+					($startTag ? : '') . ($content ? : $text) . ($startTag ? '</a>' : ''), $editbut, $delbut
 						), 5);
 	}
 

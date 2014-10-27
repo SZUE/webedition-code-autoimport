@@ -46,7 +46,7 @@ class we_fileupload_include extends we_fileupload_base{
 		$this->type = 'inc';
 		$this->contentName = $contentName;
 		$this->footerName = $footerName;
-		$this->uploadBtnName = $uploadBtnName ? $uploadBtnName : 'upload_btn';
+		$this->uploadBtnName = $uploadBtnName ? : 'upload_btn';
 		$this->form['name'] = $formName;
 		$this->form['action'] = $formAction;
 		$this->callback = $callback;
@@ -55,7 +55,7 @@ class we_fileupload_include extends we_fileupload_base{
 		$this->internalProgress['width'] = $internalProgressWidth;
 		$this->setTypeCondition('accepted', $acceptedMime, $acceptedExt);
 		$this->setTypeCondition('forbidden', $forbiddenMime, $forbiddenExt);
-		$this->externalProgress = $externalProgress ? $externalProgress : $this->externalProgress;
+		$this->externalProgress = $externalProgress ? : $this->externalProgress;
 		$this->setDimensions(array('marginTop' => 6));
 	}
 
@@ -196,7 +196,7 @@ class we_fileupload_include extends we_fileupload_base{
 
 	public static function getJsBtnCmdStatic($btn = 'upload', $contentName = '', $callback = ''){
 		$win = $contentName ? 'top.' . $contentName . '.': '';
-		$callback = $btn === 'upload' ? ($callback ? $callback : 'document.forms[0].submit()') : 'top.close()';
+		$callback = $btn === 'upload' ? ($callback ? : 'document.forms[0].submit()') : 'top.close()';
 		$call = $win . 'we_FileUpload.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');
 
 		return 'if(typeof ' . $win . 'we_FileUpload === "undefined" || ' . $win . 'we_FileUpload.isLegacyMode){' . $callback . ';}else{' . $call . ';}';

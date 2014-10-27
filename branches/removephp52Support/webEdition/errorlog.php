@@ -88,9 +88,9 @@ function getNavButtons($size, $pos, $id){
 		'</td></table>';
 }
 
-function formatLine(&$val, $key){
+/*function formatLine(&$val, $key){
 	$val = $key . ': ' . $val;
-}
+}*/
 
 function getPosData($bt){
 	$ret = '';
@@ -105,7 +105,9 @@ function getPosData($bt){
 
 		$lines = we_base_file::loadLines((strpos($file, $_SERVER['DOCUMENT_ROOT']) === 0 || strpos($file, realpath(WEBEDITION_PATH)) === 0 ? '' : $_SERVER['DOCUMENT_ROOT'] . '/' ) . $file, max(1, $lineNo - 1), $lineNo + 5);
 		if($lines){
-			array_walk($lines, 'formatLine');
+			array_walk($lines, function(&$val, $key) {
+    $val = $key . ': ' . $val;
+});
 			$ret .=$file . ":\n" . implode('', $lines) . "\n----------------------------------------------------------\n";
 		}
 	}

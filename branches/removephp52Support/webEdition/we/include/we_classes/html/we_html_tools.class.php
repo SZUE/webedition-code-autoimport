@@ -218,7 +218,7 @@ abstract class we_html_tools{
 				self::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
 
 		for($f = 0; $f < $anz; $f++){
-			$bgcol = $bgColor ? $bgColor : ((isset($content[$f]["bgcolor"]) && $content[$f]["bgcolor"]) ? $content[$f]["bgcolor"] : "white");
+			$bgcol = $bgColor ? : ((isset($content[$f]["bgcolor"]) && $content[$f]["bgcolor"]) ? $content[$f]["bgcolor"] : "white");
 			$out .= '<td class="' . $class . '" style="padding:2px 5px 2px 5px;' . (($f != 0) ? "border-left:1px solid silver;" : "") . 'border-bottom: 1px solid silver;background-color:' . $bgcol . ';" ' .
 					((isset($content[$f]["align"])) ? 'align="' . $content[$f]["align"] . '"' : "") . ' ' .
 					((isset($content[$f]["height"])) ? 'height="' . $content[$f]["height"] . '"' : "") . '>' .
@@ -261,7 +261,7 @@ abstract class we_html_tools{
 	}
 
 	static function html_select($name, $size, $vals, $value = '', $onchange = '', array $attribs = array()){
-		return self::htmlSelect($name, $vals, $size, $value, false, array_merge($attribs, array('onchange' => ($onchange ? $onchange : ''))), 'key');
+		return self::htmlSelect($name, $vals, $size, $value, false, array_merge($attribs, array('onchange' => ($onchange ? : ''))), 'key');
 	}
 
 	static function htmlSelect($name, $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $compare = 'value', $width = 0, $cls = 'defaultfont', $oldHtmlspecialchars = true){
@@ -291,7 +291,7 @@ abstract class we_html_tools{
 							'name' => trim($name),
 							'size' => abs($size),
 							($multiple ? 'multiple' : '') => 'multiple',
-							($width ? 'width' : '') => ($width ? $width : '')
+							($width ? 'width' : '') => ($width ? : '')
 										), $attribs
 								), $ret) : $ret);
 	}
@@ -345,7 +345,7 @@ abstract class we_html_tools{
 					'style' => ($width ? ' width:' . $width . 'px;' : '') . ($height ? ' height:' . $height . 'px' : ''),
 					'alt' => $alt,
 					'border' => 0,
-					'name' => ($bname ? $bname : '')
+					'name' => ($bname ? : '')
 		));
 
 		return ($disabled ?
@@ -669,13 +669,13 @@ abstract class we_html_tools{
 
 	public static function getHtmlInnerHead($title = 'webEdition', $charset = '', $expand = false){
 		if(!$expand){
-			self::headerCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET']));
+			self::headerCtCharset('text/html', ($charset ? : $GLOBALS['WE_BACKENDCHARSET']));
 		}
 		return we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 				we_html_element::htmlMeta(array('http-equiv' => 'expires', 'content' => 0)) .
 				we_html_element::htmlMeta(array('http-equiv' => 'Cache-Control', 'content' => 'no-cache')) .
 				we_html_element::htmlMeta(array('http-equiv' => 'pragma', 'content' => 'no-cache')) .
-				self::htmlMetaCtCharset('text/html', ($charset ? $charset : $GLOBALS['WE_BACKENDCHARSET'])) .
+				self::htmlMetaCtCharset('text/html', ($charset ? : $GLOBALS['WE_BACKENDCHARSET'])) .
 				we_html_element::htmlMeta(array('http-equiv' => 'imagetoolbar', 'content' => 'no')) .
 				we_html_element::htmlMeta(array('name' => 'generator', 'content' => 'webEdition')) .
 				we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .

@@ -64,7 +64,7 @@ class we_listview_search extends we_listview_base{
 		$this->triggerID = $triggerID;
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
-		$this->languages = $languages ? $languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
+		$this->languages = $languages ? : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
 
 		if($this->languages != ''){
 			$where_lang = ' AND (';
@@ -223,7 +223,7 @@ class we_listview_search extends we_listview_base{
 				$db = new DB_WE();
 				$path_parts = pathinfo($_SERVER["SCRIPT_NAME"]);
 				$objectdaten = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->DB_WE->Record["OID"]) . ' LIMIT 1', $db);
-				$objecttriggerid = ($this->triggerID ? $this->triggerID : $objectdaten['TriggerID']);
+				$objecttriggerid = ($this->triggerID ? : $objectdaten['TriggerID']);
 
 				if($objecttriggerid){
 					$path_parts = pathinfo(id_to_path($objecttriggerid));

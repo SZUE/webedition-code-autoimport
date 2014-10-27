@@ -74,8 +74,8 @@ class we_search_base{
 					$hour = ($searchname[$i]['hour'] && $searchname[$i]['hour'] ? $searchname[$i]['hour'] : '');
 					$minute = ($searchname[$i]['minute'] && $searchname[$i]['minute'] ? $searchname[$i]['minute'] : '');
 
-					$from = mktime(($hour ? $hour : 0), ($minute ? $minute : 0), 0, ($month ? $month : 1), ($day ? $day : 1), $year);
-					$till = mktime(($hour ? $hour : 23), ($minute ? $minute : 59), 59, ($month ? $month : 12), ($day ? $day : date('t', mktime(0, 0, 0, ($month ? $month : 12), 1, $year))), $year);
+					$from = mktime(($hour ? : 0), ($minute ? : 0), 0, ($month ? : 1), ($day ? : 1), $year);
+					$till = mktime(($hour ? : 23), ($minute ? : 59), 59, ($month ? : 12), ($day ? : date('t', mktime(0, 0, 0, ($month ? : 12), 1, $year))), $year);
 
 					switch($searchlocation[$i]){
 						case '<':
@@ -150,10 +150,10 @@ class we_search_base{
 	}
 
 	function countitems($where = '', $table = ''){
-		$this->table = ($table ? $table : ($this->table ? $this->table : ''));
+		$this->table = ($table ? : ($this->table ? : ''));
 
 		if($this->table){
-			$this->where = ($where ? $where : ($this->where ? $this->where : '1'));
+			$this->where = ($where ? : ($this->where ? : '1'));
 			return f('SELECT COUNT(1) FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->where, '', $this->db);
 		}
 		return -1;
@@ -161,7 +161,7 @@ class we_search_base{
 
 	function searchquery($where = '', $get = '*', $table = '', $order = '', $limit = ''){
 
-		$this->table = ($table ? $table : ($this->table ? $this->table : ''));
+		$this->table = ($table ? : ($this->table ? : ''));
 
 		if($this->table){
 			$this->where = (empty($where)) ? ((empty($this->where)) ? '' : ' WHERE ' . $this->where) : ' WHERE ' . $where;
@@ -171,7 +171,7 @@ class we_search_base{
 
 			$this->limit = ' ' . $this->searchstart . ',' . $this->anzahl . ' ';
 
-			$this->limit = ' LIMIT ' . ($limit ? $limit : $this->limit);
+			$this->limit = ' LIMIT ' . ($limit ? : $this->limit);
 
 			$this->db->query('SELECT ' . rtrim($this->get, ',') . ' FROM ' . $this->db->escape($this->table) . ' ' . $this->where . ' ' . $order . ' ' . $this->limit);
 		} else {
@@ -180,8 +180,8 @@ class we_search_base{
 	}
 
 	function setlimit($anzahl = '', $searchstart = ''){
-		$this->anzahl = ($anzahl ? $anzahl : ($this->anzahl ? $this->anzahl : $this->defaultanzahl));
-		$this->searchstart = ($searchstart ? $searchstart : ($this->searchstart ? $this->searchstart : '0'));
+		$this->anzahl = ($anzahl ? : ($this->anzahl ? : $this->defaultanzahl));
+		$this->searchstart = ($searchstart ? : ($this->searchstart ? : '0'));
 
 		$this->limit = ' ' . $this->searchstart . ',' . $this->anzahl . ' ';
 

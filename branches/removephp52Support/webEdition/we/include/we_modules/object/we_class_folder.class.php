@@ -49,9 +49,8 @@ class we_class_folder extends we_folder{
 	private function setClassProp(){
 		$sp = explode('/', $this->Path);
 		$this->ClassPath = '/' . $sp[1];
-		//FIXME: change this code
-		$this->TableID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $this->DB_WE->escape($this->ClassPath) . '"', "", $this->DB_WE);
-		$this->RootfolderID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $this->DB_WE->escape($this->ClassPath) . '"', "", $this->DB_WE);
+
+		list($this->RootfolderID, $this->TableID) = getHash('SELECT of.ID,o.ID FROM ' . OBJECT_FILES_TABLE . ' of JOIN ' . OBJECT_TABLE . ' o ON of.TableID=o.ID WHERE of.IsClassFolder=1 AND o.Path="' . $this->DB_WE->escape($this->ClassPath) . '" AND of.Path=o.Path', $this->DB_WE, MYSQL_NUM);
 	}
 
 	public function we_rewrite(){

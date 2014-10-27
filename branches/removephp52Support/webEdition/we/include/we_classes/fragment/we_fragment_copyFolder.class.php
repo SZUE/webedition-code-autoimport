@@ -490,7 +490,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 								$changed = true;
 								$pathTo = $this->getNewPath($path);
 								$idTo = $this->getID($pathTo, $GLOBALS['DB_WE']);
-								$idTo = $idTo ? $idTo : '##WEPATH##' . $pathTo . ' ###WEPATH###';
+								$idTo = $idTo ? : '##WEPATH##' . $pathTo . ' ###WEPATH###';
 								$destTag = preg_replace('/' .
 									$attribname . '="[0-9]+"/', $attribname . '="' . $idTo . '"', $destTag);
 							}
@@ -550,7 +550,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 									if($this->mustChange($path)){
 										$pathTo = $this->getNewPath($path);
 										$idTo = $this->getID($pathTo, $DB_WE);
-										$we_doc->setElement($regs[1] . we_base_link::MAGIC_INT_LINK_ID, ( $idTo ? $idTo : '##WEPATH##' . $pathTo . ' ###WEPATH###'), 'href', 'bdid');
+										$we_doc->setElement($regs[1] . we_base_link::MAGIC_INT_LINK_ID, ( $idTo ? : '##WEPATH##' . $pathTo . ' ###WEPATH###'), 'href', 'bdid');
 										$we_doc->setElement($regs[1] . we_base_link::MAGIC_INT_LINK_PATH, $pathTo, 'href', 'bdid');
 									}
 								}
@@ -567,7 +567,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 						if($this->mustChange($path)){
 							$pathTo = $this->getNewPath($path);
 							$idTo = $this->getID($pathTo, $DB_WE);
-							$we_doc->setElement($k, ($idTo ? $idTo : '##WEPATH##' . $pathTo . ' ###WEPATH###'), 'img', 'bdid');
+							$we_doc->setElement($k, ($idTo ? : '##WEPATH##' . $pathTo . ' ###WEPATH###'), 'img', 'bdid');
 						}
 						break;
 					case 'linklist' :
@@ -624,7 +624,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 				if($this->mustChange($path)){
 					$pathTo = $this->getNewPath($path);
 					$idTo = $this->getID($pathTo, $DB_WE);
-					$idTo = $idTo ? $idTo : '##WEPATH##' . $pathTo . ' ###WEPATH###';
+					$idTo = $idTo ? : '##WEPATH##' . $pathTo . ' ###WEPATH###';
 					$text = preg_replace('#(href|src)="' . we_base_link::TYPE_INT_PREFIX . $id . '#i', $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $idTo, $text);
 				}
 			}

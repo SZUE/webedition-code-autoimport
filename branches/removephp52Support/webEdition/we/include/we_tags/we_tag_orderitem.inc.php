@@ -46,7 +46,7 @@ function we_tag_orderitem($attribs){
 		$GLOBALS["we_lv_array"] = array();
 	}
 
-	$we_orderitemid = $we_orderitemid ? $we_orderitemid : we_base_request::_(we_base_request::INT, "we_orderitemid", 0);
+	$we_orderitemid = $we_orderitemid ? : we_base_request::_(we_base_request::INT, "we_orderitemid", 0);
 
 
 	$GLOBALS["lv"] = new we_shop_orderitemtag(intval($we_orderitemid), $condition, $hidedirindex);

@@ -66,7 +66,7 @@ abstract class we_users_util{
 		if(in_array($uid, $users)){
 			return true;
 		}
-		$db = $db ? $db : new DB_WE();
+		$db = $db ? : new DB_WE();
 
 		$aliases = self::getAliases($uid, $db);
 		foreach($aliases as $aid){
@@ -93,7 +93,7 @@ abstract class we_users_util{
 	}
 
 	static function isUserInGroup($uid, $groupID, we_database_base $db = null){
-		$db = $db ? $db : new DB_WE();
+		$db = $db ? : new DB_WE();
 		$pid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid), "ParentID", $db);
 		if($pid == $groupID){
 			return true;
@@ -215,7 +215,7 @@ abstract class we_users_util{
 		if(!defined('OBJECT_FILES_TABLE')){
 			return '';
 		}
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 		$out = array();
 		$ws = get_ws();
 		$ofWs = get_ws(OBJECT_FILES_TABLE);

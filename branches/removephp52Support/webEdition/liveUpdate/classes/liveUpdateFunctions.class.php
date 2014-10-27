@@ -581,7 +581,7 @@ class liveUpdateFunctions{
 	 * @param string $query
 	 */
 	function executeUpdateQuery($query, we_database_base $db = null){
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 
 		// when executing a create statement, try to create table,
 		// change fields when needed.

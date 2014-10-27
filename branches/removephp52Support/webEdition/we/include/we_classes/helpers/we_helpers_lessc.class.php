@@ -125,7 +125,7 @@ class we_helpers_lessc extends lessc{
 		}
 
 		$id = path_to_id($this->path . '/' . $tmpurl, FILE_TABLE, $GLOBALS['DB_WE']);
-		$id = ($id ? $id : path_to_id('/' . $tmpurl, FILE_TABLE, $GLOBALS['DB_WE']));
+		$id = ($id ? : path_to_id('/' . $tmpurl, FILE_TABLE, $GLOBALS['DB_WE']));
 		if($id){
 			return $id;
 		}

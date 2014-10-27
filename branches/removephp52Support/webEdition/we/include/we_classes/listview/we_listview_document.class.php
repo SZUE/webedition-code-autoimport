@@ -85,14 +85,14 @@ class we_listview_document extends we_listview_base{
 		}
 
 		$this->defaultCondition = $condition;
-		$this->condition = $condition ? $condition : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
+		$this->condition = $condition ? : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
 
 		$cond_where = // #3763
 			($this->condition != '' && ($condition_sql = $this->makeConditionSql($this->condition)) ?
 				' AND (' . $condition_sql . ')' :
 				'');
 
-		$this->languages = $languages ? $languages : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
+		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 
 		if($this->languages != ''){
 			$where_lang = ' AND (';
@@ -203,7 +203,7 @@ class we_listview_document extends we_listview_base{
 
 			$ranking = '0';
 			$spalten = array(($this->casesensitive ? 'BINARY ' : '') . INDEX_TABLE . '.Text');
-			
+
 			foreach($bedingungen as $v1){
 				if(preg_match('|^[-\+]|', $v1)){
 					$not = (preg_match('^-', $v1));
@@ -339,7 +339,7 @@ class we_listview_document extends we_listview_base{
 				$this->Record = array();
 				while($this->DB_WE->next_record()){
 					$tmp = ($this->DB_WE->f('BDID'));
-					$this->Record[$this->DB_WE->f('Name')] = $tmp ? $tmp : $this->DB_WE->f('Dat');
+					$this->Record[$this->DB_WE->f('Name')] = $tmp ? : $this->DB_WE->f('Dat');
 				}
 				$tmp = getHash('SELECT ID,ParentID,Text,Icon,IsFolder,ContentType,CreationDate,ModDate,Path,TemplateID,Filename,Extension,IsDynamic,IsSearchable,DocType,ClassName,Category,Published,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Language,WebUserID,InGlossar FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC);
 				foreach($tmp as $key => $val){

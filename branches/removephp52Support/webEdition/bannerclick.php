@@ -51,7 +51,7 @@ if($id && is_numeric($id) && $did > 0){
 				'ID' => $id,
 				'Timestamp' => sql_function('UNIX_TIMESTAMP()'),
 				'IP' => $_SERVER['REMOTE_ADDR'],
-				'Referer' => ($referer ? $referer : (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '')),
+				'Referer' => ($referer ? : (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '')),
 				'DID' => $did,
 				'Page' => $page
 		)));

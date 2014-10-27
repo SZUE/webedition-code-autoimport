@@ -303,7 +303,7 @@ abstract class we_backup_preparer{
 	}
 
 	private static function getFileList(array &$list, $dir = '', $with_dirs = false, $rem_doc_root = true){
-		$dir = ($dir ? $dir : $_SERVER['DOCUMENT_ROOT']);
+		$dir = ($dir ? : $_SERVER['DOCUMENT_ROOT']);
 		if(!is_readable($dir) || !is_dir($dir)){
 			return false;
 		}

@@ -327,7 +327,7 @@ function we_cmd() {
 		$numberformat = $feldnamen[2];
 		$classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
 		$this->classIds = makeArrayFromCSV($classid);
-		$mwst = ($feldnamen[1] ? $feldnamen[1] : '');
+		$mwst = ($feldnamen[1] ? : '');
 		$notInc = 'tblTemplates';
 
 		$da = '%d.%m.%Y';
@@ -1409,7 +1409,7 @@ function submitForm() {
 					$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
 					$serialOrder = @unserialize($strSerialOrder);
 
-					$val = $serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] ? $serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] : '';
+					$val = $serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] ? : '';
 
 					$fieldHtml = $_REQUEST['cartfieldname'] . '<input type="hidden" name="cartfieldname" id="cartfieldname" value="' . $_REQUEST['cartfieldname'] . '" />';
 				} else {
@@ -1733,7 +1733,7 @@ function submitForm() {
 				$this->raw->save();
 
 				//$ttrow = getHash('SELECT * FROM ' . RAW_TABLE . ' WHERE ID=' . intval($this->raw->ID), $this->db);
-				$tt = addslashes($tt ? $tt : $this->raw->Text);
+				$tt = addslashes($tt ? : $this->raw->Text);
 				$js = ($newone ?
 								'
 var attribs = new Array();

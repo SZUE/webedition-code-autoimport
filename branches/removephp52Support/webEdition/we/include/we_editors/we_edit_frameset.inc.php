@@ -64,7 +64,7 @@ function getTabs($classname, $predefined = 0){
 $we_Table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 $we_ID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 $we_ContentType = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
-$we_ContentType = $we_ContentType ? $we_ContentType : ($we_ID ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . $we_ID) : '');
+$we_ContentType = $we_ContentType ? : ($we_ID ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . $we_ID) : '');
 
 
 if(isset($_SESSION['weS']['we_data'][$we_transaction])){

@@ -978,7 +978,7 @@ class doclistView{
 					if($searchFields [$i] === "Content"){
 						$w = $obj->searchclassFolder->searchContent($searchString, $_table);
 						if(!$where){
-							$where .= " AND " . ($w ? $w : '0');
+							$where .= " AND " . ($w ? : '0');
 						} elseif($w != ""){
 							$where .= $op . " " . $w;
 						}
@@ -987,7 +987,7 @@ class doclistView{
 					if($searchFields [$i] === 'Title'){
 						$w = $obj->searchclassFolder->searchInTitle($searchString, $_table);
 						if(!$where){
-							$where .= " AND " . ($w ? $w : '0');
+							$where .= " AND " . ($w ? : '0');
 						} elseif($w != ""){
 							$where .= $op . " " . $w;
 						}
@@ -1358,7 +1358,7 @@ class doclistView{
 			$headline = (isset($c ["headline"]) && $c ["headline"]) ? ('<div class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c ["headline"] . '</div>') : "";
 			$mainContent = (isset($c ["html"]) && $c ["html"]) ? $c ["html"] : "";
 			$leftWidth = (isset($c ["space"]) && $c ["space"]) ? abs($c ["space"]) : 0;
-			$leftContent = $icon ? $icon : (($leftWidth && (!$_forceRightHeadline)) ? $headline : "");
+			$leftContent = $icon ? : (($leftWidth && (!$_forceRightHeadline)) ? $headline : "");
 			$rightContent = '<div class="defaultfont">' . ((($icon && $headline) || ($leftContent === "") || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
 
 			$out .= '<div style="margin-left:' . $marginLeft . 'px" >';

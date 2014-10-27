@@ -34,7 +34,7 @@ function we_tag_formfield($attribs){
 	$type_sel = $GLOBALS['we_doc']->getElement($name, 'fftype');
 	$ffname = $GLOBALS['we_doc']->getElement($name, 'ffname');
 
-	$type_sel = $type_sel ? $type_sel : (!empty($types) ? $types[0] : "textinput");
+	$type_sel = $type_sel ? : (!empty($types) ? $types[0] : "textinput");
 
 	$nameprefix = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . '#';
 

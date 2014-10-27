@@ -1214,9 +1214,9 @@ function weInputInArray(arr, val) {
 	function getHTML(){
 
 		$selectButtonSpace = $this->selectButtonSpace;
-		$inputId = $this->inputId ? $this->inputId : 'yuiAcInput' . $this->acId;
-		$resultId = $this->resultId ? $this->resultId : 'yuiAcResult' . $this->acId;
-		$containerWidth = $this->containerWidth ? $this->containerWidth : $this->width;
+		$inputId = $this->inputId ? : 'yuiAcInput' . $this->acId;
+		$resultId = $this->resultId ? : 'yuiAcResult' . $this->acId;
+		$containerWidth = $this->containerWidth ? : $this->width;
 
 		$client = we_ui_Client::getInstance();
 

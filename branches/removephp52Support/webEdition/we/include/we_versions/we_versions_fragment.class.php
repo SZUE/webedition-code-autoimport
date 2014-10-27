@@ -57,7 +57,7 @@ class we_versions_fragment extends we_fragment_base{
 				$responseText = g_l('versions', '[resetAllVersionsOK]');
 		}
 		echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(
-				addslashes($responseText ? $responseText : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
+				addslashes($responseText ? : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
 
 			// reload current document => reload all open Editors on demand
 

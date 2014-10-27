@@ -63,7 +63,7 @@ function we_tag_pref($attribs){
 			break;
 		case 'newsletter':
 			static $newsSet = false;
-			$newsSet = $newsSet ? $newsSet : we_newsletter_view::getSettings();
+			$newsSet = $newsSet ? : we_newsletter_view::getSettings();
 			if(isset($newsSet[$name])){
 				return $newsSet[$name];
 			}

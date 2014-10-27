@@ -1333,7 +1333,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 		$_description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
 		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), 'Path', $this->DB_WE);
 
-		$parent_name = ($parent_name ? $parent_name : '/');
+		$parent_name = ($parent_name ? : '/');
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('PathGroup');
@@ -1435,7 +1435,7 @@ $this->Preferences=' . var_export($this->Preferences, true) . ';
 						'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="top.content.setHot()" autocomplete="off"', 'password', 240));
 
 		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE);
-		$parent_name = $parent_name ? $parent_name : '/';
+		$parent_name = $parent_name ? : '/';
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('PathGroup');
@@ -2398,18 +2398,18 @@ function resetTabs(){
 
 top.content.hloaded=1;') .
 				$tab_header .
-				'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? $this->Path : $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>';
+				'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? : $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>';
 	}
 
 	public static function getUsername($id, we_database_base $db = null){
-		$db = $db ? $db : new DB_WE();
+		$db = $db ? : new DB_WE();
 		$user = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($id), '', $db);
-		return $user ? $user : g_l('modules_messaging', '[userid_not_found]');
+		return $user ? : g_l('modules_messaging', '[userid_not_found]');
 	}
 
 	public static function getUserID($username, we_database_base $db){
 		$uid = f('SELECT ID FROM ' . USER_TABLE . ' WHERE username="' . $db->escape(trim($username)) . '"', '', $db);
-		return $uid ? $uid : -1;
+		return $uid ? : -1;
 	}
 
 	static function filenameNotValid($username){

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -83,7 +82,7 @@ $feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' W
 $currency = oldHtmlspecialchars($feldnamen[0]);
 $numberformat = $feldnamen[2];
 $classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
-$defaultVat = ($feldnamen[1]) ? ($feldnamen[1]) : 0;
+$defaultVat = ($feldnamen[1] ? : 0);
 
 $amountCustomers = $amountOrders = $amountArticles = 0;
 
@@ -239,8 +238,8 @@ $shopDashboard = '<div style="width:60%;float:left;">' .
 	'<canvas id="chart" width="160" height="160"></canvas>' .
 	'</div><br style="clear:both;"/>';
 
-$shopDashboard .= "<script type='text/javascript' src='".WE_INCLUDES_DIR."we_widgets/dlg/shp/js/excanvas.js'></script>
-	<script type='text/javascript' src='".WE_INCLUDES_DIR."we_widgets/dlg/shp/js/gauge.min.js'></script>
+$shopDashboard .= "<script type='text/javascript' src='" . WE_INCLUDES_DIR . "we_widgets/dlg/shp/js/excanvas.js'></script>
+	<script type='text/javascript' src='" . WE_INCLUDES_DIR . "we_widgets/dlg/shp/js/gauge.min.js'></script>
     <script type='text/javascript'>
     	// Helper to execute a function after the window is loaded
 			// see http://www.google.com/search?q=addLoadEvent
@@ -263,9 +262,9 @@ $shopDashboard .= "<script type='text/javascript' src='".WE_INCLUDES_DIR."we_wid
 
 				// Draw the gauge using custom settings
 				options = {
-					value: ". we_util_Strings::formatNumber($total) .",
-					label: 'Ziel in ". $currency ."',
-					unitsLabel: ' ". $currency ."',
+					value: " . we_util_Strings::formatNumber($total) . ",
+					label: 'Ziel in " . $currency . "',
+					unitsLabel: ' " . $currency . "',
 					min: 0,
 					max: " . ($sRevenueTarget * 2) . ",
 					minorTicks: 5, // small ticks inside each major tick

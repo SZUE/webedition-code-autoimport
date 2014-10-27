@@ -90,7 +90,7 @@ abstract class we_listview_base{
 		$this->cats = trim($cats);
 		$this->categoryids = trim($categoryids);
 		$this->catOr = $catOr;
-		$this->workspaceID = $workspaceID ? $workspaceID : '';
+		$this->workspaceID = $workspaceID ? : '';
 		$this->customerFilterType = $customerFilterType;
 		$this->id = $id;
 		$this->stop_next_row = false;
@@ -109,7 +109,7 @@ abstract class we_listview_base{
 			'weekstart' => 0
 		);
 		if($calendar != ''){
-			$this->calendar_struct['datefield'] = $datefield ? $datefield : '###Published###';
+			$this->calendar_struct['datefield'] = $datefield ? : '###Published###';
 			$this->calendar_struct['defaultDate'] = ($date ? strtotime($date) : time());
 			if($weekstart != ''){
 				$wdays = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday');
@@ -278,7 +278,7 @@ abstract class we_listview_base{
 			}
 			$newdate = $year . '-' . $month . '-' . $day;
 
-			$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
+			$attribs['href'] = we_tag('url', array('id' => ($urlID ? : 'top'), 'hidedirindex' => $this->hidedirindex));
 			$attribs['href'] .=(strpos($attribs['href'], '?') === false ? '?' : '&');
 			$attribs['rel'] = 'prev';
 
@@ -290,7 +290,7 @@ abstract class we_listview_base{
 			return '';
 		}
 
-		$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
+		$attribs['href'] = we_tag('url', array('id' => ($urlID ? : 'top'), 'hidedirindex' => $this->hidedirindex));
 		$attribs['href'] .=(strpos($attribs['href'], '?') === false ? '?' : '&') . $tmp_href;
 		if($only){
 			$this->close_a = false;
@@ -394,7 +394,7 @@ abstract class we_listview_base{
 			return '';
 		}
 
-		$attribs['href'] = we_tag('url', array('id' => ($urlID ? $urlID : 'top'), 'hidedirindex' => $this->hidedirindex));
+		$attribs['href'] = we_tag('url', array('id' => ($urlID ? : 'top'), 'hidedirindex' => $this->hidedirindex));
 		$attribs['href'] .= (strpos($attribs['href'], '?') === false ? '?' : '&') . $tmp_href;
 		$attribs['rel'] = 'next';
 		if($only){

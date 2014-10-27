@@ -446,7 +446,7 @@ class we_backup_backup extends we_backup_base{
 	}
 
 	function getFileList($dir = '', $with_dirs = false, $rem_doc_root = true){
-		$dir = ($dir ? $dir : $_SERVER['DOCUMENT_ROOT']);
+		$dir = ($dir ? : $_SERVER['DOCUMENT_ROOT']);
 		if(!is_readable($dir) || !is_dir($dir)){
 			$this->file_list_count = 0;
 			return false;
@@ -555,7 +555,7 @@ class we_backup_backup extends we_backup_base{
 		$save = $this->_saveState() . '
 $this->file_list=' . var_export($this->file_list, true) . ';';
 
-		$of = ($of ? $of : we_base_file::getUniqueId());
+		$of = ($of ? : we_base_file::getUniqueId());
 		we_base_file::save($this->backup_dir_tmp . $of, $save);
 		return $of;
 	}

@@ -216,7 +216,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 			$type = we_base_link::TYPE_MAIL;
 		} else {
 			$type = $ll->getType($nr);
-			$type = $type ? $type : we_base_link::TYPE_INT;
+			$type = $type ? : we_base_link::TYPE_INT;
 			$emaillink = '';
 		}
 		$anchor = $ll->getAnchor($nr);
@@ -267,7 +267,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		$ctype = $ll->getCType($nr);
 	} else {
 		$link = $we_doc->getElement($name) ? unserialize($we_doc->getElement($name)) : array();
-		$link = ($link ? $link : array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
+		$link = ($link ? : array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
 		$href = isset($link['href']) ? $link['href'] : '';
 		if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 			$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
@@ -295,7 +295,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		$cc = isset($link['cc']) ? $link['cc'] : '';
 		$subject = isset($link['subject']) ? $link['subject'] : '';
 
-		$jswin = isset($link['jswin']) && $link['jswin'] ? $link['jswin'] : '';
+		$jswin = isset($link['jswin']) && $link['jswin'] ? : '';
 		$jscenter = isset($link['jscenter']) ? $link['jscenter'] : '';
 		$jsposx = isset($link['jsposx']) ? $link['jsposx'] : '';
 		$jsposy = isset($link['jsposy']) ? $link['jsposy'] : '';

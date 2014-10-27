@@ -145,7 +145,7 @@ class we_wysiwyg_editor{
 		$this->_imagePath = IMAGE_DIR . 'wysiwyg/';
 		$this->_image_languagePath = WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/wysiwyg/';
 
-		$this->baseHref = $baseHref ? $baseHref : we_base_util::getGlobalPath();
+		$this->baseHref = $baseHref ? : we_base_util::getGlobalPath();
 		$this->charset = $charset;
 
 		$this->width = $width;
@@ -800,7 +800,7 @@ function weWysiwygSetHiddenText(arg) {
 
 	function parseInternalImageSrc($value){
 		static $t = 0;
-		$t = ($t ? $t : time());
+		$t = ($t ? : time());
 		$editValue = $value;
 		$regs = array();
 		if(preg_match_all('/src="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)/i', $editValue, $regs, PREG_SET_ORDER)){

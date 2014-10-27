@@ -33,7 +33,7 @@ function we_tag_newsletterConfirmLink($attribs, $content){
 		$attribs["href"] = $link;
 		return ($plain ?
 				$link :
-				getHtmlTag('a', $attribs, $content ? $content : $link)
+				getHtmlTag('a', $attribs, $content ? : $link)
 			);
 	}
 	return '';

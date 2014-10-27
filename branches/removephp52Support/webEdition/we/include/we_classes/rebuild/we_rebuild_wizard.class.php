@@ -124,13 +124,13 @@ abstract class we_rebuild_wizard{
 		$btype = we_base_request::_(we_base_request::STRING, 'btype', "rebuild_all");
 		$categories = we_base_request::_(we_base_request::STRING, 'categories', '');
 		$doctypes = makeCSVFromArray(we_base_request::_(we_base_request::STRING, "doctypes", ''), true);
-		$folders = we_base_request::_(we_base_request::INTLIST, 'folders', ($dws ? $dws : ''));
+		$folders = we_base_request::_(we_base_request::INTLIST, 'folders', ($dws ? : ''));
 		$maintable = we_base_request::_(we_base_request::BOOL, 'maintable');
 		$tmptable = false; //we_base_request::_(we_base_request::INT, 'tmptable', 0);
-		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, 'thumbsFolders', ($dws ? $dws : ''));
+		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, 'thumbsFolders', ($dws ? : ''));
 		$thumbs = makeCSVFromArray(we_base_request::_(we_base_request::INT, "thumbs", ''), true);
 		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd');
-		$metaFolders = we_base_request::_(we_base_request::STRING, 'metaFolders', ($dws ? $dws : ''));
+		$metaFolders = we_base_request::_(we_base_request::STRING, 'metaFolders', ($dws ? : ''));
 		$metaFields = we_base_request::_(we_base_request::RAW, "_field", array());
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
 

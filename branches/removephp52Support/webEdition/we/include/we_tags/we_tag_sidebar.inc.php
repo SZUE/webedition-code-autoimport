@@ -49,7 +49,7 @@ function we_tag_sidebar($attribs, $content){
 
 		$attribs['href'] = "javascript:top.weSidebar.open('" . $id . "', " . $width . ",'" . $params . "');";
 	} else {
-		$file = ($file ? $file : $url);
+		$file = ($file ? : $url);
 		if(!$file){
 			return '';
 		}

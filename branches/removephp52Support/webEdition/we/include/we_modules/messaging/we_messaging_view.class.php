@@ -374,7 +374,7 @@ top.content.menuDaten.add(new top.content.self.rootEntry(0,"root","root"));';
 		}
 	}
 
-	//some additional methods called by getJSCmd(). TODO: elimiminate GLOBALS by passing objects in
+	//some additional methods called by getJSCmd().
 	private function print_fc_html($blank = true){
 
 		return we_html_element::jsElement('
