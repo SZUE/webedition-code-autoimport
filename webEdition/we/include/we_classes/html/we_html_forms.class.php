@@ -215,7 +215,7 @@ abstract class we_html_forms{
 				$commands = str_replace('applystyle,', '', implode(',', we_wysiwyg_editor::getAllCmds()));
 			}
 
-			$out .= we_wysiwyg_editor::getHeaderHTML(!$inwebedition);
+			$out = we_wysiwyg_editor::getHeaderHTML(!$inwebedition);
 
 			$_lang = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->Language)) ? $GLOBALS['we_doc']->Language : WE_LANGUAGE;
 			$buttonpos = $buttonpos ? $buttonpos : 'top';
