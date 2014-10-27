@@ -7,6 +7,8 @@ CREATE TABLE ###TBLPREFIX###tblCategorys (
   IsFolder tinyint(1) unsigned  default NULL,
   Icon ENUM('cat.gif','folder.gif') NOT NULL default 'cat.gif',
   Catfields longtext NOT NULL,
+	Title varchar(255) NOT NULL default '',
+	Description longtext NOT NULL,
   PRIMARY KEY  (ID),
   KEY Path (Path)
 ) ENGINE=MyISAM;

@@ -175,11 +175,11 @@ class we_exim_contentProvider{
 		if($data !== self::CODING_OLD){//all arrays, strings & objects can be changed due to line-ending conversion
 			return preg_match('!(^a:\d+:{)|(^s:\d+:)|(^O:\d+:)|([\\x0-\x08\x0e-\x19\x11\x12<>&])!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
 		}
-
+//FIXME: remove the following code in 6.5
 		$encoded = array(
 			'we_element' => array('Dat', 'dat'),
 			'we_backup_tableItem' => array('Dat', 'strFelder', 'strSerial', 'DocumentObject',
-				'QASet', 'QASetAdditions', 'Catfields', 'RevoteUserAgent', 'agent',
+				'QASet', 'QASetAdditions', 'Catfields'/*fixme: remove*/, 'RevoteUserAgent', 'agent',
 				'LogData', 'strSerialOrder',
 				'documentElements', 'documentScheduler', 'documentCustomFilter'//tblVersions
 			),
