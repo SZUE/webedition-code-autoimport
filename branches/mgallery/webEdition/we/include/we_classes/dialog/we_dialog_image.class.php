@@ -256,7 +256,7 @@ class we_dialog_image extends we_dialog_base{
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileSrc]'].value");
 			$wecmdenc3 = we_base_request::encCmd("opener.document.we_form.elements['we_dialog_args[type]'][1].checked=true;opener.imageChanged();");
 
-			$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"
+			$but = we_html_button::create_button("select", "javascript:we_cmd('openImgselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"
 			);
 
 			$radioBut = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "we_dialog_args[type]", g_l('wysiwyg', "[internal_image]"), true, "defaultfont", "imageChanged();");
@@ -292,7 +292,7 @@ class we_dialog_image extends we_dialog_base{
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[longdescid]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[longdescsrc]'].value");
 
-			$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$but = we_html_button::create_button("select", "javascript:we_cmd('openImgselector',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			$but2 = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[longdescid]'].value='';document.we_form.elements['we_dialog_args[longdescsrc]'].value='';");
 
 			$yuiSuggest->setAcId("Longdesc");
@@ -442,6 +442,7 @@ function we_cmd(){
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
     case "openDocselector":
+		case "openImgselector":
 		new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
 		break;
 	case "browse_server":

@@ -56,6 +56,10 @@ switch($cmd0){//FIMXE most of the stuff can be handled via session! transfer is 
 		$_REQUEST['open_doc'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 9);
 		$_REQUEST['multiple'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 10);
 		$_REQUEST['canSelectDir'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 11);
+		if($cmd0 === 'openDocselector' && $_REQUEST['filter'] === 'image/*'){
+			$cmd0 = 'openImgselector';
+			t_e('notice', 'called incorrect selector');
+		}
 		break;
 }
 

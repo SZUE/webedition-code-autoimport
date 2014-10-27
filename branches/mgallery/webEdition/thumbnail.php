@@ -40,12 +40,12 @@ if(!($imageId || $imagePath) && !$imageSizeW && !$extension){
 
 $whiteList = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::IMAGE);
 
-if(!in_array(strtolower($imageExt = we_base_request::_(we_base_request::STRING, 'extension')), $whiteList)){
+if(!in_array(strtolower($extension), $whiteList)){
 	exit();
 }
 
-$imageExt = substr($imageExt, 1);
-$thumbpath = we_base_imageEdit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, substr($extension, 1));
+$imageExt = substr($extension, 1);
+$thumbpath = we_base_imageEdit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, $imageExt);
 
 if(file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath)){
 	header('Content-type: image/' . $imageExt);

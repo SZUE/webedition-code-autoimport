@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * Provides functions for creating webEdition buttons.
  */
 abstract class we_base_imageEdit{
-
 	const IMAGE_CONTENT_TYPES = 'image/jpeg,image/pjpeg,image/gif,image/png,image/x-png,image/svg+xml,image/svg-xml,image/x-citrix-pjpeg';
 	const IMAGE_EXTENSIONS = 'svgz';
 
@@ -536,9 +534,8 @@ abstract class we_base_imageEdit{
 			}
 
 			return isset($_gdimg) ? array($_gdimg, $_outsize["width"], $_outsize["height"]) : array(false, -1, -1);
-		} else {
-			return array(false, -1, -1);
 		}
+		return array(false, -1, -1);
 	}
 
 	/* static function ImageTrueColorToPalette2($image, $dither, $ncolors){
@@ -554,63 +551,70 @@ abstract class we_base_imageEdit{
 	  return $image;
 	  } */
 
-	public static function createPreviewThumb($imgSrc, $imgID, $width, $height, $outputFormat = "jpg", $outputQuality = 75, $tmpName = ""){
+	public static function createPreviewThumb($imgSrc, $imgID, $width, $height, &$outputFormat = "jpg", $outputQuality = 75, $tmpName = ""){
 		if(self::gd_version() == 0){
-			return ICON_DIR . 'doclist/image.gif';
-		}
-		if(substr($imgSrc, 0, strlen($_SERVER['DOCUMENT_ROOT'])) == $_SERVER['DOCUMENT_ROOT']){ // it is no src, it is a server path
-			$imgSrc = substr($imgSrc, strlen($_SERVER['DOCUMENT_ROOT']));
-		}
-		$imgSrc = '/' . ltrim($imgSrc, '/');
+			$outputFormat = 'gif';
+			return ICON_DIR . 'doclist/image.gif' ; }
+					if(substr($imgSrc, 0, strlen($_SERVER [ 'DOCUMENT_ROOT'])) == $_SERVER['DOCUMENT_ROOT']){ // it is no src, it is a server path
+				 $imgSrc = substr($imgSrc, strlen($_SERVER['DOCUMENT_ROOT'] ) );
+					} $imgSrc = '/' . ltrim($imgSrc, '/');
 
-		$_imgPath = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $imgSrc;
-		if(!file_exists($_imgPath) || !($imagesize = getimagesize($_imgPath))){
-			$imagesize = array(0, 0);
-		}
-		if($imagesize[0] > $width || $imagesize[1] > $height){
-			$_previewDir = WE_THUMB_PREVIEW_PATH;
-			if(!file_exists($_previewDir) || !is_dir($_previewDir)){
-				we_base_file::createLocalFolder($_previewDir);
-			}
-			$_thumbSrc = ($imgID ?
-					WE_THUMB_PREVIEW_DIR . $imgID . '_' . $width . '_' . $height . strtolower($outputFormat) :
-					TEMP_DIR . ($tmpName ? $tmpName : we_base_file::getUniqueId()) . '.' . strtolower($outputFormat));
-			$_thumbPath = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $_thumbSrc;
+				$_imgPath = $_SERVER [ 'DOCUMENT_ROOT'] . WEBEDITION_DIR . '../'. $imgSrc;
+			$path_parts = pathinfo($_imgPath);
+					if(isset ( $path_parts['extension']) && ( $path_parts [ 'extension'] === 'svg' || $path_parts['extension'] === 'svgz')){
+			if(file_exists($_imgPath)){
+			$outputFormat ='svg-xml';
+			return $imgSrc;
+				}
+			$outputFormat = 'gif';
+				return ICON_DIR . 'doclist/image.gif';
+				}
+				if(!file_exists($_imgPath) ||!($imagesize = getimagesize($_imgPath))){
+				$imagesize = array ( 0, 0 );
+				}
+			if($imagesize[0] > $width || $imagesize[1] > $height){
+					$_previewDir =  WE_THUMB_PREVIEW_PATH;
+				if(!file_exists($_previewDir) ||!is_dir($_previewDir)){
+			we_base_file::createLocalFolder($_previewDir);
+				}
+				$_thumbSrc = ($imgID  ?
+					WE_THUMB_PREVIEW_DIR . $imgID . '_' . $width . '_' . $height . strtolower($outputFormat)  :
+					TEMP_DIR . ($tmpName  ? $tmpName   :  we_base_file::getUniqueId()) . '.' . strtolower($outputFormat ) );
+				$_thumbPath = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $_thumbSrc;
 
-			$_thumbExists = file_exists($_thumbPath);
+				$_thumbExists = file_exists($_thumbPath);
 
-			$_imageCreationDate = filemtime($_imgPath);
-			$_thumbCreationDate = $_thumbExists ? filemtime($_thumbPath) : 0;
+				$_imageCreationDate = filemtime($_imgPath);
+				$_thumbCreationDate = $_thumbExists ? filemtime($_thumbPath)  : 0;
 
-			if(!$_thumbExists || ($_imageCreationDate > $_thumbCreationDate)){
-				self::edit_image($_imgPath, $outputFormat, $_thumbPath, $outputQuality, $width, $height);
+				if(!$_thumbExists || ($_imageCreationDate >  $_thumbCreationDate)){ self::edit_image( $_imgPath, $outputFormat, $_thumbPath,$outputQuality, $width, $height);
 			}
 			return $_thumbSrc;
-		}
+			}
 
-		return $imgSrc;
-	}
+			return $imgSrc;
+			}
 
-	/**
-	 * returns the HTML for a quality output select box
-	 *
-	 * @return string
-	 * @param string $name
-	 * @param string[optional] $sel
-	 */
-	public static function qualitySelect($name = 'quality', $sel = 8){
-		return '<select name="' . $name . '" class="weSelect" size="1">
-<option value="0"' . (($sel == 0) ? ' selected' : '') . '>0 - ' . g_l('weClass', '[quality_low]') . '</option>
-<option value="1"' . (($sel == 1) ? ' selected' : '') . '>1</option>
-<option value="2"' . (($sel == 2) ? ' selected' : '') . '>2</option>
-<option value="3"' . (($sel == 3) ? ' selected' : '') . '>3</option>
-<option value="4"' . (($sel == 4) ? ' selected' : '') . '>4 - ' . g_l('weClass', '[quality_medium]') . '</option>
-<option value="5"' . (($sel == 5) ? ' selected' : '') . '>5</option>
-<option value="6"' . (($sel == 6) ? ' selected' : '') . '>6</option>
-<option value="7"' . (($sel == 7) ? ' selected' : '') . '>7</option>
-<option value="8"' . (($sel == 8) ? ' selected' : '') . '>8 - ' . g_l('weClass', '[quality_high]') . '</option>
-<option value="9"' . (($sel == 9) ? ' selected' : '') . '>9</option>
-<option value="10"' . (($sel == 10) ? ' selected' : '') . '>10 - ' . g_l('weClass', '[quality_maximum]') . '</option>
+			/**
+			 * returns the HTML for a quality output select box
+			 *
+			 * @return string
+			 * @param string $name
+			 * @param string[optional] $sel
+			 */
+			public static function  qualitySelect($name = 'quality', $sel = 8){
+			return '<select name="' . $name . '" class="weSelect" size="1">
+<option value="0"' . (($sel == 0)  ? ' selected'   :  '') . '>0 - ' . g_l('weClass', '[quality_low]' ) . '</option>
+<option value="1"' . (($sel == 1)  ? ' selected'   : '') . '>1</option>
+<option value="2"' . (($sel == 2)  ? ' selected'   : '') . '>2</option>
+<option value="3"' . (($sel == 3)  ? ' selected'   : '') . '>3</option>
+<option value="4"' . (($sel == 4)  ? ' selected'   :  '' ) . '>4 - ' . g_l('weClass', '[quality_medium]' ) . '</option>
+<option value="5"' . (($sel == 5)  ? ' selected'   : '') . '>5</option>
+<option value="6"' . (($sel == 6)  ? ' selected'   : '') . '>6</option>
+<option value="7"' . (($sel == 7)  ? ' selected'   : '') . '>7</option>
+<option value="8"' . (($sel == 8)  ? ' selected'   :  '') . '>8 - ' . g_l('weClass', '[quality_high]' ) . '</option>
+<option value="9"' . (($sel == 9)  ? ' selected'   : '') . '>9</option>
+<option value="10"' . (($sel == 10)  ? ' selected'   :  '' ) . '>10 - ' . g_l('weClass', '[quality_maximum]') . '</option>
 </select>';
 	}
 

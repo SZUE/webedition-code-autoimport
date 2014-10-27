@@ -433,7 +433,7 @@ function queryString(what,id,o){
 	}
 
 	protected static function makeWriteDoc($html){
-		$html = explode("\n", strtr(implodeJS($html), array("'" => "\\'", 'script' => "scr' + 'ipt", '#\\\'' => '\'',)));
+		$html = explode("\n", strtr(implodeJS($html), array('\'' => '\\\'', 'script' => 'scr\'+\'ipt', '#\'' => '\'','#\\\'' => '\'',)));
 		$ret = '';
 		foreach($html as $cur){
 			$ret.=(substr($cur, 0, 1) === '#' ? substr($cur, 1) : "d.writeln('" . $cur . "');");
