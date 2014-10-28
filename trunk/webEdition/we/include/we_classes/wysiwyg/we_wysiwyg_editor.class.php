@@ -83,6 +83,11 @@ class we_wysiwyg_editor{
 		};
 		$this->origName = $origName;
 		$this->bgcol = (self::$editorType != 'tinyMCE' && empty($bgcol)) ? 'white' : $bgcol;
+		if(preg_match('/^#[a-f0-9]{6}$/i', $this->bgcol)){
+			$this->bgcol = substr($this->bgcol, 1);
+		} else if(!preg_match('/^[a-f0-9]{6}$/i', $this->bgcol) && !preg_match('/^[a-z]*$/i', $this->bgcol)){
+			$this->bgcol = '';
+		}
 		$this->tinyParams = str_replace('\'', '"', trim($tinyParams, ' ,'));
 		$this->templates = trim($templates, ',');
 		$this->xml = $xml;
@@ -1052,12 +1057,6 @@ function weWysiwygSetHiddenText(arg) {
 				//fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
 				$toolBarHeight = $this->buttonpos === 'external' ? 0 : ($k - 1) * 26 + 22 - $k * 3;
 				$this->height += $toolBarHeight;
-
-				if(preg_match('/^#[a-f0-9]{6}$/i', $this->bgcol)){
-					$this->bgcol = substr($this->bgcol, 1);
-				} else if(!preg_match('/^[a-f0-9]{6}$/i', $this->bgcol) && !preg_match('/^[a-z]*$/i', $this->bgcol)){
-					$this->bgcol = '';
-				}
 
 				$wefullscreenVars = array(
 					'outsideWE' => $this->outsideWE ? "1" : "",
