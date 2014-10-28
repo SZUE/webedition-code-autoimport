@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -34,7 +35,7 @@ class doclistView{
 	function getSearchJS(){
 		$h = 0;
 		$addinputRows = "";
-		if($GLOBALS ['we_doc']->searchclassFolder->mode){
+		if($GLOBALS['we_doc']->searchclassFolder->mode){
 			$h += 30;
 			//add height of each input row to calculate the scrollContent-height
 			$addinputRows = 'for(i=0;i<newID;i++) {
@@ -145,7 +146,7 @@ class doclistView{
         }
         var scroll = document.getElementById("scrollContent_doclist");
         scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
-        YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=doclist&cmd=GetSearchResult&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
+        YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=doclist&cmd=GetSearchResult&classname=we_folder&id=' . $GLOBALS['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
       }
 
       function makeAjaxRequestParametersTop() {
@@ -155,7 +156,7 @@ class doclistView{
           newString = document.we_form.elements[i].name;
           args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
         }
-          YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=top&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
+          YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=top&classname=we_folder&id=' . $GLOBALS['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
       }
 
       function makeAjaxRequestParametersBottom() {
@@ -165,7 +166,7 @@ class doclistView{
           newString = document.we_form.elements[i].name;
           args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
         }
-          YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=bottom&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
+          YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=bottom&classname=we_folder&id=' . $GLOBALS['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
       }
 
       function getMouseOverDivs() {
@@ -175,7 +176,7 @@ class doclistView{
           newString = document.we_form.elements[i].name;
           args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
         }
-        YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackgetMouseOverDivs, "protocol=json&cns=doclist&cmd=GetMouseOverDivs&whichsearch=doclist&classname=we_folder&id=' . $GLOBALS ['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
+        YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackgetMouseOverDivs, "protocol=json&cns=doclist&cmd=GetMouseOverDivs&whichsearch=doclist&classname=we_folder&id=' . $GLOBALS['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
       }
 
       function switchSearch(mode) {
@@ -366,7 +367,7 @@ class doclistView{
 
       function newinput() {
 
-        var searchFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $GLOBALS ['we_doc']->searchclassFolder->getFields("__we_new_id__", "doclist"), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
+        var searchFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFields("__we_new_id__", "doclist"), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
         var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
         var search = "' . addslashes(we_html_tools::htmlTextInput('search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
 
@@ -410,7 +411,7 @@ class doclistView{
       	var setValue = document.getElementsByName("search["+rowNr+"]")[0].value;
         var from = document.getElementsByName("hidden_searchFields["+rowNr+"]")[0].value;
 
-        var searchFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $GLOBALS ['we_doc']->searchclassFolder->getFields("__we_new_id__", "doclist"), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
+        var searchFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFields("__we_new_id__", "doclist"), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
         var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
         var search = "' . addslashes(we_html_tools::htmlTextInput('search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
 
@@ -506,7 +507,7 @@ class doclistView{
             row.removeChild(delButtonTD);
           }
 
-          search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS ['we_doc']->searchclassFolder->getDoctypes(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
+          search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getDoctypes(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
 
           var cell = document.createElement("TD");
             cell.setAttribute("id", "td_search["+rowNr+"]");
@@ -528,7 +529,7 @@ class doclistView{
             row.removeChild(delButtonTD);
           }
 
-          search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS ['we_doc']->searchclassFolder->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
+          search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
 
           var cell = document.createElement("TD");
             cell.setAttribute("id", "td_search["+rowNr+"]");
@@ -550,7 +551,7 @@ class doclistView{
             row.removeChild(delButtonTD);
           }
 
-          search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS ['we_doc']->searchclassFolder->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
+          search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
 
           var cell = document.createElement("TD");
             cell.setAttribute("id", "td_search["+rowNr+"]");
@@ -767,7 +768,7 @@ class doclistView{
 	 * @return html for search dialog box
 	 */
 	function getSearchDialog(){
-		$out = '<table cellpadding="0" cellspacing="0" id="defSearch" border="0" width="550" style="margin-left:20px;display:' . ($GLOBALS ['we_doc']->searchclassFolder->mode ? 'none' : 'block') . ';">
+		$out = '<table cellpadding="0" cellspacing="0" id="defSearch" border="0" width="550" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'none' : 'block') . ';">
         <tr>
         <td class="weDocListSearchHeadline">' . g_l('searchtool', "[suchen]") . '
         </td>
@@ -778,7 +779,7 @@ class doclistView{
         </td>
         </tr>
         </table>
-				<table cellpadding="0" cellspacing="0" border="0" id="advSearch" width="550" style="margin-left:20px;display:' . ($GLOBALS ['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
+				<table cellpadding="0" cellspacing="0" border="0" id="advSearch" width="550" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
         <tr>
         <td class="weDocListSearchHeadline">' . g_l('searchtool', "[suchen]") . '
         </td>
@@ -789,7 +790,7 @@ class doclistView{
         </td>
         </tr>
         </table>
-				<table cellpadding="2" cellspacing="0"  id="advSearch2" border="0" style="margin-left:20px;display:' . ($GLOBALS ['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
+				<table cellpadding="2" cellspacing="0"  id="advSearch2" border="0" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
         <tbody id="filterTable">
         <tr>
           <td>' . we_class::hiddenTrans() . '</td>
@@ -798,14 +799,14 @@ class doclistView{
 		$r = array();
 		$r2 = array();
 		$r3 = array();
-		if(isset($GLOBALS ['we_doc']->searchclassFolder->search) && is_array($GLOBALS ['we_doc']->searchclassFolder->search)){
-			foreach($GLOBALS ['we_doc']->searchclassFolder->search as $k => $v){
-				$r[] = $GLOBALS ['we_doc']->searchclassFolder->search [$k];
+		if(isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search)){
+			foreach($GLOBALS['we_doc']->searchclassFolder->search as $k => $v){
+				$r[] = $GLOBALS['we_doc']->searchclassFolder->search [$k];
 			}
 		}
-		if(isset($GLOBALS ['we_doc']->searchclassFolder->searchFields) && is_array($GLOBALS ['we_doc']->searchclassFolder->search)){
-			foreach($GLOBALS ['we_doc']->searchclassFolder->searchFields as $k => $v){
-				$r2[] = $GLOBALS ['we_doc']->searchclassFolder->searchFields [$k];
+		if(isset($GLOBALS['we_doc']->searchclassFolder->searchFields) && is_array($GLOBALS['we_doc']->searchclassFolder->search)){
+			foreach($GLOBALS['we_doc']->searchclassFolder->searchFields as $k => $v){
+				$r2[] = $GLOBALS['we_doc']->searchclassFolder->searchFields [$k];
 			}
 		}
 		if(($loc = we_base_request::_(we_base_request::STRING, 'location'))){
@@ -814,37 +815,37 @@ class doclistView{
 			}
 		}
 
-		$GLOBALS ['we_doc']->searchclassFolder->search = $r;
-		$GLOBALS ['we_doc']->searchclassFolder->searchFields = $r2;
-		$GLOBALS ['we_doc']->searchclassFolder->location = $r3;
+		$GLOBALS['we_doc']->searchclassFolder->search = $r;
+		$GLOBALS['we_doc']->searchclassFolder->searchFields = $r2;
+		$GLOBALS['we_doc']->searchclassFolder->location = $r3;
 
-		for($i = 0; $i < $GLOBALS ['we_doc']->searchclassFolder->height; $i++){
+		for($i = 0; $i < $GLOBALS['we_doc']->searchclassFolder->height; $i++){
 			$button = we_html_button::create_button("image:btn_function_trash", "javascript:delRow(" . $i . ");", true, "", "", "", "", false);
 
 			$handle = "";
 
-			$searchInput = we_html_tools::htmlTextInput("search[" . $i . "]", 30, (isset($GLOBALS ['we_doc']->searchclassFolder->search) && is_array($GLOBALS ['we_doc']->searchclassFolder->search) && isset($GLOBALS ['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->search [$i] : ''), "", " class=\"wetextinput\"  id=\"search['.$i.']\" ", "text", 190);
+			$searchInput = we_html_tools::htmlTextInput("search[" . $i . "]", 30, (isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search) && isset($GLOBALS['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS['we_doc']->searchclassFolder->search [$i] : ''), "", " class=\"wetextinput\"  id=\"search['.$i.']\" ", "text", 190);
 
-			$locationDisabled = (isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i]) && ($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Content" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Status" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Speicherart" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "temp_template_id" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "temp_doc_type" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "temp_category") ?
-					'disabled' : '');
+			$locationDisabled = (isset($GLOBALS['we_doc']->searchclassFolder->searchFields [$i]) && ($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "Content" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "Status" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "Speicherart" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "temp_template_id" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "temp_doc_type" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "temp_category") ?
+							'disabled' : '');
 
-			if(isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i])){
-				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Status"){
-					$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS ['we_doc']->searchclassFolder->getFieldsStatus(), 1, (isset($GLOBALS ['we_doc']->searchclassFolder->search) && is_array($GLOBALS ['we_doc']->searchclassFolder->search) && isset($GLOBALS ['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
+			if(isset($GLOBALS['we_doc']->searchclassFolder->searchFields [$i])){
+				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "Status"){
+					$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS['we_doc']->searchclassFolder->getFieldsStatus(), 1, (isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search) && isset($GLOBALS['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
 				}
-				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Speicherart"){
-					$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS ['we_doc']->searchclassFolder->getFieldsSpeicherart(), 1, (isset($GLOBALS ['we_doc']->searchclassFolder->search) && is_array($GLOBALS ['we_doc']->searchclassFolder->search) && isset($GLOBALS ['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
+				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "Speicherart"){
+					$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS['we_doc']->searchclassFolder->getFieldsSpeicherart(), 1, (isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search) && isset($GLOBALS['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
 				}
-				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "Published" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "CreationDate" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "ModDate"){
+				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "Published" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "CreationDate" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "ModDate"){
 					$handle = "date";
-					$searchInput = we_html_tools::getDateSelector("search[" . $i . "]", "_from" . $i, $GLOBALS ['we_doc']->searchclassFolder->search [$i]);
+					$searchInput = we_html_tools::getDateSelector("search[" . $i . "]", "_from" . $i, $GLOBALS['we_doc']->searchclassFolder->search [$i]);
 				}
-				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "temp_doc_type"){
-					$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS ['we_doc']->searchclassFolder->getDocTypes(), 1, (isset($GLOBALS ['we_doc']->searchclassFolder->search) && is_array($GLOBALS ['we_doc']->searchclassFolder->search) && isset($GLOBALS ['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
+				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "temp_doc_type"){
+					$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS['we_doc']->searchclassFolder->getDocTypes(), 1, (isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search) && isset($GLOBALS['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
 				}
 
-				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "MasterTemplateID" || $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "temp_template_id"){
-					$_linkPath = $GLOBALS ['we_doc']->searchclassFolder->search [$i];
+				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "MasterTemplateID" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "temp_template_id"){
+					$_linkPath = $GLOBALS['we_doc']->searchclassFolder->search [$i];
 
 					$_rootDirID = 0;
 
@@ -856,8 +857,8 @@ class doclistView{
 
 					$searchInput = $selector;
 				}
-				if($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] === "temp_category"){
-					$_linkPath = $GLOBALS ['we_doc']->searchclassFolder->search [$i];
+				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "temp_category"){
+					$_linkPath = $GLOBALS['we_doc']->searchclassFolder->search [$i];
 
 					$_rootDirID = 0;
 
@@ -871,8 +872,8 @@ class doclistView{
 
 			$out .= '
         <tr id="filterRow_' . $i . '">
-          <td>' . we_html_tools::hidden("hidden_searchFields[" . $i . "]", isset($GLOBALS ['we_doc']->searchclassFolder->searchFields[$i]) ? $GLOBALS ['we_doc']->searchclassFolder->searchFields[$i] : "" ) . '' . we_html_tools::htmlSelect("searchFields[" . $i . "]", $GLOBALS ['we_doc']->searchclassFolder->getFields($i, "doclist"), 1, (isset($GLOBALS ['we_doc']->searchclassFolder->searchFields) && is_array($GLOBALS ['we_doc']->searchclassFolder->searchFields) && isset($GLOBALS ['we_doc']->searchclassFolder->searchFields [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->searchFields [$i] : ""), false, array('class' => "defaultfont", 'id' => "searchFields[' . $i . ']", 'onchange' => "changeit(this.value, ' . $i . ');")) . '</td>
-          <td id="td_location[' . $i . ']">' . we_html_tools::htmlSelect("location[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($GLOBALS ['we_doc']->searchclassFolder->location) && is_array($GLOBALS ['we_doc']->searchclassFolder->location) && isset($GLOBALS ['we_doc']->searchclassFolder->location [$i]) ? $GLOBALS ['we_doc']->searchclassFolder->location [$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => "location[' . $i . ']")) . '</td>
+          <td>' . we_html_tools::hidden("hidden_searchFields[" . $i . "]", isset($GLOBALS['we_doc']->searchclassFolder->searchFields[$i]) ? $GLOBALS['we_doc']->searchclassFolder->searchFields[$i] : "" ) . '' . we_html_tools::htmlSelect("searchFields[" . $i . "]", $GLOBALS['we_doc']->searchclassFolder->getFields($i, "doclist"), 1, (isset($GLOBALS['we_doc']->searchclassFolder->searchFields) && is_array($GLOBALS['we_doc']->searchclassFolder->searchFields) && isset($GLOBALS['we_doc']->searchclassFolder->searchFields [$i]) ? $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] : ""), false, array('class' => "defaultfont", 'id' => "searchFields[' . $i . ']", 'onchange' => "changeit(this.value, ' . $i . ');")) . '</td>
+          <td id="td_location[' . $i . ']">' . we_html_tools::htmlSelect("location[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($GLOBALS['we_doc']->searchclassFolder->location) && is_array($GLOBALS['we_doc']->searchclassFolder->location) && isset($GLOBALS['we_doc']->searchclassFolder->location [$i]) ? $GLOBALS['we_doc']->searchclassFolder->location [$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => "location[' . $i . ']")) . '</td>
           <td id="td_search[' . $i . ']">' . $searchInput . '</td>
           <td id="td_delButton[' . $i . ']">' . $button . '</td>
         </tr>
@@ -880,7 +881,7 @@ class doclistView{
 		}
 
 		$out .= '</tbody></table>
-			<table cellpadding="0" cellspacing="0" id="advSearch3" border="0" style="margin-left:20px;display:' . ($GLOBALS ['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
+			<table cellpadding="0" cellspacing="0" id="advSearch3" border="0" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
         <tr>
           <td colspan="4">' . we_html_tools::getPixel(20, 10) . '</td>
         </tr>
@@ -892,7 +893,7 @@ class doclistView{
         </tr>
 
         </table>' .
-			we_html_element::jsElement('calendarSetup(' . $GLOBALS ['we_doc']->searchclassFolder->height . ');');
+				we_html_element::jsElement('calendarSetup(' . $GLOBALS['we_doc']->searchclassFolder->height . ');');
 
 		return $out;
 	}
@@ -923,7 +924,7 @@ class doclistView{
 		if(isset($GLOBALS['we_cmd_obj']) && is_object($GLOBALS['we_cmd_obj'])){
 			$obj = $GLOBALS['we_cmd_obj'];
 		} else {
-			$obj = $GLOBALS ['we_doc'];
+			$obj = $GLOBALS['we_doc'];
 		}
 
 		$obj->searchclassFolder->searchstart = we_base_request::_(we_base_request::INT, "searchstart", 0);
@@ -955,16 +956,16 @@ class doclistView{
 			for($i = 0; $i < count($searchFields); $i++){
 
 				$w = "";
-				if(isset($searchText [0])){
-					$searchString = (isset($searchText [$i]) ? $searchText [$i] : $searchText [0]);
+				if(isset($searchText[0])){
+					$searchString = (isset($searchText[$i]) ? $searchText[$i] : $searchText[0]);
 				}
 				if(isset($searchString) && $searchString != ""){
 
-					switch($searchFields [$i]){
+					switch($searchFields[$i]){
 						default:
 						case "Text":
-							if(isset($searchFields [$i]) && isset($location [$i])){
-								$where .= $obj->searchclassFolder->searchfor($searchString, $searchFields [$i], $location [$i], $_table);
+							if(isset($searchFields[$i]) && isset($location[$i])){
+								$where .= $obj->searchclassFolder->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
 							}
 						case "Content":
 						case "Status":
@@ -975,72 +976,75 @@ class doclistView{
 							break;
 					}
 
-					if($searchFields [$i] === "Content"){
-						$w = $obj->searchclassFolder->searchContent($searchString, $_table);
-						if(!$where){
-							$where .= " AND " . ($w ? $w : '0');
-						} elseif($w != ""){
-							$where .= $op . " " . $w;
-						}
-					}
+					switch($searchFields[$i]){
+						case "Content":
+							$w = $obj->searchclassFolder->searchContent($searchString, $_table);
+							if(!$where){
+								$where .= " AND " . ($w ? $w : '0');
+							} elseif($w != ""){
+								$where .= $op . " " . $w;
+							}
+							break;
 
-					if($searchFields [$i] === 'Title'){
-						$w = $obj->searchclassFolder->searchInTitle($searchString, $_table);
-						if(!$where){
-							$where .= " AND " . ($w ? $w : '0');
-						} elseif($w != ""){
-							$where .= $op . " " . $w;
-						}
-					}
-
-					if($searchString != "" && ($searchFields [$i] === "Status" || $searchFields [$i] === "Speicherart")){
-						if($_table == FILE_TABLE){
-							$w = $obj->searchclassFolder->getStatusFiles($searchString, $_table);
+						case 'Title':
+							$w = $obj->searchclassFolder->searchInTitle($searchString, $_table);
+							if(!$where){
+								$where = ' AND ' . ($w ? $w : '0');
+							} elseif($w != ''){
+								$where .= $op . ' ' . $w;
+							}
+							break;
+						case "Status":
+						case "Speicherart":
+							if($searchString != ""){
+								if($_table == FILE_TABLE){
+									$w = $obj->searchclassFolder->getStatusFiles($searchString, $_table);
+									$where .= $w;
+								}
+							}
+							break;
+						case "CreatorName":
+						case "WebUserName":
+							if($searchString != ""){
+								$w = $obj->searchclassFolder->searchSpecial($searchString, $_table, $searchFields[$i], $location[$i]);
+								$where .= $w;
+							}
+							break;
+						case "temp_category":
+							$w = $obj->searchclassFolder->searchCategory($searchString, $_table, $searchFields[$i]);
 							$where .= $w;
-						}
-					}
-
-					if($searchString != "" && ($searchFields [$i] === "CreatorName" || $searchFields [$i] === "WebUserName")){
-						$w = $obj->searchclassFolder->searchSpecial($searchString, $_table, $searchFields [$i], $location [$i]);
-						$where .= $w;
-					}
-
-					if($searchFields [$i] === "temp_category"){
-						$w = $obj->searchclassFolder->searchCategory($searchString, $_table, $searchFields [$i]);
-						$where .= $w;
+							break;
 					}
 				}
 			}
 
 			$where .= ' AND ParentID = ' . intval($obj->ID);
 
-			if($where != ""){
-				$whereQuery = "1 " . $where;
-				switch($_table){
-					case FILE_TABLE:
-						$whereQuery .= ' AND ((RestrictOwners=0 OR RestrictOwners=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners)))';
-						break;
-					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-						$whereQuery .= ' AND ((RestrictOwners=0 OR RestrictOwners=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners)))';
-						break;
-					case (defined('OBJECT_TABLE') ? OBJECT_TABLE : OBJECT_TABLE):
-						$whereQuery .= 'AND ((RestrictUsers=0 OR RestrictUsers= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))) ';
-						break;
-				}
+			$whereQuery = "1 " . $where;
+			switch($_table){
+				case FILE_TABLE:
+					$whereQuery .= ' AND ((RestrictOwners=0 OR RestrictOwners=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners)))';
+					break;
+				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+					$whereQuery .= ' AND ((RestrictOwners=0 OR RestrictOwners=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners)))';
+					break;
+				case (defined('OBJECT_TABLE') ? OBJECT_TABLE : OBJECT_TABLE):
+					$whereQuery .= 'AND ((RestrictUsers=0 OR RestrictUsers= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))) ';
+					break;
+			}
 
-				$obj->searchclassFolder->setwhere($whereQuery);
-				$obj->searchclassFolder->insertInTempTable($whereQuery, $_table, $obj->Path . '/');
+			$obj->searchclassFolder->setwhere($whereQuery);
+			$obj->searchclassFolder->insertInTempTable($whereQuery, $_table, $obj->Path . '/');
 
-				$foundItems = $obj->searchclassFolder->countitems($whereQuery, $_table);
-				$_SESSION['weS']['weSearch']['foundItems'] = $foundItems;
+			$foundItems = $obj->searchclassFolder->countitems($whereQuery, $_table);
+			$_SESSION['weS']['weSearch']['foundItems'] = $foundItems;
 
-				$obj->searchclassFolder->selectFromTempTable($_searchstart, $_anzahl, $_order);
+			$obj->searchclassFolder->selectFromTempTable($_searchstart, $_anzahl, $_order);
 
-				while($obj->searchclassFolder->next_record()){
-					if(!isset($saveArrayIds [$obj->searchclassFolder->Record ['ContentType']][$obj->searchclassFolder->Record ['ID']])){
-						$saveArrayIds [$obj->searchclassFolder->Record ['ContentType']][$obj->searchclassFolder->Record ['ID']] = $obj->searchclassFolder->Record ['ID'];
-						$_result [] = array_merge(array('Table' => $_table), $obj->searchclassFolder->Record);
-					}
+			while($obj->searchclassFolder->next_record()){
+				if(!isset($saveArrayIds[$obj->searchclassFolder->Record ['ContentType']][$obj->searchclassFolder->Record ['ID']])){
+					$saveArrayIds[$obj->searchclassFolder->Record ['ContentType']][$obj->searchclassFolder->Record ['ID']] = $obj->searchclassFolder->Record ['ID'];
+					$_result[] = array_merge(array('Table' => $_table), $obj->searchclassFolder->Record);
 				}
 			}
 		}
@@ -1050,18 +1054,18 @@ class doclistView{
 			$_db2->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
 
 			foreach($_result as $k => $v){
-				$_result [$k]["Description"] = "";
-				if($_result [$k]["Table"] == FILE_TABLE && $_result [$k]['Published'] >= $_result [$k]['ModDate'] && $_result [$k]['Published'] != 0){
-					$DB_WE->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ID=' . intval($_result [$k]["ID"]) . ' AND b.Name="Description" AND b.DocumentTable="' . FILE_TABLE . '"');
+				$_result[$k]["Description"] = "";
+				if($_result[$k]["Table"] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
+					$DB_WE->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ID=' . intval($_result[$k]["ID"]) . ' AND b.Name="Description" AND b.DocumentTable="' . FILE_TABLE . '"');
 					while($DB_WE->next_record()){
-						$_result [$k]["Description"] = $DB_WE->f('Dat');
+						$_result[$k]["Description"] = $DB_WE->f('Dat');
 					}
 				} else {
-					$_db2->query('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($_result [$k]["ID"]) . ' AND DocTable="tblFile" AND Active=1');
+					$_db2->query('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($_result[$k]["ID"]) . ' AND DocTable="tblFile" AND Active=1');
 					while($_db2->next_record()){
 						$tempDoc = unserialize($_db2->f('DocumentObject'));
-						if(isset($tempDoc [0]['elements']['Description']) && $tempDoc [0]['elements']['Description']['dat'] != ""){
-							$_result [$k]["Description"] = $tempDoc [0]['elements']['Description']['dat'];
+						if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat'] != ""){
+							$_result[$k]["Description"] = $tempDoc[0]['elements']['Description']['dat'];
 						}
 					}
 				}
@@ -1084,7 +1088,7 @@ class doclistView{
 	}
 
 	function getSortImage($for){
-		$order = we_base_request::_(we_base_request::RAW, 'order', $GLOBALS ['we_doc']->searchclassFolder->order);
+		$order = we_base_request::_(we_base_request::RAW, 'order', $GLOBALS['we_doc']->searchclassFolder->order);
 
 		if(strpos($order, $for) === 0){
 			if(strpos($order, 'DESC')){
@@ -1127,8 +1131,8 @@ class doclistView{
 				$published = 1;
 			}
 
-			$ext = isset($_result [$f]["Extension"]) ? $_result [$f]["Extension"] : "";
-			$Icon = we_base_ContentTypes::inst()->getIcon($_result [$f]["ContentType"], we_base_ContentTypes::FILE_ICON, $ext);
+			$ext = isset($_result[$f]["Extension"]) ? $_result[$f]["Extension"] : "";
+			$Icon = we_base_ContentTypes::inst()->getIcon($_result[$f]["ContentType"], we_base_ContentTypes::FILE_ICON, $ext);
 
 			if($view == 0){
 				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] === "objectFile") && permissionhandler::hasPerm('PUBLISH')) ? we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '';
@@ -1136,31 +1140,31 @@ class doclistView{
 				$content[$f] = array(
 					array("dat" => $publishCheckbox),
 					array("dat" => '<img src="' . TREE_ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
-					array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" class="'.$fontColor . ' middlefont" title="' . $_result [$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result [$f]["Text"], $we_PathLength)),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]['docID'] . '\',\'' . $_result[$f]['ContentType'] . '\')" class="' . $fontColor . ' middlefont" title="' . $_result[$f]['Text'] . '"><u>' . we_util_Strings::shortenPath($_result[$f]['Text'], $we_PathLength)),
 					array("dat" => '<nobr>' . g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']') . '</nobr>'),
-					array("dat" => '<nobr>' . we_util_Strings::shortenPath($_result [$f]["SiteTitle"], $we_PathLength) . '</nobr>'),
-					array("dat" => '<nobr>' . ($_result [$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f]["CreationDate"]) : "-") . '</nobr>'),
-					array("dat" => '<nobr>' . ($_result [$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f]["ModDate"]) : "-") . '</nobr>')
+					array("dat" => '<nobr>' . we_util_Strings::shortenPath($_result[$f]["SiteTitle"], $we_PathLength) . '</nobr>'),
+					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
+					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-") . '</nobr>')
 				);
 			} else {
-				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result [$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result [$f]["Path"]) : 0;
+				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
 				$filesize = we_base_file::getHumanFileSize($fs);
 
-				if($_result [$f]["ContentType"] == we_base_ContentTypes::IMAGE){
+				if($_result[$f]["ContentType"] == we_base_ContentTypes::IMAGE){
 					$smallSize = 64;
 					$bigSize = 140;
 
 					if($fs > 0){
-						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result [$f]["Path"]);
-						$imageView = "<img src='" . (file_exists($thumbpath = WE_THUMB_PREVIEW_DIR . $_result [$f]["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($_result [$f]['Extension'])) ?
-								$thumbpath :
-								WEBEDITION_DIR . 'thumbnail.php?id=' . $_result [$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result [$f]["Path"]) . "&extension=" . $_result [$f]["Extension"]
-							) . "' border='0' /></a>";
+						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]);
+						$imageView = "<img src='" . (file_exists($thumbpath = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($_result[$f]['Extension'])) ?
+										$thumbpath :
+										WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"]
+								) . "' border='0' /></a>";
 
-						$imageViewPopup = "<img src='" . (file_exists($thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result [$f]["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($_result [$f]["Extension"])) ?
-								$thumbpathPopup :
-								WEBEDITION_DIR . "thumbnail.php?id=" . $_result [$f]["docID"] . "&size=" . $bigSize . "&path=" . urlencode($_result [$f]["Path"]) . "&extension=" . $_result [$f]["Extension"]
-							) . "' border='0' /></a>";
+						$imageViewPopup = "<img src='" . (file_exists($thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($_result[$f]["Extension"])) ?
+										$thumbpathPopup :
+										WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"]
+								) . "' border='0' /></a>";
 					} else {
 						$imagesize = array(0, 0);
 						$thumbpath = ICON_DIR . 'doclist/' . we_base_ContentTypes::IMAGE_ICON;
@@ -1173,12 +1177,12 @@ class doclistView{
 					$imageViewPopup = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
 				}
 
-				$creator = $_result [$f]["CreatorID"] ? id_to_path($_result [$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', "[nobody]");
+				$creator = $_result[$f]["CreatorID"] ? id_to_path($_result[$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', "[nobody]");
 
-				if($_result [$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
-					$templateID = ($_result [$f]["Published"] >= $_result[$f]["ModDate"] && $_result[$f]["Published"] ?
-							$_result [$f]["TemplateID"] :
-							$_result [$f]["temp_template_id"]);
+				if($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
+					$templateID = ($_result[$f]["Published"] >= $_result[$f]["ModDate"] && $_result[$f]["Published"] ?
+									$_result[$f]["TemplateID"] :
+									$_result[$f]["temp_template_id"]);
 
 					$templateText = g_l('searchtool', "[no_template]");
 					if($templateID){
@@ -1198,11 +1202,11 @@ class doclistView{
 					$_fieldcount = 6;
 				}
 				for($i = 0; $i < $_fieldcount; $i++){
-					$_tagName = $_defined_fields [$i]["tag"];
+					$_tagName = $_defined_fields[$i]["tag"];
 
 					if(we_exim_contentProvider::isBinary($_result[$f]["docID"])){
-						$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result [$f]["docID"]) . " AND b.Name='" . $DB_WE->escape($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
-						$metafields [$_tagName] = "";
+						$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result[$f]["docID"]) . " AND b.Name='" . $DB_WE->escape($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
+						$metafields[$_tagName] = "";
 						while($DB_WE->next_record()){
 							$metafields[$_tagName] = we_util_Strings::shortenPath($DB_WE->f('Dat'), 45);
 						}
@@ -1210,16 +1214,16 @@ class doclistView{
 				}
 
 				$content[$f] = array(
-					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result [$f]["Text"] . '">' . $imageView . '</a>'),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageView . '</a>'),
 					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 17)),
-					array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result [$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result [$f]["Text"], 17) . '</u></a>'),
-					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f]["CreationDate"]) : "-") . '</nobr>'),
-					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result [$f]["ModDate"]) : "-") . '</nobr>'),
-					array("dat" => '<a href="javascript:openToEdit(\'' . $_result [$f]["docTable"] . '\',\'' . $_result [$f]["docID"] . '\',\'' . $_result [$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result [$f]["Text"] . '">' . $imageViewPopup . '</a>'),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result[$f]["Text"], 17) . '</u></a>'),
+					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
+					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-") . '</nobr>'),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageViewPopup . '</a>'),
 					array("dat" => $filesize),
-					array("dat" => $imagesize [0] . " x " . $imagesize [1]),
-					array("dat" => we_util_Strings::shortenPath(g_l('contentTypes', '[' . ($_result [$f]['ContentType']) . ']'), 22)),
-					array("dat" => '<span class="' . $fontColor . '">' . we_util_Strings::shortenPath($_result [$f]["Text"], 30) . '</span>'),
+					array("dat" => $imagesize[0] . " x " . $imagesize[1]),
+					array("dat" => we_util_Strings::shortenPath(g_l('contentTypes', '[' . ($_result[$f]['ContentType']) . ']'), 22)),
+					array("dat" => '<span class="' . $fontColor . '">' . we_util_Strings::shortenPath($_result[$f]["Text"], 30) . '</span>'),
 					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 45)),
 					array("dat" => we_util_Strings::shortenPath($_result[$f]["Description"], 100)),
 					array("dat" => $_result[$f]['ContentType']),
@@ -1241,20 +1245,20 @@ class doclistView{
 	function getSearchParameterTop($foundItems){
 		$anzahl = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
-		$order = we_base_request::_(we_base_request::STRING, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->order : '', 'order');
-		$mode = we_base_request::_(we_base_request::BOOL, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->mode : '', 'mode');
-		$setView = we_base_request::_(we_base_request::INT, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->setView : '', 'setView');
-		$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->searchclassFolder->anzahl : '', 'anzahl');
-		$id = we_base_request::_(we_base_request::INT, 'id', isset($GLOBALS ['we_doc']) ? $GLOBALS ['we_doc']->ID : '');
-		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', (isset($GLOBALS ['we_transaction']) ? $GLOBALS ['we_transaction'] : 0));
+		$order = we_base_request::_(we_base_request::STRING, 'we_cmd', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->searchclassFolder->order : '', 'order');
+		$mode = we_base_request::_(we_base_request::BOOL, 'we_cmd', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->searchclassFolder->mode : '', 'mode');
+		$setView = we_base_request::_(we_base_request::INT, 'we_cmd', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->searchclassFolder->setView : '', 'setView');
+		$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->searchclassFolder->anzahl : '', 'anzahl');
+		$id = we_base_request::_(we_base_request::INT, 'id', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->ID : '');
+		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', (isset($GLOBALS['we_transaction']) ? $GLOBALS['we_transaction'] : 0));
 
 		return
-			we_html_tools::hidden("we_transaction", $we_transaction) .
-			we_html_tools::hidden("order", $order) .
-			we_html_tools::hidden("todo", "") .
-			we_html_tools::hidden("mode", $mode) .
-			we_html_tools::hidden("setView", $setView) .
-			'<table border="0" cellpadding="0" cellspacing="0">
+				we_html_tools::hidden("we_transaction", $we_transaction) .
+				we_html_tools::hidden("order", $order) .
+				we_html_tools::hidden("todo", "") .
+				we_html_tools::hidden("mode", $mode) .
+				we_html_tools::hidden("setView", $setView) .
+				'<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>' . we_html_tools::getPixel(19, 12) . '</td>
 		<td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
@@ -1274,12 +1278,11 @@ class doclistView{
 			$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
 			$publishButton = we_html_button::create_button("publish", "javascript:publishDocs();", true, 100, 22, "", "");
 		} else {
-			$publishButton = "";
-			$publishButtonCheckboxAll = "";
+			$publishButton = $publishButtonCheckboxAll = "";
 		}
 
 		return
-			'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+				'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
 	<tr>
 	 <td>' . $publishButtonCheckboxAll . '</td>
 	 <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
@@ -1304,24 +1307,24 @@ class doclistView{
 		}
 
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
-			($searchstart ?
-				we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
-				we_html_button::create_button("back", "", true, 100, 22, "", "", true)
-			) .
-			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
+				($searchstart ?
+						we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
+						we_html_button::create_button("back", "", true, 100, 22, "", "", true)
+				) .
+				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
         <td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
-			(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
-			' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
-			(($searchstart + $anzahl) < $we_search_anzahl ?
-				we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
-				we_html_button::create_button("next", "", true, 100, 22, "", "", true)
-			) .
-			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
+				(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
+				' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
+				(($searchstart + $anzahl) < $we_search_anzahl ?
+						we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
+						we_html_button::create_button("next", "", true, 100, 22, "", "", true)
+				) .
+				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
 		if($anzahl){
 			for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
-				$pages [($i * $anzahl)] = ($i + 1);
+				$pages[($i * $anzahl)] = ($i + 1);
 			}
 		}
 
@@ -1335,7 +1338,7 @@ class doclistView{
 		}
 
 		$out .= $select .
-			'</td></tr></table>';
+				'</td></tr></table>';
 
 		return $out;
 	}
@@ -1353,11 +1356,11 @@ class doclistView{
             <td class="defaultfont">';
 
 		foreach($content as $i => $c){
-			$_forceRightHeadline = (isset($c ["forceRightHeadline"]) && $c ["forceRightHeadline"]);
-			$icon = (isset($c ["icon"]) && $c ["icon"]) ? ('<img src="' . ICON_DIR . $c ["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />') : "";
-			$headline = (isset($c ["headline"]) && $c ["headline"]) ? ('<div class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c ["headline"] . '</div>') : "";
-			$mainContent = (isset($c ["html"]) && $c ["html"]) ? $c ["html"] : "";
-			$leftWidth = (isset($c ["space"]) && $c ["space"]) ? abs($c ["space"]) : 0;
+			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
+			$icon = (isset($c["icon"]) && $c["icon"]) ? ('<img src="' . ICON_DIR . $c["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />') : "";
+			$headline = (isset($c["headline"]) && $c["headline"]) ? ('<div class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c["headline"] . '</div>') : "";
+			$mainContent = (isset($c["html"]) && $c["html"]) ? $c["html"] : "";
+			$leftWidth = (isset($c["space"]) && $c["space"]) ? abs($c["space"]) : 0;
 			$leftContent = $icon ? $icon : (($leftWidth && (!$_forceRightHeadline)) ? $headline : "");
 			$rightContent = '<div class="defaultfont">' . ((($icon && $headline) || ($leftContent === "") || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
 
@@ -1371,9 +1374,9 @@ class doclistView{
 			}
 
 			$out .= $rightContent .
-				'</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
+					'</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
 
-			if($i < (count($content) - 1) && (!isset($c ["noline"]))){
+			if($i < (count($content) - 1) && (!isset($c["noline"]))){
 				$out .= '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>';
 			}
 		}

@@ -64,24 +64,24 @@ class we_object_search extends we_search_base{
 						. (($select == $cur["name"]) ? "selected" : "") . '>'
 						. $regs[1] . '</option>';
 				}
-				$all [] = $cur["name"];
+				$all[] = $cur["name"];
 			} else {
 				switch($cur["name"]){
 					case 'OF_Text':
 						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectname]') . '</option>';
-						$all [] = $cur["name"];
+						$all[] = $cur["name"];
 						break;
 					case 'OF_Path':
 						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectpath]') . '</option>';
-						$all [] = $cur["name"];
+						$all[] = $cur["name"];
 						break;
 					case 'OF_ID':
 						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectid]') . '</option>';
-						$all [] = $cur["name"];
+						$all[] = $cur["name"];
 						break;
 					case 'OF_Url':
 						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objecturl]') . '</option>';
-						$all [] = $cur["name"];
+						$all[] = $cur["name"];
 						break;
 				}
 			}
