@@ -35,12 +35,17 @@
 		case "new_objectfile_folder":
 			we_cmd("new", "<?php echo OBJECT_FILES_TABLE; ?>", "", "class_folder");
 			break;
+		case "new_objectfile_nested_folder":
+			we_cmd("new", "<?php echo OBJECT_FILES_TABLE; ?>", "", "nested_class_folder");
+			break;
 		case "new_object":
 			we_cmd("new", "<?php echo OBJECT_TABLE; ?>", "", "object");
 			break;
+		/* this is probably obsolete: looks like it never worked!
 		case "new_object_folder":
 			we_cmd("new", "<?php echo OBJECT_TABLE; ?>", "", "folder");
 			break;
+		*/
 		case "object_change_link_at_class":
 			top.load.location = url;
 			break;
