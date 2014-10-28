@@ -72,7 +72,7 @@ class we_object_exImport extends we_object{
 						$qarr[] = $key . $type;
 						//add index for complex queries
 						if($arr[0] === 'object'){
-							$indexe [] = 'KEY ' . $key . ' (' . $key . ')';
+							$indexe[] = 'KEY ' . $key . ' (' . $key . ')';
 						}
 					}
 				}

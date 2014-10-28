@@ -351,7 +351,7 @@ class we_object_listview extends we_listview_base{
 		$publ_cond = array();
 		foreach($tb as &$t){
 			$t = '`' . $t . '`';
-			$publ_cond [] = '(' . $t . '.OF_Published>0 OR ' . $t . '.OF_ID=0)';
+			$publ_cond[] = '(' . $t . '.OF_Published>0 OR ' . $t . '.OF_ID=0)';
 		}
 
 		return array(//FIXME: maybe random can be changed by time%ID or sth. which is faster and quite rand enough

@@ -297,7 +297,7 @@ class we_object extends we_document{
 
 					if($regs[1] != 'OF' && $regs[1] != 'variant'){
 						if(in_array($info['name'], $fieldsToDelete)){
-							$q [] = ' DROP `' . $info['name'] . '` ';
+							$q[] = ' DROP `' . $info['name'] . '` ';
 						} else {
 
 							$nam = $this->getElement($info['name'] . self::ELEMENT_TYPE, 'dat') . '_' . $this->getElement($info['name'], 'dat');
@@ -434,10 +434,10 @@ class we_object extends we_document{
 						}
 					}
 
-					$q [] = ' ADD `' . $nam . '` ' . $this->switchtypes($cur);
+					$q[] = ' ADD `' . $nam . '` ' . $this->switchtypes($cur);
 					//add index for complex queries
 					if($this->getElement($cur . self::ELEMENT_TYPE, 'dat') == we_objectFile::TYPE_OBJECT){
-						$q [] = ' ADD INDEX (`' . $nam . '`)';
+						$q[] = ' ADD INDEX (`' . $nam . '`)';
 					}
 				}
 			}
