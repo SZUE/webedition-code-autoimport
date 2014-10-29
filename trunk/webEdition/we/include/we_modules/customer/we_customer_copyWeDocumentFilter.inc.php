@@ -73,7 +73,7 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 	$buttonBar = we_html_button::create_button("cancel", "javascript:top.close();");
 	$cmd3 = we_base_request::_(we_base_request::RAW, 'we_cmd', false, 3);
 
-	$_iframeLocation = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '&we_cmd[1]=' . we_base_request::_(we_base_request::INT, 'we_cmd', '', 1) . "&we_cmd[2]=" . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) . ($cmd3 !== false ? "&we_cmd[3]=" . $cmd3 : "" ) . '&startCopy=1';
+	$_iframeLocation = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '&we_cmd[1]=' . we_base_request::_(we_base_request::INT, 'we_cmd', '', 1) . "&we_cmd[2]=" . we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2) . ($cmd3 !== false ? "&we_cmd[3]=" . $cmd3 : "" ) . '&startCopy=1';
 
 	echo we_html_tools::getHtmlTop(g_l('modules_customerFilter', '[apply_filter]')) .
 	STYLESHEET .
