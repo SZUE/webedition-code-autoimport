@@ -895,7 +895,7 @@ function weInputInArray(arr, val) {
 	div.yui-ac-bd ul, div.yui-ac-bd ui{ margin:-7px; margin-top:-5px; padding:0px; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px;}
 	div.yuiAcLayer { margin:0px; padding:0px;}";
 		}
-		return empty($inputfields) ? "" : we_html_element::cssElement($out, array('scoped' => 'scoped'));
+		return $inputfields ? we_html_element::cssElement($out, array('scoped' => 'scoped')) : '';
 	}
 
 	function getHTML(){
@@ -916,20 +916,20 @@ function weInputInArray(arr, val) {
 				"valign" => "top",
 				"style" => "height:10px"), $this->label, 'left', 'defaultfont', (
 				$this->selectButton ?
-					array("text" => "<div style=''>" . $this->selectButton . "</div>", "valign" => "top") :
+					array("text" => '<div style="">' . $this->selectButton . '</div>', "valign" => "top") :
 					''
 				), we_html_tools::getPixel(intval($this->trashButtonSpace), 4), (
 				$this->trashButton ?
-					array("text" => "<div style='margin-right:" . $this->trashButtonSpace . "px'>" . $this->trashButton . "</div>", "valign" => "top") :
+					array("text" => '<div style="margin-right:' . $this->trashButtonSpace . 'px">' . $this->trashButton . '</div>', "valign" => "top") :
 					''
 				), (
 				$this->openButton ?
-					array("text" => "<div style='margin-right:" . $this->openButtonSpace . "px'>" . $this->openButton . '</div>', "valign" => "top") :
+					array("text" => '<div style="margin-right:' . $this->openButtonSpace . 'px">' . $this->openButton . '</div>', "valign" => "top") :
 					''
 				), (
-				empty($this->createButton) ?
-					'' :
-					array("text" => "<div style='margin-right:" . $this->createButtonSpace . "px'>" . $this->createButton . "</div>", "valign" => "top"))
+				$this->createButton ?
+					array("text" => '<div style="margin-right:' . $this->createButtonSpace . 'px">' . $this->createButton . '</div>', "valign" => "top") :
+					'')
 		);
 
 		$this->acId = '';
@@ -939,22 +939,22 @@ function weInputInArray(arr, val) {
 		$this->label = '';
 		$this->maxResults = 20;
 		$this->mayBeEmpty = 1;
-		$this->resultName = "";
-		$this->resultValue = "";
-		$this->resultId = "";
-		$this->selectButton = "";
-		$this->selectButtonSpace = "";
-		$this->selector = "Dir"; //FIXME:self::Dirselector??
-		$this->trashButton = "";
-		$this->trashButtonSpace = "";
-		$this->openButton = "";
-		$this->openButtonSpace = "";
-		$this->createButton = "";
-		$this->createButtonSpace = "";
+		$this->resultName = '';
+		$this->resultValue = '';
+		$this->resultId = '';
+		$this->selectButton = '';
+		$this->selectButtonSpace = '';
+		$this->selector = 'Dir'; //FIXME:self::Dirselector??
+		$this->trashButton = '';
+		$this->trashButtonSpace = '';
+		$this->openButton = '';
+		$this->openButtonSpace = '';
+		$this->createButton = '';
+		$this->createButtonSpace = '';
 		$this->table = FILE_TABLE;
 		$this->width = 280;
-		$this->doOnItemSelect = "";
-		$this->doOnTextfieldBlur = "";
+		$this->doOnItemSelect = '';
+		$this->doOnTextfieldBlur = '';
 		return $html;
 	}
 
