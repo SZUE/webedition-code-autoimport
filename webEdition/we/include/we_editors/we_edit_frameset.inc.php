@@ -318,7 +318,7 @@ echo we_html_tools::getHtmlTop('','','frameset');
 
 		}
 	<?php
-	if(is_a($we_doc, 'we_binaryDocument')){
+	if($we_doc instanceof we_binaryDocument){
 		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
 	}
 }

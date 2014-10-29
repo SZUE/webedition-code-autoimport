@@ -39,7 +39,8 @@ class we_helpers_lessc extends lessc{
 		if(preg_match('|#WE:(\d+)#|', $url, $matches)){
 			$url = intval($matches[1]);
 			return f('SELECT Extension FROM ' . FILE_TABLE . ' WHERE ID=' . $url) === '.less';
-		} elseif(substr_compare($url, '.css', -4, 4) === 0){
+		}
+		if(substr_compare($url, '.css', -4, 4) === 0){
 			return false;
 		}
 
