@@ -33,7 +33,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 $headCal = we_html_element::cssLink(JS_DIR . "jscalendar/skins/aqua/theme.css") .
 	we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
-	we_html_element::jsScript(WE_INCLUDES_DIR . "we_language/" . $GLOBALS ["WE_LANGUAGE"] . "/calendar.js") .
+	we_html_element::jsScript(WE_INCLUDES_DIR . "we_language/" . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 	we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js");
 
 echo $headCal .

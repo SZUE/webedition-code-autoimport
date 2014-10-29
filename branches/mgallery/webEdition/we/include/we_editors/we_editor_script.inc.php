@@ -541,7 +541,7 @@ echo we_message_reporting::getShowMessageCall("'" . sprintf(g_l('alert', '[field
 							}
 							break;
 						case "weObject_int_length":
-							if (!theVal.match(/^-{0,1}\d+$/) || theVal < 1 || theVal > 10) {
+							if (!theVal.match(/^-{0,1}\d+$/) || theVal < 1 || theVal > 20) {
 <?php
 //  don't change the formatting of the fields here
 echo we_message_reporting::getShowMessageCall("'" . sprintf(g_l('alert', '[field_int_contains_incorrect_length]')) . "'", we_message_reporting::WE_MESSAGE_ERROR, true);

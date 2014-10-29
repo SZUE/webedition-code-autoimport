@@ -308,7 +308,7 @@ class we_users_user{
 					$val = '-1';
 				}
 				if($fieldName !== 'passwd' || $val !== ''){
-					$updt [$fieldName] = $val;
+					$updt[$fieldName] = $val;
 				}
 			}
 		}

@@ -50,12 +50,12 @@ if(isset($wasSaved) && $wasSaved){
 			break;
 
 		case we_base_ContentTypes::TEMPLATE: // #538 reload documents based on this template
-
 			$reloadDocsTempls = we_rebuild_base::getTemplAndDocIDsOfTemplate($GLOBALS['we_doc']->ID, false, false, true, true);
 
-			$reload[FILE_TABLE] = implode(',', $reloadDocsTempls['documentIDs']);
-			$reload[TEMPLATES_TABLE] = implode(',', $reloadDocsTempls['templateIDs']);
 			// reload all documents based on this template
+			$reload[FILE_TABLE] = implode(',', $reloadDocsTempls['documentIDs']);
+			//no need to reload the edit tab, since this is not changed & Preview is always regenerated
+//			$reload[TEMPLATES_TABLE] = implode(',', $reloadDocsTempls['templateIDs']);
 
 			break;
 		case 'object':
@@ -65,7 +65,7 @@ if(isset($wasSaved) && $wasSaved){
 	$reload = array_filter($reload);
 
 	if($reload){
-		echo "var _reloadTabs = new Object();";
+		echo 'var _reloadTabs = new Object();';
 		foreach($reload as $table => $vals){
 			echo "_reloadTabs['" . $table . "'] = '," . $vals . ",';";
 		}

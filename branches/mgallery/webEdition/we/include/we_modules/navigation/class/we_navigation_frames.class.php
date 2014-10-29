@@ -439,8 +439,9 @@ function setTab(tab) {
 		$yuiSuggest->setResult('LinkID', $this->Model->LinkID);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable($this->Model->FolderSelection == we_navigation_navigation::STPYE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE));
-		$yuiSuggest->setWidth($this->_width_size - 150);
+		$yuiSuggest->setWidth($this->_width_size - 190);
 		$yuiSuggest->setSelectButton($_buttons);
+		$yuiSuggest->setTrashButton(we_html_button::create_button('image:btn_function_trash', 'javascript:document.we_form.elements["LinkID"].value=0;document.we_form.elements["LinkPath"].value="";', true, 27, 22));
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
@@ -457,7 +458,7 @@ function setTab(tab) {
    }}' . we_html_button::create_state_changer(false)) .
 			'<div style="display: block;">' .
 			we_html_tools::htmlSelect(
-				'FolderSelection', $_seltype, 1, $this->Model->FolderSelection, false, array('onchange' => "onFolderSelectionChangeJS(this.value);setFolderSelection(this.value);' . $this->topFrame . '.mark();", 'style' => 'width: ' . $this->_width_size . 'px; margin-top: 5px;'), 'value', $this->_width_size) . '
+						'FolderSelection', $_seltype, 1, $this->Model->FolderSelection, false, array('onchange' => "onFolderSelectionChangeJS(this.value);setFolderSelection(this.value);" . $this->topFrame . ".mark();", 'style' => 'width: ' . $this->_width_size . 'px; margin-top: 5px;'), 'value', $this->_width_size) . '
 
 		<div id="folderSelectionDiv" style="display: ' . ($this->Model->FolderSelection != we_navigation_navigation::STYPE_URLLINK ? 'block' : 'none') . ';margin-top: 5px;">' . $weAcSelector . '</div>
 
@@ -856,14 +857,14 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 				}
 		}
 		if($this->Model->SelectionType != we_navigation_navigation::STPYE_CATEGORY){
-			if(!empty($this->Model->Categories)){
+			if($this->Model->Categories){
 				$_table->setCol(5, 0, array(
 					'style' => 'font-weight: bold;'
 					), g_l('navigation', '[categories]') . ':');
 				$_table->setColContent(5, 1, implode('<br />', $this->Model->Categories));
 			}
 
-			if(!empty($_sort)){
+			if($_sort){
 				$_table->setCol(6, 0, array(
 					'style' => 'font-weight: bold;'
 					), g_l('navigation', '[sort]') . ':');
@@ -871,14 +872,14 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 			}
 		}
 
-		if(!empty($this->Model->Url) && $this->Model->Url != 'http://'){
+		if($this->Model->Url && $this->Model->Url != 'http://'){
 			$_table->setCol(7, 0, array(
 				'style' => 'font-weight: bold;'
 				), g_l('navigation', '[urlLink]') . ':');
 			$_table->setColContent(7, 1, $this->Model->Url);
 		}
 
-		if(!empty($this->Model->Paramter)){
+		if($this->Model->Paramter){
 			$_table->setCol(8, 0, array(
 				'style' => 'font-weight: bold;'
 				), g_l('navigation', '[parameter]') . ':');

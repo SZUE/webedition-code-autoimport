@@ -1,6 +1,3 @@
-we/include/weTagWizard/we_tags/we_tag_ifCustomerResetPasswordFailed.inc.php
-we/include/we_tags/we_tag_ifCustomerResetPasswordFailed.inc.php
-webEdition/we/include/we_modules/shop/handle_shop_dbitemConnect.php
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -21,6 +18,7 @@ wysiwyg/borders.css
 wysiwyg/acronymDialog.php
 wysiwyg/abbrDialog.php
 wysiwyg
+webEdition/we/include/we_modules/shop/handle_shop_dbitemConnect.php
 we_vtabs.php
 we_backup/download/dummy
 we_ajaxcmd.php
@@ -185,6 +183,7 @@ we/include/we_tags/we_tag_ifNotPageLanguage.inc.php
 we/include/we_tags/we_tag_ifNotObjectLanguage.inc.php
 we/include/we_tags/we_tag_ifNotObject.inc.php
 we/include/we_tags/we_tag_ifNotHasShopVariants.inc.php
+we/include/we_tags/we_tag_ifCustomerResetPasswordFailed.inc.php
 we/include/we_tags/we_tag_econda.inc.php
 we/include/we_tag_elements.inc.php
 we/include/we_tagParser.inc.php
@@ -2153,6 +2152,7 @@ we/include/weTracking
 we/include/weTagWizard/we_tags/we_tag_redirectObjectSeoUrls.inc.php
 we/include/weTagWizard/we_tags/we_tag_makeMail.inc.php
 we/include/weTagWizard/we_tags/we_tag_list.inc.php
+we/include/weTagWizard/we_tags/we_tag_ifCustomerResetPasswordFailed.inc.php
 we/include/weTagWizard/data/we_tag_groups.inc.php
 we/include/weTagWizard/data/module_tags.inc.php
 we/include/weTagWizard/data
@@ -2475,7 +2475,11 @@ editors/template/CodeMirror/contrib
 editors/template/CodeMirror/MODIFICATIONS
 editors/template/CodeMirror/LICENSE
 editors/template/CodeMirror/INFO
+editors/content/wysiwyg/weWysiwygSafari.js
 editors/content/wysiwyg/weWysiwygLang.inc.php
+editors/content/wysiwyg/weWysiwyg.js
+editors/content/wysiwyg/empty.css
+editors/content/wysiwyg/borders.css
 editor/setHot.html
 editor/initEditor.html
 editor/getAttribsForTag.php

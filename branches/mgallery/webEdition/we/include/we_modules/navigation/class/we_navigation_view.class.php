@@ -1034,10 +1034,9 @@ function submitForm() {
 				if(!$this->Model->Text && $this->Model->Selection == we_navigation_navigation::SELECTION_STATIC && $this->Model->SelectionType == we_navigation_navigation::STPYE_CATLINK){
 					$_cat = new we_category();
 					$_cat->load($this->Model->LinkID);
-					$_cat->Catfields = unserialize($_cat->Catfields);
 
-					if(isset($_cat->Catfields['default']['Title'])){
-						echo we_html_element::jsElement($this->editorBodyForm . '.Text.value = "' . addslashes($_cat->Catfields['default']['Title']) . '";');
+					if(isset($_cat->Title)){
+						echo we_html_element::jsElement($this->editorBodyForm . '.Text.value = "' . addslashes($_cat->Title) . '";');
 					}
 				}
 				break;
