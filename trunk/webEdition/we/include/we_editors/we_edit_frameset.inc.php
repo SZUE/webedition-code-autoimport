@@ -65,11 +65,6 @@ $we_Table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 $we_ID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 $we_ContentType = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
 
-$isNested = false;
-if($we_ContentType === 'nested_class_folder'){
-	$we_ContentType = 'class_folder';//class_folder HERE means: we_doc will be of contentType = folder in tblObjectFiles
-	$isNested = true;
-}
 $we_ContentType = $we_ContentType ? $we_ContentType : ($we_ID ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . $we_ID) : '');
 
 if(isset($_SESSION['weS']['we_data'][$we_transaction])){
@@ -78,9 +73,6 @@ if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 
 // init document
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-
-//property IsClassFolder of we_class_folder object means: it is root flder of a class
-$we_doc->IsClassFolder = ($we_doc->ClassName === 'we_class_folder' && $isNested) ? 0 : $we_doc->IsClassFolder;
 
 if(!$we_doc->fileExists){
 	include(WE_INCLUDES_PATH . 'weInfoPages/weNoResource.inc.php');
