@@ -142,14 +142,11 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			$sessID = session_id();
 		}
 		//we have to deal with bad php settings
-		static $sessStr = array(
-			5 => '0123456789abcdefghijklmnopqrstuv',
-			6 => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-,',
-		);
+		static $sessStr = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-,';
 		$newID = '';
 		$tmp = '';
 		for($pos = 0; $pos < strlen($sessID); $pos++){
-			$tmp = $tmp << 4 | strpos($sessStr[$cnt], $sessID[$pos]);
+			$tmp = $tmp << $cnt | strpos($sessStr, $sessID[$pos]);
 			if(($pos + 1) * $cnt % 4 == 0){
 				$newID.=dechex($tmp);
 				$tmp = 0;
