@@ -919,13 +919,13 @@ function weInputInArray(arr, val) {
 					array("text" => "<div style=''>" . $this->selectButton . "</div>", "valign" => "top") :
 					''
 				), we_html_tools::getPixel(intval($this->trashButtonSpace), 4), (
-				empty($this->trashButton) ?
-					'' :
-					array("text" => "<div style='margin-right:" . $this->trashButtonSpace . "px'>" . $this->trashButton . "</div>", "valign" => "top")
+				$this->trashButton ?
+					array("text" => "<div style='margin-right:" . $this->trashButtonSpace . "px'>" . $this->trashButton . "</div>", "valign" => "top") :
+					''
 				), (
-				empty($this->openButton) ?
-					'' :
-					array("text" => "<div style='margin-right:" . $this->openButtonSpace . "px'>" . $this->openButton . '</div>', "valign" => "top")
+				$this->openButton ?
+					array("text" => "<div style='margin-right:" . $this->openButtonSpace . "px'>" . $this->openButton . '</div>', "valign" => "top") :
+					''
 				), (
 				empty($this->createButton) ?
 					'' :

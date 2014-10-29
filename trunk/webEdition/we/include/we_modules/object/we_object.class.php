@@ -1465,11 +1465,17 @@ class we_object extends we_document{
 		if($users){
 			$this->DB_WE->query('SELECT ID,Path,Icon FROM ' . USER_TABLE . ' WHERE ID IN(' . implode(',', $users) . ')');
 			$allUsers = $this->DB_WE->getAllFirst();
-			foreach($users as $user){
-				$content .= '<tr><td>' . (isset($allUsers[$user]) ? '<img src="' . TREE_ICON_DIR . $allUsers[$user]["Icon"] . '" width="16" height="18" />' : '') . '</td><td class="defaultfont">' . (isset($allUsers[$user]) ? $allUsers[$user]["Path"] : 'Unknown' ) . '</td><td>' .
+			foreach($allUsers as $user => $data){
+				$content .= '<tr><td><img src="' . TREE_ICON_DIR . $data["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $data["Path"] . '</td><td>' .
 					($canChange ?
-						$this->htmlHidden('we_users_read_only[' . $user . ']', (isset($usersReadOnly[$user]) && $usersReadOnly[$user]) ? $usersReadOnly[$user] : "" ) . '<input type="checkbox" value="1" name="wetmp_users_read_only[' . $user . ']"' . ( (isset($usersReadOnly[$user]) && $usersReadOnly[$user] ) ? ' checked' : '') . ' onclick="this.form.elements[\'we_users_read_only[' . $user . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
-						'<img src="' . TREE_IMAGE_DIR . ($usersReadOnly[$user] ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" />') . '</td><td class="defaultfont">' . g_l('weClass', "[readOnly]") . '</td><td>' . ($canChange ? we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('users_del_user','" . $user . "');_EditorFrame.setEditorIsHot(true);") : "") . '</td></tr>';
+						$this->htmlHidden('we_users_read_only[' . $user . ']', (isset($usersReadOnly[$user]) && $usersReadOnly[$user]) ? $usersReadOnly[$user] : "" ) .
+					'<input type="checkbox" value="1" name="wetmp_users_read_only[' . $user . ']"' .( (isset($usersReadOnly[$user]) && $usersReadOnly[$user] ) ?' checked' :'') . ' onclick="this.form.elements[\'we_users_read_only[' . $user . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
+						'<img src="' . TREE_IMAGE_DIR . ($usersReadOnly[$user] ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" />'
+					) . '</td><td class="defaultfont">' . g_l('weClass', "[readOnly]") . '</td><td>' .
+					($canChange ?
+						we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('users_del_user','" . $user . "');_EditorFrame.setEditorIsHot(true);") :
+						""
+					) . '</td></tr>';
 			}
 		} else {
 			$content .= '<tr><td><img src="' . TREE_ICON_DIR . 'user.gif" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', "[onlyOwner]") . '</td><td></td></tr>';
