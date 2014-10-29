@@ -50,6 +50,11 @@ class we_selector_image extends we_selector_document{
 		return parent::printFooterTable('<input type="range" name="zoom" min="50" step="25" max="250" onchange="top.document.frames[\'fsbody\'].document.body.style.fontSize=this.value+\'%\';"/>');
 	}
 
+	protected function printCMDWriteAndFillSelectorHTML(){
+		return parent::printCMDWriteAndFillSelectorHTML().
+		'top.document.frames["fsbody"].document.body.style.fontSize=top.document.frames["fsfooter"].document.getElementsByName("zoom")[0].value+"%";';
+	}
+
 		protected function printFramesetJSFunctioWriteBody(){
 		return we_html_element::jsElement('
 function writeBody(d){
