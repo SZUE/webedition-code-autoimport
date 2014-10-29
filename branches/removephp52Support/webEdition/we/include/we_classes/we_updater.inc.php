@@ -375,6 +375,23 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		}
 	}
 
+	static function updateCats(){
+		$db = $GLOBALS['DB_WE'];
+		if($db->isColExist(CATEGORY_TABLE, 'Catfields')){
+			$db->query('SELECT ID,Catfields FROM ' . CATEGORY_TABLE . ' WHERE Catfields!=""');
+			$udb = new DB_WE();
+			while($db->next_record()){
+				$data = unserialize($db->f('Catfields'));
+				$udb->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
+						'Catfields' => '',
+						'Title' => $data['default']['Title'],
+						'Description' => $data['default']['Description'],
+					)) . ' WHERE ID=' . $db->f('ID'));
+			}
+			$db->delCol(CATEGORY_TABLE, 'Catfields');
+		}
+	}
+
 	static function fixHistory(){
 		$db = $GLOBALS['DB_WE'];
 		if($db->isColExist(HISTORY_TABLE, 'ID')){
@@ -416,6 +433,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		self::updateLangLink();
 		self::fixInconsistentTables();
 		self::updateGlossar();
+		self::updateCats();
 		self::fixHistory();
 		self::replayUpdateDB();
 	}

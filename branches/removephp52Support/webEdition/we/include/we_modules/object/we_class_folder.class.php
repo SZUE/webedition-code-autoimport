@@ -146,7 +146,7 @@ class we_class_folder extends we_folder{
 
 	function i_canSaveDirinDir(){
 		if($this->ParentID == 0){
-			return false;
+			return $this->IsClassFolder ? true : false;
 		}
 		$this->IsClassFolder = 0;
 		$this->Icon = we_base_ContentTypes::FOLDER_ICON;
@@ -1107,7 +1107,7 @@ weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
 	}
 
 	function i_pathNotValid(){
-		return parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath === '/';
+		return $this->IsClassFolder ? false : (parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath === '/');
 	}
 
 }

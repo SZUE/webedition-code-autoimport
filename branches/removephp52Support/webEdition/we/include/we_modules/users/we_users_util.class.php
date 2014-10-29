@@ -197,7 +197,7 @@ abstract class we_users_util{
 			$q[] = 'CreatorID IN ("' . implode('","', $aliases) . '")';
 		}
 		foreach($aliases as $id){
-			$q [] = 'FIND_IN_SET(' . intval($id) . ',Owners)';
+			$q[] = 'FIND_IN_SET(' . intval($id) . ',Owners)';
 		}
 		$groups = array($_SESSION['user']['ID']);
 		we_getParentIDs(USER_TABLE, $_SESSION['user']['ID'], $groups, $GLOBALS['DB_WE']);

@@ -229,7 +229,7 @@ class we_banner_banner extends we_banner_base{
 			$foo = array();
 			$pathsArray = makeArrayFromCsv($paths);
 			foreach($pathsArray as $p){
-				$foo [] = 'Path LIKE "' . $db->escape($p) . '/%" OR Path = "' . $db->escape($p) . '"';
+				$foo[] = 'Path LIKE "' . $db->escape($p) . '/%" OR Path = "' . $db->escape($p) . '"';
 			}
 			$where .= ' AND (' . implode(' OR ', $foo) . ') ';
 		}

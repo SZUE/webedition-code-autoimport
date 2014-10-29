@@ -137,7 +137,7 @@ class we_object_listviewMultiobject extends we_listview_base{
 			$where_lang = array();
 			$langArray = makeArrayFromCSV($this->languages);
 			foreach($langArray as $lang){
-				$where_lang [] = $_obxTable . '.OF_Language = "' . $lang . '"';
+				$where_lang[] = $_obxTable . '.OF_Language = "' . $lang . '"';
 			}
 			$where_lang = ' AND (' . implode(' OR ', $where_lang) . ' ) ';
 		}

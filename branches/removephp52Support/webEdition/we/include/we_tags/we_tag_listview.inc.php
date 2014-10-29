@@ -272,7 +272,7 @@ function we_tag_listview($attribs){
 			$parentidname = weTag_getAttribute('parentidname', $attribs);
 //$categoryids="' . $categoryids . '";
 //$parentid="' . $parentid . '";
-			$GLOBALS['lv'] = new we_listview_category($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $parentid, $categoryids, 'default', $cols, ($parentidname ? : ''), $hidedirindex);
+			$GLOBALS['lv'] = new we_listview_category($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $parentid, $categoryids, $cols, ($parentidname ? $parentidname : ''), $hidedirindex);
 			break;
 		default:
 	}

@@ -363,9 +363,9 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 */
 	private static function _getFilesWithRestrictionsOfCustomer($classname, $filter, $classID, $ids){
 		//FIXME: this will query ALL documents with restrictions - this is definately not what we want!
-		$_db = new DB_WE();
 		$_cid = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
-		$_filesWithRestrictionsForCustomer = array();
+		//cache result
+		static $_filesWithRestrictionsForCustomer = array();
 
 		$listQuery = ' (mode=' . we_customer_abstractFilter::FILTER . ' AND !FIND_IN_SET(' . $_cid . ',whiteList) ) '; //FIND_IN_SET($_cid,blackList) AND
 		$_specificCustomersQuery = ' (mode=' . we_customer_abstractFilter::SPECIFIC . " AND !FIND_IN_SET($_cid,specificCustomers)) ";
@@ -387,31 +387,37 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		// if customer is not logged in=> return NO_LOGIN
 		// else return correct filter
 		// execute the query (get all existing filters)
+		$query = 'SELECT f.* ' . $_queryForIds . ($ids ? ' AND modelId IN (' . array_map('intval', explode(',', $ids)) . ')' : '');
+		$key = md5($query);
+		if(isset($_filesWithRestrictionsForCustomer[$key])){
+			return $_filesWithRestrictionsForCustomer[$key];
+		}
 
-
-		$_db->query('SELECT f.* ' . $_queryForIds . ($ids ? ' AND modelId IN (' . array_map('intval', explode(',', $ids)) . ')' : ''));
+		$_db = new DB_WE();
+		$_db->query($query);
 // visitor is logged in
-		$filters = array();
+		$_filesWithRestrictionsForCustomer[$key] = $filters = array();
 		while($_db->next_record()){
 			$filters[] = self::getFilterByDbHash($_db->getRecord());
 		}
 
 		foreach($filters as $filter){
-			$_perm = $filter->accessForVisitor($filter->getModelId(), $filter->getModelTable(), false, true);
+			$_perm = $filter->accessForVisitor($filter->getModelId(), $filter->getModelType(), false, true);
 			switch($_perm){
 				case self::NO_ACCESS:
 				case self::NO_LOGIN:
-					$_filesWithRestrictionsForCustomer[$filter->getModelTable()][] = $filter->getModelId();
+					$_filesWithRestrictionsForCustomer[$key][$filter->getModelTable()][] = $filter->getModelId();
 					break;
 				case self::CONTROLONTEMPLATE:
 					if($filter === 'all' || $filter === 'true' || $filter === true){
-						$_filesWithRestrictionsForCustomer[$filter->getModelTable()][] = $filter->getModelId();
+						$_filesWithRestrictionsForCustomer[$key][$filter->getModelTable()][] = $filter->getModelId();
 					}
+					break;
+				case self::ACCESS:
 					break;
 			}
 		}
-
-		return $_filesWithRestrictionsForCustomer;
+		return $_filesWithRestrictionsForCustomer[$key];
 	}
 
 	/**

@@ -125,7 +125,7 @@ abstract class we_html_tools{
 		);
 
 		if($width){
-			$_inputs ['style'] = 'width: ' . $width . 'px;';
+			$_inputs['style'] = 'width: ' . $width . 'px;';
 		}
 
 		if($id){

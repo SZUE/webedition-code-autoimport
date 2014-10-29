@@ -137,7 +137,7 @@ class we_search_base{
 				if($tmp == $f){
 					$tmp = '`' . $tmp;
 				}
-				$q [] = $tmp . '` ' . $searchlocation;
+				$q[] = $tmp . '` ' . $searchlocation;
 			}
 			return ' ' . $concat . ' ( ' . implode(' OR ', $q) . ' ) ';
 		} else {

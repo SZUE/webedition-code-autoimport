@@ -353,7 +353,7 @@ abstract class we_rebuild_base{
 			$_foo = makeArrayFromCSV($categories);
 			$tmp = array();
 			foreach($_foo as $catID){
-				$tmp [] = ' FIND_IN_SET(' . intval($catID) . ',Category)';
+				$tmp[] = ' FIND_IN_SET(' . intval($catID) . ',Category)';
 			}
 			$_cat_query = '(' . implode(' ' . ($catAnd ? ' AND ' : ' OR ') . ' ', $tmp) . ')';
 		}

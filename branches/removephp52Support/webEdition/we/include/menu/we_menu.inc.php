@@ -153,7 +153,7 @@ $we_menu = array(
 	array(// File > new > directory > objectfolder
 		'text' => g_l('javaMenu_object', '[object_directory]'),
 		'parent' => 1011000,
-		'cmd' => 'new_objectfile_folder',
+		'cmd' => 'new_objectfile_nested_folder',
 		'perm' => 'NEW_OBJECTFILE_FOLDER || ADMINISTRATOR',
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
 	),
