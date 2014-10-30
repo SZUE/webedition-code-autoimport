@@ -27,21 +27,22 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 	function execute(){
 		$resp = new rpcResponse();
 		$cmd0 = we_base_request::_(we_base_request::FILE, 'we_cmd', false, 0);
-		$cmd3 = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3);
+		$pathid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3);
 		if($cmd0 &&
-			($folder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)) &&
-			($path = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 2)) &&
-			$cmd3 &&
-			(strpos($path, $cmd0) === false || strpos($path, $cmd0) > 0)
+				($folder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)) &&
+				($path = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 2)) &&
+				$pathid &&
+				(strpos($path, $cmd0) === false || strpos($path, $cmd0) > 0)
 		){
 
 			$db = $GLOBALS['DB_WE'];
-			$db->query('SELECT * FROM ' . NAVIGATION_TABLE . " WHERE Path LIKE '" . $db->escape($path) . "/%' ORDER BY Path");
+			$path = f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $pathid);
+			$db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $db->escape($path) . '/%" ORDER BY Path');
 			$result = $db->getAll();
 			$querySet = '';
 			$query = '';
 			$folders = array($folder);
-			$mapedId = array($cmd3 => $folder);
+			$mapedId = array($pathid => $folder);
 
 			foreach($result as $row){
 				$querySet = '(';
@@ -82,10 +83,10 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 				$newNavi = new we_navigation_navigation($folder);
 				$newNavi->save();
 			}
-			$resp->setData("status", "ok");
-			$resp->setData("folders", $folders);
+			$resp->setData('status', 'ok');
+			$resp->setData('folders', $folders);
 		} else {
-			$resp->setData("folders", "");
+			$resp->setData('folders', "");
 		}
 
 		return $resp;
