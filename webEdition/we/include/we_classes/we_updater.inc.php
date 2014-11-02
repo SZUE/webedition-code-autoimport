@@ -377,7 +377,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 
 	static function updateCats(){
 		$db = $GLOBALS['DB_WE'];
-		if($db->isColExist(CATEGORY_TABLE, 'Catfields') && f('SELECT COUNT 1 FROM ' . CATEGORY_TABLE . 'WHERE Title="" LIMIT 1')){
+		if($db->isColExist(CATEGORY_TABLE, 'Catfields') && f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE . 'WHERE Title=""') == f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE)){
 			$db->query('SELECT ID,Catfields FROM ' . CATEGORY_TABLE . ' WHERE Catfields!=""');
 			$udb = new DB_WE();
 			while($db->next_record()){
