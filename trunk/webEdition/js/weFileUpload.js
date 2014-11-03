@@ -320,17 +320,19 @@ var weFileUpload = (function(){
 							(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
 							cur.partNum,
 							cur.totalParts,
-							cur.fileNameTemp
+							cur.fileNameTemp,
+							cur.file.size
 						);
 					}
 				} else {
-					this.sendChunk(cur.file, cur.file.name, cur.file.type, cur.file.size, 1, 1, '');
+					this.sendChunk(cur.file, cur.file.name, cur.file.type, cur.file.size, 1, 1, '', cur.file.size);
 				}
 			};
 
-			this.sendChunk = function(part, fileName, fileCt, partSize, partNum, totalParts, fileNameTemp){
+			this.sendChunk = function(part, fileName, fileCt, partSize, partNum, totalParts, fileNameTemp, fileSize){
 				var xhr = new XMLHttpRequest(),
 					fd = new FormData(),
+					fsize = fileSize || 1;
 					that = this;
 
 				xhr.onreadystatechange = function() {
@@ -348,6 +350,7 @@ var weFileUpload = (function(){
 				fd.append('wePartNum', partNum);
 				fd.append('wePartCount', totalParts);
 				fd.append('weFileNameTemp', fileNameTemp);
+				fd.append('weFileSize', fsize);
 				fd.append('weFileName', fileName);
 				fd.append('weFileCt', fileCt);
 				fd.append(typeof this.currentFile.field !== 'undefined' ? this.currentFile.field : _.fieldName, part, fileName);//FIXME: take fieldname allways from cur!
