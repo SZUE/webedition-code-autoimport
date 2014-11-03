@@ -113,7 +113,7 @@ class we_binaryDocument extends we_document{
 	}
 
 	public function we_publish(){
-		$this->we_save();
+		return $this->we_save();
 	}
 
 
