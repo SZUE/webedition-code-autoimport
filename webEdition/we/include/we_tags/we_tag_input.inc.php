@@ -49,7 +49,7 @@ function we_tag_input($attribs, $content){
 				return we_html_tools::getDateInput2('we_' . $GLOBALS['we_doc']->Name . '_date[' . $name . ']', ($d ? $d : time()), true, $format);
 			case 'checkbox':
 				$attribs = removeAttribs($attribs, array('name', 'value', 'type', '_name_orig', 'reload'));
-				$attribs['type'] = "checkbox";
+				$attribs['type'] = 'checkbox';
 				$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_attrib_' . $name;
 				$attribs['value'] = 1;
 				$attribs['onclick'] = '_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : \'\');' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '');

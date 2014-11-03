@@ -514,7 +514,7 @@ function we_cmd(){
 				$isAcError = false;
 				$weAcQuery = new we_selector_query();
 				$ob = we_base_request::_(we_base_request::STRING, 'obj_name');
-				$uname = we_base_request::_(we_base_request::FILE, $ob . '_username');
+				$uname = we_base_request::_(we_base_request::STRING, $ob . '_username');
 				if($uname && !we_users_user::filenameNotValid($uname)){
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('global', '[username_wrong_chars]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
