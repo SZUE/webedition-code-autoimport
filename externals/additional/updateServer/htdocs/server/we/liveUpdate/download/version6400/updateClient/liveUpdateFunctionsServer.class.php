@@ -80,7 +80,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		return $content;
 	}
 
-	function replaceDocRootNeeded(){
+	private static function replaceDocRootNeeded(){
 		return (!(isset($_SERVER['DOCUMENT' . '_ROOT']) && $_SERVER['DOCUMENT' . '_ROOT'] == LIVEUPDATE_SOFTWARE_DIR));
 	}
 
