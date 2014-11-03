@@ -332,7 +332,7 @@ var weFileUpload = (function(){
 			this.sendChunk = function(part, fileName, fileCt, partSize, partNum, totalParts, fileNameTemp, fileSize){
 				var xhr = new XMLHttpRequest(),
 					fd = new FormData(),
-					fsize = fileSize || 1;
+					fsize = fileSize || 1,
 					that = this;
 
 				xhr.onreadystatechange = function() {
