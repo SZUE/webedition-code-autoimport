@@ -208,7 +208,7 @@ function we_tag_blockControls($attribs){
 		}
 
 		return '<input type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_block[' . $attribs['name'] . ']" value="' .
-			htmlentities(serialize(isset($attribs['list']) ? $attribs['list'] : array())) .
+			htmlentities(serialize(isset($attribs['list']) ? $attribs['list'] : array())) . //FIXME: do we really need this serialized in the document???
 			'">' . $plusbut;
 	}
 }

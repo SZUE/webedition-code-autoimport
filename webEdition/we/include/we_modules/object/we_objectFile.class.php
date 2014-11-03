@@ -1864,7 +1864,7 @@ class we_objectFile extends we_document{
 					return '';
 				}
 			case self::TYPE_META:
-				if(!$this->DefArray||!is_array($this->DefArray)){
+				if(!$this->DefArray || !is_array($this->DefArray)){
 					$this->DefArray = $this->getDefaultValueArray();
 				}
 				$vals = $this->DefArray["meta_" . $t]["meta"];
@@ -1978,7 +1978,7 @@ class we_objectFile extends we_document{
 			$text = str_replace(array(' ', '//'), array('-', '/'), $text);
 			$text = (URLENCODE_OBJECTSEOURLS) ?
 				str_replace('%2F', '/', urlencode($text)) :
-				preg_replace(array('~&szlig;~', '~&(.)(uml|grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~[^0-9a-zA-Z/._-]~'), array('ss', '\1\3', ''), htmlentities($text));
+				preg_replace(array('~&szlig;~', '~&(.)(uml|grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~[^0-9a-zA-Z/._-]~'), array('ss', '\1\3', ''), htmlentities($text, ENT_COMPAT, $this->Charset));
 			$this->Url = substr($text, 0, 256);
 		} else {
 			$this->Url = '';
