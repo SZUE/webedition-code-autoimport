@@ -455,8 +455,7 @@ abstract class we_backup_preparer{
 
 		if(!($_SESSION['weS']['weBackupVars']['backup_file'])){
 			if(isset($_SESSION['weS']['weBackupVars']['options']['upload'])){
-				$maxsize = getUploadMaxFilesize();
-				$_mess = sprintf(g_l('backup', '[upload_failed]'), we_base_file::getHumanFileSize($fs, we_base_file::SZ_MB));
+				$_mess = sprintf(g_l('backup', '[upload_failed]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(), we_base_file::SZ_MB));
 			} else {
 				$_mess = g_l('backup', '[file_missing]');
 			}
@@ -489,27 +488,27 @@ abstract class we_backup_preparer{
 		$file = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . we_base_file::getUniqueId();
 		$fs = @fopen($gzfile, "rb");
 
-		if($fs){
-			if(fseek($fs, $offset, SEEK_SET) == 0){
-				$fp = @fopen($file, "wb");
-				if($fp){
-					do{
-						$data = fread($fs, 8192);
-						if(strlen($data) == 0){
-							break;
-						}
-						fwrite($fp, $data);
-					} while(true);
-					fclose($fp);
-				} else {
-					fclose($fs);
-					return false;
-				}
-			}
-			fclose($fs);
-		} else {
+		if(!$fs){
 			return false;
 		}
+		if(fseek($fs, $offset, SEEK_SET) == 0){
+			$fp = @fopen($file, "wb");
+			if($fp){
+				do{
+					$data = fread($fs, 8192);
+					if(strlen($data) == 0){
+						break;
+					}
+					fwrite($fp, $data);
+				} while(true);
+				fclose($fp);
+			} else {
+				fclose($fs);
+				return false;
+			}
+		}
+		fclose($fs);
+
 
 		return $file;
 	}
