@@ -4,16 +4,17 @@
 //code aus 6400
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
-	var $QueryLog = array();
+	var $QueryLog = array(
+		'success' => array(),
+		'tableChanged' => array(),
+		'error' => array(),
+		'entryExists' => array(),
+	);
 
 	/*
 	 * Functions for updatelog
 	 */
-	/*
-	function insertUpdateLogEntry($action, $version, $errorCode){
-		$GLOBALS['DB_WE']->query("INSERT INTO " . UPDATE_LOG_TABLE . " (datum, aktion, versionsnummer, error)	VALUES (NOW(), \"" . addslashes($action) . "\", \"$version\", $errorCode)");
-	}
-	*/
+
 	function insertUpdateLogEntry($action, $version, $errorCode){
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . we_database_base::arraySetter(array(
 				'aktion' => $action,
@@ -31,9 +32,9 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	function insertQueryLogEntries($type, $premessage = '', $errorCode, $version){
 
 		// insert notices first
+		if(isset($this->QueryLog[$type])){
 		$message = $premessage;
 
-		if(isset($this->QueryLog[$type])){
 
 			foreach($this->QueryLog[$type] as $noticeMessage){
 				$message .= "<br />$noticeMessage\n";
@@ -76,11 +77,10 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 */
 	function replaceExtensionInContent($content, $needle, $replace){
 
-		$content = str_replace($needle, $replace, $content);
-		return $content;
+		return str_replace($needle, $replace, $content);
 	}
 
-	private static function replaceDocRootNeeded(){
+	function replaceDocRootNeeded(){
 		return (!(isset($_SERVER['DOCUMENT' . '_ROOT']) && $_SERVER['DOCUMENT' . '_ROOT'] == LIVEUPDATE_SOFTWARE_DIR));
 	}
 
@@ -92,7 +92,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return string
 	 */
 	function checkReplaceDocRoot($content){
-		if(self::replaceDocRootNeeded()){
+		if($this->replaceDocRootNeeded()){
 			$content = str_replace(array(
 				'$_SERVER[\'DOCUMENT_ROOT\']',
 				"\$_SERVER[\"DOCUMENT_ROOT\"]",
@@ -103,9 +103,6 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		return $content;
 	}
 
-	/*
-	 * Functions for manipulating files
-	 */
 
 	/**
 	 * fills given array with all files in given dir
@@ -116,7 +113,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 		if(file_exists($baseDir)){
 			$dh = opendir($baseDir);
-			while($entry = readdir($dh)) {
+			while(($entry = readdir($dh))){
 				if($entry != "" && $entry != "." && $entry != ".."){
 					$_entry = $baseDir . "/" . $entry;
 					if(!is_dir($_entry)){
@@ -149,9 +146,9 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 		$dh = opendir($dir);
 		if($dh){
-			while($entry = readdir($dh)) {
-				if($entry != "" && $entry != "." && $entry != ".."){
-					$_entry = $dir . "/" . $entry;
+			while(($entry = readdir($dh))){
+				if($entry != '' && $entry != "." && $entry != '..'){
+					$_entry = $dir . '/' . $entry;
 					if(is_dir($_entry)){
 						$this->deleteDir($_entry);
 					} else{
@@ -161,9 +158,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			}
 			closedir($dh);
 			return rmdir($dir);
-		} else{
-			return true;
 		}
+			return true;
 	}
 
 	/**
@@ -233,7 +229,6 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function checkMakeDir($dirPath, $mod = 0755){
-
 		// open_base_dir - seperate document-root from rest
 		if(strpos($dirPath, LIVEUPDATE_SOFTWARE_DIR) === 0){
 			$preDir = LIVEUPDATE_SOFTWARE_DIR;
@@ -246,14 +241,14 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		$pathArray = explode('/', $dir);
 		$path = $preDir;
 
-		for($i = 0; $i < sizeof($pathArray); $i++){
-			$path .= $pathArray[$i];
-			if($pathArray[$i] != "" && !is_dir($path)){
+		foreach($pathArray as $subPath){
+			$path .= $subPath;
+			if($subPath != "" && !is_dir($path)){
 				if(!(file_exists($path) || mkdir($path, $mod))){
 					return false;
 				}
 			}
-			$path .= "/";
+			$path .= '/';
 		}
 
 		if(!is_writable($dirPath)){
@@ -318,9 +313,13 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 		$pattern = "/\.([^\..]+)$/";
 
+		$matches = array();
 		if(preg_match($pattern, $path, $matches)){
-			$ext = strtolower($matches[1]);
-			if(($ext == 'jpg' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'sql')){
+			switch(strtolower($matches[1])){
+				case 'jpg':
+				case 'gif':
+				case 'jpeg':
+				case 'sql':
 				return false;
 			}
 		}
@@ -338,6 +337,9 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function replaceCode($filePath, $replace, $needle = ''){
+		if(strpos($filePath, 'we/include/we_version') !== false || !$this->replaceDocRootNeeded()){
+			return true;
+		}
 		// decode parameters
 		$needle = $this->decodeCode($needle);
 		$replace = $this->decodeCode($replace);
@@ -384,12 +386,9 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			/** läuft nicht durch
 			  $patchSuccess = eval('?>' . escapeshellcmd($code));
 			 */
+			//FIXME:eval
 			$patchSuccess = eval('?>' . $code);
-			if($patchSuccess === false){
-				return false;
-			} else{
-				return true;
-			}
+			return ($patchSuccess === false ? false : true);
 		}
 		return true;
 	}
@@ -404,9 +403,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @param string $tableName
 	 * @return array
 	 */
-	private static function getFieldsOfTable($tableName){
-
-		$db = new DB_WE();
+	function getFieldsOfTable($tableName, we_database_base $db){
 
 		$fieldsOfTable = array();
 
@@ -431,16 +428,16 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @param string $tableName
 	 * @return array
 	 */
-	private static function getKeysFromTable($tableName){
+	function getKeysFromTable($tableName){
 		$db = new DB_WE();
 		$keysOfTable = array();
 		$db->query('SHOW INDEX FROM ' . $db->escape($tableName));
 		while($db->next_record()) {
-			if($db->f('Key_name') == 'PRIMARY'){
+			if($db->f('Key_name') === 'PRIMARY'){
 				$indexType = 'PRIMARY';
-			} else if($db->f('Comment') == 'FULLTEXT' || $db->f('Index_type') == 'FULLTEXT'){// this also depends from mysqlVersion
+			} else if($db->f('Comment') === 'FULLTEXT' || $db->f('Index_type') === 'FULLTEXT'){// this also depends on mysqlVersion
 				$indexType = 'FULLTEXT';
-			} else if($db->f('Non_unique') == '0'){
+			} else if($db->f('Non_unique') == 0){
 				$indexType = 'UNIQUE';
 			} else{
 				$indexType = 'INDEX';
@@ -464,29 +461,26 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @param boolean $isNew
 	 * @return unknown
 	 */
-	private static function getAlterTableForFields($fields, $tableName, $isNew = false){
+	function getAlterTableForFields($fields, $tableName, $isNew = false){
 
 		$queries = array();
 
 		foreach($fields as $fieldName => $fieldInfo){
 
-			$extra = '';
 			$default = '';
 
-			$null = (strtoupper($fieldInfo['Null']) == "YES" ? ' NULL' : ' NOT NULL');
+			$null = (strtoupper($fieldInfo['Null']) === 'YES' ? ' NULL' : ' NOT NULL');
 
 			if(($fieldInfo['Default']) != ""){
-				$default = 'DEFAULT ' . (($fieldInfo['Default']) == 'CURRENT_TIMESTAMP' ? 'CURRENT_TIMESTAMP' : '\'' . $fieldInfo['Default'] . '\'');
-			} else{
-				if(strtoupper($fieldInfo['Null']) == "YES"){
+				$default = 'DEFAULT ' . (($fieldInfo['Default']) === 'CURRENT_TIMESTAMP' ? 'CURRENT_TIMESTAMP' : '\'' . $fieldInfo['Default'] . '\'');
+			} elseif(strtoupper($fieldInfo['Null']) === "YES"){
 					$default = ' DEFAULT NULL';
-				}
 			}
 			$extra = strtoupper($fieldInfo['Extra']);
 			//note: auto_increment cols must have an index!
 			if(strpos($extra, 'AUTO_INCREMENT') !== false){
 				$keyfound = false;
-				$Currentkeys = self::getKeysFromTable($tableName);
+				$Currentkeys = $this->getKeysFromTable($tableName);
 				foreach($Currentkeys as $ckeys){
 					foreach($ckeys as $k){
 						if(stripos($k, $fieldName) !== false){
@@ -504,15 +498,11 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 				$queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			} else{
 				//Bug #4431
-				// das  mysql_real_escape_string bei $fieldInfo['Type'] f?hrt f?r enum dazu, das die ' escaped werden und ein Syntaxfehler entsteht (nicht abgeschlossene Zeichenkette
+				// das  mysql_real_escape_string bei $fieldInfo['Type'] f�hrt f�r enum dazu, das die ' escaped werden und ein Syntaxfehler entsteht (nicht abgeschlossene Zeichenkette
 				$queries[] = "ALTER TABLE `$tableName` CHANGE `" . $fieldInfo['Field'] . '` `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			}
 		}
 		return $queries;
-	}
-
-	static function myEscape(&$val,$key){
-		$val=  addslashes($val);
 	}
 
 	/**
@@ -523,16 +513,16 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @param boolean $isNew
 	 * @return array
 	 */
-	private static function getAlterTableForKeys($fields, $tableName, $isNew){
+	function getAlterTableForKeys($fields, $tableName, $isNew){
 		$queries = array();
 
 		foreach($fields as $key => $indexes){
 			//escape all index fields
-			array_walk($indexes, 'liveUpdateFunctionsServer::myEscape');
+			$indexes = array_map('addslashes', $indexes);
 
 			$type = $indexes['index'];
 			$mysl = '`';
-			if($type == 'PRIMARY'){
+			if($type === 'PRIMARY'){
 				$key = 'KEY';
 				$mysl = '';
 			}
@@ -546,18 +536,17 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 					$myindexes[] = '`' . str_replace('(', '`(', $index);
 				}
 			}
-			$queries[] = 'ALTER TABLE ' . $tableName . ' ' . ($isNew ? '' : ' DROP ' . ($type == 'PRIMARY' ? $type : 'INDEX') . ' ' . $mysl . $key . $mysl . ' , ') . ' ADD ' . $type . ' ' . $mysl . $key . $mysl . ' (' . implode(',', $myindexes) . ')';
+			$queries[] = 'ALTER TABLE ' . $tableName . ' ' . ($isNew ? '' : ' DROP ' . ($type === 'PRIMARY' ? $type : 'INDEX') . ' ' . $mysl . $key . $mysl . ' , ') . ' ADD ' . $type . ' ' . $mysl . $key . $mysl . ' (' . implode(',', $myindexes) . ')';
 		}
 		return $queries;
 	}
 
 	/**
-	 * Enter description here...
 	 *
 	 * @param string $path
 	 * @return boolean
 	 */
-	private static function isInsertQueriesFile($path){
+	function isInsertQueriesFile($path){
 
 		return preg_match("/^(.){3}_insert_(.*).sql/", basename($path));
 	}
@@ -573,13 +562,14 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 */
 	function executeQueriesInFiles($path){
 
-		if(self::isInsertQueriesFile($path)){
+		$db = new DB_WE();
+		if($this->isInsertQueriesFile($path)){
 			$success = true;
 			$queryArray = file($path);
 			if($queryArray){
 				foreach($queryArray as $query){
 					if(trim($query)){
-						$success &= $this->executeUpdateQuery($query);
+						$success &= $this->executeUpdateQuery($query, $db);
 					}
 				}
 			}
@@ -589,7 +579,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			//$success = $this->executeUpdateQuery($content);
 			$success = true;
 			foreach($queries as $query){
-				$success &= $this->executeUpdateQuery($query);
+				$success &= $this->executeUpdateQuery($query, $db);
 			}
 		}
 		return $success;
@@ -618,14 +608,14 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP COLUMN ' . $db->escape($matches[1]) : '');
 		}
 		if(preg_match('/###ONCOL\((.*),(.*)\)([^#]+)###/', $query, $matches)){
-			$keys = self::getKeysFromTable($matches[2]);
+			$keys = $this->getKeysFromTable($matches[2]);
 			if(isset($keys[$matches[1]])){
 				$query = $matches[3];
 			}
 		}
 		//handle if key is not set, should be used after table def. so handling code, e.g. truncate, copy... can be put here
 		if(preg_match('/###ONKEYFAILED\((.*),(.*)\)([^#]+)###/', $query, $matches)){
-			$keys = self::getKeysFromTable($matches[2]);
+			$keys = $this->getKeysFromTable($matches[2]);
 			if(!isset($keys[$matches[1]])){
 				$query = $matches[3];
 			}
@@ -697,12 +687,12 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 						$db->query(trim($tmpQuery));
 
 						// get information from existing and new table
-						$origTable = self::getFieldsOfTable($tableName, $db);
-						$newTable = self::getFieldsOfTable($tmpName, $db);
+						$origTable = $this->getFieldsOfTable($tableName, $db);
+						$newTable = $this->getFieldsOfTable($tmpName, $db);
 
 						// get keys from existing and new table
-						$origTableKeys = self::getKeysFromTable($tableName);
-						$newTableKeys = self::getKeysFromTable($tmpName);
+						$origTableKeys = $this->getKeysFromTable($tableName);
+						$newTableKeys = $this->getKeysFromTable($tmpName);
 
 
 						// determine changed and new fields.
@@ -726,10 +716,10 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 						// get all queries to change existing fields
 						if(!empty($changeFields)){
-							$alterQueries = array_merge($alterQueries, self::getAlterTableForFields($changeFields, $tableName));
+							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
 						}
 						if(!empty($addFields)){
-							$alterQueries = array_merge($alterQueries, self::getAlterTableForFields($addFields, $tableName, true));
+							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
 						}
 
 						//new position to determine new keys
@@ -757,11 +747,11 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 						// get all queries to change existing keys
 						if(!empty($addKeys)){
-							$alterQueries = array_merge($alterQueries, self::getAlterTableForKeys($addKeys, $tableName, true));
+							$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
 						}
 
 						if(!empty($changedKeys)){
-							$alterQueries = array_merge($alterQueries, self::getAlterTableForKeys($changedKeys, $tableName, false));
+							$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
 						}
 
 						//clean-up, if there is still a temporary index - make sure this is the first statement, since new temp might be created
@@ -805,7 +795,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 									$db->unlock();
 								}
 							}
-							$SearchTempTableKeys = self::getKeysFromTable($tableName);
+							$SearchTempTableKeys = $this->getKeysFromTable($tableName);
 							if(isset($SearchTempTableKeys['_temp'])){
 								$db->query(trim('ALTER TABLE ' . $db->escape($tableName) . ' DROP INDEX _temp'));
 							}
@@ -841,12 +831,11 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 */
 	function clearQueryLog(){
 
-		$this->QueryLog = array();
+		foreach($this->QueryLog as &$cur){
+			$cur = array();
 	}
 
-	/*
-	 * Functions for error handler, etc
-	 */
+	}
 
 	/**
 	 * returns array with all installed languages
@@ -857,14 +846,14 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 		clearstatcache();
 
-		//	Get all installed Languages ...
+		//	Get all installed Languages
 		$_installedLanguages = array();
-		//	Look which languages are installed ...
-		$_language_directory = dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language");
+		//	Look which languages are installed
+		$_language_directory = dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language');
 
 		while(false !== ($entry = $_language_directory->read())) {
-			if($entry != "." && $entry != ".."){
-				if(is_dir($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we_language/" . $entry)){
+			if($entry != '.' && $entry != '..'){
+				if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $entry)){
 					$_installedLanguages[] = $entry;
 				}
 			}
