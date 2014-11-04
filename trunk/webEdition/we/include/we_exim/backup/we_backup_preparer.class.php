@@ -56,7 +56,7 @@ abstract class we_backup_preparer{
 			'backup_log_file' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/lastlog.php',
 			'limits' => array(
 				'mem' => we_convertIniSizes(ini_get('memory_limit')),
-				'exec' => ini_get('max_execution_time'),
+				'exec' => min(30, ini_get('max_execution_time')),
 				'requestTime' => 0,
 				'lastMem' => 0,
 			),
@@ -439,14 +439,14 @@ abstract class we_backup_preparer{
 							}');
 				} else {
 					return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
-									'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+							'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 				}
 			case 'customer':
 				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
-								'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+						'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 			default:
 				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[format_unknown]'), we_message_reporting::WE_MESSAGE_WARNING) .
-								'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+						'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 		}
 	}
 
@@ -499,7 +499,7 @@ abstract class we_backup_preparer{
 							break;
 						}
 						fwrite($fp, $data);
-					}while(true);
+					} while(true);
 					fclose($fp);
 				} else {
 					fclose($fs);
