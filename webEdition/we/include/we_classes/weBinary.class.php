@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * Provides functions for exporting and importing backups.
  */
 class weBinary{
-
 	var $db;
 	var $ClassName = __CLASS__;
 	var $Pseudo = 'weBinary';
@@ -81,6 +79,14 @@ class weBinary{
 	//alias
 	function we_save(){
 		return $this->save();
+	}
+
+	public function getFilesize(){
+		$path = $_SERVER['DOCUMENT_ROOT'] . $this->Path;
+		if(!file_exists($path)){
+			$path = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->Path;
+		}
+		return filesize($path);
 	}
 
 }

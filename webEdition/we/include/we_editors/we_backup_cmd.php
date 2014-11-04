@@ -147,9 +147,8 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 			$_SESSION['weS']['weBackupVars']['close']($_fh);
 		}
 		if(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || (isset($_SESSION['weS']['weBackupVars']['extern_files']) && count($_SESSION['weS']['weBackupVars']['extern_files']) > 0) || we_backup_util::hasNextTable()){
-
 			$percent = we_backup_util::getExportPercent();
-
+			we_backup_util::addLog('Issuing next request.');
 			echo we_html_element::jsElement('
 function run(){' . we_backup_util::getProgressJS($percent, $description, true) . '
 	top.cmd.location = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=export";
@@ -223,6 +222,7 @@ top.cmd.location = "about:blank";
 		}
 
 		we_backup_util::writeLog();
+		session_write_close();
 		break;
 
 	case 'import':
@@ -313,6 +313,7 @@ top.cmd.location = "about:blank";
 			(isset($_SESSION['weS']['weBackupVars']['files_to_delete']) && !empty($_SESSION['weS']['weBackupVars']['files_to_delete']))
 		){
 
+
 			echo we_html_element::jsElement('
 function run(){' . we_backup_util::getProgressJS(we_backup_util::getImportPercent(), $description, true) . '
 	top.cmd.location="' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=import";
@@ -363,3 +364,4 @@ setTimeout("top.close();", 300);
 
 	default:
 }
+
