@@ -45,7 +45,6 @@ if(($cmd === 'export' || $cmd === 'import') && isset($_SESSION['weS']['weBackupV
 	$_SESSION['weS']['weBackupVars']['limits']['requestTime'] = (isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] :
 			//we don't have the time of the request, assume some time is already spent.
 			time() - 3);
-	$_SESSION['weS']['weBackupVars']['limits']['lastMem'] = 0;
 
 	if(we_base_request::_(we_base_request::BOOL, 'reload')){
 		$tmp = $_SESSION['weS']['weBackupVars']['limits']['requestTime'] - $last;
@@ -61,12 +60,15 @@ if(($cmd === 'export' || $cmd === 'import') && isset($_SESSION['weS']['weBackupV
 			++$_SESSION['weS']['weBackupVars']['retry'];
 		}
 
-		if($_SESSION['weS']['weBackupVars']['retry'] > 10){
+		if($_SESSION['weS']['weBackupVars']['retry'] > 10 || $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION){//in case of compression the file can't be used
 			$_SESSION['weS']['weBackupVars']['retry'] = 1;
 			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR));
 			exit();
 		}
 	}
+	$_SESSION['weS']['weBackupVars']['limits']['lastMem'] = 0;
+
+	echo we_backup_wizard::getHTMLChecker(we_base_request::_(we_base_request::STRING, 'cmd'));
 }
 
 switch(we_base_request::_(we_base_request::STRING, 'cmd')){
@@ -150,7 +152,6 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 
 			echo we_html_element::jsElement('
 function run(){' . we_backup_util::getProgressJS($percent, $description, true) . '
-	top.checker.location = "' . WE_INCLUDES_DIR . 'we_editors/we_make_backup.php?pnt=checker";
 	top.cmd.location = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=export";
 }
 run();');
@@ -215,13 +216,7 @@ run();');
 			echo we_html_element::jsElement(we_backup_util::getProgressJS(100, g_l('backup', "[finished]"), true) . '
 top.body.setLocation("' . WE_INCLUDES_DIR . 'we_editors/we_make_backup.php?pnt=body&step=2");
 top.cmd.location = "about:blank";
-if(top.checker != "undefined"){
-	if(typeof top.checker.setLocation == "function") {
-		top.checker.setLocation("about:blank");
-	}else{
-		top.checker.location = "about:blank";
-	}
-}');
+');
 			flush();
 
 			we_backup_util::addLog('Backup export finished');
@@ -320,8 +315,7 @@ if(top.checker != "undefined"){
 
 			echo we_html_element::jsElement('
 function run(){' . we_backup_util::getProgressJS(we_backup_util::getImportPercent(), $description, true) . '
-	top.checker.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=checker";
-	top.cmd.location = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=import";
+	top.cmd.location="' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=import";
 }
 
 run();');
@@ -344,11 +338,10 @@ run();');
 			$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $DB_WE);
 
 			echo we_html_element::jsElement('
-top.checker.location = "about:blank";
 var op = top.opener.top.makeFoldersOpenString();
 top.opener.top.we_cmd("load", top.opener.top.treeData.table);
 ' . we_main_headermenu::getMenuReloadCode() . '
-top.busy.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";
+top.busy.location="' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";
 ' . ( $_SESSION['weS']['weBackupVars']['options']['rebuild'] ?
 					'top.cmd.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=cmd&operation_mode=rebuild";' :
 					'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=4&temp_filename=' . $_SESSION['weS']['weBackupVars']['backup_file'] . '";'
@@ -363,9 +356,9 @@ top.busy.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt
 
 	case 'rebuild':
 		echo we_html_element::jsElement('
-						top.opener.top.openWindow("' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('backup', "[finished_success]") . '", "rebuildwin", -1, -1, 600, 130, 0, true);
-						setTimeout("top.close();", 300);
-						');
+top.opener.top.openWindow("' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('backup', "[finished_success]") . '", "rebuildwin", -1, -1, 600, 130, 0, true);
+setTimeout("top.close();", 300);
+');
 		break;
 
 	default:

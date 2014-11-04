@@ -108,11 +108,10 @@ abstract class we_backup_export{
 				switch($_def_table){
 					case 'tblfile':
 						if(($_object->ContentType == we_base_ContentTypes::IMAGE || stripos($_object->ContentType, "application/") !== false)){
-							if($log){
-								we_backup_util::addLog(sprintf('Exporting binary data for item %s:%s', $_table, $_object->ID));
-							}
-
 							$bin = we_exim_contentProvider::getInstance('weBinary', $_object->ID);
+							if($log){
+								we_backup_util::addLog(sprintf('Exporting binary data for item %s:%s, %s', $_table, $_object->ID, $bin->Path));
+							}
 
 							we_exim_contentProvider::binary2file($bin, $_fh, $_SESSION['weS']['weBackupVars']['write']);
 						}
@@ -121,11 +120,10 @@ abstract class we_backup_export{
 					case 'tblversions':
 						if($log){
 							we_backup_util::addLog(sprintf('Exporting version data for item %s:%s', $_table, $_object->ID));
+							we_backup_util::writeLog();
 						}
 
-						$bin = we_exim_contentProvider::getInstance('weVersion', $_object->ID);
-
-						we_exim_contentProvider::version2file($bin, $_fh, $_SESSION['weS']['weBackupVars']['write']);
+						we_exim_contentProvider::version2file(we_exim_contentProvider::getInstance('weVersion', $_object->ID), $_fh, $_SESSION['weS']['weBackupVars']['write']);
 						break;
 				}
 			}
