@@ -228,7 +228,7 @@ switch($_SESSION['prefs']['editorMode']){
 						} catch (err) {
 							setTimeout(initEditor, 500);
 						}
-					} else {// imi: console.log("weEditorWasLoaded == false");
+					} else {
 						setTimeout(initEditor, 500);
 					}
 				} else {
@@ -370,7 +370,7 @@ switch($_SESSION['prefs']['editorMode']){
 	}
 
 	function getCharset() {
-		return "<?php echo $we_doc->elements['Charset']['dat'] ? $we_doc->elements['Charset']['dat'] : $GLOBALS['WE_BACKENDCHARSET']; ?>";
+		return "<?php echo $we_doc->elements['Charset']['dat'] ? : $GLOBALS['WE_BACKENDCHARSET']; ?>";
 	}
 
 	// ############ CodeMirror Functions ################

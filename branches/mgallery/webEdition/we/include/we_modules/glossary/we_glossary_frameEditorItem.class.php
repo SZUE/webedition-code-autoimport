@@ -179,10 +179,10 @@ function submitForm() {
 			we_html_element::jsElement(
 				$js = 'showType("' . $weGlossaryFrames->View->Glossary->Type . '");' .
 				($weGlossaryFrames->View->Glossary->Type === "link" ?
-					'showLinkMode("' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') ? $weGlossaryFrames->View->Glossary->getAttribute('mode') : "intern") . '");' :
+					'showLinkMode("' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') ? : "intern") . '");' :
 					'') .
 				($weGlossaryFrames->View->Glossary->getAttribute('mode') === "category" ?
-					'showLinkModeCategory("' . ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ? $weGlossaryFrames->View->Glossary->getAttribute('modeCategory') : "intern") . '");' :
+					'showLinkModeCategory("' . ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ?  : "intern") . '");' :
 					'')
 		);
 
@@ -248,7 +248,7 @@ function we_save() {
 			. we_html_element::htmlHidden(array('name' => 'Published', 'id' => 'Published', 'value' => $weGlossaryFrames->View->Glossary->ID == 0 ? 1 : ($weGlossaryFrames->View->Glossary->Published > 0 ? 1 : 0)));
 
 
-		$language = ($weGlossaryFrames->View->Glossary->Language ? $weGlossaryFrames->View->Glossary->Language : $GLOBALS['weDefaultFrontendLanguage']);
+		$language = ($weGlossaryFrames->View->Glossary->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
 
 		$content = $hidden . '<table border="0" cellpadding="0" cellspacing="0">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[folder]') . '</td></tr>

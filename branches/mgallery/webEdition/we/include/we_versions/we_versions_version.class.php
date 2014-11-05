@@ -1335,7 +1335,7 @@ class we_versions_version{
 
 				$modConstants = $this->getConstantsOfMod($modifications);
 
-				$entry = ($modConstants ? $modConstants : '');
+				$entry = ($modConstants ? : '');
 				break;
 			case 'modifierID':
 				$entry = (isset($_SESSION['user']['ID'])) ? $_SESSION['user']['ID'] : '';
@@ -1775,7 +1775,7 @@ class we_versions_version{
 
 	public static function showValue($k, $v, $table = ''){
 		$val = self::_showValue($k, $v, $table);
-		return ($val ? $val : '&nbsp;');
+		return ($val ? : '&nbsp;');
 	}
 
 	/**
@@ -2016,7 +2016,7 @@ class we_versions_version{
 				return $fieldValueText;
 //Customer Filter
 			case '_id':
-				return ($v ? $v : 0);
+				return ($v ? : 0);
 			case '_accessControlOnTemplate':
 				return ($v == 1) ? g_l('versions', '[yes]') : g_l('versions', '[no]');
 			case '_errorDocNoLogin':

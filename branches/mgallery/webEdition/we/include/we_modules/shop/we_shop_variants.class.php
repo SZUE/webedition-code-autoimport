@@ -138,12 +138,12 @@ abstract class we_shop_variants{
 
 		if($unserialize){
 			$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) ?
-					$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] :
-					(
-					(substr($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) === "a:") ?
-							unserialize($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) :
-							array()
-					);
+				$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] :
+				(
+				(substr($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) === "a:") ?
+					unserialize($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) :
+					array()
+				);
 		}
 
 		$elements = $model->elements;
@@ -183,8 +183,8 @@ abstract class we_shop_variants{
 
 	public static function getNumberOfVariants(&$model){
 		return (isset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]) && is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) ?
-						count($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) :
-						0);
+				count($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) :
+				0);
 	}
 
 	private static function insertVariant(&$model, $position){
@@ -285,7 +285,7 @@ abstract class we_shop_variants{
 
 	private static function getNameForPosition($name, $pos){
 		return WE_SHOP_VARIANTS_PREFIX . $pos .
-				(($fieldName = self::getFieldNameFromElemName($name)) ? '_' . self::getFieldNameFromElemName($name) : '');
+			(($fieldName = self::getFieldNameFromElemName($name)) ? '_' . self::getFieldNameFromElemName($name) : '');
 	}
 
 	private static function removeVariant(&$model, $delPos){
@@ -449,7 +449,7 @@ abstract class we_shop_variants{
 	}
 
 	public static function useVariant(&$model, $name){
-		$variantDatArray = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
+		$variantDatArray = $model->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME);
 
 		$model->Variant = $name;
 		if(!is_array($variantDatArray)){
@@ -460,11 +460,10 @@ abstract class we_shop_variants{
 			if(!is_array($variant)){
 				continue;
 			}
-			foreach($variant as $variantName => $variantData){
-				if($variantName == $name){
-					foreach($variantData as $elementName => $elementData){
-						$model->elements[$elementName] = $elementData;
-					}
+			if(isset($variant[$name])){//can we break if one is found??
+				$variantData = $variant[$name];
+				foreach($variantData as $elementName => $elementData){
+					$model->elements[$elementName] = $elementData;
 				}
 			}
 		}
@@ -486,7 +485,7 @@ abstract class we_shop_variants{
 			return;
 		}
 
-		foreach($variantDatArray as $i => $variant){
+		foreach($variantDatArray as $variant){
 			foreach($variant as $variantName => $variantData){
 				if($variantName == $name){
 					foreach($variantData as $elementName => $elementData){

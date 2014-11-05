@@ -151,7 +151,7 @@ abstract class we_export_functions{
 				break;
 		}
 
-		return array("file" => $_file, "filename" => ($_SERVER['DOCUMENT_ROOT'] . ($path === "###temp###" ? TEMP_DIR : $path) . $filename), "doctype" => ((isset($doctype) && $doctype != null) ? $_doctype : ""), "tableid" => ($tableid ? $tableid : ""));
+		return array("file" => $_file, "filename" => ($_SERVER['DOCUMENT_ROOT'] . ($path === "###temp###" ? TEMP_DIR : $path) . $filename), "doctype" => ((isset($doctype) && $doctype != null) ? $_doctype : ""), "tableid" => ($tableid ? : ""));
 	}
 
 	/**
@@ -212,7 +212,7 @@ abstract class we_export_functions{
 		}
 
 		// Set alternative name if no name is now present present
-		return ($tagname ? $tagname :
+		return ($tagname ? :
 						(($alternative_number != -1) ? $alternative_name . $alternative_number : $alternative_name) );
 	}
 

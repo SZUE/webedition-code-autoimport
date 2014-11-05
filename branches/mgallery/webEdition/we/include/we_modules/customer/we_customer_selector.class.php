@@ -176,7 +176,7 @@ function setDir(id){
 		unset($vals[count($vals) - 1]);
 		$out = array('0' => '/');
 		foreach($vals as $pos => $val){
-			$out[implode('-|-', array_slice($vals, 0, $pos + 1)) . '-|-'] = ($val ? $val : g_l('modules_customer', '[no_value]'));
+			$out[implode('-|-', array_slice($vals, 0, $pos + 1)) . '-|-'] = ($val ? : g_l('modules_customer', '[no_value]'));
 		}
 		return $out;
 	}

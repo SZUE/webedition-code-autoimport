@@ -34,7 +34,7 @@ function getHash($query = '', we_database_base $DB_WE = NULL, $resultType = MYSQ
 	}
 	$hash = md5($query, true);
 	if($resultType == MYSQL_NUM || !isset($cache[$hash])){
-		$DB_WE = $DB_WE ? $DB_WE : $GLOBALS['DB_WE'];
+		$DB_WE = $DB_WE ? : $GLOBALS['DB_WE'];
 		$DB_WE->query($query);
 		$data = ($DB_WE->next_record($resultType) ? $DB_WE->Record : array());
 		if($resultType != MYSQL_NUM && $data){
@@ -47,7 +47,7 @@ function getHash($query = '', we_database_base $DB_WE = NULL, $resultType = MYSQ
 }
 
 function f($query, $field = '', we_database_base $DB_WE = NULL, $emptyValue = ''){
-	$h = getHash($query, ($DB_WE ? $DB_WE : $GLOBALS['DB_WE']), MYSQL_ASSOC);
+	$h = getHash($query, ($DB_WE ? : $GLOBALS['DB_WE']), MYSQL_ASSOC);
 	return
 		($field ?
 			($h && isset($h[$field]) ? $h[$field] : $emptyValue) :

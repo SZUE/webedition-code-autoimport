@@ -55,7 +55,7 @@ abstract class we_rebuild_base{
 					flush();
 				}
 
-				$imgdoc->Thumbs = $data['thumbs'] ? $data['thumbs'] : -1;
+				$imgdoc->Thumbs = $data['thumbs'] ? : -1;
 				$imgdoc->DocChanged = true;
 				$imgdoc->we_save(true);
 				unset($imgdoc);

@@ -162,7 +162,7 @@ class we_document extends we_root{
 		we_loadLanguageConfig();
 
 		$_defLang = self::getDefaultLanguage();
-		$value = ($this->Language ? $this->Language : $_defLang);
+		$value = ($this->Language ? : $_defLang);
 		$inputName = 'we_' . $this->Name . '_Language';
 		$_languages = getWeFrontendLanguagesForBackend();
 		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[language]') . '</td></tr>' : '');
@@ -362,7 +362,7 @@ class we_document extends we_root{
 				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCTYPE;
 				$_naviItem->IsFolder = 1;
 				$charset = $_naviItem->findCharset($_naviItem->ParentID);
-				$_naviItem->Charset = ($charset ? $charset : (DEFAULT_CHARSET ? DEFAULT_CHARSET : $GLOBALS['WE_BACKENDCHARSET']));
+				$_naviItem->Charset = ($charset ? : (DEFAULT_CHARSET ? : $GLOBALS['WE_BACKENDCHARSET']));
 			} else {
 				$_naviItem->Selection = we_navigation_navigation::SELECTION_STATIC;
 				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCLINK;
@@ -798,7 +798,7 @@ class we_document extends we_root{
 	}
 
 	protected function i_getDocumentToSave(){
-		$this->DocStream = $this->DocStream ? $this->DocStream : $this->i_getDocument();
+		$this->DocStream = $this->DocStream ? : $this->i_getDocument();
 		return $this->DocStream;
 	}
 
@@ -821,7 +821,7 @@ class we_document extends we_root{
 		if(isset($attribs['_name_orig'])){
 			unset($attribs['_name_orig']);
 		}
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 		if((!$attribs) || (!is_array($attribs))){
 			$attribs = array();
 		}
@@ -849,12 +849,12 @@ class we_document extends we_root{
 							$titleField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $titleField);
 							break;
 						case 'we_listview_document':
-							$alt = $GLOBALS['lv']->f($altField) ? $GLOBALS['lv']->f($altField) : '';
-							$title = $GLOBALS['lv']->f($titleField) ? $GLOBALS['lv']->f($titleField) : '';
+							$alt = $GLOBALS['lv']->f($altField) ? : '';
+							$title = $GLOBALS['lv']->f($titleField) ? : '';
 						case 'we_object_listview':
 						case 'we_object_listviewMultiobject':
-							$attribs['alt'] = isset($alt) && $alt ? $alt : ($img->getElement('alt') ? $img->getElement('alt') : (isset($attribs['alt']) ? $attribs['alt'] : ''));
-							$attribs['title'] = isset($title) && $title ? $title : ($img->getElement('title') ? $img->getElement('title') : (isset($attribs['title']) ? $attribs['title'] : ''));
+							$attribs['alt'] = isset($alt) && $alt ? $alt : ($img->getElement('alt') ? : (isset($attribs['alt']) ? $attribs['alt'] : ''));
+							$attribs['title'] = isset($title) && $title ? $title : ($img->getElement('title') ? : (isset($attribs['title']) ? $attribs['title'] : ''));
 							break;
 					}
 				}
@@ -972,7 +972,7 @@ class we_document extends we_root{
 				}
 				return '';
 			case 'date':
-				$val = $val ? $val : time();
+				$val = $val ? : time();
 				$format = isset($attribs['format']) && $attribs['format'] ? $attribs['format'] : g_l('date', '[format][default]');
 				Zend_Registry::set('Zend_Locale', new Zend_Locale((isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS["weDefaultFrontendLanguage"])));
 				$zdate = is_numeric($val) ? new Zend_Date($val, Zend_Date::TIMESTAMP) : new Zend_Date($val);
@@ -1115,12 +1115,12 @@ class we_document extends we_root{
 	}
 
 	function getHref($attribs, we_database_base $db = null, $fn = 'this'){
-		$db = $db ? $db : new_DB_WE();
+		$db = $db ? : new_DB_WE();
 		$n = $attribs['name'];
 		$nint = $n . we_base_link::MAGIC_INT_LINK;
 		if($this->getValFromSrc($fn, $nint)){
 			$intID = $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID, 'bdid'); //try bdid first
-			$intID = $intID ? $intID : $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID);
+			$intID = $intID ? : $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID);
 			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), '', $db);
 		}
 		return $this->getValFromSrc($fn, $n);
@@ -1135,7 +1135,7 @@ class we_document extends we_root{
 	}
 
 	function getLinkHref($link, $parentID, $path, we_database_base $db = null, $hidedirindex = false, $objectseourls = false){
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 
 // Bug Fix 8170&& 8166
 		if(isset($link['href']) && strpos($link['href'], we_base_link::TYPE_MAIL_PREFIX) === 0){
@@ -1189,7 +1189,7 @@ class we_document extends we_root{
 
 		switch(isset($link['ctype']) ? $link['ctype'] : ''){
 			case we_base_link::CONTENT_INT:
-				$img = ($img ? $img : new we_imageDocument());
+				$img = ($img ? : new we_imageDocument());
 				$img->initByID($link['img_id']);
 
 				$img_attribs = array('width' => $link['width'], 'height' => $link['height'], 'border' => $link['border'], 'hspace' => $link['hspace'], 'vspace' => $link['vspace'], 'align' => $link['align'], 'alt' => $link['alt'], 'title' => (isset($link['img_title']) ? $link['img_title'] : ''));
@@ -1247,7 +1247,7 @@ class we_document extends we_root{
 			$_linkAttribs = array();
 
 // define image-if necessary - handle with image-attribs
-			$img = ($img ? $img : new we_imageDocument());
+			$img = ($img ? : new we_imageDocument());
 
 //   image attribs
 			foreach($_imgAtts as $att){ //  take all attribs belonging to image inside content

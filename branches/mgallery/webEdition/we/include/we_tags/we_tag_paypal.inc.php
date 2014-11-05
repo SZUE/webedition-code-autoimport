@@ -196,7 +196,7 @@ function we_tag_paypal($attribs){
 					$p->add_field('cancel_return', $this_script . '?action=cancel');
 					$p->add_field('notify_url', $this_script . '?action=ipn');
 					$p->add_field('currency_code', $currency);
-					$p->add_field('lc', ($languagecode ? $languagecode : $lc));
+					$p->add_field('lc', ($languagecode ? : $lc));
 
 					// get user details
 					$p->add_field('first_name', $sendForename);

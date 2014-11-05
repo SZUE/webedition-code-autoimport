@@ -57,8 +57,8 @@ class we_updater{
 					$id = $DB_WE->f('fileID');
 					if($table && $id){
 						$Owners = ($DB_WE->f("OwnerID") && ($DB_WE->f("OwnerID") != $DB_WE->f("CreatorID"))) ? ("," . $DB_WE->f("OwnerID") . ",") : "";
-						$CreatorID = $DB_WE->f("CreatorID") ? $DB_WE->f("CreatorID") : $_SESSION["user"]["ID"];
-						$ModifierID = $DB_WE->f("ModifierID") ? $DB_WE->f("ModifierID") : $_SESSION["user"]["ID"];
+						$CreatorID = $DB_WE->f("CreatorID") ? : $_SESSION["user"]["ID"];
+						$ModifierID = $DB_WE->f("ModifierID") ? : $_SESSION["user"]["ID"];
 						$db2->query('UPDATE ' . $db2->escape($table) . " SET CreatorID=" . intval($CreatorID) . " , ModifierID=" . intval($ModifierID) . " , Owners='" . $db2->escape($Owners) . "' WHERE ID=" . intval($id));
 						$db2->query('DELETE FROM ' . TBL_PREFIX . ' WHERE fileID=' . intval($id));
 						update_time_limit(30);
@@ -377,7 +377,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 
 	static function updateCats(){
 		$db = $GLOBALS['DB_WE'];
-		if($db->isColExist(CATEGORY_TABLE, 'Catfields')){
+		if($db->isColExist(CATEGORY_TABLE, 'Catfields') && f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE . 'WHERE Title=""') == f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE)){
 			$db->query('SELECT ID,Catfields FROM ' . CATEGORY_TABLE . ' WHERE Catfields!=""');
 			$udb = new DB_WE();
 			while($db->next_record()){
@@ -388,7 +388,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 						'Description' => $data['default']['Description'],
 					)) . ' WHERE ID=' . $db->f('ID'));
 			}
-			$db->delCol(CATEGORY_TABLE, 'Catfields');
+			//$db->delCol(CATEGORY_TABLE, 'Catfields');
 		}
 	}
 

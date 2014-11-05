@@ -85,14 +85,14 @@ class we_listview_document extends we_listview_base{
 		}
 
 		$this->defaultCondition = $condition;
-		$this->condition = $condition ? $condition : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
+		$this->condition = $condition ? : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
 
 		$cond_where = // #3763
 			($this->condition != '' && ($condition_sql = $this->makeConditionSql($this->condition)) ?
 				' AND (' . $condition_sql . ')' :
 				'');
 
-		$this->languages = $languages ? $languages : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
+		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 
 		if($this->languages != ''){
 			$where_lang = ' AND (';
@@ -203,7 +203,7 @@ class we_listview_document extends we_listview_base{
 
 			$ranking = '0';
 			$spalten = array(($this->casesensitive ? 'BINARY ' : '') . INDEX_TABLE . '.Text');
-			
+
 			foreach($bedingungen as $v1){
 				if(preg_match('|^[-\+]|', $v1)){
 					$not = (preg_match('^-', $v1));
@@ -260,8 +260,9 @@ class we_listview_document extends we_listview_base{
 			$limit = (($rows > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : "");
 		}
 		$this->DB_WE->query(
-			'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID' . $extraSelect .
+			'SELECT ' . FILE_TABLE . '.ID, ' . FILE_TABLE . '.WebUserID' . $extraSelect .
 			' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID ' . $joinstring .
+			($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' ON ' . INDEX_TABLE . '.DID=' . FILE_TABLE . '.ID' : '') .
 			' WHERE ' . $orderwhereString .
 			($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : 1) . ' ' .
 			$where_lang . ' ' .
@@ -339,7 +340,7 @@ class we_listview_document extends we_listview_base{
 				$this->Record = array();
 				while($this->DB_WE->next_record()){
 					$tmp = ($this->DB_WE->f('BDID'));
-					$this->Record[$this->DB_WE->f('Name')] = $tmp ? $tmp : $this->DB_WE->f('Dat');
+					$this->Record[$this->DB_WE->f('Name')] = $tmp ? : $this->DB_WE->f('Dat');
 				}
 				$tmp = getHash('SELECT ID,ParentID,Text,Icon,IsFolder,ContentType,CreationDate,ModDate,Path,TemplateID,Filename,Extension,IsDynamic,IsSearchable,DocType,ClassName,Category,Published,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Language,WebUserID,InGlossar FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC);
 				foreach($tmp as $key => $val){
@@ -355,7 +356,7 @@ class we_listview_document extends we_listview_base{
 				}
 
 				$this->Record['WE_PATH'] = $this->Record['wedoc_Path'];
-				$this->Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id), 'Text', $this->DB_WE);
+				$this->Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id), '', $this->DB_WE);
 				$this->Record['WE_ID'] = intval($id);
 
 				if($this->customers && $this->Record['wedoc_WebUserID']){

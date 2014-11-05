@@ -52,7 +52,7 @@ class weTagData_sqlRowAttribute extends weTagData_selectAttribute{
 		global $DB_WE;
 		$this->Table = $table;
 		$this->ValueName = $valueName;
-		$this->TextName = $textName ? $textName : $valueName;
+		$this->TextName = $textName ? : $valueName;
 
 
 		// get options from choosen table

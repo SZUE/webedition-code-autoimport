@@ -160,7 +160,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 				'id' => $this->name,
 				'accept' => implode(',', $this->typeCondition['accepted']['mime']))
 		);
-		$fileInput .= !$isIE10 ? '' : 
+		$fileInput .= !$isIE10 ? '' :
 			we_html_element::htmlInput(array(
 					'class' => 'fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : ''),
 					'style' => 'width:' . $width['input'] . 'px; left:' . $width['input'] . 'px;',
@@ -199,7 +199,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 				<div style="display:table-cell;width:178px;height:116px;padding-left:4px;vertical-align:middle;color:#cccccc;font-weight:normal;font-size:' . ($this->isDragAndDrop ? 16 : 14) . 'px">' .
 					$dropText . '
 				</div>' .
-			we_html_element::htmlDiv(array('class' => 'dropzone_right'), ($thumbnailSmall ? $thumbnailSmall : we_html_element::htmlImg(array('src' => $this->binDocProperties['icon'])))) . '
+			we_html_element::htmlDiv(array('class' => 'dropzone_right'), ($thumbnailSmall ? : we_html_element::htmlImg(array('src' => $this->binDocProperties['icon'])))) . '
 			</div>
 			<div class="we_file_drag we_file_drag_binDoc" style="display:none;' . (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : '') . '" id="div_fileupload_fileDrag_state_1">
 				<div id="div_upload_fileDrag_innerLeft" style="display:table-cell;width:178px;height:116px;padding-left:10px;vertical-align:middle;text-align:left;color:#333;font-weight: normal;font-size:12px">' .

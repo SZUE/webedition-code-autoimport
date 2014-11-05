@@ -344,7 +344,7 @@ class we_object extends we_document{
 								'hreftype' => $this->getElement($info['name'] . 'hreftype'),
 								'hrefdirectory' => $this->getElement($info['name'] . 'hrefdirectory'),
 								'hreffile' => $this->getElement($info['name'] . 'hreffile'),
-								'uniqueID' => $this->SerializedArray[$info['name']]['uniqueID'] ? $this->SerializedArray[$info['name']]['uniqueID'] : md5(uniqid(__FILE__, true)),
+								'uniqueID' => $this->SerializedArray[$info['name']]['uniqueID'] ? : md5(uniqid(__FILE__, true)),
 							);
 							if($this->isVariantField($info['name']) && $this->getElement($info['name'] . 'variant') == 1){
 								$arrt[$nam]['variant'] = 1;
@@ -732,7 +732,7 @@ class we_object extends we_document{
 		$this->elements["Sortgesamt"]["dat"] = count($sort);
 		### end move elements ####
 
-		$this->setElement("we_sort", ($sort ? $sort : array()));
+		$this->setElement("we_sort", ($sort ? : array()));
 	}
 
 	function downMetaAtClass($name, $i){
@@ -808,7 +808,7 @@ class we_object extends we_document{
 	}
 
 	function getFieldHTML($name, $identifier){
-		$type = $this->getElement($name . self::ELEMENT_TYPE, "dat") ? $this->getElement($name . self::ELEMENT_TYPE, "dat") : we_objectFile::TYPE_INPUT;
+		$type = $this->getElement($name . self::ELEMENT_TYPE, "dat") ? : we_objectFile::TYPE_INPUT;
 		$content = '<tr>
 			<td  width="100" class="weMultiIconBoxHeadline" valign="top" >' . g_l('weClass', "[name]") . '</td>
 			<td  width="170" class="defaultfont" valign="top">';
@@ -839,7 +839,7 @@ class we_object extends we_document{
 				$content .= we_html_tools::hidden("we_" . $this->Name . "_input[$name]", $foo) .
 					$this->htmlTextInput("tmp" . WE_SHOP_VAT_FIELD_NAME, 40, $foo, 52, ' readonly="readonly" disabled="disabled"', "text", 388);
 			} else {
-				$foo = $foo ? $foo : g_l('modules_object', '[new_field]');
+				$foo = $foo ? : g_l('modules_object', '[new_field]');
 				$content .= $this->htmlTextInput("we_" . $this->Name . "_input[$name]", 40, $foo, 52, ' oldValue="' . $foo . '" onBlur="we_checkObjFieldname(this);" onchange="_EditorFrame.setEditorIsHot(true);"', "text", 388);
 			}
 		}
@@ -953,13 +953,13 @@ class we_object extends we_document{
 			<option' . (($typeVal == we_base_link::TYPE_EXT) ? " selected" : "") . ' value="' . we_base_link::TYPE_EXT . '">ext
 			</select>';
 				$fileVal = $this->getElement($name . "hreffile", "dat");
-				$fileVal = $fileVal ? $fileVal : "true";
+				$fileVal = $fileVal ? : "true";
 				$fileSelect = '<select class="weSelect" id="we_' . $this->Name . '_input[' . $name . 'hreffile]" name="we_' . $this->Name . '_input[' . $name . 'hreffile]">
 			<option' . (($fileVal === "true") ? " selected" : "") . ' value="true">true
 			<option' . (($fileVal === "false") ? " selected" : "") . ' value="false">false
 			</select>';
 				$dirVal = $this->getElement($name . "hrefdirectory", "dat");
-				$dirVal = $dirVal ? $dirVal : "false"; // options anzeige umgedreht wegen 4363
+				$dirVal = $dirVal ? : "false"; // options anzeige umgedreht wegen 4363
 				$dirSelect = '<select class="weSelect" id="we_' . $this->Name . '_input[' . $name . 'hrefdirectory]" name="we_' . $this->Name . '_input[' . $name . 'hrefdirectory]">
 			<option' . (($dirVal === "true") ? " selected" : "") . ' value="true">false
 			<option' . (($dirVal === "false") ? " selected" : "") . ' value="false">true
@@ -1053,7 +1053,7 @@ class we_object extends we_document{
 				$content .= '<tr valign="top"><td  width="100" class="defaultfont">Default</td>' .
 					'<td width="170" class="defaultfont">' .
 					we_html_forms::checkboxWithHidden(($dd == '1' ? true : false), "we_" . $this->Name . "_xdate[" . $name . "defaultThumb]", 'Creation Date', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') .
-					we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $name . 'default]', ($d ? $d : time()), true) .
+					we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $name . 'default]', ($d ? : time()), true) .
 					'</td></tr>';
 
 				break;
@@ -1273,7 +1273,7 @@ class we_object extends we_document{
 			$link = array();
 		}
 
-		$link = $link ? $link : array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', "[new_link]"));
+		$link = $link ? : array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', "[new_link]"));
 
 		$img = new we_imageDocument();
 		$content = parent::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
@@ -1285,7 +1285,7 @@ class we_object extends we_document{
 			$content = g_l('global', "[new_link]");
 		}
 		return "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
-					<tr><td class=\"defaultfont\">" . ($startTag ? $startTag : '') . $content . "</a></td>
+					<tr><td class=\"defaultfont\">" . ($startTag ? : '') . $content . "</a></td>
 						<td width=\"5\"></td><td>" . we_html_button::create_button_table(array($editbut, $delbut), 5) . "</td>
 					</tr>
 					</table>";
@@ -1303,7 +1303,7 @@ class we_object extends we_document{
 		$myid = $this->getElement($ObjectID . "default", "dat");
 		$DoubleNames = $this->includedObjectHasDoubbleFieldNames($pid);
 		$path = $this->getElement("we_object_" . $pid . "_path");
-		$path = $path ? $path : ($myid ? f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=$myid", "Path", $db) : '');
+		$path = $path ? : ($myid ? f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=$myid", "Path", $db) : '');
 		$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $db->escape($classPath) . '"', "ID", $db);
 		$table = OBJECT_FILES_TABLE;
 		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
@@ -1342,7 +1342,7 @@ class we_object extends we_document{
 		$myid = $this->getElement($name . "defaultvalue" . $f, "dat");
 
 		$path = $this->getElement("we_object_" . $name . "_path");
-		$path = ($path ? $path : ($myid ? f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=$myid", "Path", $db) : ''));
+		$path = ($path ? : ($myid ? f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=$myid", "Path", $db) : ''));
 		$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . $classPath . "'", '', $db);
 
 		$table = OBJECT_FILES_TABLE;
@@ -1393,7 +1393,7 @@ class we_object extends we_document{
 			"dhtmledit" => $this->getElement($name . "dhtmledit"),
 			"wysiwyg" => $this->getElement($name . "dhtmledit"),
 			"showmenus" => $this->getElement($name . "showmenus", "dat", "off"),
-			"commands" => $commands ? $commands : COMMANDS_DEFAULT,
+			"commands" => $commands ? : COMMANDS_DEFAULT,
 			"contextmenu" => $this->getElement($name . "contextmenu"),
 			"classes" => $this->getElement($name . "cssClasses"),
 			"width" => 386, //$this->getElement($name."width","dat",618),
@@ -1469,7 +1469,7 @@ class we_object extends we_document{
 				$content .= '<tr><td><img src="' . TREE_ICON_DIR . $data["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $data["Path"] . '</td><td>' .
 					($canChange ?
 						$this->htmlHidden('we_users_read_only[' . $user . ']', (isset($usersReadOnly[$user]) && $usersReadOnly[$user]) ? $usersReadOnly[$user] : "" ) .
-					'<input type="checkbox" value="1" name="wetmp_users_read_only[' . $user . ']"' .( (isset($usersReadOnly[$user]) && $usersReadOnly[$user] ) ?' checked' :'') . ' onclick="this.form.elements[\'we_users_read_only[' . $user . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
+						'<input type="checkbox" value="1" name="wetmp_users_read_only[' . $user . ']"' . ( (isset($usersReadOnly[$user]) && $usersReadOnly[$user] ) ? ' checked' : '') . ' onclick="this.form.elements[\'we_users_read_only[' . $user . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
 						'<img src="' . TREE_IMAGE_DIR . ($usersReadOnly[$user] ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" />'
 					) . '</td><td class="defaultfont">' . g_l('weClass', "[readOnly]") . '</td><td>' .
 					($canChange ?
@@ -2069,7 +2069,7 @@ class we_object extends we_document{
 			$this->DefaultWorkspaces = '';
 			$wsp = makeArrayFromCSV($this->Workspaces);
 			for($i = 0; $i < count($wsp); $i++){
-				if(we_base_request::_(we_base_request::BOOL, "we_" . $this->Name . "_DefaultWorkspaces_" . $i)){
+				if(we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_DefaultWorkspaces_' . $i) !== false){
 					$this->DefaultWorkspaces .= $wsp[$i] . ',';
 				}
 			}
@@ -2158,7 +2158,7 @@ class we_object extends we_document{
 				}
 			}
 		}
-		return ($doubleNames ? $doubleNames : false);
+		return ($doubleNames ? : false);
 	}
 
 	protected function i_writeDocument(){

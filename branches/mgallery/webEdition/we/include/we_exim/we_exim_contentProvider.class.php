@@ -88,7 +88,7 @@ class we_exim_contentProvider{
 			default:
 				switch($we_ContentType){
 					case we_base_ContentTypes::FOLDER:
-						$we_Table = $table ? $table : FILE_TABLE;
+						$we_Table = $table ? : FILE_TABLE;
 						break;
 					case we_base_ContentTypes::TEMPLATE:
 						$we_Table = TEMPLATES_TABLE;
@@ -273,7 +273,7 @@ class we_exim_contentProvider{
 			}
 		}
 
-		if(isset($object->Data)){
+		if(isset($object->Path)){
 			$offset = 0;
 			$rsize = 1048576;
 			do{
@@ -534,3 +534,4 @@ class we_exim_contentProvider{
 	}
 
 }
+

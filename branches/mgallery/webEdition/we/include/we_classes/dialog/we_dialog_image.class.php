@@ -169,7 +169,7 @@ class we_dialog_image extends we_dialog_base{
 		$type = $this->getHttpVar(we_base_request::STRING, 'type');
 		$thumbnail = $this->getHttpVar(we_base_request::INT, 'thumbnail');
 
-		$type = ($type ? $type : we_base_link::TYPE_EXT);
+		$type = ($type ? : we_base_link::TYPE_EXT);
 		if($src && !$thumbnail){
 			$this->initBySrc($src, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 		} else if($type){

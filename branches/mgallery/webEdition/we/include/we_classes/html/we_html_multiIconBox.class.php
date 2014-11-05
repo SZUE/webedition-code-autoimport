@@ -38,7 +38,7 @@ abstract class we_html_multiIconBox{
 	 * @return	string
 	 */
 	static function getHTML($name, $width, array $content, $marginLeft = 0, $buttons = '', $foldAtNr = -1, $foldRight = '', $foldDown = '', $displayAtStartup = false, $headline = "", $delegate = "", $height = 0, $overflow = "auto"){
-		$uniqname = $name ? $name : md5(uniqid(__FILE__, true));
+		$uniqname = $name ? : md5(uniqid(__FILE__, true));
 
 		$out = (isset($headline) && $headline != '') ?
 			we_html_multiIconBox::_getBoxStartHeadline($width, $headline, $uniqname, $marginLeft, $overflow) :
@@ -52,8 +52,8 @@ abstract class we_html_multiIconBox{
 
 			if($i == $foldAtNr && $foldAtNr < count($content)){ // only if the folded items contain stuff.
 				$out .= we_html_button::create_button_table(array(
-						we_html_multiIconBox::_getButton($uniqname, ($delegate ? $delegate : "" ) . ";weToggleBox('" . $uniqname . "','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "')", ($displayAtStartup ? "down" : "right"), g_l('global', "[openCloseBox]")),
-						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="' . ($delegate ? $delegate : "" ) . ';weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
+						we_html_multiIconBox::_getButton($uniqname, ($delegate ? : "" ) . ";weToggleBox('" . $uniqname . "','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "')", ($displayAtStartup ? "down" : "right"), g_l('global', "[openCloseBox]")),
+						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="' . ($delegate ? : "" ) . ';weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
 						), 10, array('style' => 'margin-left:' . $marginLeft . 'px;')
 					) .
 					'<br/><table id="table_' . $uniqname . '" width="100%" cellpadding="0" style="border-spacing: 0px;border-style:none;' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>';
@@ -72,7 +72,7 @@ abstract class we_html_multiIconBox{
 
 			$leftWidth = (isset($c["space"]) && $c["space"]) ? abs($c["space"]) : 0;
 
-			$leftContent = $icon ? $icon : (($leftWidth && (!$_forceRightHeadline)) ? $headline : '');
+			$leftContent = $icon ? : (($leftWidth && (!$_forceRightHeadline)) ? $headline : '');
 
 			$rightContent = '<div ' . ($mainContent == $leftContent && !$leftContent ? '' : 'style="float:left;"') . ' class="defaultfont">' . ((($icon && $headline) || ($leftContent === "") || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
 

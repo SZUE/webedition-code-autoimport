@@ -250,7 +250,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$styleTemplateLabel = 'display:inline';
 			$styleTemplateLabelLink = 'display:none';
 		}
-		$myid = $this->TemplateID ? $this->TemplateID : '';
+		$myid = $this->TemplateID ? : '';
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
@@ -280,7 +280,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$templateFromDoctype = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->DocType) . ' LIMIT 1', 'Templates', $this->DB_WE);
 		}
 		if($disable){
-			$myid = intval($this->TemplateID ? $this->TemplateID : 0);
+			$myid = intval($this->TemplateID ? : 0);
 			$path = ($myid ? f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($myid), '', $this->DB_WE) : '');
 
 			/* $ueberschrift = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
@@ -719,7 +719,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$inWebEditonSave = $this->InWebEdition;
 		$this->InWebEdition = false;
 		$this->EditPageNr = we_base_constants::WE_EDITPAGE_PREVIEW;
-		$we_include = $includepath ? $includepath : $this->editor();
+		$we_include = $includepath ? : $this->editor();
 		if(is_file($we_include)){
 			ob_start();
 			include($we_include);

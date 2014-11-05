@@ -679,7 +679,7 @@ function doUnload() {
 
 		$_depth = we_html_tools::htmlFormElementTable($_select, g_l('siteimport', "[depth]"));
 		$maxallowed = round($GLOBALS['DB_WE']->getMaxAllowedPacket() / (1024 * 1024));
-		$maxallowed = $maxallowed ? $maxallowed : 20;
+		$maxallowed = $maxallowed ? : 20;
 		$maxarray = array(
 			"0" => g_l('siteimport', "[nolimit]"), "0.5" => "0.5"
 		);

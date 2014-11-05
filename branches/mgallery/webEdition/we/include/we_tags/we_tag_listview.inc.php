@@ -140,7 +140,7 @@ function we_tag_listview($attribs){
 	//FIXME: XSS -> what type is we_lv_calendar
 	$we_lv_calendar = we_base_request::_(we_base_request::RAW, 'we_lv_calendar_' . $name, $calendar);
 	$we_lv_datefield = we_base_request::_(we_base_request::RAW, 'we_lv_datefield_' . $name, $datefield);
-	$we_lv_date = we_base_request::_(we_base_request::RAW, 'we_lv_date_' . $name, ($date ? $date : date('Y-m-d')));
+	$we_lv_date = we_base_request::_(we_base_request::RAW, 'we_lv_date_' . $name, ($date ? : date('Y-m-d')));
 	$we_lv_weekstart = we_base_request::_(we_base_request::RAW, 'we_lv_weekstart_' . $name, $weekstart);
 
 	if($we_lv_cats === 'we_doc'){

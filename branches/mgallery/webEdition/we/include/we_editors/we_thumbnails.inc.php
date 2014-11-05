@@ -50,7 +50,7 @@ if(($delId = we_base_request::_(we_base_request::INT, 'deletethumbnail'))){
 if(!$id){
 	$tmpid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name LIMIT 1');
 
-	$id = $tmpid ? $tmpid : -1;
+	$id = $tmpid ? : -1;
 }
 
 /**
@@ -70,7 +70,7 @@ if(!$id){
 function create_dialog($name, $title, $content, $expand = -1, $show_text = '', $hide_text = '', $cookie = false, $JS = ''){
 	return
 		// Check, if we need to write some JavaScripts
-		($JS ? $JS : '') .
+		($JS ? : '') .
 		($expand != -1 ? we_html_multiIconBox::getJS() : '') .
 		// Return HTML code of dialog
 		we_html_multiIconBox::getHTML($name, '100%', $content, 30, '', $expand, $show_text, $hide_text, $cookie != false ? ($cookie === 'down') : $cookie, $title);

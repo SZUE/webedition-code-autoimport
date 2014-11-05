@@ -111,8 +111,8 @@ function we_tag_banner($attribs, $content){
 		// stuff for iframe  and ilayer
 		$newAttribs = removeAttribs($attribs, array('name', 'paths', 'type', 'target', 'link', 'clickscript', 'getscript', 'page'));
 		$newAttribs['xml'] = $xml ? "true" : "false";
-		$newAttribs['width'] = $width ? $width : 468;
-		$newAttribs['height'] = $height ? $height : 60;
+		$newAttribs['width'] = $width ? : 468;
+		$newAttribs['height'] = $height ? : 60;
 		$newAttribs['src'] = $getbanner . '?' . http_build_query(array(
 				($nocount ? 'nocount' : '') => $nocount,
 				'bannername' => $bannername,

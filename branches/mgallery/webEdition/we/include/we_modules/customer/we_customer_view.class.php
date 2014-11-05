@@ -952,7 +952,7 @@ self.close();');
 
 				for($i = 0; $i < $counter; $i++){
 					$sort_name = we_base_request::_(we_base_request::STRING, 'sort_' . $i);
-					$sort_name = $sort_name ? $sort_name : g_l('modules_customer', '[sort_name]') . '_' . $i;
+					$sort_name = $sort_name ? : g_l('modules_customer', '[sort_name]') . '_' . $i;
 
 
 					$fcounter = we_base_request::_(we_base_request::INT, 'fcounter_' . $i, 1);

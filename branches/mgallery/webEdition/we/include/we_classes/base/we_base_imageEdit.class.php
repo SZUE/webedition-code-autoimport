@@ -263,7 +263,7 @@ abstract class we_base_imageEdit{
 		} else {
 			// bugfix #2482: preserve aspect ratio for thumbnails with width=0 and height != 0
 			$_outsize["width"] = round(($origwidth / $origheight) * $newheight);
-			$_outsize["height"] = ($newheight ? $newheight : round($origheight * $newwidth / $origwidth));
+			$_outsize["height"] = ($newheight ? : round($origheight * $newwidth / $origwidth));
 		}
 
 		// If height has been specified set it.
@@ -573,7 +573,7 @@ abstract class we_base_imageEdit{
 			}
 			$_thumbSrc = ($imgID ?
 					WE_THUMB_PREVIEW_DIR . $imgID . '_' . $width . '_' . $height . strtolower($outputFormat) :
-					TEMP_DIR . ($tmpName ? $tmpName : we_base_file::getUniqueId()) . '.' . strtolower($outputFormat) );
+					TEMP_DIR . ($tmpName ? : we_base_file::getUniqueId()) . '.' . strtolower($outputFormat));
 			$_thumbPath = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $_thumbSrc;
 
 			$_thumbExists = file_exists($_thumbPath);

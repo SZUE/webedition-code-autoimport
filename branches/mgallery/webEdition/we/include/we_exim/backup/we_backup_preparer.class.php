@@ -56,7 +56,7 @@ abstract class we_backup_preparer{
 			'backup_log_file' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/lastlog.php',
 			'limits' => array(
 				'mem' => we_convertIniSizes(ini_get('memory_limit')),
-				'exec' => ini_get('max_execution_time'),
+				'exec' => min(30, ini_get('max_execution_time')),
 				'requestTime' => 0,
 				'lastMem' => 0,
 			),
@@ -303,7 +303,7 @@ abstract class we_backup_preparer{
 	}
 
 	private static function getFileList(array &$list, $dir = '', $with_dirs = false, $rem_doc_root = true){
-		$dir = ($dir ? $dir : $_SERVER['DOCUMENT_ROOT']);
+		$dir = ($dir ? : $_SERVER['DOCUMENT_ROOT']);
 		if(!is_readable($dir) || !is_dir($dir)){
 			return false;
 		}
@@ -439,14 +439,14 @@ abstract class we_backup_preparer{
 							}');
 				} else {
 					return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
-									'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+							'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 				}
 			case 'customer':
 				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
-								'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+						'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 			default:
 				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[format_unknown]'), we_message_reporting::WE_MESSAGE_WARNING) .
-								'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+						'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 		}
 	}
 
@@ -455,8 +455,7 @@ abstract class we_backup_preparer{
 
 		if(!($_SESSION['weS']['weBackupVars']['backup_file'])){
 			if(isset($_SESSION['weS']['weBackupVars']['options']['upload'])){
-				$maxsize = getUploadMaxFilesize();
-				$_mess = sprintf(g_l('backup', '[upload_failed]'), we_base_file::getHumanFileSize($fs, we_base_file::SZ_MB));
+				$_mess = sprintf(g_l('backup', '[upload_failed]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(), we_base_file::SZ_MB));
 			} else {
 				$_mess = g_l('backup', '[file_missing]');
 			}
@@ -489,27 +488,27 @@ abstract class we_backup_preparer{
 		$file = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . we_base_file::getUniqueId();
 		$fs = @fopen($gzfile, "rb");
 
-		if($fs){
-			if(fseek($fs, $offset, SEEK_SET) == 0){
-				$fp = @fopen($file, "wb");
-				if($fp){
-					do{
-						$data = fread($fs, 8192);
-						if(strlen($data) == 0){
-							break;
-						}
-						fwrite($fp, $data);
-					}while(true);
-					fclose($fp);
-				} else {
-					fclose($fs);
-					return false;
-				}
-			}
-			fclose($fs);
-		} else {
+		if(!$fs){
 			return false;
 		}
+		if(fseek($fs, $offset, SEEK_SET) == 0){
+			$fp = @fopen($file, "wb");
+			if($fp){
+				do{
+					$data = fread($fs, 8192);
+					if(strlen($data) == 0){
+						break;
+					}
+					fwrite($fp, $data);
+				} while(true);
+				fclose($fp);
+			} else {
+				fclose($fs);
+				return false;
+			}
+		}
+		fclose($fs);
+
 
 		return $file;
 	}

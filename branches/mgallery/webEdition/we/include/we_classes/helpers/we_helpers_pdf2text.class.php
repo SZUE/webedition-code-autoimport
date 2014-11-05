@@ -595,7 +595,7 @@ class we_helpers_pdf2text{
 			return'';
 		}
 
-		$file = $file ? $file : fopen($fname, 'r');
+		$file = $file ? : fopen($fname, 'r');
 		$data = '';
 		while(($read = fread($file, self::READPORTION))){
 			$data.=$read;
@@ -717,7 +717,7 @@ class we_helpers_pdf2text{
 							$this->getPageFonts($fonts, $data);
 						}
 					}
-					if(isset($elem['Resources'])){
+					if(isset($elem['Resources']) && isset($this->data[rtrim($elem['Resources'])])){
 						$this->getPageFonts($fonts, $this->data[rtrim($elem['Resources'], self::TRIM_REF)]);
 					}
 					if(!empty($fonts)){

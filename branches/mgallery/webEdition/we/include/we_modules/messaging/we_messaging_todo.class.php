@@ -341,17 +341,17 @@ class we_messaging_todo extends we_messaging_proto{
 				'UserID' => $this->userid,
 				'msg_type' => $row('msg_type'),
 				'obj_type' => $row('obj_type'),
-				'headerDate' => $row['headerDate'] ? $row['headerDate'] : sql_function('NULL'),
-				'headerSubject' => $row['headerSubject'] ? $row['headerSubject'] : sql_function('NULL'),
-				'headerCreator' => $row['headerCreator'] ? $row['headerCreator'] : sql_function('NULL'),
-				'headerAssigner' => $row['headerAssigner'] ? $row['headerAssigner'] : sql_function('NULL'),
-				'headerStatus' => $row['headerStatus'] ? $row['headerStatus'] : sql_function('NULL'),
-				'headerDeadline' => $row['headerDeadline'] ? $row['headerDeadline'] : sql_function('NULL'),
-				'Priority' => $row['Priority'] ? $row['Priority'] : sql_function('NULL'),
+				'headerDate' => $row['headerDate'] ? : sql_function('NULL'),
+				'headerSubject' => $row['headerSubject'] ? : sql_function('NULL'),
+				'headerCreator' => $row['headerCreator'] ? : sql_function('NULL'),
+				'headerAssigner' => $row['headerAssigner'] ? : sql_function('NULL'),
+				'headerStatus' => $row['headerStatus'] ? : sql_function('NULL'),
+				'headerDeadline' => $row['headerDeadline'] ? : sql_function('NULL'),
+				'Priority' => $row['Priority'] ? : sql_function('NULL'),
 				'MessageText' => $row['MessageText'],
 				'Content_Type' => $row['Content_Type'],
 				'seenStatus' => intval($row['seenStatus']),
-				'tag' => $row['tag'] ? $row['tag'] : '',
+				'tag' => $row['tag'] ? : '',
 			);
 
 			$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->table) . ' ' . we_database_base::arraySetter($tmp));
@@ -407,7 +407,7 @@ class we_messaging_todo extends we_messaging_proto{
 						'Properties' => we_messaging_proto::TODO_PROP_NONE,
 						'MessageText' => $data['body'],
 						'seenStatus' => 0,
-						'Priority' => $data['priority'] ? $data['priority'] : sql_function('NULL'),
+						'Priority' => $data['priority'] ? : sql_function('NULL'),
 						'Content_Type' => isset($data['Content_Type']) && $data['Content_Type'] ? $data['Content_Type'] : sql_function('NULL')
 			)));
 

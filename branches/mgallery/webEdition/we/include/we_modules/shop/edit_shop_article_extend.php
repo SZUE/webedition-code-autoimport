@@ -356,7 +356,7 @@ if(isset($daten)){
 			$typeAlias = isset($typeAlias) ? "document" : "document"; // Pager: determine the current page
 
 			if($entries){ // Pager: Number of records not empty?
-				$topInfo = ($entries ? $entries : g_l('modules_shop', '[noRecord]'));
+				$topInfo = ($entries ? : g_l('modules_shop', '[noRecord]'));
 				// :: then do the query for documents
 				$DB_WE->query(
 					'SELECT c.dat AS sqlDat,l.DID AS dd,f.CreationDate AS dDate,f.Published AS dPub,f.ModDate AS dMod

@@ -232,7 +232,7 @@ class we_thumbnail{
 		$this->date = $date;
 		$this->generateSmaller = $generateSmaller;
 		if($this->thumbID && $this->thumbName){
-			$this->outputFormat = $this->thumbFormat ? $this->thumbFormat : (isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ? we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : 'jpg');
+			$this->outputFormat = $this->thumbFormat ? : (isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ? we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : 'jpg');
 			$this->checkAndGetImageSizeIfNeeded();
 			$this->setOutputPath();
 			$this->calculateOutsize();
@@ -274,7 +274,7 @@ class we_thumbnail{
 	 */
 	public function initByThumbName($thumbName, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
 		$_foo = getHash('SELECT * FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $this->db->escape($thumbName) . '"', $this->db);
-		$_foo = $_foo ? $_foo : array(
+		$_foo = $_foo ? : array(
 			'ID' => 0,
 			'Width' => 0,
 			'Height' => 0,
@@ -307,7 +307,7 @@ class we_thumbnail{
 			return false;
 		}
 		$_foo = getHash('SELECT * FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db);
-		$_foo = $_foo ? $_foo : array(
+		$_foo = $_foo ? : array(
 			'ID' => 0,
 			'Width' => 0,
 			'Height' => 0,
@@ -354,7 +354,7 @@ class we_thumbnail{
 			we_base_file::createLocalFolder($_thumbdir);
 		}
 		$quality = $this->thumbQuality < 1 ? 10 : ($this->thumbQuality > 10 ? 100 : $this->thumbQuality * 10);
-		$outarr = we_base_imageEdit::edit_image($this->imageData ? $this->imageData : $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->imagePath, $this->outputFormat, $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
+		$outarr = we_base_imageEdit::edit_image($this->imageData ? : $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->imagePath, $this->outputFormat, $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
 
 		return $outarr[0] ? self::OK : self::BUILDERROR;
 	}
@@ -379,7 +379,7 @@ class we_thumbnail{
 			return self::USE_ORIGINAL;
 		}
 		$quality = $this->thumbQuality < 1 ? 10 : ($this->thumbQuality > 10 ? 100 : $this->thumbQuality * 10);
-		$outarr = we_base_imageEdit::edit_image($this->imageData ? $this->imageData : $_SERVER["DOCUMENT_ROOT"] . $this->imagePath, $this->outputFormat, "", $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
+		$outarr = we_base_imageEdit::edit_image($this->imageData ? : $_SERVER["DOCUMENT_ROOT"] . $this->imagePath, $this->outputFormat, "", $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
 		if($outarr[0]){
 			$thumbDataPointer = $outarr[0];
 			return self::OK;
@@ -397,7 +397,7 @@ class we_thumbnail{
 	 * @param bool $realpath  if set to true, Document_ROOT will be appended before
 	 */
 	public static function getThumbDirectory($realpath = false){
-		$dir = '/' . ltrim(preg_replace('#^\.?(.*)$#', '\1', (WE_THUMBNAIL_DIRECTORY ? WE_THUMBNAIL_DIRECTORY : '_thumbnails_')), '/');
+		$dir = '/' . ltrim(preg_replace('#^\.?(.*)$#', '\1', (WE_THUMBNAIL_DIRECTORY ? : '_thumbnails_')), '/');
 		return ($realpath ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' : '') . $dir;
 	}
 

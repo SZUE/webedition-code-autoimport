@@ -92,6 +92,6 @@ if($_SESSION['user']['Username'] && $_SESSION['user']['ID']){
 	$_SESSION['perms'] = we_users_user::getAllPermissions($_SESSION['user']['ID']);
 	we_users_user::setEffectiveWorkspaces($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
 }
-$_SESSION['user']['isWeSession'] = true; // for pageLogger, to know that it is really a webEdition session
+$_SESSION['user']['isWeSession'] = true;
 unset($userdata);
 we_base_sessionHandler::makeNewID();

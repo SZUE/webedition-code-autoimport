@@ -103,7 +103,7 @@ class we_selector_query{
 		if($addCT){
 			$this->addQueryField($typeField);
 		}
-		$where .= ($userExtraSQL ? $userExtraSQL : '');
+		$where .= ($userExtraSQL ? : '');
 
 		if($this->condition){
 			foreach($this->condition as $val){

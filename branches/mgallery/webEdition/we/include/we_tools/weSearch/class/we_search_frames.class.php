@@ -412,7 +412,7 @@ class we_search_frames extends we_tool_frames{
 			$headline = (isset($c['headline']) && $c['headline']) ? ('<div  class="weMultiIconBoxHeadline" style="margin-bottom:10px;margin-left:30px;">' . $c["headline"] . '</div>') : "";
 			$mainContent = (isset($c['html']) && $c['html']) ? $c['html'] : '';
 			$leftWidth = (isset($c['space']) && $c['space']) ? abs($c['space']) : 0;
-			$leftContent = $icon ? $icon : (($leftWidth && (!$_forceRightHeadline)) ? $headline : '');
+			$leftContent = $icon ? : (($leftWidth && (!$_forceRightHeadline)) ? $headline : '');
 			$rightContent = '<div class="defaultfont">' . ((($icon && $headline) || ($leftContent === '') || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
 
 			if($leftContent || $leftWidth && $leftContent != ''){

@@ -249,7 +249,7 @@ abstract class we_navigation_dynList{
 	  } */
 
 	public static function getFirstDynDocument($id, we_database_base $db = null){
-		$db = $db ? $db : new DB_WE();
+		$db = $db ? : new DB_WE();
 		$_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($id) . ' AND IsFolder=0 AND IsDynamic=1 AND Published!=0;', '', $db);
 		if(!$_id){
 			$_path = id_to_path($id);

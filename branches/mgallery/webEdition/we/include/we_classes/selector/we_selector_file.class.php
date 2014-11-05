@@ -67,7 +67,7 @@ abstract class we_selector_file{
 			$_SESSION['weS']['we_fs_lastDir'] = array($table => 0);
 		}
 
-		$this->order = ($order ? $order : $this->order);
+		$this->order = ($order ? : $this->order);
 
 		$this->db = new DB_WE();
 		$this->id = $id;
@@ -130,7 +130,7 @@ abstract class we_selector_file{
 		if($folderID == $ID){
 			return true;
 		}
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 		$pid = f('SELECT ParentID FROM ' . $db->escape($this->table) . ' WHERE ID=' . intval($ID), '', $db);
 		if($pid == $folderID){
 			return true;

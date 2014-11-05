@@ -28,11 +28,15 @@ we/include/we_widgets/mod/usr.inc.php
 we/include/we_widgets/mod/upb.inc.php
 we/include/we_widgets/mod/sct.inc.php
 we/include/we_widgets/mod/rss.inc.php
+we/include/we_widgets/mod/plg.php
 we/include/we_widgets/mod/plg.inc.php
 we/include/we_widgets/mod/pad.inc.php
 we/include/we_widgets/mod/msg.inc.php
 we/include/we_widgets/mod/mfd.inc.php
 we/include/we_widgets/mod/mdc.inc.php
+we/include/we_widgets/inc/plg/chart.php
+we/include/we_widgets/inc/plg.inc.php
+we/include/we_widgets/inc/plg
 we/include/we_widgets/dlg/usr.inc.php
 we/include/we_widgets/dlg/upb/upb.inc.php
 we/include/we_widgets/dlg/upb.inc.php
@@ -58,6 +62,7 @@ we/include/we_widgets/dlg/rss/we_language/Deutsch_UTF-8/top_feeds.inc.php
 we/include/we_widgets/dlg/rss/we_language/Deutsch_UTF-8
 we/include/we_widgets/dlg/rss/we_language
 we/include/we_widgets/dlg/rss.inc.php
+we/include/we_widgets/dlg/plg.php
 we/include/we_widgets/dlg/plg.inc.php
 we/include/we_widgets/dlg/pad/pad.inc.php
 we/include/we_widgets/dlg/pad.inc.php
@@ -169,6 +174,7 @@ we/include/we_tools/MultiDirChooser.inc.php
 we/include/we_tools/MultiDirAndTemplateChooser.inc.php
 we/include/we_templates/we_quicktime_properties.inc.php
 we/include/we_templates/we_editor_live.inc.php
+we/include/we_tags/we_tag_tracker.inc.php
 we/include/we_tags/we_tag_redirectObjectSeoUrls.inc.php
 we/include/we_tags/we_tag_onlinemonitor.inc.php
 we/include/we_tags/we_tag_makeMail.inc.php

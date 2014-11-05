@@ -229,13 +229,9 @@ class we_backup_tableItem extends weModelBase{
 	}
 
 //FIXME: remove
-	static function serialize_fix_callback($match){
-		return 's:' . strlen($match[1]) . ':"' . $match[1] . '";';
-	}
-
-//FIXME: remove
 	static function correctSerDataISOtoUTF($serial_str){
-		return preg_replace_callback('|s:\d+:"(.*?)";|s', 'we_backup_tableItem::serialize_fix_callback', $serial_str);
+		return preg_replace_callback('|s:\d+:"(.*?)";|s', function($match){return 's:' . strlen($match[1]) . ':"' . $match[1] . '";';}, $serial_str);
 	}
 
 }
+

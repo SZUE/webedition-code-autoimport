@@ -40,7 +40,7 @@ class we_class_folder extends we_folder{
 		$this->IsClassFolder = 1;
 		array_push($this->persistent_slots, 'searchclass', 'searchclass_class', 'TriggerID', 'TableID');
 		if(isWE()){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, /* we_base_constants::WE_EDITPAGE_CFWORKSPACE, */ we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CFWORKSPACE, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
 		}
 		$this->Icon = we_base_ContentTypes::FOLDER_ICON;
 		$this->ContentType = we_base_ContentTypes::FOLDER;
@@ -49,9 +49,8 @@ class we_class_folder extends we_folder{
 	private function setClassProp(){
 		$sp = explode('/', $this->Path);
 		$this->ClassPath = '/' . $sp[1];
-		//FIXME: change this code
-		$this->TableID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $this->DB_WE->escape($this->ClassPath) . '"', "", $this->DB_WE);
-		$this->RootfolderID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $this->DB_WE->escape($this->ClassPath) . '"', "", $this->DB_WE);
+
+		list($this->RootfolderID, $this->TableID) = getHash('SELECT of.ID,o.ID FROM ' . OBJECT_FILES_TABLE . ' of JOIN ' . OBJECT_TABLE . ' o ON of.TableID=o.ID WHERE of.IsClassFolder=1 AND o.Path="' . $this->DB_WE->escape($this->ClassPath) . '" AND of.Path=o.Path', $this->DB_WE, MYSQL_NUM);
 	}
 
 	public function we_rewrite(){

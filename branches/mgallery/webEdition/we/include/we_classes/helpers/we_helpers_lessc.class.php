@@ -39,7 +39,8 @@ class we_helpers_lessc extends lessc{
 		if(preg_match('|#WE:(\d+)#|', $url, $matches)){
 			$url = intval($matches[1]);
 			return f('SELECT Extension FROM ' . FILE_TABLE . ' WHERE ID=' . $url) === '.less';
-		} elseif(substr_compare($url, '.css', -4, 4) === 0){
+		}
+		if(substr_compare($url, '.css', -4, 4) === 0){
 			return false;
 		}
 
@@ -125,7 +126,7 @@ class we_helpers_lessc extends lessc{
 		}
 
 		$id = path_to_id($this->path . '/' . $tmpurl, FILE_TABLE, $GLOBALS['DB_WE']);
-		$id = ($id ? $id : path_to_id('/' . $tmpurl, FILE_TABLE, $GLOBALS['DB_WE']));
+		$id = ($id ? : path_to_id('/' . $tmpurl, FILE_TABLE, $GLOBALS['DB_WE']));
 		if($id){
 			return $id;
 		}

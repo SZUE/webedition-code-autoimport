@@ -111,7 +111,7 @@ function we_tag_object($attribs){
 			</table><?php
 		}
 	} else {
-		$we_oid = $we_oid ? $we_oid : we_base_request::_(we_base_request::INT, 'we_oid', 0);
+		$we_oid = $we_oid ? : we_base_request::_(we_base_request::INT, 'we_oid', 0);
 	}
 	$GLOBALS['lv'] = new we_object_tag($classid, $we_oid, $triggerid, $searchable, $condition, $hidedirindex, $objectseourls);
 	if(is_array($GLOBALS['we_lv_array'])){

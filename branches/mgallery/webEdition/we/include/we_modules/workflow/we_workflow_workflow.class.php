@@ -100,7 +100,7 @@ class we_workflow_workflow extends we_workflow_base{
 	 * Load workflow definition from database
 	 */
 	function load($id = 0){
-		$this->ID = $id ? $id : $this->ID;
+		$this->ID = $id ? : $this->ID;
 		if(!$this->ID){
 			return false;
 		}
@@ -206,12 +206,12 @@ class we_workflow_workflow extends we_workflow_base{
 
 	static function isDocInWorkflow($docID, we_database_base $db){
 		$id = f('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type IN(' . self::DOCTYPE_CATEGORY . ',' . self::FOLDER . ') AND Status=' . self::STATE_INACTIVE, '', $db);
-		return ($id ? $id : false);
+		return ($id ? : false);
 	}
 
 	static function isObjectInWorkflow($docID, we_database_base $db){
 		$id = f('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type=' . self::OBJECT . ' AND Status=' . self::STATE_INACTIVE, '', $db);
-		return ($id ? $id : false);
+		return ($id ? : false);
 	}
 
 	/**
@@ -324,7 +324,7 @@ class we_workflow_workflow extends we_workflow_base{
 		}
 		$all = array_keys($wfIDs);
 
-		return ($workflowID ? $workflowID : false);
+		return ($workflowID ? : false);
 	}
 
 	function addNewStep(){

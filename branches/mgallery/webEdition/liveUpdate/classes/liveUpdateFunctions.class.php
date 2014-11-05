@@ -27,7 +27,7 @@
  * TBD if we divide this class in several classes
  */
 class liveUpdateFunctions{
-	private $QueryLog = array(
+	var $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
 		'error' => array(),
@@ -95,11 +95,10 @@ class liveUpdateFunctions{
 	 * @return unknown
 	 */
 	function replaceExtensionInContent($content, $needle, $replace){
-		$content = str_replace($needle, $replace, $content);
-		return $content;
+		return str_replace($needle, $replace, $content);
 	}
 
-	private static function replaceDocRootNeeded(){
+	function replaceDocRootNeeded(){
 		return (!(isset($_SERVER['DOCUMENT' . '_ROOT']) && $_SERVER['DOCUMENT' . '_ROOT'] == LIVEUPDATE_SOFTWARE_DIR));
 	}
 
@@ -111,7 +110,7 @@ class liveUpdateFunctions{
 	 * @return string
 	 */
 	function checkReplaceDocRoot($content){
-		if(self::replaceDocRootNeeded()){
+		if($this->replaceDocRootNeeded()){
 			$content = str_replace(array(
 				'$_SERVER[\'DOCUMENT_ROOT\']',
 				"\$_SERVER[\"DOCUMENT_ROOT\"]",
@@ -396,7 +395,7 @@ class liveUpdateFunctions{
 	 * @param string $tableName
 	 * @return array
 	 */
-	private static function getFieldsOfTable($tableName, we_database_base $db){
+	function getFieldsOfTable($tableName, we_database_base $db){
 
 		$fieldsOfTable = array();
 		$db->query('DESCRIBE ' . $db->escape($tableName));
@@ -420,7 +419,7 @@ class liveUpdateFunctions{
 	 * @param string $tableName
 	 * @return array
 	 */
-	private static function getKeysFromTable($tableName){
+	function getKeysFromTable($tableName){
 		$db = new DB_WE();
 		$keysOfTable = array();
 		$db->query('SHOW INDEX FROM ' . $db->escape($tableName));
@@ -453,7 +452,7 @@ class liveUpdateFunctions{
 	 * @param boolean $isNew
 	 * @return unknown
 	 */
-	private static function getAlterTableForFields($fields, $tableName, $isNew = false){
+	function getAlterTableForFields($fields, $tableName, $isNew = false){
 		$queries = array();
 
 		foreach($fields as $fieldName => $fieldInfo){
@@ -471,7 +470,7 @@ class liveUpdateFunctions{
 			//note: auto_increment cols must have an index!
 			if(strpos($extra, 'AUTO_INCREMENT') !== false){
 				$keyfound = false;
-				$Currentkeys = self::getKeysFromTable($tableName);
+				$Currentkeys = $this->getKeysFromTable($tableName);
 				foreach($Currentkeys as $ckeys){
 					foreach($ckeys as $k){
 						if(stripos($k, $fieldName) !== false){
@@ -504,7 +503,7 @@ class liveUpdateFunctions{
 	 * @param boolean $isNew
 	 * @return array
 	 */
-	private static function getAlterTableForKeys($fields, $tableName, $isNew){
+	function getAlterTableForKeys($fields, $tableName, $isNew){
 		$queries = array();
 
 		foreach($fields as $key => $indexes){
@@ -537,7 +536,7 @@ class liveUpdateFunctions{
 	 * @param string $path
 	 * @return boolean
 	 */
-	private static function isInsertQueriesFile($path){
+	function isInsertQueriesFile($path){
 		return preg_match("/^(.){3}_insert_(.*).sql/", basename($path));
 	}
 
@@ -552,7 +551,7 @@ class liveUpdateFunctions{
 	 */
 	function executeQueriesInFiles($path){
 		$db = new DB_WE();
-		if(self::isInsertQueriesFile($path)){
+		if($this->isInsertQueriesFile($path)){
 			$success = true;
 			$queryArray = file($path);
 			if($queryArray){
@@ -579,7 +578,7 @@ class liveUpdateFunctions{
 	 * @param string $query
 	 */
 	function executeUpdateQuery($query, we_database_base $db = null){
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 
 		// when executing a create statement, try to create table,
 		// change fields when needed.
@@ -596,14 +595,14 @@ class liveUpdateFunctions{
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP COLUMN ' . $db->escape($matches[1]) : '');
 		}
 		if(preg_match('/###ONCOL\((.*),(.*)\)([^#]+)###/', $query, $matches)){
-			$keys = self::getKeysFromTable($matches[2]);
+			$keys = $this->getKeysFromTable($matches[2]);
 			if(isset($keys[$matches[1]])){
 				$query = $matches[3];
 			}
 		}
 		//handle if key is not set, should be used after table def. so handling code, e.g. truncate, copy... can be put here
 		if(preg_match('/###ONKEYFAILED\((.*),(.*)\)([^#]+)###/', $query, $matches)){
-			$keys = self::getKeysFromTable($matches[2]);
+			$keys = $this->getKeysFromTable($matches[2]);
 			if(!isset($keys[$matches[1]])){
 				$query = $matches[3];
 			}
@@ -675,12 +674,12 @@ class liveUpdateFunctions{
 						$db->query(trim($tmpQuery));
 
 						// get information from existing and new table
-						$origTable = self::getFieldsOfTable($tableName, $db);
-						$newTable = self::getFieldsOfTable($tmpName, $db);
+						$origTable = $this->getFieldsOfTable($tableName, $db);
+						$newTable = $this->getFieldsOfTable($tmpName, $db);
 
 						// get keys from existing and new table
-						$origTableKeys = self::getKeysFromTable($tableName);
-						$newTableKeys = self::getKeysFromTable($tmpName);
+						$origTableKeys = $this->getKeysFromTable($tableName);
+						$newTableKeys = $this->getKeysFromTable($tmpName);
 
 
 						// determine changed and new fields.
@@ -704,10 +703,10 @@ class liveUpdateFunctions{
 
 						// get all queries to change existing fields
 						if(!empty($changeFields)){
-							$alterQueries = array_merge($alterQueries, self::getAlterTableForFields($changeFields, $tableName));
+							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
 						}
 						if(!empty($addFields)){
-							$alterQueries = array_merge($alterQueries, self::getAlterTableForFields($addFields, $tableName, true));
+							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
 						}
 
 						//new position to determine new keys
@@ -735,11 +734,11 @@ class liveUpdateFunctions{
 
 						// get all queries to change existing keys
 						if(!empty($addKeys)){
-							$alterQueries = array_merge($alterQueries, self::getAlterTableForKeys($addKeys, $tableName, true));
+							$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
 						}
 
 						if(!empty($changedKeys)){
-							$alterQueries = array_merge($alterQueries, self::getAlterTableForKeys($changedKeys, $tableName, false));
+							$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
 						}
 
 						//clean-up, if there is still a temporary index - make sure this is the first statement, since new temp might be created
@@ -783,7 +782,7 @@ class liveUpdateFunctions{
 									$db->unlock();
 								}
 							}
-							$SearchTempTableKeys = self::getKeysFromTable($tableName);
+							$SearchTempTableKeys = $this->getKeysFromTable($tableName);
 							if(isset($SearchTempTableKeys['_temp'])){
 								$db->query(trim('ALTER TABLE ' . $db->escape($tableName) . ' DROP INDEX _temp'));
 							}

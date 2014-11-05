@@ -1063,7 +1063,7 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 	 * Description:
 	 */
 	function saveState($of = ""){
-		$of = ($of ? $of : we_base_file::getUniqueId()); // #6590, changed from: uniqid(time())
+		$of = ($of ? : we_base_file::getUniqueId()); // #6590, changed from: uniqid(time())
 		we_base_file::save($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $of, $this->_saveState(), 'wb');
 		return $of;
 	}

@@ -86,8 +86,8 @@ class we_flashDocument extends we_binaryDocument{
 		$_data = $this->getElement('data');
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
 
-			$pluginspage = $this->getElement('Pluginspage') ? $this->getElement('Pluginspage') : 'http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash';
-			$codebase = $this->getElement('Codebase') ? $this->getElement('Codebase') : 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0';
+			$pluginspage = $this->getElement('Pluginspage') ? : 'http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash';
+			$codebase = $this->getElement('Codebase') ? : 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0';
 
 			// fix. older versions of webEdition bgcolor was type txt and not attrib
 			if($this->issetElement('bgcolor')){

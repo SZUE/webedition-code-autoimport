@@ -120,7 +120,7 @@ abstract class we_class{
 	/* creates a text-input field for entering Data that will be stored at the $elements Array */
 
 	function formInput($name, $size = 25, $type = 'txt'){
-		return $this->formTextInput($type, $name, (g_l('weClass', '[' . $name . ']') ? g_l('weClass', '[' . $name . ']') : $name), $size);
+		return $this->formTextInput($type, $name, (g_l('weClass', '[' . $name . ']') ? : $name), $size);
 	}
 
 	/* creates a color field. when user clicks, a colorchooser opens. Data that will be stored at the $elements Array */
@@ -280,7 +280,7 @@ abstract class we_class{
 # public ##################
 
 	public function initByID($ID, $Table = FILE_TABLE, $from = we_class::LOAD_MAID_DB){
-		$Table = ($Table ? $Table : FILE_TABLE);
+		$Table = ($Table ? : FILE_TABLE);
 
 		$this->ID = intval($ID);
 		$this->Table = $Table;

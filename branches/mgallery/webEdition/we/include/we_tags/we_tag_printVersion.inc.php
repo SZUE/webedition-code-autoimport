@@ -57,7 +57,7 @@ function we_tag_printVersion($attribs, $content){
 		$_query_string['tid'] = $tid;
 		$url = ($triggerID ? id_to_path($triggerID) : (isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME']));
 	} else {
-		$triggerID = $triggerID ? $triggerID : ($doc->IsDynamic ? $doc->ID : 0);
+		$triggerID = $triggerID ? : ($doc->IsDynamic ? $doc->ID : 0);
 		if($triggerID || $doc->IsDynamic){
 			$_query_string['pv_id'] = $id;
 			$_query_string['pv_tid'] = $tid;

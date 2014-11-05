@@ -478,9 +478,6 @@ foreach(array_diff(array_keys(we_base_moduleInfo::getAllModules()), $GLOBALS['_w
 echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 		break;';
 ?>
-			case "we_tracker":
-				new jsWindow("<?php echo WE_TRACKER_DIR; ?>/controlcenter.php", "we_tracker", -1, -1, 1024, 768, true, true, true);
-				break;
 			case "openFirstStepsWizardMasterTemplate":
 			case "openFirstStepsWizardDetailTemplates":
 				new jsWindow(url, "we_firststepswizard", -1, -1, 1024, 768, true, true, true);
@@ -1240,7 +1237,6 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 			case "new_widget_upb":
 			case "new_widget_mdc":
 			case "new_widget_pad":
-			case "new_widget_plg":
 			case "new_widget_shp":
 			case "new_widget_fdl":
 				if (top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().quickstart) {

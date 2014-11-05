@@ -98,7 +98,7 @@ div.imgDiv{
 }
 img.icon{
 	max-width:3em;
-	height:3em;
+	max-height:3em;
 	cursor:pointer;
 }
 div.imgText{

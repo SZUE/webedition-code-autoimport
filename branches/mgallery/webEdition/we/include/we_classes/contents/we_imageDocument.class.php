@@ -733,7 +733,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$GLOBALS['DB_WE']->query('SELECT tag,type,importFrom FROM ' . METADATA_TABLE);
 		while($GLOBALS['DB_WE']->next_record()){
 			list($_fieldName, $_fieldType, $_importFrom) = $GLOBALS['DB_WE']->getRecord();
-			$_fieldType = $_fieldType ? $_fieldType : 'textfield';
+			$_fieldType = $_fieldType ? : 'textfield';
 
 			$_parts = explode(',', $_importFrom);
 			foreach($_parts as $_part){
@@ -784,13 +784,13 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		$textname = 'we_' . $this->Name . '_txt[LinkPath]';
 		$idname = 'we_' . $this->Name . '_txt[LinkID]';
 		$extname = 'we_' . $this->Name . '_txt[LinkHref]';
-		$linkType = $this->getElement('LinkType') ? $this->getElement('LinkType') : 'no';
+		$linkType = $this->getElement('LinkType') ? : 'no';
 		$linkPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('LinkID')), 'Path', $this->DB_WE);
 
 		$RollOverFlagName = 'we_' . $this->Name . '_txt[RollOverFlag]';
 		$RollOverFlag = $this->getElement('RollOverFlag') ? 1 : 0;
 		$RollOverIDName = 'we_' . $this->Name . '_txt[RollOverID]';
-		$RollOverID = $this->getElement('RollOverID') ? $this->getElement('RollOverID') : '';
+		$RollOverID = $this->getElement('RollOverID') ? : '';
 		$RollOverPathname = 'we_' . $this->Name . '_txt[RollOverPath]';
 		$RollOverPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($RollOverID), 'Path', $this->DB_WE);
 

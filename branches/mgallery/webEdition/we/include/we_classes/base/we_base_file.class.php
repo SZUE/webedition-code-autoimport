@@ -420,7 +420,7 @@ abstract class we_base_file{
 			return false;
 		}
 
-		$zfile = ($destination ? $destination : $file) . '.' . self::getZExtension($compression);
+		$zfile = ($destination ? : $file) . '.' . self::getZExtension($compression);
 
 		if(self::isCompressed($file)){
 			if($remove){
@@ -543,6 +543,7 @@ abstract class we_base_file{
 		}
 		if(!is_file($destination)){
 			t_e('destination not naming a file', $destination, $link);
+			return false;
 		}
 		if(@link($destination, $link)){
 			return true;
@@ -593,7 +594,7 @@ abstract class we_base_file{
 		if($id == 0){
 			return true;
 		}
-		return (f('SELECT 1 FROM ' . $table . ' WHERE ID=' . $id, '', ($db ? $db : new DB_WE())) === '1');
+		return (f('SELECT 1 FROM ' . $table . ' WHERE ID=' . $id, '', ($db ? : new DB_WE())) === '1');
 	}
 
 	public static function cleanTempFiles($cleanSessFiles = false){

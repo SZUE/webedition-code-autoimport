@@ -54,7 +54,7 @@ $tabname = we_base_request::_(we_base_request::STRING, 'tabname', 'setting_ui');
  * @return         string
  */
 function create_dialog($name, array $content, $expand = -1, $show_text = '', $hide_text = '', $JS = ''){
-	$_output = ($JS ? $JS : '') .
+	$_output = ($JS ? : '') .
 		($expand != -1 ? we_html_multiIconBox::getJS() : '');
 
 	// Return HTML code of dialog
@@ -1154,7 +1154,7 @@ function build_dialog($selected_setting = 'ui'){
 			$CSSAPPLYTO_DEFAULT->addOption('all', 'all');
 			$CSSAPPLYTO_DEFAULT->addOption('around', 'around');
 			$CSSAPPLYTO_DEFAULT->addOption('wysiwyg', 'wysiwyg');
-			$CSSAPPLYTO_DEFAULT->selectOption(get_value('CSSAPPLYTO_DEFAULT') ? get_value('CSSAPPLYTO_DEFAULT') : 'around');
+			$CSSAPPLYTO_DEFAULT->selectOption(get_value('CSSAPPLYTO_DEFAULT') ? : 'around');
 
 			$BASE_IMG = we_html_tools::htmlTextInput('newconf[BASE_IMG]', 22, get_value('BASE_IMG'), '', 'placeholder="http://example.org"', 'text', 225, 0, '');
 			$BASE_CSS = we_html_tools::htmlTextInput('newconf[BASE_CSS]', 22, get_value('BASE_CSS'), '', 'placeholder="http://example.org"', 'text', 225, 0, '');
@@ -1208,8 +1208,8 @@ function build_dialog($selected_setting = 'ui'){
 				$i++;
 				$tabC->addRow();
 				$tabC->setCol($i, 0, array('class' => 'defaultfont'), CheckAndConvertISObackend($country));
-				$tabC->setCol($i, 1, array('class' => 'defaultfont'), '<input type="radio" name="newconf[countries][' . $countrycode . ']" value="2" ' . (in_array($countrycode, $countries_top) ? 'checked' : '') . ' > ');
-				$tabC->setCol($i, 2, array('class' => 'defaultfont'), '<input type="radio" name="newconf[countries][' . $countrycode . ']" value="1" ' . (in_array($countrycode, $countries_shown) ? 'checked' : '') . ' > ');
+				$tabC->setCol($i, 1, array('class' => 'defaultfont'), '<input type="radio" name="newconf[countries][' . $countrycode . ']" value="2" ' . (in_array($countrycode, $countries_top) ? 'checked="checked"' : '') . ' > ');
+				$tabC->setCol($i, 2, array('class' => 'defaultfont'), '<input type="radio" name="newconf[countries][' . $countrycode . ']" value="1" ' . (in_array($countrycode, $countries_shown) ? 'checked="checked"' : '') . ' > ');
 				$tabC->setCol($i, 3, array('class' => 'defaultfont'), '<input type="radio" name="newconf[countries][' . $countrycode . ']" value="0" ' . (!in_array($countrycode, $countries_top) && !in_array($countrycode, $countries_shown) ? 'checked' : '') . ' > ');
 			}
 
@@ -2346,16 +2346,6 @@ function set_state_auth() {
 				$_thumbnail_dir = we_html_button::create_button_table(array($_inp, $_but)) . '<br/>' . g_l('thumbnails', "[add_description_nogdlib]");
 			}
 
-			/**
-			 * set pageLogger dir
-			 */
-			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[WE_TRACKER_DIR]'].value");
-			$wecmdenc4 = '';
-			$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '" . we_base_ContentTypes::FOLDER . "', document.forms[0].elements['newconf[WE_TRACKER_DIR]'].value, '')") : "";
-			$_inp = we_html_tools::htmlTextInput("newconf[WE_TRACKER_DIR]", 12, get_value("WE_TRACKER_DIR"), "", "", "text", 125);
-			$_we_tracker_dir = we_html_button::create_button_table(array($_inp, $_but));
-
-
 			//  select if hooks can be executed
 			$EXECUTE_HOOKS = new we_html_select(array("name" => "newconf[EXECUTE_HOOKS]", "class" => "weSelect"));
 			$EXECUTE_HOOKS->addOption(0, g_l('prefs', '[no]'));
@@ -2394,7 +2384,6 @@ function set_state_auth() {
 				array("headline" => g_l('prefs', '[authuser]'), "html" => $_authuser, "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[authpass]'), "html" => $_authpass, "space" => 200),
 				array("headline" => g_l('prefs', '[thumbnail_dir]'), "html" => $_thumbnail_dir, "space" => 200),
-				array("headline" => g_l('prefs', '[pagelogger_dir]'), "html" => $_we_tracker_dir, "space" => 200),
 				array("headline" => g_l('prefs', '[hooks]'), "html" => $hooksHtml, "space" => 200),
 				array("headline" => g_l('prefs', '[session][title]'), "html" => $sessionHtml, "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[session][time]'), "html" => $sessionTime, "space" => 200, "noline" => 1),
@@ -2496,7 +2485,7 @@ function set_state_auth() {
 			$yuiSuggest->setInput('error_document_no_objectfile_text', ( ERROR_DOCUMENT_NO_OBJECTFILE ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE) : ''));
 			$yuiSuggest->setMaxResults(20);
 			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult('newconf[ERROR_DOCUMENT_NO_OBJECTFILE]', ( ERROR_DOCUMENT_NO_OBJECTFILE ? ERROR_DOCUMENT_NO_OBJECTFILE : 0));
+			$yuiSuggest->setResult('newconf[ERROR_DOCUMENT_NO_OBJECTFILE]', ( ERROR_DOCUMENT_NO_OBJECTFILE ? : 0));
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($_acButton1, 10);
@@ -2749,7 +2738,7 @@ function set_xhtml_field(val, field){
 			$yuiSuggest->setInput('SECURITY_LIMIT_CUSTOMER_REDIRECT_text', (SECURITY_LIMIT_CUSTOMER_REDIRECT ? id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT) : ''));
 			$yuiSuggest->setMaxResults(20);
 			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult('newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]', ( SECURITY_LIMIT_CUSTOMER_REDIRECT ? SECURITY_LIMIT_CUSTOMER_REDIRECT : 0));
+			$yuiSuggest->setResult('newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]', ( SECURITY_LIMIT_CUSTOMER_REDIRECT ? : 0));
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(250);
 			$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)"), 10);
@@ -2778,7 +2767,7 @@ function set_xhtml_field(val, field){
 
 			$encryptinfo = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[security][encryption][hint]'), we_html_tools::TYPE_ALERT, 450, false, 60) . '<br/>';
 			$cryptkey = get_value('SECURITY_ENCRYPTION_KEY');
-			$encryptionKey = we_html_tools::htmlTextInput('newconf[SECURITY_ENCRYPTION_KEY]', 30, ($cryptkey ? $cryptkey : bin2hex(we_customer_customer::cryptGetIV(56))), 112) . ' (hex)'; //+Button vorhandene Passwörter convertieren
+			$encryptionKey = we_html_tools::htmlTextInput('newconf[SECURITY_ENCRYPTION_KEY]', 30, ($cryptkey ? : bin2hex(we_customer_customer::cryptGetIV(56))), 112) . ' (hex)'; //+Button vorhandene Passwörter convertieren
 
 			$storeSessionPassword = new we_html_select(array('name' => 'newconf[SECURITY_SESSION_PASSWORD]', 'class' => 'weSelect'));
 			$storeSessionPassword->addOption(we_customer_customer::REMOVE_PASSWORD, g_l('prefs', '[security][storeSessionPassword][type][0]'));

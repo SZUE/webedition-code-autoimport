@@ -569,7 +569,7 @@ function we_submit(){
 
 		$export_depth = $this->exportVars["export_depth"];
 
-		$filename = $filename ? $filename : "weExport_" . time() . ($extype == we_import_functions::TYPE_GENERIC_XML ? ".xml" : ".csv");
+		$filename = $filename ? : "weExport_" . time() . ($extype == we_import_functions::TYPE_GENERIC_XML ? ".xml" : ".csv");
 
 
 //set variables in top frame

@@ -114,7 +114,7 @@ function we_tag_userInput($attribs, $content){
 				$_SESSION[$_imgDataId]['quality'] = weTag_getAttribute('quality', $attribs, 8);
 				$_SESSION[$_imgDataId]['keepratio'] = weTag_getAttribute('keepratio', $attribs, true, true);
 				$_SESSION[$_imgDataId]['maximize'] = weTag_getAttribute('maximize', $attribs, false, true);
-				$_SESSION[$_imgDataId]['id'] = $orgVal ? $orgVal : '';
+				$_SESSION[$_imgDataId]['id'] = $orgVal ? : '';
 
 				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8');
 				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs);
@@ -195,7 +195,7 @@ function we_tag_userInput($attribs, $content){
 				//$_SESSION[$_imgDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
 				$_SESSION[$_flashmovieDataId]['width'] = weTag_getAttribute('width', $attribs, 0);
 				$_SESSION[$_flashmovieDataId]['height'] = weTag_getAttribute('height', $attribs, 0);
-				$_SESSION[$_flashmovieDataId]['id'] = $orgVal ? $orgVal : '';
+				$_SESSION[$_flashmovieDataId]['id'] = $orgVal ? : '';
 
 				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8');
 				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs);
@@ -278,7 +278,7 @@ function we_tag_userInput($attribs, $content){
 				//$_SESSION[$_quicktimeDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
 				$_SESSION[$_quicktimeDataId]['width'] = weTag_getAttribute('width', $attribs, 0);
 				$_SESSION[$_quicktimeDataId]['height'] = weTag_getAttribute('height', $attribs, 0);
-				$_SESSION[$_quicktimeDataId]['id'] = $orgVal ? $orgVal : '';
+				$_SESSION[$_quicktimeDataId]['id'] = $orgVal ? : '';
 
 				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8');
 				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs);
@@ -363,7 +363,7 @@ function we_tag_userInput($attribs, $content){
 				$_SESSION[$_binaryDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0);
 				//$_SESSION[$_binaryDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
 
-				$_SESSION[$_binaryDataId]['id'] = $orgVal ? $orgVal : '';
+				$_SESSION[$_binaryDataId]['id'] = $orgVal ? : '';
 
 				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8');
 				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs);
@@ -415,7 +415,7 @@ function we_tag_userInput($attribs, $content){
 			if(!isset($_SESSION[$_binaryDataId])){
 				$_SESSION[$_binaryDataId] = array();
 			}
-			$_SESSION[$_binaryDataId]['id'] = $orgVal ? $orgVal : '';
+			$_SESSION[$_binaryDataId]['id'] = $orgVal ? : '';
 			if($_SESSION[$_binaryDataId]['id']){
 				$attribs['id'] = $_SESSION[$_binaryDataId]['id'];
 			}
@@ -471,7 +471,7 @@ function we_tag_userInput($attribs, $content){
 					'ignoredocumentcss',
 					'buttonpos'
 				));
-				return we_getTextareaField($fieldname, ($content ? $content : $value), $atts);
+				return we_getTextareaField($fieldname, ($content ? : $value), $atts);
 			}
 			echo we_html_element::jsElement('weFrontpageEdit=true;') .
 			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
@@ -522,7 +522,7 @@ function open_wysiwyg_win(){
 			//FIXME: currently we use a separate preference-option for frontend editor (where tinyMCE is labelled beta)
 			$tmp = we_wysiwyg_editor::$editorType;
 			we_wysiwyg_editor::$editorType = WYSIWYG_TYPE_FRONTEND === 'tinyMCE' ? 'tinyMCE' : 'default';
-			$ret = we_html_forms::weTextarea($fieldname, ($content ? $content : $value), $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
+			$ret = we_html_forms::weTextarea($fieldname, ($content ? : $value), $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
 			we_wysiwyg_editor::$editorType = $tmp;
 			return $ret;
 
@@ -561,7 +561,7 @@ function open_wysiwyg_win(){
 				$attsHidden = array(
 					'type' => 'hidden',
 					'name' => $fieldname,
-					'value' => $orgVal ? $orgVal : time(),
+					'value' => $orgVal ? : time(),
 					'xml' => $xml
 				);
 				return getHtmlTag('input', $attsHidden);
@@ -591,7 +591,7 @@ function open_wysiwyg_win(){
 					$maxyear = intval($maxyear);
 					break;
 			}
-			return we_html_tools::getDateInput2('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '[we_date_' . $name . ']', ($orgVal ? $orgVal : time()), false, $format, '', '', $xml, $minyear, $maxyear);
+			return we_html_tools::getDateInput2('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '[we_date_' . $name . ']', ($orgVal ?: time()), false, $format, '', '', $xml, $minyear, $maxyear);
 
 		case 'country':
 			$newAtts = removeAttribs($attribs, array('wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength'));
