@@ -38,7 +38,6 @@ function we_tag_voting($attribs){
 		return $foo;
 	}
 
-	require_once(WE_MODULES_PATH . 'voting/weVoting.php');
 	$version = ($version > 0) ? ($version - 1) : 0;
 	$GLOBALS["_we_voting_namespace"] = $name;
 	$GLOBALS['_we_voting'] = new we_voting_voting();

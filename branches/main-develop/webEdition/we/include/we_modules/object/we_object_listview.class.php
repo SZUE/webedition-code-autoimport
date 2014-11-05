@@ -306,7 +306,7 @@ class we_object_listview extends we_listview_base{
 				}
 			}
 		}
-		$f = '`' . OBJECT_X_TABLE . $classID . '`.OF_ID AS ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Templates AS OF_Templates,`' . OBJECT_X_TABLE . $classID . '`.OF_ID AS OF_ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Category AS OF_Category,`' . OBJECT_X_TABLE . $classID . '`.OF_Text AS OF_Text,`' . OBJECT_X_TABLE . $classID . '`.OF_Url AS OF_Url,`' . OBJECT_X_TABLE . $classID . '`.OF_TriggerID AS OF_TriggerID,`' . OBJECT_X_TABLE . $classID . '`.OF_WebUserID AS OF_WebUserID,`' . OBJECT_X_TABLE . $classID . '`.OF_Language AS OF_Language,`' . OBJECT_X_TABLE . $classID . '`.`OF_Published`' . ' AS we_wedoc_Published,' . $_selFields;
+		$f = '`' . OBJECT_X_TABLE . $classID . '`.OF_ID AS ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Templates,`' . OBJECT_X_TABLE . $classID . '`.OF_ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Category,`' . OBJECT_X_TABLE . $classID . '`.OF_Text,`' . OBJECT_X_TABLE . $classID . '`.OF_Url,`' . OBJECT_X_TABLE . $classID . '`.OF_TriggerID,`' . OBJECT_X_TABLE . $classID . '`.OF_WebUserID,`' . OBJECT_X_TABLE . $classID . '`.OF_Language,`' . OBJECT_X_TABLE . $classID . '`.`OF_Published`' . ' AS we_wedoc_Published,' . $_selFields;
 		foreach($matrix as $n => $p){
 			$n2 = $n;
 			if(strpos($n, 'we_object_') === 0){
@@ -351,7 +351,7 @@ class we_object_listview extends we_listview_base{
 		$publ_cond = array();
 		foreach($tb as &$t){
 			$t = '`' . $t . '`';
-			$publ_cond [] = '(' . $t . '.OF_Published>0 OR ' . $t . '.OF_ID=0)';
+			$publ_cond[] = '(' . $t . '.OF_Published>0 OR ' . $t . '.OF_ID=0)';
 		}
 
 		return array(//FIXME: maybe random can be changed by time%ID or sth. which is faster and quite rand enough

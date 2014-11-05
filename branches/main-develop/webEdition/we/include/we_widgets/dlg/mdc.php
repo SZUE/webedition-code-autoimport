@@ -442,6 +442,6 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 					"value" => we_base_request::_(we_base_request::INT, 'CategoriesCount', 0)
 			)) . $sTblWidget . we_html_element::jsElement($jsTree))));
 if($showAC){
-	print $yuiSuggest->getYuiCss();
-	print $yuiSuggest->getYuiJs();
+	echo $yuiSuggest->getYuiCss().
+			$yuiSuggest->getYuiJs();
 }

@@ -189,16 +189,14 @@ abstract class we_navigation_dynList{
 
 	public static function getCatgories($dirid, $count){
 		$_ids = array();
-		$_fieldset = new DB_WE();
-		$_fieldset->query('SELECT * FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($dirid) . ' AND IsFolder=0  LIMIT 0,' . $count);
+		$db = new DB_WE();
+		$db->query('SELECT ID,Text,Title FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($dirid) . ' AND IsFolder=0  LIMIT ' . $count);
 
-		while($_fieldset->next_record()){
-			$_catfields = @unserialize($_fieldset->f('Catfields'));
+		while($db->next_record()){
 			$_ids[] = array(
-				'id' => $_fieldset->Record['ID'],
-				'text' => $_fieldset->Record['Text'],
-				'field' => we_navigation_navigation::encodeSpecChars(
-					isset($_catfields['default']['Title']) ? $_catfields['default']['Title'] : '')
+				'id' => $db->f('ID'),
+				'text' => $db->f('Text'),
+				'field' => we_navigation_navigation::encodeSpecChars($db->f('Title'))
 			);
 		}
 

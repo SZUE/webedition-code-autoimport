@@ -104,12 +104,12 @@ function we_tag_sessionStart($attribs){
 			$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_SESSION_TABLE . ' SET ' .
 				we_database_base::arraySetter(array(
 					'SessionID' => session_id(),
-					'SessionIp' => $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : '',
+					'SessionIp' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '',
 					'WebUserID' => $WebUserID,
 					'WebUserGroup' => $WebUserGroup,
 					'WebUserDescription' => '',
-					'Browser' => $_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : '',
-					'Referrer' => $_SERVER['HTTP_REFERER'] ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '',
+					'Browser' => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '',
+					'Referrer' => isset($_SERVER['HTTP_REFERER']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '',
 					'LastLogin' => sql_function('NOW()'),
 					'PageID' => $doc->ID,
 					'SessionAutologin' => $SessionAutologin
@@ -156,7 +156,7 @@ function wetagsessionHandleFailedLogin(){
 	}
 }
 
-function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){
+function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){ //FIXME: check for last time =>(cuncurrent logins)
 	if($_REQUEST['s']['Username'] && $_REQUEST['s']['Password']){
 		if(
 			intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||

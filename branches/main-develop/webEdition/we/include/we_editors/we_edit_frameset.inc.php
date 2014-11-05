@@ -64,8 +64,8 @@ function getTabs($classname, $predefined = 0){
 $we_Table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 $we_ID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 $we_ContentType = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
-$we_ContentType = $we_ContentType ? $we_ContentType : ($we_ID ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . $we_ID) : '');
 
+$we_ContentType = $we_ContentType ? $we_ContentType : ($we_ID ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . $we_ID) : '');
 
 if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
@@ -73,6 +73,7 @@ if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 
 // init document
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+
 if(!$we_doc->fileExists){
 	include(WE_INCLUDES_PATH . 'weInfoPages/weNoResource.inc.php');
 	exit();
@@ -349,6 +350,9 @@ if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
 	<?php
 	if(isset($parastr) && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "edit_document_with_parameters"){
 		echo 'var parameters = "' . $parastr . '";';
+	}
+	if($we_doc instanceof we_binaryDocument){
+		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
 	}
 
 

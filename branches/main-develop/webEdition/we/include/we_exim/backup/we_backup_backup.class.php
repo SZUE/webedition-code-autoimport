@@ -105,7 +105,7 @@ class we_backup_backup extends we_backup_base{
 			$execTime = 1;
 		}
 
-		$maxTime = $_SESSION['weS']['weBackupVars']['limits']['exec'] > 33 ? 30 : $_SESSION['weS']['weBackupVars']['limits']['exec'] - 2;
+		$maxTime = $_SESSION['weS']['weBackupVars']['limits']['exec'] - 2;
 		if(time() - intval($_SESSION['weS']['weBackupVars']['limits']['requestTime']) + 2 * $execTime > $maxTime){
 			return false;
 		}

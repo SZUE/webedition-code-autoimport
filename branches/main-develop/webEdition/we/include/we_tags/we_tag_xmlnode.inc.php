@@ -54,10 +54,12 @@ function we_tag_xmlnode($attribs){
 	$feed = weTag_getAttribute('feed', $attribs);
 	$url = weTag_getAttribute('url', $attribs);
 
-	if(!isset($GLOBALS["xpaths"]))
+	if(!isset($GLOBALS["xpaths"])){
 		$GLOBALS["xpaths"] = array();
-	if(!isset($GLOBALS["xstack"]))
+	}
+	if(!isset($GLOBALS["xstack"])){
 		$GLOBALS["xstack"] = array();
+	}
 	$pind_name = count($GLOBALS["xstack"]) - 1;
 	if($pind_name < 0){
 		$pind_name = 0;
@@ -71,7 +73,6 @@ function we_tag_xmlnode($attribs){
 	$GLOBALS["xpaths"][$ind_name]["xpath"] = $attribs["xpath"];
 	$GLOBALS["xpaths"][$ind_name]["parent"] = $parent_name;
 	$got_name = false;
-
 
 	// find feed
 	if($url){
@@ -127,11 +128,8 @@ function we_tag_xmlnode($attribs){
 				}
 			}
 		}
-		if(!empty($nodes_name)){
-			$got_name = true;
-		} else {
-			$got_name = true;
-		}
+		//if(!empty($nodes_name)){
+		$got_name = true;
 	}
 
 	$GLOBALS["xstack"][] = $ind_name; //war einfach ind_name und fehler undefinend konstant
@@ -153,10 +151,9 @@ class _we_tag_xmlnode_struct{
 	function next(){
 		if($this->init){
 			return next($this->nodes_name) !== FALSE;
-		} else {
-			$this->init = true;
-			return reset($this->nodes_name) !== FALSE;
 		}
+		$this->init = true;
+		return reset($this->nodes_name) !== FALSE;
 	}
 
 	function hasChild(){

@@ -203,7 +203,7 @@ class we_listview_document extends we_listview_base{
 
 			$ranking = '0';
 			$spalten = array(($this->casesensitive ? 'BINARY ' : '') . INDEX_TABLE . '.Text');
-			reset($bedingungen);
+			
 			foreach($bedingungen as $v1){
 				if(preg_match('|^[-\+]|', $v1)){
 					$not = (preg_match('^-', $v1));
@@ -239,7 +239,7 @@ class we_listview_document extends we_listview_base{
 
 			$bedingung_sql = (isset($bedingung_sql1) ? $bedingung_sql1 : $bedingung_sql2);
 
-			$extraSelect = ($random ? ', RAND() as RANDOM ' : $ranking . ' AS ranking ') . $calendar_select;
+			$extraSelect = ',' . ($random ? ' RAND() as RANDOM ' : $ranking . ' AS ranking ') . $calendar_select;
 			$limit = (($this->maxItemsPerPage > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : '');
 		} else {
 			if($this->workspaceID != ''){

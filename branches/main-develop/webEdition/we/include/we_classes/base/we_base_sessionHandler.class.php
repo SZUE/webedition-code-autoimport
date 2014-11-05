@@ -2,6 +2,7 @@
 
 class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	//prevent crashed or killed sessions to stay
+
 	private $execTime;
 	private $sessionName;
 	private $DB;
@@ -22,7 +23,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			$this->id = uniqid('', true);
 			if(!(extension_loaded('suhosin') && ini_get('suhosin.session.encrypt')) && defined('SYSTEM_WE_SESSION_CRYPT') && SYSTEM_WE_SESSION_CRYPT){
 				$key = $_SERVER['DOCUMENT_ROOT'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : 'HTTP_USER_AGENT');
-				if(SYSTEM_WE_SESSION_CRYPT == 2){
+				if(SYSTEM_WE_SESSION_CRYPT === 2){
 					if(!isset($_COOKIE['secure'])){
 						$_COOKIE['secure'] = we_users_user::getHashIV(30);
 						setcookie('secure', $_COOKIE['secure'], 0, '/');
@@ -85,9 +86,9 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		}
 		if(md5($sessID . $sessData) == $this->hash){//if nothing changed,we don't have to bother the db
 			$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'lockid' => $lock ? $this->id : '',
-					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-				)) . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
+						'lockid' => $lock ? $this->id : '',
+						'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
+					)) . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
 
 			if($this->DB->affected_rows()){//make sure we had an successfull update
 				return true;
@@ -99,13 +100,13 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		$sessID = self::getSessionID($sessID);
 
 		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'sessionName' => $this->sessionName,
-				'session_id' => sql_function('x\'' . $sessID . '\''),
-				'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
-				'lockid' => $lock ? $this->id : '',
-				'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-				/* 'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
-				  -				'tmp' => serialize($_SESSION), */
+					'sessionName' => $this->sessionName,
+					'session_id' => sql_function('x\'' . $sessID . '\''),
+					'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
+					'lockid' => $lock ? $this->id : '',
+					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
+						/* 'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
+						  -				'tmp' => serialize($_SESSION), */
 		)));
 		return true;
 	}
@@ -125,35 +126,49 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 
 	private static function getSessionID($sessID){
 		if($sessID){
-			if(preg_match('|^([a-f0-9]){32,40}$|i', $sessID)){
+			if(preg_match('|^([a-f0-9]){32,40}$|', $sessID)){
 				return $sessID;
-			}
-			$cnt = ini_get('session.hash_bits_per_character');
-			if($cnt == 4){//session was generated somewhere else. convert session-id
-				$cnt = 6; //assume maximum, will have a bad session id
 			}
 		} else {
 			session_regenerate_id();
-			$cnt = ini_get('session.hash_bits_per_character');
-			if($cnt == 4){//this is easy, since this is set as hex
-				//a 4 bit value didn't match, we neeed a new id
-				return session_id();
-			}
 			$sessID = session_id();
+			if(preg_match('|^([a-f0-9]){32,40}$|', $sessID)){
+				return $sessID;
+			}
 		}
+		//if we had fallen here we have bad session settings, determine by string length
+		switch(strlen($sessID)){
+			case 40://160/4
+				$cnt = 4;
+			case 32://160/5 => 4(hex) must have mathed above
+				$cnt = 5;
+			case 27:
+				$cnt = 6;
+				break;
+			case 26://128/5
+				$cnt = 5;
+				break;
+			case 22://128/6
+				$cnt = 6;
+				break;
+			default:
+				session_regenerate_id();
+				return session_id();
+		}
+
 		//we have to deal with bad php settings
-		static $sessStr = array(
-			5 => '0123456789abcdefghijklmnopqrstuv',
-			6 => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-,',
-		);
+		static $sessStr = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-,';
 		$newID = '';
-		$tmp = '';
+		$tmp = 0;
 		for($pos = 0; $pos < strlen($sessID); $pos++){
-			$tmp = $tmp << 4 | strpos($sessStr[$cnt], $sessID[$pos]);
+			$tmp = ($tmp << $cnt) | strpos($sessStr, $sessID[$pos]);
 			if(($pos + 1) * $cnt % 4 == 0){
 				$newID.=dechex($tmp);
 				$tmp = 0;
 			}
+		}
+		if($tmp){//remaining part
+			$newID.=dechex($tmp);
 		}
 
 		session_id(str_pad($newID, 40, '0'));

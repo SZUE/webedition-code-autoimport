@@ -51,6 +51,11 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 	case 'class_folder':
 		$we_doc = new we_class_folder();
 		break;
+	case 'nested_class_folder':
+		$we_doc = new we_class_folder();
+		$we_doc->IsClassFolder = 0;
+		$we_ContentType = 'folder';
+		break;
 	case we_base_ContentTypes::TEMPLATE:
 		$we_doc = new we_template();
 		break;

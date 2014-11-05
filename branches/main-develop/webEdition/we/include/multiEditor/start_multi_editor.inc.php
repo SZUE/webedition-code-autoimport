@@ -44,7 +44,7 @@ function _buildJsCommand($cmdArray = array('', '', 'cockpit', 'open_cockpit', ''
 	return 'if(top && top.weEditorFrameController) top.weEditorFrameController.openDocument("' . implode('", "', $cmdArray) . '");';
 }
 
-
+$jsCommand = '';
 if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_include'){ // Edit-Include-Mode
 // in multiEditorFrameset we_cmd[1] can be set to reach this
 	$directCmd = array();

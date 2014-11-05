@@ -29,13 +29,13 @@ abstract class we_backup_util{
 		$match = array();
 		if(preg_match("|tblobject_([0-9]*)$|", $table, $match)){
 			return (isset($_SESSION['weS']['weBackupVars']['tables']['tblobject_']) ?
-							$_SESSION['weS']['weBackupVars']['tables']['tblobject_'] . $match[1] :
-							false);
+					$_SESSION['weS']['weBackupVars']['tables']['tblobject_'] . $match[1] :
+					false);
 		}
 
 		return (isset($_SESSION['weS']['weBackupVars']['tables'][$table]) ?
-						$_SESSION['weS']['weBackupVars']['tables'][$table] :
-						false);
+				$_SESSION['weS']['weBackupVars']['tables'][$table] :
+				false);
 	}
 
 	static function getDefaultTableName($table){
@@ -117,8 +117,8 @@ abstract class we_backup_util{
 		}
 
 		$percent = round(((float)
-				(intval($_SESSION['weS']['weBackupVars']['offset'] + $rest1) /
-				intval($_SESSION['weS']['weBackupVars']['offset_end'] + $rest2))) * 100, 2);
+			(intval($_SESSION['weS']['weBackupVars']['offset'] + $rest1) /
+			intval($_SESSION['weS']['weBackupVars']['offset_end'] + $rest2))) * 100, 2);
 
 		return max(min($percent, 100), 0);
 	}
@@ -132,7 +132,9 @@ abstract class we_backup_util{
 			return $ret;
 		}
 
-		echo we_html_element::jsElement($ret);
+		echo we_html_element::jsElement($ret . '
+			/*' . (time() - $_SESSION['weS']['weBackupVars']['limits']['requestTime']) . 's, ' . we_base_file::getHumanFileSize(memory_get_usage(true)) . '*/
+			');
 		flush();
 	}
 
@@ -220,7 +222,7 @@ abstract class we_backup_util{
 				$_SESSION['weS']['weBackupVars']['current_table'] = false;
 				$_do = false;
 			}
-		}while($_do);
+		} while($_do);
 
 		return $_SESSION['weS']['weBackupVars']['current_table'];
 	}
@@ -249,10 +251,10 @@ abstract class we_backup_util{
 		$_part = we_base_file::loadPart($file, 0, 512, $iscompr);
 
 		return (preg_match('|<\?xml |i', $_part) ?
-						'xml' :
-						(stripos($_part, 'create table') !== false ?
-								'sql' :
-								'unknown'));
+				'xml' :
+				(stripos($_part, 'create table') !== false ?
+					'sql' :
+					'unknown'));
 	}
 
 	static function getXMLImportType($file, $iscompr = 0, $end_off = 0){
@@ -354,3 +356,4 @@ abstract class we_backup_util{
 	}
 
 }
+

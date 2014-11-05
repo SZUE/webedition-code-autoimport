@@ -149,7 +149,7 @@ class we_http_request{
 
 		$tmp = array();
 		foreach($this->vars as $var){
-			$tmp [] = $var['name'] . '=' . $var['value'];
+			$tmp[] = $var['name'] . '=' . $var['value'];
 		}
 		$path = $this->http_path . (!empty($tmp) ? '?' . implode('&', $tmp) : '');
 

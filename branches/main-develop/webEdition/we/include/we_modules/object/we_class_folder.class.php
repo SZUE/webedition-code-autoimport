@@ -40,7 +40,7 @@ class we_class_folder extends we_folder{
 		$this->IsClassFolder = 1;
 		array_push($this->persistent_slots, 'searchclass', 'searchclass_class', 'TriggerID', 'TableID');
 		if(isWE()){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, /* we_base_constants::WE_EDITPAGE_CFWORKSPACE, */ we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CFWORKSPACE, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
 		}
 		$this->Icon = we_base_ContentTypes::FOLDER_ICON;
 		$this->ContentType = we_base_ContentTypes::FOLDER;
@@ -147,7 +147,7 @@ class we_class_folder extends we_folder{
 
 	function i_canSaveDirinDir(){
 		if($this->ParentID == 0){
-			return false;
+			return $this->IsClassFolder ? true : false;
 		}
 		$this->IsClassFolder = 0;
 		$this->Icon = we_base_ContentTypes::FOLDER_ICON;
@@ -1108,7 +1108,7 @@ weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
 	}
 
 	function i_pathNotValid(){
-		return parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath === '/';
+		return $this->IsClassFolder ? false : (parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath === '/');
 	}
 
 }

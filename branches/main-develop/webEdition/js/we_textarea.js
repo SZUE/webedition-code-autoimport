@@ -59,7 +59,7 @@ function we_textarea(name,value,cols,rows,width,height,autobr,autobrName,showAut
 	out += '" value="';
 	out += this.autobr ? 'on' : 'off';
 	out += '"><table border="0" cellpadding="0" cellspacing="0" background="/webEdition/images/backgrounds/aquaBackground.gif">';
-	if(showAutobr || showRTF){
+	if(showAutobr){
 		out += '<tr><td><table border="0" cellpadding="0" cellspacing="0">';
 	}
 	if(showAutobr){
@@ -79,19 +79,6 @@ function we_textarea(name,value,cols,rows,width,height,autobr,autobrName,showAut
 	if(showAutobr && (showRTF || showSpell)){
 		out += '<td style="color:black;font-weight: bold; font-size: 10px; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif">&nbsp;</td><td><div unselectable="on" style="border-right: #999999 solid 1px; font-size: 0px; height:22px; width:2px;"></div></td><td style="color:black;font-weight: bold; font-size: 10px; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif">&nbsp;</td>';
 	}
-	if(showRTF){
-
-		out += '<td unselectable="on"><div unselectable="on">'+"\n";
-		out += '<img  style="border: 0px; margin: 1px;" unselectable="on" width="23" height="22" src="/webEdition/images/wysiwyg/rtf.gif"'+"\n";
-		out += 'onmouseover="'+this.name+'Object.ButtonOverUp(this)"'+"\n";
-		out += 'onmouseout="'+this.name+'Object.ButtonNormal(this)"'+"\n";
-		out += 'onmousedown="'+this.name+'Object.ButtonOverDown(this)"'+"\n";
-		out += 'onclick="window.open(\'/webEdition/editors/content/wysiwyg/importRtfDialog.php?we_dialog_args[ntxt]=1&we_dialog_args[taname]='+encodeURI(this.name)+'\',\'importRtf\',\'height=600,width=680,scrollbars=1\');"></div></td>';
-
-		//out += '<td><a href="#" onclick="window.open(\'/webEdition/editors/content/wysiwyg/importRtfDialog.php?we_dialog_args[ntxt]=1&we_dialog_args[taname]='+escape(this.name)+'\',\'importRtf\',\'height=600,width=680,scrollbars=1\');">';
-		//out += '<div unselectable="on" style="border:1px solid transparent; padding: 1px" onMouseOver="'+this.name+'Object.ButtonOverUp(this)" onMouseOut="'+this.name+'Object.ButtonNormal(this)" onMouseDown="'+this.name+'Object.ButtonOverDown(this)"><img border="0" src="/webEdition/images/wysiwyg/rtf.gif" width="23" height="22"></div>';
-		//out += '</a></td>';
-	}
 
 	if(showSpell) {
 
@@ -105,7 +92,7 @@ function we_textarea(name,value,cols,rows,width,height,autobr,autobrName,showAut
 
 	}
 
-	if(showAutobr || showRTF){
+	if(showAutobr){
 		out += '</table></td></tr>';
 	}
 

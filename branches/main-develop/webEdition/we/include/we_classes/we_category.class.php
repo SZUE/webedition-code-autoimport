@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * Provides functions for handling webEdition category.
  */
 class we_category extends weModelBase{
-
 	var $ClassName = __CLASS__;
 	var $ContentType = 'category';
 
@@ -38,18 +36,15 @@ class we_category extends weModelBase{
 	}
 
 	function we_save(){
-		if(isset($this->Catfields) && is_array($this->Catfields)){
-			$this->Catfields = serialize($this->Catfields);
-		}
-
+		$this->Catfields = serialize(array('default' => array('Title' => $this->Title, 'Description' => $this->Description))); //FIXME:remove in 6.5
 		parent::save();
-		//FIXME:improve!
+		//FIXME:improve clean of nav Cache each time a category is saved!
 		we_navigation_cache::clean(true);
 	}
 
 	function delete(){
 		$ret = parent::delete();
-		//FIXME:improve!
+		//FIXME:improve clean of nav Cache each time a category is deleted!
 		we_navigation_cache::clean(true);
 		return $ret;
 	}
@@ -128,20 +123,13 @@ class we_category extends weModelBase{
 		$cats = array();
 		$field = $catfield ? $catfield : ($showpath ? 'Path' : 'Category');
 		$showpath &=!$catfield;
-		$db->query('SELECT ID,Path,Category,Catfields FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . trim($catIDs, ',') . ')');
+		$db->query('SELECT ID,Path,Category,Title,Description FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . trim($catIDs, ',') . ')');
 		while($db->next_record()){
 			$data = $db->getRecord();
-			if($field === 'Title' || $field === 'Description'){
-				if($data['Catfields']){
-					$_arr = unserialize($data['Catfields']);
-					if(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
-						$cats[] = ($field === 'Description') ? we_document::parseInternalLinks($_arr['default'][$field], 0) : $_arr['default'][$field];
-					}
-				} elseif(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
-					$cats[] = '';
-				}
-			} elseif(empty($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
-				$cats[] = $data[$field];
+			if(!($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
+				$cats[] = ($field === 'Description' ?
+						we_document::parseInternalLinks($data[$field], 0) :
+						$data[$field]);
 			}
 		}
 		if(($showpath || $catfield === 'Path') && strlen($rootdir)){

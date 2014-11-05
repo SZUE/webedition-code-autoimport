@@ -839,56 +839,55 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 	}
 
 	function printChangeCatHTML(){
-		if(($catId = we_base_request::_(we_base_request::INT, "catid"))){
-			$db = new DB_WE();
-			$result = getHash('SELECT Category,Catfields,ParentID,Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . $catId, $db);
-			$fields = isset($result["Catfields"]) ? $result["Catfields"] : "";
-			$fields = ($fields ?
-					unserialize($fields) :
-					array("default" => array("Title" => "", "Description" => "")));
-			$fields[$_SESSION['weS']["we_catVariant"]]["Title"] = we_base_request::_(we_base_request::STRING, "catTitle", '');
-			$fields[$_SESSION['weS']["we_catVariant"]]["Description"] = we_base_request::_(we_base_request::RAW, "catDescription", '');
-			$path = $result['Path'];
-			$parentid = we_base_request::_(we_base_request::INT, 'FolderID', $result['ParentID']);
-			$category = we_base_request::_(we_base_request::STRING, 'Category', $result['Category']);
-
-			$targetPath = id_to_path($parentid, CATEGORY_TABLE);
-
-			$js = '';
-			if(preg_match('|^' . preg_quote($path, '|') . '|', $targetPath) || preg_match('|^' . preg_quote($path, '|') . '/|', $targetPath)){
-				// Verschieben nicht m�glich
-				$parentid = $result['ParentID'];
-
-				if($parentid == 0){
-					$parentPath = '/';
-					$path = '/' . $category;
-				} else {
-					$tmp = explode('/', $path);
-					array_pop($tmp);
-					$parentPath = implode('/', $tmp);
-					$path = $parentPath . '/' . $category;
-				}
-				$js = "top.frames['fsvalues'].document.we_form.elements['FolderID'].value = '" . $parentid . "';top.frames['fsvalues'].document.we_form.elements['FolderIDPath'].value = '" . $parentPath . "';";
-			} else {
-				$path = ($parentid ? $targetPath : '') . '/' . $category;
-			}
-			$updateok = $db->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'Category' => $category,
-					'Text' => $category,
-					'Path' => $path,
-					'ParentID' => $parentid,
-					'Catfields' => serialize($fields),
-				)) . ' WHERE ID=' . $catId);
-			if($updateok){
-				$this->renameChildrenPath($catId);
-			}
-			we_html_tools::protect();
-			echo we_html_tools::getHtmlTop() .
-			we_html_element::jsElement($js . 'top.setDir(top.fsheader.document.we_form.elements[\'lookin\'].value);' .
-				($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_ok]"), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_notok]"), $category), we_message_reporting::WE_MESSAGE_ERROR) )
-			) .
-			'</head><body></body></html>';
+		if(!($catId = we_base_request::_(we_base_request::INT, "catid"))){
+			return;
 		}
+		$db = $GLOBALS['DB_WE'];
+		$result = getHash('SELECT Category,Title,Description,ParentID,Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . $catId, $db);
+		$title = we_base_request::_(we_base_request::STRING, "catTitle", $result["Title"]);
+		$description = we_base_request::_(we_base_request::RAW, "catDescription", $result["Description"]);
+		$path = $result['Path'];
+		$parentid = we_base_request::_(we_base_request::INT, 'FolderID', $result['ParentID']);
+		$category = we_base_request::_(we_base_request::STRING, 'Category', $result['Category']);
+
+		$targetPath = id_to_path($parentid, CATEGORY_TABLE);
+
+		$js = '';
+		if(preg_match('|^' . preg_quote($path, '|') . '|', $targetPath) || preg_match('|^' . preg_quote($path, '|') . '/|', $targetPath)){
+			// Verschieben nicht m�glich
+			$parentid = $result['ParentID'];
+
+			if($parentid == 0){
+				$parentPath = '/';
+				$path = '/' . $category;
+			} else {
+				$tmp = explode('/', $path);
+				array_pop($tmp);
+				$parentPath = implode('/', $tmp);
+				$path = $parentPath . '/' . $category;
+			}
+			$js = "top.frames['fsvalues'].document.we_form.elements['FolderID'].value = '" . $parentid . "';top.frames['fsvalues'].document.we_form.elements['FolderIDPath'].value = '" . $parentPath . "';";
+		} else {
+			$path = ($parentid ? $targetPath : '') . '/' . $category;
+		}
+		$updateok = $db->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				'Category' => $category,
+				'Text' => $category,
+				'Path' => $path,
+				'ParentID' => $parentid,
+				'Title' => $title,
+				'Description' => $description,
+				'Catfields' => serialize(array('default' => array('Title' => $title, 'Category' => $category)))//FIXME: remove in 6.5
+			)) . ' WHERE ID=' . $catId);
+		if($updateok){
+			$this->renameChildrenPath($catId);
+		}
+		we_html_tools::protect();
+		echo we_html_tools::getHtmlTop() .
+		we_html_element::jsElement($js . 'top.setDir(top.fsheader.document.we_form.elements[\'lookin\'].value);' .
+			($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_ok]"), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_notok]"), $category), we_message_reporting::WE_MESSAGE_ERROR) )
+		) .
+		'</head><body></body></html>';
 	}
 
 	function printPropertiesHTML(){
@@ -899,24 +898,20 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		$_SESSION['weS']["we_catVariant"] = $variant;
 		$description = "";
 		if($showPrefs){
-			$result = getHash('SELECT ID,Category,Catfields,Path,ParentID FROM ' . CATEGORY_TABLE . ' WHERE ID=' . $showPrefs, new DB_WE());
-			$fields = (isset($result["Catfields"]) && $result["Catfields"] ?
-					unserialize($result["Catfields"]) :
-					array('default' => array('Title' => '', 'Description' => ''))
-				);
+			$db = new DB_WE();
+			$result = getHash('SELECT ID,Category,Title,Description,Path,ParentID FROM ' . CATEGORY_TABLE . ' WHERE ID=' . $showPrefs, $db);
 
-			if($result["ParentID"]){
-				$result2 = getHash('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($result["ParentID"]), new DB_WE());
-				$path = isset($result2["Path"]) ? $result2["Path"] : '/';
-			} else {
-				$path = '/';
-			}
-			$parentId = isset($result["ParentID"]) ? $result["ParentID"] : 0;
-			$category = isset($result["Category"]) ? $result["Category"] : '';
-			$catID = isset($result["ID"]) ? intval($result["ID"]) : 0;
-			$title = $fields[$_SESSION['weS']["we_catVariant"]]["Title"];
-			$description = $fields[$_SESSION['weS']["we_catVariant"]]["Description"];
-			unset($result);
+			$path = ($result["ParentID"] ?
+					(f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($result["ParentID"]), '', $db)? :
+						'/'
+					) :
+					'/');
+
+			$parentId = $result ? $result["ParentID"] : 0;
+			$category = $result ? $result["Category"] : '';
+			$catID = $result ? intval($result["ID"]) : 0;
+			$title = $result ? $result['Title'] : '';
+			$description = $result ? $result["Description"] : '';
 
 			$dir_chooser = we_html_button::create_button('select', "javascript:we_cmd('openSelector', document.we_form.elements['FolderID'].value, '" . CATEGORY_TABLE . "', 'document.we_form.elements[\\'FolderID\\'].value', 'document.we_form.elements[\\'FolderIDPath\\'].value', '', '', '', '1', '', 'false', 1)");
 
