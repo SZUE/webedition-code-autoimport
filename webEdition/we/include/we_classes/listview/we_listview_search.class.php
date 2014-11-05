@@ -66,18 +66,9 @@ class we_listview_search extends we_listview_base{
 		$this->hidedirindex = $hidedirindex;
 		$this->languages = $languages ? $languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
 
-		if($this->languages != ''){
-			$where_lang = ' AND (';
-			$langArray = makeArrayFromCSV($this->languages);
-			$where_lang .= INDEX_TABLE . ".Language = '" . $langArray[0] . "' ";
-			for($i = 1; $i < count($langArray); $i++){
-				$where_lang .= "OR " . INDEX_TABLE . ".Language = '" . $langArray[$i] . "' ";
-			}
-
-			$where_lang .= ' ) ';
-		} else {
-			$where_lang = '';
-		}
+		$where_lang = ($this->languages ?
+				' AND ' . INDEX_TABLE . '.Language IN ("' . implode('","', makeArrayFromCSV($this->languages)) . '") ' :
+				'');
 
 		// correct order
 		$orderArr = array();
@@ -102,18 +93,18 @@ class we_listview_search extends we_listview_base{
 							$orderArr[] = array("oname" => $oname, "otype" => $otype);
 						}
 					}
-					$this->order = "";
+					$this->order = '';
 					foreach($orderArr as $o){
-						switch($o["oname"]){
-							case "Title":
-							case "Path":
-							case "Text":
-							case "OID":
-							case "DID":
-							case "ID":
-							case "Workspace":
-							case "Description":
-								$this->order .= $o["oname"] . ((trim(strtolower($o["otype"])) === "desc") ? " DESC" : "") . ",";
+						switch($o['oname']){
+							case 'Title':
+							case 'Path':
+							case 'Text':
+							case 'OID':
+							case 'DID':
+							case 'ID':
+							case 'Workspace':
+							case 'Description':
+								$this->order .= $o["oname"] . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
 						}
 					}
 					$this->order = rtrim($this->order, ',');
@@ -132,12 +123,12 @@ class we_listview_search extends we_listview_base{
 
 		$cat_tail = ($this->cats ? we_category::getCatSQLTail($this->cats, INDEX_TABLE, $this->catOr, $this->DB_WE) : '');
 
-		$dt = ($this->docType) ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType LIKE '" . $this->DB_WE->escape($this->docType) . "'", "ID", $this->DB_WE) : '';
+		$dt = ($this->docType) ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $this->DB_WE->escape($this->docType) . '"', '', $this->DB_WE) : '';
 
 		$cl = $this->class;
 
 		if($dt && $cl){
-			$dtcl_query = ' AND (' . INDEX_TABLE . '.Doctype="' . $this->DB_WE->escape($dt) . '" OR ' . INDEX_TABLE . '.ClassID=' . intval($cl) . ") ";
+			$dtcl_query = ' AND (' . INDEX_TABLE . '.Doctype="' . $this->DB_WE->escape($dt) . '" OR ' . INDEX_TABLE . '.ClassID=' . intval($cl) . ') ';
 		} else if($dt){
 			$dtcl_query = ' AND ' . INDEX_TABLE . '.Doctype="' . $this->DB_WE->escape($dt) . '" ';
 		} else if($cl){
@@ -178,11 +169,11 @@ class we_listview_search extends we_listview_base{
 		}
 
 		if(isset($bedingungen_sql) && count($bedingungen_sql) > 0){
-			$bedingung_sql1 = " ( " . implode($bedingungen_sql, " AND ") . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" AND " . implode($bedingungen3_sql, " AND ")) : "") . " ) ";
+			$bedingung_sql1 = " ( " . implode($bedingungen_sql, ' AND ') . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" AND " . implode($bedingungen3_sql, " AND ")) : "") . " ) ";
 		} else if(isset($bedingungen2_sql) && count($bedingungen2_sql) > 0){
-			$bedingung_sql2 = " ( ( " . implode($bedingungen2_sql, " OR ") . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" ) AND " . implode($bedingungen3_sql, " AND ")) : " ) ") . " ) ";
+			$bedingung_sql2 = " ( ( " . implode($bedingungen2_sql, ' OR ') . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" ) AND " . implode($bedingungen3_sql, " AND ")) : " ) ") . " ) ";
 		} else if(isset($bedingungen3_sql) && count($bedingungen3_sql) > 0){
-			$bedingung_sql2 = implode($bedingungen3_sql, " AND ");
+			$bedingung_sql2 = implode($bedingungen3_sql, ' AND ');
 		}
 
 		if(isset($bedingung_sql1) && $bedingung_sql1){
