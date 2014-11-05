@@ -47,12 +47,12 @@ class we_selector_image extends we_selector_document{
 	}
 
 	protected function printFooterTable(){
-		return parent::printFooterTable('<input type="range" name="zoom" min="50" step="25" max="250" onchange="top.document.frames[\'fsbody\'].document.body.style.fontSize=this.value+\'%\';"/>');
+		return parent::printFooterTable('<input type="range" name="zoom" min="50" step="25" max="250" onchange="parent.frames[\'fsbody\'].document.body.style.fontSize=this.value+\'%\';"/>');
 	}
 
 	protected function printCMDWriteAndFillSelectorHTML(){
 		return parent::printCMDWriteAndFillSelectorHTML().
-		'top.document.frames["fsbody"].document.body.style.fontSize=top.document.frames["fsfooter"].document.getElementsByName("zoom")[0].value+"%";';
+		'parent.frames["fsbody"].document.body.style.fontSize=parent.frames["fsfooter"].document.getElementsByName("zoom")[0].value+"%";';
 	}
 
 		protected function printFramesetJSFunctioWriteBody(){
