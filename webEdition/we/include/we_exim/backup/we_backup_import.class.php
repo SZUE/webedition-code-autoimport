@@ -50,7 +50,7 @@ class we_backup_import{
 
 		$parser = new we_backup_XMLParser();
 
-		$parser->parse($data, (DEFAULT_CHARSET ? DEFAULT_CHARSET : 'ISO-8859-1')); // Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
+		$parser->parse($data, (DEFAULT_CHARSET ? : 'ISO-8859-1')); // Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
 		// free some memory
 		unset($data);
 

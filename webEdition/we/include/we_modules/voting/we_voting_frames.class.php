@@ -807,7 +807,7 @@ function refreshTexts(){
 		$yuiSuggest->setInput('ParentPath', $path, 'onchange=top.content.setHot();');
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult('ParentID', ($this->View->voting->ParentID ? $this->View->voting->ParentID : 0));
+		$yuiSuggest->setResult('ParentID', ($this->View->voting->ParentID ? : 0));
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable(VOTING_TABLE);
 		$yuiSuggest->setWidth($width);

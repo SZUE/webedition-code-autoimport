@@ -55,7 +55,7 @@ abstract class we_html_forms{
 					: "") . ($onClick ? " onclick=\"$onClick\"" : "") . ($disabled ? " disabled=\"disabled\"" : "") . ' /></td>
 					<td>' . we_html_tools::getPixel(4, 2) . '</td>
 					<td class="' . $class . '" style="white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;">' . $text . '</label>' . ($description
-					? "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? $html : "") . '</td>
+					? "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ?  : "") . '</td>
 				</tr>
 			</table>';
 	}
@@ -194,7 +194,7 @@ abstract class we_html_forms{
 
 		$importrtf = weTag_getAttribute('importrtf', $attribs, false, true);
 		$doc = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] != '' && ($GLOBALS['we_doc'] instanceof we_objectFile) ? 'we_doc' : 'WE_MAIN_DOC');
-		$inwebedition = ($forceinwebedition ? $forceinwebedition : (isset($GLOBALS[$doc]->InWebEdition) && $GLOBALS[$doc]->InWebEdition));
+		$inwebedition = ($forceinwebedition ? : (isset($GLOBALS[$doc]->InWebEdition) && $GLOBALS[$doc]->InWebEdition));
 
 		$inlineedit = // we are in frontend, where default is inlineedit = true
 			weTag_getAttribute('inlineedit', $attribs, ($inwebedition ? INLINEEDIT_DEFAULT : true), true);
@@ -203,8 +203,8 @@ abstract class we_html_forms{
 		$value = self::removeBrokenInternalLinksAndImages($value);
 
 		if($wysiwyg){
-			$width = $width ? $width : (abs($cols) ? (abs($cols) * 5.5) : 520);
-			$height = $height ? $height : (abs($rows) ? (abs($rows) * 8) : 200);
+			$width = $width ? : (abs($cols) ? (abs($cols) * 5.5) : 520);
+			$height = $height ? : (abs($rows) ? (abs($rows) * 8) : 200);
 			if(!$showmenues && (strlen($commands) == 0)){
 				$commands = str_replace(array('formatblock,', 'fontname,', 'fontsize,',), '', implode(',', we_wysiwyg_editor::getAllCmds()));
 				if($hidestylemenu){
@@ -218,7 +218,7 @@ abstract class we_html_forms{
 			$out = we_wysiwyg_editor::getHeaderHTML(!$inwebedition);
 
 			$_lang = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->Language)) ? $GLOBALS['we_doc']->Language : WE_LANGUAGE;
-			$buttonpos = $buttonpos ? $buttonpos : 'top';
+			$buttonpos = $buttonpos ? : 'top';
 			$tinyParams = weTag_getAttribute('tinyparams', $attribs);
 			$templates = weTag_getAttribute('templates', $attribs);
 

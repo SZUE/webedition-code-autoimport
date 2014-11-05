@@ -112,11 +112,11 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	function load($newsletterID){
 		parent::load($newsletterID);
 		$this->Text = stripslashes($this->Text);
-		$this->Path = ($this->Path ? $this->Path : '/');
+		$this->Path = ($this->Path ? : '/');
 		$this->Subject = stripslashes($this->Subject);
 		$this->groups = we_newsletter_group::__getAllGroups($newsletterID, $this->db);
 		$this->blocks = we_newsletter_block::__getAllBlocks($newsletterID, $this->db);
-		$this->Charset = $this->Charset ? $this->Charset : $GLOBALS['WE_BACKENDCHARSET'];
+		$this->Charset = $this->Charset ? : $GLOBALS['WE_BACKENDCHARSET'];
 	}
 
 	/**

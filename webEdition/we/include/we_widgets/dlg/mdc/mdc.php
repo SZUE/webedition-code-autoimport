@@ -44,7 +44,7 @@ $cmd4 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4);
 $js = "
 var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
 var _sType='mdc';
-var _sTb='" . ($cmd4 ? $cmd4 : (($_binary{1}) ? g_l('cockpit', '[my_objects]') : g_l('cockpit', '[my_documents]'))) . "';
+var _sTb='" . ($cmd4 ? : (($_binary{1}) ? g_l('cockpit', '[my_objects]') : g_l('cockpit', '[my_documents]'))) . "';
 
 function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);

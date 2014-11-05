@@ -1164,7 +1164,7 @@ function onSelectionClassChangeJS(value) {
 
 		$yuiSuggest = &weSuggest::getInstance();
 		$yuiSuggest->setAcId($PathName);
-		$yuiSuggest->setContentType($acCTypes ? $acCTypes : $filter);
+		$yuiSuggest->setContentType($acCTypes ? : $filter);
 		$yuiSuggest->setInput($PathName, $_path, array(
 			'onchange' => $this->topFrame . ".mark();"
 		));

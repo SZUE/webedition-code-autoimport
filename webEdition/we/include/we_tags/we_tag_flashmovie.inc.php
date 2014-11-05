@@ -31,7 +31,7 @@ function we_tag_flashmovie($attribs){
 	$showflash = weTag_getAttribute('showflash', $attribs, true, true);
 
 	$id = $GLOBALS['we_doc']->getElement($name, 'bdid');
-	$id = $id ? $id : weTag_getAttribute('id', $attribs);
+	$id = $id ? : weTag_getAttribute('id', $attribs);
 	if(isset($attribs['showcontrol']) && !$showcontrol && weTag_getAttribute("id", $attribs)){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
 		$id = weTag_getAttribute("id", $attribs);
 		$attribs['id'] = $id; //siehe korrespondierende Änderung in we:document::getField
@@ -51,7 +51,7 @@ function we_tag_flashmovie($attribs){
 		// Create "Edit Flash" button
 		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage'); opener._EditorFrame.setEditorIsHot(true);");
-		$flash_button = we_html_button::create_button("image:btn_edit_flash", "javascript:we_cmd('openDocselector','" . ($id ? $id : $startid) . "', '" . FILE_TABLE . "', '" . $wecmdenc1 . "','','" . $wecmdenc3 . "',''," . $parentid . ", '" . we_base_ContentTypes::FLASH . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true);
+		$flash_button = we_html_button::create_button("image:btn_edit_flash", "javascript:we_cmd('openDocselector','" . ($id ? : $startid) . "', '" . FILE_TABLE . "', '" . $wecmdenc1 . "','','" . $wecmdenc3 . "',''," . $parentid . ", '" . we_base_ContentTypes::FLASH . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true);
 
 		// Create "Delete/Clear Flash" button
 		$clear_button = we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image', '" . $name . "')", true);

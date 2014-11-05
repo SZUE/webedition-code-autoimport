@@ -241,7 +241,7 @@ function setApplet() {
 
 		$wsA = makeArrayFromCSV(get_def_ws());
 		$ws = $wsA ? $wsA[0] : 0;
-		$store_id = $this->importToID ? $this->importToID : $ws;
+		$store_id = $this->importToID ? : $ws;
 
 		$path = id_to_path($store_id);
 		$wecmdenc1 = we_base_request::encCmd('document.we_startform.importToID.value');

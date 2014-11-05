@@ -916,9 +916,9 @@ function delRow(id) {
 				array("dat" => '<nobr>' . we_util_Strings::shortenPath($user, 30) . '</nobr>'),
 				array("dat" => '<nobr>' . ($_versions[$f]["timestamp"] ? date("d.m.y - H:i:s", $_versions[$f]["timestamp"]) : "-") . ' </nobr>'),
 				array("dat" => (($modificationText != '') ? $modificationText : '') .
-					($fromScheduler ? $fromScheduler : '') .
-					($fromImport ? $fromImport : '') .
-					($resetFromVersion ? $resetFromVersion : '')),
+					($fromScheduler ? : '') .
+					($fromImport ? : '') .
+					($resetFromVersion ? : '')),
 				array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR")) ? we_html_forms::checkbox($_versions[$f]["ID"], 0, "deleteVersion", "", false, "defaultfont", "") : ""),
 				array("dat" => "<span class='printShow'>" . we_html_button::create_button("reset", "javascript:resetVersion('" . $_versions[$f]["ID"] . "','" . $_versions[$f]["documentID"] . "','" . $_versions[$f]["version"] . "','" . $_versions[$f]["documentTable"] . "');", true, 100, 22, "", "", $disabledReset) . "</span>"),
 				array("dat" => "<span class='printShow'>" . we_html_button::create_button("preview", "javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>" . we_html_tools::getPixel(1, 1)),

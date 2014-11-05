@@ -171,7 +171,7 @@ function we_tag_a($attribs, $content){
 			} elseif($delshop){ // emptyshop
 				$param[] = 'deleteshop=1' . $ifShopname . '&t=' . time();
 			} else { // increase/decrease amount of articles
-				$param[] = 'shop_artikelid=' . $idd . '&shop_anzahl=' . $amount . '&type=' . $type . '&t=' . time() . $variant . ($customReq ? $customReq : '') . $ifShopname;
+				$param[] = 'shop_artikelid=' . $idd . '&shop_anzahl=' . $amount . '&type=' . $type . '&t=' . time() . $variant . ($customReq ? : '') . $ifShopname;
 			}
 			break;
 
@@ -179,7 +179,6 @@ function we_tag_a($attribs, $content){
 			$oid = ($listview ?
 							(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_ID') ? $GLOBALS['lv']->f('WE_ID') : 0) :
 							(isset($GLOBALS['we_obj']) && isset($GLOBALS['we_obj']->ID) && $editself ? $GLOBALS['we_obj']->ID : 0));
-			//$oid = $oid ? $oid : $id;
 
 			if($delete){
 				if($oid){

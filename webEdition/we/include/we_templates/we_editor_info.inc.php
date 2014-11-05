@@ -52,7 +52,7 @@ echo we_html_tools::getHtmlTop() .
 	<?php
 	$_html = '
 <div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>
-<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? $GLOBALS['we_doc']->ID : "-") . '</div>
+<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? : "-") . '</div>
 <div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[content_type]") . '</div>
 <div style="margin-bottom:10px;">' . g_l('weEditorInfo', '[' . $GLOBALS['we_doc']->ContentType . ']') . '</div>';
 

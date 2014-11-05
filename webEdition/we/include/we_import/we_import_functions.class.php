@@ -186,7 +186,7 @@ abstract class we_import_functions{
 			$filename = substr($filename, 0, 100);
 		}
 		$filename = trim($filename, '/');
-		return $filename ? $filename : 'newfile';
+		return $filename ? : 'newfile';
 	}
 
 	/**

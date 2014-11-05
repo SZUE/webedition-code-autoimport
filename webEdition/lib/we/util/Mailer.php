@@ -266,7 +266,7 @@ class we_util_Mailer extends Zend_Mail{
 							if(($pos = stripos($directory, $_SERVER['SERVER_NAME']))){
 								$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
 							}
-							$this->basedir = ($this->basedir ? $this->basedir : $_SERVER['DOCUMENT_ROOT']) .
+							$this->basedir = ($this->basedir ? : $_SERVER['DOCUMENT_ROOT']) .
 								((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
 								((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
 							$attachmentpath = $this->basedir . $directory . $filename;

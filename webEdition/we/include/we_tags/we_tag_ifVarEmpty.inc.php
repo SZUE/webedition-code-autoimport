@@ -67,7 +67,7 @@ function we_isVarNotEmpty($attribs){
 				return isset($doc->$match_orig) ? !empty($doc->$match_orig) : false;
 			}
 
-			$type = $type ? $type : $doc->getElement($match_orig, 'type');
+			$type = $type ? : $doc->getElement($match_orig, 'type');
 			switch($type){
 				case 'href' :
 					$attribs['name'] = $match;

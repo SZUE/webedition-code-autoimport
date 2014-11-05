@@ -116,7 +116,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 		$this->setCharset($charset);
 
 		$controller = Zend_Controller_Front::getInstance();
-		$this->_appName = $controller->getParam('appName') ? $controller->getParam('appName') : '';
+		$this->_appName = $controller->getParam('appName') ? : '';
 		if($controller->getResponse()){
 			$controller->getResponse()->setHeader('Content-Type', 'text/html; charset=' . $charset, true);
 		} else {

@@ -301,7 +301,7 @@ class we_customer_customer extends weModelBase{
 	}
 
 	static function customerNameExist($name, we_database_base $db = null){
-		$db = $db ? $db : new DB_WE();
+		$db = $db ? : new DB_WE();
 		return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '" LIMIT 1', '', $db));
 	}
 

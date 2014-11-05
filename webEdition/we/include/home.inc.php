@@ -62,7 +62,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 		$aDatTblPref = we_base_preferences::getUserPref('cockpit_dat'); // array as saved in the prefs
 		$aTrf = we_base_preferences::getUserPref('cockpit_rss');
 		$aDat = $aDatTblPref ? @unserialize($aDatTblPref) : $aCfgProps; //
-		$aDat = $aDat ? $aDat : $aCfgProps;
+		$aDat = $aDat ? : $aCfgProps;
 		$aTrf = $aTrf ? @unserialize($aTrf) : $aTopRssFeeds;
 		if(count($aDat) > $iLayoutCols){
 			while(count($aDat) > $iLayoutCols){
@@ -993,11 +993,6 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 					break;
 				case 'msg':
 					if(!defined('MESSAGING_SYSTEM') || !defined('USER_TABLE')){
-						continue;
-					}
-					break;
-				case 'plg':
-					if((!WE_TRACKER_DIR || !file_exists($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . "/includes/showme.inc.php"))){
 						continue;
 					}
 					break;

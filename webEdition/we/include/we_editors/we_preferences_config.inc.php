@@ -97,8 +97,6 @@ $GLOBALS['configs'] = array(
 		'SYSTEM_WE_SESSION_CRYPT' => array('crypt we session before save', we_base_request::INT, 2),
 // accessibility
 		'SHOWINPUTS_DEFAULT' => array('Default setting for showinputs attribute', we_base_request::BOOL, true),
-// pageLogger Dir
-		'WE_TRACKER_DIR' => array('Directory in which pageLogger is installed (deprecated)', we_base_request::FILE, '/pageLogger'),
 		'DB_SET_CHARSET' => array('connection charset to db', we_base_request::STRING, 'utf8'),
 		'WYSIWYG_TYPE' => array('define used wysiwyg editor', we_base_request::STRING, 'tinyMCE'),
 		'WYSIWYG_TYPE_FRONTEND' => array('define used wysiwyg editor in frontend', we_base_request::STRING, 'tinyMCE'),

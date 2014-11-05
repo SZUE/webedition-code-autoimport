@@ -301,7 +301,7 @@ class we_search_search extends we_search_base{
 				break;
 			case FILE_TABLE:
 				while($_db->next_record()){
-					$res[$_db->f('ID')] = ($_db->f($field) ? $_db->f($field) : $_db->f($field2));
+					$res[$_db->f('ID')] = ($_db->f($field) ? : $_db->f($field2));
 				}
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
@@ -630,13 +630,13 @@ class we_search_search extends we_search_base{
 
 //FIXME path is only implemented for filetable
 	function insertInTempTable($where = '', $table = '', $path = ''){
-		$this->table = ($table ? $table : ($this->table ? $this->table : ''));
+		$this->table = ($table ? : ($this->table ? : ''));
 
-		if(empty($this->table)){
+		if(!$this->table){
 			return;
 		}
 
-		$this->where = ' WHERE ' . ($where ? $where : ($this->where ? $this->where : ' 1 '));
+		$this->where = ' WHERE ' . ($where ? : ($this->where ? : ' 1 '));
 
 		switch($this->table){
 			case FILE_TABLE:
@@ -908,7 +908,7 @@ UNIQUE KEY k (docID,docTable)
 	}
 
 	function getChildsOfParentId($folderID, $table, we_database_base $DB_WE = null){
-		$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
+		$DB_WE = $DB_WE ? : new DB_WE();
 
 		$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
 		$ids = $DB_WE->getAll(true);

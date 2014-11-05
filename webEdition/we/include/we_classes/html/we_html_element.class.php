@@ -270,7 +270,7 @@ abstract class we_html_element{
 	 */
 	public static function htmlBr(){
 		static $br = 0;
-		$br = ($br ? $br : we_html_baseElement::getHtmlCode(new we_html_baseElement('br', 'selfclose')));
+		$br = ($br ? : we_html_baseElement::getHtmlCode(new we_html_baseElement('br', 'selfclose')));
 		return $br;
 	}
 

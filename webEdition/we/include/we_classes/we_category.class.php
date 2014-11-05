@@ -50,7 +50,7 @@ class we_category extends weModelBase{
 	}
 
 	static function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, we_database_base $db = null, $fieldName = 'Category', $getParentCats = true, $categoryids = ''){
-		$db = $db ? $db : new DB_WE();
+		$db = $db ? : new DB_WE();
 		$catCSV = trim($catCSV, ' ,');
 		$pre = ' FIND_IN_SET("';
 		$post = '",' . $table . '.' . $fieldName . ') ';
@@ -118,10 +118,10 @@ class we_category extends weModelBase{
 		if(!$catIDs){
 			return $asArray ? array() : '';
 		}
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 //$foo = makeArrayFromCSV($catIDs);
 		$cats = array();
-		$field = $catfield ? $catfield : ($showpath ? 'Path' : 'Category');
+		$field = $catfield ? : ($showpath ? 'Path' : 'Category');
 		$showpath &=!$catfield;
 		$db->query('SELECT ID,Path,Category,Title,Description FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . trim($catIDs, ',') . ')');
 		while($db->next_record()){

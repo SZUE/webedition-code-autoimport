@@ -34,6 +34,6 @@ function we_tag_customerResetPasswordLink(array $attribs, $content){
 
 	return (weTag_getAttribute("plain", $attribs, false, true) ?
 			$attribs["href"] :
-			getHtmlTag('a', removeAttribs($attribs, array('id', 'plain', 'host')), $content ? $content : $attribs["href"])
+			getHtmlTag('a', removeAttribs($attribs, array('id', 'plain', 'host')), $content ? : $attribs["href"])
 		);
 }

@@ -44,11 +44,11 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$next = $this->getNextBut();
 			$okBut = $back && $next ?
 					we_html_button::create_button_table(array($back, $next)) :
-					($back ? $back : $next );
+					($back ? : $next );
 		} else {
 			$back = $this->getBackBut();
 			$ok = $this->getOkBut();
-			$okBut = $back && $ok ? we_html_button::create_button_table(array($back, $ok)) : ($back ? $back : $ok);
+			$okBut = $back && $ok ? we_html_button::create_button_table(array($back, $ok)) : ($back ? : $ok);
 		}
 
 		return we_html_button::position_yes_no_cancel($okBut, '', we_html_button::create_button('cancel', "javascript:top.close();"));
@@ -211,9 +211,9 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		}
 		return ($parsed['scheme'] ? $parsed['scheme'] . ':' . ((strtolower($parsed['scheme']) === 'mailto') ? '' : '//') : '') .
 				($parsed['user'] ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '') .
-				($parsed['host'] ? $parsed['host'] : '') .
+				($parsed['host'] ? : '') .
 				($parsed['port'] ? ':' . $parsed['port'] : '') .
-				($parsed['path'] ? $parsed['path'] : '') .
+				($parsed['path'] ? : '') .
 				($parsed['query'] ? '?' . $parsed['query'] : '') .
 				($parsed['fragment'] ? '#' . $parsed['fragment'] : '');
 	}
@@ -307,7 +307,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>';
 
-			$_external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? $extHref : we_base_link::EMPTY_EXT, '', '', 'url', 300);
+			$_external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? : we_base_link::EMPTY_EXT, '', '', 'url', 300);
 			// E-MAIL LINK
 			$_email_link = we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300);
 		} else {
@@ -323,7 +323,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[extHref]'].value");
 			$_external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : "";
 
-			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? $extHref : we_base_link::EMPTY_EXT, '', 'onchange="if(this.value==\'\'){
+			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? : we_base_link::EMPTY_EXT, '', 'onchange="if(this.value==\'\'){
 					this.value=\'http://\';
 }else{
 	var x=this.value.match(/(.*:\/\/[^#?]*)(\?([^?#]*))?(#([^?#]*))?/);

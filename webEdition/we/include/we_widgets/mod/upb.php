@@ -111,9 +111,9 @@ foreach($tbls as $table){
 			'" width="16" height="18" />' . we_html_tools::getPixel(4, 1) . '</td><td valign="middle" class="middlefont"><nobr><a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $db->f("ID") . ',\'' . $db->f("ContentType") . '\')" title="' . $db->f("Path") . '" style="color:' . ($db->f("Published") != '-' ? "#3366CC" : "#FF0000") . ';text-decoration:none;">' . $db->f("Path") . '</a></nobr></td></tr>';
 		$row = array(
 			array("dat" => $path),
-			/* array("dat" => $db->f("Creator") ? $db->f("Creator") : '-'),
+			/* array("dat" => $db->f("Creator") ? : '-'),
 			  array("dat" => $db->f('CreationDate')),
-			  array("dat" => $db->f("Modifier") ? $db->f("Modifier") : '-'),
+			  array("dat" => $db->f("Modifier") ? : '-'),
 			  array("dat" => $db->f("Modified")),
 			  array("dat" => $db->f("Published")), */
 		);

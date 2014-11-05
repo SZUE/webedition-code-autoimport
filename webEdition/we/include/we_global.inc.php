@@ -40,7 +40,7 @@ function makePIDTail($pid, $cid, we_database_base $db = null, $table = FILE_TABL
 		return '1';
 	}
 
-	$db = $db ? $db : new DB_WE();
+	$db = $db ? : new DB_WE();
 	$parentIDs = array();
 	$pid = intval($pid);
 	$parentIDs[] = $pid;
@@ -194,7 +194,7 @@ function we_hasPerm($perm){
 }
 
 function we_getParentIDs($table, $id, &$ids, we_database_base $db = null){
-	$db = $db ? $db : new DB_WE();
+	$db = $db ? : new DB_WE();
 	while(($pid = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id), '', $db)) > 0){
 		$id = $pid; // #5836
 		$ids[] = $id;
@@ -255,7 +255,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, we_database_base $db = null
 	if(intval($pid) == 0 || $id == $pid || ($id == '' && $id != '0')){
 		return true;
 	}
-	$db = $db ? $db : new DB_WE();
+	$db = $db ? : new DB_WE();
 
 	$found = array();
 	$p = intval($id);
@@ -275,7 +275,7 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = 
 	if(!$wsIDs || $IDs === ''){
 		return true;
 	}
-	$db = ($db ? $db : new DB_WE());
+	$db = ($db ? : new DB_WE());
 
 	if(!is_array($IDs)){
 		$IDs = explode(',', trim($IDs, ','));
@@ -305,7 +305,7 @@ function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null){
 	if($path === '/'){
 		return 0;
 	}
-	$db = ($db ? $db : new DB_WE());
+	$db = ($db ? : new DB_WE());
 	return intval(f('SELECT DISTINCT ID FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '" LIMIT 1', '', $db));
 }
 
@@ -337,7 +337,7 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $pre
 		return ($asArray ? array('/') : '/');
 	}
 
-	$db = $db ? $db : new DB_WE();
+	$db = $db ? : new DB_WE();
 
 	if(!is_array($IDs)){
 		$IDs = makeArrayFromCSV($IDs);
@@ -363,7 +363,7 @@ function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db = null){
 	if(!$csv){
 		return array();
 	}
-	$db = $db ? $db : new DB_WE();
+	$db = $db ? : new DB_WE();
 	$IDArr = makeArrayFromCSV($csv);
 	$out = $firstEntry ? array(
 		0 => $firstEntry
@@ -377,7 +377,7 @@ function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db = null){
 }
 
 function getPathsFromTable($table = FILE_TABLE, we_database_base $db = null, $type = we_base_constants::FILE_ONLY, $wsIDs = '', $order = 'Path', $limitCSV = '', $first = ''){
-	$db = ($db ? $db : new DB_WE());
+	$db = ($db ? : new DB_WE());
 	$limitCSV = trim($limitCSV, ',');
 	$query = array();
 	if($wsIDs){
@@ -454,7 +454,7 @@ function get_ws($table = FILE_TABLE, $prePostKomma = false){
 }
 
 function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchvalue = 'folder', we_database_base $db = null){
-	$db = $db ? $db : new DB_WE();
+	$db = $db ? : new DB_WE();
 	$pid = f('SELECT ParentID FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($id), '', $db);
 	if($pid !== ''){
 		if($pid == 0){
@@ -469,7 +469,7 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 }
 
 function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '', $match = 'ContentType', $matchvalue = 'folder', we_database_base $db = null){
-	$db = $db ? $db : new DB_WE();
+	$db = $db ? : new DB_WE();
 	$db->query('SELECT ID,' . $db->escape($match) . ' FROM ' . $db->escape($tab) . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . intval($pid) . ' ' . $where);
 	$todo = array();
 	while($db->next_record()){
@@ -705,7 +705,7 @@ function we_convertIniSizes($in){
 }
 
 function we_getDocumentByID($id, $includepath = '', we_database_base $db = null, &$charset = ''){
-	$db = $db ? $db : new DB_WE();
+	$db = $db ? : new DB_WE();
 // look what document it is and get the className
 	$clNm = f('SELECT ClassName FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), '', $db);
 
@@ -938,7 +938,7 @@ function CheckAndConvertISObackend($utf8data){
 function g_l_encodeArray($tmp){//FIXME: move to closure as of php 5.3
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $GLOBALS['WE_BACKENDCHARSET']));
 	return (is_array($tmp) ?
-			array_map('g_l_encodeArray', $tmp) :
+			array_map(__METHOD__, $tmp) :
 			mb_convert_encoding($tmp, $charset, 'UTF-8'));
 }
 
@@ -1228,7 +1228,7 @@ function getMysqlVer($nodots = true){
 	return we_database_base::getMysqlVer($nodots);
 }
 
-if(!function_exists('hex2bin')){//FIXME: remove if php > 5.3
+if(!function_exists('hex2bin')){//FIXME: remove if php >= 5.4
 
 	function hex2bin($hex_string){
 		return pack("H*", $hex_string);

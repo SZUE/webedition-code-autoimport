@@ -1161,7 +1161,7 @@ var ajaxCallbackDeleteVersionsWizard = {
 		parent.wizbusy.document.getElementById("progr").innerHTML = o.responseText;
 		' . we_message_reporting::getShowMessageCall(
 				addslashes(
-					g_l('versions', '[deleteDateVersionsOK]') ? g_l('versions', '[deleteDateVersionsOK]') : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
+					g_l('versions', '[deleteDateVersionsOK]') ?  : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
 		// reload current document => reload all open Editors on demand
 
 		var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
@@ -1192,7 +1192,7 @@ var ajaxCallbackResetVersionsWizard = {
 		parent.wizbusy.document.getElementById("progr").innerHTML = o.responseText;
 		' . we_message_reporting::getShowMessageCall(
 				addslashes(
-					g_l('versions', '[resetAllVersionsOK]') ? g_l('versions', '[resetAllVersionsOK]') : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
+					g_l('versions', '[resetAllVersionsOK]') ? : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
 
 		top.close();
 	}

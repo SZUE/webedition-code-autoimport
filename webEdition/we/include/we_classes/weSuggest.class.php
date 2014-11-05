@@ -900,9 +900,9 @@ function weInputInArray(arr, val) {
 
 	function getHTML(){
 		$selectButtonSpace = $this->selectButtonSpace + $this->width - 1;
-		$inputId = $this->inputId ? $this->inputId : 'yuiAcInput' . $this->acId;
-		$resultId = $this->resultId ? $this->resultId : 'yuiAcResult' . $this->acId;
-		$containerWidth = $this->containerWidth ? $this->containerWidth : $this->width;
+		$inputId = $this->inputId ? : 'yuiAcInput' . $this->acId;
+		$resultId = $this->resultId ? : 'yuiAcResult' . $this->acId;
+		$containerWidth = $this->containerWidth ? : $this->width;
 
 		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir);
 		$inputField = $this->_htmlTextInput($this->inputName, 30, $this->inputValue, "", 'id="' . $inputId . '" ' . $this->inputAttribs, "text", $this->width, 0, "", $this->inputDisabled);
@@ -1059,7 +1059,7 @@ function weInputInArray(arr, val) {
 	}
 
 	function setInputId($val = ''){
-		$this->inputId = ($val ? $val : "yuiAcInput" . $this->acId);
+		$this->inputId = ($val ? : "yuiAcInput" . $this->acId);
 	}
 
 	function setInputName($val){

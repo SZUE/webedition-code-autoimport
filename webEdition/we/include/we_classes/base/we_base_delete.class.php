@@ -65,8 +65,8 @@ abstract class we_base_delete{
 	private static function deleteFolder($id, $table, $path = '', $delR = true, we_database_base $DB_WE = null){
 		$isTemplateFolder = ($table == TEMPLATES_TABLE);
 
-		$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
-		$path = $path ? $path : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), '', $DB_WE);
+		$DB_WE = ($DB_WE ? : new DB_WE());
+		$path = $path ? : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), '', $DB_WE);
 
 		if($delR){ // recursive delete
 			$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id));
@@ -118,11 +118,11 @@ abstract class we_base_delete{
 	}
 
 	private static function deleteFile($id, $table, $path = '', $contentType = '', we_database_base $DB_WE = null){
-		$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
+		$DB_WE = $DB_WE ? : new DB_WE();
 
 		$isTemplateFile = ($table == TEMPLATES_TABLE);
 
-		$path = $path ? $path : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), 'Path', $DB_WE);
+		$path = $path ? : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), 'Path', $DB_WE);
 		self::deleteContentFromDB($id, $table);
 
 		$file = ((!$isTemplateFile) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATES_PATH) . $path;
@@ -207,7 +207,7 @@ abstract class we_base_delete{
 	}
 
 	public static function deleteEntry($id, $table, $delR = true, $skipHook = false, we_database_base $DB_WE = null){
-		$DB_WE = ($DB_WE ? $DB_WE : new DB_WE());
+		$DB_WE = ($DB_WE ? : new DB_WE());
 		if(defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE))){
 			if(we_workflow_utility::inWorkflow($id, $table)){
 				we_workflow_utility::removeDocFromWorkflow($id, $table, $_SESSION['user']['ID'], g_l('modules_workflow', '[doc_deleted]'));
@@ -259,7 +259,7 @@ abstract class we_base_delete{
 	 * @return bool true on success, or if not in DB
 	 */
 	public static function deleteContentFromDB($id, $table, we_database_base $DB_WE = null){
-		$DB_WE = $DB_WE ? $DB_WE : new DB_WE();
+		$DB_WE = $DB_WE ? : new DB_WE();
 
 		if(!f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" LIMIT 1', '', $DB_WE)){
 			return true;

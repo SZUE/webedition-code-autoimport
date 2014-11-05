@@ -119,7 +119,6 @@ if(($we_include = $we_doc->editor())){
 			if($urlReplace){
 				$content = preg_replace($urlReplace, array_keys($urlReplace), $content);
 			}
-
 			echo $content;
 		}
 	} else {

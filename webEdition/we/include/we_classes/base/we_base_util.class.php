@@ -219,7 +219,7 @@ abstract class we_base_util{
 		$outArray = array(
 			$folderID
 		);
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 		$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
 		$new = array();
 		while($db->next_record()){
@@ -411,13 +411,13 @@ abstract class we_base_util{
 					$mime = finfo_file($finfo, $filepath);
 					finfo_close($finfo);
 					if($mime || $method == self::MIME_BY_HEAD){
-						return $mime ? $mime : false;
+						return $mime ? : false;
 					}
 				}
 				if(function_exists('mime_content_type')){
 					$mime = mime_content_type($filepath);
 					if($mime || $method == self::MIME_BY_HEAD){
-						return $mime ? $mime : false;
+						return $mime ? : false;
 					}
 				}
 				if($method == self::MIME_BY_HEAD){

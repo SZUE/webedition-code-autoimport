@@ -97,8 +97,8 @@ class we_quicktimeDocument extends we_binaryDocument{
 
 		$_data = $this->getElement("data");
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
-			$pluginspage = $this->getElement("Pluginspage") ? $this->getElement("Pluginspage") : "http://www.apple.com/quicktime/download/";
-			$codebase = $this->getElement("Codebase") ? $this->getElement("Codebase") : "http://www.apple.com/qtactivex/qtplugin.cab";
+			$pluginspage = $this->getElement("Pluginspage") ? : "http://www.apple.com/quicktime/download/";
+			$codebase = $this->getElement("Codebase") ? : "http://www.apple.com/qtactivex/qtplugin.cab";
 
 			// first we make valid object-tag
 			srand((double) microtime() * 1000000);

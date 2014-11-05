@@ -79,10 +79,10 @@ function we_tag_author($attribs){
 			return trim($foo['Second']);
 		case 'name' :
 			$out = trim(($foo['First'] ? ($foo['First'] . ' ') : '') . $foo['Second']);
-			return $out ? $out : $foo['Username'];
+			return $out ? : $foo['Username'];
 		case 'initials' :
 			$out = trim(($foo['First'] ? $foo['First']{0} : '') . ($foo['Second'] ? $foo['Second']{0} : ''));
-			return $out ? $out : $foo['Username'];
+			return $out ? : $foo['Username'];
 		case 'salutation':
 			return trim($foo['Salutation']);
 		case 'email':

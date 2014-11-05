@@ -171,7 +171,7 @@ abstract class we_customer_treeLoader{
 			$old = 0;
 
 			if($level == 0){
-				$gname = $db->f($grouparr[0]) ? $db->f($grouparr[0]) : g_l('modules_customer', '[no_value]');
+				$gname = $db->f($grouparr[0]) ? : g_l('modules_customer', '[no_value]');
 				$gid = '{' . $gname . '}';
 
 				$items[] = array(
@@ -190,8 +190,8 @@ abstract class we_customer_treeLoader{
 				$foo = array();
 				for($i = 0; $i < $levelcount; $i++){
 					$foo[] = ($i == 0 ?
-							('{' . ($db->f($grouparr[$i]) ? $db->f($grouparr[$i]) : g_l('modules_customer', '[no_value]')) . '}') :
-							($db->f($grouparr[$i]) ? $db->f($grouparr[$i]) : g_l('modules_customer', '[no_value]')));
+							('{' . ($db->f($grouparr[$i]) ? : g_l('modules_customer', '[no_value]')) . '}') :
+							($db->f($grouparr[$i]) ? : g_l('modules_customer', '[no_value]')));
 					$gname = implode('-|-', $foo);
 					if($i >= $level){
 						if(!isset($check[$gname])){
@@ -199,7 +199,7 @@ abstract class we_customer_treeLoader{
 								'id' => $gname,
 								'parentid' => $old,
 								'path' => '',
-								'text' => ($db->f($grouparr[$i]) ? $db->f($grouparr[$i]) : g_l('modules_customer', '[no_value]')),
+								'text' => ($db->f($grouparr[$i]) ? : g_l('modules_customer', '[no_value]')),
 								'icon' => we_base_ContentTypes::FOLDER_ICON,
 								'isfolder' => 1,
 								'typ' => 'group',
