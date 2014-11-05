@@ -1469,7 +1469,7 @@ class we_object extends we_document{
 				$content .= '<tr><td><img src="' . TREE_ICON_DIR . $data["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $data["Path"] . '</td><td>' .
 					($canChange ?
 						$this->htmlHidden('we_users_read_only[' . $user . ']', (isset($usersReadOnly[$user]) && $usersReadOnly[$user]) ? $usersReadOnly[$user] : "" ) .
-					'<input type="checkbox" value="1" name="wetmp_users_read_only[' . $user . ']"' .( (isset($usersReadOnly[$user]) && $usersReadOnly[$user] ) ?' checked' :'') . ' onclick="this.form.elements[\'we_users_read_only[' . $user . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
+						'<input type="checkbox" value="1" name="wetmp_users_read_only[' . $user . ']"' . ( (isset($usersReadOnly[$user]) && $usersReadOnly[$user] ) ? ' checked' : '') . ' onclick="this.form.elements[\'we_users_read_only[' . $user . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
 						'<img src="' . TREE_IMAGE_DIR . ($usersReadOnly[$user] ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" />'
 					) . '</td><td class="defaultfont">' . g_l('weClass', "[readOnly]") . '</td><td>' .
 					($canChange ?
@@ -2069,7 +2069,7 @@ class we_object extends we_document{
 			$this->DefaultWorkspaces = '';
 			$wsp = makeArrayFromCSV($this->Workspaces);
 			for($i = 0; $i < count($wsp); $i++){
-				if(we_base_request::_(we_base_request::BOOL, "we_" . $this->Name . "_DefaultWorkspaces_" . $i)){
+				if(we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_DefaultWorkspaces_' . $i) !== false){
 					$this->DefaultWorkspaces .= $wsp[$i] . ',';
 				}
 			}

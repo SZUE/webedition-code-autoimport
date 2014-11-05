@@ -543,6 +543,7 @@ abstract class we_base_file{
 		}
 		if(!is_file($destination)){
 			t_e('destination not naming a file', $destination, $link);
+			return false;
 		}
 		if(@link($destination, $link)){
 			return true;

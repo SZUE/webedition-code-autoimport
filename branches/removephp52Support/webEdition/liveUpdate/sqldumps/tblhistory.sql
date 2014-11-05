@@ -1,3 +1,9 @@
+###ONCOL(ID,###TBLPREFIX###tblhistory)###
+/* query separator */
+
+###UPDATEDROPCOL(ID,###TBLPREFIX###tblhistory)###
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblhistory (
   DID bigint(20) unsigned NOT NULL default '0',
   DocumentTable enum('tblFile','tblObject','tblTemplates','tblObjectFiles') NOT NULL,
@@ -8,3 +14,8 @@ CREATE TABLE ###TBLPREFIX###tblhistory (
   PRIMARY KEY (DID,DocumentTable,UID),
 	KEY perUser (UID,DocumentTable,ModDate)
 ) ENGINE=MyISAM;
+
+/* query separator */
+###ONKEYFAILED(PRIMARY KEY,###TBLPREFIX###tblhistory) TRUNCATE TABLE ###TBLPREFIX###tblhistory;###
+/* query separator */
+###ONKEYFAILED(PRIMARY KEY,###TBLPREFIX###tblhistory) ALTER TABLE ###TBLPREFIX###tblhistory ADD PRIMARY KEY (DID,DocumentTable,UID);###

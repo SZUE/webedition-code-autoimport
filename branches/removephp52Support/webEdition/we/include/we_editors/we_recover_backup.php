@@ -58,9 +58,6 @@ switch($what){
 	case 'extern':
 		print $weBackupWizard->getHTMLExtern();
 		break;
-	case 'checker':
-		print $weBackupWizard->getHTMLChecker();
-		break;
 	default:
 		t_e(__FILE__ . ' unknown reference: ' . $what);
 }

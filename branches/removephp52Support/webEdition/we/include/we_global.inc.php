@@ -30,8 +30,8 @@ function weFileExists($id, $table = FILE_TABLE, we_database_base $db = NULL){
 	return we_base_file::isWeFile($id, $table, $db);
 }
 
-function correctUml($in){
-	//FIXME: can we use this (as in objectfile): preg_replace(array('~&szlig;~','~&(.)(uml|grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~[^0-9a-zA-Z/._-]~'), array('ss','\1\3', ''), htmlentities($text));
+function correctUml($in){//FIXME: need charset!!
+	//FIXME: can we use this (as in objectfile): preg_replace(array('~&szlig;~','~&(.)(uml|grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~[^0-9a-zA-Z/._-]~'), array('ss','\1\3', ''), htmlentities($text, ENT_COMPAT, $this->Charset));
 	return strtr($in, array('ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ß' => 'ss'));
 }
 

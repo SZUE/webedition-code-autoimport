@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,8 +27,7 @@
  * TBD if we divide this class in several classes
  */
 class liveUpdateFunctions{
-
-	private $QueryLog = array(
+	var $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
 		'error' => array(),
@@ -42,9 +40,9 @@ class liveUpdateFunctions{
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . we_database_base::arraySetter(array(
-					'aktion' => $action,
-					'versionsnummer' => $version,
-					'error' => $errorCode
+				'aktion' => $action,
+				'versionsnummer' => $version,
+				'error' => $errorCode
 		)));
 	}
 
@@ -97,8 +95,7 @@ class liveUpdateFunctions{
 	 * @return unknown
 	 */
 	function replaceExtensionInContent($content, $needle, $replace){
-		$content = str_replace($needle, $replace, $content);
-		return $content;
+		return str_replace($needle, $replace, $content);
 	}
 
 	function replaceDocRootNeeded(){
@@ -113,13 +110,13 @@ class liveUpdateFunctions{
 	 * @return string
 	 */
 	function checkReplaceDocRoot($content){
-		if(self::replaceDocRootNeeded){
+		if($this->replaceDocRootNeeded()){
 			$content = str_replace(array(
 				'$_SERVER[\'DOCUMENT_ROOT\']',
 				"\$_SERVER[\"DOCUMENT_ROOT\"]",
 				'$GLOBALS[\'DOCUMENT_ROOT\']',
 				"\$GLOBALS[\"DOCUMENT_ROOT\]",
-					), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+				), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 		}
 		return $content;
 	}
@@ -452,7 +449,7 @@ class liveUpdateFunctions{
 	 *
 	 * @param array $fields
 	 * @param string $tableName
-	 * @param boolean $newField
+	 * @param boolean $isNew
 	 * @return unknown
 	 */
 	function getAlterTableForFields($fields, $tableName, $isNew = false){
@@ -596,6 +593,19 @@ class liveUpdateFunctions{
 		if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/', $query, $matches)){
 			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Field="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP COLUMN ' . $db->escape($matches[1]) : '');
+		}
+		if(preg_match('/###ONCOL\((.*),(.*)\)([^#]+)###/', $query, $matches)){
+			$keys = $this->getKeysFromTable($matches[2]);
+			if(isset($keys[$matches[1]])){
+				$query = $matches[3];
+			}
+		}
+		//handle if key is not set, should be used after table def. so handling code, e.g. truncate, copy... can be put here
+		if(preg_match('/###ONKEYFAILED\((.*),(.*)\)([^#]+)###/', $query, $matches)){
+			$keys = $this->getKeysFromTable($matches[2]);
+			if(!isset($keys[$matches[1]])){
+				$query = $matches[3];
+			}
 		}
 		if(preg_match('/###UPDATEDROPKEY\((.*),(.*)\)###/', $query, $matches)){
 			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Key_name="' . $matches[1] . '"');

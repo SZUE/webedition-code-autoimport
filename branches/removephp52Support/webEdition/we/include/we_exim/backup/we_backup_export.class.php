@@ -68,9 +68,15 @@ abstract class we_backup_export{
 				case (defined('BANNER_CLICKS_TABLE') ? BANNER_CLICKS_TABLE : 'BANNER_CLICKS_TABLE'):
 					$lines = intval($lines) * 5;
 					break;
+				case FILE_TABLE://since binary files can be large
+					$lines = ($export_binarys ? 1 : $lines);
+					break;
+				case VERSIONS_TABLE:
+					$lines = ($export_version_binarys ? 1 : $lines);
+					break;
 			}
 		}
-		if(empty($_table)){
+		if(!$_table){
 			return false;
 		}
 
@@ -108,24 +114,27 @@ abstract class we_backup_export{
 				switch($_def_table){
 					case 'tblfile':
 						if(($_object->ContentType == we_base_ContentTypes::IMAGE || stripos($_object->ContentType, "application/") !== false)){
+							$bin = we_exim_contentProvider::getInstance('weBinary', $_object->ID);
 							if($log){
-								we_backup_util::addLog(sprintf('Exporting binary data for item %s:%s', $_table, $_object->ID));
+								we_backup_util::addLog(sprintf('Exporting binary data %s, %s', $bin->Path, we_base_file::getHumanFileSize($bin->getFilesize())));
+								we_backup_util::writeLog();
 							}
 
-							$bin = we_exim_contentProvider::getInstance('weBinary', $_object->ID);
-
 							we_exim_contentProvider::binary2file($bin, $_fh, $_SESSION['weS']['weBackupVars']['write']);
+							if($log){
+								we_backup_util::addLog(sprintf('done'));
+								we_backup_util::writeLog();
+							}
 						}
 						break;
 
 					case 'tblversions':
 						if($log){
 							we_backup_util::addLog(sprintf('Exporting version data for item %s:%s', $_table, $_object->ID));
+							we_backup_util::writeLog();
 						}
 
-						$bin = we_exim_contentProvider::getInstance('weVersion', $_object->ID);
-
-						we_exim_contentProvider::version2file($bin, $_fh, $_SESSION['weS']['weBackupVars']['write']);
+						we_exim_contentProvider::version2file(we_exim_contentProvider::getInstance('weVersion', $_object->ID), $_fh, $_SESSION['weS']['weBackupVars']['write']);
 						break;
 				}
 			}

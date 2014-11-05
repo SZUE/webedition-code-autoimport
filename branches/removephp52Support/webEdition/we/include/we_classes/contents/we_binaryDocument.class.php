@@ -88,7 +88,7 @@ class we_binaryDocument extends we_document{
 		$_sitePath = $this->getSitePath();
 		$_realPath = $this->getRealPath();
 		if(!file_exists($_sitePath) && file_exists($_realPath)){
-			we_base_file::copyFile($_realPath, $this->getSitePath());
+			we_base_file::makeHardLink($_realPath, $this->getSitePath());
 		}
 		if(file_exists($_sitePath) && filesize($_sitePath)){
 			$this->setElement('data', $_sitePath, 'image');
@@ -105,12 +105,17 @@ class we_binaryDocument extends we_document{
 		}
 		if(parent::we_save($resave)){
 			$this->DocChanged = false;
-			$this->setElement("data", $this->getSitePath());
+			$this->setElement('data', $this->getSitePath());
 			return $this->insertAtIndex();
 		}
 
 		return false;
 	}
+
+	public function we_publish(){
+		return $this->we_save();
+	}
+
 
 	function i_getDocument($size = -1){
 		$file = $this->getElement('data');

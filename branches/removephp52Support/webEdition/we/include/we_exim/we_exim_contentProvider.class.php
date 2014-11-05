@@ -273,7 +273,7 @@ class we_exim_contentProvider{
 			}
 		}
 
-		if(isset($object->Data)){
+		if(isset($object->Path)){
 			$offset = 0;
 			$rsize = 1048576;
 			do{
@@ -534,3 +534,4 @@ class we_exim_contentProvider{
 	}
 
 }
+

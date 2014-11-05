@@ -207,6 +207,7 @@ class we_fileupload_include extends we_fileupload_base{
 		$partCount = we_base_request::_(we_base_request::INT, 'wePartCount', 0);
 		$fileNameTemp = we_base_request::_(we_base_request::STRING, 'weFileNameTemp', '');
 		$fileName = we_base_request::_(we_base_request::STRING, 'weFileName', '');
+		$fileSize = we_base_request::_(we_base_request::INT, "weFileSize", 1);
 		$fileCt = we_base_request::_(we_base_request::STRING, 'weFileCt', '');
 
 		//FIXME: do we really need so much vars for execution control?
@@ -288,7 +289,7 @@ class we_fileupload_include extends we_fileupload_base{
 						'type' => $fileCt,
 						'tmp_name' => 'notempty',
 						'name' => $fileName,
-						'size' => 1,
+						'size' => $fileSize,
 						'error' => UPLOAD_ERR_OK,
 					);
 					//FIXME: make some integrity test for the whole and for every chunk (md5)

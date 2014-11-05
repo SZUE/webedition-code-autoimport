@@ -717,7 +717,7 @@ class we_helpers_pdf2text{
 							$this->getPageFonts($fonts, $data);
 						}
 					}
-					if(isset($elem['Resources'])){
+					if(isset($elem['Resources']) && isset($this->data[rtrim($elem['Resources'])])){
 						$this->getPageFonts($fonts, $this->data[rtrim($elem['Resources'], self::TRIM_REF)]);
 					}
 					if(!empty($fonts)){

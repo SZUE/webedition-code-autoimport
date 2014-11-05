@@ -108,8 +108,8 @@ function we_tag_sessionStart($attribs){
 					'WebUserID' => $WebUserID,
 					'WebUserGroup' => $WebUserGroup,
 					'WebUserDescription' => '',
-					'Browser' => $_SERVER['HTTP_USER_AGENT'] ? : '',
-					'Referrer' => $_SERVER['HTTP_REFERER'] ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '',
+					'Browser' => isset($_SERVER['HTTP_USER_AGENT']) ? : '',
+					'Referrer' => isset($_SERVER['HTTP_REFERER']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '',
 					'LastLogin' => sql_function('NOW()'),
 					'PageID' => $doc->ID,
 					'SessionAutologin' => $SessionAutologin

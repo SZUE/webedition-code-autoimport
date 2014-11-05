@@ -71,11 +71,12 @@ abstract class we_customer_EI{
 					$customer_xml = new we_html_baseCollection('customer');
 					$customer = new we_customer_customer($cid);
 					if($customer->ID){
-						foreach($fields as $k => $v){
+						foreach(array_keys($fields) as $k){
 							if(!$customer->isProtected($k)){
 								$value = $customer->{$k};
-								if($value != '')
-									$value = ($options['cdata'] ? '<![CDATA[' . $value . ']]>' : htmlentities($value));
+								if($value != ''){
+									$value = ($options['cdata'] ? '<![CDATA[' . $value . ']]>' : htmlentities($value));//FIXME: is this a good idea??
+								}
 								$customer_xml->addChild(new we_html_baseElement($k, true, null, $value));
 							}
 						}
@@ -98,10 +99,8 @@ abstract class we_customer_EI{
 
 	function buildXMLElement($elements){
 		$out = '';
-		$content = '';
 		foreach($elements as $element){
-			$content = (is_array($element['content']) ? self::buildXMLElement($element['content']) : $element['content']);
-			$element = new we_html_baseElement($element['name'], true, $element['attributes'], $content);
+			$element = new we_html_baseElement($element['name'], true, $element['attributes'], (is_array($element['content']) ? self::buildXMLElement($element['content']) : $element['content']));
 			$out.=$element->getHTML();
 		}
 		return $out;

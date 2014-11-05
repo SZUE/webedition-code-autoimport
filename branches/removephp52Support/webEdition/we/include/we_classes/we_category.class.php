@@ -36,6 +36,7 @@ class we_category extends weModelBase{
 	}
 
 	function we_save(){
+		$this->Catfields = serialize(array('default' => array('Title' => $this->Title, 'Description' => $this->Description))); //FIXME:remove in 6.5
 		parent::save();
 		//FIXME:improve clean of nav Cache each time a category is saved!
 		we_navigation_cache::clean(true);

@@ -112,7 +112,7 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('float', false, '', array($name, $hyperlink, $href, $target, $num_format, $triggerid), array($name)),
 	new weTagDataOption('int', false, 'object', array($name, $hyperlink, $href, $target, $triggerid), array($name)),
 	new weTagDataOption('shopVat', false, '', array(), array()),
-	new weTagDataOption('checkbox', false, '', array(), array()),
+	new weTagDataOption('checkbox', false, '', array($name), array($name)),
 	new weTagDataOption('country', false, '', array($outputlanguage, $doc), array()),
 	new weTagDataOption('language', false, '', array($outputlanguage, $doc), array())
 	), false, '');
