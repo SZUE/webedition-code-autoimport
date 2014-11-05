@@ -73,7 +73,8 @@ function we_tag_form($attribs){
 	switch($type){
 		case 'shopliste' :
 			$formAttribs['action'] = $GLOBALS['we_form_action'];
-			$formAttribs['name'] = 'form' . ((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1]) && strlen($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1])) ? $GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] : $GLOBALS['we_doc']->ID);
+			$myID = ((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs) && ($last = end($GLOBALS['lv']->IDs))) ? $last : $GLOBALS['we_doc']->ID);
+			$formAttribs['name'] = 'form' . $myID;
 			if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
 				$ret = getHtmlTag('form', $formAttribs, '', false, true) .
 						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'type',
@@ -97,9 +98,7 @@ function we_tag_form($attribs){
 													(isset($GLOBALS['we_doc']->OF_ID) ?
 															$GLOBALS['we_doc']->OF_ID :
 															$GLOBALS['we_doc']->ID))) :
-									((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1]) && $GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] != '') ?
-											$GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] :
-											$GLOBALS['we_doc']->ID)
+									$myID
 						)) .
 						getHtmlTag('input', array(
 							'xml' => $xml,

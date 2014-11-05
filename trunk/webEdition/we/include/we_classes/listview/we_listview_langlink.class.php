@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -28,6 +29,7 @@
  *
  */
 class we_listview_langlink extends we_listview_base{
+
 	var $docType = ""; /* doctype string */
 	var $IDs = array(); /* array of ids with pages which are found */
 	var $foundlinks = array();
@@ -112,10 +114,10 @@ class we_listview_langlink extends we_listview_base{
 				}
 
 				$this->DB_WE->query(
-					'SELECT ' . LANGLINK_TABLE . '.DID, ' . LANGLINK_TABLE . '.DLocale, ' . LANGLINK_TABLE . '.LDID, ' . LANGLINK_TABLE . '.Locale, ' . LANGLINK_TABLE . '.IsFolder, ' . LANGLINK_TABLE . '.IsObject, ' . LANGLINK_TABLE . '.DocumentTable, ' . $this->dirsearchtable . '.Path' .
-					$extraSelect .
-					'FROM ' . LANGLINK_TABLE . ',' . $this->dirsearchtable .
-					' WHERE ' . LANGLINK_TABLE . '.Locale="' . $langkey . '" AND ' . LANGLINK_TABLE . '.LDID=' . $this->dirsearchtable . '.ID AND ' . $this->dirsearchtable . '.Published>0 AND ' . LANGLINK_TABLE . '.DocumentTable="' . $this->linkType . '" AND ' . LANGLINK_TABLE . '.DID=' . $this->id
+						'SELECT ' . LANGLINK_TABLE . '.DID, ' . LANGLINK_TABLE . '.DLocale, ' . LANGLINK_TABLE . '.LDID, ' . LANGLINK_TABLE . '.Locale, ' . LANGLINK_TABLE . '.IsFolder, ' . LANGLINK_TABLE . '.IsObject, ' . LANGLINK_TABLE . '.DocumentTable, ' . $this->dirsearchtable . '.Path' .
+						$extraSelect .
+						'FROM ' . LANGLINK_TABLE . ',' . $this->dirsearchtable .
+						' WHERE ' . LANGLINK_TABLE . '.Locale="' . $langkey . '" AND ' . LANGLINK_TABLE . '.LDID=' . $this->dirsearchtable . '.ID AND ' . $this->dirsearchtable . '.Published>0 AND ' . LANGLINK_TABLE . '.DocumentTable="' . $this->linkType . '" AND ' . LANGLINK_TABLE . '.DID=' . $this->id
 				);
 				$found = $this->DB_WE->num_rows();
 				if($found){
@@ -192,14 +194,14 @@ class we_listview_langlink extends we_listview_base{
 
 		if($pid){
 			$extraSelect = ($this->linkType === 'tblFile' ?
-					',' . $this->dirsearchtable . '.ParentID ' :
-					', ' . $this->dirsearchtable . '.Url, ' . $this->dirsearchtable . '.TriggerID ');
+							',' . $this->dirsearchtable . '.ParentID ' :
+							', ' . $this->dirsearchtable . '.Url, ' . $this->dirsearchtable . '.TriggerID ');
 
 			$this->DB_WE->query(
-				'SELECT ' . LANGLINK_TABLE . '.DID, ' . LANGLINK_TABLE . '.DLocale, ' . LANGLINK_TABLE . '.LDID, ' . LANGLINK_TABLE . '.Locale, ' . LANGLINK_TABLE . '.IsFolder, ' . LANGLINK_TABLE . '.IsObject, ' . LANGLINK_TABLE . '.DocumentTable, ' . $this->dirsearchtable . '.Path as Path' .
-				$extraSelect .
-				' FROM ' . LANGLINK_TABLE . "," . $this->dirsearchtable .
-				' WHERE ' . LANGLINK_TABLE . '.Locale="' . $langkey . '" AND ' . LANGLINK_TABLE . '.LDID = ' . $this->dirsearchtable . '.ID AND ' . $this->dirsearchtable . '.Published >0 AND ' . LANGLINK_TABLE . '.DocumentTable="' . $this->linkType . '" AND ' . LANGLINK_TABLE . '.DID=' . intval($pid)
+					'SELECT ' . LANGLINK_TABLE . '.DID, ' . LANGLINK_TABLE . '.DLocale, ' . LANGLINK_TABLE . '.LDID, ' . LANGLINK_TABLE . '.Locale, ' . LANGLINK_TABLE . '.IsFolder, ' . LANGLINK_TABLE . '.IsObject, ' . LANGLINK_TABLE . '.DocumentTable, ' . $this->dirsearchtable . '.Path as Path' .
+					$extraSelect .
+					' FROM ' . LANGLINK_TABLE . "," . $this->dirsearchtable .
+					' WHERE ' . LANGLINK_TABLE . '.Locale="' . $langkey . '" AND ' . LANGLINK_TABLE . '.LDID = ' . $this->dirsearchtable . '.ID AND ' . $this->dirsearchtable . '.Published >0 AND ' . LANGLINK_TABLE . '.DocumentTable="' . $this->linkType . '" AND ' . LANGLINK_TABLE . '.DID=' . intval($pid)
 			);
 			$found = $this->DB_WE->num_rows();
 			if($found){
@@ -233,29 +235,27 @@ class we_listview_langlink extends we_listview_base{
 				$this->Record["WE_PATH"] = $this->foundlinks[$count]["Path"];
 			} else {
 
-				$path_parts = pathinfo(
-					(isset($this->foundlinks[$count]['TriggerID']) && $this->foundlinks[$count]['TriggerID'] ?
-						id_to_path($this->foundlinks[$count]['TriggerID']) : $_SERVER['SCRIPT_NAME'])
+				$path_parts = pathinfo((isset($this->foundlinks[$count]['TriggerID']) && $this->foundlinks[$count]['TriggerID'] ?
+								id_to_path($this->foundlinks[$count]['TriggerID']) :
+								$_SERVER['SCRIPT_NAME'])
 				);
 
 				$paramName = 'we_objectID';
 
 				if($this->objectseourls && $this->foundlinks[$count]['Url'] != '' && show_SeoLinks()){
-					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $this->foundlinks[$count]['Url'];
-					} else {
-						$this->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $this->foundlinks[$count]['Url'];
-					}
+					$this->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
+							(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+									'' :
+									$path_parts['filename'] . '/') .
+							$this->foundlinks[$count]['Url'];
 				} else {
-					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?$paramName=" . $this->Record["WE_ID"];
-					} else {
-						$this->Record["WE_PATH"] = $_SERVER['SCRIPT_NAME'] . "?$paramName=" . $this->Record["WE_ID"];
-					}
+					$this->Record["WE_PATH"] = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+									($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
+									$_SERVER['SCRIPT_NAME']) .
+							'?' . $paramName . '=' . $this->Record["WE_ID"];
 				}
 			}
 			$this->Record["Path"] = $this->Record["WE_PATH"];
-
 			$this->Record["ID"] = $this->Record["WE_ID"];
 
 			$this->count++;
@@ -263,10 +263,11 @@ class we_listview_langlink extends we_listview_base{
 		}
 		$this->stop_next_row = $this->shouldPrintEndTR();
 		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-			$this->Record = array();
-			$this->Record["WE_PATH"] = "";
-			$this->Record["WE_TEXT"] = "";
-			$this->Record["WE_ID"] = "";
+			$this->Record = array(
+				"WE_PATH" => "",
+				"WE_TEXT" => "",
+				"WE_ID" => "",
+			);
 			$this->count++;
 			return true;
 		}
