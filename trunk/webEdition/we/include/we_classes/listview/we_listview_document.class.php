@@ -203,7 +203,7 @@ class we_listview_document extends we_listview_base{
 
 			$ranking = '0';
 			$spalten = array(($this->casesensitive ? 'BINARY ' : '') . INDEX_TABLE . '.Text');
-			
+
 			foreach($bedingungen as $v1){
 				if(preg_match('|^[-\+]|', $v1)){
 					$not = (preg_match('^-', $v1));
@@ -260,8 +260,9 @@ class we_listview_document extends we_listview_base{
 			$limit = (($rows > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : "");
 		}
 		$this->DB_WE->query(
-			'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID' . $extraSelect .
+			'SELECT ' . FILE_TABLE . '.ID, ' . FILE_TABLE . '.WebUserID' . $extraSelect .
 			' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID ' . $joinstring .
+			($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' ON ' . INDEX_TABLE . '.DID=' . FILE_TABLE . '.ID' : '') .
 			' WHERE ' . $orderwhereString .
 			($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : 1) . ' ' .
 			$where_lang . ' ' .
@@ -355,7 +356,7 @@ class we_listview_document extends we_listview_base{
 				}
 
 				$this->Record['WE_PATH'] = $this->Record['wedoc_Path'];
-				$this->Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id), 'Text', $this->DB_WE);
+				$this->Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id), '', $this->DB_WE);
 				$this->Record['WE_ID'] = intval($id);
 
 				if($this->customers && $this->Record['wedoc_WebUserID']){

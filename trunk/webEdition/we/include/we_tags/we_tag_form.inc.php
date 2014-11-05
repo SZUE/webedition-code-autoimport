@@ -104,7 +104,7 @@ function we_tag_form($attribs){
 						getHtmlTag('input', array(
 							'xml' => $xml,
 							'type' => 'hidden',
-							'name' => 'we_variant',
+							'name' => WE_SHOP_VARIANT_REQUEST,
 							'value' => (isset($GLOBALS['we_doc']->Variant) ? $GLOBALS['we_doc']->Variant : ''),
 						)) .
 						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 't', 'value' => time(),));
