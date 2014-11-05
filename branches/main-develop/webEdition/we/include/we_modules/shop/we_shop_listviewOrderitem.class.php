@@ -55,7 +55,7 @@ class we_shop_listviewOrderitem extends we_listview_base{
 
 		$this->docID = $docID;
 		$this->orderID = $orderID;
-		$this->condition = $condition ? $condition : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
+		$this->condition = $condition ? : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
 
 		if(strpos($this->condition, 'ID') !== false && strpos($this->condition, 'IntID') === false){
 			$this->condition = str_replace('ID', 'IntID', $this->condition);

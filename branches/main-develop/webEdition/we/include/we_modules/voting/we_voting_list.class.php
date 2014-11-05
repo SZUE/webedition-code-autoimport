@@ -95,7 +95,7 @@ class we_voting_list{
 		if($this->hasNextPage()){
 			$urlID = weTag_getAttribute("id", $attribs);
 			$foo = $this->Start + $this->Rows;
-			$attribs["href"] = we_tag('url', array('id' => ($urlID ? $urlID : 'self'), 'hidedirindex' => 'false')) . '?' . oldHtmlspecialchars(we_listview_base::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
+			$attribs["href"] = we_tag('url', array('id' => ($urlID ? : 'self'), 'hidedirindex' => 'false')) . '?' . oldHtmlspecialchars(we_listview_base::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
 			$attribs['rel'] = 'next';
 
 			return getHtmlTag("a", $attribs, "", false, true);
@@ -111,7 +111,7 @@ class we_voting_list{
 		if($this->hasPrevPage()){
 			$urlID = weTag_getAttribute("id", $attribs);
 			$foo = $this->Start - $this->Rows;
-			$attribs["href"] = we_tag('url', array('id' => ($urlID ? $urlID : 'self'), 'hidedirindex' => 'false')) . '?' . oldHtmlspecialchars(we_listview_base::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
+			$attribs["href"] = we_tag('url', array('id' => ($urlID ? : 'self'), 'hidedirindex' => 'false')) . '?' . oldHtmlspecialchars(we_listview_base::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
 			$attribs['rel'] = 'prev';
 
 			return getHtmlTag("a", $attribs, "", false, true);

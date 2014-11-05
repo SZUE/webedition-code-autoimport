@@ -48,24 +48,12 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 	while($_db->next_record()){
 		$_allChildsJS .= "_allChilds['id_" . $_db->f("ID") . "'] = '" . $_db->f("ContentType") . "';";
 	}
-	$_js = 'var _openChilds = Array();
-			var _usedEditors = top.opener.top.weEditorFrameController.getEditorsInUse();
-
-			for (frameId in _usedEditors) {
-
-				// table muss FILE_TABLE sein
-				if ( _usedEditors[frameId].getEditorEditorTable() == "' . $_table . '" ) {
-					if ( _allChilds["id_" + _usedEditors[frameId].getEditorDocumentId()] && _allChilds["id_" + _usedEditors[frameId].getEditorDocumentId()] == _usedEditors[frameId].getEditorContentType() ) {
-						_openChilds.push( frameId );
-					}
-				}
-			}';
 
 	$pb = new we_progressBar(0, 0, true);
-	$pb->addText("&nbsp;", 0, "copyWeDocumentCustomerFilterText");
+	$pb->addText('&nbsp;', 0, 'copyWeDocumentCustomerFilterText');
 	$pb->setStudWidth(10);
 	$pb->setStudLen(300);
-	$js = $pb->getJS('',true) . $pb->getJSCode();
+	$js = $pb->getJS('', true) . $pb->getJSCode();
 
 	// image and progressbar
 	$content = $pb->getHTML();
@@ -77,31 +65,37 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 
 	echo we_html_tools::getHtmlTop(g_l('modules_customerFilter', '[apply_filter]')) .
 	STYLESHEET .
-	we_html_element::jsElement("
-		function checkForOpenChilds() {
+	we_html_element::jsElement('
+function checkForOpenChilds() {
+	' . $_allChildsJS . '
+	var _openChilds = Array();
+	var _usedEditors = top.opener.top.weEditorFrameController.getEditorsInUse();
 
-			$_allChildsJS
-			$_js
+	for (frameId in _usedEditors) {
 
-			if (_openChilds.length) {
-				if ( confirm(\"" . g_l('modules_customerFilter', "[apply_filter_cofirm_close]") . "\") ) {
-					// close all
-					for (i=0;i<_openChilds.length;i++) {
-						_usedEditors[_openChilds[i]].setEditorIsHot(false);
-						top.opener.top.weEditorFrameController.closeDocument(_openChilds[i]);
-
-					}
-
-				} else {
-					window.close();
-					return;
-				}
-
+		// table muss FILE_TABLE sein
+		if ( _usedEditors[frameId].getEditorEditorTable() == "' . $_table . '" ) {
+			if ( _allChilds["id_" + _usedEditors[frameId].getEditorDocumentId()] && _allChilds["id_" + _usedEditors[frameId].getEditorDocumentId()] == _usedEditors[frameId].getEditorContentType() ) {
+				_openChilds.push( frameId );
 			}
-			document.getElementById(\"iframeCopyWeDocumentCustomerFilter\").src=\"" . $_iframeLocation . "\";
+		}
+	}
+
+	if (_openChilds.length) {
+		if ( confirm("' . g_l('modules_customerFilter', "[apply_filter_cofirm_close]") . '") ) {
+			// close all
+			for (i=0;i<_openChilds.length;i++) {
+				_usedEditors[_openChilds[i]].setEditorIsHot(false);
+				top.opener.top.weEditorFrameController.closeDocument(_openChilds[i]);
+			}
+		} else {
+			window.close();
+			return;
 		}
 
-	");
+	}
+	document.getElementById("iframeCopyWeDocumentCustomerFilter").src="' . $_iframeLocation . '";
+}');
 	echo '</head><body class="weDialogBody" onload="checkForOpenChilds()">' .
 	$js . we_html_tools::htmlDialogLayout($content, g_l('modules_customerFilter', "[apply_filter]"), $buttonBar) .
 	'<div style="display: none;"> <!-- hidden -->

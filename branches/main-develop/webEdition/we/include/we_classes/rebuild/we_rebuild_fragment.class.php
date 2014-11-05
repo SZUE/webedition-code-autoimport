@@ -38,7 +38,7 @@ class we_rebuild_fragment extends we_fragment_base{
 	function finish(){
 		$responseText = we_base_request::_(we_base_request::STRING, 'responseText', '');
 
-		echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(addslashes($responseText ? $responseText : g_l('rebuild', "[finished]")), we_message_reporting::WE_MESSAGE_NOTICE) . '
+		echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(addslashes($responseText ? : g_l('rebuild', "[finished]")), we_message_reporting::WE_MESSAGE_NOTICE) . '
 			top.close();');
 	}
 

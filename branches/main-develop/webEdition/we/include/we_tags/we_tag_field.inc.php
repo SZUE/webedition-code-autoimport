@@ -195,12 +195,12 @@ function we_tag_field($attribs){
 					$out = $t[5];
 					break;
 			}
-			$href = ($href ? $href : $t[1]);
+			$href = ($href ? : $t[1]);
 			break;
 		case 'link' :
 			if(is_object($GLOBALS['lv'])){
 				$out = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), 'link', $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview');
-				$href = ($href ? $href : $out);
+				$href = ($href ? : $out);
 				break;
 			}
 		case 'img' :
@@ -296,8 +296,8 @@ function we_tag_field($attribs){
 				switch(get_class($GLOBALS['lv'])){
 					case 'we_listview_document':
 						$hrefArr = array(
-							'int' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) ? $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK),
-							'intID' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) ? $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK_ID),
+							'int' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) ? : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK),
+							'intID' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) ? : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK_ID),
 							'extPath' => $GLOBALS['lv']->f($name)
 						);
 						break;
@@ -559,7 +559,7 @@ function we_tag_field($attribs){
 					$showlink = false;
 					switch(get_class($GLOBALS['lv'])){
 						case 'we_listview_document':
-							$triggerid = $triggerid ? $triggerid : $GLOBALS['lv']->triggerID;
+							$triggerid = $triggerid ? : $GLOBALS['lv']->triggerID;
 							$tailOwnId = '?we_documentID=' . $GLOBALS['lv']->f('wedoc_ID');
 						case '':
 						case 'we_listview_search':
@@ -573,7 +573,7 @@ function we_tag_field($attribs){
 							$showlink = $tid || $GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID;
 							$tailOwnId = '?we_objectID=' . $GLOBALS['lv']->DB_WE->f('OF_ID');
 						case 'we_object_tag':
-							$triggerid = $triggerid ? $triggerid : $GLOBALS['lv']->triggerID;
+							$triggerid = $triggerid ? : $GLOBALS['lv']->triggerID;
 							$showlink = $showlink || $triggerid;
 							$tailOwnId = isset($tailOwnId) ? $tailOwnId : '?we_objectID=' . $GLOBALS['lv']->getObject()->DB_WE->f('OF_ID');
 							break;

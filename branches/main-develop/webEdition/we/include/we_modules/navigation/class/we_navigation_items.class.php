@@ -127,7 +127,7 @@ class we_navigation_items{
 					'id' => $_dyn['id'],
 					'text' => isset($_dyn['field']) && $_dyn['field'] ? $_dyn['field'] : $_dyn['text'],
 					'display' => isset($_dyn['display']) && $_dyn['display'] ? $_dyn['display'] : '',
-					'name' => $_dyn['field'] ? $_dyn['field'] : (isset($_dyn['name']) && $_dyn['name'] ? $_dyn['name'] : $_dyn['text']),
+					'name' => isset($_dyn['field']) && $_dyn['field'] ? $_dyn['field'] : (isset($_dyn['name']) && $_dyn['name'] ? $_dyn['name'] : $_dyn['text']),
 					'docid' => $_dyn['id'],
 					'table' => (($_nav->SelectionType == we_navigation_navigation::STPYE_CLASS || $_nav->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE),
 					'href' => $href,
@@ -143,7 +143,7 @@ class we_navigation_items{
 
 				if($rules){
 					$items[(count($items) - 1)]['currentRule'] = we_navigation_rule::getWeNavigationRule(
-							'defined_' . ($_dyn['field'] ? $_dyn['field'] : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $href, false);
+							'defined_' . ($_dyn['field'] ? : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $href, false);
 				}
 			}
 		}
@@ -209,7 +209,7 @@ class we_navigation_items{
 
 		$_item = $this->getItemFromPool($parentid);
 
-		$_navigation->initByRawData($_item ? $_item : array(
+		$_navigation->initByRawData($_item ? : array(
 				'ID' => 0, 'Path' => '/'
 		));
 

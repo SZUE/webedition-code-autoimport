@@ -39,8 +39,8 @@ function we_tag_img($attribs){
 
 	if($name){
 		$id = $GLOBALS['we_doc']->getElement($name, 'bdid');
-		$id = $id ? $id : $GLOBALS['we_doc']->getElement($name);
-		$id = $id ? $id : $tagId;
+		$id = $id ? : $GLOBALS['we_doc']->getElement($name);
+		$id = $id ? : $tagId;
 	} else {
 		$showThumb = $showcontrol = false;
 		$id = $tagId;
@@ -78,8 +78,8 @@ function we_tag_img($attribs){
 		isset($GLOBALS['we_doc']->elements[$altField])){ // if no other image is selected.
 		$alt = $GLOBALS['we_doc']->getElement($altField);
 		$title = $GLOBALS['we_doc']->getElement($titleField);
-		$tagAttribs['alt'] = $alt ? $alt : (isset($tagAttribs['alt']) ? $tagAttribs['alt'] : '');
-		$tagAttribs['title'] = $title ? $title : (isset($tagAttribs['title']) ? $tagAttribs['title'] : '');
+		$tagAttribs['alt'] = $alt ? : (isset($tagAttribs['alt']) ? $tagAttribs['alt'] : '');
+		$tagAttribs['title'] = $title ? : (isset($tagAttribs['title']) ? $tagAttribs['title'] : '');
 		if($showThumb){
 			$thumb = $GLOBALS['we_doc']->getElement($thumbField);
 			$thumbattr = $thumb;
@@ -93,8 +93,8 @@ function we_tag_img($attribs){
 			$tagAttribs['alt'] = (isset($tagAttribs['alt']) && $tagAttribs['alt'] ? $tagAttribs['alt'] : $alt);
 			$tagAttribs['title'] = (isset($tagAttribs['title']) && $tagAttribs['title'] ? $tagAttribs['title'] : $title);
 		} else {
-			$tagAttribs['alt'] = $alt ? $alt : (isset($tagAttribs['alt']) ? $tagAttribs['alt'] : '');
-			$tagAttribs['title'] = $title ? $title : (isset($tagAttribs['title']) ? $tagAttribs['title'] : '');
+			$tagAttribs['alt'] = $alt ? : (isset($tagAttribs['alt']) ? $tagAttribs['alt'] : '');
+			$tagAttribs['title'] = $title ? : (isset($tagAttribs['title']) ? $tagAttribs['title'] : '');
 		}
 		if($showThumb){
 			$thumbattr = $GLOBALS['we_doc']->getElement($thumbField);
@@ -186,7 +186,7 @@ function we_tag_img($attribs){
 		$out .= we_html_button::create_button_table(
 				array(
 				$_editButton,
-				we_html_button::create_button("image:btn_select_image", "javascript:we_cmd('openDocselector', '" . ($id ? $id : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "',''," . $parentid . ",'" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true),
+				we_html_button::create_button("image:btn_select_image", "javascript:we_cmd('openDocselector', '" . ($id ? : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "',''," . $parentid . ",'" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true),
 				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image', '" . $name . "')", true)
 				), 5) . '</td></tr></table>';
 	}

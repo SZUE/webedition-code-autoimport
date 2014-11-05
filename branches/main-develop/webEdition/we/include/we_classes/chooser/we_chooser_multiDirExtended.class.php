@@ -43,7 +43,7 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 	<td><img src="' . TREE_ICON_DIR . $this->Record[$this->fieldsArr[0]] . '" width="16" height="18" /></td>
 	<td class="' . $this->css . '">' . $this->Record[$this->fieldsArr[1]] . '</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-						we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . "; " . $_catFieldJS, true, 26) :
+						we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? : "") . "; " . $_catFieldJS, true, 26) :
 						"") . '</td>
 </tr>';
 		}
@@ -57,7 +57,7 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 	<td><img src="' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" /></td>
 	<td class="' . $this->css . '">/</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-						we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? $this->extraDelFn : "") . ";we_cmd('" . $this->cmd_del . "','0');", true, 26) :
+						we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');", true, 26) :
 						'') . '</td>
 </tr>';
 		}

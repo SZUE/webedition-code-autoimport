@@ -625,7 +625,7 @@ function setDir(id){
 	}
 
 	function renameChildrenPath($id, we_database_base $db = null){
-		$db = $db ? $db : new DB_WE();
+		$db = $db ? : new DB_WE();
 		$db->query('SELECT ID,IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($id));
 		$updates = $db->getAllFirst(false);
 		$path = f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($id));
@@ -638,7 +638,7 @@ function setDir(id){
 	}
 
 	function CatInUse($id, $IsDir, we_database_base $db = null){
-		$db = $db ? $db : new DB_WE();
+		$db = $db ? : new DB_WE();
 		if($IsDir){
 			return $this->DirInUse($id, $db);
 		}
@@ -653,7 +653,7 @@ function setDir(id){
 	}
 
 	function DirInUse($id, we_database_base $db = null){
-		$db = $db ? $db : new DB_WE();
+		$db = $db ? : new DB_WE();
 		if($this->CatInUse($id, 0, $db)){
 			return true;
 		}

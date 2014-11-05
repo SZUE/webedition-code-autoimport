@@ -30,7 +30,7 @@ function we_tag_writeVoting($attribs){
 	$deletesessiondata = weTag_getAttribute("deletesessiondata", $attribs, false, true);
 	$writeto = weTag_getAttribute("writeto", $attribs, "voting");
 
-	$pattern = '/_we_voting_answer_(' . ($id ? $id : '[0-9]+') . ')_?([0-9]+)?/';
+	$pattern = '/_we_voting_answer_(' . ($id ? : '[0-9]+') . ')_?([0-9]+)?/';
 
 	$vars = implode(',', array_keys($_REQUEST));
 	$_voting = array();

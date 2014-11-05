@@ -25,9 +25,6 @@
 function we_tag_shopVat($attribs){
 
 	$name = WE_SHOP_VAT_FIELD_NAME;
-
-
-	$type = weTag_getAttribute('type', $attribs, 'select');
 	$id = weTag_getAttribute('id', $attribs);
 
 	if($id){
@@ -65,5 +62,5 @@ function we_tag_shopVat($attribs){
 		return $GLOBALS['we_doc']->htmlSelect($fieldname, $values, 1, $val);
 		//}
 	}
-	return ( isset($allVats[$val]) ? $allVats[$val]->vat : $standardVal );
+	return (isset($allVats[$val]) ? $allVats[$val]->vat : $standardVal);
 }

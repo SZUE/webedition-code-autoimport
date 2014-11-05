@@ -121,7 +121,7 @@ class we_tag_tagParser{
 			return $tmp;
 		}
 		$this->lastpos = 0;
-		$ende = $ende ? $ende : count($this->tags);
+		$ende = $ende ? : count($this->tags);
 		for($ipos = $start; $ipos < $ende;){
 			//t_e($ipos,$this->tags[$ipos],$ende);
 			if($this->tags[$ipos]){

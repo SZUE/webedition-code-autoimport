@@ -169,7 +169,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 			return '';
 		}
 		//check Customer-Filter on static documents
-		$id = intval($id ? $id : (isset($intID) ? $intID : 0));
+		$id = intval($id ? : (isset($intID) ? $intID : 0));
 		if(defined('CUSTOMER_TABLE') && $id){
 			$filter = we_customer_documentFilter::getFilterByIdAndTable($id, FILE_TABLE);
 
@@ -196,7 +196,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 	return 'we_setBackVar(' . $we_unique . ');' .
 		($isSeemode ? //extra stuff in seemode
 			'eval(\'?>' . addcslashes(preg_replace('|< */? *form[^>]*>|i', '', $content), '\'') .
-			($seeMode && ($id || $path) ? we_SEEM::getSeemAnchors(($id ? $id : path_to_id($path)), $seem) : '') .
+			($seeMode && ($id || $path) ? we_SEEM::getSeemAnchors(($id ? : path_to_id($path)), $seem) : '') .
 			'\');' :
 			//no seemode
 			$content

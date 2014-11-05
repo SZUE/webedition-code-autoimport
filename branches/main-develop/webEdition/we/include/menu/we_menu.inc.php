@@ -525,13 +525,6 @@ $we_menu = array(
 		'enabled' => permissionhandler::hasPerm('CAN_SEE_QUICKSTART'),
 		'hide' => !defined('CUSTOMER_TABLE'),
 	),
-	array(// Cockpit > new Widget > pageLogger
-		'text' => g_l('javaMenu_global', '[pagelogger]'),
-		'parent' => 2020000,
-		'cmd' => 'new_widget_plg',
-		'perm' => 'CAN_SEE_QUICKSTART',
-		'hide' => !(WE_TRACKER_DIR && file_exists($_SERVER['DOCUMENT_ROOT'] . WE_TRACKER_DIR . '/includes/showme.inc.php'))
-	),
 	array(// Cockpit > new Widget > default settings
 		'text' => g_l('javaMenu_global', '[default_settings]'),
 		'parent' => 2000000,

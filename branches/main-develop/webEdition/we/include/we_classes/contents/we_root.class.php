@@ -216,7 +216,7 @@ abstract class we_root extends we_class{
 	/* creates the filename input-field */
 
 	function formFilename($text = ''){
-		return $this->formTextInput('', 'Filename', $text ? $text : g_l('weClass', '[filename]'), 24, 255);
+		return $this->formTextInput('', 'Filename', $text ? : g_l('weClass', '[filename]'), 24, 255);
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -457,8 +457,8 @@ abstract class we_root extends we_class{
 
 	#
 	function formUserChooser($old_userID = -1, $width = '', $in_textname = '', $in_idname = ''){
-		$textname = $in_textname ? $in_textname : 'we_' . $this->Name . '_UserName';
-		$idname = $in_idname ? $in_idname : 'we_' . $this->Name . '_UserID';
+		$textname = $in_textname ? : 'we_' . $this->Name . '_UserName';
+		$idname = $in_idname ? : 'we_' . $this->Name . '_UserID';
 
 		$username = '';
 		$userid = $old_userID;
@@ -476,10 +476,10 @@ abstract class we_root extends we_class{
 		$textname = 'we_' . $this->Name . '_TriggerName';
 		if($isclass){
 			$idname = 'we_' . $this->Name . '_DefaultTriggerID';
-			$myid = $this->DefaultTriggerID ? $this->DefaultTriggerID : '';
+			$myid = $this->DefaultTriggerID ? : '';
 		} else {
 			$idname = 'we_' . $this->Name . '_TriggerID';
-			$myid = $this->TriggerID ? $this->TriggerID : '';
+			$myid = $this->TriggerID ? : '';
 		}
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
@@ -510,7 +510,7 @@ abstract class we_root extends we_class{
 		$textname = 'we_' . $this->Name . '_LanguageDocName[' . $langkey . ']';
 		$idname = 'we_' . $this->Name . '_LanguageDocID[' . $langkey . ']';
 		$ackeyshort = 'LanguageDoc' . str_replace('_', '', $langkey);
-		$myid = $LDID ? $LDID : '';
+		$myid = $LDID ? : '';
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
 		if($rootDirID && !$path){
 			$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($rootDirID), '', $this->DB_WE);
@@ -972,7 +972,7 @@ abstract class we_root extends we_class{
 							unset($replace[$key]);
 						}
 						$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE . ' SET ' . $data);
-						$cid = $cid ? $cid : $this->DB_WE->getInsertId();
+						$cid = $cid ? : $this->DB_WE->getInsertId();
 						$this->elements[$k]['id'] = $cid; // update Object itself
 						if(!$cid || !$this->DB_WE->query('REPLACE INTO ' . LINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 											'DID' => $this->ID,

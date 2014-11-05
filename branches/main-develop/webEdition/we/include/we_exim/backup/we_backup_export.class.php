@@ -30,7 +30,7 @@ abstract class we_backup_export{
 			return false;
 		}
 		static $_db = 0;
-		$_db = $_db ? $_db : new DB_WE();
+		$_db = $_db ? : new DB_WE();
 
 		if($offset == 0){
 
@@ -116,13 +116,13 @@ abstract class we_backup_export{
 						if(($_object->ContentType == we_base_ContentTypes::IMAGE || stripos($_object->ContentType, "application/") !== false)){
 							$bin = we_exim_contentProvider::getInstance('weBinary', $_object->ID);
 							if($log){
-								we_backup_util::addLog(sprintf('Exporting binary data for item %s:%s, %s, %s', $_table, $_object->ID, $bin->Path, we_base_file::getHumanFileSize($bin->getFilesize())));
+								we_backup_util::addLog(sprintf('Exporting binary data %s, %s', $bin->Path, we_base_file::getHumanFileSize($bin->getFilesize())));
 								we_backup_util::writeLog();
 							}
 
 							we_exim_contentProvider::binary2file($bin, $_fh, $_SESSION['weS']['weBackupVars']['write']);
 							if($log){
-								we_backup_util::addLog(sprintf('done %s,%s', $offset, $lines));
+								we_backup_util::addLog(sprintf('done'));
 								we_backup_util::writeLog();
 							}
 						}

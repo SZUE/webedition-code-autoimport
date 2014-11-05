@@ -222,7 +222,7 @@ class we_base_ContentTypes{
 
 	public static function inst(){
 		static $inst = 0;
-		$inst = ($inst ? $inst : new self());
+		$inst = ($inst ? : new self());
 		return $inst;
 	}
 

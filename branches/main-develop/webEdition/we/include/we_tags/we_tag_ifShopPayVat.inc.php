@@ -31,13 +31,13 @@ function we_tag_ifShopPayVat($attribs){
 		$cus = new we_customer_customertag($GLOBALS[$namefrom]);
 		$customerarray = $cus->getObject()->getDBRecord();
 		unset($cus);
-		$customer = ($customerarray ? $customerarray : false);
+		$customer = ($customerarray ? : false);
 	} else {
 		if(isset($GLOBALS[$namefrom]) && $GLOBALS[$namefrom]){
 			$cus = new we_customer_customertag($GLOBALS[$namefrom]);
 			$customerarray = $cus->getObject()->getDBRecord();
 			unset($cus);
-			$customer = ($customerarray ? $customerarray : false);
+			$customer = ($customerarray ? : false);
 		} else {
 			$customer = false;
 		}
