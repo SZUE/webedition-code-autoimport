@@ -168,15 +168,6 @@ $aPrefs['pad'] = array(
 	'dlgHeight' => 560,
 	'isResizable' => 0
 );
-$aPrefs['plg'] = array(
-	'width' => $large,
-	'height' => 210,
-	'res' => 1,
-	'cls' => 'white',
-	'csv' => '00000000000;',
-	'dlgHeight' => 435,
-	'isResizable' => 1
-);
 
 $aCfgProps = array(
 	array(

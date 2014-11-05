@@ -44,7 +44,7 @@ function we_tag_url($attribs){
 			$testid = $doc->ID;
 			if($id === 'top'){//check for object
 				if($GLOBALS['WE_MAIN_DOC'] instanceof we_objectFile){//ein object
-					$triggerid = ($triggerid ? $triggerid : $GLOBALS['WE_MAIN_DOC']->ID);
+					$triggerid = ($triggerid ? : $GLOBALS['WE_MAIN_DOC']->ID);
 
 					$path_parts = pathinfo(id_to_path($triggerid));
 					if($objectseourls && $GLOBALS['WE_MAIN_DOC']->Url != '' && show_SeoLinks()){
@@ -74,7 +74,7 @@ function we_tag_url($attribs){
 			} else {
 				$row = getHash('SELECT ID,Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($testid), $GLOBALS['DB_WE']);
 				if(!$triggerid){
-					$triggerid = ($row['TriggerID'] ? $row['TriggerID'] : $GLOBALS['WE_MAIN_DOC']->ID);
+					$triggerid = ($row['TriggerID'] ? : $GLOBALS['WE_MAIN_DOC']->ID);
 				}
 				$path_parts = pathinfo(id_to_path($triggerid));
 				if($objectseourls && $row['Url'] != '' && show_SeoLinks()){

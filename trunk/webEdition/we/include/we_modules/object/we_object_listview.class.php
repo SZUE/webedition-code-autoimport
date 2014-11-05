@@ -76,8 +76,8 @@ class we_object_listview extends we_listview_base{
 		$this->customers = $customers;
 		$this->customerArray = array();
 
-		$this->condition = $condition ? $condition : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : '');
-		$this->languages = $languages ? $languages : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : '');
+		$this->condition = $condition ? : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : '');
+		$this->languages = $languages ? : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : '');
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
 
@@ -214,7 +214,7 @@ class we_object_listview extends we_listview_base{
 	}
 
 	function fillMatrix(&$matrix, $classID, we_database_base $db = null){
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 		$table = OBJECT_X_TABLE . intval($classID);
 		$joinWhere = array();
 		$regs = array();
@@ -248,7 +248,7 @@ class we_object_listview extends we_listview_base{
 		return implode(' AND ', $joinWhere);
 	}
 
-	static function encodeEregString(array $match){
+	public static function encodeEregString(array $match){
 		$in = $match[1];
 		$out = '';
 		for($i = 0; $i < strlen($in); $i++){
@@ -257,12 +257,10 @@ class we_object_listview extends we_listview_base{
 		return "'" . $out . "'";
 	}
 
-	private static function char(array $match){
-		return chr($match[1]);
-	}
-
-	static function decodeEregString(array $match){
-		return "'" . preg_replace_callback("/&([^;]+);/", 'we_object_listview::char', $match[1]) . "'";
+	public static function decodeEregString(array $match){
+		return "'" . preg_replace_callback("/&([^;]+);/", function (array $match){
+				return chr($match[1]);
+			}, $match[1]) . "'";
 	}
 
 	function makeSQLParts($matrix, $classID, $order, $cond){
@@ -408,7 +406,7 @@ class we_object_listview extends we_listview_base{
 						$this->DB_WE->Record['we_WE_PATH'] = $this->Path . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
 					}
 				}
-				$this->DB_WE->Record['we_WE_TRIGGERID'] = ($this->triggerID ? $this->triggerID : intval($this->DB_WE->f('OF_TriggerID')));
+				$this->DB_WE->Record['we_WE_TRIGGERID'] = ($this->triggerID ? : intval($this->DB_WE->f('OF_TriggerID')));
 				$this->DB_WE->Record['we_WE_URL'] = $this->DB_WE->f('OF_Url');
 				$this->DB_WE->Record['we_WE_TEXT'] = $this->DB_WE->f('OF_Text');
 				$this->DB_WE->Record['we_WE_ID'] = $this->DB_WE->f('OF_ID');

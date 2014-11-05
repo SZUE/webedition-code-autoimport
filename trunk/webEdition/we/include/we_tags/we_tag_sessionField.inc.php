@@ -279,7 +279,7 @@ function we_tag_sessionField($attribs, $content){
 			$_SESSION['webuser']['imgtmp'][$name]['quality'] = weTag_getAttribute('quality', $attribs, 8);
 			$_SESSION['webuser']['imgtmp'][$name]['keepratio'] = weTag_getAttribute('keepratio', $attribs, true, true);
 			$_SESSION['webuser']['imgtmp'][$name]['maximize'] = weTag_getAttribute('maximize', $attribs, false, true);
-			$_SESSION['webuser']['imgtmp'][$name]['id'] = $orgVal ? $orgVal : '';
+			$_SESSION['webuser']['imgtmp'][$name]['id'] = $orgVal ? : '';
 
 			$_foo = id_to_path($_SESSION['webuser']['imgtmp'][$name]['id']);
 			if(!$_foo){

@@ -60,7 +60,7 @@ function we_tag_select($attribs, $content){
 		$attribs = removeAttribs($attribs, array('reload', 'value', '_name_orig')); //	not html - valid
 		$attribs['class'] = "defaultfont";
 		$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
-		$attribs['onchange'] = '_EditorFrame.setEditorIsHot(true);' . ($onchange ? $onchange : "") . ';' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '');
+		$attribs['onchange'] = '_EditorFrame.setEditorIsHot(true);' . ($onchange ? : "") . ';' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '');
 		return getHtmlTag('select', $attribs, $content, true);
 	}
 	return $val;

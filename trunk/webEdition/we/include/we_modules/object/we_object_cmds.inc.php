@@ -46,7 +46,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 			}
 			$check = 0;
 		} else {
-			$ews = ($foo ? $foo : ",") . $wsid . ",";
+			$ews = ($foo ? : ",") . $wsid . ",";
 			$check = 1;
 		}
 		$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($tableID) . ' SET OF_ExtraWorkspacesSelected="' . $DB_WE->escape($ews) . '" WHERE OF_ID=' . intval($oid));

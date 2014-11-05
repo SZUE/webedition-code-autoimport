@@ -105,7 +105,7 @@ class we_docTypes extends we_class{
 		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
-				$this->Language = ($GLOBALS['weDefaultFrontendLanguage'] ? $GLOBALS['weDefaultFrontendLanguage'] : 'de_DE');
+				$this->Language = ($GLOBALS['weDefaultFrontendLanguage'] ? : 'de_DE');
 			} else {
 				if(($h = getHash('SELECT Language,ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($ParentID), $this->DB_WE))){
 					$this->Language=$h['Language'];
@@ -119,15 +119,15 @@ class we_docTypes extends we_class{
 	function formLanguage(){
 		we_loadLanguageConfig();
 
-		$value = ($this->Language ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
+		$value = ($this->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
 		$inputName = 'we_' . $this->Name . '_Language';
 		$_languages = getWeFrontendLanguagesForBackend();
 
 		if(LANGLINK_SUPPORT){
 			$htmlzw = '';
 			foreach($_languages as $langkey => $lang){
-				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblDocTypes' AND DID=" . $this->ID . " AND Locale='" . $langkey . "'", 'LDID', $this->DB_WE);
-				$htmlzw.= $this->formDocTypes3($lang, $langkey, ($LDID ? $LDID : 0));
+				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->ID . ' AND Locale="' . $langkey . '"', '', $this->DB_WE);
+				$htmlzw.= $this->formDocTypes3($lang, $langkey, ($LDID ? : 0));
 				$langkeys[] = $langkey;
 			}
 			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, array('onchange' => 'dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);'), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont") .
@@ -360,7 +360,7 @@ function switchExt(){
 	 * @return         string
 	 */
 	public static function getDoctypeQuery(we_database_base $db = null){
-		$db = $db ? $db : new DB_WE();
+		$db = $db ? : new DB_WE();
 
 		$paths = array();
 		$ws = get_ws(FILE_TABLE);

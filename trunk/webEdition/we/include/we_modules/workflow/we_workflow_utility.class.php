@@ -241,7 +241,7 @@ abstract class we_workflow_utility{
 	}
 
 	static function getAllWorkflowDocs($table, we_database_base $db = null){
-		$db = $db ? $db : new DB_WE();
+		$db = $db ? : new DB_WE();
 		$db->query('SELECT DISTINCT ' . WORKFLOW_DOC_TABLE . '.documentID as ID FROM ' . WORKFLOW_DOC_TABLE . ' LEFT JOIN ' . WORKFLOW_TABLE . ' ON ' . WORKFLOW_DOC_TABLE . ".workflowID=" . WORKFLOW_TABLE . '.ID WHERE ' . WORKFLOW_DOC_TABLE . '.Status = ' . we_workflow_document::STATUS_UNKNOWN . ' AND ' . WORKFLOW_TABLE . '.Type IN(' . self::getTypeForTable($table) . ')');
 		return array_unique($db->getAll(true));
 	}
@@ -249,7 +249,7 @@ abstract class we_workflow_utility{
 	private static function getWorkflowDocsFromWorkspace($table, $ws, we_database_base $db = null){
 		$wids = self::getAllWorkflowDocs($table);
 		$ids = array();
-		$db = $db ? $db : new DB_WE();
+		$db = $db ? : new DB_WE();
 		foreach($wids as $id){
 			if(!in_array($id, $ids)){
 				if(is_array($ws) && !empty($ws)){
@@ -295,7 +295,7 @@ abstract class we_workflow_utility{
 		while($db->next_record()){
 			update_time_limit(50);
 			$workflowDocument = new we_workflow_document($db->f('docID'));
-			$userID = $userID ? $userID : $workflowDocument->userID;
+			$userID = $userID ? : $workflowDocument->userID;
 			$_SESSION['user']['ID'] = $userID;
 			if(!self::isWorkflowFinished($workflowDocument->document->ID, $workflowDocument->document->Table)){
 				$workflowStep = new we_workflow_step($db->f('stepID'));

@@ -40,7 +40,7 @@ define('WE_REDIRECTED_SEO', (isset($_SERVER['REDIRECT_URL']) ?
 		)
 ); //url without query string
 // get attributes
-$error404doc = (ERROR_DOCUMENT_NO_OBJECTFILE ? ERROR_DOCUMENT_NO_OBJECTFILE : 0);
+$error404doc = (ERROR_DOCUMENT_NO_OBJECTFILE ? : 0);
 
 $hiddendirindex = false;
 $dirindexarray = array();
@@ -135,7 +135,7 @@ if($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] === '/' 
 }
 if(!$notfound){
 	$ro = ini_get('request_order');
-	if(stripos('C', $ro ? $ro : ini_get('variables_order'))){
+	if(stripos('C', $ro ? : ini_get('variables_order'))){
 		//unset all cookies from request
 		foreach(array_keys($_COOKIE) as $name){
 			unset($_REQUEST[$name]);

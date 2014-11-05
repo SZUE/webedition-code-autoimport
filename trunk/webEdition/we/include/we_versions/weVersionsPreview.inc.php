@@ -579,7 +579,7 @@ if(!$isObj){
 	$activTab = 1;
 }
 
-echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]'), ($newDoc['Charset'] ? $newDoc['Charset'] : DEFAULT_CHARSET)) .
+echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]'), ($newDoc['Charset'] ? : DEFAULT_CHARSET)) .
  STYLESHEET;
 ?>
 

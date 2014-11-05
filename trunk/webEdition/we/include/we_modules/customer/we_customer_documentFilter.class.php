@@ -149,7 +149,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @return we_customer_documentFilter
 	 */
 	public static function getFilterByIdAndTable($id, $table, we_database_base $db = null){
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 		$hash = getHash('SELECT * FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . $db->escape(stripTblPrefix($table)) . '" AND modelId = ' . intval($id), $db);
 		return ($hash ?
 				self::getFilterByDbHash($hash) :
@@ -259,11 +259,11 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		switch($errorConstant){
 
 			case self::NO_LOGIN:
-				$_ret = ($this->_errorDocNoLogin ? $this->_errorDocNoLogin : $this->_errorDocNoAccess);
+				$_ret = ($this->_errorDocNoLogin ? : $this->_errorDocNoAccess);
 				break;
 
 			case self::NO_ACCESS:
-				$_ret = ($this->_errorDocNoAccess ? $this->_errorDocNoAccess : $this->_errorDocNoLogin);
+				$_ret = ($this->_errorDocNoAccess ? : $this->_errorDocNoLogin);
 				break;
 			default:
 				break;
@@ -320,7 +320,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 */
 	function deleteForModel(&$model, we_database_base $db = null){
 		if($model->ID){
-			$_db = ($db ? $db : new DB_WE());
+			$_db = ($db ? : new DB_WE());
 			$_db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelId=' . intval($model->ID) . ' AND modelTable="' . stripTblPrefix($model->Table) . '"');
 		}
 	}

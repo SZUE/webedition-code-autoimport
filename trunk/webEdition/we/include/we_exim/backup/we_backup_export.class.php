@@ -30,7 +30,7 @@ abstract class we_backup_export{
 			return false;
 		}
 		static $_db = 0;
-		$_db = $_db ? $_db : new DB_WE();
+		$_db = $_db ? : new DB_WE();
 
 		if($offset == 0){
 

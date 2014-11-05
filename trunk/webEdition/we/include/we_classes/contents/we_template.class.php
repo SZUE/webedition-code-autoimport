@@ -501,7 +501,7 @@ we_templateInit();?>';
 		$table = TEMPLATES_TABLE;
 		$textname = 'MasterTemplateNameDummy';
 		$idname = 'we_' . $this->Name . '_MasterTemplateID';
-		$myid = $this->MasterTemplateID ? $this->MasterTemplateID : '';
+		$myid = $this->MasterTemplateID ? : '';
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), "Path", $this->DB_WE);
 		$alerttext = str_replace('\'', "\\\\\\'", g_l('weClass', '[same_master_template]'));
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");

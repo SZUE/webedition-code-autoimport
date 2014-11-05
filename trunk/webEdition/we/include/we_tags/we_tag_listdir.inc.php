@@ -98,7 +98,7 @@ function _listdir_getField($field, $id, $text){
 	}
 	$db = $GLOBALS['DB_WE'];
 	$dat = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=' . intval($id) . ' AND l.Name="' . $db->escape($field) . '"', '', $db);
-	return $dat ? $dat : $text;
+	return $dat ? : $text;
 }
 
 function we_cmpText($a, $b){

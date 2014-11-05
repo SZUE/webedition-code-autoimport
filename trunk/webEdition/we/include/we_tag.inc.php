@@ -728,10 +728,6 @@ function we_tag_ifNotPosition($attribs){
 	return !we_tag('ifPosition', $attribs);
 }
 
-function we_tag_pagelogger($attribs, $content){
-	return we_tag('tracker', $attribs, $content);
-}
-
 function we_tag_ifReturnPage(){
 	return we_base_request::_(we_base_request::RAW_CHECKED, 'we_returnpage') !== false;
 }
@@ -753,8 +749,8 @@ function we_tag_ifWebEdition(){
 
 function we_tag_ifWritten($attribs){
 	$type = weTag_getAttribute('type', $attribs);
-	$type = $type ? $type : weTag_getAttribute('var', $attribs, 'document');
-	$type = $type ? $type : weTag_getAttribute('doc', $attribs, 'document');
+	$type = $type ? : weTag_getAttribute('var', $attribs, 'document');
+	$type = $type ? : weTag_getAttribute('doc', $attribs, 'document');
 	return isset($GLOBALS['we_' . $type . '_write_ok']) && ($GLOBALS['we_' . $type . '_write_ok'] == true);
 }
 

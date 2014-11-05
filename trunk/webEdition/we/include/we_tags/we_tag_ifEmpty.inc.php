@@ -38,7 +38,7 @@ function we_isNotEmpty($attribs){
 		case 'href' :
 			if($doc instanceof we_objectFile){
 				$hreftmp = $doc->getElement($match);
-				$hreftmp = $hreftmp ? $hreftmp : '';
+				$hreftmp = $hreftmp ? : '';
 				if(!is_array($hreftmp)){
 					return true;
 				}

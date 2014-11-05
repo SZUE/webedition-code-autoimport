@@ -49,7 +49,7 @@ function we_tag_textarea($attribs, $content){
 
 	$autobrName = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . '#autobr]';
 	$fieldname = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
-	$value = $GLOBALS['we_doc']->getElement($name) ? $GLOBALS['we_doc']->getElement($name) : $content;
+	$value = $GLOBALS['we_doc']->getElement($name) ? : $content;
 
 	if($GLOBALS['we_editmode']){
 		if((!$GLOBALS['we_doc']->getElement($name)) && $value){ // when not inlineedit, we need to save the content in the object, if the field is empty
@@ -58,7 +58,7 @@ function we_tag_textarea($attribs, $content){
 		}
 		return we_html_forms::weTextarea($fieldname, $value, $attribs, $autobr, $autobrName, $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '', ($spellcheck == 'true'), false, $name);
 	}
-	
+
 	$fieldVal = $GLOBALS['we_doc']->getField($attribs);
 	return $fieldVal;
 }

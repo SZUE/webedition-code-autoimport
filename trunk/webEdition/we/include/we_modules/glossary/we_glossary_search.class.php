@@ -164,7 +164,7 @@ class we_glossary_search{
 		$stmt = 'SELECT ' .
 			($countStmt ? 'COUNT(1)' : implode(', ', $this->Fields)) .
 			' FROM ' . escape_sql_query($this->Table) . ' ' .
-			'WHERE ' . ($this->Where ? $this->Where : '1') .
+			'WHERE ' . ($this->Where ? : '1') .
 			($this->GroupBy ? ' GROUP BY ' . $this->GroupBy : '') .
 			($this->Having ? ' HAVING ' . $this->Having : '');
 

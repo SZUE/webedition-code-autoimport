@@ -78,9 +78,9 @@ class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
 			if($e['parent'] == 0){
 				if(isset($e['perm']) ? we_base_menu::isEnabled($e['perm']) : 1){
 					if(is_array($e["text"])){
-						$mtext = ($e["text"][$GLOBALS["WE_LANGUAGE"]] ? $e["text"][$GLOBALS["WE_LANGUAGE"]] : "");
+						$mtext = ($e["text"][$GLOBALS["WE_LANGUAGE"]] ? : '');
 					} else {
-						$mtext = ($e["text"] ? $e["text"] : "");
+						$mtext = ($e["text"] ? : "");
 					}
 					$menus[] = array(
 						'id' => $id,
@@ -117,7 +117,7 @@ class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
 				$newAst = $zweig;
 				$e['enabled'] = isset($e['perm']) ? we_base_menu::isEnabled($e['perm']) : 1;
 				$mtext = (isset($e['text']) && is_array($e['text']) ?
-						($e['text'][$GLOBALS['WE_LANGUAGE']] ? $e['text'][$GLOBALS['WE_LANGUAGE']] : '') :
+						($e['text'][$GLOBALS['WE_LANGUAGE']] ? : '') :
 						(isset($e['text']) ? $e['text'] : ''));
 
 				if(isset($e['hide']) && $e['hide']){

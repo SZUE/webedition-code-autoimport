@@ -2224,7 +2224,7 @@ self.close();');
 		if(!$this->settings["use_base_href"]){
 			$phpmail->setIsUseBaseHref($this->settings["use_base_href"]);
 		}
-		$phpmail->setCharSet($this->newsletter->Charset ? $this->newsletter->Charset : $GLOBALS['WE_BACKENDCHARSET']);
+		$phpmail->setCharSet($this->newsletter->Charset ? : $GLOBALS['WE_BACKENDCHARSET']);
 		if($hm){
 			$phpmail->addHTMLPart($content);
 		}

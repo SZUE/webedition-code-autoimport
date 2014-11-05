@@ -395,7 +395,7 @@ abstract class we_SEEM{
 			}
 		}
 
-		return ($newArray ? $newArray : false);
+		return ($newArray ? : false);
 	}
 
 	/**
@@ -622,14 +622,14 @@ abstract class we_SEEM{
 	 */
 	static function getDocIDbyPath($docPath, $tbl = "", we_database_base $db = null){
 		//FIXME: does this work for SEO Url's???
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 		$docPath = $db->escape(trim($docPath));
 		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && $docPath[strlen($docPath) - 1] === '/'){
 			$indexFileNames = array_map('trim', explode(',', $db->escape(NAVIGATION_DIRECTORYINDEX_NAMES)));
 			$docPath = $docPath . implode('","' . $docPath, $indexFileNames);
 		}
-		$id = f('SELECT ID FROM ' . $db->escape($tbl ? $tbl : FILE_TABLE) . ' WHERE Path IN ("' . $docPath . '") LIMIT 1', 'ID', $db);
-		return $id ? $id : -1;
+		$id = f('SELECT ID FROM ' . $db->escape($tbl ? : FILE_TABLE) . ' WHERE Path IN ("' . $docPath . '") LIMIT 1', 'ID', $db);
+		return $id ? : -1;
 	}
 
 	/**
@@ -656,7 +656,7 @@ abstract class we_SEEM{
 				$j++;
 			}
 		}
-		return ($newArray ? $newArray : false);
+		return ($newArray ? : false);
 	}
 
 	/**
@@ -686,7 +686,7 @@ abstract class we_SEEM{
 			}
 		}
 
-		return ($newArray ? $newArray : false);
+		return ($newArray ? : false);
 	}
 
 	/**
@@ -992,7 +992,7 @@ abstract class we_SEEM{
 	 * @desc Looks for the ContentType of the document with the given id and returns it
 	 */
 	static function getDocContentTypeByID($id, we_database_base $db = null){
-		return f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ContentType', ($db ? $db : new DB_WE()));
+		return f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'ContentType', ($db ? : new DB_WE()));
 	}
 
 	/**

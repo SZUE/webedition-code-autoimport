@@ -195,7 +195,7 @@ class we_shop_Basket{
 				$DB_WE->query('SELECT c.BDID,c.Dat ,l.Name FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID=' . intval($id) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 				while($DB_WE->next_record()){
 					$tmp = $DB_WE->f('BDID');
-					$Record[$DB_WE->f('Name')] = $tmp ? $tmp : $DB_WE->f('Dat');
+					$Record[$DB_WE->f('Name')] = $tmp ? : $DB_WE->f('Dat');
 				}
 
 				if($variant){

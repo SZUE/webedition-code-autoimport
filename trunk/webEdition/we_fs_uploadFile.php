@@ -134,7 +134,7 @@ if($weFileupload->processFileRequest()){
 	} else if(isset($_FILES['we_uploadedFile'])){
 		$we_alerttext = (we_base_file::we_filenameNotValid($_FILES['we_uploadedFile']['name']) ?
 				g_l('alert', '[we_filename_notValid]') :
-				g_l('alert', '[wrong_file][' . ($we_ContentType ? $we_ContentType : 'other') . ']'));
+				g_l('alert', '[wrong_file][' . ($we_ContentType ? : 'other') . ']'));
 	}
 
 	// find out the smallest possible upload size

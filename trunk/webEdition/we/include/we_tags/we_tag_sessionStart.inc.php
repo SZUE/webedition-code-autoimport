@@ -104,11 +104,11 @@ function we_tag_sessionStart($attribs){
 			$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_SESSION_TABLE . ' SET ' .
 				we_database_base::arraySetter(array(
 					'SessionID' => session_id(),
-					'SessionIp' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '',
+					'SessionIp' => $_SERVER['REMOTE_ADDR'] ? : '',
 					'WebUserID' => $WebUserID,
 					'WebUserGroup' => $WebUserGroup,
 					'WebUserDescription' => '',
-					'Browser' => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '',
+					'Browser' => isset($_SERVER['HTTP_USER_AGENT']) ? : '',
 					'Referrer' => isset($_SERVER['HTTP_REFERER']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '',
 					'LastLogin' => sql_function('NOW()'),
 					'PageID' => $doc->ID,
