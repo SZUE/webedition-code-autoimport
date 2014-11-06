@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_object_tag{
+class we_object_tag{//FIXME: check why we use class/id instead of classID/ID => causes unneeded differentiation in e.g. we:form
 
 	private $DB_WE;
 	var $class = '';
