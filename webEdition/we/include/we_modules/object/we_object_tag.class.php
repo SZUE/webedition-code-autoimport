@@ -23,20 +23,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_object_tag{//FIXME: check why we use class/id instead of classID/ID => causes unneeded differentiation in e.g. we:form
-
 	private $DB_WE;
 	var $class = '';
 	var $id = 0;
 	var $triggerID = 0;
 	var $ClassName = __CLASS__;
-	public $object; //TODO: make private again as soon as property is not accessed directly anymore (use public getObject())
+	private $object; //TODO: make private again as soon as property is not accessed directly anymore (use public getObject())
 	var $avail = false;
 	var $hidedirindex = false;
 	var $objectseourls = false;
 
 	function __construct($class = '', $id = 0, $triggerID = 0, $searchable = true, $condition = '', $hidedirindex = false, $objectseourls = false){
 		$this->id = $id;
-		if(!$this->id && ($oid=we_base_request::_(we_base_request::INT,'we_objectID'))){
+		if(!$this->id && ($oid = we_base_request::_(we_base_request::INT, 'we_objectID'))){
 			$this->id = $oid;
 		}
 		if(!$this->id){
@@ -50,7 +49,7 @@ class we_object_tag{//FIXME: check why we use class/id instead of classID/ID => 
 		$this->triggerID = $triggerID;
 		$unique = md5(uniqid(__FUNCTION__, true));
 
-		$foo = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($this->id), '',$this->DB_WE);
+		$foo = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($this->id), '', $this->DB_WE);
 		if(!$foo){
 			return;
 		}
@@ -63,11 +62,10 @@ class we_object_tag{//FIXME: check why we use class/id instead of classID/ID => 
 	}
 
 	public function f($key){
-		return ($this->id ?
-				$this->object->f($key) : '');
+		return ($this->id ? $this->object->f($key) : '');
 	}
 
-	public function getObject(){
+	public function getObject(){//FIXME: remove this
 		return $this->object;
 	}
 
@@ -75,4 +73,7 @@ class we_object_tag{//FIXME: check why we use class/id instead of classID/ID => 
 		return $this->DB_WE;
 	}
 
+	public function getDBRecord(){
+		return ($this->id ? $this->object->getDBRecord() : array());
+	}
 }

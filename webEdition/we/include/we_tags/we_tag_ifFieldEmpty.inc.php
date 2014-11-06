@@ -63,8 +63,8 @@ function we_isFieldNotEmpty($attribs){
 			return false;
 		case 'multiobject':
 			$data = (isset($GLOBALS['lv']) ?
-							(method_exists($GLOBALS['lv'], 'getObject') || ($GLOBALS['lv'] instanceof we_shop_shop) ?
-									unserialize($GLOBALS['lv']->getObject()->f($orig_match)) :
+							(method_exists($GLOBALS['lv'], 'getObject') || ($GLOBALS['lv'] instanceof we_shop_shop) ?//FIXME: change this - we don't need getObject any more!
+									unserialize($GLOBALS['lv']->getDBf($orig_match)) :
 									unserialize($GLOBALS['lv']->getDBf('we_' . $orig_match))) :
 							unserialize($GLOBALS['we_doc']->getElement($orig_match)));
 
