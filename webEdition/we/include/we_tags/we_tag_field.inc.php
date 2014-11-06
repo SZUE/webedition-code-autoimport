@@ -302,6 +302,7 @@ function we_tag_field($attribs){
 					case 'we_object_listviewMultiobject':
 					case 'we_object_listview':
 					case 'we_object_tag':
+					case 'we_shop_shop':
 					case 'we_shop_listviewOrderitem': //Fix #7816
 						$hrefArr = $GLOBALS['lv']->f($name) ? unserialize($GLOBALS['lv']->f($name)) : array();
 						if(!is_array($hrefArr)){
