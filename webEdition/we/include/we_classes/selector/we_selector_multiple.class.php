@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_selector_multiple extends we_selector_file{
-
 	const SETDIR = 5;
 	const CREATEFOLDER = 8;
 	const DEL = 11;
