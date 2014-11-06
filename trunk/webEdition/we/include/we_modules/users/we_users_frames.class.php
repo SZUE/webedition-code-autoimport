@@ -406,13 +406,12 @@ self.focus();';
 
 		$_content .= $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs();
 
-		$_form_attribs = array(
+		$_form = we_html_element::htmlForm(array(
 			'name' => 'we_form',
 			'method' => 'post',
+			'autocomplete' => 'off',
 			'onsubmit' => 'return false'
-		);
-
-		$_form = we_html_element::htmlForm($_form_attribs, $_content);
+		), $_content);
 		echo we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $_form);
 	}
 
