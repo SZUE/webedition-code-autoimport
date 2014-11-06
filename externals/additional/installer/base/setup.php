@@ -97,7 +97,6 @@
 			'Longdescription' => $lang["Application"]["webEdition"]["longdescription"],
 			'Link' => $lang["Application"]["webEdition"]["link"],
 			'UpdateServer' => 'update.webedition.org',
-			//'UpdateServer' => 'update.alex.hq.living-e.zz', // local mirror
 			'UpdateScript' => '/server/we/onlineInstallation.p' . 'hp',
 			'testUpdate' => false,
 		),
@@ -107,29 +106,9 @@
 			'Longdescription' => $lang["Application"]["webEditionBeta"]["longdescription"],
 			'Link' => $lang["Application"]["webEditionBeta"]["link"],
 			'UpdateServer' => 'update.webedition.org',
-			//'UpdateServer' => 'update.alex.hq.living-e.zz', // local mirror
 			'UpdateScript' => '/server/we/onlineInstallation.p' . 'hp',
 			'testUpdate' => true,
-		)  /*,
-		'webEdition5' => array( // webEdition 5
-			'Name' => $lang["Application"]["webEdition5"]["name"],
-			'Description' => $lang["Application"]["webEdition5"]["description"],
-			'Longdescription' => $lang["Application"]["webEdition5"]["longdescription"],
-			'Link' => $lang["Application"]["webEdition5"]["link"],
-			'UpdateServer' => 'update.webedition.org',
-			//'UpdateServer' => 'update.alex.hq.living-e.zz', // local mirror
-			'UpdateScript' => '/we5/onlineInstallation.p' . 'hp',
-		), 
-		'pageLogger' => array( // pageLogger 1.6 (Open Source)
-			'Name' => $lang["Application"]["pageLogger"]["name"],
-			'Description' => $lang["Application"]["pageLogger"]["description"],
-			'Longdescription' => $lang["Application"]["pageLogger"]["longdescription"],
-			'Link' => $lang["Application"]["pageLogger"]["link"],
-			'UpdateServer' => 'update.webedition.org',
-			//'UpdateServer' => 'update.alex.hq.living-e.zz', // local mirror
-			'UpdateScript' => '/server/pl/onlineInstallation.p' . 'hp',
-			'testUpdate' => false,
-		),*/
+		),
 	);
 	
 	// choose the application which have to be installed
