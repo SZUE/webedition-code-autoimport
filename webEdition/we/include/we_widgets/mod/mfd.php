@@ -171,7 +171,7 @@ if($queries){
 					$file['Path'] . ($isOpen ? '' : '</a>') .
 					'</td>' .
 					($bMfdBy ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . $hist['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
-					($bDateLastMfd ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . date(g_l('date', '[format][default]'), $file['ModDate']) . '</td>' : '') .
+					($bDateLastMfd ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . date(g_l('date', '[format][default]'), $hist['ModDate']) . '</td>' : '') .
 					'</tr>';
 
 			$j++;
