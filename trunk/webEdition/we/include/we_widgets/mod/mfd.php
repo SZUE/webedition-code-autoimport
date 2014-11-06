@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -86,8 +85,8 @@ $bDateLastMfd = $sDisplayOpt{1};
 $db = $GLOBALS['DB_WE'];
 
 $aUsers = array_filter(array_map('intval', (permissionhandler::hasPerm('EDIT_MFD_USER') ?
-						makeArrayFromCSV($aCols[4]) :
-						array($_SESSION['user']['ID']))));
+			makeArrayFromCSV($aCols[4]) :
+			array($_SESSION['user']['ID']))));
 
 if($aUsers){
 	$aUsers = implode(',', $aUsers);
@@ -132,7 +131,7 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 $where = ($where ? ' WHERE ' . implode(' AND ', $where) : '');
 
 $tables = $data = array();
-$db->query('SELECT DID,UserName,DocumentTable,ModDate,!ISNULL(l.ID) AS isOpen FROM ' . HISTORY_TABLE . ' LEFT JOIN ' . LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=DocumentTable AND l.UserID!=' . $_SESSION['user']['ID'] . ' ' . $where . ' GROUP BY DID,DocumentTable  ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems + 30));
+$db->query('SELECT DID,UserName,DocumentTable,DATE_FORMAT(ModDate,"' . g_l('date', '[format][mysql]') . '") AS MDate,!ISNULL(l.ID) AS isOpen FROM ' . HISTORY_TABLE . ' LEFT JOIN ' . LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=DocumentTable AND l.UserID!=' . $_SESSION['user']['ID'] . ' ' . $where . ' GROUP BY DID,DocumentTable ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems + 30));
 while($db->next_record(MYSQL_ASSOC)){
 	$tables[$db->f('DocumentTable')][] = $db->f('DID');
 	$data[$db->f('DocumentTable')][$db->f('DID')] = $db->getRecord();
@@ -141,7 +140,7 @@ $queries = array();
 foreach($tables as $ctable => $ids){
 	$table = addTblPrefix($ctable);
 	$paths = ((!permissionhandler::hasPerm('ADMINISTRATOR') || ($table != TEMPLATES_TABLE && (defined('OBJECT_TABLE') ? ($table != OBJECT_TABLE) : true))) && isset($workspace[$table]) ?
-					$workspace[$table] : '');
+			$workspace[$table] : '');
 
 	$queries[] = '(SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners,"' . $ctable . '" AS ctable FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', $ids) . ')' . ($paths ? (' AND (' . $paths . ')') : '') . ')';
 }
@@ -160,19 +159,19 @@ if($queries){
 		$table = addTblPrefix($db->f('ctable'));
 
 		$show = ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && ($table == OBJECT_FILES_TABLE)) ?
-						$admin || we_history::userHasPerms($file['CreatorID'], $file['Owners'], $file['RestrictOwners']) :
-						true);
+				$admin || we_history::userHasPerms($file['CreatorID'], $file['Owners'], $file['RestrictOwners']) :
+				true);
 
 		if($show){
 			$isOpen = $hist['isOpen'];
 			$lastModified .= '<tr><td style="width:20px;height:20px;padding-right:4px;" nowrap><img src="' . TREE_ICON_DIR . $file['Icon'] . '" />' . '</td>' .
-					'<td style="vertical-align: middle;" class="middlefont" ' . ($isOpen ? 'style="color:red;"' : '') . '>' .
-					($isOpen ? '' : '<a style="color:#000000;text-decoration:none;" href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '" >') .
-					$file['Path'] . ($isOpen ? '' : '</a>') .
-					'</td>' .
-					($bMfdBy ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . $hist['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
-					($bDateLastMfd ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . date(g_l('date', '[format][default]'), $hist['ModDate']) . '</td>' : '') .
-					'</tr>';
+				'<td style="vertical-align: middle;" class="middlefont" ' . ($isOpen ? 'style="color:red;"' : '') . '>' .
+				($isOpen ? '' : '<a style="color:#000000;text-decoration:none;" href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '" >') .
+				$file['Path'] . ($isOpen ? '' : '</a>') .
+				'</td>' .
+				($bMfdBy ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . $hist['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
+				($bDateLastMfd ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . $hist['MDate'] . '</td>' : '') .
+				'</tr>';
 
 			$j++;
 		}
