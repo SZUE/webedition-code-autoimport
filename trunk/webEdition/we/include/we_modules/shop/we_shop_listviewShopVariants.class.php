@@ -76,11 +76,10 @@ class we_shop_listviewShopVariants extends we_listview_base{
 				$this->IsObjectFile = true;
 
 				$doc = $GLOBALS['we_obj'];
-
-			}	else{
+			} else {
 
 				$this->Id = $GLOBALS['we_doc']->ID;
-				$doc = $GLOBALS['we_doc'];//new we_webEditionDocument();
+				$doc = $GLOBALS['we_doc']; //new we_webEditionDocument();
 //				$doc->initByID($this->Id);
 			}
 		}
@@ -116,23 +115,21 @@ class we_shop_listviewShopVariants extends we_listview_base{
 					);
 			}
 
-			$varUrl = '';
 			$ret['WE_VARIANT_NAME'] = $key;
-			$ret['WE_VARIANT'] = '';
 
 			if($key != $this->DefaultName){
 				$varUrl = WE_SHOP_VARIANT_REQUEST . '=' . $key;
 				$ret['WE_VARIANT'] = $key;
+			} else {
+				$varUrl = $ret['WE_VARIANT'] = '';
 			}
 
 			$ret['WE_ID'] = $this->Id;
-
+			$path_parts = pathinfo($this->IsObjectFile ? $GLOBALS['we_doc']->Path : $this->Model->Path);
 			if($this->IsObjectFile){ // objectFile
-				$path_parts = pathinfo($GLOBALS['we_doc']->Path);
 				if($this->objectseourls && show_SeoLinks()){
 					$Url = f("SELECT Url from " . OBJECT_FILES_TABLE . " WHERE ID=" . $this->Id, 'Url', $this->DB_WE);
 					if($Url != ''){
-
 						$ret['WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') .
 							( show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 								'' : '/' . $path_parts['filename']
@@ -140,23 +137,20 @@ class we_shop_listviewShopVariants extends we_listview_base{
 					} else {
 						$ret['WE_PATH'] = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?we_objectID=" . $this->Id . ($varUrl ? "&amp;$varUrl" : '') :
-								$GLOBALS['we_doc']->Path . "?we_objectID=" . $this->Id . ($varUrl ? "&amp;$varUrl" : '')
+								$GLOBALS['we_doc']->Path . "?we_objectID=" . $this->Id . ($varUrl ? '&amp;' . $varUrl : '')
 							);
 					}
+				} elseif(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+					$ret['WE_PATH'] = $GLOBALS['we_doc']->Path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . ($varUrl ? "?$varUrl" : '');
 				} else {
-					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$ret['WE_PATH'] = $GLOBALS['we_doc']->Path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . ($varUrl ? "?$varUrl" : '');
-					} else {
-						$ret['WE_PATH'] = $GLOBALS['we_doc']->Path . "?we_objectID=" . $this->Id . ($varUrl ? "&amp;$varUrl" : '');
-					}
+					$ret['WE_PATH'] = $GLOBALS['we_doc']->Path . "?we_objectID=" . $this->Id . ($varUrl ? "&amp;$varUrl" : '');
 				}
-			} else { // webEdition Document
-				$path_parts = pathinfo($this->Model->Path);
-				if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-					$ret['WE_PATH'] = $this->Model->Path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . ($varUrl ? "?$varUrl" : '');
-				} else {
-					$ret['WE_PATH'] = $this->Model->Path . ($varUrl ? "?$varUrl" : '');
-				}
+			} else // webEdition Document
+
+			if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+				$ret['WE_PATH'] = $this->Model->Path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . ($varUrl ? '?'.$varUrl : '');
+			} else {
+				$ret['WE_PATH'] = $this->Model->Path . ($varUrl ? '?'.$varUrl : '');
 			}
 
 			$this->Record = $ret;

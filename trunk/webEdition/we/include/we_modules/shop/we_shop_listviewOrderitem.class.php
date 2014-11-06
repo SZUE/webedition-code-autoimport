@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  *
  */
 class we_shop_listviewOrderitem extends we_listview_base{
-
 	var $ClassName = __CLASS__;
 	var $condition = '';
 	var $Path = '';
@@ -100,7 +98,7 @@ class we_shop_listviewOrderitem extends we_listview_base{
 				($this->condition ? (' WHERE ' . $this->condition ) : ' '));
 
 
-		$this->anz_all = f('SELECT COUNT(1) FROM ' . SHOP_TABLE . $where,'',  $this->DB_WE);
+		$this->anz_all = f('SELECT COUNT(1) FROM ' . SHOP_TABLE . $where, '', $this->DB_WE);
 
 		$this->DB_WE->query('SELECT IntID as ID,IntOrderID as OrderID, IntArticleID as ArticleID, IntQuantity as Quantity, Price, strSerial FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
@@ -138,7 +136,7 @@ class we_shop_listviewOrderitem extends we_listview_base{
 					}
 					unset($value);
 					$this->DB_WE->Record['VARIANT'] = $strSerial['WE_VARIANT'];
-					$this->DB_WE->Record['shopvat'] = $strSerial['shopvat'];
+					$this->DB_WE->Record[WE_SHOP_VAT_FIELD_NAME] = $strSerial[WE_SHOP_VAT_FIELD_NAME];
 				} else {//Document based Article
 					$this->DB_WE->Record['articleIsObject'] = 0;
 					foreach($strSerial as $key => &$value){
@@ -161,7 +159,7 @@ class we_shop_listviewOrderitem extends we_listview_base{
 				}
 				unset($value);
 				$this->DB_WE->Record['VARIANT'] = $strSerial['WE_VARIANT'];
-				$this->DB_WE->Record["shopvat"] = $strSerial["shopvat"];
+				$this->DB_WE->Record[WE_SHOP_VAT_FIELD_NAME] = $strSerial[WE_SHOP_VAT_FIELD_NAME];
 			}
 
 			$this->DB_WE->Record['wedoc_Path'] = $this->DB_WE->Record['WE_PATH'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'] . '&we_orderitemid=' . $this->DB_WE->Record['ID'];

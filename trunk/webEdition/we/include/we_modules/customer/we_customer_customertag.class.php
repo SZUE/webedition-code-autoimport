@@ -42,7 +42,7 @@ class we_customer_customertag{
 		$this->hidedirindex = $hidedirindex;
 		$unique = md5(uniqid(__FILE__, true));
 
-		$this->object = new we_customer_listview($unique, 1, 0, "", 0, "(ID='" . intval($this->id) . "')" . ($condition ? " AND $condition" : ""), "", 0, $hidedirindex);
+		$this->object = new we_customer_listview($unique, 1, 0, "", 0, '(ID=' . intval($this->id) . ')' . ($condition ? " AND $condition" : ""), "", 0, $hidedirindex);
 		$this->avail = $this->object->next_record();
 	}
 
@@ -58,7 +58,7 @@ class we_customer_customertag{
 		return ($this->id ? $this->object->f($key) : '');
 	}
 
-	public function getObject(){
+	public function getObject(){//FIXME: remove this
 		return $this->object;
 	}
 
