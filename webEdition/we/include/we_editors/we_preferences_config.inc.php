@@ -98,8 +98,8 @@ $GLOBALS['configs'] = array(
 // accessibility
 		'SHOWINPUTS_DEFAULT' => array('Default setting for showinputs attribute', we_base_request::BOOL, true),
 		'DB_SET_CHARSET' => array('connection charset to db', we_base_request::STRING, 'utf8'),
-		'WYSIWYG_TYPE' => array('define used wysiwyg editor', we_base_request::STRING, 'tinyMCE'),
-		'WYSIWYG_TYPE_FRONTEND' => array('define used wysiwyg editor in frontend', we_base_request::STRING, 'tinyMCE'),
+/*		'WYSIWYG_TYPE' => array('define used wysiwyg editor', we_base_request::STRING, 'tinyMCE'),
+		'WYSIWYG_TYPE_FRONTEND' => array('define used wysiwyg editor in frontend', we_base_request::STRING, 'tinyMCE'),*/
 		'WE_MAILER' => array('mailer type; possible values are php and smtp', we_base_request::STRING, 'php'),
 		'SMTP_SERVER' => array('SMTP_SERVER', we_base_request::STRING, 'localhost'),
 		'SMTP_PORT' => array('SMTP server port', we_base_request::INT, 25),

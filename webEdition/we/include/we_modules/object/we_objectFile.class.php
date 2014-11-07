@@ -1382,7 +1382,7 @@ class we_objectFile extends we_document{
 		$attribs["height"] = isset($attribs["height"]) ? $attribs["height"] : 200;
 		$attribs["rows"] = 10;
 		$attribs["cols"] = 60;
-		$attribs['bgcolor'] = isset($attribs["bgcolor"]) ? $attribs["bgcolor"] : (WYSIWYG_TYPE === 'tinyMCE' ? '' : 'white');
+		$attribs['bgcolor'] = isset($attribs["bgcolor"]) ? $attribs["bgcolor"] : '');
 		$attribs['tinyparams'] = isset($attribs["tinyparams"]) ? $attribs["tinyparams"] : "";
 		$attribs['templates'] = isset($attribs["templates"]) ? $attribs["templates"] : "";
 		$attribs["class"] = isset($attribs["class"]) ? $attribs["class"] : "";
@@ -2772,7 +2772,7 @@ class we_objectFile extends we_document{
 		$GLOBALS['we_doc']->OF_ID = $this->ID;
 
 		$GLOBALS['we_doc']->InWebEdition = false;
-		$we_include = $includepath ?: $GLOBALS['we_doc']->TemplatePath;
+		$we_include = $includepath ? : $GLOBALS['we_doc']->TemplatePath;
 		ob_start();
 		include($we_include);
 		$contents = ob_get_clean();
