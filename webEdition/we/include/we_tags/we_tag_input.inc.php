@@ -41,7 +41,7 @@ function we_tag_input($attribs, $content){
 
 	$val = oldHtmlspecialchars($GLOBALS['we_doc']->issetElement($name) ? $GLOBALS['we_doc']->getElement($name) : $value);
 
-	if($GLOBALS['we_editmode']){
+	if($GLOBALS['we_editmode']){ 
 		//all edit-specific things
 		switch($type){
 			case 'date':
