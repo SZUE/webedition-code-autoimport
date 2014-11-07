@@ -79,7 +79,7 @@ $nr = we_base_request::_(we_base_request::INT, 'we_cmd', '-1', 2);
 if(we_base_request::_(we_base_request::BOOL, 'ok')){
 	$alt = we_base_request::_(we_base_request::STRING, 'alt', '');
 	$img_title = we_base_request::_(we_base_request::STRING, 'img_title', '');
-	$text = we_base_request::_(we_base_request::STRINGC, 'text', '');
+	$text = we_base_request::_(we_base_request::HTML, 'text', '');
 	$attribs = we_base_request::_(we_base_request::RAW, 'attribs', '');
 	$href = we_base_request::_(we_base_request::URL, 'href', '');
 	$anchor = trim(we_base_request::_(we_base_request::STRING, 'anchor', ''));
@@ -142,7 +142,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		'jslocation' => we_base_request::_(we_base_request::BOOL, 'jslocation'),
 		'img_id' => we_base_request::_(we_base_request::INT, 'img_id', 0),
 		'img_src' => we_base_request::_(we_base_request::URL, 'img_src', ''),
-		'text' => we_base_request::_(we_base_request::STRINGC, 'text'),
+		'text' => we_base_request::_(we_base_request::HTML, 'text'),
 		'type' => ($type == we_base_link::TYPE_MAIL) ? we_base_link::TYPE_INT : $type,
 		'ctype' => we_base_request::_(we_base_request::STRING, 'ctype'),
 		'width' => we_base_request::_(we_base_request::UNIT, 'width',''),
