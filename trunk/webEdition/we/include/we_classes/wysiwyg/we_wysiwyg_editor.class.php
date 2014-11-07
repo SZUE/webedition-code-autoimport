@@ -68,7 +68,7 @@ class we_wysiwyg_editor{
 	private $htmlSpecialchars = true; // in wysiwyg default was "true" (although Tag-Hilfe says "false")
 	private $contentCss = '';
 	private $isInPopup = false;
-	public static $editorType = WYSIWYG_TYPE; //FIXME: remove after old editor is removed
+	public static $editorType = 'tinyMCE'; //FIXME: remove after old editor is removed
 
 	const CONDITIONAL = true;
 

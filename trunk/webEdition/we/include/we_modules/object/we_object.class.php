@@ -1399,7 +1399,7 @@ class we_object extends we_document{
 			"width" => 386, //$this->getElement($name."width","dat",618),
 			"height" => 52, //$this->getElement($name."height","dat",200),
 			"rows" => 3,
-			"bgcolor" => $this->getElement($name . "bgcolor", "dat", (WYSIWYG_TYPE === 'tinyMCE' ? '' : 'white')),
+			"bgcolor" => $this->getElement($name . "bgcolor", "dat", '')),
 			"tinyparams" => $this->getElement($name . "tinyparams"),
 			"templates" => $this->getElement($name . "templates"),
 			"class" => $this->getElement($name . "class"),

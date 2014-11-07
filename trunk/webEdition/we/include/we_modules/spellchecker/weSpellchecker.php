@@ -515,7 +515,7 @@ echo we_html_button::create_state_changer(false);
 		</center>
 	</div>
 
-	<form name="we_form" action="' . WE_SPELLCHECKER_MODULE_DIR . 'weSpellchecker.php" method="post" target="_self">
+	<form name="we_form" action="' . WE_SPELLCHECKER_MODULE_DIR . '/weSpellchecker.php" method="post" target="_self">
 
 	<input name="' . ($_mode === 'wysiwyg' ? 'we_dialog_args[editname]' : 'editname') . '" value="' . $editname . '" type="hidden" />
 	<div id="mainPanel">' .
