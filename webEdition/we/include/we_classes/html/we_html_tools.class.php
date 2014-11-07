@@ -511,10 +511,10 @@ abstract class we_html_tools{
 			for($i = 1; $i <= 12; $i++){
 				switch($monthType){//Bug #4095
 					case 'F':
-						$val = g_l('date', '[month][long][' . ($i - 1) . ']');
+						$val = CheckAndConvertISOfrontend(g_l('date', '[month][long][' . ($i - 1) . ']'));
 						break;
 					case 'M':
-						$val = g_l('date', '[month][short][' . ($i - 1) . ']');
+						$val = CheckAndConvertISOfrontend(g_l('date', '[month][short][' . ($i - 1) . ']'));
 						break;
 					default:
 						$val = sprintf('%02d', $i);
