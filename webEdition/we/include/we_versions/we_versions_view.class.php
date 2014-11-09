@@ -750,7 +750,7 @@ function delRow(id) {
 		$height = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchclass->height, 'height');
 		$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchclass->anzahl, 'anzahl');
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $GLOBALS['we_transaction'], 'we_transaction');
-		$Text = we_base_request::_(we_base_request::RAW, 'text', $GLOBALS['we_doc']->Text);
+		$Text = we_base_request::_(we_base_request::RAW, 'text', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Text : '');
 		$ID = we_base_request::_(we_base_request::INT, 'id', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->ID : 0);
 		$Path = we_base_request::_(we_base_request::FILE, 'path', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '/');
 
