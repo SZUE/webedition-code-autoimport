@@ -155,7 +155,7 @@ class liveUpdateHttp{
 				return liveUpdateHttp::getCurlHttpResponse($server, $url, $parameters);
 			default:
 				return null; // return null otherwise php error
-			//return 'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
+				//'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
 		}
 	}
 

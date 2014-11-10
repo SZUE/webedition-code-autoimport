@@ -40,7 +40,7 @@ class we_metadata_Exif extends we_metadata_metaData{
 		$this->accesstypes = array("read");
 	}
 
-	function getUsedFields(){
+	public static function getUsedFields(){
 		return explode(',', self::usedFields);
 	}
 
