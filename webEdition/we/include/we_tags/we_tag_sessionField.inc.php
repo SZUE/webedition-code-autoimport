@@ -43,8 +43,8 @@ function we_tag_sessionField($attribs, $content){
 	$autofill = weTag_getAttribute('autofill', $attribs, false, true);
 	if($autofill){
 		$condition = ($name === 'Username' ?
-				array('caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0) :
-				array('caps' => 3, 'small' => 4, 'nums' => 3, 'specs' => 2));
+						array('caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0) :
+						array('caps' => 3, 'small' => 4, 'nums' => 3, 'specs' => 2));
 
 		$pass = new we_customer_generatePassword(7, $condition);
 		$orgVal = $pass->PassGen();
@@ -62,11 +62,11 @@ function we_tag_sessionField($attribs, $content){
 			}
 			try{
 				$date = ($orgVal ? new DateTime((is_numeric($orgVal) ? '@' : '') . $orgVal) : 0);
-			} catch (Exception $e){
+			}catch(Exception $e){
 				$date = new DateTime('now');
 			}
 			return we_html_tools::getDateInput2(
-					"s[we_date_" . $name . "]", $date, false, $format, '', '', $xml, $minyear, $maxyear);
+							"s[we_date_" . $name . "]", $date, false, $format, '', '', $xml, $minyear, $maxyear);
 
 		case 'country':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
@@ -75,8 +75,8 @@ function we_tag_sessionField($attribs, $content){
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang ?
-					substr($lang, 0, 2) :
-					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+							substr($lang, 0, 2) :
+							array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 			if(!Zend_Locale::hasCache()){
 				Zend_Locale::setCache(getWEZendCache());
@@ -244,7 +244,7 @@ function we_tag_sessionField($attribs, $content){
 				try{
 					$date = new DateTime((is_numeric($orgVal) ? '@' : '') . $orgVal);
 					return $date->format($dateformat);
-				} catch (Exception $e){
+				}catch(Exception $e){
 					//fallback to default return
 				}
 			}
@@ -264,7 +264,7 @@ function we_tag_sessionField($attribs, $content){
 				$langcode = substr($lang, 0, 2);
 				$_hidden['value'] = $langcode;
 			}
-			return getHtmlTag('input', $_hidden);
+			return getHtmlTag('input', array_merge(removeAttribs($attribs, array('doc', 'usevalue', 'languageautofill', 'htmlspecialchars', 'xml')), $_hidden));
 		case 'img':
 			if(!isset($_SESSION['webuser']['imgtmp'])){
 				$_SESSION['webuser']['imgtmp'] = array();
@@ -324,7 +324,7 @@ function we_tag_sessionField($attribs, $content){
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="center">' .
-					$imgTag . '
+						$imgTag . '
 			<input type="hidden" name="s[' . $name . ']" value="' . $_SESSION['webuser']['imgtmp'][$name]["id"] . '" /></td>
 	</tr>
 	<tr>
