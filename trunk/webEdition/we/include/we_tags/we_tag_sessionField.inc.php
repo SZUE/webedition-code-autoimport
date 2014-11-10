@@ -218,7 +218,7 @@ function we_tag_sessionField($attribs, $content){
 		case 'password':
 			$newAtts = removeAttribs($attribs, array('checked', 'options', 'selected', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'wysiwyg'));
 			$newAtts['name'] = 's[' . $name . ']';
-			$newAtts['value'] = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] ? we_customer_customer::NOPWD_CHANGE : ''; //oldHtmlspecialchars($_SESSION['webuser']['_Password']);
+			$newAtts['value'] = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] ? we_customer_customer::NOPWD_CHANGE : '';
 			return getHtmlTag('input', $newAtts);
 		case 'print':
 			$ascountry = weTag_getAttribute('ascountry', $attribs, false, true);
@@ -240,7 +240,7 @@ function we_tag_sessionField($attribs, $content){
 				}
 				return ($ascountry && $orgVal === '--' ? '' : CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, ($ascountry ? 'territory' : 'language'), $langcode)));
 			}
-			if($dateformat){
+			if($dateformat){//FIXME: use document settings for dateformat => get locale - note DateTime doesn't use locale settings
 				try{
 					$date = new DateTime((is_numeric($orgVal) ? '@' : '') . $orgVal);
 					return $date->format($dateformat);
