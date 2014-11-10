@@ -123,7 +123,6 @@ abstract class we_autoloader{
 			'weModelBase' => 'modules/weModelBase.class.php',
 			'weOrderContainer' => 'js_gui/weOrderContainer.class.php',
 			'we_progressBar' => 'we_progressBar.class.php',
-			'we_rtf2html' => 'we_rtf2html.inc.php',
 			'we_SEEM' => 'SEEM/we_SEEM.class.php',
 			'weSuggest' => 'weSuggest.class.php',
 			'we_tabs' => 'we_tabs.class.php',

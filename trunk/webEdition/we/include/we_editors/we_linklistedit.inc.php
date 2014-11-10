@@ -96,7 +96,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 	//	accept anchor with or without '#', when saving the link
 	$anchor = (!$anchor || $anchor{0} === '#' ? $anchor : '#' . $anchor);
 
-	if(strlen($params) > 0){ //	accept parameters with or without '?', when saving the link
+	if($params){ //	accept parameters with or without '?', when saving the link
 		//	when type=object we need a '&'
 		switch(we_base_request::_(we_base_request::STRING, 'type')){
 			case we_base_link::TYPE_OBJ:

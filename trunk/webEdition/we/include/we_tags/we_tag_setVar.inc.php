@@ -49,7 +49,7 @@ function we_tag_setVar($attribs){
 			case 'get' :
 			case 'global' :
 			case 'session' :
-				$valueFrom = we_tag('var',array('type' => $from, '_name_orig' => $nameFrom, 'name' => $nameFrom, 'varType' => $varType));
+				$valueFrom = we_tag('var', array('type' => $from, '_name_orig' => $nameFrom, 'name' => $nameFrom, 'varType' => $varType));
 				break;
 			case 'top' :
 				if($propertyFrom){
@@ -73,7 +73,7 @@ function we_tag_setVar($attribs){
 			case 'document' :
 				$valueFrom = ($propertyFrom ?
 								(isset($GLOBALS['we_' . $from][$formnameFrom]->$nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->$nameFrom : '') :
-								($GLOBALS['we_' . $from][$formnameFrom]->issetElement($nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->getElement($nameFrom) : ''));
+								(is_object($GLOBALS['we_' . $from][$formnameFrom]) && $GLOBALS['we_' . $from][$formnameFrom]->issetElement($nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->getElement($nameFrom) : ''));
 
 				break;
 			case 'sessionfield' :
