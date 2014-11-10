@@ -217,7 +217,7 @@ class we_fileupload_include extends we_fileupload_base{
 
 		if($isUploading){//FIXME: change to $isHtmlInputFile
 			if($partCount){
-				if(isset($_FILES[$this->name]) && strlen($_FILES[$this->name]["tmp_name"])){
+				if(isset($_FILES[$this->name]) && $_FILES[$this->name]['tmp_name']){
 
 					$tempName = $partNum == 1 ? $this->_makeFileNameTemp(self::GET_NAME_ONLY) : we_base_file::getUniqueId();
 					$tempPath = $this->_makeFileNameTemp(self::GET_PATH_ONLY, self::FORCE_DOC_ROOT);

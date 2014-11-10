@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_binaryDocument extends we_fileupload_base{
+
 	protected $isUploadComplete = false;
 	protected $fileNameTemp = "";
 	protected $fileNameTempParts = array(
@@ -153,22 +154,22 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		$btnReset = we_html_button::create_button("reset", 'javascript:we_FileUpload.reset()', true, $width['button'], 22, "", "", true, false, "_btn", true);
 		$btnCancel = we_html_button::create_button("cancel", 'javascript:we_FileUpload.cancelUpload()', true, $width['button'], 22, "", "", false, false, "_btn", true);
 		$fileInput = we_html_element::htmlInput(array(
-				'class' => 'fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : ''),
-				'style' => 'width:' . $width['input'] . 'px;',
-				'type' => 'file',
-				'name' => $this->name,
-				'id' => $this->name,
-				'accept' => implode(',', $this->typeCondition['accepted']['mime']))
+					'class' => 'fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : ''),
+					'style' => 'width:' . $width['input'] . 'px;',
+					'type' => 'file',
+					'name' => $this->name,
+					'id' => $this->name,
+					'accept' => implode(',', $this->typeCondition['accepted']['mime']))
 		);
-		$fileInput .= !$isIE10 ? '' :
-			we_html_element::htmlInput(array(
+		$fileInput .=!$isIE10 ? '' :
+				we_html_element::htmlInput(array(
 					'class' => 'fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : ''),
 					'style' => 'width:' . $width['input'] . 'px; left:' . $width['input'] . 'px;',
 					'type' => 'file',
 					'name' => $this->name . '_x2',
 					'id' => $this->name . '_x2',
 					'accept' => implode(',', $this->typeCondition['accepted']['mime']))
-			);
+		);
 		$divFileInput = we_html_element::htmlDiv(array('id' => 'div_we_File_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'height:23px;margin-top:22px;width:' . $width['button'] . 'px;'), $fileInput . $btnBrowse);
 		$divBtnReset = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnReset', 'style' => 'margin-top:22px;display:none;'), $btnReset);
 		$divBtnUpload = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnUpload', 'style' => 'margin-top: 6px;'), $btnUpload);
@@ -181,10 +182,10 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'margin-top: 13px; display: none;'), $progress->getHTML());
 
 		$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:204px'), $divFileInput .
-				$divProgressbar .
-				$divBtnReset .
-				$divBtnUpload .
-				$divBtnCancel
+						$divProgressbar .
+						$divBtnReset .
+						$divBtnUpload .
+						$divBtnCancel
 		);
 
 		$btnUploadLegacy = we_html_button::create_button("upload", "javascript:we_cmd('editor_uploadFile', 'legacy')", true, 150, 22, "", "", false, false, "_legacy_btn", true);
@@ -197,50 +198,50 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		$divDropzone = !(self::isFallback() || self::isLegacyMode()) ? ('
 			<div class="we_file_drag we_file_drag_binDoc" id="div_fileupload_fileDrag_state_0" style="' . (!$this->isDragAndDrop ? 'border-color:white;' : '') . '">
 				<div style="display:table-cell;width:178px;height:116px;padding-left:4px;vertical-align:middle;color:#cccccc;font-weight:normal;font-size:' . ($this->isDragAndDrop ? 16 : 14) . 'px">' .
-					$dropText . '
+				$dropText . '
 				</div>' .
-			we_html_element::htmlDiv(array('class' => 'dropzone_right'), ($thumbnailSmall ? : we_html_element::htmlImg(array('src' => $this->binDocProperties['icon'])))) . '
+				we_html_element::htmlDiv(array('class' => 'dropzone_right'), ($thumbnailSmall ? : we_html_element::htmlImg(array('src' => $this->binDocProperties['icon'])))) . '
 			</div>
 			<div class="we_file_drag we_file_drag_binDoc" style="display:none;' . (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : '') . '" id="div_fileupload_fileDrag_state_1">
 				<div id="div_upload_fileDrag_innerLeft" style="display:table-cell;width:178px;height:116px;padding-left:10px;vertical-align:middle;text-align:left;color:#333;font-weight: normal;font-size:12px">' .
-			we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_filename')) . we_html_element::htmlBr() .
-			we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_size')) . we_html_element::htmlBr() .
-			we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_type')) . '
+				we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_filename')) . we_html_element::htmlBr() .
+				we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_size')) . we_html_element::htmlBr() .
+				we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_type')) . '
 				</div>' .
-			we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'dropzone_right'), '') . '
+				we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'dropzone_right'), '') . '
 			</div>' .
-			($this->isDragAndDrop ? '<div style="position:absolute;top:11px;background:none;" class="we_file_drag" id="div_we_File_fileDrag"></div>' : '')) : '';
+				($this->isDragAndDrop ? '<div style="position:absolute;top:11px;background:none;" class="we_file_drag" id="div_we_File_fileDrag"></div>' : '')) : '';
 
 		return (self::isFallback() || self::isLegacyMode() ? '' : $this->getJs() . $this->getCss()) . '
 			<table id="table_form_upload" cellpadding="0" cellspacing="0" border="0" width="500">
 			<tr style="vertical-align:top;">
 				<td class="defaultfont" width="200px">' .
-			$divBtnUploadLegacy .
-			$divFileInfo .
-			(self::isFallback() || self::isLegacyMode() ? '' :
-				$divButtons .
-				we_html_tools::hidden('we_doc_ct', $this->contentType) .
-				we_html_tools::hidden('we_doc_ext', $this->extension) .
-				we_html_tools::hidden('weFileNameTemp', '') .
-				we_html_tools::hidden('weFileName', '') .
-				we_html_tools::hidden('weFileCt', '') .
-				we_html_tools::hidden('weIsFileInLegacy', 0)
-			) . '
+				$divBtnUploadLegacy .
+				$divFileInfo .
+				(self::isFallback() || self::isLegacyMode() ? '' :
+						$divButtons .
+						we_html_tools::hidden('we_doc_ct', $this->contentType) .
+						we_html_tools::hidden('we_doc_ext', $this->extension) .
+						we_html_tools::hidden('weFileNameTemp', '') .
+						we_html_tools::hidden('weFileName', '') .
+						we_html_tools::hidden('weFileCt', '') .
+						we_html_tools::hidden('weIsFileInLegacy', 0)
+				) . '
 				</td>
 				<td width="300px">' .
-			(self::isFallback() || self::isLegacyMode() ? '' : '
+				(self::isFallback() || self::isLegacyMode() ? '' : '
 						<div id="div_fileupload_right">' .
-				$divDropzone .
-				($this->binDocProperties['type'] === 'image' ? '<br />' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', "[import_metadata_at_upload]")) : '') . '
+						$divDropzone .
+						($this->binDocProperties['type'] === 'image' ? '<br />' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', "[import_metadata_at_upload]")) : '') . '
 						</div>'
-			) . '
+				) . '
 					<div id="div_fileupload_right_legacy" style="text-align:right;display:' . (self::isFallback() || self::isLegacyMode() ? '' : 'none' ) . '">' .
-			$thumbnailBig . '
+				$thumbnailBig . '
 					</div>
 				</td>
 			</tr>
 			<tr><td colspan="2">' . we_html_tools::getPixel(4, 20) . '</td></tr>' .
-			(self::isFallback() || self::isLegacyMode() ? '' : '<tr><td colspan="2" class="defaultfont">' . $this->getHtmlAlertBoxes() . '</td></tr>
+				(self::isFallback() || self::isLegacyMode() ? '' : '<tr><td colspan="2" class="defaultfont">' . $this->getHtmlAlertBoxes() . '</td></tr>
 							<tr><td colspan="2">' . we_html_tools::getPixel(4, 20) . '</td></tr>') . '
 
 			<tr><td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', ($GLOBALS['we_doc']->getFilesize() ? "[upload_will_replace]" : "[upload_single_files]")), we_html_tools::TYPE_ALERT, 508) . '</td></tr>
@@ -280,20 +281,20 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 
 		$error = '';
 
-		if(isset($_FILES[$this->name]) && strlen($_FILES[$this->name]["tmp_name"])){
+		if(isset($_FILES[$this->name]) && $_FILES[$this->name]['tmp_name']){
 			$tempName = $partNum == 1 ? we_base_file::getUniqueId() . $this->extension : we_base_file::getUniqueId();
 			$tempPath = TEMP_PATH;
 
 			$error = (!$tempName ?
-					'no_filename_error' :
-					($this->maxChunkCount && $partNum > $this->maxChunkCount ?
-						'oversized_error' :
-						(!@move_uploaded_file($_FILES[$this->name]["tmp_name"], TEMP_PATH . $tempName) ?
-							'move_file_error' :
-							''
-						)
-					)
-				);
+							'no_filename_error' :
+							($this->maxChunkCount && $partNum > $this->maxChunkCount ?
+									'oversized_error' :
+									(!@move_uploaded_file($_FILES[$this->name]["tmp_name"], TEMP_PATH . $tempName) ?
+											'move_file_error' :
+											''
+									)
+							)
+					);
 
 			//check mime type integrity when receiving first chunk
 			if($partNum == 1 && !$error){
@@ -448,8 +449,8 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 
 		if($tc['accepted']['all']){
 			if(in_array($mime, $tc['accepted']['all']) ||
-				in_array($mimeGroup, $tc['accepted']['all']) ||
-				in_array($ext, $tc['accepted']['all'])){
+					in_array($mimeGroup, $tc['accepted']['all']) ||
+					in_array($ext, $tc['accepted']['all'])){
 				//true
 			} else {
 				return false;
@@ -457,9 +458,9 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		}
 
 		if($tc['forbidden']['all'] &&
-			(in_array($mime, $tc['forbidden']['all']) ||
-			in_array($mimeGroup, $tc['forbidden']['all']) ||
-			in_array($ext, $tc['forbidden']['all']))){
+				(in_array($mime, $tc['forbidden']['all']) ||
+				in_array($mimeGroup, $tc['forbidden']['all']) ||
+				in_array($ext, $tc['forbidden']['all']))){
 			return false;
 		}
 		return true;
