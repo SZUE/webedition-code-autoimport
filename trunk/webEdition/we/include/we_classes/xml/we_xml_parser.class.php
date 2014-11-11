@@ -2507,8 +2507,8 @@ class we_xml_parser{
 
 		$match = array();
 		$encoding = 'ISO-8859-1';
-		$trenner = "[\040|\n|\t|\r]*";
-		$pattern = "%(encoding" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . ")([^\'\">\040? \\\]*)%i";
+		$trenner = "[ |\n|\t|\r]*";
+		$pattern = "%(encoding" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . ")([^\'\"> ? \\\]*)%i";
 
 		if(preg_match($pattern, $data, $match)){
 			if(strtoupper($match[2]) != 'ISO-8859-1'){
