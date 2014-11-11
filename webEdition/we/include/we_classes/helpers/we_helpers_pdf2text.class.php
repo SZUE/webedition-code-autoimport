@@ -747,6 +747,9 @@ class we_helpers_pdf2text{
 	private function getText(){
 		$texts = $lines = array();
 		foreach($this->objects as $cur){
+			if(!isset($this->data[$cur])){
+				continue;
+			}
 			$elem = $this->data[$cur];
 			unset($this->data[$cur]);
 			if(isset($elem['Type']) && $elem['Type'] === '/FontRessource'){

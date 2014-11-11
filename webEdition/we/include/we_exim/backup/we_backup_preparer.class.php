@@ -397,8 +397,8 @@ abstract class we_backup_preparer{
 		if(!empty($file)){
 			$data = we_base_file::loadPart($file, 0, 256, $iscompressed);
 			$match = array();
-			$trenner = "[\040|\n|\t|\r]*";
-			$pattern = "%(encoding" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . ")([^\'\">\040? \\\]*)%";
+			$trenner = '[ |\n|\t|\r]*';
+			$pattern = "%(encoding" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . ")([^\'\"> ? \\\]*)%";
 
 			if(preg_match($pattern, $data, $match)){
 				if(strtoupper($match[2]) != 'ISO-8859-1'){
@@ -414,8 +414,8 @@ abstract class we_backup_preparer{
 		if(!empty($file)){
 			$data = we_base_file::loadPart($file, 0, 256, $iscompressed);
 			$match = array();
-			$trenner = "[\040|\n|\t|\r]*";
-			$pattern = "%webEdition" . $trenner . "version" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . "([^\'\">\040? \\\]*)%";
+			$trenner = '[ |\n|\t|\r]*';
+			$pattern = "%webEdition" . $trenner . "version" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . "([^\'\"> ? \\\]*)%";
 
 			if(preg_match($pattern, $data, $match)){
 				return $match[1];

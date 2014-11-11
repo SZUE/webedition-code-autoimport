@@ -42,7 +42,7 @@ class we_exim_searchPatterns{
 		$this->wysiwyg_patterns = array();
 		$this->special_patterns = array();
 
-		$spacer = "[\040|\n|\t|\r]*";
+		$spacer = '[ |\n|\t|\r]*';
 
 		$_pats = array(
 			'a' => 'id',
@@ -67,29 +67,29 @@ class we_exim_searchPatterns{
 		foreach($_pats as $tag => $attribut){
 			if(is_array($attribut)){
 				foreach($attribut as $attrib){
-					$this->doc_patterns["id"][] = "/<(we:" . $tag . $spacer . "[^>]*[\040|\n|\t|\r]+" . $attrib . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
+					$this->doc_patterns["id"][] = "/<(we:" . $tag . $spacer . "[^>]*[ |\n|\t|\r]+" . $attrib . $spacer . "=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
 				}
 			} else {
-				$this->doc_patterns["id"][] = "/<(we:" . $tag . $spacer . "[^>]*[\040|\n|\t|\r]+" . $attribut . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
+				$this->doc_patterns["id"][] = "/<(we:" . $tag . $spacer . "[^>]*[ |\n|\t|\r]+" . $attribut . $spacer . "=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
 			}
 		}
 
-		$this->doc_patterns["id"][] = "/<(we:include" . $spacer . "[^>]*[\040|\n|\t|\r]+type" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]+document[\"|\']+" . $spacer . "[^>]*[\040|\n|\t|\r]+id" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
-		$this->doc_patterns["id"][] = "/<(we:include" . $spacer . "[^>]*[\040|\n|\t|\r]+id" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]+" . $spacer . "type" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]+document[\"|\']+" . $spacer . "[^>]*)>/sie";
+		$this->doc_patterns["id"][] = '/<(we:include' . $spacer . "[^>]*[ |\n|\t|\r]+type" . $spacer . "=" . $spacer . "[\"|\'|\\\\]+document[\"|\']+" . $spacer . "[^>]*[ |\n|\t|\r]+id" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
+		$this->doc_patterns["id"][] = '/<(we:include' . $spacer . "[^>]*[ |\n|\t|\r]+id" . $spacer . "=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]+" . $spacer . "type" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]+document[\"|\']+" . $spacer . "[^>]*)>/sie";
 
-		$this->doc_patterns["id"][] = "/<(we:include" . $spacer . "[^>]*[\040|\n|\t|\r]+id" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)[^>]*>/sie";
+		$this->doc_patterns["id"][] = '/<(we:include' . $spacer . "[^>]*[ |\n|\t|\r]+id" . $spacer . "=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)[^>]*>/sie";
 
 		//replace #WE:1223#
-		$this->doc_patterns["id"][] = "/(#WE:)(\d+)(#)/se";
+		$this->doc_patterns["id"][] = '/(#WE:)(\d+)(#)/se';
 
 
 		// serach for documents after path
-		$this->doc_patterns["path"][] = "/<(we:include" . $spacer . "[^>]*[\040|\n|\t|\r]+path" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
+		$this->doc_patterns["path"][] = "/<(we:include" . $spacer . "[^>]*[ |\n|\t|\r]+path" . $spacer . "=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
 
 		//search for objects
-		$this->obj_patterns["id"][] = "/<(we:object" . $spacer . "[^>]*[\040|\n|\t|\r]+id" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
-		$this->obj_patterns["id"][] = "/<(we:form" . $spacer . "[^>]*[\040|\n|\t|\r]+type" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]+object[\"|\']+" . $spacer . "[^>]*[\040|\n|\t|\r]+id" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
-		$this->obj_patterns["id"][] = "/<(we:form" . $spacer . "[^>]*[\040|\n|\t|\r]+id" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*[\040|\n|\t|\r]+type" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]+object[\"|\']+" . $spacer . "[^>]*)>/sie";
+		$this->obj_patterns["id"][] = '/<(we:object' . $spacer . "[^>]*[ |\n|\t|\r]+id" . $spacer . "=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
+		$this->obj_patterns["id"][] = '/<(we:form' . $spacer . "[^>]*[ |\n|\t|\r]+type" . $spacer . "=" . $spacer . "[\"|\'|\\\\]+object[\"|\']+" . $spacer . "[^>]*[ |\n|\t|\r]+id" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
+		$this->obj_patterns["id"][] = '/<(we:form' . $spacer . "[^>]*[ |\n|\t|\r]+id" . $spacer . "=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*[ |\n|\t|\r]+type" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]+object[\"|\']+" . $spacer . "[^>]*)>/sie";
 
 		// search for classes
 		$_pats = array(
@@ -98,7 +98,7 @@ class we_exim_searchPatterns{
 			'listview' => 'classid'
 		);
 		foreach($_pats as $tag => $attribut){
-			$this->class_patterns[] = "/<(we:" . $tag . $spacer . "[^>]*[\040|\n|\t|\r]+" . $attribut . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
+			$this->class_patterns[] = '/<(we:' . $tag . $spacer . "[^>]*[ |\n|\t|\r]+" . $attribut . $spacer . "=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
 		}
 
 		// search for external files
@@ -110,7 +110,7 @@ class we_exim_searchPatterns{
 			'td' => 'background'
 		);
 		foreach($_pats as $tag => $attribut){
-			$this->ext_patterns[] = "/<(" . $tag . $spacer . "[^>]*[\040|\n|\t|\r]+" . $tag . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
+			$this->ext_patterns[] = '/<(' . $tag . $spacer . "[^>]*[ |\n|\t|\r]+" . $tag . $spacer . "=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
 		}
 
 		// search wysiwyg textareas
@@ -124,23 +124,23 @@ class we_exim_searchPatterns{
 		);
 
 		foreach($_tmpl_pats as $tag => $attribut){
-			$this->tmpl_patterns[] = "/<(we:" . $tag . $spacer . "[^>]*[\040|\n|\t|\r]+" . $attribut . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
+			$this->tmpl_patterns[] = '/<(we:' . $tag . $spacer . "[^>]*[ |\n|\t|\r]+" . $attribut . $spacer . "=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
 		}
 
-		$this->tmpl_patterns[] = "/<(we:include" . $spacer . "[^>]*[\040|\n|\t|\r]+type" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]+template[\"|\']+" . $spacer . "[^>]*[\040|\n|\t|\r]+id" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
-		$this->tmpl_patterns[] = "/<(we:include" . $spacer . "[^>]*[\040|\n|\t|\r]+id" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]+" . $spacer . "type" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]+template[\"|\']+" . $spacer . "[^>]*)>/sie";
-		$this->tmpl_patterns[] = "/<(we:field" . $spacer . "[^>]*[\040|\n|\t|\r]+tid" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
+		$this->tmpl_patterns[] = '/<(we:include' . $spacer . "[^>]*[ |\n|\t|\r]+type" . $spacer . "=" . $spacer . "[\"|\'|\\\\]+template[\"|\']+" . $spacer . "[^>]*[ |\n|\t|\r]+id" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
+		$this->tmpl_patterns[] = '/<(we:include' . $spacer . "[^>]*[ |\n|\t|\r]+id" . $spacer . "=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]+" . $spacer . "type" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]+template[\"|\']+" . $spacer . "[^>]*)>/sie";
+		$this->tmpl_patterns[] = '/<(we:field' . $spacer . "[^>]*[ |\n|\t|\r]+tid" . $spacer . "=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
 
 		// search for navigation
-		$this->navigation_patterns[] = "/<(we:navigation[^>]*[\040|\n|\t|\r]+id" . $spacer . "[\=\"|\=\'|\=\\\\|\=]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
-		$this->navigation_patterns[] = "/<(we:navigation[^>]*[\040|\n|\t|\r]+parentid" . $spacer . "[\=\"|\=\'|\=\\\\|\=]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
+		$this->navigation_patterns[] = '/<(we:navigation[^>]*[ |\n|\t|\r]+id' . $spacer . "[=\"|=\'|=\\\\|=]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
+		$this->navigation_patterns[] = '/<(we:navigation[^>]*[ |\n|\t|\r]+parentid' . $spacer . "[=\"|=\'|=\\\\|=]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
 
 		// search for thumbnails
-		$this->thumbnail_patterns[] = "/<(we:img[^>]*[\040|\n|\t|\r]+thumbnail" . $spacer . "[\=\"|\=\'|\=\\\\|\=]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
-		$this->thumbnail_patterns[] = "/<(we:field[^>]*[\040|\n|\t|\r]+thumbnail" . $spacer . "[\=\"|\=\'|\=\\\\|\=]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
+		$this->thumbnail_patterns[] = '/<(we:img[^>]*[ |\n|\t|\r]+thumbnail' . $spacer . "[=\"|=\'|=\\\\|=]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
+		$this->thumbnail_patterns[] = '/<(we:field[^>]*[ |\n|\t|\r]+thumbnail' . $spacer . "[=\"|=\'|=\\\\|=]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
 
 		// some special patterns
-		$this->special_patterns[] = "/<(we:include" . $spacer . "[^>]*[\040|\n|\t|\r]+id" . $spacer . "\=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\">\040? \\\]*)(" . $spacer . "[^>]*)>/sie";
+		$this->special_patterns[] = '/<(we:include' . $spacer . "[^>]*[ |\n|\t|\r]+id" . $spacer . "=" . $spacer . "[\"|\'|\\\\]*" . $spacer . ")([^\'\"> ? \\\]*)(" . $spacer . "[^>]*)>/sie";
 	}
 
 }
