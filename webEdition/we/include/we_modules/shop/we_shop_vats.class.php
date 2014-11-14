@@ -38,8 +38,7 @@ class we_shop_vats{
 
 	function getShopVATById($id){
 		if(!isset($GLOBALS['weShopVats']['getShopVATById'][$id])){
-			$vat = new we_shop_vat;
-			$GLOBALS['weShopVats']['getShopVATById'][$id] = $vat->initById() ? $vat : false;
+			$GLOBALS['weShopVats']['getShopVATById'][$id] = we_shop_vat::getVatById($id);
 		}
 
 		return $GLOBALS['weShopVats']['getShopVATById'][$id];
