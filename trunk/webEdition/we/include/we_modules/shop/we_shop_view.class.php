@@ -172,6 +172,10 @@ function we_cmd(){
 			//var wind = new jsWindow("' . WE_SHOP_MODULE_DIR . 'edit_shop_payment.inc.php","shoppref",-1,-1,520,720,true,false,true,false);
 			break;
 
+		case "edit_shop_categories":
+			//var wind = new jsWindow("' . WE_SHOP_MODULE_DIR . 'edit_shop_categories.php","edit_shop_categories",-1,-1,500,450,true,false,true,false);
+			break;
+
 		default:
 			for (var i = 0; i < arguments.length; i++) {
 				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
