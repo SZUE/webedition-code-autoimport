@@ -23,28 +23,25 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_vats{
-
-	// some arrays for caching results
-
 	function getAllShopVATs(){
 		if(!isset($GLOBALS['weShopVats']['getAllVats'])){
-			$GLOBALS['DB_WE']->query('SELECT * FROM ' . WE_SHOP_VAT_TABLE);
+			$GLOBALS['DB_WE']->query('SELECT id,text,vat,standard,territory,textProvince FROM ' . WE_SHOP_VAT_TABLE);
 			$GLOBALS['weShopVats']['getAllVats'] = array();
 
 			while($GLOBALS['DB_WE']->next_record()){
-				$GLOBALS['weShopVats']['getAllVats'][$GLOBALS['DB_WE']->f('id')] = new we_shop_vat($GLOBALS['DB_WE']->f('id'), $GLOBALS['DB_WE']->f('text'), $GLOBALS['DB_WE']->f('vat'), ($GLOBALS['DB_WE']->f('standard') ? 1 : 0));
+				$GLOBALS['weShopVats']['getAllVats'][$GLOBALS['DB_WE']->f('id')] = new we_shop_vat($GLOBALS['DB_WE']->f('id'), $GLOBALS['DB_WE']->f('text'), $GLOBALS['DB_WE']->f('vat'), ($GLOBALS['DB_WE']->f('standard') ? 1 : 0), $GLOBALS['DB_WE']->f('territory'), $GLOBALS['DB_WE']->f('textProvince'));
 			}
 		}
+
 		return $GLOBALS['weShopVats']['getAllVats'];
 	}
 
 	function getShopVATById($id){
-		if(!isset($GLOBALS['weShopVats']['getShopVATById']["$id"])){
-			$data = getHash('SELECT id,text,vat,standard FROM ' . WE_SHOP_VAT_TABLE . ' WHERE id=' . intval($id));
-			$GLOBALS['weShopVats']['getShopVATById'][$id] = ($data ?
-					new we_shop_vat($data['id'], $data['text'], $data['vat'], ($data['standard'] ? true : false)) :
-					false);
+		if(!isset($GLOBALS['weShopVats']['getShopVATById'][$id])){
+			$vat = new we_shop_vat;
+			$GLOBALS['weShopVats']['getShopVATById'][$id] = $vat->initById() ? $vat : false;
 		}
+
 		return $GLOBALS['weShopVats']['getShopVATById'][$id];
 	}
 
@@ -62,10 +59,10 @@ class we_shop_vats{
 
 	function getStandardShopVat(){
 		if(!isset($GLOBALS['weShopVats']['getStandardShopVat'])){
-			$data = getHash('SELECT id,text,vat FROM ' . WE_SHOP_VAT_TABLE . ' WHERE standard=1');
+			$data = getHash('SELECT id,text,vat,standard,territory,textProvince FROM ' . WE_SHOP_VAT_TABLE . ' WHERE standard=1');
 
 			$GLOBALS['weShopVats']['getStandardShopVat'] = ($data ?
-					new we_shop_vat($data['id'], $data['text'], $data['vat'], true) :
+					new we_shop_vat($data['id'], $data['text'], $data['vat'], true, $data['territory'], $data['textProvince']) :
 					false);
 		}
 
@@ -76,32 +73,16 @@ class we_shop_vats{
 
 		// 1st - change standard for every entry
 		if($weShopVat->standard == 1){
-
-			// delete all other standard values
 			$query = 'UPDATE ' . WE_SHOP_VAT_TABLE . ' SET standard = 0 WHERE 1';
 			$GLOBALS['DB_WE']->query($query);
 		}
 
-		$set = we_database_base::arraySetter(array(
-				'text' => $weShopVat->text,
-				'vat' => $weShopVat->vat,
-				standard => $weShopVat->standard
-		));
-		if($weShopVat->id == 0){ // insert a new vat
-			if($GLOBALS['DB_WE']->query('INSERT INTO ' . WE_SHOP_VAT_TABLE . ' SET ' . $set)){
-				return $GLOBALS['DB_WE']->getInsertId();
-			}
-		} else { // update existing vat
-			if($GLOBALS['DB_WE']->query('UPDATE ' . WE_SHOP_VAT_TABLE . ' SET ' . $set . '	WHERE id=' . intval($weShopVat->id))){
-				return $weShopVat->id;
-			}
-		}
-
-		return false;
+		return $weShopVat->save();
 	}
 
 	function deleteVatById($id){
-		return $GLOBALS['DB_WE']->query('DELETE FROM ' . WE_SHOP_VAT_TABLE . ' WHERE id=' . intval($id));
-	}
+		$vat = new we_shop_vat($id);
 
+		return $vat->delete();
+	}
 }

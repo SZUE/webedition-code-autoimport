@@ -296,6 +296,57 @@ abstract class we_html_tools{
 								), $ret) : $ret);
 	}
 
+	//FIXME: make fn more concise and make base all country selects on it
+	static function htmlSelectCountry($name, $id = '', $size = 1, $selected = array(), $multiple = false, array $attribs = array(), $width = 50, $cls = 'defaultfont', $oldHtmlspecialchars = true){
+		$langcode = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
+		$countrycode = array_search($langcode, getWECountries());
+
+		$countryselect = new we_html_select(array('name' => $name, 'id' => ($id ?: $name), 'size' => $size, 'width' => $width, 'style' => (isset($attribs['style']) ? $attribs['style'] : ''), 'class' => 'weSelect ' . $cls));
+
+		$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
+
+		if(!Zend_Locale::hasCache()){
+			Zend_Locale::setCache(getWEZendCache());
+		}
+		foreach($topCountries as $countrykey => &$countryvalue){
+			$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+		}
+		unset($countryvalue);
+		$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
+		foreach($shownCountries as $countrykey => &$countryvalue){
+			$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+		}
+		unset($countryvalue);
+		$oldLocale = setlocale(LC_ALL, NULL);
+		setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');
+		asort($topCountries, SORT_LOCALE_STRING);
+		asort($shownCountries, SORT_LOCALE_STRING);
+		setlocale(LC_ALL, $oldLocale);
+
+		if(WE_COUNTRIES_DEFAULT != ''){
+			$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
+		}
+		foreach($topCountries as $countrykey => &$countryvalue){
+			$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
+		}
+		unset($countryvalue);
+		if(!empty($topCountries) && !empty($shownCountries)){
+			$countryselect->addOption('-', '----', array('disabled' => 'disabled'));
+		}
+
+		foreach($shownCountries as $countrykey => &$countryvalue){
+			$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
+		}
+		unset($countryvalue);
+
+		foreach($selectedCountries as $val){
+			$countryselect->selectOption($val);
+		}
+
+		$countryselect->selectOption("FR");
+		return $countryselect->getHtml();
+	}
+
 	static function htmlInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){
 		//  This function replaced we_getChoiceField
 		//  we need input="text" and select-box
