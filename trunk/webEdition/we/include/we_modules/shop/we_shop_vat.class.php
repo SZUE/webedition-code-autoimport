@@ -78,14 +78,14 @@ class we_shop_vat{
 	}
 
 	public function initById($id){
-		$data = getHash('SELECT id,text,vat,standard, territory, textProvince FROM ' . WE_SHOP_VAT_TABLE . ' WHERE id=' . intval($id));
-		if($data){
-			$this->id = $data['id'];
-			$this->text = $data['text'];
-			$this->vat = $data['vat'];
-			$this->standard = ($data['standard'] ? true : false);
-			$this->territory = $data['territory'];
-			$this->textProvince = $data['textProvince'];
+		$hash = getHash('SELECT id,text,vat,standard, territory, textProvince FROM ' . WE_SHOP_VAT_TABLE . ' WHERE id=' . intval($id));
+		if($hash){
+			$this->id = $hash['id'];
+			$this->text = $hash['text'];
+			$this->vat = $hash['vat'];
+			$this->standard = ($hash['standard'] ? true : false);
+			$this->territory = $hash['territory'];
+			$this->textProvince = $hash['textProvince'];
 			return true;
 		}
 
@@ -119,6 +119,12 @@ class we_shop_vat{
 
 	function delete(){
 		return $GLOBALS['DB_WE']->query('DELETE FROM ' . WE_SHOP_VAT_TABLE . ' WHERE id=' . intval($this->id));
+	}
+
+	public static function getVatById($id){
+		$vat = new self();
+
+		return $vat->initById($id) ? $vat : false;
 	}
 
 	public static function getPredefinedNames($translated = true){
