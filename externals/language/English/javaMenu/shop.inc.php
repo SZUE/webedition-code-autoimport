@@ -4,6 +4,7 @@ $l_javaMenu_shop=array(
 	'add_article_to_order'=>'Add Article',
 	'country_vat'=>'Countries',
 	'delete_order'=>'Delete order',
+	'edit_categories'=>'Shop categories',
 	'edit_vats'=>'VAT rates',
 	'menu_exit'=>'Close',
 	'menu_help'=>'Help',

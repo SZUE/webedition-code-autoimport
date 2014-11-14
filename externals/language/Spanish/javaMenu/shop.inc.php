@@ -4,6 +4,7 @@ $l_javaMenu_shop=array(
 	'add_article_to_order'=>'Agregar Artículo',
 	'country_vat'=>'Países',
 	'delete_order'=>'Eliminar orden',
+	'edit_categories'=>'Shop categories',
 	'edit_vats'=>'Tasas de IVA',
 	'menu_exit'=>'Cerrar',
 	'menu_help'=>'Ayuda',
