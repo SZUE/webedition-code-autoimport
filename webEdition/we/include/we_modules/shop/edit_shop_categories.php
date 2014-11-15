@@ -142,8 +142,9 @@ $parts[] = array(
 );
 
 //how to get data for saving relations in db
-$out = '<strong>Save...</strong><br><br>';
+$out = '';
 if(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 0) === 'saveShopCatRelations'){
+	$out .= '<strong>Save...</strong><br><br>';
 	$rels = we_base_request::_(we_base_request::STRING, 'weShopCatRelations');
 	foreach($rels as $k => $v){
 		$out .= 'cat <strong>' . $k . '</strong> is to be related with vats: ';
