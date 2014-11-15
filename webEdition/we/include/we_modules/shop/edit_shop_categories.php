@@ -22,6 +22,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+//FIXME: Base editor on edit_shop_frameset and we_shop_view (maybe in 6.4.1)
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
 we_html_tools::protect($protect);
@@ -31,7 +34,6 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 $jsFunction = '
 	function we_submitForm(url){
 		var f = self.document.we_form;
-
 		f.action = url;
 		f.method = "post";
 		f.submit();
@@ -71,45 +73,54 @@ $parts = array(
 	array(
 		'headline' => '',
 		'space' => 0,
-		'html' => 'nothing much to see \'till now ;-)'
+		'html' => 'nothing much to see \'till now...'
 	),
 );
 
+//Categories/VATs-Matrix
+$DB_WE->query('SELECT id,text,vat,territory,textProvince FROM ' . WE_SHOP_VAT_TABLE);
+$allVats = array();
+$allCats = array(
+	array('id' => 254, 'text' => 'dummyCat_254'),
+	array('id' => 62, 'text' => 'dummyCat_62'),
+	array('id' => 75, 'text' => 'dummyCat_75'),
+	array('id' => 27, 'text' => 'dummyCat_27'),
+	array('id' => 163, 'text' => 'dummyCat_163')
+);
 
+while($DB_WE->next_record()){
+	if(!isset($allVats[$DB_WE->f('territory')])){
+		$allVats[$DB_WE->f('territory')] = array();
+	}
 
+	$vat = new we_shop_vat($DB_WE->f('id'), $DB_WE->f('text'), $DB_WE->f('vat'), 0, $DB_WE->f('territory'), $DB_WE->f('textProvince'));
 
-$shopCategories = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), $rows_num = 5, $cols_num = 17);
-/*
+	$allVats[$DB_WE->f('territory')]['textTerritory'] = $vat->textTerritory;
+	$allVats[$DB_WE->f('territory')]['vatObjects'][] = $vat;
+	$allVats[$DB_WE->f('territory')]['selOptions'][$vat->id] = $vat->getNaturalizedText() . ': ' . $vat->vat . '%';
+}
+
+$shopCategories = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), $rows_num = (count($allCats) + 1), $cols_num = 17);
+
 $i = 0;
-$tabStatus->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), g_l('modules_shop', '[statusmails][fieldname]'));
 
-foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
-	$tabStatus->setCol($i, $fieldkey + 1, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 120), $fieldname);
+//generate column titles
+$j = 0;
+$shopCategories->setCol($i, $j++, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), '');
+foreach($allVats as $v){
+	$shopCategories->setCol($i, $j++, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), $v['textTerritory']);
 }
-$i++;
-$tabStatus->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('modules_shop', '[statusmails][hidefield]'));
-foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
-	$tabStatus->setCol($i, $fieldkey + 1, array("class" => "defaultfont", "nowrap" => "nowrap"), we_html_forms::checkboxWithHidden($weShopStatusMails->FieldsHidden[$fieldname], 'FieldsHidden[' . $fieldname . ']', g_l('modules_shop', '[statusmails][hidefieldJa]'), false, "defaultfont"));
+
+//generate columns
+foreach($allCats as $dummyCat){
+	$j = 0;
+	$shopCategories->setCol(++$i, $j++, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), $dummyCat['text']);
+	foreach($allVats as $k => $v){
+		$sel = we_html_tools::htmlSelect('weShopCatRelations[' . $dummyCat['id'] . '][' . $k . ']', $v['selOptions']);
+		$shopCategories->setCol($i, $j++, array("class" => "defaultfont", "style" => "font-weight:normal", "nowrap" => "nowrap", "width" => 110), $sel);
+	}
 }
-$i++;
-$tabStatus->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('modules_shop', '[statusmails][hidefieldCOV]'));
-foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
-	$tabStatus->setCol($i, $fieldkey + 1, array("class" => "defaultfont", "nowrap" => "nowrap"), we_html_forms::checkboxWithHidden($weShopStatusMails->FieldsHiddenCOV[$fieldname], 'FieldsHiddenCOV[' . $fieldname . ']', g_l('modules_shop', '[statusmails][hidefieldJa]'), false, "defaultfont"));
-}
-$i++;
-$tabStatus->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('modules_shop', '[statusmails][fieldtext]'));
-foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
-	$tabStatus->setCol($i, $fieldkey + 1, array("class" => "defaultfont", "nowrap" => "nowrap"), '<input name="FieldsText[' . $fieldname . ']" size="15" type="text" value="' . $weShopStatusMails->FieldsText[$fieldname] . '" />');
-}
-$i++;
-$tabStatus->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('modules_shop', '[statusmails][EMailssenden]'));
-foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
-	$tabStatus->setCol($i, $fieldkey + 1, array("class" => "defaultfont", "nowrap" => "nowrap"), we_html_forms::radioButton(0, ($weShopStatusMails->FieldsMails[$fieldname] == 0 ? '1' : '0'), 'FieldsMails[' . $fieldname . ']', g_l('modules_shop', '[statusmails][EMailssendenNein]')) .
-		we_html_forms::radioButton(1, ($weShopStatusMails->FieldsMails[$fieldname] == 1 ? '1' : '0'), 'FieldsMails[' . $fieldname . ']', g_l('modules_shop', '[statusmails][EMailssendenHand]')) .
-		we_html_forms::radioButton(2, ($weShopStatusMails->FieldsMails[$fieldname] == 2 ? '1' : '0'), 'FieldsMails[' . $fieldname . ']', g_l('modules_shop', '[statusmails][EMailssendenAuto]')));
-}
- * 
- */
+
 $parts[] = array(
 	'headline' => 'Categories List',
 	'space' => 100,
@@ -120,20 +131,45 @@ $parts[] = array(
 $parts[] = array(
 	'headline' => '',
 	'space' => 0,
+	'html' => 'list based on new shop_vats with territory field and some dummy cats allready exists :-)',
+	'noline' => 1
+);
+
+$parts[] = array(
+	'headline' => '',
+	'space' => 0,
 	'html' => $shopCategories->getHtml()
 );
 
+//how to get data for saving relations in db
+$out = '<strong>Save...</strong><br><br>';
+if(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 0) === 'saveShopCatRelations'){
+	$rels = we_base_request::_(we_base_request::STRING, 'weShopCatRelations');
+	foreach($rels as $k => $v){
+		$out .= 'cat <strong>' . $k . '</strong> is to be related with vats: ';
+		foreach($v as $territory => $id){
+			$out .= $id . ' (' . $territory . '), ';
+		}
+		$out .= '<br/>';
+	}
+}
+$parts[] = array(
+	'headline' => '',
+	'space' => 0,
+	'html' => $out
+);
 
 
 echo we_html_element::jsElement($jsFunction) .
  '</head>
 <body class="weDialogBody" onload="window.focus();">
 	<form name="we_form" method="post" >
-	<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />' .
+	<input type="hidden" name="we_cmd[0]" value="saveShopCatRelations" />' .
  we_html_multiIconBox::getHTML(
-	'weShopStatusMails', 700, $parts, 30, we_html_button::position_yes_no_cancel(
+	'weShopCategories', 700, $parts, 30, we_html_button::position_yes_no_cancel(
 		we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
 	), -1, '', '', false, 'Define relations between shop categories and vat rates', '', '', 'scroll'
 ) . '</form>
+
 </body>
 </html>';
