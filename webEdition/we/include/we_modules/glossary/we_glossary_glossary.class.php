@@ -391,8 +391,8 @@ class we_glossary_glossary extends weModelBase{
 	 *
 	 */
 	function clearSessionVars(){
-		if(isset($_SESSION['weS']['weGlossarySession'])){
-			unset($_SESSION['weS']['weGlossarySession']);
+		if(isset($_SESSION['weS']['glossary_session'])){
+			unset($_SESSION['weS']['glossary_session']);
 		}
 	}
 

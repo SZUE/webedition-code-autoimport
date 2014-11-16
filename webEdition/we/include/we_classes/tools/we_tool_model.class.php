@@ -39,7 +39,7 @@ class we_tool_model extends weModelBase{
 	}
 
 	function saveInSession(){
-		$_SESSION['weS'][$this->toolName . '_session'] = serialize($this);
+		$_SESSION['weS'][$this->toolName . '_session'] = $this;
 	}
 
 	function clearSessionVars(){

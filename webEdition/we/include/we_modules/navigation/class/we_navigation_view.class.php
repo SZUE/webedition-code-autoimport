@@ -1042,12 +1042,12 @@ function submitForm() {
 			default:
 		}
 
-		$_SESSION['weS']['navigation_session'] = serialize($this->Model);
+		$_SESSION['weS']['navigation_session'] = $this->Model;
 	}
 
 	function processVariables(){
 		if(isset($_SESSION['weS']['navigation_session'])){
-			$this->Model = unserialize($_SESSION['weS']['navigation_session']);
+			$this->Model = $_SESSION['weS']['navigation_session'];
 		}
 
 		if(defined('CUSTOMER_TABLE')){

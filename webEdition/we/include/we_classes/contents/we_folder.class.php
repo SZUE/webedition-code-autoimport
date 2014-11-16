@@ -25,7 +25,6 @@
 /* a class for handling directories */
 class we_folder extends we_root{
 	/* Flag which is set, when the file is a folder  */
-
 	var $IsFolder = 1;
 	var $IsClassFolder = 0;
 	var $WorkspacePath = '';
@@ -286,7 +285,7 @@ class we_folder extends we_root{
 				$documentTable = ($DB_WE->escape($this->Table) == FILE_TABLE) ? 'tblFile' : 'tblObjectFile';
 				$existLangLinks = false;
 				$deleteLangLinks = false;
-				if($DB_WE2->query('SELECT LDID, Locale FROM ' . LANGLINK_TABLE . ' WHERE DID = ' . intval($DB_WE->Record['ID']) . ' AND DocumentTable = "' . $DB_WE2->escape($documentTable) . '"')){
+				if($DB_WE2->query('SELECT LDID,Locale FROM ' . LANGLINK_TABLE . ' WHERE DID=' . intval($DB_WE->Record['ID']) . ' AND DocumentTable="' . $DB_WE2->escape($documentTable) . '"')){
 					$ldidArray = array();
 					while($DB_WE2->next_record()){
 						$existLangLinks = true;
@@ -297,14 +296,14 @@ class we_folder extends we_root{
 					}
 					if($existLangLinks){
 						if($deleteLangLinks){
-							$didCondition = 'DID = ' . intval($DB_WE->Record['ID']);
+							$didCondition = 'DID=' . intval($DB_WE->Record['ID']);
 							foreach($ldidArray as $ldid){
-								$didCondition .= ' OR DID = ' . intval($ldid);
+								$didCondition .= ' OR DID=' . intval($ldid);
 							}
-							$DB_WE3->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE (' . $didCondition . ')  AND DocumentTable = "' . $DB_WE3->escape($documentTable) . '"');
+							$DB_WE3->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE (' . $didCondition . ')  AND DocumentTable="' . $DB_WE3->escape($documentTable) . '"');
 						} else {
-							$DB_WE3->query('UPDATE ' . LANGLINK_TABLE . ' SET DLOCALE = "' . $DB_WE3->escape($language) . '" WHERE DID = ' . intval($DB_WE->Record['ID']));
-							$DB_WE3->query('UPDATE ' . LANGLINK_TABLE . ' SET LOCALE = "' . $DB_WE3->escape($language) . '" WHERE LDID = ' . intval($DB_WE->Record['ID']));
+							$DB_WE3->query('UPDATE ' . LANGLINK_TABLE . ' SET DLOCALE="' . $DB_WE3->escape($language) . '" WHERE DID=' . intval($DB_WE->Record['ID']));
+							$DB_WE3->query('UPDATE ' . LANGLINK_TABLE . ' SET LOCALE="' . $DB_WE3->escape($language) . '" WHERE LDID=' . intval($DB_WE->Record['ID']));
 						}
 					}
 				}
@@ -372,19 +371,14 @@ class we_folder extends we_root{
 		}
 		// Change Language of unpublished documents
 
-		if(!$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","objectFile")')){
-			return false;
-		}
+		$DB_WE->query('SELECT a.ID,b.DocumentObject FROM ' . $DB_WE->escape($this->Table) . ' a JOIN ' . TEMPORARY_DOC_TABLE . ' b ON a.ID=b.DocumentID WHERE a.Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND a.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","objectFile") AND b.DocTable="' . stripTblPrefix($this->Table) . '" AND b.Active=1');
 		while($DB_WE->next_record()){
-			$DocumentObject = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable="' . stripTblPrefix($this->Table) . '" AND Active=1', '', $DB_WE2);
-			if($DocumentObject != ''){
-				$DocumentObject = unserialize($DocumentObject);
-				$DocumentObject[0]['TriggerID'] = $this->TriggerID;
-				$DocumentObject = str_replace("'", "\'", serialize($DocumentObject));
+			$DocumentObject = unserialize($DB_WE->f('DocumentObject'));
+			$DocumentObject[0]['TriggerID'] = $this->TriggerID;
+			$DocumentObject = str_replace("'", "\'", serialize($DocumentObject));
 
-				if(!$DB_WE2->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $DB_WE->escape($DocumentObject) . '" WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable = "' . stripTblPrefix($this->Table) . '" AND Active = 1')){
-					return false;
-				}
+			if(!$DB_WE2->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $DB_WE->escape($DocumentObject) . '" WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable="' . stripTblPrefix($this->Table) . '" AND Active=1')){
+				return false;
 			}
 		}
 
@@ -392,9 +386,9 @@ class we_folder extends we_root{
 		if($this->Table == OBJECT_FILES_TABLE){
 			// Klasse feststellen
 			list(, $ClassPath) = explode('/', $this->Path);
-			$cid = $pid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path = "/' . $DB_WE->escape($ClassPath) . '"', 'ID', $DB_WE);
+			$cid = $pid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="/' . $DB_WE->escape($ClassPath) . '"', '', $DB_WE);
 
-			if(!$DB_WE->query('UPDATE ' . $DB_WE->escape(OBJECT_X_TABLE . $cid) . ' SET OF_TriggerID = ' . intval($this->TriggerID) . ' WHERE OF_Path LIKE "' . $DB_WE->escape($this->Path) . '/%" ')){
+			if(!$DB_WE->query('UPDATE ' . $DB_WE->escape(OBJECT_X_TABLE . $cid) . ' SET OF_TriggerID=' . intval($this->TriggerID) . ' WHERE OF_Path LIKE "' . $DB_WE->escape($this->Path) . '/%" ')){
 				return false;
 			}
 		}
@@ -407,7 +401,7 @@ class we_folder extends we_root{
 	}
 
 	function i_filenameDouble(){
-		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE Path="' . $this->DB_WE->escape($this->Path) . '" AND ID != ' . intval($this->ID), '', $this->DB_WE);
+		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE Path="' . $this->DB_WE->escape($this->Path) . '" AND ID!=' . intval($this->ID), '', $this->DB_WE);
 	}
 
 	function i_filenameEmpty(){
@@ -453,24 +447,24 @@ class we_folder extends we_root{
 			$userCanChange = false;
 		}
 		return (!$userCanChange ? '<table border="0" cellpadding="0" cellspacing="0"><tr><td><span class="defaultfont">' . $this->Path . '</span></td></tr>' :
-						'<table border="0" cellpadding="0" cellspacing="0">
+				'<table border="0" cellpadding="0" cellspacing="0">
 	<tr><td class="defaultfont">' . $this->formInputField('', ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? 'Filename' : 'Text', g_l('weClass', '[filename]'), 50, 388, 255, 'onchange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();') . '</td><td></td><td></td></tr>
 	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 	<tr><td colspan="3" class="defaultfont">' . $this->formDirChooser(388) . '</td></tr>' .
-						(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE ?
-								'	<tr><td>' . we_html_tools::getPixel(20, 4) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
+				(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE ?
+					'	<tr><td>' . we_html_tools::getPixel(20, 4) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 		<tr><td>' . we_html_tools::getPixel(20, 4) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 		<tr><td colspan="3" class="defaultfont">' . $this->formTriggerDocument() . '</td></tr>
 			<tr><td colspan="3">
 		<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_tid_expl]') . ($this->ID ? '' : g_l('weClass', '[availableAfterSave]')), we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
-								we_html_button::create_button('ok', 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', "[saveFirstMessage]"), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
+					we_html_button::create_button('ok', 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', "[saveFirstMessage]"), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(409, 2) . '</td><td></td></tr></table></td></tr>' :
-								'') .
-						($this->Table == FILE_TABLE && $this->ID && permissionhandler::hasPerm('ADMINISTRATOR') ? '
+					'') .
+				($this->Table == FILE_TABLE && $this->ID && permissionhandler::hasPerm('ADMINISTRATOR') ? '
 	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 	<tr><td class="defaultfont">' . $this->formInputField('', 'urlMap', g_l('weClass', '[urlMap]'), 50, 388, 255, 'onchange=_EditorFrame.setEditorIsHot(true); ') . '</td><td></td><td></td></tr>
 ' : '')) .
-				'</table>';
+			'</table>';
 	}
 
 	function formLanguage(){
@@ -495,7 +489,7 @@ class we_folder extends we_root{
 			}
 
 			return
-					'<table border="0" cellpadding="0" cellspacing="0">
+				'<table border="0" cellpadding="0" cellspacing="0">
 				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
 				<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
@@ -513,7 +507,7 @@ class we_folder extends we_root{
 		$_disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
 		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('modules_users', "[grant_owners_expl]") . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
-				we_html_button::create_button('ok', 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('users_changeR','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
+			we_html_button::create_button('ok', 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('users_changeR','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(409, 2) . '</td><td></td></tr></table>';
 	}
 
@@ -521,7 +515,7 @@ class we_folder extends we_root{
 		$_disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
 		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', "[grant_language_expl]") . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
-				we_html_button::create_button("ok", "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('weClass', "[saveFirstMessage]"), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeLanguageRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
+			we_html_button::create_button("ok", "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('weClass', "[saveFirstMessage]"), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeLanguageRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(409, 2) . '</td><td></td></tr></table>';
 	}
 
@@ -534,12 +528,12 @@ class we_folder extends we_root{
 		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("var parents = '" . $ParentsCSV . "';if(parents.indexOf(',' WE_PLUS currentID WE_PLUS ',') > -1){" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folder_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd('copyFolder', currentID," . $this->ID . ",1,'" . $this->Table . "');}");
 		$but = we_html_button::create_button("select", ($this->ID ?
-								"javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . $this->Table . "', '" . $wecmdenc1 . "', '', '" . $wecmdenc3 . "')" :
-								"javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR))
-						, true, 100, 22, "", "", !empty($_disabledNote));
+					"javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . $this->Table . "', '" . $wecmdenc1 . "', '', '" . $wecmdenc3 . "')" :
+					"javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR))
+				, true, 100, 22, "", "", !empty($_disabledNote));
 
 		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', "[copy_owners_expl]") . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
-				$this->htmlHidden($idname, $this->CopyID) . $but . '</td></tr>
+			$this->htmlHidden($idname, $this->CopyID) . $but . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(409, 2) . '</td><td></td></tr></table>';
 	}
 
@@ -548,14 +542,14 @@ class we_folder extends we_root{
 	function writeFolder($pub = 0){
 		if($this->Path == $this->OldPath || !$this->OldPath){
 			return $this->saveToServer();
-		} else {
-			if(!$this->moveAtServer()){
-				return false;
-			}
-			$this->modifyIndexPath();
-			$this->modifyLinks();
-			$this->modifyChildrenPath();
 		}
+		if(!$this->moveAtServer()){
+			return false;
+		}
+		$this->modifyIndexPath();
+		$this->modifyLinks();
+		$this->modifyChildrenPath();
+
 		$this->OldPath = $this->Path;
 		return true;
 	}

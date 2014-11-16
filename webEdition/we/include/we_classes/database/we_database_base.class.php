@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.in
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 
 abstract class we_database_base{
-
 	private static $pool = array(); //fixme: don't repool temporary tables - they require the same connection
 	protected static $conCount = 0;
 	protected static $linkCount = 0;
@@ -394,7 +392,7 @@ abstract class we_database_base{
 			$this->Insert_ID = $this->_getInsertId();
 			$this->Affected_Rows = $this->_affected_rows();
 // delete getHash DB Cache
-			getHash();
+			$this->getHash();
 			$repool = true;
 		} elseif(preg_match('/CREATE TEMPORARY/i', $Query_String)){
 			//we have to keep this DB connection with that temp table, since tables are connection dependend
@@ -738,8 +736,8 @@ abstract class we_database_base{
 			$query = array();
 			foreach($table as $key => $value){
 				$query[] = (is_numeric($key) ?
-								$value . ' ' . $mode :
-								$key . ' ' . $value);
+						$value . ' ' . $mode :
+						$key . ' ' . $value);
 			}
 			$query = implode(',', $query);
 		} else {
@@ -785,30 +783,27 @@ abstract class we_database_base{
 	protected function halt($msg){
 		$this->Error = $this->error();
 		$this->Errno = $this->errno();
-		/* this doesn't work, since LiveUpdate tries to create tables
-		  $this->haltmsg($msg);
-		  die("Session halted.");
-		 *
-		 */
 	}
 
 	/**
-	 * print a message with the query error
-	 * @param string $msg message to be printed
+	 * Check if a colum exists in the specified table
+	 * @param type $tab table to check
+	 * @param type $col colum to check
+	 * @return boolean true if exists
 	 */
-	protected function haltmsg($msg){
-		printf("</td></tr></table><b>Database error:</b> %s<br/>\n", $msg);
-		printf("<b>MySQL Error</b>: %s (%s)<br/>\n", $this->Errno, $this->Error);
-	}
-
 	public function isColExist($tab, $col){
 		if(!$tab || !$col){
 			return false;
 		}
 		$col = trim($col, '`');
-		return (bool) count(getHash('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"', $this));
+		return (bool) count($this->getHash('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"'));
 	}
 
+	/**
+	 * check if a particular table exists
+	 * @param type $tab table name
+	 * @return boolean true if exists
+	 */
 	public function isTabExist($tab){
 		if(!$tab){
 			return false;
@@ -817,7 +812,14 @@ abstract class we_database_base{
 		return ($this->next_record());
 	}
 
-	public function addTable($tab, $cols, $keys = array()){
+	/**
+	 * @deprecated since version 6.3.0
+	 * @param type $tab
+	 * @param type $cols
+	 * @param array $keys
+	 * @return type
+	 */
+	public function addTable($tab, $cols, array $keys = array()){
 		if(!is_array($cols) || empty($cols)){
 			return;
 		}
@@ -825,7 +827,7 @@ abstract class we_database_base{
 		foreach($cols as $name => $type){
 			$cols_sql[] = "`" . $name . "` " . $type;
 		}
-		if(!empty($keys)){
+		if($keys){
 			foreach($keys as $key){
 				$cols_sql[] = $key;
 			}
@@ -834,6 +836,10 @@ abstract class we_database_base{
 		return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE = MYISAM ' . we_database_base::getCharsetCollation() . ';');
 	}
 
+	/**
+	 * delete an table, checks if it exists.
+	 * @param type $tab
+	 */
 	public function delTable($tab){
 		$this->query('DROP TABLE IF EXISTS ' . $this->escape($tab));
 	}
@@ -859,6 +865,12 @@ abstract class we_database_base{
 		return f('SHOW COLUMNS FROM ' . $this->escape($tab) . ' LIKE "' . $col . '"', 'Type', $this);
 	}
 
+	/**
+	 * delete a column from a table
+	 * @param type $tab
+	 * @param type $col
+	 * @return type
+	 */
 	public function delCol($tab, $col){
 		if(!$this->isColExist($tab, $col)){
 			return;
@@ -869,8 +881,8 @@ abstract class we_database_base{
 	function getTableCreateArray($tab){
 		$this->query('SHOW CREATE TABLE ' . $this->escape($tab));
 		return ($this->next_record()) ?
-				explode("\n", $this->f("Create Table")) :
-				false;
+			explode("\n", $this->f("Create Table")) :
+			false;
 	}
 
 	public function getTableKeyArray($tab){
@@ -1094,6 +1106,31 @@ abstract class we_database_base{
 	 */
 	public function getMaxAllowedPacket(){
 		return f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', $this);
+	}
+
+	/**
+	 * get a line from db & give this line as an array
+	 * @param type $query
+	 * @param type $resultType
+	 * @return array
+	 */
+	public function getHash($query = '', $resultType = MYSQL_ASSOC){
+		static $cache = array();
+		if(!$query){
+			$cache = array();
+			return $cache;
+		}
+		$hash = md5($query, true);
+		if($resultType == MYSQL_NUM || !isset($cache[$hash])){
+			$this->query($query);
+			$data = ($this->next_record($resultType) ? $this->Record : array());
+			if($resultType != MYSQL_NUM && $data){
+				$cache[$hash] = $data;
+			}
+			$this->free();
+			return $data;
+		}
+		return $cache[$hash];
 	}
 
 }

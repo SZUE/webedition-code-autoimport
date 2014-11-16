@@ -569,13 +569,12 @@ function submitForm() {
 				break;
 		}
 
-		$_SESSION['weS']['weGlossarySession'] = serialize($this->Glossary);
+		$_SESSION['weS']['glossary_session'] = $this->Glossary;
 	}
 
 	function processVariables(){
-
-		if(isset($_SESSION['weS']['weGlossarySession'])){
-			$this->Glossary = unserialize($_SESSION['weS']['weGlossarySession']);
+		if(isset($_SESSION['weS']['glossary_session'])){
+			$this->Glossary = $_SESSION['weS']['glossary_session'];
 		}
 		$isPublished = we_base_request::_(we_base_request::BOOL, 'Published');
 		if(is_array($this->Glossary->persistent_slots)){

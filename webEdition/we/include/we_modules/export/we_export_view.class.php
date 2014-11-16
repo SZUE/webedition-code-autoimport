@@ -514,16 +514,16 @@ function we_cmd(){
 			default:
 		}
 
-		$_SESSION['weS']['ExportSession'] = $this->export;
+		$_SESSION['weS']['export_session'] = $this->export;
 	}
 
 	function processVariables(){//FIXME use table datatypes
-		if(isset($_SESSION['weS']['ExportSession'])){
-			$this->export = $_SESSION['weS']['ExportSession'];
+		if(isset($_SESSION['weS']['export_session'])){
+			$this->export = $_SESSION['weS']['export_session'];
 		}
 
-		if(isset($_SESSION['weS']['exportVars'])){
-			unset($_SESSION['weS']['exportVars']);
+		if(isset($_SESSION['weS']['exportVars_session'])){
+			unset($_SESSION['weS']['exportVars_session']);
 		}
 
 		if(is_array($this->export->persistent_slots)){

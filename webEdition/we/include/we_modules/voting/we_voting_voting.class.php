@@ -178,7 +178,6 @@ class we_voting_voting extends weModelBase{
 		/* $_old_QASet = f('SELECT QASet FROM ' . VOTING_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($this->Text) . "'");
 		  $_new_QASet = $this->QASet;
 		 */
-		$this->QASet = serialize($this->QASet);
 		if($with_scores || $this->ID == 0){
 			$this->Scores = serialize($this->Scores);
 		} elseif(we_base_request::_(we_base_request::BOOL, 'updateScores')){
@@ -195,7 +194,6 @@ class we_voting_voting extends weModelBase{
 		}
 
 
-		$this->QASetAdditions = serialize($this->QASetAdditions);
 
 		$logdata = $this->LogData;
 		unset($this->LogData);
@@ -209,10 +207,8 @@ class we_voting_voting extends weModelBase{
 
 		parent::save();
 
-		$this->QASet = unserialize($this->QASet);
 		$this->Scores = ($with_scores || $oldid == 0 ? unserialize($this->Scores) : $temp);
 
-		$this->QASetAdditions = unserialize($this->QASetAdditions);
 		$this->Owners = makeArrayFromCSV($this->Owners);
 		$this->BlackList = makeArrayFromCSV($this->BlackList);
 		$this->LogData = $logdata;

@@ -1763,7 +1763,7 @@ attribs["tooltip"]="";' .
 				$this->raw->delete();
 				$this->raw = new weShop();
 
-				print we_html_element::jsElement(
+				echo we_html_element::jsElement(
 								$js .
 								we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
