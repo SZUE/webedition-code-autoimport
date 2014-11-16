@@ -143,19 +143,22 @@ abstract class we_import_functions{
 			// IF NAME OF OBJECT EXISTS, WE HAVE TO CREATE A NEW NAME
 			if(($file_id = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($object->Path) . "'"))){
 				$name_exists = true;
-				if($conflict === 'replace'){
-					$object->initByID($file_id, OBJECT_FILES_TABLE);
-				} else if($conflict === 'rename'){
-					$z = 0;
-					$footext = $object->Text . '_' . $z;
-					while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($object->ParentID))){
-						$z++;
+				switch($conflict){
+					case 'replace':
+						$object->initByID($file_id, OBJECT_FILES_TABLE);
+						break;
+					case 'rename':
+						$z = 0;
 						$footext = $object->Text . '_' . $z;
-					}
-					$object->Text = $footext;
-					$object->Path = $object->getParentPath() . (($object->getParentPath() != '/') ? '/' : '') . $object->Text;
-				} else {
-					return true;
+						while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($object->ParentID))){
+							$z++;
+							$footext = $object->Text . '_' . $z;
+						}
+						$object->Text = $footext;
+						$object->Path = $object->getParentPath() . (($object->getParentPath() != '/') ? '/' : '') . $object->Text;
+						break;
+					default:
+						return true;
 				}
 			}
 		}
