@@ -6,4 +6,4 @@ CREATE TABLE ###TBLPREFIX###tblPasswordReset (
 	password varchar(255) NOT NULL default '',
 	loginPage int(11) unsigned NOT NULL,
   PRIMARY KEY (ID,UserTable)
-)
+) ENGINE=MyISAM;
