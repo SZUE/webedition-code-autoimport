@@ -366,18 +366,18 @@ self.focus();';
 		if(we_base_request::_(we_base_request::BOOL, 'home')){//FIXME: find one working condition
 			echo we_html_element::htmlBody(array('style' => 'background-color:#F0EFF0;'), '');
 		} else {
-			$user_object = new we_users_user();
-			$user_object->setState($_SESSION["user_session_data"]);
+			$user_object = $_SESSION["user_session_data"];
 			echo we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'style' => 'background:white url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif); margin-top: 0; margin-left: 0;'), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));
 		}
 	}
 
 	protected function getHTMLEditorBody(){
 		$yuiSuggest = & weSuggest::getInstance();
-		$user_object = new we_users_user();
-		if(isset($_SESSION["user_session_data"])){
-			$user_object->setState($_SESSION["user_session_data"]);
-		}
+
+		$user_object = (isset($_SESSION["user_session_data"]) ?
+				$_SESSION["user_session_data"] :
+				new we_users_user());
+
 		echo $this->View->getJSProperty();
 		$tab = we_base_request::_(we_base_request::INT, 'tab', 0);
 		$permBranch = oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "perm_branch", 0));
@@ -396,7 +396,7 @@ self.focus();';
 			if(($oldTab = we_base_request::_(we_base_request::INT, 'oldtab')) !== false && ($oldBranch = we_base_request::_(we_base_request::STRING, 'old_perm_branch')) !== false){
 
 				$user_object->preserveState($oldTab, $oldBranch);
-				$_SESSION["user_session_data"] = $user_object->getState();
+				$_SESSION["user_session_data"] = $user_object;
 			}
 			if(($start = we_base_request::_(we_base_request::INT, 'seem_start_file')) !== false){
 				$_SESSION["save_user_seem_start_file"][we_base_request::_(we_base_request::INT, "uid")] = $start;
@@ -407,18 +407,17 @@ self.focus();';
 		$_content .= $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs();
 
 		$_form = we_html_element::htmlForm(array(
-			'name' => 'we_form',
-			'method' => 'post',
-			'autocomplete' => 'off',
-			'onsubmit' => 'return false'
-		), $_content);
+				'name' => 'we_form',
+				'method' => 'post',
+				'autocomplete' => 'off',
+				'onsubmit' => 'return false'
+				), $_content);
 		echo we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $_form);
 	}
 
 	protected function getHTMLEditorFooter(){
 		if(isset($_SESSION["user_session_data"])){
-			$user_object = new we_users_user();
-			$user_object->setState($_SESSION["user_session_data"]);
+			$user_object = $_SESSION["user_session_data"];
 		}
 
 		return parent::getHTMLEditorFooter('save_user');
