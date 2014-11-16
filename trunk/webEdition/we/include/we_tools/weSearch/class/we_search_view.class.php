@@ -2958,7 +2958,7 @@ function submitForm() {
 
 	function processVariables(){
 		if(isset($_SESSION['weS'][$this->toolName . '_session'])){
-			$this->Model = unserialize($_SESSION['weS'][$this->toolName . '_session']);
+			$this->Model = $_SESSION['weS'][$this->toolName . '_session'];
 		}
 
 		if(is_array($this->Model->persistent_slots)){
