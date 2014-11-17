@@ -834,6 +834,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 		$buttons = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ?
 				array($delallbut, $addbut) :
 				array($delallbut);
+
 		$cats = new we_chooser_multiFile(self::def_width, $this->View->newsletter->groups[$group]->Extern, "del_file", we_html_button::create_button_table($buttons), "edit_file");
 
 		$cats->extraDelFn = 'document.we_form.ngroup.value=' . $group;

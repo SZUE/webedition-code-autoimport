@@ -47,7 +47,7 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 
 
 		$this->nr = 0;
-		$idArr = (is_array($this->ids) ? $this->ids : explode(',', trim($this->ids, ',')));
+		$idArr = (is_array($this->ids) ? $this->ids : array_filter(explode(',', trim($this->ids, ','))));
 		$c = 1;
 		if($idArr){
 			foreach($idArr as $id){
