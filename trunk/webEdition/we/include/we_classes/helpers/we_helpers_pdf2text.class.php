@@ -556,8 +556,8 @@ class we_helpers_pdf2text{
 		if(!empty($this->encodings)){
 			return;
 		}
-		require('we_helpers_pdfmapping.inc.php');
-		require('we_helpers_pdfencodings.inc.php');
+		$nameToUnicodeTab = require('we_helpers_pdfmapping.inc.php');
+		$encodings = require('we_helpers_pdfencodings.inc.php');
 		foreach($nameToUnicodeTab as &$cur){
 			$cur = self::unichr($cur);
 		}
