@@ -223,7 +223,6 @@ function we_cmd() {
 	}
 
 	function getJSProperty(){
-		$table = we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE);
 		$selected = '';
 		$opened = '';
 		$arr = array(FILE_TABLE => "selDocs", TEMPLATES_TABLE => "selTempl");
@@ -243,11 +242,10 @@ function we_cmd() {
 			}
 		}
 
-
 		return parent::getJSProperty() .
 				we_html_element::jsElement('
 var loaded=0;
-var table = "' . $table . '";
+var table = "' . we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE) . '";
 
 function doUnload() {
 	if (!!jsWindow_count) {
