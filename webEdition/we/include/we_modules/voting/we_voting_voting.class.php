@@ -123,7 +123,7 @@ class we_voting_voting extends weModelBase{
 		}
 	}
 
-	function load($id = 0){
+	function load($id = 0, $isAdvanced = false){
 		if(parent::load($id)){
 			$this->QASet = unserialize($this->QASet);
 			$this->QASetAdditions = unserialize($this->QASetAdditions);

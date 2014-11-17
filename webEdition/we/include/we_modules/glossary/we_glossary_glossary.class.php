@@ -236,7 +236,7 @@ class we_glossary_glossary extends weModelBase{
 	 *
 	 * @param integer $id
 	 */
-	function load($id = 0){
+	function load($id = 0, $isAdvanced = false){
 		parent::load(strval($id));
 
 		// serialize all needed attributes

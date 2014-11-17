@@ -144,7 +144,7 @@ class we_search_model extends we_tool_model{
 		}
 	}
 
-	function load($id = 0){
+	function load($id = 0, $isAdvanced = false){
 		parent::load($id);
 		$array = get_object_vars($this);
 		foreach($array as $key => &$cur){

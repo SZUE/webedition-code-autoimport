@@ -64,7 +64,7 @@ function getTabs($classname, $predefined = 0){
 $we_Table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 $we_ID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 $we_ContentType = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
-$we_ContentType = $we_ContentType ?  : ($we_ID ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . $we_ID) : '');
+$we_ContentType = $we_ContentType ? : ($we_ID ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . $we_ID) : '');
 
 if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
@@ -203,8 +203,7 @@ if($we_doc->EditPageNr === -1){ //	there is no view available for this document
 	exit;
 }
 
-
-if(!isset($we_doc->IsClassFolder)){
+if(!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder){
 	//update already offline users
 
 	$_userID = $we_doc->isLockedByUser(); //	Check if file is locked.
@@ -243,7 +242,7 @@ if(!$we_doc->getElement('data')){
 			we_base_ContentTypes::inst()->getDefaultCode($we_doc->ContentType))
 	);
 }
-echo we_html_tools::getHtmlTop('','','frameset');
+echo we_html_tools::getHtmlTop('', '', 'frameset');
 ?>
 <script  type="text/javascript">
 	<!--
@@ -418,8 +417,8 @@ switch($_SESSION['weS']['we_mode']){
 			<frame <?php echo setOnload(); ?> src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>&we_complete_request=1" name="editor_<?php echo $fid; ?>" noresize/>
 			<frame  src="about:blank" name="contenteditor_<?php echo $fid; ?>" noresize/>
 			<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer"); ?>&SEEM_edit_include=<?php
-		echo (we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') ? "true" : "false");
-		?>" name="editFooter" scrolling=no noresize/>
+			echo (we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') ? "true" : "false");
+			?>" name="editFooter" scrolling=no noresize/>
 		</frameset><noframes></noframes>
 		<?php
 		break;
