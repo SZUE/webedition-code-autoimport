@@ -119,7 +119,7 @@ class we_navigation_navigation extends weModelBase{
 			'Path' => we_base_request::STRING,
 			'Published' => we_base_request::BOOL,
 			'Text' => we_base_request::STRING,
-			'Display' => we_base_request::STRING,
+			'Display' => we_base_request::RAW_CHECKED,//note: it is desired to have test<sup>a</sup>
 			'ContentType' => we_base_request::STRING,
 			'Icon' => we_base_request::STRING,
 			'IsFolder' => we_base_request::BOOL,
