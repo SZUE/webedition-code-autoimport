@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -24,7 +23,7 @@
  *
  * Taken from poppler sources
  */
-$encodings = array(
+return array(
 	'macRomanEncoding' => array(
 		NULL,
 		NULL,
@@ -1315,4 +1314,3 @@ $encodings = array(
 		'Thornsmall',
 		'Ydieresissmall'
 	));
-
