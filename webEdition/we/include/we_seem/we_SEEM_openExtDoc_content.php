@@ -28,7 +28,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //	and parses all found links to webEdition cmds
 
 we_html_tools::protect();
-$path = we_base_request::_(we_base_request::FILE, "filepath");
+$path = we_base_request::_(we_base_request::URL, "filepath");
 if(($content = we_base_file::load($path . '?' . urldecode(we_base_request::_(we_base_request::RAW, "paras", '')))) !== false){
 	echo we_SEEM::parseDocument($content);
 } else {

@@ -452,7 +452,7 @@ function checkFooter(){
 					$GLOBALS['we_doc']->we_unpublish());
 
 			if(!$pub){
-				t_e('Error while scheduled publish/unpublish of document', $GLOBALS['we_doc']->errMsg, $GLOBALS['we_doc']);
+				t_e('Error while scheduled publish/unpublish of document', $GLOBALS['we_doc']->getErrMsg(), $GLOBALS['we_doc']);
 			}
 		}
 
