@@ -67,6 +67,19 @@
 			url = "<?php print WE_SHOP_MODULE_DIR ?>edit_shop_vat_country.php";
 			new jsWindow(url, "edit_shop_vat_country", -1, -1, 700, 780, true, true, true, false);
 			break;
+		case "edit_shop_categories":
+			var fo = false;
+			if (jsWindow_count) {
+				for (var k = jsWindow_count - 1; k > -1; k--) {
+					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + arguments[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
+					if (fo)
+						break;
+				}
+				wind.focus();
+			}
+			url = "<?php print WE_SHOP_MODULE_DIR ?>edit_shop_categories.php";
+			new jsWindow(url, "edit_shop_categories", -1, -1, 650, 650, true, false, true, false);
+			break;
 		case "edit_shop_vats":
 			var fo = false;
 			if (jsWindow_count) {
@@ -78,7 +91,7 @@
 				wind.focus();
 			}
 			url = "<?php print WE_SHOP_MODULE_DIR ?>edit_shop_vats.php";
-			new jsWindow(url, "edit_shop_vats", -1, -1, 500, 450, true, false, true, false);
+			new jsWindow(url, "edit_shop_vats", -1, -1, 650, 650, true, false, true, false);
 			break;
 		case "edit_shop_shipping":
 			var fo = false;

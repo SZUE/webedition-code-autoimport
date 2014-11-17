@@ -29,13 +29,13 @@ function we_isNotEmpty($attribs){
 	$doc = we_getDocForTag($docAttr, false);
 
 	switch($type){
-		case 'object' :
+		case 'object':
 			return (bool) $doc->getElement($match);
 		case 'binary' :
-		case 'img' :
+		case 'img':
 		case 'flashmovie' :
 			return (bool) $doc->getElement($match, 'bdid');
-		case 'href' :
+		case 'href':
 			if($doc instanceof we_objectFile){
 				$hreftmp = $doc->getElement($match);
 				$hreftmp = $hreftmp ? : '';
@@ -58,7 +58,7 @@ function we_isNotEmpty($attribs){
 				return (bool) (file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp));
 			}
 
-		default :
+		default:
 			//   #3938 added this - some php version crashed, when unserialize started with a ?,?,?
 			if((substr($doc->getElement($match), 0, 2) === 'a:')){ //  only unserialize, when $match cluld be an array
 				// Added @-operator in front of the unserialze function because there

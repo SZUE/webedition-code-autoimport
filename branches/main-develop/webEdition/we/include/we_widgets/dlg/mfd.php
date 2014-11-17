@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -26,7 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 we_html_tools::protect();
 
-list($sType, $iDate, $iAmountEntries, $sDisplayOpt, $sUsers) = explode(";", we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
+list($sType, $iDate, $iAmountEntries, $sDisplayOpt, $sUsers) = explode(';', we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 1));
 
 $jsCode = "
 var _oCsv_;
@@ -163,7 +162,7 @@ $textname = 'UserNameTmp';
 $idname = 'UserIDTmp';
 $users = makeArrayFromCSV($sUsers);
 
-$cmd0=we_base_request::_(we_base_request::STRING,'we_cmd','',0);
+$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $wecmdenc2 = we_base_request::encCmd("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].document.forms[0].elements['UserNameTmp'].value");
 $wecmdenc5 = we_base_request::encCmd("opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].addUserToField();");
 
@@ -255,10 +254,26 @@ $oSelMaxEntries->setCol(0, 2, array("valign" => "middle"), $oSctNumEntries->getH
 $show = $oSelMaxEntries->getHTML() . we_html_tools::getPixel(1, 5) . $oChbxShowMfdBy . $oChbxShowDate . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oShowUser;
 
 $parts = array(
-	array("headline" => g_l('cockpit', '[type]'), "html" => $oDbTableType->getHTML(), "space" => 80),
-	array("headline" => g_l('cockpit', '[date]'), "html" => $oSctDate->getHTML(), "space" => 80),
-	array("headline" => g_l('cockpit', '[display]'), "html" => $show, "space" => 80),
-	array("headline" => "", "html" => $oSelCls->getHTML(), "space" => 0)
+	array(
+		"headline" => g_l('cockpit', '[type]'),
+		"html" => $oDbTableType->getHTML(),
+		"space" => 80
+	),
+	array(
+		"headline" => g_l('cockpit', '[date]'),
+		"html" => $oSctDate->getHTML(),
+		"space" => 80
+	),
+	array(
+		"headline" => g_l('cockpit', '[display]'),
+		"html" => $show,
+		"space" => 80
+	),
+	array(
+		"headline" => "",
+		"html" => $oSelCls->getHTML(),
+		"space" => 0
+	)
 );
 
 $save_button = we_html_button::create_button("save", "javascript:save();", false, 0, 0);
@@ -266,15 +281,15 @@ $preview_button = we_html_button::create_button("preview", "javascript:preview()
 $cancel_button = we_html_button::create_button("close", "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-$sTblWidget = we_html_multiIconBox::getHTML("mfdProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[last_modified]'), "", 390);
+$sTblWidget = we_html_multiIconBox::getHTML('mfdProps', '100%', $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[last_modified]'), "", 390);
 
 echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[last_modified]')) . STYLESHEET . we_html_element::cssElement(
-				"select{border:#AAAAAA solid 1px}") . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-			we_html_element::jsElement(
-				$jsPrefs . $jsCode . we_html_button::create_state_changer(false))) .
-		we_html_element::htmlBody(
-			array(
-			"class" => "weDialogBody", "onload" => "init();"
-			), we_html_element::htmlForm("", $sTblWidget)));
+	we_html_element::htmlHead(
+		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[last_modified]')) . STYLESHEET . we_html_element::cssElement(
+			"select{border:#AAAAAA solid 1px}") . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+		we_html_element::jsElement(
+			$jsPrefs . $jsCode . we_html_button::create_state_changer(false))) .
+	we_html_element::htmlBody(
+		array(
+		"class" => "weDialogBody", "onload" => "init();"
+		), we_html_element::htmlForm("", $sTblWidget)));

@@ -152,15 +152,12 @@ function getOK($message = '', $value = ''){
 
 $_install_dir = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR;
 
-if(strlen($_install_dir) > 35){
-	$_install_dir = substr($_install_dir, 0, 25) . '<abbr title="' . $_install_dir . '">&hellip;</abbr>' . substr($_install_dir, -10);
-}
+$_install_dir = '<abbr title="' . $_install_dir . '">' . we_util_Strings::shortenPath($_install_dir, 35) . '</abbr>';
 
 $weVersion = WE_VERSION .
-	(defined('WE_SVNREV') && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined('WE_VERSION_BRANCH') && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH
-				: '') . ')' : '') .
-	(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
-	(defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION ? WE_VERSION_SUPP_VERSION : '');
+		(defined('WE_SVNREV') && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined('WE_VERSION_BRANCH') && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
+		(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
+		(defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION ? WE_VERSION_SUPP_VERSION : '');
 
 // GD_VERSION is more precise but only available in PHP 5.2.4 or newer
 if(is_callable("gd_info")){
@@ -227,8 +224,7 @@ $_info = array(
 	),
 	'<a href="javascript:showPhpInfo();">PHP</a>' => array(
 		g_l('sysinfo', '[php_version]') => version_compare(PHP_VERSION, '5.3.8', '<') ? getWarning('>5.3.8', PHP_VERSION) : PHP_VERSION,
-		g_l('sysinfo', '[zendframework_version]') => (Zend_Version::VERSION != WE_ZFVERSION) ? getWarning(sprintf(g_l('sysinfo', "[zend_framework warning]"), WE_ZFVERSION), Zend_Version::VERSION)
-				: Zend_Version::VERSION,
+		g_l('sysinfo', '[zendframework_version]') => (Zend_Version::VERSION != WE_ZFVERSION) ? getWarning(sprintf(g_l('sysinfo', "[zend_framework warning]"), WE_ZFVERSION), Zend_Version::VERSION) : Zend_Version::VERSION,
 		'register_globals' => (ini_get_bool('register_globals')) ? getWarning(g_l('sysinfo', "[register_globals warning]"), ini_get('register_globals')) : getOK('', ini_get_message('register_globals')),
 		'max_execution_time' => ini_get('max_execution_time'),
 		'memory_limit' => we_convertIniSizes(ini_get('memory_limit')),
@@ -241,15 +237,13 @@ $_info = array(
 		'safe_mode_include_dir' => ini_get_message('safe_mode_include_dir'),
 		'upload_max_filesize' => we_convertIniSizes(ini_get('upload_max_filesize')),
 		'post_max_size' => we_convertIniSizes(ini_get('post_max_size')),
-		'max_input_vars' => version_compare(PHP_VERSION, '5.3.0', '>=') ? (ini_get('max_input_vars') < 2000 ? getWarning('<2000', ini_get('max_input_vars')) : getOK('>=2000', ini_get_message('max_input_vars')))
-				: '-',
+		'max_input_vars' => version_compare(PHP_VERSION, '5.3.0', '>=') ? (ini_get('max_input_vars') < 2000 ? getWarning('<2000', ini_get('max_input_vars')) : getOK('>=2000', ini_get_message('max_input_vars'))) : '-',
 		'session.auto_start' => (ini_get_bool('session.auto_start')) ? getWarning(g_l('sysinfo', "[session.auto_start warning]"), ini_get('session.auto_start')) : getOK('', ini_get_message('session.auto_start')),
 		'Suhosin' => $SuhosinText,
 		'display_errors' => (ini_get_bool('display_errors')) ? getWarning(g_l('sysinfo', '[display_errors warning]'), 'on') : getOK('', ini_get_message('off')),
 	),
 	'MySql' => array(
-		g_l('sysinfo', '[mysql_version]') => (version_compare("5.0.0", we_database_base::getMysqlVer(false)) > 1) ? getWarning(sprintf(g_l('sysinfo', "[dbversion warning]"), we_database_base::getMysqlVer(false)), we_database_base::getMysqlVer(false))
-				: getOK('', we_database_base::getMysqlVer(false)),
+		g_l('sysinfo', '[mysql_version]') => (version_compare("5.0.0", we_database_base::getMysqlVer(false)) > 1) ? getWarning(sprintf(g_l('sysinfo', "[dbversion warning]"), we_database_base::getMysqlVer(false)), we_database_base::getMysqlVer(false)) : getOK('', we_database_base::getMysqlVer(false)),
 		'max_allowed_packet' => $GLOBALS['DB_WE']->getMaxAllowedPacket(),
 		'lock tables' => ($lockTables ? getOK('', g_l('sysinfo', '[available]')) : getWarning('', '-')),
 		'create temporary tables' => ($allowTempTables ? getOK('', g_l('sysinfo', '[available]')) : getWarning('', '-')),
@@ -260,16 +254,13 @@ $_info = array(
 		g_l('sysinfo', '[mbstring]') => (is_callable('mb_get_info') ? g_l('sysinfo', '[available]') : '-'),
 		g_l('sysinfo', '[gdlib]') => ($gdVersion ? g_l('sysinfo', '[version]') . ' ' . $gdVersion : '-'),
 		g_l('sysinfo', '[exif]') => (is_callable('exif_imagetype') ? g_l('sysinfo', '[available]') : getWarning(g_l('sysinfo', '[exif warning]'), '-')),
-		g_l('sysinfo', '[pcre]') => ((defined('PCRE_VERSION')) ? ( (substr(PCRE_VERSION, 0, 1) < 7) ? getWarning(g_l('sysinfo', '[pcre warning]'), g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION)
-					: g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION ) : getWarning(g_l('sysinfo', '[available]'), g_l('sysinfo', "[pcre_unkown]"))),
+		g_l('sysinfo', '[pcre]') => ((defined('PCRE_VERSION')) ? ( (substr(PCRE_VERSION, 0, 1) < 7) ? getWarning(g_l('sysinfo', '[pcre warning]'), g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION) : g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION ) : getWarning(g_l('sysinfo', '[available]'), g_l('sysinfo', "[pcre_unkown]"))),
 		g_l('sysinfo', '[sdk_db]') => $phpextensionsSDK_DB,
-		g_l('sysinfo', '[phpext]') => (!empty($phpextensionsMissing) ? getWarning(g_l('sysinfo', "[phpext warning2]"), g_l('sysinfo', "[phpext warning]") . implode(', ', $phpextensionsMissing))
-				: ($phpExtensionsDetectable ? g_l('sysinfo', '[available]') : g_l('sysinfo', '[detectable warning]')) ),
+		g_l('sysinfo', '[phpext]') => (!empty($phpextensionsMissing) ? getWarning(g_l('sysinfo', "[phpext warning2]"), g_l('sysinfo', "[phpext warning]") . implode(', ', $phpextensionsMissing)) : ($phpExtensionsDetectable ? g_l('sysinfo', '[available]') : g_l('sysinfo', '[detectable warning]')) ),
 		g_l('sysinfo', '[crypt]') => (function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, '')) ? getOK() : getWarning(g_l('sysinfo', '[crypt_warning]')))
 	),
 	'Deprecated' => array(
-		'we:saveRegisteredUser register=' => (defined('CUSTOMER_TABLE') && f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"', 'Value', $GLOBALS['DB_WE']) === 'true'
-				? getWarning('Deprecated', 'true') : getOk('', defined('CUSTOMER_TABLE') ? 'false' : '?')),
+		'we:saveRegisteredUser register=' => (defined('CUSTOMER_TABLE') && f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"', 'Value', $GLOBALS['DB_WE']) === 'true' ? getWarning('Deprecated', 'true') : getOk('', defined('CUSTOMER_TABLE') ? 'false' : '?')),
 	),
 );
 
@@ -282,7 +273,7 @@ $_types = array(
 );
 
 $buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button("close", "javascript:self.close()"), '', ''
+				we_html_button::create_button("close", "javascript:self.close()"), '', ''
 );
 
 
@@ -321,18 +312,18 @@ echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'));
 //-->
 </script>
 
-		<?php
-		echo STYLESHEET;
-		?>
+<?php
+echo STYLESHEET;
+?>
 
 </head>
 
 <body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
 	<div id="info" style="display: block;">
-		<?php
-		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
-		?>
+<?php
+echo we_html_multiIconBox::getJS() .
+ we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
+?>
 	</div>
 	<div id="more" style="display:none;">
 		<?php

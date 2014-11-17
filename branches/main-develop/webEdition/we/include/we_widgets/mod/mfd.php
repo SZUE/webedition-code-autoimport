@@ -95,6 +95,7 @@ if($aUsers){
 	$folders = $db->getAll(true);
 	if($folders){
 		$db->query('SELECT ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND (Path REGEXP "^(' . implode('/|', $folders) . '/)" OR ID IN (' . $aUsers . '))');
+		$aUsers = implode(',', $db->getAll(true));
 	}
 	$where[] = 'UID IN (' . $aUsers . ')';
 }
@@ -132,7 +133,7 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 $where = ($where ? ' WHERE ' . implode(' AND ', $where) : '');
 
 $tables = $data = array();
-$db->query('SELECT DID,UserName,DocumentTable,ModDate,!ISNULL(l.ID) AS isOpen FROM ' . HISTORY_TABLE . ' LEFT JOIN ' . LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=DocumentTable AND l.UserID!=' . $_SESSION['user']['ID'] . ' ' . $where . ' GROUP BY DID,DocumentTable  ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems + 30));
+$db->query('SELECT DID,UserName,DocumentTable,DATE_FORMAT(ModDate,"' . g_l('date', '[format][mysql]') . '") AS MDate,!ISNULL(l.ID) AS isOpen FROM ' . HISTORY_TABLE . ' LEFT JOIN ' . LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=DocumentTable AND l.UserID!=' . $_SESSION['user']['ID'] . ' ' . $where . ' GROUP BY DID,DocumentTable ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems + 30));
 while($db->next_record(MYSQL_ASSOC)){
 	$tables[$db->f('DocumentTable')][] = $db->f('DID');
 	$data[$db->f('DocumentTable')][$db->f('DID')] = $db->getRecord();
@@ -171,7 +172,7 @@ if($queries){
 					$file['Path'] . ($isOpen ? '' : '</a>') .
 					'</td>' .
 					($bMfdBy ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . $hist['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
-					($bDateLastMfd ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . date(g_l('date', '[format][default]'), $file['ModDate']) . '</td>' : '') .
+					($bDateLastMfd ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . $hist['MDate'] . '</td>' : '') .
 					'</tr>';
 
 			$j++;

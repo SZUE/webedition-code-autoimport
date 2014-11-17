@@ -25,7 +25,7 @@
  * Taken from poppler sources
  *
  */
-$nameToUnicodeTab = array(
+return array(
 	'!' => 0x0021,
 	'#' => 0x0023,
 	'$' => 0x0024,

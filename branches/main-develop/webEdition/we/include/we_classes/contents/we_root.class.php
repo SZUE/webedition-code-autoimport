@@ -303,9 +303,10 @@ abstract class we_root extends we_class{
 
 			$inputFeld = $this->htmlTextInput($textname, 24, $creator, '', $attribs, '', $width);
 			$idfield = $this->htmlHidden($idname, $this->CreatorID);
+			$wecmdenc1=we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 			$wecmdenc5 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);");
-			$button = we_html_button::create_button('edit', "javascript:we_cmd('browse_users','document.forms['we_form'].elements['" . $idname . "'].value','" . $wecmdenc2 . "','user',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "')");
+			$button = we_html_button::create_button('edit', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','user',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "')");
 
 			$out = we_html_tools::htmlFormElementTable($inputFeld, g_l('weClass', '[maincreator]'), 'left', 'defaultfont', $idfield, we_html_tools::getPixel(20, 4), $button);
 		} else {

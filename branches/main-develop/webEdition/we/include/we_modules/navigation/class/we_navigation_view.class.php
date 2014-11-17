@@ -685,14 +685,14 @@ function submitForm() {
 				$this->Model = new we_navigation_navigation();
 				$this->Model->IsFolder = we_base_request::_(we_base_request::STRING, 'cmd') === 'module_navigation_new_group' ? 1 : 0;
 				$this->Model->ParentID = we_base_request::_(we_base_request::INT, 'ParentID', 0);
-				print we_html_element::jsElement(
-						$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Model->Text) . '";' .
-						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+				echo we_html_element::jsElement(
+					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Model->Text) . '";' .
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 				break;
 			case 'module_navigation_edit':
 				if(!permissionhandler::hasPerm('EDIT_NAVIGATION')){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
@@ -700,16 +700,16 @@ function submitForm() {
 				$this->Model = new we_navigation_navigation(we_base_request::_(we_base_request::INT, 'cmdid'));
 
 				if(!$this->Model->isAllowedForUser()){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					$this->Model = new we_navigation_navigation();
 					$_REQUEST['home'] = true;
 					break;
 				}
-				print we_html_element::jsElement(
-						$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Model->Text) . '";' .
-						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+				echo we_html_element::jsElement(
+					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Model->Text) . '";' .
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 								if(' . $this->topFrame . '.treeData){
 									' . $this->topFrame . '.treeData.unselectnode();
 									' . $this->topFrame . '.treeData.selectnode(' . $this->Model->ID . ');
@@ -717,13 +717,13 @@ function submitForm() {
 				break;
 			case 'module_navigation_save':
 				if(!permissionhandler::hasPerm('EDIT_NAVIGATION') && !permissionhandler::hasPerm('EDIT_NAVIGATION')){
-					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 
 				$js = '';
 				if($this->Model->filenameNotValid($this->Model->Text)){
-					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 
@@ -736,12 +736,12 @@ function submitForm() {
 				// set the path and check it
 				$this->Model->setPath();
 				if($this->Model->pathExists($this->Model->Path)){
-					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 
 				if($this->Model->isSelf() || !$this->Model->isAllowedForUser()){
-					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 
@@ -755,7 +755,7 @@ function submitForm() {
 							}
 						}
 						if(!key_exists($this->Model->TitleField, $_fieldsByNamePart) && !key_exists($this->Model->TitleField, $_classFields)){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR));
+							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR));
 							break;
 						}
 					} else {
@@ -832,28 +832,27 @@ function submitForm() {
 				break;
 			case 'module_navigation_delete':
 
-				print we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
+				echo we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 
 				if(!permissionhandler::hasPerm('DELETE_NAVIGATION')){
-					print we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+					echo we_html_element::jsElement(
+						we_message_reporting::getShowMessageCall(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					return;
-				} else {
-					if($this->Model->delete()){
-						print we_html_element::jsElement('
+				}
+				if($this->Model->delete()){
+					echo we_html_element::jsElement('
 									' . $this->topFrame . '.deleteEntry(' . $this->Model->ID . ');
 									setTimeout(\'' . we_message_reporting::getShowMessageCall(($this->Model->IsFolder == 1 ? g_l('navigation', '[group_deleted]') : g_l('navigation', '[navigation_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);
 
 							');
-						$this->Model = new we_navigation_navigation();
-						$_REQUEST['home'] = 1;
-						$_REQUEST['pnt'] = 'edbody';
-					} else {
-						print we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('navigation', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
-					}
+					$this->Model = new we_navigation_navigation();
+					$_REQUEST['home'] = 1;
+					$_REQUEST['pnt'] = 'edbody';
+				} else {
+					echo we_html_element::jsElement(
+							we_message_reporting::getShowMessageCall(g_l('navigation', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
+					);
 				}
 				break;
 			case 'switchPage':
@@ -861,7 +860,7 @@ function submitForm() {
 				break;
 			case 'move_up' :
 				if($this->Model->reorderUp()){
-					print we_html_element::jsElement('
+					echo we_html_element::jsElement('
 								' .
 							$this->editorBodyForm . '.Ordn.value=' . ($this->Model->Ordn + 1) . ';' .
 							$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
@@ -904,7 +903,7 @@ function submitForm() {
 					$_js .= $this->topFrame . '.deleteEntry(' . $_item['id'] . ');';
 					$_js .= $this->topFrame . '.makeNewEntry(\'' . we_base_ContentTypes::FILE_ICON . '\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
 				}
-				print we_html_element::jsElement(
+				echo we_html_element::jsElement(
 						$_js .
 						we_message_reporting::getShowMessageCall(g_l('navigation', '[populate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
@@ -917,7 +916,7 @@ function submitForm() {
 						';
 				}
 				$_js .= we_message_reporting::getShowMessageCall(g_l('navigation', '[depopulate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE);
-				print we_html_element::jsElement($_js);
+				echo we_html_element::jsElement($_js);
 				$this->Model->Selection = we_navigation_navigation::SELECTION_NODYNAMIC;
 				$this->Model->saveField('Selection');
 				break;
@@ -1042,12 +1041,12 @@ function submitForm() {
 			default:
 		}
 
-		$_SESSION['weS']['navigation_session'] = serialize($this->Model);
+		$_SESSION['weS']['navigation_session'] = $this->Model;
 	}
 
 	function processVariables(){
 		if(isset($_SESSION['weS']['navigation_session'])){
-			$this->Model = unserialize($_SESSION['weS']['navigation_session']);
+			$this->Model = $_SESSION['weS']['navigation_session'];
 		}
 
 		if(defined('CUSTOMER_TABLE')){

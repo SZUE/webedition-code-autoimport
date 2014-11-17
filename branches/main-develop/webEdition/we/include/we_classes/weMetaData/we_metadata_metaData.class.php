@@ -134,8 +134,8 @@ class we_metadata_metaData{
 	 */
 	function getImplementations(){
 		return (!$this->_valid || !$this->datatype ?
-				false :
-				$this->datatype);
+						false :
+						$this->datatype);
 	}
 
 	function getMetaData($selection = ''){
@@ -145,9 +145,8 @@ class we_metadata_metaData{
 		foreach($this->datatype as $_type){
 			if(!in_array('read', $this->_instance[$_type]->accesstypes)){
 				return false;
-			} else {
-				$this->metadata[strToLower($_type)] = $this->_instance[$_type]->_getMetaData();
 			}
+			$this->metadata[strToLower($_type)] = $this->_instance[$_type]->_getMetaData();
 		}
 		return $this->metadata;
 	}
@@ -159,9 +158,8 @@ class we_metadata_metaData{
 			}
 			if(!in_array('write', $this->_instance[$_type]->accesstypes)){
 				return false;
-			} else {
-				$this->_instance[$_type]->_setMetaData($data = '');
 			}
+			$this->_instance[$_type]->_setMetaData($data = '');
 		}
 		return true;
 	}
@@ -196,10 +194,12 @@ class we_metadata_metaData{
 		// determines if given datasource is valid. will be assignet to instances later:
 		if(!$this->_valid){
 			return false;
-		} else if(empty($datasource)){
+		}
+		if(empty($datasource)){
 			$this->_valid = false;
 			return false;
-		} else if(is_numeric($datasource)){
+		}
+		if(is_numeric($datasource)){
 			// TODO: get path to file from database (tblFile)
 			$datasource = $this->_getDatasourceFromDatabase($datasource);
 		} else if(is_file($datasource)){
@@ -258,7 +258,7 @@ class we_metadata_metaData{
 		if(empty($_filetype)){
 			// try to identify type of file by its extension by checking substring after last point in $this->datasource
 			$_extension = strrchr($this->datasource, '.');
-			if(!empty($_extension) && $_extension != '.'){
+			if($_extension && $_extension != '.'){
 				$this->filetype = substr($_extension, 1);
 			} else {
 				$this->_valid = false;
@@ -269,11 +269,10 @@ class we_metadata_metaData{
 		if(array_key_exists(strtolower($this->filetype), $this->dataTypeMapping)){
 			$this->datatype = $this->dataTypeMapping[strtolower($this->filetype)];
 			$this->_valid = true;
-		} else {
-			$this->_valid = false;
-			return false;
+			return true;
 		}
-		return true;
+		$this->_valid = false;
+		return false;
 	}
 
 	/**
@@ -294,10 +293,9 @@ class we_metadata_metaData{
 				$this->_instance[$value]->datasource = $this->datasource;
 			}
 			return true;
-		} else {
-			$this->_instance[$value]->_valid = false;
-			return false;
 		}
+		$this->_instance[$value]->_valid = false;
+		return false;
 	}
 
 	/**

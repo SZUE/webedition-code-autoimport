@@ -1,3 +1,6 @@
+we/include/we_classes/dialog/we_dialog_importRtf.class.php
+we/include/we_classes/we_rtf2html.inc.php
+editors/content/wysiwyg/spellcheck.php
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js

@@ -231,26 +231,24 @@ class we_objectFile extends we_document{
 		$rootId = $classId;
 		$cnt = 1;
 		$all = array();
-		if(defined('OBJECT_TABLE')){
-			$slash = PHP_INT_MAX;
-			$ws = get_ws(OBJECT_FILES_TABLE);
-			if(intval($ws) == 0){
-				$ws = 0;
-			}
-			$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND (Path="' . $db->escape($classDir) . '" OR Path LIKE "' . $db->escape($classDir) . '/%")');
-			while($db->next_record()){
-				$all[$db->f('Path')] = $db->f('ID');
-				if((($tmp = substr_count($db->f('Path'), '/')) <= $slash) && (!$ws || in_workspace($db->f('ID'), $ws, OBJECT_FILES_TABLE, null, true))){
-					$rootId = $db->f('ID');
-					$cnt = ($tmp == $slash ? $cnt : 0) + 1;
-					if($cnt == 1){
-						$path = substr($db->f('Path'), 0, strrpos($db->f('Path'), '/'));
-					}
-					$slash = $tmp;
+		$slash = PHP_INT_MAX;
+		$ws = get_ws(OBJECT_FILES_TABLE);
+		if(intval($ws) == 0){
+			$ws = 0;
+		}
+		$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND (Path="' . $db->escape($classDir) . '" OR Path LIKE "' . $db->escape($classDir) . '/%")');
+		while($db->next_record()){
+			$all[$db->f('Path')] = $db->f('ID');
+			if((($tmp = substr_count($db->f('Path'), '/')) <= $slash) && (!$ws || in_workspace($db->f('ID'), $ws, OBJECT_FILES_TABLE, null, true))){
+				$rootId = $db->f('ID');
+				$cnt = ($tmp == $slash ? $cnt : 0) + 1;
+				if($cnt == 1){
+					$path = substr($db->f('Path'), 0, strrpos($db->f('Path'), '/'));
 				}
+				$slash = $tmp;
 			}
 		}
-		return ($cnt == 1 ? $rootId : $all[$path]);
+		return ($cnt == 1 || !isset($all[$path]) ? $rootId : $all[$path]);
 	}
 
 	function formCopyDocument(){
@@ -1382,7 +1380,7 @@ class we_objectFile extends we_document{
 		$attribs["height"] = isset($attribs["height"]) ? $attribs["height"] : 200;
 		$attribs["rows"] = 10;
 		$attribs["cols"] = 60;
-		$attribs['bgcolor'] = isset($attribs["bgcolor"]) ? $attribs["bgcolor"] : (WYSIWYG_TYPE === 'tinyMCE' ? '' : 'white');
+		$attribs['bgcolor'] = isset($attribs["bgcolor"]) ? $attribs["bgcolor"] : '';
 		$attribs['tinyparams'] = isset($attribs["tinyparams"]) ? $attribs["tinyparams"] : "";
 		$attribs['templates'] = isset($attribs["templates"]) ? $attribs["templates"] : "";
 		$attribs["class"] = isset($attribs["class"]) ? $attribs["class"] : "";
@@ -2772,7 +2770,7 @@ class we_objectFile extends we_document{
 		$GLOBALS['we_doc']->OF_ID = $this->ID;
 
 		$GLOBALS['we_doc']->InWebEdition = false;
-		$we_include = $includepath ?: $GLOBALS['we_doc']->TemplatePath;
+		$we_include = $includepath ? : $GLOBALS['we_doc']->TemplatePath;
 		ob_start();
 		include($we_include);
 		$contents = ob_get_clean();

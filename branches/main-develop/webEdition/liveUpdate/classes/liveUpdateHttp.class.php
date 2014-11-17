@@ -36,7 +36,7 @@ class liveUpdateHttp{
 			$parameterStr .= "$key=" . urlencode($value) . "&";
 		}
 
-		$address = 'http://' . $server . $url . ($parameterStr ? "?$parameterStr" : '');
+		$address = 'https://' . $server . $url . ($parameterStr ? "?$parameterStr" : '');
 		$response = false;
 
 		$fh = @fopen($address, "rb");
@@ -68,14 +68,14 @@ class liveUpdateHttp{
 				$parameterStr .= "$key=" . urlencode($value) . "&";
 			}
 
-			$address = 'http://' . $server . $url . ($parameterStr ? "?$parameterStr" : '');
+			$address = 'https://' . $server . $url . ($parameterStr ? "?$parameterStr" : '');
 
 			$realm = base64_encode($proxy_user . ":" . $proxy_pass);
 
 			// send headers
 			fputs($response, "GET $address HTTP/1.0\r\n");
 			//fputs($response, "Proxy-Connection: Keep-Alive\r\n");
-			fputs($response, "User-Agent: PHP " . phpversion() . "\r\n");
+			fputs($response, 'User-Agent: PHP ' . phpversion() . "\r\n");
 			fputs($response, "Pragma: no-cache\r\n");
 			if($proxy_user != ""){
 				fputs($response, "Proxy-authorization: Basic $realm\r\n");
@@ -94,7 +94,7 @@ class liveUpdateHttp{
 
 	function getCurlHttpResponse($server, $url, $parameters){
 
-		$_address = $server . $url;
+		$_address = 'https://' . $server . $url;
 
 		$_parameters = '';
 		foreach($parameters as $key => $value){
@@ -155,7 +155,7 @@ class liveUpdateHttp{
 				return liveUpdateHttp::getCurlHttpResponse($server, $url, $parameters);
 			default:
 				return null; // return null otherwise php error
-				return 'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
+				//'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
 		}
 	}
 
@@ -182,7 +182,7 @@ class liveUpdateHttp{
 	' . LIVEUPDATE_CSS . '
 <head>
 <body onload="document.getElementById(\'liveUpdateForm\').submit();">
-<form id="liveUpdateForm" action="http://' . LIVEUPDATE_SERVER . LIVEUPDATE_SERVER_SCRIPT . '" method="post">
+<form id="liveUpdateForm" action="https://' . LIVEUPDATE_SERVER . LIVEUPDATE_SERVER_SCRIPT . '" method="post">
 	<input type="hidden" name="update_cmd" value="startSession" /><br />
 	<input type="hidden" name="next_cmd" value="' . we_base_request::_(we_base_request::STRING, 'update_cmd') . '" />
 	<input type="hidden" name="detail" value="' . we_base_request::_(we_base_request::STRING, 'detail') . '" />

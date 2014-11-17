@@ -73,7 +73,7 @@ class we_navigation_items{
 
 	function initByNavigationObject($showRoot = true){
 		$this->items = array();
-		$navigation = unserialize($_SESSION['weS']['navigation_session']);
+		$navigation = $_SESSION['weS']['navigation_session'];
 
 		$this->rootItem = $navigation->ID;
 

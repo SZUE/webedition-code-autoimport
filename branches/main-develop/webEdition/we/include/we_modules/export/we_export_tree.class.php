@@ -286,13 +286,13 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 			switch($table){
 				case FILE_TABLE:
 					$published = (($DB_WE->f("Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate"))) ? -1 : $DB_WE->f("Published");
-					if(isset($_SESSION['weS']['exportVars']["selDocs"]) && in_array($ID, makeArrayFromCSV($_SESSION['weS']['exportVars']["selDocs"]))){
+					if(isset($_SESSION['weS']['exportVars_session']["selDocs"]) && in_array($ID, makeArrayFromCSV($_SESSION['weS']['exportVars_session']["selDocs"]))){
 						$checked = 1;
 					}
 					break;
 				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 					$published = (($DB_WE->f("Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate"))) ? -1 : $DB_WE->f("Published");
-					if(isset($_SESSION['weS']['exportVars']["selObjs"]) && in_array($ID, makeArrayFromCSV($_SESSION['weS']['exportVars']["selObjs"]))){
+					if(isset($_SESSION['weS']['exportVars_session']["selObjs"]) && in_array($ID, makeArrayFromCSV($_SESSION['weS']['exportVars_session']["selObjs"]))){
 						$checked = 1;
 					}
 					break;

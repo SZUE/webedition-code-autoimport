@@ -556,8 +556,8 @@ class we_helpers_pdf2text{
 		if(!empty($this->encodings)){
 			return;
 		}
-		require('we_helpers_pdfmapping.inc.php');
-		require('we_helpers_pdfencodings.inc.php');
+		$nameToUnicodeTab = require('we_helpers_pdfmapping.inc.php');
+		$encodings = require('we_helpers_pdfencodings.inc.php');
 		foreach($nameToUnicodeTab as &$cur){
 			$cur = self::unichr($cur);
 		}
@@ -747,6 +747,9 @@ class we_helpers_pdf2text{
 	private function getText(){
 		$texts = $lines = array();
 		foreach($this->objects as $cur){
+			if(!isset($this->data[$cur])){
+				continue;
+			}
 			$elem = $this->data[$cur];
 			unset($this->data[$cur]);
 			if(isset($elem['Type']) && $elem['Type'] === '/FontRessource'){

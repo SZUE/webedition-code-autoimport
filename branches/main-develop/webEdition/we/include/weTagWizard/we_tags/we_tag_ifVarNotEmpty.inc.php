@@ -20,6 +20,7 @@ $this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataO
 	new weTagDataOption('session'),
 	new weTagDataOption('sessionfield'),
 	new weTagDataOption('href'),
+	new weTagDataOption('img'),
 	new weTagDataOption('multiobject', false, 'object')), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('property', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_textAttribute('formname', false, '');

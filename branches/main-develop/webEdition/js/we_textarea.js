@@ -81,15 +81,12 @@ function we_textarea(name,value,cols,rows,width,height,autobr,autobrName,showAut
 	}
 
 	if(showSpell) {
-
 		out += '<td unselectable="on"><div unselectable="on">'+"\n";
 		out += '<img  style="border: 0px; margin: 1px;" unselectable="on" width="23" height="22" src="/webEdition/images/wysiwyg/spellcheck.gif"'+"\n";
 		out += 'onmouseover="if(self.'+this.name+'Object){'+this.name+'Object.ButtonOverUp(this);}"'+"\n";
 		out += 'onmouseout="if(self.'+this.name+'Object){'+this.name+'Object.ButtonNormal(this);}"'+"\n";
 		out += 'onmousedown="if(self.'+this.name+'Object){'+this.name+'Object.ButtonOverDown(this);}"'+"\n";
-		out += 'onclick="window.open(\'/webEdition/editors/content/wysiwyg/spellcheck.php?editname=areatmp_'+encodeURI(name)+'\',\'spellchechecker\',\'height=450,width=500,scrollbars=0\');"></div></td>';
-
-
+		out += 'onclick="window.open(\'/webEdition/we/include/we_modules/spellchecker/weSpellchecker.php?editname=areatmp_'+encodeURI(name)+'\',\'spellchechecker\',\'height=450,width=500,scrollbars=0\');"></div></td>';
 	}
 
 	if(showAutobr){

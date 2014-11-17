@@ -72,7 +72,7 @@ function we_isVarNotEmpty($attribs){
 				case 'href' :
 					$attribs['name'] = $match;
 					$attribs['_name_orig'] = $match_orig;
-					$foo = $doc->getField($attribs, 'href', true);
+					$foo = $doc->getField($attribs, $type, true);
 					break;
 				case 'multiobject':
 					//FIXME: this makes no sense
@@ -93,7 +93,7 @@ function we_isVarNotEmpty($attribs){
 						$foo = $doc->getElement($match_orig, $type === 'img' ? 'bdid' : 'dat');
 					}
 			}
-			return (strlen($foo) > 0);
+			return (!empty($foo));
 	}
 }
 

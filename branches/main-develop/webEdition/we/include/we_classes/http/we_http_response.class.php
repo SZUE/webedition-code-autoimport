@@ -124,16 +124,12 @@ class we_http_response{
 		switch($what){
 			case 'code':
 				return $this->http_answer['code'];
-				break;
 			case 'prot':
 				return $this->http_answer['prot'];
-				break;
 			case 'msg':
 				return $this->http_answer['msg'];
-				break;
 			default:
 				return $this->http_answer['prot'] . " " . $this->http_answer['code'] . " " . $this->http_answer['msg'];
-				break;
 		}
 	}
 

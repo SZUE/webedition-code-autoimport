@@ -64,7 +64,7 @@ function getTabs($classname, $predefined = 0){
 $we_Table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 $we_ID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 $we_ContentType = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
-$we_ContentType = $we_ContentType ?  : ($we_ID ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . $we_ID) : '');
+$we_ContentType = $we_ContentType ? : ($we_ID ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . $we_ID) : '');
 
 if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
@@ -203,8 +203,7 @@ if($we_doc->EditPageNr === -1){ //	there is no view available for this document
 	exit;
 }
 
-
-if(!isset($we_doc->IsClassFolder)){
+if(!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder){
 	//update already offline users
 
 	$_userID = $we_doc->isLockedByUser(); //	Check if file is locked.
@@ -258,7 +257,6 @@ if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
 		var editorScrollPosLeft = 0;
 		var weAutoCompetionFields = new Array();
 		var openedInEditor = true;
-
 		//WEEXT: Send Ajax request to open document (existing or new!) by transaction
 		//TODO: check if condition is really obsolete
 		//if(<?php print $we_doc->ID; ?> == 0){
@@ -450,6 +448,7 @@ if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
 			?>
 			<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="39,<?php echo $showContentEditor ? "0,*" : "*,0"; ?>,40" framespacing="0" border="0" frameborder="NO" onunload="doUnload();">
 				<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>
+
 			<?php if($showContentEditor){ ?>
 					<frame <?php echo setOnload(); ?> src="about:blank" name="editor_<?php echo $fid; ?>" noresize/>
 					<frame  src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>&we_complete_request=1" name="contenteditor_<?php echo $fid; ?>" noresize/>

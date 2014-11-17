@@ -103,6 +103,25 @@ function we_tag_shopField($attribs){
 			return we_html_tools::hidden($fieldname, $savedVal, $atts);
 
 		case 'print':
+            $ascountry = weTag_getAttribute('ascountry', $attribs, false, true);
+            $aslanguage = weTag_getAttribute('aslanguage', $attribs, false, true);
+            if($ascountry || $aslanguage){
+                if(!Zend_Locale::hasCache()){
+                    Zend_Locale::setCache(getWEZendCache());
+                }
+
+                $lang = weTag_getAttribute('outputlanguage', $attribs);
+                if(!$lang){
+                    $doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self'));
+                    $lang = $doc->Language;
+                }
+                $langcode = substr($lang, 0, 2);
+                if(!$lang){
+                    $lang = explode('_', $GLOBALS['WE_LANGUAGE']);
+                    $langcode = array_search($lang[0], getWELangs());
+                }
+                return ($ascountry && $savedVal === '--' ? '' : CheckAndConvertISOfrontend(Zend_Locale::getTranslation($savedVal, ($ascountry ? 'territory' : 'language'), $langcode)));
+            }
 			return $savedVal;
 
 		case 'select':

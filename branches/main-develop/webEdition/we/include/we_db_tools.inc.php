@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,27 +26,13 @@
   @param $query: SQL query; an empty query resets the cache
  */
 function getHash($query = '', we_database_base $DB_WE = NULL, $resultType = MYSQL_ASSOC){
-	static $cache = array();
-	if(!$query){
-		$cache = array();
-		return $cache;
-	}
-	$hash = md5($query, true);
-	if($resultType == MYSQL_NUM || !isset($cache[$hash])){
-		$DB_WE = $DB_WE ? : $GLOBALS['DB_WE'];
-		$DB_WE->query($query);
-		$data = ($DB_WE->next_record($resultType) ? $DB_WE->Record : array());
-		if($resultType != MYSQL_NUM && $data){
-			$cache[$hash] = $data;
-		}
-		$DB_WE->free();
-		return $data;
-	}
-	return $cache[$hash];
+	$DB_WE = $DB_WE ? : $GLOBALS['DB_WE'];
+	return $DB_WE->getHash($query, $resultType);
 }
 
 function f($query, $field = '', we_database_base $DB_WE = NULL, $emptyValue = ''){
-	$h = getHash($query, ($DB_WE ? : $GLOBALS['DB_WE']), MYSQL_ASSOC);
+	$DB_WE = $DB_WE ? : $GLOBALS['DB_WE'];
+	$h = $DB_WE->getHash($query, MYSQL_ASSOC);
 	return
 		($field ?
 			($h && isset($h[$field]) ? $h[$field] : $emptyValue) :

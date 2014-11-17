@@ -94,6 +94,14 @@ $we_menu_shop['240000'] = array(
 	'enabled' => 1,
 );
 
+$we_menu_shop['245000'] = array(
+	'text' => g_l('javaMenu_shop', '[edit_categories]') . '&hellip;',
+	'parent' => '200000',
+	'cmd' => 'edit_shop_categories',
+	'perm' => 'EDIT_SHOP_PREFS || ADMINISTRATOR',
+	'enabled' => 1,
+);
+
 $we_menu_shop['250000'] = array(
 	'text' => g_l('javaMenu_shop', '[edit_vats]') . '&hellip;',
 	'parent' => '200000',
