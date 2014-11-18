@@ -32,8 +32,8 @@ class we_main_headermenu{
 	 */
 	public static function createMessageConsole($consoleName = 'NoName'){
 		return we_html_element::jsScript(JS_DIR . 'messageConsoleImages.js') .
-			we_html_element::jsScript(JS_DIR . 'messageConsoleView.js') .
-			we_html_element::jsElement('
+				we_html_element::jsScript(JS_DIR . 'messageConsoleView.js') .
+				we_html_element::jsElement('
 var _msgNotice  = "' . g_l('messageConsole', '[iconBar][notice]') . '";
 var _msgWarning = "' . g_l('messageConsole', '[iconBar][warning]') . '";
 var _msgError   = "' . g_l('messageConsole', '[iconBar][error]') . '";
@@ -94,9 +94,8 @@ onunload=function() {
 	static function getJsForCssMenu(){
 		if(we_base_browserDetect::isIE() && intval(we_base_browserDetect::inst()->getBrowserVersion()) < 9){
 			return WEBEDITION_DIR . 'css/menu/clickMenu_IE8.js';
-		} else {
-			return WEBEDITION_DIR . 'css/menu/clickMenu.js';
 		}
+		return WEBEDITION_DIR . 'css/menu/clickMenu.js';
 	}
 
 	static function pJS(){
@@ -130,11 +129,10 @@ top.weSidebar = weSidebar;
 		if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){ // there is only a menu when not in seem_edit_include!
 			return null;
 		}
-		include(WE_INCLUDES_PATH . 'menu/we_menu.inc.php');
+		$we_menu = include(WE_INCLUDES_PATH . 'menu/we_menu.inc.php');
 		ksort($we_menu);
 		if(// menu for normalmode
-			isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
-
+				isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 			$jmenu = new we_base_menu($we_menu, "top.load");
 		} else { // menu for seemode
 			if(!permissionhandler::isUserAllowedForAction("header", "with_java")){
@@ -153,27 +151,24 @@ top.weSidebar = weSidebar;
 		$navigationButtons = array();
 
 		if(!we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){ // there is only a menu when not in seem_edit_include!
-			if(// menu for normalmode
-				isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
-
-			} else { // menu for seemode
-				if(permissionhandler::isUserAllowedForAction('header', 'with_java')){
-
-				} else {
+			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
+// menu for normalmode
+			} else if(permissionhandler::isUserAllowedForAction('header', 'with_java')){
+// menu for seemode
+			} else {
 //  no menu in this case !
-					$navigationButtons[] = array(
-						"onclick" => "top.we_cmd('dologout');",
-						"imagepath" => "/navigation/close.gif",
-						"text" => g_l('javaMenu_global', "[close]")
-					);
-				}
+				$navigationButtons[] = array(
+					"onclick" => "top.we_cmd('dologout');",
+					"imagepath" => "/navigation/close.gif",
+					"text" => g_l('javaMenu_global', "[close]")
+				);
 			}
 			$navigationButtons = array_merge($navigationButtons, array(
 				array("onclick" => "top.we_cmd('start_multi_editor');", "imagepath" => "/navigation/home.gif", "text" => g_l('javaMenu_global', "[home]")),
 				array("onclick" => "top.weNavigationHistory.navigateReload();", "imagepath" => "/navigation/reload.gif", "text" => g_l('javaMenu_global', "[reload]")),
 				array("onclick" => "top.weNavigationHistory.navigateBack();", "imagepath" => "/navigation/back.gif", "text" => g_l('javaMenu_global', "[back]")),
 				array("onclick" => "top.weNavigationHistory.navigateNext();", "imagepath" => "/navigation/next.gif", "text" => g_l('javaMenu_global', "[next]")),
-				)
+					)
 			);
 		}
 		?>
@@ -181,7 +176,7 @@ top.weSidebar = weSidebar;
 			<div style="position:relative;border:0px;float:left;" >
 				<?php
 				if($jmenu){
-					print $jmenu->getCode();
+					echo $jmenu->getCode();
 				}
 				?>
 			</div>
@@ -189,7 +184,7 @@ top.weSidebar = weSidebar;
 				<?php
 				if(!empty($navigationButtons)){
 					foreach($navigationButtons as $button){
-						print '<div style = "float:left;margin-top:5px;" class = "navigation_normal" onclick = "' . $button['onclick'] . '" onmouseover = "this.className=\'navigation_hover\'" onmouseout = "this.className=\'navigation_normal\'"><img border = "0" hspace = "2" src = "' . IMAGE_DIR . $button['imagepath'] . '" width = "17" height = "18" alt = "' . $button['text'] . '" title = "' . $button['text'] . '"></div>';
+						echo '<div style = "float:left;margin-top:5px;" class = "navigation_normal" onclick = "' . $button['onclick'] . '" onmouseover = "this.className=\'navigation_hover\'" onmouseout = "this.className=\'navigation_normal\'"><img border = "0" hspace = "2" src = "' . IMAGE_DIR . $button['imagepath'] . '" width = "17" height = "18" alt = "' . $button['text'] . '" title = "' . $button['text'] . '"></div>';
 					}
 				}
 				?></div>
@@ -197,7 +192,7 @@ top.weSidebar = weSidebar;
 
 
 				<?php
-				print self::createMessageConsole('mainWindow');
+				echo self::createMessageConsole('mainWindow');
 				?>
 				<img src="<?php print IMAGE_DIR ?>pixel.gif" alt="" name="busy" width="20" height="19">
 				<img src="<?php print IMAGE_DIR ?>webedition.gif" alt="" style="width:78px;height:25px;padding-left: 10px;padding-right: 5px;padding-top:3px;">

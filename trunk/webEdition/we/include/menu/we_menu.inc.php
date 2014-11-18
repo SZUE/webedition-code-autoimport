@@ -814,3 +814,5 @@ if($_activeIntModules){
 		}
 	}
 }
+
+return $we_menu;

@@ -461,9 +461,7 @@ function we_cmd() {
 	}
 
 	function getHTMLCmd(){
-		$body = we_html_element::htmlBody();
-
-		return $this->getHTMLDocument($body);
+		return $this->getHTMLDocument(we_html_element::htmlBody());
 	}
 
 	protected function getHTMLEditor(){//TODO: maybe abandon the split between former Top- and other editor files
