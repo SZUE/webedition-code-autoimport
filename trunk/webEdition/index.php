@@ -42,7 +42,6 @@ if(permissionhandler::hasPerm('ADMINISTRATOR')){
 	}
 }
 
-//FIXME: implement resave of config files
 if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && (intval(WE_SVNREV) > intval(CONF_SAVED_VERSION)))){
 	//resave config file(s)
 	we_base_preferences::check_global_config(true);
