@@ -41,7 +41,7 @@ $fields = array(
 	'removeFirstParagraph' => we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 12),
 	'bgcolor' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 13),
 	'baseHref' => we_base_request::_(we_base_request::URL, 'we_cmd', '', 14),
-	'charset' => we_base_request::_(we_base_request::STRING, 'we_cmd', DEFAULT_CHARSET, 15),
+	'charset' => we_base_request::_(we_base_request::STRING, 'we_cmd', DEFAULT_CHARSET, 15)? : DEFAULT_CHARSET,
 	'cssClasses' => we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 16),
 	'Language' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 17),
 	'documentCss' => we_base_request::_(we_base_request::CMD, 'we_cmd', '', 18),
@@ -66,6 +66,7 @@ if($fields['charset'] != DEFAULT_CHARSET && $_charsets && is_array($_charsets)){
 		}
 	}
 	if(!$found){
+		t_e('charset not found for wysiwyg', $fields['charset']);
 		exit();
 	}
 }

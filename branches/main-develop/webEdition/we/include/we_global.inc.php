@@ -893,6 +893,11 @@ function we_writeLanguageConfig($default, $available = array()){
 	}
 
 	return we_base_file::save(WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php', '<?php
+/**
+ * webEdition CMS configuration file
+ * NOTE: this file is regenerated, so any extra contents will be overwritten
+ */
+
 $GLOBALS[\'weFrontendLanguages\'] = array(
 ' . $locales . '
 );
@@ -1106,7 +1111,7 @@ function we_templatePost(){
 		if(defined('DEBUG_MEM')){
 			weMemDebug();
 		}
-		if(ob_get_level()){//if still document active, we have to do url replacements
+		if(ob_get_level() && count(array_diff(ob_list_handlers(), array('zlib output compression')))){//if still document active, we have to do url replacements
 			$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
 // --> Glossary Replacement
 			$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID)) && (isset($GLOBALS['we_doc']->InGlossar) && $GLOBALS['we_doc']->InGlossar == 0) && we_glossary_replace::useAutomatic());

@@ -42,16 +42,16 @@ function we_tag_writeVoting($attribs){
 			if(!isset($_voting[$id]) || !is_array($_voting[$id])){
 				$_voting[$id] = array();
 			}
-			if(isset($_REQUEST[$value]) && $_REQUEST[$value] !== ''){// Bug #6118: !empty geht hier nicht, da es die 0 nicht durch lässt
-				$_voting[$id][] = filterXss($_REQUEST[$value]);
+			if(($dat = we_base_request::_(we_base_request::STRING, $value)) !== false && $dat !== ''){// Bug #6118: !empty geht hier nicht, da es die 0 nicht durch lässt
+				$_voting[$id][] = $dat;
 			}
 		}
 	}
 	$additionalFieldsArray = makeArrayFromCSV($additionalFields);
 	$addFields = array();
 	foreach($additionalFieldsArray as $field){
-		if(isset($_REQUEST[$field])){
-			$addFields[$field] = filterXss($_REQUEST[$field]);
+		if(($dat = we_base_request::_(we_base_request::STRING, $field)) !== false){
+			$addFields[$field] = $dat;
 		}
 	}
 
@@ -72,8 +72,9 @@ function we_tag_writeVoting($attribs){
 				} else {
 					$votingsession = 0;
 				}
-				if($voting->Log)
+				if($voting->Log){
 					$voting->logVoting(we_voting_voting::ERROR, $votingsession, '', '', '');
+				}
 				break;
 			}
 

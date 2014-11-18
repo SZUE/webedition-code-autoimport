@@ -128,7 +128,7 @@ abstract class we_autoloader{
 			'we_tabs' => 'we_tabs.class.php',
 			'we_tab' => 'we_tab.class.php',
 			'weTree' => 'weTree.class.php',
-			'we_updater' => 'we_updater.inc.php',
+			'we_updater' => 'we_updater.class.php',
 			'weToolLookup' => 'tools/we_tool_lookup.class.php',
 		),
 		'we_modules' => array(

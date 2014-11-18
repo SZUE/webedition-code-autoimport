@@ -38,10 +38,9 @@ if(we_base_request::_(we_base_request::STRING, "cmd") === "save"){
 	if(($data = we_base_request::_(we_base_request::RAW_CHECKED, "editFile")) !== false){
 		we_base_file::save($id, $data);
 	}
-	$we_fileData = stripslashes(we_base_request::_(we_base_request::RAW, "editFile"));
+	$we_fileData = stripslashes(we_base_request::_(we_base_request::RAW_CHECKED, "editFile"));
 } else if($id){
-
-	$id = str_replace("//", "/", $id);
+	$id = str_replace('//', '/', $id);
 	$we_fileData = we_base_file::load($id);
 	if($we_fileData === false){
 		$we_alerttext = sprintf(g_l('alert', "[can_not_open_file]"), str_replace(str_replace("\\", "/", dirname($id)) . "/", "", $id), 1);

@@ -79,9 +79,9 @@ $GLOBALS['configs'] = array(
 		'CSSAPPLYTO_DEFAULT' => array('Default setting for we:css attribute applyto', we_base_request::STRING, 'around'),
 // hooks
 		'EXECUTE_HOOKS' => array('Default setting for hook execution', we_base_request::BOOL, false),
-		'BASE_IMG' => array('url used prior all internal we:img tags (deprecated)', we_base_request::URL, ''),//FIXME: remove in 6.4
-		'BASE_CSS' => array('url used prior all we:css tags(deprecated)', we_base_request::URL, ''),//FIXME: remove in 6.4
-		'BASE_JS' => array('url used prio all we:js tags(deprecated)', we_base_request::URL, ''),//FIXME: remove in 6.4
+		'BASE_IMG' => array('url used prior all internal we:img tags (deprecated)', we_base_request::URL, ''), //FIXME: remove in 6.4
+		'BASE_CSS' => array('url used prior all we:css tags(deprecated)', we_base_request::URL, ''), //FIXME: remove in 6.4
+		'BASE_JS' => array('url used prio all we:js tags(deprecated)', we_base_request::URL, ''), //FIXME: remove in 6.4
 // xhtml
 		'XHTML_DEFAULT' => array('Default setting for xml attribute', we_base_request::BOOL, false),
 		'XHTML_DEBUG' => array('Enable XHTML debug', we_base_request::BOOL, false),
@@ -97,9 +97,8 @@ $GLOBALS['configs'] = array(
 		'SYSTEM_WE_SESSION_CRYPT' => array('crypt we session before save', we_base_request::INT, 2),
 // accessibility
 		'SHOWINPUTS_DEFAULT' => array('Default setting for showinputs attribute', we_base_request::BOOL, true),
-		'DB_SET_CHARSET' => array('connection charset to db', we_base_request::STRING, 'utf8'),
-/*		'WYSIWYG_TYPE' => array('define used wysiwyg editor', we_base_request::STRING, 'tinyMCE'),
-		'WYSIWYG_TYPE_FRONTEND' => array('define used wysiwyg editor in frontend', we_base_request::STRING, 'tinyMCE'),*/
+		/* 		'WYSIWYG_TYPE' => array('define used wysiwyg editor', we_base_request::STRING, 'tinyMCE'),
+		  'WYSIWYG_TYPE_FRONTEND' => array('define used wysiwyg editor in frontend', we_base_request::STRING, 'tinyMCE'), */
 		'WE_MAILER' => array('mailer type; possible values are php and smtp', we_base_request::STRING, 'php'),
 		'SMTP_SERVER' => array('SMTP_SERVER', we_base_request::STRING, 'localhost'),
 		'SMTP_PORT' => array('SMTP server port', we_base_request::INT, 25),
@@ -248,6 +247,23 @@ $GLOBALS['configs'] = array(
 		'editorShowTab' => array(we_base_request::BOOL, true),
 		'editorTabSize' => array(we_base_request::INT, 2),
 		'editorAutoIndent' => array(we_base_request::BOOL, true),
+	),
+	'conf' => array(
+		//description,request-type if any, default, encode
+		'HTTP_USERNAME' => array('if used password protection to the webEdition directory, the username', we_base_request::STRING, ''),
+		'HTTP_PASSWORD' => array('if used password protection to the webEdition directory, the password', we_base_request::RAW, ''),
+		'DB_CONNECT' => array('Mode how to access the database: mysqli_connect, mysqli_pconnect, deprecated: connect, pconnect', we_base_request::STRING, ''),
+		'DB_SET_CHARSET' => array('connection charset to db', we_base_request::STRING, 'utf8'),
+		//note these settings are user-settings, not changed by request/frontend
+		'DB_HOST' => array('Domain or IP address of the database server', '', 'localhost'),
+		'DB_DATABASE' => array('Name of database used by webEdition', '', 'webedition'),
+		'DB_USER' => array('Username to access the database', '', 'root', true),
+		'DB_PASSWORD' => array('Password to access the database', '', 'root', true),
+		'TBL_PREFIX' => array('Prefix of tables in database for this webEdition.', '', ''),
+		'DB_CHARSET' => array('Charset of tables in database for this webEdition.', '', ''),
+		'DB_COLLATION' => array('Collation of tables in database for this webEdition.', '', ''),
+		'WE_LANGUAGE' => array('Original language of this version of webEdition, used for login-screen', '', 'English'),
+		'WE_BACKENDCHARSET' => array('Original backend charset of this version of webEdition, used for login-screen', '', 'UTF-8'),
 	),
 	'other' => array(
 		'formmail_values' => array(we_base_request::RAW_CHECKED, '', 'FORMMAIL'),
