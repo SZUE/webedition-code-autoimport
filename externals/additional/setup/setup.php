@@ -884,24 +884,28 @@ function step_installation() {
 		tpl_error("Could not open webEdition configuration files for writing.");
 		$errors = true;
 	} else {
-		$we_config = file_get_contents('./webEdition/we/include/conf/we_conf.inc.php.default');
-		$we_config_global = file_get_contents('./webEdition/we/include/conf/we_conf_global.inc.php.default');
+	//NOTE these files are only available if version >6.3.1
+		$we_config = "<?php\n";
+		$we_config_global = "<?php\n";
 		$we_active_modules = file_get_contents('./webEdition/we/include/conf/we_active_integrated_modules.inc.php.default');
 
-		$we_config = preg_replace('/(define\(\'DB_CHARSET\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["we_db_charset"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\(\'DB_COLLATION\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["we_db_collation"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\(\'DB_HOST\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'','\\\'',$_SESSION["db_host"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\(\'DB_DATABASE\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_database"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\(\'DB_USER\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_username"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\(\'DB_PASSWORD\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_password"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\(\'TBL_PREFIX\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["db_tableprefix"]).'${3}',$we_config);
-		$we_config = str_replace('\'WE_BACKENDCHARSET\', \'UTF-8\'', '\'WE_BACKENDCHARSET\', \'UTF8\'', $we_config);
-		$we_config = preg_replace('/(define\(\'WE_BACKENDCHARSET\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["we_charset"]).'${3}',$we_config);
-		$we_config = preg_replace('/(define\(\'WE_LANGUAGE\', ?\')(\w*)(\'\);)/i','${1}'.str_replace('\'', '\\\'', $_SESSION["we_language"]).'${3}',$we_config);
+		//don't worry about undefined symbols, new we versions rewrite missing settings, old versions have if(defined... clauses
 
-		$we_config_global = preg_replace('/(define\(\'DB_SET_CHARSET\', ?")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_db_charset"]).'${3}',$we_config_global);
-		$we_config_global = str_replace('\'DEFAULT_CHARSET\', "UTF-8"', '\'DEFAULT_CHARSET\', "UTF8"', $we_config_global);
-		$we_config_global = preg_replace('/(define\(\'DEFAULT_CHARSET\', ?")(\w*)("\);)/i','${1}'.str_replace('"', '\\"', $_SESSION["we_charset"]).'${3}',$we_config_global);
+		$we_config .= "define('DB_CHARSET','".$_SESSION["we_db_charset"]."');\n".
+		"define('DB_COLLATION','".$_SESSION["we_db_collation"]."');\n".
+		"define('DB_HOST','".$_SESSION["db_host"]."');\n".
+		"define('DB_DATABASE','".$_SESSION["db_database"]."');\n".
+		"define('DB_USER','".$_SESSION["db_username"]."');\n".
+		"define('DB_PASSWORD','". $_SESSION["db_password"]."');\n".
+		"define('TBL_PREFIX','".$_SESSION["db_tableprefix"]."');\n".
+		"define('WE_BACKENDCHARSET','".$_SESSION["we_charset"]."');\n".
+		"define('WE_LANGUAGE','". $_SESSION["we_language"]."');\n".
+		"";
+		
+		//define DB_SET_CHARSET in we_config_global due to old versions, will be corrected on we startup
+		$we_config_global .= "define('DB_SET_CHARSET','". $_SESSION["we_db_charset"]."');\n".
+		"define('DEFAULT_CHARSET','". $_SESSION["we_charset"]."');\n".
+		"";
 
 		$output .= tpl_ok("Changed the system's default language to ".$_SESSION["we_charset"]);
 		$output .= tpl_ok("Saved database configuration.");
