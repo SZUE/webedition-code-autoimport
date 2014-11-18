@@ -257,18 +257,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 
 	printHeader($login, 503);
 	echo we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
-} else
-/* if(isset($_POST['checkLogin']) && $_POST['checkLogin'] != session_id()){
-  $_layout = getError(sprintf(g_l('start', '[phpini_problems]'), (ini_get('cfg_file_path') ? ' (' . ini_get('cfg_file_path') . ')' : '')) . we_html_element::htmlBr() . we_html_element::htmlBr() .
-  'Debug-Info:' . we_html_element::htmlBr() .
-  'submitted session id: ' . filterXss($_POST['checkLogin']) . we_html_element::htmlBr() .
-  'current session id:   ' . session_id() . we_html_element::htmlBr() .
-  'login-page date:      ' . filterXss($_POST['indexDate']) .
-  we_html_element::htmlBr() . we_html_element::htmlBr()
-  );
-  printHeader($login, 408);
-  print we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
-  } else */ if(!$ignore_browser && !we_base_browserDetect::isSupported()){
+} elseif(!$ignore_browser && !we_base_browserDetect::isSupported()){
 
 	/*	 * *******************************************************************
 	 * CHECK BROWSER

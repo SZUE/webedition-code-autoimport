@@ -893,6 +893,11 @@ function we_writeLanguageConfig($default, $available = array()){
 	}
 
 	return we_base_file::save(WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php', '<?php
+/**
+ * webEdition CMS configuration file
+ * NOTE: this file is regenerated, so any extra contents will be overwritten
+ */
+
 $GLOBALS[\'weFrontendLanguages\'] = array(
 ' . $locales . '
 );
