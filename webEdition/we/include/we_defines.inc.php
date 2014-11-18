@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -111,7 +112,7 @@ define('SESSION_NAME', 'WESESSION');
 if(!isset($_SERVER['REQUEST_URI'])){
 	if(!isset($_SERVER['HTTP_REQUEST_URI'])){
 		$_SERVER['HTTP_REQUEST_URI'] = (isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : $_SERVER['PHP_SELF']) .
-			(isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
+				(isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
 	}
 }
 
@@ -120,4 +121,11 @@ if(!defined('DATETIME_INITIALIZED')){// to prevent additional initialization if 
 		date_default_timezone_set('Europe/Berlin');
 	}
 	define('DATETIME_INITIALIZED', 1);
+}
+
+if(!isset($GLOBALS['WE_LANGUAGE'])){
+	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
+}
+if(!isset($GLOBALS['WE_BACKENDCHARSET'])){
+	$GLOBALS['WE_BACKENDCHARSET'] = WE_BACKENDCHARSET;
 }

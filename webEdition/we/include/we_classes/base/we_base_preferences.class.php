@@ -30,40 +30,49 @@ class we_base_preferences{
 		// First, read all needed files
 		$GLOBALS['config_files'] = array(
 			// we_conf.inc.php
-			'conf' => array(
+			'conf_conf' => array(
 				'filename' => WE_INCLUDES_PATH . 'conf/we_conf.inc.php',
 				'content' => '',
+				'contentBak' => '',
+				'contentDef' => '',
 			),
 			// we_conf_global.inc.php
 			'conf_global' => array(
 				'filename' => WE_INCLUDES_PATH . 'conf/we_conf_global.inc.php',
 				'content' => '',
+				'contentBak' => '',
+				'contentDef' => '',
 			),
 			// proxysettings.inc.php
-			'proxysettings' => array(
+			'conf_proxysettings' => array(
 				'filename' => WEBEDITION_PATH . 'liveUpdate/includes/proxysettings.inc.php',
 				'content' => '',
+				'contentBak' => '',
+				'contentDef' => '',
 			),
 			// we_active_integrated_modules.inc.php
-			'active_integrated_modules' => array(
+			'conf_active_integrated_modules' => array(
 				'filename' => WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php',
 				'content' => '',
+				'contentBak' => '',
+				'contentDef' => '',
 			),
 		);
 		foreach($GLOBALS['config_files'] as &$config){
 			$config['content'] = we_base_file::load($config['filename']);
 			$config['contentBak'] = $config['content'];
+			$config['contentDef'] = we_base_file::load($config['filename'] . '.default');
 		}
 		//finally add old session prefs
 		$GLOBALS['config_files']['oldPrefs'] = $_SESSION['prefs'];
 	}
 
 	static function setConfigContent($type, $content){
-		$GLOBALS['config_files'][$type]['content'] = $content;
+		$GLOBALS['config_files']['conf_' . $type]['content'] = $content;
 	}
 
 	static function unsetConfig($type){
-		unset($GLOBALS['config_files'][$type]);
+		unset($GLOBALS['config_files']['conf_' . $type]);
 	}
 
 	/**
@@ -75,44 +84,55 @@ class we_base_preferences{
 	 * @return         void
 	 */
 	static function check_global_config($updateVersion = false, $file = '', $leave = array()){
-		$values = $GLOBALS['configs']['global'];
+		self::loadConfigs();
+		$processedConfigs = ($file ?
+						array('global' => 'contentDef') :
+						array('global' => 'contentDef', 'conf' => 'contentDef'));
 
-		// Read the global configuration file
-		$_file_name = WE_INCLUDES_PATH . 'conf/we_conf_global.inc.php';
-		$_file_name_backup = $_file_name . '.bak';
-		$content = $oldContent = we_base_file::load($_file_name);
+		foreach($processedConfigs as $conf => $dataField){
+			// Read the global configuration file
+			$file_name = $GLOBALS['config_files']['conf_' . $conf]['filename'];
+			//if we don't have content, make sure, we have at least an php-tag
+			$oldContent = (trim(str_replace('?>', '', $GLOBALS['config_files']['conf_' . $conf][$dataField]), "\n ")? : "<?php \n");
 
-		if($file != '' && $file != $_file_name){
-			$content = we_base_file::load($file);
-			//leave settings in their current state
-			foreach($leave as $settingname){
-				$content = self::changeSourceCode('define', $content, $settingname, constant($settingname), true);
+			if($file && $file != $file_name){//=> this is intentended only for we_conf_global
+				//we have the data from a backup file. We need to change e.g. DB-Settings, HTTP-User, ...
+				$content = we_base_file::load($file);
+				//leave settings in their current state
+				foreach($leave as $settingname){
+					$content = self::changeSourceCode('define', $content, $settingname, constant($settingname), true);
+				}
+				//moved constants
+				$content = self::changeSourceCode('define', $content, 'DB_SET_CHARSET', '', false);
+			} else {
+				$content = $oldContent;
 			}
-		}
 
-		// load & Cut closing PHP tag from configuration file
-		$content = trim(str_replace(array('?>', "\n\n\n\n", "\n\n\n"), array('', "\n\n", "\n\n"), $content), "\n ");
-		$oldContent = trim(str_replace('?>', '', $oldContent), "\n ");
+			// load & Cut closing PHP tag from configuration file
+			$content = trim(str_replace(array('?>', "\n\n\n\n", "\n\n\n"), array('', "\n\n", "\n\n"), $content), "\n ");
 
-		// Go through all needed values
-		foreach($values as $define => $value){
-			if(!preg_match('/define\(["\']' . $define . '["\'],/', $content)){
-				// Add needed variable
-				$content = self::changeSourceCode('add', $content, $define, $value[2], true, $value[1]);
-				//define it in running session
-				if(!defined($define)){
-					define($define, $value[1]);
+			// Go through all needed values
+			foreach($GLOBALS['configs'][$conf] as $define => $value){
+				if(!preg_match('/define\(["\']' . $define . '["\'],/', $content)){
+					// Add needed variable
+
+					$content = self::changeSourceCode('add', $content, $define, (defined($define) ? constant($define) : $value[2]), ($conf == 'global' ? true : defined($define)), $value[0]);
+					//define it in running session
+					if(!defined($define)){
+						define($define, $value[1]);
+					}
 				}
 			}
+			if($conf == 'global' && $updateVersion){
+				$content = self::changeSourceCode('define', $content, 'CONF_SAVED_VERSION', WE_SVNREV, true);
+			}
+			// Check if we need to rewrite the config file
+			if($content != $oldContent){
+				we_base_file::save($file_name . '.bak', $GLOBALS['config_files']['conf_' . $conf]['contentBak']);
+				we_base_file::save($file_name, $content);
+			}
 		}
-		if($updateVersion){
-			$content = self::changeSourceCode('define', $content, 'CONF_SAVED_VERSION', WE_SVNREV, true);
-		}
-		// Check if we need to rewrite the config file
-		if($content != $oldContent){
-			we_base_file::save($_file_name_backup, $oldContent);
-			we_base_file::save($_file_name, $content);
-		}
+		unset($GLOBALS['config_files']);
 	}
 
 	static function saveConfigs(){
@@ -158,7 +178,7 @@ class we_base_preferences{
 		switch($type){
 			case 'add':
 				return trim($text, "\n\t ") . "\n\n" .
-					self::makeDefine($key, $value, $active, $comment);
+						self::makeDefine($key, $value, $active, $comment);
 			case 'define':
 				$match = array();
 				if(preg_match('|/?/?define\(\s*(["\']' . preg_quote($key) . '["\'])\s*,\s*([^\r\n]+)\);[\r\n]?|Ui', $text, $match)){
@@ -171,8 +191,8 @@ class we_base_preferences{
 
 	private static function makeDefine($key, $val, $active = true, $comment = ''){
 		return ($comment ? '//' . $comment . "\n" : '') . ($active ? '' : "//") . 'define(\'' . $key . '\', ' .
-			(is_bool($val) || $val === 'true' || $val === 'false' ? ($val ? 'true' : 'false') :
-				(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val))) . ');';
+				(is_bool($val) || $val === 'true' || $val === 'false' ? ($val ? 'true' : 'false') :
+						(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val))) . ');';
 	}
 
 	private static function _addSlashes($in){
@@ -190,8 +210,8 @@ class we_base_preferences{
 	 */
 	public function getUserPref($name){
 		return (isset($_SESSION['prefs'][$name]) ?
-				$_SESSION['prefs'][$name] :
-				(defined($name) ? constant($name) : ''));
+						$_SESSION['prefs'][$name] :
+						(defined($name) ? constant($name) : ''));
 	}
 
 	/**
