@@ -116,7 +116,7 @@ class we_base_preferences{
 				if(!preg_match('/define\(["\']' . $define . '["\'],/', $content)){
 					// Add needed variable
 
-					$content = self::changeSourceCode('add', $content, $define, (defined($define) ? constant($define) : $value[2]), ($conf == 'global' ? true : defined($define)), $value[0]);
+					$content = self::changeSourceCode('add', $content, $define, (defined($define) ? constant($define) : $value[2]), ($conf == 'global' ? true : defined($define)), $value[0], isset($value[3]) ? $value[3] : false);
 					//define it in running session
 					if(!defined($define)){
 						define($define, $value[1]);
@@ -174,11 +174,11 @@ class we_base_preferences{
 		}
 	}
 
-	public static function changeSourceCode($type, $text, $key, $value, $active = true, $comment = ''){
+	public static function changeSourceCode($type, $text, $key, $value, $active = true, $comment = '', $encode = false){
 		switch($type){
 			case 'add':
 				return trim($text, "\n\t ") . "\n\n" .
-						self::makeDefine($key, $value, $active, $comment);
+						self::makeDefine($key, $value, $active, $comment, $encode);
 			case 'define':
 				$match = array();
 				if(preg_match('|/?/?define\(\s*(["\']' . preg_quote($key) . '["\'])\s*,\s*([^\r\n]+)\);[\r\n]?|Ui', $text, $match)){
@@ -189,10 +189,12 @@ class we_base_preferences{
 		return $text;
 	}
 
-	private static function makeDefine($key, $val, $active = true, $comment = ''){
+	private static function makeDefine($key, $val, $active = true, $comment = '', $encode = false){
 		return ($comment ? '//' . $comment . "\n" : '') . ($active ? '' : "//") . 'define(\'' . $key . '\', ' .
-				(is_bool($val) || $val === 'true' || $val === 'false' ? ($val ? 'true' : 'false') :
-						(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val))) . ');';
+				($encode ? 'base64_decode(\'' . base64_encode($val) . '\')' :
+						(is_bool($val) || $val === 'true' || $val === 'false' ? ($val ? 'true' : 'false') :
+								(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val)))
+				) . ');';
 	}
 
 	private static function _addSlashes($in){
