@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_bannerSelect($attribs){
-	global $DB_WE;
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
@@ -47,21 +46,21 @@ function we_tag_bannerSelect($attribs){
 		$options = getHtmlTag('option', array('value' => ''), $firstentry, true);
 		$select .= '<option value="">' . $firstentry . '</option>';
 	}
-	$DB_WE->query('SELECT ID,Text,Path,Customers FROM ' . BANNER_TABLE . ' ' . $where . ' ORDER BY Path');
-	$res = $DB_WE->getAll();
+	$GLOBALS['DB_WE']->query('SELECT ID,Text,Path,Customers FROM ' . BANNER_TABLE . ' ' . $where . ' ORDER BY Path');
+	$res = $GLOBALS['DB_WE']->getAll();
 	foreach($res as $record){
-		if((!defined('CUSTOMER_TABLE')) || (!$customer) || ($customer && defined('CUSTOMER_TABLE') && we_banner_banner::customerOwnsBanner($_SESSION['webuser']['ID'], $record['ID'], $DB_WE))){
+		if((!defined('CUSTOMER_TABLE')) || (!$customer) || ($customer && defined('CUSTOMER_TABLE') && we_banner_banner::customerOwnsBanner($_SESSION['webuser']['ID'], $record['ID'], $GLOBALS['DB_WE']))){
 			if(!isset($_REQUEST[$name])){
 				$_REQUEST[$name] = $record['Path'];
 			}
 			$options .= ($_REQUEST[$name] == $record['Path'] ?
-					getHtmlTag('option', array('value' => $record['Path'], 'selected' => 'selected'), $showpath ? $record['Path'] : $record['Text']) :
-					getHtmlTag('option', array('value' => $record['Path']), $showpath ? $record['Path'] : $record['Text']));
+							getHtmlTag('option', array('value' => $record['Path'], 'selected' => 'selected'), $showpath ? $record['Path'] : $record['Text']) :
+							getHtmlTag('option', array('value' => $record['Path']), $showpath ? $record['Path'] : $record['Text']));
 		}
 	}
 
 	if(isset($_REQUEST[$name])){
-		$GLOBALS[$name] = filterXss($_REQUEST[$name]);
+		$GLOBALS[$name] = we_base_request::_(we_base_request::FILE, $name);
 	}
 	return getHtmlTag('select', $newAttribs, $options, true);
 }

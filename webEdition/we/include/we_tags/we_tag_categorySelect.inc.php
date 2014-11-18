@@ -37,11 +37,11 @@ function we_tag_categorySelect($attribs, $content){
 	$values = '';
 	if($isuserinput && $GLOBALS['WE_FORM']){
 		$objekt = isset($GLOBALS['we_object'][$GLOBALS['WE_FORM']]) ?
-			$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
-			(isset($GLOBALS['we_document'][$GLOBALS['WE_FORM']]) ?
-				$GLOBALS['we_document'][$GLOBALS['WE_FORM']] :
-				(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] :
-					false));
+				$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
+				(isset($GLOBALS['we_document'][$GLOBALS['WE_FORM']]) ?
+						$GLOBALS['we_document'][$GLOBALS['WE_FORM']] :
+						(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] :
+								false));
 		if($objekt){
 			$values = $objekt->Category;
 		}
@@ -49,18 +49,13 @@ function we_tag_categorySelect($attribs, $content){
 	} else {
 		if($type === 'request'){
 			// Bug Fix #750
-			$values = filterXss(isset($_REQUEST[$name]) ?
-					(is_array($_REQUEST[$name]) ?
-						implode(',', $_REQUEST[$name]) :
-						$_REQUEST[$name]) :
-					'');
+			$valuesArray = we_base_request::_(we_base_request::INTLISTA, $name, array());
 		} else {
 			// Bug Fix #750
-			$values = (isset($GLOBALS[$name]) && is_array($GLOBALS[$name])) ?
-				implode(',', $GLOBALS[$name]) :
-				$GLOBALS[$name];
+			$valuesArray = (isset($GLOBALS[$name]) && is_array($GLOBALS[$name])) ?
+					$GLOBALS[$name] :
+					explode(',', $GLOBALS[$name]);
 		}
-		$valuesArray = makeArrayFromCSV($values, CATEGORY_TABLE);
 	}
 
 	$attribs['name'] = $name;
@@ -87,14 +82,14 @@ function we_tag_categorySelect($attribs, $content){
 		while($db->next_record()){
 			$deep = count(explode('/', $db->f('Path'))) - 2;
 			$field = ($rootdir && ($rootdir != '/') && $showpath ?
-					preg_replace('|^' . preg_quote($rootdir, '|') . '|', '', $db->f($dbfield)) :
-					$db->f($dbfield));
+							preg_replace('|^' . preg_quote($rootdir, '|') . '|', '', $db->f($dbfield)) :
+							$db->f($dbfield));
 
 			if($field){
 				$content .= getHtmlTag('option', array(
 					'value' => $db->f($valueField),
 					(in_array($db->f($valueField), $valuesArray) ? 'selected' : null) => 'selected'
-					), str_repeat($indent, $deep) . $field);
+						), str_repeat($indent, $deep) . $field);
 			}
 		}
 	} else {

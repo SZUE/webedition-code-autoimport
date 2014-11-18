@@ -23,11 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_unsubscribe($attribs){
-
 	$attribs['type'] = 'text';
 	$attribs['name'] = 'we_unsubscribe_email__';
-
-	$attribs['value'] = (isset($_REQUEST["we_unsubscribe_email__"]) ? filterXss($_REQUEST["we_unsubscribe_email__"]) : '');
+	$attribs['value'] = we_base_request::_(we_base_request::EMAIL, "we_unsubscribe_email__", '');
 
 	return getHtmlTag('input', $attribs);
 }

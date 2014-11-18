@@ -29,7 +29,7 @@ function we_tag_search($attribs){
 	$xml = weTag_getAttribute('xml', $attribs);
 	$value = weTag_getAttribute('value', $attribs);
 
-	$searchValue = filterXss(str_replace(array('"', '\\"',), '', (isset($_REQUEST['we_lv_search_' . $name]) ? trim($_REQUEST['we_lv_search_' . $name]) : $value)));
+	$searchValue = str_replace(array('"', '\\"',), '', trim(we_base_request::_(we_base_request::STRING, 'we_lv_search_' . $name, $value)));
 	$attsHidden = array(
 		'type' => 'hidden',
 		'xml' => $xml,
@@ -43,9 +43,9 @@ function we_tag_search($attribs){
 			return $searchValue;
 		case 'textinput':
 			$atts = array_merge(
-				removeAttribs($attribs, array(
+					removeAttribs($attribs, array(
 				'type', 'onchange', 'name', 'cols', 'rows'
-				)), array(
+					)), array(
 				'name' => 'we_lv_search_' . $name,
 				'type' => 'text',
 				'value' => $searchValue,
@@ -55,10 +55,10 @@ function we_tag_search($attribs){
 
 		case 'textarea':
 			$atts = array_merge(
-				removeAttribs(
-					$attribs, array(
+					removeAttribs(
+							$attribs, array(
 				'type', 'onchange', 'name', 'size', 'maxlength', 'value'
-				)), array(
+					)), array(
 				'class' => 'defaultfont',
 				'name' => 'we_lv_search_' . $name,
 				'xml' => $xml
