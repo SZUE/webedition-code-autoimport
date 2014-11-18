@@ -153,8 +153,7 @@ class we_modules_frame{
 	}
 
 	function getHTMLResize($extraUrlParams = ''){//TODO: only customer uses param sid: handle sid with extraUrlParams
-		$_incDecTree = '
-			<img id="incBaum" src="' . BUTTONS_DIR . 'icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($this->treeWidth <= 30 ? 'bgcolor:grey;' : '') . '" onclick="top.content.incTree();">
+		$_incDecTree = '<img id="incBaum" src="' . BUTTONS_DIR . 'icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($this->treeWidth <= 30 ? 'bgcolor:grey;' : '') . '" onclick="top.content.incTree();">
 			<img id="decBaum" src="' . BUTTONS_DIR . 'icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($this->treeWidth <= 30 ? 'bgcolor:grey;' : '') . '" onclick="top.content.decTree();">
 			<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($this->treeWidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onclick="top.content.toggleTree();">
 		';
@@ -240,10 +239,9 @@ class we_modules_frame{
 		}
 
 		$extraHead .= we_html_element::jsElement('
-			function we_save() {
-				top.content.we_cmd("' . $btn_cmd . '");
-			}'
-		);
+function we_save() {
+	top.content.we_cmd("' . $btn_cmd . '");
+}');
 
 		$table2 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'style' => 'width:300px;margin-top:10px;'), 1, 2);
 		$table2->setRow(0, array('valign' => 'middle'));
@@ -264,14 +262,11 @@ class we_modules_frame{
 	}
 
 	function getHTMLBox($content, $headline = "", $width = 100, $height = 50, $w = 25, $vh = 0, $ident = 0, $space = 5, $headline_align = "left", $content_align = "left"){
-		$headline = str_replace(" ", "&nbsp;", $headline);
 		if($ident){
 			$pix1 = we_html_tools::getPixel($ident, $vh);
 		}
 		if($w){
-			if(!$vh){
-				$vh = 1;
-			}
+			$vh = $vh? : 1;
 			$pix2 = we_html_tools::getPixel($w, $vh);
 		}
 
@@ -285,7 +280,7 @@ class we_modules_frame{
 		if($w){
 			$table->setCol(0, 1, array("valign" => "top"), $pix2);
 		}
-		$table->setCol(1, 1, array("valign" => "middle", "class" => "defaultgray", "align" => $headline_align), $headline);
+		$table->setCol(1, 1, array("valign" => "middle", "class" => "defaultgray", "align" => $headline_align), str_replace(" ", "&nbsp;", $headline));
 		$table->setCol(1, 2, array(), $pix3);
 		$table->setCol(1, 3, array("valign" => "middle", "align" => $content_align), $content);
 		if($w && $headline){
@@ -294,7 +289,7 @@ class we_modules_frame{
 		return $table->getHtml();
 	}
 
-	function getHTMLExitQuestion(){
+	protected function getHTMLExitQuestion(){
 		if(($dp = we_base_request::_(we_base_request::INT, 'delayParam'))){
 			$_frame = 'opener.' . $this->topFrame;
 			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("module_' . $this->module . '_save");self.close();';
@@ -304,7 +299,6 @@ class we_modules_frame{
 			return we_html_tools::getHtmlTop() .
 					STYLESHEET .
 					'</head>
-
 			<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
 					we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) .
 					'</body>
@@ -335,99 +329,98 @@ class we_modules_frame{
 		//FIXME: throw some of these functions out again and use generic version of main-window functions
 
 		return we_html_element::jsElement('
-			var oldTreeWidth = ' . $treeDefaultWidth . ';
+var oldTreeWidth = ' . $treeDefaultWidth . ';
 
-			function toggleTree(){
-				var tDiv = self.document.getElementById("left");
-				var w = getTreeWidth();
+function toggleTree(){
+	var tDiv = self.document.getElementById("left");
+	var w = getTreeWidth();
 
-				if(tDiv.style.display == "none"){
-					oldTreeWidth = (oldTreeWidth < ' . weTree::MinWidthModules . ' ? ' . $treeDefaultWidth . ' : oldTreeWidth);
-					setTreeWidth(oldTreeWidth);
-					tDiv.style.display = "block";
-					setTreeArrow("left");
-					storeTreeWidth(oldTreeWidth);
-				} else{
-					tDiv.style.display = "none";
-					oldTreeWidth = w;
-					setTreeWidth(' . weTree::HiddenWidth . ');
-					setTreeArrow("right");
-				}
-			}
+	if(tDiv.style.display == "none"){
+		oldTreeWidth = (oldTreeWidth < ' . weTree::MinWidthModules . ' ? ' . $treeDefaultWidth . ' : oldTreeWidth);
+		setTreeWidth(oldTreeWidth);
+		tDiv.style.display = "block";
+		setTreeArrow("left");
+		storeTreeWidth(oldTreeWidth);
+	} else{
+		tDiv.style.display = "none";
+		oldTreeWidth = w;
+		setTreeWidth(' . weTree::HiddenWidth . ');
+		setTreeArrow("right");
+	}
+}
 
-			function setTreeArrow(direction) {
-				try{
-					self.document.getElementById("arrowImg").src = "' . BUTTONS_DIR . 'icons/direction_" + direction + ".gif";
-					if(direction == "right"){
-						self.document.getElementById("incBaum").style.backgroundColor = "gray";
-						self.document.getElementById("decBaum").style.backgroundColor = "gray";
-					}else{
-						self.document.getElementById("incBaum").style.backgroundColor = "";
-						self.document.getElementById("decBaum").style.backgroundColor = "";
-					}
-				} catch(e) {
-					// Nothing
-				}
-			}
+function setTreeArrow(direction) {
+	try{
+		self.document.getElementById("arrowImg").src = "' . BUTTONS_DIR . 'icons/direction_" + direction + ".gif";
+		if(direction == "right"){
+			self.document.getElementById("incBaum").style.backgroundColor = "gray";
+			self.document.getElementById("decBaum").style.backgroundColor = "gray";
+		}else{
+			self.document.getElementById("incBaum").style.backgroundColor = "";
+			self.document.getElementById("decBaum").style.backgroundColor = "";
+		}
+	} catch(e) {
+		// Nothing
+	}
+}
 
-			function getTreeWidth() {
-				var w = self.document.getElementById("lframeDiv").style.width;
-				return w.substr(0, w.length-2);
-			}
+function getTreeWidth() {
+	var w = self.document.getElementById("lframeDiv").style.width;
+	return w.substr(0, w.length-2);
+}
 
-			function setTreeWidth(w) {
-				self.document.getElementById("lframeDiv").style.width = w + "px";
-				self.document.getElementById("right").style.left = w + "px";
-				if(w > ' . weTree::HiddenWidth . '){
-					storeTreeWidth(w);
-				}
-			}
+function setTreeWidth(w) {
+	self.document.getElementById("lframeDiv").style.width = w + "px";
+	self.document.getElementById("right").style.left = w + "px";
+	if(w > ' . weTree::HiddenWidth . '){
+		storeTreeWidth(w);
+	}
+}
 
-			function storeTreeWidth(w) {
-				var ablauf = new Date();
-				var newTime = ablauf.getTime() + 30758400000;
-				ablauf.setTime(newTime);
-				weSetCookie("' . $module . '", w, ablauf, "/");
-			}
+function storeTreeWidth(w) {
+	var ablauf = new Date();
+	var newTime = ablauf.getTime() + 30758400000;
+	ablauf.setTime(newTime);
+	weSetCookie("' . $module . '", w, ablauf, "/");
+}
 
-			function incTree(){
-				var w = parseInt(getTreeWidth());
-				if((w > ' . weTree::MinWidthModules . ') && (w < ' . weTree::MaxWidthModules . ')){
-					w += ' . weTree::StepWidth . ';
-					setTreeWidth(w);
-				}
-				if(w >= ' . weTree::MaxWidthModules . '){
-					w = ' . weTree::MaxWidthModules . ';
-					self.document.getElementById("incBaum").style.backgroundColor = "grey";
-				}
-			}
+function incTree(){
+	var w = parseInt(getTreeWidth());
+	if((w > ' . weTree::MinWidthModules . ') && (w < ' . weTree::MaxWidthModules . ')){
+		w += ' . weTree::StepWidth . ';
+		setTreeWidth(w);
+	}
+	if(w >= ' . weTree::MaxWidthModules . '){
+		w = ' . weTree::MaxWidthModules . ';
+		self.document.getElementById("incBaum").style.backgroundColor = "grey";
+	}
+}
 
-			function decTree(){
-				var w = parseInt(getTreeWidth());
-				w -= ' . weTree::StepWidth . ';
-				if(w > ' . weTree::MinWidthModules . '){
-					setTreeWidth(w);
-					self.document.getElementById("incBaum").style.backgroundColor = "";
-				}
-				if(w <= ' . weTree::MinWidthModules . ' && ((w + ' . weTree::StepWidth . ') >= ' . weTree::MinWidthModules . ')){
-					toggleTree();
-				}
-			}
+function decTree(){
+	var w = parseInt(getTreeWidth());
+	w -= ' . weTree::StepWidth . ';
+	if(w > ' . weTree::MinWidthModules . '){
+		setTreeWidth(w);
+		self.document.getElementById("incBaum").style.backgroundColor = "";
+	}
+	if(w <= ' . weTree::MinWidthModules . ' && ((w + ' . weTree::StepWidth . ') >= ' . weTree::MinWidthModules . ')){
+		toggleTree();
+	}
+}
 
-			function weSetCookie(module, value, expires, path, domain){
-				var moduleVals = ' . self::$treeWidthsJS . ';
-				var doc = self.document;
-				moduleVals[module] = value;
-				var val = "";
-				for(var param in moduleVals){
-					val += val ? "," + param + ":" + moduleVals[param] : param + " : " + moduleVals[param];
-				}
-				doc.cookie = "treewidth_modules" + "=" + val +
-					((expires == null) ? "" : "; expires=" + expires.toGMTString()) +
-					((path == null)    ? "" : "; path=" + path) +
-					((domain == null)  ? "" : "; domain=" + domain);
-			}
-	');
+function weSetCookie(module, value, expires, path, domain){
+	var moduleVals = ' . self::$treeWidthsJS . ';
+	var doc = self.document;
+	moduleVals[module] = value;
+	var val = "";
+	for(var param in moduleVals){
+		val += val ? "," + param + ":" + moduleVals[param] : param + " : " + moduleVals[param];
+	}
+	doc.cookie = "treewidth_modules" + "=" + val +
+		((expires == null) ? "" : "; expires=" + expires.toGMTString()) +
+		((path == null)    ? "" : "; path=" + path) +
+		((domain == null)  ? "" : "; domain=" + domain);
+}');
 	}
 
 	/* process vars & commands

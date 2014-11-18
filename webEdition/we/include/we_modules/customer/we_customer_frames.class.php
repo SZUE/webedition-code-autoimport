@@ -352,13 +352,12 @@ top.content.hloaded = 1;');
 
 	function getHTMLCmd(){
 		$p = we_base_request::_(we_base_request::RAW, 'pid');
-		if($p !== false){
-			$pid = ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8') ?
-					utf8_encode($p) :
-					$p;
-		} else {
-			exit;
+		if($p === false){
+			exit();
 		}
+		$pid = ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8') ?
+				utf8_encode($p) :
+				$p;
 
 		$sortField = we_base_request::_(we_base_request::STRING, 'sort');
 		if($sortField !== false){
@@ -453,57 +452,57 @@ top.content.hloaded = 1;');
 								we_html_element::jsElement(
 										$this->View->getJSSearch() .
 										$this->jsOut_fieldTypesByName . "
-	var date_format_dateonly = '" . g_l('date', '[format][mysqlDate]') . "';
-	var fieldDate = new weDate(date_format_dateonly);
+var date_format_dateonly = '" . g_l('date', '[format][mysqlDate]') . "';
+var fieldDate = new weDate(date_format_dateonly);
 
-	function showDatePickerIcon(fieldNr) {
-		document.getElementsByName('value_'+fieldNr)[0].style.display = 'none';
-		document.getElementsByName('value_date_'+fieldNr)[0].style.display = '';
-		document.getElementById('date_picker_'+fieldNr).style.display = '';
-		document.getElementById('dpzell_'+fieldNr).style.display = '';
-	}
+function showDatePickerIcon(fieldNr) {
+	document.getElementsByName('value_'+fieldNr)[0].style.display = 'none';
+	document.getElementsByName('value_date_'+fieldNr)[0].style.display = '';
+	document.getElementById('date_picker_'+fieldNr).style.display = '';
+	document.getElementById('dpzell_'+fieldNr).style.display = '';
+}
 
-	function hideDatePickerIcon(fieldNr) {
-		document.getElementsByName('value_'+fieldNr)[0].style.display = '';
-		document.getElementsByName('value_date_'+fieldNr)[0].style.display = 'none';
-		document.getElementById('date_picker_'+fieldNr).style.display = 'none';
-		document.getElementById('dpzell_'+fieldNr).style.display = 'none';
-	}
+function hideDatePickerIcon(fieldNr) {
+	document.getElementsByName('value_'+fieldNr)[0].style.display = '';
+	document.getElementsByName('value_date_'+fieldNr)[0].style.display = 'none';
+	document.getElementById('date_picker_'+fieldNr).style.display = 'none';
+	document.getElementById('dpzell_'+fieldNr).style.display = 'none';
+}
 
-	function isDateField(fieldNr){
-		selBranch = document.getElementsByName('branch_'+fieldNr)[0].value;
-		selField  = document.getElementsByName('field_'+fieldNr)[0].value;
+function isDateField(fieldNr){
+	selBranch = document.getElementsByName('branch_'+fieldNr)[0].value;
+	selField  = document.getElementsByName('field_'+fieldNr)[0].value;
+	selField  = selField.substring(selBranch.length+1,selField.length);
+	if(fieldTypesByName[selField] == 'date') showDatePickerIcon(fieldNr);
+	else hideDatePickerIcon(fieldNr);
+}
+
+function lookForDateFields(){
+	for(i = 0; i < document.getElementsByName('count')[0].value; i++){
+		selBranch = document.getElementsByName('branch_'+i)[0].value;
+		selField  = document.getElementsByName('field_'+i)[0].value;
 		selField  = selField.substring(selBranch.length+1,selField.length);
-		if(fieldTypesByName[selField] == 'date') showDatePickerIcon(fieldNr);
-		else hideDatePickerIcon(fieldNr);
-	}
+		if(fieldTypesByName[selField] == 'date') {
+			if(document.getElementsByName('value_'+i)[0].value != '') {
+				document.getElementById('value_date_'+i).value = fieldDate.timestempToDate(document.getElementsByName('value_'+i)[0].value);
 
-	function lookForDateFields(){
-		for(i = 0; i < document.getElementsByName('count')[0].value; i++){
-			selBranch = document.getElementsByName('branch_'+i)[0].value;
-			selField  = document.getElementsByName('field_'+i)[0].value;
-			selField  = selField.substring(selBranch.length+1,selField.length);
-			if(fieldTypesByName[selField] == 'date') {
-				if(document.getElementsByName('value_'+i)[0].value != '') {
-					document.getElementById('value_date_'+i).value = fieldDate.timestempToDate(document.getElementsByName('value_'+i)[0].value);
-
-				}
-				showDatePickerIcon(i);
 			}
-			Calendar.setup({inputField:'value_date_'+i,ifFormat:date_format_dateonly,button:'date_picker_'+i,align:'Tl',singleClick:true});
+			showDatePickerIcon(i);
+		}
+		Calendar.setup({inputField:'value_date_'+i,ifFormat:date_format_dateonly,button:'date_picker_'+i,align:'Tl',singleClick:true});
+	}
+}
+
+function transferDateFields() {
+	for(i = 0; i < document.getElementsByName('count')[0].value; i++){
+		selBranch = document.getElementsByName('branch_'+i)[0].value;
+		selField  = document.getElementsByName('field_'+i)[0].value;
+		selField  = selField.substring(selBranch.length+1,selField.length);
+		if(fieldTypesByName[selField] == 'date' && document.getElementById('value_date_'+i).value != '') {
+			document.getElementsByName('value_'+i)[0].value = fieldDate.dateToTimestemp(document.getElementById('value_date_'+i).value);
 		}
 	}
-
-	function transferDateFields() {
-		for(i = 0; i < document.getElementsByName('count')[0].value; i++){
-			selBranch = document.getElementsByName('branch_'+i)[0].value;
-			selField  = document.getElementsByName('field_'+i)[0].value;
-			selField  = selField.substring(selBranch.length+1,selField.length);
-			if(fieldTypesByName[selField] == 'date' && document.getElementById('value_date_'+i).value != '') {
-				document.getElementsByName('value_'+i)[0].value = fieldDate.dateToTimestemp(document.getElementById('value_date_'+i).value);
-			}
-		}
-	}") .
+}") .
 								we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
 										we_html_tools::htmlDialogLayout(
 												$table->getHtml(), g_l('modules_customer', '[search]'), we_html_button::position_yes_no_cancel(null, we_html_button::create_button("close", "javascript:self.close();")), "100%", 30, 558
@@ -532,11 +531,11 @@ top.content.hloaded = 1;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), $default_sort_view_select->getHtml());
 
-		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[start_year]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
-		$table->setCol( ++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol(++$cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
@@ -549,7 +548,7 @@ top.content.hloaded = 1;');
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
-		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_order->getHtml());
 
@@ -558,7 +557,7 @@ top.content.hloaded = 1;');
 		$default_saveRegisteredUser_register->addOption('true', 'true');
 		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
 
-		$table->setCol( ++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont'), '&lt;we:saveRegisteredUser register=&quot;');
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 
