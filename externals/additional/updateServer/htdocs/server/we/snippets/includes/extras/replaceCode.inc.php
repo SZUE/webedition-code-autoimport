@@ -294,5 +294,3 @@ $replaceCode['templateSaveCode_demo']['replace']['3900'] = '#save template2';
 $replaceCode['we_conf_content']['path']['3900'] = '/webEdition/we/include/conf/we_conf.inc%s';
 $replaceCode['we_conf_content']['needle']['3900'] = 'define\(\'LIVEUPDATE_INSTALLED_WITH_CONTENT\', .*\);';
 $replaceCode['we_conf_content']['replace']['3900'] = 'define(\'LIVEUPDATE_INSTALLED_WITH_CONTENT\', %s);';
-
-?>

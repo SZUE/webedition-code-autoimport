@@ -5,6 +5,40 @@
  * @see /we4/includes/replaceCode/replaceCode.inc.php
  */
 // add licensee to we_conf.inc.php
+$replaceCode['we_conf_demo']['path']['6391'] = '/webEdition/we/include/conf/we_conf.inc%s';
+$replaceCode['we_conf_demo']['replace']['6391'] = <<< weConfDemoSaveCodeBoundary
+<?php
+
+/**
+ * webEdition CMS configuration file
+ * NOTE: this file is regenerated, so any extra contents will be overwritten. Change only already existent fields, if really needed.
+ *
+ */
+weConfDemoSaveCodeBoundary;
+$replaceCode['we_conf_demo']['path']['6391'] = '/webEdition/we/include/conf/we_conf_global.inc%s';
+$replaceCode['we_conf_demo']['replace']['6391'] = <<< weConfDemoSaveCodeBoundary
+<?php
+
+/**
+ * webEdition CMS configuration file
+ * NOTE: this file is regenerated, so any extra contents will be overwritten
+ */
+
+/**
+ * Configuration file for webEdition
+ * =================================
+ *
+ * Holds the globals settings of webEdition.
+ *
+ * NOTE:
+ * =====
+ * Edit this file ONLY if you know exactly what you are doing!
+ */
+
+//Default Charset
+define('DEFAULT_CHARSET', "UTF-8");
+weConfDemoSaveCodeBoundary;
+
 $replaceCode['we_conf_demo']['path']['4900'] = '/webEdition/we/include/conf/we_conf.inc%s';
 $replaceCode['we_conf_demo']['replace']['4900'] = <<< weConfDemoSaveCodeBoundary
 <?php
@@ -396,43 +430,43 @@ define("EXECUTE_HOOKS", 0);
 // connection charset to db wichtig: klein Leerzeichen nach/vor Komma im define
 define("DB_SET_CHARSET","%s");
 
-//Versioning status for ContentType image/* 
+//Versioning status for ContentType image/*
 define("VERSIONING_IMAGE", 0);
 
-//Versioning status for ContentType text/html 
+//Versioning status for ContentType text/html
 define("VERSIONING_TEXT_HTML", 0);
 
-//Versioning status for ContentType text/weTmpl 
+//Versioning status for ContentType text/weTmpl
 define("VERSIONING_TEXT_WETMPL", 1);
 
-//Versioning status for ContentType text/webedition 
+//Versioning status for ContentType text/webedition
 define("VERSIONING_TEXT_WEBEDITION", 1);
 
-//Versioning status for ContentType text/htaccess 
+//Versioning status for ContentType text/htaccess
 define("VERSIONING_TEXT_HTACCESS", 0);
 
-//Versioning status for ContentType text/js 
+//Versioning status for ContentType text/js
 define("VERSIONING_TEXT_JS", 0);
 
-//Versioning status for ContentType text/css 
+//Versioning status for ContentType text/css
 define("VERSIONING_TEXT_CSS", 0);
 
-//Versioning status for ContentType text/plain 
+//Versioning status for ContentType text/plain
 define("VERSIONING_TEXT_PLAIN", 0);
 
-//Versioning status for ContentType application/x-shockwave-flash 
+//Versioning status for ContentType application/x-shockwave-flash
 define("VERSIONING_FLASH", 0);
 
-//Versioning status for ContentType video/quicktime 
+//Versioning status for ContentType video/quicktime
 define("VERSIONING_QUICKTIME", 0);
 
-//Versioning status for ContentType application/* 
+//Versioning status for ContentType application/*
 define("VERSIONING_SONSTIGE", 0);
 
-//Versioning status for ContentType text/xml 
+//Versioning status for ContentType text/xml
 define("VERSIONING_TEXT_XML", 0);
 
-//Versioning status for ContentType objectFile 
+//Versioning status for ContentType objectFile
 define("VERSIONING_OBJECT", 0);
 
 //Versioning Number of Days
@@ -465,10 +499,10 @@ define("VERSIONS_TIME_YEARS_TMPL", -1);
 //Versioning Number of Versions
 define("VERSIONS_ANZAHL_TMPL", "5");
 
-// Flag if automatic LanguageLinks should be supported 
+// Flag if automatic LanguageLinks should be supported
 define("LANGLINK_SUPPORT", 1);
 
-// Flag if automatic backlinks should be generated 
+// Flag if automatic backlinks should be generated
 define("LANGLINK_SUPPORT_BACKLINKS", 1);
 
 
@@ -508,10 +542,10 @@ define("URLENCODE_OBJECTSEOURLS", 0);
 // Flag if 404 not found should be suppressd
 define("SUPPRESS404CODE", 1);
 
-// Flag if should be displayed in webEdition 
+// Flag if should be displayed in webEdition
 define("SEOINSIDE_HIDEINWEBEDITION", 0);
 
-// Flag if should be displayed in Editmode 
+// Flag if should be displayed in Editmode
 define("SEOINSIDE_HIDEINEDITMODE", 1);
 
 
@@ -530,6 +564,15 @@ define("WE_VERSION_BRANCH","%s");
 define("WE_VERSION_NAME","%s");
 
 ?>';
+$replaceCode['we_activeModules']['path'][6380] = '/webEdition/we/include/conf/we_active_integrated_modules.inc%s';
+$replaceCode['we_activeModules']['replace'][6380] = '<?php
+/**
+ * webEdition CMS configuration file
+ * NOTE: this file is regenerated, so any extra contents will be overwritten
+ */
+
+$GLOBALS[\'_we_active_integrated_modules\'] = array();';
+
 $replaceCode['we_activeModules']['path'][LANGUAGELIMIT] = '/webEdition/we/include/conf/we_active_integrated_modules.inc%s';
 $replaceCode['we_activeModules']['replace'][LANGUAGELIMIT] = '<?php
 $_we_active_integrated_modules = array();
@@ -561,7 +604,7 @@ $replaceCode['we_proxysettings']['replace']['4900'] = '<?php
 	define("WE_PROXYPASSWORD", "%s");
 ?>';
 
-// enable demo pop-up webEdition.php
+/*// enable demo pop-up webEdition.php
 $replaceCode['webEdition_demo']['path']['4900'] = '/webEdition/webEdition%s';
 $replaceCode['webEdition_demo']['needle']['4900'] = 'var we_demo = false;';
 $replaceCode['webEdition_demo']['replace']['4900'] = 'var we_demo = true;';
@@ -579,24 +622,15 @@ $replaceCode['menu2_demo']['replace']['4900'] = '$we_menu["3060000"]["text"] = $
 $replaceCode['templateSaveCode_demo']['path']['4900'] = '/webEdition/we/include/we_editors/we_editor.inc%s';
 $replaceCode['templateSaveCode_demo']['needle']['4900'] = '####TEMPLATE_SAVE_CODE2_START###.*####TEMPLATE_SAVE_CODE2_END###'; // ! IMPORTANT
 $replaceCode['templateSaveCode_demo']['replace']['4900'] = '#save template2';
-
+*/
 // insert tblPrefs
 $replaceCode['insert_tblPrefs']['path']['4900'] = '';
-
-// new with webedition feed and deleted feeds:
-//$replaceCode['insert_tblPrefs']['replace']['4900'] = 'INSERT INTO %s'.'tblPrefs VALUES (1,0,\'1\',\'\',0,\'.html\',\'.php\',\'.html\',0,0,0,0,0,0,\'%s\',\'\',\'\',0,0,\'cockpit\',1,900,700,0,0,\'none\',-1,0,20,0,0,0,0,\'\',\'\',5,1,\'%s\',\'a:3:{i:0;a:2:{i:0;a:4:{i:0;s:3:\"pad\";i:1;s:4:\"blue\";i:2;i:1;i:3;s:18:\"U29uc3RpZ2Vz,30020\";}i:1;a:4:{i:0;s:3:\"mfd\";i:1;s:5:\"green\";i:2;i:1;i:3;s:12:\"1111;0;5;00;\";}}i:1;a:2:{i:0;a:4:{i:0;s:3:\"rss\";i:1;s:6:\"yellow\";i:2;i:1;i:3;s:98:\"aHR0cDovL3d3dy53ZWJlZGl0aW9uLmRlL2RlL1ByZXNzZS9QcmVzc2VtZWxkdW5nZW4vcnNzMi54bWw=,111000,0,110000,1\";}i:1;a:4:{i:0;s:3:\"sct\";i:1;s:3:\"red\";i:2;i:1;i:3;s:124:\"open_document,new_document,new_template,new_directory,unpublished_pages;unpublished_objects,new_object,new_class,preferences\";}}i:2;a:15:{i:0;a:2:{i:0;s:20:\"d2ViRWRpdGlvbiBOZXdz\";i:1;s:80:\"aHR0cDovL3d3dy53ZWJlZGl0aW9uLmRlL2RlL1ByZXNzZS9QcmVzc2VtZWxkdW5nZW4vcnNzMi54bWw=\";}i:1;a:2:{i:0;s:16:\"Rk9DVVMtT25saW5l\";i:1;s:60:\"aHR0cDovL2ZvY3VzLm1zbi5kZS9mb2wvWE1ML3Jzc19mb2xuZXdzLnhtbA==\";}i:2;a:2:{i:0;s:12:\"U2xhc2hkb3Q=\";i:1;s:56:\"aHR0cDovL3Jzcy5zbGFzaGRvdC5vcmcvU2xhc2hkb3Qvc2xhc2hkb3Q=\";}i:3;a:2:{i:0;s:24:\"aGVpc2Ugb25saW5lIE5ld3M=\";i:1;s:56:\"aHR0cDovL3d3dy5oZWlzZS5kZS9uZXdzdGlja2VyL2hlaXNlLnJkZg==\";}i:4;a:2:{i:0;s:20:\"dGFnZXNzY2hhdS5kZQ==\";i:1;s:68:\"aHR0cDovL3d3dy50YWdlc3NjaGF1LmRlL3htbC90YWdlc3NjaGF1LW1lbGR1bmdlbi8=\";}i:8;a:2:{i:0;s:12:\"RkFaLk5FVA==\";i:1;s:64:\"aHR0cDovL3d3dy5mYXoubmV0L3MvUnViL1RwbH5FcGFydG5lcn5TUnNzXy54bWw=\";}i:9;a:2:{i:0;s:20:\"RmlsbXN0YXJ0cy5kZQ==\";i:1;s:60:\"aHR0cDovL3d3dy5maWxtc3RhcnRzLmRlL3htbC9maWxtc3RhcnRzLnhtbA==\";}i:10;a:2:{i:0;s:20:\"TkVUWkVJVFVORy5ERQ==\";i:1;s:76:\"aHR0cDovL3d3dy5uZXR6ZWl0dW5nLmRlL2V4cG9ydC9uZXdzL3Jzcy90aXRlbHNlaXRlLnhtbA==\";}i:11;a:2:{i:0;s:28:\"aHR0cDovL3d3dy5zcGllZ2VsLmRl\";i:1;s:52:\"aHR0cDovL3d3dy5zcGllZ2VsLmRlL3NjaGxhZ3plaWxlbi9yc3Mv\";}i:12;a:2:{i:0;s:8:\"R0VPLmRl\";i:1;s:48:\"aHR0cDovL3d3dy5nZW8uZGUvcnNzL0dFTy9pbmRleC54bWw=\";}i:13;a:2:{i:0;s:44:\"MTAwMGUgU3By/GNoZSAoU3BydWNoIGRlcyBUYWdlcyk=\";i:1;s:96:\"aHR0cDovL3d3dy5ob21lcGFnZXNlcnZpY2Uudm9zc3dlYi5pbmZvL2F1c3dhaGwvc3BydWNoL3Jzcy9oZXV0ZS9yc3MueG1s\";}i:14;a:2:{i:0;s:32:\"QnVuZGVzcmVnaWVydW5nIEFrdHVlbGw=\";i:1;s:56:\"aHR0cDovL3d3dy5idW5kZXNyZWdpZXJ1bmcuZGUvYWt0dWVsbC5yc3M=\";}i:15;a:2:{i:0;s:20:\"QW53YWx0cy1UaXBwcw==\";i:1;s:60:\"aHR0cDovL3d3dy5hbndhbHRzc3VjaGRpZW5zdC5kZS9yc3MvcnNzLnhtbA==\";}i:18;a:2:{i:0;s:12:\"Q0hJUC5ERQ==\";i:1;s:44:\"aHR0cDovL3d3dy5jaGlwLmRlL3Jzc19uZXdzLnhtbA==\";}i:19;a:2:{i:0;s:12:\"U3Rlcm4uZGU=\";i:1;s:64:\"aHR0cDovL3d3dy5zdGVybi5kZS9zdGFuZGFyZC9yc3MucGhwP2NoYW5uZWw9YWxs\";}}}\',3,7,0,0)';
-//$replaceCode['insert_tblPrefs']['replace']['4900'] = 'INSERT INTO %s'.'tblPrefs VALUES (1,0,\'1\',\'\',0,\'.html\',\'.php\',\'.html\',0,0,0,0,0,0,\'%s\',\'\',\'\',0,0,\'cockpit\',1,900,700,0,0,\'none\',-1,0,20,0,0,0,0,\'\',\'\',5,1,\'%s\',\'a:3:{i:0;a:2:{i:0;a:4:{i:0;s:3:\"pad\";i:1;s:4:\"blue\";i:2;i:1;i:3;s:18:\"U29uc3RpZ2Vz,30020\";}i:1;a:4:{i:0;s:3:\"mfd\";i:1;s:5:\"green\";i:2;i:1;i:3;s:12:\"1111;0;5;00;\";}}i:1;a:2:{i:0;a:4:{i:0;s:3:\"rss\";i:1;s:6:\"yellow\";i:2;i:1;i:3;s:98:\"aHR0cDovL3d3dy53ZWJlZGl0aW9uLmRlL2RlL1ByZXNzZS9QcmVzc2VtZWxkdW5nZW4vcnNzMi54bWw=,111000,0,110000,1\";}i:1;a:4:{i:0;s:3:\"sct\";i:1;s:3:\"red\";i:2;i:1;i:3;s:124:\"open_document,new_document,new_template,new_directory,unpublished_pages;unpublished_objects,new_object,new_class,preferences\";}}i:2;a:15:{i:0;a:2:{i:0;s:20:\"d2ViRWRpdGlvbiBOZXdz\";i:1;s:80:\"aHR0cDovL3d3dy53ZWJlZGl0aW9uLmRlL2RlL1ByZXNzZS9QcmVzc2VtZWxkdW5nZW4vcnNzMi54bWw=\";}i:1;a:2:{i:0;s:16:\"Rk9DVVMtT25saW5l\";i:1;s:60:\"aHR0cDovL2ZvY3VzLm1zbi5kZS9mb2wvWE1ML3Jzc19mb2xuZXdzLnhtbA==\";}i:2;a:2:{i:0;s:12:\"U2xhc2hkb3Q=\";i:1;s:56:\"aHR0cDovL3Jzcy5zbGFzaGRvdC5vcmcvU2xhc2hkb3Qvc2xhc2hkb3Q=\";}i:3;a:2:{i:0;s:24:\"aGVpc2Ugb25saW5lIE5ld3M=\";i:1;s:56:\"aHR0cDovL3d3dy5oZWlzZS5kZS9uZXdzdGlja2VyL2hlaXNlLnJkZg==\";}i:4;a:2:{i:0;s:20:\"dGFnZXNzY2hhdS5kZQ==\";i:1;s:68:\"aHR0cDovL3d3dy50YWdlc3NjaGF1LmRlL3htbC90YWdlc3NjaGF1LW1lbGR1bmdlbi8=\";}i:8;a:2:{i:0;s:12:\"RkFaLk5FVA==\";i:1;s:64:\"aHR0cDovL3d3dy5mYXoubmV0L3MvUnViL1RwbH5FcGFydG5lcn5TUnNzXy54bWw=\";}i:9;a:2:{i:0;s:20:\"RmlsbXN0YXJ0cy5kZQ==\";i:1;s:60:\"aHR0cDovL3d3dy5maWxtc3RhcnRzLmRlL3htbC9maWxtc3RhcnRzLnhtbA==\";}i:10;a:2:{i:0;s:20:\"TkVUWkVJVFVORy5ERQ==\";i:1;s:76:\"aHR0cDovL3d3dy5uZXR6ZWl0dW5nLmRlL2V4cG9ydC9uZXdzL3Jzcy90aXRlbHNlaXRlLnhtbA==\";}i:11;a:2:{i:0;s:28:\"aHR0cDovL3d3dy5zcGllZ2VsLmRl\";i:1;s:52:\"aHR0cDovL3d3dy5zcGllZ2VsLmRlL3NjaGxhZ3plaWxlbi9yc3Mv\";}i:12;a:2:{i:0;s:8:\"R0VPLmRl\";i:1;s:48:\"aHR0cDovL3d3dy5nZW8uZGUvcnNzL0dFTy9pbmRleC54bWw=\";}i:13;a:2:{i:0;s:44:\"MTAwMGUgU3By/GNoZSAoU3BydWNoIGRlcyBUYWdlcyk=\";i:1;s:96:\"aHR0cDovL3d3dy5ob21lcGFnZXNlcnZpY2Uudm9zc3dlYi5pbmZvL2F1c3dhaGwvc3BydWNoL3Jzcy9oZXV0ZS9yc3MueG1s\";}i:14;a:2:{i:0;s:32:\"QnVuZGVzcmVnaWVydW5nIEFrdHVlbGw=\";i:1;s:56:\"aHR0cDovL3d3dy5idW5kZXNyZWdpZXJ1bmcuZGUvYWt0dWVsbC5yc3M=\";}i:15;a:2:{i:0;s:20:\"QW53YWx0cy1UaXBwcw==\";i:1;s:60:\"aHR0cDovL3d3dy5hbndhbHRzc3VjaGRpZW5zdC5kZS9yc3MvcnNzLnhtbA==\";}i:18;a:2:{i:0;s:12:\"Q0hJUC5ERQ==\";i:1;s:44:\"aHR0cDovL3d3dy5jaGlwLmRlL3Jzc19uZXdzLnhtbA==\";}i:19;a:2:{i:0;s:12:\"U3Rlcm4uZGU=\";i:1;s:64:\"aHR0cDovL3d3dy5zdGVybi5kZS9zdGFuZGFyZC9yc3MucGhwP2NoYW5uZWw9YWxs\";}}}\',3,7,0,0,\'\',\'\',\'\',\'\',\'\',\'\',\'\',1,0)';
 
 $replaceCode['insert_tblPrefs']['replace']['4900'] = 'UPDATE %s'.'tblPrefs set Language = \'%s\' where userID = \'1\'';
 $replaceCode['insert_tblPrefs']['replace'][LANGUAGELIMIT] = 'UPDATE %s'.'tblPrefs set Language = \'%s\',BackendCharset = \'%s\'  where userID = \'1\'';
 
-// old with webedition feed:
-//$replaceCode['insert_tblPrefs']['replace']['4900'] = 'INSERT INTO %s'.'tblPrefs VALUES (1,0,\'1\',\'\',0,\'.html\',\'.php\',\'.html\',0,0,0,0,0,0,\'%s\',\'\',\'\',0,0,\'cockpit\',1,900,700,0,0,\'none\',-1,0,20,0,0,0,0,\'\',\'\',5,1,\'%s\',\'a:3:{i:0;a:2:{i:0;a:4:{i:0;s:3:\"pad\";i:1;s:4:\"blue\";i:2;i:1;i:3;s:18:\"U29uc3RpZ2Vz,30020\";}i:1;a:4:{i:0;s:3:\"mfd\";i:1;s:5:\"green\";i:2;i:1;i:3;s:12:\"1111;0;5;00;\";}}i:1;a:2:{i:0;a:4:{i:0;s:3:\"rss\";i:1;s:6:\"yellow\";i:2;i:1;i:3;s:98:\"aHR0cDovL3d3dy53ZWJlZGl0aW9uLmRlL2RlL1ByZXNzZS9QcmVzc2VtZWxkdW5nZW4vcnNzMi54bWw=,111000,0,110000,1\";}i:1;a:4:{i:0;s:3:\"sct\";i:1;s:3:\"red\";i:2;i:1;i:3;s:124:\"open_document,new_document,new_template,new_directory,unpublished_pages;unpublished_objects,new_object,new_class,preferences\";}}i:2;a:20:{i:0;a:2:{i:0;s:20:\"d2ViRWRpdGlvbiBOZXdz\";i:1;s:80:\"aHR0cDovL3d3dy53ZWJlZGl0aW9uLmRlL2RlL1ByZXNzZS9QcmVzc2VtZWxkdW5nZW4vcnNzMi54bWw=\";}i:1;a:2:{i:0;s:16:\"Rk9DVVMtT25saW5l\";i:1;s:60:\"aHR0cDovL2ZvY3VzLm1zbi5kZS9mb2wvWE1ML3Jzc19mb2xuZXdzLnhtbA==\";}i:2;a:2:{i:0;s:12:\"U2xhc2hkb3Q=\";i:1;s:56:\"aHR0cDovL3Jzcy5zbGFzaGRvdC5vcmcvU2xhc2hkb3Qvc2xhc2hkb3Q=\";}i:3;a:2:{i:0;s:24:\"aGVpc2Ugb25saW5lIE5ld3M=\";i:1;s:56:\"aHR0cDovL3d3dy5oZWlzZS5kZS9uZXdzdGlja2VyL2hlaXNlLnJkZg==\";}i:4;a:2:{i:0;s:20:\"dGFnZXNzY2hhdS5kZQ==\";i:1;s:68:\"aHR0cDovL3d3dy50YWdlc3NjaGF1LmRlL3htbC90YWdlc3NjaGF1LW1lbGR1bmdlbi8=\";}i:5;a:2:{i:0;s:12:\"U0FUVklTSU9O\";i:1;s:52:\"aHR0cDovL3d3dy5zYXR2aXNpb24ub3JnL25ld3MvcnNzLnhtbA==\";}i:6;a:2:{i:0;s:20:\"QmFzZWwtSUkuaW5mbw==\";i:1;s:52:\"aHR0cDovL3d3dy5iYXNlbC1paS5pbmZvL0Jhc2VsLUlJLnBocA==\";}i:7;a:2:{i:0;s:52:\"LrAuTGlxdWlkIE1vdGlvbiBXZWItICYgR3JhZmlrZGVzaWdusC6w\";i:1;s:52:\"aHR0cDovL3d3dy5saXF1aWQtbW90aW9uLmRlL3Jzcy9yc3MueG1s\";}i:8;a:2:{i:0;s:12:\"RkFaLk5FVA==\";i:1;s:64:\"aHR0cDovL3d3dy5mYXoubmV0L3MvUnViL1RwbH5FcGFydG5lcn5TUnNzXy54bWw=\";}i:9;a:2:{i:0;s:20:\"RmlsbXN0YXJ0cy5kZQ==\";i:1;s:60:\"aHR0cDovL3d3dy5maWxtc3RhcnRzLmRlL3htbC9maWxtc3RhcnRzLnhtbA==\";}i:10;a:2:{i:0;s:20:\"TkVUWkVJVFVORy5ERQ==\";i:1;s:76:\"aHR0cDovL3d3dy5uZXR6ZWl0dW5nLmRlL2V4cG9ydC9uZXdzL3Jzcy90aXRlbHNlaXRlLnhtbA==\";}i:11;a:2:{i:0;s:28:\"aHR0cDovL3d3dy5zcGllZ2VsLmRl\";i:1;s:52:\"aHR0cDovL3d3dy5zcGllZ2VsLmRlL3NjaGxhZ3plaWxlbi9yc3Mv\";}i:12;a:2:{i:0;s:8:\"R0VPLmRl\";i:1;s:48:\"aHR0cDovL3d3dy5nZW8uZGUvcnNzL0dFTy9pbmRleC54bWw=\";}i:13;a:2:{i:0;s:44:\"MTAwMGUgU3By/GNoZSAoU3BydWNoIGRlcyBUYWdlcyk=\";i:1;s:96:\"aHR0cDovL3d3dy5ob21lcGFnZXNlcnZpY2Uudm9zc3dlYi5pbmZvL2F1c3dhaGwvc3BydWNoL3Jzcy9oZXV0ZS9yc3MueG1s\";}i:14;a:2:{i:0;s:32:\"QnVuZGVzcmVnaWVydW5nIEFrdHVlbGw=\";i:1;s:56:\"aHR0cDovL3d3dy5idW5kZXNyZWdpZXJ1bmcuZGUvYWt0dWVsbC5yc3M=\";}i:15;a:2:{i:0;s:20:\"QW53YWx0cy1UaXBwcw==\";i:1;s:60:\"aHR0cDovL3d3dy5hbndhbHRzc3VjaGRpZW5zdC5kZS9yc3MvcnNzLnhtbA==\";}i:16;a:2:{i:0;s:56:\"UHJvbW9NYXN0ZXJzIEludGVybmV0IE1hcmtldGluZyBSU1MgQmxvZw==\";i:1;s:56:\"aHR0cDovL3d3dy5wcm9tb21hc3RlcnMuYXQvcnNzL2luZGV4LnhtbA==\";}i:17;a:2:{i:0;s:20:\"U1dSMyBSREYtRmVlZA==\";i:1;s:40:\"aHR0cDovL3d3dy5zd3IzLmRlL3JkZi1mZWVkLw==\";}i:18;a:2:{i:0;s:12:\"Q0hJUC5ERQ==\";i:1;s:44:\"aHR0cDovL3d3dy5jaGlwLmRlL3Jzc19uZXdzLnhtbA==\";}i:19;a:2:{i:0;s:12:\"U3Rlcm4uZGU=\";i:1;s:64:\"aHR0cDovL3d3dy5zdGVybi5kZS9zdGFuZGFyZC9yc3MucGhwP2NoYW5uZWw9YWxs\";}}}\',3,7,0,0)';
-// old with living-e feed: 
-//$replaceCode['insert_tblPrefs']['replace']['4900'] = 'INSERT INTO %s'.'tblPrefs VALUES (1,0,\'1\',\'\',0,\'.html\',\'.php\',\'.html\',0,0,0,0,0,0,\'%s\',\'\',\'\',0,0,\'cockpit\',1,900,700,0,0,\'none\',-1,0,20,0,0,0,0,\'\',\'\',5,1,\'%s\',\'a:3:{i:0;a:2:{i:0;a:4:{i:0;s:3:\"pad\";i:1;s:4:\"blue\";i:2;i:1;i:3;s:18:\"U29uc3RpZ2Vz,30020\";}i:1;a:4:{i:0;s:3:\"mfd\";i:1;s:5:\"green\";i:2;i:1;i:3;s:12:\"1111;0;5;00;\";}}i:1;a:2:{i:0;a:4:{i:0;s:3:\"rss\";i:1;s:6:\"yellow\";i:2;i:1;i:3;s:106:\"aHR0cDovL3d3dy5saXZpbmctZS5kZS9kZS9wcmVzc2V6ZW50cnVtL3ByLW1pdHRlaWx1bmdlbi9yc3MyLnhtbA==,111000,0,110000,1\";}i:1;a:4:{i:0;s:3:\"sct\";i:1;s:3:\"red\";i:2;i:1;i:3;s:124:\"open_document,new_document,new_template,new_directory,unpublished_pages;unpublished_objects,new_object,new_class,preferences\";}}i:2;a:20:{i:0;a:2:{i:0;s:16:\"bGl2aW5nLWUgQUc=\";i:1;s:88:\"aHR0cDovL3d3dy5saXZpbmctZS5kZS9kZS9wcmVzc2V6ZW50cnVtL3ByLW1pdHRlaWx1bmdlbi9yc3MyLnhtbA==\";}i:1;a:2:{i:0;s:16:\"Rk9DVVMtT25saW5l\";i:1;s:60:\"aHR0cDovL2ZvY3VzLm1zbi5kZS9mb2wvWE1ML3Jzc19mb2xuZXdzLnhtbA==\";}i:2;a:2:{i:0;s:12:\"U2xhc2hkb3Q=\";i:1;s:56:\"aHR0cDovL3Jzcy5zbGFzaGRvdC5vcmcvU2xhc2hkb3Qvc2xhc2hkb3Q=\";}i:3;a:2:{i:0;s:24:\"aGVpc2Ugb25saW5lIE5ld3M=\";i:1;s:56:\"aHR0cDovL3d3dy5oZWlzZS5kZS9uZXdzdGlja2VyL2hlaXNlLnJkZg==\";}i:4;a:2:{i:0;s:20:\"dGFnZXNzY2hhdS5kZQ==\";i:1;s:68:\"aHR0cDovL3d3dy50YWdlc3NjaGF1LmRlL3htbC90YWdlc3NjaGF1LW1lbGR1bmdlbi8=\";}i:5;a:2:{i:0;s:12:\"U0FUVklTSU9O\";i:1;s:52:\"aHR0cDovL3d3dy5zYXR2aXNpb24ub3JnL25ld3MvcnNzLnhtbA==\";}i:6;a:2:{i:0;s:20:\"QmFzZWwtSUkuaW5mbw==\";i:1;s:52:\"aHR0cDovL3d3dy5iYXNlbC1paS5pbmZvL0Jhc2VsLUlJLnBocA==\";}i:7;a:2:{i:0;s:52:\"LrAuTGlxdWlkIE1vdGlvbiBXZWItICYgR3JhZmlrZGVzaWdusC6w\";i:1;s:52:\"aHR0cDovL3d3dy5saXF1aWQtbW90aW9uLmRlL3Jzcy9yc3MueG1s\";}i:8;a:2:{i:0;s:12:\"RkFaLk5FVA==\";i:1;s:64:\"aHR0cDovL3d3dy5mYXoubmV0L3MvUnViL1RwbH5FcGFydG5lcn5TUnNzXy54bWw=\";}i:9;a:2:{i:0;s:20:\"RmlsbXN0YXJ0cy5kZQ==\";i:1;s:60:\"aHR0cDovL3d3dy5maWxtc3RhcnRzLmRlL3htbC9maWxtc3RhcnRzLnhtbA==\";}i:10;a:2:{i:0;s:20:\"TkVUWkVJVFVORy5ERQ==\";i:1;s:76:\"aHR0cDovL3d3dy5uZXR6ZWl0dW5nLmRlL2V4cG9ydC9uZXdzL3Jzcy90aXRlbHNlaXRlLnhtbA==\";}i:11;a:2:{i:0;s:28:\"aHR0cDovL3d3dy5zcGllZ2VsLmRl\";i:1;s:52:\"aHR0cDovL3d3dy5zcGllZ2VsLmRlL3NjaGxhZ3plaWxlbi9yc3Mv\";}i:12;a:2:{i:0;s:8:\"R0VPLmRl\";i:1;s:48:\"aHR0cDovL3d3dy5nZW8uZGUvcnNzL0dFTy9pbmRleC54bWw=\";}i:13;a:2:{i:0;s:44:\"MTAwMGUgU3By/GNoZSAoU3BydWNoIGRlcyBUYWdlcyk=\";i:1;s:96:\"aHR0cDovL3d3dy5ob21lcGFnZXNlcnZpY2Uudm9zc3dlYi5pbmZvL2F1c3dhaGwvc3BydWNoL3Jzcy9oZXV0ZS9yc3MueG1s\";}i:14;a:2:{i:0;s:32:\"QnVuZGVzcmVnaWVydW5nIEFrdHVlbGw=\";i:1;s:56:\"aHR0cDovL3d3dy5idW5kZXNyZWdpZXJ1bmcuZGUvYWt0dWVsbC5yc3M=\";}i:15;a:2:{i:0;s:20:\"QW53YWx0cy1UaXBwcw==\";i:1;s:60:\"aHR0cDovL3d3dy5hbndhbHRzc3VjaGRpZW5zdC5kZS9yc3MvcnNzLnhtbA==\";}i:16;a:2:{i:0;s:56:\"UHJvbW9NYXN0ZXJzIEludGVybmV0IE1hcmtldGluZyBSU1MgQmxvZw==\";i:1;s:56:\"aHR0cDovL3d3dy5wcm9tb21hc3RlcnMuYXQvcnNzL2luZGV4LnhtbA==\";}i:17;a:2:{i:0;s:20:\"U1dSMyBSREYtRmVlZA==\";i:1;s:40:\"aHR0cDovL3d3dy5zd3IzLmRlL3JkZi1mZWVkLw==\";}i:18;a:2:{i:0;s:12:\"Q0hJUC5ERQ==\";i:1;s:44:\"aHR0cDovL3d3dy5jaGlwLmRlL3Jzc19uZXdzLnhtbA==\";}i:19;a:2:{i:0;s:12:\"U3Rlcm4uZGU=\";i:1;s:64:\"aHR0cDovL3d3dy5zdGVybi5kZS9zdGFuZGFyZC9yc3MucGhwP2NoYW5uZWw9YWxs\";}}}\',3,7,0,0)';
 
 // insert tblUser
 $replaceCode['insert_tblUser']['path']['4900'] = '';
-//$replaceCode['insert_tblUser']['replace']['4900'] = 'INSERT INTO %s'.'tblUser (ID, Text, Path, Icon, First, username, passwd, Permissions, CreatorID) VALUES (1, \'Administrator\', \'/Administrator\', \'user.gif\', \'Administrator\', \'%s\', MD5(\'%s\'), \'a:1:{s:13:\"ADMINISTRATOR\";i:1;}\', 1)';
-$replaceCode['insert_tblUser']['replace']['4900'] = 'UPDATE %s'.'tblUser set Text = \'%s\', username = \'%s\', passwd = MD5(\'%s\'), UseSalt = \'0\' where ID = \'1\';';
-?>
+$replaceCode['insert_tblUser']['replace']['4900'] = 'UPDATE %s'.'tblUser set Text = \'%s\', username = \'%s\', passwd = MD5(\'%s\'), UseSalt = \'0\' where ID=\'1\';';
+

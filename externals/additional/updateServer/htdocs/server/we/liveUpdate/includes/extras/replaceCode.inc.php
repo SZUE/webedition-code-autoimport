@@ -86,6 +86,3 @@ $replaceCode['templateSaveCode']['replace']['3900'] = <<< TemplateSaveCodeBounda
 							}
 						}
 TemplateSaveCodeBoundary;
-
-
-?>
