@@ -47,14 +47,12 @@ function we_tag_shopField($attribs){
 	}
 	$mode = weTag_getAttribute("mode", $attribs);
 
-	$xml = weTag_getAttribute("xml", $attribs);
-
 	$fieldname = ($reference === 'article' ? WE_SHOP_ARTICLE_CUSTOM_FIELD : WE_SHOP_CART_CUSTOM_FIELD) . '[' . $name . ']';
 	$savedVal = '';
 	$isFieldForCheckBox = false;
 
 	if($reference === 'article'){ // name depends on value
-		$savedVal = (!$shopname) && isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD][$name]) ? filterXss($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD][$name]) : '';
+		$savedVal = (!$shopname) ? we_base_request::_(we_base_request::STRING, WE_SHOP_ARTICLE_CUSTOM_FIELD, '', $name) : '';
 		// does not exist here - we are only in article - custom fields are not stored on documents
 
 		if(isset($GLOBALS['lv']) && ($tmpVal = we_tag('field', array('name' => $name)))){
@@ -103,25 +101,25 @@ function we_tag_shopField($attribs){
 			return we_html_tools::hidden($fieldname, $savedVal, $atts);
 
 		case 'print':
-            $ascountry = weTag_getAttribute('ascountry', $attribs, false, true);
-            $aslanguage = weTag_getAttribute('aslanguage', $attribs, false, true);
-            if($ascountry || $aslanguage){
-                if(!Zend_Locale::hasCache()){
-                    Zend_Locale::setCache(getWEZendCache());
-                }
+			$ascountry = weTag_getAttribute('ascountry', $attribs, false, true);
+			$aslanguage = weTag_getAttribute('aslanguage', $attribs, false, true);
+			if($ascountry || $aslanguage){
+				if(!Zend_Locale::hasCache()){
+					Zend_Locale::setCache(getWEZendCache());
+				}
 
-                $lang = weTag_getAttribute('outputlanguage', $attribs);
-                if(!$lang){
-                    $doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self'));
-                    $lang = $doc->Language;
-                }
-                $langcode = substr($lang, 0, 2);
-                if(!$lang){
-                    $lang = explode('_', $GLOBALS['WE_LANGUAGE']);
-                    $langcode = array_search($lang[0], getWELangs());
-                }
-                return ($ascountry && $savedVal === '--' ? '' : CheckAndConvertISOfrontend(Zend_Locale::getTranslation($savedVal, ($ascountry ? 'territory' : 'language'), $langcode)));
-            }
+				$lang = weTag_getAttribute('outputlanguage', $attribs);
+				if(!$lang){
+					$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self'));
+					$lang = $doc->Language;
+				}
+				$langcode = substr($lang, 0, 2);
+				if(!$lang){
+					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
+					$langcode = array_search($lang[0], getWELangs());
+				}
+				return ($ascountry && $savedVal === '--' ? '' : CheckAndConvertISOfrontend(Zend_Locale::getTranslation($savedVal, ($ascountry ? 'territory' : 'language'), $langcode)));
+			}
 			return $savedVal;
 
 		case 'select':
