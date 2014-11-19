@@ -16,11 +16,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 */
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
-		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . we_database_base::arraySetter(array(
-				'aktion' => $action,
-				'versionsnummer' => $version,
-				'error' => $errorCode
-		)));
+		$GLOBALS['DB_WE']->query("INSERT INTO " . UPDATE_LOG_TABLE . " (datum, aktion, versionsnummer, error)	VALUES (NOW(), \"" . addslashes($action) . "\", \"$version\", $errorCode)");
 	}
 
 	/**
