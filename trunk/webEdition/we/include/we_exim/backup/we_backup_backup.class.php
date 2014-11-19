@@ -59,8 +59,21 @@ class we_backup_backup extends we_backup_base{
 
 		parent::__construct($handle_options);
 
-		$this->tables['core'] = array('tblfile', 'tbllink', 'tbltemplates', 'tblindex', 'tblcontent', 'tblcategorys', 'tbldoctypes', 'tblthumbnails');
-		$this->tables['object'] = array('tblobject', 'tblobjectfiles', 'tblobject_');
+		$this->tables['core'] = array(
+			'tblfile',
+			'tbllink',
+			'tbltemplates',
+			'tblindex',
+			'tblcontent',
+			'tblcategorys',
+			'tbldoctypes',
+			'tblthumbnails',
+		);
+		$this->tables['object'] = array(
+			'tblobject',
+			'tblobjectfiles',
+			'tblobject_'
+		);
 
 		$this->mode = 'xml';
 
