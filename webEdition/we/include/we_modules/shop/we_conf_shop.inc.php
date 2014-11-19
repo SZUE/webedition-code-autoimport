@@ -41,6 +41,7 @@ define('WE_SHOP_TITLE_FIELD_NAME', 'shoptitle');
 define('WE_SHOP_DESCRIPTION_FIELD_NAME', 'shopdescription');
 
 define('WE_SHOP_VAT_FIELD_NAME', 'shopvat'); // due to the names of old fields (shoptitle, shopdescription) - we must name shopvat
+define('WE_SHOP_CATEGORY_FIELD_NAME', 'we_shopCategory');
 define('WE_SHOP_PRICE_IS_NET_NAME', 'we_shopPriceIsNet');
 define('WE_SHOP_PRICENAME', 'we_shopPricename');
 define('WE_SHOP_SHIPPING', 'we_shopPriceShipping');

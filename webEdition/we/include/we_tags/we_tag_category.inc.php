@@ -23,10 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_category($attribs){
-
 	// initialize possible Attributes
 	$delimiter = weTag_getAttribute('delimiter', $attribs, weTag_getAttribute('tokken', $attribs, ','));
-
 	$rootdir = weTag_getAttribute('rootdir', $attribs);
 	$showpath = weTag_getAttribute('showpath', $attribs, false, true);
 	$docAttr = weTag_getAttribute('doc', $attribs);
@@ -35,19 +33,23 @@ function we_tag_category($attribs){
 	$id = weTag_getAttribute('id', $attribs);
 	$separator = weTag_getAttribute('separator', $attribs, '/');
 	$onlyindir = weTag_getAttribute('onlyindir', $attribs);
-
-	if($GLOBALS['we_editmode'] && !empty($name)){
-		$_REQUEST['we_' . $GLOBALS['we_doc']->Name . '_category[' . $name . ']'] = $GLOBALS['we_doc']->getElement($name);
-		$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_category[' . $name . ']';
-		$attribs['type'] = 'request';
-		$attribs['fromTag'] = true;
-		return we_tag('categorySelect', $attribs);
-	}
-
+	$fromTag = weTag_getAttribute('fromTag', $attribs, 'category');
 	// end initialize possible Attributes
+
 	if($id){
 		$catIDs = $id;
 	} elseif($name){
+		if($GLOBALS['we_editmode'] && !empty($name)){
+			$_REQUEST['we_' . $GLOBALS['we_doc']->Name . '_category[' . $name . ']'] = $GLOBALS['we_doc']->getElement($name);
+			$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_category[' . $name . ']';
+			$attribs['type'] = 'request';
+			$attribs['rootdir'] = $onlyindir;
+			$attribs['fromTag'] = $fromTag;
+			$doc = we_getDocForTag($docAttr, false);
+			$attribs['catIDs'] = $fromTag === 'shopcategory' ? '' : $doc->Category;
+
+			return we_tag('categorySelect', $attribs);
+		}
 		$catIDs = $GLOBALS['we_doc']->getElement($name);
 	} elseif(isset($GLOBALS['lv']) && $docAttr === 'listview'){
 		$catIDs = $GLOBALS['lv']->f('wedoc_Category');
@@ -56,7 +58,7 @@ function we_tag_category($attribs){
 		$catIDs = $doc->Category;
 	}
 	$catIDs = implode(',', array_map('intval', explode(',', $catIDs)));
-	$category = array_filter(we_category::we_getCatsFromIDs($catIDs, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir, true));
+	$category = array_filter(we_category::we_getCatsFromIDs($catIDs, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir, true, ($fromTag === 'shopcategory' ? true : false)));
 
 	if(!$category){
 		return '';
