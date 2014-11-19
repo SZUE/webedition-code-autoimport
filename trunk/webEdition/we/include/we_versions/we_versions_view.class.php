@@ -880,7 +880,13 @@ function delRow(id) {
 			}
 
 			if($sortierung[0] === "modifierID"){
-				usort($_Result, array($this, 'sortResultListUser' . (isset($sortierung[1]) ? 'DESC' : 'ASC')));
+				$desc = isset($sortierung[1]);
+
+				usort($_Result, function($a, $b) use ($desc){
+					return $desc ?
+						strnatcasecmp($b['modifierID'], $a['modifierID']) :
+						strnatcasecmp($a['modifierID'], $b['modifierID']);
+				});
 			} else {
 				$sortText = $sortierung[0];
 				$sortHow = SORT_ASC;
@@ -952,18 +958,6 @@ function delRow(id) {
 			array("dat" => we_html_tools::getPixel(1, 1)),
 		);
 	}
-
-	/**
-	 * @abstract sort array in case of 'modifierID'
-	 * @return array
-	 */
-	/* 	private function sortResultListUserASC($a, $b){
-	  return strnatcasecmp($a['modifierID'], $b['modifierID']);
-	  }
-
-	  private function sortResultListUserDESC($a, $b){
-	  return strnatcasecmp($b['modifierID'], $a['modifierID']);
-	  } */
 
 	/**
 	 * @abstract generate html list for modifications
