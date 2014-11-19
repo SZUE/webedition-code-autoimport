@@ -25,7 +25,7 @@
 class we_shop_vats{
 	function getAllShopVATs(){
 		if(!isset($GLOBALS['weShopVats']['getAllVats'])){
-			$GLOBALS['DB_WE']->query('SELECT id,text,vat,standard,territory,textProvince FROM ' . WE_SHOP_VAT_TABLE);
+			$GLOBALS['DB_WE']->query('SELECT id,text,vat,standard,territory,textProvince FROM ' . WE_SHOP_VAT_TABLE . ' ORDER BY territory');
 			$GLOBALS['weShopVats']['getAllVats'] = array();
 
 			while($GLOBALS['DB_WE']->next_record()){

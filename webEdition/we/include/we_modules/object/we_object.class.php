@@ -1127,7 +1127,7 @@ class we_object extends we_document{
 				if(defined('SHOP_TABLE')){
 					$allVats = we_shop_vats::getAllShopVATs();
 					foreach($allVats as $id => $shopVat){
-						$values[$id] = $shopVat->vat . ' - ' . $shopVat->text;
+						$values[$id] = $shopVat->vat . ' - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
 						/* 						if($shopVat->standard){
 						  $standardId = $id;
 						  $standardVal = $shopVat->vat;
