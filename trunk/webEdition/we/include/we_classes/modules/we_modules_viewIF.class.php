@@ -25,8 +25,7 @@
 /* the parent class of storagable webEdition classes */
 
 
-interface we_modules_viewIF{//FIXME is this really a base class, or is it an interface???
-	//----------- Utility functions ------------------
+interface we_modules_viewIF{
 
 	function htmlHidden($name, $value = '');
 
