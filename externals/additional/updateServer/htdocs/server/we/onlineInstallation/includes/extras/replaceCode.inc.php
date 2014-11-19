@@ -4,43 +4,9 @@
  * Part2: make demo-version after online-installation
  * @see /we4/includes/replaceCode/replaceCode.inc.php
  */
-// add licensee to we_conf.inc.php
-$replaceCode['we_conf_demo']['path']['6391'] = '/webEdition/we/include/conf/we_conf.inc%s';
-$replaceCode['we_conf_demo']['replace']['6391'] = <<< weConfDemoSaveCodeBoundary
-<?php
 
-/**
- * webEdition CMS configuration file
- * NOTE: this file is regenerated, so any extra contents will be overwritten. Change only already existent fields, if really needed.
- *
- */
-weConfDemoSaveCodeBoundary;
-$replaceCode['we_conf_demo']['path']['6391'] = '/webEdition/we/include/conf/we_conf_global.inc%s';
-$replaceCode['we_conf_demo']['replace']['6391'] = <<< weConfDemoSaveCodeBoundary
-<?php
-
-/**
- * webEdition CMS configuration file
- * NOTE: this file is regenerated, so any extra contents will be overwritten
- */
-
-/**
- * Configuration file for webEdition
- * =================================
- *
- * Holds the globals settings of webEdition.
- *
- * NOTE:
- * =====
- * Edit this file ONLY if you know exactly what you are doing!
- */
-
-//Default Charset
-define('DEFAULT_CHARSET', "UTF-8");
-weConfDemoSaveCodeBoundary;
-
-$replaceCode['we_conf_demo']['path']['4900'] = '/webEdition/we/include/conf/we_conf.inc%s';
-$replaceCode['we_conf_demo']['replace']['4900'] = <<< weConfDemoSaveCodeBoundary
+$replaceCode['we_conf_demo']['path'][4900] = '/webEdition/we/include/conf/we_conf.inc%s';
+$replaceCode['we_conf_demo']['replace'][4900] = <<< weConfDemoSaveCodeBoundary
 <?php
 
 /**
@@ -187,8 +153,77 @@ define('LIVEUPDATE_INSTALLED_WITH_CONTENT', true);
 ?>
 weConfDemoSaveCodeBoundary;
 
-$replaceCode['we_conf_global_demo']['path']['4900'] = '/webEdition/we/include/conf/we_conf_global.inc%s';
-$replaceCode['we_conf_global_demo']['replace']['4900'] = <<< weConfGlobalDemoSaveCodeBoundary
+$replaceCode['we_conf_demo']['replace'][6391] = <<< weConfDemoSaveCodeBoundary
+<?php
+
+/**
+ * webEdition CMS
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
+/**
+ * Configuration file for webEdition
+ * =================================
+ *
+ * Must be adjusted to the current environment!
+ *
+ * NOTE:
+ * =====
+ * Edit this file ONLY if you know exactly what you are doing!
+ */
+
+// Domain or IP address of the database server
+define("DB_HOST",'%s');
+
+// Name of database being used by webEdition
+define("DB_DATABASE",'%s');
+
+// Username to access the database
+define("DB_USER",base64_decode('%s'));
+
+// Password to access the database
+define("DB_PASSWORD",base64_decode('%s'));
+
+// Don't change this line!!!
+define("DB_CONNECT",'%s');
+
+// Prefix of tables in database for this webEdition.
+define("TBL_PREFIX",'%s');
+
+// Charset of tables in database for this webEdition.
+define("DB_CHARSET",'%s');
+
+// Collation of tables in database for this webEdition.
+define("DB_COLLATION",'%s');
+
+// Name of licensee
+define("WE_LIZENZ",'%s');
+
+// Original language of this version of webEdition, used for login-screen
+define("WE_LANGUAGE",'%s');
+
+// Original backend charset of this version of webEdition, used for login-screen
+define("WE_BACKENDCHARSET",'%s');
+
+?>
+weConfDemoSaveCodeBoundary;
+
+$replaceCode['we_conf_global_demo']['path'][4900] = '/webEdition/we/include/conf/we_conf_global.inc%s';
+$replaceCode['we_conf_global_demo']['replace'][4900] = <<< weConfGlobalDemoSaveCodeBoundary
 <?php
 
 /**
@@ -548,13 +583,35 @@ define("SEOINSIDE_HIDEINWEBEDITION", 0);
 // Flag if should be displayed in Editmode
 define("SEOINSIDE_HIDEINEDITMODE", 1);
 
-
 ?>
 weConfGlobalDemoSaveCodeBoundary;
+$replaceCode['we_conf_global_demo']['replace'][6380] = <<< weConfDemoSaveCodeBoundary
+<?php
+
+/**
+ * webEdition CMS configuration file
+ * NOTE: this file is regenerated, so any extra contents will be overwritten
+ */
+
+/**
+ * Configuration file for webEdition
+ * =================================
+ *
+ * Holds the globals settings of webEdition.
+ *
+ * NOTE:
+ * =====
+ * Edit this file ONLY if you know exactly what you are doing!
+ */
+
+//Default Charset
+define('DEFAULT_CHARSET', "UTF-8");
+?>
+weConfDemoSaveCodeBoundary;
 
 // add version and uid
-$replaceCode['we_version_demo']['path']['4900'] = '/webEdition/we/include/we_version%s';
-$replaceCode['we_version_demo']['replace']['4900'] = '<?php
+$replaceCode['we_version_demo']['path'][4900] = '/webEdition/we/include/we_version%s';
+$replaceCode['we_version_demo']['replace'][4900] = '<?php
 define("WE_VERSION", "%s");
 define("WE_VERSION_SUPP", "%s");
 define("WE_ZFVERSION","%s");
@@ -596,41 +653,40 @@ $_we_active_integrated_modules[] = "glossary";
 
 
 // Proxysettings
-$replaceCode['we_proxysettings']['path']['4900'] = '/webEdition/liveUpdate/includes/proxysettings.inc%s';
-$replaceCode['we_proxysettings']['replace']['4900'] = '<?php
+$replaceCode['we_proxysettings']['path'][4900] = '/webEdition/liveUpdate/includes/proxysettings.inc%s';
+$replaceCode['we_proxysettings']['replace'][4900] = '<?php
 	define("WE_PROXYHOST", "%s");
 	define("WE_PROXYPORT", "%s");
 	define("WE_PROXYUSER", "%s");
 	define("WE_PROXYPASSWORD", "%s");
 ?>';
 
-/*// enable demo pop-up webEdition.php
-$replaceCode['webEdition_demo']['path']['4900'] = '/webEdition/webEdition%s';
-$replaceCode['webEdition_demo']['needle']['4900'] = 'var we_demo = false;';
-$replaceCode['webEdition_demo']['replace']['4900'] = 'var we_demo = true;';
+// enable demo pop-up webEdition.php
+$replaceCode['webEdition_demo']['path'][4900] = '/webEdition/webEdition%s';
+$replaceCode['webEdition_demo']['needle'][4900] = 'var we_demo = false;';
+$replaceCode['webEdition_demo']['replace'][4900] = 'var we_demo = true;';
 
 // change menu entries
-$replaceCode['menu1_demo']['path']['4900'] = '/webEdition/we/include/java_menu/we_menu.inc%s';
-$replaceCode['menu1_demo']['needle']['4900'] = '\$we_menu\["5050000"\]\["text"\] = \$l_javaMenu\["update"\]';
-$replaceCode['menu1_demo']['replace']['4900'] = '$we_menu["5050000"]["text"] = $l_javaMenu["register"]';
+$replaceCode['menu1_demo']['path'][4900] = '/webEdition/we/include/java_menu/we_menu.inc%s';
+$replaceCode['menu1_demo']['needle'][4900] = '\$we_menu\["5050000"\]\["text"\] = \$l_javaMenu\["update"\]';
+$replaceCode['menu1_demo']['replace'][4900] = '$we_menu["5050000"]["text"] = $l_javaMenu["register"]';
 
-$replaceCode['menu2_demo']['path']['4900'] = '/webEdition/we/include/java_menu/we_menu.inc%s';
-$replaceCode['menu2_demo']['needle']['4900'] = '\$we_menu\["3060000"\]\["text"\] = \$l_javaMenu\["module_installation"\]';
-$replaceCode['menu2_demo']['replace']['4900'] = '$we_menu["3060000"]["text"] = $l_javaMenu["register"]';
+$replaceCode['menu2_demo']['path'][4900] = '/webEdition/we/include/java_menu/we_menu.inc%s';
+$replaceCode['menu2_demo']['needle'][4900] = '\$we_menu\["3060000"\]\["text"\] = \$l_javaMenu\["module_installation"\]';
+$replaceCode['menu2_demo']['replace'][4900] = '$we_menu["3060000"]["text"] = $l_javaMenu["register"]';
 
 // template savecode
-$replaceCode['templateSaveCode_demo']['path']['4900'] = '/webEdition/we/include/we_editors/we_editor.inc%s';
-$replaceCode['templateSaveCode_demo']['needle']['4900'] = '####TEMPLATE_SAVE_CODE2_START###.*####TEMPLATE_SAVE_CODE2_END###'; // ! IMPORTANT
-$replaceCode['templateSaveCode_demo']['replace']['4900'] = '#save template2';
-*/
-// insert tblPrefs
-$replaceCode['insert_tblPrefs']['path']['4900'] = '';
+$replaceCode['templateSaveCode_demo']['path'][4900] = '/webEdition/we/include/we_editors/we_editor.inc%s';
+$replaceCode['templateSaveCode_demo']['needle'][4900] = '####TEMPLATE_SAVE_CODE2_START###.*####TEMPLATE_SAVE_CODE2_END###'; // ! IMPORTANT
+$replaceCode['templateSaveCode_demo']['replace'][4900] = '#save template2';
 
-$replaceCode['insert_tblPrefs']['replace']['4900'] = 'UPDATE %s'.'tblPrefs set Language = \'%s\' where userID = \'1\'';
+// insert tblPrefs
+$replaceCode['insert_tblPrefs']['path'][4900] = '';
+
+$replaceCode['insert_tblPrefs']['replace'][4900] = 'UPDATE %s'.'tblPrefs set Language = \'%s\' where userID = \'1\'';
 $replaceCode['insert_tblPrefs']['replace'][LANGUAGELIMIT] = 'UPDATE %s'.'tblPrefs set Language = \'%s\',BackendCharset = \'%s\'  where userID = \'1\'';
 
 
 // insert tblUser
-$replaceCode['insert_tblUser']['path']['4900'] = '';
-$replaceCode['insert_tblUser']['replace']['4900'] = 'UPDATE %s'.'tblUser set Text = \'%s\', username = \'%s\', passwd = MD5(\'%s\'), UseSalt = \'0\' where ID=\'1\';';
-
+$replaceCode['insert_tblUser']['path'][4900] = '';
+$replaceCode['insert_tblUser']['replace'][4900] = 'UPDATE %s'.'tblUser set Text = \'%s\', username = \'%s\', passwd = MD5(\'%s\'), UseSalt = \'0\' where ID=\'1\';';

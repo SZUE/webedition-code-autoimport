@@ -1,7 +1,6 @@
 <?php
 
-class updateUtilBase {
-
+class updateUtilBase{
 
 	/**
 	 * Checks if given Ip is within range of Wirtualna Polska ips
@@ -9,7 +8,7 @@ class updateUtilBase {
 	 * @param string $ip
 	 * @return boolean
 	 */
-    function isWpolskaIp($ip) {
+	function isWpolskaIp($ip){
 		global $rootDir, $wpolskas_ips;
 
 		// include local file with known wpolska ips
@@ -17,22 +16,20 @@ class updateUtilBase {
 
 		// calculate and correct ip
 		$ip = updateUtil::correctIp($ip);
-	    $checkIp = ip2long($ip);
+		$checkIp = ip2long($ip);
 
-	    // check ip with given ips from file
-	    for ($i = 0; $i < sizeof($wpolskas_ips); $i++) {
+		// check ip with given ips from file
+		for($i = 0; $i < sizeof($wpolskas_ips); $i++){
 
-	        $start = ip2long($wpolskas_ips[$i]["start"]);
-	        $stop  = ip2long($wpolskas_ips[$i]["stop"]);
+			$start = ip2long($wpolskas_ips[$i]["start"]);
+			$stop = ip2long($wpolskas_ips[$i]["stop"]);
 
-	        if (($start <= $checkIp) && ($checkIp <=$stop)) {
-	            return true;
-	        }
-	    }
+			if(($start <= $checkIp) && ($checkIp <= $stop)){
+				return true;
+			}
+		}
 		return false;
-
-    }
-
+	}
 
 	/**
 	 * Checks if given Ip is within range of strato-ips
@@ -40,62 +37,53 @@ class updateUtilBase {
 	 * @param string $ip
 	 * @return boolean
 	 */
-	function isStratoIp($ip) {
-	    global $rootDir, $strato_ips;
+	function isStratoIp($ip){
+		global $rootDir, $strato_ips;
 
-	    $ip = updateUtil::correctIp($ip);
-	    $checkIp = ip2long($ip);
+		$ip = updateUtil::correctIp($ip);
+		$checkIp = ip2long($ip);
 
-	    // include local file with known strato ips
-	    include($rootDir . "/extras/registration/strato-ips.inc.php");
+		// include local file with known strato ips
+		include($rootDir . "/extras/registration/strato-ips.inc.php");
 
-	    // check ip with given ips from file
-	    for ($i = 0; $i < sizeof($strato_ips); $i++) {
-	        $start = ip2long($strato_ips[$i]["start"]);
-	        $stop  = ip2long($strato_ips[$i]["stop"]);
+		// check ip with given ips from file
+		for($i = 0; $i < sizeof($strato_ips); $i++){
+			$start = ip2long($strato_ips[$i]["start"]);
+			$stop = ip2long($strato_ips[$i]["stop"]);
 
-	        if (($start <= $checkIp) && ($checkIp <=$stop)) {
-	            return true;
+			if(($start <= $checkIp) && ($checkIp <= $stop)){
+				return true;
+			}
+		}
 
-	        }
+		// ip does not match with known ips so read file on strato server
+		if(fopen("http://www.strato.de/shop/iparea.txt", "r")){
+			$fileContent = file("http://www.strato.de/shop/iparea.txt");
 
-	    }
+			$strato_ips_extern = array();
 
-	    // ip does not match with known ips so read file on strato server
-	    if (fopen("http://www.strato.de/shop/iparea.txt", "r")) {
-	    	$fileContent = file("http://www.strato.de/shop/iparea.txt");
+			// get given ips and tsave them in array
+			foreach($fileContent as $ip){
 
-            $strato_ips_extern = array();
+				if(strpos($ip, "#") !== 0){
+					$strato_ips_extern[] = trim($ip);
+				}
+			}
 
-            // get given ips and tsave them in array
-            foreach ($fileContent as $ip) {
+			// now check if ip is in these arrays
+			for($i = 0; $i < sizeof($strato_ips_extern); $i++){
+				$iprange = updateUtil::getIpRange($strato_ips_extern[$i]);
 
-                if (strpos($ip, "#") !== 0) {
-                    $strato_ips_extern[] = trim($ip);
+				$start = ip2long($iprange["start"]);
+				$stop = ip2long($iprange["stop"]);
 
-                }
-
-            }
-
-            // now check if ip is in these arrays
-    	    for ($i = 0; $i < sizeof($strato_ips_extern); $i++) {
-    	        $iprange = updateUtil::getIpRange($strato_ips_extern[$i]);
-
-    	        $start = ip2long($iprange["start"]);
-    	        $stop  = ip2long($iprange["stop"]);
-
-    	        if (($start <= $checkIp) && ($checkIp <=$stop)) {
-    	            return true;
-
-    	        }
-
-    	    }
-
-	    }
-	    return false;
-
+				if(($start <= $checkIp) && ($checkIp <= $stop)){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
-
 
 	/**
 	 * returns if domain is localhost
@@ -103,16 +91,13 @@ class updateUtilBase {
 	 * @param string $domain
 	 * @return boolean
 	 */
-	function isLocalhost($domain) {
+	function isLocalhost($domain){
 
-		if( strtolower($domain) == "localhost" || $domain == "127.0.0.1" ){
+		if(strtolower($domain) == "localhost" || $domain == "127.0.0.1"){
 			return true;
-
 		}
 		return false;
-
 	}
-
 
 	/**
 	 * return serialized version of the response
@@ -120,12 +105,10 @@ class updateUtilBase {
 	 * @param array $responseArray
 	 * @return string
 	 */
-	function serializeResponseArray($responseArray) {
+	function serializeResponseArray($responseArray){
 
 		return base64_encode(serialize($responseArray));
-
 	}
-
 
 	/**
 	 * generates the response string from a given array. Occassionaly renames
@@ -135,18 +118,15 @@ class updateUtilBase {
 	 * @param array $array
 	 * @return string
 	 */
-	static function getResponseString($array) {
+	static function getResponseString($array){
 
 		$responseArray = array();
 
-		foreach ($array as $key => $value) {
+		foreach($array as $key => $value){
 			$responseArray[ucfirst($key)] = $value;
-
 		}
 		return updateUtil::serializeResponseArray($responseArray);
-
 	}
-
 
 	/**
 	 * This function makes it easy to add php-code to a template.
@@ -154,12 +134,10 @@ class updateUtilBase {
 	 * @param string $code
 	 * @return string
 	 */
-	function addPhpCodeToTemplate($code) {
+	function addPhpCodeToTemplate($code){
 
 		return $code;
-
 	}
-
 
 	/**
 	 * includes given response file and returns included array
@@ -167,14 +145,13 @@ class updateUtilBase {
 	 * @param string $file
 	 * @return array
 	 */
-	function getLiveUpdateResponseArrayFromFile($file) {
+	function getLiveUpdateResponseArrayFromFile($file){
 		global $updateServerTemplateData;
 
 		$liveUpdateResponse = array();
-		if (file_exists($file)) {
+		if(file_exists($file)){
 
 			include_once($file);
-
 		} else {
 			$liveUpdateResponse['Type'] = 'template';
 			$liveUpdateResponse['headline'] = 'Error';
@@ -183,20 +160,16 @@ class updateUtilBase {
 				 Can\'t find template
 			</div>';
 		}
-		if(isset($_SESSION["displayAnnouncement"]) && $_SESSION["displayAnnouncement"] === true) {
-			$liveUpdateResponse["Code"] = str_replace('$content = \'','$content = \'<div class="messageDiv">'.$GLOBALS["lang"]['notification']['importantAnnouncement'].'</div>',$liveUpdateResponse["Code"]);
+		if(isset($_SESSION["displayAnnouncement"]) && $_SESSION["displayAnnouncement"] === true){
+			$liveUpdateResponse["Code"] = str_replace('$content = \'', '$content = \'<div class="messageDiv">' . $GLOBALS["lang"]['notification']['importantAnnouncement'] . '</div>', $liveUpdateResponse["Code"]);
 		}
 		return $liveUpdateResponse;
-
 	}
 
+	function getEncodedLiveUpdateResponseArrayFromFile($file){
 
-	function getEncodedLiveUpdateResponseArrayFromFile($file) {
-
-		return updateUtil::encodeCode( updateUtil::getLiveUpdateResponseArrayFromFile($file) );
-
+		return updateUtil::encodeCode(updateUtil::getLiveUpdateResponseArrayFromFile($file));
 	}
-
 
 	/**
 	 * executes given file and returns the output.
@@ -204,20 +177,18 @@ class updateUtilBase {
 	 * @param string $file
 	 * @return string
 	 */
-	function getTemplateContentForResponse($file) {
+	function getTemplateContentForResponse($file){
 		global $updateServerTemplateData;
 
 		$content = '';
 
-		if (file_exists($file)) {
+		if(file_exists($file)){
 			ob_start();
 			include($file);
 			$content = ob_get_contents();
 			ob_end_clean();
-
 		}
 		return $content;
-
 	}
 
 	/**
@@ -227,13 +198,11 @@ class updateUtilBase {
 	 * @param string $file
 	 * @return string
 	 */
-	function getEncodedTemplateContentForResponse($file) {
+	function getEncodedTemplateContentForResponse($file){
 		global $updateServerTemplateData;
 
 		return updateUtil::encodeCode((updateUtil::getTemplateContentForResponse($file)));
-
 	}
-
 
 	/**
 	 * returns always needed formular fields
@@ -243,7 +212,7 @@ class updateUtilBase {
 	 * @param string $liveUpdateSession
 	 * @return string
 	 */
-	function getCommonFormFields($update_cmd, $detail, $liveUpdateSession=false) {
+	function getCommonFormFields($update_cmd, $detail, $liveUpdateSession = false){
 		global $clientRequestVars;
 
 		return "
@@ -251,7 +220,6 @@ class updateUtilBase {
 			<input type=\"hidden\" name=\"detail\" value=\"$detail\" />
 			<input type=\"hidden\" name=\"liveUpdateSession\" value=\"" . ($liveUpdateSession ? $liveUpdateSession : session_id()) . "\" />
 		";
-
 	}
 
 	/**
@@ -262,15 +230,13 @@ class updateUtilBase {
 	 * @param integer $length
 	 * @return integer
 	 */
-	function version2number($version, $length=VERSIONNUMBER_LENGTH) {
+	function version2number($version, $length = VERSIONNUMBER_LENGTH){
 
 		$numberStr = str_replace('.', '', $version);
 		$number = (int) $numberStr;
 
 		return $number;
-
 	}
-
 
 	/**
 	 * this function converts a versionnumber (integer) to the number as string
@@ -281,25 +247,20 @@ class updateUtilBase {
 	 * @param integer $length
 	 * @return string
 	 */
-	function number2version($number, $length=VERSIONNUMBER_LENGTH) {
+	function number2version($number, $length = VERSIONNUMBER_LENGTH){
 
 		$number = "$number";
 		$numbers = array();
 
-		for ($i=0;$i<$length;$i++) {
-			if (isset($number[$i])) {
+		for($i = 0; $i < $length; $i++){
+			if(isset($number[$i])){
 				$numbers[] = $number[$i];
-
 			} else {
 				$numbers[] = 0;
-
 			}
-
 		}
 		return implode('.', $numbers);
-
 	}
-
 
 	/**
 	 * returns array of ip-range array(start=>IP,stop=>IP)
@@ -307,41 +268,38 @@ class updateUtilBase {
 	 * @param string $ip
 	 * @return array
 	 */
-    function getIpRange($ip) {
-        // correct format of given ip-address
-        $ip = updateUtil::correctIp($ip);
+	function getIpRange($ip){
+		// correct format of given ip-address
+		$ip = updateUtil::correctIp($ip);
 
-        $startIp = $ip;
-        $stopIp  = $ip;
+		$startIp = $ip;
+		$stopIp = $ip;
 
-        // determine
-        $iparr = explode(".", $ip);
+		// determine
+		$iparr = explode(".", $ip);
 
-        switch (sizeof($iparr)) {
-	        case 1:
-	            $startIp .= ".0";
-	            $stopIp  .= ".255";
+		switch(sizeof($iparr)){
+			case 1:
+				$startIp .= ".0";
+				$stopIp .= ".255";
 
-	        case 2:
-	            $startIp .= ".0";
-	            $stopIp  .= ".255";
+			case 2:
+				$startIp .= ".0";
+				$stopIp .= ".255";
 
-	        case 3:
-	            $startIp .= ".0";
-	            $stopIp  .= ".255";
+			case 3:
+				$startIp .= ".0";
+				$stopIp .= ".255";
 
-	        case 4:
-	            return array('start' => $startIp, 'stop' => $stopIp);
+			case 4:
+				return array('start' => $startIp, 'stop' => $stopIp);
 				break;
 
-	        default:
-	            return array('start' => "0.0.0.0", 'stop' => "0.0.0.0");
+			default:
+				return array('start' => "0.0.0.0", 'stop' => "0.0.0.0");
 				break;
-
-        }
-
-    }
-
+		}
+	}
 
 	/**
 	 * checks and corrects given ip-address to the form
@@ -351,16 +309,14 @@ class updateUtilBase {
 	 * @param string $ip
 	 * @return string
 	 */
-	function correctIp($ip) {
+	function correctIp($ip){
 
 		$iparr = explode(".", $ip);
 
-		for ($i=0; $i < sizeof($iparr); $i++) {
+		for($i = 0; $i < sizeof($iparr); $i++){
 			$iparr[$i] = abs($iparr[$i]);
-
 		}
 		return implode(".", $iparr);
-
 	}
 
 	/**
@@ -371,28 +327,22 @@ class updateUtilBase {
 	 * @return string
 	 */
 	function getNearestVersion($array, $version){
-
-		if ( sizeof($array) == 1 ) {
+		if(sizeof($array) == 1){
 			return key($array);
-
 		}
 
-		if (isset($array[$version])) {
+		if(isset($array[$version])){
 			return $version;
-
 		}
 
 		krsort($array);
-		foreach ($array as $key => $value) {
-			if (intval($key) <= $version) {
+		foreach(array_keys($array) as $key){
+			if(intval($key) <= $version){
 				return $key;
-
 			}
-
 		}
-
+		return '';
 	}
-
 
 	/**
 	 * returns parameter base_64 encoded
@@ -400,11 +350,9 @@ class updateUtilBase {
 	 * @param string $string
 	 * @return string
 	 */
-	static function encodeCode($string) {
+	static function encodeCode($string){
 		return base64_encode($string);
-
 	}
-
 
 	// output of standard templates
 
@@ -414,7 +362,7 @@ class updateUtilBase {
 	 * @param string $templatePath
 	 * @return string
 	 */
-	function getInternalResponse($templatePath) {
+	function getInternalResponse($templatePath){
 
 		$liveUpdateResponse = updateUtil::getLiveUpdateResponseArrayFromFile($templatePath);
 
@@ -423,16 +371,12 @@ class updateUtilBase {
 			$newResponse->initByHttpResponse("' . addslashes(updateUtil::getResponseString($liveUpdateResponse)) . '");
 			print $newResponse->getOutput();
 		';
-
 	}
 
-
-	function replaceExtensionInContent($content) {
+	function replaceExtensionInContent($content){
 		$content = str_replace('.php', $_SESSION['clientExtension'], $content);
 		return $content;
-
 	}
-
 
 	/**
 	 * reads given file and returns it already encoded
@@ -440,17 +384,14 @@ class updateUtilBase {
 	 * @param string $filePath
 	 * @return string
 	 */
-	function getFileContentEncoded($filePath, $replaceExtension=false) {
+	function getFileContentEncoded($filePath, $replaceExtension = false){
 		$content = updateUtil::getFileContent($filePath);
 
-		if ($replaceExtension) {
+		if($replaceExtension){
 			$content = updateUtil::replaceExtensionInContent($content);
-
 		}
 		return updateUtil::encodeCode($content);
-
 	}
-
 
 	/**
 	 * Reads filecontent in a string and returns it
@@ -458,43 +399,39 @@ class updateUtilBase {
 	 * @param string $filePath
 	 * @return string
 	 */
-	static function getFileContent($filePath) {
+	static function getFileContent($filePath){
 
 		$content = '';
-		if (file_exists($filePath)) {
-			if ($fh = fopen($filePath, 'rb')) {
-				if (filesize($filePath)) {
+		if(file_exists($filePath)){
+			if($fh = fopen($filePath, 'rb')){
+				if(filesize($filePath)){
 					$content = fread($fh, filesize($filePath));
-
 				}
-
 			}
-
 		}
 		return $content;
-
 	}
 
 	/**
 	 * @param string $dir
 	 * @param array $files
 	 */
-	function getFilesOfDir($dir, & $files) {
+	function getFilesOfDir($dir, & $files){
 
-		if (file_exists($dir)) {
+		if(file_exists($dir)){
 
 			$dh = opendir($dir);
-			while( $entry = readdir($dh) ){
+			while($entry = readdir($dh)){
 
-				if( $entry != "" && $entry != "." && $entry != ".." ){
+				if($entry != "" && $entry != "." && $entry != ".."){
 
 					$_entry = $dir . "/" . $entry;
 
-		            if( !is_dir( $_entry ) ){
-		                $files[] = $_entry;
-		            }
+					if(!is_dir($_entry)){
+						$files[] = $_entry;
+					}
 
-					if(is_dir( $_entry )){
+					if(is_dir($_entry)){
 						updateUtilBase::getFilesOfDir($_entry, $files);
 					}
 				}
@@ -503,14 +440,13 @@ class updateUtilBase {
 		}
 	}
 
-
 	/**
 	 * returns string for the liveUpdate functions to overwrite functions, which
 	 * could be broken.
 	 *
 	 * @return string
 	 */
-	function getOverwriteClassesCode() {
+	function getOverwriteClassesCode(){
 
 		$retString = '
 
@@ -538,8 +474,8 @@ class updateUtilBase {
 
 		';
 		return $retString;
-
 	}
 
 }
+
 ?>
