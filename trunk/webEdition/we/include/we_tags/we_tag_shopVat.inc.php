@@ -38,7 +38,7 @@ function we_tag_shopVat($attribs){
 	$standardId = 0;
 
 	foreach($allVats as $id => $shopVat){
-		$values[$id] = $shopVat->vat . ' - ' . $shopVat->text;
+		$values[$id] = $shopVat->vat . ' - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
 		if($shopVat->standard){
 
 			$standardId = $id;
