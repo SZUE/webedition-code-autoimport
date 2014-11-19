@@ -1351,14 +1351,13 @@ HTS;
 			//FIXME: delete condition and else branch when new uploader is stable
 			if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
 				if($this->fileUploader && $this->fileUploader->processFileRequest()){
-					$v['import_from'] = $this->getFileNameTemp();
+					$v['import_from'] = $this->fileUploader->getFileNameTemp();
 				} else {
-					$v['import_from'] = TEMP_DIR . 'we_xml_' . $uniqueId . '.xml';
+					$v['import_from'] = TEMP_DIR . 'we_xml_' . we_base_file::getUniqueId() . '.xml';
 					move_uploaded_file($_FILES['uploaded_xml_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
 				}
 			} else {
-				$uniqueId = we_base_file::getUniqueId(); // #6590, changed from: uniqid(microtime())
-				$v['import_from'] = TEMP_DIR . 'we_xml_' . $uniqueId . '.xml';
+				$v['import_from'] = TEMP_DIR . 'we_xml_' . we_base_file::getUniqueId() . '.xml';
 				move_uploaded_file($_FILES['uploaded_xml_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
 			}
 		}
