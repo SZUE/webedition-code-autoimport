@@ -50,17 +50,7 @@ function we_tag_category($attribs){
 	} elseif($name){
 		$catIDs = $GLOBALS['we_doc']->getElement($name);
 	} elseif(isset($GLOBALS['lv']) && $docAttr === 'listview'){
-		// get cats from listview object
-		switch(get_class($GLOBALS['lv'])){
-			case 'we_object_listview' :
-				$catIDs = $GLOBALS['lv']->f('wedoc_Category');
-				break;
-			case 'we_listview_search':
-				$catIDs = $GLOBALS['lv']->f('wedoc_Category');
-				break;
-			default :
-				$catIDs = $GLOBALS['lv']->f('wedoc_Category');
-		}
+		$catIDs = $GLOBALS['lv']->f('wedoc_Category');
 	} else {
 		$doc = we_getDocForTag($docAttr, false);
 		$catIDs = $doc->Category;
