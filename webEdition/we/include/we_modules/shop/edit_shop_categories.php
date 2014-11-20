@@ -44,7 +44,7 @@ $debug_output = '';
 if($shopCategoriesDir !== -1){
 	switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		case 'saveShopCatRels':
-			$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop",pref_name="shop_cats_dir",pref_value=' . intval($shopCategoriesDir));
+			$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop", pref_name="shop_cats_dir", pref_value=' . intval($shopCategoriesDir));
 
 			$destPrincipleIds = array();
 			foreach(we_base_request::_(we_base_request::INT, 'weShopCatDestPrinciple', array()) as $k => $v){
@@ -52,7 +52,7 @@ if($shopCategoriesDir !== -1){
 					$destPrincipleIds[] = intval($k);
 				}
 			}
-			$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop",pref_name="shop_cats_destPrinciple",pref_value="' . implode(',', $destPrincipleIds) . '"');
+			$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop", pref_name="shop_cats_destPrinciple", pref_value="' . implode(',', $destPrincipleIds) . '"');
 
 			//how to get data for saving relations in db
 			$debug_output .= '<br/><strong>Save...</strong><br><br>';
@@ -97,15 +97,16 @@ $selCategoryDirs = we_html_tools::htmlSelect('weShopCatDir', $allCategoryDirs, 1
 
 //get all shop categories (from inside $shopCategoriesDir)
 if(intval($shopCategoriesDir) !== -1){
-	$DB_WE->query('SELECT ID, Text FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $allCategoryDirs[$shopCategoriesDir] . '/%" AND IsFolder = 0');
+	//$DB_WE->query('SELECT ID, Text FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $allCategoryDirs[$shopCategoriesDir] . '/%" AND IsFolder = 0');
+	$DB_WE->query('SELECT ID, Text, IsFolder FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $allCategoryDirs[$shopCategoriesDir] . '/%"');
 	$shopCategories = array();
 	while($DB_WE->next_record()){
-		$shopCategories[] = array("id" => $DB_WE->f('ID'), "text" => $DB_WE->f('Text'));
+		$shopCategories[] = array("id" => $DB_WE->f('ID'), "text" => $DB_WE->f('Text'), "IsFolder" => $DB_WE->f('IsFolder'));
 	}
 
 
 	//Categories/VATs-Matrix
-	$DB_WE->query('SELECT id,text,vat,territory,textProvince,categories FROM ' . WE_SHOP_VAT_TABLE);
+	$DB_WE->query('SELECT id, text, vat, territory, textProvince, categories FROM ' . WE_SHOP_VAT_TABLE);
 	$allVats = array();
 	$doWriteRelations = !$relations ? true : false;
 	
@@ -144,7 +145,7 @@ if(intval($shopCategoriesDir) !== -1){
 		if(count($shopCategories)){
 			foreach($shopCategories as $cat){
 				$j = 0;
-				$matrix->setCol(++$i, $j++, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), $cat['text']);
+				$matrix->setCol(++$i, $j++, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), $cat['text'] . ($cat['IsFolder'] ? '/' : ''));
 				if(!count($allVats)){
 					$matrix->setCol($i, $j, array("class" => "defaultfont", "style" => "font-weight:normal", "nowrap" => "nowrap", "width" => 110), 'no vats defined yet');//GL
 				} else {
@@ -248,7 +249,7 @@ $parts[] = array(
 $parts[] = array(
 	'headline' => '',
 	'space' => 0,
-	'html' => $debug_output
+	//'html' => $debug_output
 );
 
 echo we_html_element::jsElement($jsFunction) .
