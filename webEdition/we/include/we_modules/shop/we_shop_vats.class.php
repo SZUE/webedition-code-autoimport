@@ -56,12 +56,13 @@ class we_shop_vats{
 		return ($weShopVat ? $weShopVat->vat : $standard);
 	}
 
+	//TODO: check calls and make static 
 	function getStandardShopVat(){
 		if(!isset($GLOBALS['weShopVats']['getStandardShopVat'])){
-			$data = getHash('SELECT id,text,vat,standard,territory,textProvince FROM ' . WE_SHOP_VAT_TABLE . ' WHERE standard=1');
+			$data = getHash('SELECT id, text, vat, standard, territory, textProvince, categories FROM ' . WE_SHOP_VAT_TABLE . ' WHERE standard=1');
 
 			$GLOBALS['weShopVats']['getStandardShopVat'] = ($data ?
-					new we_shop_vat($data['id'], $data['text'], $data['vat'], true, $data['territory'], $data['textProvince']) :
+					new we_shop_vat($data['id'], $data['text'], $data['vat'], true, $data['territory'], $data['textProvince'], $data['categories']) :
 					false);
 		}
 
@@ -95,17 +96,13 @@ class we_shop_vats{
 		if($GLOBALS['DB_WE']->num_rows() > 1){
 			t_e("function getVatByCountryCategory", "number of results: " . $GLOBALS['DB_WE']->num_rows());
 		}
+		//end debug
 
 		$hash = getHash('SELECT id,text,vat,standard,territory,textProvince, categories FROM ' . WE_SHOP_VAT_TABLE . ' WHERE territory="' . $country . '" AND FIND_IN_SET(' . $category . ', categories)');
 		if($hash){
-
 			return new we_shop_vat($hash['id'], $hash['text'], $hash['vat'], ($hash['standard'] ? 1 : 0), $hash['territory'], $hash['textProvince'], $hash['categories']);
-		} else {
-			$hash = getHash('SELECT id,text,vat,standard,territory,textProvince, categories FROM ' . WE_SHOP_VAT_TABLE . ' WHERE standard=1');
-			if($hash){
-
-				return new we_shop_vat($hash['id'], $hash['text'], $hash['vat'], ($hash['standard'] ? 1 : 0), $hash['territory'], $hash['textProvince'], $hash['categories']);
-			}
+		} else if(($standard = self::getStandardShopVat())){
+			return $standard;
 		}
 		t_e("function getVatByCountryCategory", "neither vat found nor standard");
 
