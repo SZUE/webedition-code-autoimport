@@ -41,6 +41,7 @@ function we_tag_shopCategory($attribs){
 	if($GLOBALS['we_editmode'] && !($fromid || $fromdoc)){
 		$attribs['_name_orig'] = WE_SHOP_CATEGORY_FIELD_NAME;
 		$attribs['field'] = 'PATH';
+		$attribs['showpath'] = true;
 		return we_tag_category($attribs);
 	} else {
 		if($GLOBALS['we_editmode']){

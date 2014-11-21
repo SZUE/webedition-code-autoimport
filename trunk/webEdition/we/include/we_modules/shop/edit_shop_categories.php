@@ -74,6 +74,9 @@ if($shopCategoriesDir !== -1){
 					$saveCatIds[$id][] = intval($k);
 				}
 			}
+
+			//reset all vat-category relations before saving the new set of relations
+			$DB_WE->query('UPDATE ' . WE_SHOP_VAT_TABLE . ' SET categories=""');
 			foreach($saveCatIds as $vatId => $catIds){
 				$DB_WE->query('UPDATE ' . WE_SHOP_VAT_TABLE . ' SET categories="' . implode(',', $catIds) . '" WHERE id=' . intval($vatId));
 			}

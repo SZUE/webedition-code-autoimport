@@ -297,6 +297,10 @@ class we_object_exImport extends we_object{
 			'hreftype' => '',
 			'hrefdirectory' => '',
 			'hreffile' => '',
+			'shopcatField' => '',
+			'shopcatShowPath' => 'true',
+			'shopcatRootdir' => '',
+			'shopcatUseDefault' => '',
 			'uniqueID' => md5(uniqid(__FUNCTION__, true)),
 		);
 		switch($type){
