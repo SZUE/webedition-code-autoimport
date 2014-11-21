@@ -106,5 +106,6 @@ function we_tag_categorySelect($attribs, $content){
 			$content = str_replace('<option value="' . $catPaths . '">', '<option value="' . $catPaths . '" selected="selected">', $content);
 		}
 	}
+
 	return getHtmlTag('select', $attribs, $content, true);
 }
