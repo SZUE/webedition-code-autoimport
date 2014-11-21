@@ -364,7 +364,7 @@ function we_cmd(){
 					break;
 				}
 
-				$this->voting = new we_voting_voting(we_base_request::_(we_base_request::STRING, "cmdid"));
+				$this->voting = new we_voting_voting(we_base_request::_(we_base_request::INT, "cmdid"));
 
 				if(!$this->voting->isAllowedForUser()){
 					echo we_html_element::jsElement(

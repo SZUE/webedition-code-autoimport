@@ -26,7 +26,6 @@
 
 class we_messaging_messaging extends we_class{
 	/* Flag which is set when the file is not new */
-
 	var $we_transact;
 	var $Folder_ID = -1;
 	var $userid = -1;
@@ -353,12 +352,14 @@ class we_messaging_messaging extends we_class{
 				if($di == 1){
 					$ids = self::array_get_kvals('ID', $val);
 					foreach($ids as $id){
-						array_splice($this->selected_set, self::array_ksearch('ID', $id, $this->selected_set), 1);
+						$index = self::array_ksearch('ID', $id, $this->selected_set);
+						unset($this->selected_set[$index]);
 						$this->update_last_id();
 					}
 					continue;
 				}
 			}
+			t_e('error in delete items', $_REQUEST, $this->used_msgobjs[$cn],$val);
 			echo 'Couldn\'t delete Message ID = ' . $val['ID'] . '<br/>';
 		}
 	}
@@ -381,7 +382,7 @@ class we_messaging_messaging extends we_class{
 		return f('SELECT strVal FROM ' . PREFS_TABLE . ' WHERE userID=' . intval($this->userid) . ' AND strKey="check_step"', '', $this->DB_WE, 10);
 	}
 
-	function get_subfolder_count($id, $classname = ''){
+	function get_subfolder_count($id){
 		$classname = $this->available_folders[self::array_ksearch('ID', $id, $this->available_folders)]['ClassName'];
 		return (!empty($classname) ? $this->used_msgobjs[$classname]->get_subfolder_count($id) : -1);
 	}
@@ -520,8 +521,8 @@ class we_messaging_messaging extends we_class{
 	function get_message_count($folderid, $classname = ''){
 		$classname = $this->available_folders[self::array_ksearch('ID', $folderid, $this->available_folders)]['ClassName'];
 		return (isset($classname) ?
-						$this->used_msgobjs[$classname]->get_count($folderid) :
-						-1);
+				$this->used_msgobjs[$classname]->get_count($folderid) :
+				-1);
 	}
 
 	function delete_folders($ids){
@@ -947,12 +948,12 @@ class we_messaging_messaging extends we_class{
 		$matchArray = array("Name" => $fooArray);
 
 		$mergedArray = array_merge(
-				array(
+			array(
 			array(
 				'ID' => 0,
 				'Name' => "-- " . g_l('modules_messaging', "[nofolder]") . " --"
 			)
-				), self::array_hash_construct($this->available_folders, array('ID', 'Name'), $matchArray)
+			), self::array_hash_construct($this->available_folders, array('ID', 'Name'), $matchArray)
 		);
 
 		$_arr1 = array('ID', 'Name');
