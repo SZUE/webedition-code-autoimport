@@ -306,7 +306,7 @@ top.content.startloc=0;
 top.content.menuDaten.add(new top.content.self.rootEntry(0,"root","root"));';
 
 						foreach($this->messaging->available_folders as $folder){
-							if(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'], '')) >= 0){
+							if(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'])) >= 0){
 								$js_out .= 'top.content.menuDaten.add(
 	new top.content.dirEntry(
 		"' . ($folder['ClassName'] === 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif",
