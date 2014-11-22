@@ -36,7 +36,7 @@ class we_shop_vat{
 	public $textProvince;
 	public $categories;
 
-	const predefinedNames = array(
+	private static $predefinedNames = array(
 		'exempt',
 		'zero',
 		'superreduced',
@@ -60,7 +60,7 @@ class we_shop_vat{
 	}
 
 	public function getNaturalizedText(){
-		if(!in_array($this->text, self::predefinedNames)){
+		if(!in_array($this->text, self::$predefinedNames)){
 			return $this->text;
 		}
 
@@ -131,10 +131,10 @@ class we_shop_vat{
 
 	public static function getPredefinedNames($translated = true){
 		if(!$translated){
-			return self::predefinedNames;
+			return self::$predefinedNames;
 		} else {
 			$ret = array();
-			foreach(self::predefinedNames as $name){
+			foreach(self::$predefinedNames as $name){
 				$ret[$name] = g_l('modules_shop', '[vat][name_' . $name . ']');
 			}
 
