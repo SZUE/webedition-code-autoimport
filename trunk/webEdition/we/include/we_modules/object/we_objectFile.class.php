@@ -1105,7 +1105,7 @@ class we_objectFile extends we_document{
 
 			$values = array();
 			foreach($shopVats as $shopVat){
-				$values[$shopVat->id] = $shopVat->vat . '% - ' . $shopVat->text;
+				$values[$shopVat->id] = $shopVat->vat . '% - ' . $shopVat->getNaturalizedText();
 			}
 
 			$val = $this->getElement($name) ? : $attribs['default'];
