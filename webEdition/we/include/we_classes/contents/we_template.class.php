@@ -333,7 +333,7 @@ we_templateInit();?>';
 	function i_getDocument(){
 		$this->_updateCompleteCode();
 		/* remove unwanted/-needed start/stop parser tags (?><php) */
-		return preg_replace(array("/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?= ?/si", "/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?php ?/si"), array("${1}\n${2} echo ", "${1}\n${2}"), $this->parseTemplate());
+		return preg_replace(array("/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?= ?/si", "/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?php ?/si"), array('${1}' . "\n" . '${2} echo ', '${1}' . "\n" . '${2}'), $this->parseTemplate());
 	}
 
 	protected function i_writeSiteDir(){
