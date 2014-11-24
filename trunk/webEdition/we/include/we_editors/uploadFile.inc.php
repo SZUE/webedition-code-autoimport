@@ -76,7 +76,7 @@ if($weFileupload->processFileRequest()){
 		include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 		if(isset($_FILES['we_File']) && ($_FILES['we_File']['name']) && $_FILES['we_File']['type'] && ((empty($allowedContentTypes)) || (!(strpos($allowedContentTypes, $_FILES['we_File']['type']) === false)))){
-			$we_doc->Extension = strtolower((strpos($_FILES['we_File']['name'], '.') > 0) ? preg_replace('/^.+(\..+)$/', "\\1", $_FILES['we_File']['name']) : ''); //strtolower for feature 3764
+			$we_doc->Extension = strtolower((strpos($_FILES['we_File']['name'], '.') > 0) ? preg_replace('/^.+(\..+)$/', '$1', $_FILES['we_File']['name']) : ''); //strtolower for feature 3764
 			if(!isset($we_File) || !$we_File){
 				$we_File = TEMP_PATH . we_base_file::getUniqueId() . $we_doc->Extension;
 				move_uploaded_file($_FILES['we_File']['tmp_name'], $we_File);
@@ -84,7 +84,7 @@ if($weFileupload->processFileRequest()){
 			if((!$we_doc->Filename) || (!$we_doc->ID)){
 				// Bug Fix #6284
 				$we_doc->Filename = preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES["we_File"]["name"]);
-				$we_doc->Filename = preg_replace('/^(.+)\..+$/', '\\1', $we_doc->Filename);
+				$we_doc->Filename = preg_replace('/^(.+)\..+$/', '$1', $we_doc->Filename);
 			}
 
 			$foo = explode('/', $_FILES["we_File"]["type"]);

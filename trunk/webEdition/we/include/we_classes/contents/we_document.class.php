@@ -1017,13 +1017,13 @@ class we_document extends we_root{
 				$_wysiwyg = weTag_getAttribute('wysiwyg', $attribs, false, true);
 
 				if($_htmlspecialchars && (!$_wysiwyg)){
-					$retval = preg_replace('/#we##br([^#]*)#we##/', '<br\1>', oldHtmlspecialchars(preg_replace('/<br([^>]*)>/i', '#we##br\1#we##', $retval), ENT_QUOTES));
+					$retval = preg_replace('/#we##br([^#]*)#we##/', '<br${1}>', oldHtmlspecialchars(preg_replace('/<br([^>]*)>/i', '#we##br${1}#we##', $retval), ENT_QUOTES));
 				}
 				if(!weTag_getAttribute('php', $attribs, (defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT), true)){
 					$retval = we_base_util::rmPhp($retval);
 				}
 				$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), true);
-				$retval = preg_replace('-<(br|hr)([^/>]*)/? *>-i', ($xml ? '<\\1\\2/>' : '<\\1\\2>'), $retval);
+				$retval = preg_replace('-<(br|hr)([^/>]*)/? *>-i', ($xml ? '<${1}${2}/>' : '<${1}${2}>'), $retval);
 
 				if(preg_match('/^[\d.,]+$/', trim($retval))){
 					$precision = isset($attribs['precision']) ? abs($attribs['precision']) : 2;
@@ -1588,7 +1588,7 @@ class we_document extends we_root{
 						'-<(a|img) [^>]*' . $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
 						'-<(a|img) [^>]*' . $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '(\?|&|&amp;|")[^>]*>-Ui',
 							), array(
-						'\3',
+						'$3',
 						''
 							), $text);
 				}
@@ -1617,7 +1617,7 @@ class we_document extends we_root{
 						$text = ($reg[2] === '?' ?
 										str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
 										str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
-					} else {t_e("reg", $reg[1]);
+					} else {
 						$text = preg_replace(array(
 							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
 							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>-Ui',
@@ -1630,7 +1630,7 @@ class we_document extends we_root{
 			}
 		}
 
-		return preg_replace('/\<a>(.*)\<\/a>/siU', '\1', $text);
+		return preg_replace('/\<a>(.*)\<\/a>/siU', '$1', $text);
 	}
 
 	private function getNavigationItems(){

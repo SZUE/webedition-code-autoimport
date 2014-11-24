@@ -237,7 +237,7 @@ abstract class we_html_forms{
 				$previewDivContent = $hiddenTextareaContent;
 			}
 
-			$fieldName = preg_match('|^.+\[.+\]$|i', $name) ? preg_replace('/^.+\[(.+)\]$/', '\1', $name) : '';
+			$fieldName = preg_match('|^.+\[.+\]$|i', $name) ? preg_replace('/^.+\[(.+)\]$/', '$1', $name) : '';
 
 			return $out .
 					we_html_element::htmlTextArea(array('name' => $name, 'id' => $name, 'onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'display: none'), $hiddenTextareaContent) .
@@ -274,7 +274,7 @@ abstract class we_html_forms{
 						'|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . '"[^>]*>([^<]+)</a>|i',
 						'|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . '"[^>]*>|i',
 						'|<img [^>]*src="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . '"[^>]*>|i',
-							), array('\1'), $text);
+							), array('$1'), $text);
 				}
 			}
 		}
@@ -294,7 +294,7 @@ abstract class we_html_forms{
 						$text = preg_replace(array(
 							'|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>([^<]+)</a>|i',
 							'|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>|i',
-								), array('\1'), $text);
+								), array('$1'), $text);
 					}
 				}
 			}

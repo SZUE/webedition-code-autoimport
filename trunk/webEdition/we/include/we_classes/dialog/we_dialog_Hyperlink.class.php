@@ -92,7 +92,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					break;
 				case we_base_link::TYPE_MAIL_PREFIX:
 					$this->args['type'] = we_base_link::TYPE_MAIL;
-					$this->args['mailHref'] = preg_replace('|^([^\?#]+).*$|', '\1', $ref);
+					$this->args['mailHref'] = preg_replace('|^([^\?#]+).*$|', '$1', $ref);
 					$this->args['extHref'] = '';
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
@@ -106,7 +106,13 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					break;
 				default:
 					$this->args['type'] = we_base_link::TYPE_EXT;
-					$this->args['extHref'] = preg_replace('|^([^\?#]+).*$|', '\1', preg_replace('|^' . WEBEDITION_DIR . '|', '', preg_replace('|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|', '\1', $this->args["href"])));
+					$this->args['extHref'] = preg_replace(
+							array(
+						'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
+						'|^' . WEBEDITION_DIR . '|',
+						'|^([^\?#]+).*$|'
+							), array('$1', '', '$1')
+							, $this->args["href"]);
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
 					$this->args['mailHref'] = '';

@@ -369,13 +369,13 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 		if(!$this->typeCondition['accepted']['mime'] || in_array($fileCt, $this->typeCondition['accepted']['mime'])){
-			$we_doc->Extension = strtolower((strpos($fileName, '.') > 0) ? preg_replace('/^.+(\..+)$/', "\\1", $fileName) : ''); //strtolower for feature 3764
+			$we_doc->Extension = strtolower((strpos($fileName, '.') > 0) ? preg_replace('/^.+(\..+)$/', '$1', $fileName) : ''); //strtolower for feature 3764
 			$we_File = TEMP_PATH . $fileNameTemp;
 
 			if((!$we_doc->Filename) || (!$we_doc->ID)){
 				// Bug Fix #6284
 				$we_doc->Filename = preg_replace('/[^A-Za-z0-9._-]/', '', $fileName);
-				$we_doc->Filename = preg_replace('/^(.+)\..+$/', '\\1', $we_doc->Filename);
+				$we_doc->Filename = preg_replace('/^(.+)\..+$/', '$1', $we_doc->Filename);
 			}
 
 			$foo = explode('/', $fileCt);

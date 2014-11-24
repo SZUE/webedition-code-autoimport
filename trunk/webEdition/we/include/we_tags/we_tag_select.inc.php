@@ -48,9 +48,9 @@ function we_tag_select($attribs, $content){
 				}
 				break;
 			default:
-				$content = preg_replace('|<(option[^>]*) selected( *=? *"selected")?([^>]*)>|i', "<\\1\\3>", $content);
+				$content = preg_replace('|<(option[^>]*) selected( *=? *"selected")?([^>]*)>|i', '<${1}${3}>', $content);
 				if(stripos($content, '<option>') !== false){
-					$content = preg_replace('|<option>' . preg_quote($val) . '( ?[<\n\r\t])|i', '<option selected="selected">' . $val . '\\1', $content);
+					$content = preg_replace('|<option>' . preg_quote($val) . '( ?[<\n\r\t])|i', '<option selected="selected">' . $val . '${1}', $content);
 				}
 				if(preg_match('|<option[^>]*value=[\'"]?.*[\'"]?>|i', $content)){
 					$content = preg_replace('|<option([^>]*)value *= *"' . preg_quote($val) . '"([^>]*)>|i', '<option value="' . $val . '" selected="selected">', $content);
