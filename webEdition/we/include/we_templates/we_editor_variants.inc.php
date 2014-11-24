@@ -43,7 +43,7 @@ echo STYLESHEET;
 				break;
 
 			case we_base_ContentTypes::TEMPLATE:
-				include(WE_INCLUDES_DIR . 'we_templates/we_template_variant.inc.php');
+				include(WE_INCLUDES_PATH. 'we_templates/we_template_variant.inc.php');
 				break;
 
 			default:
