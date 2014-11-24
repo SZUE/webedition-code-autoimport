@@ -70,6 +70,7 @@ class update extends updateBase {
 	
 	function checkRequirements(&$output, $pcreV,$phpextensionsstring, $phpV,$mysqlV=''){
 		$phpversionOK = true;
+		$phpversionOkForV640 = true;
 		$mysqlversionOK = true;
 		$pcreversionOK = true;
 		$phpExtensionsDetectable = true;
@@ -108,6 +109,8 @@ class update extends updateBase {
 		
 		if ($phpV !='' && version_compare($phpV,"5.2.4",'<') ){
 			$phpversionOK = false;
+		} else if ($phpV !='' && version_compare($phpV,"5.3.7",'<') && $_SESSION['clientTargetVersionNumber'] > 6390){
+			$phpversionOkForV640 = false;
 		}
 		
 		if ($mysqlV!='' && substr($mysqlV,0,1)<4 && $_SESSION['clientTargetVersionNumber'] <6200){
@@ -125,12 +128,12 @@ class update extends updateBase {
 		if($pcreV!='' && substr($pcreV,0,1)<7) {
 			$pcreversionOK = false;
 		}
-		if ($sdkDbOK && $mysqlversionOK && $phpExtensionsOK && $pcreversionOK && $mbstringAvailable && $gdlibAvailable && $exifAvailable && $phpversionOK && $phpExtensionsDetectable) {
+		if ($sdkDbOK && $mysqlversionOK && $phpExtensionsOK && $pcreversionOK && $mbstringAvailable && $gdlibAvailable && $exifAvailable && $phpversionOK && $phpversionOkForV640 && $phpExtensionsDetectable) {
 			$output = '';
 			return 1;
 		} else {
 			$output = '<div class="messageDiv">';
-			if (!$phpExtensionsOK || !$phpversionOK || !$mysqlversionOK){
+			if (!$phpExtensionsOK || !$phpversionOK || $phpversionOkForV640 || !$mysqlversionOK){
 				$output .='<p><b>'.$GLOBALS['lang']['update']['ReqWarnung'].'</b></p><p>'.$GLOBALS['lang']['update']['ReqWarnungText'].'</p><ul>';
 			} else {
 				$output .='<ul>';
@@ -140,6 +143,10 @@ class update extends updateBase {
 			}
 			if (!$phpversionOK){
 				$output .= '<li><b>'.$GLOBALS['lang']['update']['ReqWarnungKritisch'].'</b>'.$GLOBALS['lang']['update']['ReqWarnungPHPversion'].'<b>'.$phpV.'</b></li>';
+			}
+			
+			if (!$phpversionOkForV640){
+				$output .= '<li><b>'.$GLOBALS['lang']['update']['ReqWarnungKritisch'].'</b>'.$GLOBALS['lang']['update']['ReqWarnungPHPversionForV640'].'<b>'.$phpV.'</b></li>';
 			}
 			
 			if (!$phpExtensionsOK){
@@ -169,7 +176,7 @@ class update extends updateBase {
 			
 			$output .= '</ul></div>';
 			
-			if ($phpExtensionsOK && $phpversionOK && $mysqlversionOK){
+			if ($phpExtensionsOK && $phpversionOK && $phpversionOkForV640 && $mysqlversionOK){
 				return 1;
 			} else {
 				return 0;

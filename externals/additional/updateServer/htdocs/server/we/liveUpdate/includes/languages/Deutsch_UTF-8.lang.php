@@ -139,6 +139,7 @@ $lang['update']['ReqWarnungMbstring'] = 'MultiByte String Unterstützung (PHP-Ex
 $lang['update']['ReqWarnungGdlib'] = 'Die PHP GDlib-Funktionen (PHP-Extension gd) sind auf diesem Server nicht verfügbar, daher sind einige Bildbearbeitungs- und Bildvorschaufunktionen nur eingeschränkt nutzbar.';
 $lang['update']['ReqWarnungExif'] = "Die exif PHP Extension ist auf diesem Server nicht verfügbar, daher sind EXIF-Metadaten für Bilder nicht nutzbar.";
 $lang['update']['ReqWarnungPHPversion'] = 'Es wird mindestens PHP in der Version 5.2.4 benötigt. Festgestellt wurde Version ';
+$lang['update']['ReqWarnungPHPversionForV640'] = 'Für ein Update auf webEdition-Versionen neuer als 6.3.9.0 wird PHP mindestens in der Version 5.2.4 benötigt. Festgestellt wurde Version ';
 
 $lang['installer']['headline'] = 'Installation wird durchgeführt';
 $lang['installer']['headlineConfirmInstallation'] = 'Installation bestätigen';
