@@ -26,7 +26,7 @@
 					if(!in_array(strtolower($exten),$phpextensions,true) ){$phpextensionsMissing[]=$exten;}
 				}
 				
-				if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//später ODER mysqli
+				if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//spÃ¤ter ODER mysqli
 						
 				} else {$sdkDbOK = false;}
 			} else {
@@ -55,8 +55,8 @@
 			}
 			
 			// identify webEdition version that has to be installed
-			if($_SESSION["le_version"] >= "7000") {
-				$phpVersionMin="5.3.2";
+			if($_SESSION["le_version"] >= "6391") {
+				$phpVersionMin="5.3.7";
 			} else if($_SESSION["le_version"] >= "6000") {
 				$phpVersionMin="5.2.4";
 			} 

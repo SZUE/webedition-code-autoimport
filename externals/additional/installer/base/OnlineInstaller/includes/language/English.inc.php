@@ -144,6 +144,7 @@ $lang["Step"]["SessionAndCookieTest"]["cookieFailed"] = "Cookie: A cookie can no
 $lang["Step"]["SessionAndCookieTest"]["sessionFailed"] = "Session: A session can not be started.";
 
 $lang["Step"]["SessionAndCookieTest"]["php"] = "PHP version %s";
+$lang["Step"]["SessionAndCookieTest"]["phpWarning"] = "To install webEdition versions newer than 6.3.9.0, you need at least PHP version 5.3.7";
 $lang["Step"]["SessionAndCookieTest"]["phpFailed"] = "The used PHP version <b>%s</b> is to old. You need at least PHP version 5.2.4.";
 
 $lang["Step"]["SessionAndCookieTest"]["max_input_vars"] = "PHP max_input_vars";

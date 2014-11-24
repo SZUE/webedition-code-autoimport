@@ -40,18 +40,19 @@ class SessionAndCookieTest extends leStep {
 
 		//error_log(print_r($_COOKIE),1);
 		//error_log(print_r($_SESSION),1);
-		
-		
+
+		$PHPText = sprintf($this->Language['php'], PHP_VERSION);
+		$PHPWarning = '';
 		$PHPImage = leLayout::getRequirementStateImage();
-		if ( version_compare(PHP_VERSION, '5.2.4', '<' )) {
+		if (version_compare(PHP_VERSION, '5.2.4', '<' )) {
 			$Success = false;
 			$PHPImage = leLayout::getRequirementStateImage(false);
 			$Template->addError(sprintf($this->Language['phpFailed'], PHP_VERSION));
-
+		} else if(version_compare(PHP_VERSION, '5.3.7', '<' )){
+			$PHPImage = leLayout::getWarningStateImage(false);
+			$PHPWarning = '<tr><td colspan="2">' . $this->Language['phpWarning'] . '</td></tr>';
 		}
-		$PHPText = sprintf($this->Language['php'], PHP_VERSION);
-		
-		
+
 		$SessionImage = leLayout::getRequirementStateImage();
 		if ( !(isset($_SESSION["le_testSession"]) && $_SESSION["le_testSession"] == "test-session" ) ) {
 			$Success = false;
@@ -129,6 +130,7 @@ class SessionAndCookieTest extends leStep {
 	<td>&middot; {$PHPText}</td>
 	<td align="right">{$PHPImage}</td>
 </tr>
+{$PHPWarning}
 <tr>
 	<td>&middot; {$this->Language['cookie']}</td>
 	<td align="right">{$CookieImage}</td>
