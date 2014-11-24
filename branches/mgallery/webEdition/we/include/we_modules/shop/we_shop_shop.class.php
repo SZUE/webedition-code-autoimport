@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_shop{
-
 	const DOCUMENT = 'w';
 	const OBJECT = 'o';
 
@@ -71,11 +70,7 @@ class we_shop_shop{
 			$this->Record = array();
 			foreach($shoppingItem['serial'] as $key => $value){
 				if(!is_int($key)){
-					if($key == WE_SHOP_VAT_FIELD_NAME){
-						$this->Record[$key] = $value;
-					} else {
-						$this->Record[preg_replace('#^we_#', '', $key)] = $value;
-					}
+					$this->Record[($key == WE_SHOP_VAT_FIELD_NAME ? $key : preg_replace('#^we_#', '', $key))] = $value;
 				}
 			}
 			$this->count++;

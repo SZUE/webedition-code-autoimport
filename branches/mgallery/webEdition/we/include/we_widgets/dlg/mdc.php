@@ -45,10 +45,9 @@ if($_selection){
 		$_selTable = ($_selType) ? OBJECT_FILES_TABLE : FILE_TABLE;
 	}
 
-	$_SESSION['weS']['exportVars'][$selType] = $sCsv;
+	$_SESSION['weS']['exportVars_session'][$selType] = $sCsv;
 }
 $jsTree = "
-
 function startInit() { // this function is called onload!
 	startTree();
 	var _sCsv='" . $sCsv . "';
@@ -57,8 +56,7 @@ function startInit() { // this function is called onload!
 	for(var i=0;i<aCsvLen;i++){
 		SelectedItems['" . $_selTable . "'][i]=aCsv[i];
 	}
-}
-	";
+}";
 
 function getHTMLDirSelector($_selType){
 	global $showAC, $yuiSuggest;

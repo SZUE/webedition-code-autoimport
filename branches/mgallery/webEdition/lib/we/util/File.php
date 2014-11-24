@@ -112,16 +112,17 @@ abstract class we_util_File extends we_base_file{
 			}
 		}
 // loop through the folder
-		$dir = dir($path);
-		while(false !== $entry = $dir->read()){
-			if($entry === '.' || $entry === '..'){
-				continue;
-			}
+		if(($dir = dir($path))){
+			while(false !== $entry = $dir->read()){
+				if($entry === '.' || $entry === '..'){
+					continue;
+				}
 // Recurse
 //t_e(" -- trying to delete folder " . $path);
-			self::rmdirr($path . DIRECTORY_SEPARATOR . $entry);
+				self::rmdirr($path . DIRECTORY_SEPARATOR . $entry);
+			}
+			$dir->close();
 		}
-		$dir->close();
 		return @rmdir($path);
 	}
 

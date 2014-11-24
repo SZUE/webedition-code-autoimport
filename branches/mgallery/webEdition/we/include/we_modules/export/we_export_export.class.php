@@ -151,11 +151,11 @@ class we_export_export extends weModelBase{
 	}
 
 	function clearSessionVars(){
-		if(isset($_SESSION['weS']['ExportSession'])){
-			unset($_SESSION['weS']['ExportSession']);
+		if(isset($_SESSION['weS']['export_session'])){
+			unset($_SESSION['weS']['export_session']);
 		}
-		if(isset($_SESSION['weS']['exportVars'])){
-			unset($_SESSION['weS']['exportVars']);
+		if(isset($_SESSION['weS']['exportVars_session'])){
+			unset($_SESSION['weS']['exportVars_session']);
 		}
 	}
 

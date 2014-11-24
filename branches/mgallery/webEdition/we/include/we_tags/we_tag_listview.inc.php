@@ -68,15 +68,15 @@ function we_tag_listview($attribs){
 	$name = weTag_getAttribute('name', $attribs, 0);
 	$doctype = weTag_getAttribute('doctype', $attribs);
 	$class = weTag_getAttribute('classid', $attribs, 0);
-	$we_lv_cats = isset($_REQUEST['we_lv_cats_' . $name]) ? filterXss($_REQUEST['we_lv_cats_' . $name]) : weTag_getAttribute('categories', $attribs);
+	$we_lv_cats = we_base_request::_(we_base_request::FILELIST, 'we_lv_cats_' . $name, weTag_getAttribute('categories', $attribs));
 	$categoryids = weTag_getAttribute('categoryids', $attribs);
-	$we_lv_categoryids = isset($_REQUEST['we_lv_categoryids_' . $name]) ? filterXss($_REQUEST['we_lv_categoryids_' . $name]) : $categoryids;
+	$we_lv_categoryids = we_base_request::_(we_base_request::INTLIST, 'we_lv_categoryids_' . $name, $categoryids);
 	$we_lv_catOr = we_base_request::_(we_base_request::BOOL, 'we_lv_catOr_' . $name, weTag_getAttribute('catOr', $attribs, false, true));
 
 	$rows = weTag_getAttribute('rows', $attribs, 100000000);
 	$order = weTag_getAttribute('order', $attribs);
 	//FIXME: XSS
-	$we_lv_order = isset($_REQUEST['we_lv_order_' . $name]) ? filterXss($_REQUEST['we_lv_order_' . $name]) : $order;
+	$we_lv_order = we_base_request::_(we_base_request::STRING, 'we_lv_order_' . $name, $order);
 
 	$we_lv_numorder = we_base_request::_(we_base_request::BOOL, 'we_lv_numorder_' . $name, weTag_getAttribute('numorder', $attribs, false, true));
 	$id = weTag_getAttribute('id', $attribs);
@@ -110,8 +110,8 @@ function we_tag_listview($attribs){
 	$we_lv_se = we_base_request::_(we_base_request::BOOL, 'we_lv_se_' . $name, weTag_getAttribute('searchable', $attribs, true, true));
 
 	$seeMode = (isset($attribs['seem'])) ?
-		weTag_getAttribute('seem', $attribs, true, true) : //	backwards compatibility
-		weTag_getAttribute('seeMode', $attribs, true, true);
+			weTag_getAttribute('seem', $attribs, true, true) : //	backwards compatibility
+			weTag_getAttribute('seeMode', $attribs, true, true);
 
 	$calendar = weTag_getAttribute('calendar', $attribs);
 	$datefield = weTag_getAttribute('datefield', $attribs);
@@ -122,8 +122,8 @@ function we_tag_listview($attribs){
 
 	// deprecated, because subfolders acts the other way arround as it should
 	$subfolders = (isset($attribs['subfolders'])) ?
-		!weTag_getAttribute('subfolders', $attribs, false, true) :
-		weTag_getAttribute('recursive', $attribs, true, true);
+			!weTag_getAttribute('subfolders', $attribs, false, true) :
+			weTag_getAttribute('recursive', $attribs, true, true);
 
 	$we_lv_subfolders = isset($_REQUEST['we_lv_subfolders_' . $name]) ? (bool) $_REQUEST['we_lv_subfolders_' . $name] : $subfolders;
 
@@ -177,11 +177,10 @@ function we_tag_listview($attribs){
 			switch(isset($GLOBALS['lv']) ? get_class($GLOBALS['lv']) : ''){
 				case 'we_object_listview':
 				case 'we_object_tag':
-					$record = $GLOBALS['lv'] instanceof we_object_listview ? $GLOBALS['lv']->getDBRecord() : $GLOBALS['lv']->getObject()->getDBRecord();
-					$we_lv_pageID = $record['OF_ID'];
+					$we_lv_pageID = $GLOBALS['lv']->getDBf('OF_ID');
 					$we_lv_linktype = 'tblObjectFile';
-					$we_lv_pagelanguage = $we_lv_pagelanguage === 'self' ? $record['OF_Language'] : ($we_lv_pagelanguage === 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);
-					$we_lv_ownlanguage = $record['OF_Language'];
+					$we_lv_pagelanguage = $we_lv_pagelanguage === 'self' ? $GLOBALS['lv']->getDBf('OF_Language') : ($we_lv_pagelanguage === 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);
+					$we_lv_ownlanguage = $GLOBALS['lv']->getDBf('OF_Language');
 					break;
 				default:
 					$we_lv_pagelanguage = $we_lv_pagelanguage === 'self' || $we_lv_pagelanguage === 'top' ? $we_lv_ownlanguage : we_getDocForTag($docAttr)->Language;

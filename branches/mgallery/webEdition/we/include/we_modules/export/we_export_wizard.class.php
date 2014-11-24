@@ -53,7 +53,7 @@ class we_export_wizard{
 		"filename" => "",
 		"csv_delimiter" => ';',
 		"csv_enclose" => '"',
-		"csv_lineend" => "windows",
+		"csv_lineend" => 'windows',
 		"csv_fieldnames" => "",
 		"csv_fields" => 0,
 		"cdata" => "true",
@@ -77,16 +77,16 @@ class we_export_wizard{
 		$this->setFrameset($frameset);
 		$this->db = new DB_WE();
 
-		if(isset($_SESSION['weS']['exportVars'])){
+		if(isset($_SESSION['weS']['exportVars_session'])){
 			foreach($this->exportVars as $k => $v){
-				if(isset($_SESSION['weS']['exportVars'][$k])){
-					$this->exportVars[$k] = $_SESSION['weS']['exportVars'][$k];
+				if(isset($_SESSION['weS']['exportVars_session'][$k])){
+					$this->exportVars[$k] = $_SESSION['weS']['exportVars_session'][$k];
 				} else {
-					$_SESSION['weS']['exportVars'][$k] = $v;
+					$_SESSION['weS']['exportVars_session'][$k] = $v;
 				}
 			}
 		} else {
-			$_SESSION['weS']['exportVars'] = $this->exportVars;
+			$_SESSION['weS']['exportVars_session'] = $this->exportVars;
 		}
 	}
 
@@ -119,8 +119,8 @@ class we_export_wizard{
 	}
 
 	private function getExportVars(){
-		if(isset($_SESSION['weS']['exportVars'])){
-			$this->exportVars = $_SESSION['weS']['exportVars'];
+		if(isset($_SESSION['weS']['exportVars_session'])){
+			$this->exportVars = $_SESSION['weS']['exportVars_session'];
 		}
 		foreach(array_keys($this->exportVars) as $k){
 			$var = we_base_request::_(we_base_request::RAW, $k, null);
@@ -128,12 +128,12 @@ class we_export_wizard{
 				$this->exportVars[$k] = $var;
 			}
 		}
-		$_SESSION['weS']['exportVars'] = $this->exportVars;
+		$_SESSION['weS']['exportVars_session'] = $this->exportVars;
 	}
 
 	private function getHTMLFrameset(){
 		$args = "";
-		$_SESSION['weS']['exportVars'] = array();
+		$_SESSION['weS']['exportVars_session'] = array();
 		if(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1))){
 			$args .= "&we_cmd[1]=" . $cmd1;
 		}
@@ -531,8 +531,8 @@ function we_submit(){
 										we_html_element::htmlHidden(array("name" => "step", "value" => 4)) .
 										we_html_element::htmlHidden(array("name" => "selDocs", "value" => "")) .
 										we_html_element::htmlHidden(array("name" => "selTempl", "value" => "")) .
-										we_html_element::htmlHidden(array("name" => "selObjs", "value" => (isset($_SESSION['weS']['exportVars']["selObjs"]) ? $_SESSION['weS']['exportVars']["selObjs"] : ""))) .
-										we_html_element::htmlHidden(array("name" => "selClasses", "value" => (isset($_SESSION['weS']['exportVars']["selClasses"]) ? $_SESSION['weS']['exportVars']["selClasses"] : ""))) .
+										we_html_element::htmlHidden(array("name" => "selObjs", "value" => (isset($_SESSION['weS']['exportVars_session']["selObjs"]) ? $_SESSION['weS']['exportVars_session']["selObjs"] : ""))) .
+										we_html_element::htmlHidden(array("name" => "selClasses", "value" => (isset($_SESSION['weS']['exportVars_session']["selClasses"]) ? $_SESSION['weS']['exportVars_session']["selClasses"] : ""))) .
 										we_html_multiIconBox::getHTML("", 530, $parts, 30, "", -1, "", "", false, g_l('export', "[title]"))
 								)
 						)
@@ -546,10 +546,6 @@ function we_submit(){
 
 		$extype = $this->exportVars["extype"];
 		$filename = $this->exportVars["filename"];
-//$export_to = $this->exportVars["export_to"];
-//$cdata = $this->exportVars["cdata"];
-//$path = $this->exportVars["path"];
-//$art = $this->exportVars["art"];
 
 		$handle_def_templates = $this->exportVars["handle_def_templates"];
 		$handle_document_includes = $this->exportVars["handle_document_includes"];
@@ -660,11 +656,9 @@ function setState(a) {
 		$export_to = $this->exportVars["export_to"];
 		$cdata = $this->exportVars["cdata"];
 		$path = $this->exportVars["path"];
-//$art = $this->exportVars["art"];
 		$csv_delimiter = $this->exportVars["csv_delimiter"];
 		$csv_enclose = $this->exportVars["csv_enclose"];
 		$csv_lineend = $this->exportVars["csv_lineend"];
-//$csv_fields = $this->exportVars["csv_fields"];
 
 		if(!$filename){
 			$filename = "weExport_" . date('d_m_Y_H_i') . ($extype == we_import_functions::TYPE_GENERIC_XML ? ".xml" : ".csv");
@@ -738,7 +732,7 @@ function setState(a) {
 						g_l('export', "[download_starting]") .
 						we_html_element::htmlA(array("href" => $this->frameset . "?pnt=body&step=50&exportfile=" . $filename), g_l('export', "[download]")));
 
-		unset($_SESSION['weS']['exportVars']);
+		unset($_SESSION['weS']['exportVars_session']);
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 						we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET .
@@ -840,8 +834,8 @@ function delOpenFolder(id){
 
 
 function populateVars(){
-	' . $this->bodyFrame . '.document.we_form.selDocs.value="' . (isset($_SESSION['weS']['exportVars']["selDocs"]) ? $_SESSION['weS']['exportVars']["selDocs"] : "") . '";
-	' . $this->bodyFrame . '.document.we_form.selObjs.value="' . (isset($_SESSION['weS']['exportVars']["selObjs"]) ? $_SESSION['weS']['exportVars']["selObjs"] : "") . '";
+	' . $this->bodyFrame . '.document.we_form.selDocs.value="' . (isset($_SESSION['weS']['exportVars_session']["selDocs"]) ? $_SESSION['weS']['exportVars_session']["selDocs"] : "") . '";
+	' . $this->bodyFrame . '.document.we_form.selObjs.value="' . (isset($_SESSION['weS']['exportVars_session']["selObjs"]) ? $_SESSION['weS']['exportVars_session']["selObjs"] : "") . '";
 }
 
 function setTab(tab) {
@@ -1056,10 +1050,10 @@ var we_tabs = new Array();
 
 				$xmlExIm->getSelectedItems($this->exportVars["selection"], $extype, $this->exportVars["art"], $this->exportVars["type"], $this->exportVars["doctype"], $this->exportVars["classname"], $this->exportVars["categories"], $this->exportVars["dir"], $finalDocs, $finalTempl, $finalObjs, $finalClasses);
 
-				$_SESSION['weS']['exportVars']["finalDocs"] = $finalDocs;
-				$_SESSION['weS']['exportVars']["finalTempl"] = $finalTempl;
-				$_SESSION['weS']['exportVars']["finalObjs"] = $finalObjs;
-				$_SESSION['weS']['exportVars']["finalClasses"] = $finalClasses;
+				$_SESSION['weS']['exportVars_session']["finalDocs"] = $finalDocs;
+				$_SESSION['weS']['exportVars_session']["finalTempl"] = $finalTempl;
+				$_SESSION['weS']['exportVars_session']["finalObjs"] = $finalObjs;
+				$_SESSION['weS']['exportVars_session']["finalClasses"] = $finalClasses;
 
 // Description of the variables:
 //  $finalDocs - contains documents IDs that need to be exported
@@ -1160,10 +1154,10 @@ if (top.footer.setProgress){
 
 				if($remaining_docs){
 					$cut = array_shift($remaining_docs);
-					$_SESSION['weS']['exportVars']["finalDocs"] = $remaining_docs;
+					$_SESSION['weS']['exportVars_session']["finalDocs"] = $remaining_docs;
 				} else if($remaining_objs){
 					$cut = array_shift($remaining_objs);
-					$_SESSION['weS']['exportVars']["finalObjs"] = $remaining_objs;
+					$_SESSION['weS']['exportVars_session']["finalObjs"] = $remaining_objs;
 				}
 
 				$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "load")) .
@@ -1179,7 +1173,7 @@ if (top.footer.setProgress){
 					);
 				}
 				if(!$export_local){
-					unset($_SESSION['weS']['exportVars']);
+					unset($_SESSION['weS']['exportVars_session']);
 				}
 				$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET;
 				return we_html_element::htmlDocType() . we_html_element::htmlHtml(
@@ -1254,12 +1248,12 @@ if (top.footer.setProgress){
 					}
 					$xmlExIm->setOptions($this->exportVars);
 					$xmlExIm->prepareExport($ids);
-					$_SESSION['weS']['exportVars']["RefTable"] = $xmlExIm->RefTable->RefTable2Array();
+					$_SESSION['weS']['exportVars_session']["RefTable"] = $xmlExIm->RefTable->RefTable2Array();
 					$all = count($xmlExIm->RefTable);
 					$exports = 0;
-					$_SESSION['weS']['exportVars']["filename"] = ($export_local ? TEMP_PATH . $filename : $_SERVER['DOCUMENT_ROOT'] . $path . $filename);
+					$_SESSION['weS']['exportVars_session']["filename"] = ($export_local ? TEMP_PATH . $filename : $_SERVER['DOCUMENT_ROOT'] . $path . $filename);
 //FIXME set export type in getHeader
-					we_base_file::save($_SESSION['weS']['exportVars']["filename"], we_exim_XMLExIm::getHeader(), "wb");
+					we_base_file::save($_SESSION['weS']['exportVars_session']["filename"], we_exim_XMLExIm::getHeader(), "wb");
 				} else {
 					$xmlExIm->RefTable->Array2RefTable($this->exportVars["RefTable"]);
 					$xmlExIm->RefTable->current = $this->exportVars["CurrentRef"];
@@ -1281,7 +1275,7 @@ if (top.footer.setProgress){
 				} else if($percent > 100){
 					$percent = 100;
 				}
-				$_SESSION['weS']['exportVars']["CurrentRef"] = $xmlExIm->RefTable->current;
+				$_SESSION['weS']['exportVars_session']["CurrentRef"] = $xmlExIm->RefTable->current;
 
 				$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "load")) .
 						we_html_element::htmlHidden(array("name" => "all", "value" => $all)) .

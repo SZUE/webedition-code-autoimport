@@ -44,7 +44,7 @@ class we_backup_tableItem extends weModelBase{
 		$this->setKeys(self::getTableKey($this->table));
 	}
 
-	function load(array $ids){
+	function load(array $ids, $isAdvanced = false){
 		foreach($ids as $key => $val){
 			$this->$key = $val;
 		}

@@ -459,11 +459,10 @@ top.content.hloaded=1;
 	}
 
 	function getHTMLCmd(){
-		$extraHead = $this->View->getCmdJS();
 		$form = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->htmlHidden("wcmd", "") . $this->View->htmlHidden("wopt", ""));
 		$body = we_html_element::htmlBody(array(), $form);
 
-		return $this->getHTMLDocument($body, $extraHead);
+		return $this->getHTMLDocument($body, $this->View->getCmdJS());
 	}
 
 	function getHTMLLogQuestion(){

@@ -223,7 +223,6 @@ function we_cmd() {
 	}
 
 	function getJSProperty(){
-		$table = we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE);
 		$selected = '';
 		$opened = '';
 		$arr = array(FILE_TABLE => "selDocs", TEMPLATES_TABLE => "selTempl");
@@ -243,11 +242,10 @@ function we_cmd() {
 			}
 		}
 
-
 		return parent::getJSProperty() .
 				we_html_element::jsElement('
 var loaded=0;
-var table = "' . $table . '";
+var table = "' . we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE) . '";
 
 function doUnload() {
 	if (!!jsWindow_count) {
@@ -514,16 +512,16 @@ function we_cmd(){
 			default:
 		}
 
-		$_SESSION['weS']['ExportSession'] = $this->export;
+		$_SESSION['weS']['export_session'] = $this->export;
 	}
 
 	function processVariables(){//FIXME use table datatypes
-		if(isset($_SESSION['weS']['ExportSession'])){
-			$this->export = $_SESSION['weS']['ExportSession'];
+		if(isset($_SESSION['weS']['export_session'])){
+			$this->export = $_SESSION['weS']['export_session'];
 		}
 
-		if(isset($_SESSION['weS']['exportVars'])){
-			unset($_SESSION['weS']['exportVars']);
+		if(isset($_SESSION['weS']['exportVars_session'])){
+			unset($_SESSION['weS']['exportVars_session']);
 		}
 
 		if(is_array($this->export->persistent_slots)){

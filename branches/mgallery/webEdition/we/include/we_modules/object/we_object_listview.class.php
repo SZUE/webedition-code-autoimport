@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -28,6 +29,7 @@
  *
  */
 class we_object_listview extends we_listview_base{
+
 	var $classID; /* ID of a class */
 	var $triggerID; /* ID of a document which to use for displaying thr detail page */
 	var $condition = ''; /* condition string (like SQL) */
@@ -84,8 +86,8 @@ class we_object_listview extends we_listview_base{
 		$_obxTable = OBJECT_X_TABLE . intval($this->classID);
 
 		$where_lang = ($this->languages ?
-				' AND ' . $_obxTable . '.OF_Language IN ("' . implode('","', explode(',', $this->languages)) . '")' :
-				'');
+						' AND ' . $_obxTable . '.OF_Language IN ("' . implode('","', explode(',', $this->languages)) . '")' :
+						'');
 
 		if($this->desc && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';
@@ -94,12 +96,12 @@ class we_object_listview extends we_listview_base{
 		$this->we_predefinedSQL = $we_predefinedSQL;
 
 		$this->Path = ($this->docID ?
-				id_to_path($this->docID, FILE_TABLE, $this->DB_WE) :
-				($this->triggerID && show_SeoLinks() ?
-					id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE) :
-					(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '')
-				)
-			);
+						id_to_path($this->docID, FILE_TABLE, $this->DB_WE) :
+						($this->triggerID && show_SeoLinks() ?
+								id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE) :
+								(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '')
+						)
+				);
 
 
 		// IMPORTANT for seeMode !!!! #5317
@@ -115,14 +117,16 @@ class we_object_listview extends we_listview_base{
 			$this->fetchCalendar($this->condition, $calendar_select, $calendar_where, $matrix);
 		}
 		$sqlParts = $this->makeSQLParts($matrix, $this->classID, $this->order, $this->condition);
+		//allways join the file table itself
+		$sqlParts["tables"].=' JOIN `' . OBJECT_FILES_TABLE . '` ON `' . OBJECT_FILES_TABLE . '`.ID=`' . OBJECT_X_TABLE . $this->classID . '`.OF_ID';
 
 		$pid_tail = (isset($GLOBALS['we_doc']) ? makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table) : '1');
 
-		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", true, $this->categoryids) : '');
+		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", $this->categoryids) : '');
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName, $this->classID, $id) :
-				'');
+						we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName, $this->classID, $id) :
+						'');
 
 		$webUserID_tail = '';
 		if($this->customers && $this->customers !== "*"){
@@ -157,7 +161,7 @@ class we_object_listview extends we_listview_base{
 				} else {
 					$ws_tail = '';
 				}
-				$this->DB_WE->query('SELECT ' . $_obxTable . '.OF_ID AS ID ' . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? " " . $_obxTable . ".OF_IsSearchable=1 AND" : "") . " " . $pid_tail . ' AND ' . $_obxTable . '.OF_ID!=0 ' . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? ' AND (' . $sqlParts['cond'] . ') ' : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy']);
+				$this->DB_WE->query('SELECT ' . $_obxTable . '.OF_ID AS ID ' . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? " " . $_obxTable . '.OF_IsSearchable=1 AND' : "") . " " . $pid_tail . ' AND ' . $_obxTable . '.OF_ID!=0 ' . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (" AND " . $sqlParts["publ_cond"]) : "") . " " . ($sqlParts["cond"] ? ' AND (' . $sqlParts['cond'] . ') ' : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy']);
 				$this->anz_all = $this->DB_WE->num_rows();
 				if($calendar != ""){
 					while($this->DB_WE->next_record()){
@@ -169,7 +173,6 @@ class we_object_listview extends we_listview_base{
 				}
 				$q = 'SELECT ' . $sqlParts["fields"] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' ' . $_obxTable . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . ' AND ' . $_obxTable . '.OF_ID!=0 ' . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? ' AND (' . $sqlParts['cond'] . ') ' : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
 			}
-			//t_e($q);
 			$this->DB_WE->query($q);
 			$this->anz = $this->DB_WE->num_rows();
 
@@ -259,8 +262,8 @@ class we_object_listview extends we_listview_base{
 
 	public static function decodeEregString(array $match){
 		return "'" . preg_replace_callback("/&([^;]+);/", function (array $match){
-				return chr($match[1]);
-			}, $match[1]) . "'";
+					return chr($match[1]);
+				}, $match[1]) . "'";
 	}
 
 	function makeSQLParts($matrix, $classID, $order, $cond){
@@ -280,7 +283,7 @@ class we_object_listview extends we_listview_base{
 				$descArr[] = intval(isset($g[1]) && strtolower(trim($g[1])) === 'desc');
 			}
 		}
-		//t_e($orderArr);
+
 		//get Metadata for class (default title, etc.)
 		//BugFix #4629
 		$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords,CreationDate,ModDate FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classID, $this->DB_WE);
@@ -328,9 +331,13 @@ class we_object_listview extends we_listview_base{
 			case 'we_id':
 			case 'we_filename':
 			case 'we_published':
-				$_tmporder = str_replace(array(
-					'we_id', 'we_filename', 'we_published'), array(
-					'`' . OBJECT_X_TABLE . $classID . '`.OF_ID', '`' . OBJECT_X_TABLE . $classID . '`.OF_Text', '`' . OBJECT_X_TABLE . $classID . '`.OF_Published'), $_tmporder);
+			case 'we_moddate':
+				$_tmporder = strtr($_tmporder, array(
+					'we_id' => '`' . OBJECT_X_TABLE . $classID . '`.OF_ID',
+					'we_filename' => '`' . OBJECT_X_TABLE . $classID . '`.OF_Text',
+					'we_published' => '`' . OBJECT_X_TABLE . $classID . '`.OF_Published',
+					'we_moddate' => '`' . OBJECT_FILES_TABLE . '`.ModDate',
+				));
 				$order = ' ORDER BY ' . $_tmporder . ($this->desc ? ' DESC' : '');
 				break;
 			case 'random()':
@@ -355,7 +362,7 @@ class we_object_listview extends we_listview_base{
 		return array(//FIXME: maybe random can be changed by time%ID or sth. which is faster and quite rand enough
 			'fields' => rtrim($f, ',') . ($order === ' ORDER BY RANDOM ' ? ', RAND() AS RANDOM ' : ''),
 			'order' => $order,
-			'tables' => makeCSVFromArray($tb),
+			'tables' => implode(',', $tb),
 			'groupBy' => (count($tb) > 1) ? ' GROUP BY `' . OBJECT_X_TABLE . $classID . '`.OF_ID ' : '',
 			'publ_cond' => $publ_cond ? ' ( ' . implode(' AND ', $publ_cond) . ' ) ' : '',
 			'cond' => trim($cond)
@@ -395,10 +402,10 @@ class we_object_listview extends we_listview_base{
 						$path_parts = pathinfo(id_to_path($this->DB_WE->f('OF_TriggerID')));
 					}
 					$this->DB_WE->Record['we_WE_PATH'] = ($path_parts && $path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-						(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-							'' :
-							$path_parts['filename'] . '/' ) .
-						$this->DB_WE->Record['OF_Url'];
+							(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+									'' :
+									$path_parts['filename'] . '/' ) .
+							$this->DB_WE->Record['OF_Url'];
 				} else {
 					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$this->DB_WE->Record['we_WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];

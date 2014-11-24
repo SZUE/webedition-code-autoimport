@@ -50,9 +50,6 @@ class we_imageDocument extends we_binaryDocument{
 		$this->ContentType = we_base_ContentTypes::IMAGE;
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_IMAGEEDIT, we_base_constants::WE_EDITPAGE_THUMBNAILS);
-			/* 		if(defined('CUSTOMER_TABLE')){
-			  array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_WEBUSER);
-			  } */
 		}
 		self::$imgCnt++;
 	}

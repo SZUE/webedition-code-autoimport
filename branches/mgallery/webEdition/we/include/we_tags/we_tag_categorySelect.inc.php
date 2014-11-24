@@ -34,14 +34,17 @@ function we_tag_categorySelect($attribs, $content){
 	$indent = weTag_getAttribute('indent', $attribs);
 	$multiple = weTag_getAttribute('multiple', $attribs, false, true);
 
+	$catIDs = implode(',', array_map('intval', explode(',', weTag_getAttribute('catIDs', $attribs, -1))));
+	$fromTag = weTag_getAttribute('fromTag', $attribs, false);
+
 	$values = '';
 	if($isuserinput && $GLOBALS['WE_FORM']){
 		$objekt = isset($GLOBALS['we_object'][$GLOBALS['WE_FORM']]) ?
-			$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
-			(isset($GLOBALS['we_document'][$GLOBALS['WE_FORM']]) ?
-				$GLOBALS['we_document'][$GLOBALS['WE_FORM']] :
-				(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] :
-					false));
+				$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
+				(isset($GLOBALS['we_document'][$GLOBALS['WE_FORM']]) ?
+						$GLOBALS['we_document'][$GLOBALS['WE_FORM']] :
+						(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] :
+								false));
 		if($objekt){
 			$values = $objekt->Category;
 		}
@@ -49,18 +52,13 @@ function we_tag_categorySelect($attribs, $content){
 	} else {
 		if($type === 'request'){
 			// Bug Fix #750
-			$values = filterXss(isset($_REQUEST[$name]) ?
-					(is_array($_REQUEST[$name]) ?
-						implode(',', $_REQUEST[$name]) :
-						$_REQUEST[$name]) :
-					'');
+			$valuesArray = we_base_request::_(we_base_request::INTLISTA, $name, array());
 		} else {
 			// Bug Fix #750
-			$values = (isset($GLOBALS[$name]) && is_array($GLOBALS[$name])) ?
-				implode(',', $GLOBALS[$name]) :
-				$GLOBALS[$name];
+			$valuesArray = (isset($GLOBALS[$name]) && is_array($GLOBALS[$name])) ?
+					$GLOBALS[$name] :
+					explode(',', $GLOBALS[$name]);
 		}
-		$valuesArray = makeArrayFromCSV($values, CATEGORY_TABLE);
 	}
 
 	$attribs['name'] = $name;
@@ -73,7 +71,7 @@ function we_tag_categorySelect($attribs, $content){
 		$attribs = removeAttribs($attribs, array('size', 'multiple'));
 	}
 
-	$attribs = removeAttribs($attribs, array('showpath', 'rootdir', 'firstentry', 'type'));
+	$attribs = removeAttribs($attribs, array('showpath', 'rootdir', 'firstentry', 'type', 'shopCat'));
 
 	$content = trim($content);
 	if(!$content){
@@ -82,19 +80,22 @@ function we_tag_categorySelect($attribs, $content){
 		}
 		$db = $GLOBALS['DB_WE'];
 		$dbfield = $showpath || $indent ? 'Path' : 'Category';
-		$valueField = (weTag_getAttribute('fromTag', $attribs, false, true) ? 'ID' : 'Path');
-		$db->query('SELECT ID,Path,Category FROM ' . CATEGORY_TABLE . ' WHERE ' . ($rootdir === '/' ? 1 : ' Path LIKE "' . $db->escape($rootdir) . '%"') . ' ORDER BY ' . $dbfield);
+		$valueField = $fromTag ? 'ID' : 'Path';
+		//$whereTag = !$fromTag ? '' : ($fromTag === 'shopcategory' ? ' AND IsFolder=0' : ' AND ID IN('. trim($catIDs, ',') .')');
+		$whereTag = !$fromTag ? '' : ($fromTag === 'shopcategory' ? '' : ' AND ID IN('. trim($catIDs, ',') .')');
+
+		$db->query('SELECT ID,Path,Category FROM ' . CATEGORY_TABLE . ' WHERE ' . ($rootdir === '/' ? 1 : ' Path LIKE "' . $db->escape($rootdir) . '%"') . $whereTag . ' ORDER BY ' . $dbfield);
 		while($db->next_record()){
 			$deep = count(explode('/', $db->f('Path'))) - 2;
 			$field = ($rootdir && ($rootdir != '/') && $showpath ?
-					preg_replace('|^' . preg_quote($rootdir, '|') . '|', '', $db->f($dbfield)) :
-					$db->f($dbfield));
+							preg_replace('|^' . preg_quote($rootdir, '|') . '|', '', $db->f($dbfield)) :
+							$db->f($dbfield));
 
 			if($field){
 				$content .= getHtmlTag('option', array(
 					'value' => $db->f($valueField),
 					(in_array($db->f($valueField), $valuesArray) ? 'selected' : null) => 'selected'
-					), str_repeat($indent, $deep) . $field);
+						), str_repeat($indent, $deep) . $field);
 			}
 		}
 	} else {
@@ -105,5 +106,6 @@ function we_tag_categorySelect($attribs, $content){
 			$content = str_replace('<option value="' . $catPaths . '">', '<option value="' . $catPaths . '" selected="selected">', $content);
 		}
 	}
+
 	return getHtmlTag('select', $attribs, $content, true);
 }

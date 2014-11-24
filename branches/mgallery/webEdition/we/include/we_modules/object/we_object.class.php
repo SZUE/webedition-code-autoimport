@@ -220,6 +220,10 @@ class we_object extends we_document{
 							'hreftype' => $this->getElement($cur . 'hreftype'),
 							'hrefdirectory' => $this->getElement($cur . 'hrefdirectory', 'dat', 'false'),
 							'hreffile' => $this->getElement($cur . 'hreffile', 'dat', 'true'),
+							'shopcatField' => $this->getElement($cur . 'shopcatField'),
+							'shopcatShowPath' => $this->getElement($cur . 'shopcatShowPath'),
+							'shopcatRootdir' => $this->getElement($cur . 'shopcatRootdir'),
+							'shopcatUseDefault' => $this->getElement($cur . 'shopcatUseDefault'),
 							'uniqueID' => md5(uniqid(__FILE__, true)),
 						);
 
@@ -344,6 +348,10 @@ class we_object extends we_document{
 								'hreftype' => $this->getElement($info['name'] . 'hreftype'),
 								'hrefdirectory' => $this->getElement($info['name'] . 'hrefdirectory'),
 								'hreffile' => $this->getElement($info['name'] . 'hreffile'),
+								'shopcatField' => $this->getElement($info['name'] . 'shopcatField'),
+								'shopcatShowPath' => $this->getElement($info['name'] . 'shopcatShowPath'),
+								'shopcatRootdir' => $this->getElement($info['name'] . 'shopcatRootdir'),
+								'shopcatUseDefault' => $this->getElement($info['name'] . 'shopcatUseDefault'),
 								'uniqueID' => $this->SerializedArray[$info['name']]['uniqueID'] ? : md5(uniqid(__FILE__, true)),
 							);
 							if($this->isVariantField($info['name']) && $this->getElement($info['name'] . 'variant') == 1){
@@ -411,6 +419,10 @@ class we_object extends we_document{
 						'hreftype' => $this->getElement($cur . 'hreftype'),
 						'hrefdirectory' => $this->getElement($cur . 'hrefdirectory', 'dat', 'false'),
 						'hreffile' => $this->getElement($cur . 'hreffile', 'dat', 'true'),
+						'shopcatField' => $this->getElement($cur . 'shopcatField'),
+						'shopcatShowPath' => $this->getElement($cur . 'shopcatShowPath'),
+						'shopcatRootdir' => $this->getElement($cur . 'shopcatRootdir'),
+						'shopcatUseDefault' => $this->getElement($cur . 'shopcatUseDefault'),
 						'uniqueID' => md5(uniqid(__FILE__, true)),
 					);
 //					$arrt[$nam]['variant'] = (isset($this->getElement($cur.'variant')) && $this->getElement($cur.'variant')==1) ? $this->getElement($cur.'variant') : '';
@@ -529,6 +541,7 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_MULTIOBJECT:
 				return ' TEXT NOT NULL ';
 			case we_objectFile::TYPE_SHOPVAT:
+			case we_objectFile::TYPE_SHOPCATEGORY:
 				return ' TEXT NOT NULL';
 			default:
 				return '';
@@ -830,14 +843,14 @@ class we_object extends we_document{
 				$count++;
 			}
 			asort($vals);
-			$content .= $this->htmlSelect("we_" . $this->Name . "_input[$name]", $vals, 1, $this->getElement($name, "dat"), "", array('onchange' => 'if(this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\']){this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'object_reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\')'), "value", 388);
+			$content .= $this->htmlSelect("we_" . $this->Name . "_input[$name]", $vals, 1, $this->getElement($name, "dat"), "", array('onchange' => 'if(this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\']){this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'object_change_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\')'), "value", 388);
 		} else {
 
 			$foo = $this->getElement($name, "dat");
-			if($type == we_objectFile::TYPE_SHOPVAT){
-				$foo = WE_SHOP_VAT_FIELD_NAME;
+			if($type == we_objectFile::TYPE_SHOPVAT || $type == we_objectFile::TYPE_SHOPCATEGORY){
+				$foo = $type == we_objectFile::TYPE_SHOPCATEGORY ? WE_SHOP_CATEGORY_FIELD_NAME : WE_SHOP_VAT_FIELD_NAME;
 				$content .= we_html_tools::hidden("we_" . $this->Name . "_input[$name]", $foo) .
-					$this->htmlTextInput("tmp" . WE_SHOP_VAT_FIELD_NAME, 40, $foo, 52, ' readonly="readonly" disabled="disabled"', "text", 388);
+					$this->htmlTextInput("tmp" . $foo, 40, $foo, 52, ' readonly="readonly" disabled="disabled"', "text", 388);
 			} else {
 				$foo = $foo ? : g_l('modules_object', '[new_field]');
 				$content .= $this->htmlTextInput("we_" . $this->Name . "_input[$name]", 40, $foo, 52, ' oldValue="' . $foo . '" onBlur="we_checkObjFieldname(this);" onchange="_EditorFrame.setEditorIsHot(true);"', "text", 388);
@@ -874,12 +887,14 @@ class we_object extends we_document{
 		);
 		if(defined('SHOP_TABLE')){
 			$val[we_objectFile::TYPE_SHOPVAT] = g_l('modules_object', '[shopVat_field]');
+			$val[we_objectFile::TYPE_SHOPCATEGORY] = 'Shop-Kategorie';//GL
 		}
-		$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . self::ELEMENT_TYPE . ']', $val, 1, $type, "", array('onchange' => 'if(this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\']){this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'object_reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\');'), "value", 388) .
+		$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . self::ELEMENT_TYPE . ']', $val, 1, $type, "", array('onchange' => 'if(this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\']){this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'object_change_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\');'), "value", 388) .
 			'</td></tr>';
 
 		switch($type){
 			case we_objectFile::TYPE_SHOPVAT:
+			case we_objectFile::TYPE_SHOPCATEGORY:
 			case we_objectFile::TYPE_FLOAT:
 			case we_objectFile::TYPE_TEXT:
 			case we_objectFile::TYPE_COUNTRY:
@@ -1127,7 +1142,7 @@ class we_object extends we_document{
 				if(defined('SHOP_TABLE')){
 					$allVats = we_shop_vats::getAllShopVATs();
 					foreach($allVats as $id => $shopVat){
-						$values[$id] = $shopVat->vat . ' - ' . $shopVat->text;
+						$values[$id] = $shopVat->vat . ' - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
 						/* 						if($shopVat->standard){
 						  $standardId = $id;
 						  $standardVal = $shopVat->vat;
@@ -1138,6 +1153,46 @@ class we_object extends we_document{
 					'<td width="170" class="defaultfont">' .
 					we_class::htmlSelect("we_" . $this->Name . "_shopVat[" . $name . "default]", $values, 1, $this->getElement($name . "default", "dat")) .
 					'</td></tr>';
+				break;
+			case we_objectFile::TYPE_SHOPCATEGORY:
+				if(defined('SHOP_TABLE')){
+					$values = array('0' => '', 'ID' => 'ID', 'Path' => 'Path', 'Title' => 'Title', 'Description' => 'Description');
+					$selectField = self::htmlSelect('we_' . $this->Name . '_input[' . $name . 'shopcatField]', $values, 1, $this->getElement($name . 'shopcatField', 'dat'));
+
+					$values = array('true' => 'true', 'false' => 'false');
+					$selectShopPath = self::htmlSelect('we_' . $this->Name . '_input[' . $name . 'shopcatShowPath]', $values, 1, $this->getElement($name . 'shopcatShowPath', 'dat'));
+					$textRootdir = self::htmlTextInput('we_' . $this->Name . '_input[' . $name . 'shopcatRootdir]', 24, $value = $this->getElement($name . 'shopcatRootdir', 'dat'));
+
+					//TODO: make some class we_shop_categories class with static functions getShopCatDir and getShopCategories (to feed select directly)
+					$pref = getHash('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE pref_name="shop_cats_dir"', $this->DB_WE);
+					$parentPath = we_category::we_getCatsFromIDs($pref['pref_value'], ',', true, $this->DB_WE,'', 'Path');
+					$this->DB_WE->query('SELECT ID, Text, PATH, IsFolder FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $parentPath . '/%"');
+					$values = array();
+					while($this->DB_WE->next_record()){
+						$values[$this->DB_WE->f('ID')] = $this->DB_WE->f('PATH');
+					}
+					$selectCategories = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . 'default]', $values, 1, $this->getElement($name . 'default', 'dat'), false, array(), 'value', 388);
+					$checkUseDefault = we_html_forms::checkboxWithHidden((abs($this->getElement($name . 'shopcatUseDefault', 'dat')) == '1' ? true : false), 'we_' . $this->Name . '_input[' . $name . 'shopcatUseDefault]', 'use default (no select)', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+
+					$content .= '<tr valign="top">
+							<td  width="100" class="defaultfont"  valign="top"></td>
+							<td class="defaultfont">' .
+								'field' . we_html_tools::getPixel(8, 2) . $selectField . we_html_tools::getPixel(8, 2) . 
+								'showpath' . we_html_tools::getPixel(8, 2) . $selectShopPath .
+							'</td>
+						</tr>
+							<tr valign="top"><td  width="100" class="defaultfont"  valign="top"></td>
+							<td class="defaultfont">' .
+								'rootdir' . we_html_tools::getPixel(8, 2) . $textRootdir .
+							'</td>
+						</tr>
+						<tr valign="top">
+							<td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>
+							<td width="170" class="defaultfont">' . 
+								$selectCategories . '<br />' . we_html_tools::getPixel(2, 2) . $checkUseDefault . 
+							'</td>
+						</tr>';
+				}
 				break;
 			default: // default for input, int and float
 
@@ -1399,7 +1454,7 @@ class we_object extends we_document{
 			"width" => 386, //$this->getElement($name."width","dat",618),
 			"height" => 52, //$this->getElement($name."height","dat",200),
 			"rows" => 3,
-			"bgcolor" => $this->getElement($name . "bgcolor", "dat", (WYSIWYG_TYPE === 'tinyMCE' ? '' : 'white')),
+			"bgcolor" => $this->getElement($name . "bgcolor", "dat", ''),
 			"tinyparams" => $this->getElement($name . "tinyparams"),
 			"templates" => $this->getElement($name . "templates"),
 			"class" => $this->getElement($name . "class"),
@@ -2029,6 +2084,10 @@ class we_object extends we_document{
 				'hreftype' => '',
 				'hreffile' => '',
 				'hrefdirectory' => 'false',
+				'shopcatField' => '',
+				'shopcatShowPath' => 'true',
+				'shopcatRootdir' => '',
+				'shopcatUseDefault' => '',
 				'intPath' => '',
 			);
 			foreach($tableInfo as $info){

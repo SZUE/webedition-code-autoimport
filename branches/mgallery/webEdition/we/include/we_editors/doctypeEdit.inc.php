@@ -42,7 +42,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 			$we_JavaScript = "";
 			$we_show_response = 1;
-		} else if(strlen($we_doc->DocType) == 0){
+		} else if(!$we_doc->DocType){
 			$we_responseText = g_l('alert', "[doctype_empty]");
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 			$we_JavaScript = "";

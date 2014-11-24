@@ -73,21 +73,21 @@ we_base_request::registerTables(array(
 	CATEGORY_TABLE, CAPTCHA_TABLE, CLEAN_UP_TABLE, CONTENT_TABLE, DOC_TYPES_TABLE, ERROR_LOG_TABLE, FAILED_LOGINS_TABLE, FILE_TABLE, INDEX_TABLE, LINK_TABLE, LANGLINK_TABLE, PREFS_TABLE, RECIPIENTS_TABLE, TEMPLATES_TABLE, TEMPORARY_DOC_TABLE, UPDATE_LOG_TABLE, THUMBNAILS_TABLE, VALIDATION_SERVICES_TABLE, HISTORY_TABLE, FORMMAIL_LOG_TABLE, FORMMAIL_BLOCK_TABLE, METADATA_TABLE, NOTEPAD_TABLE, PWDRESET_TABLE, VERSIONS_TABLE, VERSIONSLOG_TABLE, SESSION_TABLE, NAVIGATION_TABLE, NAVIGATION_RULE_TABLE, USER_TABLE, LOCK_TABLE, SETTINGS_TABLE
 ));
 
-require_once (WE_INCLUDES_PATH . 'we_global.inc.php');
+require_once(WE_INCLUDES_PATH . 'we_global.inc.php');
 update_mem_limit(32);
 
 we_loadLanguageConfig();
 
 
 //	Insert all config files for all modules.
-include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
+include_once(WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 
 // use the following arrays:
 // we_available_modules - modules and informations about integrated and none integrated modules
 // we_active_integrated_modules - all active integrated modules
 //if file corrupted try to load defaults
 if(empty($GLOBALS['_we_active_integrated_modules']) || !in_array('users', $GLOBALS['_we_active_integrated_modules'])){
-	include_once (WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php.default');
+	include_once(WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php.default');
 }
 //FIXME: don't include all confs!
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
@@ -100,7 +100,7 @@ if(!isset($GLOBALS['DB_WE'])){
 
 if(!(defined('NO_SESS') || isset($GLOBALS['FROM_WE_SHOW_DOC']))){
 	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
-	require_once (WE_INCLUDES_PATH . 'we_session.inc.php');
+	require_once(WE_INCLUDES_PATH . 'we_session.inc.php');
 	$_tooldefines = we_tool_lookup::getDefineInclude();
 	if($_tooldefines){
 		foreach($_tooldefines as $_tooldefine){

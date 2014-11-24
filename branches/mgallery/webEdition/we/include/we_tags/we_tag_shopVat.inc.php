@@ -25,13 +25,9 @@
 function we_tag_shopVat($attribs){
 
 	$name = WE_SHOP_VAT_FIELD_NAME;
-	$id = weTag_getAttribute('id', $attribs);
 
-	if($id){
-		$shopVat = we_shop_vats::getShopVATById($id);
-		if($shopVat){
-			return $shopVat->vat;
-		}
+	if(($id = weTag_getAttribute('id', $attribs)) && ($shopVat = we_shop_vats::getShopVATById($id))){
+		return $shopVat->vat;
 	}
 
 	// in webEdition - EditMode
@@ -42,7 +38,7 @@ function we_tag_shopVat($attribs){
 	$standardId = 0;
 
 	foreach($allVats as $id => $shopVat){
-		$values[$id] = $shopVat->vat . ' - ' . $shopVat->text;
+		$values[$id] = $shopVat->vat . ' - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
 		if($shopVat->standard){
 
 			$standardId = $id;

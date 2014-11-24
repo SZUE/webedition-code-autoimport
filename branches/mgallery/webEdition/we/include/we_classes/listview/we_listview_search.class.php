@@ -73,15 +73,20 @@ class we_listview_search extends we_listview_base{
 		// correct order
 		$orderArr = array();
 		$random = false;
-		if($this->order){
-			if($this->order === "we_id" || $this->order === "we_creationdate" || $this->order === 'we_filename'){
 
-				$ord = str_replace('we_id', INDEX_TABLE . ".DID" . ($this->desc ? " DESC" : "") . ',' . INDEX_TABLE . ".OID" . ($this->desc ? " DESC" : ""), $this->order);
+		switch($this->order? : '__noorder'){
+			case '__noorder':
+				break;
+			case 'we_id':
+			case 'we_creationdate':
+			case 'we_filename':
+				$ord = str_replace('we_id', INDEX_TABLE . '.DID' . ($this->desc ? ' DESC' : '') . ',' . INDEX_TABLE . '.OID' . ($this->desc ? ' DESC' : ''), $this->order);
 				//$ord = str_replace("we_creationdate",FILE_TABLE . ".CreationDate",$ord); // NOTE: this won't work, cause Indextable doesn't know this field & filetable is not used in this query
 				$ord = str_replace('we_creationdate', '', $ord);
-				$this->order = str_replace("we_filename", INDEX_TABLE . ".Path", $ord);
-			} else {
-				$orderArr1 = makeArrayFromCSV($this->order);
+				$this->order = str_replace('we_filename', INDEX_TABLE . '.Path', $ord);
+				break;
+			default:
+				$orderArr1 = array_map('trim', explode(',', $this->order));
 				if(in_array('random()', $orderArr1)){
 					$random = true;
 				} else {
@@ -109,8 +114,8 @@ class we_listview_search extends we_listview_base{
 					}
 					$this->order = rtrim($this->order, ',');
 				}
-			}
 		}
+
 
 		if($this->order && $this->desc && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';
@@ -197,10 +202,14 @@ class we_listview_search extends we_listview_base{
 				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName) :
 				'');
 
-		$this->DB_WE->query('SELECT 1 FROM ' . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail GROUP BY OID,DID");
+		$where = ' WHERE ' . $bedingung_sql . ' ' . $dtcl_query . ' ' . $cat_tail . ' ' . $ws_where . ' ' . $where_lang . ' ' . $weDocumentCustomerFilter_tail . ' GROUP BY OID,DID';
+		$this->DB_WE->query('SELECT 1 FROM ' . INDEX_TABLE . $where);
 		$this->anz_all = $this->DB_WE->num_rows();
 
-		$this->DB_WE->query('SELECT ' . INDEX_TABLE . '.Category, ' . INDEX_TABLE . '.DID,' . INDEX_TABLE . '.OID,' . INDEX_TABLE . '.ClassID,' . INDEX_TABLE . ".Text," . INDEX_TABLE . ".Workspace," . INDEX_TABLE . ".WorkspaceID," . INDEX_TABLE . ".Title," . INDEX_TABLE . ".Description," . INDEX_TABLE . ".Path," . INDEX_TABLE . '.Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking FROM ' . INDEX_TABLE . " WHERE $bedingung_sql $dtcl_query $cat_tail $ws_where $where_lang $weDocumentCustomerFilter_tail GROUP BY OID,DID ORDER BY ranking" . ($this->order ? ("," . $this->order) : "") . (($this->maxItemsPerPage > 0) ? (" LIMIT " . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ""));
+		$this->DB_WE->query(
+			'SELECT ' . INDEX_TABLE . '.Category, ' . INDEX_TABLE . '.DID,' . INDEX_TABLE . '.OID,' . INDEX_TABLE . '.ClassID,' . INDEX_TABLE . '.Text,' . INDEX_TABLE . '.Workspace,' . INDEX_TABLE . '.WorkspaceID,' . INDEX_TABLE . '.Title,' . INDEX_TABLE . '.Description,' . INDEX_TABLE . '.Path,' . INDEX_TABLE . '.Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking ' .
+			'FROM ' . INDEX_TABLE .
+			$where . ' ORDER BY ranking' . ($this->order ? (',' . $this->order) : '') . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 

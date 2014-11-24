@@ -521,7 +521,7 @@ function open_wysiwyg_win(){
 			$charset = weTag_getAttribute('charset', $attribs, 'iso-8859-1');
 			//FIXME: currently we use a separate preference-option for frontend editor (where tinyMCE is labelled beta)
 			$tmp = we_wysiwyg_editor::$editorType;
-			we_wysiwyg_editor::$editorType = WYSIWYG_TYPE_FRONTEND === 'tinyMCE' ? 'tinyMCE' : 'default';
+			we_wysiwyg_editor::$editorType = 'tinyMCE';
 			$ret = we_html_forms::weTextarea($fieldname, ($content ? : $value), $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
 			we_wysiwyg_editor::$editorType = $tmp;
 			return $ret;
@@ -591,7 +591,7 @@ function open_wysiwyg_win(){
 					$maxyear = intval($maxyear);
 					break;
 			}
-			return we_html_tools::getDateInput2('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '[we_date_' . $name . ']', ($orgVal ?: time()), false, $format, '', '', $xml, $minyear, $maxyear);
+			return we_html_tools::getDateInput2('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '[we_date_' . $name . ']', ($orgVal ? : time()), false, $format, '', '', $xml, $minyear, $maxyear);
 
 		case 'country':
 			$newAtts = removeAttribs($attribs, array('wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength'));

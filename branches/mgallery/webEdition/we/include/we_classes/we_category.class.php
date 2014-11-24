@@ -49,7 +49,7 @@ class we_category extends weModelBase{
 		return $ret;
 	}
 
-	static function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, we_database_base $db = null, $fieldName = 'Category', $getParentCats = true, $categoryids = ''){
+	static function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, we_database_base $db = null, $fieldName = 'Category', $categoryids = ''){
 		$db = $db ? : new DB_WE();
 		$catCSV = trim($catCSV, ' ,');
 		$pre = ' FIND_IN_SET("';
@@ -114,7 +114,7 @@ class we_category extends weModelBase{
 				'');
 	}
 
-	static function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false){
+	static function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false, $noDirs = false){
 		if(!$catIDs){
 			return $asArray ? array() : '';
 		}
@@ -123,7 +123,7 @@ class we_category extends weModelBase{
 		$cats = array();
 		$field = $catfield ? : ($showpath ? 'Path' : 'Category');
 		$showpath &=!$catfield;
-		$db->query('SELECT ID,Path,Category,Title,Description FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . trim($catIDs, ',') . ')');
+		$db->query('SELECT ID,Path,Category,Title,Description FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . trim($catIDs, ',') . ')' . ($noDirs ? ' AND IsFolder=0' : ''));
 		while($db->next_record()){
 			$data = $db->getRecord();
 			if(!($onlyindir) || strpos($data['Path'], $onlyindir) === 0){

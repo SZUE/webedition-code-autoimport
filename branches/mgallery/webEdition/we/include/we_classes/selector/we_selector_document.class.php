@@ -57,25 +57,22 @@ class we_selector_document extends we_selector_directory{
 		}
 
 		// deal with workspaces
+		$wsQuery = '';
 		if(permissionhandler::hasPerm('ADMINISTRATOR') || ($this->table == FILE_TABLE && permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES')) || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES'))){
-			$wsQuery = '';
+
 		} else {
-			$wsQuery = '';
 			if(get_ws($this->table)){
 				$wsQuery = getWsQueryForSelector($this->table);
 			} else if(defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 				$ac = we_users_util::getAllowedClasses($this->db);
+				$wsQueryA = array();
 				foreach($ac as $cid){
 					$path = id_to_path($cid, OBJECT_TABLE);
-					$wsQuery .= " Path LIKE '" . $this->db->escape($path) . "/%' OR Path='" . $this->db->escape($path) . "' OR ";
+					$wsQueryA[] = " Path LIKE '" . $this->db->escape($path) . "/%' OR Path='" . $this->db->escape($path) . "'";
 				}
-				if($wsQuery){
-					$wsQuery = ' AND (' . substr($wsQuery, 0, strlen($wsQuery) - 3) . ')';
-				}
+				$wsQuery = ($wsQueryA ? ' AND (' . implode(' OR ', $wsQueryA) . ')' : '');
 			}
-			if(empty($wsQuery)){
-				$wsQuery = ' OR RestrictOwners=0 ';
-			}
+			$wsQuery = $wsQuery? : ' OR RestrictOwners=0 ';
 		}
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
 			we_users_util::makeOwnersSql() . ')' .

@@ -177,11 +177,16 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			break;
+		case 'object_change_entry_at_class':
+			$identifier = array_pop(explode('_', $id));
+			$fieldname = $we_doc->getElement("wholename" . $identifier);
+			$we_doc->setElement($fieldname . 'default', '');
+			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
+			break;
 
 		case 'object_reload_entry_at_class':
 			$identifier = array_pop(explode('_', $id));
 			$fieldname = $we_doc->getElement("wholename" . $identifier);
-			$we_doc->setElement($fieldname . 'default', '');
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_up_meta_at_class':
@@ -205,11 +210,11 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_add_user_to_field':
-			$we_doc->add_user_to_field(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4));
+			$we_doc->add_user_to_field(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3), we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 4));
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_del_user_from_field':
-			$we_doc->del_user_from_field(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3), we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4));
+			$we_doc->del_user_from_field(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3), we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 4));
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_remove_image_at_class';

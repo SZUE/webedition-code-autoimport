@@ -72,15 +72,50 @@ abstract class we_backup_base{
 		'tblprefs' => PREFS_TABLE,
 		'tblrecipients' => RECIPIENTS_TABLE,
 		'tblupdatelog' => UPDATE_LOG_TABLE,
+		'tbluser' => USER_TABLE,
 		'tblfailedlogins' => FAILED_LOGINS_TABLE,
 		'tblthumbnails' => THUMBNAILS_TABLE,
-		'tblvalidationservices' => VALIDATION_SERVICES_TABLE
+		'tblvalidationservices' => VALIDATION_SERVICES_TABLE,
+		'tblsettings' => SETTINGS_TABLE,
 	);
 	var $fixedTable = array(
-		'tblbackup', 'tblhelpindex', 'tblhelptopic', 'tblhelplink',
-		'tblerrorlog', 'tblcleanup', 'tbllock',
+		'tblbackup', 'tblerrorlog', 'tblcleanup', 'tbllock',
 		'tblfailedlogins', 'tblupdatelog');
-	var $tables = array();
+	var $tables = array(
+		'settings' => array('tblprefs', 'tblrecipients', 'tblvalidationservices', 'tblsettings'),
+		'configuration' => array(),
+		'users' => array('tbluser'),
+		'customers' => array('tblwebuser', 'tblwebadmin'),
+		'shop' => array('tblanzeigeprefs', 'tblorders'),
+		'workflow' => array(
+			'tblworkflowdef', 'tblworkflowstep', 'tblworkflowtask',
+			'tblworkflowdoc', 'tblworkflowdocstep', 'tblworkflowdoctask',
+			'tblworkflowlog'
+		),
+		'todo' => array(
+			'tbltodo', 'tbltodohistory', 'tblmessages', 'tblmsgaccounts',
+			'tblmsgaddrbook', 'tblmsgfolders', 'tblmsgsettings'
+		),
+		'newsletter' => array(
+			'tblnewsletter', 'tblnewslettergroup',
+			'tblnewsletterblock', 'tblnewsletterlog',
+			'tblnewsletterprefs', 'tblnewsletterconfirm'
+		),
+		'temporary' => array('tbltemporarydoc'),
+		'banner' => array(
+			'tblbanner', 'tblbannerclicks',
+			'tblbannerprefs', 'tblbannerviews'
+		),
+		'schedule' => array(
+			'tblschedule'
+		),
+		'export' => array(
+			'tblexport'
+		),
+		'voting' => array(
+			'tblvoting'
+		),
+	);
 	var $properties = array(
 		'default_backup_steps', 'backup_step', 'backup_steps', 'backup_phase', 'backup_extern',
 		'export2server', 'export2send', 'partial', 'current_insert', 'table_end', 'current_description', 'offset'
@@ -111,7 +146,6 @@ abstract class we_backup_base{
 
 		$this->mysql_max_packet = f('SHOW VARIABLES LIKE "max_allowed_packet"', 'Value', $this->backup_db);
 
-		$this->table_map['tbluser'] = USER_TABLE;
 
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			$this->table_map['tblschedule'] = SCHEDULE_TABLE;
@@ -192,41 +226,6 @@ abstract class we_backup_base{
 			$this->table_map['tblvoting'] = VOTING_TABLE;
 		}
 
-		$this->tables = array(
-			'settings' => array('tblprefs', 'tblrecipients', 'tblvalidationservices'),
-			'configuration' => array(),
-			'users' => array('tbluser'),
-			'customers' => array('tblwebuser', 'tblwebadmin'),
-			'shop' => array('tblanzeigeprefs', 'tblorders'),
-			'workflow' => array(
-				'tblworkflowdef', 'tblworkflowstep', 'tblworkflowtask',
-				'tblworkflowdoc', 'tblworkflowdocstep', 'tblworkflowdoctask',
-				'tblworkflowlog'
-			),
-			'todo' => array(
-				'tbltodo', 'tbltodohistory', 'tblmessages', 'tblmsgaccounts',
-				'tblmsgaddrbook', 'tblmsgfolders', 'tblmsgsettings'
-			),
-			'newsletter' => array(
-				'tblnewsletter', 'tblnewslettergroup',
-				'tblnewsletterblock', 'tblnewsletterlog',
-				'tblnewsletterprefs', 'tblnewsletterconfirm'
-			),
-			'temporary' => array('tbltemporarydoc'),
-			'banner' => array(
-				'tblbanner', 'tblbannerclicks',
-				'tblbannerprefs', 'tblbannerviews'
-			),
-			'schedule' => array(
-				'tblschedule'
-			),
-			'export' => array(
-				'tblexport'
-			),
-			'voting' => array(
-				'tblvoting'
-			),
-		);
 
 		$this->setDescriptions();
 
@@ -244,6 +243,7 @@ abstract class we_backup_base{
 				defined('CUSTOMER_TABLE') ? strtolower(CUSTOMER_TABLE) : 'CUSTOMER_TABLE' => g_l('backup', '[import_customer_data]'),
 				defined('SHOP_TABLE') ? strtolower(SHOP_TABLE) : 'SHOP_TABLE' => g_l('backup', '[import_shop_data]'),
 				defined('WE_SHOP_PREFS_TABLE') ? strtolower(WE_SHOP_PREFS_TABLE) : 'WE_SHOP_PREFS_TABLE' => g_l('backup', '[import_prefs]'),
+				strtolower(SETTINGS_TABLE) => g_l('backup', '[import_prefs]'),
 				strtolower(TEMPLATES_TABLE) => g_l('backup', '[import_templates]'),
 				strtolower(TEMPORARY_DOC_TABLE) => g_l('backup', '[import][temporary_data]'),
 				strtolower(BACKUP_TABLE) => g_l('backup', '[external_backup]'),
@@ -258,6 +258,7 @@ abstract class we_backup_base{
 				defined('CUSTOMER_TABLE') ? strtolower(CUSTOMER_TABLE) : 'CUSTOMER_TABLE' => g_l('backup', '[export_customer_data]'),
 				defined('SHOP_TABLE') ? strtolower(SHOP_TABLE) : 'SHOP_TABLE' => g_l('backup', '[export_shop_data]'),
 				defined('WE_SHOP_PREFS_TABLE') ? strtolower(WE_SHOP_PREFS_TABLE) : 'WE_SHOP_PREFS_TABLE' => g_l('backup', '[export_prefs]'),
+				strtolower(SETTINGS_TABLE) => g_l('backup', '[export_prefs]'),
 				strtolower(TEMPLATES_TABLE) => g_l('backup', '[export_templates]'),
 				strtolower(TEMPORARY_DOC_TABLE) => g_l('backup', '[export][temporary_data]'),
 				strtolower(BACKUP_TABLE) => g_l('backup', '[external_backup]'),
@@ -898,14 +899,9 @@ abstract class we_backup_base{
 		if(substr($tabname, 0, 10) === "tblobject_" && defined('OBJECT_X_TABLE')){
 			return str_ireplace("tblobject_", OBJECT_X_TABLE, $tabname);
 		}
-
-		foreach($this->table_map as $k => $v){
-			if($tabname == strtolower($k)){
-				return $v;
-			}
-		}
-
-		return $tabname;
+		return (isset($this->table_map[$tabname]) ?
+				$this->table_map[$tabname] :
+				$tabname);
 	}
 
 	/**

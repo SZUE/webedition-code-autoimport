@@ -25,6 +25,7 @@
 /* a class for handling templates */
 
 class we_template extends we_document{
+
 	var $MasterTemplateID = 0;
 	var $TagWizardCode; // bugfix 1502
 	var $TagWizardSelection; // bugfix 1502
@@ -41,7 +42,7 @@ class we_template extends we_document{
 		$this->Table = TEMPLATES_TABLE;
 
 		array_push($this->persistent_slots, 'MasterTemplateID', 'IncludedTemplates', 'TagWizardCode', 'TagWizardSelection');
-		$this->setElement('Charset', DEFAULT_CHARSET,'attrib');
+		$this->setElement('Charset', DEFAULT_CHARSET, 'attrib');
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE, we_base_constants::WE_EDITPAGE_VARIANTS, we_base_constants::WE_EDITPAGE_VERSIONS);
 		}
@@ -458,7 +459,7 @@ we_templateInit();?>';
 						}
 						//additional parsing for selects
 						if($tagname === 'select'){
-							$spacer = "[\040|\n|\t|\r]*";
+							$spacer = '[ |\n|\t|\r]*';
 							$selregs = array();
 							//FIXME: this regex is not correct [^name] will not match any of those chars
 							if(preg_match('-(<we:select [^name]*name' . $spacer . '[\=\"|\=\'|\=\\\\|\=]*' . $spacer . preg_quote($att['name'], '-') . '[\'\"]*[^>]*>)(.*)<' . $spacer . '/' . $spacer . 'we:select' . $spacer . '>-i', $templateCode, $selregs)){
@@ -666,10 +667,10 @@ we_templateInit();?>';
 					$attribs = we_tag_tagParser::parseAttribs($reg[1], true);
 					$name = isset($attribs['name']) ? $attribs['name'] : '';
 					$masterTemplateCode = str_replace($all, ($name ?
-							(isset($masterTags[$name]['content']) ?
-								$masterTags[$name]['content'] :
-								'') :
-							$code), $masterTemplateCode);
+									(isset($masterTags[$name]['content']) ?
+											$masterTags[$name]['content'] :
+											'') :
+									$code), $masterTemplateCode);
 				}
 
 				$code = str_replace('</we:content>', '', $masterTemplateCode);
@@ -726,9 +727,8 @@ we_templateInit();?>';
 				}
 			}
 		}
-		if(strlen($this->IncludedTemplates) > 0){
-			$this->IncludedTemplates .= ',';
-		}
+		$this->IncludedTemplates.= ($this->IncludedTemplates ? ',' : '');
+
 		$this->setElement('completeData', $code);
 		--$cnt;
 	}
@@ -773,9 +773,9 @@ we_templateInit();?>';
 		if(defined('SHOP_TABLE') && ($tmp = $this->getElement('allVariants'))){
 			$tmp = @unserialize($tmp);
 			$this->setElement('allVariants', (is_array($tmp) ?
-					$tmp :
-					$this->readAllVariantFields($this->getElement('completeData'))
-				), 'variants');
+							$tmp :
+							$this->readAllVariantFields($this->getElement('completeData'))
+					), 'variants');
 		}
 	}
 

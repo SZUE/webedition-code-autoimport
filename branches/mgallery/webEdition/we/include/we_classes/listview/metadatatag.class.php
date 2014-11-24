@@ -68,7 +68,7 @@ class metadatatag{
 		return ($this->id ? $this->object->f($key) : '');
 	}
 
-	public function getObject(){
+	public function getObject(){//FIXME: remove this
 		return $this->object;
 	}
 

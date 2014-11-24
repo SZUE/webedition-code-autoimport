@@ -148,7 +148,7 @@ class we_customer_customer extends weModelBase{
 		return $real_name;
 	}
 
-	function getBranches(&$banches, &$fixed, &$other, $mysort = ''){
+	function getBranches(array &$banches, array &$fixed, array &$other, $mysort = ''){
 		$fixed['ID'] = $this->ID; // Bug Fix #8413 + #8520
 		if(!isset($this->persistent_slots)){
 			return;
@@ -184,27 +184,20 @@ class we_customer_customer extends weModelBase{
 	}
 
 	function getBranchesNames(){
-		$branches = array();
-		$common = array();
-		$other = array();
-
+		$branches = $common = $other = array();
 		$this->getBranches($branches, $common, $other);
-
 		return array_keys($branches);
 	}
 
 	function getFieldsNames($branch, $mysort = ''){
-		$branches = array();
-		$common = array();
-		$other = array();
+		$branches = $common = $other = array();
 
 		$this->getBranches($branches, $common, $other, $mysort);
 
 		$arr = array();
 
-		if(!$branch){
-			$branch = g_l('modules_customer', '[other]');
-		}
+		$branch = $branch? : g_l('modules_customer', '[other]');
+
 
 		switch($branch){
 			case g_l('modules_customer', '[common]'):
@@ -234,11 +227,8 @@ class we_customer_customer extends weModelBase{
 		return $ret;
 	}
 
-	function getFieldDbProperties($field_name, $buff = array()){
-
-		if(empty($buff)){
-			$buff = $this->getFieldsDbProperties();
-		}
+	function getFieldDbProperties($field_name){
+		$buff = $this->getFieldsDbProperties();
 
 		foreach($buff as $b){
 			if($b["Field"] == $field_name){
@@ -347,7 +337,7 @@ class we_customer_customer extends weModelBase{
 		if(!$storedPassword || !$clearPassword){
 			return false;
 		}
-		$matches=array();
+		$matches = array();
 		if(!preg_match('|^\$([^$]{2,4})\$([^$]+)\$(.+)$|', $storedPassword, $matches)){
 			return $storedPassword === $clearPassword;
 		}

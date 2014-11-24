@@ -1107,7 +1107,7 @@ var weFileUpload = (function(){
 			};
 
 			this.reloadOpener = function(){
-				top.opener.top.we_cmd('load', this.fileTable);
+				top.opener.top.we_cmd('load', this.fileTable?this.fileTable:'tblFile');
 			};
 
 			this.repaintGUI = function(arg){
@@ -1398,7 +1398,7 @@ var weFileUpload = (function(){
 				this.setDisplay('fileDrag_state_0', 'none');
 				this.setDisplay('fileDrag_state_1', '');
 				this.elems.dragInnerRight.innerHTML = '';
-				
+
 				if(f.uploadConditionsOk){
 					_.sender.isAutostartPermitted = true;
 					_.controller.setEditorIsHot();

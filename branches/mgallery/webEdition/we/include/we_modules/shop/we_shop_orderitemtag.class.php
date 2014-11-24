@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_orderitemtag{
-
 	private $DB_WE;
 	var $id = 0;
 	var $ClassName = __CLASS__;
@@ -40,7 +39,7 @@ class we_shop_orderitemtag{
 		$this->DB_WE = new DB_WE();
 		$this->hidedirindex = $hidedirindex;
 
-		$this->object = new we_shop_listviewOrderitem(0, 1, 0, "", 0, '(IntID=' . intval($this->id) . ')' . ($condition ? " AND $condition" : ''), '', 0, 0, $hidedirindex);
+		$this->object = new we_shop_listviewOrderitem(0, 1, 0, "", 0, '(IntID=' . intval($this->id) . ')' . ($condition ? ' AND ' . $condition : ''), '', 0, 0, $hidedirindex);
 		$this->avail = ($this->object->next_record());
 	}
 
@@ -52,7 +51,7 @@ class we_shop_orderitemtag{
 		return ($this->id ? $this->object->f($key) : '');
 	}
 
-	public function getObject(){
+	public function getObject(){//FIXME: remove this
 		return $this->object;
 	}
 

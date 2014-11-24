@@ -236,7 +236,7 @@ class we_glossary_glossary extends weModelBase{
 	 *
 	 * @param integer $id
 	 */
-	function load($id = 0){
+	function load($id = 0, $isAdvanced = false){
 		parent::load(strval($id));
 
 		// serialize all needed attributes
@@ -391,8 +391,8 @@ class we_glossary_glossary extends weModelBase{
 	 *
 	 */
 	function clearSessionVars(){
-		if(isset($_SESSION['weS']['weGlossarySession'])){
-			unset($_SESSION['weS']['weGlossarySession']);
+		if(isset($_SESSION['weS']['glossary_session'])){
+			unset($_SESSION['weS']['glossary_session']);
 		}
 	}
 

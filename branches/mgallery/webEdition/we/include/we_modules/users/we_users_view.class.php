@@ -422,7 +422,7 @@ function we_cmd(){
 
 				$user_object->initType(we_users_user::TYPE_USER_GROUP);
 
-				$_SESSION["user_session_data"] = $user_object->getState();
+				$_SESSION["user_session_data"] = $user_object;
 
 				echo we_html_element::jsElement('
 		top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
@@ -447,7 +447,7 @@ function we_cmd(){
 
 				$user_object->initType(we_users_user::TYPE_ALIAS);
 
-				$_SESSION["user_session_data"] = $user_object->getState();
+				$_SESSION["user_session_data"] = $user_object;
 				print we_html_element::jsElement('
 		top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
 		top.content.editor.edbody.location="' . $this->frameset . '?pnt=edbody";
@@ -483,7 +483,7 @@ function we_cmd(){
 				}
 				$user_object->initType(we_users_user::TYPE_USER);
 
-				$_SESSION["user_session_data"] = $user_object->getState();
+				$_SESSION["user_session_data"] = $user_object;
 				echo we_html_element::jsElement('
 		top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
 		top.content.editor.edbody.location="' . $this->frameset . '?pnt=edbody&oldtab=0";
@@ -499,7 +499,7 @@ function we_cmd(){
 						break;
 					}
 
-					$_SESSION["user_session_data"] = $user_object->getState();
+					$_SESSION["user_session_data"] = $user_object;
 
 					echo we_html_element::jsElement('top.content.usetHot();' .
 						($user_object->Type == 1 ?
@@ -584,11 +584,10 @@ function we_cmd(){
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[workspaceFieldError]"), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
-				$user_object = new we_users_user();
-				$user_object->setState($_SESSION["user_session_data"]);
+				$user_object = $_SESSION["user_session_data"];
 				if(($oldtab = we_base_request::_(we_base_request::INT, 'oldtab')) !== false && ($opb = we_base_request::_(we_base_request::STRING, 'old_perm_branch')) !== false){//FIXME: is latter ever used?
 					$user_object->preserveState($oldtab, $opb);
-					$_SESSION["user_session_data"] = $user_object->getState();
+					$_SESSION["user_session_data"] = $user_object;
 				}
 
 				if(!permissionhandler::hasPerm("ADMINISTRATOR") && $user_object->checkPermission("ADMINISTRATOR")){
@@ -643,7 +642,7 @@ function we_cmd(){
 							array('ParentID' => 0));
 
 					$ret = $user_object->saveToDB();
-					$_SESSION['user_session_data'] = $user_object->getState();
+					$_SESSION['user_session_data'] = $user_object;
 
 					//	Save seem_startfile to DB when needed.
 					if(($sid = we_base_request::_(we_base_request::INT, 'seem_start_file')) !== false){
@@ -700,8 +699,7 @@ function we_cmd(){
 				break;
 			case "delete_user":
 				if(isset($_SESSION["user_session_data"]) && $_SESSION["user_session_data"]){
-					$user_object = new we_users_user();
-					$user_object->setState($_SESSION["user_session_data"]);
+					$user_object = $_SESSION["user_session_data"];
 
 					if($user_object->ID == $_SESSION["user"]["ID"]){
 						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', "[delete_user_same]"), we_message_reporting::WE_MESSAGE_ERROR));
@@ -759,8 +757,7 @@ function we_cmd(){
 				break;
 			case 'do_delete':
 				if($_SESSION['user_session_data']){
-					$user_object = new we_users_user();
-					$user_object->setState($_SESSION["user_session_data"]);
+					$user_object = $_SESSION["user_session_data"];
 					if(!permissionhandler::hasPerm('DELETE_USER') && $user_object->Type == we_users_user::TYPE_USER){
 						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR));
 						break;

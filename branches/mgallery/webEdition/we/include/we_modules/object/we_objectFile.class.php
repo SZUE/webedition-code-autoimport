@@ -39,6 +39,7 @@ class we_objectFile extends we_document{
 	const TYPE_MULTIOBJECT = 'multiobject';
 	const TYPE_OBJECT = 'object';
 	const TYPE_QUICKTIME = 'quicktime';
+	const TYPE_SHOPCATEGORY = 'shopCategory';
 	const TYPE_SHOPVAT = 'shopVat';
 	const TYPE_TEXT = 'text';
 
@@ -231,26 +232,24 @@ class we_objectFile extends we_document{
 		$rootId = $classId;
 		$cnt = 1;
 		$all = array();
-		if(defined('OBJECT_TABLE')){
-			$slash = PHP_INT_MAX;
-			$ws = get_ws(OBJECT_FILES_TABLE);
-			if(intval($ws) == 0){
-				$ws = 0;
-			}
-			$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND (Path="' . $db->escape($classDir) . '" OR Path LIKE "' . $db->escape($classDir) . '/%")');
-			while($db->next_record()){
-				$all[$db->f('Path')] = $db->f('ID');
-				if((($tmp = substr_count($db->f('Path'), '/')) <= $slash) && (!$ws || in_workspace($db->f('ID'), $ws, OBJECT_FILES_TABLE, null, true))){
-					$rootId = $db->f('ID');
-					$cnt = ($tmp == $slash ? $cnt : 0) + 1;
-					if($cnt == 1){
-						$path = substr($db->f('Path'), 0, strrpos($db->f('Path'), '/'));
-					}
-					$slash = $tmp;
+		$slash = PHP_INT_MAX;
+		$ws = get_ws(OBJECT_FILES_TABLE);
+		if(intval($ws) == 0){
+			$ws = 0;
+		}
+		$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND (Path="' . $db->escape($classDir) . '" OR Path LIKE "' . $db->escape($classDir) . '/%")');
+		while($db->next_record()){
+			$all[$db->f('Path')] = $db->f('ID');
+			if((($tmp = substr_count($db->f('Path'), '/')) <= $slash) && (!$ws || in_workspace($db->f('ID'), $ws, OBJECT_FILES_TABLE, null, true))){
+				$rootId = $db->f('ID');
+				$cnt = ($tmp == $slash ? $cnt : 0) + 1;
+				if($cnt == 1){
+					$path = substr($db->f('Path'), 0, strrpos($db->f('Path'), '/'));
 				}
+				$slash = $tmp;
 			}
 		}
-		return ($cnt == 1 ? $rootId : $all[$path]);
+		return ($cnt == 1 || !isset($all[$path]) ? $rootId : $all[$path]);
 	}
 
 	function formCopyDocument(){
@@ -776,6 +775,8 @@ class we_objectFile extends we_document{
 				return $this->getMetaFieldHTML($name, $attribs, $editable, $variant);
 			case self::TYPE_SHOPVAT:
 				return $this->getShopVatFieldHtml($name, $attribs, $editable);
+			case self::TYPE_SHOPCATEGORY:
+				return $this->getShopCategoryFieldHtml($name, $attribs, $editable);
 		}
 	}
 
@@ -1104,7 +1105,7 @@ class we_objectFile extends we_document{
 
 			$values = array();
 			foreach($shopVats as $shopVat){
-				$values[$shopVat->id] = $shopVat->vat . '% - ' . $shopVat->text;
+				$values[$shopVat->id] = $shopVat->vat . '% - ' . $shopVat->getNaturalizedText();
 			}
 
 			$val = $this->getElement($name) ? : $attribs['default'];
@@ -1122,6 +1123,34 @@ class we_objectFile extends we_document{
 			$weShopVat = we_shop_vats::getStandardShopVat();
 		}
 		return $this->getPreviewView($name, $weShopVat->vat);
+	}
+
+	private function getShopCategoryFieldHtml($name, $attribs, $we_editmode = true){
+		if($we_editmode){
+			$values = array();
+			if($attribs['shopcatUseDefault']){
+					$values[] = we_category::we_getCatsFromIDs(intval($attribs['default']), ',', true, $this->DB_WE,'', 'Path');
+					$input = we_class::htmlSelect('dummy', $values, 1, 0, false, array('disabled' => 'disabled')) .
+						we_html_element::htmlHidden(array('name' => 'we_' . $this->Name . '_shopCategory[' . $name . ']', 'value' => $attribs['default']));
+			} else {
+					$pref = getHash('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE pref_name="shop_cats_dir"', $this->DB_WE);
+					$path = we_category::we_getCatsFromIDs($pref['pref_value'], ',', true, $this->DB_WE,'', 'Path');
+					$this->DB_WE->query('SELECT ID, Text, PATH, IsFolder FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $path . '/%"');
+					while($this->DB_WE->next_record()){
+						$values[$this->DB_WE->f('ID')] = $this->DB_WE->f('PATH');
+					}
+					$input = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . ']', $values, 1, ($this->getElement($name) ? : $attribs['default']));
+			}
+
+			return
+				'<table class="defaultfont">
+				<tr><td><span class="weObjectPreviewHeadline">' . $name . '</span>' . ( isset($this->DefArray["_shopCategory__shopcategory"]['editdescription']) && $this->DefArray["_shopCategory__shopcategory"]['editdescription'] ? '<div class="objectDescription">' . str_replace("\n", we_html_element::htmlBr(), $this->DefArray["_shopCategory__shopcategory"]['editdescription']) . '</div>' : '' ) . '</td></tr>
+				<tr><td>' . $input . '</td></tr>
+			</table>';
+		}
+		$val = we_category::we_getCatsFromIDs($this->getElement($name), ',', ($attribs['shopcatShowPath'] == 'false' ? false : true), $this->DB_WE, $attribs['shopcatRootdir'], $attribs['shopcatField']);
+
+		return $this->getPreviewView($name, $val);
 	}
 
 	private function getHrefFieldHTML($n, $attribs, $we_editmode = true, $variant = false){
@@ -1382,7 +1411,7 @@ class we_objectFile extends we_document{
 		$attribs["height"] = isset($attribs["height"]) ? $attribs["height"] : 200;
 		$attribs["rows"] = 10;
 		$attribs["cols"] = 60;
-		$attribs['bgcolor'] = isset($attribs["bgcolor"]) ? $attribs["bgcolor"] : (WYSIWYG_TYPE === 'tinyMCE' ? '' : 'white');
+		$attribs['bgcolor'] = isset($attribs["bgcolor"]) ? $attribs["bgcolor"] : '';
 		$attribs['tinyparams'] = isset($attribs["tinyparams"]) ? $attribs["tinyparams"] : "";
 		$attribs['templates'] = isset($attribs["templates"]) ? $attribs["templates"] : "";
 		$attribs["class"] = isset($attribs["class"]) ? $attribs["class"] : "";
@@ -2772,7 +2801,7 @@ class we_objectFile extends we_document{
 		$GLOBALS['we_doc']->OF_ID = $this->ID;
 
 		$GLOBALS['we_doc']->InWebEdition = false;
-		$we_include = $includepath ?: $GLOBALS['we_doc']->TemplatePath;
+		$we_include = $includepath ? : $GLOBALS['we_doc']->TemplatePath;
 		ob_start();
 		include($we_include);
 		$contents = ob_get_clean();

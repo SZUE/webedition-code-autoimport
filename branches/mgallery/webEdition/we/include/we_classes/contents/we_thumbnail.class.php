@@ -483,10 +483,10 @@ class we_thumbnail{
 	 */
 	private function setOutputPath(){
 		if(we_base_imageEdit::gd_version() > 0 &&
-			we_base_imageEdit::is_imagetype_supported($this->outputFormat) &&
-			we_base_imageEdit::is_imagetype_read_supported(isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ?
-					we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : "") &&
-			( (!$this->useOriginalSize()) || (!$this->hasOriginalType() ) )){
+				we_base_imageEdit::is_imagetype_supported($this->outputFormat) &&
+				we_base_imageEdit::is_imagetype_read_supported(isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ?
+								we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : "") &&
+				( (!$this->useOriginalSize()) || (!$this->hasOriginalType() ) )){
 			$this->outputPath = self::getThumbDirectory() . "/" . $this->imageID . "_" . $this->thumbID . "_" . $this->imageFileName . "." . $this->outputFormat;
 		} else {
 			$this->outputPath = $this->imagePath;
@@ -570,7 +570,7 @@ class we_thumbnail{
 	 */
 	private function getImageData($getBinary = false){
 		$this->db->query('SELECT l.Name,c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->imageID) .
-			' AND l.DocumentTable="tblFile"');
+				' AND l.DocumentTable="tblFile"');
 
 		while($this->db->next_record()){
 			if($this->db->f('Name') === 'origwidth'){
@@ -642,8 +642,14 @@ class we_thumbnail{
 		$filestodelete = array();
 		if($dir_obj){
 			while(false !== ($entry = $dir_obj->read())){
-				if($entry != '.' && $entry != '..' && substr($entry, 0, strlen($id) + 1) == $id . "_"){
-					$filestodelete[] = $thumbsdir . '/' . $entry;
+				switch($entry){
+					case '.':
+					case '..':
+						continue;
+					default:
+						if(substr($entry, 0, strlen($id) + 1) == $id . '_'){
+							$filestodelete[] = $thumbsdir . '/' . $entry;
+						}
 				}
 			}
 		}
@@ -651,8 +657,14 @@ class we_thumbnail{
 		$dir_obj = @dir($previewDir);
 		if($dir_obj){
 			while(false !== ($entry = $dir_obj->read())){
-				if($entry != '.' && $entry != '..' && (substr($entry, 0, strlen($id) + 1) == $id . "_" || substr($entry, 0, strlen($id) + 1) == $id . ".")){
-					$filestodelete[] = $previewDir . '/' . $entry;
+				switch($entry){
+					case '.':
+					case '..':
+						continue;
+					default:
+						if(substr($entry, 0, strlen($id) + 1) == $id . "_" || substr($entry, 0, strlen($id) + 1) == $id . '.'){
+							$filestodelete[] = $previewDir . '/' . $entry;
+						}
 				}
 			}
 		}
