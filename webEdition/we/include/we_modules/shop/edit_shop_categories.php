@@ -179,7 +179,7 @@ if(intval($shopCategoriesDir) !== -1){
 				} else {
 					foreach($allVats as $k => $v){
 						$value = isset($relations[$cat['id']][$k]) && $relations[$cat['id']][$k] ? $relations[$cat['id']][$k] : 0;
-						$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['id'] . '][' . $k . ']', $v['selOptions'], 1, $relations[$cat['id']][$k], false, array(), 'value', 240);
+						$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['id'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, array(), 'value', 240);
 						$matrix->setCol($i, 1, array("class" => "defaultfont", "style" => "font-weight:normal", "nowrap" => "nowrap", "width" => 110), $v['textTerritory']);
 						$matrix->setCol($i++, 2, array("class" => "defaultfont", "style" => "font-weight:normal", "nowrap" => "nowrap", "width" => 110), $sel);
 					}
