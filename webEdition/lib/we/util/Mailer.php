@@ -335,7 +335,7 @@ class we_util_Mailer extends Zend_Mail{
 		);
 
 		$textpart = preg_replace(array('/<br[^>]*>/s', '/<(ul|ol)[^>]*>/s'), array("\n", "\n\n"), strtr($html, $lineBreaks));
-		$this->AltBody = trim(strip_tags(preg_replace('/<(head|title|style|script)[^>]*>.*?<\/\\1>/s', '', $textpart)));
+		$this->AltBody = trim(strip_tags(preg_replace('/<(head|title|style|script)[^>]*>.*?<\/${1}>/s', '', $textpart)));
 	}
 
 	public function doaddAttachmentInline($attachment, $isBinData = false, $ext = ''){

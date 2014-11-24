@@ -864,10 +864,10 @@ class we_navigation_navigation extends weModelBase{
 			'|<(\/)?i>|',
 			'|&([^;]+);|',
 			), array(
-			$open . 'br\\1' . $close,
-			$open . '\\1b' . $close,
-			$open . '\\1i' . $close,
-			$amp . '\\1;',
+			$open . 'br${1}' . $close,
+			$open . '${1}b' . $close,
+			$open . '${1}i' . $close,
+			$amp . '${1};',
 			), $string);
 
 		return str_replace(array(

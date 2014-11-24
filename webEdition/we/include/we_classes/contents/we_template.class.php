@@ -229,7 +229,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 	private function parseTemplate(){
 		$code = str_replace("<?xml", '<?php print "<?xml"; ?>', $this->getTemplateCode(true));
-		//$code = preg_replace('/(< *\/? *we:[^>]+>\n)/i','\1'."\n",$code);
+		//$code = preg_replace('/(< *\/? *we:[^>]+>\n)/i','$1'."\n",$code);
 		$tp = new we_tag_tagParser($code, $this->getPath());
 		$tags = $tp->getAllTags();
 		if(($foo = self::checkElsetags($tags))){
@@ -284,7 +284,7 @@ we_templateInit();?>';
 			//#### parse base href
 			$code = str_replace(array('?>', '=>'), array('__WE_?__WE__', '__WE_=__WE__'), $code);
 
-			$code = preg_replace('%(<body[^>]*)>%i', '\\1<?php echo (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']? \' onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>', $code);
+			$code = preg_replace('%(<body[^>]*)>%i', '${1}<?php echo (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']? \' onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>', $code);
 
 			$code = str_replace(array('__WE_?__WE__', '__WE_=__WE__'), array('?>', '=>'), $code);
 			$code = str_ireplace(array('</head>', '</body>'), array('<?php we_templateHead();?></head>', '<?php we_templatePostContent(true);?></body>'), $code);
@@ -333,7 +333,7 @@ we_templateInit();?>';
 	function i_getDocument(){
 		$this->_updateCompleteCode();
 		/* remove unwanted/-needed start/stop parser tags (?><php) */
-		return preg_replace(array("/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?= ?/si", "/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?php ?/si"), array("\\1\n\\2 echo ", "\\1\n\\2"), $this->parseTemplate());
+		return preg_replace(array("/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?= ?/si", "/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?php ?/si"), array("${1}\n${2} echo ", "${1}\n${2}"), $this->parseTemplate());
 	}
 
 	protected function i_writeSiteDir(){

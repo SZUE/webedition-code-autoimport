@@ -2065,7 +2065,7 @@ self.close();');
 
 				$urlReplace = we_folder::getUrlReplacements($this->db, false, true);
 				if($urlReplace){
-					$content = preg_replace('-(["\'])//-', '\\1' . $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
+					$content = preg_replace('-(["\'])//-', '$1' . $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
 				}
 				$content = preg_replace(array(
 					'-(<[^>]+src' . $spacer . '=' . $spacer . '[\'"]?)(/)-i',
@@ -2074,11 +2074,11 @@ self.close();');
 					'-(background' . $spacer . ':' . $spacer . '[^url]*url' . $spacer . '\\([\'"]?)(/)-i',
 					'+(background-image' . $spacer . ':' . $spacer . '[^url]*url' . $spacer . '\\([\'"]?)(/)+i',
 					), array(
-					'\\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\\2',
-					'\\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\\2',
-					'\\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\\2',
-					'\\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\\2',
-					'\\1' . $protocol . $_SERVER['SERVER_NAME'] . $port . '\\2',
+					'${1}' . $protocol . $_SERVER['SERVER_NAME'] . $port . '${2}',
+					'${1}' . $protocol . $_SERVER['SERVER_NAME'] . $port . '${2}',
+					'${1}' . $protocol . $_SERVER['SERVER_NAME'] . $port . '${2}',
+					'${1}' . $protocol . $_SERVER['SERVER_NAME'] . $port . '${2}',
+					'${1}' . $protocol . $_SERVER['SERVER_NAME'] . $port . '${2}',
 					), $content);
 			}
 		} else {

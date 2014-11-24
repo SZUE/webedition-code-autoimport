@@ -81,7 +81,11 @@ class we_dialog_image extends we_dialog_base{
 				$this->args["thumbnail"] = $thumb;
 			} else {
 				$this->args["type"] = we_base_link::TYPE_EXT;
-				$this->args["extSrc"] = preg_replace('|^' . WEBEDITION_DIR . '|', '', preg_replace('|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|', '\1', preg_replace('|^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$|i', '\1', $this->args["src"])));
+				$this->args["extSrc"] = preg_replace(array(
+					'|^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$|i',
+					'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
+					'|^' . WEBEDITION_DIR . '|',
+						), array('$1', '$1', ''), $this->args["src"]);
 				$this->args["fileID"] = "";
 				$this->args["fileSrc"] = "";
 				$this->args["thumbnail"] = 0;

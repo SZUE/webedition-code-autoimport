@@ -26,6 +26,7 @@
 
 class we_flashDocument extends we_binaryDocument{
 	/* Parameternames which are placed within the object-Tag */
+
 	var $ObjectParamNames = array('align', 'border', 'id', 'height', 'hspace', 'name', 'width', 'vspace', 'only', 'style');
 
 	function __construct(){
@@ -97,8 +98,8 @@ class we_flashDocument extends we_binaryDocument{
 			srand((double) microtime() * 1000000);
 			$randval = rand();
 			$src = $dyn ?
-				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . $randval :
-				$this->Path;
+					WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . $randval :
+					$this->Path;
 			$attribs = $params = array();
 			$this->html = '';
 
@@ -426,10 +427,8 @@ class we_flashDocument extends we_binaryDocument{
 								$_SESSION[$_flashmovieDataId]["id"] = $flashId;
 							}
 
-							$_SESSION[$_flashmovieDataId]["fileName"] = preg_replace(
-								'#^(.+)\..+$#', '\\1', $tmp_Filename);
-							$_SESSION[$_flashmovieDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace(
-									'#^.+(\..+)$#', '\\1', $tmp_Filename) : '';
+							$_SESSION[$_flashmovieDataId]["fileName"] = preg_replace('#^(.+)\..+$#', '$1', $tmp_Filename);
+							$_SESSION[$_flashmovieDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace('#^.+(\..+)$#', '$1', $tmp_Filename) : '';
 							$_SESSION[$_flashmovieDataId]["text"] = $_SESSION[$_flashmovieDataId]["fileName"] . $_SESSION[$_flashmovieDataId]["extension"];
 
 							$we_size = getimagesize($_SESSION[$_flashmovieDataId]["serverPath"]);

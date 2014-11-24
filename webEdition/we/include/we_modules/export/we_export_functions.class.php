@@ -229,19 +229,19 @@ abstract class we_export_functions{
 	 */
 	static function checkCompatibility($content, $csv_delimiter = ",", $csv_enclose = "'", $type = "escape"){
 		switch($type){
-			case "escape":
+			case 'escape':
 				$_check = array("\\");
 
 				break;
-			case "enclose":
+			case 'enclose':
 				$_check = array($csv_enclose);
 
 				break;
-			case "delimiter":
+			case 'delimiter':
 				$_check = array($csv_delimiter);
 
 				break;
-			case "lineend":
+			case 'lineend':
 				$_check = array("\r\n", "\n", "\r");
 
 				break;
