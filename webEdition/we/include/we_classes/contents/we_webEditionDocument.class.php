@@ -30,8 +30,6 @@ class we_webEditionDocument extends we_textContentDocument{
 	var $temp_template_id = 0;
 	// Categories of the parked document (Bug Fix #6615)
 	var $temp_category = '';
-	// Doc-Type of the parked document (Bug Fix #6615)
-	var $temp_doc_type = '';
 	// Path from the template
 	var $TemplatePath = '';
 	var $hasVariants = null;
@@ -56,7 +54,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		if(isset($_SESSION['prefs']['DefaultTemplateID'])){
 			$this->TemplateID = $_SESSION['prefs']['DefaultTemplateID'];
 		}
-		array_push($this->persistent_slots, 'TemplateID', 'TemplatePath', 'hidePages', 'controlElement', 'temp_template_id', 'temp_doc_type', 'temp_category', 'usedElementNames');
+		array_push($this->persistent_slots, 'TemplateID', 'TemplatePath', 'hidePages', 'controlElement', 'temp_template_id', 'temp_category', 'usedElementNames');
 		$this->Icon = 'we_dokument.gif';
 		$this->ContentType = we_base_ContentTypes::WEDOCUMENT;
 	}
@@ -648,7 +646,6 @@ class we_webEditionDocument extends we_textContentDocument{
 //FIXME: maybe use $this->getUsedElements() to unset unused elements?! add setting to do this? check rebuild!!!
 		// Bug Fix #6615
 		$this->temp_template_id = $this->TemplateID;
-		$this->temp_doc_type = $this->DocType;
 		$this->temp_category = $this->Category;
 
 		// Last step is to save the webEdition document

@@ -498,28 +498,6 @@ class doclistView{
             cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
             row.appendChild(cell);
         }
-        else if(value=="temp_doc_type") {
-          if (locationTD!=null) {
-            location.disabled = true;
-          }
-          row.removeChild(searchTD);
-          if (delButtonTD!=null) {
-            row.removeChild(delButtonTD);
-          }
-
-          search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getDoctypes(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
-
-          var cell = document.createElement("TD");
-            cell.setAttribute("id", "td_search["+rowNr+"]");
-            cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-          row.appendChild(cell);
-
-          cell = document.createElement("TD");
-            cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-            row.appendChild(cell);
-
-        }
         else if(value=="Status") {
           if (locationTD!=null) {
             location.disabled = true;
@@ -628,8 +606,8 @@ class doclistView{
             cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
             row.appendChild(cell);
         }
-        if(from=="temp_template_id" || from=="ContentType" || from=="temp_doc_type" || from=="temp_category" || from=="Status" || from=="Speicherart" || from=="Published" || from=="CreationDate" || from=="ModDate"
-           || value=="temp_template_id" || value=="ContentType" || value=="temp_doc_type" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {
+        if(from=="temp_template_id" || from=="ContentType" || from=="temp_category" || from=="Status" || from=="Speicherart" || from=="Published" || from=="CreationDate" || from=="ModDate"
+           || value=="temp_template_id" || value=="ContentType" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {
         	document.getElementById("search["+rowNr+"]").value = "";
 		}
 		else {
@@ -824,13 +802,22 @@ class doclistView{
 
 			$handle = "";
 
-			$searchInput = we_html_tools::htmlTextInput("search[" . $i . "]", 30, (isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search) && isset($GLOBALS['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS['we_doc']->searchclassFolder->search [$i] : ''), "", " class=\"wetextinput\"  id=\"search['.$i.']\" ", "text", 190);
+			$searchInput = we_html_tools::htmlTextInput("search[" . $i . "]", 30, (isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search) && isset($GLOBALS['we_doc']->searchclassFolder->search[$i]) ? $GLOBALS['we_doc']->searchclassFolder->search[$i] : ''), "", " class=\"wetextinput\"  id=\"search['.$i.']\" ", "text", 190);
 
-			$locationDisabled = (isset($GLOBALS['we_doc']->searchclassFolder->searchFields [$i]) && ($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "Content" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "Status" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "Speicherart" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "temp_template_id" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "temp_doc_type" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "temp_category") ?
-							'disabled' : '');
+			switch(isset($GLOBALS['we_doc']->searchclassFolder->searchFields[$i]) ? $GLOBALS['we_doc']->searchclassFolder->searchFields[$i] : ''){
+				case "Content":
+				case "Status":
+				case "Speicherart":
+				case "temp_template_id":
+				case "temp_category":
+					$locationDisabled = 'disabled';
+					break;
+				default:
+					$locationDisabled = '';
+			}
 
-			if(isset($GLOBALS['we_doc']->searchclassFolder->searchFields [$i])){
-				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "Status"){
+			if(isset($GLOBALS['we_doc']->searchclassFolder->searchFields[$i])){
+				if($GLOBALS['we_doc']->searchclassFolder->searchFields[$i] === "Status"){
 					$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS['we_doc']->searchclassFolder->getFieldsStatus(), 1, (isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search) && isset($GLOBALS['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
 				}
 				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "Speicherart"){
@@ -839,9 +826,6 @@ class doclistView{
 				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "Published" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "CreationDate" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "ModDate"){
 					$handle = "date";
 					$searchInput = we_html_tools::getDateSelector("search[" . $i . "]", "_from" . $i, $GLOBALS['we_doc']->searchclassFolder->search [$i]);
-				}
-				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "temp_doc_type"){
-					$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS['we_doc']->searchclassFolder->getDocTypes(), 1, (isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search) && isset($GLOBALS['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
 				}
 
 				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "MasterTemplateID" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "temp_template_id"){

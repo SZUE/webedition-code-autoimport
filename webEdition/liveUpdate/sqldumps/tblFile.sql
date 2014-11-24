@@ -1,5 +1,9 @@
 ###UPDATEONLY### UPDATE ###TBLPREFIX###tblFile SET Path=REPLACE(Path,"//","/") WHERE Path LIKE "%//%"
 /* query separator */
+###UPDATEDROPCOL(temp_doc_type,###TBLPREFIX###tblFile)###
+/* query separator */
+###UPDATEDROPCOL(Deleted,###TBLPREFIX###tblFile)###
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblFile (
   ID int(11) unsigned NOT NULL auto_increment,
@@ -12,7 +16,7 @@ CREATE TABLE ###TBLPREFIX###tblFile (
   ModDate int(11) unsigned NOT NULL default '0',
   RebuildDate int(11) unsigned NOT NULL default '0',
   `Path` varchar(255) NOT NULL default '',
-  Filehash varchar(40) NOT NULL default '',
+  Filehash char(40) NOT NULL default '',
   TemplateID int(11) unsigned NOT NULL default '0',
   temp_template_id int(11) unsigned NOT NULL default '0',
   Filename varchar(255) NOT NULL default '',
@@ -20,11 +24,10 @@ CREATE TABLE ###TBLPREFIX###tblFile (
   IsDynamic tinyint(1) unsigned NOT NULL default '0',
   IsSearchable tinyint(1) unsigned NOT NULL default '0',
   DocType smallint(6) unsigned NOT NULL,
-  temp_doc_type smallint(6) unsigned NOT NULL,
   ClassName ENUM('we_flashDocument','we_folder','we_htmlDocument','we_imageDocument','we_otherDocument','we_textDocument','we_webEditionDocument','we_quicktimeDocument') NOT NULL default 'we_textDocument',
-  Category text NULL default NULL,
-  temp_category text NULL default NULL,
-  Published int(10) unsigned NOT NULL default '0',
+  Category text NOT NULL default '',
+  temp_category text NOT NULL default '',
+  Published int(11) unsigned NOT NULL default '0',
   CreatorID int(11) unsigned NOT NULL default '0',
   ModifierID int(11) unsigned NOT NULL default '0',
   RestrictOwners tinyint(1) unsigned NOT NULL default '0',
