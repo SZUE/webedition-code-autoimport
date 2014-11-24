@@ -168,7 +168,7 @@ if(intval($shopCategoriesDir) !== -1){
 		$matrix = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), (count($shopCategories) * (count($allVats) + 2)), 3);
 		if(count($shopCategories)){
 			$i = 0;
-			
+
 			foreach($shopCategories as $cat){
 				$j = 0;
 				$matrix->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), $cat['text']);
