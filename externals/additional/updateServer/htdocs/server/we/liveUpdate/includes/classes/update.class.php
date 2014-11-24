@@ -551,7 +551,5 @@ class update extends updateBase {
 		return updateUtil::getResponseString($retArray);
 	}
 
-
 }
-
 ?>

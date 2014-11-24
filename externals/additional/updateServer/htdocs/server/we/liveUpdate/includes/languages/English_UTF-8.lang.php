@@ -214,5 +214,4 @@ $luSystemLanguage['modules']['finished'] = 'Installation of modules completed';
 
 $luSystemLanguage['languages']['start'] = 'Start installation of languages';
 $luSystemLanguage['languages']['finished'] = 'Installation of languages completed';
-
 ?>

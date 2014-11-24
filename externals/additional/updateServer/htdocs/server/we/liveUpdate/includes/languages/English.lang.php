@@ -120,7 +120,6 @@ $lang['update']['ReqWarnungMbstring'] = 'MultiByte String support (PHP extension
 $lang['update']['ReqWarnungGdlib'] = 'The PHP GDlib funktions (PHP extension gd) are not available, therefore, many image manipulation and preview functions are not available.';
 $lang['update']['ReqWarnungExif'] = "The exif PHP extension is not available, therefore, EXIF metadata for images are nut usuable.";
 $lang['update']['ReqWarnungPHPversion'] = 'PHP version 5.2.4 or newer is required for the update. Determined was version ';
-$lang['update']['ReqWarnungPHPversionForV640'] = 'PHP version 5.3.7 or newer is required for the update to a webEdition version newer than 6.3.9.0. Determined was PHP version ';
 
 $lang['update']['spenden'] = 'This webEdition version was made possible bei the work of the charitable foundation webEdition e.V. Support the work of the foundation and its members with your donation<br>
 It allows the foundation to employ professional developers which make it <br/>

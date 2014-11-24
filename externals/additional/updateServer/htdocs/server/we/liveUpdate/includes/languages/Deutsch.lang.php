@@ -124,8 +124,7 @@ $lang['update']['ReqWarnungMbstring'] = 'MultiByte String Unterst&uuml;tzung (PH
 $lang['update']['ReqWarnungGdlib'] = 'Die PHP GDlib-Funktionen (PHP-Extension gd) sind auf diesem Server nicht verf&uuml;gbar, daher sind einige Bildbearbeitungs- und Bildvorschaufunktionen nur eingeschr&auml;nkt nutzbar.';
 $lang['update']['ReqWarnungExif'] = "Die exif PHP Extension ist auf diesem Server nicht verf&uuml;gbar, daher sind EXIF-Metadaten f&uuml;r Bilder nicht nutzbar.";
 $lang['update']['ReqWarnungPHPversion'] = 'Es wird mindestens PHP in der Version 5.2.4 ben&ouml;tigt. Festgestellt wurde Version ';
-$lang['update']['ReqWarnungPHPversionForV640'] = 'F&uuml;r ein Update auf webEdition-Versionen neuer als 6.3.9.0 wird PHP mindestens in der Version 5.2.4 ben&ouml;tigt. Festgestellt wurde Version ';
-
+$lang['update']['ReqWarnungPHPversionForV640'] = 'F&uuml;r ein Update auf webEdition-Versionen neuer als 6.3.9.0 wird PHP mindestens in der Version 5.3.7 ben&ouml;tigt. Festgestellt wurde Version ';
 
 $lang['modules']['headline'] = 'Modulinstallation';
 $lang['modules']['textConfirmModules'] = 'Folgende Module sollen installiert werden. Best&auml;tigen Sie Ihre Auswahl und die Installation beginnt. Nach der Installation wird webEdition neu gestartet.';
