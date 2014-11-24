@@ -516,20 +516,8 @@ class we_webEditionDocument extends we_textContentDocument{
 	public function insertAtIndex(array $only = null, array $fieldTypes = array()){
 		if($this->ContentType == we_base_ContentTypes::WEDOCUMENT){
 			$only = $this->getUsedElements(true);
-			if(!$only){//FIXME:needed for rebuild, since tags are unintialized
-				// dont save unneeded fields in index-table
-				//FIXME: it is better to use $this->getUsedElements - only we:input type="date" is not handled... => this will call the TP which is not desired since this method is called on save in frontend
-				$fieldTypes = we_webEditionDocument::getFieldTypes($this->getTemplateCode(), false);
-				$fieldTypes = array_keys($fieldTypes, 'txt');
-				array_push($fieldTypes, 'Title', 'Description', 'Keywords');
-				foreach($fieldTypes as $field){//for #230: if variables are used in fieldnames we cannot determine these types
-					if($field && ($field[0] === '$' || isset($field[1]) && $field[1] === '$')){
-						$fieldTypes = array();
-						break;
-					}
-				}
-			} else {
-				array_push($only, 'Title', 'Description', 'Keywords');
+			if($only){//FIXME:needed for rebuild, since tags are unintialized
+				$only = array_merge(array('Title', 'Description', 'Keywords'), $only);
 			}
 		}
 		return parent::insertAtIndex($only, $fieldTypes);
@@ -1089,10 +1077,8 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		$type = self::getFieldType($type, '', true);
 		if(!isset($this->usedElementNames[$type])){
 			$this->usedElementNames[$type] = array($name);
-		} else {
-			if(array_search($name, $this->usedElementNames[$type]) === false){
-				$this->usedElementNames[$type][] = $name;
-			}
+		} elseif(array_search($name, $this->usedElementNames[$type]) === false){
+			$this->usedElementNames[$type][] = $name;
 		}
 	}
 
