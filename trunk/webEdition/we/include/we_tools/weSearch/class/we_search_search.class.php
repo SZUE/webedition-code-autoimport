@@ -137,7 +137,7 @@ class we_search_search extends we_search_base{
 			'temp_template_id' => g_l('searchtool', '[temp_template_id]'),
 			'MasterTemplateID' => g_l('searchtool', '[MasterTemplateID]'),
 			'ContentType' => g_l('searchtool', '[ContentType]'),
-			'temp_doc_type' => g_l('searchtool', '[temp_doc_type]'),
+			//'temp_doc_type' => g_l('searchtool', '[temp_doc_type]'),
 			'temp_category' => g_l('searchtool', '[temp_category]'),
 			'CreatorID' => g_l('searchtool', '[CreatorID]'),
 			'CreatorName' => g_l('searchtool', '[CreatorName]'),
@@ -766,9 +766,6 @@ UNIQUE KEY k (docID,docTable)
 					case 'temp_template_id' :
 						$searchfield = 'TemplateID';
 						break;
-					case 'temp_doc_type' :
-						$searchfield = 'DocType';
-						break;
 					case 'ModDate' :
 						$searchfield = 'timestamp';
 						break;
@@ -806,12 +803,6 @@ UNIQUE KEY k (docID,docTable)
 						} else {
 							$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 						}
-					} elseif($searchfield === 'temp_doc_type' && $this->table == FILE_TABLE){
-						$searching = " = '" . $this->db->escape($searchname) . "' ";
-
-						$sql .= $this->sqlwhere($tablename . '.DocType', $searching, $operator . '( (Published >= ModDate AND Published !=0 AND ') .
-								$this->sqlwhere($searchfield, $searching, ' ) OR (Published < ModDate AND ') .
-								'))';
 					} elseif(stristr($searchfield, '.Published') || stristr($searchfield, '.CreationDate') || stristr($searchfield, '.ModDate')){
 						if((stristr($searchfield, '.Published') && $this->table == FILE_TABLE || $this->table == OBJECT_FILES_TABLE) || !stristr($searchfield, '.Published')){
 							if($this->table == VERSIONS_TABLE && (stristr($searchfield, '.CreationDate') || stristr($searchfield, '.ModDate'))){

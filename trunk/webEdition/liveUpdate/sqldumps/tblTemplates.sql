@@ -9,7 +9,7 @@ CREATE TABLE ###TBLPREFIX###tblTemplates (
   ModDate int(11) unsigned NOT NULL default '0',
   RebuildDate int(11) unsigned NOT NULL default '0',
   Path varchar(255) NOT NULL default '',
-  Filehash varchar(40) NOT NULL default '',
+  Filehash char(40) NOT NULL default '',
   Filename varchar(64) NOT NULL default '',
   Extension enum('','.tmpl') NOT NULL default '',
   ClassName ENUM('we_folder','we_template') NOT NULL default 'we_template',
