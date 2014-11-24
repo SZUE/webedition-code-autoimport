@@ -1,6 +1,3 @@
-###ONCOL(ID,###TBLPREFIX###tblhistory)###
-/* query separator */
-
 ###UPDATEDROPCOL(ID,###TBLPREFIX###tblhistory)###
 /* query separator */
 

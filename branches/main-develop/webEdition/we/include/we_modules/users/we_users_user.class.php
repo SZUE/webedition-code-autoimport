@@ -48,9 +48,9 @@ class we_users_user{
 		'First' => we_base_request::STRING,
 		'Second' => we_base_request::STRING,
 		'Address' => we_base_request::STRING,
-		'HouseNo' => we_base_request::STRING, //e.g. 2a
+		'HouseNo' => we_base_request::STRINGC, //e.g. 2a
 		'City' => we_base_request::STRING,
-		'PLZ' => we_base_request::STRING, //leading 0
+		'PLZ' => we_base_request::STRINGC, //leading 0
 		'State' => we_base_request::STRING,
 		'Country' => we_base_request::STRING,
 		'Tel_preselection' => we_base_request::STRINGC,

@@ -58,6 +58,7 @@
 		case "object_insert_meta_at_class":
 		case "object_delete_meta_class":
 		case "object_reload_entry_at_class":
+		case "object_change_entry_at_class":
 		case "object_add_user_to_field":
 		case "object_del_user_from_field":
 		case "object_del_all_users":

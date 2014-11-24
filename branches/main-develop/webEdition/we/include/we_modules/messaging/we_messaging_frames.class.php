@@ -756,7 +756,7 @@ function loadData() {
 					$iconbasename = $folder['ClassName'] === 'we_todo' ? 'todo_folder' : 'msg_folder';
 					break;
 			}
-			if(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'], '')) >= 0){
+			if(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'])) >= 0){
 
 
 				$jsOut .= '

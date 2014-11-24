@@ -39,6 +39,7 @@ class we_objectFile extends we_document{
 	const TYPE_MULTIOBJECT = 'multiobject';
 	const TYPE_OBJECT = 'object';
 	const TYPE_QUICKTIME = 'quicktime';
+	const TYPE_SHOPCATEGORY = 'shopCategory';
 	const TYPE_SHOPVAT = 'shopVat';
 	const TYPE_TEXT = 'text';
 
@@ -774,6 +775,8 @@ class we_objectFile extends we_document{
 				return $this->getMetaFieldHTML($name, $attribs, $editable, $variant);
 			case self::TYPE_SHOPVAT:
 				return $this->getShopVatFieldHtml($name, $attribs, $editable);
+			case self::TYPE_SHOPCATEGORY:
+				return $this->getShopCategoryFieldHtml($name, $attribs, $editable);
 		}
 	}
 
@@ -1102,7 +1105,7 @@ class we_objectFile extends we_document{
 
 			$values = array();
 			foreach($shopVats as $shopVat){
-				$values[$shopVat->id] = $shopVat->vat . '% - ' . $shopVat->text;
+				$values[$shopVat->id] = $shopVat->vat . '% - ' . $shopVat->getNaturalizedText();
 			}
 
 			$val = $this->getElement($name) ? : $attribs['default'];
@@ -1120,6 +1123,34 @@ class we_objectFile extends we_document{
 			$weShopVat = we_shop_vats::getStandardShopVat();
 		}
 		return $this->getPreviewView($name, $weShopVat->vat);
+	}
+
+	private function getShopCategoryFieldHtml($name, $attribs, $we_editmode = true){
+		if($we_editmode){
+			$values = array();
+			if($attribs['shopcatUseDefault']){
+					$values[] = we_category::we_getCatsFromIDs(intval($attribs['default']), ',', true, $this->DB_WE,'', 'Path');
+					$input = we_class::htmlSelect('dummy', $values, 1, 0, false, array('disabled' => 'disabled')) .
+						we_html_element::htmlHidden(array('name' => 'we_' . $this->Name . '_shopCategory[' . $name . ']', 'value' => $attribs['default']));
+			} else {
+					$pref = getHash('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE pref_name="shop_cats_dir"', $this->DB_WE);
+					$path = we_category::we_getCatsFromIDs($pref['pref_value'], ',', true, $this->DB_WE,'', 'Path');
+					$this->DB_WE->query('SELECT ID, Text, PATH, IsFolder FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $path . '/%"');
+					while($this->DB_WE->next_record()){
+						$values[$this->DB_WE->f('ID')] = $this->DB_WE->f('PATH');
+					}
+					$input = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . ']', $values, 1, ($this->getElement($name) ? : $attribs['default']));
+			}
+
+			return
+				'<table class="defaultfont">
+				<tr><td><span class="weObjectPreviewHeadline">' . $name . '</span>' . ( isset($this->DefArray["_shopCategory__shopcategory"]['editdescription']) && $this->DefArray["_shopCategory__shopcategory"]['editdescription'] ? '<div class="objectDescription">' . str_replace("\n", we_html_element::htmlBr(), $this->DefArray["_shopCategory__shopcategory"]['editdescription']) . '</div>' : '' ) . '</td></tr>
+				<tr><td>' . $input . '</td></tr>
+			</table>';
+		}
+		$val = we_category::we_getCatsFromIDs($this->getElement($name), ',', ($attribs['shopcatShowPath'] == 'false' ? false : true), $this->DB_WE, $attribs['shopcatRootdir'], $attribs['shopcatField']);
+
+		return $this->getPreviewView($name, $val);
 	}
 
 	private function getHrefFieldHTML($n, $attribs, $we_editmode = true, $variant = false){

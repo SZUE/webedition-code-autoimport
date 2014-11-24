@@ -177,11 +177,16 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			break;
+		case 'object_change_entry_at_class':
+			$identifier = array_pop(explode('_', $id));
+			$fieldname = $we_doc->getElement("wholename" . $identifier);
+			$we_doc->setElement($fieldname . 'default', '');
+			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
+			break;
 
 		case 'object_reload_entry_at_class':
 			$identifier = array_pop(explode('_', $id));
 			$fieldname = $we_doc->getElement("wholename" . $identifier);
-			$we_doc->setElement($fieldname . 'default', '');
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 		case 'object_up_meta_at_class':

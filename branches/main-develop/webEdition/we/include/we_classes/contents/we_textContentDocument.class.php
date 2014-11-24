@@ -24,6 +24,7 @@
  */
 abstract class we_textContentDocument extends we_textDocument{
 	/* Doc-Type of the document */
+
 	public $DocType = '';
 
 	function __construct(){
@@ -73,55 +74,38 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 		$text = '';
 
-		$this->resetElements();
-		while((list($k, $v) = $this->nextElement(''))){
-			$_dat = (isset($v['dat']) && is_string($v['dat']) && substr($v['dat'], 0, 2) === 'a:') ? unserialize($v['dat']) : (isset($v['dat']) ? $v['dat'] : '');
-			if($k[0] === '$' || (isset($k[1]) && $k[1] === '$') || $k === 'Charset' || empty($_dat)){
-				//skip elements whose names are variables or if element is empty
-				continue;
+		if($only){
+			foreach($only as $cur){
+				$text .= ' ' . $this->getElement($cur);
 			}
+		} else {
+			$this->resetElements();
+			while((list($k, $v) = $this->nextElement('txt'))){
+				$_dat = (isset($v['dat']) && is_string($v['dat']) && isset($v['dat']) ? $v['dat'] : '');
+				if($k[0] === '$' || (isset($k[1]) && $k[1] === '$') || empty($_dat)){
+					//skip elements whose names are variables or if element is empty
+					continue;
+				}
 
-			if((!is_array($_dat) || (isset($_dat['text']) && $_dat['text'])) && $fieldTypes){
-//rebuild variant
-				foreach($fieldTypes as $name){
-					if(preg_match('|^' . $name . '$|i', $k)){
-						if(is_array($_dat) && !empty($_dat['text'])){
-							$text .= ' ' . $_dat['text'];
-						} elseif($v['type'] === 'txt'){
-							$text .= ' ' . $_dat;
-						}
-					}
-				}
-			} elseif((!is_array($_dat) || (isset($_dat['text']) && $_dat['text'])) && $only){
-//normal save of we_doc
-				if(in_array($k, $only)){
-					if(is_array($_dat) && !empty($_dat['text'])){
-						$text .= ' ' . $_dat['text'];
-					} elseif($v['type'] === 'txt'){
-						$text .= ' ' . $_dat;
-					}
-				}
-			} else if(!is_array($_dat)){
-//save of text_document
 				if(isset($v['type']) && $v['type'] === 'txt'){
 					$text .= ' ' . $_dat;
 				}
 			}
+			//variants ar initialized, so nothing special to do
 		}
-
 
 		$maxDB = min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
 		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'DID' => intval($this->ID),
-					'Text' => substr(preg_replace(array('/(&#160;|&nbsp;)/', "/ *[\r\n]+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB),
-					'Workspace' => $this->ParentPath,
-					'WorkspaceID' => intval($this->ParentID),
-					'Category' => $this->Category,
-					'Doctype' => $this->DocType,
-					'Title' => $this->getElement('Title'),
-					'Description' => $this->getElement('Description'),
-					'Path' => $this->Path,
-					'Language' => $this->Language
+							'DID' => intval($this->ID),
+							'Text' => substr(preg_replace(array('/(&#160;|&nbsp;)/', "/ *[\r\n]+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB),
+							'Workspace' => $this->ParentPath,
+							'WorkspaceID' => intval($this->ParentID),
+							'Category' => $this->Category,
+							'Doctype' => $this->DocType,
+							'Title' => $this->getElement('Title'),
+							'Description' => $this->getElement('Description'),
+							'Path' => $this->Path,
+							'Language' => $this->Language
 		)));
 	}
 
@@ -192,9 +176,9 @@ abstract class we_textContentDocument extends we_textDocument{
 			return g_l('weClass', '[doctype]') . we_html_element::htmlBr() . $name;
 		}
 		return $this->formSelect2($width, 'DocType', DOC_TYPES_TABLE, 'ID', 'DocType', g_l('weClass', '[doctype]'), we_docTypes::getDoctypeQuery($this->DB_WE), 1, $this->DocType, false, (($this->DocType !== '') ?
-					"if(confirm('" . g_l('weClass', '[doctype_changed_question]') . "')){we_cmd('doctype_changed');};" :
-					"we_cmd('doctype_changed');") .
-				"_EditorFrame.setEditorIsHot(true);", array(), 'left', "defaultfont", "", we_html_button::create_button("edit", "javascript:top.we_cmd('doctypes')", false, 0, 0, "", "", (!permissionhandler::hasPerm('EDIT_DOCTYPE'))), ((permissionhandler::hasPerm('NO_DOCTYPE') || ($this->ID && empty($this->DocType)) ) ) ? array('', g_l('weClass', '[nodoctype]')) : '');
+								"if(confirm('" . g_l('weClass', '[doctype_changed_question]') . "')){we_cmd('doctype_changed');};" :
+								"we_cmd('doctype_changed');") .
+						"_EditorFrame.setEditorIsHot(true);", array(), 'left', "defaultfont", "", we_html_button::create_button("edit", "javascript:top.we_cmd('doctypes')", false, 0, 0, "", "", (!permissionhandler::hasPerm('EDIT_DOCTYPE'))), ((permissionhandler::hasPerm('NO_DOCTYPE') || ($this->ID && empty($this->DocType)) ) ) ? array('', g_l('weClass', '[nodoctype]')) : '');
 	}
 
 	function formDocTypeTempl(){
@@ -235,7 +219,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND Was=' . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
 					if($sessDat &&
-						$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
+							$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
 						$this->i_getPersistentSlotsFromDB('Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID');
 						$this->OldPath = $this->Path;
 
@@ -395,9 +379,9 @@ abstract class we_textContentDocument extends we_textDocument{
 
 	public function we_republish($rebuildMain = true){
 		return ($this->Published ?
-				$this->we_publish(true, $rebuildMain) :
-				$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID))
-			);
+						$this->we_publish(true, $rebuildMain) :
+						$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID))
+				);
 	}
 
 	function we_resaveTemporaryTable(){
@@ -405,9 +389,9 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->saveInSession($saveArr);
 		if(($this->ModDate > $this->Published) && $this->Published){
 			return (!we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE) ?
-					we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE) :
-					we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE)
-				);
+							we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE) :
+							we_temporaryDocument::resave($this->ID, $this->Table, $saveArr, $this->DB_WE)
+					);
 		}
 		return true;
 	}

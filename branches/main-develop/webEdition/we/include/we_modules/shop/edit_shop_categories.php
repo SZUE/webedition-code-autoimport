@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 8384 $
- * $Author: mokraemer $
- * $Date: 2014-10-07 18:49:11 +0200 (Di, 07 Okt 2014) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -44,7 +44,7 @@ $debug_output = '';
 if($shopCategoriesDir !== -1){
 	switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		case 'saveShopCatRels':
-			$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop",pref_name="shop_cats_dir",pref_value=' . intval($shopCategoriesDir));
+			$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop", pref_name="shop_cats_dir", pref_value=' . intval($shopCategoriesDir));
 
 			$destPrincipleIds = array();
 			foreach(we_base_request::_(we_base_request::INT, 'weShopCatDestPrinciple', array()) as $k => $v){
@@ -52,7 +52,7 @@ if($shopCategoriesDir !== -1){
 					$destPrincipleIds[] = intval($k);
 				}
 			}
-			$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop",pref_name="shop_cats_destPrinciple",pref_value="' . implode(',', $destPrincipleIds) . '"');
+			$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop", pref_name="shop_cats_destPrinciple", pref_value="' . implode(',', $destPrincipleIds) . '"');
 
 			//how to get data for saving relations in db
 			$debug_output .= '<br/><strong>Save...</strong><br><br>';
@@ -74,6 +74,9 @@ if($shopCategoriesDir !== -1){
 					$saveCatIds[$id][] = intval($k);
 				}
 			}
+
+			//reset all vat-category relations before saving the new set of relations
+			$DB_WE->query('UPDATE ' . WE_SHOP_VAT_TABLE . ' SET categories=""');
 			foreach($saveCatIds as $vatId => $catIds){
 				$DB_WE->query('UPDATE ' . WE_SHOP_VAT_TABLE . ' SET categories="' . implode(',', $catIds) . '" WHERE id=' . intval($vatId));
 			}
@@ -97,15 +100,16 @@ $selCategoryDirs = we_html_tools::htmlSelect('weShopCatDir', $allCategoryDirs, 1
 
 //get all shop categories (from inside $shopCategoriesDir)
 if(intval($shopCategoriesDir) !== -1){
-	$DB_WE->query('SELECT ID, Text FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $allCategoryDirs[$shopCategoriesDir] . '/%" AND IsFolder = 0');
+	//$DB_WE->query('SELECT ID, Text FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $allCategoryDirs[$shopCategoriesDir] . '/%" AND IsFolder = 0');
+	$DB_WE->query('SELECT ID, Text, IsFolder FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $allCategoryDirs[$shopCategoriesDir] . '/%"');
 	$shopCategories = array();
 	while($DB_WE->next_record()){
-		$shopCategories[] = array("id" => $DB_WE->f('ID'), "text" => $DB_WE->f('Text'));
+		$shopCategories[] = array("id" => $DB_WE->f('ID'), "text" => $DB_WE->f('Text'), "IsFolder" => $DB_WE->f('IsFolder'));
 	}
 
 
 	//Categories/VATs-Matrix
-	$DB_WE->query('SELECT id,text,vat,territory,textProvince,categories FROM ' . WE_SHOP_VAT_TABLE);
+	$DB_WE->query('SELECT id, text, vat, territory, textProvince, categories FROM ' . WE_SHOP_VAT_TABLE);
 	$allVats = array();
 	$doWriteRelations = !$relations ? true : false;
 	
@@ -144,7 +148,7 @@ if(intval($shopCategoriesDir) !== -1){
 		if(count($shopCategories)){
 			foreach($shopCategories as $cat){
 				$j = 0;
-				$matrix->setCol(++$i, $j++, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), $cat['text']);
+				$matrix->setCol(++$i, $j++, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), $cat['text'] . ($cat['IsFolder'] ? '/' : ''));
 				if(!count($allVats)){
 					$matrix->setCol($i, $j, array("class" => "defaultfont", "style" => "font-weight:normal", "nowrap" => "nowrap", "width" => 110), 'no vats defined yet');//GL
 				} else {
@@ -164,7 +168,7 @@ if(intval($shopCategoriesDir) !== -1){
 		$matrix = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), (count($shopCategories) * (count($allVats) + 2)), 3);
 		if(count($shopCategories)){
 			$i = 0;
-			
+
 			foreach($shopCategories as $cat){
 				$j = 0;
 				$matrix->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), $cat['text']);
@@ -175,7 +179,7 @@ if(intval($shopCategoriesDir) !== -1){
 				} else {
 					foreach($allVats as $k => $v){
 						$value = isset($relations[$cat['id']][$k]) && $relations[$cat['id']][$k] ? $relations[$cat['id']][$k] : 0;
-						$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['id'] . '][' . $k . ']', $v['selOptions'], 1, $relations[$cat['id']][$k], false, array(), 'value', 240);
+						$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['id'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, array(), 'value', 240);
 						$matrix->setCol($i, 1, array("class" => "defaultfont", "style" => "font-weight:normal", "nowrap" => "nowrap", "width" => 110), $v['textTerritory']);
 						$matrix->setCol($i++, 2, array("class" => "defaultfont", "style" => "font-weight:normal", "nowrap" => "nowrap", "width" => 110), $sel);
 					}
@@ -248,7 +252,7 @@ $parts[] = array(
 $parts[] = array(
 	'headline' => '',
 	'space' => 0,
-	'html' => $debug_output
+	//'html' => $debug_output
 );
 
 echo we_html_element::jsElement($jsFunction) .

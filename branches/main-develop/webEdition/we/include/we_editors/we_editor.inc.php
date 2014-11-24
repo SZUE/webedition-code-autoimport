@@ -427,7 +427,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 						$we_doc->we_publish();
 					}
 
-
+//used in demo version to remove this code
 ####TEMPLATE_SAVE_CODE2_START###
 					$TEMPLATE_SAVE_CODE2 = true;
 					$arr = we_rebuild_base::getTemplAndDocIDsOfTemplate($we_doc->ID, true, true);

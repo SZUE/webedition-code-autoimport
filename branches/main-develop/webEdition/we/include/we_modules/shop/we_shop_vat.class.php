@@ -34,8 +34,9 @@ class we_shop_vat{
 	public $country;
 	public $province;
 	public $textProvince;
+	public $categories;
 
-	const predefinedNames = array(
+	private static $predefinedNames = array(
 		'exempt',
 		'zero',
 		'superreduced',
@@ -44,13 +45,14 @@ class we_shop_vat{
 		'parking'
 	);
 
-	function __construct($id = -1, $text = '', $vat = 0, $standard = false, $territory = '', $textProvince = ''){
+	function __construct($id = -1, $text = '', $vat = 0, $standard = false, $territory = '', $textProvince = '', $categories = ''){
 		$this->id = $id;
 		$this->setText($text);
 		$this->vat = $vat;
 		$this->standard = $standard;
 		$this->territory = $territory;
 		$this->textProvince = $textProvince;
+		$this->categories = $categories;
 
 		$this->country = substr($territory, 0, 2);
 		$this->province = (strlen($territory) > 2 ? substr($territory, 3) : '');
@@ -58,7 +60,7 @@ class we_shop_vat{
 	}
 
 	public function getNaturalizedText(){
-		if(!in_array($this->text, self::predefinedNames)){
+		if(!in_array($this->text, self::$predefinedNames)){
 			return $this->text;
 		}
 
@@ -129,10 +131,10 @@ class we_shop_vat{
 
 	public static function getPredefinedNames($translated = true){
 		if(!$translated){
-			return self::predefinedNames;
+			return self::$predefinedNames;
 		} else {
 			$ret = array();
-			foreach(self::predefinedNames as $name){
+			foreach(self::$predefinedNames as $name){
 				$ret[$name] = g_l('modules_shop', '[vat][name_' . $name . ']');
 			}
 

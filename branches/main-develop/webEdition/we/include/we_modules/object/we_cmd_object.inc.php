@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,6 +27,7 @@ switch($cmd){
 	case 'object_down_entry_at_class':
 	case 'object_insert_entry_at_class':
 	case 'object_reload_entry_at_class':
+	case 'object_change_entry_at_class':
 	case 'object_down_meta_at_class':
 	case 'object_insert_meta_at_class':
 	case 'object_delete_meta_class':
