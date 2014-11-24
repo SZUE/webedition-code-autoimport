@@ -1617,12 +1617,12 @@ class we_document extends we_root{
 						$text = ($reg[2] === '?' ?
 										str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
 										str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
-					} else {
+					} else {t_e("reg", $reg[1]);
 						$text = preg_replace(array(
 							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
 							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>-Ui',
 								), array(
-							'\1',
+							'$2',
 							''
 								), $text);
 					}
