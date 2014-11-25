@@ -1,9 +1,4 @@
 <?php
-
-function we_parse_tag_voting($attribs, $content){
-	return '<?php printElement(' . we_tag_tagParser::printTag('voting', $attribs) . ');?>' . $content . '<?php if(isset($GLOBALS[\'_we_voting\'])) unset($GLOBALS[\'_we_voting\']);?>';
-}
-
 /**
  * webEdition CMS
  *
@@ -26,13 +21,18 @@ function we_parse_tag_voting($attribs, $content){
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+function we_parse_tag_voting($attribs, $content){
+	return '<?php printElement(' . we_tag_tagParser::printTag('voting', $attribs) . ');?>' . $content . '<?php if(isset($GLOBALS[\'_we_voting\'])) unset($GLOBALS[\'_we_voting\']);?>';
+}
+
 function we_tag_voting($attribs){
 	if(!defined('VOTING_TABLE')){
 		return modulFehltError('Voting', __FUNCTION__);
 	}
-	$id = weTag_getAttribute("id", $attribs, 0);
-	$name = weTag_getAttribute("name", $attribs);
-	$version = weTag_getAttribute("version", $attribs, 0);
+	$id = weTag_getAttribute('id', $attribs, 0);
+	$name = weTag_getAttribute('name', $attribs);
+	$version = weTag_getAttribute('version', $attribs, 0);
 
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
