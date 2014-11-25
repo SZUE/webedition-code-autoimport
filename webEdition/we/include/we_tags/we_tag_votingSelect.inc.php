@@ -41,7 +41,7 @@ function we_tag_votingSelect($attribs, $content){
 			'name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $select_name . ']'
 		);
 
-		$val = oldHtmlspecialchars(isset($GLOBALS['we_doc']->elements[$select_name]["dat"]) ? $GLOBALS['we_doc']->getElement($select_name) : 0);
+		$val = oldHtmlspecialchars($GLOBALS['we_doc']->issetElement($select_name) ? $GLOBALS['we_doc']->getElement($select_name) : 0);
 
 		if($submitonchange){
 			$newAttribs['onchange'] = 'we_submitForm();';
