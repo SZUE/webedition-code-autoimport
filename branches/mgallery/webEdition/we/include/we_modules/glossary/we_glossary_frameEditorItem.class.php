@@ -624,7 +624,7 @@ function we_save() {
 
 		$_title = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Title]', 30, $weGlossaryFrames->View->Glossary->Title, '', 'onchange="setHot();"', 'text', 520), g_l('modules_glossary', '[title]'));
 
-		$_anchor = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][anchor]', 30, $weGlossaryFrames->View->Glossary->getAttribute('anchor'), '', 'onchange="setHot();" onblur="alert(this.value);if(!new RegExp(\'#?[a-z]+[a-z,0-9,_,:,.,-]*$\',\'i\').test(this.value)){alert(\'' . g_l('linklistEdit', '[anchor_invalid]') . '\');this.focus();}"', 'text', 520), g_l('modules_glossary', '[anchor]'));
+		$_anchor = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][anchor]', 30, $weGlossaryFrames->View->Glossary->getAttribute('anchor'), '', 'onchange="setHot();" onblur="if(this.value&&!new RegExp(\'#?[a-z]+[a-z,0-9,_,:,.,-]*$\',\'i\').test(this.value)){alert(\'' . g_l('linklistEdit', '[anchor_invalid]') . '\');this.focus();}"', 'text', 520), g_l('modules_glossary', '[anchor]'));
 
 		$_target = we_html_tools::htmlFormElementTable(we_html_tools::targetBox('link[Attributes][target]', 30, (520 - 100), '', $weGlossaryFrames->View->Glossary->getAttribute('target'), 'setHot();', 8, 100), g_l('modules_glossary', '[target]'));
 

@@ -891,32 +891,6 @@ function changeit(value, rowNr){
 					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 		 row.appendChild(cell);
  }
- else if(value=="temp_doc_type") {
-	if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	search = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getDoctypes(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
-
-	var cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-	row.appendChild(cell);
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
-
- }
  else if(value=="Status") {
 	if (locationTD!=null) {
 	 location.disabled = true;
@@ -1102,7 +1076,6 @@ else if(value=="modifierID") {
  case "ParentIDDoc":
  case "temp_template_id":
  case "ContentType":
- case "temp_doc_type":
  case "temp_category":
  case "Status":
  case "Speicherart":
@@ -1110,7 +1083,7 @@ else if(value=="modifierID") {
  case "CreationDate":
  case "ModDate":
 	 document.getElementById("searchAdvSearch["+rowNr+"]").value = "";
-		 /*|| value =="allModsIn" || value =="MasterTemplateID" || value=="ParentIDTmpl" || value=="ParentIDObj" || value=="ParentIDDoc" || value=="temp_template_id" || value=="ContentType" || value=="temp_doc_type" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {*/
+		 /*|| value =="allModsIn" || value =="MasterTemplateID" || value=="ParentIDTmpl" || value=="ParentIDObj" || value=="ParentIDDoc" || value=="temp_template_id" || value=="ContentType" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {*/
 
  default:
 	 document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
@@ -1880,7 +1853,7 @@ function calendarSetup(x){
 								($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8" ? utf8_encode($searchText[0]) : $searchText[0]));
 					}
 					if(isset($searchString) && $searchString){
-						if($searchFields[$i] != "temp_doc_type" && $searchFields[$i] != "Status" && $searchFields[$i] != "Speicherart"){
+						if($searchFields[$i] != "Status" && $searchFields[$i] != "Speicherart"){
 							$searchString = str_replace(array('\\', '_', '%'), array('\\\\', '\_', '\%'), $searchString);
 						}
 
@@ -2503,7 +2476,6 @@ function calendarSetup(x){
 					case "Speicherart":
 					case "MasterTemplateID":
 					case "temp_template_id":
-					case "temp_doc_type":
 					case "temp_category":
 						$locationDisabled = "disabled";
 				}
@@ -2526,10 +2498,6 @@ function calendarSetup(x){
 					case "ModDate":
 						$handle = "date";
 						$searchInput = we_html_tools::getDateSelector("searchAdvSearch[" . $i . "]", "_from" . $i, $this->Model->searchAdvSearch[$i]);
-						break;
-
-					case "temp_doc_type":
-						$searchInput = we_html_tools::htmlSelect("searchAdvSearch[" . $i . "]", $this->searchclass->getDocTypes(), 1, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset($this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
 						break;
 
 					case "ParentIDDoc":

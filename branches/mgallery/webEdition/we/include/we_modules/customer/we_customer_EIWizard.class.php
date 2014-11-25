@@ -274,7 +274,7 @@ class we_customer_EIWizard{
 			"headline" => $table->getHtml(),
 			"html" =>
 			we_html_element::htmlBr() .
-			we_html_tools::htmlFormElementTable($this->formFileChooser(200, "path", $path, "", "folder"), g_l('modules_customer', '[path]'))
+			we_html_tools::htmlFormElementTable($this->formFileChooser(200, "path", $path, "", we_base_ContentTypes::FOLDER), g_l('modules_customer', '[path]'))
 		);
 
 		$table->setColContent(0, 1, we_html_forms::radiobutton(self::EXPORT_LOCAL, ($export_to == self::EXPORT_LOCAL), "export_to", g_l('modules_customer', '[export_to_local]'), true, "defaultfont", $this->topFrame . ".export_to='" . self::EXPORT_LOCAL . "'"));

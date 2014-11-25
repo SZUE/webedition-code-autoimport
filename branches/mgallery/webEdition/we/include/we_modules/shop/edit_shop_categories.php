@@ -44,7 +44,7 @@ $debug_output = '';
 if($shopCategoriesDir !== -1){
 	switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		case 'saveShopCatRels':
-			$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop", pref_name="shop_cats_dir", pref_value=' . intval($shopCategoriesDir));
+			$success = $DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop", pref_name="shop_cats_dir", pref_value=' . intval($shopCategoriesDir));
 
 			$destPrincipleIds = array();
 			foreach(we_base_request::_(we_base_request::INT, 'weShopCatDestPrinciple', array()) as $k => $v){
@@ -52,18 +52,7 @@ if($shopCategoriesDir !== -1){
 					$destPrincipleIds[] = intval($k);
 				}
 			}
-			$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop", pref_name="shop_cats_destPrinciple", pref_value="' . implode(',', $destPrincipleIds) . '"');
-
-			//how to get data for saving relations in db
-			$debug_output .= '<br/><strong>Save...</strong><br><br>';
-			$relations = we_base_request::_(we_base_request::STRING, 'weShopCatRels');
-			foreach($relations as $k => $v){
-				$debug_output .= 'cat <strong>' . $k . '</strong> is to be related with vats: ';
-				foreach($v as $territory => $id){
-					$debug_output .= $id . ' (' . $territory . '), ';
-				}
-				$debug_output .= '<br/>';
-			}
+			$success &= $DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop", pref_name="shop_cats_destPrinciple", pref_value="' . implode(',', $destPrincipleIds) . '"');
 
 			$saveCatIds = array();
 			foreach($relations as $k => $v){
@@ -76,11 +65,18 @@ if($shopCategoriesDir !== -1){
 			}
 
 			//reset all vat-category relations before saving the new set of relations
-			$DB_WE->query('UPDATE ' . WE_SHOP_VAT_TABLE . ' SET categories=""');
+			$success &= $DB_WE->query('UPDATE ' . WE_SHOP_VAT_TABLE . ' SET categories=""');
 			foreach($saveCatIds as $vatId => $catIds){
-				$DB_WE->query('UPDATE ' . WE_SHOP_VAT_TABLE . ' SET categories="' . implode(',', $catIds) . '" WHERE id=' . intval($vatId));
+				$success &= $DB_WE->query('UPDATE ' . WE_SHOP_VAT_TABLE . ' SET categories="' . implode(',', $catIds) . '" WHERE id=' . intval($vatId));
 			}
 
+			if($success){
+				$jsMessage = g_l('modules_shop', '[shopcats][save_success]');
+				$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
+			} else {
+				$jsMessage = g_l('modules_shop', '[shopcats][save_error]');
+				$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
+			}
 			break;
 		default:
 			$relations = array();
@@ -224,7 +220,9 @@ $jsFunction = '
 				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
 			break;
 		}
-	}';
+	}
+
+	' . (isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '');
 
 $parts = array(
 	array(

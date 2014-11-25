@@ -320,8 +320,8 @@ class we_quicktimeDocument extends we_binaryDocument{
 							$_SESSION[$_quicktimeDataId]["id"] = $quicktimeId;
 						}
 
-						$_SESSION[$_quicktimeDataId]["fileName"] = preg_replace('#^(.+)\..+$#', "\\1", $tmp_Filename);
-						$_SESSION[$_quicktimeDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace('#^.+(\..+)$#', "\\1", $tmp_Filename) : "";
+						$_SESSION[$_quicktimeDataId]["fileName"] = preg_replace('#^(.+)\..+$#', '$1', $tmp_Filename);
+						$_SESSION[$_quicktimeDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace('#^.+(\..+)$#', '$1', $tmp_Filename) : "";
 						$_SESSION[$_quicktimeDataId]["text"] = $_SESSION[$_quicktimeDataId]["fileName"] . $_SESSION[$_quicktimeDataId]["extension"];
 
 

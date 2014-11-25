@@ -519,11 +519,8 @@ function open_wysiwyg_win(){
 			$autobr = $autobrAttr ? 'on' : 'off';
 			$showAutobr = isset($attribs['autobr']);
 			$charset = weTag_getAttribute('charset', $attribs, 'iso-8859-1');
-			//FIXME: currently we use a separate preference-option for frontend editor (where tinyMCE is labelled beta)
-			$tmp = we_wysiwyg_editor::$editorType;
-			we_wysiwyg_editor::$editorType = 'tinyMCE';
 			$ret = we_html_forms::weTextarea($fieldname, ($content ? : $value), $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
-			we_wysiwyg_editor::$editorType = $tmp;
+
 			return $ret;
 
 		case 'checkbox' :

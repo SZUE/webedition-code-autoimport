@@ -109,9 +109,8 @@ function we_tag_listview($attribs){
 	$cols = weTag_getAttribute('cols', $attribs);
 	$we_lv_se = we_base_request::_(we_base_request::BOOL, 'we_lv_se_' . $name, weTag_getAttribute('searchable', $attribs, true, true));
 
-	$seeMode = (isset($attribs['seem'])) ?
-			weTag_getAttribute('seem', $attribs, true, true) : //	backwards compatibility
-			weTag_getAttribute('seeMode', $attribs, true, true);
+	$seeMode = weTag_getAttribute('seem', $attribs, weTag_getAttribute('seeMode', $attribs, true, true), true); //	backwards compatibility
+
 
 	$calendar = weTag_getAttribute('calendar', $attribs);
 	$datefield = weTag_getAttribute('datefield', $attribs);

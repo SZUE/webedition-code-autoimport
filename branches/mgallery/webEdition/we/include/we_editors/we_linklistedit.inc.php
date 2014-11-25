@@ -408,10 +408,6 @@ echo $yuiSuggest->getYuiCssFiles() .
 		return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
 	}
 
-	function openColorChooser(name, value) {
-		var win = new jsWindow("colorDialog.php?we_dialog_args[type]=dialog&we_dialog_args[name]=" +encodeURI(name) + "&we_dialog_args[color]=" +encodeURI(value), "colordialog", -1, -1, 400, 380, true, false, true, false);
-	}
-
 	function IsDigitPercent(e) {
 		var key;
 
@@ -567,7 +563,7 @@ if($ok && $cmd === "edit_link_at_class"){
 		$cc = we_html_tools::htmlTextInput('cc', 30, $cc, '', '', 'text', 300);
 		$subject = we_html_tools::htmlTextInput('subject', 30, $subject, '', '', 'text', 300);
 
-		$anchor = we_html_tools::htmlTextInput('anchor', 30, $anchor, '', 'onblur="alert(this.value);if(!new RegExp(\'#?[a-z]+[a-z,0-9,_,:,.,-]*$\',\'i\').test(this.value)){alert(\'' . g_l('linklistEdit', '[anchor_invalid]') . '\');this.focus();}"', 'text', 300);
+		$anchor = we_html_tools::htmlTextInput('anchor', 30, $anchor, '', 'onblur="if(this.value&&!new RegExp(\'#?[a-z]+[a-z,0-9,_,:,.,-]*$\',\'i\').test(this.value)){alert(\'' . g_l('linklistEdit', '[anchor_invalid]') . '\');this.focus();}"', 'text', 300);
 		$accesskey = we_html_tools::htmlTextInput('accesskey', 30, $accesskey, '', '', 'text', 140);
 		$tabindex = we_html_tools::htmlTextInput('tabindex', 30, $tabindex, '', '', 'text', 140);
 		$lang = getLangField('lang', $lang, g_l('linklistEdit', '[link_language]'), 140);

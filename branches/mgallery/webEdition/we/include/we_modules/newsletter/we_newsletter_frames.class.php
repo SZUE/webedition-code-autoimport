@@ -828,7 +828,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 	function getHTMLExtern($group){
 		$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('del_all_files'," . $group . ")");
 		$wecmdenc4 = we_base_request::encCmd("opener.we_cmd('add_file',top.currentID,$group);");
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('browse_server','fileselect','','/','" . $wecmdenc4 . "');");
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('browse_server','fileselect','" . we_base_ContentTypes::TEXT . "','/','" . $wecmdenc4 . "','',1);");
 
 
 		$buttons = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ?
@@ -2095,7 +2095,7 @@ function postSelectorSelect(wePssCmd) {
 
 		$chooser = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 2, 1);
 		$chooser->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
-		$chooser->setCol(1, 0, array(), $this->View->formFileChooser(420, "csv_file", ($open_file ? : ($csv_file ?: "/")), "", "", 'readonly="readonly" onchange="alert(100)"'));
+		$chooser->setCol(1, 0, array(), $this->View->formFileChooser(420, "csv_file", ($open_file ? : ($csv_file ? : "/")), "", "", 'readonly="readonly" onchange="alert(100)"'));
 		//$chooser->setCol(2,0,array(),we_html_tools::getPixel(5,15));
 		//$chooser->setCol(3,0,array(),we_button::create_button_table(array($close,$edit)));
 		//$chooser->setCol(4,0,array(),we_html_tools::getPixel(5,15));
@@ -2533,8 +2533,8 @@ self.focus();');
 					'###LASTNAME###' => $lastname,
 					'###CUSTOMERID###' => $customerid,
 					'###TITLE###' => $title,);
-				$content = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $contentF) : $contentF), $rep);
-				$content_plain = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $contentF_plain) : $contentF_plain), $rep);
+				$content = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentF) : $contentF), $rep);
+				$content_plain = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentF_plain) : $contentF_plain), $rep);
 			} else if($salutation && $lastname && ($salutation == $this->View->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD]) && ((!$this->View->settings["title_or_salutation"]) || (!$title))){
 				$rep = array(
 					'###FIRSTNAME###' => $firstname,
@@ -2543,8 +2543,8 @@ self.focus();');
 					'###TITLE###' => $title
 				);
 
-				$content = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $contentM) : $contentM), $rep);
-				$content_plain = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $contentM_plain) : $contentM_plain), $rep);
+				$content = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentM) : $contentM), $rep);
+				$content_plain = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentM_plain) : $contentM_plain), $rep);
 			} else if($title && $firstname && $lastname){
 				$rep = array(
 					'###FIRSTNAME###' => $firstname,
@@ -2552,8 +2552,8 @@ self.focus();');
 					'###CUSTOMERID###' => $customerid,
 					'###TITLE###' => $title
 				);
-				$content = strtr(preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $contentTFL), $rep);
-				$content_plain = strtr(preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $contentTFL_plain), $rep);
+				$content = strtr(preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentTFL), $rep);
+				$content_plain = strtr(preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentTFL_plain), $rep);
 			} else if($title && $lastname){
 				$rep = array(
 					'###FIRSTNAME###' => $firstname,
@@ -2561,8 +2561,8 @@ self.focus();');
 					'###CUSTOMERID###' => $customerid,
 					'###TITLE###' => $title
 				);
-				$content = strtr(preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $contentTL), $rep);
-				$content_plain = strtr(preg_replace('|([^ ])###TITLE###|', '\1 ' . $title, $contentTL_plain), $rep);
+				$content = strtr(preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentTL), $rep);
+				$content_plain = strtr(preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentTL_plain), $rep);
 			} else if($lastname && $firstname){
 				$rep = array(
 					'###FIRSTNAME###' => $firstname,

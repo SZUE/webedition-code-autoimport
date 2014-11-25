@@ -47,8 +47,8 @@ if($weFileupload->processFileRequest()){
 	$pid = we_base_request::_(we_base_request::INT, 'pid', 0);
 	$parts = array();
 	$we_alerttext = (!in_workspace($pid, get_ws(FILE_TABLE), FILE_TABLE, $GLOBALS['DB_WE']) || isset($_FILES['we_uploadedFile']) && !permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name']))) ?
-			g_l('alert', '[upload_targetDir_notallowed]') :
-			'');
+					g_l('alert', '[upload_targetDir_notallowed]') :
+					'');
 
 	if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploadedFile']['type'] && (($allowedContentTypes === '') || (!(strpos($allowedContentTypes, $_FILES['we_uploadedFile']['type']) === false)))){
 		if(!$we_ContentType){
@@ -67,8 +67,8 @@ if($weFileupload->processFileRequest()){
 
 		$tmp_Filename = preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_uploadedFile']['name']);
 
-		$we_doc->Filename = preg_replace('#^(.+)\..+$#', '\\1', $tmp_Filename);
-		$we_doc->Extension = (strpos($tmp_Filename, '.') > 0) ? preg_replace('#^.+(\..+)$#', '\\1', $tmp_Filename) : '';
+		$we_doc->Filename = preg_replace('#^(.+)\..+$#', '$1', $tmp_Filename);
+		$we_doc->Extension = (strpos($tmp_Filename, '.') > 0) ? preg_replace('#^.+(\..+)$#', '$1', $tmp_Filename) : '';
 		$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
 		$we_doc->setParentID($pid);
 		$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
@@ -123,8 +123,8 @@ if($weFileupload->processFileRequest()){
 			}
 			if(($thumbs = we_base_request::_(we_base_request::INT, 'Thumbnails'))){
 				$we_doc->Thumbs = (is_array($thumbs) ?
-						makeCSVFromArray($thumbs, true) :
-						$thumbs);
+								makeCSVFromArray($thumbs, true) :
+								$thumbs);
 			}
 			$we_doc->Table = we_base_request::_(we_base_request::TABLE, 'tab');
 			$we_doc->Published = time();
@@ -133,8 +133,8 @@ if($weFileupload->processFileRequest()){
 		}
 	} else if(isset($_FILES['we_uploadedFile'])){
 		$we_alerttext = (we_base_file::we_filenameNotValid($_FILES['we_uploadedFile']['name']) ?
-				g_l('alert', '[we_filename_notValid]') :
-				g_l('alert', '[wrong_file][' . ($we_ContentType ? : 'other') . ']'));
+						g_l('alert', '[we_filename_notValid]') :
+						g_l('alert', '[wrong_file][' . ($we_ContentType ? : 'other') . ']'));
 	}
 
 	// find out the smallest possible upload size
@@ -188,14 +188,14 @@ if($weFileupload->processFileRequest()){
 				?>
 				var ref;
 				if (opener.top.opener && opener.top.opener.top.makeNewEntry) {
-					ref = opener.top.opener.top;
+				ref = opener.top.opener.top;
 				} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.makeNewEntry) {
-					ref = opener.top.opener.top.opener.top;
+				ref = opener.top.opener.top.opener.top;
 				} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener.top.makeNewEntry) {
-					ref = opener.top.opener.top.opener.top.opener.top;
+				ref = opener.top.opener.top.opener.top.opener.top;
 				}
 				if (ref.makeNewEntry) {
-					ref.makeNewEntry(<?php echo '"' . $we_doc->Icon . '", "' . $we_doc->ID . '", "' . $we_doc->ParentID . '", "' . $we_doc->Text . '", 1, "' . $we_doc->ContentType . '", "' . $we_doc->Table . '"'; ?>);
+				ref.makeNewEntry(<?php echo '"' . $we_doc->Icon . '", "' . $we_doc->ID . '", "' . $we_doc->ParentID . '", "' . $we_doc->Text . '", 1, "' . $we_doc->ContentType . '", "' . $we_doc->Table . '"'; ?>);
 				}
 				<?php
 			}
@@ -212,12 +212,12 @@ if($weFileupload->processFileRequest()){
 	</script>
 	</head>
 	<body class="weDialogBody" onload="self.focus();" ><center>
-			<form method="post" enctype="multipart/form-data">
-				<input type="hidden" name="table" value="<?php echo we_base_request::_(we_base_request::TABLE, 'tab'); ?>" />
-				<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
-				<input type="hidden" name="ct" value="<?php echo $we_ContentType; ?>" />
-				<?php echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 620); ?>
-			</form></center>
+		<form method="post" enctype="multipart/form-data">
+			<input type="hidden" name="table" value="<?php echo we_base_request::_(we_base_request::TABLE, 'tab'); ?>" />
+			<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+			<input type="hidden" name="ct" value="<?php echo $we_ContentType; ?>" />
+			<?php echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', "[import_File_from_hd_title]"), "", 620); ?>
+		</form></center>
 	</body>
 	</html>
 <?php } ?>
