@@ -49,7 +49,7 @@ class we_wysiwyg_editor{
 	private $fontnamesCSV = '';
 	private $fontnames = array();
 	private $tinyFonts = '';
-	private $tinyFormatblock = '';
+	private $formats = 'p,div,h1,h2,h3,h4,h5,h6,pre,code,blockquote,samp';
 	private $maxGroupWidth = 0;
 	private $outsideWE = false;
 	private $xml = false;
@@ -71,7 +71,7 @@ class we_wysiwyg_editor{
 
 	const CONDITIONAL = true;
 
-	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = ''){
+	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->restrictContextmenu = $contextmenu ? ',' . $contextmenu . ',' : '';
 		$this->createContextmenu = trim($contextmenu, " ,'") === 'none' || trim($contextmenu, " ,'") === 'false' ? false : true;
@@ -115,6 +115,19 @@ class we_wysiwyg_editor{
 				'Verdana=Verdana, Arial, Helvetica, sans-serif;' .
 				'Wingdings=wingdings,zapf dingbats';
 		}
+
+		if($formats){
+			$tmp = '';
+			$formatsArr = explode(',', $this->formats);
+			foreach(explode(',',$formats) as $f){
+				if(in_array(trim($f, ', '), $formatsArr)){
+					$tmp .= trim($f, ', ') . ',';
+				}
+			}
+			$formats = trim($tmp, ',');
+		}
+		$this->formats = $formats ? : $this->formats;
+
 		if($cssClasses){
 			$cc = explode(',', $cssClasses);
 			$tf = '';
@@ -376,50 +389,6 @@ function weWysiwygSetHiddenText(arg) {
 	function setToolbarElements(){// TODO: declare setToolbarElements
 		$sep = new we_wysiwyg_ToolbarSeparator($this);
 		$sepCon = new we_wysiwyg_ToolbarSeparator($this, self::CONDITIONAL);
-
-		$formatblockArr = we_base_browserDetect::isIE() ? array(
-			"normal" => g_l('wysiwyg', "[normal]"),
-			"p" => g_l('wysiwyg', "[paragraph]"),
-			"h1" => g_l('wysiwyg', "[h1]"),
-			"h2" => g_l('wysiwyg', "[h2]"),
-			"h3" => g_l('wysiwyg', "[h3]"),
-			"h4" => g_l('wysiwyg', "[h4]"),
-			"h5" => g_l('wysiwyg', "[h5]"),
-			"h6" => g_l('wysiwyg', "[h6]"),
-			"pre" => g_l('wysiwyg', "[pre]"),
-			"address" => g_l('wysiwyg', "[address]")
-			) :
-			(we_base_browserDetect::isSafari() ? array(
-				"div" => g_l('wysiwyg', "[normal]"),
-				"p" => g_l('wysiwyg', "[paragraph]"),
-				"h1" => g_l('wysiwyg', "[h1]"),
-				"h2" => g_l('wysiwyg', "[h2]"),
-				"h3" => g_l('wysiwyg', "[h3]"),
-				"h4" => g_l('wysiwyg', "[h4]"),
-				"h5" => g_l('wysiwyg', "[h5]"),
-				"h6" => g_l('wysiwyg', "[h6]"),
-				"pre" => g_l('wysiwyg', "[pre]"),
-				"address" => g_l('wysiwyg', "[address]"),
-				"blockquote" => "blockquote"
-				) :
-				array(
-				"normal" => g_l('wysiwyg', "[normal]"),
-				"p" => g_l('wysiwyg', "[paragraph]"),
-				"h1" => g_l('wysiwyg', "[h1]"),
-				"h2" => g_l('wysiwyg', "[h2]"),
-				"h3" => g_l('wysiwyg', "[h3]"),
-				"h4" => g_l('wysiwyg', "[h4]"),
-				"h5" => g_l('wysiwyg', "[h5]"),
-				"h6" => g_l('wysiwyg', "[h6]"),
-				"pre" => g_l('wysiwyg', "[pre]"),
-				"address" => g_l('wysiwyg', "[address]"),
-				"code" => "Code",
-				//"cite" => "Cite",
-				//"q" => "q",
-				"blockquote" => "blockquote"
-		));
-
-		$this->tinyFormatblock = implode(',', array_keys($formatblockArr));
 
 		//group: font
 		$this->elements = array_filter(
@@ -768,17 +737,6 @@ function weWysiwygSetHiddenText(arg) {
 			'template' => 'template',
 			'editrow' => 'row_props',
 			'deletetable' => 'delete_table'
-
-			// table controlls are not mapped from wysiwyg to tinyMCE:
-			//'notmapped1' => 'attribs',
-			//'notmapped2' => 'insertimage', // replaced by weimage
-			//'notmapped3' => 'insertfile',
-			//'notmapped4' => 'preview', // will not be implemented: we should only use we-preview
-			//'notmapped5' => 'media',
-			//'notmapped6' => 'visualchars', //seems not to work
-			//'notmapped7' => 'iespell',
-			//'notmapped8' => 'pagebreak',
-			//'notmapped9' => 'template',
 		);
 		return $cmdMapping[$cmd] != '--' ? $cmdMapping[$cmd] : '';
 	}
@@ -952,7 +910,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		"origName" : "' . urlencode($this->origName) . '",
 		"tinyParams" : "' . urlencode($this->tinyParams) . '",
 		"contextmenu" : "' . urlencode(trim($this->restrictContextmenu, ',')) . '",
-		"templates" : "' . $this->templates . '"
+		"templates" : "' . $this->templates . '",
+		"formats" : "' . $this->formats . '"
 	},
 	weClassNames_urlEncoded : "' . urlencode($this->cssClassesCSV) . '",
 	weIsFrontend : "' . ($this->isFrontendEdit ? 1 : 0) . '",
@@ -989,7 +948,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	theme_advanced_toolbar_location : "' . $this->buttonpos . '", //external: toolbar floating on top of textarea
 	theme_advanced_fonts: "' . $this->tinyFonts . '",
 	theme_advanced_styles: "' . $this->cssClasses . '",
-	theme_advanced_blockformats : "' . $this->tinyFormatblock . '",
+	theme_advanced_blockformats : "' . $this->formats . '",
 	theme_advanced_toolbar_align : "left",
 	theme_advanced_statusbar_location : "' . $this->statuspos . '",
 	theme_advanced_resizing : false,

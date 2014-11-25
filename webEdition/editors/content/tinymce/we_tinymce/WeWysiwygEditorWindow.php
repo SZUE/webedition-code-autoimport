@@ -102,7 +102,7 @@ window.close();');
 				'', //test
 				we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 17), //$spell
 				false //frontendEdit
-			);
+			);//FIXME: what about the missing params?
 
 			$cancelBut = we_html_button::create_button('cancel', 'javascript:top.close()');
 			$okBut = we_html_button::create_button('ok', 'javascript:weWysiwygSetHiddenText();document.we_form.submit();');
