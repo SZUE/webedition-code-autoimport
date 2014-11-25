@@ -408,10 +408,6 @@ echo $yuiSuggest->getYuiCssFiles() .
 		return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
 	}
 
-	function openColorChooser(name, value) {
-		var win = new jsWindow("colorDialog.php?we_dialog_args[type]=dialog&we_dialog_args[name]=" +encodeURI(name) + "&we_dialog_args[color]=" +encodeURI(value), "colordialog", -1, -1, 400, 380, true, false, true, false);
-	}
-
 	function IsDigitPercent(e) {
 		var key;
 
