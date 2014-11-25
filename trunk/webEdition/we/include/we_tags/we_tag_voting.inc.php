@@ -40,10 +40,9 @@ function we_tag_voting($attribs){
 
 	$version = ($version > 0) ? ($version - 1) : 0;
 	$GLOBALS["_we_voting_namespace"] = $name;
-	$GLOBALS['_we_voting'] = new we_voting_voting();
 
-	if(isset($GLOBALS['we_doc']->elements[$GLOBALS['_we_voting_namespace']]['dat'])){
-		$GLOBALS['_we_voting'] = new we_voting_voting($GLOBALS['we_doc']->elements[$GLOBALS['_we_voting_namespace']]['dat']);
+	if($GLOBALS['we_doc']->issetElement($name)){
+		$GLOBALS['_we_voting'] = new we_voting_voting($GLOBALS['we_doc']->getElement($name));
 	} else if($id != 0){
 		$GLOBALS['_we_voting'] = new we_voting_voting($id);
 	} else {
