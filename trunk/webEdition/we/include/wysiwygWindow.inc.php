@@ -145,7 +145,7 @@ top.close();');
 			}
 
 			$e = new we_wysiwyg_editor(
-				$fields['name'], $fields['width'], $fields['height'], $fields['empty'], $fields['propstring'], $fields['bgcolor'], '', $fields['classname'], $fields['fontnames'], $fields['outsidewe'], $fields['xml'], $fields['removeFirstParagraph'], true, $fields['baseHref'], $fields['charset'], $fields['cssClasses'], $fields['Language'], '', true, $fields['isInFrontend'], 'top', true, $fields['documentCss'], $fields['origName'], $fields['tinyParams'], $fields['contextmenu'], true, $fields['templates']
+				$fields['name'], $fields['width'], $fields['height'], $fields['empty'], $fields['propstring'], $fields['bgcolor'], '', $fields['classname'], $fields['fontnames'], $fields['outsidewe'], $fields['xml'], $fields['removeFirstParagraph'], true, $fields['baseHref'], $fields['charset'], $fields['cssClasses'], $fields['Language'], '', true, $fields['isInFrontend'], 'top', true, $fields['documentCss'], $fields['origName'], $fields['tinyParams'], $fields['contextmenu'], true, $fields['templates'], $fields['formats']
 			);
 
 
