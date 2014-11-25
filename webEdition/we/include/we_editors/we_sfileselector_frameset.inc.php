@@ -45,12 +45,12 @@ if(!file_exists($docroot . $currentDir . '/' . $currentName)){
 	$currentDir = '';
 	$currentName = '';
 }
-
 $currentID = $docroot . $currentDir . ($filter == we_base_ContentTypes::FOLDER || $filter === 'filefolder' ? '' : (($currentDir != '') ? '/' : '') . $currentName);
 
 $currentID = str_replace('\\', '/', $currentID);
 
 $rootDir = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 5);
+$selectOwn = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 6);
 ?>
 <script type="text/javascript"><!--
 	var rootDir = "<?php echo $rootDir; ?>";
@@ -97,12 +97,10 @@ if(($cmd4 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4))){
 echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
 ?>
 </head>
-<frameset rows="73,*,<?php echo (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2) ? 60 : 90); ?>,0" border="0" onload="top.fscmd.selectDir()">
+<frameset rows="73,*,<?php echo (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2) ? 60 : 90); ?>,0" onload="top.fscmd.selectDir()">
   <frame src="we_sselector_header.php?ret=<?php echo ($cmd1 ? 1 : 0); ?>&filter=<?php echo $filter; ?>&currentDir=<?php echo $currentDir; ?>" name="fsheader" noresize scrolling="no">
 	<frame src="about:blank" name="fsbody" noresize scrolling="auto">
 	<frame  src="we_sselector_footer.php?ret=<?php echo ($cmd1 ? 1 : 0); ?>&filter=<?php echo $filter; ?>&currentName=<?php echo $currentName; ?>" name="fsfooter" noresize scrolling="no">
-	<frame src="we_sselector_cmd.php?ret=<?php echo ($cmd1 ? 1 : 0); ?>&filter=<?php echo $filter; ?>&currentName=<?php echo $currentName; ?>" name="fscmd" noresize scrolling="no">
+	<frame src="we_sselector_cmd.php?ret=<?php echo ($cmd1 ? 1 : 0); ?>&filter=<?php echo $filter; ?>&currentName=<?php echo $currentName; ?>&selectOwn=<?php echo $selectOwn; ?>" name="fscmd" noresize scrolling="no">
 </frameset>
-<body>
-</body>
 </html>
