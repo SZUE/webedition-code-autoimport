@@ -2501,11 +2501,12 @@ editors/content/wysiwyg/imageDialog.php
 editors/content/wysiwyg/fullscreenEditDialog.php
 editors/content/wysiwyg/empty.html
 editors/content/wysiwyg/empty.css
+editors/content/wysiwyg/colorDialog.php
 editors/content/wysiwyg/cellDialog.php
 editors/content/wysiwyg/borders.css
 editors/content/wysiwyg/acronymDialog
 editors/content/wysiwyg/abbrDialog.php
-
+editors/content/wysiwyg
 editor/setHot.html
 editor/initEditor.html
 editor/getAttribsForTag.php
