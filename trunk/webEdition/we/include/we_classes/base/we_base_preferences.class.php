@@ -124,7 +124,7 @@ class we_base_preferences{
 				}
 			}
 			if($conf == 'global' && $updateVersion){
-				$content = self::changeSourceCode('define', $content, 'CONF_SAVED_VERSION', WE_SVNREV, true);
+				$content = self::changeSourceCode('define', $content, 'CONF_SAVED_VERSION', str_replace(array('$Rev$'), '', WE_SVNREV), true);
 			}
 			// Check if we need to rewrite the config file
 			if($content != $oldContent){
