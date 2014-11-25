@@ -24,33 +24,9 @@ class we_wysiwyg_ToolbarButton extends we_wysiwyg_ToolbarElement{
 	var $tooltiptext = '';
 	var $imgSrc = '';
 
-	function __construct($editor, $cmd, $imgSrc, $tooltiptext = '', $width = 22, $height = 22){
-		$width = we_wysiwyg_editor::$editorType != 'tinyMCE' ? 25 : $width; //block of n buttons = n*22px + 2px left and right border of block
+	function __construct($editor, $cmd, $width = 22, $height = 22){
 		parent::__construct($editor, $cmd, $width, $height);
-		if(we_wysiwyg_editor::$editorType != 'tinyMCE'){
-			$this->tooltiptext = $tooltiptext;
-			$this->imgSrc = $imgSrc;
-		}
 		$this->showMeInContextmenu = $this->hasProp('', true);
-	}
-
-	function getHTML(){
-		if(we_base_browserDetect::isSafari()){
-			return '<div id="' . $this->editor->ref . 'edit_' . $this->cmd . 'Div" class="tbButton">
-<img  width="' . ($this->width - 2) . '" height="' . $this->height . '" id="' . $this->editor->ref . 'edit_' . $this->cmd . '" src="' . $this->imgSrc . '" alt="' . $this->tooltiptext . '" title="' . $this->tooltiptext . '"
-onmouseover="' . $this->editor->ref . 'Obj.over(\'' . $this->cmd . '\');"
-onmouseout="' . $this->editor->ref . 'Obj.out(\'' . $this->cmd . '\');"
-onmousedown="' . $this->editor->ref . 'Obj.click(event,\'' . $this->cmd . '\');" /></div>';
-		} else {
-
-			return '<div id="' . $this->editor->ref . 'edit_' . $this->cmd . 'Div" class="tbButton">
-<img  width="' . ($this->width - 2) . '" height="' . $this->height . '" id="' . $this->editor->ref . 'edit_' . $this->cmd . '" src="' . $this->imgSrc . '" alt="' . $this->tooltiptext . '" title="' . $this->tooltiptext . '"
-onmouseover="' . $this->editor->ref . 'Obj.over(\'' . $this->cmd . '\');"
-onmouseout="' . $this->editor->ref . 'Obj.out(\'' . $this->cmd . '\');"
-onmousedown="' . $this->editor->ref . 'Obj.check(\'' . $this->cmd . '\');"
-onmouseup="' . $this->editor->ref . 'Obj.uncheck(\'' . $this->cmd . '\');"
-onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>';
-		}
 	}
 
 	function hasProp($cmd = '', $contextMenu = false){
@@ -73,12 +49,6 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 		  )
 		  ); */
 		switch($this->cmd){
-			case 'caption':
-			case 'removecaption':
-			case 'edittable':
-				return we_wysiwyg_editor::$editorType === 'tinyMCE' ? false : parent::hasProp('', $contextMenu) || parent::hasProp('table', $contextMenu);
-			case 'importrtf':
-				return we_wysiwyg_editor::$editorType === 'tinyMCE' ? false : parent::hasProp('', $contextMenu);
 			case 'fontname':
 			case 'fontsize':
 				return parent::hasProp('', $contextMenu) || parent::hasProp('font', $contextMenu);
@@ -121,7 +91,7 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 				$this->editor->setPlugin('lists', parent::hasProp('', $contextMenu) || parent::hasProp('list', $contextMenu));
 				return $this->editor->setPlugin('advlist', parent::hasProp('', $contextMenu) || parent::hasProp('list', $contextMenu));
 			case 'blockquote':
-				return we_wysiwyg_editor::$editorType === 'tinyMCE' && (parent::hasProp('', $contextMenu) || parent::hasProp('list', $contextMenu));
+				return parent::hasProp('', $contextMenu) || parent::hasProp('list', $contextMenu);
 			case 'anchor':
 			case 'createlink':
 			case 'unlink':
@@ -171,14 +141,20 @@ onclick="' . $this->editor->ref . 'Obj.click(\'' . $this->cmd . '\');" /></div>'
 			case 'replace':
 				return $this->editor->setPlugin('searchreplace', parent::hasProp('', $contextMenu) || parent::hasProp('essential', $contextMenu));
 			case 'fullscreen':
-				return !$this->editor->getIsFrontendEdit() && we_wysiwyg_editor::$editorType === 'tinyMCE' && (parent::hasProp('', $contextMenu) || parent::hasProp('essential', $contextMenu));
+				return !$this->editor->getIsFrontendEdit() && (parent::hasProp('', $contextMenu) || parent::hasProp('essential', $contextMenu));
 			case 'editsource':
 				return parent::hasProp('', $contextMenu) || parent::hasProp('advanced', $contextMenu);
 			case 'template':
-				return we_wysiwyg_editor::$editorType === 'tinyMCE' && (parent::hasProp('', $contextMenu) || parent::hasProp('advanced', $contextMenu));
+				return parent::hasProp('', $contextMenu) || parent::hasProp('advanced', $contextMenu);
+			case 'fontname':
+			case 'fontsize':
+				return parent::hasProp('', $contextMenu) || parent::hasProp('font', $contextMenu);
+			case 'formatblock':
+			case 'applystyle':
+				return parent::hasProp('', $contextMenu) || parent::hasProp('prop', $contextMenu);
 			default:
 				//FIXME: find the command using this case!
-				return we_wysiwyg_editor::$editorType === 'tinyMCE' ? false : parent::hasProp('', $contextMenu);
+				return false;
 		}
 	}
 

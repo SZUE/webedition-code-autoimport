@@ -12,7 +12,7 @@
 				}
 
 				e.windowManager.open({
-					file: f + '/../../../../../wysiwyg/imageDialog.php?we_dialog_args[editor]=tinyMce&we_dialog_args[src]=' + encodeURIComponent(wesrc) + '&we_dialog_args[cssclasses]=' + e.getParam('weClassNames_urlEncoded') + "&we_dialog_args[isFrontend]=" + e.getParam('weIsFrontend'),
+					file: f + '/../../../../we_tinymce/imageDialog.php?we_dialog_args[editor]=tinyMce&we_dialog_args[src]=' + encodeURIComponent(wesrc) + '&we_dialog_args[cssclasses]=' + e.getParam('weClassNames_urlEncoded') + "&we_dialog_args[isFrontend]=" + e.getParam('weIsFrontend'),
 					popup_css: false,
 					width: 600 + parseInt(e.getLang('weimage.delta_width', 0)),
 					height: 610 + parseInt(e.getLang('weimage.delta_height', 0)),
