@@ -185,7 +185,12 @@ foreach($versions as $k => $v){
 	$_versions_time_days->addOption($k, $txt);
 }
 
-$contentDiff = '<div style="margin-left:25px;" id="top">' . g_l('versions', '[VersionChangeTxt]') . '<br/><br/>' .
+$contentDiff = we_html_element::cssElement('
+	td{
+	padding: 5px;
+	}
+	').
+	'<div style="margin-left:25px;" id="top">' . g_l('versions', '[VersionChangeTxt]') . '<br/><br/>' .
 		g_l('versions', '[VersionNumber]') . " " . $_versions_time_days->getHtml() . '
 			<div style="margin:20px 0px 0px 0px;" class="defaultfont"><a href="javascript:window.print()">' . g_l('versions', '[printPage]') . '</a></div>
 			</div>
@@ -195,7 +200,7 @@ $contentDiff = '<div style="margin-left:25px;" id="top">' . g_l('versions', '[Ve
 					<br/><strong>' . g_l('versions', '[documentID]') . ':</strong> ' . $newDoc["documentID"] . '
 					<br/><strong>' . g_l('versions', '[path]') . ':</strong> ' . $newDoc["Path"] . '
 			</div>
-			<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
+			<table style="width:95%;background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 			<tr>
 			<td style="border-bottom:1px solid #B8B8B7;background-color:#BCBBBB;">' . we_html_tools::getPixel(30, 15) . '
 			</td>
@@ -248,7 +253,7 @@ $contentDiff .= '</table>';
 
 //elements
 
-$contentDiff .= '<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
+$contentDiff .= '<table style="width:95%;background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 		<tr>
 		<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>' . g_l('versions', '[contentElementsMod]') . '</strong>' .
 		'</td></tr>';
@@ -362,7 +367,7 @@ if($newDocElements){
 
 $contentDiff .= '</table>' .
 //scheduler
-		'<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
+		'<table style="width:95%;background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 <tr>
 	<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>' . g_l('versions', '[schedulerMod]') . '</strong></td>
 </tr>';
@@ -474,7 +479,7 @@ if(empty($newDocScheduler) && empty($oldDocScheduler)){
 
 $contentDiff .= '</table>' .
 //customfilter
-		'<table cellpadding="5" cellspacing="0" border="0" width="95%" style="background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
+		'<table style="width:95%;background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 <tr>
 	<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>' . g_l('versions', '[customerMod]') . '</strong></td>
 </tr>';
@@ -623,14 +628,14 @@ echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]')
 		<?php print $tabsBody; ?>
 	</div>
 	<div id="content" style="position:absolute;margin: 0px; top:30px;bottom:40px;left:0px;right:0px;overflow:auto;">
-		<div id="tab1" style="display:block;">
-			<?php print $_tab_1 ?>
+		<div id="tab1" style="display:block;width:100%;">
+			<?php echo $_tab_1 ?>
 		</div>
 		<div id="tab2" style="display:none;height:100%;width:100%">
-			<?php print $_tab_2 ?>
+			<?php echo $_tab_2 ?>
 		</div>
 		<div id="tab3" style="display:none;height:100%;width:100%">
-			<?php print $_tab_3 ?>
+			<?php echo $_tab_3 ?>
 		</div>
 	</div>
 
