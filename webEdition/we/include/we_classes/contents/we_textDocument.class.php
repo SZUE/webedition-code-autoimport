@@ -52,10 +52,9 @@ class we_textDocument extends we_document{
 					$GLOBALS['we_file_to_delete_after_include'] = TEMP_PATH . we_base_file::getUniqueId() . $this->Extension;
 					we_base_file::save($GLOBALS['we_file_to_delete_after_include'], $this->i_getDocument());
 					return $GLOBALS['we_file_to_delete_after_include'];
-				} else {
-					$GLOBALS['we_editmode'] = false;
-					return 'we_templates/we_srcTmpl.inc.php';
 				}
+				$GLOBALS['we_editmode'] = false;
+				return 'we_templates/we_srcTmpl.inc.php';
 			case we_base_constants::WE_EDITPAGE_VALIDATION:
 				return 'we_templates/validateDocument.inc.php';
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
@@ -123,7 +122,7 @@ class we_textDocument extends we_document{
 							$less->setFormatter('classic');
 							try{
 								$doc = $less->compile($doc);
-							}catch(exception $e){
+							} catch (exception $e){
 								$this->errMsg = $e->getMessage();
 								return false;
 							}
@@ -135,7 +134,7 @@ class we_textDocument extends we_document{
 							$scss->setImportPaths(array_unique(array('', $_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(), $_SERVER['DOCUMENT_ROOT'] . '/')));
 							try{
 								$doc = $scss->compile($doc);
-							}catch(exception $e){
+							} catch (exception $e){
 								$this->errMsg = $e->getMessage();
 								return false;
 							}
