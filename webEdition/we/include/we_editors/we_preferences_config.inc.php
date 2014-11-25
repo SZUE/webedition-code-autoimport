@@ -181,7 +181,7 @@ $GLOBALS['configs'] = array(
 		'SECURITY_ENCRYPTION_KEY' => array('This is the encryption key used for password, if set to symmetric mode', we_base_request::STRING, ''),
 		'SECURITY_SESSION_PASSWORD' => array('Determine if a userpassword is allowed to be stored in current session', we_base_request::INT, we_customer_customer::STORE_PASSWORD),
 //internal
-		'CONF_SAVED_VERSION' => array('config file version', we_base_request::INT, WE_SVNREV),
+		'CONF_SAVED_VERSION' => array('config file version', we_base_request::INT, str_replace(array('$Rev$'), '', WE_SVNREV)),
 	),
 	'user' => array(//FIXME: most defaults (currently null) are handled by remember_value! change this!
 //key => type,default-val, permission. default true
@@ -260,7 +260,7 @@ $GLOBALS['configs'] = array(
 		'DB_USER' => array('Username to access the database', '', 'root', true),
 		'DB_PASSWORD' => array('Password to access the database', '', 'root', true),
 		'TBL_PREFIX' => array('Prefix of tables in database for this webEdition.', '', ''),
-		'DB_CHARSET' => array('Charset of tables in database for this webEdition.', '', ''),
+		'DB_CHARSET' => array('Charset of tables in database for this webEdition.', we_base_request::STRING, ''),
 		'DB_COLLATION' => array('Collation of tables in database for this webEdition.', '', ''),
 		'WE_LANGUAGE' => array('Original language of this version of webEdition, used for login-screen', '', 'English'),
 		'WE_BACKENDCHARSET' => array('Original backend charset of this version of webEdition, used for login-screen', '', 'UTF-8'),
