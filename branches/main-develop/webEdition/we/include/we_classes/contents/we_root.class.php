@@ -303,7 +303,7 @@ abstract class we_root extends we_class{
 
 			$inputFeld = $this->htmlTextInput($textname, 24, $creator, '', $attribs, '', $width);
 			$idfield = $this->htmlHidden($idname, $this->CreatorID);
-			$wecmdenc1=we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
+			$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 			$wecmdenc5 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);");
 			$button = we_html_button::create_button('edit', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','user',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "')");
@@ -571,8 +571,17 @@ abstract class we_root extends we_class{
 	function setElement($name, $data, $type = 'txt', $key = 'dat', $autobr = false){
 		$this->elements[$name][$key] = $data;
 		$this->elements[$name]['type'] = $type;
-		if($key === 'bdid' && isset($this->elements[$name]['dat'])){//remove dat if bdid is set
-			unset($this->elements[$name]['dat']);
+		switch($key){
+			case 'bdid':
+				if(isset($this->elements[$name]['dat'])){//remove dat if bdid is set
+					unset($this->elements[$name]['dat']);
+				}
+				break;
+			case 'dat':
+				if(isset($this->elements[$name]['bdid'])){//remove bdid if dat is set
+					unset($this->elements[$name]['bdid']);
+				}
+				break;
 		}
 		if($autobr){
 			$this->elements[$name]['autobr'] = $autobr;

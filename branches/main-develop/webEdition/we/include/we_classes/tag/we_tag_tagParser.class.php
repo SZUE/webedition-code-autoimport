@@ -81,32 +81,6 @@ class we_tag_tagParser{
 		return $_matches;
 	}
 
-	/**
-	 * @return string of code with all required tags
-	 * @param $code Src Code
-	 * @desc Searches for all meta-tags in a given template (title, keyword, description, charset)
-	 */
-	/*public static function getMetaTags($code){
-		$foo = array();
-		preg_match_all('%<we:(title|description|keywords|charset)([ \t\n\r]*[[:alnum:]_-]+[ \t]*=[ \t]*"[^"]*")*[ \t\n\r]*>(.*)</we:\1>%i', $code, $foo, PREG_SET_ORDER);
-		$tp = new self();
-		foreach($foo as $f){
-			$tp->setAllTags($f[3]);
-			$tp->parseTags($f[3]);
-			ob_start();
-			//FIXME: eval
-			eval('?>' . $f[3]);
-			$f[3] = ob_get_clean();
-			if($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES && $GLOBALS['we_doc']->InWebEdition){ //	normally meta tags are edited on property page
-				$f[1][0] = strtoupper($f[1][0]);
-				$GLOBALS['meta'][$f[1]]['default'] = str_replace('"', '\"', $f[3]);
-				if($f[1] == 'Charset'){
-					$GLOBALS['meta'][$f[1]]['defined'] = weTag_getAttribute('defined', self::parseAttribs($f[2], true));
-				}
-			}
-		}
-	}*/
-
 	/*public function parseSpecificTags($tags, &$code, $postName = '', $ignore = array()){
 		$this->tags = $tags;
 		return $this->parseTags($code, ($postName == '' ? 0 : $postName), $ignore);

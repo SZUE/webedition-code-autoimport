@@ -301,10 +301,20 @@ abstract class we_html_tools{
 		$langcode = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 		$countrycode = array_search($langcode, getWECountries());
 
-		$countryselect = new we_html_select(array('name' => $name, 'id' => ($id ?: $name), 'size' => $size, 'width' => $width, 'style' => (isset($attribs['style']) ? $attribs['style'] : ''), 'class' => 'weSelect ' . $cls));
+		$attributes = array(
+			'name' => $name, 
+			'id' => ($id ?: $name), 
+			'size' => $size, 
+			'width' => $width, 
+			'style' => (isset($attribs['style']) ? $attribs['style'] : ''), 
+			'class' => 'weSelect ' . $cls
+		);
+		if($multiple){
+			$attributes['multiple'] = 'multiple';
+		}
+		$countryselect = new we_html_select($attributes);
 
 		$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
-
 		if(!Zend_Locale::hasCache()){
 			Zend_Locale::setCache(getWEZendCache());
 		}
@@ -317,6 +327,7 @@ abstract class we_html_tools{
 			$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 		}
 		unset($countryvalue);
+
 		$oldLocale = setlocale(LC_ALL, NULL);
 		setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');
 		asort($topCountries, SORT_LOCALE_STRING);
@@ -324,26 +335,27 @@ abstract class we_html_tools{
 		setlocale(LC_ALL, $oldLocale);
 
 		if(WE_COUNTRIES_DEFAULT != ''){
-			$countryselect->addOption('--', CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT));
+			$countryselect->addOption('--', ($oldHtmlspecialchars ? oldHtmlspecialchars(CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT)) : CheckAndConvertISObackend(WE_COUNTRIES_DEFAULT)));
 		}
 		foreach($topCountries as $countrykey => &$countryvalue){
-			$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
+			$countryselect->addOption($countrykey, ($oldHtmlspecialchars ? oldHtmlspecialchars(CheckAndConvertISObackend($countryvalue)) : CheckAndConvertISObackend($countryvalue)));
 		}
 		unset($countryvalue);
 		if(!empty($topCountries) && !empty($shownCountries)){
 			$countryselect->addOption('-', '----', array('disabled' => 'disabled'));
 		}
-
 		foreach($shownCountries as $countrykey => &$countryvalue){
-			$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
+			$countryselect->addOption($countrykey, ($oldHtmlspecialchars ? oldHtmlspecialchars(CheckAndConvertISObackend($countryvalue)) : CheckAndConvertISObackend($countryvalue)));
 		}
 		unset($countryvalue);
 
-		foreach($selectedCountries as $val){
+		foreach($selected as $val){
 			$countryselect->selectOption($val);
+			if(!multiple){
+				break;
+			}
 		}
 
-		$countryselect->selectOption("FR");
 		return $countryselect->getHtml();
 	}
 
@@ -533,7 +545,7 @@ abstract class we_html_tools{
 		$_showHour = true;
 		$_showMinute = true;
 
-		$name = preg_replace('/^(.+)]$/', '\1%s]', $name);
+		$name = preg_replace('/^(.+)]$/', '${1}%s]', $name);
 		if(!$format || $_dayPos > -1){
 			$days = getHtmlTag('option', array_merge($_attsOption, array('value' => 0)), '--');
 			;

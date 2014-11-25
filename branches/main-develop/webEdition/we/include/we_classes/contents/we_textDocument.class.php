@@ -114,8 +114,12 @@ class we_textDocument extends we_document{
 						break;
 					case '.less':
 						if($this->parseFile){
-							$less = new we_helpers_lessc();
-							$less->setCurrentPath($this->getParentPath());
+							include_once(WE_LIB_PATH . 'additional/Less/lessc.inc.php');
+							$less = new lessc();
+							$less->setImportDir(array(
+								$_SERVER['DOCUMENT_ROOT'],
+								$_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(),
+							));
 							$less->setFormatter('classic');
 							try{
 								$doc = $less->compile($doc);

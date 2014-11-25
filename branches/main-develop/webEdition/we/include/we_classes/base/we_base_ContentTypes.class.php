@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_ContentTypes{
+
 	const CLASS_FOLDER_ICON = 'class_folder.gif';
 	const FOLDER_ICON = 'folder.gif';
 	const IMAGE_ICON = 'image.gif';
@@ -146,7 +147,7 @@ class we_base_ContentTypes{
 				'Icon' => 'htaccess.gif'
 			),
 			self::TEXT => array(
-				'Extension' => '.txt',
+				'Extension' => array('.txt', '.csv'),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_TEXT',
 				'DefaultCode' => '',

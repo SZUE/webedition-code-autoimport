@@ -68,7 +68,7 @@ we_ui_controls_WeWysiwygEditor.setDataView = function(idOrObject, data)
 we_ui_controls_WeWysiwygEditor.openWeWysiwyg = function()
 {
 	var args = "";
-	var url = "/webEdition/editors/content/wysiwyg/WeWysiwygEditorWindow.php?";
+	var url = "/webEdition/editors/content/tinymce/we_tinymce/WeWysiwygEditorWindow.php?";
 	url += "we_cmd[0]=" +encodeURI(arguments[0]) + "&";
 	url += "we_cmd[1]=" +encodeURI(arguments[1]) + "&";
 	url += "we_cmd[2]=" +encodeURI(arguments[2] - 50) + "&";

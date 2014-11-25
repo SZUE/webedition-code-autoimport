@@ -1609,7 +1609,7 @@ function ' . $prefix . 'setLinkSelection(value){
 						we_html_tools::htmlTextInput('Attributes[title]', 30, $this->Model->getAttribute('title'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $this->_width_size), g_l('navigation', '[title]'));
 
 		$_anchor = we_html_tools::htmlFormElementTable(
-						we_html_tools::htmlTextInput('Attributes[anchor]', 30, $this->Model->getAttribute('anchor'), '', 'onchange="' . $this->topFrame . '.mark();" onblur="alert(this.value);if(!new RegExp(\'#?[a-z]+[a-z,0-9,_,:,.,-]*$\',\'i\').test(this.value)){alert(\'' . g_l('linklistEdit', '[anchor_invalid]') . '\');this.focus();}"', 'text', $this->_width_size) . '<br/>' .
+						we_html_tools::htmlTextInput('Attributes[anchor]', 30, $this->Model->getAttribute('anchor'), '', 'onchange="' . $this->topFrame . '.mark();" onblur="if(this.value&&!new RegExp(\'#?[a-z]+[a-z,0-9,_,:,.,-]*$\',\'i\').test(this.value)){alert(\'' . g_l('linklistEdit', '[anchor_invalid]') . '\');this.focus();}"', 'text', $this->_width_size) . '<br/>' .
 						we_html_forms::checkboxWithHidden($this->Model->CurrentOnAnker, 'CurrentOnAnker', g_l('navigation', '[current_on_anker]'), false, "defaultfont", $this->topFrame . '.mark();"'), g_l('navigation', '[anchor]'));
 
 		$_target = we_html_tools::htmlFormElementTable(

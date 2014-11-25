@@ -85,7 +85,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		$name = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $id);
 		$del = false;
 		if($name){
-			$GLOBALS['DB_WE']->query('SELECT 1 FROM ' . FILE_TABLE . ' WHERE DocType=' . $id . ' OR temp_doc_type=' . $id . ' LIMIT 1');
+			$GLOBALS['DB_WE']->query('SELECT 1 FROM ' . FILE_TABLE . ' WHERE DocType=' . $id . ' LIMIT 1');
 			if(!$GLOBALS['DB_WE']->next_record()){
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $id);
 

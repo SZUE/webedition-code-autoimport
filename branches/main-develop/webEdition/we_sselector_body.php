@@ -131,16 +131,14 @@ function _cutText($text, $l){
 </script>
 
 </head>
-<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" onload="doScrollTo();">
+<body class="grey" style="background-color:white" LINK="#000000" ALINK="#000000" VLINK="#000000" onload="doScrollTo();">
 	<form name="we_form" target="fscmd" action="we_sselector_cmd.php" method="post" onsubmit="return false;">
-		<table border="0" cellpadding="0" cellspacing="0" width="100%">
-
-			<?php
+		<table border="0" cellpadding="0" cellspacing="0" width="100%"><?php
 
 			function getDataType($dat){
 				$ct = getContentTypeFromFile($dat);
 				return (($ct = g_l('contentTypes', '[' . $ct . ']', true)) !== false ?
-						$ct : '');
+								$ct : '');
 			}
 
 			$arDir = $arFile = $ordDir = $ordFile = $final = array();
@@ -170,11 +168,11 @@ function _cutText($text, $l){
 									break;
 								case 30:
 								case 31:
-									$ordDir[] = filectime($dir . "/" . $entry);
+									$ordDir[] = filectime($dir . '/' . $entry);
 									break;
 								case 40:
 								case 41:
-									$ordDir[] = filesize($dir . "/" . $entry);
+									$ordDir[] = filesize($dir . '/' . $entry);
 									break;
 							}
 						} else {
@@ -186,15 +184,15 @@ function _cutText($text, $l){
 									break;
 								case 20:
 								case 21:
-									$ordFile[] = getDataType($dir . "/" . $entry);
+									$ordFile[] = getDataType($dir . '/' . $entry);
 									break;
 								case 30:
 								case 31:
-									$ordFile[] = filectime($dir . "/" . $entry);
+									$ordFile[] = filectime($dir . '/' . $entry);
 									break;
 								case 40:
 								case 41:
-									$ordFile[] = filesize($dir . "/" . $entry);
+									$ordFile[] = filesize($dir . '/' . $entry);
 									break;
 							}
 						}
@@ -202,7 +200,7 @@ function _cutText($text, $l){
 				}
 				$dir_obj->close();
 			} else {
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR)) . '<br/><br/><div class="middlefontgray" align="center">-- ' . g_l('alert', "[access_denied]") . ' --</div>';
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR)) . '<br/><br/><div class="middlefontgray" align="center">-- ' . g_l('alert', "[access_denied]") . ' --</div>';
 			}
 
 			switch($ord){
@@ -237,18 +235,19 @@ var i = 0;';
 			echo we_html_element::jsElement($js);
 			$set_rename = false;
 
-			if($nf === "new_folder"){
+			if($nf === 'new_folder'){
 				?>
 				<tr style="background-color:#DFE9F5;">
 					<td align="center" width="25"><img src="<?php print TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0"></td>
-					<td class="selector" width="200"><?php print we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', "[new_folder_name]"), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
-					<td class="selector" width="150"><?php print g_l('fileselector', "[folder]") ?></td>
+					<td class="selector" width="200"><?php echo we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', "[new_folder_name]"), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
+					<td class="selector" width="150"><?php echo g_l('fileselector', "[folder]") ?></td>
 					<td class="selector"><?php echo date("d.m.Y H:i:s") ?></td>
 					<td class="selector"></td>
 				</tr>
 				<?php
 			}
 			$thumbFold = trim(WE_THUMBNAIL_DIRECTORY, '/');
+			$selectOwn = we_base_request::_(we_base_request::BOOL, 'selectOwn', false);
 			foreach($final as $key => $entry){
 				$name = str_replace('//', '/', $org . '/' . $entry);
 				$DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($name) . '"');
@@ -259,22 +258,27 @@ var i = 0;';
 				$type = $isfolder ? g_l('contentTypes', '[folder]') : getDataType($dir . '/' . $entry);
 
 				$indb = $DB_WE->next_record();
-				if($entry === 'webEdition' || ((preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry === "download" || $entry === "tmp")) || $entry === WE_THUMBNAIL_DIRECTORY || $entry === $thumbFold){
+				if($entry === 'webEdition' || ((preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry === "download" || $entry === 'tmp')) || $entry === WE_THUMBNAIL_DIRECTORY || $entry === $thumbFold){
 					$indb = true;
 				}
 				if($supportDebugging){
 					$indb = false;
 				}
-				$file = we_base_request::_(we_base_request::STRING, 'file');//FIXME: totaler nonsense!!
+				$file = we_base_request::_(we_base_request::STRING, 'file'); //FIXME: totaler nonsense!!
 				$show = ($entry != '.') && ($entry != '..') && (($file == g_l('contentTypes', '[all_Types]')) || ($type == g_l('contentTypes', '[folder]')) || ($type == $file || $file == ''));
 				$bgcol = (we_base_request::_(we_base_request::FILE, 'curID') == ($dir . '/' . $entry) && !( $nf === 'new_folder')) ? '#DFE9F5' : 'white';
 				$onclick = $ondblclick = '';
 				$_cursor = 'cursor:default;';
 				if(!(( $nf === 'rename_folder' || $nf === 'rename_file') && ($entry == $sid) && ($isfolder))){
-					if($indb && $isfolder){
-						$onclick = ' onclick="tout=setTimeout(\'if(wasdblclick==0){doClick(\\\'' . $entry . '\\\',1,' . ($indb ? 1 : 0) . ');}else{wasdblclick=0;}\',300);return true;"';
-						$ondblclick = 'onDblClick="wasdblclick=1;clearTimeout(tout);doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');return true;"';
-						$_cursor = 'cursor:pointer;';
+					if($indb){
+						if($isfolder){
+							$onclick = ' onclick="tout=setTimeout(\'if(wasdblclick==0){doClick(\\\'' . $entry . '\\\',1,' . ($indb ? 1 : 0) . ');}else{wasdblclick=0;}\',300);return true;"';
+							$ondblclick = 'onDblClick="wasdblclick=1;clearTimeout(tout);doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');return true;"';
+							$_cursor = 'cursor:pointer;';
+						} elseif($selectOwn){
+							$onclick = 'onclick="if(old==\'' . $entry . '\') mk=setTimeout(\'if(!wasdblclick){ clickEditFile(old);}\',500); old=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
+							$_cursor = 'cursor:pointer;';
+						}
 					} else if(!$indb){
 						if($isfolder){
 							$onclick = 'onclick="if(old==\'' . $entry . '\') mk=setTimeout(\'if(!wasdblclick){clickEdit(old);}\',500); old=\'' . $entry . '\';doSelectFolder(\'' . $entry . '\',' . ($indb ? 1 : 0) . ');"';
@@ -290,10 +294,10 @@ var i = 0;';
 				$filesize = file_exists($dir . '/' . $entry) ? filesize($dir . '/' . $entry) : 0;
 
 				$_size = ($isfolder ?
-						'' :
-						($islink ?
-							'-> ' . readlink($dir . '/' . $entry) :
-							'<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($filesize) . '">' . we_base_file::getHumanFileSize($filesize) . '</span>'));
+								'' :
+								($islink ?
+										'-> ' . readlink($dir . '/' . $entry) :
+										'<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($filesize) . '">' . we_base_file::getHumanFileSize($filesize) . '</span>'));
 
 				switch((($entry == $sid) && (!$indb) ? $nf : '')){
 					case "rename_folder":
@@ -312,8 +316,8 @@ var i = 0;';
 						break;
 					default:
 						$_text_to_show = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($entry) . '">' .
-							((strlen($entry) > 24) ? oldHtmlspecialchars(_cutText($entry, 24)) : oldHtmlspecialchars($entry)) .
-							'</span>';
+								((strlen($entry) > 24) ? oldHtmlspecialchars(_cutText($entry, 24)) : oldHtmlspecialchars($entry)) .
+								'</span>';
 						$_type = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars(_cutText($type, 17)) . '</span>';
 						$_date = '<span' . ($indb ? ' style="color:#006699"' : '') . '>' . (file_exists($dir . "/" . $entry) ? date("d.m.Y H:i:s", filectime($dir . '/' . $entry)) : 'n/a') . '<span>';
 				}
@@ -363,9 +367,6 @@ var i = 0;';
 			//-->
 		</script>
 		<?php
-	}
-	if($nf === "new_folder" || (( $nf === "rename_folder" || $nf === "rename_file") && $set_rename)){
-
 	}
 	?>
 </body>

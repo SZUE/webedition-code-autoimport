@@ -79,11 +79,11 @@ if(!($fields['isInFrontend'] && $fields['empty'] === 'frontend')){
 }
 
 if(preg_match('%^.+_te?xt\[.+\]$%i', $fields['name'])){
-	$fieldName = preg_replace('/^.+_te?xt\[(.+)\]$/', '\1', $fields['name']);
+	$fieldName = preg_replace('/^.+_te?xt\[(.+)\]$/', '$1', $fields['name']);
 } else if(preg_match('|^.+_input\[.+\]$|i', $fields['name'])){
-	$fieldName = preg_replace('/^.+_input\[(.+)\]$/', '\1', $fields['name']);
+	$fieldName = preg_replace('/^.+_input\[(.+)\]$/', '$1', $fields['name']);
 } else if(preg_match('|^we_ui.+\[.+\]$|i', $fields['name'])){//we_user_input
-	$fieldName = preg_replace('/^we_ui.+\[(.+)\]$/', '\1', $fields['name']);
+	$fieldName = preg_replace('/^we_ui.+\[(.+)\]$/', '$1', $fields['name']);
 	$writeToFrontend = true;
 }
 
@@ -92,9 +92,9 @@ echo we_html_tools::getHtmlTop(sprintf('', $fieldName), $fields['charset']);
 if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed')){
 	if(!isset($writeToFrontend)){
 		if(preg_match('%^(.+_te?xt)\[.+\]$%i', $fields['name'])){
-			$reqName = preg_replace('/^(.+_te?xt)\[.+\]$/', '\1', $fields['name']);
+			$reqName = preg_replace('/^(.+_te?xt)\[.+\]$/', '$1', $fields['name']);
 		} else if(preg_match('|^(.+_input)\[.+\]$|i', $fields['name'])){
-			$reqName = preg_replace('/^(.+_input)\[.+\]$/', '\1', $fields['name']);
+			$reqName = preg_replace('/^(.+_input)\[.+\]$/', '$1', $fields['name']);
 		}
 		$openerDocument = 'top.opener.top.weEditorFrameController.getVisibleEditorFrame().document';
 	} else {
@@ -102,7 +102,7 @@ if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed'
 		$openerDocument = 'top.opener.document';
 	}
 
-	$value = preg_replace('|(</?)script([^>]*>)|i', '\\1scr"+"ipt\\2', strtr(we_base_request::_(we_base_request::RAW_CHECKED, $reqName, '', $fieldName), array("\r" => '\r', "\n" => '\n', "'" => '&#039;')));
+	$value = preg_replace('|(</?)script([^>]*>)|i', '${1}scr"+"ipt${2}', strtr(we_base_request::_(we_base_request::RAW_CHECKED, $reqName, '', $fieldName), array("\r" => '\r', "\n" => '\n', "'" => '&#039;')));
 	$replacements = array(
 		'"' => '\"',
 		"\xe2\x80\xa8" => '',
