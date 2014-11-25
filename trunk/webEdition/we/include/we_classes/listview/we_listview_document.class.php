@@ -245,18 +245,17 @@ class we_listview_document extends we_listview_base{
 			$limit = (($this->maxItemsPerPage > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : '');
 		} else {
 			if($this->workspaceID != ''){
-				$workspaces = makeArrayFromCSV($this->workspaceID);
-				$cond = array();
-				if(!$this->subfolders){ // all entries with given parentIds
-					$ws_where = ' AND (ParentID IN (' . implode(', ', $workspaces) . '))';
-				} else { // beneath the workspaceids
+				$workspaces = explode(',', $this->workspaceID);
+				if($this->subfolders){ // all entries with given parentIds
+					$cond = array();
 					foreach($workspaces as $wid){
 						$workspace = id_to_path($wid, FILE_TABLE, $this->DB_WE);
-						$cond[] = FILE_TABLE . '.Path LIKE "' . $this->DB_WE->escape($workspace) . '/%"';
-						$cond[] = FILE_TABLE . '.Path="' . $this->DB_WE->escape($workspace) . '"';
+						$cond[] = 'Path LIKE "' . $this->DB_WE->escape($workspace) . '/%"';
 					}
-					$ws_where = ' AND (' . implode(' OR ', $cond) . ')';
+					$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ' . implode(' OR ', $cond));
+					$workspaces = array_unique(array_merge($workspaces, $this->DB_WE->getAll(true)));
 				}
+				$ws_where = ' AND (ParentID IN (' . implode(', ', $workspaces) . '))';
 			}
 			$extraSelect = ($random ? ', RAND() as RANDOM' : '');
 			$limit = (($rows > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : "");

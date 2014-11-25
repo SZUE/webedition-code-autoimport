@@ -40,9 +40,9 @@ CREATE TABLE ###TBLPREFIX###tblFile (
 	urlMap varchar(100) NOT NULL default '',
 	parseFile tinyint(1) unsigned NOT NULL default '0',
 	PRIMARY KEY  (ID),
-  KEY Path (Path),
+  KEY Path (Path(30),IsFolder),
   KEY WebUserID (WebUserID),
 	KEY urlMap (urlMap),
 	KEY TemplateID (TemplateID,IsDynamic),
-	KEY ParentID(ParentID)
+	KEY ParentID(ParentID,IsSearchable,Published)
 ) ENGINE=MyISAM;
