@@ -243,6 +243,10 @@ $l_modules_shop=array(
 		'shipping_costs'=>'Shipping_costs',
 		'shipping_package'=>'Manipulando y enviando',
 	),
+	'shopcats'=>array(
+		'save_error'=>'Could not save shop categories.',
+		'save_success'=>'Saved shop categories successfully.',
+	),
 	'sl'=>'-',
 	'stat'=>'Evaluación de estadísticas',
 	

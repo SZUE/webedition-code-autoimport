@@ -245,6 +245,10 @@ in der Bestellung',
 		'shipping_costs'=>'Versandkosten',
 		'shipping_package'=>'Porto und Verpackung',
 	),
+	'shopcats'=>array(
+		'save_error'=>'Beim Speichern der Shop-Kategorien ist ein Fehler aufgetreten.',
+		'save_success'=>'Die Shop-Kategorien wurden erfolgreich gespeichert.',
+	),
 	'sl'=>'-',
 	'stat'=>'Statistische Auswertung',
 	

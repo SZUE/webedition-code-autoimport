@@ -244,6 +244,10 @@ order view',
 		'shipping_costs'=>'Shipping_costs',
 		'shipping_package'=>'Shipping and handling',
 	),
+	'shopcats'=>array(
+		'save_error'=>'Could not save shop categories.',
+		'save_success'=>'Saved shop categories successfully.',
+	),
 	'sl'=>'-',
 	'stat'=>'Statistical evaluation',
 	
