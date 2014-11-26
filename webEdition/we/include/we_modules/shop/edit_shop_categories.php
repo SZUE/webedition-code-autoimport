@@ -55,6 +55,7 @@ if($shopCategoriesDir !== -1){
 			$success &= $DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop", pref_name="shop_cats_destPrinciple", pref_value="' . implode(',', $destPrincipleIds) . '"');
 
 			$saveCatIds = array();
+			$relations = we_base_request::_(we_base_request::STRING, 'weShopCatRels');
 			foreach($relations as $k => $v){
 				foreach($v as $id){
 					if(!isset($saveCatIds[$id])){
