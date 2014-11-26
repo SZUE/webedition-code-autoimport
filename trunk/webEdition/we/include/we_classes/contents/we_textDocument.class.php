@@ -96,6 +96,24 @@ class we_textDocument extends we_document{
 		return $doc;
 	}
 
+	public function we_save($resave = 0, $skipHook = 0){
+		if($this->ContentType === we_base_ContentTypes::HTACESS && $this->ParentID == 0){
+			//pretest new htaccess file
+			$doc = parent::i_getDocumentToSave();
+			$oldDoc = ($this->ID ? f('SELECT Dat FROM ' . LINK_TABLE . ' JOIN ' . CONTENT_TABLE . ' ON CID=ID WHERE DID=' . $this->ID . ' AND Name="data"', '', $this->DB_WE) : '');
+			$ok = we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $doc);
+			$data = getHTTP(getServerUrl(true), WEBEDITION_DIR . 'index.php');
+			$data2 = getHTTP(getServerUrl(true), WEBEDITION_DIR . 'index.html');
+			if(strlen($data) < 2500 || strlen($data2) != filesize(WEBEDITION_PATH . 'index.html')){//generated error codes; since fopen is not capable of returning proper codes
+				//restore old htaccess
+				we_base_file::save(WEBEDITION_PATH . $this->Path, $oldDoc);
+				$this->errMsg = 'Error 500';
+				return false;
+			}
+		}
+		return parent::we_save($resave, $skipHook);
+	}
+
 	function getPath(){
 		if($this->parseFile && $this->ContentType == we_base_ContentTypes::CSS && ($this->Extension === '.less' || $this->Extension === '.scss')){
 			return rtrim($this->getParentPath(), '/') . '/' . ( isset($this->Filename) ? $this->Filename : '' ) . '.css';
