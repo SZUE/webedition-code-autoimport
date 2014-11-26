@@ -44,10 +44,10 @@ foreach($_menuItems as $_menuItem){
 foreach($_menuItems as $_menuItem){
 	switch($_menuItem["name"]){
 		case "weSearch":
-			$text = g_l('searchtool', "[weSearch]");
+			$text = g_l('searchtool', '[weSearch]');
 			break;
 		case "navigation":
-			$text = g_l('navigation', "[navigation]");
+			$text = g_l('navigation', '[navigation]');
 			break;
 		case 'toolfactory':
 			$text = $_menuItem["text"];
@@ -74,7 +74,7 @@ echo $tab_header;
 	var current = "<?php echo $tool; ?>";
 	function openTool(tool) {
 		if (top.content.hot == "1") {
-			if (confirm("<?php print g_l('alert', '[discard_changed_data]') ?>")) {
+			if (confirm("<?php echo g_l('alert', '[discard_changed_data]') ?>")) {
 				top.content.hot = "0";
 				current = tool;
 				top.content.location.replace('tools_content.php?tool=' + tool);
@@ -92,7 +92,7 @@ echo $tab_header;
 	//-->
 </script>
 </head>
-<body style="background: #C8D8EC url(<?php print IMAGE_DIR; ?>backgrounds/header.gif);margin: 0px 0px 0px 0px;" link="black" alink="#1559b0" vlink="black" onload="setFrameSize()" onresize="setFrameSize()">
+<body style="background: #C8D8EC url(<?php echo IMAGE_DIR; ?>backgrounds/header.gif);margin: 0px 0px 0px 0px;" link="black" alink="#1559b0" vlink="black" onload="setFrameSize()" onresize="setFrameSize()">
 	<div id="main" ><?php echo $we_tabs->getHTML(); ?></div>
 </body>
 </html>

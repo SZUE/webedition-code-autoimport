@@ -39,7 +39,7 @@ abstract class we_editor_footer{
 		$_messageTbl->setColContent(0, 0, we_html_tools::getPixel(20, 7));
 		$_messageTbl->setColContent(1, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
 		$_messageTbl->setColContent(1, 2, we_html_tools::getPixel(5, 2));
-		$_messageTbl->setCol(1, 3, array("class" => "defaultfont"), sprintf(g_l('alert', "[file_locked_footer]"), $_username));
+		$_messageTbl->setCol(1, 3, array("class" => "defaultfont"), sprintf(g_l('alert', '[file_locked_footer]'), $_username));
 		$_messageTbl->setColContent(1, 4, we_html_tools::getPixel(5, 2));
 		$_messageTbl->setColContent(1, 5, $refreshButton);
 
@@ -77,7 +77,7 @@ abstract class we_editor_footer{
 		$_messageTbl->setColContent(0, 0, we_html_tools::getPixel(20, 7));
 		$_messageTbl->setColContent(1, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
 		$_messageTbl->setColContent(1, 2, we_html_tools::getPixel(5, 2));
-		$_messageTbl->setCol(1, 3, array("class" => "defaultfont"), g_l('alert', "[file_no_save_footer]"));
+		$_messageTbl->setCol(1, 3, array("class" => "defaultfont"), g_l('alert', '[file_no_save_footer]'));
 
 
 		$_head = we_html_element::htmlHead(we_html_element::jsElement('top.toggleBusy(0);') . STYLESHEET);
@@ -95,7 +95,7 @@ abstract class we_editor_footer{
 		$_messageTbl->setColContent(0, 0, we_html_tools::getPixel(20, 7));
 		$_messageTbl->setColContent(1, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
 		$_messageTbl->setColContent(1, 2, we_html_tools::getPixel(5, 2));
-		$_messageTbl->setCol(1, 3, array("class" => "defaultfont"), str_replace("<br/>", " ", sprintf(g_l('alert', "[no_perms]"), f("SELECT Username FROM " . USER_TABLE . " WHERE ID='" . $we_doc->CreatorID . "'", "Username", $GLOBALS['DB_WE']))));
+		$_messageTbl->setCol(1, 3, array("class" => "defaultfont"), str_replace("<br/>", " ", sprintf(g_l('alert', '[no_perms]'), f("SELECT Username FROM " . USER_TABLE . " WHERE ID='" . $we_doc->CreatorID . "'", "Username", $GLOBALS['DB_WE']))));
 
 
 		$_head = we_html_element::htmlHead(we_html_element::jsElement('top.toggleBusy(0);') . STYLESHEET);
@@ -268,7 +268,7 @@ abstract class we_editor_footer{
 			case we_base_ContentTypes::TEMPLATE:
 				if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") || permissionhandler::hasPerm("ADMINISTRATOR")){
 					$_normalTable->addCol(2);
-					$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', "[we_new_doc_after_save]"), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
+					$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', '[we_new_doc_after_save]'), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
 					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 				}
 				break;

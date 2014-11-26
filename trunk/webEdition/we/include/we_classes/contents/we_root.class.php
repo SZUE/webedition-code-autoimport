@@ -321,7 +321,7 @@ abstract class we_root extends we_class{
 			$v = $this->RestrictOwners ? true : false;
 			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[limitedAccess]'), false, 'defaultfont', "setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');");
 		} else {
-			return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td><img src="' . TREE_IMAGE_DIR . ($this->RestrictOwners ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" /></td><td class="defaultfont">&nbsp;' . g_l('weClass', "[limitedAccess]") . '</td></tr></table>';
+			return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td><img src="' . TREE_IMAGE_DIR . ($this->RestrictOwners ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" /></td><td class="defaultfont">&nbsp;' . g_l('weClass', '[limitedAccess]') . '</td></tr></table>';
 		}
 	}
 
@@ -1311,10 +1311,10 @@ abstract class we_root extends we_class{
 	public function showLockedWarning($userID){
 		echo we_html_tools::getHtmlTop() . STYLESHEET .
 		we_html_element::jsElement('top.toggleBusy(0);') .
-		'</head>' . we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_tools::htmlDialogLayout('<p class="defaultfont">' . sprintf(g_l('alert', "[temporaere_no_access_text]"), $this->Text, f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID))) . '</p>', g_l('alert', "[temporaere_no_access]")) .
+		'</head>' . we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_tools::htmlDialogLayout('<p class="defaultfont">' . sprintf(g_l('alert', '[temporaere_no_access_text]'), $this->Text, f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID))) . '</p>', g_l('alert', '[temporaere_no_access]')) .
 //	For SEEM-Mode
 				($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
-						'<a href="javascript://" style="text-decoration:none" onclick="top.weNavigationHistory.navigateReload()" >' . g_l('SEEM', "[try_doc_again]") . '</a>' : '')
+						'<a href="javascript://" style="text-decoration:none" onclick="top.weNavigationHistory.navigateReload()" >' . g_l('SEEM', '[try_doc_again]') . '</a>' : '')
 		) .
 		'</html>';
 		exit();

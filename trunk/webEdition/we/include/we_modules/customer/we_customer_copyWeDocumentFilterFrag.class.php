@@ -98,9 +98,9 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 	function finish(){
 
 		echo we_html_element::jsElement("
-			parent.setProgressText('copyWeDocumentCustomerFilterText', '" . g_l('modules_customerFilter', "[apply_filter_done]") . "');
+			parent.setProgressText('copyWeDocumentCustomerFilterText', '" . g_l('modules_customerFilter', '[apply_filter_done]') . "');
 			parent.setProgress(100);
-			" . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter', "[apply_filter_done]"), we_message_reporting::WE_MESSAGE_NOTICE) . "
+			" . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter', '[apply_filter_done]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 			window.setTimeout('parent.top.close()', 2000);
 		");
 	}

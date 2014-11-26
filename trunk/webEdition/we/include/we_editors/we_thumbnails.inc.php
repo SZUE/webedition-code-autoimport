@@ -193,11 +193,11 @@ function add_thumbnail() {';
 
 			$_needed_JavaScript_Source .= "
 	var thumbnail_names = new Array(" . $_thumbnail_names . ");
-	var name = prompt('" . g_l('thumbnails', "[new]") . "', '');
+	var name = prompt('" . g_l('thumbnails', '[new]') . "', '');
 
 	if (name != null) {
 		if((name.indexOf('<') != -1) || (name.indexOf('>') != -1)) {
-			" . we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "
+			" . we_message_reporting::getShowMessageCall(g_l('alert', '[name_nok]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 			return;
 		}
 

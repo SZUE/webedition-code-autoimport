@@ -30,7 +30,7 @@ class we_dialog_fullscreenEdit extends we_dialog_base{
 
 	function __construct(){
 		parent::__construct();
-		$this->dialogTitle = g_l('wysiwyg', "[fullscreen_editor]");
+		$this->dialogTitle = g_l('wysiwyg', '[fullscreen_editor]');
 		$this->args["src"] = "";
 	}
 

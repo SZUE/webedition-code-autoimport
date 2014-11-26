@@ -102,7 +102,7 @@ function getTmplTableRow($type, $name, $isField = false){
 			<we:repeat>' . getTemplTag($type, $name) . '</we:repeat>
 		</we:listview>
 		<we:else/>
-			' . g_l('global', "[no_entries]") . '
+			' . g_l('global', '[no_entries]') . '
 		' . $close . '
 	</td>
 </tr>';
@@ -191,7 +191,7 @@ if($_SESSION['weS']['we_data'][$cmd3][0]["ID"]){
 					</tr>
 				</table></p>
 			<we:else/>
-				' . g_l('global', "[no_entries]") . '
+				' . g_l('global', '[no_entries]') . '
 			</we:ifFound>
 		</we:listview>
 ';

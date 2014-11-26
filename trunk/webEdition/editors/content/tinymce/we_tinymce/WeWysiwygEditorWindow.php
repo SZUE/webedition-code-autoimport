@@ -53,7 +53,7 @@ window.close();');
 		?>
 	</head>
 	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" style="background-image:url(<?php echo IMAGE_DIR; ?>backgrounds/aquaBackground.gif);">
-		<form action="<?php print $_SERVER['SCRIPT_NAME']; ?>" name="we_form" method="post">
+		<form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" name="we_form" method="post">
 			<input type="hidden" name="we_okpressed" value="1" />
 			<?php
 			foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $i => $v){

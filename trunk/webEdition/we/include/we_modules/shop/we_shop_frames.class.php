@@ -97,7 +97,7 @@ class we_shop_frames extends we_modules_frame{
 								fr.write("<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 							}
 		<?php } ?>
-						fr.write("<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
+						fr.write("<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php echo g_l('tree', '[edit_statustext]'); ?>\">");
 		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?>
 							fr.write("</a>");
 		<?php } ?>
@@ -118,16 +118,16 @@ class we_shop_frames extends we_modules_frame{
 						var zusatz = (ai === nf.laenge) ? "end" : "";
 
 						if (nf[ai].offen === 0) {
-							fr.write("&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" border=0><img src=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php echo g_l('tree', "[open_statustext]") ?>\"></a>");
+							fr.write("&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" border=0><img src=<?php echo TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php echo g_l('tree', '[open_statustext]') ?>\"></a>");
 							var zusatz2 = "";
 						} else {
-							fr.write("&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" border=0><img src=<?php print TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[close_statustext]") ?>\"></a>");
+							fr.write("&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" border=0><img src=<?php echo TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php echo g_l('tree', '[close_statustext]') ?>\"></a>");
 							var zusatz2 = "open";
 						}
 		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?>
 							fr.write("<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 		<?php } ?>
-						fr.write("<img src=<?php print TREE_IMAGE_DIR; ?>icons/folder" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
+						fr.write("<img src=<?php echo TREE_IMAGE_DIR; ?>icons/folder" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php echo g_l('tree', '[edit_statustext]'); ?>\">");
 		<?php if(permissionhandler::hasPerm('EDIT_SHOP_ORDER')){ ?>
 							fr.write("</a>");
 			<?php
@@ -142,7 +142,7 @@ class we_shop_frames extends we_modules_frame{
 		<?php } ?>
 						fr.write("&nbsp;&nbsp;<br/>");
 						if (nf[ai].offen) {
-							newAst = newAst + "<img src=<?php print TREE_IMAGE_DIR; ?>" + (ai === nf.laenge ? "leer.gif" : "strich2.gif") + " width=19 height=18 align=absmiddle border=0>";
+							newAst = newAst + "<img src=<?php echo TREE_IMAGE_DIR; ?>" + (ai === nf.laenge ? "leer.gif" : "strich2.gif") + " width=19 height=18 align=absmiddle border=0>";
 							zeichne(nf[ai].name, newAst);
 						}
 					}
@@ -562,7 +562,7 @@ function we_cmd() {
 		$we_tabs = new we_tabs();
 
 		if(isset($_REQUEST["mid"]) && $_REQUEST["mid"] && $_REQUEST["mid"] != '00'){
-			$we_tabs->addTab(new we_tab('#', g_l('tabs', "[module][overview]"), we_tab::ACTIVE, 0));
+			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][overview]'), we_tab::ACTIVE, 0));
 		} else {
 			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][orderdata]'), we_tab::ACTIVE, "setTab(0);"));
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][orderlist]'), we_tab::NORMAL, "setTab(1);"));
@@ -620,18 +620,18 @@ top.content.hloaded = 1;
 
 		$we_tabs = new we_tabs();
 		if(isset($_REQUEST["mid"]) && $_REQUEST["mid"]){
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][overview]"), we_tab::ACTIVE, "//"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][overview]'), we_tab::ACTIVE, "//"));
 		} else {
 			if($resultD && $resultO){ //docs and objects
-				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_1]"), we_tab::ACTIVE, "setTab(0);"));
-				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_2]"), we_tab::NORMAL, "setTab(1);"));
+				$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_1]'), we_tab::ACTIVE, "setTab(0);"));
+				$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_2]'), we_tab::NORMAL, "setTab(1);"));
 			} elseif($resultD && !$resultO){ // docs but no objects
-				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_1]"), we_tab::NORMAL, "setTab(0);"));
+				$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_1]'), we_tab::NORMAL, "setTab(0);"));
 			} elseif(!$resultD && $resultO){ // no docs but objects
-				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_2]"), we_tab::NORMAL, "setTab(1);"));
+				$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_2]'), we_tab::NORMAL, "setTab(1);"));
 			}
 			if(isset($yearTrans) && $yearTrans != 0){
-				$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][admin_3]"), we_tab::NORMAL, "setTab(2);"));
+				$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_3]'), we_tab::NORMAL, "setTab(2);"));
 			}
 		}
 		$we_tabs->onResize();

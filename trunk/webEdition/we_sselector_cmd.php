@@ -70,7 +70,7 @@ if(!$cmd || $cmd != "save_last"){
 				top.currentDir = dir;
 				selectDir();
 			} else {
-	<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', "[already_root]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+	<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', '[already_root]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			}
 		}
 
@@ -157,7 +157,7 @@ if(!$cmd || $cmd != "save_last"){
 			if ((top.currentID !== "") && (top.fsfooter.document.forms["we_form"].elements["fname"].value !== "")) {
 				top.fscmd.location = "we_sselector_cmd.php?cmd=delete_file&fid=" + top.currentID + "&ask=" + arguments[0];
 			} else {
-	<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+	<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', '[edit_file_nok]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			}
 		}
 
@@ -171,15 +171,15 @@ if(!$cmd || $cmd != "save_last"){
 					delDir($dir . "/" . $entry);
 				} else if(is_file($dir . "/" . $entry)){
 					if(!@unlink($dir . "/" . $entry)){
-						echo we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[delete_nok_file]"), $entry), we_message_reporting::WE_MESSAGE_ERROR);
+						echo we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_nok_file]'), $entry), we_message_reporting::WE_MESSAGE_ERROR);
 					}
 				} else {
-					echo we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[delete_nok_noexist]"), $entry), we_message_reporting::WE_MESSAGE_ERROR);
+					echo we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_nok_noexist]'), $entry), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 			}
 		}
 		if(!rmdir($dir)){
-			echo we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[delete_nok_folder]"), $dir), we_message_reporting::WE_MESSAGE_ERROR);
+			echo we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_nok_folder]'), $dir), we_message_reporting::WE_MESSAGE_ERROR);
 		}
 	}
 
@@ -188,30 +188,30 @@ if(!$cmd || $cmd != "save_last"){
 		case "new_folder":
 			echo 'drawDir(top.currentDir);';
 			if($txt === ''){
-				echo we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR);
+				echo we_message_reporting::getShowMessageCall(g_l('alert', '[we_filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
 			}
 			if(preg_match('|[\'"<>/]|', $txt)){
-				echo we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR);
+				echo we_message_reporting::getShowMessageCall(g_l('alert', '[name_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
 			}
 			$path = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . we_base_request::_(we_base_request::FILE, 'pat') . '/' . $txt);
 			if(!is_dir($path)){
 				echo (!we_base_file::createLocalFolder($path) ?
-						we_message_reporting::getShowMessageCall(g_l('alert', "[create_folder_nok]"), we_message_reporting::WE_MESSAGE_ERROR) :
+						we_message_reporting::getShowMessageCall(g_l('alert', '[create_folder_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
 						'selectFile("' . $txt . '");top.currentID="' . $path . '";');
 			} else {
-				echo we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[path_exists]"), str_replace($_SERVER['DOCUMENT_ROOT'], '', $path)), we_message_reporting::WE_MESSAGE_ERROR);
+				echo we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[path_exists]'), str_replace($_SERVER['DOCUMENT_ROOT'], '', $path)), we_message_reporting::WE_MESSAGE_ERROR);
 			}
 			break;
 		case "rename_folder":
 			if($txt === ''){
-				echo we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR) .
+				echo we_message_reporting::getShowMessageCall(g_l('alert', '[we_filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR) .
 				"drawDir(top.currentDir);";
 				break;
 			}
 			if(preg_match('|[\'"<>/]|', $txt)){
-				echo we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR) .
+				echo we_message_reporting::getShowMessageCall(g_l('alert', '[name_nok]'), we_message_reporting::WE_MESSAGE_ERROR) .
 				"drawDir(top.currentDir);";
 				break;
 			}
@@ -221,10 +221,10 @@ if(!$cmd || $cmd != "save_last"){
 			if($old != $new){
 				if(!is_dir($new)){
 					echo (!rename($old, $new) ?
-							we_message_reporting::getShowMessageCall(g_l('alert', "[rename_folder_nok]"), we_message_reporting::WE_MESSAGE_ERROR) :
+							we_message_reporting::getShowMessageCall(g_l('alert', '[rename_folder_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
 							'selectFile("' . $txt . '");');
 				} else {
-					$we_responseText = sprintf(g_l('alert', "[path_exists]"), str_replace($_SERVER['DOCUMENT_ROOT'], '', $new));
+					$we_responseText = sprintf(g_l('alert', '[path_exists]'), str_replace($_SERVER['DOCUMENT_ROOT'], '', $new));
 					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				}
 			}
@@ -233,12 +233,12 @@ if(!$cmd || $cmd != "save_last"){
 			break;
 		case "rename_file":
 			if($txt === ''){
-				echo we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR) .
+				echo we_message_reporting::getShowMessageCall(g_l('alert', '[we_filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR) .
 				"drawDir(top.currentDir);";
 				break;
 			}
 			if(preg_match('|[\'"<>/]|', $txt)){
-				echo we_message_reporting::getShowMessageCall(g_l('alert', "[name_nok]"), we_message_reporting::WE_MESSAGE_ERROR) .
+				echo we_message_reporting::getShowMessageCall(g_l('alert', '[name_nok]'), we_message_reporting::WE_MESSAGE_ERROR) .
 				"drawDir(top.currentDir);";
 				break;
 			}
@@ -249,10 +249,10 @@ if(!$cmd || $cmd != "save_last"){
 			if($old != $new){
 				if(!file_exists($new)){
 					echo (!rename($old, $new) ?
-							we_message_reporting::getShowMessageCall(g_l('alert', "[rename_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR) :
+							we_message_reporting::getShowMessageCall(g_l('alert', '[rename_file_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
 							'selectFile("' . $txt . '");');
 				} else {
-					$we_responseText = sprintf(g_l('alert', "[path_exists]"), str_replace($_SERVER['DOCUMENT_ROOT'], '', $new));
+					$we_responseText = sprintf(g_l('alert', '[path_exists]'), str_replace($_SERVER['DOCUMENT_ROOT'], '', $new));
 					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				}
 			}
@@ -264,20 +264,20 @@ if(!$cmd || $cmd != "save_last"){
 			}
 			$foo = f('SELECT ID FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($fid) . "'");
 			if(preg_match('|' . WEBEDITION_PATH . '|', $fid) || ($fid == rtrim(WEBEDITION_PATH, '/')) || strpos("..", $fid) || $foo || $fid == $_SERVER['DOCUMENT_ROOT'] || $fid . "/" == $_SERVER['DOCUMENT_ROOT']){
-				echo we_message_reporting::getShowMessageCall(g_l('alert', "[access_denied]"), we_message_reporting::WE_MESSAGE_ERROR);
+				echo we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
 			}
 			if(we_base_request::_(we_base_request::BOOL, "ask")){
 				if(!is_link($fid) && is_dir($fid)){
-					echo "if (confirm(\"" . g_l('alert', "[delete_folder]") . "\")){delFile(0);}";
+					echo "if (confirm(\"" . g_l('alert', '[delete_folder]') . "\")){delFile(0);}";
 				} else if(is_link($fid) || is_file($fid)){
-					echo "if (confirm(\"" . g_l('alert', "[delete]") . "\")){delFile(0);}";
+					echo "if (confirm(\"" . g_l('alert', '[delete]') . "\")){delFile(0);}";
 				}
 			} else {
 				if(!is_link($fid) && is_dir($fid)){
 					delDir($fid);
 				} else if(!@unlink($fid)){
-					echo we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[delete_nok_error]"), $fid), we_message_reporting::WE_MESSAGE_ERROR);
+					echo we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_nok_error]'), $fid), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 			}
 			echo "selectFile('');drawDir(top.currentDir);";

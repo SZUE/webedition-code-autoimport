@@ -73,13 +73,13 @@ $_y_we3 = $_y_table_back + 116;
 
 </style>
 
-<?php print $we_head_insert; ?>
+<?php echo $we_head_insert; ?>
 </head>
 
 <body bgcolor="#F0EFF0" onload="loaded = 1;">
-	<div id="tabelle"><?php print $_starttable->getHtml(); ?></div>
-	<div id="hintergrund"><img src="<?php print IMAGE_DIR . "startscreen/we_startbox_modul.gif" ?>" width="251" height="220" /></div>
-	<div id="modimage"><img src="<?php print IMAGE_DIR . "startscreen/" . $modimage; ?>" width="335" height="329" /></div>
-		<?php print $we_body_insert . we_html_element::jsElement('var we_is_home = 1;'); ?>
+	<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
+	<div id="hintergrund"><img src="<?php echo IMAGE_DIR . "startscreen/we_startbox_modul.gif" ?>" width="251" height="220" /></div>
+	<div id="modimage"><img src="<?php echo IMAGE_DIR . "startscreen/" . $modimage; ?>" width="335" height="329" /></div>
+		<?php echo $we_body_insert . we_html_element::jsElement('var we_is_home = 1;'); ?>
 </body>
 </html>

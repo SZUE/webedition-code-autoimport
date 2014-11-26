@@ -384,7 +384,7 @@ top.content.hloaded = 1;');
 						we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 										we_html_element::jsElement(
 												(we_base_request::_(we_base_request::STRING, 'error') ?
-														we_message_reporting::getShowMessageCall(g_l('modules_customer', "[error_download_failed]"), we_message_reporting::WE_MESSAGE_ERROR) : '') .
+														we_message_reporting::getShowMessageCall(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR) : '') .
 												$rootjs . $this->Tree->getJSLoadTree(we_customer_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $sortField : ''))))
 								)
 						)

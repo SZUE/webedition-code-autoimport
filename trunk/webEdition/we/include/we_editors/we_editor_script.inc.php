@@ -414,7 +414,7 @@ if(isset($we_doc) && $we_doc->ContentType == we_base_ContentTypes::IMAGE){
 						new jsWindow(url, "we_image_resize", -1, -1, 260,<?php echo ($we_doc->getGDType() === "jpg") ? 250 : 190; ?>, true, false, true);
 		<?php
 	} else {
-		echo we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', "[type_not_supported_hint]"), g_l('weClass', '[convert_' . $we_doc->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
+		echo we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[type_not_supported_hint]'), g_l('weClass', '[convert_' . $we_doc->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 	?>
 
@@ -436,11 +436,11 @@ if(isset($we_doc) && $we_doc->ContentType == we_base_ContentTypes::IMAGE){
 							new jsWindow(url, "we_rotate", -1, -1, 300,<?php echo ($we_doc->getGDType() === "jpg") ? 230 : 170; ?>, true, false, true);
 			<?php
 		} else {
-			echo we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', "[type_not_supported_hint]"), g_l('weClass', '[convert_' . $we_doc->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
+			echo we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[type_not_supported_hint]'), g_l('weClass', '[convert_' . $we_doc->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
 		}
 	} else {
 
-		echo we_message_reporting::getShowMessageCall(g_l('weClass', "[rotate_hint]"), we_message_reporting::WE_MESSAGE_ERROR);
+		echo we_message_reporting::getShowMessageCall(g_l('weClass', '[rotate_hint]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 	?>
 					break;
@@ -452,7 +452,7 @@ if(isset($we_doc) && $we_doc->ContentType == we_base_ContentTypes::IMAGE){
 	<?php
 } else if(defined('WE_EDIT_IMAGE')){
 
-	echo we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', "[type_not_supported_hint]"), g_l('weClass', '[convert_' . $GLOBALS['we_doc']->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
+	echo we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[type_not_supported_hint]'), g_l('weClass', '[convert_' . $GLOBALS['we_doc']->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
 }
 ?>
 				break;

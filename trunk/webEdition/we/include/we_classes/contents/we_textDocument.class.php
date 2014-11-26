@@ -106,7 +106,11 @@ class we_textDocument extends we_document{
 			$data2 = getHTTP(getServerUrl(true), WEBEDITION_DIR . 'index.html');
 			if(strlen($data) < 2500 || strlen($data2) != filesize(WEBEDITION_PATH . 'index.html')){//generated error codes; since fopen is not capable of returning proper codes
 				//restore old htaccess
-				we_base_file::save(WEBEDITION_PATH . $this->Path, $oldDoc);
+				if($this->ID){
+					we_base_file::save(WEBEDITION_PATH . $this->Path, $oldDoc);
+				} else {
+					we_base_file::delete(WEBEDITION_PATH . $this->Path);
+				}
 				$this->errMsg = 'Error 500';
 				return false;
 			}
@@ -140,7 +144,7 @@ class we_textDocument extends we_document{
 							$less->setFormatter('classic');
 							try{
 								$doc = $less->compile($doc);
-							} catch (exception $e){
+							}catch(exception $e){
 								$this->errMsg = $e->getMessage();
 								return false;
 							}
@@ -152,7 +156,7 @@ class we_textDocument extends we_document{
 							$scss->setImportPaths(array_unique(array('', $_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(), $_SERVER['DOCUMENT_ROOT'] . '/')));
 							try{
 								$doc = $scss->compile($doc);
-							} catch (exception $e){
+							}catch(exception $e){
 								$this->errMsg = $e->getMessage();
 								return false;
 							}

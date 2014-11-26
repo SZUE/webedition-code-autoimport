@@ -115,22 +115,22 @@ function we_cmd(){
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
 		case "new_shop":
-			' . $this->topFrame . '.editor.location="<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor";
+			' . $this->topFrame . '.editor.location="<?php echo WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor";
 			break;
 		case "delete_shop":
 			if (' . $this->topFrame . '.right && ' . $this->topFrame . '.editor.edbody.hot && ' . $this->topFrame . '.editor.edbody.hot == 1 ) {
-				if(confirm("' . g_l("modules_shop", "[del_shop]") . '")){
+				if(confirm("' . g_l('modules_shop', '[del_shop]') . '")){
 					' . $this->topFrame . '.editor.edbody.deleteorder();
 				}
 			} else {
-				' . we_message_reporting::getShowMessageCall(g_l("modules_shop", "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
+				' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 			}
 			break;
 		case "new_article":
 			if (' . $this->topFrame . '.right && ' . $this->topFrame . '.editor.edbody.hot && ' . $this->topFrame . '.editor.edbody.hot == 1 ) {
 				top.content.editor.edbody.neuerartikel();
 			} else {
-				' . we_message_reporting::getShowMessageCall(g_l("modules_shop", "[no_order_there]"), we_message_reporting::WE_MESSAGE_ERROR) . '
+				' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[no_order_there]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			}
 			break;
 		case "revenue_view":
@@ -909,7 +909,7 @@ function we_cmd() {
 
 			<script type="text/javascript"><!--
 				function SendMail(was) {
-					document.location = "<?php print $_SERVER['SCRIPT_NAME'] . '?pnt=edbody&bid=' . $_REQUEST['bid']; ?>&SendMail=" + was;
+					document.location = "<?php echo $_SERVER['SCRIPT_NAME'] . '?pnt=edbody&bid=' . $_REQUEST['bid']; ?>&SendMail=" + was;
 				}
 				function doUnload() {
 					if (!!jsWindow_count) {
@@ -922,7 +922,7 @@ function we_cmd() {
 				function we_cmd() {
 
 					var args = "";
-					var url = "<?php print WE_SHOP_MODULE_DIR . 'edit_shop_properties.php'; ?>?";
+					var url = "<?php echo WE_SHOP_MODULE_DIR . 'edit_shop_properties.php'; ?>?";
 
 					for (var i = 0; i < arguments.length; i++) {
 						url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
@@ -945,7 +945,7 @@ function we_cmd() {
 							var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST['bid']; ?>", "edit_order_customer", -1, -1, 545, 600, true, true, true, false);
 							break;
 						case "customer_edit":
-							top.document.location = '<?php print WE_MODULES_DIR; ?>show_frameset.php?mod=customer&sid=<?php print $_REQUEST['cid']; ?>';
+							top.document.location = '<?php echo WE_MODULES_DIR; ?>show_frameset.php?mod=customer&sid=<?php echo $_REQUEST['cid']; ?>';
 											break;
 										case "add_new_article":
 											var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST['bid']; ?>", "add_new_article", -1, -1, 650, 600, true, false, true, false);
@@ -958,7 +958,7 @@ function we_cmd() {
 								}
 
 								function deleteorder() {
-									top.content.editor.location = "<?php print WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
+									top.content.editor.location = "<?php echo WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
 											top.content.deleteEntry(<?php echo $_REQUEST["bid"]; ?>);
 										}
 

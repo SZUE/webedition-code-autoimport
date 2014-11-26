@@ -25,7 +25,7 @@ echo we_html_tools::getHtmlTop();
 ?>
 
 <script  type="text/javascript"><!--
-	var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?php print $GLOBALS['we_transaction']; ?>");
+	var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?php echo $GLOBALS['we_transaction']; ?>");
 	var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();
 
 <?php
@@ -125,7 +125,7 @@ if($we_responseText){
 		if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW){ //	alert or confirm
 			$_jsCommand .= "
 			if(!showAlert){
-				if(confirm(\"" . $we_responseText . "\\n\\n" . g_l('SEEM', "[confirm][change_to_preview]") . "\")){
+				if(confirm(\"" . $we_responseText . "\\n\\n" . g_l('SEEM', '[confirm][change_to_preview]') . "\")){
 					_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS['we_transaction'] . "');
 				} else {
 					_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');
@@ -145,7 +145,7 @@ if($we_responseText){
 
 			$_jsCommand .="
 			if(isEditInclude){
-				" . we_message_reporting::getShowMessageCall(g_l('SEEM', "[alert][changed_include]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
+				" . we_message_reporting::getShowMessageCall(g_l('SEEM', '[alert][changed_include]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 						weWindow.top.we_cmd("reload_editpage");
 						weWindow.edit_include.close();
 						top.close();

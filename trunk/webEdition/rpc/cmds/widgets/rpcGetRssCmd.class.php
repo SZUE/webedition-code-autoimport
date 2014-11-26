@@ -97,11 +97,11 @@ class rpcGetRssCmd extends rpcCmd{
 					($bShowPubdate ? ' ' : we_html_element::htmlBr()) :
 					'') .
 				($bShowPubdate ?
-					g_l('cockpit', "[published]") . ': ' . date(g_l('date', '[format][default]'), strtotime($item['pubdate'])) :
+					g_l('cockpit', '[published]') . ': ' . date(g_l('date', '[format][default]'), strtotime($item['pubdate'])) :
 					'') .
 				($bShowCategory ?
 					($bShowPubdate ? we_html_element::htmlBr() : "") .
-					g_l('cockpit', "[category]") . ": " . $item['category'] :
+					g_l('cockpit', '[category]') . ": " . $item['category'] :
 					'') .
 				($bShowPubdate || $bShowCategory ?
 					we_html_element::htmlBr() :

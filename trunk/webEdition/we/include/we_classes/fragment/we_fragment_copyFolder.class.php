@@ -667,10 +667,10 @@ class we_fragment_copyFolder extends we_fragment_base{
 		} else {
 			$checkTable = (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 1);
 			if(!isset($_SESSION['weS']['WE_COPY_OBJECTS'])){
-				echo we_html_element::jsElement('top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
+				echo we_html_element::jsElement('top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
 			} else {
 				unset($_SESSION['weS']['WE_COPY_OBJECTS']);
-				echo we_html_element::jsElement('top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");' . we_message_reporting::getShowMessageCall(g_l('copyFolder', "[copy_success]"), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
+				echo we_html_element::jsElement('top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");' . we_message_reporting::getShowMessageCall(g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
 			}
 		}
 	}
@@ -736,7 +736,7 @@ function fsubmit(e) {
 
 		$table->setCol(0, 0, array('colspan' => 2), we_html_tools::getPixel(5, 5));
 		$table->setCol(1, 0, array('class' => 'defaultfont', 'width' => 100), g_l('copyFolder', '[categories]'));
-		$table->setCol(1, 1, array('class' => 'defaultfont'), we_html_forms::checkbox(1, 0, 'OverwriteCategories', g_l('copyFolder', "[overwrite_categories]"), false, "defaultfont", "toggleButton();"));
+		$table->setCol(1, 1, array('class' => 'defaultfont'), we_html_forms::checkbox(1, 0, 'OverwriteCategories', g_l('copyFolder', '[overwrite_categories]'), false, "defaultfont", "toggleButton();"));
 		$table->setCol(2, 0, array('colspan' => 2), we_html_element::htmlDiv(
 				array(
 					'id' => 'categories',

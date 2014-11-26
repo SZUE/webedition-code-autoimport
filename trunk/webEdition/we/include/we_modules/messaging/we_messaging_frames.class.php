@@ -288,7 +288,7 @@ for(var i = 0; i < arguments.length; i++) {
 }
 
 if(hot == "1" && arguments[0] != "messaging_start_view") {
-	if(confirm("' . g_l('modules_messaging', "[save_changed_folder]") . '")) {
+	if(confirm("' . g_l('modules_messaging', '[save_changed_folder]') . '")) {
 		top.content.editor.document.edit_folder.submit();
 	} else {
 		top.content.usetHot();
@@ -430,10 +430,10 @@ function zeichne(startEntry, zweigEintrag) {
 				if(nf[ai].name != -1) {
 					trg = "javascript:top.content.check(\"img_" + nf[ai].name + "\");"
 					if(nf[ai].checked) {
-						fr.write("<a href=\"" + trg + "\"><img src=\"' . TREE_IMAGE_DIR . 'check1.gif\"WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"' . g_l('tree', "[select_statustext]") . '\" name=\"img_"+nf[ai].name+"\"></a>");
+						fr.write("<a href=\"" + trg + "\"><img src=\"' . TREE_IMAGE_DIR . 'check1.gif\"WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"' . g_l('tree', '[select_statustext]') . '\" name=\"img_"+nf[ai].name+"\"></a>");
 					}
 					else {
-						fr.write("<a href=\"" + trg + "\"><img src=\"' . TREE_IMAGE_DIR . 'check0.gif\"WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"' . g_l('tree', "[select_statustext]") . '\" name=\"img_"+nf[ai].name+"\"></a>");
+						fr.write("<a href=\"" + trg + "\"><img src=\"' . TREE_IMAGE_DIR . 'check0.gif\"WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"' . g_l('tree', '[select_statustext]') . '\" name=\"img_"+nf[ai].name+"\"></a>");
 					}
 				}
 			} else {

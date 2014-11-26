@@ -65,7 +65,7 @@ if($weFileupload->processFileRequest()){
 	$maxsize = $weFileupload->getMaxUploadSize();
 	$we_maxfilesize_text = sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB));
 
-	echo we_html_tools::getHtmlTop(g_l('newFile', "[import_File_from_hd_title]")) .
+	echo we_html_tools::getHtmlTop(g_l('newFile', '[import_File_from_hd_title]')) .
 	STYLESHEET . we_html_element::jsElement('parent.openedWithWE = 1;') . $weFileupload->getJS() . $weFileupload->getCss();
 
 	if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
@@ -127,7 +127,7 @@ if($weFileupload->processFileRequest()){
 					<tr><td>' . $weFileupload->getHtml() . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>';
 	if($we_doc->ContentType == we_base_ContentTypes::IMAGE){
-		$content .= '<tr><td>' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', "[import_metadata_at_upload]")) . '</td></tr>';
+		$content .= '<tr><td>' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', '[import_metadata_at_upload]')) . '</td></tr>';
 	}
 	$content .= '</table>';
 
@@ -155,7 +155,7 @@ if($weFileupload->processFileRequest()){
 		?>
 		opener.we_cmd("update_file");
 		_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
-		_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php print $we_doc->Path; ?>", "<?php print $we_doc->Text; ?>");
+		_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php echo $we_doc->Path; ?>", "<?php echo $we_doc->Text; ?>");
 		self.close();
 	<?php } ?>
 	//-->
@@ -165,8 +165,8 @@ if($weFileupload->processFileRequest()){
 	<body class="weDialogBody" onload="self.focus();">
 		<center>
 			<form method="post" enctype="multipart/form-data">
-				<input type="hidden" name="we_transaction" value="<?php print $we_transaction ?>" />
-				<?php print we_html_tools::htmlDialogLayout($content, g_l('newFile', "[import_File_from_hd_title]"), $_buttons); ?>
+				<input type="hidden" name="we_transaction" value="<?php echo $we_transaction ?>" />
+				<?php echo we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_File_from_hd_title]'), $_buttons); ?>
 			</form>
 		</center>
 	</body>

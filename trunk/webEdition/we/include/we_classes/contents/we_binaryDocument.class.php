@@ -307,7 +307,7 @@ class we_binaryDocument extends we_document{
 	 */
 	function formUpload(){
 		$fs = $GLOBALS['we_doc']->getFilesize();
-		$fs = g_l('metadata', "[filesize]") . ": " . round(($fs / 1024), 2) . "&nbsp;KB";
+		$fs = g_l('metadata', '[filesize]') . ": " . round(($fs / 1024), 2) . "&nbsp;KB";
 		$_metaData = $this->getMetaData();
 		$_mdtypes = array();
 
@@ -327,9 +327,9 @@ class we_binaryDocument extends we_document{
 
 		$md = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
 						'' :
-						g_l('metadata', "[supported_types]") . ': ' .
+						g_l('metadata', '[supported_types]') . ': ' .
 						'<a href="javascript:parent.frames[0].setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
-						(count($_mdtypes) > 0 ? implode(', ', $_mdtypes) : g_l('metadata', "[none]")) .
+						(count($_mdtypes) > 0 ? implode(', ', $_mdtypes) : g_l('metadata', '[none]')) .
 						'</a>');
 
 		$fileUpload = new we_fileupload_binaryDocument($this->ContentType, $this->Extension);

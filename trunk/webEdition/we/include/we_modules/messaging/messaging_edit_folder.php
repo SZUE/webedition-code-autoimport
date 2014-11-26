@@ -77,7 +77,7 @@ we_html_tools::protect();
 echo STYLESHEET;
 ?>
 <body class="weDialogBody" style="border-top: 1px solid black;">
-	<form name="edit_folder" action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_edit_folder.php" method="post">
+	<form name="edit_folder" action="<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_edit_folder.php" method="post">
 		<?php
 		echo we_html_tools::hidden('we_transaction', $transaction);
 		echo we_html_tools::hidden('mcmd', 'save_folder_settings');
@@ -102,12 +102,12 @@ echo STYLESHEET;
 		$n = isset($finf) ? $finf['Name'] : '';
 		$orgn = $n;
 		$fooArray = array(
-			"sent" => g_l('modules_messaging', "[folder_sent]"),
-			"messages" => g_l('modules_messaging', "[folder_messages]"),
-			"done" => g_l('modules_messaging', "[folder_done]"),
-			"task" => g_l('modules_messaging', "[folder_todo]"),
-			"rejected" => g_l('modules_messaging', "[folder_rejected]"),
-			"todo" => g_l('modules_messaging', "[folder_todo]")
+			"sent" => g_l('modules_messaging', '[folder_sent]'),
+			"messages" => g_l('modules_messaging', '[folder_messages]'),
+			"done" => g_l('modules_messaging', '[folder_done]'),
+			"task" => g_l('modules_messaging', '[folder_todo]'),
+			"rejected" => g_l('modules_messaging', '[folder_rejected]'),
+			"todo" => g_l('modules_messaging', '[folder_todo]')
 		);
 		if(isset($fooArray[strtolower($n)])){
 			$n = $fooArray[strtolower($n)];

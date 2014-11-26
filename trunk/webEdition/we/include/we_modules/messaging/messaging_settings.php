@@ -63,7 +63,7 @@ echo STYLESHEET;
 ?>
 
 <body class="weDialogBody">
-	<form name="settings" action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_settings.php" method="post">
+	<form name="settings" action="<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_settings.php" method="post">
 		<?php
 		if(($transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'))){
 			echo we_html_tools::hidden('we_transaction', $transaction);

@@ -167,7 +167,7 @@ class we_wysiwyg_editor{
 			$value = preg_replace('%<\?xml[^>]*>%i', '', $value);
 			$value = str_replace(array('<?', '?>',), array('||##?##||', '##||?||##'), $value);
 		}
-         * 
+         *
          */
 
 		$this->setToolbarElements();
@@ -862,25 +862,25 @@ var weclassNames_tinyMce = new Array (' . $this->cssClassesJS . ');
 
 var tinyMceTranslationObject = {' . $editorLang . ':{
 	we:{
-		"group_link":"' . g_l('wysiwyg', "[links]") . '",//(insert_hyperlink)
-		"group_copypaste":"' . g_l('wysiwyg', "[import_text]") . '",
-		"group_advanced":"' . g_l('wysiwyg', "[advanced]") . '",
-		"group_insert":"' . g_l('wysiwyg', "[insert]") . '",
-		"group_indent":"' . g_l('wysiwyg', "[indent]") . '",
-		//"group_view":"' . g_l('wysiwyg', "[view]") . '",
-		"group_table":"' . g_l('wysiwyg', "[table]") . '",
-		"group_edit":"' . g_l('wysiwyg', "[edit]") . '",
-		"group_layer":"' . g_l('wysiwyg', "[layer]") . '",
-		"group_xhtml":"' . g_l('wysiwyg', "[xhtml_extras]") . '",
-		"tt_weinsertbreak":"' . g_l('wysiwyg', "[insert_br]") . '",
-		"tt_welink":"' . g_l('wysiwyg', "[hyperlink]") . '",
-		"tt_weimage":"' . g_l('wysiwyg', "[insert_edit_image]") . '",
-		"tt_wefullscreen":"' . g_l('wysiwyg', "[fullscreen]") . '",
-		"tt_welang":"' . g_l('wysiwyg', "[language]") . '",
-		"tt_wespellchecker":"' . g_l('wysiwyg', "[spellcheck]") . '",
-		"tt_wevisualaid":"' . g_l('wysiwyg', "[visualaid]") . '",
-		"cm_inserttable":"' . g_l('wysiwyg', "[insert_table]") . '",
-		"cm_table_props":"' . g_l('wysiwyg', "[edit_table]") . '"
+		"group_link":"' . g_l('wysiwyg', '[links]') . '",//(insert_hyperlink)
+		"group_copypaste":"' . g_l('wysiwyg', '[import_text]') . '",
+		"group_advanced":"' . g_l('wysiwyg', '[advanced]') . '",
+		"group_insert":"' . g_l('wysiwyg', '[insert]') . '",
+		"group_indent":"' . g_l('wysiwyg', '[indent]') . '",
+		//"group_view":"' . g_l('wysiwyg', '[view]') . '",
+		"group_table":"' . g_l('wysiwyg', '[table]') . '",
+		"group_edit":"' . g_l('wysiwyg', '[edit]') . '",
+		"group_layer":"' . g_l('wysiwyg', '[layer]') . '",
+		"group_xhtml":"' . g_l('wysiwyg', '[xhtml_extras]') . '",
+		"tt_weinsertbreak":"' . g_l('wysiwyg', '[insert_br]') . '",
+		"tt_welink":"' . g_l('wysiwyg', '[hyperlink]') . '",
+		"tt_weimage":"' . g_l('wysiwyg', '[insert_edit_image]') . '",
+		"tt_wefullscreen":"' . g_l('wysiwyg', '[fullscreen]') . '",
+		"tt_welang":"' . g_l('wysiwyg', '[language]') . '",
+		"tt_wespellchecker":"' . g_l('wysiwyg', '[spellcheck]') . '",
+		"tt_wevisualaid":"' . g_l('wysiwyg', '[visualaid]') . '",
+		"cm_inserttable":"' . g_l('wysiwyg', '[insert_table]') . '",
+		"cm_table_props":"' . g_l('wysiwyg', '[edit_table]') . '"
 	}}};
 
 

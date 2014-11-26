@@ -353,7 +353,7 @@ class we_shop_pager{
 			'</td><td>' . we_html_tools::getPixel(23, 1) . "</td><td class='defaultfont'><b>" . (($anz) ? $offset + 1 : 0) . "-" .
 			(($anz - $offset) < $nrOfPage ?
 				$anz : $offset + $nrOfPage) .
-			"&nbsp;&nbsp;" . g_l('global', "[from]") . "&nbsp;&nbsp;" . $anz . "</b></td><td>" . we_html_tools::getPixel(23, 1) . '</td><td>' .
+			"&nbsp;&nbsp;" . g_l('global', '[from]') . "&nbsp;&nbsp;" . $anz . "</b></td><td>" . we_html_tools::getPixel(23, 1) . '</td><td>' .
 			(($offset + $nrOfPage) < $anz ?
 				we_html_button::create_button("next", $url . '&actPage=' . ($actPage + 1)) :
 				we_html_button::create_button("next", "#", false, 100, 22, "", "", true)) .

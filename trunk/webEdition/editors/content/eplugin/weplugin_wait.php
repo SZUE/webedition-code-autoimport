@@ -70,7 +70,7 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 					we_html_element::htmlImg(array("src" => IMAGE_DIR . "spinner.gif")) .
 					we_html_element::htmlBr() .
 					we_html_element::htmlBr() .
-					we_html_element::htmlDiv(array("class" => "header_small"), g_l('eplugin', "[initialisation]"))
+					we_html_element::htmlDiv(array("class" => "header_small"), g_l('eplugin', '[initialisation]'))
 				)
 			)
 		)

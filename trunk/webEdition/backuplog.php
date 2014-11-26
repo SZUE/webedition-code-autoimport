@@ -29,14 +29,14 @@ we_html_tools::protect();
 $_parts = array();
 if(permissionhandler::hasPerm("BACKUPLOG")){
 	$_parts[] = array(
-		'headline' => g_l('backup', "[view_log]"),
+		'headline' => g_l('backup', '[view_log]'),
 		'html' => '',
 		'space' => 10
 	);
 	if(!file_exists($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/lastlog.php')){
 		$_parts[] = array(
 			'headline' => '',
-			'html' => '<p>' . g_l('backup', "[view_log_not_found]") . '</p>',
+			'html' => '<p>' . g_l('backup', '[view_log_not_found]') . '</p>',
 			'space' => 10
 		);
 	} else {
@@ -50,11 +50,11 @@ if(permissionhandler::hasPerm("BACKUPLOG")){
 } else {
 	$_parts[] = array(
 		'headline' => '',
-		'html' => '<p>' . g_l('backup', "[view_log_no_perm]") . '</p>',
+		'html' => '<p>' . g_l('backup', '[view_log_no_perm]') . '</p>',
 		'space' => 10
 	);
 }
-echo we_html_tools::getHtmlTop(g_l('backup', "[view_log]")) .
+echo we_html_tools::getHtmlTop(g_l('backup', '[view_log]')) .
  we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsElement('
 	function closeOnEscape() {

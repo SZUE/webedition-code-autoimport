@@ -103,7 +103,7 @@ HTS;
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
-					we_html_tools::getHtmlInnerHead(g_l('import', "[title]")) .
+					we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) .
 					we_html_element::jsScript(JS_DIR . 'windows.js') .
 					we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 					we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
@@ -252,7 +252,7 @@ function we_cmd() {
 		if(we_base_request::_(we_base_request::INT, "mode") == 1){
 			$WE_PB = new we_progressBar(0, 0, true);
 			$WE_PB->setStudLen(200);
-			$WE_PB->addText($text = g_l('import', "[import_progress]"), 0, "pb1");
+			$WE_PB->addText($text = g_l('import', '[import_progress]'), 0, "pb1");
 			$pb = $WE_PB->getJSCode() .
 				we_html_element::htmlDiv(array('id' => 'progress'), $WE_PB->getHTML());
 			$js = we_html_element::jsElement('
@@ -330,7 +330,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 							$this->getHdns("attrs", $attrs);
 					}
 
-					$JScript = 'top.wizbusy.setProgressText("pb1","' . g_l('import', "[prepare_progress]") . '");';
+					$JScript = 'top.wizbusy.setProgressText("pb1","' . g_l('import', '[prepare_progress]') . '");';
 
 
 					$out .= we_html_element::htmlForm(array("name" => "we_form"), $h) .
@@ -697,7 +697,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 
 
 					$JScript = "
-top.wizbusy.setProgressText('pb1','" . g_l('import', "[import]") . "');
+top.wizbusy.setProgressText('pb1','" . g_l('import', '[import]') . "');
 top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . ")*100));";
 
 

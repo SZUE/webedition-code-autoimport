@@ -200,7 +200,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 			function spellcheck() {
 				retry = 0;
 				if (document.spellchecker.isReady()) {
-					top.frames.glossarycheck.document.getElementById("statusText").innerHTML = "<?php print g_l('modules_glossary', '[checking]'); ?>...";
+					top.frames.glossarycheck.document.getElementById("statusText").innerHTML = "<?php echo g_l('modules_glossary', '[checking]'); ?>...";
 					var text = getTextOnly(orginal);
 					document.spellchecker.check(text);
 					window.setTimeout("findNext()", 2000);
@@ -682,19 +682,19 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 								case <?php echo we_glossary_glossary::TYPE_ACRONYM; ?>:
 									if (title === '') {
 										document.getElementById('title_' + i).focus();
-		<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_title]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+		<?php echo we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_title]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 										return false;
 									}
 									if (lang === '') {
 										document.getElementById('lang_' + i).focus();
-		<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+		<?php echo we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 										return false;
 									}
 									break;
 								case <?php echo we_glossary_glossary::TYPE_FOREIGNWORD; ?>:
 									if (lang === '') {
 										document.getElementById('lang_' + i).focus();
-		<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+		<?php echo we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 										return false;
 									}
 									break;
@@ -707,13 +707,13 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 									title = document.getElementById('title_' + i).value;
 									if (title === '') {
 										document.getElementById('title_' + i).focus();
-		<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_correct_word]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+		<?php echo we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_correct_word]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 										return false;
 									}
 									break;
 								default:
 									document.getElementById('type_' + i).focus();
-		<?php print we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_choose_action]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+		<?php echo we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_choose_action]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 									return false;
 									break;
 							}
@@ -733,7 +733,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				</div>
 
 
-				<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" target="glossarycheck">
+				<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post" target="glossarycheck">
 					<input type="hidden" name="ItemsToPublish" id="ItemsToPublish" value="" />
 					<input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 					<input type="hidden" name="we_cmd[1]" value="finish" />
@@ -909,7 +909,7 @@ top.add();' .
 					?>
 					</head>
 					<body class="weDialogBody">
-						<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post"><?php
+						<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post"><?php
 					}
 					?>
 				</form>

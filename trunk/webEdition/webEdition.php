@@ -129,7 +129,7 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 		success: function (o) {
 		},
 		failure: function (o) {
-			alert("<?php echo g_l('global', "[unable_to_call_setpagenr]"); ?>");
+			alert("<?php echo g_l('global', '[unable_to_call_setpagenr]'); ?>");
 		}
 	};
 
@@ -200,7 +200,7 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 
 		} else {
 			//  If a include-file is edited and another link is chosen, it will appear on the main window. And the pop-up will be closed.
-<?php echo we_message_reporting::getShowMessageCall(g_l('SEEM', "[open_link_in_SEEM_edit_include]"), we_message_reporting::WE_MESSAGE_WARNING); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('SEEM', '[open_link_in_SEEM_edit_include]'), we_message_reporting::WE_MESSAGE_WARNING); ?>
 			top.opener.top.doClickDirect(id, ct, table, top.opener);
 			// clean session
 			// get the EditorFrame - this is important due to edit_include_mode!!!!
@@ -564,13 +564,13 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				toggleBusy(1);
 				if (weEditorFrameController.getActiveDocumentReference()) {
 					if (!hasPerm) {
-<?php echo we_message_reporting::getShowMessageCall(g_l('alert', "[no_perms_action]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms_action]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 					} else if (window.confirm("<?php echo g_l('alert', '[delete_single][confirm_delete]'); ?>\n" + path)) {
 						url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
 						submit_we_form(top.weEditorFrameController.getActiveDocumentReference().frames["3"], self.load, url2 + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 					}
 				} else {
-<?php echo we_message_reporting::getShowMessageCall(g_l('global', "[no_document_opened]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('global', '[no_document_opened]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 				}
 				break;
 
@@ -623,12 +623,12 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				toggleBusy(1);
 				if (weEditorFrameController.getActiveDocumentReference()) {
 					if (!hasPerm) {
-<?php echo we_message_reporting::getShowMessageCall(g_l('alert', "[no_perms_action]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms_action]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 					} else {
 						submit_we_form(top.weEditorFrameController.getActiveDocumentReference().frames["3"], self.load, url + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 					}
 				} else {
-<?php echo we_message_reporting::getShowMessageCall(g_l('global', "[no_document_opened]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('global', '[no_document_opened]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 				}
 				break;
 			case "do_delete":
@@ -1053,7 +1053,7 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 					}
 
 				} else {
-					alert("<?php echo g_l('multiEditor', "[no_editor_left]"); ?>");
+					alert("<?php echo g_l('multiEditor', '[no_editor_left]'); ?>");
 
 				}
 				break;
@@ -1076,7 +1076,7 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 					we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
 
 				} else {
-					alert("<?php echo g_l('multiEditor', "[no_editor_left]"); ?>");
+					alert("<?php echo g_l('multiEditor', '[no_editor_left]'); ?>");
 
 				}
 				break;
@@ -1339,7 +1339,7 @@ pWebEdition_JSwe_cmds();
 					top.weEditorFrameController.toggleFrames();
 
 				} else {
-<?php we_message_reporting::getShowMessageCall(g_l('multiEditor', "[no_editor_left]"), we_message_reporting::WE_MESSAGE_INFO); ?>
+<?php we_message_reporting::getShowMessageCall(g_l('multiEditor', '[no_editor_left]'), we_message_reporting::WE_MESSAGE_INFO); ?>
 				}
 		}
 
@@ -1417,7 +1417,7 @@ if($_table_to_load){
 		try {
 			browserwind = window.open("<?php echo WEBEDITION_DIR; ?>openBrowser.php?url=" + encodeURI(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
 		} catch (e) {
-<?php echo we_message_reporting::getShowMessageCall(g_l('alert', "[browser_crashed]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[browser_crashed]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 		}
 	}
 <?php

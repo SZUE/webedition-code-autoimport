@@ -1804,13 +1804,13 @@ function in_array(n, h) {
 }
 
 function add_recipient() {
-	var newRecipient = prompt(\"" . g_l('alert', "[input_name]") . "\", \"\");
+	var newRecipient = prompt(\"" . g_l('alert', '[input_name]') . "\", \"\");
 	var p = document.forms[0].elements[\"we_recipient\"];
 
 	if (newRecipient != null) {
 		if (newRecipient.length > 0) {
 			if (newRecipient.length > 255 ) {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', "[max_name_recipient]"), we_message_reporting::WE_MESSAGE_ERROR) . "
+				" . we_message_reporting::getShowMessageCall(g_l('alert', '[max_name_recipient]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 				return;
 			}
 
@@ -1821,10 +1821,10 @@ function add_recipient() {
 				set_state_edit_delete_recipient();
 				send_recipients();
 			} else {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', "[recipient_exists]"), we_message_reporting::WE_MESSAGE_ERROR) . "
+				" . we_message_reporting::getShowMessageCall(g_l('alert', '[recipient_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 			}
 		} else {
-			" . we_message_reporting::getShowMessageCall(g_l('alert', "[not_entered_recipient]"), we_message_reporting::WE_MESSAGE_ERROR) . "
+			" . we_message_reporting::getShowMessageCall(g_l('alert', '[not_entered_recipient]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 		}
 	}
 }
@@ -1833,7 +1833,7 @@ function delete_recipient() {
 	var p = document.forms[0].elements[\"we_recipient\"];
 
 	if (p.selectedIndex >= 0) {
-		if (confirm(\"" . g_l('alert', "[delete_recipient]") . "\")) {
+		if (confirm(\"" . g_l('alert', '[delete_recipient]') . "\")) {
 			hot = true;
 
 			var d = document.forms[0].elements[\"newconf[formmail_deleted]\"];
@@ -1852,7 +1852,7 @@ function edit_recipient() {
 	if (p.selectedIndex >= 0) {
 		var editRecipient = p.options[p.selectedIndex].text;
 
-		editRecipient = prompt(\"" . g_l('alert', "[recipient_new_name]") . "\", editRecipient);
+		editRecipient = prompt(\"" . g_l('alert', '[recipient_new_name]') . "\", editRecipient);
 	}
 
 	if (p.selectedIndex >= 0 && editRecipient != null) {
@@ -1862,7 +1862,7 @@ function edit_recipient() {
 			}
 
 			if (editRecipient.length > 255 ) {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', "[max_name_recipient]"), we_message_reporting::WE_MESSAGE_ERROR) . "
+				" . we_message_reporting::getShowMessageCall(g_l('alert', '[max_name_recipient]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 				return;
 			}
 
@@ -1871,10 +1871,10 @@ function edit_recipient() {
 				hot = true;
 				send_recipients();
 			} else {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', "[recipient_exists]"), we_message_reporting::WE_MESSAGE_ERROR) . "
+				" . we_message_reporting::getShowMessageCall(g_l('alert', '[recipient_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 			}
 		} else {
-			" . we_message_reporting::getShowMessageCall(g_l('alert', "[not_entered_recipient]"), we_message_reporting::WE_MESSAGE_ERROR) . "
+			" . we_message_reporting::getShowMessageCall(g_l('alert', '[not_entered_recipient]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 		}
 	}
 }
@@ -2342,7 +2342,7 @@ function set_state_auth() {
 			} else { //  gd lib ist nicht installiert
 				$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "#", true, 100, 22, '', '', true) : "";
 				$_inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125, 0, '', true);
-				$_thumbnail_dir = we_html_button::create_button_table(array($_inp, $_but)) . '<br/>' . g_l('thumbnails', "[add_description_nogdlib]");
+				$_thumbnail_dir = we_html_button::create_button_table(array($_inp, $_but)) . '<br/>' . g_l('thumbnails', '[add_description_nogdlib]');
 			}
 
 			//  select if hooks can be executed

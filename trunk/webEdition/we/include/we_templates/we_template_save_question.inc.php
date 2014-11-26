@@ -29,7 +29,7 @@ echo we_html_tools::getHtmlTop(g_l('global', '[question]')) .
 $_we_cmd6 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 6);
 
 $alerttext = ($isTemplatesUsedByThisTemplate ?
-		g_l('alert', "[template_save_warning2]") :
+		g_l('alert', '[template_save_warning2]') :
 		sprintf((g_l('alert', ($nrDocsUsedByThisTemplate == 1) ? '[template_save_warning1]' : '[template_save_warning]')), $nrDocsUsedByThisTemplate)
 	);
 ?>

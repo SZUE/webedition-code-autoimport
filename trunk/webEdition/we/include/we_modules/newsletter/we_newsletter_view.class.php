@@ -1598,11 +1598,11 @@ edf.populateGroups();');
 				$this->saveSettings();
 				break;
 
-			case "import_csv":
-				if(($importno = we_base_request::_(we_base_request::INT, "csv_import")) !== false){
-					$filepath = we_base_request::_(we_base_request::FILE, "csv_file" . $importno);
-					$delimiter = we_base_request::_(we_base_request::RAW_CHECKED, "csv_delimiter" . $importno);
-					$col = we_base_request::_(we_base_request::INT, "csv_col" . $importno, 0);
+			case 'import_csv':
+				if(($importno = we_base_request::_(we_base_request::INT, 'csv_import')) !== false){
+					$filepath = we_base_request::_(we_base_request::FILE, 'csv_file' . $importno);
+					$delimiter = we_base_request::_(we_base_request::RAW_CHECKED, 'csv_delimiter' . $importno);
+					$col = we_base_request::_(we_base_request::INT, 'csv_col' . $importno, 0);
 
 					$imports = array(
 						'hmcol' => array(),
@@ -1612,7 +1612,7 @@ edf.populateGroups();');
 						'lastnamecol' => array(),
 					);
 					foreach($imports as $key => &$vals){
-						$vals['val'] = we_base_request::_(we_base_request::INT, "csv_" . $key . $importno, 0);
+						$vals['val'] = we_base_request::_(we_base_request::INT, 'csv_' . $key . $importno, 0);
 						$vals['import'] = ($vals['val'] > 0);
 						if($vals['val']){
 							$vals['val'] --;
@@ -1626,25 +1626,25 @@ edf.populateGroups();');
 					} else {
 						$row = array();
 						$control = array();
-						$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $filepath, "rb");
+						$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $filepath, 'rb');
 						$mailListArray = array();
 						if($fh){
 							$_mailListArray = explode("\n", $this->newsletter->groups[$importno]->Emails);
 							foreach($_mailListArray as $line){
-								$mailListArray[] = substr($line, 0, strpos($line, ","));
+								$mailListArray[] = substr($line, 0, strpos($line, ','));
 							}
 							unset($_mailListArray);
 							while($dat = fgetcsv($fh, 1000, $delimiter)){
 
 								if(!isset($control[$dat[$col]])){
-									$_alldat = implode("", $dat);
-									if(str_replace(" ", "", $_alldat) === ""){
+									$_alldat = implode('', $dat);
+									if(str_replace(' ', '', $_alldat) === ""){
 										continue;
 									}
-									$mailrecip = (str_replace(" ", "", $dat[$col]) === "") ? "--- " . g_l('modules_newsletter', '[email_missing]') . " ---" : $dat[$col];
+									$mailrecip = (str_replace(' ', '', $dat[$col]) === '') ? '--- ' . g_l('modules_newsletter', '[email_missing]') . ' ---' : $dat[$col];
 									if(!empty($mailrecip) && !in_array($mailrecip, $mailListArray)){
 										$row[] = $mailrecip . "," .
-											( ($imports['hmcol']['import'] && isset($dat[$imports['hmcol']['val']])) ? $dat[$imports['hmcol']['val']] : "") . "," .
+											( ($imports['hmcol']['import'] && isset($dat[$imports['hmcol']['val']])) ? $dat[$imports['hmcol']['val']] : '') . "," .
 											( ($imports['salutationcol']['import'] && isset($dat[$imports['salutationcol']['val']])) ? $dat[$imports['salutationcol']['val']] : "") . "," .
 											( ($imports['titlecol']['import'] && isset($dat[$imports['titlecol']['val']])) ? $dat[$imports['titlecol']['val']] : "") . "," .
 											( ($imports['firstnamecol']['import'] && isset($dat[$imports['firstnamecol']['val']])) ? $dat[$imports['firstnamecol']['val']] : "") . "," .

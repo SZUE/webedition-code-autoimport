@@ -110,7 +110,7 @@ function init() {
 }
 
 function browse_users_window() {
-	new jsWindow("<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel_browse_frameset.php?we_transaction=<?php echo $transaction; ?>", "messaging_usel_browse", -1, -1, 350, 330, true, false, true, false);
+	new jsWindow("<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_usel_browse_frameset.php?we_transaction=<?php echo $transaction; ?>", "messaging_usel_browse", -1, -1, 350, 330, true, false, true, false);
 		}
 
 		function save_addrbook() {
@@ -268,7 +268,7 @@ if($maxsel){
 		}
 //-->
 </script>
-<?php print STYLESHEET; ?>
+<?php echo STYLESHEET; ?>
 </head>
 <body class="weDialogBody" onload="doOnLoad()" onunload="doUnload();">
 	<form name="usel">
@@ -306,7 +306,7 @@ if($maxsel){
 		echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging', '[sel_rcpts]'), we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:ok()"), "", we_html_button::create_button("cancel", "javascript:window.close();")));
 		?>
 	</form>
-	<form action="<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php" method="post" name="addrbook_data">
+	<form action="<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php" method="post" name="addrbook_data">
 		<?php
 		echo we_html_tools::hidden('mode', 'save_addrbook') .
 		we_html_tools::hidden('we_transaction', $transaction) .

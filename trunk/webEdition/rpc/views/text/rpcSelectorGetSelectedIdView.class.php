@@ -37,23 +37,23 @@ class rpcSelectorGetSelectedIdView extends rpcView{
 			if(strpos(we_base_request::_(we_base_request::STRING,'we_cmd','',3), ',')){
 				switch(we_base_request::_(we_base_request::TABLE,'we_cmd','',2)){
 					case FILE_TABLE:
-						$msg = g_l('weSelectorSuggest', "[no_document]");
+						$msg = g_l('weSelectorSuggest', '[no_document]');
 						break;
 					case TEMPLATES_TABLE:
-						$msg = g_l('weSelectorSuggest', "[no_template]");
+						$msg = g_l('weSelectorSuggest', '[no_template]');
 						break;
 					case OBJECT_TABLE:
-						$msg = g_l('weSelectorSuggest', "[no_class]");
+						$msg = g_l('weSelectorSuggest', '[no_class]');
 						break;
 					case OBJECT_FILES_TABLE:
-						$msg = g_l('weSelectorSuggest', "[no_class]");
+						$msg = g_l('weSelectorSuggest', '[no_class]');
 						break;
 					default:
-						$msg = g_l('weSelectorSuggest', "[no_result]");
+						$msg = g_l('weSelectorSuggest', '[no_result]');
 						break;
 				}
 			} else {
-				$msg = g_l('weSelectorSuggest', "[no_folder]");
+				$msg = g_l('weSelectorSuggest', '[no_folder]');
 			}
 			$html = '"msg":"' . $msg . '","nr":"' . we_base_request::_(we_base_request::INT,'we_cmd',0,2) . '"';
 		}
