@@ -481,7 +481,7 @@ class we_class_folder extends we_folder{
 							break;
 						case 'checkbox':
 							$text = $this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']);
-							$content[$f][$i + 5]['dat'] = ($text == '1' ? g_l('global', '[yes]') : g_l('global', '[no]') );
+							$content[$f][$i + 5]['dat'] = g_l('global', ($text == '1' ? '[yes]' : '[no]'));
 							break;
 						case 'meta':
 							if($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']) != '' && isset($DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])])){

@@ -61,7 +61,7 @@ echo we_html_tools::getHtmlTop() .
 		$fs = $GLOBALS['we_doc']->getFilesize();
 
 		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[file_size]') . '</div>' .
-			'<div style="margin-bottom:10px;">' . round(($fs / 1024), 2) . "&nbsp;KB&nbsp;(" . $fs . "&nbsp;Byte)" . '</div>';
+				'<div style="margin-bottom:10px;">' . round(($fs / 1024), 2) . "&nbsp;KB&nbsp;(" . $fs . "&nbsp;Byte)" . '</div>';
 	}
 	$parts = array(
 		array(
@@ -96,7 +96,7 @@ echo we_html_tools::getHtmlTop() .
 
 		if($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::HTML || $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT){
 			$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[lastLive]') . '</div>' .
-				'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->Published) : "-") . '</div>';
+					'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->Published) : "-") . '</div>';
 
 			if($GLOBALS['we_doc']->Published && $GLOBALS['we_doc']->ModDate > $GLOBALS['we_doc']->Published){
 				$_html .= '<div style="margin-bottom:10px;">' . we_html_button::create_button('revert_published', 'javascript:revertToPublished();', true, 280) . '</div>';
@@ -144,8 +144,8 @@ echo we_html_tools::getHtmlTop() .
 
 		if(defined('WORKFLOW_TABLE') && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT){
 			$anzeige = (we_workflow_utility::inWorkflow($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) ?
-					we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) :
-					we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table));
+							we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) :
+							we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table));
 
 			$parts[] = array(
 				'headline' => g_l('modules_workflow', '[workflow]'),
@@ -168,7 +168,7 @@ echo we_html_tools::getHtmlTop() .
 					}
 				}
 				if(!isset($_metaData['exif']) || empty($_metaData['exif'])){
-					$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont" colspan="2">' . (is_callable("exif_read_data") ? g_l('metadata', '[no_exif_data]') : g_l('metadata', '[no_exif_installed]')) . '</td></tr>';
+					$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont" colspan="2">' . g_l('metadata', (is_callable("exif_read_data") ? '[no_exif_data]' : '[no_exif_installed]')) . '</td></tr>';
 				}
 
 				$_metaDataTable .= '<tr><td style="padding:10px 0 5px 0;" class="weMultiIconBoxHeadline" colspan="2">' . g_l('metadata', '[info_iptc_data]') . '</td></tr>';
@@ -214,7 +214,7 @@ echo we_html_tools::getHtmlTop() .
 	}
 
 	echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
+	we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
 	?>
 </body>
 </html>

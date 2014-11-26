@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_workflow_frames extends we_modules_frame{
+
 	public $module = "workflow";
 	protected $useMainTree = false;
 
@@ -120,7 +121,7 @@ class we_workflow_frames extends we_modules_frame{
 						if (nf[ai].name != -1) {
 							fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 						}
-						fr.write("<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]");            ?>\">");
+						fr.write("<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]");             ?>\">");
 						fr.write("</a>");
 						fr.write("&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + (parseInt(nf[ai].published) ? "" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "" : "") + "</A>&nbsp;&nbsp;<br/>\n");
 					} else {
@@ -129,14 +130,14 @@ class we_workflow_frames extends we_modules_frame{
 						var zusatz = (ai == nf.laenge ? "end" : "");
 
 						if (nf[ai].offen == 0) {
-							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php echo TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]")            ?>\"></A>");
+							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php echo TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]")             ?>\"></A>");
 							var zusatz2 = "";
 						} else {
-							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php echo TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[close_statustext]")            ?>\"></A>");
+							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php echo TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[close_statustext]")             ?>\"></A>");
 							var zusatz2 = "open";
 						}
 						fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
-						fr.write("<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>icons/workflow_folder" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[edit_statustext]");            ?>\">");
+						fr.write("<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>icons/workflow_folder" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[edit_statustext]");             ?>\">");
 						fr.write("</a>");
 						fr.write("<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 						fr.write("&nbsp;<b>" + (!parseInt(nf[ai].published) ? "<font color=\"red\">" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "</font>" : "") + "</b>");
@@ -369,7 +370,7 @@ class we_workflow_frames extends we_modules_frame{
 
 		$we_tabs->onResize();
 		$tab_header = $we_tabs->getHeader('', 22);
-		$textPre = ($mode == 1 ? g_l('modules_workflow', '[document]') : g_l('modules_workflow', '[workflow]'));
+		$textPre = g_l('modules_workflow', ($mode == 1 ? '[document]' : '[workflow]'));
 		$textPost = '/' . $text;
 
 		$extraHead = we_html_element::jsElement('
@@ -388,24 +389,24 @@ top.content.hloaded=1;
 		') . $tab_header;
 
 		$mainDiv = we_html_element::htmlDiv(array('id' => 'main'), we_html_tools::getPixel(100, 3) .
-				we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'), we_html_element::htmlNobr(
-						we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
-						we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
-				)) .
-				we_html_tools::getPixel(100, 3) .
-				$we_tabs->getHTML()
+						we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'), we_html_element::htmlNobr(
+										we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
+										we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
+						)) .
+						we_html_tools::getPixel(100, 3) .
+						$we_tabs->getHTML()
 		);
 
 		$body = we_html_element::htmlBody(array(
-				'onresize' => 'setFrameSize()',
-				'onload' => 'setFrameSize()',
-				'bgcolor' => 'white',
-				'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif',
-				'marginwidth' => 0,
-				'marginheight' => 0,
-				'leftmargin' => 0,
-				'topmargin' => 0,
-				), $mainDiv . we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')
+					'onresize' => 'setFrameSize()',
+					'onload' => 'setFrameSize()',
+					'bgcolor' => 'white',
+					'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif',
+					'marginwidth' => 0,
+					'marginheight' => 0,
+					'leftmargin' => 0,
+					'topmargin' => 0,
+						), $mainDiv . we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -441,11 +442,11 @@ top.content.hloaded=1;
 		$table2->setCol(0, 2, array('nowrap' => null, 'class' => 'defaultfont'), $this->View->getStatusHTML());
 
 		$body = we_html_element::htmlBody(array(
-				'bgcolor' => 'white',
-				'background' => IMAGE_DIR . 'edit/editfooterback.gif',
-				'style' => 'margin: 0px 0px 0px 0px;',
-				'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
-				), we_html_element::htmlForm($attribs = array(), $table1->getHtml() . $table2->getHtml())
+					'bgcolor' => 'white',
+					'background' => IMAGE_DIR . 'edit/editfooterback.gif',
+					'style' => 'margin: 0px 0px 0px 0px;',
+					'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
+						), we_html_element::htmlForm($attribs = array(), $table1->getHtml() . $table2->getHtml())
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);

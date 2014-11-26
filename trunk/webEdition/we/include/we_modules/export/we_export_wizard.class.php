@@ -801,7 +801,7 @@ function setState(a) {
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 						we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET) .
-						we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout($message, ($returned_message[1] ? g_l('export', '[step99]') : g_l('export', '[step99_notice]')))
+						we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout($message, g_l('export', ($returned_message[1] ? '[step99]' : '[step99_notice]')))
 						)
 		);
 	}

@@ -342,7 +342,7 @@ top.content.hloaded = 1;');
 										we_html_tools::htmlDialogLayout($edit->getHtml(), (
 												$type === "branch" ?
 														(g_l('modules_customer', '[edit_branche]')) :
-														($mode === "edit" ? g_l('modules_customer', '[edit_field]') : g_l('modules_customer', '[add_field]'))
+														g_l('modules_customer', ($mode === "edit" ? '[edit_field]' : '[add_field]'))
 												), we_html_button::position_yes_no_cancel($save, null, $cancel)
 										)
 								)
@@ -543,7 +543,7 @@ function transferDateFields() {
 		$default_order = new we_html_select(array('name' => 'default_order', 'style' => 'width:250px;', 'class' => 'weSelect'));
 		$default_order->addOption('', g_l('modules_customer', '[none]'));
 		foreach($this->View->settings->OrderTable as $ord){
-			$ordval = ($ord === 'ASC') ? g_l('modules_customer', '[ASC]') : g_l('modules_customer', '[DESC]');
+			$ordval = g_l('modules_customer', ($ord === 'ASC') ? '[ASC]' : '[DESC]');
 			$default_order->addOption($ord, $ordval);
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));

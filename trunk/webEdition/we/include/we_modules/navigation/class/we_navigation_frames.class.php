@@ -220,7 +220,7 @@ function setTab(tab) {
 					"onload" => "setFrameSize()",
 					"onresize" => "setFrameSize()"
 						), we_html_element::htmlDiv(array('id' => "main"), we_html_tools::getPixel(100, 3) . we_html_element::htmlDiv(array('id' => 'headrow', 'style' => "margin:0px;"), '&nbsp;' .
-										we_html_element::htmlB(($this->Model->IsFolder ? g_l('navigation', '[group]') : g_l('navigation', '[entry]')) . ':&nbsp;' .
+										we_html_element::htmlB(g_l('navigation', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' .
 												str_replace('&amp;', '&', $this->Model->Text) .
 												we_html_element::htmlDiv(array('id' => 'mark', 'style' => 'display: none;'), '*'))) .
 								we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' . we_html_element::jsElement($extraJS))
@@ -320,7 +320,7 @@ function setTab(tab) {
 						$uniqname, "weToggleBox('" . $uniqname . "','" . addslashes(g_l('navigation', '[icon_properties_out]')) . "','" . addslashes(
 								g_l('navigation', '[icon_properties]')) . "')", $wepos, g_l('global', '[openCloseBox]')) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(
 						g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(
-						g_l('navigation', '[icon_properties]')) . '\');" >' . ($wepos === 'down' ? g_l('navigation', '[icon_properties_out]') : g_l('navigation', '[icon_properties]')) . '</span></td></tr></table>',
+						g_l('navigation', '[icon_properties]')) . '\');" >' . g_l('navigation', ($wepos === 'down' ? '[icon_properties_out]' : '[icon_properties]')) . '</span></td></tr></table>',
 				'space' => $this->_space_size,
 				'noline' => 1
 			),
@@ -552,7 +552,7 @@ function setTab(tab) {
 				), 5, 2);
 
 		$_table->setColContent(0, 0, g_l('navigation', '[stat_selection]'));
-		$_table->setColContent(1, 0, ($this->Model->SelectionType == we_navigation_navigation::STPYE_CATLINK ? g_l('navigation', '[catLink]') : ($this->Model->SelectionType == we_navigation_navigation::STPYE_DOCLINK ? g_l('navigation', '[docLink]') : g_l('navigation', '[objLink]'))) . ':');
+		$_table->setColContent(1, 0, g_l('navigation', ($this->Model->SelectionType == we_navigation_navigation::STPYE_CATLINK ? '[catLink]' : ($this->Model->SelectionType == we_navigation_navigation::STPYE_DOCLINK ? '[docLink]' : '[objLink]'))) . ':');
 		$_table->setColContent(1, 1, id_to_path($this->Model->LinkID, ($this->Model->SelectionType == we_navigation_navigation::STPYE_CATLINK ? CATEGORY_TABLE : ($this->Model->SelectionType == we_navigation_navigation::STPYE_DOCLINK ? FILE_TABLE : OBJECT_FILES_TABLE))));
 
 		if(!empty($this->Model->Url) && $this->Model->Url != 'http://'){
@@ -789,7 +789,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 	function getHTMLContentInfo(){
 		$_sort = array();
 		foreach($this->Model->Sort as $_i){
-			$_sort[] = $_i['field'] . '&nbsp;(' . ($_i['order'] === 'DESC' ? g_l('navigation', '[descending]') : g_l('navigation', '[ascending]')) . ')';
+			$_sort[] = $_i['field'] . '&nbsp;(' . g_l('navigation', ($_i['order'] === 'DESC' ? '[descending]' : '[ascending]')) . ')';
 		}
 
 		$_table = new we_html_table(
@@ -1445,7 +1445,7 @@ function selectItem() {
 			array(
 				'headline' => '',
 				'html' => we_html_tools::htmlFormElementTable(
-						$_select->getHtml(), $this->Model->SelectionType == we_navigation_navigation::STPYE_CATEGORY ? g_l('navigation', '[categories]') : ($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS ? g_l('navigation', '[objects]') : g_l('navigation', '[documents]'))),
+						$_select->getHtml(), g_l('navigation', ($this->Model->SelectionType == we_navigation_navigation::STPYE_CATEGORY ? '[categories]' : ($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS ? '[objects]' : '[documents]')))),
 				'space' => 0
 		));
 

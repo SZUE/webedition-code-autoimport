@@ -25,7 +25,9 @@
 class we_versions_logView{
 
 	public $actionView;
+
 	const versionPerPage = 10;
+
 	private $Model;
 
 	public function __construct(){
@@ -215,20 +217,20 @@ function back(id) {
 
 			for($i = 0; $i < $anz; $i++){
 				$out .= '<tr><td style="font-weight:bold;width:100px;padding:5px 15px 5px 15px;">' .
-					g_l('logging', '[date]') . ':</td><td width="200">' .
-					date("d.m.y - H:i:s", $content[$i]['timestamp']) . '</td>' .
-					'<td width="auto">' . we_html_tools::getPixel(1, 1) . '</td></tr>' .
-					'<tr><td style="font-weight:bold;width:100px;padding:5px 15px 5px 15px;">' .
-					g_l('logging', '[user]') . ':</td><td width="auto">' .
-					f("SELECT Text FROM `" . USER_TABLE . "` WHERE ID=" . intval($content[$i]['userID']), "Text", new DB_WE()) .
-					'</td></tr>' .
-					'<tr><td style="font-weight:bold;width:100px;padding:5px 15px 5px 15px;">' .
-					g_l('logging', '[logEntry]') . ':</td><td width="auto">' .
-					$this->showLog($content[$i]['action'], $content[$i]['ID']) . '</td></tr>' .
-					'<tr><td colspan="3" style="padding:5px 15px 5px 15px;"><div id="dataContent_' . $content[$i]['ID'] . '" name="dataContent">' .
-					$this->handleData($content[$i]['ID'], 0, self::versionPerPage) . '</div>' .
-					'<div style="border-top:1px solid #000;margin-top:20px;margin-bottom:20px;">' . we_html_tools::getPixel(1, 1) .
-					'</div></td></tr>';
+						g_l('logging', '[date]') . ':</td><td width="200">' .
+						date("d.m.y - H:i:s", $content[$i]['timestamp']) . '</td>' .
+						'<td width="auto">' . we_html_tools::getPixel(1, 1) . '</td></tr>' .
+						'<tr><td style="font-weight:bold;width:100px;padding:5px 15px 5px 15px;">' .
+						g_l('logging', '[user]') . ':</td><td width="auto">' .
+						f("SELECT Text FROM `" . USER_TABLE . "` WHERE ID=" . intval($content[$i]['userID']), "Text", new DB_WE()) .
+						'</td></tr>' .
+						'<tr><td style="font-weight:bold;width:100px;padding:5px 15px 5px 15px;">' .
+						g_l('logging', '[logEntry]') . ':</td><td width="auto">' .
+						$this->showLog($content[$i]['action'], $content[$i]['ID']) . '</td></tr>' .
+						'<tr><td colspan="3" style="padding:5px 15px 5px 15px;"><div id="dataContent_' . $content[$i]['ID'] . '" name="dataContent">' .
+						$this->handleData($content[$i]['ID'], 0, self::versionPerPage) . '</div>' .
+						'<div style="border-top:1px solid #000;margin-top:20px;margin-bottom:20px;">' . we_html_tools::getPixel(1, 1) .
+						'</div></td></tr>';
 			}
 
 			$out .= '</table></div>';
@@ -265,14 +267,14 @@ function back(id) {
 		if($action == we_versions_log::VERSIONS_DELETE || $action == we_versions_log::VERSIONS_RESET){
 
 			$out .= '<table cellpadding="3" cellspacing="0" border="0" style="width:100%;border:1px solid #BBBAB9;" class="middlefont">' .
-				'<thead><tr style="background-color:#dddddd;font-weight:bold;"><td>' .
-				we_html_tools::getPixel(1, 1) . '</td><td>' .
-				g_l('logging', '[ID]') . '</td><td>' .
-				g_l('logging', '[name]') . '</td><td>' .
-				g_l('logging', '[path]') . '</td><td>' .
-				g_l('logging', '[version]') . '</td><td>' .
-				g_l('logging', '[contenttype]') .
-				'</td></tr></thead>';
+					'<thead><tr style="background-color:#dddddd;font-weight:bold;"><td>' .
+					we_html_tools::getPixel(1, 1) . '</td><td>' .
+					g_l('logging', '[ID]') . '</td><td>' .
+					g_l('logging', '[name]') . '</td><td>' .
+					g_l('logging', '[path]') . '</td><td>' .
+					g_l('logging', '[version]') . '</td><td>' .
+					g_l('logging', '[contenttype]') .
+					'</td></tr></thead>';
 
 			$anzGesamt = count($data);
 
@@ -294,19 +296,19 @@ function back(id) {
 				}
 				$out .= '<tr id="' . $name . '" name="' . $name . '" style="display:' . $display . ';">
 					<td align="left">' . $m . '.</td><td align="left">' .
-					$v['documentID'] . '</td><td align="left">' .
-					we_util_Strings::shortenPath($v['Text'], 18) . '</td><td align="left">' .
-					we_util_Strings::shortenPath($v['Path'], 40) . '</td><td align="left">' .
-					$v['Version'] . '</td><td align="left">' .
-					$v['ContentType'] . '</td></tr>';
+						$v['documentID'] . '</td><td align="left">' .
+						we_util_Strings::shortenPath($v['Text'], 18) . '</td><td align="left">' .
+						we_util_Strings::shortenPath($v['Path'], 40) . '</td><td align="left">' .
+						$v['Version'] . '</td><td align="left">' .
+						$v['ContentType'] . '</td></tr>';
 			}
 			$out .= '<tr style="background-color:#dddddd;">
 				<td style="border-top:1px solid #BBBAB9;padding:3px 5px 3px 3px;" align="right" colspan="6">
 				<span id="startNumber_' . $logId . '">' . ($start + 1) . '</span> - <span id="showNumber_' . $logId . '">' . $showNumber . '</span> <span>' . g_l('logging', '[of]') . '</span> <span style="margin-right:20px;">' . $anzGesamt . '</span>' .
-				(($anzGesamt > self::versionPerPage) ? '<span style="margin-right:20px;"><a id="showAll_' . $logId . '" href="#" onclick="showAll(' . $logId . ');">' . g_l('logging', '[all]') . '</a></span>' : '') .
-				'<span style="margin-right:5px;"><a title="' . g_l('logging', '[back]') . '" href="#" onclick="back(' . $logId . ');"><img src=\'' . IMAGE_DIR . 'navigation/button_arrow_left.gif\' id="back_' . $logId . '" style="display:none;border:2px solid #DDD;"  /></a></span>' .
-				(($anzGesamt > self::versionPerPage) ? '<span style="margin-right:5px;"><a title="' . g_l('logging', '[next]') . '" href="#" onclick="next(' . $logId . ');"><img src=\'' . IMAGE_DIR . 'navigation/button_arrow_right.gif\' id="next_' . $logId . '" style="border:2px solid #DDD;" /></a></span>' : '') .
-				we_html_tools::hidden("start_" . $logId, $start) . '</td></tr>
+					(($anzGesamt > self::versionPerPage) ? '<span style="margin-right:20px;"><a id="showAll_' . $logId . '" href="#" onclick="showAll(' . $logId . ');">' . g_l('logging', '[all]') . '</a></span>' : '') .
+					'<span style="margin-right:5px;"><a title="' . g_l('logging', '[back]') . '" href="#" onclick="back(' . $logId . ');"><img src=\'' . IMAGE_DIR . 'navigation/button_arrow_left.gif\' id="back_' . $logId . '" style="display:none;border:2px solid #DDD;"  /></a></span>' .
+					(($anzGesamt > self::versionPerPage) ? '<span style="margin-right:5px;"><a title="' . g_l('logging', '[next]') . '" href="#" onclick="next(' . $logId . ');"><img src=\'' . IMAGE_DIR . 'navigation/button_arrow_right.gif\' id="next_' . $logId . '" style="border:2px solid #DDD;" /></a></span>' : '') .
+					we_html_tools::hidden("start_" . $logId, $start) . '</td></tr>
 				</table>';
 		} elseif($action == we_versions_log::VERSIONS_PREFS){
 
@@ -318,55 +320,55 @@ function back(id) {
 
 				switch($k){
 					case "version_image/*":
-						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$val = g_l('logging', (isset($v) && $v) ? '[activated]' : '[deactivated]');
 						$out .= '-> ' . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[image/*]') . ": " . $val;
 						break;
 					case "version_text/html":
-						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$val = g_l('logging', (isset($v) && $v) ? '[activated]' : '[deactivated]');
 						$out .= '-> ' . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/html]') . ": " . $val;
 						break;
 					case "version_text/webedition":
-						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$val = g_l('logging', (isset($v) && $v) ? '[activated]' : '[deactivated]');
 						$out .= '-> ' . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/webedition]') . ": " . $val;
 						break;
 					case "version_text/js":
-						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$val = g_l('logging', (isset($v) && $v) ? '[activated]' : '[deactivated]');
 						$out .= '-> ' . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/js]') . ": " . $val;
 						break;
 					case "version_text/css":
-						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$val = g_l('logging', (isset($v) && $v) ? '[activated]' : '[deactivated]');
 						$out .= '-> ' . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/css]') . ": " . $val;
 						break;
 					case "version_text/plain":
-						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$val = g_l('logging', (isset($v) && $v) ? '[activated]' : '[deactivated]');
 						$out .= '-> ' . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/plain]') . ": " . $val;
 						break;
 					case "version_text/htaccess":
-						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$val = g_l('logging', (isset($v) && $v) ? '[activated]' : '[deactivated]');
 						$out .= '-> ' . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/htaccess]') . ": " . $val;
 						break;
 					case "version_text/weTmpl"://#4120
-						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$val = g_l('logging', (isset($v) && $v) ? '[activated]' : '[deactivated]');
 						$out .= '-> ' . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/weTmpl]') . ": " . $val;
 						break;
 					case "version_application/x-shockwave-flash":
-						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$val = g_l('logging', (isset($v) && $v) ? '[activated]' : '[deactivated]');
 						$out .= '-> ' . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[application/x-shockwave-flash]') . ": " . $val;
 						break;
 					case "version_video/quicktime":
-						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$val = g_l('logging', (isset($v) && $v) ? '[activated]' : '[deactivated]');
 						$out .= '-> ' . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[video/quicktime]') . ": " . $val;
 						break;
 					case "version_application/*":
-						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$val = g_l('logging', (isset($v) && $v) ? '[activated]' : '[deactivated]');
 						$out .= '-> ' . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[application/*]') . ": " . $val;
 						break;
 					case "version_text/xml":
-						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$val = g_l('logging', (isset($v) && $v) ? '[activated]' : '[deactivated]');
 						$out .= '-> ' . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[text/xml]') . ": " . $val;
 						break;
 					case "version_objectFile":
-						$val = (isset($v) && $v) ? g_l('logging', '[activated]') : g_l('logging', '[deactivated]');
+						$val = g_l('logging', (isset($v) && $v) ? '[activated]' : '[deactivated]');
 						$out .= '-> ' . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[objectFile]') . ": " . $val;
 						break;
 					case "versions_time_days":
@@ -376,12 +378,12 @@ function back(id) {
 					case "versions_time_weeks":
 						$val = (isset($v) && $v != "" && $v != -1) ? ($v / $secondsWeek) : "";
 						$out .= '-> ' . g_l('logging', '[zeitraum]') . " " .
-							g_l('logging', '[weeks]') . ": " . $val;
+								g_l('logging', '[weeks]') . ": " . $val;
 						break;
 					case "versions_time_years":
 						$val = (isset($v) && $v != "" && $v != -1) ? ($v / $secondsYear) : "";
 						$out .= '-> ' . g_l('logging', '[zeitraum]') . " " .
-							g_l('logging', '[years]') . ": " . $val;
+								g_l('logging', '[years]') . ": " . $val;
 						break;
 					case "versions_anzahl":
 						$val = (isset($v) && $v != "") ? $v : "";
