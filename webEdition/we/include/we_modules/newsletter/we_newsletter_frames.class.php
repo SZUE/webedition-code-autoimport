@@ -1508,7 +1508,7 @@ function changeFieldValue(val,valueField) {
 										""
 								) .
 								we_html_tools::htmlDialogLayout(
-										$table->getHtml(), $type ? g_l('modules_newsletter', '[edit_email]') : g_l('modules_newsletter', '[add_email]'), we_html_button::position_yes_no_cancel($save, $close)
+										$table->getHtml(), g_l('modules_newsletter', $type ? '[edit_email]' : '[add_email]'), we_html_button::position_yes_no_cancel($save, $close)
 								)
 						)
 		);
@@ -1993,7 +1993,7 @@ self.focus();
 						"align" => "",
 					),
 					array(
-						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[1] ? g_l('modules_newsletter', '[yes]') : g_l('modules_newsletter', '[no]'))),
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), g_l('modules_newsletter', ($cols[1] ? '[yes]' : '[no]'))),
 						"height" => "",
 						"align" => "",
 					),
@@ -2331,7 +2331,7 @@ self.focus();
 		$_content = we_html_tools::htmlDialogLayout($_textarea, g_l('modules_newsletter', '[details]'), $_footer);
 
 
-		$details = (we_base_request::_(we_base_request::BOOL, "test") ? g_l('modules_newsletter', '[test_no_mail]') : g_l('modules_newsletter', '[sending]') );
+		$details = g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "test") ? '[test_no_mail]' : '[sending]'));
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $pb->getJS('', true) .
 								$_content

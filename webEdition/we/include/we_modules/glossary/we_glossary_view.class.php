@@ -545,7 +545,7 @@ function submitForm() {
 				if($this->Glossary->delete()){
 					echo we_html_element::jsElement('
 								' . $this->topFrame . '.deleteEntry(' . $this->Glossary->ID . ');
-								setTimeout(\'' . we_message_reporting::getShowMessageCall(($this->Glossary->IsFolder == 1 ? g_l('modules_glossary', '[group_deleted]') : g_l('modules_glossary', '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);
+								setTimeout(\'' . we_message_reporting::getShowMessageCall(g_l('modules_glossary', ($this->Glossary->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);
 							');
 
 					// --> Save to Cache

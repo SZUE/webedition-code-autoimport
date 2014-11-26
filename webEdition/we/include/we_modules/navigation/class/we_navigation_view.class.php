@@ -844,7 +844,7 @@ function submitForm() {
 				if($this->Model->delete()){
 					echo we_html_element::jsElement('
 									' . $this->topFrame . '.deleteEntry(' . $this->Model->ID . ');
-									setTimeout(\'' . we_message_reporting::getShowMessageCall(($this->Model->IsFolder == 1 ? g_l('navigation', '[group_deleted]') : g_l('navigation', '[navigation_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);
+									setTimeout(\'' . we_message_reporting::getShowMessageCall(g_l('navigation', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[navigation_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);
 
 							');
 					$this->Model = new we_navigation_navigation();
