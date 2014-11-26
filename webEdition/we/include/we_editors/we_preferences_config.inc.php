@@ -250,8 +250,8 @@ $GLOBALS['configs'] = array(
 	),
 	'conf' => array(
 		//description,request-type if any, default, encode
-		'HTTP_USERNAME' => array('if used password protection to the webEdition directory, the username', we_base_request::STRING, ''),
-		'HTTP_PASSWORD' => array('if used password protection to the webEdition directory, the password', we_base_request::RAW, ''),
+		'HTTP_USERNAME' => array('if used password protection to the webEdition directory, the username', we_base_request::STRING, '',true),
+		'HTTP_PASSWORD' => array('if used password protection to the webEdition directory, the password', we_base_request::RAW, '',true),
 		'DB_CONNECT' => array('Mode how to access the database: mysqli_connect, mysqli_pconnect, deprecated: connect, pconnect', we_base_request::STRING, ''),
 		'DB_SET_CHARSET' => array('connection charset to db', we_base_request::STRING, 'utf8'),
 		//note these settings are user-settings, not changed by request/frontend
@@ -276,8 +276,6 @@ $GLOBALS['configs'] = array(
 		'active_integrated_modules' => array(we_base_request::STRING, ''),
 		'DB_CONNECT' => array(we_base_request::STRING, ''),
 		'useauth' => array(we_base_request::BOOL, false), //pseudo element
-		'HTTP_USERNAME' => array(we_base_request::STRING, ''),
-		'HTTP_PASSWORD' => array(we_base_request::RAW, ''),
 		'locale_default' => array(we_base_request::STRING, 'de_DE'),
 		'locale_locales' => array(we_base_request::STRING, 'de_DE'),
 	),
