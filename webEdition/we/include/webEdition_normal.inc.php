@@ -86,7 +86,7 @@ function pWebEdition_JSFunctions(){
 		top.opener.location.replace('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=1');
 		top.opener.focus();
 	<?php } else { ?>
-		top.opener.location.reload();
+		top.opener.history.back();
 		var logoutpopup = window.open('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
 		logoutpopup.focus();
 	<?php } ?>
