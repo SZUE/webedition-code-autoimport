@@ -89,7 +89,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 	}
 	$compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 	?>
-	<form action="<?php print WE_MESSAGING_MODULE_DIR; ?>todo_send_ntodo.php" name="compose_form" method="post">
+	<form action="<?php echo WE_MESSAGING_MODULE_DIR; ?>todo_send_ntodo.php" name="compose_form" method="post">
 		<?php
 		echo we_html_tools::hidden('we_transaction', $transaction);
 		echo we_html_tools::hidden('rcpts_string', '');

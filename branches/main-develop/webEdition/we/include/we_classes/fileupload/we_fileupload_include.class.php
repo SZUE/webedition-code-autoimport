@@ -131,7 +131,7 @@ class we_fileupload_include extends we_fileupload_base{
 		<div style="vertical-align: top; display: inline-block; height: 22px">
 			' . $butReset . '
 		</div>
-		<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" style="display:' . ($this->isDragAndDrop ? 'block' : 'none') . '">' . g_l('importFiles', "[dragdrop_text]") . '</div>
+		<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" style="display:' . ($this->isDragAndDrop ? 'block' : 'none') . '">' . g_l('importFiles', '[dragdrop_text]') . '</div>
 		<div id="div_' . $this->name . '_fileName" style="height:26px;padding-top:10px;display:' . ($this->isDragAndDrop ? 'none' : 'block') . '"></div>
 		<div style="display:block;">
 			<div id="div_' . $this->name . '_message" style="height:26px;font-size:12px;">

@@ -25,7 +25,7 @@ we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop() . STYLESHEET;
 
-$content = "<p class=\"defaultfont\">" . (isset($we_message) ? $we_message : sprintf(g_l('alert', "[no_perms]"), f("SELECT Username FROM " . USER_TABLE . " WHERE ID='" . $we_doc->CreatorID . "'", "Username", $DB_WE))) . "</p>";
+$content = "<p class=\"defaultfont\">" . (isset($we_message) ? $we_message : sprintf(g_l('alert', '[no_perms]'), f("SELECT Username FROM " . USER_TABLE . " WHERE ID='" . $we_doc->CreatorID . "'", "Username", $DB_WE))) . "</p>";
 ?>
 <script  type="text/javascript"><!--
 	top.toggleBusy(0);
@@ -37,7 +37,7 @@ $content = "<p class=\"defaultfont\">" . (isset($we_message) ? $we_message : spr
 
 <body class="weDialogBody">
 	<?php
-	print we_html_tools::htmlDialogLayout($content, g_l('alert', "[no_perms_title]"));
+	print we_html_tools::htmlDialogLayout($content, g_l('alert', '[no_perms_title]'));
 	?>
 </body>
 </html>

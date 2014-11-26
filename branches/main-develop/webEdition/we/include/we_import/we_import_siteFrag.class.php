@@ -62,7 +62,7 @@ top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . oldH
 	function finish(){
 		print we_html_element::jsElement(
 				"top.siteimportbuttons.setProgress(100);setTimeout('" . we_message_reporting::getShowMessageCall(
-					g_l('siteimport', "[importFinished]"), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');");
+					g_l('siteimport', '[importFinished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');");
 	}
 
 	function printHeader(){

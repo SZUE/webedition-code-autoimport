@@ -34,9 +34,9 @@ echo STYLESHEET;
 
 		$parts = array(array("icon" => "upload.gif", "headline" => "", "html" => $GLOBALS['we_doc']->formUpload(), "space" => 140));
 		if(method_exists($GLOBALS['we_doc'], "formProperties")){
-			$parts[] = array("icon" => "attrib.gif", "headline" => g_l('weClass', "[attribs]"), "html" => $GLOBALS['we_doc']->formProperties(), "space" => 140);
+			$parts[] = array("icon" => "attrib.gif", "headline" => g_l('weClass', '[attribs]'), "html" => $GLOBALS['we_doc']->formProperties(), "space" => 140);
 		}
-		$parts[] = array("icon" => "meta.gif", "headline" => g_l('weClass', "[metadata]"), "html" => $GLOBALS['we_doc']->formMetaInfos() . $GLOBALS['we_doc']->formMetaData(), "space" => 140);
+		$parts[] = array("icon" => "meta.gif", "headline" => g_l('weClass', '[metadata]'), "html" => $GLOBALS['we_doc']->formMetaInfos() . $GLOBALS['we_doc']->formMetaData(), "space" => 140);
 		echo we_html_multiIconBox::getJS() .
 		we_html_multiIconBox::getHTML("weImgProp", "100%", $parts, 20);
 		?>

@@ -69,7 +69,7 @@ $closeButton = we_html_button::create_button("close", "javascript:window.close()
 
 	<div id="headlineDiv">
 		<div class="weDialogHeadline">
-			<?php print g_l('versions', '[versions_log]') ?>
+			<?php echo g_l('versions', '[versions_log]') ?>
 		</div>
 	</div>
 	<div id="versionsDiv">
@@ -80,7 +80,7 @@ $closeButton = we_html_button::create_button("close", "javascript:window.close()
 	</div>
 	<div class="dialogButtonDiv">
 		<div style="position:absolute;top:10px;right:20px;">
-			<?php print $closeButton; ?>
+			<?php echo $closeButton; ?>
 		</div>
 	</div>
 </body>

@@ -125,20 +125,20 @@ top.unselectAllFiles();') . '
 <form name="we_form" target="fscmd" action="' . $_SERVER["SCRIPT_NAME"] . '">');
 		?>
 				if (top.we_editDirID) {
-					d.writeln('<input type="hidden" name="what" value="<?php print self::DORENAMEFOLDER; ?>" />');
+					d.writeln('<input type="hidden" name="what" value="<?php echo self::DORENAMEFOLDER; ?>" />');
 					d.writeln('<input type="hidden" name="we_editDirID" value="' + top.we_editDirID + '" />');
 				} else {
-					d.writeln('<input type="hidden" name="what" value="<?php print self::CREATEFOLDER; ?>" />');
+					d.writeln('<input type="hidden" name="what" value="<?php echo self::CREATEFOLDER; ?>" />');
 				}
 				d.writeln('<input type="hidden" name="order" value="' + top.order + '" />');
-				d.writeln('<input type="hidden" name="rootDirID" value="<?php print $this->rootDirID; ?>" />');
-				d.writeln('<input type="hidden" name="table" value="<?php print $this->table; ?>" />');
+				d.writeln('<input type="hidden" name="rootDirID" value="<?php echo $this->rootDirID; ?>" />');
+				d.writeln('<input type="hidden" name="table" value="<?php echo $this->table; ?>" />');
 				d.writeln('<input type="hidden" name="id" value="' + top.currentDir + '" />');
 				d.writeln('<table border="0" cellpadding="0" cellspacing="0" width="100%">');
 				if (makeNewFolder) {
 					d.writeln('<tr style="background-color:#DFE9F5;">');
-					d.writeln('<td align="center"><img src="<?php print TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>');
-					d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php print g_l('modules_voting', '[newFolder]') ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php print g_l('modules_voting', '[newFolder]') ?>"  class="wetextinput" style="width:100%" /></td>');
+					d.writeln('<td align="center"><img src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>');
+					d.writeln('<td><input type="hidden" name="we_FolderText" value="<?php echo g_l('modules_voting', '[newFolder]') ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php echo g_l('modules_voting', '[newFolder]') ?>"  class="wetextinput" style="width:100%" /></td>');
 					d.writeln('</tr>');
 				}
 				for (i = 0; i < entries.length; i++) {
@@ -146,7 +146,7 @@ top.unselectAllFiles();') . '
 					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 					d.writeln('<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? 'background-color:#DFE9F5;' : '') + 'cursor:pointer;' + ((we_editDirID != entries[i].ID) ? '' : '') + '"' + ((we_editDirID || makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >');
 					d.writeln('<td class="selector" width="25" align="center">');
-					d.writeln('<img src="<?php print TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
+					d.writeln('<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
 					d.writeln('</td>');
 					if (we_editDirID == entries[i].ID) {
 						d.writeln('<td class="selector">');
@@ -156,11 +156,11 @@ top.unselectAllFiles();') . '
 						d.writeln(cutText(entries[i].text, 24));
 					}
 					d.writeln('</td>');
-					d.writeln('</tr><tr><td colspan="3"><?php print we_html_tools::getPixel(2, 1); ?></td></tr>');
+					d.writeln('</tr><tr><td colspan="3"><?php echo we_html_tools::getPixel(2, 1); ?></td></tr>');
 				}
 				d.writeln('<tr>');
-				d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
-				d.writeln('<td><?php print we_html_tools::getPixel(200, 2) ?></td>');
+				d.writeln('<td width="25"><?php echo we_html_tools::getPixel(25, 2) ?></td>');
+				d.writeln('<td><?php echo we_html_tools::getPixel(200, 2) ?></td>');
 				d.writeln('</tr>');
 				d.writeln('</table></form>');
 				if (makeNewFolder || top.we_editDirID) {

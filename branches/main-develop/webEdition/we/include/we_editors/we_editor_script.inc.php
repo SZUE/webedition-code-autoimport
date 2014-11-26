@@ -144,8 +144,8 @@ function seeMode_dealWithLinks() {
 
 <?php
 echo (($_we_transaction = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0)) ?
-	"_EditorFrame = _controller.getEditorFrameByTransaction('" . $_we_transaction . "');" :
-	"_EditorFrame = _controller.getEditorFrame();");
+		"_EditorFrame = _controller.getEditorFrameByTransaction('" . $_we_transaction . "');" :
+		"_EditorFrame = _controller.getEditorFrame();");
 ?>
 
 	}
@@ -159,14 +159,14 @@ if(isset($GLOBALS['we_doc'])){
 	?>
 		// check if parentId was changed
 		var ajaxCallback = {
-			success: function(o) {
+			success: function (o) {
 				if (typeof (o.responseText) !== undefined && o.responseText !== '') {
 					var weResponse = false;
 					try {
 						eval(o.responseText);
 						if (weResponse) {
 							if (weResponse["data"] === "true") {
-								_question = "<?php echo ($GLOBALS['we_doc']->IsFolder ? g_l('alert', '[confirm][applyWeDocumentCustomerFiltersFolder]') : g_l('alert', '[confirm][applyWeDocumentCustomerFiltersDocument]')) ?>";
+								_question = "<?php echo g_l('alert', ($GLOBALS['we_doc']->IsFolder ? '[confirm][applyWeDocumentCustomerFiltersFolder]' : '[confirm][applyWeDocumentCustomerFiltersDocument]')) ?>";
 								if (confirm(_question)) {
 									top.we_cmd("customer_applyWeDocumentCustomerFilterFromFolder");
 								}
@@ -182,7 +182,7 @@ if(isset($GLOBALS['we_doc'])){
 					}
 				}
 			},
-			failure: function(o) {
+			failure: function (o) {
 
 			}}
 
@@ -334,7 +334,7 @@ if(isset($GLOBALS['we_doc'])){
 		var args = "";
 		var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 		for (var i = 0; i < arguments.length; i++) {
-			url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
+			url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 			if (i < (arguments.length - 1)) {
 				url += "&";
 			}
@@ -414,7 +414,7 @@ if(isset($we_doc) && $we_doc->ContentType == we_base_ContentTypes::IMAGE){
 						new jsWindow(url, "we_image_resize", -1, -1, 260,<?php echo ($we_doc->getGDType() === "jpg") ? 250 : 190; ?>, true, false, true);
 		<?php
 	} else {
-		echo we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', "[type_not_supported_hint]"), g_l('weClass', '[convert_' . $we_doc->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
+		echo we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[type_not_supported_hint]'), g_l('weClass', '[convert_' . $we_doc->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 	?>
 
@@ -436,11 +436,11 @@ if(isset($we_doc) && $we_doc->ContentType == we_base_ContentTypes::IMAGE){
 							new jsWindow(url, "we_rotate", -1, -1, 300,<?php echo ($we_doc->getGDType() === "jpg") ? 230 : 170; ?>, true, false, true);
 			<?php
 		} else {
-			echo we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', "[type_not_supported_hint]"), g_l('weClass', '[convert_' . $we_doc->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
+			echo we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[type_not_supported_hint]'), g_l('weClass', '[convert_' . $we_doc->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
 		}
 	} else {
 
-		echo we_message_reporting::getShowMessageCall(g_l('weClass', "[rotate_hint]"), we_message_reporting::WE_MESSAGE_ERROR);
+		echo we_message_reporting::getShowMessageCall(g_l('weClass', '[rotate_hint]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 	?>
 					break;
@@ -452,7 +452,7 @@ if(isset($we_doc) && $we_doc->ContentType == we_base_ContentTypes::IMAGE){
 	<?php
 } else if(defined('WE_EDIT_IMAGE')){
 
-	echo we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', "[type_not_supported_hint]"), g_l('weClass', '[convert_' . $GLOBALS['we_doc']->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
+	echo we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[type_not_supported_hint]'), g_l('weClass', '[convert_' . $GLOBALS['we_doc']->getGDType() . ']')), we_message_reporting::WE_MESSAGE_ERROR);
 }
 ?>
 				break;

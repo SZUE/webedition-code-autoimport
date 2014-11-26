@@ -50,7 +50,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 	passed_dls = new Array();
 
 	function showContent(id) {
-		top.content.editor.edbody.msg_mfv.messaging_msg_view.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>messaging_message_view.php?id=" + id + "&we_transaction=<?php echo $transaction; ?>";
+		top.content.editor.edbody.msg_mfv.messaging_msg_view.location = "<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_message_view.php?id=" + id + "&we_transaction=<?php echo $transaction; ?>";
 	}
 
 	function check(elem, groupSel) {

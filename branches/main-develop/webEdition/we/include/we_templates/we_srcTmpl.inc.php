@@ -160,7 +160,7 @@ if(we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9){
 	function javaEditorSetCode() {// imi: console.log("javaEditorSetCode() called");
 		if (document.weEditorApplet.height != 3000) {
 			try {
-				document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
+				document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php echo 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
 				countJEditorInitAttempts = 0;
 			} catch (err) {
 				setTimeout(javaEditorSetCode, 1000);
@@ -277,7 +277,7 @@ switch($_SESSION['prefs']['editorMode']){
 				_EditorFrame.setEditorIsHot(true);
 				document.weEditorApplet.setHot(false);
 			}
-			document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value = document.weEditorApplet.getCode();
+			document.forms['we_form'].elements["<?php echo 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value = document.weEditorApplet.getCode();
 		}
 	}
 
@@ -294,7 +294,7 @@ switch($_SESSION['prefs']['editorMode']){
 
 	function setCode() {
 		if (document.weEditorApplet && typeof (document.weEditorApplet.setCode) != undefined) {
-			document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php print 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
+			document.weEditorApplet.setCode(document.forms['we_form'].elements["<?php echo 'we_' . $we_doc->Name . '_txt[data]'; ?>"].value);
 		}
 	}
 
@@ -1032,7 +1032,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$znr = 1;
 		}
 		echo we_html_multiIconBox::getJS() .
-		'<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] === 'java' ? '' : 'style="display:none;"') . '>' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', "[showTagwizard]"), g_l('weClass', "[hideTagwizard]"), ($wepos === "down"), "", 'toggleTagWizard();') . '</div>';
+		'<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] === 'java' ? '' : 'style="display:none;"') . '>' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === "down"), "", 'toggleTagWizard();') . '</div>';
 		?>
 		<input type="hidden" name="we_complete_request" value="1"/>
 	</form></body>

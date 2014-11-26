@@ -94,7 +94,7 @@ $_buttons = we_html_button::position_yes_no_cancel($deleteAllButton, null, $clos
 
 	<div id="headlineDiv">
 		<div class="weDialogHeadline">
-			<?php print g_l('messageConsole', "[headline]") ?>
+			<?php echo g_l('messageConsole', '[headline]') ?>
 		</div>
 	</div>
 	<div id="messageDiv">
@@ -102,7 +102,7 @@ $_buttons = we_html_button::position_yes_no_cancel($deleteAllButton, null, $clos
 	</div>
 	<div class="dialogButtonDiv">
 		<div style="padding: 10px 10px 0px 0px;">
-			<?php print $_buttons; ?>
+			<?php echo $_buttons; ?>
 		</div>
 	</div>
 </body>

@@ -213,7 +213,7 @@ run();');
 				we_base_file::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], time() + 8 * 3600); //8h
 			}
 
-			echo we_html_element::jsElement(we_backup_util::getProgressJS(100, g_l('backup', "[finished]"), true) . '
+			echo we_html_element::jsElement(we_backup_util::getProgressJS(100, g_l('backup', '[finished]'), true) . '
 top.body.setLocation("' . WE_INCLUDES_DIR . 'we_editors/we_make_backup.php?pnt=body&step=2");
 top.cmd.location = "about:blank";
 ');
@@ -369,7 +369,7 @@ top.busy.location="' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=b
 
 	case 'rebuild':
 		echo we_html_element::jsElement('
-top.opener.top.openWindow("' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('backup', "[finished_success]") . '", "rebuildwin", -1, -1, 600, 130, 0, true);
+top.opener.top.openWindow("' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('backup', '[finished_success]') . '", "rebuildwin", -1, -1, 600, 130, 0, true);
 setTimeout("top.close();", 300);
 ');
 		break;

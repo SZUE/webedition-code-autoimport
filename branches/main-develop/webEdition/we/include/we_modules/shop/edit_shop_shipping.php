@@ -301,7 +301,7 @@ if(isset($weShipping)){ // show the shipping which must be edited
 	$parts[] = array(
 		'headline' => 'Standard',
 		'space' => 150,
-		'html' => we_class::htmlSelect('weShipping_default', array(1 => g_l('global', "[true]"), 0 => g_l('global', "[false]")), 1, $weShipping->default),
+		'html' => we_class::htmlSelect('weShipping_default', array(1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')), 1, $weShipping->default),
 		'noline' => 1
 	);
 }

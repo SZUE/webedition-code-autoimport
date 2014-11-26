@@ -141,7 +141,7 @@ class we_docTypes extends we_class{
 		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector', -1, '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(521, $this->Category, "dt_delete_cat", $addbut, "", "Icon,Path", CATEGORY_TABLE);
-		return we_html_tools::htmlFormElementTable($cats->get(), g_l('weClass', "[category]"));
+		return we_html_tools::htmlFormElementTable($cats->get(), g_l('weClass', '[category]'));
 	}
 
 	function addCat($id){
@@ -265,7 +265,7 @@ class we_docTypes extends we_class{
 		$yuiSuggest->setAcId("Path");
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput($textname, $this->ParentPath);
-		$yuiSuggest->setLabel(g_l('weClass', "[dir]"));
+		$yuiSuggest->setLabel(g_l('weClass', '[dir]'));
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($idname, $this->ParentID);
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
@@ -277,7 +277,7 @@ class we_docTypes extends we_class{
 
 	function formExtension($width = 100){
 		$exts = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::WEDOCUMENT);
-		return we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $this->Extension, $exts, $width), g_l('weClass', "[extension]"));
+		return we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $this->Extension, $exts, $width), g_l('weClass', '[extension]'));
 	}
 
 	/* creates the Template PopupMenue */
@@ -322,7 +322,7 @@ class we_docTypes extends we_class{
 	function formIsDynamic(){
 		$n = "we_" . $this->Name . "_IsDynamic";
 
-		return we_html_forms::checkbox(1, $this->IsDynamic, "check_" . $n, g_l('weClass', "[IsDynamic]"), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, ($this->IsDynamic ? 1 : 0)) .
+		return we_html_forms::checkbox(1, $this->IsDynamic, "check_" . $n, g_l('weClass', '[IsDynamic]'), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, ($this->IsDynamic ? 1 : 0)) .
 			we_html_element::jsElement('
 function switchExt(){
 	var a=document.we_form.elements;' .

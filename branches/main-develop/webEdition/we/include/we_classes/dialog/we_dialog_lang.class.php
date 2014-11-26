@@ -31,7 +31,7 @@ class we_dialog_lang extends we_dialog_base{
 
 	function __construct($noInternals = false){
 		parent::__construct();
-		$this->dialogTitle = g_l('wysiwyg', "[language_title]");
+		$this->dialogTitle = g_l('wysiwyg', '[language_title]');
 		$this->noInternals = $noInternals;
 		$this->defaultInit();
 	}
@@ -72,7 +72,7 @@ class we_dialog_lang extends we_dialog_base{
 
 	function getDialogContentHTML(){
 		return '<table border="0" cellpadding="0" cellspacing="0">
-<tr><td>' . $this->getLangField("lang", g_l('wysiwyg', "[language]"), 260) . '</td></tr>
+<tr><td>' . $this->getLangField("lang", g_l('wysiwyg', '[language]'), 260) . '</td></tr>
 </table>
 ' .
 			(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals ?

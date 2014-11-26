@@ -28,10 +28,10 @@ $parts = array(
 
 if($we_doc->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $we_doc->Table == OBJECT_FILES_TABLE)){
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
-		$parts[] = array("icon" => "lang.gif", "headline" => g_l('weClass', "[language]"), "html" => $GLOBALS['we_doc']->formLanguage(), "space" => 140, "noline" => 1);
-		$parts[] = array("headline" => g_l('weClass', "[grant_language]"), "html" => $GLOBALS['we_doc']->formChangeLanguage(), "space" => 140, "forceRightHeadline" => 1);
+		$parts[] = array("icon" => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $GLOBALS['we_doc']->formLanguage(), "space" => 140, "noline" => 1);
+		$parts[] = array("headline" => g_l('weClass', '[grant_language]'), "html" => $GLOBALS['we_doc']->formChangeLanguage(), "space" => 140, "forceRightHeadline" => 1);
 	} else if($we_doc->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $we_doc->Table == OBJECT_FILES_TABLE)){
-		$parts[] = array("icon" => "lang.gif", "headline" => g_l('weClass', "[language]"), "html" => $GLOBALS['we_doc']->formLanguage(), "space" => 140);
+		$parts[] = array("icon" => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $GLOBALS['we_doc']->formLanguage(), "space" => 140);
 	}
 }
 
@@ -42,10 +42,10 @@ if($we_doc->Table == FILE_TABLE && permissionhandler::hasPerm('CAN_COPY_FOLDERS'
 $wepos = weGetCookieVariable('but_weDirProp');
 $znr = 4;
 if($we_doc->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $we_doc->Table == OBJECT_FILES_TABLE)){
-	$parts[] = array("icon" => "user.gif", "headline" => g_l('weClass', "[owners]")
+	$parts[] = array("icon" => "user.gif", "headline" => g_l('weClass', '[owners]')
 		, "html" => $GLOBALS['we_doc']->formCreatorOwners() . "<br/>", "space" => 140, "noline" => 1);
 	if(permissionhandler::hasPerm("ADMINISTRATOR")){
-		$parts[] = array("headline" => g_l('modules_users', "[grant_owners]"), "html" => $GLOBALS['we_doc']->formChangeOwners(), "space" => 140, "forceRightHeadline" => 1);
+		$parts[] = array("headline" => g_l('modules_users', '[grant_owners]'), "html" => $GLOBALS['we_doc']->formChangeOwners(), "space" => 140, "forceRightHeadline" => 1);
 	}
 }
 

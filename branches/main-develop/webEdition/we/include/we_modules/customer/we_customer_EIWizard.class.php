@@ -597,7 +597,7 @@ class we_customer_EIWizard{
 		);
 
 		//upload table
-		//$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', "[max_possible_size]"), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
+		//$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
 		$tmptable->setCol(0, 0, array(), $fileUploader->getHtmlAlertBoxes());
 		$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
 
@@ -788,7 +788,7 @@ class we_customer_EIWizard{
 						$_REQUEST["dataset"] = $firstItem;
 						$parts = array(array("html" => $tblFrame->getHtml(), "space" => 0, "noline" => 1));
 					}else {
-						$parts = array(array("html" => we_html_tools::htmlAlertAttentionBox((!$xmlWellFormed) ? g_l('modules_customer', '[not_well_formed]') : g_l('modules_customer', '[missing_child_node]'), we_html_tools::TYPE_ALERT, 570), "space" => 0, "noline" => 1));
+						$parts = array(array("html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', (!$xmlWellFormed) ? '[not_well_formed]' : '[missing_child_node]'), we_html_tools::TYPE_ALERT, 570), "space" => 0, "noline" => 1));
 						$js = we_html_element::jsElement($this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_IMPORT . '&step=99";');
 					}
 					break;
@@ -840,7 +840,7 @@ class we_customer_EIWizard{
 		$records = we_customer_EI::getCustomersFieldset();
 
 		if($type == we_import_functions::TYPE_GENERIC_XML){
-			$tableheader = array(array("dat" => g_l('modules_customer', '[we_flds]')), array("dat" => g_l('modules_customer', '[rcd_flds]')), array("dat" => g_l('import', "[attributes]")));
+			$tableheader = array(array("dat" => g_l('modules_customer', '[we_flds]')), array("dat" => g_l('modules_customer', '[rcd_flds]')), array("dat" => g_l('import', '[attributes]')));
 		} else {
 			$tableheader = array(array("dat" => g_l('modules_customer', '[we_flds]')), array("dat" => g_l('modules_customer', '[rcd_flds]')));
 		}

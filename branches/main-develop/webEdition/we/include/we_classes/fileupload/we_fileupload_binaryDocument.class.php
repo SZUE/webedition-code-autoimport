@@ -147,7 +147,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 	public function getHTML($fs = '', $ft = '', $md = '', $thumbnailSmall = '', $thumbnailBig = ''){
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? true : false;
 		$width = $isIE10 ? array('input' => 84, 'button' => 168) : array('input' => 170, 'button' => 170);
-		$dropText = $this->isDragAndDrop ? g_l('newFile', "[drop_text_ok]") : g_l('newFile', "[drop_text_nok]");
+		$dropText = g_l('newFile', $this->isDragAndDrop ? '[drop_text_ok]' : '[drop_text_nok]');
 
 		$btnBrowse = we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, $width['button'], we_html_button::HEIGHT, '', '', false, false, '_btn');
 		$btnUpload = we_html_button::create_button("upload", "javascript:" . $this->getJsBtnCmd('upload'), true, $width['button'], 22, "", "", true, false, "_btn", true);
@@ -232,7 +232,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 				(self::isFallback() || self::isLegacyMode() ? '' : '
 						<div id="div_fileupload_right">' .
 						$divDropzone .
-						($this->binDocProperties['type'] === 'image' ? '<br />' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', "[import_metadata_at_upload]")) : '') . '
+						($this->binDocProperties['type'] === 'image' ? '<br />' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', '[import_metadata_at_upload]')) : '') . '
 						</div>'
 				) . '
 					<div id="div_fileupload_right_legacy" style="text-align:right;display:' . (self::isFallback() || self::isLegacyMode() ? '' : 'none' ) . '">' .

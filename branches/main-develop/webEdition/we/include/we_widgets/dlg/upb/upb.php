@@ -32,7 +32,7 @@ $aProps = array(
 );
 require_once('../../mod/upb.php');
 
-$sTb = ($bTypeDoc && $bTypeObj) ? g_l('cockpit', "[upb_docs_and_objs]") : (($bTypeDoc) ? g_l('cockpit', "[upb_docs]") : (($bTypeObj) ? g_l('cockpit', "[upb_objs]") : g_l('cockpit', "[upb_docs_and_objs]")));
+$sTb = g_l('cockpit', ($bTypeDoc && $bTypeObj ? '[upb_docs_and_objs]' : ($bTypeDoc ? '[upb_docs]' : ($bTypeObj ? '[upb_objs]' : '[upb_docs_and_objs]'))));
 
 $jsCode = "
 var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
@@ -45,15 +45,15 @@ function init(){
 ";
 
 print we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[unpublished]')) . STYLESHEET . we_html_element::jsElement(
-				$jsCode)) . we_html_element::htmlBody(
-			array(
-			"marginwidth" => 15,
-			"marginheight" => 10,
-			"leftmargin" => 15,
-			"topmargin" => 10,
-			"onload" => "if(parent!=self)init();"
-			), we_html_element::htmlDiv(array(
-				"id" => "upb"
-				), $ct)));
+				we_html_element::htmlHead(
+						we_html_tools::getHtmlInnerHead(g_l('cockpit', '[unpublished]')) . STYLESHEET . we_html_element::jsElement(
+								$jsCode)) . we_html_element::htmlBody(
+						array(
+					"marginwidth" => 15,
+					"marginheight" => 10,
+					"leftmargin" => 15,
+					"topmargin" => 10,
+					"onload" => "if(parent!=self)init();"
+						), we_html_element::htmlDiv(array(
+							"id" => "upb"
+								), $ct)));

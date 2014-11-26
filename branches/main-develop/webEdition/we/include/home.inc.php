@@ -347,7 +347,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 			switch (a) {
 				case 'swap':
 					gel(id + '_res').value = (res == 0) ? 1 : 0;
-					gel(id + '_icon_resize').title = (res == 0) ? '<?php echo g_l('cockpit', "[reduce_size]") ?>' : '<?php echo g_l('cockpit', "[increase_size]"); ?>';
+					gel(id + '_icon_resize').title = (res == 0) ? '<?php echo g_l('cockpit', '[reduce_size]') ?>' : '<?php echo g_l('cockpit', '[increase_size]'); ?>';
 					break;
 				case 'get':
 					return res;
@@ -631,7 +631,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 		}
 
 		function removeWidget(wizId) {
-			var remove = confirm('<?php echo g_l('cockpit', "[pre_remove]"); ?>"' + getLabel(wizId) + '"<?php echo g_l('cockpit', "[post_remove]"); ?>');
+			var remove = confirm('<?php echo g_l('cockpit', '[pre_remove]'); ?>"' + getLabel(wizId) + '"<?php echo g_l('cockpit', '[post_remove]'); ?>');
 			if (remove == true) {
 				gel(wizId).parentNode.removeChild(gel(wizId));
 				updateJsStyleCls();
@@ -1141,8 +1141,8 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 			array(
 			"class" => "defaultfont errorMessage", "style" => "width: 400px;"
 			), (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ? we_html_tools::htmlAlertAttentionBox(
-					"<strong>" . g_l('SEEM', "[question_change_startdocument]") . "</strong><br/><br/>" . we_html_button::create_button(
+					"<strong>" . g_l('SEEM', '[question_change_startdocument]') . "</strong><br/><br/>" . we_html_button::create_button(
 						"preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) : we_html_tools::htmlAlertAttentionBox(
-					"<strong>" . g_l('SEEM', "[start_with_SEEM_no_startdocument]") . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
+					"<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
 }
 echo '<iframe id="RSIFrame" name="RSIFrame" style="border:0px;width:1px;height:1px; visibility:hidden"></iframe></html>';

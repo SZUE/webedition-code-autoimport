@@ -175,7 +175,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 			'<tr><td>' .
 			we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') .
 			'</td></tr>
-		<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_SEE, getValueLoginMode(we_base_constants::MODE_SEE), 'mode', '<abbr title="' . g_l('SEEM', "[start_mode_seem_acronym]") . '">' . g_l('SEEM', '[start_mode_seem]') . '</abbr>', true, "small") .
+		<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_SEE, getValueLoginMode(we_base_constants::MODE_SEE), 'mode', '<abbr title="' . g_l('SEEM', '[start_mode_seem_acronym]') . '">' . g_l('SEEM', '[start_mode_seem]') . '</abbr>', true, "small") .
 			'</td></tr>
 		</table>');
 		$_modetable->setCol(0, 1, array(

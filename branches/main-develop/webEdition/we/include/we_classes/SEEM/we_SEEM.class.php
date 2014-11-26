@@ -480,7 +480,7 @@ abstract class we_SEEM{
 
 				//  Target document is on another Web-Server - leave webEdition !!!!!
 			} elseif(strpos($linkArray[5][$i], 'http://') === 0 || strpos($linkArray[5][$i], 'https://') === 0){
-				$javascriptCode = " onclick=\"if(confirm('" . g_l('SEEM', "[ext_document_on_other_server_selected]") . "')){ window.open('" . $linkArray[5][$i] . $linkArray[3][$i] . "','_blank');top.info(' '); } else { return false; };\" onmouseover=\"top.info('" . g_l('SEEM', "[info_ext_doc]") . "');\"";
+				$javascriptCode = " onclick=\"if(confirm('" . g_l('SEEM', '[ext_document_on_other_server_selected]') . "')){ window.open('" . $linkArray[5][$i] . $linkArray[3][$i] . "','_blank');top.info(' '); } else { return false; };\" onmouseover=\"top.info('" . g_l('SEEM', '[info_ext_doc]') . "');\"";
 			} else { //  Target is on the same Web-Server - open doc with webEdition.
 				if(strpos($linkArray[5][$i], WEBEDITION_DIR . 'we_cmd.php') === 0){ //  it is a command link - use open_document_with_parameters
 					//  Work with the parameters
@@ -493,13 +493,13 @@ abstract class we_SEEM{
 
 					$javascriptCode = (array_key_exists('we_objectID', $theParameterArray) ? //	target is a object
 									" onclick=\"" . self::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
-									" onclick=\"top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','" . we_base_ContentTypes::WEDOCUMENT . "','" . FILE_TABLE . "', '" . $theParameters . "');top.info(' ');\" onmouseover=\"top.info('" . g_l('SEEM', "[info_doc_with_parameter]") . "');\"");
+									" onclick=\"top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','" . we_base_ContentTypes::WEDOCUMENT . "','" . FILE_TABLE . "', '" . $theParameters . "');top.info(' ');\" onmouseover=\"top.info('" . g_l('SEEM', '[info_doc_with_parameter]') . "');\"");
 				} else {
 					//	This is a javascript:history link, to get back to the last document.
 					$javascriptCode = (strpos($linkArray[2][$i], 'javascript') === 0 && strpos($linkArray[2][$i], 'history') ?
-									' onclick="' . we_message_reporting::getShowMessageCall(g_l('SEEM', '[link_does_not_work]'), we_message_reporting::WE_MESSAGE_FRONTEND) . "\" onmouseover=\"top.info('" . g_l('SEEM', "[info_link_does_not_work]") . "')\"" :
+									' onclick="' . we_message_reporting::getShowMessageCall(g_l('SEEM', '[link_does_not_work]'), we_message_reporting::WE_MESSAGE_FRONTEND) . "\" onmouseover=\"top.info('" . g_l('SEEM', '[info_link_does_not_work]') . "')\"" :
 									//  Check, if the current document was changed
-									" onclick=\"if(confirm('" . g_l('SEEM', "[ext_doc_selected]") . "')){top.doExtClick('" . $linkArray[5][$i] . $linkArray[3][$i] . "');top.info(' ');} else { return false; };\" onmouseover=\"top.info('" . g_l('SEEM', "[info_ext_doc]") . "');\"");
+									" onclick=\"if(confirm('" . g_l('SEEM', '[ext_doc_selected]') . "')){top.doExtClick('" . $linkArray[5][$i] . $linkArray[3][$i] . "');top.info(' ');} else { return false; };\" onmouseover=\"top.info('" . g_l('SEEM', '[info_ext_doc]') . "');\"");
 				}
 			}
 			$destCode = str_replace($linkArray[0][$i], '<a href="javascript://" ' . $javascriptCode . ' onmouseout="top.info(\' \')">', $destCode);
@@ -779,7 +779,7 @@ abstract class we_SEEM{
 			$newForm = '<form';
 
 			if($formArray[2][$i] == -1 && (strpos($formArray[1][$i], "http://") === 0 || strpos($formArray[1][$i], "https://") === 0)){ // Formular is on another webServer
-				$newForm .= " onsubmit='if(confirm(\"" . g_l('SEEM', "[ext_form_target_other_server]") . "\")){return true;} else {return false;};' target='_blank'";
+				$newForm .= " onsubmit='if(confirm(\"" . g_l('SEEM', '[ext_form_target_other_server]') . "\")){return true;} else {return false;};' target='_blank'";
 
 				foreach($theAttribs as $key => $value){
 					//  the target must be changed and shall open in a new window
@@ -795,7 +795,7 @@ abstract class we_SEEM{
 				// target is a webEdition Document
 				$newForm .= ' target="load" action="' . WEBEDITION_DIR . 'we_cmd.php"' .
 						($formArray[2][$i] != -1 || strpos($formArray[1][$i], WEBEDITION_DIR . 'we_cmd.php') === 0 ? '' :
-								" onsubmit='if(confirm(\"" . g_l('SEEM', "[ext_form_target_we_server]") . "\")){return true;} else {return false;};'");
+								" onsubmit='if(confirm(\"" . g_l('SEEM', '[ext_form_target_we_server]') . "\")){return true;} else {return false;};'");
 
 				foreach($theAttribs as $key => $value){
 					if(strtolower($key) === 'target' || strtolower($key) === 'action'){

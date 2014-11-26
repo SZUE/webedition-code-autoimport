@@ -3,7 +3,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once ('meta.conf.php');
 
 $translate = we_core_Local::addTranslation('apps.xml');
-we_core_Local::addTranslation('default.xml', '<?php print $TOOLNAME; ?>');
+we_core_Local::addTranslation('default.xml', '<?php echo $TOOLNAME; ?>');
 
 $controller = Zend_Controller_Front::getInstance();
 $appName = $controller->getParam('appName');

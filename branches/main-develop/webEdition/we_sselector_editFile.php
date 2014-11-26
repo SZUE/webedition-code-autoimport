@@ -43,7 +43,7 @@ if(we_base_request::_(we_base_request::STRING, "cmd") === "save"){
 	$id = str_replace('//', '/', $id);
 	$we_fileData = we_base_file::load($id);
 	if($we_fileData === false){
-		$we_alerttext = sprintf(g_l('alert', "[can_not_open_file]"), str_replace(str_replace("\\", "/", dirname($id)) . "/", "", $id), 1);
+		$we_alerttext = sprintf(g_l('alert', '[can_not_open_file]'), str_replace(str_replace("\\", "/", dirname($id)) . "/", "", $id), 1);
 	}
 }
 

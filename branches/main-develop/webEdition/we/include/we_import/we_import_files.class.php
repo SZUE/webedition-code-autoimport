@@ -138,7 +138,7 @@ function refreshTree() {
 function uploadFinished() {
 	refreshTree();
 	' . we_message_reporting::getShowMessageCall(
-						g_l('importFiles', "[finished]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
+						g_l('importFiles', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 }
 
 function checkFileinput(){
@@ -150,7 +150,7 @@ function checkFileinput(){
 					imgs[i].style.display="";
 			}
 		}
-		//weAppendMultiboxRow(we_fileinput.replace(/WEFORMNUM/g,weGetLastMultiboxNr()),\'' . g_l('importFiles', "[file]") . '\' + \' \' + (parseInt(weGetMultiboxLength())),80,1);
+		//weAppendMultiboxRow(we_fileinput.replace(/WEFORMNUM/g,weGetLastMultiboxNr()),\'' . g_l('importFiles', '[file]') . '\' + \' \' + (parseInt(weGetMultiboxLength())),80,1);
 		var fi = we_fileinput.replace(/WEFORMNUM/g,weGetLastMultiboxNr());
 		fi = fi.replace(/WE_FORM_NUM/g,(document.forms.length));
 		weAppendMultiboxRow(fi,"",0,1);
@@ -262,7 +262,7 @@ function setApplet() {
 
 		$parts = array(
 			array(
-				'headline' => g_l('importFiles', "[destination_dir]"),
+				'headline' => g_l('importFiles', '[destination_dir]'),
 				'html' =>
 				we_html_tools::hidden('we_cmd[0]', 'import_files') . we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', '2') . we_html_tools::hidden('jsRequirementsOk', 0) . // fix for categories require reload!
 				we_html_element::htmlHidden(array('name' => 'categories', 'value' => '')) .
@@ -272,11 +272,11 @@ function setApplet() {
 			array(
 				'headline' => g_l('importFiles', '[sameName_headline]'),
 				'html' =>
-				we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[sameName_expl]"), we_html_tools::TYPE_INFO, 380) .
+				we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 380) .
 				we_html_tools::getPixel(200, 10) .
-				we_html_forms::radiobutton('overwrite', ($this->sameName === "overwrite"), "sameName", g_l('importFiles', "[sameName_overwrite]")) .
-				we_html_forms::radiobutton('rename', ($this->sameName === "rename"), "sameName", g_l('importFiles', "[sameName_rename]")) .
-				we_html_forms::radiobutton('nothing', ($this->sameName === "nothing"), "sameName", g_l('importFiles', "[sameName_nothing]")),
+				we_html_forms::radiobutton('overwrite', ($this->sameName === "overwrite"), "sameName", g_l('importFiles', '[sameName_overwrite]')) .
+				we_html_forms::radiobutton('rename', ($this->sameName === "rename"), "sameName", g_l('importFiles', '[sameName_rename]')) .
+				we_html_forms::radiobutton('nothing', ($this->sameName === "nothing"), "sameName", g_l('importFiles', '[sameName_nothing]')),
 				'space' => 150
 			),
 		);
@@ -287,7 +287,7 @@ function setApplet() {
 		if(permissionhandler::hasPerm("EDIT_KATEGORIE")){
 
 			$parts[] = array(
-				'headline' => g_l('global', "[categorys]") . '',
+				'headline' => g_l('global', '[categorys]') . '',
 				'html' => $this->getHTMLCategory(),
 				'space' => 150
 			);
@@ -295,15 +295,15 @@ function setApplet() {
 
 		if(permissionhandler::hasPerm("NEW_GRAFIK")){
 			$parts[] = array(
-				'headline' => g_l('importFiles', "[metadata]") . '',
+				'headline' => g_l('importFiles', '[metadata]') . '',
 				'html' => we_html_forms::checkboxWithHidden(
-					$this->importMetadata == true, 'importMetadata', g_l('importFiles', "[import_metadata]")),
+					$this->importMetadata == true, 'importMetadata', g_l('importFiles', '[import_metadata]')),
 				'space' => 150
 			);
 
 			if(we_base_imageEdit::gd_version() > 0){
 				$GLOBALS['DB_WE']->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER By Name');
-				$Thselect = g_l('importFiles', "[thumbnails]") . "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
+				$Thselect = g_l('importFiles', '[thumbnails]') . "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
 
 				$thumbsArray = makeArrayFromCSV($this->thumbs);
 				while($GLOBALS['DB_WE']->next_record()){
@@ -313,7 +313,7 @@ function setApplet() {
 				$Thselect .= '</select><input type="hidden" name="thumbs" value="' . $this->thumbs . '" />' . "\n";
 
 				$parts[] = array(
-					"headline" => g_l('importFiles', "[make_thumbs]"),
+					"headline" => g_l('importFiles', '[make_thumbs]'),
 					"html" => $Thselect,
 					"space" => 150
 				);
@@ -321,19 +321,19 @@ function setApplet() {
 				$widthInput = we_html_tools::htmlTextInput("width", 10, $this->width, "", '', "text", 60);
 				$heightInput = we_html_tools::htmlTextInput("height", 10, $this->height, "", '', "text", 60);
 
-				$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->widthSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
-				$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->heightSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
+				$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . (($this->widthSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
+				$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . (($this->heightSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
 
-				$ratio_checkbox = we_html_forms::checkbox(1, $this->keepRatio, "keepRatio", g_l('thumbnails', "[ratio]"));
+				$ratio_checkbox = we_html_forms::checkbox(1, $this->keepRatio, "keepRatio", g_l('thumbnails', '[ratio]'));
 
 				$_resize = '<table border="0" cellpadding="2" cellspacing="0">
 <tr>
-	<td class="defaultfont">' . g_l('weClass', "[width]") . ':</td>
+	<td class="defaultfont">' . g_l('weClass', '[width]') . ':</td>
 	<td>' . $widthInput . '</td>
 	<td>' . $widthSelect . '</td>
 </tr>
 <tr>
-	<td class="defaultfont">' . g_l('weClass', "[height]") . ':</td>
+	<td class="defaultfont">' . g_l('weClass', '[height]') . ':</td>
 	<td>' . $heightInput . '</td>
 	<td>' . $heightSelect . '</td>
 </tr>
@@ -343,22 +343,22 @@ function setApplet() {
 </table>';
 
 				$parts[] = array(
-					"headline" => g_l('weClass', "[resize]"), "html" => $_resize, "space" => 150
+					"headline" => g_l('weClass', '[resize]'), "html" => $_resize, "space" => 150
 				);
 
-				$_radio0 = we_html_forms::radiobutton(0, $this->degrees == 0, "degrees", g_l('weClass', "[rotate0]"));
-				$_radio180 = we_html_forms::radiobutton(180, $this->degrees == 180, "degrees", g_l('weClass', "[rotate180]"));
-				$_radio90l = we_html_forms::radiobutton(90, $this->degrees == 90, "degrees", g_l('weClass', "[rotate90l]"));
-				$_radio90r = we_html_forms::radiobutton(270, $this->degrees == 270, "degrees", g_l('weClass', "[rotate90r]"));
+				$_radio0 = we_html_forms::radiobutton(0, $this->degrees == 0, "degrees", g_l('weClass', '[rotate0]'));
+				$_radio180 = we_html_forms::radiobutton(180, $this->degrees == 180, "degrees", g_l('weClass', '[rotate180]'));
+				$_radio90l = we_html_forms::radiobutton(90, $this->degrees == 90, "degrees", g_l('weClass', '[rotate90l]'));
+				$_radio90r = we_html_forms::radiobutton(270, $this->degrees == 270, "degrees", g_l('weClass', '[rotate90r]'));
 
 				$parts[] = array(
-					"headline" => g_l('weClass', "[rotate]"),
+					"headline" => g_l('weClass', '[rotate]'),
 					"html" => $_radio0 . $_radio180 . $_radio90l . $_radio90r,
 					"space" => 150
 				);
 
 				$parts[] = array(
-					"headline" => g_l('weClass', "[quality]"),
+					"headline" => g_l('weClass', '[quality]'),
 					"html" => we_base_imageEdit::qualitySelect("quality", $this->quality),
 					"space" => 150
 				);
@@ -366,7 +366,7 @@ function setApplet() {
 				$parts[] = array(
 					"headline" => "",
 					"html" => we_html_tools::htmlAlertAttentionBox(
-						g_l('importFiles', "[add_description_nogdlib]"), we_html_tools::TYPE_INFO, ""),
+						g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, ""),
 					"space" => 0
 				);
 			}
@@ -377,7 +377,7 @@ function setApplet() {
 		$wepos = weGetCookieVariable("but_weimportfiles");
 		$content = we_html_multiIconBox::getJS() .
 			we_html_multiIconBox::getHTML(
-				"weimportfiles", "99%", $parts, 30, "", $foldAt, g_l('importFiles', "[image_options_open]"), g_l('importFiles', "[image_options_close]"), ($wepos === "down"), g_l('importFiles', "[step1]"));
+				"weimportfiles", "99%", $parts, 30, "", $foldAt, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), ($wepos === "down"), g_l('importFiles', '[step1]'));
 		$startsrceen = we_html_element::htmlDiv(
 				array(
 				"id" => "start"
@@ -433,9 +433,9 @@ function setApplet() {
 
 		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') .
 			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
-			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl]"), $maxsize), we_html_tools::TYPE_INFO, 520, false)) .
-			(we_fileupload_base::isFallback() && !we_fileupload_base::isLegacyMode() ? we_html_element::htmlDiv(array('id' => 'desc', 'style' => 'margin-top: 4px;'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[fallback_text]"), we_html_tools::TYPE_ALERT, 520, false)) : '') .
-			we_html_element::htmlDiv(array('id' => 'descJupload', 'style' => 'display:none;'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', "[import_expl_jupload]"), $maxsize), we_html_tools::TYPE_INFO, 520, false));
+			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', '[import_expl]'), $maxsize), we_html_tools::TYPE_INFO, 520, false)) .
+			(we_fileupload_base::isFallback() && !we_fileupload_base::isLegacyMode() ? we_html_element::htmlDiv(array('id' => 'desc', 'style' => 'margin-top: 4px;'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[fallback_text]'), we_html_tools::TYPE_ALERT, 520, false)) : '') .
+			we_html_element::htmlDiv(array('id' => 'descJupload', 'style' => 'display:none;'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', '[import_expl_jupload]'), $maxsize), we_html_tools::TYPE_INFO, 520, false));
 
 
 		$parts = array(
@@ -451,7 +451,7 @@ function setApplet() {
 					'onchange' => "checkFileinput();"
 			)) . $but;
 
-		$fileinput = '<table><tr><td valign="top" class="weMultiIconBoxHeadline">' . g_l('importFiles', "[file]") . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td><td>' . we_html_tools::getPixel(
+		$fileinput = '<table><tr><td valign="top" class="weMultiIconBoxHeadline">' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td><td>' . we_html_tools::getPixel(
 				35, 5) . '</td><td>' . $fileinput . '</td></tr></table>';
 
 		$form_content = str_replace("WEFORMNUM", 0, $this->_getHiddens("buttons", $this->step) . str_replace("WE_FORM_NUM", 1, $fileinput));
@@ -475,7 +475,7 @@ function setApplet() {
 					"name" => "we_startform",
 					"method" => "post"
 					), $this->_getHiddens()) .
-				we_html_multiIconBox::getHTML("uploadFiles", "100%", $parts, 30, "", -1, "", "", "", g_l('importFiles', "[step2]"))
+				we_html_multiIconBox::getHTML("uploadFiles", "100%", $parts, 30, "", -1, "", "", "", g_l('importFiles', '[step2]'))
 		);
 
 		$body = we_html_element::htmlBody(
@@ -518,7 +518,7 @@ function setApplet() {
 				), we_html_element::htmlHidden(array(
 					'name' => 'step', 'value' => 3
 				)) . we_html_multiIconBox::getHTML(
-					"uploadFiles", "100%", $parts, 30, "", -1, "", "", "", g_l('importFiles', "[step3]")))// bugfix 1001
+					"uploadFiles", "100%", $parts, 30, "", -1, "", "", "", g_l('importFiles', '[step3]')))// bugfix 1001
 		;
 
 		$body = we_html_element::htmlBody(array(
@@ -557,16 +557,16 @@ function setApplet() {
 							$filelist .= '- ' . $err["filename"] . ' => ' . $err["error"] . '\n';
 						}
 						unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
-						$response['completed'] = we_message_reporting::getShowMessageCall(sprintf(g_l('importFiles', "[error]"), $filelist), we_message_reporting::WE_MESSAGE_ERROR);
+						$response['completed'] = we_message_reporting::getShowMessageCall(sprintf(g_l('importFiles', '[error]'), $filelist), we_message_reporting::WE_MESSAGE_ERROR);
 					} else {
-						$response['completed'] = we_message_reporting::getShowMessageCall(g_l('importFiles', "[finished]"), we_message_reporting::WE_MESSAGE_NOTICE);
+						$response['completed'] = we_message_reporting::getShowMessageCall(g_l('importFiles', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE);
 					}
 				}
 			} else {
 				$response['fileNameTemp'] = $this->fileNameTemp;
 				//TODO: if we have a message here, we can stop uloading chunks of this file!
 				$response['status'] = empty($error) ? 'continue' : 'failure';
-				$response['message'] = empty($error) ? '' : g_l('importFiles', "[" . $error['error'] . "]");
+				$response['message'] = empty($error) ? '' : g_l('importFiles', '[' . $error['error'] . ']');
 			}
 			echo json_encode($response);
 			exit();
@@ -641,7 +641,7 @@ function next() {
 		$prog = ($formcount === 0) ? 0 : (($this->step == 0) ? 0 : ((int) ((100 / $formcount) * ($formnum + 1))));
 		$pb = new we_progressBar($prog);
 		$pb->setStudLen(200);
-		$pb->addText(sprintf(g_l('importFiles', "[import_file]"), $formnum + 1), 0, "progress_title");
+		$pb->addText(sprintf(g_l('importFiles', '[import_file]'), $formnum + 1), 0, "progress_title");
 		$progressbar = '<span id="progressbar"' . (($this->step == 0) ? 'style="display:none' : '') . '">' . $pb->getHTML() . '</span>';
 		$js .= $pb->getJSCode();
 
@@ -694,9 +694,9 @@ function next() {
 				$filelist .= '- ' . $err["filename"] . ' => ' . $err["error"] . '\n';
 			}
 			unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
-			$js .= we_message_reporting::getShowMessageCall(sprintf(g_l('importFiles', "[error]"), $filelist), we_message_reporting::WE_MESSAGE_ERROR);
+			$js .= we_message_reporting::getShowMessageCall(sprintf(g_l('importFiles', '[error]'), $filelist), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
-			$js .= we_message_reporting::getShowMessageCall(g_l('importFiles', "[finished]"), we_message_reporting::WE_MESSAGE_NOTICE);
+			$js .= we_message_reporting::getShowMessageCall(g_l('importFiles', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE);
 		}
 
 		$js .= "

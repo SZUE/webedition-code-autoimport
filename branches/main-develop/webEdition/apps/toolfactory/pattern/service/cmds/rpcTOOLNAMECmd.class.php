@@ -1,11 +1,11 @@
 
-class rpc<?php print $TOOLNAME;?>Cmd extends rpcCmd 
+class rpc<?php echo $TOOLNAME;?>Cmd extends rpcCmd
 {
-	function execute() 
+	function execute()
 	{
 		$resp = new rpcResponse();
 
 		return $resp;
-		
+
 	}
 }

@@ -56,7 +56,7 @@ class we_otherDocument extends we_binaryDocument{
 		$_data = $this->getElement('data');
 		$this->html = ($this->ID || ($_data && !is_dir($_data) && is_readable($_data)) ?
 						'<p class="defaultfont"><b>Datei</b>: ' . $this->Text . '</p>' :
-						g_l('global', "[no_file_uploaded]"));
+						g_l('global', '[no_file_uploaded]'));
 
 		return $this->html;
 	}

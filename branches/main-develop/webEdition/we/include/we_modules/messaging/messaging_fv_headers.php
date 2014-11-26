@@ -39,7 +39,7 @@ $si = we_base_request::_(we_base_request::STRING, "si");
 $so = we_base_request::_(we_base_request::STRING, 'so');
 ?>
 </head>
-<body  background="<?php print IMAGE_DIR; ?>backgrounds/header_with_black_line.gif"  marginwidth="7" marginheight="6" topmargin="6" leftmargin="7">
+<body  background="<?php echo IMAGE_DIR; ?>backgrounds/header_with_black_line.gif"  marginwidth="7" marginheight="6" topmargin="6" leftmargin="7">
 	<table border="0" cellpadding="0" cellspacing="0" width="100%">
 		<tr>
 			<?php if(we_base_request::_(we_base_request::STRING, "viewclass") != "todo"){ ?>

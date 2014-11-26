@@ -231,15 +231,15 @@ $_buttons = we_html_button::position_yes_no_cancel(
 );
 ?>
 <div id="divTagName">
-	<h1>&lt;we:<?php print $weTag->getName() . '&gt;' . ($weTag->isDeprecated() ? ' (' . g_l('taged', '[deprecated][title]') . ')' : ''); ?></h1>
+	<h1>&lt;we:<?php echo $weTag->getName() . '&gt;' . ($weTag->isDeprecated() ? ' (' . g_l('taged', '[deprecated][title]') . ')' : ''); ?></h1>
 </div>
 <div id="divContent">
-	<?php print $code; ?>
+	<?php echo $code; ?>
 	<br/>
 </div>
 <div id="divButtons">
 	<div style="padding-top: 8px;">
-		<?php print $_buttons; ?>
+		<?php echo $_buttons; ?>
 	</div>
 </div>
 <input type="submit" style="width:1px; height:1px; padding:0px; margin:0px; color:#fff; background-color:#fff; border:0px;" />

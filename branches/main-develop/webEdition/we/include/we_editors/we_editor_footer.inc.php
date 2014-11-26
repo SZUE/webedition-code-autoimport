@@ -333,7 +333,7 @@ if(inWorkflow($we_doc)){
 				$_noPermTable->setColContent(0, 0, we_html_tools::getPixel(20, 2));
 				$_noPermTable->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
 				$_noPermTable->setColContent(0, 2, we_html_tools::getPixel(10, 2));
-				$_noPermTable->setColContent(0, 3, g_l('SEEM', "[no_permission_to_edit_document]"));
+				$_noPermTable->setColContent(0, 3, g_l('SEEM', '[no_permission_to_edit_document]'));
 
 
 				print $_noPermTable->getHtml();

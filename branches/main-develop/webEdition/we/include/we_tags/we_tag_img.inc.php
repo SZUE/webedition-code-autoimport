@@ -137,7 +137,7 @@ function we_tag_img($attribs){
 	<tr><td class="weEditmodeStyle" align="center" colspan="2" style="width: 180px;">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
-					<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', "[alt_kurz]") . ':&nbsp;</td>
+					<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', '[alt_kurz]') . ':&nbsp;</td>
 					<td class="weEditmodeStyle">' . we_html_tools::htmlTextInput($altname, 16, $tagAttribs['alt'], '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
 				</tr>
 				<tr>
@@ -145,7 +145,7 @@ function we_tag_img($attribs){
 					<td class="weEditmodeStyle"></td>
 				</tr>
 				<tr>
-					<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ";\">" . g_l('weClass', "[Title]") . ':&nbsp;</td>
+					<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ";\">" . g_l('weClass', '[Title]') . ':&nbsp;</td>
 					<td class="weEditmodeStyle">' . we_html_tools::htmlTextInput($titlename, 16, $tagAttribs['title'], '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
 				</tr>
 			</table></td></tr>' : ''
@@ -165,7 +165,7 @@ function we_tag_img($attribs){
 	<tr><td class="weEditmodeStyle" align="center" colspan="2" style="width: 180px;">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
-					<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', "[thumbnails]") . ':&nbsp;</td>
+					<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', '[thumbnails]') . ':&nbsp;</td>
 					<td class="weEditmodeStyle">' . $thumbnails . '</td>
 				</tr>
 			</table></td></tr>';

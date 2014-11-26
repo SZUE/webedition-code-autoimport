@@ -134,7 +134,7 @@ class we_backup_backup extends we_backup_base{
 			$tablename = $this->fixTableName($tablename);
 			$this->current_description = (isset($this->description["import"][strtolower($tablename)]) && $this->description["import"][strtolower($tablename)] ?
 					$this->description["import"][strtolower($tablename)] :
-					g_l('backup', "[working]"));
+					g_l('backup', '[working]'));
 
 			$object = we_exim_contentProvider::getInstance("we_backup_table", 0, $tablename);
 			$node_set2 = $xmlBrowser->getSet($nodeset);
@@ -254,7 +254,7 @@ class we_backup_backup extends we_backup_base{
 			$this->backup_step = 0;
 
 			if(!we_base_file::save($this->dumpfilename, $this->header)){
-				$this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $this->dumpfilename));
+				$this->setError(sprintf(g_l('backup', '[can_not_open_file]'), $this->dumpfilename));
 				return -1;
 			}
 		}
@@ -310,7 +310,7 @@ class we_backup_backup extends we_backup_base{
 
 					$this->current_description = (isset($this->description["export"][strtolower($table)]) ?
 							$this->description["export"][strtolower($table)] :
-							g_l('backup', "[working]"));
+							g_l('backup', '[working]'));
 
 					$keys = we_backup_tableItem::getTableKey($table);
 					$this->partial = false;
@@ -416,7 +416,7 @@ class we_backup_backup extends we_backup_base{
 	 */
 	function restoreChunk($filename){
 		if(!is_readable($filename)){
-			$this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $filename));
+			$this->setError(sprintf(g_l('backup', '[can_not_open_file]'), $filename));
 			return false;
 		}
 

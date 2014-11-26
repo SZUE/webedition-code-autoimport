@@ -25,6 +25,7 @@
 /* the parent class of storagable webEdition classes */
 
 class we_banner_view extends we_banner_base implements we_modules_viewIF{
+
 	// settings array; format settings[setting_name]=settings_value
 	var $settings = array();
 	//default banner
@@ -51,14 +52,14 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 
 	function getHiddens(){
 		$out = $this->htmlHidden("home", 0) .
-			$this->htmlHidden("ncmd", "new_banner") .
-			$this->htmlHidden("ncmdvalue", "") .
-			$this->htmlHidden("bid", $this->banner->ID) .
-			$this->htmlHidden("pnt", we_base_request::_(we_base_request::STRING, "pnt")) .
-			$this->htmlHidden("page", $this->page) .
-			$this->htmlHidden("bname", $this->uid) .
-			$this->htmlHidden("order", $this->Order) .
-			$this->htmlHidden($this->uid . "_IsFolder", $this->banner->IsFolder);
+				$this->htmlHidden("ncmd", "new_banner") .
+				$this->htmlHidden("ncmdvalue", "") .
+				$this->htmlHidden("bid", $this->banner->ID) .
+				$this->htmlHidden("pnt", we_base_request::_(we_base_request::STRING, "pnt")) .
+				$this->htmlHidden("page", $this->page) .
+				$this->htmlHidden("bname", $this->uid) .
+				$this->htmlHidden("order", $this->Order) .
+				$this->htmlHidden($this->uid . "_IsFolder", $this->banner->IsFolder);
 		foreach(array_keys($this->banner->persistents) as $p){
 			if(!in_array($p, $this->pageFields[$this->page])){
 				$v = $this->banner->{$p};
@@ -89,15 +90,15 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				</head>
 				<body class="weEditorBody" onload="loaded=1;" onunload="doUnload()">
 				<form name="we_form" onsubmit="return false;">' .
-			$this->getHiddens();
+				$this->getHiddens();
 
 		$znr = -1;
 		$headline = $openText = $closeText = $wepos = $itsname = "";
 		switch($this->page){
 			case we_banner_banner::PAGE_PROPERTY:
 				$out .= $this->htmlHidden("UseFilter", $this->UseFilter) .
-					$this->htmlHidden("FilterDate", $this->FilterDate) .
-					$this->htmlHidden("FilterDateEnd", $this->FilterDateEnd);
+						$this->htmlHidden("FilterDate", $this->FilterDate) .
+						$this->htmlHidden("FilterDateEnd", $this->FilterDateEnd);
 				$parts = array(
 					array(
 						"headline" => g_l('modules_banner', '[path]'),
@@ -125,16 +126,16 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 						"space" => 120
 					);
 				}
-				$headline = g_l('tabs', "[module][properties]");
+				$headline = g_l('tabs', '[module][properties]');
 				$itsname = "weBannerProp";
-				$openText = g_l('weClass', "[moreProps]");
-				$closeText = g_l('weClass', "[lessProps]");
+				$openText = g_l('weClass', '[moreProps]');
+				$closeText = g_l('weClass', '[lessProps]');
 				$wepos = weGetCookieVariable("but_weBannerProp");
 				break;
 			case we_banner_banner::PAGE_PLACEMENT:
 				$out .= $this->htmlHidden("UseFilter", $this->UseFilter) .
-					$this->htmlHidden("FilterDate", $this->FilterDate) .
-					$this->htmlHidden("FilterDateEnd", $this->FilterDateEnd);
+						$this->htmlHidden("FilterDate", $this->FilterDate) .
+						$this->htmlHidden("FilterDateEnd", $this->FilterDateEnd);
 				$parts = array(
 					array(
 						"headline" => g_l('modules_banner', '[tagname]'),
@@ -161,15 +162,15 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 						"html" => $this->formDoctypes(),
 						"space" => 120)
 				);
-				$headline = g_l('tabs', "[module][placement]");
+				$headline = g_l('tabs', '[module][placement]');
 				$znr = 3;
 				$itsname = "weBannerPlace";
-				$openText = g_l('weClass', "[moreProps]");
-				$closeText = g_l('weClass', "[lessProps]");
+				$openText = g_l('weClass', '[moreProps]');
+				$closeText = g_l('weClass', '[lessProps]');
 				$wepos = weGetCookieVariable("but_$itsname");
 				break;
 			case we_banner_banner::PAGE_STATISTICS:
-				$headline = g_l('tabs', "[module][statistics]");
+				$headline = g_l('tabs', '[module][statistics]');
 				$parts = array(
 					array(
 						"headline" => "",
@@ -182,11 +183,11 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 		}
 
 		$out.= we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML($itsname, "100%", $parts, 30, "", $znr, $openText, $closeText, ($wepos === "down")) .
-			'</form>' .
-			$yuiSuggest->getYuiCss() .
-			$yuiSuggest->getYuiJs() .
-			'</body></html>';
+				we_html_multiIconBox::getHTML($itsname, "100%", $parts, 30, "", $znr, $openText, $closeText, ($wepos === "down")) .
+				'</form>' .
+				$yuiSuggest->getYuiCss() .
+				$yuiSuggest->getYuiJs() .
+				'</body></html>';
 
 		return $out;
 	}
@@ -224,7 +225,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		?>
 
-			parent.document.title = "webEdition <?php echo g_l('global', "[modules]") . ' - ' . $title; ?>";
+			parent.document.title = "webEdition <?php echo g_l('global', '[modules]') . ' - ' . $title; ?>";
 
 			function setHot() {
 				hot = "1";
@@ -236,7 +237,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 
 			function we_cmd() {
 				var args = "";
-				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
+				var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
 					url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 					if (i < (arguments.length - 1)) {
@@ -298,7 +299,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 									return;
 								}
 							} else {
-			<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_WARNING); ?>
+			<?php echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_WARNING); ?>
 								return;
 							}
 
@@ -390,7 +391,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 
 			function we_cmd() {
 				var args = "";
-				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
+				var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
 					url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 					if (i < (arguments.length - 1)) {
@@ -435,7 +436,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 						submitForm();
 						break;
 					case "delete_stat":
-						if (confirm("<?php print g_l('modules_banner', '[deleteStatConfirm]'); ?>")) {
+						if (confirm("<?php echo g_l('modules_banner', '[deleteStatConfirm]'); ?>")) {
 							document.we_form.ncmd.value = arguments[0];
 							submitForm();
 						}
@@ -642,7 +643,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 						return;
 					}
 					if(f('SELECT 1 FROM ' . BANNER_TABLE . " WHERE Text='" . $this->db->escape($this->banner->Text) . "' AND ParentID=" . intval($this->banner->ParentID) .
-							($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), '', $this->db)){
+									($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), '', $this->db)){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
 					}
@@ -673,11 +674,11 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 					$message = "";
 					$this->banner->save($message);
 					echo we_html_element::jsElement(
-						($newone ?
-							'top.content.makeNewEntry("' . $this->banner->Icon . '",' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",true,"' . ($this->banner->IsFolder ? 'folder' : 'file') . '","weBanner",1);' :
-							'top.content.updateEntry(' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",1);') .
-						$childs .
-						we_message_reporting::getShowMessageCall(($this->banner->IsFolder ? g_l('modules_banner', '[save_group_ok]') : g_l('modules_banner', '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE));
+							($newone ?
+									'top.content.makeNewEntry("' . $this->banner->Icon . '",' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",true,"' . ($this->banner->IsFolder ? 'folder' : 'file') . '","weBanner",1);' :
+									'top.content.updateEntry(' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",1);') .
+							$childs .
+							we_message_reporting::getShowMessageCall(g_l('modules_banner', ($this->banner->IsFolder ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE));
 				}
 				break;
 			case "delete_banner":
@@ -692,8 +693,8 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 					if($this->banner->delete()){
 						$this->banner = new we_banner_banner(0, $this->banner->IsFolder);
 						echo we_html_element::jsElement('top.content.deleteEntry(' . $bid . ',"' .
-							($this->banner->IsFolder ? 'folder' : 'file') . '");' .
-							we_message_reporting::getShowMessageCall(g_l('modules_banner', ($this->banner->IsFolder ? '[delete_group_ok]' : '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.content.we_cmd("new_banner");');
+								($this->banner->IsFolder ? 'folder' : 'file') . '");' .
+								we_message_reporting::getShowMessageCall(g_l('modules_banner', ($this->banner->IsFolder ? '[delete_group_ok]' : '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.content.we_cmd("new_banner");');
 					} else {
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', ($this->banner->IsFolder ? '[delete_group_nok]' : '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR));
 					}
@@ -754,8 +755,8 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 		$db = new DB_WE();
 		foreach($settings as $key => $value){
 			$db->query('REPLACE INTO ' . BANNER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'pref_name' => $key,
-					'pref_value' => $value
+						'pref_name' => $key,
+						'pref_value' => $value
 			)));
 		}
 	}
@@ -780,11 +781,11 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 		sort($tagnames);
 
 		$code = '<table border="0" cellpadding="0" cellspacing="0"><tr><td class="defaultfont">' .
-			we_html_tools::htmlTextInput($this->uid . "_TagName", 50, $this->banner->TagName, "", 'style="width:250px" onchange="top.content.setHot();"') .
-			'</td>
+				we_html_tools::htmlTextInput($this->uid . "_TagName", 50, $this->banner->TagName, "", 'style="width:250px" onchange="top.content.setHot();"') .
+				'</td>
 <td class="defaultfont">' . we_html_tools::getPixel(10, 2) . '</td>
 <td class="defaultfont"><select style="width:240px" class="weSelect" name="' . $this->uid . '_TagName_tmp" size="1" onchange="top.content.setHot(); this.form.elements[\'' . $this->uid . '_TagName\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0">' .
-			'<option value=""></option>';
+				'<option value=""></option>';
 		foreach($tagnames as $tagname){
 			$code .= '<option value="' . $tagname . '">' . $tagname . '</option>' . "\n";
 		}
@@ -846,9 +847,9 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 	<tr><td colspan="2">
 	<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont">' . g_l('global', "[from]") . ':&nbsp;</td>
+		<td class="defaultfont">' . g_l('global', '[from]') . ':&nbsp;</td>
 		<td>' . $datefilter . '</td>
-		<td class="defaultfont">' . g_l('global', "[to]") . ':&nbsp;</td>
+		<td class="defaultfont">' . g_l('global', '[to]') . ':&nbsp;</td>
 		<td>' . $datefilter2 . '</td>
 	</tr>
 </table></td>
@@ -894,10 +895,10 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 <table border="0" cellpadding="0" cellspacing="0">
 	<tr><td>' . $this->formBannerChooser(388, $this->uid . "_bannerID", $this->banner->bannerID, g_l('modules_banner', '[imagepath]'), "opener.we_cmd(\\'switchPage\\',\\'" . $this->page . "\\')") . '</td></tr>
 ' . ($this->banner->bannerID ?
-				'<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
+						'<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
 	<tr><td>' . $this->previewBanner() . '</td></tr>' : ''
-			) .
-			'	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
+				) .
+				'	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
 	<tr><td>' . $this->formBannerHref() . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
 	<tr><td>' . $this->formBannerNumbers() . '</td></tr>
@@ -951,8 +952,8 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 		$Pathname = "ParentPath";
 
 		return $this->htmlHidden($IDName, 0) .
-			$this->htmlHidden($Pathname, "") .
-			we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . BANNER_TABLE . "','document.we_form.elements[\\'" . $IDName . "\\'].value','document.we_form.elements[\\'" . $Pathname . "\\'].value','opener.we_cmd(\\'copy_banner\\');','','" . $rootDirID . "')");
+				$this->htmlHidden($Pathname, "") .
+				we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . BANNER_TABLE . "','document.we_form.elements[\\'" . $IDName . "\\'].value','document.we_form.elements[\\'" . $Pathname . "\\'].value','opener.we_cmd(\\'copy_banner\\');','','" . $rootDirID . "')");
 	}
 
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */

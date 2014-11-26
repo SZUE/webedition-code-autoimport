@@ -67,7 +67,7 @@ if(!$wfchk){
 				($found ? '}else{ top.toggleBusy(0)}' : '') .
 				'}');
 	} else {
-		$script = 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING);
+		$script = 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING);
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' .
 		we_html_tools::hidden("sel", we_base_request::_(we_base_request::INTLIST, "sel", "")) . "</form>";
@@ -262,7 +262,7 @@ if(!$wfchk){
 				break;
 			case -1: //	not allowed to delete document
 				$script .= 'top.toggleBusy(0);' .
-					we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[noRightsToDelete]"), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
+					we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[noRightsToDelete]'), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
 			default:
 				if($retVal){ //	user may delete -> delete files !
@@ -361,18 +361,18 @@ if(!$wfchk){
 					$script .= 'top.toggleBusy(0);';
 					switch($table){
 						case TEMPLATES_TABLE:
-							$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[deleteTempl_notok_used]"), we_message_reporting::WE_MESSAGE_ERROR);
+							$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[deleteTempl_notok_used]'), we_message_reporting::WE_MESSAGE_ERROR);
 							break;
 						case OBJECT_TABLE:
-							$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[deleteClass_notok_used]"), we_message_reporting::WE_MESSAGE_ERROR);
+							$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[deleteClass_notok_used]'), we_message_reporting::WE_MESSAGE_ERROR);
 							break;
 						default:
-							$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[delete_notok]"), we_message_reporting::WE_MESSAGE_ERROR);
+							$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[delete_notok]'), we_message_reporting::WE_MESSAGE_ERROR);
 					}
 				}
 		}
 	} else {
-		$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING);
+		$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING);
 	}
 	print we_html_element::jsScript(JS_DIR . 'windows.js') .
 		we_html_element::jsElement($script);
@@ -438,7 +438,7 @@ function we_submitForm(target, url) {
 	if (!sel) {
 		top.toggleBusy(0);
 <?php
-print we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_ERROR);
+print we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
 ?>
 		return;
 	}
@@ -470,8 +470,8 @@ if($wecmd0 === "do_delete"){
 	exit();
 }
 
-$delete_text = g_l('newFile', "[delete_text]");
-$delete_confirm = g_l('alert', "[delete]");
+$delete_text = g_l('newFile', '[delete_text]');
+$delete_confirm = g_l('alert', '[delete]');
 
 $content = '<span class="middlefont">' . $delete_text . '</span>';
 
@@ -482,7 +482,7 @@ $form = '<form name="we_form" method="post">' . we_html_tools::hidden('sel', '')
 
 echo '</head><body class="weTreeHeader">
 <div style="width:380px;">
-<h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(g_l('newFile', "[title_delete]")) . '</h1>
+<h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(g_l('newFile', '[title_delete]')) . '</h1>
 <p class="small">' . $content . '</p>
 <div>' . $_buttons . '</div></div>' . $form . '
 </body>

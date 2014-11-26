@@ -164,14 +164,14 @@ top.weSidebar = weSidebar;
 				$navigationButtons[] = array(
 					"onclick" => "top.we_cmd('dologout');",
 					"imagepath" => "/navigation/close.gif",
-					"text" => g_l('javaMenu_global', "[close]")
+					"text" => g_l('javaMenu_global', '[close]')
 				);
 			}
 			$navigationButtons = array_merge($navigationButtons, array(
-				array("onclick" => "top.we_cmd('start_multi_editor');", "imagepath" => "/navigation/home.gif", "text" => g_l('javaMenu_global', "[home]")),
-				array("onclick" => "top.weNavigationHistory.navigateReload();", "imagepath" => "/navigation/reload.gif", "text" => g_l('javaMenu_global', "[reload]")),
-				array("onclick" => "top.weNavigationHistory.navigateBack();", "imagepath" => "/navigation/back.gif", "text" => g_l('javaMenu_global', "[back]")),
-				array("onclick" => "top.weNavigationHistory.navigateNext();", "imagepath" => "/navigation/next.gif", "text" => g_l('javaMenu_global', "[next]")),
+				array("onclick" => "top.we_cmd('start_multi_editor');", "imagepath" => "/navigation/home.gif", "text" => g_l('javaMenu_global', '[home]')),
+				array("onclick" => "top.weNavigationHistory.navigateReload();", "imagepath" => "/navigation/reload.gif", "text" => g_l('javaMenu_global', '[reload]')),
+				array("onclick" => "top.weNavigationHistory.navigateBack();", "imagepath" => "/navigation/back.gif", "text" => g_l('javaMenu_global', '[back]')),
+				array("onclick" => "top.weNavigationHistory.navigateNext();", "imagepath" => "/navigation/next.gif", "text" => g_l('javaMenu_global', '[next]')),
 					)
 			);
 		}
@@ -198,8 +198,8 @@ top.weSidebar = weSidebar;
 				<?php
 				echo self::createMessageConsole('mainWindow');
 				?>
-				<img src="<?php print IMAGE_DIR ?>pixel.gif" alt="" name="busy" width="20" height="19">
-				<img src="<?php print IMAGE_DIR ?>webedition.gif" alt="" style="width:78px;height:25px;padding-left: 10px;padding-right: 5px;padding-top:3px;">
+				<img src="<?php echo IMAGE_DIR ?>pixel.gif" alt="" name="busy" width="20" height="19">
+				<img src="<?php echo IMAGE_DIR ?>webedition.gif" alt="" style="width:78px;height:25px;padding-left: 10px;padding-right: 5px;padding-top:3px;">
 			</div>
 		</div>
 		<?php

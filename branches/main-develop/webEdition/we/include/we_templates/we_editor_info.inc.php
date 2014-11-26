@@ -27,7 +27,7 @@ echo we_html_tools::getHtmlTop() .
 ?>
 <script type="text/javascript"><!--
 	function revertToPublished() {
-		if (confirm("<?php print addslashes(g_l('weEditorInfo', "[revert_publish_question]")); ?>")) {
+		if (confirm("<?php echo addslashes(g_l('weEditorInfo', '[revert_publish_question]')); ?>")) {
 			top.we_cmd("revert_published");
 		}
 	}
@@ -35,11 +35,11 @@ echo we_html_tools::getHtmlTop() .
 
 <?php if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'revert_published'){ ?>
 
-		var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?php print $GLOBALS['we_transaction']; ?>");
+		var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?php echo $GLOBALS['we_transaction']; ?>");
 
 		_EditorFrame.setEditorIsHot(false);
 
-	<?php print $GLOBALS['we_doc']->getUpdateTreeScript(true); ?>
+	<?php echo $GLOBALS['we_doc']->getUpdateTreeScript(true); ?>
 
 		_EditorFrame.getDocumentReference().frames[3].location.reload();
 
@@ -53,15 +53,15 @@ echo we_html_tools::getHtmlTop() .
 	$_html = '
 <div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>
 <div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? : "-") . '</div>
-<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[content_type]") . '</div>
+<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[content_type]') . '</div>
 <div style="margin-bottom:10px;">' . g_l('weEditorInfo', '[' . $GLOBALS['we_doc']->ContentType . ']') . '</div>';
 
 
 	if($GLOBALS['we_doc']->ContentType != "folder"){
 		$fs = $GLOBALS['we_doc']->getFilesize();
 
-		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[file_size]") . '</div>' .
-			'<div style="margin-bottom:10px;">' . round(($fs / 1024), 2) . "&nbsp;KB&nbsp;(" . $fs . "&nbsp;Byte)" . '</div>';
+		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[file_size]') . '</div>' .
+				'<div style="margin-bottom:10px;">' . round(($fs / 1024), 2) . "&nbsp;KB&nbsp;(" . $fs . "&nbsp;Byte)" . '</div>';
 	}
 	$parts = array(
 		array(
@@ -74,29 +74,29 @@ echo we_html_tools::getHtmlTop() .
 
 	if($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::FOLDER){
 		$_html = '
-<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[creation_date]") . '</div>
-<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['we_doc']->CreationDate) . '</div>';
+<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[creation_date]') . '</div>
+<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->CreationDate) . '</div>';
 
 		if($GLOBALS['we_doc']->CreatorID && ($name = f('SELECT CONCAT(First," ",Second," (",username,")") AS name FROM ' . USER_TABLE . ' WHERE ID=' . intval($GLOBALS['we_doc']->CreatorID)))){
 			$_html .= '
-<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', "[created_by]") . '</div>
+<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[created_by]') . '</div>
 <div style="margin-bottom:10px;">' . $name . '</div>';
 		}
 
 		$_html .= '
-<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[changed_date]") . '</div>
-<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['we_doc']->ModDate) . '</div>';
+<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[changed_date]') . '</div>
+<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->ModDate) . '</div>';
 
 
 		if($GLOBALS['we_doc']->ModifierID && $name = f('SELECT CONCAT(First," ",Second," (",username,")") AS name FROM ' . USER_TABLE . ' WHERE ID=' . intval($GLOBALS['we_doc']->ModifierID))){
 			$_html .= '
-<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', "[changed_by]") . '</div>
+<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[changed_by]') . '</div>
 <div style="margin-bottom:10px;">' . $name . '</div>';
 		}
 
 		if($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::HTML || $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT){
-			$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[lastLive]") . '</div>' .
-				'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['we_doc']->Published) : "-") . '</div>';
+			$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[lastLive]') . '</div>' .
+					'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->Published) : "-") . '</div>';
 
 			if($GLOBALS['we_doc']->Published && $GLOBALS['we_doc']->ModDate > $GLOBALS['we_doc']->Published){
 				$_html .= '<div style="margin-bottom:10px;">' . we_html_button::create_button('revert_published', 'javascript:revertToPublished();', true, 280) . '</div>';
@@ -129,9 +129,9 @@ echo we_html_tools::getHtmlTop() .
 			$published = !(($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::HTML || $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT) && $GLOBALS['we_doc']->Published == 0);
 
 			$_html = '
-<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[local_path]") . '</div>
+<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[local_path]') . '</div>
 <div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : '<span title="' . oldHtmlspecialchars($rp) . '">' . oldHtmlspecialchars(we_util_Strings::shortenPath($rp, 74)) . '</span>') . '</div>
-<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', "[http_path]") . '</div>
+<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[http_path]') . '</div>
 <div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : ($showlink ? '<a href="' . $http . '" target="_blank" title="' . oldHtmlspecialchars($http) . '">' : '') . we_util_Strings::shortenPath($http, 74) . ($showlink ? '</a>' : '')) . '</div>';
 
 			$parts[] = array(
@@ -144,8 +144,8 @@ echo we_html_tools::getHtmlTop() .
 
 		if(defined('WORKFLOW_TABLE') && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT){
 			$anzeige = (we_workflow_utility::inWorkflow($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) ?
-					we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) :
-					we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table));
+							we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) :
+							we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table));
 
 			$parts[] = array(
 				'headline' => g_l('modules_workflow', '[workflow]'),
@@ -168,7 +168,7 @@ echo we_html_tools::getHtmlTop() .
 					}
 				}
 				if(!isset($_metaData['exif']) || empty($_metaData['exif'])){
-					$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont" colspan="2">' . (is_callable("exif_read_data") ? g_l('metadata', '[no_exif_data]') : g_l('metadata', '[no_exif_installed]')) . '</td></tr>';
+					$_metaDataTable .= '<tr><td style="padding:0px 5px 5px 0px;" class="defaultfont" colspan="2">' . g_l('metadata', (is_callable("exif_read_data") ? '[no_exif_data]' : '[no_exif_installed]')) . '</td></tr>';
 				}
 
 				$_metaDataTable .= '<tr><td style="padding:10px 0 5px 0;" class="weMultiIconBoxHeadline" colspan="2">' . g_l('metadata', '[info_iptc_data]') . '</td></tr>';
@@ -214,7 +214,7 @@ echo we_html_tools::getHtmlTop() .
 	}
 
 	echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
+	we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
 	?>
 </body>
 </html>

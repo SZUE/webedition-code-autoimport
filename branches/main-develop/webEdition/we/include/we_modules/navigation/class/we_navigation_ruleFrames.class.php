@@ -122,7 +122,7 @@ class we_navigation_ruleFrames{
 			we_navigation_navigation::STPYE_DOCTYPE => g_l('global', '[documents]')
 		);
 		if(defined('OBJECT_TABLE')){
-			$selectionTypes[we_navigation_navigation::STPYE_CLASS] = g_l('global', "[objects]");
+			$selectionTypes[we_navigation_navigation::STPYE_CLASS] = g_l('global', '[objects]');
 		}
 
 		$parts[] = array(

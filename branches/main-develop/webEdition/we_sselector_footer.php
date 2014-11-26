@@ -46,11 +46,11 @@ echo we_html_tools::getHtmlTop() .
 				new jsWindow(url, "we_fseditFile", -1, -1, 600, 500, true, false, true, true);
 			}
 			else {
-<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', '[edit_file_nok]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			}
 		}
 		else {
-<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_is_folder]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', '[edit_file_is_folder]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 		}
 	}
 
@@ -64,7 +64,7 @@ echo we_html_tools::getHtmlTop() .
 //-->
 </script>
 </head>
-<body background="<?php print IMAGE_DIR ?>backgrounds/radient.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onunload="doUnload();">
+<body background="<?php echo IMAGE_DIR ?>backgrounds/radient.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onunload="doUnload();">
 	<form name="we_form" target="fscmd">
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
 			<tr><td colspan="5"><img src="<?php echo IMAGE_DIR ?>umr_h_small.gif" width="100%" height="2" border="0"></td></tr>
@@ -86,11 +86,11 @@ echo we_html_tools::getHtmlTop() .
 				<tr>
 					<td></td>
 					<td class="defaultfont">
-						<b><?php print g_l('fileselector', "[type]"); ?></b></td>
+						<b><?php echo g_l('fileselector', '[type]'); ?></b></td>
 					<td></td>
 					<td class="defaultfont">
 						<select name="filter" class="weSelect" size="1" onchange="top.fscmd.setFilter(document.forms['we_form'].elements['filter'].options[document.forms['we_form'].elements['filter'].selectedIndex].value)" style="width:100%">
-							<option value="<?php echo str_replace(' ', '%20', g_l('contentTypes', '[all_Types]')); ?>"><?php print g_l('contentTypes', '[all_Types]'); ?></option>
+							<option value="<?php echo str_replace(' ', '%20', g_l('contentTypes', '[all_Types]')); ?>"><?php echo g_l('contentTypes', '[all_Types]'); ?></option>
 							<?php
 							$ct = we_base_ContentTypes::inst();
 							foreach($ct->getFiles() as $key){
@@ -108,7 +108,7 @@ echo we_html_tools::getHtmlTop() .
 				<td></td>
 				<td class="defaultfont">
 					<b><?php
-						echo g_l('fileselector', "[name]");
+						echo g_l('fileselector', '[name]');
 						?></b>
 				</td>
 				<td></td>
@@ -117,11 +117,11 @@ echo we_html_tools::getHtmlTop() .
 				<td></td>
 			</tr>
 			<tr>
-				<td width="10"><?php print we_html_tools::getPixel(10, 5); ?></td>
-				<td width="70"><?php print we_html_tools::getPixel(70, 5); ?></td>
-				<td width="10"><?php print we_html_tools::getPixel(10, 5); ?></td>
-				<td><?php print we_html_tools::getPixel(5, 5); ?></td>
-				<td width="10"><?php print we_html_tools::getPixel(10, 5); ?></td>
+				<td width="10"><?php echo we_html_tools::getPixel(10, 5); ?></td>
+				<td width="70"><?php echo we_html_tools::getPixel(70, 5); ?></td>
+				<td width="10"><?php echo we_html_tools::getPixel(10, 5); ?></td>
+				<td><?php echo we_html_tools::getPixel(5, 5); ?></td>
+				<td width="10"><?php echo we_html_tools::getPixel(10, 5); ?></td>
 			</tr>
 		</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
 			<tr>

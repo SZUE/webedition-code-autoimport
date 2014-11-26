@@ -46,7 +46,7 @@ class we_backup_delete extends we_fragment_base{
 
 			if(empty($this->alldata)){
 				print we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('backup', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_WARNING)
+						we_message_reporting::getShowMessageCall(g_l('backup', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING)
 				);
 				$this->finish();
 			}
@@ -66,7 +66,7 @@ class we_backup_delete extends we_fragment_base{
 			$text = addslashes(substr($text, 0, 65) . '&hellip;' . substr($text, -10));
 		}
 		print we_html_element::jsElement('
-			parent.delmain.setProgressText("pb1","' . sprintf(g_l('backup', "[delete_entry]"), $text) . '");
+			parent.delmain.setProgressText("pb1","' . sprintf(g_l('backup', '[delete_entry]'), $text) . '");
 			parent.delmain.setProgress(' . $percent . ');
 		');
 	}

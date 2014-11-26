@@ -83,8 +83,8 @@ class we_messaging_headerMsg{
 			?>
 
 				if (top.weEditorFrameController && top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().quickstart && typeof (top.weEditorFrameController.getActiveDocumentReference().setMsgCount) == 'function' && typeof (top.weEditorFrameController.getActiveDocumentReference().setTaskCount) == 'function') {
-					top.weEditorFrameController.getActiveDocumentReference().setMsgCount(<?php print abs($newmsg_count); ?>);
-					top.weEditorFrameController.getActiveDocumentReference().setTaskCount(<?php print abs($newtodo_count); ?>);
+					top.weEditorFrameController.getActiveDocumentReference().setMsgCount(<?php echo abs($newmsg_count); ?>);
+					top.weEditorFrameController.getActiveDocumentReference().setTaskCount(<?php echo abs($newtodo_count); ?>);
 				}
 		<?php } ?>
 		//-->

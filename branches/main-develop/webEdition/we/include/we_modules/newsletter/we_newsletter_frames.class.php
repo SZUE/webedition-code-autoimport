@@ -348,9 +348,9 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 		$this->View->db->query('SELECT * FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ($status !== false ? ' AND Log=' . $status : '') . ($start && $end ? ' AND LogTime BETWEEN ' . $start . ' AND ' . $end : '') . ' ORDER BY LogTime DESC');
 
 		while($this->View->db->next_record()){
-			$log = g_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']');
+			$log = g_l('modules_newsletter', '[' . $this->View->db->f('Log') . ']');
 			$param = $this->View->db->f("Param");
-			$content.=we_html_element::htmlDiv(array("class" => "defaultfont"), date(g_l('weEditorInfo', "[date_format_sec]"), $this->View->db->f("LogTime")) . '&nbsp;' . ($param ? sprintf($log, $param) : $log));
+			$content.=we_html_element::htmlDiv(array("class" => "defaultfont"), date(g_l('weEditorInfo', '[date_format_sec]'), $this->View->db->f("LogTime")) . '&nbsp;' . ($param ? sprintf($log, $param) : $log));
 		}
 
 		return $this->getHTMLDocument(
@@ -460,7 +460,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 			$table->setCol(4, 2, array('colspan' => 2, "style" => "padding: 0 5px 0 5px;"), we_html_element::htmlB($allRecipients));
 
 			$parts[] = array(
-				"headline" => g_l('modules_newsletter', '[reporting][mailing_send_at]') . '&nbsp;' . date(g_l('weEditorInfo', "[date_format_sec]"), $key),
+				"headline" => g_l('modules_newsletter', '[reporting][mailing_send_at]') . '&nbsp;' . date(g_l('weEditorInfo', '[date_format_sec]'), $key),
 				"html" => $table->getHTML() . we_html_element::htmlBr()
 			);
 		}
@@ -1508,7 +1508,7 @@ function changeFieldValue(val,valueField) {
 										""
 								) .
 								we_html_tools::htmlDialogLayout(
-										$table->getHtml(), $type ? g_l('modules_newsletter', '[edit_email]') : g_l('modules_newsletter', '[add_email]'), we_html_button::position_yes_no_cancel($save, $close)
+										$table->getHtml(), g_l('modules_newsletter', $type ? '[edit_email]' : '[add_email]'), we_html_button::position_yes_no_cancel($save, $close)
 								)
 						)
 		);
@@ -1993,7 +1993,7 @@ self.focus();
 						"align" => "",
 					),
 					array(
-						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), ($cols[1] ? g_l('modules_newsletter', '[yes]') : g_l('modules_newsletter', '[no]'))),
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), g_l('modules_newsletter', ($cols[1] ? '[yes]' : '[no]'))),
 						"height" => "",
 						"align" => "",
 					),
@@ -2115,13 +2115,13 @@ function postSelectorSelect(wePssCmd) {
 		if(($anz - $offset) < $numRows){
 			$colcontent = ( $anz ? $offset + 1 : 0 ) . "-" . $anz .
 					we_html_tools::getPixel(5, 1) .
-					g_l('global', "[from]") .
+					g_l('global', '[from]') .
 					we_html_tools::getPixel(5, 1) .
 					$anz;
 		} else {
 			$colcontent = ( $anz ? $offset + 1 : 0 ) . "-" . $offset + $numRows .
 					we_html_tools::getPixel(5, 1) .
-					g_l('global', "[from]") .
+					g_l('global', '[from]') .
 					we_html_tools::getPixel(5, 1) .
 					$anz;
 		}
@@ -2225,7 +2225,7 @@ function clearLog(){
 		$csv = "";
 		$this->View->db->query("SELECT " . NEWSLETTER_TABLE . ".Text as NewsletterName, " . NEWSLETTER_LOG_TABLE . ".* FROM " . NEWSLETTER_TABLE . "," . NEWSLETTER_LOG_TABLE . " WHERE " . NEWSLETTER_TABLE . ".ID=" . NEWSLETTER_LOG_TABLE . ".NewsletterID;");
 		while($this->View->db->next_record()){
-			$csv.=$this->View->db->f("NewsletterName") . "," . date(g_l('weEditorInfo', "[date_format]"), $this->View->db->f("LogTime")) . "," . (g_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']') !== false ? (sprintf($lg_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']'), $this->View->db->f("Param"))) : $this->View->db->f("Log")) . "\n";
+			$csv.=$this->View->db->f("NewsletterName") . "," . date(g_l('weEditorInfo', '[date_format]'), $this->View->db->f("LogTime")) . "," . (g_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']') !== false ? (sprintf($lg_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']'), $this->View->db->f("Param"))) : $this->View->db->f("Log")) . "\n";
 		}
 
 		$link = BACKUP_DIR . "download/log_" . time() . ".csv";
@@ -2331,7 +2331,7 @@ self.focus();
 		$_content = we_html_tools::htmlDialogLayout($_textarea, g_l('modules_newsletter', '[details]'), $_footer);
 
 
-		$details = (we_base_request::_(we_base_request::BOOL, "test") ? g_l('modules_newsletter', '[test_no_mail]') : g_l('modules_newsletter', '[sending]') );
+		$details = g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "test") ? '[test_no_mail]' : '[sending]'));
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $pb->getJS('', true) .
 								$_content
