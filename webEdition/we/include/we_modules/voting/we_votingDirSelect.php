@@ -31,7 +31,7 @@ if(isset($_REQUEST['we_cmd'])){
 }
 
 we_html_tools::protect();
-$_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "voting/we_votingDirSelect.php";
+$_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . 'voting/we_votingDirSelect.php';
 $fs = new we_voting_dirSelector(we_base_request::_(we_base_request::INT, "id", 0), we_base_request::_(we_base_request::JS, "JSIDName", ''), we_base_request::_(we_base_request::JS, "JSTextName", ''), we_base_request::_(we_base_request::JS, "JSCommand", ''), we_base_request::_(we_base_request::RAW, "order", ''), we_base_request::_(we_base_request::INT, "we_editDirID", 0), we_base_request::_(we_base_request::RAW, "we_FolderText", ''));
 
 $fs->printHTML(we_base_request::_(we_base_request::INT, "what", we_selector_file::FRAMESET));

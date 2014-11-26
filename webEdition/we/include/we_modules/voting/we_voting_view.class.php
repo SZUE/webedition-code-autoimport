@@ -226,7 +226,7 @@ function we_cmd() {
 			submitForm();
 		break;
 		case "voting_openDirselector":
-			url="' . WE_VOTING_MODULE_DIR . 'we_votingDirSelectorFrameset.php?";
+			url="' . WE_VOTING_MODULE_DIR . 'we_votingDirSelect.php?";
 			for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 			new jsWindow(url,"we_votingSelector",-1,-1,600,350,true,true,true);
 		break;
@@ -672,7 +672,7 @@ setTimeout(\'' . we_message_reporting::getShowMessageCall(g_l('modules_voting', 
 		$icount = we_base_request::_(we_base_request::INT, 'item_count');
 		if($qname && $vcount && $aname && $icount){
 			for($i = 0; $i < $vcount; $i++){
-				if(($quest = we_base_request::_(we_base_request::STRING . $qname . '_variant' . $i . '_' . $qname . '_item0')) !== false){
+				if(($quest = we_base_request::_(we_base_request::STRING, $qname . '_variant' . $i . '_' . $qname . '_item0')) !== false){
 					$set = array(
 						'question' => addslashes($quest),
 						'answers' => array(),
