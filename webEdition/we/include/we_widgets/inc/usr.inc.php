@@ -32,5 +32,5 @@ $oTblCont = new we_html_table(
 	), 1, 1);
 $oTblCont->setCol(0, 0, null, $inline);
 $aLang = array(
-	g_l('cockpit', "[users_online]"), ' (' . $UO->getNumUsers() . ")"
+	g_l('cockpit', '[users_online]'), ' (' . $UO->getNumUsers() . ")"
 );

@@ -11,15 +11,15 @@ $page->addJSFile(JS_DIR.'images.js');
 
 
 $nodes = array();
-$table = <?php print (isset($TABLECONSTANT) && !empty($TABLECONSTANT) && $TABLEEXISTS) ? $TABLECONSTANT : "''"; ?>;
+$table = <?php echo (isset($TABLECONSTANT) && !empty($TABLECONSTANT) && $TABLEEXISTS) ? $TABLECONSTANT : "''"; ?>;
 
 $TreeDiv = new we_ui_layout_Div();
-$TreeDiv->setId('TreeDiv_<?php print $TOOLNAME; ?>');
+$TreeDiv->setId('TreeDiv_<?php echo $TOOLNAME; ?>');
 $TreeDiv->setStyle('margin:5px 0px 0px 5px;overflow:auto;');
 
 
-$tree = new <?php print $TOOLNAME; ?>_ui_controls_Tree();
-$tree->setId('tree_<?php print $TOOLNAME; ?>');
+$tree = new <?php echo $TOOLNAME; ?>_ui_controls_Tree();
+$tree->setId('tree_<?php echo $TOOLNAME; ?>');
 if($table!="") {
 	$tree->setTable($table);
 }

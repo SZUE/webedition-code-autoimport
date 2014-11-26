@@ -310,18 +310,18 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 		$extHref = (!$this->args['extHref'] ? 'http://' : (utf8_decode((substr($this->args['extHref'], 0, 1) === '#') ? '' : $this->args['extHref'])));
 		if($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)){
-			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
-<option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>';
+			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
+<option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>';
 
 			$_external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? : we_base_link::EMPTY_EXT, '', '', 'url', 300);
 			// E-MAIL LINK
 			$_email_link = we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300);
 		} else {
-			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
-<option value="' . we_base_link::TYPE_INT . '"' . (($this->args["type"] == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[internal_link]") . '</option>
-<option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>' .
+			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
+<option value="' . we_base_link::TYPE_INT . '"' . (($this->args["type"] == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[internal_link]') . '</option>
+<option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>' .
 					((defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))) ?
-							'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[objectFile]") . '</option>' :
+							'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[objectFile]') . '</option>' :
 							''
 					);
 
@@ -400,8 +400,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 
 		// lang
-		$_lang = $this->getLangField("lang", g_l('wysiwyg', "[link_lang]"), 145);
-		$_hreflang = $this->getLangField("hreflang", g_l('wysiwyg', "[href_lang]"), 145);
+		$_lang = $this->getLangField("lang", g_l('wysiwyg', '[link_lang]'), 145);
+		$_hreflang = $this->getLangField("hreflang", g_l('wysiwyg', '[href_lang]'), 145);
 
 		$_title = we_html_tools::htmlTextInput("we_dialog_args[title]", 30, $this->args["title"], "", "", "text", 300);
 
@@ -421,22 +421,22 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				// Create table output
 				'<div style="position:relative; top:15px"><table cellpadding="0" cellspacing="0" border="0" height="65">
 	<tr>
-		<td class="defaultgray" valign="top" width="100" height="20">' . g_l('weClass', "[linkType]") . '</td>
+		<td class="defaultgray" valign="top" width="100" height="20">' . g_l('weClass', '[linkType]') . '</td>
 		<td valign="top"><select name="we_dialog_args[type]" id="weDialogType" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">' . $_select_type . '</select></td>
 	</tr>
 	<tr class="we_change ' . we_base_link::TYPE_EXT . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_EXT) ? "table-row" : "none") . ';">
-		<td class="defaultgray" valign="top" width="100">' . g_l('linklistEdit', "[external_link]") . '</td><td valign="top" >' . $_external_link . '</td>
+		<td class="defaultgray" valign="top" width="100">' . g_l('linklistEdit', '[external_link]') . '</td><td valign="top" >' . $_external_link . '</td>
 	</tr>' .
 				(isset($_internal_link) ? '
 	<tr class="we_change ' . we_base_link::TYPE_INT . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_INT) ? "table-row" : "none") . ';">
-		<td class="defaultgray" valign="top" width="100"> ' . g_l('weClass', "[document]") . '</td>
+		<td class="defaultgray" valign="top" width="100"> ' . g_l('weClass', '[document]') . '</td>
 		<td valign="top"> ' . $_internal_link . we_html_element::jsElement('document.we_form.onsubmit = weonsubmit;
 function weonsubmit() {
 	return false;
 }') . '</td>
 	</tr>' : '') . '
 	<tr class="we_change ' . we_base_link::TYPE_MAIL . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
-		<td class="defaultgray" valign="top" width="100">' . g_l('wysiwyg', "[emaillink]") . '</td>
+		<td class="defaultgray" valign="top" width="100">' . g_l('wysiwyg', '[emaillink]') . '</td>
 		<td valign="top">
 			' . $_email_link . '</td>
 	</tr>' .
@@ -621,7 +621,7 @@ function showclasss(name, val, onCh) {' .
 	classNames = top.opener.weclassNames_tinyMce;' : '
 	classNames = top.opener.we_classNames;')) . '
 	document.writeln(\'<select class="defaultfont" style="width:300px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onchange="\'+onCh+\'"\' : \'\')+\'>\');
-	document.writeln(\'<option value="">' . g_l('wysiwyg', "[none]") . '\');
+	document.writeln(\'<option value="">' . g_l('wysiwyg', '[none]') . '\');
 	if(typeof(classNames) != "undefined"){
 		for (var i = 0; i < classNames.length; i++) {
 			var foo = classNames[i].substring(0,1) == "." ?

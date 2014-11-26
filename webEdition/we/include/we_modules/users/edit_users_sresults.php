@@ -25,7 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive('users') && we_users_util::canEditModule('users') ? null : array(false);
 we_html_tools::protect($protect);
 
-echo we_html_tools::getHtmlTop(g_l('modules_users', "[search_result]"), $GLOBALS['WE_BACKENDCHARSET']) . STYLESHEET;
+echo we_html_tools::getHtmlTop(g_l('modules_users', '[search_result]'), $GLOBALS['WE_BACKENDCHARSET']) . STYLESHEET;
 
 $_kwd = we_base_request::_(we_base_request::RAW, "kwd", "");
 $arr = explode(" ", strToLower($_kwd));
@@ -98,15 +98,15 @@ $_buttons = we_html_button::position_yes_no_cancel(
 
 
 $_content = we_html_tools::htmlFormElementTable(
-		we_html_tools::htmlTextInput('kwd', 24, $_kwd, "", "", "text", 485), g_l('modules_users', "[search_for]"), "left", "defaultfont", we_html_tools::getPixel(10, 1), we_html_button::create_button("image:btn_function_search", "javascript:document.we_form.submit();")
+		we_html_tools::htmlTextInput('kwd', 24, $_kwd, "", "", "text", 485), g_l('modules_users', '[search_for]'), "left", "defaultfont", we_html_tools::getPixel(10, 1), we_html_button::create_button("image:btn_function_search", "javascript:document.we_form.submit();")
 	) . '<div style="height:20px;"></div>' .
 	we_html_tools::htmlFormElementTable(
-		$_select, g_l('modules_users', "[search_result]")
+		$_select, g_l('modules_users', '[search_result]')
 );
 ?>
 </head>
 <body class="weEditorBody" style="margin:10px 20px;">
 	<form name="we_form" method="post">
-		<?php print we_html_tools::htmlDialogLayout($_content, g_l('modules_users', "[search]"), $_buttons); ?>
+		<?php echo we_html_tools::htmlDialogLayout($_content, g_l('modules_users', '[search]'), $_buttons); ?>
 	</form>
 </body>

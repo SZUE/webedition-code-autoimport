@@ -125,10 +125,10 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 						"space" => 120
 					);
 				}
-				$headline = g_l('tabs', "[module][properties]");
+				$headline = g_l('tabs', '[module][properties]');
 				$itsname = "weBannerProp";
-				$openText = g_l('weClass', "[moreProps]");
-				$closeText = g_l('weClass', "[lessProps]");
+				$openText = g_l('weClass', '[moreProps]');
+				$closeText = g_l('weClass', '[lessProps]');
 				$wepos = weGetCookieVariable("but_weBannerProp");
 				break;
 			case we_banner_banner::PAGE_PLACEMENT:
@@ -161,15 +161,15 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 						"html" => $this->formDoctypes(),
 						"space" => 120)
 				);
-				$headline = g_l('tabs', "[module][placement]");
+				$headline = g_l('tabs', '[module][placement]');
 				$znr = 3;
 				$itsname = "weBannerPlace";
-				$openText = g_l('weClass', "[moreProps]");
-				$closeText = g_l('weClass', "[lessProps]");
+				$openText = g_l('weClass', '[moreProps]');
+				$closeText = g_l('weClass', '[lessProps]');
 				$wepos = weGetCookieVariable("but_$itsname");
 				break;
 			case we_banner_banner::PAGE_STATISTICS:
-				$headline = g_l('tabs', "[module][statistics]");
+				$headline = g_l('tabs', '[module][statistics]');
 				$parts = array(
 					array(
 						"headline" => "",
@@ -224,7 +224,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		?>
 
-			parent.document.title = "webEdition <?php echo g_l('global', "[modules]") . ' - ' . $title; ?>";
+			parent.document.title = "webEdition <?php echo g_l('global', '[modules]') . ' - ' . $title; ?>";
 
 			function setHot() {
 				hot = "1";
@@ -236,7 +236,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 
 			function we_cmd() {
 				var args = "";
-				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
+				var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
 					url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 					if (i < (arguments.length - 1)) {
@@ -298,7 +298,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 									return;
 								}
 							} else {
-			<?php print we_message_reporting::getShowMessageCall(g_l('modules_banner', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_WARNING); ?>
+			<?php echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_WARNING); ?>
 								return;
 							}
 
@@ -390,7 +390,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 
 			function we_cmd() {
 				var args = "";
-				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
+				var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
 					url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 					if (i < (arguments.length - 1)) {
@@ -435,7 +435,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 						submitForm();
 						break;
 					case "delete_stat":
-						if (confirm("<?php print g_l('modules_banner', '[deleteStatConfirm]'); ?>")) {
+						if (confirm("<?php echo g_l('modules_banner', '[deleteStatConfirm]'); ?>")) {
 							document.we_form.ncmd.value = arguments[0];
 							submitForm();
 						}
@@ -846,9 +846,9 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 	<tr><td colspan="2">
 	<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont">' . g_l('global', "[from]") . ':&nbsp;</td>
+		<td class="defaultfont">' . g_l('global', '[from]') . ':&nbsp;</td>
 		<td>' . $datefilter . '</td>
-		<td class="defaultfont">' . g_l('global', "[to]") . ':&nbsp;</td>
+		<td class="defaultfont">' . g_l('global', '[to]') . ':&nbsp;</td>
 		<td>' . $datefilter2 . '</td>
 	</tr>
 </table></td>

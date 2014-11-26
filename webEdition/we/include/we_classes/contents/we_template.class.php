@@ -228,7 +228,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 	}
 
 	private function parseTemplate(){
-		$code = str_replace("<?xml", '<?php print "<?xml"; ?>', $this->getTemplateCode(true));
+		$code = str_replace("<?xml", '<?php echo "<?xml"; ?>', $this->getTemplateCode(true));
 		//$code = preg_replace('/(< *\/? *we:[^>]+>\n)/i','$1'."\n",$code);
 		$tp = new we_tag_tagParser($code, $this->getPath());
 		$tags = $tp->getAllTags();

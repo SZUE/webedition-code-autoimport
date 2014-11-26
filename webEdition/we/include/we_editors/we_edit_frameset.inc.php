@@ -367,7 +367,7 @@ if($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
 	<?php
 	if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
 
-		echo we_message_reporting::getShowMessageCall(g_l('SEEM', "[alert][close_include]"), we_message_reporting::WE_MESSAGE_ERROR)
+		echo we_message_reporting::getShowMessageCall(g_l('SEEM', '[alert][close_include]'), we_message_reporting::WE_MESSAGE_ERROR)
 		?>
 					top.close();
 		<?php

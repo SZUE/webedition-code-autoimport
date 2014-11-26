@@ -82,7 +82,7 @@ function checkForOpenChilds() {
 	}
 
 	if (_openChilds.length) {
-		if ( confirm("' . g_l('modules_customerFilter', "[apply_filter_cofirm_close]") . '") ) {
+		if ( confirm("' . g_l('modules_customerFilter', '[apply_filter_cofirm_close]') . '") ) {
 			// close all
 			for (i=0;i<_openChilds.length;i++) {
 				_usedEditors[_openChilds[i]].setEditorIsHot(false);
@@ -97,7 +97,7 @@ function checkForOpenChilds() {
 	document.getElementById("iframeCopyWeDocumentCustomerFilter").src="' . $_iframeLocation . '";
 }');
 	echo '</head><body class="weDialogBody" onload="checkForOpenChilds()">' .
-	$js . we_html_tools::htmlDialogLayout($content, g_l('modules_customerFilter', "[apply_filter]"), $buttonBar) .
+	$js . we_html_tools::htmlDialogLayout($content, g_l('modules_customerFilter', '[apply_filter]'), $buttonBar) .
 	'<div style="display: none;"> <!-- hidden -->
 	<iframe style="position: absolute; top: 150; height: 1px; width: 1px;" name="iframeCopyWeDocumentCustomerFilter" id="iframeCopyWeDocumentCustomerFilter" src="about:blank"></iframe>
 </div>

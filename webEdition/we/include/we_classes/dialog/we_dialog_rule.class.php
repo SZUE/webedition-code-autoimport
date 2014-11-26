@@ -35,7 +35,7 @@ class we_dialog_rule extends we_dialog_base{
 
 	function __construct(){
 		parent::__construct();
-		$this->dialogTitle = g_l('wysiwyg', "[edit_hr]");
+		$this->dialogTitle = g_l('wysiwyg', '[edit_hr]');
 		$this->defaultInit();
 	}
 
@@ -49,17 +49,17 @@ class we_dialog_rule extends we_dialog_base{
 
 	function getDialogContentHTML(){
 		$foo = $this->formColor(7, "we_dialog_args[color]", (isset($this->args["color"]) ? $this->args["color"] : ""), 50);
-		$color = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[color]"));
+		$color = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', '[color]'));
 
 		$foo = we_html_tools::htmlTextInput("we_dialog_args[width]", 5, (isset($this->args["width"]) ? $this->args["width"] : ""), "", ' onkeypress="return IsDigitPercent(event);"', "text", 50);
-		$width = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[width]"));
+		$width = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', '[width]'));
 
 		$foo = we_html_tools::htmlTextInput("we_dialog_args[height]", 5, (isset($this->args["height"]) ? $this->args["height"] : ""), "", ' onkeypress="return IsDigitPercent(event);"', "text", 50);
-		$height = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[height]"));
+		$height = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', '[height]'));
 
 		$noshade = '<table cellpadding="0" cellspacing="0" border="0">
 <tr><td><input type="checkbox" name="we_dialog_args[noshade]" value="1"' . ((isset($this->args["noshade"]) && $this->args["noshade"]) ? " checked" : "") . ' /></td><td>' . we_html_tools::getPixel(8, 2) . '</td><td class="defaultfont">' .
-			g_l('wysiwyg', "[noshade]") . '</td></tr></table>';
+			g_l('wysiwyg', '[noshade]') . '</td></tr></table>';
 
 		$foo = '<select class="defaultfont" name="we_dialog_args[align]" size="1">
 							<option value="">Default</option>
@@ -67,7 +67,7 @@ class we_dialog_rule extends we_dialog_base{
 							<option value="center"' . ((isset($this->args["align"]) && $this->args["align"] === "center") ? "selected" : "") . '>Center</option>
 							<option value="right"' . ((isset($this->args["align"]) && $this->args["align"] === "right") ? "selected" : "") . '>Right</option>
 						</select>';
-		$align = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[halignment]"));
+		$align = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', '[halignment]'));
 
 		$table = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td>' . $width . '</td><td>' . $height . '</td></tr>

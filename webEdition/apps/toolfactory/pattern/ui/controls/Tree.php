@@ -5,7 +5,7 @@
  */
 
 
-class <?php print $TOOLNAME;?>_ui_controls_Tree extends we_ui_controls_Tree
+class <?php echo $TOOLNAME;?>_ui_controls_Tree extends we_ui_controls_Tree
 {
 	/**
 	 * Constructor
@@ -33,8 +33,8 @@ class <?php print $TOOLNAME;?>_ui_controls_Tree extends we_ui_controls_Tree
 	public static function getTreeIconClass($contentType, $extension='')
 	{
 		switch($contentType) {
-			case "<?php print $TOOLNAME;?>/item":
-				return "<?php print $TOOLNAME;?>_item";
+			case "<?php echo $TOOLNAME;?>/item":
+				return "<?php echo $TOOLNAME;?>_item";
 				break;
 			default:
 				return we_ui_controls_Tree::getTreeIconClass($contentType, $extension='');

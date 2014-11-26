@@ -402,8 +402,8 @@ function doUnload() {
 		$_valueUseRegex = isset($data["valueUseRegex"]) ? $data["valueUseRegex"] : 0;
 		$_valueFieldValues = isset($data["valueFieldValues"]) ? unserialize($data["valueFieldValues"]) : array();
 		$_valueDateFormat = isset($data["valueDateFormat"]) ? $data["valueDateFormat"] : "unix";
-		$_valueDateFormatField = isset($data["valueDateFormatField"]) ? $data["valueDateFormatField"] : g_l('siteimport', "[dateFormatString]");
-		$_valueTemplateName = isset($data["valueTemplateName"]) ? $data["valueTemplateName"] : str_replace(' ', '', g_l('siteimport', "[newTemplate]"));
+		$_valueDateFormatField = isset($data["valueDateFormatField"]) ? $data["valueDateFormatField"] : g_l('siteimport', '[dateFormatString]');
+		$_valueTemplateName = isset($data["valueTemplateName"]) ? $data["valueTemplateName"] : str_replace(' ', '', g_l('siteimport', '[newTemplate]'));
 		$_valueTemplateParentID = isset($data["valueTemplateParentID"]) ? $data["valueTemplateParentID"] : "0";
 
 		$_templateFields = self::_getFieldsFromTemplate($_valueTemplateId);
@@ -421,24 +421,24 @@ function doUnload() {
 			"own" => g_l('import', '[fts]')
 		);
 		$_dateFormatHTML = '<div id="dateFormatDiv" style="display:' . ($hasDateFields ? 'block' : 'none') . ';margin-bottom:10px;"><table style="margin:10px 0 10px 0" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
-						g_l('siteimport', "[dateFormat]"), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
+						g_l('siteimport', '[dateFormat]'), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
 						"dateFormat", $dateformatvals, 1, $_valueDateFormat, false, array('onchange' => "dateFormatChanged(this);")) . '</td><td id="ownValueInput" style="padding-left:10px;display:' . (($_valueDateFormat === "own") ? 'block' : 'none') . '">' . we_html_tools::htmlTextInput(
 						"dateformatField", 20, $_valueDateFormatField) . '</td><td id="ownValueInputHelp" style="padding-bottom:1px;padding-left:10px;display:' . (($_valueDateFormat === "own") ? 'block' : 'none') . '">' . $date_help_button . '</td></tr></table></div>';
 
 		$table = '<div style="overflow:auto;height:330px; margin-top:5px;"><div style="width:450px;" id="tablediv">' . $this->_getSiteImportTableHTML($_templateFields, $_valueFieldValues) . '</div></div>';
 
-		$_regExCheckbox = we_html_forms::checkboxWithHidden($_valueUseRegex, "useRegEx", oldHtmlspecialchars(g_l('siteimport', "[useRegEx]"), ENT_QUOTES));
+		$_regExCheckbox = we_html_forms::checkboxWithHidden($_valueUseRegex, "useRegEx", oldHtmlspecialchars(g_l('siteimport', '[useRegEx]'), ENT_QUOTES));
 		$specifyHTML = $this->_getTemplateSelectHTML($_valueTemplateId) . '<div id="specifyParam" style="padding-top:10px;display:' . ($_valueTemplateId ? 'block' : 'none') . '">' . $_dateFormatHTML . $_regExCheckbox . $table . '</div>';
 
 		$vals = array(
-			"auto" => oldHtmlspecialchars(g_l('siteimport', "[cresteAutoTemplate]"), ENT_QUOTES),
-			"specify" => oldHtmlspecialchars(g_l('siteimport', "[useSpecifiedTemplate]"), ENT_QUOTES)
+			"auto" => oldHtmlspecialchars(g_l('siteimport', '[cresteAutoTemplate]'), ENT_QUOTES),
+			"specify" => oldHtmlspecialchars(g_l('siteimport', '[useSpecifiedTemplate]'), ENT_QUOTES)
 		);
 
 		$_html = '<table style="margin-bottom:10px" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
-						g_l('siteimport', "[importKind]"), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
+						g_l('siteimport', '[importKind]'), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
 						"createType", $vals, 1, $_valueCreateType, false, array('onchange' => "createTypeChanged(this);")) . '</td></tr></table><div id="ctauto" style="display:' . (($_valueCreateType === "auto") ? 'block' : 'none') . '">' . we_html_tools::htmlAlertAttentionBox(
-						g_l('siteimport', "[autoExpl]"), we_html_tools::TYPE_INFO, 450) . self::_formPathHTML($_valueTemplateName, $_valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($_valueCreateType === "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
+						g_l('siteimport', '[autoExpl]'), we_html_tools::TYPE_INFO, 450) . self::_formPathHTML($_valueTemplateName, $_valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($_valueCreateType === "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
 
 		$_html = '<div style="height:480px">' . $_html . '</div>';
 
@@ -457,7 +457,7 @@ function doUnload() {
 		$cancelbutton = we_html_button::create_button("cancel", "javascript:self.close()");
 		$buttons = we_html_button::position_yes_no_cancel($okbutton, null, $cancelbutton);
 		$bodyhtml .= we_html_multiIconBox::getHTML(
-						"", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('siteimport', "[importSettingsWePages]"));
+						"", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('siteimport', '[importSettingsWePages]'));
 		$bodyhtml .= '</form></body>';
 
 		$js = we_html_element::jsElement('
@@ -468,7 +468,7 @@ function doUnload() {
 			// check if template is selected
 			if (f.templateID.value == "0" || f.templateID.value=="") {
 				' . we_message_reporting::getShowMessageCall(
-								g_l('siteimport', "[pleaseSelectTemplateAlert]"), we_message_reporting::WE_MESSAGE_ERROR) . '
+								g_l('siteimport', '[pleaseSelectTemplateAlert]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 				return false;
 			}
 			// check value of fields
@@ -508,27 +508,27 @@ function doUnload() {
 			}
 			if (filled == 0) {
 				' . we_message_reporting::getShowMessageCall(
-								g_l('siteimport', "[startEndMarkAlert]"), we_message_reporting::WE_MESSAGE_ERROR) . '
+								g_l('siteimport', '[startEndMarkAlert]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 				return false;
 			}
 			if (document.getElementById("ownValueInput").style.display != "none") {
 				if (f.dateformatField.value.length == 0) {
 					' . we_message_reporting::getShowMessageCall(
-								str_replace('"', '\"', g_l('siteimport', "[errorEmptyDateFormat]")), we_message_reporting::WE_MESSAGE_ERROR) . '
+								str_replace('"', '\"', g_l('siteimport', '[errorEmptyDateFormat]')), we_message_reporting::WE_MESSAGE_ERROR) . '
 					return false;
 				}
 			}
 		} else {
 			if (f.templateName.value.length==0) {
 				' . we_message_reporting::getShowMessageCall(
-								g_l('siteimport', "[nameOfTemplateAlert]"), we_message_reporting::WE_MESSAGE_ERROR) . '
+								g_l('siteimport', '[nameOfTemplateAlert]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 				f.templateName.focus();
 				f.templateName.select();
 				return false;
 			}
 			var reg = /[^a-z0-9\._+\-]/gi;
 			if (reg.test(f.templateName.value)) {' .
-						we_message_reporting::getShowMessageCall(g_l('alert', "[we_filename_notValid]"), we_message_reporting::WE_MESSAGE_ERROR) . '
+						we_message_reporting::getShowMessageCall(g_l('alert', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 				f.templateName.focus();
 				f.templateName.select();
 				return false;
@@ -575,7 +575,7 @@ function doUnload() {
 
 		$foo = we_html_tools::htmlTextInput('templateDummy', 30, $path, "", ' readonly', "text", 320, 0);
 		return we_html_tools::htmlFormElementTable(
-						$foo, oldHtmlspecialchars(g_l('siteimport', "[template]"), ENT_QUOTES), "left", "defaultfont", we_html_tools::hidden('templateID', intval($tid)), we_html_tools::getPixel(20, 4), $button);
+						$foo, oldHtmlspecialchars(g_l('siteimport', '[template]'), ENT_QUOTES), "left", "defaultfont", we_html_tools::hidden('templateID', intval($tid)), we_html_tools::getPixel(20, 4), $button);
 	}
 
 	/**
@@ -593,7 +593,7 @@ function doUnload() {
 		$_input = we_html_tools::htmlTextInput("from", 30, $this->from, "", "readonly", "text", 300);
 
 		$_importFrom = we_html_tools::htmlFormElementTable(
-						$_input, g_l('siteimport', "[importFrom]"), "left", "defaultfont", we_html_tools::getPixel(10, 1), $_from_button, "", "", "", 0);
+						$_input, g_l('siteimport', '[importFrom]'), "left", "defaultfont", we_html_tools::getPixel(10, 1), $_from_button, "", "", "", 0);
 
 		// Destination Directory
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['to'].value");
@@ -609,7 +609,7 @@ function doUnload() {
 		$yuiSuggest->setAcId("DirPath");
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput("toPath", id_to_path($this->to));
-		$yuiSuggest->setLabel(g_l('siteimport', "[importTo]"));
+		$yuiSuggest->setLabel(g_l('siteimport', '[importTo]'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setResult("to", $this->to);
@@ -626,23 +626,23 @@ function doUnload() {
 		$weoncklick .= ((!permissionhandler::hasPerm("NEW_HTML")) && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")) ? "if((!this.checked) && this.form.elements['htmlPages'].checked){this.form.elements['htmlPages'].checked = false;}" : "";
 
 		$_images = we_html_forms::checkboxWithHidden(
-						permissionhandler::hasPerm("NEW_GRAFIK") ? $this->images : false, "images", g_l('siteimport', "[importImages]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_GRAFIK"));
+						permissionhandler::hasPerm("NEW_GRAFIK") ? $this->images : false, "images", g_l('siteimport', '[importImages]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_GRAFIK"));
 
-		$_htmlPages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTML") ? $this->htmlPages : ((permissionhandler::hasPerm("NEW_WEBEDITIONSITE") && $this->createWePages) ? true : false), "htmlPages", g_l('siteimport', "[importHtmlPages]"), false, "defaultfont", "if(this.checked){this.form.elements['_createWePages'].disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements['_createWePages'].disabled=true;document.getElementById('label__createWePages').style.color='grey';}", !permissionhandler::hasPerm("NEW_HTML"));
-		$_createWePages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") ? $this->createWePages : false, "createWePages", g_l('siteimport', "[createWePages]") . "&nbsp;&nbsp;", false, "defaultfont", $weoncklick, !permissionhandler::hasPerm("NEW_WEBEDITIONSITE"));
-		$_flashmovies = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_FLASH") ? $this->flashmovies : false, "flashmovies", g_l('siteimport', "[importFlashmovies]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_FLASH"));
-		$_quicktime = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_QUICKTIME") ? $this->quicktime : false, "quicktime", g_l('siteimport', "[importQuicktime]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_QUICKTIME"));
-		$_jss = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_JS") ? $this->js : false, "j", g_l('siteimport', "[importJS]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_JS"));
-		$_css = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_CSS") ? $this->css : false, "css", g_l('siteimport', "[importCSS]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_CSS"));
-		$_text = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_TEXT") ? $this->text : false, "text", g_l('siteimport', "[importText]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_TEXT"));
-		$_htaccess = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTACCESS") ? $this->text : false, "htacsess", g_l('siteimport', "[importHTACCESS]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_HTACCESS"));
-		$_others = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_SONSTIGE") ? $this->other : false, "other", g_l('siteimport', "[importOther]"), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_SONSTIGE"));
+		$_htmlPages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTML") ? $this->htmlPages : ((permissionhandler::hasPerm("NEW_WEBEDITIONSITE") && $this->createWePages) ? true : false), "htmlPages", g_l('siteimport', '[importHtmlPages]'), false, "defaultfont", "if(this.checked){this.form.elements['_createWePages'].disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements['_createWePages'].disabled=true;document.getElementById('label__createWePages').style.color='grey';}", !permissionhandler::hasPerm("NEW_HTML"));
+		$_createWePages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") ? $this->createWePages : false, "createWePages", g_l('siteimport', '[createWePages]') . "&nbsp;&nbsp;", false, "defaultfont", $weoncklick, !permissionhandler::hasPerm("NEW_WEBEDITIONSITE"));
+		$_flashmovies = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_FLASH") ? $this->flashmovies : false, "flashmovies", g_l('siteimport', '[importFlashmovies]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_FLASH"));
+		$_quicktime = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_QUICKTIME") ? $this->quicktime : false, "quicktime", g_l('siteimport', '[importQuicktime]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_QUICKTIME"));
+		$_jss = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_JS") ? $this->js : false, "j", g_l('siteimport', '[importJS]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_JS"));
+		$_css = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_CSS") ? $this->css : false, "css", g_l('siteimport', '[importCSS]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_CSS"));
+		$_text = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_TEXT") ? $this->text : false, "text", g_l('siteimport', '[importText]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_TEXT"));
+		$_htaccess = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTACCESS") ? $this->text : false, "htacsess", g_l('siteimport', '[importHTACCESS]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_HTACCESS"));
+		$_others = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_SONSTIGE") ? $this->other : false, "other", g_l('siteimport', '[importOther]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_SONSTIGE"));
 
 		$_wePagesOptionButton = we_html_button::create_button("preferences", "javascript:we_cmd('siteImportCreateWePageSettings')", true, 150, 22, "", "", false, true, "", true);
 		// Depth
 		$_select = we_html_tools::htmlSelect(
 						"depth", array(
-					"-1" => g_l('siteimport', "[nolimit]"),
+					"-1" => g_l('siteimport', '[nolimit]'),
 					0,
 					1,
 					2,
@@ -676,11 +676,11 @@ function doUnload() {
 					30
 						), 1, $this->depth, false, array(), "value", 150);
 
-		$_depth = we_html_tools::htmlFormElementTable($_select, g_l('siteimport', "[depth]"));
+		$_depth = we_html_tools::htmlFormElementTable($_select, g_l('siteimport', '[depth]'));
 		$maxallowed = round($GLOBALS['DB_WE']->getMaxAllowedPacket() / (1024 * 1024));
 		$maxallowed = $maxallowed ? : 20;
 		$maxarray = array(
-			"0" => g_l('siteimport', "[nolimit]"), "0.5" => "0.5"
+			"0" => g_l('siteimport', '[nolimit]'), "0.5" => "0.5"
 		);
 		for($i = 1; $i <= $maxallowed; $i++){
 			$maxarray["" . $i] = $i;
@@ -688,16 +688,16 @@ function doUnload() {
 
 		// maxSize
 		$_select = we_html_tools::htmlSelect("maxSize", $maxarray, 1, $this->maxSize, false, array(), "value", 150);
-		$_maxSize = we_html_tools::htmlFormElementTable($_select, g_l('siteimport', "[maxSize]"));
+		$_maxSize = we_html_tools::htmlFormElementTable($_select, g_l('siteimport', '[maxSize]'));
 
 		$GLOBALS['DB_WE']->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 		$thumbsarray = $GLOBALS['DB_WE']->getAllFirst(false);
 		$_select = we_html_tools::htmlSelect("thumbs[]", $thumbsarray, 5, $this->thumbs, true, array(), "value", 150);
-		$_thumbs = we_html_tools::htmlFormElementTable($_select, g_l('importFiles', "[thumbnails]"));
+		$_thumbs = we_html_tools::htmlFormElementTable($_select, g_l('importFiles', '[thumbnails]'));
 
 		$parts = array(
 			array(
-				"headline" => g_l('siteimport', "[dirs_headline]"),
+				"headline" => g_l('siteimport', '[dirs_headline]'),
 				"html" => $_importFrom . we_html_tools::getPixel(20, 5) . $_importTo,
 				"space" => 120
 		));
@@ -733,7 +733,7 @@ function doUnload() {
 
 
 		$parts[] = array(
-			"headline" => g_l('siteimport', "[import]"),
+			"headline" => g_l('siteimport', '[import]'),
 			"html" => $_tableObj->getHtml(),
 			"space" => 120
 		);
@@ -745,33 +745,33 @@ function doUnload() {
 		$_tableObj->setCol(1, 1, null, we_html_tools::getPixel(180, 1));
 
 		$parts[] = array(
-			"headline" => g_l('siteimport', "[limits]"),
+			"headline" => g_l('siteimport', '[limits]'),
 			"html" => $_tableObj->getHtml(),
 			"space" => 120
 		);
 
-		$content = we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[sameName_expl]"), we_html_tools::TYPE_INFO, 410) .
+		$content = we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 410) .
 				we_html_tools::getPixel(200, 10) .
-				we_html_forms::radiobutton("overwrite", ($this->sameName === "overwrite"), "sameName", g_l('importFiles', "[sameName_overwrite]")) .
-				we_html_forms::radiobutton("rename", ($this->sameName === "rename"), "sameName", g_l('importFiles', "[sameName_rename]")) .
-				we_html_forms::radiobutton("nothing", ($this->sameName === "nothing"), "sameName", g_l('importFiles', "[sameName_nothing]"));
+				we_html_forms::radiobutton("overwrite", ($this->sameName === "overwrite"), "sameName", g_l('importFiles', '[sameName_overwrite]')) .
+				we_html_forms::radiobutton("rename", ($this->sameName === "rename"), "sameName", g_l('importFiles', '[sameName_rename]')) .
+				we_html_forms::radiobutton("nothing", ($this->sameName === "nothing"), "sameName", g_l('importFiles', '[sameName_nothing]'));
 
 		$parts[] = array(
-			"headline" => g_l('importFiles', "[sameName_headline]"),
+			"headline" => g_l('importFiles', '[sameName_headline]'),
 			"html" => $content,
 			"space" => 120
 		);
 
 		if(permissionhandler::hasPerm("NEW_GRAFIK")){
 			$parts[] = array(
-				'headline' => g_l('importFiles', "[metadata]") . '',
-				'html' => we_html_forms::checkboxWithHidden($this->importMetadata == true, 'importMetadata', g_l('importFiles', "[import_metadata]")),
+				'headline' => g_l('importFiles', '[metadata]') . '',
+				'html' => we_html_forms::checkboxWithHidden($this->importMetadata == true, 'importMetadata', g_l('importFiles', '[import_metadata]')),
 				'space' => 120
 			);
 
 			if(we_base_imageEdit::gd_version() > 0){
 				$parts[] = array(
-					"headline" => g_l('importFiles', "[make_thumbs]"),
+					"headline" => g_l('importFiles', '[make_thumbs]'),
 					"html" => $_thumbs,
 					"space" => 120
 				);
@@ -779,20 +779,20 @@ function doUnload() {
 				$widthInput = we_html_tools::htmlTextInput("width", 10, $this->width, "", '', "text", 60);
 				$heightInput = we_html_tools::htmlTextInput("height", 10, $this->height, "", '', "text", 60);
 
-				$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->widthSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
-				$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[pixel]") . '</option><option value="percent"' . (($this->heightSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', "[percent]") . '</option></select>';
+				$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . (($this->widthSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
+				$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . (($this->heightSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
 
 				$ratio_checkbox = we_html_forms::checkbox(
-								1, $this->keepRatio, "keepRatio", g_l('thumbnails', "[ratio]"));
+								1, $this->keepRatio, "keepRatio", g_l('thumbnails', '[ratio]'));
 
 				$_resize = '<table border="0" cellpadding="2" cellspacing="0">
 				<tr>
-					<td class="defaultfont">' . g_l('weClass', "[width]") . ':</td>
+					<td class="defaultfont">' . g_l('weClass', '[width]') . ':</td>
 					<td>' . $widthInput . '</td>
 					<td>' . $widthSelect . '</td>
 				</tr>
 				<tr>
-					<td class="defaultfont">' . g_l('weClass', "[height]") . ':</td>
+					<td class="defaultfont">' . g_l('weClass', '[height]') . ':</td>
 					<td>' . $heightInput . '</td>
 					<td>' . $heightSelect . '</td>
 				</tr>
@@ -802,22 +802,22 @@ function doUnload() {
 			</table>';
 
 				$parts[] = array(
-					"headline" => g_l('weClass', "[resize]"), "html" => $_resize, "space" => 120
+					"headline" => g_l('weClass', '[resize]'), "html" => $_resize, "space" => 120
 				);
 
-				$_radio0 = we_html_forms::radiobutton(0, $this->degrees == 0, "degrees", g_l('weClass', "[rotate0]"));
-				$_radio180 = we_html_forms::radiobutton(180, $this->degrees == 180, "degrees", g_l('weClass', "[rotate180]"));
-				$_radio90l = we_html_forms::radiobutton(90, $this->degrees == 90, "degrees", g_l('weClass', "[rotate90l]"));
-				$_radio90r = we_html_forms::radiobutton(270, $this->degrees == 270, "degrees", g_l('weClass', "[rotate90r]"));
+				$_radio0 = we_html_forms::radiobutton(0, $this->degrees == 0, "degrees", g_l('weClass', '[rotate0]'));
+				$_radio180 = we_html_forms::radiobutton(180, $this->degrees == 180, "degrees", g_l('weClass', '[rotate180]'));
+				$_radio90l = we_html_forms::radiobutton(90, $this->degrees == 90, "degrees", g_l('weClass', '[rotate90l]'));
+				$_radio90r = we_html_forms::radiobutton(270, $this->degrees == 270, "degrees", g_l('weClass', '[rotate90r]'));
 
 				$parts[] = array(
-					"headline" => g_l('weClass', "[rotate]"),
+					"headline" => g_l('weClass', '[rotate]'),
 					"html" => $_radio0 . $_radio180 . $_radio90l . $_radio90r,
 					"space" => 120
 				);
 
 				$parts[] = array(
-					"headline" => g_l('weClass', "[quality]"),
+					"headline" => g_l('weClass', '[quality]'),
 					"html" => we_base_imageEdit::qualitySelect("quality", $this->quality),
 					"space" => 120
 				);
@@ -825,7 +825,7 @@ function doUnload() {
 				$parts[] = array(
 					"headline" => "",
 					"html" => we_html_tools::htmlAlertAttentionBox(
-							g_l('importFiles', "[add_description_nogdlib]"), we_html_tools::TYPE_INFO, ""),
+							g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, ""),
 					"space" => 0
 				);
 			}
@@ -837,7 +837,7 @@ function doUnload() {
 		$wepos = weGetCookieVariable("but_wesiteimport");
 		$content = we_html_multiIconBox::getJS() .
 				we_html_multiIconBox::getHTML(
-						"wesiteimport", "100%", $parts, 30, "", $foldAT, g_l('importFiles', "[image_options_open]"), g_l('importFiles', "[image_options_close]"), ($wepos === "down"), g_l('siteimport', "[siteimport]")) . $this->_getHiddensHTML();
+						"wesiteimport", "100%", $parts, 30, "", $foldAT, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), ($wepos === "down"), g_l('siteimport', '[siteimport]')) . $this->_getHiddensHTML();
 
 		$content = we_html_element::htmlForm(
 						array(
@@ -869,10 +869,10 @@ function doUnload() {
 				$importDirectory = rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/');
 				if(count(scandir($importDirectory)) <= 2){
 					return we_html_element::jsElement('alert(\'' . addslashes(
-											g_l('importFiles', "[emptyDir]")) . '\');top.close()');
+											g_l('importFiles', '[emptyDir]')) . '\');top.close()');
 				}
 				return we_html_element::jsElement('alert(\'' . addslashes(
-										g_l('importFiles', "[noFiles]")) . '\');top.close();');
+										g_l('importFiles', '[noFiles]')) . '\');top.close();');
 			}
 			new we_import_siteFrag($this);
 			return '';
@@ -902,17 +902,17 @@ function doUnload() {
 				top.siteimportcontent.document.we_form.submit();
 				break;
 			case 1:
-				if(confirm('" . g_l('importFiles', "[root_dir_1]") . "')){
+				if(confirm('" . g_l('importFiles', '[root_dir_1]') . "')){
 					top.siteimportcontent.document.we_form.submit();
 				}
 				break;
 			case 2:
-				if(confirm('" . g_l('importFiles', "[root_dir_2]") . "')){
+				if(confirm('" . g_l('importFiles', '[root_dir_2]') . "')){
 					top.siteimportcontent.document.we_form.submit();
 				}
 				break;
 			case 3:
-				if(confirm('" . g_l('importFiles', "[root_dir_3]") . "')){
+				if(confirm('" . g_l('importFiles', '[root_dir_3]') . "')){
 					top.siteimportcontent.document.we_form.submit();
 				}
 				break;
@@ -1048,7 +1048,7 @@ function doUnload() {
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput('templateDirName', $path);
 		$yuiSuggest->setResult('templateParentID', 0);
-		$yuiSuggest->setLabel(g_l('weClass', "[dir]"));
+		$yuiSuggest->setLabel(g_l('weClass', '[dir]'));
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setWidth(320);
@@ -1072,10 +1072,10 @@ function doUnload() {
 <table border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
 	<tr>
 		<td>' . we_html_tools::htmlFormElementTable(
-						we_html_tools::htmlTextInput("templateName", 30, $templateName, 255, "", "text", 320), g_l('siteimport', "[nameOfTemplate]")) . '</td>
+						we_html_tools::htmlTextInput("templateName", 30, $templateName, 255, "", "text", 320), g_l('siteimport', '[nameOfTemplate]')) . '</td>
 		<td></td>
 		<td>' . we_html_tools::htmlFormElementTable(
-						'<span class="defaultfont"><b>.tmpl</b></span>', g_l('weClass', "[extension]")) . '</td>
+						'<span class="defaultfont"><b>.tmpl</b></span>', g_l('weClass', '[extension]')) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(20, 4) . '</td>

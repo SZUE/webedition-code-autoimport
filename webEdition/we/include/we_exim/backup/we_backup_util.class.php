@@ -89,19 +89,19 @@ abstract class we_backup_util{
 			case INDEX_TABLE:
 				return g_l('backup', '[' . $prefix . '_indexes]');
 			case DOC_TYPES_TABLE:
-				return g_l('backup', "[" . $prefix . '_doctypes]');
+				return g_l('backup', '[' . $prefix . '_doctypes]');
 			case USER_TABLE:
-				return g_l('backup', "[" . $prefix . '_user_data]');
+				return g_l('backup', '[' . $prefix . '_user_data]');
 			case (defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE'):
-				return g_l('backup', "[" . $prefix . '_customer_data]');
+				return g_l('backup', '[' . $prefix . '_customer_data]');
 			case (defined('SHOP_TABLE') ? SHOP_TABLE : 'SHOP_TABLE'):
-				return g_l('backup', "[" . $prefix . '_shop_data]');
+				return g_l('backup', '[' . $prefix . '_shop_data]');
 			case (defined('PREFS_TABLE') ? PREFS_TABLE : 'PREFS_TABLE'):
-				return g_l('backup', "[" . $prefix . '_prefs]');
+				return g_l('backup', '[' . $prefix . '_prefs]');
 			case (defined('BACKUP_TABLE') ? BACKUP_TABLE : 'BACKUP_TABLE'):
-				return g_l('backup', "[" . $prefix . '_extern_data]');
+				return g_l('backup', '[' . $prefix . '_extern_data]');
 			case (defined('BANNER_CLICKS_TABLE') ? BANNER_CLICKS_TABLE : 'BANNER_CLICKS_TABLE'):
-				return g_l('backup', "[" . $prefix . '_banner_data]');
+				return g_l('backup', '[' . $prefix . '_banner_data]');
 			default:
 				return g_l('backup', '[working]');
 		}

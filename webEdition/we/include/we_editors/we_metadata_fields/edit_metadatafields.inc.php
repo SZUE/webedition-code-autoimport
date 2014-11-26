@@ -189,10 +189,10 @@ function build_dialog($selected_setting = 'ui'){
 </tr>
 <tr id="metadataRow2_' . $key . '">
 	<td style="padding-bottom:10px;padding-right:5px;">
-		<div class="small">' . oldHtmlspecialchars(g_l('metadata', "[import_from]")) . '</div>' . we_html_tools::htmlTextInput('metadataImportFrom[' . $key . ']', 24, $value['importFrom'], 255, "", "text", 205) . '
+		<div class="small">' . oldHtmlspecialchars(g_l('metadata', '[import_from]')) . '</div>' . we_html_tools::htmlTextInput('metadataImportFrom[' . $key . ']', 24, $value['importFrom'], 255, "", "text", 205) . '
 	</td>
 	<td colspan="2" style="padding-bottom:10px;">
-		<div class="small">' . oldHtmlspecialchars(g_l('metadata', "[fields]")) . '</div>' .
+		<div class="small">' . oldHtmlspecialchars(g_l('metadata', '[fields]')) . '</div>' .
 					we_html_tools::htmlSelect('add_' . $key, $_metadata_fields, 1, "", false, array('class' => "defaultfont", 'style' => "width:100%", 'onchange' => "addFieldToInput(this,' . $key . ')")) . '
 	</td>
 </tr>';
@@ -203,8 +203,8 @@ function build_dialog($selected_setting = 'ui'){
 <table border="0" cellpadding="0" cellspacing="0" width="440">
 	<tbody id="metadataTable">
 		<tr>
-			<td class="defaultfont" style="width:210px;"><strong>' . g_l('metadata', "[tagname]") . '</strong></td>
-			<td class="defaultfont" style="width:110px;" colspan="2"><strong>' . g_l('metadata', "[type]") . '</strong></td>
+			<td class="defaultfont" style="width:210px;"><strong>' . g_l('metadata', '[tagname]') . '</strong></td>
+			<td class="defaultfont" style="width:110px;" colspan="2"><strong>' . g_l('metadata', '[type]') . '</strong></td>
 		</tr>
 		' . $_adv_row . '
 	</tbody>
@@ -248,12 +248,12 @@ function build_dialog($selected_setting = 'ui'){
 
 			cell = document.createElement("TD");
 			cell.style.paddingBottom="10px";
-					cell.innerHTML=\'<div class="small">' . oldHtmlspecialchars(g_l('metadata', "[import_from]")) . '</div>\'+importInp.replace(/__we_new_id__/,newID);
+					cell.innerHTML=\'<div class="small">' . oldHtmlspecialchars(g_l('metadata', '[import_from]')) . '</div>\'+importInp.replace(/__we_new_id__/,newID);
 					newRow.appendChild(cell);
 			cell = document.createElement("TD");
 			cell.setAttribute("colspan",2);
 			cell.style.paddingBottom="10px";
-					cell.innerHTML=\'<div class="small">' . oldHtmlspecialchars(g_l('metadata', "[fields]")) . '</div>\'+fieldSel.replace(/__we_new_id__/g,newID);
+					cell.innerHTML=\'<div class="small">' . oldHtmlspecialchars(g_l('metadata', '[fields]')) . '</div>\'+fieldSel.replace(/__we_new_id__/g,newID);
 					newRow.appendChild(cell);
 					elem.appendChild(newRow);
 		}

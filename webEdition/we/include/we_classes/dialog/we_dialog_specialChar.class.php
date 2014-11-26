@@ -31,7 +31,7 @@ class we_dialog_specialChar extends we_dialog_base{
 
 	function __construct(){
 		parent::__construct();
-		$this->dialogTitle = g_l('wysiwyg', "[insertspecialchar]");
+		$this->dialogTitle = g_l('wysiwyg', '[insertspecialchar]');
 		$this->defaultInit();
 	}
 

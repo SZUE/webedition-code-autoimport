@@ -301,7 +301,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 	}
 
 	function deleteDict(name) {
-		if (confirm(sprintf("<?php print g_l('modules_spellchecker', '[ask_dict_del]'); ?>", name))) {
+		if (confirm(sprintf("<?php echo g_l('modules_spellchecker', '[ask_dict_del]'); ?>", name))) {
 			hiddenCmd.dispatch("deleteDict", name);
 		}
 	}
@@ -317,21 +317,21 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 //-->
 </script>
 
-<?php print $js; ?>
+<?php echo $js; ?>
 
 </head>
 
 <body onload="loadTable()" class="weDialogBody">
 
-<?php print $tabsBody; ?>
+<?php echo $tabsBody; ?>
 
 	<div id="content" style="margin: 10px; width: 450px;">
 		<div id="tab1" style="display:block;">
-<?php print $_tab_1 ?>
+<?php echo $_tab_1 ?>
 
 		</div>
 		<div id="tab2" style="display:none;">
-<?php print $_tab_2 ?>
+<?php echo $_tab_2 ?>
 		</div>
 
 	</div>
@@ -339,7 +339,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 	<div style="left:0px;height:40px;background-image: url(<?php echo IMAGE_DIR; ?>edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div align="right" style="padding: 10px 10px 0 0;"><?php echo $_button; ?></div></div>
 
 
-	<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height: 0px;" src="<?php print WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php'; ?>"></iframe>
+	<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height: 0px;" src="<?php echo WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php'; ?>"></iframe>
 
 	<div id="appletPanel2" style="position: absolute; left:0px; top:900px; display: block; border: 0px; width: 0px; height: 0px;">
 	</div>

@@ -111,14 +111,14 @@ class we_banner_frames extends we_modules_frame{
 
 					if (nf[ai].typ == 'file') {
 						if (ai == nf.laenge) {
-							fr.write("&nbsp;&nbsp;<img src=<?php print TREE_IMAGE_DIR; ?>kreuzungend.gif width=19 height=18 align=absmiddle border=0>");
+							fr.write("&nbsp;&nbsp;<img src=<?php echo TREE_IMAGE_DIR; ?>kreuzungend.gif width=19 height=18 align=absmiddle border=0>");
 						} else {
-							fr.write("&nbsp;&nbsp;<img src=<?php print TREE_IMAGE_DIR; ?>kreuzung.gif width=19 height=18 align=absmiddle border=0>");
+							fr.write("&nbsp;&nbsp;<img src=<?php echo TREE_IMAGE_DIR; ?>kreuzung.gif width=19 height=18 align=absmiddle border=0>");
 						}
 						if (nf[ai].name != -1) {
 							fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 						}
-						fr.write("<IMG SRC=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]");                       ?>\">");
+						fr.write("<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php #print g_l('tree',"[edit_statustext]");                       ?>\">");
 						fr.write("</a>");
 						fr.write("&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + (parseInt(nf[ai].published) ? "" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "" : "") + "</a>&nbsp;&nbsp;<br/>\n");
 					} else {
@@ -127,14 +127,14 @@ class we_banner_frames extends we_modules_frame{
 						var zusatz = (ai == nf.laenge) ? "end" : "";
 
 						if (nf[ai].offen == 0) {
-							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]")                       ?>\"></A>");
+							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php echo TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[open_statustext]")                       ?>\"></A>");
 							var zusatz2 = "";
 						} else {
-							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[close_statustext]")                       ?>\"></A>");
+							fr.write("&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php echo TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[close_statustext]")                       ?>\"></A>");
 							var zusatz2 = "open";
 						}
 						fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" border='0'>");
-						fr.write("<img src=<?php print TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon.replace(/\.gif/, "") + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[edit_statustext]");                       ?>\">");
+						fr.write("<img src=<?php echo TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon.replace(/\.gif/, "") + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php #print g_l('tree',"[edit_statustext]");                       ?>\">");
 						fr.write("</a>");
 						fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 						fr.write("&nbsp;<b>" + nf[ai].text + "</b>");
@@ -142,9 +142,9 @@ class we_banner_frames extends we_modules_frame{
 						fr.write("&nbsp;&nbsp;<br/>\n");
 						if (nf[ai].offen) {
 							if (ai == nf.laenge) {
-								newAst = newAst + "<IMG SRC=<?php print TREE_IMAGE_DIR; ?>leer.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
+								newAst = newAst + "<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>leer.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
 							} else {
-								newAst = newAst + "<IMG SRC=<?php print TREE_IMAGE_DIR; ?>strich2.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
+								newAst = newAst + "<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>strich2.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
 							}
 							zeichne(nf[ai].name, newAst);
 						}
@@ -359,11 +359,11 @@ class we_banner_frames extends we_modules_frame{
 		$we_tabs = new we_tabs();
 
 		if($isFolder){
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][properties]"), we_tab::ACTIVE, "setTab(0);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][properties]'), we_tab::ACTIVE, "setTab(0);"));
 		} else {
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][properties]"), ($page == 0 ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(0);"));
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][placement]"), ($page == 1 ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(1);"));
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', "[module][statistics]"), ($page == 2 ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(2);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][properties]'), ($page == 0 ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(0);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][placement]'), ($page == 1 ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(1);"));
+			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][statistics]'), ($page == 2 ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(2);"));
 		}
 
 		$we_tabs->onResize('header');

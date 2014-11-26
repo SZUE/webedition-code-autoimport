@@ -349,8 +349,8 @@ class we_voting_frames extends we_modules_frame{
 
 			$lineend = new we_html_select(array('name' => 'csv_lineend', 'size' => 1, 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
 			$lineend->addOption('windows', g_l('export', '[windows]'));
-			$lineend->addOption('unix', g_l('export', "[unix]"));
-			$lineend->addOption('mac', g_l('export', "[mac]"));
+			$lineend->addOption('unix', g_l('export', '[unix]'));
+			$lineend->addOption('mac', g_l('export', '[mac]'));
 
 			$_charsetHandler = new we_base_charsetHandler();
 			$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
@@ -725,8 +725,8 @@ function refreshTexts(){
 
 		$lineend = new we_html_select(array('name' => 'csv_lineend', 'size' => 1, 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
 		$lineend->addOption('windows', g_l('export', '[windows]'));
-		$lineend->addOption('unix', g_l('export', "[unix]"));
-		$lineend->addOption('mac', g_l('export', "[mac]"));
+		$lineend->addOption('unix', g_l('export', '[unix]'));
+		$lineend->addOption('mac', g_l('export', '[mac]'));
 
 		$delimiter = new we_html_select(array('name' => 'csv_delimiter', 'size' => 1, 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
 		$delimiter->addOption(';', g_l('export', '[semicolon]'));
@@ -1010,7 +1010,7 @@ function refreshTexts(){
 				}
 
 				$content[] = array(
-					array('dat' => date(g_l('weEditorInfo', "[date_format]"), $data['time'])),
+					array('dat' => date(g_l('weEditorInfo', '[date_format]'), $data['time'])),
 					array('dat' => $data['ip']),
 					array('dat' => $data['agent']),
 					array('dat' => $data['cookie'] ? g_l('modules_voting', '[enabled]') : g_l('modules_voting', '[disabled]')),
@@ -1026,7 +1026,7 @@ function refreshTexts(){
 					) .
 					we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 					($size - $next) .
-					"&nbsp;" . g_l('global', "[from]") . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
+					"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 					($next > 0 ?
 							we_html_button::create_button("next", $this->frameset . "?pnt=show_log&start=" . $next) : //bt_next
 							we_html_button::create_button("next", "", "", 100, 22, "", "", true)
@@ -1136,7 +1136,7 @@ function refreshTexts(){
 				$content[] = array(
 					array('dat' => $data['votingsession']),
 					array('dat' => $data['voting']),
-					array('dat' => date(g_l('weEditorInfo', "[date_format]"), $data['time'])),
+					array('dat' => date(g_l('weEditorInfo', '[date_format]'), $data['time'])),
 					array('dat' => $data['ip']),
 					array('dat' => $data['agent']),
 					array('dat' => $data['cookie'] ? g_l('modules_voting', '[enabled]') : g_l('modules_voting', '[disabled]')),
@@ -1156,7 +1156,7 @@ function refreshTexts(){
 					) .
 					we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 					($size - $next) .
-					"&nbsp;" . g_l('global', "[from]") . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
+					"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 					($next > 0 ?
 							we_html_button::create_button("next", $this->frameset . "?pnt=show_log&start=" . $next) : //bt_next
 							we_html_button::create_button("next", "", "", 100, 22, "", "", true)
@@ -1252,7 +1252,7 @@ function refreshTexts(){
 				}
 
 				$content[] = array(
-					array('dat' => date(g_l('weEditorInfo', "[date_format]"), $data['time'])),
+					array('dat' => date(g_l('weEditorInfo', '[date_format]'), $data['time'])),
 					array('dat' => $data['ip']),
 					array('dat' => $data['agent']),
 					array('dat' => $data['cookie'] ? g_l('modules_voting', '[enabled]') : g_l('modules_voting', '[disabled]')),
@@ -1270,7 +1270,7 @@ function refreshTexts(){
 					) .
 					we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 					($size - $next) .
-					"&nbsp;" . g_l('global', "[from]") . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
+					"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 					($next > 0 ?
 							we_html_button::create_button("next", $this->frameset . "?pnt=show_log&start=" . $next) : //bt_next
 							we_html_button::create_button("next", "", "", 100, 22, "", "", true)

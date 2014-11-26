@@ -53,7 +53,7 @@ if($weFileupload->processFileRequest()){
 		if(file_exists($cpat . "/" . $_FILES['we_uploadFile']["name"])){
 			if($overwrite){
 				if(weFile($path . "/" . $_FILES['we_uploadFile']["name"])){
-					$we_alerttext = g_l('fileselector', "[can_not_overwrite_we_file]");
+					$we_alerttext = g_l('fileselector', '[can_not_overwrite_we_file]');
 				}
 			} else {
 				$z = 0;
@@ -81,7 +81,7 @@ if($weFileupload->processFileRequest()){
 	}
 	$maxsize = getUploadMaxFilesize(false);
 
-	$yes_button = we_html_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector', "[edit_file_nok]"), we_message_reporting::WE_MESSAGE_ERROR) . "} else {" . $weFileupload->getJsBtnCmdStatic($btn = 'upload', '', "document.forms['we_form'].submit()") . "}", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_btn');
+	$yes_button = we_html_button::create_button("upload", "javascript:if(!document.forms['we_form'].elements['we_uploadFile'].value) { " . we_message_reporting::getShowMessageCall(g_l('fileselector', '[edit_file_nok]'), we_message_reporting::WE_MESSAGE_ERROR) . "} else {" . $weFileupload->getJsBtnCmdStatic($btn = 'upload', '', "document.forms['we_form'].submit()") . "}", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_btn');
 	$cancel_button = we_html_button::create_button("cancel", "javascript:" . $weFileupload->getJsBtnCmdStatic('cancel'));
 	$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 	$buttonsTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);
@@ -100,7 +100,7 @@ if($weFileupload->processFileRequest()){
 	<script type="text/javascript"><!--
 		self.focus();
 	<?php if(isset($_FILES['we_uploadFile']) && (!$we_alerttext)){ ?>
-			opener.top.fscmd.selectFile('<?php print $_FILES['we_uploadFile']['name']; ?>');
+			opener.top.fscmd.selectFile('<?php echo $_FILES['we_uploadFile']['name']; ?>');
 			opener.top.fscmd.selectDir();
 			self.close();
 		<?php

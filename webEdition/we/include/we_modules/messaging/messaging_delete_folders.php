@@ -48,7 +48,7 @@ $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 		}
 		if (!sel) {
 			top.toggleBusy(0);
-<?php print we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_delete]"), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			return;
 		}
 		sel = sel.substring(0, sel.length - 1);
@@ -76,7 +76,7 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'delete_folders'){
 
 			$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 			?>
-				top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $transaction ?>&mcmd=delete_folders&folders=<?php echo implode(',', $v) ?>';
+				top.content.cmd.location = '<?php echo WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $transaction ?>&mcmd=delete_folders&folders=<?php echo implode(',', $v) ?>';
 					top.content.we_cmd('messaging_start_view', '', '<?php echo we_base_request::_(we_base_request::TABLE, 'table', ''); ?>');
 					//-->
 			</script>

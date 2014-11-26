@@ -36,7 +36,7 @@ if(($content = we_base_file::load($path . '?' . urldecode(we_base_request::_(we_
 		"cellspacing" => 0,
 		"border" => 0), 4, 2);
 	$_table->setColContent(0, 0, we_html_tools::getPixel(20, 20));
-	$_table->setCol(1, 1, array("class" => "defaultfont"), sprintf(g_l('SEEM', "[ext_doc_not_found]"), $path) . "<br/>");
+	$_table->setCol(1, 1, array("class" => "defaultfont"), sprintf(g_l('SEEM', '[ext_doc_not_found]'), $path) . "<br/>");
 	$_table->setColContent(2, 0, we_html_tools::getPixel(20, 6));
 
 	//	there must be a navigation-history - so use it

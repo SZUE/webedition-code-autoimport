@@ -61,7 +61,7 @@ if(permissionhandler::hasPerm("administrator")){
 			$content[$ind][0]['dat'] = $GLOBALS['DB_WE']->f("ip");
 			$content[$ind][1]['dat'] = ($GLOBALS['DB_WE']->f("blockedUntil") == -1 ?
 					oldHtmlspecialchars(g_l('prefs', '[forever]')) :
-					date(g_l('weEditorInfo', "[date_format]"), $GLOBALS['DB_WE']->f("blockedUntil")));
+					date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['DB_WE']->f("blockedUntil")));
 
 			$content[$ind][2]['dat'] = '<a href="javascript:clearEntry(' . $GLOBALS['DB_WE']->f("id") . ',\'' . $GLOBALS['DB_WE']->f("ip") . '\')">' . g_l('prefs', '[unblock]') . '</a>';
 
@@ -76,7 +76,7 @@ if(permissionhandler::hasPerm("administrator")){
 				we_html_button::create_button("back", "", false, 100, 22, "", "", true)) .
 			we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($start + 1) . "&nbsp;-&nbsp;" .
 			min($num_all, $start + $count) .
-			"&nbsp;" . g_l('global', "[from]") . " " . ($num_all) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
+			"&nbsp;" . g_l('global', '[from]') . " " . ($num_all) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 			($next < $num_all ?
 				we_html_button::create_button("next", $_SERVER['SCRIPT_NAME'] . "?start=" . $next) : //bt_next
 				we_html_button::create_button("next", "", "", 100, 22, "", "", true)) .

@@ -68,5 +68,5 @@ $oTblCont->setCol(
 			"id" => "task_count"
 			), $newtodo_count) . ")"));
 $aLang = array(
-	g_l('cockpit', "[messaging]"), ""
+	g_l('cockpit', '[messaging]'), ""
 );

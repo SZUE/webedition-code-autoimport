@@ -1446,7 +1446,7 @@ class we_versions_version{
 				$contents = getHTTP(getServerUrl(true), $location . "?vers_we_obj=1");
 
 				if(ini_get("short_open_tag") == 1){
-					$contents = str_replace("<?xml", '<?php print "<?xml"; ?>', $contents);
+					$contents = str_replace("<?xml", '<?php echo "<?xml"; ?>', $contents);
 				}
 
 				we_base_file::delete($f);

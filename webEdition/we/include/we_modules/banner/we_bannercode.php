@@ -115,7 +115,7 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 </head>
 <body class="weDialogBody"<?php if($ok){ ?> onload="document.we_form.code.focus();
 			document.we_form.code.select();"<?php } ?>>
-	<form onsubmit="return checkForm(this);" name="we_form" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" method="get"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
+	<form onsubmit="return checkForm(this);" name="we_form" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" method="get"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 		<?php
 		$typeselect = '<select name="type" size="1">
 <option' . (($type === "js") ? " selected" : "") . '>js</option>

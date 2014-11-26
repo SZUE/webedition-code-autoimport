@@ -440,7 +440,7 @@ abstract class we_backup_base{
 	 * backup external files.
 	 */
 	function buildBackupTable(){
-		$this->current_description = g_l('backup', "[external_backup]");
+		$this->current_description = g_l('backup', '[external_backup]');
 		$rootdir = rtrim(str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']), '/') . '/';
 		$count = 0;
 		$done = 0;
@@ -492,7 +492,7 @@ abstract class we_backup_base{
 			}
 			@fclose($fh);
 		} else {
-			$this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $this->dumpfilename));
+			$this->setError(sprintf(g_l('backup', '[can_not_open_file]'), $this->dumpfilename));
 			return false;
 		}
 		return true;
@@ -607,7 +607,7 @@ abstract class we_backup_base{
 				} else {
 					$sdir = str_replace("\\", "/", dirname($_SERVER['DOCUMENT_ROOT'] . $line["Path"]));
 					if(!we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $line["Path"], $line["Data"], 'wb')){
-						$this->setError(g_l('backup', "[can_not_open_file]"), $line["Path"]);
+						$this->setError(g_l('backup', '[can_not_open_file]'), $line["Path"]);
 						return false;
 					}
 				}
@@ -625,7 +625,7 @@ abstract class we_backup_base{
 	function splitFile($backup_select){
 		$buff = '';
 
-		$this->current_description = g_l('backup', "[preparing_file]");
+		$this->current_description = g_l('backup', '[preparing_file]');
 
 		$filename = $backup_select;
 		$backup_select = we_base_file::getUniqueId();
@@ -671,12 +671,12 @@ abstract class we_backup_base{
 						}
 					}
 				} else {
-					$this->setError(g_l('backup', "[can_not_open_file]"), basename($filename) . "_" . $num);
+					$this->setError(g_l('backup', '[can_not_open_file]'), basename($filename) . "_" . $num);
 					return -1;
 				}
 			}
 		} else {
-			$this->setError(g_l('backup', "[can_not_open_file]"), basename($filename) . "_" . $num);
+			$this->setError(g_l('backup', '[can_not_open_file]'), basename($filename) . "_" . $num);
 			return -1;
 		}
 		if($fh_temp){
@@ -761,7 +761,7 @@ abstract class we_backup_base{
 									}
 								}
 							} else {
-								$this->setWarning(g_l('backup', "[query_is_too_big]"), $this->mysql_max_packet);
+								$this->setWarning(g_l('backup', '[query_is_too_big]'), $this->mysql_max_packet);
 							}
 						}
 
@@ -770,7 +770,7 @@ abstract class we_backup_base{
 				}
 			}
 		} else {
-			$this->setError(sprintf(g_l('backup', "[can_not_open_file]"), $filename));
+			$this->setError(sprintf(g_l('backup', '[can_not_open_file]'), $filename));
 			return false;
 		}
 		@fclose($fh);
@@ -779,7 +779,7 @@ abstract class we_backup_base{
 
 		$this->current_description = (isset($this->description["import"]["$tn"]) && $this->description["import"]["$tn"] ?
 				$this->description["import"][$tn] :
-				g_l('backup', "[working]"));
+				g_l('backup', '[working]'));
 
 
 		if($restore_extra && !$this->restoreFiles()){
@@ -1095,7 +1095,7 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 
 	function clearOldTmp(){
 		if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp")){
-			$this->setError(sprintf(g_l('backup', "[cannot_save_tmpfile]"), BACKUP_DIR));
+			$this->setError(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR));
 			return -1;
 		}
 

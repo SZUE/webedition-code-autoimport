@@ -589,7 +589,7 @@ echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]')
 ?>
 
 <script type="text/javascript"><!--
-	var activ_tab = <?php print $activTab; ?>;
+	var activ_tab = <?php echo $activTab; ?>;
 
 	function toggle(id) {
 		var elem = document.getElementById(id);
@@ -598,12 +598,12 @@ echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]')
 
 	function previewVersion(ID, newID) {
 		top.opener.top.we_cmd("versions_preview", ID, newID);
-		//new jsWindow("<?php print WEBEDITION_DIR; ?>we/include/we_versions/weVersionsPreview.php?ID="+ID+"&newCompareID="+newID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
+		//new jsWindow("<?php echo WEBEDITION_DIR; ?>we/include/we_versions/weVersionsPreview.php?ID="+ID+"&newCompareID="+newID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
 
 	}
 //-->
 </script>
-<?php print we_html_element::jsScript(JS_DIR . 'windows.js') . $js; ?>
+<?php echo we_html_element::jsScript(JS_DIR . 'windows.js') . $js; ?>
 <style type="text/css" media="screen">
 	body {margin: 0;padding: 0;}
 	td {font-size:11px;vertical-align:top;}
@@ -625,7 +625,7 @@ echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]')
 
 <body>
 	<div id="mytabs">
-		<?php print $tabsBody; ?>
+		<?php echo $tabsBody; ?>
 	</div>
 	<div id="content" style="position:absolute;margin: 0px; top:30px;bottom:40px;left:0px;right:0px;overflow:auto;">
 		<div id="tab1" style="display:block;width:100%;">

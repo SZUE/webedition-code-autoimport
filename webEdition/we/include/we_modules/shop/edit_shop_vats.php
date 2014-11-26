@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -26,7 +27,7 @@ $protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule(
 we_html_tools::protect($protect);
 
 echo we_html_tools::getHtmlTop() .
-	STYLESHEET;
+ STYLESHEET;
 
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'saveVat':
@@ -213,35 +214,35 @@ if(!empty($allVats)){
 			<td><strong>' . g_l('modules_shop', '[vat][vat_form_standard]') . '</strong></td>
 		</tr>';
 
-		foreach($allVats as $_weShopVat){
+	foreach($allVats as $_weShopVat){
 
-			$vatJavaScript .='
+		$vatJavaScript .='
 		allVats["vat_' . $_weShopVat->id . '"] = {"id":"' . $_weShopVat->id . '","text":"' . $_weShopVat->getNaturalizedText() . '", "vat":"' . $_weShopVat->vat . '", "standard":"' . ($_weShopVat->standard ? 1 : 0) . '", "territory":"' . $_weShopVat->territory . '", "country":"' . $_weShopVat->country . '", "province":"' . $_weShopVat->province . '", "textProvince":"' . $_weShopVat->textProvince . '"};';
 
-			$vatTable .= '
+		$vatTable .= '
 		<tr>
 			<td>' . $_weShopVat->id . '</td>
 			<td>' . oldHtmlspecialchars($_weShopVat->getNaturalizedText()) . '</td>
 			<td>' . $_weShopVat->vat . '%</td>
 			<td>' . $_weShopVat->textTerritory . '</td>
 			<td>' . $_weShopVat->territory . '</td>
-			<td>' . ($_weShopVat->standard ? g_l('global', "[yes]") : g_l('global', "[no]")) . '</td>
+			<td>' . g_l('global', ($_weShopVat->standard ? '[yes]' : '[no]')) . '</td>
 			<td>' . we_html_button::create_button('image:btn_edit_edit', 'javascript:we_cmd(\'edit\',\'' . $_weShopVat->id . '\');') . '</td>
 			<td>' . we_html_button::create_button('image:btn_function_trash', 'javascript:we_cmd(\'delete\',\'' . $_weShopVat->id . '\');') . '</td>
 		</tr>';
-			unset($_weShopVat);
-		}
+		unset($_weShopVat);
+	}
 
-		$vatTable .= '</table>
+	$vatTable .= '</table>
 	</div>';
 }
 
 $plusBut = we_html_button::create_button('image:btn_function_plus', 'javascript:we_cmd(\'addVat\')');
 
 echo we_html_element::jsElement(
-	$vatJavaScript .
-	$jsFunction .
-	(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')) . "
+		$vatJavaScript .
+		$jsFunction .
+		(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')) . "
 	</head>
 <body class=\"weDialogBody\" onload='window.focus();'>";
 
@@ -256,13 +257,8 @@ $parts[] = array(
 
 // formular to edit the vats
 $selPredefinedNames = we_html_tools::htmlSelect(
-		'sel_predefinedNames',
-		array_merge(array('---'), we_shop_vat::getPredefinedNames()),
-		1,
-		0,
-		false, 
-		array('onchange' => "var elem=document.getElementById('weShopVatText');elem.value=this.options[this.selectedIndex].text;this.selectedIndex=0")
-	);
+				'sel_predefinedNames', array_merge(array('---'), we_shop_vat::getPredefinedNames()), 1, 0, false, array('onchange' => "var elem=document.getElementById('weShopVatText');elem.value=this.options[this.selectedIndex].text;this.selectedIndex=0")
+);
 
 $formVat = '
 <form name="we_form" method="post">
@@ -291,7 +287,7 @@ $formVat = '
 <tr>
 	<td>' . g_l('modules_shop', '[vat][vat_edit_form_province]') . ':</td>
 	<td>
-		<input size="3" style="width:30px" class="wetextinput" type="text" id="weShopVatProvince" name="weShopVatProvince" value="" />: 
+		<input size="3" style="width:30px" class="wetextinput" type="text" id="weShopVatProvince" name="weShopVatProvince" value="" />:
 		<input style="width:160px" class="wetextinput" type="text" id="weShopVatTextProvince" name="weShopVatTextProvince" value="" />
 	</td>
 </tr>
@@ -319,8 +315,8 @@ $parts[] = array(
 );
 
 echo we_html_multiIconBox::getHTML(
-	'weShopVates', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
-		'', '', we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
-	), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
+		'weShopVates', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
+				'', '', we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
+		), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
 ) . '
 </body></html>';

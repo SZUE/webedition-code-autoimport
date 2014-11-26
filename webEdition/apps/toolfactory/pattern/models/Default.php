@@ -8,34 +8,34 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/webEdition/we/include/we.inc.php');
 
-class <?php print $CLASSNAME;?>_models_Default extends we_app_Model
+class <?php echo $CLASSNAME;?>_models_Default extends we_app_Model
 {
 	/**
 	 * ContentType attribute
 	 *
 	 * @var string
 	 */
-	public $ContentType = "<?php print $TOOLNAME;?>/item";
+	public $ContentType = "<?php echo $TOOLNAME;?>/item";
 
 	/**
 	 * _appName attribute
 	 *
 	 * @var string
 	 */
-	protected $_appName = '<?php print $TOOLNAME;?>';
+	protected $_appName = '<?php echo $TOOLNAME;?>';
 
 	/**
 	 * Constructor
 	 *
-	 * @param string $<?php print $TOOLNAME;?>ID
+	 * @param string $<?php echo $TOOLNAME;?>ID
 	 * @return void
 	 */
-	function __construct($<?php print $TOOLNAME;?>ID = 0)
+	function __construct($<?php echo $TOOLNAME;?>ID = 0)
 	{
-		parent::__construct(<?php print (isset($TABLECONSTANT) && $TABLEEXISTS && !empty($TABLECONSTANT)) ? $TABLECONSTANT : "''";?>);
-		if ($<?php print $TOOLNAME;?>ID) {
-			$this->{$this->_primaryKey} = $<?php print $TOOLNAME;?>ID;
-			$this->load($<?php print $TOOLNAME;?>ID);
+		parent::__construct(<?php echo (isset($TABLECONSTANT) && $TABLEEXISTS && !empty($TABLECONSTANT)) ? $TABLECONSTANT : "''";?>);
+		if ($<?php echo $TOOLNAME;?>ID) {
+			$this->{$this->_primaryKey} = $<?php echo $TOOLNAME;?>ID;
+			$this->load($<?php echo $TOOLNAME;?>ID);
 		}
 		<?php if(!isset($TABLECONSTANT) || !$TABLEEXISTS || (isset($TABLECONSTANT) && empty($TABLECONSTANT))) {?>
 			$this->setPersistentSlots(array('ID', 'Text'));

@@ -69,7 +69,7 @@ function enableDelBut(){
 
 		return parent::printFramesetJSFunctions() . we_html_element::jsElement('
 function deleteEntry(){
-	if(confirm(\'' . g_l('fileselector', "[deleteQuestion]") . '\')){
+	if(confirm(\'' . g_l('fileselector', '[deleteQuestion]') . '\')){
 		var todel = "";
 		var docIsOpen = false;
 		for	(var i=0;i < entries.length; i++){
@@ -253,7 +253,7 @@ top.close();');
 	<tr>
 		<td></td>
 		<td class="defaultfont">
-			<b>' . g_l('fileselector', "[filename]") . '</b>
+			<b>' . g_l('fileselector', '[filename]') . '</b>
 		</td>
 		<td></td>
 		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '

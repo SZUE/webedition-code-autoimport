@@ -33,5 +33,5 @@ $oTblCont->setCol(
 		), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)
 ));
 $aLang = array(
-	g_l('cockpit', "[last_modified]"), ""
+	g_l('cockpit', '[last_modified]'), ""
 );

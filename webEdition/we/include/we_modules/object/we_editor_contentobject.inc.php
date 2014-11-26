@@ -56,17 +56,17 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 <script  type="text/javascript"><!--
 	function we_checkObjFieldname(i) {
 		if (i.value.search(/^([a-zA-Z0-9_+-])*$/)) {
-<?php print we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameNotValid]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameNotValid]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			i.focus();
 			i.select();
 			i.value = i.getAttribute("oldValue");
 		} else if (i.value === 'Title' || i.value === 'Description') {
-<?php print we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameNotTitleDesc]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameNotTitleDesc]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			i.focus();
 			i.select();
 			i.value = i.getAttribute("oldValue");
 		} else if (i.value.length === 0) {
-<?php print we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameEmpty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameEmpty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			//		i.focus(); # 1052
 			//		i.select();
 			i.value = i.getAttribute("oldValue");

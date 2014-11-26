@@ -42,7 +42,7 @@ switch(($cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0))){
 	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);
 	top.weEditorFrameController.getActiveDocumentReference().frames[3].we_save_document();
 }else{
-	' . we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_save]"), we_message_reporting::WE_MESSAGE_ERROR) . '
+	' . we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 }
 ';
 		break;
@@ -52,7 +52,7 @@ switch(($cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0))){
 	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);
 	top.weEditorFrameController.getActiveDocumentReference().frames[3].we_save_document();
 }else{
-	' . we_message_reporting::getShowMessageCall(g_l('alert', "[nothing_to_publish]"), we_message_reporting::WE_MESSAGE_ERROR) . '
+	' . we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_publish]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 }
 ';
 		break;

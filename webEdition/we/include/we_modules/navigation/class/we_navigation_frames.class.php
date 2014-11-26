@@ -318,7 +318,7 @@ function setTab(tab) {
 				'html' => $this->getHTMLChooser(
 						g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'opener.' . $this->topFrame . '.mark()', we_base_ContentTypes::IMAGE, false, true, 'folder,' . we_base_ContentTypes::IMAGE) . we_html_tools::getPixel($this->_width_size, 10) . '<table><tr><td>' . we_html_multiIconBox::getJS() . we_html_multiIconBox::_getButton(
 						$uniqname, "weToggleBox('" . $uniqname . "','" . addslashes(g_l('navigation', '[icon_properties_out]')) . "','" . addslashes(
-								g_l('navigation', '[icon_properties]')) . "')", $wepos, g_l('global', "[openCloseBox]")) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(
+								g_l('navigation', '[icon_properties]')) . "')", $wepos, g_l('global', '[openCloseBox]')) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(
 						g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(
 						g_l('navigation', '[icon_properties]')) . '\');" >' . ($wepos === 'down' ? g_l('navigation', '[icon_properties_out]') : g_l('navigation', '[icon_properties]')) . '</span></td></tr></table>',
 				'space' => $this->_space_size,
@@ -493,7 +493,7 @@ function setTab(tab) {
 		//$cmd = 'opener.'.$this->topFrame.'.mark()';
 		if($this->Model->isnew){
 			$_disabled = true;
-			$_disabledNote = " " . g_l('weClass', "[availableAfterSave]");
+			$_disabledNote = " " . g_l('weClass', '[availableAfterSave]');
 			$_padding = "15";
 		} else {
 			$_disabled = false;
@@ -509,10 +509,10 @@ function setTab(tab) {
 		$_button_copyFolder = we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', $_disabled);
 
 		$parts[] = array(
-			'headline' => g_l('weClass', "[copyFolder]"),
+			'headline' => g_l('weClass', '[copyFolder]'),
 			'html' => we_html_element::jsElement("var selfNaviPath ='" . addslashes(
 							$this->Model->Path) . "';\nvar selfNaviId = '" . $this->Model->ID . "';") . "<div style='float:left; margin-right:20px'>" . we_html_tools::htmlAlertAttentionBox(
-					g_l('weClass', "[copy_owners_expl]") . $_disabledNote, we_html_tools::TYPE_INFO, ($this->_width_size - 120), true, 0) . "</div>" . "<div style='padding-top:{$_padding}px'>" . $_button_copyFolder . "</div>" . we_html_element::htmlHidden(
+					g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, ($this->_width_size - 120), true, 0) . "</div>" . "<div style='padding-top:{$_padding}px'>" . $_button_copyFolder . "</div>" . we_html_element::htmlHidden(
 					array(
 						'name' => 'CopyFolderID', "value" => ''
 			)) . we_html_element::htmlHidden(array(
@@ -1236,7 +1236,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 		);
 		$table->setCol(3, 0, array('colspan' => 2), we_html_tools::getPixel(5, 5));
 		$table->setCol(
-				4, 0, array('align' => 'left'), we_html_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', "[catAnd]"))
+				4, 0, array('align' => 'left'), we_html_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', '[catAnd]'))
 		);
 		$table->setCol(
 				4, 1, array('align' => 'right'), we_html_button::create_button_table(
@@ -1772,7 +1772,7 @@ function ' . $prefix . 'setLinkSelection(value){
 					'style' => 'margin-left: 15px'
 		)));
 
-		$table2->setColContent(0, 1, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", ($this->View->Model->IsFolder ? g_l('global', "[we_new_folder_after_save]") : g_l('global', "[we_new_entry_after_save]")), false, "defaultfont", ""));
+		$table2->setColContent(0, 1, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', ($this->View->Model->IsFolder ? '[we_new_folder_after_save]' : '[we_new_entry_after_save]')), false, "defaultfont", ""));
 
 		return $this->getHTMLDocument(
 						we_html_element::jsScript(JS_DIR . "attachKeyListener.js") .

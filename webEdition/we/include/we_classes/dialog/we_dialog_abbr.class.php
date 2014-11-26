@@ -74,9 +74,9 @@ class we_dialog_abbr extends we_dialog_base{
 
 	function getDialogContentHTML(){
 		$foo = we_html_tools::htmlTextInput("we_dialog_args[title]", 30, (isset($this->args["title"]) ? $this->args["title"] : ""), "", '', "text", 350);
-		$title = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[title]"));
+		$title = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', '[title]'));
 
-		$lang = $this->getLangField("lang", g_l('wysiwyg', "[language]"), 350);
+		$lang = $this->getLangField("lang", g_l('wysiwyg', '[language]'), 350);
 
 		$table = '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td>' . $title . '</td></tr>
