@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_versions_version{
+
 	protected $ID;
 	protected $documentID;
 	protected $documentTable;
@@ -1060,7 +1061,7 @@ class we_versions_version{
 		}
 
 		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "save_document" &&
-			we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){
+				we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){
 			$status = "published";
 		}
 
@@ -1090,8 +1091,8 @@ class we_versions_version{
 			$lastEntry = $_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]];
 
 			$diffExists = (is_array($document) && $lastEntry ?
-					(self::getHashValue(self::removeUnneededCompareFields($document)) != $lastEntry) :
-					false);
+							(self::getHashValue(self::removeUnneededCompareFields($document)) != $lastEntry) :
+							false);
 
 			$lastEntry = self::getLastEntry($document["ID"], $document["Table"], $db);
 
@@ -1109,9 +1110,9 @@ class we_versions_version{
 			foreach($tblversionsFields as $fieldName){
 				if($fieldName != 'ID'){
 					$set[$fieldName] = (isset($document[$fieldName]) ?
-							$document[$fieldName] :
-							$this->makePersistentEntry($fieldName, $status, $document, $documentObj)
-						);
+									$document[$fieldName] :
+									$this->makePersistentEntry($fieldName, $status, $document, $documentObj)
+							);
 				}
 			}
 
@@ -1250,9 +1251,9 @@ class we_versions_version{
 									$lastEntryField = array();
 								} else {
 									$lastEntryField = unserialize(
-										(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
-											html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
-											gzuncompress($lastEntryField))
+											(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
+													html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
+													gzuncompress($lastEntryField))
 									);
 								}
 								switch($val){
@@ -1446,7 +1447,7 @@ class we_versions_version{
 				$contents = getHTTP(getServerUrl(true), $location . "?vers_we_obj=1");
 
 				if(ini_get("short_open_tag") == 1){
-					$contents = str_replace("<?xml", '<?php print "<?xml"; ?>', $contents);
+					$contents = str_replace("<?xml", '<?php echo "<?xml"; ?>', $contents);
 				}
 
 				we_base_file::delete($f);
@@ -1611,8 +1612,8 @@ class we_versions_version{
 							case "documentElements":
 								if($v){
 									$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
-											html_entity_decode(urldecode($v), ENT_QUOTES) :
-											gzuncompress($v))
+													html_entity_decode(urldecode($v), ENT_QUOTES) :
+													gzuncompress($v))
 									);
 									$resetDoc->elements = $docElements;
 								}
@@ -1620,8 +1621,8 @@ class we_versions_version{
 							case 'documentScheduler':
 								if($v){
 									$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
-											html_entity_decode(urldecode($v), ENT_QUOTES) :
-											gzuncompress($v))
+													html_entity_decode(urldecode($v), ENT_QUOTES) :
+													gzuncompress($v))
 									);
 									$resetDoc->schedArr = $docElements;
 								}
@@ -1629,8 +1630,8 @@ class we_versions_version{
 							case 'documentCustomFilter':
 								if($v){
 									$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
-											html_entity_decode(urldecode($v), ENT_QUOTES) :
-											gzuncompress($v))
+													html_entity_decode(urldecode($v), ENT_QUOTES) :
+													gzuncompress($v))
 									);
 									$resetDoc->documentCustomerFilter = new we_customer_documentFilter();
 									foreach($docElements as $k => $v){
@@ -1678,7 +1679,7 @@ class we_versions_version{
 
 								$parentID = (isset($_SESSION['weS']['versions']['lastPathID'])) ? $_SESSION['weS']['versions']['lastPathID'] : 0;
 								$folder = (defined('OBJECT_FILES_TABLE') && $resetArray['documentTable'] == OBJECT_FILES_TABLE ?
-										new we_class_folder() : new we_folder());
+												new we_class_folder() : new we_folder());
 
 								$folder->we_new();
 								$folder->setParentID($parentID);
@@ -1806,11 +1807,11 @@ class we_versions_version{
 			case 'InGlossar':
 			case 'IsDynamic':
 			case 'IsSearchable':
-				return ($v == 1) ? g_l('versions', '[activ]') : g_l('versions', '[notactiv]');
+				return g_l('versions', ($v == 1) ? '[activ]' : '[notactiv]');
 			case 'DocType':
 				return f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v), 'DocType', $db);
 			case 'RestrictOwners':
-				return ($v == 1) ? g_l('versions', '[activ]') : g_l('versions', '[notactiv]');
+				return g_l('versions', ($v == 1) ? '[activ]' : '[notactiv]');
 			case 'Language':
 				return isset($GLOBALS['weFrontendLanguages'][$v]) ? $GLOBALS['weFrontendLanguages'][$v] : '';
 			case 'WebUserID':
@@ -1886,9 +1887,9 @@ class we_versions_version{
 				}
 				return $fieldValueText;
 			case 'fromScheduler':
-				return ($v == 1) ? g_l('versions', '[yes]') : g_l('versions', '[no]');
+				return g_l('versions', ($v == 1) ? '[yes]' : '[no]');
 			case 'fromImport':
-				return ($v == 1) ? g_l('versions', '[yes]') : g_l('versions', '[no]');
+				return g_l('versions', ($v == 1) ? '[yes]' : '[no]');
 			case 'resetFromVersion':
 				return ($v == 0) ? "-" : $v;
 			case 'Category':
@@ -1925,7 +1926,7 @@ class we_versions_version{
 						if($fieldValueText != ""){
 							$fieldValueText .= "<br/>";
 						}
-						$stat = ($val == 1) ? g_l('versions', '[activ]') : g_l('versions', '[notactiv]');
+						$stat = g_l('versions', ($val == 1) ? '[activ]' : '[notactiv]');
 						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength) . ": " . $stat;
 					}
 				}
@@ -1963,7 +1964,7 @@ class we_versions_version{
 			case 'type':
 				return g_l('versions', '[type_' . $v . ']');
 			case 'active':
-				return ($v == 1) ? g_l('versions', '[yes]') : g_l('versions', '[no]');
+				return g_l('versions', ($v == 1) ? '[yes]' : '[no]');
 			case 'months':
 				$months = array();
 				if(is_array($v) && !empty($v)){
@@ -2021,7 +2022,7 @@ class we_versions_version{
 			case '_id':
 				return ($v ? : 0);
 			case '_accessControlOnTemplate':
-				return ($v == 1) ? g_l('versions', '[yes]') : g_l('versions', '[no]');
+				return g_l('versions', ($v == 1) ? '[yes]' : '[no]');
 			case '_errorDocNoLogin':
 				return we_util_Strings::shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
 			case '_errorDocNoAccess':

@@ -200,7 +200,7 @@ function _cutText($text, $l){
 				}
 				$dir_obj->close();
 			} else {
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR)) . '<br/><br/><div class="middlefontgray" align="center">-- ' . g_l('alert', "[access_denied]") . ' --</div>';
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR)) . '<br/><br/><div class="middlefontgray" align="center">-- ' . g_l('alert', '[access_denied]') . ' --</div>';
 			}
 
 			switch($ord){
@@ -238,9 +238,9 @@ var i = 0;';
 			if($nf === 'new_folder'){
 				?>
 				<tr style="background-color:#DFE9F5;">
-					<td align="center" width="25"><img src="<?php print TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0"></td>
-					<td class="selector" width="200"><?php echo we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', "[new_folder_name]"), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
-					<td class="selector" width="150"><?php echo g_l('fileselector', "[folder]") ?></td>
+					<td align="center" width="25"><img src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0"></td>
+					<td class="selector" width="200"><?php echo we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', '[new_folder_name]'), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
+					<td class="selector" width="150"><?php echo g_l('fileselector', '[folder]') ?></td>
 					<td class="selector"><?php echo date("d.m.Y H:i:s") ?></td>
 					<td class="selector"></td>
 				</tr>
@@ -332,10 +332,10 @@ var i = 0;';
  </tr>';
 					?>
 					<tr>
-						<td width="25"><?php print we_html_tools::getPixel(25, 1) ?></td>
-						<td width="200"><?php print we_html_tools::getPixel(200, 1) ?></td>
-						<td width="150"><?php print we_html_tools::getPixel(150, 1) ?></td>
-						<td width="200"><?php print we_html_tools::getPixel(200, 1) ?></td>
+						<td width="25"><?php echo we_html_tools::getPixel(25, 1) ?></td>
+						<td width="200"><?php echo we_html_tools::getPixel(200, 1) ?></td>
+						<td width="150"><?php echo we_html_tools::getPixel(150, 1) ?></td>
+						<td width="200"><?php echo we_html_tools::getPixel(200, 1) ?></td>
 						<td><?php echo we_html_tools::getPixel(10, 1) ?></td>
 					</tr>
 					<?php

@@ -32,6 +32,20 @@ $fontnames = new weTagData_choiceAttribute('fontnames', array(new weTagDataOptio
 	new weTagDataOption('verdana'),
 	new weTagDataOption('wingdings'),
 	), false, true, '');
+$formats = new weTagData_choiceAttribute('formats', array(
+	new weTagDataOption('p'),
+	new weTagDataOption('div'),
+	new weTagDataOption('h1'),
+	new weTagDataOption('h2'),
+	new weTagDataOption('h3'),
+	new weTagDataOption('h4'),
+	new weTagDataOption('h5'),
+	new weTagDataOption('h6'),
+	new weTagDataOption('pre'),
+	new weTagDataOption('code'),
+	new weTagDataOption('blockquote'),
+	new weTagDataOption('samp'),
+	), false, true, '');
 $xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
 $abbr = new weTagData_selectAttribute('abbr', weTagData_selectAttribute::getTrueFalse(), false, '');
 $removefirstparagraph = new weTagData_selectAttribute('removefirstparagraph', weTagData_selectAttribute::getTrueFalse(), false, '');
@@ -46,8 +60,8 @@ $tinyparams = new weTagData_textAttribute('tinyparams', false, '');
 $templates = new weTagData_textAttribute('templates', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('wysiwyg', array(
-	new weTagDataOption('true', false, '', array($name, $cols, $rows, $autobr, $width, $height, $class, $bgcolor, $editorcss, $ignoredocumentcss, $htmlspecialchars, $commands, $contextmenu, $fontnames, $abbr, $removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $templates, $tinyparams), array($name)),
+	new weTagDataOption('true', false, '', array($name, $cols, $rows, $autobr, $width, $height, $class, $bgcolor, $editorcss, $ignoredocumentcss, $htmlspecialchars, $commands, $contextmenu, $fontnames, $formats, $abbr, $removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $templates, $tinyparams), array($name)),
 	new weTagDataOption('false', false, '', array($name, $cols, $rows, $class, $autobr, $html, $htmlspecialchars, $php, $abbr, $spellcheck), array($name))), false, '');
 
-$this->Attributes = array($name, $cols, $rows, $class, $autobr, $importrtf, $width, $height, $bgcolor, $editorcss, $ignoredocumentcss, $html, $htmlspecialchars, $php, $commands, $contextmenu, $fontnames, $xml, $abbr,
+$this->Attributes = array($name, $cols, $rows, $class, $autobr, $importrtf, $width, $height, $bgcolor, $editorcss, $ignoredocumentcss, $html, $htmlspecialchars, $php, $commands, $contextmenu, $fontnames, $formats, $xml, $abbr,
 	$removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $templates, $tinyparams);

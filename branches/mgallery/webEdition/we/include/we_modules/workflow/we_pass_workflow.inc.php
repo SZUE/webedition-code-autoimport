@@ -63,7 +63,7 @@ echo STYLESHEET;
 
 		} else {
 			?>
-			<form action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post">
+			<form action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post">
 				<?php
 				$okbut = we_html_button::create_button("ok", "javascript:document.forms[0].submit()");
 				$cancelbut = we_html_button::create_button("cancel", "javascript:top.close()");

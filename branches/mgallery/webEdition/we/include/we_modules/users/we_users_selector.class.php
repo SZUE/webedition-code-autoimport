@@ -200,7 +200,7 @@ function selectFile(id){
 	<tr>
 		<td></td>
 		<td class="defaultfont">
-			<b>' . g_l('fileselector', "[name]") . '</b>
+			<b>' . g_l('fileselector', '[name]') . '</b>
 		</td>
 		<td></td>
 		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, isset($this->values["Text"]) ? $this->values["Text"] : '', "", 'style="width:100%" readonly="readonly"') . '

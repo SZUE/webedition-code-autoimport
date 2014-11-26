@@ -55,7 +55,7 @@ echo we_html_tools::getHtmlTop() .
 </style>
 <script type="text/javascript"><!--
 	function todo_markdone() {
-		top.content.cmd.location = '<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&mcmd=todo_markdone&we_transaction=<?php echo $transaction; ?>';
+		top.content.cmd.location = '<?php echo WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&mcmd=todo_markdone&we_transaction=<?php echo $transaction; ?>';
 			}
 //-->
 </script>
@@ -78,7 +78,7 @@ echo we_html_tools::getHtmlTop() .
 			array("headline" => g_l('modules_messaging', '[status]'),
 				"html" => '<table border="0" cellpadding="0" cellspacing="0"><tr><td class="defaultfont">' . $messaging->selected_message['hdrs']['status'] . '%</td><td>' . we_html_tools::getPixel(20, 2) .
 				(($messaging->selected_message['hdrs']['status'] < 100) ? '<td>' . we_html_button::create_button(
-						"percent100", "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
+								"percent100", "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
 				"noline" => 1,
 				"space" => 140
 			),
@@ -143,7 +143,7 @@ echo we_html_tools::getHtmlTop() .
 	}
 
 	print we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML("weMessageView", "100%", $parts, 30, "", -1, "", "", false, (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] === 'we_todo' ? g_l('modules_messaging', "[type_todo]") : g_l('modules_messaging', "[type_message]")));
+			we_html_multiIconBox::getHTML("weMessageView", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_messaging', (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] === 'we_todo' ? '[type_todo]' : '[type_message]')));
 	?>
 </body>
 </html>

@@ -149,7 +149,7 @@ top.unselectAllFiles();') . '
 					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 					d.writeln('<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? 'background-color:#DFE9F5;' : '') + 'cursor:pointer;' + ((we_editDirID != entries[i].ID) ? '' : '') + '"' + ((we_editDirID || makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + '>');
 					d.writeln('<td class="selector" width="25" align="center">');
-					d.writeln('<img src="<?php print TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
+					d.writeln('<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />');
 					d.writeln('</td>');
 					if (we_editDirID == entries[i].ID) {
 						d.writeln('<td class="selector">');
@@ -159,7 +159,7 @@ top.unselectAllFiles();') . '
 						d.writeln(cutText(entries[i].text, 24));
 					}
 					d.writeln('</td>');
-					d.writeln('</tr><tr><td colspan="3"><?php print we_html_tools::getPixel(2, 1); ?></td></tr>');
+					d.writeln('</tr><tr><td colspan="3"><?php echo we_html_tools::getPixel(2, 1); ?></td></tr>');
 				}
 		<?php echo self::makeWriteDoc('
 <tr>

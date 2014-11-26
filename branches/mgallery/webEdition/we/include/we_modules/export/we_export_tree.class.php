@@ -224,16 +224,16 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 			$captions = array();
 
 			if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
-				$captions[FILE_TABLE] = g_l('export', "[documents]");
+				$captions[FILE_TABLE] = g_l('export', '[documents]');
 			}
 			if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
-				$captions[TEMPLATES_TABLE] = g_l('export', "[templates]");
+				$captions[TEMPLATES_TABLE] = g_l('export', '[templates]');
 			}
 			if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
-				$captions[OBJECT_FILES_TABLE] = g_l('export', "[objects]");
+				$captions[OBJECT_FILES_TABLE] = g_l('export', '[objects]');
 			}
 			if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
-				$captions[OBJECT_TABLE] = g_l('export', "[classes]");
+				$captions[OBJECT_TABLE] = g_l('export', '[classes]');
 			}
 
 			$header->setColContent(1, 0, we_html_tools::htmlSelect('headerSwitch', $captions, 1, we_base_request::_(we_base_request::TABLE, 'headerSwitch', 0), false, array('onchange' => "setHead(this.value);"), 'value', $width));

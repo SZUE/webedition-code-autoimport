@@ -126,7 +126,7 @@ class doclistView{
       function search(newSearch) {
 
       	if(' . intval(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()) . ') {
-   			' . we_message_reporting::getShowMessageCall(g_l('searchtool', "[noTempTableRightsDoclist]"), we_message_reporting::WE_MESSAGE_NOTICE) . '
+   			' . we_message_reporting::getShowMessageCall(g_l('searchtool', '[noTempTableRightsDoclist]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
       	}
       	else {
 	        if(newSearch) {
@@ -748,7 +748,7 @@ class doclistView{
 	function getSearchDialog(){
 		$out = '<table cellpadding="0" cellspacing="0" id="defSearch" border="0" width="550" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'none' : 'block') . ';">
         <tr>
-        <td class="weDocListSearchHeadline">' . g_l('searchtool', "[suchen]") . '
+        <td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '
         </td>
         <td>' . we_html_tools::getPixel(10, 2) . '
         </td>
@@ -759,7 +759,7 @@ class doclistView{
         </table>
 				<table cellpadding="0" cellspacing="0" border="0" id="advSearch" width="550" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
         <tr>
-        <td class="weDocListSearchHeadline">' . g_l('searchtool', "[suchen]") . '
+        <td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '
         </td>
         <td>' . we_html_tools::getPixel(10, 2) . '
         </td>
@@ -931,7 +931,7 @@ class doclistView{
 
 
 		if(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()){
-			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', "[noTempTableRightsDoclist]"), we_message_reporting::WE_MESSAGE_NOTICE));
+			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', '[noTempTableRightsDoclist]'), we_message_reporting::WE_MESSAGE_NOTICE));
 			return '';
 		}
 		if($obj->ID != 0){
@@ -1127,8 +1127,8 @@ class doclistView{
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]['docID'] . '\',\'' . $_result[$f]['ContentType'] . '\')" class="' . $fontColor . ' middlefont" title="' . $_result[$f]['Text'] . '"><u>' . we_util_Strings::shortenPath($_result[$f]['Text'], $we_PathLength)),
 					array("dat" => '<nobr>' . g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']') . '</nobr>'),
 					array("dat" => '<nobr>' . we_util_Strings::shortenPath($_result[$f]["SiteTitle"], $we_PathLength) . '</nobr>'),
-					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
-					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-") . '</nobr>')
+					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
+					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-") . '</nobr>')
 				);
 			} else {
 				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
@@ -1161,14 +1161,14 @@ class doclistView{
 					$imageViewPopup = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
 				}
 
-				$creator = $_result[$f]["CreatorID"] ? id_to_path($_result[$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', "[nobody]");
+				$creator = $_result[$f]["CreatorID"] ? id_to_path($_result[$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', '[nobody]');
 
 				if($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
 					$templateID = ($_result[$f]["Published"] >= $_result[$f]["ModDate"] && $_result[$f]["Published"] ?
 									$_result[$f]["TemplateID"] :
 									$_result[$f]["temp_template_id"]);
 
-					$templateText = g_l('searchtool', "[no_template]");
+					$templateText = g_l('searchtool', '[no_template]');
 					if($templateID){
 						$DB_WE->query('SELECT ID, Text FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($templateID));
 						while($DB_WE->next_record()){
@@ -1201,8 +1201,8 @@ class doclistView{
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageView . '</a>'),
 					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 17)),
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result[$f]["Text"], 17) . '</u></a>'),
-					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
-					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-") . '</nobr>'),
+					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
+					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-") . '</nobr>'),
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageViewPopup . '</a>'),
 					array("dat" => $filesize),
 					array("dat" => $imagesize[0] . " x " . $imagesize[1]),
@@ -1245,7 +1245,7 @@ class doclistView{
 				'<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>' . we_html_tools::getPixel(19, 12) . '</td>
-		<td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
+		<td style="font-size:12px;width:125px;">' . g_l('searchtool', '[eintraege_pro_seite]') . ':</td>
 		<td class="defaultgray" style="width:60px;">' . we_html_tools::htmlSelect("anzahl", $anzahl, 1, $_anzahl, "", array('onchange' => 'this.form.elements[\'searchstart\'].value=0;search(false);')) . '</td>
 		<td>' . $this->getNextPrev($foundItems) . '</td>
 		<td>' . we_html_tools::getPixel(10, 12) . '</td>
@@ -1298,7 +1298,7 @@ class doclistView{
 				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
         <td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
 				(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
-				' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
+				' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
 				(($searchstart + $anzahl) < $we_search_anzahl ?
 						we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
 						we_html_button::create_button("next", "", true, 100, 22, "", "", true)

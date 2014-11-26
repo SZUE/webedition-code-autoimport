@@ -93,7 +93,7 @@ if(z != 0){
 	';
 
 					$foo = '<input type="text" size="20" name="colorvalue" class="defaultfont" style="width:150px" />';
-					$color = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[color]"));
+					$color = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', '[color]'));
 
 					$buttons = ($isA ?
 							we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:setColor();"), "", we_html_button::create_button("cancel", "javascript:window.close()")) :

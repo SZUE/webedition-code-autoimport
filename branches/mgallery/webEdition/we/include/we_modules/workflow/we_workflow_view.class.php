@@ -459,7 +459,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 
 			function we_cmd() {
 				var args = "";
-				var url = "<?php print WEBEDITION_DIR; ?>we_cmd.php?";
+				var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
 					url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
 					if (i < (arguments.length - 1)) {
@@ -493,11 +493,11 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		} else {
 			?>
 							if (top.content.editor.edbody.loaded) {
-								if (!confirm("<?php print g_l('modules_workflow', '[delete_question]') ?>"))
+								if (!confirm("<?php echo g_l('modules_workflow', '[delete_question]') ?>"))
 									return;
 							}
 							else {
-			<?php print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+			<?php echo we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 							}
 
 							top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
@@ -1189,7 +1189,7 @@ function checkData(){
 			);
 			$_parts[] = array(
 				'headline' => '',
-				'html' => '<a href="#" onclick="openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . g_l('weEditorInfo', "[openDocument]") . '</a>',
+				'html' => '<a href="#" onclick="openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . g_l('weEditorInfo', '[openDocument]') . '</a>',
 				'space' => $_space
 			);
 		}
@@ -1264,7 +1264,7 @@ function checkData(){
 
 		$_parts[] = array(
 			'headline' => '',
-			'html' => '<a href="#" onclick="openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . g_l('weEditorInfo', "[openDocument]") . '</a>',
+			'html' => '<a href="#" onclick="openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . g_l('weEditorInfo', '[openDocument]') . '</a>',
 			'space' => $_space
 		);
 
@@ -1320,8 +1320,8 @@ function checkData(){
 
 			$workflowStep = new we_workflow_step($sv->workflowStepID);
 
-			/* $now = date(g_l('weEditorInfo', "[date_format]"), time());
-			  $start = date(g_l('weEditorInfo', "[date_format]"), $sv->startDate);
+			/* $now = date(g_l('weEditorInfo', '[date_format]'), time());
+			  $start = date(g_l('weEditorInfo', '[date_format]'), $sv->startDate);
 			 */
 			$elapsed = self::getTime(time() - $sv->startDate);
 			$remained = self::getTime(($sv->startDate + round($workflowStep->Worktime * 3600)) - time());

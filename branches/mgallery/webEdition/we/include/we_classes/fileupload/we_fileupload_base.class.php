@@ -213,7 +213,7 @@ abstract class we_fileupload_base{
 
 	protected function _getJsGl(){
 		return '{
-					dropText : "' . g_l('importFiles', "[dragdrop_text]") . '",
+					dropText : "' . g_l('importFiles', '[dragdrop_text]') . '",
 					sizeTextOk : "' . g_l('newFile', '[file_size]') . ': ",
 					sizeTextNok : "' . g_l('newFile', '[file_size]') . ': &gt; ' . $this->maxUploadSizeMBytes . ' MB, ",
 					typeTextOk : "' . g_l('newFile', '[file_type]') . ': ",
@@ -223,12 +223,12 @@ abstract class we_fileupload_base{
 					errorFileType : "' . g_l('newFile', '[error_file_type]') . '",
 					errorFileSizeType : "' . g_l('newFile', '[error_size_type]') . '",
 					uploadCancelled : "' . g_l('importFiles', '[upload_cancelled]') . '",
-					cancelled : "' . g_l('importFiles', "[cancelled]") . '",
-					doImport : "' . g_l('importFiles', "[do_import]") . '",
-					file : "' . g_l('importFiles', "[file]") . '",
+					cancelled : "' . g_l('importFiles', '[cancelled]') . '",
+					doImport : "' . g_l('importFiles', '[do_import]') . '",
+					file : "' . g_l('importFiles', '[file]') . '",
 					btnClose : "' . g_l('button', '[close][value]') . '",
 					btnCancel : "' . g_l('button', '[cancel][value]') . '",
-					btnUpload : "' . g_l('button', "[upload][value]") . '"
+					btnUpload : "' . g_l('button', '[upload][value]') . '"
 				}';
 	}
 }

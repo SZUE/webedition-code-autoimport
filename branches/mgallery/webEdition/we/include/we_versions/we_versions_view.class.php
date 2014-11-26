@@ -826,7 +826,7 @@ function delRow(id) {
 			(($we_search_anzahl - $searchstart) < $anzahl ?
 				$we_search_anzahl :
 				$searchstart + $anzahl) .
-			' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td id="weiter">' .
+			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td id="weiter">' .
 			(($searchstart + $anzahl) < $we_search_anzahl ?
 				we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") : //bt_back
 				we_html_button::create_button("next", "", true, 100, 22, "", "", true)) .

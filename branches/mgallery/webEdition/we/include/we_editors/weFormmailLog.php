@@ -68,7 +68,7 @@ if(permissionhandler::hasPerm('administrator')){
 			) .
 			we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($start + 1) . "&nbsp;-&nbsp;" .
 			min($num_all, $start + $count) .
-			"&nbsp;" . g_l('global', "[from]") . " " . ($num_all) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
+			"&nbsp;" . g_l('global', '[from]') . " " . ($num_all) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 			($next < $num_all ?
 				we_html_button::create_button("next", $_SERVER['SCRIPT_NAME'] . "?start=" . $next) : //bt_next
 				we_html_button::create_button("next", "", "", 100, 22, "", "", true)

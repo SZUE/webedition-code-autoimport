@@ -35,12 +35,12 @@ echo we_html_element::htmlDocType();
 		}
 		if($we_doc->getElement('Keywords')){
 			?>
-			<meta name="keywords" content="<?php print $we_doc->getElement('Keywords') ?>">
+			<meta name="keywords" content="<?php echo $we_doc->getElement('Keywords') ?>">
 			<?php
 		}
 		if($we_doc->getElement('Description')){
 			?>
-			<meta name="description" content="<?php print $we_doc->getElement('Description') ?>">
+			<meta name="description" content="<?php echo $we_doc->getElement('Description') ?>">
 		<?php } ?>
 		<title><?php echo $we_doc->getElement('Title') ?></title>
 		<?php

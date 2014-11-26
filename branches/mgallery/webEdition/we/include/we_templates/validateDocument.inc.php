@@ -158,7 +158,7 @@ print STYLESHEET;
 	s_method = new Array();
 	additionalVars = new Array();
 
-<?php print $js; ?>
+<?php echo $js; ?>
 
 	function switchPredefinedService(name) {
 

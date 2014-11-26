@@ -70,7 +70,7 @@ class we_sidebar_frames{
 				</div>
 			</div>
 			<div style="position:absolute;top:22px;left:0px;right:0px;bottom:40px;border-bottom: 1px solid black;border-top: 1px solid black;">
-				<iframe src="<?php print $this->_frameset; ?>?pnt=content" style="border: 0px;background-color:white;width:100%;height:100%;overflow: auto;" name="weSidebarContent"></iframe>
+				<iframe src="<?php echo $this->_frameset; ?>?pnt=content" style="border: 0px;background-color:white;width:100%;height:100%;overflow: auto;" name="weSidebarContent"></iframe>
 			</div>
 			<div name="weSidebarFooter" id="weSidebarFooter" style="overflow: hidden;position:absolute;bottom:0px;left:0px;right:0px;height:40px;background-color:#f0f0f0;background-image: url('<?php echo IMAGE_DIR; ?>edit/editfooterback.gif'); ">
 			</div>

@@ -29,7 +29,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[overview]'), we_tab::ACTIVE, "setTab('1');"));
 
-		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[type]'), g_l('modules_glossary', '[' . array_pop(explode("_", we_base_request::_(we_base_request::STRING, 'cmdid'))) . ']'));
+		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[type]'), g_l('modules_glossary', '[' . array_pop(explode('_', we_base_request::_(we_base_request::STRING, 'cmdid'))) . ']'));
 	}
 
 	function Body(&$weGlossaryFrames){
@@ -390,7 +390,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 					<td></td>
 					<td>' . $prev . '</td>
 					<td>' . we_html_tools::getPixel(10, 2) . '</td>
-					<td class="defaultfont"><b>' . ($Search->Rows == 1 ? $min : $min . '-' . $max) . ' ' . g_l('global', "[from]") . ' ' . $sum . '</b></td>
+					<td class="defaultfont"><b>' . ($Search->Rows == 1 ? $min : $min . '-' . $max) . ' ' . g_l('global', '[from]') . ' ' . $sum . '</b></td>
 					<td>' . we_html_tools::getPixel(10, 2) . '</td>
 					<td>' . $next . '</td>
 					<td>' . we_html_tools::getPixel(10, 2) . '</td>
@@ -410,7 +410,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">' . (permissionhandler::hasPerm("DELETE_GLOSSARY") ? we_html_button::create_button("image:btn_function_trash", "javascript: if(confirm('" . g_l('modules_glossary', "[confirm_delete]") . "')) { document.we_form.elements['do'].value='delete'; SubmitForm(); }") . '</td>
+					<td class="small">' . (permissionhandler::hasPerm("DELETE_GLOSSARY") ? we_html_button::create_button("image:btn_function_trash", "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_delete]') . "')) { document.we_form.elements['do'].value='delete'; SubmitForm(); }") . '</td>
 					<td>' . we_html_tools::getPixel(5, 1) . '</td>
 					<td class="small">&nbsp;' . g_l('modules_glossary', '[delete_selected_items]') : "") . '</td>
 				</tr>
@@ -427,7 +427,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button("image:btn_function_publish", "javascript: if(confirm('" . g_l('modules_glossary', "[confirm_publish]") . "')) { document.we_form.elements['do'].value='publish'; SubmitForm(); }") . '</td>
+					<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button("image:btn_function_publish", "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_publish]') . "')) { document.we_form.elements['do'].value='publish'; SubmitForm(); }") . '</td>
 					<td>' . we_html_tools::getPixel(5, 1) . '</td>
 					<td class="small">&nbsp;' . g_l('modules_glossary', '[publish_selected_items]') : "") . '</td>
 				</tr>
@@ -444,7 +444,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button("image:btn_function_unpublish", "javascript: if(confirm('" . g_l('modules_glossary', "[confirm_unpublish]") . "')) { document.we_form.elements['do'].value='unpublish'; SubmitForm(); }") . '</td>
+					<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button("image:btn_function_unpublish", "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_unpublish]') . "')) { document.we_form.elements['do'].value='unpublish'; SubmitForm(); }") . '</td>
 					<td>' . we_html_tools::getPixel(5, 1) . '</td>
 					<td class="small">&nbsp;' . g_l('modules_glossary', '[unpublish_selected_items]') : "") . '</td>
 				</tr>

@@ -29,7 +29,7 @@ class we_dialog_color extends we_dialog_base{
 
 	function __construct(){
 		parent::__construct();
-		$this->dialogTitle = g_l('wysiwyg', "[choosecolor]");
+		$this->dialogTitle = g_l('wysiwyg', '[choosecolor]');
 		$this->args["color"] = "";
 	}
 
@@ -61,7 +61,7 @@ if(z != 0){
 		$trash = we_html_button::create_button("image:btn_function_trash", "javascript:selectColor('')");
 
 		$foo = '<table border="0" cellpadding="0" cellspacing="0"><tr><td><input type="text" size="20" name="we_dialog_args[color]" class="defaultfont" style="width:150px;' . ($this->args["color"] ? ('background-color:' . $this->args["color"] . ';') : '') . '" value="' . $this->args["color"] . '" /></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $trash . '</td></tr></table>';
-		$color = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', "[color]"));
+		$color = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', '[color]'));
 
 
 		$table = '<table border="0" cellpadding="0" cellspacing="0">

@@ -167,21 +167,21 @@ function checkFooter(){
 	function getHTML($isobj = false){
 		$taskpopup = '<select class="weSelect we_schedule_task" name="we_schedule_task_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true);checkFooter();if(self.we_hasExtraRow_' . $this->nr . ' || this.options[this.selectedIndex].value==' . self::DOCTYPE . ' || this.options[this.selectedIndex].value==' . self::CATEGORY . ' || this.options[this.selectedIndex].value==' . self::DIR . '){ setScrollTo();we_cmd(\'reload_editpage\');}">
 <option value="' . self::SCHEDULE_FROM . '"' . (($this->task == self::SCHEDULE_FROM) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_FROM . ']') . '</option>
-<option value="' . self::SCHEDULE_TO . '"' . (($this->task == self::SCHEDULE_TO) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_TO . ']') . '</option>';
+<option value="' . self::SCHEDULE_TO . '"' . (($this->task == self::SCHEDULE_TO) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::SCHEDULE_TO . ']') . '</option>';
 		if((permissionhandler::hasPerm('DELETE_DOCUMENT') && (!$isobj)) || (permissionhandler::hasPerm('DELETE_OBJECTFILE') && $isobj)){
-			$taskpopup .= '<option value="' . self::DELETE . '"' . (($this->task == self::DELETE) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DELETE . ']') . '</option>';
+			$taskpopup .= '<option value="' . self::DELETE . '"' . (($this->task == self::DELETE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::DELETE . ']') . '</option>';
 		}
 		if(!$isobj){
-			$taskpopup .= '<option value="' . self::DOCTYPE . '"' . (($this->task == self::DOCTYPE) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DOCTYPE . ']') . '</option>
-<option value="' . self::CALL . '"' . (($this->task == self::CALL) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::CALL . ']') . '</option>';
+			$taskpopup .= '<option value="' . self::DOCTYPE . '"' . (($this->task == self::DOCTYPE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::DOCTYPE . ']') . '</option>
+<option value="' . self::CALL . '"' . (($this->task == self::CALL) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::CALL . ']') . '</option>';
 		}
-		$taskpopup .= '<option value="' . self::CATEGORY . '"' . (($this->task == self::CATEGORY) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::CATEGORY . ']') . '</option>';
+		$taskpopup .= '<option value="' . self::CATEGORY . '"' . (($this->task == self::CATEGORY) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::CATEGORY . ']') . '</option>';
 		if((permissionhandler::hasPerm('MOVE_DOCUMENT') && (!$isobj)) || (permissionhandler::hasPerm("MOVE_OBJECTFILE") && $isobj)){
-			$taskpopup .= '<option value="' . self::DIR . '"' . (($this->task == self::DIR) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::DIR . ']') . '</option>';
+			$taskpopup .= '<option value="' . self::DIR . '"' . (($this->task == self::DIR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::DIR . ']') . '</option>';
 		}
 		$taskpopup .= '
-<option value="' . self::SEARCHABLE_ENABLED . '"' . (($this->task == self::SEARCHABLE_ENABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SEARCHABLE_ENABLED . ']') . '</option>
-<option value="' . self::SEARCHABLE_DISABLED . '"' . (($this->task == self::SEARCHABLE_DISABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SEARCHABLE_DISABLED . ']') . '</option>
+<option value="' . self::SEARCHABLE_ENABLED . '"' . (($this->task == self::SEARCHABLE_ENABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::SEARCHABLE_ENABLED . ']') . '</option>
+<option value="' . self::SEARCHABLE_DISABLED . '"' . (($this->task == self::SEARCHABLE_DISABLED) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::SEARCHABLE_DISABLED . ']') . '</option>
 </select>';
 		$extracont = '';
 		$extraheadl = '';
@@ -198,10 +198,10 @@ function checkFooter(){
 				}
 				$doctypepop .= '</select>';
 				$checknname = md5(uniqid(__FUNCTION__, true));
-				$extracont = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $doctypepop . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->doctypeAll, $checknname, g_l('modules_schedule', "[doctypeAll]")
+				$extracont = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $doctypepop . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->doctypeAll, $checknname, g_l('modules_schedule', '[doctypeAll]')
 						, false, "defaultfont", "this.form.elements['we_schedule_doctypeAll_" . $this->nr . "'].value=this.checked?1:0;") .
 					'<input type="hidden" name="we_schedule_doctypeAll_' . $this->nr . '" value="' . $this->doctypeAll . '" /></td></tr></table>';
-				$extraheadl = g_l('modules_schedule', "[doctype]");
+				$extraheadl = g_l('modules_schedule', '[doctype]');
 				break;
 			case self::CATEGORY:
 				$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('schedule_delete_all_schedcats'," . $this->nr . ")");
@@ -212,7 +212,7 @@ function checkFooter(){
 					$cats->isEditable = false;
 				}
 				$extracont = $cats->get();
-				$extraheadl = g_l('modules_schedule', "[categories]");
+				$extraheadl = g_l('modules_schedule', '[categories]');
 				break;
 			case self::DIR:
 				$textname = 'path_we_schedule_parentid_' . $this->nr;
@@ -251,20 +251,20 @@ function checkFooter(){
 		}
 
 		$typepopup = '<select class="weSelect" name="we_schedule_type_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true);setScrollTo();we_cmd(\'reload_editpage\')">
-<option value="' . self::TYPE_ONCE . '"' . (($this->type == self::TYPE_ONCE) ? ' selected' : '') . '>' . g_l('modules_schedule', "[type][" . self::TYPE_ONCE . ']') . '</option>
-<option value="' . self::TYPE_HOUR . '"' . (($this->type == self::TYPE_HOUR) ? ' selected' : '') . '>' . g_l('modules_schedule', "[type][" . self::TYPE_HOUR . ']') . '</option>
-<option value="' . self::TYPE_DAY . '"' . (($this->type == self::TYPE_DAY) ? ' selected' : '') . '>' . g_l('modules_schedule', "[type][" . self::TYPE_DAY . ']') . '</option>
-<option value="' . self::TYPE_WEEK . '"' . (($this->type == self::TYPE_WEEK) ? ' selected' : '') . '>' . g_l('modules_schedule', "[type][" . self::TYPE_WEEK . ']') . '</option>
-<option value="' . self::TYPE_MONTH . '"' . (($this->type == self::TYPE_MONTH) ? ' selected' : '') . '>' . g_l('modules_schedule', "[type][" . self::TYPE_MONTH . ']') . '</option>
-<option value="' . self::TYPE_YEAR . '"' . (($this->type == self::TYPE_YEAR) ? ' selected' : '') . '>' . g_l('modules_schedule', "[type][" . self::TYPE_YEAR . ']') . '</option>
+<option value="' . self::TYPE_ONCE . '"' . (($this->type == self::TYPE_ONCE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_ONCE . ']') . '</option>
+<option value="' . self::TYPE_HOUR . '"' . (($this->type == self::TYPE_HOUR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_HOUR . ']') . '</option>
+<option value="' . self::TYPE_DAY . '"' . (($this->type == self::TYPE_DAY) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_DAY . ']') . '</option>
+<option value="' . self::TYPE_WEEK . '"' . (($this->type == self::TYPE_WEEK) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_WEEK . ']') . '</option>
+<option value="' . self::TYPE_MONTH . '"' . (($this->type == self::TYPE_MONTH) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_MONTH . ']') . '</option>
+<option value="' . self::TYPE_YEAR . '"' . (($this->type == self::TYPE_YEAR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_YEAR . ']') . '</option>
 </select>';
 
 
 		$checknname = md5(uniqid(__FUNCTION__, true));
 		$table = '<table cellpadding="0" cellspacing="0" border="0">
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', "[task][headline]") . ':</td>
-		<td class="defaultfont"><table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->active, $checknname, g_l('modules_schedule', "[active]")
+		<td class="defaultgray">' . g_l('modules_schedule', '[task][headline]') . ':</td>
+		<td class="defaultfont"><table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->active, $checknname, g_l('modules_schedule', '[active]')
 				, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);checkFooter();") .
 			'<input type="hidden" class="we_schedule_active" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
 		<td>' . we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('schedule_del','" . $this->nr . "')") . '</td>
@@ -280,7 +280,7 @@ function checkFooter(){
 
 		$table .= '
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', "[type][headline]") . ':</td>
+		<td class="defaultgray">' . g_l('modules_schedule', '[type][headline]') . ':</td>
 		<td class="defaultfont">' . $typepopup . '</td>
 		<td></td>
 	</tr>' .
@@ -291,7 +291,7 @@ function checkFooter(){
 			case self::TYPE_ONCE:
 				$table .= '
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', "[datetime]") . ':</td>
+		<td class="defaultgray">' . g_l('modules_schedule', '[datetime]') . ':</td>
 		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true) . '</td>
 		<td></td>
 	</tr>';
@@ -299,7 +299,7 @@ function checkFooter(){
 			case self::TYPE_HOUR:
 				$table .= '
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', "[minutes]") . ':</td>
+		<td class="defaultgray">' . g_l('modules_schedule', '[minutes]') . ':</td>
 		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "i") . '</td>
 		<td></td>
 	</tr>';
@@ -307,7 +307,7 @@ function checkFooter(){
 			case self::TYPE_DAY:
 				$table .= '
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', "[time]") . ':</td>
+		<td class="defaultgray">' . g_l('modules_schedule', '[time]') . ':</td>
 		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
 	</tr>';
@@ -315,13 +315,13 @@ function checkFooter(){
 			case self::TYPE_WEEK:
 				$table .= '
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', "[time]") . ':</td>
+		<td class="defaultgray">' . g_l('modules_schedule', '[time]') . ':</td>
 		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
 	</tr>' .
 					$this->getSpacerRowHTML() . '
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', "[weekdays]") . ':</td>
+		<td class="defaultgray">' . g_l('modules_schedule', '[weekdays]') . ':</td>
 		<td class="defaultfont">' . $this->getWeekdaysHTML() . '</td>
 		<td></td>
 	</tr>';
@@ -329,13 +329,13 @@ function checkFooter(){
 			case self::TYPE_MONTH:
 				$table .= '
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', "[time]") . ':</td>
+		<td class="defaultgray">' . g_l('modules_schedule', '[time]') . ':</td>
 		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
 	</tr>' .
 					$this->getSpacerRowHTML() . '
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', "[days]") . ':</td>
+		<td class="defaultgray">' . g_l('modules_schedule', '[days]') . ':</td>
 		<td class="defaultfont">' . $this->getDaysHTML() . '</td>
 		<td></td>
 	</tr>';
@@ -343,19 +343,19 @@ function checkFooter(){
 			case self::TYPE_YEAR:
 				$table .= '
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', "[time]") . ':</td>
+		<td class="defaultgray">' . g_l('modules_schedule', '[time]') . ':</td>
 		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
 	</tr>' .
 					$this->getSpacerRowHTML() . '
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', "[months]") . ':</td>
+		<td class="defaultgray">' . g_l('modules_schedule', '[months]') . ':</td>
 		<td class="defaultfont">' . $this->getMonthsHTML() . '</td>
 		<td></td>
 	</tr>' .
 					$this->getSpacerRowHTML() . '
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', "[days]") . ':</td>
+		<td class="defaultgray">' . g_l('modules_schedule', '[days]') . ':</td>
 		<td class="defaultfont">' . $this->getDaysHTML() . '</td>
 		<td></td>
 	</tr>';

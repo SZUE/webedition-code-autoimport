@@ -84,7 +84,7 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 
 		if($retVal == -1){ //	not allowed to move document
 			$script .= 'top.toggleBusy(0);' .
-					we_message_reporting::getShowMessageCall(sprintf(g_l('alert', "[noRightsToMove]"), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
+					we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[noRightsToMove]'), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif($retVal){ //	move files !
 			$notMovedItems = array();
 			foreach($selectedItems as $selectedItem){
@@ -108,7 +108,7 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 					}
 					$script .= 'new jsWindow("' . WEBEDITION_DIR . 'moveInfo.php","we_moveinfo",-1,-1,550,550,true,true,true);' . "\n";
 				} else {
-					$script .= we_message_reporting::getShowMessageCall(g_l('alert', "[move_ok]"), we_message_reporting::WE_MESSAGE_NOTICE);
+					$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[move_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 				}
 			}
 		} else {
@@ -173,7 +173,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 				setTimeout('press_ok_move()', 100);
 				return;
 			} else if (!acStatus.valid) {
-<?php echo we_message_reporting::getShowMessageCall(g_l('weClass', "[notValidFolder]"), we_message_reporting::WE_MESSAGE_ERROR) ?>
+<?php echo we_message_reporting::getShowMessageCall(g_l('weClass', '[notValidFolder]'), we_message_reporting::WE_MESSAGE_ERROR) ?>
 				return;
 			}
 		}
@@ -207,20 +207,20 @@ echo $table;
 <?php
 switch($table){
 	case TEMPLATES_TABLE:
-		$_type = g_l('global', "[templates]");
+		$_type = g_l('global', '[templates]');
 		break;
 	case defined('OBJECT_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE':
-		$_type = g_l('global', "[objects]");
+		$_type = g_l('global', '[objects]');
 		break;
 	default:
-		$_type = g_l('global', "[documents]");
+		$_type = g_l('global', '[documents]');
 		break;
 }
 ?>
 			if (confirm("<?php
-printf(g_l('alert', "[move_exit_open_docs_question]"), $_type, $_type);
+printf(g_l('alert', '[move_exit_open_docs_question]'), $_type, $_type);
 ?>" + _openDocs_Str + "\n<?php
-echo g_l('alert', "[move_exit_open_docs_continue]");
+echo g_l('alert', '[move_exit_open_docs_continue]');
 ?>")) {
 
 				for (i = 0; i < _open_move_editors.length; i++) {
@@ -236,7 +236,7 @@ echo $table;
 		} else {
 
 			if (confirm('<?php
-echo g_l('alert', "[move]");
+echo g_l('alert', '[move]');
 ?>')) {
 				we_cmd('do_move', '', '<?php
 echo $table;
@@ -317,8 +317,8 @@ echo
 <form name="we_form" method="post" onsubmit="return false">
 <div style="width:460px;">
 <h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(
-		g_l('newFile', "[title_move]")) . '</h1>
-<p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile', "[move_text]") . '</span>
+		g_l('newFile', '[title_move]')) . '</h1>
+<p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile', '[move_text]') . '</span>
 			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . '</p></p>
 <div>' . $_buttons . '</div></div>' . we_html_tools::hidden("sel", "") .
  '</form>' .

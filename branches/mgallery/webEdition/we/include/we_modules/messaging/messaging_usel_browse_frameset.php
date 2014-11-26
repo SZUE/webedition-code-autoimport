@@ -145,14 +145,14 @@ echo we_html_tools::getHtmlTop() .
 			fr.write(zweigEintrag);
 			if (nf[ai].typ == 'user') {
 				if (ai == nf.laenge) {
-					fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzungend.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
+					fr.write("&nbsp;&nbsp;<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>kreuzungend.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
 				} else {
-					fr.write("&nbsp;&nbsp;<IMG SRC=<?php print TREE_IMAGE_DIR; ?>kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
+					fr.write("&nbsp;&nbsp;<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
 				}
 				if (nf[ai].name != -1) {
 					fr.write("<a name='_" + nf[ai].name + "' href=\"javascript:doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=\"0\">");
 				}
-				fr.write("<IMG SRC=<?php print TREE_ICON_DIR; ?>" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
+				fr.write("<IMG SRC=<?php echo TREE_ICON_DIR; ?>" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 alt=\"<?php echo g_l('tree', '[edit_statustext]'); ?>\">");
 				fr.write("</a>");
 
 				if (nf[ai].checked) {
@@ -169,14 +169,14 @@ echo we_html_tools::getHtmlTop() .
 				var zusatz = (ai == nf.laenge) ? "end" : "";
 
 				if (nf[ai].offen == 0) {
-					fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php print g_l('tree', "[open_statustext]") ?>\"></A>");
+					fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=<?php echo TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php echo g_l('tree', '[open_statustext]') ?>\"></A>");
 					var zusatz2 = "";
 				} else {
-					fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php print TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php print g_l('tree', "[close_statustext]") ?>\"></A>");
+					fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=<?php echo TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php echo g_l('tree', '[close_statustext]') ?>\"></A>");
 					var zusatz2 = "open";
 				}
 				fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
-				fr.write("<IMG SRC=<?php print TREE_ICON_DIR; ?>usergroup" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php print g_l('tree', "[edit_statustext]"); ?>\">");
+				fr.write("<IMG SRC=<?php echo TREE_ICON_DIR; ?>usergroup" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"<?php echo g_l('tree', '[edit_statustext]'); ?>\">");
 				fr.write("</a>");
 				fr.write("<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 				fr.write("&nbsp;<b>" + nf[ai].text + "</b>");
@@ -184,9 +184,9 @@ echo we_html_tools::getHtmlTop() .
 				fr.write("&nbsp;&nbsp;<br/>\n");
 				if (nf[ai].offen) {
 					if (ai == nf.laenge) {
-						newAst = newAst + "<IMG SRC=<?php print TREE_IMAGE_DIR; ?>leer.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
+						newAst = newAst + "<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>leer.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
 					} else {
-						newAst = newAst + "<IMG SRC=<?php print TREE_IMAGE_DIR; ?>strich2.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
+						newAst = newAst + "<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>strich2.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
 					}
 					zeichne(nf[ai].name, newAst);
 				}
@@ -399,7 +399,7 @@ while($DB_WE->next_record()){
 	default_color = "#000000";
 
 	function showContent(id) {
-		top.cmd.location = "<?php print WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $we_transaction ?>&mcmd=show_message&id=" + id;
+		top.cmd.location = "<?php echo WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $we_transaction ?>&mcmd=show_message&id=" + id;
 	}
 
 	function array_search(needle, haystack) {

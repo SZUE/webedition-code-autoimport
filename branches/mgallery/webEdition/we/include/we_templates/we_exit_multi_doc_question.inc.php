@@ -43,7 +43,7 @@ foreach(g_l('contentTypes', '') as $key => $lng){
 	ctLngs[\"$key\"] = \"$lng\";";
 }
 
-$untitled = g_l('global', "[untitled]");
+$untitled = g_l('global', '[untitled]');
 
 print <<< EOFEOF
 <script type="text/javascript"><!--
@@ -132,7 +132,7 @@ EOFEOF;
 
 $content = '
 <div>
-	' . g_l('alert', "[exit_multi_doc_question]") . '
+	' . g_l('alert', '[exit_multi_doc_question]') . '
 	<br />
 	<br />
 	<div style="width: 350px; height: 150px; background: white; overflow: auto;">

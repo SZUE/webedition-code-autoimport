@@ -79,12 +79,12 @@ function getHTMLDirSelector($_selType){
 			), we_html_tools::htmlFormElementTable(
 				"<div id=\"yuiAcLayerDoc\" class=\"yuiAcLayer\">" . $yuiSuggest->getErrorMarkPlaceHolder(
 					"yuiAcErrorMarkDoc") . we_html_tools::htmlTextInput(
-					"FolderPath", 58, $_path, "", 'onchange="" id="yuiAcInputDoc"', "text", (420 - 120), 0) . "<div id=\"yuiAcContainerDoc\"></div></div>", g_l('cockpit', "[dir]"), "left", "defaultfont", we_html_tools::getPixel(300, 20), we_html_element::htmlHidden(array(
+					"FolderPath", 58, $_path, "", 'onchange="" id="yuiAcInputDoc"', "text", (420 - 120), 0) . "<div id=\"yuiAcContainerDoc\"></div></div>", g_l('cockpit', '[dir]'), "left", "defaultfont", we_html_tools::getPixel(300, 20), we_html_element::htmlHidden(array(
 					"name" => "FolderID", "value" => $folderID, "id" => "yuiAcIdDoc"
 				)), we_html_tools::getPixel(20, 4), $_buttons));
 }
 
-$docTypes = array(0 => g_l('cockpit', "[no_entry]"));
+$docTypes = array(0 => g_l('cockpit', '[no_entry]'));
 
 $DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($DB_WE));
 while($DB_WE->next_record()){
@@ -92,7 +92,7 @@ while($DB_WE->next_record()){
 }
 $doctypeElement = we_html_tools::htmlFormElementTable(
 		we_html_tools::htmlSelect(
-			"DocTypeID", $docTypes, 1, 0, false, array('onchange' => "", 'style' => "width:420px; border: #AAAAAA solid 1px;"), 'value'), g_l('cockpit', "[doctype]"));
+			"DocTypeID", $docTypes, 1, 0, false, array('onchange' => "", 'style' => "width:420px; border: #AAAAAA solid 1px;"), 'value'), g_l('cockpit', '[doctype]'));
 
 $cls = new we_html_select(
 	array(
@@ -102,7 +102,7 @@ $cls = new we_html_select(
 	"style" => "width:420px; border: #AAAAAA solid 1px"
 	));
 $optid = 0;
-$cls->insertOption($optid, 0, g_l('cockpit', "[no_entry]"));
+$cls->insertOption($optid, 0, g_l('cockpit', '[no_entry]'));
 $ac = makeCSVFromArray(we_users_util::getAllowedClasses($DB_WE));
 if($ac){
 	$DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
@@ -383,24 +383,24 @@ $divStatic = we_html_element::htmlDiv(
 
 $captions = array();
 if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
-	$captions[FILE_TABLE] = g_l('export', "[documents]");
+	$captions[FILE_TABLE] = g_l('export', '[documents]');
 }
 if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
-	$captions[OBJECT_FILES_TABLE] = g_l('export', "[objects]");
+	$captions[OBJECT_FILES_TABLE] = g_l('export', '[objects]');
 }
 
 $divDynamic = we_html_element::htmlDiv(
 		array(
 		"id" => "dynamic", "style" => (!$_selection ? 'display:block;' : 'display:none;')
 		), getHTMLDirSelector($_selType) . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . ((!$_selType) ? $doctypeElement : we_html_tools::htmlFormElementTable(
-				$cls->getHTML(), g_l('cockpit', "[class]"))) . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . getHTMLCategory());
+				$cls->getHTML(), g_l('cockpit', '[class]'))) . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . getHTMLCategory());
 
 $divContent = we_html_element::htmlDiv(
 		array(
 		"style" => "display:block;"
 		), we_html_tools::htmlSelect(
 			"Selection", array(
-			"dynamic" => g_l('cockpit', "[dyn_selection]"), "static" => g_l('cockpit', '[stat_selection]')
+			"dynamic" => g_l('cockpit', '[dyn_selection]'), "static" => g_l('cockpit', '[stat_selection]')
 			), 1, ($_selection ? "static" : "dynamic"), false, array('style' => "width:420px;border:#AAAAAA solid 1px;", 'onchange' => "closeAllSelection();we_submit();"), 'value') . we_html_element::htmlBr() . we_html_tools::htmlSelect(
 			"headerSwitch", $captions, 1, (!$_selType ? FILE_TABLE : OBJECT_FILES_TABLE), false, array('style' => "width:420px;border:#AAAAAA solid 1px;margin-top:10px;", 'onchange' => "setHead(this.value);we_submit();"), 'value', 420) . $divStatic . $divDynamic . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . we_html_tools::htmlFormElementTable(
 			we_html_tools::htmlTextInput(

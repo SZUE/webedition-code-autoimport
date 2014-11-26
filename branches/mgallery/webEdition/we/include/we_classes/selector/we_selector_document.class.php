@@ -252,8 +252,8 @@ a:link,a:visited,a:hover,a:active
 #if(makeNewFolder){
 	<tr>
 		<td align="center"><img src="' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" border="0"></td>
-		<td><input type="hidden" name="we_FolderText" value="' . g_l('fileselector', "[new_folder_name]") . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('fileselector', "[new_folder_name]") . '" class="wetextinput" style="width:100%" /></td>
-		<td class="selector">' . g_l('contentTypes', "[folder]") . '</td>
+		<td><input type="hidden" name="we_FolderText" value="' . g_l('fileselector', '[new_folder_name]') . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('fileselector', '[new_folder_name]') . '" class="wetextinput" style="width:100%" /></td>
+		<td class="selector">' . g_l('contentTypes', '[folder]') . '</td>
 		<td class="selector">' . date(g_l('date', '[format][default]')) . '</td>
 	</tr>
 #}
@@ -466,11 +466,11 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			$ret.= '
 	<tr>
 		<td></td>
-		<td class="defaultfont"><b>' . g_l('fileselector', "[type]") . '</b></td>
+		<td class="defaultfont"><b>' . g_l('fileselector', '[type]') . '</b></td>
 		<td></td>
 		<td class="defaultfont">
 			<select name="filter" class="weSelect" size="1" onchange="top.setFilter(this.options[this.selectedIndex].value)" class="defaultfont" style="width:100%">
-				<option value="">' . g_l('fileselector', "[all_Types]") . '</option>';
+				<option value="">' . g_l('fileselector', '[all_Types]') . '</option>';
 			foreach(we_base_ContentTypes::inst()->getWETypes() as $ctype){
 				$ret.= '<option value="' . oldHtmlspecialchars($ctype) . '">' . g_l('contentTypes', '[' . $ctype . ']') . '</option>';
 			}
@@ -487,7 +487,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	<tr>
 		<td></td>
 		<td class="defaultfont">
-			<b>' . g_l('fileselector', "[name]") . '</b>
+			<b>' . g_l('fileselector', '[name]') . '</b>
 		</td>
 		<td></td>
 		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $seval, "", 'style="width:100%" readonly="readonly"') . '
@@ -652,7 +652,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				if($fs === 0){
 					$_imagesize = array(0, 0);
 					$_thumbpath = ICON_DIR . 'no_image.gif';
-					$_imagepreview = "<img src='" . $_thumbpath . "' border='0' id='previewpic'><p>" . g_l('fileselector', "[image_not_uploaded]") . "</p>";
+					$_imagepreview = "<img src='" . $_thumbpath . "' border='0' id='previewpic'><p>" . g_l('fileselector', '[image_not_uploaded]') . "</p>";
 				} else {
 					$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 					$_thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
@@ -666,16 +666,16 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			}
 
 			$_previewFields = array(
-				"properies" => array("headline" => g_l('weClass', "[tab_properties]"), "data" => array()),
-				"metainfos" => array("headline" => g_l('weClass', "[metainfo]"), "data" => array()),
-				"attributes" => array("headline" => g_l('weClass', "[attribs]"), "data" => array()),
-				"folders" => array("headline" => g_l('fileselector', "[folders]"), "data" => array()),
-				"files" => array("headline" => g_l('fileselector', "[files]"), "data" => array()),
-				"masterTemplate" => array("headline" => g_l('weClass', "[master_template]"), "data" => array())
+				"properies" => array("headline" => g_l('weClass', '[tab_properties]'), "data" => array()),
+				"metainfos" => array("headline" => g_l('weClass', '[metainfo]'), "data" => array()),
+				"attributes" => array("headline" => g_l('weClass', '[attribs]'), "data" => array()),
+				"folders" => array("headline" => g_l('fileselector', '[folders]'), "data" => array()),
+				"files" => array("headline" => g_l('fileselector', '[files]'), "data" => array()),
+				"masterTemplate" => array("headline" => g_l('weClass', '[master_template]'), "data" => array())
 			);
 
 			$_previewFields["properies"]["data"][] = array(
-				"caption" => g_l('fileselector', "[name]"),
+				"caption" => g_l('fileselector', '[name]'),
 				"content" => (
 				$showPriview ? "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='" . $result['Path'] .
 					"' target='_blank' style='color:black'><img src='" . TREE_ICON_DIR . "browser.gif' border='0' vspace='0' hspace='0'></a></div>" : ""
@@ -697,34 +697,34 @@ top.parentID = "' . $this->values["ParentID"] . '";
 
 			if($result['CreationDate']){
 				$_previewFields["properies"]["data"][] = array(
-					"caption" => g_l('fileselector', "[created]"),
+					"caption" => g_l('fileselector', '[created]'),
 					"content" => date(g_l('date', '[format][default]'), $result['CreationDate'])
 				);
 			}
 
 			if($result['ModDate']){
 				$_previewFields["properies"]["data"][] = array(
-					"caption" => g_l('fileselector', "[modified]"),
+					"caption" => g_l('fileselector', '[modified]'),
 					"content" => date(g_l('date', '[format][default]'), $result['ModDate'])
 				);
 			}
 
 			$_previewFields["properies"]["data"][] = array(
-				"caption" => g_l('fileselector', "[type]"),
+				"caption" => g_l('fileselector', '[type]'),
 				"content" => ((g_l('contentTypes', '[' . $result['ContentType'] . ']') !== false) ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType'])
 			);
 
 
 			if(isset($_imagesize)){
 				$_previewFields["properies"]["data"][] = array(
-					"caption" => g_l('weClass', "[width]") . " x " . g_l('weClass', "[height]"),
+					"caption" => g_l('weClass', '[width]') . " x " . g_l('weClass', '[height]'),
 					"content" => $_imagesize[0] . " x " . $_imagesize[1] . " px "
 				);
 			}
 
 			if($result['ContentType'] != "folder" && $result['ContentType'] != we_base_ContentTypes::TEMPLATE && $result['ContentType'] != "object" && $result['ContentType'] != "objectFile"){
 				$_previewFields["properies"]["data"][] = array(
-					"caption" => g_l('fileselector', "[filesize]"),
+					"caption" => g_l('fileselector', '[filesize]'),
 					"content" => $_filesize
 				);
 			}
@@ -732,21 +732,21 @@ top.parentID = "' . $this->values["ParentID"] . '";
 
 			if(isset($metainfos['Title'])){
 				$_previewFields["metainfos"]["data"][] = array(
-					"caption" => g_l('weClass', "[Title]"),
+					"caption" => g_l('weClass', '[Title]'),
 					"content" => $metainfos['Title']
 				);
 			}
 
 			if(isset($metainfos['Description'])){
 				$_previewFields["metainfos"]["data"][] = array(
-					"caption" => g_l('weClass', "[Description]"),
+					"caption" => g_l('weClass', '[Description]'),
 					"content" => $metainfos['Description']
 				);
 			}
 
 			if(isset($metainfos['Keywords'])){
 				$_previewFields["metainfos"]["data"][] = array(
-					"caption" => g_l('weClass', "[Keywords]"),
+					"caption" => g_l('weClass', '[Keywords]'),
 					"content" => $metainfos['Keywords']
 				);
 			}
@@ -757,19 +757,19 @@ top.parentID = "' . $this->values["ParentID"] . '";
 					$alt = (isset($metainfos['alt']) ? $metainfos['alt'] : '');
 					if($Title !== ""){
 						$_previewFields["attributes"]["data"][] = array(
-							"caption" => g_l('weClass', "[Title]"),
+							"caption" => g_l('weClass', '[Title]'),
 							"content" => oldHtmlspecialchars($Title)
 						);
 					}
 					if($name !== ""){
 						$_previewFields["attributes"]["data"][] = array(
-							"caption" => g_l('weClass', "[name]"),
+							"caption" => g_l('weClass', '[name]'),
 							"content" => $name
 						);
 					}
 					if($alt !== ""){
 						$_previewFields["attributes"]["data"][] = array(
-							"caption" => g_l('weClass', "[alt]"),
+							"caption" => g_l('weClass', '[alt]'),
 							"content" => oldHtmlspecialchars($alt)
 						);
 					}
@@ -818,7 +818,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 							"content" => $result['MasterTemplateID']
 						);
 						$_previewFields["masterTemplate"]["data"][] = array(
-							"caption" => g_l('weClass', "[path]"),
+							"caption" => g_l('weClass', '[path]'),
 							"content" => $mastertemppath
 						);
 					}

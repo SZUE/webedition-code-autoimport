@@ -55,7 +55,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 	public function getHTML($hiddens = ''){
 		$alert = we_html_tools::hidden('we_cmd[0]', 'import_files') .
 			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
-			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', "[import_expl_js]") . '<br/><br/>' . ($this->maxUploadSizeMBytes == 0 ? g_l('importFiles', "[import_expl_js_no_limit]") : sprintf(g_l('importFiles', "[import_expl_js_limit]"), $this->maxUploadSizeMBytes)), we_html_tools::TYPE_INFO, 520, false, 20));
+			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[import_expl_js]') . '<br/><br/>' . ($this->maxUploadSizeMBytes == 0 ? g_l('importFiles', '[import_expl_js_no_limit]') : sprintf(g_l('importFiles', '[import_expl_js_limit]'), $this->maxUploadSizeMBytes)), we_html_tools::TYPE_INFO, 520, false, 20));
 
 		$topParts = array(
 			array("headline" => "", "html" => $alert, "space" => 0)
@@ -75,13 +75,13 @@ class we_fileupload_importFiles extends we_fileupload_base{
 				<div style="vertical-align: top; display: inline-block; height: 22px">
 					' . $butReset . '
 				</div>
-				<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" ' . ((we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11) || we_base_browserDetect::isOpera() ? 'style="display:none;"' : 'style="display:block;"') . '>' . g_l('importFiles', "[dragdrop_text]") . '</div>
+				<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" ' . ((we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11) || we_base_browserDetect::isOpera() ? 'style="display:none;"' : 'style="display:block;"') . '>' . g_l('importFiles', '[dragdrop_text]') . '</div>
 			</div>
 		</form>
 		</div>
 		';
 
-		$topParts[] = array("headline" => g_l('importFiles', "[select_files]"), "html" => $fileselect, "space" => 130);
+		$topParts[] = array("headline" => g_l('importFiles', '[select_files]'), "html" => $fileselect, "space" => 130);
 
 		$content = we_html_element::htmlDiv(
 				array("id" => "forms", "style" => "display:block"), we_html_element::htmlForm(
@@ -90,7 +90,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 					"name" => "we_startform",
 					"method" => "post"
 					), $hiddens) .
-				'<div style="overflow:hidden; padding-bottom: 10px">' . we_html_multiIconBox::getHTML("selectFiles", "100%", $topParts, 30, "", -1, "", "", "", g_l('importFiles', "[step2]"), "", 0, "hidden") . '</div>' .
+				'<div style="overflow:hidden; padding-bottom: 10px">' . we_html_multiIconBox::getHTML("selectFiles", "100%", $topParts, 30, "", -1, "", "", "", g_l('importFiles', '[step2]'), "", 0, "hidden") . '</div>' .
 				'<div id="div_upload_files" style="height:310px; width: 100%; overflow:auto">' . we_html_multiIconBox::getHTML("uploadFiles", "100%", array(), 30, "", -1, "", "", "", "") . '</div>'
 		);
 
@@ -103,7 +103,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 
 		return str_replace(array("\n\r", "\r\n", "\r", "\n"), "", '<table cellspacing="0" cellpadding="0" border="0" width="520"><tbody><tr height="28" width="520">
 			<td width="20" valign="bottom"></td>
-			<td class="weMultiIconBoxHeadline" width="80" valign="bottom">' . g_l('importFiles', "[file]") . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span><span style="display:inline-block;width:20px;height:5px;"></span></td>
+			<td class="weMultiIconBoxHeadline" width="80" valign="bottom">' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span><span style="display:inline-block;width:20px;height:5px;"></span></td>
 			<td valign="bottom" width="270"><input id="name_uploadFiles_WEFORMNUM" display:inline-block; type="text" size="' . (we_base_browserDetect::isOpera() ? 34 : 38) . '" readonly="readonly" value="FILENAME" /></td>
 			<td width valign="bottom" width="150">
 				<div style="display: block" id="div_rowButtons_WEFORMNUM">

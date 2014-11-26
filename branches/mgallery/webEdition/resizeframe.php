@@ -50,11 +50,11 @@ function startNormalMode(){
 	$_treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= weTree::MinWidth) ? $_COOKIE["treewidth_main"] : weTree::DefaultWidth;
 	?>
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;border: 0px;">
-		<div style="position:absolute;top:0px;bottom:0px;left:0px;width:<?php print $_treewidth; ?>px;border-right:1px solid black;" id="bframeDiv">
+		<div style="position:absolute;top:0px;bottom:0px;left:0px;width:<?php echo $_treewidth; ?>px;border-right:1px solid black;" id="bframeDiv">
 			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 		</div>
-		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:<?php print $_treewidth; ?>px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
-			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
+		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:<?php echo $_treewidth; ?>px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
+			<iframe frameBorder="0" src="<?php echo WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 		</div>
 		<?php if(!(SIDEBAR_DISABLED == 1)){ ?>
 			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;border-left:1px solid black;" id="sidebarDiv">
@@ -93,7 +93,7 @@ function startSEEMMode(){
 			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 		</div>
 		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:0px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
-			<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
+			<iframe frameBorder="0" src="<?php echo WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 		</div>
 		<?php if($_sidebarwidth > 0){ ?>
 			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;border-left:1px solid black;" id="sidebarDiv">

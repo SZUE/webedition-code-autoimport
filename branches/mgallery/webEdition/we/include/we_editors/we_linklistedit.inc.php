@@ -508,11 +508,11 @@ if($ok && $cmd === "edit_link_at_class"){
 	if(!we_base_request::_(we_base_request::BOOL, "ok")){
 
 		$_select_type = '<select name="type" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);" class="big">
-<option value="' . we_base_link::TYPE_EXT . '"' . (($type == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[external_link]") . '</option>
-<option value="' . we_base_link::TYPE_INT . '"' . (($type == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[internal_link]") . '</option>
-<option value="' . we_base_link::TYPE_MAIL . '"' . (($type == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', "[emaillink]") . '</option>
+<option value="' . we_base_link::TYPE_EXT . '"' . (($type == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
+<option value="' . we_base_link::TYPE_INT . '"' . (($type == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[internal_link]') . '</option>
+<option value="' . we_base_link::TYPE_MAIL . '"' . (($type == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>
 ' . (defined('OBJECT_TABLE') ? '
-<option value="' . we_base_link::TYPE_OBJ . '"' . (($type == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', "[objectFile]") . '</option>' : '') . '
+<option value="' . we_base_link::TYPE_OBJ . '"' . (($type == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[objectFile]') . '</option>' : '') . '
 </select>';
 
 
@@ -579,11 +579,11 @@ if($ok && $cmd === "edit_link_at_class"){
 	<tr>
 		<td class="small">' . g_l('global', '[posx]') . '</td>
 		<td></td>
-		<td class="small">' . g_l('global', "[posy]") . '</td>
+		<td class="small">' . g_l('global', '[posy]') . '</td>
 		<td></td>
-		<td class="small">' . g_l('global', "[width]") . '</td>
+		<td class="small">' . g_l('global', '[width]') . '</td>
 		<td></td>
-		<td class="small">' . g_l('global', "[height]") . '</td>
+		<td class="small">' . g_l('global', '[height]') . '</td>
 		<td></td>
 		<td></td>
 	</tr>
@@ -601,22 +601,22 @@ if($ok && $cmd === "edit_link_at_class"){
 		<td colspan="9">' . we_html_tools::getPixel(2, 2) . '</td>
 	</tr>
 	<tr>
-		<td>' . we_html_forms::checkbox(1, $jsstatus, "jsstatus", g_l('global', "[status]"), true, "small") . '</td>
+		<td>' . we_html_forms::checkbox(1, $jsstatus, "jsstatus", g_l('global', '[status]'), true, "small") . '</td>
 		<td></td>
-		<td>' . we_html_forms::checkbox(1, $jsscrollbars, "jsscrollbars", g_l('global', "[scrollbars]"), true, "small") . '</td>
+		<td>' . we_html_forms::checkbox(1, $jsscrollbars, "jsscrollbars", g_l('global', '[scrollbars]'), true, "small") . '</td>
 		<td></td>
-		<td>' . we_html_forms::checkbox(1, $jsmenubar, "jsmenubar", g_l('global', "[menubar]"), true, "small") . '</td>
+		<td>' . we_html_forms::checkbox(1, $jsmenubar, "jsmenubar", g_l('global', '[menubar]'), true, "small") . '</td>
 		<td></td>
 		<td></td>
 		<td></td>
 		<td></td>
 	</tr>
 	<tr>
-		<td>' . we_html_forms::checkbox(1, $jsresizable, "jsresizable", g_l('global', "[resizable]"), true, "small") . '</td>
+		<td>' . we_html_forms::checkbox(1, $jsresizable, "jsresizable", g_l('global', '[resizable]'), true, "small") . '</td>
 		<td></td>
-		<td>' . we_html_forms::checkbox(1, $jslocation, "jslocation", g_l('global', "[location]"), true, "small") . '</td>
+		<td>' . we_html_forms::checkbox(1, $jslocation, "jslocation", g_l('global', '[location]'), true, "small") . '</td>
 		<td></td>
-		<td>' . we_html_forms::checkbox(1, $jstoolbar, "jstoolbar", g_l('global', "[toolbar]"), true, "small") . '</td>
+		<td>' . we_html_forms::checkbox(1, $jstoolbar, "jstoolbar", g_l('global', '[toolbar]'), true, "small") . '</td>
 		<td></td>
 		<td></td>
 		<td></td>
@@ -626,18 +626,18 @@ if($ok && $cmd === "edit_link_at_class"){
 		$foo = '
 <table border="0" cellspacing="0" cellpadding="0">
 	<tr>
-		<td>' . we_html_forms::checkbox(1, $jswin, "jswin", g_l('global', "[open]")) . '</td>
+		<td>' . we_html_forms::checkbox(1, $jswin, "jswin", g_l('global', '[open]')) . '</td>
 		<td>' . we_html_tools::getPixel(10, 2) . '</td>
-		<td>' . we_html_forms::checkbox(1, $jscenter, "jscenter", g_l('global', "[center]"), true, "defaultfont", "if(this.checked){if(this.form.jswidth.value==''){this.form.jswidth.value='100';};if(this.form.jsheight.value==''){this.form.jsheight.value='100';};}") . '</td>
+		<td>' . we_html_forms::checkbox(1, $jscenter, "jscenter", g_l('global', '[center]'), true, "defaultfont", "if(this.checked){if(this.form.jswidth.value==''){this.form.jswidth.value='100';};if(this.form.jsheight.value==''){this.form.jsheight.value='100';};}") . '</td>
 	</tr>
 </table>';
 		$jswinonoff = we_html_tools::htmlFormElementTable($jsWinProps, $foo, "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);
 
 
 		$_content_select = '<select name="ctype" size="1" style="margin-bottom:5px;width:300px;" onchange="changeCTypeSelect(this);" class="big">
-<option value="' . we_base_link::CONTENT_TEXT . '"' . (($ctype == we_base_link::CONTENT_TEXT) ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', "[text]")) . '</option>
-<option value="' . we_base_link::CONTENT_EXT . '"' . (($ctype == we_base_link::CONTENT_EXT) ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', "[external_image]")) . '</option>
-<option value="' . we_base_link::CONTENT_INT . '"' . (($ctype == we_base_link::CONTENT_INT) ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', "[internal_image]")) . '</option>
+<option value="' . we_base_link::CONTENT_TEXT . '"' . (($ctype == we_base_link::CONTENT_TEXT) ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', '[text]')) . '</option>
+<option value="' . we_base_link::CONTENT_EXT . '"' . (($ctype == we_base_link::CONTENT_EXT) ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', '[external_image]')) . '</option>
+<option value="' . we_base_link::CONTENT_INT . '"' . (($ctype == we_base_link::CONTENT_INT) ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', '[internal_image]')) . '</option>
 </select>';
 
 
@@ -665,17 +665,17 @@ if($ok && $cmd === "edit_link_at_class"){
 		$imgProps = '
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 	<tr>
-		<td class="small">' . g_l('global', "[width]") . '</td>
+		<td class="small">' . g_l('global', '[width]') . '</td>
 		<td></td>
-		<td class="small">' . g_l('global', "[height]") . '</td>
+		<td class="small">' . g_l('global', '[height]') . '</td>
 		<td></td>
-		<td class="small">' . g_l('global', "[border]") . '</td>
+		<td class="small">' . g_l('global', '[border]') . '</td>
 		<td></td>
-		<td class="small">' . g_l('global', "[hspace]") . '</td>
+		<td class="small">' . g_l('global', '[hspace]') . '</td>
 		<td></td>
-		<td class="small">' . g_l('global', "[vspace]") . '</td>
+		<td class="small">' . g_l('global', '[vspace]') . '</td>
 		<td></td>
-		<td class="small">' . g_l('global', "[align]") . '</td>
+		<td class="small">' . g_l('global', '[align]') . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::htmlTextInput("width", 4, $width, "", ' onkeypress="return IsDigitPercent(event);"', "text", 40) . '</td>
@@ -703,9 +703,9 @@ if($ok && $cmd === "edit_link_at_class"){
 		</select></td>
 	</tr>
 	<tr><td colspan="12">' . we_html_tools::getPixel(2, 2) . '</td></tr>
-	<tr><td colspan="12" class="small">' . g_l('linklistEdit', "[alt_text]") . '</td></tr>
+	<tr><td colspan="12" class="small">' . g_l('linklistEdit', '[alt_text]') . '</td></tr>
 	<tr><td colspan="12">' . we_html_tools::htmlTextInput("alt", 20, $alt, "", '', "text", 300) . '</td></tr>
-	<tr><td colspan="12" class="small">' . g_l('linklistEdit', "[title]") . '</td></tr>
+	<tr><td colspan="12" class="small">' . g_l('linklistEdit', '[title]') . '</td></tr>
 	<tr><td colspan="12">' . we_html_tools::htmlTextInput("img_title", 20, $img_title, "", '', "text", 300) . '</td></tr>
 </table>';
 		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:document.forms['we_form'].submit()"), null, we_html_button::create_button("cancel", "javascript:self.close()"));
@@ -734,7 +734,7 @@ if($ok && $cmd === "edit_link_at_class"){
 </table>',
 				'space' => 150,
 				'noline' => 1),
-			array('headline' => g_l('global', "[content]"),
+			array('headline' => g_l('global', '[content]'),
 				'html' => '
 <table cellpadding="0" cellspacing="0" border="0">
 	<tr>
@@ -754,15 +754,15 @@ if($ok && $cmd === "edit_link_at_class"){
 	</tr>
 </table><div></div>',
 				'space' => 150),
-			array('headline' => g_l('linklistEdit', "[link_anchor]"),
+			array('headline' => g_l('linklistEdit', '[link_anchor]'),
 				'html' => $anchor,
 				'space' => 150,
 				'noline' => 1),
-			array('headline' => g_l('linklistEdit', "[link_params]"),
+			array('headline' => g_l('linklistEdit', '[link_params]'),
 				'html' => $params,
 				'space' => 150,
 				'noline' => 1),
-			array('headline' => g_l('linklistEdit', "[link_target]"),
+			array('headline' => g_l('linklistEdit', '[link_target]'),
 				'html' => $ctarget,
 				'space' => 150)
 		);
@@ -804,7 +804,7 @@ if($ok && $cmd === "edit_link_at_class"){
 				'space' => 150,
 				'noline' => 1);
 
-			$_parts[] = array('headline' => g_l('wysiwyg', "[relation]"),
+			$_parts[] = array('headline' => g_l('wysiwyg', '[relation]'),
 				'html' => '<table border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td>' . $relfield . '</td>
@@ -815,18 +815,18 @@ if($ok && $cmd === "edit_link_at_class"){
 				'space' => 150,
 				'noline' => 1);
 
-			$_parts[] = array('headline' => g_l('linklistEdit', "[link_attr]"),
+			$_parts[] = array('headline' => g_l('linklistEdit', '[link_attr]'),
 				'html' => $cattribs,
 				'space' => 150);
 		}
 
 
 		//   Pop-Up
-		$_parts[] = array('headline' => g_l('global', "[jswin]"),
+		$_parts[] = array('headline' => g_l('global', '[jswin]'),
 			'html' => $jswinonoff,
 			'space' => 150);
 		?>
-		<form name="we_form" action="<?php print WEBEDITION_DIR; ?>we_cmd.php" method="post" onsubmit="return false">
+		<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post" onsubmit="return false">
 			<input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 			<?php
 			if(isset($ll) && $ll){

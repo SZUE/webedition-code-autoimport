@@ -182,18 +182,18 @@ class we_webEditionDocument extends we_textContentDocument{
 		$v = $this->IsDynamic;
 		if(!$disabled){
 			$n = "we_" . $this->Name . "_IsDynamic";
-			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', "[IsDynamic]"), false, "defaultfont", "_EditorFrame.setEditorIsHot(true);switchExt();") . we_html_element::jsElement(
+			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[IsDynamic]'), false, "defaultfont", "_EditorFrame.setEditorIsHot(true);switchExt();") . we_html_element::jsElement(
 							'function switchExt() {' .
 							(!$this->Published ?
 									'var a=document.we_form.elements;' .
-									($this->ID ? 'if(confirm("' . g_l('weClass', "[confirm_ext_change]") . '")){' : '') . '
+									($this->ID ? 'if(confirm("' . g_l('weClass', '[confirm_ext_change]') . '")){' : '') . '
 					if(a["we_' . $this->Name . '_IsDynamic"].value==1){ var changeto="' . DEFAULT_DYNAMIC_EXT . '"; }else{ var changeto="' . DEFAULT_STATIC_EXT . '";}
 					a["we_' . $this->Name . '_Extension"].value=changeto;' .
 									($this->ID ? '}' : '') : '') .
 							'}'
 			);
 		}
-		return we_html_forms::checkboxWithHidden($v ? true : false, '', g_l('weClass', "[IsDynamic]"), false, "defaultfont", "", true);
+		return we_html_forms::checkboxWithHidden($v ? true : false, '', g_l('weClass', '[IsDynamic]'), false, "defaultfont", "", true);
 	}
 
 	function formDocTypeTempl(){
@@ -383,19 +383,19 @@ class we_webEditionDocument extends we_textContentDocument{
 		return '
 <table style="border-spacing: 0px;border-style:none" cellpadding="0">
 	<tr>
-		<td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', "[Title]"), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', '[Title]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(2, 4) . '</td>
 	</tr>
 	<tr>
-		<td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', "[Description]"), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', '[Description]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_tools::getPixel(2, 4) . '</td>
 	</tr>
 	<tr>
-		<td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', "[Keywords]"), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', '[Keywords]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>' .
 				$this->getCharsetSelect() .
 				$this->formLanguage(true) .
@@ -448,7 +448,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return '<tr><td colspan="2">' . we_html_tools::getPixel(2, 4) . '</td></tr>
 <tr><td>
 	<table style="border-spacing: 0px;border-style:none" cellpadding="0">
-		<tr><td colspan="2" class="defaultfont">' . g_l('weClass', "[Charset]") . '</td>
+		<tr><td colspan="2" class="defaultfont">' . g_l('weClass', '[Charset]') . '</td>
 		<tr><td>' . $retInput . '</td><td>' . $retSelect . '</td></tr>
 	</table>
 </td></tr>';

@@ -76,13 +76,13 @@ function we_tag_customer($attribs){
 			?>
 			<table style="border-style:none;" class="weEditTable spacing0 padding0">
 				<tr>
-					<td style="padding:0 6px;"><b><?php print $_showName; ?></b></td>
-					<td><?php print we_html_tools::hidden($idname, $we_cid) ?></td>
-					<td><?php print we_html_tools::htmlTextInput($textname, $size, $path, '', ' readonly', 'text', 0, 0); ?></td>
+					<td style="padding:0 6px;"><b><?php echo $_showName; ?></b></td>
+					<td><?php echo we_html_tools::hidden($idname, $we_cid) ?></td>
+					<td><?php echo we_html_tools::htmlTextInput($textname, $size, $path, '', ' readonly', 'text', 0, 0); ?></td>
 					<td><?php we_html_tools::getPixel(6, 4); ?></td>
-					<td><?php print $button; ?></td>
+					<td><?php echo $button; ?></td>
 					<td><?php we_html_tools::getPixel(6, 4); ?></td>
-					<td><?php print $delbutton; ?></td>
+					<td><?php echo $delbutton; ?></td>
 				</tr>
 			</table><?php
 		}

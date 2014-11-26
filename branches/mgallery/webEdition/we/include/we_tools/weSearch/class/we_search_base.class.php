@@ -271,7 +271,7 @@ function setOrder(order){
 			(($we_search_anzahl - $this->searchstart) < $this->anzahl ?
 				$we_search_anzahl :
 				$this->searchstart + $this->anzahl) .
-			' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td>
+			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td>' .
 			(($this->searchstart + $this->anzahl) < $we_search_anzahl ?

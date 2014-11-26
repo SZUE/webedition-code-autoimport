@@ -90,11 +90,10 @@ function getHttpOption(){
 
 function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 //FIXME: add code for proxy, see weXMLBrowser
-	$_opt = getHttpOption();
 	if(strpos($server, '://') === FALSE){
 		$server = 'http' . ($port == 443 ? 's' : '') . '://' . (($username && $password) ? "$username:$password@" : '') . $server . ':' . $port;
 	}
-	switch($_opt){
+	switch(getHttpOption()){
 		case 'fopen':
 			$page = 'Server Error: Failed opening URL: ' . $server . $url;
 			$fh = @fopen($server . $url, 'rb');

@@ -73,16 +73,16 @@ echo STYLESHEET . we_html_element::cssElement('
 			echo we_html_element::htmlIFrame('preview', $we_doc->Path);
 		} else {
 			$parts = array(
-				array("headline" => g_l('weClass', "[preview]"), "html" => we_html_tools::htmlAlertAttentionBox(g_l('weClass', "[no_preview_available]"), we_html_tools::TYPE_ALERT), "space" => 120)
+				array("headline" => g_l('weClass', '[preview]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[no_preview_available]'), we_html_tools::TYPE_ALERT), "space" => 120)
 			);
 
 			if($we_doc->ID){
 				$_we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 				$link = "<a href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=" . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . "&we_cmd[1]=" . we_base_request::_(we_base_request::INT, 'we_cmd', '', 1) . "&we_cmd[2]=" . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) . "&we_cmd[3]=download&we_transaction=" . $_we_transaction . "'>" . $http = $we_doc->getHttpPath() . "</a>";
 			} else {
-				$link = g_l('weClass', "[file_not_saved]");
+				$link = g_l('weClass', '[file_not_saved]');
 			}
-			$parts[] = array("headline" => g_l('weClass', "[download]"), "html" => $link, "space" => 120);
+			$parts[] = array("headline" => g_l('weClass', '[download]'), "html" => $link, "space" => 120);
 
 			echo we_html_multiIconBox::getHTML('weOtherDocPrev', '100%', $parts, 20);
 		}

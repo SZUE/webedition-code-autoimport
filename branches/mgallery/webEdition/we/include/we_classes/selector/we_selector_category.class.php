@@ -93,7 +93,7 @@ class we_selector_category extends we_selector_multiple{
 			$this->printHeaderTableSpaceRow() . '
 	<tr valign="middle">
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td width="70" class="defaultfont"><b>' . g_l('fileselector', "[lookin]") . '</b></td>
+		<td width="70" class="defaultfont"><b>' . g_l('fileselector', '[lookin]') . '</b></td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td><select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' . $this->printHeaderOptions() . '</select></td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
@@ -212,18 +212,18 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles
 		?>
 
 		<?php if(we_base_browserDetect::isIE() && substr($GLOBALS["WE_LANGUAGE"], -5) !== "UTF-8"){ ?>
-					d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">');
+					d.writeln('<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">');
 
 		<?php } else { ?>
-					d.writeln('<form name="we_form" target="fscmd" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">');
+					d.writeln('<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">');
 
 		<?php } ?>
 				if (top.we_editCatID) {
-					d.writeln('<input type="hidden" name="what" value="<?php print self::DO_RENAME_ENTRY; ?>" />');
+					d.writeln('<input type="hidden" name="what" value="<?php echo self::DO_RENAME_ENTRY; ?>" />');
 					d.writeln('<input type="hidden" name="we_editCatID" value="' + top.we_editCatID + '" />');
 				} else {
 					if (makeNewFolder) {
-						d.writeln('<input type="hidden" name="what" value="<?php print self::CREATEFOLDER; ?>" />');
+						d.writeln('<input type="hidden" name="what" value="<?php echo self::CREATEFOLDER; ?>" />');
 					} else {
 						d.writeln('<input type="hidden" name="what" value="<?php echo self::CREATE_CAT; ?>" />');
 					}
@@ -236,12 +236,12 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles
 				if (makeNewFolder) {
 					d.writeln('<tr style="background-color:#DFE9F5;">');
 					d.writeln('<td align="center"><img src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>');
-					d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print g_l('fileselector', "[new_folder_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php echo g_l('fileselector', "[new_folder_name]") ?>" class="wetextinput" style="width:100%" /></td>');
+					d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php echo g_l('fileselector', '[new_folder_name]'); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php echo g_l('fileselector', '[new_folder_name]') ?>" class="wetextinput" style="width:100%" /></td>');
 					d.writeln('</tr>');
 				} else if (makeNewCat) {
 					d.writeln('<tr style="background-color:#DFE9F5;">');
 					d.writeln('<td align="center"><img src="<?php echo TREE_ICON_DIR ?>cat.gif" width="16" height="18" border="0" /></td>');
-					d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php print g_l('fileselector', "[new_cat_name]"); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php echo g_l('fileselector', "[new_cat_name]") ?>" class="wetextinput" style="width:100%" /></td>');
+					d.writeln('<td><input type="hidden" name="we_EntryText" value="<?php echo g_l('fileselector', '[new_cat_name]'); ?>" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="<?php echo g_l('fileselector', '[new_cat_name]') ?>" class="wetextinput" style="width:100%" /></td>');
 					d.writeln('</tr>');
 				}
 				for (i = 0; i < entries.length; i++) {
@@ -301,7 +301,7 @@ function drawNewCat(){
 	top.makeNewCat=false;
 }
 function deleteEntry(){
-	if(confirm(\'' . g_l('fileselector', "[deleteQuestion]") . '\')){
+	if(confirm(\'' . g_l('fileselector', '[deleteQuestion]') . '\')){
 		var todel = "";
 		for	(var i=0;i < entries.length; i++){
 			if(isFileSelected(entries[i].ID)){
@@ -341,10 +341,10 @@ var old=0;');
 		$txt = $this->EntryText;
 		if(empty($txt)){
 			$js.=($what == 1 ?
-					we_message_reporting::getShowMessageCall(g_l('weEditor', "[folder][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR) :
-					we_message_reporting::getShowMessageCall(g_l('weEditor', "[category][filename_empty]"), we_message_reporting::WE_MESSAGE_ERROR));
+					we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR) :
+					we_message_reporting::getShowMessageCall(g_l('weEditor', '[category][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
 		} else if(strpos($txt, ',') !== false){
-			$js.=we_message_reporting::getShowMessageCall(g_l('weEditor', "[category][name_komma]"), we_message_reporting::WE_MESSAGE_ERROR);
+			$js.=we_message_reporting::getShowMessageCall(g_l('weEditor', '[category][name_komma]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$txt = trim($txt);
 			$parentPath = (!intval($this->dir)) ? '' : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'Path', $this->db);
@@ -354,7 +354,7 @@ var old=0;');
 				$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', ($what == 1 ? '[folder][response_path_exists]' : '[category][response_path_exists]')), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('|[\\\'"<>/]|', $txt)){
-					$js.= we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][we_filename_notValid]"), $Path), we_message_reporting::WE_MESSAGE_ERROR);
+					$js.= we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 				} else {
 					$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
 							'Category' => $txt,
@@ -390,7 +390,7 @@ top.selectFile(top.currentID);') .
 		echo '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr>
-		<td width="35%" class="selector" style="padding-left:10px;"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', "[catname]") . '</a></b></td>
+		<td width="35%" class="selector" style="padding-left:10px;"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', '[catname]') . '</a></b></td>
 		<td width="65%" class="selector" style="padding-left:10px;"><b>' . g_l('button', '[properties][value]') . '</b></td>
 	</tr>
 	<tr>
@@ -698,7 +698,7 @@ function setDir(id){
 			}
 			if($catlistNotDeleted){
 				echo we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('fileselector', "[cat_in_use]") . '\n\n' . $catlistNotDeleted, we_message_reporting::WE_MESSAGE_ERROR)
+					we_message_reporting::getShowMessageCall(g_l('fileselector', '[cat_in_use]') . '\n\n' . $catlistNotDeleted, we_message_reporting::WE_MESSAGE_ERROR)
 				);
 			}
 			if($changeToParent){
@@ -731,7 +731,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		  if($this->CatInUse($this->id, $IsDir)){
 
 		  print we_html_element::jsElement(
-		  we_message_reporting::getShowMessageCall(g_l('fileselector', "[cat_in_use]") . '\n\n' . $catlistNotDeleted, we_message_reporting::WE_MESSAGE_ERROR)
+		  we_message_reporting::getShowMessageCall(g_l('fileselector', '[cat_in_use]') . '\n\n' . $catlistNotDeleted, we_message_reporting::WE_MESSAGE_ERROR)
 		  );
 		  } else {
 		  if($IsDir){
@@ -803,7 +803,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 	</tr>
 	<tr>
 		<td></td>
-		<td class="defaultfont"><b>' . g_l('fileselector', "[catname]") . '</b></td>
+		<td class="defaultfont"><b>' . g_l('fileselector', '[catname]') . '</b></td>
 		<td></td>
 		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '</td>
 		<td></td>
@@ -885,7 +885,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop() .
 		we_html_element::jsElement($js . 'top.setDir(top.fsheader.document.we_form.elements[\'lookin\'].value);' .
-			($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_ok]"), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][response_save_notok]"), $category), we_message_reporting::WE_MESSAGE_ERROR) )
+			($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_ok]'), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_notok]'), $category), we_message_reporting::WE_MESSAGE_ERROR) )
 		) .
 		'</head><body></body></html>';
 	}
@@ -930,19 +930,19 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 
 			$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 3);
 
-			$table->setCol(0, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), '<b>' . g_l('weClass', "[category]") . '</b>');
+			$table->setCol(0, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), '<b>' . g_l('weClass', '[category]') . '</b>');
 			$table->setCol(0, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_tools::htmlTextInput("Category", 50, $category, "", ' id="category"', "text", 360));
 
 			$table->setCol(1, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), "<b>ID</b>");
 			$table->setCol(1, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), $catID);
 
-			$table->setCol(2, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), '<b>' . g_l('weClass', "[dir]") . '</b>');
+			$table->setCol(2, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), '<b>' . g_l('weClass', '[dir]') . '</b>');
 			$table->setCol(2, 1, array("style" => "width:240px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), $yuiSuggest->getHTML());
 
-			$table->setCol(3, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), "<b>" . g_l('global', "[title]") . "</b>");
+			$table->setCol(3, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), "<b>" . g_l('global', '[title]') . "</b>");
 			$table->setCol(3, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_tools::htmlTextInput("catTitle", 50, $title, "", '', "text", 360));
 
-			$ta = we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("catDescription", $description, array("bgcolor" => "white", "inlineedit" => "true", "wysiwyg" => "true", "width" => 450, "height" => 130), true, 'autobr', true, "", true, true, true, false, ""), "<b>" . g_l('global', "[description]") . "</b>", "left", "defaultfont", "", "", "", "", "", 0);
+			$ta = we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("catDescription", $description, array("bgcolor" => "white", "inlineedit" => "true", "wysiwyg" => "true", "width" => 450, "height" => 130), true, 'autobr', true, "", true, true, true, false, ""), "<b>" . g_l('global', '[description]') . "</b>", "left", "defaultfont", "", "", "", "", "", 0);
 			$saveBut = we_html_button::create_button("save", "javascript:weWysiwygSetHiddenText();we_checkName();");
 		}
 
@@ -968,7 +968,7 @@ function we_cmd(){
 function we_checkName() {
 	var regExp = /\'|"|>|<|\\\|\\//;
 	if(regExp.test(document.getElementById("category").value)) {' .
-			we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', "[category][we_filename_notValid]"), $path), we_message_reporting::WE_MESSAGE_ERROR) . '
+			we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $path), we_message_reporting::WE_MESSAGE_ERROR) . '
 	} else {
 		document.we_form.submit();
 	}

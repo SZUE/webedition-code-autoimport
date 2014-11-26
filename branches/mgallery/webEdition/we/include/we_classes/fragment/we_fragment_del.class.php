@@ -67,7 +67,7 @@ class we_fragment_del extends we_fragment_base{
 	function finish(){
 		$alert = (($_SESSION['weS']['we_not_deleted_entries']) ?
 				we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[folder_not_empty]'), implode("\n", $_SESSION['weS']['we_not_deleted_entries']) . "\n"), we_message_reporting::WE_MESSAGE_ERROR) :
-				we_message_reporting::getShowMessageCall(g_l('alert', "[delete_ok]"), we_message_reporting::WE_MESSAGE_NOTICE));
+				we_message_reporting::getShowMessageCall(g_l('alert', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE));
 		echo we_html_element::jsElement($alert . (($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $_SESSION['weS']['we_go_seem_start']) ? 'top.opener.top.we_cmd("start_multi_editor");' : '') . 'top.close();');
 		unset($_SESSION['weS']['todel']);
 		unset($_SESSION['weS']['we_not_deleted_entries']);

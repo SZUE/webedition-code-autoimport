@@ -215,14 +215,15 @@ abstract class we_html_forms{
 			$buttonpos = $buttonpos ? : 'top';
 			$tinyParams = weTag_getAttribute('tinyparams', $attribs);
 			$templates = weTag_getAttribute('templates', $attribs);
+			$formats = weTag_getAttribute('formats', $attribs);
 
 			if($inlineedit){
-				$e = new we_wysiwyg_editor($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates);
+				$e = new we_wysiwyg_editor($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates, $formats);
 
 				return $out . $e->getHTML();
 			}
 
-			$e = new we_wysiwyg_editor($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates);
+			$e = new we_wysiwyg_editor($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates, $formats);
 
 			if(stripos($name, "we_ui") === false){//we are in backend
 				$hiddenTextareaContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), $e->parseInternalImageSrc($value));

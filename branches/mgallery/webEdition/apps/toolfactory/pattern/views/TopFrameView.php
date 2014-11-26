@@ -10,7 +10,7 @@
  * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class <?php print $TOOLNAME;?>_views_TopFrameView extends we_app_TopFrameView {
+class <?php echo $TOOLNAME;?>_views_TopFrameView extends we_app_TopFrameView {
 
 
 }

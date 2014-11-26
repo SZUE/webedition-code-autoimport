@@ -89,7 +89,7 @@ color:black;
 }
 
 .title{
-color:black;	
+color:black;
 }
 
 .panel_wrapper{
@@ -112,7 +112,7 @@ height: 18px;
 }
 
 #styleSelectRow select{
-width:110px;	
+width:110px;
 }
 
 body[role=application] div#iframecontainer{
@@ -121,7 +121,7 @@ margin-right:0px;
 }
 
 .panel_wrapper #class{
-width:110px;	
+width:110px;
 }
 
 textarea{
@@ -158,10 +158,10 @@ color: black !important;
 float: none;
 margin-left: 0px;
 margin-right:10px;
-font-weight:normal; 
+font-weight:normal;
 }
 
-<?php print (we_base_browserDetect::isMAC()) ? "
+<?php echo (we_base_browserDetect::isMAC()) ? "
 .mceActionPanel #replaceBtn{
 position:absolute;
 right: 325px;
@@ -202,13 +202,13 @@ right: 125px;
 }
 
 #colorpicker #previewblock{
-margin-right:0; 
-<?php 
+margin-right:0;
+<?php
 /*
 print (we_base_browserDetect::isMAC()) ? "
 position:absolute;
 right: 205px;
-" : "" 
+" : ""
 */
 ?>
 }
@@ -238,7 +238,7 @@ margin: 20px 0px 0 14px;
 
 /* Some dialogs do not work not with webEDition-Footer in IE: they do not have attribute role="application" in body tag */
 body[role=application] fieldset{
-border:none;	
+border:none;
 }
 
 body[role=application] label{

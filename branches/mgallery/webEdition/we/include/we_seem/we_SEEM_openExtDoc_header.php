@@ -29,8 +29,8 @@ we_html_tools::protect();
 $_webEditionSiteUrl = getServerUrl() . SITE_DIR;
 $url = we_base_request::_(we_base_request::URL, 'url');
 $_errormsg = (strpos($url, $_webEditionSiteUrl) === 0 ?
-		g_l('SEEM', "[ext_doc_tmp]") :
-		sprintf(g_l('SEEM', "[ext_doc]"), $url));
+		g_l('SEEM', '[ext_doc_tmp]') :
+		sprintf(g_l('SEEM', '[ext_doc]'), $url));
 
 
 $_table = new we_html_table(array("cellpadding" => 0,

@@ -83,15 +83,15 @@ function pWebEdition_JSFunctions(){
 	// FIXME: closing-actions for SEEM
 	if(top.opener) {
 	<?php if(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())){ ?>
-		top.opener.location.replace('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=1');
+		top.opener.location.replace('<?php echo WEBEDITION_DIR; ?>we_loggingOut.php?isopener=1');
 		top.opener.focus();
 	<?php } else { ?>
-		top.opener.location.reload();
-		var logoutpopup = window.open('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
+		top.opener.history.back();
+		var logoutpopup = window.open('<?php echo WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
 		logoutpopup.focus();
 	<?php } ?>
 	}else{
-	var logoutpopup = window.open('<?php print WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
+	var logoutpopup = window.open('<?php echo WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
 	logoutpopup.focus();
 	}
 	}
@@ -207,7 +207,7 @@ function pWebEdition_Frameset($SEEM_edit_include){
 		<?php we_main_header::pbody($SEEM_edit_include); ?>
 	</div>
 	<div style="position:absolute;top:32px;left:0px;right:0px;bottom:0px;border: 0;">
-		<iframe frameBorder="0" src="<?php print WEBEDITION_DIR; ?>resizeframe.php" style="border:0px;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
+		<iframe frameBorder="0" src="<?php echo WEBEDITION_DIR; ?>resizeframe.php" style="border:0px;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
 	</div>
 	<div style="position:absolute;left:0px;right:0px;bottom:0px;height: 0px;border: 1px solid;">
 		<div style="height:100%;float:left;width:25%;border:0px;">

@@ -937,12 +937,12 @@ class we_messaging_messaging extends we_class{
 
 	function &get_wesel_available_folders(){
 		$fooArray = array(
-			"sent" => g_l('modules_messaging', "[folder_sent]"),
-			"messages" => g_l('modules_messaging', "[folder_messages]"),
-			"done" => g_l('modules_messaging', "[folder_done]"),
-			"task" => g_l('modules_messaging', "[folder_todo]"),
-			"rejected" => g_l('modules_messaging', "[folder_rejected]"),
-			"todo" => g_l('modules_messaging', "[folder_todo]")
+			"sent" => g_l('modules_messaging', '[folder_sent]'),
+			"messages" => g_l('modules_messaging', '[folder_messages]'),
+			"done" => g_l('modules_messaging', '[folder_done]'),
+			"task" => g_l('modules_messaging', '[folder_todo]'),
+			"rejected" => g_l('modules_messaging', '[folder_rejected]'),
+			"todo" => g_l('modules_messaging', '[folder_todo]')
 		);
 
 		$matchArray = array("Name" => $fooArray);
@@ -951,7 +951,7 @@ class we_messaging_messaging extends we_class{
 			array(
 			array(
 				'ID' => 0,
-				'Name' => "-- " . g_l('modules_messaging', "[nofolder]") . " --"
+				'Name' => "-- " . g_l('modules_messaging', '[nofolder]') . " --"
 			)
 			), self::array_hash_construct($this->available_folders, array('ID', 'Name'), $matchArray)
 		);

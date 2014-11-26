@@ -468,14 +468,14 @@ a:link,a:visited,a:hover,a:active
 						link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 					}
 					link += ' onclick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
-					d.writeln(link + '<img src="<?php print TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
+					d.writeln(link + '<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
 					d.writeln('</td>');
 					d.writeln('<td class="selector" title="' + entries[i].text + '">');
 					d.writeln(link + cutText(entries[i].text, 70) + '</a>');
 					d.writeln('</td></tr>');
 					d.writeln('<tr>');
-					d.writeln('<td width="25"><?php print we_html_tools::getPixel(25, 2) ?></td>');
-					d.writeln('<td><?php print we_html_tools::getPixel(200, 2) ?></td></tr>');
+					d.writeln('<td width="25"><?php echo we_html_tools::getPixel(25, 2) ?></td>');
+					d.writeln('<td><?php echo we_html_tools::getPixel(200, 2) ?></td></tr>');
 				}
 				d.writeln('</table></body>');
 				d.close();
@@ -617,7 +617,7 @@ a:link,a:visited,a:hover,a:active
 			$this->printHeaderTableSpaceRow() . '
 	<tr valign="middle">
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td width="70" class="defaultfont"><b>' . g_l('fileselector', "[lookin]") . '</b></td>
+		<td width="70" class="defaultfont"><b>' . g_l('fileselector', '[lookin]') . '</b></td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td>
 		<select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' .
@@ -639,7 +639,7 @@ a:link,a:visited,a:hover,a:active
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr>
 		<td>' . we_html_tools::getPixel(25, 14) . '</td>
-		<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', "[filename]") . '</a></b></td>
+		<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', '[filename]') . '</a></b></td>
 	</tr>
 	<tr>
 		<td width="25">' . we_html_tools::getPixel(25, 1) . '</td>
@@ -777,7 +777,7 @@ function press_ok_button() {
 	<tr>
 		<td></td>
 		<td class="defaultfont">
-			<b>' . g_l('fileselector', "[name]") . '</b>
+			<b>' . g_l('fileselector', '[name]') . '</b>
 		</td>
 		<td></td>
 		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '

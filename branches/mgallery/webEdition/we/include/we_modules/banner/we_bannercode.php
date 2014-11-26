@@ -115,7 +115,7 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 </head>
 <body class="weDialogBody"<?php if($ok){ ?> onload="document.we_form.code.focus();
 			document.we_form.code.select();"<?php } ?>>
-	<form onsubmit="return checkForm(this);" name="we_form" action="<?php print $_SERVER["SCRIPT_NAME"]; ?>" method="get"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
+	<form onsubmit="return checkForm(this);" name="we_form" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" method="get"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 		<?php
 		$typeselect = '<select name="type" size="1">
 <option' . (($type === "js") ? " selected" : "") . '>js</option>
@@ -195,7 +195,7 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 
 		$buttons = $ok ? we_html_button::position_yes_no_cancel($close_button, null, $back_button) : we_html_button::position_yes_no_cancel($ok_button, null, $cancel_button);
 
-		print we_html_tools::htmlDialogLayout($content, $ok ? g_l('modules_banner', '[bannercode_copy]') : g_l('modules_banner', '[bannercode_ext]'), $buttons);
+		print we_html_tools::htmlDialogLayout($content, g_l('modules_banner', $ok ? '[bannercode_copy]' : '[bannercode_ext]'), $buttons);
 		?>
 	</form>
 </body>

@@ -80,7 +80,7 @@ class we_export_treeMain extends weTree{
 				function doClick(id,typ){
 					var cmd = "";
 					if(top.content.hot == "1") {
-						if(confirm("' . g_l('export', "[save_changed_export]") . '")) {
+						if(confirm("' . g_l('export', '[save_changed_export]') . '")) {
 							cmd = "save_export";
 							top.content.we_cmd("save_export");
 						} else {

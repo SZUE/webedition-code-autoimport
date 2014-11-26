@@ -30,7 +30,7 @@
 				new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 	<?php
 } else {
-	print we_message_reporting::getShowMessageCall(g_l('alert', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);
+	print we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 }
 ?>
 			break;
@@ -40,7 +40,7 @@
 				new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 	<?php
 } else {
-	echo we_message_reporting::getShowMessageCall(g_l('alert', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);
+	echo we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 }
 ?>
 
@@ -65,7 +65,7 @@
 				}
 	<?php
 } else {
-	print we_message_reporting::getShowMessageCall(g_l('alert', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);
+	print we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 }
 ?>
 			break;
@@ -74,7 +74,7 @@
 				new jsWindow(url, "doctypes", -1, -1, 720, 670, true, true, true);
 	<?php
 } else {
-	echo we_message_reporting::getShowMessageCall(g_l('alert', "[no_perms]"), we_message_reporting::WE_MESSAGE_ERROR);
+	echo we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 }
 ?>
 			break;

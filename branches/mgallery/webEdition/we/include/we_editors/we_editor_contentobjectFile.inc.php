@@ -39,7 +39,7 @@ if(is_array($GLOBALS['we_doc']->DefArray)){
 			if(isset($v["required"]) && $v["required"] && $_editMode){
 				$parts[] = array(
 					"headline" => "",
-					"html" => '*' . g_l('global', "[required_fields]"),
+					"html" => '*' . g_l('global', '[required_fields]'),
 					"space" => 0,
 					"name" => str_replace('.', '', uniqid('', true)),
 				);
@@ -88,7 +88,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 
 		if($_editMode){
 
-			echo we_html_multiIconBox::_getBoxStart("100%", g_l('weClass', "[edit]"), md5(uniqid(__FILE__, true)), 30) .
+			echo we_html_multiIconBox::_getBoxStart("100%", g_l('weClass', '[edit]'), md5(uniqid(__FILE__, true)), 30) .
 			$jsGUI->getContainer() .
 			we_html_multiIconBox::_getBoxEnd("100%");
 

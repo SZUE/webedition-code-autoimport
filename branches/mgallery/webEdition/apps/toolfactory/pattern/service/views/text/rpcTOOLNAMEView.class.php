@@ -1,11 +1,11 @@
 
-class rpc<?php print $TOOLNAME;?>View extends rpcView 
+class rpc<?php echo $TOOLNAME;?>View extends rpcView
 {
-	function getResponse($response) 
+	function getResponse($response)
 	{
-		$html = 'Hello World! My name is <?php print $TOOLNAME;?> and I am a webEdition-Application.';
-		
+		$html = 'Hello World! My name is <?php echo $TOOLNAME;?> and I am a webEdition-Application.';
+
 		return $html;
-		
+
 	}
 }

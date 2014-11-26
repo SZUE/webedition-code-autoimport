@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_search_view{
+
 	var $Model;
 	var $toolName;
 	var $toolDir;
@@ -56,8 +57,8 @@ class we_search_view{
 
 	function getJSTop(){
 		return we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsElement(
-				'var activ_tab = "1";
+				we_html_element::jsElement(
+						'var activ_tab = "1";
    var hot = 0;
 
    function we_cmd() {
@@ -132,10 +133,10 @@ class we_search_view{
 				$tab = we_base_request::_(we_base_request::INT, 'tabnr');
 
 				echo we_html_element::jsElement(
-					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' .
-					($tab !== false ? '&tab=' . $tab : '') .
-					'&text=' . urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+						$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' .
+						($tab !== false ? '&tab=' . $tab : '') .
+						'&text=' . urlencode($this->Model->Text) . '";' .
+						$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 				break;
 
 			case 'tool_weSearch_edit' :
@@ -143,17 +144,17 @@ class we_search_view{
 
 				if(!$this->Model->isAllowedForUser()){
 					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(
-							g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+							we_message_reporting::getShowMessageCall(
+									g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 					$this->Model = new we_search_model();
 					$_REQUEST['home'] = true;
 					break;
 				}
 				echo we_html_element::jsElement(
-					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' .
-					($cmdid !== false ? '&cmdid=' . $cmdid : '') . '&text=' .
-					urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+						$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' .
+						($cmdid !== false ? '&cmdid=' . $cmdid : '') . '&text=' .
+						urlencode($this->Model->Text) . '";' .
+						$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
         if(' . $this->topFrame . '.treeData){
          ' . $this->topFrame . '.treeData.unselectnode();
          ' . $this->topFrame . '.treeData.selectnode("' . $this->Model->ID . '");
@@ -164,11 +165,11 @@ class we_search_view{
 			case 'tool_weSearch_save' :
 				$this->Model->Text = we_base_request::_(we_base_request::STRING, 'savedSearchName', $this->Model->Text);
 				if(strlen($this->Model->Text) > 30){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', "[nameTooLong]"), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', '[nameTooLong]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 				if(stristr($this->Model->Text, "'") || stristr($this->Model->Text, '"')){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', "[no_hochkomma]"), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', '[no_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 
@@ -201,26 +202,26 @@ class we_search_view{
 					$this->Model->updateChildPaths($oldpath);
 
 					$js = we_html_element::jsElement(($newone ?
-								$this->topFrame . '.makeNewEntry(\'' . $this->Model->Icon . '\',\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes($this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . SUCHE_TABLE . '\',0,0);' :
-								$this->topFrame . '.updateEntry(\'' . $this->Model->ID . '\',\'' . $this->Model->Text . '\',\'' . $this->Model->ParentID . '\',0,0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . SUCHE_TABLE . '\',0,0);') .
-							$this->editorHeaderFrame . '.location.reload();' .
-							we_message_reporting::getShowMessageCall(
-								g_l('searchtool', ($this->Model->IsFolder == 1 ? "[save_group_ok]" : "[save_ok]")), we_message_reporting::WE_MESSAGE_NOTICE) .
-							$this->topFrame . '.hot=0;'
+											$this->topFrame . '.makeNewEntry(\'' . $this->Model->Icon . '\',\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes($this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . SUCHE_TABLE . '\',0,0);' :
+											$this->topFrame . '.updateEntry(\'' . $this->Model->ID . '\',\'' . $this->Model->Text . '\',\'' . $this->Model->ParentID . '\',0,0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . SUCHE_TABLE . '\',0,0);') .
+									$this->editorHeaderFrame . '.location.reload();' .
+									we_message_reporting::getShowMessageCall(
+											g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
+									$this->topFrame . '.hot=0;'
 					);
 
 					if(we_base_request::_(we_base_request::BOOL, 'delayCmd')){
 						$js .= we_html_element::jsElement(
-								$this->topFrame . '.we_cmd("' . we_base_request::_(we_base_request::STRING, 'delayCmd') . '"' . (($dp = we_base_request::_(we_base_request::RAW, 'delayParam')) ? ',"' . $dp . '"' : '') . ');'
+										$this->topFrame . '.we_cmd("' . we_base_request::_(we_base_request::STRING, 'delayCmd') . '"' . (($dp = we_base_request::_(we_base_request::RAW, 'delayParam')) ? ',"' . $dp . '"' : '') . ');'
 						);
 						$_REQUEST['delayCmd'] = '';
 						$_REQUEST['delayParam'] = '';
 					}
 				} else {
 					$js = we_html_element::jsElement($js .
-							$this->editorHeaderFrame . '.location.reload();' .
-							we_message_reporting::getShowMessageCall(($this->Model->IsFolder == 1 ? g_l('searchtool', "[save_group_failed]") : g_l('searchtool', "[save_failed]")), we_message_reporting::WE_MESSAGE_ERROR) .
-							$this->topFrame . '.hot=0;'
+									$this->editorHeaderFrame . '.location.reload();' .
+									we_message_reporting::getShowMessageCall(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_failed]' : '[save_failed]')), we_message_reporting::WE_MESSAGE_ERROR) .
+									$this->topFrame . '.hot=0;'
 					);
 				}
 
@@ -231,10 +232,10 @@ class we_search_view{
 				echo we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 				if($this->Model->delete()){
 					echo we_html_element::jsElement(
-						$this->topFrame . '.deleteEntry("' . $this->Model->ID . '");
+							$this->topFrame . '.deleteEntry("' . $this->Model->ID . '");
         setTimeout(\'' . we_message_reporting::getShowMessageCall(
-							g_l('tools', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);' .
-						$this->topFrame . '.we_cmd("tool_weSearch_edit");'
+									g_l('tools', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);' .
+							$this->topFrame . '.we_cmd("tool_weSearch_edit");'
 					);
 					$this->Model = new we_search_model();
 					$_REQUEST['pnt'] = 'edbody';
@@ -252,7 +253,7 @@ class we_search_view{
 case "tool_weSearch_save":
  if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {
 	' . we_message_reporting::getShowMessageCall(
-				g_l('searchtool', '[predefinedSearchmodify]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+						g_l('searchtool', '[predefinedSearchmodify]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 	break;
  }else if (' . $this->editorBodyFrame . '.loaded) {
 	if(' . $this->editorBodyFrame . '.document.we_form.newone.value==1) {
@@ -269,14 +270,14 @@ case "tool_weSearch_save":
 	' . $this->editorBodyFrame . '.submitForm();
  }else {
 	' . we_message_reporting::getShowMessageCall(
-				g_l('tools', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+						g_l('tools', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
  }
 
  break;
 
 case "tool_weSearch_delete":
  if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {' .
-			we_message_reporting::getShowMessageCall(g_l('searchtool', '[predefinedSearchdelete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+				we_message_reporting::getShowMessageCall(g_l('searchtool', '[predefinedSearchdelete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 	return;
  }
  if(' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.newone.value==1){
@@ -284,7 +285,7 @@ case "tool_weSearch_delete":
 	return;
  }
  ' . (!permissionhandler::hasPerm("DELETE_" . strtoupper($this->toolName)) ? (we_message_reporting::getShowMessageCall(
-					g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)) : ('
+								g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)) : ('
 		 if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
 
 			if (confirm("' . g_l('searchtool', '[confirmDel]') . '")) {
@@ -297,7 +298,7 @@ case "tool_weSearch_delete":
 			}
 
 		 } else {' .
-				we_message_reporting::getShowMessageCall(g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+						we_message_reporting::getShowMessageCall(g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 		 }
 
 	 ')) . '
@@ -390,7 +391,7 @@ if (' . $this->editorBodyFrame . '.loaded) {
  newID = elem.rows.length-1;
 
  scrollheight = ' . $h . ';' .
-				$addinputRows . '
+						$addinputRows . '
  var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
  var scrollContent = document.getElementById("scrollContent_' . $whichSearch . '");
 
@@ -406,7 +407,7 @@ if (' . $this->editorBodyFrame . '.loaded) {
 }else {
  setTimeout(\'sizeScrollContent();\', 1000);
 }' :
-				'');
+						'');
 
 		switch($whichSearch){
 			case "DocSearch" :
@@ -478,7 +479,7 @@ var ajaxCallbackgetMouseOverDivs = {
 
 function search(newSearch) {
 	' . (intval(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()) ?
-					we_message_reporting::getShowMessageCall(g_l('searchtool', "[noTempTableRightsSearch]"), we_message_reporting::WE_MESSAGE_NOTICE) : '
+								we_message_reporting::getShowMessageCall(g_l('searchtool', '[noTempTableRightsSearch]'), we_message_reporting::WE_MESSAGE_NOTICE) : '
 
 		var Checks = new Array();
 		' . ($whichSearch === "AdvSearch" ? '
@@ -494,9 +495,9 @@ function search(newSearch) {
 			}
 		}
 		if(Checks.length==0) {' .
-						we_message_reporting::getShowMessageCall(g_l('searchtool', "[nothingCheckedAdv]"), we_message_reporting::WE_MESSAGE_ERROR) . '
+										we_message_reporting::getShowMessageCall(g_l('searchtool', '[nothingCheckedAdv]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 		}' : '') .
-					($whichSearch === "DocSearch" ? '
+								($whichSearch === "DocSearch" ? '
 		var m = 0;
 		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
 			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
@@ -508,9 +509,9 @@ function search(newSearch) {
 			}
 		}
 		if(Checks.length==0) {' .
-						we_message_reporting::getShowMessageCall(g_l('searchtool', "[nothingCheckedTmplDoc]"), we_message_reporting::WE_MESSAGE_ERROR) . '
+										we_message_reporting::getShowMessageCall(g_l('searchtool', '[nothingCheckedTmplDoc]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 		}' : '') .
-					($whichSearch === "TmplSearch" ? '
+								($whichSearch === "TmplSearch" ? '
 		var m = 0;
 		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
 			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
@@ -522,11 +523,11 @@ function search(newSearch) {
 			}
 		}
 		if(Checks.length==0) {' .
-						we_message_reporting::getShowMessageCall(g_l('searchtool', "[nothingCheckedTmplDoc]"), we_message_reporting::WE_MESSAGE_ERROR) . '
+										we_message_reporting::getShowMessageCall(g_l('searchtool', '[nothingCheckedTmplDoc]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 		}' : '') . '
 		 if(Checks.length!=0) {
 			 if(newSearch) {' .
-					$this->editorBodyFrame . '.document.we_form.searchstart' . $whichSearch . '.value=0;
+								$this->editorBodyFrame . '.document.we_form.searchstart' . $whichSearch . '.value=0;
 			 }
 			 makeAjaxRequestDoclist();
 	}') . '
@@ -636,7 +637,7 @@ function absTop(el) {
 function next(anzahl){
 var scrollActive = document.getElementById("scrollActive");
 if(scrollActive==null) {' .
-				$this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value) + anzahl;
+						$this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value) + anzahl;
 	search(false);
 
  }
@@ -645,7 +646,7 @@ if(scrollActive==null) {' .
 function back(anzahl){
 	var scrollActive = document.getElementById("scrollActive");
 	if(scrollActive==null) {' .
-				$this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value) - anzahl;
+						$this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value) - anzahl;
 		search(false);
 	}
 }
@@ -784,7 +785,7 @@ function changeit(value, rowNr){
 		 cell = document.createElement("TD");
 		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
 		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+								"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 		 row.appendChild(cell);
 		 document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
 
@@ -816,7 +817,7 @@ function changeit(value, rowNr){
 	cell = document.createElement("TD");
 		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
 		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+								"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 		 row.appendChild(cell);
  }
  else if(value=="temp_template_id" || value=="MasterTemplateID") {
@@ -846,7 +847,7 @@ function changeit(value, rowNr){
 	cell = document.createElement("TD");
 		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
 		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+								"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 		 row.appendChild(cell);
  }
  else if(value=="ParentIDDoc" || value=="ParentIDObj" || value=="ParentIDTmpl") {
@@ -888,7 +889,7 @@ function changeit(value, rowNr){
 	cell = document.createElement("TD");
 		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
 		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+								"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 		 row.appendChild(cell);
  }
  else if(value=="Status") {
@@ -901,9 +902,9 @@ function changeit(value, rowNr){
 	}
 
 	search = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
+								"\n", '\n', addslashes(
+										we_html_tools::htmlSelect(
+												'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
 
 	var cell = document.createElement("TD");
 		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
@@ -913,7 +914,7 @@ function changeit(value, rowNr){
 	cell = document.createElement("TD");
 		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
 		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+								"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 		 row.appendChild(cell);
 
  }
@@ -927,9 +928,9 @@ function changeit(value, rowNr){
 	}
 
 	search = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
+								"\n", '\n', addslashes(
+										we_html_tools::htmlSelect(
+												'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
 
 	var cell = document.createElement("TD");
 		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
@@ -939,7 +940,7 @@ function changeit(value, rowNr){
 	cell = document.createElement("TD");
 		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
 		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+								"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 		 row.appendChild(cell);
 
  }
@@ -948,9 +949,9 @@ function changeit(value, rowNr){
 	row.removeChild(locationTD);
 
 	locationFields = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'locationAdvSearch[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
+								"\n", '\n', addslashes(
+										we_html_tools::htmlSelect(
+												'locationAdvSearch[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
 
 	var cell = document.createElement("TD");
 		 cell.setAttribute("id", "td_locationAdvSearch["+rowNr+"]");
@@ -982,7 +983,7 @@ function changeit(value, rowNr){
 	cell = document.createElement("TD");
 		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
 		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+								"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 		 row.appendChild(cell);
 
  }
@@ -996,9 +997,9 @@ if (locationTD!=null) {
 	}
 
 	search = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
+								"\n", '\n', addslashes(
+										we_html_tools::htmlSelect(
+												'searchAdvSearch[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
 
 	var cell = document.createElement("TD");
 		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
@@ -1008,7 +1009,7 @@ if (locationTD!=null) {
 	cell = document.createElement("TD");
 		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
 		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+								"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 		 row.appendChild(cell);
  }
 
@@ -1022,9 +1023,9 @@ else if(value=="modifierID") {
 	}
 
 	search = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
+								"\n", '\n', addslashes(
+										we_html_tools::htmlSelect(
+												'searchAdvSearch[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
 
 	var cell = document.createElement("TD");
 		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
@@ -1034,7 +1035,7 @@ else if(value=="modifierID") {
 	cell = document.createElement("TD");
 		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
 		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+								"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 		 row.appendChild(cell);
 
 }
@@ -1061,7 +1062,7 @@ else if(value=="modifierID") {
 		 cell = document.createElement("TD");
 		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
 		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+								"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
 		 row.appendChild(cell);
 
 		 document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
@@ -1097,7 +1098,7 @@ var ajaxCallbackResetVersion = {
  success: function(o) {
 	 //top.we_cmd("save_document","' . $GLOBALS['we_transaction'] . '","0","1","0", "","");
 	 ' . we_message_reporting::getShowMessageCall(
-					g_l('versions', '[resetAllVersionsOK]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+								g_l('versions', '[resetAllVersionsOK]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 	 // reload current document => reload all open Editors on demand
 	 var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
 	 for (frameId in _usedEditors) {
@@ -1148,7 +1149,7 @@ function resetVersions() {
 
  if(check==false) {
 	 ' . we_message_reporting::getShowMessageCall(
-					g_l('versions', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+								g_l('versions', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
  }else {
 	 Check = confirm("' . g_l('versions', '[resetVersionsSearchtool]') . '");
 	 if (Check == true) {
@@ -1207,7 +1208,7 @@ function publishDocs(whichSearch) {
 
  if(check==false) {
 	 ' . we_message_reporting::getShowMessageCall(
-					g_l('searchtool', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+								g_l('searchtool', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
  }
  else {
 
@@ -1243,7 +1244,7 @@ var ajaxCallbackPublishDocs = {
 	 document.getElementById("resetBusyAdvSearch").innerHTML = "";
 		 document.getElementById("resetBusyDocSearch").innerHTML = "";
 		 ' . we_message_reporting::getShowMessageCall(
-					g_l('searchtool', '[publishOK]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+								g_l('searchtool', '[publishOK]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 
 	 },
 	 failure: function(o) {
@@ -1315,22 +1316,22 @@ function calendarSetup(x){
 		}
 
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
-			($searchstart ?
-				we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
-				we_html_button::create_button("back", "", true, 100, 22, "", "", true)
-			) .
-			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
-			(($we_search_anzahl - $searchstart) < $anzahl ?
-				$we_search_anzahl :
-				$searchstart + $anzahl
-			) .
-			' ' . g_l('global', "[from]") . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
-			(($searchstart + $anzahl) < $we_search_anzahl ?
-				//bt_back
-				we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
-				we_html_button::create_button("next", "", true, 100, 22, "", "", true)
-			) .
-			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
+				($searchstart ?
+						we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
+						we_html_button::create_button("back", "", true, 100, 22, "", "", true)
+				) .
+				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
+				(($we_search_anzahl - $searchstart) < $anzahl ?
+						$we_search_anzahl :
+						$searchstart + $anzahl
+				) .
+				' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
+				(($searchstart + $anzahl) < $we_search_anzahl ?
+						//bt_back
+						we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
+						we_html_button::create_button("next", "", true, 100, 22, "", "", true)
+				) .
+				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
 		for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
@@ -1345,7 +1346,7 @@ function calendarSetup(x){
 			$out .= we_html_tools::hidden("searchstart" . $whichSearch, $searchstart);
 		}
 		$out .= $select .
-			'</td></tr></table>';
+				'</td></tr></table>';
 		return $out;
 	}
 
@@ -1365,13 +1366,13 @@ function calendarSetup(x){
 	function getSearchDialogCheckboxes($whichSearch){
 
 		$_table = new we_html_table(
-			array(
+				array(
 			'border' => 0,
 			'cellpadding' => 2,
 			'cellspacing' => 0,
 			'width' => 500,
 			'height' => 50
-			), 4, 2);
+				), 4, 2);
 
 		switch($whichSearch){
 			case "DocSearch" :
@@ -1513,48 +1514,48 @@ function calendarSetup(x){
 		}
 
 		$_table = new we_html_table(
-			array(
+				array(
 			'border' => 0,
 			'cellpadding' => 2,
 			'cellspacing' => 0,
 			'width' => 550,
 			'height' => 50
-			), 4, 3);
+				), 4, 3);
 
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 			$_table->setCol(
-				0, 0, array(), we_html_forms::checkboxWithHidden(
-					$this->Model->search_tables_advSearch[FILE_TABLE] ? true : false, 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
+					0, 0, array(), we_html_forms::checkboxWithHidden(
+							$this->Model->search_tables_advSearch[FILE_TABLE] ? true : false, 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
 		}
 
 		if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 			$_table->setCol(
-				1, 0, array(), we_html_forms::checkboxWithHidden(
-					$this->Model->search_tables_advSearch[TEMPLATES_TABLE] ? true : false, 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
+					1, 0, array(), we_html_forms::checkboxWithHidden(
+							$this->Model->search_tables_advSearch[TEMPLATES_TABLE] ? true : false, 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
 		}
 
 		if(defined('OBJECT_TABLE')){
 			if(permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
 				$_table->setCol(
-					0, 1, array(), we_html_forms::checkboxWithHidden(
-						$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
+						0, 1, array(), we_html_forms::checkboxWithHidden(
+								$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
 			}
 			if(permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 				$_table->setCol(
-					1, 1, array(), we_html_forms::checkboxWithHidden(
-						$this->Model->search_tables_advSearch[OBJECT_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
+						1, 1, array(), we_html_forms::checkboxWithHidden(
+								$this->Model->search_tables_advSearch[OBJECT_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
 			}
 		}
 
 		if(permissionhandler::hasPerm('SEE_VERSIONS')){
 			$_table->setCol(
-				0, 2, array(), we_html_forms::checkboxWithHidden(
-					$this->Model->search_tables_advSearch[VERSIONS_TABLE] ? true : false, 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
+					0, 2, array(), we_html_forms::checkboxWithHidden(
+							$this->Model->search_tables_advSearch[VERSIONS_TABLE] ? true : false, 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
 		}
 
 		$_table->setCol(1, 2, array(
 			'align' => 'right'
-			), we_html_button::create_button("search", "javascript:search(true);"));
+				), we_html_button::create_button("search", "javascript:search(true);"));
 
 		return $_table->getHtml();
 	}
@@ -1564,8 +1565,8 @@ function calendarSetup(x){
 		switch($whichSearch){
 			case "DocSearch" :
 				$this->Model->locationDocSearch = (($op = we_base_request::_(we_base_request::STRING, "locationDocSearch")) ?
-						$op :
-						array("CONTAIN"));
+								$op :
+								array("CONTAIN"));
 
 				$this->Model->searchFieldsDocSearch = array();
 				$locationName = "locationDocSearch[0]";
@@ -1602,8 +1603,8 @@ function calendarSetup(x){
 				break;
 			case "TmplSearch" :
 				$this->Model->locationTmplSearch = (($op = we_base_request::_(we_base_request::STRING, "locationTmplSearch")) ?
-						$op :
-						array("CONTAIN"));
+								$op :
+								array("CONTAIN"));
 
 				$this->Model->searchFieldsTmplSearch = array();
 				$locationName = "locationTmplSearch[0]";
@@ -1825,9 +1826,9 @@ function calendarSetup(x){
 				$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = count($_result);
 			}
 		} elseif(
-			($obj->IsFolder != 1 && ( ($whichSearch === 'DocSearch' && $tab === 1) || ($whichSearch === 'TmplSearch' && $tab === 2) || ($whichSearch === 'AdvSearch' && $tab === 3)) ) ||
-			(we_base_request::_(we_base_request::INT, 'cmdid')) ||
-			(($view = we_base_request::_(we_base_request::STRING, 'view')) === "GetSearchResult" || $view === "GetMouseOverDivs")
+				($obj->IsFolder != 1 && ( ($whichSearch === 'DocSearch' && $tab === 1) || ($whichSearch === 'TmplSearch' && $tab === 2) || ($whichSearch === 'AdvSearch' && $tab === 3)) ) ||
+				(we_base_request::_(we_base_request::INT, 'cmdid')) ||
+				(($view = we_base_request::_(we_base_request::STRING, 'view')) === "GetSearchResult" || $view === "GetMouseOverDivs")
 		){
 
 			if(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()){
@@ -1849,8 +1850,8 @@ function calendarSetup(x){
 					$w = '';
 					if(isset($searchText[0])){
 						$searchString = ($whichSearch === 'AdvSearch' && isset($searchText[$i]) ?
-								($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8" ? utf8_encode($searchText[$i]) : $searchText[$i]) :
-								($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8" ? utf8_encode($searchText[0]) : $searchText[0]));
+										($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8" ? utf8_encode($searchText[$i]) : $searchText[$i]) :
+										($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8" ? utf8_encode($searchText[0]) : $searchText[0]));
 					}
 					if(isset($searchString) && $searchString){
 						if($searchFields[$i] != "Status" && $searchFields[$i] != "Speicherart"){
@@ -2043,7 +2044,7 @@ function calendarSetup(x){
 			foreach($versionsFound as $k => $v){
 				foreach($_result as $key => $val){
 					if(isset($_result[$key]['foundInVersions']) && isset($_result[$key]['docID']) && $_result[$key]['docID'] == $v[1] && isset(
-							$_result[$key]['ContentType']) && $_result[$key]['ContentType'] == $v[0]){
+									$_result[$key]['ContentType']) && $_result[$key]['ContentType'] == $v[0]){
 						if($_result[$key]['foundInVersions'] != ""){
 							$_result[$key]['foundInVersions'] .= ",";
 						}
@@ -2054,11 +2055,11 @@ function calendarSetup(x){
 				$this->searchclass->selectFromTempTable($_searchstart, $_anzahl, $_order);
 				while($this->searchclass->next_record()){
 					if(!isset(
-							$saveArrayIds[$this->searchclass->Record['ContentType']][$this->searchclass->Record['docID']])){
+									$saveArrayIds[$this->searchclass->Record['ContentType']][$this->searchclass->Record['docID']])){
 						$saveArrayIds[$this->searchclass->Record['ContentType']][$this->searchclass->Record['docID']] = $this->searchclass->Record['docID'];
 						$_result[] = array_merge(array(
 							'Table' => $_table
-							), $this->searchclass->Record);
+								), $this->searchclass->Record);
 					}
 				}
 			}
@@ -2182,8 +2183,8 @@ function calendarSetup(x){
 							array("version" => array($k => "")),
 							array("version" => array($k => "<div style='margin-left:5px;'>" .
 									(($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] === "objectFile") ?
-										we_html_forms::checkbox($ID, 0, "publishVersion_" . $ID, g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
-										"") .
+											we_html_forms::checkbox($ID, 0, "publishVersion_" . $ID, g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
+											"") .
 									"</div>")),
 						);
 					}
@@ -2191,8 +2192,8 @@ function calendarSetup(x){
 				$docExists = f('SELECT ID FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]["docID"]), 'ID', $DB_WE);
 
 				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] === "objectFile") && permissionhandler::hasPerm(
-						'PUBLISH') && $docExists != "") ? we_html_forms::checkbox(
-							$_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_" . $whichSearch, "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '';
+								'PUBLISH') && $docExists != "") ? we_html_forms::checkbox(
+										$_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_" . $whichSearch, "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '';
 
 
 				$content[$f] = array(
@@ -2201,8 +2202,8 @@ function calendarSetup(x){
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]["Path"] . '"><u>' . $_result[$f]["Text"]),
 					array("dat" => $_result[$f]["SiteTitle"]),
 					array("dat" => isset($_result[$f]["VersionID"]) && $_result[$f]["VersionID"] ? "-" : ($_result[$f]["CreationDate"] ? date(
-									g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-")),
-					array("dat" => ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-")),
+												g_l('searchtool', '[date_format]'), $_result[$f]["CreationDate"]) : "-")),
+					array("dat" => ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-")),
 				);
 			} else {
 				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
@@ -2238,14 +2239,14 @@ function calendarSetup(x){
 					$imageViewPopup = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
 				}
 
-				$creator = $_result[$f]["CreatorID"] ? id_to_path($_result[$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', "[nobody]");
+				$creator = $_result[$f]["CreatorID"] ? id_to_path($_result[$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', '[nobody]');
 
 				if($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT && $_result[$f]["Table"] != VERSIONS_TABLE){
 					$templateID = ($_result[$f]["Published"] >= $_result[$f]["ModDate"] && $_result[$f]["Published"] != 0 ?
-							$_result[$f]["TemplateID"] :
-							$_result[$f]["temp_template_id"]);
+									$_result[$f]["TemplateID"] :
+									$_result[$f]["temp_template_id"]);
 
-					$templateText = g_l('searchtool', "[no_template]");
+					$templateText = g_l('searchtool', '[no_template]');
 					if($templateID){
 						$DB_WE->query('SELECT ID, Text FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($templateID));
 						while($DB_WE->next_record()){
@@ -2278,8 +2279,8 @@ function calendarSetup(x){
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageView . '</a>'),
 					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 17)),
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . $_result[$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result[$f]["Text"], 20) . '</u></a>'),
-					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
-					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', "[date_format]"), $_result[$f]["ModDate"]) : "-") . '</nobr>'),
+					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
+					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-") . '</nobr>'),
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageViewPopup . '</a>'),
 					array("dat" => $filesize),
 					array("dat" => $imagesize[0] . " x " . $imagesize[1]),
@@ -2352,7 +2353,7 @@ function calendarSetup(x){
 <table border="0" cellpadding="0" cellspacing="0">
 <tr>
  <td>' . we_html_tools::getPixel(30, 12) . '</td>
- <td style="font-size:12px;width:125px;">' . g_l('searchtool', "[eintraege_pro_seite]") . ':</td>
+ <td style="font-size:12px;width:125px;">' . g_l('searchtool', '[eintraege_pro_seite]') . ':</td>
  <td class="defaultgray" style="width:60px;">
  ' . we_html_tools::htmlSelect($anzahl, $values, 1, $_anzahl, "", array('onchange' => 'this.form.elements["' . $searchstart . '"].value=0;search(false);')) . '</td>
  <td style="width:400px;">' . $this->getNextPrev($foundItems, $whichSearch) . '</td>
@@ -2367,8 +2368,8 @@ function calendarSetup(x){
 
 	function getSearchParameterBottom($foundItems, $whichSearch){
 		$resetButton = (permissionhandler::hasPerm('RESET_VERSIONS') && $whichSearch === "AdvSearch" ?
-				we_html_button::create_button("reset", "javascript:resetVersions();", true, 100, 22, "", "") :
-				'');
+						we_html_button::create_button("reset", "javascript:resetVersions();", true, 100, 22, "", "") :
+						'');
 		if(permissionhandler::hasPerm('PUBLISH') && ($whichSearch === "AdvSearch" || $whichSearch === "DocSearch")){
 			$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all_" . $whichSearch, "", false, "middlefont", "checkAllPubChecks('" . $whichSearch . "')");
 			$publishButton = we_html_button::create_button("publish", "javascript:publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
@@ -2428,7 +2429,7 @@ function calendarSetup(x){
 				}
 			} else {
 				$this->searchclass->height = (isset($this->Model->searchFieldsAdvSearch[0]) ?
-						count($this->Model->searchFieldsAdvSearch) : 1);
+								count($this->Model->searchFieldsAdvSearch) : 1);
 			}
 		}
 		//if own search was saved without fields
@@ -2448,16 +2449,16 @@ function calendarSetup(x){
 
 		$locationAdvSearch = we_base_request::_(we_base_request::STRING, 'locationAdvSearch');
 		$this->Model->locationAdvSearch = ($locationAdvSearch && is_array($locationAdvSearch) ?
-				$locationAdvSearch :
-				array_values($this->Model->locationAdvSearch) );
+						$locationAdvSearch :
+						array_values($this->Model->locationAdvSearch) );
 
 		$this->Model->searchAdvSearch = is_array($this->Model->searchAdvSearch) ?
-			array_values($this->Model->searchAdvSearch) :
-			array();
+				array_values($this->Model->searchAdvSearch) :
+				array();
 
 		$this->Model->searchFieldsAdvSearch = is_array($this->Model->searchFieldsAdvSearch) ?
-			array_values($this->Model->searchFieldsAdvSearch) :
-			array();
+				array_values($this->Model->searchFieldsAdvSearch) :
+				array();
 
 		for($i = 0; $i < $this->searchclass->height; $i++){
 			$button = we_html_button::create_button("image:btn_function_trash", 'javascript:delRow(' . $i . ');', true, '', '', '', '', false);
@@ -2511,7 +2512,7 @@ function calendarSetup(x){
 						$_cmd = "javascript:we_cmd('openDirselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','')";
 						$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(
-								we_html_tools::htmlTextInput('searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'searchAdvSearchParentID[' . $i . ']', "value" => "")), we_html_tools::getPixel(5, 4), $_button);
+										we_html_tools::htmlTextInput('searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'searchAdvSearchParentID[' . $i . ']', "value" => "")), we_html_tools::getPixel(5, 4), $_button);
 
 						$searchInput = $selector;
 						break;
@@ -2526,11 +2527,11 @@ function calendarSetup(x){
 						$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
 						$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(
-								we_html_tools::htmlTextInput(
-									'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
-									array(
-										'name' => 'searchAdvSearchParentID[' . $i . ']', "value" => ""
-								)), we_html_tools::getPixel(5, 4), $_button);
+										we_html_tools::htmlTextInput(
+												'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
+												array(
+													'name' => 'searchAdvSearchParentID[' . $i . ']', "value" => ""
+										)), we_html_tools::getPixel(5, 4), $_button);
 
 						$searchInput = $selector;
 						break;
@@ -2541,11 +2542,11 @@ function calendarSetup(x){
 						$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
 						$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(
-								we_html_tools::htmlTextInput(
-									'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
-									array(
-										'name' => 'searchAdvSearchParentID[' . $i . ']', "value" => ""
-								)), we_html_tools::getPixel(5, 4), $_button);
+										we_html_tools::htmlTextInput(
+												'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
+												array(
+													'name' => 'searchAdvSearchParentID[' . $i . ']', "value" => ""
+										)), we_html_tools::getPixel(5, 4), $_button);
 
 						$searchInput = $selector;
 				}
@@ -2553,8 +2554,8 @@ function calendarSetup(x){
 
 			$out .= '<tr id="filterRow_' . $i . '">
      <td>' . we_html_tools::hidden("hidden_searchFieldsAdvSearch[" . $i . "]", isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : "") .
-				we_html_tools::htmlSelect("searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, ""), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) .
-				'</td>
+					we_html_tools::htmlSelect("searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, ""), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) .
+					'</td>
      <td id="td_locationAdvSearch[' . $i . ']">' . we_html_tools::htmlSelect("locationAdvSearch[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch) && isset($this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'locationAdvSearch[' . $i . ']')) . '</td>
      <td id="td_searchAdvSearch[' . $i . ']">' . $searchInput . '</td>
      <td id="td_delButton[' . $i . ']">' . $button . '</td>
@@ -2562,14 +2563,14 @@ function calendarSetup(x){
 		}
 
 		$out .= '</tbody></table>' .
-			'<table>
+				'<table>
 <tr>
  <td>' . we_html_button::create_button("add", "javascript:newinputAdvSearch();") . '</td>
  <td>' . we_html_tools::getPixel(10, 10) . '</td>
  <td colspan="7" align="right"></td>
 </tr>
 </table></div>' .
-			we_html_element::jsElement("calendarSetup(" . $this->searchclass->height . ");");
+				we_html_element::jsElement("calendarSetup(" . $this->searchclass->height . ");");
 
 		return $out;
 	}
@@ -2613,10 +2614,10 @@ function calendarSetup(x){
 		}
 
 		$out .= '</tr></table>' .
-			//FIXME: realize with tbody?
-			'<div id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%;height:100%;">' .
-			$this->tabListContent($view, $content, $class, $whichSearch) .
-			'</div>';
+				//FIXME: realize with tbody?
+				'<div id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%;height:100%;">' .
+				$this->tabListContent($view, $content, $class, $whichSearch) .
+				'</div>';
 
 		return $out;
 	}
@@ -2636,8 +2637,8 @@ function calendarSetup(x){
 
 			for($m = 0; $m < $x; $m++){
 				$out .= '<tr>' . ($whichSearch != "doclist" ?
-						$this->tblListRow($content[$m]) :
-						we_search_view::tblListRow($content[$m])) . '</tr>';
+								$this->tblListRow($content[$m]) :
+								we_search_view::tblListRow($content[$m])) . '</tr>';
 			}
 			$out .= '</tbody></table>';
 			return $out;
@@ -2646,17 +2647,17 @@ function calendarSetup(x){
 
 		for($m = 0; $m < $x; $m++){
 			$out .= '<div style="float:left;width:180px;height:100px;margin:20px 0px 0px 20px;z-index:1;">' .
-				($whichSearch != "doclist" ?
-					$this->tblListRowIconView($content[$m], $class, $m, $whichSearch) :
-					we_search_view::tblListRowIconView($content[$m], $class, $m, $whichSearch)
-				) . '</div>';
+					($whichSearch != "doclist" ?
+							$this->tblListRowIconView($content[$m], $class, $m, $whichSearch) :
+							we_search_view::tblListRowIconView($content[$m], $class, $m, $whichSearch)
+					) . '</div>';
 		}
 
 		$out .= '</td></tr></table>';
 
 		$allDivs = ($whichSearch != "doclist" ?
-				$this->makeMouseOverDivs($x, $content, $whichSearch) :
-				we_search_view::makeMouseOverDivs($x, $content, $whichSearch));
+						$this->makeMouseOverDivs($x, $content, $whichSearch) :
+						we_search_view::makeMouseOverDivs($x, $content, $whichSearch));
 
 
 		$out .= we_html_element::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes($allDivs) . "';");
@@ -2684,28 +2685,28 @@ function calendarSetup(x){
 			<table style="font-size:10px;" border="0" cellspacing="0" cellpadding="3">
 			<tr>
 			<td colspan="2" style="font-size:12px;">' . $content[$n][9]["dat"] . '<br/><br/></td></tr>
-			<tr><td valign="top">' . g_l('searchtool', "[idDiv]") . ': </td><td>' . $content[$n][16]["dat"] . '</td></tr>
-			<tr><td valign="top">' . g_l('searchtool', "[dateityp]") . ': </td><td>' . $content[$n][8]["dat"] . '</td></tr>';
+			<tr><td valign="top">' . g_l('searchtool', '[idDiv]') . ': </td><td>' . $content[$n][16]["dat"] . '</td></tr>
+			<tr><td valign="top">' . g_l('searchtool', '[dateityp]') . ': </td><td>' . $content[$n][8]["dat"] . '</td></tr>';
 			if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE || $content[$n][12]["dat"] == we_base_ContentTypes::APPLICATION){
-				$outDivs .= '<tr><td valign="top">' . g_l('searchtool', "[groesse]") . ': </td><td>' . $content[$n][6]["dat"] . '</td></tr>';
+				$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[groesse]') . ': </td><td>' . $content[$n][6]["dat"] . '</td></tr>';
 				if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE){
-					$outDivs .= '<tr><td valign="top">' . g_l('searchtool', "[aufloesung]") . ': </td><td>' . $content[$n][7]["dat"] . '</td></tr>';
+					$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[aufloesung]') . ': </td><td>' . $content[$n][7]["dat"] . '</td></tr>';
 				}
 			}
 			if($content[$n][12]["dat"] == we_base_ContentTypes::WEDOCUMENT){
-				$outDivs .= '<tr><td valign="top">' . g_l('searchtool', "[template]") . ': ' . '</td>
+				$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[template]') . ': ' . '</td>
 					<td>' . $content[$n][14]["dat"] . '</td></tr>';
 			}
-			$outDivs .= '<tr><td valign="top">' . g_l('searchtool', "[creator]") . ': </td><td>' . $content[$n][13]["dat"] . '</td></tr>
-			<tr><td valign="top">' . g_l('searchtool', "[created]") . ': </td><td>' . $content[$n][3]["dat"] . '</td></tr>
-			<tr><td valign="top">' . g_l('searchtool', "[modified]") . ': </td><td>' . $content[$n][4]["dat"] . '</td></tr></table>
+			$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[creator]') . ': </td><td>' . $content[$n][13]["dat"] . '</td></tr>
+			<tr><td valign="top">' . g_l('searchtool', '[created]') . ': </td><td>' . $content[$n][3]["dat"] . '</td></tr>
+			<tr><td valign="top">' . g_l('searchtool', '[modified]') . ': </td><td>' . $content[$n][4]["dat"] . '</td></tr></table>
 			</div>
 			<div style="padding:0px 0px 6px 15px;position:relative;top:0px;left:0px;width:360px;">';
 			if($content[$n][11]["dat"] != ""){
-				$outDivs .= '<table cellpadding="0" cellspacing="0" border="0" style="font-size:10px;"><tr><td valign="top">' . g_l('searchtool', "[beschreibung]") . ':</td><td>' . we_html_tools::getPixel(
-						15, 5) . '</td><td>' .
-					we_util_Strings::shortenPath($content[$n][11]["dat"], 150) .
-					'</td></tr></table>';
+				$outDivs .= '<table cellpadding="0" cellspacing="0" border="0" style="font-size:10px;"><tr><td valign="top">' . g_l('searchtool', '[beschreibung]') . ':</td><td>' . we_html_tools::getPixel(
+								15, 5) . '</td><td>' .
+						we_util_Strings::shortenPath($content[$n][11]["dat"], 150) .
+						'</td></tr></table>';
 			}
 			$outDivs .= '</div>
 				</div>';
@@ -2713,7 +2714,7 @@ function calendarSetup(x){
 				$outDivs .= '<div style="width:100%;position:relative;top:0px;height:1px;overflow:hidden;background-color:#DDDDDD;"></div>
 					<div style="width:100%;position:relative;top:0px;height:1px;overflow:hidden;background-color:#FFF;"></div>
 					<div style="width:100%;position:relative;top:0px;height:20px;overflow:hidden;background-color:#DDDDDD;">
-						<div style="margin:5px 0px 0px 15px">' . g_l('searchtool', "[metafelder]") . ':</div>
+						<div style="margin:5px 0px 0px 15px">' . g_l('searchtool', '[metafelder]') . ':</div>
 						</div>
 						<div style="width:100%;position:relative;top:0px;background-color:#FFF;">
 						<div style="padding:10px 0px 10px 15px;">
@@ -2757,17 +2758,17 @@ function calendarSetup(x){
 				$out .= '</tr><tr><td style="width:20px;">' . we_html_tools::getPixel(20, 10) . '</td>';
 				for($y = 0; $y < $anz; $y++){
 					$out .= '<td style="font-weight:bold;font-size:11px;' . ($f == 0 ? "width:30px;" : '') . '">' .
-						we_html_tools::getPixel(5, 10) .
-						$content[$y]["version"][$k] .
-						'</td>';
+							we_html_tools::getPixel(5, 10) .
+							$content[$y]["version"][$k] .
+							'</td>';
 				}
 
 				$out .= '</tr><tr><td style="width:20px;">' . we_html_tools::getPixel(20, 10) . '</td>';
 				for($y = 0; $y < $anz; $y++){
 					$out .= '<td style="font-weight:bold;font-size:11px;' . ($f == 0 ? "width:30px;" : '') . '">' . ($y == 2 ?
-							$content[5]["version"][$k] . '<br/>' :
-							we_html_tools::getPixel(1, 1)
-						) . '</td>';
+									$content[5]["version"][$k] . '<br/>' :
+									we_html_tools::getPixel(1, 1)
+							) . '</td>';
 				}
 			}
 		}
@@ -2779,7 +2780,7 @@ function calendarSetup(x){
 		return '<table border="0" width="100%" cellpadding="0" cellspacing="0" class="' . $class . '">
 <tr>
 	<td width="75" valign="top" align="center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
-			((isset($content[0]["dat"]) && $content[0]["dat"]) ? $content[0]["dat"] : "&nbsp;") . '</td>
+				((isset($content[0]["dat"]) && $content[0]["dat"]) ? $content[0]["dat"] : "&nbsp;") . '</td>
 		<td width="105" valign="top" style="line-height:20px;">
 		<span>' . ((isset($content[2]["dat"]) && $content[2]["dat"]) ? $content[2]["dat"] : "&nbsp;") . '</span><br/><br/>
 		<span>' . ((isset($content[1]["dat"]) && $content[1]["dat"]) ? $content[1]["dat"] : "&nbsp;") . '</span></td>
@@ -2820,12 +2821,12 @@ function calendarSetup(x){
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $folderID . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $folderPath . "'].value");
 		$yuiSuggest->setSelectButton(
-			we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['" . $folderID . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));
+				we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['" . $folderID . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));
 
 		return
-			weSuggest::getYuiFiles() .
-			$yuiSuggest->getHTML() .
-			$yuiSuggest->getYuiCode();
+				weSuggest::getYuiFiles() .
+				$yuiSuggest->getHTML() .
+				$yuiSuggest->getYuiCode();
 	}
 
 	//----------- Utility functions ------------------
@@ -2848,12 +2849,12 @@ function calendarSetup(x){
 
 	function getCommonHiddens($cmds = array()){
 		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
-			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
-			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
-			$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')) .
-			$this->htmlHidden('vernr', (isset($cmds['vernr']) ? $cmds['vernr'] : 0)) .
-			$this->htmlHidden('delayCmd', (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : '')) .
-			$this->htmlHidden('delayParam', (isset($cmds['delayParam']) ? $cmds['delayParam'] : ''));
+				$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
+				$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
+				$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')) .
+				$this->htmlHidden('vernr', (isset($cmds['vernr']) ? $cmds['vernr'] : 0)) .
+				$this->htmlHidden('delayCmd', (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : '')) .
+				$this->htmlHidden('delayParam', (isset($cmds['delayParam']) ? $cmds['delayParam'] : ''));
 	}
 
 	function getPropertyJSAdditional(){
@@ -2862,7 +2863,7 @@ function calendarSetup(x){
 
 	function getJSProperty(){
 		return we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsElement('
+				we_html_element::jsElement('
 var loaded=0;
 function we_cmd() {
 	var args = "";
@@ -2896,7 +2897,7 @@ function we_cmd() {
 			eval("' . $this->topFrame . '.we_cmd("+args+")");
 	}
 }' .
-				$this->getJSSubmitFunction());
+						$this->getJSSubmitFunction());
 	}
 
 	function getJSTreeHeader(){
