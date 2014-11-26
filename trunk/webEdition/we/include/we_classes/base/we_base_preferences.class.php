@@ -115,11 +115,11 @@ class we_base_preferences{
 			foreach($GLOBALS['configs'][$conf] as $define => $value){
 				if(!preg_match('/define\(["\']' . $define . '["\'],/', $content)){
 					// Add needed variable
-
-					$content = self::changeSourceCode('add', $content, $define, (defined($define) ? constant($define) : $value[2]), ($conf == 'global' ? true : defined($define)), $value[0], isset($value[3]) ? $value[3] : false);
+					$active = ($conf == 'global' ? true : defined($define));
+					$content = self::changeSourceCode('add', $content, $define, (defined($define) ? constant($define) : $value[2]), $active, $value[0], isset($value[3]) ? $value[3] : false);
 					//define it in running session
-					if(!defined($define)){
-						define($define, $value[1]);
+					if(!defined($define) && $active){
+						define($define, $value[2]);
 					}
 				}
 			}
