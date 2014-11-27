@@ -25,7 +25,7 @@
 // widget MY DOCUMENTS
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$all = explode(';', we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1));
+$all = explode(';', we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 1));
 if(count($all) > 1){
 	list($dir, $dt_tid, $cats) = $all;
 } else {

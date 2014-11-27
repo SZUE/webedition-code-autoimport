@@ -70,7 +70,7 @@ if($this->Data['allEntries']){ // entries exist
 </div>
 <br />';
 
-	$button = '';
+	$buttons = '';
 	if(($this->Data['logEntries'])){ // entries match filter
 		$content .= '
 <table width="100%" class="defaultfont updateContent" id="updateLogTable">
