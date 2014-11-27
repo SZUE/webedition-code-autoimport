@@ -123,7 +123,7 @@ class we_object extends we_document{
 					if(stristr($dat, 'unique')){
 						$unique = $this->getElement('unique_' . $i);
 						$dat = '%' . str_replace('%', '', $dat) . (($unique > 0) ? $unique : 16) . '%';
-						$this->elements[$was]['dat'] = $dat;
+						$this->setElement($was, $dat, 'defaultText');
 					}
 					$this->DefaultText .= $dat;
 				}
@@ -887,7 +887,7 @@ class we_object extends we_document{
 		);
 		if(defined('SHOP_TABLE')){
 			$val[we_objectFile::TYPE_SHOPVAT] = g_l('modules_object', '[shopVat_field]');
-			$val[we_objectFile::TYPE_SHOPCATEGORY] = 'Shop-Kategorie';//GL
+			$val[we_objectFile::TYPE_SHOPCATEGORY] = 'Shop-Kategorie'; //GL
 		}
 		$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . self::ELEMENT_TYPE . ']', $val, 1, $type, "", array('onchange' => 'if(this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\']){this.form.elements[\'' . 'we_' . $this->Name . '_input[' . $name . 'default]' . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'object_change_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\');'), "value", 388) .
 			'</td></tr>';
@@ -1165,7 +1165,7 @@ class we_object extends we_document{
 
 					//TODO: make some class we_shop_categories class with static functions getShopCatDir and getShopCategories (to feed select directly)
 					$pref = getHash('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE pref_name="shop_cats_dir"', $this->DB_WE);
-					$parentPath = we_category::we_getCatsFromIDs($pref['pref_value'], ',', true, $this->DB_WE,'', 'Path');
+					$parentPath = we_category::we_getCatsFromIDs($pref['pref_value'], ',', true, $this->DB_WE, '', 'Path');
 					$this->DB_WE->query('SELECT ID, Text, PATH, IsFolder FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $parentPath . '/%"');
 					$values = array();
 					while($this->DB_WE->next_record()){
@@ -1177,20 +1177,20 @@ class we_object extends we_document{
 					$content .= '<tr valign="top">
 							<td  width="100" class="defaultfont"  valign="top"></td>
 							<td class="defaultfont">' .
-								'field' . we_html_tools::getPixel(8, 2) . $selectField . we_html_tools::getPixel(8, 2) .
-								'showpath' . we_html_tools::getPixel(8, 2) . $selectShopPath .
-							'</td>
+						'field' . we_html_tools::getPixel(8, 2) . $selectField . we_html_tools::getPixel(8, 2) .
+						'showpath' . we_html_tools::getPixel(8, 2) . $selectShopPath .
+						'</td>
 						</tr>
 							<tr valign="top"><td  width="100" class="defaultfont"  valign="top"></td>
 							<td class="defaultfont">' .
-								'rootdir' . we_html_tools::getPixel(8, 2) . $textRootdir .
-							'</td>
+						'rootdir' . we_html_tools::getPixel(8, 2) . $textRootdir .
+						'</td>
 						</tr>
 						<tr valign="top">
 							<td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>
 							<td width="170" class="defaultfont">' .
-								$selectCategories . '<br />' . we_html_tools::getPixel(2, 2) . $checkUseDefault .
-							'</td>
+						$selectCategories . '<br />' . we_html_tools::getPixel(2, 2) . $checkUseDefault .
+						'</td>
 						</tr>';
 				}
 				break;
@@ -1707,7 +1707,7 @@ class we_object extends we_document{
 					if(stristr($dat, 'unique')){
 						$unique = $this->getElement("unique_" . $i);
 						$dat = "%" . str_replace("%", "", $dat) . ( $unique > 0 ? $unique : 16) . "%";
-						$this->elements[$was]["dat"] = $dat;
+						$this->setElement($was, $dat, 'defaultText');
 					}
 					$this->DefaultText .= $dat;
 				}
@@ -1727,23 +1727,23 @@ class we_object extends we_document{
 					$anz = (!$regs[1] ? 16 : abs($regs[1]));
 					$unique = substr(md5(uniqid(__FUNCTION__, true)), 0, min($anz, 32));
 					$text = preg_replace('/%unique[^%]*%/', $unique, (isset($text) ? $text : ""));
-					$select .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "%unique%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
+					$select .= $this->htmlSelect("we_" . $this->Name . "_defaultText[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "%unique%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
 						$this->htmlTextInput("we_" . $this->Name . "_input[unique_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 				} else {
-					$select .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "%" . $key . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;";
+					$select .= $this->htmlSelect("we_" . $this->Name . "_defaultText[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "%" . $key . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;";
 				}
 			} else if(preg_match('/^([^%]+)/', $all, $regs)){
 				$all = substr($all, strlen($regs[1]));
 				$key = $regs[1];
-				$select .= $this->htmlSelect("textwert_" . $zahl, g_l('modules_object', '[value]'), 1, "Text", "", array('onchange' => '_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_' . $this->Name . '_input[DefaultText_' . $zahl . ']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-					$this->htmlTextInput("we_" . $this->Name . "_input[DefaultText_" . $zahl . "]", 40, $key, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+				$select .= $this->htmlSelect("textwert_" . $zahl, g_l('modules_object', '[value]'), 1, "Text", "", array('onchange' => '_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_' . $this->Name . '_defaultText[DefaultText_' . $zahl . ']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
+					$this->htmlTextInput("we_" . $this->Name . "_defaultText[DefaultText_" . $zahl . "]", 40, $key, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 			}
 
 			$select .= we_html_element::htmlBr();
 			$zahl++;
 		}
 
-		$select .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
+		$select .= $this->htmlSelect("we_" . $this->Name . "_defaultText[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
 			'<input type = "hidden" name="we_' . $this->Name . '_input[Defaultanzahl]" value="' . $zahl . '" />';
 
 		$var_flip = array_flip(g_l('modules_object', '[url]'));
@@ -2147,17 +2147,31 @@ class we_object extends we_document{
 	}
 
 	function i_filenameNotValid(){
-		$defTextValid = false;
-		foreach($this->elements as $k => $v){
-			if(is_string($k) && substr($k, 0, 12) === 'DefaultText_'){
+		static $allowedReplace = array(
+			'%ID%',
+			'%d%',
+			'%j%',
+			'%m%',
+			'%y%',
+			'%Y%',
+			'%n%',
+			'%h%',
+			'%H%',
+			'%g%',
+			'%G%',
+			'%unique%'
+		);
+
+		$this->resetElements();
+		while((list($k, $v) = $this->nextElement('defaultText'))){
+			if(substr($k, 0, 12) === 'DefaultText_'){
 				$end = substr($k, 12, strlen($k));
-				if(isset($_REQUEST['textwert_' . $end]) && isset($v['dat']) && $v['dat'] != '' && preg_match('/[^\w\-.]/', $v['dat'])){
-					$defTextValid = true;
-					break;
+				if(isset($_REQUEST['textwert_' . $end]) && isset($v['dat']) && $v['dat'] && !in_array($v['dat'], $allowedReplace) && preg_match('/[^\w\-.]/', $v['dat'])){
+					return true;
 				}
 			}
 		}
-		return (preg_match('/[^\w\-.]/', $this->Text) || $defTextValid);
+		return (preg_match('/[^\w\-.]/', $this->Text));
 	}
 
 	function i_filenameNotAllowed(){
