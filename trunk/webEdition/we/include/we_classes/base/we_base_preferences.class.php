@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -64,7 +63,7 @@ class we_base_preferences{
 			$config['contentDef'] = we_base_file::load($config['filename'] . '.default');
 		}
 		//finally add old session prefs
-		$GLOBALS['config_files']['oldPrefs'] = $_SESSION['prefs'];
+		$GLOBALS['config_files']['oldPrefs'] = isset($_SESSION['prefs']) ? $_SESSION['prefs'] : array();
 	}
 
 	static function setConfigContent($type, $content){
@@ -86,8 +85,8 @@ class we_base_preferences{
 	static function check_global_config($updateVersion = false, $file = '', $leave = array()){
 		self::loadConfigs();
 		$processedConfigs = ($file ?
-						array('global' => 'contentDef') :
-						array('global' => 'contentDef', 'conf' => 'contentDef'));
+				array('global' => 'contentDef') :
+				array('global' => 'contentDef', 'conf' => 'contentDef'));
 
 		foreach($processedConfigs as $conf => $dataField){
 			// Read the global configuration file
@@ -178,7 +177,7 @@ class we_base_preferences{
 		switch($type){
 			case 'add':
 				return trim($text, "\n\t ") . "\n\n" .
-						self::makeDefine($key, $value, $active, $comment, $encode);
+					self::makeDefine($key, $value, $active, $comment, $encode);
 			case 'define':
 				$match = array();
 				if(preg_match('|/?/?define\(\s*(["\']' . preg_quote($key) . '["\'])\s*,\s*([^\r\n]+)\);[\r\n]?|Ui', $text, $match)){
@@ -191,10 +190,10 @@ class we_base_preferences{
 
 	private static function makeDefine($key, $val, $active = true, $comment = '', $encode = false){
 		return ($comment ? '//' . $comment . "\n" : '') . ($active ? '' : "//") . 'define(\'' . $key . '\', ' .
-				($encode ? 'base64_decode(\'' . base64_encode($val) . '\')' :
-						(is_bool($val) || $val === 'true' || $val === 'false' ? ($val ? 'true' : 'false') :
-								(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val)))
-				) . ');';
+			($encode ? 'base64_decode(\'' . base64_encode($val) . '\')' :
+				(is_bool($val) || $val === 'true' || $val === 'false' ? ($val ? 'true' : 'false') :
+					(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val)))
+			) . ');';
 	}
 
 	private static function _addSlashes($in){
@@ -212,8 +211,8 @@ class we_base_preferences{
 	 */
 	public function getUserPref($name){
 		return (isset($_SESSION['prefs'][$name]) ?
-						$_SESSION['prefs'][$name] :
-						(defined($name) ? constant($name) : ''));
+				$_SESSION['prefs'][$name] :
+				(defined($name) ? constant($name) : ''));
 	}
 
 	/**

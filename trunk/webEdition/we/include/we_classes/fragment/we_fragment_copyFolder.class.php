@@ -61,43 +61,31 @@ class we_fragment_copyFolder extends we_fragment_base{
 			$fromPath = id_to_path($fromID);
 			$db = new DB_WE();
 			$this->alldata = array();
+			$merge = array(
+				"CopyToId" => $toID,
+				"CopyFromId" => $fromID,
+				"CopyFromPath" => $fromPath,
+				"IsWeFile" => 0,
+				"CreateTemplate" => $CreateTemplate ? 1 : 0,
+				"CreateDoctypes" => $CreateDoctypes ? 1 : 0,
+				"CreateTemplateInFolderID" => $CreateTemplateInFolderID,
+				"OverwriteCategories" => $OverwriteCategories,
+				"newCategories" => $newCategories,
+			);
 
 			// make it twice to be sure that all linked IDs are correct
 			$db->query('SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Category FROM ' . FILE_TABLE . " WHERE (Path LIKE'" . $db->escape($fromPath) . "/%') AND ContentType != '" . we_base_ContentTypes::WEDOCUMENT . "' ORDER BY IsFolder DESC,Path");
 			while($db->next_record()){
-				$db->Record["CopyToId"] = $toID;
-				$db->Record["CopyFromId"] = $fromID;
-				$db->Record["CopyFromPath"] = $fromPath;
-				$db->Record["IsWeFile"] = 0;
-				$db->Record["CreateTemplate"] = $CreateTemplate ? 1 : 0;
-				$db->Record["CreateDoctypes"] = $CreateDoctypes ? 1 : 0;
-				$db->Record["CreateTemplateInFolderID"] = $CreateTemplateInFolderID;
-				$db->Record["OverwriteCategories"] = $OverwriteCategories;
-				$db->Record["newCategories"] = $newCategories;
-				$this->alldata[] = $db->Record;
+				$this->alldata[] = array_merge($db->getRecord(), $merge);
 			}
 
+			$merge['IsWeFile'] = 1;
 			for($num = 0; $num < 2; $num++){
-				$db->query("SELECT ID,ParentID,Text,TemplateID,Path,IsFolder,ClassName,ContentType,Category FROM " . FILE_TABLE . " WHERE (Path LIKE'" . $db->escape($fromPath) . "/%') AND ContentType = '" . we_base_ContentTypes::WEDOCUMENT . "' ORDER BY IsFolder DESC,Path");
+				$merge['num'] = $num;
+				$db->query('SELECT ID,ParentID,Text,TemplateID,Path,IsFolder,ClassName,ContentType,Category FROM ' . FILE_TABLE . " WHERE (Path LIKE'" . $db->escape($fromPath) . "/%') AND ContentType = '" . we_base_ContentTypes::WEDOCUMENT . "' ORDER BY IsFolder DESC,Path");
 				while($db->next_record()){
-
-					// check if the template exists
-					$TemplateExists = false;
-					if($CreateTemplate){
-						$TemplateExists = (id_to_path($db->f('TemplateID'), TEMPLATES_TABLE) ? 1 : 0);
-					}
-
-					$db->Record["CopyToId"] = $toID;
-					$db->Record["CopyFromId"] = $fromID;
-					$db->Record["CopyFromPath"] = $fromPath;
-					$db->Record["IsWeFile"] = 1;
-					$db->Record["num"] = $num;
-					$db->Record["CreateTemplate"] = $CreateTemplate ? $TemplateExists : 0;
-					$db->Record["CreateDoctypes"] = $CreateDoctypes ? 1 : 0;
-					$db->Record["CreateTemplateInFolderID"] = $CreateTemplateInFolderID;
-					$db->Record["OverwriteCategories"] = $OverwriteCategories;
-					$db->Record["newCategories"] = $newCategories;
-					$this->alldata[] = $db->Record;
+					$merge["CreateTemplate"] = $CreateTemplate ? (id_to_path($db->f('TemplateID'), TEMPLATES_TABLE) ? 1 : 0) : 0;
+					$this->alldata[] = array_merge($db->getRecord(), $merge);
 				}
 			}
 		} else {
@@ -109,23 +97,24 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 				$db = new DB_WE();
 				$this->alldata = array();
-
-				$db->query("SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Published FROM " . OBJECT_FILES_TABLE . " WHERE " . $qfolders . " (Path LIKE'" . $db->escape($fromPath) . "/%') ORDER BY IsFolder DESC,Path");
+				$merge = array(
+					"CopyToId" => $toID,
+					"CopyFromId" => $fromID,
+					"CopyFromPath" => $fromPath,
+					"IsWeFile" => 1,
+					"TheTable" => OBJECT_FILES_TABLE,
+					"OverwriteObjects" => $OverwriteObjects,
+					"ObjectCopyNoFolders" => $ObjectCopyNoFolders,
+					"IsFolder" => $db->f('IsFolder'),
+					"CreateTemplate" => 0,
+					"CreateDoctypes" => 0,
+					"CreateTemplateInFolderID" => 0,
+					"OverwriteCategories" => 0,
+					"newCategories" => '',
+				);
+				$db->query('SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . $qfolders . " (Path LIKE'" . $db->escape($fromPath) . "/%') ORDER BY IsFolder DESC,Path");
 				while($db->next_record()){
-					$db->Record["CopyToId"] = $toID;
-					$db->Record["CopyFromId"] = $fromID;
-					$db->Record["CopyFromPath"] = $fromPath;
-					$db->Record["IsWeFile"] = 1;
-					$db->Record["TheTable"] = OBJECT_FILES_TABLE;
-					$db->Record["OverwriteObjects"] = $OverwriteObjects;
-					$db->Record["ObjectCopyNoFolders"] = $ObjectCopyNoFolders;
-					$db->Record["IsFolder"] = $db->f('IsFolder');
-					$db->Record["CreateTemplate"] = 0;
-					$db->Record["CreateDoctypes"] = 0;
-					$db->Record["CreateTemplateInFolderID"] = 0;
-					$db->Record["OverwriteCategories"] = 0;
-					$db->Record["newCategories"] = '';
-					$this->alldata[] = $db->Record;
+					$this->alldata[] = array_merge($db->getRecord(), $merge);
 				}
 			}
 		}
@@ -181,7 +170,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 			$GLOBALS['we_doc']->OldPath = '';
 			$pid = $this->getObjectPid($path, $GLOBALS['DB_WE']);
 			$GLOBALS['we_doc']->setParentID($pid);
-			$ObjectExists = $this->CheckForSameObjectName($GLOBALS['we_doc']->Path, $GLOBALS['DB_WE']);
+			$ObjectExists = $this->CheckForSameObjectName($GLOBALS['we_doc']->Path);
 
 
 			if($ObjectExists && $this->data['OverwriteObjects'] == 'nothing'){
@@ -190,7 +179,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 			if($ObjectExists && $this->data['OverwriteObjects'] === 'rename'){
 				$GLOBALS['we_doc']->Text = $GLOBALS['we_doc']->Text . '_copy';
 				$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->Path . '_copy';
-				while($this->CheckForSameObjectName($GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'])){
+				while($this->CheckForSameObjectName($GLOBALS['we_doc']->Path)){
 					$GLOBALS['we_doc']->Text = $GLOBALS['we_doc']->Text . '_copy';
 					$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->Path . '_copy';
 				}
@@ -208,8 +197,8 @@ class we_fragment_copyFolder extends we_fragment_base{
 		return true;
 	}
 
-	function CheckForSameObjectName($path, we_database_base $db){
-		return f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $db->escape($path) . '"', 'ID', $db);
+	private function CheckForSameObjectName($path){
+		return f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($path) . '"');
 	}
 
 	function copyObjectFolder(){
@@ -288,10 +277,10 @@ class we_fragment_copyFolder extends we_fragment_base{
 							$dt->ID = 0;
 							$dt->DocType = $dt->DocType . '_copy';
 							// if file exists we need  to create a new one!
-							if(($file_id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType='" . $GLOBALS['DB_WE']->escape($dt->DocType) . "'"))){
+							if(($file_id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $GLOBALS['DB_WE']->escape($dt->DocType) . '"'))){
 								$z = 0;
 								$footext = $dt->DocType . '_' . $z;
-								while(f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType='" . $GLOBALS['DB_WE']->escape($footext) . "'")){
+								while(f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $GLOBALS['DB_WE']->escape($footext) . '"')){
 									$z++;
 									$footext = $dt->DocType . '_' . $z;
 								}
@@ -658,12 +647,11 @@ class we_fragment_copyFolder extends we_fragment_base{
 		}
 
 		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
-
 			$pbText = g_l('copyFolder', '[prepareTemplates]');
 
-			print we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress(0);parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
+			echo we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress(0);parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 			flush();
-			print we_html_element::jsElement('setTimeout(\'self.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=copyFolder&finish=1"\',100);');
+			echo we_html_element::jsElement('setTimeout(\'self.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=copyFolder&finish=1"\',100);');
 			#unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		} else {
 			$checkTable = (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 1);
@@ -678,8 +666,8 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 	function printHeader(){
 		//FIXME: missing title
-		print we_html_element::htmlHead(we_html_tools::getHtmlInnerHead() . STYLESHEET . weSuggest::getYuiFiles() .
-						we_html_element::jsElement('
+		echo we_html_element::htmlHead(we_html_tools::getHtmlInnerHead() . STYLESHEET . weSuggest::getYuiFiles() .
+			we_html_element::jsElement('
 function fsubmit(e) {
 	return false;
 }'));
