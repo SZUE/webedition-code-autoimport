@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -43,8 +44,7 @@ class we_updater{
 		}
 	}
 
-	static function updateTables(){
-		global $DB_WE;
+	static function updateTables(we_database_base $DB_WE){
 		$db2 = new DB_WE();
 		$tables = $db2->table_names(TBL_PREFIX . 'tblOwner');
 
@@ -98,8 +98,7 @@ class we_updater{
 		}
 	}
 
-	static function fix_user(){
-		$db = new DB_WE();
+	static function fix_user(we_database_base $db){
 		$db2 = new DB_WE();
 		$db->query('SELECT ID,username,ParentID,Path FROM ' . USER_TABLE);
 		while($db->next_record()){
@@ -140,36 +139,35 @@ class we_updater{
 		}
 	}
 
-	static function updateUsers(){
-		global $DB_WE;
+	static function updateUsers(we_database_base $DB_WE){
 		$DB_WE->query('UPDATE ' . USER_TABLE . " SET IsFolder=1 WHERE Type=" . we_users_user::TYPE_USER_GROUP);
 
-		self::fix_user();
+		self::fix_user($DB_WE);
 
-		$GLOBALS['DB_WE']->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value NOT LIKE "%_UTF-8%" OR value!="") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
-		$users = $GLOBALS['DB_WE']->getAll(true);
+		$DB_WE->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value NOT LIKE "%_UTF-8%" OR value!="") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
+		$users = $DB_WE->getAll(true);
 		if($users){
-			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="ISO-8859-1" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
+			$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET value="ISO-8859-1" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
 		}
-		$GLOBALS['DB_WE']->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value LIKE "%_UTF-8%") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
-		$users = $GLOBALS['DB_WE']->getAll(true);
+		$DB_WE->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value LIKE "%_UTF-8%") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
+		$users = $DB_WE->getAll(true);
 		if($users){
-			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="UTF-8" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
-			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value=REPLACE(value,"_UTF-8","") WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
+			$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET value="UTF-8" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
+			$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET value=REPLACE(value,"_UTF-8","") WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
 		}
-		$GLOBALS['DB_WE']->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND value="" AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
-		$users = $GLOBALS['DB_WE']->getAll(true);
+		$DB_WE->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND value="" AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
+		$users = $DB_WE->getAll(true);
 		if($users){
-			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="UTF-8" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
-			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
+			$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET value="UTF-8" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
+			$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
 			//$_SESSION['prefs'] = we_user::readPrefs($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
 		}
-		$GLOBALS['DB_WE']->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND value=""');
-		$users = $GLOBALS['DB_WE']->getAll(true);
+		$DB_WE->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND value=""');
+		$users = $DB_WE->getAll(true);
 		if($users){
-			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
+			$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
 		}
-		$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
+		$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $DB_WE);
 
 
 		return true;
@@ -376,15 +374,15 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 
 	static function updateCats(){
 		$db = $GLOBALS['DB_WE'];
-		if($db->isColExist(CATEGORY_TABLE, 'Catfields') && f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE . 'WHERE Title=""') == f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE)){
+		if($db->isColExist(CATEGORY_TABLE, 'Catfields') && f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE . ' WHERE Title=""') == f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE)){
 			$db->query('SELECT ID,Catfields FROM ' . CATEGORY_TABLE . ' WHERE Catfields!=""');
 			$udb = new DB_WE();
 			while($db->next_record()){
 				$data = unserialize($db->f('Catfields'));
 				$udb->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'Title' => $data['default']['Title'],
-						'Description' => $data['default']['Description'],
-					)) . ' WHERE ID=' . $db->f('ID'));
+							'Title' => $data['default']['Title'],
+							'Description' => $data['default']['Description'],
+						)) . ' WHERE ID=' . $db->f('ID'));
 			}
 			//$db->delCol(CATEGORY_TABLE, 'Catfields');
 		}
@@ -419,11 +417,19 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		}
 	}
 
+	static function udpateNewsletter(we_database_base $db){
+		if($db->isColExist(NEWSLETTER_LOG_TABLE, 'LogTime')){
+			$db->query('UPDATE ' . NEWSLETTER_LOG_TABLE . ' SET stamp=FROM_UNIXTIME(LogTime)');
+			$db->delCol(NEWSLETTER_LOG_TABLE, 'LogTime');
+		}
+	}
+
 	public function doUpdate(){
+		$db = $GLOBALS['DB_WE'];
 		self::replayUpdateDB();
 
-		self::updateTables();
-		self::updateUsers();
+		self::updateTables($db);
+		self::updateUsers($db);
 		self::updateObjectFilesX();
 		self::updateScheduler();
 		self::updateVoting();
@@ -433,6 +439,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		self::updateGlossar();
 		self::updateCats();
 		self::fixHistory();
+		self::udpateNewsletter($db);
 		self::replayUpdateDB();
 	}
 
