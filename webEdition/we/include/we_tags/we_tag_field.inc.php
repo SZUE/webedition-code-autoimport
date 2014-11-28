@@ -130,6 +130,27 @@ function we_tag_field($attribs){
 	if(isset($attribs['fontnames'])){
 		$attribs['fontnames'] = weTag_getAttribute('fontnames', $attribs);
 	}//Wwysiwyg
+	
+	$showpath = weTag_getAttribute('showpath', $attribs);
+	if(isset($attribs['showpath'])){
+		$attribs['showpath'] = $showpath;
+	}
+	$rootdir = weTag_getAttribute('rootdir', $attribs);
+	if(isset($attribs['rootdir'])){
+		$attribs['rootdir'] = $rootdir;
+	}
+	$show = weTag_getAttribute('show', $attribs);
+	if(isset($attribs['show'])){
+		$attribs['show'] = $show;
+	}
+	$catfield = weTag_getAttribute('catfield', $attribs);
+	if(isset($attribs['catfield'])){
+		$attribs['catfield'] = $catfield;
+	}
+	$vatfield = weTag_getAttribute('vatfield', $attribs);
+	if(isset($attribs['vatfield'])){
+		$attribs['vatfield'] = $vatfield;
+	}
 	$out = '';
 
 
@@ -287,6 +308,14 @@ function we_tag_field($attribs){
 				$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME, 'txt'), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 
 				$out = we_shop_vats::getVatRateForSite($normVal);
+			}
+			break;
+		case 'shopCategory' :
+			if(defined('SHOP_TABLE') && is_object($GLOBALS['lv'])){
+				$id = $GLOBALS['lv']->f('shopcategory');
+				$field = $show === 'vat' ? $vatfield : $catfield;
+				$out = we_shop_category::getFieldFromIDs($id, $field, false, 0, '', false, false, ',', $showpath, $rootdir);
+				break;
 			}
 			break;
 		case 'href' ://#6329: fixed for lv type=document. check later for other types! #6421: field type=href in we:block

@@ -44,8 +44,11 @@ function we_tag_shopCategory($attribs){
 		$attribs['showpath'] = true;
 		return we_tag_category($attribs);
 	} else {
-		$ret = $show === 'vat' ? 'show vat' : 
-				we_shop_category::getShopCategoriesFromIDs($GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME), $field, false, 0, $onlyindir, false, false, ',', $showpath, $rootdir);
+		if($show === 'vat'){
+			$ret = we_shop_category::getVatByCategory($GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME), '', 'vat');
+		} else {
+			$ret = we_shop_category::getFieldFromIDs($GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME), $field, false, 0, $onlyindir, false, false, ',', $showpath, $rootdir);
+		}
 
 		if($GLOBALS['we_editmode']){
 			$attribs['field'] = 'ID';

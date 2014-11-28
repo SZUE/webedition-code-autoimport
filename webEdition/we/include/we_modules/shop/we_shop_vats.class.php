@@ -86,34 +86,8 @@ class we_shop_vats{
 		return $vat->delete();
 	}
 
+	//FIXME: obsolete
 	public static function getVatByCountryCategory($country, $category){
-		$db = $GLOBALS['DB_WE'];
-		$country = $country ? : f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_location"', '', $db, -1);
-
-		if(!($category = intval($category)) || !($country = $db->escape($country))){
-			return false;
-		}
-
-		//for debugging purpose only: when num_rows > 1 we have an inconsistent tblshopvat!
-		$db->query('SELECT id,text,vat,standard,territory,textProvince, categories FROM ' . WE_SHOP_VAT_TABLE . ' WHERE territory="' . $country . '" AND FIND_IN_SET(' . $category . ', categories)');
-		if($db->num_rows() > 1){
-			t_e("function getVatByCountryCategory", "number of results: " . $db->num_rows());
-		}
-		//end debug
-
-		$hash = getHash('SELECT id,text,vat,standard,territory,textProvince, categories FROM ' . WE_SHOP_VAT_TABLE . ' WHERE territory="' . $country . '" AND FIND_IN_SET(' . $category . ', categories)');
-		if($hash){
-			return new we_shop_vat($hash['id'], $hash['text'], $hash['vat'], ($hash['standard'] ? 1 : 0), $hash['territory'], $hash['textProvince'], $hash['categories']);
-		} else if(($standard = self::getStandardShopVat())){
-			return $standard;
-		} else {
-			$shopPrefs = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"'));
-			if(($pref = $shopPrefs[1])){
-				new we_shop_vat(0, 'shop_pref', $pref, 1, '', '', '');
-			}
-		}
-		t_e("function getVatByCountryCategory", "neither vat found nor standard");
-
-		return false;
+		return we_shop_category::getVatByCategory($category, $country);
 	}
 }

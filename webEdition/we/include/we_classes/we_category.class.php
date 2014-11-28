@@ -31,8 +31,11 @@ class we_category extends weModelBase{
 	var $ClassName = __CLASS__;
 	var $ContentType = 'category';
 
-	function __construct(){
+	function __construct($id = 0){
 		parent::__construct(CATEGORY_TABLE);
+		if($id && is_int($id)){
+			$this->load($id);
+		}
 	}
 
 	function we_save(){
