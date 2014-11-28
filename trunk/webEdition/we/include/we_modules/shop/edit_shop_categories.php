@@ -76,7 +76,7 @@ if($shopCategoriesDir !== -1 && we_base_request::_(we_base_request::STRING, 'we_
 $DB_WE->query('SELECT ID,Path FROM ' . CATEGORY_TABLE . ' WHERE IsFolder = 1 ORDER BY Path');
 $allCategoryDirs = array('-1' => 'bitte wählen');//GL
 while($DB_WE->next_record()){
-    $data = $db->getRecord();
+	$data = $DB_WE->getRecord();
 	$allCategoryDirs[$data['ID']] = $data['Path'];
 }
 $selCategoryDirs = we_html_tools::htmlSelect('weShopCatDir', $allCategoryDirs, 1, $shopCategoriesDir, false, array('id' => 'weShopCatDir', 'onchange' => 'we_submitForm(\'' . $_SERVER['SCRIPT_NAME'] . '\');'));
@@ -91,7 +91,7 @@ if(intval($shopCategoriesDir) !== -1){
 	$doWriteRelations = !$relations ? true : false;
 	
 	while($DB_WE->next_record()){
-		$data = $db->getRecord();
+		$data = $DB_WE->getRecord();
 
 		if(!isset($allVats[$data['territory']])){
 			$allVats[$data['territory']] = array();
