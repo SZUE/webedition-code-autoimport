@@ -60,7 +60,7 @@ class we_chooser_multiDir{
 	}
 
 	function printIt(){
-		print $this->get();
+		echo $this->get();
 	}
 
 	function getLine($lineNr){

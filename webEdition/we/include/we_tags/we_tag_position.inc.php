@@ -56,7 +56,7 @@ function we_tag_position($attribs){
 		case "linklist" : //	look in fkt we_tag_linklist and class we_linklist for details
 			$missingAttrib = attributFehltError($attribs, "reference", __FUNCTION__); // seperate because of #6890
 			if($missingAttrib){
-				print $missingAttrib;
+				echo $missingAttrib;
 				return "";
 			}
 			foreach($GLOBALS['we_position'][$type] as $name => $arr){
@@ -76,7 +76,7 @@ function we_tag_position($attribs){
 			//	first we must get right array !!!
 			$missingAttrib = attributFehltError($attribs, "reference", __FUNCTION__);
 			if($missingAttrib){
-				print $missingAttrib;
+				echo $missingAttrib;
 				return "";
 			}
 			foreach($GLOBALS['we_position'][$type] as $name => $arr){

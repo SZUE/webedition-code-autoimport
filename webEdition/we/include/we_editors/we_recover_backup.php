@@ -44,19 +44,19 @@ if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
 
 switch($what){
 	case 'frameset':
-		print $weBackupWizard->getHTMLFrameset();
+		echo $weBackupWizard->getHTMLFrameset();
 		break;
 	case 'body':
-		print $weBackupWizard->getHTMLStep($step);
+		echo $weBackupWizard->getHTMLStep($step);
 		break;
 	case 'cmd':
-		print $weBackupWizard->getHTMLCmd();
+		echo $weBackupWizard->getHTMLCmd();
 		break;
 	case 'busy':
-		print $weBackupWizard->getHTMLBusy();
+		echo $weBackupWizard->getHTMLBusy();
 		break;
 	case 'extern':
-		print $weBackupWizard->getHTMLExtern();
+		echo $weBackupWizard->getHTMLExtern();
 		break;
 	default:
 		t_e(__FILE__ . ' unknown reference: ' . $what);

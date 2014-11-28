@@ -48,7 +48,7 @@ unset(' . $unq . ');?>';
  */
 function we_tag_xmlnode($attribs){
 	if(($foo = attributFehltError($attribs, "xpath", __FUNCTION__))){
-		print $foo;
+		echo $foo;
 		return false;
 	}
 	$feed = weTag_getAttribute('feed', $attribs);

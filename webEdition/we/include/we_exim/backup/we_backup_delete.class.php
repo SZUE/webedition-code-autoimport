@@ -45,7 +45,7 @@ class we_backup_delete extends we_fragment_base{
 			}
 
 			if(empty($this->alldata)){
-				print we_html_element::jsElement(
+				echo we_html_element::jsElement(
 						we_message_reporting::getShowMessageCall(g_l('backup', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING)
 				);
 				$this->finish();
@@ -65,7 +65,7 @@ class we_backup_delete extends we_fragment_base{
 		if(strlen($text) > 75){
 			$text = addslashes(substr($text, 0, 65) . '&hellip;' . substr($text, -10));
 		}
-		print we_html_element::jsElement('
+		echo we_html_element::jsElement('
 			parent.delmain.setProgressText("pb1","' . sprintf(g_l('backup', '[delete_entry]'), $text) . '");
 			parent.delmain.setProgress(' . $percent . ');
 		');
@@ -73,13 +73,13 @@ class we_backup_delete extends we_fragment_base{
 
 	function finish(){
 		if(isset($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok']) && count($_SESSION['weS']['delete_files_nok'])){
-			print we_html_element::jsScript(JS_DIR . "windows.js") .
+			echo we_html_element::jsScript(JS_DIR . "windows.js") .
 				we_html_element::jsElement('
 					new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,600,550,true,true,true);
 			');
 		}
 		unset($_SESSION['weS']['backup_delete']);
-		print we_html_element::jsElement('top.close();');
+		echo we_html_element::jsElement('top.close();');
 	}
 
 	function printHeader(){

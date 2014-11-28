@@ -355,13 +355,13 @@ function we_cmd(){
 		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case "new_export":
 				if(!permissionhandler::hasPerm("NEW_EXPORT")){
-					print we_html_element::jsElement(
+					echo we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				} else {
 					$this->export = new we_export_export();
-					print we_html_element::jsElement('
+					echo we_html_element::jsElement('
 								' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->export->Text) . '";
 								' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 						');
@@ -370,7 +370,7 @@ function we_cmd(){
 				break;
 			case "new_export_group":
 				if(!permissionhandler::hasPerm("NEW_EXPORT")){
-					print we_html_element::jsElement(
+					echo we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;

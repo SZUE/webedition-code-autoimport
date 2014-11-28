@@ -487,7 +487,7 @@ abstract class we_backup_base{
 		$fh = @fopen($this->dumpfilename, 'rb');
 		if($fh){
 			while(!@feof($fh)){
-				print @fread($fh, 52428);
+				echo @fread($fh, 52428);
 				update_time_limit(80);
 			}
 			@fclose($fh);

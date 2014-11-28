@@ -158,10 +158,10 @@ abstract class validation{
 
 						if($showWrong){
 							if(isset($_SESSION['prefs']['xhtml_show_wrong_text']) && $_SESSION['prefs']['xhtml_show_wrong_text']){
-								print '<p>' . sprintf(g_l('xhtmlDebug', '[missing_attribute][text]'), $required, $element) . '</p>';
+								echo '<p>' . sprintf(g_l('xhtmlDebug', '[missing_attribute][text]'), $required, $element) . '</p>';
 							}
 							if(isset($_SESSION['prefs']['xhtml_show_wrong_js']) && $_SESSION['prefs']['xhtml_show_wrong_js']){
-								print we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element), we_message_reporting::WE_MESSAGE_ERROR));
+								echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element), we_message_reporting::WE_MESSAGE_ERROR));
 							}
 							if(isset($_SESSION['prefs']['xhtml_show_wrong_error_log']) && $_SESSION['prefs']['xhtml_show_wrong_error_log']){
 								error_log(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element));
@@ -173,10 +173,10 @@ abstract class validation{
 		} else { //	element does not exist
 			if($showWrong){
 				if(isset($_SESSION['prefs']['xhtml_show_wrong_text']) && $_SESSION['prefs']['xhtml_show_wrong_text']){
-					print '<p>' . sprintf(g_l('xhtmlDebug', '[wrong_element][text]'), $element) . '</p>';
+					echo '<p>' . sprintf(g_l('xhtmlDebug', '[wrong_element][text]'), $element) . '</p>';
 				}
 				if(isset($_SESSION['prefs']['xhtml_show_wrong_js']) && $_SESSION['prefs']['xhtml_show_wrong_js']){
-					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element), we_message_reporting::WE_MESSAGE_ERROR));
 				}
 				if(isset($_SESSION['prefs']['xhtml_show_wrong_error_log']) && $_SESSION['prefs']['xhtml_show_wrong_error_log']){
 					error_log(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element));

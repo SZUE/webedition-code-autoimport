@@ -191,26 +191,10 @@ right: 230px;
 
 .mceActionPanel #preview{
 /* padding-right:0px; */
-<?php
-/*
-print (we_base_browserDetect::isMAC()) ? "
-position:absolute;
-right: 125px;
-" : ""
-*/
-?>
 }
 
 #colorpicker #previewblock{
 margin-right:0;
-<?php
-/*
-print (we_base_browserDetect::isMAC()) ? "
-position:absolute;
-right: 205px;
-" : ""
-*/
-?>
 }
 
 #colorpicker #preview_wrapper{

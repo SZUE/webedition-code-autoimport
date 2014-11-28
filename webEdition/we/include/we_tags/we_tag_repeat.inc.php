@@ -21,8 +21,8 @@
 function we_parse_tag_repeat($attribs, $content){
 	return '<?php while(' . we_tag_tagParser::printTag('repeat', $attribs) . '){
 	if(isset($_SESSION[\'weS\'][\'we_mode\']) && $_SESSION[\'weS\'][\'we_mode\'] == we_base_constants::MODE_SEE){
-		print we_SEEM::getSeemAnchors();
-	}?>' . 
+		echo we_SEEM::getSeemAnchors();
+	}?>' .
 	$content . '<?php }?>';
 }
 

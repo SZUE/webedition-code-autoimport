@@ -67,5 +67,5 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) && ($we_transaction
 
 	$table .= '</tr></table>';
 
-	print we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin: 5px 5px 5px 5px'), $table) . "</html>";
+	echo we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin: 5px 5px 5px 5px'), $table) . "</html>";
 }

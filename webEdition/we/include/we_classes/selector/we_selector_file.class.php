@@ -280,7 +280,7 @@ function cutText(text,l){
 		?>
 		</head>
 		<?php
-		print $this->getFrameset();
+		echo $this->getFrameset();
 	}
 
 	function printFramesetUnselectFileHTML(){
@@ -662,7 +662,7 @@ function enableRootDirButs(){
 	}
 
 	function printCmdHTML(){
-		print we_html_element::jsElement('
+		echo we_html_element::jsElement('
 top.clearEntries();' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .

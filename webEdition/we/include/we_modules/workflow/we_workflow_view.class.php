@@ -489,7 +489,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 					case "delete_workflow":
 		<?php
 		if(!permissionhandler::hasPerm("DELETE_WORKFLOW")){
-			print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+			echo we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			?>
 							if (top.content.editor.edbody.loaded) {
@@ -507,7 +507,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 					case "save_workflow":
 		<?php
 		if(!permissionhandler::hasPerm("EDIT_WORKFLOW") && !permissionhandler::hasPerm("NEW_WORKFLOW")){
-			print we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+			echo we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			?>
 							if (top.content.editor.edbody.loaded) {

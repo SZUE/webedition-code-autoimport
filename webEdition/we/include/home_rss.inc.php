@@ -51,5 +51,5 @@ foreach($rss->getItems() as $item){
 			we_html_tools::getPixel(1, 10) . we_html_element::htmlBr();
 }
 $rss_out .= '</div>';
-print $rss_out .
+echo $rss_out .
 		'</body></html>';

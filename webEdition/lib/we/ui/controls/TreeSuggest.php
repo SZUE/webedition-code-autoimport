@@ -183,7 +183,7 @@ if($sessionName && $id){
 
 		$response .= ']}}';
 
-		print $response;
+		echo $response;
 	} else {
 		return;
 	}

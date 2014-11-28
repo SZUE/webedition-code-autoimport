@@ -71,12 +71,12 @@ $parts[] = array("headline" => "",
 );
 
 
-print STYLESHEET;
+echo STYLESHEET;
 ?>
 </head>
 <body class="weEditorBody">
 	<?php
-	print we_html_multiIconBox::getJS() .
+	echo we_html_multiIconBox::getJS() .
 		we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
 	?>
 </body>
