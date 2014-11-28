@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -28,10 +29,12 @@
  * Provides functions for exporting and importing backups. Extends we_backup.
  */
 class we_backup_backup extends we_backup_base{
+
 	const backupMarker = '<!-- webackup -->';
 	const weXmlExImHead = '<webEdition';
 	const weXmlExImFooter = '</webEdition>';
 	const weXmlExImProtectCode = '<?php exit();?>';
+	const logFile = 'data/lastlog.php';
 
 	var $header;
 	var $footer;
@@ -52,7 +55,7 @@ class we_backup_backup extends we_backup_base{
 
 	function __construct($handle_options = array()){
 		$this->header = '<?xml version="1.0" encoding="' . $GLOBALS['WE_BACKENDCHARSET'] . '" standalone="yes"?>' . $this->nl .
-			self::weXmlExImHead . ' version="' . WE_VERSION . '" type="backup" xmlns:we="we-namespace">' . $this->nl;
+				self::weXmlExImHead . ' version="' . WE_VERSION . '" type="backup" xmlns:we="we-namespace">' . $this->nl;
 		$this->footer = $this->nl . self::weXmlExImFooter;
 
 		$this->properties = array_push($this->properties, 'mode', 'filename', 'compress', 'backup_binary', 'rebuild', 'file_counter', 'file_end', 'row_count', 'file_list_count', 'old_objects_deleted');
@@ -133,8 +136,8 @@ class we_backup_backup extends we_backup_base{
 		if(!$this->isFixed($tablename) && $tablename != ""){
 			$tablename = $this->fixTableName($tablename);
 			$this->current_description = (isset($this->description["import"][strtolower($tablename)]) && $this->description["import"][strtolower($tablename)] ?
-					$this->description["import"][strtolower($tablename)] :
-					g_l('backup', '[working]'));
+							$this->description["import"][strtolower($tablename)] :
+							g_l('backup', '[working]'));
 
 			$object = we_exim_contentProvider::getInstance("we_backup_table", 0, $tablename);
 			$node_set2 = $xmlBrowser->getSet($nodeset);
@@ -150,8 +153,8 @@ class we_backup_backup extends we_backup_base{
 			}
 
 			if(
-				((defined('OBJECT_TABLE') && $object->table == OBJECT_TABLE) ||
-				(defined('OBJECT_FILES_TABLE') && $object->table == OBJECT_FILES_TABLE)) && $this->old_objects_deleted == 0){
+					((defined('OBJECT_TABLE') && $object->table == OBJECT_TABLE) ||
+					(defined('OBJECT_FILES_TABLE') && $object->table == OBJECT_FILES_TABLE)) && $this->old_objects_deleted == 0){
 				$this->delOldTables();
 				$this->old_objects_deleted = 1;
 			}
@@ -167,8 +170,8 @@ class we_backup_backup extends we_backup_base{
 		foreach($node_set2 as $nsv){
 			$index = $xmlBrowser->nodeName($nsv);
 			$content[$index] = (we_exim_contentProvider::needCoding($classname, $index, $nsv) ?
-					we_exim_contentProvider::decode($xmlBrowser->getData($nsv)) :
-					$xmlBrowser->getData($nsv));
+							we_exim_contentProvider::decode($xmlBrowser->getData($nsv)) :
+							$xmlBrowser->getData($nsv));
 		}
 		$attributes = $xmlBrowser->getAttributes($nodeset);
 
@@ -190,8 +193,8 @@ class we_backup_backup extends we_backup_base{
 		foreach($node_set2 as $nsv){
 			$index = $xmlBrowser->nodeName($nsv);
 			$content[$index] = (we_exim_contentProvider::needCoding($classname, $index, $nsv) ?
-					we_exim_contentProvider::decode($xmlBrowser->getData($nsv)) :
-					$xmlBrowser->getData($nsv));
+							we_exim_contentProvider::decode($xmlBrowser->getData($nsv)) :
+							$xmlBrowser->getData($nsv));
 		}
 		$object = we_exim_contentProvider::getInstance($classname, 0);
 		we_exim_contentProvider::populateInstance($object, $content);
@@ -260,8 +263,8 @@ class we_backup_backup extends we_backup_base{
 		}
 
 		return ($this->backup_extern == 1 && $this->backup_phase == 0 ?
-				$this->exportExtern() :
-				$this->exportTables());
+						$this->exportExtern() :
+						$this->exportTables());
 	}
 
 	/**
@@ -309,8 +312,8 @@ class we_backup_backup extends we_backup_base{
 					}
 
 					$this->current_description = (isset($this->description["export"][strtolower($table)]) ?
-							$this->description["export"][strtolower($table)] :
-							g_l('backup', '[working]'));
+									$this->description["export"][strtolower($table)] :
+									g_l('backup', '[working]'));
 
 					$keys = we_backup_tableItem::getTableKey($table);
 					$this->partial = false;
@@ -329,7 +332,7 @@ class we_backup_backup extends we_backup_base{
 							$xmlExport->exportChunk(implode(",", $keyvalue), "we_backup_tableItem", $this->dumpfilename, $table, $this->backup_binary);
 							++$this->backup_step;
 						}
-					} while(self::limitsReached($table, microtime(true) - $start));
+					}while(self::limitsReached($table, microtime(true) - $start));
 				}
 				$i++;
 				if($this->backup_step < $this->table_end && $this->backup_db->num_rows() != 0){
@@ -421,8 +424,8 @@ class we_backup_backup extends we_backup_base{
 		}
 
 		return ($this->mode === 'sql' ?
-				parent::restoreFromBackup($filename, $this->backup_extern) :
-				$this->recover($filename));
+						parent::restoreFromBackup($filename, $this->backup_extern) :
+						$this->recover($filename));
 	}
 
 	function getVersion($file){
@@ -502,8 +505,8 @@ class we_backup_backup extends we_backup_base{
 
 	function addToFileList($file, $rem_doc_root = true){
 		$this->file_list[] = ($rem_doc_root ?
-				str_replace($_SERVER['DOCUMENT_ROOT'], '', $file) :
-				$file);
+						str_replace($_SERVER['DOCUMENT_ROOT'], '', $file) :
+						$file);
 	}
 
 	function getSiteFiles(){
