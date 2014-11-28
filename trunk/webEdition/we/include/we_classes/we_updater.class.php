@@ -99,6 +99,7 @@ class we_updater{
 	}
 
 	static function fix_user(we_database_base $db){
+		//FIXME: since this is done ever and ever, remove this after 6.4.3
 		$db2 = new DB_WE();
 		$db->query('SELECT ID,username,ParentID,Path FROM ' . USER_TABLE);
 		while($db->next_record()){
@@ -127,7 +128,7 @@ class we_updater{
 
 	static function updateUnindexedCols($tab, $col){
 		global $DB_WE;
-		$DB_WE->query("SHOW COLUMNS FROM " . $DB_WE->escape($tab) . " LIKE '" . $DB_WE->escape($col) . "'");
+		$DB_WE->query('SHOW COLUMNS FROM ' . $DB_WE->escape($tab) . " LIKE '" . $DB_WE->escape($col) . "'");
 		$query = array();
 		while($DB_WE->next_record()){
 			if(!$DB_WE->f('Key')){
@@ -140,8 +141,6 @@ class we_updater{
 	}
 
 	static function updateUsers(we_database_base $DB_WE){
-		$DB_WE->query('UPDATE ' . USER_TABLE . " SET IsFolder=1 WHERE Type=" . we_users_user::TYPE_USER_GROUP);
-
 		self::fix_user($DB_WE);
 
 		$DB_WE->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value NOT LIKE "%_UTF-8%" OR value!="") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
@@ -384,6 +383,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 							'Description' => $data['default']['Description'],
 						)) . ' WHERE ID=' . $db->f('ID'));
 			}
+			//FIXME: enable this, & change to existent after 6.4
 			//$db->delCol(CATEGORY_TABLE, 'Catfields');
 		}
 	}
@@ -402,7 +402,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 			}
 			self::replayUpdateDB('tblhistory.sql');
 		}
-		if(f('SELECT COUNT(1) c FROM ' . HISTORY_TABLE . ' GROUP BY UID HAVING c>' . we_history::MAX . ' LIMIT 1')){
+		if(f('SELECT COUNT(1) FROM ' . HISTORY_TABLE . ' GROUP BY UID HAVING c>' . we_history::MAX . ' LIMIT 1')){
 			$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE ModDate="0000-00-00 00:00:00"');
 			$db->query('RENAME TABLE ' . HISTORY_TABLE . ' TO old' . HISTORY_TABLE);
 			//create clean table
@@ -414,13 +414,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 				$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE UID=' . $uid . ' ORDER BY ModDate DESC LIMIT ' . ($cnt - we_history::MAX));
 			}
 			$db->query('DROP TABLE old' . HISTORY_TABLE);
-		}
-	}
-
-	static function udpateNewsletter(we_database_base $db){
-		if($db->isColExist(NEWSLETTER_LOG_TABLE, 'LogTime')){
-			$db->query('UPDATE ' . NEWSLETTER_LOG_TABLE . ' SET stamp=FROM_UNIXTIME(LogTime)');
-			$db->delCol(NEWSLETTER_LOG_TABLE, 'LogTime');
 		}
 	}
 
@@ -439,7 +432,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		self::updateGlossar();
 		self::updateCats();
 		self::fixHistory();
-		self::udpateNewsletter($db);
 		self::replayUpdateDB();
 	}
 

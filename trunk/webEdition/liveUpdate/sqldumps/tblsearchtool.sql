@@ -1,6 +1,6 @@
 ###UPDATEONLY###DELETE FROM ###TBLPREFIX###tblsearchtool WHERE predefined=1 AND ID>13;
 /* query separator */
-###UPDATEONLY###UPDATE ###TBLPREFIX###tblsearchtool SET ID=ID+25 WHERE ID<25;
+###UPDATEONLY###UPDATE ###TBLPREFIX###tblsearchtool SET ID=ID+25 WHERE ID<25 AND predefined=0;
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblsearchtool (

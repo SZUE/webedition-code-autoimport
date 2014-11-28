@@ -7,3 +7,9 @@ CREATE TABLE ###TBLPREFIX###tblNewsletterLog (
   PRIMARY KEY  (ID),
   KEY NewsletterID (NewsletterID,stamp)
 ) ENGINE=MyISAM;
+
+/* query separator */
+###ONCOL(LogTime,###TBLPREFIX###tblNewsletterLog) UPDATE ###TBLPREFIX###tblNewsletterLog SET stamp=FROM_UNIXTIME(LogTime);###
+
+/* query separator */
+###ONCOL(LogTime,###TBLPREFIX###tblNewsletterLog) ALTER TABLE ###TBLPREFIX###tblNewsletterLog DROP LogTime;###
