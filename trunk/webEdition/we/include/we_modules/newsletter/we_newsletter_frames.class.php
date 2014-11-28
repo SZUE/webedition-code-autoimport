@@ -341,16 +341,16 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 	}
 
 	function getHTMLLog(){
-		$content = "";
 		$start = we_base_request::_(we_base_request::INT, 'newsletterStartTime', 0);
 		$end = we_base_request::_(we_base_request::INT, 'newsletterEndTime', 0);
 		$status = we_base_request::_(we_base_request::INT, 'newsletterStatus');
-		$this->View->db->query('SELECT * FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ($status !== false ? ' AND Log=' . $status : '') . ($start && $end ? ' AND LogTime BETWEEN ' . $start . ' AND ' . $end : '') . ' ORDER BY LogTime DESC');
+		$this->View->db->query('SELECT Log,Param,DATE_FORMAT(stamp,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS LogTime FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ($status !== false ? ' AND Log=' . $status : '') . ($start && $end ? ' AND stamp BETWEEN FROM_UNIXTIME(' . $start . ') AND FROM_UNIXTIME(' . $end . ')' : '') . ' ORDER BY stamp DESC');
 
+		$content = "";
 		while($this->View->db->next_record()){
 			$log = g_l('modules_newsletter', '[' . $this->View->db->f('Log') . ']');
 			$param = $this->View->db->f("Param");
-			$content.=we_html_element::htmlDiv(array("class" => "defaultfont"), date(g_l('weEditorInfo', '[date_format_sec]'), $this->View->db->f("LogTime")) . '&nbsp;' . ($param ? sprintf($log, $param) : $log));
+			$content.=we_html_element::htmlDiv(array("class" => "defaultfont"), $this->View->db->f("LogTime") . '&nbsp;' . ($param ? sprintf($log, $param) : $log));
 		}
 
 		return $this->getHTMLDocument(
@@ -374,25 +374,25 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 			return we_util_Strings::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']));
 		}
 
-		$parts = array();
-
-		$this->View->db->query('SELECT * FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ' AND Log != \'log_save_newsletter\' AND (Log = \'log_start_send\' OR Log = \'log_end_send\') ORDER BY LogTime ASC');
+		$this->View->db->query('SELECT Log,stamp,DATE_FORMAT(stamp,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS LogTime FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ' AND Log IN(\'log_start_send\', \'log_end_send\') ORDER BY stamp ASC');
 
 		$newsletterMailOrders = array();
 		$newsletterMailOrdersCnt = 0;
 
 		while($this->View->db->next_record()){
 			if($this->View->db->f("Log") === "log_start_send"){
-				$newsletterMailOrdersCnt++;
-				$newsletterMailOrders[$newsletterMailOrdersCnt]['start_send'] = $this->View->db->f("LogTime");
+				$newsletterMailOrders[++$newsletterMailOrdersCnt]['start_send'] = $this->View->db->f("stamp");
+				$newsletterMailOrders[$newsletterMailOrdersCnt]['startTime'] = $this->View->db->f("LogTime");
 			} else {
-				$newsletterMailOrders[$newsletterMailOrdersCnt]['end_send'] = $this->View->db->f("LogTime");
+				$newsletterMailOrders[$newsletterMailOrdersCnt]['end_send'] = $this->View->db->f("stamp");
 			}
 		}
 
-		foreach($newsletterMailOrders as $newsletterMailOrder){
+		$parts = array();
+
+		foreach($newsletterMailOrders as $key => $newsletterMailOrder){
 			$table = new we_html_table(array('cellpadding' => 3, 'cellspacing' => 0, 'border' => 0, 'class' => 'defaultfont', 'style' => 'width: 588px'), 1, 5);
-			$this->View->db->query('SELECT Log,count(*) FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ' AND (Log != \'log_start_send\' AND Log != \'log_end_send\') AND LogTime BETWEEN ' . $newsletterMailOrder['start_send'] . ' AND ' . $newsletterMailOrder['end_send'] . ' GROUP BY Log');
+			$this->View->db->query('SELECT Log,COUNT(*) FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ' AND Log NOT IN (\'log_start_send\',\'log_end_send\') AND stamp BETWEEN "' . $newsletterMailOrder['start_send'] . '" AND "' . $newsletterMailOrder['end_send'] . '" GROUP BY Log');
 
 			$results = array();
 			while($this->View->db->next_record(MYSQL_NUM)){
@@ -401,7 +401,6 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 			}
 
 			$allRecipients = array_sum($results);
-			$key = $newsletterMailOrder['start_send']; //for html and js
 
 			/* process bar blocked by blacklist */
 			$allBlockedByBlacklist = (array_key_exists("email_is_black", $results) ? $results['email_is_black'] : 0);
@@ -460,7 +459,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 			$table->setCol(4, 2, array('colspan' => 2, "style" => "padding: 0 5px 0 5px;"), we_html_element::htmlB($allRecipients));
 
 			$parts[] = array(
-				"headline" => g_l('modules_newsletter', '[reporting][mailing_send_at]') . '&nbsp;' . date(g_l('weEditorInfo', '[date_format_sec]'), $key),
+				"headline" => g_l('modules_newsletter', '[reporting][mailing_send_at]') . '&nbsp;' . $newsletterMailOrder['startTime'],
 				"html" => $table->getHTML() . we_html_element::htmlBr()
 			);
 		}
