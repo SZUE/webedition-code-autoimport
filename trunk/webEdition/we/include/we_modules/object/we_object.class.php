@@ -1163,7 +1163,7 @@ class we_object extends we_document{
 					$selectShopPath = self::htmlSelect('we_' . $this->Name . '_input[' . $name . 'shopcatShowPath]', $values, 1, $this->getElement($name . 'shopcatShowPath', 'dat'));
 					$textRootdir = self::htmlTextInput('we_' . $this->Name . '_input[' . $name . 'shopcatRootdir]', 24, $value = $this->getElement($name . 'shopcatRootdir', 'dat'));
 
-					$selectCategories = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . 'default]', we_shop_category::getShopCategories('Path'), 1, $this->getElement($name . 'default', 'dat'), false, array(), 'value', 388);
+					$selectCategories = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . 'default]', we_shop_category::getFieldFromAll('Path'), 1, $this->getElement($name . 'default', 'dat'), false, array(), 'value', 388);
 					$checkUseDefault = we_html_forms::checkboxWithHidden((abs($this->getElement($name . 'shopcatUseDefault', 'dat')) == '1' ? true : false), 'we_' . $this->Name . '_input[' . $name . 'shopcatUseDefault]', 'use default only', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 
 					$content .= '<tr valign="top">

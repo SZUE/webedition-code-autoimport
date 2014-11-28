@@ -1134,7 +1134,7 @@ class we_objectFile extends we_document{
 				$input = we_class::htmlSelect('dummy', $values, 1, 0, false, array('disabled' => 'disabled')) .
 						we_html_element::htmlHidden(array('name' => 'we_' . $this->Name . '_shopCategory[' . $name . ']', 'value' => $attribs['default']));
 			} else {
-				$input = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . ']', we_shop_category::getShopCategories('Path'), 1, ($this->getElement($name) ? : $attribs['default']));
+				$input = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . ']', we_shop_category::getFieldFromAll('Path'), 1, ($this->getElement($name) ? : $attribs['default']));
 			}
 
 			return
@@ -1143,7 +1143,7 @@ class we_objectFile extends we_document{
 				<tr><td>' . $input . '</td></tr>
 			</table>';
 		}
-		$val = we_shop_category::getShopCategoriesFromIDs($this->getElement($name), $attribs['shopcatField'], false, 0, '', false, false, ',', ($attribs['shopcatShowPath'] == 'false' ? false : true), $attribs['shopcatRootdir']);
+		$val = we_shop_category::getFieldFromIDs($this->getElement($name), $attribs['shopcatField'], false, 0, '', false, false, ',', ($attribs['shopcatShowPath'] == 'false' ? false : true), $attribs['shopcatRootdir']);
 
 		return $this->getPreviewView($name, $val);
 	}
