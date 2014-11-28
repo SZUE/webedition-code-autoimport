@@ -53,7 +53,7 @@ abstract class we_backup_preparer{
 			'backup_steps' => 5,
 			'backup_log' => we_base_request::_(we_base_request::BOOL, 'backup_log'),
 			'backup_log_data' => '',
-			'backup_log_file' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/lastlog.php',
+			'backup_log_file' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . we_backup_backup::logFile,
 			'limits' => array(
 				'mem' => we_convertIniSizes(ini_get('memory_limit')),
 				'exec' => min(30, ini_get('max_execution_time')),

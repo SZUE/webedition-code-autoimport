@@ -30,11 +30,6 @@ if(function_exists('apache_setenv')){
 }
 ini_set('zlib.output_compression', 0);
 
-//make sure we will have at least an good timestamp
-if(isset($_SESSION['weS']['weBackupVars']) && !empty($_SESSION['weS']['weBackupVars'])){
-	we_backup_backup::limitsReached('', 1);
-}
-
 $cmd = we_base_request::_(we_base_request::STRING, 'cmd');
 if(!$cmd){
 	t_e('called without command');
