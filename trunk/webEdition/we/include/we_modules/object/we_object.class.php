@@ -1156,23 +1156,15 @@ class we_object extends we_document{
 				break;
 			case we_objectFile::TYPE_SHOPCATEGORY:
 				if(defined('SHOP_TABLE')){
-					$values = array('0' => '', 'ID' => 'ID', 'Path' => 'Path', 'Title' => 'Title', 'Description' => 'Description');
+					$values = array('0' => '', 'ID' => 'ID', 'Category' => 'Category', 'Path' => 'Path', 'Title' => 'Title', 'Description' => 'Description', 'destPrinciple' => 'destPrinciple');
 					$selectField = self::htmlSelect('we_' . $this->Name . '_input[' . $name . 'shopcatField]', $values, 1, $this->getElement($name . 'shopcatField', 'dat'));
 
 					$values = array('true' => 'true', 'false' => 'false');
 					$selectShopPath = self::htmlSelect('we_' . $this->Name . '_input[' . $name . 'shopcatShowPath]', $values, 1, $this->getElement($name . 'shopcatShowPath', 'dat'));
 					$textRootdir = self::htmlTextInput('we_' . $this->Name . '_input[' . $name . 'shopcatRootdir]', 24, $value = $this->getElement($name . 'shopcatRootdir', 'dat'));
 
-					//TODO: make some class we_shop_categories class with static functions getShopCatDir and getShopCategories (to feed select directly)
-					$pref = getHash('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE pref_name="shop_cats_dir"', $this->DB_WE);
-					$parentPath = we_category::we_getCatsFromIDs($pref['pref_value'], ',', true, $this->DB_WE, '', 'Path');
-					$this->DB_WE->query('SELECT ID, Text, PATH, IsFolder FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $parentPath . '/%"');
-					$values = array();
-					while($this->DB_WE->next_record()){
-						$values[$this->DB_WE->f('ID')] = $this->DB_WE->f('PATH');
-					}
-					$selectCategories = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . 'default]', $values, 1, $this->getElement($name . 'default', 'dat'), false, array(), 'value', 388);
-					$checkUseDefault = we_html_forms::checkboxWithHidden((abs($this->getElement($name . 'shopcatUseDefault', 'dat')) == '1' ? true : false), 'we_' . $this->Name . '_input[' . $name . 'shopcatUseDefault]', 'use default (no select)', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+					$selectCategories = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . 'default]', we_shop_category::getShopCategories('Path'), 1, $this->getElement($name . 'default', 'dat'), false, array(), 'value', 388);
+					$checkUseDefault = we_html_forms::checkboxWithHidden((abs($this->getElement($name . 'shopcatUseDefault', 'dat')) == '1' ? true : false), 'we_' . $this->Name . '_input[' . $name . 'shopcatUseDefault]', 'use default only', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 
 					$content .= '<tr valign="top">
 							<td  width="100" class="defaultfont"  valign="top"></td>

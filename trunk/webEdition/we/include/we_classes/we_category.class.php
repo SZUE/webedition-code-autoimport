@@ -114,31 +114,49 @@ class we_category extends weModelBase{
 				'');
 	}
 
-	static function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false, $noDirs = false){
+	static function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false, $assoc = false, $noDirs = false, $complete = false){
 		if(!$catIDs){
 			return $asArray ? array() : '';
 		}
+		return self::we_getCategories($catIDs, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir, $asArray, $noDirs, $complete);
+	}
+
+	static function we_getCategories($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false, $assoc = false, $noDirs = false, $complete = false){
 		$db = ($db ? : new DB_WE());
-//$foo = makeArrayFromCSV($catIDs);
 		$cats = array();
+		$whereIDs = trim($catIDs, ',') ? ' ID IN(' . trim($catIDs, ',') . ')' : 1;
+		$wherePath = ' AND Path LIKE "' . $onlyindir . '/%"';
 		$field = $catfield ? : ($showpath ? 'Path' : 'Category');
+		$asArray = $complete ? : $asArray;
 		$showpath &=!$catfield;
-		$db->query('SELECT ID,Path,Category,Title,Description FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . trim($catIDs, ',') . ')' . ($noDirs ? ' AND IsFolder=0' : ''));
+
+		$db->query('SELECT ID,Path,Category,Title,Description, IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ' . $whereIDs . $wherePath . ($noDirs ? ' AND IsFolder=0' : ''));
 		while($db->next_record()){
 			$data = $db->getRecord();
-			if(!($onlyindir) || strpos($data['Path'], $onlyindir) === 0){
-				$cats[] = ($field === 'Description' ?
-						we_document::parseInternalLinks($data[$field], 0) :
-						$data[$field]);
-			}
-		}
-		if(($showpath || $catfield === 'Path') && strlen($rootdir)){
-			foreach($cats as &$cat){
-				if(substr($cat, 0, strlen($rootdir)) == $rootdir){
-					$cat = substr($cat, strlen($rootdir));
+			if(!$complete){
+				$cat = ($field === 'Description' ? we_document::parseInternalLinks($data[$field], 0) : $data[$field]);
+				if(($showpath || $catfield === 'Path') && strlen($rootdir)){
+					if(substr($cat, 0, strlen($rootdir)) == $rootdir){
+						$cat = substr($cat, strlen($rootdir));
+					}
 				}
+				if($assoc){
+					$cats[$data['ID']] = $cat;
+				} else {
+					$cats[] = $cat;
+				}
+			} else {//we return complete data allways as associative arrays
+				$cats[$data['ID']] = array(
+					'ID' => $data['ID'],
+					'Path' => $data['Path'],
+					'Category' => $data['Category'],
+					'Title' => $data['Title'],
+					'Description' => $data['Description'],
+					'IsFolder' => $data['IsFolder']
+				);
 			}
 		}
+
 		return $asArray ? $cats : makeCSVFromArray($cats, false, $tokken);
 	}
 

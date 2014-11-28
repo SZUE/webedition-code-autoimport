@@ -14,9 +14,20 @@ $this->Attributes[] = new weTagData_selectAttribute('doc', array(
 	), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_textAttribute('rootdir', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('field', array(
+$this->Attributes[] = new weTagData_selectAttribute('show', array(new weTagDataOption(''), new weTagDataOption('category'), new weTagDataOption('vat')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('catfield', array(
 	new weTagDataOption('ID'),
+	new weTagDataOption('Category'),
 	new weTagDataOption('Path'),
 	new weTagDataOption('Title'),
 	new weTagDataOption('Description'),
+	new weTagDataOption('destPrinciple')
+	), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('vatfield', array(
+	new weTagDataOption('id'),
+	new weTagDataOption('vat'),
+	new weTagDataOption('text'),
+	new weTagDataOption('standard'),
+	new weTagDataOption('territory'),
+	new weTagDataOption('categories')
 	), false, '');
