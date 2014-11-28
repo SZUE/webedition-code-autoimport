@@ -90,14 +90,14 @@ if(defined('WORKFLOW_TABLE')){
 	);
 }
 
-print STYLESHEET .
+echo STYLESHEET .
 	we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>
 <body class="weEditorBody" onunload="doUnload()">
 	<?php
-	print we_html_multiIconBox::getJS() .
+	echo we_html_multiIconBox::getJS() .
 		we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
 	?>
 </body>

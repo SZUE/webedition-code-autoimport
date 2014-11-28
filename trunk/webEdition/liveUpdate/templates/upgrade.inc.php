@@ -48,4 +48,4 @@ $content = '
 </tr>
 </table>';
 
-print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[upgrade][headline]'), $content);
+echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[upgrade][headline]'), $content);

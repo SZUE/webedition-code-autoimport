@@ -57,20 +57,20 @@ top.clearEntries();
 			$this->db->query("SELECT ID FROM " . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "'");
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('weEditor', '[folder][response_path_exists]'), $folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('-[<>?":|\\/*]-', $folder->Filename)){
 					$we_responseText = sprintf(g_l('weEditor', '[folder][we_filename_notValid]'), $folder->Path);
-					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				} else {
 					$folder->we_save();
-					print 'var ref;
+					echo 'var ref;
 if(top.opener.top.content.makeNewEntry) ref = top.opener.top.content;
 else if(top.opener.top.opener) ref = top.opener.top.opener.top;
 ref.makeNewEntry("' . $folder->Icon . '",' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1,"' . $folder->ContentType . '","' . $this->table . '");
 ';
 					if($this->canSelectDir){
-						print 'top.currentPath = "' . $folder->Path . '";
+						echo 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 ';
@@ -112,22 +112,22 @@ top.clearEntries();
 			$this->db->query("SELECT ID,Text FROM " . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "' AND ID != " . intval($this->we_editDirID));
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('weEditor', '[folder][response_path_exists]'), $folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('-[<>?":|\\/*]-', $folder->Filename)){
 					$we_responseText = sprintf(g_l('weEditor', '[folder][we_filename_notValid]'), $folder->Path);
-					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				} else {
 					if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), "Text", $this->db) != $txt){
 						$folder->we_save();
-						print 'var ref;
+						echo 'var ref;
 if(top.opener.top.content.makeNewEntry) ref = top.opener.top.content;
 else if(top.opener.top.opener) ref = top.opener.top.opener.top;
 ';
-						print 'ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '","' . $this->table . '");
+						echo 'ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '","' . $this->table . '");
 ';
 						if($this->canSelectDir){
-							print 'top.currentPath = "' . $folder->Path . '";
+							echo 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 ';
@@ -138,7 +138,7 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 		}
 
 
-		print $this->printCmdAddEntriesHTML() .
+		echo $this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
 				'top.makeNewFolder = 0;
 top.selectFile(top.currentID);

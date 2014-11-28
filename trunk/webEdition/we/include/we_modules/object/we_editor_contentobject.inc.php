@@ -42,7 +42,7 @@ if($we_doc->CSS){
 	foreach($cssArr as $cs){
 		$path = id_to_path($cs);
 		if($path){
-			print we_html_element::cssLink($path);
+			echo we_html_element::cssLink($path);
 		}
 	}
 }

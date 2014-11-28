@@ -36,7 +36,7 @@ $content = '<p class="defaultfont">' . g_l('alert', '[no_perms_action]') . '</p>
 </head>
 
 <body class="weDialogBody"><?php
-	print we_html_tools::htmlDialogLayout($content, g_l('alert', '[no_perms_title]'));
+	echo we_html_tools::htmlDialogLayout($content, g_l('alert', '[no_perms_title]'));
 	?>
 </body>
 </html>

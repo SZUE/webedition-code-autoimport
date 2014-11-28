@@ -377,7 +377,7 @@ if(top.currentID){
 			}
 		}
 
-		print we_html_element::jsElement(
+		echo we_html_element::jsElement(
 				$js .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .

@@ -27,7 +27,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $dialog = new we_dialog_fullscreenEdit();
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoFullscreenJS");
-print $dialog->getHTML();
+echo $dialog->getHTML();
 
 function weDoFullscreenJS(){
 	return '

@@ -143,7 +143,7 @@ if($weFileupload->processFileRequest()){
 	<script type="text/javascript"><!--
 	<?php
 	if($we_alerttext){
-		print we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
+		echo we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
 		if($error){
 			?>
 			top.close();

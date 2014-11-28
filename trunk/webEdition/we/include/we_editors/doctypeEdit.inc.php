@@ -64,7 +64,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 					$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
 					$we_show_response = 1;
 				} else {
-					print "ERROR";
+					echo "ERROR";
 				}
 			}
 		}
@@ -172,7 +172,7 @@ if($we_show_response){
 		?>
 		opener.top.toggleBusy(0);
 		<?php
-		print we_message_reporting::getShowMessageCall($we_responseText, $we_response_type);
+		echo we_message_reporting::getShowMessageCall($we_responseText, $we_response_type);
 	}
 }
 switch($wecmd0){
@@ -255,7 +255,7 @@ function we_cmd() {
 <?php
 $GLOBALS['DB_WE']->query('SELECT CONCAT("\'",REPLACE(DocType,"\'","\\\\\'"),"\'") FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType');
 $dtNames = implode(',', $GLOBALS['DB_WE']->getAll(true));
-print 'var docTypeNames = new Array(' . $dtNames . ');';
+echo 'var docTypeNames = new Array(' . $dtNames . ');';
 ?>
 
 			var name = prompt("<?php echo g_l('weClass', '[newDocTypeName]'); ?>", "");
@@ -391,7 +391,7 @@ function disableLangDefault(allnames, allvalues, deselect) {
 				'<div align="right">' . $cancelbut . '</div>');
 
 
-		print we_html_multiIconBox::getJS() .
+		echo we_html_multiIconBox::getJS() .
 			we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, "", "", 630) .
 			$yuiSuggest->getYuiCss() .
 			$yuiSuggest->getYuiJs();

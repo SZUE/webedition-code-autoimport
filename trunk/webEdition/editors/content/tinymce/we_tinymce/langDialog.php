@@ -58,8 +58,8 @@ if(defined('GLOSSARY_TABLE') && we_base_request::_(we_base_request::BOOL, 'weSav
 $dialog = new we_dialog_lang($noInternals);
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoLangJS");
-print $dialog->getHTML();
-print $appendJS;
+echo $dialog->getHTML().
+		$appendJS;
 
 function weDoLangJS(){
 	return '

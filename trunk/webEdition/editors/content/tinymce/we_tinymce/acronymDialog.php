@@ -69,8 +69,8 @@ if(defined('GLOSSARY_TABLE') && we_base_request::_(we_base_request::BOOL, 'weSav
 $dialog = new we_dialog_acronym($noInternals);
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoAcronymJS");
-print $dialog->getHTML();
-print $appendJS;
+echo $dialog->getHTML().
+		$appendJS;
 
 function weDoAcronymJS(){
 	return '

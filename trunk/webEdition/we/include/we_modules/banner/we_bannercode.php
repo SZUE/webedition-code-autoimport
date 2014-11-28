@@ -195,7 +195,7 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 
 		$buttons = $ok ? we_html_button::position_yes_no_cancel($close_button, null, $back_button) : we_html_button::position_yes_no_cancel($ok_button, null, $cancel_button);
 
-		print we_html_tools::htmlDialogLayout($content, g_l('modules_banner', $ok ? '[bannercode_copy]' : '[bannercode_ext]'), $buttons);
+		echo we_html_tools::htmlDialogLayout($content, g_l('modules_banner', $ok ? '[bannercode_copy]' : '[bannercode_ext]'), $buttons);
 		?>
 	</form>
 </body>

@@ -38,7 +38,7 @@ $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['us
 $dialog = new we_dialog_Hyperlink('', '', 0, 0, $noInternals);
 $dialog->initByHttp();
 $dialog->registerCmdFn('weDoLinkCmd');
-print $dialog->getHTML();
+echo $dialog->getHTML();
 
 function weDoLinkCmd($args){
 	if((!isset($args['href'])) || $args['href'] == we_base_link::EMPTY_EXT){

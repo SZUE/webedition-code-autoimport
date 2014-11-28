@@ -121,7 +121,7 @@ function clearEntry(id,ip) {
 	}
 }');
 
-	print getHTMLDocument($body, $script);
+	echo getHTMLDocument($body, $script);
 }
 
 function getHTMLDocument($body, $head = ""){

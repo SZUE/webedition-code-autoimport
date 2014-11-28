@@ -243,20 +243,20 @@ top.clearEntries();
 			$folder->Path = $folder->getPath();
 			$this->db->query("SELECT ID FROM " . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "'");
 			if($this->db->next_record()){
-				print we_message_reporting::getShowMessageCall(g_l('modules_voting', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+				echo we_message_reporting::getShowMessageCall(g_l('modules_voting', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				if(we_voting_voting::filenameNotValid($folder->Text)){
-					print we_message_reporting::getShowMessageCall(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+					echo we_message_reporting::getShowMessageCall(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 				} else {
 					$folder->we_save();
-					print 'var ref;
+					echo 'var ref;
 if(top.opener.top.content.makeNewEntry){
 	ref = top.opener.top.content;
 	ref.makeNewEntry("' . we_base_ContentTypes::FOLDER_ICON . '",' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1,"folder","' . $this->table . '",1);
 }
 ';
 					if($this->canSelectDir){
-						print 'top.currentPath = "' . $folder->Path . '";
+						echo 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 ';
@@ -311,7 +311,7 @@ top.clearEntries();
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if(!$txt){
-			print we_message_reporting::getShowMessageCall(g_l('modules_voting', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			echo we_message_reporting::getShowMessageCall(g_l('modules_voting', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);
@@ -321,22 +321,22 @@ top.clearEntries();
 			$this->db->query("SELECT ID,Text FROM " . $this->db->escape($this->table) . " WHERE Path='" . $folder->Path . "' AND ID != '" . $this->we_editDirID . "'");
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('modules_voting', '[folder_exists]'), $folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('/[%/\\"\']/', $folder->Text)){
 					$we_responseText = g_l('modules_voting', '[wrongtext]');
-					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				} else {
 					if(f("SELECT Text FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->we_editDirID), "Text", $this->db) != $txt){
 						$folder->we_save();
-						print 'var ref;
+						echo 'var ref;
 if(top.opener.top.content.updateEntry){
 	ref = top.opener.top.content;
 	ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '",1);
 }
 ';
 						if($this->canSelectDir){
-							print 'top.currentPath = "' . $folder->Path . '";
+							echo 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 ';

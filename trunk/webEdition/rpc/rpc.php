@@ -62,7 +62,7 @@ $_shell = new rpcCmdShell($_REQUEST, $protocol);
 
 if($_shell->getStatus() == rpcCmd::STATUS_OK){
 	$_shell->executeCommand();
-	print $_shell->getResponse();
+	echo $_shell->getResponse();
 } else { // there was an error in initializing the command
 	dieWithError($_shell->getErrorOut(), $protocol);
 }

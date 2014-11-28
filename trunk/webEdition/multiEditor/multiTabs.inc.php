@@ -92,7 +92,7 @@ switch($browser->getBrowser()){
 }
 $frameDefaultHeight = 22;
 
-print we_html_element::jsElement($content = $_contentTypes);
+echo we_html_element::jsElement($content = $_contentTypes);
 ?>
 <script type="text/javascript"><!--
 	function _getIcon(contentType, extension) {

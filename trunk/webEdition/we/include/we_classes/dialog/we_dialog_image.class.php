@@ -431,7 +431,7 @@ class we_dialog_image extends we_dialog_base{
 						if(typeof top.document.we_form["tinyMCEInitRatioW"] !== "undefined") top.document.we_form[["tinyMCEInitRatioW"]].value = rw;
 					';
 
-					print we_html_tools::getHtmlTop() . we_html_element::jsElement($js) . "</head></html>";
+					echo we_html_tools::getHtmlTop() . we_html_element::jsElement($js) . "</head></html>";
 					break;
 				default:
 			}

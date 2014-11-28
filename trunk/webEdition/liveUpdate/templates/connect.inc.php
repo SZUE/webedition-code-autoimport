@@ -37,4 +37,4 @@ $content = '
 	' . $checkButton . '
 </div>';
 
-print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[connect][headline]'), $content);
+echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[connect][headline]'), $content);

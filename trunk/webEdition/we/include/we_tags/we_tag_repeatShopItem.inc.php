@@ -43,7 +43,7 @@ function we_tag_repeatShopItem($attribs){
 	switch($_type){
 		case 'start':
 			if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__))){
-				print $foo;
+				echo $foo;
 				return;
 			}
 			we_base_moduleInfo::isActive('shop');

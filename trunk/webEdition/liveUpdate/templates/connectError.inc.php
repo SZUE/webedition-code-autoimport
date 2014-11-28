@@ -93,4 +93,4 @@ $content = '
 	' . g_l('liveUpdate', '[connect][connectionError]') . '
 </div>' . we_html_element::jsElement('alert("' . g_l('liveUpdate', '[connect][connectionErrorJs]') . '");') . $errorMessage;
 
-print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[connect][headline]'), $content);
+echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[connect][headline]'), $content);

@@ -35,7 +35,7 @@ function we_parse_tag_customer($attribs, $content, array $arr){
 
 function we_tag_customer($attribs){
 	if(!defined('WE_CUSTOMER_MODULE_PATH')){
-		print modulFehltError('Customer', __FUNCTION__);
+		echo modulFehltError('Customer', __FUNCTION__);
 		return false;
 	}
 
@@ -52,7 +52,7 @@ function we_tag_customer($attribs){
 
 	if($name){
 		if(strpos($name, ' ') !== false){
-			print parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
+			echo parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
 			return false;
 		}
 

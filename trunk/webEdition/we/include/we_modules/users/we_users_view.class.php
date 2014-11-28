@@ -432,7 +432,7 @@ function we_cmd(){
 
 			case "new_alias":
 				if(!permissionhandler::hasPerm("NEW_USER")){
-					print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 
@@ -448,7 +448,7 @@ function we_cmd(){
 				$user_object->initType(we_users_user::TYPE_ALIAS);
 
 				$_SESSION["user_session_data"] = $user_object;
-				print we_html_element::jsElement('
+				echo we_html_element::jsElement('
 		top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
 		top.content.editor.edbody.location="' . $this->frameset . '?pnt=edbody";
 		top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
@@ -494,7 +494,7 @@ function we_cmd(){
 					$user_object = new we_users_user();
 					$user_object->initFromDB($uid);
 					if(!permissionhandler::hasPerm("ADMINISTRATOR") && $user_object->checkPermission("ADMINISTRATOR")){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
 						$user_object = new we_users_user();
 						break;
 					}
@@ -599,7 +599,7 @@ function we_cmd(){
 				if($user_object){
 
 					if(!permissionhandler::hasPerm("SAVE_USER") && ($user_object->Type == we_users_user::TYPE_USER || $user_object->Type == we_users_user::TYPE_ALIAS) && $user_object->ID != 0){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 					if(!permissionhandler::hasPerm("NEW_USER") && ($user_object->Type == we_users_user::TYPE_USER || $user_object->Type == we_users_user::TYPE_ALIAS) && $user_object->ID == 0){
@@ -702,12 +702,12 @@ function we_cmd(){
 					$user_object = $_SESSION["user_session_data"];
 
 					if($user_object->ID == $_SESSION["user"]["ID"]){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[delete_user_same]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[delete_user_same]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
 					if(we_users_util::isUserInGroup($_SESSION["user"]["ID"], $user_object->ID)){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[delete_group_user_same]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[delete_group_user_same]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
@@ -726,13 +726,13 @@ function we_cmd(){
 					}
 
 					if(isset($GLOBALS["user"]) && $user_object->Text == $GLOBALS["user"]["Username"]){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[user_same]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[user_same]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 
 					if($user_object->checkPermission("ADMINISTRATOR")){
 						if($user_object->isLastAdmin()){
-							print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[modify_last_admin]'), we_message_reporting::WE_MESSAGE_ERROR));
+							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[modify_last_admin]'), we_message_reporting::WE_MESSAGE_ERROR));
 							exit();
 						}
 					}
@@ -749,7 +749,7 @@ function we_cmd(){
 							$question = sprintf(g_l('modules_users', '[delete_alert_user]'), $user_object->Text);
 							break;
 					}
-					print we_html_element::jsElement('
+					echo we_html_element::jsElement('
 		if(confirm("' . $question . '")){
 			top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=do_delete";
 		}');
@@ -759,15 +759,15 @@ function we_cmd(){
 				if($_SESSION['user_session_data']){
 					$user_object = $_SESSION["user_session_data"];
 					if(!permissionhandler::hasPerm('DELETE_USER') && $user_object->Type == we_users_user::TYPE_USER){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 					if(!permissionhandler::hasPerm('DELETE_GROUP') && $user_object->Type == we_users_user::TYPE_USER_GROUP){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 					if($user_object->deleteMe()){
-						print we_html_element::jsElement('
+						echo we_html_element::jsElement('
 		top.content.deleteEntry(' . $user_object->ID . ');
 		top.content.editor.edheader.location="' . WEBEDITION_DIR . 'html/grayWithTopLine.html";
 		top.content.editor.edbody.location="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users";
