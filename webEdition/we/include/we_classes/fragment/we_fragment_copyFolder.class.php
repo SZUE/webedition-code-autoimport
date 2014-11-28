@@ -293,7 +293,6 @@ class we_fragment_copyFolder extends we_fragment_base{
 							}
 
 							if($dt->Templates){
-
 								$templArray = makeArrayFromCSV($dt->Templates);
 								$newTemplateIDs = array();
 								foreach($templArray as $id){
