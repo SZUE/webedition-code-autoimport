@@ -219,6 +219,7 @@ function we_tag_a($attribs, $content){
 		'amount',
 		'delshop',
 		'delarticle',
+		'hidedirindex',
 		'shopname',
 		'return',
 		'edit',
