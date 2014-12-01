@@ -28,8 +28,15 @@ if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) ==
 
 list($pad_header_enc, $pad_csv) = explode(',', $aProps[3]);
 
-$_iFrmPadAtts['src'] = WE_INCLUDES_DIR . 'we_widgets/mod/pad.php?' . http_build_query(array('we_cmd[0]' => $pad_csv, 'we_cmd[2]' => 'home', 'we_cmd[3]' => $aProps[1], 'we_cmd[4]' =>
-		$pad_header_enc, 'we_cmd[5]' => $iCurrId, 'we_cmd[6]' => $aProps[1], 'we_cmd[7]' => 'home'));
+$_iFrmPadAtts['src'] = WE_INCLUDES_DIR . 'we_widgets/mod/pad.php?' . http_build_query(array(
+			'we_cmd' => array(
+				0 => $pad_csv,
+				2 => 'home',
+				3 => $aProps[1],
+				4 => $pad_header_enc,
+				5 => $iCurrId,
+				6 => $aProps[1],
+				7 => 'home')));
 $_iFrmPadAtts['id'] = 'm_' . $iCurrId . '_inline';
 $_iFrmPadAtts['style'] = 'width:' . $iWidth . 'px;height:287px';
 $_iFrmPadAtts['scrolling'] = 'no';
@@ -41,7 +48,7 @@ $_iFrmPad = str_replace('>', ' allowtransparency="true">', getHtmlTag('iframe', 
 
 $oTblCont = new we_html_table(array(
 	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-	), 1, 1);
+		), 1, 1);
 $oTblCont->setCol(0, 0, null, $_iFrmPad);
 $aLang = array(
 	g_l('cockpit', '[notes]') . " - " . base64_decode($pad_header_enc), ""
