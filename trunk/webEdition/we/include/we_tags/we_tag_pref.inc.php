@@ -49,16 +49,14 @@ function we_tag_pref($attribs){
 						return is_array($ship->$field) ? implode(',', $ship->$field) : '';
 					}
 					break;
-					case 'pref':
-
+				case 'pref':
 			}
 
 			break;
 		case 'banner':
 			switch($name){
 				case 'DefaultBanner':
-					$id = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'");
-					return f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id));
+					return f('SELECT bannerID FROM ' . BANNER_TABLE . ' b JOIN ' . BANNER_PREFS_TABLE . ' p ON p.pref_value=b.ID WHERE p.pref_name="DefaultBannerID"');
 			}
 			break;
 		case 'newsletter':

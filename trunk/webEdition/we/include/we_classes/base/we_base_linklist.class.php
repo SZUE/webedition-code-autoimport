@@ -226,7 +226,7 @@ class we_base_linklist{
 			}
 		}
 
-		return (isset($row["Path"]) ? $row["Path"] : '') . ($params ? ("?" . $params) : "");
+		return (isset($row["Path"]) ? $row["Path"] : '') . ($params ? ('?' . $params) : "");
 	}
 
 	function getImageID($nr = -1){

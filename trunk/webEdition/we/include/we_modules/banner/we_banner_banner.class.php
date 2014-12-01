@@ -277,17 +277,32 @@ class we_banner_banner extends we_banner_base{
 		$attsImage['border'] = 0;
 		$attsImage['alt'] = '';
 
-		if(($id = $bannerData["ID"])){
-			if($bannerData["bannerID"]){
-				$bannersrc = id_to_path($bannerData["bannerID"]);
-				$attsImage = array_merge($attsImage, self::getImageInfos($bannerData["bannerID"]));
+		if(($id = $bannerData['ID'])){
+			if($bannerData['bannerID']){
+				$bannersrc = id_to_path($bannerData['bannerID']);
+				$attsImage = array_merge($attsImage, self::getImageInfos($bannerData['bannerID']));
 				if(isset($attsImage['longdescid'])){
 					unset($attsImage['longdescid']);
 				}
 			} else {
-				$bannersrc = $getbanner . "?" . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . "u=$uniq&amp;bannername=" . rawurlencode($bannername) . "&amp;id=" . $bannerData["ID"] . "&amp;bid=" . $bannerData["bannerID"] . "&amp;did=" . $did . "&amp;page=" . rawurlencode($page);
+				$bannersrc = $getbanner . '?' . http_build_query(array(
+							($nocount ? 'nocount' : 'n') => $nocount,
+							'u' => $uniq,
+							'bannername' => $bannername,
+							'id' => $bannerData["ID"],
+							'bid' => $bannerData["bannerID"],
+							'did' => $did,
+							'page' => $page
+				));
 			}
-			$bannerlink = $bannerclick . "?" . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . "u=$uniq&amp;bannername=" . rawurlencode($bannername) . "&amp;id=" . $bannerData["ID"] . "&amp;did=" . $did . "&amp;page=" . rawurlencode($page);
+			$bannerlink = $bannerclick . '?' . http_build_query(array(
+						($nocount ? 'nocount' : 'n') => $nocount,
+						'u' => $uniq,
+						'bannername' => $bannername,
+						'id' => $bannerData["ID"],
+						'did' => $did,
+						'page' => $page
+			));
 		} else {
 			$id = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . ' WHERE pref_name="DefaultBannerID"', '', $db);
 
@@ -299,10 +314,24 @@ class we_banner_banner extends we_banner_base{
 					unset($attsImage['longdescid']);
 				}
 			} else {
-				$bannersrc = $getbanner . "?" . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . "u=$uniq&amp;bannername=" . rawurlencode($bannername) . "&amp;id=" . $id . "&amp;bid=" . $bannerID . "&amp;did=" . $did;
+				$bannersrc = $getbanner . '?' . http_build_query(array(
+							($nocount ? 'nocount' : 'n') => $nocount,
+							'u' => $uniq,
+							'bannername' => $bannername,
+							'id' => $id,
+							'bid' => $bannerID,
+							'did' => $did
+				));
 				$showlink = false;
 			}
-			$bannerlink = $bannerclick . "?" . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . "u=$uniq&amp;bannername=" . rawurlencode($bannername) . "&amp;id=" . $id . "&amp;did=" . $did . "&amp;page=" . rawurlencode($page);
+			$bannerlink = $bannerclick . '?' . http_build_query(array(
+						($nocount ? 'nocount' : 'n') => $nocount,
+						'u' => $uniq,
+						'bannername' => $bannername,
+						'id' => $id,
+						'did' => $did,
+						'page' => $page
+			));
 		}
 		if(!$nocount){
 			$db->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter(array(
@@ -316,7 +345,7 @@ class we_banner_banner extends we_banner_base{
 			$db->query('UPDATE ' . BANNER_TABLE . ' SET views=views+1 WHERE ID=' . intval($id));
 		}
 
-		$attsImage['xml'] = $xml ? "true" : "false";
+		$attsImage['xml'] = $xml ? 'true' : 'false';
 
 		$attsImage['src'] = $bannersrc;
 		if($width){

@@ -95,7 +95,6 @@ class we_shop_shippingControl{
 	}
 
 	function getDefaultShipping(){
-
 		foreach($this->shippings as $shipping){
 			if($shipping->default){
 				return $shipping;
@@ -105,12 +104,10 @@ class we_shop_shippingControl{
 	}
 
 	function getShippingCostByOrderValue($orderValue, $customer = false){
-
 		if($customer){
 			// foreach, search the shipping
 
 			if(isset($customer[$this->stateField])){
-
 				foreach($this->shippings as $key => $tmpShipping){
 					if(in_array($customer[$this->stateField], $tmpShipping->countries)){
 						$shipping = $tmpShipping;
@@ -124,16 +121,12 @@ class we_shop_shippingControl{
 		}
 
 		if($shipping){
-
 			$shippingId = 0;
-
 			for($i = 0; $i < count($shipping->cartValue); $i++){
-
 				if($shipping->cartValue[$i] > $orderValue){
 					continue;
-				} else {
-					$shippingId = $i;
 				}
+				$shippingId = $i;
 			}
 			return $shipping->shipping[$shippingId];
 		}

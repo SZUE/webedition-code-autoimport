@@ -52,8 +52,8 @@ if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data
 			'pref_name' => 'shop_location',
 			'pref_value' => we_base_request::_(we_base_request::STRING, "shoplocation")
 	)));
-    
-    
+
+
 	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array(
 			'strDateiname' => "shop_pref",
 			'strFelder' => we_base_request::_(we_base_request::STRING, "waehr") . '|' . we_base_request::_(we_base_request::STRING, "mwst") . '|' . $format . '|' . we_base_request::_(we_base_request::STRING, "classID", 0) . '|' . we_base_request::_(we_base_request::STRING, "pag")
@@ -200,7 +200,7 @@ $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(2
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][orderCustomerFields]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $orderFields, (count($orderFields) > 5 ? 5 : count($orderFields)), implode(',', $fields['orderCustomerFields']), true, array(), 'value', 280));
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $orderFields, min(count($orderFields) ,5), implode(',', $fields['orderCustomerFields']), true, array(), 'value', 280));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][CountryField]'));
