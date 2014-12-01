@@ -37,7 +37,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[settings]')) .
 <?php
 if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'save_settings' && ($cstep = we_base_request::_(we_base_request::STRING, 'check_step'))){
 	if($messaging->save_settings(array('check_step' => $cstep))){
-		print we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+		echo we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
 		?>
 		window.close();
 		//-->

@@ -38,7 +38,7 @@ $this->userCanMakeNewFolder = true;
 }
 
 function printHeaderHeadlines(){
-print '			<table style="border-spacing: 0px;border-style:none;width:550px;" cellpadding="0">
+echo '			<table style="border-spacing: 0px;border-style:none;width:550px;" cellpadding="0">
 	<tr>
 		<td>'.we_html_tools::getPixel(25,14).'</td>
 		<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">'.g_l('tools','[name]').'</a></b></td>
@@ -54,7 +54,7 @@ print '			<table style="border-spacing: 0px;border-style:none;width:550px;" cell
 }
 
 function printHeaderTableExtraCols(){
-print '<td></td>';
+echo '<td></td>';
 }
 
 function printFramesetJSFunctioWriteBody(){
@@ -286,13 +286,13 @@ function printDoRenameFolderHTML(){
 echo we_html_tools::getHtmlTop();
 we_html_tools::protect();
 
-print '<script type="text/javascript"><!--
+echo '<script type="text/javascript"><!--
 																	top.clearEntries();
 																	';
 																	$this - > FolderText = rawurldecode($this - > FolderText);
 																	$txt = $this - > FolderText;
 																	if ($txt == ''){
-													print we_message_reporting::getShowMessageCall($GLOBALS['l_<?php echo $TOOLNAME; ?>']['folder_empty'], we_message_reporting::WE_MESSAGE_ERROR);
+													echo we_message_reporting::getShowMessageCall($GLOBALS['l_<?php echo $TOOLNAME; ?>']['folder_empty'], we_message_reporting::WE_MESSAGE_ERROR);
 																	} else{
 													$folder = new we_folder();
 																	$folder - > initByID($this - > we_editDirID, $this - > table);
@@ -302,21 +302,21 @@ print '<script type="text/javascript"><!--
 																	$this - > db - > query("SELECT ID,Text FROM ".$this - > db - > escape($this - > table)." WHERE Path='".$this - > db - > escape($folder - > Path)."' AND ID != ".intval($this - > we_editDirID));
 																	if ($this - > db - > next_record()){
 													$we_responseText = sprintf($GLOBALS["l_<?php echo $TOOLNAME; ?>"]["folder_exists"], $folder - > Path);
-																	print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+																	echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 													} else{
 													if (preg_match('/[%/\\"\']/', $folder - > Text)){
 													$we_responseText = $GLOBALS["l_<?php echo $TOOLNAME; ?>"]["wrongtext"];
-																	print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+																	echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 													} else{
 													if (f("SELECT Text FROM ".$this - > db - > escape($this - > table)." WHERE ID=".intval($this - > we_editDirID), "Text", $this - > db) != $txt){
 													$folder - > we_save();
-																	print 'var ref = top.opener.top.content;
+																	echo 'var ref = top.opener.top.content;
 																	if (ref.updateEntry){
 													ref.updateEntry('.$folder->ID.', "'.$txt.'", "'.$folder->ParentID.'", 1, 0);
 																	}
 													';
 																	if ($this - > canSelectDir){
-													print 'top.currentPath = "'.$folder - > Path.'";
+													echo 'top.currentPath = "'.$folder - > Path.'";
 																	top.currentID = "'.$folder->ID.'";
 																	top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
 																	';
@@ -335,7 +335,7 @@ print '<script type="text/javascript"><!--
 //-->
 </script>
 ';
-print '</head><body></body></html>';
+echo '</head><body></body></html>';
 }
 
 
@@ -379,4 +379,4 @@ function printFramesetSelectFileHTML(){
 
 
 <?php
-print '}';
+echo '}';

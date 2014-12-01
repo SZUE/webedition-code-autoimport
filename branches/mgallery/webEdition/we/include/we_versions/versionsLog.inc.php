@@ -74,7 +74,7 @@ $closeButton = we_html_button::create_button("close", "javascript:window.close()
 	</div>
 	<div id="versionsDiv">
 		<?php
-		print $out;
+		echo $out;
 		?>
 
 	</div>

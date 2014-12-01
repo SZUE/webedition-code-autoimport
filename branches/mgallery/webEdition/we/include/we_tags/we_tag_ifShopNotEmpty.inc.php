@@ -34,7 +34,7 @@ we_base_moduleInfo::isActive('shop');
  */
 function we_tag_ifShopNotEmpty($attribs){
 	if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
-		print $foo;
+		echo $foo;
 		return false;
 	}
 

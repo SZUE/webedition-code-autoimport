@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 7705 $
- * $Author: mokraemer $
- * $Date: 2014-06-10 21:46:56 +0200 (Di, 10 Jun 2014) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -27,7 +27,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $dialog = new we_dialog_fullscreenEdit();
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoFullscreenJS");
-print $dialog->getHTML();
+echo $dialog->getHTML();
 
 function weDoFullscreenJS(){
 	return '

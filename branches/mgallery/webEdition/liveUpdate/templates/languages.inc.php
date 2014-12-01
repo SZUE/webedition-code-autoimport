@@ -91,4 +91,4 @@ $content = '
 </form>
 ' . $jsAlert;
 
-print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[languages][headline]'), $content);
+echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[languages][headline]'), $content);

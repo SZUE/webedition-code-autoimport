@@ -35,7 +35,7 @@ function we_tag_shopField($attribs){
 	$type = weTag_getAttribute("type", $attribs);
 
 	if($type === 'checkbox' && ($missingAttrib = attributFehltError($attribs, 'value', __FUNCTION__))){
-		print $missingAttrib;
+		echo $missingAttrib;
 	}
 
 	$values = weTag_getAttribute("values", $attribs); // select, choice

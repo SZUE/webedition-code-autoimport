@@ -3,7 +3,7 @@
 CREATE TABLE ###TBLPREFIX###tblSettings (
 	tool ENUM('banner','glossary','newsletter','shop') NOT NULL,
   pref_name VARCHAR(255) NOT NULL,
-  pref_value VARCHAR(255) NOT NULL default '',
+  pref_value text NOT NULL,
   PRIMARY KEY  (tool,pref_name)
 ) ENGINE=MyISAM;
 

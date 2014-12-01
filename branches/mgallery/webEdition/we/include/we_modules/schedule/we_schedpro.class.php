@@ -534,7 +534,7 @@ function checkFooter(){
 		}
 
 		foreach($scheddy as $s){
-			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Schedpro="' . $DB_WE->escape(serialize($s)) . '", Active=1, SerializedData="" WHERE DID=' . intval($s["did"]) . " AND Was=" . intval($s["task"]) . " AND Wann=" . intval($s["time"]));
+			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Schedpro="' . $DB_WE->escape(serialize($s)) . '", Active=1, SerializedData="" WHERE DID=' . intval($s["did"]) . ' AND Was=' . intval($s["task"]) . " AND Wann=" . intval($s["time"]));
 		}
 	}
 

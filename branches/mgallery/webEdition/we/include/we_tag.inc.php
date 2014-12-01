@@ -45,7 +45,7 @@ function we_include_tag_file($name){
 		return true;
 	}
 	if(strpos(trim($name), 'if') === 0){ // this ifTag does not exist
-		print parseError(sprintf(g_l('parser', '[tag_not_known]'), trim($name)));
+		echo parseError(sprintf(g_l('parser', '[tag_not_known]'), trim($name)));
 		return false;
 	}
 	return parseError(sprintf(g_l('parser', '[tag_not_known]'), trim($name)));

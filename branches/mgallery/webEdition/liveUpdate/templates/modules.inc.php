@@ -63,4 +63,4 @@ $content = '
 </tr>
 </table>';
 
-print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[modules][headline]'), $content);
+echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[modules][headline]'), $content);

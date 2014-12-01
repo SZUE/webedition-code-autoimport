@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 8380 $
- * $Author: mokraemer $
- * $Date: 2014-10-07 16:58:47 +0200 (Di, 07 Okt 2014) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -58,8 +58,8 @@ if(defined('GLOSSARY_TABLE') && we_base_request::_(we_base_request::BOOL, 'weSav
 $dialog = new we_dialog_lang($noInternals);
 $dialog->initByHttp();
 $dialog->registerOkJsFN("weDoLangJS");
-print $dialog->getHTML();
-print $appendJS;
+echo $dialog->getHTML().
+		$appendJS;
 
 function weDoLangJS(){
 	return '

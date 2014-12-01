@@ -109,7 +109,7 @@ if($services){
 }
 
 //  css for webSite
-print STYLESHEET;
+echo STYLESHEET;
 
 //  js-functions for the select-men�
 ?>

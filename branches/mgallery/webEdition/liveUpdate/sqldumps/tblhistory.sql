@@ -13,6 +13,6 @@ CREATE TABLE ###TBLPREFIX###tblhistory (
 ) ENGINE=MyISAM;
 
 /* query separator */
-###ONKEYFAILED(PRIMARY KEY,###TBLPREFIX###tblhistory) TRUNCATE TABLE ###TBLPREFIX###tblhistory;###
+###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblhistory) TRUNCATE TABLE ###TBLPREFIX###tblhistory;###
 /* query separator */
-###ONKEYFAILED(PRIMARY KEY,###TBLPREFIX###tblhistory) ALTER TABLE ###TBLPREFIX###tblhistory ADD PRIMARY KEY (DID,DocumentTable,UID);###
+###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblhistory) ALTER TABLE ###TBLPREFIX###tblhistory ADD PRIMARY KEY (DID,DocumentTable,UID);###

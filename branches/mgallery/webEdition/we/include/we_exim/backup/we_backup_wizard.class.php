@@ -1060,13 +1060,13 @@ function startStep(){
 					}
 					fclose($_filehandler);
 				} else {
-					print $this->build_error_message();
+					echo $this->build_error_message();
 				}
 			} else {
-				print $this->build_error_message();
+				echo $this->build_error_message();
 			}
 		} else {
-			print $this->build_error_message();
+			echo $this->build_error_message();
 		}
 
 		if(isset($_SESSION['weS']['weBackupVars']['backup_file']) && isset($_SESSION['weS']['weBackupVars']['options']['export2server']) &&
@@ -1281,7 +1281,7 @@ function press_yes() {
 				return;
 			case "backup":
 				if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp")){
-					print we_html_element::jsElement('
+					echo we_html_element::jsElement('
 function setLocation(loc){
 	location.href=loc;
 }
@@ -1367,7 +1367,7 @@ top.body.location="' . $this->frameset . '?pnt=body&step=2&ok=false&do_import_af
 				unset($we_backup_obj);
 				break;
 			case "rebuild":
-				print we_html_element::jsElement('
+				echo we_html_element::jsElement('
 function setLocation(loc){
 	location.href=loc;
 }
@@ -1378,7 +1378,7 @@ setTimeout("top.close();",300);'
 			case "import":
 				$continue = true;
 				if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp")){
-					print we_html_element::jsElement('
+					echo we_html_element::jsElement('
 function setLocation(loc){
 	location.href=loc;
 }
@@ -1462,7 +1462,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 						$we_backup_obj->getVersion($we_backup_obj->filename);
 						$we_backup_obj->file_end = $we_backup_obj->splitFile2();
 						if($we_backup_obj->file_end < 0){
-							print we_html_element::jsElement('top.busy.location = "' . $this->frameset . '?pnt=busy";' .
+							echo we_html_element::jsElement('top.busy.location = "' . $this->frameset . '?pnt=busy";' .
 											we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_split_file]'), basename($we_backup_obj->filename)) . ($we_backup_obj->file_end == -10 ? g_l('backup', '[cannot_split_file_ziped]') : ''), we_message_reporting::WE_MESSAGE_ERROR));
 							return '';
 						}

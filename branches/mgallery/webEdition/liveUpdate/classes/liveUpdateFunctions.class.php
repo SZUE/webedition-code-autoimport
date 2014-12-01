@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,6 +28,7 @@
  * TBD if we divide this class in several classes
  */
 class liveUpdateFunctions{
+
 	var $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
@@ -40,9 +42,9 @@ class liveUpdateFunctions{
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . we_database_base::arraySetter(array(
-				'aktion' => $action,
-				'versionsnummer' => $version,
-				'error' => $errorCode
+					'aktion' => $action,
+					'versionsnummer' => $version,
+					'error' => $errorCode
 		)));
 	}
 
@@ -116,7 +118,7 @@ class liveUpdateFunctions{
 				"\$_SERVER[\"DOCUMENT_ROOT\"]",
 				'$GLOBALS[\'DOCUMENT_ROOT\']',
 				"\$GLOBALS[\"DOCUMENT_ROOT\]",
-				), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+					), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 		}
 		return $content;
 	}
@@ -532,12 +534,12 @@ class liveUpdateFunctions{
 	}
 
 	/**
-	 *
+	 * @deprecated since version now
 	 * @param string $path
 	 * @return boolean
 	 */
 	function isInsertQueriesFile($path){
-		return preg_match("/^(.){3}_insert_(.*).sql/", basename($path));
+		//	return preg_match("/^(.){3}_insert_(.*).sql/", basename($path));
 	}
 
 	/**
@@ -551,24 +553,13 @@ class liveUpdateFunctions{
 	 */
 	function executeQueriesInFiles($path){
 		$db = new DB_WE();
-		if($this->isInsertQueriesFile($path)){
-			$success = true;
-			$queryArray = file($path);
-			if($queryArray){
-				foreach($queryArray as $query){
-					if(trim($query)){
-						$success &= $this->executeUpdateQuery($query, $db);
-					}
-				}
-			}
-		} else {
-			$content = $this->getFileContent($path);
-			$queries = explode("/* query separator */", $content);
-			$success = true;
-			foreach($queries as $query){
-				$success &= $this->executeUpdateQuery($query, $db);
-			}
+		$content = $this->getFileContent($path);
+		$queries = explode("/* query separator */", $content);
+		$success = true;
+		foreach($queries as $query){
+			$success &= $this->executeUpdateQuery($query, $db);
 		}
+
 		return $success;
 	}
 
@@ -595,19 +586,15 @@ class liveUpdateFunctions{
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP COLUMN ' . $db->escape($matches[1]) : '');
 		}
 		if(preg_match('/###ONCOL\((.*),(.*)\)([^#]+)###/', $query, $matches)){
-			$keys = $this->getKeysFromTable($matches[2]);
-			if(isset($keys[$matches[1]])){
-				$query = $matches[3];
-			}
+			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Field="' . $matches[1] . '"');
+			$query = ($db->num_rows() ? $matches[3] : '');
 		}
 		//handle if key is not set, should be used after table def. so handling code, e.g. truncate, copy... can be put here
-		if(preg_match('/###ONKEYFAILED\((.*),(.*)\)([^#]+)###/', $query, $matches)){
+		if(preg_match('/###ONKEYFAILED\(([^,]+),([^)]+)\)([^#]+)###/', $query, $matches)){
 			$keys = $this->getKeysFromTable($matches[2]);
-			if(!isset($keys[$matches[1]])){
-				$query = $matches[3];
-			}
+			$query = (!isset($keys[$matches[1]]) ? $matches[3] : '');
 		}
-		if(preg_match('/###UPDATEDROPKEY\((.*),(.*)\)###/', $query, $matches)){
+		if(preg_match('/###UPDATEDROPKEY\(([^,]+),([^)]+)\)###/', $query, $matches)){
 			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Key_name="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP KEY ' . $db->escape($matches[1]) : '');
 		}
@@ -642,166 +629,166 @@ class liveUpdateFunctions{
 
 		if(!$query || $db->query($query)){
 			return true;
-		} else {
+		}
 
-			switch($db->Errno){
+		switch($db->Errno){
+			case 1050: // this table already exists
+				// the table already exists,
+				// make tmptable and check these tables
+				$namePattern = '/CREATE TABLE (\w+) \(/';
+				preg_match($namePattern, $query, $matches);
 
-				case 1050: // this table already exists
-					// the table already exists,
-					// make tmptable and check these tables
-					$namePattern = '/CREATE TABLE (\w+) \(/';
-					preg_match($namePattern, $query, $matches);
+				if($matches[1]){
 
-					if($matches[1]){
+					// get name of table and build name of temptable
+					// realname of the new table
+					$tableName = $matches[1];
 
-						// get name of table and build name of temptable
-						// realname of the new table
-						$tableName = $matches[1];
+					// tmpname - this table is to compare the incoming dump
+					// with existing table
+					$tmpName = '__we_delete_update_temp_table__';
+					$backupName = trim($tableName, '`') . '_backup';
 
-						// tmpname - this table is to compare the incoming dump
-						// with existing table
-						$tmpName = '__we_delete_update_temp_table__';
-						$backupName = trim($tableName, '`') . '_backup';
+					$db->query('DROP TABLE IF EXISTS ' . $db->escape($tmpName)); // delete table if already exists
+					$db->query('DROP TABLE IF EXISTS ' . $db->escape($backupName)); // delete table if already exists
+					$db->query('SHOW CREATE TABLE ' . $db->escape($tableName));
+					list(, $orgTable) = ($db->next_record() ? $db->Record : array('', ''));
+					$orgTable = preg_replace($namePattern, 'CREATE TABLE ' . $db->escape($backupName) . ' (', $orgTable);
 
-						$db->query('DROP TABLE IF EXISTS ' . $db->escape($tmpName)); // delete table if already exists
-						$db->query('DROP TABLE IF EXISTS ' . $db->escape($backupName)); // delete table if already exists
-						$db->query('SHOW CREATE TABLE ' . $db->escape($tableName));
-						list(, $orgTable) = ($db->next_record() ? $db->Record : array('', ''));
-						$orgTable = preg_replace($namePattern, 'CREATE TABLE ' . $db->escape($backupName) . ' (', $orgTable);
+					// create temptable
+					$tmpQuery = preg_replace($namePattern, 'CREATE TABLE ' . $db->escape($tmpName) . ' (', $query);
+					$db->query(trim($tmpQuery));
 
-						// create temptable
-						$tmpQuery = preg_replace($namePattern, 'CREATE TABLE ' . $db->escape($tmpName) . ' (', $query);
-						$db->query(trim($tmpQuery));
+					// get information from existing and new table
+					$origTable = $this->getFieldsOfTable($tableName, $db);
+					$newTable = $this->getFieldsOfTable($tmpName, $db);
 
-						// get information from existing and new table
-						$origTable = $this->getFieldsOfTable($tableName, $db);
-						$newTable = $this->getFieldsOfTable($tmpName, $db);
-
-						// get keys from existing and new table
-						$origTableKeys = $this->getKeysFromTable($tableName);
-						$newTableKeys = $this->getKeysFromTable($tmpName);
+					// get keys from existing and new table
+					$origTableKeys = $this->getKeysFromTable($tableName);
+					$newTableKeys = $this->getKeysFromTable($tmpName);
 
 
-						// determine changed and new fields.
-						$changeFields = array(); // array with changed fields
-						$addFields = array(); // array with new fields
+					// determine changed and new fields.
+					$changeFields = array(); // array with changed fields
+					$addFields = array(); // array with new fields
 
-						foreach($newTable as $fieldName => $newField){
-							if(isset($origTable[$fieldName])){ // field exists
-								if(!($newField['Type'] == $origTable[$fieldName]['Type'] && $newField['Null'] == $origTable[$fieldName]['Null'] && $newField['Default'] == $origTable[$fieldName]['Default'] && $newField['Extra'] == $origTable[$fieldName]['Extra'])){
-									$changeFields[$fieldName] = $newField;
-								}
-							} else { // field does not exist
-								$addFields[$fieldName] = $newField;
+					foreach($newTable as $fieldName => $newField){
+						if(isset($origTable[$fieldName])){ // field exists
+							if(!($newField['Type'] == $origTable[$fieldName]['Type'] && $newField['Null'] == $origTable[$fieldName]['Null'] && $newField['Default'] == $origTable[$fieldName]['Default'] && $newField['Extra'] == $origTable[$fieldName]['Extra'])){
+								$changeFields[$fieldName] = $newField;
 							}
+						} else { // field does not exist
+							$addFields[$fieldName] = $newField;
 						}
+					}
 
-						// determine new keys
-						// moved down after change and addfields
-						// get all queries to add/change fields, keys
-						$alterQueries = array();
+					// determine new keys
+					// moved down after change and addfields
+					// get all queries to add/change fields, keys
+					$alterQueries = array();
 
-						// get all queries to change existing fields
-						if(!empty($changeFields)){
-							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
-						}
-						if(!empty($addFields)){
-							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
-						}
+					// get all queries to change existing fields
+					if(!empty($changeFields)){
+						$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
+					}
+					if(!empty($addFields)){
+						$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
+					}
 
-						//new position to determine new keys
-						$addKeys = array();
-						$changedKeys = array();
-						foreach($newTableKeys as $keyName => $indexes){
+					//new position to determine new keys
+					$addKeys = array();
+					$changedKeys = array();
+					foreach($newTableKeys as $keyName => $indexes){
 
-							if(isset($origTableKeys[$keyName])){
-								//index-type changed
-								if($origTableKeys[$keyName]['index'] != $indexes['index']){
+						if(isset($origTableKeys[$keyName])){
+							//index-type changed
+							if($origTableKeys[$keyName]['index'] != $indexes['index']){
+								$changedKeys[$keyName] = $indexes;
+								continue;
+							}
+
+							for($i = 1; $i < count($indexes); $i++){
+								if(!in_array($indexes[$i], $origTableKeys[$keyName])){
 									$changedKeys[$keyName] = $indexes;
-									continue;
+									break;
 								}
-
-								for($i = 1; $i < count($indexes); $i++){
-									if(!in_array($indexes[$i], $origTableKeys[$keyName])){
-										$changedKeys[$keyName] = $indexes;
-										break;
-									}
-								}
-							} else {
-								$addKeys[$keyName] = $indexes;
-							}
-						}
-
-						// get all queries to change existing keys
-						if(!empty($addKeys)){
-							$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
-						}
-
-						if(!empty($changedKeys)){
-							$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
-						}
-
-						//clean-up, if there is still a temporary index - make sure this is the first statement, since new temp might be created
-						if(isset($origTableKeys['_temp'])){
-							$alterQueries = array_merge(array('ALTER TABLE `' . $tableName . '` DROP INDEX _temp'), $alterQueries);
-						}
-
-						if(!empty($alterQueries)){
-							// execute all queries
-							$success = true;
-							$duplicate = false;
-							foreach($alterQueries as $_query){
-								if(!trim($_query)){
-									continue;
-								}
-								if($db->query(trim($_query))){
-									$this->QueryLog['success'][] = $_query;
-								} else {
-									//unknown why mysql don't show correct error
-									if($db->Errno == 1062 || $db->Errno == 0){
-										$duplicate = true;
-										$this->QueryLog['tableChanged'][] = $tableName;
-									} else {
-										$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
-									}
-									$success = false;
-								}
-							}
-							if($success){
-								$this->QueryLog['tableChanged'][] = $tableName . "\n<!-- $query -->";
-							} else if($duplicate){
-								if($db->query('RENAME TABLE ' . $db->escape($tableName) . ' TO ' . $db->escape($backupName))){
-									$db->query($orgTable);
-									$db->lock(array($tableName => 'write', $backupName => 'read'));
-									foreach($alterQueries as $_query){
-										if(trim($query) && !$db->query(trim($_query))){
-											$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
-										}
-									}
-									$db->query('INSERT IGNORE INTO ' . $db->escape($tableName) . ' SELECT * FROM ' . $db->escape($backupName));
-									$db->unlock();
-								}
-							}
-							$SearchTempTableKeys = $this->getKeysFromTable($tableName);
-							if(isset($SearchTempTableKeys['_temp'])){
-								$db->query(trim('ALTER TABLE ' . $db->escape($tableName) . ' DROP INDEX _temp'));
 							}
 						} else {
-							//$this->QueryLog['tableExists'][] = $tableName;
+							$addKeys[$keyName] = $indexes;
 						}
-
-						$db->query('DROP TABLE IF EXISTS ' . $db->escape($tmpName));
 					}
-					break;
-				case 1062:
-					$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
-					return false;
-				default:
-					$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
-					return false;
-			}
-			return false;
+
+					// get all queries to change existing keys
+					if(!empty($addKeys)){
+						$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
+					}
+
+					if(!empty($changedKeys)){
+						$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
+					}
+
+					//clean-up, if there is still a temporary index - make sure this is the first statement, since new temp might be created
+					if(isset($origTableKeys['_temp'])){
+						$alterQueries = array_merge(array('ALTER TABLE `' . $tableName . '` DROP INDEX _temp'), $alterQueries);
+					}
+
+					if(!empty($alterQueries)){
+						// execute all queries
+						$success = true;
+						$duplicate = false;
+						foreach($alterQueries as $_query){
+							if(!trim($_query)){
+								continue;
+							}
+							if($db->query(trim($_query))){
+								$this->QueryLog['success'][] = $_query;
+							} else {
+								//unknown why mysql don't show correct error
+								if($db->Errno == 1062 || $db->Errno == 0){
+									$duplicate = true;
+									$this->QueryLog['tableChanged'][] = $tableName;
+								} else {
+									$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
+								}
+								$success = false;
+							}
+						}
+						if($success){
+							$this->QueryLog['tableChanged'][] = $tableName . "\n<!-- $query -->";
+						} else if($duplicate){
+							if($db->query('RENAME TABLE ' . $db->escape($tableName) . ' TO ' . $db->escape($backupName))){
+								$db->query($orgTable);
+								$db->lock(array($tableName => 'write', $backupName => 'read'));
+								foreach($alterQueries as $_query){
+									if(trim($query) && !$db->query(trim($_query))){
+										$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
+									}
+								}
+								$db->query('INSERT IGNORE INTO ' . $db->escape($tableName) . ' SELECT * FROM ' . $db->escape($backupName));
+								$db->unlock();
+							}
+						}
+						$SearchTempTableKeys = $this->getKeysFromTable($tableName);
+						if(isset($SearchTempTableKeys['_temp'])){
+							$db->query(trim('ALTER TABLE ' . $db->escape($tableName) . ' DROP INDEX _temp'));
+						}
+					} else {
+						//$this->QueryLog['tableExists'][] = $tableName;
+					}
+
+					$db->query('DROP TABLE IF EXISTS ' . $db->escape($tmpName));
+				}
+				break;
+			case 1062:
+
+				$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
+				return false;
+			default:
+
+				$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
+				return false;
 		}
+
 		return true;
 	}
 

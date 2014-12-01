@@ -313,7 +313,7 @@ if(top.opener.top.content.updateEntry){
 }
 ';
 						if($this->canSelectDir){
-							print 'top.currentPath = "' . $folder->Path . '";
+							echo 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 ';

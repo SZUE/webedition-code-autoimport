@@ -1475,7 +1475,7 @@ function set_state_edit_delete_recipient(control) {
 				$nid = we_base_request::_(we_base_request::INT, "nid");
 				if($nid !== false){
 					if(!$nid){
-						print we_html_element::jsElement(
+						echo we_html_element::jsElement(
 										we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						return;
@@ -1503,7 +1503,7 @@ function set_state_edit_delete_recipient(control) {
 						}
 					}
 				} else {
-					print we_html_element::jsElement(
+					echo we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "IsFolder") ? '[delete_group_nok]' : '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 				}
@@ -1543,7 +1543,7 @@ function set_state_edit_delete_recipient(control) {
 
 			case "addGroup":
 				$this->newsletter->addGroup();
-				print we_html_element::jsElement('
+				echo we_html_element::jsElement('
 var edf=top.content.editor.edfooter;
 edf.document.we_form.gview.length = 0;
 edf.populateGroups();');
@@ -1561,13 +1561,13 @@ edf.populateGroups();');
 
 			case "send_test":
 				if(!permissionhandler::hasPerm("SEND_TEST_EMAIL")){
-					print we_html_element::jsElement(
+					echo we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					return;
 				}
 				$this->sendTestMail(we_base_request::_(we_base_request::STRING, "gview"), we_base_request::_(we_base_request::BOOL, "hm"));
-				print we_html_element::jsElement(
+				echo we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[test_mail_sent]'), $this->newsletter->Test), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 				break;
@@ -1604,7 +1604,7 @@ edf.populateGroups();');
 				if(($importno = we_base_request::_(we_base_request::INT, 'csv_import')) !== false){
 					$filepath = we_base_request::_(we_base_request::FILE, 'csv_file' . $importno);
 					$delimiter = we_base_request::_(we_base_request::RAW_CHECKED, 'csv_delimiter' . $importno);
-					$col = we_base_request::_(we_base_request::INT, 'csv_col' . $importno, 0);
+					$col = max(0, we_base_request::_(we_base_request::INT, 'csv_col' . $importno, 1) - 1);
 
 					$imports = array(
 						'hmcol' => array(),
@@ -1622,7 +1622,7 @@ edf.populateGroups();');
 					}
 
 					if(strpos($filepath, '..') !== false){
-						print we_html_element::jsElement(
+						echo we_html_element::jsElement(
 										we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 					} else {
@@ -1637,7 +1637,6 @@ edf.populateGroups();');
 							}
 							unset($_mailListArray);
 							while($dat = fgetcsv($fh, 1000, $delimiter)){
-
 								if(!isset($control[$dat[$col]])){
 									$_alldat = implode('', $dat);
 									if(str_replace(' ', '', $_alldat) === ""){
@@ -1645,7 +1644,7 @@ edf.populateGroups();');
 									}
 									$mailrecip = (str_replace(' ', '', $dat[$col]) === '') ? '--- ' . g_l('modules_newsletter', '[email_missing]') . ' ---' : $dat[$col];
 									if(!empty($mailrecip) && !in_array($mailrecip, $mailListArray)){
-										$row[] = $mailrecip . "," .
+										$row[] = $mailrecip . ',' .
 												( ($imports['hmcol']['import'] && isset($dat[$imports['hmcol']['val']])) ? $dat[$imports['hmcol']['val']] : '') . "," .
 												( ($imports['salutationcol']['import'] && isset($dat[$imports['salutationcol']['val']])) ? $dat[$imports['salutationcol']['val']] : "") . "," .
 												( ($imports['titlecol']['import'] && isset($dat[$imports['titlecol']['val']])) ? $dat[$imports['titlecol']['val']] : "") . "," .
@@ -1658,8 +1657,8 @@ edf.populateGroups();');
 							fclose($fh);
 							$this->newsletter->groups[$importno]->Emails.=($this->newsletter->groups[$importno]->Emails ? "\n" : '') . implode("\n", $row);
 						} else {
-							print we_html_element::jsElement(
-											we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
+							echo we_html_element::jsElement(
+									we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
 							);
 						}
 					}
@@ -1680,7 +1679,7 @@ edf.populateGroups();');
 
 			case "save_black":
 				$this->saveSetting("black_list", $this->settings["black_list"]);
-				print we_html_element::jsElement('self.close();');
+				echo we_html_element::jsElement('self.close();');
 				break;
 
 			case "do_upload_csv":
@@ -1696,7 +1695,7 @@ edf.populateGroups();');
 
 				//set header we avoided when sending JSON only
 				we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
-				print we_html_tools::getHtmlTop('newsletter') . STYLESHEET;
+				echo we_html_tools::getHtmlTop('newsletter') . STYLESHEET;
 
 				//we have finished upload or we are in fallback mode
 				$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $weFileupload->getFileNameTemp());
@@ -1706,14 +1705,14 @@ edf.populateGroups();');
 					$tempName = TEMP_PATH . we_base_file::getUniqueId();
 
 					if(!move_uploaded_file($we_File["tmp_name"], $tempName)){
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[upload_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[upload_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
 					}
 					$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $tempName);
 				}
 
 				//print next command
-				print we_html_element::jsElement($ncmd === 'do_upload_csv' ? '
+				echo we_html_element::jsElement($ncmd === 'do_upload_csv' ? '
 opener.document.we_form.csv_file' . $group . '.value="' . $tempName . '";
 opener.we_cmd("import_csv");
 self.close();' : '

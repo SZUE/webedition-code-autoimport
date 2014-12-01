@@ -214,7 +214,7 @@ loadTreeData();');
 		$js = '';
 	}
 
-	print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(
+	echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(
 				we_html_tools::getHtmlInnerHead('File-Tree') .
 				$js
 			) . we_html_element::htmlBody(array("bgcolor" => "white"))

@@ -157,7 +157,7 @@ function we_tag_listview($attribs){
 			break;
 		case 'object':
 			if(!defined('OBJECT_TABLE')){
-				print modulFehltError('Object/DB', __FUNCTION__ . ' type="object"');
+				echo modulFehltError('Object/DB', __FUNCTION__ . ' type="object"');
 				unset($GLOBALS['lv']);
 				return false;
 			}
@@ -198,7 +198,7 @@ function we_tag_listview($attribs){
 			break;
 		case 'customer':
 			if(!defined('CUSTOMER_TABLE')){
-				print modulFehltError('Customer', __FUNCTION__ . ' type="customer"');
+				echo modulFehltError('Customer', __FUNCTION__ . ' type="customer"');
 				return;
 			}
 			$GLOBALS['lv'] = new we_customer_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
@@ -209,25 +209,25 @@ function we_tag_listview($attribs){
 				$GLOBALS['lv'] = new we_customer_onlinemonitor($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $lastaccesslimit, $lastloginlimit, $hidedirindex);
 				break;
 			}
-			print modulFehltError('Customer', __FUNCTION__ . ' type="onlinemonitor"');
+			echo modulFehltError('Customer', __FUNCTION__ . ' type="onlinemonitor"');
 			return;
 		case 'order':
 			if(!defined('SHOP_TABLE')){
-				print modulFehltError('Shop', __FUNCTION__ . ' type="order"');
+				echo modulFehltError('Shop', __FUNCTION__ . ' type="order"');
 				return;
 			}
 			$GLOBALS['lv'] = new we_shop_listviewOrder($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
 			break;
 		case 'orderitem':
 			if(!defined('SHOP_TABLE')){
-				print modulFehltError('Shop', __FUNCTION__ . ' type="orderitem"');
+				echo modulFehltError('Shop', __FUNCTION__ . ' type="orderitem"');
 				return;
 			}
 			$GLOBALS['lv'] = new we_shop_listviewOrderitem($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $orderid, $hidedirindex);
 			break;
 		case 'multiobject':
 			if(!defined('OBJECT_TABLE')){
-				print modulFehltError('Object/DB', __FUNCTION__ . ' type="multiobject"');
+				echo modulFehltError('Object/DB', __FUNCTION__ . ' type="multiobject"');
 				return;
 			}
 			$name = weTag_getAttribute('_name_orig', $attribs);
@@ -235,7 +235,7 @@ function we_tag_listview($attribs){
 			break;
 		case 'banner':
 			if(!defined('BANNER_TABLE')){
-				print modulFehltError('Banner', __FUNCTION__ . ' type="banner"');
+				echo modulFehltError('Banner', __FUNCTION__ . ' type="banner"');
 				return;
 			}
 			$usefilter = weTag_getAttribute('usefilter', $attribs);
@@ -250,7 +250,7 @@ function we_tag_listview($attribs){
 			break;
 		case 'shopVariant':
 			if(!defined('SHOP_TABLE')){
-				print modulFehltError('Shop', __FUNCTION__ . ' type="shopVariant"');
+				echo modulFehltError('Shop', __FUNCTION__ . ' type="shopVariant"');
 				return;
 			}
 			$defaultname = weTag_getAttribute('defaultname', $attribs);

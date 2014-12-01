@@ -37,7 +37,7 @@ function we_parse_tag_object($attribs, $content, array $arr){
 
 function we_tag_object($attribs){
 	if(!defined('WE_OBJECT_MODULE_PATH')){
-		print modulFehltError('Object/DB', __FUNCTION__);
+		echo modulFehltError('Object/DB', __FUNCTION__);
 		return false;
 	}
 

@@ -74,7 +74,7 @@ function setDir(id){
 
 	function printSetDirHTML(){
 
-		print we_html_element::jsElement('
+		echo we_html_element::jsElement('
 top.clearEntries();' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() . '

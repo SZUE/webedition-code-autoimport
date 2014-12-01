@@ -26,14 +26,14 @@ require_once (WE_INCLUDES_PATH . 'we_tags/we_tag_category.inc.php');
 
 function we_tag_shopCategory($attribs){
 	$db = $GLOBALS['DB_WE'];
-	$pref = getHash('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE pref_name="shop_cats_dir"', $db);
 
 	$fromid = weTag_getAttribute('id', $attribs);
 	$fromdoc = weTag_getAttribute('fromdoc', $attribs, false, true);
 	$showpath = weTag_getAttribute('showpath', $attribs, false, true);
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
-	$onlyindir = id_to_path($pref['pref_value'], CATEGORY_TABLE, $db);
-	$field = weTag_getAttribute('field', $attribs);
+	$onlyindir = we_shop_category::getShopCatsDir(true);
+	$show = weTag_getAttribute('show', $attribs, 'category');
+	$field = weTag_getAttribute(($show === 'vat' ? 'vatfield' : 'catfield'), $attribs);
 
 	$attribs['onlyindir'] = $onlyindir;
 	$attribs['fromTag'] = 'shopcategory';
@@ -44,18 +44,20 @@ function we_tag_shopCategory($attribs){
 		$attribs['showpath'] = true;
 		return we_tag_category($attribs);
 	} else {
+		if($show === 'vat'){
+			$ret = we_shop_category::getVatByCategory($GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME), '', 'vat');
+		} else {
+			$ret = we_shop_category::getFieldFromIDs($GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME), $field, false, 0, $onlyindir, false, false, ',', $showpath, $rootdir);
+		}
+
 		if($GLOBALS['we_editmode']){
 			$attribs['field'] = 'ID';
 			$catIDs = explode(',', trim(we_tag_category($attribs), ','));
 			if(count($catIDs)){
-
-				return we_html_element::htmlHidden(array('name' => 'we_' . $GLOBALS['we_doc']->Name . '_category[we_shopCategory]', 'value' => $catIDs[0])) . 
-						we_category::we_getCatsFromIDs($catIDs[0], ',', $showpath, $db, $rootdir, $field, $onlyindir, false);
+				$ret .= we_html_element::htmlHidden(array('name' => 'we_' . $GLOBALS['we_doc']->Name . '_category[we_shopCategory]', 'value' => $catIDs[0]));// . 
 			}
-		} else {
-			$catIDs = we_category::we_getCatsFromIDs($GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME), ',', $showpath, $db, $rootdir, $field, $onlyindir, true);
-
-			return count($catIDs) ? $catIDs[0] : '';
 		}
+
+		return $ret;
 	}
 }

@@ -389,9 +389,8 @@ class we_object_listviewMultiobject extends we_listview_base{
 		if(!$this->calendar_struct["calendar"] || $fetch){
 
 			if($this->count < count($this->Record)){
-				$paramName = "we_objectID";
 				$this->DB_WE->Record($this->Record[$this->count]);
-				$this->DB_WE->Record["we_wedoc_Path"] = $this->Path . '?' . $paramName . '=' . $this->DB_WE->Record["OF_ID"];
+				$this->DB_WE->Record["we_wedoc_Path"] = $this->Path . '?we_objectID=' . $this->DB_WE->Record["OF_ID"];
 				$path_parts = pathinfo($this->Path);
 				if($this->objectseourls && $this->DB_WE->Record['OF_Url'] != '' && show_SeoLinks()){
 					if(!$this->triggerID && $this->DB_WE->Record['OF_TriggerID'] != 0){
@@ -404,9 +403,9 @@ class we_object_listviewMultiobject extends we_listview_base{
 					}
 				} else {
 					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?$paramName=" . $this->DB_WE->Record["OF_ID"];
+						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $this->DB_WE->Record["OF_ID"];
 					} else {
-						$this->DB_WE->Record["we_WE_PATH"] = $this->Path . "?$paramName=" . $this->DB_WE->Record["OF_ID"];
+						$this->DB_WE->Record["we_WE_PATH"] = $this->Path . '?we_objectID=' . $this->DB_WE->Record["OF_ID"];
 					}
 				}
 				$this->DB_WE->Record["we_WE_TRIGGERID"] = ($this->triggerID ? : intval($this->DB_WE->f("OF_TriggerID")));
@@ -416,7 +415,7 @@ class we_object_listviewMultiobject extends we_listview_base{
 				$this->DB_WE->Record["we_wedoc_Category"] = $this->DB_WE->f("OF_Category");
 
 				// for seeMode #5317
-				$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath . '?' . $paramName . '=' . $this->DB_WE->Record["OF_ID"];
+				$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath . '?we_objectID=' . $this->DB_WE->Record["OF_ID"];
 				$this->count++;
 				return true;
 			}

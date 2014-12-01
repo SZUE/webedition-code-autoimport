@@ -335,7 +335,7 @@ if(inWorkflow($we_doc)){
 				$_noPermTable->setColContent(0, 3, g_l('SEEM', '[no_permission_to_edit_document]'));
 
 
-				print $_noPermTable->getHtml();
+				echo $_noPermTable->getHtml();
 			}
 		}
 		?>

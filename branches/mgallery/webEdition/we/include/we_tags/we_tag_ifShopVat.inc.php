@@ -24,7 +24,7 @@
  */
 function we_tag_ifShopVat($attribs){
 	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
-		print $foo;
+		echo $foo;
 		return false;
 	}
 	$id = weTag_getAttribute('id', $attribs, -1);

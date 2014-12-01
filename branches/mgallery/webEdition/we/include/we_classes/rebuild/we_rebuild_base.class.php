@@ -32,7 +32,7 @@ abstract class we_rebuild_base{
 		switch($data['type']){
 			case 'navigation':
 				if($printIt){
-					print ('Rebuilding Navigation Item with Id: ' . $data['id']);
+					echo ('Rebuilding Navigation Item with Id: ' . $data['id']);
 					flush();
 				}
 
@@ -43,7 +43,7 @@ abstract class we_rebuild_base{
 				//clean AFTER rebuild to make sure all data is acurate afterwards!
 				we_navigation_cache::clean(true);
 				if($printIt){
-					print ("   done$_newLine");
+					echo ("   done$_newLine");
 					flush();
 				}
 				break;
@@ -51,7 +51,7 @@ abstract class we_rebuild_base{
 				$imgdoc = new we_imageDocument();
 				$imgdoc->initByID($data['id']);
 				if($printIt){
-					print ('Rebuilding thumb for image: ' . $imgdoc->Path);
+					echo ('Rebuilding thumb for image: ' . $imgdoc->Path);
 					flush();
 				}
 
@@ -60,7 +60,7 @@ abstract class we_rebuild_base{
 				$imgdoc->we_save(true);
 				unset($imgdoc);
 				if($printIt){
-					print ("   done$_newLine");
+					echo ("   done$_newLine");
 					flush();
 				}
 				break;
@@ -77,7 +77,7 @@ abstract class we_rebuild_base{
 				$imgdoc->we_save(true);
 				unset($imgdoc);
 				if($printIt){
-					print ("   done$_newLine");
+					echo ("   done$_newLine");
 					flush();
 				}
 				break;
@@ -103,7 +103,7 @@ abstract class we_rebuild_base{
 				$GLOBALS['we_doc'] = new $tmp();
 				$GLOBALS['we_doc']->initByID($data['id'], $table, (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE ? we_class::LOAD_TEMP_DB : we_class::LOAD_MAID_DB));
 				if($printIt){
-					print ('Rebuilding: ' . $GLOBALS['we_doc']->Path);
+					echo ('Rebuilding: ' . $GLOBALS['we_doc']->Path);
 					flush();
 				}
 
@@ -140,7 +140,7 @@ abstract class we_rebuild_base{
 					$GLOBALS['we_doc']->we_republish($data['mt']);
 				}
 				if($printIt){
-					print ("   done$_newLine");
+					echo ("   done$_newLine");
 					flush();
 				}
 		}

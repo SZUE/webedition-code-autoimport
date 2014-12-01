@@ -141,7 +141,7 @@ function doClick(id,ct){
 	}
 
 	protected function printCmdHTML(){
-		print we_html_element::jsElement('
+		echo we_html_element::jsElement('
 top.clearEntries();' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .

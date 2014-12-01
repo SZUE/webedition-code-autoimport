@@ -34,11 +34,11 @@ class we_sidebar_frames{
 		switch($what){
 
 			case 'content':
-				print $this->getHTMLContent();
+				echo $this->getHTMLContent();
 				break;
 
 			default:
-				print $this->getHTMLFrameset();
+				echo $this->getHTMLFrameset();
 				break;
 		}
 	}

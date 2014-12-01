@@ -1134,13 +1134,7 @@ class we_objectFile extends we_document{
 				$input = we_class::htmlSelect('dummy', $values, 1, 0, false, array('disabled' => 'disabled')) .
 						we_html_element::htmlHidden(array('name' => 'we_' . $this->Name . '_shopCategory[' . $name . ']', 'value' => $attribs['default']));
 			} else {
-				$pref = getHash('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE pref_name="shop_cats_dir"', $this->DB_WE);
-				$path = we_category::we_getCatsFromIDs($pref['pref_value'], ',', true, $this->DB_WE, '', 'Path');
-				$this->DB_WE->query('SELECT ID, Text, PATH, IsFolder FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $path . '/%"');
-				while($this->DB_WE->next_record()){
-					$values[$this->DB_WE->f('ID')] = $this->DB_WE->f('PATH');
-				}
-				$input = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . ']', $values, 1, ($this->getElement($name) ? : $attribs['default']));
+				$input = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . ']', we_shop_category::getFieldFromAll('Path'), 1, ($this->getElement($name) ? : $attribs['default']));
 			}
 
 			return
@@ -1149,7 +1143,7 @@ class we_objectFile extends we_document{
 				<tr><td>' . $input . '</td></tr>
 			</table>';
 		}
-		$val = we_category::we_getCatsFromIDs($this->getElement($name), ',', ($attribs['shopcatShowPath'] == 'false' ? false : true), $this->DB_WE, $attribs['shopcatRootdir'], $attribs['shopcatField']);
+		$val = we_shop_category::getFieldFromIDs($this->getElement($name), $attribs['shopcatField'], false, 0, '', false, false, ',', ($attribs['shopcatShowPath'] == 'false' ? false : true), $attribs['shopcatRootdir']);
 
 		return $this->getPreviewView($name, $val);
 	}
@@ -2009,7 +2003,7 @@ class we_objectFile extends we_document{
 			$text = str_replace(array(' ', '//'), array('-', '/'), $text);
 			$text = (URLENCODE_OBJECTSEOURLS) ?
 					str_replace('%2F', '/', urlencode($text)) :
-					preg_replace(array('~&szlig;~', '~&(.)uml;~', '~&(.)(uml|grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~[^0-9a-zA-Z/._-]~'), array('ss', '${1}e', '${1}${3}', ''), htmlentities($text, ENT_COMPAT, $this->Charset));
+					preg_replace(array('~&szlig;~', '~&(.)dash;~', '~&(.)uml;~', '~&(.)(grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~&[^;]+;~','~[^0-9a-zA-Z/._-]~',), array('ss', '-', '${1}e', '${1}${3}', ''), htmlentities($text, ENT_COMPAT, $this->Charset));
 			$this->Url = substr($text, 0, 256);
 		} else {
 			$this->Url = '';

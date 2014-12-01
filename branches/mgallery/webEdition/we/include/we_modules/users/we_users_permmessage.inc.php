@@ -37,7 +37,7 @@ $content = "<p class=\"defaultfont\">" . (isset($we_message) ? $we_message : spr
 
 <body class="weDialogBody">
 	<?php
-	print we_html_tools::htmlDialogLayout($content, g_l('alert', '[no_perms_title]'));
+	echo we_html_tools::htmlDialogLayout($content, g_l('alert', '[no_perms_title]'));
 	?>
 </body>
 </html>

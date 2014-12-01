@@ -118,6 +118,13 @@ class we_textDocument extends we_document{
 		return parent::we_save($resave, $skipHook);
 	}
 
+	protected function i_writeSiteDir($doc){
+		if($this->ContentType === we_base_ContentTypes::HTACESS){
+			return true;
+		}
+		return parent::i_writeSiteDir($doc);
+	}
+
 	function getPath(){
 		if($this->parseFile && $this->ContentType == we_base_ContentTypes::CSS && ($this->Extension === '.less' || $this->Extension === '.scss')){
 			return rtrim($this->getParentPath(), '/') . '/' . ( isset($this->Filename) ? $this->Filename : '' ) . '.css';
@@ -144,7 +151,7 @@ class we_textDocument extends we_document{
 							$less->setFormatter('classic');
 							try{
 								$doc = $less->compile($doc);
-							}catch(exception $e){
+							} catch (exception $e){
 								$this->errMsg = $e->getMessage();
 								return false;
 							}
@@ -156,7 +163,7 @@ class we_textDocument extends we_document{
 							$scss->setImportPaths(array_unique(array('', $_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(), $_SERVER['DOCUMENT_ROOT'] . '/')));
 							try{
 								$doc = $scss->compile($doc);
-							}catch(exception $e){
+							} catch (exception $e){
 								$this->errMsg = $e->getMessage();
 								return false;
 							}

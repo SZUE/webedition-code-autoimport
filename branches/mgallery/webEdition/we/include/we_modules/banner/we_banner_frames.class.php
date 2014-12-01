@@ -337,11 +337,11 @@ class we_banner_frames extends we_modules_frame{
 		}
 
 		$out.='}';
-		print we_html_element::jsElement($out);
+		echo we_html_element::jsElement($out);
 	}
 
 	function getJSCmdCode(){
-		print $this->View->getJSTopCode();
+		echo $this->View->getJSTopCode();
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){

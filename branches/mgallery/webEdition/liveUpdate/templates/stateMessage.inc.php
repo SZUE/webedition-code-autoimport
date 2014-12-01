@@ -39,4 +39,4 @@ $content = '
 	</div>
 </div>';
 
-print liveUpdateTemplates::getHtml(g_l('liveUpdate', '[state][headline]'), $content);
+echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[state][headline]'), $content);
