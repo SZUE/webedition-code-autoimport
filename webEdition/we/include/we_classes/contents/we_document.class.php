@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -26,6 +27,7 @@ require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 /* the parent class for documents */
 
 class we_document extends we_root{
+
 //Extension of the document
 	var $Extension = '';
 //Array of possible filename extensions for the document
@@ -197,8 +199,8 @@ class we_document extends we_root{
 
 	function formInGlossar(){
 		return (we_base_moduleInfo::we_getModuleNameByContentType('glossary') === 'glossary' ?
-				we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
-				'');
+						we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
+						'');
 	}
 
 	function formIsSearchable(){
@@ -259,7 +261,7 @@ class we_document extends we_root{
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', '[Keywords]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 </table>' .
-			($this->ContentType == we_base_ContentTypes::IMAGE ? $this->formCharset(true) : '');
+				($this->ContentType == we_base_ContentTypes::IMAGE ? $this->formCharset(true) : '');
 	}
 
 	function formCategory(){
@@ -722,11 +724,11 @@ class we_document extends we_root{
 		parent::we_initSessDat($sessDat);
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			if(
-				($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_minute')) !== false){
+					($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_minute')) !== false){
 				$this->From = mktime($hour, $min, 0, $month, $day, $year);
 			}
 			if(
-				($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_minute')) !== false){
+					($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_minute')) !== false){
 				$this->To = mktime($hour, $min, 0, $month, $day, $year);
 			}
 		}
@@ -927,10 +929,10 @@ class we_document extends we_root{
 			case 'link':
 				$link = $val ? unserialize($val) : array();
 
-				$only = weTag_getAttribute('only', $attribs);
+				$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
 
-				$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
-				$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
+				$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
+				$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, we_base_request::BOOL);
 
 				if($pathOnly || $only === 'href'){
 					$return = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
@@ -953,12 +955,12 @@ class we_document extends we_root{
 						$_useName = '';
 					}
 
-					$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), true, false);
-					$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, true, true);
+					$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), we_base_request::BOOL);
+					$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, true, we_base_request::BOOL);
 					if($only){
 						return ($only === 'content' ?
-								self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls) :
-								isset($link[$only]) ? $link[$only] : ''); // #3636
+										self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls) :
+										isset($link[$only]) ? $link[$only] : ''); // #3636
 					}
 
 					if(($content = self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls))){
@@ -1007,29 +1009,29 @@ class we_document extends we_root{
 				self::parseInternalLinks($val, $parentID);
 				$retval = preg_replace('/<\?xml[^>]+>/i', '', $val);
 
-				if(!weTag_getAttribute('html', $attribs, true, true) && !weTag_getAttribute('wysiwyg', $attribs, false, true)){
+				if(!weTag_getAttribute('html', $attribs, true, we_base_request::BOOL) && !weTag_getAttribute('wysiwyg', $attribs, false, we_base_request::BOOL)){
 					$retval = strip_tags($retval, '<br/>,<p>');
 				}
 
-				$_htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
-				$_wysiwyg = weTag_getAttribute('wysiwyg', $attribs, false, true);
+				$_htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL);
+				$_wysiwyg = weTag_getAttribute('wysiwyg', $attribs, false, we_base_request::BOOL);
 
 				if($_htmlspecialchars && (!$_wysiwyg)){
 					$retval = preg_replace('/#we##br([^#]*)#we##/', '<br${1}>', oldHtmlspecialchars(preg_replace('/<br([^>]*)>/i', '#we##br${1}#we##', $retval), ENT_QUOTES));
 				}
-				if(!weTag_getAttribute('php', $attribs, (defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT), true)){
+				if(!weTag_getAttribute('php', $attribs, (defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT), we_base_request::BOOL)){
 					$retval = we_base_util::rmPhp($retval);
 				}
-				$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), true);
+				$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), we_base_request::BOOL);
 				$retval = preg_replace('-<(br|hr)([^/>]*)/? *>-i', ($xml ? '<${1}${2}/>' : '<${1}${2}>'), $retval);
 
 				if(preg_match('/^[\d.,]+$/', trim($retval))){
 					$precision = isset($attribs['precision']) ? abs($attribs['precision']) : 2;
-					if(($num = weTag_getAttribute('num_format', $attribs))){
+					if(($num = weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING))){
 						$retval = we_util_Strings::formatNumber(we_base_util::std_numberformat($retval), $num, $precision);
 					}
 				}
-				if(weTag_getAttribute('win2iso', $attribs, false, true)){
+				if(weTag_getAttribute('win2iso', $attribs, false, we_base_request::BOOL)){
 
 					$charset = ( isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'])) ? $GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'] : '';
 					if(trim(strtolower(substr($charset, 0, 3))) === 'iso' || $charset === ''){
@@ -1224,7 +1226,7 @@ class we_document extends we_root{
 			case we_base_link::CONTENT_TEXT:
 // Workarround => We have to find another solution
 				return (($xml || $htmlspecialchars) ?
-						oldHtmlspecialchars(html_entity_decode($link['text'])) : $link['text']);
+								oldHtmlspecialchars(html_entity_decode($link['text'])) : $link['text']);
 		}
 	}
 
@@ -1322,15 +1324,15 @@ class we_document extends we_root{
 					}
 				}
 				$js.=
-					(isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] ?
-						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $_popUpCtrl["jswidth"] . '\';' : '') .
-					(isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"] ?
-						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';' : '') . 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (isset($_popUpCtrl["jsstatus"]) && $_popUpCtrl["jsstatus"] ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . (isset($_popUpCtrl["jsscrollbars"]) && $_popUpCtrl["jsscrollbars"] ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . (isset($_popUpCtrl["jsmenubar"]) && $_popUpCtrl["jsmenubar"] ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=' . (isset($_popUpCtrl["jsresizable"]) && $_popUpCtrl["jsresizable"] ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=' . (isset($_popUpCtrl["jslocation"]) && $_popUpCtrl["jslocation"] ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=' . (isset($_popUpCtrl["jstoolbar"]) && $_popUpCtrl["jstoolbar"] ? 'yes' : 'no') . '\';';
+						(isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] ?
+								'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $_popUpCtrl["jswidth"] . '\';' : '') .
+						(isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"] ?
+								'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';' : '') . 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (isset($_popUpCtrl["jsstatus"]) && $_popUpCtrl["jsstatus"] ? 'yes' : 'no') . '\';' .
+						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . (isset($_popUpCtrl["jsscrollbars"]) && $_popUpCtrl["jsscrollbars"] ? 'yes' : 'no') . '\';' .
+						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . (isset($_popUpCtrl["jsmenubar"]) && $_popUpCtrl["jsmenubar"] ? 'yes' : 'no') . '\';' .
+						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=' . (isset($_popUpCtrl["jsresizable"]) && $_popUpCtrl["jsresizable"] ? 'yes' : 'no') . '\';' .
+						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=' . (isset($_popUpCtrl["jslocation"]) && $_popUpCtrl["jslocation"] ? 'yes' : 'no') . '\';' .
+						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=' . (isset($_popUpCtrl["jstoolbar"]) && $_popUpCtrl["jstoolbar"] ? 'yes' : 'no') . '\';';
 				$foo = $js . "var we_win = window.open('','we_" . (isset($attribs["name"]) ? $attribs["name"] : "") . "',we_winOpts);";
 
 				$_linkAttribs['target'] = 'we_' . (isset($attribs["name"]) ? $attribs["name"] : "");
@@ -1410,7 +1412,7 @@ class we_document extends we_root{
 			}
 			foreach($dates as $nr => $v){
 				$this->schedArr[$nr]['time'] = mktime(
-					$dates[$nr]['hour'], $dates[$nr]['minute'], 0, $dates[$nr]['month'], $dates[$nr]['day'], $dates[$nr]['year']);
+						$dates[$nr]['hour'], $dates[$nr]['minute'], 0, $dates[$nr]['month'], $dates[$nr]['day'], $dates[$nr]['year']);
 			}
 		}
 		$this->Path = $this->getPath();
@@ -1488,9 +1490,9 @@ class we_document extends we_root{
 
 
 		return '<table border="0" cellpadding="0" cellspacing="0">' .
-			($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
-			'<tr><td>' . $this->htmlTextInput($inputName, 24, $value) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"), "value", 330) . '</td></tr>' .
-			'</table>';
+				($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
+				'<tr><td>' . $this->htmlTextInput($inputName, 24, $value) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"), "value", 330) . '</td></tr>' .
+				'</table>';
 	}
 
 	/**
@@ -1559,9 +1561,9 @@ class we_document extends we_root{
 		}
 		$this->wasUpdate = $this->ID > 0;
 		$usepath = ($this->Table == TEMPLATES_TABLE ?
-				(strpos($this->Path, '.tmpl') === false ? TEMPLATES_PATH . $this->Path : TEMPLATES_PATH . substr_replace($this->Path, '.php', -5)) :
-				$_SERVER['DOCUMENT_ROOT'] . $this->Path
-			);
+						(strpos($this->Path, '.tmpl') === false ? TEMPLATES_PATH . $this->Path : TEMPLATES_PATH . substr_replace($this->Path, '.php', -5)) :
+						$_SERVER['DOCUMENT_ROOT'] . $this->Path
+				);
 
 		$this->Filehash = (file_exists($usepath) && is_file($usepath) ? sha1_file($usepath) : '');
 		$this->i_savePersistentSlotsToDB('Filehash,RebuildDate');
@@ -1585,10 +1587,10 @@ class we_document extends we_root{
 					$text = preg_replace(array(
 						'-<(a|img) [^>]*' . $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
 						'-<(a|img) [^>]*' . $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '(\?|&|&amp;|")[^>]*>-Ui',
-						), array(
+							), array(
 						'$3',
 						''
-						), $text);
+							), $text);
 				}
 			}
 		}
@@ -1613,16 +1615,16 @@ class we_document extends we_root{
 					}
 					if($href){
 						$text = ($reg[2] === '?' ?
-								str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
-								str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
+										str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
+										str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
 					} else {
 						$text = preg_replace(array(
 							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
 							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>-Ui',
-							), array(
+								), array(
 							'$2',
 							''
-							), $text);
+								), $text);
 					}
 				}
 			}

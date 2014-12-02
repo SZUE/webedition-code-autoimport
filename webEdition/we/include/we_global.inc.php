@@ -788,7 +788,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 //	take values given from the tag - later from preferences.
-	$xhtml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, true);
+	$xhtml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
 
 //	remove x(ht)ml-attributs
 	$removeAttribs = array('xml', 'xmltype', 'to', 'nameto', '_name_orig', null);
@@ -816,7 +816,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 		if(XHTML_DEBUG){ //  check if XHTML_DEBUG is activated - system pref
 			$showWrong = (isset($_SESSION['prefs']['xhtml_show_wrong']) && $_SESSION['prefs']['xhtml_show_wrong'] && isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
 // at the moment only transitional is supported
-			$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional');
+			$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional',we_base_request::STRING);
 			$attribs = removeAttribs($attribs, $removeAttribs);
 
 			validation::validateXhtmlAttribs($element, $attribs, $xhtmlType, $showWrong, XHTML_REMOVE_WRONG);

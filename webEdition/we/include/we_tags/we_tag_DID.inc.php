@@ -19,9 +19,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_DID($attribs){
-	$docAttr = weTag_getAttribute("doc", $attribs);
+	$docAttr = weTag_getAttribute("doc", $attribs, '', we_base_request::STRING);
 	if(!$docAttr){
-		$docAttr = weTag_getAttribute("type", $attribs); // for Compatibility Reasons
+		$docAttr = weTag_getAttribute("type", $attribs, '', we_base_request::STRING); // for Compatibility Reasons
 	}
 
 	switch($docAttr){
