@@ -117,7 +117,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 		if($name && !($id || $path)){
 			$type = weTag_getAttribute('kind', $attribs, '', we_base_request::STRING);
 			$_name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
-			$description = weTag_getAttribute('description', $attribs, g_l('tags', '[include_file]'), we_base_request::STRING);
+			$description = weTag_getAttribute('description', $attribs, g_l('tags', '[include_file]'), we_base_request::RAW);
 
 			echo '<table class="weEditTable" style="background: #006DB8;border:0px;padding:0px;"><tr><td style="padding: 3px;color:white;">' . '&nbsp;' . $description . '</td></tr><tr><td>' .
 			we_tag('href', array('name' => $_name, 'rootdir' => weTag_getAttribute('rootdir', $attribs, '/', we_base_request::FILE), 'startid' => weTag_getAttribute('startid', $attribs, 0, we_base_request::INT), 'type' => $type, 'size' => weTag_getAttribute('size', $attribs, 50, we_base_request::UNIT))) .
