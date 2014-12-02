@@ -524,7 +524,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 				//be compatible
 				return '';
 			}
-			$xml = isset($attribs) ? weTag_getAttribute('xml', $attribs, false, true) : true; //rest is done in getHtmlTag
+			$xml = isset($attribs) ? weTag_getAttribute('xml', $attribs, false, we_base_request::BOOL) : true; //rest is done in getHtmlTag
 			$attribs = array('style' => 'margin:8px 18px;border-style:none;width:64px;height:64px;',
 				'src' => ICON_DIR . 'no_image.gif',
 				'alt' => 'no-image',

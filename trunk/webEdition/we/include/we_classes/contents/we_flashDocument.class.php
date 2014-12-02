@@ -50,15 +50,14 @@ class we_flashDocument extends we_binaryDocument{
 
 	// is not written yet
 	function initByAttribs($attribs){
-		$sizingrel = weTag_getAttribute('sizingrel', $attribs, 0);
-		if(!empty($sizingrel)){
-			$orig_w = weTag_getAttribute('width', $attribs, $this->getElement('width'));
-			$orig_h = weTag_getAttribute('height', $attribs, $this->getElement('height'));
+		if(($sizingrel = weTag_getAttribute('sizingrel', $attribs, 0, we_base_request::INT))){
+			$orig_w = weTag_getAttribute('width', $attribs, $this->getElement('width'), we_base_request::UNIT);
+			$orig_h = weTag_getAttribute('height', $attribs, $this->getElement('height'), we_base_request::UNIT);
 			$attribs['width'] = round($orig_w * $sizingrel);
 			$attribs['height'] = round($orig_h * $sizingrel);
 		}
-		$sizingbase = weTag_getAttribute('sizingbase', $attribs, 16);
-		$sizingstyle = weTag_getAttribute('sizingstyle', $attribs, false);
+		$sizingbase = weTag_getAttribute('sizingbase', $attribs, 16, we_base_request::UNIT);
+		$sizingstyle = weTag_getAttribute('sizingstyle', $attribs, false, we_base_request::STRING);
 		if($sizingstyle === 'none'){
 			$sizingstyle = false;
 		}
@@ -71,7 +70,7 @@ class we_flashDocument extends we_binaryDocument{
 			$removeAttribs[] = 'height';
 		}
 
-		$this->setElement('xml', weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, true));
+		$this->setElement('xml', weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL));
 		$attribs = removeAttribs($attribs, $removeAttribs, 'attrib');
 
 		foreach($attribs as $a => $b){

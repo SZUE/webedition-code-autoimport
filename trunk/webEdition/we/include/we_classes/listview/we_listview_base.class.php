@@ -70,6 +70,7 @@ abstract class we_listview_base{
 	 * @param   cols   		  integer - to display a table this is the number of cols
 	 *
 	 */
+
 	function __construct($name = 0, $rows = 999999999, $offset = 0, $order = '', $desc = false, $cats = '', $catOr = false, $workspaceID = 0, $cols = 0, $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'all', $id = 0){
 
 		$this->name = $name;
@@ -244,8 +245,8 @@ abstract class we_listview_base{
 	 *
 	 */
 	public function getBackLink($attribs){
-		$only = weTag_getAttribute('only', $attribs);
-		$urlID = weTag_getAttribute('id', $attribs);
+		$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
+		$urlID = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
 
 			$month = $this->calendar_struct['month_human'];
@@ -295,9 +296,8 @@ abstract class we_listview_base{
 		if($only){
 			$this->close_a = false;
 			return (isset($attribs[$only]) ? $attribs[$only] : '');
-		} else {
-			return getHtmlTag('a', $attribs, '', false, true);
 		}
+		return getHtmlTag('a', $attribs, '', false, true);
 	}
 
 	static function we_makeQueryString($queryString = '', $filter = ''){
@@ -351,8 +351,8 @@ abstract class we_listview_base{
 	 *
 	 */
 	public function getNextLink($attribs){
-		$only = weTag_getAttribute('only', $attribs);
-		$urlID = weTag_getAttribute('id', $attribs);
+		$only = weTag_getAttribute('only', $attribs,'',we_base_request::STRING);
+		$urlID = weTag_getAttribute('id', $attribs,0,we_base_request::INT);
 		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
 
 			$month = $this->calendar_struct['month_human'];
