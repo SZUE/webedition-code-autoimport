@@ -24,27 +24,27 @@
  */
 function we_parse_tag_select($attribs, $content){
 	return '<?php if($GLOBALS[\'we_editmode\']){ ob_start();?>' . $content . '<?php $we_select_content=ob_get_clean();}else{$we_select_content=\'\';}'
-		. 'printElement(' . we_tag_tagParser::printTag('select', $attribs, '$we_select_content') . ');?>';
+			. 'printElement(' . we_tag_tagParser::printTag('select', $attribs, '$we_select_content') . ');?>';
 }
 
 function we_tag_select($attribs, $content){
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
-	$name = weTag_getAttribute('name', $attribs);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 	$val = $GLOBALS['we_doc']->getElement($name);
 	if($GLOBALS['we_editmode']){
-		$onchange = weTag_getAttribute('onchange', $attribs);
-		$reload = weTag_getAttribute('reload', $attribs, false, true);
-		switch(weTag_getAttribute('type', $attribs)){
+		$onchange = weTag_getAttribute('onchange', $attribs, '', we_base_request::JS);
+		$reload = weTag_getAttribute('reload', $attribs, false, we_base_request::BOOL);
+		switch(weTag_getAttribute('type', $attribs, '', we_base_request::STRING)){
 			case 'csv':
-				$vals = explode(',', weTag_getAttribute('values', $attribs, $content));
+				$vals = explode(',', weTag_getAttribute('values', $attribs, $content, '', we_base_request::RAW));
 				$content = '';
 				foreach($vals as $cur){
 					$content.=($cur == $val ?
-							getHtmlTag('option', array('value' => $cur, 'selected' => 'selected'), $cur, true) :
-							getHtmlTag('option', array('value' => $cur), $cur, true)
-						);
+									getHtmlTag('option', array('value' => $cur, 'selected' => 'selected'), $cur, true) :
+									getHtmlTag('option', array('value' => $cur), $cur, true)
+							);
 				}
 				break;
 			default:

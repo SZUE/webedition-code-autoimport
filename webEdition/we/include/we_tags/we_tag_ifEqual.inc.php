@@ -27,9 +27,9 @@ function we_tag_ifEqual($attribs){
 		echo $foo;
 		return false;
 	}
-	$name = weTag_getAttribute('name', $attribs);
-	$eqname = weTag_getAttribute('eqname', $attribs);
-	$value = weTag_getAttribute('value', $attribs);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+	$eqname = weTag_getAttribute('eqname', $attribs, '', we_base_request::STRING);
+	$value = weTag_getAttribute('value', $attribs, '', we_base_request::RAW);
 
 	if(!$eqname){
 		if(($foo = attributFehltError($attribs, 'value', __FUNCTION__))){
@@ -48,10 +48,10 @@ function we_tag_ifEqual($attribs){
 
 	if($GLOBALS["WE_MAIN_DOC"]->getElement($blockeq)){//check if eqname is present in block
 		return ($elem == $GLOBALS["WE_MAIN_DOC"]->getElement($blockeq));
-	} elseif($GLOBALS["WE_MAIN_DOC"]->getElement($eqname)){//check if eqname is present in document
-		return ($elem == $GLOBALS["WE_MAIN_DOC"]->getElement($eqname));
-	} else {//check if eqname is present in GLOBALS
-		return (isset($GLOBALS[$eqname])) && ($GLOBALS[$eqname] == $elem);
 	}
-	return false;
+	if($GLOBALS["WE_MAIN_DOC"]->getElement($eqname)){//check if eqname is present in document
+		return ($elem == $GLOBALS["WE_MAIN_DOC"]->getElement($eqname));
+	}
+//check if eqname is present in GLOBALS
+	return (isset($GLOBALS[$eqname])) && ($GLOBALS[$eqname] == $elem);
 }

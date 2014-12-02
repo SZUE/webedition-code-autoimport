@@ -25,10 +25,10 @@
 function we_tag_votingField($attribs){
 
 	if(isset($GLOBALS['_we_voting'])){
-		$name = weTag_getAttribute('_name_orig', $attribs);
-		$type = weTag_getAttribute('type', $attribs);
-		$precision = weTag_getAttribute('precision', $attribs, 0);
-		$num_format = weTag_getAttribute('num_format', $attribs);
+		$name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
+		$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
+		$precision = weTag_getAttribute('precision', $attribs, 0, we_base_request::INT);
+		$num_format = weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING);
 
 		switch($name){
 			case 'id':
@@ -227,7 +227,7 @@ function we_tag_votingField($attribs){
 			case 'result':
 				return $GLOBALS['_we_voting']->getResult($type, $num_format, $precision);
 			case 'date':
-				$format = weTag_getAttribute('format', $attribs);
+				$format = weTag_getAttribute('format', $attribs, '', we_base_request::STRING);
 				return date(($format ? : g_l('weEditorInfo', '[date_format]')), $GLOBALS['_we_voting']->PublishDate);
 		}
 	}

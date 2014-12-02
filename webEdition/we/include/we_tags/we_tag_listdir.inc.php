@@ -34,7 +34,7 @@ we_post_tag_listview();?>';
 
 function we_tag_listdir($attribs){
 	static $files = array();
-	if(weTag_getAttribute('_internal', $attribs, false, true)){
+	if(weTag_getAttribute('_internal', $attribs, false, we_base_request::BOOL)){
 		$pos = $GLOBALS['we_position']['listdir']['position'];
 		if(!isset($files[$pos])){
 			return false;
@@ -54,13 +54,13 @@ function we_tag_listdir($attribs){
 		$files = array();
 	}
 
-	$dirID = weTag_getAttribute('id', $attribs, $GLOBALS['we_doc']->ParentID);
-	$index = explode(',', weTag_getAttribute('index', $attribs, 'index.html,index.htm,index.php,default.htm,default.html,default.php'));
-	$name = weTag_getAttribute('field', $attribs);
-	$dirfield = weTag_getAttribute('dirfield', $attribs, $name);
-	$sort = weTag_getAttribute('order', $attribs, $name);
-	$desc = weTag_getAttribute('desc', $attribs, false, true);
-	$searchable = weTag_getAttribute('searchable', $attribs, false, true);
+	$dirID = weTag_getAttribute('id', $attribs, $GLOBALS['we_doc']->ParentID, we_base_request::INT);
+	$index = explode(',', weTag_getAttribute('index', $attribs, 'index.html,index.htm,index.php,default.htm,default.html,default.php', we_base_request::STRING));
+	$name = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);
+	$dirfield = weTag_getAttribute('dirfield', $attribs, $name, we_base_request::STRING);
+	$sort = weTag_getAttribute('order', $attribs, $name, we_base_request::STRING);
+	$desc = weTag_getAttribute('desc', $attribs, false, we_base_request::BOOL);
+	$searchable = weTag_getAttribute('searchable', $attribs, false, we_base_request::BOOL);
 
 	$indexes = ' Text IN ("' . implode('","', $index) . '")';
 	$db = new DB_WE();
@@ -69,8 +69,8 @@ function we_tag_listdir($attribs){
 
 	while($db->next_record()){
 		$id = intval($db->f('IsFolder') ?
-				$db->f('FolderIndex') :
-				$db->f('ID'));
+						$db->f('FolderIndex') :
+						$db->f('ID'));
 
 		if($id){
 			$files[] = array(

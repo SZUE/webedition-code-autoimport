@@ -27,13 +27,13 @@ function we_tag_customerResetPasswordLink(array $attribs, $content){
 	if(isset($GLOBALS['ERROR']['customerResetPassword']) && $GLOBALS['ERROR']['customerResetPassword'] != we_customer_customer::PWD_ALL_OK || !isset($_SESSION['webuser'])){
 		return '';
 	}
-	$id = weTag_getAttribute('id', $attribs);
-	$host = weTag_getAttribute('host', $attribs, getServerUrl());
+	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
+	$host = weTag_getAttribute('host', $attribs, getServerUrl(), we_base_request::URL);
 
 	$attribs["href"] = $host . we_tag('a', array('hrefonly' => true, 'id' => $id)) . '?user=' . $_SESSION['webuser']['ID'] . '&token=' . $_SESSION['webuser']['WE_token'];
 
-	return (weTag_getAttribute("plain", $attribs, false, true) ?
-			$attribs["href"] :
-			getHtmlTag('a', removeAttribs($attribs, array('id', 'plain', 'host')), $content ? : $attribs["href"])
-		);
+	return (weTag_getAttribute("plain", $attribs, false, we_base_request::BOOL) ?
+					$attribs["href"] :
+					getHtmlTag('a', removeAttribs($attribs, array('id', 'plain', 'host')), $content ? : $attribs["href"])
+			);
 }

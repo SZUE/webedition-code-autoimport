@@ -27,21 +27,21 @@ function we_tag_setVar($attribs){
 		return $foo;
 	}
 
-	$nameFrom = weTag_getAttribute('namefrom', $attribs);
-	$nameTo = weTag_getAttribute('nameto', $attribs);
-	$typeFrom = weTag_getAttribute('typefrom', $attribs, 'text');
-	$to = weTag_getAttribute('to', $attribs);
-	$from = weTag_getAttribute('from', $attribs);
-	$propertyTo = weTag_getAttribute('propertyto', $attribs, false, true);
-	$propertyFrom = weTag_getAttribute('propertyfrom', $attribs, false, true);
-	$striptags = weTag_getAttribute('striptags', $attribs, false, true);
-	$formnameTo = weTag_getAttribute('formnameto', $attribs, 'we_global_form');
-	$formnameFrom = weTag_getAttribute('formnamefrom', $attribs, 'we_global_form');
-	$varType = $typeFrom === 'href' ? we_base_request::URL : weTag_getAttribute('varType', $attribs, we_base_request::STRING);
-	$prepareSQL = weTag_getAttribute('prepareSQL', $attribs, false, true);
+	$nameFrom = weTag_getAttribute('namefrom', $attribs, '', we_base_request::STRING);
+	$nameTo = weTag_getAttribute('nameto', $attribs, '', we_base_request::STRING);
+	$typeFrom = weTag_getAttribute('typefrom', $attribs, 'text', we_base_request::STRING);
+	$to = weTag_getAttribute('to', $attribs, '', we_base_request::STRING);
+	$from = weTag_getAttribute('from', $attribs, '', we_base_request::STRING);
+	$propertyTo = weTag_getAttribute('propertyto', $attribs, false, we_base_request::BOOL);
+	$propertyFrom = weTag_getAttribute('propertyfrom', $attribs, false, we_base_request::BOOL);
+	$striptags = weTag_getAttribute('striptags', $attribs, false, we_base_request::BOOL);
+	$formnameTo = weTag_getAttribute('formnameto', $attribs, 'we_global_form', we_base_request::STRING);
+	$formnameFrom = weTag_getAttribute('formnamefrom', $attribs, 'we_global_form', we_base_request::STRING);
+	$varType = $typeFrom === 'href' ? we_base_request::URL : weTag_getAttribute('varType', $attribs, we_base_request::STRING, we_base_request::STRING);
+	$prepareSQL = weTag_getAttribute('prepareSQL', $attribs, false, we_base_request::BOOL);
 
 	if(isset($attribs['value'])){
-		$valueFrom = weTag_getAttribute('value', $attribs);
+		$valueFrom = weTag_getAttribute('value', $attribs, '', we_base_request::RAW);
 	} else {
 		switch($from){
 			case 'request' :

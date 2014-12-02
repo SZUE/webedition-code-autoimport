@@ -34,8 +34,8 @@ class we_base_request{
 	const BOOL = 'bool';
 	const RAW = 'raw';
 	const URL = 'url';
-	const EMAIL = 'email';
-	const STRING = 'string';
+	const EMAIL = 'email';//add email_list
+	const STRING = 'string';//FIXME: add string_list
 	const HTML = 'html';
 
 	/**

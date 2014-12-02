@@ -28,7 +28,7 @@ function we_tag_ifNotShopField($attribs){
 		return false;
 	}
 
-	$match = weTag_getAttribute('match', $attribs);
+	$match = weTag_getAttribute('match', $attribs, '', we_base_request::STRING);
 
 	$attribs['type'] = 'print';
 	unset($attribs['match']);

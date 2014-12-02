@@ -26,17 +26,17 @@ function we_tag_href($attribs){
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
-	$name = weTag_getAttribute('name', $attribs);
-	$type = weTag_getAttribute('type', $attribs, we_base_link::TYPE_ALL);
-	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
-	$include = weTag_getAttribute('include', $attribs, false, true);
-	$reload = weTag_getAttribute('reload', $attribs, false, true);
-	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+	$type = weTag_getAttribute('type', $attribs, we_base_link::TYPE_ALL, we_base_request::STRING);
+	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
+	$include = weTag_getAttribute('include', $attribs, false, we_base_request::BOOL);
+	$reload = weTag_getAttribute('reload', $attribs, false, we_base_request::BOOL);
+	$rootdir = weTag_getAttribute('rootdir', $attribs, '/', we_base_request::FILE);
 //	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
 
 
-	$file = weTag_getAttribute('file', $attribs, true, true);
-	$directory = weTag_getAttribute('directory', $attribs, false, true);
+	$file = weTag_getAttribute('file', $attribs, true, we_base_request::BOOL);
+	$directory = weTag_getAttribute('directory', $attribs, false, we_base_request::BOOL);
 	$attribs = removeAttribs($attribs, array('rootdir', 'file', 'directory'));
 
 	if($GLOBALS['we_doc'] instanceof we_objectFile){
@@ -60,7 +60,7 @@ function we_tag_href($attribs){
 			$intID = $GLOBALS['we_doc']->getElement($nintID, 'bdid');
 			$intPath = $ct = '';
 			if(!$intID){
-				$intID = intval(weTag_getAttribute('startid', $attribs));
+				$intID = intval(weTag_getAttribute('startid', $attribs, 0, we_base_request::INT));
 			}
 			if($intID){
 				$foo = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID));
@@ -88,7 +88,7 @@ function we_tag_href($attribs){
 	}
 
 	if(!$GLOBALS['we_editmode']){
-		if($int && defined('CUSTOMER_TABLE') && $intID && weTag_getAttribute('cfilter', $attribs, true, true)){
+		if($int && defined('CUSTOMER_TABLE') && $intID && weTag_getAttribute('cfilter', $attribs, true, we_base_request::BOOL)){
 			$filter = we_customer_documentFilter::getFilterByIdAndTable($intID, FILE_TABLE);
 
 			if(is_object($filter)){
@@ -127,7 +127,7 @@ function we_tag_href($attribs){
 	$trashbut = we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value = ''; document.we_form.elements['" . $intPath_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);" . (($include || $reload) ? "setScrollTo(); top.we_cmd('reload_editpage');" : ''), true);
 	$span = '<span style="color: black;font-size:' . ((we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px")) . ';font-family:' . g_l('css', '[font_family]') . ';">';
 
-	$size = 5 * intval(weTag_getAttribute('size', $attribs, 20));
+	$size = 5 * intval(weTag_getAttribute('size', $attribs, 20, we_base_request::INT));
 
 	$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $intID_elem_Name . "'].value");
 	$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $intPath_elem_Name . "'].value");
@@ -155,8 +155,8 @@ function we_tag_href($attribs){
 	}
 
 	return
-		'<table class="weEditTable padding0 spacing2">' .
-		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT ? '
+			'<table class="weEditTable padding0 spacing2">' .
+			($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT ? '
 <tr>
 	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_html_forms::radiobutton(1, $int, $int_elem_Name, $span . g_l('tags', '[int_href]') . ':</span>') : $span . g_l('tags', '[int_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="1" />' ) . '</td>
 	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' . $yuiSuggest->getHTML() . '</td>
@@ -164,22 +164,22 @@ function we_tag_href($attribs){
 	<td class="weEditmodeStyle">' . $open . '</td>
 	<td class="weEditmodeStyle">' . $trashbut . '</td>
 	</tr>' : '') .
-		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_EXT ? '
+			($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_EXT ? '
 <tr>
 	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_html_forms::radiobutton(0, !$int, $int_elem_Name, $span . g_l('tags', '[ext_href]') . ':</span>') : $span . g_l('tags', '[ext_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="0" />') . '</td>
 	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' .
-			getHtmlTag('input', array_merge(removeAttribs($attribs, array('onkeydown', 'onKeyDown')), array(
-				'style' => 'width:' . ($size) . 'px;',
-				'onchange' => ($type == we_base_link::TYPE_ALL ? 'this.form.elements[\'' . $int_elem_Name . '\'][1].checked=true;' : ''),
-				'type' => "text",
-				'name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']',
-				'placeholder' => "http://example.org",
-				'value' => $extPath
-			)))
-			. '</td>
+					getHtmlTag('input', array_merge(removeAttribs($attribs, array('onkeydown', 'onKeyDown')), array(
+						'style' => 'width:' . ($size) . 'px;',
+						'onchange' => ($type == we_base_link::TYPE_ALL ? 'this.form.elements[\'' . $int_elem_Name . '\'][1].checked=true;' : ''),
+						'type' => "text",
+						'name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']',
+						'placeholder' => "http://example.org",
+						'value' => $extPath
+					)))
+					. '</td>
 	<td class="weEditmodeStyle">' . $but2 . '</td>
 	<td class="weEditmodeStyle">' . $trashbut2 . '</td>
 </tr>' : '') . '
 </table>' .
-		($include && $include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '');
+			($include && $include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '');
 }

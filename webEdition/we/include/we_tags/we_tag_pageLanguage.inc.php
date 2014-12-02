@@ -23,14 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_pageLanguage($attribs){
-	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
-	$type = weTag_getAttribute('type', $attribs);
-	$case = weTag_getAttribute('case', $attribs);
-	$doc = we_getDocForTag($docAttr);
+	$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
 
 	$lang = explode('_', $doc->Language);
 
-	switch($type){
+	switch(weTag_getAttribute('type', $attribs, '', we_base_request::STRING)){
 		case 'language':
 			$out = $lang[0];
 			break;
@@ -53,7 +50,7 @@ function we_tag_pageLanguage($attribs){
 			$out = $doc->Language;
 	}
 
-	switch($case){
+	switch(weTag_getAttribute('case', $attribs, '', we_base_request::STRING)){
 		case 'uppercase':
 			return strtoupper($out);
 		case 'lowercase':

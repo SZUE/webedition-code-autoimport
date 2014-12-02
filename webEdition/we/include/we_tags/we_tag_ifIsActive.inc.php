@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifIsActive($attribs){
-	switch(weTag_getAttribute('_name_orig', $attribs)){
+	switch(weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING)){
 		case 'banner':
 			return we_base_moduleInfo::isActive(we_base_moduleInfo::BANNER);
 		case 'customer':

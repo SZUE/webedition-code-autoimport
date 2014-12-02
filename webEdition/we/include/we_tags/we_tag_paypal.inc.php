@@ -32,33 +32,27 @@
  */
 function we_tag_paypal($attribs){
 	$DB_WE = $GLOBALS['DB_WE'];
-	$name = weTag_getAttribute('name', $attribs);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 	if(($foo = attributFehltError($attribs, 'pricename', __FUNCTION__))){
 		return $foo;
 	}
 
-	$shopname = weTag_getAttribute('shopname', $attribs, $name);
-	$pricename = weTag_getAttribute('pricename', $attribs);
+	$shopname = weTag_getAttribute('shopname', $attribs, $name, we_base_request::STRING);
+	$pricename = weTag_getAttribute('pricename', $attribs, '', we_base_request::STRING);
 
-	$countrycode = weTag_getAttribute('countrycode', $attribs);
-	$languagecode = weTag_getAttribute('languagecode', $attribs);
-	$shipping = weTag_getAttribute('shipping', $attribs);
-	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs, false, true);
-	$shippingVatRate = weTag_getAttribute('shippingvatrate', $attribs);
-	$messageRedirectAuto = weTag_getAttribute('messageredirectAuto', $attribs);
-	if(!$messageRedirectAuto){
-		$messageRedirectAuto = weTag_getAttribute('messageredirectauto', $attribs);
-	}
-	$messageRedirectMan = weTag_getAttribute('messageredirectMan', $attribs);
-	if(!$messageRedirectMan){
-		$messageRedirectMan = weTag_getAttribute('messageredirectman', $attribs);
-	}
-	$formTagOnly = weTag_getAttribute('formtagonly', $attribs, false, true);
-	$charset = weTag_getAttribute('charset', $attribs);
+	$countrycode = weTag_getAttribute('countrycode', $attribs, '', we_base_request::STRING);
+	$languagecode = weTag_getAttribute('languagecode', $attribs, '', we_base_request::STRING);
+	$shipping = weTag_getAttribute('shipping', $attribs, '', we_base_request::FLOAT);
+	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs, false, we_base_request::BOOL);
+	$shippingVatRate = weTag_getAttribute('shippingvatrate', $attribs, 0, we_base_request::FLOAT);
+	$messageRedirectAuto = weTag_getAttribute('messageredirectAuto', $attribs, weTag_getAttribute('messageredirectauto', $attribs, '', we_base_request::STRING), we_base_request::STRING);
+	$messageRedirectMan = weTag_getAttribute('messageredirectMan', $attribs, weTag_getAttribute('messageredirectman', $attribs, '', we_base_request::STRING), we_base_request::STRING);
+	$formTagOnly = weTag_getAttribute('formtagonly', $attribs, false, we_base_request::BOOL);
+	$charset = weTag_getAttribute('charset', $attribs, '', we_base_request::STRING);
 
-	$netprices = weTag_getAttribute('netprices', $attribs, true, true);
-	$useVat = weTag_getAttribute('usevat', $attribs, true, true);
-	$currency = weTag_getAttribute('currency', $attribs);
+	$netprices = weTag_getAttribute('netprices', $attribs, true, we_base_request::BOOL);
+	$useVat = weTag_getAttribute('usevat', $attribs, true, we_base_request::BOOL);
+	$currency = weTag_getAttribute('currency', $attribs, '', we_base_request::RAW);
 
 	if($useVat){
 		$_customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);

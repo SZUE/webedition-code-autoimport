@@ -26,6 +26,6 @@ function we_tag_ifNext($attribs){
 	if(isset($GLOBALS['_we_voting_list'])){
 		return $GLOBALS['_we_voting_list']->hasNextPage();
 	}
-	$useparent = weTag_getAttribute('useparent', $attribs, false, true);
+	$useparent = weTag_getAttribute('useparent', $attribs, false, we_base_request::BOOL);
 	return (isset($GLOBALS['lv'])) && $GLOBALS['lv']->hasNextPage($useparent);
 }

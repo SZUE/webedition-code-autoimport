@@ -23,6 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_newsletterField($attribs){
-	$fieldName = weTag_getAttribute('fieldName', $attribs);
+	$fieldName = weTag_getAttribute('fieldName', $attribs, '', we_base_request::STRING);
 	return $fieldName ? '####PLACEHOLDER:DB::CUSTOMER_TABLE:' . $fieldName . '####' : '';
 }

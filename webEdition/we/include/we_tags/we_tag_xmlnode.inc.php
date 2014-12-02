@@ -51,8 +51,8 @@ function we_tag_xmlnode($attribs){
 		echo $foo;
 		return false;
 	}
-	$feed = weTag_getAttribute('feed', $attribs);
-	$url = weTag_getAttribute('url', $attribs);
+	$feed = weTag_getAttribute('feed', $attribs, '', we_base_request::STRING);
+	$url = weTag_getAttribute('url', $attribs, '', we_base_request::URL);
 
 	if(!isset($GLOBALS["xpaths"])){
 		$GLOBALS["xpaths"] = array();

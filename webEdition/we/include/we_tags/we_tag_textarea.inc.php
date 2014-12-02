@@ -27,14 +27,14 @@ function we_tag_textarea($attribs, $content){
 		return $foo;
 	}
 
-	$name = weTag_getAttribute("name", $attribs);
-	$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, true);
-	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined('REMOVEFIRSTPARAGRAPH_DEFAULT') ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, true);
+	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
+	$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, we_base_request::BOOL);
+	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined('REMOVEFIRSTPARAGRAPH_DEFAULT') ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, we_base_request::BOOL);
 	$attribs = removeAttribs($attribs, array('removefirstparagraph'));
 
-	$html = weTag_getAttribute("html", $attribs, true, true);
-	$autobrAttr = weTag_getAttribute("autobr", $attribs, false, true);
-	$spellcheck = weTag_getAttribute('spellcheck', $attribs, 'true');
+	$html = weTag_getAttribute("html", $attribs, true, we_base_request::BOOL);
+	$autobrAttr = weTag_getAttribute("autobr", $attribs, false, we_base_request::BOOL);
+	$spellcheck = weTag_getAttribute('spellcheck', $attribs, true, we_base_request::BOOL);
 
 	$autobr = $GLOBALS['we_doc']->getElement($name, "autobr");
 	if(strlen($autobr) == 0){

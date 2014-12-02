@@ -27,12 +27,12 @@ function we_tag_ifRegisteredUser($attribs){
 		return (bool) $GLOBALS['WE_MAIN_DOC_REF']->getEditorPersistent('registered');
 	}
 
-	$permission = weTag_getAttribute('permission', $attribs);
-	$match = makeArrayFromCSV(weTag_getAttribute('match', $attribs));
-	$cfilter = weTag_getAttribute('cfilter', $attribs, false, true);
-	$allowNoFilter = weTag_getAttribute('allowNoFilter', $attribs, false, true);
-	$userid = makeArrayFromCSV(weTag_getAttribute('userid', $attribs));
-	$matchType = weTag_getAttribute('matchType', $attribs, 'one');
+	$permission = weTag_getAttribute('permission', $attribs, '', we_base_request::STRING);
+	$match = makeArrayFromCSV(weTag_getAttribute('match', $attribs, '', we_base_request::STRING));
+	$cfilter = weTag_getAttribute('cfilter', $attribs, false, we_base_request::BOOL);
+	$allowNoFilter = weTag_getAttribute('allowNoFilter', $attribs, false, we_base_request::BOOL);
+	$userid = weTag_getAttribute('userid', $attribs, '', we_base_request::INTLISTA);
+	$matchType = weTag_getAttribute('matchType', $attribs, 'one', we_base_request::STRING);
 
 	//return true only on registered users - or if cfilter is set to "no filter"
 	if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered']){

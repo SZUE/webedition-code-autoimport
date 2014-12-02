@@ -32,8 +32,7 @@ we_base_moduleInfo::isActive('shop');
  * @return         void
  */
 function we_tag_saferpay($attribs){
-	global $DB_WE;
-	$name = weTag_getAttribute('name', $attribs);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 
 	if(($foo = attributFehltError($attribs, 'pricename', __FUNCTION__))){
 		return $foo;
@@ -44,28 +43,23 @@ function we_tag_saferpay($attribs){
 		}
 	}
 
-	$shopname = weTag_getAttribute('shopname', $attribs);
-	$shopname = $shopname ? : $name;
-	$pricename = weTag_getAttribute('pricename', $attribs);
-	$shipping = weTag_getAttribute('shipping', $attribs);
-	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs, false, true);
-	$shippingVatRate = weTag_getAttribute('shippingvatrate', $attribs);
-	$languagecode = weTag_getAttribute('languagecode', $attribs);
+	$shopname = weTag_getAttribute('shopname', $attribs, '', we_base_request::STRING)? : $name;
+	$pricename = weTag_getAttribute('pricename', $attribs, '', we_base_request::STRING);
+	$shipping = weTag_getAttribute('shipping', $attribs, '', we_base_request::FLOAT);
+	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs, false, we_base_request::BOOL);
+	$shippingVatRate = weTag_getAttribute('shippingvatrate', $attribs, 0, we_base_request::FLOAT);
+	$languagecode = weTag_getAttribute('languagecode', $attribs, '', we_base_request::STRING);
 
-	$onsuccess = weTag_getAttribute('onsuccess', $attribs);
-	$onfailure = weTag_getAttribute('onfailure', $attribs);
-	$onabortion = weTag_getAttribute('onabortion', $attribs);
+	$onsuccess = weTag_getAttribute('onsuccess', $attribs, 0, we_base_request::INT);
+	$onfailure = weTag_getAttribute('onfailure', $attribs, 0, we_base_request::INT);
+	$onabortion = weTag_getAttribute('onabortion', $attribs, 0, we_base_request::INT);
 
 
-	$netprices = weTag_getAttribute('netprices', $attribs, true, true);
-	$useVat = weTag_getAttribute('usevat', $attribs, false, true);
+	$netprices = weTag_getAttribute('netprices', $attribs, true, we_base_request::BOOL);
+	$useVat = weTag_getAttribute('usevat', $attribs, false, we_base_request::BOOL);
 
 	if($useVat){
-		if(isset($_SESSION['webuser'])){
-			$_customer = $_SESSION['webuser'];
-		} else {
-			$_customer = false;
-		}
+		$_customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
 
 		$weShopVatRule = we_shop_vatRule::getShopVatRule();
 		$calcVat = $weShopVatRule->executeVatRule($_customer);
@@ -146,17 +140,9 @@ function we_tag_saferpay($attribs){
 		/*		 * **** get the preferences ***** */
 
 		/*		 * **** get the further links ***** */
-		$successprelink = id_to_path($onsuccess);
-		$successlink = getServerUrl() . $successprelink;
-		//print $successlink;
-
-		$failureprelink = id_to_path($onfailure);
-		$failurelink = getServerUrl() . $failureprelink;
-		//print $failurelink;
-
-		$abortionprelink = id_to_path($onabortion);
-		$abortionlink = getServerUrl() . $abortionprelink;
-		//print $failurelink;
+		$successlink = getServerUrl() . id_to_path($onsuccess);
+		$failurelink = getServerUrl() . id_to_path($onfailure);
+		$abortionlink = getServerUrl() . id_to_path($onabortion);
 		/*		 * **** get the further links ***** */
 
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -24,11 +25,11 @@
 require_once (WE_INCLUDES_PATH . 'we_tags/we_tag_ifVarSet.inc.php');
 
 function we_isVarNotEmpty($attribs){
-	$docAttr = weTag_getAttribute('doc', $attribs);
-	$match_orig = weTag_getAttribute('match', $attribs);
+	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
+	$match_orig = weTag_getAttribute('match', $attribs, '', we_base_request::RAW);
 	$match = we_tag_getPostName($match_orig); //#6367
 
-	$type = weTag_getAttribute('type', $attribs);
+	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
 
 	/* 	if(!we_isVarSet($match, $match_orig, $type, $docAttr, $property, $formname)){
 	  return false;
@@ -51,7 +52,7 @@ function we_isVarNotEmpty($attribs){
 			switch($docAttr){
 				case 'object' :
 				case 'document' :
-					$formname = weTag_getAttribute('formname', $attribs, 'we_global_form');
+					$formname = weTag_getAttribute('formname', $attribs, 'we_global_form', we_base_request::STRING);
 					$doc = isset($GLOBALS['we_' . $docAttr][$formname]) ? $GLOBALS['we_' . $docAttr][$formname] : false;
 					break;
 				case 'top' :
@@ -63,7 +64,7 @@ function we_isVarNotEmpty($attribs){
 			if(!$doc){
 				return false;
 			}
-			if(weTag_getAttribute('property', $attribs, false, true)){
+			if(weTag_getAttribute('property', $attribs, false, we_base_request::BOOL)){
 				return isset($doc->$match_orig) ? !empty($doc->$match_orig) : false;
 			}
 

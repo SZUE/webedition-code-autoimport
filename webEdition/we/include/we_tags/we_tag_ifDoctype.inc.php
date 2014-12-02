@@ -27,9 +27,9 @@ function we_tag_ifDoctype($attribs){
 		print($foo);
 		return false;
 	}
-	$match = weTag_getAttribute('doctypes', $attribs);
+	$matchArr = weTag_getAttribute('doctypes', $attribs, '', we_base_request::FILELISTA);
 
-	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
+	$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 
 	if($docAttr === 'listview' && isset($GLOBALS['lv'])){
 		$doctype = $GLOBALS['lv']->f('wedoc_DocType');
@@ -40,7 +40,6 @@ function we_tag_ifDoctype($attribs){
 		}
 		$doctype = $doc->DocType;
 	}
-	$matchArr = makeArrayFromCSV($match);
 
 	if(isset($doctype) && $doctype != false){
 		foreach($matchArr as $match){

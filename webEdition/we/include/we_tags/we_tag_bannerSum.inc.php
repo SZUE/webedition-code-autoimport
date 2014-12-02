@@ -27,10 +27,10 @@ function we_tag_bannerSum($attribs){
 		return false;
 	}
 	$foo = attributFehltError($attribs, 'type', __FUNCTION__);
-	if($foo)
+	if(($foo = attributFehltError($attribs, 'type', __FUNCTION__))){
 		return $foo;
-	$type = weTag_getAttribute('type', $attribs);
-	switch($type){
+	}
+	switch(weTag_getAttribute('type', $attribs, '', we_base_request::STRING)){
 		case 'clicks':
 			return $GLOBALS['lv']->getAllclicks();
 		case 'views':

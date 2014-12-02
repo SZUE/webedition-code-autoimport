@@ -23,7 +23,7 @@ function we_parse_tag_repeat($attribs, $content){
 	if(isset($_SESSION[\'weS\'][\'we_mode\']) && $_SESSION[\'weS\'][\'we_mode\'] == we_base_constants::MODE_SEE){
 		echo we_SEEM::getSeemAnchors();
 	}?>' .
-	$content . '<?php }?>';
+			$content . '<?php }?>';
 }
 
 function we_tag_repeat(){

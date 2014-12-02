@@ -23,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_isUserInputNotEmpty($attribs){
-	$formname = weTag_getAttribute('formname', $attribs, 'we_global_form');
-	$match = weTag_getAttribute('match', $attribs);
+	$formname = weTag_getAttribute('formname', $attribs, 'we_global_form', we_base_request::STRING);
+	$match = weTag_getAttribute('match', $attribs, '', we_base_request::STRING);
 	return (isset($_REQUEST['we_ui_' . $formname][$match]) && !empty($_REQUEST['we_ui_' . $formname][$match]));
 }
 

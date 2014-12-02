@@ -23,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_objectLanguage($attribs){
-	$type = weTag_getAttribute("type", $attribs, "complete");
-	$case = weTag_getAttribute("case", $attribs, "unchanged");
+	$type = weTag_getAttribute("type", $attribs, "complete", we_base_request::STRING);
+	$case = weTag_getAttribute("case", $attribs, "unchanged", we_base_request::STRING);
 
 	$lang = (isset($GLOBALS['lv']) ? $GLOBALS['lv']->getDBf('OF_Language') : '');
 

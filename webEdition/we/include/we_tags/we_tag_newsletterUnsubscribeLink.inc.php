@@ -26,8 +26,8 @@ function we_tag_newsletterUnsubscribeLink($attribs){
 	if(($foo = attributFehltError($attribs, "id", __FUNCTION__))){
 		return $foo;
 	}
-	$id = weTag_getAttribute("id", $attribs);
-	$plain = weTag_getAttribute("plain", $attribs, true, true);
+	$id = weTag_getAttribute("id", $attribs, 0, we_base_request::INT);
+	$plain = weTag_getAttribute("plain", $attribs, true, we_base_request::BOOL);
 
 	$db = $GLOBALS['DB_WE'];
 	$db->query('SELECT pref_name,pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name IN ("use_port","use_https_refer")');
