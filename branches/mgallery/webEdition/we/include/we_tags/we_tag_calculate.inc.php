@@ -31,8 +31,7 @@ function we_parse_tag_calculate($a, $content, array $attribs){
 
 function we_tag_calculate($attribs, $content){
 	//internal Attribute
-	$_type = weTag_getAttribute('_type', $attribs);
-	switch($_type){
+	switch(weTag_getAttribute('_type', $attribs, '', we_base_request::STRING)){
 		case 'start':
 			$GLOBALS['calculate'] = 1;
 			ob_start();
@@ -40,9 +39,9 @@ function we_tag_calculate($attribs, $content){
 		case 'stop':
 			$content = ob_get_clean();
 			unset($GLOBALS['calculate']);
-			$sum = weTag_getAttribute('sum', $attribs);
-			$num_format = weTag_getAttribute('num_format', $attribs);
-			$print = weTag_getAttribute('print', $attribs, true, true);
+			$sum = weTag_getAttribute('sum', $attribs, '', we_base_request::STRING);
+			$num_format = weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING);
+			$print = weTag_getAttribute('print', $attribs, true, we_base_request::BOOL);
 			@eval('$result = (' . (trim($content) ? $content : 0) . ') ;');
 			if(!isset($result)){
 				$result = 0;
@@ -54,7 +53,7 @@ function we_tag_calculate($attribs, $content){
 				}
 				$GLOBALS['summe'][$sum] += $result;
 			}
-			return ($print ? ($num_format ? we_util_Strings::formatNumber($result, $num_format, intval(weTag_getAttribute('decimals', $attribs, 2))) : $result) : '');
+			return ($print ? ($num_format ? we_util_Strings::formatNumber($result, $num_format, intval(weTag_getAttribute('decimals', $attribs, 2, we_base_request::INT))) : $result) : '');
 		default:
 			return attributFehltError($attribs, '_type', __FUNCTION__);
 	}

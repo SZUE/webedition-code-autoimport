@@ -69,13 +69,13 @@ function we_tag_customerResetPassword(array $attribs){
 //cleanup table
 	$GLOBALS['DB_WE']->query('DELETE FROM ' . PWDRESET_TABLE . ' WHERE expires<NOW()');
 
-	$required = array_unique(explode(',', weTag_getAttribute('required', $attribs)));
-	$loadFields = array_unique(explode(',', weTag_getAttribute('loadFields', $attribs)));
+	$required = array_unique(explode(',', weTag_getAttribute('required', $attribs, '', we_base_request::STRING)));
+	$loadFields = array_unique(explode(',', weTag_getAttribute('loadFields', $attribs, '', we_base_request::STRING)));
 
 //set dates
 	we_base_util::convertDateInRequest($_REQUEST['s'], false);
 
-	switch($type = weTag_getAttribute('type', $attribs)){
+	switch($type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING)){
 		default:
 			return parseError('no type set');
 		case 'direct':
@@ -97,18 +97,18 @@ function we_tag_customerResetPassword(array $attribs){
 			if(count($required) < 1){
 				return parseError('For security reasons: in email mode, attribute <b>required</b> needs at least one field!');
 			}
-			$customerEmailField = weTag_getAttribute('customerEmailField', $attribs);
+			$customerEmailField = weTag_getAttribute('customerEmailField', $attribs, '', we_base_request::STRING);
 			if(($type === 'emailPassword' && !checkPwds()) || !($uid = checkRequired($required, $loadFields, $customerEmailField))){
 				return;
 			}
 			$pwd = we_base_request::_(we_base_request::STRING, 's', '', 'Password');
 			$_SESSION['webuser']['WE_token'] = substr(md5(uniqid('', true)), 0, 25);
 			$GLOBALS['DB_WE']->query('REPLACE INTO ' . PWDRESET_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'ID' => $uid,
-					'UserTable' => 'tblWebUser',
-					'password' => $pwd ? we_customer_customer::cryptPassword($pwd) : '',
-					'expires' => sql_function('NOW()+ INTERVAL ' . intval(weTag_getAttribute('expireToken', $attribs, 3600)) . ' SECOND'),
-					'token' => $_SESSION['webuser']['WE_token']
+						'ID' => $uid,
+						'UserTable' => 'tblWebUser',
+						'password' => $pwd ? we_customer_customer::cryptPassword($pwd) : '',
+						'expires' => sql_function('NOW()+ INTERVAL ' . intval(weTag_getAttribute('expireToken', $attribs, 3600, we_base_request::INT)) . ' SECOND'),
+						'token' => $_SESSION['webuser']['WE_token']
 			)));
 			$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_ALL_OK;
 

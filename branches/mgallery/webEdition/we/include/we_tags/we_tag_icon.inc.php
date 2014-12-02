@@ -26,7 +26,7 @@ function we_tag_icon($attribs){
 	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
 		return $foo;
 	}
-	$xml = weTag_getAttribute('xml', $attribs);
+	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
 	$id = weTag_getAttribute('id', $attribs);
 	if(($row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)))){
 		$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');

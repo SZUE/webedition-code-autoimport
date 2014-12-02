@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,6 +28,7 @@
  *
  */
 class we_voting_list{
+
 	//properties
 	var $Name;
 	var $Version;
@@ -61,7 +63,7 @@ class we_voting_list{
 		}
 
 		$limit = ($rows || $this->Start ?
-				' LIMIT ' . $this->Start . ',' . ($rows == 0 ? 9999999 : $rows) : '');
+						' LIMIT ' . $this->Start . ',' . ($rows == 0 ? 9999999 : $rows) : '');
 
 		if($order != ""){
 			$order_sql = ' ORDER BY ' . $order;
@@ -93,9 +95,9 @@ class we_voting_list{
 
 	public function getNextLink($attribs){
 		if($this->hasNextPage()){
-			$urlID = weTag_getAttribute("id", $attribs);
+			$urlID = weTag_getAttribute("id", $attribs, 0, we_base_request::INT);
 			$foo = $this->Start + $this->Rows;
-			$attribs["href"] = we_tag('url', array('id' => ($urlID ? : 'self'), 'hidedirindex' => 'false')) . '?' . oldHtmlspecialchars(we_listview_base::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
+			$attribs["href"] = we_tag('url', array('id' => ($urlID ? : 'self'), 'hidedirindex' => false)) . '?' . oldHtmlspecialchars(we_listview_base::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
 			$attribs['rel'] = 'next';
 
 			return getHtmlTag("a", $attribs, "", false, true);
@@ -109,9 +111,9 @@ class we_voting_list{
 
 	public function getBackLink($attribs){
 		if($this->hasPrevPage()){
-			$urlID = weTag_getAttribute("id", $attribs);
+			$urlID = weTag_getAttribute("id", $attribs, 0, we_base_request::INT);
 			$foo = $this->Start - $this->Rows;
-			$attribs["href"] = we_tag('url', array('id' => ($urlID ? : 'self'), 'hidedirindex' => 'false')) . '?' . oldHtmlspecialchars(we_listview_base::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
+			$attribs["href"] = we_tag('url', array('id' => ($urlID ? : 'self'), 'hidedirindex' => false)) . '?' . oldHtmlspecialchars(we_listview_base::we_makeQueryString("_we_vl_start_" . $this->Name . "=$foo"));
 			$attribs['rel'] = 'prev';
 
 			return getHtmlTag("a", $attribs, "", false, true);

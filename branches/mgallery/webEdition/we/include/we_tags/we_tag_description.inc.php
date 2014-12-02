@@ -23,11 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_description($attribs, $content){
-	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
-	$max = weTag_getAttribute('max', $attribs, 0);
-	$attribs = removeAttribs($attribs, array(
-		'htmlspecialchars', 'max'
-	));
+	$max = weTag_getAttribute('max', $attribs, 0, we_base_request::INT);
 
 	$descr = isset($GLOBALS['DESCRIPTION']) && $GLOBALS['DESCRIPTION'] ? $GLOBALS['DESCRIPTION'] : '';
 	if(!$descr && $content){
@@ -44,7 +40,9 @@ function we_tag_description($attribs, $content){
 	}
 
 	$attribs["name"] = "description";
-	$descr = $htmlspecialchars ? oldHtmlspecialchars(strip_tags($descr)) : strip_tags($descr);
+	$descr = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL) ? oldHtmlspecialchars(strip_tags($descr)) : strip_tags($descr);
 	$attribs["content"] = $max ? cutText($descr, $max, true) : $descr;
-	return getHtmlTag("meta", $attribs) . "\n";
+	return getHtmlTag("meta", removeAttribs($attribs, array(
+				'htmlspecialchars', 'max'
+			))) . "\n";
 }

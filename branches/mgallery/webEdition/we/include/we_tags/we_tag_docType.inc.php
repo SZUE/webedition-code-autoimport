@@ -23,8 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_docType($attribs){
-	$docAttr = weTag_getAttribute("doc", $attribs);
-	switch($docAttr){
+	switch($weTag_getAttribute("doc", $attribs, '', we_base_request::STRING)){
 		case "self" :
 			if($GLOBALS['we_doc']->DocType){
 				return f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID = ' . $GLOBALS['DB_WE']->escape($GLOBALS['we_doc']->DocType), "DocType", $GLOBALS['DB_WE']);

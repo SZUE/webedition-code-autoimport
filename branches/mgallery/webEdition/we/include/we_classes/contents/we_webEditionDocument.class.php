@@ -870,9 +870,9 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 				foreach($_tags[2] as $cur){ //	go through all matches
 					$_tagAttribs = we_tag_tagParser::makeArrayFromAttribs($cur);
 
-					$_type = weTag_getAttribute('type', $_tagAttribs);
-					$_name = weTag_getAttribute('name', $_tagAttribs);
-					$_hide = weTag_getAttribute('hide', $_tagAttribs, false, true);
+					$_type = weTag_getAttribute('type', $_tagAttribs, '', we_base_request::STRING);
+					$_name = weTag_getAttribute('name', $_tagAttribs, '', we_base_request::STRING);
+					$_hide = weTag_getAttribute('hide', $_tagAttribs, false, we_base_request::BOOL);
 
 					if($_type && $_name){
 						switch($_type){
@@ -882,8 +882,8 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 							case 'checkbox':
 								$_ctrlArray['checkbox'][$_name] = array(
 									'hide' => ( $_hide ? 1 : 0 ),
-									'readonly' => ( weTag_getAttribute('readonly', $_tagAttribs, true, true) ? 1 : 0 ),
-									'checked' => ( weTag_getAttribute('checked', $_tagAttribs, false, true) ? 1 : 0 )
+									'readonly' => ( weTag_getAttribute('readonly', $_tagAttribs, true, we_base_request::BOOL) ? 1 : 0 ),
+									'checked' => ( weTag_getAttribute('checked', $_tagAttribs, false, we_base_request::BOOL) ? 1 : 0 )
 								);
 								break;
 						}
@@ -913,7 +913,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 				// here we only take the FIRST tag
 				$_tagAttribs = we_tag_tagParser::makeArrayFromAttribs($_tags[2][0]);
 
-				$_pages = weTag_getAttribute('pages', $_tagAttribs);
+				$_pages = weTag_getAttribute('pages', $_tagAttribs, '', we_base_request::STRING);
 
 				if(!in_array('hidePages', $this->persistent_slots)){
 					$this->persistent_slots[] = 'hidePages';
@@ -932,26 +932,28 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * @desc disables the editpages saved in persistent_slot hidePages inside webEdition
 	 */
 	function disableHidePages(){
-		$MNEMONIC_EDITPAGES = array(
-			we_base_constants::WE_EDITPAGE_PROPERTIES => 'properties', we_base_constants::WE_EDITPAGE_CONTENT => 'edit', we_base_constants::WE_EDITPAGE_INFO => 'information', we_base_constants::WE_EDITPAGE_PREVIEW => 'preview', we_base_constants::WE_EDITPAGE_SCHEDULER => 'schedpro', we_base_constants::WE_EDITPAGE_VALIDATION => 'validation', we_base_constants::WE_EDITPAGE_VERSIONS => 'versions'
-		);
-		if(we_base_moduleInfo::isActive('shop')){
-			$MNEMONIC_EDITPAGES[we_base_constants::WE_EDITPAGE_VARIANTS] = 'variants';
-		}
-		if(we_base_moduleInfo::isActive('customer')){
-			$MNEMONIC_EDITPAGES[we_base_constants::WE_EDITPAGE_WEBUSER] = 'customer';
-		}
-
 		if(isset($this->hidePages) && $this->InWebEdition){
+			$MNEMONIC_EDITPAGES = array(
+				we_base_constants::WE_EDITPAGE_PROPERTIES => 'properties',
+				we_base_constants::WE_EDITPAGE_CONTENT => 'edit',
+				we_base_constants::WE_EDITPAGE_INFO => 'information',
+				we_base_constants::WE_EDITPAGE_PREVIEW => 'preview',
+				we_base_constants::WE_EDITPAGE_SCHEDULER => 'schedpro',
+				we_base_constants::WE_EDITPAGE_VALIDATION => 'validation',
+				we_base_constants::WE_EDITPAGE_VERSIONS => 'versions',
+				we_base_constants::WE_EDITPAGE_VARIANTS => 'variants',
+				we_base_constants::WE_EDITPAGE_WEBUSER => 'customer',
+			);
+
 			$_hidePagesArr = explode(',', $this->hidePages); //	get pages which shall be disabled
 
 			if(in_array('all', $_hidePagesArr)){
 				$this->EditPageNrs = array();
-			} else {
-				foreach($this->EditPageNrs as $key => $editPage){
-					if(array_key_exists($editPage, $MNEMONIC_EDITPAGES) && in_array($MNEMONIC_EDITPAGES[$editPage], $_hidePagesArr)){
-						unset($this->EditPageNrs[$key]);
-					}
+				return;
+			}
+			foreach($this->EditPageNrs as $key => $editPage){
+				if(array_key_exists($editPage, $MNEMONIC_EDITPAGES) && in_array($MNEMONIC_EDITPAGES[$editPage], $_hidePagesArr)){
+					unset($this->EditPageNrs[$key]);
 				}
 			}
 		}

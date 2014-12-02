@@ -234,8 +234,8 @@ function getArrayValue($var, $name, $arrayIndex){
  * @param bool $isFlag determines if this is a flag (true/false -value)
  * @return mixed returns the attributes value or default if not set
  */
-function weTag_getParserAttribute($name, $attribs, $default = '', $isFlag = false){
-	return weTag_getAttribute($name, $attribs, $default, $isFlag, false);
+function weTag_getParserAttribute($name, $attribs, $default = '', $type = we_base_request::RAW){
+	return weTag_getAttribute($name, $attribs, $default, $type, false);
 }
 
 /**
@@ -247,41 +247,34 @@ function weTag_getParserAttribute($name, $attribs, $default = '', $isFlag = fals
  * @param bool $useGlobal check if attribute value is a php-variable and is found in $GLOBALS
  * @return mixed returns the attributes value or default if not set
  */
-function weTag_getAttribute($name, $attribs, $default = '', $isFlag = false, $useGlobal = true){
+function weTag_getAttribute($name, $attribs, $default = '', $type = we_base_request::RAW, $useGlobal = true){
 	//FIXME: add an array holding attributes accessed for removal!
 	$value = isset($attribs[$name]) ? $attribs[$name] : '';
 	$regs = array();
 	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$([^\[]+)(\[.*\])?|', $value, $regs)){
 		$value = (isset($regs[2]) ?
-				getArrayValue($GLOBALS, $regs[1], $regs[2]) :
-				(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
+						getArrayValue($GLOBALS, $regs[1], $regs[2]) :
+						(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
 	}
-	if($isFlag){
-		$val = (is_string($value) ? strtolower(trim($value)) : $value);
-		return (((bool) $default) &&
-			!($val === 'false' || $val === 'off' || $val === '0' || $val === 0 || $val === false)) ||
-			($val === 'true' || $val === 'on' || $val === '1' || $value === $name || $val === 1 || $val === true);
-	}
-	$value = is_array($value) || strlen($value) || is_bool($value) ? $value : $default;
+
+	$value = we_base_request::filterVar($value, (is_bool($type) ? we_base_request::BOOL : $type), $default);
 
 	return is_array($value) || is_bool($value) ? $value : htmlspecialchars_decode($value);
 }
 
-/*
- * @deprecated
+/**
+ * @deprecated since version 6.3.0
  */
-
 function we_getTagAttributeTagParser($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false){
-	t_e('deprecated', 'you use an old tag, which still uses function we_getTagAttributeTagParser, use weTag_getParserAttribute instead!');
+	t_e('warning', 'you use an old tag, which still uses function we_getTagAttributeTagParser, use weTag_getParserAttribute instead! This function will be removed in 6.4.1.');
 	return weTag_getAttribute($name, $attribs, ($isFlag ? $checkForFalse : $default), $isFlag, false);
 }
 
-/*
- * @deprecated
+/**
+ * @deprecated since version 6.3.0
  */
-
 function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $useGlobal = true){
-	t_e('deprecated', 'you use an old tag, which still uses function we_getTagAttribute, use weTag_getAttribute instead!');
+	t_e('warning', 'you use an old tag, which still uses function we_getTagAttribute, use weTag_getAttribute instead! This function will be removed in 6.4.1.');
 	return weTag_getAttribute($name, $attribs, ($isFlag ? $checkForFalse : $default), $isFlag, $useGlobal);
 }
 
@@ -371,8 +364,8 @@ function we_getDocForTag($docAttr, $maindefault = false){
 			return $GLOBALS['WE_MAIN_DOC'];
 		default :
 			return ($maindefault ?
-					$GLOBALS['WE_MAIN_DOC'] :
-					$GLOBALS['we_doc']);
+							$GLOBALS['WE_MAIN_DOC'] :
+							$GLOBALS['we_doc']);
 	}
 }
 
@@ -505,7 +498,7 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 	if((!$isin) && $addMissing && $value != ''){
 		$content .= getHtmlTag('option', array(
 			'value' => oldHtmlspecialchars($value), 'selected' => 'selected'
-			), oldHtmlspecialchars($value), true);
+				), oldHtmlspecialchars($value), true);
 	}
 	return getHtmlTag('select', $attribs, $content, true);
 }
@@ -768,7 +761,7 @@ function we_tag_listviewPageNr(){
 
 function we_tag_listviewPages(){
 	return $GLOBALS['lv']->rows ? ceil(
-			((float) $GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset)) / ((float) $GLOBALS['lv']->maxItemsPerPage )) : 1;
+					((float) $GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset)) / ((float) $GLOBALS['lv']->maxItemsPerPage )) : 1;
 }
 
 function we_tag_listviewRows(){

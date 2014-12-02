@@ -23,11 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifSearch($attribs){
-	$name = weTag_getAttribute('name', $attribs, '0');
-	$set = weTag_getAttribute('set', $attribs, true, true);
+	$name = weTag_getAttribute('name', $attribs, 0, we_base_request::STRING);
+	$set = weTag_getAttribute('set', $attribs, true, we_base_request::BOOL);
 
 	return ($set ?
-			isset($_REQUEST['we_lv_search_' . $name]) :
-			isset($_REQUEST['we_lv_search_' . $name]) && strlen(str_replace(array('\\"', '"'), '', trim($_REQUEST['we_lv_search_' . $name])))
-		);
+					isset($_REQUEST['we_lv_search_' . $name]) :
+					isset($_REQUEST['we_lv_search_' . $name]) && strlen(str_replace(array('\\"', '"'), '', trim($_REQUEST['we_lv_search_' . $name])))
+			);
 }

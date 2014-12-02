@@ -24,11 +24,11 @@
  */
 function we_tag_writeVoting($attribs){
 
-	$id = weTag_getAttribute('id', $attribs, 0);
-	$additionalFields = weTag_getAttribute('additionalfields', $attribs, 0);
-	$allowredirect = weTag_getAttribute("allowredirect", $attribs, false, true);
-	$deletesessiondata = weTag_getAttribute("deletesessiondata", $attribs, false, true);
-	$writeto = weTag_getAttribute("writeto", $attribs, "voting");
+	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
+	$additionalFields = weTag_getAttribute('additionalfields', $attribs, 0, we_base_request::INTLISTA);
+	$allowredirect = weTag_getAttribute("allowredirect", $attribs, false, we_base_request::BOOL);
+	$deletesessiondata = weTag_getAttribute("deletesessiondata", $attribs, false, we_base_request::BOOL);
+	$writeto = weTag_getAttribute("writeto", $attribs, "voting", we_base_request::STRING);
 
 	$pattern = '/_we_voting_answer_(' . ($id ? : '[0-9]+') . ')_?([0-9]+)?/';
 
@@ -47,9 +47,8 @@ function we_tag_writeVoting($attribs){
 			}
 		}
 	}
-	$additionalFieldsArray = makeArrayFromCSV($additionalFields);
 	$addFields = array();
-	foreach($additionalFieldsArray as $field){
+	foreach($additionalFields as $field){
 		if(($dat = we_base_request::_(we_base_request::STRING, $field)) !== false){
 			$addFields[$field] = $dat;
 		}

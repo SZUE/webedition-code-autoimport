@@ -28,8 +28,8 @@ function we_tag_ifPageLanguage($attribs){
 		return false;
 	}
 
-	$match = explode(',', weTag_getAttribute('match', $attribs));
-	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
+	$match = explode(',', weTag_getAttribute('match', $attribs, '', we_base_request::STRING));
+	$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 	$doc = we_getDocForTag($docAttr);
 	return in_array($doc->Language, $match);
 }

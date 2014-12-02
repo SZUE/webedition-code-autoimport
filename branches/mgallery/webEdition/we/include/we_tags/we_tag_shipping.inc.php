@@ -27,9 +27,8 @@ function we_tag_shipping($attribs){
 		return $foo;
 	}
 
-	$sumName = weTag_getAttribute('sum', $attribs);
-	$num_format = weTag_getAttribute('num_format', $attribs);
-	$type = weTag_getAttribute('type', $attribs);
+	$sumName = weTag_getAttribute('sum', $attribs, '', we_base_request::STRING);
+	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
 	$shippingCost = 0;
 
 	// shipping depends on total value of basket
@@ -63,10 +62,10 @@ function we_tag_shipping($attribs){
 						break;
 					case 'vat':
 						$shippingCost = ($weShippingControl->isNet ?
-								// y = x * 0.16
-								$shippingCost * ($weShippingControl->vatRate / 100) :
-								// y = x /116 * 16
-								$shippingCost / ( ((1 + ($weShippingControl->vatRate / 100)) * 100) ) * $weShippingControl->vatRate);
+										// y = x * 0.16
+										$shippingCost * ($weShippingControl->vatRate / 100) :
+										// y = x /116 * 16
+										$shippingCost / ( ((1 + ($weShippingControl->vatRate / 100)) * 100) ) * $weShippingControl->vatRate);
 						break;
 				}
 			} else { // always return net prices
@@ -84,7 +83,7 @@ function we_tag_shipping($attribs){
 				}
 			}
 		}
-		return we_util_Strings::formatNumber($shippingCost, $num_format);
+		return we_util_Strings::formatNumber($shippingCost, weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING));
 	}
 	return 0;
 }

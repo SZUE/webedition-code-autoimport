@@ -19,14 +19,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_saveRegisteredUser($attribs){
-	$userexists = weTag_getAttribute('userexists', $attribs);
-	$userempty = weTag_getAttribute('userempty', $attribs);
-	$passempty = weTag_getAttribute('passempty', $attribs);
-	$changesessiondata = weTag_getAttribute('changesessiondata', $attribs, true, true);
+	$userexists = weTag_getAttribute('userexists', $attribs, '', we_base_request::STRING);
+	$userempty = weTag_getAttribute('userempty', $attribs, '', we_base_request::STRING);
+	$passempty = weTag_getAttribute('passempty', $attribs, '', we_base_request::STRING);
+	$changesessiondata = weTag_getAttribute('changesessiondata', $attribs, true, we_base_request::BOOL);
 	$default_register = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"') === 'true';
-	$registerallowed = (isset($attribs['register']) ? weTag_getAttribute('register', $attribs, $default_register, true) : $default_register);
-	$protected = makeArrayFromCSV(weTag_getAttribute('protected', $attribs));
-	$allowed = makeArrayFromCSV(weTag_getAttribute('allowed', $attribs));
+	$registerallowed = (isset($attribs['register']) ? weTag_getAttribute('register', $attribs, $default_register, we_base_request::BOOL) : $default_register);
+	$protected = makeArrayFromCSV(weTag_getAttribute('protected', $attribs, '', we_base_request::STRING));
+	$allowed = makeArrayFromCSV(weTag_getAttribute('allowed', $attribs, '', we_base_request::STRING));
 	$GLOBALS['we_customer_written'] = false;
 	if(!(defined('CUSTOMER_TABLE') && isset($_REQUEST['s']))){
 		return;
@@ -180,7 +180,7 @@ function we_saveCustomerImages(){
 
 						//image needs to be scaled
 						if((isset($_SESSION['webuser']['imgtmp'][$imgName]['width']) && $_SESSION['webuser']['imgtmp'][$imgName]['width']) ||
-							(isset($_SESSION['webuser']['imgtmp'][$imgName]['height']) && $_SESSION['webuser']['imgtmp'][$imgName]['height'])){
+								(isset($_SESSION['webuser']['imgtmp'][$imgName]['height']) && $_SESSION['webuser']['imgtmp'][$imgName]['height'])){
 							$imageData = we_base_file::load($_serverPath);
 							$thumb = new we_thumbnail();
 							$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], $_SESSION['webuser']['imgtmp'][$imgName]['keepratio'], $_SESSION['webuser']['imgtmp'][$imgName]['maximize'], false, false, '', 'dummy', 0, '', '', $_extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
@@ -217,8 +217,8 @@ function we_saveCustomerImages(){
 
 						$imgDocument->setElement('width', $_imgwidth, 'attrib');
 						$imgDocument->setElement('height', $_imgheight, 'attrib');
-						$imgDocument->setElement('origwidth', $_imgwidth,'attrib');
-						$imgDocument->setElement('origheight', $_imgheight,'attrib');
+						$imgDocument->setElement('origwidth', $_imgwidth, 'attrib');
+						$imgDocument->setElement('origheight', $_imgheight, 'attrib');
 						$imgDocument->setElement('type', we_base_ContentTypes::IMAGE, 'attrib');
 
 						$imgDocument->setElement('data', $_serverPath, 'image');
@@ -274,13 +274,13 @@ function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
 				break;
 			default:
 				if(($protected && in_array($name, $protected)) ||
-					($allowed && !in_array($name, $allowed)) ||
-					($name === 'Password' && $val == we_customer_customer::NOPWD_CHANGE)){
+						($allowed && !in_array($name, $allowed)) ||
+						($name === 'Password' && $val == we_customer_customer::NOPWD_CHANGE)){
 					continue;
 				}
 				$set[$name] = ($name === 'Password' ?
-						we_customer_customer::cryptPassword($val) :
-						we_base_util::rmPhp($val));
+								we_customer_customer::cryptPassword($val) :
+								we_base_util::rmPhp($val));
 				break;
 		}
 	}

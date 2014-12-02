@@ -28,10 +28,10 @@ function we_parse_tag_include($attribs, $c, array $attr){
 		$attr['_parsed'] = 'true';
 	}
 	return ($type !== 'template' ?
-			'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' : //include documents
-			//(($path ?
-			'<?php if(($we_inc=' . we_tag_tagParser::printTag('include', $attr) . ')){include' . (weTag_getParserAttribute('once', $attr, false, true) ? '_once' : '') . '($we_inc);}; ?>'//include templates of ID's
-		);
+					'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' : //include documents
+					//(($path ?
+					'<?php if(($we_inc=' . we_tag_tagParser::printTag('include', $attr) . ')){include' . (weTag_getParserAttribute('once', $attr, false, true) ? '_once' : '') . '($we_inc);}; ?>'//include templates of ID's
+			);
 }
 
 function we_setBackVar($we_unique){
@@ -90,10 +90,10 @@ function we_resetBackVar($we_unique){
 }
 
 function we_tag_include($attribs){//FIXME: include doesn't work in editmode - check funktionen
-	$id = intval(weTag_getAttribute('id', $attribs));
-	$path = weTag_getAttribute('path', $attribs);
+	$id = intval(weTag_getAttribute('id', $attribs, 0, we_base_request::INT));
+	$path = weTag_getAttribute('path', $attribs, '', we_base_request::FILE);
 
-	if(weTag_getAttribute('type', $attribs) === 'template'){
+	if(weTag_getAttribute('type', $attribs, '', we_base_request::STRING) === 'template'){
 		if(!isset($attribs['_parsed'])){
 			echo 'cannot use we:include with type="template" dynamically';
 			return '';
@@ -102,10 +102,10 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 		return ($ret && $ret != '/' ? TEMPLATES_PATH . $ret : '');
 	}
 
-	$name = weTag_getAttribute('name', $attribs);
-	$gethttp = weTag_getAttribute('gethttp', $attribs, false, true);
-	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
-	$once = weTag_getAttribute('once', $attribs, false, true);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+	$gethttp = weTag_getAttribute('gethttp', $attribs, false, we_base_request::BOOL);
+	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, we_base_request::BOOL);
+	$once = weTag_getAttribute('once', $attribs, false, we_base_request::BOOL);
 
 	if((!$id) && (!$path) && (!$name)){
 		t_e('we:include - missing id, path or name');
@@ -115,19 +115,19 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 
 	if(we_tag('ifEditmode')){
 		if($name && !($id || $path)){
-			$type = weTag_getAttribute('kind', $attribs);
-			$_name = weTag_getAttribute('_name_orig', $attribs);
-			$description = weTag_getAttribute('description', $attribs, g_l('tags', '[include_file]'));
+			$type = weTag_getAttribute('kind', $attribs, '', we_base_request::STRING);
+			$_name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
+			$description = weTag_getAttribute('description', $attribs, g_l('tags', '[include_file]'), we_base_request::RAW);
 
 			echo '<table class="weEditTable" style="background: #006DB8;border:0px;padding:0px;"><tr><td style="padding: 3px;color:white;">' . '&nbsp;' . $description . '</td></tr><tr><td>' .
-			we_tag('href', array('name' => $_name, 'rootdir' => weTag_getAttribute('rootdir', $attribs, '/'), 'startid' => weTag_getAttribute('startid', $attribs, 0), 'type' => $type, 'size' => weTag_getAttribute('size', $attribs, 50))) .
+			we_tag('href', array('name' => $_name, 'rootdir' => weTag_getAttribute('rootdir', $attribs, '/', we_base_request::FILE), 'startid' => weTag_getAttribute('startid', $attribs, 0, we_base_request::INT), 'type' => $type, 'size' => weTag_getAttribute('size', $attribs, 50, we_base_request::UNIT))) .
 			'</td></tr></table>';
 			return '';
 		}
 	} else {//notEditmode
 		if($name && !($id || $path)){
-			$type = weTag_getAttribute('kind', $attribs);
-			$_name = weTag_getAttribute('_name_orig', $attribs);
+			$type = weTag_getAttribute('kind', $attribs, '', we_base_request::STRING);
+			$_name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 			$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false', 'type' => $type, 'isInternal' => 1));
 			$nint = $name . we_base_link::MAGIC_INT_LINK;
 			$int = ($GLOBALS['we_doc']->getElement($nint) == '') ? 0 : $GLOBALS['we_doc']->getElement($nint);
@@ -144,7 +144,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 
 	if($id){
 		if($GLOBALS['WE_MAIN_DOC']->ID == $id || //don't include same id
-			$GLOBALS['we_doc']->ContentType != we_base_ContentTypes::WEDOCUMENT //don't include any unknown document
+				$GLOBALS['we_doc']->ContentType != we_base_ContentTypes::WEDOCUMENT //don't include any unknown document
 		){
 			return '';
 		}
@@ -194,12 +194,12 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 	}
 
 	return 'we_setBackVar(' . $we_unique . ');' .
-		($isSeemode ? //extra stuff in seemode
-			'eval(\'?>' . addcslashes(preg_replace('|< */? *form[^>]*>|i', '', $content), '\'') .
-			($seeMode && ($id || $path) ? we_SEEM::getSeemAnchors(($id ? : path_to_id($path)), $seem) : '') .
-			'\');' :
-			//no seemode
-			$content
-		) .
-		'we_resetBackVar(' . $we_unique . ');';
+			($isSeemode ? //extra stuff in seemode
+					'eval(\'?>' . addcslashes(preg_replace('|< */? *form[^>]*>|i', '', $content), '\'') .
+					($seeMode && ($id || $path) ? we_SEEM::getSeemAnchors(($id ? : path_to_id($path)), $seem) : '') .
+					'\');' :
+					//no seemode
+					$content
+			) .
+			'we_resetBackVar(' . $we_unique . ');';
 }

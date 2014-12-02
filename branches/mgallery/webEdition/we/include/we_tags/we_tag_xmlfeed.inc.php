@@ -33,10 +33,10 @@ function we_tag_xmlfeed($attribs){
 		return $foo;
 	}
 
-	$name = weTag_getAttribute('name', $attribs);
-	$url = weTag_getAttribute('url', $attribs);
-	$refresh = abs(weTag_getAttribute('refresh', $attribs, 30)) * 60;
-	$timeout = abs(weTag_getAttribute('timeout', $attribs, 0));
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+	$url = weTag_getAttribute('url', $attribs, '', we_base_request::URL);
+	$refresh = abs(weTag_getAttribute('refresh', $attribs, 30, we_base_request::INT)) * 60;
+	$timeout = abs(weTag_getAttribute('timeout', $attribs, 0, we_base_request::INT));
 
 	if(!isset($GLOBALS['xmlfeeds'])){
 		$GLOBALS['xmlfeeds'] = array();

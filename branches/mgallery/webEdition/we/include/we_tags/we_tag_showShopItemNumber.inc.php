@@ -24,19 +24,18 @@
  */
 we_base_moduleInfo::isActive('shop');
 
-
 function we_tag_showShopItemNumber($attribs){
 	if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
 		return $foo;
 	}
 
-	$shopname = weTag_getAttribute('shopname', $attribs);
-	$option = weTag_getAttribute('option', $attribs, false, true);
-	$inputfield = weTag_getAttribute('inputfield', $attribs, false, true);
-	$type = weTag_getAttribute('type', $attribs);
-	$xml = weTag_getAttribute('xml', $attribs, false, true);
-	$num_format = weTag_getAttribute('num_format', $attribs);
-	$floatquantities = weTag_getAttribute('floatquantities', $attribs, false, true);
+	$shopname = weTag_getAttribute('shopname', $attribs, '', we_base_request::STRING);
+	$option = weTag_getAttribute('option', $attribs, false, we_base_request::BOOL);
+	$inputfield = weTag_getAttribute('inputfield', $attribs, false, we_base_request::BOOL);
+	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
+	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
+	$num_format = weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING);
+	$floatquantities = weTag_getAttribute('floatquantities', $attribs, false, we_base_request::BOOL);
 
 	if(!isset($GLOBALS[$shopname]) || empty($GLOBALS[$shopname])){
 		return parseError(sprintf(g_l('parser', '[missing_createShop]'), 'showShopItemNumber'));
@@ -47,19 +46,17 @@ function we_tag_showShopItemNumber($attribs){
 	// $type of the field
 	$articleType = (isset($GLOBALS['lv']->Record['OF_ID']) ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT);
 
-
 	$itemQuantity = (isset($GLOBALS['lv']) && isset($GLOBALS['lv']->ShoppingCartKey) ?
-			$GLOBALS[$shopname]->Get_Item_Quantity($GLOBALS['lv']->ShoppingCartKey) :
-			0);
+					$GLOBALS[$shopname]->Get_Item_Quantity($GLOBALS['lv']->ShoppingCartKey) :
+					0);
 
 	if($option || ($type === 'select')){
-
-		$start = weTag_getAttribute('start', $attribs, 0);
-		$stop = weTag_getAttribute('stop', $attribs, 10);
-		$step = weTag_getAttribute('step', $attribs, 1);
+		$start = weTag_getAttribute('start', $attribs, 0, we_base_request::INT);
+		$stop = weTag_getAttribute('stop', $attribs, 10, we_base_request::INT);
+		$step = weTag_getAttribute('step', $attribs, 1, we_base_request::INT);
 		$stop = ($floatquantities ?
-				( $stop > $itemQuantity ? $stop : $itemQuantity) :
-				( intval($stop) > intval($itemQuantity) ? $stop : $itemQuantity));
+						( $stop > $itemQuantity ? $stop : $itemQuantity) :
+						( intval($stop) > intval($itemQuantity) ? $stop : $itemQuantity));
 
 		$attr['name'] = 'shop_cart_id[' . $GLOBALS['lv']->ShoppingCartKey . ']';
 		$attr['size'] = 1;
@@ -68,17 +65,17 @@ function we_tag_showShopItemNumber($attribs){
 		$out = '';
 		while($start <= $stop){
 			$out .= ($itemQuantity == $start ?
-					getHtmlTag('option', array('xml' => $xml, 'value' => $start, 'selected' => 'selected'), $start) :
-					getHtmlTag('option', array('xml' => $xml, 'value' => $start), $start));
+							getHtmlTag('option', array('xml' => $xml, 'value' => $start, 'selected' => 'selected'), $start) :
+							getHtmlTag('option', array('xml' => $xml, 'value' => $start), $start));
 
 			$start = $start + $step;
 		}
 		return getHtmlTag('select', $attr, $out, true) . getHtmlTag('input', array('type' => 'hidden', 'name' => 't', 'value' => time()));
-	} else if($inputfield || ($type === 'textinput')){
+	}
+	if($inputfield || ($type === 'textinput')){
 		$itemQuantity = ($floatquantities ? we_util_Strings::formatNumber($itemQuantity, $num_format, 2) : intval($itemQuantity));
 		$attr = array_merge($attr, array('type' => 'text', 'name' => 'shop_cart_id[' . $GLOBALS['lv']->ShoppingCartKey . ']', 'size' => 2, 'value' => $itemQuantity));
 		return getHtmlTag('input', $attr) . getHtmlTag('input', array('type' => 'hidden', 'name' => 't', 'value' => time()));
-	} else {
-		return ($floatquantities ? we_util_Strings::formatNumber($itemQuantity, $num_format, 2) : intval($itemQuantity));
 	}
+	return ($floatquantities ? we_util_Strings::formatNumber($itemQuantity, $num_format, 2) : intval($itemQuantity));
 }

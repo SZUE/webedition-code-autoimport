@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifShopPayVat($attribs){
-	$namefrom = weTag_getAttribute("customerfrom", $attribs);
+	$namefrom = weTag_getAttribute("customerfrom", $attribs, '', we_base_request::STRING);
 	$weShopVatRule = we_shop_vatRule::getShopVatRule();
 	if(we_tag('ifRegisteredUser', array(), '')){
 		$customer = $_SESSION['webuser'];
@@ -32,15 +32,13 @@ function we_tag_ifShopPayVat($attribs){
 		$customerarray = $cus->getDBRecord();
 		unset($cus);
 		$customer = ($customerarray ? : false);
+	} elseif(isset($GLOBALS[$namefrom]) && $GLOBALS[$namefrom]){
+		$cus = new we_customer_customertag($GLOBALS[$namefrom]);
+		$customerarray = $cus->getDBRecord();
+		unset($cus);
+		$customer = ($customerarray ? : false);
 	} else {
-		if(isset($GLOBALS[$namefrom]) && $GLOBALS[$namefrom]){
-			$cus = new we_customer_customertag($GLOBALS[$namefrom]);
-			$customerarray = $cus->getDBRecord();
-			unset($cus);
-			$customer = ($customerarray ? : false);
-		} else {
-			$customer = false;
-		}
+		$customer = false;
 	}
 
 	return $weShopVatRule->executeVatRule($customer);

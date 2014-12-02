@@ -28,18 +28,18 @@ function we_tag_path($attribs){
 	}
 
 	$db = $GLOBALS['DB_WE'];
-	$field = weTag_getAttribute('field', $attribs);
-	$dirfield = weTag_getAttribute('dirfield', $attribs, $field);
-	$index = weTag_getAttribute('index', $attribs);
-	$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
-	$fieldforfolder = weTag_getAttribute('fieldforfolder', $attribs, false, true);
-	$docAttr = weTag_getAttribute('doc', $attribs);
-	$sep = weTag_getAttribute('separator', $attribs, '/');
-	$home = weTag_getAttribute('home', $attribs, 'home');
-	$hidehome = weTag_getAttribute('hidehome', $attribs, false, true);
-	$class = weTag_getAttribute('class', $attribs);
-	$style = weTag_getAttribute('style', $attribs);
-	$max = weTag_getAttribute('max', $attribs);
+	$field = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);
+	$dirfield = weTag_getAttribute('dirfield', $attribs, $field, we_base_request::STRING);
+	$index = weTag_getAttribute('index', $attribs, '', we_base_request::STRING);
+	$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL);
+	$fieldforfolder = weTag_getAttribute('fieldforfolder', $attribs, false, we_base_request::BOOL);
+	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
+	$sep = weTag_getAttribute('separator', $attribs, '/', we_base_request::RAW);
+	$home = weTag_getAttribute('home', $attribs, 'home', we_base_request::RAW);
+	$hidehome = weTag_getAttribute('hidehome', $attribs, false, we_base_request::BOOL);
+	$class = weTag_getAttribute('class', $attribs, '', we_base_request::STRING);
+	$style = weTag_getAttribute('style', $attribs, '', we_base_request::STRING);
+	$max = weTag_getAttribute('max', $attribs, 0, we_base_request::INT);
 
 	$doc = we_getDocForTag($docAttr, true);
 	$pID = $doc->ParentID;

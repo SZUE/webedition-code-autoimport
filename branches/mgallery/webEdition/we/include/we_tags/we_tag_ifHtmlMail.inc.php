@@ -27,12 +27,12 @@ function we_tag_ifHtmlMail(){
 		return ((bool) $GLOBALS['WE_HTMLMAIL']);
 	}
 	//html=false, text=true
-	
+
 	if(isset($GLOBALS['we_editmode'])){
 		return ($GLOBALS['we_editmode'] ? //editmode always HTML Mode
-				true :
-				($GLOBALS['we_doc']->InWebEdition && !(bool) $GLOBALS['we_doc']->getEditorPersistent('newsletterFormat'))
-			);
+						true :
+						($GLOBALS['we_doc']->InWebEdition && !(bool) $GLOBALS['we_doc']->getEditorPersistent('newsletterFormat'))
+				);
 	}
 	return true;
 }

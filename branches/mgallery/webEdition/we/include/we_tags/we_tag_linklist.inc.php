@@ -27,11 +27,11 @@ function we_parse_tag_linklist($attribs, $content){
 }
 
 function we_tag_linklist($attribs){
-	switch(weTag_getAttribute('_type', $attribs)){
+	switch(weTag_getAttribute('_type', $attribs, '', we_base_request::STRING)){
 		default:
-			$name = weTag_getAttribute("name", $attribs);
-			$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
-			$objectseourls = weTag_getAttribute("objectseourls", $attribs, TAGLINKS_OBJECTSEOURLS, true);
+			$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
+			$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
+			$objectseourls = weTag_getAttribute("objectseourls", $attribs, TAGLINKS_OBJECTSEOURLS, we_base_request::BOOL);
 			if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 				return $foo;
 			}

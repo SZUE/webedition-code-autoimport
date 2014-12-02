@@ -26,11 +26,9 @@ function we_tag_sum($attribs){
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
-	$name = weTag_getAttribute('_name_orig', $attribs);
-	$num_format = weTag_getAttribute('num_format', $attribs);
-	$decimals = intval(weTag_getAttribute('decimals', $attribs, 2));
+	$name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 
 	$result = (isset($GLOBALS['summe'][$name]) ? we_base_util::std_numberformat($GLOBALS['summe'][$name]) : 0);
 
-	return we_util_Strings::formatNumber($result, $num_format, $decimals);
+	return we_util_Strings::formatNumber($result, weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING), weTag_getAttribute('decimals', $attribs, 2, we_base_request::INT));
 }

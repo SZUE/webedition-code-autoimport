@@ -39,12 +39,12 @@ function we_tag_customer($attribs){
 		return false;
 	}
 
-	$condition = weTag_getAttribute('condition', $attribs, 0);
-	$we_cid = weTag_getAttribute('id', $attribs, 0);
-	$name = weTag_getAttribute('name', $attribs);
-	$_showName = weTag_getAttribute('_name_orig', $attribs);
-	$size = weTag_getAttribute('size', $attribs, 30);
-	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
+	$condition = weTag_getAttribute('condition', $attribs, 0, we_base_request::RAW);
+	$we_cid = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+	$_showName = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
+	$size = weTag_getAttribute('size', $attribs, 30, we_base_request::UNIT);
+	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
 
 	if(!isset($GLOBALS['we_lv_array'])){
 		$GLOBALS['we_lv_array'] = array();
@@ -58,10 +58,10 @@ function we_tag_customer($attribs){
 
 		$we_doc = $GLOBALS['we_doc'];
 		$we_cid = intval(($we_doc->getElement($name, 'bdid') ?
-				$we_doc->getElement($name, 'bdid') :
-				($we_doc->getElement($name) ?
-					$we_doc->getElement($name) :
-					$we_cid)
+						$we_doc->getElement($name, 'bdid') :
+						($we_doc->getElement($name) ?
+								$we_doc->getElement($name) :
+								$we_cid)
 		));
 
 		$we_cid = $we_cid ? : we_base_request::_(we_base_request::INT, 'we_cid', 0);

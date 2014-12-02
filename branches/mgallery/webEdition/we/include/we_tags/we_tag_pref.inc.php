@@ -22,14 +22,14 @@ function we_tag_pref($attribs){
 	if(($foo = attributFehltError($attribs, array('type' => false, 'name' => false), __FUNCTION__))){
 		return $foo;
 	}
-	$name = weTag_getAttribute('name', $attribs);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 
-	switch(($type = weTag_getAttribute('type', $attribs))){
+	switch(($type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING))){
 		case 'shop':
 			if(($foo = attributFehltError($attribs, array('field' => false), __FUNCTION__))){
 				return $foo;
 			}
-			$field = weTag_getAttribute('field', $attribs);
+			$field = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);
 			switch($name){
 				case 'vatRule':
 					$vat = we_shop_vatRule::getShopVatRule();

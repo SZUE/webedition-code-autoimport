@@ -23,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_isFieldNotEmpty($attribs){
-	$type = weTag_getAttribute('type', $attribs);
-	$match = weTag_getAttribute('match', $attribs);
+	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
+	$match = weTag_getAttribute('match', $attribs, '', we_base_request::STRING);
 	if(!isset($GLOBALS['lv'])){
 		echo parseError(g_l('parser', '[field_not_in_lv]'));
 		return false;
@@ -63,7 +63,7 @@ function we_isFieldNotEmpty($attribs){
 			return false;
 		case 'multiobject':
 			$data = (isset($GLOBALS['lv']) ?
-							(method_exists($GLOBALS['lv'], 'getObject') || ($GLOBALS['lv'] instanceof we_shop_shop) ?//FIXME: change this - we don't need getObject any more!
+							(method_exists($GLOBALS['lv'], 'getObject') || ($GLOBALS['lv'] instanceof we_shop_shop) ? //FIXME: change this - we don't need getObject any more!
 									unserialize($GLOBALS['lv']->getDBf($orig_match)) :
 									unserialize($GLOBALS['lv']->getDBf('we_' . $orig_match))) :
 							unserialize($GLOBALS['we_doc']->getElement($orig_match)));

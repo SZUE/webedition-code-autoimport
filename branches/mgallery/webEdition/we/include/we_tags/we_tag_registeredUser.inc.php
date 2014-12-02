@@ -24,9 +24,9 @@
  */
 function we_tag_registeredUser($attribs){
 
-	$id = weTag_getAttribute('id', $attribs);
-	$show = weTag_getAttribute('show', $attribs);
-	$docAttr = weTag_getAttribute('doc', $attribs);
+	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
+	$show = weTag_getAttribute('show', $attribs, '', we_base_request::STRING);
+	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
 	$regs = array();
 	if(preg_match('|^field:(.+)$|', $id, $regs)){
 		$doc = we_getDocForTag($docAttr);

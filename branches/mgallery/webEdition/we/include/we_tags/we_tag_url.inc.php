@@ -27,11 +27,11 @@ function we_tag_url($attribs){
 		return $foo;
 	}
 	static $urls = array();
-	$type = weTag_getAttribute('type', $attribs, 'document');
-	$id = weTag_getAttribute('id', $attribs);
-	$triggerid = weTag_getAttribute('triggerid', $attribs, 0);
-	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
-	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
+	$type = weTag_getAttribute('type', $attribs, 'document', we_base_request::STRING);
+	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::STRING);
+	$triggerid = weTag_getAttribute('triggerid', $attribs, 0, we_base_request::INT);
+	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
+	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, we_base_request::BOOL);
 	if(is_numeric($id) && (isset($urls[$type . $id]))){ // do only work you have never done before
 		return $urls[$type . $id];
 	}
@@ -49,13 +49,13 @@ function we_tag_url($attribs){
 					$path_parts = pathinfo(id_to_path($triggerid));
 					if($objectseourls && $GLOBALS['WE_MAIN_DOC']->Url != '' && show_SeoLinks()){
 						$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-							(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-								'' : $path_parts['filename'] . '/') .
-							$GLOBALS['WE_MAIN_DOC']->Url;
+								(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+										'' : $path_parts['filename'] . '/') .
+								$GLOBALS['WE_MAIN_DOC']->Url;
 					} else {
 						$url = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID :
-								$GLOBALS['WE_MAIN_DOC']->Path . '?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID);
+										($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID :
+										$GLOBALS['WE_MAIN_DOC']->Path . '?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID);
 					}
 					$urlNotSet = false;
 				}
@@ -73,20 +73,24 @@ function we_tag_url($attribs){
 				}
 			} else {
 				$row = getHash('SELECT ID,Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($testid), $GLOBALS['DB_WE']);
+				if(!$row){
+					$urls[$type . $id] = '';
+					return '';
+				}
 				if(!$triggerid){
 					$triggerid = ($row['TriggerID'] ? : $GLOBALS['WE_MAIN_DOC']->ID);
 				}
 				$path_parts = pathinfo(id_to_path($triggerid));
 				if($objectseourls && $row['Url'] != '' && show_SeoLinks()){
 					$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-						(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-							'' : $path_parts['filename'] . '/' ) .
-						$row['Url'];
+							(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+									'' : $path_parts['filename'] . '/' ) .
+							$row['Url'];
 				} else {
 					$url = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $row['ID'] :
-							id_to_path($triggerid) . '?we_objectID=' . $row['ID']
-						);
+									($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $row['ID'] :
+									id_to_path($triggerid) . '?we_objectID=' . $row['ID']
+							);
 				}
 			}
 		}

@@ -27,12 +27,12 @@ function we_tag_bannerSelect($attribs){
 		return $foo;
 	}
 
-	$name = weTag_getAttribute('name', $attribs);
-	$customer = weTag_getAttribute('customer', $attribs, false, true);
-	$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
-	$firstentry = weTag_getAttribute('firstentry', $attribs);
-	$showpath = weTag_getAttribute('showpath', $attribs, false, true);
-	$submitonchange = weTag_getAttribute('submitonchange', $attribs, false, true);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+	$customer = weTag_getAttribute('customer', $attribs, false, we_base_request::BOOL);
+	//$rootdir = weTag_getAttribute('rootdir', $attribs, '/');
+	$firstentry = weTag_getAttribute('firstentry', $attribs, '', we_base_request::STRING);
+	$showpath = weTag_getAttribute('showpath', $attribs, false, we_base_request::BOOL);
+	$submitonchange = weTag_getAttribute('submitonchange', $attribs, false, we_base_request::BOOL);
 
 	$where = ' WHERE IsFolder=0 ';
 
