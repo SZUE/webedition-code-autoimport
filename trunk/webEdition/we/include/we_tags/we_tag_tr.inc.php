@@ -28,12 +28,9 @@ function we_parse_tag_tr($attribs, $content){
 }
 
 function we_tag_tr($attribs){
-	$_type = weTag_getAttribute('_type', $attribs);
-	$attribs = removeAttribs($attribs, array('_type'));
-
-	switch($_type){
+	switch(weTag_getAttribute('_type', $attribs, '', we_base_request::STRING)){
 		case 'start':
-			return ($GLOBALS["lv"]->shouldPrintStartTR() ? getHtmlTag('tr', $attribs, '', false, true) : '');
+			return ($GLOBALS["lv"]->shouldPrintStartTR() ? getHtmlTag('tr', removeAttribs($attribs, array('_type')), '', false, true) : '');
 		case 'end':
 			return ($GLOBALS["lv"]->shouldPrintEndTR() ? '</tr>' : '');
 	}

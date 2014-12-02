@@ -24,7 +24,6 @@
  */
 we_base_moduleInfo::isActive('shop');
 
-
 /**
  * This functions checks if the shops basket is empty
  *
@@ -37,7 +36,7 @@ function we_tag_ifShopEmpty($attribs){
 		echo $foo;
 		return false;
 	}
-	$shopname = weTag_getAttribute('shopname', $attribs);
+	$shopname = weTag_getAttribute('shopname', $attribs, '', we_base_request::STRING);
 
 	$basket = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname] : '';
 	if($basket){

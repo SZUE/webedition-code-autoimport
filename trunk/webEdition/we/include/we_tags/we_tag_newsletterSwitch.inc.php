@@ -27,7 +27,7 @@ function we_tag_newsletterSwitch(){
 		return '';
 	}
 //html=false, text=true
-	
+
 	if(isset($_REQUEST['we_set_newsletterFormat']) && $GLOBALS['we_doc']->InWebEdition){
 		$GLOBALS['we_doc']->setEditorPersistent('newsletterFormat', (bool) $_REQUEST['we_set_newsletterFormat']);
 	}

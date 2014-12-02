@@ -26,15 +26,13 @@ function we_tag_flashmovie($attribs){
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
-	$name = weTag_getAttribute("name", $attribs);
-	$showcontrol = weTag_getAttribute("showcontrol", $attribs, true, true);
-	$showflash = weTag_getAttribute('showflash', $attribs, true, true);
+	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
+	$showcontrol = weTag_getAttribute("showcontrol", $attribs, true, we_base_request::BOOL);
+	$showflash = weTag_getAttribute('showflash', $attribs, true, we_base_request::BOOL);
 
-	$id = $GLOBALS['we_doc']->getElement($name, 'bdid');
-	$id = $id ? : weTag_getAttribute('id', $attribs);
-	if(isset($attribs['showcontrol']) && !$showcontrol && weTag_getAttribute("id", $attribs)){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
-		$id = weTag_getAttribute("id", $attribs);
-		$attribs['id'] = $id; //siehe korrespondierende Änderung in we:document::getField
+	$id = $GLOBALS['we_doc']->getElement($name, 'bdid')? : weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
+	if(isset($attribs['showcontrol']) && !$showcontrol && ($lid = weTag_getAttribute("id", $attribs, 0, we_base_request::INT))){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
+		$attribs['id'] = $lid; //siehe korrespondierende Änderung in we:document::getField
 		$attribs['showcontrol'] = $showcontrol; //sicherstellen das es boolean iost
 	}
 	$fname = 'we_' . $GLOBALS['we_doc']->Name . '_img[' . $name . '#bdid]';
@@ -42,12 +40,12 @@ function we_tag_flashmovie($attribs){
 	$attribs = removeAttribs($attribs, array('showflash'));
 
 	$out = ($GLOBALS['we_editmode'] && !$showflash ?
-			'' :
-			$GLOBALS['we_doc']->getField($attribs, 'flashmovie') );
+					'' :
+					$GLOBALS['we_doc']->getField($attribs, 'flashmovie') );
 
 	if($showcontrol && $GLOBALS['we_editmode']){
-		$startid = weTag_getAttribute('startid', $attribs);
-		$parentid = weTag_getAttribute('parentid', $attribs, 0);
+		$startid = weTag_getAttribute('startid', $attribs, 0, we_base_request::INT);
+		$parentid = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
 		// Create "Edit Flash" button
 		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage'); opener._EditorFrame.setEditorIsHot(true);");
@@ -67,9 +65,9 @@ function we_tag_flashmovie($attribs){
 				</tr>
 				<tr>
 					<td class="weEditmodeStyle" align="center">' .
-			we_html_button::create_button_table(array(
-				$flash_button, $clear_button
-				), 5) . '</td></tr></table>';
+				we_html_button::create_button_table(array(
+					$flash_button, $clear_button
+						), 5) . '</td></tr></table>';
 	}
 	//	When in SEEM - Mode add edit-Button to tag - textarea
 	return $out;

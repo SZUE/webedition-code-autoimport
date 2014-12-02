@@ -24,16 +24,16 @@
  */
 function we_tag_category($attribs){
 	// initialize possible Attributes
-	$delimiter = weTag_getAttribute('delimiter', $attribs, weTag_getAttribute('tokken', $attribs, ','));
-	$rootdir = weTag_getAttribute('rootdir', $attribs);
-	$showpath = weTag_getAttribute('showpath', $attribs, false, true);
-	$docAttr = weTag_getAttribute('doc', $attribs);
-	$field = weTag_getAttribute('field', $attribs);
-	$name = weTag_getAttribute('_name_orig', $attribs);
-	$id = weTag_getAttribute('id', $attribs);
-	$separator = weTag_getAttribute('separator', $attribs, '/');
-	$onlyindir = weTag_getAttribute('onlyindir', $attribs);
-	$fromTag = weTag_getAttribute('fromTag', $attribs, 'category');
+	$delimiter = weTag_getAttribute('delimiter', $attribs, weTag_getAttribute('tokken', $attribs, ',', we_base_request::RAW), we_base_request::RAW);
+	$rootdir = weTag_getAttribute('rootdir', $attribs, '', we_base_request::FILE);
+	$showpath = weTag_getAttribute('showpath', $attribs, false, we_base_request::BOOL);
+	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
+	$field = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);
+	$name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
+	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INTLIST);
+	$separator = weTag_getAttribute('separator', $attribs, '/', we_base_request::RAW);
+	$onlyindir = weTag_getAttribute('onlyindir', $attribs, '', we_base_request::FILE);
+	$fromTag = weTag_getAttribute('fromTag', $attribs, 'category', we_base_request::STRING);
 	// end initialize possible Attributes
 
 	if($id){

@@ -19,7 +19,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifNotCustomerResetPassword(array $attribs){
-	$type = weTag_getAttribute('type', $attribs, 'all');
+	$type = weTag_getAttribute('type', $attribs, 'all', we_base_request::STRING);
 	switch($type){
 		case 'all':
 			return isset($GLOBALS['ERROR']['customerResetPassword']) && $GLOBALS['ERROR']['customerResetPassword'];

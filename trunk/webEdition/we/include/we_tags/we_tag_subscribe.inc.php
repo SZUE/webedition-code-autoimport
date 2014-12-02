@@ -23,11 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_subscribe($attribs){
-	$type = weTag_getAttribute("type", $attribs, "email");
-	$values = weTag_getAttribute("values", $attribs);
-	$value = weTag_getAttribute("value", $attribs);
-	$xml = weTag_getAttribute("xml", $attribs);
-	$checked = weTag_getAttribute("checked", $attribs, false, true);
+	$type = weTag_getAttribute("type", $attribs, "email", we_base_request::STRING);
+	$values = weTag_getAttribute("values", $attribs, '', we_base_request::RAW);
+	$value = weTag_getAttribute("value", $attribs, '', we_base_request::RAW);
+	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
+	$checked = weTag_getAttribute("checked", $attribs, false, we_base_request::BOOL);
 
 	switch($type){
 		case "listCheckbox":
@@ -45,7 +45,7 @@ function we_tag_subscribe($attribs){
 			}
 
 			return getHtmlTag('input', array('type' => 'hidden', 'name' => 'we_use_lists__', 'value' => 1, 'xml' => $xml)) .
-				getHtmlTag('input', $newAttribs);
+					getHtmlTag('input', $newAttribs);
 
 		case "listSelect":
 			if($values){
@@ -56,11 +56,11 @@ function we_tag_subscribe($attribs){
 				$vals = makeArrayFromCSV($values);
 				foreach($vals as $i => $v){
 					$options .= ((isset($_REQUEST["we_subscribe_list__"]) && in_array($i, $_REQUEST["we_subscribe_list__"])) ?
-							getHtmlTag('option', array('value' => $i, 'selected' => 'selected'), oldHtmlspecialchars($v)) :
-							getHtmlTag('option', array('value' => $i), oldHtmlspecialchars($v)));
+									getHtmlTag('option', array('value' => $i, 'selected' => 'selected'), oldHtmlspecialchars($v)) :
+									getHtmlTag('option', array('value' => $i), oldHtmlspecialchars($v)));
 				}
 				return getHtmlTag('input', array('type' => 'hidden', 'name' => 'we_use_lists__', 'value' => 1, 'xml' => $xml)) .
-					getHtmlTag('select', $newAttribs, $options, true);
+						getHtmlTag('select', $newAttribs, $options, true);
 			}
 			return '';
 
@@ -77,7 +77,7 @@ function we_tag_subscribe($attribs){
 		case "htmlSelect":
 			$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'size', 'values', 'maxlength', 'checked'));
 			$newAttribs['name'] = 'we_subscribe_html__';
-			$value = weTag_getAttribute("value", $attribs, false, true);
+			$value = weTag_getAttribute("value", $attribs, false, we_base_request::BOOL);
 			$ishtml = we_base_request::_(we_base_request::BOOL, "we_subscribe_html__", (isset($attribs["value"]) ? $value : false));
 			$values = ($values ? makeArrayFromCSV($values) : array("Text", "HTML"));
 

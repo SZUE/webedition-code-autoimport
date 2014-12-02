@@ -23,9 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_isNotEmpty($attribs){
-	$docAttr = weTag_getAttribute('doc', $attribs);
-	$type = weTag_getAttribute('type', $attribs);
-	$match = we_tag_getPostName(weTag_getAttribute('match', $attribs));
+	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
+	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
+	$match = we_tag_getPostName(weTag_getAttribute('match', $attribs, '', we_base_request::STRING));
 	$doc = we_getDocForTag($docAttr, false);
 
 	switch($type){
@@ -65,7 +65,7 @@ function we_isNotEmpty($attribs){
 				// were some PHP notices that had no effect on the output of the function
 				// remark holeg: when it is a serialized array, the function looks if it is not empty
 				if(is_array(
-						$arr = unserialize($doc->getElement($match)))){
+								$arr = unserialize($doc->getElement($match)))){
 					return !empty($arr);
 				}
 			}

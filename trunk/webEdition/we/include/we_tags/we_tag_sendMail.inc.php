@@ -27,9 +27,9 @@ function _getMails($to){
 	foreach($to as $mail){
 		if(strpos($mail, '@') === false){
 			if((
-				(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"]) ||
-				(isset($GLOBALS['ERROR']['customerResetPassword']) && $GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_ALL_OK)) &&
-				isset($_SESSION["webuser"][$mail]) && strpos($_SESSION["webuser"][$mail], '@') !== false){ //wenn man registireten Usern was senden moechte
+					(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"]) ||
+					(isset($GLOBALS['ERROR']['customerResetPassword']) && $GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_ALL_OK)) &&
+					isset($_SESSION["webuser"][$mail]) && strpos($_SESSION["webuser"][$mail], '@') !== false){ //wenn man registireten Usern was senden moechte
 				if(we_check_email($_SESSION["webuser"][$mail])){
 					$we_recipient[] = $_SESSION["webuser"][$mail];
 				}
@@ -57,20 +57,20 @@ function we_tag_sendMail($attribs, $content){
 		return;
 	}
 
-	$id = weTag_getAttribute("id", $attribs, we_base_request::_(we_base_request::INT, 'ID', 0));
-	$from = weTag_getAttribute("from", $attribs);
-	$reply = weTag_getAttribute("reply", $attribs);
-	$recipient = weTag_getAttribute("recipient", $attribs);
-	$recipientCC = weTag_getAttribute("recipientcc", $attribs, weTag_getAttribute("recipientCC", $attribs));
-	$recipientBCC = weTag_getAttribute("recipientbcc", $attribs, weTag_getAttribute("recipientBCC", $attribs));
+	$id = weTag_getAttribute("id", $attribs, we_base_request::_(we_base_request::INT, 'ID', 0), we_base_request::INT);
+	$from = weTag_getAttribute("from", $attribs, '', we_base_request::EMAIL);
+	$reply = weTag_getAttribute("reply", $attribs, '', we_base_request::STRING); //FIXME:email_list
+	$recipient = weTag_getAttribute("recipient", $attribs, '', we_base_request::STRING); //FIXME:email_list
+	$recipientCC = weTag_getAttribute("recipientcc", $attribs, weTag_getAttribute("recipientCC", $attribs, '', we_base_request::STRING), we_base_request::STRING); //FIXME:email_list
+	$recipientBCC = weTag_getAttribute("recipientbcc", $attribs, weTag_getAttribute("recipientBCC", $attribs, '', we_base_request::STRING), we_base_request::STRING); //FIXME:email_list
 
-	$mimetype = weTag_getAttribute("mimetype", $attribs);
-	$subject = weTag_getAttribute("subject", $attribs);
-	$charset = weTag_getAttribute("charset", $attribs, "UTF-8");
-	$includeimages = weTag_getAttribute("includeimages", $attribs, false, true);
-	$useBaseHref = weTag_getAttribute("usebasehref", $attribs, true, true);
-	$useFormmailLog = weTag_getAttribute("useformmaillog", $attribs, weTag_getAttribute("useformmailLog", $attribs, false, true), true);
-	$useFormmailBlock = weTag_getAttribute("useformmailblock", $attribs, weTag_getAttribute("useformmailblock", $attribs, false, true), true);
+	$mimetype = weTag_getAttribute("mimetype", $attribs, '', we_base_request::STRING);
+	$subject = weTag_getAttribute("subject", $attribs, '', we_base_request::STRING);
+	$charset = weTag_getAttribute("charset", $attribs, "UTF-8", we_base_request::STRING);
+	$includeimages = weTag_getAttribute("includeimages", $attribs, false, we_base_request::BOOL);
+	$useBaseHref = weTag_getAttribute("usebasehref", $attribs, true, we_base_request::BOOL);
+	$useFormmailLog = weTag_getAttribute("useformmaillog", $attribs, weTag_getAttribute("useformmailLog", $attribs, false, we_base_request::BOOL), we_base_request::BOOL);
+	$useFormmailBlock = weTag_getAttribute("useformmailblock", $attribs, weTag_getAttribute("useformmailblock", $attribs, false, we_base_request::BOOL), we_base_request::BOOL);
 	if($useFormmailBlock){
 		$useFormmailLog = true;
 	}

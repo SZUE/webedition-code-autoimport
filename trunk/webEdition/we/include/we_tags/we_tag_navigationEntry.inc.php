@@ -32,14 +32,14 @@ function we_tag_navigationEntry($attribs, $content){
 		return;
 	}
 
-	$navigationName = weTag_getAttribute('navigationname', $attribs, 'default');
-	$type = weTag_getAttribute('type', $attribs);
-	$level = weTag_getAttribute('level', $attribs, we_navigation_items::TEMPLATE_DEFAULT_LEVEL);
+	$navigationName = weTag_getAttribute('navigationname', $attribs, 'default', we_base_request::STRING);
+	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
+	$level = weTag_getAttribute('level', $attribs, we_navigation_items::TEMPLATE_DEFAULT_LEVEL, we_base_request::STRING);
 	$current = (isset($attribs['current']) ?
-			weTag_getAttribute('current', $attribs, false, true) :
-			we_navigation_items::TEMPLATE_DEFAULT_CURRENT);
+					weTag_getAttribute('current', $attribs, false, we_base_request::BOOL) :
+					we_navigation_items::TEMPLATE_DEFAULT_CURRENT);
 
-	$positions = makeArrayFromCSV(weTag_getAttribute('position', $attribs, we_navigation_items::TEMPLATE_DEFAULT_POSITION));
+	$positions = makeArrayFromCSV(weTag_getAttribute('position', $attribs, we_navigation_items::TEMPLATE_DEFAULT_POSITION, we_base_request::STRING));
 
 	if(!isset($GLOBALS['we_navigation'][$navigationName])){
 		echo parseError('we:navigationentry "' . $navigationName . '" not set');

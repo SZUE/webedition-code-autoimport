@@ -26,12 +26,12 @@ function we_tag_sidebar($attribs, $content){
 	if(SIDEBAR_DISABLED || (we_tag('ifNotEditmode') && !defined('WE_SIDEBAR'))){
 		return '';
 	}
-	$id = intval(weTag_getAttribute('id', $attribs, 0));
-	$file = weTag_getAttribute('file', $attribs);
-	$url = weTag_getAttribute('url', $attribs);
+	$id = intval(weTag_getAttribute('id', $attribs, 0, we_base_request::INT));
+	$file = weTag_getAttribute('file', $attribs, '', we_base_request::FILE);
+	$url = weTag_getAttribute('url', $attribs, '', we_base_request::URL);
 	//$anchor = weTag_getAttribute('anchor', $attribs);
-	$width = weTag_getAttribute('width', $attribs, SIDEBAR_DEFAULT_WIDTH);
-	$params = weTag_getAttribute('params', $attribs);
+	$width = weTag_getAttribute('width', $attribs, SIDEBAR_DEFAULT_WIDTH, we_base_request::UNIT);
+	$params = weTag_getAttribute('params', $attribs, '', we_base_request::RAW);
 	if($params && strpos($params, '?') === 0){
 		$params = substr($params, 1);
 	}

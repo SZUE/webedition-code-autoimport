@@ -27,7 +27,7 @@ function we_tag_colorChooser($attribs){
 		return $foo;
 	}
 
-	$name = weTag_getAttribute('name', $attribs);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 
 	if(!$GLOBALS['we_doc']->getElement($attribs["name"])){
 		if(isset($attribs["value"]) && $attribs["value"])
@@ -35,8 +35,8 @@ function we_tag_colorChooser($attribs){
 	}
 
 	if($GLOBALS['we_editmode']){
-		$width = weTag_getAttribute('width', $attribs, 100);
-		$height = weTag_getAttribute('height', $attribs, 18);
+		$width = weTag_getAttribute('width', $attribs, 100, we_base_request::UNIT);
+		$height = weTag_getAttribute('height', $attribs, 18, we_base_request::UNIT);
 		return $GLOBALS['we_doc']->formColor($width, $name, 25, "txt", $height);
 	} else {
 		return $GLOBALS['we_doc']->getElement($name);

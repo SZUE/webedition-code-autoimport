@@ -194,12 +194,12 @@ function we_tag_addDelNewsletterEmail($attribs){
 							'subscribe_firstname' => $f['subscribe_firstname'],
 							'subscribe_lastname' => $f['subscribe_lastname'],
 							'lists' => $lists,
-							'expires' => sql_function('UNIX_TIMESTAMP() + ' . weTag_getAttribute('expiredoubleoptin', $attribs, 1440,we_base_request::INT) * 60) // in secs
+							'expires' => sql_function('UNIX_TIMESTAMP() + ' . weTag_getAttribute('expiredoubleoptin', $attribs, 1440, we_base_request::INT) * 60) // in secs
 				)));
 
-				$id = weTag_getAttribute('id', $attribs,0,we_base_request::INT);
-				$subject = weTag_getAttribute('subject', $attribs, 'newsletter',we_base_request::STRING);
-				$from = weTag_getAttribute('from', $attribs, 'newsletter@' . $_SERVER['SERVER_NAME'],we_base_request::EMAIL);
+				$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
+				$subject = weTag_getAttribute('subject', $attribs, 'newsletter', we_base_request::STRING);
+				$from = weTag_getAttribute('from', $attribs, 'newsletter@' . $_SERVER['SERVER_NAME'], we_base_request::EMAIL);
 
 				$use_https_refer = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="use_https_refer"', '', $db);
 				$protocol = ($use_https_refer ? 'https://' : 'http://');
@@ -273,8 +273,8 @@ function we_tag_addDelNewsletterEmail($attribs){
 						$mailtextHTML = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:' . $phf . '####', $placeholderReplaceValue, $mailtextHTML);
 					}
 				}
-				$recipientCC = weTag_getAttribute('recipientCC', $attribs,'',we_base_request::EMAIL);
-				$recipientBCC = weTag_getAttribute('recipientBCC', $attribs,'',we_base_request::EMAIL);
+				$recipientCC = weTag_getAttribute('recipientCC', $attribs, '', we_base_request::EMAIL);
+				$recipientBCC = weTag_getAttribute('recipientBCC', $attribs, '', we_base_request::EMAIL);
 				$includeimages = weTag_getAttribute('includeimages', $attribs, false, we_base_request::BOOL);
 				$toCC = explode(',', $recipientCC);
 				$we_recipientCC = array();

@@ -27,11 +27,9 @@ function we_parse_tag_back($attribs, $content){
 }
 
 function we_tag_back($attribs){
-	$_type = weTag_getAttribute('_type', $attribs);
-	$attribs = removeAttribs($attribs, array('_type'));
-
-	switch($_type){
+	switch(weTag_getAttribute('_type', $attribs, '', we_base_request::STRING)){
 		default:
+			$attribs = removeAttribs($attribs, array('_type'));
 			if(isset($GLOBALS["_we_voting_list"])){
 				return $GLOBALS["_we_voting_list"]->getBackLink($attribs);
 			}

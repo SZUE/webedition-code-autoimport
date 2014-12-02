@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifLoginFailed($attribs){
-	switch(weTag_getAttribute('type', $attribs, 'all')){
+	switch(weTag_getAttribute('type', $attribs, 'all', we_base_request::STRING)){
 		default:
 		case 'all':
 			return isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed']) ? ($_SESSION['webuser']['loginfailed'] !== false) : false;

@@ -24,7 +24,7 @@
  */
 function we_tag_ifNotVote($attribs){
 	if(isset($GLOBALS['_we_voting_status'])){
-		switch(weTag_getAttribute('type', $attribs)){
+		switch(weTag_getAttribute('type', $attribs, '', we_base_request::STRING)){
 			case 'error':
 				return ($GLOBALS['_we_voting_status'] == we_voting_voting::ERROR);
 			case 'revote':

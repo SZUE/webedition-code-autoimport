@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -32,7 +33,7 @@ we_base_moduleInfo::isActive('shop');
  */
 function we_tag_writeShopData($attribs){
 
-	$name = weTag_getAttribute('name', $attribs);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 	if(($foo = attributFehltError($attribs, 'pricename', __FUNCTION__))){
 		return $foo;
 	}
@@ -42,14 +43,14 @@ function we_tag_writeShopData($attribs){
 		}
 	}
 
-	$shopname = weTag_getAttribute('shopname', $attribs);
+	$shopname = weTag_getAttribute('shopname', $attribs, '', we_base_request::STRING);
 	$shopname = $shopname ? : $name;
-	$pricename = weTag_getAttribute('pricename', $attribs);
-	$shipping = weTag_getAttribute('shipping', $attribs);
-	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs, false, true);
-	$shippingVatRate = weTag_getAttribute('shippingvatrate', $attribs);
-	$netprices = weTag_getAttribute('netprices', $attribs, true, true);
-	$useVat = weTag_getAttribute('usevat', $attribs, false, true);
+	$pricename = weTag_getAttribute('pricename', $attribs, '', we_base_request::STRING);
+	$shipping = weTag_getAttribute('shipping', $attribs, '', we_base_request::FLOAT);
+	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs, false, we_base_request::BOOL);
+	$shippingVatRate = weTag_getAttribute('shippingvatrate', $attribs, 0, we_base_request::FLOAT);
+	$netprices = weTag_getAttribute('netprices', $attribs, true, we_base_request::BOOL);
+	$useVat = weTag_getAttribute('usevat', $attribs, false, we_base_request::BOOL);
 
 	$_customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
 
@@ -100,17 +101,17 @@ function we_tag_writeShopData($attribs){
 			}
 
 			if(!$DB_WE->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
-					we_database_base::arraySetter((array(
-						'IntArticleID' => intval($shoppingItem['id']),
-						'IntQuantity' => abs($shoppingItem['quantity']),
-						'Price' => $preis,
-						'IntOrderID' => $orderID,
-						'IntCustomerID' => intval($_SESSION['webuser']['ID']),
-						'DateOrder' => sql_function('NOW()'),
-						'DateShipping' => 0,
-						'Datepayment' => 0,
-						'strSerial' => serialize($shoppingItem['serial']),
-				))))){
+							we_database_base::arraySetter((array(
+								'IntArticleID' => intval($shoppingItem['id']),
+								'IntQuantity' => abs($shoppingItem['quantity']),
+								'Price' => $preis,
+								'IntOrderID' => $orderID,
+								'IntCustomerID' => intval($_SESSION['webuser']['ID']),
+								'DateOrder' => sql_function('NOW()'),
+								'DateShipping' => 0,
+								'Datepayment' => 0,
+								'strSerial' => serialize($shoppingItem['serial']),
+					))))){
 
 				echo 'Data Insert Failed';
 				return;
@@ -146,16 +147,16 @@ function we_tag_writeShopData($attribs){
 			WE_SHOP_CART_CUSTOMER_FIELD => $_customer, // add netprice flag to article
 			WE_SHOP_PRICENAME => $pricename,
 			WE_SHOP_SHIPPING => ($shipping === '' ?
-				array(
+					array(
 				'costs' => $weShippingControl->getShippingCostByOrderValue($totPrice, $_customer),
 				'isNet' => $weShippingControl->isNet,
 				'vatRate' => $weShippingControl->vatRate
-				) :
-				array(
+					) :
+					array(
 				'costs' => floatval(str_replace(',', '.', $shipping)),
 				'isNet' => $shippingIsNet,
 				'vatRate' => $shippingVatRate
-				)),
+					)),
 		);
 
 

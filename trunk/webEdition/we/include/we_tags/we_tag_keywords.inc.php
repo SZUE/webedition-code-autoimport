@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_keywords($attribs, $content){
-	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
+	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL);
 	$attribs = removeAttribs($attribs, array(
 		'htmlspecialchars'
 	));

@@ -33,7 +33,7 @@ function we_tag_a($attribs, $content){
 
 		// get attributes
 
-		$id = weTag_getAttribute('id', $attribs,0,we_base_request::STRING);
+		$id = weTag_getAttribute('id', $attribs, 0, we_base_request::STRING);
 		if($id === 'self' && !defined('WE_REDIRECTED_SEO')){
 			$id = $GLOBALS['WE_MAIN_DOC']->ID;
 		}

@@ -23,18 +23,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_delete($attribs){
-	$id = weTag_getAttribute('id', $attribs, 0);
-	$type = weTag_getAttribute('type', $attribs, 'document');
-	$userid = weTag_getAttribute('userid', $attribs); // deprecated  use protected=true instead
-	$protected = weTag_getAttribute('protected', $attribs, false, true);
-	$admin = weTag_getAttribute('admin', $attribs);
-	$mail = weTag_getAttribute('mail', $attribs);
-	$mailfrom = weTag_getAttribute('mailfrom', $attribs);
-	$charset = weTag_getAttribute('charset', $attribs, "iso-8859-1");
-	$doctype = weTag_getAttribute('doctype', $attribs);
-	$classid = weTag_getAttribute('classid', $attribs);
-	$pid = weTag_getAttribute('pid', $attribs);
-	$forceedit = weTag_getAttribute('forceedit', $attribs, false, true);
+	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
+	$type = weTag_getAttribute('type', $attribs, 'document', we_base_request::STRING);
+	$userid = weTag_getAttribute('userid', $attribs, 0, we_base_request::STRING); // deprecated  use protected=true instead
+	$protected = weTag_getAttribute('protected', $attribs, false, we_base_request::BOOL);
+	$admin = weTag_getAttribute('admin', $attribs, '', we_base_request::STRING);
+	$mail = weTag_getAttribute('mail', $attribs, '', we_base_request::EMAIL);
+	$mailfrom = weTag_getAttribute('mailfrom', $attribs, '', we_base_request::EMAIL);
+	$charset = weTag_getAttribute('charset', $attribs, "iso-8859-1", we_base_request::STRING);
+	$doctype = weTag_getAttribute('doctype', $attribs, '', we_base_request::STRING);
+	$classid = weTag_getAttribute('classid', $attribs, '', we_base_request::INT);
+	$pid = weTag_getAttribute('pid', $attribs, 0, we_base_request::INT);
+	$forceedit = weTag_getAttribute('forceedit', $attribs, false, we_base_request::BOOL);
 
 	switch($type){
 		case "document":
@@ -76,9 +76,9 @@ function we_tag_delete($attribs){
 	}
 
 	$isOwner = ($protected ?
-			($_SESSION["webuser"]["ID"] == $doc->WebUserID) :
-			($userid ?
-				($_SESSION["webuser"]["ID"] == $doc->getElement($userid)) : false));
+					($_SESSION["webuser"]["ID"] == $doc->WebUserID) :
+					($userid ?
+							($_SESSION["webuser"]["ID"] == $doc->getElement($userid)) : false));
 
 
 	$isAdmin = ($admin ? isset($_SESSION["webuser"][$admin]) && $_SESSION["webuser"][$admin] : false);

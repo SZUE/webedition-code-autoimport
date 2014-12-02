@@ -24,7 +24,6 @@
  */
 we_base_moduleInfo::isActive('shop');
 
-
 function we_tag_createShop($attribs){
 	if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
 		return $foo;
@@ -33,9 +32,9 @@ function we_tag_createShop($attribs){
 		return modulFehltError('Shop', __FUNCTION__);
 	}
 
-	$deleteshop = weTag_getAttribute('deleteshop', $attribs, false, true);
-	$deleteshoponlogout = weTag_getAttribute('deleteshoponlogout', $attribs, false, true);
-	$shopname = weTag_getAttribute('shopname', $attribs);
+	$deleteshop = weTag_getAttribute('deleteshop', $attribs, false, we_base_request::BOOL);
+	$deleteshoponlogout = weTag_getAttribute('deleteshoponlogout', $attribs, false, we_base_request::BOOL);
+	$shopname = weTag_getAttribute('shopname', $attribs, '', we_base_request::STRING);
 
 	if(!isset($_SESSION)){
 		new we_base_sessionHandler();

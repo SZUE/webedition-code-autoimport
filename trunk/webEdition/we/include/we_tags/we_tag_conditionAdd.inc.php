@@ -28,14 +28,14 @@ function we_tag_conditionAdd($attribs){
 	}
 
 	// initialize possible Attributes
-	$field = weTag_getAttribute('field', $attribs);
-	$value = str_replace(array('&gt;', '&lt;'), array('>', '<'), weTag_getAttribute('value', $attribs));
-	$compare = weTag_getAttribute('compare', $attribs, '=');
-	$var = weTag_getAttribute('var', $attribs);
-	$type = weTag_getAttribute('type', $attribs);
-	$property = weTag_getAttribute('property', $attribs, false, true);
-	$exactmatch = weTag_getAttribute('exactmatch', $attribs, false, true);
-	$docAttr = weTag_getAttribute('doc', $attribs);
+	$field = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);
+	$value = str_replace(array('&gt;', '&lt;'), array('>', '<'), weTag_getAttribute('value', $attribs, '', we_base_request::RAW));
+	$compare = weTag_getAttribute('compare', $attribs, '=', we_base_request::RAW);
+	$var = weTag_getAttribute('var', $attribs, '', we_base_request::STRING);
+	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
+	$property = weTag_getAttribute('property', $attribs, false, we_base_request::BOOL);
+	$exactmatch = weTag_getAttribute('exactmatch', $attribs, false, we_base_request::BOOL);
+	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
 	// end initialize possible Attributes
 
 

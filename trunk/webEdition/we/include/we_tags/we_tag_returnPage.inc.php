@@ -24,11 +24,11 @@
  */
 function we_tag_returnPage($attribs){
 
-	$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, true);
+	$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, we_base_request::BOOL);
 
 	//FIXME: XSS - howto???
 	$ret = we_base_request::_(we_base_request::URL, 'we_returnpage', '');
 	return ($xml ?
-			oldHtmlspecialchars($ret) :
-			$ret);
+					oldHtmlspecialchars($ret) :
+					$ret);
 }

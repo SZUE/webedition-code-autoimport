@@ -26,7 +26,7 @@ function we_tag_shopVat($attribs){
 
 	$name = WE_SHOP_VAT_FIELD_NAME;
 
-	if(($id = weTag_getAttribute('id', $attribs)) && ($shopVat = we_shop_vats::getShopVATById($id))){
+	if(($id = weTag_getAttribute('id', $attribs, '', we_base_request::INT)) && ($shopVat = we_shop_vats::getShopVATById($id))){
 		return $shopVat->vat;
 	}
 

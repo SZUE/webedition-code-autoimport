@@ -24,10 +24,9 @@
  */
 function we_tag_search($attribs){
 
-	$name = weTag_getAttribute('name', $attribs, '0');
-	$type = weTag_getAttribute('type', $attribs);
-	$xml = weTag_getAttribute('xml', $attribs);
-	$value = weTag_getAttribute('value', $attribs);
+	$name = weTag_getAttribute('name', $attribs, 0, we_base_request::STRING);
+	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
+	$value = weTag_getAttribute('value', $attribs, '', we_base_request::RAW);
 
 	$searchValue = str_replace(array('"', '\\"',), '', trim(we_base_request::_(we_base_request::STRING, 'we_lv_search_' . $name, $value)));
 	$attsHidden = array(
@@ -38,7 +37,7 @@ function we_tag_search($attribs){
 	);
 
 
-	switch($type){
+	switch(weTag_getAttribute('type', $attribs, '', we_base_request::STRING)){
 		case 'print':
 			return $searchValue;
 		case 'textinput':

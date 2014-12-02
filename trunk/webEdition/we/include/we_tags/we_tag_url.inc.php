@@ -27,11 +27,11 @@ function we_tag_url($attribs){
 		return $foo;
 	}
 	static $urls = array();
-	$type = weTag_getAttribute('type', $attribs, 'document');
-	$id = weTag_getAttribute('id', $attribs);
-	$triggerid = weTag_getAttribute('triggerid', $attribs, 0);
-	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
-	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
+	$type = weTag_getAttribute('type', $attribs, 'document', we_base_request::STRING);
+	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::STRING);
+	$triggerid = weTag_getAttribute('triggerid', $attribs, 0, we_base_request::INT);
+	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
+	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, we_base_request::BOOL);
 	if(is_numeric($id) && (isset($urls[$type . $id]))){ // do only work you have never done before
 		return $urls[$type . $id];
 	}

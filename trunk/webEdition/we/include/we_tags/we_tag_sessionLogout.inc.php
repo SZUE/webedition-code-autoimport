@@ -26,7 +26,7 @@ function we_tag_sessionLogout($attribs, $content){
 	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
 		return $foo;
 	}
-	$id = weTag_getAttribute('id', $attribs);
+	$id = weTag_getAttribute('id', $attribs, '', we_base_request::STRING);
 	$id = ($id === 'self') ? $GLOBALS['WE_MAIN_DOC']->ID : $id;
 	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
 

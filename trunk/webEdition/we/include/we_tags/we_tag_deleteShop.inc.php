@@ -29,7 +29,7 @@ function we_tag_deleteShop($attribs){
 	if(!defined('SHOP_TABLE')){
 		return modulFehltError('Shop', __FUNCTION__);
 	}
-	$shopname = weTag_getAttribute("shopname", $attribs);
+	$shopname = weTag_getAttribute("shopname", $attribs, '', we_base_request::STRING);
 
 	unset($_SESSION[$shopname . '_save']);
 }

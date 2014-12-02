@@ -26,12 +26,12 @@ function we_tag_dateSelect($attribs){
 	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		return $foo;
 	}
-	$name = weTag_getAttribute('name', $attribs);
-	$class = weTag_getAttribute('class', $attribs);
-	$style = weTag_getAttribute('style', $attribs);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+	$class = weTag_getAttribute('class', $attribs, '', we_base_request::STRING);
+	$style = weTag_getAttribute('style', $attribs, '', we_base_request::STRING);
 
-	$tmp_from = weTag_getAttribute('start', $attribs);
-	$tmp_to = weTag_getAttribute('end', $attribs);
+	$tmp_from = weTag_getAttribute('start', $attribs, '', we_base_request::STRING);
+	$tmp_to = weTag_getAttribute('end', $attribs, '', we_base_request::STRING);
 
 	$from = array();
 	$to = array();
@@ -140,6 +140,6 @@ WE_checkDate_' . $name . '();');
 		$checkDate = 'WE_checkDate_' . $name . '();';
 	}
 
-	$submitonchange = weTag_getAttribute('submitonchange', $attribs, false, true);
+	$submitonchange = weTag_getAttribute('submitonchange', $attribs, false, we_base_request::BOOL);
 	return we_html_tools::getDateInput2($name . '%s', (((!isset($_REQUEST[$name])) || $_REQUEST[$name] == -1) ? time() : $_REQUEST[$name]), false, "dmy", $submitonchange ? $checkDate . 'we_submitForm();' : $checkDate, $class, '', $minyear, $maxyear, $style) . $js;
 }

@@ -23,9 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_options($attribs){
-	$name = weTag_getAttribute('name', $attribs);
-	$classid = weTag_getAttribute('classid', $attribs);
-	$field = weTag_getAttribute('field', $attribs);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+	$classid = weTag_getAttribute('classid', $attribs, 0, we_base_request::INT);
+	$field = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);
 
 	$o = '';
 	if($classid && $field){

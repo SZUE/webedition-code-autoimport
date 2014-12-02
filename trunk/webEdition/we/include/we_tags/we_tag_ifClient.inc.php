@@ -23,10 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifClient($attribs){
-	$version = weTag_getAttribute('version', $attribs);
-	$browser = weTag_getAttribute('browser', $attribs);
-	$operator = weTag_getAttribute('operator', $attribs);
-	$system = weTag_getAttribute('system', $attribs);
+	$version = weTag_getAttribute('version', $attribs, '', we_base_request::FLOAT);
+	$browser = weTag_getAttribute('browser', $attribs, '', we_base_request::STRING);
+	$operator = weTag_getAttribute('operator', $attribs, '', we_base_request::STRING);
+	$system = weTag_getAttribute('system', $attribs, '', we_base_request::STRING);
 
 	$br = we_base_browserDetect::inst();
 	if($browser){
@@ -36,7 +36,7 @@ function we_tag_ifClient($attribs){
 		// for backwards compatibility
 		if(!$browserMatched){
 			$browserMatched = ((we_base_browserDetect::isNN() && in_array('mozilla', $bro)) ||
-				($_browserOfClient == we_base_browserDetect::APPLE && in_array('safari', $bro)));
+					($_browserOfClient == we_base_browserDetect::APPLE && in_array('safari', $bro)));
 		}
 	} else {
 		$browserMatched = true;

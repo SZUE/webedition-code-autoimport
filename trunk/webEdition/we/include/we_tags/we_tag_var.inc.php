@@ -26,15 +26,14 @@ function we_tag_var($attribs){
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
-	$docAttr = weTag_getAttribute('doc', $attribs);
-	$name = weTag_getAttribute('name', $attribs);
-	$name_orig = weTag_getAttribute('_name_orig', $attribs);
-	$type = weTag_getAttribute('type', $attribs);
-	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true); // #3771
-	$format = weTag_getAttribute('format', $attribs);
-	$doc = we_getDocForTag($docAttr, false);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+	$name_orig = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
+	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
+	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL); // #3771
+	$format = weTag_getAttribute('format', $attribs, '', we_base_request::STRING);
+	$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, '', we_base_request::STRING), false);
 	$varType = weTag_getAttribute('varType', $attribs, we_base_request::STRING);
-	$prepareSQL = weTag_getAttribute('prepareSQL', $attribs, false, true);
+	$prepareSQL = weTag_getAttribute('prepareSQL', $attribs, false, we_base_request::BOOL);
 
 	switch($type){
 		case 'session' :
@@ -81,7 +80,7 @@ function we_tag_var($attribs){
 			// wenn die Abfrage im Aktuellen Objekt kein Erg?bnis liefert
 			// wird in den eingebundenen Objekten ?berpr?ft ob das Feld existiert
 			$name = ($type === 'select' && $normVal == '' ? $name_orig : $name);
-			$selectKey = weTag_getAttribute('key', $attribs, false, true);
+			$selectKey = weTag_getAttribute('key', $attribs, false, we_base_request::BOOL);
 			if($type === 'select' && $selectKey){
 				$return = $doc->getElement($name);
 				break;

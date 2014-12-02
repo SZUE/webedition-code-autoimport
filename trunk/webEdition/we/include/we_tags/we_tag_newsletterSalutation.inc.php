@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_newsletterSalutation($attribs){
-	$type = trim(weTag_getAttribute('type', $attribs));
+	$type = trim(weTag_getAttribute('type', $attribs, '', we_base_request::STRING));
 	switch($type){
 		case 'customerid':
 			return (isset($GLOBALS['WE_CUSTOMERID']) && $GLOBALS['WE_CUSTOMERID'] ) ? $GLOBALS['WE_CUSTOMERID'] : '';

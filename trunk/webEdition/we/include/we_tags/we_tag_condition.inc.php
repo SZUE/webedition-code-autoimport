@@ -28,10 +28,9 @@ function we_parse_tag_condition($a, $content, array $attribs){
 }
 
 function we_tag_condition($attribs){
-	$name = weTag_getAttribute('name', $attribs, 'we_lv_condition');
+	$name = weTag_getAttribute('name', $attribs, 'we_lv_condition', we_base_request::STRING);
 	//internal Attribute
-	$_type = weTag_getAttribute('_type', $attribs);
-	switch($_type){
+	switch(weTag_getAttribute('_type', $attribs, '', we_base_request::STRING)){
 		case 'start':
 
 			$GLOBALS['we_lv_conditionCount'] = isset($GLOBALS['we_lv_conditionCount']) ? intval($GLOBALS['we_lv_conditionCount']) + 1 : 1;

@@ -24,8 +24,8 @@
  */
 function we_tag_sessionStart($attribs){
 	$GLOBALS['WE_SESSION_START'] = true;
-	$persistentlogins = weTag_getAttribute('persistentlogins', $attribs, false, true);
-	$onlinemonitor = weTag_getAttribute('onlinemonitor', $attribs, false, true);
+	$persistentlogins = weTag_getAttribute('persistentlogins', $attribs, false, we_base_request::BOOL);
+	$onlinemonitor = weTag_getAttribute('onlinemonitor', $attribs, false, we_base_request::BOOL);
 
 	if(!isset($_SESSION)){
 		new we_base_sessionHandler();
@@ -94,30 +94,29 @@ function we_tag_sessionStart($attribs){
 		}
 		if($onlinemonitor && isset($_SESSION['webuser']['registered'])){
 			$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_SESSION_TABLE . ' WHERE LastAccess<DATE_SUB(NOW(), INTERVAL 1 HOUR)');
-			$monitorgroupfield = weTag_getAttribute('monitorgroupfield', $attribs);
-			$docAttr = weTag_getAttribute('monitordoc', $attribs);
-			$doc = we_getDocForTag($docAttr, false);
+			$monitorgroupfield = weTag_getAttribute('monitorgroupfield', $attribs, '', we_base_request::STRING);
+			$doc = we_getDocForTag(weTag_getAttribute('monitordoc', $attribs, '', we_base_request::STRING), false);
 
 			$WebUserID = ($_SESSION['webuser']['registered'] ? $_SESSION['webuser']['ID'] : 0);
 			$WebUserGroup = ($_SESSION['webuser']['registered'] && $monitorgroupfield ? $_SESSION['webuser'][$monitorgroupfield] : 'we_guest');
 
 			$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_SESSION_TABLE . ' SET ' .
-				we_database_base::arraySetter(array(
-					'SessionID' => session_id(),
-					'SessionIp' => $_SERVER['REMOTE_ADDR'] ? : '',
-					'WebUserID' => $WebUserID,
-					'WebUserGroup' => $WebUserGroup,
-					'WebUserDescription' => '',
-					'Browser' => isset($_SERVER['HTTP_USER_AGENT']) ? : '',
-					'Referrer' => isset($_SERVER['HTTP_REFERER']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '',
-					'LastLogin' => sql_function('NOW()'),
-					'PageID' => $doc->ID,
-					'SessionAutologin' => $SessionAutologin
-				)) . ' ON DUPLICATE KEY UPDATE ' . we_database_base::arraySetter(array(
-					'PageID' => $doc->ID,
-					'WebUserID' => $WebUserID,
-					'WebUserGroup' => $WebUserGroup,
-					'WebUserDescription' => '',
+					we_database_base::arraySetter(array(
+						'SessionID' => session_id(),
+						'SessionIp' => $_SERVER['REMOTE_ADDR'] ? : '',
+						'WebUserID' => $WebUserID,
+						'WebUserGroup' => $WebUserGroup,
+						'WebUserDescription' => '',
+						'Browser' => isset($_SERVER['HTTP_USER_AGENT']) ? : '',
+						'Referrer' => isset($_SERVER['HTTP_REFERER']) ? oldHtmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '',
+						'LastLogin' => sql_function('NOW()'),
+						'PageID' => $doc->ID,
+						'SessionAutologin' => $SessionAutologin
+					)) . ' ON DUPLICATE KEY UPDATE ' . we_database_base::arraySetter(array(
+						'PageID' => $doc->ID,
+						'WebUserID' => $WebUserID,
+						'WebUserGroup' => $WebUserGroup,
+						'WebUserDescription' => '',
 			)));
 		}
 		return '';
@@ -137,8 +136,8 @@ function wetagsessionHandleFailedLogin(){
 
 
 	if(
-		intval(f('SELECT COUNT(1)  FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
-		intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
+			intval(f('SELECT COUNT(1)  FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
+			intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
 	){
 		//don't serve user
 		if(SECURITY_LIMIT_CUSTOMER_REDIRECT){
@@ -150,7 +149,7 @@ function wetagsessionHandleFailedLogin(){
 			}
 		}
 		echo CheckAndConvertISOfrontend('Dear customer, our service is currently not available. Please try again later. Thank you.<br/>' .
-			'Sehr geehrter Kunde, aus Sicherheitsgründen ist ein Login derzeit nicht möglich! Bitte probieren Sie es später noch ein mal. Vielen Dank');
+				'Sehr geehrter Kunde, aus Sicherheitsgründen ist ein Login derzeit nicht möglich! Bitte probieren Sie es später noch ein mal. Vielen Dank');
 
 		exit();
 	}
@@ -159,8 +158,8 @@ function wetagsessionHandleFailedLogin(){
 function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){ //FIXME: check for last time =>(cuncurrent logins)
 	if($_REQUEST['s']['Username'] && $_REQUEST['s']['Password']){
 		if(
-			intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
-			intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
+				intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
+				intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
 		){
 			$GLOBALS['WE_LOGIN_DENIED'] = true;
 			return false;
@@ -182,9 +181,9 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){ //FIXM
 			if($persistentlogins && isset($_REQUEST['s']['AutoLogin']) && $_REQUEST['s']['AutoLogin'] && $_SESSION['webuser']['AutoLoginDenied'] != 1){
 				$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)), true);
 				$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'AutoLoginID' => sha1($_SESSION['webuser']['AutoLoginID']),
-						'WebUserID' => $_SESSION['webuser']['ID'],
-						'LastIp' => $_SERVER['REMOTE_ADDR']
+							'AutoLoginID' => sha1($_SESSION['webuser']['AutoLoginID']),
+							'WebUserID' => $_SESSION['webuser']['ID'],
+							'LastIp' => $_SERVER['REMOTE_ADDR']
 				)));
 
 				setcookie('_we_autologin', $_SESSION['webuser']['AutoLoginID'], (time() + CUSTOMER_AUTOLOGIN_LIFETIME), '/');
@@ -220,9 +219,9 @@ function wetagsessionStartdoAutoLogin(){
 			$_SESSION['webuser']['registered'] = true;
 			$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)), true);
 			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'AutoLoginID' => sha1($_SESSION['webuser']['AutoLoginID']),
-					'LastIp' => $_SERVER['REMOTE_ADDR'],
-				)) . ' WHERE WebUserID=' . intval($_SESSION['webuser']['ID']) . ' AND AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"'
+						'AutoLoginID' => sha1($_SESSION['webuser']['AutoLoginID']),
+						'LastIp' => $_SERVER['REMOTE_ADDR'],
+					)) . ' WHERE WebUserID=' . intval($_SESSION['webuser']['ID']) . ' AND AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"'
 			);
 
 			setcookie('_we_autologin', $_SESSION['webuser']['AutoLoginID'], (time() + CUSTOMER_AUTOLOGIN_LIFETIME), '/');
