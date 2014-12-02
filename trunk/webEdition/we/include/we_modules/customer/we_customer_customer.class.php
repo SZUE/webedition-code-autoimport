@@ -127,7 +127,7 @@ class we_customer_customer extends weModelBase{
 	 * delete entry from database
 	 * @param recursive bool if true, customerfilter are deleted as well
 	 */
-	function delete($recursive = true){
+	function delete($recursive = true){ //FIXME: what about documents/objects of customer?
 		if(weModelBase::delete() && $recursive){
 			we_customer_documentFilter::deleteWebUser($this->ID);
 			return true;
