@@ -23,10 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifWorkspace($attribs){
-	$required_path = weTag_getAttribute('path', $attribs, 0, we_base_request::FILELISTA);
+	$required_path = weTag_getAttribute('path', $attribs, array(), we_base_request::FILELISTA);
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 	$doc = we_getDocForTag($docAttr);
-	$id = weTag_getAttribute('id', $attribs, '', we_base_request::INTLISTA);
+	$id = weTag_getAttribute('id', $attribs, array(), we_base_request::INTLISTA);
 
 	if(!$required_path){
 		$required_path = id_to_path($id, FILE_TABLE, $GLOBALS['DB_WE'], false, true);

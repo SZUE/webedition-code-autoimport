@@ -51,7 +51,7 @@ function we_tag_css($attribs){
 	//	remove not needed elements
 	$attribs = removeAttribs($attribs, array('id', 'applyto'));
 
-	$attribs['rel'] = weTag_getAttribute('rel', $attribs, 'stylesheet', '', we_base_request::STRING);
+	$attribs['rel'] = weTag_getAttribute('rel', $attribs, 'stylesheet', we_base_request::STRING);
 	$attribs['type'] = 'text/css';
 	$attribs['href'] = (we_isHttps() ? '' : BASE_CSS) . $row['Path'] . ($row['IsFolder'] ? '/' : '');
 
