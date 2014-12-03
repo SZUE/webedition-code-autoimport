@@ -34,8 +34,8 @@ class we_base_request{
 	const BOOL = 'bool';
 	const RAW = 'raw';
 	const URL = 'url';
-	const EMAIL = 'email';//add email_list
-	const STRING = 'string';//FIXME: add string_list
+	const EMAIL = 'email'; //add email_list
+	const STRING = 'string'; //FIXME: add string_list
 	const HTML = 'html';
 
 	/**
@@ -76,10 +76,12 @@ class we_base_request{
 				$var = (preg_match('|^([a-f0-9]){32}$|i', $var) ? $var : $default);
 				return;
 			case self::INTLISTA:
-				$var = array_map('intval', explode(',', trim($var, ',')));
+				$var = trim($var, ',');
+				$var = $var ? array_map('intval', explode(',', $var)) : $default;
 				return;
 			case self::INTLIST:
-				$var = implode(',', array_map('intval', explode(',', trim($var, ','))));
+				$var = trim($var, ',');
+				$var = $var ? implode(',', array_map('intval', explode(',', $var))) : $default;
 				return;
 			case self::SERIALIZED:
 				$var = unserialize($var);
@@ -196,7 +198,11 @@ class we_base_request{
 	  } */
 
 	public static function filterVar($var, $varType, $default = ''){
+		$preVar = $var;
 		self::_weRequest($var, '', array($varType, $default));
+		if($preVar != $var && $var != $default){
+			t_e('changed var', $preVar, $var);
+		}
 		return $var;
 	}
 
