@@ -29,8 +29,8 @@ $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2);
 $script = '';
 
 if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("MOVE_TEMPLATE")) ||
-	($table == FILE_TABLE && !permissionhandler::hasPerm("MOVE_DOCUMENT")) ||
-	(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !permissionhandler::hasPerm("MOVE_OBJECTFILES"))){
+		($table == FILE_TABLE && !permissionhandler::hasPerm("MOVE_DOCUMENT")) ||
+		(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !permissionhandler::hasPerm("MOVE_OBJECTFILES"))){
 	require_once (WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 	exit();
 }
@@ -41,7 +41,7 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 	$db = new DB_WE();
 	if(($targetDirectroy = we_base_request::_(we_base_request::INT, 'we_target')) === false){
 		$script .= 'top.toggleBusy(0);' .
-			we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
+				we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} elseif(($selectedItems = we_base_request::_(we_base_request::INTLISTA, 'sel'))){
 
 		// list of all item names which should be moved
@@ -84,7 +84,7 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 
 		if($retVal == -1){ //	not allowed to move document
 			$script .= 'top.toggleBusy(0);' .
-we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[noRightsToMove]'), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
+					we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[noRightsToMove]'), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif($retVal){ //	move files !
 			$notMovedItems = array();
 			foreach($selectedItems as $selectedItem){
@@ -113,14 +113,14 @@ we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[noRightsToMove]'
 			}
 		} else {
 			$script .= 'top.toggleBusy(0);' .
-				we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_ERROR);
+					we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_ERROR);
 		}
 	} else {
 		$script .= 'top.toggleBusy(0);' .
-			we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
+				we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 	$script = we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsElement($script);
+			we_html_element::jsElement($script);
 	//exit;
 }
 
@@ -129,8 +129,8 @@ we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[noRightsToMove]'
 
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	$js = ($retVal ? //	document moved -> go to seeMode startPage
-			we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.we_cmd('start_multi_editor');" :
-			we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
+					we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.we_cmd('start_multi_editor');" :
+					we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
 
 	echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($script . we_html_element::jsElement($js)));
 	exit();
@@ -311,19 +311,13 @@ $weAcSelector = $yuiSuggest->getHTML();
 
 $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:press_ok_move();"), "", we_html_button::create_button("quit_move", "javascript:we_cmd('exit_move','','" . $table . "')"), 10, "left");
 
-
 echo
 '</head><body class="weTreeHeaderMove">
 <form name="we_form" method="post" onsubmit="return false">
 <div style="width:460px;">
 <h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(
-<<<<<<< .mine
-	g_l('newFile', "[title_move]")) . '</h1>
-<p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile', "[move_text]") . '</span>
-=======
 		g_l('newFile', '[title_move]')) . '</h1>
 <p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile', '[move_text]') . '</span>
->>>>>>> .r8649
 			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . '</p></p>
 <div>' . $_buttons . '</div></div>' . we_html_tools::hidden("sel", "") .
  '</form>' .
