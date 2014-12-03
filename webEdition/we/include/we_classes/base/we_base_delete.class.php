@@ -214,7 +214,12 @@ abstract class we_base_delete{
 			}
 		}
 		if($id){
-			$row = getHash('SELECT Path,IsFolder,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
+			if($table != USER_TABLE && ( (defined('CUSTOMER_TABLE') && $table != CUSTOMER_TABLE) || !defined('CUSTOMER_TABLE'))){
+				$row = getHash('SELECT Path,IsFolder,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
+			} else {
+				$row = getHash('SELECT Path,IsFolder FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
+				$row['ContentType']='internalModule';
+			}
 			if(!$row){
 				$GLOBALS['deletedItems'][] = $id;
 				return;
