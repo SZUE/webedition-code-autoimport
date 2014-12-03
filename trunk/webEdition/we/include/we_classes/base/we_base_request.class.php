@@ -198,10 +198,11 @@ class we_base_request{
 	  } */
 
 	public static function filterVar($var, $varType, $default = ''){
+		//FIXME: remove checker at release
 		$preVar = $var;
 		self::_weRequest($var, '', array($varType, $default));
 		if($preVar != $var && $var != $default){
-			t_e('changed var', $preVar, $var);
+			t_e('changed var/tag attribute', $preVar, $var);
 		}
 		return $var;
 	}
