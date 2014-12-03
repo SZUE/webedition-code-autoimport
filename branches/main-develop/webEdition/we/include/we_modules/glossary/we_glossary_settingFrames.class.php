@@ -37,7 +37,7 @@ class we_glossary_settingFrames{
 	function getHTML($what){
 		switch($what){
 			case 'frameset':
-				print $this->getHTMLFrameset();
+				echo $this->getHTMLFrameset();
 				break;
 			default:
 				t_e(__FILE__ . " unknown reference: $what");

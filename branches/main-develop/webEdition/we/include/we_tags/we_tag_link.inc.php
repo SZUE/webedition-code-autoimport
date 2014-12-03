@@ -24,7 +24,7 @@
  */
 function we_tag_link($attribs, $content){
 	if(isset($GLOBALS['we']['ll'])){
-		$only = weTag_getAttribute('only', $attribs);
+		$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
 		$link = $GLOBALS['we']['ll']->getLink();
 		$linkcontent = $GLOBALS['we']['ll']->getLinkContent();
 		if($link){
@@ -35,11 +35,11 @@ function we_tag_link($attribs, $content){
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
-	$name = weTag_getAttribute('name', $attribs);
-	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, true);
-	$text = weTag_getAttribute('text', $attribs);
-	$imageid = weTag_getAttribute('imageid', $attribs, 0);
-	$id = weTag_getAttribute('id', $attribs);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
+	$text = weTag_getAttribute('text', $attribs, '', we_base_request::STRING);
+	$imageid = weTag_getAttribute('imageid', $attribs, 0, we_base_request::INT);
+	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 
 	// check if target document exists (Bug #7167)
 	if($id != 0 && (!f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)))){
@@ -47,9 +47,7 @@ function we_tag_link($attribs, $content){
 	}
 	if($imageid != 0 && (!f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($imageid)))){
 		$imageid = 0;
-		if(isset($id)){
-			$id = 0;
-		}
+		$id = 0;
 	}
 
 	$attribs = removeAttribs($attribs, array('text', 'id', 'imageid', 'to', 'nameto'));

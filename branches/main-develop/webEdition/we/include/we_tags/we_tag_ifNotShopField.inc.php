@@ -24,11 +24,11 @@
  */
 function we_tag_ifNotShopField($attribs){
 	if(($foo = attributFehltError($attribs, array('name' => false, 'reference' => false, 'shopname' => false, 'match' => true), __FUNCTION__))){
-		print $foo;
+		echo $foo;
 		return false;
 	}
 
-	$match = weTag_getAttribute('match', $attribs);
+	$match = weTag_getAttribute('match', $attribs, '', we_base_request::STRING);
 
 	$attribs['type'] = 'print';
 	unset($attribs['match']);

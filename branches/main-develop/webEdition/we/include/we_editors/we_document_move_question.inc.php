@@ -34,7 +34,7 @@ echo we_html_tools::getHtmlTop(g_l('global', '[question]')) .
 	$noCmd = "self.close();opener.top.toggleBusy(0);";
 	$cancelCmd = "self.close();opener.top.toggleBusy(0);";
 
-	print we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[document_move_warning]'), IMAGE_DIR . 'alert.gif', true, true, true, $yesCmd, $noCmd, $cancelCmd);
+	echo we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[document_move_warning]'), IMAGE_DIR . 'alert.gif', true, true, true, $yesCmd, $noCmd, $cancelCmd);
 	?>
 </body>
 </html>

@@ -24,14 +24,14 @@
  */
 function we_tag_ifShopVat($attribs){
 	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
-		print $foo;
+		echo $foo;
 		return false;
 	}
-	$id = weTag_getAttribute('id', $attribs, -1);
+	$id = weTag_getAttribute('id', $attribs, -1, we_base_request::INT);
 
 	$vatId = (isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME) ?
-			$GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME) :
-			$GLOBALS['we_doc']->getElement(WE_SHOP_VAT_FIELD_NAME));
+					$GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME) :
+					$GLOBALS['we_doc']->getElement(WE_SHOP_VAT_FIELD_NAME));
 
 
 	if(!$vatId){

@@ -27,20 +27,20 @@ function we_tag_sessionField($attribs, $content){
 		return $foo;
 	}
 
-	$name = weTag_getAttribute('_name_orig', $attribs);
-	$xml = weTag_getAttribute('xml', $attribs, false, true);
-	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined('REMOVEFIRSTPARAGRAPH_DEFAULT') ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, true);
-	$autobrAttr = weTag_getAttribute('autobr', $attribs, false, true);
-	$checked = weTag_getAttribute('checked', $attribs, false, true);
-	$values = weTag_getAttribute('values', $attribs);
-	$type = weTag_getAttribute('type', $attribs);
-	$size = weTag_getAttribute('size', $attribs);
-	$dateformat = weTag_getAttribute('dateformat', $attribs);
-	$value = weTag_getAttribute('value', $attribs);
+	$name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
+	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
+	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined('REMOVEFIRSTPARAGRAPH_DEFAULT') ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, we_base_request::BOOL);
+	$autobrAttr = weTag_getAttribute('autobr', $attribs, false, we_base_request::BOOL);
+	$checked = weTag_getAttribute('checked', $attribs, false, we_base_request::BOOL);
+	$values = weTag_getAttribute('values', $attribs, '', we_base_request::RAW);
+	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
+	$size = weTag_getAttribute('size', $attribs, '', we_base_request::UNIT);
+	$dateformat = weTag_getAttribute('dateformat', $attribs, '', we_base_request::RAW);
+	$value = weTag_getAttribute('value', $attribs, '', we_base_request::RAW);
 	$orgVal = (isset($_SESSION['webuser'][$name]) && (strlen($_SESSION['webuser'][$name]) > 0)) ? $_SESSION['webuser'][$name] : (($type === 'radio') ? '' : $value);
 
 
-	$autofill = weTag_getAttribute('autofill', $attribs, false, true);
+	$autofill = weTag_getAttribute('autofill', $attribs, false, we_base_request::BOOL);
 	if($autofill){
 		$condition = ($name === 'Username' ?
 						array('caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0) :
@@ -53,10 +53,9 @@ function we_tag_sessionField($attribs, $content){
 
 	switch($type){
 		case "date" :
-			$currentdate = weTag_getAttribute("currentdate", $attribs, false, true);
-			$minyear = weTag_getAttribute("minyear", $attribs);
-			$maxyear = weTag_getAttribute("maxyear", $attribs);
-			$format = weTag_getAttribute("dateformat", $attribs);
+			$currentdate = weTag_getAttribute("currentdate", $attribs, false, we_base_request::BOOL);
+			$minyear = weTag_getAttribute("minyear", $attribs, 0, we_base_request::INT);
+			$maxyear = weTag_getAttribute("maxyear", $attribs, 0, we_base_request::INT);
 			if($currentdate){
 				$orgVal = time();
 			}
@@ -65,14 +64,12 @@ function we_tag_sessionField($attribs, $content){
 			}catch(Exception $e){
 				$date = new DateTime('now');
 			}
-			return we_html_tools::getDateInput2(
-							"s[we_date_" . $name . "]", $date, false, $format, '', '', $xml, $minyear, $maxyear);
+			return we_html_tools::getDateInput2("s[we_date_" . $name . "]", $date, false, $dateformat, '', '', $xml, $minyear, $maxyear);
 
 		case 'country':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
 			$newAtts['name'] = 's[' . $name . ']';
-			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
-			$doc = we_getDocForTag($docAttr);
+			$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
 			$lang = $doc->Language;
 			$langcode = ($lang ?
 							substr($lang, 0, 2) :
@@ -122,8 +119,7 @@ function we_tag_sessionField($attribs, $content){
 		case 'language':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
 			$newAtts['name'] = 's[' . $name . ']';
-			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
-			$doc = we_getDocForTag($docAttr);
+			$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
 			$lang = $doc->Language;
 			$langcode = ($lang ? substr($lang, 0, 2) : array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
@@ -158,18 +154,17 @@ function we_tag_sessionField($attribs, $content){
 
 		case 'choice':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'maxlength', 'rows', 'cols', 'wysiwyg'));
-			$mode = weTag_getAttribute('mode', $attribs);
-			return we_html_tools::htmlInputChoiceField('s_' . $name . '', $orgVal, $values, $newAtts, $mode);
+			return we_html_tools::htmlInputChoiceField('s_' . $name . '', $orgVal, $values, $newAtts, weTag_getAttribute('mode', $attribs, '', we_base_request::STRING));
 
 		case 'textinput':
-			$choice = weTag_getAttribute('choice', $attribs, false, true);
+			$choice = weTag_getAttribute('choice', $attribs, false, we_base_request::BOOL);
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'wysiwyg', 'rows', 'cols'));
 			//FIXME: can't this be done by calling the 'choice' switch?
 			if($choice){ // because of backwards compatibility
 				$newAtts = removeAttribs($newAtts, array('maxlength'));
 				$newAtts['name'] = 's[' . $name . ']';
 
-				$optionsAr = makeArrayFromCSV(weTag_getAttribute('options', $attribs));
+				$optionsAr = makeArrayFromCSV(weTag_getAttribute('options', $attribs, '', we_base_request::RAW));
 				$isin = 0;
 				$options = '';
 				for($i = 0; $i < count($optionsAr); $i++){
@@ -189,7 +184,7 @@ function we_tag_sessionField($attribs, $content){
 
 		case 'textarea':
 			//old Attribute
-			$pure = weTag_getAttribute('pure', $attribs, false, true);
+			$pure = weTag_getAttribute('pure', $attribs, false, we_base_request::BOOL);
 			if($pure){
 				$attribs = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'size', 'wysiwyg'));
 				return we_getTextareaField('s[' . $name . ']', $orgVal, $attribs);
@@ -221,16 +216,16 @@ function we_tag_sessionField($attribs, $content){
 			$newAtts['value'] = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] ? we_customer_customer::NOPWD_CHANGE : '';
 			return getHtmlTag('input', $newAtts);
 		case 'print':
-			$ascountry = weTag_getAttribute('ascountry', $attribs, false, true);
-			$aslanguage = weTag_getAttribute('aslanguage', $attribs, false, true);
+			$ascountry = weTag_getAttribute('ascountry', $attribs, false, we_base_request::BOOL);
+			$aslanguage = weTag_getAttribute('aslanguage', $attribs, false, we_base_request::BOOL);
 			if($ascountry || $aslanguage){
 				if(!Zend_Locale::hasCache()){
 					Zend_Locale::setCache(getWEZendCache());
 				}
 
-				$lang = weTag_getAttribute('outputlanguage', $attribs);
+				$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
 				if(!$lang){
-					$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self'));
+					$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
 					$lang = $doc->Language;
 				}
 				$langcode = substr($lang, 0, 2);
@@ -248,18 +243,18 @@ function we_tag_sessionField($attribs, $content){
 					//fallback to default return
 				}
 			}
-			return weTag_getAttribute('htmlspecialchars', $attribs, false, true) ? oldHtmlspecialchars($orgVal) : $orgVal;
+			return weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL) ? oldHtmlspecialchars($orgVal) : $orgVal;
 		case 'hidden':
-			$usevalue = weTag_getAttribute('usevalue', $attribs, false, true);
-			$languageautofill = weTag_getAttribute('languageautofill', $attribs, false, true);
+			$usevalue = weTag_getAttribute('usevalue', $attribs, false, we_base_request::BOOL);
+			$languageautofill = weTag_getAttribute('languageautofill', $attribs, false, we_base_request::BOOL);
 			$v = ($usevalue ? $value : $orgVal);
 			$_hidden = array(
 				'type' => 'hidden',
 				'name' => 's[' . $name . ']',
-				'value' => weTag_getAttribute('htmlspecialchars', $attribs, false, true) ? oldHtmlspecialchars($v) : $v,
+				'value' => weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL) ? oldHtmlspecialchars($v) : $v,
 				'xml' => $xml);
 			if($languageautofill){
-				$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self'));
+				$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
 				$lang = $doc->Language;
 				$langcode = substr($lang, 0, 2);
 				$_hidden['value'] = $langcode;
@@ -273,12 +268,12 @@ function we_tag_sessionField($attribs, $content){
 				$_SESSION['webuser']['imgtmp'][$name] = array();
 			}
 
-			$_SESSION['webuser']['imgtmp'][$name]['parentid'] = weTag_getAttribute('parentid', $attribs, 0);
-			$_SESSION['webuser']['imgtmp'][$name]['width'] = weTag_getAttribute('width', $attribs, 0);
-			$_SESSION['webuser']['imgtmp'][$name]['height'] = weTag_getAttribute('height', $attribs, 0);
-			$_SESSION['webuser']['imgtmp'][$name]['quality'] = weTag_getAttribute('quality', $attribs, 8);
-			$_SESSION['webuser']['imgtmp'][$name]['keepratio'] = weTag_getAttribute('keepratio', $attribs, true, true);
-			$_SESSION['webuser']['imgtmp'][$name]['maximize'] = weTag_getAttribute('maximize', $attribs, false, true);
+			$_SESSION['webuser']['imgtmp'][$name]['parentid'] = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
+			$_SESSION['webuser']['imgtmp'][$name]['width'] = weTag_getAttribute('width', $attribs, 0, we_base_request::INT);
+			$_SESSION['webuser']['imgtmp'][$name]['height'] = weTag_getAttribute('height', $attribs, 0, we_base_request::INT);
+			$_SESSION['webuser']['imgtmp'][$name]['quality'] = weTag_getAttribute('quality', $attribs, 8, we_base_request::INT);
+			$_SESSION['webuser']['imgtmp'][$name]['keepratio'] = weTag_getAttribute('keepratio', $attribs, true, we_base_request::BOOL);
+			$_SESSION['webuser']['imgtmp'][$name]['maximize'] = weTag_getAttribute('maximize', $attribs, false, we_base_request::BOOL);
 			$_SESSION['webuser']['imgtmp'][$name]['id'] = $orgVal ? : '';
 
 			$_foo = id_to_path($_SESSION['webuser']['imgtmp'][$name]['id']);
@@ -286,12 +281,12 @@ function we_tag_sessionField($attribs, $content){
 				$_SESSION['webuser']['imgtmp'][$name]['id'] = 0;
 			}
 
-			$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8');
-			$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs);
-			$inputstyle = weTag_getAttribute('inputstyle', $attribs);
-			$checkboxclass = weTag_getAttribute('checkboxclass', $attribs);
-			$inputclass = weTag_getAttribute('inputclass', $attribs);
-			$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'));
+			$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8', we_base_request::STRING);
+			$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs, '', we_base_request::STRING);
+			$inputstyle = weTag_getAttribute('inputstyle', $attribs, '', we_base_request::STRING);
+			$checkboxclass = weTag_getAttribute('checkboxclass', $attribs, '', we_base_request::STRING);
+			$inputclass = weTag_getAttribute('inputclass', $attribs, '', we_base_request::STRING);
+			$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'), we_base_request::STRING);
 
 			if($_SESSION['webuser']['imgtmp'][$name]['id']){
 				$attribs['id'] = $_SESSION['webuser']['imgtmp'][$name];
@@ -300,7 +295,7 @@ function we_tag_sessionField($attribs, $content){
 			unset($attribs['width']);
 			unset($attribs['height']);
 
-			$showcontrol = weTag_getAttribute('showcontrol', $attribs, true, true);
+			$showcontrol = weTag_getAttribute('showcontrol', $attribs, true, we_base_request::BOOL);
 			if($showcontrol){
 
 				if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
@@ -310,7 +305,7 @@ function we_tag_sessionField($attribs, $content){
 
 			$imgId = $_SESSION['webuser']['imgtmp'][$name]['id'];
 
-			$thumbnail = weTag_getAttribute('thumbnail', $attribs);
+			$thumbnail = weTag_getAttribute('thumbnail', $attribs, '', we_base_request::STRING);
 			if($thumbnail != ''){
 				$attr['thumbnail'] = $thumbnail;
 				$imgTag = $GLOBALS['we_doc']->getFieldByVal($imgId, 'img', $attr);

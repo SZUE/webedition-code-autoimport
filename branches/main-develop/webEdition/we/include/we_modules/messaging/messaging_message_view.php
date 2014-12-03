@@ -142,7 +142,7 @@ echo we_html_tools::getHtmlTop() .
 		);
 	}
 
-	print we_html_multiIconBox::getJS() .
+	echo we_html_multiIconBox::getJS() .
 			we_html_multiIconBox::getHTML("weMessageView", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_messaging', (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] === 'we_todo' ? '[type_todo]' : '[type_message]')));
 	?>
 </body>

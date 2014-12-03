@@ -28,7 +28,7 @@ function we_tag_ifObjectLanguage($attribs){
 		return false;
 	}
 
-	$match = weTag_getAttribute('match', $attribs);
+	$match = weTag_getAttribute('match', $attribs, '', we_base_request::STRING);
 	$matchArray = makeArrayFromCSV($match);
 	$lang = (isset($GLOBALS['lv']) ? $GLOBALS['lv']->getDBf('OF_Language') : '');
 

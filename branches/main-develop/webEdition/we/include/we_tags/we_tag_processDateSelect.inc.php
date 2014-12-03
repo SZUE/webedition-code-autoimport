@@ -26,8 +26,8 @@ function we_tag_processDateSelect($attribs){
 	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		return $foo;
 	}
-	$name = weTag_getAttribute("name", $attribs);
-	$endofday = weTag_getAttribute("endofday", $attribs, false, true);
+	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
+	$endofday = weTag_getAttribute("endofday", $attribs, false, we_base_request::BOOL);
 	$GLOBALS[$name] = $_REQUEST[$name] = mktime(
-		$endofday ? 23 : 0, $endofday ? 59 : 0, $endofday ? 59 : 0, we_base_request::_(we_base_request::INT, $name . "_month",0), we_base_request::_(we_base_request::INT, $name . "_day", 0), we_base_request::_(we_base_request::INT, $name . "_year",0));
+			$endofday ? 23 : 0, $endofday ? 59 : 0, $endofday ? 59 : 0, we_base_request::_(we_base_request::INT, $name . "_month", 0), we_base_request::_(we_base_request::INT, $name . "_day", 0), we_base_request::_(we_base_request::INT, $name . "_year", 0));
 }

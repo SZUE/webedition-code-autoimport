@@ -240,8 +240,6 @@ class we_listview_langlink extends we_listview_base{
 								$_SERVER['SCRIPT_NAME'])
 				);
 
-				$paramName = 'we_objectID';
-
 				if($this->objectseourls && $this->foundlinks[$count]['Url'] != '' && show_SeoLinks()){
 					$this->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 							(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
@@ -252,7 +250,7 @@ class we_listview_langlink extends we_listview_base{
 					$this->Record["WE_PATH"] = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 									($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
 									$_SERVER['SCRIPT_NAME']) .
-							'?' . $paramName . '=' . $this->Record["WE_ID"];
+							'?we_objectID=' . $this->Record["WE_ID"];
 				}
 			}
 			$this->Record["Path"] = $this->Record["WE_PATH"];

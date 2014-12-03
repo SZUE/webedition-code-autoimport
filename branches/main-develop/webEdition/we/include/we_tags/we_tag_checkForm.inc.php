@@ -53,28 +53,25 @@ function we_tag_checkForm($attribs, $content){
 	$content = ob_get_clean();
 
 	// get fields of $attribs
-	$match = weTag_getAttribute("match", $attribs);
-	$type = weTag_getAttribute("type", $attribs);
-	$mandatory = weTag_getAttribute("mandatory", $attribs);
-	$email = weTag_getAttribute("email", $attribs);
-	$password = weTag_getAttribute("password", $attribs);
-	$onError = weTag_getAttribute("onError", $attribs);
-	$jsIncludePath = weTag_getAttribute("jsIncludePath", $attribs);
-	$xml = weTag_getAttribute("xml", $attribs);
+	$match = weTag_getAttribute("match", $attribs, '', we_base_request::STRING);
+	$type = weTag_getAttribute("type", $attribs, '', we_base_request::STRING);
+	$mandatory = weTag_getAttribute("mandatory", $attribs, '', we_base_request::STRING);
+	$email = weTag_getAttribute("email", $attribs, '', we_base_request::STRING);
+	$password = weTag_getAttribute("password", $attribs, '', we_base_request::STRING);
+	$onError = weTag_getAttribute("onError", $attribs, '', we_base_request::JS);
+	$jsIncludePath = weTag_getAttribute("jsIncludePath", $attribs, '', we_base_request::RAW);
+	$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, we_base_request::BOOL);
 
 	//  Generate errorHandler:
-	if($onError){
-		$jsOnError = '
-            if(self.' . $onError . '){
-                ' . $onError . '(formular,missingReq,wrongEmail,pwError);
-            } else {
-            	' . we_message_reporting::getShowMessageCall(
-				$content, we_message_reporting::WE_MESSAGE_FRONTEND) . '
-            }
-        ';
-	} else {
-		$jsOnError = we_message_reporting::getShowMessageCall($content, we_message_reporting::WE_MESSAGE_FRONTEND);
-	}
+	$jsOnError = ($onError ?
+					$jsOnError = '
+if(self.' . $onError . '){' .
+					$onError . '(formular,missingReq,wrongEmail,pwError);
+} else {' .
+					we_message_reporting::getShowMessageCall($content, we_message_reporting::WE_MESSAGE_FRONTEND) . '
+}' :
+					we_message_reporting::getShowMessageCall($content, we_message_reporting::WE_MESSAGE_FRONTEND)
+			);
 
 	//  Generate mandatory array
 	if($mandatory){
@@ -86,14 +83,12 @@ function we_tag_checkForm($attribs, $content){
 		$jsMandatory = '';
 	}
 
-	if($email){ //  code to check Emails
-		$_emails = explode(',', $email);
-		$jsEmail = '//  validate emails
-        var email = new Array("' . implode('", "', $_emails) . '");
-        wrongEmail = weCheckFormEmail(formular, email);';
-	} else {
-		$jsEmail = '';
-	}
+	$jsEmail = ($email ? //  code to check Emails
+					'//  validate emails
+        var email = new Array("' . implode('", "', explode(',', $email)) . '");
+        wrongEmail = weCheckFormEmail(formular, email);' :
+					'');
+
 
 	if($password){
 		$_pwFields = explode(',', $password);
@@ -113,11 +108,8 @@ function we_tag_checkForm($attribs, $content){
 	if($jsIncludePath){
 
 		if(is_numeric($jsIncludePath)){
-			$jsTag = we_tag('js', array('id' => $jsIncludePath, 'xml' => $xml));
-			if($jsTag){
-				$jsEventHandler = $jsTag;
-			} else {
-				$jsEventHandler = '';
+			$jsEventHandler = we_tag('js', array('id' => $jsIncludePath, 'xml' => $xml));
+			if(!$jsEventHandler){
 				return parseError(g_l('parser', '[checkForm_jsIncludePath_not_found]'));
 			}
 		} else {
@@ -140,11 +132,8 @@ function we_tag_checkForm($attribs, $content){
         var pwError    = false;
 
         formular = document.getElementById("' . $match . '");
-
         ' . $jsMandatory . '
-
         ' . $jsEmail . '
-
         ' . $jsPasword . '
 
         //  return true or false depending on errors
@@ -174,11 +163,8 @@ function we_tag_checkForm($attribs, $content){
         var pwError    = false;
 
         formular = document.forms["' . $match . '"];
-
         ' . $jsMandatory . '
-
         ' . $jsEmail . '
-
         ' . $jsPasword . '
 
         //  return true or false depending on errors

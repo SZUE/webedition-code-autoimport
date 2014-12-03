@@ -27,10 +27,10 @@ function we_tag_printVersion($attribs, $content){
 		return $foo;
 	}
 
-	$tid = weTag_getAttribute('tid', $attribs);
-	$triggerID = weTag_getAttribute('triggerid', $attribs, weTag_getAttribute('triggerID', $attribs));
-	$docAttr = weTag_getAttribute("doc", $attribs, weTag_getAttribute("type", $attribs));
-	$link = weTag_getAttribute("Link", $attribs, weTag_getAttribute("link", $attribs, true, true), true);
+	$tid = weTag_getAttribute('tid', $attribs, 0, we_base_request::INT);
+	$triggerID = weTag_getAttribute('triggerid', $attribs, weTag_getAttribute('triggerID', $attribs, 0, we_base_request::INT), we_base_request::INT);
+	$docAttr = weTag_getAttribute("doc", $attribs, weTag_getAttribute("type", $attribs, '', we_base_request::STRING), we_base_request::STRING);
+	$link = weTag_getAttribute("Link", $attribs, weTag_getAttribute("link", $attribs, true, we_base_request::BOOL), we_base_request::BOOL);
 
 	$doc = we_getDocForTag($docAttr);
 

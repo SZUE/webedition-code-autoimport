@@ -24,9 +24,8 @@
  */
 function we_tag_author($attribs){
 	// attributes
-	$type = weTag_getAttribute('type', $attribs);
-	$creator = weTag_getAttribute('creator', $attribs, false, true);
-	$docAttr = weTag_getAttribute('doc', $attribs);
+	$creator = weTag_getAttribute('creator', $attribs, false, we_base_request::BOOL);
+	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
 
 	$author = $creator ? 'CreatorID' : 'ModifierID';
 
@@ -55,8 +54,8 @@ function we_tag_author($attribs){
 
 			if(!$authorID){
 				$authorID = (isset($objID) && $objID > 0 ?
-						f('SELECT ' . $author . ' FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($objID)) :
-						f('SELECT ' . $author . ' FROM ' . FILE_TABLE . ' WHERE ID=' . intval($docID)));
+								f('SELECT ' . $author . ' FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($objID)) :
+								f('SELECT ' . $author . ' FROM ' . FILE_TABLE . ' WHERE ID=' . intval($docID)));
 			}
 
 			break;
@@ -72,7 +71,7 @@ function we_tag_author($attribs){
 		return '';
 	}
 
-	switch($type){
+	switch(weTag_getAttribute('type', $attribs, '', we_base_request::STRING)){
 		case 'forename' :
 			return trim($foo['First']);
 		case 'surname' :

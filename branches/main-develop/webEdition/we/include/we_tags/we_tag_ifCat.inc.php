@@ -24,8 +24,8 @@
  */
 function we_tag_ifCat($attribs){
 
-	$categories = weTag_getAttribute('categories', $attribs);
-	$category = weTag_getAttribute('category', $attribs);
+	$categories = weTag_getAttribute('categories', $attribs, '', we_base_request::RAW);
+	$category = weTag_getAttribute('category', $attribs, '', we_base_request::RAW);
 
 	if(strlen($categories) == 0 && strlen($category) == 0){
 		if(($foo = attributFehltError($attribs, 'categories', __FUNCTION__))){
@@ -34,8 +34,8 @@ function we_tag_ifCat($attribs){
 		}
 	}
 
-	$parent = weTag_getAttribute('parent', $attribs, false, true);
-	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
+	$parent = weTag_getAttribute('parent', $attribs, false, we_base_request::BOOL);
+	$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 
 	$match = $categories ? : $category;
 	$matchArray = makeArrayFromCSV($match);

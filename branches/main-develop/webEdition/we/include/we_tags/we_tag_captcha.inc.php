@@ -63,26 +63,26 @@ function we_parse_tag_captcha($a, $c, array $attribs){
 require_once($_SERVER[\'DOCUMENT_ROOT\'].\'' . WE_INCLUDES_DIR . 'we.inc.php\');
 require_once(WE_INCLUDES_PATH . \'we_tag.inc.php\');
 ' . we_tag_tagParser::printTag('captcha', array('_internal' => true,
-			'width' => $width,
-			'height' => $height,
-			'maxlength' => $maxlength,
-			'fontpath' => $fontpath,
-			'font' => $font,
-			'fontsize' => $fontsize,
-			'fontcolor' => $fontcolor,
-			'subset' => $subset,
-			'case' => $case,
-			'skip' => $skip,
-			'align' => $align,
-			'valign' => $valign,
-			'bgcolor' => $bgcolor,
-			'transparent' => (bool) $bgcolor && $transparent,
-			'style' => $style,
-			'stylecolor' => $stylecolor,
-			'stylenumber' => $stylenumber,
-			'angle' => $angle,
-			'type' => $bgcolor && $transparent ? 'gif' : $type
-		)) . ';', 'w+');
+				'width' => $width,
+				'height' => $height,
+				'maxlength' => $maxlength,
+				'fontpath' => $fontpath,
+				'font' => $font,
+				'fontsize' => $fontsize,
+				'fontcolor' => $fontcolor,
+				'subset' => $subset,
+				'case' => $case,
+				'skip' => $skip,
+				'align' => $align,
+				'valign' => $valign,
+				'bgcolor' => $bgcolor,
+				'transparent' => (bool) $bgcolor && $transparent,
+				'style' => $style,
+				'stylecolor' => $stylecolor,
+				'stylenumber' => $stylenumber,
+				'angle' => $angle,
+				'type' => $bgcolor && $transparent ? 'gif' : $type
+			)) . ';', 'w+');
 
 	// clean attribs
 	$attribs = removeAttribs($attribs, array(

@@ -81,7 +81,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save')){
 
 			$_buttontable = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:save_settings();"), null, we_html_button::create_button("cancel", "javascript:self.close()"));
 
-			print we_html_tools::htmlDialogLayout($table, "", $_buttontable, "90%");
+			echo we_html_tools::htmlDialogLayout($table, "", $_buttontable, "90%");
 			?>
 
 		</form>

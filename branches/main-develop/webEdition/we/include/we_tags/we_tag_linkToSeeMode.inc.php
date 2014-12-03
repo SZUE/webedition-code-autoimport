@@ -23,12 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_linkToSeeMode($attribs){
-	$id = weTag_getAttribute('id', $attribs); //	if a document-id is selected go to that document
-	$oid = weTag_getAttribute('oid', $attribs); //	if an object-id is selected go to that object
-	$permission = weTag_getAttribute("permission", $attribs);
-	$docAttr = weTag_getAttribute("doc", $attribs, "top");
-
-	$xml = weTag_getAttribute("xml", $attribs);
+	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT); //	if a document-id is selected go to that document
+	$oid = weTag_getAttribute('oid', $attribs, 0, we_base_request::INT); //	if an object-id is selected go to that object
+	$permission = weTag_getAttribute("permission", $attribs, '', we_base_request::STRING);
+	$docAttr = weTag_getAttribute("doc", $attribs, "top", we_base_request::STRING);
+	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
 
 	return ''; //this feature is currently unsupported
 	// check for value attribute
@@ -36,7 +35,7 @@ function we_tag_linkToSeeMode($attribs){
 		return $foo;
 	}
 
-	$value = weTag_getAttribute("value", $attribs);
+	$value = weTag_getAttribute("value", $attribs, '', we_base_request::STRING);
 
 	if(isset($id) && $id){
 
@@ -69,26 +68,12 @@ function we_tag_linkToSeeMode($attribs){
 							'name' => 'startSeeMode_' . $type . '_' . $id,
 							'target' => '_parent',
 							'action' => WEBEDITION_DIR . 'loginToSuperEasyEditMode.php'
-								), getHtmlTag(
-										'input', array(
-									'type' => 'hidden',
-									'name' => 'username',
-									'value' => $_SESSION["webuser"]["Username"],
-									'xml' => $xml
-								)) . getHtmlTag(
-										'input', array(
-									'type' => 'hidden', 'name' => 'type', 'value' => $type, 'xml' => $xml
-								)) . getHtmlTag(
-										'input', array(
-									'type' => 'hidden', 'name' => 'id', 'value' => $id, 'xml' => $xml
-								)) . getHtmlTag(
-										'input', array(
-									'type' => 'hidden',
-									'name' => 'path',
-									'value' => $_SERVER['HTTP_REQUEST_URI'],
-									'xml' => $xml
-						))) . getHtmlTag(
-								'a', array(
+								), getHtmlTag('input', array('type' => 'hidden', 'name' => 'username', 'value' => $_SESSION["webuser"]["Username"], 'xml' => $xml)) .
+								getHtmlTag('input', array('type' => 'hidden', 'name' => 'type', 'value' => $type, 'xml' => $xml)) .
+								getHtmlTag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $id, 'xml' => $xml)) .
+								getHtmlTag('input', array('type' => 'hidden', 'name' => 'path', 'value' => $_SERVER['HTTP_REQUEST_URI'], 'xml' => $xml))
+						) .
+						getHtmlTag('a', array(
 							'href' => 'javascript:document.forms[\'startSeeMode_' . $type . '_' . $id . '\'].submit();',
 							'xml' => $xml
 								), $value);

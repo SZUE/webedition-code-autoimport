@@ -84,7 +84,7 @@ if(($tid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3))){ // create
 		$thumbObj->initByThumbID($tid, $we_doc->ID, $we_doc->Filename, $we_doc->Path, $we_doc->Extension, $we_doc->getElement("origwidth"), $we_doc->getElement("origheight"), $we_doc->getDocument());
 		$thumbObj->getThumb($out);
 		unset($thumbObj);
-		print $out;
+		echo $out;
 		exit();
 	}
 }

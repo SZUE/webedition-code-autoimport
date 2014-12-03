@@ -323,7 +323,7 @@ loadTreeData();');
 	}
 
 	if(!$loadExtTree){
-		print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(
+		echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead('File-Tree') .
 					$js
 				) . we_html_element::htmlBody(array("bgcolor" => "white"))
@@ -343,7 +343,8 @@ loadTreeData();');
 				'items' => getItems($parentFolder, $offset, $Tree->default_segment, true, $timestamp)
 			);
 		}
-		print json_encode($ret);
+		echo json_encode($ret);
 	}
+
 }
 we_users_user::writePrefs($_SESSION["prefs"]["userID"], $GLOBALS['DB_WE']);

@@ -63,13 +63,13 @@ class we_customer_EIWizard{
 				echo $this->getHTMLFrameset($what);
 				break;
 			case "eibody":
-				print $this->getHTMLStep($mode, $step);
+				echo $this->getHTMLStep($mode, $step);
 				break;
 			case "eifooter":
-				print $this->getHTMLFooter($mode, $step);
+				echo $this->getHTMLFooter($mode, $step);
 				break;
 			case "eiload":
-				print $this->getHTMLLoad();
+				echo $this->getHTMLLoad();
 				break;
 			default:
 				error_log(__FILE__ . " unknown reference: $what");

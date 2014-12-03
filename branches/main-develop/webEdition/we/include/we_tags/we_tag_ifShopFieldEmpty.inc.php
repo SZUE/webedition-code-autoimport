@@ -24,7 +24,7 @@
  */
 function we_tag_ifShopFieldEmpty($attribs){
 	if(($foo = attributFehltError($attribs, array('name' => false, 'reference' => false, 'shopname' => false), __FUNCTION__))){
-		print $foo;
+		echo $foo;
 		return false;
 	}
 

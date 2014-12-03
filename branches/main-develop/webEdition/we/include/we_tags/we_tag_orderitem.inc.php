@@ -31,14 +31,14 @@ function we_parse_tag_orderitem($attribs, $content){
 function we_tag_orderitem($attribs){
 
 	if(!defined('WE_SHOP_MODULE_PATH')){
-		print modulFehltError('Shop', __FUNCTION__);
+		echo modulFehltError('Shop', __FUNCTION__);
 		return false;
 	}
 
-	$condition = weTag_getAttribute("condition", $attribs, 0);
-	$we_orderitemid = weTag_getAttribute("id", $attribs, 0);
+	$condition = weTag_getAttribute("condition", $attribs, 0, we_base_request::RAW);
+	$we_orderitemid = weTag_getAttribute("id", $attribs, 0, we_base_request::INT);
 
-	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
+	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
 
 	$condition = ($condition ? $condition . ' AND ' : '') . "IntID = " . $we_orderitemid;
 

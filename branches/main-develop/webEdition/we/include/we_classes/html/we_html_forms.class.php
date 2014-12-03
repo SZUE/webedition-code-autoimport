@@ -128,29 +128,29 @@ abstract class we_html_forms{
 			}
 		}
 		$out = '';
-		$dhtmledit = weTag_getAttribute('dhtmledit', $attribs, false, true); //4614
-		$wysiwyg = $dhtmledit || weTag_getAttribute('wysiwyg', $attribs, false, true);
+		$dhtmledit = weTag_getAttribute('dhtmledit', $attribs, false, we_base_request::BOOL); //4614
+		$wysiwyg = $dhtmledit || weTag_getAttribute('wysiwyg', $attribs, false, we_base_request::BOOL);
 
-		$cols = weTag_getAttribute('cols', $attribs);
-		$rows = weTag_getAttribute('rows', $attribs);
-		$width = weTag_getAttribute('width', $attribs);
-		$height = weTag_getAttribute('height', $attribs);
-		$commands = preg_replace('/ *, */', ',', weTag_getAttribute('commands', $attribs, defined('COMMANDS_DEFAULT') ? COMMANDS_DEFAULT : ''));
-		$contextmenu = preg_replace('/ *, */', ',', weTag_getAttribute('contextmenu', $attribs));
-		$bgcolor = weTag_getAttribute('bgcolor', $attribs);
-		$wrap = weTag_getAttribute('wrap', $attribs);
-		$hideautobr = weTag_getAttribute('hideautobr', $attribs, false, true);
-		$class = weTag_getAttribute('class', $attribs);
-		$style = weTag_getAttribute('style', $attribs);
-		$id = weTag_getAttribute('id', $attribs, weTag_getAttribute('pass_id', $attribs));
-		$tabindex = weTag_getAttribute('tabindex', $attribs);
-		$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
-		$ignoredocumentcss = weTag_getAttribute('ignoredocumentcss', $attribs, false, true);
-		$buttonpos = weTag_getAttribute('buttonpos', $attribs);
-		$cssClasses = weTag_getAttribute('classes', $attribs);
+		$cols = weTag_getAttribute('cols', $attribs, '', we_base_request::STRING);
+		$rows = weTag_getAttribute('rows', $attribs, '', we_base_request::UNIT);
+		$width = weTag_getAttribute('width', $attribs, '', we_base_request::UNIT);
+		$height = weTag_getAttribute('height', $attribs, '', we_base_request::UNIT);
+		$commands = preg_replace('/ *, */', ',', weTag_getAttribute('commands', $attribs, defined('COMMANDS_DEFAULT') ? COMMANDS_DEFAULT : '', we_base_request::STRING));
+		$contextmenu = preg_replace('/ *, */', ',', weTag_getAttribute('contextmenu', $attribs, '', we_base_request::STRING));
+		$bgcolor = weTag_getAttribute('bgcolor', $attribs, '', we_base_request::STRING);
+		$wrap = weTag_getAttribute('wrap', $attribs, false, we_base_request::BOOL);
+		$hideautobr = weTag_getAttribute('hideautobr', $attribs, false, we_base_request::BOOL);
+		$class = weTag_getAttribute('class', $attribs, '', we_base_request::STRING);
+		$style = weTag_getAttribute('style', $attribs, '', we_base_request::STRING);
+		$id = weTag_getAttribute('id', $attribs, weTag_getAttribute('pass_id', $attribs, '', we_base_request::STRING), we_base_request::STRING);
+		$tabindex = weTag_getAttribute('tabindex', $attribs, '', we_base_request::STRING);
+		$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL);
+		$ignoredocumentcss = weTag_getAttribute('ignoredocumentcss', $attribs, false, we_base_request::BOOL);
+		$buttonpos = weTag_getAttribute('buttonpos', $attribs, '', we_base_request::STRING);
+		$cssClasses = weTag_getAttribute('classes', $attribs, '', we_base_request::STRING);
 		$buttonTop = false;
 		$buttonBottom = false;
-		$editorcss = weTag_getAttribute('editorcss', $attribs);
+		$editorcss = weTag_getAttribute('editorcss', $attribs, '', we_base_request::STRING);
 		$editorcss = $editorcss ? id_to_path($editorcss, FILE_TABLE, null, false, true) : array();
 
 		//first prepare stylesheets from textarea-attribute editorcss (templates) or class-css (classes): csv of ids. then (if document) get document-css, defined by we:css
@@ -178,20 +178,20 @@ abstract class we_html_forms{
 		//FIXME: don't remove style width/height in no wysiwyg if no width is given!
 		$style = ($style ? explode(';', trim(preg_replace(array('/width:[^;"]+[;"]?/i', '/height:[^;"]+[;"]?/i'), '', $style), ' ;')) : array());
 
-		$fontnames = weTag_getAttribute('fontnames', $attribs);
+		$fontnames = weTag_getAttribute('fontnames', $attribs, '', we_base_request::STRING);
 		$showmenues = (
 				isset($attribs['showMenues']) ?
-						weTag_getAttribute('showMenues', $attribs, true, true) :
+						weTag_getAttribute('showMenues', $attribs, true, we_base_request::BOOL) :
 						(isset($attribs['showmenues']) ?
-								weTag_getAttribute('showmenues', $attribs, true, true) :
-								weTag_getAttribute('showmenus', $attribs, true, true)));
+								weTag_getAttribute('showmenues', $attribs, true, we_base_request::BOOL) :
+								weTag_getAttribute('showmenus', $attribs, true, we_base_request::BOOL)));
 
-		$importrtf = weTag_getAttribute('importrtf', $attribs, false, true);
+		$importrtf = weTag_getAttribute('importrtf', $attribs, false, we_base_request::BOOL);
 		$doc = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] != '' && ($GLOBALS['we_doc'] instanceof we_objectFile) ? 'we_doc' : 'WE_MAIN_DOC');
 		$inwebedition = ($forceinwebedition ? : (isset($GLOBALS[$doc]->InWebEdition) && $GLOBALS[$doc]->InWebEdition));
 
 		$inlineedit = // we are in frontend, where default is inlineedit = true
-				weTag_getAttribute('inlineedit', $attribs, ($inwebedition ? INLINEEDIT_DEFAULT : true), true);
+				weTag_getAttribute('inlineedit', $attribs, ($inwebedition ? INLINEEDIT_DEFAULT : true), we_base_request::BOOL);
 
 
 		$value = self::removeBrokenInternalLinksAndImages($value);
@@ -213,9 +213,9 @@ abstract class we_html_forms{
 
 			$_lang = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->Language)) ? $GLOBALS['we_doc']->Language : WE_LANGUAGE;
 			$buttonpos = $buttonpos ? : 'top';
-			$tinyParams = weTag_getAttribute('tinyparams', $attribs);
-			$templates = weTag_getAttribute('templates', $attribs);
-			$formats = weTag_getAttribute('formats', $attribs);
+			$tinyParams = weTag_getAttribute('tinyparams', $attribs, '', we_base_request::STRING);
+			$templates = weTag_getAttribute('templates', $attribs, '', we_base_request::STRING);
+			$formats = weTag_getAttribute('formats', $attribs, '', we_base_request::STRING);
 
 			if($inlineedit){
 				$e = new we_wysiwyg_editor($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates, $formats);
@@ -243,7 +243,7 @@ abstract class we_html_forms{
 			return $out .
 					we_html_element::htmlTextArea(array('name' => $name, 'id' => $name, 'onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'display: none'), $hiddenTextareaContent) .
 					($fieldName ? we_html_element::jsElement('tinyEditors["' . $fieldName . '"] = "' . $name . '";') : '') .
-					($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);"></div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '">' . $previewDivContent . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);"></div>' : '');
+					($buttonTop ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-bottom:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . (empty($class) ? "" : $class . " ") . 'wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '">' . $previewDivContent . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="width:25px;border-top:0px;background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">' . $e->getHTML() . '</div>' : '');
 		}
 		if($width){
 			$style[] = 'width:' . $width . 'px;';

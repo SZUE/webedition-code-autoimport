@@ -37,19 +37,19 @@ function we_parse_tag_object($attribs, $content, array $arr){
 
 function we_tag_object($attribs){
 	if(!defined('WE_OBJECT_MODULE_PATH')){
-		print modulFehltError('Object/DB', __FUNCTION__);
+		echo modulFehltError('Object/DB', __FUNCTION__);
 		return false;
 	}
 
-	$condition = weTag_getAttribute('condition', $attribs, 0);
-	$classid = weTag_getAttribute('classid', $attribs);
-	$we_oid = weTag_getAttribute('id', $attribs, 0);
-	$name = weTag_getAttribute('name', $attribs);
-	$size = 5 * intval(weTag_getAttribute('size', $attribs, 30));
-	$triggerid = weTag_getAttribute('triggerid', $attribs, 0);
-	$searchable = weTag_getAttribute('searchable', $attribs, false, true);
-	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
-	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, true);
+	$condition = weTag_getAttribute('condition', $attribs, 0, we_base_request::RAW);
+	$classid = weTag_getAttribute('classid', $attribs, 0, we_base_request::INT);
+	$we_oid = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+	$size = 5 * intval(weTag_getAttribute('size', $attribs, 30, we_base_request::UNIT));
+	$triggerid = weTag_getAttribute('triggerid', $attribs, 0, we_base_request::INT);
+	$searchable = weTag_getAttribute('searchable', $attribs, false, we_base_request::BOOL);
+	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
+	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, we_base_request::BOOL);
 
 	if(!isset($GLOBALS['we_lv_array'])){
 		$GLOBALS['we_lv_array'] = array();
@@ -102,7 +102,7 @@ function we_tag_object($attribs){
 			?>
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
-					<td class="weEditmodeStyle" style="padding:0 6px;"><span style="font-weight: bold;"><?php echo weTag_getAttribute('text', $attribs, weTag_getAttribute('_name_orig', $attribs)); ?></span></td>
+					<td class="weEditmodeStyle" style="padding:0 6px;"><span style="font-weight: bold;"><?php echo weTag_getAttribute('text', $attribs, weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING), we_base_request::STRING); ?></span></td>
 					<td class="weEditmodeStyle" style="width: <?php echo ($size + 20); ?>px"><?php echo $yuiSuggest->getHTML(); ?></td>
 					<td class="weEditmodeStyle"><?php echo $button; ?></td>
 					<td class="weEditmodeStyle"><?php echo $open; ?></td>

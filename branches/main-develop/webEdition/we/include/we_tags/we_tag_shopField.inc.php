@@ -28,24 +28,24 @@ function we_tag_shopField($attribs){
 	}
 
 
-	$name = weTag_getAttribute("name", $attribs);
-	$reference = weTag_getAttribute("reference", $attribs);
-	$shopname = weTag_getAttribute("shopname", $attribs);
+	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
+	$reference = weTag_getAttribute("reference", $attribs, '', we_base_request::STRING);
+	$shopname = weTag_getAttribute("shopname", $attribs, '', we_base_request::STRING);
 
-	$type = weTag_getAttribute("type", $attribs);
+	$type = weTag_getAttribute("type", $attribs, '', we_base_request::STRING);
 
 	if($type === 'checkbox' && ($missingAttrib = attributFehltError($attribs, 'value', __FUNCTION__))){
-		print $missingAttrib;
+		echo $missingAttrib;
 	}
 
-	$values = weTag_getAttribute("values", $attribs); // select, choice
-	$value = weTag_getAttribute("value", $attribs); // checkbox
-	$checked = weTag_getAttribute("checked", $attribs, false, true); // checkbox
+	$values = weTag_getAttribute("values", $attribs, '', we_base_request::RAW); // select, choice
+	$value = weTag_getAttribute("value", $attribs, '', we_base_request::RAW); // checkbox
+	$checked = weTag_getAttribute("checked", $attribs, false, we_base_request::BOOL); // checkbox
 
 	if($checked && ($foo = attributFehltError($attribs, "value", __FUNCTION__))){
 		return $foo;
 	}
-	$mode = weTag_getAttribute("mode", $attribs);
+	$mode = weTag_getAttribute("mode", $attribs, '', we_base_request::STRING);
 
 	$fieldname = ($reference === 'article' ? WE_SHOP_ARTICLE_CUSTOM_FIELD : WE_SHOP_CART_CUSTOM_FIELD) . '[' . $name . ']';
 	$savedVal = '';
@@ -92,8 +92,6 @@ function we_tag_shopField($attribs){
 			return getHtmlTag('input', $atts) . we_html_tools::hidden($fieldname, $savedVal);
 
 		case 'choice':
-			$reference = weTag_getAttribute("mode", $attribs);
-
 			return we_html_tools::htmlInputChoiceField($fieldname, $savedVal, $values, $atts, $mode);
 
 		case 'hidden':
@@ -101,16 +99,16 @@ function we_tag_shopField($attribs){
 			return we_html_tools::hidden($fieldname, $savedVal, $atts);
 
 		case 'print':
-			$ascountry = weTag_getAttribute('ascountry', $attribs, false, true);
-			$aslanguage = weTag_getAttribute('aslanguage', $attribs, false, true);
+			$ascountry = weTag_getAttribute('ascountry', $attribs, false, we_base_request::BOOL);
+			$aslanguage = weTag_getAttribute('aslanguage', $attribs, false, we_base_request::BOOL);
 			if($ascountry || $aslanguage){
 				if(!Zend_Locale::hasCache()){
 					Zend_Locale::setCache(getWEZendCache());
 				}
 
-				$lang = weTag_getAttribute('outputlanguage', $attribs);
+				$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
 				if(!$lang){
-					$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self'));
+					$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
 					$lang = $doc->Language;
 				}
 				$langcode = substr($lang, 0, 2);
@@ -128,7 +126,7 @@ function we_tag_shopField($attribs){
 		case 'country':
 			$newAtts = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'checked', 'mode'));
 			$newAtts['name'] = 'we_sscf[' . $name . ']';
-			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
+			$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang ?
@@ -179,7 +177,7 @@ function we_tag_shopField($attribs){
 		case 'language':
 			$newAtts = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'checked', 'mode'));
 			$newAtts['name'] = 'we_sscf[' . $name . ']';
-			$docAttr = weTag_getAttribute('doc', $attribs, 'self');
+			$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang ?

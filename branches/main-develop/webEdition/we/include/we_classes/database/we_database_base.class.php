@@ -482,7 +482,7 @@ abstract class we_database_base{
 	/** shorthand for print num_rows
 	 */
 	public function np(){
-		print $this->num_rows();
+		echo $this->num_rows();
 	}
 
 	/**
@@ -500,7 +500,7 @@ abstract class we_database_base{
 	 *
 	 */
 	public function p($Name){
-		print $this->Record[$Name];
+		echo $this->Record[$Name];
 	}
 
 	/**

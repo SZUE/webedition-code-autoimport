@@ -51,7 +51,7 @@ class we_import_siteFrag extends we_fragment_base{
 				t_e('import error:', $ret);
 			}
 		}
-		print we_html_element::jsElement('
+		echo we_html_element::jsElement('
 top.siteimportbuttons.document.getElementById("progressBarDiv").style.display="block";
 top.siteimportbuttons.weButton.disable("back");
 top.siteimportbuttons.weButton.disable("next");
@@ -60,13 +60,13 @@ top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . oldH
 	}
 
 	function finish(){
-		print we_html_element::jsElement(
+		echo we_html_element::jsElement(
 				"top.siteimportbuttons.setProgress(100);setTimeout('" . we_message_reporting::getShowMessageCall(
 					g_l('siteimport', '[importFinished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');");
 	}
 
 	function printHeader(){
-		print we_html_element::htmlDocType() . we_html_element::htmlhtml(we_html_element::htmlHead(//FIXME: missing title
+		echo we_html_element::htmlDocType() . we_html_element::htmlhtml(we_html_element::htmlHead(//FIXME: missing title
 					we_html_tools::getHtmlInnerHead() .
 					STYLESHEET), false);
 	}

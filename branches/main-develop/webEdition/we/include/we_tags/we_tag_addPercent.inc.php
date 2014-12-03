@@ -31,8 +31,7 @@ function we_parse_tag_addPercent($a, $content, array $attribs){
 
 function we_tag_addPercent($attribs, $content){
 	//internal Attribute
-	$_type = weTag_getAttribute('_type', $attribs);
-	switch($_type){
+	switch(weTag_getAttribute('_type', $attribs, '', we_base_request::STRING)){
 		case 'start':
 			$GLOBALS['calculate'] = 1;
 			ob_start();
@@ -43,12 +42,12 @@ function we_tag_addPercent($attribs, $content){
 			if(($foo = attributFehltError($attribs, 'percent', __FUNCTION__))){
 				return $foo;
 			}
-			$percent = weTag_getAttribute('percent', $attribs);
-			$num_format = weTag_getAttribute('num_format', $attribs);
+			$percent = weTag_getAttribute('percent', $attribs, 0, we_base_request::FLOAT);
+			$num_format = weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING);
 			$result = ($content / 100) * (100 + $percent);
 			return ($num_format ? //bug 6437 gibt immer deutsch zurück (das ist der default von formatnaumber), was das verhalten ändert
-					we_util_Strings::formatNumber($result, $num_format) :
-					$result);
+							we_util_Strings::formatNumber($result, $num_format) :
+							$result);
 		default:
 			return attributFehltError($attribs, '_type', __FUNCTION__);
 	}

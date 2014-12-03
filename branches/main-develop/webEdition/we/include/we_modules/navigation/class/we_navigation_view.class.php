@@ -678,7 +678,7 @@ function submitForm() {
 			case 'module_navigation_new':
 			case 'module_navigation_new_group':
 				if(!permissionhandler::hasPerm('EDIT_NAVIGATION')){
-					print we_html_element::jsElement(
+					echo we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
@@ -760,7 +760,7 @@ function submitForm() {
 							break;
 						}
 					} else {
-						print we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 				}
@@ -882,7 +882,7 @@ function submitForm() {
 				if($this->Model->reorderDown()){
 					$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db);
 					$_num = f('SELECT MAX(Ordn) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), 'OrdCount', $this->db);
-					print we_html_element::jsElement('
+					echo we_html_element::jsElement('
 									' .
 									$this->editorBodyForm . '.Ordn.value=' . ($this->Model->Ordn + 1) . ';' .
 									$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');

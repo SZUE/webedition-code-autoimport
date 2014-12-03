@@ -34,8 +34,8 @@ class we_base_request{
 	const BOOL = 'bool';
 	const RAW = 'raw';
 	const URL = 'url';
-	const EMAIL = 'email';
-	const STRING = 'string';
+	const EMAIL = 'email';//add email_list
+	const STRING = 'string';//FIXME: add string_list
 	const HTML = 'html';
 
 	/**
@@ -45,7 +45,6 @@ class we_base_request{
 	const INTLIST = 'intList';
 	const CMD = 'cmd';
 	const UNIT = 'unit';
-	const TOGGLE = 'toggle';
 	const TABLE = 'table';
 	const FILE = 'file';
 	const FILELIST = 'filelist';
@@ -108,7 +107,8 @@ class we_base_request{
 				if(is_bool($var)){
 					return $var;
 				}
-				switch($var){
+
+				switch(is_string($var) ? strtolower(trim($var)) : $var){
 					case '0':
 					case 'off':
 					case 'false':
@@ -124,9 +124,6 @@ class we_base_request{
 						return;
 				}
 
-			case self::TOGGLE: //FIXME: temporary type => whenever possible use 'bool'
-				$var = $var === 'on' || $var === 'off' || $var == '1' || $var == '0' ? $var : (bool) $var;
-				return;
 			case self::TABLE: //FIXME: this doesn't hold for OBJECT_X_TABLE - make sure we don't use them in requests
 				$var = $var && in_array($var, self::$allTables) ? $var : $default;
 				return;

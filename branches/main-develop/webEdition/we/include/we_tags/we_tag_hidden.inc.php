@@ -28,12 +28,10 @@ function we_tag_hidden($attribs){
 		return $foo;
 	}
 
-	$name = weTag_getAttribute("name", $attribs);
-	$type = weTag_getAttribute("type", $attribs);
-	$xml = weTag_getAttribute("xml", $attribs);
+	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
+	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
 
-	$value = '';
-	switch($type){
+	switch(weTag_getAttribute("type", $attribs, '', we_base_request::STRING)){
 		case 'session' :
 			$value = $_SESSION[$name];
 			break;
@@ -41,7 +39,7 @@ function we_tag_hidden($attribs){
 			$value = filterXss(we_base_util::rmPhp(we_base_request::_(we_base_request::RAW, $name, '')));
 			break;
 		default :
-			$value = $GLOBALS[$name];
+			$value = isset($GLOBALS[$name]) ? $GLOBALS[$name] : '';
 			break;
 	}
 

@@ -25,33 +25,28 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-
-$_parts = array();
 if(permissionhandler::hasPerm("BACKUPLOG")){
-	$_parts[] = array(
-		'headline' => g_l('backup', '[view_log]'),
-		'html' => '',
-		'space' => 10
+	$_parts = array(
+		array(
+			'headline' => g_l('backup', '[view_log]'),
+			'html' => '',
+			'space' => 10
+		),
+		array(
+			'headline' => '',
+			'html' => (file_exists($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . we_backup_backup::logFile) ?
+					'<pre>' . file_get_contents($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . we_backup_backup::logFile) . '</pre>' :
+					'<p>' . g_l('backup', '[view_log_not_found]') . '</p>'),
+			'space' => 10
+		)
 	);
-	if(!file_exists($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/lastlog.php')){
-		$_parts[] = array(
-			'headline' => '',
-			'html' => '<p>' . g_l('backup', '[view_log_not_found]') . '</p>',
-			'space' => 10
-		);
-	} else {
-		$log = file_get_contents($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/lastlog.php');
-		$_parts[] = array(
-			'headline' => '',
-			'html' => '<pre>' . $log . '</pre>',
-			'space' => 10
-		);
-	}
 } else {
-	$_parts[] = array(
-		'headline' => '',
-		'html' => '<p>' . g_l('backup', '[view_log_no_perm]') . '</p>',
-		'space' => 10
+	$_parts = array(
+		array(
+			'headline' => '',
+			'html' => '<p>' . g_l('backup', '[view_log_no_perm]') . '</p>',
+			'space' => 10
+		)
 	);
 }
 echo we_html_tools::getHtmlTop(g_l('backup', '[view_log]')) .
@@ -67,14 +62,14 @@ echo we_html_tools::getHtmlTop(g_l('backup', '[view_log]')) .
 </head>
 
 <body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
-	<div id="info" style="display: block;"><?php
-		$buttons = we_html_button::position_yes_no_cancel(
+	<div id="info"><?php
+$buttons = we_html_button::position_yes_no_cancel(
 				we_html_button::create_button("close", "javascript:self.close()"), '', ''
-		);
+);
 
-		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML('', 500, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
-		?>
+echo we_html_multiIconBox::getJS() .
+ we_html_multiIconBox::getHTML('', 500, $_parts, 30, $buttons, -1, '', '', false, "", "", 0, "auto");
+?>
 	</div>
 
 </body>

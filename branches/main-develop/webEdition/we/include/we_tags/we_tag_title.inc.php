@@ -23,10 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_title($attribs, $content){
-	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true);
-	$prefix = weTag_getAttribute('prefix', $attribs);
-	$suffix = weTag_getAttribute('suffix', $attribs);
-	$delimiter = weTag_getAttribute('delimiter', $attribs);
+	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL);
+	$prefix = weTag_getAttribute('prefix', $attribs, '', we_base_request::RAW);
+	$suffix = weTag_getAttribute('suffix', $attribs, '', we_base_request::RAW);
+	$delimiter = weTag_getAttribute('delimiter', $attribs, '', we_base_request::RAW);
 
 	$attribs = removeAttribs($attribs, array('htmlspecialchars', 'prefix', 'suffix', 'delimiter'));
 	$title = isset($GLOBALS['TITLE']) && $GLOBALS['TITLE'] ? $GLOBALS['TITLE'] : '';

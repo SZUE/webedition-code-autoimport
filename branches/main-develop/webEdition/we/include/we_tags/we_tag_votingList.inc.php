@@ -33,18 +33,18 @@ function we_parse_tag_votingList($a, $content, array $attribs){
 
 function we_tag_votingList($attribs){
 	if(!defined('VOTING_TABLE')){
-		print modulFehltError('Voting', __FUNCTION__);
+		echo modulFehltError('Voting', __FUNCTION__);
 		return;
 	}
-	$name = weTag_getAttribute('name', $attribs);
-	$groupid = weTag_getAttribute('groupid', $attribs, 0);
-	$rows = weTag_getAttribute('rows', $attribs, 0);
-	$desc = weTag_getAttribute('desc', $attribs, false, true);
-	$order = weTag_getAttribute('order', $attribs, 'PublishDate');
-	$subgroup = weTag_getAttribute("subgroup", $attribs, false, true);
-	$version = weTag_getAttribute("version", $attribs, 1);
-	$offset = weTag_getAttribute("offset", $attribs, 0);
-	$_type = weTag_getAttribute('_type', $attribs);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+	$groupid = weTag_getAttribute('groupid', $attribs, 0, we_base_request::INT);
+	$rows = weTag_getAttribute('rows', $attribs, 0, we_base_request::INT);
+	$desc = weTag_getAttribute('desc', $attribs, false, we_base_request::BOOL);
+	$order = weTag_getAttribute('order', $attribs, 'PublishDate', we_base_request::STRING);
+	$subgroup = weTag_getAttribute("subgroup", $attribs, false, we_base_request::BOOL);
+	$version = weTag_getAttribute("version", $attribs, 1, we_base_request::INT);
+	$offset = weTag_getAttribute("offset", $attribs, 0, we_base_request::INT);
+	$_type = weTag_getAttribute('_type', $attribs, '', we_base_request::STRING);
 	$start = (isset($_REQUEST['_we_vl_start_' . $name]) && $_REQUEST['_we_vl_start_' . $name]) ? abs($_REQUEST['_we_vl_start_' . $name]) : 0;
 
 	switch($_type){

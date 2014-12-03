@@ -24,11 +24,11 @@
  */
 function we_tag_ifShopField($attribs){
 	if(($foo = attributFehltError($attribs, array('name' => false, 'reference' => false, 'shopname' => false, 'match' => true), __FUNCTION__))){
-		print $foo;
+		echo $foo;
 		return false;
 	}
-	$match = weTag_getAttribute('match', $attribs);
-	$operator = weTag_getAttribute('operator', $attribs);
+	$match = weTag_getAttribute('match', $attribs, '', we_base_request::STRING);
+	$operator = weTag_getAttribute('operator', $attribs, '', we_base_request::RAW);
 
 	$atts = removeAttribs($attribs, array('match', 'operator'));
 	$atts['type'] = 'print';

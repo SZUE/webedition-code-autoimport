@@ -124,6 +124,6 @@ if($GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_WORKSPACE){
 		"space" => 0
 	);
 }
-print we_html_multiIconBox::getJS() .
+echo we_html_multiIconBox::getJS() .
 	we_html_multiIconBox::getHTML("weOjFileProp", "100%", $parts, 30);
 

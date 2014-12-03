@@ -30,15 +30,17 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsElement('url="' . WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array(
-		'we_cmd[0]' => 'save_document',
-		'we_cmd[1]' => $trans,
-		'we_cmd[2]' => 1,
-		'we_transaction' => $trans,
-		'we_cmd[5]' => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5),
-		'we_cmd[6]' => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 6),
-		'we_complete_request' => 1
-		), null, '&') .
-	'";
+			'we_cmd' => array(
+				0 => 'save_document',
+				1 => $trans,
+				2 => 1,
+				5 => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5),
+				6 => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 6),
+			),
+			'we_transaction' => $trans,
+			'we_complete_request' => 1
+				), null, '&') .
+		'";
 new jsWindow(url,"templateSaveQuestion",-1,-1,400,170,true,false,true);
 ');
 ?>

@@ -28,7 +28,7 @@ function we_tag_charset($attribs, $content){
 		//set meta data & exit
 		$GLOBALS['meta']['Charset'] = array(
 			'default' => $content,
-			'defined' => weTag_getAttribute('defined', $attribs),
+			'defined' => weTag_getAttribute('defined', $attribs, '', we_base_request::STRING),
 		);
 		return;
 	}

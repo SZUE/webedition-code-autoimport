@@ -27,19 +27,19 @@ function we_tag_css($attribs){
 		return $foo;
 	}
 
-	$row = getHash('SELECT Path,IsFolder FROM ' . FILE_TABLE . ' WHERE ID=' . intval(weTag_getAttribute('id', $attribs)));
+	$row = getHash('SELECT Path,IsFolder FROM ' . FILE_TABLE . ' WHERE ID=' . intval(weTag_getAttribute('id', $attribs, 0, we_base_request::INT)));
 	if(!$row){
 		return '';
 	}
 
 	$nolink = false;
-	switch(weTag_getAttribute('applyto', $attribs, defined('CSSAPPLYTO_DEFAULT') ? CSSAPPLYTO_DEFAULT : 'around')){
+	switch(weTag_getAttribute('applyto', $attribs, defined('CSSAPPLYTO_DEFAULT') ? CSSAPPLYTO_DEFAULT : 'around', we_base_request::STRING)){
 		case 'around' :
 			break;
 		case 'wysiwyg' :
 			$nolink = true;
 		case 'all' :
-			switch(weTag_getAttribute('media', $attribs)){
+			switch(weTag_getAttribute('media', $attribs, '', we_base_request::STRING)){
 				case '':
 				case 'screen':
 				case 'all':
@@ -51,7 +51,7 @@ function we_tag_css($attribs){
 	//	remove not needed elements
 	$attribs = removeAttribs($attribs, array('id', 'applyto'));
 
-	$attribs['rel'] = weTag_getAttribute('rel', $attribs, 'stylesheet');
+	$attribs['rel'] = weTag_getAttribute('rel', $attribs, 'stylesheet', '', we_base_request::STRING);
 	$attribs['type'] = 'text/css';
 	$attribs['href'] = (we_isHttps() ? '' : BASE_CSS) . $row['Path'] . ($row['IsFolder'] ? '/' : '');
 

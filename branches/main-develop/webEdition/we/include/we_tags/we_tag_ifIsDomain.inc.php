@@ -31,8 +31,8 @@ function we_tag_ifIsDomain($attribs){
 		return true;
 	}
 
-	$domain = explode(',', strtolower(weTag_getAttribute('domain', $attribs)));
-	$matchType = weTag_getAttribute('matchType', $attribs, 'exact');
+	$domain = explode(',', strtolower(weTag_getAttribute('domain', $attribs, '', we_base_request::STRING)));
+	$matchType = weTag_getAttribute('matchType', $attribs, 'exact', we_base_request::STRING);
 	$servername = strtolower($_SERVER['SERVER_NAME']);
 	switch($matchType){
 		case 'exact':

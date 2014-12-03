@@ -28,8 +28,8 @@ function we_tag_ifField($attribs){
 		return false;
 	}
 
-	$match = weTag_getAttribute('match', $attribs);
-	$type = weTag_getAttribute('type', $attribs);
+	$match = weTag_getAttribute('match', $attribs, '', we_base_request::STRING);
+	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
 
 	//Bug #4815
 	if($type === 'float' || $type === 'int'){
@@ -39,7 +39,7 @@ function we_tag_ifField($attribs){
 	$attribs['name'] = $attribs['_name_orig'];
 	$realvalue = we_tag('field', $attribs);
 
-	switch(weTag_getAttribute('operator', $attribs, 'equal')){
+	switch(weTag_getAttribute('operator', $attribs, 'equal', we_base_request::STRING)){
 		default:
 		case 'equal':
 			return $realvalue == $match;

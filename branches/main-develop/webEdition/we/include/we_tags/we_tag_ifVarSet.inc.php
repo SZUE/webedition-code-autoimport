@@ -84,13 +84,13 @@ function we_tag_ifVarSet($attribs){
 		return false;
 	}
 
-	$type = weTag_getAttribute('var', $attribs, weTag_getAttribute('type', $attribs));
-	$doc = weTag_getAttribute('doc', $attribs);
-	$name = weTag_getAttribute('name', $attribs);
-	$name_orig = weTag_getAttribute('_name_orig', $attribs);
-	$formname = weTag_getAttribute('formname', $attribs, 'we_global_form');
-	$property = weTag_getAttribute('property', $attribs, false, true);
-	$shopname = weTag_getAttribute('shopname', $attribs);
+	$type = weTag_getAttribute('var', $attribs, weTag_getAttribute('type', $attribs, '', we_base_request::STRING), we_base_request::STRING);
+	$doc = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+	$name_orig = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
+	$formname = weTag_getAttribute('formname', $attribs, 'we_global_form', we_base_request::STRING);
+	$property = weTag_getAttribute('property', $attribs, false, we_base_request::BOOL);
+	$shopname = weTag_getAttribute('shopname', $attribs, '', we_base_request::STRING);
 
 	return we_isVarSet($name, $name_orig, $type, $doc, $property, $formname, $shopname);
 }

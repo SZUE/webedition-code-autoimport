@@ -22,14 +22,14 @@ function we_tag_pref($attribs){
 	if(($foo = attributFehltError($attribs, array('type' => false, 'name' => false), __FUNCTION__))){
 		return $foo;
 	}
-	$name = weTag_getAttribute('name', $attribs);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 
-	switch(($type = weTag_getAttribute('type', $attribs))){
+	switch(($type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING))){
 		case 'shop':
 			if(($foo = attributFehltError($attribs, array('field' => false), __FUNCTION__))){
 				return $foo;
 			}
-			$field = weTag_getAttribute('field', $attribs);
+			$field = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);
 			switch($name){
 				case 'vatRule':
 					$vat = we_shop_vatRule::getShopVatRule();
@@ -49,16 +49,14 @@ function we_tag_pref($attribs){
 						return is_array($ship->$field) ? implode(',', $ship->$field) : '';
 					}
 					break;
-					case 'pref':
-
+				case 'pref':
 			}
 
 			break;
 		case 'banner':
 			switch($name){
 				case 'DefaultBanner':
-					$id = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'");
-					return f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id));
+					return f('SELECT bannerID FROM ' . BANNER_TABLE . ' b JOIN ' . BANNER_PREFS_TABLE . ' p ON p.pref_value=b.ID WHERE p.pref_name="DefaultBannerID"');
 			}
 			break;
 		case 'newsletter':

@@ -118,16 +118,15 @@ function we_tag_ifPosition($attribs){
 		$attribs['type'] = 'linklist';
 	}
 	if(($missingAttrib = attributFehltError($attribs, array('type' => false, 'position' => false), __FUNCTION__))){
-		print $missingAttrib;
+		echo $missingAttrib;
 		return '';
 	}
 
 
-	$type = weTag_getAttribute('type', $attribs);
-	$position = weTag_getAttribute('position', $attribs);
-	$positionArray = explode(',', $position);
+	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
+	$positionArray = explode(',', weTag_getAttribute('position', $attribs, '', we_base_request::STRING));
 	$_size = count($positionArray);
-	$operator = weTag_getAttribute('operator', $attribs);
+	$operator = weTag_getAttribute('operator', $attribs, '', we_base_request::STRING);
 
 	switch($type){
 		case 'listview' : //	inside a listview, we take direct global listview object

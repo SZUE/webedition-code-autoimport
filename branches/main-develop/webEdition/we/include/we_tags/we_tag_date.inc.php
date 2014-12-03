@@ -23,9 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_date($attribs){
-	$format = weTag_getAttribute('format', $attribs, g_l('date', '[format][default]'));
+	$format = weTag_getAttribute('format', $attribs, g_l('date', '[format][default]'), we_base_request::RAW);
 
-	switch(strtolower(weTag_getAttribute('type', $attribs))){
+	switch(strtolower(weTag_getAttribute('type', $attribs, 'php', we_base_request::STRING))){
 		case 'js':
 			$monthsLong = g_l('date', '[month][long]');
 			ksort($monthsLong);
@@ -139,7 +139,7 @@ function getDateWord(f,dateObj){
 				}
 			}
 			$js.=implode('', $js_arr) .
-				'document.write(' . stripslashes(implode('+', $ret)) . ');';
+					'document.write(' . stripslashes(implode('+', $ret)) . ');';
 
 			return we_html_element::jsElement($js);
 		case 'php':

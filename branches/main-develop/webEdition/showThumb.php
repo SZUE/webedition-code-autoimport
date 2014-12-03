@@ -53,12 +53,13 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) && ($we_transaction
 			$src = $thumbObj->getOutputPath(false, true);
 		} else {
 			$src = WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(
-					array(
-						'we_cmd[0]' => 'show_binaryDoc',
-						'we_cmd[1]' => $we_doc->ContentType,
-						'we_cmd[2]' => $we_transaction,
-						'we_cmd[3]' => ($useOrig ? '' : $thumbid),
-						'rand' => $randval
+							array('we_cmd' => array(
+									0 => 'show_binaryDoc',
+									1 => $we_doc->ContentType,
+									2 => $we_transaction,
+									3 => ($useOrig ? '' : $thumbid),
+								),
+								'rand' => $randval
 			));
 		}
 
@@ -67,5 +68,5 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) && ($we_transaction
 
 	$table .= '</tr></table>';
 
-	print we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin: 5px 5px 5px 5px'), $table) . "</html>";
+	echo we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin: 5px 5px 5px 5px'), $table) . "</html>";
 }

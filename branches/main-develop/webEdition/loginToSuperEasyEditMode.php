@@ -66,9 +66,9 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 </html>';
 	} else {
 
-		print "Ein Fehler trat auf. - 1";
+		echo "Ein Fehler trat auf. - 1";
 	}
 } else {
 
-	print "Es trat ein Fehler auf. - 2";
+	echo "Es trat ein Fehler auf. - 2";
 }

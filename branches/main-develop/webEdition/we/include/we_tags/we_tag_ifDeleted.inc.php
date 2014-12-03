@@ -23,6 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifDeleted($attribs){
-	$type = weTag_getAttribute('type', $attribs, 'document');
+	$type = weTag_getAttribute('type', $attribs, 'document', we_base_request::STRING);
 	return isset($GLOBALS['we_' . $type . '_delete_ok']) && ($GLOBALS['we_' . $type . '_delete_ok'] == true);
 }

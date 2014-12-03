@@ -23,28 +23,28 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_field($attribs){
-	$orgName = weTag_getAttribute('_name_orig', $attribs);
-	$name = weTag_getAttribute('name', $attribs);
+	$orgName = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 
-	$href = weTag_getAttribute('href', $attribs);
+	$href = weTag_getAttribute('href', $attribs, '', we_base_request::URL);
 	if(isset($attribs['href'])){
 		$attribs['href'] = $href;
 	}
-	$type = weTag_getAttribute('type', $attribs);
+	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
 	if(isset($attribs['type'])){
 		$attribs['type'] = $type;
 	}
-	$orgAlt = weTag_getAttribute('alt', $attribs);
+	$orgAlt = weTag_getAttribute('alt', $attribs, '', we_base_request::STRING);
 	$alt = we_tag_getPostName($orgAlt);
 	if(isset($attribs['alt'])){
 		$attribs['alt'] = $alt;
 	}
-	$orgTitle = weTag_getAttribute('title', $attribs);
+	$orgTitle = weTag_getAttribute('title', $attribs, '', we_base_request::STRING);
 	$title = we_tag_getPostName($orgTitle);
 	if(isset($attribs['title'])){
 		$attribs['title'] = $title;
 	}
-	$value = weTag_getAttribute('value', $attribs);
+	$value = weTag_getAttribute('value', $attribs, '', we_base_request::RAW);
 	if(isset($attribs['value'])){
 		$attribs['value'] = $value;
 	}
@@ -76,7 +76,7 @@ function we_tag_field($attribs){
 	if(isset($attribs['style'])){
 		$attribs['style'] = $style;
 	}
-	$hyperlink = weTag_getAttribute('hyperlink', $attribs, false, true);
+	$hyperlink = weTag_getAttribute('hyperlink', $attribs, false, we_base_request::BOOL);
 	if(isset($attribs['hyperlink'])){
 		$attribs['hyperlink'] = $hyperlink;
 	}
@@ -92,11 +92,11 @@ function we_tag_field($attribs){
 	if(isset($attribs['id'])){
 		$attribs['id'] = $id;
 	}
-	$xml = weTag_getAttribute('xml', $attribs);
+	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
 	if(isset($attribs['xml'])){
 		$attribs['xml'] = $xml;
 	}
-	$striphtml = weTag_getAttribute('striphtml', $attribs, false, true);
+	$striphtml = weTag_getAttribute('striphtml', $attribs, false, we_base_request::BOOL);
 	if(isset($attribs['striphtml'])){
 		$attribs['striphtml'] = $striphtml;
 	}
@@ -104,7 +104,7 @@ function we_tag_field($attribs){
 	if(isset($attribs['only'])){
 		$attribs['only'] = $only;
 	}
-	$usekey = weTag_getAttribute('usekey', $attribs, false, true);
+	$usekey = weTag_getAttribute('usekey', $attribs, false, we_base_request::BOOL);
 	if(isset($attribs['usekey'])){
 		$attribs['usekey'] = $usekey;
 	}
@@ -112,7 +112,7 @@ function we_tag_field($attribs){
 	if(isset($attribs['triggerid'])){
 		$attribs['triggerid'] = $triggerid;
 	}
-	$seeMode = weTag_getAttribute('seeMode', $attribs, true, true);
+	$seeMode = weTag_getAttribute('seeMode', $attribs, true, we_base_request::BOOL);
 	if(isset($attribs['seeMode'])){
 		$attribs['seeMode'] = $value;
 	}
@@ -130,6 +130,27 @@ function we_tag_field($attribs){
 	if(isset($attribs['fontnames'])){
 		$attribs['fontnames'] = weTag_getAttribute('fontnames', $attribs);
 	}//Wwysiwyg
+
+	$showpath = weTag_getAttribute('showpath', $attribs);
+	if(isset($attribs['showpath'])){
+		$attribs['showpath'] = $showpath;
+	}
+	$rootdir = weTag_getAttribute('rootdir', $attribs, '', we_base_request::FILE);
+	if(isset($attribs['rootdir'])){
+		$attribs['rootdir'] = $rootdir;
+	}
+	$show = weTag_getAttribute('show', $attribs);
+	if(isset($attribs['show'])){
+		$attribs['show'] = $show;
+	}
+	$catfield = weTag_getAttribute('catfield', $attribs);
+	if(isset($attribs['catfield'])){
+		$attribs['catfield'] = $catfield;
+	}
+	$vatfield = weTag_getAttribute('vatfield', $attribs);
+	if(isset($attribs['vatfield'])){
+		$attribs['vatfield'] = $vatfield;
+	}
 	$out = '';
 
 
@@ -245,10 +266,9 @@ function we_tag_field($attribs){
 			$out = (isset($temp['objects']) && !empty($temp['objects']) ? implode(',', $temp['objects']) : '');
 			break;
 		case 'country' :
-			$lang = weTag_getAttribute('outputlanguage', $attribs);
+			$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
 			if(!$lang){
-				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
-				$doc = we_getDocForTag($docAttr);
+				$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
 				$lang = $doc->Language;
 			}
 			$langcode = substr($lang, 0, 2);
@@ -266,10 +286,9 @@ function we_tag_field($attribs){
 			}
 			break;
 		case 'language' :
-			$lang = weTag_getAttribute('outputlanguage', $attribs);
+			$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
 			if(!$lang){
-				$docAttr = weTag_getAttribute('doc', $attribs, 'self');
-				$doc = we_getDocForTag($docAttr);
+				$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', '', we_base_request::STRING));
 				$lang = $doc->Language;
 			}
 			$langcode = substr($lang, 0, 2);
@@ -287,6 +306,14 @@ function we_tag_field($attribs){
 				$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME, 'txt'), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 
 				$out = we_shop_vats::getVatRateForSite($normVal);
+			}
+			break;
+		case 'shopCategory' :
+			if(defined('SHOP_TABLE') && is_object($GLOBALS['lv'])){
+				$id = $GLOBALS['lv']->f('shopcategory');
+				$field = $show === 'vat' ? $vatfield : $catfield;
+				$out = we_shop_category::getFieldFromIDs($id, $field, false, 0, '', false, false, ',', $showpath, $rootdir);
+				break;
 			}
 			break;
 		case 'href' ://#6329: fixed for lv type=document. check later for other types! #6421: field type=href in we:block
@@ -471,7 +498,7 @@ function we_tag_field($attribs){
 				foreach($GLOBALS['lv']->calendar_struct['storage'] as $date){
 					if((($GLOBALS['lv']->calendar_struct['calendarCount'] > 0 || ($GLOBALS['lv']->calendar_struct['calendar'] === 'day' && $GLOBALS['lv']->calendar_struct['calendarCount'] >= 0)) && $GLOBALS['lv']->calendar_struct['calendarCount'] <= $GLOBALS['lv']->calendar_struct['numofentries']) && ((int) $date >= (int) $GLOBALS['lv']->calendar_struct['start_date'] && (int) $date <= (int) $GLOBALS['lv']->calendar_struct['end_date'])){
 						$show = ($GLOBALS['lv']->calendar_struct['calendar'] === 'year' ? 'month' : 'day');
-						$listviewname = weTag_getAttribute('listviewname', $attribs, $lvname);
+						$listviewname = weTag_getAttribute('listviewname', $attribs, $lvname, we_base_request::STRING);
 
 						$_linkAttribs['href'] = id_to_path($id) . '?' .
 								(isset($GLOBALS['lv']->contentTypes) && $GLOBALS['lv']->contentTypes ? ('we_lv_ct_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->contentTypes) . '&amp;') : '') .
@@ -544,7 +571,7 @@ function we_tag_field($attribs){
 					);
 		}
 		if(($GLOBALS['lv'] instanceof we_listview_category) && we_tag('ifHasChildren')){
-			$parentidname = weTag_getAttribute('parentidname', $attribs, 'we_parentid');
+			$parentidname = weTag_getAttribute('parentidname', $attribs, 'we_parentid', we_base_request::STRING);
 			$_linkAttribs['href'] = $_SERVER['SCRIPT_NAME'] . '?' . $parentidname . '=' . $GLOBALS['lv']->f('ID');
 
 			return ($name === 'we_href' ?

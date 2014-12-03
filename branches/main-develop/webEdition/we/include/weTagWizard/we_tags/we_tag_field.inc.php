@@ -92,6 +92,30 @@ $doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
 	), false, '');
 $triggerid = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('triggerid', FILE_TABLE, 'text/webedition', false, '') : null);
 $usekey = new weTagData_selectAttribute('usekey', weTagData_selectAttribute::getTrueFalse(), false, '');
+$showpath = new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, '');
+$rootdir = new weTagData_textAttribute('rootdir', false, '');
+$show = new weTagData_selectAttribute('show', array(
+	new weTagDataOption('category'),
+	new weTagDataOption('vat'),
+	//new weTagDataOption('both')
+	), false, '');
+//$this->Attributes[] = new weTagData_selectAttribute('getobject', weTagData_selectAttribute::getTrueFalse(), false, '');
+$catfield = new weTagData_selectAttribute('catfield', array(
+	new weTagDataOption('ID'),
+	new weTagDataOption('Category'),
+	new weTagDataOption('Path'),
+	new weTagDataOption('Title'),
+	new weTagDataOption('Description'),
+	new weTagDataOption('DestPrinciple')
+	), false, '');
+$vatfield = new weTagData_selectAttribute('vatfield', array(
+	new weTagDataOption('id'),
+	new weTagDataOption('vat'),
+	new weTagDataOption('text'),
+	new weTagDataOption('standard'),
+	new weTagDataOption('territory'),
+	new weTagDataOption('categories')
+	), false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('-', false, '', array(), array()),
@@ -112,6 +136,7 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('float', false, '', array($name, $hyperlink, $href, $target, $num_format, $triggerid), array($name)),
 	new weTagDataOption('int', false, 'object', array($name, $hyperlink, $href, $target, $triggerid), array($name)),
 	new weTagDataOption('shopVat', false, '', array(), array()),
+	new weTagDataOption('shopCategory', false, '', array($showpath, $rootdir, $show, $catfield, $vatfield), array()),
 	new weTagDataOption('checkbox', false, '', array($name), array($name)),
 	new weTagDataOption('country', false, '', array($outputlanguage, $doc), array()),
 	new weTagDataOption('language', false, '', array($outputlanguage, $doc), array())

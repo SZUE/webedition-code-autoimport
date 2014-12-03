@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_write($attribs){
-	$type = weTag_getAttribute('type', $attribs, 'document');
+	$type = weTag_getAttribute('type', $attribs, 'document', we_base_request::STRING);
 
 	switch($type){
 		case 'object':
@@ -39,45 +39,45 @@ function we_tag_write($attribs){
 			break;
 	}
 
-	$name = weTag_getAttribute('formname', $attribs, ((isset($GLOBALS['WE_FORM']) && $GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : 'we_global_form'));
+	$name = weTag_getAttribute('formname', $attribs, ((isset($GLOBALS['WE_FORM']) && $GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : 'we_global_form'), we_base_request::STRING);
 
-	$publish = weTag_getAttribute('publish', $attribs, false, true);
-	$triggerid = weTag_getAttribute('triggerid', $attribs, 0);
-	$charset = weTag_getAttribute('charset', $attribs, 'iso-8859-1');
-	$categories = weTag_getAttribute('categories', $attribs);
-	$classid = weTag_getAttribute('classid', $attribs);
-	$userid = weTag_getAttribute('userid', $attribs); // deprecated  use protected=true instead
-	$protected = weTag_getAttribute('protected', $attribs, false, true);
-	$admin = weTag_getAttribute('admin', $attribs);
-	$mail = weTag_getAttribute('mail', $attribs);
-	$mailfrom = weTag_getAttribute('mailfrom', $attribs);
-	$forceedit = weTag_getAttribute('forceedit', $attribs, false, true);
-	$workspaces = weTag_getAttribute('workspaces', $attribs);
-	$objname = preg_replace('/[^a-z0-9_-]/i', '', weTag_getAttribute('name', $attribs));
-	$onduplicate = ($objname === '' ? 'overwrite' : weTag_getAttribute('onduplicate', $attribs, 'increment'));
-	$onpredefinedname = weTag_getAttribute('onpredefinedname', $attribs, 'appendto');
-	$workflowname = weTag_getAttribute('workflowname', $attribs);
-	$workflowuserid = weTag_getAttribute('workflowuserid', $attribs, 0);
+	$publish = weTag_getAttribute('publish', $attribs, false, we_base_request::BOOL);
+	$triggerid = weTag_getAttribute('triggerid', $attribs, 0, we_base_request::INT);
+	$charset = weTag_getAttribute('charset', $attribs, 'iso-8859-1', we_base_request::STRING);
+	$categories = weTag_getAttribute('categories', $attribs, '', we_base_request::STRING);
+	$classid = weTag_getAttribute('classid', $attribs, 0, we_base_request::INT);
+	$userid = weTag_getAttribute('userid', $attribs, '', we_base_request::STRING); // deprecated  use protected=true instead
+	$protected = weTag_getAttribute('protected', $attribs, false, we_base_request::BOOL);
+	$admin = weTag_getAttribute('admin', $attribs, '', we_base_request::STRING);
+	$mail = weTag_getAttribute('mail', $attribs, '', we_base_request::STRING); //FIXME: email_list
+	$mailfrom = weTag_getAttribute('mailfrom', $attribs, '', we_base_request::EMAIL);
+	$forceedit = weTag_getAttribute('forceedit', $attribs, false, we_base_request::BOOL);
+	$workspaces = weTag_getAttribute('workspaces', $attribs, '', we_base_request::INTLISTA);
+	$objname = preg_replace('/[^a-z0-9_-]/i', '', weTag_getAttribute('name', $attribs, '', we_base_request::STRING));
+	$onduplicate = ($objname === '' ? 'overwrite' : weTag_getAttribute('onduplicate', $attribs, 'increment', we_base_request::STRING));
+	$onpredefinedname = weTag_getAttribute('onpredefinedname', $attribs, 'appendto', we_base_request::STRING);
+	$workflowname = weTag_getAttribute('workflowname', $attribs, '', we_base_request::STRING);
+	$workflowuserid = weTag_getAttribute('workflowuserid', $attribs, 0, we_base_request::INT);
 	$doworkflow = ($workflowname != '' && $workflowuserid != 0);
-	$searchable = weTag_getAttribute('searchable', $attribs, true, true);
+	$searchable = weTag_getAttribute('searchable', $attribs, true, we_base_request::BOOL);
 	if(we_base_request::_(we_base_request::BOOL, 'edit_' . $type)){
 
 		switch($type){
 			case 'document':
-				$tid = weTag_getAttribute('tid', $attribs);
-				$doctype = weTag_getAttribute('doctype', $attribs);
+				$tid = weTag_getAttribute('tid', $attribs, 0, we_base_request::INT);
+				$doctype = weTag_getAttribute('doctype', $attribs, '', we_base_request::STRING);
 				$ok = we_webEditionDocument::initDocument($name, $tid, $doctype, $categories, true);
 				break;
 			case 'object':
-				$parentid = weTag_getAttribute('parentid', $attribs);
+				$parentid = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
 				$ok = we_objectFile::initObject(intval($classid), $name, $categories, intval($parentid), true);
 				break;
 		}
 
 		if($ok){
 			$isOwner = ($protected && isset($_SESSION['webuser']['ID']) ?
-					($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->WebUserID) :
-					$userid && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->getElement($userid)));
+							($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->WebUserID) :
+							$userid && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->getElement($userid)));
 
 			$isAdmin = $admin && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin];
 
@@ -118,13 +118,12 @@ function we_tag_write($attribs){
 				}
 				$GLOBALS['we_doc'] = &$GLOBALS['we_' . $type][$name];
 				$GLOBALS['we_doc']->IsSearchable = $searchable;
-				if(strlen($workspaces) > 0 && $type === 'object'){
-					$wsArr = makeArrayFromCSV($workspaces);
+				if($workspaces && $type === 'object'){
 					$tmplArray = array();
-					foreach($wsArr as $wsId){
+					foreach($workspaces as $wsId){
 						$tmplArray[] = $GLOBALS['we_' . $type][$name]->getTemplateFromWs($wsId);
 					}
-					$GLOBALS['we_' . $type][$name]->Workspaces = makeCSVFromArray($wsArr, true);
+					$GLOBALS['we_' . $type][$name]->Workspaces = makeCSVFromArray($workspaces, true);
 					$GLOBALS['we_' . $type][$name]->Templates = makeCSVFromArray($tmplArray, true);
 				}
 
@@ -226,8 +225,8 @@ function we_tag_write($attribs){
 						case 'object':
 							$classname = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid));
 							$mailtext = sprintf(g_l('global', '[std_mailtext_newObj]'), $path, $classname) . "\n" .
-								($triggerid ? id_to_path($triggerid) . '?we_objectID=' : 'ObjectID: ') .
-								$GLOBALS['we_object'][$name]->OF_ID;
+									($triggerid ? id_to_path($triggerid) . '?we_objectID=' : 'ObjectID: ') .
+									$GLOBALS['we_object'][$name]->OF_ID;
 							$subject = g_l('global', '[std_subject_newObj]');
 							break;
 						default:
@@ -356,7 +355,7 @@ function checkAndCreateQuicktime($formname, $type = 'we_document'){
 						// document has already an image
 						// so change binary data
 						$quicktimeDocument->initByID(
-							$quicktimeId);
+								$quicktimeId);
 					}
 
 					$quicktimeDocument->Filename = $_SESSION[$_quicktimeDataId]['fileName'];
@@ -498,7 +497,7 @@ function checkAndCreateBinary($formname, $type = 'we_document'){
 						// document has already an image
 						// so change binary data
 						$binaryDocument->initByID(
-							$binaryId);
+								$binaryId);
 					}
 
 					$binaryDocument->Filename = $_SESSION[$_binaryDataId]['fileName'];

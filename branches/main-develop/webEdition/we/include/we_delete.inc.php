@@ -374,7 +374,7 @@ if(!$wfchk){
 	} else {
 		$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING);
 	}
-	print we_html_element::jsScript(JS_DIR . 'windows.js') .
+	echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 		we_html_element::jsElement($script);
 
 	//exit;
@@ -384,7 +384,7 @@ if(!$wfchk){
 
 
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-	print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement(
+	echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement(
 					($retVal ? //	document deleted -> go to seeMode startPage
 						we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');" :
 						we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR))
@@ -398,25 +398,25 @@ if($wecmd0 != "delete_single_document"){ // no select mode in delete_single_docu
 	switch($table){
 		case FILE_TABLE:
 			if(permissionhandler::hasPerm("DELETE_DOC_FOLDER") && permissionhandler::hasPerm("DELETE_DOCUMENT")){
-				print 'top.treeData.setstate(top.treeData.tree_states["select"]);';
+				echo 'top.treeData.setstate(top.treeData.tree_states["select"]);';
 			} elseif(permissionhandler::hasPerm("DELETE_DOCUMENT")){
-				print 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
+				echo 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
 			}
 			break;
 		case TEMPLATES_TABLE:
 			if(permissionhandler::hasPerm("DELETE_TEMP_FOLDER") && permissionhandler::hasPerm("DELETE_TEMPLATE")){
-				print 'top.treeData.setstate(top.treeData.tree_states["select"]);';
+				echo 'top.treeData.setstate(top.treeData.tree_states["select"]);';
 			} elseif(permissionhandler::hasPerm("DELETE_TEMPLATE")){
-				print 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
+				echo 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
 			}
 			break;
 		case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 1):
 			if(permissionhandler::hasPerm("DELETE_OBJECTFILE")){
-				print 'top.treeData.setstate(top.treeData.tree_states["select"]);';
+				echo 'top.treeData.setstate(top.treeData.tree_states["select"]);';
 			}
 			break;
 		default:
-			print 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
+			echo 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
 	}
 }
 ?>
@@ -438,7 +438,7 @@ function we_submitForm(target, url) {
 	if (!sel) {
 		top.toggleBusy(0);
 <?php
-print we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
+echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
 ?>
 		return;
 	}

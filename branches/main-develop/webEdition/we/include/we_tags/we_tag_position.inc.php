@@ -32,13 +32,11 @@ function we_tag_position($attribs){
 	}
 
 	//	here we get the needed attributes
-	$type = weTag_getAttribute("type", $attribs);
-	$_reference = weTag_getAttribute("reference", $attribs);
-	$format = weTag_getAttribute("format", $attribs, 1);
+	$_reference = weTag_getAttribute("reference", $attribs, '', we_base_request::STRING);
 	//	this value we will return later
 	$_retPos = "";
 
-	switch($type){
+	switch(($type = weTag_getAttribute("type", $attribs, '', we_base_request::STRING))){
 
 		case "listview" : //	inside a listview, we take direct global listview object
 			$_retPos = ($lv->start + $lv->count);
@@ -56,7 +54,7 @@ function we_tag_position($attribs){
 		case "linklist" : //	look in fkt we_tag_linklist and class we_linklist for details
 			$missingAttrib = attributFehltError($attribs, "reference", __FUNCTION__); // seperate because of #6890
 			if($missingAttrib){
-				print $missingAttrib;
+				echo $missingAttrib;
 				return "";
 			}
 			foreach($GLOBALS['we_position'][$type] as $name => $arr){
@@ -76,7 +74,7 @@ function we_tag_position($attribs){
 			//	first we must get right array !!!
 			$missingAttrib = attributFehltError($attribs, "reference", __FUNCTION__);
 			if($missingAttrib){
-				print $missingAttrib;
+				echo $missingAttrib;
 				return "";
 			}
 			foreach($GLOBALS['we_position'][$type] as $name => $arr){
@@ -94,18 +92,12 @@ function we_tag_position($attribs){
 	}
 
 	//	convert to desired format
-	switch($format){
-
+	switch(weTag_getAttribute("format", $attribs, 1, we_base_request::STRING)){
 		case 'a' :
 			return we_base_util::number2System($_retPos);
-			break;
-
 		case 'A' :
 			return strtoupper(we_base_util::number2System($_retPos));
-			break;
-
 		default :
 			return $_retPos;
-			break;
 	}
 }

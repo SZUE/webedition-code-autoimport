@@ -37,7 +37,7 @@ class we_messaging_headerMsg{
 	}
 
 	static function pCSS(){
-		print we_html_element::cssElement('
+		echo we_html_element::cssElement('
 			table.msgheadertable {
 				margin:2px 0px 1em auto;
 				border-spacing:0px;

@@ -23,9 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifRegisteredUserCanChange($attribs){
-	$admin = weTag_getAttribute('admin', $attribs);
-	$userid = weTag_getAttribute('userid', $attribs); // deprecated  use protected=true instead
-	$protected = weTag_getAttribute('protected', $attribs, false, true);
+	$admin = weTag_getAttribute('admin', $attribs, '', we_base_request::STRING);
+	$userid = weTag_getAttribute('userid', $attribs, '', we_base_request::STRING); // deprecated  use protected=true instead
+	$protected = weTag_getAttribute('protected', $attribs, false, we_base_request::BOOL);
 	if(!(isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID']))){
 		return false;
 	}
@@ -35,7 +35,6 @@ function we_tag_ifRegisteredUserCanChange($attribs){
 
 	if(isset($GLOBALS['lv'])){
 		return ($protected ? $GLOBALS['lv']->f('wedoc_WebUserID') : $GLOBALS['lv']->f($userid)) == $_SESSION['webuser']['ID'];
-	} else {
-		return ($protected ? $GLOBALS['we_doc']->WebUserID : $GLOBALS['we_doc']->getElement($userid)) == $_SESSION['webuser']['ID'];
 	}
+	return ($protected ? $GLOBALS['we_doc']->WebUserID : $GLOBALS['we_doc']->getElement($userid)) == $_SESSION['webuser']['ID'];
 }

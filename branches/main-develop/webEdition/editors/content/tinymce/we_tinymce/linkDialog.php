@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 7741 $
- * $Author: mokraemer $
- * $Date: 2014-06-13 22:01:55 +0200 (Fr, 13 Jun 2014) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -38,7 +38,7 @@ $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['us
 $dialog = new we_dialog_Hyperlink('', '', 0, 0, $noInternals);
 $dialog->initByHttp();
 $dialog->registerCmdFn('weDoLinkCmd');
-print $dialog->getHTML();
+echo $dialog->getHTML();
 
 function weDoLinkCmd($args){
 	if((!isset($args['href'])) || $args['href'] == we_base_link::EMPTY_EXT){

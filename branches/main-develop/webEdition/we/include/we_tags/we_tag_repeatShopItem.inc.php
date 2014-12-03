@@ -36,14 +36,14 @@ function we_tag_repeatShopItem($attribs){
 		echo modulFehltError('Shop', __FUNCTION__);
 		return;
 	}
-	$shopname = weTag_getAttribute("shopname", $attribs);
+	$shopname = weTag_getAttribute("shopname", $attribs, '', we_base_request::STRING);
 
 	//internal Attribute
-	$_type = weTag_getAttribute('_type', $attribs);
+	$_type = weTag_getAttribute('_type', $attribs, '', we_base_request::STRING);
 	switch($_type){
 		case 'start':
 			if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__))){
-				print $foo;
+				echo $foo;
 				return;
 			}
 			we_base_moduleInfo::isActive('shop');

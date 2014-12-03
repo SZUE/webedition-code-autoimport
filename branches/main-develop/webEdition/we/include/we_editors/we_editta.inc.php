@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -32,13 +33,13 @@ $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS'][
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 if(we_base_request::_(we_base_request::BOOL, "ok")){
-	$we_doc->setElement($name . 'inlineedit', we_base_request::_(we_base_request::TOGGLE, 'inlineedit'));
-	$we_doc->setElement($name . 'forbidphp', we_base_request::_(we_base_request::TOGGLE, 'forbidphp'));
-	$we_doc->setElement($name . 'forbidhtml', we_base_request::_(we_base_request::TOGGLE, 'forbidhtml'));
-	$we_doc->setElement($name . 'removefirstparagraph', we_base_request::_(we_base_request::TOGGLE, 'removefirstparagraph'));
-	$we_doc->setElement($name . 'xml', we_base_request::_(we_base_request::TOGGLE, 'xml'));
-	$we_doc->setElement($name . 'dhtmledit', we_base_request::_(we_base_request::TOGGLE, 'dhtmledit'));
-	$we_doc->setElement($name . 'showmenus', we_base_request::_(we_base_request::TOGGLE, 'showmenus'));
+	$we_doc->setElement($name . 'inlineedit', (we_base_request::_(we_base_request::BOOL, 'inlineedit') ? 'on' : 'off'));
+	$we_doc->setElement($name . 'forbidphp', (we_base_request::_(we_base_request::BOOL, 'forbidphp') ? 'on' : 'off'));
+	$we_doc->setElement($name . 'forbidhtml', (we_base_request::_(we_base_request::BOOL, 'forbidhtml') ? 'on' : 'off'));
+	$we_doc->setElement($name . 'removefirstparagraph', (we_base_request::_(we_base_request::BOOL, 'removefirstparagraph') ? 'on' : 'off'));
+	$we_doc->setElement($name . 'xml', (we_base_request::_(we_base_request::BOOL, 'xml') ? 'on' : 'off'));
+	$we_doc->setElement($name . 'dhtmledit', (we_base_request::_(we_base_request::BOOL, 'dhtmledit') ? 'on' : 'off'));
+	$we_doc->setElement($name . 'showmenus', (we_base_request::_(we_base_request::BOOL, 'showmenus') ? 'on' : 'off'));
 	$we_doc->setElement($name . 'commands', we_base_request::_(we_base_request::STRINGC, 'commands'));
 	$we_doc->setElement($name . 'contextmenu', we_base_request::_(we_base_request::STRINGC, 'contextmenu'));
 	$we_doc->setElement($name . 'height', we_base_request::_(we_base_request::INT, 'height', 50));
@@ -51,19 +52,19 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
 	$js = 'opener._EditorFrame.setEditorIsHot(true);'
-		. ((we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) &&
-		$we_doc->getElement($name . 'dhtmledit') === 'on' &&
-		$we_doc->getElement($name . 'inlineedit') === 'on' ? 'opener.setScrollTo();opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' :
-			'opener.we_cmd("object_reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");')
-		. 'top.close();';
+			. ((we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) &&
+			$we_doc->getElement($name . 'dhtmledit') === 'on' &&
+			$we_doc->getElement($name . 'inlineedit') === 'on' ? 'opener.setScrollTo();opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' :
+					'opener.we_cmd("object_reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");')
+			. 'top.close();';
 } else {
 	$js = 'function okFn(){'
-		. 'document.forms[0].submit();'
-		. '}';
+			. 'document.forms[0].submit();'
+			. '}';
 }
 
 echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(//FIXME: missing title
-		we_html_tools::getHtmlInnerHead() . we_html_element::jsElement($js) . STYLESHEET), false);
+				we_html_tools::getHtmlInnerHead() . we_html_element::jsElement($js) . STYLESHEET), false);
 
 $out = '<body onload="top.focus();" class="weDialogBody"><form name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '">' . we_html_tools::hidden('ok', 1);
 
@@ -285,6 +286,6 @@ $cancel_button = we_html_button::create_button("cancel", "javascript:top.close()
 $okbut = we_html_button::create_button("ok", "javascript:okFn();");
 $buttons = we_html_button::position_yes_no_cancel($okbut, null, $cancel_button);
 $out .= we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('modules_object', '[textarea_field]') . ' "' . $we_doc->getElement($name) . '" - ' . g_l('modules_object', '[attributes]')) .
-	'</form></body></html>';
+		'</form></body></html>';
 
-print $out;
+echo $out;

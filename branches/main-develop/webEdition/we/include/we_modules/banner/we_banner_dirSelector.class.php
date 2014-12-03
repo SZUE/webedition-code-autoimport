@@ -303,15 +303,15 @@ top.clearEntries();
 			$this->db->query("SELECT ID,Text FROM " . $this->table . " WHERE Path='" . $this->db->escape($folder->Path) . "' AND ID != " . intval($this->we_editDirID));
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('modules_banner', '[group_path_exists]'), $folder->Path);
-				print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('/[%/\\"\']/', $folder->Text)){
 					$we_responseText = g_l('modules_banner', '[wrongtext]');
-					print we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				} else {
 					if(f('SELECT Text FROM ' . $this->table . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
 						$folder->we_save();
-						print 'var ref;
+						echo 'var ref;
 if(top.opener.top.content.updateEntry){
 	ref = top.opener.top.content;
 	ref.updateEntry(' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1);

@@ -48,4 +48,4 @@ $_body = we_html_element::htmlBody(array(
 		'onload' => 'setFrameSize();',
 		'onresize' => 'setFrameSize()'), $bodyContent);
 
-print we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($_tabHead) . $_body);
+echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($_tabHead) . $_body);

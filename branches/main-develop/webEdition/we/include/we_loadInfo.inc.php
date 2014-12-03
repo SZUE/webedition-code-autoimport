@@ -28,7 +28,7 @@ echo we_html_tools::getHtmlTop() .
 <body>
 	<span class="defaultfont">
 		<?php
-		print g_l('global', '[load_menu_info]');
+		echo g_l('global', '[load_menu_info]');
 		?>
 	</span>
 </body>

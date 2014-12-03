@@ -30,90 +30,89 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 		we_html_element::jsElement(
 			'self.focus();
 
-		function removeAllCats(){
-			if(categories_edit.itemCount>0){
-				while(categories_edit.itemCount>0){
-					categories_edit.delItem(categories_edit.itemCount);
-				}
-			}
+function removeAllCats(){
+	if(categories_edit.itemCount>0){
+		while(categories_edit.itemCount>0){
+			categories_edit.delItem(categories_edit.itemCount);
 		}
+	}
+}
 
-		function addCat(paths){
-			var path = paths.split(",");
-			var found = false;
-			var j = 0;
-			for (var i = 0; i < path.length; i++) {
-				if(path[i]!="") {
-					found = false;
-					for(j=0;j<categories_edit.itemCount;j++){
-						if(categories_edit.form.elements[categories_edit.name+"_variant0_"+categories_edit.name+"_item"+j].value == path[i]) {
-							found = true;
-						}
-					}
-					if(!found) {
-						categories_edit.addItem();
-						categories_edit.setItem(0,(categories_edit.itemCount-1),path[i]);
-					}
+function addCat(paths){
+	var path = paths.split(",");
+	var found = false;
+	var j = 0;
+	for (var i = 0; i < path.length; i++) {
+		if(path[i]!="") {
+			found = false;
+			for(j=0;j<categories_edit.itemCount;j++){
+				if(categories_edit.form.elements[categories_edit.name+"_variant0_"+categories_edit.name+"_item"+j].value == path[i]) {
+					found = true;
 				}
 			}
-			categories_edit.showVariant(0);
+			if(!found) {
+				categories_edit.addItem();
+				categories_edit.setItem(0,(categories_edit.itemCount-1),path[i]);
+			}
 		}
+	}
+	categories_edit.showVariant(0);
+}
 
-		function we_cmd(){
-			var args = "";
-			var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+function we_cmd(){
+	var args = "";
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+escape(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
-			switch (arguments[0]){
-				case "openDirselector":
-					new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
-					break;
-				case "openCatselector":
-					new jsWindow(url,"we_cateditor",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
-					break;
-				default:
-					for(var i = 0; i < arguments.length; i++){
-						args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-					}
-					eval("opener.we_cmd("+args+")");
+	switch (arguments[0]){
+		case "openDirselector":
+			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+			break;
+		case "openCatselector":
+			new jsWindow(url,"we_cateditor",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+			break;
+		default:
+			for(var i = 0; i < arguments.length; i++){
+				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
 			}
+			eval("opener.we_cmd("+args+")");
+	}
+}
+var lastCFolder;
+function toggleButton() {
+	if(document.getElementById(\'CreateTemplate\').checked) {
+		weButton.enable(\'select\');
+		if(acin = document.getElementById(\'yuiAcInputTemplate\')) {
+			document.getElementById(\'yuiAcInputTemplate\').disabled=false;
+			lastCFolder = acin.value;
+			acin.readOnly=false;
 		}
-		var lastCFolder;
-		function toggleButton() {
-			if(document.getElementById(\'CreateTemplate\').checked) {
-				weButton.enable(\'select\');
-				if(acin = document.getElementById(\'yuiAcInputTemplate\')) {
-					document.getElementById(\'yuiAcInputTemplate\').disabled=false;
-					lastCFolder = acin.value;
-					acin.readOnly=false;
-				}
-				return true;
-			} else {
-				weButton.disable(\'select\');
-				if(acin = document.getElementById(\'yuiAcInputTemplate\')) {
-					document.getElementById(\'yuiAcInputTemplate\').disabled=true;
-					acin.readOnly=true;
-					acin.value = lastCFolder;
-				}
-				return true;
-			}
-			return false;
+		return true;
+	} else {
+		weButton.disable(\'select\');
+		if(acin = document.getElementById(\'yuiAcInputTemplate\')) {
+			document.getElementById(\'yuiAcInputTemplate\').disabled=true;
+			acin.readOnly=true;
+			acin.value = lastCFolder;
 		}
-		function incTemp(val) {
-			if(val) {
-				document.getElementsByName("CreateMasterTemplate")[0].disabled=false;
-				document.getElementsByName("CreateIncludedTemplate")[0].disabled=false;
-				document.getElementById("label_CreateMasterTemplate").style.color = "black";
-				document.getElementById("label_CreateIncludedTemplate").style.color = "black";
-			} else {
-				document.getElementsByName("CreateMasterTemplate")[0].checked=false;
-				document.getElementsByName("CreateIncludedTemplate")[0].checked=false;
-				document.getElementsByName("CreateMasterTemplate")[0].disabled=true;
-				document.getElementsByName("CreateIncludedTemplate")[0].disabled=true;
-				document.getElementById("label_CreateMasterTemplate").style.color = "grey";
-				document.getElementById("label_CreateIncludedTemplate").style.color = "grey";
-			}
-		}
-		');
+		return true;
+	}
+	return false;
+}
+function incTemp(val) {
+	if(val) {
+		document.getElementsByName("CreateMasterTemplate")[0].disabled=false;
+		document.getElementsByName("CreateIncludedTemplate")[0].disabled=false;
+		document.getElementById("label_CreateMasterTemplate").style.color = "black";
+		document.getElementById("label_CreateIncludedTemplate").style.color = "black";
+	} else {
+		document.getElementsByName("CreateMasterTemplate")[0].checked=false;
+		document.getElementsByName("CreateIncludedTemplate")[0].checked=false;
+		document.getElementsByName("CreateMasterTemplate")[0].disabled=true;
+		document.getElementsByName("CreateIncludedTemplate")[0].disabled=true;
+		document.getElementById("label_CreateMasterTemplate").style.color = "grey";
+		document.getElementById("label_CreateIncludedTemplate").style.color = "grey";
+	}
+}');
 
 	$yes_button = we_html_button::create_button("ok", "form:we_form");
 	$cancel_button = we_html_button::create_button("cancel", "javascript:self.close();");
@@ -171,7 +170,6 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 	$yuiSuggest->getYuiJs();
 	'</body></html>';
 } else {
-
 	$bodyAttribs = array(
 		"bgcolor" => "#FFFFFF",
 		"marginwidth" => 15,
@@ -180,7 +178,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 		"topmargin" => 10
 	);
 	$fr = (we_base_request::_(we_base_request::BOOL, 'finish') ?
-			new we_fragment_copyFolderFinish("we_copyFolderFinish", 1, 0, $bodyAttribs) :
-			new we_fragment_copyFolder("we_copyFolder", 1, 0, $bodyAttribs)
+			new we_fragment_copyFolderFinish('we_copyFolderFinish', 1, 0, $bodyAttribs) :
+			new we_fragment_copyFolder('we_copyFolder', 1, 0, $bodyAttribs)
 		);
 }

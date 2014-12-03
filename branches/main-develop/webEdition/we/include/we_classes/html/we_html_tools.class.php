@@ -302,11 +302,11 @@ abstract class we_html_tools{
 		$countrycode = array_search($langcode, getWECountries());
 
 		$attributes = array(
-			'name' => $name, 
-			'id' => ($id ?: $name), 
-			'size' => $size, 
-			'width' => $width, 
-			'style' => (isset($attribs['style']) ? $attribs['style'] : ''), 
+			'name' => $name,
+			'id' => ($id ?: $name),
+			'size' => $size,
+			'width' => $width,
+			'style' => (isset($attribs['style']) ? $attribs['style'] : ''),
 			'class' => 'weSelect ' . $cls
 		);
 		if($multiple){
@@ -441,7 +441,7 @@ abstract class we_html_tools{
 	}
 
 	static function pExtensionPopup($name, $selected, $extensions){
-		print self::getExtensionPopup($name, $selected, $extensions);
+		echo self::getExtensionPopup($name, $selected, $extensions);
 	}
 
 	static function getPixel($w, $h, $border = 0){
@@ -455,7 +455,7 @@ abstract class we_html_tools{
 	}
 
 	static function pPixel($w, $h){
-		print self::getPixel($w, $h);
+		echo self::getPixel($w, $h);
 	}
 
 	static function hidden($name, $value, $attribs = null){
@@ -686,7 +686,7 @@ abstract class we_html_tools{
 	//FIXME: remove deprecated
 	public static function htmlTop($title = 'webEdition', $charset = '', $doctype = ''){
 		t_e('deprecated');
-		print self::getHtmlTop($title, $charset, $doctype);
+		echo self::getHtmlTop($title, $charset, $doctype);
 	}
 
 	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '', $expand = false, $closeHtml = false, $closeHead = false){

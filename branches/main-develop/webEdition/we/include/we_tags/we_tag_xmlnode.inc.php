@@ -48,11 +48,11 @@ unset(' . $unq . ');?>';
  */
 function we_tag_xmlnode($attribs){
 	if(($foo = attributFehltError($attribs, "xpath", __FUNCTION__))){
-		print $foo;
+		echo $foo;
 		return false;
 	}
-	$feed = weTag_getAttribute('feed', $attribs);
-	$url = weTag_getAttribute('url', $attribs);
+	$feed = weTag_getAttribute('feed', $attribs, '', we_base_request::STRING);
+	$url = weTag_getAttribute('url', $attribs, '', we_base_request::URL);
 
 	if(!isset($GLOBALS["xpaths"])){
 		$GLOBALS["xpaths"] = array();

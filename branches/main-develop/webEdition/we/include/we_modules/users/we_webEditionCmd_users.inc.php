@@ -30,7 +30,7 @@
 				new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 	<?php
 } else {
-	print we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+	echo we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 }
 ?>
 			break;
@@ -65,7 +65,7 @@
 				}
 	<?php
 } else {
-	print we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+	echo we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 }
 ?>
 			break;

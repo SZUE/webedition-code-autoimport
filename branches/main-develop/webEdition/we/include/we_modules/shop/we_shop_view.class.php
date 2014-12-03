@@ -1212,7 +1212,7 @@ function submitForm() {
 				// determine which articles should be shown >>>
 
 
-				print we_html_element::jsElement('
+				echo we_html_element::jsElement('
 		self.focus();
 
 		function selectArticle(articleInfo) {
@@ -1337,7 +1337,7 @@ function submitForm() {
 				}
 
 
-				print we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
+				echo we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
 						'</form>
 		</body>
 		</html>';
@@ -1387,7 +1387,7 @@ function submitForm() {
 
 			case 'edit_shop_cart_custom_field':
 
-				print we_html_element::jsElement('function we_submit() {
+				echo we_html_element::jsElement('function we_submit() {
 				elem = document.getElementById("cartfieldname");
 
 				if (elem && elem.value) {
@@ -1435,13 +1435,13 @@ function submitForm() {
 					)
 				);
 
-				print we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_shop_field]'));
+				echo we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_shop_field]'));
 				unset($saveBut);
 				unset($cancelBut);
 				unset($parts);
 				unset($val);
 				unset($fieldHtml);
-				print '</form></body></html>';
+				echo '</form></body></html>';
 				exit;
 
 			case 'save_shop_cart_custom_field':
@@ -1465,7 +1465,7 @@ function submitForm() {
 					$jsCmd = we_message_reporting::getShowMessageCall(g_l('modules_shop', '[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 
-				print we_html_element::jsElement($jsCmd . 'window.close();') .
+				echo we_html_element::jsElement($jsCmd . 'window.close();') .
 						'</head><body></body></html>';
 				unset($serialOrder);
 				unset($strSerialOrder);
@@ -1524,7 +1524,7 @@ function submitForm() {
 				);
 
 
-				print '</head>
+				echo '</head>
 						<body class="weDialogBody">
 						<form name="we_form" target="edbody">' .
 						we_html_tools::hidden('bid', $_REQUEST['bid']) .
@@ -1672,7 +1672,7 @@ function submitForm() {
 					}
 				}
 
-				print '</head>
+				echo '</head>
 						<body class="weDialogBody">
 						<form name="we_form" target="edbody">' .
 						we_html_tools::hidden('bid', $_REQUEST['bid']) .
@@ -1712,7 +1712,7 @@ function submitForm() {
 		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 			case 'new_raw':
 				$this->raw = new weShop();
-				print we_html_element::jsElement(
+				echo we_html_element::jsElement(
 								$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
 								$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 				);
@@ -1726,7 +1726,7 @@ function submitForm() {
 				break;
 			case 'save_raw':
 				if($this->raw->filenameNotValid()){
-					print we_html_element::jsElement(
+					echo we_html_element::jsElement(
 									we_message_reporting::getShowMessageCall(g_l('modules_shop', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
@@ -1752,7 +1752,7 @@ attribs["tooltip"]="";' .
 								$this->topFrame . '.drawTree();' :
 								$this->topFrame . '.updateEntry(' . $this->raw->ID . ',"' . $tt . '");'
 						);
-				print we_html_element::jsElement(
+				echo we_html_element::jsElement(
 								$js .
 								we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_saved_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
