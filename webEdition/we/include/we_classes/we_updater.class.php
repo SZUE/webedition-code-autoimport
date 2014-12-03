@@ -388,8 +388,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		}
 	}
 
-	static function fixHistory(){
-		$db = $GLOBALS['DB_WE'];
+	static function fixHistory(we_database_base $db){
 		if($db->isColExist(HISTORY_TABLE, 'ID')){
 			$db->query('SELECT h1.ID FROM ' . HISTORY_TABLE . ' h1 LEFT JOIN ' . HISTORY_TABLE . ' h2 ON h1.DID = h2.DID AND h1.DocumentTable = h2.DocumentTable AND h1.ModDate = h2.ModDate WHERE h1.ID < h2.ID');
 			$tmp = $db->getAll(true);
@@ -418,7 +417,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 	}
 
 	public function doUpdate(){
-		$db = $GLOBALS['DB_WE'];
+		$db = new DB_WE();
 		self::replayUpdateDB();
 
 		self::updateTables($db);

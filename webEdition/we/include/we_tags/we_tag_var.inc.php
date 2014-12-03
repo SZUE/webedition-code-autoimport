@@ -32,7 +32,7 @@ function we_tag_var($attribs){
 	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL); // #3771
 	$format = weTag_getAttribute('format', $attribs, '', we_base_request::STRING);
 	$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, '', we_base_request::STRING), false);
-	$varType = weTag_getAttribute('varType', $attribs, we_base_request::STRING);
+	$varType = weTag_getAttribute('varType', $attribs, '', we_base_request::STRING);
 	$prepareSQL = weTag_getAttribute('prepareSQL', $attribs, false, we_base_request::BOOL);
 
 	switch($type){
