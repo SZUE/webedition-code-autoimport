@@ -166,7 +166,7 @@ abstract class we_base_delete{
 						if($DB_WE->isColExist(OBJECT_X_TABLE . $testclassID, we_object::QUERY_PREFIX . $tableID)){
 
 							//das loeschen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
-							$DB_WE->query('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($testclassID) . ' WHERE ' . we_object::QUERY_PREFIX . $tableID . '= ' . intval($id));
+							$DB_WE->query('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($testclassID) . ' WHERE ' . we_object::QUERY_PREFIX . $tableID . '=' . intval($id));
 							$foos = $DB_WE->getAll(true);
 							foreach($foos as $affectedobjectsID){
 								$obj = new we_objectFile();

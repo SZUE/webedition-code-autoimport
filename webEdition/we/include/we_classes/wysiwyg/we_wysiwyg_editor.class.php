@@ -119,7 +119,7 @@ class we_wysiwyg_editor{
 		if($formats){
 			$tmp = '';
 			$formatsArr = explode(',', $this->formats);
-			foreach(explode(',',$formats) as $f){
+			foreach(explode(',', $formats) as $f){
 				if(in_array(trim($f, ', '), $formatsArr)){
 					$tmp .= trim($f, ', ') . ',';
 				}
@@ -160,15 +160,15 @@ class we_wysiwyg_editor{
 
 		//FIXME: what to do with scripts??
 		/*
-		if($inlineedit && $value){
-			//old editor's code
-			$value = strtr($value, array("\\" => "\\\\", "\n" => '\n', "\r" => '\r'));
-			$value = str_replace(array('script', 'Script', 'SCRIPT',), array('##scr#ipt##', '##Scr#ipt##', '##SCR#IPT##',), $value);
-			$value = preg_replace('%<\?xml[^>]*>%i', '', $value);
-			$value = str_replace(array('<?', '?>',), array('||##?##||', '##||?||##'), $value);
-		}
-         *
-         */
+		  if($inlineedit && $value){
+		  //old editor's code
+		  $value = strtr($value, array("\\" => "\\\\", "\n" => '\n', "\r" => '\r'));
+		  $value = str_replace(array('script', 'Script', 'SCRIPT',), array('##scr#ipt##', '##Scr#ipt##', '##SCR#IPT##',), $value);
+		  $value = preg_replace('%<\?xml[^>]*>%i', '', $value);
+		  $value = str_replace(array('<?', '?>',), array('||##?##||', '##||?||##'), $value);
+		  }
+		 *
+		 */
 
 		$this->setToolbarElements();
 		$this->setFilteredElements();
@@ -573,7 +573,7 @@ function weWysiwygSetHiddenText(arg) {
 		if(preg_match_all('/src="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)/i', $editValue, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[1]));
-				$editValue = str_ireplace('src="' . we_base_link::TYPE_INT_PREFIX . $reg[1], 'src="' . $path . "?id=" . $reg[1] . '&time=' . $t, $editValue);
+				$editValue = str_ireplace('src="' . we_base_link::TYPE_INT_PREFIX . $reg[1], 'src="' . ($path ? $path . "?id=" . $reg[1] . '&time=' . $t : ICON_DIR . 'no_image.gif'), $editValue);
 			}
 		}
 		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '([^" ]+)/i', $editValue, $regs, PREG_SET_ORDER)){
@@ -766,55 +766,55 @@ function weWysiwygSetHiddenText(arg) {
 		$rows = $this->getToolbarRows();
 		$editValue = $this->parseInternalImageSrc($this->value);
 
-			list($lang) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
+		list($lang) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
 
-			//write theme_advanced_buttons_X
-			$tinyRows = '';
-			$allCommands = array();
-			$i = 0;
-			$k = 1;
-			$pastetext = 0;
+		//write theme_advanced_buttons_X
+		$tinyRows = '';
+		$allCommands = array();
+		$i = 0;
+		$k = 1;
+		$pastetext = 0;
 
-			foreach($rows as $outer){
-				$tinyRows .= 'theme_advanced_buttons' . $k . ' : "';
-				$j = 0;
-				foreach($outer as $inner){
-					if(!$rows[$i][$j]->cmd){
-						$tinyRows .= $rows[$i][$j]->conditional ? '' : 'separator,';
-					} else if(self::wysiwygCmdToTiny($rows[$i][$j]->cmd)){
-						$tinyRows .= self::wysiwygCmdToTiny($rows[$i][$j]->cmd) . ',';
-						$allCommands[] .= self::wysiwygCmdToTiny($rows[$i][$j]->cmd);
-					}
-					$j++;
+		foreach($rows as $outer){
+			$tinyRows .= 'theme_advanced_buttons' . $k . ' : "';
+			$j = 0;
+			foreach($outer as $inner){
+				if(!$rows[$i][$j]->cmd){
+					$tinyRows .= $rows[$i][$j]->conditional ? '' : 'separator,';
+				} else if(self::wysiwygCmdToTiny($rows[$i][$j]->cmd)){
+					$tinyRows .= self::wysiwygCmdToTiny($rows[$i][$j]->cmd) . ',';
+					$allCommands[] .= self::wysiwygCmdToTiny($rows[$i][$j]->cmd);
 				}
-				$tinyRows = rtrim($tinyRows, ',') . '",';
-				$i++;
-				$k++;
+				$j++;
 			}
-			$tinyRows .= 'theme_advanced_buttons' . $k . ' : "",';
+			$tinyRows = rtrim($tinyRows, ',') . '",';
+			$i++;
+			$k++;
+		}
+		$tinyRows .= 'theme_advanced_buttons' . $k . ' : "",';
 
-			$this->tinyPlugins = implode(',', array_unique($this->tinyPlugins));
-			$this->wePlugins = implode(',', array_intersect($this->wePlugins, $allCommands));
-			$plugins = ($this->createContextmenu ? 'wecontextmenu,' : '') .
-				($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
-				($this->wePlugins ? $this->wePlugins . ',' : '') .
-				'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
-			//fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
-			$toolBarHeight = $this->buttonpos === 'external' ? 0 : ($k - 1) * 26 + 22 - $k * 3;
-			$this->height += $toolBarHeight;
+		$this->tinyPlugins = implode(',', array_unique($this->tinyPlugins));
+		$this->wePlugins = implode(',', array_intersect($this->wePlugins, $allCommands));
+		$plugins = ($this->createContextmenu ? 'wecontextmenu,' : '') .
+			($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
+			($this->wePlugins ? $this->wePlugins . ',' : '') .
+			'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
+		//fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
+		$toolBarHeight = $this->buttonpos === 'external' ? 0 : ($k - 1) * 26 + 22 - $k * 3;
+		$this->height += $toolBarHeight;
 
-			$wefullscreenVars = array(
-				'outsideWE' => $this->outsideWE ? "1" : "",
-				'xml' => $this->xml ? "1" : "",
-				'removeFirstParagraph' => $this->removeFirstParagraph ? "1" : "0",
-			);
+		$wefullscreenVars = array(
+			'outsideWE' => $this->outsideWE ? "1" : "",
+			'xml' => $this->xml ? "1" : "",
+			'removeFirstParagraph' => $this->removeFirstParagraph ? "1" : "0",
+		);
 
-			$contentCss = $this->contentCss ? $this->contentCss . ',' : '';
+		$contentCss = $this->contentCss ? $this->contentCss . ',' : '';
 
-			$editorLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
-			$editorLangSuffix = $editorLang === 'de' ? 'de_' : '';
+		$editorLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
+		$editorLangSuffix = $editorLang === 'de' ? 'de_' : '';
 
-			return we_html_element::jsElement('
+		return we_html_element::jsElement('
 				' . ($this->fieldName ? '
 /* -- tinyMCE -- */
 
@@ -1184,7 +1184,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 tinyMCE.addI18n(tinyMceTranslationObject);
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 ') .
-				'
+			'
 <textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . (max($this->width, $this->maxGroupWidth + 8)) . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace(array('\n', '&'), array('', '&amp;'), $editValue) . '</textarea>';
 	}
 
