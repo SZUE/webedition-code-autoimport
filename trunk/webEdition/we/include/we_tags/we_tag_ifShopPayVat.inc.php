@@ -24,7 +24,9 @@
  */
 function we_tag_ifShopPayVat($attribs){
 	$namefrom = weTag_getAttribute("customerfrom", $attribs, '', we_base_request::STRING);
+	$usefallback = weTag_getAttribute("usefallback", $attribs);
 	$weShopVatRule = we_shop_vatRule::getShopVatRule();
+
 	if(we_tag('ifRegisteredUser', array(), '')){
 		$customer = $_SESSION['webuser'];
 	} elseif(isset($GLOBALS[$namefrom]) && $GLOBALS[$namefrom]){
@@ -41,5 +43,10 @@ function we_tag_ifShopPayVat($attribs){
 		$customer = false;
 	}
 
-	return $weShopVatRule->executeVatRule($customer);
+	$country = '';
+	if(!$customer && $usefallback){
+		$country = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_location"', '', $GLOBALS['DB_WE'], -1) ? : '';
+	}
+
+	return $weShopVatRule->executeVatRule($customer, $country);
 }

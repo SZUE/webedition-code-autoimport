@@ -164,9 +164,6 @@ $parts = array(
 $queryCondtion = 'YEAR(DateOrder)=' . $selectedYear . ($selectedMonth > 0 ? ' AND MONTH(DateOrder)=' . $selectedMonth : '');
 //$queryCondtion = 'date_format(DateOrder,"%Y") = ' . $selectedYear . ($selectedMonth > 0 ? ' AND date_format(DateOrder,"%c") = ' . $selectedMonth : '');
 
-
-
-
 $query = ' FROM ' . SHOP_TABLE . '	WHERE ' . $queryCondtion;
 if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 	$total = $payed = $unpayed = $canceled = 0;

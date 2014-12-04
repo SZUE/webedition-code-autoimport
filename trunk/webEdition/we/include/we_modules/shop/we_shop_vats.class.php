@@ -44,7 +44,7 @@ class we_shop_vats{
 		return $GLOBALS['weShopVats']['getShopVATById'][$id];
 	}
 
-	function getVatRateForSite($id = false, $fallBackToStandard = true, $standard = ''){
+	public static function getVatRateForSite($id = false, $fallBackToStandard = true, $standard = ''){
 		if($id){
 			$weShopVat = we_shop_vats::getShopVATById($id);
 		}
@@ -53,11 +53,10 @@ class we_shop_vats{
 			$weShopVat = we_shop_vats::getStandardShopVat();
 		}
 
-		return ($weShopVat ? $weShopVat->vat : $standard);
+		return ($weShopVat ? $weShopVat->vat : ($standard && is_int($standard) ? $standard : false));
 	}
 
-	//TODO: check calls and make static 
-	function getStandardShopVat(){
+	public static function getStandardShopVat(){
 		if(!isset($GLOBALS['weShopVats']['getStandardShopVat'])){
 			$data = getHash('SELECT id, text, vat, standard, territory, textProvince, categories FROM ' . WE_SHOP_VAT_TABLE . ' WHERE standard=1');
 
@@ -70,7 +69,6 @@ class we_shop_vats{
 	}
 
 	function saveWeShopVAT($weShopVat){
-
 		// 1st - change standard for every entry
 		if($weShopVat->standard == 1){
 			$query = 'UPDATE ' . WE_SHOP_VAT_TABLE . ' SET standard = 0 WHERE 1';
@@ -84,10 +82,5 @@ class we_shop_vats{
 		$vat = new we_shop_vat($id);
 
 		return $vat->delete();
-	}
-
-	//FIXME: obsolete
-	public static function getVatByCountryCategory($country, $category){
-		return we_shop_category::getVatByCategory($category, $country);
 	}
 }

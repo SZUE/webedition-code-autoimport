@@ -1,7 +1,29 @@
 <?php
 
+/**
+ * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package none
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
 class we_shop_vatRule{
-	var $stateField;
+	public $stateField;
 	var $stateFieldIsISO;
 	var $liableToVat;
 	var $notLiableToVat;
@@ -23,12 +45,12 @@ class we_shop_vatRule{
 		$this->conditionalRules = $conditionalRules;
 	}
 
-	public function executeVatRule($customer = false){
+	public function executeVatRule($customer = false, $state = ''){
 		// now check all rules for the vat
 
-		if($customer){
-			if(isset($this->stateField) && isset($customer[$this->stateField])){
-				$state = $customer[$this->stateField];
+		if($customer || $state){
+			if(isset($this->stateField) && (isset($customer[$this->stateField]) || $state)){
+				$state = isset($customer[$this->stateField]) ? $customer[$this->stateField] : ($state ? : false);
 
 				// is state liableToVat
 				if(in_array($state, $this->liableToVat)){
@@ -38,6 +60,11 @@ class we_shop_vatRule{
 				// is state not liable to vat
 				if(in_array($state, $this->notLiableToVat)){
 					return false;
+				}
+
+				// if we have $state but no $customer: return here
+				if(!$customer){
+					return ($this->defaultValue === 'true' ? true : false);
 				}
 
 				// now check additional fields
@@ -80,6 +107,12 @@ class we_shop_vatRule{
 			)
 			), 0
 		);
+	}
+
+	public static function getStateField(){
+		$rule = self::getShopVatRule();
+
+		return $rule->stateField;
 	}
 
 	private static function makeArrayFromConditionField(){

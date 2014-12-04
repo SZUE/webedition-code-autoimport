@@ -116,6 +116,9 @@ $vatfield = new weTagData_selectAttribute('vatfield', array(
 	new weTagDataOption('territory'),
 	new weTagDataOption('categories')
 	), false, '');
+$customerid = new weTagData_textAttribute('customerid', false, '');
+$country = new weTagData_textAttribute('country', false, '');
+
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('-', false, '', array(), array()),
@@ -136,7 +139,7 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('float', false, '', array($name, $hyperlink, $href, $target, $num_format, $triggerid), array($name)),
 	new weTagDataOption('int', false, 'object', array($name, $hyperlink, $href, $target, $triggerid), array($name)),
 	new weTagDataOption('shopVat', false, '', array(), array()),
-	new weTagDataOption('shopCategory', false, '', array($showpath, $rootdir, $show, $catfield, $vatfield), array()),
+	new weTagDataOption('shopCategory', false, '', array($showpath, $rootdir, $show, $catfield, $vatfield, $customerid, $country), array()),
 	new weTagDataOption('checkbox', false, '', array($name), array($name)),
 	new weTagDataOption('country', false, '', array($outputlanguage, $doc), array()),
 	new weTagDataOption('language', false, '', array($outputlanguage, $doc), array())

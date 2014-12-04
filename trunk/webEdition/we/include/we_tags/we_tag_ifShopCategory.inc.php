@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * webEdition CMS
+ *
+ * $Rev: 8656 $
+ * $Author: mokraemer $
+ * $Date: 2014-11-28 18:22:19 +0100 (Fr, 28 Nov 2014) $
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package none
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+function we_tag_ifShopCategory($attribs){
+	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
+		echo $foo;
+		return false;
+	}
+	$id = weTag_getAttribute('id', $attribs, -1);
+
+	$categoryId = (isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME) ?
+			$GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME) :
+			$GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME));
+
+	return ($id == $categoryId);
+}
