@@ -262,6 +262,10 @@ class we_shop_Basket{
 					$Record[WE_SHOP_VAT_FIELD_NAME] = $Record['we_' . WE_SHOP_VAT_FIELD_NAME];
 					unset($Record['we_' . WE_SHOP_VAT_FIELD_NAME]);
 				}
+				if(isset($Record['we_' . WE_SHOP_CATEGORY_FIELD_NAME])){
+					$Record[WE_SHOP_CATEGORY_FIELD_NAME] = $Record['we_' . WE_SHOP_CATEGORY_FIELD_NAME];
+					unset($Record['we_' . WE_SHOP_CATEGORY_FIELD_NAME]);
+				}
 				break;
 		}
 

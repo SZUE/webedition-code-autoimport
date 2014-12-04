@@ -25,7 +25,7 @@
 function we_tag_writeVoting($attribs){
 
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
-	$additionalFields = weTag_getAttribute('additionalfields', $attribs, 0, we_base_request::INTLISTA);
+	$additionalFields = weTag_getAttribute('additionalfields', $attribs, array(), we_base_request::INTLISTA);
 	$allowredirect = weTag_getAttribute("allowredirect", $attribs, false, we_base_request::BOOL);
 	$deletesessiondata = weTag_getAttribute("deletesessiondata", $attribs, false, we_base_request::BOOL);
 	$writeto = weTag_getAttribute("writeto", $attribs, "voting", we_base_request::STRING);

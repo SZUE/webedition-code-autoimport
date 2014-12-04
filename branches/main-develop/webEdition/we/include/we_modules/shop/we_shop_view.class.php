@@ -24,7 +24,6 @@
  */
 /* the parent class of storagable webEdition classes */
 
-
 class we_shop_view{
 
 	var $db;
@@ -406,7 +405,6 @@ function we_cmd() {
 					$strSerial = $this->db->f('strSerial');
 					$tmpDoc = @unserialize($strSerial);
 					$tmpDoc[WE_SHOP_VAT_FIELD_NAME] = $_REQUEST['vat'];
-
 
 					$this->db->query('UPDATE ' . SHOP_TABLE . ' SET strSerial="' . $this->db->escape(serialize($tmpDoc)) . '" WHERE IntID=' . $article);
 					unset($strSerial);
@@ -1109,20 +1107,26 @@ function submitForm() {
 					unset($customFieldsTmp);
 
 					// shop vats must be calculated
+					$orderArray = unserialize($_strSerialOrder);
 					$standardVat = we_shop_vats::getStandardShopVat();
 
-					if(isset($serialDoc[WE_SHOP_VAT_FIELD_NAME])){
+					if(isset($serialDoc[WE_SHOP_CATEGORY_FIELD_NAME]) && $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME]){
+						$stateField = we_shop_vatRule::getStateField();
+						$billingCountry = isset($orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField]) && $orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField] ?
+								$orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField] : we_shop_category::getDefaultCountry();
+
+						$shopVat = we_shop_category::getVatByIdAndCountry($serialDoc[WE_SHOP_CATEGORY_FIELD_NAME], $billingCountry, false);
+					} elseif(isset($serialDoc[WE_SHOP_VAT_FIELD_NAME])){
 						$shopVat = we_shop_vats::getShopVATById($serialDoc[WE_SHOP_VAT_FIELD_NAME]);
 					}
 
-					if(isset($shopVat)){
+					if(isset($shopVat) && $shopVat){
 						$serialDoc[WE_SHOP_VAT_FIELD_NAME] = $shopVat->vat;
 					} elseif($standardVat){
 						$serialDoc[WE_SHOP_VAT_FIELD_NAME] = $standardVat->vat;
 					}
 
 					//need pricefield:
-					$orderArray = unserialize($_strSerialOrder);
 					$pricename = (isset($orderArray[WE_SHOP_PRICENAME]) ? $orderArray[WE_SHOP_PRICENAME] : 'shopprice');
 					// now insert article to order:
 					$row = getHash('SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment, IntPayment_Type FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . we_base_request::_(we_base_request::INT, 'bid'), $this->db);

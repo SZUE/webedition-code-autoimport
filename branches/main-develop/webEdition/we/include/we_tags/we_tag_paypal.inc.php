@@ -56,14 +56,11 @@ function we_tag_paypal($attribs){
 
 	if($useVat){
 		$_customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
-
 		$weShopVatRule = we_shop_vatRule::getShopVatRule();
 
 		//FIX: it was meant to write since now we know if a costumer needs to pay tax or the default is true
 		$useVat = $weShopVatRule->executeVatRule($_customer);
 	}
-
-
 
 	if(isset($GLOBALS[$shopname])){
 		$basket = $GLOBALS[$shopname];
@@ -222,8 +219,14 @@ function we_tag_paypal($attribs){
 					//so we have to calculate the correct net article price
 					//bug #5701
 					if(!$useVat && !$netprices){
-						$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
-						$shopVat = (1 + (we_shop_vats::getVatRateForSite($vatId, true, false) / 100));
+						if(isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]){
+							$billingCountry = $countrycode ? : we_shop_category::getDefaultCountry();
+							$shopVat = we_shop_category::getVatByIdAndCountry($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME], $billingCountry, true);
+						} else {
+							$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
+							$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);
+						}
+						$shopVat = (1 + ($shopVat / 100));
 						//paypal allows only two decimal places
 						$itemPrice = round(($itemPrice / $shopVat), 2);
 					} else {
@@ -234,8 +237,14 @@ function we_tag_paypal($attribs){
 					$p->add_field('amount_' . $i, $itemPrice);
 
 					// foreach article we must determine the correct tax-rate
-					$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
-					$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);
+					if(isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]){
+						$billingCountry = $countrycode ? : we_shop_category::getDefaultCountry();
+						$shopVat = we_shop_category::getVatByIdAndCountry($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME], $billingCountry, true);
+					} else {
+						$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
+						$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);
+					}
+
 					if($shopVat){ // has selected or standard shop rate
 						$item['serial'][WE_SHOP_VAT_FIELD_NAME] = $shopVat;
 					} else { // could not find any shoprates, remove field if necessary
@@ -243,7 +252,6 @@ function we_tag_paypal($attribs){
 							unset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]);
 						}
 					}
-
 
 					if($netprices && $useVat){ //Bug 4549
 						$totalVat = $itemPrice / 100 * $shopVat;

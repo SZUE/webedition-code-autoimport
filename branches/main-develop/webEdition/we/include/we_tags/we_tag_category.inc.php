@@ -57,7 +57,7 @@ function we_tag_category($attribs){
 		$doc = we_getDocForTag($docAttr, false);
 		$catIDs = $doc->Category;
 	}
-	$catIDs = implode(',', array_map('intval', explode(',', $catIDs)));
+	$catIDs = implode(',', array_filter(array_map('intval', explode(',', $catIDs))));
 	$category = array_filter(we_category::we_getCatsFromIDs($catIDs, $delimiter, $showpath, $GLOBALS['DB_WE'], $rootdir, $field, $onlyindir, true, ($fromTag === 'shopcategory' ? false : false)));
 
 	if(!$category){

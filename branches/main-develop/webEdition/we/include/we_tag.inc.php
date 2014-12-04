@@ -249,7 +249,7 @@ function weTag_getParserAttribute($name, $attribs, $default = '', $type = we_bas
  */
 function weTag_getAttribute($name, $attribs, $default = '', $type = we_base_request::RAW, $useGlobal = true){
 	//FIXME: add an array holding attributes accessed for removal!
-	$value = isset($attribs[$name]) ? $attribs[$name] : '';
+	$value = isset($attribs[$name]) ? $attribs[$name] : $default;
 	$regs = array();
 	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$([^\[]+)(\[.*\])?|', $value, $regs)){
 		$value = (isset($regs[2]) ?

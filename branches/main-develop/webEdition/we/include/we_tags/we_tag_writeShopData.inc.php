@@ -62,9 +62,7 @@ function we_tag_writeShopData($attribs){
 
 	// Check for Shop being set
 	if(isset($GLOBALS[$shopname])){
-
 		$basket = $GLOBALS[$shopname];
-
 		$shoppingItems = $basket->getShoppingItems();
 		$cartFields = $basket->getCartFields();
 
@@ -74,7 +72,14 @@ function we_tag_writeShopData($attribs){
 
 		$DB_WE = $GLOBALS['DB_WE'];
 
-		$DB_WE->lock(array(SHOP_TABLE => 'write', ERROR_LOG_TABLE => 'write', WE_SHOP_VAT_TABLE => 'read'));
+		$DB_WE->lock(array(
+			SHOP_TABLE => 'write',
+			ERROR_LOG_TABLE => 'write',
+			WE_SHOP_VAT_TABLE => 'read',
+			CATEGORY_TABLE => 'read',
+			WE_SHOP_PREFS_TABLE => 'read',
+			SETTINGS_TABLE => 'read'
+		));
 		$orderID = intval(f('SELECT MAX(IntOrderID) AS max FROM ' . SHOP_TABLE, 'max', $DB_WE)) + 1;
 
 		$totPrice = 0;
@@ -88,11 +93,17 @@ function we_tag_writeShopData($attribs){
 
 			$totPrice += $preis * $shoppingItem['quantity'];
 
-
 			// foreach article we must determine the correct tax-rate
-			$vatId = isset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
-			$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);
-			if($shopVat){ // has selected or standard shop rate
+			if(isset($shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME])){
+				$billingCountry = we_shop_category::getCountryFromCustomer(false, $_SESSION['webuser']);
+				$shopVat = we_shop_category::getVatByIdAndCountry($shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME], $billingCountry, true);
+			
+			} else {
+				$vatId = isset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
+				$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);
+			}
+
+			if($shopVat !== false){ // has selected or standard shop rate
 				$shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME] = $shopVat;
 			} else { // could not find any shoprates, remove field if necessary
 				if(isset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME])){

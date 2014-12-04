@@ -31,7 +31,7 @@ function we_tag_ifRegisteredUser($attribs){
 	$match = makeArrayFromCSV(weTag_getAttribute('match', $attribs, '', we_base_request::STRING));
 	$cfilter = weTag_getAttribute('cfilter', $attribs, false, we_base_request::BOOL);
 	$allowNoFilter = weTag_getAttribute('allowNoFilter', $attribs, false, we_base_request::BOOL);
-	$userid = weTag_getAttribute('userid', $attribs, '', we_base_request::INTLISTA);
+	$userid = weTag_getAttribute('userid', $attribs, array(), we_base_request::INTLISTA);
 	$matchType = weTag_getAttribute('matchType', $attribs, 'one', we_base_request::STRING);
 
 	//return true only on registered users - or if cfilter is set to "no filter"
