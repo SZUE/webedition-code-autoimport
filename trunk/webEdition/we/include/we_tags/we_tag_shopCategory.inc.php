@@ -59,7 +59,7 @@ function we_tag_shopCategory($attribs){
 	if($show === 'vat'){
 		$countryArr = we_shop_category::getCountryFromCustomer(true, null, $customerid, true);
 		$countryArr['country'] = $country ? : $countryArr['country']; //country delivered as attribute has highest priority
-		if($field === 'is_prefs_country'){
+		if($field === 'is_country_fallback_to_prefs'){
 			return $countryArr['country'] && $countryArr['isFallback'] ? 1 : 0;
 		}
 
@@ -69,11 +69,11 @@ function we_tag_shopCategory($attribs){
 		}
 
 		$catId = $id ? : $GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME);
-		$vat = we_shop_category::getVatByIdAndCountry($catId, $countryArr['country'], false, ($field === 'is_default_vat'), ($field === 'is_prefs_rate'));
+		$vat = we_shop_category::getVatByIdAndCountry($catId, $countryArr['country'], false, ($field === 'is_vat_fallback_to_standard'), ($field === 'is_vat_fallback_to_prefs'));
 
 		switch($field){
-			case 'is_default_vat':
-			case 'is_prefs_rate':
+			case 'is_vat_fallback_to_standard':
+			case 'is_vat_fallback_to_prefs':
 				$ret .= $vat === true ? 1 : 0;
 				break;
 			default: 

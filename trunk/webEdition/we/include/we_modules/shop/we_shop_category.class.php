@@ -278,7 +278,7 @@ class we_shop_category extends we_category{
 	 * @param bool $getIsDefaultFromPrefs
 	 * @return we_shop_vat
 	 */
-	public function getVatByCountry($country, $getRate = false, $getIsFallbackToStandard = false, $getIsDefaultFromPrefs = false){
+	public function getVatByCountry($country, $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false){
 		if(!$country){
 			return false;
 		}
@@ -301,7 +301,7 @@ class we_shop_category extends we_category{
 		$shopPrefs = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $this->db, -1));
 		if(($pref = $shopPrefs[1])){
 			$GLOBALS['weShopCategories']['getShopVATByCatCountry'][$this->ID][$country] = $pref;
-			if($getIsDefaultFromPrefs){
+			if($getIsFallbackToPrefs){
 				return true;
 			}
 			if($getRate){
@@ -325,7 +325,7 @@ class we_shop_category extends we_category{
 	 * @param bool $getIsDefaultFromPrefs
 	 * @return we_shop_vat
 	 */
-	public static function getVatByIdAndCountry($id = 0, $country = '', $getRate = false, $getIsFallbackToStandard = false, $getIsDefaultFromPrefs = false){
+	public static function getVatByIdAndCountry($id = 0, $country = '', $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false){
 		if(!$id || !$country){
 			return false;
 		}
@@ -339,7 +339,7 @@ class we_shop_category extends we_category{
 			return false;
 		}
 
-		return $cat->getVatByCountry($country, $getRate, $getIsFallbackToStandard, $getIsDefaultFromPrefs);
+		return $cat->getVatByCountry($country, $getRate, $getIsFallbackToStandard, $getIsFallbackToPrefs);
 	}
 
 	/**
