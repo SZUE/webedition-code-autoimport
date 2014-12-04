@@ -70,7 +70,7 @@ class we_shop_shop{
 			$this->Record = array();
 			foreach($shoppingItem['serial'] as $key => $value){
 				if(!is_int($key)){
-					$this->Record[($key == WE_SHOP_VAT_FIELD_NAME ? $key : preg_replace('#^we_#', '', $key))] = $value;
+					$this->Record[(($key == WE_SHOP_VAT_FIELD_NAME || $key == WE_SHOP_CATEGORY_FIELD_NAME) ? $key : preg_replace('#^we_#', '', $key))] = $value;
 				}
 			}
 			$this->count++;

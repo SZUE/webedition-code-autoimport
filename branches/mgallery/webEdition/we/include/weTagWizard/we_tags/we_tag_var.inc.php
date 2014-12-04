@@ -43,6 +43,8 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('get', false, '', array($name, $varType, $htmlspecialchars, $format, $sql), array($name)),
 	new weTagDataOption('select', false, '', array($name, $doc, $htmlspecialchars, $key, $sql), array($name)),
 	new weTagDataOption('session', false, '', array($name, $htmlspecialchars, $format, $sql), array($name)),
-	new weTagDataOption('shopVat', false, '', array($doc), array())), true, '');
+	new weTagDataOption('shopVat', false, '', array($doc), array()),
+	new weTagDataOption('shopCategory', false, '', array($doc), array())), true, '');
+
 
 $this->Attributes = array($name, $doc, $win2iso, $varType, $sql, $htmlspecialchars, $key);

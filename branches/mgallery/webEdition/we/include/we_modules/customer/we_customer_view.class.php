@@ -1460,7 +1460,6 @@ failure: function(o) {
 				} else {
 					$objectStr = g_l('modules_customer', '[NoObjects]');
 				}
-				//$objectStr = getCustomersObjectList($this->customer->ID, false);
 
 				$parts[] = array(
 					"html" => $objectStr,
@@ -1469,13 +1468,17 @@ failure: function(o) {
 				break;
 			case g_l('modules_customer', '[documentTab]'):
 				$DB_WE = new DB_WE();
-				$DB_WE->query('SELECT ID,Path,ContentType,Text,Published,ModDate,' .
-						'(SELECT c.Dat  FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.Name="Title" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.DID=f.ID) AS title,' .
-						' (SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID  WHERE l.Name="Description" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.DID=f.ID) AS description' .
-						' FROM ' . FILE_TABLE . ' f WHERE f.WebUserID = ' . $this->customer->ID . ' ORDER BY f.Path');
-				$documentStr = '';
+				$DB_WE->query('SELECT f.ID,f.Path,f.ContentType,f.Text,f.Published,f.ModDate,c1.Dat AS title,c2.Dat AS description' .
+						' FROM ' .
+						FILE_TABLE . ' f LEFT JOIN ' .
+						LINK_TABLE . ' l1 ON (l1.DID=f.ID AND l1.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l1.Name="Title") LEFT JOIN ' .
+						CONTENT_TABLE . ' c1 ON l1.CID=c1.ID LEFT JOIN ' .
+						LINK_TABLE . ' l2 ON (l2.DID=f.ID AND l2.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l2.Name="Description") LEFT JOIN ' .
+						CONTENT_TABLE . ' c2 ON l2.CID=c2.ID' .
+						' WHERE f.WebUserID=' . intval($this->customer->ID) . ' ORDER BY f.Path');
+
 				if($DB_WE->num_rows()){
-					$documentStr.='<table class="defaultfont" width="600">' .
+					$documentStr='<table class="defaultfont" width="600">' .
 							'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td><td><b>' . g_l('modules_customer', '[Titel]') . '</b></td>' .
 							'</tr>';
 					while($DB_WE->next_record()){
@@ -1493,7 +1496,6 @@ failure: function(o) {
 				} else {
 					$documentStr = g_l('modules_customer', '[NoDocuments]');
 				}
-				//$documentStr = getCustomersDocumentList($this->customer->ID, false);
 
 				$parts[] = array(
 					"html" => $documentStr,

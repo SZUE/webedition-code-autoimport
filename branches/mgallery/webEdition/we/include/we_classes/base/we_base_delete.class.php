@@ -29,8 +29,8 @@ abstract class we_base_delete{
 			return true;
 		}
 		return (f('SELECT IsFolder FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE  ID=' . intval($id)) ?
-				self::checkDeleteFolder($id, $table) :
-				self::checkDeleteFile($id, $table));
+						self::checkDeleteFolder($id, $table) :
+						self::checkDeleteFile($id, $table));
 	}
 
 	private static function checkDeleteFolder($id, $table){
@@ -122,7 +122,7 @@ abstract class we_base_delete{
 
 		$isTemplateFile = ($table == TEMPLATES_TABLE);
 
-		$path = $path ? : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), 'Path', $DB_WE);
+		$path = $path ? : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), '', $DB_WE);
 		self::deleteContentFromDB($id, $table);
 
 		$file = ((!$isTemplateFile) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATES_PATH) . $path;
@@ -140,7 +140,7 @@ abstract class we_base_delete{
 
 		switch($table){
 			case FILE_TABLE:
-				$DB_WE->query('UPDATE ' . CONTENT_TABLE . ' c JOIN '.LINK_TABLE.' l ON c.ID=l.CID SET BDID=0 WHERE l.Type IN ("href","img") AND c.BDID=' . intval($id));
+				$DB_WE->query('UPDATE ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID SET BDID=0 WHERE l.Type IN ("href","img") AND c.BDID=' . intval($id));
 				$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id));
 
 				if(we_base_moduleInfo::isActive('schedule')){ //	Delete entries from schedule as well
@@ -201,12 +201,23 @@ abstract class we_base_delete{
 			}
 			$DB_WE->query('DROP TABLE IF EXISTS ' . OBJECT_X_TABLE . intval($id));
 		}
-		if($contentType == we_base_ContentTypes::IMAGE){
+		if($contentType === we_base_ContentTypes::IMAGE){
 			we_thumbnail::deleteByImageID($id);
 		}
 	}
 
 	public static function deleteEntry($id, $table, $delR = true, $skipHook = false, we_database_base $DB_WE = null){
+		switch($table){
+			case defined('FILE_TABLE') ? FILE_TABLE : 'FILE_TABLE':
+			case defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : TEMPLATES_TABLE:
+			case defined('OBJECT_TABLE') ? OBJECT_TABLE : OBJECT_TABLE:
+			case defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : OBJECT_FILES_TABLE:
+				break;
+			default:
+				t_e('unable to delete files from this table', $table);
+				die('unsupported delete');
+		}
+
 		$DB_WE = ($DB_WE ? : new DB_WE());
 		if(defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE))){
 			if(we_workflow_utility::inWorkflow($id, $table)){

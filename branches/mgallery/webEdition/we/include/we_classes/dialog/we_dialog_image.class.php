@@ -166,7 +166,7 @@ class we_dialog_image extends we_dialog_base{
 		} else {
 			$longdesc = $this->getHttpVar(we_base_request::STRING, 'longdesc');
 		}
-		$border = $this->getHttpVar(we_base_request::STRING, 'border');
+		$border = $this->getHttpVar(we_base_request::UNIT, 'border');
 		$alt = $this->getHttpVar(we_base_request::STRING, 'alt');
 		$align = $this->getHttpVar(we_base_request::STRING, 'align');
 		$name = $this->getHttpVar(we_base_request::STRING, 'name');

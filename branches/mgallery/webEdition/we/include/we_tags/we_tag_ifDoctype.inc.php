@@ -27,7 +27,7 @@ function we_tag_ifDoctype($attribs){
 		print($foo);
 		return false;
 	}
-	$matchArr = weTag_getAttribute('doctypes', $attribs, '', we_base_request::FILELISTA);
+	$matchArr = weTag_getAttribute('doctypes', $attribs, array(), we_base_request::FILELISTA);
 
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 

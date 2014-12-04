@@ -37,6 +37,11 @@ class we_shop_category extends we_category{
 		$this->saveDestPrinciple();
 	}
 
+	/**
+	 * get field DestinationPrinciple of this shop category
+	 * 
+	 * @return int
+	 */
 	private function getDestPrincipleFromSettings(){
 		if(!$this->ID){
 			return 0;
@@ -47,6 +52,11 @@ class we_shop_category extends we_category{
 		return in_array(intval($this->ID), $ids) ? 1 : 0;
 	}
 
+	/**
+	 * save field DestinationPrinciple of this shop category
+	 * 
+	 * @return void
+	 */
 	private function saveDestPrinciple(){
 		$ids = self::getSettingDestPrinciple(true);
 		if($this->DestPrinciple){
@@ -69,6 +79,12 @@ class we_shop_category extends we_category{
 		return serialize($this);
 	}
 
+	/**
+	 * get csv or array containing ids of all shop categories with DestinationPrinciple = true
+	 * 
+	 * @param bool $asArray
+	 * @return csv or array of int
+	 */
 	public static function getSettingDestPrinciple($asArray = false){
 		$db = new DB_WE();
 		$ids = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_destPrinciple"', '', $db, -1);
@@ -76,6 +92,12 @@ class we_shop_category extends we_category{
 		return $asArray ? explode(',', $ids) : $ids;
 	}
 
+	/**
+	 * saves shop category field DestinationPrinciple of all shop categoeries
+	 * 
+	 * @param csv of int $ids
+	 * @return void
+	 */
 	public static function saveSettingDestPrinciple($ids){
 		$db = new DB_WE();
 		$arr = explode(',', trim($ids, ','));
@@ -85,7 +107,13 @@ class we_shop_category extends we_category{
 		}
 		return $db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop", pref_name="shop_cats_destPrinciple", pref_value="' . trim($val, ',') . '"');
 	}
-
+	
+	/**
+	 * return shopCategoryDir defined in tblSettings as path or id
+	 * 
+	 * @param bool $path
+	 * @return int or string
+	 */
 	public static function getShopCatsDir($path = false){
 		$db = new DB_WE();
 		$dir = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_dir"', '', $db, -1);
@@ -93,20 +121,35 @@ class we_shop_category extends we_category{
 		return $dir ? ($path ? id_to_path($dir, CATEGORY_TABLE) : $dir) : false;
 	}
 
+	/**
+	 * saves shopCategoryDir to tblSettings 
+	 *
+	 * @param int $id
+	 * @return void
+	 */
 	public static function saveShopCatsDir($id){
 		$db = new DB_WE();
 
 		return $db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop", pref_name="shop_cats_dir", pref_value=' . intval($id));
 	}
 
+	/**
+	 * returns shop category by id, false if there is no shop category of this id 
+	 *
+	 * @param int $id
+	 * @return we_shop_category
+	 */
 	public static function getShopCategoryById($id = 0){
 		if(!$id){
 			return false;
 		}
 
-		$path = self::getShopCatsDir(true);
-		$cat = new self(intval($id));
+		$cat = new self();
+		if(!$cat->load($id)){
+			return false;
+		}
 
+		$path = self::getShopCatsDir(true);
 		if(!$cat->isnew && strpos($cat->Path, $path . '/') === 0){
 			return $cat;
 		}
@@ -114,6 +157,14 @@ class we_shop_category extends we_category{
 		return false;
 	}
 
+	/**
+	 * returns all shop categories (as defined by shop categories directory). 
+	 * Optionally it returns shop categories inside of some driectory defined by $dir.
+	 *
+	 * @param bool $assoc
+	 * @param int $dir
+	 * @return array of we_shop_category
+	 */
 	public static function getAllShopCategories($assoc = false, $dir = 0){
 		$ids = self::getFieldFromAll('ID', false, $dir, '', true, true);
 		$ret = array();
@@ -128,8 +179,25 @@ class we_shop_category extends we_category{
 		return $ret;
 	}
 
-	/* FIXME: base the following methods on shopcat objects instead of geting data from db directly! */
+	/**
+	 * returns field $catfield of all shop categories.
+	 *
+	 * @param string $catfield
+	 * @param bool $complete
+	 * @param int $catsDir
+	 * @param string $catsPath
+	 * @param bool $asArray
+	 * @param bool $assoc
+	 * @param string $tokken
+	 * @param bool $showpath
+	 * @param string $rootdir
+	 * @param bool $noDirs
+	 * @param object $db
+	 * @return array of string
+	 */
 	static function getFieldFromAll($catfield = '', $complete = false, $catsDir = 0, $catsPath = '', $asArray = true, $assoc = true, $tokken = ',', $showpath = false, $rootdir = '/', $noDirs = false, we_database_base $db = null, $catIDs = ''){
+		/* FIXME: base on shopcat objects instead of geting data from db directly! */
+
 		if(!($path = $catsPath ? : (id_to_path(($catsDir ? : self::getShopCatsDir()), CATEGORY_TABLE)))){
 			return false;
 		}
@@ -172,7 +240,26 @@ class we_shop_category extends we_category{
 		return $ret;
 	}
 
+	/**
+	 * returns field $catfield of shop categories defined by their ids.
+	 *
+	 * @param string $catIDs
+	 * @param string $catfield
+	 * @param bool $complete
+	 * @param int $catsDir
+	 * @param string $catsPath
+	 * @param bool $asArray
+	 * @param bool $assoc
+	 * @param string $tokken
+	 * @param bool $showpath
+	 * @param string $rootdir
+	 * @param bool $noDirs
+	 * @param object $db
+	 * @return array of string
+	 */
 	static function getFieldFromIDs($catIDs, $catfield = '', $complete = false, $catsDir = 0, $catsPath = '', $asArray = false, $assoc = false, $tokken = ',', $showpath = false, $rootdir = '/', $noDirs = false, we_database_base $db = null){
+		/* FIXME: base on shopcat objects instead of geting data from db directly! */
+
 		if(!$catIDs){
 			return $asArray ? array() : '';
 		}
@@ -181,41 +268,122 @@ class we_shop_category extends we_category{
 		return self::getFieldFromAll($catfield, $complete, $catsDir, $catsPath, $asArray, $assoc, $tokken, $showpath, $rootdir, $noDirs, $db, $catIDs);
 	}
 
-	//FIXME: we need getVat and getVatField!
-	public static function getVatByCategory($category, $country = '', $field = ''){
-		$db = $GLOBALS['DB_WE'];
-
-		//prio for country: 1) $counry (for test purpose only) 2) webuser session, 3) tblSettings => shop_location
-		$country = $country ? : f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_location"', '', $db, -1);
-
-		if(!($category = intval($category)) || !$country){
+	/**
+	 * returns we_shop_vat for determined by destination country
+	 *
+	 * @param int $id
+	 * @param string $country
+	 * @param bool $getRate
+	 * @param bool $getIsFallbackToStandard
+	 * @param bool $getIsDefaultFromPrefs
+	 * @return we_shop_vat
+	 */
+	public function getVatByCountry($country, $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false){
+		if(!$country){
 			return false;
 		}
 
-		//for debugging purpose only: when num_rows > 1 we have an inconsistent tblshopvat!
-		/*
-		$db->query('SELECT id,text,vat,standard,territory,textProvince, categories FROM ' . WE_SHOP_VAT_TABLE . ' WHERE territory="' . $db->escape($country) . '" AND FIND_IN_SET(' . $category . ', categories)');
-		if($db->num_rows() > 1){
-			t_e("function getVatByCountryCategory", "number of results: " . $db->num_rows());
+		if($getRate && isset($GLOBALS['weShopCategories']['getShopVATByCatCountry'][$this->ID][$country])){
+			return $GLOBALS['weShopCategories']['getShopVATByCatCountry'][$this->ID][$country];
 		}
-		 * 
-		 */
-		//end debug
 
-		$hash = getHash('SELECT id, text, vat, standard, territory, textProvince, categories FROM ' . WE_SHOP_VAT_TABLE . ' WHERE territory="' . $db->escape($country) . '" AND FIND_IN_SET(' . $category . ', categories)');
-		if($hash){
-			//$vat = new we_shop_vat($hash['id'], $hash['text'], $hash['vat'], ($hash['standard'] ? 1 : 0), $hash['territory'], $hash['textProvince'], $hash['categories']);
-			return isset($hash[$field]) ? $hash[$field] : '';
-		} else if(($standard = we_shop_vats::getStandardShopVat())){
-			return $standard;
-		} else {
-			$shopPrefs = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"'));
-			if(($pref = $shopPrefs[1])){
-				new we_shop_vat(0, 'shop_pref', $pref, 1, '', '', '');
-			}
+		$vatID = f('SELECT id FROM ' . WE_SHOP_VAT_TABLE . ' WHERE territory="' . $this->db->escape($country) . '" AND FIND_IN_SET(' . intval($this->ID) . ', categories)', '', $this->db, -1);
+		if($vatID && ($vat = we_shop_vat::getVatById($vatID))){
+			$GLOBALS['weShopCategories']['getShopVATByCatCountry'][$this->ID][$country] = $vat->vat;
+			return $getRate ? $vat->vat : $vat;
 		}
-		t_e("function getVatByCountryCategory", "neither vat found nor standard");
+
+		if(($vat = we_shop_vats::getStandardShopVat())){
+			$GLOBALS['weShopCategories']['getShopVATByCatCountry'][$this->ID][$country] = $vat->vat;
+			return $getIsFallbackToStandard ? true : ($getRate ? $vat->vat : $vat);
+		}
+
+		$shopPrefs = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $this->db, -1));
+		if(($pref = $shopPrefs[1])){
+			$GLOBALS['weShopCategories']['getShopVATByCatCountry'][$this->ID][$country] = $pref;
+			if($getIsFallbackToPrefs){
+				return true;
+			}
+			if($getRate){
+				return $pref;
+			}
+			return new we_shop_vat(0, 'shop_pref', $pref, 1, '', '', '');
+		}
+
+		$GLOBALS['weShopCategories']['getShopVATByCatCountry'][$this->ID][$country] = false;
 
 		return false;
+	}
+
+	/**
+	 * returns we_shop_vat for determined by shop category id destination country
+	 *
+	 * @param int $id
+	 * @param string $country
+	 * @param bool $getRate
+	 * @param bool $getIsFallbackToStandard
+	 * @param bool $getIsDefaultFromPrefs
+	 * @return we_shop_vat
+	 */
+	public static function getVatByIdAndCountry($id = 0, $country = '', $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false){
+		if(!$id || !$country){
+			return false;
+		}
+
+		if($getRate && isset($GLOBALS['weShopCategories']['getShopVATByCatCountry'][$id][$country])
+				&& ($vat = $GLOBALS['weShopCategories']['getShopVATByCatCountry'][$id][$country] !== false)){
+			return $vat;
+		}
+
+		if(!($cat = self::getShopCategoryById($id))){
+			return false;
+		}
+
+		return $cat->getVatByCountry($country, $getRate, $getIsFallbackToStandard, $getIsFallbackToPrefs);
+	}
+
+	/**
+	 * returns content of a customer's country field. Country fallback is used when param useFallback is true.
+	 * Optionally teh function returns an array with country, customer and flag isFallback.
+	 *
+	 * @param bool $useFallback
+	 * @param object $customer
+	 * @param int $customerId
+	 * @param bool $getAllData
+	 * @return object
+	 */
+	public static function getCountryFromCustomer($useFallback = false, $customer = false, $customerId = 0, $getAllData = false){
+		if(!$customer){
+			if(isset($_SESSION['webuser'])){
+				$customer = $_SESSION['webuser'];
+			} elseif($customerId){
+				$cust = new we_customer_customertag($GLOBALS[$customerId]);
+				$carray = $cust->getDBRecord();
+				unset($cust);
+				$customer = ($carray ? : false);
+			}
+		}
+
+		if($customer){
+			$stateField = we_shop_vatRule::getStateField();
+			if(isset($customer[$stateField]) && ($c = $customer[$stateField])){
+				return $getAllData ? array('country' => $c, 'isFallback' => false, "customer" => $customer) : $c;
+			}
+		}
+
+		if($useFallback && ($c = self::getDefaultCountry())){
+			return $getAllData ? array('country' => $c, "isFallback" => true, "customer" => false) : $c;
+		}
+
+		return $getAllData ? array('country' => false, "isFallback" => false, "customer" => $customer ? true : false) : false;
+	}
+
+	/**
+	 * returns country defined in shop prefs as shop location
+	 *
+	 * @return string
+	 */
+	public static function getDefaultCountry(){
+		return ($c = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_location"', '', $GLOBALS['DB_WE'], -1) ? : false);
 	}
 }

@@ -26,20 +26,22 @@ function we_tag_var($attribs){
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
-	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
-	$name_orig = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
-	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
-	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL); // #3771
-	$format = weTag_getAttribute('format', $attribs, '', we_base_request::STRING);
-	$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, '', we_base_request::STRING), false);
-	$varType = weTag_getAttribute('varType', $attribs, we_base_request::STRING);
-	$prepareSQL = weTag_getAttribute('prepareSQL', $attribs, false, we_base_request::BOOL);
+	$docAttr = weTag_getAttribute('doc', $attribs);
+	$name = weTag_getAttribute('name', $attribs);
+	$name_orig = weTag_getAttribute('_name_orig', $attribs);
+	$type = weTag_getAttribute('type', $attribs);
+	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true); // #3771
+	$format = weTag_getAttribute('format', $attribs);
+	$doc = we_getDocForTag($docAttr, false);
+	$varType = weTag_getAttribute('varType', $attribs, we_base_request::STRING, we_base_request::STRING);
+	$prepareSQL = weTag_getAttribute('prepareSQL', $attribs, false, true);
 
 	switch($type){
 		case 'session' :
 			$return = getArrayValue($_SESSION, null, $name_orig);
 			break;
 		case 'request' :
+			$return = $_REQUEST;
 			$return = we_base_util::rmPhp(we_base_request::filterVar(getArrayValue($_REQUEST, null, $name_orig), $varType));
 			break;
 		case 'post' :
@@ -66,6 +68,11 @@ function we_tag_var($attribs){
 				$vatId = $doc->getElement(WE_SHOP_VAT_FIELD_NAME);
 				$return = we_shop_vats::getVatRateForSite($vatId);
 				return $prepareSQL ? $GLOBALS['DB_WE']->escape($return) : $return;
+			}
+			return '';
+		case 'shopCategory' :
+			if(defined('SHOP_TABLE')){
+				return $doc->getElement(WE_SHOP_CATEGORY_FIELD_NAME);
 			}
 			return '';
 		case 'link' :

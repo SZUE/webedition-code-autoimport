@@ -7,5 +7,10 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Module = 'shop';
 
 if(defined('WE_SHOP_VAT_TABLE')){
-	$this->Attributes[] = new weTagData_sqlRowAttribute('id', WE_SHOP_VAT_TABLE, false, 'id', 'text', 'text', '');
+	$options = array();
+	$vats = we_shop_vats::getAllShopVATs();
+	foreach($vats as $vat){
+		$options[] = new weTagDataOption($vat->vat . '% - ' . $vat->getNaturalizedText() . ' (' . $vat->territory  . ')', $vat->id);
+	}
+	$this->Attributes[] = new weTagData_selectAttribute('id', $options, false);
 }

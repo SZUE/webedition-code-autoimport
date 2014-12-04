@@ -44,9 +44,10 @@ class we_updater{
 		}
 	}
 
-	static function updateTables(we_database_base $DB_WE){
+	static function updateTables($DB_WE){
 		$db2 = new DB_WE();
 		$tables = $db2->table_names(TBL_PREFIX . 'tblOwner');
+		$DB_WE = $DB_WE ? : new DB_WE(); //old code calls without object
 
 		if(!empty($tables)){
 			$DB_WE->query('SELECT * FROM ' . TBL_PREFIX . 'tblOwner');
@@ -98,7 +99,7 @@ class we_updater{
 		}
 	}
 
-	static function fix_user(we_database_base $db){
+	static function fix_user($db){
 		//FIXME: since this is done ever and ever, remove this after 6.4.3
 		$db2 = new DB_WE();
 		$db->query('SELECT ID,username,ParentID,Path FROM ' . USER_TABLE);
@@ -140,7 +141,8 @@ class we_updater{
 		}
 	}
 
-	static function updateUsers(we_database_base $DB_WE){
+	static function updateUsers($DB_WE){
+		$DB_WE = $DB_WE? : new DB_WE();
 		self::fix_user($DB_WE);
 
 		$DB_WE->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value NOT LIKE "%_UTF-8%" OR value!="") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
@@ -388,8 +390,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		}
 	}
 
-	static function fixHistory(){
-		$db = $GLOBALS['DB_WE'];
+	static function fixHistory($db){
+		$db = $db? : new DB_WE();
 		if($db->isColExist(HISTORY_TABLE, 'ID')){
 			$db->query('SELECT h1.ID FROM ' . HISTORY_TABLE . ' h1 LEFT JOIN ' . HISTORY_TABLE . ' h2 ON h1.DID = h2.DID AND h1.DocumentTable = h2.DocumentTable AND h1.ModDate = h2.ModDate WHERE h1.ID < h2.ID');
 			$tmp = $db->getAll(true);
@@ -418,7 +420,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 	}
 
 	public function doUpdate(){
-		$db = $GLOBALS['DB_WE'];
+		$db = new DB_WE();
 		self::replayUpdateDB();
 
 		self::updateTables($db);

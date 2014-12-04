@@ -52,7 +52,7 @@ function we_tag_write($attribs){
 	$mail = weTag_getAttribute('mail', $attribs, '', we_base_request::STRING); //FIXME: email_list
 	$mailfrom = weTag_getAttribute('mailfrom', $attribs, '', we_base_request::EMAIL);
 	$forceedit = weTag_getAttribute('forceedit', $attribs, false, we_base_request::BOOL);
-	$workspaces = weTag_getAttribute('workspaces', $attribs, '', we_base_request::INTLISTA);
+	$workspaces = weTag_getAttribute('workspaces', $attribs, array(), we_base_request::INTLISTA);
 	$objname = preg_replace('/[^a-z0-9_-]/i', '', weTag_getAttribute('name', $attribs, '', we_base_request::STRING));
 	$onduplicate = ($objname === '' ? 'overwrite' : weTag_getAttribute('onduplicate', $attribs, 'increment', we_base_request::STRING));
 	$onpredefinedname = weTag_getAttribute('onpredefinedname', $attribs, 'appendto', we_base_request::STRING);

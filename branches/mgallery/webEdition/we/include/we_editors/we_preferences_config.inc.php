@@ -103,7 +103,7 @@ $GLOBALS['configs'] = array(
 		'SMTP_SERVER' => array('SMTP_SERVER', we_base_request::STRING, 'localhost'),
 		'SMTP_PORT' => array('SMTP server port', we_base_request::INT, 25),
 		'SMTP_AUTH' => array('SMTP authentication', we_base_request::BOOL, false),
-		'SMTP_USERNAME' => array('SMTP username', we_base_request::STRING, ''),
+		'SMTP_USERNAME' => array('SMTP username', we_base_request::STRINGC, ''),
 		'SMTP_PASSWORD' => array('SMTP password', we_base_request::RAW, ''),
 		'SMTP_ENCRYPTION' => array('SMTP encryption', we_base_request::BOOL, false),
 //formmail stuff

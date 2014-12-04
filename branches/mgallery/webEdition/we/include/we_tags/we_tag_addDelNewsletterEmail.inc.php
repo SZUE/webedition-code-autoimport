@@ -58,9 +58,9 @@ function we_tag_addDelNewsletterEmail($attribs){
 				}
 				break;
 			case 'csv':
-				$paths = weTag_getAttribute('path', $attribs, '', we_base_request::FILELISTA);
-				if(empty($paths) || (strlen($paths[0]) == 0)){
-					$paths[0] = 'newsletter.txt';
+				$paths = weTag_getAttribute('path', $attribs, array('newsletter.txt'), we_base_request::FILELISTA);
+				if(!$paths){
+					$paths = array('newsletter.txt');
 				}
 				break;
 		}
@@ -73,7 +73,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				}
 				break;
 			default:
-				$tmpPaths = weTag_getAttribute('path', $attribs, '', we_base_request::FILELISTA);
+				$tmpPaths = weTag_getAttribute('path', $attribs, array(), we_base_request::FILELISTA);
 				foreach($_REQUEST['we_subscribe_list__'] as $nr){
 					$paths[] = $tmpPaths[intval($nr)];
 				}
