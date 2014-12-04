@@ -10,7 +10,7 @@ if(defined('WE_SHOP_VAT_TABLE')){
 	$options = array();
 	$vats = we_shop_vats::getAllShopVATs();
 	foreach($vats as $vat){
-		$options[] = new weTagDataOption($vat->vat . ' - ' . $vat->getNaturalizedText() . ' (' . $vat->territory  . ')', $vat->id);
+		$options[] = new weTagDataOption($vat->vat . '% - ' . $vat->getNaturalizedText() . ' (' . $vat->territory  . ')', $vat->id);
 	}
 	$this->Attributes[] = new weTagData_selectAttribute('id', $options, false);
 }
