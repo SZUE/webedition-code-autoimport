@@ -7,11 +7,9 @@ $this->Groups[] = 'if_tags';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Module = 'shop';
 
-if(defined('WE_SHOP_VAT_TABLE')){
 	$options = array();
-	$vats = we_shop_vats::getAllShopVATs();
-	foreach($vats as $vat){
-		$options[] = new weTagDataOption($vat->vat . ' - ' . $vat->getNaturalizedText() . ' (' . $vat->territory  . ')', $vat->id);
+	$opts = we_shop_category::getFieldFromAll('Path');
+	foreach($opts as $k => $v){
+		$options[] = new weTagDataOption($v, $k);
 	}
 	$this->Attributes[] = new weTagData_selectAttribute('id', $options, true);
-}

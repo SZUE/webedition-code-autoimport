@@ -151,6 +151,14 @@ function we_tag_field($attribs){
 	if(isset($attribs['vatfield'])){
 		$attribs['vatfield'] = $vatfield;
 	}
+	$customerid = weTag_getAttribute('customerid', $attribs);
+	if(isset($attribs['customerid'])){
+		$attribs['customerid'] = $catfield;
+	}
+	$country = weTag_getAttribute('country', $attribs);
+	if(isset($attribs['country'])){
+		$attribs['country'] = $vatfield;
+	}
 	$out = '';
 
 
@@ -310,9 +318,18 @@ function we_tag_field($attribs){
 			break;
 		case 'shopCategory' :
 			if(defined('SHOP_TABLE') && is_object($GLOBALS['lv'])){
-				$id = $GLOBALS['lv']->f('shopcategory');
+				$id = $id ? : $GLOBALS['lv']->f('shopcategory');
 				$field = $show === 'vat' ? $vatfield : $catfield;
-				$out = we_shop_category::getFieldFromIDs($id, $field, false, 0, '', false, false, ',', $showpath, $rootdir);
+				if($show !== 'vat'){
+					$out = we_shop_category::getFieldFromIDs($id, $field, false, 0, '', false, false, ',', $showpath, $rootdir);
+				} else {
+					$shopCatAttribs = $attribs;
+					$shopCatAttribs['id'] = $id;
+					$shopCatAttribs['dosave'] = false;
+					unset($shopCatAttribs['type']);
+
+					$out = we_tag('shopCategory', $shopCatAttribs);
+				}
 				break;
 			}
 			break;
