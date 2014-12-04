@@ -247,7 +247,7 @@ abstract class we_database_base{
 	 */
 	protected function _setup(){
 // deactivate MySQL strict mode; don't use query function (error logging)
-		$this->_query('SET SESSION sql_mode="NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO"');
+		$this->_query('SET SESSION sql_mode="ERROR_FOR_DIVISION_BY_ZERO"');//NO_ZERO_DATE,NO_ZERO_IN_DATE,
 		if(defined('DB_SET_CHARSET') && DB_SET_CHARSET != ''){
 			$this->_setCharset(DB_SET_CHARSET);
 		}
