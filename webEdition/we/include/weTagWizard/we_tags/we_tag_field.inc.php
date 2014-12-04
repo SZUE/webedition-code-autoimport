@@ -114,7 +114,9 @@ $vatfield = new weTagData_selectAttribute('vatfield', array(
 	new weTagDataOption('text'),
 	new weTagDataOption('standard'),
 	new weTagDataOption('territory'),
-	new weTagDataOption('categories')
+	new weTagDataOption('is_vat_fallback_to_standard'),
+	new weTagDataOption('is_vat_fallback_to_prefs'),
+	new weTagDataOption('is_country_fallback_to_prefs')
 	), false, '');
 $customerid = new weTagData_textAttribute('customerid', false, '');
 $country = new weTagData_textAttribute('country', false, '');
