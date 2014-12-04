@@ -214,11 +214,11 @@ class we_wysiwyg_editor{
 
 			return $ret;
 		}
-		$ret = array(
+
+		$ret = array_merge(array(
 			'',
 			g_l('wysiwyg', '[groups]') => we_html_tools::OPTGROUP
-		);
-		$ret = array_merge($ret, $tmp);
+			), $tmp);
 		foreach($commands as $key => $values){
 			$ret = array_merge($ret, array($key => we_html_tools::OPTGROUP), $values);
 		}
@@ -573,7 +573,7 @@ function weWysiwygSetHiddenText(arg) {
 		if(preg_match_all('/src="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)/i', $editValue, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[1]));
-				$editValue = str_ireplace('src="' . we_base_link::TYPE_INT_PREFIX . $reg[1], 'src="' . ($path ? $path . "?id=" . $reg[1] . '&time=' . $t : ICON_DIR . 'no_image.gif'), $editValue);
+				$editValue = str_ireplace('src="' . we_base_link::TYPE_INT_PREFIX . $reg[1], 'src="' . ($path ? $path . '?id=' . $reg[1] . '&time=' . $t : ICON_DIR . 'no_image.gif'), $editValue);
 			}
 		}
 		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '([^" ]+)/i', $editValue, $regs, PREG_SET_ORDER)){
@@ -750,16 +750,22 @@ function weWysiwygSetHiddenText(arg) {
 
 	function getTemplates(){
 		$tmplArr = explode(',', str_replace(' ', '', $this->templates));
-		$templates = '';
-		for($i = 0; $i < count($tmplArr); $i++){
+		$templates = array();
+		foreach($tmplArr as $i => $cur){
 			$tmplDoc = new we_document();
-			$tmplDoc->initByID(intval($tmplArr[$i]));
-			if(($tmplDoc->ContentType == we_base_ContentTypes::APPLICATION && ($tmplDoc->Extension === '.html' || $tmplDoc->Extension === '.htm')) || $tmplDoc->ContentType == we_base_ContentTypes::WEDOCUMENT){
-				$templates .= '{title: "' . (isset($tmplDoc->elements['Title']['dat']) && $tmplDoc->elements['Title']['dat'] ? $tmplDoc->elements['Title']['dat'] : "no title " . ($i + 1)) . '", src : "' . $tmplDoc->Path . '", description: "' . (isset($tmplDoc->elements['Description']['dat']) && $tmplDoc->elements['Description']['dat'] ? $tmplDoc->elements['Description']['dat'] : "no description " . ($i + 1)) . '"},';
+			$tmplDoc->initByID(intval($cur));
+			switch($tmplDoc->ContentType){
+				case we_base_ContentTypes::APPLICATION:
+					if(!($tmplDoc->Extension === '.html' || $tmplDoc->Extension === '.htm')){
+						continue;
+					}
+				//no break
+				case we_base_ContentTypes::WEDOCUMENT:
+					$templates[] = '{title: "' . (isset($tmplDoc->elements['Title']['dat']) && $tmplDoc->elements['Title']['dat'] ? $tmplDoc->elements['Title']['dat'] : 'no title ' . ($i + 1)) . '", src : "' . $tmplDoc->Path . '", description: "' . (isset($tmplDoc->elements['Description']['dat']) && $tmplDoc->elements['Description']['dat'] ? $tmplDoc->elements['Description']['dat'] : 'no description ' . ($i + 1)) . '"}';
 			}
 		}
 
-		return $templates ? 'template_templates : [' . rtrim($templates, ',') . '],' : 'template_templates : [],';
+		return 'template_templates : [' . implode(',', $templates) . '],';
 	}
 
 	function getInlineHTML(){
@@ -771,24 +777,19 @@ function weWysiwygSetHiddenText(arg) {
 		//write theme_advanced_buttons_X
 		$tinyRows = '';
 		$allCommands = array();
-		$i = 0;
 		$k = 1;
-		$pastetext = 0;
-
 		foreach($rows as $outer){
 			$tinyRows .= 'theme_advanced_buttons' . $k . ' : "';
-			$j = 0;
 			foreach($outer as $inner){
-				if(!$rows[$i][$j]->cmd){
-					$tinyRows .= $rows[$i][$j]->conditional ? '' : 'separator,';
-				} else if(self::wysiwygCmdToTiny($rows[$i][$j]->cmd)){
-					$tinyRows .= self::wysiwygCmdToTiny($rows[$i][$j]->cmd) . ',';
-					$allCommands[] .= self::wysiwygCmdToTiny($rows[$i][$j]->cmd);
+				if(!$inner->cmd){
+					$tinyRows .= $inner->conditional ? '' : 'separator,';
+				} else if(self::wysiwygCmdToTiny($inner->cmd)){
+					$tinyRows .= self::wysiwygCmdToTiny($inner->cmd) . ',';
+					$allCommands[] .= self::wysiwygCmdToTiny($inner->cmd);
 				}
-				$j++;
 			}
 			$tinyRows = rtrim($tinyRows, ',') . '",';
-			$i++;
+
 			$k++;
 		}
 		$tinyRows .= 'theme_advanced_buttons' . $k . ' : "",';
@@ -1000,8 +1001,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 
 		ed.onInit.add(function(ed, o){
 			//TODO: clean up the mess in here!
-			ed.pasteAsPlainText = ' . $pastetext . ';
-			ed.controlManager.setActive("pastetext", ' . $pastetext . ');
+			ed.pasteAsPlainText = 0;
+			ed.controlManager.setActive("pastetext", 0);
 			var openerDocument = ' . (!$this->isInPopup ? '""' : ($this->isFrontendEdit ? 'top.opener.document' : 'top.opener.top.weEditorFrameController.getVisibleEditorFrame().document')) . ';
 			' . ($this->isInPopup ? '
 			try{
