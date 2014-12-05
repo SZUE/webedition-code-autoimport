@@ -318,7 +318,7 @@ function we_tag_field($attribs){
 			break;
 		case 'shopCategory' :
 			if(defined('SHOP_TABLE') && is_object($GLOBALS['lv'])){
-				$id = $id ? : $GLOBALS['lv']->f('shopcategory');
+				$id = $GLOBALS['lv']->f('shopcategory');
 				$field = $show === 'vat' ? $vatfield : $catfield;
 				if($show !== 'vat'){
 					$out = we_shop_category::getFieldFromIDs($id, $field, false, 0, '', false, false, ',', $showpath, $rootdir);
