@@ -51,8 +51,8 @@ function we_tag_shopCategory($attribs){
 	if($GLOBALS['we_editmode']){
 		$attribs['field'] = 'ID';
 		$catIDs = explode(',', trim(we_tag_category($attribs), ','));
-		if(count($catIDs) && !$show === 'vat' && $dosave){
-			$ret .= we_html_element::htmlHidden(array('name' => 'we_' . $GLOBALS['we_doc']->Name . '_category[we_shopCategory]', 'value' => $catIDs[0]));
+		if(count($catIDs) && $show !== 'vat' && $dosave){
+			$ret .= we_html_element::htmlHidden(array('name' => 'we_' . $GLOBALS['we_doc']->Name . '_category[' . WE_SHOP_CATEGORY_FIELD_NAME . ']', 'value' => $catIDs[0]));
 		}
 	}
 
