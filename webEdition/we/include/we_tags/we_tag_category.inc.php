@@ -28,7 +28,7 @@ function we_tag_category($attribs){
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '', we_base_request::FILE);
 	$showpath = weTag_getAttribute('showpath', $attribs, false, we_base_request::BOOL);
 	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
-	$field = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);
+	$field = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);//FIXME: this is bool!
 	$name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INTLIST);
 	$separator = weTag_getAttribute('separator', $attribs, '/', we_base_request::RAW);
