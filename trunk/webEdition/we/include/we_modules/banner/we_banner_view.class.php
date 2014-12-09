@@ -239,7 +239,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				var args = "";
 				var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
-					url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+					url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 					if (i < (arguments.length - 1)) {
 						url += "&";
 					}
@@ -341,7 +341,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				var args = "";
 				var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
-					url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+					url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 					if (i < (arguments.length - 1)) {
 						url += "&";
 					}
@@ -393,7 +393,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				var args = "";
 				var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
-					url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+					url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 					if (i < (arguments.length - 1)) {
 						url += "&";
 					}

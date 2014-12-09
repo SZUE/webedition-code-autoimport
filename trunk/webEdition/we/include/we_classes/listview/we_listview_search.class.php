@@ -64,7 +64,7 @@ class we_listview_search extends we_listview_base{
 		$this->triggerID = $triggerID;
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
-		$this->languages = $languages ? : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : "");
+		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : "");
 
 		$where_lang = ($this->languages ?
 				' AND ' . INDEX_TABLE . '.Language IN ("' . implode('","', makeArrayFromCSV($this->languages)) . '") ' :

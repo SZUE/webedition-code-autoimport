@@ -334,7 +334,7 @@ if(isset($GLOBALS['we_doc'])){
 		var args = "";
 		var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 		for (var i = 0; i < arguments.length; i++) {
-			url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 			if (i < (arguments.length - 1)) {
 				url += "&";
 			}
