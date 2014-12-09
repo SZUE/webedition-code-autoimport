@@ -39,7 +39,7 @@ function we_tag_category($attribs){
 	if($id){
 		$catIDs = $id;
 	} elseif($name){
-		if($GLOBALS['we_editmode'] && !empty($name)){
+		if($GLOBALS['we_editmode'] && $name){
 			$_REQUEST['we_' . $GLOBALS['we_doc']->Name . '_category[' . $name . ']'] = $GLOBALS['we_doc']->getElement($name);
 			$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_category[' . $name . ']';
 			$attribs['type'] = 'request';
