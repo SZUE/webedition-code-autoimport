@@ -153,9 +153,9 @@ function we_tag_saferpay($attribs){
 			$itemPrice = (isset($item['serial']["we_" . $pricename]) ? $item['serial']["we_" . $pricename] : $item['serial'][$pricename]);
 
 			// foreach article we must determine the correct tax-rate
-			if(isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]){
+			if(we_shop_category::isCategoryMode()){
 				$billingCountry = we_shop_category::getCountryFromCustomer(true);
-				$shopVat = we_shop_category::getVatByIdAndCountry($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME], $billingCountry, true);
+				$shopVat = we_shop_category::getShopVatByIdAndCountry((isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0), $billingCountry, true);
 			} else {
 				$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 				$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);

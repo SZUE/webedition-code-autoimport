@@ -287,8 +287,8 @@ $formVat = '
 <tr>
 	<td>' . g_l('modules_shop', '[vat][vat_edit_form_province]') . ':</td>
 	<td>
-		<input size="3" style="width:30px" class="wetextinput" type="text" id="weShopVatProvince" name="weShopVatProvince" value="" />:
-		<input style="width:160px" class="wetextinput" type="text" id="weShopVatTextProvince" name="weShopVatTextProvince" value="" />
+		(-<input size="3" style="width:30px" class="wetextinput" type="text" id="weShopVatProvince" name="weShopVatProvince" value="" />)
+		<!--: <input style="width:160px" class="wetextinput" type="text" id="weShopVatTextProvince" name="weShopVatTextProvince" value="" /> -->
 	</td>
 </tr>
 

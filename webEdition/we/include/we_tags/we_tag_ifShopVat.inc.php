@@ -23,22 +23,40 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifShopVat($attribs){
-	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
-		echo $foo;
-		return false;
-	}
-	$id = weTag_getAttribute('id', $attribs, -1, we_base_request::INT);
+	if(!we_shop_category::isCategoryMode()){
+		if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
+			echo $foo;
+			return false;
+		}
+		$id = weTag_getAttribute('id', $attribs, -1, we_base_request::INT);
 
-	$vatId = (isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME) ?
-					$GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME) :
-					$GLOBALS['we_doc']->getElement(WE_SHOP_VAT_FIELD_NAME));
+		$vatId = (isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME) ?
+						$GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME) :
+						$GLOBALS['we_doc']->getElement(WE_SHOP_VAT_FIELD_NAME));
 
 
-	if(!$vatId){
-		$shopVat = we_shop_vats::getStandardShopVat();
-		if($shopVat){
-			$vatId = $shopVat->id;
+		if(!$vatId){
+			$shopVat = we_shop_vats::getStandardShopVat();
+			if($shopVat){
+				$vatId = $shopVat->id;
+			}
+		}
+
+		return ($id == $vatId);
+	} else {
+		$match = intval(weTag_getAttribute('match', $attribs, 0, we_base_request::INT));
+		$shopVatAttribs['field'] = $field = weTag_getAttribute('field', $attribs, 'id', we_base_request::STRING);
+		$shopCatID = (isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME) ?
+				$GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME) :
+				$GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME));
+		$shopVatAttribs['shopcategoryid'] = $shopCatID;
+
+		$vatField = we_tag('shopVat', $shopVatAttribs);
+		switch ($field){
+			case 'id':
+				return $match === 0 ? boolval($vatField) : $match === intval($vatField);
+			default:
+				return boolval($vatField);
 		}
 	}
-	return ($id == $vatId);
 }

@@ -671,6 +671,14 @@ function we_tag_ifNotSearch($attribs){
 	return !we_tag('ifSearch', $attribs);
 }
 
+function we_tag_ifNotShopCategory($attribs){
+	return !we_tag('ifShopCategory', $attribs);
+}
+
+function we_tag_ifNotShopVat($attribs){
+	return !we_tag('ifShopVat', $attribs);
+}
+
 function we_tag_ifNotSelf($attribs){
 	return !we_tag('ifSelf', $attribs);
 }
