@@ -54,6 +54,7 @@ function we_tag_href($attribs){
 	$extPath = oldHtmlspecialchars(html_entity_decode($GLOBALS['we_doc']->getElement($name)));
 
 	switch($type){
+		default:
 		case we_base_link::TYPE_INT:
 		case we_base_link::TYPE_ALL:
 			$int = ($type == we_base_link::TYPE_INT || $GLOBALS['we_doc']->getElement($nint) != '') ? $GLOBALS['we_doc']->getElement($nint) : false;
