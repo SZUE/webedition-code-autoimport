@@ -1110,12 +1110,12 @@ function submitForm() {
 					$orderArray = unserialize($_strSerialOrder);
 					$standardVat = we_shop_vats::getStandardShopVat();
 
-					if(isset($serialDoc[WE_SHOP_CATEGORY_FIELD_NAME]) && $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME]){
+					if(we_shop_category::isCategoryMode()){
 						$stateField = we_shop_vatRule::getStateField();
 						$billingCountry = isset($orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField]) && $orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField] ?
 								$orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField] : we_shop_category::getDefaultCountry();
 
-						$shopVat = we_shop_category::getVatByIdAndCountry($serialDoc[WE_SHOP_CATEGORY_FIELD_NAME], $billingCountry, false);
+						$shopVat = we_shop_category::getShopVatByIdAndCountry((isset($serialDoc[WE_SHOP_CATEGORY_FIELD_NAME]) && $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME] ? $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME] : 0), $billingCountry, false);
 					} elseif(isset($serialDoc[WE_SHOP_VAT_FIELD_NAME])){
 						$shopVat = we_shop_vats::getShopVATById($serialDoc[WE_SHOP_VAT_FIELD_NAME]);
 					}

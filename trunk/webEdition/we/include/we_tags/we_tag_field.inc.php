@@ -139,13 +139,9 @@ function we_tag_field($attribs){
 	if(isset($attribs['rootdir'])){
 		$attribs['rootdir'] = $rootdir;
 	}
-	$show = weTag_getAttribute('show', $attribs);
-	if(isset($attribs['show'])){
-		$attribs['show'] = $show;
-	}
-	$catfield = weTag_getAttribute('catfield', $attribs);
-	if(isset($attribs['catfield'])){
-		$attribs['catfield'] = $catfield;
+	$field = weTag_getAttribute('field', $attribs);
+	if(isset($attribs['field'])){
+		$attribs['field'] = $field;
 	}
 	$vatfield = weTag_getAttribute('vatfield', $attribs);
 	if(isset($attribs['vatfield'])){
@@ -153,11 +149,11 @@ function we_tag_field($attribs){
 	}
 	$customerid = weTag_getAttribute('customerid', $attribs);
 	if(isset($attribs['customerid'])){
-		$attribs['customerid'] = $catfield;
+		$attribs['customerid'] = $customerid;
 	}
 	$country = weTag_getAttribute('country', $attribs);
 	if(isset($attribs['country'])){
-		$attribs['country'] = $vatfield;
+		$attribs['country'] = $country;
 	}
 	$out = '';
 
@@ -311,25 +307,23 @@ function we_tag_field($attribs){
 			break;
 		case 'shopVat' :
 			if(defined('SHOP_TABLE')){
-				$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME, 'txt'), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
+				if(!we_shop_category::isCategoryMode()){
+					$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME, 'txt'), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
+					$out = we_shop_vats::getVatRateForSite($normVal);
+				} else {
+					$shopVatAttribs = $attribs;
+					$shopVatAttribs['shopcategoryid'] = $GLOBALS['lv']->f('shopcategory');
+					unset($shopVatAttribs['type']);
 
-				$out = we_shop_vats::getVatRateForSite($normVal);
+					$out = we_tag('shopVat', $shopVatAttribs);
+				}
 			}
 			break;
 		case 'shopCategory' :
 			if(defined('SHOP_TABLE') && is_object($GLOBALS['lv'])){
 				$id = $GLOBALS['lv']->f('shopcategory');
-				$field = $show === 'vat' ? $vatfield : $catfield;
-				if($show !== 'vat'){
-					$out = we_shop_category::getFieldFromIDs($id, $field, false, 0, '', false, false, ',', $showpath, $rootdir);
-				} else {
-					$shopCatAttribs = $attribs;
-					$shopCatAttribs['id'] = $id;
-					$shopCatAttribs['dosave'] = false;
-					unset($shopCatAttribs['type']);
 
-					$out = we_tag('shopCategory', $shopCatAttribs);
-				}
+				$out = we_shop_category::getShopCatFieldByID($id, $field, $showpath, $rootdir);
 				break;
 			}
 			break;

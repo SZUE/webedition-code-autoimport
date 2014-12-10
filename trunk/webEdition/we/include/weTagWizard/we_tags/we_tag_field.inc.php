@@ -94,13 +94,7 @@ $triggerid = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('triggerid
 $usekey = new weTagData_selectAttribute('usekey', weTagData_selectAttribute::getTrueFalse(), false, '');
 $showpath = new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, '');
 $rootdir = new weTagData_textAttribute('rootdir', false, '');
-$show = new weTagData_selectAttribute('show', array(
-	new weTagDataOption('category'),
-	new weTagDataOption('vat'),
-	//new weTagDataOption('both')
-	), false, '');
-//$this->Attributes[] = new weTagData_selectAttribute('getobject', weTagData_selectAttribute::getTrueFalse(), false, '');
-$catfield = new weTagData_selectAttribute('catfield', array(
+$catfield = new weTagData_selectAttribute('field', array(
 	new weTagDataOption('ID'),
 	new weTagDataOption('Category'),
 	new weTagDataOption('Path'),
@@ -108,14 +102,15 @@ $catfield = new weTagData_selectAttribute('catfield', array(
 	new weTagDataOption('Description'),
 	new weTagDataOption('DestPrinciple')
 	), false, '');
-$vatfield = new weTagData_selectAttribute('vatfield', array(
+$vatfield = new weTagData_selectAttribute('field', array(
 	new weTagDataOption('id'),
 	new weTagDataOption('vat'),
-	new weTagDataOption('text'),
-	new weTagDataOption('standard'),
-	new weTagDataOption('territory'),
-	new weTagDataOption('is_vat_fallback_to_standard'),
-	new weTagDataOption('is_vat_fallback_to_prefs'),
+	new weTagDataOption('name'),
+	new weTagDataOption('country'),
+	new weTagDataOption('country_iso'),
+	new weTagDataOption('is_standard'),
+	new weTagDataOption('is_fallback_to_standard'),
+	new weTagDataOption('is_fallback_to_prefs'),
 	new weTagDataOption('is_country_fallback_to_prefs')
 	), false, '');
 $customerid = new weTagData_textAttribute('customerid', false, '');
@@ -140,12 +135,13 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('binary', false, 'object', array($name, $hyperlink, $href, $target, $only), array($name)),
 	new weTagDataOption('float', false, '', array($name, $hyperlink, $href, $target, $num_format, $triggerid), array($name)),
 	new weTagDataOption('int', false, 'object', array($name, $hyperlink, $href, $target, $triggerid), array($name)),
-	new weTagDataOption('shopVat', false, '', array(), array()),
-	new weTagDataOption('shopCategory', false, '', array($showpath, $rootdir, $show, $catfield, $vatfield, $customerid, $country), array()),
+	new weTagDataOption('shopVat', false, '', array($vatfield, $customerid, $country), array()),
+	new weTagDataOption('shopCategory', false, '', array($catfield, $showpath, $rootdir), array()),
 	new weTagDataOption('checkbox', false, '', array($name), array($name)),
 	new weTagDataOption('country', false, '', array($outputlanguage, $doc), array()),
 	new weTagDataOption('language', false, '', array($outputlanguage, $doc), array())
 	), false, '');
 
 $this->Attributes = array($name, $classid, $hyperlink, $tid, $href, $target, $class, $style, $format, $num_format, $thumbnail, $id, $parentidname, $winprops, $alt, $max, $src,
-	$width, $height, $border, $hspace, $vspace, $align, $only, $onlyImg, $htmlspecialchars, $seeMode, $xml, $win2iso, $listviewname, $striphtml, $outputlanguage, $doc, $triggerid, $usekey);
+	$width, $height, $border, $hspace, $vspace, $align, $only, $onlyImg, $htmlspecialchars, $seeMode, $xml, $win2iso, $listviewname, $striphtml, $outputlanguage, $doc, $triggerid, 
+	$usekey, $vatfield, $customerid, $country, $catfield, $showpath, $rootdir);

@@ -82,7 +82,7 @@ function we_tag_categorySelect($attribs, $content){
 		//$whereTag = !$fromTag ? '' : ($fromTag === 'shopcategory' ? ' AND IsFolder=0' : ' AND ID IN('. trim($catIDs, ',') .')');
 		$whereTag = !$fromTag ? '' : ($fromTag === 'shopcategory' ? '' : ' AND ID IN(' . trim($catIDs, ',') . ')');
 
-		$db->query('SELECT ID,Path,Category FROM ' . CATEGORY_TABLE . ' WHERE ' . ($rootdir === '/' ? 1 : ' Path LIKE "' . $db->escape($rootdir) . '%"') . $whereTag . ' ORDER BY ' . $dbfield);
+		$db->query('SELECT ID,Path,Category FROM ' . CATEGORY_TABLE . ' WHERE ' . ($rootdir === '/' ? 1 : ' Path LIKE "' . $db->escape($rootdir) . '/%"') . $whereTag . ' ORDER BY ' . $dbfield);
 		while($db->next_record()){
 			$deep = count(explode('/', $db->f('Path'))) - 2;
 			$field = ($rootdir && ($rootdir != '/') && $showpath ?

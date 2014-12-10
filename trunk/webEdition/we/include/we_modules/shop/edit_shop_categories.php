@@ -30,7 +30,7 @@ we_html_tools::protect($protect);
 
 //FIXME: mak sowme view class for this editor and use processVariables() and processCommands()?
 //process request
-$shopCategoriesDir = ($val = we_base_request::_(we_base_request::INT, 'weShopCatDir', false)) !== false ? $val : we_shop_category::getShopCatsDir();//(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_dir"', '', $DB_WE, -1));
+$shopCategoriesDir = ($val = we_base_request::_(we_base_request::INT, 'weShopCatDir', false)) !== false ? $val : we_shop_category::getShopCatDir();//(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_dir"', '', $DB_WE, -1));
 $relations = array();
 
 if($shopCategoriesDir !== -1 && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'saveShopCatRels'){
@@ -42,8 +42,16 @@ if($shopCategoriesDir !== -1 && we_base_request::_(we_base_request::STRING, 'we_
 				$destPrincipleIds[] = intval($k);
 			}
 		}
-
 		$success &= we_shop_category::saveSettingDestPrinciple(implode(',', $destPrincipleIds));
+
+		//FIXME: get destPrinciple and isActive from db at once
+		$isActiveIds = array();
+		foreach(we_base_request::_(we_base_request::INT, 'weShopCatIsActive', array()) as $k => $v){
+			if($v){
+				$isActiveIds[] = intval($k);
+			}
+		}
+		$success &= we_shop_category::saveSettingIsActive(implode(',', $isActiveIds));
 
 		$saveCatIds = array();
 		$relations = we_base_request::_(we_base_request::STRING, 'weShopCatRels');
@@ -82,9 +90,8 @@ while($DB_WE->next_record()){
 }
 $selCategoryDirs = we_html_tools::htmlSelect('weShopCatDir', $allCategoryDirs, 1, $shopCategoriesDir, false, array('id' => 'weShopCatDir', 'onchange' => 'we_submitForm(\'' . $_SERVER['SCRIPT_NAME'] . '\');'));
 
-//get all shop categories (from inside $shopCategoriesDir)
 if(intval($shopCategoriesDir) !== -1){
-	$shopCategories = we_shop_category::getAllShopCategories(true, $shopCategoriesDir) ? : array();
+	$shopCategories = we_shop_category::getShopCatFieldsFromDir('', true, $shopCategoriesDir, true, true, true, '', 'Path');
 
 	//Categories/VATs-Matrix
 	$DB_WE->query('SELECT id, text, vat, territory, textProvince, categories FROM ' . WE_SHOP_VAT_TABLE);
@@ -114,65 +121,109 @@ if(intval($shopCategoriesDir) !== -1){
 		}
 	}
 
-	if(count($allVats) < 4){
-		$matrix = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), (count($shopCategories) + 2 ), count($allVats) + 2);
+	//FIXME: throw out row design variant when sure, we do not need it
+	if(count($allVats) < 0){
+		$catsDirMatrix = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), (1 + 2 ), count($allVats) + 4);
+		$catsMatrix = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), (count($shopCategories) + 2 ), count($allVats) + 4);
+
 		$i = 0;
 		$j = 0;
-		$matrix->setCol($i, $j++, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), '');
+		$catsDirMatrix->setCol(0, $j, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 30), '');
+		$catsMatrix->setCol(0, $j++, array("class" => "defaultfont", "style" => "font-weight:normal", "nowrap" => "nowrap", "width" => 30), '');//GL
+		$catsDirMatrix->setCol(0, $j, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 20), '');
+		$catsMatrix->setCol(0, $j++, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 20), '');
+		$catsDirMatrix->setCol(0, $j, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), '');
+		$catsMatrix->setCol(0, $j++, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), '');
+
+
 		foreach($allVats as $v){
-			$matrix->setCol($i, $j++, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), $v['textTerritory']);
+			$catsDirMatrix->setCol(0, $j, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), $v['textTerritory']);
+			$catsMatrix->setCol(0, $j++, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), $v['textTerritory']);
 		}
-		$matrix->setCol($i, $j, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), 'Destination Principle');//GL
+		$catsDirMatrix->setCol(0, $j, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), 'Destination Principle');//GL
+		$catsMatrix->setCol(0, $j, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), 'Destination Principle');//GL
 
 		//generate columns
 		if(count($shopCategories)){
+			$i = $iTmp = 1;
+
 			foreach($shopCategories as $cat){
+				$matrix = $catsMatrix;
+				if($cat['ID'] == $shopCategoriesDir){
+					$matrix = $catsDirMatrix;
+					$iTmp = $i;
+					$i = 1;
+				}
+
 				$j = 0;
-				$matrix->setCol(++$i, $j++, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), $cat->Category . ($cat->IsFolder ? '/' : ''));
+				$matrix->setCol(++$i, $j++, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 30), ($cat['ID'] == $shopCategoriesDir ? '' : (we_html_forms::checkboxWithHidden(($cat['IsActive'] == 1), 'weShopCatIsActive[' . $cat['ID'] . ']', ''))));
+				$matrix->setCol($i, $j++, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 20), ($cat['ID'] . ': '));
+				$matrix->setCol($i, $j++, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 110), $cat['Category'] . ($cat['IsFolder'] ? '/' : ''));
 				if(!count($allVats)){
 					$matrix->setCol($i, $j, array("class" => "defaultfont", "style" => "font-weight:normal", "nowrap" => "nowrap", "width" => 110), 'no vats defined yet');//GL
 				} else {
 					foreach($allVats as $k => $v){
-						$value = isset($relations[$cat->ID][$k]) && $relations[$cat->ID][$k] ? $relations[$cat->ID][$k] : 0;
-						$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat->ID . '][' . $k . ']', $v['selOptions'], 1, $value, false, array(), 'value', 180);
+						$value = isset($relations[$cat['ID']][$k]) && $relations[$cat['ID']][$k] ? $relations[$cat['ID']][$k] : 0;
+						$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, array(), 'value', 180);
 						$matrix->setCol($i, $j++, array("class" => "defaultfont", "style" => "font-weight:normal", "nowrap" => "nowrap", "width" => 110), $sel);
 					}
 				}
-				$matrix->setCol($i, $j++, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), we_html_forms::checkboxWithHidden(($cat->DestPrinciple == 1), 'weShopCatDestPrinciple[' . $cat->ID . ']', ''));
+				$matrix->setCol($i, $j++, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), we_html_forms::checkboxWithHidden(($cat['DestPrinciple'] == 1), 'weShopCatDestPrinciple[' . $cat['ID'] . ']', ''));
+
+				$i = $cat['ID'] == $shopCategoriesDir ? $iTmp : $i;
 			}
-			$matrixHtml = $matrix->getHtml();
+			$catsDirMatrixHtml = $catsDirMatrix->getHtml();
+			$catsMatrixHtml = $catsMatrix->getHtml();
+			
 		} else {
-			$matrixHtml = "Das ausgewählte Kategoeir-Verzeichnis enthält keine Einträge.";//GL
+			$catsMatrixHtml = "Das ausgewählte Kategorie-Verzeichnis enthält keine Einträge.";//GL
 		}
 	} else {
-		$matrix = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), (count($shopCategories) * (count($allVats) + 2)), 3);
+		$catsMatrix = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), (count($shopCategories) * (count($allVats) + 3)), 5);
+		$catsDirMatrix = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), ((count($allVats) + 3)), 5);
 		if(count($shopCategories)){
-			$i = 0;
+			$i = $iTmp = 0;
 
-			foreach($shopCategories as $cat){
+			foreach($shopCategories as $k => $cat){
+				$matrix = $catsMatrix;
+				if($cat['ID'] == $shopCategoriesDir){
+					$matrix = $catsDirMatrix;
+					$iTmp = $i;
+					$i = 0;
+				}
+
 				$j = 0;
-				$matrix->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), $cat->Category);
-				$matrix->setCol($i, 1, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), 'Destination Principle');//GL
-				$matrix->setCol($i++, 2, array("class" => "defaultfont", "style" => "font-weight:normal", "nowrap" => "nowrap", "width" => 110), we_html_forms::checkboxWithHidden(($cat->DestPrinciple == 1), 'weShopCatDestPrinciple[' . $cat->ID . ']', ''));
+				$matrix->setCol($i, 0, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 30), ($cat['ID'] == $shopCategoriesDir ? '' : (we_html_forms::checkboxWithHidden(($cat['IsActive'] == 1), 'weShopCatIsActive[' . $cat['ID'] . ']', ''))));
+				$matrix->setCol($i, 1, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 20), $cat['ID'] . ': ');
+				$matrix->setCol($i, 2, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 140), $cat['Category']);
+				$matrix->setCol($i++, 3, array("class" => "defaultfont", "style" => "font-weight:bold", "colspan" => "2","nowrap" => "nowrap", "width" => 110), $cat['Path']);//GL
+				$matrix->setCol($i, 3, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 110), 'Destination Principle');//GL
+				$matrix->setCol($i++, 4, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 110), we_html_forms::checkboxWithHidden(($cat['DestPrinciple'] == 1), 'weShopCatDestPrinciple[' . $cat['ID'] . ']', ''));
+				
 				if(!count($allVats)){
-					$matrix->setCol($i, 1, array("class" => "defaultfont", "style" => "font-weight:normal", "nowrap" => "nowrap", "width" => 110), 'no vats defined yet');//GL
+					$matrix->setCol($i, 3, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 110), 'no vats defined yet');//GL
 				} else {
 					foreach($allVats as $k => $v){
-						$value = isset($relations[$cat->ID][$k]) && $relations[$cat->ID][$k] ? $relations[$cat->ID][$k] : 0;
-						$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat->ID . '][' . $k . ']', $v['selOptions'], 1, $value, false, array(), 'value', 240);
-						$matrix->setCol($i, 1, array("class" => "defaultfont", "style" => "font-weight:normal", "nowrap" => "nowrap", "width" => 110), $v['textTerritory']);
-						$matrix->setCol($i++, 2, array("class" => "defaultfont", "style" => "font-weight:normal", "nowrap" => "nowrap", "width" => 110), $sel);
+						$value = isset($relations[$cat['ID']][$k]) && $relations[$cat['ID']][$k] ? $relations[$cat['ID']][$k] : 0;
+						$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, array(), 'value', 240);
+						$matrix->setCol($i, 3, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 110), $v['textTerritory']);
+						$matrix->setCol($i++, 4, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 110), $sel);
 					}
 				}
-				$matrix->setCol($i++, 0, array("class" => "defaultfont", "style" => "font-weight:normal", "nowrap" => "nowrap", "width" => 110), '');
+				$matrix->setCol($i, 1, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 20), '');
+				$matrix->setCol($i++, 2, array("style" => "padding-bottom: 20px", "class" => "defaultfont", "nowrap" => "nowrap", "width" => 140), '');
+
+				$i = $cat['ID'] == $shopCategoriesDir ? $iTmp : $i;
 			}
 		} else {
-			$matrixHtml = "Das ausgewählte Kategoeir-Verzeichnis enthält keine Einträge.";//GL
+			$catsMatrix = "Das ausgewählte Kategoeir-Verzeichnis enthält keine Einträge.";//GL
+			$catsDirMatrix = "Das ausgewählte Kategoeir-Verzeichnis enthält keine Einträge.";//GL
 		}
-		$matrixHtml = $matrix->getHtml();
+		$catsMatrixHtml = $catsMatrix->getHtml();
+		$catsDirMatrixHtml = $catsDirMatrix->getHtml();
 	}
 } else {
-	$matrixHtml = "Sie habe noch kein Kategorie-Verzeichnis gewählt.";//GL
+	$catsMatrixHtml = $catsDirMatrixHtml = "Sie habe noch kein Kategorie-Verzeichnis gewählt.";//GL
 }
 
 echo we_html_tools::getHtmlTop() . STYLESHEET;
@@ -218,6 +269,19 @@ $parts = array(
 );
 
 $parts[] = array(
+	'headline' => 'Kategorie-Verzeichnis bearbeiten',
+	'space' => 400,
+	'html' => '',
+	'noline' => 1
+);
+
+$parts[] = array(
+	'headline' => '',
+	'space' => 0,
+	'html' => $catsDirMatrixHtml,
+);
+
+$parts[] = array(
 	'headline' => 'Kategorien bearbeiten',
 	'space' => 200,
 	'html' => '',
@@ -227,7 +291,7 @@ $parts[] = array(
 $parts[] = array(
 	'headline' => '',
 	'space' => 0,
-	'html' => $matrixHtml,
+	'html' => $catsMatrixHtml,
 	'noline' => 1
 );
 

@@ -123,17 +123,20 @@ class we_category extends weModelBase{
 		}
 		return self::we_getCategories($catIDs, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir, $asArray, $noDirs, $complete);
 	}
-
-	static function we_getCategories($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false, $assoc = false, $noDirs = false, $complete = false){
+	
+	//FIXME: throw out unused params added when implementing shopCategories
+	static function we_getCategories($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false, $assoc = false, $noDirs = false, $complete = false, $includeDir = false, $order = ''){
 		$db = ($db ? : new DB_WE());
 		$cats = array();
 		$whereIDs = trim($catIDs, ',') ? ' ID IN(' . trim($catIDs, ',') . ')' : 1;
-		$wherePath = ' AND Path LIKE "' . $onlyindir . '/%"';
+		$whereDir = ' AND Path LIKE "' . $db->escape($onlyindir) . '/%"';
+		$whereIncludeDir = $onlyindir && $includeDir !== false ? ' OR (Path = "' . $db->escape($onlyindir) . '")' : '';
+		$orderBy = $order ? ' ORDER BY ' . $db->escape($order) : '';
 		$field = $catfield ? : ($showpath ? 'Path' : 'Category');
 		$asArray = $complete ? : $asArray;
 		$showpath &=!$catfield;
 
-		$db->query('SELECT ID,Path,Category,Title,Description, IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ' . $whereIDs . $wherePath . ($noDirs ? ' AND IsFolder=0' : ''));
+		$db->query('SELECT ID,Path,Category,Title,Description, IsFolder, ParentID FROM ' . CATEGORY_TABLE . ' WHERE (' . $whereIDs . $whereDir . ')' . $whereIncludeDir . $orderBy);
 		while($db->next_record()){
 			$data = $db->getRecord();
 			if(!$complete){
@@ -151,6 +154,7 @@ class we_category extends weModelBase{
 			} else {//we return complete data allways as associative arrays
 				$cats[$data['ID']] = array(
 					'ID' => $data['ID'],
+					'ParentID' => $data['ParentID'],
 					'Path' => $data['Path'],
 					'Category' => $data['Category'],
 					'Title' => $data['Title'],

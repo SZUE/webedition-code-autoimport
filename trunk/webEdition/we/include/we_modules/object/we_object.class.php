@@ -223,7 +223,7 @@ class we_object extends we_document{
 							'shopcatField' => $this->getElement($cur . 'shopcatField'),
 							'shopcatShowPath' => $this->getElement($cur . 'shopcatShowPath'),
 							'shopcatRootdir' => $this->getElement($cur . 'shopcatRootdir'),
-							'shopcatUseDefault' => $this->getElement($cur . 'shopcatUseDefault'),
+							'shopcatLimitChoice' => $this->getElement($cur . 'shopcatLimitChoice'),
 							'uniqueID' => md5(uniqid(__FILE__, true)),
 						);
 
@@ -351,7 +351,7 @@ class we_object extends we_document{
 								'shopcatField' => $this->getElement($info['name'] . 'shopcatField'),
 								'shopcatShowPath' => $this->getElement($info['name'] . 'shopcatShowPath'),
 								'shopcatRootdir' => $this->getElement($info['name'] . 'shopcatRootdir'),
-								'shopcatUseDefault' => $this->getElement($info['name'] . 'shopcatUseDefault'),
+								'shopcatLimitChoice' => $this->getElement($info['name'] . 'shopcatLimitChoice'),
 								'uniqueID' => $this->SerializedArray[$info['name']]['uniqueID'] ? : md5(uniqid(__FILE__, true)),
 							);
 							if($this->isVariantField($info['name']) && $this->getElement($info['name'] . 'variant') == 1){
@@ -422,7 +422,7 @@ class we_object extends we_document{
 						'shopcatField' => $this->getElement($cur . 'shopcatField'),
 						'shopcatShowPath' => $this->getElement($cur . 'shopcatShowPath'),
 						'shopcatRootdir' => $this->getElement($cur . 'shopcatRootdir'),
-						'shopcatUseDefault' => $this->getElement($cur . 'shopcatUseDefault'),
+						'shopcatLimitChoice' => $this->getElement($cur . 'shopcatLimitChoice'),
 						'uniqueID' => md5(uniqid(__FILE__, true)),
 					);
 //					$arrt[$nam]['variant'] = (isset($this->getElement($cur.'variant')) && $this->getElement($cur.'variant')==1) ? $this->getElement($cur.'variant') : '';
@@ -1163,8 +1163,9 @@ class we_object extends we_document{
 					$selectShopPath = self::htmlSelect('we_' . $this->Name . '_input[' . $name . 'shopcatShowPath]', $values, 1, $this->getElement($name . 'shopcatShowPath', 'dat'));
 					$textRootdir = self::htmlTextInput('we_' . $this->Name . '_input[' . $name . 'shopcatRootdir]', 24, $value = $this->getElement($name . 'shopcatRootdir', 'dat'));
 
-					$selectCategories = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . 'default]', we_shop_category::getFieldFromAll('Path'), 1, $this->getElement($name . 'default', 'dat'), false, array(), 'value', 388);
-					$checkUseDefault = we_html_forms::checkboxWithHidden((abs($this->getElement($name . 'shopcatUseDefault', 'dat')) == '1' ? true : false), 'we_' . $this->Name . '_input[' . $name . 'shopcatUseDefault]', 'use default only', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+					$selectCategories = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . 'default]', we_shop_category::getShopCatFieldsFromDir('Path'), 1, $this->getElement($name . 'default', 'dat'), false, array(), 'value', 388);
+					$values = array('0' => '', '1' => 'default', '2' => 'object\'s shop category');//FIXME: use constants instead of ints
+					$selectLimitChoice = self::htmlSelect('we_' . $this->Name . '_input[' . $name . 'shopcatLimitChoice]', $values, 1, $this->getElement($name . 'shopcatLimitChoice', 'dat'));
 
 					$content .= '<tr valign="top">
 							<td  width="100" class="defaultfont"  valign="top"></td>
@@ -1181,7 +1182,7 @@ class we_object extends we_document{
 						<tr valign="top">
 							<td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>
 							<td width="170" class="defaultfont">' .
-						$selectCategories . '<br />' . we_html_tools::getPixel(2, 2) . $checkUseDefault .
+						$selectCategories . '<br />' . we_html_tools::getPixel(2, 2) . 'use only' . we_html_tools::getPixel(8, 24) . $selectLimitChoice .
 						'</td>
 						</tr>';
 				}
@@ -2079,7 +2080,7 @@ class we_object extends we_document{
 				'shopcatField' => '',
 				'shopcatShowPath' => 'true',
 				'shopcatRootdir' => '',
-				'shopcatUseDefault' => '',
+				'shopcatLimitChoice' => 0,
 				'intPath' => '',
 			);
 			foreach($tableInfo as $info){

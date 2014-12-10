@@ -53,6 +53,11 @@ if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data
 			'pref_value' => we_base_request::_(we_base_request::STRING, "shoplocation")
 	)));
 
+		$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			'tool' => "shop",
+			'pref_name' => 'category_mode',
+			'pref_value' => we_base_request::_(we_base_request::INT, "categorymode")
+	)));
 
 	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array(
 			'strDateiname' => "shop_pref",
@@ -91,6 +96,7 @@ if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data
 	exit;
 }
 $shoplocation = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_location"', '', $db, -1);
+$categorymode = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="category_mode"', '', $db, -1);
 
 $strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"');
 if($strFelder !== ''){
@@ -124,9 +130,15 @@ if(!isset($feldnamen[4])){
 $_row = 0;
 //we_html_tools::htmlSelectCountry('weShopVatCountry', '', 1, array(), false, array('id' => 'weShopVatCountry'), 200)
 
-$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), 'Land des Shop-Betreibers');
+$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), 'Land des Shop-Betreibers');//GL
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelectCountry('shoplocation', '', 1, array($shoplocation), false, array('id' => 'shoplocation'), 280));
+$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
+
+$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), 'Shop-Kategorien nutzen');//GL
+$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
+$yesno = array(0 => 'false', 1 =>'true');
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('categorymode', $yesno, 1, $categorymode));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[waehrung]'));

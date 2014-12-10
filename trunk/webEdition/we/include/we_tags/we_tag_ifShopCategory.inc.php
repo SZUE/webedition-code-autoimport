@@ -23,15 +23,31 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifShopCategory($attribs){
-	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
-		echo $foo;
-		return false;
-	}
-	$id = weTag_getAttribute('id', $attribs, -1);
+	$field = weTag_getAttribute('field', $attribs, 'id', we_base_request::STRING);
+	$match = intval(weTag_getAttribute('match', $attribs, false, we_base_request::INT));
+	$ignorefallbacks = weTag_getAttribute('ignorefallbacks', $attribs, false, we_base_request::BOOL);
 
-	$categoryId = (isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME) ?
+	$catID = intval((isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME) ?
 			$GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME) :
-			$GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME));
+			$GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME)));
 
-	return ($id == $categoryId);
+	$validArr = we_shop_category::checkGetValidID($catID, true, false, true);
+	$validID = intval($validArr['id']);
+
+	switch($field){
+		case 'is_fallback_to_standard':
+			return boolval($validArr['state'] === we_shop_category::IS_CAT_FALLBACK_TO_STANDARD);
+		case 'is_fallback_to_active':
+			return boolval($validArr['state'] === we_shop_category::IS_CAT_FALLBACK_TO_ACTIVE);
+		case 'is_destinationprinciple':
+			return boolval(we_shop_category::getShopCatFieldByID($validID, 'DestPrinciple'));
+		case 'id':
+			if(!$match){
+				return $ignorefallbacks ? boolval($catID) : boolval($validID);
+			} else {
+				return $ignorefallbacks ? $catID === $match : $validID === $match;
+			}
+		default: 
+			return false;
+	}
 }
