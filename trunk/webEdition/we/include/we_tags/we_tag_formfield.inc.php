@@ -28,7 +28,7 @@ function we_tag_formfield($attribs){
 	}
 	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
 
-	$types = makeArrayFromCSV(weTag_getAttribute("type", $attribs, "textinput", '', we_base_request::STRING));
+	$types = makeArrayFromCSV(weTag_getAttribute("type", $attribs, "textinput", we_base_request::STRING));
 	$attrs = makeArrayFromCSV(weTag_getAttribute("attribs", $attribs, '', we_base_request::STRING));
 
 	$type_sel = $GLOBALS['we_doc']->getElement($name, 'fftype');
