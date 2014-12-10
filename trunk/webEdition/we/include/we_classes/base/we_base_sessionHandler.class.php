@@ -57,23 +57,31 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 
 	function read($sessID){
 		$sessID = $this->DB->escape(str_pad(self::getSessionID($sessID), 40, '0'));
-
-		while(!(($data = f('SELECT session_data FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" AND touch+INTERVAL ' . SYSTEM_WE_SESSION_TIME . ' second>NOW()', '', $this->DB)) &&
-		$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="' . $this->id . '",lockTime=NOW() WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" AND (lockid="" OR lockid="' . $this->id . '" OR lockTime+INTERVAL ' . $this->execTime . ' second<NOW())') &&
-		$this->DB->affected_rows()
-		) && $data){
-			usleep(100000);
+		if(f('SELECT 1 FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"')){//session exists
+			$max = $this->execTime * 10;
+			while(!(($data = f('SELECT session_data FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" AND touch+INTERVAL ' . SYSTEM_WE_SESSION_TIME . ' second>NOW()', '', $this->DB)) &&
+			$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="' . $this->id . '",lockTime=NOW() WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" AND (lockid="" OR lockid="' . $this->id . '" OR lockTime+INTERVAL ' . $this->execTime . ' second<NOW())') &&
+			$this->DB->affected_rows()
+			) && $data){
+				if(--$max){
+					usleep(100000);
+				} else {
+					//make really sure we end
+					break;
+				}
+			}
+			if($data){
+				$data = ($data[0] === '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data);
+				if($data && $data[0] === 'x'){
+					//valid gzip
+					$data = gzuncompress($data);
+					$this->hash = md5($sessID . $data);
+					return $data;
+				}//else we need a new sessionid; if decrypt failed we might else destroy an existing valid session
+			}
+		}else{
+			$data = '';
 		}
-		if($data){
-			$data = ($data[0] === '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data);
-			if($data && $data[0] === 'x'){
-				//valid gzip
-				$data = gzuncompress($data);
-				$this->hash = md5($sessID . $data);
-				return $data;
-			}//else we need a new sessionid; if decrypt failed we might else destroy an existing valid session
-		}
-
 		//if we don't find valid data, generate a new ID because of session stealing
 		$this->write(self::getSessionID(0), $data, true); //we need a new locked session
 		return '';
