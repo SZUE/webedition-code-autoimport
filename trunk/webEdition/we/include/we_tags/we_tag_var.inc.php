@@ -59,8 +59,8 @@ function we_tag_var($attribs){
 
 		case 'property' :
 			$return = (isset($GLOBALS['we_obj']) ?
-							$GLOBALS['we_obj']->$name_orig :
-							$doc->$name_orig);
+					$GLOBALS['we_obj']->$name_orig :
+					$doc->$name_orig);
 			break;
 
 		case 'shopVat' :
@@ -113,7 +113,5 @@ function we_tag_var($attribs){
 		return date($format, intval($return));
 	}
 	$return = $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
-	$return = $prepareSQL ? $GLOBALS['DB_WE']->escape($return) : $return;
-
-	return $return;
+	return $prepareSQL ? $GLOBALS['DB_WE']->escape($return) : $return;
 }
