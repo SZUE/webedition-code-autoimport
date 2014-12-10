@@ -39,7 +39,7 @@ class we_shop_category extends we_category{
 
 	/**
 	 * get field DestinationPrinciple of this shop category
-	 * 
+	 *
 	 * @return int
 	 */
 	private function getDestPrincipleFromSettings(){
@@ -54,7 +54,7 @@ class we_shop_category extends we_category{
 
 	/**
 	 * save field DestinationPrinciple of this shop category
-	 * 
+	 *
 	 * @return void
 	 */
 	private function saveDestPrinciple(){
@@ -66,7 +66,7 @@ class we_shop_category extends we_category{
 			$ids[] = $this->ID;
 			sort($ids);
 		} else {
-			if(($k = array_search($this->ID, $ids)) === false) {
+			if(($k = array_search($this->ID, $ids)) === false){
 				return true;
 			}
 			unset($ids[$k]);
@@ -74,14 +74,14 @@ class we_shop_category extends we_category{
 
 		return self::saveSettingDestPrinciple(implode(',', $ids));
 	}
-	
+
 	public function __toString(){
 		return serialize($this);
 	}
 
 	/**
 	 * get csv or array containing ids of all shop categories with DestinationPrinciple = true
-	 * 
+	 *
 	 * @param bool $asArray
 	 * @return csv or array of int
 	 */
@@ -94,7 +94,7 @@ class we_shop_category extends we_category{
 
 	/**
 	 * saves shop category field DestinationPrinciple of all shop categoeries
-	 * 
+	 *
 	 * @param csv of int $ids
 	 * @return void
 	 */
@@ -107,10 +107,10 @@ class we_shop_category extends we_category{
 		}
 		return $db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop", pref_name="shop_cats_destPrinciple", pref_value="' . trim($val, ',') . '"');
 	}
-	
+
 	/**
 	 * return shopCategoryDir defined in tblSettings as path or id
-	 * 
+	 *
 	 * @param bool $path
 	 * @return int or string
 	 */
@@ -122,7 +122,7 @@ class we_shop_category extends we_category{
 	}
 
 	/**
-	 * saves shopCategoryDir to tblSettings 
+	 * saves shopCategoryDir to tblSettings
 	 *
 	 * @param int $id
 	 * @return void
@@ -134,7 +134,7 @@ class we_shop_category extends we_category{
 	}
 
 	/**
-	 * returns shop category by id, false if there is no shop category of this id 
+	 * returns shop category by id, false if there is no shop category of this id
 	 *
 	 * @param int $id
 	 * @return we_shop_category
@@ -158,7 +158,7 @@ class we_shop_category extends we_category{
 	}
 
 	/**
-	 * returns all shop categories (as defined by shop categories directory). 
+	 * returns all shop categories (as defined by shop categories directory).
 	 * Optionally it returns shop categories inside of some driectory defined by $dir.
 	 *
 	 * @param bool $assoc
@@ -199,7 +199,7 @@ class we_shop_category extends we_category{
 		/* FIXME: base on shopcat objects instead of geting data from db directly! */
 
 		if(!($path = $catsPath ? : (id_to_path(($catsDir ? : self::getShopCatsDir()), CATEGORY_TABLE)))){
-			return false;
+			return $asArray ? array() : false;
 		}
 		//$catIDs = !$catIDs ? '' : trim(implode(',', array_walk(explode(',', $catIDs), 'intval')), ',');
 
@@ -221,7 +221,6 @@ class we_shop_category extends we_category{
 					} else {
 						$ret[] = in_array($data['ID'], $destPrincipleIds) ? 1 : 0;
 					}
-					
 				}
 
 				return $asArray ? $ret : makeCSVFromArray($ret, false, $tokken);
@@ -330,8 +329,7 @@ class we_shop_category extends we_category{
 			return false;
 		}
 
-		if($getRate && isset($GLOBALS['weShopCategories']['getShopVATByCatCountry'][$id][$country])
-				&& ($vat = $GLOBALS['weShopCategories']['getShopVATByCatCountry'][$id][$country] !== false)){
+		if($getRate && isset($GLOBALS['weShopCategories']['getShopVATByCatCountry'][$id][$country]) && ($vat = $GLOBALS['weShopCategories']['getShopVATByCatCountry'][$id][$country] !== false)){
 			return $vat;
 		}
 
@@ -386,4 +384,5 @@ class we_shop_category extends we_category{
 	public static function getDefaultCountry(){
 		return ($c = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_location"', '', $GLOBALS['DB_WE'], -1) ? : false);
 	}
+
 }
