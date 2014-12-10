@@ -95,12 +95,14 @@ $usekey = new weTagData_selectAttribute('usekey', weTagData_selectAttribute::get
 $showpath = new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, '');
 $rootdir = new weTagData_textAttribute('rootdir', false, '');
 $catfield = new weTagData_selectAttribute('field', array(
-	new weTagDataOption('ID'),
-	new weTagDataOption('Category'),
-	new weTagDataOption('Path'),
-	new weTagDataOption('Title'),
-	new weTagDataOption('Description'),
-	new weTagDataOption('DestPrinciple')
+	new weTagDataOption('id'),
+	new weTagDataOption('category'),
+	new weTagDataOption('path'),
+	new weTagDataOption('title'),
+	new weTagDataOption('description'),
+	new weTagDataOption('is_destinationprinciple'),
+	new weTagDataOption('is_fallback_to_standard'),
+	new weTagDataOption('is_fallback_to_active')
 	), false, '');
 $vatfield = new weTagData_selectAttribute('field', array(
 	new weTagDataOption('id'),
@@ -115,8 +117,6 @@ $vatfield = new weTagData_selectAttribute('field', array(
 	), false, '');
 $customerid = new weTagData_textAttribute('customerid', false, '');
 $country = new weTagData_textAttribute('country', false, '');
-
-
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('-', false, '', array(), array()),
 	new weTagDataOption('text', false, '', array($name, $hyperlink, $href, $target, $num_format, $alt, $max, $striphtml, $htmlspecialchars, $triggerid), array($name)),

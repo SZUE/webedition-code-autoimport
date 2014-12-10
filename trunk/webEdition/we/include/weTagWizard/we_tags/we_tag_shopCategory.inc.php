@@ -16,10 +16,7 @@ $this->Attributes[] = new weTagData_selectAttribute('fromdoc', weTagData_selectA
 $this->Attributes[] = new weTagData_selectAttribute('doc', array(
 	new weTagDataOption('self'),
 	new weTagDataOption('top'),
-	//new weTagDataOption('listview'),
 	), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_textAttribute('rootdir', false, '');
 $this->Attributes[] = new weTagData_selectAttribute('field', array(
 	new weTagDataOption('id'),
 	new weTagDataOption('category'),
@@ -30,3 +27,5 @@ $this->Attributes[] = new weTagData_selectAttribute('field', array(
 	new weTagDataOption('is_fallback_to_standard'),
 	new weTagDataOption('is_fallback_to_active')
 	), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, '');
+$this->Attributes[] = new weTagData_textAttribute('rootdir', false, '');
