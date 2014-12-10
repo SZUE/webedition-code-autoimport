@@ -117,13 +117,15 @@ class we_category extends weModelBase{
 				'');
 	}
 
-	static function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false, $assoc = false, $noDirs = false, $complete = false){
-		if(!$catIDs){
-			return $asArray ? array() : '';
-		}
-		return self::we_getCategories($catIDs, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir, $asArray, $noDirs, $complete);
+	static function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false, $noDirs = false, $complete = false){
+		return ($catIDs ?
+				self::we_getCategories($catIDs, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir, $asArray, $noDirs, $complete) :
+				($asArray ?
+					array() :
+					'')
+			);
 	}
-	
+
 	//FIXME: throw out unused params added when implementing shopCategories
 	static function we_getCategories($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false, $assoc = false, $noDirs = false, $complete = false, $includeDir = false, $order = ''){
 		$db = ($db ? : new DB_WE());
@@ -164,7 +166,7 @@ class we_category extends weModelBase{
 			}
 		}
 
-		return $asArray ? $cats : makeCSVFromArray($cats, false, $tokken);
+		return $asArray ? $cats : implode($tokken, $cats);
 	}
 
 }
