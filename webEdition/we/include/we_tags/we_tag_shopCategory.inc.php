@@ -39,6 +39,7 @@ function we_tag_shopCategory($attribs){
 		'title' => 'Title',
 		'description' => 'Description',
 		'is_destinationprinciple' => 'DestPrinciple',
+		'is_from doc_object' => 'is_from doc_object',
 		'is_fallback_to_standard' => 'is_fallback_to_standard',
 		'is_fallback_to_active' => 'is_fallback_to_active'
 	);
@@ -53,6 +54,7 @@ function we_tag_shopCategory($attribs){
 			$attribs['_name_orig'] = WE_SHOP_CATEGORY_FIELD_NAME;
 			$attribs['field'] = 'PATH';
 			$attribs['showpath'] = true;
+			$attribs['firstentry'] = ' ';
 
 			return we_tag_category($attribs);
 		}
@@ -65,7 +67,7 @@ function we_tag_shopCategory($attribs){
 	}
 
 	$shopCatId = $GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME) ? : 0;
-	$ret .= we_shop_category::getShopCatFieldByID($shopCatId, $field, $showpath, $rootdir, true, !we_shop_category::USE_IS_ACTIVE);
+	$ret .= we_shop_category::getShopCatFieldByID($shopCatId, $GLOBALS['we_doc']->Category, $field, $showpath, $rootdir, true, !we_shop_category::USE_IS_ACTIVE);
 
 	return $ret;
 }

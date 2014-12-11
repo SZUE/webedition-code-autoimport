@@ -74,7 +74,7 @@ function we_tag_categorySelect($attribs, $content){
 	$content = trim($content);
 	if(!$content){
 		if($firstentry){
-			$content .= getHtmlTag('option', array('value' => ''), $firstentry);
+			$content .= getHtmlTag('option', array('value' => ($fromTag === 'shopcategory' ? 0 : '')), $firstentry);
 		}
 		$db = $GLOBALS['DB_WE'];
 		$dbfield = $showpath || $indent ? 'Path' : 'Category';
