@@ -213,13 +213,11 @@ class we_base_linklist{
 		if(!$id){
 			return we_base_link::EMPTY_EXT;
 		}
-		if(isset($this->cache[$id])){
-			$row = $this->cache[$id];
-		} else {
-			$row = getHash('SELECT IsDynamic,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->db);
-			$this->cache[$id] = $row;
+		if(!isset($this->cache[$id])){
+			$this->cache[$id] = getHash('SELECT IsDynamic,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->db);
 		}
-		if(isset($row["Path"]) && $this->hidedirindex){
+		$row = $this->cache[$id];
+		if(isset($row['Path']) && $this->hidedirindex){
 			$path_parts = pathinfo($row["Path"]);
 			if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 				$row["Path"] = ($path_parts['dirname'] != DIRECTORY_SEPARATOR ? $path_parts['dirname'] : '') . DIRECTORY_SEPARATOR;
@@ -468,8 +466,8 @@ class we_base_linklist{
 							$GLOBALS["we_list_insertedNr"]) && $GLOBALS["we_list_insertedNr"] ) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID()) . '\');');
 				}
 				if($this->show == -1 || ($this->show > $this->length())){
-					echo "<br/>" . we_html_button::create_button("image:btn_add_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", $disabled);
-					echo '<input type="hidden" name="we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']" value="' . oldHtmlspecialchars(
+					echo "<br/>" . we_html_button::create_button("image:btn_add_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", $disabled) .
+					'<input type="hidden" name="we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']" value="' . oldHtmlspecialchars(
 						$this->getString()) . '" />' . ($this->length() ? '' : $plusbut);
 				}
 			} else {
@@ -479,10 +477,7 @@ class we_base_linklist{
 				$downbut = we_html_button::create_button("image:btn_direction_down", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('down_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt < (count($this->listArray) - 1)));
 				$editbut = we_html_button::create_button("image:btn_edit_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('edit_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true);
 				$trashbut = we_html_button::create_button("image:btn_function_trash", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('delete_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "','')", true);
-				echo we_html_button::create_button_table(
-					array(
-					$plusbut, $upbut, $downbut, $editbut, $trashbut
-					), 5);
+				echo we_html_button::create_button_table(array($plusbut, $upbut, $downbut, $editbut, $trashbut), 5);
 			}
 		}
 		$ret&= next($this->listArray);
@@ -520,15 +515,19 @@ class we_base_linklist{
 	}
 
 	function upLink($nr){
-		$temp = $this->listArray[$nr - 1];
-		$this->listArray[$nr - 1] = $this->listArray[$nr];
-		$this->listArray[$nr] = $temp;
+		if($nr > 0 && $nr < count($this->listArray)){
+			$temp = $this->listArray[$nr - 1];
+			$this->listArray[$nr - 1] = $this->listArray[$nr];
+			$this->listArray[$nr] = $temp;
+		}
 	}
 
 	function downLink($nr){
-		$temp = $this->listArray[$nr + 1];
-		$this->listArray[$nr + 1] = $this->listArray[$nr];
-		$this->listArray[$nr] = $temp;
+		if($nr >= 0 && ($nr + 1) < count($this->listArray)){
+			$temp = $this->listArray[$nr + 1];
+			$this->listArray[$nr + 1] = $this->listArray[$nr];
+			$this->listArray[$nr] = $temp;
+		}
 	}
 
 	function insertLink($nr){

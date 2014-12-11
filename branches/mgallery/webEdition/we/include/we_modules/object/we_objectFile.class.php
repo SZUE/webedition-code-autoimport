@@ -1129,12 +1129,26 @@ class we_objectFile extends we_document{
 	private function getShopCategoryFieldHtml($name, $attribs, $we_editmode = true){
 		if($we_editmode){
 			$values = array();
-			if($attribs['shopcatUseDefault']){
-				$values[] = we_category::we_getCatsFromIDs(intval($attribs['default']), ',', true, $this->DB_WE, '', 'Path');
+			$idFromObject = we_shop_category::getShopCatDir();;
+
+			//FIXME: make automated assignment auf shop category from object dynamic: let we_shop_category::checkGetValidID do the job
+			if($attribs['shopcatLimitChoice'] == 2){//FIXME: use constant
+				$category = array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory)))));
+				$shopCategories = we_shop_category::getAllShopCatIDs(true);
+				foreach($category as $cat){
+					if(in_array($cat, $shopCategories)){
+						$idFromObject = $cat;
+						break;
+					}
+				}
+			}
+
+			if($attribs['shopcatLimitChoice'] == 1 || $attribs['shopcatLimitChoice'] == 2){//FIXME: use constants
+				$values[] = we_category::we_getCatsFromIDs((intval($attribs['shopcatLimitChoice'] == 2 ? $idFromObject : $attribs['default'])), ',', true, $this->DB_WE, '', 'Path');
 				$input = we_class::htmlSelect('dummy', $values, 1, 0, false, array('disabled' => 'disabled')) .
 						we_html_element::htmlHidden(array('name' => 'we_' . $this->Name . '_shopCategory[' . $name . ']', 'value' => $attribs['default']));
 			} else {
-				$input = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . ']', we_shop_category::getFieldFromAll('Path'), 1, ($this->getElement($name) ? : $attribs['default']));
+				$input = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . ']', we_shop_category::getShopCatFieldsFromDir('Path'), 1, ($this->getElement($name) ? : $attribs['default']));
 			}
 
 			return
@@ -1143,7 +1157,7 @@ class we_objectFile extends we_document{
 				<tr><td>' . $input . '</td></tr>
 			</table>';
 		}
-		$val = we_shop_category::getFieldFromIDs($this->getElement($name), $attribs['shopcatField'], false, 0, '', false, false, ',', ($attribs['shopcatShowPath'] == 'false' ? false : true), $attribs['shopcatRootdir']);
+		$val = we_shop_category::getShopCatFieldByID($this->getElement($name), $attribs['shopcatField'], ($attribs['shopcatShowPath'] == 'false' ? false : true), $attribs['shopcatRootdir']);
 
 		return $this->getPreviewView($name, $val);
 	}

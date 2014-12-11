@@ -24,7 +24,6 @@
  */
 class we_docTypes extends we_class{
 	/* The Text that will be shown in the tree-menue */
-
 	var $DocType = 'New DocType';
 	var $Extension = DEFAULT_STATIC_EXT;
 	var $ParentID = 0;
@@ -43,7 +42,7 @@ class we_docTypes extends we_class{
 	var $Category = '';
 	var $Language = '';
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'Category', 'DocType', 'Extension', 'ParentID', 'ParentPath', 'TemplateID', 'ContentTable', 'IsDynamic', 'IsSearchable', 'Notify', 'NotifyTemplateID', 'NotifySubject', 'NotifyOnChange', 'SubDir', 'Templates', 'Language');
 		$this->Table = DOC_TYPES_TABLE;
@@ -58,7 +57,7 @@ class we_docTypes extends we_class{
 				$newIdArr[] = $id;
 			}
 		}
-		$this->Templates = makeCSVFromArray($newIdArr);
+		$this->Templates = implode(',', $newIdArr);
 
 		if(LANGLINK_SUPPORT){
 			if(($llink = we_base_request::_(we_base_request::RAW, "we_" . $this->Name . "_LangDocType"))){
@@ -72,7 +71,7 @@ class we_docTypes extends we_class{
 		return we_class::we_save($resave);
 	}
 
-	function we_save_exim(){
+	public function we_save_exim(){
 		return parent::we_save(0);
 	}
 
@@ -99,24 +98,22 @@ class we_docTypes extends we_class{
 		}
 	}
 
-	function initLanguageFromParent(){
+	private function initLanguageFromParent(){
 		$ParentID = $this->ParentID;
 		$i = 0;
 		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
 				$this->Language = ($GLOBALS['weDefaultFrontendLanguage'] ? : 'de_DE');
-			} else {
-				if(($h = getHash('SELECT Language,ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($ParentID), $this->DB_WE))){
-					$this->Language=$h['Language'];
-					$ParentID = $h['ParentID'];
-				}
+			} elseif(($h = getHash('SELECT Language,ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($ParentID), $this->DB_WE))){
+				$this->Language = $h['Language'];
+				$ParentID = $h['ParentID'];
 			}
 			$i++;
 		}
 	}
 
-	function formLanguage(){
+	private function formLanguage(){
 		we_loadLanguageConfig();
 
 		$value = ($this->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
@@ -137,14 +134,14 @@ class we_docTypes extends we_class{
 		}
 	}
 
-	function formCategory(){
+	private function formCategory(){
 		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector', -1, '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(521, $this->Category, "dt_delete_cat", $addbut, "", "Icon,Path", CATEGORY_TABLE);
 		return we_html_tools::htmlFormElementTable($cats->get(), g_l('weClass', '[category]'));
 	}
 
-	function addCat($id){
+	public function addCat($id){
 		$cats = makeArrayFromCSV($this->Category);
 		$ids = makeArrayFromCSV($id);
 		foreach($ids as $id){
@@ -155,7 +152,7 @@ class we_docTypes extends we_class{
 		$this->Category = makeCSVFromArray($cats, true);
 	}
 
-	function delCat($id){
+	public function delCat($id){
 		$cats = makeArrayFromCSV($this->Category);
 		if(in_array($id, $cats)){
 			$pos = array_search($id, $cats);
@@ -170,7 +167,7 @@ class we_docTypes extends we_class{
 	 * Form functions for generating the html of the input fields
 	 */
 
-	function formDocTypeHeader(){
+	public function formDocTypeHeader(){
 		return '
 <table border="0" cellpadding="0" cellspacing="0">
 	<tr valign="top">
@@ -181,18 +178,18 @@ class we_docTypes extends we_class{
 </table>';
 	}
 
-	function formName(){
+	public function formName(){
 		return $this->formInputField('', 'DocType', '', 24, 520, 32);
 	}
 
-	function formDocTypeTemplates(){
+	public function formDocTypeTemplates(){
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_dt_template', top.allIDs);");
 		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openDocselector', 0, '" . TEMPLATES_TABLE . "','','','" . $wecmdenc3 . "', '', '', '" . we_base_ContentTypes::TEMPLATE . "', 1,1)");
 		$templ = new we_chooser_multiDir(521, $this->Templates, "delete_dt_template", $addbut, "", "Icon,Path", TEMPLATES_TABLE);
 		return $templ->get();
 	}
 
-	function formDocTypeDefaults(){
+	public function formDocTypeDefaults(){
 		return '
 <table border="0" cellpadding="0" cellspacing="0">
 	<tr><td colspan="3">' . $this->formDirChooser(we_base_browserDetect::isIE() ? 403 : 409) . '</td></tr>
@@ -226,7 +223,7 @@ class we_docTypes extends we_class{
 	 * @desc   returns HTML-Code for a doctype select-box without doctypes given in $array
 	 * @return string
 	 */
-	function formDocTypes2($arrHide = array()){
+	private function formDocTypes2($arrHide = array()){
 		$vals = array();
 		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . self::getDoctypeQuery($this->DB_WE));
 
@@ -241,19 +238,13 @@ class we_docTypes extends we_class{
 		return $this->htmlSelect("DocTypes", $vals, 8, $this->ID, false, array('style' => "width:328px", 'onchange' => 'we_cmd(\'change_docType\',this.options[this.selectedIndex].value)'));
 	}
 
-	function formDocTypes3($headline, $langkey, $derDT = 0){
-		$vals = array();
-		$this->DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . ' ' . self::getDoctypeQuery($this->DB_WE));
-		$vals[0] = g_l('weClass', '[nodoctype]');
-		while($this->DB_WE->next_record()){
-			$v = $this->DB_WE->f("ID");
-			$t = $this->DB_WE->f("DocType");
-			$vals[$v] = $t;
-		}
+	private function formDocTypes3($headline, $langkey, $derDT = 0){
+		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . self::getDoctypeQuery($this->DB_WE));
+		$vals = array_merge(array(0 => g_l('weClass', '[nodoctype]')), $this->DB_WE->getAllFirst(false));
 		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . "_LangDocType[" . $langkey . "]", $vals, 1, $derDT, false, array(($langkey == $this->Language ? 'disabled' : null) => "disabled", 'width' => 328, 'onchange' => '')), $headline, "left", "defaultfont");
 	}
 
-	function formDirChooser($width = 100){
+	private function formDirChooser($width = 100){
 		$yuiSuggest = & weSuggest::getInstance();
 
 		$textname = 'we_' . $this->Name . '_ParentPath';
@@ -275,14 +266,14 @@ class we_docTypes extends we_class{
 		return $yuiSuggest->getHTML();
 	}
 
-	function formExtension($width = 100){
+	private function formExtension($width = 100){
 		$exts = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::WEDOCUMENT);
 		return we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $this->Extension, $exts, $width), g_l('weClass', '[extension]'));
 	}
 
 	/* creates the Template PopupMenue */
 
-	function formTemplatePopup($width = 100){
+	private function formTemplatePopup($width = 100){
 		$tlist = array();
 		if($this->TemplateID){
 			$tlist[] = $this->TemplateID;
@@ -295,32 +286,8 @@ class we_docTypes extends we_class{
 		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[standard_template]'), $sqlTeil, 1, $this->TemplateID, false, '', array(), 'left', 'defaultfont', '', '', array(0, g_l('weClass', '[none]')));
 	}
 
-	// return DocumentType HTML
-	function formDocTypeDropDown($selected = -1, $width = 200, $onChange = ''){
-		$this->DocType = $selected;
-		return $this->formSelect2(
-				$width, // width
-				'DocType', // name
-				DOC_TYPES_TABLE, // table
-				'ID', // value in DB
-				'DocType', // txt in DB
-				g_l('weClass', '[doctype]'), // text
-				'ORDER BY DocType', // sql Part
-				1, // size
-				$selected, // selectedIndex
-				false, // multiply
-				$onChange, // on change part
-				array(), // attribs
-				'left', // textalign
-				'defaultfont', // textclass
-				'', // pre code
-				'', // postcode
-				array(-1, g_l('weClass', '[nodoctype]')) // first element
-		);
-	}
-
-	function formIsDynamic(){
-		$n = "we_" . $this->Name . "_IsDynamic";
+	private function formIsDynamic(){
+		$n = 'we_' . $this->Name . '_IsDynamic';
 
 		return we_html_forms::checkbox(1, $this->IsDynamic, "check_" . $n, g_l('weClass', '[IsDynamic]'), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, ($this->IsDynamic ? 1 : 0)) .
 			we_html_element::jsElement('
@@ -334,20 +301,20 @@ function switchExt(){
 }');
 	}
 
-	function formIsSearchable(){
+	private function formIsSearchable(){
 		$n = 'we_' . $this->Name . '_IsSearchable';
 		return we_html_forms::checkbox(1, $this->IsSearchable, 'check_' . $n, g_l('weClass', '[IsSearchable]'), false, 'defaultfont', "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0');") . $this->htmlHidden($n, ($this->IsSearchable ? 1 : 0));
 	}
 
-	function formSubDir($width = 100){
+	private function formSubDir($width = 100){
 		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', g_l('weClass', '[subdir]'), 1, $this->SubDir, false, array(), 'value', $width), g_l('weClass', '[subdirectory]'));
 	}
 
-	function formNewDocType(){
+	public function formNewDocType(){
 		return we_html_button::create_button('new_doctype', "javascript:we_cmd('newDocType')");
 	}
 
-	function formDeleteDocType(){
+	private function formDeleteDocType(){
 		return we_html_button::create_button('delete_doctype', "javascript:we_cmd('deleteDocType', '" . $this->ID . "')");
 	}
 
@@ -373,23 +340,17 @@ function switchExt(){
 						$paths[] = '(ParentPath = "' . $db->escape($db->f('Path')) . '" || ParentPath LIKE "' . $db->escape($db->f('Path')) . '/%")';
 					}
 				}
-				if(is_array($paths) && count($paths) > 0){
-					return 'WHERE (' . implode(' OR ', $paths) . ' OR ParentPath="") ORDER BY DocType';
-				}
-			} else {
-				foreach($b as $k => $v){
-					$_tmp_path = id_to_path($v);
-					while($_tmp_path && $_tmp_path != '/'){
-						$paths[] = '"' . $db->escape($_tmp_path) . '"';
-						$_tmp_path = dirname($_tmp_path);
-					}
-				}
-				if(is_array($paths) && count($paths) > 0){
-					return 'WHERE ParentPath IN (' . implode(',', $paths) . ',"")  ORDER BY DocType';
+				return ($paths ? 'WHERE (' . implode(' OR ', $paths) . ' OR ParentPath="")' : '') . ' ORDER BY DocType';
+			}
+			foreach($b as $k => $v){
+				$_tmp_path = id_to_path($v);
+				while($_tmp_path && $_tmp_path != '/'){
+					$paths[] = '"' . $db->escape($_tmp_path) . '"';
+					$_tmp_path = dirname($_tmp_path);
 				}
 			}
 		}
-		return (is_array($paths) && count($paths) > 0 ? 'WHERE ((' . implode(' OR ', $paths) . ') OR ParentPath="")' : '') . ' ORDER BY DocType';
+		return ($paths ? 'WHERE ParentPath IN (' . implode(',', $paths) . ',"")' : '') . ' ORDER BY DocType';
 	}
 
 }

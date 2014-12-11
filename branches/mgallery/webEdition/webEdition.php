@@ -95,7 +95,7 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 	var seeMode = <?php echo ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? "true" : "false"; ?>; // in seeMode
 	var seeMode_edit_include = <?php echo (isset($SEEM_edit_include) && $SEEM_edit_include) ? "true" : "false"; ?>; // in edit_include mode of seeMode
 
-	var wePerms = {
+	var wePerms = {//FIXME: unused?
 		"ADMINISTRATOR": <?php echo permissionhandler::hasPerm("ADMINISTRATOR") ? 1 : 0; ?>,
 		"DELETE_DOCUMENT": <?php echo permissionhandler::hasPerm("DELETE_DOCUMENT") ? 1 : 0; ?>,
 		"DELETE_TEMPLATE": <?php echo permissionhandler::hasPerm("DELETE_TEMPLATE") ? 1 : 0; ?>,
@@ -150,9 +150,8 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 		if (!win) {
 			win = window;
 		}
-		if (!prio) { // default is error, to avoid missing messages
-			prio = <?php echo we_message_reporting::WE_MESSAGE_ERROR; ?>;
-		}
+		 // default is error, to avoid missing messages
+		prio = prio ? prio : <?php echo we_message_reporting::WE_MESSAGE_ERROR; ?>;
 
 		// always show in console !
 		messageConsole.addMessage(prio, message);
@@ -357,11 +356,9 @@ if(defined('MESSAGING_SYSTEM')){
 				// use 2 loadframes to avoid missing cmds
 				if (target.name === "load" || target.name === "load2") {
 					if (top.lastUsedLoadFrame === target.name) {
-						if (target.name === "load") {
-							target = self.load2;
-						} else {
-							target = self.load;
-						}
+						target = (target.name === "load" ?
+										self.load2 :
+										self.load);
 					}
 					top.lastUsedLoadFrame = target.name;
 				}
@@ -382,7 +379,8 @@ if(defined('MESSAGING_SYSTEM')){
 				if (formlocation.we_submitForm) {
 					formlocation.we_submitForm(target.name, url);
 					return true;
-				} else if (formlocation.contentWindow.we_submitForm) {
+				}
+				if (formlocation.contentWindow.we_submitForm) {
 					formlocation.contentWindow.we_submitForm(target.name, url);
 					return true;
 				}
@@ -414,7 +412,7 @@ if(defined('MESSAGING_SYSTEM')){
 		var hasPerm = false;
 		var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 		for (var i = 0; i < arguments.length; i++) {
-			url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 			if (i < (arguments.length - 1))
 				url += "&";
 		}
@@ -459,14 +457,14 @@ if(($_jsincludes = we_tool_lookup::getJsCmdInclude())){
 	}
 }
 $modSwitch = str_replace(
-	array_merge(explode("\n", we_html_element::jsElement()), array(
+		array_merge(explode("\n", we_html_element::jsElement()), array(
 	'switch (WE_REMOVE) {',
 	'switch(WE_REMOVE){',
 	'switch(WE_REMOVE) {',
 	'switch (WE_REMOVE){',
 	'}//WE_REMOVE'
-		)
-	), '', ob_get_clean()
+				)
+		), '', ob_get_clean()
 );
 
 echo $modSwitch; // deal with not activated modules
@@ -525,37 +523,33 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 					hasPerm = false;
 				} else if (<?php echo (permissionhandler::hasPerm("ADMINISTRATOR") ? 'true' : 'false'); ?>) {
 					hasPerm = true;
-				} else if (isFolder) {
-					switch (eTable) {
-						case "<?php echo FILE_TABLE; ?>":
-							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_DOC_FOLDER') ? 'true' : 'false'); ?>;
-							break;
-						case "<?php echo TEMPLATES_TABLE; ?>":
-							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_TEMP_FOLDER') ? 'true' : 'false'); ?>;
-							break;
-						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1; ?>":
-							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
-							break;
-						default:
-							hasPerm = false;
-					}
 				} else {
 					switch (eTable) {
 						case "<?php echo FILE_TABLE; ?>":
-							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_DOCUMENT') ? 'true' : 'false'); ?>;
+							hasPerm = (isFolder ?
+<?php echo (permissionhandler::hasPerm('DELETE_DOC_FOLDER') ? 'true' : 'false'); ?> :
+<?php echo (permissionhandler::hasPerm('DELETE_DOCUMENT') ? 'true' : 'false'); ?>
+							);
 							break;
 						case "<?php echo TEMPLATES_TABLE; ?>":
-							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_TEMPLATE') ? 'true' : 'false'); ?>;
-							if (wePerms.DELETE_TEMPLATE) {
-								hasPerm = true;
-							}
+							hasPerm = (isFolder ?
+<?php echo (permissionhandler::hasPerm('DELETE_TEMP_FOLDER') ? 'true' : 'false'); ?> :
+<?php echo (permissionhandler::hasPerm('DELETE_TEMPLATE') ? 'true' : 'false'); ?>
+							);
 							break;
 						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1; ?>":
-							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
+							hasPerm = (isFolder ?
+<?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?> :
+<?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>
+							);
 							break;
-						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_TABLE : -2; ?>":
-							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECT') ? 'true' : 'false'); ?>;
+						case "<?php echo defined('OBJECT_TABLE') ? OBJECT_TABLE : -2; ?>":
+							hasPerm = (isFolder ?
+											false :
+<?php echo (permissionhandler::hasPerm('DELETE_OBJECT') ? 'true' : 'false'); ?>
+							);
 							break;
+
 						default:
 							hasPerm = false;
 					}
@@ -584,36 +578,30 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 					hasPerm = false;
 				} else if (<?php echo (permissionhandler::hasPerm("ADMINISTRATOR") ? 'true' : 'false'); ?>) {
 					hasPerm = true;
-				} else if (isFolder) {
-					switch (eTable) {
-						case "<?php echo FILE_TABLE; ?>":
-							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_DOC_FOLDER') ? 'true' : 'false'); ?>;
-							break;
-						case "<?php echo TEMPLATES_TABLE; ?>":
-							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_TEMP_FOLDER') ? 'true' : 'false'); ?>;
-							break;
-						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1; ?>":
-							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
-							break;
-						default:
-							hasPerm = false;
-					}
 				} else {
 					switch (eTable) {
 						case "<?php echo FILE_TABLE; ?>":
-							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_DOCUMENT') ? 'true' : 'false'); ?>;
+							hasPerm = (isFolder ?
+<?php echo (permissionhandler::hasPerm('DELETE_DOC_FOLDER') ? 'true' : 'false'); ?> :
+<?php echo (permissionhandler::hasPerm('DELETE_DOCUMENT') ? 'true' : 'false'); ?>
+							);
 							break;
 						case "<?php echo TEMPLATES_TABLE; ?>":
-							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_TEMPLATE') ? 'true' : 'false'); ?>;
-							if (wePerms.DELETE_TEMPLATE) {
-								hasPerm = true;
-							}
+							hasPerm = (isFolder ?
+<?php echo (permissionhandler::hasPerm('DELETE_TEMP_FOLDER') ? 'true' : 'false'); ?> :
+<?php echo (permissionhandler::hasPerm('DELETE_TEMPLATE') ? 'true' : 'false'); ?>
+							);
 							break;
 						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1; ?>":
-							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>;
+							hasPerm = (isFolder ?
+<?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?> :
+<?php echo (permissionhandler::hasPerm('DELETE_OBJECTFILE') ? 'true' : 'false'); ?>
+							);
 							break;
-						case "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_TABLE : -2; ?>":
-							hasPerm = <?php echo (permissionhandler::hasPerm('DELETE_OBJECT') ? 'true' : 'false'); ?>;
+						case "<?php echo defined('OBJECT_TABLE') ? OBJECT_TABLE : -2; ?>":
+							hasPerm = (isFolder ?
+											false :
+<?php echo (permissionhandler::hasPerm('DELETE_OBJECT') ? 'true' : 'false'); ?>);
 							break;
 						default:
 							hasPerm = false;
@@ -1025,7 +1013,6 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				}
 
 				if ((nextWindow = top.weEditorFrameController.getFreeWindow())) {
-
 					_nextContent = nextWindow.getDocumentReference();
 
 					// activate tab and set state to loading
@@ -1060,9 +1047,7 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				break;
 			case "open_extern_document":
 			case "new_document":
-
 				if ((nextWindow = top.weEditorFrameController.getFreeWindow())) {
-
 					_nextContent = nextWindow.getDocumentReference();
 
 					// activate tab and set it status loading ...

@@ -74,21 +74,11 @@ class we_selector_document extends we_selector_directory{
 			}
 			$wsQuery = $wsQuery? : ' OR RestrictOwners=0 ';
 		}
-		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
-			we_users_util::makeOwnersSql() . ')' .
-			$wsQuery . ')' .
-			$filterQuery . //$publ_q.
-			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
-		);
 
-		$_db = new DB_WE();
 		switch($this->table){
 			case FILE_TABLE:
-				$_db->query('SELECT f.ID, c.Dat FROM (' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID)) JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND f.ParentID=' . intval($this->dir) . ' AND l.Name="Title"');
-
-				while($_db->next_record()){
-					$this->titles[$_db->f('ID')] = $_db->f('Dat');
-				}
+				$this->db->query('SELECT f.ID, c.Dat FROM (' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID)) JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND f.ParentID=' . intval($this->dir) . ' AND l.Name="Title"');
+				$this->titles = $this->db->getAllFirst(false);
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$_path = $this->path;
@@ -96,17 +86,21 @@ class we_selector_document extends we_selector_directory{
 					$_path = dirname($_path);
 				}
 
-				$hash = getHash('SELECT o.DefaultTitle,o.ID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.ID=of.TableID WHERE of.ID=' . intval($this->dir), $_db);
+				$hash = getHash('SELECT o.DefaultTitle,o.ID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.ID=of.TableID WHERE of.ID=' . intval($this->dir), $this->db);
 
 				$this->titleName = ($hash ? $hash['DefaultTitle'] : '');
 				if($this->titleName && strpos($this->titleName, '_')){
-					$_db->query('SELECT OF_ID, ' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . $hash['ID'] . ' WHERE OF_ParentID=' . intval($this->dir));
-					while($_db->next_record()){
-						$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
-					}
+					$this->db->query('SELECT OF_ID, ' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . $hash['ID'] . ' WHERE OF_ParentID=' . intval($this->dir));
+					$this->titles = $this->db->getAllFirst(false);
 				}
 				break;
 		}
+		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
+			we_users_util::makeOwnersSql() . ')' .
+			$wsQuery . ')' .
+			$filterQuery . //$publ_q.
+			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
+		);
 	}
 
 	function printHTML($what = we_selector_file::FRAMESET){

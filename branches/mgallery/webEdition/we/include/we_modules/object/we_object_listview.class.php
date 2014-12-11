@@ -118,7 +118,7 @@ class we_object_listview extends we_listview_base{
 		}
 		$sqlParts = $this->makeSQLParts($matrix, $this->classID, $this->order, $this->condition);
 		//allways join the file table itself
-		$sqlParts["tables"].=' JOIN `' . OBJECT_FILES_TABLE . '` ON `' . OBJECT_FILES_TABLE . '`.ID=`' . OBJECT_X_TABLE . $this->classID . '`.OF_ID';
+		$sqlParts['tables'].=' JOIN `' . OBJECT_FILES_TABLE . '` ON `' . OBJECT_FILES_TABLE . '`.ID=`' . OBJECT_X_TABLE . $this->classID . '`.OF_ID';
 
 		$pid_tail = (isset($GLOBALS['we_doc']) ? makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table) : '1');
 
@@ -362,7 +362,7 @@ class we_object_listview extends we_listview_base{
 		return array(//FIXME: maybe random can be changed by time%ID or sth. which is faster and quite rand enough
 			'fields' => rtrim($f, ',') . ($order === ' ORDER BY RANDOM ' ? ', RAND() AS RANDOM ' : ''),
 			'order' => $order,
-			'tables' => implode(',', $tb),
+			'tables' => implode(' JOIN ', $tb),
 			'groupBy' => (count($tb) > 1) ? ' GROUP BY `' . OBJECT_X_TABLE . $classID . '`.OF_ID ' : '',
 			'publ_cond' => $publ_cond ? ' ( ' . implode(' AND ', $publ_cond) . ' ) ' : '',
 			'cond' => trim($cond)

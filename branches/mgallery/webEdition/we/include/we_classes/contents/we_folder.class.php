@@ -113,8 +113,7 @@ class we_folder extends we_root{
 		}
 	}
 
-	function initLanguageFromParent(){
-
+	private function initLanguageFromParent(){
 		$ParentID = $this->ParentID;
 		$i = 0;
 		while(!$this->Language){

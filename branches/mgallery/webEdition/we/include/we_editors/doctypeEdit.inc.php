@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-$parts = array();
 
 $we_doc = new we_docTypes();
 
@@ -47,25 +46,20 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 			$we_JavaScript = "";
 			$we_show_response = 1;
+		} elseif(($id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $GLOBALS['DB_WE']->escape($we_doc->DocType) . '" LIMIT 1')) && ($we_doc->ID != $id)){
+			$we_responseText = sprintf(g_l('weClass', '[doctype_save_nok_exist]'), $we_doc->DocType);
+			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
+			$we_JavaScript = "";
+			$we_show_response = 1;
 		} else {
-			$GLOBALS['DB_WE']->query('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $GLOBALS['DB_WE']->escape($we_doc->DocType) . '"');
-			if(($GLOBALS['DB_WE']->next_record()) && ($we_doc->ID != $GLOBALS['DB_WE']->f("ID"))){
-				$we_responseText = sprintf(g_l('weClass', '[doctype_save_nok_exist]'), $we_doc->DocType);
-				$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
-				$we_JavaScript = "";
+			$we_JavaScript = 'opener.top.makefocus = self;' .
+				we_main_headermenu::getMenuReloadCode();
+			if($we_doc->we_save()){
+				$we_responseText = sprintf(g_l('weClass', '[doctype_save_ok]'), $we_doc->DocType);
+				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
 				$we_show_response = 1;
 			} else {
-				$we_JavaScript = 'opener.top.makefocus = self;' .
-					we_main_headermenu::getMenuReloadCode();
-
-				//$we_JavaScript .= "opener.top.header.document.location.reload();\n";
-				if($we_doc->we_save()){
-					$we_responseText = sprintf(g_l('weClass', '[doctype_save_ok]'), $we_doc->DocType);
-					$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
-					$we_show_response = 1;
-				} else {
-					echo "ERROR";
-				}
+				echo "ERROR";
 			}
 		}
 		break;
@@ -85,25 +79,23 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		$name = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $id);
 		$del = false;
 		if($name){
-			$GLOBALS['DB_WE']->query('SELECT 1 FROM ' . FILE_TABLE . ' WHERE DocType=' . $id . ' LIMIT 1');
-			if(!$GLOBALS['DB_WE']->next_record()){
+			if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE DocType=' . $id . ' LIMIT 1')){
+				$we_show_response = 1;
+				$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
+				$we_responseText = sprintf(g_l('weClass', '[doctype_delete_nok]'), $name);
+			} else {
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $id);
 
 				// Fast Fix for deleting entries from tblLangLink: #5840
-				$GLOBALS['DB_WE']->query('DELETE FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblDocTypes' AND (DID=" . $id . ' OR LDID=' . $id . ')');
+				$GLOBALS['DB_WE']->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND (DID=' . $id . ' OR LDID=' . $id . ')');
 
 				$we_show_response = 1;
 				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
 				$we_responseText = sprintf(g_l('weClass', '[doctype_delete_ok]'), $name);
 				$del = true;
-			} else {
-				$we_show_response = 1;
-				$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
-				$we_responseText = sprintf(g_l('weClass', '[doctype_delete_nok]'), $name);
 			}
 			if($del){
-				$id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType LIMIT 1');
-				if($id){
+				if(($id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType LIMIT 1'))){
 					$we_doc->initByID($id, DOC_TYPES_TABLE);
 				}
 			} else {
@@ -114,13 +106,13 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 	case 'add_dt_template':
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
 		$foo = makeArrayFromCSV($we_doc->Templates);
-		$ids = makeArrayFromCSV(we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 1));
+		$ids = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', '', 1);
 		foreach($ids as $id){
 			if(!in_array($id, $foo)){
 				$foo[] = $id;
 			}
 		}
-		$we_doc->Templates = makeCSVFromArray($foo);
+		$we_doc->Templates = implode(',', $foo);
 		break;
 	case 'delete_dt_template':
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
@@ -128,8 +120,8 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		$cmd1 = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 		if($cmd1 && (in_array($cmd1, $foo))){
 			$pos = array_search($cmd1, $foo);
-			if($pos !== false || $pos == '0'){
-				array_splice($foo, $pos, 1);
+			if($pos !== false){
+				unset($foo[$pos]);
 			}
 		}
 		if($we_doc->TemplateID == $cmd1){
@@ -150,7 +142,8 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		}
 		break;
 	default:
-		$id = (($tmp = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)) ? $tmp :
+		$id = (($tmp = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)) ?
+				$tmp :
 				f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']) . ' LIMIT 1'));
 
 		if($id){
@@ -158,9 +151,9 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		}
 }
 
-echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]'));
 $yuiSuggest = & weSuggest::getInstance();
-echo weSuggest::getYuiFiles() .
+echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
+ weSuggest::getYuiFiles() .
  we_html_element::jsScript(JS_DIR . "keyListener.js") .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
@@ -179,20 +172,18 @@ switch($wecmd0){
 	case "deleteDocType":
 		if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){
 			echo we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
-		} else {
-			?>
-			if (confirm("<?php printf(g_l('weClass', '[doctype_delete_prompt]'), $we_doc->DocType); ?>")) {
-				we_cmd("deleteDocTypeok", "<?php echo we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1); ?>");
-			}
-			<?php
+			break;
 		}
+		?>
+		if (confirm("<?php printf(g_l('weClass', '[doctype_delete_prompt]'), $we_doc->DocType); ?>")) {
+			we_cmd("deleteDocTypeok", "<?php echo we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1); ?>");
+		}
+		<?php
 		break;
 	case "deleteDocTypeok":
 		echo 'opener.top.makefocus = self;' .
-		we_main_headermenu::getMenuReloadCode();
-//							opener.top.header.document.location.reload();
-
-		echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
+		we_main_headermenu::getMenuReloadCode() .
+		we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
 }
 ?>
 
@@ -358,30 +349,30 @@ function disableLangDefault(allnames, allvalues, deselect) {
 		echo we_class::hiddenTrans();
 
 		if($we_doc->ID){
-
-			$parts[] = array("headline" => g_l('weClass', '[doctypes]'),
-				"html" => $GLOBALS['we_doc']->formDocTypeHeader(),
-				"space" => 120
-			);
-
-			$parts[] = array("headline" => g_l('weClass', '[name]'),
-				"html" => $GLOBALS['we_doc']->formName(),
-				"space" => 120
-			);
-
-			$parts[] = array("headline" => g_l('global', '[templates]'),
-				"html" => $GLOBALS['we_doc']->formDocTypeTemplates(),
-				"space" => 120
-			);
-
-			$parts[] = array("headline" => g_l('weClass', '[defaults]'),
-				"html" => $GLOBALS['we_doc']->formDocTypeDefaults(),
-				"space" => 120
+			$parts = array(
+				array("headline" => g_l('weClass', '[doctypes]'),
+					"html" => $we_doc->formDocTypeHeader(),
+					"space" => 120
+				),
+				array("headline" => g_l('weClass', '[name]'),
+					"html" => $we_doc->formName(),
+					"space" => 120
+				),
+				array("headline" => g_l('global', '[templates]'),
+					"html" => $we_doc->formDocTypeTemplates(),
+					"space" => 120
+				),
+				array("headline" => g_l('weClass', '[defaults]'),
+					"html" => $we_doc->formDocTypeDefaults(),
+					"space" => 120
+				)
 			);
 		} else {
-			$parts[] = array("headline" => "",
-				"html" => $GLOBALS['we_doc']->formNewDocType(),
-				"space" => 0
+			$parts = array(
+				array("headline" => "",
+					"html" => $we_doc->formNewDocType(),
+					"space" => 0
+				)
 			);
 		}
 
@@ -393,9 +384,9 @@ function disableLangDefault(allnames, allvalues, deselect) {
 
 
 		echo we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, "", "", 630) .
-			$yuiSuggest->getYuiCss() .
-			$yuiSuggest->getYuiJs();
+		we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, "", "", 630) .
+		$yuiSuggest->getYuiCss() .
+		$yuiSuggest->getYuiJs();
 		?>
 	</form>
 </body>

@@ -9,9 +9,23 @@ $this->Module = 'shop';
 
 if(defined('WE_SHOP_VAT_TABLE')){
 	$options = array();
+	$options[] = new weTagDataOption('', 0);
 	$vats = we_shop_vats::getAllShopVATs();
 	foreach($vats as $vat){
 		$options[] = new weTagDataOption($vat->vat . '% - ' . $vat->getNaturalizedText() . ' (' . $vat->territory  . ')', $vat->id);
 	}
-	$this->Attributes[] = new weTagData_selectAttribute('id', $options, true);
+
+	if(!we_shop_category::isCategoryMode()){
+		$this->Attributes[] = new weTagData_selectAttribute('id', $options, true);
+	} else {
+		$this->Attributes[] = new weTagData_selectAttribute('field', array(
+			new weTagDataOption('id'),
+			new weTagDataOption('is_standard'),
+			new weTagDataOption('is_fallback_to_standard'),
+			new weTagDataOption('is_fallback_to_prefs'),
+			new weTagDataOption('is_country_fallback_to_prefs')
+		), false, '');
+		$this->Attributes[] = new weTagData_selectAttribute('match', $options, true);
+	}
+
 }

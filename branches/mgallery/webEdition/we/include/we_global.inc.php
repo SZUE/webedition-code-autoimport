@@ -305,7 +305,7 @@ function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null){
 		return 0;
 	}
 	$db = ($db ? : new DB_WE());
-	return intval(f('SELECT DISTINCT ID FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '" LIMIT 1', '', $db));
+	return intval(f('SELECT ID FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '" LIMIT 1', '', $db));
 }
 
 function weConvertToIds($paths, $table){

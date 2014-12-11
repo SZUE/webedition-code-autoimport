@@ -219,9 +219,9 @@ function we_tag_paypal($attribs){
 					//so we have to calculate the correct net article price
 					//bug #5701
 					if(!$useVat && !$netprices){
-						if(isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]){
+						if(we_shop_category::isCategoryMode()){
 							$billingCountry = $countrycode ? : we_shop_category::getDefaultCountry();
-							$shopVat = we_shop_category::getVatByIdAndCountry($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME], $billingCountry, true);
+							$shopVat = we_shop_category::getShopVatByIdAndCountry((isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0), $billingCountry, true);
 						} else {
 							$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 							$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);
@@ -237,9 +237,9 @@ function we_tag_paypal($attribs){
 					$p->add_field('amount_' . $i, $itemPrice);
 
 					// foreach article we must determine the correct tax-rate
-					if(isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]){
+					if(we_shop_category::isCategoryMode()){
 						$billingCountry = $countrycode ? : we_shop_category::getDefaultCountry();
-						$shopVat = we_shop_category::getVatByIdAndCountry($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME], $billingCountry, true);
+						$shopVat = we_shop_category::getShopVatByIdAndCountry((isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0), $billingCountry, true);
 					} else {
 						$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 						$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);

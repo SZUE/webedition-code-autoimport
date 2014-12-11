@@ -87,29 +87,23 @@ abstract class we_selector_file{
 
 	protected function setDirAndID(){
 		$id = $this->id;
-		if($id === 0){
-			$this->setDefaultDirAndID(false);
-			return;
-		}
 		if($id > 0){
 			// get default Directory
 			$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id));
 
 			// getValues of selected Dir
 			if($this->db->next_record()){
-				$this->values = $this->db->Record;
+				$this->values = $this->db->getRecord();
 
 				$this->dir = ($this->values['IsFolder'] ?
 						$id :
 						$this->values['ParentID']);
 
 				$this->path = $this->values['Path'];
-			} else {
-				$this->setDefaultDirAndID(false);
+				return;
 			}
-		} else {
-			$this->setDefaultDirAndID(true);
 		}
+		$this->setDefaultDirAndID($id === 0 ? false : true);
 	}
 
 	protected function setDefaultDirAndID($setLastDir){
@@ -220,6 +214,7 @@ function closeOnEscape() {
 	}
 
 	function printFramesetHTML(){
+		$this->setDirAndID();//set correct directory
 		echo we_html_tools::getHtmlTop($this->title, '', 'frameset') .
 		implodeJS(
 			we_html_element::jsScript(JS_DIR . 'keyListener.js') .
@@ -679,12 +674,12 @@ function enableRootDirButs(){
 	protected function printCmdHTML(){
 		echo we_html_element::jsElement('
 top.clearEntries();' .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				(($this->dir) == 0 ?
-					'top.fsheader.disableRootDirButs();' :
-					'top.fsheader.enableRootDirButs();') .
-				'top.currentPath = "' . $this->path . '";
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			(($this->dir) == 0 ?
+				'top.fsheader.disableRootDirButs();' :
+				'top.fsheader.enableRootDirButs();') .
+			'top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 ');
 	}
