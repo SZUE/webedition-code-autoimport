@@ -119,7 +119,7 @@ class we_wysiwyg_editor{
 		if($formats){
 			$tmp = '';
 			$formatsArr = explode(',', $this->formats);
-			foreach(explode(',',$formats) as $f){
+			foreach(explode(',', $formats) as $f){
 				if(in_array(trim($f, ', '), $formatsArr)){
 					$tmp .= trim($f, ', ') . ',';
 				}
@@ -160,15 +160,15 @@ class we_wysiwyg_editor{
 
 		//FIXME: what to do with scripts??
 		/*
-		if($inlineedit && $value){
-			//old editor's code
-			$value = strtr($value, array("\\" => "\\\\", "\n" => '\n', "\r" => '\r'));
-			$value = str_replace(array('script', 'Script', 'SCRIPT',), array('##scr#ipt##', '##Scr#ipt##', '##SCR#IPT##',), $value);
-			$value = preg_replace('%<\?xml[^>]*>%i', '', $value);
-			$value = str_replace(array('<?', '?>',), array('||##?##||', '##||?||##'), $value);
-		}
-         *
-         */
+		  if($inlineedit && $value){
+		  //old editor's code
+		  $value = strtr($value, array("\\" => "\\\\", "\n" => '\n', "\r" => '\r'));
+		  $value = str_replace(array('script', 'Script', 'SCRIPT',), array('##scr#ipt##', '##Scr#ipt##', '##SCR#IPT##',), $value);
+		  $value = preg_replace('%<\?xml[^>]*>%i', '', $value);
+		  $value = str_replace(array('<?', '?>',), array('||##?##||', '##||?||##'), $value);
+		  }
+		 *
+		 */
 
 		$this->setToolbarElements();
 		$this->setFilteredElements();
@@ -214,11 +214,11 @@ class we_wysiwyg_editor{
 
 			return $ret;
 		}
-		$ret = array(
+
+		$ret = array_merge(array(
 			'',
 			g_l('wysiwyg', '[groups]') => we_html_tools::OPTGROUP
-		);
-		$ret = array_merge($ret, $tmp);
+			), $tmp);
 		foreach($commands as $key => $values){
 			$ret = array_merge($ret, array($key => we_html_tools::OPTGROUP), $values);
 		}
@@ -573,7 +573,7 @@ function weWysiwygSetHiddenText(arg) {
 		if(preg_match_all('/src="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)/i', $editValue, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[1]));
-				$editValue = str_ireplace('src="' . we_base_link::TYPE_INT_PREFIX . $reg[1], 'src="' . $path . "?id=" . $reg[1] . '&time=' . $t, $editValue);
+				$editValue = str_ireplace('src="' . we_base_link::TYPE_INT_PREFIX . $reg[1], 'src="' . ($path ? $path . '?id=' . $reg[1] . '&time=' . $t : ICON_DIR . 'no_image.gif'), $editValue);
 			}
 		}
 		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '([^" ]+)/i', $editValue, $regs, PREG_SET_ORDER)){
@@ -750,71 +750,72 @@ function weWysiwygSetHiddenText(arg) {
 
 	function getTemplates(){
 		$tmplArr = explode(',', str_replace(' ', '', $this->templates));
-		$templates = '';
-		for($i = 0; $i < count($tmplArr); $i++){
+		$templates = array();
+		foreach($tmplArr as $i => $cur){
 			$tmplDoc = new we_document();
-			$tmplDoc->initByID(intval($tmplArr[$i]));
-			if(($tmplDoc->ContentType == we_base_ContentTypes::APPLICATION && ($tmplDoc->Extension === '.html' || $tmplDoc->Extension === '.htm')) || $tmplDoc->ContentType == we_base_ContentTypes::WEDOCUMENT){
-				$templates .= '{title: "' . (isset($tmplDoc->elements['Title']['dat']) && $tmplDoc->elements['Title']['dat'] ? $tmplDoc->elements['Title']['dat'] : "no title " . ($i + 1)) . '", src : "' . $tmplDoc->Path . '", description: "' . (isset($tmplDoc->elements['Description']['dat']) && $tmplDoc->elements['Description']['dat'] ? $tmplDoc->elements['Description']['dat'] : "no description " . ($i + 1)) . '"},';
+			$tmplDoc->initByID(intval($cur));
+			switch($tmplDoc->ContentType){
+				case we_base_ContentTypes::APPLICATION:
+					if(!($tmplDoc->Extension === '.html' || $tmplDoc->Extension === '.htm')){
+						continue;
+					}
+				//no break
+				case we_base_ContentTypes::WEDOCUMENT:
+					$templates[] = '{title: "' . (isset($tmplDoc->elements['Title']['dat']) && $tmplDoc->elements['Title']['dat'] ? $tmplDoc->elements['Title']['dat'] : 'no title ' . ($i + 1)) . '", src : "' . $tmplDoc->Path . '", description: "' . (isset($tmplDoc->elements['Description']['dat']) && $tmplDoc->elements['Description']['dat'] ? $tmplDoc->elements['Description']['dat'] : 'no description ' . ($i + 1)) . '"}';
 			}
 		}
 
-		return $templates ? 'template_templates : [' . rtrim($templates, ',') . '],' : 'template_templates : [],';
+		return 'template_templates : [' . implode(',', $templates) . '],';
 	}
 
 	function getInlineHTML(){
 		$rows = $this->getToolbarRows();
 		$editValue = $this->parseInternalImageSrc($this->value);
 
-			list($lang) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
+		list($lang) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
 
-			//write theme_advanced_buttons_X
-			$tinyRows = '';
-			$allCommands = array();
-			$i = 0;
-			$k = 1;
-			$pastetext = 0;
-
-			foreach($rows as $outer){
-				$tinyRows .= 'theme_advanced_buttons' . $k . ' : "';
-				$j = 0;
-				foreach($outer as $inner){
-					if(!$rows[$i][$j]->cmd){
-						$tinyRows .= $rows[$i][$j]->conditional ? '' : 'separator,';
-					} else if(self::wysiwygCmdToTiny($rows[$i][$j]->cmd)){
-						$tinyRows .= self::wysiwygCmdToTiny($rows[$i][$j]->cmd) . ',';
-						$allCommands[] .= self::wysiwygCmdToTiny($rows[$i][$j]->cmd);
-					}
-					$j++;
+		//write theme_advanced_buttons_X
+		$tinyRows = '';
+		$allCommands = array();
+		$k = 1;
+		foreach($rows as $outer){
+			$tinyRows .= 'theme_advanced_buttons' . $k . ' : "';
+			foreach($outer as $inner){
+				if(!$inner->cmd){
+					$tinyRows .= $inner->conditional ? '' : 'separator,';
+				} else if(self::wysiwygCmdToTiny($inner->cmd)){
+					$tinyRows .= self::wysiwygCmdToTiny($inner->cmd) . ',';
+					$allCommands[] .= self::wysiwygCmdToTiny($inner->cmd);
 				}
-				$tinyRows = rtrim($tinyRows, ',') . '",';
-				$i++;
-				$k++;
 			}
-			$tinyRows .= 'theme_advanced_buttons' . $k . ' : "",';
+			$tinyRows = rtrim($tinyRows, ',') . '",';
 
-			$this->tinyPlugins = implode(',', array_unique($this->tinyPlugins));
-			$this->wePlugins = implode(',', array_intersect($this->wePlugins, $allCommands));
-			$plugins = ($this->createContextmenu ? 'wecontextmenu,' : '') .
-				($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
-				($this->wePlugins ? $this->wePlugins . ',' : '') .
-				'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
-			//fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
-			$toolBarHeight = $this->buttonpos === 'external' ? 0 : ($k - 1) * 26 + 22 - $k * 3;
-			$this->height += $toolBarHeight;
+			$k++;
+		}
+		$tinyRows .= 'theme_advanced_buttons' . $k . ' : "",';
 
-			$wefullscreenVars = array(
-				'outsideWE' => $this->outsideWE ? "1" : "",
-				'xml' => $this->xml ? "1" : "",
-				'removeFirstParagraph' => $this->removeFirstParagraph ? "1" : "0",
-			);
+		$this->tinyPlugins = implode(',', array_unique($this->tinyPlugins));
+		$this->wePlugins = implode(',', array_intersect($this->wePlugins, $allCommands));
+		$plugins = ($this->createContextmenu ? 'wecontextmenu,' : '') .
+			($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
+			($this->wePlugins ? $this->wePlugins . ',' : '') .
+			'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
+		//fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
+		$toolBarHeight = $this->buttonpos === 'external' ? 0 : ($k - 1) * 26 + 22 - $k * 3;
+		$this->height += $toolBarHeight;
 
-			$contentCss = $this->contentCss ? $this->contentCss . ',' : '';
+		$wefullscreenVars = array(
+			'outsideWE' => $this->outsideWE ? "1" : "",
+			'xml' => $this->xml ? "1" : "",
+			'removeFirstParagraph' => $this->removeFirstParagraph ? "1" : "0",
+		);
 
-			$editorLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
-			$editorLangSuffix = $editorLang === 'de' ? 'de_' : '';
+		$contentCss = $this->contentCss ? $this->contentCss . ',' : '';
 
-			return we_html_element::jsElement('
+		$editorLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
+		$editorLangSuffix = $editorLang === 'de' ? 'de_' : '';
+
+		return we_html_element::jsElement('
 				' . ($this->fieldName ? '
 /* -- tinyMCE -- */
 
@@ -1000,8 +1001,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 
 		ed.onInit.add(function(ed, o){
 			//TODO: clean up the mess in here!
-			ed.pasteAsPlainText = ' . $pastetext . ';
-			ed.controlManager.setActive("pastetext", ' . $pastetext . ');
+			ed.pasteAsPlainText = 0;
+			ed.controlManager.setActive("pastetext", 0);
 			var openerDocument = ' . (!$this->isInPopup ? '""' : ($this->isFrontendEdit ? 'top.opener.document' : 'top.opener.top.weEditorFrameController.getVisibleEditorFrame().document')) . ';
 			' . ($this->isInPopup ? '
 			try{
@@ -1184,7 +1185,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 tinyMCE.addI18n(tinyMceTranslationObject);
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 ') .
-				'
+			'
 <textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . (max($this->width, $this->maxGroupWidth + 8)) . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace(array('\n', '&'), array('', '&amp;'), $editValue) . '</textarea>';
 	}
 

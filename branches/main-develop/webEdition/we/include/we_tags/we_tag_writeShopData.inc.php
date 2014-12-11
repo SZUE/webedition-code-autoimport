@@ -94,9 +94,9 @@ function we_tag_writeShopData($attribs){
 			$totPrice += $preis * $shoppingItem['quantity'];
 
 			// foreach article we must determine the correct tax-rate
-			if(isset($shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME])){
+			if(we_shop_category::isCategoryMode()){
 				$billingCountry = we_shop_category::getCountryFromCustomer(false, $_SESSION['webuser']);
-				$shopVat = we_shop_category::getVatByIdAndCountry($shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME], $billingCountry, true);
+				$shopVat = we_shop_category::getShopVatByIdAndCountry((isset($shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] ? $shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0), $billingCountry, true);
 			
 			} else {
 				$vatId = isset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;

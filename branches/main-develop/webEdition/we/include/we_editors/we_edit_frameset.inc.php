@@ -37,18 +37,17 @@ we_html_tools::protect();
 function getFirstValidEditPageNr($doc, $EditPageNr){
 	if($doc->isValidEditPage($EditPageNr) && permissionhandler::isUserAllowedForAction('switch_edit_page', $EditPageNr)){
 		return $EditPageNr;
-	} else {
-		//	bugfix for new tag: we:hidePages
-		foreach(array_keys($doc->EditPageNrs) as $key){
-			//  the command in this case is swith_edit_page, because in this funtion
-			//  the editor tries to select a certain edit_page
-			//  in some cases it must switch it
-			if(permissionhandler::isUserAllowedForAction('switch_edit_page', $doc->EditPageNrs[$key])){
-				return $doc->EditPageNrs[$key];
-			}
-		}
-		return -1;
 	}
+	//	bugfix for new tag: we:hidePages
+	foreach(array_keys($doc->EditPageNrs) as $key){
+		//  the command in this case is swith_edit_page, because in this funtion
+		//  the editor tries to select a certain edit_page
+		//  in some cases it must switch it
+		if(permissionhandler::isUserAllowedForAction('switch_edit_page', $doc->EditPageNrs[$key])){
+			return $doc->EditPageNrs[$key];
+		}
+	}
+	return -1;
 }
 
 function getTabs($classname, $predefined = 0){
@@ -63,8 +62,7 @@ function getTabs($classname, $predefined = 0){
 
 $we_Table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 $we_ID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
-$we_ContentType = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
-$we_ContentType = $we_ContentType ? : ($we_ID ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . $we_ID) : '');
+$we_ContentType = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3) ? : ($we_ID ? f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . $we_ID) : '');
 
 if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
@@ -117,7 +115,7 @@ if(!$we_ID){
 	$_SESSION['weS']['EditPageNr'] = getTabs('we_webEditionDocument', we_base_constants::WE_EDITPAGE_PROPERTIES);
 }
 
-if(($tid = we_base_request::_(we_base_request::INT, 'we_cmd', false, 10)) !== false && ($we_Table == FILE_TABLE) && ($we_ContentType == we_base_ContentTypes::WEDOCUMENT)){
+if(($tid = we_base_request::_(we_base_request::INT, 'we_cmd', false, 10)) !== false && ($we_Table == FILE_TABLE) && ($we_ContentType === we_base_ContentTypes::WEDOCUMENT)){
 	$we_doc->setTemplateID($tid);
 	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 1);
 }
@@ -130,7 +128,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'new_documen
 }
 
 
-if(($doct = we_base_request::_(we_base_request::INT, 'we_cmd', false, 8)) !== false && ($we_Table == FILE_TABLE) && ($we_ContentType == we_base_ContentTypes::WEDOCUMENT)){
+if(($doct = we_base_request::_(we_base_request::INT, 'we_cmd', false, 8)) !== false && ($we_Table == FILE_TABLE) && ($we_ContentType === we_base_ContentTypes::WEDOCUMENT)){
 	$we_doc->changeDoctype($doct);
 	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 1);
 } else if($doct !== false && (defined('OBJECT_FILES_TABLE') && $we_Table == OBJECT_FILES_TABLE) && ($we_ContentType === 'objectFile')){
@@ -146,7 +144,7 @@ if($we_doc->ID){
 		if(!(in_workspace($we_doc->ID, $ws, $we_Table, $DB_WE))){
 			switch($we_Table){
 				case TEMPLATES_TABLE: //	different workspace. for template
-					$we_message = g_l('alert', '[' . ($we_ContentType == we_base_ContentTypes::FOLDER) ? 'folder' : $we_Table . '][not_im_ws]');
+					$we_message = g_l('alert', '[' . ($we_ContentType === we_base_ContentTypes::FOLDER) ? 'folder' : $we_Table . '][not_im_ws]');
 					include(WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 					exit();
 				case FILE_TABLE: //	only preview mode allowed for docs
@@ -185,7 +183,7 @@ if($we_doc->ID == 0){
 					getFirstValidEditPageNr($we_doc, we_base_constants::WE_EDITPAGE_CONTENT));
 }
 
-if($we_Table == FILE_TABLE && $we_ContentType == we_base_ContentTypes::FOLDER && $we_ID){
+if($we_Table == FILE_TABLE && $we_ContentType === we_base_ContentTypes::FOLDER && $we_ID){
 	$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_DOCLIST;
 	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 16);
 }
@@ -328,7 +326,7 @@ if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
 
 			}
 		<?php
-		if(is_a($we_doc, 'we_binaryDocument')){
+	if($we_doc instanceof we_binaryDocument){
 			$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
 		}
 	}
@@ -346,9 +344,6 @@ if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
 	<?php
 	if(isset($parastr) && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "edit_document_with_parameters"){
 		echo 'var parameters = "' . $parastr . '";';
-	}
-	if($we_doc instanceof we_binaryDocument){
-		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
 	}
 
 
@@ -383,7 +378,7 @@ if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
 		<?php
 		if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
 
-			echo we_message_reporting::getShowMessageCall(g_l('SEEM', "[alert][close_include]"), we_message_reporting::WE_MESSAGE_ERROR)
+		echo we_message_reporting::getShowMessageCall(g_l('SEEM', '[alert][close_include]'), we_message_reporting::WE_MESSAGE_ERROR)
 			?>
 						top.close();
 			<?php
@@ -413,7 +408,7 @@ if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
 	</script>
 	<?php
 
-	function setOnload($extonly = false){
+function setOnload($extonly = false){
 		// Don't do this with Templates and only in Preview Mode
 		// in Edit-Mode all must be reloaded !!!
 		// To remove this functionality - just use the second condition as well.
@@ -422,8 +417,8 @@ if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
 			return 'onload="if(typeof top.WE !== \'undefined\'){top.WE.app.getController(\'Bridge\').registerWeIframe();}"';
 		} else {
 			return ($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE/* && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW */ ?
-							'onload="if(typeof top.WE !== \'undefined\'){top.WE.app.getController(\'Bridge\').registerWeIframe(this);} if(top.edit_include){top.edit_include.close();} if(openedWithWE == 0){ checkDocument(); } setOpenedWithWE(0);"' :
-							'onload="if(typeof top.WE !== \'undefined\'){top.WE.app.getController(\'Bridge\').registerWeIframe(this);}"');
+			'onload="if(typeof top.WE !== \'undefined\'){top.WE.app.getController(\'Bridge\').registerWeIframe(this);} if(top.edit_include){top.edit_include.close();} if(openedWithWE == 0){ checkDocument(); } setOpenedWithWE(0);"' :
+			'onload="if(typeof top.WE !== \'undefined\'){top.WE.app.getController(\'Bridge\').registerWeIframe(this);}"');
 		}
 	}
 	?>
@@ -436,8 +431,10 @@ if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
 			<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="1,*,0,40" framespacing="0" border="0" frameborder="NO" onunload="doUnload()">
 				<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>
 				<frame <?php echo setOnload(); ?> src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>&we_complete_request=1" name="editor_<?php echo $fid; ?>" noresize/>
-				<frame <?php echo setOnload(true); ?> src="about:blank" name="contenteditor_<?php echo $fid; ?>" noresize/>
-				<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer"); ?>&SEEM_edit_include=<?php echo (we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') ? "true" : "false"); ?>" name="editFooter" scrolling=no noresize/>
+			<frame <?php echo setOnload(true); ?> src="about:blank" name="contenteditor_<?php echo $fid; ?>" noresize/>
+			<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer"); ?>&SEEM_edit_include=<?php
+			echo (we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') ? "true" : "false");
+			?>" name="editFooter" scrolling=no noresize/>
 			</frameset><noframes></noframes>
 
 			<?php

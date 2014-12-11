@@ -5,40 +5,27 @@
 $this->NeedsEndTag = false;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = (defined('CATEGORY_TABLE') ? new weTagData_selectorAttribute('id', CATEGORY_TABLE, '', false, '') : null);
+$options = array();
+$opts = we_shop_category::getShopCatFieldsFromDir('Path');
+foreach($opts as $k => $v){
+	$options[] = new weTagDataOption($v, $k);
+}
+$this->Attributes[] = new weTagData_selectAttribute('id', $options, false);
+
 $this->Attributes[] = new weTagData_selectAttribute('fromdoc', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('doc', array(
 	new weTagDataOption('self'),
 	new weTagDataOption('top'),
-	new weTagDataOption('listview'),
+	), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('field', array(
+	new weTagDataOption('id'),
+	new weTagDataOption('category'),
+	new weTagDataOption('path'),
+	new weTagDataOption('title'),
+	new weTagDataOption('description'),
+	new weTagDataOption('is_destinationprinciple'),
+	new weTagDataOption('is_fallback_to_standard'),
+	new weTagDataOption('is_fallback_to_active')
 	), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_textAttribute('rootdir', false, '');
-$this->Attributes[] = new weTagData_selectAttribute('show', array(
-	new weTagDataOption('category'),
-	new weTagDataOption('vat'),
-	//new weTagDataOption('both')
-	), false, '');
-//$this->Attributes[] = new weTagData_selectAttribute('getobject', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('catfield', array(
-	new weTagDataOption('ID'),
-	new weTagDataOption('Category'),
-	new weTagDataOption('Path'),
-	new weTagDataOption('Title'),
-	new weTagDataOption('Description'),
-	new weTagDataOption('DestPrinciple')
-	), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('vatfield', array(
-	new weTagDataOption('id'),
-	new weTagDataOption('vat'),
-	new weTagDataOption('text'),
-	new weTagDataOption('standard'),
-	new weTagDataOption('territory'),
-	new weTagDataOption('is_vat_fallback_to_standard'),
-	new weTagDataOption('is_vat_fallback_to_prefs'),
-	new weTagDataOption('is_country_fallback_to_prefs'),
-	), false, '');
-$this->Attributes[] = new weTagData_textAttribute('customerid', false, '');
-$this->Attributes[] = new weTagData_textAttribute('country', false, '');
-
-

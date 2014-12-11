@@ -109,7 +109,7 @@ class we_document extends we_root{
 		return $this->i_getDocument();
 	}
 
-	function initLanguageFromParent(){
+	private function initLanguageFromParent(){
 		$ParentID = $this->ParentID;
 		$i = 0;
 		while(!$this->Language){

@@ -300,7 +300,7 @@ class we_object_exImport extends we_object{
 			'shopcatField' => '',
 			'shopcatShowPath' => 'true',
 			'shopcatRootdir' => '',
-			'shopcatUseDefault' => '',
+			'shopcatLimitChoice' => 0,
 			'uniqueID' => md5(uniqid(__FUNCTION__, true)),
 		);
 		switch($type){

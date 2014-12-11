@@ -28,60 +28,44 @@ function we_tag_shopCategory($attribs){
 	$id = weTag_getAttribute('id', $attribs, false, we_base_request::INT);
 	$fromdoc = weTag_getAttribute('fromdoc', $attribs, false, we_base_request::BOOL);
 	$showpath = weTag_getAttribute('showpath', $attribs, false, we_base_request::BOOL);
-	$rootdir = weTag_getAttribute('rootdir', $attribs, '/', we_base_request::FILE);
-	$onlyindir = we_shop_category::getShopCatsDir(true);
-	$show = weTag_getAttribute('show', $attribs, 'category', we_base_request::STRING);
-	$field = weTag_getAttribute(($show === 'vat' ? 'vatfield' : 'catfield'), $attribs, '', we_base_request::STRING);
-	$customerid = weTag_getAttribute('customerid', $attribs, false, we_base_request::INT);
-	$country = weTag_getAttribute('country', $attribs, false, we_base_request::STRING);
+	$rootdir = weTag_getAttribute('rootdir', $attribs, '', we_base_request::FILE);
+	$field = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);
 	$dosave = weTag_getAttribute('dosave', $attribs, true, we_base_request::BOOL);
 
-	$attribs['onlyindir'] = $onlyindir;
-	$attribs['fromTag'] = 'shopcategory';
-
-	if($GLOBALS['we_editmode'] && !($id || $fromdoc) && $show !== 'vat'){
-		$attribs['_name_orig'] = WE_SHOP_CATEGORY_FIELD_NAME;
-		$attribs['field'] = 'PATH';
-		$attribs['showpath'] = true;
-
-		return we_tag_category($attribs);
-	}
+	$fieldMap = array(
+		'id' => 'ID',
+		'category' => 'Category',
+		'path' => 'Path',
+		'title' => 'Title',
+		'description' => 'Description',
+		'is_destinationprinciple' => 'DestPrinciple',
+		'is_fallback_to_standard' => 'is_fallback_to_standard',
+		'is_fallback_to_active' => 'is_fallback_to_active'
+	);
+	$field = isset($fieldMap[$field]) ? $fieldMap[$field] : 'ID';
 
 	$ret = '';
 	if($GLOBALS['we_editmode']){
+		$attribs['onlyindir'] = we_shop_category::getShopCatDir(true);
+		$attribs['fromTag'] = 'shopcategory';
+
+		if(!($id || $fromdoc)){
+			$attribs['_name_orig'] = WE_SHOP_CATEGORY_FIELD_NAME;
+			$attribs['field'] = 'PATH';
+			$attribs['showpath'] = true;
+
+			return we_tag_category($attribs);
+		}
+
 		$attribs['field'] = 'ID';
 		$catIDs = explode(',', trim(we_tag_category($attribs), ','));
-		if(count($catIDs) && !$show === 'vat' && $dosave){
-			$ret .= we_html_element::htmlHidden(array('name' => 'we_' . $GLOBALS['we_doc']->Name . '_category[we_shopCategory]', 'value' => $catIDs[0]));
+		if(count($catIDs) && $dosave){
+			$ret .= we_html_element::htmlHidden(array('name' => 'we_' . $GLOBALS['we_doc']->Name . '_category[' . WE_SHOP_CATEGORY_FIELD_NAME . ']', 'value' => $catIDs[0]));
 		}
 	}
 
-	if($show === 'vat'){
-		$countryArr = we_shop_category::getCountryFromCustomer(true, null, $customerid, true);
-		$countryArr['country'] = $country ? : $countryArr['country']; //country delivered as attribute has highest priority
-		if($field === 'is_country_fallback_to_prefs'){
-			return $countryArr['country'] && $countryArr['isFallback'] ? 1 : 0;
-		}
-
-		$weShopVatRule = we_shop_vatRule::getShopVatRule();
-		if(!$weShopVatRule->executeVatRule($countryArr['customer'], $countryArr['country'])){
-			return $field === 'vat' ? 0 : '';
-		}
-
-		$catId = $id ? : $GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME);
-		$vat = we_shop_category::getVatByIdAndCountry($catId, $countryArr['country'], false, ($field === 'is_vat_fallback_to_standard'), ($field === 'is_vat_fallback_to_prefs'));
-
-		switch($field){
-			case 'is_vat_fallback_to_standard':
-			case 'is_vat_fallback_to_prefs':
-				$ret .= $vat === true ? 1 : 0;
-				break;
-			default: 
-				$ret = $vat->$field;
-		}
-	} else {
-		$ret .= we_shop_category::getFieldFromIDs($GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME), $field, false, 0, $onlyindir, false, false, ',', $showpath, $rootdir);
-	}
+	$shopCatId = $GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME) ? : 0;
+	$ret .= we_shop_category::getShopCatFieldByID($shopCatId, $field, $showpath, $rootdir, true, !we_shop_category::USE_IS_ACTIVE);
 
 	return $ret;
 }

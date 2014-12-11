@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_selector_document extends we_selector_directory{
-
 	protected $userCanMakeNewFile = true;
 	protected $open_doc = 0;
 	protected $titles = array();
@@ -76,21 +75,11 @@ class we_selector_document extends we_selector_directory{
 			}
 			$wsQuery = $wsQuery? : ' OR RestrictOwners=0 ';
 		}
-		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
-				we_users_util::makeOwnersSql() . ')' .
-				$wsQuery . ')' .
-				$filterQuery . //$publ_q.
-				($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
-		);
 
-		$_db = new DB_WE();
 		switch($this->table){
 			case FILE_TABLE:
-				$_db->query('SELECT f.ID, c.Dat FROM (' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID)) JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND f.ParentID=' . intval($this->dir) . ' AND l.Name="Title"');
-
-				while($_db->next_record()){
-					$this->titles[$_db->f('ID')] = $_db->f('Dat');
-				}
+				$this->db->query('SELECT f.ID, c.Dat FROM (' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID)) JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND f.ParentID=' . intval($this->dir) . ' AND l.Name="Title"');
+				$this->titles = $this->db->getAllFirst(false);
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$_path = $this->path;
@@ -98,17 +87,21 @@ class we_selector_document extends we_selector_directory{
 					$_path = dirname($_path);
 				}
 
-				$hash = getHash('SELECT o.DefaultTitle,o.ID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.ID=of.TableID WHERE of.ID=' . intval($this->dir), $_db);
+				$hash = getHash('SELECT o.DefaultTitle,o.ID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.ID=of.TableID WHERE of.ID=' . intval($this->dir), $this->db);
 
 				$this->titleName = ($hash ? $hash['DefaultTitle'] : '');
 				if($this->titleName && strpos($this->titleName, '_')){
-					$_db->query('SELECT OF_ID, ' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . $hash['ID'] . ' WHERE OF_ParentID=' . intval($this->dir));
-					while($_db->next_record()){
-						$this->titles[$_db->f('OF_ID')] = $_db->f($this->titleName);
-					}
+					$this->db->query('SELECT OF_ID, ' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . $hash['ID'] . ' WHERE OF_ParentID=' . intval($this->dir));
+					$this->titles = $this->db->getAllFirst(false);
 				}
 				break;
 		}
+		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
+			we_users_util::makeOwnersSql() . ')' .
+			$wsQuery . ')' .
+			$filterQuery . //$publ_q.
+			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
+		);
 	}
 
 	function printHTML($what = we_selector_file::FRAMESET){
@@ -123,18 +116,18 @@ class we_selector_document extends we_selector_directory{
 
 	function getExitOpenWe(){
 		$frameRef = $this->JSTextName && strpos($this->JSTextName, ".document.") > 0 ?
-				substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) :
-				'';
+			substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) :
+			'';
 		return '
 function exit_open() {//alert("exit_open standard on docselector");
 	if(currentID) {' . ($this->JSIDName ?
-								'top.opener.' . $this->JSIDName . '= currentID ? currentID : "";' : '') .
-						($this->JSTextName ?
-								'top.opener.' . $this->JSTextName . '= currentID ? currentPath : "";
+					'top.opener.' . $this->JSIDName . '= currentID ? currentID : "";' : '') .
+				($this->JSTextName ?
+					'top.opener.' . $this->JSTextName . '= currentID ? currentPath : "";
 		if(!!top.opener.' . $frameRef . 'YAHOO && !!top.opener.' . $frameRef . 'YAHOO.autocoml) {  top.opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(top.opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
 		' : '') .
-						($this->JSCommand ?
-								$this->JSCommand . ';' : '') . '
+				($this->JSCommand ?
+					$this->JSCommand . ';' : '') . '
 	}
 	self.close();
 }';
@@ -200,7 +193,7 @@ function reloadDir() {
 		return we_html_element::jsElement('
 function writeBody(d){
 	d.open();' .
-						self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
+				self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
 var ctrlpressed=false
 var shiftpressed=false
 var inputklick=false
@@ -282,9 +275,9 @@ function queryString(what,id,o,we_editDirID,filter){
 	if(!we_editDirID) we_editDirID="";
 	if(!filter) filter="' . $this->filter . '";
 	return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&rootDirID=' .
-						$this->rootDirID . (isset($this->open_doc) ?
-								"&open_doc=" . $this->open_doc : '') .
-						'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "")+(filter ? ("&filter="+filter) : "");
+				$this->rootDirID . (isset($this->open_doc) ?
+					"&open_doc=" . $this->open_doc : '') .
+				'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "")+(filter ? ("&filter="+filter) : "");
 }');
 	}
 
@@ -361,13 +354,13 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 	function printHeaderTableExtraCols(){
 		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
 		return parent::printHeaderTableExtraCols() .
-				($this->filter != we_base_ContentTypes::TEMPLATE && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != we_base_ContentTypes::WEDOCUMENT ?
-						'<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
-						we_html_element::jsElement('newFileState=' . $newFileState . ';') .
-						($this->filter == we_base_ContentTypes::IMAGE || $this->filter == we_base_ContentTypes::QUICKTIME || $this->filter == we_base_ContentTypes::FLASH ?
-								we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
-								we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
-						'</td>' : '');
+			($this->filter != we_base_ContentTypes::TEMPLATE && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != we_base_ContentTypes::WEDOCUMENT ?
+				'<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
+				we_html_element::jsElement('newFileState=' . $newFileState . ';') .
+				($this->filter == we_base_ContentTypes::IMAGE || $this->filter == we_base_ContentTypes::QUICKTIME || $this->filter == we_base_ContentTypes::FLASH ?
+					we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
+					we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
+				'</td>' : '');
 	}
 
 	function printHeaderJSDef(){
@@ -415,18 +408,18 @@ function enableNewFileBut() {
 				return false;
 			}
 		} elseif(!
-				(
-				permissionhandler::hasPerm("NEW_GRAFIK") ||
-				permissionhandler::hasPerm("NEW_QUICKTIME") ||
-				permissionhandler::hasPerm("NEW_HTML") ||
-				permissionhandler::hasPerm("NEW_JS") ||
-				permissionhandler::hasPerm("NEW_CSS") ||
-				permissionhandler::hasPerm("NEW_TEXT") ||
-				permissionhandler::hasPerm("NEW_HTACCESS") ||
-				permissionhandler::hasPerm("NEW_FLASH") ||
-				permissionhandler::hasPerm("NEW_SONSTIGE") ||
-				permissionhandler::hasPerm('FILE_IMPORT')
-				)
+			(
+			permissionhandler::hasPerm("NEW_GRAFIK") ||
+			permissionhandler::hasPerm("NEW_QUICKTIME") ||
+			permissionhandler::hasPerm("NEW_HTML") ||
+			permissionhandler::hasPerm("NEW_JS") ||
+			permissionhandler::hasPerm("NEW_CSS") ||
+			permissionhandler::hasPerm("NEW_TEXT") ||
+			permissionhandler::hasPerm("NEW_HTACCESS") ||
+			permissionhandler::hasPerm("NEW_FLASH") ||
+			permissionhandler::hasPerm("NEW_SONSTIGE") ||
+			permissionhandler::hasPerm('FILE_IMPORT')
+			)
 		){
 			return false;
 		}
@@ -529,7 +522,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db, MYSQL_ASSOC);
 		$path = isset($result['Path']) ? $result['Path'] : "";
 		$out = we_html_tools::getHtmlTop() .
-				STYLESHEET . we_html_element::cssElement('
+			STYLESHEET . we_html_element::cssElement('
 	body {
 		margin:0px;
 		padding:0px;
@@ -650,11 +643,11 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				} else {
 					$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 					$_thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
-								'id' => $this->id,
-								'size' => 150,
-								'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']),
-								'extension' => $result['Extension'],
-								'size2' => 200));
+							'id' => $this->id,
+							'size' => 150,
+							'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']),
+							'extension' => $result['Extension'],
+							'size2' => 200));
 					$_imagepreview = "<a href='" . $result['Path'] . "' target='_blank' align='center'><img src='" . $_thumbpath . "' border='0' id='previewpic'></a>";
 				}
 			}
@@ -672,7 +665,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				"caption" => g_l('fileselector', '[name]'),
 				"content" => (
 				$showPriview ? "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='" . $result['Path'] .
-						"' target='_blank' style='color:black'><img src='" . TREE_ICON_DIR . "browser.gif' border='0' vspace='0' hspace='0'></a></div>" : ""
+					"' target='_blank' style='color:black'><img src='" . TREE_ICON_DIR . "browser.gif' border='0' vspace='0' hspace='0'></a></div>" : ""
 				) . "<div style='margin-right:14px'>" . (
 				$showPriview ? "<a href='" . $result['Path'] . "' target='_blank' style='color:black'>" . $result['Text'] . "</a>" : $result['Text']
 				) . "</div>"
@@ -900,7 +893,7 @@ function doClick(id,ct){
 		}
 	} else {
 		if(getEntry(id).contentType != "folder" || ' . ($this->canSelectDir ? "true" : "false") . '){' .
-						($this->multiple ? '
+				($this->multiple ? '
 			if(fsbody.shiftpressed){
 				var oldid = currentID;
 				var currendPos = getPositionByID(id);
@@ -922,7 +915,7 @@ function doClick(id,ct){
 					unselectFile(id);
 				}else{' : '') . '
 					selectFile(id);' .
-						($this->multiple ? '
+				($this->multiple ? '
 				}
 			}' : '') . '
 		} else {
