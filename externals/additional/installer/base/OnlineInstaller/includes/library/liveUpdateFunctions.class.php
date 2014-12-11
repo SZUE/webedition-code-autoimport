@@ -218,6 +218,10 @@ class liveUpdateFunctions {
 			if ($fh) {
 				fwrite($fh, $newContent, strlen($newContent));
 				fclose($fh);
+				//if we write a php file, invalidate cache if used.
+				if(substr($filePath, -4) === '.php' && function_exists('opcache_invalidate')){
+					opcache_invalidate($filePath, true);
+				}
 				if(!chmod($filePath, 0755)) {
 					return false;
 
