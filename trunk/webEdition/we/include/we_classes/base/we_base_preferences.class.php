@@ -136,12 +136,10 @@ class we_base_preferences{
 			t_e('no config set');
 			return;
 		}
-		$changed = false;
 		foreach($GLOBALS['config_files'] as $file){
 			if(isset($file['content']) && $file['content'] != $file['contentBak']){ //only save if anything changed
 				we_base_file::save($file['filename'] . '.bak', $file['contentBak']);
 				we_base_file::save($file['filename'], trim($file['content'], "\n "));
-				$changed = true;
 			}
 		}
 
@@ -150,9 +148,6 @@ class we_base_preferences{
 			we_users_user::writePrefs($_SESSION['prefs']['userID'], $GLOBALS['DB_WE']);
 		}
 		unset($GLOBALS['config_files']);
-		if($changed && ini_get('opcache.enable')){
-			sleep(intval(ini_get('opcache.revalidate_freq')));
-		}
 	}
 
 	static function userIsAllowed($setting){
