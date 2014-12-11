@@ -847,19 +847,17 @@ function setDir(id) {
 	function printFramesetSelectFileHTML(){
 		return we_html_element::jsElement('
 function selectFile(id){
-
+	fname = top.fsfooter.document.getElementsByName("fname");
 	if(id){
 		e = getEntry(id);
 		fspath.document.body.innerHTML = e.path;
-
-		if( top.fsfooter.document.we_form.fname.value != e.text &&
-			top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
-			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
-			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 ){
-
-			top.fsfooter.document.we_form.fname.value =  top.fsfooter.document.we_form.fname.value ?
-				(top.fsfooter.document.we_form.fname.value + "," + e.text) :
-				e.text;
+		if(fname&& fname[0].value != e.text &&
+			fname[0].value.indexOf(e.text+",") == -1 &&
+			fname[0].value.indexOf(","+e.text+",") == -1 &&
+			fname[0].value.indexOf(","+e.text+",") == -1 ){
+				fname[0].value =  top.fsfooter.document.we_form.fname.value ?
+					(fname[0].value + "," + e.text) :
+					e.text;
 		}
 
 		if(top.fsbody.document.getElementById("line_"+id)) top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
@@ -869,13 +867,11 @@ function selectFile(id){
 		currentType = e.contentType;
 
 		showPreview(id);
-
 	}else{
-		top.fsfooter.document.we_form.fname.value = "";
+		fname[0].value = "";
 		currentPath = "";
 		we_editDirID = 0;
 	}
-
 }');
 	}
 
