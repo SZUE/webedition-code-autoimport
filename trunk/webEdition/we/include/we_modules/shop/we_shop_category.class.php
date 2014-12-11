@@ -34,10 +34,13 @@ class we_shop_category extends we_category{
 	private static $shopCatIDs = array();
 	private static $shopVatsByCategoryCountry = array();
 	private static $shopCatMapping = array();
-	private static $writeCatMapping = -1;
+	private static $mustCheckIsActive = -1;
 
 	const IS_CAT_FALLBACK_TO_STANDARD = 1;
 	const IS_CAT_FALLBACK_TO_ACTIVE = 2;
+	const IS_CAT_FALLBACK_TO_WEDOCCAT = 3;
+	const IS_CAT_FALLBACK_TO_WEDOCCAT_AND_ACTIVE = 5;
+
 	const USE_IS_ACTIVE = true;
 
 	function __construct($id = 0){
@@ -237,12 +240,12 @@ class we_shop_category extends we_category{
 	 * @param int $id
 	 * @return we_shop_category
 	 */
-	public static function getShopCatById($id = 0, $useFallback = false, $activeOnly = false){
+	public static function getShopCatById($id = 0, $wedocCategory = '', $useFallback = false){
 		if(!$id && !$useFallback){
 			return false;
 		}
 
-		$tmpValidID = self::checkGetValidID($id, $useFallback, $activeOnly, true);
+		$tmpValidID = self::checkGetValidID($id, $wedocCategory, $useFallback, true);
 		if(!($validID = $tmpValidID['id'])){
 			return false;
 		}
@@ -358,30 +361,46 @@ class we_shop_category extends we_category{
 	 *
 	 * @return int $validID
 	 */
-	public static function checkGetValidID($id, $useFallback = true, $activeOnly = false, $getState = false){
-		//FIXME: completely implement $activeOnly or throw it out
-		$state = $id ? 0 : self::IS_CAT_FALLBACK_TO_STANDARD;
-		$id = self::isShopCategoryID($id) ? $id : ($useFallback ? self::getShopCatDir() : 0);
-		if(!$id){
-			return false;
+	public static function checkGetValidID($id = 0, $wedocCategory = '', $useFallback = true, $getState = false){
+		$state = 0;
+		if(!$id || !self::isShopCategoryID($id)){
+			if(!$useFallback){
+				return false;
+			}
+
+			//look for shop category linked to we_doc
+			$id = 0;
+			foreach(explode(',', trim($wedocCategory, ',')) as $c){
+				if(self::isShopCategoryID($c)){
+					$id = $c;
+					$state = self::IS_CAT_FALLBACK_TO_WEDOCCAT;
+					break;
+				}
+			}
+
+			//if still no valid id: get shopCatDir
+			if(!$id){
+				$id = self::getShopCatDir();
+				$state = self::IS_CAT_FALLBACK_TO_STANDARD;
+			}
 		}
 
 		if(self::USE_IS_ACTIVE && $id !== self::getShopCatDir()){
 			$actives = array();
-			if(self::$writeCatMapping === -1){
+			if(self::$mustCheckIsActive === -1){
 				$actives = self::getIsActiveFromDB(true);
 				$numCats = count(self::getAllShopCatIDs(false));
-				self::$writeCatMapping = count($actives) && $numCats !== count($actives);
+				self::$mustCheckIsActive = count($actives) && $numCats !== count($actives);
 			}
 
-			if(self::$writeCatMapping === true){
+			if(self::$mustCheckIsActive === true){
 				$actives = $actives ? : self::getIsActiveFromDB(true);
 				$tmpId = $id;
 				if(!self::$shopCatMapping){
 					self::writeShopCatMapping($actives);
 				}
 				$id = isset(self::$shopCatMapping) ? self::$shopCatMapping[$id] : $id;
-				$state = $tmpId === $id ? $state : self::IS_CAT_FALLBACK_TO_ACTIVE;
+				$state += $tmpId === $id ? 0 : self::IS_CAT_FALLBACK_TO_ACTIVE;
 			}
 		}
 
@@ -459,8 +478,8 @@ class we_shop_category extends we_category{
 	 * @param object $db
 	 * @return array of string
 	 */
-	static function getShopCatFieldByID($id, $field = '', $showpath = false, $rootdir = '', $useFallback = false, $activeOnly = false){
-		$cat = self::getShopCatById($id, $useFallback, $activeOnly, true, true);
+	static function getShopCatFieldByID($id, $wedocCategory = '', $field = '', $showpath = false, $rootdir = '', $useFallback = false){
+		$cat = self::getShopCatById($id, $wedocCategory, $useFallback);
 		if(!$cat){
 			return false;
 		}
@@ -468,10 +487,12 @@ class we_shop_category extends we_category{
 		switch($field){
 			case 'Path':
 				return !$showpath ? $cat->Category : (substr($cat->Path, strlen($rootdir)));
+			case 'is_from doc_object':
+				return ($cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_WEDOCCAT || $cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_WEDOCCAT_AND_ACTIVE) ? 1 : 0;
 			case 'is_fallback_to_standard':
 				return $cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_STANDARD ? 1 : 0;
 			case 'is_fallback_to_active' : 
-				return $cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_ACTIVE ? 1 : 0;
+				return ($cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_ACTIVE || $cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_WEDOCCAT_AND_ACTIVE) ? 1 : 0;
 			default: 
 				return $cat->$field;
 		}
@@ -537,18 +558,17 @@ class we_shop_category extends we_category{
 	 * @param bool $getIsFallbackToPrefs
 	 * @return we_shop_vat
 	 */
-	public static function getShopVatByIdAndCountry($id = 0, $country = '', $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false, $useFallback = true, $activeOnly = true){
+	public static function getShopVatByIdAndCountry($id = 0, $wedocCategory = '', $country = '', $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false, $useFallback = true){
 		if(!$country){
 			return false;
 		}
 
-		$validID = self::checkGetValidID($id, $useFallback, $activeOnly);
+		$validID = self::checkGetValidID($id, $wedocCategory, $useFallback);
 		if(!$getIsFallbackToStandard && !$getIsFallbackToPrefs && isset(self::$shopVatsByCategoryCountry[$validID][$country]) && ($vat = self::$shopVatsByCategoryCountry[$validID][$country])){
-
 			return $getRate ? $vat->vat : $vat;
 		}
 
-		if(!($cat = self::getShopCatById($validID, false, false))){//we have validID so we do not have to validate again!
+		if(!($cat = self::getShopCatById($validID, '', false))){//we have validID so we do not have to validate again!
 			return false;
 		}
 

@@ -10,10 +10,10 @@ $this->Module = 'shop';
 $this->Attributes[] = new weTagData_selectAttribute('field', array(
 	new weTagDataOption('id'),
 	new weTagDataOption('is_destinationprinciple'),
+	new weTagDataOption('is_from doc_object'),
 	new weTagDataOption('is_fallback_to_standard'),
 	new weTagDataOption('is_fallback_to_active')
 	), false, '');
-
 
 if(defined('WE_SHOP_VAT_TABLE')){
 	$options = array();

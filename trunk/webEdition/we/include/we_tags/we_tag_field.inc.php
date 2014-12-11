@@ -312,7 +312,8 @@ function we_tag_field($attribs){
 					$out = we_shop_vats::getVatRateForSite($normVal);
 				} else {
 					$shopVatAttribs = $attribs;
-					$shopVatAttribs['shopcategoryid'] = $GLOBALS['lv']->f('shopcategory');
+					$shopVatAttribs['shopcategoryid'] = $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME);
+					$shopVatAttribs['wedoccategories'] = $GLOBALS['lv']->f('wedoc_Category');
 					unset($shopVatAttribs['type']);
 
 					$out = we_tag('shopVat', $shopVatAttribs);
@@ -321,9 +322,10 @@ function we_tag_field($attribs){
 			break;
 		case 'shopCategory' :
 			if(defined('SHOP_TABLE') && is_object($GLOBALS['lv'])){
-				$id = $GLOBALS['lv']->f('shopcategory');
+				$id = $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME);
+				$wedocCategory = $GLOBALS['lv']->f('wedoc_Category');
 
-				$out = we_shop_category::getShopCatFieldByID($id, $field, $showpath, $rootdir);
+				$out = we_shop_category::getShopCatFieldByID($id, $wedocCategory, $field, $showpath, $rootdir);
 			}
 			break;
 		case 'href' ://#6329: fixed for lv type=document. check later for other types! #6421: field type=href in we:block
