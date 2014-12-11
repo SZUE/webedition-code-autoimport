@@ -476,16 +476,16 @@ abstract class we_rebuild_wizard{
 	 * @return string
 	 * @param string $thumbs csv value with thumb IDs
 	 */
-	static function formThumbs($thumbs){
-		$GLOBALS['DB_WE']->query("SELECT ID,Name FROM " . THUMBNAILS_TABLE . " Order By Name");
+	private static function formThumbs($thumbs){
+		$GLOBALS['DB_WE']->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER By Name');
 		$Thselect = g_l('rebuild', '[thumbnails]') . "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" .
-				'<select class="defaultfont" name="thumbs[]" size="10" multiple style="width: 520px">' . "\n";
+				'<select class="defaultfont" name="thumbs[]" size="10" multiple style="width: 520px">';
 
 		$thumbsArray = makeArrayFromCSV($thumbs);
 		while($GLOBALS['DB_WE']->next_record()){
-			$Thselect .= '<option value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array($GLOBALS['DB_WE']->f("ID"), $thumbsArray) ? " selected" : "") . '>' . $GLOBALS['DB_WE']->f("Name") . "</option>\n";
+			$Thselect .= '<option value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array($GLOBALS['DB_WE']->f("ID"), $thumbsArray) ? ' selected' : '') . '>' . $GLOBALS['DB_WE']->f("Name") . "</option>\n";
 		}
-		$Thselect .= "</select>\n";
+		$Thselect .= '</select>';
 		return $Thselect;
 	}
 
@@ -674,7 +674,6 @@ abstract class we_rebuild_wizard{
 	}
 
 	static function getRebuildMetadata(){
-
 		$thumbsFolders = we_base_request::_(we_base_request::RAW, 'thumbsFolders', '');
 		$metaFolders = we_base_request::_(we_base_request::INTLIST, 'metaFolders', '');
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
