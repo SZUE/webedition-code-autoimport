@@ -26,7 +26,6 @@ require_once (WE_INCLUDES_PATH . 'we_tags/we_tag_category.inc.php');
 
 function we_tag_shopCategory($attribs){
 	$id = weTag_getAttribute('id', $attribs, false, we_base_request::INT);
-	$fromdoc = weTag_getAttribute('fromdoc', $attribs, false, we_base_request::BOOL);
 	$showpath = weTag_getAttribute('showpath', $attribs, false, we_base_request::BOOL);
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '', we_base_request::FILE);
 	$field = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);
@@ -50,7 +49,7 @@ function we_tag_shopCategory($attribs){
 		$attribs['onlyindir'] = we_shop_category::getShopCatDir(true);
 		$attribs['fromTag'] = 'shopcategory';
 
-		if(!($id || $fromdoc)){
+		if(!$id){
 			$attribs['_name_orig'] = WE_SHOP_CATEGORY_FIELD_NAME;
 			$attribs['field'] = 'PATH';
 			$attribs['showpath'] = true;
@@ -59,10 +58,8 @@ function we_tag_shopCategory($attribs){
 			return we_tag_category($attribs);
 		}
 
-		$attribs['field'] = 'ID';
-		$catIDs = explode(',', trim(we_tag_category($attribs), ','));
-		if(count($catIDs) && $dosave){
-			$ret .= we_html_element::htmlHidden(array('name' => 'we_' . $GLOBALS['we_doc']->Name . '_category[' . WE_SHOP_CATEGORY_FIELD_NAME . ']', 'value' => $catIDs[0]));
+		if($id && $dosave){
+			$ret .= we_html_element::htmlHidden(array('name' => 'we_' . $GLOBALS['we_doc']->Name . '_category[' . WE_SHOP_CATEGORY_FIELD_NAME . ']', 'value' => $id));
 		}
 	}
 

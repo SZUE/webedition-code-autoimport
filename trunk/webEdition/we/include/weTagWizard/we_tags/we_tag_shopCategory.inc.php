@@ -12,7 +12,6 @@ foreach($opts as $k => $v){
 }
 $this->Attributes[] = new weTagData_selectAttribute('id', $options, false);
 
-$this->Attributes[] = new weTagData_selectAttribute('fromdoc', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('doc', array(
 	new weTagDataOption('self'),
 	new weTagDataOption('top'),
