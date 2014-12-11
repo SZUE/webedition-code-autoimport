@@ -28,7 +28,7 @@
  */
 function pWebEdition_Tree(){
 	$Tree = new weMainTree("webEdition.php", "top", "self.Tree", "top.load");
-	print $Tree->getJSTreeCode();
+	echo $Tree->getJSTreeCode();
 }
 
 /**
