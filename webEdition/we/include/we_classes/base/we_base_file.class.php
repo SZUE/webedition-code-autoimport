@@ -166,7 +166,7 @@ abstract class we_base_file{
 			@$close($fp);
 			//if we write a php file, invalidate cache if used.
 			if(substr($filename, -4) === '.php' && function_exists('opcache_invalidate')){
-				opcache_invalidate($filename);
+				opcache_invalidate($filename, true);
 			}
 
 			return $written;
@@ -256,7 +256,6 @@ abstract class we_base_file{
 					}
 
 					if($write){
-						//print "WRITE<br/>\n";
 						$fsize+=strlen($buff);
 						fwrite($fh_temp, $buff);
 						if(($split_size && $fsize > $split_size) || ($marker_size)){
