@@ -49,11 +49,13 @@ foreach($GLOBALS['tabs'] as $name => $perm){
 	}
 }
 foreach($GLOBALS['tabs'] as $name => $perm){
-	$_javascript.="content.document.getElementById('setting_" . $name . "').style.display = 'none';";
+	$_javascript.="try{content.document.getElementById('setting_" . $name . "').style.display = 'none';}catch(e){}";
 }
 
 $_javascript .= "
+	try{
 			content.document.getElementById('setting_' + arguments[0]).style.display = '';
+			}catch(e){}
 			break;
 	}
 }
@@ -65,7 +67,7 @@ function closeOnEscape() {
 }
 
 function saveOnKeyBoard() {
-	window.frames[2].we_save();
+	this.we_save();
 	return true;
 
 }";
