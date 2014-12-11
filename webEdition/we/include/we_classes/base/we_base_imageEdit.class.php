@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * Provides functions for creating webEdition buttons.
  */
 abstract class we_base_imageEdit{
-
 	const IMAGE_CONTENT_TYPES = 'image/jpeg,image/pjpeg,image/gif,image/png,image/x-png,image/svg+xml,image/svg-xml,image/x-citrix-pjpeg';
 	const IMAGE_EXTENSIONS = 'svgz';
 
@@ -385,160 +383,143 @@ abstract class we_base_imageEdit{
 		$_fromFile = (strlen($imagedata) < 255 && @file_exists($imagedata));
 
 		// Output format is available
-		if(in_array($output_format, self::supported_image_types())){
-			// Set quality for JPG images
-			if($output_format === 'jpg'){
-				// Keep quality between 1 and 99
-				$output_quality = max(1, min(99, (is_int($output_quality) ? $output_quality : 75)));
-			}
-
-			$_gdimg = ($_fromFile ? self::ImageCreateFromFileReplacement($imagedata) : self::ImageCreateFromStringReplacement($imagedata));
-
-			// Now we need to ensure that we could read the file
-			if($_gdimg){
-				// Detect dimension of image
-				$_width = ImageSX($_gdimg);
-				$_height = ImageSY($_gdimg);
-
-				if(($rotate_angle != 0) && function_exists("ImageRotate")){
-					$rotate_angle = floatval($rotate_angle);
-
-					while($rotate_angle < 0){
-						$rotate_angle += 360;
-					}
-
-					$rotate_angle = $rotate_angle % 360;
-
-					if($rotate_angle != 0){
-						$_gdimg = ImageRotate($_gdimg, $rotate_angle, 0);
-						$_width = ImageSX($_gdimg);
-						$_height = ImageSY($_gdimg);
-					}
-				}
-
-				$_outsize = self::calculate_image_size($_width, $_height, $width, $height, $keep_aspect_ratio, true, $fitinside);
-
-				// Decide, which functions to use (depends on version of GD library)
-				$_image_create_function = (self::gd_version() >= 2.0 ? "imagecreatetruecolor" : "imagecreate");
-				$_image_resize_function = (function_exists('imagecopyresampled') ? "imagecopyresampled" : "imagecopyresized");
-
-				if($_outsize["width"] == 0){
-					$_outsize["width"] = 1;
-				}
-				if($_outsize["height"] == 0){
-					$_outsize["height"] = 1;
-				}
-
-				// Now create the image
-				$_output_gdimg = $_image_create_function($_outsize["width"], $_outsize["height"]); // this image is always black
-
-				$GDInfo = self::gd_info();
-				// DEBIAN EDGE FIX => crashes at imagefill, so use old Method
-				if($GDInfo["GD Version"] === '2.0 or higher' && !function_exists("imagerotate")){
-					// set black to transparent!
-					if($output_format === 'gif' || $output_format === 'png'){ // transparency with gifs
-						imagecolortransparent($_output_gdimg, imagecolorallocate($_output_gdimg, 0, 0, 0)); // set this color to transparent - done
-					}
-				} else {
-
-					// preserve transparency of png and gif images:
-					switch($output_format){
-						case "gif":
-							$colorTransparent = imagecolortransparent($_gdimg);
-							imagepalettecopy($_gdimg, $_output_gdimg);
-							imagefill($_output_gdimg, 0, 0, $colorTransparent);
-							imagecolortransparent($_output_gdimg, $colorTransparent);
-							imagetruecolortopalette($_output_gdimg, true, 256);
-							break;
-						case "png":
-							imagealphablending($_output_gdimg, false);
-							$transparent = imagecolorallocatealpha($_output_gdimg, 0, 0, 0, 127);
-							$transparent = imagecolorallocatealpha($_output_gdimg, 255, 255, 255, 127);
-							imagefill($_output_gdimg, 0, 0, $transparent);
-							imagesavealpha($_output_gdimg, true);
-							break;
-						default:
-					}
-				}
-				// Resize image
-				//if($_outsize["width"] == "1")
-				if($fitinside && $keep_aspect_ratio && $width && $height){
-					$wratio = $width / $_width;
-					$hratio = $height / $_height;
-					$ratio = max($width / $_width, $height / $_height);
-					$h = $height / $ratio;
-
-					$w = $width / $ratio;
-					if($wratio < $hratio){
-						$x = ($_width - $width / $ratio) / 2;
-						$y = 0;
-					} else {
-						$x = 0;
-						$y = ($_height - $height / $ratio) / 2;
-					}
-					$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, $x, $y, $width, $height, $w, $h);
-				} else {
-					$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, 0, 0, $_outsize["width"], $_outsize["height"], $_width, $_height);
-				}
-
-				// PHP 4.4.1 GDLIB-Bug/Safemode - Workarround
-				if($output_filename != "" && file_exists($output_filename)){
-					touch($output_filename);
-				}
-
-				ImageInterlace($_output_gdimg, ($interlace ? 1 : 0));
-
-				switch($output_format){
-					case 'jpg':
-						// Output to a filename or directly
-						if($output_filename != ""){
-							$_gdimg = @imagejpeg($_output_gdimg, $output_filename, $output_quality);
-
-							if($_gdimg){
-								$_gdimg = basename($output_filename);
-							}
-						} else {
-							if(($_tempfilename = tempnam(TEMP_PATH, ""))){
-								@imagejpeg($_output_gdimg, $_tempfilename, $output_quality);
-								$_gdimg = we_base_file::load($_tempfilename);
-
-								// As we read the temporary file we no longer need it
-								//unlink($_tempfilename);
-							}
-						}
-
-						break;
-
-					case 'png':
-					case 'gif':
-						// Set output function
-						$_image_out_function = 'image' . $output_format;
-						// Output to a filename or directly
-						if($output_filename){
-							$_gdimg = @$_image_out_function($_output_gdimg, $output_filename);
-							if($_gdimg){
-								$_gdimg = basename($output_filename);
-							}
-						} else {
-							if(($_tempfilename = tempnam(TEMP_PATH, ""))){
-								@$_image_out_function($_output_gdimg, $_tempfilename);
-								$_gdimg = we_base_file::load($_tempfilename);
-
-								// As we read the temporary file we no longer need it
-								unlink($_tempfilename);
-							}
-						}
-
-						break;
-				}
-
-				ImageDestroy($_output_gdimg);
-			}
-
-			return isset($_gdimg) ? array($_gdimg, $_outsize["width"], $_outsize["height"]) : array(false, -1, -1);
-		} else {
+		if(!in_array($output_format, self::supported_image_types()) ||
+			!($_gdimg = ($_fromFile ? self::ImageCreateFromFileReplacement($imagedata) : self::ImageCreateFromStringReplacement($imagedata)))
+		){
 			return array(false, -1, -1);
 		}
+
+		// Set quality for JPG images
+		if($output_format === 'jpg'){
+			// Keep quality between 1 and 99
+			$output_quality = max(1, min(99, (is_int($output_quality) ? $output_quality : 75)));
+		}
+
+
+		// Now we need to ensure that we could read the file
+		// Detect dimension of image
+		$_width = ImageSX($_gdimg);
+		$_height = ImageSY($_gdimg);
+
+		if(($rotate_angle != 0) && function_exists('ImageRotate')){
+			$rotate_angle = floatval($rotate_angle);
+
+			while($rotate_angle < 0){
+				$rotate_angle += 360;
+			}
+
+			$rotate_angle = $rotate_angle % 360;
+
+			if($rotate_angle != 0){
+				$_gdimg = ImageRotate($_gdimg, $rotate_angle, 0);
+				$_width = ImageSX($_gdimg);
+				$_height = ImageSY($_gdimg);
+			}
+		}
+
+		$_outsize = self::calculate_image_size($_width, $_height, $width, $height, $keep_aspect_ratio, true, $fitinside);
+
+		// Decide, which functions to use (depends on version of GD library)
+		$_image_create_function = (self::gd_version() >= 2.0 ? "imagecreatetruecolor" : "imagecreate");
+		$_image_resize_function = (function_exists('imagecopyresampled') ? "imagecopyresampled" : "imagecopyresized");
+
+		if($_outsize["width"] == 0){
+			$_outsize["width"] = 1;
+		}
+		if($_outsize["height"] == 0){
+			$_outsize["height"] = 1;
+		}
+
+		// Now create the image
+		$_output_gdimg = $_image_create_function($_outsize["width"], $_outsize["height"]); // this image is always black
+
+		$GDInfo = self::gd_info();
+		// DEBIAN EDGE FIX => crashes at imagefill, so use old Method
+		if($GDInfo["GD Version"] === '2.0 or higher' && !function_exists("imagerotate")){
+			// set black to transparent!
+			if($output_format === 'gif' || $output_format === 'png'){ // transparency with gifs
+				imagecolortransparent($_output_gdimg, imagecolorallocate($_output_gdimg, 0, 0, 0)); // set this color to transparent - done
+			}
+		} else {
+
+			// preserve transparency of png and gif images:
+			switch($output_format){
+				case "gif":
+					$colorTransparent = imagecolortransparent($_gdimg);
+					imagepalettecopy($_gdimg, $_output_gdimg);
+					imagefill($_output_gdimg, 0, 0, $colorTransparent);
+					imagecolortransparent($_output_gdimg, $colorTransparent);
+					imagetruecolortopalette($_output_gdimg, true, 256);
+					break;
+				case "png":
+					imagealphablending($_output_gdimg, false);
+					$transparent = imagecolorallocatealpha($_output_gdimg, 0, 0, 0, 127);
+					$transparent = imagecolorallocatealpha($_output_gdimg, 255, 255, 255, 127);
+					imagefill($_output_gdimg, 0, 0, $transparent);
+					imagesavealpha($_output_gdimg, true);
+					break;
+				default:
+			}
+		}
+		// Resize image
+		//if($_outsize["width"] == "1")
+		if($fitinside && $keep_aspect_ratio && $width && $height){
+			$wratio = $width / $_width;
+			$hratio = $height / $_height;
+			$ratio = max($width / $_width, $height / $_height);
+			$h = $height / $ratio;
+
+			$w = $width / $ratio;
+			if($wratio < $hratio){
+				$x = ($_width - $width / $ratio) / 2;
+				$y = 0;
+			} else {
+				$x = 0;
+				$y = ($_height - $height / $ratio) / 2;
+			}
+			$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, $x, $y, $width, $height, $w, $h);
+		} else {
+			$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, 0, 0, $_outsize["width"], $_outsize["height"], $_width, $_height);
+		}
+
+		// PHP 4.4.1 GDLIB-Bug/Safemode - Workarround
+		if($output_filename != "" && file_exists($output_filename)){
+			touch($output_filename);
+		}
+
+		ImageInterlace($_output_gdimg, ($interlace ? 1 : 0));
+
+		switch($output_format){
+			case 'jpg':
+				// Output to a filename or directly
+				if($output_filename != ""){
+					$_gdimg = imagejpeg($_output_gdimg, $output_filename, $output_quality) ? basename($output_filename) : '';
+				} elseif(($_tempfilename = tempnam(TEMP_PATH, ""))){
+					$_gdimg = imagejpeg($_output_gdimg, $_tempfilename, $output_quality) ? we_base_file::load($_tempfilename) : '';
+					// As we read the temporary file we no longer need it
+					unlink($_tempfilename);
+				}
+				break;
+
+			case 'png':
+			case 'gif':
+				// Set output function
+				$_image_out_function = 'image' . $output_format;
+				// Output to a filename or directly
+				if($output_filename){
+					$_gdimg = $_image_out_function($_output_gdimg, $output_filename) ? basename($output_filename) : '';
+				} elseif(($_tempfilename = tempnam(TEMP_PATH, ""))){
+					$_gdimg = $_image_out_function($_output_gdimg, $_tempfilename) ? we_base_file::load($_tempfilename) : '';
+					// As we read the temporary file we no longer need it
+					unlink($_tempfilename);
+				}
+				break;
+		}
+
+		ImageDestroy($_output_gdimg);
+
+
+		return $_gdimg ? array($_gdimg, $_outsize["width"], $_outsize["height"]) : array(false, -1, -1);
 	}
 
 	/* static function ImageTrueColorToPalette2($image, $dither, $ncolors){

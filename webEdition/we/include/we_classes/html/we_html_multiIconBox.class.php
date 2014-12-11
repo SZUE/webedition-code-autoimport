@@ -62,7 +62,7 @@ abstract class we_html_multiIconBox{
 			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
 
 			$icon = (isset($c["icon"]) && $c["icon"] ?
-					we_html_element::htmlImg(array('src' => ICON_DIR  . $c["icon"], 'style' => "margin-left:20px;")) :
+					we_html_element::htmlImg(array('src' => ICON_DIR . $c["icon"], 'style' => "margin-left:20px;")) :
 					'');
 			$headline = (isset($c["headline"]) && $c["headline"] ?
 					'<div id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c["headline"] . '</div>' :
@@ -100,13 +100,11 @@ abstract class we_html_multiIconBox{
 
 		$boxHTML = $out . we_html_multiIconBox::_getBoxEnd($width);
 
-		if($buttons){
-			//ignore height, replace by bottom:
-			return '<div style="overflow:' . $overflow . ';position:absolute;width:100%;' . ($height ? 'height:' . $height . 'px;' : 'bottom:40px;') . 'top:0px;left:0px;">' . $boxHTML . '</div>
-				<div style="left:0px;height:40px;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div style="padding: 10px 10px 0 0;">' . $buttons . '</div></div>';
-		} else {
-			return $boxHTML;
-		}
+		return ($buttons ?
+				//ignore height, replace by bottom:
+				'<div style="overflow:' . $overflow . ';position:absolute;width:100%;' . ($height ? 'height:' . $height . 'px;' : 'bottom:40px;') . 'top:0px;left:0px;">' . $boxHTML . '</div>
+				<div style="left:0px;height:40px;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div style="padding: 10px;">' . $buttons . '</div></div>' :
+				$boxHTML);
 	}
 
 	static function getJS(){

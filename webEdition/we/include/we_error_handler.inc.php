@@ -234,18 +234,21 @@ function getVariableMax($var, we_database_base $db = null){
 			}
 			$ret = '';
 			//FIXME: clone will be reduced to unsetting weS+webuser if all vars have moved
-			$clone = array_diff_key($_SESSION, array('prefs' => '', 'perms' => '', 'webuser' => '', 'weS' => ''));
 			if(isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID'])){
-				$ret.= 'webUser - ID: ' . $_SESSION['webuser']['ID'] . ' Username: ' . $_SESSION['webuser']['Username'] . '(' . $_SESSION['webuser']['Forename'] . ' ' . $_SESSION['webuser']['Surname'] . ')' . "\n";
+				$ret.= 'webUser: ' . print_r(array('ID' => $_SESSION['webuser']['ID'], 'Username' => $_SESSION['webuser']['Username'] . '(' . $_SESSION['webuser']['Forename'] . ' ' . $_SESSION['webuser']['Surname'] . ')'), true);
 			}
+			if(isset($_SESSION['user']) && isset($_SESSION['user']['ID'])){
+				$ret.= 'webEdition-User: ' . print_r(array('ID' => $_SESSION['user']['ID'], 'Username' => $_SESSION['user']['Username']), true);
+			}
+
 			if(isset($_SESSION['weS'])){
-				$ret.= "Internal data:\n" . print_r(array_diff_key($_SESSION['weS'], array('versions' => '', 'prefs' => '', 'we_data' => '', 'perms' => '', 'webuser' => '')), true);
+				$ret.= ($ret ? "----------------------------------------\n" : '') . "Internal data:\n" . print_r(array_diff_key($_SESSION['weS'], array('versions' => '', 'prefs' => '', 'we_data' => '', 'perms' => '', 'webuser' => '')), true);
 			}
 
 			if(isset($_SESSION['perms'])){
 				$ret.= "----------------------------------------\nEffective Permissions:\n" . print_r(array_filter($_SESSION['perms']), true) . "\n------------------------------------\n";
 			}
-			$ret.= print_r($clone, true);
+			$ret.= print_r(array_diff_key($_SESSION, array('prefs' => '', 'perms' => '', 'webuser' => '', 'weS' => '')), true);
 
 			break;
 		case 'Global':
