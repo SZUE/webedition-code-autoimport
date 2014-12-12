@@ -88,11 +88,15 @@ function pWebEdition_JSFunctions(){
 	<?php } else { ?>
 		top.opener.history.back();
 		var logoutpopup = window.open('<?php echo WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
+		if(logoutpopup){
 		logoutpopup.focus();
+		}
 	<?php } ?>
 	}else{
 	var logoutpopup = window.open('<?php echo WEBEDITION_DIR; ?>we_loggingOut.php?isopener=0', "webEdition","width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
+	if(logoutpopup){
 	logoutpopup.focus();
+	}
 	}
 	}
 	}
