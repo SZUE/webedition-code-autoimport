@@ -174,7 +174,7 @@ class we_base_ContentTypes{
 				'Icon' => self::CLASS_FOLDER_ICON,
 			),
 			self::FLASH => array(
-				'Extension' => '.swf',
+				'Extension' => array('.swf'/*,'.mp4','.m4v'*/),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_FLASH',
 				'DefaultCode' => '',
@@ -191,6 +191,16 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'Icon' => 'quicktime.gif',
 			),
+			/*FIXME: add video type!
+			  'video/*' => array(
+				'Extension' => array('.mp4','.m4v','.ogg','.webm'),
+				'ExtensionIsFilename' => false,
+				//'Permission' => 'NEW_FLASH',
+				'DefaultCode' => '',
+				'IsRealFile' => true,
+				'IsWebEditionFile' => true,
+				'Icon' => 'flashmovie.gif',
+			),*/
 			self::APPLICATION => array(
 				'Extension' => array('.doc', '.xls', '.ppt', '.zip', '.sit', '.bin', '.hqx', '.exe', '.pdf'),
 				'ExtensionIsFilename' => false,
