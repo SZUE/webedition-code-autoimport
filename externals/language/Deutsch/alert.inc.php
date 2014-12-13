@@ -173,8 +173,10 @@ $l_alert=array(
 	'wrong_file'=>array(
 		'application/*'=>'Der MIME-Typ "application/*" paßt nicht zum ausgewählten Dokumenttyp.',
 		'application/x-shockwave-flash'=>'Die Datei konnte nicht angelegt werden. Entweder handelt es sich um keinen Flash-Datei oder ihr Speicherplatz (Festplatte) ist erschöpft!',
+		'audio/*'=>'Die Datei konnte nicht angelegt werden. Entweder handelt es sich um keine Audio-Datei oder ihr Speicherplatz (Festplatte) ist erschöpft!',
 		'image/*'=>'Die Datei konnte nicht angelegt werden. Entweder handelt es sich nicht um eine Grafik, das Format ist nicht gültig für die Veröffentlichung im Internet (kein bmp, tif), oder es steht nicht ausreichend Speicherplatz (Webspace) zur Verfügung!',
 		'other'=>'Die Datei konnte nicht angelegt werden. Entweder stimmt das Format der Datei nicht mit dem Inhalt überein, Sie sind nicht berechtigt den Typ `Sonstige Dateien` anzulegen, oder es steht nicht ausreichend Speicherplatz (Webspace) zur Verfügung!',
 		'text/css'=>'Die Datei konnte nicht angelegt werden. Entweder handelt es sich um keine CSS-Datei oder ihr Speicherplatz (Festplatte) ist erschöpft!',
+		'video/*'=>'Die Datei konnte nicht angelegt werden. Entweder handelt es sich um keine Video-Datei oder ihr Speicherplatz (Festplatte) ist erschöpft!',
 		'video/quicktime'=>'Die Datei konnte nicht angelegt werden. Entweder handelt es sich um keinen Quicktime-Datei oder ihr Speicherplatz (Festplatte) ist erschöpft!',
 ));

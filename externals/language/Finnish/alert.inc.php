@@ -173,8 +173,10 @@ $l_alert=array(
 	'wrong_file'=>array(
 		'application/*'=>'MIME type "application/*" is not applicable to the chosen document type.',
 		'application/x-shockwave-flash'=>'Valitsemasi tiedosto ei ole Flash -tiedosto!',
+		'audio/*'=>'The file could not be stored. Either it is not an audio file, the format is not compatible for publishing in the internet or your webspace is exhausted!',
 		'image/*'=>'Valitsemasi tiedosto ei ole kuva!',
 		'other'=>'The file could not be stored. Either your file format doesn`t match the type, you are not allowed to `store other` files or your disk space is exhausted!',
 		'text/css'=>'Tiedostoa ei saatu tallennettua. Joko se ei ole CSS-tiedosto tai levytila on loppu!',
+		'video/*'=>'The file could not be stored. Either it is not an video, the format is not compatible for publishing in the internet or your webspace is exhausted!',
 		'video/quicktime'=>'Valitsemasi tiedosto ei ole Quicktime -tiedosto!',
 ));
