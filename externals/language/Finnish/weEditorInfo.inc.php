@@ -3,6 +3,7 @@
 $l_weEditorInfo=array(
 	'application/*'=>'Muu dokumentti',
 	'application/x-shockwave-flash'=>'Flash -tiedosto',
+	'audio/*'=>'Audio file',
 	'changed_date'=>'Muutettu',
 	'content_type'=>'Tyyppi',
 	'creation_date'=>'Luotu',
@@ -34,6 +35,7 @@ $l_weEditorInfo=array(
 	'text/weTmpl'=>'Sivupohja',
 	'text/webedition'=>'webEdition -dokumentti',
 	'text/xml'=>'XML -dokumentti',
+	'video/*'=>'Videofile',
 	'video/quicktime'=>'Quicktime -tiedosto',
 	'yes'=>'Kyllä',
 );

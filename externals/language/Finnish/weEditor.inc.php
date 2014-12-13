@@ -25,6 +25,17 @@ $l_weEditor=array(
 		'we_filename_notAllowed'=>'Annettu tiedoston nimi ei ole sallittu!',
 		'we_filename_notValid'=>'Virheellinen tiedoston nimi!\nSallitut merkit ovat alfa-numeerisia, isot ja pienet kirjaimet, alaviiva, tavuviiva ja piste (a-z, A-Z, 0-9, _, -, .)',
 	),
+	'audio/*'=>array(
+		'filename_empty'=>'No name has been entered for this document!',
+		'response_path_exists'=>'The file `%s` could not be saved because another document or directory is positioned at the same location!',
+		'response_publish_ok'=>'The file `%s` has been successfully published!',
+		'response_save_noperms_to_create_folders'=>'The file could not be saved because you do not have the neccessary rights to create folders (%s)!',
+		'response_save_notok'=>'Error while saving file `%s`!',
+		'response_save_ok'=>'The file `%s` has been successfully saved!',
+		'response_unpublish_ok'=>'The file `%s` has been successfully unpublished!',
+		'we_filename_notAllowed'=>'The file name you have entered is not allowed!',
+		'we_filename_notValid'=>'Invalid file name\nAll characters except <>?":|\\/* are valid.',
+	),
 	'category'=>array(
 		'filename_empty'=>'Tiedoston nimi ei voi olla tyhjä.',
 		'name_komma'=>'Virheellinen nimi! Pilkku ei ole sallittu!',
@@ -194,6 +205,17 @@ Sallitut kirjaimet ovat alfa-numeerisia , isot ja pienet kirjaimet, alaviiva, ta
 	),
 	'variantNameInvalid'=>'Artikkelimuuttujan nimi ei voi olla tyhjä!',
 	
+	'video/*'=>array(
+		'filename_empty'=>'No name has been entered for this document!',
+		'response_path_exists'=>'The video `%s` could not be saved because another document or directory is positioned at the same location!',
+		'response_publish_ok'=>'The video `%s` has been successfully published!',
+		'response_save_noperms_to_create_folders'=>'The video could not be saved because you do not have the neccessary rights to create folders (%s)!',
+		'response_save_notok'=>'Error while saving video `%s`!',
+		'response_save_ok'=>'The video `%s` has been successfully saved!',
+		'response_unpublish_ok'=>'The video `%s` has been successfully unpublished!',
+		'we_filename_notAllowed'=>'The file name you have entered is not allowed!',
+		'we_filename_notValid'=>'Invalid file name\nAll characters except <>?":|\\/* are valid.',
+	),
 	'video/quicktime'=>array(
 		'filename_empty'=>'Dokumentille ei ole annettu nimeä!',
 		'response_path_exists'=>'Quicktime -tiedostoa `%s` ei voitu tallentaa koska samanniminen tiedosto tai hakemisto sijaitsee kohteessa!',

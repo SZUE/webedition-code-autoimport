@@ -3,6 +3,7 @@
 $l_weEditorInfo=array(
 	'application/*'=>'Sonstige Datei',
 	'application/x-shockwave-flash'=>'Flash-Datei',
+	'audio/*'=>'Audio-Datei',
 	'changed_date'=>'Geändert am',
 	'content_type'=>'Dateityp',
 	'creation_date'=>'Erstellt am',
@@ -34,6 +35,7 @@ $l_weEditorInfo=array(
 	'text/weTmpl'=>'Vorlage',
 	'text/webedition'=>'webEdition-Seite',
 	'text/xml'=>'XML-Datei',
+	'video/*'=>'Video-Datei',
 	'video/quicktime'=>'Quicktime-Datei',
 	'yes'=>'ja',
 );
