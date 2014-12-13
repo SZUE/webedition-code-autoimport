@@ -4,6 +4,7 @@ $l_contentTypes=array(
 	'all_Types'=>'Все файлы',
 	'application/*'=>'Прочие данные',
 	'application/x-shockwave-flash'=>'Flash movie',
+	'audio/*'=>'Audio',
 	'class_folder'=>'Директория',
 	'folder'=>'Директория',
 	'image/*'=>'Графика',
@@ -18,6 +19,7 @@ $l_contentTypes=array(
 	'text/weTmpl'=>'Шаблон webEdition',
 	'text/webedition'=>'Страница webEdition',
 	'text/xml'=>'Файлы XML',
+	'video/*'=>'Video movie',
 	'video/quicktime'=>'Quicktime movie',
 	'weThumbnail'=>'Thumbnail',
 );

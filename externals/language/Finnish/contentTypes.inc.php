@@ -4,6 +4,7 @@ $l_contentTypes=array(
 	'all_Types'=>'Kaikki kentät',
 	'application/*'=>'Binäärinen dokumentti',
 	'application/x-shockwave-flash'=>'Flash -tiedosto',
+	'audio/*'=>'Audio',
 	'class_folder'=>'Hakemisto',
 	'folder'=>'Hakemisto',
 	'image/*'=>'Kuva',
@@ -18,6 +19,7 @@ $l_contentTypes=array(
 	'text/weTmpl'=>'webEdition -sivupohja',
 	'text/webedition'=>'webEdition -sivu',
 	'text/xml'=>'XML -tiedosto',
+	'video/*'=>'Video movie',
 	'video/quicktime'=>'Quicktime -tiedosto',
 	'weThumbnail'=>'Thumbnail',
 );
