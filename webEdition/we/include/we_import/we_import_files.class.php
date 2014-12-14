@@ -37,7 +37,7 @@ class we_import_files{
 	var $quality = 8;
 	var $degrees = 0;
 	var $categories = '';
-	private $jsRequirementsOk = false;//obsolete: we use browserdetection now
+	private $jsRequirementsOk = false; //obsolete: we use browserdetection now
 	private $isWeFileupload = false;
 	private $maxUploadSizeMB = 8;
 	private $maxUploadSizeB = 0;
@@ -830,14 +830,16 @@ function next() {
 				}
 				// now change the category
 				$we_doc->Category = $this->categories;
-				if($we_ContentType == we_base_ContentTypes::IMAGE || $we_ContentType == we_base_ContentTypes::FLASH){
-					$we_size = $we_doc->getimagesize($tempName);
-					if(is_array($we_size) && count($we_size) >= 2){
-						$we_doc->setElement("width", $we_size[0], "attrib");
-						$we_doc->setElement("height", $we_size[1], "attrib");
-						$we_doc->setElement("origwidth", $we_size[0], 'attrib');
-						$we_doc->setElement("origheight", $we_size[1], 'attrib');
-					}
+				switch($we_ContentType){
+					case we_base_ContentTypes::IMAGE:
+					case we_base_ContentTypes::FLASH:
+						$we_size = $we_doc->getimagesize($tempName);
+						if(is_array($we_size) && count($we_size) >= 2){
+							$we_doc->setElement("width", $we_size[0], "attrib");
+							$we_doc->setElement("height", $we_size[1], "attrib");
+							$we_doc->setElement("origwidth", $we_size[0], 'attrib');
+							$we_doc->setElement("origheight", $we_size[1], 'attrib');
+						}
 				}
 				if($we_doc->Extension === '.pdf'){
 					$we_doc->setMetaDataFromFile($tempName);

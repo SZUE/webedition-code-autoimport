@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,6 +28,16 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 		$we_doc = new we_imageDocument();
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$cmd2]);
 		$contenttype = $we_doc->getElement("type");
+		break;
+	case we_base_ContentTypes::VIDEO:
+		$we_doc = new we_document_video();
+		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$cmd2]);
+		$contenttype = 'video/' . str_replace('.', '', $we_doc->Extension);
+		break;
+	case we_base_ContentTypes::AUDIO:
+		$we_doc = new we_document_audio();
+		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$cmd2]);
+		$contenttype = 'audio/' . str_replace('.', '', $we_doc->Extension);
 		break;
 	case we_base_ContentTypes::FLASH:
 		$we_doc = new we_flashDocument();

@@ -518,6 +518,8 @@ class we_backup_backup extends we_backup_base{
 				case we_base_ContentTypes::IMAGE:
 				case we_base_ContentTypes::APPLICATION:
 				case we_base_ContentTypes::FLASH:
+				case we_base_ContentTypes::VIDEO:
+				case we_base_ContentTypes::AUDIO:
 					continue;
 				default:
 					$out[] = $file;

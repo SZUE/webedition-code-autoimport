@@ -259,8 +259,8 @@ abstract class we_html_tools{
 		}
 	}
 
-	static function html_select($name, $size, $vals, $value = '', $onchange = '', array $attribs = array()){
-		return self::htmlSelect($name, $vals, $size, $value, false, array_merge($attribs, array('onchange' => ($onchange ? : ''))), 'key');
+	static function html_select($name, $size, $vals, $value = '', array $attribs = array()){
+		return self::htmlSelect($name, $vals, $size, $value, false, $attribs, 'value');
 	}
 
 	static function htmlSelect($name, $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $compare = 'value', $width = 0, $cls = 'defaultfont', $oldHtmlspecialchars = true){
@@ -281,11 +281,8 @@ abstract class we_html_tools{
 		}
 		$ret .= ($optgroup ? '</optgroup>' : '');
 
-		if(!is_array($attribs)){
-			$attribs = self::parseAttribs($attribs);
-		}
-
-		return ($name ? we_html_element::htmlSelect(array_merge(array(
+		return ($name ? we_html_element::htmlSelect(array_merge(
+						array(
 					'class' => 'weSelect ' . $cls,
 					'name' => trim($name),
 					'size' => abs($size),
@@ -698,7 +695,7 @@ abstract class we_html_tools{
 	public static function getJSErrorHandler($plain = false){
 		$ret = 'try{' .
 			'window.onerror=function(msg, file, line, col, errObj){' .
-			(true||defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ? '
+			(true || defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ? '
 	postData=\'we_cmd[msg]=\'+encodeURIComponent(msg);
 	postData+=\'&we_cmd[file]=\'+encodeURIComponent(file);
 	postData+=\'&we_cmd[line]=\'+encodeURIComponent(line);

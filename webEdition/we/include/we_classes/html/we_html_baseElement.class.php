@@ -221,6 +221,9 @@ class we_html_baseElement{
 					$out.='"';
 				}
 			} else if($v !== ''){
+				if(is_array($v)){
+					t_e($v);
+				}
 				$out.=' ' . $k . '="' . $v . '"';
 			} else {//empty attribs
 				switch($k){
