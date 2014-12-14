@@ -23,8 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_var($attribs){
-	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
-		return $foo;
+	switch(weTag_getAttribute('type', $attribs)){ //Fix #9311
+		case 'shopVat':
+		case 'shopCategory': //shopVat and shopCategory need no attribute 'name'
+			break;
+		default:
+			if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
+				return $foo;
+			}
 	}
 	$docAttr = weTag_getAttribute('doc', $attribs);
 	$name = weTag_getAttribute('name', $attribs);
