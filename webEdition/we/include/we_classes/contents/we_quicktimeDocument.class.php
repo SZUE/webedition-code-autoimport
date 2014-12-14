@@ -85,10 +85,6 @@ class we_quicktimeDocument extends we_document_video{
 
 			$filter = array("filesize", "type", "xml");
 			$noAtts = array("scale", "volume"); //  no atts for xml
-			// fix. older versions of webEdition bgcolor was type txt and not attrib
-			if($this->issetElement("bgcolor")){
-				$this->elements["bgcolor"]["type"] = "attrib";
-			}
 
 			$this->resetElements();
 			while(list($k, $v) = $this->nextElement("attrib")){
