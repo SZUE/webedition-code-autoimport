@@ -2847,6 +2847,8 @@ function set_xhtml_field(val, field){
 					we_base_ContentTypes::TEMPLATE => 'VERSIONING_TEXT_WETMPL',
 					we_base_ContentTypes::FLASH => 'VERSIONING_FLASH',
 					we_base_ContentTypes::QUICKTIME => 'VERSIONING_QUICKTIME',
+					we_base_ContentTypes::VIDEO => 'VERSIONING_VIDEO',
+					we_base_ContentTypes::AUDIO => 'VERSIONING_AUDIO',
 					we_base_ContentTypes::APPLICATION => 'VERSIONING_SONSTIGE',
 					we_base_ContentTypes::XML => 'VERSIONING_TEXT_XML',
 					'objectFile' => 'VERSIONING_OBJECT',

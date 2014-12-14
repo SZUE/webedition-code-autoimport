@@ -1178,6 +1178,8 @@ function checkData(){
 				case we_base_ContentTypes::WEDOCUMENT:
 				case we_base_ContentTypes::IMAGE:
 				case we_base_ContentTypes::FLASH:
+				case we_base_ContentTypes::VIDEO:
+				case we_base_ContentTypes::AUDIO:
 					$showlink = true;
 			}
 

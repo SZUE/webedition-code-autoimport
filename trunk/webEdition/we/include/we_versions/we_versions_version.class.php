@@ -972,6 +972,10 @@ class we_versions_version{
 				return VERSIONING_TEXT_HTACCESS;
 			case we_base_ContentTypes::TEMPLATE:
 				return VERSIONING_TEXT_WETMPL;
+			case we_base_ContentTypes::VIDEO:
+				return VERSIONING_VIDEO;
+			case we_base_ContentTypes::AUDIO:
+				return VERSIONING_AUDIO;
 			case we_base_ContentTypes::FLASH:
 				return VERSIONING_FLASH;
 			case we_base_ContentTypes::QUICKTIME:

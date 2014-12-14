@@ -29,16 +29,28 @@ echo STYLESHEET;
 ?></head>
 <body class="weEditorBody">
 	<form name="we_form" method="post" onsubmit="return false;"><?php
-		echo we_class::hiddenTrans();
-
-
-		$parts = array(array("icon" => "upload.gif", "headline" => "", "html" => $GLOBALS['we_doc']->formUpload(), "space" => 140));
-		if(method_exists($GLOBALS['we_doc'], "formProperties")){
-			$parts[] = array("icon" => "attrib.gif", "headline" => g_l('weClass', '[attribs]'), "html" => $GLOBALS['we_doc']->formProperties(), "space" => 140);
-		}
-		$parts[] = array("icon" => "meta.gif", "headline" => g_l('weClass', '[metadata]'), "html" => $GLOBALS['we_doc']->formMetaInfos() . $GLOBALS['we_doc']->formMetaData(), "space" => 140);
-		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML("weImgProp", "100%", $parts, 20);
+		echo we_class::hiddenTrans() .
+		we_html_multiIconBox::getJS() .
+		we_html_multiIconBox::getHTML("weImgProp", "100%", array(
+			array(
+				"icon" => "upload.gif",
+				"headline" => "",
+				"html" => $GLOBALS['we_doc']->formUpload(),
+				"space" => 140
+			),
+			array(
+				"icon" => "attrib.gif",
+				"headline" => g_l('weClass', '[attribs]'),
+				"html" => $GLOBALS['we_doc']->formProperties(),
+				"space" => 140
+			),
+			array(
+				"icon" => "meta.gif",
+				"headline" => g_l('weClass', '[metadata]'),
+				"html" => $GLOBALS['we_doc']->formMetaInfos() . $GLOBALS['we_doc']->formMetaData(),
+				"space" => 140
+			)
+			), 20);
 		?>
 		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>

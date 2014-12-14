@@ -425,7 +425,7 @@ function setTab(tab) {
 			$_seltype[we_navigation_navigation::STPYE_OBJLINK] = g_l('navigation', '[objLink]');
 		}
 
-		$yuiSuggest->setAcId("LinkPath");
+		$yuiSuggest->setAcId('LinkPath');
 		$yuiSuggest->setContentType(
 			$this->Model->FolderSelection == we_navigation_navigation::STPYE_DOCLINK ?
 				implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME)) :

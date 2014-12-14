@@ -36,6 +36,12 @@ if((!isset($we_ContentType)) && ((!isset($we_dt)) || (!is_array($we_dt)) || (!$w
 
 $showDoc = isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC'];
 switch(isset($we_ContentType) ? $we_ContentType : ''){
+	case we_base_ContentTypes::VIDEO:
+		$we_doc = new we_document_video();
+		break;
+	case we_base_ContentTypes::AUDIO:
+		$we_doc = new we_document_audio();
+		break;
 	case we_base_ContentTypes::FLASH:
 		$we_doc = new we_flashDocument();
 		break;

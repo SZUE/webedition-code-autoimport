@@ -24,28 +24,16 @@
  */
 /*  a class for handling flashDocuments. */
 
-class we_flashDocument extends we_binaryDocument{
+class we_flashDocument extends we_document_video{
 	/* Parameternames which are placed within the object-Tag */
-
 	var $ObjectParamNames = array('align', 'border', 'id', 'height', 'hspace', 'name', 'width', 'vspace', 'only', 'style');
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		if(isWE()){
 			$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_PREVIEW;
 		}
 		$this->ContentType = we_base_ContentTypes::FLASH;
-	}
-
-	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
-
-	function editor(){
-		switch($this->EditPageNr){
-			case we_base_constants::WE_EDITPAGE_PREVIEW:
-				return 'we_templates/we_editor_flash_preview.inc.php';
-			default:
-				return parent::editor();
-		}
 	}
 
 	// is not written yet
@@ -85,7 +73,6 @@ class we_flashDocument extends we_binaryDocument{
 	function getHtml($dyn = false){
 		$_data = $this->getElement('data');
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
-
 			$pluginspage = $this->getElement('Pluginspage') ? : 'http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash';
 			$codebase = $this->getElement('Codebase') ? : 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0';
 
@@ -94,11 +81,9 @@ class we_flashDocument extends we_binaryDocument{
 				$this->elements['bgcolor']['type'] = 'attrib';
 			}
 
-			srand((double) microtime() * 1000000);
-			$randval = rand();
 			$src = $dyn ?
-					WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . $randval :
-					$this->Path;
+				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . we_base_file::getUniqueId() :
+				$this->Path;
 			$attribs = $params = array();
 			$this->html = '';
 
@@ -185,13 +170,18 @@ class we_flashDocument extends we_binaryDocument{
 	}
 
 	function formProperties(){
-		return '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 	<tr valign="top">
 		<td>' . $this->formInputInfo2(155, "width", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"", "origwidth") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formInputInfo2(155, "height", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"", "origheight") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formSelectElement(155, "scale", array("" => "", "showall" => g_l('global', '[showall]'), "noborder" => g_l('global', '[noborder]'), "exactfit" => g_l('global', '[exactfit]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
+		<td>' . $this->formSelectElement(155, "scale", array(
+				"" => "",
+				"showall" => g_l('global', '[showall]'),
+				"noborder" => g_l('global', '[noborder]'),
+				"exactfit" => g_l('global', '[exactfit]')
+				), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 	</tr>
 	<tr valign="top">
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
@@ -239,7 +229,7 @@ class we_flashDocument extends we_binaryDocument{
 	}
 
 	function formOther(){
-		return '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 	<tr valign="top">
 		<td>' . $this->formInputField("txt", "Pluginspage", "Pluginspage", 24, 388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
@@ -393,49 +383,46 @@ class we_flashDocument extends we_binaryDocument{
 
 	static function checkAndPrepare($formname, $key = 'we_document'){
 		// check to see if there is an image to create or to change
-		if(!(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"]))){
+		if(!(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"]) && isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"]) )){
 			return;
 		}
-
 		$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 
-		if(isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
-			foreach($_FILES["we_ui_$formname"]["name"] as $flashName => $filename){
+		foreach($_FILES['we_ui_' . $formname]['name'] as $videoName => $filename){
 
-				$_flashmovieDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_FLASHMOVIE_DATA_ID_' . $flashName);
+			$videoDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_FLASHMOVIE_DATA_ID_' . $videoName);
 
-				if($_flashmovieDataId !== false && isset($_SESSION[$_flashmovieDataId])){
+			if($videoDataId !== false && isset($_SESSION[$videoDataId])){
 
-					$_SESSION[$_flashmovieDataId]['doDelete'] = false;
+				$_SESSION[$videoDataId]['doDelete'] = false;
 
-					if(we_base_request::_(we_base_request::BOOL, 'WE_UI_DEL_CHECKBOX_' . $flashName)){
-						$_SESSION[$_flashmovieDataId]['doDelete'] = true;
-					} elseif($filename){
-						// file is selected, check to see if it is an image
-						$ct = getContentTypeFromFile($filename);
-						if($ct == $this->ContentType){
-							$flashId = intval($GLOBALS[$key][$formname]->getElement($flashName));
+				if(we_base_request::_(we_base_request::BOOL, 'WE_UI_DEL_CHECKBOX_' . $videoName)){
+					$_SESSION[$videoDataId]['doDelete'] = true;
+				} elseif($filename){
+					// file is selected, check to see if it is an image
+					$ct = getContentTypeFromFile($filename);
+					if($ct == $this->ContentType){
+						$videoid = intval($GLOBALS[$key][$formname]->getElement($videoName));
 
-							// move document from upload location to tmp dir
-							$_SESSION[$_flashmovieDataId]["serverPath"] = TEMP_PATH . we_base_file::getUniqueId();
-							move_uploaded_file($_FILES["we_ui_$formname"]["tmp_name"][$flashName], $_SESSION[$_flashmovieDataId]["serverPath"]);
+						// move document from upload location to tmp dir
+						$_SESSION[$videoDataId]["serverPath"] = TEMP_PATH . we_base_file::getUniqueId();
+						move_uploaded_file($_FILES["we_ui_$formname"]["tmp_name"][$videoName], $_SESSION[$videoDataId]["serverPath"]);
 
-							$tmp_Filename = $flashName . "_" . we_base_file::getUniqueId() . "_" . preg_replace('[^A-Za-z0-9._-]', '', $_FILES["we_ui_$formname"]["name"][$flashName]);
+						$tmp_Filename = $videoName . "_" . we_base_file::getUniqueId() . "_" . preg_replace('[^A-Za-z0-9._-]', '', $_FILES["we_ui_$formname"]["name"][$videoName]);
 
-							if($flashId){
-								$_SESSION[$_flashmovieDataId]["id"] = $flashId;
-							}
-
-							$_SESSION[$_flashmovieDataId]["fileName"] = preg_replace('#^(.+)\..+$#', '$1', $tmp_Filename);
-							$_SESSION[$_flashmovieDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace('#^.+(\..+)$#', '$1', $tmp_Filename) : '';
-							$_SESSION[$_flashmovieDataId]["text"] = $_SESSION[$_flashmovieDataId]["fileName"] . $_SESSION[$_flashmovieDataId]["extension"];
-
-							$we_size = getimagesize($_SESSION[$_flashmovieDataId]["serverPath"]);
-							$_SESSION[$_flashmovieDataId]["imgwidth"] = $we_size[0];
-							$_SESSION[$_flashmovieDataId]["imgheight"] = $we_size[1];
-							$_SESSION[$_flashmovieDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$flashName];
-							$_SESSION[$_flashmovieDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$flashName];
+						if($videoid){
+							$_SESSION[$videoDataId]["id"] = $videoid;
 						}
+
+						$_SESSION[$videoDataId]["fileName"] = preg_replace('#^(.+)\..+$#', '$1', $tmp_Filename);
+						$_SESSION[$videoDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace('#^.+(\..+)$#', '$1', $tmp_Filename) : '';
+						$_SESSION[$videoDataId]["text"] = $_SESSION[$videoDataId]["fileName"] . $_SESSION[$videoDataId]["extension"];
+
+						$we_size = getimagesize($_SESSION[$videoDataId]["serverPath"]);
+						$_SESSION[$videoDataId]["imgwidth"] = $we_size[0];
+						$_SESSION[$videoDataId]["imgheight"] = $we_size[1];
+						$_SESSION[$videoDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$videoName];
+						$_SESSION[$videoDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$videoName];
 					}
 				}
 			}

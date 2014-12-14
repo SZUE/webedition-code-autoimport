@@ -28,8 +28,17 @@ class we_selector_document extends we_selector_directory{
 	protected $titles = array();
 	protected $titleName = '';
 	protected $startPath;
-	protected $ctp = array(we_base_ContentTypes::IMAGE => "NEW_GRAFIK", we_base_ContentTypes::QUICKTIME => "NEW_QUICKTIME", we_base_ContentTypes::FLASH => "NEW_FLASH");
-	protected $ctb = array("" => "btn_add_file", we_base_ContentTypes::IMAGE => "btn_add_image", we_base_ContentTypes::QUICKTIME => "btn_add_quicktime", we_base_ContentTypes::FLASH => "btn_add_flash");
+	protected $ctp = array(//FIXME: add movie/audio button
+		we_base_ContentTypes::IMAGE => "NEW_GRAFIK",
+		we_base_ContentTypes::QUICKTIME => "NEW_QUICKTIME",
+		we_base_ContentTypes::FLASH => "NEW_FLASH"
+	);
+	protected $ctb = array(//FIXME: add movie/audio button
+		"" => "btn_add_file",
+		we_base_ContentTypes::IMAGE => "btn_add_image",
+		we_base_ContentTypes::QUICKTIME => "btn_add_quicktime",
+		we_base_ContentTypes::FLASH => "btn_add_flash"
+	);
 
 	function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false){
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter);

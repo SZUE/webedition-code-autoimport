@@ -24,13 +24,11 @@
  */
 /*  a class for handling quicktimeDocuments. */
 
-class we_quicktimeDocument extends we_binaryDocument{
+class we_quicktimeDocument extends we_document_video{
 	/* Parameternames which are placed within the object-Tag */
 	var $ObjectParamNames = array("width", "height", "name", "vspace", "hspace", "style");
 
-	/* Constructor */
-
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		if(isWE()){
 			$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_PREVIEW;
@@ -38,52 +36,33 @@ class we_quicktimeDocument extends we_binaryDocument{
 		$this->ContentType = we_base_ContentTypes::QUICKTIME;
 	}
 
-	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
-
-	function editor(){
-		switch($this->EditPageNr){
-			case we_base_constants::WE_EDITPAGE_PREVIEW:
-				return "we_templates/we_editor_flash_preview.inc.php";
-			default:
-				return parent::editor();
-		}
-	}
-
 	// is not written yet
 	function initByAttribs($attribs){
-		if(isset($attribs["sizingrel"])){
-			$orig_w = (isset($attribs["width"]) ? $attribs["width"] : $this->getElement("width"));
-			$orig_h = (isset($attribs["height"]) ? $attribs["height"] : $this->getElement("height"));
-
-			$attribs["width"] = round($orig_w * $attribs["sizingrel"]);
-			$attribs["height"] = round($orig_h * $attribs["sizingrel"]);
-			unset($attribs["sizingrel"]);
+		if(($sizingrel = weTag_getAttribute('sizingrel', $attribs, 0, we_base_request::INT))){
+			$orig_w = weTag_getAttribute('width', $attribs, $this->getElement('width'), we_base_request::UNIT);
+			$orig_h = weTag_getAttribute('height', $attribs, $this->getElement('height'), we_base_request::UNIT);
+			$attribs['width'] = round($orig_w * $sizingrel);
+			$attribs['height'] = round($orig_h * $sizingrel);
 		}
-		$sizingbase = (isset($attribs['sizingbase']) && $attribs['sizingbase'] != 16 ? $attribs['sizingbase'] : 16);
-		if(isset($attribs['sizingbase'])){
-			unset($attribs['sizingbase']);
-		}
-
-		if(isset($attribs['sizingstyle'])){
-			$sizingstyle = ($attribs['sizingstyle'] === 'none' ? false : $attribs['sizingstyle']);
-			unset($attribs['sizingstyle']);
-		} else {
+		$sizingbase = weTag_getAttribute('sizingbase', $attribs, 16, we_base_request::UNIT);
+		$sizingstyle = weTag_getAttribute('sizingstyle', $attribs, false, we_base_request::STRING);
+		if($sizingstyle === 'none'){
 			$sizingstyle = false;
 		}
 
+		$removeAttribs = array('sizingrel', 'sizingbase', 'sizingstyle', 'xml');
 		if($sizingstyle){
-			$style_width = round($attribs["width"] / $sizingbase, 6);
-			$style_height = round($attribs["height"] / $sizingbase, 6);
-			$newstyle = (isset($attribs["style"]) ? $attribs["style"] : '');
-
-			$newstyle.=";width:" . $style_width . $sizingstyle . ";height:" . $style_height . $sizingstyle . ";";
-			$attribs["style"] = $newstyle;
-			unset($attribs['width']);
-			unset($attribs['height']);
+			$style_width = round($attribs['width'] / $sizingbase, 6);
+			$style_height = round($attribs['height'] / $sizingbase, 6);
+			$attribs['style'] = (isset($attribs['style']) ? $attribs['style'] : '') . ';width:' . $style_width . $sizingstyle . ';height:' . $style_height . $sizingstyle . ';';
+			$removeAttribs[] = 'width';
+			$removeAttribs[] = 'height';
 		}
+		$this->setElement('xml', weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL));
+		$attribs = removeAttribs($attribs, $removeAttribs, 'attrib');
 
 		foreach($attribs as $a => $b){
-			if($b != ""){
+			if($b != ''){
 				$this->setElement($a, $b, ($a === 'Pluginspage' || $a === 'Codebase' ? 'txt' : 'attrib'));
 			}
 		}
@@ -95,16 +74,13 @@ class we_quicktimeDocument extends we_binaryDocument{
 		//    At the moment it is not possible to make this tag xhtml valid, so the output is only posible
 		//    non xhtml valid
 
-		$_data = $this->getElement("data");
+		$_data = $this->getElement('data');
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
-			$pluginspage = $this->getElement("Pluginspage") ? : "http://www.apple.com/quicktime/download/";
-			$codebase = $this->getElement("Codebase") ? : "http://www.apple.com/qtactivex/qtplugin.cab";
+			$pluginspage = $this->getElement('Pluginspage') ? : 'http://www.apple.com/quicktime/download/';
+			$codebase = $this->getElement('Codebase') ? : 'http://www.apple.com/qtactivex/qtplugin.cab';
 
-			// first we make valid object-tag
-			srand((double) microtime() * 1000000);
-			$randval = rand();
 			$src = $dyn ?
-				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . "&rand=" . $randval :
+					WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . we_base_file::getUniqueId() :
 				$this->Path;
 
 			$filter = array("filesize", "type", "xml");
@@ -170,7 +146,7 @@ class we_quicktimeDocument extends we_binaryDocument{
 						$_embedAtts[$k] = $v["dat"];
 					}
 				}
-				$_embed = "\n" . getHtmlTag('embed', $_embedAtts, "", true);
+				$_embed = "\n" . getHtmlTag('embed', $_embedAtts, '', true);
 			}
 			$_objectAtts = removeEmptyAttribs($_objectAtts);
 			$this->html = getHtmlTag('object', $_objectAtts, $_params . $_embed);
@@ -183,12 +159,11 @@ class we_quicktimeDocument extends we_binaryDocument{
 	function formProperties(){
 		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 	<tr valign="top">
-		<td>' . $this->formInput2(155, "width", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInputInfo2(155, "width", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"", "origwidth") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formInput2(155, "height", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInputInfo2(155, "height", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"", "origheight") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formSelectElement(
-				155, "scale", array(
+		<td>' . $this->formSelectElement(155, "scale", array(
 				"" => "",
 				"tofit" => "tofit",
 				"aspect" => "aspect",
@@ -286,49 +261,49 @@ class we_quicktimeDocument extends we_binaryDocument{
 		return $html;
 	}
 
-	static function checkAndPrepare($formname, $key = "we_document"){
+		static function checkAndPrepare($formname, $key = 'we_document'){
 		// check to see if there is an image to create or to change
 		if(!(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"]) && isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"]) )){
 			return;
 		}
-		$webuserId = isset($_SESSION["webuser"]["ID"]) ? $_SESSION["webuser"]["ID"] : 0;
-		foreach($_FILES["we_ui_$formname"]["name"] as $quicktimeName => $filename){
+		$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 
-			$_quicktimeDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_QUICKTIME_DATA_ID_' . $quicktimeName);
+			foreach($_FILES['we_ui_'.$formname]['name'] as $videoName => $filename){
 
-			if($_quicktimeDataId !== false && isset($_SESSION[$_quicktimeDataId])){
+			$videoDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_QUICKTIME_DATA_ID_' . $videoName);
 
-				$_SESSION[$_quicktimeDataId]['doDelete'] = false;
+			if($videoDataId !== false && isset($_SESSION[$videoDataId])){
 
-				if(we_base_request::_(we_base_request::BOOL, 'WE_UI_DEL_CHECKBOX_' . $quicktimeName)){
-					$_SESSION[$_quicktimeDataId]['doDelete'] = true;
+				$_SESSION[$videoDataId]['doDelete'] = false;
+
+				if(we_base_request::_(we_base_request::BOOL, 'WE_UI_DEL_CHECKBOX_' . $videoName)){
+					$_SESSION[$videoDataId]['doDelete'] = true;
 				} elseif($filename){
 					// file is selected, check to see if it is an image
 					$ct = getContentTypeFromFile($filename);
 					if($ct == $this->ContentType){
-						$quicktimeId = intval($GLOBALS[$key][$formname]->getElement($quicktimeName));
+						$videoid = intval($GLOBALS[$key][$formname]->getElement($videoName));
 
 						// move document from upload location to tmp dir
-						$_SESSION[$_quicktimeDataId]["serverPath"] = TEMP_PATH . we_base_file::getUniqueId();
-						move_uploaded_file($_FILES["we_ui_$formname"]["tmp_name"][$quicktimeName], $_SESSION[$_quicktimeDataId]["serverPath"]);
+						$_SESSION[$videoDataId]["serverPath"] = TEMP_PATH . we_base_file::getUniqueId();
+						move_uploaded_file($_FILES["we_ui_$formname"]["tmp_name"][$videoName], $_SESSION[$videoDataId]["serverPath"]);
 
 
-						$tmp_Filename = $quicktimeName . "_" . we_base_file::getUniqueId() . "_" . preg_replace(
-								"/[^A-Za-z0-9._-]/", "", $_FILES["we_ui_$formname"]["name"][$quicktimeName]);
+							$tmp_Filename = $videoName . "_" . we_base_file::getUniqueId() . "_" . preg_replace('[^A-Za-z0-9._-]', '', $_FILES["we_ui_$formname"]["name"][$videoName]);
 
-						if($quicktimeId){
-							$_SESSION[$_quicktimeDataId]["id"] = $quicktimeId;
+						if($videoid){
+							$_SESSION[$videoDataId]["id"] = $videoid;
 						}
 
-						$_SESSION[$_quicktimeDataId]["fileName"] = preg_replace('#^(.+)\..+$#', '$1', $tmp_Filename);
-						$_SESSION[$_quicktimeDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace('#^.+(\..+)$#', '$1', $tmp_Filename) : "";
-						$_SESSION[$_quicktimeDataId]["text"] = $_SESSION[$_quicktimeDataId]["fileName"] . $_SESSION[$_quicktimeDataId]["extension"];
+						$_SESSION[$videoDataId]["fileName"] = preg_replace('#^(.+)\..+$#', '$1', $tmp_Filename);
+							$_SESSION[$videoDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace('#^.+(\..+)$#', '$1', $tmp_Filename) : '';
+						$_SESSION[$videoDataId]["text"] = $_SESSION[$videoDataId]["fileName"] . $_SESSION[$videoDataId]["extension"];
 
 
-						//$_SESSION[$_quicktimeDataId]["imgwidth"] = $we_size[0];
-						//$_SESSION[$_quicktimeDataId]["imgheight"] = $we_size[1];
-						$_SESSION[$_quicktimeDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$quicktimeName];
-						$_SESSION[$_quicktimeDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$quicktimeName];
+						//$_SESSION[$videoDataId]["imgwidth"] = $we_size[0];
+						//$_SESSION[$videoDataId]["imgheight"] = $we_size[1];
+						$_SESSION[$videoDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$videoName];
+						$_SESSION[$videoDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$videoName];
 					}
 				}
 			}

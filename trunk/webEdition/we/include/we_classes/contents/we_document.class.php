@@ -625,7 +625,11 @@ class we_document extends we_root{
 
 	private function isVersioned(){
 		switch($this->ContentType){
-			case we_base_ContentTypes::FLASH:
+			case we_base_ContentTypes::AUDIO:
+				return VERSIONING_AUDIO;
+			case we_base_ContentTypes::VIDEO:
+				return VERSIONING_VIDEO;
+			case we_base_ContentTypes::FLASH://FIXME: remove flash/quicktime, replace by video
 				return VERSIONING_FLASH;
 			case we_base_ContentTypes::IMAGE:
 				return VERSIONING_IMAGE;
@@ -814,7 +818,7 @@ class we_document extends we_root{
 		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . " AND Filename='" . escape_sql_query($this->Filename) . "' AND Extension='" . escape_sql_query($this->Extension) . "' AND ID != " . intval($this->ID), "", $this->DB_WE);
 	}
 
-//FIXME: parameter $attribt should be: array $attribs=array()
+//FIXME: parameter $attrib should be: array $attribs=array()
 //FIXME: check if we can rid of this function, since it causes problems every change of tags since it also uses the given attribs array!
 	public function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', we_database_base $db = null, $classID = '', $fn = 'this'){
 		$attribs = is_array($attribs) ? $attribs : array();

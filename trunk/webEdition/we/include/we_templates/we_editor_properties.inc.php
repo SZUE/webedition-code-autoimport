@@ -67,11 +67,12 @@ switch($we_doc->ContentType){
 	case we_base_ContentTypes::FLASH:
 		include(WE_INCLUDES_PATH . 'we_templates/we_flash_properties.inc.php');
 		break;
+	case we_base_ContentTypes::VIDEO:
+	case we_base_ContentTypes::AUDIO:
 	case we_base_ContentTypes::APPLICATION:
 		include(WE_INCLUDES_PATH . 'we_templates/we_other_properties.inc.php');
 		break;
 	default:
-
 		$moduleDir = we_base_moduleInfo::we_getModuleNameByContentType($we_doc->ContentType);
 		$moduleDir = $moduleDir ? $moduleDir . '/' : '';
 

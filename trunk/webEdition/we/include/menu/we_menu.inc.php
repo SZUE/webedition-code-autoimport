@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -90,6 +89,18 @@ $we_menu = array(
 		'parent' => 1010300,
 		'cmd' => 'new_quicktime_movie',
 		'perm' => 'NEW_QUICKTIME || ADMINISTRATOR',
+	),
+	array(// File > New Other > video
+		'text' => g_l('contentTypes', '[' . we_base_ContentTypes::VIDEO . ']'),
+		'parent' => 1010300,
+		'cmd' => 'new_video_movie',
+		'perm' => 'NEW_FLASH || ADMINISTRATOR',
+	),
+	array(// File > New Other > audio
+		'text' => g_l('contentTypes', '[' . we_base_ContentTypes::AUDIO . ']'),
+		'parent' => 1010300,
+		'cmd' => 'new_audio_audio',
+		'perm' => 'NEW_SONSTIGE || ADMINISTRATOR',
 	),
 	array(// File > New > Other > Javascript
 		'text' => g_l('javaMenu_global', '[javascript]'),
