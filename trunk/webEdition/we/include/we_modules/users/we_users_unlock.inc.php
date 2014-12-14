@@ -48,11 +48,12 @@ for($i = 0; $i < count($_ids); $i++){
 		$queries[$_tables[$i]][] = $_ids[$i];
 	}
 }
-
+$uid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 foreach($queries as $table => $ids){
 	//don't clean all locks! - is this really a needed statement???
+	$ids = implode(', ', array_filter($ids));
 	if($ids){
-		$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE tbl="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND ID IN (' . implode(', ', $ids) . ') AND sessionID="' . session_id() . '" AND UserID=' . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2));
+		$DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE tbl="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND ID IN (' . $ids . ') AND sessionID="' . session_id() . '" AND UserID=' . $uid);
 	}
 }
 ?>UNLOCKED
