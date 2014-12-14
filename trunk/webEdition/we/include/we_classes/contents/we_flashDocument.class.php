@@ -336,10 +336,7 @@ class we_flashDocument extends we_document_video{
 		if(!$this->getElement('height')){
 			$this->setElement('height', $this->getElement('origheight'), 'attrib');
 		}
-		if(!$this->Icon){
-			$this->Icon = we_base_ContentTypes::inst()->getIcon($this->ContentType);
-		}
-
+		
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
 		if(parent::we_save($resave)){
 			if($docChanged){

@@ -98,11 +98,11 @@ class we_document_video extends we_binaryDocument{
 			} else {
 				$poster = '';
 			}
-			$width = $this->getElement('width');
-			$height = $this->getElement('height');
-			$play = $this->getElement('autoplay');
-			$control = $this->getElement('controller');
-			$bgcolor = $this->getElement('bgcolor');
+			$width = $preload ? 100 : $this->getElement('width');
+			$height = $preload ? 100 : $this->getElement('height');
+			$play = !$preload && $this->getElement('autoplay');
+			$control = !$preload && $this->getElement('controller');
+			$bgcolor = $preload ? '' : $this->getElement('bgcolor');
 			$mute = $this->getElement('mute');
 			$loop = $this->getElement('loop');
 			$name = $this->getElement('name');
@@ -110,9 +110,9 @@ class we_document_video extends we_binaryDocument{
 
 			return
 				getHtmlTag('video', array_filter(array(
-				'style' => ($preload ? 'width:100px;height:100px;' : 'width:' . ($width? : 400) . 'px;height:' . ($height? : 400) . 'px;margin-left:2em;' . ($bgcolor ? 'background-color:' . $bgcolor . ';' : '')),
+				'style' => 'width:' . ($width? : 400) . 'px;height:' . ($height? : 400) . 'px;' . ($preload ? 'margin-left:2em;' : '') . ($bgcolor ? 'background-color:' . $bgcolor . ';' : ''),
 				($play ? 'autoplay' : '') => 'autoplay',
-				($preload ? '' : ($control ? 'controls' : '')) => 'controls',
+				($control ? 'controls' : '') => 'controls',
 				($mute ? 'muted' : '') => 'muted',
 				($loop ? 'loop' : '') => 'loop',
 				($name ? 'name' : '') => $name,
