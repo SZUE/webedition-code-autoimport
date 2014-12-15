@@ -6,14 +6,12 @@ we_html_tools::protect($protect);
 
 $editname = we_base_request::_(we_base_request::STRING, 'we_dialog_args', false, 'editname');
 echo we_html_tools::getHtmlTop() .
- ($editname === 'tinyMce' ?
 	we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js') .
 	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/mctabs.js') .
 	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/form_utils.js') .
 	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/validate.js') .
-	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/editable_selects.js') :
-	''
-) . STYLESHEET;
+	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/editable_selects.js') .
+	STYLESHEET;
 
 if(!isset($_SESSION['weS']['dictLang'])){
 	$_SESSION['weS']['dictLang'] = $spellcheckerConf['default'];
