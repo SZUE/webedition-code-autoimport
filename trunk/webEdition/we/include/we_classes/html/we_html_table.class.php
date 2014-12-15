@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -39,10 +38,21 @@ class we_html_table extends we_html_baseCollection{
 	 *
 	 * @return     we_html_table
 	 */
-	function __construct(array $attribs = array(), $rows_num = 0, $cols_num = 0){
+	function __construct(array $attribs = array(), $rows_num = 0, $cols_num = 0, array $content = null){
 		parent::__construct('table', true, $attribs);
 		$this->addRow($rows_num);
 		$this->addCol($cols_num);
+		$this->setTableContent($content);
+	}
+
+	public function setTableContent(array $content = null){
+		if($content){
+			foreach($content as $rowNo => $rowContent){
+				foreach($rowContent as $colNo => $col){
+					$this->setCol($rowNo, $colNo, $col[0], $col[1]);
+				}
+			}
+		}
 	}
 
 	/**
@@ -65,8 +75,9 @@ class we_html_table extends we_html_baseCollection{
 		}
 		for($i = 0; $i < $rows_num; $i++){
 			$this->childs[] = new we_html_baseCollection("tr");
-			for($j = 0; $j < $cols_num; $j++)
+			for($j = 0; $j < $cols_num; $j++){
 				$this->childs[count($this->childs) - 1]->childs[] = new we_html_baseElement("td");
+			}
 		}
 	}
 
