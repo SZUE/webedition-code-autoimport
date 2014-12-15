@@ -20,4 +20,4 @@ if(defined('FILE_TABLE')){
 $this->Attributes[] = new weTagData_selectAttribute('showvideo', weTagData_selectAttribute::getTrueFalse(), false, '');
 
  */
-$this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
+//$this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
