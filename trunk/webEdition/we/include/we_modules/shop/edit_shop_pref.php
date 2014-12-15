@@ -130,13 +130,13 @@ if(!isset($feldnamen[4])){
 $_row = 0;
 //we_html_tools::htmlSelectCountry('weShopVatCountry', '', 1, array(), false, array('id' => 'weShopVatCountry'), 200)
 
-$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), 'Nutze Shop-Kategorien');//GL
+$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[shopcats][use_shopCats]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $yesno = array(0 => 'false', 1 =>'true');
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('categorymode', $yesno, 1, $categorymode));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
-$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), 'Land des Shop-Betreibers');//GL
+$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[shopcats][shopHolderCountry]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelectCountry('shoplocation', '', 1, array($shoplocation), false, array('id' => 'shoplocation'), 280));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
