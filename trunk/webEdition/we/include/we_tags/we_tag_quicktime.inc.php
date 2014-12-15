@@ -31,17 +31,18 @@ function we_tag_quicktime($attribs){
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 	$showcontrol = weTag_getAttribute('showcontrol', $attribs, true, we_base_request::BOOL);
 	$showvideo = weTag_getAttribute('showquicktime', $attribs, true, we_base_request::BOOL);
+	$lid = weTag_getAttribute("id", $attribs, 0, we_base_request::INT);
 
-	$id = $GLOBALS['we_doc']->getElement($name, 'bdid')? : weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
-	if(isset($attribs['showcontrol']) && !$showcontrol && ($lid = weTag_getAttribute("id", $attribs, 0, we_base_request::INT))){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
+	$id = $GLOBALS['we_doc']->getElement($name, 'bdid')? : $lid;
+	if(isset($attribs['showcontrol']) && !$showcontrol && $lid){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
 		$attribs['id'] = $lid; //siehe korrespondierende Änderung in we:document::getField
 		$attribs['showcontrol'] = $showcontrol; //sicherstellen das es boolean iost
 	}
 	$fname = 'we_' . $GLOBALS['we_doc']->Name . '_img[' . $name . '#bdid]';
 
 	$out = ($GLOBALS['we_editmode'] && !$showvideo ?
-					'' :
-					$GLOBALS['we_doc']->getField($attribs, "quicktime"));
+			'' :
+			$GLOBALS['we_doc']->getField($attribs, "quicktime"));
 
 	if($showcontrol && $GLOBALS['we_editmode']){
 		$startid = weTag_getAttribute('startid', $attribs, 0, we_base_request::INT);
@@ -61,11 +62,10 @@ function we_tag_quicktime($attribs){
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" align="center">' .
-	we_html_button::create_button_table(array(
-		$button, $clear_button
-	), 5) . '</td></tr></table>';
+			we_html_button::create_button_table(array(
+				$button, $clear_button
+				), 5) . '</td></tr></table>';
 	}
 	//	When in SEEM - Mode add edit-Button to tag - textarea
 	return $out;
 }
-
