@@ -167,16 +167,6 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	const kIconEditQuicktime = '/webEdition/images/button/icons/edit_quicktime.gif';
 
 	/*
-	 * Path for edit real Icon
-	 */
-	const kIconEditReal = '/webEdition/images/button/icons/edit_real.gif';
-
-	/*
-	 * Path for edit wmp Icon
-	 */
-	const kIconEditWMP = '/webEdition/images/button/icons/edit_wmp.gif';
-
-	/*
 	 * Path for folder back Icon
 	 */
 	const kIconFolderBack = '/webEdition/images/button/icons/fs_back.gif';
