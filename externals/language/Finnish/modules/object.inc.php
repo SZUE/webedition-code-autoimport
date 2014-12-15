@@ -58,6 +58,7 @@ $l_modules_object=array(
 	'search_term'=>'Hakuehto',
 	'seourl'=>'SEO-URL',
 	'seourltrigger'=>'Preset document for display',
+	'shopCat_field'=>'Shop category',
 	'shopVat_field'=>'ALV kenttä',
 	'textarea_field'=>'Iso tekstikenttä',
 	'type'=>'Tyyppi',

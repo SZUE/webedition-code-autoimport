@@ -58,6 +58,7 @@ $l_modules_object=array(
 	'search_term'=>'Suchbegriff',
 	'seourl'=>'SEO-URL',
 	'seourltrigger'=>'Voreinstellung Dokument für die Darstellung',
+	'shopCat_field'=>'Shop-Kategorie',
 	'shopVat_field'=>'Mehrwertsteuer Feld',
 	'textarea_field'=>'Textfeld',
 	'type'=>'Typ',

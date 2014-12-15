@@ -58,6 +58,7 @@ $l_modules_object=array(
 	'search_term'=>'Искать термин',
 	'seourl'=>'SEO-URL',
 	'seourltrigger'=>'Preset document for display',
+	'shopCat_field'=>'Shop category',
 	'shopVat_field'=>'Поле НДС',
 	'textarea_field'=>'Область для текста',
 	'type'=>'Тип',

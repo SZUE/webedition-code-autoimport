@@ -58,6 +58,7 @@ $l_modules_object=array(
 	'search_term'=>'Mot de Recherchee',
 	'seourl'=>'SEO-URL',
 	'seourltrigger'=>'Preset document for display',
+	'shopCat_field'=>'Shop category',
 	'shopVat_field'=>'Champ de TVA',
 	'textarea_field'=>'Passage de texte',
 	'type'=>'Type',

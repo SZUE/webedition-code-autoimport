@@ -58,6 +58,7 @@ $l_modules_object=array(
 	'search_term'=>'Zoekterm',
 	'seourl'=>'SEO-URL',
 	'seourltrigger'=>'Preset document for display',
+	'shopCat_field'=>'Shop category',
 	'shopVat_field'=>'BTW veld',
 	'textarea_field'=>'Tekst area',
 	'type'=>'Type',

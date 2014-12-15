@@ -58,6 +58,7 @@ $l_modules_object=array(
 	'search_term'=>'Termino de bï¿½squeda',
 	'seourl'=>'SEO-URL',
 	'seourltrigger'=>'Preset document for display',
+	'shopCat_field'=>'Shop category',
 	'shopVat_field'=>'Campo IVA',
 	'textarea_field'=>'ï¿½rea de Texto',
 	'type'=>'Tipo',
