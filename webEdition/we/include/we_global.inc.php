@@ -816,7 +816,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 		if(XHTML_DEBUG){ //  check if XHTML_DEBUG is activated - system pref
 			$showWrong = (isset($_SESSION['prefs']['xhtml_show_wrong']) && $_SESSION['prefs']['xhtml_show_wrong'] && isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
 // at the moment only transitional is supported
-			$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional',we_base_request::STRING);
+			$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional', we_base_request::STRING);
 			$attribs = removeAttribs($attribs, $removeAttribs);
 
 			validation::validateXhtmlAttribs($element, $attribs, $xhtmlType, $showWrong, XHTML_REMOVE_WRONG);
@@ -990,13 +990,12 @@ function g_l($name, $specific, $omitErrors = false){
 						mb_convert_encoding($tmp, $charset, 'UTF-8')
 					) :
 					$tmp);
-		} else {
-			if(!$omitErrors){
-				t_e('notice', 'Requested lang entry l_' . $name . $specific . ' not found in ' . $file . ' !');
-				return '??';
-			}
-			return false;
 		}
+		if(!$omitErrors){
+			t_e('notice', 'Requested lang entry l_' . $name . $specific . ' not found in ' . $file . ' !');
+			return '??';
+		}
+		return false;
 	}
 	if(!$omitErrors){
 		t_e('Language file "' . $file . '" not found with entry ' . $specific);

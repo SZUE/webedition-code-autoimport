@@ -904,6 +904,19 @@ class we_document extends we_root{
 				}
 				$bin->initByID($val, FILE_TABLE);
 				return array($bin->Text, $bin->Path, $bin->ParentPath, $bin->Filename, $bin->Extension, (isset($bin->elements['filesize']) ? $bin->elements['filesize']['dat'] : ''));
+				case 'video':
+				$video = new we_document_video();
+				if(isset($attribs['name'])){
+					$video->Name = $attribs['name'];
+				}
+				if(!$val && isset($attribs['id'])){
+					$val = $attribs['id'];
+				}
+				$video->initByID($val, FILE_TABLE);
+				/*if(!empty($attribs)){
+					$video->initByAttribs($attribs);
+				}*/
+				return $pathOnly ? $video->Path : $video->getHtml(false,$GLOBALS['we_editmode']);
 			case 'flashmovie':
 				$fl = new we_flashDocument();
 				if(isset($attribs['name'])){
@@ -1083,6 +1096,7 @@ class we_document extends we_root{
 			case 'img':
 			case 'flashmovie':
 			case 'quicktime':
+			case 'video':
 				if(isset($attribs['showcontrol']) && !$attribs['showcontrol'] && isset($attribs['id']) && $attribs['id']){//bug 6433: siehe korrespondierende Änderung in we_tag_img
 					unset($attribs['showcontrol']);
 					$val = $attribs['id'];
