@@ -67,7 +67,6 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 ?>
 
 <script type="text/javascript"><!--
-
 	self.focus();
 
 	var Header = null;
@@ -146,7 +145,6 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 	 * @param win object reference to the calling window
 	 */
 	function showMessage(message, prio, win) {
-
 		if (!win) {
 			win = window;
 		}

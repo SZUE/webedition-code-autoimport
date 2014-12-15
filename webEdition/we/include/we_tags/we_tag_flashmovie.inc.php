@@ -30,8 +30,10 @@ function we_tag_flashmovie($attribs){
 	$showcontrol = weTag_getAttribute('showcontrol', $attribs, true, we_base_request::BOOL);
 	$showvideo = weTag_getAttribute('showflash', $attribs, true, we_base_request::BOOL);
 
-	$id = $GLOBALS['we_doc']->getElement($name, 'bdid')? : weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
-	if(isset($attribs['showcontrol']) && !$showcontrol && ($lid = weTag_getAttribute("id", $attribs, 0, we_base_request::INT))){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
+	$lid = weTag_getAttribute("id", $attribs, 0, we_base_request::INT);
+
+	$id = $GLOBALS['we_doc']->getElement($name, 'bdid')? : $lid;
+	if(isset($attribs['showcontrol']) && !$showcontrol && $lid){//bug 6433: später wird so ohne weiteres gar nicht mehr auf die id zurückgegriffen
 		$attribs['id'] = $lid; //siehe korrespondierende Änderung in we:document::getField
 		$attribs['showcontrol'] = $showcontrol; //sicherstellen das es boolean iost
 	}
@@ -60,9 +62,9 @@ function we_tag_flashmovie($attribs){
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" align="center">' .
-we_html_button::create_button_table(array(
-	$button, $clear_button
-	), 5) . '</td></tr></table>';
+			we_html_button::create_button_table(array(
+				$button, $clear_button
+				), 5) . '</td></tr></table>';
 	}
 	//	When in SEEM - Mode add edit-Button to tag - textarea
 	return $out;
