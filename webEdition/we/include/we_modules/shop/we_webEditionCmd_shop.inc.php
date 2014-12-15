@@ -78,7 +78,7 @@
 				wind.focus();
 			}
 			url = "<?php echo WE_SHOP_MODULE_DIR ?>edit_shop_categories.php";
-			new jsWindow(url, "edit_shop_categories", -1, -1, 650, 650, true, false, true, false);
+			new jsWindow(url, "edit_shop_categories", -1, -1, 740, 650, true, false, true, false);
 			break;
 		case "edit_shop_vats":
 			var fo = false;
