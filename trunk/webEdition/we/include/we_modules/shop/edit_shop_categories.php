@@ -139,7 +139,7 @@ if(intval($shopCategoriesDir) !== -1){
 			$matrix->setCol($i, 2, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 140), $cat['Category']);
 			$matrix->setCol($i++, 3, array("class" => "defaultfont", "style" => "font-weight:bold", "colspan" => "2","nowrap" => "nowrap", "width" => 174), $cat['Path']);
 			if($cat['ID'] != $shopCategoriesDir){
-				$matrix->setCol($i, 3, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 174), 'Is active as Shop category');
+				$matrix->setCol($i, 3, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 174), g_l('modules_shop', '[shopcats][active_shopCat]'));
 				$matrix->setCol($i++, 4, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 240), we_html_forms::checkboxWithHidden(($cat['IsInactive'] == 0), 'weShopCatIsActive[' . $cat['ID'] . ']', '', false, '', 'we_switch_active_by_id(' . $cat['ID'] . ')'));
 			}
 			$matrix->setCol($i, 3, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 174, "style" => "padding-bottom: 10px"), g_l('modules_shop', '[shopcats][text_destPrinciple]'));
