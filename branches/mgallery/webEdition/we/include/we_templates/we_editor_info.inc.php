@@ -23,6 +23,12 @@
  */
 echo we_html_tools::getHtmlTop() .
  STYLESHEET .
+ we_html_element::cssElement('
+img.multiIcon{
+	height:64px;
+	width:64px;
+}
+') .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 <script type="text/javascript"><!--
@@ -61,7 +67,7 @@ echo we_html_tools::getHtmlTop() .
 		$fs = $GLOBALS['we_doc']->getFilesize();
 
 		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[file_size]') . '</div>' .
-				'<div style="margin-bottom:10px;">' . round(($fs / 1024), 2) . "&nbsp;KB&nbsp;(" . $fs . "&nbsp;Byte)" . '</div>';
+			'<div style="margin-bottom:10px;">' . round(($fs / 1024), 2) . "&nbsp;KB&nbsp;(" . $fs . "&nbsp;Byte)" . '</div>';
 	}
 	$parts = array(
 		array(
@@ -75,33 +81,26 @@ echo we_html_tools::getHtmlTop() .
 	if($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::FOLDER){
 		$_html = '
 <div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[creation_date]') . '</div>
-<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->CreationDate) . '</div>';
-
-		if($GLOBALS['we_doc']->CreatorID && ($name = f('SELECT CONCAT(First," ",Second," (",username,")") AS name FROM ' . USER_TABLE . ' WHERE ID=' . intval($GLOBALS['we_doc']->CreatorID)))){
-			$_html .= '
+<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->CreationDate) . '</div>' .
+			($GLOBALS['we_doc']->CreatorID && ($name = f('SELECT CONCAT(First," ",Second," (",username,")") AS name FROM ' . USER_TABLE . ' WHERE ID=' . intval($GLOBALS['we_doc']->CreatorID))) ?
+				$_html .= '
 <div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[created_by]') . '</div>
-<div style="margin-bottom:10px;">' . $name . '</div>';
-		}
+<div style="margin-bottom:10px;">' . $name . '</div>' :
+				'') .
+			'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[changed_date]') . '</div>
+<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->ModDate) . '</div>' .
+			($GLOBALS['we_doc']->ModifierID && $name = f('SELECT CONCAT(First," ",Second," (",username,")") AS name FROM ' . USER_TABLE . ' WHERE ID=' . intval($GLOBALS['we_doc']->ModifierID)) ?
+			'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[changed_by]') . '</div>
+<div style="margin-bottom:10px;">' . $name . '</div>' .
+			($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::HTML || $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT ?
+				'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[lastLive]') . '</div>' .
+				'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->Published) : "-") . '</div>' :
+				'') .
+			($GLOBALS['we_doc']->Published && $GLOBALS['we_doc']->ModDate > $GLOBALS['we_doc']->Published ?
+				'<div style="margin-bottom:10px;">' . we_html_button::create_button('revert_published', 'javascript:revertToPublished();', true, 280) . '</div>' :
+				'') :
+			'');
 
-		$_html .= '
-<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[changed_date]') . '</div>
-<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->ModDate) . '</div>';
-
-
-		if($GLOBALS['we_doc']->ModifierID && $name = f('SELECT CONCAT(First," ",Second," (",username,")") AS name FROM ' . USER_TABLE . ' WHERE ID=' . intval($GLOBALS['we_doc']->ModifierID))){
-			$_html .= '
-<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[changed_by]') . '</div>
-<div style="margin-bottom:10px;">' . $name . '</div>';
-		}
-
-		if($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::HTML || $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT){
-			$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[lastLive]') . '</div>' .
-					'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->Published) : "-") . '</div>';
-
-			if($GLOBALS['we_doc']->Published && $GLOBALS['we_doc']->ModDate > $GLOBALS['we_doc']->Published){
-				$_html .= '<div style="margin-bottom:10px;">' . we_html_button::create_button('revert_published', 'javascript:revertToPublished();', true, 280) . '</div>';
-			}
-		}
 
 		$parts[] = array(
 			'headline' => '',
@@ -123,6 +122,8 @@ echo we_html_tools::getHtmlTop() .
 				case we_base_ContentTypes::IMAGE:
 				case we_base_ContentTypes::FLASH:
 				case we_base_ContentTypes::QUICKTIME:
+				case we_base_ContentTypes::VIDEO:
+				case we_base_ContentTypes::AUDIO:
 					$showlink = true;
 			}
 
@@ -144,8 +145,8 @@ echo we_html_tools::getHtmlTop() .
 
 		if(defined('WORKFLOW_TABLE') && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT){
 			$anzeige = (we_workflow_utility::inWorkflow($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) ?
-							we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) :
-							we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table));
+					we_workflow_utility::getDocumentStatusInfo($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table) :
+					we_workflow_utility::getLogButton($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->Table));
 
 			$parts[] = array(
 				'headline' => g_l('modules_workflow', '[workflow]'),

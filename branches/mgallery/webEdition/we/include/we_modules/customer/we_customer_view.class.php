@@ -881,9 +881,8 @@ self.close();');
 						new jsWindow(url,"export_customer",-1,-1,640,600,true,true,true,false);');
 				break;
 			case 'save_settings':
-
 				foreach($this->settings->getAllSettings() as $k => $v){
-					$set = we_base_request::_(we_base_request::STRING, $k);
+					$set = we_base_request::_(we_base_request::STRINGC, $k);
 					if($set !== false){
 						$this->settings->setSettings($k, $set);
 					}

@@ -47,8 +47,8 @@ if($weFileupload->processFileRequest()){
 	$pid = we_base_request::_(we_base_request::INT, 'pid', 0);
 	$parts = array();
 	$we_alerttext = (!in_workspace($pid, get_ws(FILE_TABLE), FILE_TABLE, $GLOBALS['DB_WE']) || isset($_FILES['we_uploadedFile']) && !permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name']))) ?
-					g_l('alert', '[upload_targetDir_notallowed]') :
-					'');
+			g_l('alert', '[upload_targetDir_notallowed]') :
+			'');
 
 	if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploadedFile']['type'] && (($allowedContentTypes === '') || (!(strpos($allowedContentTypes, $_FILES['we_uploadedFile']['type']) === false)))){
 		if(!$we_ContentType){
@@ -96,11 +96,14 @@ if($weFileupload->processFileRequest()){
 		$foo = explode('/', $_FILES['we_uploadedFile']['type']);
 		$we_doc->setElement('data', $tempName, $foo[0]);
 
-		if($we_ContentType == we_base_ContentTypes::IMAGE && !$we_doc->isSvg() && !in_array(we_base_imageEdit::detect_image_type($tempName), we_base_imageEdit::$GDIMAGE_TYPE)){
-
-			$we_alerttext = g_l('alert', '[wrong_file][' . $we_ContentType . ']');
-		} else {
-			if($we_ContentType == we_base_ContentTypes::IMAGE || $we_ContentType == we_base_ContentTypes::FLASH){
+		switch($we_ContentType){
+			case we_base_ContentTypes::IMAGE:
+				if(!$we_doc->isSvg() && !in_array(we_base_imageEdit::detect_image_type($tempName), we_base_imageEdit::$GDIMAGE_TYPE)){
+					$we_alerttext = g_l('alert', '[wrong_file][' . $we_ContentType . ']');
+					break;
+				}
+			//no break
+			case we_base_ContentTypes::FLASH:
 				$we_size = $we_doc->getimagesize($tempName);
 				$we_doc->setElement('width', $we_size[0], 'attrib');
 				$we_doc->setElement('height', $we_size[1], 'attrib');
@@ -109,32 +112,33 @@ if($weFileupload->processFileRequest()){
 				if(we_base_request::_(we_base_request::BOOL, 'import_metadata')){
 					$we_doc->importMetaData();
 				}
-			}
-			if($we_doc->Extension === '.pdf'){
-				$we_doc->setMetaDataFromFile($tempName);
-			}
+			//no break
+			default:
+				if($we_doc->Extension === '.pdf'){
+					$we_doc->setMetaDataFromFile($tempName);
+				}
 
-			$we_doc->setElement('filesize', $_FILES['we_uploadedFile']['size'], 'attrib');
-			if(($tit = we_base_request::_(we_base_request::STRING, 'img_title')) !== false){
-				$we_doc->setElement('title', $tit, 'attrib');
-			}
-			if(($alt = we_base_request::_(we_base_request::STRING, 'img_alt')) !== false){
-				$we_doc->setElement('alt', $alt, 'attrib');
-			}
-			if(($thumbs = we_base_request::_(we_base_request::INT, 'Thumbnails'))){
-				$we_doc->Thumbs = (is_array($thumbs) ?
-								makeCSVFromArray($thumbs, true) :
-								$thumbs);
-			}
-			$we_doc->Table = we_base_request::_(we_base_request::TABLE, 'tab');
-			$we_doc->Published = time();
-			$we_doc->we_save();
-			$id = $we_doc->ID;
+				$we_doc->setElement('filesize', $_FILES['we_uploadedFile']['size'], 'attrib');
+				if(($tit = we_base_request::_(we_base_request::STRING, 'img_title')) !== false){
+					$we_doc->setElement('title', $tit, 'attrib');
+				}
+				if(($alt = we_base_request::_(we_base_request::STRING, 'img_alt')) !== false){
+					$we_doc->setElement('alt', $alt, 'attrib');
+				}
+				if(($thumbs = we_base_request::_(we_base_request::INT, 'Thumbnails'))){
+					$we_doc->Thumbs = (is_array($thumbs) ?
+							makeCSVFromArray($thumbs, true) :
+							$thumbs);
+				}
+				$we_doc->Table = we_base_request::_(we_base_request::TABLE, 'tab');
+				$we_doc->Published = time();
+				$we_doc->we_save();
+				$id = $we_doc->ID;
 		}
-	} else if(isset($_FILES['we_uploadedFile'])){
+	} elseif(isset($_FILES['we_uploadedFile'])){
 		$we_alerttext = (we_base_file::we_filenameNotValid($_FILES['we_uploadedFile']['name']) ?
-						g_l('alert', '[we_filename_notValid]') :
-						g_l('alert', '[wrong_file][' . ($we_ContentType ? : 'other') . ']'));
+				g_l('alert', '[we_filename_notValid]') :
+				g_l('alert', '[wrong_file][' . ($we_ContentType ? : 'other') . ']'));
 	}
 
 	// find out the smallest possible upload size
@@ -142,10 +146,9 @@ if($weFileupload->processFileRequest()){
 
 	$yes_button = we_html_button::create_button('upload', 'javascript:' . $weFileupload->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_btn');
 	$cancel_button = we_html_button::create_button('cancel', 'javascript:' . $weFileupload->getJsBtnCmd('cancel'));
-	$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 	$buttonsTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);
-	$buttonsTable->setCol(0, 0, $attribs = array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
-	$buttonsTable->setCol(0, 1, $attribs = array('align' => 'right'), $buttons);
+	$buttonsTable->setCol(0, 0, array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
+	$buttonsTable->setCol(0, 1, array('align' => 'right'), we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button));
 	$buttons = $buttonsTable->getHtml();
 
 	$parts[] = array('headline' => '', 'html' => $weFileupload->getHtmlAlertBoxes(), 'space' => 0, 'noline' => 1);
@@ -212,12 +215,12 @@ if($weFileupload->processFileRequest()){
 	</script>
 	</head>
 	<body class="weDialogBody" onload="self.focus();" ><center>
-		<form method="post" enctype="multipart/form-data">
-			<input type="hidden" name="table" value="<?php echo we_base_request::_(we_base_request::TABLE, 'tab'); ?>" />
-			<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
-			<input type="hidden" name="ct" value="<?php echo $we_ContentType; ?>" />
-			<?php echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', '[import_File_from_hd_title]'), "", 620); ?>
-		</form></center>
+			<form method="post" enctype="multipart/form-data">
+				<input type="hidden" name="table" value="<?php echo we_base_request::_(we_base_request::TABLE, 'tab'); ?>" />
+				<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+				<input type="hidden" name="ct" value="<?php echo $we_ContentType; ?>" />
+				<?php echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', '[import_File_from_hd_title]'), "", 620); ?>
+			</form></center>
 	</body>
 	</html>
 <?php } ?>

@@ -71,6 +71,12 @@ switch(($cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0))){
 	case "new_quicktime_movie":
 		echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::QUICKTIME . '");';
 		break;
+		case "new_video_movie":
+		echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::VIDEO . '");';
+		break;
+		case "new_audio_audio":
+		echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::AUDIO . '");';
+		break;
 	case "new_javascript":
 		echo 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::JS . '");';
 		break;

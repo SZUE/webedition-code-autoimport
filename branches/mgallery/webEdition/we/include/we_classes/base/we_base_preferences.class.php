@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -85,9 +86,8 @@ class we_base_preferences{
 	static function check_global_config($updateVersion = false, $file = '', $leave = array()){
 		self::loadConfigs();
 		$processedConfigs = ($file ?
-				array('global' => 'contentDef') :
-				array('global' => 'contentDef', 'conf' => 'contentDef'));
-
+						array('global' => 'contentBak') :
+						array('global' => 'contentBak', 'conf' => 'contentBak'));
 		foreach($processedConfigs as $conf => $dataField){
 			// Read the global configuration file
 			$file_name = $GLOBALS['config_files']['conf_' . $conf]['filename'];
@@ -115,7 +115,7 @@ class we_base_preferences{
 				if(!preg_match('/define\(["\']' . $define . '["\'],/', $content)){
 					// Add needed variable
 					$active = ($conf == 'global' ? true : defined($define));
-					$content = self::changeSourceCode('add', $content, $define, (defined($define) ? constant($define) : $value[2]), $active, $value[0], isset($value[3]) ? $value[3] : false);
+					$content = self::changeSourceCode('add', $content, $define, (defined($define) ? constant($define) : $value[2]), $active, $value[0], isset($value[3]) && $conf != 'global'/* access restriction */ ? $value[3] : false);
 					//define it in running session
 					if(!defined($define) && $active){
 						define($define, $value[2]);
@@ -125,13 +125,11 @@ class we_base_preferences{
 			if($conf == 'global' && $updateVersion){
 				$content = self::changeSourceCode('define', $content, 'CONF_SAVED_VERSION', str_replace(array('$Rev$'), '', WE_SVNREV), true);
 			}
-			// Check if we need to rewrite the config file
-			if($content != $oldContent){
-				we_base_file::save($file_name . '.bak', $GLOBALS['config_files']['conf_' . $conf]['contentBak']);
-				we_base_file::save($file_name, $content);
-			}
+			$GLOBALS['config_files']['conf_' . $conf]['contentBak'] = $oldContent;
+			$GLOBALS['config_files']['conf_' . $conf]['content'] = $content;
 		}
-		unset($GLOBALS['config_files']);
+// Check if we need to rewrite the config file
+		self::saveConfigs();
 	}
 
 	static function saveConfigs(){
@@ -139,7 +137,6 @@ class we_base_preferences{
 			t_e('no config set');
 			return;
 		}
-
 		foreach($GLOBALS['config_files'] as $file){
 			if(isset($file['content']) && $file['content'] != $file['contentBak']){ //only save if anything changed
 				we_base_file::save($file['filename'] . '.bak', $file['contentBak']);
@@ -147,7 +144,7 @@ class we_base_preferences{
 			}
 		}
 
-		$tmp = array_diff_assoc($_SESSION['prefs'], $GLOBALS['config_files']['oldPrefs']);
+		$tmp = isset($_SESSION['prefs']) && is_array($_SESSION['prefs']) ? array_diff_assoc($_SESSION['prefs'], $GLOBALS['config_files']['oldPrefs']) : array();
 		if(!empty($tmp)){
 			we_users_user::writePrefs($_SESSION['prefs']['userID'], $GLOBALS['DB_WE']);
 		}
@@ -177,7 +174,7 @@ class we_base_preferences{
 		switch($type){
 			case 'add':
 				return trim($text, "\n\t ") . "\n\n" .
-					self::makeDefine($key, $value, $active, $comment, $encode);
+						self::makeDefine($key, $value, $active, $comment, $encode);
 			case 'define':
 				$match = array();
 				if(preg_match('|/?/?define\(\s*(["\']' . preg_quote($key) . '["\'])\s*,\s*([^\r\n]+)\);[\r\n]?|Ui', $text, $match)){
@@ -190,10 +187,10 @@ class we_base_preferences{
 
 	private static function makeDefine($key, $val, $active = true, $comment = '', $encode = false){
 		return ($comment ? '//' . $comment . "\n" : '') . ($active ? '' : "//") . 'define(\'' . $key . '\', ' .
-			($encode ? 'base64_decode(\'' . base64_encode($val) . '\')' :
-				(is_bool($val) || $val === 'true' || $val === 'false' ? ($val ? 'true' : 'false') :
-					(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val)))
-			) . ');';
+				($encode ? 'base64_decode(\'' . base64_encode($val) . '\')' :
+						(is_bool($val) || $val === 'true' || $val === 'false' ? ($val ? 'true' : 'false') :
+								(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val)))
+				) . ');';
 	}
 
 	private static function _addSlashes($in){
@@ -211,8 +208,8 @@ class we_base_preferences{
 	 */
 	public function getUserPref($name){
 		return (isset($_SESSION['prefs'][$name]) ?
-				$_SESSION['prefs'][$name] :
-				(defined($name) ? constant($name) : ''));
+						$_SESSION['prefs'][$name] :
+						(defined($name) ? constant($name) : ''));
 	}
 
 	/**

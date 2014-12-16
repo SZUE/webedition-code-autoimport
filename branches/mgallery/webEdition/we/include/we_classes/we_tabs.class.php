@@ -158,7 +158,16 @@ function setPathGroup(pathGroup) {
 	if(hasPathGroup) titlePathGroup = pathGroup;
 }
 
-var __weEditorFrameController = (top.opener && top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) ? top.opener.top.opener.top.weEditorFrameController : (top.opener && top.opener.top.weEditorFrameController) ? top.opener.top.weEditorFrameController : top.weEditorFrameController;
+			try{
+var __weEditorFrameController = (top.opener && top.opener.top.opener && top.opener.top.opener.top.hasOwnProperty('weEditorFrameController') ?
+	top.opener.top.opener.top.weEditorFrameController :
+	(top.opener && top.opener.top.hasOwnProperty('weEditorFrameController') ?
+		top.opener.top.weEditorFrameController :
+			top.weEditorFrameController)
+	);
+}catch(e){//Bugfix FF >34
+			var __weEditorFrameController = top.weEditorFrameController;
+}
 
 if (__weEditorFrameController.getVisibleEditorFrame() || (parent.frames && parent.frames[1])) {
 	setTimeout("getPathInfos()",250);

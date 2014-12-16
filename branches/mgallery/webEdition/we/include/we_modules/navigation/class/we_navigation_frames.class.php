@@ -102,8 +102,8 @@ class we_navigation_frames extends we_modules_frame{
 			we_html_element::htmlHidden(array('name' => 'cmd', 'value' => 'no_cmd'));
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => 'white', 'marginwidth' => 10, 'marginheight' => 10, 'leftmargin' => 10, 'topmargin' => 10), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
-										we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree($_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))
-								)
+						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree($_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))
+					)
 		));
 	}
 
@@ -208,20 +208,20 @@ function setTab(tab) {
 
 		$extraJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
 		$body = we_html_element::htmlBody(
-						array(
-					"bgcolor" => "white",
-					"background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif",
-					"marginwidth" => 0,
-					"marginheight" => 0,
-					"leftmargin" => 0,
-					"topmargin" => 0,
-					"onload" => "setFrameSize()",
-					"onresize" => "setFrameSize()"
-						), we_html_element::htmlDiv(array('id' => "main"), we_html_tools::getPixel(100, 3) . we_html_element::htmlDiv(array('id' => 'headrow', 'style' => "margin:0px;"), '&nbsp;' .
-										we_html_element::htmlB(g_l('navigation', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' .
-												str_replace('&amp;', '&', $this->Model->Text) .
-												we_html_element::htmlDiv(array('id' => 'mark', 'style' => 'display: none;'), '*'))) .
-								we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' . we_html_element::jsElement($extraJS))
+				array(
+				"bgcolor" => "white",
+				"background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif",
+				"marginwidth" => 0,
+				"marginheight" => 0,
+				"leftmargin" => 0,
+				"topmargin" => 0,
+				"onload" => "setFrameSize()",
+				"onresize" => "setFrameSize()"
+				), we_html_element::htmlDiv(array('id' => "main"), we_html_tools::getPixel(100, 3) . we_html_element::htmlDiv(array('id' => 'headrow', 'style' => "margin:0px;"), '&nbsp;' .
+						we_html_element::htmlB(g_l('navigation', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' .
+							str_replace('&amp;', '&', $this->Model->Text) .
+							we_html_element::htmlDiv(array('id' => 'mark', 'style' => 'display: none;'), '*'))) .
+					we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' . we_html_element::jsElement($extraJS))
 		);
 
 		return $this->getHTMLDocument($body, $tabsHead);
@@ -314,11 +314,11 @@ function setTab(tab) {
 			array(
 				'headline' => '',
 				'html' => $this->getHTMLChooser(
-						g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'opener.' . $this->topFrame . '.mark()', we_base_ContentTypes::IMAGE, false, true, 'folder,' . we_base_ContentTypes::IMAGE) . we_html_tools::getPixel($this->_width_size, 10) . '<table><tr><td>' . we_html_multiIconBox::getJS() . we_html_multiIconBox::_getButton(
-						$uniqname, "weToggleBox('" . $uniqname . "','" . addslashes(g_l('navigation', '[icon_properties_out]')) . "','" . addslashes(
-								g_l('navigation', '[icon_properties]')) . "')", $wepos, g_l('global', '[openCloseBox]')) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(
-						g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(
-						g_l('navigation', '[icon_properties]')) . '\');" >' . g_l('navigation', ($wepos === 'down' ? '[icon_properties_out]' : '[icon_properties]')) . '</span></td></tr></table>',
+					g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'opener.' . $this->topFrame . '.mark()', we_base_ContentTypes::IMAGE, false, true, 'folder,' . we_base_ContentTypes::IMAGE) . we_html_tools::getPixel($this->_width_size, 10) . '<table><tr><td>' . we_html_multiIconBox::getJS() . we_html_multiIconBox::_getButton(
+					$uniqname, "weToggleBox('" . $uniqname . "','" . addslashes(g_l('navigation', '[icon_properties_out]')) . "','" . addslashes(
+						g_l('navigation', '[icon_properties]')) . "')", $wepos, g_l('global', '[openCloseBox]')) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(
+					g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(
+					g_l('navigation', '[icon_properties]')) . '\');" >' . g_l('navigation', ($wepos === 'down' ? '[icon_properties_out]' : '[icon_properties]')) . '</span></td></tr></table>',
 				'space' => $this->_space_size,
 				'noline' => 1
 			),
@@ -423,7 +423,7 @@ function setTab(tab) {
 			$_seltype[we_navigation_navigation::STPYE_OBJLINK] = g_l('navigation', '[objLink]');
 		}
 
-		$yuiSuggest->setAcId("LinkPath");
+		$yuiSuggest->setAcId('LinkPath');
 		$yuiSuggest->setContentType(
 			$this->Model->FolderSelection == we_navigation_navigation::STPYE_DOCLINK ?
 				implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME)) :
@@ -509,10 +509,10 @@ function setTab(tab) {
 		$parts[] = array(
 			'headline' => g_l('weClass', '[copyFolder]'),
 			'html' => we_html_element::jsElement("var selfNaviPath ='" . addslashes(
-							$this->Model->Path) . "';\nvar selfNaviId = '" . $this->Model->ID . "';") . "<div style='float:left; margin-right:20px'>" . we_html_tools::htmlAlertAttentionBox(
-					g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, ($this->_width_size - 120), true, 0) . "</div>" . "<div style='padding-top:{$_padding}px'>" . $_button_copyFolder . "</div>" . we_html_element::htmlHidden(
-					array(
-						'name' => 'CopyFolderID', "value" => ''
+					$this->Model->Path) . "';\nvar selfNaviId = '" . $this->Model->ID . "';") . "<div style='float:left; margin-right:20px'>" . we_html_tools::htmlAlertAttentionBox(
+				g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, ($this->_width_size - 120), true, 0) . "</div>" . "<div style='padding-top:{$_padding}px'>" . $_button_copyFolder . "</div>" . we_html_element::htmlHidden(
+				array(
+					'name' => 'CopyFolderID', "value" => ''
 			)) . we_html_element::htmlHidden(array(
 				'name' => 'CopyFolderPath', "value" => ''
 			)),
@@ -1234,7 +1234,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 		);
 		$table->setCol(3, 0, array('colspan' => 2), we_html_tools::getPixel(5, 5));
 		$table->setCol(
-				4, 0, array('align' => 'left'), we_html_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', '[catAnd]'))
+			4, 0, array('align' => 'left'), we_html_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', '[catAnd]'))
 		);
 		$table->setCol(
 			4, 1, array('align' => 'right'), we_html_button::create_button_table(
@@ -1443,7 +1443,7 @@ function selectItem() {
 			array(
 				'headline' => '',
 				'html' => we_html_tools::htmlFormElementTable(
-						$_select->getHtml(), g_l('navigation', ($this->Model->SelectionType == we_navigation_navigation::STPYE_CATEGORY ? '[categories]' : ($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS ? '[objects]' : '[documents]')))),
+					$_select->getHtml(), g_l('navigation', ($this->Model->SelectionType == we_navigation_navigation::STPYE_CATEGORY ? '[categories]' : ($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS ? '[objects]' : '[documents]')))),
 				'space' => 0
 		));
 
@@ -1553,9 +1553,7 @@ function ' . $prefix . 'setLinkSelection(value){
 			), 1, 3);
 		$table->setCol(0, 0, null, we_html_tools::htmlTextInput("Charset", 15, $value, '', '', 'text', 120));
 		$table->setCol(0, 1, null, we_html_tools::getPixel(2, 10, 0));
-		$table->setCol(
-			0, 2, null, we_html_tools::htmlSelect(
-				"CharsetSelect", $charsets, 1, $value, false, array("onblur" => 'document.forms[0].elements[\"Charset\"].value=this.options[this.selectedIndex].value;', 'onchange' => 'document.forms[0].elements["Charset"].value=this.options[this.selectedIndex].value;document.we_form.submit();'), 'value', ($this->_width_size - 122), "defaultfont", false));
+		$table->setCol(0, 2, null, we_html_tools::htmlSelect("CharsetSelect", $charsets, 1, $value, false, array('onblur' => 'document.forms[0].elements[\'Charset\'].value=this.options[this.selectedIndex].value;', 'onchange' => 'document.forms[0].elements[\'Charset\'].value=this.options[this.selectedIndex].value;document.we_form.submit();'), 'value', ($this->_width_size - 122), "defaultfont", false));
 
 		return $table->getHtml();
 	}
@@ -1607,8 +1605,7 @@ function ' . $prefix . 'setLinkSelection(value){
 				we_html_tools::htmlTextInput('Attributes[title]', 30, $this->Model->getAttribute('title'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $this->_width_size), g_l('navigation', '[title]'));
 
 		$_anchor = we_html_tools::htmlFormElementTable(
-
-we_html_tools::htmlTextInput('Attributes[anchor]', 30, $this->Model->getAttribute('anchor'), '', 'onchange="' . $this->topFrame . '.mark();" onblur="if(this.value&&!new RegExp(\'#?[a-z]+[a-z,0-9,_,:,.,-]*$\',\'i\').test(this.value)){alert(\'' . g_l('linklistEdit', '[anchor_invalid]') . '\');this.focus();}"', 'text', $this->_width_size) . '<br/>' .
+				we_html_tools::htmlTextInput('Attributes[anchor]', 30, $this->Model->getAttribute('anchor'), '', 'onchange="' . $this->topFrame . '.mark();" onblur="if(this.value&&!new RegExp(\'#?[a-z]+[a-z,0-9,_,:,.,-]*$\',\'i\').test(this.value)){alert(\'' . g_l('linklistEdit', '[anchor_invalid]') . '\');this.focus();}"', 'text', $this->_width_size) . '<br/>' .
 				we_html_forms::checkboxWithHidden($this->Model->CurrentOnAnker, 'CurrentOnAnker', g_l('navigation', '[current_on_anker]'), false, "defaultfont", $this->topFrame . '.mark();"'), g_l('navigation', '[anchor]'));
 
 		$_target = we_html_tools::htmlFormElementTable(

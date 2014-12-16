@@ -28,7 +28,6 @@
  * Provides functions for creating webEdition buttons.
  */
 abstract class we_base_imageEdit{
-	const IMAGE_CONTENT_TYPES = 'image/jpeg,image/pjpeg,image/gif,image/png,image/x-png,image/svg+xml,image/svg-xml,image/x-citrix-pjpeg';
 	const IMAGE_EXTENSIONS = 'svgz';
 
 	public static $GDIMAGE_TYPE = array('.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png');
@@ -551,7 +550,8 @@ abstract class we_base_imageEdit{
 		}
 		if(substr($imgSrc, 0, strlen($_SERVER ['DOCUMENT_ROOT'])) == $_SERVER['DOCUMENT_ROOT']){ // it is no src, it is a server path
 			$imgSrc = substr($imgSrc, strlen($_SERVER['DOCUMENT_ROOT']));
-		} $imgSrc = '/' . ltrim($imgSrc, '/');
+		}
+		$imgSrc = '/' . ltrim($imgSrc, '/');
 
 		$_imgPath = $_SERVER ['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $imgSrc;
 		$path_parts = pathinfo($_imgPath);

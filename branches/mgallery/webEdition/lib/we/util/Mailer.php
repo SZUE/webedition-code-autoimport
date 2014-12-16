@@ -396,7 +396,7 @@ class we_util_Mailer extends Zend_Mail{
 	 */
 	public static function get_mime_type($ext, $name = '', $filepath = ''/* , $useLegacy = false */){
 		//if(!$useLegacy){
-		return (($mt = we_base_util::getMimeType($ext, $filepath, we_base_util::MIME_BY_HEAD_THEN_EXTENSION)) ? $mt : 'application/octet-stream') . '; name="' . $name . '"';
+		return (we_base_util::getMimeType($ext, $filepath, we_base_util::MIME_BY_HEAD_THEN_EXTENSION) ? : 'application/octet-stream') . '; name="' . $name . '"';
 		//}
 		//keep legacy function for test purposes. FIXME: throw it out as soon as possible
 		/* if($filepath && function_exists('finfo_open')){

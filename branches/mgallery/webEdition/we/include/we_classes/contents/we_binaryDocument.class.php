@@ -353,4 +353,8 @@ class we_binaryDocument extends we_document{
 		return true;
 	}
 
+	public function formProperties(){
+
+	}
+
 }

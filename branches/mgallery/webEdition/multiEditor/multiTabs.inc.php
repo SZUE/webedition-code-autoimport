@@ -44,7 +44,7 @@ switch($browser->getBrowser()){
 		$textvalign = "top";
 		$imgmargintop = 2;
 		$imgvalign = "top";
-		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:center" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="' . IMAGE_DIR . 'pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="' . IMAGE_DIR . 'multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr><span><img src="' . IMAGE_DIR . 'pixel.gif" height="0" /></span></div>';
+		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" id="###loadId###" title="" class="status"/>&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img id="###modId###" class="status modified"/><img src="' . IMAGE_DIR . 'multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr><span><img src="' . IMAGE_DIR . 'pixel.gif" height="0" /></span></div>';
 		$tabBorder = "border:0px;";
 		$tabBG = "";
 		break;
@@ -53,7 +53,7 @@ switch($browser->getBrowser()){
 		$textvalign = "middle";
 		$imgmargintop = 0;
 		$imgvalign = "middle";
-		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr>&nbsp;<span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:center" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="' . IMAGE_DIR . 'pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="' . IMAGE_DIR . 'multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr></div>';
+		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr>&nbsp;<span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" id="###loadId###" title="" class="status"/>&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img id="###modId###" class="status modified"/><img src="' . IMAGE_DIR . 'multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr></div>';
 		$tabBorder = "border:0px;";
 		$tabBG = "background-position:bottom";
 		break;
@@ -62,13 +62,13 @@ switch($browser->getBrowser()){
 		$textvalign = "top";
 		$imgmargintop = 2;
 		$imgvalign = "top";
-		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr>&nbsp;<span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:center" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="' . IMAGE_DIR . 'pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="' . IMAGE_DIR . 'multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr></div>';
+		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr>&nbsp;<span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" id="###loadId###" title="" class="status"/>&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img id="###modId###" class="status modified"/><img src="' . IMAGE_DIR . 'multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr></div>';
 		$tabBorder = 'border: 0px; border-bottom: 1px solid #888888; border-right: 1px solid #888888;';
 		$tabBG = "";
 		switch($browser->getSystem()){
 			case we_base_browserDetect::SYS_MAC:
 				if($browser->isFF() && $browser->getBrowserVersion() < 3){
-					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" ondblclick=";" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" style="background-position:center" />&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img src="' . IMAGE_DIR . 'pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="' . IMAGE_DIR . 'images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr></div>';
+					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" ondblclick=";" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" id="###loadId###" title="" class="status"/>&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img id="###modId###" class="status modified"/><img src="' . IMAGE_DIR . 'images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr></div>';
 				} else {
 					$tabContainerMargin = "0px";
 				}
@@ -76,7 +76,7 @@ switch($browser->getBrowser()){
 				break;
 			case we_base_browserDetect::SYS_UNIX:
 				if($browser->isFF() && $browser->getBrowserVersion() < 3){
-					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" width="16" height="16" id="###loadId###" title="" class="status" />&nbsp;</span><span id="###tabTextId###" class="text" style="background-position:center"></span><span class="spacer"><img src="' . IMAGE_DIR . 'pixel.gif" width="5" height="16" id="###modId###" class="status" /><img src="' . IMAGE_DIR . 'images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr></div>';
+					$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr><span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" id="###loadId###" title="" class="status" />&nbsp;</span><span id="###tabTextId###" class="text" style="background-position:center"></span><span class="spacer"><img id="###modId###" class="status modified"/><img src="' . IMAGE_DIR . 'images/multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr></div>';
 				} else {
 					$tabContainerMargin = "0px";
 				}
@@ -147,7 +147,7 @@ echo we_html_element::jsElement($content = $_contentTypes);
 	 * the class TabView controls the behaviort of the tabs
 	 * onload a instance of this class is created
 	 */
-	TabView = function(myDoc) {
+	TabView = function (myDoc) {
 		this.myDoc = myDoc;
 		this.init();
 	}
@@ -159,7 +159,7 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		 * if a tab for the given frameId exists, it will be selected
 		 * if not if will be added
 		 */
-		openTab: function(frameId, text, title) {
+		openTab: function (frameId, text, title) {
 			if (this.myDoc.getElementById("tab_" + frameId) == undefined) {
 				this.addTab(frameId, text, title);
 			} else {
@@ -169,7 +169,7 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		/**
 		 * adds an new tab to the tab view
 		 */
-		addTab: function(frameId, text, title) {
+		addTab: function (frameId, text, title) {
 			newtab = this.tabDummy.cloneNode(true);
 			newtab.innerHTML = newtab.innerHTML.replace(/###tabTextId###/g, "text_" + frameId);
 			newtab.innerHTML = newtab.innerHTML.replace(/###modId###/g, "mod_" + frameId);
@@ -188,7 +188,7 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		/**
 		 * controls the click on the close button
 		 */
-		onCloseTab: function(val) {
+		onCloseTab: function (val) {
 			frameId = (typeof val) == "object" ? val.id.replace(/close_/g, "") : val;
 			top.weEditorFrameController.closeDocument(frameId);
 
@@ -196,7 +196,7 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		/**
 		 * removes a tab from the tab view
 		 */
-		closeTab: function(frameId) {
+		closeTab: function (frameId) {
 			this.tabContainer.removeChild(this.myDoc.getElementById('tab_' + frameId));
 			if (this.activeTab == frameId) {
 				this.activeTab = null;
@@ -207,7 +207,7 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		/**
 		 * selects a tab (set style for selected tabs)
 		 */
-		selectTab: function(frameId) {
+		selectTab: function (frameId) {
 			this.deselectAll();
 			if (this.activeTab != null) {
 				this.deselectTab(this.activeTab);
@@ -220,7 +220,7 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		/**
 		 * deselects a tab (set style for deselected tabs)
 		 */
-		deselectTab: function(frameId) {
+		deselectTab: function (frameId) {
 			if (this.myDoc.getElementById('tab_' + frameId)) {
 				this.myDoc.getElementById('tab_' + frameId).className = "tab";
 			}
@@ -228,7 +228,7 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		/**
 		 * deselects all tab (set style for deselected tabs to all tabs)
 		 */
-		deselectAll: function() {
+		deselectAll: function () {
 			tabs = this.myDoc.getElementsByName("tab");
 			for (i = 0; tabs.length; i++) {
 				tabs[i].className = "tab";
@@ -237,26 +237,26 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		/**
 		 * sets the tab label
 		 */
-		setText: function(frameId, val) {
+		setText: function (frameId, val) {
 			this.myDoc.getElementById('text_' + frameId).innerHTML = val;
 			setTimeout("setFrameSize()", 50);
 		},
 		/**
 		 * sets the tab title
 		 */
-		setTitle: function(frameId, val) {
+		setTitle: function (frameId, val) {
 			this.myDoc.getElementById('tab_' + frameId).title = val;
 		},
 		/**
 		 * sets the id to the icon
 		 */
-		setId: function(frameId, val) {
+		setId: function (frameId, val) {
 			this.myDoc.getElementById('load_' + frameId).title = val;
 		},
 		/**
 		 * marks a tab as modified an not safed
 		 */
-		setModified: function(frameId, modified) {
+		setModified: function (frameId, modified) {
 			if (modified) {
 				this.myDoc.getElementById('mod_' + frameId).src = "<?php echo IMAGE_DIR; ?>multiTabs/modified.gif";
 			} else {
@@ -266,7 +266,7 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		/**
 		 * displays the loading loading icon
 		 */
-		setLoading: function(frameId, loading) {
+		setLoading: function (frameId, loading) {
 			if (loading) {
 				this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(<?php echo IMAGE_DIR; ?>spinner.gif)";
 			} else {
@@ -285,14 +285,14 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		/**
 		 * displays the content type icon
 		 */
-		setContentType: function(frameId, contentType) {
+		setContentType: function (frameId, contentType) {
 			this.contentType[frameId] = contentType;
 			this.setLoading(frameId, false);
 		},
 		/**
 		 * controls the click on a tab
 		 */
-		selectFrame: function(val) {
+		selectFrame: function (val) {
 			frameId = (typeof val) == "object" ? val.id.replace(/tab_/g, "") : val;
 			top.weEditorFrameController.showEditor(frameId);
 			//this.selectTab(frameId);
@@ -300,7 +300,7 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		/**
 		 * inits some vars
 		 */
-		init: function() {
+		init: function () {
 			this.tabs = new Array();
 			this.frames = new Array();
 			this.activeTab = null;
@@ -374,11 +374,21 @@ echo we_html_element::jsElement($content = $_contentTypes);
 	span.status{
 		vertical-align:<?php echo $imgvalign; ?>;
 		padding:0px;
+		width:16px;
+		height:16px;
+		margin:<?php echo $imgmargintop; ?>px;
 	}
 	img.status{
 		vertical-align:<?php echo $imgvalign; ?>;
 		padding:0px;
 		margin:<?php echo $imgmargintop; ?>px;
+		width: 16px;
+		height: 16px;
+		background-position:center;
+		background-size: 16px 16px;
+	}
+	img.modified{
+		width:5px;
 	}
 	.hidden{
 		display: none;

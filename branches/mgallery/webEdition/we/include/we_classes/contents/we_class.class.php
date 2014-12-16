@@ -209,7 +209,8 @@ abstract class we_class{
 
 	function formSelectElement($width, $name, $values, $type = 'txt', $size = 1, array $attribs = array()){
 		return we_html_tools::htmlFormElementTable(
-				we_html_tools::html_select('we_' . $this->Name . '_' . $type . "[$name]", $size, $values, $this->getElement($name), array_merge(array(
+				we_html_tools::html_select('we_' . $this->Name . '_' . $type . '[' . $name . ']', $size, $values, $this->getElement($name), array_merge(
+						array(
 					'class' => 'defaultfont',
 					'width' => $width,
 						), $attribs))

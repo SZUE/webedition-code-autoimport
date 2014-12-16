@@ -139,8 +139,7 @@ function we_saveCustomerImages(){
 		$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 		foreach($_FILES['WE_SF_IMG_DATA']['name'] as $imgName => $filename){
 			$imgId = isset($_SESSION['webuser'][$imgName]) ? $_SESSION['webuser'][$imgName] : 0;
-			$_foo = id_to_path($imgId);
-			if(!$_foo){
+			if(!id_to_path($imgId)){
 				$imgId = 0;
 			}
 
@@ -151,9 +150,7 @@ function we_saveCustomerImages(){
 					if($imgDocument->WebUserID == $webuserId){
 						//everything ok, now delete
 
-						$GLOBALS['NOT_PROTECT'] = true;
 						we_base_delete::deleteEntry($imgId, FILE_TABLE);
-						$GLOBALS['NOT_PROTECT'] = false;
 						// reset image field
 						$_SESSION['webuser'][$imgName] = 0;
 						$_REQUEST['s'][$imgName] = 0;

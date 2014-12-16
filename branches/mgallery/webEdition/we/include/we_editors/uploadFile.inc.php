@@ -21,7 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 //TODO: let do we_fileuploade_binaryDocument::processFileRequest() do the job!
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
@@ -90,30 +89,34 @@ if($weFileupload->processFileRequest()){
 			$foo = explode('/', $_FILES["we_File"]["type"]);
 			$we_doc->setElement('data', $we_File, $foo[0]);
 
-			if($we_doc->ContentType == we_base_ContentTypes::IMAGE && !$we_doc->isSvg() && !in_array(we_base_imageEdit::detect_image_type($we_File), we_base_imageEdit::$GDIMAGE_TYPE)){
-				$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
-			} else {
-
-				if($we_doc->ContentType == we_base_ContentTypes::IMAGE || $we_doc->ContentType == we_base_ContentTypes::FLASH){
+			switch($we_doc->ContentType){
+				case we_base_ContentTypes::IMAGE:
+					if(!$we_doc->isSvg() && !in_array(we_base_imageEdit::detect_image_type($we_File), we_base_imageEdit::$GDIMAGE_TYPE)){
+						$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
+						break;
+					}
+				//no break;
+				case we_base_ContentTypes::FLASH:
 					$we_size = $we_doc->getimagesize($we_File);
 					$we_doc->setElement('width', $we_size[0], 'attrib');
 					$we_doc->setElement('height', $we_size[1], 'attrib');
 					$we_doc->setElement('origwidth', $we_size[0], 'attrib');
 					$we_doc->setElement('origheight', $we_size[1], 'attrib');
-				}
-				$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
-				$we_doc->Path = $we_doc->getPath();
-				$we_doc->DocChanged = true;
+				//no break;
+				default:
+					$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
+					$we_doc->Path = $we_doc->getPath();
+					$we_doc->DocChanged = true;
 
-				if($we_doc->Extension === '.pdf'){
-					$we_doc->setMetaDataFromFile($we_File);
-				}
+					if($we_doc->Extension === '.pdf'){
+						$we_doc->setMetaDataFromFile($we_File);
+					}
 
-				$_SESSION['weS']['we_data']["tmpName"] = $we_File;
-				if(we_base_request::_(we_base_request::BOOL, 'import_metadata')){
-					$we_doc->importMetaData();
-				}
-				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
+					$_SESSION['weS']['we_data']["tmpName"] = $we_File;
+					if(we_base_request::_(we_base_request::BOOL, 'import_metadata')){
+						$we_doc->importMetaData();
+					}
+					$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 			}
 		} else if(isset($_FILES['we_File']['name']) && !empty($_FILES['we_File']['name'])){
 			$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
@@ -172,5 +175,5 @@ if($weFileupload->processFileRequest()){
 	</body>
 
 	</html>
-<?php
+	<?php
 }

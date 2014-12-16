@@ -67,7 +67,6 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 ?>
 
 <script type="text/javascript"><!--
-
 	self.focus();
 
 	var Header = null;
@@ -146,7 +145,6 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 	 * @param win object reference to the calling window
 	 */
 	function showMessage(message, prio, win) {
-
 		if (!win) {
 			win = window;
 		}
@@ -193,8 +191,8 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 		if (!fenster) {
 			fenster = window;
 		}
-		//  the actual position is the top-window, nmaybe the first window was closed
-		if (!fenster.top.opener || fenster.top.opener.win || fenster.top.opener.closed) {
+		//  the actual position is the top-window, maybe the first window was closed
+		if (!fenster.top.opener || /*fenster.top.opener.win || FIXME: what is win??*/ fenster.top.opener.closed) {
 			top.weEditorFrameController.openDocument(table, id, ct);
 
 		} else {

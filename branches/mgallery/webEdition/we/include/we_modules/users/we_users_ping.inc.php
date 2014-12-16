@@ -43,10 +43,10 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 					try {
 						//console.log(exp + " " + o.responseText);
 					} catch (ex) {
-
+						var result='';
 					}
 				}
-				if (result.Success) {
+				if (result && result.Success) {
 					var num_users = result.DataArray.num_users;
 					weRpcFailedCnt = 0;
 					if (top.weEditorFrameController) {

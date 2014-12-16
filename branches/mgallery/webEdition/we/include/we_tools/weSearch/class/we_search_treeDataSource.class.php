@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_search_treeDataSource extends we_tool_treeDataSource{
-
 	var $treeItems = array();
 
 	function __construct($ds){
@@ -68,7 +67,7 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 
 		$db->query("SELECT $elem, LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr FROM " . $db->escape($table) . " $where ORDER BY isNr DESC,Nr,lowtext,Text " . ($segment ? "LIMIT " . abs($offset) . "," . abs($segment) : ''));
 
-		while($db->next_record()){//FIXME: this is no good code
+		while($db->next_record(MYSQL_ASSOC)){//FIXME: this is no good code
 			if(($db->f('ID') == 3 || $db->f('ID') == 7) && (!defined('OBJECT_FILES_TABLE') || !defined('OBJECT_TABLE') || !permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'))){
 
 			} elseif(($db->f('ID') == 2 || $db->f('ID') == 4 || $db->f('ID') == 5 || $db->f('ID') == 6) && !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
@@ -78,36 +77,23 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 			} else {
 				$OpenCloseStatus = (in_array($db->f('ID'), $openFolders) ? 1 : 0);
 
-				if($db->f('IsFolder') == 1){
-					$typ = array(
-						'typ' => 'group'
-					);
-				} else {
-					$typ = array(
-						'typ' => 'item'
-					);
-				}
-
-				$typ['icon'] = $db->f('Icon');
-				$typ['open'] = $OpenCloseStatus;
-				$typ['disabled'] = 0;
-				$typ['tooltip'] = $db->f('ID');
-				$typ['offset'] = $offset;
-				$typ['order'] = $db->f('Ordn');
-				$typ['published'] = 1;
-				$typ['disabled'] = 0;
-
+				$typ = array(
+					'typ' => ($db->f('IsFolder') ? 'group' : 'item'),
+					'icon' => $db->f('Icon'),
+					'open' => $OpenCloseStatus,
+					'disabled' => 0,
+					'tooltip' => $db->f('ID'),
+					'offset' => $offset,
+					'order' => $db->f('Ordn'),
+					'published' => 1,
+					'disabled' => 0,
+					'text' => oldHtmlspecialchars(we_search_model::getLangText($db->f('Path'), $db->f('Text'))),
+				);
 				$fields = array();
 
 				foreach($db->Record as $k => $v){
-					if(!is_numeric($k)){
-						$fields[strtolower($k)] = $v;
-					}
+					$fields[strtolower($k)] = $v;
 				}
-
-				$_text = oldHtmlspecialchars(we_search_model::getLangText($db->f('Path'), $db->f('Text')));
-
-				$typ['text'] = $_text;
 
 				$this->treeItems[] = array_merge($fields, $typ);
 
@@ -117,7 +103,7 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 			}
 		}
 
-		$total = f('SELECT COUNT(1) as total FROM `' . $db->escape($table) . "` $where;", 'total', $db);
+		$total = f('SELECT COUNT(1) FROM `' . $db->escape($table) . "` $where", '', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$this->treeItems[] = array(

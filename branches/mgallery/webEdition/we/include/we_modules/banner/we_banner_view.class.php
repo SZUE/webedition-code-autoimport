@@ -722,7 +722,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 
 		foreach($this->banner->persistents as $val => $type){
 			$varname = $this->uid . "_" . $val;
-			if(($value = we_base_request::_($type, $varname)) !== false){
+			if(($value = we_base_request::_($type, $varname,'_no_val')) !== '_no_val'){
 				$this->banner->$val = $value;
 			}
 		}

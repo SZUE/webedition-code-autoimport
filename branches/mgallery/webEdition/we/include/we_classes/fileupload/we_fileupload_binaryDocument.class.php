@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_binaryDocument extends we_fileupload_base{
-
 	protected $isUploadComplete = false;
 	protected $fileNameTemp = "";
 	protected $fileNameTempParts = array(
@@ -62,6 +61,12 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 				$mime = we_base_imageEdit::IMAGE_CONTENT_TYPES;
 				$ext = we_base_imageEdit::IMAGE_EXTENSIONS;
 				break;
+			case we_base_ContentTypes::VIDEO:
+				$mime = we_base_util::mimegroup2mimes(we_base_ContentTypes::VIDEO);
+				$ext = implode(',', we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::VIDEO));
+			case we_base_ContentTypes::AUDIO:
+				$mime = we_base_util::mimegroup2mimes(we_base_ContentTypes::AUDIO);
+				$ext = implode(',', we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::AUDIO));
 			case we_base_ContentTypes::APPLICATION;
 				$mime = '';
 				$ext = '';
@@ -71,12 +76,13 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 				$ext = '';
 		}
 
-		$tmp = array();
 		$mime = trim(str_replace(' ', '', strtolower($mime)), ', ');
 		$ext = trim(str_replace(' ', '', strtolower($ext)), ', ');
 
-		$tmp['mime'] = $mime ? explode(',', $mime) : array();
-		$tmp['ext'] = $ext ? explode(',', $ext) : array();
+		$tmp = array(
+			'mime' => $mime ? explode(',', $mime) : array(),
+			'ext' => $ext ? explode(',', $ext) : array(),
+		);
 		$tmp['all'] = array_merge($tmp['mime'], $tmp['ext']);
 
 		$this->typeCondition['accepted'] = $tmp;
@@ -85,63 +91,71 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 	private function getDocProperties(){
 		switch($this->contentType){
 			case we_base_ContentTypes::IMAGE;
-				return array('type' => 'image', 'icon' => IMAGE_DIR . 'icons/no_image.gif');
+				return array('type' => 'image', 'icon' => ICON_DIR . 'no_image.gif');
 			case we_base_ContentTypes::FLASH;
-				return array('type' => 'flash', 'icon' => IMAGE_DIR . 'icons/no_flashmovie.gif');
-				break;
+				return array('type' => 'flash', 'icon' => ICON_DIR . 'no_flashmovie.gif');
+			case we_base_ContentTypes::VIDEO;
+				return array('type' => 'video', 'icon' => ICON_DIR . 'doclist/video.svg');
+			case we_base_ContentTypes::AUDIO;
+				return array('type' => 'audio', 'icon' => ICON_DIR . 'doclist/audio.svg');
 			case we_base_ContentTypes::QUICKTIME;
-				return array('type' => 'quicktime', 'icon' => IMAGE_DIR . 'icons/no_quicktime.gif');
+				return array('type' => 'quicktime', 'icon' => ICON_DIR . 'no_quicktime.gif');
 			default:
-				return array('type' => 'other', 'icon' => IMAGE_DIR . 'icons/doc.gif');
+				return array('type' => 'other', 'icon' => ICON_DIR . 'doc.gif');
 		}
 	}
 
-	private function getType(){
-		switch($this->contentType){
-			case we_base_ContentTypes::IMAGE;
-				return IMAGE_DIR . 'image';
-			case we_base_ContentTypes::FLASH;
-				return IMAGE_DIR . 'flash';
-				break;
-			case we_base_ContentTypes::QUICKTIME;
-				return IMAGE_DIR . 'quicktime';
-			default:
-				//$mime = $this->contentType;
-				//$ext = '';
-				return IMAGE_DIR . 'other';
-		}
-	}
+	/* 	private function getType(){
+	  switch($this->contentType){
+	  case we_base_ContentTypes::IMAGE;
+	  return IMAGE_DIR . 'image';
+	  case we_base_ContentTypes::FLASH;
+	  return IMAGE_DIR . 'flash';
+	  break;
+	  case we_base_ContentTypes::QUICKTIME;
+	  return IMAGE_DIR . 'quicktime';
+	  default:
+	  //$mime = $this->contentType;
+	  //$ext = '';
+	  return IMAGE_DIR . 'other';
+	  }
+	  }
+	 */
 
 	public function getCss(){
 
 		return self::isFallback() || self::isLegacyMode() ? '' : we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::cssElement('
-			div.we_file_drag{
-				width: 300px;
-				border-radius: 0px;
-				border: dotted 2px gray;
-				height: 116px;
-			}
-			div.we_file_drag_binDoc{
-				float:left;
-				margin: 1px 0 10px 0;
-				border: solid 2px #ededed;
-			}
-			div.we_file_drag_hover{
-				color: #00cc00;
-				border: 2px solid #00cc00;
-				box-shadow: inset 0 3px 4px #888;
-				background-color: rgb(243, 247, 255);
-			}
-			div.dropzone_right{
-				display:table-cell;
-				height:116px;
-				width:120px;
-				vertical-align:middle;
-				text-align:center;
-			}
-			.fileInputIE10{
-				left: 0;
-			}');
+div.we_file_drag{
+	width: 300px;
+	border-radius: 0px;
+	border: dotted 2px gray;
+	height: 116px;
+}
+div.we_file_drag_binDoc{
+	float:left;
+	margin: 1px 0 10px 0;
+	border: solid 2px #ededed;
+}
+div.we_file_drag_hover{
+	color: #00cc00;
+	border: 2px solid #00cc00;
+	box-shadow: inset 0 3px 4px #888;
+	background-color: rgb(243, 247, 255);
+}
+div.dropzone_right{
+	display:table-cell;
+	height:116px;
+	width:120px;
+	vertical-align:middle;
+	text-align:center;
+}
+.dropzone_right img{
+	max-height: 100px;
+	max-width: 100px;
+}
+.fileInputIE10{
+	left: 0;
+}');
 	}
 
 	public function getHTML($fs = '', $ft = '', $md = '', $thumbnailSmall = '', $thumbnailBig = ''){
@@ -154,21 +168,21 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		$btnReset = we_html_button::create_button("reset", 'javascript:we_FileUpload.reset()', true, $width['button'], 22, "", "", true, false, "_btn", true);
 		$btnCancel = we_html_button::create_button("cancel", 'javascript:we_FileUpload.cancelUpload()', true, $width['button'], 22, "", "", false, false, "_btn", true);
 		$fileInput = we_html_element::htmlInput(array(
-					'class' => 'fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : ''),
-					'style' => 'width:' . $width['input'] . 'px;',
-					'type' => 'file',
-					'name' => $this->name,
-					'id' => $this->name,
-					'accept' => implode(',', $this->typeCondition['accepted']['mime']))
+				'class' => 'fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : ''),
+				'style' => 'width:' . $width['input'] . 'px;',
+				'type' => 'file',
+				'name' => $this->name,
+				'id' => $this->name,
+				'accept' => implode(',', $this->typeCondition['accepted']['mime']))
 		);
 		$fileInput .=!$isIE10 ? '' :
-				we_html_element::htmlInput(array(
-					'class' => 'fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : ''),
-					'style' => 'width:' . $width['input'] . 'px; left:' . $width['input'] . 'px;',
-					'type' => 'file',
-					'name' => $this->name . '_x2',
-					'id' => $this->name . '_x2',
-					'accept' => implode(',', $this->typeCondition['accepted']['mime']))
+			we_html_element::htmlInput(array(
+				'class' => 'fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : ''),
+				'style' => 'width:' . $width['input'] . 'px; left:' . $width['input'] . 'px;',
+				'type' => 'file',
+				'name' => $this->name . '_x2',
+				'id' => $this->name . '_x2',
+				'accept' => implode(',', $this->typeCondition['accepted']['mime']))
 		);
 		$divFileInput = we_html_element::htmlDiv(array('id' => 'div_we_File_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'height:23px;margin-top:22px;width:' . $width['button'] . 'px;'), $fileInput . $btnBrowse);
 		$divBtnReset = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnReset', 'style' => 'margin-top:22px;display:none;'), $btnReset);
@@ -182,10 +196,10 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'margin-top: 13px; display: none;'), $progress->getHTML());
 
 		$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:204px'), $divFileInput .
-						$divProgressbar .
-						$divBtnReset .
-						$divBtnUpload .
-						$divBtnCancel
+				$divProgressbar .
+				$divBtnReset .
+				$divBtnUpload .
+				$divBtnCancel
 		);
 
 		$btnUploadLegacy = we_html_button::create_button("upload", "javascript:we_cmd('editor_uploadFile', 'legacy')", true, 150, 22, "", "", false, false, "_legacy_btn", true);
@@ -198,50 +212,50 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		$divDropzone = !(self::isFallback() || self::isLegacyMode()) ? ('
 			<div class="we_file_drag we_file_drag_binDoc" id="div_fileupload_fileDrag_state_0" style="' . (!$this->isDragAndDrop ? 'border-color:white;' : '') . '">
 				<div style="display:table-cell;width:178px;height:116px;padding-left:4px;vertical-align:middle;color:#cccccc;font-weight:normal;font-size:' . ($this->isDragAndDrop ? 16 : 14) . 'px">' .
-				$dropText . '
+			$dropText . '
 				</div>' .
-				we_html_element::htmlDiv(array('class' => 'dropzone_right'), ($thumbnailSmall ? : we_html_element::htmlImg(array('src' => $this->binDocProperties['icon'])))) . '
+			we_html_element::htmlDiv(array('class' => 'dropzone_right'), ($thumbnailSmall ? : we_html_element::htmlImg(array('src' => $this->binDocProperties['icon'])))) . '
 			</div>
 			<div class="we_file_drag we_file_drag_binDoc" style="display:none;' . (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : '') . '" id="div_fileupload_fileDrag_state_1">
 				<div id="div_upload_fileDrag_innerLeft" style="display:table-cell;width:178px;height:116px;padding-left:10px;vertical-align:middle;text-align:left;color:#333;font-weight: normal;font-size:12px">' .
-				we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_filename')) . we_html_element::htmlBr() .
-				we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_size')) . we_html_element::htmlBr() .
-				we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_type')) . '
+			we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_filename')) . we_html_element::htmlBr() .
+			we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_size')) . we_html_element::htmlBr() .
+			we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_type')) . '
 				</div>' .
-				we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'dropzone_right'), '') . '
+			we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'dropzone_right'), '') . '
 			</div>' .
-				($this->isDragAndDrop ? '<div style="position:absolute;top:11px;background:none;" class="we_file_drag" id="div_we_File_fileDrag"></div>' : '')) : '';
+			($this->isDragAndDrop ? '<div style="position:absolute;top:11px;background:none;" class="we_file_drag" id="div_we_File_fileDrag"></div>' : '')) : '';
 
 		return (self::isFallback() || self::isLegacyMode() ? '' : $this->getJs() . $this->getCss()) . '
 			<table id="table_form_upload" cellpadding="0" cellspacing="0" border="0" width="500">
 			<tr style="vertical-align:top;">
 				<td class="defaultfont" width="200px">' .
-				$divBtnUploadLegacy .
-				$divFileInfo .
-				(self::isFallback() || self::isLegacyMode() ? '' :
-						$divButtons .
-						we_html_tools::hidden('we_doc_ct', $this->contentType) .
-						we_html_tools::hidden('we_doc_ext', $this->extension) .
-						we_html_tools::hidden('weFileNameTemp', '') .
-						we_html_tools::hidden('weFileName', '') .
-						we_html_tools::hidden('weFileCt', '') .
-						we_html_tools::hidden('weIsFileInLegacy', 0)
-				) . '
+			$divBtnUploadLegacy .
+			$divFileInfo .
+			(self::isFallback() || self::isLegacyMode() ? '' :
+				$divButtons .
+				we_html_tools::hidden('we_doc_ct', $this->contentType) .
+				we_html_tools::hidden('we_doc_ext', $this->extension) .
+				we_html_tools::hidden('weFileNameTemp', '') .
+				we_html_tools::hidden('weFileName', '') .
+				we_html_tools::hidden('weFileCt', '') .
+				we_html_tools::hidden('weIsFileInLegacy', 0)
+			) . '
 				</td>
 				<td width="300px">' .
-				(self::isFallback() || self::isLegacyMode() ? '' : '
+			(self::isFallback() || self::isLegacyMode() ? '' : '
 						<div id="div_fileupload_right">' .
-						$divDropzone .
-						($this->binDocProperties['type'] === 'image' ? '<br />' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', '[import_metadata_at_upload]')) : '') . '
+				$divDropzone .
+				($this->binDocProperties['type'] === 'image' ? '<br />' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', '[import_metadata_at_upload]')) : '') . '
 						</div>'
-				) . '
+			) . '
 					<div id="div_fileupload_right_legacy" style="text-align:right;display:' . (self::isFallback() || self::isLegacyMode() ? '' : 'none' ) . '">' .
-				$thumbnailBig . '
+			$thumbnailBig . '
 					</div>
 				</td>
 			</tr>
 			<tr><td colspan="2">' . we_html_tools::getPixel(4, 20) . '</td></tr>' .
-				(self::isFallback() || self::isLegacyMode() ? '' : '<tr><td colspan="2" class="defaultfont">' . $this->getHtmlAlertBoxes() . '</td></tr>
+			(self::isFallback() || self::isLegacyMode() ? '' : '<tr><td colspan="2" class="defaultfont">' . $this->getHtmlAlertBoxes() . '</td></tr>
 							<tr><td colspan="2">' . we_html_tools::getPixel(4, 20) . '</td></tr>') . '
 
 			<tr><td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', ($GLOBALS['we_doc']->getFilesize() ? "[upload_will_replace]" : "[upload_single_files]")), we_html_tools::TYPE_ALERT, 508) . '</td></tr>
@@ -286,15 +300,15 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 			$tempPath = TEMP_PATH;
 
 			$error = (!$tempName ?
-							'no_filename_error' :
-							($this->maxChunkCount && $partNum > $this->maxChunkCount ?
-									'oversized_error' :
-									(!@move_uploaded_file($_FILES[$this->name]["tmp_name"], TEMP_PATH . $tempName) ?
-											'move_file_error' :
-											''
-									)
-							)
-					);
+					'no_filename_error' :
+					($this->maxChunkCount && $partNum > $this->maxChunkCount ?
+						'oversized_error' :
+						(!@move_uploaded_file($_FILES[$this->name]["tmp_name"], TEMP_PATH . $tempName) ?
+							'move_file_error' :
+							''
+						)
+					)
+				);
 
 			//check mime type integrity when receiving first chunk
 			if($partNum == 1 && !$error){
@@ -381,31 +395,37 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 			$foo = explode('/', $fileCt);
 			$we_doc->setElement('data', $we_File, $foo[0]);
 
-			if($we_doc->ContentType == we_base_ContentTypes::IMAGE && !$we_doc->isSvg() && !in_array(we_base_imageEdit::detect_image_type($we_File), we_base_imageEdit::$GDIMAGE_TYPE)){
-				$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
-			} else {
-				if($we_doc->ContentType == we_base_ContentTypes::IMAGE || $we_doc->ContentType == we_base_ContentTypes::FLASH){
+			switch($we_doc->ContentType){
+				case we_base_ContentTypes::IMAGE:
+					if(!$we_doc->isSvg() && !in_array(we_base_imageEdit::detect_image_type($we_File), we_base_imageEdit::$GDIMAGE_TYPE)){
+						$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
+						break;
+					}
+				//no break
+				case we_base_ContentTypes::FLASH:
 					$we_size = $we_doc->getimagesize($we_File);
 					$we_doc->setElement('width', $we_size[0], 'attrib');
 					$we_doc->setElement('height', $we_size[1], 'attrib');
 					$we_doc->setElement('origwidth', $we_size[0], 'attrib');
 					$we_doc->setElement('origheight', $we_size[1], 'attrib');
-				}
-				$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
-				$we_doc->Path = $we_doc->getPath();
-				$we_doc->DocChanged = true;
+				//no break
+				default:
+					$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
+					$we_doc->Path = $we_doc->getPath();
+					$we_doc->DocChanged = true;
 
-				if($we_doc->Extension === '.pdf'){
-					$we_doc->setMetaDataFromFile($we_File);
-				}
+					if($we_doc->Extension === '.pdf'){
+						$we_doc->setMetaDataFromFile($we_File);
+					}
 
-				$_SESSION['weS']['we_data']["tmpName"] = $we_File;
-				if(we_base_request::_(we_base_request::BOOL, 'import_metadata')){
-					$we_doc->importMetaData();
-				}
-				$we_doc->saveInSession($_SESSION['weS']['we_data'][$this->transaction]); // save the changed object in session
+					$_SESSION['weS']['we_data']['tmpName'] = $we_File;
+					if(we_base_request::_(we_base_request::BOOL, 'import_metadata')){
+						$we_doc->importMetaData();
+					}
+					$we_doc->saveInSession($_SESSION['weS']['we_data'][$this->transaction]); // save the changed object in session
 			}
 		} else if(isset($fileName) && !empty($fileName)){
+			t_e('here');
 			$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
 		} else if(isset($fileName) && empty($fileName)){
 			$we_alerttext = g_l('alert', '[no_file_selected]');
@@ -449,8 +469,8 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 
 		if($tc['accepted']['all']){
 			if(in_array($mime, $tc['accepted']['all']) ||
-					in_array($mimeGroup, $tc['accepted']['all']) ||
-					in_array($ext, $tc['accepted']['all'])){
+				in_array($mimeGroup, $tc['accepted']['all']) ||
+				in_array($ext, $tc['accepted']['all'])){
 				//true
 			} else {
 				return false;
@@ -458,9 +478,9 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		}
 
 		if($tc['forbidden']['all'] &&
-				(in_array($mime, $tc['forbidden']['all']) ||
-				in_array($mimeGroup, $tc['forbidden']['all']) ||
-				in_array($ext, $tc['forbidden']['all']))){
+			(in_array($mime, $tc['forbidden']['all']) ||
+			in_array($mimeGroup, $tc['forbidden']['all']) ||
+			in_array($ext, $tc['forbidden']['all']))){
 			return false;
 		}
 		return true;

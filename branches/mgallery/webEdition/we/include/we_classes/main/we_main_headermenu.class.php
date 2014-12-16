@@ -39,7 +39,7 @@ var _msgWarning = "' . g_l('messageConsole', '[iconBar][warning]') . '";
 var _msgError   = "' . g_l('messageConsole', '[iconBar][error]') . '";
 
 
-var _console_' . $consoleName . ' = new messageConsoleView("' . $consoleName . '", window );
+var _console_' . $consoleName . ' = new messageConsoleView("' . $consoleName . '", this.window );
 _console_' . $consoleName . '.register();
 
 onunload=function() {

@@ -38,6 +38,7 @@ abstract class we_base_util{
 	const MIME_BY_DATA = 3;
 
 	//FIXME: add more extensions
+	//FIXME: change this to $finfo = finfo_open(FILEINFO_MIME_TYPE); 		  $mime = finfo_file($finfo, $filepath);		  finfo_close($finfo);
 	//NOTICE: WE contenttypes differ strongly from the following mime types!
 	private static $mimetypes = array(
 		'hqx' => 'application/mac-binhex40',
@@ -129,7 +130,12 @@ abstract class we_base_util{
 		'eml' => 'message/rfc822',
 		'svg' => 'image/svg+xml',
 		'svgz' => 'image/svg+xml',
-		'shtm' => 'text/html'
+		'shtm' => 'text/html',
+		'ogg' => array('application/ogg', 'video/ogg', 'audio/ogg'),
+		'mp4' => 'video/mp4',
+		'm4v' => 'video/mp4',
+		'mp3' => 'audio/mp3',
+		'wav' => 'audio/wav'
 	);
 
 	/**
@@ -431,18 +437,32 @@ abstract class we_base_util{
 				return false;
 		}
 		//self::MIME_BY_EXTENSION
-		return (!isset(self::$mimetypes[strtolower($ext)])) ? 'application/octet-stream' : self::$mimetypes[strtolower($ext)];
+		return (!isset(self::$mimetypes[strtolower($ext)])) ?
+			'application/octet-stream' :
+			(is_array(self::$mimetypes[strtolower($ext)]) ?
+				current(self::$mimetypes[strtolower($ext)]) :
+				self::$mimetypes[strtolower($ext)]);
 	}
 
 	public static function extension2mime($ext){
-		return isset(self::$mimetypes[strtolower($ext)]) ? self::$mimetypes[strtolower($ext)] : false;
+		return isset(self::$mimetypes[strtolower($ext)]) ?
+			(is_array(self::$mimetypes[strtolower($ext)]) ?
+				current(self::$mimetypes[strtolower($ext)]) :
+				self::$mimetypes[strtolower($ext)]) :
+			false;
 	}
 
 	public static function mime2extensions($mime, $retCsv = false){
 		$mime = str_replace('/*', '/', trim($mime));
 		$extensions = array();
 		foreach(self::$mimetypes as $k => $v){
-			if(strpos($v, $mime) === 0){
+			if(is_array($v)){
+				foreach($v as $cur){
+					if(strpos($cur, $mime) === 0){
+						$extensions[] = $k;
+					}
+				}
+			} elseif(strpos($v, $mime) === 0){
 				$extensions[] = $k;
 			}
 		}
@@ -454,7 +474,13 @@ abstract class we_base_util{
 		$mimegroup = str_replace('/*', '/', trim($mimegroup));
 		$mimes = array();
 		foreach(self::$mimetypes as $v){
-			if(strpos($v, $mimegroup) === 0 && !in_array($v, $mimes)){
+			if(is_array($v)){
+				foreach($v as $cur){
+					if(strpos($cur, $mimegroup) === 0 && !in_array($cur, $mimes)){
+						$mimes[] = $cur;
+					}
+				}
+			} elseif(strpos($v, $mimegroup) === 0 && !in_array($v, $mimes)){
 				$mimes[] = $v;
 			}
 		}
@@ -464,8 +490,16 @@ abstract class we_base_util{
 
 	public static function isExtensionMime($ext, $mime){
 		$mime = str_replace('/*', '/', trim($mime));
-
-		return strpos(self::$mimetypes[$ext], $mime) === false ? false : true;
+		$check = self::$mimetypes[$ext];
+		if(!is_array($check)){
+			return strpos($check, $mime) !== false;
+		}
+		foreach($check as $cur){
+			if(strpos($cur, $mime) !== false){
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
