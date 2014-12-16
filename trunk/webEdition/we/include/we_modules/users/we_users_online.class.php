@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -28,14 +29,29 @@
  * This class handles the users online for the personalized desktop (Cockpit).
  */
 class we_users_online{
+
 	var $num_uo = 0;
 	var $users = '';
 
-	function __construct(){
+	public function __construct(){
 		global $DB_WE;
 		$_row = '';
 		$_u = '';
-		$colors = array('red', 'blue', 'green', 'orange', 'darkgreen', 'darkblue'); //FIXME:add usefull colors
+		$colors = array(
+			'red',
+			'blue',
+			'green',
+			'orange',
+			'darkgreen',
+			'darkblue',
+			'darkslategray',
+			'navy',
+			'tomato',
+			'orchid',
+			'darkorange',
+			'fuchsia',
+			'seagreen'
+		); //FIXME:add usefull colors
 		$i = -1;
 		$img = we_base_file::load($_SERVER['DOCUMENT_ROOT'] . IMAGE_DIR . 'pd/usr/user.svg');
 		$DB_WE->query('SELECT ID,username,Ping  FROM ' . USER_TABLE . ' WHERE Ping>UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' second )) ORDER BY Ping DESC');
@@ -47,10 +63,10 @@ class we_users_online{
 				$_row .= '<tr><td height="8">' . we_html_tools::getPixel(1, 8) . '</td></tr>';
 			}
 			$_row .= '<tr><td width="30">' . str_replace('black', $colors[( ++$i) % $colorCount], $img) . '</td>' .
-				'<td valign="middle" class="middlefont" style="font-weight:' . $_fontWeight . ';">' . $DB_WE->f("username") . '</td>';
+					'<td valign="middle" class="middlefont" style="font-weight:' . $_fontWeight . ';">' . $DB_WE->f("username") . '</td>';
 			if(defined('MESSAGES_TABLE')){
 				$_row .= '<td valign="middle" width="24"><a href="javascript:newMessage(\'' . $DB_WE->f("username") . '\');">' .
-					'<img src="' . IMAGE_DIR . 'pd/usr/user_mail.gif" border="0" width="24" height="20" alt="" /></a><td>';
+						'<img src="' . IMAGE_DIR . 'pd/usr/user_mail.gif" border="0" width="24" height="20" alt="" /></a><td>';
 			}
 			$_row .= '</tr>';
 		}
