@@ -408,7 +408,7 @@ we_templateInit();?>';
 	 * @param	none
 	 */
 	function getAllVariantFields(){
-		return (($val = $this->getElement('allVariants')) ? $val : array());
+		return ($this->getElement('allVariants') ? : array());
 	}
 
 	/**
