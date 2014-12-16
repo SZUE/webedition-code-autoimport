@@ -42,7 +42,7 @@ if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 
 switch($contentType){
 	case we_base_ContentTypes::IMAGE;
-		$allowedContentTypes = we_base_imageEdit::IMAGE_CONTENT_TYPES;
+		$allowedContentTypes = implode(',',we_base_ContentTypes::inst()->getRealContentTypes($contentType));
 		$allowedExtensions = we_base_imageEdit::IMAGE_EXTENSIONS;
 		break;
 	case we_base_ContentTypes::APPLICATION;
