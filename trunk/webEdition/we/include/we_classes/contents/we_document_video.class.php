@@ -54,14 +54,14 @@ class we_document_video extends we_binaryDocument{
 	<tr valign="top">
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>' . /*
-			  <tr valign="top">
-			  <td>' . $this->formInput2(155, "hspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-			  <td>' . we_html_tools::getPixel(18, 2) . '</td>
-			  <td>' . $this->formInput2(155, "vspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-			  <td>' . we_html_tools::getPixel(18, 2) . '</td>
-			  <td>' . $this->formInput2(155, "name", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-			  </tr> */
-			'<tr valign="top">
+				  <tr valign="top">
+				  <td>' . $this->formInput2(155, "hspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+				  <td>' . we_html_tools::getPixel(18, 2) . '</td>
+				  <td>' . $this->formInput2(155, "vspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+				  <td>' . we_html_tools::getPixel(18, 2) . '</td>
+				  <td>' . $this->formInput2(155, "name", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+				  </tr> */
+				'<tr valign="top">
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
@@ -76,13 +76,13 @@ class we_document_video extends we_binaryDocument{
 	</tr>
 	<tr valign="top">
 		<td>' . $this->formSelectElement(155, 'mute', array(0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>' .
-			'<td>' . we_html_tools::getPixel(18, 2) . '</td>
+				'<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formSelectElement(155, 'loop', array(0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formInput2(155, 'name', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
 	</tr>
 </table>' .
-			weSuggest::getYuiFiles() . $yuiSuggest->getYuiCode()
+				weSuggest::getYuiFiles() . $yuiSuggest->getYuiCode()
 		;
 	}
 
@@ -93,8 +93,8 @@ class we_document_video extends we_binaryDocument{
 			if(($bdid = $this->getElement('poster', 'bdid'))){
 				$poster = id_to_path($bdid);
 				$poster = ($bdid && $poster && file_exists($_SERVER['DOCUMENT_ROOT'] . $poster) ?
-						$poster :
-						'');
+								$poster :
+								'');
 			} else {
 				$poster = '';
 			}
@@ -109,22 +109,22 @@ class we_document_video extends we_binaryDocument{
 
 
 			return
-				getHtmlTag('video', array_filter(array(
+					getHtmlTag('video', array_filter(array(
 				'style' => 'width:' . ($width? : 400) . 'px;height:' . ($height? : 400) . 'px;' . ($preload ? 'margin-left:2em;' : '') . ($bgcolor ? 'background-color:' . $bgcolor . ';' : ''),
 				($play ? 'autoplay' : '') => 'autoplay',
-				($control ? 'controls' : '') => 'controls',
+				($control !== '0' ? 'controls' : '') => 'controls',
 				($mute ? 'muted' : '') => 'muted',
 				($loop ? 'loop' : '') => 'loop',
 				($name ? 'name' : '') => $name,
 				($poster ? 'poster' : '') => $poster,
-				'preload' => ($preload ? 'metadata' : 'none')
-				)), getHtmlTag('source', array(
+				'preload' => ($preload || !$poster ? 'metadata' : 'none')
+					)), getHtmlTag('source', array(
 				'src' => ( $dyn ?
-					WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . we_base_file::getUniqueId() :
-					$this->Path),
+						WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . we_base_file::getUniqueId() :
+						$this->Path),
 				'type' => 'video/' . str_replace('.', '', $this->Extension)
-				))
-				, true);
+					))
+					, true);
 		}
 		return '';
 	}
@@ -135,8 +135,8 @@ class we_document_video extends we_binaryDocument{
 		}
 
 		return ($bdid && $path && file_exists($_SERVER['DOCUMENT_ROOT'] . $path) ?
-				we_html_element::htmlImg(array('src' => $path, 'maxwidth' => '100px', 'maxheight' => '100px')) :
-				$this->getHtml(true, true));
+						we_html_element::htmlImg(array('src' => $path, 'maxwidth' => '100px', 'maxheight' => '100px')) :
+						$this->getHtml(true, true));
 	}
 
 	/**

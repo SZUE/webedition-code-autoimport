@@ -33,6 +33,8 @@ function we_isNotEmpty($attribs){
 			return (bool) $doc->getElement($match);
 		case 'binary' :
 		case 'img':
+		case 'video':
+		case 'audio':
 		case 'flashmovie' :
 			return (bool) $doc->getElement($match, 'bdid');
 		case 'href':
