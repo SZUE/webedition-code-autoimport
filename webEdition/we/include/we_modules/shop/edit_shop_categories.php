@@ -90,7 +90,7 @@ while($DB_WE->next_record()){
 }
 $selCategoryDirs = we_html_tools::htmlSelect('weShopCatDir', $allCategoryDirs, 1, $shopCategoriesDir, false, array('id' => 'weShopCatDir', 'onchange' => 'we_submitForm(\'' . $_SERVER['SCRIPT_NAME'] . '\');'));
 
-if(intval($shopCategoriesDir) !== -1){
+if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 	$shopCategories = we_shop_category::getShopCatFieldsFromDir('', true, $shopCategoriesDir, true, true, true, '', 'Path');
 
 	//Categories/VATs-Matrix
@@ -123,7 +123,7 @@ if(intval($shopCategoriesDir) !== -1){
 
 	$catsMatrix = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), (count($shopCategories) * (count($allVats) + 4)), 5);
 	$catsDirMatrix = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), ((count($allVats) + 5)), 5);
-	if(count($shopCategories)){
+	if(is_array($shopCategories) && count($shopCategories) > 1){
 		$i = $iTmp = 0;
 
 		foreach($shopCategories as $k => $cat){
@@ -165,12 +165,12 @@ if(intval($shopCategoriesDir) !== -1){
 
 			$i = $cat['ID'] == $shopCategoriesDir ? $iTmp : $i;
 		}
+		$catsMatrixHtml = $catsMatrix->getHtml();
+		$catsDirMatrixHtml = $catsDirMatrix->getHtml();
 	} else {
-		$catsMatrix = g_l('modules_shop', '[shopcats][warning_shopCatDirEmpty]');
-		$catsDirMatrix = g_l('modules_shop', '[shopcats][warning_shopCatDirEmpty]');
+		$catsMatrixHtml = g_l('modules_shop', '[shopcats][warning_shopCatDirEmpty]');
+		$catsDirMatrixHtml = g_l('modules_shop', '[shopcats][warning_shopCatDirEmpty]');
 	}
-	$catsMatrixHtml = $catsMatrix->getHtml();
-	$catsDirMatrixHtml = $catsDirMatrix->getHtml();
 } else {
 	$catsMatrixHtml = $catsDirMatrixHtml = g_l('modules_shop', '[shopcats][warning_noShopCatDir]');
 }
