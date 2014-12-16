@@ -264,7 +264,7 @@ class we_workflow_workflow extends we_workflow_base{
 		}
 		$all = array_keys($wfIDs);
 		return ($workflowID ? $workflowID // when we have found a document type-based workflow we can return
-				: (($tmp = self::findWfIdForFolder($folder, $db, $all)) ? $tmp : false));
+				: (self::findWfIdForFolder($folder, $db, $all) ? : false));
 	}
 
 	private static function findWfIdForFolder($folderID, we_database_base $db, array &$all){

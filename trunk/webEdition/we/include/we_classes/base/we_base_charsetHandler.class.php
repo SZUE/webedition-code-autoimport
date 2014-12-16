@@ -160,7 +160,7 @@ class we_base_charsetHandler{
 		$retArr = array();
 
 		foreach($availableChars as $char){
-			$tmpCharArray[] = (($charset = $this->getCharsetArrByCharset($char)) ? $charset : array('charset' => $char));
+			$tmpCharArray[] = ($this->getCharsetArrByCharset($char) ? : array('charset' => $char));
 		}
 
 		foreach($tmpCharArray as $val){

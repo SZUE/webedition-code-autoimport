@@ -131,7 +131,7 @@ class rpcGetRssCmd extends rpcCmd{
 			$aTb[] = g_l('cockpit', '[rss_feed]');
 		}
 		if($bTbTitel){
-			$aTb[] = ($tmp = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4)) ? $tmp :
+			$aTb[] = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) ?  :
 				((isset($oRssParser->channel["title"])) ? $oRssParser->channel["title"] : "");
 		}
 		if($bTbDesc){
