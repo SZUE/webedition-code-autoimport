@@ -373,9 +373,13 @@ class we_webEditionDocument extends we_textContentDocument{
 		$include = $this->editor();
 		if($include && $include != WE_INCLUDES_PATH . 'we_templates/' . we_template::NO_TEMPLATE_INC){
 			ob_start();
+			//FIX for old code
+			$DB_WE = $GLOBALS['DB_WE'];
+			//$we_doc = $this;
 			include($include);
-			ob_end_clean();
+			$ret = ob_end_clean();
 		}
+
 		$this->EditPageNr = $oldEdit;
 		weSuggest::setStaticInstance(true);
 
