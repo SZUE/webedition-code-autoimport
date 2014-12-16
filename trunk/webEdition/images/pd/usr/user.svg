@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="29">
+<style>
+.userImg{fill:black;}
+</style>
+  <path
+     d="m 11.9625,23.441668 a 2.9604166,3.1416667 0 1 1 -5.9208328,0 2.9604166,3.1416667 0 1 1 5.9208328,0 z"
+     transform="matrix(2.195637,0,0,2.0689655,-7.94864,-41.95)"
+		class="userImg"
+     style="fill-opacity:1;fill-rule:nonzero;" />
+  <path
+     d="m 17.641666,13.231251 5.316667,0.241667 -0.241667,14.137499 -9.425,0.241666 z
+     M 9.3041667,15.708333 11.9625,14.1375 l 2.5375,1.45 -2.416667,9.304167 z
+     M 6.525,13.4125 1.2083333,13.654167 1.45,27.791667 l 9.425,0.241666 z
+     "
+		class="userImg"
+     style="fill-opacity:1;stroke:none" />
+      
+  <rect
+     width="4.4708333"
+     height="1.9333333"
+     x="17.158333"
+     y="21.991667"
+     id="rect3856"
+     style="fill:white;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+</svg>
