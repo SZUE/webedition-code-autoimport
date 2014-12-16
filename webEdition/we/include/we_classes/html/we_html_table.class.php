@@ -92,8 +92,8 @@ class we_html_table extends we_html_baseCollection{
 	 */
 	function addCol($cols_num = 1){
 		for($i = 0; $i < $cols_num; $i++){
-			foreach($this->childs as $k => $v){
-				$this->childs[$k]->childs[] = new we_html_baseElement("td");
+			foreach($this->childs as &$v){
+				$v->childs[] = new we_html_baseElement('td');
 			}
 		}
 	}
@@ -113,7 +113,7 @@ class we_html_table extends we_html_baseCollection{
 
 		if($cols_num){
 			if($cols_num > count($row->childs)){
-				$row->addChild(new we_html_baseElement("td"));
+				$row->addChild(new we_html_baseElement('td'));
 			} else if($cols_num < count($row->childs)){
 				$row->childs = array_splice($row->childs, ($cols_num - 1));
 			}
@@ -131,8 +131,7 @@ class we_html_table extends we_html_baseCollection{
 	 * @return     void
 	 */
 	function setCol($rowid, $colid, $attribs = array(), $content = ''){
-		$row = & $this->getChild($rowid);
-		$col = & $row->getChild($colid);
+		$col = &$this->getChild($rowid)->getChild($colid);
 		$col->setAttributes($attribs);
 		$col->setContent($content);
 	}
@@ -161,8 +160,7 @@ class we_html_table extends we_html_baseCollection{
 	 * @return     void
 	 */
 	function setColAttributes($rowid, $colid, $attribs = array()){
-		$row = & $this->getChild($rowid);
-		$col = & $row->getChild($colid);
+		$col = & $this->getChild($rowid)->getChild($colid);
 		$col->setAttributes($attribs);
 	}
 
@@ -176,8 +174,7 @@ class we_html_table extends we_html_baseCollection{
 	 * @return     void
 	 */
 	function setColContent($rowid, $colid, $content = ""){
-		$row = & $this->getChild($rowid);
-		$col = & $row->getChild($colid);
+		$col = & $this->getChild($rowid)->getChild($colid);
 		$col->setContent($content);
 	}
 
@@ -207,8 +204,7 @@ class we_html_table extends we_html_baseCollection{
 				} else {
 					$col = $row->getChild($j);
 					if(in_array('colspan', array_keys($col->attribs))){
-						$colspan = $col->getAttribute('colspan');
-						$colspan--;
+						$colspan = $col->getAttribute('colspan')-1;
 					}
 				}
 			}
