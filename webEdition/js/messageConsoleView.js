@@ -17,10 +17,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function messageConsoleView( conName, win ) {
+function messageConsoleView(conName, win) {
 
 	this.name = conName;
-	this.win  = win;
+	this.win = win;
 
 	// for disabling/hiding the messages the boxes
 	this.calls = new Array();
@@ -30,38 +30,42 @@ function messageConsoleView( conName, win ) {
 	 * function is called from the subject
 	 * @param {object} _lastMessage
 	 */
-	this.notify = function(_lastMessage) {
-		if (this.win && this.win.document) {
+	this.notify = function (_lastMessage) {
+		try {
+			if (this.win && this.win.document) {
 
-			if (_lastMessage) { // if there is a lastMessage show it in the console window
-				this.currentPrio = _lastMessage["prio"];
+				if (_lastMessage) { // if there is a lastMessage show it in the console window
+					this.currentPrio = _lastMessage["prio"];
 
-				/*
-				 1 => see Notices
-				 2 => see Warnings
-				 4 => see Errors
-				*/
-				switch ( _lastMessage["prio"] ) {
+					/*
+					 1 => see Notices
+					 2 => see Warnings
+					 4 => see Errors
+					 */
+					switch (_lastMessage["prio"]) {
 
-					case 1:
-						this.win.document.getElementById("messageConsoleMessage" + this.name).innerHTML = this.win._msgNotice;
-					break;
-					case 2:
-						this.win.document.getElementById("messageConsoleMessage" + this.name).innerHTML = this.win._msgWarning;
-					break;
-					case 4:
-						this.win.document.getElementById("messageConsoleMessage" + this.name).innerHTML = this.win._msgError;
-					break;
-					default:
-						this.win.document.getElementById("messageConsoleMessage" + this.name).innerHTML = this.win._msgNotice;
-					break;
+						case 1:
+							this.win.document.getElementById("messageConsoleMessage" + this.name).innerHTML = this.win._msgNotice;
+							break;
+						case 2:
+							this.win.document.getElementById("messageConsoleMessage" + this.name).innerHTML = this.win._msgWarning;
+							break;
+						case 4:
+							this.win.document.getElementById("messageConsoleMessage" + this.name).innerHTML = this.win._msgError;
+							break;
+						default:
+							this.win.document.getElementById("messageConsoleMessage" + this.name).innerHTML = this.win._msgNotice;
+							break;
+					}
+					this.win.document.getElementById("messageConsoleMessage" + this.name).style.display = "block";
+					this.switchImage(_lastMessage["prio"], true);
+					this.calls.push(null);
+
+					this.win.setTimeout("_console_" + this.name + ".hideMessage()", 5000);
 				}
-				this.win.document.getElementById("messageConsoleMessage" + this.name).style.display = "block";
-				this.switchImage(_lastMessage["prio"], true);
-				this.calls.push(null);
-
-				this.win.setTimeout("_console_" + this.name + ".hideMessage()", 5000);
 			}
+		} catch (e) {
+			//FF raises error (can't access win)
 		}
 	}
 
@@ -71,7 +75,7 @@ function messageConsoleView( conName, win ) {
 	 * @param {integer} prio
 	 * @param {boolean} active
 	 */
-	this.switchImage = function(prio, active) {
+	this.switchImage = function (prio, active) {
 
 		if (!active) {
 			active = false;
@@ -85,23 +89,23 @@ function messageConsoleView( conName, win ) {
 				} else {
 					_img = this.win._imgWarning;
 				}
-			break;
+				break;
 			case 4:
 				if (active) {
 					_img = this.win._imgErrorActive;
 				} else {
 					_img = this.win._imgError;
 				}
-			break;
+				break;
 			default:
 				if (active) {
 					_img = this.win._imgNoticeActive;
 				} else {
 					_img = this.win._imgNotice;
 				}
-			break;
+				break;
 		}
-		this.win.document.getElementById("messageConsoleImage" + this.name ).src = _img.src;
+		this.win.document.getElementById("messageConsoleImage" + this.name).src = _img.src;
 
 
 	}
@@ -109,7 +113,7 @@ function messageConsoleView( conName, win ) {
 	/**
 	 * Disabled the message after a certain time
 	 */
-	this.hideMessage = function() {
+	this.hideMessage = function () {
 		this.calls.pop();
 
 		if (this.calls.length == 0) {
@@ -122,8 +126,8 @@ function messageConsoleView( conName, win ) {
 	/**
 	 * registers this console to the messageConsole in mainWindow of webEdition
 	 */
-	this.register = function() {
-		if ( typeof(top.messageConsole) != "undefined" ) {
+	this.register = function () {
+		if (typeof (top.messageConsole) != "undefined") {
 			top.messageConsole.addObserver(this);
 
 		} else {
@@ -132,8 +136,8 @@ function messageConsoleView( conName, win ) {
 		}
 	}
 
-	this.unregister = function() {
-		if ( typeof(top.messageConsole) != "undefined" ) {
+	this.unregister = function () {
+		if (typeof (top.messageConsole) != "undefined") {
 			top.messageConsole.removeObserver(this);
 
 		} else {
@@ -146,8 +150,8 @@ function messageConsoleView( conName, win ) {
 	/**
 	 * opens the message console in a new window
 	 */
-	this.openMessageConsole = function() {
-		if ( typeof(top.messageConsole) != "undefined" ) {
+	this.openMessageConsole = function () {
+		if (typeof (top.messageConsole) != "undefined") {
 			top.messageConsole.openMessageConsole();
 		} else {
 			top.opener.top.messageConsole.openMessageConsole();
