@@ -23,9 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_request{
+
 	private static $allTables = array();
 
 	/* converts an csv of ints to an array */
+
 	const INTLISTA = 'intListA';
 	const INT = 'int';
 	const FLOAT = 'float';
@@ -89,8 +91,8 @@ class we_base_request{
 				return;
 			case self::CMD:
 				$var = strpos($var, 'WECMDENC_') !== false ?
-					base64_decode(urldecode(substr($var, 9))) :
-					$var;
+						base64_decode(urldecode(substr($var, 9))) :
+						$var;
 				return;
 			case self::UNIT:
 				$regs = array(); //FIMXE: check for %d[em,ex,pt,%...]?
@@ -142,7 +144,7 @@ class we_base_request{
 				$var = explode(',', trim(strtr($var, array(
 					'../' => '',
 					'//' => ''
-						)), ','));
+								)), ','));
 				foreach($var as &$cur){
 					$cur = filter_var($cur, FILTER_SANITIZE_URL);
 					if(strpos($cur, rtrim(WEBEDITION_DIR, '/')) === 0){//file-selector has propably access
@@ -199,7 +201,7 @@ class we_base_request{
 		//FIXME: remove checker at release
 		$preVar = $var;
 		self::_weRequest($var, '', array($varType, $default));
-		if(!is_bool($var)&& !is_array($var) && $preVar != $var && $var != $default){
+		if($varType != self::INTLIST && !is_bool($var) && !is_array($var) && $preVar != $var && $var != $default){
 			t_e('changed var/tag attribute', $preVar, $var);
 		}
 		return $var;

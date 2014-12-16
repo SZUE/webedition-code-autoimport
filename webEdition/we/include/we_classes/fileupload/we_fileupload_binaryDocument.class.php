@@ -58,7 +58,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 	public function setTypeCondition(){
 		switch($this->contentType){
 			case we_base_ContentTypes::IMAGE;
-				$mime = we_base_imageEdit::IMAGE_CONTENT_TYPES;
+				$mime = implode(',',we_base_ContentTypes::inst()->getRealContentTypes($this->contentType));
 				$ext = we_base_imageEdit::IMAGE_EXTENSIONS;
 				break;
 			case we_base_ContentTypes::VIDEO:
@@ -425,7 +425,6 @@ div.dropzone_right{
 					$we_doc->saveInSession($_SESSION['weS']['we_data'][$this->transaction]); // save the changed object in session
 			}
 		} else if(isset($fileName) && !empty($fileName)){
-			t_e('here');
 			$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
 		} else if(isset($fileName) && empty($fileName)){
 			$we_alerttext = g_l('alert', '[no_file_selected]');
