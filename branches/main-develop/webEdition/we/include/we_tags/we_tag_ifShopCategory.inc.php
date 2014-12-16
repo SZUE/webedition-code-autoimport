@@ -27,20 +27,26 @@ function we_tag_ifShopCategory($attribs){
 	$match = intval(weTag_getAttribute('match', $attribs, false, we_base_request::INT));
 	$ignorefallbacks = weTag_getAttribute('ignorefallbacks', $attribs, false, we_base_request::BOOL);
 
-	$catID = intval((isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME) ?
-			$GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME) :
-			$GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME)));
+	if(isset($GLOBALS['lv'])){
+		$catID = $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME) ? : 0;
+		$wedocCategory = $GLOBALS['lv']->f('wedoc_Category') ? : '';
+	} else {
+		$catID = $GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME) ? : 0;
+		$wedocCategory = $GLOBALS['we_doc']->Category ? : '';
+	}
 
-	$validArr = we_shop_category::checkGetValidID($catID, true, false, true);
+	$validArr = we_shop_category::checkGetValidID($catID, $wedocCategory, true, true);
 	$validID = intval($validArr['id']);
 
 	switch($field){
+		case 'is_from doc_object':
+			return boolval($validArr['state'] === we_shop_category::IS_CAT_FALLBACK_TO_WEDOCCAT) || boolval($validArr['state'] === we_shop_category::IS_CAT_FALLBACK_TO_WEDOCCAT_AND_ACTIVE);
 		case 'is_fallback_to_standard':
 			return boolval($validArr['state'] === we_shop_category::IS_CAT_FALLBACK_TO_STANDARD);
 		case 'is_fallback_to_active':
-			return boolval($validArr['state'] === we_shop_category::IS_CAT_FALLBACK_TO_ACTIVE);
+			return boolval($validArr['state'] === we_shop_category::IS_CAT_FALLBACK_TO_ACTIVE) || boolval($validArr['state'] === we_shop_category::IS_CAT_FALLBACK_TO_WEDOCCAT_AND_ACTIVE);
 		case 'is_destinationprinciple':
-			return boolval(we_shop_category::getShopCatFieldByID($validID, 'DestPrinciple'));
+			return boolval(we_shop_category::getShopCatFieldByID($validID, $wedocCategory = '', 'DestPrinciple'));
 		case 'id':
 			if(!$match){
 				return $ignorefallbacks ? boolval($catID) : boolval($validID);

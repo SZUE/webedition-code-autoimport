@@ -28,8 +28,19 @@ class we_selector_document extends we_selector_directory{
 	protected $titles = array();
 	protected $titleName = '';
 	protected $startPath;
-	protected $ctp = array(we_base_ContentTypes::IMAGE => "NEW_GRAFIK", we_base_ContentTypes::QUICKTIME => "NEW_QUICKTIME", we_base_ContentTypes::FLASH => "NEW_FLASH");
-	protected $ctb = array("" => "btn_add_file", we_base_ContentTypes::IMAGE => "btn_add_image", we_base_ContentTypes::QUICKTIME => "btn_add_quicktime", we_base_ContentTypes::FLASH => "btn_add_flash");
+	protected $ctp = array(//FIXME: add movie/audio button
+		we_base_ContentTypes::IMAGE => "NEW_GRAFIK",
+		we_base_ContentTypes::QUICKTIME => "NEW_QUICKTIME",
+		we_base_ContentTypes::FLASH => "NEW_FLASH",
+		we_base_ContentTypes::VIDEO => "NEW_VIDEO"
+	);
+	protected $ctb = array(
+		"" => "btn_add_file",
+		we_base_ContentTypes::IMAGE => 'btn_add_image',
+		we_base_ContentTypes::QUICKTIME => 'btn_add_quicktime',
+		we_base_ContentTypes::FLASH => 'btn_add_flash',
+		we_base_ContentTypes::VIDEO => 'btn_add_video',
+	);
 
 
 	function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false, $extInstanceId = ""){
@@ -357,7 +368,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 			($this->filter != we_base_ContentTypes::TEMPLATE && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != we_base_ContentTypes::WEDOCUMENT ?
 				'<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
 				we_html_element::jsElement('newFileState=' . $newFileState . ';') .
-				($this->filter == we_base_ContentTypes::IMAGE || $this->filter == we_base_ContentTypes::QUICKTIME || $this->filter == we_base_ContentTypes::FLASH ?
+				($this->filter && isset($this->ctb[$this->filter]) ?
 					we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
 					we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
 				'</td>' : '');
@@ -365,35 +376,27 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 
 	function printHeaderJSDef(){
 		$ret = parent::printHeaderJSDef();
-		if($this->filter != we_base_ContentTypes::TEMPLATE && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != we_base_ContentTypes::WEDOCUMENT){
-			$ret.= '
+		switch($this->filter){
+			case we_base_ContentTypes::TEMPLATE:
+			case "object":
+			case "objectFile":
+			case we_base_ContentTypes::WEDOCUMENT:
+				return $ret;
+			default:
+				$ret.= '
 var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
-			if($this->filter == we_base_ContentTypes::IMAGE || $this->filter == we_base_ContentTypes::QUICKTIME || $this->filter == we_base_ContentTypes::FLASH){
+				$btn = ($this->filter && isset($this->ctb[$this->filter]) ? $this->ctb[$this->filter] : 'btn_add_file');
 				return $ret . '
 function disableNewFileBut() {
-	' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '_enabled = switch_button_state("' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '", "", "disabled", "image");
+	' . $btn . '_enabled = switch_button_state("' . $btn . '", "", "disabled", "image");
 	newFileState = 0;
 }
 
 function enableNewFileBut() {
-	' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '_enabled = switch_button_state("' . ((isset($this->ctb[$this->filter])) ? $this->ctb[$this->filter] : "") . '", "", "enabled", "image");
+	' . $btn . '_enabled = switch_button_state("' . $btn . '", "", "enabled", "image");
 	newFileState = 1;
 }';
-			} else {
-				return $ret . '
-function disableNewFileBut() {
-	btn_add_file_enabled = switch_button_state("btn_add_file", "", "disabled", "image");
-	newFileState = 0;
-}
-
-function enableNewFileBut() {
-	btn_add_file_enabled = switch_button_state("btn_add_file", "", "enabled", "image");
-	newFileState = 1;
-}';
-			}
 		}
-
-		return $ret;
 	}
 
 	function _userCanMakeNewFile(){
@@ -403,7 +406,7 @@ function enableNewFileBut() {
 		if(!$this->userCanSeeDir()){
 			return false;
 		}
-		if($this->filter == we_base_ContentTypes::IMAGE || $this->filter == we_base_ContentTypes::QUICKTIME || $this->filter == we_base_ContentTypes::FLASH){
+		if($this->filter && isset($this->ctp[$this->filter])){
 			if(!permissionhandler::hasPerm($this->ctp[$this->filter])){
 				return false;
 			}
@@ -848,19 +851,17 @@ function setDir(id) {
 	function printFramesetSelectFileHTML(){
 		return we_html_element::jsElement('
 function selectFile(id){
-
+	fname = top.fsfooter.document.getElementsByName("fname");
 	if(id){
 		e = getEntry(id);
 		fspath.document.body.innerHTML = e.path;
-
-		if( top.fsfooter.document.we_form.fname.value != e.text &&
-			top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
-			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
-			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 ){
-
-			top.fsfooter.document.we_form.fname.value =  top.fsfooter.document.we_form.fname.value ?
-				(top.fsfooter.document.we_form.fname.value + "," + e.text) :
-				e.text;
+		if(fname&& fname[0].value != e.text &&
+			fname[0].value.indexOf(e.text+",") == -1 &&
+			fname[0].value.indexOf(","+e.text+",") == -1 &&
+			fname[0].value.indexOf(","+e.text+",") == -1 ){
+				fname[0].value =  top.fsfooter.document.we_form.fname.value ?
+					(fname[0].value + "," + e.text) :
+					e.text;
 		}
 
 		if(top.fsbody.document.getElementById("line_"+id)) top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
@@ -870,17 +871,16 @@ function selectFile(id){
 		currentType = e.contentType;
 
 		showPreview(id);
-
 	}else{
-		top.fsfooter.document.we_form.fname.value = "";
+		fname[0].value = "";
 		currentPath = "";
 		we_editDirID = 0;
 	}
-
 }');
 	}
 
-	protected function printFramesetJSDoClickFn(){
+	protected
+		function printFramesetJSDoClickFn(){
 		return we_html_element::jsElement('
 function doClick(id,ct){
 	if(top.fspreview.document.body){

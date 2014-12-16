@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * This class handles the users online for the personalized desktop (Cockpit).
  */
 class we_users_online{
-
 	var $num_uo = 0;
 	var $users = '';
 
@@ -37,18 +35,18 @@ class we_users_online{
 		global $DB_WE;
 		$_row = '';
 		$_u = '';
-		$colors = array('red', 'blue', 'green', 'orange');
+		$colors = array('red', 'blue', 'green', 'orange', 'darkgreen', 'darkblue'); //FIXME:add usefull colors
 		$i = -1;
-
+		$img = we_base_file::load($_SERVER['DOCUMENT_ROOT'] . IMAGE_DIR . 'pd/usr/user.svg');
 		$DB_WE->query('SELECT ID,username,Ping  FROM ' . USER_TABLE . ' WHERE Ping>UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' second )) ORDER BY Ping DESC');
 		$colorCount = count($colors);
 		while($DB_WE->next_record()){
 			$this->num_uo++;
-			$_fontWeight = ($_SESSION["user"]["ID"] == $DB_WE->f("ID")) ? 'bold' : 'bold';
+			$_fontWeight = ($_SESSION["user"]["ID"] == $DB_WE->f('ID')) ? 'bold' : 'bold';
 			if($i >= 0){
 				$_row .= '<tr><td height="8">' . we_html_tools::getPixel(1, 8) . '</td></tr>';
 			}
-			$_row .= '<tr><td width="30"><img src="' . IMAGE_DIR . 'pd/usr/user_' . $colors[( ++$i) % $colorCount] . '.gif" width="24" height="29" /></td>' .
+			$_row .= '<tr><td width="30">' . str_replace('black', $colors[( ++$i) % $colorCount], $img) . '</td>' .
 				'<td valign="middle" class="middlefont" style="font-weight:' . $_fontWeight . ';">' . $DB_WE->f("username") . '</td>';
 			if(defined('MESSAGES_TABLE')){
 				$_row .= '<td valign="middle" width="24"><a href="javascript:newMessage(\'' . $DB_WE->f("username") . '\');">' .

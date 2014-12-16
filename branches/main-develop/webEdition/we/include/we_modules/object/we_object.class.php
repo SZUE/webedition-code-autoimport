@@ -280,7 +280,7 @@ class we_object extends we_document{
 			$ctable = OBJECT_X_TABLE . intval($this->ID);
 
 			$this->DB_WE->delTable($ctable);
-			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . implode(',', $q) . ', ' . implode(',', $indexe) . ') ENGINE = MYISAM ' . we_database_base::getCharsetCollation());
+			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . implode(',', $q) . ', ' . implode(',', $indexe) . ') ENGINE=MYISAM ' . we_database_base::getCharsetCollation());
 
 			//dummy eintrag schreiben
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
@@ -1163,9 +1163,9 @@ class we_object extends we_document{
 					$selectShopPath = self::htmlSelect('we_' . $this->Name . '_input[' . $name . 'shopcatShowPath]', $values, 1, $this->getElement($name . 'shopcatShowPath', 'dat'));
 					$textRootdir = self::htmlTextInput('we_' . $this->Name . '_input[' . $name . 'shopcatRootdir]', 24, $value = $this->getElement($name . 'shopcatRootdir', 'dat'));
 
-					$selectCategories = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . 'default]', we_shop_category::getShopCatFieldsFromDir('Path'), 1, $this->getElement($name . 'default', 'dat'), false, array(), 'value', 388);
-					$values = array('0' => '', '1' => 'default', '2' => 'object\'s shop category');//FIXME: use constants instead of ints
-					$selectLimitChoice = self::htmlSelect('we_' . $this->Name . '_input[' . $name . 'shopcatLimitChoice]', $values, 1, $this->getElement($name . 'shopcatLimitChoice', 'dat'));
+					$values = array_merge(array('0' => ' '), we_shop_category::getShopCatFieldsFromDir('Path'));
+					$selectCategories = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . 'default]', $values, 1, $this->getElement($name . 'default', 'dat'), false, array(), 'value', 388);
+					$selectLimitChoice = we_html_forms::checkboxWithHidden((abs($this->getElement($name . 'shopcatLimitChoice', 'dat')) == '1' ? true : false), 'we_' . $this->Name . '_input[' . $name . 'shopcatLimitChoice]', 'use default only', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 
 					$content .= '<tr valign="top">
 							<td  width="100" class="defaultfont"  valign="top"></td>
@@ -1182,7 +1182,7 @@ class we_object extends we_document{
 						<tr valign="top">
 							<td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>
 							<td width="170" class="defaultfont">' .
-						$selectCategories . '<br />' . we_html_tools::getPixel(2, 2) . 'use only' . we_html_tools::getPixel(8, 24) . $selectLimitChoice .
+						$selectCategories . '<br />' . we_html_tools::getPixel(2, 2) . $selectLimitChoice .
 						'</td>
 						</tr>';
 				}

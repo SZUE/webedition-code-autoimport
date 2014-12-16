@@ -106,7 +106,7 @@ class we_html_baseElement{
 		$widthHeightNotInStyle = $this->tag_name === 'applet';
 		if(is_array($attribs)){
 			foreach($attribs as $k => $v){
-				if(!empty($k)){
+				if($k){
 					$this->setAttribute($k, $v, $widthHeightNotInStyle);
 				}
 			}
@@ -128,7 +128,7 @@ class we_html_baseElement{
 				$vals = explode(';', $attrib_value);
 				foreach($vals as $val){
 					$val = trim($val);
-					if(!empty($val)){
+					if($val){
 						list($k, $v) = explode(':', $val);
 						$this->setStyle($k, $v);
 					}
@@ -213,7 +213,7 @@ class we_html_baseElement{
 		$out = '<' . $this->tag_name;
 		foreach($this->attribs as $k => $v){
 			if($k === 'style'){
-				if(!empty($v)){
+				if($v){
 					$out.=' ' . $k . '="';
 					foreach($v as $kk => $vv){
 						$out.=$kk . ':' . $vv . ';';
@@ -221,6 +221,9 @@ class we_html_baseElement{
 					$out.='"';
 				}
 			} else if($v !== ''){
+				if(is_array($v)){
+					t_e($v);
+				}
 				$out.=' ' . $k . '="' . $v . '"';
 			} else {//empty attribs
 				switch($k){

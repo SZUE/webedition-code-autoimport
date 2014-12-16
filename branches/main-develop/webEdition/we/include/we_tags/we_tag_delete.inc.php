@@ -46,14 +46,18 @@ function we_tag_delete($attribs){
 			$doc->initByID($docID);
 			$table = FILE_TABLE;
 			if($doctype){
-				$doctypeID = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType LIKE '" . $GLOBALS['DB_WE']->escape($doctype) . "'");
+				$doctypeID = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $GLOBALS['DB_WE']->escape($doctype) . '"');
 				if($doc->DocType != $doctypeID){
 					$GLOBALS['we_' . $type . '_delete_ok'] = false;
 					return '';
 				}
 			}
+			if($mail){
+				$mailtext = sprintf(g_l('global', '[std_mailtext_delDoc]'), $doc->Path);
+				$subject = g_l('global', '[std_subject_delDoc]');
+			}
 			break;
-		default:
+		case 'object':
 			$docID = $id ? : we_base_request::_(we_base_request::INT, 'we_delObject_ID', $id);
 			if(!$docID){
 				return '';
@@ -62,41 +66,39 @@ function we_tag_delete($attribs){
 			$doc->initByID($docID, OBJECT_FILES_TABLE);
 			$table = OBJECT_FILES_TABLE;
 			if($classid && $doc->TableID != $classid){//FIXME: IsClassFolder
-				$GLOBALS["we_" . $type . "_delete_ok"] = false;
-				return "";
+				$GLOBALS['we_' . $type . '_delete_ok'] = false;
+				return '';
+			}
+			if($mail){
+				$mailtext = sprintf(g_l('global', '[std_mailtext_delObj]'), $doc->Path);
+				$subject = g_l('global', '[std_subject_delObj]');
 			}
 			break;
+		default:
+			return;
 	}
 
 	if($pid){
 		if($doc->ParentID != $pid){
-			$GLOBALS["we_" . $type . "_delete_ok"] = false;
-			return "";
+			$GLOBALS['we_' . $type . '_delete_ok'] = false;
+			return '';
 		}
 	}
 
 	$isOwner = ($protected ?
-					($_SESSION["webuser"]["ID"] == $doc->WebUserID) :
-					($userid ?
-							($_SESSION["webuser"]["ID"] == $doc->getElement($userid)) : false));
+			($_SESSION['webuser']['ID'] == $doc->WebUserID) :
+			($userid ?
+				($_SESSION['webuser']['ID'] == $doc->getElement($userid)) : false));
 
 
-	$isAdmin = ($admin ? isset($_SESSION["webuser"][$admin]) && $_SESSION["webuser"][$admin] : false);
+	$isAdmin = ($admin ? isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin] : false);
 
 	if($isAdmin || $isOwner || $forceedit){
-		$GLOBALS["NOT_PROTECT"] = true;
 		we_base_delete::deleteEntry($docID, $table);
-		$GLOBALS["we_" . $type . "_delete_ok"] = true;
+		$GLOBALS['we_' . $type . '_delete_ok'] = true;
 		if($mail){
 			if(!$mailfrom){
-				$mailfrom = "dontReply@" . $_SERVER['SERVER_NAME'];
-			}
-			if($type === "object"){
-				$mailtext = sprintf(g_l('global', '[std_mailtext_delObj]'), $doc->Path) . "\n";
-				$subject = g_l('global', '[std_subject_delObj]');
-			} else {
-				$mailtext = sprintf(g_l('global', '[std_mailtext_delDoc]'), $doc->Path) . "\n";
-				$subject = g_l('global', '[std_subject_delDoc]');
+				$mailfrom = 'dontReply@' . $_SERVER['SERVER_NAME'];
 			}
 			$phpmail = new we_util_Mailer($mail, $subject, $mailfrom);
 			$phpmail->setCharSet($charset);
@@ -105,7 +107,7 @@ function we_tag_delete($attribs){
 			$phpmail->Send();
 		}
 	} else {
-		$GLOBALS["we_" . $type . "_delete_ok"] = false;
+		$GLOBALS['we_' . $type . '_delete_ok'] = false;
 	}
 	return '';
 }

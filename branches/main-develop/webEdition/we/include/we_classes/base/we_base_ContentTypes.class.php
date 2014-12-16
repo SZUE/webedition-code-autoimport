@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_ContentTypes{
-
 	const CLASS_FOLDER_ICON = 'class_folder.gif';
 	const FOLDER_ICON = 'folder.gif';
 	const IMAGE_ICON = 'image.gif';
@@ -40,6 +39,8 @@ class we_base_ContentTypes{
 	const TEXT = 'text/plain';
 	const FLASH = 'application/x-shockwave-flash';
 	const QUICKTIME = 'video/quicktime';
+	const VIDEO = 'video/*';
+	const AUDIO = 'audio/*';
 	const APPLICATION = 'application/*';
 	const FOLDER = 'folder';
 
@@ -174,7 +175,7 @@ class we_base_ContentTypes{
 				'Icon' => self::CLASS_FOLDER_ICON,
 			),
 			self::FLASH => array(
-				'Extension' => '.swf',
+				'Extension' => array('.swf'/* ,'.mp4','.m4v' */),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_FLASH',
 				'DefaultCode' => '',
@@ -190,6 +191,24 @@ class we_base_ContentTypes{
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
 				'Icon' => 'quicktime.gif',
+			),
+			self::VIDEO => array(
+				'Extension' => array('.mp4', '.m4v', '.ogg', '.webm'),
+				'ExtensionIsFilename' => false,
+				'Permission' => 'NEW_FLASH',
+				'DefaultCode' => '',
+				'IsRealFile' => true,
+				'IsWebEditionFile' => true,
+				'Icon' => 'video.svg',
+			),
+			self::AUDIO => array(
+				'Extension' => array('.mp3', '.wav', '.ogg'),
+				'ExtensionIsFilename' => false,
+				'Permission' => 'NEW_SONSTIGE',
+				'DefaultCode' => '',
+				'IsRealFile' => true,
+				'IsWebEditionFile' => true,
+				'Icon' => 'audio.svg',
 			),
 			self::APPLICATION => array(
 				'Extension' => array('.doc', '.xls', '.ppt', '.zip', '.sit', '.bin', '.hqx', '.exe', '.pdf'),

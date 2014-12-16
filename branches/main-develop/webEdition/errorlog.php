@@ -20,6 +20,9 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect(array('ADMINISTRATOR'));
+$trans = array('Error type' => 'Type', 'Error message' => 'Text', 'Script name' => 'File', 'Line number' => 'Line', 'Backtrace' => 'Backtrace',
+	'Source code around' => 'posData',
+	'Request' => 'Request', 'Server' => 'Server', 'Session' => 'Session', 'Global' => 'Global');
 
 function getInfoTable($infoArr){
 	if(!$infoArr){
@@ -37,9 +40,7 @@ function getInfoTable($infoArr){
 			@$tmp = htmlentities($tmp, ENT_COMPAT, $GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8' ? 'ISO-8859-15' : 'UTF-8');
 		}
 	}
-	$trans = array('Error type' => 'Type', 'Error message' => 'Text', 'Script name' => 'File', 'Line number' => 'Line', 'Backtrace' => 'Backtrace',
-		'Source code around' => 'posData',
-		'Request' => 'Request', 'Server' => 'Server', 'Session' => 'Session', 'Global' => 'Global');
+
 	$ret = '<table class="error" align="center">
   <colgroup>
   <col width="10%"/>
@@ -49,9 +50,9 @@ function getInfoTable($infoArr){
   	<td class="left">#' . $infoArr['ID'] . '</td>
     <td class="right">' . $infoArr['Date'] . '</td>
   </tr>';
-	foreach($trans as $key => $val){
+	foreach($GLOBALS['trans'] as $key => $val){
 		if(isset($infoArr[$val])){
-			$ret.= '<tr>
+			$ret.= '<tr id="' . str_replace(' ', '', $key) . '">
     <td class="left">' . $key . ':</td>
     <td class="right"><pre>' . $infoArr[$val] . '</pre></td>
   </tr>';
@@ -88,9 +89,9 @@ function getNavButtons($size, $pos, $id){
 		'</td></table>';
 }
 
-/*function formatLine(&$val, $key){
-	$val = $key . ': ' . $val;
-}*/
+/* function formatLine(&$val, $key){
+  $val = $key . ': ' . $val;
+  } */
 
 function getPosData($bt){
 	$ret = '';
@@ -105,16 +106,21 @@ function getPosData($bt){
 
 		$lines = we_base_file::loadLines((strpos($file, $_SERVER['DOCUMENT_ROOT']) === 0 || strpos($file, realpath(WEBEDITION_PATH)) === 0 ? '' : $_SERVER['DOCUMENT_ROOT'] . '/' ) . $file, max(1, $lineNo - 1), $lineNo + 5);
 		if($lines){
-			array_walk($lines, function(&$val, $key) {
-    $val = $key . ': ' . $val;
-});
+			array_walk($lines, function(&$val, $key){
+				$val = $key . ': ' . $val;
+			});
 			$ret .=$file . ":\n" . implode('', $lines) . "\n----------------------------------------------------------\n";
 		}
 	}
 	return $ret;
 }
 
-$buttons = we_html_button::position_yes_no_cancel(
+$options = '';
+foreach(array_keys($GLOBALS['trans']) as $key){
+	$options.='<option value="' . str_replace(' ', '', $key) . '">' . $key . '</option>';
+}
+$buttons = g_l('searchtool', '[anzeigen]') . ': <select onchange="document.getElementById(this.value).scrollIntoView();">' . $options . '</select>' .
+	we_html_button::position_yes_no_cancel(
 		we_html_button::create_button("delete_all", $_SERVER['SCRIPT_NAME'] . '?deleteAll=1'), we_html_button::create_button('refresh', $_SERVER['SCRIPT_NAME']), we_html_button::create_button("close", "javascript:self.close()")
 );
 
@@ -254,8 +260,8 @@ table.error td pre{
 	<div id="info" style="display: block;">
 		<?php
 		echo we_html_multiIconBox::getJS() .
-			we_html_element::htmlDiv(array('style' => 'position:absolute; top:0px; left:30px;right:30px;height:60px;'), $size && $data ? getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0) : '') .
-			we_html_element::htmlDiv(array('style' => 'position:absolute;top:60px;bottom:0px;left:0px;right:0px;'), we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", "", "auto"));
+		we_html_element::htmlDiv(array('style' => 'position:absolute; top:0px; left:30px;right:30px;height:60px;'), $size && $data ? getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0) : '') .
+		we_html_element::htmlDiv(array('style' => 'position:absolute;top:60px;bottom:0px;left:0px;right:0px;'), we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", "", "auto"));
 		?>
 	</div>
 </body>

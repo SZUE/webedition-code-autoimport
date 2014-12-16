@@ -26,7 +26,6 @@ require_once (WE_INCLUDES_PATH . 'we_tags/we_tag_category.inc.php');
 
 function we_tag_shopCategory($attribs){
 	$id = weTag_getAttribute('id', $attribs, false, we_base_request::INT);
-	$fromdoc = weTag_getAttribute('fromdoc', $attribs, false, we_base_request::BOOL);
 	$showpath = weTag_getAttribute('showpath', $attribs, false, we_base_request::BOOL);
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '', we_base_request::FILE);
 	$field = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);
@@ -39,6 +38,7 @@ function we_tag_shopCategory($attribs){
 		'title' => 'Title',
 		'description' => 'Description',
 		'is_destinationprinciple' => 'DestPrinciple',
+		'is_from doc_object' => 'is_from doc_object',
 		'is_fallback_to_standard' => 'is_fallback_to_standard',
 		'is_fallback_to_active' => 'is_fallback_to_active'
 	);
@@ -49,23 +49,22 @@ function we_tag_shopCategory($attribs){
 		$attribs['onlyindir'] = we_shop_category::getShopCatDir(true);
 		$attribs['fromTag'] = 'shopcategory';
 
-		if(!($id || $fromdoc)){
+		if(!$id){
 			$attribs['_name_orig'] = WE_SHOP_CATEGORY_FIELD_NAME;
 			$attribs['field'] = 'PATH';
 			$attribs['showpath'] = true;
+			$attribs['firstentry'] = ' ';
 
 			return we_tag_category($attribs);
 		}
 
-		$attribs['field'] = 'ID';
-		$catIDs = explode(',', trim(we_tag_category($attribs), ','));
-		if(count($catIDs) && $dosave){
-			$ret .= we_html_element::htmlHidden(array('name' => 'we_' . $GLOBALS['we_doc']->Name . '_category[' . WE_SHOP_CATEGORY_FIELD_NAME . ']', 'value' => $catIDs[0]));
+		if($id && $dosave){
+			$ret .= we_html_element::htmlHidden(array('name' => 'we_' . $GLOBALS['we_doc']->Name . '_category[' . WE_SHOP_CATEGORY_FIELD_NAME . ']', 'value' => $id));
 		}
 	}
 
 	$shopCatId = $GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME) ? : 0;
-	$ret .= we_shop_category::getShopCatFieldByID($shopCatId, $field, $showpath, $rootdir, true, !we_shop_category::USE_IS_ACTIVE);
+	$ret .= we_shop_category::getShopCatFieldByID($shopCatId, $GLOBALS['we_doc']->Category, $field, $showpath, $rootdir, true, !we_shop_category::USE_IS_ACTIVE);
 
 	return $ret;
 }

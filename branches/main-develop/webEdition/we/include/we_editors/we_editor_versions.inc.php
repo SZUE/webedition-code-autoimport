@@ -88,4 +88,4 @@ echo we_html_element::cssLink(JS_DIR . 'jscalendar/skins/aqua/theme.css') .
 		?>
 		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
-</body></html>';
+</body></html>

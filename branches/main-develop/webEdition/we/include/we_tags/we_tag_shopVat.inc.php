@@ -60,6 +60,7 @@ function we_tag_shopVat($attribs){
 		$field = weTag_getAttribute('field', $attribs, 'vat', we_base_request::STRING);
 		//$id = weTag_getAttribute('id', $attribs, false, we_base_request::INT);
 		$shopcategoryid = weTag_getAttribute('shopcategoryid', $attribs, false, we_base_request::INT);
+		$wedoccategories = weTag_getAttribute('wedoccategories', $attribs, '', we_base_request::STRING);
 		$customerid = weTag_getAttribute('customerid', $attribs, false, we_base_request::INT);
 		$country = weTag_getAttribute('country', $attribs, false, we_base_request::STRING);
 		$iso = $field === 'country_iso';
@@ -90,7 +91,8 @@ function we_tag_shopVat($attribs){
 		}
 
 		$catId = $shopcategoryid ? : ($GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME) ? : 0);
-		$vat = we_shop_category::getShopVatByIdAndCountry($catId, $countryArr['country'], false, ($field === 'is_vat_fallback_to_standard'), ($field === 'is_vat_fallback_to_prefs'));
+		$wedocCategory = $wedoccategories ? : $GLOBALS['we_doc']->Category;
+		$vat = we_shop_category::getShopVatByIdAndCountry($catId, $wedocCategory, $countryArr['country'], false, ($field === 'is_vat_fallback_to_standard'), ($field === 'is_vat_fallback_to_prefs'));
 
 		switch($field){
 			case 'is_vat_fallback_to_standard':

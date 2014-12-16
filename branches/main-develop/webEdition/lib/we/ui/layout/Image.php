@@ -34,7 +34,7 @@ abstract class we_ui_layout_Image{
 	/**
 	 * path of tree icon audio
 	 */
-	const kTreeIconAudio = '/webEdition/images/tree/icons/audio.gif';
+	const kTreeIconAudio = '/webEdition/images/tree/icons/audio.svg';
 
 	/**
 	 * path of tree icon banner

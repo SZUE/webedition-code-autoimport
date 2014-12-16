@@ -26,7 +26,7 @@
 class we_shop_category extends we_category{
 	public $DestPrinciple = 0;//make getter and set private
 	public $CatFallbackState = 0;
-	public $IsActive = 0;
+	public $IsInactive = 0;
 
 	//FIXME: move some of these static vars to session
 	private static $isCategoryMode = -1;
@@ -34,17 +34,20 @@ class we_shop_category extends we_category{
 	private static $shopCatIDs = array();
 	private static $shopVatsByCategoryCountry = array();
 	private static $shopCatMapping = array();
-	private static $writeCatMapping = -1;
+	private static $mustCheckIsInactive = -1;
 
 	const IS_CAT_FALLBACK_TO_STANDARD = 1;
 	const IS_CAT_FALLBACK_TO_ACTIVE = 2;
+	const IS_CAT_FALLBACK_TO_WEDOCCAT = 3;
+	const IS_CAT_FALLBACK_TO_WEDOCCAT_AND_ACTIVE = 5;
+
 	const USE_IS_ACTIVE = true;
 
 	function __construct($id = 0){
 		parent::__construct($id);
 		if($id && is_int($id)){
 			$this->DestPrinciple = $this->getDestPrinciple();
-			$this->IsActive = $this->getIsActive();
+			$this->IsInactive = $this->getIsInactive();
 		}
 	}
 
@@ -68,16 +71,16 @@ class we_shop_category extends we_category{
 	}
 	
 	/**
-	 * get field IsActive of this shop category
+	 * get field IsInactive of this shop category
 	 *
 	 * @return int
 	 */
-	//FIXME: Combine getters, setters and save functions fpr IsActive and DestPrinciple
-	private function getIsActive(){
+	//FIXME: Combine getters, setters and save functions for IsInactive and DestPrinciple
+	private function getIsInactive(){
 		if(!$this->ID){
 			return 0;
 		}
-		$ids = self::getIsActiveFromDB(true);
+		$ids = self::getIsInactiveFromDB(true);
 
 		return in_array(intval($this->ID), $ids) ? 1 : 0;
 	}
@@ -106,13 +109,13 @@ class we_shop_category extends we_category{
 	}
 
 	/**
-	 * save field IsActive of this shop category
+	 * save field IsInactive of this shop category
 	 *
 	 * @return void
 	 */
-	private function saveIsActiveToDB(){
-		$ids = self::getIsActiveFromDB(true);
-		if($this->IsActive){
+	private function saveIsInactiveToDB(){
+		$ids = self::getIsInactiveFromDB(true);
+		if($this->IsInactive){
 			if(in_array($this->ID, $ids)){
 				return true;
 			}
@@ -125,7 +128,7 @@ class we_shop_category extends we_category{
 			unset($ids[$k]);
 		}
 
-		return self::saveSettingIsActive(implode(',', $ids));
+		return self::saveSettingIsInactive(implode(',', $ids));
 	}
 
 	/**
@@ -143,15 +146,15 @@ class we_shop_category extends we_category{
 	}
 
 	/**
-	 * get csv or array containing ids of all shop categories with IsActive = true
+	 * get csv or array containing ids of all shop categories with IsInactive = true
 	 *
 	 * @param bool $asArray
 	 * @return csv or array of int
 	 */
-	public static function getIsActiveFromDB($asArray = false){
+	public static function getIsInactiveFromDB($asArray = false){
 		//FIXME: make static var for this too
 		$db = new DB_WE();
-		$ids = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_isActive"', '', $db, -1);
+		$ids = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_isInactive"', '', $db, -1);
 
 		return $asArray ? explode(',', $ids) : $ids;
 	}
@@ -173,19 +176,19 @@ class we_shop_category extends we_category{
 	}
 
 	/**
-	 * saves shop category field IsActive of all shop categoeries
+	 * saves shop category field IsInactive of all shop categoeries
 	 *
 	 * @param csv of int $ids
 	 * @return void
 	 */
-	public static function saveSettingIsActive($ids){
+	public static function saveSettingIsInactive($ids){
 		$db = new DB_WE();
 		$arr = explode(',', trim($ids, ','));
 		$val = '';
 		foreach($arr as $id){
 			$val .= $id ? intval($id) . ',' : '';
 		}
-		return $db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop", pref_name="shop_cats_isActive", pref_value="' . trim($val, ',') . '"');
+		return $db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="shop", pref_name="shop_cats_isInactive", pref_value="' . trim($val, ',') . '"');
 	}
 
 	/**
@@ -237,12 +240,12 @@ class we_shop_category extends we_category{
 	 * @param int $id
 	 * @return we_shop_category
 	 */
-	public static function getShopCatById($id = 0, $useFallback = false, $activeOnly = false){
+	public static function getShopCatById($id = 0, $wedocCategory = '', $useFallback = false){
 		if(!$id && !$useFallback){
 			return false;
 		}
 
-		$tmpValidID = self::checkGetValidID($id, $useFallback, $activeOnly, true);
+		$tmpValidID = self::checkGetValidID($id, $wedocCategory, $useFallback, true);
 		if(!($validID = $tmpValidID['id'])){
 			return false;
 		}
@@ -281,30 +284,29 @@ class we_shop_category extends we_category{
 	/**
 	 * writes mapping for inactive shop categories to static var $shopCatMapping
 	 *
-	 * @param array of int $actives: ids of active shop catgories 
+	 * @param array of int $inactives: ids of inactive shop catgories 
 	 *
 	 * @return void
 	 */
-	private static function writeShopCatMapping($actives){
+	private static function writeShopCatMapping($inactives){
 		$paths = self::getShopCatFieldsFromDir('Path', false, 0, false, true, true, '', 'Path');
 		$parentIDs = self::getShopCatFieldsFromDir('ParentID');
 		asort($paths);
-		//$activeCats = self::getIsActiveFromDB(true);
 
 		self::$shopCatMapping[self::getShopCatDir()] = self::getShopCatDir();
 		foreach($paths as $id => $path){
-			self::$shopCatMapping[$id] = in_array($id, $actives) ? $id : self::$shopCatMapping[$parentIDs[$id]];
+			self::$shopCatMapping[$id] = in_array($id, $inactives) ? self::$shopCatMapping[$parentIDs[$id]] : $id;
 		}
 
 		//debug
 		/*
 		$arr = array();
 		foreach(self::$shopCatMapping as $id => $val){
-			$arr[$id] = in_array($val, $actives);
+			$arr[$id] = !in_array($val, $inactives) ? "ok" : "bad";
 		}
 		unset($arr[self::getShopCatDir()]);
 		t_e("check is shopCatMapping ok", $arr, self::$shopCatMapping);
-		 *
+		 * 
 		 */
 
 	}
@@ -358,32 +360,51 @@ class we_shop_category extends we_category{
 	 *
 	 * @return int $validID
 	 */
-	public static function checkGetValidID($id, $useFallback = true, $activeOnly = false, $getState = false){
-		//FIXME: completely implement $activeOnly or throw it out
-		$state = $id ? 0 : self::IS_CAT_FALLBACK_TO_STANDARD;
-		$id = self::isShopCategoryID($id) ? $id : ($useFallback ? self::getShopCatDir() : 0);
-		if(!$id){
-			return false;
+	public static function checkGetValidID($id = 0, $wedocCategory = '', $useFallback = true, $getState = false){
+		//$origID = $id;
+		$state = 0;
+		if(!$id || !self::isShopCategoryID($id)){
+			if(!$useFallback){
+				return false;
+			}
+
+			//look for shop category linked to we_doc
+			$id = 0;
+			foreach(explode(',', trim($wedocCategory, ',')) as $c){
+				if(self::isShopCategoryID($c)){
+					$id = $c;
+					$state = self::IS_CAT_FALLBACK_TO_WEDOCCAT;
+					break;
+				}
+			}
+
+			//if still no valid id: get shopCatDir
+			if(!$id){
+				$id = self::getShopCatDir();
+				$state = self::IS_CAT_FALLBACK_TO_STANDARD;
+			}
 		}
+		//$interimsID = $id;
 
 		if(self::USE_IS_ACTIVE && $id !== self::getShopCatDir()){
-			$actives = array();
-			if(self::$writeCatMapping === -1){
-				$actives = self::getIsActiveFromDB(true);
+			$inactives = array();
+			if(self::$mustCheckIsInactive === -1){
+				$inactives = self::getIsInactiveFromDB(true);
 				$numCats = count(self::getAllShopCatIDs(false));
-				self::$writeCatMapping = count($actives) && $numCats !== count($actives);
+				self::$mustCheckIsInactive = count($inactives) && $numCats !== count($inactives);
 			}
 
-			if(self::$writeCatMapping === true){
-				$actives = $actives ? : self::getIsActiveFromDB(true);
+			if(self::$mustCheckIsInactive === true){
+				$inactives = $inactives ? : self::getIsInactiveFromDB(true);
 				$tmpId = $id;
 				if(!self::$shopCatMapping){
-					self::writeShopCatMapping($actives);
+					self::writeShopCatMapping($inactives);
 				}
 				$id = isset(self::$shopCatMapping) ? self::$shopCatMapping[$id] : $id;
-				$state = $tmpId === $id ? $state : self::IS_CAT_FALLBACK_TO_ACTIVE;
+				$state += $tmpId === $id ? 0 : self::IS_CAT_FALLBACK_TO_ACTIVE;
 			}
 		}
+		//t_e("getCheck", $origID, $interimsID, $id);
 
 		return $getState ? array("id" => $id, "state" => $state) : $id;
 	}
@@ -415,14 +436,14 @@ class we_shop_category extends we_category{
 		}
 		$tmpField = $field === 'DestPrinciple' ? 'ID' : $field;
 
-		if($field === 'IsActive' || $allFields){
-			$isActiveIds = self::getIsActiveFromDB(true);
+		if($field === 'IsInactive' || $allFields){
+			$isInactiveIds = self::getIsInactiveFromDB(true);
 			$assoc = true;
 		}
-		$tmpField = $field === 'IsActive' ? 'ID' : $field;
+		$tmpField = $field === 'IsInactive' ? 'ID' : $field;
 
 		$ret = parent::we_getCategories('', ',', $showpath, null, $rootdir, $tmpField, $path, true, $assoc, false, $allFields, $includeDir, $order);
-		if($field === 'DestPrinciple' || $field === 'IsActive' || $allFields){
+		if($field === 'DestPrinciple' || $field === 'IsInactive' || $allFields){
 			if(!$ret || !is_array($ret)){
 				return false;
 			}
@@ -430,11 +451,11 @@ class we_shop_category extends we_category{
 			foreach($ret as $k => &$v){
 				if(!$allFields && $field === 'DestPrinciple'){
 					$v = in_array($k, $destPrincipleIds) ? 1 : 0;
-				} elseif(!$allFields && $field === 'IsActive') {
-					$v = in_array($k, $isActiveIds) ? 1 : 0;
+				} elseif(!$allFields && $field === 'IsInactive') {
+					$v = in_array($k, $isInactiveIds) ? 1 : 0;
 				} else {
 					$v['DestPrinciple'] = in_array($k, $destPrincipleIds) ? 1 : 0;
-					$v['IsActive'] = in_array($k, $isActiveIds) ? 1 : 0;
+					$v['IsInactive'] = in_array($k, $isInactiveIds) ? 1 : 0;
 				}
 			}
 		}
@@ -459,8 +480,8 @@ class we_shop_category extends we_category{
 	 * @param object $db
 	 * @return array of string
 	 */
-	static function getShopCatFieldByID($id, $field = '', $showpath = false, $rootdir = '', $useFallback = false, $activeOnly = false){
-		$cat = self::getShopCatById($id, $useFallback, $activeOnly, true, true);
+	static function getShopCatFieldByID($id, $wedocCategory = '', $field = '', $showpath = false, $rootdir = '', $useFallback = false){
+		$cat = self::getShopCatById($id, $wedocCategory, $useFallback);
 		if(!$cat){
 			return false;
 		}
@@ -468,10 +489,12 @@ class we_shop_category extends we_category{
 		switch($field){
 			case 'Path':
 				return !$showpath ? $cat->Category : (substr($cat->Path, strlen($rootdir)));
+			case 'is_from doc_object':
+				return ($cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_WEDOCCAT || $cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_WEDOCCAT_AND_ACTIVE) ? 1 : 0;
 			case 'is_fallback_to_standard':
 				return $cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_STANDARD ? 1 : 0;
 			case 'is_fallback_to_active' : 
-				return $cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_ACTIVE ? 1 : 0;
+				return ($cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_ACTIVE || $cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_WEDOCCAT_AND_ACTIVE) ? 1 : 0;
 			default: 
 				return $cat->$field;
 		}
@@ -537,18 +560,17 @@ class we_shop_category extends we_category{
 	 * @param bool $getIsFallbackToPrefs
 	 * @return we_shop_vat
 	 */
-	public static function getShopVatByIdAndCountry($id = 0, $country = '', $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false, $useFallback = true, $activeOnly = true){
+	public static function getShopVatByIdAndCountry($id = 0, $wedocCategory = '', $country = '', $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false, $useFallback = true){
 		if(!$country){
 			return false;
 		}
 
-		$validID = self::checkGetValidID($id, $useFallback, $activeOnly);
+		$validID = self::checkGetValidID($id, $wedocCategory, $useFallback);
 		if(!$getIsFallbackToStandard && !$getIsFallbackToPrefs && isset(self::$shopVatsByCategoryCountry[$validID][$country]) && ($vat = self::$shopVatsByCategoryCountry[$validID][$country])){
-
 			return $getRate ? $vat->vat : $vat;
 		}
 
-		if(!($cat = self::getShopCatById($validID, false, false))){//we have validID so we do not have to validate again!
+		if(!($cat = self::getShopCatById($validID, '', false))){//we have validID so we do not have to validate again!
 			return false;
 		}
 

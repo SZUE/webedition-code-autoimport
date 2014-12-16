@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * Provides functions for creating and handling webEdition thumbnails.
  */
 class we_thumbnail{
-
 	const OK = 0;
 	const USE_ORIGINAL = 1;
 	const BUILDERROR = 2;
@@ -353,7 +351,7 @@ class we_thumbnail{
 		if(!file_exists($_thumbdir)){
 			we_base_file::createLocalFolder($_thumbdir);
 		}
-		$quality = $this->thumbQuality < 1 ? 10 : ($this->thumbQuality > 10 ? 100 : $this->thumbQuality * 10);
+		$quality = max(10, min(100, intval($this->thumbQuality) * 10));
 		$outarr = we_base_imageEdit::edit_image($this->imageData ? : $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->imagePath, $this->outputFormat, $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
 
 		return $outarr[0] ? self::OK : self::BUILDERROR;
@@ -483,10 +481,10 @@ class we_thumbnail{
 	 */
 	private function setOutputPath(){
 		if(we_base_imageEdit::gd_version() > 0 &&
-				we_base_imageEdit::is_imagetype_supported($this->outputFormat) &&
-				we_base_imageEdit::is_imagetype_read_supported(isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ?
-								we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : "") &&
-				( (!$this->useOriginalSize()) || (!$this->hasOriginalType() ) )){
+			we_base_imageEdit::is_imagetype_supported($this->outputFormat) &&
+			we_base_imageEdit::is_imagetype_read_supported(isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ?
+					we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : "") &&
+			( (!$this->useOriginalSize()) || (!$this->hasOriginalType() ) )){
 			$this->outputPath = self::getThumbDirectory() . "/" . $this->imageID . "_" . $this->thumbID . "_" . $this->imageFileName . "." . $this->outputFormat;
 		} else {
 			$this->outputPath = $this->imagePath;
@@ -570,7 +568,7 @@ class we_thumbnail{
 	 */
 	private function getImageData($getBinary = false){
 		$this->db->query('SELECT l.Name,c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->imageID) .
-				' AND l.DocumentTable="tblFile"');
+			' AND l.DocumentTable="tblFile"');
 
 		while($this->db->next_record()){
 			if($this->db->f('Name') === 'origwidth'){

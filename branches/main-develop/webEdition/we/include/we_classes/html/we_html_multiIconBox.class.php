@@ -62,7 +62,7 @@ abstract class we_html_multiIconBox{
 			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
 
 			$icon = (isset($c["icon"]) && $c["icon"] ?
-					we_html_element::htmlImg(array('src' => ICON_DIR  . $c["icon"], 'style' => "margin-left:20px;")) :
+					we_html_element::htmlImg(array('src' => ICON_DIR . $c["icon"], 'style' => "margin-left:20px;", 'class' => 'multiIcon')) :
 					'');
 			$headline = (isset($c["headline"]) && $c["headline"] ?
 					'<div id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c["headline"] . '</div>' :
@@ -100,184 +100,182 @@ abstract class we_html_multiIconBox{
 
 		$boxHTML = $out . we_html_multiIconBox::_getBoxEnd($width);
 
-		if($buttons){
-			//ignore height, replace by bottom:
-			return '<div style="overflow:' . $overflow . ';position:absolute;width:100%;' . ($height ? 'height:' . $height . 'px;' : 'bottom:40px;') . 'top:0px;left:0px;">' . $boxHTML . '</div>
-				<div style="left:0px;height:40px;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div style="padding: 10px 10px 0 0;">' . $buttons . '</div></div>';
-		} else {
-			return $boxHTML;
-		}
+		return ($buttons ?
+				//ignore height, replace by bottom:
+				'<div style="overflow:' . $overflow . ';position:absolute;width:100%;' . ($height ? 'height:' . $height . 'px;' : 'bottom:40px;') . 'top:0px;left:0px;">' . $boxHTML . '</div>
+				<div style="left:0px;height:40px;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div style="padding: 10px;">' . $buttons . '</div></div>' :
+				$boxHTML);
 	}
 
 	static function getJS(){
 		return we_html_element::jsElement('
-			function weToggleBox(name,textDown,textRight){
-				var t = document.getElementById(\'table_\'+name);
-				var s = document.getElementById(\'text_\'+name);
-				var b = document.getElementById(\'btn_direction_\'+name+\'_middle\');
-				if(t.style.display == "none"){
-					t.style.display = "";
-					s.innerHTML = textDown;
-					b.style.background="url(' . BUTTONS_DIR . 'btn_direction_down.gif)";
-					weSetCookieVariable("but_"+name,"down")
-				}else{
-					t.style.display = "none";
-					s.innerHTML = textRight;
-					b.style.background="url(' . BUTTONS_DIR . 'btn_direction_right.gif)";
-					weSetCookieVariable("but_"+name,"right")
-				}
-			}
+function weToggleBox(name,textDown,textRight){
+	var t = document.getElementById(\'table_\'+name);
+	var s = document.getElementById(\'text_\'+name);
+	var b = document.getElementById(\'btn_direction_\'+name+\'_middle\');
+	if(t.style.display == "none"){
+		t.style.display = "";
+		s.innerHTML = textDown;
+		b.style.background="url(' . BUTTONS_DIR . 'btn_direction_down.gif)";
+		weSetCookieVariable("but_"+name,"down")
+	}else{
+		t.style.display = "none";
+		s.innerHTML = textRight;
+		b.style.background="url(' . BUTTONS_DIR . 'btn_direction_right.gif)";
+		weSetCookieVariable("but_"+name,"right")
+	}
+}
 
-			function weGetCookieVariable(name){
-				var c = weGetCookie("we' . session_id() . '");
-				var vals = new Array();
-				if(c != null){
-					var parts = c.split(/&/);
-					for(var i=0; i<parts.length; i++){
-						var foo = parts[i].split(/=/);
-						vals[unescape(foo[0])]=unescape(foo[1]);
-					}
-					return vals[name];
-				}
-				return null;
+function weGetCookieVariable(name){
+	var c = weGetCookie("we' . session_id() . '");
+	var vals = new Array();
+	if(c != null){
+		var parts = c.split(/&/);
+		for(var i=0; i<parts.length; i++){
+			var foo = parts[i].split(/=/);
+			vals[unescape(foo[0])]=unescape(foo[1]);
+		}
+		return vals[name];
+	}
+	return null;
+}
+function weGetCookie(name){
+	var cname = name + "=";
+	var doc = (top.name == "edit_module") ? top.opener.top.document : top.document;
+	var dc = doc.cookie;
+	if (dc.length > 0) {
+		begin = dc.indexOf(cname);
+		if (begin != -1) {
+			begin += cname.length;
+			end = dc.indexOf(";", begin);
+			if (end == -1) {
+				end = dc.length;
 			}
-			function weGetCookie(name){
-				var cname = name + "=";
-				var doc = (top.name == "edit_module") ? top.opener.top.document : top.document;
-				var dc = doc.cookie;
-				if (dc.length > 0) {
-					begin = dc.indexOf(cname);
-					if (begin != -1) {
-						begin += cname.length;
-						end = dc.indexOf(";", begin);
-						if (end == -1) {
-							end = dc.length;
-						}
-						return unescape(dc.substring(begin, end));
-					}
-				}
-				return null;
-			}
+			return unescape(dc.substring(begin, end));
+		}
+	}
+	return null;
+}
 
-			function weSetCookieVariable(name,value){
-				var c = weGetCookie("we' . session_id() . '");
-				var vals = new Array();
-				if(c != null){
-					var parts = c.split(/&/);
-					for(var i=0; i<parts.length; i++){
-						var foo = parts[i].split(/=/);
-						vals[unescape(foo[0])]=unescape(foo[1]);
-					}
-				}
-				vals[name] = value;
-				c = "";
-				for (var i in vals) {
-					c += encodeURI(i)+"="+encodeURI(vals[i])+"&";
-				}
-				if(c.length > 0){
-					c=c.substring(0,c.length-1);
-				}
-				weSetCookie("we' . session_id() . '", c);
-			}
-			function weSetCookie(name, value, expires, path, domain){
-				var doc = (top.name == "edit_module") ? top.opener.top.document : top.document;
-				doc.cookie = name + "=" +encodeURI(value) +
-				((expires == null) ? "" : "; expires=" + expires.toGMTString()) +
-				((path == null)    ? "" : "; path=" + path) +
-				((domain == null)  ? "" : "; domain=" + domain);
-			}');
+function weSetCookieVariable(name,value){
+	var c = weGetCookie("we' . session_id() . '");
+	var vals = new Array();
+	if(c != null){
+		var parts = c.split(/&/);
+		for(var i=0; i<parts.length; i++){
+			var foo = parts[i].split(/=/);
+			vals[unescape(foo[0])]=unescape(foo[1]);
+		}
+	}
+	vals[name] = value;
+	c = "";
+	for (var i in vals) {
+		c += encodeURI(i)+"="+encodeURI(vals[i])+"&";
+	}
+	if(c.length > 0){
+		c=c.substring(0,c.length-1);
+	}
+	weSetCookie("we' . session_id() . '", c);
+}
+function weSetCookie(name, value, expires, path, domain){
+	var doc = (top.name == "edit_module") ? top.opener.top.document : top.document;
+	doc.cookie = name + "=" +encodeURI(value) +
+	((expires == null) ? "" : "; expires=" + expires.toGMTString()) +
+	((path == null)    ? "" : "; path=" + path) +
+	((domain == null)  ? "" : "; domain=" + domain);
+}');
 	}
 
 	static function getDynJS($uniqname = '', $marginLeft = 0){
 		return we_html_element::jsElement('
-			if(navigator.product == "Gecko"){
-				var CELLPADDING = "cellpadding";
-				var CELLSPACING = "cellspacing";
-				var CLASSNAME = "classname";
-				var VALIGN = "valign";
-			}else{
-				var CELLPADDING = "cellpadding";
-				var CELLSPACING = "cellspacing";
-				var CLASSNAME = "className";
-				var VALIGN = "vAlign";
-			}
+if(navigator.product == "Gecko"){
+	var CELLPADDING = "cellpadding";
+	var CELLSPACING = "cellspacing";
+	var CLASSNAME = "classname";
+	var VALIGN = "valign";
+}else{
+	var CELLPADDING = "cellpadding";
+	var CELLSPACING = "cellspacing";
+	var CLASSNAME = "className";
+	var VALIGN = "vAlign";
+}
 
-			function weGetMultiboxLength(){
+function weGetMultiboxLength(){
 
-				var divs = document.getElementsByTagName("DIV");
-				var prefix =  "div_' . $uniqname . '_";
-				var z = 0;
-				for(var i = 0; i<divs.length; i++){
-					if(divs[i].id.length > prefix.length && divs[i].id.substring(0,prefix.length) == prefix){
-						z++;
-					}
-				}
-				return z;
-			}
-			function weGetLastMultiboxNr(){
+	var divs = document.getElementsByTagName("DIV");
+	var prefix =  "div_' . $uniqname . '_";
+	var z = 0;
+	for(var i = 0; i<divs.length; i++){
+		if(divs[i].id.length > prefix.length && divs[i].id.substring(0,prefix.length) == prefix){
+			z++;
+		}
+	}
+	return z;
+}
+function weGetLastMultiboxNr(){
 
-				var divs = document.getElementsByTagName("DIV");
-				var prefix =  "div_' . $uniqname . '_";
-				var num = -1;
-				for(var i = 0; i<divs.length; i++){
-					if(divs[i].id.length > prefix.length && divs[i].id.substring(0,prefix.length) == prefix){
-						num = divs[i].id.substring(prefix.length,divs[i].id.length);
-					}
-				}
-				return parseInt(num);
-			}
+	var divs = document.getElementsByTagName("DIV");
+	var prefix =  "div_' . $uniqname . '_";
+	var num = -1;
+	for(var i = 0; i<divs.length; i++){
+		if(divs[i].id.length > prefix.length && divs[i].id.substring(0,prefix.length) == prefix){
+			num = divs[i].id.substring(prefix.length,divs[i].id.length);
+		}
+	}
+	return parseInt(num);
+}
 
-			function weDelMultiboxRow(nr){
-				var div = document.getElementById("div_' . $uniqname . '_"+nr);
-				var mainTD = document.getElementById("td_' . $uniqname . '");
-				mainTD.removeChild(div);
-			}
+function weDelMultiboxRow(nr){
+	var div = document.getElementById("div_' . $uniqname . '_"+nr);
+	var mainTD = document.getElementById("td_' . $uniqname . '");
+	mainTD.removeChild(div);
+}
 
-			function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insertDivAfter){
-				var lastNum = weGetLastMultiboxNr();
-				var i = (lastNum + 1);
-				icon = icon  ? (\'<img src="' . ICON_DIR . '\' + icon + \'" width="64" height="64" alt="" style="margin-left:20px;" />\') : "";
-				headline = headline ? (\'<div  id="headline_' . $uniqname . '_\'+ i + \'" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">\' + headline + \'</div>\') : "";
+function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insertDivAfter){
+	var lastNum = weGetLastMultiboxNr();
+	var i = (lastNum + 1);
+	icon = icon  ? (\'<img src="' . ICON_DIR . '\' + icon + \'" width="64" height="64" alt="" style="margin-left:20px;" />\') : "";
+	headline = headline ? (\'<div  id="headline_' . $uniqname . '_\'+ i + \'" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">\' + headline + \'</div>\') : "";
 
-				var mainContent = content ? content : "";
-				var leftWidth = space ? space : 0;
-				var leftContent = icon ? icon : (leftWidth ? headline : "");
-				var rightContent = \'<div style="float:left;" class="defaultfont">\' + (((icon && headline) || (leftContent == "")) ? (headline + \'<div>\' + mainContent + \'</div>\') : mainContent)  + \'</div>\';
+	var mainContent = content ? content : "";
+	var leftWidth = space ? space : 0;
+	var leftContent = icon ? icon : (leftWidth ? headline : "");
+	var rightContent = \'<div style="float:left;" class="defaultfont">\' + (((icon && headline) || (leftContent == "")) ? (headline + \'<div>\' + mainContent + \'</div>\') : mainContent)  + \'</div>\';
 
-				var mainDiv = document.createElement("DIV");
-				mainDiv.style.cssText = \'margin-left:' . $marginLeft . 'px\';
-				mainDiv.id="div_' . $uniqname . '_" + i;
-				var innerHTML = "";
+	var mainDiv = document.createElement("DIV");
+	mainDiv.style.cssText = \'margin-left:' . $marginLeft . 'px\';
+	mainDiv.id="div_' . $uniqname . '_" + i;
+	var innerHTML = "";
 
-				if (leftContent || leftWidth) {
-					if ((!leftContent) && leftWidth) {
-						leftContent = "&nbsp;";
-					}
-					innerHTML += \'<div style="float:left;width:\' + leftWidth + \'px">\' + leftContent + \'</div>\';
-				}
-				innerHTML += rightContent;
-				innerHTML += \'<br style="clear:both;">\';
-				mainDiv.innerHTML = innerHTML;
+	if (leftContent || leftWidth) {
+		if ((!leftContent) && leftWidth) {
+			leftContent = "&nbsp;";
+		}
+		innerHTML += \'<div style="float:left;width:\' + leftWidth + \'px">\' + leftContent + \'</div>\';
+	}
+	innerHTML += rightContent;
+	innerHTML += \'<br style="clear:both;">\';
+	mainDiv.innerHTML = innerHTML;
 
-				var mainTD = document.getElementById("td_' . $uniqname . '");
-				mainTD.appendChild(mainDiv);
+	var mainTD = document.getElementById("td_' . $uniqname . '");
+	mainTD.appendChild(mainDiv);
 
 ' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10 ? 'mainTD.appendChild(document.createElement("BR"));' : '') . '
 
-				var lastDiv = document.createElement("DIV");
-				if(insertDivAfter !== -1){
-					lastDiv.style.cssText = "margin:10px 0;clear:both;";
-					mainTD.appendChild(lastDiv);
-				}
+	var lastDiv = document.createElement("DIV");
+	if(insertDivAfter !== -1){
+		lastDiv.style.cssText = "margin:10px 0;clear:both;";
+		mainTD.appendChild(lastDiv);
+	}
 
-				if(insertRuleBefore && (lastNum != -1)){
-					var rule = document.createElement("DIV");
-					rule.style.cssText = "border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;";
-					var preDIV = document.getElementById("div_' . $uniqname . '_"+lastNum);
-					preDIV.appendChild(rule);
-				}
+	if(insertRuleBefore && (lastNum != -1)){
+		var rule = document.createElement("DIV");
+		rule.style.cssText = "border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;";
+		var preDIV = document.getElementById("div_' . $uniqname . '_"+lastNum);
+		preDIV.appendChild(rule);
+	}
 
-			}');
+}');
 	}
 
 	static function _getBoxStartHeadline($width, $headline, $uniqname, $marginLeft = 0, $overflow = "auto"){

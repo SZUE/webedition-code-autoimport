@@ -91,12 +91,12 @@ echo STYLESHEET;
 		switch($mode){
 			case 'new':
 				$heading = g_l('modules_messaging', '[new_folder]');
-				$acc_html = we_html_tools::html_select('foldertypes', 1, $messaging->get_wesel_folder_types(), "", "top.content.setHot();");
+				$acc_html = we_html_tools::html_select('foldertypes', 1, $messaging->get_wesel_folder_types(), '', array('onchange' => "top.content.setHot();"));
 				break;
 			case 'edit':
 				$heading = g_l('modules_messaging', '[change_folder_settings]');
 				$finf = $messaging->get_folder_info($fid);
-				$acc_html = we_html_tools::html_select('foldertypes', 1, $messaging->get_wesel_folder_types(), $finf['ClassName'], "top.content.setHot();");
+				$acc_html = we_html_tools::html_select('foldertypes', 1, $messaging->get_wesel_folder_types(), $finf['ClassName'], array('onchange' => "top.content.setHot();"));
 		}
 
 		$n = isset($finf) ? $finf['Name'] : '';
@@ -123,7 +123,7 @@ echo STYLESHEET;
 	</tr>
 	<tr>
 	  <td class="defaultfont">' . g_l('modules_messaging', '[parent_folder]') . '</td>
-	  <td>' . we_html_tools::html_select('parent_folder', 1, $messaging->get_wesel_available_folders(), isset($finf) ? $finf['ParentID'] : '', "top.content.setHot();") . '</td>
+	  <td>' . we_html_tools::html_select('parent_folder', 1, $messaging->get_wesel_available_folders(), isset($finf) ? $finf['ParentID'] : '', array('onchange' => "top.content.setHot();")) . '</td>
 	</tr>
 	<tr>
 	  <td class="defaultfont">' . g_l('modules_messaging', '[type]') . '</td>

@@ -41,7 +41,7 @@ class we_html_select extends we_html_baseCollection{
 	 * @return		we_html_select
 	 */
 	function __construct($attribs = array(), $opt_num = 0){
-		parent::__construct("select", true, $attribs);
+		parent::__construct('select', true, $attribs);
 		for($i = 0; $i < $opt_num; $i++){
 			$this->addOption();
 		}

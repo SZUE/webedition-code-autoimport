@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * Provides functions for creating webEdition buttons.
  */
 abstract class we_html_button{
-
 	const HEIGHT = 22;
 	const WIDTH = 100;
 	const AUTO_WIDTH = -1;
@@ -149,104 +147,76 @@ function switch_button_state(element, button, state, type) {
 	 * @return     string
 	 */
 	static function create_button($name, $href, $alt = true, $width = self::WIDTH, $height = self::HEIGHT, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false){
-
 		$cmd = '';
-		// Initialize variable for Form:Submit behaviour
-		$_add_form_submit_dummy = false;
 
-		/**
-		 * CHECK DEFAULTS
-		 */
 		// Check width
 		$width = ($width ? : self::WIDTH);
 
 		// Check height
 		$height = ($height ? : self::HEIGHT);
 
+		$isImg = strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) !== false;
 		/**
 		 * DEFINE THE NAME OF THE BUTTON
 		 */
 		// Check if the button is a text button or an image button
-		if(strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) === false){ // Button is NOT an image
-			$_button_name = ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix;
-		} else { // Button is an image - create a unique name
-			$_button_pure_name = substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY)));
-			$_button_name = ($uniqid ? 'we' . substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY))) . '_' . md5(uniqid(__FUNCTION__, true)) : substr($name, (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) + strlen(self::WE_IMAGE_BUTTON_IDENTIFY))) . $suffix);
+		if($isImg){ // Button is an image
+			$name = substr($name, strlen(self::WE_IMAGE_BUTTON_IDENTIFY));
 		}
+
+		$_button_name = ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix;
 		/**
 		 * CHECK IF THE LANGUAGE FILE DEFINES ANOTHER WIDTH FOR THE BUTTON
 		 */
 		// Check if the button will a text button or a image button
-		if(strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) === false){ // Button will NOT be an image
+		if($isImg){ // Button will be an image
+			//set width for image button if given width has not default value
+			$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
+		} else {
 			$tmp = g_l('button', '[' . $name . '][width]', true);
 			if(!empty($tmp) && ($width == self::WIDTH)){
 				$width = $tmp;
 			}
-		} else {
-			//set width for image button if given width has not default value
-			$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
 		}
 
 		// Check if the button will be used in a form or not
-		if(strpos($href, self::WE_FORM_BUTTON_IDENTIFY) === false){ // Button will NOT be used in a form
-			// Check if the buttons target will be a JavaScript
-			if(strpos($href, self::WE_JS_BUTTON_IDENTIFY) === false){ // Buttons target will NOT be a JavaScript
-				// Check if the link has to be opened in a different frame or in a new window
-				$_button_link = ($target ? // The link will be opened in a different frame or in a new window
-						// Check if the link has to be opend in a frame or a window
-						($target === '_blank' ? // The link will be opened in a new window
-							"window.open('" . $href . "', '" . $target . "');" :
-							// The link will be opened in a different frame
-							"target_frame = eval('parent.' + " . $target . ");target_frame.location.href='" . $href . "';") :
-						// The link will be opened in the current frame or window
-						"window.location.href='" . $href . "';");
-
-				// Now assign the link string
-				$cmd .= $_button_link;
-			} else { // Buttons target will be a JavaScript
-				// Get content of JavaScript
-				$_javascript_content = substr($href, (strpos($href, self::WE_JS_BUTTON_IDENTIFY) + strlen(self::WE_JS_BUTTON_IDENTIFY)));
-
-				// Render link
-				$cmd .= $_javascript_content;
-			}
-		} else { // Button will be used in a form
+		if(strpos($href, self::WE_FORM_BUTTON_IDENTIFY) !== false){ // Button will be used in a form
 			// Check if the button shall call the onSubmit event
-			if(strpos($href, self::WE_SUBMIT_BUTTON_IDENTIFY) === false){ // Button shall not call the onSubmit event
-				// Get name of form
-				$_form_name = substr($href, (strpos($href, self::WE_FORM_BUTTON_IDENTIFY) + strlen(self::WE_FORM_BUTTON_IDENTIFY)));
-
-				// Render link
-				$cmd .= 'document.' . $_form_name . '.submit();return false;';
-			} else { // Button must call the onSubmit event
-				// Set variable for Form:Submit behaviour
-				$_add_form_submit_dummy = true;
-
-				// Get name of form
-				$_form_name = substr($href, (strpos($href, self::WE_SUBMIT_BUTTON_IDENTIFY) + strlen(self::WE_SUBMIT_BUTTON_IDENTIFY)));
-
+			if(strpos($href, self::WE_SUBMIT_BUTTON_IDENTIFY) !== false){ // Button must call the onSubmit event
+				$_form_name = substr($href, strlen(self::WE_SUBMIT_BUTTON_IDENTIFY));
 				// Render link
 				$cmd .= 'if (document.' . $_form_name . '.onsubmit()) { document.' . $_form_name . '.submit(); } return false;';
+			} else {
+				// Render link
+				$cmd .= 'document.' . substr($href, strlen(self::WE_FORM_BUTTON_IDENTIFY)) . '.submit();return false;';
 			}
-		}
+		} elseif(strpos($href, self::WE_JS_BUTTON_IDENTIFY) !== false){ // Buttons target will  be a JavaScript
+			// Get content of JavaScript
+			$_javascript_content = substr($href, strlen(self::WE_JS_BUTTON_IDENTIFY));
 
-		$value = (strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) === false) ? g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '') :
-			we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'icons/' . str_replace('btn_', '', $_button_pure_name) . '.gif', 'class' => 'weBtnImage'));
-
-		$title = '';
-		// Check if the button will a text button or an image button
-		if(strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) === false){ // Button will NOT be an image
-			$tmp = g_l('button', '[' . $name . '][alt]', true);
-			if(!empty($tmp) && $alt){
-				$title = $tmp;
-			}
+			// Render link
+			$cmd .= $_javascript_content;
 		} else {
-			$tmp = g_l('button', '[' . $_button_pure_name . '][alt]', true);
-			//ignore missing alt attribute
-			if(!empty($tmp) && $alt){
-				$title = $tmp;
-			}
+			// Check if the link has to be opened in a different frame or in a new window
+			$_button_link = ($target ? // The link will be opened in a different frame or in a new window
+					// Check if the link has to be opend in a frame or a window
+					($target === '_blank' ? // The link will be opened in a new window
+						"window.open('" . $href . "', '" . $target . "');" :
+						// The link will be opened in a different frame
+						"target_frame = eval('parent.' + " . $target . ");target_frame.location.href='" . $href . "';") :
+					// The link will be opened in the current frame or window
+					"window.location.href='" . $href . "';");
+
+			// Now assign the link string
+			$cmd .= $_button_link;
 		}
+
+		$value = $isImg ?
+			we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'icons/' . str_replace('btn_', '', $name) . '.gif', 'class' => 'weBtnImage')) :
+			g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
+
+		$title = $alt && ($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '';
+
 		return self::getButton($value, $_button_name, $cmd, $width, $title, $disabled, '', '', '', '', '', true, (strpos($href, self::WE_FORM_BUTTON_IDENTIFY) !== false));
 	}
 
@@ -313,7 +283,7 @@ function switch_button_state(element, button, state, type) {
 	 */
 	static function position_yes_no_cancel($yes_button, $no_button = null, $cancel_button = null, $gap = 10, $align = '', $attribs = array(), $aligngap = 0){
 		//	Create default attributes for table
-		$align = $align ? 'right' : 'right';
+		$align = /*$align ? 'right' :*/ 'right';
 		$attr = array(
 			'style' => 'border-style:none; padding-top:0px;padding-bottom:0px;padding-left:' . ($align === 'left' ? $aligngap : 0) . 'px;padding-right:' . ($align === 'right' ? $aligngap : 0) . 'px;border-spacing:0px;',
 			'align' => $align,
@@ -341,7 +311,7 @@ function switch_button_state(element, button, state, type) {
 		$_count_button = count($_buttons);
 
 		//	Create_table
-		$_button_table = new we_html_table($attr, 1, count($_buttons));
+		$_button_table = new we_html_table($attr, 1, $_count_button);
 
 		//	Write buttons
 		foreach($_buttons as $i => $button){

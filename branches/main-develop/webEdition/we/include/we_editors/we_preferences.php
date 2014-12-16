@@ -684,7 +684,7 @@ function build_dialog($selected_setting = 'ui'){
 				$charset = $GLOBALS['WE_BACKENDCHARSET'];
 				$GLOBALS['weDefaultCharset'] = get_value('DEFAULT_CHARSET');
 				$_defaultCharset = we_html_tools::htmlTextInput('newconf[DEFAULT_CHARSET]', 8, $GLOBALS['weDefaultCharset'], 255, '', 'text', 100);
-				$_defaultCharsetChooser = we_html_tools::htmlSelect('DefaultCharsetSelect', $_charsets, 1, $GLOBALS['weDefaultCharset'], false, array("onchange" => "document.forms[0].elements['newconf[DEFAULT_CHARSET]'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 100, "defaultfont", false);
+				$_defaultCharsetChooser = we_html_tools::htmlSelect('DefaultCharsetSelect', $_charsets, 1, $GLOBALS['weDefaultCharset'], false, array("onchange" => "document.forms[0].elements['newconf[DEFAULT_CHARSET]'].value=this.options[this.selectedIndex].value;"), "value", 100, "defaultfont", false);
 				$DEFAULT_CHARSET = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_defaultCharset . '</td><td>' . $_defaultCharsetChooser . '</td></tr></table>';
 
 				$_settings[] = array(
@@ -2847,6 +2847,8 @@ function set_xhtml_field(val, field){
 					we_base_ContentTypes::TEMPLATE => 'VERSIONING_TEXT_WETMPL',
 					we_base_ContentTypes::FLASH => 'VERSIONING_FLASH',
 					we_base_ContentTypes::QUICKTIME => 'VERSIONING_QUICKTIME',
+					we_base_ContentTypes::VIDEO => 'VERSIONING_VIDEO',
+					we_base_ContentTypes::AUDIO => 'VERSIONING_AUDIO',
 					we_base_ContentTypes::APPLICATION => 'VERSIONING_SONSTIGE',
 					we_base_ContentTypes::XML => 'VERSIONING_TEXT_XML',
 					'objectFile' => 'VERSIONING_OBJECT',

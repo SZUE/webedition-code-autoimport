@@ -339,7 +339,7 @@ abstract class we_rebuild_wizard{
 		$thumbs = makeCSVFromArray(we_base_request::_(we_base_request::STRING, "thumbs", ''), true);
 		$catAnd = we_base_request::_(we_base_request::BOOL, "catAnd");
 		$templateID = we_base_request::_(we_base_request::INT, "templateID", 0);
-		$metaFolders = we_base_request::_(we_base_request::INTLIST, "metaFolders", (($dws = get_def_ws()) ? $dws : ""));
+		$metaFolders = we_base_request::_(we_base_request::INTLIST, "metaFolders", (get_def_ws() ? : ""));
 		$metaFields = we_base_request::_(we_base_request::INT, "_field", array());
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
 

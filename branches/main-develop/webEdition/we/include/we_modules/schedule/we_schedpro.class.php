@@ -378,7 +378,6 @@ function checkFooter(){
 		foreach($schedFile['value'] as $s){
 			switch($s['task']){
 				case self::DELETE:
-					$GLOBALS['NOT_PROTECT'] = true;
 					we_base_delete::deleteEntry($id, $schedFile['table']);
 					$callPublish = false;
 					$changeTmpDoc = false;

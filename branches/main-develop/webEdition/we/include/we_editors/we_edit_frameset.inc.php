@@ -178,9 +178,9 @@ if($we_doc->ID == 0){
 	}
 
 	$we_doc->EditPageNr = (in_array($_SESSION['weS']['EditPageNr'], $we_doc->EditPageNrs) ?
-					getTabs($we_doc->ClassName, $_SESSION['weS']['EditPageNr']) :
-					//	Here we must get the first valid EDIT_PAGE
-					getFirstValidEditPageNr($we_doc, we_base_constants::WE_EDITPAGE_CONTENT));
+			getTabs($we_doc->ClassName, $_SESSION['weS']['EditPageNr']) :
+			//	Here we must get the first valid EDIT_PAGE
+			getFirstValidEditPageNr($we_doc, we_base_constants::WE_EDITPAGE_CONTENT));
 }
 
 if($we_Table == FILE_TABLE && $we_ContentType === we_base_ContentTypes::FOLDER && $we_ID){
@@ -191,12 +191,12 @@ if($we_Table == FILE_TABLE && $we_ContentType === we_base_ContentTypes::FOLDER &
 if($we_doc->EditPageNr === -1){ //	there is no view available for this document
 	//	show errorMessage - no view for this document (we:hidePages)
 	echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-			we_html_element::htmlHead(
-					we_html_element::jsElement('top.toggleBusy(0);') .
-					STYLESHEET
-			) .
-			we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_tools::htmlDialogLayout(we_html_tools::htmlAlertAttentionBox(g_l('alert', '[no_views][description]'), we_html_tools::TYPE_ALERT, 500, true), g_l('alert', '[no_views][headline]'))
-			)
+		we_html_element::htmlHead(
+			we_html_element::jsElement('top.toggleBusy(0);') .
+			STYLESHEET
+		) .
+		we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_tools::htmlDialogLayout(we_html_tools::htmlAlertAttentionBox(g_l('alert', '[no_views][description]'), we_html_tools::TYPE_ALERT, 500, true), g_l('alert', '[no_views][headline]'))
+		)
 	);
 	exit;
 }
@@ -236,8 +236,8 @@ if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 // get default code
 if(!$we_doc->getElement('data')){
 	$we_doc->setElement('data', ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && ($cmd10 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 10)) ?
-					base64_decode($cmd10) :
-					we_base_ContentTypes::inst()->getDefaultCode($we_doc->ContentType))
+			base64_decode($cmd10) :
+			we_base_ContentTypes::inst()->getDefaultCode($we_doc->ContentType))
 	);
 }
 //WEEXT
@@ -313,7 +313,7 @@ if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
 			closeAllModalWindows();
 
 	<?php if($we_doc->userHasAccess() == we_root::USER_HASACCESS){ ?>
-				if (!unlock && (!top.opener || top.opener.win)) {	//	login to super easy edit mode
+			if (!unlock && (!top.opener || typeof top.opener.win !== undefined)) {	//	login to super easy edit mode
 					unlock = true;
 				}
 	<?php } ?>
@@ -432,11 +432,11 @@ function setOnload($extonly = false){
 				<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>
 				<frame <?php echo setOnload(); ?> src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>&we_complete_request=1" name="editor_<?php echo $fid; ?>" noresize/>
 			<frame <?php echo setOnload(true); ?> src="about:blank" name="contenteditor_<?php echo $fid; ?>" noresize/>
+
 			<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer"); ?>&SEEM_edit_include=<?php
 			echo (we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') ? "true" : "false");
 			?>" name="editFooter" scrolling=no noresize/>
 			</frameset><noframes></noframes>
-
 			<?php
 			break;
 		case we_base_constants::MODE_NORMAL:
@@ -445,7 +445,6 @@ function setOnload($extonly = false){
 			?>
 			<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="39,<?php echo $showContentEditor ? "0,*" : "*,0"; ?>,40" framespacing="0" border="0" frameborder="NO" onunload="doUnload();">
 				<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>
-
 			<?php if($showContentEditor){ ?>
 					<frame <?php echo setOnload(); ?> src="about:blank" name="editor_<?php echo $fid; ?>" noresize/>
 					<frame  src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>&we_complete_request=1" name="contenteditor_<?php echo $fid; ?>" noresize/>
@@ -461,4 +460,4 @@ function setOnload($extonly = false){
 	<body>
 	</body>
 	</html>
-<?php } ?>
+<?php }

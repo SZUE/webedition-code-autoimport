@@ -23,8 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_var($attribs){
-	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
-		return $foo;
+	switch(weTag_getAttribute('type', $attribs)){ //Fix #9311
+		case 'shopVat':
+		case 'shopCategory': //shopVat and shopCategory need no attribute 'name'
+			break;
+		default:
+			if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
+				return $foo;
+			}
 	}
 	$docAttr = weTag_getAttribute('doc', $attribs);
 	$name = weTag_getAttribute('name', $attribs);
@@ -65,9 +71,18 @@ function we_tag_var($attribs){
 
 		case 'shopVat' :
 			if(defined('SHOP_TABLE')){
-				$vatId = $doc->getElement(WE_SHOP_VAT_FIELD_NAME);
-				$return = we_shop_vats::getVatRateForSite($vatId);
-				return $prepareSQL ? $GLOBALS['DB_WE']->escape($return) : $return;
+				if(!we_shop_category::isCategoryMode()){
+					$vatId = $doc->getElement(WE_SHOP_VAT_FIELD_NAME);
+					$return = we_shop_vats::getVatRateForSite($vatId);
+					return $prepareSQL ? $GLOBALS['DB_WE']->escape($return) : $return;
+				} else {
+					$shopVatAttribs = $attribs;
+					$shopVatAttribs['shopcategoryid'] = $doc->getElement(WE_SHOP_CATEGORY_FIELD_NAME);
+					$shopVatAttribs['wedoccategories'] = $doc->Category;
+					unset($shopVatAttribs['type']);
+					$return = we_tag('shopVat', $shopVatAttribs);
+					return $prepareSQL ? $GLOBALS['DB_WE']->escape($return) : $return;
+				}
 			}
 			return '';
 		case 'shopCategory' :
