@@ -240,6 +240,8 @@ $l_modules_shop=array(
 		'payment_provider'=>'Maksupalvelun tarjoaja',
 		'prices_are_net'=>'Hinnat ovat nettohintoja',
 		'revenue_view'=>'Tuotenimikkeet- / Tulot',
+		'save_error'=>'The settings for Shipping and handling could not be saved.',
+		'save_success'=>'Settings for Shipping and handling successfully saved.',
 		'shipping_costs'=>'Shipping_costs',
 		'shipping_package'=>'Lähetys ja käsittely',
 	),

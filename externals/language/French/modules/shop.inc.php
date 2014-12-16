@@ -240,6 +240,8 @@ $l_modules_shop=array(
 		'payment_provider'=>'Fornisseur de paiement',
 		'prices_are_net'=>'Les prix sont nets',
 		'revenue_view'=>'Articles- / Redements',
+		'save_error'=>'The settings for Shipping and handling could not be saved.',
+		'save_success'=>'Settings for Shipping and handling successfully saved.',
 		'shipping_costs'=>'Shipping_costs',
 		'shipping_package'=>'Shipping and handling',
 	),
