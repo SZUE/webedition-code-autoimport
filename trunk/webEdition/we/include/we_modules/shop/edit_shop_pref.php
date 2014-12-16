@@ -33,7 +33,7 @@ function prepareFieldname($str){
 
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
- STYLESHEET;
+	STYLESHEET;
 
 
 $ignoreFields = explode(',', we_shop_shop::ignoredEditFields);
@@ -133,9 +133,11 @@ $_row = 0;
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[shopcats][use_shopCats]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $yesno = array(0 => 'false', 1 =>'true');
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('categorymode', $yesno, 1, $categorymode));
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('categorymode', $yesno, 1, $categorymode, false, array("id" => "categorymode", "onchange" => "document.getElementById('shop_holders_location').style.display = (this.value == 1 ? '' : 'none'); document.getElementById('shop_holders_location_br').style.display = (this.value == 1 ? '' : 'none');")));
+$_htmlTable->setRow($_row, array('id' => 'shop_holders_location_br', 'style' => 'display:' . ($categorymode ? '' : 'none')));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
+$_htmlTable->setRow($_row, array('id' => 'shop_holders_location', 'style' => 'display:' . ($categorymode ? '' : 'none')));
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[shopcats][shopHolderCountry]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelectCountry('shoplocation', '', 1, array($shoplocation), false, array('id' => 'shoplocation'), 280));
@@ -231,12 +233,9 @@ $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 25));
 
-
-
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button('save', 'javascript:document.we_form.submit();'), '', we_html_button::create_button('cancel', 'javascript:self.close();'));
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button('save', 'javascript:if(document.getElementById("categorymode").value == 1 && document.getElementById("shoplocation").value === ""){' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[preferences][save_alert]'), we_message_reporting::WE_MESSAGE_ERROR) . '}else{document.we_form.submit();}'), '', we_html_button::create_button('cancel', 'javascript:self.close();'));
 
 $frame = we_html_tools::htmlDialogLayout($_htmlTable->getHtml(), g_l('modules_shop', '[pref]'), $_buttons);
-
 
 echo we_html_element::jsElement('self.focus();') . '
 	</head>
