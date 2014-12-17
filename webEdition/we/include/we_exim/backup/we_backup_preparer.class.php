@@ -43,7 +43,7 @@ abstract class we_backup_preparer{
 		if(!self::checkFilePermission()){
 			return false;
 		}
-
+		$execTime = ini_get('max_execution_time');
 
 		$_SESSION['weS']['weBackupVars'] = array(
 			'options' => array(),
@@ -56,7 +56,7 @@ abstract class we_backup_preparer{
 			'backup_log_file' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . we_backup_backup::logFile,
 			'limits' => array(
 				'mem' => we_convertIniSizes(ini_get('memory_limit')),
-				'exec' => min(30, ini_get('max_execution_time')),
+				'exec' => min(30, ($execTime > 200 ? ($execTime > 2000 ? 5 : 15) : $execTime)),
 				'requestTime' => 0,
 				'lastMem' => 0,
 			),
