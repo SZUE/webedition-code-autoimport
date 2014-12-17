@@ -238,7 +238,10 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		 * sets the tab label
 		 */
 		setText: function (frameId, val) {
-			this.myDoc.getElementById('text_' + frameId).innerHTML = val;
+			text=this.myDoc.getElementById('text_' + frameId);
+			if(text){
+							text.innerHTML = val;
+			}
 			setTimeout("setFrameSize()", 50);
 		},
 		/**
@@ -313,7 +316,7 @@ echo we_html_element::jsElement($content = $_contentTypes);
 	 * document init
 	 */
 	function init() {
-		top.weMultiTabs = new TabView(document);
+		top.weMultiTabs = new TabView(this.document);
 	}
 //-->
 </script>
