@@ -208,7 +208,7 @@ class we_object_search extends we_search_base{
 		}
 
 		foreach($this->db->metadata($tablename) as $f){
-			if($f['type'] === 'int'){
+			if(in_array($f['type'], array('int', 'tinyint', 'smallint', 'mediumint', 'bigint'))){
 				self::$intFields[] = $f['name'];
 			}
 		}
@@ -221,7 +221,7 @@ class we_object_search extends we_search_base{
 		}
 
 		foreach($this->db->metadata($tablename) as $f){
-			if($f['type'] === 'real'){
+			if(in_array($f['type'], array('real', 'float', 'double', 'decimal'))){
 				self::$realFields[] = $f['name'];
 			}
 		}
