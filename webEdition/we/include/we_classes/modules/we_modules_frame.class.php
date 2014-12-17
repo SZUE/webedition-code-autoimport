@@ -145,7 +145,7 @@ class we_modules_frame{
 
 		$menu = $jmenu->getCode(false) . $jmenu->getJS();
 
-		$table = new we_html_table(array("style" => "width:100%;background-color:#efefef;background-image: url(/webEdition/images/java_menu/background.gif); background-repeat: repeat-x;", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
+		$table = new we_html_table(array("style" => "width:100%;background-color:#efefef;background-image: url(/webEdition/images/menu/background.gif); background-repeat: repeat-x;", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
 		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), we_html_element::htmlDiv(array('class' => 'menuDiv'), $menu));
 		$table->setCol(0, 1, array("align" => "right", "valign" => "top", 'style' => 'width:5em;'), we_main_headermenu::createMessageConsole('moduleFrame'));
 
