@@ -179,7 +179,7 @@ class we_object_search extends we_search_base{
 			$filteredFields = '';
 			$fieldsToFilterOut = array();
 
-			$type = !preg_match('/^[-+]?[0-9]*\.?[0-9]+$/', $searchname[$i]) ? 1 : (!preg_match('/^[-+]?\d+$/', $searchname[$i])? 2 : 0);
+			$type = !preg_match('/^[-+]?\d*\.?\d+$/', $searchname[$i]) ? 1 : (!preg_match('/^[-+]?\d+$/', $searchname[$i])? 2 : 0);
 			switch($type){
 				case 1:
 					$fieldsToFilterOut = array_merge($fieldsToFilterOut, $this->getRealFields($tablename));
