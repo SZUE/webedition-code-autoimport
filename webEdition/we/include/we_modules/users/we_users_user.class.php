@@ -2501,7 +2501,7 @@ top.content.hloaded=1;') .
 				$passwd = md5($clearPassword . md5($username));
 				break;
 			case self::SALT_CRYPT:
-				if(version_compare(PHP_VERSION, '5.3.7') >= 0){
+				if(version_compare(PHP_VERSION, '5.3.7', '>=')){
 					$passwd = crypt($passwd = substr($clearPassword, 0, 64), $storedPassword);
 				} else {
 					echo 'unable to check passwords php version to old (' . PHP_VERSION . ', needed at least 5.3.7)!';
@@ -2525,13 +2525,12 @@ top.content.hloaded=1;') .
 
 	public static function makeSaltedPassword(&$useSalt, $username, $passwd, $strength = 15){
 		$passwd = substr($passwd, 0, 64);
-		if(version_compare(PHP_VERSION, '5.3.7') >= 0){
+		if(version_compare(PHP_VERSION, '5.3.7', '>=')){
 			$useSalt = self::SALT_CRYPT;
 			return crypt($passwd, '$2y$' . sprintf('%02d', $strength) . '$' . self::getHashIV(22));
-		} else {
-			$useSalt = self::SALT_MD5;
-			return md5($passwd . md5($username));
 		}
+		$useSalt = self::SALT_MD5;
+		return md5($passwd . md5($username));
 	}
 
 	static function readPrefs($id, $db, $login = false){
