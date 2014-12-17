@@ -27,6 +27,19 @@ echo we_html_tools::getHtmlTop(g_l('global', '[select_color]')) .
  we_html_element::jsScript(JS_DIR . 'we_colors2.js');
 $isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
 ?>
+<style>
+	.colorTable{
+
+	}
+	table.colorTable td{
+		width:15px;
+		height:15px;
+		border-top: 1px solid black;
+		border-left: 1px solid black;
+		border-bottom: 1px solid lightgrey;
+		border-right: 1px solid lightgrey;
+	}
+</style>
 <script  type="text/javascript"><!--
 
 	function selectColor(c) {
@@ -64,7 +77,10 @@ $isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
 	<form name="we_form" action="" onsubmit="<?php if(!$isA){ ?>setColor();<?php } ?>return
 			false;">
 					<?php
-					$colortable = '<table border="1" bordercolor="SILVER" bordercolorlight="WHITE" bordercolordark="BLACK" cellspacing="0" cellpadding="0">
+					$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", ($isA ? "javascript:setColor();" : "form:submit:we_form")), "", we_html_button::create_button("cancel", "javascript:window.close()"));
+					echo we_html_tools::htmlDialogLayout('<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td><table class="colorTable" cellspacing="0" cellpadding="0">
 <script  type="text/javascript"><!--
 var z=0;
 for ( col in we_color2 ){
@@ -72,7 +88,7 @@ for ( col in we_color2 ){
 		document.writeln(\'<tr>\');
 	}
 
-document.writeln(\'<td bgcolor="\'+col+\'"><a href="#" onclick="selectColor(\\\'\'+col+\'\\\');"><span style="display:inline-block;width:15px;height:15px" title="\'+we_color2[col]+\'" ></span></a></td>\');
+document.writeln(\'<td style="background-color:\'+col+\'" onclick="selectColor(\\\'\'+col+\'\\\');" title="\'+we_color2[col]+\'" >&nbsp;</td>\');
 
 if(z==17){
 		document.writeln(\'</tr>\');
@@ -89,30 +105,11 @@ if(z != 0){
 }
 //->
 </script>
-		</table>
-	';
-
-					$foo = '<input type="text" size="20" name="colorvalue" class="defaultfont" style="width:150px" />';
-					$color = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', '[color]'));
-
-					$buttons = ($isA ?
-							we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:setColor();"), "", we_html_button::create_button("cancel", "javascript:window.close()")) :
-							we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "form:submit:we_form"), "", we_html_button::create_button("cancel", "javascript:window.close()"))
-						);
-					$table = '<table border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td>' . $colortable . '</td>
+		</table></td>
 	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(2, 10) . '</td>
-	</tr>
-	<tr>
-		<td>' . $color . '</td>
-	</tr>
+	<tr><td style="padding-top:10px;">' . we_html_tools::htmlFormElementTable('<input type="text" size="20" name="colorvalue" class="defaultfont" style="width:150px" />', g_l('wysiwyg', '[color]')) . '</td></tr>
 </table>
-';
-
-					echo we_html_tools::htmlDialogLayout($table, g_l('global', '[select_color]'), $buttons);
+', g_l('global', '[select_color]'), $buttons);
 					?>
 	</form>
 </body>
