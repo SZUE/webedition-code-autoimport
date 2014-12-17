@@ -46,7 +46,7 @@ class we_dialog_abbr extends we_dialog_base{
 		$this->args["style"] = "";
 	}
 
-	function getTinyMceJS(){
+	public static function getTinyMceJS(){
 		return
 			parent::getTinyMceJS() .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weabbr/js/abbr_init.js');

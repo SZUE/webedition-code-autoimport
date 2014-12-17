@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_acronym extends we_dialog_base{
-
 	var $dialogWidth = 370;
 	var $JsOnly = true;
 	var $changeableArgs = array("title",
@@ -40,16 +39,17 @@ class we_dialog_acronym extends we_dialog_base{
 	}
 
 	function defaultInit(){
-		$this->args["title"] = "";
-		$this->args["lang"] = "";
-		$this->args["class"] = "";
-		$this->args["style"] = "";
+		$this->args = array(
+			"title" => "",
+			"lang" => "",
+			"class" => "",
+			"style" => ""
+		);
 	}
 
-	function getTinyMceJS(){
-		$out = parent::getTinyMceJS();
-		$out .= we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weacronym/js/acronym_init.js');
-		return $out;
+	public static function getTinyMceJS(){
+		return parent::getTinyMceJS() .
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weacronym/js/acronym_init.js');
 	}
 
 	function getJs(){
@@ -97,14 +97,12 @@ class we_dialog_acronym extends we_dialog_base{
 	}
 
 	function getDialogButtons(){
-		$trashbut = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[title]'].value='';weDoOk();");
-
-		$buttons = array();
-		$buttons[] = $trashbut;
+		$buttons = array(
+			we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[title]'].value='';weDoOk();")
+		);
 
 		if(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals){
-			$glossarybut = we_html_button::create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
-			$buttons[] = $glossarybut;
+			$buttons[] = we_html_button::create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
 		}
 
 		$buttons[] = parent::getDialogButtons();
