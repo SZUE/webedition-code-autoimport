@@ -87,7 +87,7 @@ class we_users_user{
 		'ParentWsn' => we_base_request::BOOL,
 		'ParentWso' => we_base_request::BOOL,
 		'ParentWsnl' => we_base_request::BOOL,
-		'ParentCust' => we_base_request::BOOL,
+		'ParentWsCust' => we_base_request::BOOL,
 		'altID' => we_base_request::INT,
 		'LoginDenied' => we_base_request::BOOL,
 		'UseSalt' => we_base_request::INT
@@ -174,17 +174,17 @@ class we_users_user{
 	// Customer workspaces
 	private $workSpaceCust = '';
 	// Flag which indicated if user inherits files workspaces from parent
-	var $ParentWs = 0;
+	var $ParentWs = 1;
 	// Flag which indicated if user inherits templates workspaces from parent
-	var $ParentWst = 0;
+	var $ParentWst = 1;
 	// Flag which indicated if user inherits templates workspaces from parent
-	var $ParentWsn = 0;
+	var $ParentWsn = 1;
 	// Flag which indicated if user inherits objetcs workspaces from parent
-	var $ParentWso = 0;
+	var $ParentWso = 1;
 	// Flag which indicated if user inherits newsletters workspaces from parent
-	var $ParentWsnl = 0;
+	var $ParentWsnl = 1;
 	// Flag which indicated if user inherits customer "workspaces" from parent
-	private $ParentWsCust = 0;
+	private $ParentWsCust = 1;
 	var $LoginDenied = 0;
 	// Flag which indicated if user inherits templates workspaces from parent
 	var $initExt = 0;
