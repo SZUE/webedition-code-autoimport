@@ -92,7 +92,7 @@ var _msgWarning = "$warningText";
 var _msgError   = "$errorText";
 
 
-var _console_$this->_consoleName = new messageConsoleView( '$this->_consoleName', window );
+var _console_$this->_consoleName = new messageConsoleView( '$this->_consoleName', this.window );
 _console_$this->_consoleName.register();
 
 onunload=function() {

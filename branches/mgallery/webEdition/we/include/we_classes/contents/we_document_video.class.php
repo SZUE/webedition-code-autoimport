@@ -112,12 +112,12 @@ class we_document_video extends we_binaryDocument{
 				getHtmlTag('video', array_filter(array(
 				'style' => 'width:' . ($width? : 400) . 'px;height:' . ($height? : 400) . 'px;' . ($preload ? 'margin-left:2em;' : '') . ($bgcolor ? 'background-color:' . $bgcolor . ';' : ''),
 				($play ? 'autoplay' : '') => 'autoplay',
-				($control ? 'controls' : '') => 'controls',
+				(!$preload && $control !== '0' ? 'controls' : '') => 'controls',
 				($mute ? 'muted' : '') => 'muted',
 				($loop ? 'loop' : '') => 'loop',
 				($name ? 'name' : '') => $name,
 				($poster ? 'poster' : '') => $poster,
-				'preload' => ($preload ? 'metadata' : 'none')
+				'preload' => ($preload || !$poster ? 'metadata' : 'none')
 				)), getHtmlTag('source', array(
 				'src' => ( $dyn ?
 					WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . we_base_file::getUniqueId() :

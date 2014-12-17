@@ -43,8 +43,8 @@ function we_tag_sessionField($attribs, $content){
 	$autofill = weTag_getAttribute('autofill', $attribs, false, we_base_request::BOOL);
 	if($autofill){
 		$condition = ($name === 'Username' ?
-						array('caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0) :
-						array('caps' => 3, 'small' => 4, 'nums' => 3, 'specs' => 2));
+				array('caps' => 4, 'small' => 4, 'nums' => 4, 'specs' => 0) :
+				array('caps' => 3, 'small' => 4, 'nums' => 3, 'specs' => 2));
 
 		$pass = new we_customer_generatePassword(7, $condition);
 		$orgVal = $pass->PassGen();
@@ -61,7 +61,7 @@ function we_tag_sessionField($attribs, $content){
 			}
 			try{
 				$date = ($orgVal ? new DateTime((is_numeric($orgVal) ? '@' : '') . $orgVal) : 0);
-			}catch(Exception $e){
+			} catch (Exception $e){
 				$date = new DateTime('now');
 			}
 			return we_html_tools::getDateInput2("s[we_date_" . $name . "]", $date, false, $dateformat, '', '', $xml, $minyear, $maxyear);
@@ -72,21 +72,20 @@ function we_tag_sessionField($attribs, $content){
 			$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
 			$lang = $doc->Language;
 			$langcode = ($lang ?
-							substr($lang, 0, 2) :
-							array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+					substr($lang, 0, 2) :
+					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 			if(!Zend_Locale::hasCache()){
 				Zend_Locale::setCache(getWEZendCache());
 			}
 
 			//$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
-			$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
+			$topCountries = WE_COUNTRIES_TOP ? array_flip(explode(',', WE_COUNTRIES_TOP)) : array();
 			foreach($topCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 			}
-			unset($countryvalue);
 
-			$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
+			$shownCountries = WE_COUNTRIES_SHOWN ? array_flip(explode(',', WE_COUNTRIES_SHOWN)) : array();
 			foreach($shownCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
 			}
@@ -101,18 +100,16 @@ function we_tag_sessionField($attribs, $content){
 			if(WE_COUNTRIES_DEFAULT != ''){
 				$content.='<option value="--" ' . ($orgVal === '--' ? ' selected="selected">' : '>') . WE_COUNTRIES_DEFAULT . '</option>';
 			}
-			foreach($topCountries as $countrykey => &$countryvalue){
+			foreach($topCountries as $countrykey => $countryvalue){
 				$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
 			}
-			unset($countryvalue);
 
 			if($topCountries && $shownCountries){
 				$content.='<option value="-" disabled="disabled">----</option>';
 			}
-			foreach($shownCountries as $countrykey2 => &$countryvalue2){
-				$content.='<option value="' . $countrykey2 . '" ' . ($orgVal == $countrykey2 ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue2) . '</option>';
+			foreach($shownCountries as $countrykey => $countryvalue){
+				$content.='<option value="' . $countrykey . '" ' . ($orgVal == $countrykey ? ' selected="selected">' : '>') . CheckAndConvertISOfrontend($countryvalue) . '</option>';
 			}
-			unset($countryvalue2);
 
 			return getHtmlTag('select', $newAtts, $content, true);
 
@@ -239,7 +236,7 @@ function we_tag_sessionField($attribs, $content){
 				try{
 					$date = new DateTime((is_numeric($orgVal) ? '@' : '') . $orgVal);
 					return $date->format($dateformat);
-				}catch(Exception $e){
+				} catch (Exception $e){
 					//fallback to default return
 				}
 			}
@@ -319,12 +316,12 @@ function we_tag_sessionField($attribs, $content){
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="center">' .
-						$imgTag . '
+					$imgTag . '
 			<input type="hidden" name="s[' . $name . ']" value="' . $_SESSION['webuser']['imgtmp'][$name]["id"] . '" /></td>
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="left">
-			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="WE_SF_IMG_DATA[' . $name . ']" type="file" accept="' . implode(',',we_base_ContentTypes::inst()->getRealContentTypes(we_base_ContentTypes::IMAGE)) . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . ' />
+			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="WE_SF_IMG_DATA[' . $name . ']" type="file" accept="' . implode(',', we_base_ContentTypes::inst()->getRealContentTypes(we_base_ContentTypes::IMAGE)) . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . ' />
 		</td>
 	</tr>
 	<tr>

@@ -24,6 +24,7 @@
  */
 class we_docTypes extends we_class{
 	/* The Text that will be shown in the tree-menue */
+
 	var $DocType = 'New DocType';
 	var $Extension = DEFAULT_STATIC_EXT;
 	var $ParentID = 0;
@@ -128,10 +129,9 @@ class we_docTypes extends we_class{
 				$langkeys[] = $langkey;
 			}
 			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, array('onchange' => 'dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);'), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont") .
-				we_html_element::htmlBr() . we_html_tools::htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
-		} else {
-			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, array(), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
+					we_html_element::htmlBr() . we_html_tools::htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
 		}
+		return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, array(), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
 	}
 
 	private function formCategory(){
@@ -290,14 +290,14 @@ class we_docTypes extends we_class{
 		$n = 'we_' . $this->Name . '_IsDynamic';
 
 		return we_html_forms::checkbox(1, $this->IsDynamic, "check_" . $n, g_l('weClass', '[IsDynamic]'), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, ($this->IsDynamic ? 1 : 0)) .
-			we_html_element::jsElement('
+				we_html_element::jsElement('
 function switchExt(){
 	var a=document.we_form.elements;' .
-				($this->ID ?
-					'if(confirm("' . g_l('weClass', '[confirm_ext_change]') . '")){' : '') .
-				'if(a["we_' . $this->Name . '_IsDynamic"].value==1) {var changeto="' . DEFAULT_DYNAMIC_EXT . '";} else {var changeto="' . DEFAULT_STATIC_EXT . '";}
+						($this->ID ?
+								'if(confirm("' . g_l('weClass', '[confirm_ext_change]') . '")){' : '') .
+						'if(a["we_' . $this->Name . '_IsDynamic"].value==1) {var changeto="' . DEFAULT_DYNAMIC_EXT . '";} else {var changeto="' . DEFAULT_STATIC_EXT . '";}
 	a["we_' . $this->Name . '_Extension"].value=changeto;' .
-				($this->ID ? '}' : '') . '
+						($this->ID ? '}' : '') . '
 }');
 	}
 

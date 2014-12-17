@@ -54,7 +54,7 @@ function getDimension(theString, styleClassElement) {
 		lr.document.open();
 		if (styleClassElement) {
 			lr.document.write('<span class="' + styleClassElement + '">'
-				+ theString + '<\/span>');
+							+ theString + '<\/span>');
 		}
 		else {
 			lr.document.write(theString);

@@ -26,7 +26,6 @@ class we_dialog_base{
 	/*	 * ***********************************************************************
 	 * VARIABLES
 	 * *********************************************************************** */
-
 	var $db = '';
 	var $what = '';
 	var $args = array();
@@ -97,7 +96,7 @@ class we_dialog_base{
 				return $this->getCmdHTML();
 			default:
 				return $this->getHeaderHTML(true) .
-						$this->getFramesetHTML() . '</html>';
+					$this->getFramesetHTML() . '</html>';
 		}
 	}
 
@@ -129,28 +128,28 @@ class we_dialog_base{
 
 	function getFramesetHTML(){
 		return we_html_element::jsElement('
-				var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
-				var isOpera = ' . (we_base_browserDetect::isOpera() ? 'true' : 'false') . ';' .
-						((!(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera())) ?
-								'document.onkeydown = doKeyDown;' : '') . '
+var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
+var isOpera = ' . (we_base_browserDetect::isOpera() ? 'true' : 'false') . ';' .
+				((!(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera())) ?
+					'document.onkeydown = doKeyDown;' : '') . '
 
-				function doKeyDown() {
-					var key = event.keyCode;
+function doKeyDown() {
+	var key = event.keyCode;
 
-					switch(key) {
-						case 27:
-							top.close();
-							break;
+	switch(key) {
+		case 27:
+			top.close();
+			break;
 
-						case 13:
-							self.we_' . $this->ClassName . '_edit_area.weDoOk();
-							break;
-					}
-				}') .
-				we_html_element::htmlBody(array('class' => 'weDialogBody', 'style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onunload' => 'doUnload()')
-						, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-								, we_html_element::htmlExIFrame('navi', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
-								we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+		case 13:
+			self.we_' . $this->ClassName . '_edit_area.weDoOk();
+			break;
+	}
+}') .
+			we_html_element::htmlBody(array('class' => 'weDialogBody', 'style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onunload' => 'doUnload()')
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlExIFrame('navi', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 		));
 	}
 
@@ -174,11 +173,11 @@ class we_dialog_base{
 		$dc = $this->getDialogContentHTML();
 
 		$dialogContent = (is_array($dc) ?
-						we_html_multiIconBox::getHTML('', '100%', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle, '', $this->getDialogHeight()) :
-						we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
+				we_html_multiIconBox::getHTML('', '100%', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle, '', $this->getDialogHeight()) :
+				we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
 
 		return $this->getFormHTML() . $dialogContent .
-				'<input type="hidden" name="we_what" value="cmd" />' . $this->getHiddenArgs() . '</form>';
+			'<input type="hidden" name="we_what" value="cmd" />' . $this->getHiddenArgs() . '</form>';
 	}
 
 	function getDialogHeight(){
@@ -240,19 +239,19 @@ class we_dialog_base{
 
 	function getHeaderHTML($printJS_Style = false){
 		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . STYLESHEET .
-				(isset($this->args['editor']) && $this->args['editor'] === 'tinyMce' ? $this->getTinyMceJS() : '') .
-				($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/weDialogCss.css') .
-				'</head>';
+			(isset($this->args['editor']) && $this->args['editor'] === 'tinyMce' ? static::getTinyMceJS() : '') .
+			($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/weDialogCss.css') .
+			'</head>';
 	}
 
-	function getTinyMceJS(){
+	public static function getTinyMceJS(){
 		return
-				we_html_element::jsElement('var isWeDialog = true;') .
-				we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js') .
-				we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/mctabs.js') .
-				we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/form_utils.js') .
-				we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/validate.js') .
-				we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/editable_selects.js');
+			we_html_element::jsElement('var isWeDialog = true;') .
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js') .
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/mctabs.js') .
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/form_utils.js') .
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/validate.js') .
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/editable_selects.js');
 	}
 
 	function getJs(){
@@ -271,21 +270,21 @@ function doKeyDown(e) {
 		case 27:
 			top.close();
 			break;' .
-						($this->pageNr == $this->numPages && $this->JsOnly ? '
+				($this->pageNr == $this->numPages && $this->JsOnly ? '
 				case 13:
 					if (!textareaFocus) {
 						weDoOk();
 					}
 					break;' : '') .
-						'	}
+				'	}
 }
 
 function weDoOk() {' .
-						($this->pageNr == $this->numPages && $this->JsOnly ? '
+				($this->pageNr == $this->numPages && $this->JsOnly ? '
 			if (!textareaFocus) {
 				' . $this->getOkJs() . '
 			}' : '') .
-						'
+				'
 }
 
 function IsDigit(e) {

@@ -540,13 +540,13 @@ function weonsubmit() {
 </select>';
 	}
 
-	function getTinyMceJS(){
+	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
 				we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/welink/js/welink_init.js');
 	}
 
 	function getJs(){
-		return we_dialog_base::getJs() . we_html_element::jsElement('
+		return parent::getJs() . we_html_element::jsElement('
 var weAcCheckLoop = 0;
 var weFocusedField;
 function setFocusedField(elem){
