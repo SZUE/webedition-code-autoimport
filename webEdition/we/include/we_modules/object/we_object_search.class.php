@@ -30,6 +30,7 @@ class we_object_search extends we_search_base{
 	var $show;
 
 	private static $intFields = array();
+	private static $realFields = array();
 
 	function __construct(){
 		parent::__construct();
@@ -176,14 +177,24 @@ class we_object_search extends we_search_base{
 	function searchfor($searchname, $searchfield, $searchlocation, $tablename, $rows = -1, $start = 0, $order = '', $desc = 0){
 		for($i = 0; $i < count($searchname); $i++){
 			$filteredFields = '';
-			if(!preg_match('/^\d+$/', $searchname[$i])){
+			$fieldsToFilterOut = array();
+
+			$type = !preg_match('/^[-+]?[0-9]*\.?[0-9]+$/', $searchname[$i]) ? 1 : (!preg_match('/^[-+]?\d+$/', $searchname[$i])? 2 : 0);
+			switch($type){
+				case 1:
+					$fieldsToFilterOut = array_merge($fieldsToFilterOut, $this->getRealFields($tablename));
+					//no break!
+				case 2:
+					$fieldsToFilterOut = array_merge($fieldsToFilterOut, $this->getIntFields($tablename));
+			}
+
+			if($fieldsToFilterOut){
 				$arrSearchfield = explode(',', trim($searchfield[$i], ','));
 				foreach($arrSearchfield as $f){
-					if(!in_array($f, $this->getIntFields($tablename))){
+					if(!in_array($f, $fieldsToFilterOut)){
 						$filteredFields .= $f . ',';
 					}
 				}
-
 				$searchfield[$i] = rtrim($filteredFields, ',');
 			}
 		}
@@ -201,8 +212,20 @@ class we_object_search extends we_search_base{
 				self::$intFields[] = $f['name'];
 			}
 		}
-
 		return self::$intFields;
+	}
+
+	private function getRealFields($tablename){
+		if(self::$realFields || !$tablename){
+			return self::$realFields;
+		}
+
+		foreach($this->db->metadata($tablename) as $f){
+			if($f['type'] === 'real'){
+				self::$realFields[] = $f['name'];
+			}
+		}
+		return self::$realFields;
 	}
 
 	function removeFilter($position){
