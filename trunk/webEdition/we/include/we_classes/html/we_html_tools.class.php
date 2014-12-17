@@ -250,7 +250,7 @@ abstract class we_html_tools{
 
 	static function htmlSelect($name, $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $compare = 'value', $width = 0, $cls = 'defaultfont', $oldHtmlspecialchars = true){
 		$ret = '';
-		$selIndex = makeArrayFromCSV($selectedIndex);
+		$selIndex = is_array($selectedIndex) ? $selectedIndex : makeArrayFromCSV($selectedIndex);
 		$optgroup = false;
 		foreach($values as $value => $text){
 			if($text === self::OPTGROUP || $value === self::OPTGROUP){
@@ -678,7 +678,7 @@ abstract class we_html_tools{
 	public static function getJSErrorHandler($plain = false){
 		$ret = 'try{' .
 			'window.onerror=function(msg, file, line, col, errObj){' .
-			(true  ? '
+			(true ? '
 	console.debug(msg);
 	if(errObj){
 		console.debug(errObj);
