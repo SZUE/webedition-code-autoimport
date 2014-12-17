@@ -1068,7 +1068,7 @@ abstract class we_database_base{
 	 * @param type $nodots
 	 * @return string
 	 */
-	public static function getMysqlVer($nodots = true){
+	public static function getMysqlVer(/*$nodots = true*/){
 		$DB_WE = new DB_WE();
 		$res = f('SELECT VERSION()', '', $DB_WE);
 
@@ -1080,9 +1080,9 @@ abstract class we_database_base{
 				$res = explode('-', $res);
 			}
 		}
-		if(isset($res)){
+		/*if(isset($res)){
 			if($nodots){
-				$strver = substr(str_replace('.', '', $res[0]), 0, 4);
+				$strver = str_replace('.', '', $res[0]);
 				$ver = (int) $strver;
 				if(strlen($ver) < 4){
 					$ver = sprintf('%04d', $ver);
@@ -1094,7 +1094,7 @@ abstract class we_database_base{
 				return $ver;
 			}
 			return $res[0];
-		}
+		}*/
 		return '';
 	}
 
