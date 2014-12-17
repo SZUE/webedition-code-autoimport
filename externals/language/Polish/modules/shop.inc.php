@@ -200,6 +200,8 @@ $l_modules_shop=array(
 		'customerdata'=>'Dane klienta',
 		'explanation_customer_odercustomer'=>'Objaśnienie: Te dane zapamiętano tylko w obrębie tego zamówienia, dane z zarządzania klientami pozostały zachowane.',
 		'orderCustomerFields'=>'Pola klienta<br/>(Zamówienie)',
+		'save_alert'=>'If you are using Shop categories, the setting "Shop holder`s place" must not be empty.
+If you can`t select the Shop holder`s country, please check the country settings in Common Preferences.',
 	),
 	'revenue_list'=>'Obrót w ciągu roku:',
 	'saferpayAllowCollectTxt'=>'* Uznać saferpay w trybie ręcznym!',

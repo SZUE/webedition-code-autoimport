@@ -200,6 +200,8 @@ $l_modules_shop=array(
 		'customerdata'=>'Données de clients',
 		'explanation_customer_odercustomer'=>'Explication: Ces données sont seulement enregistrées avec la commande, les données du gestions de client ne seront pas affectées.',
 		'orderCustomerFields'=>'Champs de client<br/>(Commande)',
+		'save_alert'=>'If you are using Shop categories, the setting "Shop holder`s place" must not be empty.
+If you can`t select the Shop holder`s country, please check the country settings in Common Preferences.',
 	),
 	'revenue_list'=>'Chiffre d`affaires annuel:',
 	'saferpayAllowCollectTxt'=>'* regardez dans le manuel de saferpay !',

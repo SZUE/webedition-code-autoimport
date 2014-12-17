@@ -202,6 +202,7 @@ in der Bestellung',
 		'explanation_customer_odercustomer'=>'Erklärung: Diese Daten werden nur innerhalb dieser Bestellung gespeichert, die Daten der Kundenverwaltung bleiben erhalten.',
 		'orderCustomerFields'=>'Felder aus Bestellung<br/>
 übernehmen',
+		'save_alert'=>'Wenn Sie Shop-Kategorien benutzen, darf die Einstellung "Land des Shop-Betreibers" nicht leer sein. Sollte das Betreiber-Land nicht zur Auswahl stehen, prüfen Sie bitte den Reiter "Länder" in den allgemeinen Einstellungen.',
 	),
 	'revenue_list'=>'Umsatz im Jahr:',
 	'saferpayAllowCollectTxt'=>'* saferpay Handbuch beachten!',

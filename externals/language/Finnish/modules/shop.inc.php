@@ -200,6 +200,8 @@ $l_modules_shop=array(
 		'customerdata'=>'Asiakastiedot',
 		'explanation_customer_odercustomer'=>'Selitys: Nämä tiedot tallennetaan vain tilauksen yhteyteen. Asiakashallinnan tietoihin ei kosketa.',
 		'orderCustomerFields'=>'Asiakaskentät<br/>(Tilaus)',
+		'save_alert'=>'If you are using Shop categories, the setting "Shop holder`s place" must not be empty.
+If you can`t select the Shop holder`s country, please check the country settings in Common Preferences.',
 	),
 	'revenue_list'=>'Vuosittainen tuotto:',
 	'saferpayAllowCollectTxt'=>'* kts saferpay Manuaali !',

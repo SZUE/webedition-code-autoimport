@@ -200,6 +200,8 @@ $l_modules_shop=array(
 		'customerdata'=>'Klant gegevens',
 		'explanation_customer_odercustomer'=>'Uitleg: Deze gegevens worden alleen bewaard binnen deze order, de gegevens van de Klanten module blijven ongewijzigd.',
 		'orderCustomerFields'=>'Klant velden<br/>(Bestelling)',
+		'save_alert'=>'If you are using Shop categories, the setting "Shop holder`s place" must not be empty.
+If you can`t select the Shop holder`s country, please check the country settings in Common Preferences.',
 	),
 	'revenue_list'=>'Jaarlijkse omzet:',
 	'saferpayAllowCollectTxt'=>'* bekijk saferpay handleiding !',

@@ -201,6 +201,8 @@ order view',
 		'customerdata'=>'Customer Data',
 		'explanation_customer_odercustomer'=>'Explanation: These data is only saved within the order, the data of the Customer Module will not be touched.',
 		'orderCustomerFields'=>'Use field values<br/>from order',
+		'save_alert'=>'If you are using Shop categories, the setting "Shop holder`s place" must not be empty.
+If you can`t select the Shop holder`s country, please check the country settings in Common Preferences.',
 	),
 	'revenue_list'=>'Annual Turnover:',
 	'saferpayAllowCollectTxt'=>'* see saferpay Manual !',
