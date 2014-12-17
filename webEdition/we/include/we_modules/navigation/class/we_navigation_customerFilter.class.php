@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,11 +27,10 @@
  *
  */
 class we_navigation_customerFilter extends we_customer_abstractFilter{
-
 	var $_useDocumentFilter = true;
 
-	public function __construct(){
-		parent::__construct();
+	public function __construct($mode = self::OFF, array $specificCustomers = array(), array $blackList = array(), array $whiteList = array(), array $filter = array()){
+		parent::__construct($mode, $specificCustomers, $blackList, $whiteList, $filter);
 	}
 
 	/**
@@ -217,16 +215,16 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 
 		$DB_WE = new DB_WE();
 		$DB_WE->query('UPDATE ' . NAVIGATION_TABLE . ' SET ' .
-				we_database_base::arraySetter(array(
-					'LimitAccess' => $_limitAccess,
-					'ApplyFilter' => $_applyFilter,
-					'AllCustomers' => $_allCustomers,
-					'Customers' => makeCSVFromArray($filterObj->getSpecificCustomers(), true),
-					'CustomerFilter' => serialize($filterObj->getFilter()),
-					'BlackList' => makeCSVFromArray($filterObj->getBlackList(), true),
-					'WhiteList' => makeCSVFromArray($filterObj->getWhiteList(), true)
-				)) .
-				' WHERE UseDocumentFilter=1 AND ' . we_navigation_navigation::getNavCondition($id, $table));
+			we_database_base::arraySetter(array(
+				'LimitAccess' => $_limitAccess,
+				'ApplyFilter' => $_applyFilter,
+				'AllCustomers' => $_allCustomers,
+				'Customers' => makeCSVFromArray($filterObj->getSpecificCustomers(), true),
+				'CustomerFilter' => serialize($filterObj->getFilter()),
+				'BlackList' => makeCSVFromArray($filterObj->getBlackList(), true),
+				'WhiteList' => makeCSVFromArray($filterObj->getWhiteList(), true)
+			)) .
+			' WHERE UseDocumentFilter=1 AND ' . we_navigation_navigation::getNavCondition($id, $table));
 	}
 
 }
