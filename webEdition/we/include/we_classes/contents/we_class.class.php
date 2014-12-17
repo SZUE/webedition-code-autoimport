@@ -431,7 +431,7 @@ abstract class we_class{
 			$isobject = ($type === 'tblObjectFile') ? 1 : 0;
 			$type = ($isfolder && $isobject) ? 'tblFile' : ($isobject ? 'tblObjectFile' : $type);
 
-			$delete = f('SELECT 1 FROM ' . LANGLINK_TABLE . ' WHERE DLocale!="' . $this->DB_WE->escape($newLang) . '" DocumentTable="' . $this->DB_WE->escape($type) . '" AND IsObject=' . intval($isobject) . ' AND IsFolder=' . intval($isfolder) . ' AND DID=' . intval($this->ID) . ' LIMIT 1', '', $this->DB_WE);
+			$delete = f('SELECT 1 FROM ' . LANGLINK_TABLE . ' WHERE DLocale!="' . $this->DB_WE->escape($newLang) . '" AND DocumentTable="' . $this->DB_WE->escape($type) . '" AND IsObject=' . intval($isobject) . ' AND IsFolder=' . intval($isfolder) . ' AND DID=' . intval($this->ID) . ' LIMIT 1', '', $this->DB_WE);
 
 			if($delete){
 				$this->DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '" AND IsFolder=' . intval($isfolder) . ' AND IsObject=' . intval($isobject));
