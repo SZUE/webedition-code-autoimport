@@ -100,7 +100,9 @@ abstract class we_html_tools{
 			'name' => 'sel_' . $name,
 			'onfocus' => "change$jsvarname=1;",
 			'onchange' => "if(change$jsvarname) this.form.elements['" . $name . "'].value = this.options[this.selectedIndex].text; change$jsvarname=0; this.selectedIndex = 0;" . $onChange,
-			'style' => (($selectboxWidth != '') ? ('width: ' . $selectboxWidth . 'px;') : '')
+			'style' => (($selectboxWidth != '') ? ('width: ' . $selectboxWidth . 'px;') : ''),
+			'name' => $name,
+			'class' => 'defaultfont'
 		);
 
 		if($disabled){
@@ -117,11 +119,6 @@ abstract class we_html_tools{
 		$_table = new we_html_table(array(
 			'cellpadding' => 0, 'cellspacing' => 0, 'border' => 0
 			), 1, 3);
-
-		$_inputs = array(
-			'name' => $name,
-			'class' => 'defaultfont'
-		);
 
 		if($width){
 			$_inputs['style'] = 'width: ' . $width . 'px;';
@@ -190,25 +187,17 @@ abstract class we_html_tools{
 		foreach($content as $c){
 			$out .= '<tr>' . self::htmlDialogBorder4Row($c, $class, $bgColor) . '</tr>';
 		}
-
 		$out .= '</table>';
 
 		if($buttons){
-			$attribs = array(
-				'border' => 0, 'cellpadding' => 0, 'cellspacing' => 0
-			);
-			$_table = new we_html_table($attribs, 3, 1);
-			$_table->setCol(0, 0, array(
-				'colspan' => 2
-				), $out);
-			$_table->setCol(1, 0, null, self::getPixel($w, 5)); // row for gap between buttons and dialogborder
-			$_table->setCol(2, 0, array(
-				'align' => 'right'
-				), $buttons);
+			$_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 3, 1, array(
+				array(array('colspan' => 2), $out),
+				array(null, self::getPixel($w, 5)), // row for gap between buttons and dialogborder
+				array(array('align' => 'right'), $buttons),
+			));
 			return $_table->getHtml();
-		} else {
-			return $out;
 		}
+		return $out;
 	}
 
 	static function htmlDialogBorder4Row($content, $class = 'middlefont', $bgColor = ''){
@@ -242,21 +231,17 @@ abstract class we_html_tools{
 		foreach($content as $c){
 			$out .= '<tr>' . self::htmlDialogBorder4Row($c, $class, $bgColor) . '</tr>';
 		}
-
 		$out .= '</table>';
 
 		if($buttons){
-			$attribs = array(
-				"border" => 0, "cellpadding" => 0, "cellspacing" => 0
-			);
-			$_table = new we_html_table($attribs, 3, 1);
-			$_table->setCol(0, 0, array("colspan" => 2), $out);
-			$_table->setCol(1, 0, null, self::getPixel($w, 5)); // row for gap between buttons and dialogborder
-			$_table->setCol(2, 0, array("align" => "right"), $buttons);
+			$_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 3, 1, array(
+				array(array("colspan" => 2), $out),
+				array(null, self::getPixel($w, 5)), // row for gap between buttons and dialogborder
+				array(array("align" => "right"), $buttons)
+			));
 			return $_table->getHtml();
-		} else {
-			return $out;
 		}
+		return $out;
 	}
 
 	static function html_select($name, $size, $vals, $value = '', array $attribs = array()){
@@ -393,8 +378,7 @@ abstract class we_html_tools{
 			) . 'this.selectedIndex=0;';
 		$atts['name'] = 'tmp_' . $name;
 		//$atts['size'] = isset($atts['size']) ? $atts['size'] : 1;
-		$atts = removeAttribs($atts, array('size')); //  remove size for choice
-		$selectMenue = getHtmlTag('select', $atts, $opts, true);
+		$selectMenue = getHtmlTag('select', removeAttribs($atts, array('size')), $opts, true); //  remove size for choice
 		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td>' . $textField . '</td><td>' . $selectMenue . '</td></tr></table>';
 	}
 
@@ -430,10 +414,9 @@ abstract class we_html_tools{
 			}
 			$out .= '</select></td></tr></table>';
 			return $out;
-		} else {
-			$_ext = $extensions[0];
-			return self::hidden($name, $_ext) . '<b class="defaultfont">' . $_ext . '</b>';
 		}
+		$_ext = $extensions[0];
+		return self::hidden($name, $_ext) . '<b class="defaultfont">' . $_ext . '</b>';
 	}
 
 	static function pExtensionPopup($name, $selected, $extensions){
@@ -695,7 +678,11 @@ abstract class we_html_tools{
 	public static function getJSErrorHandler($plain = false){
 		$ret = 'try{' .
 			'window.onerror=function(msg, file, line, col, errObj){' .
-			(true || defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ? '
+			(true  ? '
+	console.debug(msg);
+	if(errObj){
+		console.debug(errObj);
+	}
 	postData=\'we_cmd[msg]=\'+encodeURIComponent(msg);
 	postData+=\'&we_cmd[file]=\'+encodeURIComponent(file);
 	postData+=\'&we_cmd[line]=\'+encodeURIComponent(line);
@@ -720,7 +707,7 @@ abstract class we_html_tools{
 	return true;
 ' :
 				'return true;'//prevent JS errors to have influence
-			) . '}}catch(e){}';
+			) . '}}catch(e){console.log(e);}';
 
 		return ($plain ? str_replace("\n", '', $ret) : we_html_element::jsElement($ret));
 	}
