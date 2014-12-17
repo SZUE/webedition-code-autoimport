@@ -1,3 +1,4 @@
+js/weDOM_Safari.js
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -2362,6 +2363,7 @@ jupload/jupload.jar
 jupload/import.php
 jupload
 js/we_textarea_include.inc.php
+js/we_colors.js
 js/weJsStrings.php
 js/weJsStrings.inc.php
 js/seeMode.php

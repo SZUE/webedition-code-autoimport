@@ -26,7 +26,7 @@ function initDragWidgets() {
 
 var oEvt = {
 	obj: null,
-	init: function(oWidgetTbl, oWidgetDiv) {
+	init: function (oWidgetTbl, oWidgetDiv) {
 		oWidgetTbl.onmousedown = oEvt.start;
 		oWidgetTbl.obj = oWidgetDiv;
 		if (isNaN(parseInt(oWidgetDiv.style.left))) {
@@ -39,7 +39,7 @@ var oEvt = {
 		oWidgetDiv.onDragEnd = new Function();
 		oWidgetDiv.onDrag = new Function();
 	},
-	uninit: function(oWidgetTbl, oWidgetDiv) {
+	uninit: function (oWidgetTbl, oWidgetDiv) {
 		window.clearInterval(oWidgetDiv.H);
 		oWidgetTbl.onmousedown = null;
 		oWidgetTbl.obj = null;
@@ -47,7 +47,7 @@ var oEvt = {
 		oWidgetDiv.onDragEnd = null;
 		oWidgetDiv.onDrag = null;
 	},
-	start: function(oMouseEvt) {
+	start: function (oMouseEvt) {
 		var obj = oEvt.obj = this.obj;
 		oMouseEvt = oEvt.getEvt(oMouseEvt);
 		if (oMouseEvt.which != 1) {
@@ -66,7 +66,7 @@ var oEvt = {
 		document.onmousemove = oEvt.drag;
 		return false;
 	},
-	drag: function(oMouseEvt) {
+	drag: function (oMouseEvt) {
 		oMouseEvt = oEvt.getEvt(oMouseEvt);
 		if (oMouseEvt.which == 0) {
 			return oEvt.end();
@@ -92,7 +92,7 @@ var oEvt = {
 		oDiv.onDrag(iLastPosX, iLastPosY);
 		return false;
 	},
-	end: function(oMouseEvt) {
+	end: function (oMouseEvt) {
 		oMouseEvt = oEvt.getEvt(oMouseEvt);
 		document.onmousemove = null;
 		document.onmouseup = null;
@@ -103,7 +103,7 @@ var oEvt = {
 		saveSettings();
 		return oDiv;
 	},
-	getEvt: function(oMouseEvt) {
+	getEvt: function (oMouseEvt) {
 		if (typeof oMouseEvt == 'undefined') {
 			oMouseEvt = window.event;
 		}
@@ -119,7 +119,7 @@ var oEvt = {
 		return oMouseEvt;
 	}
 };
-var le_dragInit = function(oMouseEvt) {
+var le_dragInit = function (oMouseEvt) {
 	oWidget.oTbl = oMouseEvt;
 	oWidget.oTblRow = oWidget.oTbl.tBodies[0].rows[0];
 	oWidget.oCell = oWidget.oTblRow.cells;
@@ -144,14 +144,14 @@ oWidget.Opera = oWidget.br.indexOf('Opera') != -1;
 oWidget.Safari = oWidget.br.indexOf('Safari') != -1;
 oWidget.oShieldId = 'divShieldId';
 oWidget.oModShieldId = 'modDivShieldId';
-oWidget.hide = function() {
+oWidget.hide = function () {
 	oWidget.oTbl.style.display = 'none'
 };
-oWidget.show = function() {
+oWidget.show = function () {
 	oWidget.oTbl.style.display = ''
 };
 oWidget.oMask = null;
-oWidget.p = function() {
+oWidget.p = function () {
 	if (!oWidget.oMask) {
 		oWidget.oMask = document.createElement('div');
 		oWidget.oMask.className = 'le_widget';
@@ -162,13 +162,13 @@ oWidget.p = function() {
 	return oWidget.oMask;
 };
 
-oWidget.applyEvt = function(obj, evt) {
-	return function() {
+oWidget.applyEvt = function (obj, evt) {
+	return function () {
 		return obj[evt].apply(obj, arguments);
 	}
 };
 
-oWidget.adaptOffset = function(oParent) {
+oWidget.adaptOffset = function (oParent) {
 	for (var i = 0; i < oWidget.c.length; i++) {
 		var obj = oWidget.c[i];
 		obj.node.pagePosLeft = oWidget.setOffsetLeftTop(obj.node, true);
@@ -181,7 +181,7 @@ oWidget.adaptOffset = function(oParent) {
 	}
 };
 
-oWidget.setOffsetLeftTop = function(obj, bIterate) {
+oWidget.setOffsetLeftTop = function (obj, bIterate) {
 	var count = 0;
 	while (obj != null) {
 		count += obj['offset' + (bIterate ? 'Left' : 'Top')];
@@ -190,7 +190,7 @@ oWidget.setOffsetLeftTop = function(obj, bIterate) {
 	return count;
 };
 
-oWidget.appendMaskClone = function(aTbl) {
+oWidget.appendMaskClone = function (aTbl) {
 	oWidget.removeMasks();
 	var oNewDiv = document.createElement('div');
 	oNewDiv.id = oWidget.oShieldId;
@@ -204,7 +204,7 @@ oWidget.appendMaskClone = function(aTbl) {
 	document.body.appendChild(oNewDiv);
 };
 
-oWidget.removeMasks = function() {
+oWidget.removeMasks = function () {
 	var aShields = [oWidget.oModShieldId, oWidget.oShieldId];
 	for (var i = 0; i < aShields.length; i++) {
 		var oRemove = gel(aShields[i]);
@@ -215,7 +215,7 @@ oWidget.removeMasks = function() {
 	}
 };
 
-oWidget.br = function() {
+oWidget.br = function () {
 	var s = '';
 	for (var i = 0; i < oWidget.oCell.length; i++) {
 		var oCurrCell = oWidget.oCell[i];
@@ -364,7 +364,7 @@ function drop() {
 }
 
 function setPosition(obj, iPx) {
-	return function() {
+	return function () {
 		var iInnerH = (window.innerHeight < document.body.clientHeight) ? window.innerHeight : document.body.clientHeight;
 		var iScrollTop = document.body.scrollTop;
 		var iMarginTop = 4;

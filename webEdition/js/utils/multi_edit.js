@@ -30,7 +30,7 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 	this.editable = editable;
 	this.delRelatedItems = false;
 
-	this.createItemHidden = function(name) {
+	this.createItemHidden = function (name) {
 
 		var item = document.createElement("input");
 		item.setAttribute("name", name);
@@ -44,18 +44,18 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 		item = null;
 	}
 
-	this.updateHidden = function(item, value) {
+	this.updateHidden = function (item, value) {
 		this.form.elements[this.name + "_variant" + this.currentVariant + "_" + this.name + "_" + item].value = value;
 	}
 
-	this.addVariant = function() {
+	this.addVariant = function () {
 		for (var i = 0; i < this.itemCount; i++) {
 			this.createItemHidden(this.name + "_variant" + this.variantCount + "_" + this.name + "_item" + i);
 		}
 		this.variantCount++;
 	}
 
-	this.deleteVariant = function(variant) {
+	this.deleteVariant = function (variant) {
 		if (variant < (this.variantCount - 1)) {
 			for (var i = variant + 1; i < this.variantCount; i++) {
 				for (var j = 0; j < this.itemCount; j++) {
@@ -79,7 +79,7 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 
 	}
 
-	this.addItem = function() {
+	this.addItem = function () {
 
 		if (arguments[0]) {
 			this.button = arguments[0];
@@ -108,7 +108,7 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 		this.itemCount++;
 	}
 
-	this.delItem = function(child) {
+	this.delItem = function (child) {
 		this.itemCount--;
 		for (var i = 0; i < this.variantCount; i++) {
 			if (child < this.itemCount) {
@@ -141,15 +141,15 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 		this.showVariant(this.currentVariant);
 	}
 
-	this.setItem = function(variant, item, value) {
+	this.setItem = function (variant, item, value) {
 		this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + item].value = value;
 	}
 
-	this.setRelatedItems = function(item) {
+	this.setRelatedItems = function (item) {
 		this.relatedItems[this.itemCount] = item;
 	}
 
-	this.showVariant = function(variant) {
+	this.showVariant = function (variant) {
 
 		for (var i = 0; i < this.itemCount; i++) {
 			if (typeof (this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + i]) != 'undefined') {

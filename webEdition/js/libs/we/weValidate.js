@@ -39,16 +39,16 @@ we.validate = {
 		return true;
 	},
 	domainname:function(domainname){
-		
-		var pattern = /^[^_\-\s/=?\*"'#!§$%&;()\[\]\{\};:,°<>\|][^\s/=?\*"'#!§$%&;()\[\]\{\};:,°<>\|]+$/i;
+
+		var pattern = /^[^_\-\s/=?\*"'#!Â§$%&;()\[\]\{\};:,Â°<>\|][^\s/=?\*"'#!Â§$%&;()\[\]\{\};:,Â°<>\|]+$/i;
 		if(domainname.match(pattern)) return true;
 		return false;
 	},
 	date:function(){
-		// TODO 
+		// TODO
 	},
 	currency:function(){
-		// TODO 
+		// TODO
 	}
-	
+
 }
