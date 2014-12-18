@@ -1,6 +1,11 @@
 /**
  * webEdition CMS
  *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +26,7 @@ function array_search(needle, haystack) {
     var i;
 
     for (i = 0; i < haystack.length; i++) {
-	if (needle == haystack[i]) 
+	if (needle == haystack[i])
 	    return i;
     }
 
@@ -32,7 +37,7 @@ function array_two_dim_search(needle, haystack, offset) {
     var i;
 
     for (i = 0; i < haystack.length; i++) {
-	if (needle == haystack[i][offset]) 
+	if (needle == haystack[i][offset])
 	    return i;
     }
 
@@ -47,7 +52,7 @@ function user_array_search(needle, haystack, offset, type) {
 	    continue;
 	}
 
-	if (needle == haystack[i][offset]) 
+	if (needle == haystack[i][offset])
 	    return i;
     }
 
@@ -66,7 +71,7 @@ function array_rm_elem(arr, elem, tdim_off) {
 	index = array_two_dim_search(elem, arr, tdim_off);
     }
 
-    // Delete entry from entries_selected 
+    // Delete entry from entries_selected
     if (index != -1) {
 	arr1 = arr.slice(0, index);
 	arr2 = arr.slice(index + 1, arr.length);
