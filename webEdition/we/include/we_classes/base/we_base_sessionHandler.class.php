@@ -74,7 +74,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			if(!$max){
 				//set this session our session
 				$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="' . $this->id . '",lockTime=NOW() WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
-				t_e('session was not releases properly, emergency release done');
+				t_e('session was not releases properly, emergency release done', $sessID, $this->sessionName);
 			}
 			if($data){
 				$data = ($data[0] === '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data);
