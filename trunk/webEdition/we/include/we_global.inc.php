@@ -1065,10 +1065,12 @@ function we_templateHead($fullHeader = false){
 			return;
 		}
 	}
-	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' : '') . STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY .
-	we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() .
+	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' . we_html_tools::getJSErrorHandler() : '') .
+	STYLESHEET_BUTTONS_ONLY .
+	SCRIPT_BUTTONS_ONLY .
+	we_html_element::jsScript(JS_DIR . 'windows.js') .
 	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
-	we_html_tools::getJSErrorHandler() .
+	weSuggest::getYuiFiles() .
 	we_html_element::jsElement('parent.openedWithWE = 1;');
 	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	if($fullHeader){
