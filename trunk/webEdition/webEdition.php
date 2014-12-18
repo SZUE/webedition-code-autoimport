@@ -146,7 +146,7 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 	 */
 	function showMessage(message, prio, win) {
 		if (!win) {
-			win = window;
+			win = this.window;
 		}
 		 // default is error, to avoid missing messages
 		prio = prio ? prio : <?php echo we_message_reporting::WE_MESSAGE_ERROR; ?>;

@@ -1065,7 +1065,8 @@ function we_templateHead($fullHeader = false){
 			return;
 		}
 	}
-	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' . we_html_tools::getJSErrorHandler() : '') .
+	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' : '') .
+	we_html_tools::getJSErrorHandler() .
 	STYLESHEET_BUTTONS_ONLY .
 	SCRIPT_BUTTONS_ONLY .
 	we_html_element::jsScript(JS_DIR . 'windows.js') .

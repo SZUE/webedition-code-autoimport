@@ -676,40 +676,9 @@ abstract class we_html_tools{
 	}
 
 	public static function getJSErrorHandler($plain = false){
-		$ret = 'try{
-	window.onerror=function(msg, file, line, col, errObj){
-		console.debug(msg);
-		if(errObj){
-			console.debug(errObj);
-		}
-		postData=\'we_cmd[msg]=\'+encodeURIComponent(msg);
-		postData+=\'&we_cmd[file]=\'+encodeURIComponent(file);
-		postData+=\'&we_cmd[line]=\'+encodeURIComponent(line);
-		if(col){
-			postData+=\'&we_cmd[col]=\'+encodeURIComponent(col);
-		}
-		if(errObj){
-			postData+=\'&we_cmd[errObj]=\'+encodeURIComponent(errObj.stack);
-		}
-		lcaller=arguments.callee.caller;
-		while(lcaller){
-			postData+=\'&we_cmd[]=\'+encodeURIComponent(lcaller.name);
-			lcaller=lcaller.caller;
-		}
-		postData+=\'&we_cmd[App]=\'+encodeURIComponent(navigator.appName);
-		postData+=\'&we_cmd[Ver]=\'+encodeURIComponent(navigator.appVersion);
-		postData+=\'&we_cmd[UA]=\'+encodeURIComponent(navigator.userAgent);
-		xmlhttp=new XMLHttpRequest();
-		xmlhttp.open(\'POST\',\'' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=TriggerJSError&cns=error\',true);
-		xmlhttp.setRequestHeader(\'Content-type\',\'application/x-www-form-urlencoded\');
-		xmlhttp.send(postData);
-	}
-}catch(e){
-console.debug(e);
-}
-';
-
-		return ($plain ? str_replace("\n", '', $ret) : we_html_element::jsElement($ret));
+		return ($plain ?
+				str_replace("\n", '', we_base_file::load(JS_PATH . 'utils/jsErrorHandler.js')) :
+				we_html_element::jsScript(JS_DIR . 'utils/jsErrorHandler.js'));
 	}
 
 	public static function getHtmlInnerHead($title = 'webEdition', $charset = '', $expand = false){
@@ -717,7 +686,10 @@ console.debug(e);
 			self::headerCtCharset('text/html', ($charset ? : $GLOBALS['WE_BACKENDCHARSET']));
 		}
 		return
-			self::getJSErrorHandler() . //load this as early as possible
+			($expand ?
+				we_html_element::jsElement(self::getJSErrorHandler(true)) :
+				self::getJSErrorHandler()
+			) . //load this as early as possible
 			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array('http-equiv' => 'expires', 'content' => 0)) .
 			we_html_element::htmlMeta(array('http-equiv' => 'Cache-Control', 'content' => 'no-cache')) .
