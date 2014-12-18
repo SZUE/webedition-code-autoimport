@@ -286,7 +286,7 @@ we_templateInit();?>';
 			$code = preg_replace('%(<body[^>]*)>%i', '${1}<?php echo (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']? \' onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>', $code);
 
 			$code = str_replace(array('__WE_?__WE__', '__WE_=__WE__'), array('?>', '=>'), $code);
-			$code = str_ireplace(array('<head>', '</head>', '</body>'), array('<head>' . we_html_tools::getJSErrorHandler(), '<?php we_templateHead();?></head>', '<?php we_templatePostContent(true);?></body>'), $code);
+			$code = str_ireplace(array('<head>', '</body>'), array('<head><?php we_templateHead();?>', '<?php we_templatePostContent(true);?></body>'), $code);
 		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
 			$code = '<?php we_templateHead(true);?>' . $code . '<?php we_templatePostContent(false,true);?>';
 		} else {

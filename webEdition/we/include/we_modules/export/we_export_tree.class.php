@@ -113,69 +113,67 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 	function getJSDrawTree(){
 
 		return '
- 		function drawTree(){
-			var out=\'<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr><td class="\'+treeData.getlayout()+\'">\n<nobr>\n\';
-			out+=draw(treeData.startloc,"");
-			out+="</nobr>\n</td></tr></table>\n";
-			' . $this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
-			/*nurl="treeMain.php";
-			win=window.open(nurl);
-			win.document.open();
-			win.document.write(top.treeHTML.innerHTML);
-			win.document.close();*/
-   		}
-
- 		' . $this->getJSDraw();
+function drawTree(){
+	var out=\'<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr><td class="\'+treeData.getlayout()+\'">\n<nobr>\n\';
+	out+=draw(treeData.startloc,"");
+	out+="</nobr>\n</td></tr></table>\n";
+	' . $this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
+	/*nurl="treeMain.php";
+	win=window.open(nurl);
+	win.document.open();
+	win.document.write(top.treeHTML.innerHTML);
+	win.document.close();*/
+	}' . $this->getJSDraw();
 	}
 
 	function getJSCheckNode(){
 		return '
- 	function checkNode(imgName) {
-		var object_name = imgName.substring(4,imgName.length);
-		for(i=1;i<=treeData.len;i++) {
-			if(treeData[i].id == object_name) {
-				' . $this->treeFrame . '.populate(treeData[i].id,treeData.table);
-				if(treeData[i].checked==1) {
-					if(document.images) {
-						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check0_img.src;");
-					}
-					treeData[i].checked=0;
-					if(' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length>1){
-						found=false;
-						' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length+1;
-						for(z=0;z<' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length;z++){
-							if(' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table][z]==treeData[i].id) found=true;
-							if(found){
-								' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table][z]=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table][z+1];
-						}}
-						' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length-2;
-					}
-					else ' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table]=new Array();
+function checkNode(imgName) {
+	var object_name = imgName.substring(4,imgName.length);
+	for(i=1;i<=treeData.len;i++) {
+		if(treeData[i].id == object_name) {
+			' . $this->treeFrame . '.populate(treeData[i].id,treeData.table);
+			if(treeData[i].checked==1) {
+				if(document.images) {
+					eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check0_img.src;");
+				}
+				treeData[i].checked=0;
+				if(' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length>1){
+					found=false;
+					' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length+1;
+					for(z=0;z<' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length;z++){
+						if(' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table][z]==treeData[i].id) found=true;
+						if(found){
+							' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table][z]=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table][z+1];
+					}}
+					' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length-2;
+				}
+				else ' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table]=new Array();
 
-					treeData[i].applylayout();
-					break;
-				}
-				else {
-					if(document.images) {
-						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check1_img.src;");
-					}
-					treeData[i].checked=1;
-					' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].push(treeData[i].id);
-					treeData[i].applylayout();
-					break;
-				}
+				treeData[i].applylayout();
+				break;
 			}
-
-		}
-		if(top.content) {
-			if(typeof(top.content.hot) != "undefined") {
-				top.content.hot=1;
+			else {
+				if(document.images) {
+					eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check1_img.src;");
+				}
+				treeData[i].checked=1;
+				' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].push(treeData[i].id);
+				treeData[i].applylayout();
+				break;
 			}
 		}
-		if(!document.images){
-		 drawTree();
+
+	}
+	if(top.content) {
+		if(typeof(top.content.hot) != "undefined") {
+			top.content.hot=1;
 		}
-		}';
+	}
+	if(!document.images){
+	 drawTree();
+	}
+}';
 	}
 
 	function getHTMLMultiExplorer($width = 500, $height = 250, $useSelector = true){
