@@ -50,6 +50,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	}
 
 	function close(){
+		$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="",lockTime=NULL WHERE session_id=x\'' . session_id() . '\' AND sessionName="' . $this->sessionName . '" AND lockid="' . $this->id . '"');
 		//make sure every access will be an error after close
 		//unset($_SESSION); //navigate tree will not load in phpmyadmin - they use bad code for that...
 		return true;
@@ -73,6 +74,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			if(!$max){
 				//set this session our session
 				$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="' . $this->id . '",lockTime=NOW() WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
+				t_e('session was not releases properly, emergency release done');
 			}
 			if($data){
 				$data = ($data[0] === '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data);
@@ -96,7 +98,8 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			return $this->destroy($sessID);
 		}
 		if(md5($sessID . $sessData) == $this->hash){//if nothing changed,we don't have to bother the db
-			$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET ' .
+				we_database_base::arraySetter(array(
 					'lockid' => $lock ? $this->id : '',
 					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
 				)) . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
