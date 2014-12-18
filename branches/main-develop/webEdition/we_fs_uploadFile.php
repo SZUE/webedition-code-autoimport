@@ -27,7 +27,9 @@ we_html_tools::protect();
 $we_ContentType = we_base_request::_(we_base_request::STRING, 'ct', (isset($_FILES['we_uploadedFile']['name']) ? getContentTypeFromFile($_FILES['we_uploadedFile']['name']) : ''));
 switch($we_ContentType){
 	case we_base_ContentTypes::IMAGE;
-		$allowedContentTypes = we_base_imageEdit::IMAGE_CONTENT_TYPES;
+	case we_base_ContentTypes::VIDEO:
+	case we_base_ContentTypes::AUDIO:
+		$allowedContentTypes = implode(',',we_base_ContentTypes::inst()->getRealContentTypes($we_ContentType));
 		break;
 	case we_base_ContentTypes::APPLICATION;
 		$allowedContentTypes = '';
@@ -49,7 +51,6 @@ if($weFileupload->processFileRequest()){
 	$we_alerttext = (!in_workspace($pid, get_ws(FILE_TABLE), FILE_TABLE, $GLOBALS['DB_WE']) || isset($_FILES['we_uploadedFile']) && !permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name']))) ?
 			g_l('alert', '[upload_targetDir_notallowed]') :
 			'');
-
 	if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploadedFile']['type'] && (($allowedContentTypes === '') || (!(strpos($allowedContentTypes, $_FILES['we_uploadedFile']['type']) === false)))){
 		if(!$we_ContentType){
 			$we_ContentType = getContentTypeFromFile($_FILES['we_uploadedFile']['name']);

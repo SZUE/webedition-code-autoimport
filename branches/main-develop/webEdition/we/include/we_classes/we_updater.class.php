@@ -381,16 +381,16 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 			while($db->next_record()){
 				$data = unserialize($db->f('Catfields'));
 				$udb->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
-							'Title' => $data['default']['Title'],
-							'Description' => $data['default']['Description'],
-						)) . ' WHERE ID=' . $db->f('ID'));
+						'Title' => $data['default']['Title'],
+						'Description' => $data['default']['Description'],
+					)) . ' WHERE ID=' . $db->f('ID'));
 			}
 			//FIXME: enable this, & change to existent after 6.4
 			//$db->delCol(CATEGORY_TABLE, 'Catfields');
 		}
 	}
 
-	static function fixHistory($db){
+	static function fixHistory($db = null){
 		$db = $db? : new DB_WE();
 		if($db->isColExist(HISTORY_TABLE, 'ID')){
 			$db->query('SELECT h1.ID FROM ' . HISTORY_TABLE . ' h1 LEFT JOIN ' . HISTORY_TABLE . ' h2 ON h1.DID = h2.DID AND h1.DocumentTable = h2.DocumentTable AND h1.ModDate = h2.ModDate WHERE h1.ID < h2.ID');
@@ -404,7 +404,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 			}
 			self::replayUpdateDB('tblhistory.sql');
 		}
-		if(f('SELECT COUNT(1) FROM ' . HISTORY_TABLE . ' GROUP BY UID HAVING c>' . we_history::MAX . ' LIMIT 1')){
+		if(f('SELECT COUNT(1) c FROM ' . HISTORY_TABLE . ' GROUP BY UID HAVING c>' . we_history::MAX . ' LIMIT 1')){
 			$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE ModDate="0000-00-00 00:00:00"');
 			$db->query('RENAME TABLE ' . HISTORY_TABLE . ' TO old' . HISTORY_TABLE);
 			//create clean table

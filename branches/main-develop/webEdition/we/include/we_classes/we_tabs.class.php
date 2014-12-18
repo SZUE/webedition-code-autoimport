@@ -169,7 +169,7 @@ var __weEditorFrameController = (top.opener && top.opener.top.opener && top.open
 			var __weEditorFrameController = top.weEditorFrameController;
 }
 
-if (__weEditorFrameController.getVisibleEditorFrame() || (parent.frames && parent.frames[1])) {
+if (__weEditorFrameController &&(__weEditorFrameController.getVisibleEditorFrame()) || (parent.frames && parent.frames[1])) {
 	setTimeout("getPathInfos()",250);
 }
 

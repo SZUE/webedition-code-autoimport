@@ -1,6 +1,11 @@
 /**
  * webEdition CMS
  *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,26 +42,26 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 	this.delRelatedItems = false;
 	this.SelectImageCmd = '';
 
-	this.SetMinCount = function(minCount) {
+	this.SetMinCount = function (minCount) {
 		this.minCount = minCount;
 	}
-	this.toggleMinCount = function() {
+	this.toggleMinCount = function () {
 		if (this.minCount == 1) {
 			this.minCount = 2;
 		} else {
 			this.minCount = 1;
 		}
 	}
-	this.SetImageIDText = function(derText) {
+	this.SetImageIDText = function (derText) {
 		this.imageIDText = derText;
 	}
-	this.SetMediaIDText = function(derText) {
+	this.SetMediaIDText = function (derText) {
 		this.mediaIDText = derText;
 	}
-	this.SetSuccessorIDText = function(derText) {
+	this.SetSuccessorIDText = function (derText) {
 		this.successorIDText = derText;
 	}
-	this.toggleImages = function() {
+	this.toggleImages = function () {
 		if (this.ImagesHidden) {
 			this.ImagesHidden = 0;
 			for (var i = 0; i < this.itemCount; i++) {
@@ -71,19 +76,19 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 		}
 
 	}
-	this.hideImages = function() {
+	this.hideImages = function () {
 		this.ImagesHidden = 1;
 		for (var i = 0; i < this.itemCount; i++) {
 			document.getElementById('tabrowImageID' + i).style.display = "none";
 		}
 	}
-	this.showImages = function() {
+	this.showImages = function () {
 		this.ImagesHidden = 0;
 		for (var i = 0; i < this.itemCount; i++) {
 			document.getElementById('tabrowImageID' + i).style.display = "block";
 		}
 	}
-	this.toggleMedia = function() {
+	this.toggleMedia = function () {
 		if (this.MediaHidden) {
 			this.MediaHidden = 0;
 			for (var i = 0; i < this.itemCount; i++) {
@@ -98,19 +103,19 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 		}
 
 	}
-	this.hideMedia = function() {
+	this.hideMedia = function () {
 		this.MediaHidden = 1;
 		for (var i = 0; i < this.itemCount; i++) {
 			document.getElementById('tabrowMediaID' + i).style.display = "none";
 		}
 	}
-	this.showMedia = function() {
+	this.showMedia = function () {
 		this.MediaHidden = 0;
 		for (var i = 0; i < this.itemCount; i++) {
 			document.getElementById('tabrowMediaID' + i).style.display = "block";
 		}
 	}
-	this.toggleSuccessors = function() {
+	this.toggleSuccessors = function () {
 		if (this.SuccessorsHidden) {
 			this.SuccessorsHidden = 0;
 			for (var i = 0; i < this.itemCount; i++) {
@@ -125,19 +130,19 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 		}
 
 	}
-	this.hideSuccessors = function() {
+	this.hideSuccessors = function () {
 		this.SuccessorsHidden = 1;
 		for (var i = 0; i < this.itemCount; i++) {
 			document.getElementById('tabrowSuccessorID' + i).style.display = "none";
 		}
 	}
-	this.showSuccessors = function() {
+	this.showSuccessors = function () {
 		this.SuccessorsHidden = 0;
 		for (var i = 0; i < this.itemCount; i++) {
 			document.getElementById('tabrowSuccessorID' + i).style.display = "block";
 		}
 	}
-	this.createItemHidden = function(name) {
+	this.createItemHidden = function (name) {
 
 		var item = document.createElement("input");
 		item.setAttribute("name", name);
@@ -151,14 +156,14 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 		item = null;
 	}
 
-	this.updateHidden = function(item, value) {
+	this.updateHidden = function (item, value) {
 		this.form.elements[this.name + "_variant" + this.currentVariant + "_" + this.name + "_" + item].value = value;
 
 	}
 
 
 
-	this.addVariant = function() {
+	this.addVariant = function () {
 		for (var i = 0; i < this.itemCount; i++) {
 			this.createItemHidden(this.name + "_variant" + this.variantCount + "_" + this.name + "_item" + i);
 			this.createItemHidden(this.name + "_variant" + this.variantCount + "_" + this.name + "_itemImageID" + i);
@@ -168,7 +173,7 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 		this.variantCount++;
 	}
 
-	this.deleteVariant = function(variant) {
+	this.deleteVariant = function (variant) {
 		if (variant < (this.variantCount - 1)) {
 			for (var i = variant + 1; i < this.variantCount; i++) {
 				for (var j = 0; j < this.itemCount; j++) {
@@ -197,7 +202,7 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 
 	}
 
-	this.addItem = function() {
+	this.addItem = function () {
 
 
 
@@ -249,7 +254,7 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 		}
 	}
 
-	this.delItem = function(child) {
+	this.delItem = function (child) {
 		this.itemCount--;
 		for (var i = 0; i < this.variantCount; i++) {
 			if (child < this.itemCount) {
@@ -282,28 +287,28 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 		this.showVariant(this.currentVariant);
 	}
 
-	this.setItem = function(variant, item, value) {//alert(this.name+"_variant"+variant+"_"+this.name+"_item"+item);
+	this.setItem = function (variant, item, value) {//alert(this.name+"_variant"+variant+"_"+this.name+"_item"+item);
 		this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + item].value = value;
 	}
-	this.setItemImageID = function(variant, item, value) {
+	this.setItemImageID = function (variant, item, value) {
 		this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_itemImageID" + item].value = value;
 		//alert(this.name+"_variant"+variant+"_"+this.name+"_itemImageID"+item+ ' ' +this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemImageID"+item].value);
 	}
-	this.setItemMediaID = function(variant, item, value) {
+	this.setItemMediaID = function (variant, item, value) {
 		this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_itemMediaID" + item].value = value;
 
 	}
-	this.setItemSuccessorID = function(variant, item, value) {
+	this.setItemSuccessorID = function (variant, item, value) {
 		this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_itemSuccessorID" + item].value = value;
 		//alert(this.name+"_variant"+variant+"_"+this.name+"_itemSuccessorID"+item+ ' ' +this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemSuccessorID"+item].value);
 	}
 
 
-	this.setRelatedItems = function(item) {
+	this.setRelatedItems = function (item) {
 		this.relatedItems[this.itemCount] = item;
 	}
 
-	this.showVariant = function(variant) {
+	this.showVariant = function (variant) {
 		for (var i = 0; i < this.itemCount; i++) {
 			if (variant != this.currentVariant && this.editable) {
 				this.setItem(this.currentVariant, i, this.form.elements[this.name + "_item" + i].value);

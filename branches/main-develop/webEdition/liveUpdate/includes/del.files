@@ -1,7 +1,5 @@
-images/pd/usr/user_blue.gif
-images/pd/usr/user_green.gif
-images/pd/usr/user_orange.gif
-images/pd/usr/user_red.gif
+lib/we/ui/layout/NoteDiv.js
+js/weDOM_Safari.js
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -2109,7 +2107,12 @@ we/include/we_classes/helpers
 we/include/we_classes/fileupload/we_fileupload_uploader_include.class.php
 we/include/we_classes/fileupload/we_fileupload_uploader_importfile.class.php
 we/include/we_classes/fileupload/we_fileupload_uploader_base.class.php
+we/include/we_classes/dialog/we_dialog_table.class.php
+we/include/we_classes/dialog/we_dialog_specialChar.class.php
+we/include/we_classes/dialog/we_dialog_rule.class.php
 we/include/we_classes/dialog/we_dialog_importRtf.class.php
+we/include/we_classes/dialog/we_dialog_color.class.php
+we/include/we_classes/dialog/we_dialog_cell.class.php
 we/include/we_classes/delete/deleteProgressDialog.inc.php
 we/include/we_classes/delete/delFragment.inc.php
 we/include/we_classes/delete/delBackup.inc.php
@@ -2361,6 +2364,7 @@ jupload/jupload.jar
 jupload/import.php
 jupload
 js/we_textarea_include.inc.php
+js/we_colors.js
 js/weJsStrings.php
 js/weJsStrings.inc.php
 js/seeMode.php
@@ -2377,6 +2381,10 @@ js/layers/layers.js
 images/tree/icons/audio.gif
 images/tree/bg_tree.gif
 images/tree/bg.gif
+images/pd/usr/user_red.gif
+images/pd/usr/user_orange.gif
+images/pd/usr/user_green.gif
+images/pd/usr/user_blue.gif
 images/login/left.jpg
 images/login/bottom_l2.jpg
 images/java_menu/menu-arrow.gif

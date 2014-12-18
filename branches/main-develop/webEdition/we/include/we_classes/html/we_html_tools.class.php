@@ -100,7 +100,9 @@ abstract class we_html_tools{
 			'name' => 'sel_' . $name,
 			'onfocus' => "change$jsvarname=1;",
 			'onchange' => "if(change$jsvarname) this.form.elements['" . $name . "'].value = this.options[this.selectedIndex].text; change$jsvarname=0; this.selectedIndex = 0;" . $onChange,
-			'style' => (($selectboxWidth != '') ? ('width: ' . $selectboxWidth . 'px;') : '')
+			'style' => (($selectboxWidth != '') ? ('width: ' . $selectboxWidth . 'px;') : ''),
+			'name' => $name,
+			'class' => 'defaultfont'
 		);
 
 		if($disabled){
@@ -117,11 +119,6 @@ abstract class we_html_tools{
 		$_table = new we_html_table(array(
 			'cellpadding' => 0, 'cellspacing' => 0, 'border' => 0
 			), 1, 3);
-
-		$_inputs = array(
-			'name' => $name,
-			'class' => 'defaultfont'
-		);
 
 		if($width){
 			$_inputs['style'] = 'width: ' . $width . 'px;';
@@ -190,25 +187,17 @@ abstract class we_html_tools{
 		foreach($content as $c){
 			$out .= '<tr>' . self::htmlDialogBorder4Row($c, $class, $bgColor) . '</tr>';
 		}
-
 		$out .= '</table>';
 
 		if($buttons){
-			$attribs = array(
-				'border' => 0, 'cellpadding' => 0, 'cellspacing' => 0
-			);
-			$_table = new we_html_table($attribs, 3, 1);
-			$_table->setCol(0, 0, array(
-				'colspan' => 2
-				), $out);
-			$_table->setCol(1, 0, null, self::getPixel($w, 5)); // row for gap between buttons and dialogborder
-			$_table->setCol(2, 0, array(
-				'align' => 'right'
-				), $buttons);
+			$_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 3, 1, array(
+				array(array('colspan' => 2), $out),
+				array(null, self::getPixel($w, 5)), // row for gap between buttons and dialogborder
+				array(array('align' => 'right'), $buttons),
+			));
 			return $_table->getHtml();
-		} else {
-			return $out;
 		}
+		return $out;
 	}
 
 	static function htmlDialogBorder4Row($content, $class = 'middlefont', $bgColor = ''){
@@ -242,21 +231,17 @@ abstract class we_html_tools{
 		foreach($content as $c){
 			$out .= '<tr>' . self::htmlDialogBorder4Row($c, $class, $bgColor) . '</tr>';
 		}
-
 		$out .= '</table>';
 
 		if($buttons){
-			$attribs = array(
-				"border" => 0, "cellpadding" => 0, "cellspacing" => 0
-			);
-			$_table = new we_html_table($attribs, 3, 1);
-			$_table->setCol(0, 0, array("colspan" => 2), $out);
-			$_table->setCol(1, 0, null, self::getPixel($w, 5)); // row for gap between buttons and dialogborder
-			$_table->setCol(2, 0, array("align" => "right"), $buttons);
+			$_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 3, 1, array(
+				array(array("colspan" => 2), $out),
+				array(null, self::getPixel($w, 5)), // row for gap between buttons and dialogborder
+				array(array("align" => "right"), $buttons)
+			));
 			return $_table->getHtml();
-		} else {
-			return $out;
 		}
+		return $out;
 	}
 
 	static function html_select($name, $size, $vals, $value = '', array $attribs = array()){
@@ -265,7 +250,7 @@ abstract class we_html_tools{
 
 	static function htmlSelect($name, $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $compare = 'value', $width = 0, $cls = 'defaultfont', $oldHtmlspecialchars = true){
 		$ret = '';
-		$selIndex = makeArrayFromCSV($selectedIndex);
+		$selIndex = is_array($selectedIndex) ? $selectedIndex : makeArrayFromCSV($selectedIndex);
 		$optgroup = false;
 		foreach($values as $value => $text){
 			if($text === self::OPTGROUP || $value === self::OPTGROUP){
@@ -393,8 +378,7 @@ abstract class we_html_tools{
 			) . 'this.selectedIndex=0;';
 		$atts['name'] = 'tmp_' . $name;
 		//$atts['size'] = isset($atts['size']) ? $atts['size'] : 1;
-		$atts = removeAttribs($atts, array('size')); //  remove size for choice
-		$selectMenue = getHtmlTag('select', $atts, $opts, true);
+		$selectMenue = getHtmlTag('select', removeAttribs($atts, array('size')), $opts, true); //  remove size for choice
 		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td>' . $textField . '</td><td>' . $selectMenue . '</td></tr></table>';
 	}
 
@@ -430,10 +414,9 @@ abstract class we_html_tools{
 			}
 			$out .= '</select></td></tr></table>';
 			return $out;
-		} else {
-			$_ext = $extensions[0];
-			return self::hidden($name, $_ext) . '<b class="defaultfont">' . $_ext . '</b>';
 		}
+		$_ext = $extensions[0];
+		return self::hidden($name, $_ext) . '<b class="defaultfont">' . $_ext . '</b>';
 	}
 
 	static function pExtensionPopup($name, $selected, $extensions){
@@ -693,43 +676,21 @@ abstract class we_html_tools{
 	}
 
 	public static function getJSErrorHandler($plain = false){
-		$ret = 'try{' .
-			'window.onerror=function(msg, file, line, col, errObj){' .
-			(true || defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ? '
-	postData=\'we_cmd[msg]=\'+encodeURIComponent(msg);
-	postData+=\'&we_cmd[file]=\'+encodeURIComponent(file);
-	postData+=\'&we_cmd[line]=\'+encodeURIComponent(line);
-	if(col){
-		postData+=\'&we_cmd[col]=\'+encodeURIComponent(col);
-	}
-	if(errObj){
-		postData+=\'&we_cmd[errObj]=\'+encodeURIComponent(errObj.stack);
-	}
-	lcaller=arguments.callee.caller;
-	while(lcaller){
-		postData+=\'&we_cmd[]=\'+encodeURIComponent(lcaller.name);
-		lcaller=lcaller.caller;
-	}
-	postData+=\'&we_cmd[App]=\'+encodeURIComponent(navigator.appName);
-	postData+=\'&we_cmd[Ver]=\'+encodeURIComponent(navigator.appVersion);
-	postData+=\'&we_cmd[UA]=\'+encodeURIComponent(navigator.userAgent);
-	xmlhttp=new XMLHttpRequest();
-	xmlhttp.open(\'POST\',\'' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=TriggerJSError&cns=error\',true);
-	xmlhttp.setRequestHeader(\'Content-type\',\'application/x-www-form-urlencoded\');
-	xmlhttp.send(postData);
-	return true;
-' :
-				'return true;'//prevent JS errors to have influence
-			) . '}}catch(e){}';
-
-		return ($plain ? str_replace("\n", '', $ret) : we_html_element::jsElement($ret));
+		return ($plain ?
+				str_replace("\n", '', we_base_file::load(JS_PATH . 'utils/jsErrorHandler.js')) :
+				we_html_element::jsScript(JS_DIR . 'utils/jsErrorHandler.js'));
 	}
 
 	public static function getHtmlInnerHead($title = 'webEdition', $charset = '', $expand = false){
 		if(!$expand){
 			self::headerCtCharset('text/html', ($charset ? : $GLOBALS['WE_BACKENDCHARSET']));
 		}
-		return we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
+		return
+			($expand ?
+				we_html_element::jsElement(self::getJSErrorHandler(true)) :
+				self::getJSErrorHandler()
+			) . //load this as early as possible
+			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array('http-equiv' => 'expires', 'content' => 0)) .
 			we_html_element::htmlMeta(array('http-equiv' => 'Cache-Control', 'content' => 'no-cache')) .
 			we_html_element::htmlMeta(array('http-equiv' => 'pragma', 'content' => 'no-cache')) .
@@ -743,7 +704,7 @@ abstract class we_html_tools{
 				we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 				we_html_element::jsScript(JS_DIR . 'attachKeyListener.js')
 
-			) . self::getJSErrorHandler();
+			);
 	}
 
 	static function htmlMetaCtCharset($content, $charset){

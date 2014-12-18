@@ -124,7 +124,6 @@ echo we_html_element::jsElement($content = $_contentTypes);
 					return 'odg.gif';
 			}
 			return "prog.gif";
-
 		} else {
 			tmp = _Contentypes[contentType];
 			if (tmp == undefined) {
@@ -191,7 +190,6 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		onCloseTab: function (val) {
 			frameId = (typeof val) == "object" ? val.id.replace(/close_/g, "") : val;
 			top.weEditorFrameController.closeDocument(frameId);
-
 		},
 		/**
 		 * removes a tab from the tab view
@@ -238,14 +236,20 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		 * sets the tab label
 		 */
 		setText: function (frameId, val) {
-			this.myDoc.getElementById('text_' + frameId).innerHTML = val;
+			text = this.myDoc.getElementById('text_' + frameId);
+			if (text) {
+				text.innerHTML = val;
+			}
 			setTimeout("setFrameSize()", 50);
 		},
 		/**
 		 * sets the tab title
 		 */
 		setTitle: function (frameId, val) {
-			this.myDoc.getElementById('tab_' + frameId).title = val;
+			title = this.myDoc.getElementById('tab_' + frameId);
+			if (title) {
+				title.title = val;
+			}
 		},
 		/**
 		 * sets the id to the icon
@@ -257,11 +261,9 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		 * marks a tab as modified an not safed
 		 */
 		setModified: function (frameId, modified) {
-			if (modified) {
-				this.myDoc.getElementById('mod_' + frameId).src = "<?php echo IMAGE_DIR; ?>multiTabs/modified.gif";
-			} else {
-				this.myDoc.getElementById('mod_' + frameId).src = "<?php echo IMAGE_DIR; ?>pixel.gif";
-			}
+			this.myDoc.getElementById('mod_' + frameId).src = (modified ?
+							"<?php echo IMAGE_DIR; ?>multiTabs/modified.gif" :
+							"<?php echo IMAGE_DIR; ?>pixel.gif");
 		},
 		/**
 		 * displays the loading loading icon
@@ -269,18 +271,14 @@ echo we_html_element::jsElement($content = $_contentTypes);
 		setLoading: function (frameId, loading) {
 			if (loading) {
 				this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(<?php echo IMAGE_DIR; ?>spinner.gif)";
+			} else if (_Contentypes[this.contentType[frameId]]) {
+				var _text = this.myDoc.getElementById('text_' + frameId).innerHTML;
+				var _ext = _text ? _text.replace(/^.*\./, ".") : "";
+				this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(<?php echo TREE_ICON_DIR; ?>" + _getIcon(this.contentType[frameId], _ext) + ")";
 			} else {
-
-
-
-				if (_Contentypes[this.contentType[frameId]]) {
-					var _text = this.myDoc.getElementById('text_' + frameId).innerHTML;
-					var _ext = _text ? _text.replace(/^.*\./, ".") : "";
-					this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(<?php echo TREE_ICON_DIR; ?>" + _getIcon(this.contentType[frameId], _ext) + ")";
-				} else {
-					this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(<?php echo IMAGE_DIR; ?>pixel.gif)";
-				}
+				this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(<?php echo IMAGE_DIR; ?>pixel.gif)";
 			}
+
 		},
 		/**
 		 * displays the content type icon
@@ -313,7 +311,7 @@ echo we_html_element::jsElement($content = $_contentTypes);
 	 * document init
 	 */
 	function init() {
-		top.weMultiTabs = new TabView(document);
+		top.weMultiTabs = new TabView(this.document);
 	}
 //-->
 </script>

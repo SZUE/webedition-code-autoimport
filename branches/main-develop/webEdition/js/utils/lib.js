@@ -1,6 +1,11 @@
 /**
  * webEdition CMS
  *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +34,7 @@ function copy() {
 Array.prototype.copy = copy;
 
 function pop() {
-	var lastItem = this[this.length-1];
+	var lastItem = this[this.length - 1];
 	this.length--;
 	return lastItem;
 }
@@ -46,7 +51,7 @@ Array.prototype.push = push;
 function concat(secondArray) {
 	var firstArray = this.copy();
 
-	for (loop = 0; loop<secondArray.length; loop++) {
+	for (loop = 0; loop < secondArray.length; loop++) {
 		firstArray[firstArray.length] = secondArray[loop];
 	}
 	return firstArray;
@@ -57,8 +62,8 @@ Array.prototype.concat = concat;
 function shift() {
 	var newValue = this[0];
 	var origLength = this.length;
-	for (loop = 0; loop<this.length-1; loop++) {
-		this[loop] = this[loop+1];
+	for (loop = 0; loop < this.length - 1; loop++) {
+		this[loop] = this[loop + 1];
 	}
 	this.length--;
 	return newValue;
@@ -67,8 +72,8 @@ function shift() {
 Array.prototype.shift = shift;
 
 function unshift(item) {
-	for (loop = this.length-1; loop >= 0; loop--) {
-		this[loop+1] = this[loop];
+	for (loop = this.length - 1; loop >= 0; loop--) {
+		this[loop + 1] = this[loop];
 	}
 	this[0] = item;
 	return this.length;
@@ -81,9 +86,9 @@ function permute(theArray) {
 	var newArray = new Array();
 	var randomNum = 0;
 	for (loop = 0; loop < this.length; loop++) {
-		randomNum = Math.round(Math.random() * (tempArray.length-1));
+		randomNum = Math.round(Math.random() * (tempArray.length - 1));
 		newArray[loop] = tempArray[randomNum];
-		tempArray[randomNum] = tempArray[tempArray.length-1];
+		tempArray[randomNum] = tempArray[tempArray.length - 1];
 		tempArray.length--;
 	}
 	return newArray;

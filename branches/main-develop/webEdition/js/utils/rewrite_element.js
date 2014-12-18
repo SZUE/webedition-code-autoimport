@@ -1,6 +1,11 @@
 /**
  * webEdition CMS
  *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +33,7 @@ if (document.layers) {
 function we_element(content, id, className) {
 	this.id = we_element.cnt++;
 	we_element.elements[this.id] = this;
-	this.layerId = id; 
+	this.layerId = id;
 	this.content = content;
 	this.className = className || '';
 	this.writeElement();

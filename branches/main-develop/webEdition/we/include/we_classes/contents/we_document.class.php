@@ -158,9 +158,7 @@ class we_document extends we_root{
 	 */
 
 	function formLanguage($withHeadline = true){
-
 		we_loadLanguageConfig();
-
 		$_defLang = self::getDefaultLanguage();
 		$value = ($this->Language ? : $_defLang);
 		$inputName = 'we_' . $this->Name . '_Language';
@@ -170,10 +168,7 @@ class we_document extends we_root{
 		if(LANGLINK_SUPPORT){
 			$htmlzw = '';
 			foreach($_languages as $langkey => $lang){
-				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblFile' AND DID=" . $this->ID . ' AND Locale="' . $langkey . '"', 'LDID', $this->DB_WE);
-				if(!$LDID){
-					$LDID = 0;
-				}
+				$LDID = intval(f('SELECT LDID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblFile' AND DID=" . $this->ID . ' AND Locale="' . $langkey . '"', '', $this->DB_WE));
 				$divname = 'we_' . $this->Name . '_LanguageDocDiv[' . $langkey . ']';
 				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formLanguageDocument($lang, $langkey, $LDID) . '</div>';
 				$langkeys[] = $langkey;

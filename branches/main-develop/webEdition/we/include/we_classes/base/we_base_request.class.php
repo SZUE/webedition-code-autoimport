@@ -199,7 +199,7 @@ class we_base_request{
 		//FIXME: remove checker at release
 		$preVar = $var;
 		self::_weRequest($var, '', array($varType, $default));
-		if(!is_bool($var)&& !is_array($var) && $preVar != $var && $var != $default){
+		if($varType != self::INTLIST && !is_bool($var) && !is_array($var) && $preVar != $var && $var != $default){
 			t_e('changed var/tag attribute', $preVar, $var);
 		}
 		return $var;
@@ -215,7 +215,9 @@ class we_base_request{
 	 * @return mixed default, if value not set, the filtered value else
 	 */
 	public static function _($type, $name, $default = false){
-
+		if(!isset($_REQUEST)){
+			return $default;
+		}
 		$var = $_REQUEST;
 		$args = func_get_args();
 		/* fixme temporary until 6.3.9 release */

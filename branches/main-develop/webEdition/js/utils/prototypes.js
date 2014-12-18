@@ -1,6 +1,11 @@
 /**
  * webEdition CMS
  *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -161,7 +166,7 @@ function utf8to16(str) {
 function serialize(o) {
 	var p = 0, sb = [], ht = [], hv = 1;
 	function classname(o) {
-		if (typeof(o) === 'undefined' || typeof(o.constructor) === 'undefined') {
+		if (typeof (o) === 'undefined' || typeof (o.constructor) === 'undefined') {
 			return '';
 		}
 		var c = o.constructor.toString();
@@ -227,7 +232,7 @@ function serialize(o) {
 		sb[p++] = 0;
 		sb[p++] = ':{';
 		for (var k in a) {
-			if (typeof(a[k]) !== 'function') {
+			if (typeof (a[k]) !== 'function') {
 				is_int(k) ? ser_integer(k) : ser_string(k);
 				__serialize(a[k]);
 				sb[lp]++;
@@ -239,14 +244,14 @@ function serialize(o) {
 		var cn = classname(o);
 		if (cn === '')
 			ser_null();
-		else if (typeof(o.serialize) !== 'function') {
+		else if (typeof (o.serialize) !== 'function') {
 			sb[p++] = 'O:' + cn.length + ':"';
 			sb[p++] = cn;
 			sb[p++] = '":';
 			var lp = p;
 			sb[p++] = 0;
 			sb[p++] = ':{';
-			if (typeof(o.__sleep) === 'function') {
+			if (typeof (o.__sleep) === 'function') {
 				var a = o.__sleep();
 				for (var kk in a) {
 					ser_string(a[kk]);
@@ -255,7 +260,7 @@ function serialize(o) {
 				}
 			} else {
 				for (var k in o) {
-					if (typeof(o[k]) !== 'function') {
+					if (typeof (o[k]) !== 'function') {
 						ser_string(k);
 						__serialize(o[k]);
 						sb[lp]++;
@@ -285,46 +290,46 @@ function serialize(o) {
 		} else
 			switch (o.constructor) {
 				case Boolean:
-					{
-						hv++;
-						ser_boolean(o);
-						break;
-					}
+				{
+					hv++;
+					ser_boolean(o);
+					break;
+				}
 				case Number:
-					{
-						hv++;
-						is_int(o) ? ser_integer(o) : ser_double(o);
-						break;
-					}
+				{
+					hv++;
+					is_int(o) ? ser_integer(o) : ser_double(o);
+					break;
+				}
 				case String:
-					{
-						hv++;
-						ser_string(o);
-						break;
-					}
+				{
+					hv++;
+					ser_string(o);
+					break;
+				}
 				case Array:
-					{
-						var r = in_ht(o);
-						if (r) {
-							ser_pointref(r);
-						} else {
-							ht[hv++] = o;
-							ser_array(o);
-						}
-						break;
+				{
+					var r = in_ht(o);
+					if (r) {
+						ser_pointref(r);
+					} else {
+						ht[hv++] = o;
+						ser_array(o);
 					}
+					break;
+				}
 				default:
-					{
-						var r = in_ht(o);
-						if (r) {
-							hv++;
-							ser_ref(r);
-						} else {
-							ht[hv++] = o;
-							ser_object(o);
-						}
-						break;
+				{
+					var r = in_ht(o);
+					if (r) {
+						hv++;
+						ser_ref(r);
+					} else {
+						ht[hv++] = o;
+						ser_object(o);
 					}
+					break;
+				}
 			}
 	}
 	__serialize(o);
@@ -434,7 +439,7 @@ function unserialize(ss) {
 			o[k] = __unserialize();
 		}
 		p++;
-		if (typeof(o.__wakeup) === 'function')
+		if (typeof (o.__wakeup) === 'function')
 			o.__wakeup();
 		return o;
 	}
@@ -451,7 +456,7 @@ function unserialize(ss) {
 		}
 		var o = eval(['new ', cn, '()'].join(''));
 		ht[hv++] = o;
-		if (typeof(o.unserialize) !== 'function')
+		if (typeof (o.unserialize) !== 'function')
 			p += n;
 		else
 			o.unserialize(ss.substring(p, p += n));
@@ -519,7 +524,7 @@ var Base64 = {
 	// private property
 	_keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
 	// public method for encoding
-	encode: function(input) {
+	encode: function (input) {
 		var output = "";
 		var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
 		var i = 0;
@@ -552,7 +557,7 @@ var Base64 = {
 		return output;
 	},
 	// public method for decoding
-	decode: function(input) {
+	decode: function (input) {
 		var output = "";
 		var chr1, chr2, chr3;
 		var enc1, enc2, enc3, enc4;
@@ -588,7 +593,7 @@ var Base64 = {
 
 	},
 	// private method for UTF-8 encoding
-	_utf8_encode: function(string) {
+	_utf8_encode: function (string) {
 		string = string.replace(/\r\n/g, "\n");
 		var utftext = "";
 
@@ -614,7 +619,7 @@ var Base64 = {
 		return utftext;
 	},
 	// private method for UTF-8 decoding
-	_utf8_decode: function(utftext) {
+	_utf8_decode: function (utftext) {
 		var string = "";
 		var i = 0;
 		var c = c1 = c2 = 0;

@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_ContentTypes{
+
 	const CLASS_FOLDER_ICON = 'class_folder.gif';
 	const FOLDER_ICON = 'folder.gif';
 	const IMAGE_ICON = 'image.gif';
@@ -52,6 +53,7 @@ class we_base_ContentTypes{
 // Content Type for Images
 			self::IMAGE => array(
 				'Extension' => array('.gif', '.jpg', '.jpeg', '.png', '.svg', '.svgz'),
+				'ContentTypes' => array('image/jpeg', 'image/pjpeg', 'image/gif', 'image/png', 'image/x-png', 'image/svg+xml', 'image/svg-xml', 'image/x-citrix-pjpeg'),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_GRAFIK',
 				'DefaultCode' => '',
@@ -194,6 +196,7 @@ class we_base_ContentTypes{
 			),
 			self::VIDEO => array(
 				'Extension' => array('.mp4', '.m4v', '.ogg', '.webm'),
+				'ContentTypes' => array('video/mp4', 'video/webm','application/ogg', 'video/ogg',),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_FLASH',
 				'DefaultCode' => '',
@@ -203,6 +206,7 @@ class we_base_ContentTypes{
 			),
 			self::AUDIO => array(
 				'Extension' => array('.mp3', '.wav', '.ogg'),
+				'ContentTypes' => array('audio/mp3', 'audio/ogg', 'audio/wav'),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_SONSTIGE',
 				'DefaultCode' => '',
@@ -323,6 +327,10 @@ class we_base_ContentTypes{
 			}
 		}
 		return '';
+	}
+
+	public function getRealContentTypes($type){
+		return (isset($this->ct[$type]['ContentTypes'])) ? $this->ct[$type]['ContentTypes'] : array();
 	}
 
 	public function getFiles(){

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_backup_XMLFileReader{
-
 	const READ_SIZE = 8192;
 
 	static $file = array();
@@ -77,7 +76,7 @@ abstract class we_backup_XMLFileReader{
 
 				if($isend && we_backup_fileReader::preParse($first)){//preparse is true if table is not imported
 					$buffer = '';
-					$isend = $eof(self::$file['fp']) && we_backup_backup::limitsReached('', max(0.1, microtime(true) - $start()), 10);
+					$isend = $eof(self::$file['fp']) && we_backup_backup::limitsReached('', max(0.1, microtime(true) - $start), 10);
 					$count = 0;
 					//keep time if we decided to end
 					$start = $isend ? $start : microtime(true);
@@ -94,13 +93,13 @@ abstract class we_backup_XMLFileReader{
 					t_e('line didn\'t end after 10000 iterations', strlen($buffer), $first, $end);
 					break;
 				}
-			}while(!$isend);
+			} while(!$isend);
 			//  check condition
-			$condition = --$lines > 0 && !$eof(self::$file['fp']) && we_backup_backup::limitsReached('', max(0.1, microtime(true) - $start()), 10);
+			$condition = --$lines > 0 && !$eof(self::$file['fp']) && we_backup_backup::limitsReached('', max(0.1, microtime(true) - $start), 10);
 
 			$data .= $buffer;
 			$condition&=strlen($data) < (5 * 1024 * 1024);
-		}while($condition);
+		} while($condition);
 
 		unset($buffer);
 

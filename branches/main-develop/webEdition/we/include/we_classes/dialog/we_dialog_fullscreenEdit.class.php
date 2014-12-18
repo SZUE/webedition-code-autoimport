@@ -39,7 +39,7 @@ class we_dialog_fullscreenEdit extends we_dialog_base{
 		return we_wysiwyg_editor::getHeaderHTML() . we_html_element::jsElement('isFullScreen = true;') . $e->getHTML();
 	}
 
-	function getTinyMceJS(){
+	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
 			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/wefullscreen/js/fullscreen_init.js');
 	}

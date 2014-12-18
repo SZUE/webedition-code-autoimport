@@ -123,15 +123,16 @@ function pWebEdition_JSwe_cmds(){
 	top.weEditorFrameController.openDocument(arguments[1],arguments[2],arguments[3],"",arguments[4]);
 	}
 	break;
-
 	case "load":
-	if(self.Tree)
-	if(self.Tree.setScrollY)
-	self.Tree.setScrollY();
-	we_cmd("setTab",arguments[1]);
-	//toggleBusy(1);
-	we_repl(self.load,url,arguments[0]);
-	break;
+		if(self.Tree)
+		if(self.Tree.setScrollY)
+		self.Tree.setScrollY();
+		var tbl_prefix = '<?php echo TBL_PREFIX; ?>',
+			table = (typeof arguments[1] != 'undefined' && arguments[1]) ? arguments[1] : 'tblFile';
+		we_cmd("setTab", (tbl_prefix != '' && table.indexOf(tbl_prefix) !== 0 ? tbl_prefix + table : table));
+		//toggleBusy(1);
+		we_repl(self.load,url,arguments[0]);
+		break;
 	case "exit_delete":
 	case "exit_move":
 	deleteMode = false;

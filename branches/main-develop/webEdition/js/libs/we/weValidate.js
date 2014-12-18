@@ -1,6 +1,11 @@
 /**
  * webEdition CMS
  *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,16 +44,16 @@ we.validate = {
 		return true;
 	},
 	domainname:function(domainname){
-		
-		var pattern = /^[^_\-\s/=?\*"'#!§$%&;()\[\]\{\};:,°<>\|][^\s/=?\*"'#!§$%&;()\[\]\{\};:,°<>\|]+$/i;
+
+		var pattern = /^[^_\-\s/=?\*"'#!Â§$%&;()\[\]\{\};:,Â°<>\|][^\s/=?\*"'#!Â§$%&;()\[\]\{\};:,Â°<>\|]+$/i;
 		if(domainname.match(pattern)) return true;
 		return false;
 	},
 	date:function(){
-		// TODO 
+		// TODO
 	},
 	currency:function(){
-		// TODO 
+		// TODO
 	}
-	
+
 }

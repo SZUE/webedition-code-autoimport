@@ -1,6 +1,11 @@
 /**
  * webEdition SDK
  *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of the webEdition SDK. The webEdition SDK is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License

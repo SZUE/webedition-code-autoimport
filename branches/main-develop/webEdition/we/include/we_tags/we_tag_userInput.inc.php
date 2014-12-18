@@ -146,7 +146,7 @@ function we_tag_userInput($attribs, $content){
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="left">
-			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="' . we_base_imageEdit::IMAGE_CONTENT_TYPES . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="' . implode(',', we_base_ContentTypes::inst()->getRealContentTypes(we_base_ContentTypes::IMAGE)) . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
 		</td>
 	</tr>
 	<tr>

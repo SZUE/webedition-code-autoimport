@@ -1,6 +1,11 @@
 /**
  * webEdition CMS
  *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,15 +29,15 @@ var WE_MESSAGE_NOTICE = 1;
 var WE_MESSAGE_WARNING = 2;
 var WE_MESSAGE_ERROR = 4;
 
-function we_showMessage (message, prio, win) {
+function we_showMessage(message, prio, win) {
 	if (win.top.showMessage != null) {
 		win.top.showMessage(message, prio, win);
 	} else if (win.top.opener) {
 		if (win.top.opener.top.showMessage != null) {
 			win.top.opener.top.showMessage(message, prio, win);
-		} else if (typeof win.top.opener.top.opener!='undefined' && win.top.opener.top.opener.top.showMessage != null) {
+		} else if (typeof win.top.opener.top.opener != 'undefined' && win.top.opener.top.opener.top.showMessage != null) {
 			win.top.opener.top.opener.top.showMessage(message, prio, win);
-		} else if (typeof win.top.opener.top.opener!='undefined' && typeof win.top.opener.top.opener.top.opener!='undefined' &&  win.top.opener.top.opener.top.opener.top.showMessage != null) {
+		} else if (typeof win.top.opener.top.opener != 'undefined' && typeof win.top.opener.top.opener.top.opener != 'undefined' && win.top.opener.top.opener.top.opener.top.showMessage != null) {
 			win.top.opener.top.opener.top.opener.top.showMessage(message, prio, win);
 		} else {//nichts gefunden
 			if (!win) {

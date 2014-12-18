@@ -1,6 +1,11 @@
 /**
  * webEdition CMS
  *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,52 +24,54 @@
 
 function We_TabCtrl() {
 	this.tabs = new Array(arguments.length);
-	for(i=0; i<arguments.length; i++) {
+	for (i = 0; i < arguments.length; i++) {
 		this.tabs[i] = arguments[i];
 	}
 
-	this.addTab = new Function("we_tab","this.tabs.push(we_tab)");
+	this.addTab = new Function("we_tab", "this.tabs.push(we_tab)");
 
-	this.getTabCtrls = function() {
+	this.getTabCtrls = function () {
 		var tabRowWidth = 0;
 		var currCtrl = 0;
 		var ctrls = new Array();
 
-		for (var i=0; i<this.tabs.length; i++) {
-			tabRowWidth += this.tabs[i].width+20;
+		for (var i = 0; i < this.tabs.length; i++) {
+			tabRowWidth += this.tabs[i].width + 20;
 			if (tabRowWidth >= winWidth) {
-				tabRowWidth = this.tabs[i].width+20;
+				tabRowWidth = this.tabs[i].width + 20;
 				currCtrl++;
 			}
-			if (typeof(ctrls[currCtrl]) == 'undefined')
+			if (typeof (ctrls[currCtrl]) == 'undefined') {
 				ctrls[currCtrl] = new Array();
+			}
 			ctrls[currCtrl].push(this.tabs[i]);
 		}
 		return ctrls;
 	}
 
-	this.getActiveTab = function() {
-		for (var i=0; i<this.tabs.length; i++) {
-			if (this.tabs[i].state == 2)
+	this.getActiveTab = function () {
+		for (var i = 0; i < this.tabs.length; i++) {
+			if (this.tabs[i].state == 2) {
 				return i;
+			}
 		}
 		return 0;
 	}
 
-	this.setActiveTab = function(activeTab) {
-		for (i=0; i<tabCtrl.tabs.length; i++) {
-			var overOff   = hoveroff;
-			var state     = TAB_NORMAL;
+	this.setActiveTab = function (activeTab) {
+		for (i = 0; i < tabCtrl.tabs.length; i++) {
+			var overOff = hoveroff;
+			var state = TAB_NORMAL;
 			var newSuffix = "";
 
 			if (i == activeTab) {
 				overOff = hovertab;
 				newSuffix = suffix;
-				state  = TAB_ACTIVE;
+				state = TAB_ACTIVE;
 			}
-			eval("tab["+i+"].setStyleClass('tab"+overOff+"');");
-			document.images["tab_left" +i].src = eval(strImgLeft  + newSuffix + overOff + ".src");
-			document.images["tab_right"+i].src = eval(strImgRight + newSuffix + overOff + ".src");
+			eval("tab[" + i + "].setStyleClass('tab" + overOff + "');");
+			document.images["tab_left" + i].src = eval(strImgLeft + newSuffix + overOff + ".src");
+			document.images["tab_right" + i].src = eval(strImgRight + newSuffix + overOff + ".src");
 			tabCtrl.tabs[i].setState(state);
 		}
 		this.setActiveCtrl(activeTab);
@@ -73,23 +80,22 @@ function We_TabCtrl() {
 		document.getElementById("tabs_table").style.display = "";
 	}
 
-	this.setActiveCtrl = function(activeTab) {
+	this.setActiveCtrl = function (activeTab) {
 		var activeCtrl;
 		var currLayer = 0;
 		var tabCtrls;
 
 		tabCtrls = this.getTabCtrls();
-		for (var i=0; i<tabCtrls.length; i++) {
-			for (var y=0; y<tabCtrls[i].length; y++) {
+		for (var i = 0; i < tabCtrls.length; i++) {
+			for (var y = 0; y < tabCtrls[i].length; y++) {
 				if (tabCtrls[i][y].id == activeTab) {
 					activeCtrl = i;
 				}
 			}
 			if (i == activeCtrl) {
-				setLayerTop(theTabLayer[i],(tabCtrls.length-1)*19 + layerPosYOffset);
-			}
-			else {
-				setLayerTop(theTabLayer[i], (currLayer*19 + layerPosYOffset));
+				setLayerTop(theTabLayer[i], (tabCtrls.length - 1) * 19 + layerPosYOffset);
+			} else {
+				setLayerTop(theTabLayer[i], (currLayer * 19 + layerPosYOffset));
 				currLayer++;
 			}
 		}
@@ -97,19 +103,19 @@ function We_TabCtrl() {
 }
 
 function We_Tab(href, title, state, jscode) {
-	this.href  = href;
+	this.href = href;
 	this.title = title;
 	this.state = state;
 	this.jscode = jscode;
 
-	this.getId = function() {
+	this.getId = function () {
 		return we_tabs.length;
 	}
 	this.id = this.getId();
 
 	this.width = getDimension(this.title, 'tab_normal').width;
 
-	this.setState = function(state) {
+	this.setState = function (state) {
 		this.state = state;
 	}
 }
@@ -124,14 +130,14 @@ function addTab(el) {
 	if (el.id == tabCtrl.getActiveTab())
 		_suffix = hovertab;
 	tabContent += '<td width="10">'
-				+ '<img name="tab_left'+el.id+'" src="'+img_path+strImgLeft+global_suffix+_suffix+'.gif" '
-				+ 'onClick="'+el.jscode+';tabCtrl.setActiveTab('+el.id+');" style="cursor:pointer;">'
-				+ '</td>';
-	classElement = new CSSClassElement(el, 'tab'+_suffix);
+					+ '<img name="tab_left' + el.id + '" src="' + img_path + strImgLeft + global_suffix + _suffix + '.gif" '
+					+ 'onClick="' + el.jscode + ';tabCtrl.setActiveTab(' + el.id + ');" style="cursor:pointer;">'
+					+ '</td>';
+	classElement = new CSSClassElement(el, 'tab' + _suffix);
 	tabContent += '<td width="10">'
-				+ '<img name="tab_right'+el.id+'" src="'+img_path+strImgRight+global_suffix+_suffix+'.gif" '
-				+ 'onClick="'+el.jscode+';tabCtrl.setActiveTab('+el.id+');" style="cursor:pointer;">'
-				+ '</td>';
+					+ '<img name="tab_right' + el.id + '" src="' + img_path + strImgRight + global_suffix + _suffix + '.gif" '
+					+ 'onClick="' + el.jscode + ';tabCtrl.setActiveTab(' + el.id + ');" style="cursor:pointer;">'
+					+ '</td>';
 	return classElement;
 }
 
@@ -149,9 +155,9 @@ function CSSClassElement(el, className, block) {
 }
 
 function CSSClassElement_writeElement() {
-	tabContent += '<TD align="center" width="'+this.width+'" id="'+this.elementID
-				+ '" onClick="' + this.jscode + ';tabCtrl.setActiveTab('+this.id+');" '
-				+ this.createClassStyle()+' nowrap unselectable="on">'+this.title+'<\/TD>\n';
+	tabContent += '<TD align="center" width="' + this.width + '" id="' + this.elementID
+					+ '" onClick="' + this.jscode + ';tabCtrl.setActiveTab(' + this.id + ');" '
+					+ this.createClassStyle() + ' nowrap unselectable="on">' + this.title + '<\/TD>\n';
 
 }
 
@@ -162,15 +168,15 @@ function CSSClassElement_createClassStyle() {
 }
 
 CSSClassElement.prototype.createClassStyle =
-	CSSClassElement_createClassStyle;
+				CSSClassElement_createClassStyle;
 
 function CSSClassElement_setStyleClass(className) {
 	this.className = className;
 	if (document.layers) {
 		if (!this.layer)
-		this.layer = document[this.elementID];
+			this.layer = document[this.elementID];
 		var html = '';
-		html += '<span '+this.createClassStyle()+'>'+this.content+'<\/span>';
+		html += '<span ' + this.createClassStyle() + '>' + this.content + '<\/span>';
 		this.layer.document.open();
 		this.layer.document.write(html);
 		this.layer.document.close();
@@ -178,7 +184,7 @@ function CSSClassElement_setStyleClass(className) {
 	else {
 		if (!this.layer)
 			this.layer = document.all ? document.all[this.elementID] :
-				document.getElementById(this.elementID);
+							document.getElementById(this.elementID);
 	}
 	this.layer.className = className;
 }
@@ -189,10 +195,10 @@ CSSClassElements = new Array();
 
 var theTabLayer = new Array();
 
-we_tabInit = function() {
+we_tabInit = function () {
 	tabCtrl = new We_TabCtrl();
 	var id = 0;
-	for (var i=0; i<we_tabs.length; i++) {
+	for (var i = 0; i < we_tabs.length; i++) {
 		if (we_tabs[i].state != 0) {
 			tabCtrl.addTab(we_tabs[id]);
 			id++;
@@ -206,46 +212,45 @@ we_tabInit = function() {
 		var frmRows = parent.document.body.rows;
 		var rows = frmRows.split(",");
 
-		var newFrmRows = 18 + ((tabCtrls.length-1)*19) + layerPosYOffset;
-		for (var i=1; i<rows.length; i++) {
-			newFrmRows += ","+rows[i];
+		var newFrmRows = 18 + ((tabCtrls.length - 1) * 19) + layerPosYOffset;
+		for (var i = 1; i < rows.length; i++) {
+			newFrmRows += "," + rows[i];
 		}
 		if (frmRows != newFrmRows) {
 			parent.document.body.rows = newFrmRows;
 		}
 	}
-	for (var i=0; i<tabCtrls.length; i++) {
+	for (var i = 0; i < tabCtrls.length; i++) {
 		var activeCtrl = false;
 		var rowWidth = 0;
 		var layerPosY = 0;
 
 		tabContent = "";
-		tabContent = '<table id="tabs_table" width="'+winWidth+'" border="0" cellpadding="0" cellspacing="0" style=""><tr>';
- 		for (var y=0; y<tabCtrls[i].length; y++) {
+		tabContent = '<table id="tabs_table" width="' + winWidth + '" border="0" cellpadding="0" cellspacing="0" style=""><tr>';
+		for (var y = 0; y < tabCtrls[i].length; y++) {
 			if (tabCtrls[i][y].id == tabCtrl.getActiveTab()) {
 				activeCtrl = true;
 			}
 			tab[tabCtrls[i][y].id] = addTab(tabCtrls[i][y]);
-			rowWidth += tabCtrls[i][y].width+20;
+			rowWidth += tabCtrls[i][y].width + 20;
 		}
 
-  		tabContent += '<td width="'+(winWidth-rowWidth)+'">'
-			+ '<img src="'+img_tabline+'" width="'+(winWidth-rowWidth)+'" height="18"></td>';
+		tabContent += '<td width="' + (winWidth - rowWidth) + '">'
+						+ '<img src="' + img_tabline + '" width="' + (winWidth - rowWidth) + '" height="18"></td>';
 		tabContent += '</tr></table>';
 
 		if (activeCtrl) {
-			layerPosY = (tabCtrls.length-1)*19+layerPosYOffset;
+			layerPosY = (tabCtrls.length - 1) * 19 + layerPosYOffset;
 			activeCtrl = false;
-		}
-		else {
-			layerPosY = count*19+layerPosYOffset;
+		} else {
+			layerPosY = count * 19 + layerPosYOffset;
 			count++;
 		}
 
-		theTabLayer[i] = createLayer("tabCtrl_"+i, null,
+		theTabLayer[i] = createLayer("tabCtrl_" + i, null,
 						0, layerPosY,
 						winWidth, 18,
 						tabContent,
-    					"", "visible", i);
- 	}
+						"", "visible", i);
+	}
 }
