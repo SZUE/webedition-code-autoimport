@@ -951,6 +951,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 
 						if(we_base_request::_(we_base_request::BOOL, 'WE_UI_DEL_CHECKBOX_' . $imgName)){
 							$_SESSION[$_imgDataId]['doDelete'] = true;
+							$_SESSION[$_imgDataId]['id'] = $_SESSION[$_imgDataId]['id'] ? : (intval($GLOBALS[$key][$formname]->getElement($imgName)) ? : 0);
 						} elseif($filename){
 							// file is selected, check to see if it is an image
 							$ct = getContentTypeFromFile($filename);

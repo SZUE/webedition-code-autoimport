@@ -87,7 +87,7 @@ class we_users_user{
 		'ParentWsn' => we_base_request::BOOL,
 		'ParentWso' => we_base_request::BOOL,
 		'ParentWsnl' => we_base_request::BOOL,
-		'ParentCust' => we_base_request::BOOL,
+		'ParentWsCust' => we_base_request::BOOL,
 		'altID' => we_base_request::INT,
 		'LoginDenied' => we_base_request::BOOL,
 		'UseSalt' => we_base_request::INT
@@ -174,17 +174,17 @@ class we_users_user{
 	// Customer workspaces
 	private $workSpaceCust = '';
 	// Flag which indicated if user inherits files workspaces from parent
-	var $ParentWs = 0;
+	var $ParentWs = 1;
 	// Flag which indicated if user inherits templates workspaces from parent
-	var $ParentWst = 0;
+	var $ParentWst = 1;
 	// Flag which indicated if user inherits templates workspaces from parent
-	var $ParentWsn = 0;
+	var $ParentWsn = 1;
 	// Flag which indicated if user inherits objetcs workspaces from parent
-	var $ParentWso = 0;
+	var $ParentWso = 1;
 	// Flag which indicated if user inherits newsletters workspaces from parent
-	var $ParentWsnl = 0;
+	var $ParentWsnl = 1;
 	// Flag which indicated if user inherits customer "workspaces" from parent
-	private $ParentWsCust = 0;
+	private $ParentWsCust = 1;
 	var $LoginDenied = 0;
 	// Flag which indicated if user inherits templates workspaces from parent
 	var $initExt = 0;
@@ -2501,7 +2501,7 @@ top.content.hloaded=1;') .
 				$passwd = md5($clearPassword . md5($username));
 				break;
 			case self::SALT_CRYPT:
-				if(version_compare(PHP_VERSION, '5.3.7') >= 0){
+				if(version_compare(PHP_VERSION, '5.3.7', '>=')){
 					$passwd = crypt($passwd = substr($clearPassword, 0, 64), $storedPassword);
 				} else {
 					echo 'unable to check passwords php version to old (' . PHP_VERSION . ', needed at least 5.3.7)!';
@@ -2525,13 +2525,12 @@ top.content.hloaded=1;') .
 
 	public static function makeSaltedPassword(&$useSalt, $username, $passwd, $strength = 15){
 		$passwd = substr($passwd, 0, 64);
-		if(version_compare(PHP_VERSION, '5.3.7') >= 0){
+		if(version_compare(PHP_VERSION, '5.3.7', '>=')){
 			$useSalt = self::SALT_CRYPT;
 			return crypt($passwd, '$2y$' . sprintf('%02d', $strength) . '$' . self::getHashIV(22));
-		} else {
-			$useSalt = self::SALT_MD5;
-			return md5($passwd . md5($username));
 		}
+		$useSalt = self::SALT_MD5;
+		return md5($passwd . md5($username));
 	}
 
 	static function readPrefs($id, $db, $login = false){

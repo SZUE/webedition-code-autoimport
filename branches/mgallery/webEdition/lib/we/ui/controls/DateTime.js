@@ -3,6 +3,11 @@
  * webEdition SDK
 
  *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
 
  * This source is part of the webEdition SDK. The webEdition SDK is
 

@@ -29,6 +29,9 @@ class we_object_search extends we_search_base{
 	var $searchfield;
 	var $show;
 
+	private static $intFields = array();
+	private static $realFields = array();
+
 	function __construct(){
 		parent::__construct();
 		if(isset($sessDat) && is_array($sessDat)){
@@ -169,6 +172,60 @@ class we_object_search extends we_search_base{
 		}
 		$out .= '</table>';
 		return $out;
+	}
+
+	function searchfor($searchname, $searchfield, $searchlocation, $tablename, $rows = -1, $start = 0, $order = '', $desc = 0){
+		for($i = 0; $i < count($searchname); $i++){
+			$filteredFields = '';
+			$fieldsToFilterOut = array();
+
+			$type = !preg_match('/^[-+]?\d*\.?\d+$/', $searchname[$i]) ? 1 : (!preg_match('/^[-+]?\d+$/', $searchname[$i])? 2 : 0);
+			switch($type){
+				case 1:
+					$fieldsToFilterOut = array_merge($fieldsToFilterOut, $this->getRealFields($tablename));
+					//no break!
+				case 2:
+					$fieldsToFilterOut = array_merge($fieldsToFilterOut, $this->getIntFields($tablename));
+			}
+
+			if($fieldsToFilterOut){
+				$arrSearchfield = explode(',', trim($searchfield[$i], ','));
+				foreach($arrSearchfield as $f){
+					if(!in_array($f, $fieldsToFilterOut)){
+						$filteredFields .= $f . ',';
+					}
+				}
+				$searchfield[$i] = rtrim($filteredFields, ',');
+			}
+		}
+
+		return parent::searchfor($searchname, $searchfield, $searchlocation, $tablename, $rows, $start, $order, $desc);
+	}
+
+	private function getIntFields($tablename){
+		if(self::$intFields || !$tablename){
+			return self::$intFields;
+		}
+
+		foreach($this->db->metadata($tablename) as $f){
+			if(in_array($f['type'], array('int', 'tinyint', 'smallint', 'mediumint', 'bigint'))){
+				self::$intFields[] = $f['name'];
+			}
+		}
+		return self::$intFields;
+	}
+
+	private function getRealFields($tablename){
+		if(self::$realFields || !$tablename){
+			return self::$realFields;
+		}
+
+		foreach($this->db->metadata($tablename) as $f){
+			if(in_array($f['type'], array('real', 'float', 'double', 'decimal'))){
+				self::$realFields[] = $f['name'];
+			}
+		}
+		return self::$realFields;
 	}
 
 	function removeFilter($position){
