@@ -1,6 +1,11 @@
 /**
  * webEdition CMS
  *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +39,7 @@ function showtip(current,e,text)
 
    else
    {
-       document.tooltip.document.write( 
+       document.tooltip.document.write(
            '<layer bgColor="#FFFFE7" style="border:1px ' +
            'solid black; font-size:12px;color:#000000;">' + text + '</layer>')
        document.tooltip.document.close()

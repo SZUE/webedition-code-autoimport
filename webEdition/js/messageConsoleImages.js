@@ -1,6 +1,11 @@
 /**
  * webEdition CMS
  *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +31,7 @@ var _imgWarning           = new Image();
 	_imgWarning.src       = "/webEdition/images/messageConsole/warning.gif";;
 var _imgWarningActive     = new Image();
 	_imgWarningActive.src = "/webEdition/images/messageConsole/warningActive.gif";
-	
+
 var	_imgError           = new Image();
 	_imgError.src       = "/webEdition/images/messageConsole/error.gif";
 var	_imgErrorActive     = new Image();
