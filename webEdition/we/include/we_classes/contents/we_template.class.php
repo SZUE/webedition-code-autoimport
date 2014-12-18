@@ -25,7 +25,6 @@
 /* a class for handling templates */
 
 class we_template extends we_document{
-
 	var $MasterTemplateID = 0;
 	var $TagWizardCode; // bugfix 1502
 	var $TagWizardSelection; // bugfix 1502
@@ -287,7 +286,7 @@ we_templateInit();?>';
 			$code = preg_replace('%(<body[^>]*)>%i', '${1}<?php echo (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']? \' onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>', $code);
 
 			$code = str_replace(array('__WE_?__WE__', '__WE_=__WE__'), array('?>', '=>'), $code);
-			$code = str_ireplace(array('</head>', '</body>'), array('<?php we_templateHead();?></head>', '<?php we_templatePostContent(true);?></body>'), $code);
+			$code = str_ireplace(array('<head>', '</head>', '</body>'), array('<head>' . we_html_tools::getJSErrorHandler(), '<?php we_templateHead();?></head>', '<?php we_templatePostContent(true);?></body>'), $code);
 		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
 			$code = '<?php we_templateHead(true);?>' . $code . '<?php we_templatePostContent(false,true);?>';
 		} else {
@@ -667,10 +666,10 @@ we_templateInit();?>';
 					$attribs = we_tag_tagParser::parseAttribs($reg[1], true);
 					$name = isset($attribs['name']) ? $attribs['name'] : '';
 					$masterTemplateCode = str_replace($all, ($name ?
-									(isset($masterTags[$name]['content']) ?
-											$masterTags[$name]['content'] :
-											'') :
-									$code), $masterTemplateCode);
+							(isset($masterTags[$name]['content']) ?
+								$masterTags[$name]['content'] :
+								'') :
+							$code), $masterTemplateCode);
 				}
 
 				$code = str_replace('</we:content>', '', $masterTemplateCode);
@@ -773,9 +772,9 @@ we_templateInit();?>';
 		if(defined('SHOP_TABLE') && ($tmp = $this->getElement('allVariants'))){
 			$tmp = @unserialize($tmp);
 			$this->setElement('allVariants', (is_array($tmp) ?
-							$tmp :
-							$this->readAllVariantFields($this->getElement('completeData'))
-					), 'variants');
+					$tmp :
+					$this->readAllVariantFields($this->getElement('completeData'))
+				), 'variants');
 		}
 	}
 

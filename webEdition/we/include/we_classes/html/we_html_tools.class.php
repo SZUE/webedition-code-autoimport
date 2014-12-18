@@ -676,38 +676,38 @@ abstract class we_html_tools{
 	}
 
 	public static function getJSErrorHandler($plain = false){
-		$ret = 'try{' .
-			'window.onerror=function(msg, file, line, col, errObj){' .
-			(true ? '
-	console.debug(msg);
-	if(errObj){
-		console.debug(errObj);
+		$ret = 'try{
+	window.onerror=function(msg, file, line, col, errObj){
+		console.debug(msg);
+		if(errObj){
+			console.debug(errObj);
+		}
+		postData=\'we_cmd[msg]=\'+encodeURIComponent(msg);
+		postData+=\'&we_cmd[file]=\'+encodeURIComponent(file);
+		postData+=\'&we_cmd[line]=\'+encodeURIComponent(line);
+		if(col){
+			postData+=\'&we_cmd[col]=\'+encodeURIComponent(col);
+		}
+		if(errObj){
+			postData+=\'&we_cmd[errObj]=\'+encodeURIComponent(errObj.stack);
+		}
+		lcaller=arguments.callee.caller;
+		while(lcaller){
+			postData+=\'&we_cmd[]=\'+encodeURIComponent(lcaller.name);
+			lcaller=lcaller.caller;
+		}
+		postData+=\'&we_cmd[App]=\'+encodeURIComponent(navigator.appName);
+		postData+=\'&we_cmd[Ver]=\'+encodeURIComponent(navigator.appVersion);
+		postData+=\'&we_cmd[UA]=\'+encodeURIComponent(navigator.userAgent);
+		xmlhttp=new XMLHttpRequest();
+		xmlhttp.open(\'POST\',\'' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=TriggerJSError&cns=error\',true);
+		xmlhttp.setRequestHeader(\'Content-type\',\'application/x-www-form-urlencoded\');
+		xmlhttp.send(postData);
 	}
-	postData=\'we_cmd[msg]=\'+encodeURIComponent(msg);
-	postData+=\'&we_cmd[file]=\'+encodeURIComponent(file);
-	postData+=\'&we_cmd[line]=\'+encodeURIComponent(line);
-	if(col){
-		postData+=\'&we_cmd[col]=\'+encodeURIComponent(col);
-	}
-	if(errObj){
-		postData+=\'&we_cmd[errObj]=\'+encodeURIComponent(errObj.stack);
-	}
-	lcaller=arguments.callee.caller;
-	while(lcaller){
-		postData+=\'&we_cmd[]=\'+encodeURIComponent(lcaller.name);
-		lcaller=lcaller.caller;
-	}
-	postData+=\'&we_cmd[App]=\'+encodeURIComponent(navigator.appName);
-	postData+=\'&we_cmd[Ver]=\'+encodeURIComponent(navigator.appVersion);
-	postData+=\'&we_cmd[UA]=\'+encodeURIComponent(navigator.userAgent);
-	xmlhttp=new XMLHttpRequest();
-	xmlhttp.open(\'POST\',\'' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=TriggerJSError&cns=error\',true);
-	xmlhttp.setRequestHeader(\'Content-type\',\'application/x-www-form-urlencoded\');
-	xmlhttp.send(postData);
-	return true;
-' :
-				'return true;'//prevent JS errors to have influence
-			) . '}}catch(e){console.log(e);}';
+}catch(e){
+console.debug(e);
+}
+';
 
 		return ($plain ? str_replace("\n", '', $ret) : we_html_element::jsElement($ret));
 	}
@@ -716,7 +716,9 @@ abstract class we_html_tools{
 		if(!$expand){
 			self::headerCtCharset('text/html', ($charset ? : $GLOBALS['WE_BACKENDCHARSET']));
 		}
-		return we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
+		return
+			self::getJSErrorHandler() . //load this as early as possible
+			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array('http-equiv' => 'expires', 'content' => 0)) .
 			we_html_element::htmlMeta(array('http-equiv' => 'Cache-Control', 'content' => 'no-cache')) .
 			we_html_element::htmlMeta(array('http-equiv' => 'pragma', 'content' => 'no-cache')) .
@@ -730,7 +732,7 @@ abstract class we_html_tools{
 				we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 				we_html_element::jsScript(JS_DIR . 'attachKeyListener.js')
 
-			) . self::getJSErrorHandler();
+			);
 	}
 
 	static function htmlMetaCtCharset($content, $charset){
