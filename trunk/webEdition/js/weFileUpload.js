@@ -1107,7 +1107,7 @@ var weFileUpload = (function(){
 			};
 
 			this.reloadOpener = function(){
-				top.opener.top.we_cmd('load', this.fileTable?this.fileTable:'tblFile');
+				top.opener.top.we_cmd('load', 'tblFile');
 			};
 
 			this.repaintGUI = function(arg){
