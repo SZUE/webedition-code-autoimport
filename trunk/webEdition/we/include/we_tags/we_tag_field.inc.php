@@ -369,6 +369,8 @@ function we_tag_field($attribs){
 			} else {
 				$testtype = ($type === 'select' && $usekey) ? 'text' : $type;
 				switch(get_class($GLOBALS['lv'])){
+					case 'we_shop_shop':
+						$classid = empty($classid) ? $GLOBALS['lv']->f('wedoc_TableID') : $classid ; //Fix #9223
 					case 'we_object_listview':
 					case 'we_object_tag':
 						if($type === 'select'){// bugfix #6399
