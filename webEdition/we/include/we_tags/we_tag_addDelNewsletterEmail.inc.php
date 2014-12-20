@@ -423,6 +423,8 @@ function we_tag_addDelNewsletterEmail($attribs){
 						}
 						$set .= $abo . "='" . $__db->escape($setVal) . "', ";
 					}
+					
+					
 
 					if($updateCustomerFields){
 						$__db->query('UPDATE ' . CUSTOMER_ADMIN_TABLE . ' SET Value="' . $__db->escape(serialize($customerFields)) . '" WHERE Name="FieldAdds"');
@@ -430,7 +432,10 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 					if($_customerFieldPrefs['customer_html_field'] != 'ID'){
 						$set .= $_customerFieldPrefs['customer_html_field'] . '= "' . $__db->escape($f["subscribe_html"]) . '"';
+					}else{
+						$set = (strripos($set, ",") == (strlen($set)-1)) ? substr($set,0,(strlen($set)-1)) : $set; //Fix #9336
 					}
+					
 					$__db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . $set . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($f["subscribe_mail"]) . '"');
 					break;
 				case 'emailonly':
