@@ -179,9 +179,11 @@ function we_tag_field($attribs){
 		unset($attribs['winprops']);
 	}
 
-	$classid = ($classid ? :
-					(isset($GLOBALS['lv']) ? (($GLOBALS['lv'] instanceof we_object_tag) ? $GLOBALS['lv']->class :
-									(isset($GLOBALS['lv']->classID) ? $GLOBALS['lv']->classID : '')) :
+	$classid = ($classid ?
+					$classid :
+					(isset($GLOBALS['lv']) ? (($GLOBALS['lv'] instanceof we_object_tag) && method_exists($GLOBALS['lv'], 'getObject') && isset($GLOBALS['lv']->getObject()->classID) ? $GLOBALS['lv']->getObject()->classID :
+									(method_exists($GLOBALS['lv'], 'getObject') && isset($GLOBALS['lv']->getObject()->classID) ? $GLOBALS['lv']->getObject()->classID :
+											(isset($GLOBALS['lv']->classID) ? $GLOBALS['lv']->classID : ( ($GLOBALS['lv'] instanceof we_shop_shop) ? $GLOBALS['lv']->f('wedoc_TableID') : '')))) : //Fix #9223
 							($GLOBALS['we_doc'] instanceof we_objectFile ?
 									$GLOBALS['we_doc']->TableID :
 									0)));
@@ -370,7 +372,6 @@ function we_tag_field($attribs){
 				$testtype = ($type === 'select' && $usekey) ? 'text' : $type;
 				switch(get_class($GLOBALS['lv'])){
 					case 'we_shop_shop':
-						$classid = empty($classid) ? $GLOBALS['lv']->f('wedoc_TableID') : $classid ; //Fix #9223
 					case 'we_object_listview':
 					case 'we_object_tag':
 						if($type === 'select'){// bugfix #6399
