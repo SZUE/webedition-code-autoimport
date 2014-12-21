@@ -49,7 +49,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		return true;
 	}
 
-	function close(){
+	function close(){//FIX for php >5.5, where write is only called, if sth. in session changed
 		$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="",lockTime=NULL WHERE session_id=x\'' . session_id() . '\' AND sessionName="' . $this->sessionName . '" AND lockid="' . $this->id . '"');
 		//make sure every access will be an error after close
 		//unset($_SESSION); //navigate tree will not load in phpmyadmin - they use bad code for that...
