@@ -1279,7 +1279,7 @@ function addLocale() {
 			}
 " . (defined('SPELLCHECKER') ? "
 			// Wörterbuch hinzufügen
-			if(confirm('{" . g_l('prefs', '[add_dictionary_question]') . "}')) {
+			if(confirm('" . g_l('prefs', '[add_dictionary_question]') . "')) {
 				top.opener.top.we_cmd('spellchecker_edit_ifthere');
 			}
 " : '') . "
