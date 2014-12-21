@@ -30,7 +30,7 @@ function we_tag_ifNotHtmlMail(){
 	if(isset($GLOBALS['we_editmode'])){
 		return ($GLOBALS['we_editmode'] ? //editmode always HTML Mode
 						false :
-						($GLOBALS['we_doc']->InWebEdition ? (bool) $GLOBALS['we_doc']->getEditorPersistent('newsletterFormat') : false) //html=false, text=true
+						($GLOBALS['we_doc']->InWebEdition ? (bool) $GLOBALS['we_doc']->getEditorPersistent('newsletterFormat') : false) //newsletterFormat: html=false, text=true
 				);
 	}
 	return false;
