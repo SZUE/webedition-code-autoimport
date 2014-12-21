@@ -434,6 +434,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 						$set .= $_customerFieldPrefs['customer_html_field'] . '= "' . $__db->escape($f["subscribe_html"]) . '"';
 					}else{
 						$set = (strripos($set, ",") == (strlen($set)-1)) ? substr($set,0,(strlen($set)-1)) : $set; //Fix #9336
+						t_e('warning','missing newsletter customer settings', 'no customer html field found in settings: field "ID" is not allowed');
 					}
 					
 					$__db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . $set . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($f["subscribe_mail"]) . '"');
