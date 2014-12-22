@@ -37,6 +37,7 @@ function we_tag_ifWorkspace($attribs){
 	}
 
 	foreach($required_path as $path){
+		$path = rtrim($path, '/') . '/';
 		if(strpos($doc->Path, $path) === 0){
 			return true;
 		}
