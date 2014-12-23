@@ -1575,11 +1575,10 @@ class we_object extends we_document{
 		$this->Users = makeCSVFromArray($users, true);
 	}
 
-	function add_css($id){
+	function add_css(array $id){
 		$this->CSS = implode(',', array_filter(
 				array_unique(
-					array_merge(
-						explode(',', $this->CSS), explode(',', $id))
+					array_merge(explode(',', $this->CSS), $id)
 			))
 		);
 	}

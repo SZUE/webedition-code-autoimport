@@ -139,22 +139,21 @@ function getDateWord(f,dateObj){
 				}
 			}
 			$js.=implode('', $js_arr) .
-					'document.write(' . stripslashes(implode('+', $ret)) . ');';
+				'document.write(' . stripslashes(implode('+', $ret)) . ');';
 
 			return we_html_element::jsElement($js);
 		case 'php':
 		default:
-			Zend_Registry::set('Zend_Locale', new Zend_Locale((isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS["weDefaultFrontendLanguage"])));
+			Zend_Registry::set('Zend_Locale', new Zend_Locale((isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS['weDefaultFrontendLanguage'])));
 			$zdate = new Zend_Date();
 
 			//workaround buggy zend dateformat with \h which duplicates the char
 			$ret = '';
 			for($i = 0; $i < strlen($format); $i++){
-				if($format[$i] === '\\'){
-					$ret.=$format[++$i];
-				} else {
-					$ret.=$zdate->toString($format[$i], 'php');
-				}
+				$ret.=($format[$i] === '\\' ?
+						$format[++$i] :
+						$zdate->toString($format[$i], 'php')
+					);
 			}
 			return $ret;
 	}

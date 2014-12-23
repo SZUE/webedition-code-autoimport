@@ -229,7 +229,9 @@ abstract class we_textContentDocument extends we_textDocument{
 				break;
 		}
 		$this->OldPath = $this->Path;
-		$this->loadSchedule();
+		if(isWE()){//no need to load schedule data, if not in editmode
+			$this->loadSchedule();
+		}
 		if($this->Category){ // Category-Fix!
 			$this->Category = $this->i_fixCSVPrePost($this->Category);
 		}

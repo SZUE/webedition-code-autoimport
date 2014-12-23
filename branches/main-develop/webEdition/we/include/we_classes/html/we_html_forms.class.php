@@ -213,7 +213,7 @@ abstract class we_html_forms{
 
 			$_lang = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->Language)) ? $GLOBALS['we_doc']->Language : WE_LANGUAGE;
 			$buttonpos = $buttonpos ? : 'top';
-			$tinyParams = weTag_getAttribute('tinyparams', $attribs, '', we_base_request::STRING);
+			$tinyParams = weTag_getAttribute('tinyparams', $attribs, '', we_base_request::RAW);
 			$templates = weTag_getAttribute('templates', $attribs, '', we_base_request::STRING);
 			$formats = weTag_getAttribute('formats', $attribs, '', we_base_request::STRING);
 

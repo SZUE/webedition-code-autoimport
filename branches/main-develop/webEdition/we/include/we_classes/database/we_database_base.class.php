@@ -247,7 +247,7 @@ abstract class we_database_base{
 	 */
 	protected function _setup(){
 // deactivate MySQL strict mode; don't use query function (error logging)
-		$this->_query('SET SESSION sql_mode="ERROR_FOR_DIVISION_BY_ZERO"');//NO_ZERO_DATE,NO_ZERO_IN_DATE,
+		$this->_query('SET SESSION sql_mode="ERROR_FOR_DIVISION_BY_ZERO"'); //NO_ZERO_DATE,NO_ZERO_IN_DATE,
 		if(defined('DB_SET_CHARSET') && DB_SET_CHARSET != ''){
 			$this->_setCharset(DB_SET_CHARSET);
 		}
@@ -392,7 +392,9 @@ abstract class we_database_base{
 			$this->Insert_ID = $this->_getInsertId();
 			$this->Affected_Rows = $this->_affected_rows();
 // delete getHash DB Cache
-			$this->getHash();
+			if(!strpos($Query_String, ERROR_LOG_TABLE)){
+				$this->getHash();
+			}
 			$repool = true;
 		} elseif(preg_match('/CREATE TEMPORARY/i', $Query_String)){
 			//we have to keep this DB connection with that temp table, since tables are connection dependend
@@ -1029,7 +1031,7 @@ abstract class we_database_base{
 		return self::$linkCount > 0;
 	}
 
-	public function t_e_query($cnt = 1){
+	public static function t_e_query($cnt = 1){
 		self::$Trigger_cnt = $cnt;
 	}
 
@@ -1068,7 +1070,7 @@ abstract class we_database_base{
 	 * @param type $nodots
 	 * @return string
 	 */
-	public static function getMysqlVer(/*$nodots = true*/){
+	public static function getMysqlVer(/* $nodots = true */){
 		$DB_WE = new DB_WE();
 		$res = f('SELECT VERSION()', '', $DB_WE);
 
@@ -1080,21 +1082,21 @@ abstract class we_database_base{
 				$res = explode('-', $res);
 			}
 		}
-		/*if(isset($res)){
-			if($nodots){
-				$strver = str_replace('.', '', $res[0]);
-				$ver = (int) $strver;
-				if(strlen($ver) < 4){
-					$ver = sprintf('%04d', $ver);
-					if(substr($ver, 0, 1) == '0'){
-						$ver = (int) (substr($ver, 1) . '0');
-					}
-				}
+		/* if(isset($res)){
+		  if($nodots){
+		  $strver = str_replace('.', '', $res[0]);
+		  $ver = (int) $strver;
+		  if(strlen($ver) < 4){
+		  $ver = sprintf('%04d', $ver);
+		  if(substr($ver, 0, 1) == '0'){
+		  $ver = (int) (substr($ver, 1) . '0');
+		  }
+		  }
 
-				return $ver;
-			}
-			return $res[0];
-		}*/
+		  return $ver;
+		  }
+		  return $res[0];
+		  } */
 		return '';
 	}
 

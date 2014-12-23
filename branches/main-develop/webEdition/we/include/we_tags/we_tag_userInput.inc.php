@@ -604,7 +604,6 @@ function open_wysiwyg_win(){
 				Zend_Locale::setCache(getWEZendCache());
 			}
 
-			//$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
 			$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 			foreach($topCountries as $countrykey => &$countryvalue){
 				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);

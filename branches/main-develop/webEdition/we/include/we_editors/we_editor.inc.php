@@ -241,7 +241,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$we_doc->DocChanged = true;
 		break;
 	case 'object_add_css':
-		$we_doc->add_css(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
+		$we_doc->add_css(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', 0, 1));
 		break;
 	case 'object_del_css':
 		$we_doc->del_css(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
