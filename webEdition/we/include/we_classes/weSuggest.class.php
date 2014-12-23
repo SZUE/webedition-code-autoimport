@@ -881,16 +881,16 @@ function weInputInArray(arr, val) {
 	div.yuiAcLayer{
 		margin:0px; padding:0px;
 	}' .
-			$containerfields
-				(we_base_browserDetect::isIE() ?
-					' {
+			$containerfields .
+			(we_base_browserDetect::isIE() ?
+				' {
 	position:relative;
 	top:0px !important;
 	margin-top:8px;
 	width:100%;
 	z-index:10000
 }' : //$inputfields {position:absolute;width:100%; margin-top:-2px} /* abs for ie quirks */
-					'{
+				'{
 	position:absolute;
 	top:30px !important;
 }' );
