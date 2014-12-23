@@ -801,37 +801,6 @@ function weInputInArray(arr, val) {
 
 {$this->addJS}
 ");
-		/*		 * *****************************************************
-		  var weShowDebug = true;
-		  var debugsizeW=145;
-		  var debugsizeH='100%';
-		  function debug(text){
-		  }
-		  function doDebugResizeW(){
-		  if(debugsizeW<600) {
-		  debugsize=600;
-		  document.getElementById('DebugResizeW').innerHTML='&lt;';
-		  } else {
-		  debugsize=145;
-		  document.getElementById('DebugResizeW').innerHTML='&gt;';
-		  }
-		  document.getElementById('damd').style.width=debugsize;
-		  }
-		  function doDebugResizeH(){
-		  if(debugsizeH=='30px') {
-		  debugsizeH='100%';
-		  document.getElementById('DebugResizeH').innerHTML='A';
-		  } else {
-		  debugsizeH='30px';
-		  document.getElementById('DebugResizeH').innerHTML='V';
-		  }
-		  document.getElementById('damd').style.height=debugsizeH;
-		  }") . "
-		  <div style='display:none; position:absolute; top:0px; width:145px; height:100%; background:yellow; border: 1px solid red; color:red; z-index:10000' id='damd'>
-		  <div align='center'><button onclick='document.getElementById(\"debug\").innerHTML=\"\"'>clear</button><button id='DebugResizeW' onclick='doDebugResizeW()'>&gt;</button><button id='DebugResizeH' onclick='doDebugResizeH()'>A</button></div><hr>
-		  <div id='debug'></div>
-		  </div>
-		  "; */
 	}
 
 	/**
@@ -839,62 +808,93 @@ function weInputInArray(arr, val) {
 	 *
 	 * @return unknown
 	 */
-	function getYuiCss(){
-		$inputfields = "";
-		$containerfields = "";
-		$yuiAcContent = "";
-		$ysearchquery = "";
-		$yuiAcShadow = "";
-		$ul = "";
-		$li = "";
-		$yuAcHighlight = "";
-		$layer = "";
-		$layerZ = "";
+	function getYuiCss(){//FIXME: add class to these fields instead of individual styling of id
+		$inputfields = $containerfields = $yuiAcContent = $ysearchquery = $yuiAcShadow = $ul = $li = $yuAcHighlight = $layer = $layerZ = "";
 		for($i = 0; $i < count($this->inputfields); $i++){
 			$inputfields .= ($i > 0 ? ", " : "") . "#" . $this->inputfields[$i];
 			$containerfields .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i];
-			$yuiAcContent .= "#" . $this->containerfields[$i] . " .yui-ac-content {position:absolute;left:0px;width:" . (we_base_browserDetect::isIE() ? $this->containerwidth[$i] : ($this->containerwidth[$i] + 4)) . "px;border:1px solid #404040;background:#fff;overflow:hidden;z-index:9050; margin-top:-10px}";
-			$ysearchquery .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " .ysearchquery";
-			$yuiAcShadow .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " .yui-ac-shadow";
-			$ul .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " ul";
-			$li .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " li";
-			$yuAcHighlight .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . " li.yui-ac-highlight";
+			$yuiAcContent .= "#" . $this->containerfields[$i] . ' .yui-ac-content {
+	position:absolute;
+	left:0px;
+	width:' . (we_base_browserDetect::isIE() ? $this->containerwidth[$i] : ($this->containerwidth[$i] + 4)) . 'px;
+	border:1px solid #404040;
+	background:#fff;
+	overflow:hidden;
+	z-index:9050;
+	margin-top:-10px;
+}';
+			$ysearchquery .= ($i > 0 ? ', ' : '') . "#" . $this->containerfields[$i] . ' .ysearchquery';
+			$yuiAcShadow .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . ' .yui-ac-shadow';
+			$ul .= ($i > 0 ? ", " : "") . '#' . $this->containerfields[$i] . ' ul';
+			$li .= ($i > 0 ? ", " : "") . '#' . $this->containerfields[$i] . ' li';
+			$yuAcHighlight .= ($i > 0 ? ', ' : '') . '#' . $this->containerfields[$i] . ' li.yui-ac-highlight';
 		}
 		foreach($this->layer as $i => $cur){
 			$layer .= ($i > 0 ? ", " : "") . "#" . $cur;
-			$layerZ .= "#" . $cur . " {z-index:" . (9010 - $i) . ";}";
+			$layerZ .= "#" . $cur . ' {z-index:' . (9010 - $i) . ';}';
 		}
-		if(we_base_browserDetect::isIE()){
-			$out = (!empty($layer) ? "	$layerZ" : '') . "
-	$inputfields { width:100%; }
-	$containerfields {position:relative; top:0px !important;margin-top:8px; width:100%; z-index:10000 }
-	$yuiAcContent
-	$ysearchquery {position:absolute;right:10px;color:#808080;z-index:10;}
-	$yuiAcShadow {position:absolute;margin:.3em;width:100%;background:#a0a0a0;z-index:9049;}
-	$ul { padding:5px 0;margin-left:0px; background-color:#ffffff}
-	$li { padding:0 5px;cursor:default;white-space:nowrap; }
-	$yuAcHighlight {background:#B5D5FF;}
-	div.yui-ac-bd ul, div.yui-ac-bd li{ margin:0px; padding:0px; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px; line-height:11px}
-	div.yui-ac-bd ul, div.yui-ac-bd ui{ margin:-5px; margin-top:-5px; padding:0px; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px;}
-	div.yuiAcLayer { margin:0px; padding:0px;}
-";
-		} else {
-			$out = (!empty($layer) ?
-					"	$layer {position:relative;margin-bottom:1.5em;width:100%;}/* set width of widget here*/" .
-					$layerZ :
-					'') . "
-	$inputfields {position:absolute;width:100%; margin-top:-2px} /* abs for ie quirks */
-	$containerfields {position:absolute;top:30px !important;}
-	$yuiAcContent
-	$ysearchquery {position:absolute;right:10px;color:#808080;z-index:10;}
-	$yuiAcShadow {position:absolute;margin:.3em;width:100%;background:#a0a0a0;z-index:9049;}
-	$ul { padding:5px 0;margin-left:0px; background-color:#ffffff}
-	$li { padding:0 5px;cursor:default;white-space:nowrap; }
-	$yuAcHighlight {background:#B5D5FF;}
-	div.yui-ac-bd ul, div.yui-ac-bd li{ margin:0px; padding:0px; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px; line-height:11px}
-	div.yui-ac-bd ul, div.yui-ac-bd ui{ margin:-7px; margin-top:-5px; padding:0px; list-style:none; font-family: Verdana, Arial, sans-serif; font-size: 10px;}
-	div.yuiAcLayer { margin:0px; padding:0px;}";
-		}
+		$out = ($layer ? $layerZ : '') .
+			$inputfields . ' {width:100%;}' .
+			$yuiAcContent . ' ' .
+			$ysearchquery . ' {
+	position:absolute;
+	right:10px;
+	color:#808080;
+	z-index:10;
+}' .
+			$yuiAcShadow . ' {
+			position:absolute;
+			margin:.3em;
+			width:100%;
+			background:#a0a0a0;
+			z-index:9049;
+}' .
+			$ul . ' {
+			padding:5px 0;
+			margin-left:0px;
+			background-color:#ffffff
+}' .
+			$li . ' {
+			padding:0 5px;
+			cursor:default;
+			white-space:nowrap;
+}' .
+			$yuAcHighlight . ' {
+	background:#B5D5FF;
+}
+	div.yui-ac-bd ul, div.yui-ac-bd li{
+		margin:0px;
+		padding:0px;
+		list-style:none;
+		font-family: Verdana, Arial, sans-serif;
+		font-size: 10px;
+		line-height:11px;
+	}
+	div.yui-ac-bd ul, div.yui-ac-bd ui{
+		margin:-7px;
+		margin-top:-5px;
+		padding:0px;
+		list-style:none;
+		font-family: Verdana, Arial, sans-serif;
+		font-size: 10px;
+	}
+	div.yuiAcLayer{
+		margin:0px; padding:0px;
+	}' .
+			$containerfields .
+			(we_base_browserDetect::isIE() ?
+				' {
+	position:relative;
+	top:0px !important;
+	margin-top:8px;
+	width:100%;
+	z-index:10000
+}' : //$inputfields {position:absolute;width:100%; margin-top:-2px} /* abs for ie quirks */
+				'{
+	position:absolute;
+	top:30px !important;
+}' );
+
 		return $inputfields ? we_html_element::cssElement($out, array('scoped' => 'scoped')) : '';
 	}
 

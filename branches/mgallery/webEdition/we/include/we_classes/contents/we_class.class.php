@@ -359,10 +359,9 @@ abstract class we_class{
 	}
 
 	protected function i_fixCSVPrePost($in){
-		if($in){
-			return ',' . trim($in, ',') . ',';
-		}
-		return $in;
+		return ($in ?
+				',' . trim($in, ',') . ',' :
+				$in);
 	}
 
 	protected function i_savePersistentSlotsToDB($felder = ''){
