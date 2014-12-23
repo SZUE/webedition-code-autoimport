@@ -636,7 +636,7 @@ function runAtWin(){
 }
 
 function weMemDebug(){
-	echo "Mem usage " . round(((memory_get_usage() / 1024) / 1024), 3) . " MiB\n" .
+	echo 'Mem usage ' . round(((memory_get_usage() / 1024) / 1024), 3) . " MiB\n" .
 	(microtime(true) - floatval($_SERVER['REQUEST_TIME_FLOAT'])) . ' ';
 }
 
@@ -1111,6 +1111,7 @@ function we_templatePost(){
 		}
 		if(defined('DEBUG_MEM')){
 			weMemDebug();
+			p_r(get_included_files());
 		}
 		if(ob_get_level() && count(array_diff(ob_list_handlers(), array('zlib output compression')))){//if still document active, we have to do url replacements
 			$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
@@ -1151,14 +1152,13 @@ function show_SeoLinks(){
 function we_TemplateExit($param = 0){
 	if(isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC']){
 		exit($param);
-	} else {
-//we are inside we, we don't terminate here
-		if($param){
-			echo $param;
-		}
-//FIXME: use g_l
-		t_e('template forces document to exit, see Backtrace for template name. Message of statement', $param);
 	}
+//we are inside we, we don't terminate here
+	if($param){
+		echo $param;
+	}
+//FIXME: use g_l
+	t_e('template forces document to exit, see Backtrace for template name. Message of statement', $param);
 }
 
 function getWEZendCache($lifetime = 1800){
