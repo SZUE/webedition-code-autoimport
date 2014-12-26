@@ -47,7 +47,6 @@ function we_tag_var($attribs){
 			$return = getArrayValue($_SESSION, null, $name_orig);
 			break;
 		case 'request' :
-			$return = $_REQUEST;
 			$return = we_base_util::rmPhp(we_base_request::filterVar(getArrayValue($_REQUEST, null, $name_orig), $varType));
 			break;
 		case 'post' :
