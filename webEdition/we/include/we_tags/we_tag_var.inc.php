@@ -98,8 +98,8 @@ function we_tag_var($attribs){
 				$format = '';
 			}
 			// bugfix 7557
-			// wenn die Abfrage im Aktuellen Objekt kein Erg?bnis liefert
-			// wird in den eingebundenen Objekten ?berpr?ft ob das Feld existiert
+			// wenn die Abfrage im Aktuellen Objekt kein Ergebnis liefert
+			// wird in den eingebundenen Objekten ueberprueft ob das Feld existiert
 			$name = ($type === 'select' && $normVal == '' ? $name_orig : $name);
 			$selectKey = weTag_getAttribute('key', $attribs, false, we_base_request::BOOL);
 			if($type === 'select' && $selectKey){
