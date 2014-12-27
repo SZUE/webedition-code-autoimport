@@ -332,7 +332,7 @@ abstract class we_html_tools{
 
 		foreach($selected as $val){
 			$countryselect->selectOption($val);
-			if(!multiple){
+			if(!$multiple){
 				break;
 			}
 		}
