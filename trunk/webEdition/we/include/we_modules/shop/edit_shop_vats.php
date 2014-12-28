@@ -34,7 +34,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$province = we_base_request::_(we_base_request::STRING, 'weShopVatProvince');
 		$territory = we_base_request::_(we_base_request::STRING, 'weShopVatCountry') . ($province ? '-' . $province : '');
 
-		$weShopVat = new we_shop_vat(we_base_request::_(we_base_request::INT, 'weShopVatId'), we_base_request::_(we_base_request::STRING, 'weShopVatText'), we_base_request::_(we_base_request::RAW, 'weShopVatVat'), we_base_request::_(we_base_request::RAW, 'weShopVatStandard'), $territory, we_base_request::_(we_base_request::STRING, 'weShopVatTextProvince'));
+		$weShopVat = new we_shop_vat(we_base_request::_(we_base_request::INT, 'weShopVatId'), we_base_request::_(we_base_request::STRING, 'weShopVatText'), we_base_request::_(we_base_request::FLOAT, 'weShopVatVat'), we_base_request::_(we_base_request::FLOAT, 'weShopVatStandard'), $territory, we_base_request::_(we_base_request::STRING, 'weShopVatTextProvince'));
 
 		if(($newId = we_shop_vats::saveWeShopVAT($weShopVat))){
 			$weShopVat->id = $newId;
