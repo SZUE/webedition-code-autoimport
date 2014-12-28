@@ -132,26 +132,26 @@ if($this->Data['allEntries']){ // entries exist
 }
 
 $jsHead = we_html_element::jsElement('
-	function confirmDelete() {
-		if (confirm("' . g_l('liveUpdate', '[updatelog][confirmDelete]') . '")) {
-			deleteEntries();
-		}
+function confirmDelete() {
+	if (confirm("' . g_l('liveUpdate', '[updatelog][confirmDelete]') . '")) {
+		deleteEntries();
 	}
+}
 
-	function deleteEntries() {
-		document.we_form.log_cmd.value = "deleteEntries";
-		document.we_form.submit();
-	}
+function deleteEntries() {
+	document.we_form.log_cmd.value = "deleteEntries";
+	document.we_form.submit();
+}
 
-	function lastEntries() {
-		document.we_form.log_cmd.value = "lastEntries";
-		document.we_form.submit();
-	}
+function lastEntries() {
+	document.we_form.log_cmd.value = "lastEntries";
+	document.we_form.submit();
+}
 
-	function nextEntries() {
-		document.we_form.log_cmd.value = "nextEntries";
-		document.we_form.submit();
-	}');
+function nextEntries() {
+	document.we_form.log_cmd.value = "nextEntries";
+	document.we_form.submit();
+}');
 
 
 echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[updatelog][headline]'), $content, $jsHead, $buttons);
