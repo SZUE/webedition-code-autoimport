@@ -1126,6 +1126,7 @@ class we_objectFile extends we_document{
 	}
 
 	private function getShopCategoryFieldHtml($name, $attribs, $we_editmode = true){
+	
 		if($we_editmode){
 			$values = array();
 
@@ -1134,7 +1135,7 @@ class we_objectFile extends we_document{
 				$input = we_class::htmlSelect('dummy', $values, 1, 0, false, array('disabled' => 'disabled')) .
 					we_html_element::htmlHidden(array('name' => 'we_' . $this->Name . '_shopCategory[' . $name . ']', 'value' => $attribs['default']));
 			} else {
-				$values = array_merge(array('0' => ' '), we_shop_category::getShopCatFieldsFromDir('Path'));
+				$values = array('0' => ' ') + we_shop_category::getShopCatFieldsFromDir('Path'); //Fix #9355 don't use array_merge() because numeric keys will be renumbered!
 				$input = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . ']', $values, 1, ($this->getElement($name) ? : $attribs['default']));
 			}
 
