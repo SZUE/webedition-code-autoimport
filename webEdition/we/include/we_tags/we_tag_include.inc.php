@@ -28,10 +28,10 @@ function we_parse_tag_include($attribs, $c, array $attr){
 		$attr['_parsed'] = 'true';
 	}
 	return ($type !== 'template' ?
-					'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' : //include documents
-					//(($path ?
-					'<?php if(($we_inc=' . we_tag_tagParser::printTag('include', $attr) . ')){include' . (weTag_getParserAttribute('once', $attr, false, true) ? '_once' : '') . '($we_inc);}; ?>'//include templates of ID's
-			);
+			'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' : //include documents
+			//(($path ?
+			'<?php if(($we_inc=' . we_tag_tagParser::printTag('include', $attr) . ')){include' . (weTag_getParserAttribute('once', $attr, false, true) ? '_once' : '') . '($we_inc);}; ?>'//include templates of ID's
+		);
 }
 
 function we_setBackVar($we_unique){
@@ -124,17 +124,16 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 			'</td></tr></table>';
 			return '';
 		}
-	} else {//notEditmode
-		if($name && !($id || $path)){
-			$type = weTag_getAttribute('kind', $attribs, '', we_base_request::STRING);
-			$_name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
-			$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false', 'type' => $type, 'isInternal' => 1));
-			$nint = $name . we_base_link::MAGIC_INT_LINK;
-			$int = ($GLOBALS['we_doc']->getElement($nint) == '') ? 0 : $GLOBALS['we_doc']->getElement($nint);
-			$intID = $GLOBALS['we_doc']->getElement($nint . 'ID');
-			if($int && $intID){
-				$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0');
-			}
+	} else //notEditmode
+	if($name && !($id || $path)){
+		$type = weTag_getAttribute('kind', $attribs, '', we_base_request::STRING);
+		$_name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
+		$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false', 'type' => $type, 'isInternal' => 1));
+		$nint = $name . we_base_link::MAGIC_INT_LINK;
+		$int = ($GLOBALS['we_doc']->getElement($nint) == '') ? 0 : $GLOBALS['we_doc']->getElement($nint);
+		$intID = $GLOBALS['we_doc']->getElement($nint . 'ID');
+		if($int && $intID){
+			$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0');
 		}
 	}
 
@@ -144,7 +143,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 
 	if($id){
 		if($GLOBALS['WE_MAIN_DOC']->ID == $id || //don't include same id
-				$GLOBALS['we_doc']->ContentType != we_base_ContentTypes::WEDOCUMENT //don't include any unknown document
+			$GLOBALS['we_doc']->ContentType != we_base_ContentTypes::WEDOCUMENT //don't include any unknown document
 		){
 			return '';
 		}
@@ -161,7 +160,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 	$isSeemode = (we_tag('ifSeeMode'));
 	// check early if there is a document - if not the rest is never needed
 	if($gethttp){
-		$content = ($isSeemode ? getHTTP(getServerUrl(true), $realPath) : 'echo getHTTP(getServerUrl(true), \'' . $realPath . '\');');
+		$content = /* ($isSeemode ? getHTTP(getServerUrl(true), $realPath) : */ 'echo getHTTP(getServerUrl(true), \'' . $realPath . '\');'/* )' */;
 	} else {
 		$realPath = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $realPath; //(symlink) webEdition always points to the REAL DOC-Root!
 		if(!file_exists($realPath) || !is_file($realPath)){
@@ -179,7 +178,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 				}
 			}
 		}
-		$content = ($isSeemode ? file_get_contents($realPath) : 'include' . ($once ? '_once' : '') . '(\'' . $realPath . '\');');
+		$content = /* ($isSeemode ? file_get_contents($realPath) : */ 'include' . ($once ? '_once' : '') . '(\'' . $realPath . '\');'/* ) */;
 	}
 
 	if(isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars'])){
@@ -194,12 +193,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 	}
 
 	return 'we_setBackVar(' . $we_unique . ');' .
-			($isSeemode ? //extra stuff in seemode
-					'eval(\'?>' . addcslashes(preg_replace('|< */? *form[^>]*>|i', '', $content), '\'') .
-					($seeMode && ($id || $path) ? we_SEEM::getSeemAnchors(($id ? : path_to_id($path)), $seeMode) : '') .
-					'\');' :
-					//no seemode
-					$content
-			) .
-			'we_resetBackVar(' . $we_unique . ');';
+		$content .
+		($isSeemode && $seeMode && ($id || $path) ? 'echo \'' . we_SEEM::getSeemAnchors(($id ? : path_to_id($path)), 'include') . '\';' : '') .
+		'we_resetBackVar(' . $we_unique . ');';
 }
