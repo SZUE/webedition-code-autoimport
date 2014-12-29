@@ -56,7 +56,11 @@ abstract class we_backup_preparer{
 			'backup_log_file' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . we_backup_backup::logFile,
 			'limits' => array(
 				'mem' => we_convertIniSizes(ini_get('memory_limit')),
-				'exec' => min(30, ($execTime > 200 ? ($execTime > 2000 ? 5 : 15) : $execTime)), //fix for really faulty php installations, e.g. 1&1
+				'exec' => min(30, ($execTime > 120 ? ($execTime > 2000 ? 5 : 15) : $execTime)),
+				/*fix for really faulty php installations, e.g. 1&1
+				 * 1&1 execution time >2000, no matter if the script gets killed after 15 seconds
+				 * df execution time = 180,  no matter if the script gets killed after 20 seconds
+				 */
 				'requestTime' => 0,
 				'lastMem' => 0,
 			),
