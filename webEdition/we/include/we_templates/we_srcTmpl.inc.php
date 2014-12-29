@@ -45,6 +45,8 @@ $_useJavaEditor = ($_SESSION['prefs']['editorMode'] === 'java');
 if(!isset($_SESSION['weS']['we_wrapcheck'])){
 	$_SESSION['weS']['we_wrapcheck'] = $_SESSION['prefs']['editorWrap'];
 }
+//FIXME: make real js files out of this!
+echo we_html_multiIconBox::getJS();
 ?>
 <script  type="text/javascript"><!--
 	var weIsTextEditor = true;
@@ -95,10 +97,10 @@ if(!isset($_SESSION['weS']['we_wrapcheck'])){
 		}
 
 		if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
-
 <?php
 if(we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9){
-	echo 'h=document.body.offsetHeight; h=Math.max(h,600);';
+	echo 'h=document.body.offsetHeight;
+h=Math.max(h,600);';
 }
 ?>
 			if (wizardTable != null) {
@@ -122,7 +124,6 @@ if(we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 9){
 					}
 
 				}
-
 
 				wizardTable.style.width = editorWidth + "px";
 				//wizardTableButtons.style.width=editorWidth+"px"; // causes problems with codemirror2
@@ -185,18 +186,18 @@ switch($_SESSION['prefs']['editorMode']){
 		<?php if($_SESSION['prefs']['editorHighlightCurrentLine']){ ?>
 						hlLine = editor.addLineClass(0, "background", "activeline");
 						//highlight current line
-						editor.on("cursorActivity", function() {
+						editor.on("cursorActivity", function () {
 							var cur = editor.getLineHandle(editor.getCursor().line);
 							if (cur != hlLine) {
 								editor.removeLineClass(hlLine, "background", "activeline");
 								hlLine = editor.addLineClass(cur, "background", "activeline");
 							}
 						});
-		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....                     ?>
+		<?php } else { //FIX for CM which doesn't display lines beyond 27 if this line is missing....                        ?>
 						hlLine = editor.addLineClass(0, "background", "");
 
 		<?php } ?>
-					editor.on("change", function() {
+					editor.on("change", function () {
 						//this wil save content from CodeMirror2 to our original <textarea>.
 						var currentTemplateCode = editor.getValue().replace(/\r/g, "\n");
 						if (window.orignalTemplateContent != currentTemplateCode) {
@@ -364,9 +365,9 @@ switch($_SESSION['prefs']['editorMode']){
 	function getSource() {
 		if (document.weEditorApplet && typeof (document.weEditorApplet.getCode) != undefined) {
 			return document.weEditorApplet.getCode();
-		} else {
-			return document.forms['we_form'].elements['we_<?php echo $we_doc->Name; ?>_txt[data]'].value;
 		}
+		return document.forms['we_form'].elements['we_<?php echo $we_doc->Name; ?>_txt[data]'].value;
+
 	}
 
 	function getCharset() {
@@ -851,149 +852,146 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$addCursorPositionbut = we_html_button::create_button("addCursorPosition", 'javascript:addCursorPosition(document.getElementById("tag_edit_area").value);_EditorFrame.setEditorIsHot(true);');
 
 			$tagWizardHtml = $CodeWizard->getJavascript() .
-				we_html_element::jsElement(
-					'function executeEditButton() {
-				if(document.getElementById(\'weTagGroupSelect\').value == \'snippet_custom\') {
-					YUIdoAjax(document.getElementById(\'codesnippet_custom\').value);
+				we_html_element::jsElement('
+function executeEditButton() {
+	if(document.getElementById(\'weTagGroupSelect\').value == \'snippet_custom\') {
+		YUIdoAjax(document.getElementById(\'codesnippet_custom\').value);
 
-				} else if(document.getElementById(\'weTagGroupSelect\').value == \'snippet_standard\') {
-					YUIdoAjax(document.getElementById(\'codesnippet_standard\').value);
+	} else if(document.getElementById(\'weTagGroupSelect\').value == \'snippet_standard\') {
+		YUIdoAjax(document.getElementById(\'codesnippet_standard\').value);
 
-				} else {
-					var _sel=document.getElementById(\'tagSelection\');
-					if(_sel.selectedIndex > -1) {
-						edit_wetag(_sel.value);
-					}
-				}
-		 	}
+	} else {
+		var _sel=document.getElementById(\'tagSelection\');
+		if(_sel.selectedIndex > -1) {
+			edit_wetag(_sel.value);
+		}
+	}
+}
 
-		 	function openTagWizardPrompt( _wrongTag ) {
+function openTagWizardPrompt( _wrongTag ) {
+	var _prompttext = "' . g_l('weTagWizard', '[insert_tagname]') . '";
+	if ( _wrongTag ) {
+		_prompttext = "' . sprintf(g_l('weTagWizard', '[insert_tagname_not_exist]'), '\"" + _wrongTag + "\"') . '\n\n" + _prompttext;
+	}
 
+	var _tagName = prompt(_prompttext);
+	var _tagExists = false;
 
-		 		var _prompttext = "' . g_l('weTagWizard', '[insert_tagname]') . '";
-		 		if ( _wrongTag ) {
-		 			_prompttext = "' . sprintf(g_l('weTagWizard', '[insert_tagname_not_exist]'), '\"" + _wrongTag + "\"') . '\n\n" + _prompttext;
-		 		}
+	if ( typeof(_tagName) == "string") {
 
-		 		var _tagName = prompt(_prompttext);
-		 		var _tagExists = false;
-
-		 		if ( typeof(_tagName) == "string") {
-
-			 		for ( i=0; i < tagGroups["alltags"].length && !_tagExists; i++ ) {
-			 			if ( tagGroups["alltags"][i] == _tagName ) {
-			 				_tagExists = true;
-
-			 			}
-			 		}
-
-			 		if ( _tagExists ) {
-			 			edit_wetag(_tagName, 1);
-
-			 		} else {
-			 			openTagWizardPrompt( _tagName );
-
-			 		}
-			 	}
-		 	}
-
-			function edit_wetag(tagname, insertAtCursor) {
-				if (!insertAtCursor) {
-					insertAtCursor = 0;
-				}
-				we_cmd("open_tag_wizzard", tagname, insertAtCursor);
+		for ( i=0; i < tagGroups["alltags"].length && !_tagExists; i++ ) {
+			if ( tagGroups["alltags"][i] == _tagName ) {
+				_tagExists = true;
 
 			}
+		}
 
-			function insertAtStart(tagText) {
-				if (document.weEditorApplet && typeof(document.weEditorApplet.insertAtStart) != undefined) {
-					document.weEditorApplet.insertAtStart(tagText);
-				} else if(window.editor && window.editor.frame) {
-					window.editor.insertIntoLine(window.editor.firstLine(), 0, tagText + "\n");
-				} else {
-				 	document.we_form["we_' . $we_doc->Name . '_txt[data]"].value = tagText + "\n" + document.we_form["we_' . $we_doc->Name . '_txt[data]"].value;
-				}
-				_EditorFrame.setEditorIsHot(true);
+		if ( _tagExists ) {
+			edit_wetag(_tagName, 1);
+
+		} else {
+			openTagWizardPrompt( _tagName );
+
+		}
+	}
+}
+
+function edit_wetag(tagname, insertAtCursor) {
+	if (!insertAtCursor) {
+		insertAtCursor = 0;
+	}
+	we_cmd("open_tag_wizzard", tagname, insertAtCursor);
+
+}
+
+function insertAtStart(tagText) {
+	if (document.weEditorApplet && typeof(document.weEditorApplet.insertAtStart) != undefined) {
+		document.weEditorApplet.insertAtStart(tagText);
+	} else if(window.editor && window.editor.frame) {
+		window.editor.insertIntoLine(window.editor.firstLine(), 0, tagText + "\n");
+	} else {
+		document.we_form["we_' . $we_doc->Name . '_txt[data]"].value = tagText + "\n" + document.we_form["we_' . $we_doc->Name . '_txt[data]"].value;
+	}
+	_EditorFrame.setEditorIsHot(true);
+}
+
+function insertAtEnd(tagText) {
+	if (document.weEditorApplet && typeof(document.weEditorApplet.insertAtEnd) != undefined) {
+		document.weEditorApplet.insertAtEnd(tagText);
+	} else if(window.editor && window.editor.frame) {
+		window.editor.insertIntoLine(window.editor.lastLine(), "end", "\n" + tagText);
+	} else {
+		document.we_form["we_' . $we_doc->Name . '_txt[data]"].value += "\n" + tagText;
+	}
+	_EditorFrame.setEditorIsHot(true);
+
+}
+
+function addCursorPosition ( tagText ) {
+
+	if (document.weEditorApplet && typeof(document.weEditorApplet.replaceSelection) != undefined) {
+		document.weEditorApplet.replaceSelection(tagText);
+	} else if(window.editor && window.editor.frame) {
+		window.editor.replaceSelection(tagText);
+	} else {
+		var weForm = document.we_form["we_' . $we_doc->Name . '_txt[data]"];
+		if(document.selection){
+						weForm.focus();
+						document.selection.createRange().text=tagText;
+						document.selection.createRange().select();
+		}else if (weForm.selectionStart || weForm.selectionStart == "0"){
+				intStart = weForm.selectionStart;
+				intEnd = weForm.selectionEnd;
+				weForm.value = (weForm.value).substring(0, intStart) + tagText + (weForm.value).substring(intEnd, weForm.value.length);
+					window.setTimeout("scrollToPosition();",50);
+				weForm.focus();
+					weForm.selectionStart = eval(intStart+tagText.length);
+					weForm.selectionEnd = eval(intStart+tagText.length);
+			}else{
+				weForm.value += tagText;
 			}
+	}
+}
 
-			function insertAtEnd(tagText) {
-				if (document.weEditorApplet && typeof(document.weEditorApplet.insertAtEnd) != undefined) {
-					document.weEditorApplet.insertAtEnd(tagText);
-				} else if(window.editor && window.editor.frame) {
-					window.editor.insertIntoLine(window.editor.lastLine(), "end", "\n" + tagText);
-				} else {
-					document.we_form["we_' . $we_doc->Name . '_txt[data]"].value += "\n" + tagText;
-				}
-				_EditorFrame.setEditorIsHot(true);
+function selectTagGroup(groupname) {
 
-			}
+	if(groupname == "snippet_custom") {
+		document.getElementById(\'codesnippet_standard\').style.display = \'none\';
+		document.getElementById(\'tagSelection\').style.display = \'none\';
+		document.getElementById(\'codesnippet_custom\').style.display = \'block\';
 
-			function addCursorPosition ( tagText ) {
+	} else if(groupname == "snippet_standard") {
+		document.getElementById(\'codesnippet_custom\').style.display = \'none\';
+		document.getElementById(\'tagSelection\').style.display = \'none\';
+		document.getElementById(\'codesnippet_standard\').style.display = \'block\';
 
-				if (document.weEditorApplet && typeof(document.weEditorApplet.replaceSelection) != undefined) {
-					document.weEditorApplet.replaceSelection(tagText);
-				} else if(window.editor && window.editor.frame) {
-					window.editor.replaceSelection(tagText);
-				} else {
-					var weForm = document.we_form["we_' . $we_doc->Name . '_txt[data]"];
-					if(document.selection){
-					        weForm.focus();
-					        document.selection.createRange().text=tagText;
-					        document.selection.createRange().select();
-					}else if (weForm.selectionStart || weForm.selectionStart == "0"){
-							intStart = weForm.selectionStart;
-							intEnd = weForm.selectionEnd;
-							weForm.value = (weForm.value).substring(0, intStart) + tagText + (weForm.value).substring(intEnd, weForm.value.length);
-						    window.setTimeout("scrollToPosition();",50);
-							weForm.focus();
-						    weForm.selectionStart = eval(intStart+tagText.length);
-						    weForm.selectionEnd = eval(intStart+tagText.length);
-						}else{
-							weForm.value += tagText;
-						}
-				}
-			}
+	} else if (groupname != "-1") {
+		document.getElementById(\'codesnippet_custom\').style.display = \'none\';
+		document.getElementById(\'codesnippet_standard\').style.display = \'none\';
+		document.getElementById(\'tagSelection\').style.display = \'block\';
+		elem = document.getElementById("tagSelection");
 
-			function selectTagGroup(groupname) {
+		for(var i=(elem.options.length-1); i>=0;i--) {
+			elem.options[i] = null;
+		}
 
-				if(groupname == "snippet_custom") {
-					document.getElementById(\'codesnippet_standard\').style.display = \'none\';
-					document.getElementById(\'tagSelection\').style.display = \'none\';
-					document.getElementById(\'codesnippet_custom\').style.display = \'block\';
-
-				} else if(groupname == "snippet_standard") {
-					document.getElementById(\'codesnippet_custom\').style.display = \'none\';
-					document.getElementById(\'tagSelection\').style.display = \'none\';
-					document.getElementById(\'codesnippet_standard\').style.display = \'block\';
-
-				} else if (groupname != "-1") {
-					document.getElementById(\'codesnippet_custom\').style.display = \'none\';
-					document.getElementById(\'codesnippet_standard\').style.display = \'none\';
-					document.getElementById(\'tagSelection\').style.display = \'block\';
-					elem = document.getElementById("tagSelection");
-
-					for(var i=(elem.options.length-1); i>=0;i--) {
-						elem.options[i] = null;
-					}
-
-					for (var i=0; i<tagGroups[groupname].length; i++) {
-						elem.options[i] = new Option(tagGroups[groupname][i],tagGroups[groupname][i]);
-					}
-				}
-			}
-
-			' . $groupJs . '
-			function openTagWizWithReturn (Ereignis) {
-				if (!Ereignis)
-				Ereignis = window.event;
-				if (Ereignis.which) {
-				Tastencode = Ereignis.which;
-				} else if (Ereignis.keyCode) {
-				Tastencode = Ereignis.keyCode;
-				}
-				if (Tastencode==13) edit_wetag(document.getElementById("tagSelection").value);
-				//return false;
-			}') .
+		for (var i=0; i<tagGroups[groupname].length; i++) {
+			elem.options[i] = new Option(tagGroups[groupname][i],tagGroups[groupname][i]);
+		}
+	}
+}
+' . $groupJs . '
+function openTagWizWithReturn (Ereignis) {
+	if (!Ereignis)
+	Ereignis = window.event;
+	if (Ereignis.which) {
+	Tastencode = Ereignis.which;
+	} else if (Ereignis.keyCode) {
+	Tastencode = Ereignis.keyCode;
+	}
+	if (Tastencode==13) edit_wetag(document.getElementById("tagSelection").value);
+	//return false;
+}') .
 				'
 		<table id="wizardTable" style="width: 700px;border:0px;padding:0px;" class="defaultfont" cellspacing="0">
 		<tr>
@@ -1031,8 +1029,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$wepos = weGetCookieVariable("but_weTMPLDocEdit");
 			$znr = 1;
 		}
-		echo we_html_multiIconBox::getJS() .
-		'<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] === 'java' ? '' : 'style="display:none;"') . '>' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === "down"), "", 'toggleTagWizard();') . '</div>';
+		echo '<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] === 'java' ? '' : 'style="display:none;"') . '>' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === "down"), "", 'toggleTagWizard();') . '</div>';
 		?>
 		<input type="hidden" name="we_complete_request" value="1"/>
 	</form></body>

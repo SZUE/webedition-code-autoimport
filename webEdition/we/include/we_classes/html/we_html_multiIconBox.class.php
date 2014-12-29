@@ -139,6 +139,7 @@ function weGetCookieVariable(name){
 	}
 	return null;
 }
+
 function weGetCookie(name){
 	var cname = name + "=";
 	var doc = (top.name == "edit_module") ? top.opener.top.document : top.document;

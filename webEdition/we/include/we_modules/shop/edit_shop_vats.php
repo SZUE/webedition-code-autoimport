@@ -92,7 +92,6 @@ function changeFormTextField(theId, newVal) {
 }
 
 function changeFormSelect(theId, newVal) {
-
 	elem = document.getElementById(theId);
 
 	for (i=0; i<elem.options.length; i++) {
