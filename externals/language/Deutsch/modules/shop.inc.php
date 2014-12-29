@@ -251,7 +251,7 @@ in der Bestellung',
 	'shopcats'=>array(
 		'active_shopCat'=>'Als Shop-Kategorie aktiv',
 		'info_editShopCats'=>'Hier können Sie für die weiteren Shop-Kategorien pro Land einen Mehrwertsteuersatz auswählen. Auch hier wird als Fallback der Standard-Steuersatz verwendet. Wird das Häckchen bei "Aktive Shop-Kategorie" entfernt, greift webEdition so lange auf die jeweilige Parent-Kategorie zurück, bis eine aktive Shop-Kategorie gefunden wird. Das Shop-Kategorie-Verzeichnis ist immer aktiv.',
-		'info_edit_shopCatDir'=>'Wählen Sie hier für das Shop-Kategorie-Verzeichnis die passenden Mehrwertsteuersätze aus: Zur Auswahl stehen alle im Editor "Mehrwertsteuersätze" für das jeweilige Land definierten Steuersätze. Wählen Sie für ein Land keinen Steuersatz aus, so gilt für die betreffende Kombination von Land und Kategorie der Standard-Steuersatz. Mit der Checkbox "Destination Principle" legen Sie fest, ob für die Besteuerung dieser Kategorie das Bestimmungsland-Prinzip gilt.',
+		'info_edit_shopCatDir'=>'Wählen Sie hier für das Shop-Kategorie-Verzeichnis die passenden Mehrwertsteuersätze aus: Zur Auswahl stehen alle im Editor "Mehrwertsteuersätze" für das jeweilige Land definierten Steuersätze. Wählen Sie für ein Land keinen Steuersatz aus, so gilt für die betreffende Kombination von Land und Kategorie der Standard-Steuersatz. Mit der Checkbox "Bestimmungslandprinzip" legen Sie fest, ob für die Besteuerung dieser Kategorie das Bestimmungsland-Prinzip gilt.',
 		'save_error'=>'Beim Speichern der Shop-Kategorien ist ein Fehler aufgetreten.',
 		'save_success'=>'Die Shop-Kategorien wurden erfolgreich gespeichert.',
 		'select_shopCatDir'=>'bitte wählen',
