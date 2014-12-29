@@ -307,7 +307,6 @@ if(isset($GLOBALS['we_doc'])){
 		parent.openedWithWe = true;
 
 		if (target && url) {
-
 			f.target = target;
 			f.action = url;
 			f.method = "post";
