@@ -414,9 +414,8 @@ switch($_SESSION['weS']['we_mode']){
 			<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>
 			<frame <?php echo setOnload(); ?> src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>&we_complete_request=1" name="editor_<?php echo $fid; ?>" noresize/>
 			<frame  src="about:blank" name="contenteditor_<?php echo $fid; ?>" noresize/>
-			<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer"); ?>&SEEM_edit_include=<?php
-			echo (we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') ? "true" : "false");
-			?>" name="editFooter" scrolling=no noresize/>
+			<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer") . '&SEEM_edit_include=' . (we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') ? 1 : 0);
+		?>" name="editFooter" scrolling=no noresize/>
 		</frameset><noframes></noframes>
 		<?php
 		break;
