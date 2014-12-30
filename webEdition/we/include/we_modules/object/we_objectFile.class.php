@@ -1126,7 +1126,7 @@ class we_objectFile extends we_document{
 	}
 
 	private function getShopCategoryFieldHtml($name, $attribs, $we_editmode = true){
-	
+
 		if($we_editmode){
 			$values = array();
 

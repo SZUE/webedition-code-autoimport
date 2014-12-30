@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -24,6 +25,7 @@
 
 /** the parent class of storagable webEdition classes */
 abstract class we_class{
+
 	//constants for retrieving data from DB
 
 	const LOAD_MAID_DB = 0;
@@ -37,6 +39,7 @@ abstract class we_class{
 	const SUB_DIR_YEAR_MONTH_DAY = 3;
 
 	/* Name of the class => important for reconstructing the class from outside the class */
+
 	var $ClassName = __CLASS__;
 	/* In this array are all storagable class variables */
 	var $persistent_slots = array('ClassName', 'Name', 'ID', 'Table', 'wasUpdate', 'InWebEdition');
@@ -146,15 +149,15 @@ abstract class we_class{
 		if(!$elementtype){
 			$ps = $this->$name;
 		}
-		return we_html_tools::htmlFormElementTable($this->htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype && $this->getElement($name) ? $this->getElement($name) : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), $maxlength, $attribs, 'text', $width), $text, $textalign, $textclass);
+		return we_html_tools::htmlFormElementTable($this->htmlTextInput('we_' . $this->Name . '_' . ($elementtype ? $elementtype . '[' . $name . ']' : $name), $size, ($elementtype && ($elVal = $this->getElement($name)) ? $elVal : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), $maxlength, $attribs, 'text', $width), $text, $textalign, $textclass);
 	}
 
 	function formTextArea($elementtype, $name, $text, $rows = 10, $cols = 30, array $attribs = array(), $textalign = 'left', $textclass = 'defaultfont'){
 		return we_html_tools::htmlFormElementTable(self::htmlTextArea(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $rows, $cols, $this->getElement($name), $attribs), $text, $textalign, $textclass);
 	}
 
-	function formSelectFromArray($elementtype, $name, $vals, $text, $size, $multiple, array $attribs){
-		$pop = $this->htmlSelect(('we_' . $this->Name . '_' . $elementtype . "[$name]"), $vals, $size, $this->getElement($name), $multiple, $attribs);
+	function formSelectFromArray($elementtype, $name, $vals, $text, $size = 1, $multiple = false, array $attribs = array()){
+		$pop = $this->htmlSelect('we_' . $this->Name . '_' . ($elementtype ? $elementtype . '[' . $name . ']' : $name), $vals, $size,  ($elementtype ? $this->getElement($name) : $this->$name), $multiple, $attribs);
 		return we_html_tools::htmlFormElementTable($pop, $text, 'left', 'defaultfont');
 	}
 
@@ -168,13 +171,13 @@ abstract class we_class{
 
 	static function htmlTextArea($name, $rows = 10, $cols = 30, $value = '', array $attribs = array()){
 		return we_html_element::htmlTextArea(
-				array_merge(array(
-				'name' => trim($name),
-				'class' => 'defaultfont wetextarea',
-				'rows' => abs($rows),
-				'cols' => abs($cols),
-					), $attribs
-				), ($value ? (oldHtmlspecialchars($value)) : ''));
+						array_merge(array(
+					'name' => trim($name),
+					'class' => 'defaultfont wetextarea',
+					'rows' => abs($rows),
+					'cols' => abs($cols),
+								), $attribs
+						), ($value ? (oldHtmlspecialchars($value)) : ''));
 	}
 
 	//fixme: add auto-grouping, add format
@@ -195,13 +198,13 @@ abstract class we_class{
 			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare === 'value') ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . $text . '</option>';
 		}
 		return we_html_element::htmlSelect(array_merge($attribs, array(
-				'id' => trim($name),
-				'class' => "weSelect defaultfont",
-				'name' => trim($name),
-				'size' => abs($size),
-				($multiple ? 'multiple' : null) => 'multiple',
-				($width ? 'width' : null) => $width
-				)), $ret);
+					'id' => trim($name),
+					'class' => "weSelect defaultfont",
+					'name' => trim($name),
+					'size' => abs($size),
+					($multiple ? 'multiple' : null) => 'multiple',
+					($width ? 'width' : null) => $width
+						)), $ret);
 	}
 
 	############## new fns
@@ -209,12 +212,12 @@ abstract class we_class{
 
 	function formSelectElement($width, $name, $values, $type = 'txt', $size = 1, array $attribs = array()){
 		return we_html_tools::htmlFormElementTable(
-				we_html_tools::html_select('we_' . $this->Name . '_' . $type . '[' . $name . ']', $size, $values, $this->getElement($name), array_merge(
-						array(
-					'class' => 'defaultfont',
-					'width' => $width,
-						), $attribs))
-				, g_l('weClass', '[' . $name . ']'));
+						we_html_tools::html_select('we_' . $this->Name . '_' . $type . '[' . $name . ']', $size, $values, $this->getElement($name), array_merge(
+										array(
+							'class' => 'defaultfont',
+							'width' => $width,
+										), $attribs))
+						, g_l('weClass', '[' . $name . ']'));
 	}
 
 	function formInput2($width, $name, $size = 25, $type = 'txt', $attribs = ''){
@@ -249,7 +252,7 @@ abstract class we_class{
 
 		$pop = $this->htmlSelect($myname . ($multiple ? 'Tmp' : ''), $vals, $size, $ps, $multiple, array_merge(array(
 			'onchange' => $onChange . ($multiple ? ";var we_sel='';for(i=0;i<this.options.length;i++){if(this.options[i].selected){we_sel += (this.options[i].value + ',');};};if(we_sel){we_sel=we_sel.substring(0,we_sel.length-1)};this.form.elements['" . $myname . "'].value=we_sel;" : '')
-				), $attribs), 'value', $width);
+						), $attribs), 'value', $width);
 
 		if($precode || $postcode){
 			$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ('<td>' . $precode . '</td><td>' . we_html_tools::getPixel($gap, 2) . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . we_html_tools::getPixel($gap, 2) . '</td><td>' . $postcode . '</td>') : '') . '</tr></table>';
@@ -360,8 +363,8 @@ abstract class we_class{
 
 	protected function i_fixCSVPrePost($in){
 		return ($in ?
-				',' . trim($in, ',') . ',' :
-				$in);
+						',' . trim($in, ',') . ',' :
+						$in);
 	}
 
 	protected function i_savePersistentSlotsToDB($felder = ''){
@@ -412,8 +415,8 @@ abstract class we_class{
 
 	function isValidEditPage($editPageNr){
 		return (is_array($this->EditPageNrs) ?
-				in_array($editPageNr, $this->EditPageNrs) :
-				false);
+						in_array($editPageNr, $this->EditPageNrs) :
+						false);
 	}
 
 	protected function updateRemoteLang($db, $id, $lang, $type){
@@ -486,7 +489,7 @@ abstract class we_class{
 				}
 
 				echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('weClass', '[languageLinksLocaleChanged]'), we_message_reporting::WE_MESSAGE_NOTICE)
+										we_message_reporting::getShowMessageCall(g_l('weClass', '[languageLinksLocaleChanged]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				)));
 				return true;
 			}
@@ -547,7 +550,7 @@ abstract class we_class{
 				if(($fileLang = f('SELECT Language FROM ' . $this->DB_WE->escape(addTblPrefix($documentTable)) . ' WHERE ID=' . intval($LDID), '', $this->DB_WE))){
 					if($fileLang != $locale){
 						echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement(
-									we_message_reporting::getShowMessageCall($we_responseText = sprintf(g_l('weClass', '[languageLinksLangNotok]'), $locale, $fileLang, $locale), we_message_reporting::WE_MESSAGE_NOTICE)
+												we_message_reporting::getShowMessageCall($we_responseText = sprintf(g_l('weClass', '[languageLinksLangNotok]'), $locale, $fileLang, $locale), we_message_reporting::WE_MESSAGE_NOTICE)
 						)));
 						return true;
 					}
@@ -573,7 +576,7 @@ abstract class we_class{
 
 						if(!$setThisLink){
 							echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement(
-										we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_message_reporting::WE_MESSAGE_NOTICE)
+													we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_message_reporting::WE_MESSAGE_NOTICE)
 							)));
 							return true;
 						}
@@ -593,7 +596,7 @@ abstract class we_class{
 					} else {//!isfolder
 						if(f('SELECT 1 FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape($type) . '" AND DLocale="' . $this->DB_WE->escape($ownLocale) . '" AND Locale="' . $this->DB_WE->escape($locale) . '" AND LDID=' . intval($LDID) . ' AND IsObject=' . ($isobject ? 1 : 0) . ' AND IsFolder=1 LIMIT 1', '', $this->DB_WE)){//conflict
 							echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement(
-										we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_message_reporting::WE_MESSAGE_NOTICE)
+													we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_message_reporting::WE_MESSAGE_NOTICE)
 							)));
 							return true;
 						}
@@ -642,18 +645,18 @@ abstract class we_class{
 		foreach($LangLinkArray as $locale => $LDID){ //obsolete if we call executeSetLanguageLink with only the link to bechanged (instead of whole $LangLinkArray)
 			if(($ID = f('SELECT ID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='" . $this->DB_WE->escape($type) . "' AND DID=" . intval($this->ID) . " AND Locale='" . $this->DB_WE->escape($locale) . "' AND isFolder='" . intval($isfolder) . "' AND IsObject=" . intval($isobject), 'ID', $this->DB_WE))){
 				$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'LDID' => $LDID,
-						'DLocale' => $this->Language
-					)) . ' WHERE ID=' . intval($ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
+							'LDID' => $LDID,
+							'DLocale' => $this->Language
+						)) . ' WHERE ID=' . intval($ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
 			} elseif($locale != $this->Language && $LDID > 0){
 				$this->DB_WE->query('INSERT INTO ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'DID' => $this->ID,
-						'DLocale' => $this->Language,
-						'IsFolder' => $isfolder,
-						'IsObject' => $isobject,
-						'LDID' => $LDID,
-						'Locale' => $locale,
-						'DocumentTable' => $type
+							'DID' => $this->ID,
+							'DLocale' => $this->Language,
+							'IsFolder' => $isfolder,
+							'IsObject' => $isobject,
+							'LDID' => $LDID,
+							'Locale' => $locale,
+							'DocumentTable' => $type
 				)));
 			}
 
@@ -661,27 +664,27 @@ abstract class we_class{
 				if(($ID = f('SELECT ID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape($type) . '" AND DID=' . intval($LDID) . ' AND Locale="' . $this->DB_WE->escape($this->Language) . '" AND IsObject=' . ($isobject ? 1 : 0), '', $this->DB_WE))){
 					if($LDID > 0){
 						$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-								'DID' => $LDID,
-								'DLocale' => $locale,
-								'LDID' => $this->ID,
-								'Locale' => $this->Language
-							)) . ' WHERE ID=' . intval($ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
+									'DID' => $LDID,
+									'DLocale' => $locale,
+									'LDID' => $this->ID,
+									'Locale' => $this->Language
+								)) . ' WHERE ID=' . intval($ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
 					} elseif($LDID < 0){// here we could delete istead of update (and then delete later...)
 						$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-								'DID' => $LDID, //FIXME: DID is unsigned => result=0!
-								'DLocale' => $locale,
-								'LDID' => 0,
-								'Locale' => $this->Language,
-							)) . ' WHERE ID=' . intval($ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
+									'DID' => $LDID, //FIXME: DID is unsigned => result=0!
+									'DLocale' => $locale,
+									'LDID' => 0,
+									'Locale' => $this->Language,
+								)) . ' WHERE ID=' . intval($ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
 					}
 				} elseif($LDID > 0){
 					$this->DB_WE->query('INSERT INTO ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-							'DID' => $LDID,
-							'DLocale' => $locale,
-							'LDID' => $this->ID,
-							'Locale' => $this->Language,
-							'IsObject' => ($isobject ? 1 : 0),
-							'DocumentTable' => $type
+								'DID' => $LDID,
+								'DLocale' => $locale,
+								'LDID' => $this->ID,
+								'Locale' => $this->Language,
+								'IsObject' => ($isobject ? 1 : 0),
+								'DocumentTable' => $type
 					)));
 				}
 			}
@@ -703,12 +706,12 @@ abstract class we_class{
 							$j = ($i + 1) % count($rows);
 							if($rows[$i]['LDID'] && $rows[$j]['LDID']){
 								$this->DB_WE->query('REPLACE INTO ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-										'DID' => $rows[$i]['LDID'],
-										'DLocale' => $rows[$i]['Locale'],
-										'LDID' => $rows[$j]['LDID'],
-										'Locale' => $rows[$j]['Locale'],
-										'IsObject' => ($isobject ? 1 : 0),
-										'DocumentTable' => $type
+											'DID' => $rows[$i]['LDID'],
+											'DLocale' => $rows[$i]['Locale'],
+											'LDID' => $rows[$j]['LDID'],
+											'Locale' => $rows[$j]['Locale'],
+											'IsObject' => ($isobject ? 1 : 0),
+											'DocumentTable' => $type
 								)));
 							}
 						}
