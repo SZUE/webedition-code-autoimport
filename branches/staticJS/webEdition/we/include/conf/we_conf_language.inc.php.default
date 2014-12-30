@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * webEdition CMS configuration file
+ * NOTE: this file is regenerated, so any extra contents will be overwritten
+ */
+
+$GLOBALS['weFrontendLanguages'] = array(
+	'de_DE'
+);
+
+$GLOBALS["weDefaultFrontendLanguage"] = "de_DE";
