@@ -80,7 +80,7 @@ foreach($vtab as &$val){
 unset($val);
 
 echo we_html_element::jsScript(JS_DIR . 'images.js') .
- we_html_element::jsScript(JS_DIR . 'we_tabs.js');
+ we_html_element::jsScript(JS_DIR . 'we_vtabs.js');
 ?>
 <script type="text/javascript"><!--
 
