@@ -99,24 +99,20 @@ switch($bSort){
 		$q_sort = 'CreationDate, Title';
 }
 
-if(!$bDisplay){
-	$_sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
+$_sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
 		WidgetName = '" . $GLOBALS['DB_WE']->escape($title) . "' AND
-		UserID = " . intval($_SESSION['user']['ID']) . "
-		ORDER BY " . $q_sort;
-} else {
-	$_sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
-		WidgetName = '" . $GLOBALS['DB_WE']->escape($title) . "' AND
-		UserID = " . intval($_SESSION['user']['ID']) . " AND (
+		UserID = " . intval($_SESSION['user']['ID']) .
+	($bDisplay ?
+		" AND (
 			Valid = 'always' OR (
 				Valid = 'date' AND ValidFrom <= DATE_FORMAT(NOW(), \"%Y-%m-%d\")
 			) OR (
 				Valid = 'period' AND ValidFrom <= DATE_FORMAT(NOW(), \"%Y-%m-%d\") AND ValidUntil >= DATE_FORMAT(NOW(), \"%Y-%m-%d\")
 			)
-		)
+		)" : ''
+	) .
+	' ORDER BY ' . $q_sort;
 
-		ORDER BY " . $q_sort;
-}
 // validity settings
 $sctValid = we_html_tools::htmlSelect("sct_valid", array(
 		g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
@@ -138,9 +134,11 @@ $oTblPeriod->setCol(0, 1, array(
 	), $oTblValidity->getHTML());
 
 // Edit note prio settings
-$rdoPrio[0] = we_html_forms::radiobutton(0, 0, "rdo_prio", g_l('cockpit', '[high]'), true, "middlefont", "", false, "", 0, "");
-$rdoPrio[1] = we_html_forms::radiobutton(1, 0, "rdo_prio", g_l('cockpit', '[medium]'), true, "middlefont", "", false, "", 0, "");
-$rdoPrio[2] = we_html_forms::radiobutton(2, 1, "rdo_prio", g_l('cockpit', '[low]'), true, "middlefont", "", false, "", 0, "");
+$rdoPrio = array(
+	we_html_forms::radiobutton(0, 0, "rdo_prio", g_l('cockpit', '[high]'), true, "middlefont", "", false, "", 0, ""),
+	we_html_forms::radiobutton(1, 0, "rdo_prio", g_l('cockpit', '[medium]'), true, "middlefont", "", false, "", 0, ""),
+	we_html_forms::radiobutton(2, 1, "rdo_prio", g_l('cockpit', '[low]'), true, "middlefont", "", false, "", 0, "")
+);
 $oTblPrio = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 8);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
 $oTblPrio->setCol(0, 1, null, we_html_element::htmlImg(
@@ -238,38 +236,24 @@ $oPad->setCol(0, 0, array(
 	), we_html_element::htmlImg(array(
 		"src" => IMAGE_DIR . "pd/pad_corner_lt.gif", "width" => 6, "height" => 4
 )));
-$oPad->setCol(0, 1, array(
-	"class" => "cl_notes"
-	), "");
-$oPad->setCol(0, 2, array(
-	"width" => 6
-	), we_html_element::htmlImg(array(
+$oPad->setCol(0, 1, array("class" => "cl_notes"), "");
+$oPad->setCol(0, 2, array("width" => 6), we_html_element::htmlImg(array(
 		"src" => IMAGE_DIR . "pd/pad_corner_rt.gif", "width" => 6, "height" => 4
 )));
-$oPad->setCol(1, 0, array(
-	"colspan" => 3, "class" => "cl_notes"
-	), we_html_element::htmlDiv(array(
+$oPad->setCol(1, 0, array("colspan" => 3, "class" => "cl_notes"), we_html_element::htmlDiv(array(
 		"id" => "notices"
 		), getNoteList($_sql, $bDate, $bDisplay)));
-$oPad->setCol(2, 0, array(
-	'width' => 6
-	), we_html_element::htmlImg(array(
+$oPad->setCol(2, 0, array('width' => 6), we_html_element::htmlImg(array(
 		'src' => IMAGE_DIR . 'pd/pad_corner_lb.gif', "width" => 6, "height" => 6
 )));
-$oPad->setCol(2, 1, array(
-	"class" => "cl_notes"
-	), "");
-$oPad->setCol(2, 2, array(
-	"width" => 6
-	), we_html_element::htmlImg(array(
+$oPad->setCol(2, 1, array("class" => "cl_notes"), "");
+$oPad->setCol(2, 2, array("width" => 6), we_html_element::htmlImg(array(
 		"src" => IMAGE_DIR . "pd/pad_corner_rb.gif", "width" => 6, "height" => 6
 )));
 
-$_notepad = $oPad->getHTML() . we_html_element::htmlDiv(array(
-		"id" => "props"
-		), $oTblProps->getHTML()) . we_html_element::htmlDiv(array(
-		"id" => "view"
-		), $oTblBtnProps->getHTML());
+$_notepad = $oPad->getHTML() .
+	we_html_element::htmlDiv(array("id" => "props"), $oTblProps->getHTML()) .
+	we_html_element::htmlDiv(array("id" => "view"), $oTblBtnProps->getHTML());
 
 $_notepad .= we_html_element::jsElement('
 function toggleTblValidity(){
@@ -287,7 +271,7 @@ function toggleTblValidity(){
 }
 toggleTblValidity();');
 
-print we_html_element::htmlDocType() . we_html_element::htmlHtml(
+echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
 			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[notepad]')) . STYLESHEET . we_html_element::cssElement(
 				getCSS()) . we_html_element::linkElement(

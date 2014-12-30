@@ -154,7 +154,6 @@ top.content.hloaded = 1;');
 		$extraJS .= "aTabs['" . g_l('modules_customer', '[documentTab]') . "']='documentTab';";
 
 
-		$tabs->onResize();
 		$tabsHead = $tabs->getHeader() . $js;
 		//$tabsBody = $tabs->getJS();
 

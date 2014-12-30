@@ -126,7 +126,6 @@ var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";') .
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][statistics]'), ($page == 2 ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(2);"));
 		}
 
-		$we_tabs->onResize();
 		$tab_head = $we_tabs->getHeader();
 
 		$extraHead = $tab_head .

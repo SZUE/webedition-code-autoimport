@@ -54,17 +54,14 @@ font-family: <?php echo g_l('css', '[font_family]'); ?>;
 background-color: #EEEEEE;
 }
 
-.weMarkInputError, input:invalid {background-color: #ff8888 ! important;}
+.weMarkInputError,
+input:invalid {
+background-color: #ff8888 ! important;
+}
 
 input.wetextinput:focus{
-color: black;
 border: #888888 solid 1px;
 background-color: #dce6f2;
-box-sizing: border-box;
-height: 20px;
-<?php echo (we_base_browserDetect::isIE()) ? '' : 'line-height: 18px;'; ?>
-font-size: <?php echo (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
-font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
 
 
@@ -82,9 +79,6 @@ color: black;
 border: #888888 solid 1px;
 background-color: #dce6f2;
 height: 80px;
-<?php echo (we_base_browserDetect::isIE()) ? '' : 'line-height: 18px;'; ?>
-font-size: <?php echo (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
-font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
 
 .multichooser {
@@ -144,27 +138,24 @@ font-size: <?php echo (we_base_browserDetect::isMAC() ? 11 : ((we_base_browserDe
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
 
-.changed, a.changed{ /*elements which are saved & published*/
+.changed,
+a.changed{ /*elements which are saved & published*/
 color: #3366CC;
 cursor: pointer;
 }
-.changed a {
-text-decoration:none;
-}
-.notpublished, a.notpublished {
+
+.notpublished,
+a.notpublished {
 color: red;
 cursor: pointer;
 }
+
+.changed a,
 .notpublished a{
 text-decoration:none;
 }
 
-
-
-.npdefaultfont a {
-color: red;
-}
-
+.npdefaultfont a,
 .npdefaultfont a:visited {
 color: red;
 }
@@ -228,10 +219,7 @@ font-family: <?php echo g_l('css', '[font_family]'); ?>;
 text-align:center;
 }
 
-.npshopContentfont a {
-color: red;
-}
-
+.npshopContentfont a,
 .npshopContentfont a:visited {
 color: red;
 }
@@ -247,42 +235,22 @@ font-family: <?php echo g_l('css', '[font_family]'); ?>;
 text-align:right;
 }
 
-.pshopContentfont {
+.pshopContentfont,
+.pdefaultfont{
 color: green;
 font-size: <?php echo (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 text-align:center;
-
-}
-.pshopContentfont a {
-color: green;
 }
 
-.pshopContentfont a:visited {
-color: green;
-}
-
-.pshopContentfont a:active {
-color: #006DB8;
-
-}
-.pdefaultfont {
-color: green;
-font-size: <?php echo (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
-font-family: <?php echo g_l('css', '[font_family]'); ?>;
-
-}
-
-.pdefaultfont a {
-color: green;
-
-}
-
+.pshopContentfont a,
+.pshopContentfont a:visited,
+.pdefaultfont a,
 .pdefaultfont a:visited {
 color: green;
-
 }
 
+.pshopContentfont a:active,
 .pdefaultfont a:active {
 color: #006DB8;
 }
@@ -294,10 +262,7 @@ font-family: <?php echo g_l('css', '[font_family]'); ?>;
 
 }
 
-.middlefont a {
-color: black;
-}
-
+.middlefont a,
 .middlefont a:visited {
 color: black;
 }
@@ -312,10 +277,7 @@ font-size: <?php echo (we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserD
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
 
-.middlefontgray a {
-color: #666666;
-}
-
+.middlefontgray a,
 .middlefontgray a:visited {
 color: #666666;
 }
@@ -330,10 +292,7 @@ font-size: <?php echo (we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserD
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
 
-.middlefontred a {
-color: red;
-}
-
+.middlefontred a,
 .middlefontred a:visited {
 color: red;
 }
@@ -348,10 +307,7 @@ font-size: <?php echo (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserD
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
 
-.defaultgray a {
-color: #666666;
-}
-
+.defaultgray a,
 .defaultgray a:visited {
 color: #666666;
 }
@@ -450,12 +406,9 @@ font-size: <?php echo (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserD
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
 
-.tableHeader a {
-color: #ffffff;
-text-decoration:none;
-}
-
+.tableHeader a,
 .tableHeader a:visited {
+text-decoration:none;
 color: #ffffff;
 }
 

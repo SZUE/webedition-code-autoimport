@@ -65,8 +65,7 @@ switch($tool){
 		break;
 }
 
-$we_tabs->onResize('navi');
-$tab_header = $we_tabs->getHeader('_tools', 1);
+$tab_header = $we_tabs->getHeader();
 
 echo $tab_header;
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -243,12 +242,15 @@ $preview_button = we_html_button::create_button("preview", "javascript:preview()
 $cancel_button = we_html_button::create_button("close", "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-print we_html_element::htmlDocType() . we_html_element::htmlHtml(
+echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[notepad]')) . STYLESHEET . we_html_element::cssElement(
-				"select{border:#AAAAAA solid 1px}") . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[notepad]')) .
+			STYLESHEET .
+			we_html_element::cssElement("select{border:#AAAAAA solid 1px}") .
+			we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
 			we_html_element::jsScript(JS_DIR . "weCombobox.js") .
-			we_html_element::jsElement($jsPrefs . $jsCode)) . we_html_element::htmlBody(
+			we_html_element::jsElement($jsPrefs . $jsCode)) .
+		we_html_element::htmlBody(
 			array(
 			"class" => "weDialogBody", "onload" => "init();"
 			), we_html_element::htmlForm(

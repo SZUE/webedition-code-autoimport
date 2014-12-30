@@ -38,18 +38,18 @@ class we_messaging_headerMsg{
 
 	static function pCSS(){
 		echo we_html_element::cssElement('
-			table.msgheadertable {
-				margin:2px 0px 1em auto;
-				border-spacing:0px;
-				border: none;
-			}
-			table.msgheadertable td {
-				padding:0px;
-	}
-			table.msgheadertable tr {
-				height: 12px;
-			}
-			');
+table.msgheadertable {
+	margin:2px 0px 1em auto;
+	border-spacing:0px;
+	border: none;
+}
+table.msgheadertable td {
+	padding:0px;
+}
+table.msgheadertable tr {
+	height: 12px;
+}
+');
 	}
 
 	static function pJS(){

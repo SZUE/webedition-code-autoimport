@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -62,16 +61,18 @@ function initPlugin() {
 
 self.focus();
 ');
-$css = we_html_element::cssLink(WEBEDITION_DIR . 'css/global.php');
 
 echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead($css . "\n" . $js) .
-		we_html_element::htmlBody(array("bgcolor" => "#ffffff", "leftmargin" => 20, "topmargin" => 20, "marginheight" => 20, "marginwidth" => 20, "onload" => "initPlugin();checkPlugin()"), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlCenter(
-					we_html_element::htmlImg(array("src" => IMAGE_DIR . "spinner.gif")) .
-					we_html_element::htmlBr() .
-					we_html_element::htmlBr() .
-					we_html_element::htmlDiv(array("class" => "header_small"), g_l('eplugin', '[initialisation]'))
-				)
+	we_html_element::htmlHead(
+		STYLESHEET .
+		$js
+	) .
+	we_html_element::htmlBody(array("bgcolor" => "#ffffff", "leftmargin" => 20, "topmargin" => 20, "marginheight" => 20, "marginwidth" => 20, "onload" => "initPlugin();checkPlugin()"), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlCenter(
+				we_html_element::htmlImg(array("src" => IMAGE_DIR . "spinner.gif")) .
+				we_html_element::htmlBr() .
+				we_html_element::htmlBr() .
+				we_html_element::htmlDiv(array("class" => "header_small"), g_l('eplugin', '[initialisation]'))
 			)
 		)
-	);
+	)
+);

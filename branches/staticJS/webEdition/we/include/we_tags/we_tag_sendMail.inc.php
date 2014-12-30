@@ -27,9 +27,9 @@ function _getMails($to){
 	foreach($to as $mail){
 		if(strpos($mail, '@') === false){
 			if((
-					(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"]) ||
-					(isset($GLOBALS['ERROR']['customerResetPassword']) && $GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_ALL_OK)) &&
-					isset($_SESSION["webuser"][$mail]) && strpos($_SESSION["webuser"][$mail], '@') !== false){ //wenn man registireten Usern was senden moechte
+				(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"]) ||
+				(isset($GLOBALS['ERROR']['customerResetPassword']) && $GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_ALL_OK)) &&
+				isset($_SESSION["webuser"][$mail]) && strpos($_SESSION["webuser"][$mail], '@') !== false){ //wenn man registireten Usern was senden moechte
 				if(we_check_email($_SESSION["webuser"][$mail])){
 					$we_recipient[] = $_SESSION["webuser"][$mail];
 				}
@@ -110,10 +110,9 @@ function we_tag_sendMail($attribs, $content){
 		if($_blocked){
 			$headline = "Fehler / Error";
 			$content = g_l('global', '[formmailerror]') . getHtmlTag("br") . "&#8226; " . "Email dispatch blocked / Email Versand blockiert!";
-			$css = array('media' => 'screen', 'rel' => 'stylesheet', 'type' => 'text/css', 'href' => WEBEDITION_DIR . 'css/global.php');
 
 			echo we_html_tools::getHtmlTop() .
-			getHtmlTag("link", $css) .
+			STYLESHEET .
 			'</head>' .
 			getHtmlTag("body", array("class" => "weEditorBody"), we_html_tools::htmlDialogLayout(getHtmlTag("div", array("class" => "defaultgray"), $content), $headline)) .
 			'</html>';

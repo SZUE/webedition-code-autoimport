@@ -434,15 +434,13 @@ function enableNewFileBut() {
 	}
 
 	function printSetDirHTML(){
-		echo '<script type="text/javascript"><!--
+		echo we_html_element::jsElement('
 top.clearEntries();' .
-		$this->printCmdAddEntriesHTML() .
-		$this->printCMDWriteAndFillSelectorHTML() . '
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() . '
 top.fsheader.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
 top.currentDir = "' . $this->dir . '";
-top.parentID = "' . $this->values["ParentID"] . '";
-//-->
-</script>';
+top.parentID = "' . $this->values["ParentID"] . '";');
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
@@ -524,39 +522,9 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db, MYSQL_ASSOC);
 		$path = isset($result['Path']) ? $result['Path'] : "";
 		$out = we_html_tools::getHtmlTop() .
-			STYLESHEET . we_html_element::cssElement('
-	body {
-		margin:0px;
-		padding:0px;
-		background-color:#FFFFFF;
-	}
-	td {
-		font-size: 10px;
-		padding: 3px 6px;
-		vertical-align:top;
-	}
-	td.image {
-		vertical-align:middle;
-		padding: 0px;
-	}
-	td.info {
-		padding: 0px;
-	}
-	.headline {
-		padding:3px 6px;
-		background-color:#BABBBA;
-		font-weight:bold;
-		border-top:0px solid black;
-		border-bottom:0px solid black;
-	}
-	.odd {
-		padding:3px 6px;
-		background-color:#FFFFFF;
-	}
-	.even {
-		padding:3px 6px;
-		background-color:#F2F2F1;
-	}') . we_html_element::jsElement('
+			STYLESHEET .
+			we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .
+			we_html_element::jsElement('
 	function setInfoSize() {
 		infoSize = document.body.clientHeight;
 		if(infoElem=document.getElementById("info")) {
@@ -576,11 +544,11 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
 	function weWriteBreadCrumb(BreadCrumb){
 		if(typeof top.fspath != "undefined") top.fspath.document.body.innerHTML = BreadCrumb;
-		else if(weCountWriteBC<10) setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
+		else if(weCountWriteBC<10) setTimeout(\'weWriteBreadCrumb(BreadCrumb)\',100);
 		weCountWriteBC++;
 	}') . '
 </head>
-<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">';
+<body class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">';
 		if(isset($result['ContentType']) && !empty($result['ContentType'])){
 			if($result['ContentType'] === "folder"){
 				$this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
@@ -636,12 +604,11 @@ top.parentID = "' . $this->values["ParentID"] . '";
 
 			$_filesize = we_base_file::getHumanFileSize($fs);
 
-
 			if($result['ContentType'] == we_base_ContentTypes::IMAGE && file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){
 				if($fs === 0){
 					$_imagesize = array(0, 0);
 					$_thumbpath = ICON_DIR . 'no_image.gif';
-					$_imagepreview = "<img src='" . $_thumbpath . "' border='0' id='previewpic'><p>" . g_l('fileselector', '[image_not_uploaded]') . "</p>";
+					$_imagepreview = "<img src='" . $_thumbpath . "' id='previewpic'><p>" . g_l('fileselector', '[image_not_uploaded]') . "</p>";
 				} else {
 					$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 					$_thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
@@ -655,35 +622,33 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			}
 
 			$_previewFields = array(
-				"properies" => array("headline" => g_l('weClass', '[tab_properties]'), "data" => array()),
 				"metainfos" => array("headline" => g_l('weClass', '[metainfo]'), "data" => array()),
 				"attributes" => array("headline" => g_l('weClass', '[attribs]'), "data" => array()),
 				"folders" => array("headline" => g_l('fileselector', '[folders]'), "data" => array()),
 				"files" => array("headline" => g_l('fileselector', '[files]'), "data" => array()),
-				"masterTemplate" => array("headline" => g_l('weClass', '[master_template]'), "data" => array())
-			);
-
-			$_previewFields["properies"]["data"][] = array(
-				"caption" => g_l('fileselector', '[name]'),
-				"content" => (
-				$showPriview ? "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='" . $result['Path'] .
-					"' target='_blank' style='color:black'><img src='" . TREE_ICON_DIR . "browser.gif' border='0' vspace='0' hspace='0'></a></div>" : ""
-				) . "<div style='margin-right:14px'>" . (
-				$showPriview ? "<a href='" . $result['Path'] . "' target='_blank' style='color:black'>" . $result['Text'] . "</a>" : $result['Text']
-				) . "</div>"
-			);
-
-			$_previewFields["properies"]["data"][] = array(
-				"caption" => "ID",
-				"content" => "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
+				"masterTemplate" => array("headline" => g_l('weClass', '[master_template]'), "data" => array()),
+				"properies" => array("headline" => g_l('weClass', '[tab_properties]'), "data" => array(
+						array(
+							"caption" => g_l('fileselector', '[name]'),
+							"content" => (
+							$showPriview ? "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='" . $result['Path'] .
+								"' target='_blank' style='color:black'><img src='" . TREE_ICON_DIR . "browser.gif' border='0' vspace='0' hspace='0'></a></div>" : ""
+							) . "<div style='margin-right:14px'>" . (
+							$showPriview ? "<a href='" . $result['Path'] . "' target='_blank' style='color:black'>" . $result['Text'] . "</a>" : $result['Text']
+							) . "</div>"
+						),
+						array(
+							"caption" => "ID",
+							"content" => "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
 					<div style='float:left; vertical-align:baseline; margin-right:4px;'>
 					<img src='" . TREE_ICON_DIR . "bearbeiten.gif' border='0' vspace='0' hspace='0'>
 					</div></a>
 					<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
 						<div>" . $this->id . "</div>
 					</a>"
+						)
+					)),
 			);
-
 			if($result['CreationDate']){
 				$_previewFields["properies"]["data"][] = array(
 					"caption" => g_l('fileselector', '[created]'),
@@ -711,11 +676,17 @@ top.parentID = "' . $this->values["ParentID"] . '";
 				);
 			}
 
-			if($result['ContentType'] != "folder" && $result['ContentType'] != we_base_ContentTypes::TEMPLATE && $result['ContentType'] != "object" && $result['ContentType'] != "objectFile"){
-				$_previewFields["properies"]["data"][] = array(
-					"caption" => g_l('fileselector', '[filesize]'),
-					"content" => $_filesize
-				);
+			switch($result['ContentType']){
+				case "folder":
+				case we_base_ContentTypes::TEMPLATE:
+				case "object":
+				case "objectFile":
+					break;
+				default:
+					$_previewFields["properies"]["data"][] = array(
+						"caption" => g_l('fileselector', '[filesize]'),
+						"content" => $_filesize
+					);
 			}
 
 

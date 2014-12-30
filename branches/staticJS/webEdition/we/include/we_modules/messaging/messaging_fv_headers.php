@@ -33,14 +33,27 @@ echo we_html_tools::getHtmlTop() .
 
 		top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $transaction . '";
 	}') .
- STYLESHEET .
- we_html_element::cssElement('.defaultfont a {color:black; text-decoration:none}');
+ STYLESHEET ;
 $si = we_base_request::_(we_base_request::STRING, "si");
 $so = we_base_request::_(we_base_request::STRING, 'so');
 ?>
+<style type="text/css">
+	.defaultfont a {
+		color:black;
+		text-decoration:none
+	}
+	body{
+		background-image: url('<?php echo IMAGE_DIR; ?>backgrounds/header_with_black_line.gif');
+		margin-left: 7px;
+		margin-top: 6px;
+	}
+	table{
+		width:100%;
+	}
+</style>
 </head>
-<body  background="<?php echo IMAGE_DIR; ?>backgrounds/header_with_black_line.gif"  marginwidth="7" marginheight="6" topmargin="6" leftmargin="7">
-	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<body>
+	<table cellpadding="0" cellspacing="0">
 		<tr>
 			<?php if(we_base_request::_(we_base_request::STRING, "viewclass") != "todo"){ ?>
 				<td width="18"><?php we_html_tools::pPixel(18, 1) ?></td>

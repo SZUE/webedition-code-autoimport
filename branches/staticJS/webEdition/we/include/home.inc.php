@@ -25,15 +25,12 @@ include_once (WE_INCLUDES_PATH . '/we_widgets/cfg.inc.php');
 //make sure we know which browser is used
 
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop();
-
-$js_load = array('windows', 'utils/dimension', 'utils/prototypes', 'utils/cockpit');
-foreach($js_load as $js){
-	echo we_html_element::jsScript(JS_DIR . $js . '.js');
-}
-unset($js_load);
-
-echo STYLESHEET .
+echo we_html_tools::getHtmlTop() .
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(JS_DIR . 'utils/dimension.js') .
+ we_html_element::jsScript(JS_DIR . 'utils/prototypes.js') .
+ we_html_element::jsScript(JS_DIR . 'utils/cockpit.js') .
+ STYLESHEET .
  we_html_element::cssElement('
 body{
 	background: url( "/webEdition/images/backgrounds/aquaBackground.gif" )
@@ -42,17 +39,14 @@ body{
 .rssDiv, .rssDiv *{
 	background-color: transparent;
 	color: black;
-	font-size: ' . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ';
-	font-family: ' . g_l('css', '[font_family]') . ' ! important;
+	font-size: ' . ((we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11)) . 'px;
 }
 
 .rssDiv a {
 	color: black;
 	text-decoration:none;
 }
-#rowWidgets td div table{
-	/*background-color:white;*/
-}') . we_html_element::jsScript(JS_DIR . '/utils/prototypes.js');
+');
 
 if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 	$iLayoutCols = isset($_SESSION["prefs"]["cockpit_amount_columns"]) ? $_SESSION["prefs"]["cockpit_amount_columns"] : 3;
@@ -61,8 +55,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 
 		$aDatTblPref = we_base_preferences::getUserPref('cockpit_dat'); // array as saved in the prefs
 		$aTrf = we_base_preferences::getUserPref('cockpit_rss');
-		$aDat = $aDatTblPref ? @unserialize($aDatTblPref) : $aCfgProps; //
-		$aDat = $aDat ? : $aCfgProps;
+		$aDat = ($aDatTblPref ? @unserialize($aDatTblPref) : $aCfgProps)? : $aCfgProps;
 		$aTrf = $aTrf ? @unserialize($aTrf) : $aTopRssFeeds;
 		if(count($aDat) > $iLayoutCols){
 			while(count($aDat) > $iLayoutCols){
@@ -200,7 +193,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 		reset($d);
 		while((list(, $v) = each($d))){
 			$i++;
-			echo "{'type':'" . $v[0] . "','cls':'" . $v[1] . "','res':'" . $v[2] . "','csv':'" . $v[3] . "'}" . (($i < $count_i) ? "," : ""). "\n";
+			echo "{'type':'" . $v[0] . "','cls':'" . $v[1] . "','res':'" . $v[2] . "','csv':'" . $v[3] . "'}" . (($i < $count_i) ? "," : "") . "\n";
 		}
 		$j++;
 		echo "]" . (($j < $count_j) ? "," : "") . "\n";
@@ -651,7 +644,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 				if (i != 0) {
 					out += delimeter;
 				}
-				out += enclosure +encodeURI(arr[i]) + enclosure;
+				out += enclosure + encodeURI(arr[i]) + enclosure;
 			}
 			return out;
 		}
@@ -767,7 +760,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 
 			var args = '';
 			for (var i = 0; i < arguments.length; i++) {
-				args += '&we_cmd[' + i + ']=' +encodeURI(arguments[i]);
+				args += '&we_cmd[' + i + ']=' + encodeURI(arguments[i]);
 			}
 
 			var _cmdName = null;
@@ -784,7 +777,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 		}
 
 		var ajaxCallback = {
-			success: function(o) {
+			success: function (o) {
 				if (typeof (o.responseText) !== undefined && o.responseText !== '') {
 					var weResponse = false;
 					try {
@@ -798,7 +791,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 					}
 				}
 			},
-			failure: function(o) {
+			failure: function (o) {
 				alert("Could not complete the ajax request");
 
 			}
@@ -957,7 +950,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 		function getUser() {
 			var url = '<?php echo WEBEDITION_DIR; ?>we_cmd.php?';
 			for (var i = 0; i < arguments.length; i++) {
-				url += 'we_cmd[' + i + ']=' +encodeURI(arguments[i]);
+				url += 'we_cmd[' + i + ']=' + encodeURI(arguments[i]);
 				if (i < (arguments.length - 1)) {
 					url += '&';
 				}
@@ -1093,53 +1086,49 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 } else { // no right to see cockpit!!!
 	echo
 	we_html_element::jsElement('
-		function isHot(){
-			return false;
-		}
-		function closeAllModalWindows(){}
+function isHot(){
+	return false;
+}
+function closeAllModalWindows(){}
 
-		var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
-		_EditorFrame.initEditorFrameData(
-		{
-			"EditorType":"cockpit",
-			"EditorDocumentText":"Cockpit",
-			"EditorDocumentPath":"Cockpit",
-			"EditorContentType":"cockpit",
-			"EditorEditCmd":"open_cockpit"
-		}
-		);
-	') .
+var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
+_EditorFrame.initEditorFrameData(
+{
+	"EditorType":"cockpit",
+	"EditorDocumentText":"Cockpit",
+	"EditorDocumentPath":"Cockpit",
+	"EditorContentType":"cockpit",
+	"EditorEditCmd":"open_cockpit"
+}
+);') .
 	we_html_element::cssElement('
-		html {
-			heigth: 90%;
-		}
-		body {
-			background: #DDE7F1 url( "' . IMAGE_DIR . 'backgrounds/blank_editor.gif" ) no-repeat fixed bottom right;
-			height:100%;
-			margin: 0;
-			padding: 0;
-			text-align: center;
-		}
+html {
+	heigth: 90%;
+}
+body {
+	background: #DDE7F1 url( "' . IMAGE_DIR . 'backgrounds/blank_editor.gif" ) no-repeat fixed bottom right;
+	height:100%;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
 
-		.errorMessage {
-			position: relative;
-			top: 250px;
-			display: block;
-			border: 1px solid #999;
-			margin: auto;
-			padding: 1px;
-		}
-		') .
+.errorMessage {
+	position: relative;
+	top: 250px;
+	display: block;
+	border: 1px solid #999;
+	margin: auto;
+	padding: 1px;
+}') .
 	'</head>' .
 	we_html_element::htmlBody(
 		array(
 		"onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
 		), we_html_element::htmlDiv(
-			array(
-			"class" => "defaultfont errorMessage", "style" => "width: 400px;"
-			), (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ? we_html_tools::htmlAlertAttentionBox(
-					"<strong>" . g_l('SEEM', '[question_change_startdocument]') . "</strong><br/><br/>" . we_html_button::create_button(
-						"preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) : we_html_tools::htmlAlertAttentionBox(
-					"<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
+			array("class" => "defaultfont errorMessage", "style" => "width: 400px;"), (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ?
+				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[question_change_startdocument]') . '</strong><br/><br/>' .
+					we_html_button::create_button("preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
+				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
 }
 echo '<iframe id="RSIFrame" name="RSIFrame" style="border:0px;width:1px;height:1px; visibility:hidden"></iframe></html>';

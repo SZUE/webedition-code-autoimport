@@ -325,7 +325,6 @@ function we_cmd() {
 
 		$textPre = g_l('modules_shop', $bid > 0 ? '[orderList][order]' : '[order_view]');
 		$textPost = isset($_REQUEST['mid']) && $_REQUEST['mid'] > 0 ? (strlen($_REQUEST['mid']) > 5 ? g_l('modules_shop', '[month][' . substr($_REQUEST['mid'], 0, -5) . ']') . " " . substr($_REQUEST['mid'], -5, 4) : substr($_REQUEST['mid'], 1)) : ($bid ? sprintf(g_l('modules_shop', '[orderNo]'), $bid, $cdat) : '');
-		$we_tabs->onResize();
 
 		$tab_head = $we_tabs->getHeader() . we_html_element::jsElement('
 function setTab(tab) {
@@ -389,7 +388,6 @@ top.content.hloaded = 1;
 				$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_3]'), we_tab::NORMAL, "setTab(2);"));
 			}
 		}
-		$we_tabs->onResize();
 
 		$tab_head = $we_tabs->getHeader() . we_html_element::jsElement('
 function setTab(tab) {

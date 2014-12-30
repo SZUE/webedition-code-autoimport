@@ -149,7 +149,6 @@ class we_navigation_frames extends we_modules_frame{
 			$we_tabs->addTab(new we_tab("#", g_l('navigation', '[preview]'), '((' . $this->topFrame . '.activ_tab=="preview") ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('preview');", array("id" => "tab_preview")));
 		}
 
-		$we_tabs->onResize();
 		$tabsHead = $we_tabs->getHeader() .
 			we_html_element::jsElement(
 				($this->Model->IsFolder == 0 ? '

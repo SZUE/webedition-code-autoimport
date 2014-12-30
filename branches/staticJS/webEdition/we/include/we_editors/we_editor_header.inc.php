@@ -130,7 +130,6 @@ switch($_SESSION['weS']['we_mode']){
 			}
 		}
 
-		$we_tabs->onResize('editHeader');
 		echo $we_tabs->getHeader();
 		break;
 	case we_base_constants::MODE_SEE://	No tabs in Super-Easy-Edit_mode

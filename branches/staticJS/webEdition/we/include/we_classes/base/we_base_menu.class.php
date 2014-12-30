@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_menu{
-
 	private $entries;
 	private $lcmdFrame = '';
 	private $menuaction = '';
@@ -70,8 +69,7 @@ function menuaction(cmd) {
 		foreach($menus as $menu){
 			$foo = $menu['code'];
 			$this->h_pCODE($this->entries, $foo, $menu['id'], '');
-			$foo .= '</ul></div></li>';
-			$out .= $foo;
+			$out .= $foo . '</ul></div></li>';
 		}
 
 		$out .= '</ul>';
@@ -140,4 +138,3 @@ function menuaction(cmd) {
 	}
 
 }
-

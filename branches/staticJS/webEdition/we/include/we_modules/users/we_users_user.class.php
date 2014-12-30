@@ -2331,7 +2331,6 @@ function show_seem_chooser(val) {
 			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][' . $val . ']'), ($tab == $key ? we_tab::ACTIVE : we_tab::NORMAL), 'self.setTab(' . $key . ');'));
 		}
 
-		$we_tabs->onResize();
 		$tab_header = $we_tabs->getHeader();
 
 		return we_html_element::jsElement('

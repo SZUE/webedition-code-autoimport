@@ -89,7 +89,6 @@ class we_export_frames extends we_modules_frame{
 			$we_tabs->addTab(new we_tab("#", g_l('export', '[log]'), '((' . $this->topFrame . '.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
 		}
 
-		$we_tabs->onResize();
 		$tabsHead = $we_tabs->getHeader();
 
 		$js = we_html_element::jsElement('

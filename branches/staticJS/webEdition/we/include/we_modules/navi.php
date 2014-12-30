@@ -46,8 +46,7 @@ foreach($mods as $_menuItem){
 	}
 }
 
-$we_tabs->onResize('navi');
-$tab_header = $we_tabs->getHeader('_modules', 1);
+$tab_header = $we_tabs->getHeader();
 
 echo $tab_header .
  we_html_element::jsElement('

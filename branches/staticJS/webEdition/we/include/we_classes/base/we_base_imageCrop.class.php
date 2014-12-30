@@ -909,25 +909,43 @@ if(!Function.prototype.apply){
 
 	static function getCSS(){
 		return we_html_element::cssElement('
-			#weImgDiv {border: 0px solid #CECECE;}
-			#weImagePanelBorder {border: 0px solid #808080;}
-			#weControl img {border:none;}
-			#weSizeDiv {float:left;width:60px;height:15px;padding:0px;margin-right:4px;background-image:url(' . IMAGE_DIR . 'crop/size_wh.gif);background-repeat:no-repeat;}
-			#weSizeDiv input {display:block;width:24px;height:13px;text-align:center;border:none;font-family:Arial,Verdana,sans-serif;font-size:10px;color:#000000;background-color:transparent;}
-			#CropWidth {float:left;}
-			#CropHeight {float:right;}
-			.clHorLine {position:absolute;left:0px;top:0px;width:1px;height:1px;font:1px/1px verdana,sans-serif;background-image:url(' . IMAGE_DIR . 'crop/horizontal.gif);background-repeat: repeat-x;z-index:10;cursor:n-resize;visibility:hidden;background-color:#000000;}
-			.clVerLine {position: absolute;left:0px;top:0px;width:1px;height:1px;font: 1px/1px verdana,sans-serif;background-image:url(' . IMAGE_DIR . 'crop/vertical.gif);background-repeat:repeat-y;z-index:10;cursor:e-resize;visibility:hidden;background-color:#000000;}
-			#weImage {display:block;position:relative;left:0px;top:0px;z-index:3;}
-			#weImagePanel {position:relative;left:0px;top:0px;z-index:1;background:#CECECE;}
-			#weCoverPanel {position:absolute;left:0px;top:0px;background:#000000;z-index:4;cursor:default;visibility:hidden;filter:alpha(opacity=60);opacity:0.6;-moz-opacity:0.6;}
-			#weCropPanel {position:absolute;left:0px;top:0px;display:block;overflow:hidden;z-index:9;visibility:hidden;}
-			#cropButtonZoomIn, #cropButtonZoomOut {cursor:pointer;display:block;float:left;width:18px;height:18px;background-repeat:no-repeat;}
-			#cropButtonZoomIn {background-image: url(' . IMAGE_DIR . 'crop/zoom_in1.gif);}
-			#cropButtonZoomIn:hover {background-image: url(' . IMAGE_DIR . 'crop/zoom_in2.gif);}
-			#cropButtonZoomOut {background-image: url(' . IMAGE_DIR . 'crop/zoom_out1.gif);}
-			#cropButtonZoomOut:hover {background-image: url(' . IMAGE_DIR . 'crop/zoom_out2.gif);}
-		');
+#weImgDiv {
+	border: 0px solid #CECECE;
+}
+#weImagePanelBorder {
+	border: 0px solid #808080;
+}
+#weControl img {
+	border:none;
+s}
+#weSizeDiv {float:left;width:60px;height:15px;padding:0px;margin-right:4px;background-image:url(' . IMAGE_DIR . 'crop/size_wh.gif);background-repeat:no-repeat;}
+#weSizeDiv input {
+	display:block;
+	width:24px;
+	height:13px;
+	text-align:center;
+	border:none;
+	font-family:Arial,Verdana,sans-serif;
+	font-size:10px;
+	color:#000000;
+	background-color:transparent;
+}
+#CropWidth {
+	float:left;
+}
+#CropHeight {float:right;}
+.clHorLine {position:absolute;left:0px;top:0px;width:1px;height:1px;font:1px/1px verdana,sans-serif;background-image:url(' . IMAGE_DIR . 'crop/horizontal.gif);background-repeat: repeat-x;z-index:10;cursor:n-resize;visibility:hidden;background-color:#000000;}
+.clVerLine {position: absolute;left:0px;top:0px;width:1px;height:1px;font: 1px/1px verdana,sans-serif;background-image:url(' . IMAGE_DIR . 'crop/vertical.gif);background-repeat:repeat-y;z-index:10;cursor:e-resize;visibility:hidden;background-color:#000000;}
+#weImage {display:block;position:relative;left:0px;top:0px;z-index:3;}
+#weImagePanel {position:relative;left:0px;top:0px;z-index:1;background:#CECECE;}
+#weCoverPanel {position:absolute;left:0px;top:0px;background:#000000;z-index:4;cursor:default;visibility:hidden;filter:alpha(opacity=60);opacity:0.6;-moz-opacity:0.6;}
+#weCropPanel {position:absolute;left:0px;top:0px;display:block;overflow:hidden;z-index:9;visibility:hidden;}
+#cropButtonZoomIn, #cropButtonZoomOut {cursor:pointer;display:block;float:left;width:18px;height:18px;background-repeat:no-repeat;}
+#cropButtonZoomIn {background-image: url(' . IMAGE_DIR . 'crop/zoom_in1.gif);}
+#cropButtonZoomIn:hover {background-image: url(' . IMAGE_DIR . 'crop/zoom_in2.gif);}
+#cropButtonZoomOut {background-image: url(' . IMAGE_DIR . 'crop/zoom_out1.gif);}
+#cropButtonZoomOut:hover {background-image: url(' . IMAGE_DIR . 'crop/zoom_out2.gif);}
+');
 	}
 
 	static function getCrop($attribs){

@@ -125,8 +125,7 @@ var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[editor][information]'), we_tab::ACTIVE, "//", array("id" => "tab_0")));
 		}
 
-		$we_tabs->onResize();
-		$tab_header = $we_tabs->getHeader('', 22);
+		$tab_header = $we_tabs->getHeader();
 		$textPre = g_l('modules_workflow', ($mode == 1 ? '[document]' : '[workflow]'));
 		$textPost = '/' . $text;
 

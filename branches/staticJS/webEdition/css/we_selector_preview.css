@@ -1,8 +1,7 @@
-<?php
-
 /**
  * webEdition CMS
  *
+ * webEdition CMS
  * $Rev$
  * $Author$
  * $Date$
@@ -19,28 +18,39 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package none
+ * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_tabs{
-	private $container = '';
 
-	public function __construct(){
-
-	}
-
-	public function addTab($tab){
-		$this->container .= $tab->getHTML();
-	}
-
-	function getHeader(){
-		return we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
-			we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
-			we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
-	}
-
-	function getHTML(){
-		return '<div id="tabContainer" name="tabContainer">' . $this->container . '</div>';
-	}
-
+body {
+	margin:0px;
+	padding:0px;
+	background-color:#FFFFFF;
+}
+td {
+	font-size: 10px;
+	padding: 3px 6px;
+	vertical-align:top;
+}
+td.image {
+	vertical-align:middle;
+	padding: 0px;
+}
+td.info {
+	padding: 0px;
+}
+.headline {
+	padding:3px 6px;
+	background-color:#BABBBA;
+	font-weight:bold;
+	border-top:0px solid black;
+	border-bottom:0px solid black;
+}
+.odd {
+	padding:3px 6px;
+	background-color:#FFFFFF;
+}
+.even {
+	padding:3px 6px;
+	background-color:#F2F2F1;
 }

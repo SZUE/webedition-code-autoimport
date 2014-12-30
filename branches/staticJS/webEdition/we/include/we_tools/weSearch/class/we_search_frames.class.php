@@ -119,15 +119,11 @@ class we_search_frames extends we_tool_frames{
 			'id' => 'tab_4', 'style' => "display:$displayFolder"
 		)));
 
-		$we_tabs->onResize();
-
 		$tabsHead = $we_tabs->getHeader();
-
-		$activeTabJS = '';
 
 		$tabNr = $this->getTab();
 
-		$activeTabJS .= $this->topFrame . '.activ_tab = ' . $tabNr . ';';
+		$activeTabJS = $this->topFrame . '.activ_tab = ' . $tabNr . ';';
 
 		$tabsHead .= we_html_element::jsElement($activeTabJS . '
 

@@ -68,16 +68,17 @@ function transmit(){
 	}
 }
 ";
-		print we_html_element::htmlDocType() .
-			we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					we_html_element::cssElement('div,span{display:none;}') . we_html_element::jsElement($js)) .
-				we_html_element::htmlBody(
-					array('onload' => 'transmit();'
-					), we_html_element::htmlDiv(array('id' => 'content'), $oTblCont->getHtml()) .
-					we_html_element::htmlSpan(array('id' => 'prefix'), $aLang[0]) .
-					we_html_element::htmlSpan(array('id' => 'postfix'), $aLang[1]) .
-					we_html_element::htmlSpan(array('id' => 'csv'), (isset($aProps[3]) ? $aProps[3] : ''))));
+		echo we_html_element::htmlDocType() .
+		we_html_element::htmlHtml(
+			we_html_element::htmlHead(
+				we_html_element::cssElement('div,span{display:none;}') .
+				we_html_element::jsElement($js)) .
+			we_html_element::htmlBody(
+				array('onload' => 'transmit();'
+				), we_html_element::htmlDiv(array('id' => 'content'), $oTblCont->getHtml()) .
+				we_html_element::htmlSpan(array('id' => 'prefix'), $aLang[0]) .
+				we_html_element::htmlSpan(array('id' => 'postfix'), $aLang[1]) .
+				we_html_element::htmlSpan(array('id' => 'csv'), (isset($aProps[3]) ? $aProps[3] : ''))));
 		break;
 
 	//added to fix bug #6538

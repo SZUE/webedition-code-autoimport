@@ -36,8 +36,7 @@ foreach($GLOBALS['tabs'] as $name => $perm){
 	}
 }
 
-$we_tabs->onResize('naviDiv');
-$tab_head = $we_tabs->getHeader('', 1);
+$tab_head = $we_tabs->getHeader();
 
 function getPreferencesTabsDefaultHeight(){
 	return 22;
@@ -48,7 +47,7 @@ function getPreferencesJS(){
 }
 
 function getPreferencesCSS(){
-	return $GLOBALS['we_tabs']->getHeader('', 1);
+	return $GLOBALS['we_tabs']->getHeader();
 }
 
 function getPreferencesHeader(){

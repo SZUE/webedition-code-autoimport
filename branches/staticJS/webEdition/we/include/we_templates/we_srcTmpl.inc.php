@@ -707,12 +707,19 @@ switch($_SESSION['prefs']['editorMode']){
 						($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE ?
 							($_SESSION['prefs']['editorTooltips'] ? we_getCodeMirror2Tags(true) : '') .
 							($_SESSION['prefs']['editorTooltipsIDs'] ? we_getCSSIds() : '') : '') . '
-.weSelfClose:hover:after, .cm-weSelfClose:hover:after, .weOpenTag:hover:after, .cm-weOpenTag:hover:after, .weTagAttribute:hover:after, .cm-weTagAttribute:hover:after {
+.weSelfClose:hover:after,
+.cm-weSelfClose:hover:after,
+.weOpenTag:hover:after,
+.cm-weOpenTag:hover:after,
+.weTagAttribute:hover:after,
+.cm-weTagAttribute:hover:after {
 	font-family: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontname'] ? $_SESSION['prefs']['editorTooltipFontname'] : 'sans-serif') . ';
 	font-size: ' . ($_SESSION['prefs']['editorTooltipFont'] && $_SESSION['prefs']['editorTooltipFontsize'] ? $_SESSION['prefs']['editorTooltipFontsize'] : '12') . 'px;
 }
 
-.CodeMirror, .CodeMirror.cm-s-ambiance, .CodeMirror.cm-s-solarized {
+.CodeMirror,
+.CodeMirror.cm-s-ambiance,
+.CodeMirror.cm-s-solarized {
 	font-family: ' . ($_SESSION['prefs']['editorFont'] && $_SESSION['prefs']['editorFontname'] ? $_SESSION['prefs']['editorFontname'] : 'monospace') . ' !important;
 	font-size: ' . ($_SESSION['prefs']['editorFont'] && $_SESSION['prefs']['editorFontsize'] ? $_SESSION['prefs']['editorFontsize'] : '12') . 'px !important;
 }

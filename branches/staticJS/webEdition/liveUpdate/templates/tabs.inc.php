@@ -36,7 +36,6 @@ foreach($this->Data['allTabs'] as $tabname){
 
 
 // get output
-$tabs->onResize();
 $_tabHead = $tabs->getHeader();
 
 $bodyContent = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">' . we_html_tools::getPixel(100, 10) . '</div>' . we_html_tools::getPixel(100, 3) .

@@ -213,7 +213,12 @@ class we_imageDocument extends we_binaryDocument{
 	}
 
 	public function isSvg(){
-		return ($this->Extension === '.svg' || $this->Extension === '.svgz');
+		switch($this->Extension){
+			case '.svg':
+			case '.svgz':
+				return true;
+		}
+		return false;
 	}
 
 	private function checkDisableEditpages(){
@@ -241,7 +246,7 @@ class we_imageDocument extends we_binaryDocument{
 			return '';
 		}
 		if(!$src){
-			$src = (we_isHttps() ? '' : BASE_IMG) . $this->Path;//FIXME:remove BASE_IMG
+			$src = (we_isHttps() ? '' : BASE_IMG) . $this->Path; //FIXME:remove BASE_IMG
 		}
 
 		if(!$src_over){
@@ -459,7 +464,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 				'src' => $src
 			);
 
-			$filter = array('filesize', 'type', 'id', 'showcontrol', 'showthumbcontrol', 'thumbnail', 'href', 'longdescid', 'showimage', 'showinputs', 'listviewname', 'parentid', 'startid', 'origwidth', 'origheight','useMetaTitle'); //  dont use these array-entries
+			$filter = array('filesize', 'type', 'id', 'showcontrol', 'showthumbcontrol', 'thumbnail', 'href', 'longdescid', 'showimage', 'showinputs', 'listviewname', 'parentid', 'startid', 'origwidth', 'origheight', 'useMetaTitle'); //  dont use these array-entries
 
 			if(defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT){
 				$filter[] = 'name';

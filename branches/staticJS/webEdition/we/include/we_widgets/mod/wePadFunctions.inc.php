@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -42,11 +41,11 @@ function convertDate($date){
  * @return unknown
  */
 function getDateSelector($_label, $_name, $_btn){
-	$btnDatePicker = we_html_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
-	$oSelector = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"), 1, 5);
-	$oSelector->setCol(0, 0, array("class" => "middlefont"), $_label);
+	$btnDatePicker = we_html_button::create_button('image:date_picker', 'javascript:', null, null, null, null, null, null, false, $_btn);
+	$oSelector = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0, 'id' => $_name . '_cell'), 1, 5);
+	$oSelector->setCol(0, 0, array('class' => 'middlefont'), $_label);
 	$oSelector->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
-	$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, "", 10, 'id="' . $_name . '" readonly="1"', "text", 70, 0));
+	$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, '', 10, 'id="' . $_name . '" readonly="1"', "text", 70, 0));
 	$oSelector->setCol(0, 3, null, we_html_tools::getPixel(5, 1));
 	$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));
 	return $oSelector->getHTML();
@@ -82,10 +81,10 @@ function getNoteList($_sql, $bDate, $bDisplay){
 
 			$_fldValue = CheckAndConvertISObackend(str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), ($_fld === 'ValidUntil' && ($dbf === '3000-01-01' || $dbf === '0000-00-00' || !$dbf) ? '' : $dbf)));
 			$_notes .= we_html_element::htmlHidden(
-							array(
-								'id' => $_rcd . '_' . $_fld,
-								'style' => 'display:none;',
-								'value' => $_fldValue
+					array(
+						'id' => $_rcd . '_' . $_fld,
+						'style' => 'display:none;',
+						'value' => $_fldValue
 			));
 		}
 
@@ -119,11 +118,11 @@ function getNoteList($_sql, $bDate, $bDisplay){
 		$_notes .= '<tr style="cursor:pointer;" id="' . $_rcd . '_tr" onmouseover="fo=document.forms[0];if(fo.elements[\'mark\'].value==\'\'){setColor(this,' . $_rcd . ',\'#EDEDED\');}" onmouseout="fo=document.forms[0];if(fo.elements[\'mark\'].value==\'\'){setColor(this,' . $_rcd . ',\'#FFFFFF\');}" onmousedown="selectNote(' . $_rcd . ');">
 		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
 		<td width="15" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(
-						array(
-							"src" => IMAGE_DIR . "pd/prio_" . $DB_WE->f("Priority") . ".gif",
-							"width" => 13,
-							"height" => 14
-				)) . '</td>
+				array(
+					"src" => IMAGE_DIR . "pd/prio_" . $DB_WE->f("Priority") . ".gif",
+					"width" => 13,
+					"height" => 14
+			)) . '</td>
 		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
 		<td width="60" valign="middle" class="middlefont" align="center">' . $showDate . '</td>
 		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
@@ -138,66 +137,62 @@ function getNoteList($_sql, $bDate, $bDisplay){
 
 function getCSS(){
 	return '
-	body{
-		background-color:transparent;
-	}
-	.cl_notes{
-		background-color:#FFFFFF;
-	}
-	#notices{
-		position:relative;
-		top:0px;
-		display:block;
-		height:250px;
-		overflow:auto;
-	}
-	#props{
-		position:absolute;
-		bottom:0px;
-		display:none;
-	}
-	#view{
-		position:absolute;
-		bottom:0px;
-		display:block;
-		height:22px;
-	}
-	.wetextinput{
-		color:black;
-		border:#AAAAAA solid 1px;
-		height:18px;
-		vertical-align:middle;
-		' . (we_base_browserDetect::isIE() ? '' : 'line-height:normal;') . ';
-		font-size:' . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ';
-		font-family:' . g_l('css', '[font_family]') . ';
-	}
-	input.wetextinput:focus {
-		color:black;
-		border:#888888 solid 1px;
-		background-color:#DCE6F2;
-		height:18px;
-		' . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ';
-		font-size:' . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ";
-		font-family:" . g_l('css', '[font_family]') . ';
-	}
-	.wetextarea {
-		color:black;
-		border:#AAAAAA solid 1px;
-		height:80px;
-		' . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
-		font-size:" . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ";
-		font-family:" . g_l('css', '[font_family]') . ';
-	}
-	textarea.wetextarea:focus {
-		color:black;
-		border:#888888 solid 1px;
-		background-color:#DCE6F2;
-		height:80px;
-		' . (we_base_browserDetect::isIE() ? "" : "line-height:normal;") . ";
-		font-size:" . ((we_base_browserDetect::isMAC()) ? "10px" : ((we_base_browserDetect::isUNIX()) ? "12px" : "11px")) . ";
-		font-family:" . g_l('css', '[font_family]') . ';
-	}
-	select{
-		border:#AAAAAA solid 1px;
-	}';
+body{
+	background-color:transparent;
+}
+.cl_notes{
+	background-color:#FFFFFF;
+}
+#notices{
+	position:relative;
+	top:0px;
+	display:block;
+	height:250px;
+	overflow:auto;
+}
+#props{
+	position:absolute;
+	bottom:0px;
+	display:none;
+}
+#view{
+	position:absolute;
+	bottom:0px;
+	display:block;
+	height:22px;
+}
+.wetextinput{
+	color:black;
+	border:#AAAAAA solid 1px;
+	height:18px;
+	vertical-align:middle;
+	' . (we_base_browserDetect::isIE() ? '' : 'line-height:normal;') . ';
+	font-size:' . ((we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11)) . 'px;
+}
+input.wetextinput:focus {
+	color:black;
+	border:#888888 solid 1px;
+	background-color:#DCE6F2;
+	height:18px;
+	' . (we_base_browserDetect::isIE() ? '' : 'line-height:normal;') . ';
+	font-size:' . ((we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11)) . 'px;
+}
+.wetextarea {
+	color:black;
+	border:#AAAAAA solid 1px;
+	height:80px;
+	' . (we_base_browserDetect::isIE() ? '' : 'line-height:normal;') . ';
+	font-size:' . ((we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11)) . 'px;
+}
+textarea.wetextarea:focus {
+	color:black;
+	border:#888888 solid 1px;
+	background-color:#DCE6F2;
+	height:80px;
+	' . (we_base_browserDetect::isIE() ? '' : 'line-height:normal;') . ';
+	font-size:' . ((we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11)) . 'px;
+}
+select{
+	border:#AAAAAA solid 1px;
+}';
 }
