@@ -133,33 +133,34 @@ class we_backup_backup extends we_backup_base{
 		$attributes = $xmlBrowser->getAttributes($nodeset);
 
 		$tablename = $attributes["name"];
-		if(!$this->isFixed($tablename) && $tablename != ""){
-			$tablename = $this->fixTableName($tablename);
-			$this->current_description = (isset($this->description["import"][strtolower($tablename)]) && $this->description["import"][strtolower($tablename)] ?
-							$this->description["import"][strtolower($tablename)] :
-							g_l('backup', '[working]'));
-
-			$object = we_exim_contentProvider::getInstance("we_backup_table", 0, $tablename);
-			$node_set2 = $xmlBrowser->getSet($nodeset);
-			foreach($node_set2 as $set2){
-				$node_set3 = $xmlBrowser->getSet($set2);
-				foreach($node_set3 as $nsv){
-					$tmp = $xmlBrowser->nodeName($nsv);
-					if($tmp === "Field"){
-						$name = $xmlBrowser->getData($nsv);
-					}
-					$object->elements[$name][$tmp] = $xmlBrowser->getData($nsv);
-				}
-			}
-
-			if(
-					((defined('OBJECT_TABLE') && $object->table == OBJECT_TABLE) ||
-					(defined('OBJECT_FILES_TABLE') && $object->table == OBJECT_FILES_TABLE)) && $this->old_objects_deleted == 0){
-				$this->delOldTables();
-				$this->old_objects_deleted = 1;
-			}
-			$object->save();
+		if($this->isFixed($tablename) || $tablename == ""){
+			return;
 		}
+		$tablename = $this->fixTableName($tablename);
+		$this->current_description = (isset($this->description["import"][strtolower($tablename)]) && $this->description["import"][strtolower($tablename)] ?
+						$this->description["import"][strtolower($tablename)] :
+						g_l('backup', '[working]'));
+
+		$object = we_exim_contentProvider::getInstance("we_backup_table", 0, $tablename);
+		$node_set2 = $xmlBrowser->getSet($nodeset);
+		foreach($node_set2 as $set2){
+			$node_set3 = $xmlBrowser->getSet($set2);
+			foreach($node_set3 as $nsv){
+				$tmp = $xmlBrowser->nodeName($nsv);
+				if($tmp === "Field"){
+					$name = $xmlBrowser->getData($nsv);
+				}
+				$object->elements[$name][$tmp] = $xmlBrowser->getData($nsv);
+			}
+		}
+
+		if(
+				((defined('OBJECT_TABLE') && $object->table == OBJECT_TABLE) ||
+				(defined('OBJECT_FILES_TABLE') && $object->table == OBJECT_FILES_TABLE)) && $this->old_objects_deleted == 0){
+			$this->delOldTables();
+			$this->old_objects_deleted = 1;
+		}
+		$object->save();
 	}
 
 	function recoverTableItem($nodeset, &$xmlBrowser){
@@ -176,14 +177,15 @@ class we_backup_backup extends we_backup_base{
 		$attributes = $xmlBrowser->getAttributes($nodeset);
 
 		$tablename = $attributes["table"];
-		if(!$this->isFixed($tablename) && $tablename != ""){
-			$tablename = $this->fixTableName($tablename);
-
-			$object = we_exim_contentProvider::getInstance($classname, 0, $tablename);
-			we_exim_contentProvider::populateInstance($object, $content);
-
-			$object->save(true);
+		if($this->isFixed($tablename) || $tablename == ""){
+			return;
 		}
+		$tablename = $this->fixTableName($tablename);
+
+		$object = we_exim_contentProvider::getInstance($classname, 0, $tablename);
+		we_exim_contentProvider::populateInstance($object, $content);
+
+		$object->save(true);
 	}
 
 	function recoverBinary($nodeset, &$xmlBrowser){

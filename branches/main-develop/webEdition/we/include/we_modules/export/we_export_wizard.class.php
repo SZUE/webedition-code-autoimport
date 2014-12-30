@@ -868,8 +868,8 @@ var js_path  = "' . JS_DIR . '";
 var img_path = "' . IMAGE_DIR . "tabs/" . '";
 var suffix   = "";
 var layerPosYOffset = 22;') .
-						we_html_element::jsScript(JS_DIR . "images.js") .
-						we_html_element::jsScript(JS_DIR . "we_tabs/tabs_inc.js");
+						we_html_element::jsScript(JS_DIR . 'images.js') .
+						we_html_element::jsScript(JS_DIR . 'we_tabs/tabs.js');
 
 				$js2 = we_html_element::jsElement('
 var winWidth  = getWindowWidth(window);

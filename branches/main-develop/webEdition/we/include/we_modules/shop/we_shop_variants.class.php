@@ -147,8 +147,8 @@ abstract class we_shop_variants{
 		}
 
 		$elements = $model->elements;
-
-		$variations = $elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
+		
+		$variations = isset($elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) ? $elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] : ''; //Fix #9349
 		if(!$variations || !is_array($variations)){
 			return;
 		}

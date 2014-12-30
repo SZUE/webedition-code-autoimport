@@ -47,7 +47,6 @@ function we_tag_var($attribs){
 			$return = getArrayValue($_SESSION, null, $name_orig);
 			break;
 		case 'request' :
-			$return = $_REQUEST;
 			$return = we_base_util::rmPhp(we_base_request::filterVar(getArrayValue($_REQUEST, null, $name_orig), $varType));
 			break;
 		case 'post' :
@@ -99,8 +98,8 @@ function we_tag_var($attribs){
 				$format = '';
 			}
 			// bugfix 7557
-			// wenn die Abfrage im Aktuellen Objekt kein Erg?bnis liefert
-			// wird in den eingebundenen Objekten ?berpr?ft ob das Feld existiert
+			// wenn die Abfrage im Aktuellen Objekt kein Ergebnis liefert
+			// wird in den eingebundenen Objekten ueberprueft ob das Feld existiert
 			$name = ($type === 'select' && $normVal == '' ? $name_orig : $name);
 			$selectKey = weTag_getAttribute('key', $attribs, false, we_base_request::BOOL);
 			if($type === 'select' && $selectKey){
