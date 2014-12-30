@@ -1,3 +1,7 @@
+html/grayWithTopLine.html
+html/whiteWithTopLine.html
+html/whiteWithLeftLine.html
+html/white_inc.html
 lib/we/ui/layout/NoteDiv.js
 js/weDOM_Safari.js
 wysiwyg/weWysiwygSafari.js
