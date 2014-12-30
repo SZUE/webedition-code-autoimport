@@ -179,7 +179,7 @@ function we_cmd(){
 			for (var i = 0; i < arguments.length; i++) {
 				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
 			}
-			eval("opener.top.content.we_cmd("+args+")");
+			eval("top.opener.top.we_cmd("+args+")");
 			break;
 	}
 }

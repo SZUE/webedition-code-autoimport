@@ -357,7 +357,7 @@ var i = 0;';
 	<?php
 	if($nf === "new_folder" || (( $nf === "rename_folder" || $nf === "rename_file") && $set_rename)){
 		?>
-		<script  type="text/javascript"><!--
+		<script type="text/javascript"><!--
 		document.forms["we_form"].elements["txt"].focus();
 			document.forms["we_form"].elements["txt"].select();
 	<?php if($nf === "rename_folder" || $nf === "rename_file"){ ?>

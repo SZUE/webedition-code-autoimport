@@ -40,7 +40,7 @@ $isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
 		border-right: 1px solid lightgrey;
 	}
 </style>
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 
 	function selectColor(c) {
 		document.we_form.colorvalue.value = c;
@@ -81,7 +81,7 @@ $isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
 					echo we_html_tools::htmlDialogLayout('<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td><table class="colorTable" cellspacing="0" cellpadding="0">
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 var z=0;
 for ( col in we_color2 ){
 	if(z == 0){

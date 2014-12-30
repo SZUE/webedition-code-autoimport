@@ -80,11 +80,11 @@ foreach($array_not as $k => $value){
 if($condition != ""){
 	$condition = ' WHERE ' . $condition . ' ORDER BY Text';
 }
-$DB_WE->query("SELECT ID,Text FROM " . USER_TABLE . $condition);
+$DB_WE->query('SELECT ID,Text FROM ' . USER_TABLE . $condition);
 
 $_select = '<div style="background-color:white;width:520px;height:220px;"/>';
 if($DB_WE->num_rows()){
-	$_select = '<select name="search_results" size="20" style="width:520px;height:220px;" ondblclick="opener.top.content.we_cmd(\'check_user_display\',document.we_form.search_results.value); top.close();">';
+	$_select = '<select name="search_results" size="20" style="width:520px;height:220px;" ondblclick="top.opener.top.we_cmd(\'check_user_display\',document.we_form.search_results.value); top.close();">';
 	while($DB_WE->next_record()){
 		$_select.='<option value="' . $DB_WE->f("ID") . '">' . $DB_WE->f("Text") . '</option>';
 	}
@@ -92,7 +92,7 @@ if($DB_WE->num_rows()){
 }
 
 $_buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button("edit", "javascript:opener.top.content.we_cmd('check_user_display',document.we_form.search_results.value); if(document.we_form.search_results.value){top.close()}"), null, we_html_button::create_button("cancel", "javascript:self.close();")
+		we_html_button::create_button("edit", "javascript:top.opener.top.we_cmd('check_user_display',document.we_form.search_results.value); if(document.we_form.search_results.value){top.close()}"), null, we_html_button::create_button("cancel", "javascript:self.close();")
 );
 
 

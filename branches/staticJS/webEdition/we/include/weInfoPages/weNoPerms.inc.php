@@ -28,7 +28,7 @@ echo we_html_tools::getHtmlTop() .
 
 $content = '<p class="defaultfont">' . g_l('alert', '[no_perms_action]') . '</p>';
 ?>
-<script  type="text/javascript">
+<script type="text/javascript">
 	top.toggleBusy(0);
 	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 	_EditorFrame.setEditorIsLoading(false);

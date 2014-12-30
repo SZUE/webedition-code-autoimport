@@ -77,7 +77,7 @@ class we_modules_frame{
 		 *
 		 */
 		//this is not nice, but it works for the moment...
-		return STYLESHEET . $extraHead .
+		return $extraHead .
 				we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 				we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
 				we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
@@ -161,7 +161,7 @@ class we_modules_frame{
 		$content = we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $this->treeWidth . 'px;'), we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; width: ' . weTree::HiddenWidth . 'px; background-image: url(' . IMAGE_DIR . 'v-tabs/background.gif); background-repeat: repeat-y; border-top: 1px solid black;'), $_incDecTree) .
 								$this->getHTMLLeft()
 						) .
-						we_html_element::htmlDiv(array('id' => 'right', 'style' => 'background: #F0EFF0; position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width: auto; border-left: 1px solid black; overflow: auto;'), we_html_element::htmlIFrame('editor', $this->frameset . '?pnt=editor' . $extraUrlParams, 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; overflow: hidden;')
+						we_html_element::htmlDiv(array('id' => 'right', 'style' => 'background-color: #F0EFF0; position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width: auto; border-left: 1px solid black; overflow: auto;'), we_html_element::htmlIFrame('editor', $this->frameset . '?pnt=editor' . $extraUrlParams, 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; overflow: hidden;')
 						)
 		);
 
@@ -201,8 +201,28 @@ class we_modules_frame{
 						'topmargin' => 4), $Tree->getHTMLContructX('if(top.treeResized){top.treeResized();}')
 			);
 		}
+//FIXME make this a static document & use this at messaging_usel_browse_frameset.php as well
+		return $this->getHTMLDocument(we_html_element::htmlBody(array('style'=>'margin: 5px;')), '
+<style type="text/css">
+body{
+	background-color:#F3F7FF;
+}
+a,a:visited,a:active{
+color:#000000;
+}
+</style>
+' . we_html_tools::getJSErrorHandler().we_html_element::jsElement('
+	clickCount=0;
+	wasdblclick=0;
+	tout=null;'.$this->getDoClick().'
+function loadFinished(){
+	top.content.loaded=1;
+}
+		'));
+	}
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F3F7FF')));
+	protected function getDoClick(){//overwrite
+		return '';
 	}
 
 	protected function getHTMLTreeheader(){

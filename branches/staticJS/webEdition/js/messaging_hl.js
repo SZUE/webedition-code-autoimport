@@ -26,32 +26,30 @@ sel_color = "#697ace";
 default_color = "#000000";
 
 // Highlighting-Stuff start
-function selectEntryHandler(id, NN4) {
+function selectEntryHandler(id) {
 	var i, j;
 
 //		var id = parseInt(elem.match(/\d+/));
 
 	if (parent.multi_select == 0) {
 		//unselect all selected entries
-		if (NN4 == false) {
-			for (j = 0; j < parent.entries_selected.length; j++) {
-				highlight_Elem(parent.entries_selected[j], default_color);
-			}
+		for (j = 0; j < parent.entries_selected.length; j++) {
+			highlight_Elem(parent.entries_selected[j], default_color);
 		}
 
 
 		parent.entries_selected = new Array();
-		doSelectMessage(id, 'elem', '', NN4);
+		doSelectMessage(id, 'elem', '');
 	} else {
 		if (array_search(id, parent.entries_selected) != -1) {
-			unSelectMessage(id, 'elem', '', NN4);
+			unSelectMessage(id, 'elem', '');
 		} else {
-			doSelectMessage(id, 'elem', '', NN4);
+			doSelectMessage(id, 'elem', '');
 		}
 	}
 }
 
-function doSelectMessage(id, mode, doc, NN4) {
+function doSelectMessage(id, mode, doc) {
 	var i = 0;
 	var highlight_color = sel_color;
 
@@ -68,12 +66,10 @@ function doSelectMessage(id, mode, doc, NN4) {
 	}
 
 
-	if (NN4 == false) {
-		if (mode == "fv")
-			highlight_TR(id, highlight_color, '');
-		else
-			highlight_Elem(id, highlight_color, doc);
-	}
+	if (mode == "fv")
+		highlight_TR(id, highlight_color, '');
+	else
+		highlight_Elem(id, highlight_color, doc);
 }
 
 function highlight_Elem(id, color, fr) {
@@ -93,7 +89,7 @@ function highlight_TR(id, color) {
 	}
 }
 
-function unSelectMessage(id, show_cont, doc, NN4) {
+function unSelectMessage(id, show_cont, doc) {
 	var index = -1;
 	var arr1, arr2;
 
@@ -105,12 +101,10 @@ function unSelectMessage(id, show_cont, doc, NN4) {
 	}
 
 	if (show_cont == 'fv') {
-		if (NN4 == false)
 			highlight_TR(id, default_color);
 
 		top.editor.edbody.msg_mfv.messaging_message_view.location = "<?php echo HTML_DIR?>gray.html";
 	} else {
-		if (NN4 == false)
 			highlight_Elem(id, default_color, messaging_usel_main);
 	}
 

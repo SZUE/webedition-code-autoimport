@@ -429,6 +429,10 @@ height: 18px;
 vertical-align: middle;
 }
 
+img.treeKreuz{
+	width:19px;
+}
+
 .selector {
 color: black;
 font-size: <?php echo (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;

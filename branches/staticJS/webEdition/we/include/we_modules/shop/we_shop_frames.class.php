@@ -41,274 +41,35 @@ class we_shop_frames extends we_modules_frame{
 		return $this->View->getJSTop_tmp();
 	}
 
+	protected function getDoClick(){
+		return "function doClick(id,ct,table){
+top.content.editor.location='" . WE_SHOP_MODULE_DIR . "edit_shop_frameset.php?pnt=editor&bid='+id;
+}
+function doFolderClick(id,ct,table){
+	top.content.editor.location='" . WE_SHOP_MODULE_DIR . "edit_shop_frameset.php?pnt=editor&mid='+id;
+}
+function doYearClick(yearView){
+	top.content.editor.location='" . WE_SHOP_MODULE_DIR . "edit_shop_frameset.php?pnt=editor&ViewYear='+yearView;
+}";
+	}
+
 	function getJSTreeCode(){ //TODO: use we_html_element::jsElement and move to new class weShopTree
+		echo we_html_element::jsElement('
+var table="' . SHOP_TABLE . '";
+var tree_icon_dir="' . TREE_ICON_DIR . '";
+var tree_img_dir="' . TREE_IMAGE_DIR . '";
+var we_dir="' . WEBEDITION_DIR . '";
+var tree_select_statustext="' . g_l('tree', '[select_statustext]') . '";
+var tree_edit_statustext="' . g_l('tree', '[edit_statustext]') . '";
+var tree_open_statustext="' . g_l('tree', '[open_statustext]') . '";
+var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";
+var treeYearClick="' . g_l('modules_shop', '[treeYearClick]') . '";
+var treeYear="' . g_l('modules_shop', '[treeYear]') . '";
+var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
+') .
+		we_html_element::jsScript(JS_DIR . 'shop_tree.js');
 		?>
 		<script type="text/javascript"><!--
-			var menuDaten = new container();
-			var count = 0;
-			var folder = 0;
-			var table = "<?php echo SHOP_TABLE; ?>";
-
-			function drawEintraege() {
-				fr = top.content.tree.window.document;//TODO: when frame tree is eliminated change adress to ...getElementById('tree')!!!
-				fr.open();
-				fr.writeln("<html><head>");
-				fr.writeln("<script type=\"text/javascript\">");
-				fr.writeln("<?php echo we_html_tools::getJSErrorHandler(true); ?>");
-				fr.writeln("clickCount=0;");
-				fr.writeln("wasdblclick=0;");
-				fr.writeln("tout=null");
-				fr.writeln("function doClick(id,ct,table){");
-				fr.writeln("top.content.editor.location='<?php echo WE_SHOP_MODULE_DIR ?>edit_shop_frameset.php?pnt=editor&bid='+id;");
-				fr.writeln("}");
-				fr.writeln("function doFolderClick(id,ct,table){");
-				fr.writeln("top.content.editor.location='<?php echo WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&mid='+id;");
-				fr.writeln("}");
-
-				fr.writeln("function doYearClick(yearView){");
-				fr.writeln("top.content.editor.location='<?php echo WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor&ViewYear='+yearView;");
-				fr.writeln("}");
-
-				fr.writeln("</" + "script>");
-				fr.writeln('<?php echo STYLESHEET_SCRIPT; ?>');
-				fr.write("</head>");
-				fr.write("<body bgcolor=\"#F3F7FF\" link=\"#000000\" alink=\"#000000\" vlink=\"#000000\" leftmargin=\"5\" topmargin=\"0\" marginheight=\"0\" marginwidth=\"5\">");
-				fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\"><nobr>");
-				fr.write("<tr><td class=\"tree\"><nobr><a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"<?php echo g_l('modules_shop', '[treeYearClick]'); ?>\" ><?php echo g_l('modules_shop', '[treeYear]'); ?>: <strong>" + top.yearshop + " </strong></a> <br/>");
-
-				zeichne(0, "");
-				fr.write("</nobr></td></tr></table>");
-				fr.write("</body></html>");
-				fr.close();
-			}
-
-			function zeichne(startEntry, zweigEintrag) {
-				var nf = search(startEntry);
-				var ai = 1;
-				while (ai <= nf.laenge) {
-					fr.write(zweigEintrag);
-					if (nf[ai].typ === 'shop') {
-						if (ai === nf.laenge) {
-							fr.write("&nbsp;&nbsp;<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>kreuzungend.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
-						} else {
-							fr.write("&nbsp;&nbsp;<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>kreuzung.gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
-						}
-		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?> // make  in tree clickable
-							if (nf[ai].name !== -1) {
-								fr.write("<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
-							}
-		<?php } ?>
-						fr.write("<IMG SRC=<?php echo TREE_IMAGE_DIR; ?>icons/" + nf[ai].icon + " WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php echo g_l('tree', '[edit_statustext]'); ?>\">");
-		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?>
-							fr.write("</a>");
-		<?php } ?>
-						fr.write("&nbsp;");
-		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?> // make orders in tree clickable
-							fr.write("<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
-
-		<?php } ?>
-						//changed for #6786
-						fr.write("<span style='" + nf[ai].st + "'>" + nf[ai].text + "</span>");
-		<?php if(permissionhandler::hasPerm('EDIT_SHOP_ORDER')){ ?>
-							fr.write("</a>");
-		<?php } ?>
-						fr.write("&nbsp;&nbsp;<br/>\n");
-					} else {
-						var newAst = zweigEintrag;
-
-						var zusatz = (ai === nf.laenge) ? "end" : "";
-
-						if (nf[ai].offen === 0) {
-							fr.write("&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" border=0><img src=<?php echo TREE_IMAGE_DIR; ?>auf" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php echo g_l('tree', '[open_statustext]') ?>\"></a>");
-							var zusatz2 = "";
-						} else {
-							fr.write("&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" border=0><img src=<?php echo TREE_IMAGE_DIR; ?>zu" + zusatz + ".gif WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php echo g_l('tree', '[close_statustext]') ?>\"></a>");
-							var zusatz2 = "open";
-						}
-		<?php if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){ ?>
-							fr.write("<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
-		<?php } ?>
-						fr.write("<img src=<?php echo TREE_IMAGE_DIR; ?>icons/folder" + zusatz2 + ".gif WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 title=\"<?php echo g_l('tree', '[edit_statustext]'); ?>\">");
-		<?php if(permissionhandler::hasPerm('EDIT_SHOP_ORDER')){ ?>
-							fr.write("</a>");
-			<?php
-		}
-		if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){
-			?> // make the month in tree clickable
-							fr.write("<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
-		<?php } ?>
-						fr.write("&nbsp;" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : ""));
-		<?php if(permissionhandler::hasPerm('EDIT_SHOP_ORDER')){ ?>
-							fr.write("</a>");
-		<?php } ?>
-						fr.write("&nbsp;&nbsp;<br/>");
-						if (nf[ai].offen) {
-							newAst = newAst + "<img src=<?php echo TREE_IMAGE_DIR; ?>" + (ai === nf.laenge ? "leer.gif" : "strich2.gif") + " width=19 height=18 align=absmiddle border=0>";
-							zeichne(nf[ai].name, newAst);
-						}
-					}
-					ai++;
-				}
-			}
-
-			function makeNewEntry(icon, id, pid, txt, offen, ct, tab, pub) {
-				if (table === tab && menuDaten[indexOfEntry(pid)]) {
-					if (ct === "folder") {
-						menuDaten.addSort(new dirEntry(icon, id, pid, txt, offen, ct, tab));
-					} else {
-						menuDaten.addSort(new urlEntry(icon, id, pid, txt, ct, tab, pub));
-					}
-					drawEintraege();
-				}
-			}
-
-
-			function updateEntry(id, text, pub) {
-				var ai = 1;
-				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop')) {
-						if (menuDaten[ai].name == id) {
-							menuDaten[ai].text = text;
-							menuDaten[ai].published = pub;
-						}
-					}
-					ai++;
-				}
-				drawEintraege();
-			}
-
-			function deleteEntry(id) {
-				var ai = 1;
-				var ind = 0;
-				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop')) {
-						if (menuDaten[ai].name == id) {
-							ind = ai;
-							break;
-						}
-					}
-					ai++;
-				}
-				if (ind !== 0) {
-					ai = ind;
-					while (ai <= menuDaten.laenge - 1) {
-						menuDaten[ai] = menuDaten[ai + 1];
-						ai++;
-					}
-					menuDaten.laenge[menuDaten.laenge] = null;
-					menuDaten.laenge--;
-					drawEintraege();
-				}
-			}
-
-			function openClose(name, status) {
-				var eintragsIndex = indexOfEntry(name);
-				menuDaten[eintragsIndex].offen = status;
-				if (status) {
-					if (!menuDaten[eintragsIndex].loaded) {
-						drawEintraege();
-					} else {
-						drawEintraege();
-					}
-				} else {
-					drawEintraege();
-				}
-			}
-
-			function indexOfEntry(name) {
-				var ai = 1;
-				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ === 'root') || (menuDaten[ai].typ === 'folder')) {
-						if (menuDaten[ai].name == name) {
-							return ai;
-						}
-					}
-					ai++;
-				}
-				return -1;
-			}
-
-			function search(eintrag) {
-				var nf = new container();
-				var ai = 1;
-				while (ai <= menuDaten.laenge) {
-					if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop')) {
-						if (menuDaten[ai].vorfahr == eintrag) {
-							nf.add(menuDaten[ai]);
-						}
-					}
-					ai++;
-				}
-				return nf;
-			}
-
-			function container() {
-				this.laenge = 0;
-				this.clear = containerClear;
-				this.add = add;
-				this.addSort = addSort;
-				return this;
-			}
-
-			function add(object) {
-				this.laenge++;
-				this[this.laenge] = object;
-			}
-
-			function containerClear() {
-				this.laenge = 0;
-			}
-
-			function addSort(object) {
-				this.laenge++;
-				for (var i = this.laenge; i > 0; i--) {
-					if (i > 1 && this[i - 1].text.toLowerCase() > object.text.toLowerCase()) {
-						this[i] = this[i - 1];
-					} else {
-						this[i] = object;
-						break;
-					}
-				}
-			}
-
-			function rootEntry(name, text, rootstat) {
-				this.name = name;
-				this.text = text;
-				this.loaded = true;
-				this.typ = 'root';
-				this.rootstat = rootstat;
-				return this;
-			}
-
-			function dirEntry(icon, name, vorfahr, text, offen, contentType, table, published) {
-				this.icon = icon;
-				this.name = name;
-				this.vorfahr = vorfahr;
-				this.text = text;
-				this.typ = 'folder';
-				this.offen = (offen ? 1 : 0);
-				this.contentType = contentType;
-				this.table = table;
-				this.loaded = (offen ? 1 : 0);
-				this.checked = false;
-				this.published = published;
-				return this;
-			}
-
-			//changed for #6786
-			function urlEntry(icon, name, vorfahr, text, contentType, table, published, style) {
-				this.icon = icon;
-				this.name = name;
-				this.vorfahr = vorfahr;
-				this.text = text;
-				this.typ = 'shop';
-				this.checked = false;
-				this.contentType = contentType;
-				this.table = table;
-				this.published = published;
-				this.st = style;
-				return this;
-			}
 
 			function loadData() {
 
@@ -317,8 +78,6 @@ class we_shop_frames extends we_modules_frame{
 
 
 		<?php
-// echo "menuDaten.add(new dirEntry('folder.gif','aaaa',0, 'Article',0,'','',".(($k>0)?1:0)."));";
-
 		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
 		while($this->db->next_record()){
 			//added for #6786
@@ -367,11 +126,6 @@ class we_shop_frames extends we_modules_frame{
 
 			}
 
-			function start() {
-				loadData();
-				drawEintraege();
-			}
-			self.focus();
 			//-->
 		</script>
 		<?php

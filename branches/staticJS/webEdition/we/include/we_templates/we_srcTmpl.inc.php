@@ -48,7 +48,7 @@ if(!isset($_SESSION['weS']['we_wrapcheck'])){
 //FIXME: make real js files out of this!
 echo we_html_multiIconBox::getJS();
 ?>
-<script  type="text/javascript"><!--
+<script type="text/javascript"><!--
 	var weIsTextEditor = true;
 	var reloadContent = false;
 	try {

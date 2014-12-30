@@ -242,7 +242,7 @@ if(!$we_doc->getElement('data')){
 }
 echo we_html_tools::getHtmlTop('', '', 'frameset');
 ?>
-<script  type="text/javascript">
+<script type="text/javascript">
 	<!--
 	var unlock = false;
 	var scrollToVal = 0;
