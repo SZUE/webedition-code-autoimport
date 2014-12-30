@@ -105,52 +105,54 @@ echo (isset($we_JavaScript) ? $we_JavaScript : "");
 if($we_responseText){
 	$_jsCommand = "";
 	echo 'self.focus();
-		top.toggleBusy(0);
-		showAlert = 0;
-		var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();';
+top.toggleBusy(0);
+showAlert = 0;
+var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();';
 
 	// enable navigation box if doc has been published
 	if(isset($GLOBALS['we_doc']->Published) && $GLOBALS['we_doc']->Published){
-		echo "try{ if( _EditorFrame && _EditorFrame.getEditorIsInUse() && contentEditor && contentEditor.switch_button_state) contentEditor.switch_button_state('add', 'add_enabled', 'enabled'); } catch(e) {}";
+		echo 'try{
+	if( _EditorFrame && _EditorFrame.getEditorIsInUse() && contentEditor && contentEditor.switch_button_state){
+		contentEditor.switch_button_state("add", "add_enabled", "enabled");
+	}
+} catch(e) {}';
 	}
 
 	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && (!isset($_showAlert) || !$_showAlert)){ //	Confirm Box or alert in seeMode
 		if(isset($GLOBALS["publish_doc"]) && $GLOBALS["publish_doc"] == true){ //	edit include and pulish then close window and reload
 			$_jsCommand .='
-			if(isEditInclude){
-				showAlert = 1;
-			}';
+if(isEditInclude){
+	showAlert = 1;
+}';
 		}
-
-		if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW){ //	alert or confirm
-			$_jsCommand .= "
-			if(!showAlert){
-				if(confirm(\"" . $we_responseText . "\\n\\n" . g_l('SEEM', '[confirm][change_to_preview]') . "\")){
-					_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS['we_transaction'] . "');
-				} else {
-					_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');
-				}
-			} else {
-				" . we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) . "
-			}
-			";
-		} else { //	alert when in preview mode
-			$_jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
-					"_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');" .
-					//	JavaScript: generated in we_editor.inc.php
-					we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5);
-		}
-
-		if(isset($GLOBALS["publish_doc"]) && $GLOBALS["publish_doc"] == true){
-
-			$_jsCommand .="
-			if(isEditInclude){
-				" . we_message_reporting::getShowMessageCall(g_l('SEEM', '[alert][changed_include]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-						weWindow.top.we_cmd("reload_editpage");
-						weWindow.edit_include.close();
-						top.close();
-			}';
-		}
+		$_jsCommand .=
+				(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW ? //	alert or confirm
+						"
+if(!showAlert){
+	if(confirm(\"" . $we_responseText . "\\n\\n" . g_l('SEEM', '[confirm][change_to_preview]') . "\")){
+		_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS['we_transaction'] . "');
+	} else {
+		_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');
+	}
+} else {
+	" . we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) . "
+}" :
+						//	alert when in preview mode
+						we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
+						"_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');" .
+						//	JavaScript: generated in we_editor.inc.php
+						we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5)
+				) .
+				(isset($GLOBALS["publish_doc"]) && $GLOBALS["publish_doc"] == true ?
+						"
+if(isEditInclude){
+	" . we_message_reporting::getShowMessageCall(g_l('SEEM', '[alert][changed_include]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+			weWindow.top.we_cmd("reload_editpage");
+			weWindow.edit_include.close();
+			top.close();
+}' :
+						''
+				);
 	} else { //	alert in normal mode
 		$_jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
 				//	JavaScript: generated in we_editor.inc.php
