@@ -82,7 +82,6 @@ abstract class we_SEEM{
 		//  $linkarray[4] - Array of all after the href (styles and stuff)<a href="...?test=1"-> ... <->
 		//  All these informations are needed to replace the old link with a new one
 		$linkArray = self::getAllHrefs($code);
-
 		if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && !defined('WE_SIDEBAR')){
 
 			//  The edit-mode only changes SEEM-links
@@ -131,7 +130,7 @@ abstract class we_SEEM{
 	 *
 	 * @return string of the source code with changed links
 	 */
-	static function parseLinksForEditMode($code, $linkArray){
+	private static function parseLinksForEditMode($code, $linkArray){
 
 		//  Take all links with a seem="<attrib>" and put them in a new Array
 		//  $SEEM_Links[0] - Array of all found "<a ... >"
@@ -163,7 +162,7 @@ abstract class we_SEEM{
 	 *
 	 * @return   string of the source code with changed links
 	 */
-	static function parseLinksForPreviewMode($code, $linkArray){
+	private static function parseLinksForPreviewMode($code, $linkArray){
 
 		$SEEM_Links = self::getSEEM_Links($linkArray);
 		//  if an array is returned, modify the code

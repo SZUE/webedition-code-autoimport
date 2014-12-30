@@ -1841,7 +1841,7 @@ class we_object extends we_document{
 		}
 	}
 
-	function formPath(){
+	public function formPath(){
 		return '<table border="0" cellpadding="0" cellspacing="0">
 	<tr><td>' . $this->formInputField('', 'Text', g_l('modules_object', '[classname]'), 30, 508, 255, 'onchange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"') . '</td><td></td><td></td></tr>
 </table>';

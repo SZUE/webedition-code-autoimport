@@ -179,7 +179,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 
 
 $jsStr = '';
-foreach($allVats as $k -> $v){
+foreach($allVats as $k => $v){
 	$jsStr .= '
 		
 	';

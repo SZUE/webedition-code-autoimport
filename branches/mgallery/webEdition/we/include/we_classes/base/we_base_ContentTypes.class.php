@@ -61,7 +61,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'Icon' => self::IMAGE_ICON,
 			),
-			self::XML => array(//this entry must stay before text/html, text/we because filetypes are not distinct
+			self::XML => array(//this entry must stay before text/html, text/we because fileextensions are not distinct
 				'Extension' => '.xml',
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_TEXT',
@@ -141,7 +141,7 @@ class we_base_ContentTypes{
 				'Icon' => 'css.gif',
 			),
 			self::HTACESS => array(
-				'Extension' => '.htaccess',
+				'Extension' => array('.htaccess', '.htpasswd'),
 				'ExtensionIsFilename' => true,
 				'Permission' => 'NEW_HTACCESS',
 				'DefaultCode' => '',
@@ -196,7 +196,7 @@ class we_base_ContentTypes{
 			),
 			self::VIDEO => array(
 				'Extension' => array('.mp4', '.m4v', '.ogg', '.webm'),
-				'ContentTypes' => array('video/mp4', 'video/webm','application/ogg', 'video/ogg',),
+				'ContentTypes' => array('video/mp4', 'video/webm', 'application/ogg', 'video/ogg',),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_FLASH',
 				'DefaultCode' => '',
@@ -293,8 +293,8 @@ class we_base_ContentTypes{
 		}
 	}
 
-	public function getExtension($name){
-		return isset($this->ct[$name]) && !$this->ct[$name]['ExtensionIsFilename'] ? $this->ct[$name]['Extension'] : '';
+	public function getExtension($name, $ignoreIsFilename = false){
+		return isset($this->ct[$name]) && ($ignoreIsFilename || !$this->ct[$name]['ExtensionIsFilename']) ? $this->ct[$name]['Extension'] : '';
 	}
 
 	public function isWEFile($name){

@@ -99,12 +99,12 @@ abstract class we_backup_base{
 		'newsletter' => array(
 			'tblnewsletter', 'tblnewslettergroup',
 			'tblnewsletterblock', 'tblnewsletterlog',
-			'tblnewsletterprefs', 'tblnewsletterconfirm'
+			'tblnewsletterprefs', 'tblnewsletterconfirm',
 		),
 		'temporary' => array('tbltemporarydoc'),
 		'banner' => array(
 			'tblbanner', 'tblbannerclicks',
-			'tblbannerprefs', 'tblbannerviews'
+			'tblbannerprefs', 'tblbannerviews',
 		),
 		'schedule' => array(
 			'tblschedule'

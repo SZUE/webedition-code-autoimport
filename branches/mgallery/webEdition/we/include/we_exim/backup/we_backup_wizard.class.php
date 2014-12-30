@@ -475,37 +475,50 @@ extra_files_desc=new Array();';
 				$dstr = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $adddatadir;
 				$d = dir($dstr);
 				while(($entry = $d->read())){
-					if($entry != '.' && $entry != '..' && $entry != 'CVS' && $entry != 'download' && $entry != 'tmp' && $entry != 'lastlog.php' && $entry != '.htaccess' && !@is_dir($dstr . $entry)){
-						$filename = $dstr . $entry;
-						$filesize = we_base_file::getHumanFileSize(filesize($filename));
-						$filedate = date($dateformat, filemtime($filename));
-						if(strpos($entry, 'weBackup_') !== 0){
-							$extra_files[$adddatadir . $entry] = $entry . " $filedate $filesize";
+					switch($entry){
+						case '.':
+						case '..':
+						case 'CVS':
+						case 'download':
+						case 'tmp':
+						case 'lastlog.php':
+						case '.htaccess':
 							continue;
-						}
-						$ts = str_replace(array('.php', '.xml', '.gz', '.bz', '.zip'), '', preg_replace('|^weBackup_|', '', $entry));
-
-						if(is_numeric($ts) && !($ts < 1004569200)){//old Backup
-							$comp = we_base_file::getCompression($entry);
-							$files[$adddatadir . $entry] = /* g_l('backup', '[backup_form]') . ' ' . */ date($dateformat, $ts) . ($comp && $comp != "none" ? " ($comp)" : "") . " " . $filesize;
-							continue;
-						}
-
-						if(substr_count($ts, '_') > 5){
-							$matches = array();
-							if(preg_match('|([^_]*)_(\d{4})_(\d{1,2})_(\d{1,2})__(\d{1,2})_(\d{1,2})_?([\d-]*)|', $ts, $matches)){
-								list(, $url, $year, $month, $day, $hour, $min, $wever) = $matches;
-								$filedate = date($dateformat, mktime($hour, $min, 0, $month, $day, $year));
-							} else {
-								$url = $wever = '';
+						default:
+							if(@is_dir($dstr . $entry)){
+								continue;
 							}
-							$comp = we_base_file::getCompression($entry);
-							$files[$adddatadir . $entry] = /* g_l('backup', '[backup_form]') . ' ' . */ $filedate . ($url ? ' - ' . $url : '') . ($wever ? ' (WE: ' . str_replace('-', '.', $wever) . ')' : '') . ($comp && $comp != 'none' ? ' (' . $comp . ')' : '') . " " . $filesize;
-							continue;
-						}
-
-						$extra_files[$adddatadir . $entry] = $entry . " $filedate $filesize";
 					}
+
+					$filename = $dstr . $entry;
+					$filesize = we_base_file::getHumanFileSize(filesize($filename));
+					$filedate = date($dateformat, filemtime($filename));
+					if(strpos($entry, 'weBackup_') !== 0){
+						$extra_files[$adddatadir . $entry] = $entry . " $filedate $filesize";
+						continue;
+					}
+					$ts = str_replace(array('.php', '.xml', '.gz', '.bz', '.zip'), '', preg_replace('|^weBackup_|', '', $entry));
+
+					if(is_numeric($ts) && !($ts < 1004569200)){//old Backup
+						$comp = we_base_file::getCompression($entry);
+						$files[$adddatadir . $entry] = /* g_l('backup', '[backup_form]') . ' ' . */ date($dateformat, $ts) . ($comp && $comp != "none" ? " ($comp)" : "") . " " . $filesize;
+						continue;
+					}
+
+					if(substr_count($ts, '_') > 5){
+						$matches = array();
+						if(preg_match('|([^_]*)_(\d{4})_(\d{1,2})_(\d{1,2})__(\d{1,2})_(\d{1,2})_?([\d-]*)|', $ts, $matches)){
+							list(, $url, $year, $month, $day, $hour, $min, $wever) = $matches;
+							$filedate = date($dateformat, mktime($hour, $min, 0, $month, $day, $year));
+						} else {
+							$url = $wever = '';
+						}
+						$comp = we_base_file::getCompression($entry);
+						$files[$adddatadir . $entry] = /* g_l('backup', '[backup_form]') . ' ' . */ $filedate . ($url ? ' - ' . $url : '') . ($wever ? ' (WE: ' . str_replace('-', '.', $wever) . ')' : '') . ($comp && $comp != 'none' ? ' (' . $comp . ')' : '') . " " . $filesize;
+						continue;
+					}
+
+					$extra_files[$adddatadir . $entry] = $entry . " $filedate $filesize";
 				}
 			}
 			$d->close();
@@ -1286,7 +1299,7 @@ function setLocation(loc){
 	location.href=loc;
 }
 top.busy.location="' . $this->frameset . '?pnt=busy";' .
-									we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					return "";
 				}
@@ -1383,7 +1396,7 @@ function setLocation(loc){
 	location.href=loc;
 }
 top.busy.location="' . $this->frameset . '?pnt=busy";' .
-									we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					return '';
 				}
@@ -1463,7 +1476,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 						$we_backup_obj->file_end = $we_backup_obj->splitFile2();
 						if($we_backup_obj->file_end < 0){
 							echo we_html_element::jsElement('top.busy.location = "' . $this->frameset . '?pnt=busy";' .
-											we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_split_file]'), basename($we_backup_obj->filename)) . ($we_backup_obj->file_end == -10 ? g_l('backup', '[cannot_split_file_ziped]') : ''), we_message_reporting::WE_MESSAGE_ERROR));
+									we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_split_file]'), basename($we_backup_obj->filename)) . ($we_backup_obj->file_end == -10 ? g_l('backup', '[cannot_split_file_ziped]') : ''), we_message_reporting::WE_MESSAGE_ERROR));
 							return '';
 						}
 						if($handle_options["core"]){

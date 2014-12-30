@@ -109,6 +109,7 @@ function we_tab_setState(state, init, objects) {
 	}
 }
 
+
 function we_tab(href, normSrc, activeSrc, disabledSrc, width, height, state, js, svg, no) {
 	this.src = "";
 	this.href = href;

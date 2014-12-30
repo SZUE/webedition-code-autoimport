@@ -61,7 +61,7 @@ class we_otherDocument extends we_binaryDocument{
 		return $this->html;
 	}
 
-	function formExtension2(){
+	protected function formExtension2(){
 		return we_html_tools::htmlFormElementTable($this->htmlTextInput('we_' . $this->Name . '_Extension', 5, $this->Extension, '', 'onchange="_EditorFrame.setEditorIsHot(true);" style="width:92px"'), g_l('weClass', '[extension]'));
 	}
 
