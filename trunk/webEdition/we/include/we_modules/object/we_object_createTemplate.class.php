@@ -39,7 +39,7 @@ class we_object_createTemplate extends we_template {
 				we_html_tools::getPixel(20, 4), $button);
 	}
 
-	function formExtension2(){
+	protected function formExtension2(){
 		return we_html_tools::htmlFormElementTable("<b class='defaultfont'>" . $this->Extension . "</b>", g_l('weClass', '[extension]'));
 	}
 
