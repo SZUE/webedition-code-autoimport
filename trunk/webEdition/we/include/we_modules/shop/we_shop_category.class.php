@@ -573,7 +573,7 @@ class we_shop_category extends we_category{
 		if(!($cat = self::getShopCatById($validID, '', false))){//we have validID so we do not have to validate again!
 			return false;
 		}
-
+		$country = $cat->DestPrinciple ? $country : $cat->getDefaultCountry();// only get vat of current (customer) country, when shop category is DestPrinciple!
 		return $cat->getShopVatByCountry($country, $getRate, $getIsFallbackToStandard, $getIsFallbackToPrefs);
 	}
 
