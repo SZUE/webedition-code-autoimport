@@ -96,7 +96,7 @@ function we_makeTextFromPath(path){
 }');
 	}
 
-	function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){
 		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {

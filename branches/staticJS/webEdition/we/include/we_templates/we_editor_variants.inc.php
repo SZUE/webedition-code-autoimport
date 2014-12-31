@@ -38,8 +38,8 @@ echo STYLESHEET;
 
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::WEDOCUMENT:
-			case 'objectFile':
-				we_shop_variants::edit($we_doc->ContentType == 'objectFile', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), $we_doc);
+			case we_base_ContentTypes::OBJECT_FILE:
+				we_shop_variants::edit($we_doc->ContentType == we_base_ContentTypes::OBJECT_FILE, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), $we_doc);
 				break;
 
 			case we_base_ContentTypes::TEMPLATE:

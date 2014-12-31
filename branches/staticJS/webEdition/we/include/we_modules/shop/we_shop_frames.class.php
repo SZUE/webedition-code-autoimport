@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_frames extends we_modules_frame{
-
 	var $db;
 	var $View;
 	var $frameset;
@@ -245,7 +244,7 @@ function we_cmd() {
 		}
 
 		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
-						we_html_element::htmlIFrame('edbody', $bodyURL . '&pnt=edbody', 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
+				we_html_element::htmlIFrame('edbody', $bodyURL . '&pnt=edbody', 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
 		);
 
 		return $this->getHTMLDocument($body);
@@ -309,8 +308,13 @@ function we_cmd() {
 		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 
 		$hash = getHash('SELECT IntCustomerID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") AS d FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, $DB_WE);
-		$cid = $hash['IntCustomerID'];
-		$cdat = $hash['d'];
+		if($hash){
+			$cid = $hash['IntCustomerID'];
+			$cdat = $hash['d'];
+		} else {
+			$cid = 0;
+			$cdat = '';
+		}
 		//$order = getHash('SELECT IntOrderID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") as orddate FROM ' . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC LIMIT 1', $DB_WE);
 		//$headline = ($order ? sprintf(g_l('modules_shop', '[lastOrder]'), $order["IntOrderID"], $order["orddate"]) : '');
 
@@ -342,8 +346,8 @@ top.content.hloaded = 1;
 		');
 
 		$tab_body_content = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
-				$we_tabs->getHTML() .
-				'</div>';
+			$we_tabs->getHTML() .
+			'</div>';
 		$tab_body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "bgcolor" => "#FFFFFF", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif"), $tab_body_content);
 
 		return $this->getHTMLDocument($tab_body, $tab_head);
@@ -409,8 +413,8 @@ top.content.hloaded = 1;
 		');
 
 		$tab_body_content = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB($headline) . '</div>' . we_html_tools::getPixel(100, 3) .
-				$we_tabs->getHTML() .
-				'</div>';
+			$we_tabs->getHTML() .
+			'</div>';
 		$tab_body = we_html_element::htmlBody(array('bgcolor' => '#FFFFFF', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif'), $tab_body_content);
 
 		return $this->getHTMLDocument($tab_body, $tab_head);

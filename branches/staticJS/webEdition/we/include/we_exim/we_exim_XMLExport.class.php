@@ -166,7 +166,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			foreach($selObjs as $k => $v){
 				$this->RefTable->add2(array(
 					"ID" => $v,
-					"ContentType" => "objectFile",
+					"ContentType" => we_base_ContentTypes::OBJECT_FILE,
 					"level" => 0
 					)
 				);

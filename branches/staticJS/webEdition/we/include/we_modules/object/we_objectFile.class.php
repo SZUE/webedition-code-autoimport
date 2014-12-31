@@ -67,7 +67,7 @@ class we_objectFile extends we_document{
 		parent::__construct();
 		$this->Icon = 'objectFile.gif';
 		$this->Table = OBJECT_FILES_TABLE;
-		$this->ContentType = 'objectFile';
+		$this->ContentType = we_base_ContentTypes::OBJECT_FILE;
 		$this->PublWhenSave = 0;
 		$this->IsTextContentDoc = true;
 		array_push($this->persistent_slots, 'CSS', 'DefArray', 'Text', 'AllowedClasses', 'Templates', 'ExtraTemplates', 'Workspaces', 'ExtraWorkspaces', 'ExtraWorkspacesSelected', 'RootDirPath', 'rootDirID', 'TableID', 'Category', 'IsSearchable', 'Charset', 'Language', 'Url', 'TriggerID');
@@ -2274,7 +2274,7 @@ class we_objectFile extends we_document{
 		}
 		$a = $this->i_saveTmp();
 // version
-		if($this->ContentType === 'objectFile' && defined('VERSIONING_OBJECT') && VERSIONING_OBJECT){
+		if($this->ContentType === we_base_ContentTypes::OBJECT_FILE && defined('VERSIONING_OBJECT') && VERSIONING_OBJECT){
 			$version = new we_versions_version();
 			$version->save($this);
 		}
@@ -2464,7 +2464,7 @@ class we_objectFile extends we_document{
 		}
 
 		/* version */
-		if($this->ContentType === 'objectFile' && defined('VERSIONING_OBJECT') && VERSIONING_OBJECT){
+		if($this->ContentType === we_base_ContentTypes::OBJECT_FILE && defined('VERSIONING_OBJECT') && VERSIONING_OBJECT){
 			$version = new we_versions_version();
 			$version->save($this, 'unpublished');
 		}

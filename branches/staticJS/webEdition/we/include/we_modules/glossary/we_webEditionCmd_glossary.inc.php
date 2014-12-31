@@ -31,7 +31,7 @@
 							&& _EditorFrame.getEditorType() == "model"
 							&& (
 											_EditorFrame.getEditorContentType() == "<?php echo we_base_ContentTypes::WEDOCUMENT; ?>"
-											|| _EditorFrame.getEditorContentType() == "objectFile"
+											|| _EditorFrame.getEditorContentType() == "<?php echo we_base_ContentTypes::OBJECT_FILE; ?>"
 											)
 							) {
 

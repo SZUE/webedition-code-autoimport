@@ -41,7 +41,7 @@ $isTempl = false;
 if($newDoc['ContentType'] == we_base_ContentTypes::TEMPLATE){
 	$isTempl = true;
 }
-if($newDoc['ContentType'] === "objectFile"){
+if($newDoc['ContentType'] === we_base_ContentTypes::OBJECT_FILE){
 	$isObj = true;
 }
 if(!($isObj OR $isTempl)){

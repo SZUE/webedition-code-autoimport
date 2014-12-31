@@ -549,13 +549,13 @@ setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 												$_path_info = $ref->Path;
 												break;
 											case 'doctype':
-												$_path_info = f('SELECT DocType FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . intval($ref->ID), 'DocType', new DB_WE());
+												$_path_info = f('SELECT DocType FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
 												break;
 											case 'weNavigationRule':
-												$_path_info = f('SELECT NavigationName FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . intval($ref->ID), 'NavigationName', new DB_WE());
+												$_path_info = f('SELECT NavigationName FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
 												break;
 											case 'weThumbnail':
-												$_path_info = f('SELECT Name FROM ' . escape_sql_query($ref->Table) . ' WHERE ID = ' . intval($ref->ID), 'Name', new DB_WE());
+												$_path_info = f('SELECT Name FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
 												break;
 											default:
 												$_path_info = id_to_path($ref->ID, $ref->Table);

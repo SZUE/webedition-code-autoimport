@@ -185,8 +185,8 @@ abstract class we_editor_footer{
 
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::WEDOCUMENT:
-			case 'object':
-			case 'objectFile':
+			case we_base_ContentTypes::OBJECT:
+			case we_base_ContentTypes::OBJECT_FILE:
 			case we_base_ContentTypes::FOLDER:
 			case 'class_folder':
 				break;

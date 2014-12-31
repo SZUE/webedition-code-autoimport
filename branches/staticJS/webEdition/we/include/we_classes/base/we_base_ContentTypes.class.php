@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_ContentTypes{
-
 	const CLASS_FOLDER_ICON = 'class_folder.gif';
 	const FOLDER_ICON = 'folder.gif';
 	const IMAGE_ICON = 'image.gif';
@@ -44,6 +43,8 @@ class we_base_ContentTypes{
 	const AUDIO = 'audio/*';
 	const APPLICATION = 'application/*';
 	const FOLDER = 'folder';
+	const OBJECT = 'object';
+	const OBJECT_FILE = 'objectFile';
 
 	private $ct;
 
@@ -223,7 +224,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'Icon' => self::FILE_ICON,
 			),
-			'object' => array(
+			self::OBJECT => array(
 				'Extension' => '',
 				'ExtensionIsFilename' => false,
 				'Permission' => '',
@@ -232,7 +233,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => false,
 				'Icon' => 'object.gif',
 			),
-			'objectFile' => array(
+			self::OBJECT_FILE => array(
 				'Extension' => '',
 				'ExtensionIsFilename' => false,
 				'Permission' => '',

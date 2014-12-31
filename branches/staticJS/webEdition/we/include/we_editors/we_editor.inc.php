@@ -483,7 +483,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 						$wf_flag = false;
 						$wasNew = (intval($we_doc->ID) == 0) ? true : false;
 						$wasPubl = (isset($we_doc->Published) && $we_doc->Published) ? true : false;
-						if(!permissionhandler::hasPerm('ADMINISTRATOR') && $we_doc->ContentType != 'object' && $we_doc->ContentType != 'objectFile' && !in_workspace($we_doc->ParentID, get_ws($we_doc->Table), $we_doc->Table)){
+						if(!permissionhandler::hasPerm('ADMINISTRATOR') && $we_doc->ContentType != 'object' && $we_doc->ContentType != we_base_ContentTypes::OBJECT_FILE && !in_workspace($we_doc->ParentID, get_ws($we_doc->Table), $we_doc->Table)){
 							$we_responseText = g_l('alert', '[' . FILE_TABLE . '][not_im_ws]');
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 							include(WE_INCLUDES_PATH . 'we_templates/we_editor_save.inc.php');
@@ -579,7 +579,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 								$we_JavaScript .= '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');';
 							}
 
-							if(($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === 'objectFile') && $we_doc->canHaveVariants(true)){
+							if(($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE) && $we_doc->canHaveVariants(true)){
 								we_shop_variants::setVariantDataForModel($we_doc, true);
 							}
 						} else {

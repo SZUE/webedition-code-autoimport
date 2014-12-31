@@ -92,7 +92,7 @@ class we_banner_dirSelector extends we_selector_directory{
 				'</td>';
 	}
 
-	function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){
 		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
@@ -179,7 +179,7 @@ top.unselectAllFiles();') . '
 		return ob_get_clean();
 	}
 
-	function printFramesetJSFunctionQueryString(){
+	protected function printFramesetJSFunctionQueryString(){
 		return we_html_element::jsElement('
 		function queryString(what,id,o,we_editDirID){
 		if(!o) o=top.order;
@@ -191,7 +191,7 @@ top.unselectAllFiles();') . '
 		}');
 	}
 
-	function printFramesetJSFunctionEntry(){
+	protected function printFramesetJSFunctionEntry(){
 		return we_html_element::jsElement('
 function entry(ID,icon,text,isFolder,path){
 	this.ID=ID;
@@ -202,7 +202,7 @@ function entry(ID,icon,text,isFolder,path){
 }');
 	}
 
-	function printFramesetJSFunctionAddEntry(){
+	protected function printFramesetJSFunctionAddEntry(){
 		return we_html_element::jsElement('
 function addEntry(ID,icon,text,isFolder,path){
 	entries[entries.length] = new entry(ID,icon,text,isFolder,path);

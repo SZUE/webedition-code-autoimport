@@ -91,7 +91,7 @@ function we_tag_object($attribs){
 
 			$yuiSuggest = &weSuggest::getInstance();
 			$yuiSuggest->setAcId($name . we_base_file::getUniqueId(), f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classid));
-			$yuiSuggest->setContentType('folder,objectFile');
+			$yuiSuggest->setContentType('folder,'.we_base_ContentTypes::OBJECT_FILE);
 			$yuiSuggest->setInput($textname, $path);
 			$yuiSuggest->setResult($idname, $we_oid);
 			$yuiSuggest->setMaxResults(10);

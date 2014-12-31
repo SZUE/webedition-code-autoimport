@@ -31,7 +31,7 @@ we_html_tools::protect();
 function checkIfValidStartdocument($id, $type = 'document'){
 
 	return ($type === 'object' ?
-			(f('SELECT ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id)) === 'objectFile') :
+			(f('SELECT ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id)) === we_base_ContentTypes::OBJECT_FILE) :
 			(f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) === we_base_ContentTypes::WEDOCUMENT));
 }
 
@@ -74,7 +74,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_i
 					$directCmd = array(
 						OBJECT_FILES_TABLE,
 						$_SESSION['weS']['SEEM']['startId'],
-						'objectFile'
+						we_base_ContentTypes::OBJECT_FILE
 					);
 					$jsCommand = _buildJsCommand($directCmd);
 				} else {
@@ -97,7 +97,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_i
 					$jsCommand = _buildJsCommand(array(
 						OBJECT_FILES_TABLE,
 						$_SESSION['prefs']['seem_start_file'],
-						'objectFile',
+						we_base_ContentTypes::OBJECT_FILE,
 					));
 				} else {
 					t_e('start doc not valid', $_SESSION['prefs']['seem_start_file']);

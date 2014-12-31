@@ -131,7 +131,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'new_documen
 if(($doct = we_base_request::_(we_base_request::INT, 'we_cmd', false, 8)) !== false && ($we_Table == FILE_TABLE) && ($we_ContentType === we_base_ContentTypes::WEDOCUMENT)){
 	$we_doc->changeDoctype($doct);
 	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 1);
-} else if($doct !== false && (defined('OBJECT_FILES_TABLE') && $we_Table == OBJECT_FILES_TABLE) && ($we_ContentType === 'objectFile')){
+} else if($doct !== false && (defined('OBJECT_FILES_TABLE') && $we_Table == OBJECT_FILES_TABLE) && ($we_ContentType === we_base_ContentTypes::OBJECT_FILE)){
 	$we_doc->TableID = $doct;
 	$we_doc->setRootDirID(true);
 	$we_doc->restoreDefaults();
@@ -219,7 +219,7 @@ if(!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder){
 		}
 	}
 
-	if($we_doc->ContentType === 'objectFile' && (!$we_doc->canMakeNew())){ // at this time only in objectFiles
+	if($we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE && (!$we_doc->canMakeNew())){ // at this time only in objectFiles
 		$we_message = g_l('alert', '[no_new][objectFile]');
 		include(WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 		exit;

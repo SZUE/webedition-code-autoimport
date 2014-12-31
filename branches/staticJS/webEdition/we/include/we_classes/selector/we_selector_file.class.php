@@ -214,7 +214,7 @@ function closeOnEscape() {
 	}
 
 	function printFramesetHTML(){
-		$this->setDirAndID();//set correct directory
+		$this->setDirAndID(); //set correct directory
 		echo we_html_tools::getHtmlTop($this->title, '', 'frameset') .
 		implodeJS(
 			we_html_element::jsScript(JS_DIR . 'keyListener.js') .
@@ -415,11 +415,11 @@ function setDir(id){
 }');
 	}
 
-	function getFsQueryString($what){
+	protected function getFsQueryString($what){
 		return $_SERVER["SCRIPT_NAME"] . "?what=$what&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&filter=" . $this->filter;
 	}
 
-	function printFramesetJSFunctionQueryString(){
+	protected function printFramesetJSFunctionQueryString(){
 		return we_html_element::jsElement('
 function queryString(what,id,o){
 	if(!o) o=top.order;
@@ -436,7 +436,7 @@ function queryString(what,id,o){
 		return $ret;
 	}
 
-	function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){
 		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
@@ -473,7 +473,7 @@ function queryString(what,id,o){
 		return ob_get_clean();
 	}
 
-	function printFramesetJSFunctionEntry(){
+	protected function printFramesetJSFunctionEntry(){
 		return we_html_element::jsElement('
 function entry(ID,icon,text,isFolder,path){
 	this.ID=ID;
@@ -484,7 +484,7 @@ function entry(ID,icon,text,isFolder,path){
 }');
 	}
 
-	function printFramesetJSFunctionAddEntry(){
+	protected function printFramesetJSFunctionAddEntry(){
 		return we_html_element::jsElement('
 function addEntry(ID,icon,text,isFolder,path){
 	entries[entries.length] = new entry(ID,icon,text,isFolder,path);
@@ -518,8 +518,17 @@ function clearEntries(){
 	}
 
 	function printBodyHTML(){
-		echo we_html_element::htmlDocType() . '<html><head>' . we_html_tools::getJSErrorHandler() . '</head>
-				<body bgcolor="white" onload="top.writeBody(self.document);"></body></html>';
+		echo 	we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT.
+		we_html_element::cssElement('
+body{
+	background-color: white;
+	margin: 0px;
+}
+a, a:visited, a:active{
+	color: #000000;
+}').
+			'</head>
+				<body onload="top.writeBody(self.document);"></body></html>';
 	}
 
 	function printHeaderHTML(){

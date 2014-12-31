@@ -135,7 +135,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			'CreatorID' => 0);
 	}
 
-	function getFsQueryString($what){
+	protected function getFsQueryString($what){
 		return $_SERVER["SCRIPT_NAME"] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . (isset($this->open_doc) ? ("&open_doc=" . $this->open_doc) : "");
 	}
 
@@ -151,7 +151,7 @@ function RenameFolder(id){
 }');
 	}
 
-	function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){
 		return we_html_element::jsElement('
 function writeBody(d){
 	d.open();' .
@@ -235,7 +235,7 @@ d.close();
 }');
 	}
 
-	function printFramesetJSFunctionQueryString(){
+	protected function printFramesetJSFunctionQueryString(){
 		return we_html_element::jsElement('
 		function queryString(what,id,o,we_editDirID){
 		if(!o) o=top.order;
@@ -247,7 +247,7 @@ d.close();
 		}');
 	}
 
-	function printFramesetJSFunctionEntry(){
+	protected function printFramesetJSFunctionEntry(){
 		return we_html_element::jsElement('
 function entry(ID,icon,text,isFolder,path,modDate){
 	this.ID=ID;
@@ -259,7 +259,7 @@ function entry(ID,icon,text,isFolder,path,modDate){
 }');
 	}
 
-	function printFramesetJSFunctionAddEntry(){
+	protected function printFramesetJSFunctionAddEntry(){
 		return we_html_element::jsElement('
 function addEntry(ID,icon,text,isFolder,path,modDate){
 	entries[entries.length] = new entry(ID,icon,text,isFolder,path,modDate);
@@ -944,8 +944,8 @@ top.selectFile(top.currentID);
 					case we_base_ContentTypes::APPLICATION:
 						$out .= $previewDefauts . "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[filesize]') . ":</td><td>" . $filesize . "</td></tr>";
 						break;
-					case "object":
-					case "objectFile":
+					case we_base_ContentTypes::OBJECT:
+					case we_base_ContentTypes::OBJECT_FILE:
 					default:
 						$out .= $previewDefauts;
 						break;

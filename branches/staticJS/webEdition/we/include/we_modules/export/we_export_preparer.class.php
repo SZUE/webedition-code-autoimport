@@ -348,7 +348,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 
 	function makeExportList(){
 
-		$serachCT = array(we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::TEMPLATE, 'doctype', 'category', 'object', 'objectFile', we_base_ContentTypes::IMAGE);
+		$serachCT = array(we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::TEMPLATE, 'doctype', 'category', we_base_ContentTypes::OBJECT, we_base_ContentTypes::OBJECT_FILE, we_base_ContentTypes::IMAGE);
 
 		$_step = 0;
 		$id = $this->RefTable->getNext();

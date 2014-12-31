@@ -213,7 +213,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 			case we_base_ContentTypes::FOLDER:
 				$we_ContentType = $this->data['ContentType'];
 				return new we_class_folder();
-			case 'objectFile':
+			case we_base_ContentTypes::OBJECT_FILE:
 				$we_ContentType = $this->data['ContentType'];
 				return new we_objectFile();
 		}

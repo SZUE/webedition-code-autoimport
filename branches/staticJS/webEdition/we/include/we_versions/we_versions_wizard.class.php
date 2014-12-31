@@ -981,7 +981,7 @@ set_button_state(false);';
 					break;
 				case we_base_ContentTypes::WEDOCUMENT:
 				case we_base_ContentTypes::HTML:
-				case "objectFile":
+				case we_base_ContentTypes::OBJECT_FILE:
 					if($v){
 						$w[] = '(ContentType="' . $k . '" AND status="published" )';
 					}

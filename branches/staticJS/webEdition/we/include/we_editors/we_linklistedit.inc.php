@@ -544,7 +544,7 @@ if($ok && $cmd === "edit_link_at_class"){
 			$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 
 			$yuiSuggest->setAcId("Obj");
-			$yuiSuggest->setContentType("folder,objectFile");
+			$yuiSuggest->setContentType("folder,".we_base_ContentTypes::OBJECT_FILE);
 			$yuiSuggest->setInput("href_obj", $href_obj);
 			$yuiSuggest->setMaxResults(20);
 			$yuiSuggest->setMayBeEmpty(true);

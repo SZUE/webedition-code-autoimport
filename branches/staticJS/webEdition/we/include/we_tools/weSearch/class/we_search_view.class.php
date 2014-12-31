@@ -2115,7 +2115,7 @@ function calendarSetup(x){
 				switch($_result[$f]["ContentType"]){
 					case we_base_ContentTypes::HTML:
 					case we_base_ContentTypes::WEDOCUMENT:
-					case "objectFile":
+					case we_base_ContentTypes::OBJECT_FILE:
 						$published = ((($_result[$f]["Published"] != 0) && ($_result[$f]["Published"] < $_result[$f]["ModDate"])) ? -1 : $_result[$f]["Published"]);
 						if($published == 0){
 							$fontColor = 'notpublished';
@@ -2166,7 +2166,7 @@ function calendarSetup(x){
 
 						$classNotExistsText = "";
 						//if class doesn't exists it's not possible to reset object-version!
-						if($_result[$f]['ContentType'] === "objectFile"){
+						if($_result[$f]['ContentType'] === we_base_ContentTypes::OBJECT_FILE){
 
 							if(!f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($_result[$f]["TableID"]), '', $DB_WE)){
 								$resetDisabled = true;
@@ -2182,7 +2182,7 @@ function calendarSetup(x){
 							array("version" => array($k => "<span style='margin-left:5px;'>" . date("d.m.Y", $timestamp) . "</span>")),
 							array("version" => array($k => "")),
 							array("version" => array($k => "<div style='margin-left:5px;'>" .
-									(($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] === "objectFile") ?
+									(($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] === we_base_ContentTypes::OBJECT_FILE) ?
 											we_html_forms::checkbox($ID, 0, "publishVersion_" . $ID, g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
 											"") .
 									"</div>")),
@@ -2191,7 +2191,7 @@ function calendarSetup(x){
 				}
 				$docExists = f('SELECT ID FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]["docID"]), 'ID', $DB_WE);
 
-				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] === "objectFile") && permissionhandler::hasPerm(
+				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] === we_base_ContentTypes::OBJECT_FILE) && permissionhandler::hasPerm(
 								'PUBLISH') && $docExists != "") ? we_html_forms::checkbox(
 										$_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_" . $whichSearch, "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '';
 

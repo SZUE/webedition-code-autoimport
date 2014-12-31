@@ -377,9 +377,9 @@ abstract class we_ui_layout_Image{
 				return "flash";
 			case we_base_ContentTypes::QUICKTIME:
 				return "quicktime";
-			case "object" :
+			case we_base_ContentTypes::OBJECT:
 				return "object";
-			case "objectFile" :
+			case we_base_ContentTypes::OBJECT_FILE:
 				return "objectFile";
 			case we_base_ContentTypes::APPLICATION:
 				switch($extension){

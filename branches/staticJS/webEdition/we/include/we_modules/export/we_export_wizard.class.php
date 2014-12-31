@@ -1235,7 +1235,7 @@ if (top.footer.setProgress){
 					foreach($finalObjs as $k => $v){
 						$ids[] = array(
 							"ID" => $v,
-							"ContentType" => "objectFile",
+							"ContentType" => we_base_ContentTypes::OBJECT_FILE,
 							"level" => 0
 						);
 					}

@@ -984,7 +984,7 @@ class we_versions_version{
 				return VERSIONING_SONSTIGE;
 			case we_base_ContentTypes::XML:
 				return VERSIONING_TEXT_XML;
-			case "objectFile":
+			case we_base_ContentTypes::OBJECT_FILE:
 				return VERSIONING_OBJECT;
 		}
 
@@ -1069,7 +1069,7 @@ class we_versions_version{
 			$status = "published";
 		}
 
-		if($document["ContentType"] != "objectFile" && $document["ContentType"] != we_base_ContentTypes::WEDOCUMENT && $document["ContentType"] != we_base_ContentTypes::HTML && !($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL)){
+		if($document["ContentType"] != we_base_ContentTypes::OBJECT_FILE && $document["ContentType"] != we_base_ContentTypes::WEDOCUMENT && $document["ContentType"] != we_base_ContentTypes::HTML && !($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL)){
 			$status = "saved";
 		}
 
@@ -1081,7 +1081,7 @@ class we_versions_version{
 			$status = "published";
 		}
 
-		if($document["ContentType"] === "objectFile" || $document["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $document["ContentType"] == we_base_ContentTypes::HTML || ($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL)){
+		if($document["ContentType"] === we_base_ContentTypes::OBJECT_FILE || $document["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $document["ContentType"] == we_base_ContentTypes::HTML || ($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL)){
 			if($document["ContentType"] != we_base_ContentTypes::TEMPLATE && (defined('VERSIONS_CREATE') && VERSIONS_CREATE) && $status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
 				$writeVersion = false;
 			}
@@ -1186,7 +1186,7 @@ class we_versions_version{
 			case 'binaryPath':
 				$binaryPath = '';
 				$this->Filehash = '';
-				if(!($document['ContentType'] === 'objectFile' || $document['ContentType'] == we_base_ContentTypes::TEMPLATE)){
+				if(!($document['ContentType'] === we_base_ContentTypes::OBJECT_FILE || $document['ContentType'] == we_base_ContentTypes::TEMPLATE)){
 					$documentPath = substr($document["Path"], 1);
 					$siteFile = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $documentPath;
 
@@ -1225,7 +1225,7 @@ class we_versions_version{
 					if(isset($this->modFields[$val]) && isset($vals[$val])){
 						$lastEntryField = isset($vals[$val]) ? $vals[$val] : '';
 
-						if($val === "Text" && $document["ContentType"] != "objectFile"){
+						if($val === "Text" && $document["ContentType"] != we_base_ContentTypes::OBJECT_FILE){
 							$val = "";
 						}
 
@@ -1744,7 +1744,7 @@ class we_versions_version{
 				$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . " AND documentTable='" . $db->escape($resetArray["documentTable"]) . "' AND status='published' ORDER BY version DESC LIMIT 1", '', $db);
 				$publishedDoc = $_SERVER['DOCUMENT_ROOT'] . $resetDoc->Path;
 				$publishedDocExists = true;
-				if($resetArray['ContentType'] != 'objectFile'){
+				if($resetArray['ContentType'] != we_base_ContentTypes::OBJECT_FILE){
 					$publishedDocExists = file_exists($publishedDoc);
 				}
 				if($doPark || !$wasPublished || !$publishedDocExists){

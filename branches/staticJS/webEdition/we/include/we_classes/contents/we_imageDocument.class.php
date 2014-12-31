@@ -873,7 +873,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 			$_content->setCol(5, 1, null, we_html_tools::getPixel(400, 10));
 
 			$yuiSuggest->setAcId('objPathLink');
-			$yuiSuggest->setContentType("folder,objectFile");
+			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
 			$yuiSuggest->setInput($objtextname, $objPath);
 			$yuiSuggest->setResult($objidname, $this->getElement('ObjID'));
 			$yuiSuggest->setTable(OBJECT_FILES_TABLE);

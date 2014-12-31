@@ -93,13 +93,13 @@ class we_exim_contentProvider{
 					case we_base_ContentTypes::TEMPLATE:
 						$we_Table = TEMPLATES_TABLE;
 						break;
-					case 'object':
+					case we_base_ContentTypes::OBJECT:
 						if(!defined('OBJECT_TABLE')){
 							return $we_doc;
 						}
 						$we_Table = OBJECT_TABLE;
 						break;
-					case 'objectFile':
+					case we_base_ContentTypes::OBJECT_FILE:
 						if(!defined('OBJECT_FILES_TABLE')){
 							return $we_doc;
 						}

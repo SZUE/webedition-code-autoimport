@@ -111,7 +111,7 @@ function getJSCommand($cmd0){
 			}
 			if(preg_match('/^new_ClObjectFile(.+)$/', $cmd0, $regs)){
 				$clID = $regs[1];
-				return 'top.we_cmd("new","' . OBJECT_FILES_TABLE . '","","objectFile","' . $clID . '");';
+				return 'top.we_cmd("new","' . OBJECT_FILES_TABLE . '","","' . we_base_ContentTypes::OBJECT_FILE . '","' . $clID . '");';
 			}
 			$arr = array();
 			foreach($_REQUEST['we_cmd'] as $cur){

@@ -370,7 +370,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				$_object_select_button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "', '', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
 
 				$yuiSuggest->setAcId("Obj");
-				$yuiSuggest->setContentType("folder,objectFile");
+				$yuiSuggest->setContentType("folder,".we_base_ContentTypes::OBJECT_FILE);
 				$yuiSuggest->setInput("we_dialog_args[objHref]", $this->args["objHref"]);
 				$yuiSuggest->setMaxResults(20);
 				$yuiSuggest->setMayBeEmpty(0);

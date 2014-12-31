@@ -143,11 +143,11 @@ class we_exim_XMLExIm{
 				return DOC_TYPES_TABLE;
 			case "category":
 				return CATEGORY_TABLE;
-			case "object":
+			case we_base_ContentTypes::OBJECT:
 				return (defined('OBJECT_TABLE')) ? OBJECT_TABLE : null;
 			case we_base_ContentTypes::TEMPLATE:
 				return TEMPLATES_TABLE;
-			case "objectFile":
+			case we_base_ContentTypes::OBJECT_FILE:
 				return (defined('OBJECT_FILES_TABLE')) ? OBJECT_FILES_TABLE : null;
 			case "weBinary":
 				return null;

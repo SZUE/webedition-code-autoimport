@@ -168,7 +168,7 @@ function printFramesetJSFunctionQueryString(){
 
 }
 
-function printFramesetJSFunctionEntry(){
+protected function printFramesetJSFunctionEntry(){
 <?php echo '?>'; ?>
 <script type="text/javascript">
 <!--

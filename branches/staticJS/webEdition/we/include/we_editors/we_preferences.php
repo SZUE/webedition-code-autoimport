@@ -910,7 +910,7 @@ function build_dialog($selected_setting = 'ui'){
 					// Build SEEM select start object chooser
 
 					$yuiSuggest->setAcId('Obj');
-					$yuiSuggest->setContentType('folder,objectFile');
+					$yuiSuggest->setContentType('folder,'.we_base_ContentTypes::OBJECT_FILE);
 					$yuiSuggest->setInput('seem_start_object_name', $_object_path, '', get_value('seem_start_file'));
 					$yuiSuggest->setMaxResults(20);
 					$yuiSuggest->setMayBeEmpty(false);
@@ -2851,7 +2851,7 @@ function set_xhtml_field(val, field){
 					we_base_ContentTypes::AUDIO => 'VERSIONING_AUDIO',
 					we_base_ContentTypes::APPLICATION => 'VERSIONING_SONSTIGE',
 					we_base_ContentTypes::XML => 'VERSIONING_TEXT_XML',
-					'objectFile' => 'VERSIONING_OBJECT',
+					we_base_ContentTypes::OBJECT_FILE => 'VERSIONING_OBJECT',
 				),
 				'other' => array(
 					'VERSIONS_TIME_DAYS' => 'VERSIONS_TIME_DAYS',

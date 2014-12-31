@@ -2010,7 +2010,7 @@ function show_seem_chooser(val) {
 
 		// Build SEEM select start object chooser
 		$yuiSuggest->setAcId('Obj');
-		$yuiSuggest->setContentType('folder,objectFile');
+		$yuiSuggest->setContentType('folder,'.we_base_ContentTypes::OBJECT_FILE);
 		$yuiSuggest->setInput('seem_start_object_name', $_object_path);
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);

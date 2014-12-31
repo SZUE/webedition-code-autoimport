@@ -546,8 +546,8 @@ abstract class we_root extends we_class{
 			$ctype = we_base_ContentTypes::WEDOCUMENT;
 			$etype = FILE_TABLE;
 		} else {
-			$yuiSuggest->setContentType('folder,objectFile');
-			$ctype = 'objectFile';
+			$yuiSuggest->setContentType('folder,'.we_base_ContentTypes::OBJECT_FILE);
+			$ctype = we_base_ContentTypes::OBJECT_FILE;
 			$etype = OBJECT_FILES_TABLE;
 		}
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");

@@ -79,10 +79,6 @@ class we_users_selector extends we_selector_multiple{
 		}
 	}
 
-	function getFsQueryString($what){
-		return $_SERVER['SCRIPT_NAME'] . "?what=$what&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&filter=" . $this->filter;
-	}
-
 	function query(){
 		switch($this->filter){
 			case 'group':
@@ -108,7 +104,7 @@ class we_users_selector extends we_selector_multiple{
 			$q . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->db->escape($this->order)) : ''));
 	}
 
-	function printFramesetJSFunctionQueryString(){
+	protected function printFramesetJSFunctionQueryString(){
 		return we_html_element::jsElement('
 function queryString(what,id,o){
 	if(!o) o=top.order;

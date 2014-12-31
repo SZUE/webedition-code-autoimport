@@ -93,7 +93,7 @@ if(isset($GLOBALS['we_doc'])){
 	$useSeeModeJS = array(
 		we_base_ContentTypes::WEDOCUMENT => array(we_base_constants::WE_EDITPAGE_CONTENT),
 		we_base_ContentTypes::TEMPLATE => array(we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE),
-		"objectFile" => array(we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW)
+		we_base_ContentTypes::OBJECT_FILE => array(we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW)
 	);
 
 
@@ -144,8 +144,8 @@ function seeMode_dealWithLinks() {
 
 <?php
 echo (($_we_transaction = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0)) ?
-		"_EditorFrame = _controller.getEditorFrameByTransaction('" . $_we_transaction . "');" :
-		"_EditorFrame = _controller.getEditorFrame();");
+	"_EditorFrame = _controller.getEditorFrameByTransaction('" . $_we_transaction . "');" :
+	"_EditorFrame = _controller.getEditorFrame();");
 ?>
 
 	}
@@ -393,7 +393,7 @@ if(isset($GLOBALS['we_doc'])){
 				break;
 
 
-<?php if(defined('GLOSSARY_TABLE') && isset($we_doc) && ($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === "objectFile")){ ?>
+<?php if(defined('GLOSSARY_TABLE') && isset($we_doc) && ($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE)){ ?>
 				case "glossary_check":
 					new jsWindow(url, "glossary_check", -1, -1, 730, 400, true, false, true);
 					break;

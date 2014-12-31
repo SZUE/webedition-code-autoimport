@@ -174,7 +174,7 @@ top.selectFile(top.currentID);
 		return $ret;
 	}
 
-	function printFramesetJSFunctionAddEntry(){
+	protected function printFramesetJSFunctionAddEntry(){
 		return we_html_element::jsElement('
 		function addEntry(ID,icon,text,isFolder,path){
 		entries[entries.length] = new entry(ID,icon,text,isFolder,path);
@@ -196,7 +196,7 @@ top.selectFile(top.currentID);
 </table>';
 	}
 
-	function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){
 		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {

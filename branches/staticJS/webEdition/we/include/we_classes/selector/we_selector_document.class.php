@@ -165,7 +165,7 @@ function exit_open() {
 		$this->id = '';
 	}
 
-	function getFsQueryString($what){
+	protected function getFsQueryString($what){
 		return $_SERVER["SCRIPT_NAME"] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&filter=" . $this->filter . (isset($this->open_doc) ? ("&open_doc=" . $this->open_doc) : "");
 	}
 
@@ -199,7 +199,7 @@ function reloadDir() {
 }');
 	}
 
-	function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){
 		return we_html_element::jsElement('
 function writeBody(d){
 	d.open();' .
@@ -215,7 +215,8 @@ document.onclick = weonclick;
 function weonclick(e){
 #	if(top.makeNewFolder ||  top.we_editDirID){
 		if(!inputklick){
-			document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);document.we_form.submit();
+			document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);
+			document.we_form.submit();
 		}else{
 			inputklick=false;
 		}
@@ -278,7 +279,7 @@ function weonclick(e){
 }');
 	}
 
-	function printFramesetJSFunctionQueryString(){
+	protected function printFramesetJSFunctionQueryString(){
 		return we_html_element::jsElement('
 function queryString(what,id,o,we_editDirID,filter){
 	if(!o) o=top.order;
@@ -291,7 +292,7 @@ function queryString(what,id,o,we_editDirID,filter){
 }');
 	}
 
-	function printFramesetJSFunctionEntry(){
+	protected function printFramesetJSFunctionEntry(){
 		return we_html_element::jsElement('
 function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 	this.ID=ID;
@@ -306,7 +307,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 }');
 	}
 
-	function printFramesetJSFunctionAddEntry(){
+	protected function printFramesetJSFunctionAddEntry(){
 		return we_html_element::jsElement('
 		function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 		entries[entries.length] = new entry(ID,icon,text,isFolder,path,modDate,contentType,published,title);
@@ -317,8 +318,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 		$ret = '';
 		if($this->userCanSeeDir(true)){
 			while($this->next_record()){
-				$title = isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : '&nbsp;';
-				$title = strip_tags(str_replace(array('\\', '"', "\n",), array('\\\\', '\"', ' '), $title));
+				$title = strip_tags(strtr((isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : '&nbsp;'), array('\\' => '\\\\', '"' => '\"', "\n" => ' ',)));
 				$title = $title === '&nbsp;' ? '-' : oldHtmlspecialchars($title);
 				$published = ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? $this->f("Published") : 1);
 				$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . addcslashes($title, '"') . '");';
@@ -338,9 +338,15 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . $title . '");';
 		}
 
-		if($this->filter != we_base_ContentTypes::TEMPLATE && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != we_base_ContentTypes::WEDOCUMENT){
-			$tmp = ((in_workspace($this->dir, get_ws($this->table))) && $this->userCanMakeNewFile) ? 'enable' : 'disable';
-			$ret.= 'if(top.fsheader.' . $tmp . 'NewFileBut){top.fsheader.' . $tmp . 'NewFileBut();}';
+		switch($this->filter){
+			case we_base_ContentTypes::TEMPLATE:
+			case we_base_ContentTypes::OBJECT:
+			case we_base_ContentTypes::OBJECT_FILE:
+			case we_base_ContentTypes::WEDOCUMENT:
+				break;
+			default:
+				$tmp = ((in_workspace($this->dir, get_ws($this->table))) && $this->userCanMakeNewFile) ? 'enable' : 'disable';
+				$ret.= 'if(top.fsheader.' . $tmp . 'NewFileBut){top.fsheader.' . $tmp . 'NewFileBut();}';
 		}
 
 
@@ -363,22 +369,30 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 
 	function printHeaderTableExtraCols(){
 		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
-		return parent::printHeaderTableExtraCols() .
-			($this->filter != we_base_ContentTypes::TEMPLATE && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != we_base_ContentTypes::WEDOCUMENT ?
-				'<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
-				we_html_element::jsElement('newFileState=' . $newFileState . ';') .
-				($this->filter && isset($this->ctb[$this->filter]) ?
-					we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
-					we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
-				'</td>' : '');
+		$ret = parent::printHeaderTableExtraCols();
+		switch($this->filter){
+			case we_base_ContentTypes::TEMPLATE:
+			case "object":
+			case we_base_ContentTypes::OBJECT_FILE:
+			case we_base_ContentTypes::WEDOCUMENT:
+				return $ret;
+			default:
+				return $ret .
+					'<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
+					we_html_element::jsElement('newFileState=' . $newFileState . ';') .
+					($this->filter && isset($this->ctb[$this->filter]) ?
+						we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
+						we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
+					'</td>';
+		}
 	}
 
 	function printHeaderJSDef(){
 		$ret = parent::printHeaderJSDef();
 		switch($this->filter){
 			case we_base_ContentTypes::TEMPLATE:
-			case "object":
-			case "objectFile":
+			case we_base_ContentTypes::OBJECT:
+			case we_base_ContentTypes::OBJECT_FILE:
 			case we_base_ContentTypes::WEDOCUMENT:
 				return $ret;
 			default:
@@ -560,7 +574,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 			} else {
 				switch($this->table){
 					case FILE_TABLE:
-						$this->db->query('SELECT l.Name, c.Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c on (l.CID = c.ID) WHERE l.DID=' . intval($this->id) . " AND l.DocumentTable!='tblTemplates'");
+						$this->db->query('SELECT l.Name, c.Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($this->id));
 						$metainfos = $this->db->getAllFirst(false);
 						break;
 					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
@@ -592,11 +606,11 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 				case we_base_ContentTypes::WEDOCUMENT:
 				case we_base_ContentTypes::HTML:
 				case we_base_ContentTypes::APPLICATION:
-					$showPriview = $result['Published'] > 0 ? true : false;
+					$showPreview = $result['Published'] > 0;
 					break;
 
 				default:
-					$showPriview = false;
+					$showPreview = false;
 					break;
 			}
 
@@ -631,10 +645,13 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 						array(
 							"caption" => g_l('fileselector', '[name]'),
 							"content" => (
-							$showPriview ? "<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='" . $result['Path'] .
-								"' target='_blank' style='color:black'><img src='" . TREE_ICON_DIR . "browser.gif' border='0' vspace='0' hspace='0'></a></div>" : ""
-							) . "<div style='margin-right:14px'>" . (
-							$showPriview ? "<a href='" . $result['Path'] . "' target='_blank' style='color:black'>" . $result['Text'] . "</a>" : $result['Text']
+							$showPreview ?
+								"<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='" . $result['Path'] . "' target='_blank' style='color:black'><img src='" . TREE_ICON_DIR . "browser.gif' border='0' vspace='0' hspace='0'></a></div>" :
+								""
+							) . "<div style='margin-right:14px'>" .
+							($showPreview ?
+								"<a href='" . $result['Path'] . "' target='_blank' style='color:black'>" . $result['Text'] . "</a>" :
+								$result['Text']
 							) . "</div>"
 						),
 						array(
@@ -679,8 +696,8 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 			switch($result['ContentType']){
 				case "folder":
 				case we_base_ContentTypes::TEMPLATE:
-				case "object":
-				case "objectFile":
+				case we_base_ContentTypes::OBJECT:
+				case we_base_ContentTypes::OBJECT_FILE:
 					break;
 				default:
 					$_previewFields["properies"]["data"][] = array(
