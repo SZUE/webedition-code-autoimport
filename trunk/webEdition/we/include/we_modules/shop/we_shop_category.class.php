@@ -35,6 +35,8 @@ class we_shop_category extends we_category{
 	private static $shopVatsByCategoryCountry = array();
 	private static $shopCatMapping = array();
 	private static $mustCheckIsInactive = -1;
+	private static $destPrinciples = array();
+	private static $activeShopCats = array();
 
 	const IS_CAT_FALLBACK_TO_STANDARD = 1;
 	const IS_CAT_FALLBACK_TO_ACTIVE = 2;
@@ -138,11 +140,15 @@ class we_shop_category extends we_category{
 	 * @return csv or array of int
 	 */
 	public static function getDestPrincipleFromDB($asArray = false){
-		//FIXME: make static var for this too
+		if(!empty(self::$destPrinciples)){
+			return $asArray ? self::$destPrinciples : implode(',', self::$destPrinciples);
+		}
+
 		$db = new DB_WE();
 		$ids = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_destPrinciple"', '', $db, -1);
+		self::$destPrinciples = explode(',', $ids);
 
-		return $asArray ? explode(',', $ids) : $ids;
+		return $asArray ? self::$destPrinciples : $ids;
 	}
 
 	/**
@@ -152,11 +158,15 @@ class we_shop_category extends we_category{
 	 * @return csv or array of int
 	 */
 	public static function getIsInactiveFromDB($asArray = false){
-		//FIXME: make static var for this too
+		if(!empty(self::$activeShopCats)){
+			return $asArray ? self::$activeShopCats : implode(',', self::$activeShopCats);
+		}
+
 		$db = new DB_WE();
 		$ids = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_isInactive"', '', $db, -1);
-
-		return $asArray ? explode(',', $ids) : $ids;
+		self::$activeShopCats = explode(',', $ids);
+		
+		return $asArray ? self::$activeShopCats : $ids;
 	}
 
 	/**
@@ -561,11 +571,9 @@ class we_shop_category extends we_category{
 	 * @return we_shop_vat
 	 */
 	public static function getShopVatByIdAndCountry($id = 0, $wedocCategory = '', $country = '', $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false, $useFallback = true){
-		if(!$country){
-			return false;
-		}
-
+		$country = $country && in_array(intval($id) , self::getDestPrincipleFromDB(true)) ? $country : self::getDefaultCountry();// only get vat of current (customer) country, when shop category is DestPrinciple!
 		$validID = self::checkGetValidID($id, $wedocCategory, $useFallback);
+
 		if(!$getIsFallbackToStandard && !$getIsFallbackToPrefs && isset(self::$shopVatsByCategoryCountry[$validID][$country]) && ($vat = self::$shopVatsByCategoryCountry[$validID][$country])){
 			return $getRate ? $vat->vat : $vat;
 		}
@@ -573,7 +581,7 @@ class we_shop_category extends we_category{
 		if(!($cat = self::getShopCatById($validID, '', false))){//we have validID so we do not have to validate again!
 			return false;
 		}
-		$country = $cat->DestPrinciple ? $country : $cat->getDefaultCountry();// only get vat of current (customer) country, when shop category is DestPrinciple!
+
 		return $cat->getShopVatByCountry($country, $getRate, $getIsFallbackToStandard, $getIsFallbackToPrefs);
 	}
 
