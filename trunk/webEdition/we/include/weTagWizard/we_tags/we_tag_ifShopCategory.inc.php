@@ -17,7 +17,7 @@ $this->Attributes[] = new weTagData_selectAttribute('field', array(
 
 if(defined('WE_SHOP_VAT_TABLE')){
 	$options = array();
-	$opts = we_shop_category::getShopCatFieldsFromDir('Path');
+	$opts = we_shop_category::getShopCatFieldsFromDir('Path', true);
 	foreach($opts as $k => $v){
 		$options[] = new weTagDataOption($v, $k);
 	}
