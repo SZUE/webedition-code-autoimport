@@ -34,6 +34,7 @@ function we_tag_category($attribs){
 	$separator = weTag_getAttribute('separator', $attribs, '/', we_base_request::RAW);
 	$onlyindir = weTag_getAttribute('onlyindir', $attribs, '', we_base_request::FILE);
 	$fromTag = weTag_getAttribute('fromTag', $attribs, 'category', we_base_request::STRING);
+	$shopCatIDs = weTag_getAttribute('shopCatIDs', $attribs, -1, we_base_request::INTLIST);
 	// end initialize possible Attributes
 
 	if($id){
@@ -46,7 +47,7 @@ function we_tag_category($attribs){
 			$attribs['rootdir'] = $onlyindir;
 			$attribs['fromTag'] = $fromTag;
 			$doc = we_getDocForTag($docAttr, false);
-			$attribs['catIDs'] = $fromTag === 'shopcategory' ? '' : $doc->Category;
+			$attribs['catIDs'] = $fromTag === 'shopcategory' ? $shopCatIDs : $doc->Category;
 
 			return we_tag('categorySelect', $attribs);
 		}

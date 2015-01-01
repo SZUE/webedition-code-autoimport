@@ -436,7 +436,7 @@ class we_shop_category extends we_category{
 	 * @return array of string
 	 */
 	static function getShopCatFieldsFromDir($field = '', $activeOnly = false, $allFields = false, $dir = 0, $includeDir = true, $assoc = true, $showpath = false, $rootdir = '', $order = ''){
-		$order = $order ? : $field;
+		$order = $order ? : ($field ? : 'ID');
 
 		if(!($path = (id_to_path(($dir ? : self::getShopCatDir()), CATEGORY_TABLE)))){
 			return array();
@@ -454,10 +454,15 @@ class we_shop_category extends we_category{
 		}
 		$tmpField = $field === 'IsInactive' ? 'ID' : $field;
 
-		$ret = parent::we_getCategories('', ',', $showpath, null, $rootdir, $tmpField, $path, true, $assoc, false, $allFields, $includeDir, $order);
+		$ret = parent::we_getCategories('', ',', $showpath, null, $rootdir, $tmpField, $path, true, ($activeOnly ? : $assoc), false, $allFields, $includeDir, $order);
 		if($activeOnly){
-			foreach(($isInactiveIds = isset($isInactiveIds) ? $isInactiveIds : self::getIsInactiveFromDB(true)) as $k){
-				unset($ret[$k]);
+			$isInactiveIds = isset($isInactiveIds) ? $isInactiveIds : self::getIsInactiveFromDB(true);
+			$numCats = count($ret) - ($includeDir ? 1 : 0);
+
+			if(!empty($isInactiveIds) && count($isInactiveIds) !== $numCats){
+				foreach($isInactiveIds as $k){
+					unset($ret[$k]);
+				}
 			}
 		}
 
@@ -478,7 +483,7 @@ class we_shop_category extends we_category{
 			}
 		}
 
-		return $ret;
+		return !$assoc ? array_merge($ret) : $ret;
 	}
 
 	/**
