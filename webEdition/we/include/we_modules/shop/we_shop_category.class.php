@@ -283,7 +283,7 @@ class we_shop_category extends we_category{
 	 * @return array of int
 	 */
 	public static function getAllShopCatIDs($incCatsDir = true, $dir = 0){
-		$ids = (self::$shopCatIDs = self::$shopCatIDs ? : self::getShopCatFieldsFromDir('ID', false, $dir, false, false));
+		$ids = (self::$shopCatIDs = self::$shopCatIDs ? : self::getShopCatFieldsFromDir('ID', false, false, $dir, false, false));
 		if($incCatsDir){
 			array_unshift($ids, self::getShopCatDir());
 		}
@@ -299,8 +299,8 @@ class we_shop_category extends we_category{
 	 * @return void
 	 */
 	private static function writeShopCatMapping($inactives){
-		$paths = self::getShopCatFieldsFromDir('Path', false, 0, false, true, true, '', 'Path');
-		$parentIDs = self::getShopCatFieldsFromDir('ParentID');
+		$paths = self::getShopCatFieldsFromDir('Path', false, false, 0, false, true, true, '', 'Path');
+		$parentIDs = self::getShopCatFieldsFromDir('ParentID', false, false, 0, true, true, false, '', 'ID');
 		asort($paths);
 
 		self::$shopCatMapping[self::getShopCatDir()] = self::getShopCatDir();
@@ -435,7 +435,9 @@ class we_shop_category extends we_category{
 	 * @param object $db
 	 * @return array of string
 	 */
-	static function getShopCatFieldsFromDir($field = '', $allFields = false, $dir = 0, $includeDir = true, $assoc = true, $showpath = false, $rootdir = '', $order = ''){
+	static function getShopCatFieldsFromDir($field = '', $activeOnly = false, $allFields = false, $dir = 0, $includeDir = true, $assoc = true, $showpath = false, $rootdir = '', $order = ''){
+		$order = $order ? : $field;
+
 		if(!($path = (id_to_path(($dir ? : self::getShopCatDir()), CATEGORY_TABLE)))){
 			return array();
 		}
@@ -453,6 +455,12 @@ class we_shop_category extends we_category{
 		$tmpField = $field === 'IsInactive' ? 'ID' : $field;
 
 		$ret = parent::we_getCategories('', ',', $showpath, null, $rootdir, $tmpField, $path, true, $assoc, false, $allFields, $includeDir, $order);
+		if($activeOnly){
+			foreach(($isInactiveIds = isset($isInactiveIds) ? $isInactiveIds : self::getIsInactiveFromDB(true)) as $k){
+				unset($ret[$k]);
+			}
+		}
+
 		if($field === 'DestPrinciple' || $field === 'IsInactive' || $allFields){
 			if(!$ret || !is_array($ret)){
 				return false;
