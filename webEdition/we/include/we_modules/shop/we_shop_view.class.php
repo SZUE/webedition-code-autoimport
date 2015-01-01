@@ -1480,9 +1480,7 @@ function submitForm() {
 				$shippingVats = array();
 
 				foreach($shopVats as $k => $shopVat){
-					$shippingVats[$shopVat->vat] = (strlen($shopVat->vat . ' - ' . $shopVat->text) > 20 ?
-									substr($shopVat->vat . ' - ' . $shopVat->text, 0, 16) . ' ...' :
-									$shopVat->vat . ' - ' . $shopVat->text);
+					$shippingVats[$shopVat->vat] = $shopVat->vat . ' - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
 				}
 
 				unset($shopVat);

@@ -520,7 +520,7 @@ class we_shop_category extends we_category{
 	 * @param bool $getIsDefaultFromPrefs
 	 * @return we_shop_vat
 	 */
-	public function getShopVatByCountry($country, $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false){
+	private function getShopVatByCountry($country, $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false){
 		if(!$country){
 			return false;
 		}
