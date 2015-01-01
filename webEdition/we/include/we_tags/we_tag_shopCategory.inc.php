@@ -46,14 +46,13 @@ function we_tag_shopCategory($attribs){
 
 	$ret = '';
 	if($GLOBALS['we_editmode']){
-		$attribs['onlyindir'] = we_shop_category::getShopCatDir(true);
-		$attribs['fromTag'] = 'shopcategory';
-
 		if(!$id){
+			$attribs['fromTag'] = 'shopcategory';
 			$attribs['_name_orig'] = WE_SHOP_CATEGORY_FIELD_NAME;
 			$attribs['field'] = 'PATH';
 			$attribs['showpath'] = true;
 			$attribs['firstentry'] = ' ';
+			$attribs['shopCatIDs'] = implode(',', we_shop_category::getShopCatFieldsFromDir('ID', true));
 
 			return we_tag_category($attribs);
 		}
