@@ -94,11 +94,11 @@ abstract class we_html_element{
 		return we_html_baseElement::getHtmlCode(new we_html_baseElement('style', true, $attribs, $content));
 	}
 
-	public static function jsScript($name){
-		$attribs = array(
+	public static function jsScript($name, array $attribs = array()){
+		$attribs = array_merge($attribs, array(
 			'src' => self::getUnCache($name),
 			'type' => 'text/javascript',
-		);
+		));
 		return we_html_baseElement::getHtmlCode(new we_html_baseElement('script', true, $attribs));
 	}
 

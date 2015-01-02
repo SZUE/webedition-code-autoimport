@@ -101,11 +101,10 @@ function unSelectMessage(id, show_cont, doc) {
 	}
 
 	if (show_cont == 'fv') {
-			highlight_TR(id, default_color);
-
+		highlight_TR(id, default_color);
 		top.editor.edbody.msg_mfv.messaging_message_view.location = "<?php echo HTML_DIR?>gray.html";
 	} else {
-			highlight_Elem(id, default_color, messaging_usel_main);
+		highlight_Elem(id, default_color, messaging_usel_main);
 	}
 
 }
