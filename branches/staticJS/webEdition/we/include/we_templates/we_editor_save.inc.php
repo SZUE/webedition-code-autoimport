@@ -58,7 +58,7 @@ if(isset($wasSaved) && $wasSaved){
 //			$reload[TEMPLATES_TABLE] = implode(',', $reloadDocsTempls['templateIDs']);
 
 			break;
-		case 'object':
+		case we_base_ContentTypes::OBJECT:
 			$GLOBALS['DB_WE']->query('SELECT f.ID FROM ' . OBJECT_FILES_TABLE . ' f INNER JOIN ' . LOCK_TABLE . ' l ON f.ID=l.ID AND l.tbl="' . stripTblPrefix(OBJECT_FILES_TABLE) . '" WHERE f.IsFolder=0 AND f.TableID=' . intval($GLOBALS['we_doc']->ID));
 			$reload[OBJECT_FILES_TABLE] = implode(',', $GLOBALS['DB_WE']->getAll(true));
 	}
@@ -89,7 +89,7 @@ for (frameId in _usedEditors) {
 						''
 				) .
 				'} else {' :
-				(($isObject = $we_doc->ContentType === 'object' && (permissionhandler::hasPerm('NEW_OBJECTFILE') || permissionhandler::hasPerm("ADMINISTRATOR"))) ?
+				(($isObject = $we_doc->ContentType === we_base_ContentTypes::OBJECT && (permissionhandler::hasPerm('NEW_OBJECTFILE') || permissionhandler::hasPerm("ADMINISTRATOR"))) ?
 						"if( _EditorFrame.getEditorMakeNewDoc() == true ) {
 				top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');
 			} else {" : '')) .

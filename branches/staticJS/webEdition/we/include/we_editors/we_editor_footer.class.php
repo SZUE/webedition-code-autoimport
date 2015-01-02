@@ -151,7 +151,7 @@ abstract class we_editor_footer{
 					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("make_new_document", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','','" . $we_doc->ID . "');_EditorFrame.setEditorMakeNewDoc(false);"));
 					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 					break;
-				case "object":
+				case we_base_ContentTypes::OBJECT:
 					$_normalTable->addCol(2);
 					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("make_new_object", "javascript:top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');_EditorFrame.setEditorMakeNewDoc(false);"));
 					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
@@ -272,7 +272,7 @@ abstract class we_editor_footer{
 					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 				}
 				break;
-			case "object":
+			case we_base_ContentTypes::OBJECT:
 				if(permissionhandler::hasPerm("NEW_OBJECTFILE") || permissionhandler::hasPerm("ADMINISTRATOR")){
 					$_normalTable->addCol(2);
 					$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('modules_object', '[we_new_doc_after_save]'), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));

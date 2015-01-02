@@ -281,7 +281,7 @@ function loadData() {
 		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 		$frameset->setAttributes(array("rows" => "26,1,*", 'framespacing' => 0, 'border' => 0, 'frameborder' => 'NO'));
 		$frameset->addFrame(array("src" => $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=msg_fv_headers', 'name' => 'messaging_fv_headers', 'noresize' => null, 'scrolling' => 'no'));
-		$frameset->addFrame(array("src" => HTML_DIR . 'msg_white_fr.html', 'noresize' => null, 'scrolling' => 'no'));
+		$frameset->addFrame(array("src" => HTML_DIR . 'white.html', 'noresize' => null, 'scrolling' => 'no'));
 		$frameset->addFrame(array("src" => WE_MESSAGING_MODULE_DIR . 'messaging_mfv.php', "name" => "msg_mfv", "noresize" => null, "scrolling" => "no"));
 
 		$noframeset = new we_html_baseElement("noframes");

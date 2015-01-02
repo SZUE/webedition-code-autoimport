@@ -331,7 +331,7 @@ var startPath="' . $startPath . '";
 
 
 var parentID=' . intval(($this->dir ?
-						f('SELECT ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'ParentID', $this->db) :
+						f('SELECT ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), '', $this->db) :
 						0)) . ';
 var table="' . $this->table . '";
 var order="' . $this->order . '";
@@ -448,8 +448,7 @@ function queryString(what,id,o){
 <table border="0" cellpadding="0" cellspacing="0">');
 		?>
 				for (i = 0; i < entries.length; i++) {
-					d.writeln('<tr>');
-					d.writeln('<td class="selector" align="center">');
+					d.writeln('<tr><td class="selector" align="center">');
 					var link = '<a title="' + entries[i].text + '" href="javascript://"';
 					if (entries[i].isFolder) {
 						link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';

@@ -209,7 +209,8 @@ var shiftpressed=false
 var inputklick=false
 var wasdblclick=false
 function submitFolderMods(){
-	document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);document.we_form.submit();
+	document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);
+	document.we_form.submit();
 }
 document.onclick = weonclick;
 function weonclick(e){
@@ -372,7 +373,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 		$ret = parent::printHeaderTableExtraCols();
 		switch($this->filter){
 			case we_base_ContentTypes::TEMPLATE:
-			case "object":
+			case we_base_ContentTypes::OBJECT:
 			case we_base_ContentTypes::OBJECT_FILE:
 			case we_base_ContentTypes::WEDOCUMENT:
 				return $ret;

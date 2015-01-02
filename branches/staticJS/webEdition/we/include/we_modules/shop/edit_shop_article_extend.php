@@ -204,9 +204,7 @@ if(isset($daten)){
 		case "object": //start output object
 			$orderBy = $DB_WE->escape(we_base_request::_(we_base_request::STRING, 'orderBy', 'obTitle'));
 			$entries = 0;
-			$count_expression = "";
-			$from_expression = "";
-			$where_expression = "";
+			$count_expression = $from_expression = $where_expression = "";
 			if(!empty($fe)){
 				$fe_count = 0;
 

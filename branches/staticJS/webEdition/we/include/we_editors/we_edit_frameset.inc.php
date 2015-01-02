@@ -156,7 +156,7 @@ if($we_doc->ID){
 	}
 	$_access = $we_doc->userHasAccess();
 	if(($_access !== we_root::USER_HASACCESS && $_access !== we_root::FILE_LOCKED)){ //   user has no access to object/document - bugfix #2481
-		if($we_ContentType != 'object'){
+		if($we_ContentType != we_base_ContentTypes::OBJECT){
 			$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
 		} else {
 			include(WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
