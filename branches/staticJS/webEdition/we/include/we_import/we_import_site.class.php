@@ -1956,7 +1956,7 @@ function doUnload() {
 	}
 
 	private function _getFrameset(){
-		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
+		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
 						, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 								, we_html_element::htmlIFrame('siteimportcontent', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=siteImport&cmd=content", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto') .
 								we_html_element::htmlIFrame('siteimportbuttons', "we_cmd.php?we_cmd[0]=siteImport&cmd=buttons", 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden') .

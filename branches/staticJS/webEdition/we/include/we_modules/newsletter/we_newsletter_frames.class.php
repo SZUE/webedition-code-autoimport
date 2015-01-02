@@ -184,7 +184,7 @@ top.content.hloaded = 1;
 
 		$tabHead = $we_tabs->getHeader() . $js;
 
-		$body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . oldHtmlspecialchars($textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
+		$body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif"), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . oldHtmlspecialchars($textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
 						$we_tabs->getHTML() .
 						'</div>'
 		);
@@ -330,7 +330,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 	}
 }');
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0, "onload" => "setTimeout('populateGroups()',100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden(array("name" => "hm", "value" => 0)) .
+		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "onload" => "setTimeout('populateGroups()',100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden(array("name" => "hm", "value" => 0)) .
 								$table2->getHtml() .
 								$post_js
 						)
@@ -482,7 +482,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 				we_html_element::htmlHidden(array("name" => "ncmd", "value" => "")) .
 				we_html_element::htmlHidden(array("name" => "nopt", "value" => ""));
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+		return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "white", "style" => 'margin:10px',), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 										we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_newsletter_treeLoader::getItems($pid)))
 								)
 		));
@@ -2402,7 +2402,7 @@ function initControl(){
 
 self.focus();');
 
-		$body = we_html_element::htmlBody(array("marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10, "onload" => "initControl()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "nid", "value" => $nid)) .
+		$body = we_html_element::htmlBody(array("style" => 'margin:10px', "onload" => "initControl()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "nid", "value" => $nid)) .
 								we_html_element::htmlHidden(array("name" => "pnt", "value" => "send_cmd")) .
 								we_html_element::htmlHidden(array("name" => "test", "value" => $test)) .
 								we_html_element::htmlHidden(array("name" => "blockcache", "value" => $blockcache)) .
@@ -2745,7 +2745,7 @@ function reload(){
 
 self.focus();');
 
-		$body = we_html_element::htmlBody(array("marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10, "onload" => "startTimeout()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "send_cmd", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "nid", "value" => $nid)) .
+		$body = we_html_element::htmlBody(array("style" => 'margin:10px', "onload" => "startTimeout()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "send_cmd", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "nid", "value" => $nid)) .
 								we_html_element::htmlHidden(array("name" => "pnt", "value" => "send_cmd")) .
 								we_html_element::htmlHidden(array("name" => "retry", "value" => 1)) .
 								we_html_element::htmlHidden(array("name" => "test", "value" => 0)) .

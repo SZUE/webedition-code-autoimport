@@ -164,6 +164,6 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 	we_html_element::htmlHead(
 		we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET'])
 	) .
-	we_html_element::htmlBody(array('bgcolor' => 'white', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0), $out
+	we_html_element::htmlBody(array('style' => 'background-color:white'), $out
 	)
 );

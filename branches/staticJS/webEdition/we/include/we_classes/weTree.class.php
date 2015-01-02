@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weTree{
-
 	const DefaultWidth = 300;
 	const MinWidth = 200;
 	const MaxWidth = 1000;
@@ -73,13 +72,13 @@ class weTree{
 		}
 
 		$this->setStyles(array(
-			'.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . ';}',
+			'.item {color: black;}',
 			'.item a { text-decoration:none;}',
-			'.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . ';}',
+			'.group {color: black; font-weight: bold;}',
 			'.group a { text-decoration:none;}',
-			'.selected_item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . '; background-color: #6070B6; cursor: pointer;}',
+			'.selected_item {color: black;background-color: #6070B6; cursor: pointer;}',
 			'.selected_item a { text-decoration:none;}',
-			'.selected_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . '; background-color: #6070B6; cursor: pointer;}',
+			'.selected_group {color: black; font-weight: bold;background-color: #6070B6; cursor: pointer;}',
 			'.selected_group a { text-decoration:none;}',
 		));
 
@@ -630,6 +629,7 @@ function setUnCheckNode(imgName){
 	if(document.images[imgName]){document.images[imgName].src="' . TREE_IMAGE_DIR . 'check1.gif";}
 }');
 		return
+			STYLESHEET .
 			we_html_element::cssElement(implode("\n", $this->styles)) . $js .
 			we_html_element::htmlDiv(array(
 				'link' => '#000000',

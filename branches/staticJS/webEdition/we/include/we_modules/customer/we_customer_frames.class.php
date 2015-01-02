@@ -172,7 +172,7 @@ top.content.hloaded = 1;');
 		$text = $this->View->customer->Username;
 
 		//TODO: we have the following body in several modules!
-		$body = we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'bgcolor' => 'white', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif', 'marginwidth' => 0, 'marginheight' => 0, 'leftmargin' => 0, 'topmargin' => 0), we_html_element::htmlDiv(array('id' => 'main'), we_html_tools::getPixel(100, 3) .
+		$body = we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'bgcolor' => 'white', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif',), we_html_element::htmlDiv(array('id' => 'main'), we_html_tools::getPixel(100, 3) .
 								we_html_element::htmlDiv(array('style' => 'margin:0px; padding-left:10px;', 'id' => 'headrow'), we_html_element::htmlNobr(
 												we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('modules_customer', '[customer]')) . ':&nbsp;') .
 												we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
@@ -380,7 +380,7 @@ top.content.hloaded = 1;');
 
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+						we_html_element::htmlBody(array("bgcolor" => "white", "style" => 'margin:10px'), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 										we_html_element::jsElement(
 												(we_base_request::_(we_base_request::STRING, 'error') ?
 														we_message_reporting::getShowMessageCall(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR) : '') .

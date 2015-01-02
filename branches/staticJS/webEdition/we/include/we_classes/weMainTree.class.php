@@ -50,29 +50,29 @@ class weMainTree extends weTree{
 		));
 
 		$this->setStyles(array(
-			'.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}',
+			'.item {color: black;cursor: pointer;}',
 			'.item a { text-decoration:none;}',
-			'.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}',
+			'.group {color: black; font-weight: bold;cursor: pointer;}',
 			'.group a { text-decoration:none;}',
-			'.checked_item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.checked_item {color: black; background-color: #D4DBFA; cursor: pointer;}',
 			'.checked_item a { text-decoration:none;}',
-			'.checked_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.checked_group {color: black; font-weight: bold;background-color: #D4DBFA; cursor: pointer;}',
 			'.checked_group a { text-decoration:none;}',
-			'.checked_notpublished {color: red; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.checked_notpublished {color: red;background-color: #D4DBFA; cursor: pointer;}',
 			'.checked_notpublished a { text-decoration:none;}',
-			'.checked_changed {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.checked_changed {color: #3366CC;background-color: #D4DBFA; cursor: pointer;}',
 			'.checked_changed a { text-decoration:none;}',
-			'#tree .disabled {color: grey; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}',
+			'#tree .disabled {color: grey;cursor: pointer;}',
 			'#tree .disabled a { text-decoration:none;}',
-			'.selected_item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.selected_item {color: black;background-color: #D4DBFA; cursor: pointer;}',
 			'.selected_item a { text-decoration:none;}',
-			'.selected_notpublished_item {color: red; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.selected_notpublished_item {color: red;background-color: #D4DBFA; cursor: pointer;}',
 			'.selected_notpublished_item a { text-decoration:none;}',
-			'.selected_changed_item {color: #3366CC; font-size: ' . (((we_base_browserDetect::isUNIX()) ? 11 : 9)) . 'px; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.selected_changed_item {color: #3366CC;background-color: #D4DBFA; cursor: pointer;}',
 			'.selected_changed_item a { text-decoration:none;}',
-			'.selected_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.selected_group {color: black; font-weight: bold;background-color: #D4DBFA; cursor: pointer;}',
 			'.selected_group a { text-decoration:none;}',
-			'.selected_open_group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; background-color: #D4DBFA; cursor: pointer;}',
+			'.selected_open_group {color: black; font-weight: bold;background-color: #D4DBFA; cursor: pointer;}',
 			'.selected_open_group a { text-decoration:none;}',
 			)
 		);
@@ -264,8 +264,6 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab){
 				attribs["table"]=tab;
 				attribs["tooltip"]=id;
 				attribs["contenttype"]=ct;
-
-
 				attribs["disabled"]=0;
 				if(attribs["typ"]=="item") attribs["published"]=0;
 
@@ -294,7 +292,6 @@ treeData.table="' . FILE_TABLE . '";' .
 
 	function getJSLoadTree($treeItems){
 		$js = 'var attribs=new Array();';
-
 
 		if(is_array($treeItems)){
 			foreach($treeItems as $item){

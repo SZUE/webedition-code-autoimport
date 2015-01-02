@@ -221,11 +221,9 @@ abstract class we_html_element{
 	 */
 	public static function htmlBody(array $attribs = array(), $content = ''){
 		$body = new we_html_baseElement('body', true, $attribs, $content);
-		if(!$body->hasStyle('margin')){
-			$body->setStyle('margin', '0px 0px 0px 0px');
-		}
 		return $body->getHTML();
 	}
+
 
 	/**
 	 * Function generates html code for html label element

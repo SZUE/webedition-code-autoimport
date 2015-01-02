@@ -111,7 +111,7 @@ class we_voting_frames extends we_modules_frame{
 		);
 
 		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
-		$body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", g_l('modules_voting', ($this->View->voting->IsFolder ? '[group]' : '[voting]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $this->View->voting->Path) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
+		$body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif",), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", g_l('modules_voting', ($this->View->voting->IsFolder ? '[group]' : '[voting]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $this->View->voting->Path) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
 						$we_tabs->getHTML() .
 						'</div>' . we_html_element::jsElement($extraJS)
 		);
@@ -162,7 +162,7 @@ class we_voting_frames extends we_modules_frame{
 					function we_save() {
 						top.content.we_cmd("save_voting");
 					}') .
-						we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), we_html_element::htmlForm(array(), $table2->getHtml())
+						we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", ), we_html_element::htmlForm(array(), $table2->getHtml())
 						)
 		);
 	}
@@ -844,7 +844,7 @@ function refreshTexts(){
 				we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10), we_html_element::htmlForm(
+						we_html_element::htmlBody(array("bgcolor" => "white", "style" => 'margin:10px',), we_html_element::htmlForm(
 										array("name" => "we_form"), $hiddens . we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_voting_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, "")))
 								)
 						)

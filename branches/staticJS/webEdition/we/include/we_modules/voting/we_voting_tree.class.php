@@ -29,11 +29,11 @@ class we_voting_tree extends weMainTree{
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 
 		$this->setStyles(array(
-			'.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
+			'.item {color: black;}',
 			'.item a { text-decoration:none;}',
-			'.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
+			'.group {color: black; font-weight: bold;}',
 			'.group a { text-decoration:none;}',
-			'.notpublished {color: green; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}',
+			'.notpublished {color: green;cursor: pointer;}',
 			'.notpublished a { text-decoration:none;}',
 		));
 	}

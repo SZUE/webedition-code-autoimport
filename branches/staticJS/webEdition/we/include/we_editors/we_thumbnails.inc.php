@@ -440,7 +440,7 @@ function saveOnKeyBoard() {
 	window.frames[1].we_save();
 	return true;
 }') . STYLESHEET . '</head>' .
-	we_html_element::htmlBody(array('style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;')
+	we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;')
 		, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 			, we_html_element::htmlExIFrame('we_thumbnails', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: hidden;', 'weDialogBody') .
 			we_html_element::htmlExIFrame('we_thumbnails_footer', getFooter(), 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')

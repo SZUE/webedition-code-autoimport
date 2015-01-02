@@ -92,7 +92,7 @@ echo STYLESHEET .
 
 			self.focus();') .
  '</head>' .
- we_html_element::htmlBody(array('style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;')
+ we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;')
 		, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 				, we_html_element::htmlExIFrame('passwdcontent', getContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;', 'weDialogBody') .
 				getLoad()

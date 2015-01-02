@@ -88,6 +88,7 @@ border: 1px grey solid;
 
 body {
 letter-spacing: normal ! important;
+margin: 0px;
 }
 
 body.aqua {

@@ -103,7 +103,7 @@ class we_navigation_frames extends we_modules_frame{
 			we_html_element::htmlHidden(array('name' => 'cmd', 'value' => 'no_cmd'));
 
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => 'white', 'marginwidth' => 10, 'marginheight' => 10, 'leftmargin' => 10, 'topmargin' => 10), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
+		return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => 'white', 'style' => 'margin:10px'), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
 						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree($_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))
 					)
 		));

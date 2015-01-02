@@ -91,7 +91,7 @@ class we_tool_frames extends we_modules_frame{
 				we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 				we_main_headermenu::css();
 
-		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
+		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "start();")
 						, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 								, we_html_element::htmlExIFrame('header', parent::getHTMLHeader($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php', $this->toolName), 'position:absolute;top:0px;height:32px;left:0px;right:0px;') .
 								we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize' . (($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '') . ($modelid ? '&modelid=' . $modelid : '') . (($sid = we_base_request::_(we_base_request::INT, 'sid')) ? '&sid=' . $sid : ''), 'position:absolute;top:32px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
@@ -174,7 +174,7 @@ class we_tool_frames extends we_modules_frame{
 		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $menu);
 		$table->setCol(0, 1, array("align" => "right", "valign" => "top"), we_main_headermenu::createMessageConsole('toolFrame'));
 
-		$body = we_html_element::htmlBody(array('style' => 'background-color:#efefef;background-image: url(' . IMAGE_DIR . 'menu/background.gif); background-repeat:repeat;margin:0px;'), $table->getHtml());
+		$body = we_html_element::htmlBody(array('style' => 'background-color:#efefef;background-image: url(' . IMAGE_DIR . 'menu/background.gif); background-repeat:repeat;'), $table->getHtml());
 
 		return $this->getHTMLDocument($body);
 	}
@@ -233,7 +233,7 @@ function setTab(tab) {
 		);
 
 		$extraJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
-		$body = we_html_element::htmlBody(array("bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0, "onload" => "setFrameSize()", "onresize" => "setFrameSize()"), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' . we_html_tools::getPixel(100, 3) .
+		$body = we_html_element::htmlBody(array("bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "onload" => "setFrameSize()", "onresize" => "setFrameSize()"), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' . we_html_tools::getPixel(100, 3) .
 						$we_tabs->getHTML() .
 						'</div>' . we_html_element::jsElement($extraJS)
 		);
@@ -286,7 +286,7 @@ function setTab(tab) {
 function we_save() {
 	' . $this->topFrame . '.we_cmd("tool_' . $this->toolName . '_save");
 }') .
-						we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), we_html_element::htmlForm(array(), $_but_table)
+						we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif"), we_html_element::htmlForm(array(), $_but_table)
 						)
 		);
 	}
@@ -373,7 +373,7 @@ function we_save() {
 		$hiddens = we_html_element::htmlHidden(array('name' => 'pnt', 'value' => 'cmd')) .
 				we_html_element::htmlHidden(array('name' => 'cmd', 'value' => 'no_cmd'));
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => 'white', 'marginwidth' => 10, 'marginheight' => 10, 'leftmargin' => 10, 'topmargin' => 10), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
+		return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => 'white', 'style' => 'margin:10px',), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
 										we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree($_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))
 								)
 		));

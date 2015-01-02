@@ -67,7 +67,7 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		STYLESHEET .
 		$js
 	) .
-	we_html_element::htmlBody(array("bgcolor" => "#ffffff", "leftmargin" => 20, "topmargin" => 20, "marginheight" => 20, "marginwidth" => 20, "onload" => "initPlugin();checkPlugin()"), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlCenter(
+	we_html_element::htmlBody(array("style" => "background-color:#ffffff;margin:20px;", "onload" => "initPlugin();checkPlugin()"), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlCenter(
 				we_html_element::htmlImg(array("src" => IMAGE_DIR . "spinner.gif")) .
 				we_html_element::htmlBr() .
 				we_html_element::htmlBr() .
