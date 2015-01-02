@@ -769,7 +769,7 @@ function we_cmd(){
 					if($user_object->deleteMe()){
 						echo we_html_element::jsElement('
 		top.content.deleteEntry(' . $user_object->ID . ');
-		top.content.editor.edheader.location="' . WEBEDITION_DIR . 'html/grayWithTopLine.html";
+		top.content.editor.edheader.location="' . WEBEDITION_DIR . 'html/gray.html";
 		top.content.editor.edbody.location="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users";
 		top.content.editor.edfooter.location="' . WEBEDITION_DIR . 'html/gray.html";');
 						unset($_SESSION["user_session_data"]);

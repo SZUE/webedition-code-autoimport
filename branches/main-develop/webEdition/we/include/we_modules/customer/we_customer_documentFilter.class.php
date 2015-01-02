@@ -387,7 +387,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		// if customer is not logged in=> return NO_LOGIN
 		// else return correct filter
 		// execute the query (get all existing filters)
-		$query = 'SELECT f.* ' . $_queryForIds . ($ids ? ' AND modelId IN (' . array_map('intval', explode(',', $ids)) . ')' : '');
+		$query = 'SELECT f.* ' . $_queryForIds . ($ids ? ' AND modelId IN (' . implode(',', (array_map('intval', explode(',', $ids)))) . ')' : '');
 		$key = md5($query);
 		if(isset($_filesWithRestrictionsForCustomer[$key])){
 			return $_filesWithRestrictionsForCustomer[$key];

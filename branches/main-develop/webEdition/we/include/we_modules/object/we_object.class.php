@@ -1163,7 +1163,7 @@ class we_object extends we_document{
 					$selectShopPath = self::htmlSelect('we_' . $this->Name . '_input[' . $name . 'shopcatShowPath]', $values, 1, $this->getElement($name . 'shopcatShowPath', 'dat'));
 					$textRootdir = self::htmlTextInput('we_' . $this->Name . '_input[' . $name . 'shopcatRootdir]', 24, $value = $this->getElement($name . 'shopcatRootdir', 'dat'));
 
-					$values = array_merge(array('0' => ' '), we_shop_category::getShopCatFieldsFromDir('Path'));
+					$values = array('0' => ' ') + we_shop_category::getShopCatFieldsFromDir('Path', true); //Fix #9355 don't use array_merge() because numeric keys will be renumbered!
 					$selectCategories = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . 'default]', $values, 1, $this->getElement($name . 'default', 'dat'), false, array(), 'value', 388);
 					$selectLimitChoice = we_html_forms::checkboxWithHidden((abs($this->getElement($name . 'shopcatLimitChoice', 'dat')) == '1' ? true : false), 'we_' . $this->Name . '_input[' . $name . 'shopcatLimitChoice]', 'use default only', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 

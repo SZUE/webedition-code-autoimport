@@ -35,6 +35,8 @@ class we_shop_category extends we_category{
 	private static $shopVatsByCategoryCountry = array();
 	private static $shopCatMapping = array();
 	private static $mustCheckIsInactive = -1;
+	private static $destPrinciples = array();
+	private static $activeShopCats = array();
 
 	const IS_CAT_FALLBACK_TO_STANDARD = 1;
 	const IS_CAT_FALLBACK_TO_ACTIVE = 2;
@@ -138,11 +140,15 @@ class we_shop_category extends we_category{
 	 * @return csv or array of int
 	 */
 	public static function getDestPrincipleFromDB($asArray = false){
-		//FIXME: make static var for this too
+		if(!empty(self::$destPrinciples)){
+			return $asArray ? self::$destPrinciples : implode(',', self::$destPrinciples);
+		}
+
 		$db = new DB_WE();
 		$ids = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_destPrinciple"', '', $db, -1);
+		self::$destPrinciples = explode(',', $ids);
 
-		return $asArray ? explode(',', $ids) : $ids;
+		return $asArray ? self::$destPrinciples : $ids;
 	}
 
 	/**
@@ -152,11 +158,15 @@ class we_shop_category extends we_category{
 	 * @return csv or array of int
 	 */
 	public static function getIsInactiveFromDB($asArray = false){
-		//FIXME: make static var for this too
+		if(!empty(self::$activeShopCats)){
+			return $asArray ? self::$activeShopCats : implode(',', self::$activeShopCats);
+		}
+
 		$db = new DB_WE();
 		$ids = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_isInactive"', '', $db, -1);
-
-		return $asArray ? explode(',', $ids) : $ids;
+		self::$activeShopCats = explode(',', $ids);
+		
+		return $asArray ? self::$activeShopCats : $ids;
 	}
 
 	/**
@@ -273,7 +283,7 @@ class we_shop_category extends we_category{
 	 * @return array of int
 	 */
 	public static function getAllShopCatIDs($incCatsDir = true, $dir = 0){
-		$ids = (self::$shopCatIDs = self::$shopCatIDs ? : self::getShopCatFieldsFromDir('ID', false, $dir, false, false));
+		$ids = (self::$shopCatIDs = self::$shopCatIDs ? : self::getShopCatFieldsFromDir('ID', false, false, $dir, false, false));
 		if($incCatsDir){
 			array_unshift($ids, self::getShopCatDir());
 		}
@@ -289,8 +299,8 @@ class we_shop_category extends we_category{
 	 * @return void
 	 */
 	private static function writeShopCatMapping($inactives){
-		$paths = self::getShopCatFieldsFromDir('Path', false, 0, false, true, true, '', 'Path');
-		$parentIDs = self::getShopCatFieldsFromDir('ParentID');
+		$paths = self::getShopCatFieldsFromDir('Path', false, false, 0, false, true, true, '', 'Path');
+		$parentIDs = self::getShopCatFieldsFromDir('ParentID', false, false, 0, true, true, false, '', 'ID');
 		asort($paths);
 
 		self::$shopCatMapping[self::getShopCatDir()] = self::getShopCatDir();
@@ -425,7 +435,9 @@ class we_shop_category extends we_category{
 	 * @param object $db
 	 * @return array of string
 	 */
-	static function getShopCatFieldsFromDir($field = '', $allFields = false, $dir = 0, $includeDir = true, $assoc = true, $showpath = false, $rootdir = '', $order = ''){
+	static function getShopCatFieldsFromDir($field = '', $activeOnly = false, $allFields = false, $dir = 0, $includeDir = true, $assoc = true, $showpath = false, $rootdir = '', $order = ''){
+		$order = $order ? : ($field ? : 'ID');
+
 		if(!($path = (id_to_path(($dir ? : self::getShopCatDir()), CATEGORY_TABLE)))){
 			return array();
 		}
@@ -442,7 +454,18 @@ class we_shop_category extends we_category{
 		}
 		$tmpField = $field === 'IsInactive' ? 'ID' : $field;
 
-		$ret = parent::we_getCategories('', ',', $showpath, null, $rootdir, $tmpField, $path, true, $assoc, false, $allFields, $includeDir, $order);
+		$ret = parent::we_getCategories('', ',', $showpath, null, $rootdir, $tmpField, $path, true, ($activeOnly ? : $assoc), false, $allFields, $includeDir, $order);
+		if($activeOnly){
+			$isInactiveIds = isset($isInactiveIds) ? $isInactiveIds : self::getIsInactiveFromDB(true);
+			$numCats = count($ret) - ($includeDir ? 1 : 0);
+
+			if(!empty($isInactiveIds) && count($isInactiveIds) !== $numCats){
+				foreach($isInactiveIds as $k){
+					unset($ret[$k]);
+				}
+			}
+		}
+
 		if($field === 'DestPrinciple' || $field === 'IsInactive' || $allFields){
 			if(!$ret || !is_array($ret)){
 				return false;
@@ -460,7 +483,7 @@ class we_shop_category extends we_category{
 			}
 		}
 
-		return $ret;
+		return !$assoc ? array_merge($ret) : $ret;
 	}
 
 	/**
@@ -510,7 +533,7 @@ class we_shop_category extends we_category{
 	 * @param bool $getIsDefaultFromPrefs
 	 * @return we_shop_vat
 	 */
-	public function getShopVatByCountry($country, $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false){
+	private function getShopVatByCountry($country, $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false){
 		if(!$country){
 			return false;
 		}
@@ -561,11 +584,9 @@ class we_shop_category extends we_category{
 	 * @return we_shop_vat
 	 */
 	public static function getShopVatByIdAndCountry($id = 0, $wedocCategory = '', $country = '', $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false, $useFallback = true){
-		if(!$country){
-			return false;
-		}
-
+		$country = $country && in_array(intval($id) , self::getDestPrincipleFromDB(true)) ? $country : self::getDefaultCountry();// only get vat of current (customer) country, when shop category is DestPrinciple!
 		$validID = self::checkGetValidID($id, $wedocCategory, $useFallback);
+
 		if(!$getIsFallbackToStandard && !$getIsFallbackToPrefs && isset(self::$shopVatsByCategoryCountry[$validID][$country]) && ($vat = self::$shopVatsByCategoryCountry[$validID][$country])){
 			return $getRate ? $vat->vat : $vat;
 		}
