@@ -23,11 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifTemplate($attribs){
-	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
+	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INTLISTA);
 	$TID = (isset($GLOBALS['we_doc']->TemplateID) ? $GLOBALS['we_doc']->TemplateID : ($GLOBALS['we_doc'] instanceof we_template && isset($GLOBALS['we_doc']->ID) ? $GLOBALS['we_doc']->ID : 0));
 
 	if($TID && $id){
-		return in_array($TID, makeArrayFromCSV($id));
+		return in_array($TID, $id);
 	}
 	$parentid = weTag_getAttribute('workspaceID', $attribs, weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT), we_base_request::INT);
 	if($parentid){

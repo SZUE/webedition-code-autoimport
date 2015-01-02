@@ -27,7 +27,7 @@ if(defined('WE_SHOP_VAT_TABLE')){
 			new weTagDataOption('is_country_fallback_to_prefs')
 		), false, '');
 		$options = array();
-		$shopcats = we_shop_category::getShopCatFieldsFromDir('Path', false, 0, true, true, true, '');
+		$shopcats = we_shop_category::getShopCatFieldsFromDir('Path', true);
 		foreach($shopcats as $k => $v){
 			$options[] = new weTagDataOption($v, $k);
 		}

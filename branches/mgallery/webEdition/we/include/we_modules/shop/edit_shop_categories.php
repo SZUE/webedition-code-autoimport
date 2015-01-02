@@ -91,7 +91,7 @@ while($DB_WE->next_record()){
 $selCategoryDirs = we_html_tools::htmlSelect('weShopCatDir', $allCategoryDirs, 1, $shopCategoriesDir, false, array('id' => 'weShopCatDir', 'onchange' => 'we_submitForm(\'' . $_SERVER['SCRIPT_NAME'] . '\');'));
 
 if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
-	$shopCategories = we_shop_category::getShopCatFieldsFromDir('', true, $shopCategoriesDir, true, true, true, '', 'Path');
+	$shopCategories = we_shop_category::getShopCatFieldsFromDir('', false, true, $shopCategoriesDir, true, true, true, '', 'Path');
 
 	//Categories/VATs-Matrix
 	$DB_WE->query('SELECT id, text, vat, territory, textProvince, categories FROM ' . WE_SHOP_VAT_TABLE);
@@ -156,7 +156,7 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 						$selAttribs = array_merge($selAttribs, array('disabled' => 'disabled'));
 					}
 					$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, $selAttribs, 'value', 240);
-					$matrix->setCol($i, 3, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 174, "style" => ($isDefCountry ? "font-weight: normal;" : "")), $v['textTerritory']);
+					$matrix->setCol($i, 3, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 174, "style" => ($isDefCountry ? "font-weight: normal;" : "")), ($v['textTerritory'] ? : 'N.N.'));
 					$matrix->setCol($i++, 4, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 240), $sel);
 				}
 			}

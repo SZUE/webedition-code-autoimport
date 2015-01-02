@@ -220,7 +220,7 @@ function we_tag_paypal($attribs){
 					//bug #5701
 					if(!$useVat && !$netprices){
 						if(we_shop_category::isCategoryMode()){
-							$wedocCategory = $item['serial']['wedoc_Category'];
+							$wedocCategory = $item['serial']['we_wedoc_Category'];
 							$billingCountry = $countrycode ? : we_shop_category::getDefaultCountry();
 							$shopVat = we_shop_category::getShopVatByIdAndCountry((isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0), $wedocCategory, $billingCountry, true);
 						} else {

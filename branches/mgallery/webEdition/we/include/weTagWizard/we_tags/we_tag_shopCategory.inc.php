@@ -6,7 +6,7 @@ $this->NeedsEndTag = false;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $options = array();
-$opts = we_shop_category::getShopCatFieldsFromDir('Path');
+$opts = we_shop_category::getShopCatFieldsFromDir('Path', true);
 foreach($opts as $k => $v){
 	$options[] = new weTagDataOption($v, $k);
 }
