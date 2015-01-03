@@ -52,16 +52,7 @@ $parts[] = array(
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo we_html_element::cssElement('
-.paddingLeft {
-	padding-left: 25px;
-}
-.paddingVertical {
-	padding-top: 10px;
-	padding-bottom: 10px;
-}
-
-') .
+echo 
  we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
  (isset($yuiSuggest) ? // webuser filter is not displayed at images, so $yuiSuggest is not defined!

@@ -51,33 +51,8 @@ echo STYLESHEET;
 
 //	---> Loading some Javascript
 
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
-?>
-<script type="text/javascript"><!--
-	function we_checkObjFieldname(i) {
-		if (i.value.search(/^([a-zA-Z0-9_+-])*$/)) {
-<?php echo we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameNotValid]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			i.focus();
-			i.select();
-			i.value = i.getAttribute("oldValue");
-		} else if (i.value === 'Title' || i.value === 'Description') {
-<?php echo we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameNotTitleDesc]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			i.focus();
-			i.select();
-			i.value = i.getAttribute("oldValue");
-		} else if (i.value.length === 0) {
-<?php echo we_message_reporting::getShowMessageCall(g_l('modules_object', '[fieldNameEmpty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			//		i.focus(); # 1052
-			//		i.select();
-			i.value = i.getAttribute("oldValue");
-		} else {
-			i.setAttribute("oldValue", i.value);
-		}
-	}
-//-->
-</script>
-<?php
-echo $jsGUI->getJS(WEBEDITION_DIR . 'js');
+echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+ $jsGUI->getJS(WEBEDITION_DIR . 'js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 

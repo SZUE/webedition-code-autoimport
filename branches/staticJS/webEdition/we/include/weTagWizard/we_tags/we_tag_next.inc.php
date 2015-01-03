@@ -8,7 +8,7 @@ $this->NeedsEndTag = true;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 if(defined('FILE_TABLE')){
-	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, 'text/webedition', false, '');
+	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
 }
 $this->Attributes[] = new weTagData_textAttribute('class', false, '');
 $this->Attributes[] = new weTagData_textAttribute('style', false, '');

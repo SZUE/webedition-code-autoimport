@@ -47,7 +47,7 @@ $this->Attributes[] = new weTagData_textAttribute('style', false, '');
 $this->Attributes[] = new weTagData_textAttribute('text', false, '');
 $this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
 if(defined('FILE_TABLE')){
-	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, 'text/webedition', false, '');
+	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
 }
 if(defined('FILE_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('imageid', FILE_TABLE, 'image/*', false, '');

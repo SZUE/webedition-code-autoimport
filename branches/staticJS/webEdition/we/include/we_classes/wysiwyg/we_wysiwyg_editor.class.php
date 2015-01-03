@@ -266,43 +266,7 @@ class we_wysiwyg_editor{
 }') .
 			we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') .
 			($loadDialogRegistry ? we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') : '') .
-			we_html_element::jsScript(JS_DIR . 'weTinyMceFunctions.js') .
-			we_html_element::jsElement('
-function tinyMCECallRegisterDialog(win,action){
-	if(typeof(top.isRegisterDialogHere) != "undefined"){
-		try{
-			top.weRegisterTinyMcePopup(win,action);
-		} catch(err) {}
-	} else {
-		if(typeof(top.opener.isRegisterDialogHere) != "undefined"){
-			try{
-				top.opener.weRegisterTinyMcePopup(win,action);
-			} catch(err){}
-		} else {
-			try{
-				top.opener.tinyMCECallRegisterDialog(win,action);
-			} catch(err){}
-		}
-	}
-}') .
-			we_html_element::jsElement('
-function weWysiwygSetHiddenTextSync(){
-	weWysiwygSetHiddenText();
-	setTimeout(weWysiwygSetHiddenTextSync,500);
-}
-
-function weWysiwygSetHiddenText(arg) {
-	try {
-		if (weWysiwygIsIntialized) {
-			for (var i = 0; i < we_wysiwygs.length; i++) {
-				we_wysiwygs[i].setHiddenText(arg);
-			}
-		}else{
-			}
-	} catch(e) {
-		// Nothing
-	}
-}');
+			we_html_element::jsScript(JS_DIR . 'weTinyMceFunctions.js');
 	}
 
 	function getAllCmds(){

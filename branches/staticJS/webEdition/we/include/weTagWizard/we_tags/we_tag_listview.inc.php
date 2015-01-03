@@ -77,7 +77,7 @@ $offset = new weTagData_textAttribute('offset', false, '');
 $casesensitive = new weTagData_selectAttribute('casesensitive', weTagData_selectAttribute::getTrueFalse(), false, '');
 $classid = (defined('OBJECT_TABLE') ? new weTagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '') : null);
 $condition = new weTagData_textAttribute('condition', false, '');
-$triggerid = new weTagData_selectorAttribute('triggerid', FILE_TABLE, 'text/webedition', false, '');
+$triggerid = new weTagData_selectorAttribute('triggerid', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
 $seeMode = new weTagData_selectAttribute('seeMode', weTagData_selectAttribute::getTrueFalse(), false, '');
 $custBanner = (defined('CUSTOMER_TABLE') ? new weTagData_selectAttribute('customer', weTagData_selectAttribute::getTrueFalse(), false, 'customer') : null);
 $workspaceID_document = new weTagData_multiSelectorAttribute('workspaceID', FILE_TABLE, weTagData_selectorAttribute::FOLDER, 'ID', false, '');
@@ -86,7 +86,7 @@ $workspaceID_object = defined('OBJECT_FILES_TABLE') ? new weTagData_multiSelecto
 $categoryids = new weTagData_multiSelectorAttribute('categoryids', CATEGORY_TABLE, '', 'ID', false, '');
 $parentid = new weTagData_selectorAttribute('parentid', CATEGORY_TABLE, '', false, '');
 $parentidname = new weTagData_textAttribute('parentidname', false, '');
-$contenttypes = new weTagData_choiceAttribute('contenttypes', array(new weTagDataOption('text/webedition'),
+$contenttypes = new weTagData_choiceAttribute('contenttypes', array(new weTagDataOption(we_base_ContentTypes::WEDOCUMENT),
 	new weTagDataOption('image/*'),
 	new weTagDataOption('text/html'),
 	new weTagDataOption('text/plain'),
@@ -99,7 +99,7 @@ $contenttypes = new weTagData_choiceAttribute('contenttypes', array(new weTagDat
 	), false, true, '');
 $searchable = new weTagData_selectAttribute('searchable', weTagData_selectAttribute::getTrueFalse(), false, '');
 $defaultname = new weTagData_textAttribute('defaultname', false, '');
-$documentid = new weTagData_selectorAttribute('documentid', FILE_TABLE, 'text/webedition', false, '');
+$documentid = new weTagData_selectorAttribute('documentid', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
 $objectid = (defined('OBJECT_FILES_TABLE') ? new weTagData_selectorAttribute('objectid', OBJECT_FILES_TABLE, 'objectFile', false, '') : null);
 $calendar = new weTagData_selectAttribute('calendar', array(new weTagDataOption('year'),
 	new weTagDataOption('month'),
@@ -121,7 +121,7 @@ $cfilter = (defined('CUSTOMER_TABLE') ? new weTagData_selectAttribute('cfilter',
 		new weTagDataOption('auto'),
 		), false, 'customer') : null);
 $recursive = new weTagData_selectAttribute('recursive', weTagData_selectAttribute::getTrueFalse(), false, '');
-$docid = new weTagData_multiSelectorAttribute('docid', FILE_TABLE, 'text/webedition', 'ID', false, '');
+$docid = new weTagData_multiSelectorAttribute('docid', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, 'ID', false, '');
 $customer = (defined('CUSTOMER_TABLE') ? new weTagData_textAttribute('customer', false, 'customer') : null);
 $customers = (defined('CUSTOMER_TABLE') ? new weTagData_textAttribute('customers', false, 'customer') : null);
 $id = new weTagData_textAttribute('id', false, '');

@@ -59,27 +59,22 @@ function we_textarea(name, value, cols, rows, width, height, autobr, autobrName,
 		val = val.replace(/##\|lt\;\?##/gi, "<?");
 
 	}
-	out = '<input type="hidden" name="';
-
-	out += autobrName;
-	out += '" value="';
-	out += this.autobr ? 'on' : 'off';
-	out += '"><table border="0" cellpadding="0" cellspacing="0" background="/webEdition/images/backgrounds/aquaBackground.gif">';
+	out = '<input type="hidden" name="' +
+					autobrName +
+					'" value="' +
+					(this.autobr ? 'on' : 'off') +
+					'"><table border="0" cellpadding="0" cellspacing="0" background="/webEdition/images/backgrounds/aquaBackground.gif">';
 	if (showAutobr) {
-		out += '<tr><td><table border="0" cellpadding="0" cellspacing="0">';
-	}
-	if (showAutobr) {
-
-
-		out += '<td><input type="checkbox" name="check';
-		out += name;
-		out += '" id="check';
-		out += name;
-		out += '" onClick="if(self.' + this.name + 'Object){';
-		out += this.name;
-		out += 'Object.translate(this);this.form.elements[\'' + autobrName + '\'].value=(this.checked ? \'on\' : \'off\');}"';
-		out += this.autobr ? ' checked' : '';
-		out += '>&nbsp;</td><td style=" color:black;font-weight: bold; font-size: 10px; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;cursor: pointer;" onClick="if(self.' + this.name + 'Object){var cb=document.getElementById(\'check' + name + '\');cb.checked=cb.checked ? false : true;' + this.name + 'Object.translate(cb);cb.form.elements[\'' + autobrName + '\'].value=(cb.checked ? \'on\' : \'off\');}">autobr</td>';
+		out += '<tr><td><table border="0" cellpadding="0" cellspacing="0">' +
+						'<td><input type="checkbox" name="check' +
+						name +
+						'" id="check' +
+						name +
+						'" onClick="if(self.' + this.name + 'Object){' +
+						this.name +
+						'Object.translate(this);this.form.elements[\'' + autobrName + '\'].value=(this.checked ? \'on\' : \'off\');}"' +
+						(this.autobr ? ' checked' : '') +
+						'>&nbsp;</td><td style=" color:black;font-weight: bold; font-size: 10px; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;cursor: pointer;" onClick="if(self.' + this.name + 'Object){var cb=document.getElementById(\'check' + name + '\');cb.checked=cb.checked ? false : true;' + this.name + 'Object.translate(cb);cb.form.elements[\'' + autobrName + '\'].value=(cb.checked ? \'on\' : \'off\');}">autobr</td>';
 	}
 
 	if (showAutobr && (showRTF || showSpell)) {
@@ -87,47 +82,41 @@ function we_textarea(name, value, cols, rows, width, height, autobr, autobrName,
 	}
 
 	if (showSpell) {
-		out += '<td unselectable="on"><div unselectable="on">' + "\n";
-		out += '<img  style="border: 0px; margin: 1px;" unselectable="on" width="23" height="22" src="/webEdition/images/wysiwyg/spellcheck.gif"' + "\n";
-		out += 'onmouseover="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonOverUp(this);}"' + "\n";
-		out += 'onmouseout="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonNormal(this);}"' + "\n";
-		out += 'onmousedown="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonOverDown(this);}"' + "\n";
-		out += 'onclick="window.open(\'/webEdition/we/include/we_modules/spellchecker/weSpellchecker.php?editname=areatmp_' + encodeURI(name) + '\',\'spellchechecker\',\'height=450,width=500,scrollbars=0\');"></div></td>';
+		out += '<td unselectable="on"><div unselectable="on">' +
+						'<img  style="border: 0px; margin: 1px;" unselectable="on" width="23" height="22" src="/webEdition/images/wysiwyg/spellcheck.gif"' +
+						'onmouseover="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonOverUp(this);}"' +
+						'onmouseout="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonNormal(this);}"' +
+						'onmousedown="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonOverDown(this);}"' +
+						'onclick="window.open(\'/webEdition/we/include/we_modules/spellchecker/weSpellchecker.php?editname=areatmp_' + encodeURI(name) + '\',\'spellchechecker\',\'height=450,width=500,scrollbars=0\');"></div></td>';
 	}
 
 	if (showAutobr) {
 		out += '</table></td></tr>';
 	}
 
-	out += '<tr><td><textarea name="areatmp_';
-	out += name;
-	out += '"';
-	out += 'class="' + (classname ? classname + ' ' : '') + 'wetextarea wetextarea-' + origName + '"';
-	out += cols ? ' cols="' + cols + '"' : '';
-	out += wrap ? ' wrap="' + wrap + '"' : '';
-	out += rows ? ' rows="' + rows + '"' : '';
-	out += id ? ' id="' + id + '"' : '';
-	out += style ? ' style="' + style + '"' : '';
-	out += ' ' + changehandler + '="if (_EditorFrame && this.value != this.form.elements[\'';
-	out += name;
-	out += '\'].value){_EditorFrame.setEditorIsHot(true)};this.form.elements[\'';
-	out += name;
-	out += '\'].value=(';
-	out += this.name;
-	out += 'Object.autobr ? ';
-	out += this.name;
-	out += 'Object.nl2br(this.value,' + (this.xml ? 'true' : 'false') + ') : this.value);" onblur="if(self.' + this.name + 'Object){this.form.elements[\'';
-	out += name;
-	out += '\'].value=(';
-	out += this.name + 'Object.autobr ? ';
-	out += this.name;
-	out += 'Object.nl2br(this.value,' + (this.xml ? 'true' : 'false') + ') : this.value);}">';
-	if (val)
-		out += this.htmlspecialchars(this.autobr ? this.br2nl(val) : val);
-	out += '</textarea>';
-	out += '<input type="hidden" name="';
-	out += name;
-	out += '" value=""></td></tr></table>';
+	out += '<tr><td><textarea name="areatmp_' + name + '"' +
+					'class="' + (classname ? classname + ' ' : '') + 'wetextarea wetextarea-' + origName + '"' +
+					(cols ? ' cols="' + cols + '"' : '') +
+					(wrap ? ' wrap="' + wrap + '"' : '') +
+					(rows ? ' rows="' + rows + '"' : '') +
+					(id ? ' id="' + id + '"' : '') +
+					(style ? ' style="' + style + '"' : '') +
+					' ' + changehandler + '="if (_EditorFrame && this.value != this.form.elements[\'' +
+					name + '\'].value){_EditorFrame.setEditorIsHot(true)};this.form.elements[\'' +
+					name +
+					'\'].value=(' +
+					this.name +
+					'Object.autobr ? ' +
+					this.name +
+					'Object.nl2br(this.value,' + (this.xml ? 'true' : 'false') + ') : this.value);" onblur="if(self.' + this.name + 'Object){this.form.elements[\'' +
+					name +
+					'\'].value=(' +
+					this.name + 'Object.autobr ? ' +
+					this.name +
+					'Object.nl2br(this.value,' + (this.xml ? 'true' : 'false') + ') : this.value);}">' +
+					(val ? this.htmlspecialchars(this.autobr ? this.br2nl(val) : val) : '') +
+					'</textarea>' +
+					'<input type="hidden" name="' + name + '" value=""></td></tr></table>';
 	this.form = null;
 	document.writeln(out);
 	for (var i = 0; i < document.forms.length; i++) {

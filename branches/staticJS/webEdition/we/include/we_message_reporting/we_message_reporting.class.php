@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  *
  */
 abstract class we_message_reporting{
-
 // constants for messaging!
 // these are binray checked like permissions in unix, DON'T change indexes
 
@@ -48,19 +46,24 @@ abstract class we_message_reporting{
 	 * @return string
 	 */
 	public static function getShowMessageCall($message, $priority, $isJsMsg = false, $isOpener = false){
+		$message = $isJsMsg ? $message : '"' . self::prepareMsgForJS($message) . '"';
 		switch($priority){
 			case self::WE_MESSAGE_INFO:
 			case self::WE_MESSAGE_FRONTEND:
-				return ($isJsMsg ? // message is build from scripts, just print it!
-						'alert(' . $message . ');' :
-						'alert("' . str_replace(array('\n', '\\', '"', '##NL##', '`'), array('##NL##', '\\\\', '\\"', '\n', '\"'), $message) . '");');
-				break;
+				return 'alert(' . $message . ');';
 			default:
-				return ($isJsMsg ? // message is build from scripts, just print it!
-						($isOpener ? 'top.opener.' : '') . 'top.we_showMessage(' . $message . ', ' . $priority . ', window);' :
-						($isOpener ? 'top.opener.' : '') . 'top.we_showMessage("' . str_replace(array("\n", '\n', '\\', '"', '###NL###'), array('###NL###', '###NL###', '\\\\', '\\"', '\n'), $message) . '", ' . $priority . ', window);'
-					);
+				return ($isOpener ? 'top.opener.' : '') . 'top.we_showMessage(' . $message . ', ' . $priority . ', window);';
 		}
+	}
+
+	public static function prepareMsgForJS($message){
+		return strtr($message, array(
+			"\n" => '###NL###',
+			'\n' => '###NL###',
+			'\\' => '\\\\',
+			'"' => '\\"',
+			'###NL###' => '\n'
+		));
 	}
 
 	public static function jsString(){
@@ -69,6 +72,13 @@ var we_string_message_reporting_notice = "' . g_l('alert', '[notice]') . '";
 var we_string_message_reporting_warning = "' . g_l('alert', '[warning]') . '";
 var we_string_message_reporting_error = "' . g_l('alert', '[error]') . '";
 ');
+	}
+
+	public static function getJSLevelVar(){
+		return
+			'var WE_MESSAGE_NOTICE = ' . we_message_reporting::WE_MESSAGE_NOTICE . ';
+	var WE_MESSAGE_WARNING = ' . we_message_reporting::WE_MESSAGE_WARNING . ';
+	var WE_MESSAGE_ERROR = ' . we_message_reporting::WE_MESSAGE_ERROR . ';';
 	}
 
 }

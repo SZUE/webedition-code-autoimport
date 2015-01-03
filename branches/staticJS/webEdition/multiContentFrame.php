@@ -34,7 +34,8 @@ if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
 	$_cmd_string .= ",'SEEM_edit_include'";
 }
 
-echo we_html_tools::getHtmlTop();
+echo we_html_tools::getHtmlTop() .
+ we_html_element::cssLink(CSS_DIR . 'multiEditor/multiEditor.css');
 ?>
 <script type="text/javascript"><!--
 	function we_cmd() {
@@ -48,13 +49,20 @@ echo we_html_tools::getHtmlTop();
 	function startMultiEditor() {
 		we_cmd('start_multi_editor'<?php echo $_cmd_string; ?>);
 	}
+
+	var isChrome =<?php echo intval(we_base_browserDetect::isChrome()); ?>;
+	var curUserID =<?php echo intval($_SESSION["user"]["ID"]); ?>;
+	var g_l_eplugin_exit_doc = "<?php echo g_l('multiEditor', '[eplugin_exit_doc]'); ?>";
+	var g_l_no_editor_left = "<?php echo we_message_reporting::prepareMsgForJS(g_l('multiEditor', '[no_editor_left]')); ?>";
+	<?php echo we_message_reporting::getJSLevelVar();?>
+
 //-->
 </script>
 <?php
-include(WEBEDITION_PATH . 'multiEditor/EditorFrameController.inc.php');
+echo we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js');
 ?>
 </head>
-<body onresize="setFrameSize()">
+<body onresize="setFrameSize()" onload="startMultiEditor()">
 	<div style="position:absolute;top:0px;bottom:0px;right:0px;left:0px;overflow: hidden;background-color: white;">
 		<div style="position:absolute;top:0px;height:22px;width:100%;background-color: Silver; border-top: 1px solid #000000;" id="multiEditorDocumentTabsFrameDiv">
 			<?php include(WEBEDITION_PATH . 'multiEditor/multiTabs.inc.php'); ?>
@@ -69,8 +77,5 @@ include(WEBEDITION_PATH . 'multiEditor/EditorFrameController.inc.php');
 			?>
 		</div>
 	</div>
-	<?php
-	echo we_html_element::jsElement('startMultiEditor()');
-	?>
 </body>
 </html>
