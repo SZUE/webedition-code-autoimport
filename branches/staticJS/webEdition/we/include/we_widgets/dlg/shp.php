@@ -70,7 +70,7 @@ function save(){
 	if(isNoError()) {
 		var sCsv=getCsv();
 		_oCsv_.value=sCsv;
-		savePrefs();
+		//savePrefs();
 		opener.saveSettings();
 		if((!_bPrev&&sCsv!=_sInitCsv_)||(_bPrev&&sCsv!=_sLastPreviewCsv)){
 			refresh(false);

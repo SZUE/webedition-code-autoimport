@@ -86,8 +86,6 @@ function save(){
 		opener.rpc(sTitleEsc.concat(','+sBit),'','','',sTitleEsc,_sObjId,_sPadInc);
 	}
 	opener.setPrefs(_sObjId,sBit,sTitleEnc);
-	opener.saveSettings();
-	savePrefs();
 	" . we_message_reporting::getShowMessageCall(
 		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 	opener.top.weNavigationHistory.navigateReload();

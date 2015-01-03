@@ -75,7 +75,7 @@ div.le_widget:first-child{
 	margin-left:10px;
 
 }
-.divClone{
+#divClone{
 	position:relative;
 	display:none;
 }

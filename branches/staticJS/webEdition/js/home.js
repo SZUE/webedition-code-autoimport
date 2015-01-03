@@ -353,10 +353,22 @@ function toggle(wizId, wizType, prefix, postfix) {
 	var defH = eval('oCfg.' + wizType + '_props_["height"]');
 	var defRes = eval('oCfg.' + wizType + '_props_["res"]');
 	var defW = (!!defRes) ? oCfg.general_['w_expand'] : oCfg.general_['w_collapse'];
-	var asoc = {'width': {'_inline': defW, '_bx': defW + (2 * oCfg.general_['wh_edge']), '_tb': defW + (2 * oCfg.general_['wh_edge']),
-			'_h': defW - oCfg.general_['w_icon_bar'], '_lbl': defW - (2 * oCfg.general_['w_icon_bar'])},
-		'height': {'_bx': defH + (2 * oCfg.general_['wh_edge']), '_vline_l': defH, '_vline_r': defH}};
-	var props = {'prefix': prefix, 'postfix': postfix, 'type': wizType, 'res': defRes};
+	var asoc = {
+		'width': {
+			'_inline': defW,
+			'_bx': defW + (2 * oCfg.general_['wh_edge']),
+			'_tb': defW + (2 * oCfg.general_['wh_edge']),
+			'_h': defW - oCfg.general_['w_icon_bar'],
+			'_lbl': defW - (2 * oCfg.general_['w_icon_bar'])
+		},
+		'height': {
+			'_bx': defH + (2 * oCfg.general_['wh_edge']),
+			'_vline_r': defH
+		}
+	};
+	var props = {
+		'prefix': prefix, 'postfix': postfix, 'type': wizType, 'res': defRes
+	};
 	for (var att_name in asoc) {
 		for (var v in asoc[att_name]) {
 			eval('gel(wizId+v).style.' + att_name + '=asoc[att_name][v]+"px"');

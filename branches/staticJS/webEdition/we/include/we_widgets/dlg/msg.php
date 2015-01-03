@@ -33,14 +33,15 @@ function init(){
 }
 
 function save(){
-	savePrefs();
 	previewPrefs();
 	" . we_message_reporting::getShowMessageCall(
 		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 	self.close();
 }
 
-function preview(){ previewPrefs(); }
+function preview(){
+	previewPrefs();
+}
 
 function exit_close(){
 	previewPrefs();

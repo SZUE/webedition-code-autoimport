@@ -274,8 +274,8 @@ function save(){
 		opener._isHotTrf=true;
 	}
 	opener.saveSettings();
-	savePrefs();
-	displayRssFeed(sUri,true);
+	//savePrefs();
+	//displayRssFeed(sUri,true);
 	" . we_message_reporting::getShowMessageCall(
 		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 	opener.top.weNavigationHistory.navigateReload();

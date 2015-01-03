@@ -28,6 +28,7 @@
  * Use this class to add a widget to the Cockpit.
  */
 abstract class we_base_widget{
+	static $js = '';
 
 	/**
 	 * To add a widget give a unique id ($iId). Currently supported widget types ($sType) are Shortcuts (sct), RSS Reader (rss),
@@ -88,7 +89,11 @@ abstract class we_base_widget{
 		$oBox = new we_html_table(array("id" => $iId . "_bx", "style" => "width:" . ($w + (2 * $wh_edge)) . "px;height:" . ($h + (2 * $wh_edge)) . "px;", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 3);
 		$oBox->setCol(0, 0, array("colspan" => 3, "width" => $wh_edge, "height" => $h_tb), $oTb->getHtml());
 		$oBox->setCol(1, 0, array("id" => $iId . "_lbl_mgnl", "align" => "left", "width" => $wh_edge, "height" => $h_title, "class" => 'widgetTitle widgetTitle_' . $sCls));
-		$oBox->setCol(1, 1, array("id" => $iId . "_lbl", "class" => "label widgetTitle widgetTitle_" . $sCls, "style" => "width:" . $w . 'px;'), we_html_element::jsElement("setLabel('" . $iId . "','" . str_replace("'", "\'", $aLabel[0]) . "','" . str_replace("'", "\'", $aLabel[1]) . "');"));
+		$oBox->setCol(1, 1, array("id" => $iId . "_lbl", "class" => "label widgetTitle widgetTitle_" . $sCls, "style" => "width:" . $w . 'px;'));
+		if($iId != 'clone'){
+			self::$js.="setLabel('" . $iId . "','" . str_replace("'", "\'", $aLabel[0]) . "','" . str_replace("'", "\'", $aLabel[1]) . "');" .
+				"initWidget('" . $iId . "');";
+		}
 		$oBox->setCol(1, 2, array("id" => $iId . "_lbl_mgnr", "align" => "right", "width" => $wh_edge, "height" => $h_title, "class" => "widgetTitle widgetTitle_" . $sCls,), we_html_element::htmlNobr(we_html_tools::getPixel(10, 1)));
 		$oBox->setCol(2, 0, array("id" => $iId . "_vll", "align" => "left", "width" => $wh_edge, "height" => $h, "class" => "bgc_" . $sCls));
 		$oBox->setCol(2, 1, array("id" => $iId . "_wrapper", "style" => "text-align:left;vertical-align:top;", "width" => $w, "height" => $h, "class" => "bgc_" . $sCls), we_html_tools::getPixel(1, $gap) . we_html_element::htmlBr() . we_html_element::htmlDiv(array("id" => $iId . "_content"), ((isset($oContent)) ? $oContent->getHtml() : "")) .
@@ -105,6 +110,10 @@ abstract class we_base_widget{
 		$oBox->setCol(3, 2, array("width" => $wh_edge, "height" => $wh_edge), we_html_element::htmlImg(array("id" => $iId . "_img_cr", "src" => IMAGE_DIR . "pd/bx_corner_right_" . $sCls . ".gif", "width" => $wh_edge, "height" => $wh_edge)));
 
 		return $oBox;
+	}
+
+	public static function getJs(){
+		return we_html_element::jsElement(self::$js);
 	}
 
 }

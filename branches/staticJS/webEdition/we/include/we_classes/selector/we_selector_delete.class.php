@@ -89,7 +89,6 @@ function deleteEntry(){
 		top.fsfooter.disableDelBut();
 
 		if(docIsOpen) {
-			//top.opener.top.weEditorFrameController.openDocument("", "", "cockpit", "open_cockpit", "", "", "", "", "");
 			top.opener.top.we_cmd("close_all_documents");
 			top.opener.top.we_cmd("start_multi_editor");
 		}

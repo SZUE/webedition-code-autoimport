@@ -30,7 +30,7 @@ if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 	if(permissionhandler::hasPerm("NO_DOCTYPE")){
 		$_disableNew = false;
 	} else {
-		$q = "ORDER BY DocType";
+		$q = 'ORDER BY DocType';
 		$paths = array();
 		$ws = get_ws(FILE_TABLE);
 		if($ws){
@@ -45,7 +45,7 @@ if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 		if(is_array($paths) && count($paths) > 0){
 			$q = 'WHERE (' . implode(" OR ", $paths) . ") OR ParentPath='' ORDER BY DocType";
 		}
-		$DB_WE->query("SELECT ID,DocType FROM " . DOC_TYPES_TABLE . " $q");
+		$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
 		if($DB_WE->next_record()){
 			$_disableNew = false;
 			$_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','" . $DB_WE->f("ID") . "')";
@@ -111,10 +111,10 @@ $oSctPool = new we_html_select(
 	"onchange" => "addBtn(_fo['list11'],this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,true);this.options[0].selected=true;"
 	)
 );
-$oSctPool->insertOption(0, " ", "",true);
+$oSctPool->insertOption(0, " ", "", true);
 $iCurrOpt = 1;
 foreach($shortcuts as $key => $value){
-	$oSctPool->insertOption($iCurrOpt, $key, $value,true);
+	$oSctPool->insertOption($iCurrOpt, $key, $value, true);
 	$iCurrOpt++;
 }
 
@@ -137,8 +137,7 @@ $oSctList21 = new we_html_select(
 	"onDblClick" => "moveSelectedOptions(this.form['list21'],this.form['list11'],false);"
 	));
 
-$oBtnDelete = we_html_button::create_button(
-		"delete", "javascript:removeOption(document.forms[0]['list11']);removeOption(document.forms[0]['list21']);", false, -1, -1, "", "", false, false);
+$oBtnDelete = we_html_button::create_button("delete", "javascript:removeOption(document.forms[0]['list11']);removeOption(document.forms[0]['list21']);", false, -1, -1, "", "", false, false);
 $oShortcutsRem = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[sct_rem]'), we_html_tools::TYPE_INFO, 420);
 
 $oPool = new we_html_table(array(
@@ -154,20 +153,20 @@ $oPool->setCol(
 		"onclick" => "moveOptionUp(document.forms[0]['list11']);moveOptionUp(document.forms[0]['list21']);return false;"
 		), we_html_element::htmlImg(array(
 			"src" => IMAGE_DIR . "pd/arrow_up.gif", "border" => 0
-	))) . we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_element::htmlA(
-		array(
+	))) . we_html_element::htmlBr() . we_html_element::htmlBr() .
+	we_html_element::htmlA(array(
 		"href" => "#",
 		"onclick" => "moveSelectedOptions(document.forms[0]['list11'],document.forms[0]['list21'],false);return false;"
 		), we_html_element::htmlImg(array(
 			"src" => IMAGE_DIR . "pd/arrow_right.gif", "border" => 0
-	))) . we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_element::htmlA(
-		array(
+	))) . we_html_element::htmlBr() . we_html_element::htmlBr() .
+	we_html_element::htmlA(array(
 		"href" => "#",
 		"onclick" => "moveSelectedOptions(document.forms[0]['list21'],document.forms[0]['list11'],false);return false;"
 		), we_html_element::htmlImg(array(
 			"src" => IMAGE_DIR . "pd/arrow_left.gif", "border" => 0
-	))) . we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_element::htmlA(
-		array(
+	))) . we_html_element::htmlBr() . we_html_element::htmlBr() .
+	we_html_element::htmlA(array(
 		"href" => "#",
 		"onclick" => "moveOptionDown(document.forms[0]['list11']);moveOptionDown(document.forms[0]['list21']);return false;"
 		), we_html_element::htmlImg(array(
@@ -500,7 +499,7 @@ function save(){
 	var sCsv=getCsv();
 	var oCsv_=opener.gel(_sObjId+'_csv');
 	oCsv_.value=sCsv;
-	savePrefs();
+	//savePrefs();
 	if(_sCsvInit_!=sCsv){
 		opener.rpc(sCsv,'','','','',_sObjId,_sSctInc);
 	}

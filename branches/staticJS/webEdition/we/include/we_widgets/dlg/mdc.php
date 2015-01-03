@@ -311,7 +311,6 @@ function save(){
 	var sCsv=(parseInt(sSel))?getTreeSelected():getCsv(parseInt(sSwitch));
 	opener.rpc(sSel+sSwitch,sCsv,'','',sTitle,_sObjId,_sMdcInc);
 	_oCsv_.value=opener.base64_encode(sTitle)+';'+sSel+sSwitch+';'+sCsv;
-	savePrefs();
 	" . we_message_reporting::getShowMessageCall(
 		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 	self.close();
