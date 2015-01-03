@@ -99,7 +99,7 @@ function makeNewEntry(icon, id, pid, txt, offen, ct, tab, pub, denied) {
 function updateEntry(id, pid, text, pub, denied) {
 	var ai = 1;
 	while (ai <= menuDaten.laenge) {
-		if ((menuDaten[ai].typ == "folder") || (menuDaten[ai].typ == "user")) {
+		if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == "user")) {
 			if (menuDaten[ai].name == id) {
 				menuDaten[ai].vorfahr = pid;
 				menuDaten[ai].text = text;
@@ -167,7 +167,7 @@ function search(eintrag) {
 	var nf = new container();
 	var ai = 1;
 	while (ai <= menuDaten.laenge) {
-		if ((menuDaten[ai].typ == "folder") || (menuDaten[ai].typ == "user")) {
+		if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'user')) {
 			if (menuDaten[ai].vorfahr == eintrag) {
 				nf.add(menuDaten[ai]);
 			}

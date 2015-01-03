@@ -106,9 +106,7 @@ class we_category extends weModelBase{
 			unset($cur);
 		}
 
-		return /* (empty($where) ?
-			  ' AND ' . $table . '.' . $fieldName . ' = "-1" ' : */
-			' AND (' . implode(($catOr ? ' OR ' : ' AND '), $where) . ' )';
+		return ' AND (' . implode(($catOr ? ' OR ' : ' AND '), $where) . ' )';
 	}
 
 	static function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = ''){

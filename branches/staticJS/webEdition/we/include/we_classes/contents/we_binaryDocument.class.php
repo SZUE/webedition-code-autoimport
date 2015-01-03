@@ -26,7 +26,6 @@
 
 class we_binaryDocument extends we_document{
 	/* The HTML-Code which can be included in a HTML Document */
-
 	protected $html = '';
 
 	/**
@@ -120,11 +119,11 @@ class we_binaryDocument extends we_document{
 	function i_getDocument($size = -1){
 		$file = $this->getElement('data');
 		return ($file && file_exists($file) ?
-						($size == -1 ?
-								we_base_file::load($file) :
-								we_base_file::loadPart($file, 0, $size)
-						) :
-						'');
+				($size == -1 ?
+					we_base_file::load($file) :
+					we_base_file::loadPart($file, 0, $size)
+				) :
+				'');
 	}
 
 	protected function i_writeDocument(){
@@ -280,7 +279,7 @@ class we_binaryDocument extends we_document{
 
 					case 'date':
 						$_inp = we_html_tools::htmlFormElementTable(
-										we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $_tagName . ']', abs($this->getElement($_tagName)), true), $_tagName
+								we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $_tagName . ']', abs($this->getElement($_tagName)), true), $_tagName
 						);
 						break;
 
@@ -323,14 +322,14 @@ class we_binaryDocument extends we_document{
 			}
 		}
 
-		$ft = g_l('metadata', '[filetype]') . ': ' . (empty($this->Extension) ? '' : substr($this->Extension, 1));
+		$ft = g_l('metadata', '[filetype]') . ': ' . ($this->Extension ? substr($this->Extension, 1) : '');
 
 		$md = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
-						'' :
-						g_l('metadata', '[supported_types]') . ': ' .
-						'<a href="javascript:parent.frames[0].setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
-						(count($_mdtypes) > 0 ? implode(', ', $_mdtypes) : g_l('metadata', '[none]')) .
-						'</a>');
+				'' :
+				g_l('metadata', '[supported_types]') . ': ' .
+				'<a href="javascript:parent.frames[0].setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
+				(count($_mdtypes) > 0 ? implode(', ', $_mdtypes) : g_l('metadata', '[none]')) .
+				'</a>');
 
 		$fileUpload = new we_fileupload_binaryDocument($this->ContentType, $this->Extension);
 

@@ -736,14 +736,14 @@ abstract class we_html_tools{
 	 * @return string
 	 */
 	static function htmlYesNoCancelDialog($text = '', $img = '', $yes = '', $no = '', $cancel = '', $yesHandler = '', $noHandler = '', $cancelHandler = '', $script = ''){
-		$cancelButton = (empty($cancel) ? '' : we_html_button::create_button('cancel', 'javascript:' . $cancelHandler));
-		$noButton = (empty($no) ? '' : we_html_button::create_button('no', 'javascript:' . $noHandler));
-		$yesButton = (empty($yes) ? '' : we_html_button::create_button('yes', 'javascript:' . $yesHandler) );
+		$cancelButton = ($cancel ? we_html_button::create_button('cancel', 'javascript:' . $cancelHandler) : '');
+		$noButton = ($no ? we_html_button::create_button('no', 'javascript:' . $noHandler) : '');
+		$yesButton = ($yes ? we_html_button::create_button('yes', 'javascript:' . $yesHandler) : '');
 
 
 		$content = new we_html_table(array(
 			'cellpadding' => 10, 'cellspacing' => 0, 'border' => 0
-			), 1, (empty($img) ? 1 : 2));
+			), 1, ($img ? 2 : 1));
 
 		if(!empty($img) && file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
 			$size = getimagesize($_SERVER['DOCUMENT_ROOT'] . $img);
@@ -756,7 +756,7 @@ abstract class we_html_tools{
 			)));
 		}
 
-		$content->setCol(0, (empty($img) ? 0 : 1), array(
+		$content->setCol(0, ($img ? 1 : 0), array(
 			'class' => 'defaultfont'
 			), $text);
 

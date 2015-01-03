@@ -546,7 +546,7 @@ abstract class we_root extends we_class{
 			$ctype = we_base_ContentTypes::WEDOCUMENT;
 			$etype = FILE_TABLE;
 		} else {
-			$yuiSuggest->setContentType('folder,'.we_base_ContentTypes::OBJECT_FILE);
+			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
 			$ctype = we_base_ContentTypes::OBJECT_FILE;
 			$etype = OBJECT_FILES_TABLE;
 		}
@@ -1099,7 +1099,7 @@ abstract class we_root extends we_class{
 			}
 			$doctype = new we_docTypes();
 			$doctype->initByID($this->DocType, DOC_TYPES_TABLE);
-			if(empty($doctype->SubDir)){
+			if(!$doctype->SubDir){
 				return false;
 			}
 			$_pathFirstPart = substr($this->getParentPath(), -1) === '/' ? '' : '/';

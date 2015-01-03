@@ -579,7 +579,7 @@ class we_thumbnail{
 		}
 
 		$imgdat = getHash('SELECT ID,Filename,Extension,Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->imageID), $this->db);
-		if(empty($imgdat)){
+		if(!$imgdat){
 			return false;
 		}
 		$this->imageFileName = $imgdat['Filename'];

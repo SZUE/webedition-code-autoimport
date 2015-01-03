@@ -275,7 +275,7 @@ abstract class we_rebuild_base{
 
 	private static function getDependendTemplates(we_database_base $db, array $done, array &$data, $mt, $tt){
 		//get other, these have to be processed in php
-		$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . (empty($done) ? 0 : implode(',', $done)) . ') ORDER BY (`IncludedTemplates` = "") DESC');
+		$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . ($done ? implode(',', $done) : 0) . ') ORDER BY (`IncludedTemplates` = "") DESC');
 
 		$todo = array();
 		while($db->next_record(MYSQL_ASSOC)){

@@ -53,13 +53,13 @@ function drawEintraege() {
 function zeichne(startEntry, zweigEintrag) {
 	var nf = search(startEntry);
 	var ai = 1;
-	ret = '';
+	ret="";
 	while (ai <= nf.laenge) {
 		ret += zweigEintrag;
 		nf[ai].text = nf[ai].text.replace(/</g, "&lt;");
 		nf[ai].text = nf[ai].text.replace(/>/g, "&gt;");
 		if (nf[ai].typ == 'file') {
-			ret += "&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir +
+			ret += "&nbsp;&nbsp;<img src=\"" + tree_img_dir +
 							(ai == nf.laenge ?
 											"kreuzungend.gif" :
 											"kreuzung.gif"
@@ -67,11 +67,11 @@ function zeichne(startEntry, zweigEintrag) {
 							"\" class=\"treeKreuz\">";
 
 			if (nf[ai].name != -1) {
-				ret += "<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\"";
+				ret += "<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">";
 			}
 			ret += "<IMG SRC=\"" + tree_img_dir + "icons/" + nf[ai].icon + "\"/>" +
 							"</a>" +
-							"&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + (parseInt(nf[ai].published) ? "" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "" : "") + "</A>&nbsp;&nbsp;<br/>";
+							"&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + (parseInt(nf[ai].published) ? "" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "" : "") + "</a>&nbsp;&nbsp;<br/>";
 		} else {
 			var newAst = zweigEintrag;
 
@@ -85,9 +85,9 @@ function zeichne(startEntry, zweigEintrag) {
 				var zusatz2 = "open";
 			}
 			ret += "<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
-							"<IMG SRC=\"" + tree_img_dir + "icons/workflow_folder" + zusatz2 + ".gif\"/>" +
+							"<img src=\"" + tree_img_dir + "icons/workflow_folder" + zusatz2 + ".gif\"/>" +
 							"</a>" +
-							"<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
+							"<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
 							"&nbsp;<b>" + (!parseInt(nf[ai].published) ? "<font color=\"red\">" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "</font>" : "") + "</b>" +
 							"</a>" +
 							"&nbsp;&nbsp;<br/>";
@@ -107,7 +107,7 @@ function zeichne(startEntry, zweigEintrag) {
 
 
 function makeNewEntry(icon, id, pid, txt, offen, ct, tab, pub) {
-	if (ct == "folder") {
+	if (ct === "folder") {
 		menuDaten.addSort(new dirEntry(icon, id, pid, txt, offen, ct, tab, pub));
 	} else {
 		menuDaten.addSort(new urlEntry(icon, id, pid, txt, ct, tab, pub));

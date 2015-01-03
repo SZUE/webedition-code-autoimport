@@ -365,9 +365,9 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 					if(isset($GLOBALS['WE_MAIN_DOC'])){
 						$pid = $GLOBALS['WE_MAIN_DOC']->ParentID;
 					} else {
-						$pidCvs = f('SELECT Workspaces FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($id), 'Workspaces', $this->DB_WE);
+						$pidCvs = f('SELECT Workspaces FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($id), '', $this->DB_WE);
 						$foo = makeArrayFromCSV($pidCvs);
-						$pid = (empty($foo) ? 0 : $foo[0]);
+						$pid = ($foo ? $foo[0] : 0);
 					}
 
 					$path = isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : '';

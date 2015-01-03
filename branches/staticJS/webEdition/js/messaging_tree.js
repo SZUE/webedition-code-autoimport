@@ -30,58 +30,46 @@ var multi_select = 0;
 var startloc = 0;
 var loaded_thr = 2;
 var load_state = 0;
-loaded = false;
 deleteMode = false;
 entries_selected = new Array();
 del_parents = new Array();
 open_folder = -1;
 viewclass = "message";
 mode = "show_folder_content";
-
-
 check0_img = new Image();
 check1_img = new Image();
 check0_img.src = tree_img_dir + "check0.gif";
 check1_img.src = tree_img_dir + "check1.gif";
-
 // message folders
 f1_img = new Image();
 f3_img = new Image();
 f5_img = new Image();
-
 f1_o_img = new Image();
 f3_o_img = new Image();
 f5_o_img = new Image();
-
 f1_img.src = tree_icon_dir + "msg_folder.gif";
 f3_img.src = tree_icon_dir + "msg_in_folder.gif";
 f5_img.src = tree_icon_dir + "msg_sent_folder.gif";
-
 f1_o_img.src = tree_icon_dir + "msg_folder_open.gif";
 f3_o_img.src = tree_icon_dir + "msg_in_folder_open.gif";
 f5_o_img.src = tree_icon_dir + "msg_sent_folder_open.gif";
-
 // todo folders
 tf1_img = new Image();
 tf3_img = new Image();
 tf13_img = new Image();
 tf11_img = new Image();
-
 tf1_o_img = new Image();
 tf3_o_img = new Image();
 tf13_o_img = new Image();
 tf11_o_img = new Image();
-
 tf1_img.src = tree_icon_dir + "todo_folder.gif";
 tf3_img.src = tree_icon_dir + "todo_in_folder.gif";
 tf13_img.src = tree_icon_dir + "todo_done_folder.gif";
 tf11_img.src = tree_icon_dir + "todo_reject_folder.gif";
-
 tf1_o_img.src = tree_icon_dir + "todo_folder_open.gif";
 tf3_o_img.src = tree_icon_dir + "todo_in_folder_open.gif";
 tf13_o_img.src = tree_icon_dir + "todo_done_folder_open.gif";
 tf11_o_img.src = tree_icon_dir + "todo_reject_folder_open.gif";
-
 function check(img) {
 	var i;
 	var tarr = img.split("_");
@@ -299,35 +287,36 @@ function usetHot() {
 
 
 function drawEintraege() {
-	fr = top.content.tree.window.document.body;//IMI: set tree indstead of left
-	fr.innerHTML = '<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td class="tree"><nobr>'+
-	zeichne(top.content.startloc, "")+
-					"</nobr></td></tr></table>"+
+	fr = top.content.tree.window.document.body; //IMI: set tree indstead of left
+	fr.innerHTML = '<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td class="tree"><nobr>' +
+					zeichne(top.content.startloc, "") +
+					"</nobr></td></tr></table>" +
 					"</body></html>";
-
 	top.content.tree.window.loadFinished();
 }
 
 function zeichne(startEntry, zweigEintrag) {
 	var nf = search(startEntry);
 	var ai = 1;
-	ret="";
+	ret = "";
 	while (ai <= nf.laenge) {
 		ret += zweigEintrag;
 		if (nf[ai].typ == "leaf_Folder") {
-			if (ai == nf.laenge) {
-				ret += "&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir + "kreuzungend.gif\" class=\"treeKreuz\">";
-			} else {
-				ret+= "&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir + "kreuzung.gif\" class=\"treeKreuz\">";
-			}
+			ret += '&nbsp;&nbsp;<IMG SRC="' + tree_img_dir +
+							(ai == nf.laenge ?
+											'kreuzungend.gif' :
+											'kreuzung.gif'
+											) +
+							'" class="treeKreuz">';
+
 			if (nf[ai].name != -1) {
-				ret+= "<a name=\"_" + nf[ai].name + "\" href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ");return true;\">";
+				ret += '<a name="_' + nf[ai].name + '" href="javascript://" onclick="doClick(' + nf[ai].name + ');return true;">';
 			}
 			if (deleteMode) {
 				if (nf[ai].name != -1) {
 					trg = "javascript:top.content.check(\"img_" + nf[ai].name + "\");"
 					if (nf[ai].checked) {
-						ret += "<a href=\"" + trg + "\"><img src=\"" + tree_img_dir + "check1.gif\" alt=\"" + tree_select_statustext + "\" name=\"img_" + nf[ai].name + "\"></a>";
+						ret += '<a href="' + trg + '"><img src="' + tree_img_dir + "check1.gif\" alt=\"" + tree_select_statustext + "\" name=\"img_" + nf[ai].name + "\"></a>";
 					} else {
 						ret += "<a href=\"" + trg + "\"><img src=\"" + tree_img_dir + "check0.gif\" alt=\"" + tree_select_statustext + "\" name=\"img_" + nf[ai].name + "\"></a>";
 					}
@@ -375,7 +364,7 @@ function zeichne(startEntry, zweigEintrag) {
 				} else {
 					newAst = newAst + "<IMG SRC=\"" + tree_img_dir + "strich2.gif\" class=\"treeKreuz\">";
 				}
-				ret+=zeichne(nf[ai].name, newAst);
+				ret += zeichne(nf[ai].name, newAst);
 			}
 		}
 		ai++;
@@ -557,8 +546,7 @@ function addSort(object) {
 	for (var i = this.laenge; i > 0; i--) {
 		if (i > 1 && this[i - 1].text.toLowerCase() > object.text.toLowerCase()) {
 			this[i] = this[i - 1];
-		}
-		else {
+		}	else {
 			this[i] = object;
 			break;
 		}
@@ -569,7 +557,7 @@ function rootEntry(name, text, rootstat) {
 	this.name = name;
 	this.text = text;
 	this.loaded = true;
-	this.typ = "root";
+	this.typ = 'root';
 	this.rootstat = rootstat;
 	return this;
 }
