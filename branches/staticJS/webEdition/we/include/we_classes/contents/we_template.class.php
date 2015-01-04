@@ -784,4 +784,72 @@ we_templateInit();?>';
 		return preg_replace('/.tmpl$/i', '.php', parent::getRealPath($old));
 	}
 
+	public static function we_getCodeMirror2Tags($css, $setting, $weTags = true){
+		$ret = '';
+		$allTags = array();
+		if($weTags && ($css || $setting['WE'])){
+			$allWeTags = we_wizard_tag::getExistingWeTags($css); //only load deprecated tags if css is requested
+			foreach($allWeTags as $tagName){
+				if(($weTag = weTagData::getTagData($tagName))){
+					if($css){
+						$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . strtr(html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET']), array('"' => '\'', "\n" => ' ')) . '";}' . "\n";
+					} else {
+						$allTags['we:' . $tagName] = array('we' => $weTag->getAttributesForCM());
+					}
+				}
+			}
+		}
+		if($css){
+			return $ret;
+		}
+
+		$all = include(WE_INCLUDES_PATH . 'we_templates/htmlTags.inc.php');
+		$allTags = array_merge($allTags, ($setting['htmlTag'] ? $all['html'] : array()), ($setting['html5Tag'] ? $all['html5'] : array()));
+		if(!$allTags){
+			return '';
+		}
+		//keep we tags in front of ordinal html tags
+		$ret.='CodeMirror.weHints["<"] = ["' . implode('","', array_keys($allTags)) . '"];' . "\n";
+
+		ksort($allTags);
+		foreach($allTags as $tagName => $cur){
+			$attribs = array();
+			foreach($cur as $type => $attribList){
+				switch($type){
+					case 'we':
+						$ok = true;
+						break;
+					case 'default':
+						$ok = (isset($setting['htmlDefAttr']) && $setting['htmlDefAttr']);
+						break;
+					case 'js':
+						$ok = (isset($setting['htmlJSAttr']) && $setting['htmlJSAttr']);
+						break;
+					case 'norm':
+						$ok = (isset($setting['htmlAttr']) && $setting['htmlAttr']);
+						break;
+					case 'default_html5':
+						$ok = (isset($setting['html5Tag']) && isset($setting['htmlDefAttr']) && $setting['html5Tag'] && $setting['htmlDefAttr']);
+						break;
+					case 'html5':
+						$ok = (isset($setting['html5Tag']) && isset($setting['html5Attr']) && $setting['html5Tag'] && $setting['html5Attr']);
+						break;
+					default:
+						$ok = false;
+				}
+				if($ok){
+					foreach($attribList as $attr){
+						$attribs[] = '\'' . $attr . (strstr($attr, '"') === false ? '=""' : '') . '\'';
+					}
+				}
+			}
+			if($attribs){
+				$attribs = array_unique($attribs);
+				sort($attribs);
+				$ret.='CodeMirror.weHints["<' . $tagName . ' "] = [' . implode(',', $attribs) . '];' . "\n";
+			}
+		}
+		return $ret;
+	}
+
 }

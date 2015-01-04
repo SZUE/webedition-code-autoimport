@@ -759,7 +759,7 @@ function resizeIdx(a, id) {
 	switch (a) {
 		case 'swap':
 			gel(id + '_res').value = (res == 0) ? 1 : 0;
-			gel(id + '_icon_resize').title = (res == 0) ? g_l_reduce_size : g_l_increase_size;
+			gel(id + '_icon_resize').title = (res == 0) ? g_l.reduce_size : g_l.increase_size;
 			break;
 		case 'get':
 			return res;
@@ -767,7 +767,7 @@ function resizeIdx(a, id) {
 }
 
 function removeWidget(wizId) {
-	var remove = confirm(g_l_pre_remove + getLabel(wizId) + g_l_post_remove);
+	var remove = confirm(g_l.pre_remove + getLabel(wizId) + g_l.post_remove);
 	if (remove === true) {
 		gel(wizId).parentNode.removeChild(gel(wizId));
 		updateJsStyleCls();

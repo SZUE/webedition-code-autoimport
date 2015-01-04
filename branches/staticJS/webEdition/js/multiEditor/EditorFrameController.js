@@ -238,7 +238,7 @@ function EditorFrameController() {
 					this.closeDocument(this.ActiveEditorFrameId, "top.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
 
 				} else {
-					top.we_showMessage(g_l_no_editor_left, WE_MESSAGE_ERROR, window);
+					top.we_showMessage(g_l.no_editor_left, WE_MESSAGE_ERROR, window);
 				}
 			}
 		}
@@ -367,7 +367,7 @@ function EditorFrameController() {
 	 */
 	this.closeAllDocuments = function () {
 
-		if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm(g_l_eplugin_exit_doc)) {
+		if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm(g_l.eplugin_exit_doc)) {
 
 			// close all none Hot Editors
 			if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
@@ -403,7 +403,7 @@ function EditorFrameController() {
 
 	this.closeAllButActiveDocument = function (activeId) {
 
-		if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm(g_l_eplugin_exit_doc)) {
+		if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm(g_l.eplugin_exit_doc)) {
 
 			// only do something, if more than one editor is open
 			if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) > 1) {

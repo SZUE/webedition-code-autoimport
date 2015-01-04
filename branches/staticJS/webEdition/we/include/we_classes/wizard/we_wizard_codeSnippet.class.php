@@ -74,7 +74,7 @@ class we_wizard_codeSnippet{
 		}
 
 		// set the short description
-		if($Parser->execMethod_count("/topic[1]/shortdesc[1]", "g_l") > 0){
+		if($Parser->execMethod_count("/topic[1]/shortdesc[1]", 'g_l') > 0){
 			$this->Description = $Parser->getData("/topic[1]/shortdesc[1]/g_l[1]");
 			$this->Description = g_l('snippet', $this->Description);
 		}

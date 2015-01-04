@@ -85,10 +85,12 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		var _bDgSave = false;
 		var bInitDrag = false;
 		var oTblWidgets = null;
-		var g_l_reduce_size = '<?php echo g_l('cockpit', '[reduce_size]') ?>';
-		var g_l_increase_size = '<?php echo g_l('cockpit', '[increase_size]'); ?>';
-		var g_l_pre_remove = '<?php echo g_l('cockpit', '[pre_remove]'); ?>"';
-		var g_l_post_remove = '" <?php echo g_l('cockpit', '[post_remove]'); ?>';
+		var g_l = {
+			'reduce_size': '<?php echo g_l('cockpit', '[reduce_size]') ?>',
+			'increase_size': '<?php echo g_l('cockpit', '[increase_size]'); ?>',
+			'pre_remove': '<?php echo g_l('cockpit', '[pre_remove]'); ?>"',
+			'post_remove': '" <?php echo g_l('cockpit', '[post_remove]'); ?>'
+		};
 		var has_messaging =<?php echo defined('WE_MESSAGING_MODULE_DIR'); ?>;
 		var transact = "<?php echo md5(uniqid(__FILE__, true)); ?>";
 
