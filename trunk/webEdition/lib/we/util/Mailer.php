@@ -318,7 +318,17 @@ class we_util_Mailer extends Zend_Mail{
 	}
 
 	public function parseHtml2TextPart($html){
-		$lineBreaks = array(
+
+		$this->AltBody = trim(strip_tags(
+				preg_replace(array(
+			'-<br[^>]*>-s',
+			'-<(ul|ol)[^>]*>-s',
+			'-<(head|title|style|script)[^>]*>.*?</\1>-s'
+					), array(
+			"\n",
+			"\n\n",
+			''
+					), strtr($html, array(
 			"\n" => '',
 			"\r" => '',
 			'</h1>' => "\n\n",
@@ -332,10 +342,9 @@ class we_util_Mailer extends Zend_Mail{
 			'</li>' => "\n",
 			'&lt;' => '<',
 			'&gt;' => '>',
-		);
-
-		$textpart = preg_replace(array('/<br[^>]*>/s', '/<(ul|ol)[^>]*>/s'), array("\n", "\n\n"), strtr($html, $lineBreaks));
-		$this->AltBody = trim(strip_tags(preg_replace('/<(head|title|style|script)[^>]*>.*?<\/${1}>/s', '', $textpart)));
+						)
+				))
+		));
 	}
 
 	public function doaddAttachmentInline($attachment, $isBinData = false, $ext = ''){
