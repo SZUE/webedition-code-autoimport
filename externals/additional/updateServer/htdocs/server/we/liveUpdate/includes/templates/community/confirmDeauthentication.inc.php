@@ -21,8 +21,6 @@ $content = \'
 	<tr><td width="120px">\' . $backButton . \'</td><td>\' . $nextButton . \'</td></tr>
 	</table>
 \';
-	
+
 print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['community']['headline']) . '", $content);
 ?>';
-
-?>
