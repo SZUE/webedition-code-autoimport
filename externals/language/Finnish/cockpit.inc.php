@@ -136,6 +136,7 @@ $l_cockpit=array(
 	
 	'shop_dashboard'=>array(
 		'articles_order'=>'Count articles/order',
+		'canceled'=>'Canceled',
 		'canceled_order'=>'Canceled orders',
 		'cnt_articles'=>'Ordered articles',
 		'cnt_new_customer'=>'Number of new customers',
