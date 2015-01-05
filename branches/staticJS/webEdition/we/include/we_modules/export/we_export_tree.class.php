@@ -147,8 +147,7 @@ function checkNode(imgName) {
 
 				treeData[i].applylayout();
 				break;
-			}
-			else {
+			} else {
 				if(document.images) {
 					eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check1_img.src;");
 				}
@@ -211,11 +210,7 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 		}
 
 		if($useSelector){
-			$header = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
-
-			$header->setCol(0, 0, array("bgcolor" => "white"), we_html_tools::getPixel(5, 5));
 			$captions = array();
-
 			if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 				$captions[FILE_TABLE] = g_l('export', '[documents]');
 			}
@@ -229,6 +224,8 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 				$captions[OBJECT_TABLE] = g_l('export', '[classes]');
 			}
 
+			$header = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+			$header->setCol(0, 0, array("bgcolor" => "white"), we_html_tools::getPixel(5, 5));
 			$header->setColContent(1, 0, we_html_tools::htmlSelect('headerSwitch', $captions, 1, we_base_request::_(we_base_request::TABLE, 'headerSwitch', 0), false, array('onchange' => "setHead(this.value);"), 'value', $width));
 			$header->setColContent(2, 0, we_html_tools::getPixel(5, 5));
 			$header = $header->getHtml();
@@ -274,17 +271,16 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 			$ContentType = $DB_WE->f("ContentType");
 			$Icon = $DB_WE->f("Icon");
 			$IsClassFolder = $DB_WE->f("IsClassFolder");
+			$published = (($DB_WE->f("Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate"))) ? -1 : $DB_WE->f("Published");
 
 			$checked = 0;
 			switch($table){
 				case FILE_TABLE:
-					$published = (($DB_WE->f("Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate"))) ? -1 : $DB_WE->f("Published");
 					if(isset($_SESSION['weS']['exportVars_session']["selDocs"]) && in_array($ID, makeArrayFromCSV($_SESSION['weS']['exportVars_session']["selDocs"]))){
 						$checked = 1;
 					}
 					break;
 				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-					$published = (($DB_WE->f("Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate"))) ? -1 : $DB_WE->f("Published");
 					if(isset($_SESSION['weS']['exportVars_session']["selObjs"]) && in_array($ID, makeArrayFromCSV($_SESSION['weS']['exportVars_session']["selObjs"]))){
 						$checked = 1;
 					}

@@ -430,7 +430,7 @@ font-family: <?php echo g_l('css', '[font_family]'); ?>;
 .blockWrapper {
 overflow: auto !important;
 display: block ;
-background-color: white;
+background-color: white !important;
 padding: 0px;
 }
 

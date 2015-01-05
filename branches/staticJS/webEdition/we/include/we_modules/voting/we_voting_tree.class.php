@@ -116,35 +116,26 @@ function doClick(id,typ){
 	function getJSMakeNewEntry(){
 		return '
 function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
-		if(treeData[indexOfEntry(pid)]){
-			if(treeData[indexOfEntry(pid)].loaded){
+	if(treeData[indexOfEntry(pid)]&&treeData[indexOfEntry(pid)].loaded){
+		ct=(ct=="folder"? "group":"item");
 
-				if(ct=="folder") ct="group";
-				else ct="item";
+		var attribs={
+		"id":id,
+		"icon":icon,
+		"text":txt,
+		"parentid":pid,
+		"open":open,
+		"tooltip":id,
+		"typ":ct,
+		"disabled":0,
+		"published":(ct=="item"?pub:1),
+		"selected":0
+		};
 
-				var attribs=new Array();
+		treeData.addSort(new node(attribs));
 
-				attribs["id"]=id;
-				attribs["icon"]=icon;
-				attribs["text"]=txt;
-				attribs["parentid"]=pid;
-				attribs["open"]=open;
-
-				attribs["tooltip"]=id;
-				attribs["typ"]=ct;
-
-
-				attribs["disabled"]=0;
-				if(ct=="item") attribs["published"]=pub;
-				else attribs["published"]=1;
-
-				attribs["selected"]=0;
-
-				treeData.addSort(new node(attribs));
-
-				drawTree();
-			}
-		}
+		drawTree();
+	}
 }';
 	}
 

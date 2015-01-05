@@ -131,26 +131,20 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub,order){
 
 		ct=(ct=="folder"?"group":"item");
 
-		var attribs=new Array();
-
-		attribs["id"]=id;
-		attribs["icon"]=icon;
-		attribs["text"]=txt;
-		attribs["parentid"]=pid;
-		attribs["open"]=open;
-
-		attribs["order"]=order;
-
-		attribs["tooltip"]=id;
-		attribs["typ"]=ct;
-
-
-		attribs["disabled"]=0;
-		attribs["published"]=pub==0 ? 1 : 0;
-		attribs["depended"]=pub;
-
-		attribs["selected"]=0;
-
+		var attribs={
+			"id":id,
+			"icon":icon,
+			"text":txt,
+			"parentid":pid,
+			"open":open,
+			"order":order,
+			"tooltip":id,
+			"typ":ct,
+			"disabled":0,
+			"published":(pub==0 ? 1 : 0),
+			"depended":pub,
+			"selected":0
+};
 		treeData.addSort(new node(attribs));
 
 		drawTree();
@@ -230,17 +224,7 @@ function clearItems(){
 					STYLESHEET .
 					we_html_element::cssElement(implode("\n", $this->styles))
 				) .
-				we_html_element::htmlBody(array(
-					'bgcolor' => '#F3F7FF',
-					'link' => '#000000',
-					'alink' => '#000000',
-					'vlink' => '#000000',
-					'marginwidth' => 0,
-					'marginheight' => 4,
-					'leftmargin' => 0,
-					'topmargin' => 4
-					), '<div id="treetable"></div>
-					'
+				we_html_element::htmlBody(array(), '<div id="treetable"></div>'
 				)
 		);
 	}

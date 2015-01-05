@@ -33,7 +33,7 @@ function setTreeState() {
 
 	if (this.state == this.tree_states["edit"]) {
 		for (i = 1; i <= this.len; i++) {
-			if (this[i].checked == 1){
+			if (this[i].checked == 1) {
 				this[i].checked = 0;
 			}
 		}
@@ -165,4 +165,16 @@ function parentChecked(start) {
 	}
 
 	return false;
+}
+
+function setCheckNode(imgName) {
+	if (document.images[imgName]) {
+		document.images[imgName].src = "/webEdition/images/tree/check0.gif";
+	}
+}
+
+function setUnCheckNode(imgName) {
+	if (document.images[imgName]) {
+		document.images[imgName].src = "/webEdition/images/tree/check1.gif";
+	}
 }

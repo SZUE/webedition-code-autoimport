@@ -147,18 +147,17 @@ if(weWindow.treeData){
 				'weWindow.treeData.unselectnode();') . '
 	if(weWindow.treeData.table == "' . $doc->Table . '"){
 		if(weWindow.treeData[top.indexOfEntry(' . $doc->ParentID . ')]){
-				var attribs=new Array();
-				attribs["id"]=\'' . $doc->ID . '\';
-				attribs["parentid"]=\'' . $doc->ParentID . '\';
-				attribs["text"]=\'' . $doc->Text . '\';
-				attribs["published"]=\'' . $published . '\';
-				attribs["table"]=\'' . $doc->Table . '\';
+				var attribs={
+				"id":\'' . $doc->ID . '\',
+				"parentid":\'' . $doc->ParentID . '\',
+				"text":\'' . $doc->Text . '\',
+				"published":\'' . $published . '\',
+				"table":\'' . $doc->Table . '\'
+				};
 
-				if(' . $this->topFrame . '.indexOfEntry(' . $doc->ParentID . ')!=-1){
-					var visible=' . $this->topFrame . '.treeData[' . $this->topFrame . '.indexOfEntry(' . $doc->ParentID . ')].open;
-				}else{
-					var visible=0
-				}
+				var visible=(' . $this->topFrame . '.indexOfEntry(' . $doc->ParentID . ')!=-1?
+					' . $this->topFrame . '.treeData[' . $this->topFrame . '.indexOfEntry(' . $doc->ParentID . ')].open:
+						0);
 
 				if(' . $this->topFrame . '.indexOfEntry(' . $doc->ID . ')!=-1){
 						isIn=true;
@@ -259,19 +258,19 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab){
 		if(treeData[indexOfEntry(pid)]){
 			if(treeData[indexOfEntry(pid)].loaded){
 
-				var attribs=new Array();
-
-				attribs["id"]=id;
-				attribs["icon"]=icon;
-				attribs["text"]=txt;
-				attribs["parentid"]=pid;
-				attribs["open"]=open;
-				attribs["typ"]=(ct=="folder" ? "group" : "item");
-				attribs["table"]=tab;
-				attribs["tooltip"]=id;
-				attribs["contenttype"]=ct;
-				attribs["disabled"]=0;
-				attribs["selected"]=0;
+				var attribs={
+					"id":id,
+					"icon":icon,
+					"text":txt,
+					"parentid":pid,
+					"open":open,
+					"typ":(ct=="folder" ? "group" : "item"),
+					"table":tab,
+					"tooltip":id,
+					"contenttype":ct,
+					"disabled":0,
+					"selected":0
+				};
 				if(attribs["typ"]=="item"){
 					attribs["published"]=0;
 				}

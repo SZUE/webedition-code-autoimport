@@ -62,18 +62,6 @@ class we_banner_frames extends we_modules_frame{
 
 	function getJSTreeCode(){//TODO: move (as in all modules...) to some future moduleTree class
 		//start of code from ex class weModuleBannerFrames
-		echo we_html_element::jsScript(JS_DIR . 'images.js') .
-		we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsElement('
-var table="' . BANNER_TABLE . '";
-var tree_icon_dir="' . TREE_ICON_DIR . '";
-var tree_img_dir="' . TREE_IMAGE_DIR . '";
-var we_dir="' . WEBEDITION_DIR . '";
-var tree_select_statustext="' . g_l('tree', '[select_statustext]') . '";
-var tree_edit_statustext="' . g_l('tree', '[edit_statustext]') . '";
-var tree_open_statustext="' . g_l('tree', '[open_statustext]') . '";
-var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";') .
-		we_html_element::jsScript(JS_DIR . 'banner_tree.js');
 
 		$startloc = 0;
 
@@ -97,7 +85,19 @@ var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";') .
 		}
 
 		$out.='}';
-		echo we_html_element::jsElement($out);
+		echo we_html_element::jsScript(JS_DIR . 'images.js') .
+			we_html_element::jsScript(JS_DIR . 'tree.js').
+		we_html_element::jsScript(JS_DIR . 'windows.js') .
+		we_html_element::jsElement('
+var table="' . BANNER_TABLE . '";
+var tree_icon_dir="' . TREE_ICON_DIR . '";
+var tree_img_dir="' . TREE_IMAGE_DIR . '";
+var we_dir="' . WEBEDITION_DIR . '";
+var tree_select_statustext="' . g_l('tree', '[select_statustext]') . '";
+var tree_edit_statustext="' . g_l('tree', '[edit_statustext]') . '";
+var tree_open_statustext="' . g_l('tree', '[open_statustext]') . '";
+var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";') .
+		we_html_element::jsScript(JS_DIR . 'banner_tree.js').we_html_element::jsElement($out);
 	}
 
 	function getJSCmdCode(){

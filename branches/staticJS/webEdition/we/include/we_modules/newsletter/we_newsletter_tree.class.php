@@ -31,69 +31,58 @@ class we_newsletter_tree extends weMainTree{
 
 	function getJSMakeNewEntry(){
 		return '
-			function makeNewEntry(icon,id,pid,txt,open,ct,tab){
-					if(treeData[indexOfEntry(pid)]){
-						if(treeData[indexOfEntry(pid)].loaded){
+function makeNewEntry(icon,id,pid,txt,open,ct,tab){
+		if(treeData[indexOfEntry(pid)]){
+			if(treeData[indexOfEntry(pid)].loaded){
 
-	 						if(ct=="folder") ct="group";
-	 						else ct="item";
+				ct=(ct=="folder"? "group":"item");
 
-							var attribs=new Array();
+				var attribs={
+				"id":id,
+				"icon":icon,
+				"text":txt,
+				"parentid":pid,
+				"open":open
+				"tooltip":id,
+				"typ":ct,
+				"contenttype":"newsletter",
+				"disabled":0,
+				"published":1,
+				"selected":0
+				};
 
-							attribs["id"]=id;
-							attribs["icon"]=icon;
-							attribs["text"]=txt;
-							attribs["parentid"]=pid;
-							attribs["open"]=open;
+				treeData.addSort(new node(attribs));
 
-	 						attribs["tooltip"]=id;
-	 						attribs["typ"]=ct;
-
-	 						attribs["contenttype"]="newsletter";
-
-							attribs["disabled"]=0;
-							attribs["published"]=1;
-
-							attribs["selected"]=0;
-
-							treeData.addSort(new node(attribs));
-
-							drawTree();
-						}
-					}
+				drawTree();
 			}
-			';
+		}
+}';
 	}
 
 	function getJSUpdateItem(){
 		return '
- 				function updateEntry(id,text,pid){
-        			var ai = 1;
-        			while (ai <= treeData.len) {
-            			if (treeData[ai].id==id) {
-                 			treeData[ai].text=text;
-                 			treeData[ai].parentid=pid;
-             			}
-            	 		ai++;
-        			}
-					drawTree();
- 				}
-			';
+function updateEntry(id,text,pid){
+			var ai = 1;
+			while (ai <= treeData.len) {
+					if (treeData[ai].id==id) {
+							treeData[ai].text=text;
+							treeData[ai].parentid=pid;
+					}
+					ai++;
+			}
+	drawTree();
+}';
 	}
 
 	function getJSTreeFunctions(){
 
-		$out = weTree::getJSTreeFunctions();
-
-		$out.='
-
-				function doClick(id,typ){
-					var node=' . $this->topFrame . '.get(id);
-    				' . $this->topFrame . '.we_cmd(\'newsletter_edit\',node.id,node.typ,node.table);
-				}
-				' . $this->topFrame . '.loaded=1;
-			' . $this->getJSMakeNewEntry();
-		return $out;
+		return weTree::getJSTreeFunctions() . '
+function doClick(id,typ){
+	var node=' . $this->topFrame . '.get(id);
+		' . $this->topFrame . '.we_cmd(\'newsletter_edit\',node.id,node.typ,node.table);
+}
+' . $this->topFrame . '.loaded=1;
+' . $this->getJSMakeNewEntry();
 	}
 
 	function getJSStartTree(){
@@ -114,9 +103,7 @@ class we_newsletter_tree extends weMainTree{
 
 	function getJSInfo(){
 		return '
-			function info(text) {
-
-			}
+function info(text) {}
 		';
 	}
 

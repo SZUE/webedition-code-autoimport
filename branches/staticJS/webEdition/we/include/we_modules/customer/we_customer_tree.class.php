@@ -152,8 +152,9 @@ function updateEntry(id,text){
 		return parent::getJSTreeFunctions() . '
 function doClick(id,typ){
 	var node=' . $this->topFrame . '.get(id);
-		if(node.typ=="item")
+		if(node.typ=="item"){
 		' . $this->topFrame . '.we_cmd(\'customer_edit\',node.id,node.typ,node.table);
+		}
 }
 ' . $this->topFrame . '.loaded=1;';
 	}

@@ -118,36 +118,31 @@ class we_export_treeMain extends weTree{
 
 	function getJSMakeNewEntry(){
 		return '
-			function makeNewEntry(icon,id,pid,txt,open,ct,tab){
-					if(treeData[indexOfEntry(pid)]){
-						if(treeData[indexOfEntry(pid)].loaded){
+function makeNewEntry(icon,id,pid,txt,open,ct,tab){
+		if(treeData[indexOfEntry(pid)]&&treeData[indexOfEntry(pid)].loaded){
 
-	 						if(ct=="folder") ct="group";
-	 						else ct="item";
+				ct=(ct=="folder"? "group":"item");
 
-							var attribs=new Array();
+				var attribs={
+				"id":id,
+				"icon":icon,
+				"text":txt,
+				"parentid":pid,
+				"open":open,
+				"tooltip":id,
+				"typ":ct,
+				"selected":0,
+				"disabled":0
+				};
 
-							attribs["id"]=id;
-							attribs["icon"]=icon;
-							attribs["text"]=txt;
-							attribs["parentid"]=pid;
-							attribs["open"]=open;
+				if(attribs["typ"]=="item") attribs["published"]=0;
 
-	 						attribs["tooltip"]=id;
-	 						attribs["typ"]=ct;
+				treeData.addSort(new node(attribs));
 
-
-							attribs["disabled"]=0;
-							if(attribs["typ"]=="item") attribs["published"]=0;
-
-							attribs["selected"]=0;
-
-							treeData.addSort(new node(attribs));
-
-							drawTree();
-						}
-					}
-			}
+				drawTree();
+			
+		}
+}
 			';
 	}
 

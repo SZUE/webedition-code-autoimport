@@ -56,7 +56,7 @@ function zeichne(startEntry, zweigEintrag) {
 		ret += zweigEintrag;
 		if (nf[ai].typ == 'file') {
 			ret += "&nbsp;&nbsp;<img src=\"" + tree_img_dir +
-						(ai == nf.laenge?
+							(ai == nf.laenge ?
 											"kreuzungend.gif" :
 											"kreuzung.gif"
 											) +
@@ -85,12 +85,13 @@ function zeichne(startEntry, zweigEintrag) {
 							"</a>" +
 							"&nbsp;&nbsp;<br/>";
 			if (nf[ai].offen) {
-				if (ai == nf.laenge) {
-					newAst = newAst + "<IMG SRC=\"" + tree_img_dir + "leer.gif\" class=\"treeKreuz\">";
-				} else {
-					newAst = newAst + "<IMG SRC=\"" + tree_img_dir + "strich2.gif\" class=\"treeKreuz\">";
-				}
-				ret+=zeichne(nf[ai].name, newAst);
+				newAst += "<IMG SRC=\"" + tree_img_dir +
+								(ai == nf.laenge ?
+												"leer.gif" :
+												"strich2.gif"
+												) + "\" class=\"treeKreuz\">";
+
+				ret += zeichne(nf[ai].name, newAst);
 			}
 		}
 		ai++;
@@ -125,12 +126,11 @@ function deleteEntry(id, type) {
 	var ai = 1;
 	var ind = 0;
 	while (ai <= menuDaten.laenge) {
-		if ((menuDaten[ai].typ == type)) {
-			if (menuDaten[ai].name == id) {
-				ind = ai;
-				break;
-			}
-			}
+		if ((menuDaten[ai].typ == type) && menuDaten[ai].name == id) {
+			ind = ai;
+			break;
+
+		}
 		ai++;
 	}
 	if (ind != 0) {
