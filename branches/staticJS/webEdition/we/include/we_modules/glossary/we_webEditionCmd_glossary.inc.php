@@ -36,12 +36,11 @@
 							) {
 
 				var transaction = _EditorFrame.getEditorTransaction();
-				url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?we_cmd[0]=glossary_check&we_cmd[2]=" + transaction + "&we_cmd[3]=checkOnly";
+				url = "/webEdition/we_cmd.php?we_cmd[0]=glossary_check&we_cmd[2]=" + transaction + "&we_cmd[3]=checkOnly";
 				new jsWindow(url, "glossary_check", -1, -1, 730, 400, true, false, true);
 
 			} else {
-<?php echo we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[glossary_check_not_avalaible]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-
+				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "glossary_edit_acronym":
@@ -69,10 +68,7 @@
 		case "glossary_dictionaries":
 			new jsWindow(url, "edit_glossary_dictionaries", -1, -1, 490, 250, true, true, true, true);
 			break;
-<?php
-if($GLOBALS['weFrontendLanguages']){
-
-	echo '	case ((arguments[0].substr(0, 15) == "GlossaryXYZnew_") ? arguments[0] : false):' .
+case ((arguments[0].substr(0, 15) == "GlossaryXYZnew_") ? arguments[0] : false):' .
 	"		tempargs = arguments[0].split(\"\XYZ\");
 				var fo=false;
 				for(var k=jsWindow_count-1;k>-1;k--) {
@@ -83,8 +79,6 @@ if($GLOBALS['weFrontendLanguages']){
 				}
 				wind.focus();
 				break;";
-}
-?>
 		case "new_glossary_acronym":
 		case "new_glossary_abbreviation":
 		case "new_glossary_foreignword":

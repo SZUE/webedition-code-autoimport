@@ -28,55 +28,57 @@
 		case "browse_users":
 <?php if(permissionhandler::hasPerm("NEW_USER") || permissionhandler::hasPerm("NEW_GROUP") || permissionhandler::hasPerm("SAVE_USER") || permissionhandler::hasPerm("SAVE_GROUP") || permissionhandler::hasPerm("DELETE_USER") || permissionhandler::hasPerm("DELETE_GROUP")){ ?>
 				new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
-	<?php
-} else {
-	echo we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
-}
-?>
-			break;
-		case "users_edit":
-		case "users_edit_ifthere":
-<?php if(permissionhandler::hasPerm("NEW_USER") || permissionhandler::hasPerm("SAVE_USER") || permissionhandler::hasPerm("NEW_GROUP") || permissionhandler::hasPerm("SAVE_GROUP") || permissionhandler::hasPerm("DELETE_USER") || permissionhandler::hasPerm("DELETE_GROUP")){ ?>
-				new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
-	<?php
-} else {
-	echo we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
-}
-?>
+<?php } else {
+	?>
+				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+	<?php } ?>
+				break;
+			case "users_edit":
+			case "users_edit_ifthere":
+	<?php if(permissionhandler::hasPerm("NEW_USER") || permissionhandler::hasPerm("SAVE_USER") || permissionhandler::hasPerm("NEW_GROUP") || permissionhandler::hasPerm("SAVE_GROUP") || permissionhandler::hasPerm("DELETE_USER") || permissionhandler::hasPerm("DELETE_GROUP")){ ?>
+					new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+	<?php } else {
+		?>
+					top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+		<?php
+	}
+	?>
 
-			break;
-		case "new_user":
-		case "save_user":
-		case "new_group":
-		case "new_alias":
-		case "exit_users":
-		case "delete_user":
-		case "new_organization":
-<?php if(permissionhandler::hasPerm("EDIT_USER")){ ?>
-				var fo = false;
-				if (jsWindow_count) {
-					for (var k = jsWindow_count - 1; k > -1; k--) {
-						eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + arguments[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-						if (fo)
-							break;
+				break;
+			case "new_user":
+			case "save_user":
+			case "new_group":
+			case "new_alias":
+			case "exit_users":
+			case "delete_user":
+			case "new_organization":
+	<?php if(permissionhandler::hasPerm("EDIT_USER")){ ?>
+					var fo = false;
+					if (jsWindow_count) {
+						for (var k = jsWindow_count - 1; k > -1; k--) {
+							eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + arguments[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
+							if (fo)
+								break;
+						}
+						if (wind)
+							wind.focus();
 					}
-					if (wind)
-						wind.focus();
-				}
-	<?php
-} else {
-	echo we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
-}
-?>
-			break;
-		case "doctypes":
-<?php if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){ ?>
-				new jsWindow(url, "doctypes", -1, -1, 720, 670, true, true, true);
-	<?php
-} else {
-	echo we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
-}
-?>
+	<?php } else {
+		?>
+					top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+		<?php
+	}
+	?>
+				break;
+			case "doctypes":
+	<?php if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){ ?>
+					new jsWindow(url, "doctypes", -1, -1, 720, 670, true, true, true);
+	<?php } else {
+		?>
+					top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+		<?php
+	}
+	?>
 			break;
 		case "users_unlock":
 			top.YAHOO.util.Connect.asyncRequest('GET', url, {success: weDummy, failure: weDummy});
