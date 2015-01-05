@@ -41,7 +41,9 @@ function checkIfValidStartdocument($id, $type = 'document'){
 
 
 function _buildJsCommand($cmdArray = array('', '', 'cockpit', 'open_cockpit', '', '', '', '', '')){
-	return 'if(top && top.weEditorFrameController) top.weEditorFrameController.openDocument("' . implode('", "', $cmdArray) . '");';
+	return 'if(top && top.weEditorFrameController){
+		top.weEditorFrameController.openDocument("' . implode('", "', $cmdArray) . '");
+}';
 }
 
 $jsCommand = '';

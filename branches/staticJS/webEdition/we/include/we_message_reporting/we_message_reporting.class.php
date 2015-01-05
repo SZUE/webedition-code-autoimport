@@ -57,13 +57,19 @@ abstract class we_message_reporting{
 	}
 
 	public static function prepareMsgForJS($message){
-		return strtr($message, array(
-			"\n" => '###NL###',
-			'\n' => '###NL###',
-			'\\' => '\\\\',
-			'"' => '\\"',
-			'###NL###' => '\n'
-		));
+		return str_replace(array(
+			"\n",
+			'\n',
+			'\\',
+			'"',
+			'###NL###'
+			), array(
+			'###NL###',
+			'###NL###',
+			'\\\\',
+			'\\"',
+			), $message
+		);
 	}
 
 	public static function jsString(){
@@ -74,7 +80,7 @@ var we_string_message_reporting_error = "' . g_l('alert', '[error]') . '";
 ');
 	}
 
-	public static function getJSLevelVar(){
+	public static function getJSLevelVar(){//FIXME: remove this, use we_showMessage => see we_showMessage
 		return
 			'var WE_MESSAGE_NOTICE = ' . we_message_reporting::WE_MESSAGE_NOTICE . ';
 	var WE_MESSAGE_WARNING = ' . we_message_reporting::WE_MESSAGE_WARNING . ';

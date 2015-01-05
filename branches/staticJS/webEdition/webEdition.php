@@ -63,7 +63,21 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
  we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
  we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
+ we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
  we_message_reporting::jsString();
+
+if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
+	$_table_to_load = FILE_TABLE;
+} else if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
+	$_table_to_load = TEMPLATES_TABLE;
+} else if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+	$_table_to_load = OBJECT_FILES_TABLE;
+} else if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
+	$_table_to_load = OBJECT_TABLE;
+}else{
+	$_table_to_load = "";
+}
+
 ?>
 
 <script type="text/javascript"><!--
@@ -103,6 +117,24 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 		"DELETE_DOC_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_DOC_FOLDER") ? 1 : 0; ?>,
 		"DELETE_TEMP_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_TEMP_FOLDER") ? 1 : 0; ?>
 	};
+
+	var g_l = {
+		'unable_to_call_setpagenr': "<?php echo g_l('global', '[unable_to_call_setpagenr]'); ?>",
+		'open_link_in_SEEM_edit_include': '<?php echo we_message_reporting::prepareMsgForJS(g_l('SEEM', '[open_link_in_SEEM_edit_include]')); ?>',
+		'browser_crashed': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[browser_crashed]')); ?>'
+	};
+
+	var userID =<?php echo $_SESSION["user"]["ID"]; ?>;
+	var size = {
+		'tree': {
+			'hidden':<?php echo weTree::HiddenWidth; ?>,
+			'default':<?php echo weTree::DefaultWidth; ?>,
+			'min':<?php echo weTree::MinWidth; ?>
+		}
+	};
+
+	var table_to_load="<?php echo $_table_to_load;?>";
+
 	/*##################### messaging function #####################*/
 
 	// this variable contains settings how to deal with settings
@@ -128,106 +160,13 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 		success: function (o) {
 		},
 		failure: function (o) {
-			alert("<?php echo g_l('global', '[unable_to_call_setpagenr]'); ?>");
+			alert(g_l.unable_to_call_setpagenr);
 		}
 	};
 
-	/**
-	 * setting is built like the unix file system privileges with the 3 options
-	 * see notices, see warnings, see errors
-	 *
-	 * 1 => see Notices
-	 * 2 => see Warnings
-	 * 4 => see Errors
-	 *
-	 * @param message string
-	 * @param prio integer one of the values 1,2,4
-	 * @param win object reference to the calling window
-	 */
-	function showMessage(message, prio, win) {
-		if (!win) {
-			win = this.window;
-		}
-		 // default is error, to avoid missing messages
-		prio = prio ? prio : <?php echo we_message_reporting::WE_MESSAGE_ERROR; ?>;
-
-		// always show in console !
-		messageConsole.addMessage(prio, message);
-
-		if (prio & messageSettings) { // show it, if you should
-
-			// the used vars are in file JS_DIR . "weJsStrings.php";
-			switch (prio) {
-				// Notice
-				case <?php echo we_message_reporting::WE_MESSAGE_NOTICE; ?>:
-					win.alert(we_string_message_reporting_notice + ":\n" + message);
-					break;
-
-					// Warning
-				case <?php echo we_message_reporting::WE_MESSAGE_WARNING; ?>:
-					win.alert(we_string_message_reporting_warning + ":\n" + message);
-					break;
-
-					// Error
-				case <?php echo we_message_reporting::WE_MESSAGE_ERROR; ?>:
-					win.alert(we_string_message_reporting_error + ":\n" + message);
-					break;
-			}
-		}
-	}
-
-	/*##############################################################*/
-
-	function weDummy(o) { // AJAX Requests
-		// dummy
-	}
 
 	if (self.location !== top.location) {
 		top.location = self.location;
-	}
-
-// new functions
-	function doClickDirect(id, ct, table, fenster) {
-		if (!fenster) {
-			fenster = window;
-		}
-		//  the actual position is the top-window, maybe the first window was closed
-		if (!fenster.top.opener || /*fenster.top.opener.win || FIXME: what is win??*/ fenster.top.opener.closed) {
-			top.weEditorFrameController.openDocument(table, id, ct);
-
-		} else {
-			//  If a include-file is edited and another link is chosen, it will appear on the main window. And the pop-up will be closed.
-<?php echo we_message_reporting::getShowMessageCall(g_l('SEEM', '[open_link_in_SEEM_edit_include]'), we_message_reporting::WE_MESSAGE_WARNING); ?>
-			top.opener.top.doClickDirect(id, ct, table, top.opener);
-			// clean session
-			// get the EditorFrame - this is important due to edit_include_mode!!!!
-			var _ActiveEditor = top.weEditorFrameController.getActiveEditorFrame();
-			if (_ActiveEditor) {
-				trans = _ActiveEditor.getEditorTransaction();
-				if (trans) {
-					top.we_cmd('users_unlock', _ActiveEditor.getEditorDocumentId(), '<?php echo $_SESSION["user"]["ID"]; ?>', _ActiveEditor.getEditorEditorTable(), trans);
-				}
-			}
-			top.close();
-		}
-	}
-
-	function doClickWithParameters(id, ct, table, parameters) {
-		top.weEditorFrameController.openDocument(table, id, ct, '', '', '', '', '', parameters);
-
-	}
-
-	function doExtClick(url) {
-
-		// split url in url and parameters !!!
-		var parameters = "";
-		if ((_position = url.indexOf("?")) != -1) {
-			parameters = url.substring(_position);
-			url = url.substring(0, _position);
-		}
-
-		top.weEditorFrameController.openDocument('', '', '', '', '', url, '', '', parameters);
-
 	}
 
 <?php
@@ -253,45 +192,6 @@ if(defined('MESSAGING_SYSTEM')){
 }
 ?>
 
-
-	function weSetCookie(name, value, expires, path, domain) {
-		var doc = self.document;
-		doc.cookie = name + "=" + encodeURI(value) +
-						((expires === null) ? "" : "; expires=" + expires.toGMTString()) +
-						((path === null) ? "" : "; path=" + path) +
-						((domain === null) ? "" : "; domain=" + domain);
-	}
-
-	function treeResized() {
-//FIXME: remove - it is obsolete
-		var treeWidth = getTreeWidth();
-		if (treeWidth <= <?php echo weTree::HiddenWidth; ?>) {
-			setTreeArrow("right");
-		} else {
-			setTreeArrow("left");
-			storeTreeWidth(treeWidth);
-		}
-	}
-
-	var oldTreeWidth = <?php echo weTree::DefaultWidth; ?>;
-	function toggleTree() {
-		var tfd = self.rframe.document.getElementById("treeFrameDiv");
-		var w = top.getTreeWidth();
-
-		if (tfd.style.display == "none") {
-			oldTreeWidth = (oldTreeWidth <<?php echo weTree::MinWidth; ?> ?<?php echo weTree::DefaultWidth; ?> : oldTreeWidth);
-			setTreeWidth(oldTreeWidth);
-			tfd.style.display = "block";
-			setTreeArrow("left");
-			storeTreeWidth(oldTreeWidth);
-		} else {
-			tfd.style.display = "none";
-			oldTreeWidth = w;
-			setTreeWidth(<?php echo weTree::HiddenWidth; ?>);
-			setTreeArrow("right");
-		}
-	}
-
 	function setTreeArrow(direction) {
 		try {
 			self.rframe.document.getElementById("arrowImg").src = "<?php echo BUTTONS_DIR; ?>icons/direction_" + direction + ".gif";
@@ -308,107 +208,9 @@ if(defined('MESSAGING_SYSTEM')){
 		}
 	}
 
-	function getTreeWidth() {
-		var w = self.rframe.document.getElementById("bframeDiv").style.width;
-		return w.substr(0, w.length - 2);
-	}
-
-	function getSidebarWidth() {
-		var obj = self.rframe.document.getElementById("sidebarDiv");
-		if (obj === undefined || obj === null) {
-			return 0;
-		}
-		var w = obj.style.left;
-		return w.substr(0, w.length - 2);
-	}
-
-	function setSidebarWidth() {
-		var obj = self.rframe.document.getElementById("sidebarDiv");
-		if (obj !== undefined && obj !== null) {
-			obj.style.left = w + "px";
-		}
-	}
-
-	function setTreeWidth(w) {
-		self.rframe.document.getElementById("bframeDiv").style.width = w + "px";
-		self.rframe.document.getElementById("bm_content_frameDiv").style.left = w + "px";
-		if (w ><?php echo weTree::HiddenWidth; ?>) {
-			storeTreeWidth(w);
-		}
-	}
-
-	function storeTreeWidth(w) {
-		var ablauf = new Date();
-		var newTime = ablauf.getTime() + 30758400000;
-		ablauf.setTime(newTime);
-		weSetCookie("treewidth_main", w, ablauf, "/");
-	}
-
-	function focusise() {
-		setTimeout("self.makefocus.focus();self.makefocus=null;", 200);
-	}
-
-	function we_repl(target, url) {
-		if (target) {
-			try {
-				// use 2 loadframes to avoid missing cmds
-				if (target.name === "load" || target.name === "load2") {
-					if (top.lastUsedLoadFrame === target.name) {
-						target = (target.name === "load" ?
-										self.load2 :
-										self.load);
-					}
-					top.lastUsedLoadFrame = target.name;
-				}
-			} catch (e) {
-				// Nothing
-			}
-			if (target.location === undefined) {
-				target.src = url;
-			} else {
-				target.location.replace(url);
-			}
-		}
-	}
-
-	function submit_we_form(formlocation, target, url) {
-		try {
-			if (formlocation) {
-				if (formlocation.we_submitForm) {
-					formlocation.we_submitForm(target.name, url);
-					return true;
-				}
-				if (formlocation.contentWindow.we_submitForm) {
-					formlocation.contentWindow.we_submitForm(target.name, url);
-					return true;
-				}
-			}
-		} catch (e) {
-		}
-		return false;
-	}
-
-	function we_sbmtFrm(target, url, source) {
-		if (typeof (source) === "undefined") {
-			source = top.weEditorFrameController.getVisibleEditorFrame();
-		}
-		return submit_we_form(source, target, url);
-
-	}
-
-	function we_sbmtFrmC(target, url) {
-		return submit_we_form(top.weEditorFrameController.getActiveDocumentReference(), target, url);
-	}
-
-	function we_setEditorWasLoaded(flag) {
-		// imi: console.log("we_setEditorWasLoaded: " + flag);
-		//flag = true; //uncomment to keep first weEditorWasLoaded=true for the rest of the session
-		self.weEditorWasLoaded = flag;
-	}
-
 	function we_cmd() {
 		var hasPerm = false;
-		var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
+		var url = "/webEdition/we_cmd.php?";
 		for (var i = 0; i < arguments.length; i++) {
 			url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 			if (i < (arguments.length - 1))
@@ -455,14 +257,14 @@ if(($_jsincludes = we_tool_lookup::getJsCmdInclude())){
 	}
 }
 $modSwitch = str_replace(
-		array_merge(explode("\n", we_html_element::jsElement()), array(
+	array_merge(explode("\n", we_html_element::jsElement()), array(
 	'switch (WE_REMOVE) {',
 	'switch(WE_REMOVE){',
 	'switch(WE_REMOVE) {',
 	'switch (WE_REMOVE){',
 	'}//WE_REMOVE'
-				)
-		), '', ob_get_clean()
+		)
+	), '', ob_get_clean()
 );
 
 echo $modSwitch; // deal with not activated modules
@@ -1327,94 +1129,20 @@ pWebEdition_JSwe_cmds();
 		}
 
 	}
-	// use this to submit a cmd with post (if you have much data, which is to long for the url);  // not testet very much!!!
-	function doPostCmd(cmds, target) {
-		var doc = self.postframe.document;
-		if (doc.forms[0]) {
-			doc.body.removeChild(doc.forms[0]);
-		}
-		var formElement = doc.createElement("FORM");
-		formElement.action = '<?php echo WEBEDITION_DIR; ?>we_cmd.php';
-		formElement.method = "post";
-		formElement.target = target;
 
-		var hiddens = new Array();
-		for (var i = 0; i < cmds.length; i++) {
-			var hid = doc.createElement("INPUT");
-			hid.name = "we_cmd[" + i + "]";
-			hid.value = cmds[i];
-			formElement.appendChild(hid);
-		}
-		doc.body.appendChild(formElement);
-		formElement.submit();
-	}
-
-	function doSave(url, trans, cmd) {
-		_EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction(trans);
-		// _EditorFrame.setEditorIsHot(false);
-		if (_EditorFrame.getEditorAutoRebuild())
-			url += "&we_cmd[8]=1";
-		if (!we_sbmtFrm(self.load, url)) {
-			url += "&we_transaction=" + trans;
-			we_repl(self.load, url, cmd);
-		}
-	}
-
-	function doPublish(url, trans, cmd) {
-		if (!we_sbmtFrm(self.load, url)) {
-			url += "&we_transaction=" + trans;
-			we_repl(self.load, url, cmd);
-		}
-	}
-
-	function openWindow(url, ref, x, y, w, h, scrollbars, menues) {
-		new jsWindow(url, ref, x, y, w, h, true, scrollbars, menues);
-	}
-
-	function start() {
-		self.Tree = self.rframe;
-		self.Vtabs = self.rframe;
-		self.TreeInfo = self.rframe;
-<?php
-$_table_to_load = "";
-if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
-	$_table_to_load = FILE_TABLE;
-} else if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
-	$_table_to_load = TEMPLATES_TABLE;
-} else if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
-	$_table_to_load = OBJECT_FILES_TABLE;
-} else if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
-	$_table_to_load = OBJECT_TABLE;
-}
-
-if($_table_to_load){
-	echo 'we_cmd("load","' . $_table_to_load . '");';
-}
-?>
-	}
-
-	function openBrowser(url) {
-		if (!url) {
-			url = "/";
-		}
-		try {
-			browserwind = window.open("<?php echo WEBEDITION_DIR; ?>openBrowser.php?url=" + encodeURI(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
-		} catch (e) {
-<?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[browser_crashed]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-		}
-	}
-<?php
+	<?php
 pWebEdition_JSFunctions();
 ?>
 	var cockpitFrame;
 //-->
 </script>
 <?php
+echo we_html_element::jsScript(JS_DIR . 'webEdition.js');
 $SEEM_edit_include = we_base_request::_(we_base_request::BOOL, "SEEM_edit_include");
 we_main_header::pCSS($SEEM_edit_include);
 ?>
 </head>
-<body style="background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;" onbeforeunload="doUnload()">
+<body id="weMainBody" onbeforeunload="doUnload()">
 	<?php
 	flush();
 //	get the frameset for the actual mode.
@@ -1428,6 +1156,9 @@ we_main_header::pCSS($SEEM_edit_include);
 <?php
 flush();
 if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
+	if(function_exists('fastcgi_finish_request')){
+		fastcgi_finish_request();
+	}
 	session_write_close();
 // trigger scheduler
 	we_schedpro::trigger_schedule();

@@ -162,7 +162,7 @@ echo implode(',', $tmp);
 	}
 //-->
 </script>
-<div style="position:absolute;top:8px;left:5px;z-index:10;border-left:1px solid #909090;border-bottom:1px solid #909090;text-decoration:none ">
+<div id="vtab">
 	<script type="text/javascript"><!--
 	for (var i = 0; i < we_tabs.length; i++) {
 			if (we_tabs[i] !== null) {
@@ -190,6 +190,8 @@ if(($tab = we_base_request::_(we_base_request::STRING, "table"))){
 //-->
 	</script>
 </div>
-<img id="incBaum" src="<?php echo BUTTONS_DIR ?>icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;<?php echo ($_treewidth <= 100) ? 'bgcolor:grey;' : ''; ?>" onclick="incTree();">
-<img id="decBaum" src="<?php echo BUTTONS_DIR ?>icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;<?php echo ($_treewidth <= 100) ? 'bgcolor:grey;' : ''; ?>" onclick="decTree();">
-<img id="arrowImg" src="<?php echo BUTTONS_DIR ?>icons/direction_<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onclick="toggleTree();">
+<div id="baumArrows">
+<img class="baumArrow" src="<?php echo BUTTONS_DIR ?>icons/function_plus.gif" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();">
+<img class="baumArrow" src="<?php echo BUTTONS_DIR ?>icons/function_minus.gif" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();">
+<img class="baumArrow" src="<?php echo BUTTONS_DIR ?>icons/direction_<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>.gif" onclick="toggleTree();">
+</div>

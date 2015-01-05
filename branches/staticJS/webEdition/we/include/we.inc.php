@@ -129,7 +129,11 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 	$GLOBALS['WE_BACKENDCHARSET'] = (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] ?
 			$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
 
-	include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
+	define('SCRIPT_BUTTONS_ONLY', we_html_element::jsScript(JS_DIR . 'weButton.js'));
+	define('STYLESHEET_BUTTONS_ONLY', we_html_element::cssLink(CSS_DIR . 'we_button.css'));
+	define('STYLESHEET_SCRIPT', we_html_element::cssLink(CSS_DIR . 'global.php') . STYLESHEET_BUTTONS_ONLY . we_html_element::cssLink(CSS_DIR . 'webEdition.css'));
+	define('STYLESHEET', STYLESHEET_SCRIPT . SCRIPT_BUTTONS_ONLY);
+
 
 	//send header?
 	switch(isset($_REQUEST['we_cmd']) && !is_array($_REQUEST['we_cmd']) ? we_base_request::_(we_base_request::STRING, 'we_cmd', '__default__') : ''){

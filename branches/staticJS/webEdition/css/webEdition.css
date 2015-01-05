@@ -1,0 +1,103 @@
+/**
+ * webEdition CMS
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
+#weMainBody{
+	background-color:grey;
+	margin: 0px;
+	position:fixed;
+	top:0px;
+	left:0px;
+	right:0px;
+	bottom:0px;
+	border:0px none;
+}
+#resizeFrame{
+	margin:0px;
+	border:0px none;
+	position:absolute;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	overflow:hidden;
+}
+#bframeDiv{
+	position:absolute;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	display:none;
+	border-right:1px solid black;
+}
+
+#vtab{
+	position:absolute;
+	top:8px;
+	left:5px;
+	z-index:10;
+	border-left:1px solid #909090;
+	border-bottom:1px solid #909090;
+	text-decoration:none
+}
+
+#baumArrows{
+	position:absolute;
+	left:5px;
+	bottom: 13px;
+}
+
+img.baumArrow{
+	margin-top: 5px;
+	width:9px;
+	height:12px;
+	border:1px solid grey;
+	padding:0 1px;
+	cursor: pointer;
+}
+#treeFrameDiv{
+	position:absolute;
+	top:0px;
+	bottom:0px;
+	left:24px;
+	right:0px;
+	border:0px;
+	overflow: hidden;
+}
+#bm_treeheaderDiv{
+	position:absolute;
+	top:0px;
+	height:1px;
+	left:0px;
+	right:0px;
+	overflow: hidden;
+}
+#bm_mainDiv{
+	position:absolute;
+	top:1px;
+	bottom:40px;
+	left:0px;
+	right:0px;
+	overflow: auto;
+	background-color:#F3F7FF;
+}

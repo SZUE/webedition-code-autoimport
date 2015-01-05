@@ -164,7 +164,9 @@ class we_shop_statusMails{
 			'languageFieldIsISO' => 0
 			), $documentsarray
 		);
-		$zw2 = strtr(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShopStatusMails"', '', $DB_WE), array('O:17:"weShopStatusMails":' => 'O:19:"we_shop_statusMails":'));
+		$zw2 = strtr(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShopStatusMails"', '', $DB_WE), array(
+			'O:17:"weShopStatusMails":' => 'O:19:"we_shop_statusMails":'
+		));
 
 		if($zw2){
 			$zw2 = unserialize($zw2);
@@ -276,7 +278,11 @@ class we_shop_statusMails{
 			$phpmail->setIsEmbedImages(true);
 
 			$phpmail->addHTMLPart($codes);
-			$phpmail->addTextPart(strip_tags(strtr($codes, array('&nbsp;' => ' ', '<br />' => "\n", '<br/>' => "\n"))));
+			$phpmail->addTextPart(strip_tags(strtr($codes, array(
+				'&nbsp;' => ' ',
+				'<br />' => "\n",
+				'<br/>' => "\n"
+			))));
 			$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField'] != '' && isset($cdata[$this->EMailData['titleField']]) && $cdata[$this->EMailData['titleField']] != '' ) ? $cdata[$this->EMailData['titleField']] . ' ' : '') . $cdata['Forename'] . ' ' . $cdata['Surname']);
 			if(isset($this->EMailData['bcc']) && $this->EMailData['bcc'] != ''){
 				$bccArray = explode(',', $this->EMailData['bcc']);

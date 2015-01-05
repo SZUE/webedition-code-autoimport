@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
 function gel(id_) {
 	return document.getElementById ? document.getElementById(id_) : null;
 }
@@ -780,5 +779,3 @@ function newMessage(username) {
 		new jsWindow('webEdition/we/include/we_modules/messaging/messaging_newmessage.php?we_transaction=' + transact + '&mode=u_' + encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
 	}
 }
-
-addCss();

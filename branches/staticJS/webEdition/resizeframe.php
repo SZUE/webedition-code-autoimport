@@ -50,7 +50,7 @@ function startNormalMode(){
 	$_treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= weTree::MinWidth) ? $_COOKIE["treewidth_main"] : weTree::DefaultWidth;
 	?>
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;border: 0px;">
-		<div style="position:absolute;top:0px;bottom:0px;left:0px;width:<?php echo $_treewidth; ?>px;border-right:1px solid black;" id="bframeDiv">
+		<div style="width:<?php echo $_treewidth; ?>px;display:block;" id="bframeDiv">
 			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 		</div>
 		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:<?php echo $_treewidth; ?>px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
@@ -89,7 +89,7 @@ function startSEEMMode(){
 	$_sidebarwidth = getSidebarWidth();
 	?>
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;border: 0px;">
-		<div style="position:absolute;top:0px;bottom:0px;left:0px;display:none;border-right:1px solid black;" id="bframeDiv">
+		<div id="bframeDiv">
 			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 		</div>
 		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:0px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
@@ -131,21 +131,21 @@ function startSEEMMode(){
 //-->
 </script>
 </head>
-<?php
+<body id="resizeFrame">
+	<?php
 //	Here begins the controller of the page
 //  Edit an included file with SEEM.
-if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
-	startEditIncludeMode();
+	if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
+		startEditIncludeMode();
 
 //  We are in SEEM-Mode
-} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-	startSEEMMode();
+	} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
+		startSEEMMode();
 
 //  Open webEdition normally
-} else {
-	echo '<body style="margin:0px;border:0px none;position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow:hidden;">';
-	startNormalMode();
-	echo '</body>';
-}
-?>
+	} else {
+		startNormalMode();
+	}
+	?>
+</body>
 </html>

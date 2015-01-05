@@ -159,7 +159,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		//-->
 	</script>
 	<?php
-	echo we_html_element::jsScript(JS_DIR . 'home.js')
+	echo we_html_element::jsScript(JS_DIR . 'home.js', array('onload' => 'addCss();'))
 	?>
 	</head>
 	<?php

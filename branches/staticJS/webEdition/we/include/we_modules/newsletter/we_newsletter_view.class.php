@@ -1990,8 +1990,8 @@ self.close();');
 					$content = $blockHtml ?
 							$blockHtml :
 							strtr($block->Source, array(
-								"\r\n" => "\n",
-								"\r" => "\n",
+								"\r\n" => '<br/>',
+								"\r" => '<br/>',
 								'&' => '&amp;',
 								'<' => '&lt;',
 								'>' => '&gt;',

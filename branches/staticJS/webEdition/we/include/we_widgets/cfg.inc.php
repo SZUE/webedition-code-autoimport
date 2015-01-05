@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -78,95 +77,97 @@ if(permissionhandler::hasPerm('EDIT_SETTINGS')){
 	$shortCuts_right[] = 'preferences';
 }
 
-$aPrefs['sct'] = array(
-	'width' => $small,
-	'height' => 210,
-	'res' => 0,
-	'cls' => 'red',
-	'csv' => implode(',', $sc1) . ';' . implode(',', $sc2),
-	'dlgHeight' => 435,
-	'isResizable' => 1
-);
-$aPrefs['rss'] = array(
-	'width' => $small,
-	'height' => 307,
-	'res' => 0,
-	'cls' => 'yellow',
-	'csv' => base64_encode('http://www.webedition.org/de/feeds/aktuelles.xml') . ',111000,0,110000,1',
-	'dlgHeight' => 480,
-	'isResizable' => 1
-);
-$aPrefs['mfd'] = array(
-	'width' => $large,
-	'height' => 210,
-	'res' => 1,
-	'cls' => 'lightCyan',
-	'csv' => $shortCutsDocs . $shortCutsTemplates . $shortCutsObjects . $shortCutsClasses . ';0;5;00;',
-	'dlgHeight' => 435,
-	'isResizable' => 0
-);
-$aPrefs['shp'] = array(
-	'width' => $large,
-	'height' => 212,
-	'res' => 1,
-	'cls' => 'lightCyan',
-	'csv' => '1111;3;10000;',
-	'dlgHeight' => 435,
-	'isResizable' => 0
-);
-$aPrefs['msg'] = array(
-	'width' => $small,
-	'height' => 100,
-	'res' => 0,
-	'cls' => 'lightCyan',
-	'csv' => '',
-	'dlgHeight' => 140,
-	'isResizable' => 1
-);
-$aPrefs['fdl'] = array(
-	'width' => $large,
-	'height' => 210,
-	'res' => 1,
-	'cls' => 'orange',
-	'csv' => '',
-	'dlgHeight' => 435,
-	'isResizable' => 0
-);
-$aPrefs['usr'] = array(
-	'width' => $small,
-	'height' => 210,
-	'res' => 0,
-	'cls' => 'lightCyan',
-	'csv' => '',
-	'dlgHeight' => 140,
-	'isResizable' => 1
-);
-$aPrefs['upb'] = array(
-	'width' => $small,
-	'height' => 210,
-	'res' => 0,
-	'cls' => 'lightCyan',
-	'csv' => $shortCutsDocs . $shortCutsObjects,
-	'dlgHeight' => 190,
-	'isResizable' => 1
-);
-$aPrefs['mdc'] = array(
-	'width' => $small,
-	'height' => 307,
-	'res' => 0,
-	'cls' => 'white',
-	'csv' => ';10;',
-	'dlgHeight' => 450,
-	'isResizable' => 1
-);
-$aPrefs['pad'] = array(
-	'width' => $large,
-	'height' => 307,
-	'res' => 1,
-	'cls' => 'blue',
-	'csv' => base64_encode(g_l('cockpit', '[notepad_defaultTitle_DO_NOT_TOUCH]')) . ',30020',
-	'dlgHeight' => 560,
-	'isResizable' => 0
+$aPrefs = array(
+	'sct' => array(
+		'width' => $small,
+		'height' => 210,
+		'res' => 0,
+		'cls' => 'red',
+		'csv' => implode(',', $sc1) . ';' . implode(',', $sc2),
+		'dlgHeight' => 435,
+		'isResizable' => 1
+	),
+	'rss' => array(
+		'width' => $small,
+		'height' => 307,
+		'res' => 0,
+		'cls' => 'yellow',
+		'csv' => base64_encode('http://www.webedition.org/de/feeds/aktuelles.xml') . ',111000,0,110000,1',
+		'dlgHeight' => 480,
+		'isResizable' => 1
+	),
+	'mfd' => array(
+		'width' => $large,
+		'height' => 210,
+		'res' => 1,
+		'cls' => 'lightCyan',
+		'csv' => $shortCutsDocs . $shortCutsTemplates . $shortCutsObjects . $shortCutsClasses . ';0;5;00;',
+		'dlgHeight' => 435,
+		'isResizable' => 0
+	),
+	'shp' => array(
+		'width' => $large,
+		'height' => 212,
+		'res' => 1,
+		'cls' => 'lightCyan',
+		'csv' => '1111;3;10000;',
+		'dlgHeight' => 435,
+		'isResizable' => 0
+	),
+	'msg' => array(
+		'width' => $small,
+		'height' => 100,
+		'res' => 0,
+		'cls' => 'lightCyan',
+		'csv' => '',
+		'dlgHeight' => 140,
+		'isResizable' => 1
+	),
+	'fdl' => array(
+		'width' => $large,
+		'height' => 210,
+		'res' => 1,
+		'cls' => 'orange',
+		'csv' => '',
+		'dlgHeight' => 435,
+		'isResizable' => 0
+	),
+	'usr' => array(
+		'width' => $small,
+		'height' => 210,
+		'res' => 0,
+		'cls' => 'lightCyan',
+		'csv' => '',
+		'dlgHeight' => 140,
+		'isResizable' => 1
+	),
+	'upb' => array(
+		'width' => $small,
+		'height' => 210,
+		'res' => 0,
+		'cls' => 'lightCyan',
+		'csv' => $shortCutsDocs . $shortCutsObjects,
+		'dlgHeight' => 190,
+		'isResizable' => 1
+	),
+	'mdc' => array(
+		'width' => $small,
+		'height' => 307,
+		'res' => 0,
+		'cls' => 'white',
+		'csv' => ';10;',
+		'dlgHeight' => 450,
+		'isResizable' => 1
+	),
+	'pad' => array(
+		'width' => $large,
+		'height' => 307,
+		'res' => 1,
+		'cls' => 'blue',
+		'csv' => base64_encode(g_l('cockpit', '[notepad_defaultTitle_DO_NOT_TOUCH]')) . ',30020',
+		'dlgHeight' => 560,
+		'isResizable' => 0
+	),
 );
 
 $aCfgProps = array(

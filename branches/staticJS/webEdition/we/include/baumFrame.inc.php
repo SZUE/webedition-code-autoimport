@@ -27,11 +27,11 @@ $table = isset($table) ? $table : FILE_TABLE;
 	<div style="position:absolute;top:0px;bottom:0px;left:0px;width:24px;overflow: hidden;background-image: url(<?php echo IMAGE_DIR; ?>v-tabs/background.gif);background-repeat:repeat-y;border-top:1px solid black;">
 		<?php include(WE_INCLUDES_PATH . 'we_vtabs.inc.php'); ?>
 	</div>
-	<div style="position:absolute;top:0px;bottom:0px;left:24px;right:0px;border:0px;overflow: hidden;" id="treeFrameDiv">
-		<div style="position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden;" id="bm_treeheaderDiv">
+	<div id="treeFrameDiv">
+		<div id="bm_treeheaderDiv">
 			<iframe frameBorder="0" src="about:blank" name="treeheader" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 		</div>
-		<div style="position:absolute;top:1px;bottom:40px;left:0px;right:0px;overflow: auto;background-color:#F3F7FF" id="bm_mainDiv">
+		<div id="bm_mainDiv">
 			<?php
 			$Tree = new weMainTree('webEdition.php', 'top', 'top.resize.left.tree', 'top.load');
 			echo $Tree->getHTMLContructX('if(top.treeResized){top.treeResized();}');
