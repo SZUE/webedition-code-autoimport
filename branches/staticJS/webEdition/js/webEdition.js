@@ -22,6 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+var regular_logout = false;
+var widthBeforeDeleteMode = 0;
+var widthBeforeDeleteModeSidebar = 0;
+var cockpitFrame;
+
+
 /**
  * setting is built like the unix file system privileges with the 3 options
  * see notices, see warnings, see errors
@@ -308,7 +314,159 @@ function start() {
 	self.Tree = self.rframe;
 	self.Vtabs = self.rframe;
 	self.TreeInfo = self.rframe;
-	if (table_to_load) {
-		we_cmd("load", table_to_load);
+	if (tables.table_to_load) {
+		we_cmd("load", tables.table_to_load);
 	}
 }
+
+function hasPermDelete(eTable, isFolder) {
+	if (eTable === "") {
+		return false;
+	}
+	if (wePerms.ADMINISTRATOR) {
+		return true;
+	}
+	switch (eTable) {
+		case tables.FILE_TABLE:
+			return (isFolder ? wePerms.DELETE_DOC_FOLDER : wePerms.DELETE_DOCUMENT);
+		case tables.TEMPLATES_TABLE:
+			return (isFolder ? wePerms.DELETE_TEMP_FOLDER : wePerms.DELETE_TEMPLATE);
+		case tables.OBJECT_FILES_TABLE:
+			return (isFolder ? wePerms.DELETE_OBJECTFILE : wePerms.DELETE_OBJECTFILE);
+		case tables.OBJECT_TABLE:
+			return (isFolder ? false : wePerms.DELETE_OBJECT);
+		default:
+			return false;
+	}
+}
+
+function toggleBusy(w) { //=> removed since no header animation anymore
+	return;/*
+	 if (w == busy || firstLoad == false) {
+	 return;
+	 }
+	 if (self.header) {
+	 if (self.header.toggleBusy) {
+	 busy = w;
+	 self.header.toggleBusy(w);
+	 return;
+	 }
+	 }
+	 setTimeout("toggleBusy(" + w + ");", 300);*/
+}
+
+
+function doUnloadSEEM(whichWindow) {
+	// unlock all open documents
+	var _usedEditors = top.weEditorFrameController.getEditorsInUse();
+
+	var docIds = "";
+	var docTables = "";
+
+	for (frameId in _usedEditors) {
+
+		if (_usedEditors[frameId].EditorType != "cockpit") {
+
+			docIds += _usedEditors[frameId].getEditorDocumentId() + ",";
+			docTables += _usedEditors[frameId].getEditorEditorTable() + ",";
+		}
+	}
+
+	if (docIds) {
+
+		top.we_cmd('users_unlock', docIds, '<?php echo $_SESSION["user"]["ID"]; ?>', docTables);
+
+		if (top.opener) {
+			top.opener.focus();
+
+		}
+	}
+	//  close the SEEM-edit-include when exists
+	if (top.edit_include) {
+		top.edit_include.close();
+	}
+	try {
+		if (jsWindow_count) {
+			for (i = 0; i < jsWindow_count; i++) {
+				eval("jsWindow" + i + "Object.close()");
+			}
+		}
+		if (browserwind) {
+			browserwind.close();
+		}
+	} catch (e) {
+
+	}
+
+	//  only when no SEEM-edit-include window is closed
+
+	if (whichWindow != "include") {
+		if (opener) {
+			opener.location.replace('/webEdition/we_loggingOut.php');
+		}
+	}
+}
+
+function doUnloadNormal(whichWindow) {
+	if (!regular_logout) {
+
+		if (typeof (tinyMceDialog) !== "undefinded" && tinyMceDialog !== null) {
+			var tinyDialog = tinyMceDialog;
+			try {
+				tinyDialog.close();
+			} catch (err) {
+			}
+		}
+
+		if (typeof (tinyMceSecondaryDialog) !== "undefinded" && tinyMceSecondaryDialog !== null) {
+			var tinyDialog = tinyMceSecondaryDialog;
+			try {
+				tinyDialog.close();
+			} catch (err) {
+			}
+		}
+
+		try {
+			if (jsWindow_count) {
+				for (i = 0; i < jsWindow_count; i++) {
+					eval("jsWindow" + i + "Object.close()");
+				}
+			}
+			if (browserwind) {
+				browserwind.close();
+			}
+		} catch (e) {
+		}
+		if (whichWindow != "include") { 	// only when no SEEM-edit-include window is closed
+			// FIXME: closing-actions for SEEM
+			if (top.opener) {
+				if (specialUnload) {
+					top.opener.location.replace('/webEdition/we_loggingOut.php?isopener=1');
+					top.opener.focus();
+				} else {
+					top.opener.history.back();
+					var logoutpopup = window.open('/webEdition/we_loggingOut.php?isopener=0', "webEdition", "width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
+					if (logoutpopup) {
+						logoutpopup.focus();
+					}
+				}
+			} else {
+				var logoutpopup = window.open('/webEdition/we_loggingOut.php?isopener=0', "webEdition", "width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
+				if (logoutpopup) {
+					logoutpopup.focus();
+				}
+			}
+		}
+	}
+
+}
+
+
+function doUnload(whichWindow) { // triggered when webEdition-window is closed
+	if (SEEMODE) {
+		doUnloadSEEM(whichWindow);
+	} else {
+		doUnloadNormal(whichWindow);
+	}
+}
+

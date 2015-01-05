@@ -64,7 +64,7 @@ echo we_html_tools::getHtmlTop() .
 echo we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js');
 ?>
 </head>
-<body onresize="setFrameSize()" onload="startMultiEditor()">
+<body onresize="setFrameSize()" onload="init();startMultiEditor();">
 	<div style="position:absolute;top:0px;bottom:0px;right:0px;left:0px;overflow: hidden;background-color: white;">
 		<div style="position:absolute;top:0px;height:22px;width:100%;background-color: Silver; border-top: 1px solid #000000;" id="multiEditorDocumentTabsFrameDiv">
 			<?php include(WEBEDITION_PATH . 'multiEditor/multiTabs.inc.php'); ?>

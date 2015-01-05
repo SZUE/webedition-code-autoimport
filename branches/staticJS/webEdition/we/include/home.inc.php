@@ -23,7 +23,6 @@
  */
 include_once (WE_INCLUDES_PATH . '/we_widgets/cfg.inc.php');
 //make sure we know which browser is used
-
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
@@ -119,7 +118,6 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	}
 	?>
 			];
-			try {
 				if (_iInitCols != _iLayoutCols) {
 					return true;
 				}
@@ -137,9 +135,6 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 						}
 					}
 				}
-			} catch (e) {
-				//console.log("err init1");
-			}
 			if (_isHotTrf) {
 				return true;
 			}
@@ -159,7 +154,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		//-->
 	</script>
 	<?php
-	echo we_html_element::jsScript(JS_DIR . 'home.js', array('onload' => 'addCss();'))
+	echo we_html_element::jsScript(JS_DIR . 'home.js')
 	?>
 	</head>
 	<?php
@@ -296,4 +291,5 @@ html {
 					we_html_button::create_button("preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
 				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
 }
-echo '<iframe id="RSIFrame" name="RSIFrame" style="border:0px;width:1px;height:1px; visibility:hidden"></iframe></html>';
+?>
+	<iframe id="RSIFrame" name="RSIFrame" style="border:0px;width:1px;height:1px; visibility:hidden"></iframe></html>

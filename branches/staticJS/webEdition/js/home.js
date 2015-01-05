@@ -779,3 +779,6 @@ function newMessage(username) {
 		new jsWindow('webEdition/we/include/we_modules/messaging/messaging_newmessage.php?we_transaction=' + transact + '&mode=u_' + encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
 	}
 }
+
+//dont move this as on load event, since adding css will fire load event again.
+addCss();

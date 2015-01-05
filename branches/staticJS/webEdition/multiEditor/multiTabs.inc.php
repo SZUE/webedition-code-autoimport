@@ -85,7 +85,7 @@ div.tabOver{
 echo we_html_element::jsElement($_contentTypes . '
 	var contentTypeApp="' . we_base_ContentTypes::APPLICATION . '";
 	var heightPlus=' . $heightPlus . ';
-') . we_html_element::jsScript(JS_DIR . 'multiEditor/multiTabs.js', array('onload' => 'init();'));
+') . we_html_element::jsScript(JS_DIR . 'multiEditor/multiTabs.js');
 ?>
 
 <div id="weMultiTabs">

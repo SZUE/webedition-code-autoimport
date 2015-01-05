@@ -27,14 +27,6 @@
  * @desc only used in normal mode
  */
 function pWebEdition_Tree(){
-
-}
-
-/**
- * @return void
- * @desc prints JavaScript functions only needed in SeeMode
- */
-function pWebEdition_JSFunctions(){
 	?>
 	function makeNewEntry(icon,id,pid,txt,open,typ,tab){
 	}
@@ -43,96 +35,6 @@ function pWebEdition_JSFunctions(){
 
 	function info(text){
 	}
-
-	function toggleBusy(w) {/* => removed since no header animation anymore
-	/*	if(w == busy)
-	return;
-	if(self.header) {
-	if(self.header.toggleBusy) {
-	busy=w;
-	self.header.toggleBusy(w);
-	return;
-	}
-	}
-	setTimeout("toggleBusy("+w+");",300);*/
-	}
-
-	function doUnload(whichWindow) {
-
-	// unlock all open documents
-	var _usedEditors = top.weEditorFrameController.getEditorsInUse();
-
-	var docIds = "";
-	var docTables = "";
-
-	for (frameId in _usedEditors) {
-
-	if (_usedEditors[frameId].EditorType != "cockpit") {
-
-	docIds += _usedEditors[frameId].getEditorDocumentId() + ",";
-	docTables += _usedEditors[frameId].getEditorEditorTable() + ",";
-	}
-	}
-
-	if (docIds) {
-
-	top.we_cmd('users_unlock',docIds,'<?php echo $_SESSION["user"]["ID"]; ?>',docTables);
-
-	if(top.opener){
-	top.opener.focus();
-
-	}
-	}
-	//  close the SEEM-edit-include when exists
-	if(top.edit_include){
-	top.edit_include.close();
-	}
-	try{
-	if(jsWindow_count) {
-	for(i = 0; i < jsWindow_count; i++){
-	eval("jsWindow"+i+"Object.close()");
-	}
-	}
-	if(browserwind){
-	browserwind.close();
-	}
-	} catch(e){
-
-	}
-
-	//  only when no SEEM-edit-include window is closed
-
-	if(whichWindow !="include"){
-	if(opener) {
-	opener.location.replace('<?php
-	echo WEBEDITION_DIR;
-	?>
-	we_loggingOut.php');
-	}
-	}
-	}
-	<?php
-}
-
-/**
- * @return void
- * @desc prints the different cases for the function we_cmd
- */
-function pWebEdition_JSwe_cmds(){
-	?>
-	case "new":
-	top.weEditorFrameController.openDocument(arguments[1],arguments[2],arguments[3],"",arguments[4],"",arguments[5]);
-	break;
-	case "load":
-	//	toggleBusy(1);
-	break;
-	case "exit_delete": case "exit_move":
-	deleteMode=false; case "delete": case "move":
-	if(top.deleteMode !=arguments[1]){ top.deleteMode=arguments[1];
-	}
-	if(arguments[2] !=1)
-	we_repl(top.weEditorFrameController.getActiveDocumentReference(),url,arguments[0]);
-	break;
 	<?php
 }
 
@@ -156,26 +58,16 @@ function pWebEdition_Frameset($SEEM_edit_include){
 		<?php we_main_header::pbody($SEEM_edit_include); ?>
 	</div>
 	<div style="position:absolute;top:32px;left:0px;right:0px;bottom:0px;border: 0px;">
-		<iframe src="<?php echo WEBEDITION_DIR; ?>resizeframe.php?<?php echo $we_cmds ?>" style="border:0px;width:100%;height:100%;overflow: hidden;" id="rframe" name="rframe"></iframe>
+		<iframe src="<?php echo WEBEDITION_DIR; ?>resizeframe.php?<?php echo $we_cmds ?>" id="rframe" name="rframe"></iframe>
 	</div>
-	<div style="position:absolute;left:0px;right:0px;bottom:0px;height:1px;border: 1px solid;">
-		<div style="height:100%;float:left;width:25%;border:0px;">
-			<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load"></iframe>
-		</div>
-		<div style="height:100%;float:left;width:25%;border:0px;">
-			<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="load2"></iframe>
-		</div>
+	<div style="position:absolute;left:0px;right:0px;bottom:0px;height:1px;">
+		<iframe src="about:blank" style="overflow: hidden;" name="load"></iframe>
+		<iframe src="about:blank" style="overflow: hidden;" name="load2"></iframe>
 		<!-- Bugfix Opera >=10.5  target name is always "ad" -->
-		<div style="height:100%;float:left;width:10%;border:0px;">
-			<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
-		</div>
-		<div style="height:100%;float:left;width:10%;border:0px;"><?php include(WE_USERS_MODULE_PATH . 'we_users_ping.inc.php'); ?></div>
-		<div style="height:100%;float:left;width:10%;border:0px;">
-			<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
-		</div>
-		<div style="height:100%;float:left;width:10%;border:0px;">
-			<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="plugin"></iframe>
-		</div>
+		<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
+		<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
+		<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="plugin"></iframe>
+			<?php include(WE_USERS_MODULE_PATH . 'we_users_ping.inc.php'); ?>
 	</div>
 	<?php
 }

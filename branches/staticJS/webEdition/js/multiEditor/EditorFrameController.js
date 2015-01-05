@@ -459,19 +459,19 @@ function EditorFrameController() {
 		if (this.EditorFrames[frameId]) {
 
 			if (this.EditorFrames[frameId].EditorType === "cockpit") {
-
+				var docRef = this.EditorFrames[frameId].getDocumentReference();
 				// close all modal dialogs
-				this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows();
+				docRef.closeAllModalWindows();
 
-				if (this.EditorFrames[frameId].getDocumentReference().isHot()) {
+				if (docRef.isHot()) {
 					// save changes, in cockpit
-					this.EditorFrames[frameId].getDocumentReference().saveSettings();
+					docRef.saveSettings();
 				}
 
 			} else if (this.EditorFrames[frameId].EditorType === "model") {
-
-				if (this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows) {
-					this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows();
+				var docRef = this.EditorFrames[frameId].getDocumentReference();
+				if (docRef.closeAllModalWindows) {
+					docRef.closeAllModalWindows();
 				}
 				// unlock document
 				trans = this.EditorFrames[frameId].getEditorTransaction();
