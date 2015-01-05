@@ -25,14 +25,16 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-//if(!isset($aCols)){
-$aCols = explode(';', $aProps[3]);
-//}
-$sTypeBinary = $aCols[0];
-$bTypeDoc = (bool) $sTypeBinary{0};
-$bTypeTpl = (bool) $sTypeBinary{1};
-$bTypeObj = (bool) $sTypeBinary{2};
-$bTypeCls = (bool) $sTypeBinary{3};
+
+if(!isset($aCols[5])){
+	$aCols = explode(';', $aProps[3]);
+}
+
+$sKPIs = $aCols[0];
+$bOrders = (bool) $sKPIs{0};
+$bCustomer = (bool) $sKPIs{1};
+$bAverageOrder = (bool) $sKPIs{2};
+$bTarget = (bool) $sKPIs{3};
 
 $iDate = intval($aCols[1]);
 $sRevenueTarget = intval($aCols[2]);
@@ -182,77 +184,95 @@ if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm("CAN_SEE_CUSTOMER")){
 }
 
 $shopDashboardTable = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 1, 3);
+$i = 0;
+if($bOrders){
+	//1. row
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][cnt_order]') . we_html_tools::getPixel(5, 1)));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(($amountOrders > 0 ? $amountOrders : 0)));
+	$i++;
 
-//1. row
-$shopDashboardTable->setCol(0, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][cnt_order]') . we_html_tools::getPixel(5, 1)));
-$shopDashboardTable->setCol(0, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(0, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(($amountOrders > 0 ? $amountOrders : 0)));
+	//2. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont","style"=>"color:red;"), g_l('cockpit','[shop_dashboard][canceled_order]').we_html_tools::getPixel(5, 1));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right","style"=>"color:red;"),($amountCanceledOrders > 0 ? $amountCanceledOrders : 0));
+	$i++;
 
-//2. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(1, 0, array("class" => "middlefont","style"=>"color:red;"), g_l('cockpit','[shop_dashboard][canceled_order]').we_html_tools::getPixel(5, 1));
-$shopDashboardTable->setCol(1, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(1, 2, array("class" => "middlefont","align"=>"right","style"=>"color:red;"),($amountCanceledOrders > 0 ? $amountCanceledOrders : 0));
+	//3. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][cnt_articles]') . we_html_tools::getPixel(5, 1));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right"), ($amountArticles > 0 ? $amountArticles : 0));
+	$i++;
 
-//3. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(2, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][cnt_articles]') . we_html_tools::getPixel(5, 1));
-$shopDashboardTable->setCol(2, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(2, 2, array("class" => "middlefont", "align" => "right"), ($amountArticles > 0 ? $amountArticles : 0));
+	//4. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][articles_order]'));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right"), we_util_Strings::formatNumber(($amountArticles > 0 ? ($amountArticles / $amountOrders) : 0), $numberformat));
+	$i++;
 
-//4. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(3, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][articles_order]'));
-$shopDashboardTable->setCol(3, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(3, 2, array("class" => "middlefont", "align" => "right"), we_util_Strings::formatNumber(($amountArticles > 0 ? ($amountArticles / $amountOrders) : 0), $numberformat));
+	//5. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), "&nbsp;");
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont"), "&nbsp;");
+	$i++;
+}
 
-//5. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(4, 0, array("class" => "middlefont"), "&nbsp;");
-$shopDashboardTable->setCol(4, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(4, 2, array("class" => "middlefont"), "&nbsp;");
+if($bAverageOrder){
+	//6. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][revenue]')));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(we_util_Strings::formatNumber($total, $numberformat) . '&nbsp;' . $currency));
+	$i++;
 
-//6. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(5, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][revenue]')));
-$shopDashboardTable->setCol(5, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(5, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(we_util_Strings::formatNumber($total, $numberformat) . '&nbsp;' . $currency));
+	//7. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont", "style" => "color:green;"), g_l('cockpit', '[shop_dashboard][payed]'));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right", "style" => "color:green;"), we_util_Strings::formatNumber($payed, $numberformat) . '&nbsp;' . $currency);
+	$i++;
 
-//7. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(6, 0, array("class" => "middlefont", "style" => "color:green;"), g_l('cockpit', '[shop_dashboard][payed]'));
-$shopDashboardTable->setCol(6, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(6, 2, array("class" => "middlefont", "align" => "right", "style" => "color:green;"), we_util_Strings::formatNumber($payed, $numberformat) . '&nbsp;' . $currency);
+	//8. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont", "style" => "color:red;"), g_l('cockpit', '[shop_dashboard][unpayed]'));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right", "style" => "color:red;"), we_util_Strings::formatNumber($unpayed, $numberformat) . '&nbsp;' . $currency);
+	$i++;
 
-//8. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(7, 0, array("class" => "middlefont", "style" => "color:red;"), g_l('cockpit', '[shop_dashboard][unpayed]'));
-$shopDashboardTable->setCol(7, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(7, 2, array("class" => "middlefont", "align" => "right", "style" => "color:red;"), we_util_Strings::formatNumber($unpayed, $numberformat) . '&nbsp;' . $currency);
+	//9. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont","style"=>"color:red;"), g_l('cockpit', '[shop_dashboard][canceled]'));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right", "style" => "color:red;"), we_util_Strings::formatNumber($canceled, $numberformat) . '&nbsp;' . $currency);
+	$i++;
 
-//9. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(8, 0, array("class" => "middlefont","style"=>"color:red;"), g_l('cockpit', '[shop_dashboard][canceled]'));
-$shopDashboardTable->setCol(8, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(8, 2, array("class" => "middlefont", "align" => "right", "style" => "color:red;"), we_util_Strings::formatNumber($canceled, $numberformat) . '&nbsp;' . $currency);
+	//10. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][order_value_order]'));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right"), we_util_Strings::formatNumber(($amountOrders > 0 ? ($total / $amountOrders) : 0), $numberformat) . '&nbsp;' . $currency);
+	$i++;
 
-//10. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(9, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][order_value_order]'));
-$shopDashboardTable->setCol(9, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(9, 2, array("class" => "middlefont", "align" => "right"), we_util_Strings::formatNumber(($amountOrders > 0 ? ($total / $amountOrders) : 0), $numberformat) . '&nbsp;' . $currency);
+	//11. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), "&nbsp;");
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont"), "&nbsp;");
+	$i++;
+}
 
-//11. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(10, 0, array("class" => "middlefont"), "&nbsp;");
-$shopDashboardTable->setCol(10, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(10, 2, array("class" => "middlefont"), "&nbsp;");
-
-//12. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(11, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][cnt_new_customer]')));
-$shopDashboardTable->setCol(11, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(11, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(($amountCustomers > 0 ? $amountCustomers : 0)));
+if($bCustomer){
+	//12. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][cnt_new_customer]')));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(($amountCustomers > 0 ? $amountCustomers : 0)));
+	$i++;
+}
 
 $shopDashboard = '<div style="width:60%;float:left;">' .
 	$shopDashboardTable->getHtml() .
@@ -260,45 +280,47 @@ $shopDashboard = '<div style="width:60%;float:left;">' .
 	. '<div style="width:40%;float:right;"><b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_util_Strings::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b><br/>' .
 	'<canvas id="'.$newSCurrId . '_chart_div" width="160" height="160"></canvas>' .
 	'</div><br style="clear:both;"/>';
-
-$shopDashboard .= "<script type='text/javascript' src='" . WE_INCLUDES_DIR . "we_widgets/dlg/shp/js/excanvas.js'></script>
-	<script type='text/javascript' src='" . WE_INCLUDES_DIR . "we_widgets/dlg/shp/js/gauge.min.js'></script>
-    <script type='text/javascript'>
-    	// Helper to execute a function after the window is loaded
-			// see http://www.google.com/search?q=addLoadEvent
-			function addLoadEvent(func) {
-				var oldonload = window.onload;
-				if (typeof window.onload != 'function') {
-					window.onload = func;
-				} else {
-					window.onload = function() {
-						if (oldonload) {
-							oldonload();
+	
+if($bTarget){
+	$shopDashboard .= "<script type='text/javascript' src='" . WE_INCLUDES_DIR . "we_widgets/dlg/shp/js/excanvas.js'></script>
+		<script type='text/javascript' src='" . WE_INCLUDES_DIR . "we_widgets/dlg/shp/js/gauge.min.js'></script>
+		<script type='text/javascript'>
+			// Helper to execute a function after the window is loaded
+				// see http://www.google.com/search?q=addLoadEvent
+				function addLoadEvent(func) {
+					var oldonload = window.onload;
+					if (typeof window.onload != 'function') {
+						window.onload = func;
+					} else {
+						window.onload = function() {
+							if (oldonload) {
+								oldonload();
+							}
+							func();
 						}
-						func();
 					}
 				}
-			}
 
-			addLoadEvent( function() {
-				var options;
+				addLoadEvent( function() {
+					var options;
 
-				// Draw the gauge using custom settings
-				options = {
-					value: " . we_util_Strings::formatNumber($total) . ",
-					label: 'Ziel in " . $currency . "',
-					unitsLabel: ' " . $currency . "',
-					min: 0,
-					max: " . ($sRevenueTarget * 2) . ",
-					minorTicks: 5, // small ticks inside each major tick
-					greenFrom: " . ($sRevenueTarget * 1.1) . ",
-					greenTo: " . ($sRevenueTarget * 2) . ",
-					yellowFrom: " . ($sRevenueTarget * 0.9) . ",
-					yellowTo: " . ($sRevenueTarget * 1.1) . ",
-					redFrom: 0,
-					redTo: " . ($sRevenueTarget * 0.9) . "
-				};
-				new Gauge( document.getElementById('".$newSCurrId . "_chart_div'), options );
-			});
+					// Draw the gauge using custom settings
+					options = {
+						value: " . we_util_Strings::formatNumber($total) . ",
+						label: 'Ziel in " . $currency . "',
+						unitsLabel: ' " . $currency . "',
+						min: 0,
+						max: " . ($sRevenueTarget * 2) . ",
+						minorTicks: 5, // small ticks inside each major tick
+						greenFrom: " . ($sRevenueTarget * 1.1) . ",
+						greenTo: " . ($sRevenueTarget * 2) . ",
+						yellowFrom: " . ($sRevenueTarget * 0.9) . ",
+						yellowTo: " . ($sRevenueTarget * 1.1) . ",
+						redFrom: 0,
+						redTo: " . ($sRevenueTarget * 0.9) . "
+					};
+					new Gauge( document.getElementById('".$newSCurrId . "_chart_div'), options );
+				});
 
-    </script>";
+		</script>";
+}
