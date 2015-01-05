@@ -212,6 +212,7 @@ switch($_SESSION['prefs']['editorMode']){
 					$parser_css[] = 'addon/hint/show-hint.css';
 					$mode = we_base_ContentTypes::TEMPLATE;
 					$useCompletion = true;
+					break;
 				case we_base_ContentTypes::HTML:
 					$parser_js[] = 'mode/htmlmixed/htmlmixed.js';
 					$parser_js[] = 'mode/xml/xml.js';
