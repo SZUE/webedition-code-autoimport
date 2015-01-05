@@ -26,8 +26,10 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
+$isRefresh = true;
 if(!isset($aCols[5])){
 	$aCols = explode(';', $aProps[3]);
+	$isRefresh = false;
 }
 
 $sKPIs = $aCols[0] ? : array();
@@ -286,41 +288,43 @@ if($bTarget){
 		<script type='text/javascript' src='" . WE_INCLUDES_DIR . "we_widgets/dlg/shp/js/gauge.min.js'></script>
 		<script type='text/javascript'>
 			// Helper to execute a function after the window is loaded
-				// see http://www.google.com/search?q=addLoadEvent
-				function addLoadEvent(func) {
-					var oldonload = window.onload;
-					if (typeof window.onload != 'function') {
-						window.onload = func;
-					} else {
-						window.onload = function() {
-							if (oldonload) {
-								oldonload();
-							}
-							func();
+			// see http://www.google.com/search?q=addLoadEvent
+			function addLoadEvent(func) {
+				var oldonload = window.onload;
+				if (typeof window.onload != 'function') {
+					window.onload = func;
+				} else {
+					window.onload = function() {
+						if (oldonload) {
+							oldonload();
 						}
+						func();
 					}
 				}
+			}
 
-				addLoadEvent( function() {
-					var options;
+			addLoadEvent( function() {
+				var options;
+				var widgetDoc = typeof widgetFrame !== 'undefined' ? widgetFrame.document : " . ($isRefresh ? 'parent.document' : 'document') . ";
 
-					// Draw the gauge using custom settings
-					options = {
-						value: " . we_util_Strings::formatNumber($total) . ",
-						label: 'Ziel in " . $currency . "',
-						unitsLabel: ' " . $currency . "',
-						min: 0,
-						max: " . ($sRevenueTarget * 2) . ",
-						minorTicks: 5, // small ticks inside each major tick
-						greenFrom: " . ($sRevenueTarget * 1.1) . ",
-						greenTo: " . ($sRevenueTarget * 2) . ",
-						yellowFrom: " . ($sRevenueTarget * 0.9) . ",
-						yellowTo: " . ($sRevenueTarget * 1.1) . ",
-						redFrom: 0,
-						redTo: " . ($sRevenueTarget * 0.9) . "
-					};
-					new Gauge( document.getElementById('".$newSCurrId . "_chart_div'), options );
-				});
+				// Draw the gauge using custom settings
+				options = {
+					value: " . we_util_Strings::formatNumber($total) . ",
+					label: 'Ziel in " . $currency . "',
+					unitsLabel: ' " . $currency . "',
+					min: 0,
+					max: " . ($sRevenueTarget * 2) . ",
+					minorTicks: 5, // small ticks inside each major tick
+					greenFrom: " . ($sRevenueTarget * 1.1) . ",
+					greenTo: " . ($sRevenueTarget * 2) . ",
+					yellowFrom: " . ($sRevenueTarget * 0.9) . ",
+					yellowTo: " . ($sRevenueTarget * 1.1) . ",
+					redFrom: 0,
+					redTo: " . ($sRevenueTarget * 0.9) . "
+				};
+
+				new Gauge(widgetDoc.getElementById('".$newSCurrId . "_chart_div'), options );
+			});
 
 		</script>";
 }
