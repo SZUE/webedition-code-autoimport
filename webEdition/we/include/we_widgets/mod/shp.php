@@ -43,7 +43,6 @@ $sRevenueTarget = intval($aCols[2]);
 
 switch($iDate){
 	default:
-		break;
 	case 0 : //heute
 		$queryShopDateCondtion = '(DATE(DateOrder) = DATE(CURDATE()))';
 		$timestampCustomer = '(MemberSince >= UNIX_TIMESTAMP(NOW()))';
@@ -154,7 +153,6 @@ if(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 				}
 				$total += $actPrice;
 
-				//$timestampDatePayment = $DB_WE->f('payed');
 				switch(true){
 					case ($DB_WE->f('payed')):
 						$payed += $actPrice;
@@ -165,13 +163,6 @@ if(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 					default:
 						$unpayed += $actPrice;
 				}
-				/**
-				if($timestampDatePayment){
-					$payed += $actPrice;
-				} else {
-					$unpayed += $actPrice;
-				}
-				*/
 			}
 		}
 	}
