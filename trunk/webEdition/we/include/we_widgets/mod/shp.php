@@ -30,11 +30,11 @@ if(!isset($aCols[5])){
 	$aCols = explode(';', $aProps[3]);
 }
 
-$sKPIs = $aCols[0];
-$bOrders = (bool) $sKPIs{0};
-$bCustomer = (bool) $sKPIs{1};
-$bAverageOrder = (bool) $sKPIs{2};
-$bTarget = (bool) $sKPIs{3};
+$sKPIs = $aCols[0] ? : array();
+$bOrders = isset($sKPIs[0]) && $sKPIs[0] ? true : false;
+$bCustomer = isset($sKPIs[1]) && $sKPIs[1] ? true : false;
+$bAverageOrder = isset($sKPIs[2]) && $sKPIs[2] ? true : false;
+$bTarget = isset($sKPIs[3]) && $sKPIs[3] ? true : false;
 
 $iDate = intval($aCols[1]);
 $sRevenueTarget = intval($aCols[2]);
@@ -277,7 +277,7 @@ if($bCustomer){
 $shopDashboard = '<div style="width:60%;float:left;">' .
 	$shopDashboardTable->getHtml() .
 	'</div>'
-	. '<div style="width:40%;float:right;"><b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_util_Strings::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b><br/>' .
+	. '<div style="width:40%;float:right;">' . ($bTarget ? '<b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_util_Strings::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b><br/>' : '') .
 	'<canvas id="'.$newSCurrId . '_chart_div" width="160" height="160"></canvas>' .
 	'</div><br style="clear:both;"/>';
 	
