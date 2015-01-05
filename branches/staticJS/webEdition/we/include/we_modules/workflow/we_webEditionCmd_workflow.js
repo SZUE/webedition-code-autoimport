@@ -1,4 +1,3 @@
-<?php
 /**
  * webEdition CMS
  *
@@ -21,27 +20,27 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-?>
-<script type="text/javascript"><!--
-	switch (WE_REMOVE) {
-		case "messaging_start":
-		case "messaging_edit_ifthere":
+function we_cmd_workflow(cmd) {
+	switch (cmd) {
+		case "workflow_isIn":
+		case "workflow_pass":
+		case "workflow_decline":
+			new jsWindow(url, "choose_workflow", -1, -1, 420, 320, true, true, true, true);
+			return true;
+		case "workflow_finish":
+			we_repl(self.load, url, arguments[0]);
+			return true;
+		case "workflow_edit":
+		case "workflow_edit_ifthere":
 			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
-			break;
-		case "messaging_new_message":
-		case "messaging_new_todo":
-		case "messaging_start_view":
-		case "messaging_new_folder":
-		case "messaging_delete_mode_on":
-		case "messaging_delete_folders":
-		case "messaging_edit_folder":
-		case "messaging_exit":
-		case "messaging_new_account":
-		case "messaging_edit_account":
-		case "messaging_copy":
-		case "messaging_cut":
-		case "messaging_paste":
-		case "messaging_settings":
+			return true;
+		case "new_user":
+		case "exit_workflow":
+//case "reload_workflow":
+		case "save_workflow":
+		case "new_workflow":
+		case "delete_workflow":
+		case "empty_log":
 			var fo = false;
 			if (jsWindow_count) {
 				for (var k = jsWindow_count - 1; k > -1; k--) {
@@ -52,7 +51,7 @@
 				}
 				wind.focus();
 			}
-			break;
-	}//WE_REMOVE
-//-->
-</script>
+			return true;
+	}
+	return false;
+}

@@ -1,4 +1,3 @@
-<?php
 /**
  * webEdition CMS
  *
@@ -21,14 +20,12 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-?>
-<script type="text/javascript"><!--
-		switch (WE_REMOVE) {
-
+function we_cmd_banner(cmd) {
+	switch (cmd) {
 		case "banner_edit":
 		case "banner_edit_ifthere":
 			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
-			break;
+			return true;
 		case "banner_default":
 			var fo = false;
 			if (jsWindow_count) {
@@ -42,19 +39,20 @@
 				}
 			}
 			new jsWindow(url, "defaultbanner", -1, -1, 500, 220, true, false, true, true);
-			break;
+			return true;
 		case "banner_code":
 			var fo = false;
 			if (jsWindow_count) {
 				for (var k = jsWindow_count - 1; k > -1; k--) {
 					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo)
+					if (fo) {
 						break;
+					}
 				}
 				wind.focus();
 			}
 			new jsWindow(url, "bannercode", -1, -1, 500, 420, true, true, true, false);
-			break;
+			return true;
 		case "new_banner":
 		case "new_bannergroup":
 		case "save_banner":
@@ -64,13 +62,15 @@
 			if (jsWindow_count) {
 				for (var k = jsWindow_count - 1; k > -1; k--) {
 					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + arguments[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo)
+					if (fo) {
 						break;
+					}
 				}
-				if (wind && arguments[0] != "empty_log")
+				if (wind && arguments[0] != "empty_log") {
 					wind.focus();
+				}
 			}
-			break;
-	}//WE_REMOVE
-//-->
-</script>
+			return true;
+	}
+	return false;
+}

@@ -1,4 +1,3 @@
-<?php
 /**
  * webEdition CMS
  *
@@ -21,24 +20,31 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-?>
-<script type="text/javascript"><!--
-		switch (WE_REMOVE) {
+function we_cmd_newsletter(cmd) {
+	switch (cmd) {
 
-		case "customer_edit":
-		case "customer_edit_ifthere":
+		case "newsletter_edit":
+		case "newsletter_edit_ifthere":
 			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
-			break;
-		case "new_customer":
-		case "save_customer":
-		case "delete_customer":
-		case "exit_customer":
-		case "show_admin":
-		case "show_sort_admin":
-		case "show_customer_settings":
-		case "show_search":
-		case "import_customer":
-		case "export_customer":
+			return true;
+		case "new_user":
+		case "save_newsletter":
+		case "new_newsletter":
+		case "new_newsletter_group":
+		case "send_newsletter":
+		case "preview_newsletter":
+		case "delete_newsletter":
+		case "send_test":
+		case "domain_check":
+		case "test_newsletter":
+		case "show_log":
+		case "print_lists":
+		case "newsletter_settings":
+		case "black_list":
+		case "search_email":
+		case "edit_file":
+		case "clear_log":
+		case "exit_newsletter":
 			var fo = false;
 			if (jsWindow_count) {
 				for (var k = jsWindow_count - 1; k > -1; k--) {
@@ -49,17 +55,7 @@
 				}
 				wind.focus();
 			}
-			break;
-		case "unlock"://FIXME:????
-			we_repl(self.load, url, arguments[0]);
-			break;
-		case "customer_applyWeDocumentCustomerFilterFromFolder":
-			if (!we_sbmtFrm(top.weEditorFrameController.getActiveDocumentReference().frames["1"], url)) {
-				url += "&we_transaction=" + arguments[2];
-				we_repl(top.weEditorFrameController.getActiveDocumentReference().frames["1"], url, arguments[0]);
-			}
-			break;
-	}//WE_REMOVE
-
-//-->
-</script>
+			return true;
+	}
+	return false;
+}

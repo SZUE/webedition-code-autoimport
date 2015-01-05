@@ -1,4 +1,3 @@
-<?php
 /**
  * webEdition CMS
  *
@@ -21,14 +20,13 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-?>
-<script type="text/javascript"><!--
-	switch (WE_REMOVE) {
+function we_cmd_spellchecker(cmd) {
+	switch (cmd) {
 
-		case "edit_schedule":
-		case "schedule_edit_ifthere":
-			new jsWindow(url, "edit_module", -1, -1, 380, 250, true, true, true, true);
-			break;
-	}//WE_REMOVE
-//-->
-</script>
+		case "spellchecker_edit":
+		case "spellchecker_edit_ifthere":
+			new jsWindow(url, "spellcheckadmin", -1, -1, 470, 510, true, false, true, false);
+			return true;
+	}
+	return false;
+}

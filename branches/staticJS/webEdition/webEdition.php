@@ -52,7 +52,6 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) != "edit_include
 }
 $GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . '	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ')');
 
-
 echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) .
  STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
@@ -76,6 +75,13 @@ if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$_table_to_load = OBJECT_TABLE;
 } else {
 	$_table_to_load = "";
+}
+
+$jsCmd = array();
+foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
+	if(file_exists(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.js')){
+		$jsCmd[$mod] = WE_MODULES_DIR . $mod . '/we_webEditionCmd_' . $mod . '.js';
+	}
 }
 ?>
 
@@ -160,8 +166,12 @@ if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 		'table_to_load': "<?php echo $_table_to_load; ?>"
 	};
 
+	var dirs = {
+		"WE_SHOP_MODULE_DIR": "<?php echo defined('WE_SHOP_MODULE_DIR')?WE_SHOP_MODULE_DIR:''; ?>"
+	};
+
 	var SEEMODE =<?php echo intval($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE); ?>;
-	var specialUnload=<?php echo intval(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari()));?>;
+	var specialUnload =<?php echo intval(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())); ?>;
 
 	/*##################### messaging function #####################*/
 
@@ -1032,8 +1042,8 @@ if(defined('WE_MESSAGING_MODULE_DIR')){
 				if (SEEMODE) {
 					//	toggleBusy(1);
 				} else {
-					if (self.Tree){
-						if (self.Tree.setScrollY){
+					if (self.Tree) {
+						if (self.Tree.setScrollY) {
 							self.Tree.setScrollY();
 						}
 					}
@@ -1063,7 +1073,7 @@ if(defined('WE_MESSAGING_MODULE_DIR')){
 					if (top.deleteMode != arguments[1]) {
 						top.deleteMode = arguments[1];
 					}
-					if (arguments[2] != 1){
+					if (arguments[2] != 1) {
 						we_repl(top.weEditorFrameController.getActiveDocumentReference(), url, arguments[0]);
 					}
 				} else {
@@ -1090,7 +1100,7 @@ if(defined('WE_MESSAGING_MODULE_DIR')){
 
 					widthBeforeDeleteModeSidebar = widthSidebar;
 
-					if (arguments[2] != 1){
+					if (arguments[2] != 1) {
 						we_repl(self.rframe.treeheader, url, arguments[0]);
 					}
 				}
@@ -1100,7 +1110,7 @@ if(defined('WE_MESSAGING_MODULE_DIR')){
 					if (top.deleteMode != arguments[1]) {
 						top.deleteMode = arguments[1];
 					}
-					if (arguments[2] != 1){
+					if (arguments[2] != 1) {
 						we_repl(top.weEditorFrameController.getActiveDocumentReference(), url, arguments[0]);
 					}
 				} else {
@@ -1135,6 +1145,11 @@ if(defined('WE_MESSAGING_MODULE_DIR')){
 				break;
 
 			default:
+<?php
+foreach(array_keys($jsCmd) as $mod){//fixme: if all commands have valid prefixes, we can do a switch/case instead of search
+	echo 'if(we_cmd_' . $mod . '(arguments[0])){break;}';
+}
+?>
 				if ((nextWindow = top.weEditorFrameController.getFreeWindow())) {
 					_nextContent = nextWindow.getDocumentReference();
 					we_repl(_nextContent, url, arguments[0]);
@@ -1153,6 +1168,10 @@ if(defined('WE_MESSAGING_MODULE_DIR')){
 //-->
 </script>
 <?php
+foreach($jsCmd as $cur){
+	echo we_html_element::jsScript($cur);
+}
+
 echo we_html_element::jsScript(JS_DIR . 'webEdition.js');
 $SEEM_edit_include = we_base_request::_(we_base_request::BOOL, "SEEM_edit_include");
 we_main_header::pCSS($SEEM_edit_include);
