@@ -68,17 +68,17 @@
 		case "glossary_dictionaries":
 			new jsWindow(url, "edit_glossary_dictionaries", -1, -1, 490, 250, true, true, true, true);
 			break;
-case ((arguments[0].substr(0, 15) == "GlossaryXYZnew_") ? arguments[0] : false):' .
-	"		tempargs = arguments[0].split(\"\XYZ\");
-				var fo=false;
-				for(var k=jsWindow_count-1;k>-1;k--) {
-					eval(\"if(jsWindow\"+k+\"Object.ref=='edit_module'){ jsWindow\"+k+\"Object.wind.content.we_cmd('\"+tempargs[1]+\"','\"+tempargs[2]+\"');fo=true;wind=jsWindow\"+k+\"Object.wind}\");
-					if(fo) {
-						break;
-					}
+		case ((arguments[0].substr(0, 15) == "GlossaryXYZnew_") ? arguments[0] : false):
+			tempargs = arguments[0].split("\XYZ");
+			var fo = false;
+			for (var k = jsWindow_count - 1; k > -1; k--) {
+				eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + tempargs[1] + "','" + tempargs[2] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
+				if (fo) {
+					break;
 				}
-				wind.focus();
-				break;";
+			}
+			wind.focus();
+			break;
 		case "new_glossary_acronym":
 		case "new_glossary_abbreviation":
 		case "new_glossary_foreignword":
