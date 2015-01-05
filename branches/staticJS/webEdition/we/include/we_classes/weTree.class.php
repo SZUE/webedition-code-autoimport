@@ -139,26 +139,16 @@ class weTree{
 
 		return $this->getJSDrawTree() .
 			$this->getJSUpdateItem() .
-			$this->getJSDeleteItem() .
-			$this->getJSClearTree() .
-			$this->getJSSetTreeState() .
 			$this->getJSOpenClose() .
-			$this->getJSGetTreeLayout() .
-			$this->getJSApplyLayout() .
 			$this->getJSGetLayout() .
 			$this->getJSContainer() .
-			$this->getJSAddNode() .
-			$this->getJSRootAdd() .
-			$this->getJSMakeFoldersOpenString() .
 			$this->getJSCheckNode() .
 			$this->getJSInfo() .
-			$this->getJSSelectNode() .
-			$this->getJSUnselectNode() .
 			$this->getJSShowSegment() .
 			$this->getJSClearItems();
 	}
 
-	function getJSTreeCode($withTag = true){
+	function getJSTreeCode(){
 		$js = '
 var treeData = new container();
 
@@ -217,8 +207,9 @@ var startloc=0;
 var treeHTML;
 self.focus();';
 
-
-		return ($withTag ? we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsElement($js) : $js);
+		return we_html_element::jsScript(JS_DIR . 'images.js') .
+			we_html_element::jsScript(JS_DIR . 'tree.js') .
+			we_html_element::jsElement($js);
 	}
 
 	function getJSAddSortFunction(){
@@ -260,7 +251,9 @@ function setSegment(id){
 		return '
 function openClose(id){
 
-	if(id=="") return;
+	if(id==""){
+		return;
+	}
 
 	var eintragsIndex = indexOfEntry(id);
 	var status;
@@ -316,118 +309,11 @@ function checkNode(imgName) {
 }';
 	}
 
-	function getJSGetTreeLayout(){
-		return '
-function getTreeLayout(){
-		return this.tree_layouts[this.state];
-}';
-	}
-
 	function getJSGetLayout(){
 		return '
 function getLayout(){
 		var layout_key=(this.typ=="group" ? "group" : "item");
 		return treeData.node_layouts[layout_key];
-}';
-	}
-
-	function getJSSetTreeState(){
-		return '
-function setTreeState(){
-	this.state=arguments[0];
-
-	if(this.state==this.tree_states["edit"]){
-		for(i=1;i<=this.len;i++) {
-			if(this[i].checked == 1) this[i].checked=0;
-		}
-
-	}
-
-}';
-	}
-
-	function getJSApplyLayout(){
-		return '
-function applyLayout(){
-	if(arguments[0]){
-		eval("if("+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\"))"+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\").className =\""+arguments[0]+"\";");
-	}else{
-		eval("if("+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\"))"+treeData.treeFrame+".document.getElementById(\"lab_"+this.id+"\").className =\""+this.getlayout()+"\";");
-	}
-}';
-	}
-
-	function getJSRootAdd(){
-		return '
-function rootEntry(id,text,rootstat,offset){
-	this.id = id;
-	this.text = text;
-	this.open=1;
-	this.loaded=1;
-	this.typ = "root";
-	this.offset = offset;
-	this.rootstat = rootstat;
-	this.showsegment=showSegment;
-	this.clear=clearItems;
-
-	return this;
-}';
-	}
-
-	function getJSAddNode(){
-		return '
-function node(attribs){
-
-	for(aname in attribs){
-		var val=""+attribs[aname];
-		this[aname] = val;
-	}
-
-	this.getlayout=getLayout;
-	this.applylayout=applyLayout;
-	this.showsegment=showSegment;
-	this.clear=clearItems;
-	return this;
-}';
-	}
-
-	function getJSSelectNode(){
-		return '
-function selectNode(){
-	if(arguments[0]){
-				var ind;
-		if(treeData.selection!="" && treeData.selection_table==treeData.table){
-			ind=indexOfEntry(treeData.selection);
-			if(ind!=-1){
-				var oldnode=get(treeData.selection);
-				oldnode.selected=0;
-				oldnode.applylayout();
-			}
-		}
-		ind=indexOfEntry(arguments[0]);
-		if(ind!=-1){
-			var newnode=get(arguments[0]);
-			newnode.selected=1;
-			newnode.applylayout();
-		}
-		treeData.selection=arguments[0];
-		treeData.selection_table=treeData.table;
-	}
-}';
-	}
-
-	function getJSUnselectNode(){
-		return '
-function unselectNode(){
-	if(treeData.selection!="" && treeData.table==treeData.selection_table){
-		var ind=indexOfEntry(treeData.selection);
-		if(ind!=-1){
-			var node=get(treeData.selection);
-			node.selected=0;
-			if(node.applylayout) node.applylayout();
-		}
-		treeData.selection="";
-	}
 }';
 	}
 
@@ -472,19 +358,19 @@ function clearItems(){
 	}
 
 	function getJSContainer(){
-		$ts = 'this.tree_states=new Array();';
+		$ts = array();
 		foreach($this->tree_states as $k => $v){
-			$ts.='this.tree_states["' . $k . '"]="' . $v . '";';
+			$ts[] = '"' . $k . '":"' . $v . '"';
 		}
 
-		$tl = 'this.tree_layouts=new Array();';
+		$tl = array();
 		foreach($this->tree_layouts as $k => $v){
-			$tl.='this.tree_layouts["' . $k . '"]="' . $v . '";';
+			$tl[] = '"' . $k . '":"' . $v . '"';
 		}
 
-		$nl = 'this.node_layouts=new Array();';
+		$nl = array();
 		foreach($this->node_layouts as $k => $v){
-			$nl.='this.node_layouts["' . $k . '"]="' . $v . '";';
+			$nl[] = '"' . $k . '":"' . $v . '"';
 		}
 
 		return '
@@ -511,9 +397,9 @@ function container(){
 	this.topFrame="' . $this->topFrame . '";
 	this.treeFrame="' . $this->treeFrame . '";
 
-	' . $ts . '
-	' . $tl . '
-	' . $nl . '
+	this.tree_states={' . implode(',', $ts) . '};
+	this.tree_layouts={' . implode(',', $tl) . '};
+	this.node_layouts={' . implode(',', $nl) . '};
 
 	this.check0_img=new Image();
 	this.check0_img.src="' . $this->tree_image_dir . 'check0.gif";
@@ -537,52 +423,6 @@ function updateEntry(attribs){
 		}
 		ai++;
 	}
-}';
-	}
-
-	function getJSDeleteItem(){
-		return '
-function deleteEntry(id){
-	var ai = 1;
-	var ind=0;
-	while (ai <= treeData.len) {
-		if (treeData[ai].id==id) {
-				ind=ai;
-				break;
-		}
-		ai++;
-	}
-	if(ind!=0){
-		ai = ind;
-		while (ai <= treeData.len-1) {
-						treeData[ai]=treeData[ai+1];
-						ai++;
-		}
-		treeData.len[treeData.len]=null;
-		treeData.len--;
-		drawTree();
-	}
-}';
-	}
-
-	function getJSMakeFoldersOpenString(){
-		return '
-function makeFoldersOpenString() {
-	var op = "";
-	for(i=1;i<=treeData.len;i++) {
-		if(treeData[i].typ == "group" && treeData[i].open == 1){
-			op +=  treeData[i].id+",";
-			}
-	}
-	op = op.substring(0,op.length-1);
-	return op;
-}';
-	}
-
-	function getJSClearTree(){
-		return '
-function clearTree(){
-	treeData.clear();
 }';
 	}
 
@@ -629,8 +469,8 @@ function setUnCheckNode(imgName){
 	if(document.images[imgName]){document.images[imgName].src="' . TREE_IMAGE_DIR . 'check1.gif";}
 }');
 		return
-			STYLESHEET .
-			we_html_element::cssElement(implode("\n", $this->styles)) . $js .
+			we_html_element::cssElement(implode("\n", $this->styles)) .
+			$js .
 			we_html_element::htmlDiv(array(
 				'link' => '#000000',
 				'alink' => '#000000',
@@ -653,14 +493,11 @@ function drawTree(){
 		var type=typeof(' . $this->treeFrame . ');
 	}catch(e){
 		//console.log("Frame not found ' . $this->treeFrame . '");
-		var type="undefined";
-	}
-
-	if (type == "undefined") {
 		window.setTimeout("drawTree()", 500);
 		return;
 	}
-	var out="' . addcslashes(we_html_element::cssElement(implode('', $this->styles)), '"') . '<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\""+treeData.getlayout()+"\"><nobr>"+draw(treeData.startloc,"")+"</nobr></td></tr></table>";' .
+
+	var out="' . /* addcslashes(we_html_element::cssElement(implode('', $this->styles)), '"') . */'<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\""+treeData.getlayout()+"\"><nobr>"+draw(treeData.startloc,"")+"</nobr></td></tr></table>";' .
 			$this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
 }' .
 			$this->getJSDraw();
@@ -836,18 +673,7 @@ for(var i=1;i<=obj.len;i++){
 }
 top.treeData = cont;
 top.drawTree();
-
-function parentChecked(start){
-	var obj = top.treeData;
-	for(var i=1;i<=obj.len;i++){
-		if(obj[i].id == start){
-			if(obj[i].checked==1) return true;
-			else if(obj[i].parentid != 0) parentChecked(obj[i].parentid);
-		}
-	}
-
-	return false;
-}';
+';
 	}
 
 }

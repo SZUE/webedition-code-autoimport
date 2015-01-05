@@ -47,21 +47,18 @@ function openClose(id){
 	var openstatus;
 
 
-	if(treeData[eintragsIndex].open==0) openstatus=1;
-	else openstatus=0;
+	openstatus=(treeData[eintragsIndex].open==0?1:0);
 
 	treeData[eintragsIndex].open=openstatus;
 
 	if(openstatus && treeData[eintragsIndex].loaded!=1){
-		if(sort!=""){
-			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+"&sort="+sort;
-		}else{
-			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id;
-		}
+			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+(sort!=""?"&sort="+sort:"");
 	}else{
 		drawTree();
 	}
-	if(openstatus==1) treeData[eintragsIndex].loaded=1;
+	if(openstatus==1){
+		treeData[eintragsIndex].loaded=1;
+	}
 }';
 	}
 
@@ -118,38 +115,37 @@ function doClick(id,typ){
 
 	function getJSMakeNewEntry(){
 		return '
-			function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
-					if(treeData[indexOfEntry(pid)]){
-						if(treeData[indexOfEntry(pid)].loaded){
+function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
+		if(treeData[indexOfEntry(pid)]){
+			if(treeData[indexOfEntry(pid)].loaded){
 
-	 						if(ct=="folder") ct="group";
-	 						else ct="item";
+				if(ct=="folder") ct="group";
+				else ct="item";
 
-							var attribs=new Array();
+				var attribs=new Array();
 
-							attribs["id"]=id;
-							attribs["icon"]=icon;
-							attribs["text"]=txt;
-							attribs["parentid"]=pid;
-							attribs["open"]=open;
+				attribs["id"]=id;
+				attribs["icon"]=icon;
+				attribs["text"]=txt;
+				attribs["parentid"]=pid;
+				attribs["open"]=open;
 
-	 						attribs["tooltip"]=id;
-	 						attribs["typ"]=ct;
+				attribs["tooltip"]=id;
+				attribs["typ"]=ct;
 
 
-							attribs["disabled"]=0;
-							if(ct=="item") attribs["published"]=pub;
-							else attribs["published"]=1;
+				attribs["disabled"]=0;
+				if(ct=="item") attribs["published"]=pub;
+				else attribs["published"]=1;
 
-							attribs["selected"]=0;
+				attribs["selected"]=0;
 
-							treeData.addSort(new node(attribs));
+				treeData.addSort(new node(attribs));
 
-							drawTree();
-						}
-					}
+				drawTree();
 			}
-			';
+		}
+}';
 	}
 
 	function getJSInfo(){
@@ -158,13 +154,12 @@ function doClick(id,typ){
 
 	function getJSShowSegment(){
 		return '
- 				function showSegment(){
-					parentnode=' . $this->topFrame . '.get(this.parentid);
-					parentnode.clear();
-					' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+this.parentid+"&offset="+this.offset;
-					drawTree();
-				}
-			';
+function showSegment(){
+	parentnode=' . $this->topFrame . '.get(this.parentid);
+	parentnode.clear();
+	' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+this.parentid+"&offset="+this.offset;
+	drawTree();
+}';
 	}
 
 }

@@ -260,10 +260,10 @@ function doClick(id,typ){
 			$this->topFrame . '.loaded=1;';
 	}
 
-	function getJSTreeCode($withTag = true){
+	function getJSTreeCode(){
 		// must override
-		return parent::getJSTreeCode($withTag) . "\n" .
-			($withTag ? we_html_element::jsElement('drawTree.selection_table="";') : 'drawTree.selection_table="";');
+		return parent::getJSTreeCode($withTag) .
+			we_html_element::jsElement('drawTree.selection_table="";');
 	}
 
 }

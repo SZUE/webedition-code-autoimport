@@ -235,9 +235,15 @@ function updateEntry(id,text,pid,tab){
 		var ai = 1;
 		while (ai <= treeData.len) {
 			if (treeData[ai].id==id){
-				if(text) treeData[ai].text=text;
-				if(pid) treeData[ai].parentid=pid;
-				if(tab) treeData[ai].table=tab;
+				if(text){
+				treeData[ai].text=text;
+				}
+				if(pid){
+				treeData[ai].parentid=pid;
+				}
+				if(tab){
+				treeData[ai].table=tab;
+				}
 			}
 			ai++;
 		}
@@ -265,9 +271,10 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab){
 				attribs["tooltip"]=id;
 				attribs["contenttype"]=ct;
 				attribs["disabled"]=0;
-				if(attribs["typ"]=="item") attribs["published"]=0;
-
 				attribs["selected"]=0;
+				if(attribs["typ"]=="item"){
+					attribs["published"]=0;
+				}
 
 				treeData.addSort(new node(attribs));
 
@@ -279,7 +286,7 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab){
 	}
 
 	function getJSIncludeFunctions(){
-		return weTree::getJSIncludeFunctions() . '
+		return parent::getJSIncludeFunctions() . '
 we_scrollY["' . FILE_TABLE . '"] = 0;
 we_scrollY["' . TEMPLATES_TABLE . '"] = 0;' .
 			(defined('OBJECT_TABLE') ? '

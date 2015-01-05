@@ -48,12 +48,8 @@ class we_search_tree extends we_tool_tree{
 
 	function getJSTreeCode(){
 
-		return parent::getJSTreeCode() . we_html_element::jsElement(
-				'
- 					drawTree.selection_table="' . SUCHE_TABLE . '";
- 				');
+		return parent::getJSTreeCode() .
+			we_html_element::jsElement('drawTree.selection_table="' . SUCHE_TABLE . '";');
 	}
 
 }
-
-?>

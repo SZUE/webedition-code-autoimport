@@ -106,7 +106,7 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 	}
 
 	function getJSTreeCode(){
-		return weMainTree::getJSTreeCode() .
+		return parent::getJSTreeCode() .
 			we_html_element::jsElement($this->getJSStartTree());
 	}
 
@@ -114,15 +114,10 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 
 		return '
 function drawTree(){
-	var out=\'<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr><td class="\'+treeData.getlayout()+\'">\n<nobr>\n\';
-	out+=draw(treeData.startloc,"");
-	out+="</nobr>\n</td></tr></table>\n";
+	var out=\'<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr><td class="\'+treeData.getlayout()+\'">\n<nobr>\n\'+
+		draw(treeData.startloc,"")+
+		"</nobr>\n</td></tr></table>\n";
 	' . $this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
-	/*nurl="treeMain.php";
-	win=window.open(nurl);
-	win.document.open();
-	win.document.write(top.treeHTML.innerHTML);
-	win.document.close();*/
 	}' . $this->getJSDraw();
 	}
 

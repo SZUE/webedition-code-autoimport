@@ -43,10 +43,8 @@ class we_navigation_tree extends we_modules_tree{
 	}
 
 	function getJSTreeCode(){
-		return parent::getJSTreeCode() . we_html_element::jsElement(
-				'
- 					drawTree.selection_table="' . NAVIGATION_TABLE . '";
- 				');
+		return parent::getJSTreeCode() .
+			we_html_element::jsElement('drawTree.selection_table="' . NAVIGATION_TABLE . '";');
 	}
 
 }

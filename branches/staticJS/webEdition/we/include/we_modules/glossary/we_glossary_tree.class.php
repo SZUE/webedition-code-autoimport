@@ -120,8 +120,7 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
 		if(treeData[indexOfEntry(pid)]){
 			if(treeData[indexOfEntry(pid)].loaded){
 
-				if(ct=="folder") ct="group";
-				else ct="item";
+				 ct=(ct=="folder"?"group":"item");
 
 				var attribs=new Array();
 
@@ -130,15 +129,10 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
 				attribs["text"]=txt;
 				attribs["parentid"]=pid;
 				attribs["open"]=open;
-
 				attribs["tooltip"]=id;
 				attribs["typ"]=ct;
-
-
 				attribs["disabled"]=0;
-				if(ct=="item") attribs["published"]=pub;
-				else attribs["published"]=1;
-
+				attribs["published"]=(ct=="item"?pub:1);
 				attribs["selected"]=0;
 
 				treeData.addSort(new node(attribs));

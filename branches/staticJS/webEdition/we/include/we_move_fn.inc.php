@@ -27,7 +27,7 @@ if(!$notprotect){
 	we_html_tools::protect();
 }
 
-function moveTreeEntries($dontMoveClassFolders = false){
+function moveTreeEntries($dontMoveClassFolders = false){//FIXME: check if js function is duplicate in tree.js
 	return 'var obj = top.treeData;
 var cont = new top.container();
 for(var i=1;i<=obj.len;i++){
