@@ -262,7 +262,7 @@ function doClick(id,typ){
 
 	function getJSTreeCode(){
 		// must override
-		return parent::getJSTreeCode($withTag) .
+		return parent::getJSTreeCode() .
 			we_html_element::jsElement('drawTree.selection_table="";');
 	}
 
