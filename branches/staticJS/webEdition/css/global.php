@@ -368,26 +368,8 @@ font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
 
 .tree {
-color: black;
 font-size: <?php echo (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? 10 : ((we_base_browserDetect::isUNIX()) ? 11 : 9)); ?>px;
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
-border-width: 0px;
-border-collapse: collapse;
-padding: 0px;
-}
-
-.tree a {
-text-decoration:none;
-}
-
-.tree img {
-width: 16px;
-height: 18px;
-vertical-align: middle;
-}
-
-img.treeKreuz{
-	width:19px;
 }
 
 .selector {

@@ -148,15 +148,7 @@ function deleteEntry(id, type) {
 function openClose(name, status) {
 	var eintragsIndex = indexOfEntry(name);
 	menuDaten[eintragsIndex].offen = status;
-	if (status) {
-		if (!menuDaten[eintragsIndex].loaded) {
-			drawEintraege();
-		} else {
-			drawEintraege();
-		}
-	} else {
-		drawEintraege();
-	}
+	drawEintraege();
 }
 
 function indexOfEntry(name) {

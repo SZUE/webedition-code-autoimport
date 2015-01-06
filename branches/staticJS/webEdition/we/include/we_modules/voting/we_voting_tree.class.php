@@ -24,30 +24,15 @@
  */
 class we_voting_tree extends weMainTree{
 
-	function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
-
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
-
-		$this->setStyles(array(
-			'.item {color: black;}',
-			'.item a { text-decoration:none;}',
-			'.group {color: black; font-weight: bold;}',
-			'.group a { text-decoration:none;}',
-			'.notpublished {color: green;cursor: pointer;}',
-			'.notpublished a { text-decoration:none;}',
-		));
-	}
-
 	function getJSOpenClose(){
 		return '
 function openClose(id){
 	var sort="";
-	if(id=="") return;
+	if(id==""){
+		return;
+	}
 	var eintragsIndex = indexOfEntry(id);
-	var openstatus;
-
-
-	openstatus=(treeData[eintragsIndex].open==0?1:0);
+	var openstatus=(treeData[eintragsIndex].open==0?1:0);
 
 	treeData[eintragsIndex].open=openstatus;
 
@@ -65,15 +50,15 @@ function openClose(id){
 	function getJSUpdateItem(){
 		return '
 function updateEntry(id,text,pid,pub){
-			var ai = 1;
-			while (ai <= treeData.len) {
-					if (treeData[ai].id==id) {
-							treeData[ai].text=text;
-							treeData[ai].parentid=pid;
-							treeData[ai].published=pub;
-					}
-					ai++;
-			}
+	var ai = 1;
+	while (ai <= treeData.len) {
+		if (treeData[ai].id==id) {
+			treeData[ai].text=text;
+			treeData[ai].parentid=pid;
+			treeData[ai].published=pub;
+		}
+		ai++;
+	}
 	drawTree();
 }';
 	}

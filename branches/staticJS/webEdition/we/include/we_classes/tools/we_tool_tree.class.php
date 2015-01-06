@@ -29,20 +29,8 @@ class we_tool_tree extends weMainTree{
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 
 		$this->setStyles(array(
-			'.item {color: black;}',
-			'.item a { text-decoration:none;}',
-			'.group {color: black; font-weight: bold;}',
-			'.group a { text-decoration:none;}',
-			'.selected_item {color: black; background-color: #D4DBFA; cursor: pointer;}',
-			'.selected_item a { text-decoration:none;}',
-			'.selected_notpublished_item {color: #3366CC;  background-color: #D4DBFA; cursor: pointer;}',
-			'.selected_notpublished_item a { text-decoration:none;}',
-			'.selected_changed_item {color: #3366CC; background-color: #D4DBFA; cursor: pointer;}',
-			'.selected_changed_item a { text-decoration:none;}',
-			'.selected_group {color: black; font-weight: bold; background-color: #D4DBFA; cursor: pointer;}',
-			'.selected_group a { text-decoration:none;}',
-			'.selected_open_group {color: black; font-weight: bold; background-color: #D4DBFA; cursor: pointer;}',
-			'.selected_open_group a { text-decoration:none;}',
+			'.selected_item {background-color: #D4DBFA;}',
+			'.selected_group {background-color: #D4DBFA;}',
 		));
 	}
 
@@ -50,13 +38,13 @@ class we_tool_tree extends weMainTree{
 		return '
 function openClose(id){
 	var sort="";
-	if(id=="") return;
+	if(id==""){
+		return;
+	}
 	var eintragsIndex = indexOfEntry(id);
 	var openstatus;
 
-
-	if(treeData[eintragsIndex].open==0) openstatus=1;
-	else openstatus=0;
+	openstatus=(treeData[eintragsIndex].open==0?1:0);
 
 	treeData[eintragsIndex].open=openstatus;
 
@@ -69,7 +57,9 @@ function openClose(id){
 	}else{
 		drawTree();
 	}
-	if(openstatus==1) treeData[eintragsIndex].loaded=1;
+	if(openstatus==1){
+		treeData[eintragsIndex].loaded=1;
+	}
 }';
 	}
 
@@ -220,7 +210,7 @@ function clearItems(){
 				we_html_element::htmlHead(//FIXME: missing title
 					we_html_tools::getHtmlInnerHead() .
 					STYLESHEET .
-					we_html_element::cssElement(implode("\n", $this->styles))
+					$this->getStyles()
 				) .
 				we_html_element::htmlBody(array(
 					), '<div id="treetable"></div>'

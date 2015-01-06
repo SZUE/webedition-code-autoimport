@@ -29,17 +29,79 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //	are located in 2 different files. Depending on mode the correct
 //	file is included and the matching functions are included.
 
-if(!isset($_SESSION['weS']['we_mode']) || $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	working in normal mode
-	include_once(WE_INCLUDES_PATH . 'webEdition_normal.inc.php');
-} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){ //	working in super-easy-edit-mode
-	include_once(WE_INCLUDES_PATH . 'webEdition_seem.inc.php');
+if(!isset($_SESSION['weS']['we_mode'])){
+	$_SESSION['weS']['we_mode'] = we_base_constants::MODE_NORMAL;
 }
-
-
 //	check session
 we_html_tools::protect(null, WEBEDITION_DIR . 'index.php');
 
 we_base_file::cleanTempFiles();
+
+/**
+ * @return void
+ * @desc prints the functions needed for the tree.
+ */
+function pWebEdition_Tree(){
+	switch($_SESSION['weS']['we_mode']){
+		default:
+		case we_base_constants::MODE_NORMAL:
+			$Tree = new weMainTree("webEdition.php", "top", "self.Tree", "top.load");
+			echo $Tree->getJSTreeCode();
+			break;
+		case we_base_constants::MODE_SEE:
+			echo we_html_element::jsElement('
+function makeNewEntry(icon,id,pid,txt,open,typ,tab){
+}
+function drawTree(){
+}
+
+function info(text){
+}');
+			break;
+	}
+}
+
+/**
+ * @return void
+ * @desc the frameset for the SeeMode
+ */
+function pWebEdition_Frameset($SEEM_edit_include){
+	switch($_SESSION['weS']['we_mode']){
+		default:
+		case we_base_constants::MODE_NORMAL:
+			$we_cmds = '';
+			break;
+		case we_base_constants::MODE_SEE:
+			$we_cmds = '';
+			if(isset($GLOBALS["SEEM_edit_include"]) && $GLOBALS["SEEM_edit_include"]){ // edit include file
+				$_REQUEST["SEEM_edit_include"] = true;
+				$we_cmds = "?we_cmd[0]=edit_document&";
+
+				for($i = 1; $i < count($_REQUEST['we_cmd']); $i++){
+					$we_cmds .= "we_cmd[" . $i . "]=" . $_REQUEST['we_cmd'][$i] . "&";
+				}
+				$we_cmds.='&SEEM_edit_include=true';
+			}
+			break;
+	}
+	?>
+	<div style="position:absolute;top:0px;left:0px;right:0px;height:32px;border-bottom: 1px solid black;">
+		<?php we_main_header::pbody($SEEM_edit_include); ?>
+	</div>
+	<div style="position:absolute;top:32px;left:0px;right:0px;bottom:0px;border: 0px;">
+		<iframe src="<?php echo WEBEDITION_DIR; ?>resizeframe.php?<?php echo $we_cmds ? '?' . $we_cmds : ''; ?>" id="rframe" name="rframe"></iframe>
+	</div>
+	<div style="position:absolute;left:0px;right:0px;bottom:0px;height: 0px;">
+		<iframe src="about:blank" style="overflow: hidden;" name="load"></iframe>
+		<iframe src="about:blank" style="overflow: hidden;" name="load2"></iframe>
+		<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
+		<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
+		<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="plugin"></iframe>
+		<?php include(WE_USERS_MODULE_PATH . 'we_users_ping.inc.php'); ?>
+	</div>
+	<?php
+}
+
 /* $sn = SERVER_NAME;
 
   if(strstr($sn, '@')) {
@@ -48,7 +110,7 @@ we_base_file::cleanTempFiles();
  */
 //	unlock everything old, when a new window is opened.
 if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) != "edit_include_document"){
-	$GLOBALS['DB_WE']->query('DELETE FROM ' . LOCK_TABLE . '	WHERE lockTime<NOW()');
+	$GLOBALS['DB_WE']->query('DELETE FROM ' . LOCK_TABLE . ' WHERE lockTime<NOW()');
 }
 $GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . '	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ')');
 
@@ -309,7 +371,7 @@ we_main_header::pCSS($SEEM_edit_include);
 	<?php
 	flush();
 //	get the frameset for the actual mode.
-	pWebEdition_Frameset($SEEM_edit_include);
+	pWebEdition_Frameset($seeMode, $SEEM_edit_include);
 	we_main_header::pJS($SEEM_edit_include);
 //	get the Treefunctions for docselector
 	pWebEdition_Tree();

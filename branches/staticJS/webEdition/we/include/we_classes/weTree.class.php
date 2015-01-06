@@ -72,14 +72,8 @@ class weTree{
 		}
 
 		$this->setStyles(array(
-			'.item {color: black;}',
-			'.item a { text-decoration:none;}',
-			'.group {color: black; font-weight: bold;}',
-			'.group a { text-decoration:none;}',
-			'.selected_item {color: black;background-color: #6070B6; cursor: pointer;}',
-			'.selected_item a { text-decoration:none;}',
-			'.selected_group {color: black; font-weight: bold;background-color: #6070B6; cursor: pointer;}',
-			'.selected_group a { text-decoration:none;}',
+			'.selected_item {background-color: #6070B6;}',
+			'.selected_group {background-color: #6070B6;}',
 		));
 
 		$this->setItemsCount(we_base_preferences::getUserPref('default_tree_count'));
@@ -150,14 +144,6 @@ class weTree{
 
 	function getJSTreeCode(){
 		return we_html_element::jsScript(JS_DIR . 'images.js') .
-			we_html_element::jsElement('
-var frames={
-	"set":"' . $this->frameset . '",
-	"top":"' . $this->topFrame . '",
-	"tree":"' . $this->treeFrame . '",
-	"cmd":"' . $this->cmdFrame . '",
-};
-				') .//FIXME: can we use values from container???
 			we_html_element::jsScript(JS_DIR . 'tree.js') .
 			we_html_element::jsElement('
 var treeData = new container();
@@ -265,15 +251,17 @@ function openClose(id){
 	var eintragsIndex = indexOfEntry(id);
 	var status;
 
-	if(treeData[eintragsIndex].open==0) openstatus=1;
-	else openstatus=0;
+	openstatus=(treeData[eintragsIndex].open==0?1:0);
+
 	treeData[eintragsIndex].open=openstatus;
 	if(openstatus && treeData[eintragsIndex].loaded!=1){
 		' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id;
 	}else{
 		drawTree();
 	}
-	if(openstatus==1) treeData[eintragsIndex].loaded=1;
+	if(openstatus==1){
+		treeData[eintragsIndex].loaded=1;
+	}
 }';
 	}
 
@@ -409,10 +397,10 @@ function container(){
 	this.node_layouts={' . implode(',', $nl) . '};
 
 	this.check0_img=new Image();
-	this.check0_img.src="' . $this->tree_image_dir . 'check0.gif";
+	this.check0_img.src=this.tree_image_dir+"check0.gif";
 
 	this.check1_img=new Image();
-	this.check1_img.src="' . $this->tree_image_dir . 'check1.gif";
+	this.check1_img.src=this.tree_image_dir+"check1.gif";
 
 	return this;
 }';
@@ -433,16 +421,20 @@ function updateEntry(attribs){
 }';
 	}
 
-	// Function which control how tree contenet will be displayed
+	function getStyles(){
+		return we_html_element::cssLink(CSS_DIR . 'tree.css') .
+			($this->styles ? we_html_element::cssElement(implode("\n", $this->styles)) : '');
+	}
 
+	// Function which control how tree contenet will be displayed
 	function getHTMLContruct($onresize = ''){
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(//FIXME: missing title
 					we_html_tools::getHtmlInnerHead() .
 					STYLESHEET .
-					we_html_element::cssElement(implode("\n", $this->styles)) .
-					we_html_element::jsScript(JS_DIR.'tree.js')
+					$this->getStyles() .
+					we_html_element::jsScript(JS_DIR . 'tree.js')
 				) .
 				we_html_element::htmlBody(array(
 					'id' => 'treetable',
@@ -454,7 +446,7 @@ function updateEntry(attribs){
 
 	function getHTMLContructX($onresize = ''){
 		return
-			we_html_element::cssElement(implode("\n", $this->styles)) .
+			$this->getStyles() .
 			we_html_element::htmlDiv(array(
 				'id' => 'treetable',
 				'onresize' => $onresize
@@ -473,7 +465,7 @@ function drawTree(){
 		return;
 	}
 
-	var out="' . /* addcslashes(we_html_element::cssElement(implode('', $this->styles)), '"') . */'<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\""+treeData.getlayout()+"\"><nobr>"+draw(treeData.startloc,"")+"</nobr></td></tr></table>";' .
+	var out="<table><tr><td class=\""+treeData.getlayout()+"\"><nobr>"+draw(treeData.startloc,"")+"</nobr></td></tr></table>";' .
 			$this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
 }' .
 			$this->getJSDraw();
@@ -526,53 +518,44 @@ if(treeData.state==treeData.tree_states["select"] && nf[ai].disabled!=1) {
 	}
 }
 
-row+="<img src="+treeData.tree_icon_dir+nf[ai].icon+" align=absmiddle border=0 alt=\"\">";
-
-if(nf[ai].disabled!=1){
-	row+="</a>";
-}
+row+="<img src="+treeData.tree_icon_dir+nf[ai].icon+" alt=\"\">"+
+(nf[ai].disabled!=1?
+	"</a>":
+	""
+);
 
 if(treeData.state==treeData.tree_states["selectitem"] && (nf[ai].disabled!=1)) {
-	var ci;
-
-	if (nf[ai].typ == "group") {
-		row+="<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\">&nbsp;" + nf[ai].text +"</label>";
-	} else {
-		ci="' . $this->tree_image_dir . '"+(nf[ai].checked==1?"check1.gif":"check0.gif");
-		row+="<a href=\"javascript:"+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\"><img src=\""+ci+"\" width=16 height=18 align=absmiddle border=0 alt=\"\" name=\"img_"+nf[ai].id+"\"></a>"+
-		"<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\" onclick=\""+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\">&nbsp;" + nf[ai].text +"</label>";
-
-	}
-
+	row+= (nf[ai].typ == "group"?
+		"<label id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\">&nbsp;" + nf[ai].text +"</label>":
+		"<a href=\"javascript:"+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\"><img src=\""+treeData.tree_image_dir+(nf[ai].checked==1?"check1.gif":"check0.gif")+"\" alt=\"\" name=\"img_"+nf[ai].id+"\"></a>"+
+			"<label id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\" onclick=\""+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\">&nbsp;" + nf[ai].text +"</label>"
+		);
 }else if(treeData.state==treeData.tree_states["selectgroup"] && (nf[ai].disabled!=1)) {
-	var ci;
-
-	if (nf[ai].typ == "item") {
-		row+="<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\">&nbsp;" + nf[ai].text +"</label>";
-	} else {
-		ci="' . $this->tree_image_dir . '"+(nf[ai].checked==1?"check1.gif":"check0.gif");
-		row+="<a href=\"javascript:"+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\"><img src=\""+ci+"\" width=16 height=18 align=absmiddle border=0 alt=\"\" name=\"img_"+nf[ai].id+"\"></a>"+
-		"<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\" onclick=\""+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\">&nbsp;" + nf[ai].text +"</label>";
-	}
+	row+=(nf[ai].typ == "item"?
+		"<label id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\">&nbsp;" + nf[ai].text +"</label>":
+		"<a href=\"javascript:"+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\"><img src=\""+treeData.tree_image_dir+(nf[ai].checked==1?"check1.gif":"check0.gif")+"\" alt=\"\" name=\"img_"+nf[ai].id+"\"></a>"+
+			"<label id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\" onclick=\""+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\">&nbsp;" + nf[ai].text +"</label>"
+		);
 }else if(treeData.state==treeData.tree_states["select"] && (nf[ai].disabled!=1)) {
-	var ci;
-	ci="' . $this->tree_image_dir . '"+(nf[ai].checked==1?"check1.gif":"check0.gif");
-
-	row+="<a href=\"javascript:"+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\"><img src=\""+ci+"\" width=16 height=18 align=absmiddle border=0 alt=\"\" name=\"img_"+nf[ai].id+"\"></a>"+
-	"<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\" onclick=\""+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\">&nbsp;" + nf[ai].text +"</label>";
+	row+="<a href=\"javascript:"+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\"><img src=\""+treeData.tree_image_dir+(nf[ai].checked==1?"check1.gif":"check0.gif")+"\" alt=\"\" name=\"img_"+nf[ai].id+"\"></a>"+
+	"<label id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\" onclick=\""+treeData.topFrame+".checkNode(\'img_" + nf[ai].id + "\')\">&nbsp;" + nf[ai].text +"</label>";
 
 }else{
-	if(nf[ai].disabled!=1){
-			row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\"  onDblClick=\"' . $this->topFrame . '.wasdblclick=1;clearTimeout(' . $this->topFrame . '.tout);' . $this->topFrame . '.doClick(\'"+nf[ai].id+"\');return true;\" onclick=\"' . $this->topFrame . '.tout=setTimeout(\'if(' . $this->topFrame . '.wasdblclick==0) ' . $this->topFrame . '.doClick(\\\\\'"+nf[ai].id+"\\\\\'); else ' . $this->topFrame . '.wasdblclick=0;\',300);return true;\" onMouseOver=\"' . $this->topFrame . '.info(\'ID:"+nf[ai].id+"\')\" onMouseOut=\"' . $this->topFrame . '.info(\' \');\">";
-	}
-	row+="<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\">&nbsp;" + nf[ai].text +"</label>";
-	if(nf[ai].disabled!=1) row+="</a>";
+	row+=(nf[ai].disabled!=1?
+			"<a name=\'_"+nf[ai].id+"\' href=\"javascript://\"  onDblClick=\"' . $this->topFrame . '.wasdblclick=1;clearTimeout(' . $this->topFrame . '.tout);' . $this->topFrame . '.doClick(\'"+nf[ai].id+"\');return true;\" onclick=\"' . $this->topFrame . '.tout=setTimeout(\'if(' . $this->topFrame . '.wasdblclick==0) ' . $this->topFrame . '.doClick(\\\\\'"+nf[ai].id+"\\\\\'); else ' . $this->topFrame . '.wasdblclick=0;\',300);return true;\" onMouseOver=\"' . $this->topFrame . '.info(\'ID:"+nf[ai].id+"\')\" onMouseOut=\"' . $this->topFrame . '.info(\' \');\">":
+				""
+	)+
+	"<label id=\"lab_"+nf[ai].id+"\""+(nf[ai].tooltip!="" ? " title=\""+nf[ai].tooltip+"\"" : "")+" class=\""+nf[ai].getlayout()+"\">&nbsp;" + nf[ai].text +"</label>"+
+	(nf[ai].disabled!=1?
+		"</a>":
+		""
+	);
 }
 row+="&nbsp;&nbsp;<br/>";';
 		}
 
 		return array(
-			"item" => 'row+="&nbsp;&nbsp;<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"kreuzungend.gif":"kreuzung.gif")+" width=19 height=18 align=absmiddle border=0>";' . $click_handler,
+			"item" => 'row+="&nbsp;&nbsp;<img src=\""+treeData.tree_image_dir+(ai == nf.len?"kreuzungend.gif":"kreuzung.gif")+"\" class=\"treeKreuz\" >";' . $click_handler,
 			"group" => '
 var newAst = zweigEintrag;
 
@@ -580,14 +563,14 @@ var zusatz = (ai == nf.len) ? "end" : "";
 var oc_img;
 var oc_js;
 
-oc_img="' . $this->tree_image_dir . '"+(nf[ai].open == 0?"auf":"zu")+zusatz+".gif";
+oc_img=treeData.tree_image_dir+(nf[ai].open == 0?"auf":"zu")+zusatz+".gif";
 
 if(nf[ai].disabled!=1) oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
 else oc_js="//";
 
 oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
 
-row+="&nbsp;&nbsp;<a href=\"javascript:"+oc_js+" border=0><img src="+oc_img+" width=\"19\" height=\"18\" align=\"absmiddle\" border=\"0\" Alt=\"\"></a>";
+row+="&nbsp;&nbsp;<a href=\"javascript:"+oc_js+" border=0><img src="+oc_img+" class=\"treeKreuz\" alt=\"\"></a>";
 
 var folder_icon;
 folder_icon="folder"+(nf[ai].open==1 ? "open" : "")+(nf[ai].disabled==1 ? "_disabled" : "")+".gif";
@@ -597,13 +580,13 @@ nf[ai].icon=folder_icon;
 ' . $click_handler . '
 
 if (nf[ai].open==1){
-	newAst = newAst + "<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"leer.gif":"strich2.gif")+" width=\"19\" height=\"18\" align=\"absmiddle\" border=\"0\">";
+	newAst = newAst + "<img src=\""+treeData.tree_image_dir+(ai == nf.len?"leer.gif":"strich2.gif")+"\" class=\"treeKreuz\"/>";
 	row+=draw(nf[ai].id,newAst);
 		}',
 			"threedots" => '
-row+="&nbsp;&nbsp;<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"kreuzungend.gif":"kreuzung.gif")+" width=\"19\" height=\"18\" align=\"absmiddle\" border=\"0\">"+
+row+="&nbsp;&nbsp;<img src=\""+treeData.tree_image_dir+(ai == nf.len?"kreuzungend.gif":"kreuzung.gif")+"\" class=\"treeKreuz\" >"+
 "<a name=\'_"+nf[ai].id+"\' href=\"javascript://\"  onclick=\"' . $this->topFrame . '.setSegment(\'"+nf[ai].id+"\');return true;\">"+
-"<img src=\"' . $this->tree_image_dir . '/"+nf[ai].icon+"\" style=\"width:100px;height:7px\" alt=\"\">"+
+"<img src=\""+treeData.tree_image_dir+nf[ai].icon+"\" style=\"width:100px;height:7px\" alt=\"\">"+
 "</a>"+
 "&nbsp;&nbsp;<br/>";'
 		);

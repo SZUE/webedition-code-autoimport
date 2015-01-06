@@ -1,5 +1,3 @@
-treeMainModules.php
-treeMain.php
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -25,6 +23,8 @@ we_backup/download/dummy
 we_ajaxcmd.php
 we/templates/dummy
 we/include/xhtml.inc.php
+we/include/webEdition_seem.inc.php
+we/include/webEdition_normal.inc.php
 we/include/we_widgets/mod/usr.inc.php
 we/include/we_widgets/mod/upb.inc.php
 we/include/we_widgets/mod/sct.inc.php
@@ -2248,6 +2248,8 @@ we/include/htaccessbase.txt
 we/include/define_styles.inc.php
 we/include/db_mysql.inc.php
 we/include/clear_cache.inc.php
+treeMainModules.php
+treeMain.php
 treeInfo.php
 stay_alive.php
 showDoc.php

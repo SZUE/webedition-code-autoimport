@@ -45,12 +45,11 @@ function zeichne(startEntry, zweigEintrag) {
 							(ai == nf.laenge ?
 											"kreuzungend.gif" :
 											"kreuzung.gif") +
-							"\" class=\"treeKreuz\">";
-
-			if (nf[ai].name != -1) {
-				ret += "<a name=\'_" + nf[ai].name + "\' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",\'" + nf[ai].contentType + "\',\'" + nf[ai].table + "\');return true;\">";
-			}
-			ret += "<IMG SRC=\"" + tree_icon_dir + nf[ai].icon + "\" alt=\"' . g_l('tree', '[edit_statustext]') . '\">" +
+							"\" class=\"treeKreuz\">" +
+							(nf[ai].name != -1 ?
+											"<a name=\'_" + nf[ai].name + "\' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",\'" + nf[ai].contentType + "\',\'" + nf[ai].table + "\');return true;\">" :
+											"") +
+							"<img src=\"" + tree_icon_dir + nf[ai].icon + "\" alt=\"' . g_l('tree', '[edit_statustext]') . '\">" +
 							"</a>" +
 							"&nbsp;<a name=\'_" + nf[ai].name + "\' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",\'" + nf[ai].contentType + "\',\'" + nf[ai].table + "\');return true;\"><font color=\"" + ((nf[ai].contentType == "alias") ? "#006DB8" : (parseInt(nf[ai].denied) ? "red" : "black")) + "\">" + (parseInt(nf[ai].published) ? "<b>" : "") + "<label title=\'" + nf[ai].name + "\'>" + nf[ai].text + "</label>" + (parseInt(nf[ai].published) ? "</b>" : "") + "</font></A>&nbsp;&nbsp;<br/>";
 		} else {
@@ -139,15 +138,7 @@ function deleteEntry(id) {
 function openClose(name, status) {
 	var eintragsIndex = indexOfEntry(name);
 	menuDaten[eintragsIndex].offen = status;
-	if (status) {
-		if (!menuDaten[eintragsIndex].loaded) {
-			drawEintraege();
-		} else {
-			drawEintraege();
-		}
-	} else {
-		drawEintraege();
-	}
+	drawEintraege();
 }
 
 function indexOfEntry(name) {

@@ -36,14 +36,15 @@ class we_export_tree extends weMainTree{
 
 		return '
 function openClose(id){
-
-	if(id=="") return;
+	if(id==""){
+		return;
+	}
 
 	var eintragsIndex = indexOfEntry(id);
 	var status;
 
-	if(treeData[eintragsIndex].open==0) openstatus=1;
-	else openstatus=0;
+	openstatus=(treeData[eintragsIndex].open==0? 1:0);
+
 	treeData[eintragsIndex].open=openstatus;
 	if(openstatus && treeData[eintragsIndex].loaded!=1){
 		' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=load&tab="+' . $this->topFrame . '.table+"&cmd=load&pid="+id;
@@ -58,7 +59,9 @@ function openClose(id){
 		}
 		drawTree();
 	}
-	if(openstatus==1) treeData[eintragsIndex].loaded=1;
+	if(openstatus==1){
+		treeData[eintragsIndex].loaded=1;
+	}
 }';
 	}
 
@@ -114,7 +117,7 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 
 		return '
 function drawTree(){
-	var out=\'<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr><td class="\'+treeData.getlayout()+\'">\n<nobr>\n\'+
+	var out=\'<table><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr><td class="\'+treeData.getlayout()+\'">\n<nobr>\n\'+
 		draw(treeData.startloc,"")+
 		"</nobr>\n</td></tr></table>\n";
 	' . $this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
@@ -202,13 +205,6 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 
 ' . $this->getJSStartTree());
 
-		$style_code = "";
-		if(isset($this->SelectionTree->styles)){
-			foreach($this->SelectionTree->styles as $st){
-				$style_code.=$st . "\n";
-			}
-		}
-
 		if($useSelector){
 			$captions = array();
 			if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
@@ -249,7 +245,6 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 
 		$DB_WE = new DB_WE();
 		$where = ' WHERE  ParentID=' . intval($ParentID) . ' AND((1' . we_users_util::makeOwnersSql() . ')' . $GLOBALS['wsQuery'] . ')';
-		//if($GLOBALS['table']==FILE_TABLE) $where .= " AND (ClassName='we_webEditionDocument' OR ClassName='we_folder')";
 		$elem = 'ID,ParentID,Path,Text,Icon,IsFolder,ModDate' . (($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE)) ? ",Published" : "") . ((defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) ? ",IsClassFolder" : "");
 
 		switch($table){

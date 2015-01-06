@@ -141,39 +141,39 @@ class we_export_wizard{
 		$js = $this->getJSTop() .
 			$this->Tree->getJSTreeCode() .
 			we_html_element::jsElement('
-   		var step = 0;
+var step = 0;
 
-			var activetab=0;
-			var selection="auto";
+var activetab=0;
+var selection="auto";
 
-			var extype="' . we_import_functions::TYPE_WE_XML . '";
-			var type="doctype";
-			var categories="";
-			var doctype="";
-			var classname="";
-			var dir="";
+var extype="' . we_import_functions::TYPE_WE_XML . '";
+var type="doctype";
+var categories="";
+var doctype="";
+var classname="";
+var dir="";
 
-			var file_format="' . we_import_functions::TYPE_GENERIC_XML . '";
-			var filename="";
-			var export_to="server";
-			var path="/";
+var file_format="' . we_import_functions::TYPE_GENERIC_XML . '";
+var filename="";
+var export_to="server";
+var path="/";
 
-			var SelectedItems= new Array();
-			SelectedItems["' . FILE_TABLE . '"]=new Array();' .
-				(defined('OBJECT_FILES_TABLE') ? (
-					'SelectedItems["' . OBJECT_FILES_TABLE . '"]=new Array();
-				SelectedItems["' . OBJECT_TABLE . '"]=new Array();
-				') : '') . '
+var SelectedItems= new Array();
+SelectedItems["' . FILE_TABLE . '"]=new Array();' .
+	(defined('OBJECT_FILES_TABLE') ? (
+		'SelectedItems["' . OBJECT_FILES_TABLE . '"]=new Array();
+	SelectedItems["' . OBJECT_TABLE . '"]=new Array();
+	') : '') . '
 
-			SelectedItems["' . TEMPLATES_TABLE . '"]=new Array();
+SelectedItems["' . TEMPLATES_TABLE . '"]=new Array();
 
-			var openFolders= new Array();
-			openFolders["' . FILE_TABLE . '"]="";' .
-				(defined('OBJECT_FILES_TABLE') ? ('
-			openFolders["' . OBJECT_FILES_TABLE . '"]="";
-			openFolders["' . OBJECT_TABLE . '"]="";
-			') : '') . '
-			openFolders["' . TEMPLATES_TABLE . '"]="";
+var openFolders= new Array();
+openFolders["' . FILE_TABLE . '"]="";' .
+	(defined('OBJECT_FILES_TABLE') ? ('
+openFolders["' . OBJECT_FILES_TABLE . '"]="";
+openFolders["' . OBJECT_TABLE . '"]="";
+') : '') . '
+openFolders["' . TEMPLATES_TABLE . '"]="";
 
 		');
 
@@ -495,13 +495,6 @@ function we_submit(){
 	document.we_form.submit();
 }');
 
-		$style_code = "";
-		if(isset($this->Tree->styles)){
-			foreach($this->Tree->styles as $st){
-				$style_code.=$st . "\n";
-			}
-		}
-
 		$header = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 2, 9);
 		$parts = array(
 			array(
@@ -521,7 +514,7 @@ function we_submit(){
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) .
 					STYLESHEET .
-					we_html_element::cssElement($style_code) .
+					$this->Tree->getStyles() .
 					$js
 				) .
 				we_html_element::htmlBody(array(

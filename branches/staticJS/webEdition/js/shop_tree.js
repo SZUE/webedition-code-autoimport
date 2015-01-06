@@ -46,61 +46,57 @@ function zeichne(startEntry, zweigEintrag) {
 	while (ai <= nf.laenge) {
 		ret += zweigEintrag;
 		if (nf[ai].typ === 'shop') {
-			if (ai === nf.laenge) {
-				ret += "&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir + "kreuzungend.gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
-			} else {
-				ret += "&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir + "kreuzung.gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
-			}
+			ret += "&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir +
+							(ai === nf.laenge ?
+											"kreuzungend.gif" :
+											"kreuzung.gif"
+											) +
+							"\" class=\"treeKreuz\"/>";
 			if (perm_EDIT_SHOP_ORDER) { // make  in tree clickable
 				if (nf[ai].name !== -1) {
-					ret += "<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>";
+					ret += "<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">";
 				}
 			}
-			ret += "<IMG SRC=\"" + tree_img_dir + "icons/" + nf[ai].icon + "\" title=\"" + tree_edit_statustext + "\">";
-			if (perm_EDIT_SHOP_ORDER) {
-				ret += "</a>";
-			}
-			ret += "&nbsp;";
-			if (perm_EDIT_SHOP_ORDER) { // make orders in tree clickable
-				ret += "<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">";
-
-			}
-			//changed for #6786
-			ret += "<span style='" + nf[ai].st + "'>" + nf[ai].text + "</span>";
-			if (perm_EDIT_SHOP_ORDER) {
-				ret += "</a>";
-			}
-			ret += "&nbsp;&nbsp;<br/>";
+			ret += "<img src=\"" + tree_img_dir + "icons/" + nf[ai].icon + "\" title=\"" + tree_edit_statustext + "\">" +
+							(perm_EDIT_SHOP_ORDER ?
+											"</a>" :
+											"") +
+							"&nbsp;" +
+							(perm_EDIT_SHOP_ORDER ? // make orders in tree clickable
+											"<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
+											"") +
+							//changed for #6786
+							"<span style='" + nf[ai].st + "'>" + nf[ai].text + "</span>" +
+							(perm_EDIT_SHOP_ORDER ?
+											"</a>" : ""
+											) +
+							"&nbsp;&nbsp;<br/>";
 		} else {
 			var newAst = zweigEintrag;
 			var zusatz = (ai === nf.laenge) ? "end" : "";
 
 			if (nf[ai].offen === 0) {
-				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\" border=0><img src=\"" + tree_img_dir + "auf" + zusatz + ".gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"" + tree_open_statustext + "\"></a>";
+				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\"><img src=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" title=\"" + tree_open_statustext + "\"></a>";
 				var zusatz2 = "";
 			} else {
-				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\" border=0><img src=\"" + tree_img_dir + "zu" + zusatz + ".gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 title=\"" + tree_close_statustext + "\"></a>";
+				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\"><img src=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\" title=\"" + tree_close_statustext + "\"></a>";
 				var zusatz2 = "open";
 			}
-			if (perm_EDIT_SHOP_ORDER) {
-				ret += "<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>";
-			}
-			ret += "<img src=\"" + tree_img_dir + "icons/folder" + zusatz2 + ".gif\" title=\"" + tree_edit_statustext + "\">";
-			if (perm_EDIT_SHOP_ORDER) {
-				ret += "</a>";
-
-			}
-			if (perm_EDIT_SHOP_ORDER) {
-				// make the month in tree clickable
-				ret += "<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">";
-			}
-			ret += "&nbsp;" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "");
-			if (perm_EDIT_SHOP_ORDER) {
-				ret += "</a>";
-			}
-			ret += "&nbsp;&nbsp;<br/>";
+			ret += (perm_EDIT_SHOP_ORDER ?
+							"<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
+							"") +
+							"<img src=\"" + tree_img_dir + "icons/folder" + zusatz2 + ".gif\" title=\"" + tree_edit_statustext + "\">" +
+							(perm_EDIT_SHOP_ORDER ?
+											"</a>" +
+											// make the month in tree clickable
+											"<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
+											"") +
+							"&nbsp;" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") +
+							(perm_EDIT_SHOP_ORDER ?
+											"</a>" : "") +
+							"&nbsp;&nbsp;<br/>";
 			if (nf[ai].offen) {
-				newAst = newAst + "<img src=\"" + tree_img_dir + (ai === nf.laenge ? "leer.gif" : "strich2.gif") + "\" width=19 height=18 align=absmiddle border=0>";
+				newAst = newAst + "<img src=\"" + tree_img_dir + (ai === nf.laenge ? "leer.gif" : "strich2.gif") + "\" class=\"treeKreuz\">";
 				ret += zeichne(nf[ai].name, newAst);
 			}
 		}
@@ -162,15 +158,7 @@ function deleteEntry(id) {
 function openClose(name, status) {
 	var eintragsIndex = indexOfEntry(name);
 	menuDaten[eintragsIndex].offen = status;
-	if (status) {
-		if (!menuDaten[eintragsIndex].loaded) {
-			drawEintraege();
-		} else {
-			drawEintraege();
-		}
-	} else {
-		drawEintraege();
-	}
+	drawEintraege();
 }
 
 function indexOfEntry(name) {

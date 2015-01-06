@@ -70,6 +70,7 @@ tf1_o_img.src = tree_icon_dir + "todo_folder_open.gif";
 tf3_o_img.src = tree_icon_dir + "todo_in_folder_open.gif";
 tf13_o_img.src = tree_icon_dir + "todo_done_folder_open.gif";
 tf11_o_img.src = tree_icon_dir + "todo_reject_folder_open.gif";
+
 function check(img) {
 	var i;
 	var tarr = img.split("_");
@@ -341,11 +342,13 @@ function zeichne(startEntry, zweigEintrag) {
 			if (deleteMode) {
 				if (nf[ai].name != -1) {
 					trg = "javascript:top.content.check(\"img_" + nf[ai].name + "\");";
-					if (nf[ai].checked) {
-						ret += "<a href=\"" + trg + "\"><img src=\"" + tree_img_dir + "check1.gif\" alt=\"" + tree_select_statustext + "\" name=\'img_" + nf[ai].name + "\'></a>";
-					} else {
-						ret += "<a href=\"" + trg + "\"><img src=\"" + tree_img_dir + "check0.gif\" alt=\"" + tree_select_statustext + "\" name=\'img_" + nf[ai].name + "\'></a>";
-					}
+					ret += "<a href=\"" + trg + "\"><img src=\"" + tree_img_dir +
+									(nf[ai].checked ?
+													"check1.gif" :
+													"check0.gif"
+													) +
+									"\" alt=\"" + tree_select_statustext + "\" name=\'img_" + nf[ai].name + "\'></a>";
+
 				}
 			} else {
 				trg = "doClick(" + nf[ai].name + ");return true;"
@@ -421,15 +424,7 @@ function deleteEntry(id) {
 function openClose(name, status) {
 	var eintragsIndex = indexOfEntry(name);
 	menuDaten[eintragsIndex].offen = status;
-	if (status) {
-		if (!menuDaten[eintragsIndex].loaded) {
-			drawEintraege();
-		} else {
-			drawEintraege();
-		}
-	} else {
-		drawEintraege();
-	}
+	drawEintraege();
 }
 
 function indexOfEntry(name) {
@@ -546,7 +541,7 @@ function addSort(object) {
 	for (var i = this.laenge; i > 0; i--) {
 		if (i > 1 && this[i - 1].text.toLowerCase() > object.text.toLowerCase()) {
 			this[i] = this[i - 1];
-		}	else {
+		} else {
 			this[i] = object;
 			break;
 		}

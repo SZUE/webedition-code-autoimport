@@ -32,44 +32,44 @@ class we_newsletter_tree extends weMainTree{
 	function getJSMakeNewEntry(){
 		return '
 function makeNewEntry(icon,id,pid,txt,open,ct,tab){
-		if(treeData[indexOfEntry(pid)]){
-			if(treeData[indexOfEntry(pid)].loaded){
+	if(treeData[indexOfEntry(pid)]){
+		if(treeData[indexOfEntry(pid)].loaded){
 
-				ct=(ct=="folder"? "group":"item");
+			ct=(ct=="folder"? "group":"item");
 
-				var attribs={
-				"id":id,
-				"icon":icon,
-				"text":txt,
-				"parentid":pid,
-				"open":open,
-				"tooltip":id,
-				"typ":ct,
-				"contenttype":"newsletter",
-				"disabled":0,
-				"published":1,
-				"selected":0
-				};
+			var attribs={
+			"id":id,
+			"icon":icon,
+			"text":txt,
+			"parentid":pid,
+			"open":open,
+			"tooltip":id,
+			"typ":ct,
+			"contenttype":"newsletter",
+			"disabled":0,
+			"published":1,
+			"selected":0
+			};
 
-				treeData.addSort(new node(attribs));
+			treeData.addSort(new node(attribs));
 
-				drawTree();
-			}
+			drawTree();
 		}
+	}
 }';
 	}
 
 	function getJSUpdateItem(){
 		return '
 function updateEntry(id,text,pid){
-			var ai = 1;
-			while (ai <= treeData.len) {
-					if (treeData[ai].id==id) {
-							treeData[ai].text=text;
-							treeData[ai].parentid=pid;
-					}
-					ai++;
-			}
+	var ai = 1;
+	while (ai <= treeData.len) {
+		if (treeData[ai].id==id) {
+				treeData[ai].text=text;
+				treeData[ai].parentid=pid;
+		}
+		ai++;
+	}
 	drawTree();
 }';
 	}
@@ -113,9 +113,7 @@ function openClose(id){
 	var sort="";
 	if(id=="") return;
 	var eintragsIndex = indexOfEntry(id);
-	var openstatus;
-
-	openstatus=(treeData[eintragsIndex].open==0? 1:0);
+	var openstatus=(treeData[eintragsIndex].open==0? 1:0);
 
 	treeData[eintragsIndex].open=openstatus;
 

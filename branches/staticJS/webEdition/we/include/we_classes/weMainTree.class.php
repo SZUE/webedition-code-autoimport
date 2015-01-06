@@ -50,30 +50,12 @@ class weMainTree extends weTree{
 		));
 
 		$this->setStyles(array(
-			'.item {color: black;cursor: pointer;}',
-			'.item a { text-decoration:none;}',
-			'.group {color: black; font-weight: bold;cursor: pointer;}',
-			'.group a { text-decoration:none;}',
-			'.checked_item {color: black; background-color: #D4DBFA; cursor: pointer;}',
-			'.checked_item a { text-decoration:none;}',
-			'.checked_group {color: black; font-weight: bold;background-color: #D4DBFA; cursor: pointer;}',
-			'.checked_group a { text-decoration:none;}',
-			'.checked_notpublished {color: red;background-color: #D4DBFA; cursor: pointer;}',
-			'.checked_notpublished a { text-decoration:none;}',
-			'.checked_changed {color: #3366CC;background-color: #D4DBFA; cursor: pointer;}',
-			'.checked_changed a { text-decoration:none;}',
-			'#tree .disabled {color: grey;cursor: pointer;}',
-			'#tree .disabled a { text-decoration:none;}',
-			'.selected_item {color: black;background-color: #D4DBFA; cursor: pointer;}',
-			'.selected_item a { text-decoration:none;}',
-			'.selected_notpublished_item {color: red;background-color: #D4DBFA; cursor: pointer;}',
-			'.selected_notpublished_item a { text-decoration:none;}',
-			'.selected_changed_item {color: #3366CC;background-color: #D4DBFA; cursor: pointer;}',
-			'.selected_changed_item a { text-decoration:none;}',
-			'.selected_group {color: black; font-weight: bold;background-color: #D4DBFA; cursor: pointer;}',
-			'.selected_group a { text-decoration:none;}',
-			'.selected_open_group {color: black; font-weight: bold;background-color: #D4DBFA; cursor: pointer;}',
-			'.selected_open_group a { text-decoration:none;}',
+			'.item {cursor: pointer;}',
+			'.group {cursor: pointer;}',
+			'.selected_item {background-color: #D4DBFA;}',
+			'.selected_group {background-color: #D4DBFA;}',
+			'.selected_notpublished_item {color: red;}',
+			'.selected_open_group {color: black;}',
 			)
 		);
 	}

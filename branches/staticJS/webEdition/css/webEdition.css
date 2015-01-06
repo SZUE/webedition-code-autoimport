@@ -100,17 +100,6 @@ img.baumArrow{
 	right:0px;
 	overflow: hidden;
 }
-#treetable{
-	margin: 4px 0px 4px 0px;
-	background-color: #F3F7FF;
-}
-#treetable a,
-#treetable a:active,
-#treetable a:visited
-{
-	text-decoration: none;
-	color:black;
-}
 
 #bm_mainDiv{
 	position:absolute;
