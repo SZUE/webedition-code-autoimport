@@ -1,4 +1,3 @@
-we/include/we_modules/navigation/hook/we_jsCmdHook_navigation.inc.php
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -86,6 +85,7 @@ we/include/we_versions/version_wizard/we_version.class.php
 we/include/we_versions/version_wizard/versionFragment.inc.php
 we/include/we_versions/version_wizard/versionFragment.class.php
 we/include/we_versions/version_wizard
+we/include/we_tools/weSearch/hook/we_jsCmdHook_weSearch.inc.php
 we/include/we_tools/weSearch/class/searchtoolView.class.php
 we/include/we_tools/weSearch/class/searchtoolTreeDataSource.class.php
 we/include/we_tools/weSearch/class/searchtoolTree.class.php
@@ -221,6 +221,7 @@ we/include/we_modules/voting/weVotingTree.php
 we/include/we_modules/voting/weVotingList.php
 we/include/we_modules/voting/weVotingFrames.php
 we/include/we_modules/voting/weVoting.php
+we/include/we_modules/users/we_webEditionCmd_users.inc.php
 we/include/we_modules/users/we_users_util.php
 we/include/we_modules/users/we_users_ping.php
 we/include/we_modules/users/we_users_lockmessage.inc.php
@@ -241,6 +242,7 @@ we/include/we_modules/users/edit_users_edfooter.php
 we/include/we_modules/users/edit_users_cmd.php
 we/include/we_modules/users/edit_users_bcmd.php
 we/include/we_modules/spellchecker/we_webEditionCmd_spellchecker.inc.php
+we/include/we_modules/shop/we_webEditionCmd_shop.inc.php
 we/include/we_modules/shop/we_template_variant.inc.php
 we/include/we_modules/shop/we_shopDirSelector.php
 we/include/we_modules/shop/we_pager_class.inc.php
@@ -268,6 +270,7 @@ we/include/we_modules/schedule/we_schedule_prop.inc.php
 we/include/we_modules/schedule/we_schedpro_defines.inc.php
 we/include/we_modules/schedule/we_schedpro.inc.php
 we/include/we_modules/schedule/we_editor_schedpro.inc.php
+we/include/we_modules/object/we_webEditionCmd_object.inc.php
 we/include/we_modules/object/we_searchobject_class.inc.php
 we/include/we_modules/object/we_objecttag.inc.php
 we/include/we_modules/object/we_objectFile.inc.php
@@ -290,6 +293,7 @@ we/include/we_modules/newsletter/weNewsletterBlock.php
 we/include/we_modules/newsletter/weNewsletterBase.php
 we/include/we_modules/newsletter/weNewsletter.php
 we/include/we_modules/navigation/we_webEditionCmd_navigation.inc.php
+we/include/we_modules/navigation/hook/we_jsCmdHook_navigation.inc.php
 we/include/we_modules/navigation/conf/we_navigationSettings.inc.php
 we/include/we_modules/navigation/conf/we_conf_navigation.inc.php
 we/include/we_modules/navigation/class/we_navigation_settingControl.class.php
@@ -319,6 +323,7 @@ we/include/we_modules/messaging/messaging_defs.inc.php
 we/include/we_modules/messaging/messaging_cmd.php
 we/include/we_modules/messaging/ieHResize.html
 we/include/we_modules/messaging/header_msg.php
+we/include/we_modules/glossary/we_webEditionCmd_glossary.inc.php
 we/include/we_modules/glossary/we_conf_glossary_settings.inc.php
 we/include/we_modules/glossary/weGlossaryView.php
 we/include/we_modules/glossary/weGlossaryTreeLoader.php
@@ -2254,6 +2259,7 @@ noAvailable.php
 multiEditor/multiTabs.php
 multiEditor/multiEditorFrameset.php
 multiEditor/EditorFrameController.php
+multiEditor/EditorFrameController.inc.php
 mozillamenu.php
 menuapplet/menuapplet.zip
 menuapplet/menuapplet.cab
@@ -2590,4 +2596,5 @@ apps/toolfactory/pattern/hook/custom_hooks/weCustomHook_TOOLNAME_save.inc.php
 apps/toolfactory/pattern/hook/custom_hooks/weCustomHook_TOOLNAME_publish.inc.php
 apps/toolfactory/pattern/hook/custom_hooks/weCustomHook_TOOLNAME_delete.inc.php
 apps/toolfactory/lang/no/default.xml
+apps/toolfactory/hook/we_jsCmdHook_toolfactory.inc.php
 apps/toolfactory/hook/custom_hooks/weCustomHook_toolfactory_save.inc.php
