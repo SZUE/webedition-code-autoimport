@@ -20,7 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_customer(args) {
+function we_cmd_customer(args,url) {
 	switch (args[0]) {
 
 		case "customer_edit":

@@ -20,7 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_users(args) {
+function we_cmd_users(args,url) {
 	switch (args[0]) {
 		case "browse_users":
 			new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);

@@ -20,7 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_navigation(args) {
+function we_cmd_navigation(args,url) {
 	switch (args[0]) {
 
 		case "navigation_edit":

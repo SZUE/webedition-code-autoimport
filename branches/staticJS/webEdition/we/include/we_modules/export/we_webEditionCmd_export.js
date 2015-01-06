@@ -20,7 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_export(args) {
+function we_cmd_export(args,url) {
 	switch (args[0]) {
 		case "export_edit":
 		case "export_edit_ifthere":

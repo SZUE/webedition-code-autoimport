@@ -20,7 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_spellchecker(args) {
+function we_cmd_spellchecker(args,url) {
 	switch (args[0]) {
 		case "spellchecker_edit":
 		case "spellchecker_edit_ifthere":

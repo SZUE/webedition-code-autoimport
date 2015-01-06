@@ -20,7 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_schedule(args) {
+function we_cmd_schedule(args,url) {
 	switch (args[0]) {
 		case "edit_schedule":
 		case "schedule_edit_ifthere":

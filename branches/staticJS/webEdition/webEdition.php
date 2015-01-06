@@ -223,7 +223,6 @@ echo we_html_element::jsScript(JS_DIR . 'webEdition.js');
 
 
 	function we_cmd() {
-		console.log(arguments[0]);
 		var url = "/webEdition/we_cmd.php?";
 		for (var i = 0; i < arguments.length; i++) {
 			url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
@@ -282,7 +281,7 @@ $jsmods = array_keys($jsCmd);
 $jsmods[] = 'base';
 $jsmods[] = 'tools';
 foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do a switch/case instead of search
-	echo 'if(we_cmd_' . $mod . '(arguments)){break;}';
+	echo 'if(we_cmd_' . $mod . '(arguments,url)){break;}';
 }
 ?>
 				if ((nextWindow = top.weEditorFrameController.getFreeWindow())) {

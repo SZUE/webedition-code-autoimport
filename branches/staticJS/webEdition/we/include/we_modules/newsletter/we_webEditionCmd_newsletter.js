@@ -20,7 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_newsletter(args) {
+function we_cmd_newsletter(args,url) {
 	switch (args[0]) {
 		case "newsletter_edit":
 		case "newsletter_edit_ifthere":

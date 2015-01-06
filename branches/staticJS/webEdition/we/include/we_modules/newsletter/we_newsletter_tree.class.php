@@ -42,7 +42,7 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab){
 				"icon":icon,
 				"text":txt,
 				"parentid":pid,
-				"open":open
+				"open":open,
 				"tooltip":id,
 				"typ":ct,
 				"contenttype":"newsletter",
@@ -115,9 +115,7 @@ function openClose(id){
 	var eintragsIndex = indexOfEntry(id);
 	var openstatus;
 
-
-	if(treeData[eintragsIndex].open==0) openstatus=1;
-	else openstatus=0;
+	openstatus=(treeData[eintragsIndex].open==0? 1:0);
 
 	treeData[eintragsIndex].open=openstatus;
 

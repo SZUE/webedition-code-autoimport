@@ -160,7 +160,7 @@ abstract class we_tool_lookup{
 				$includes['tool_' . $_tool['name']] = $path . '.js';
 			}
 		}
-		return 'function we_cmd_tools(args) {
+		return 'function we_cmd_tools(args,url) {
 	switch (args[0]) {
 		' . ob_get_clean() . '
 		default:

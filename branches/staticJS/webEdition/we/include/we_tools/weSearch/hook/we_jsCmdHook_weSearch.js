@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_tool_weSearch(args) {
+function we_cmd_tool_weSearch(args, url) {
 	switch (args[0]) {
 
 		case "tool_weSearch_edit":

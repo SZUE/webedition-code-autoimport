@@ -21,7 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_cmd_shop(args) {
+function we_cmd_shop(args,url) {
 	var swcmd = args[0];
 	if (swcmd.match(/^year\d+$/)) {
 		swcmd = 'yearCmd';

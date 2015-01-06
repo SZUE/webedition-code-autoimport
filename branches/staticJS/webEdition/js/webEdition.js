@@ -487,14 +487,7 @@ function doUnload(whichWindow) { // triggered when webEdition-window is closed
 }
 
 
-function we_cmd_base(args) {
-	var url = "/webEdition/we_cmd.php?";
-	for (var i = 0; i < args.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]);
-		if (i < (args.length - 1))
-			url += "&";
-	}
-
+function we_cmd_base(args,url) {
 	switch (args[0]) {
 		case "exit_modules":
 			if (jsWindow_count) {
@@ -604,10 +597,10 @@ function we_cmd_base(args) {
 			break;
 		case "changeLanguageRecursive":
 		case "changeTriggerIDRecursive":
-			we_repl(self.load, url, cmd);
+			we_repl(self.load, url, args[0]);
 			break;
 		case "logout":
-			we_repl(self.load, url, cmd);
+			we_repl(self.load, url, args[0]);
 			break;
 		case "dologout":
 			// before the command 'logout' is executed, ask if unsaved changes should be saved
@@ -621,10 +614,10 @@ function we_cmd_base(args) {
 			break;
 		case "loadFolder":
 		case "closeFolder":
-			we_repl(self.load, url, cmd);
+			we_repl(self.load, url, args[0]);
 			break;
 		case "reload_editfooter":
-			we_repl(top.weEditorFrameController.getActiveDocumentReference().frames[3], url, cmd);
+			we_repl(top.weEditorFrameController.getActiveDocumentReference().frames[3], url, args[0]);
 			break;
 		case "rebuild":
 			new jsWindow(url, "rebuild", -1, 0, 609, 645, true, false, true);
@@ -743,7 +736,7 @@ function we_cmd_base(args) {
 			}
 			break;
 		case "showLoadInfo":
-			we_repl(self.Tree, url, cmd);
+			we_repl(self.Tree, url, args[0]);
 			break;
 		case "update_image":
 		case "update_file":
@@ -817,7 +810,7 @@ function we_cmd_base(args) {
 
 			if (_currentEditorRootFrame) {
 				if (!we_sbmtFrm(_visibleEditorFrame, url, _visibleEditorFrame)) {
-					if (cmd !== "update_image") {
+					if (args[0] !== "update_image") {
 						// add we_transaction, if not set
 						if (!args[2]) {
 							args[2] = top.weEditorFrameController.getActiveEditorFrame().getEditorTransaction();
@@ -1306,7 +1299,7 @@ function we_cmd_base(args) {
 						args[2] = _we_activeTransaction;
 					}
 					url += "&we_transaction=" + args[2];
-					we_repl(_sendToFrame, url, args[0]);
+					we_repl(_sendToFrame, url, argsclose[0]);
 				}
 			}
 

@@ -20,7 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_banner(args) {
+function we_cmd_banner(args,url) {
 	switch (args[0]) {
 		case "banner_edit":
 		case "banner_edit_ifthere":

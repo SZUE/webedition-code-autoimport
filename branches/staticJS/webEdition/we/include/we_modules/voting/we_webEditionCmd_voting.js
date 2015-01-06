@@ -20,7 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_voting(args) {
+function we_cmd_voting(args,url) {
 	switch (args[0]) {
 
 		case "voting_edit":
