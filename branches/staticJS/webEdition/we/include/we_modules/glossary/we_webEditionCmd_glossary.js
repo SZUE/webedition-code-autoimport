@@ -1,4 +1,3 @@
-<?php
 /**
  * webEdition CMS
  *
@@ -21,17 +20,16 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-?>
-<script type="text/javascript"><!--
-		switch (WE_REMOVE) {
+function we_cmd_glossary(args) {
+	switch (args[0]) {
 		case "glossary_check":
 
 			var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
 			if (_EditorFrame != false
 							&& _EditorFrame.getEditorType() == "model"
 							&& (
-											_EditorFrame.getEditorContentType() == "<?php echo we_base_ContentTypes::WEDOCUMENT; ?>"
-											|| _EditorFrame.getEditorContentType() == "<?php echo we_base_ContentTypes::OBJECT_FILE; ?>"
+											_EditorFrame.getEditorContentType() == contentTypes.WEDOCUMENT
+											|| _EditorFrame.getEditorContentType() == contentTypes.OBJECT_FILE
 											)
 							) {
 
@@ -68,8 +66,8 @@
 		case "glossary_dictionaries":
 			new jsWindow(url, "edit_glossary_dictionaries", -1, -1, 490, 250, true, true, true, true);
 			break;
-		case ((arguments[0].substr(0, 15) == "GlossaryXYZnew_") ? arguments[0] : false):
-			tempargs = arguments[0].split("\XYZ");
+		case ((args[0].substr(0, 15) == "GlossaryXYZnew_") ? args[0] : false):
+			tempargs = args[0].split("\XYZ");
 			var fo = false;
 			for (var k = jsWindow_count - 1; k > -1; k--) {
 				eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + tempargs[1] + "','" + tempargs[2] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
@@ -92,10 +90,10 @@
 			var fo = false;
 			if (jsWindow_count) {
 				for (var k = jsWindow_count - 1; k > -1; k--) {
-					if (arguments[1] != undefined) {
-						eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + arguments[0] + "','" + arguments[1] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
+					if (args[1] != undefined) {
+						eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "','" + args[1] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
 					} else {
-						eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + arguments[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
+						eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
 					}
 					if (fo) {
 						break;
@@ -105,9 +103,10 @@
 			}
 			break;
 		case "unlock"://FIXME:???
-			we_repl(self.load, url, arguments[0]);
+			we_repl(self.load, url, args[0]);
 			break;
-	}//WE_REMOVE
-
-//-->
-</script>
+		default:
+			return false;
+	}
+	return true;
+}

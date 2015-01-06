@@ -147,7 +147,7 @@ abstract class we_shop_variants{
 		}
 
 		$elements = $model->elements;
-		
+
 		$variations = isset($elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) ? $elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] : ''; //Fix #9349
 		if(!$variations || !is_array($variations)){
 			return;
@@ -253,7 +253,6 @@ abstract class we_shop_variants{
 	 * @param array $model
 	 */
 	private static function changeVariantPosition($pos1, $pos2, &$model){
-
 		// first move all fields in the $modell
 		$tmp = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'][$pos1];
 		$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'][$pos1] = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'][$pos2];
@@ -292,12 +291,10 @@ abstract class we_shop_variants{
 		$total = we_shop_variants::getNumberOfVariants($model);
 
 		$lastPos = $total - 1;
-
 		// move at last position, then remove it
 		while($delPos < $lastPos){
 			self::moveVariant($model, $delPos++, 'down');
 		}
-
 		// first remove all fields from doc
 		$variationFields = we_shop_variants::getAllVariationFields($model, $delPos);
 		foreach(array_keys($variationFields) as $name){
@@ -584,16 +581,16 @@ abstract class we_shop_variants{
 	public static function edit($isObject, $command, $we_doc){
 		switch($command){
 			case 'shop_insert_variant':
-				self::insertVariant($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
+				self::insertVariant($we_doc, we_base_request::_(we_base_request::INT, 'we_cmd', '', 1));
 				break;
 			case 'shop_move_variant_up':
-				self::moveVariant($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), 'up');
+				self::moveVariant($we_doc, we_base_request::_(we_base_request::INT, 'we_cmd', '', 1), 'up');
 				break;
 			case 'shop_move_variant_down':
-				self::moveVariant($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), 'down');
+				self::moveVariant($we_doc, we_base_request::_(we_base_request::INT, 'we_cmd', '', 1), 'down');
 				break;
 			case 'shop_remove_variant':
-				self::removeVariant($we_doc, we_base_request::_(we_base_request::STRING . 'we_cmd', '', 1));
+				self::removeVariant($we_doc, we_base_request::_(we_base_request::INT, 'we_cmd', '', 1));
 				break;
 			case 'shop_preview_variant':
 				self::correctModelFields($we_doc, false);

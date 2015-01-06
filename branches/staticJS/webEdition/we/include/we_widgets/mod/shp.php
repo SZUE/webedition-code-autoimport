@@ -25,14 +25,18 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-//if(!isset($aCols)){
-$aCols = explode(';', $aProps[3]);
-//}
-$sTypeBinary = $aCols[0];
-$bTypeDoc = (bool) $sTypeBinary{0};
-$bTypeTpl = (bool) $sTypeBinary{1};
-$bTypeObj = (bool) $sTypeBinary{2};
-$bTypeCls = (bool) $sTypeBinary{3};
+
+$isRefresh = true;
+if(!isset($aCols[5])){
+	$aCols = explode(';', $aProps[3]);
+	$isRefresh = false;
+}
+
+$sKPIs = $aCols[0] ? : array();
+$bOrders = isset($sKPIs[0]) && $sKPIs[0] ? true : false;
+$bCustomer = isset($sKPIs[1]) && $sKPIs[1] ? true : false;
+$bAverageOrder = isset($sKPIs[2]) && $sKPIs[2] ? true : false;
+$bTarget = isset($sKPIs[3]) && $sKPIs[3] ? true : false;
 
 $iDate = intval($aCols[1]);
 $sRevenueTarget = intval($aCols[2]);
@@ -46,33 +50,33 @@ switch($iDate){
 		$interval = g_l('cockpit', '[today]');
 		break;
 	case 1 : //diese woche
-		$queryShopDateCondtion = '(WEEK(DateOrder) = WEEK(CURDATE()) AND YEAR(DateOrder) = YEAR(CURDATE()))';
-		$timestampCustomer = '(MemberSince>=UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL 7 DAY)))';
+		$queryShopDateCondtion = '(WEEK(DateOrder,1) = WEEK(NOW(),1) AND YEAR(DateOrder) = YEAR(NOW()))';
+		$timestampCustomer = '(WEEK(FROM_UNIXTIME(MemberSince),1) = WEEK(NOW(),1) AND YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(NOW()))';
 		$interval = g_l('cockpit', '[this_week]');
 		break;
 	case 2 : //letzte woche
 		$queryShopDateCondtion = '(WEEK(DateOrder) = WEEK(CURDATE())-1 AND YEAR(DateOrder) = YEAR(CURDATE()))';
-		$timestampCustomer = '(MemberSince>=UNIX_TIMESTAMP(NOW()-INTERVAL 7 DAY) AND MemberSince<UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL 7 DAY)))';
+		$timestampCustomer = '(WEEK(FROM_UNIXTIME(MemberSince),1) = WEEK(NOW()-INTERVAL 7 DAY,1) AND (YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(NOW()-INTERVAL 7 DAY)))';
 		$interval = g_l('cockpit', '[last_week]');
 		break;
 	case 3 : //dieser monat
 		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()) AND MONTH(DateOrder) = MONTH(CURDATE()))';
-		$timestampCustomer = '(MemberSince>=UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL 1 MONTH)))';
+		$timestampCustomer = '(MONTH(FROM_UNIXTIME(MemberSince)) = MONTH(NOW()) AND YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(NOW()))';
 		$interval = g_l('cockpit', '[this_month]');
 		break;
 	case 4 : //letzter monat
-		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()) AND MONTH(DateOrder) = MONTH(CURDATE())-1)';
-		$timestampCustomer = '(MemberSince>=UNIX_TIMESTAMP(NOW()-INTERVAL 1 MONTH) AND MemberSince<UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL 1 MONTH)))';
+		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(NOW()-INTERVAL 1 MONTH) AND MONTH(DateOrder) = MONTH(NOW()-INTERVAL 1 MONTH))';
+		$timestampCustomer = '(MONTH(FROM_UNIXTIME(MemberSince)) = MONTH(NOW()-INTERVAL 1 MONTH) AND YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(NOW()-INTERVAL 1 MONTH))';
 		$interval = g_l('cockpit', '[last_month]');
 		break;
 	case 5 : //dieses jahr
 		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()))';
-		$timestampCustomer = '(MemberSince>=UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL 1 YEAR)))';
+		$timestampCustomer = '(YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(NOW()))';
 		$interval = g_l('cockpit', '[this_year]');
 		break;
 	case 6 : //letztes jahr
 		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()) - 1)';
-		$timestampCustomer = '(MemberSince>=UNIX_TIMESTAMP(NOW()-INTERVAL 1 YEAR) AND MemberSince<UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL 1 YEAR)))';
+		$timestampCustomer = '(YEAR(FROM_UNIXTIME(MemberSince)) = (YEAR(NOW())-1))';
 		$interval = g_l('cockpit', '[last_year]');
 		break;
 }
@@ -93,12 +97,13 @@ if(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 	if(($maxRows = f('SELECT COUNT(1) ' . $queryShop))){
 
 		$amountOrders = f('SELECT COUNT(distinct IntOrderID) ' . $queryShop);
+		$amountCanceledOrders = f('SELECT COUNT(distinct IntOrderID) ' . $queryShop . 'AND DateCancellation != 0');
 		$amountArticles = f('SELECT COUNT(IntID) ' . $queryShop);
 
 		// first of all calculate complete revenue of this year -> important check vats as well.
 		$cur = 0;
 		while($maxRows > $cur){
-			$DB_WE->query('SELECT strSerial,strSerialOrder,(Price*IntQuantity) AS actPrice,UNIX_TIMESTAMP(DatePayment) AS payed ' . $queryShop . ' LIMIT ' . $cur . ',1000');
+			$DB_WE->query('SELECT strSerial,strSerialOrder,(Price*IntQuantity) AS actPrice,UNIX_TIMESTAMP(DatePayment) AS payed, UNIX_TIMESTAMP(DateCancellation) AS canceled ' . $queryShop . ' LIMIT ' . $cur . ',1000');
 			$cur+=1000;
 			while($DB_WE->next_record()){
 
@@ -149,12 +154,24 @@ if(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 				}
 				$total += $actPrice;
 
-				$timestampDatePayment = $DB_WE->f('payed');
+				//$timestampDatePayment = $DB_WE->f('payed');
+				switch(true){
+					case ($DB_WE->f('payed')):
+						$payed += $actPrice;
+						break;
+					case ($DB_WE->f('canceled')):
+						$canceled += $actPrice;
+						break;
+					default:
+						$unpayed += $actPrice;
+				}
+				/**
 				if($timestampDatePayment){
 					$payed += $actPrice;
 				} else {
 					$unpayed += $actPrice;
 				}
+				*/
 			}
 		}
 	}
@@ -169,79 +186,108 @@ if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm("CAN_SEE_CUSTOMER")){
 }
 
 $shopDashboardTable = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 1, 3);
+$i = 0;
+if($bOrders){
+	//1. row
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][cnt_order]') . we_html_tools::getPixel(5, 1)));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(($amountOrders > 0 ? $amountOrders : 0)));
+	$i++;
 
-//1. row
-//$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(0, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][cnt_order]') . we_html_tools::getPixel(5, 1)));
-$shopDashboardTable->setCol(0, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(0, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(($amountOrders > 0 ? $amountOrders : 0)));
+	//2. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont","style"=>"color:red;"), g_l('cockpit','[shop_dashboard][canceled_order]').we_html_tools::getPixel(5, 1));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right","style"=>"color:red;"),($amountCanceledOrders > 0 ? $amountCanceledOrders : 0));
+	$i++;
 
-//2. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(1, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][cnt_articles]') . we_html_tools::getPixel(5, 1));
-$shopDashboardTable->setCol(1, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(1, 2, array("class" => "middlefont", "align" => "right"), ($amountArticles > 0 ? $amountArticles : 0));
+	//3. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][cnt_articles]') . we_html_tools::getPixel(5, 1));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right"), ($amountArticles > 0 ? $amountArticles : 0));
+	$i++;
 
-//3. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(2, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][articles_order]'));
-$shopDashboardTable->setCol(2, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(2, 2, array("class" => "middlefont", "align" => "right"), we_util_Strings::formatNumber(($amountArticles > 0 ? ($amountArticles / $amountOrders) : 0), $numberformat));
+	//4. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][articles_order]'));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right"), we_util_Strings::formatNumber(($amountArticles > 0 ? ($amountArticles / $amountOrders) : 0), $numberformat));
+	$i++;
 
-//4. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(3, 0, array("class" => "middlefont"), "&nbsp;");
-$shopDashboardTable->setCol(3, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(3, 2, array("class" => "middlefont"), "&nbsp;");
+	//5. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), "&nbsp;");
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont"), "&nbsp;");
+	$i++;
+}
 
-//5. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(4, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][revenue]')));
-$shopDashboardTable->setCol(4, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(4, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(we_util_Strings::formatNumber($total, $numberformat) . '&nbsp;' . $currency));
+if($bAverageOrder){
+	//6. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][revenue]')));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(we_util_Strings::formatNumber($total, $numberformat) . '&nbsp;' . $currency));
+	$i++;
 
-//6. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(5, 0, array("class" => "middlefont", "style" => "color:green;"), g_l('cockpit', '[shop_dashboard][payed]'));
-$shopDashboardTable->setCol(5, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(5, 2, array("class" => "middlefont", "align" => "right", "style" => "color:green;"), we_util_Strings::formatNumber($payed, $numberformat) . '&nbsp;' . $currency);
+	//7. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont", "style" => "color:green;"), g_l('cockpit', '[shop_dashboard][payed]'));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right", "style" => "color:green;"), we_util_Strings::formatNumber($payed, $numberformat) . '&nbsp;' . $currency);
+	$i++;
 
-//7. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(6, 0, array("class" => "middlefont", "style" => "color:red;"), g_l('cockpit', '[shop_dashboard][unpayed]'));
-$shopDashboardTable->setCol(6, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(6, 2, array("class" => "middlefont", "align" => "right", "style" => "color:red;"), we_util_Strings::formatNumber($unpayed, $numberformat) . '&nbsp;' . $currency);
+	//8. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont", "style" => "color:red;"), g_l('cockpit', '[shop_dashboard][unpayed]'));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right", "style" => "color:red;"), we_util_Strings::formatNumber($unpayed, $numberformat) . '&nbsp;' . $currency);
+	$i++;
 
-//8. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(7, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][order_value_order]'));
-$shopDashboardTable->setCol(7, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(7, 2, array("class" => "middlefont", "align" => "right"), we_util_Strings::formatNumber(($amountOrders > 0 ? ($total / $amountOrders) : 0), $numberformat) . '&nbsp;' . $currency);
+	//9. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont","style"=>"color:red;"), g_l('cockpit', '[shop_dashboard][canceled]'));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right", "style" => "color:red;"), we_util_Strings::formatNumber($canceled, $numberformat) . '&nbsp;' . $currency);
+	$i++;
 
-//9. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(8, 0, array("class" => "middlefont"), "&nbsp;");
-$shopDashboardTable->setCol(8, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(8, 2, array("class" => "middlefont"), "&nbsp;");
+	//10. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][order_value_order]'));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right"), we_util_Strings::formatNumber(($amountOrders > 0 ? ($total / $amountOrders) : 0), $numberformat) . '&nbsp;' . $currency);
+	$i++;
 
-//10. row
-$shopDashboardTable->addRow();
-$shopDashboardTable->setCol(9, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][cnt_new_customer]')));
-$shopDashboardTable->setCol(9, 1, array(), we_html_tools::getPixel(10, 1));
-$shopDashboardTable->setCol(9, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(($amountCustomers > 0 ? $amountCustomers : 0)));
+	//11. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), "&nbsp;");
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont"), "&nbsp;");
+	$i++;
+}
 
+if($bCustomer){
+	//12. row
+	$shopDashboardTable->addRow();
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][cnt_new_customer]')));
+	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(($amountCustomers > 0 ? $amountCustomers : 0)));
+	$i++;
+}
 
 $shopDashboard = '<div style="width:60%;float:left;">' .
 	$shopDashboardTable->getHtml() .
 	'</div>'
-	. '<div style="width:40%;float:right;"><b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_util_Strings::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b><br/>' .
-	'<canvas id="chart" width="160" height="160"></canvas>' .
+	. '<div style="width:40%;float:right;">' . ($bTarget ? '<b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_util_Strings::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b><br/>' : '') .
+	'<canvas id="'.$newSCurrId . '_chart_div" width="160" height="160"></canvas>' .
 	'</div><br style="clear:both;"/>';
-
-$shopDashboard .= "<script type='text/javascript' src='" . WE_INCLUDES_DIR . "we_widgets/dlg/shp/js/excanvas.js'></script>
-	<script type='text/javascript' src='" . WE_INCLUDES_DIR . "we_widgets/dlg/shp/js/gauge.min.js'></script>
-    <script type='text/javascript'>
-    	// Helper to execute a function after the window is loaded
+	
+if($bTarget){
+	$shopDashboard .= "<script type='text/javascript' src='" . WE_INCLUDES_DIR . "we_widgets/dlg/shp/js/excanvas.js'></script>
+		<script type='text/javascript' src='" . WE_INCLUDES_DIR . "we_widgets/dlg/shp/js/gauge.min.js'></script>
+		<script type='text/javascript'>
+			// Helper to execute a function after the window is loaded
 			// see http://www.google.com/search?q=addLoadEvent
 			function addLoadEvent(func) {
 				var oldonload = window.onload;
@@ -259,6 +305,7 @@ $shopDashboard .= "<script type='text/javascript' src='" . WE_INCLUDES_DIR . "we
 
 			addLoadEvent( function() {
 				var options;
+				var widgetDoc = typeof widgetFrame !== 'undefined' ? widgetFrame.document : " . ($isRefresh ? 'parent.document' : 'document') . ";
 
 				// Draw the gauge using custom settings
 				options = {
@@ -275,7 +322,9 @@ $shopDashboard .= "<script type='text/javascript' src='" . WE_INCLUDES_DIR . "we
 					redFrom: 0,
 					redTo: " . ($sRevenueTarget * 0.9) . "
 				};
-				new Gauge( document.getElementById( 'chart'), options );
+
+				new Gauge(widgetDoc.getElementById('".$newSCurrId . "_chart_div'), options );
 			});
 
-    </script>";
+		</script>";
+}

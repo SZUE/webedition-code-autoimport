@@ -20,8 +20,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_object(cmd) {
-	switch (cmd) {
+function we_cmd_object(args) {
+	switch (args[0]) {
 
 		case "object_edit_ifthere":
 		case "edit_object":
@@ -63,7 +63,7 @@ function we_cmd_object(cmd) {
 		case "object_remove_image_at_class":
 		case "object_delete_link_at_class":
 		case "object_change_multiobject_at_class":
-//url += "#f"+(parseInt(arguments[1])-1);
+//url += "#f"+(parseInt(args[1])-1);
 			we_sbmtFrm(top.load, url);
 			break;
 		case "object_change_link_at_object":
@@ -77,7 +77,7 @@ function we_cmd_object(cmd) {
 		case "object_reload_entry_at_object":
 		case "object_change_objectlink":
 		case "object_delete_link_at_object":
-			url += "#f" + (parseInt(arguments[1]) - 1);
+			url += "#f" + (parseInt(args[1]) - 1);
 			we_sbmtFrm(top.load, url);
 			break;
 		case "object_add_workspace":
@@ -89,13 +89,13 @@ function we_cmd_object(cmd) {
 		case "object_changeTempl_ob":
 		case "object_ws_from_class":
 			if (!we_sbmtFrm(top.weEditorFrameController.getActiveDocumentReference().frames["1"], url)) {
-				url += "&we_transaction=" + arguments[2];
-				we_repl(top.weEditorFrameController.getActiveDocumentReference().frames["1"], url, arguments[0]);
+				url += "&we_transaction=" + args[2];
+				we_repl(top.weEditorFrameController.getActiveDocumentReference().frames["1"], url, args[0]);
 			}
 			break;
 		case "object_toggleExtraWorkspace":
 		case "object_obj_search":
-			we_repl(self.load, url, arguments[0]);
+			we_repl(self.load, url, args[0]);
 			break;
 		case "delete_object":
 			top.we_cmd("del", 1, tables.OBJECT_TABLE);

@@ -1,7 +1,7 @@
-<?php
 /**
  * webEdition CMS
  *
+ * webEdition CMS
  * $Rev$
  * $Author$
  * $Date$
@@ -18,16 +18,16 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package none
+ * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-?>
-<script type="text/javascript"><!--
-	switch (WE_REMOVE) {
+function we_cmd_tool_toolfactory(args) {
+	switch (args) {
 		case "tool_toolfactory_edit":
 			new jsWindow(url, "tool_window", -1, -1, 970, 760, true, true, true, true);
 			break;
-	}//WE_REMOVE
-
-//-->
-</script>
+		default:
+			return false;
+	}
+	return true;
+}

@@ -20,43 +20,61 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_customer(args) {
+function we_cmd_users(args) {
 	switch (args[0]) {
-
-		case "customer_edit":
-		case "customer_edit_ifthere":
+		case "browse_users":
+			new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
+			break;
+		case "users_edit":
+		case "users_edit_ifthere":
 			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
-			return true;
-		case "new_customer":
-		case "save_customer":
-		case "delete_customer":
-		case "exit_customer":
-		case "show_admin":
-		case "show_sort_admin":
-		case "show_customer_settings":
-		case "show_search":
-		case "import_customer":
-		case "export_customer":
+			break;
+		case "new_user":
+		case "save_user":
+		case "new_group":
+		case "new_alias":
+		case "exit_users":
+		case "delete_user":
+		case "new_organization":
 			var fo = false;
 			if (jsWindow_count) {
 				for (var k = jsWindow_count - 1; k > -1; k--) {
 					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo) {
+					if (fo)
 						break;
-					}
 				}
-				wind.focus();
+				if (wind)
+					wind.focus();
 			}
-			return true;
-		case "unlock"://FIXME:????
-			we_repl(self.load, url, args[0]);
-			return true;
-		case "customer_applyWeDocumentCustomerFilterFromFolder":
+			break;
+		case "doctypes":
+			new jsWindow(url, "doctypes", -1, -1, 720, 670, true, true, true);
+			break;
+		case "users_unlock":
+			top.YAHOO.util.Connect.asyncRequest('GET', url, {success: weDummy, failure: weDummy});
+//		we_repl(self.load,url,args[0]);
+			break;
+		case "users_add_owner":
+		case "users_del_owner":
+		case "users_del_all_owners":
+		case "users_del_user":
+		case "users_add_user":
+			if (args[0] === "object_del_all_users" && args[3]) {
+				url += '#f' + args[3];
+			}
 			if (!we_sbmtFrm(top.weEditorFrameController.getActiveDocumentReference().frames["1"], url)) {
 				url += "&we_transaction=" + args[2];
 				we_repl(top.weEditorFrameController.getActiveDocumentReference().frames["1"], url, args[0]);
 			}
-			return true;
+			break;
+		case "chooseAddress":
+			new jsWindow(url, "chooseAddress", -1, -1, 400, 590, true, true, true, true);
+			break;
+		case "users_changeR":
+			we_repl(self.load, url, args[0]);
+			break;
+		default:
+			return false;
 	}
-	return false;
+	return true;
 }

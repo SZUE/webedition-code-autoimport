@@ -20,8 +20,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_navigation(cmd) {
-	switch (cmd) {
+function we_cmd_navigation(args) {
+	switch (args[0]) {
 
 		case "navigation_edit":
 		case "navigation_edit_ifthere":
@@ -36,12 +36,12 @@ function we_cmd_navigation(cmd) {
 			var fo = false;
 			if (jsWindow_count) {
 				for (var k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){jsWindow" + k + "Object.wind.content.we_cmd('" + arguments[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
+					eval("if(jsWindow" + k + "Object.ref=='edit_module'){jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
 					if (fo) {
 						break;
 					}
 				}
-				if (wind && arguments[0] != "empty_log") {
+				if (wind && args[0] != "empty_log") {
 					wind.focus();
 				}
 			}
@@ -61,10 +61,10 @@ function we_cmd_navigation(cmd) {
 			new jsWindow("/webEdition/we/include/we_modules/navigation/edit_navigation_rules_frameset.php", "tool_navigation_rules", -1, -1, 680, 580, true, true, true, true);
 			return true;
 		case "module_navigation_edit_navi":
-			new jsWindow("/webEdition/we/include/we_modules/navigation/weNaviEditor.php?we_cmd[1]=" + arguments[1], "we_navieditor", -1, -1, 600, 350, true, false, true, true);
+			new jsWindow("/webEdition/we/include/we_modules/navigation/weNaviEditor.php?we_cmd[1]=" + args[1], "we_navieditor", -1, -1, 600, 350, true, false, true, true);
 			return true;
 		case "module_navigation_do_reset_customer_filter":
-			we_repl(self.load, url, arguments[0]);
+			we_repl(self.load, url, args[0]);
 			return true;
 	}
 	return false;

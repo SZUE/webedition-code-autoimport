@@ -1,7 +1,7 @@
-<?php
 /**
  * webEdition CMS
  *
+ * webEdition CMS
  * $Rev$
  * $Author$
  * $Date$
@@ -18,13 +18,11 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package none
+ * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/meta.conf.php');
-?>
-<script type="text/javascript"><!--
-			switch (WE_REMOVE) {
+function we_cmd_tool_weSearch(args) {
+	switch (args[0]) {
 
 		case "tool_weSearch_edit":
 			new jsWindow(url, "tool_window_weSearch", -1, -1, 970, 760, true, true, true, true);
@@ -39,13 +37,15 @@ require (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/meta.conf.php');
 			var fo = false;
 			if (jsWindow_count) {
 				for (var k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='tool_window_weSearch'){ jsWindow" + k + "Object.wind.we_cmd('" + arguments[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
+					eval("if(jsWindow" + k + "Object.ref=='tool_window_weSearch'){ jsWindow" + k + "Object.wind.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
 					if (fo)
 						break;
 				}
 				wind.focus();
 			}
 			break;
-	}//WE_REMOVE
-//-->
-</script>
+		default:
+			return false;
+	}
+	return true;
+}

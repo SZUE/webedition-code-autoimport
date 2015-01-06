@@ -67,6 +67,8 @@ function transmit(){
 		top.weEditorFrameController.getActiveDocumentReference().pushContent('" . $aProps[0] . "','m_" . $iCurrId . "',gel('content').innerHTML,gel('prefix').innerHTML,gel('postfix').innerHTML,gel('csv').innerHTML);
 	}
 }
+
+var widgetFrame = top.weEditorFrameController.getActiveDocumentReference();
 ";
 		echo we_html_element::htmlDocType() .
 		we_html_element::htmlHtml(

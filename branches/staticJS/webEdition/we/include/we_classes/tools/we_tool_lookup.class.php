@@ -22,7 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 abstract class we_tool_lookup{
 	const REGISTRY_NAME = 'weToolsRegistry';
 
@@ -142,19 +141,34 @@ abstract class we_tool_lookup{
 		return '';
 	}
 
-	static function getJsCmdInclude(){
-
-		$_inc = array();
+	static function getJsCmdInclude(array &$includes){
 		$_tools = self::getAllTools(true, true);
+		ob_start();
 		foreach($_tools as $_tool){
-			if(($_tool['name'] === 'weSearch' || $_tool['name'] === 'navigation') && file_exists(WE_INCLUDES_PATH . 'we_tools/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php')){
-				$_inc[] = WE_INCLUDES_PATH . 'we_tools/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php';
-			} elseif(file_exists(WEBEDITION_PATH . 'apps/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php')){
-				$_inc[] = WEBEDITION_PATH . 'apps/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php';
+			switch($_tool['name']){
+				case 'weSearch':
+				case 'navigation':
+					$path = WE_INCLUDES_DIR . 'we_tools/';
+					break;
+				default:
+					$path = WEBEDITION_DIR . 'apps/';
+			}
+			$path.=$_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'];
+			if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . '.inc.php')){
+				include( $_SERVER['DOCUMENT_ROOT'] . $path . '.inc.php');
+			} elseif(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . '.js')){
+				$includes['tool_' . $_tool['name']] = $path . '.js';
 			}
 		}
-
-		return $_inc;
+		return 'function we_cmd_tools(args) {
+	switch (args[0]) {
+		' . ob_get_clean() . '
+		default:
+			return false;
+	}
+	return true;
+}
+';
 	}
 
 	static function getDefineInclude(){
@@ -449,6 +463,7 @@ abstract class we_tool_lookup{
 
 }
 
-abstract class weToolLookup extends we_tool_lookup{
+abstract
+	class weToolLookup extends we_tool_lookup{
 
 }

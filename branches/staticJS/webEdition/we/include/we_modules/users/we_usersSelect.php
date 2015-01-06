@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -24,7 +23,8 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-we_html_tools::protect();
+we_html_tools::protect(array("NEW_USER", "NEW_GROUP", "SAVE_USER", "SAVE_GROUP", "DELETE_USER", "DELETE_GROUP"));
+
 $_SERVER['SCRIPT_NAME'] = WE_USERS_MODULE_DIR . 'we_usersSelect.php';
 
 $fs = new we_users_selector(we_base_request::_(we_base_request::INT, "id", 0), we_base_request::_(we_base_request::TABLE, 'table', USER_TABLE), we_base_request::_(we_base_request::JS, "JSIDName", ""), we_base_request::_(we_base_request::JS, "JSTextName", ""), we_base_request::_(we_base_request::JS, "JSCommand", ""), we_base_request::_(we_base_request::RAW, "order", ""), we_base_request::_(we_base_request::INT, "rootDirID", 0), we_base_request::_(we_base_request::STRING, "filter", ""), we_base_request::_(we_base_request::BOOL, "multiple"));

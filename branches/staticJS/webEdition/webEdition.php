@@ -86,168 +86,144 @@ foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 ?>
 
 <script type="text/javascript"><!--
-	self.focus();
-	var Header = null;
-	var Tree = null;
-	var Vtabs = null;
-	var TreeInfo = null;
-	var busy = 0;
-	var balken = null;
-	var firstLoad = false;
-	var hot = 0;
-	var last = 0;
-	var lastUsedLoadFrame = null;
-	var nlHTMLMail = 0;
-	var browserwind = null;
-	var makefocus = null;
-	var weplugin_wait = null;
-	// is set in headermenu.php
-	var weSidebar = null;
-	// seeMode
-	var seeMode = <?php echo ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? "true" : "false"; ?>; // in seeMode
-	var seeMode_edit_include = <?php echo (isset($SEEM_edit_include) && $SEEM_edit_include) ? "true" : "false"; ?>; // in edit_include mode of seeMode
+<?php echo we_tool_lookup::getJsCmdInclude($jsCmd); ?>
 
-	var wePerms = {
-		"ADMINISTRATOR": <?php echo permissionhandler::hasPerm("ADMINISTRATOR") ? 1 : 0; ?>,
-		"DELETE_DOCUMENT": <?php echo permissionhandler::hasPerm("DELETE_DOCUMENT") ? 1 : 0; ?>,
-		"DELETE_TEMPLATE": <?php echo permissionhandler::hasPerm("DELETE_TEMPLATE") ? 1 : 0; ?>,
-		"DELETE_OBJECT": <?php echo permissionhandler::hasPerm("DELETE_OBJECT") ? 1 : 0; ?>,
-		"DELETE_OBJECTFILE": <?php echo permissionhandler::hasPerm("DELETE_OBJECTFILE") ? 1 : 0; ?>,
-		"DELETE_DOC_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_DOC_FOLDER") ? 1 : 0; ?>,
-		"DELETE_TEMP_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_TEMP_FOLDER") ? 1 : 0; ?>
-	};
-	var g_l = {
-		'unable_to_call_setpagenr': "<?php echo g_l('global', '[unable_to_call_setpagenr]'); ?>",
-		'open_link_in_SEEM_edit_include': '<?php echo we_message_reporting::prepareMsgForJS(g_l('SEEM', '[open_link_in_SEEM_edit_include]')); ?>',
-		'browser_crashed': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[browser_crashed]')); ?>',
-		'no_perms_action': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms_action]')); ?>',
-		'no_document_opened': '<?php echo we_message_reporting::prepareMsgForJS(g_l('global', '[no_document_opened]')); ?>',
-		'no_editor_left': "<?php echo g_l('multiEditor', '[no_editor_left]'); ?>",
-		'eplugin_exit_doc': "<?php echo g_l('alert', '[eplugin_exit_doc]'); ?>",
-		"delete_single_confirm_delete": "<?php echo g_l('alert', '[delete_single][confirm_delete]'); ?>",
-		'cockpit_reset_settings': '<?php echo g_l('alert', '[cockpit_reset_settings]'); ?>',
-		'cockpit_not_activated': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[cockpit_not_activated]'));?>',
-		'no_perms': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms]'));?>',
-	};
-	var userID =<?php echo $_SESSION["user"]["ID"]; ?>;
-	var sess_id = "<?php echo session_id(); ?>";
-	var size = {
-		'tree': {
-			'hidden':<?php echo weTree::HiddenWidth; ?>,
-			'default':<?php echo weTree::DefaultWidth; ?>,
-			'min':<?php echo weTree::MinWidth; ?>,
-			'moveWidth':<?php echo weTree::MoveWidth; ?>,
-			'deleteWidth':<?php echo weTree::DeleteWidth; ?>
-
-		},
-		'catSelect': {
-			'width':<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
-			'height':<?php echo we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>
-		},
-		'docSelect': {
-			'width':<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH; ?>,
-			'height':<?php echo we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>
-		},
-		'windowSelect': {
-			'width':<?php echo we_selector_file::WINDOW_SELECTOR_WIDTH; ?>,
-			'height':<?php echo we_selector_file::WINDOW_SELECTOR_HEIGHT; ?>
-		},
-		'windowDirSelect': {
-			'width':<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH; ?>,
-			'height':<?php echo we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>
-		},
-		'windowDelSelect': {
-			'width':<?php echo we_selector_file::WINDOW_DELSELECTOR_WIDTH; ?>,
-			'height':<?php echo we_selector_file::WINDOW_DELSELECTOR_HEIGHT; ?>
-		},
-	};
-	var tables = {
-		'FILE_TABLE': "<?php echo FILE_TABLE; ?>",
-		'TEMPLATES_TABLE': "<?php echo TEMPLATES_TABLE; ?>",
-		'OBJECT_FILES_TABLE': "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'; ?>",
-		'OBJECT_TABLE': "<?php echo defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'; ?>",
-		'CATEGORY_TABLE': "<?php echo CATEGORY_TABLE; ?>",
-		'table_to_load': "<?php echo $_table_to_load; ?>",
-		'TBL_PREFIX': '<?php echo TBL_PREFIX; ?>'
-	};
-
-	var dirs = {
-		"WE_SHOP_MODULE_DIR": "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : ''; ?>",
-		'WE_MODULES_DIR': "<?php echo WE_MODULES_DIR; ?>",
-		'WE_MESSAGING_MODULE_DIR': "<?php echo defined('WE_MESSAGING_MODULE_DIR') ? WE_MESSAGING_MODULE_DIR : ''; ?>"
-	};
-
-	var SEEMODE =<?php echo intval($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE); ?>;
-	var specialUnload =<?php echo intval(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())); ?>;
-	var docuLang="<?php echo ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'); ?>";
-
-	/*##################### messaging function #####################*/
-
-	// this variable contains settings how to deal with settings
-	// it has to be set when changing the preferences
-	/**
-	 * setting integer, any sum of 1,2,4
-	 */
-	var messageSettings = <?php echo (isset($_SESSION["prefs"]["message_reporting"]) && $_SESSION["prefs"]["message_reporting"] > 0 ? we_message_reporting::WE_MESSAGE_ERROR | $_SESSION["prefs"]["message_reporting"] : (we_message_reporting::WE_MESSAGE_ERROR | we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_NOTICE)); ?>;
-	var weEditorWasLoaded = false;
-	function reload_weJsStrings(newLng) {
-		if (!newLng) {
-			newLng = "<?php echo $GLOBALS['WE_LANGUAGE'] ?>";
-		}
-		var newSrc = "<?php echo JS_DIR; ?>weJsStrings.php?lng=" + newLng;
-		var elem = document.createElement("script");
-		elem.src = newSrc;
-		document.getElementsByTagName("head")[0].appendChild(elem);
-	}
-
-	var setPageNrCallback = {
-		success: function (o) {
-		},
-		failure: function (o) {
-			alert(g_l.unable_to_call_setpagenr);
-		}
-	};
-	if (self.location !== top.location) {
-		top.location = self.location;
-	}
-
-<?php
-if(defined('MESSAGING_SYSTEM')){
-	?>
-		function msg_update() {
-			try {
-				var fo = false;
-				for (var k = jsWindow_count - 1; k > -1; k--) {
-					eval("if((jsWindow" + k + "Object.ref=='edit_module') && !jsWindow" + k + "Object.wind.closed && (typeof(jsWindow" + k + "Object.wind.content.update_messaging) == 'function')){ jsWindow" + k + "Object.wind.content.update_messaging(); fo=true}");
-					if (fo)
-						break;
-				}
-			} catch (e) {
-
-			}
-		}
-	<?php
+if (self.location !== top.location) {
+	top.location = self.location;
 }
-?>
 
-	function setTreeArrow(direction) {
-		try {
-			self.rframe.document.getElementById("arrowImg").src = "<?php echo BUTTONS_DIR; ?>icons/direction_" + direction + ".gif";
-			if (direction === "right") {
-				self.rframe.document.getElementById("incBaum").style.backgroundColor = "gray";
-				self.rframe.document.getElementById("decBaum").style.backgroundColor = "gray";
-			} else {
-				self.rframe.document.getElementById("incBaum").style.backgroundColor = "";
-				self.rframe.document.getElementById("decBaum").style.backgroundColor = "";
-			}
-		} catch (e) {
-			// Nothing
-			;
-		}
+self.focus();
+var Header = null;
+var Tree = null;
+var Vtabs = null;
+var TreeInfo = null;
+var busy = 0;
+var balken = null;
+var firstLoad = false;
+var hot = 0;
+var last = 0;
+var lastUsedLoadFrame = null;
+var nlHTMLMail = 0;
+var browserwind = null;
+var makefocus = null;
+var weplugin_wait = null;
+// is set in headermenu.php
+var weSidebar = null;
+// seeMode
+var SEEMODE =<?php echo intval($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE); ?>;
+var seeMode_edit_include = <?php echo (isset($SEEM_edit_include) && $SEEM_edit_include) ? "true" : "false"; ?>; // in edit_include mode of seeMode
+var userID =<?php echo $_SESSION["user"]["ID"]; ?>;
+var sess_id = "<?php echo session_id(); ?>";
+var specialUnload =<?php echo intval(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())); ?>;
+var docuLang = "<?php echo ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'); ?>";
+
+var wePerms = {
+	"ADMINISTRATOR": <?php echo permissionhandler::hasPerm("ADMINISTRATOR") ? 1 : 0; ?>,
+	"DELETE_DOCUMENT": <?php echo permissionhandler::hasPerm("DELETE_DOCUMENT") ? 1 : 0; ?>,
+	"DELETE_TEMPLATE": <?php echo permissionhandler::hasPerm("DELETE_TEMPLATE") ? 1 : 0; ?>,
+	"DELETE_OBJECT": <?php echo permissionhandler::hasPerm("DELETE_OBJECT") ? 1 : 0; ?>,
+	"DELETE_OBJECTFILE": <?php echo permissionhandler::hasPerm("DELETE_OBJECTFILE") ? 1 : 0; ?>,
+	"DELETE_DOC_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_DOC_FOLDER") ? 1 : 0; ?>,
+	"DELETE_TEMP_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_TEMP_FOLDER") ? 1 : 0; ?>
+};
+var g_l = {
+	'unable_to_call_setpagenr': "<?php echo g_l('global', '[unable_to_call_setpagenr]'); ?>",
+	'open_link_in_SEEM_edit_include': '<?php echo we_message_reporting::prepareMsgForJS(g_l('SEEM', '[open_link_in_SEEM_edit_include]')); ?>',
+	'browser_crashed': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[browser_crashed]')); ?>',
+	'no_perms_action': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms_action]')); ?>',
+	'no_document_opened': '<?php echo we_message_reporting::prepareMsgForJS(g_l('global', '[no_document_opened]')); ?>',
+	'no_editor_left': "<?php echo g_l('multiEditor', '[no_editor_left]'); ?>",
+	'eplugin_exit_doc': "<?php echo g_l('alert', '[eplugin_exit_doc]'); ?>",
+	"delete_single_confirm_delete": "<?php echo g_l('alert', '[delete_single][confirm_delete]'); ?>",
+	'cockpit_reset_settings': '<?php echo g_l('alert', '[cockpit_reset_settings]'); ?>',
+	'cockpit_not_activated': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[cockpit_not_activated]')); ?>',
+	'no_perms': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms]')); ?>',
+};
+var size = {
+	'tree': {
+		'hidden':<?php echo weTree::HiddenWidth; ?>,
+		'default':<?php echo weTree::DefaultWidth; ?>,
+		'min':<?php echo weTree::MinWidth; ?>,
+		'moveWidth':<?php echo weTree::MoveWidth; ?>,
+		'deleteWidth':<?php echo weTree::DeleteWidth; ?>
+
+	},
+	'catSelect': {
+		'width':<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
+		'height':<?php echo we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>
+	},
+	'docSelect': {
+		'width':<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH; ?>,
+		'height':<?php echo we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>
+	},
+	'windowSelect': {
+		'width':<?php echo we_selector_file::WINDOW_SELECTOR_WIDTH; ?>,
+		'height':<?php echo we_selector_file::WINDOW_SELECTOR_HEIGHT; ?>
+	},
+	'windowDirSelect': {
+		'width':<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH; ?>,
+		'height':<?php echo we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>
+	},
+	'windowDelSelect': {
+		'width':<?php echo we_selector_file::WINDOW_DELSELECTOR_WIDTH; ?>,
+		'height':<?php echo we_selector_file::WINDOW_DELSELECTOR_HEIGHT; ?>
+	},
+};
+var tables = {
+	'FILE_TABLE': "<?php echo FILE_TABLE; ?>",
+	'TEMPLATES_TABLE': "<?php echo TEMPLATES_TABLE; ?>",
+	'OBJECT_FILES_TABLE': "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'; ?>",
+	'OBJECT_TABLE': "<?php echo defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'; ?>",
+	'CATEGORY_TABLE': "<?php echo CATEGORY_TABLE; ?>",
+	'table_to_load': "<?php echo $_table_to_load; ?>",
+	'TBL_PREFIX': '<?php echo TBL_PREFIX; ?>'
+};
+
+var dirs = {
+	"WE_SHOP_MODULE_DIR": "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : ''; ?>",
+	'WE_MODULES_DIR': "<?php echo WE_MODULES_DIR; ?>",
+	'WE_MESSAGING_MODULE_DIR': "<?php echo defined('WE_MESSAGING_MODULE_DIR') ? WE_MESSAGING_MODULE_DIR : ''; ?>",
+	'BUTTONS_DIR': "<?php echo BUTTONS_DIR; ?>"
+};
+
+var contentTypes = {
+	'TEMPLATE': '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
+	'WEDOCUMENT': '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>',
+	'OBJECT_FILE': '<?php echo we_base_ContentTypes::OBJECT_FILE; ?>',
+};
+
+var WE_EDITPAGE_CONTENT =<?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>;
+
+/*##################### messaging function #####################*/
+
+// this variable contains settings how to deal with settings
+// it has to be set when changing the preferences
+/**
+ * setting integer, any sum of 1,2,4
+ */
+var messageSettings = <?php echo (isset($_SESSION["prefs"]["message_reporting"]) && $_SESSION["prefs"]["message_reporting"] > 0 ? we_message_reporting::WE_MESSAGE_ERROR | $_SESSION["prefs"]["message_reporting"] : (we_message_reporting::WE_MESSAGE_ERROR | we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_NOTICE)); ?>;
+var weEditorWasLoaded = false;
+
+var setPageNrCallback = {
+	success: function (o) {
+	},
+	failure: function (o) {
+		alert(g_l.unable_to_call_setpagenr);
 	}
+};
+//-->
+</script>
+<?php
+foreach($jsCmd as $cur){
+	echo we_html_element::jsScript($cur);
+}
+echo we_html_element::jsScript(JS_DIR . 'webEdition.js');
+?>
+<script type="text/javascript"><!--
+
 
 	function we_cmd() {
-		var hasPerm = false;
+		console.log(arguments[0]);
 		var url = "/webEdition/we_cmd.php?";
 		for (var i = 0; i < arguments.length; i++) {
 			url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
@@ -255,10 +231,10 @@ if(defined('MESSAGING_SYSTEM')){
 				url += "&";
 		}
 
-		if (window.screen) {
-			h = ((screen.height - 100) > screen.availHeight) ? screen.height - 100 : screen.availHeight;
-			w = screen.availWidth;
-		}
+		/*if (window.screen) {
+		 h = ((screen.height - 100) > screen.availHeight) ? screen.height - 100 : screen.availHeight;
+		 w = screen.availWidth;
+		 }*/
 
 		//	When coming from a we_cmd, always mark the document as opened with we !!!!
 		if (top.weEditorFrameController && top.weEditorFrameController.getActiveDocumentReference) {
@@ -272,126 +248,18 @@ if(defined('MESSAGING_SYSTEM')){
 			}
 		}
 		switch (arguments[0]) {
-
 <?php
-//	In we.inc.php all names of the installed modules have already been searched
-//	so we only have to use the array $GLOBALS['_we_active_integrated_modules']
-ob_start();
-foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
-	if(file_exists(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.inc.php')){
-		include(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.inc.php');
-	}
-}
-
-if(($_jsincludes = we_tool_lookup::getJsCmdInclude())){
-	foreach($_jsincludes as $_jsinclude){
-		include($_jsinclude);
-	}
-}
-$modSwitch = str_replace(
-	array_merge(explode("\n", we_html_element::jsElement()), array(
-	'switch (WE_REMOVE) {',
-	'switch(WE_REMOVE){',
-	'switch(WE_REMOVE) {',
-	'switch (WE_REMOVE){',
-	'}//WE_REMOVE'
-		)
-	), '', ob_get_clean()
-);
-
-echo $modSwitch; // deal with not activated modules
-
-foreach(array_diff(array_keys(we_base_moduleInfo::getAllModules()), $GLOBALS['_we_active_integrated_modules']) as $m){
-	echo 'case "' . $m . '_edit_ifthere":
+// deal with not activated modules
+$diff = array_diff(array_keys(we_base_moduleInfo::getAllModules()), $GLOBALS['_we_active_integrated_modules']);
+if($diff){
+	foreach($diff as $m){
+		echo 'case "' . $m . '_edit_ifthere":
 ';
-}
-echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
+	}
+	echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 		break;';
+}
 ?>
-
-			case "open_template":
-				we_cmd("load", tables.TEMPLATES_TABLE);
-				url = "/webEdition/we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=<?php echo we_base_ContentTypes::TEMPLATE; ?>&we_cmd[2]=" + tables.TEMPLATES_TABLE + "&we_cmd[5]="+encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)")+"&we_cmd[9]=1";
-				new jsWindow(url, "we_dirChooser", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
-				break;
-
-			case "switch_edit_page":
-
-				// get editor root frame of active tab
-				var _currentEditorRootFrame = top.weEditorFrameController.getActiveDocumentReference();
-				// get visible frame for displaying editor page
-				var _visibleEditorFrame = top.weEditorFrameController.getVisibleEditorFrame();
-				// frame where the form should be sent from
-				var _sendFromFrame = _visibleEditorFrame;
-				// set flag to true if active frame is frame nr 2 (frame for displaying editor page 1 with content editor)
-				var _isEditpageContent = _visibleEditorFrame === _currentEditorRootFrame.frames[2];
-				//var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
-
-				// if we switch from we_base_constants::WE_EDITPAGE_CONTENT to another page
-				if (_isEditpageContent && arguments[1] !== <?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>) {
-					// clean body to avoid flickering
-					try {
-						_currentEditorRootFrame.frames[1].document.body.innerHTML = "";
-					} catch (e) {
-						//can be caused by not loaded content
-					}
-					// switch to normal frame
-					top.weEditorFrameController.switchToNonContentEditor();
-					// set var to new active editor frame
-					_visibleEditorFrame = _currentEditorRootFrame.frames[1];
-					//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[1].getElementsByTagName("iframe")[0];
-
-					// set flag to false
-					_isEditpageContent = false;
-					// if we switch to we_base_constants::WE_EDITPAGE_CONTENT from another page
-				} else if (!_isEditpageContent && arguments[1] === <?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>) {
-					// switch to content editor frame
-					top.weEditorFrameController.switchToContentEditor();
-					// set var to new active editor frame
-					_visibleEditorFrame = _currentEditorRootFrame.frames[2];
-					//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
-					// set flag to false
-					_isEditpageContent = true;
-				}
-
-				// frame where the form should be sent to
-				var _sendToFrame = _visibleEditorFrame;
-				// get active transaction
-				var _we_activeTransaction = top.weEditorFrameController.getActiveEditorFrame().getEditorTransaction();
-				// if there are parameters, attach them to the url
-				if (_currentEditorRootFrame.parameters) {
-					url += _currentEditorRootFrame.parameters;
-				}
-
-				// focus the frame
-				if (_sendToFrame) {
-					_sendToFrame.focus();
-				}
-				// if visible frame equals to editpage content and there is already content loaded
-				if (_isEditpageContent && typeof (_visibleEditorFrame.weIsTextEditor) !== "undefined" && _currentEditorRootFrame.frames[2].location !== "about:blank") {
-					// tell the backend the right edit page nr and break (don't send the form)
-					//YAHOO.util.Connect.setForm(_sendFromFrame.document.we_form);
-					YAHOO.util.Connect.asyncRequest('POST', "/webEdition/rpc/rpc.php", setPageNrCallback, 'protocol=json&cmd=SetPageNr&transaction=' + _we_activeTransaction + "&editPageNr=" + arguments[1]);
-					if (_visibleEditorFrame.reloadContent === false) {
-						break;
-					}
-					_visibleEditorFrame.reloadContent = false;
-				}
-
-
-				if (_currentEditorRootFrame) {
-
-					if (!we_sbmtFrm(_sendToFrame, url, _sendFromFrame)) {
-						// add we_transaction, if not set
-						if (!arguments[2]) {
-							arguments[2] = _we_activeTransaction;
-						}
-						url += "&we_transaction=" + arguments[2];
-						we_repl(_sendToFrame, url, arguments[0]);
-					}
-				}
-
-				break;
 			case "exit_doc_question":
 				// return !! important for multiEditor
 				return new jsWindow(url, "exit_doc_question", -1, -1, 380, 130, true, false, true);
@@ -412,8 +280,9 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 <?php
 $jsmods = array_keys($jsCmd);
 $jsmods[] = 'base';
+$jsmods[] = 'tools';
 foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do a switch/case instead of search
-	echo 'if(we_cmd_' . $mod . '(arguments[0])){break;}';
+	echo 'if(we_cmd_' . $mod . '(arguments)){break;}';
 }
 ?>
 				if ((nextWindow = top.weEditorFrameController.getFreeWindow())) {
@@ -430,15 +299,9 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 		}
 
 	}
-
 //-->
 </script>
 <?php
-foreach($jsCmd as $cur){
-	echo we_html_element::jsScript($cur);
-}
-
-echo we_html_element::jsScript(JS_DIR . 'webEdition.js');
 $SEEM_edit_include = we_base_request::_(we_base_request::BOOL, "SEEM_edit_include");
 we_main_header::pCSS($SEEM_edit_include);
 ?>
@@ -455,11 +318,12 @@ we_main_header::pCSS($SEEM_edit_include);
 </body>
 </html>
 <?php
-flush();
 if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
+	flush();
+	if(function_exists('fastcgi_finish_request')){
+		fastcgi_finish_request();
+	}
 	session_write_close();
 // trigger scheduler
 	we_schedpro::trigger_schedule();
-	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it
-//	@chmod($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR, 0777);
 }

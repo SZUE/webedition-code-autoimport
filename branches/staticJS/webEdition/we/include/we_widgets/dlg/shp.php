@@ -63,7 +63,7 @@ function getCsv(){
 
 function refresh(bRender){
 	if(bRender)_sLastPreviewCsv=getCsv();
-	opener.rpc(getBinary('type'),_oSctDate.selectedIndex,_sObjId,_sShpInc);
+	opener.rpc(getBinary('type'),_oSctDate.selectedIndex,document.forms[0].elements['revenueTarget'].value,'','',_sObjId,_sShpInc);
 }
 
 function save(){

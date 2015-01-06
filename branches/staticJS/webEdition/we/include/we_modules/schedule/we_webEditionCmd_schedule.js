@@ -20,8 +20,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_schedule(cmd) {
-	switch (cmd) {
+function we_cmd_schedule(args) {
+	switch (args[0]) {
 		case "edit_schedule":
 		case "schedule_edit_ifthere":
 			new jsWindow(url, "edit_module", -1, -1, 380, 250, true, true, true, true);

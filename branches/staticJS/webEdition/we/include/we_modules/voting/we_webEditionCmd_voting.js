@@ -20,8 +20,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_voting(cmd) {
-	switch (cmd) {
+function we_cmd_voting(args) {
+	switch (args[0]) {
 
 		case "voting_edit":
 		case "voting_edit_ifthere":
@@ -35,7 +35,7 @@ function we_cmd_voting(cmd) {
 			var fo = false;
 			if (jsWindow_count) {
 				for (var k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + arguments[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
+					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
 					if (fo) {
 						break;
 					}
@@ -44,7 +44,7 @@ function we_cmd_voting(cmd) {
 			}
 			return true;
 		case "unlock"://FIXME:???
-			we_repl(self.load, url, arguments[0]);
+			we_repl(self.load, url, args[0]);
 			return true;
 	}
 	return false;

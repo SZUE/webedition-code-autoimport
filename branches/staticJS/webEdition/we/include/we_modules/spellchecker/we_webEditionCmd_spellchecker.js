@@ -20,9 +20,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_spellchecker(cmd) {
-	switch (cmd) {
-
+function we_cmd_spellchecker(args) {
+	switch (args[0]) {
 		case "spellchecker_edit":
 		case "spellchecker_edit_ifthere":
 			new jsWindow(url, "spellcheckadmin", -1, -1, 470, 510, true, false, true, false);
