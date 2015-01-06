@@ -543,7 +543,7 @@ self.focus();' . $this->getJSSubmitFunction("customer_settings");
 					);
 					break;
 				}
-				if($c->Password != $this->customer->Password || $this->customer->LoginDenied || $this->customer->AutoLoginDenied){
+				if($_SESSION['weS']['customer_session']->Password != $this->customer->Password || $this->customer->LoginDenied || $this->customer->AutoLoginDenied){
 //delete autologins, if password is changed
 					$this->db->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($this->customer->ID));
 				}
