@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_workflow_frames extends we_modules_frame{
-
 	public $module = "workflow";
 	protected $useMainTree = false;
 
@@ -65,34 +64,15 @@ class we_workflow_frames extends we_modules_frame{
 	}
 
 	function getJSTreeCode(){
-
-		//start ex we_workflow_moduleFrames::getJSTreeCode()
-		echo we_html_element::jsScript(JS_DIR . 'images.js') .
-		we_html_element::jsScript(JS_DIR . 'windows.js');
-
-		// TODO: move shared code for (some of the) modules-tree (not based on weTree!!) to new weModulesTree.class
-		echo we_html_element::jsElement('
-var table="' . USER_TABLE . '";
-var tree_icon_dir="' . TREE_ICON_DIR . '";
-var tree_img_dir="' . TREE_IMAGE_DIR . '";
-var we_dir="' . WEBEDITION_DIR . '";
-var tree_select_statustext="' . g_l('tree', '[select_statustext]') . '";
-var tree_edit_statustext="' . g_l('tree', '[edit_statustext]') . '";
-var tree_open_statustext="' . g_l('tree', '[open_statustext]') . '";
-var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";
-') . we_html_element::jsScript(JS_DIR . 'workflow_tree.js');
-
 		$out = '
 		function loadData(){
 			menuDaten.clear();';
 
-		$startloc = 0;
-
-		$out.="startloc=" . $startloc . ";";
-		$this->db->query('SELECT * FROM ' . WORKFLOW_TABLE . ' ORDER BY Text ASC');
-		while($this->db->next_record()){
-			$this->View->workflowDef = new we_workflow_workflow();
-			$this->View->workflowDef->load($this->db->f('ID'));
+		$out.="startloc=0;";
+		$this->db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' ORDER BY Text ASC');
+		$ids = $this->db->getAll(true);
+		foreach($ids as $id){
+			$this->View->workflowDef = new we_workflow_workflow($id);
 			$out.="  menuDaten.add(new dirEntry('folder','" . $this->View->workflowDef->ID . "','0','" . oldHtmlspecialchars(addslashes($this->View->workflowDef->Text)) . "',false,'folder','workflowDef','" . $this->View->workflowDef->Status . "'));";
 
 			foreach($this->View->workflowDef->documents as $v){
@@ -101,7 +81,24 @@ var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";
 		}
 
 		$out.='}';
-		echo we_html_element::jsElement($out);
+		echo
+		we_html_element::jsScript(JS_DIR . 'images.js') .
+		we_html_element::jsScript(JS_DIR . 'windows.js') .
+		we_html_element::jsScript(JS_DIR . 'tree.js') .
+		we_html_element::cssLink(CSS_DIR . 'tree.css') .
+		// TODO: move shared code for (some of the) modules-tree (not based on weTree!!) to new weModulesTree.class
+		we_html_element::jsElement('
+var table="' . USER_TABLE . '";
+var tree_icon_dir="' . TREE_ICON_DIR . '";
+var tree_img_dir="' . TREE_IMAGE_DIR . '";
+var we_dir="' . WEBEDITION_DIR . '";
+var tree_select_statustext="' . g_l('tree', '[select_statustext]') . '";
+var tree_edit_statustext="' . g_l('tree', '[edit_statustext]') . '";
+var tree_open_statustext="' . g_l('tree', '[open_statustext]') . '";
+var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";
+') .
+		we_html_element::jsScript(JS_DIR . 'workflow_tree.js') .
+		we_html_element::jsElement($out);
 	}
 
 	function getJSCmdCode(){
@@ -141,28 +138,29 @@ function setTab(tab){
 	}
 }
 
-top.content.hloaded=1;
-		') . $tab_header;
+top.content.hloaded=1;') .
+			$tab_header;
 
 		$mainDiv = we_html_element::htmlDiv(array('id' => 'main'), we_html_tools::getPixel(100, 3) .
-						we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'), we_html_element::htmlNobr(
-										we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
-										we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
-						)) .
-						we_html_tools::getPixel(100, 3) .
-						$we_tabs->getHTML()
+				we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'), we_html_element::htmlNobr(
+						we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
+						we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
+				)) .
+				we_html_tools::getPixel(100, 3) .
+				$we_tabs->getHTML()
 		);
 
 		$body = we_html_element::htmlBody(array(
-					'onresize' => 'setFrameSize()',
-					'onload' => 'setFrameSize()',
-					'bgcolor' => 'white',
-					'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif',
-					'marginwidth' => 0,
-					'marginheight' => 0,
-					'leftmargin' => 0,
-					'topmargin' => 0,
-						), $mainDiv . we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')
+				'onresize' => 'setFrameSize()',
+				'onload' => 'setFrameSize()',
+				'bgcolor' => 'white',
+				'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif',
+				'marginwidth' => 0,
+				'marginheight' => 0,
+				'leftmargin' => 0,
+				'topmargin' => 0,
+				), $mainDiv .
+				we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -174,19 +172,18 @@ top.content.hloaded=1;
 		}
 
 		$extraHead = we_html_element::jsElement('
-			function setStatusCheck(){
-				var a=document.we_form.status_workflow;
-				var b;
-				if(top.content.editor.edbody.loaded) b=top.content.editor.edbody.getStatusContol();
-				else setTimeout("setStatusCheck()",100);
+function setStatusCheck(){
+	var a=document.we_form.status_workflow;
+	var b;
+	if(top.content.editor.edbody.loaded) b=top.content.editor.edbody.getStatusContol();
+	else setTimeout("setStatusCheck()",100);
 
-				if(b==1) a.checked=true;
-				else a.checked=false;
-			}
-			function we_save() {
-				top.content.we_cmd("save_workflow");
-			}
-		');
+	if(b==1) a.checked=true;
+	else a.checked=false;
+}
+function we_save() {
+	top.content.we_cmd("save_workflow");
+}');
 
 		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 1);
 		$table1->setCol(0, 0, array("nowrap" => null, "valign" => "top"), we_html_tools::getPixel(1, 10));
@@ -198,11 +195,11 @@ top.content.hloaded=1;
 		$table2->setCol(0, 2, array('nowrap' => null, 'class' => 'defaultfont'), $this->View->getStatusHTML());
 
 		$body = we_html_element::htmlBody(array(
-					'bgcolor' => 'white',
-					'background' => IMAGE_DIR . 'edit/editfooterback.gif',
-					'style' => 'margin: 0px 0px 0px 0px;',
-					'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
-						), we_html_element::htmlForm($attribs = array(), $table1->getHtml() . $table2->getHtml())
+				'bgcolor' => 'white',
+				'background' => IMAGE_DIR . 'edit/editfooterback.gif',
+				'style' => 'margin: 0px 0px 0px 0px;',
+				'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
+				), we_html_element::htmlForm($attribs = array(), $table1->getHtml() . $table2->getHtml())
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);

@@ -300,7 +300,7 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 		closeAllModalWindows();
 
 <?php if($we_doc->userHasAccess() == we_root::USER_HASACCESS){ ?>
-			if (!unlock && (!top.opener || typeof top.opener.win !== undefined)) {	//	login to super easy edit mode
+			if (!unlock && (!top.opener ||top.opener.hasOwnProperty('win'))) {	//	login to super easy edit mode
 				unlock = true;
 			}
 <?php } ?>

@@ -24,6 +24,13 @@
 
 body{
 	margin: 0px;
+	letter-spacing: normal ! important;
+}
+
+body.aqua,
+body.grey{
+	background-color:#bfbfbf;
+	background-repeat:repeat;
 }
 
 #weMainBody{
@@ -35,6 +42,7 @@ body{
 	bottom:0px;
 	border:0px none;
 }
+
 #resizeFrame{
 	margin:0px;
 	border:0px none;
@@ -109,4 +117,357 @@ img.baumArrow{
 	right:0px;
 	overflow: auto;
 	background-color:#F3F7FF;
+}
+
+.weSelect,
+.wetextinput,
+.wetextarea{
+	border: #AAAAAA solid 1px;
+	color: black;
+	box-sizing: border-box;
+}
+
+.wetextinput {
+	height: 20px;
+}
+
+.wetextarea {
+	height: 80px;
+}
+
+.multichooser {
+	background-color:white;
+	border: 1px grey solid;
+}
+
+.wetextinput[disabled] {
+	background-color: #EEEEEE;
+}
+
+.weMarkInputError,
+input:invalid {
+	background-color: #ff8888 ! important;
+}
+
+input.wetextinput:focus{
+	border: #888888 solid 1px;
+	background-color: #dce6f2;
+}
+
+.small,
+.big,
+.defaultfont,
+.defaultfont a,
+.defaultfont a:visited,
+.middlefont,
+.middlefont a,
+.middlefont a:visited ,
+.selector{
+	color: black;
+}
+
+
+.objectDescription {
+	padding: 4px 0 4px 0;
+	max-width:50em;
+}
+
+textarea.wetextarea:focus {
+	color: black;
+	border: #888888 solid 1px;
+	background-color: #dce6f2;
+	height: 80px;
+}
+
+.changed,
+a.changed{ /*elements which are saved & published*/
+	color: #3366CC;
+	cursor: pointer;
+}
+
+.notpublished,
+a.notpublished {
+	cursor: pointer;
+}
+
+.changed a,
+.notpublished a,
+.tableHeader a,
+.tableHeader a:visited,
+.selector a {
+	text-decoration:none;
+}
+
+.notpublished,
+a.notpublished,
+.npdefaultfont,
+.npdefaultfont a,
+.npdefaultfont a:visited,
+.npshopContentfontR,
+.middlefontred,
+.middlefontred a,
+.middlefontred a:visited,
+.npshopContentfont,
+.npshopContentfont a,
+.npshopContentfont a:visited
+{
+	color: red;
+}
+
+.changeddefaultfont {
+	color: blue;
+}
+
+
+.defaultgray,
+.defaultgray a,
+.defaultgray a:visited,
+.middlefontgray,
+.middlefontgray a,
+.middlefontgray a:visited,
+.shopContentfontGR,
+.shop_fontView,
+.shopContentfontGreySmall{
+	color: #666666;
+}
+
+.pshopContentfont a:active,
+.pdefaultfont a:active,
+.middlefont a:active,
+.npdefaultfont a:active,
+.middlefontred a:active,
+.defaultgray a:active,
+.middlefontgray a:active,
+.npshopContentfont a:active,
+.defaultfont a:active,
+.todo_hist_hdr{
+	color: #006DB8;
+}
+
+.pshopContentfontR,
+.pshopContentfont,
+.pdefaultfont,
+.pshopContentfont a,
+.pshopContentfont a:visited,
+.pdefaultfont a,
+.pdefaultfont a:visited {
+	color: green;
+}
+
+.shopContentfont {
+	vertical-align: top;
+	color: black;
+	text-align:center;
+}
+
+.shopContentfontAlert {
+	color: #800000;
+	text-align:left;
+}
+
+.shopContentfontR {
+	vertical-align: top;
+	color: black;
+	text-align:right;
+}
+
+.shopContentfontGR {
+	text-align:right;
+}
+
+.npshopContentfont {
+	text-align:center;
+}
+
+.tableHeader,
+.shop_th,
+.header {
+	font-weight: bold;
+}
+
+.tableHeader,
+.tableHeader a,
+.tableHeader a:visited {
+	color: white;
+}
+
+.tableHeader a:active {
+	color: #FF0000;
+}
+
+.defaultfontred {
+	color: #6CBFF9;
+}
+
+.header {
+	color: black;
+	font-size: 20px;
+}
+
+.shop_th {
+	color: black;
+	font-size: 12px;
+	padding-bottom:5px;
+}
+
+.shop_fontView {
+	font-size: 12px;
+}
+
+.navigation_normal{
+	padding: 1px;
+	margin: 0px;
+}
+
+.navigation_hover{
+	margin: 0px;
+	border-bottom: black solid 1px;
+	border-right:	black solid 1px;
+	border-left:	#CCCCCC solid 1px;
+	border-top:		#CCCCCC solid 1px;
+	cursor:pointer;
+}
+
+optgroup{
+	font-weight: bold;
+	font-style: normal;
+}
+
+optgroup.lvl1{
+	color: darkblue;
+}
+
+optgroup.lvl2{
+	margin-left: 10px;
+}
+
+/*	Following: styles for accessibility	*/
+.weHide{
+	display:none;
+}
+
+.weDialogBody,
+.weEditorBody{
+	margin: 0px;
+	padding: 0px;
+	background-color: #EDEDED;
+}
+
+.weEditorBody {
+	padding: 10px 0px;
+}
+
+.weTreeHeader,
+.weTreeHeaderMove{
+	background-color: #F0EFF0;
+	margin:0px;
+	padding: 10px 10px;
+	border-bottom: 1px solid black;
+}
+.weTreeHeader{
+	height:129px;
+}
+
+.weTreeHeaderMove {
+	height:139px;
+}
+
+.weDefaultStyle{
+	background: transparent;
+	background-color: transparent;
+	border: 0px;
+	color: black;
+	cursor: default;
+	font-weight: normal;
+	margin: 0px;
+	padding:0px;
+	text-align: left;
+	text-decoration: none;
+}
+
+.weDialogHeadline {
+	color: black;
+	font-weight: bold;
+}
+
+.weMultiIconBoxHeadline,
+.weMultiIconBoxHeadlineThin,
+.weObjectPreviewHeadline,
+.weDocListSearchHeadline,
+.weDocListSearchHeadlineDivs,
+.weMultiIconBoxHeadline a{
+	color: #6078A2;
+}
+
+.weMultiIconBoxHeadline,
+.weObjectPreviewHeadline{
+	font-weight: bold;
+}
+
+.weMultiIconBoxHeadlineThin {
+	font-weight: normal;
+}
+
+.weObjectPreviewHeadline {
+	margin-bottom:3px;
+}
+
+.shopContentfontSmall {
+	color: black;
+	text-align:center;
+}
+.shopContentfontGreySmall {
+	text-align:left;
+}
+
+.weDocListSearchHeadline {
+	font-weight: bold;
+	margin-top:6px;
+}
+
+.weDocListSearchHeadlineDivs {
+	font-weight: bold;
+}
+
+.big {
+	text-align: left;
+}
+
+.blockWrapper {
+	overflow: auto !important;
+	display: block ;
+	background-color: white !important;
+	padding: 0px;
+}
+
+.pshopContentfontR {
+	text-align:right;
+}
+
+.pshopContentfont,
+.pdefaultfont{
+	text-align:center;
+}
+
+.header_shop {
+	font-size: 11px;
+	background-position: bottom left;
+	background-repeat: no-repeat;
+}
+
+.weDialogButtonsBody {
+	margin: 0;
+	padding: 10px 10px;
+	background-color: #EDEDED;
+}
+
+
+.weSidebarBody {
+	margin		: 5px;
+	padding		: 0px;
+}
+
+.header_small,
+.header_shop{
+	color: #006699;
 }

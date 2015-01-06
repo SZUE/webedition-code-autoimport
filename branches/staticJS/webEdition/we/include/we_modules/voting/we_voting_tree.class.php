@@ -37,7 +37,7 @@ function openClose(id){
 	treeData[eintragsIndex].open=openstatus;
 
 	if(openstatus && treeData[eintragsIndex].loaded!=1){
-			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+(sort!=""?"&sort="+sort:"");
+			' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid="+id+(sort!=""?"&sort="+sort:"");
 	}else{
 		drawTree();
 	}
@@ -75,12 +75,12 @@ function doClick(id,typ){
 			top.content.usetHot();
 			cmd = "voting_edit";
 			var node=' . $this->topFrame . '.get(id);
-			' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
+			' . $this->topFrame . '.editor.edbody.location=treeData.frameset+"?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 		}
 	} else {
 		cmd = "voting_edit";
 		var node=' . $this->topFrame . '.get(id);
-		' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
+		' . $this->topFrame . '.editor.edbody.location=treeData.frameset+"?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 	}
 }
 ' . $this->topFrame . '.loaded=1;';
@@ -89,7 +89,7 @@ function doClick(id,typ){
 	function getJSStartTree(){
 
 		return 'function startTree(){
-				' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid=0";
+				' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid=0";
 				drawTree();
 			}';
 	}
@@ -133,7 +133,7 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
 function showSegment(){
 	parentnode=' . $this->topFrame . '.get(this.parentid);
 	parentnode.clear();
-	' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+this.parentid+"&offset="+this.offset;
+	' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid="+this.parentid+"&offset="+this.offset;
 	drawTree();
 }';
 	}

@@ -47,7 +47,7 @@ function openClose(id){
 
 	treeData[eintragsIndex].open=openstatus;
 	if(openstatus && treeData[eintragsIndex].loaded!=1){
-		' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=load&tab="+' . $this->topFrame . '.table+"&cmd=load&pid="+id;
+		' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=load&tab="+' . $this->topFrame . '.table+"&cmd=load&pid="+id;
 		' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table]+=","+id;
 	}else{
 		var arr = ' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table].split(",");
@@ -104,7 +104,7 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 
 	function getJSStartTree(){
 		return 'function startTree(){
-				' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=load&cmd=load&tab="+' . $this->topFrame . '.table+"&pid=0&openFolders="+' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table];
+				' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=load&cmd=load&tab="+' . $this->topFrame . '.table+"&pid=0&openFolders="+' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table];
 			}';
 	}
 
@@ -117,9 +117,9 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 
 		return '
 function drawTree(){
-	var out=\'<table><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr><td class="\'+treeData.getlayout()+\'">\n<nobr>\n\'+
+	var out=\'<div class="treetable \'+treeData.getlayout()+\'"><nobr>\'+
 		draw(treeData.startloc,"")+
-		"</nobr>\n</td></tr></table>\n";
+		"</nobr></div>";
 	' . $this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
 	}' . $this->getJSDraw();
 	}

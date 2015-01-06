@@ -24,8 +24,9 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-#treetable{
-	margin: 4px 0px 4px 0px;
+#treetable,
+.treetable{
+	margin: 0px;
 	background-color: #F3F7FF;
 	padding: 0px;
 }

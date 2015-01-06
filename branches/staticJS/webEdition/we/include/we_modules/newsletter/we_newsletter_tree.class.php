@@ -88,7 +88,7 @@ function doClick(id,typ){
 	function getJSStartTree(){
 
 		return 'function startTree(){
-				' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid=0";
+				' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid=0";
 				drawTree();
 			}';
 	}
@@ -119,9 +119,9 @@ function openClose(id){
 
 	if(openstatus && treeData[eintragsIndex].loaded!=1){
 		if(sort!=""){
-			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+"&sort="+sort;
+			' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid="+id+"&sort="+sort;
 		}else{
-			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id;
+			' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid="+id;
 		}
 	}else{
 		drawTree();

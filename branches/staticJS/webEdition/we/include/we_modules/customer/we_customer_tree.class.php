@@ -91,7 +91,7 @@ function openClose(id){
 		sort = encodeURI(sort);
 		id = id.replace(/\+/g,"%2B");
 		sort = sort.replace(/\+/g,"%2B");
-		' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+(sort!=""?"&sort="+sort:"");
+		' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid="+id+(sort!=""?"&sort="+sort:"");
 	}else{
 		drawTree();
 	}
@@ -104,16 +104,16 @@ function openClose(id){
 	function getJSUpdateItem(){
 		return '
 function updateEntry(id,text){
-			var ai = 1;
-			while (ai <= treeData.len) {
-					if (treeData[ai].id==id) {
-						text = text.replace(/</g,"&lt;");
-			text = text.replace(/>/g,"&gt;");
-							treeData[ai].text=text;
-					}
-					ai++;
+	var ai = 1;
+	while (ai <= treeData.len) {
+			if (treeData[ai].id==id) {
+				text = text.replace(/</g,"&lt;");
+				text = text.replace(/>/g,"&gt;");
+				treeData[ai].text=text;
 			}
-			drawTree();
+			ai++;
+	}
+	drawTree();
 }';
 	}
 
@@ -131,7 +131,7 @@ function doClick(id,typ){
 	function getJSStartTree(){
 		return '
 function startTree(){
-	' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid=0";
+	' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid=0";
 	drawTree();
 }';
 	}
@@ -203,9 +203,10 @@ function showSegment(){
 	function getJSGetLayout(){
 		return '
 function getLayout(){
-		if(this.typ=="threedots") return treeData.node_layouts["threedots"];
+		if(this.typ=="threedots"){
+			return treeData.node_layouts["threedots"];
+		}
 		var layout_key=(this.typ=="group" ? "group" : "item");
-
 
 		return treeData.node_layouts[layout_key]+(this.typ=="item" && this.published==1 ? " loginDenied" : "");
 }';

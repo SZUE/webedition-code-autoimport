@@ -53,7 +53,8 @@ function doYearClick(yearView){
 	}
 
 	function getJSTreeCode(){ //TODO: use we_html_element::jsElement and move to new class weShopTree
-		echo we_html_element::jsElement('
+		echo we_html_element::cssLink(CSS_DIR . 'tree.css') .
+			we_html_element::jsElement('
 var table="' . SHOP_TABLE . '";
 var tree_icon_dir="' . TREE_ICON_DIR . '";
 var tree_img_dir="' . TREE_IMAGE_DIR . '";

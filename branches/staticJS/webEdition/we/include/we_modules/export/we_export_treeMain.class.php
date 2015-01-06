@@ -43,9 +43,9 @@ function openClose(id){
 
 	if(openstatus && treeData[eintragsIndex].loaded!=1){
 		if(sort!=""){
-			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&cmd=mainload&pid="+id+"&sort="+sort;
+			' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&cmd=mainload&pid="+id+"&sort="+sort;
 		}else{
-			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&cmd=mainload&pid="+id;
+			' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&cmd=mainload&pid="+id;
 		}
 	}else{
 		drawTree();
@@ -87,12 +87,12 @@ function doClick(id,typ){
 			top.content.usetHot();
 			cmd = "export_edit";
 			var node=' . $this->topFrame . '.get(id);
-			' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
+			' . $this->topFrame . '.editor.edbody.location=treeData.frameset+"?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 		}
 	} else {
 		cmd = "export_edit";
 		var node=' . $this->topFrame . '.get(id);
-		' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
+		' . $this->topFrame . '.editor.edbody.location=treeData.frameset+"?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
 	}
 }
 ' . $this->topFrame . '.loaded=1;
@@ -103,7 +103,7 @@ function doClick(id,typ){
 	function getJSStartTree(){
 
 		return 'function startTree(){
-	' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&cmd=mainload&pid=0";
+	' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&cmd=mainload&pid=0";
 	drawTree();
 			}';
 	}
