@@ -28,14 +28,9 @@ class we_customer_tree extends weTree{
 		return array_merge(parent::getJSCustomDraw(), array(
 			"sort" => '
 var newAst = zweigEintrag;
-var zusatz = (ai == nf.laenge) ? "end" : "";
-var oc_img;
-var oc_js;
+var oc_js=treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
 
-oc_img=treeData.tree_image_dir+(nf[ai].open == 0?"auf":"zu")+zusatz+".gif";
-oc_js=treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
-
-row+="&nbsp;&nbsp;<a href=\"javascript:"+oc_js+" border=0><img src="+oc_img+" class=\"treeKreuz\" alt=\"\"></a>"+
+row+="&nbsp;&nbsp;<a href=\"javascript:"+oc_js+" border=0><img src=\""+treeData.tree_image_dir+(nf[ai].open == 0?"auf":"zu")+(ai == nf.laenge ? "end" : "")+".gif\" class=\"treeKreuz\" alt=\"\"></a>"+
 	"<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onclick=\""+oc_js+";return true;\" border=0>"+
 	"<img src=\""+treeData.tree_image_dir+"icons/"+nf[ai].icon+"\" alt=\"\">"+
 	"</a>"+
@@ -50,41 +45,28 @@ if (nf[ai].open){
 }',
 			"group" => '
 var newAst = zweigEintrag;
-var zusatz = (ai == nf.len) ? "end" : "";
-var oc_img;
-var oc_js;
+var oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
+row+="&nbsp;&nbsp;<a href=\"javascript:"+oc_js+" border=0><img src=\""+treeData.tree_image_dir+(nf[ai].open == 1?"zu":"auf")+(ai == nf.len ? "end" : "")+".gif\" class=\"treeKreuz\" alt=\"\"></a>";
 
-oc_img=treeData.tree_image_dir+(nf[ai].open == 1?"zu":"auf")+zusatz+".gif";
-if(nf[ai].disabled!=1){
-	oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
-} else{
-	oc_js="//";
-}
-oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
-row+="&nbsp;&nbsp;<a href=\"javascript:"+oc_js+" border=0><img src="+oc_img+" class=\"treeKreuz\" alt=\"\"></a>";
+nf[ai].icon="folder"+(nf[ai].open==1 ? "open" : "")+(nf[ai].disabled==1 ? "_disabled" : "")+".gif";
 
-var folder_icon;
-folder_icon="folder"+(nf[ai].open==1 ? "open" : "")+(nf[ai].disabled==1 ? "_disabled" : "")+".gif";
-nf[ai].icon=folder_icon;
-
-if(nf[ai].disabled!=1){
-	row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript:"+oc_js+"\">";
-}
-row+="<img src=\""+treeData.tree_image_dir+"icons/"+nf[ai].icon+"\" alt=\"\">";
-if(nf[ai].disabled!=1){
-	row+="</a>"+
-	"<a name=\'_"+nf[ai].id+"\' href=\"javascript:"+oc_js+"\">";
-}
-row+="<label id=\"lab_"+nf[ai].id+"\" class=\""+nf[ai].getlayout()+"\">&nbsp;" + nf[ai].text+"</label>";
-if(nf[ai].disabled!=1){
-	row+="</a>";
-}
-row+="&nbsp;&nbsp;<br/>\n";
+row+=(nf[ai].disabled!=1?
+		"<a name=\'_"+nf[ai].id+"\' href=\"javascript:"+oc_js+"\">":
+		"")+
+	"<img src=\""+treeData.tree_image_dir+"icons/"+nf[ai].icon+"\" alt=\"\">"+
+	(nf[ai].disabled!=1?
+		"</a><a name=\'_"+nf[ai].id+"\' href=\"javascript:"+oc_js+"\">":
+		"")+
+	"<label id=\"lab_"+nf[ai].id+"\" class=\""+nf[ai].getlayout()+"\">&nbsp;" + nf[ai].text+"</label>"+
+	(nf[ai].disabled!=1?
+		"</a>":
+		"")+
+	"&nbsp;&nbsp;<br/>";
 if (nf[ai].open==1){
-	newAst = newAst + "<img src=\""+treeData.tree_image_dir+(ai == nf.len?"leer.gif":"strich2.gif")+"\" class=\"treeKreuz\"/>";
+	newAst += "<img src=\""+treeData.tree_image_dir+(ai == nf.len?"leer.gif":"strich2.gif")+"\" class=\"treeKreuz\"/>";
 	row+=draw(nf[ai].id,newAst);
-}
-			'));
+}'
+		));
 	}
 
 	function getJSOpenClose(){

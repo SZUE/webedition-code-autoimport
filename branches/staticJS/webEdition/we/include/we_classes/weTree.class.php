@@ -559,28 +559,14 @@ row+="&nbsp;&nbsp;<br/>";';
 			"group" => '
 var newAst = zweigEintrag;
 
-var zusatz = (ai == nf.len) ? "end" : "";
-var oc_img;
-var oc_js;
+row+="&nbsp;&nbsp;<a href=\"javascript:"+treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"><img src="+treeData.tree_image_dir+(nf[ai].open == 0?"auf":"zu")+(ai == nf.len ? "end" : "")+".gif class=\"treeKreuz\" alt=\"\"></a>";
 
-oc_img=treeData.tree_image_dir+(nf[ai].open == 0?"auf":"zu")+zusatz+".gif";
-
-if(nf[ai].disabled!=1) oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
-else oc_js="//";
-
-oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
-
-row+="&nbsp;&nbsp;<a href=\"javascript:"+oc_js+" border=0><img src="+oc_img+" class=\"treeKreuz\" alt=\"\"></a>";
-
-var folder_icon;
-folder_icon="folder"+(nf[ai].open==1 ? "open" : "")+(nf[ai].disabled==1 ? "_disabled" : "")+".gif";
-
-nf[ai].icon=folder_icon;
+nf[ai].icon="folder"+(nf[ai].open==1 ? "open" : "")+(nf[ai].disabled==1 ? "_disabled" : "")+".gif";
 
 ' . $click_handler . '
 
 if (nf[ai].open==1){
-	newAst = newAst + "<img src=\""+treeData.tree_image_dir+(ai == nf.len?"leer.gif":"strich2.gif")+"\" class=\"treeKreuz\"/>";
+	newAst += "<img src=\""+treeData.tree_image_dir+(ai == nf.len?"leer.gif":"strich2.gif")+"\" class=\"treeKreuz\"/>";
 	row+=draw(nf[ai].id,newAst);
 		}',
 			"threedots" => '
