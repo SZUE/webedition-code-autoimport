@@ -39,14 +39,17 @@ function setTreeState() {
 		}
 
 	}
-
 }
 
 function applyLayout() {
 	if (arguments[0]) {
-		eval("if(" + treeData.treeFrame + ".document.getElementById(\"lab_" + this.id + "\"))" + treeData.treeFrame + ".document.getElementById(\"lab_" + this.id + "\").className =\"" + arguments[0] + "\";");
+		if (treeData.treeFrameW.document.getElementById("lab_" + this.id)) {
+			treeData.treeFrameW.document.getElementById("lab_" + this.id).className = arguments[0];
+		}
 	} else {
-		eval("if(" + treeData.treeFrame + ".document.getElementById(\"lab_" + this.id + "\"))" + treeData.treeFrame + ".document.getElementById(\"lab_" + this.id + "\").className =\"" + this.getlayout() + "\";");
+		if (treeData.treeFrameW.document.getElementById("lab_" + this.id)) {
+			treeData.treeFrameW.document.getElementById("lab_" + this.id).className = this.getlayout();
+		}
 	}
 }
 
