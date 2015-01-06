@@ -1299,7 +1299,7 @@ function we_cmd_base(args,url) {
 						args[2] = _we_activeTransaction;
 					}
 					url += "&we_transaction=" + args[2];
-					we_repl(_sendToFrame, url, argsclose[0]);
+					we_repl(_sendToFrame, url, args[0]);
 				}
 			}
 
