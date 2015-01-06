@@ -34,49 +34,49 @@ $shopCategoriesDir = ($val = we_base_request::_(we_base_request::INT, 'weShopCat
 $relations = array();
 
 if($shopCategoriesDir !== -1 && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'saveShopCatRels'){
-		$success = we_shop_category::saveShopCatsDir($shopCategoriesDir);
+	$success = we_shop_category::saveShopCatsDir($shopCategoriesDir);
 
-		$destPrincipleIds = array();
-		foreach(we_base_request::_(we_base_request::INT, 'weShopCatDestPrinciple', array()) as $k => $v){
-			if($v){
-				$destPrincipleIds[] = intval($k);
+	$destPrincipleIds = array();
+	foreach(we_base_request::_(we_base_request::INT, 'weShopCatDestPrinciple', array()) as $k => $v){
+		if($v){
+			$destPrincipleIds[] = intval($k);
+		}
+	}
+	$success &= we_shop_category::saveSettingDestPrinciple(implode(',', $destPrincipleIds));
+
+	//FIXME: get destPrinciple and isActive from db at once
+	$isInactiveIds = array();
+	foreach(we_base_request::_(we_base_request::INT, 'weShopCatIsActive', array()) as $k => $v){
+		if(!$v){
+			$isInactiveIds[] = intval($k);
+		}
+	}
+	$success &= we_shop_category::saveSettingIsInactive(implode(',', $isInactiveIds));
+
+	$saveCatIds = array();
+	$relations = we_base_request::_(we_base_request::STRING, 'weShopCatRels');
+	foreach($relations as $k => $v){
+		foreach($v as $id){
+			if(!isset($saveCatIds[$id])){
+				$saveCatIds[$id] = array();
 			}
+			$saveCatIds[$id][] = intval($k);
 		}
-		$success &= we_shop_category::saveSettingDestPrinciple(implode(',', $destPrincipleIds));
+	}
 
-		//FIXME: get destPrinciple and isActive from db at once
-		$isInactiveIds = array();
-		foreach(we_base_request::_(we_base_request::INT, 'weShopCatIsActive', array()) as $k => $v){
-			if(!$v){
-				$isInactiveIds[] = intval($k);
-			}
-		}
-		$success &= we_shop_category::saveSettingIsInactive(implode(',', $isInactiveIds));
+	//reset all vat-category relations before saving the new set of relations
+	$success &= $DB_WE->query('UPDATE ' . WE_SHOP_VAT_TABLE . ' SET categories=""');
+	foreach($saveCatIds as $vatId => $catIds){
+		$success &= $DB_WE->query('UPDATE ' . WE_SHOP_VAT_TABLE . ' SET categories="' . implode(',', $catIds) . '" WHERE id=' . intval($vatId));
+	}
 
-		$saveCatIds = array();
-		$relations = we_base_request::_(we_base_request::STRING, 'weShopCatRels');
-		foreach($relations as $k => $v){
-			foreach($v as $id){
-				if(!isset($saveCatIds[$id])){
-					$saveCatIds[$id] = array();
-				}
-				$saveCatIds[$id][] = intval($k);
-			}
-		}
-
-		//reset all vat-category relations before saving the new set of relations
-		$success &= $DB_WE->query('UPDATE ' . WE_SHOP_VAT_TABLE . ' SET categories=""');
-		foreach($saveCatIds as $vatId => $catIds){
-			$success &= $DB_WE->query('UPDATE ' . WE_SHOP_VAT_TABLE . ' SET categories="' . implode(',', $catIds) . '" WHERE id=' . intval($vatId));
-		}
-
-		if($success){
-			$jsMessage = g_l('modules_shop', '[shopcats][save_success]');
-			$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
-		} else {
-			$jsMessage = g_l('modules_shop', '[shopcats][save_error]');
-			$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
-		}
+	if($success){
+		$jsMessage = g_l('modules_shop', '[shopcats][save_success]');
+		$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
+	} else {
+		$jsMessage = g_l('modules_shop', '[shopcats][save_error]');
+		$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
+	}
 } else {
 	//please select category dir...
 }
@@ -93,7 +93,7 @@ $selCategoryDirs = we_html_tools::htmlSelect('weShopCatDir', $allCategoryDirs, 1
 if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 	$shopCategories = we_shop_category::getShopCatFieldsFromDir('', false, true, $shopCategoriesDir, true, true, true, '', 'Path');
 
-	//Categories/VATs-Matrix
+	//Categories/VATs-Table
 	$DB_WE->query('SELECT id, text, vat, territory, textProvince, categories FROM ' . WE_SHOP_VAT_TABLE);
 	$allVats = array();
 	$doWriteRelations = !$relations ? true : false;
@@ -121,69 +121,87 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 		}
 	}
 
-	$catsMatrix = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), (count($shopCategories) * (count($allVats) + 4)), 5);
-	$catsDirMatrix = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), ((count($allVats) + 5)), 5);
+	$catsTable = new we_html_table(array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 4), (count($shopCategories) * 6), 5);
+	$catsDirTable = new we_html_table(array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 4), 7, 5);
 	if(is_array($shopCategories) && count($shopCategories) > 1){
 		$i = $iTmp = 0;
 
 		foreach($shopCategories as $k => $cat){
-			$matrix = $catsMatrix;
+			$table = $catsTable;
+			$isShopCatsDir = false;
 			if($cat['ID'] == $shopCategoriesDir){
-				$matrix = $catsDirMatrix;
+				$isShopCatsDir = true;
+				$table = $catsDirTable;
 				$iTmp = $i;
 				$i = 0;
 			}
 
 			$j = 0;
-			$matrix->setCol($i, 1, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 20), $cat['ID'] . ': ');
-			$matrix->setCol($i, 2, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 140), $cat['Category']);
-			$matrix->setCol($i++, 3, array("class" => "defaultfont", "style" => "font-weight:bold", "colspan" => "2","nowrap" => "nowrap", "width" => 174), $cat['Path']);
+			$table->setCol($i, 1, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 20), $cat['ID'] . ': ');
+			$table->setCol($i, 2, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap', 'width' => 140), $cat['Category']);
+			$table->setCol($i++, 3, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'colspan' => 2, 'nowrap' => 'nowrap', 'width' => 174), $cat['Path']);
 			if($cat['ID'] != $shopCategoriesDir){
-				$matrix->setCol($i, 3, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 174), g_l('modules_shop', '[shopcats][active_shopCat]'));
-				$matrix->setCol($i++, 4, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 240), we_html_forms::checkboxWithHidden(($cat['IsInactive'] == 0), 'weShopCatIsActive[' . $cat['ID'] . ']', '', false, '', 'we_switch_active_by_id(' . $cat['ID'] . ')'));
+				$table->setCol($i, 3, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 174), g_l('modules_shop', '[shopcats][active_shopCat]'));
+				$table->setCol($i++, 4, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 240), we_html_forms::checkboxWithHidden(($cat['IsInactive'] == 0), 'weShopCatIsActive[' . $cat['ID'] . ']', '', false, '', 'we_switch_active_by_id(' . $cat['ID'] . ')'));
 			}
-			$matrix->setCol($i, 3, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 174, "style" => "padding-bottom: 10px"), g_l('modules_shop', '[shopcats][text_destPrinciple]'));
-			$matrix->setCol($i++, 4, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 240, "style" => "padding-bottom: 10px"), we_html_forms::checkboxWithHidden(($cat['DestPrinciple'] == 1), 'weShopCatDestPrinciple[' . $cat['ID'] . ']', ''));
+
+			$taxPrinciple = we_html_forms::radioButton(0, ($cat['DestPrinciple'] == 0 ? '1' : '0'), 'weShopCatDestPrinciple[' . $cat['ID'] . ']', 'Ursprungslandprinzip', false, 'defaultfont', 'we_switch_principle_by_id(' . $cat['ID'] . ', this, ' . ($isShopCatsDir ? 'true' : 'false') . ')') .
+				we_html_forms::radioButton(1, ($cat['DestPrinciple'] == 1 ? '1' : '0'), 'weShopCatDestPrinciple[' . $cat['ID'] . ']', g_l('modules_shop', '[shopcats][text_destPrinciple]'), false, 'defaultfont', 'we_switch_principle_by_id(' . $cat['ID'] . ', this, ' . ($isShopCatsDir ? 'true' : 'false') . ')') .
+				we_html_element::htmlHidden(array('id' => 'taxPrinciple_tmp[' . $cat['ID'] . ']', 'value' => $cat['DestPrinciple']));
+
+			$table->setRow($i, array('id' => 'destPrincipleRow_' . $cat['ID'], 'style' => ($cat['IsInactive'] == 1 ? 'display: none;' : '')));
+			$table->setCol($i, 3, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 174, 'style' => 'padding-bottom: 10px'), 'Besteuerungsart');
+			$table->setCol($i++, 4, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 240, 'style' => 'padding-bottom: 10px'), $taxPrinciple);
 
 			if(!count($allVats)){
-				$matrix->setCol($i, 3, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 140), g_l('modules_shop', '[shopcats][warning_noVatsDefined]'));
+				$table->setCol($i, 3, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 140), g_l('modules_shop', '[shopcats][warning_noVatsDefined]'));
 			} else {
+				$defCountry = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 2);
+				$countries = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), max((count($allVats) - 1), 1), 2);
+
+				$c = -1;
+				ksort($allVats);
 				foreach($allVats as $k => $v){
-					$isDefCountry = we_shop_category::getDefaultCountry() == $k;
-					$value = isset($relations[$cat['ID']][$k]) && $relations[$cat['ID']][$k] ? $relations[$cat['ID']][$k] : 0;
-					$selAttribs = array("id" => 'weShopCatRels[' . $cat['ID'] . '][' . $k . ']');
-					if($cat['IsInactive']){
-						$selAttribs = array_merge($selAttribs, array('disabled' => 'disabled'));
+					if(we_shop_category::getDefaultCountry() == $k){
+						$innerTable = $defCountry;
+						$num = 0;
+						$isDefCountry = true;
+					} else {
+						$innerTable = $countries;
+						$c++;
+						$num = $c;
+						$isDefCountry = false;
 					}
-					$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, $selAttribs, 'value', 240);
-					$matrix->setCol($i, 3, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 174, "style" => ($isDefCountry ? "font-weight: normal;" : "")), ($v['textTerritory'] ? : 'N.N.'));
-					$matrix->setCol($i++, 4, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 240), $sel);
+
+					$value = isset($relations[$cat['ID']][$k]) && $relations[$cat['ID']][$k] ? $relations[$cat['ID']][$k] : 0;
+					$selAttribs = array('id' => 'weShopCatRels[' . $cat['ID'] . '][' . $k . ']');
+					$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, $selAttribs, 'value', 220);
+
+					$innerTable->setCol($num, 0, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 184, 'style' => ($isDefCountry ? 'font-weight: normal;' : 'padding-bottom: 8px;')), ($v['textTerritory'] ? : 'N.N.'));
+					$innerTable->setCol($num, 1, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 220), $sel);
 				}
 			}
-			$matrix->setCol($i, 1, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 20), '');
-			$matrix->setCol($i++, 2, array("style" => "padding-bottom: 20px", "class" => "defaultfont", "nowrap" => "nowrap", "width" => 140), '');
+			$table->setRow($i, array('id' => 'defCountryRow_' . $cat['ID'], 'style' => ($cat['IsInactive'] == 0 ? '' : 'display: none;')));
+			$table->setCol($i++, 3, array('class' => 'defaultfont', 'colspan' => 2, 'nowrap' => 'nowrap', 'width' => 424), $defCountry->getHtml());
+			$table->setRow($i, array('id' => 'countriesRow_' . $cat['ID'], 'style' => ($cat['IsInactive'] == 1 || $cat['DestPrinciple'] == 0 ? 'display: none;' : '')));
+			$table->setCol($i++, 3, array('class' => 'defaultfont', 'colspan' => 2, 'nowrap' => 'nowrap', 'width' => 424), $countries->getHtml());
+
+			$table->setCol($i, 1, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 20), '');
+			$table->setCol($i++, 2, array('style' => 'padding-bottom: 20px', 'class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 140), '');
 
 			$i = $cat['ID'] == $shopCategoriesDir ? $iTmp : $i;
 		}
-		$catsMatrixHtml = $catsMatrix->getHtml();
-		$catsDirMatrixHtml = $catsDirMatrix->getHtml();
+		$catsTableHtml = $catsTable->getHtml();
+		$catsDirTableHtml = $catsDirTable->getHtml();
 	} else {
-		$catsMatrixHtml = g_l('modules_shop', '[shopcats][warning_shopCatDirEmpty]');
-		$catsDirMatrixHtml = g_l('modules_shop', '[shopcats][warning_shopCatDirEmpty]');
+		$catsTableHtml = g_l('modules_shop', '[shopcats][warning_shopCatDirEmpty]');
+		$catsDirTableHtml = g_l('modules_shop', '[shopcats][warning_shopCatDirEmpty]');
 	}
 } else {
-	$catsMatrixHtml = $catsDirMatrixHtml = g_l('modules_shop', '[shopcats][warning_noShopCatDir]');
+	$catsTableHtml = $catsDirTableHtml = g_l('modules_shop', '[shopcats][warning_noShopCatDir]');
 }
 
 echo we_html_tools::getHtmlTop() . STYLESHEET;
-
-
-$jsStr = '';
-foreach($allVats as $k => $v){
-	$jsStr .= '
-		
-	';
-}
 
 $jsFunction = '
 	function we_submitForm(url){
@@ -216,12 +234,23 @@ $jsFunction = '
 
 	function we_switch_active_by_id(id){
 		try{
-			countries = ["' . implode('","', array_keys($allVats)) . '"];
-			var active = document.getElementById("check_weShopCatIsActive[" + id + "]").checked;
-			document.getElementById("check_weShopCatDestPrinciple[" + id + "]").disabled = !active;
-			for(var i = 0; i < countries.length; i++){
-				document.getElementById("weShopCatRels[" + id + "][" + countries[i] + "]").disabled = !active;
-			}
+			document.getElementById("destPrincipleRow_" + id).style.display = 
+				document.getElementById("defCountryRow_" + id).style.display = 
+				(document.getElementById("check_weShopCatIsActive[" + id + "]").checked) ? "" : "none";
+
+			document.getElementById("countriesRow_" + id).style.display = 
+				document.getElementById("check_weShopCatIsActive[" + id + "]").checked && 
+				(document.getElementById("taxPrinciple_tmp[" + id + "]").value == 1) ? "" : "none";
+		} catch(e){}
+	}
+
+	function we_switch_principle_by_id(id, obj, isShopCatsDir){
+		try{
+			var active = isShopCatsDir ? true : document.getElementById("check_weShopCatIsActive[" + id + "]").checked;
+
+			document.getElementById("taxPrinciple_tmp[" + id + "]").value = obj.value;
+			document.getElementById("countriesRow_" + id).style.display = 
+				(active && obj.value == 1) ? "" : "none";
 		} catch(e){}
 	}
 
@@ -246,14 +275,14 @@ $parts[] = array(
 $parts[] = array(
 	'headline' => '',
 	'space' => 0,
-	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[shopcats][info_edit_shopCatDir]'), we_html_tools::TYPE_INFO, "614", false, 100),
+	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[shopcats][info_edit_shopCatDir]'), we_html_tools::TYPE_INFO, '614', false, 100),
 	'noline' => 1
 );
 
 $parts[] = array(
 	'headline' => '',
 	'space' => 0,
-	'html' => $catsDirMatrixHtml,
+	'html' => $catsDirTableHtml,
 );
 
 $parts[] = array(
@@ -273,7 +302,7 @@ $parts[] = array(
 $parts[] = array(
 	'headline' => '',
 	'space' => 0,
-	'html' => $catsMatrixHtml,
+	'html' => $catsTableHtml,
 	'noline' => 1
 );
 
