@@ -15,6 +15,3 @@
  * =====
  * Edit this file ONLY if you know exactly what you are doing!
  */
-
-//Default Charset
-define('DEFAULT_CHARSET', "UTF-8");
