@@ -93,37 +93,33 @@ while($DB_WE->next_record()){
 $selCategoryDirs = we_html_tools::htmlSelect('weShopCatDir', $allCategoryDirs, 1, $shopCategoriesDir, false, array('id' => 'weShopCatDir', 'onchange' => 'we_submitForm(\'' . $_SERVER['SCRIPT_NAME'] . '\');'));
 
 if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
-	$shopCategories = we_shop_category::getShopCatFieldsFromDir('', false, true, $shopCategoriesDir, true, true, true, '', 'Path');
+	$allVats = we_shop_vats::getAllShopVATs();
+	$vatGroups = array();
+	if(count($allVats) > 0){
+		$doWriteRelations = !$relations ? true : false;
+		foreach($allVats as $vatObj){
+			if(!isset($vatGroups[$vatObj->territory])){
+				$vatGroups[$vatObj->territory] = array();
+				$vatGroups[$vatObj->territory]['selOptions'] = array(0 => ' ');
+			}
+			$vatGroups[$vatObj->territory]['textTerritory'] = $vatObj->textTerritory;
+			$vatGroups[$vatObj->territory]['selOptions'][$vatObj->id] = $vatObj->getNaturalizedText() . ': ' . $vatObj->vat . '%';
 
-	//Categories/VATs-Table
-	$DB_WE->query('SELECT id, text, vat, territory, textProvince, categories FROM ' . WE_SHOP_VAT_TABLE);
-	$allVats = array();
-	$countriesSortable = array();
-	$doWriteRelations = !$relations ? true : false;
-
-	while($DB_WE->next_record()){
-		$data = $DB_WE->getRecord();
-		$vat = new we_shop_vat($data['id'], $data['text'], $data['vat'], 0, $data['territory'], $data['textProvince']);
-
-		if(!isset($countriesSortable[$data['territory']])){
-			$countriesSortable[$data['territory']] = str_replace(array('Ä', 'Ö', 'Ü', 'ä', 'ö', 'ü'), array('Ae', 'Oe', 'Ue', 'ae', 'oe', 'ue'), $vat->textTerritory);
-			$allVats[$data['territory']] = array();
-			$allVats[$data['territory']]['selOptions'] = array(0 => ' ');
-		}
-		$allVats[$data['territory']]['textTerritory'] = $vat->textTerritory;
-		$allVats[$data['territory']]['selOptions'][$vat->id] = $vat->getNaturalizedText() . ': ' . $vat->vat . '%';
-
-		if($doWriteRelations){
-			$catArr = explode(',', $data['categories']);
-			foreach($catArr = explode(',', $data['categories']) as $cat){
-				if(!isset($relations[$cat])){
-					$relations[$cat] = array();
+			if($doWriteRelations){
+				foreach($catArr = explode(',', $vatObj->categories) as $cat){
+					if($cat){
+						if(!isset($relations[$cat])){
+							$relations[$cat] = array();
+						}
+						$relations[$cat][$vatObj->territory] = $vatObj->id;
+					}
 				}
-				$relations[$cat][$data['territory']] = $data['id'];
 			}
 		}
+		
 	}
 
+	$shopCategories = we_shop_category::getShopCatFieldsFromDir('', false, true, $shopCategoriesDir, true, true, true, '', 'Path');
 	$catsTable = new we_html_table(array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 4), (count($shopCategories) * 6), 5);
 	$catsDirTable = new we_html_table(array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 4), 7, 5);
 	if(is_array($shopCategories) && count($shopCategories) > 1){
@@ -164,8 +160,7 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 				$countriesTable = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), max((count($allVats) - 1), 1), 2);
 
 				$c = -1;
-				asort($countriesSortable);
-				foreach($countriesSortable as $k => $v){
+				foreach($vatGroups as $k => $v){
 					if(we_shop_category::getDefaultCountry() == $k){
 						$innerTable = $holderCountryTable;
 						$num = 0;
@@ -179,9 +174,9 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 
 					$value = isset($relations[$cat['ID']][$k]) && $relations[$cat['ID']][$k] ? $relations[$cat['ID']][$k] : 0;
 					$selAttribs = array('id' => 'weShopCatRels[' . $cat['ID'] . '][' . $k . ']');
-					$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $allVats[$k]['selOptions'], 1, $value, false, $selAttribs, 'value', 220);
+					$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, $selAttribs, 'value', 220);
 
-					$innerTable->setCol($num, 0, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 184, 'style' => ($isDefCountry ? 'font-weight: bold;' : 'padding-bottom: 8px;')), ($allVats[$k]['textTerritory'] ? : 'N.N.'));
+					$innerTable->setCol($num, 0, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 184, 'style' => ($isDefCountry ? 'font-weight: bold;' : 'padding-bottom: 8px;')), ($v['textTerritory'] ? : 'N.N.'));
 					$innerTable->setCol($num, 1, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 220), $sel);
 				}
 			}

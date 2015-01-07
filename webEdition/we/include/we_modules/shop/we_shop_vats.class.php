@@ -25,13 +25,16 @@
 class we_shop_vats{
 	function getAllShopVATs(){
 		if(!isset($GLOBALS['weShopVats']['getAllVats'])){
-			$GLOBALS['DB_WE']->query('SELECT id,text,vat,standard,territory,textProvince, categories FROM ' . WE_SHOP_VAT_TABLE . ' ORDER BY territory');
+			$GLOBALS['DB_WE']->query('SELECT id,text,vat,standard,territory,textProvince, categories FROM ' . WE_SHOP_VAT_TABLE . ' ORDER BY vat');
 			$GLOBALS['weShopVats']['getAllVats'] = array();
 
 			while($GLOBALS['DB_WE']->next_record()){
 				$GLOBALS['weShopVats']['getAllVats'][$GLOBALS['DB_WE']->f('id')] = new we_shop_vat($GLOBALS['DB_WE']->f('id'), $GLOBALS['DB_WE']->f('text'), $GLOBALS['DB_WE']->f('vat'), ($GLOBALS['DB_WE']->f('standard') ? 1 : 0), $GLOBALS['DB_WE']->f('territory'), $GLOBALS['DB_WE']->f('textProvince'), $GLOBALS['DB_WE']->f('categories'));
 			}
 		}
+		usort($GLOBALS['weShopVats']['getAllVats'], function($a, $b){
+			return ($ret = strcmp($a->textTerritorySortable, $b->textTerritorySortable)) !== 0 ? $ret : ($a->vat > $b->vat ? 1 : -1);
+		});
 
 		return $GLOBALS['weShopVats']['getAllVats'];
 	}
