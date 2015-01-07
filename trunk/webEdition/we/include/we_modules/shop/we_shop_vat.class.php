@@ -35,6 +35,8 @@ class we_shop_vat{
 	public $province;
 	public $textProvince;
 	public $categories;
+	public $textTerritory;
+	public $textTerritorySortable;
 
 	private static $predefinedNames = array(
 		'exempt',
@@ -57,6 +59,8 @@ class we_shop_vat{
 		$this->country = substr($territory, 0, 2);
 		$this->province = (strlen($territory) > 2 ? substr($territory, 3) : '');
 		$this->textTerritory = $textProvince ?: Zend_Locale::getTranslation($this->country, 'territory', array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+		$this->textTerritorySortable = str_replace(array('Ä', 'Ö', 'Ü', 'ä', 'ö', 'ü'), array('Ae', 'Oe', 'Ue', 'ae', 'oe', 'ue'), $this->textTerritory);
+
 	}
 
 	public function getNaturalizedText(){
