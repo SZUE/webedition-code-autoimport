@@ -98,17 +98,18 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 	//Categories/VATs-Table
 	$DB_WE->query('SELECT id, text, vat, territory, textProvince, categories FROM ' . WE_SHOP_VAT_TABLE);
 	$allVats = array();
+	$countriesSortable = array();
 	$doWriteRelations = !$relations ? true : false;
 
 	while($DB_WE->next_record()){
 		$data = $DB_WE->getRecord();
-
-		if(!isset($allVats[$data['territory']])){
-			$allVats[$data['territory']] = array();
-			$allVats[$data['territory']]['selOptions'][0] = ' ';
-		}
-
 		$vat = new we_shop_vat($data['id'], $data['text'], $data['vat'], 0, $data['territory'], $data['textProvince']);
+
+		if(!isset($countriesSortable[$data['territory']])){
+			$countriesSortable[$data['territory']] = str_replace(array('Ä', 'Ö', 'Ü', 'ä', 'ö', 'ü'), array('Ae', 'Oe', 'Ue', 'ae', 'oe', 'ue'), $vat->textTerritory);
+			$allVats[$data['territory']] = array();
+			$allVats[$data['territory']]['selOptions'] = array(0 => ' ');
+		}
 		$allVats[$data['territory']]['textTerritory'] = $vat->textTerritory;
 		$allVats[$data['territory']]['selOptions'][$vat->id] = $vat->getNaturalizedText() . ': ' . $vat->vat . '%';
 
@@ -159,18 +160,18 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 			if(!count($allVats)){
 				$table->setCol($i, 3, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 140), g_l('modules_shop', '[shopcats][warning_noVatsDefined]'));
 			} else {
-				$defCountry = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 2);
-				$countries = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), max((count($allVats) - 1), 1), 2);
+				$holderCountryTable = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 2);
+				$countriesTable = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), max((count($allVats) - 1), 1), 2);
 
 				$c = -1;
-				ksort($allVats);
-				foreach($allVats as $k => $v){
+				asort($countriesSortable);
+				foreach($countriesSortable as $k => $v){
 					if(we_shop_category::getDefaultCountry() == $k){
-						$innerTable = $defCountry;
+						$innerTable = $holderCountryTable;
 						$num = 0;
 						$isDefCountry = true;
 					} else {
-						$innerTable = $countries;
+						$innerTable = $countriesTable;
 						$c++;
 						$num = $c;
 						$isDefCountry = false;
@@ -178,16 +179,16 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 
 					$value = isset($relations[$cat['ID']][$k]) && $relations[$cat['ID']][$k] ? $relations[$cat['ID']][$k] : 0;
 					$selAttribs = array('id' => 'weShopCatRels[' . $cat['ID'] . '][' . $k . ']');
-					$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, $selAttribs, 'value', 220);
+					$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $allVats[$k]['selOptions'], 1, $value, false, $selAttribs, 'value', 220);
 
-					$innerTable->setCol($num, 0, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 184, 'style' => ($isDefCountry ? 'font-weight: normal;' : 'padding-bottom: 8px;')), ($v['textTerritory'] ? : 'N.N.'));
+					$innerTable->setCol($num, 0, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 184, 'style' => ($isDefCountry ? 'font-weight: bold;' : 'padding-bottom: 8px;')), ($allVats[$k]['textTerritory'] ? : 'N.N.'));
 					$innerTable->setCol($num, 1, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 220), $sel);
 				}
 			}
 			$table->setRow($i, array('id' => 'defCountryRow_' . $cat['ID'], 'style' => ($cat['IsInactive'] == 0 ? '' : 'display: none;')));
-			$table->setCol($i++, 3, array('class' => 'defaultfont', 'colspan' => 2, 'nowrap' => 'nowrap', 'width' => 424), $defCountry->getHtml());
+			$table->setCol($i++, 3, array('class' => 'defaultfont', 'colspan' => 2, 'nowrap' => 'nowrap', 'width' => 424), $holderCountryTable->getHtml());
 			$table->setRow($i, array('id' => 'countriesRow_' . $cat['ID'], 'style' => ($cat['IsInactive'] == 1 || $cat['DestPrinciple'] == 0 ? 'display: none;' : '')));
-			$table->setCol($i++, 3, array('class' => 'defaultfont', 'colspan' => 2, 'nowrap' => 'nowrap', 'width' => 424), $countries->getHtml());
+			$table->setCol($i++, 3, array('class' => 'defaultfont', 'colspan' => 2, 'nowrap' => 'nowrap', 'width' => 424), $countriesTable->getHtml());
 
 			$table->setCol($i, 1, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 20), '');
 			$table->setCol($i++, 2, array('style' => 'padding-bottom: 20px', 'class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 140), '');
@@ -211,7 +212,9 @@ $jsFunction = '
 
 	function addListeners(){
 		for(var i = 1; i < document.we_form.elements.length; i++){
-			document.we_form.elements[i].onchange = function(){hot = 1};
+			document.we_form.elements[i].addEventListener("change",function(){
+				hot = 1;
+			});
 		}
 	}
 
