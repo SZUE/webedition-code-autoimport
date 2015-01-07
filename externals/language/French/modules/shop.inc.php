@@ -99,6 +99,7 @@ $l_modules_shop=array(
 		'vatRate'=>'Taux de TVA',
 	),
 	'einfueg'=>'Ajouter un article',
+	'exit_question'=>'There are unsaved changes that will be discarded. Are you sure?',
 	'fieldCity'=>'Ville',
 	'fieldEmail'=>'E-Mail',
 	'fieldForname'=>'Prénom',

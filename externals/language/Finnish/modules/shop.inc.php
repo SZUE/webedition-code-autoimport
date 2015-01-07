@@ -99,6 +99,7 @@ $l_modules_shop=array(
 		'vatRate'=>'ALV arvo',
 	),
 	'einfueg'=>'Lisää tuotenimike',
+	'exit_question'=>'There are unsaved changes that will be discarded. Are you sure?',
 	'fieldCity'=>'Paikkakunta',
 	'fieldEmail'=>'Sähköposti',
 	'fieldForname'=>'Etunimi',

@@ -99,6 +99,7 @@ $l_modules_shop=array(
 		'vatRate'=>'Ставка НДС',
 	),
 	'einfueg'=>'Добавить товар',
+	'exit_question'=>'There are unsaved changes that will be discarded. Are you sure?',
 	'fieldCity'=>'Город',
 	'fieldEmail'=>'email',
 	'fieldForname'=>'Имя',

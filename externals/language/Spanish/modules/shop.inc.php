@@ -99,6 +99,7 @@ $l_modules_shop=array(
 		'vatRate'=>'Tasa de IVA',
 	),
 	'einfueg'=>'Agregar un Artículo',
+	'exit_question'=>'There are unsaved changes that will be discarded. Are you sure?',
 	'fieldCity'=>'Ciudad',
 	'fieldEmail'=>'E-Mail',
 	'fieldForname'=>'Nombre',

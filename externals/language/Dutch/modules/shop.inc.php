@@ -99,6 +99,7 @@ $l_modules_shop=array(
 		'vatRate'=>'BTW waarde',
 	),
 	'einfueg'=>'Voeg een artikel toe',
+	'exit_question'=>'There are unsaved changes that will be discarded. Are you sure?',
 	'fieldCity'=>'Stad',
 	'fieldEmail'=>'email',
 	'fieldForname'=>'Voornaam',

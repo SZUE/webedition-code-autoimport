@@ -99,6 +99,7 @@ $l_modules_shop=array(
 		'vatRate'=>'Mehrwertsteuersatz',
 	),
 	'einfueg'=>'Artikel hinzufügen',
+	'exit_question'=>'Sie haben Änderungen vorgenommen. Möchten Sie diese speichern?',
 	'fieldCity'=>'Ort',
 	'fieldEmail'=>'E-Mail',
 	'fieldForname'=>'Vorname',
