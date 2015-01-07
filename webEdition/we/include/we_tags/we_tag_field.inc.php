@@ -327,7 +327,7 @@ function we_tag_field($attribs){
 				$id = $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME);
 				$wedocCategory = $GLOBALS['lv']->f('wedoc_Category');
 
-				$out = we_shop_category::getShopCatFieldByID($id, $wedocCategory, $field, $showpath, $rootdir);
+				$out = we_shop_category::getShopCatFieldByID($id, $wedocCategory, $field, $showpath, $rootdir, true);
 			}
 			break;
 		case 'href' ://#6329: fixed for lv type=document. check later for other types! #6421: field type=href in we:block

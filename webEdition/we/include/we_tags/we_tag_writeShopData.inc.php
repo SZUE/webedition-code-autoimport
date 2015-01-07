@@ -88,20 +88,21 @@ function we_tag_writeShopData($attribs){
 
 		foreach($shoppingItems as $shoppingItem){
 			$preis = ((isset($shoppingItem['serial']['we_' . $pricename])) ? $shoppingItem['serial']['we_' . $pricename] : $shoppingItem['serial'][$pricename]);
-
 			$preis = we_base_util::std_numberformat($preis);
-
 			$totPrice += $preis * $shoppingItem['quantity'];
 
 			// foreach article we must determine the correct tax-rate
 			if(we_shop_category::isCategoryMode()){
-				$wedocCategory = $shoppingItem['serial']['we_wedoc_Category'];
-				$billingCountry = we_shop_category::getCountryFromCustomer(false, $_SESSION['webuser']);
-				$shopVat = we_shop_category::getShopVatByIdAndCountry((isset($shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] ? $shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0), $wedocCategory, $billingCountry, true);
-			
+				$wedocCategory = ((isset($shoppingItem['serial']['we_wedoc_Category'])) ? $shoppingItem['serial']['we_wedoc_Category'] : $shoppingItem['serial']['wedoc_Category']);
+				$billingCountry = we_shop_category::getCountryFromCustomer(false, $_SESSION['webuser']);t_e("write here", $shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME], $wedocCategory, $billingCountry, $shoppingItem['serial']);
+				$catId = isset($shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] ? $shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
+
+				$shopVat = we_shop_category::getShopVatByIdAndCountry($catId, $wedocCategory, $billingCountry, true);
+				$shopCategory = we_shop_category::getShopCatFieldByID($catId, $wedocCategory, 'ID');
 			} else {
 				$vatId = isset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 				$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);
+				$shopCategory = 0;
 			}
 
 			if($shopVat !== false){ // has selected or standard shop rate
@@ -111,6 +112,7 @@ function we_tag_writeShopData($attribs){
 					unset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]);
 				}
 			}
+			$shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] = $shopCategory ? : 0;
 
 			if(!$DB_WE->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
 							we_database_base::arraySetter((array(
