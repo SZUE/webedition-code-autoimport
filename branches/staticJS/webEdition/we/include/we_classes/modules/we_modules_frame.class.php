@@ -68,16 +68,7 @@ class we_modules_frame{
 	}
 
 	function getHTMLDocument($body, $extraHead = ''){
-		/*
-		  return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		  we_html_element::htmlHead(we_html_tools::getHtmlInnerHead($this->module) .
-		  STYLESHEET . $extraHead) . $body
-		  );
-		 *
-		 */
-		//this is not nice, but it works for the moment...
 		return $extraHead .
-			STYLESHEET .
 			we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 			we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
 			we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
@@ -210,8 +201,9 @@ body{
 a,a:visited,a:active{
 color:#000000;
 }
-</style>
-' . we_html_tools::getJSErrorHandler() . we_html_element::jsElement('
+</style>' .
+				we_html_element::cssLink(CSS_DIR . 'tree.css') .
+				we_html_tools::getJSErrorHandler() . we_html_element::jsElement('
 	clickCount=0;
 	wasdblclick=0;
 	tout=null;' . $this->getDoClick() . '

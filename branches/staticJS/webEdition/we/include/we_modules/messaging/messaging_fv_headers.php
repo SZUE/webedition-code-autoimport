@@ -33,7 +33,7 @@ echo we_html_tools::getHtmlTop() .
 
 		top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $transaction . '";
 	}') .
- STYLESHEET ;
+ STYLESHEET;
 $si = we_base_request::_(we_base_request::STRING, "si");
 $so = we_base_request::_(we_base_request::STRING, 'so');
 ?>

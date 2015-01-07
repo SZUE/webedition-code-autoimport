@@ -304,9 +304,7 @@ class we_thumbnail{
 		if(!$this->getImageData($getBinary)){
 			return false;
 		}
-		$_foo = getHash('SELECT * FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db);
-		$_foo = $_foo ? : array(
-			'ID' => 0,
+		$_foo = getHash('SELECT Width,Height,Ratio,Maxsize,Interlace,Fitinside,Format,Name,Date FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db)? : array(
 			'Width' => 0,
 			'Height' => 0,
 			'Ratio' => 0,
@@ -316,7 +314,6 @@ class we_thumbnail{
 			'Format' => '',
 			'Name' => '',
 			'Date' => '',
-			'Quality' => ''
 		);
 
 		$this->init($thumbID, $_foo['Width'], $_foo['Height'], $_foo['Ratio'], $_foo['Maxsize'], $_foo['Interlace'], $_foo['Fitinside'], $_foo['Format'], $_foo['Name'], $imageID, $this->imageFileName, $this->imagePath, $this->imageExtension, $this->imageWidth, $this->imageHeight, $this->imageData, $_foo['Date']);
@@ -416,10 +413,9 @@ class we_thumbnail{
 		if(isset($arr) && is_array($arr) && (count($arr) >= 4) && $arr[0] && $arr[1]){
 			return $arr;
 		}
-		if(we_base_imageEdit::gd_version()){
-			return we_base_imageEdit::getimagesize($filename);
-		}
-		return $arr;
+		return (we_base_imageEdit::gd_version() ?
+				we_base_imageEdit::getimagesize($filename) :
+				$arr);
 	}
 
 	/**
@@ -480,12 +476,16 @@ class we_thumbnail{
 	 * @private
 	 */
 	private function setOutputPath(){
-		if(we_base_imageEdit::gd_version() > 0 &&
+		if(
+			( (!$this->useOriginalSize()) || (!$this->hasOriginalType() ) ) &&
+			we_base_imageEdit::gd_version() > 0 &&
 			we_base_imageEdit::is_imagetype_supported($this->outputFormat) &&
-			we_base_imageEdit::is_imagetype_read_supported(isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ?
-					we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : "") &&
-			( (!$this->useOriginalSize()) || (!$this->hasOriginalType() ) )){
-			$this->outputPath = self::getThumbDirectory() . "/" . $this->imageID . "_" . $this->thumbID . "_" . $this->imageFileName . "." . $this->outputFormat;
+			we_base_imageEdit::is_imagetype_read_supported(
+				isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ?
+					we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : ''
+			)
+		){
+			$this->outputPath = self::getThumbDirectory() . '/' . $this->imageID . '_' . $this->thumbID . '_' . $this->imageFileName . '.' . $this->outputFormat;
 		} else {
 			$this->outputPath = $this->imagePath;
 		}
@@ -544,11 +544,9 @@ class we_thumbnail{
 	 * @private
 	 */
 	private function useOriginalSize(){
-		$outvar = ($this->thumbMaxsize == false) && ($this->thumbFitinside == false) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth == 0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight == 0);
-		if($this->generateSmaller){
-			return false;
-		}
-		return $outvar;
+		return ($this->generateSmaller ?
+				false :
+				($this->thumbMaxsize == false) && ($this->thumbFitinside == false) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth == 0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight == 0));
 	}
 
 	/**
@@ -578,7 +576,7 @@ class we_thumbnail{
 			}
 		}
 
-		$imgdat = getHash('SELECT ID,Filename,Extension,Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->imageID), $this->db);
+		$imgdat = getHash('SELECT ID,Filename,Extension,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->imageID), $this->db);
 		if(!$imgdat){
 			return false;
 		}

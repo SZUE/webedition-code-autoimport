@@ -28,7 +28,7 @@
 
 function drawEintraege() {
 	fr = top.content.tree.window.document.body;//IMI: set tree indstead of left
-	fr.innerHTML = '<div id="treetable"><nobr>' +
+	fr.innerHTML = '<div id="treetable" class="tree"><nobr>' +
 					zeichne(top.content.startloc, "") +
 					"</nobr></div>" +
 					"</body></html>";

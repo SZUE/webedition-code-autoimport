@@ -1584,9 +1584,14 @@ class we_document extends we_root{
 		$DB_WE = new DB_WE();
 		$regs = array();
 		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
+			$allIds = array();
 			foreach($regs as $reg){
-				$foo = getHash('SELECT Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]) . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published>0'), $DB_WE);
-
+				$allIds[] = intval($reg[2]);
+			}
+			$DB_WE->query('SELECT ID,Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $allIds) . ')' . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published>0'));
+			$allDocs = $DB_WE->getAllFirst(true, MYSQL_ASSOC);
+			foreach($regs as $reg){
+				$foo = isset($allDocs[$reg[2]]) ? $allDocs[$reg[2]] : '';
 				if($foo && $foo['Path']){
 					$path_parts = pathinfo($foo['Path']);
 					if(show_SeoLinks() && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
@@ -1606,8 +1611,7 @@ class we_document extends we_root{
 		}
 		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '(\d+),(\d+)"/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$imgID = $reg[1];
-				$thumbID = $reg[2];
+				list(,$imgID,$thumbID) = $reg;
 				$thumbObj = new we_thumbnail();
 				if($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)){
 					$text = str_replace('src="' . we_base_link::TYPE_THUMB_PREFIX . $imgID . ',' . $thumbID . '"', 'src="' . ($doBaseReplace ? BASE_IMG : '') . $thumbObj->getOutputPath(false, true) . '"', $text);

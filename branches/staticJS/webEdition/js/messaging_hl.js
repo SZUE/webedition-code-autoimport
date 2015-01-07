@@ -50,34 +50,32 @@ function selectEntryHandler(id) {
 }
 
 function doSelectMessage(id, mode, doc) {
-	var i = 0;
-	var highlight_color = sel_color;
-
-	if (id == -1)
+	if (id == -1) {
 		return;
+	}
+
+	var highlight_color = sel_color;
 
 	if (mode == "fv") {
 		showContent(id);
 		//IE Mac 5.01 doesnt support Array.push()
 		parent.entries_selected = parent.entries_selected.concat(new Array(String(id)));
 		parent.last_entry_selected = id;
+		highlight_TR(id, highlight_color, '');
 	} else {
 		entries_selected = entries_selected.concat(new Array(String(id)));
+		highlight_Elem(id, highlight_color, doc);
 	}
 
-
-	if (mode == "fv")
-		highlight_TR(id, highlight_color, '');
-	else
-		highlight_Elem(id, highlight_color, doc);
 }
 
 function highlight_Elem(id, color, fr) {
 	if (fr == '') {
 		document.getElementById(id).style.color = color;
 	} else {
-		if (fr.document.getElementById(id))
+		if (fr.document.getElementById(id)){
 			fr.document.getElementById(id).style.color = color;
+		}
 	}
 }
 
@@ -96,17 +94,12 @@ function unSelectMessage(id, show_cont, doc) {
 
 	if (show_cont == 'fv') {
 		parent.entries_selected = array_rm_elem(parent.entries_selected, id, -1);
-	} else {
-		entries_selected = array_rm_elem(entries_selected, id, -1);
-	}
-
-	if (show_cont == 'fv') {
 		highlight_TR(id, default_color);
 		top.editor.edbody.msg_mfv.messaging_message_view.location = "<?php echo HTML_DIR?>gray.html";
 	} else {
+		entries_selected = array_rm_elem(entries_selected, id, -1);
 		highlight_Elem(id, default_color, messaging_usel_main);
 	}
-
 }
 
 //Highlighting-Stuff end

@@ -45,7 +45,6 @@ class we_users_frames extends we_modules_frame{
 	}';
 	}
 
-//FIXME this is never called!
 	function getJSTreeCode(){ //TODO: move to new class weUsersTree
 		$jsInit = '
 var table="' . USER_TABLE . '";
@@ -91,8 +90,7 @@ function loadData() {
 }
 ';
 
-		return we_html_element::cssLink(CSS_DIR . 'tree.css') .
-			we_html_element::jsElement($jsInit) .
+		return we_html_element::jsElement($jsInit) .
 			we_html_element::jsScript(JS_DIR . 'users_tree.js') .
 			we_html_element::jsElement($jsCode);
 	}

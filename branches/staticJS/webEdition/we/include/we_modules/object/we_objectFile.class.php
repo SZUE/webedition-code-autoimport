@@ -3123,7 +3123,8 @@ class we_objectFile extends we_document{
 				}
 			}
 			return $path . '?we_objectID=' . intval($id) . str_replace('?', '&amp;', $pidstr);
-		} elseif($foo['Workspaces']){
+		}
+		if($foo['Workspaces']){
 			$path = self::getNextDynDoc('', $pid, $foo['Workspaces'], '', $DB_WE);
 			/* $fooArr = makeArrayFromCSV($foo['Workspaces']);
 			  $path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape(id_to_path($fooArr[0], FILE_TABLE, $DB_WE)) . '%" LIMIT 1', '', $DB_WE); */

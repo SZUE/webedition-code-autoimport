@@ -44,9 +44,9 @@ var folder = 0;
 
 function drawEintraege() {
 	fr = top.content.tree.window.document.body;//IMI: set tree indstead of left
-	fr.innerHTML = '<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td class="tree"><nobr>' +
+	fr.innerHTML = '<div id="treetable" class="tree"><nobr>' +
 					zeichne(top.content.startloc, "") +
-					"</nobr></td></tr></table>" +
+					"</nobr></div>" +
 					"</body></html>";
 }
 
