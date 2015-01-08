@@ -51,7 +51,7 @@ function we_cmd() {
 	if(we_base_request::_(we_base_request::STRING, 'tool') === 'navigation'){
 		$_REQUEST['mod'] = $mod = 'navigation';
 	}
-	$cmd1 = we_base_request::_(we_base_request::RAW, 'we_cmd', false, 1);
+	$cmd1 = we_base_request::_(we_base_request::INT, 'we_cmd', false, 1);//to be used only for IDs or integer constants!
 	$sid = we_base_request::_(we_base_request::RAW, 'sid');
 	$bid = $mod === 'shop' && $cmd1 !== false ? $cmd1 : we_base_request::_(we_base_request::RAW, 'bid');
 
