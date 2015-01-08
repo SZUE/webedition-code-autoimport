@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_vats{
-	function getAllShopVATs(){
+	public static function getAllShopVATs(){
 		if(!isset($GLOBALS['weShopVats']['getAllVats'])){
 			$GLOBALS['DB_WE']->query('SELECT id,text,vat,standard,territory,textProvince, categories FROM ' . WE_SHOP_VAT_TABLE . ' ORDER BY vat');
 			$GLOBALS['weShopVats']['getAllVats'] = array();
@@ -39,7 +39,7 @@ class we_shop_vats{
 		return $GLOBALS['weShopVats']['getAllVats'];
 	}
 
-	function getShopVATById($id){
+	public static function getShopVATById($id){
 		if(!isset($GLOBALS['weShopVats']['getShopVATById'][$id])){
 			$GLOBALS['weShopVats']['getShopVATById'][$id] = we_shop_vat::getVatById($id);
 		}
