@@ -379,7 +379,13 @@ class we_shop_frames extends we_modules_frame{
 
 	function getHTMLFrameset(){
 		$extraHead = $this->getJSTreeCode();
-		$extraUrlParams = ($bid = we_base_request::_(we_base_request::INT, 'bid')) ? '&bid=' . $bid : '&top=1&home=1';
+
+		if(($bid = we_base_request::_(we_base_request::INT, 'bid')) === -1){
+			$this->db->query("SELECT IntOrderID FROM " . SHOP_TABLE . " ORDER BY IntID DESC");
+			$bid = $this->db->next_record() ? $this->db->f("IntOrderID") : 0;
+		}
+
+		$extraUrlParams = $bid > 0 ? '&bid=' . $bid : '&top=1&home=1';
 
 		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
 	}
