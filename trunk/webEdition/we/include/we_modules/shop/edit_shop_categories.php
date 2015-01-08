@@ -136,8 +136,8 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 			}
 
 			$j = 0;
-			$table->setCol($i, 1, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 20), $cat['ID'] . ': ');
-			$table->setCol($i, 2, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap', 'width' => 140), $cat['Category']);
+			$table->setCol($i, 1, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 140), '<abbr title="ShopCatID: '.$cat['ID'].'">'.$cat['Category'].'</abbr>');
+			$table->setCol($i, 2, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 20));
 			$table->setCol($i++, 3, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'colspan' => 2, 'nowrap' => 'nowrap', 'width' => 174), $cat['Path']);
 			if($cat['ID'] != $shopCategoriesDir){
 				$table->setCol($i, 3, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 174), g_l('modules_shop', '[shopcats][active_shopCat]'));
