@@ -87,7 +87,7 @@ $numberformat = $feldnamen[2];
 $classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
 $defaultVat = ($feldnamen[1] ? : 0);
 
-$amountCustomers = $amountOrders = $amountArticles = 0;
+$amountCustomers = $amountOrders = $amountArticles = $amountCanceledOrders = $canceled = 0;
 
 if(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 	$queryShop = ' FROM ' . SHOP_TABLE . '	WHERE ' . $queryShopDateCondtion;
