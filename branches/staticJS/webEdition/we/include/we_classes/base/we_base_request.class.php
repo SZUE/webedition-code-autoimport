@@ -278,9 +278,11 @@ class we_base_request{
 					}
 					if(is_string($var)){
 						switch($var){
+							case 'off':
 							case 'false':
 								$cmp = 0;
 								break 2;
+							case 'on':
 							case 'true':
 								$cmp = 1;
 								break 2;

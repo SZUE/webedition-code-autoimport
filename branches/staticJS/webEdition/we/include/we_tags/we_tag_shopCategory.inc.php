@@ -31,19 +31,6 @@ function we_tag_shopCategory($attribs){
 	$field = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);
 	$dosave = weTag_getAttribute('dosave', $attribs, true, we_base_request::BOOL);
 
-	$fieldMap = array(
-		'id' => 'ID',
-		'category' => 'Category',
-		'path' => 'Path',
-		'title' => 'Title',
-		'description' => 'Description',
-		'is_destinationprinciple' => 'DestPrinciple',
-		'is_from doc_object' => 'is_from doc_object',
-		'is_fallback_to_standard' => 'is_fallback_to_standard',
-		'is_fallback_to_active' => 'is_fallback_to_active'
-	);
-	$field = isset($fieldMap[$field]) ? $fieldMap[$field] : 'ID';
-
 	$ret = '';
 	if($GLOBALS['we_editmode']){
 		if(!$id){
@@ -63,7 +50,7 @@ function we_tag_shopCategory($attribs){
 	}
 
 	$shopCatId = $GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME) ? : 0;
-	$ret .= we_shop_category::getShopCatFieldByID($shopCatId, $GLOBALS['we_doc']->Category, $field, $showpath, $rootdir, true, !we_shop_category::USE_IS_ACTIVE);
+	$ret .= we_shop_category::getShopCatFieldByID($shopCatId, $GLOBALS['we_doc']->Category, $field, $showpath, $rootdir, true);
 
 	return $ret;
 }

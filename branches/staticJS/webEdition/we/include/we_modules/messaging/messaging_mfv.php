@@ -33,4 +33,5 @@ echo we_html_tools::getHtmlTop('', '', 'frameset') .
 </frameset>
 <body>
 </body>
+
 </html>

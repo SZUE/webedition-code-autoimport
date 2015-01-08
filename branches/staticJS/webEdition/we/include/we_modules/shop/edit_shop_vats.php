@@ -28,6 +28,8 @@ we_html_tools::protect($protect);
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
+$saveSuccess = false;
+$onsaveClose = we_base_request::_(we_base_request::BOOL, 'onsaveclose', false);
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'saveVat':
 		$province = we_base_request::_(we_base_request::STRING, 'weShopVatProvince');
@@ -38,6 +40,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		if(($newId = we_shop_vats::saveWeShopVAT($weShopVat))){
 			$weShopVat->id = $newId;
 			unset($newId);
+			$saveSuccess = true;
 			$jsMessage = g_l('modules_shop', '[vat][save_success]');
 			$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
 		} else {
@@ -64,8 +67,17 @@ if(!isset($weShopVat)){
 }
 $jsFunction = '
 var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
+var hot = 0;
 
 ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
+
+function addListeners(){
+	for(var i = 1; i < document.we_form.elements.length; i++){
+		document.we_form.elements[i].addEventListener("change",function(){
+			hot = 1;
+		})
+	}
+}
 
 function doKeyDown(e) {
 	var key = ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'e.keyCode;' : 'event.keyCode;') . '
@@ -120,11 +132,20 @@ function we_cmd(){
 
 	switch (arguments[0]) {
 		case "save":
+			document.we_form.onsaveclose.value = 1;
+			we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
+			break;
+
+		case "save_notclose":
 			we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
 			break;
 
 		case "close":
-			window.close();
+			if(hot){
+				new jsWindow("' . WE_SHOP_MODULE_DIR . 'edit_shop_exitQuestion.php","we_exit_doc_question",-1,-1,380,130,true,false,true);
+			} else {
+				window.close();
+			}
 			break;
 
 		case "edit":
@@ -237,6 +258,7 @@ $selPredefinedNames = we_html_tools::htmlSelect(
 $formVat = '
 <form name="we_form" method="post">
 <input type="hidden" name="weShopVatId" id="weShopVatId" value="' . $weShopVat->id . '" />
+<input type="hidden" name="onsaveclose" value="0" />
 <input type="hidden" name="we_cmd[0]" value="saveVat" />
 <table class="defaultfont" id="editShopVatForm" style="display:none;">
 <tr>
@@ -277,7 +299,7 @@ $formVat = '
 </tr>
 <tr>
 	<td width="100">&nbsp;</td>
-	<td>' . we_html_button::create_button('save', 'javascript:we_cmd(\'save\');') . '</td>
+	<td>' . we_html_button::create_button('save', 'javascript:we_cmd(\'save_notclose\');') . '</td>
 </tr>
 </table>
 </form>';
@@ -297,12 +319,12 @@ $parts = array(
 	)
 );
 
-echo we_html_element::jsElement(
+echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement(
 	$vatJavaScript .
 	$jsFunction .
-	(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')) . "
+	(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) . ($saveSuccess && $onsaveClose ? 'window.close()' : '') : '')) . "
 	</head>
-<body class=\"weDialogBody\" onload='window.focus();'>" .
+<body class=\"weDialogBody\" onload='window.focus();addListeners();'>" .
  we_html_multiIconBox::getHTML(
 	'weShopVates', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
 		'', '', we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')

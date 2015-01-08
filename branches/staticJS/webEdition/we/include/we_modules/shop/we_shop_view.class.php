@@ -1111,11 +1111,12 @@ function submitForm() {
 					$standardVat = we_shop_vats::getStandardShopVat();
 
 					if(we_shop_category::isCategoryMode()){
+						$wedocCategory = ((isset($serialDoc['we_wedoc_Category'])) ? $serialDoc['we_wedoc_Category'] : $serialDoc['wedoc_Category']);
 						$stateField = we_shop_vatRule::getStateField();
 						$billingCountry = isset($orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField]) && $orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField] ?
 								$orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField] : we_shop_category::getDefaultCountry();
 
-						$shopVat = we_shop_category::getShopVatByIdAndCountry((isset($serialDoc[WE_SHOP_CATEGORY_FIELD_NAME]) && $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME] ? $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME] : 0), $serialDoc['wedoc_Category'], $billingCountry);
+						$shopVat = we_shop_category::getShopVatByIdAndCountry((isset($serialDoc[WE_SHOP_CATEGORY_FIELD_NAME]) && $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME] ? $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME] : 0), $wedocCategory, $billingCountry);
 					} elseif(isset($serialDoc[WE_SHOP_VAT_FIELD_NAME])){
 						$shopVat = we_shop_vats::getShopVATById($serialDoc[WE_SHOP_VAT_FIELD_NAME]);
 					}
