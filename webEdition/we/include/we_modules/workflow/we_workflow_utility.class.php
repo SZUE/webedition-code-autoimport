@@ -90,12 +90,13 @@ abstract class we_workflow_utility{
 	 */
 	public static function removeDocFromWorkflow($docID, $table, $userID, $desc){
 		$desc = nl2br($desc);
-		$doc = self::getWorkflowDocument($docID, $table);
+		$db = new DB_WE();
+		$doc = self::getWorkflowDocument($docID, $table, we_workflow_document::STATUS_UNKNOWN, $db);
 		if(isset($doc->ID)){
-			if($doc->finishWorkflow(1, $userID)){
+			if($doc->finishWorkflow(1, $userID,$db)){
 				$doc->save();
 				//insert into document history
-				$doc->Log->logDocumentEvent($doc->ID, $userID, we_workflow_log::TYPE_DOC_REMOVED, $desc);
+				$doc->Log->logDocumentEvent($doc->ID, $userID, we_workflow_log::TYPE_DOC_REMOVED, $desc,$db);
 				return true;
 			}
 		}
@@ -107,9 +108,9 @@ abstract class we_workflow_utility{
 	  If workflow documnet is not defined for that document false
 	  will be returned
 	 */
-	private static function getWorkflowDocument($docID, $table, $status = we_workflow_document::STATUS_UNKNOWN){
+	private static function getWorkflowDocument($docID, $table, $status = we_workflow_document::STATUS_UNKNOWN, we_database_base $db = null){
 		$type = self::getTypeForTable($table);
-		return we_workflow_document::find($docID, $type, $status);
+		return we_workflow_document::find($docID, $type, $status, $db);
 	}
 
 	/**
@@ -163,8 +164,8 @@ abstract class we_workflow_utility{
 		return we_workflow_workflow::getAllWorkflowsInfo($status, $type, $all);
 	}
 
-	static function inWorkflow($docID, $table){
-		$doc = self::getWorkflowDocument($docID, $table);
+	static function inWorkflow($docID, $table, we_database_base $db = null){
+		$doc = self::getWorkflowDocument($docID, $table, we_workflow_document::STATUS_UNKNOWN, $db);
 		return (isset($doc->ID) && $doc->ID);
 	}
 

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_workflow_log{
-
 	const TYPE_APPROVE = 1;
 	const TYPE_APPROVE_FORCE = 2;
 	const TYPE_DECLINE = 3;
@@ -34,8 +33,8 @@ class we_workflow_log{
 	const TYPE_DOC_REMOVED = 8;
 	const NUMBER_LOGS = 8;
 
-	function logDocumentEvent($workflowDocID, $userID, $type, $description){
-		$db = new DB_WE();
+	function logDocumentEvent($workflowDocID, $userID, $type, $description, we_database_base $db = null){
+		$db = $db? : new DB_WE();
 		$db->query('INSERT INTO ' . WORKFLOW_LOG_TABLE . " (ID, RefID, userID, logDate, Type, Description) VALUES ('', " . intval($workflowDocID) . ", " . intval($userID) . ", UNIX_TIMESTAMP(), " . intval($type) . ", '" . $db->escape($description) . "');");
 	}
 

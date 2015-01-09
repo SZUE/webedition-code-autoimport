@@ -27,27 +27,33 @@ try {
 		if (errObj) {
 			console.debug(errObj);
 		}
-		postData = 'we_cmd[msg]=' + encodeURIComponent(msg);
-		postData += '&we_cmd[file]=' + encodeURIComponent(file);
-		postData += '&we_cmd[line]=' + encodeURIComponent(line);
-		if (col) {
-			postData += '&we_cmd[col]=' + encodeURIComponent(col);
+		try {//we don' want to raise errors inside
+			postData = 'we_cmd[msg]=' + encodeURIComponent(msg);
+			postData += '&we_cmd[file]=' + encodeURIComponent(file);
+			postData += '&we_cmd[line]=' + encodeURIComponent(line);
+			postData += '&we_cmd[url]=' + encodeURIComponent(this.location.pathname + this.location.search);
+			postData += '&we_cmd[search]=' + encodeURIComponent(line);
+			if (col) {
+				postData += '&we_cmd[col]=' + encodeURIComponent(col);
+			}
+			if (errObj) {
+				postData += '&we_cmd[errObj]=' + encodeURIComponent(errObj.stack);
+			}
+			lcaller = arguments.callee.caller;
+			while (lcaller) {
+				postData += '&we_cmd[]=' + encodeURIComponent(lcaller.name);
+				lcaller = lcaller.caller;
+			}
+			postData += '&we_cmd[App]=' + encodeURIComponent(navigator.appName);
+			postData += '&we_cmd[Ver]=' + encodeURIComponent(navigator.appVersion);
+			postData += '&we_cmd[UA]=' + encodeURIComponent(navigator.userAgent);
+			xmlhttp = new XMLHttpRequest();
+			xmlhttp.open('POST', '/webEdition/rpc/rpc.php?cmd=TriggerJSError&cns=error', true);
+			xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+			xmlhttp.send(postData);
+		} catch (e) {
+			console.debug(e);
 		}
-		if (errObj) {
-			postData += '&we_cmd[errObj]=' + encodeURIComponent(errObj.stack);
-		}
-		lcaller = arguments.callee.caller;
-		while (lcaller) {
-			postData += '&we_cmd[]=' + encodeURIComponent(lcaller.name);
-			lcaller = lcaller.caller;
-		}
-		postData += '&we_cmd[App]=' + encodeURIComponent(navigator.appName);
-		postData += '&we_cmd[Ver]=' + encodeURIComponent(navigator.appVersion);
-		postData += '&we_cmd[UA]=' + encodeURIComponent(navigator.userAgent);
-		xmlhttp = new XMLHttpRequest();
-		xmlhttp.open('POST', '/webEdition/rpc/rpc.php?cmd=TriggerJSError&cns=error', true);
-		xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		xmlhttp.send(postData);
 	}
 } catch (e) {
 	console.debug(e);
