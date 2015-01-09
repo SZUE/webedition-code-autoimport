@@ -20,7 +20,7 @@
  * @category   webEdition
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- */ 
+ */
 
 /**
  * This class deals with the frames for the liveUpdate
@@ -224,7 +224,7 @@ class liveUpdateFrames{
 			 * There are entries available, get them
 			 */
 			$this->Data['logEntries'] = array();
-			$GLOBALS['DB_WE']->query('SELECT DATE_FORMAT(datum, "' . str_replace(' ', '&nbsp;/&nbsp;)', g_l('date', '[format][mysql]')) . '") AS date, aktion, versionsnummer, error FROM ' . UPDATE_LOG_TABLE . ' ' . $condition . ' ORDER BY datum DESC LIMIT ' . $this->Data['start'] . ',' . abs($this->Data['amountPerPage']));
+			$GLOBALS['DB_WE']->query('SELECT DATE_FORMAT(datum, "' . str_replace(' ', '&nbsp;/&nbsp;', g_l('date', '[format][mysql]')) . '") AS date, aktion, versionsnummer, error FROM ' . UPDATE_LOG_TABLE . ' ' . $condition . ' ORDER BY datum DESC LIMIT ' . $this->Data['start'] . ',' . abs($this->Data['amountPerPage']));
 
 			while(($row = $GLOBALS['DB_WE']->next_record())){
 				$this->Data['logEntries'][] = array(
