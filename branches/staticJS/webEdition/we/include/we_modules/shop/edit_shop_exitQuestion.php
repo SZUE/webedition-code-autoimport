@@ -33,6 +33,6 @@ echo we_html_tools::getHtmlTop() .
 		STYLESHEET .
 '</head>
 <body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
-		we_html_tools::htmlYesNoCancelDialog(g_l('modules_shop', '[[exit_question]]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) . //GL
+		we_html_tools::htmlYesNoCancelDialog(g_l('modules_shop', '[exit_question]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) . //GL
 		'</body>
 </html>';
