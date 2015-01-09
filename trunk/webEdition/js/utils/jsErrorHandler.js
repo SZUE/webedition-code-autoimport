@@ -32,7 +32,6 @@ try {
 			postData += '&we_cmd[file]=' + encodeURIComponent(file);
 			postData += '&we_cmd[line]=' + encodeURIComponent(line);
 			postData += '&we_cmd[url]=' + encodeURIComponent(this.location.pathname + this.location.search);
-			postData += '&we_cmd[search]=' + encodeURIComponent(line);
 			if (col) {
 				postData += '&we_cmd[col]=' + encodeURIComponent(col);
 			}
