@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_workflow_document extends we_workflow_base{
-
 	const STATUS_UNKNOWN = 0;
 	const STATUS_FINISHED = 1;
 	const STATUS_CANCELED = 2;
@@ -43,7 +42,7 @@ class we_workflow_document extends we_workflow_base{
 	 * Default Constructor
 	 *
 	 */
-	function __construct($wfDocument = 0){
+	public function __construct($wfDocument = 0){
 		parent::__construct();
 		$this->table = WORKFLOW_DOC_TABLE;
 		$this->ClassName = __CLASS__;
@@ -166,7 +165,7 @@ class we_workflow_document extends we_workflow_base{
 		}
 	}
 
-	function finishWorkflow($force = 0, $uID = 0){
+	function finishWorkflow($force = 0, $uID = 0, we_database_base $db = null){
 		if($force){
 			$this->Status = self::STATUS_CANCELED;
 			foreach($this->steps as &$sv){
@@ -180,11 +179,11 @@ class we_workflow_document extends we_workflow_base{
 				}
 			}
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->ID, $uID, we_workflow_log::TYPE_DOC_FINISHED_FORCE, "");
+			$this->Log->logDocumentEvent($this->ID, $uID, we_workflow_log::TYPE_DOC_FINISHED_FORCE, "", $db);
 			return true;
 		}
 		$this->Status = self::STATUS_FINISHED;
-		$this->Log->logDocumentEvent($this->ID, $uID, we_workflow_log::TYPE_DOC_FINISHED, "");
+		$this->Log->logDocumentEvent($this->ID, $uID, we_workflow_log::TYPE_DOC_FINISHED, "", $db);
 
 		return true;
 	}
@@ -250,10 +249,10 @@ class we_workflow_document extends we_workflow_base{
 	 *    return false if no workflow
 	 */
 
-	function find($documentID, $type = '0,1', $status = self::STATUS_UNKNOWN){
-		$db = new DB_WE();
+	public static function find($documentID, $type = '0,1', $status = self::STATUS_UNKNOWN, we_database_base $db = null){
+		$db = $db? : new DB_WE();
 		$id = f('SELECT ' . WORKFLOW_DOC_TABLE . '.ID FROM ' . WORKFLOW_DOC_TABLE . ' LEFT JOIN ' . WORKFLOW_TABLE . ' ON ' . WORKFLOW_DOC_TABLE . '.workflowID=' . WORKFLOW_TABLE . '.ID' .
-			' WHERE ' . WORKFLOW_DOC_TABLE . '.documentID=' . intval($documentID) . " AND " . WORKFLOW_DOC_TABLE . ".Status IN (" . $db->escape($status) . ")" . ($type ? " AND " . WORKFLOW_TABLE . ".Type IN (" . $db->escape($type) . ")" : "") . " ORDER BY " . WORKFLOW_DOC_TABLE . ".ID DESC", '', $db);
+			' WHERE ' . WORKFLOW_DOC_TABLE . '.documentID=' . intval($documentID) . " AND " . WORKFLOW_DOC_TABLE . ".Status IN (" . $db->escape($status) . ")" . ($type ? " AND " . WORKFLOW_TABLE . ".Type IN (" . $db->escape($type) . ")" : "") . ' ORDER BY ' . WORKFLOW_DOC_TABLE . '.ID DESC', '', $db);
 		return ($id ? new self($id) : false);
 	}
 
@@ -261,12 +260,12 @@ class we_workflow_document extends we_workflow_base{
 	 * Create new workflow document
 	 *    if workflow for that document exists, function will return it
 	 */
-	function createNew($documentID, $type, $workflowID, $userID){
-		$newWfDoc = self::find($documentID, $type);
-
-		if(isset($newWfDoc->ID)){
+	public static function createNew($documentID, $type, $workflowID, $userID){
+		if(($newWfDoc = self::find($documentID, $type))){
 			return $newWfDoc;
 		}
+
+		//fixme: check the difference to new self($documentID)
 
 		$newWFDoc = new self();
 		$newWFDoc->documentID = $documentID;
