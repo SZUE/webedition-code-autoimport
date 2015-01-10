@@ -41,7 +41,7 @@ class we_workflow_documentTask extends we_workflow_base{
 	var $workflowTaskID = 0;
 	// date when task is done
 	var $Date = 0;
-	// todo id
+	// to do id
 	var $todoID = 0;
 	// Status of document task
 	var $Status = self::STATUS_UNKNOWN;

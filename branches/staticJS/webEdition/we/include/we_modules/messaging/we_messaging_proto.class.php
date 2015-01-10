@@ -44,7 +44,7 @@ class we_messaging_proto extends we_class{
 	const ACTION_REJECT = 3;
 	const ACTION_DONE = 4;
 
-	/* ToDO properties */
+	/* To DO properties */
 	const TODO_PROP_NONE = 0;
 	const TODO_PROP_IMMOVABLE = 1;
 

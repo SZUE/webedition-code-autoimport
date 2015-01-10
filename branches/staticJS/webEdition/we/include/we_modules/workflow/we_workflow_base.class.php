@@ -98,8 +98,8 @@ class we_workflow_base{
 		}
 	}
 
-	/* generate new ToDo */
-	/* return the ID of the created ToDo, 0 on error */
+	/* generate new To Do */
+	/* return the ID of the created To Do, 0 on error */
 
 	function sendTodo($userID, $subject, $description, $deadline){
 		$errs = array();
@@ -119,7 +119,7 @@ class we_workflow_base{
 		return $res['id'];
 	}
 
-	/* Mark ToDo as done */
+	/* Mark To Do as done */
 	/* $id - value of the 'ID' field in MSG_TODO_TABLE */
 
 	function doneTodo($id){
@@ -144,7 +144,7 @@ class we_workflow_base{
 		return ($res['err'] == 0);
 	}
 
-	/* remove ToDo */
+	/* remove To Do */
 	/* $id - value of the 'ID' field in MSG_TODO_TABLE */
 
 	function removeTodo($id){
@@ -156,7 +156,7 @@ class we_workflow_base{
 		return $m->delete_items($i_headers);
 	}
 
-	/* Mark ToDo as rejected */
+	/* Mark To Do as rejected */
 	/* $id - value of the 'ID' field in MSG_TODO_TABLE */
 
 	function rejectTodo($id){
