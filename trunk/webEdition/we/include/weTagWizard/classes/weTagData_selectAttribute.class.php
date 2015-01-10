@@ -54,26 +54,14 @@ class weTagData_selectAttribute extends weTagDataAttribute{
 	 * @return string
 	 */
 	function getCodeForTagWizard(){
-
-		$keys = array();
-		$values = array();
-
+		$select = new we_html_select(array('name' => $this->getName(), 'id' => $this->getIdName(), 'class' => 'defaultfont selectinput'));
 		if(!$this->Required){
-			$keys[] = '';
-			$values[] = '';
+			$select->addOption('', '');
 		}
 
 		foreach($this->Options as $option){
-			$keys[] = $option->Value;
-			$values[] = $option->getName();
+			$select->addOption($option->Value, $option->getName(), $option->Disabled ? array('disabled' => 'disabled') : array());
 		}
-
-		$select = new we_html_select(
-			array(
-			'name' => $this->getName(), 'id' => $this->getIdName(), 'class' => 'defaultfont selectinput'
-		));
-		$select->addOptions(count($values), $keys, $values);
-
 		$select->selectOption($this->Value);
 
 		return '<table class="attribute"><tr>

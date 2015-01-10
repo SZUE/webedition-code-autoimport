@@ -13,15 +13,11 @@ $this->Attributes[] = new weTagData_selectAttribute('field', array(
 	new weTagDataOption('is_from doc_object'),
 	new weTagDataOption('is_fallback_to_standard'),
 	new weTagDataOption('is_fallback_to_active')
-	), false, '');
-
-if(defined('WE_SHOP_VAT_TABLE')){
-	$options = array();
-	$opts = we_shop_category::getShopCatFieldsFromDir('Path', true);
-	foreach($opts as $k => $v){
-		$options[] = new weTagDataOption($v, $k);
-	}
-	$this->Attributes[] = new weTagData_selectAttribute('match', $options, false);
-	$this->Attributes[] = new weTagData_selectAttribute('ignorefallbacks', weTagData_selectAttribute::getTrueFalse(), false, '');
-
+), false, '');
+$options = array();
+$opts = we_shop_category::getShopCatFieldsFromDir('Path', true);
+foreach($opts as $k => $v){
+	$options[] = new weTagDataOption($v, $k);
 }
+$this->Attributes[] = new weTagData_selectAttribute('match', $options, false);
+$this->Attributes[] = new weTagData_selectAttribute('ignorefallbacks', weTagData_selectAttribute::getTrueFalse(), false, '');

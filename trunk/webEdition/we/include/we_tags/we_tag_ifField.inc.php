@@ -23,21 +23,31 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifField($attribs){
+	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
+
+	switch($type){
+		case 'shopCategory':
+			$attribs['lvOnly'] = true;
+			return we_shop_category::isCategoryMode() ? we_tag('ifShopCategory', $attribs) : false;
+		case 'shopVat':
+			if(we_shop_category::isCategoryMode()){
+				$attribs['lvOnly'] = true;
+				return we_tag('ifShopVat', $attribs);
+			}
+			break;
+		case 'float':
+		case 'int':
+			$attribs['type'] = 'text';//Bug #4815
+	}
+
 	if(($foo = attributFehltError($attribs, array('name' => false, 'match' => true), __FUNCTION__))){
 		print($foo);
 		return false;
 	}
-
-	$match = weTag_getAttribute('match', $attribs, '', we_base_request::STRING);
-	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
-
-	//Bug #4815
-	if($type === 'float' || $type === 'int'){
-		$attribs['type'] = 'text';
-	}
-
 	$attribs['name'] = $attribs['_name_orig'];
+
 	$realvalue = we_tag('field', $attribs);
+	$match = weTag_getAttribute('match', $attribs, '', we_base_request::STRING);
 
 	switch(weTag_getAttribute('operator', $attribs, 'equal', we_base_request::STRING)){
 		default:

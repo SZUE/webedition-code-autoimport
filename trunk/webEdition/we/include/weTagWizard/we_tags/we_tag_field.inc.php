@@ -116,8 +116,6 @@ $vatfield = new weTagData_selectAttribute('field', array(
 	new weTagDataOption('is_fallback_to_prefs'),
 	new weTagDataOption('is_country_fallback_to_prefs')
 	), false, '');
-$customerid = new weTagData_textAttribute('customerid', false, '');
-$countrycode = new weTagData_textAttribute('countrycode', false, '');
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('-', false, '', array(), array()),
 	new weTagDataOption('text', false, '', array($name, $hyperlink, $href, $target, $num_format, $alt, $max, $striphtml, $htmlspecialchars, $triggerid), array($name)),
@@ -136,7 +134,7 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('binary', false, 'object', array($name, $hyperlink, $href, $target, $only), array($name)),
 	new weTagDataOption('float', false, '', array($name, $hyperlink, $href, $target, $num_format, $triggerid), array($name)),
 	new weTagDataOption('int', false, 'object', array($name, $hyperlink, $href, $target, $triggerid), array($name)),
-	new weTagDataOption('shopVat', false, '', array($vatfield, $customerid, $countrycode), array()),
+	new weTagDataOption('shopVat', false, '', array($vatfield), array()),
 	new weTagDataOption('shopCategory', false, '', array($catfield, $showpath, $rootdir), array()),
 	new weTagDataOption('checkbox', false, '', array($name), array($name)),
 	new weTagDataOption('country', false, '', array($outputlanguage, $doc), array()),

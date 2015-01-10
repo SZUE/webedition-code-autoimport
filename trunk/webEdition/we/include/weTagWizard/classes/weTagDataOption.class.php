@@ -36,6 +36,12 @@ class weTagDataOption{
 	public $Value;
 
 	/**
+	 * attribute disabled of this option
+	 * @var bool
+	 */
+	public $Disabled = false;
+
+	/**
 	 * all allowed attributes, when selecting this option
 	 * @var array
 	 */
@@ -58,9 +64,10 @@ class weTagDataOption{
 	 * @param array $allowedAttributes
 	 * @param array $requiredAttributes
 	 */
-	function __construct($name, $value = false, $module = '', $allowedAttributes = array(), $requiredAttributes = array()){
+	function __construct($name, $value = false, $module = '', $allowedAttributes = array(), $requiredAttributes = array(), $disabled = false){
 		$this->Name = $name;
 		$this->Value = ($value === false) ? $name : $value;
+		$this->Disabled = $disabled;
 
 		// clean allowed and required attributes in case not all modules are installed
 		$this->AllowedAttributes = $allowedAttributes;
