@@ -88,13 +88,13 @@ img.treeKreuz{
 }
 
 .selected_item,
-selected_group{
+.selected_group{
 	color: black;
 	background-color: #6070B6;
 	cursor: pointer;
 }
 
-selected_group {
+.selected_group {
 	font-weight: bold;
 }
 
