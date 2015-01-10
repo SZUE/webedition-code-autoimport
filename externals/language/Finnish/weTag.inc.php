@@ -1,6 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weTag=array(
+	'ifNotShopVat'=>array(
+		'description'=>'- to be edited soon -',
+	),
 	'DID'=>array(
 		'description'=>'Tagi palauttaa webEdition dokumentin ID:n.',
 	),
@@ -337,6 +340,9 @@ $l_weTag=array(
 	'ifNotSendMail'=>array(
 		'description'=>'Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page',
 	),
+	'ifNotShopCategory'=>array(
+		'description'=>'- to be edited soon -',
+	),
 	'ifNotShopField'=>array(
 		'description'=>'Everything between the start and end tags of this tag is displayed only if the value of the attribut "match" is not identical with the value of the shopField',
 	),
@@ -417,6 +423,9 @@ $l_weTag=array(
 	),
 	'ifSendMail'=>array(
 		'description'=>'Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page',
+	),
+	'ifShopCategory'=>array(
+		'description'=>'- to be edited soon -',
 	),
 	'ifShopEmpty'=>array(
 		'description'=>'Tämän tagin sisältö näytetään jos ostoskori on tyhjä.',
@@ -703,6 +712,9 @@ $l_weTag=array(
 	),
 	'shipping'=>array(
 		'description'=>'we:shipping -tagia käytetään lähetyskulujen määrittelyyn. Nämä kulut perustuvat ostoskorin arvoon, rekisteröityneen käyttäjän kotimaahan ja lähetyskulujen määrittely sääntöjä voidaan muokata Kauppa moduulissa. Parametriin "summa" määritellään we:sum -tagin nimi. "tyyppi" -parametrilla määritellään joko lähetyskulujen tyyppi.',
+	),
+	'shopCategory'=>array(
+		'description'=>'- to be edited soon -',
 	),
 	'shopField'=>array(
 		'description'=>'Tämä tagi tallentaa useamman sisältökentän suoraan tuotteesta tai ostoskorista. The pääkäyttäjä voi määrittää tiettyjä arvoja joista käyttäjä voi valita tai syöttää omansa arvonsa. Näin on mahdollista kartoittaa useampia toisintoja tuotteista helposti.',

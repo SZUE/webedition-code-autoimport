@@ -1,6 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weTag=array(
+	'ifNotShopVat'=>array(
+		'description'=>'- to be edited soon -',
+	),
 	'DID'=>array(
 		'description'=>'Deze tag stuurt het ID terug van een webEdition document.',
 	),
@@ -337,6 +340,9 @@ $l_weTag=array(
 	'ifNotSendMail'=>array(
 		'description'=>'Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page',
 	),
+	'ifNotShopCategory'=>array(
+		'description'=>'- to be edited soon -',
+	),
 	'ifNotShopField'=>array(
 		'description'=>'Everything between the start and end tags of this tag is displayed only if the value of the attribut "match" is not identical with the value of the shopField',
 	),
@@ -417,6 +423,9 @@ $l_weTag=array(
 	),
 	'ifSendMail'=>array(
 		'description'=>'Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page',
+	),
+	'ifShopCategory'=>array(
+		'description'=>'- to be edited soon -',
 	),
 	'ifShopEmpty'=>array(
 		'description'=>'Alles tussen de begin- en eind tag wordt getoond als de winkelmand leeg is.',
@@ -703,6 +712,9 @@ $l_weTag=array(
 	),
 	'shipping'=>array(
 		'description'=>'Met betrekking tot de aankoop wordt we:shipping gebruikt om de verzend kosten te bepalen. Deze kosten zijn gebaseerd op de waarde van de winkelwagen, het land van herkomst van de geregistreerde gebruiker en de verzend overeenkomsten, te wijzigen in de Winkel module. De parameter "sum" bevat de naam van een met we:sum berekende som. De parameter type wordt gebruikt bij het bepalen van de netto waarde, bruto waarde of het aantal van de BTW toebehorend aan de verzendkosten.',
+	),
+	'shopCategory'=>array(
+		'description'=>'- to be edited soon -',
 	),
 	'shopField'=>array(
 		'description'=>'Deze tag geeft de mogelijkheid om meerdere invoervelden direct aan een artikel/winkelwagen (bestelling) toe te voegen. De beheerder kan sommige waardes vooraf definiëren waaruit de klant een eigen waarde kan selecteren of invoeren. Hierdoor is het mogelijk om meerdere artikel varianten eenvoudig in kaart te brengen.',

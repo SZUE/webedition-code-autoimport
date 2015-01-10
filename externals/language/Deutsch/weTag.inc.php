@@ -1,6 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weTag=array(
+	'ifNotShopVat'=>array(
+		'description'=>'- wird zur Zeit bearbeitet -',
+	),
 	'DID'=>array(
 		'description'=>'Dieses Tag gibt die ID eines webEdition-Dokuments zurück.',
 	),
@@ -337,6 +340,9 @@ $l_weTag=array(
 	'ifNotSendMail'=>array(
 		'description'=>'Prüft, ob eine Seite gerade mit we:sendMail versendet wird und erlaubt Inhalte dabei aus- und einzublenden',
 	),
+	'ifNotShopCategory'=>array(
+		'description'=>'- wird zur Zeit bearbeitet -',
+	),
 	'ifNotShopField'=>array(
 		'description'=>'Das Tag bewirkt, daß alles, was zwischen dem Start- und Endtag steht, nur dann angezeigt wird, wenn das shopField mit dem Namen "name" ungleich dem Wert ist, welcher in "match" eingetragen ist. Ist dies der Fall, wird alles zwischen Start- und Endtag angezeigt.',
 	),
@@ -417,6 +423,9 @@ $l_weTag=array(
 	),
 	'ifSendMail'=>array(
 		'description'=>'Prüft, ob eine Seite gerade mit we:sendMail versendet wird und erlaubt Inhalte dabei aus- und einzublenden',
+	),
+	'ifShopCategory'=>array(
+		'description'=>'- wird zur Zeit bearbeitet -',
 	),
 	'ifShopEmpty'=>array(
 		'description'=>'Alles, was sich zwischen dam Start- und Endtag befindet, wird angezeigt, wenn der Warenkorb leer ist.',
@@ -706,11 +715,14 @@ In der Benutzereingabe können lediglich Dokumente geändert werden, sofern das 
 	'shipping'=>array(
 		'description'=>'we:shipping ermittelt die bei einem Einkauf fälligen Versandkosten. Dabei wird auf den Wert des Warenkorbs, das Herkunftsland des eingeloggten Kunden und die innerhalb des Shop Moduls eingepflegten Regeln für Porto- und Versandkosten zugegriffen, um die anfallenden Kosten zu ermitteln. Mit dem Parameter "sum" übergibt man den Namen einer mit we:sum errechneten Summe. Mit dem Parameter type kann gezielt der Netto- (net), bzw. Brutto- (gros) Betrag sowie der Mehrwertsteueranteil (vat) ermittelt werden.',
 	),
+	'shopCategory'=>array(
+		'description'=>'- wird zur Zeit bearbeitet -',
+	),
 	'shopField'=>array(
 		'description'=>'Mit we:shopField können verschiedene Felder direkt bei Artikeln, bzw. im Warenkorb (Bestellung) abgespeichert werden. Diese Felder können vom Administrator mit verschiedenen Werten festgelegt werden, die der Endkunde dann einstellen kann. Neben Artikel-Varianten ist es damit möglich, eine Vielzahl von verschiedenen Artikelvariationen auf einfache Weise abzubilden.',
 	),
 	'shopVat'=>array(
-		'description'=>'Mit we:shopVat ist es möglich einen Mehrwertsteuersatz für einen Artikel festzulegen. Mehrwertsteuersätze können direkt im Shop Modul gepflegt werden. Ist Id gesetzt, wird der Mehrwertsteuersatz mit der angegebenen Id ausgegeben.',
+		'description'=>'Dieses Tag wird verwendet, um den Mehrwertsteuersatz eines Artikels festzulegen. Mehrwertsteuersätze können direkt im Shop Modul gepflegt werden. Bei Verwendung von Shop-Kategorien (optional ab Version 6.4.0) dient es dazu, den anhand von Shop-Kategorie, Besteuerungsprinzip und Bestimmungsland ermittelten Mehrwertsteuersatz auszugeben. Ist Id gesetzt, wird in beiden Fällen der Mehrwertsteuersatz mit der angegebenen Id ausgegeben.',
 	),
 	'showShopItemNumber'=>array(
 		'description'=>'Das we:showShopItemNumber-Tag zeigt die im Warenkorb vorhandene Anzahl der Artikel eines Typs an.',

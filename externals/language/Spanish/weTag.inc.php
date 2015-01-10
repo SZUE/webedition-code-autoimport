@@ -1,6 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weTag=array(
+	'ifNotShopVat'=>array(
+		'description'=>'- to be edited soon -',
+	),
 	'DID'=>array(
 		'description'=>'This tag returns the ID of a webEdition document.',
 	),
@@ -337,6 +340,9 @@ $l_weTag=array(
 	'ifNotSendMail'=>array(
 		'description'=>'Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page',
 	),
+	'ifNotShopCategory'=>array(
+		'description'=>'- to be edited soon -',
+	),
 	'ifNotShopField'=>array(
 		'description'=>'Everything between the start and end tags of this tag is displayed only if the value of the attribut "match" is not identical with the value of the shopField',
 	),
@@ -417,6 +423,9 @@ $l_weTag=array(
 	),
 	'ifSendMail'=>array(
 		'description'=>'Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page',
+	),
+	'ifShopCategory'=>array(
+		'description'=>'- to be edited soon -',
 	),
 	'ifShopEmpty'=>array(
 		'description'=>'Everything between the start- and endtag will be shown if the shopping cart is empty.',
@@ -705,11 +714,14 @@ Users can only change document-type includes where the name attribute is set. In
 	'shipping'=>array(
 		'description'=>'In regard to the purchase we:shipping is used to determine shipping costs. These costs are based on the value of the shopping cart, the land of origin of the registered user and the shipping cost rules editable in the Shop Module. The parameter "sum" contains the name of a sum calculated with we:sum. The parameter "type" is used to determine either the net, gros as well as the amount of the VAT contained in the shipping costs.',
 	),
+	'shopCategory'=>array(
+		'description'=>'- to be edited soon -',
+	),
 	'shopField'=>array(
 		'description'=>'This tag saves various input fields directly from an article or in the shopping cart (order). The administrator can define some values from which the customer can choose or enter an own value. It is therefore possible to map many article variants in a simple way.',
 	),
 	'shopVat'=>array(
-		'description'=>'This tag is used to determine the VAT for an article. To adminstrate different VAT rates use the Shop Module. A given Id directly prints the VAT-Rate for this article.',
+		'description'=>'This tag is used to determine the VAT for an article. To adminstrate different VAT rates use the Shop Module. When using Shop categories (optional since version 6.4.0) it is used to print out the Vat rate determined by Shop category, taxation principle for this category, and destination country. A given Id directly prints the respective VAT-Rate.',
 	),
 	'showShopItemNumber'=>array(
 		'description'=>'The we:showShopItemNumber tag shows the amount of specified items in the basket.',
