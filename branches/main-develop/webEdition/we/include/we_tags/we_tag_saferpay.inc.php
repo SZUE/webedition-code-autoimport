@@ -154,12 +154,16 @@ function we_tag_saferpay($attribs){
 
 			// foreach article we must determine the correct tax-rate
 			if(we_shop_category::isCategoryMode()){
-				$wedocCategory = $item['serial']['wedoc_Category'];
+				$wedocCategory = ((isset($item['serial']['we_wedoc_Category'])) ? $item['serial']['we_wedoc_Category'] : $item['serial']['wedoc_Category']);
 				$billingCountry = we_shop_category::getCountryFromCustomer(true);
-				$shopVat = we_shop_category::getShopVatByIdAndCountry((isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0), $wedocCategory, $billingCountry, true);
+				$catId = isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
+
+				$shopVat = we_shop_category::getShopVatByIdAndCountry($catId, $wedocCategory, $billingCountry, true);
+				$shopCategory = we_shop_category::getShopCatFieldByID($catId, $wedocCategory, 'ID');
 			} else {
 				$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 				$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);
+				$shopCategory = 0;
 			}
 
 			if($shopVat){ // has selected or standard shop rate
@@ -169,6 +173,7 @@ function we_tag_saferpay($attribs){
 					unset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]);
 				}
 			}
+			$item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] = $shopCategory ? : 0;
 
 
 			if($netprices){

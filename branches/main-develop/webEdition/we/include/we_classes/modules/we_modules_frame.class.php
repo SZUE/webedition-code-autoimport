@@ -290,14 +290,13 @@ function we_save() {
 	}
 
 	protected function getHTMLExitQuestion(){
-		if(($dp = we_base_request::_(we_base_request::INT, 'delayParam'))){
+		if(($dc = we_base_request::_(we_base_request::RAW, 'delayCmd'))){
 			$_frame = 'opener.' . $this->topFrame;
 			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("module_' . $this->module . '_save");self.close();';
-			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . we_base_request::_(we_base_request::RAW, 'delayCmd') . '","' . $dp . '");self.close();';
+			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . $dc . '","' . we_base_request::_(we_base_request::INT, 'delayParam') . '");self.close();';
 			$_cancel = 'self.close();';
 
-			return we_html_tools::getHtmlTop() .
-					STYLESHEET .
+			return STYLESHEET .
 					'</head>
 			<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
 					we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) .

@@ -49,6 +49,8 @@ $content = g_l('liveUpdate', '[updatelog][logIsEmpty]');
 /*
  * items found - show them in table
  */
+$buttons = '';
+
 if($this->Data['allEntries']){ // entries exist
 	// there are entries available -> show them in table
 	$start = $this->Data['start'];
@@ -70,7 +72,6 @@ if($this->Data['allEntries']){ // entries exist
 </div>
 <br />';
 
-	$buttons = '';
 	if(($this->Data['logEntries'])){ // entries match filter
 		$content .= '
 <table width="100%" class="defaultfont updateContent" id="updateLogTable">
@@ -81,7 +82,6 @@ if($this->Data['allEntries']){ // entries exist
 </tr>';
 
 		foreach($this->Data['logEntries'] as $logEntry){
-
 			switch($logEntry['state']){
 				case 1:
 					$classStr = ' class="logError"';
@@ -104,34 +104,27 @@ if($this->Data['allEntries']){ // entries exist
 		 * Add buttons for next, back and delete
 		 */
 
-		$backButton = ($start > 0 ? //	backbutton
-				we_html_button::create_button("back", "javascript:lastEntries();") :
-				we_html_button::create_button("back", "#", true, 100, 22, "", "", true));
-
-		$nextButton = ($this->Data['amountEntries'] <= $start + $this->Data['amountPerPage'] ? //	next_button
-				we_html_button::create_button("next", "#", true, 100, 22, "", "", true) :
-				we_html_button::create_button("next", "javascript:nextEntries();"));
-
-		$deleteButton = we_html_button::create_button("delete", "javascript:confirmDelete();");
-
-		$buttons = "<table><tr><td>$deleteButton</td><td>$backButton</td><td>$nextButton</td></tr></table>";
+		$buttons = we_html_button::create_button_table(array(
+				we_html_button::create_button("delete", "javascript:confirmDelete();"),
+				($start > 0 ? //	backbutton
+					we_html_button::create_button("back", "javascript:lastEntries();") :
+					we_html_button::create_button("back", "#", true, 100, 22, "", "", true)),
+				($this->Data['amountEntries'] <= $start + $this->Data['amountPerPage'] ? //	next_button
+					we_html_button::create_button("next", "#", true, 100, 22, "", "", true) :
+					we_html_button::create_button("next", "javascript:nextEntries();"))
+		));
 
 		$content .= '
 </table>';
 	} else {
-		$content .= '
-<table class="defaultfont">
-<tr>
-	<td><br />
-		' . g_l('liveUpdate', '[updatelog][noEntriesMatchFilter]') . '</td>
-</tr>
-</table>';
+		$content .=g_l('liveUpdate', '[updatelog][noEntriesMatchFilter]');
 	}
 	$content .= '
 </form>';
 }
 
-$jsHead = we_html_element::jsElement('
+
+echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[updatelog][headline]'), $content, we_html_element::jsElement('
 function confirmDelete() {
 	if (confirm("' . g_l('liveUpdate', '[updatelog][confirmDelete]') . '")) {
 		deleteEntries();
@@ -151,7 +144,4 @@ function lastEntries() {
 function nextEntries() {
 	document.we_form.log_cmd.value = "nextEntries";
 	document.we_form.submit();
-}');
-
-
-echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[updatelog][headline]'), $content, $jsHead, $buttons);
+}'), $buttons);

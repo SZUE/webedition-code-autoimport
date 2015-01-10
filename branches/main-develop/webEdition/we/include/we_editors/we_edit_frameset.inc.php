@@ -313,20 +313,20 @@ if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
 			closeAllModalWindows();
 
 	<?php if($we_doc->userHasAccess() == we_root::USER_HASACCESS){ ?>
-			if (!unlock && (!top.opener || typeof top.opener.win !== undefined)) {	//	login to super easy edit mode
-					unlock = true;
-				}
+				if (!unlock && (!top.opener ||top.opener.hasOwnProperty('win'))) {	//	login to super easy edit mode
+						unlock = true;
+					}
 	<?php } ?>
 		}
 
 
 	<?php if(!$we_doc->ID){ ?>
-			if (top.Tree && top.Tree.treeData && top.Tree.treeData.table != "<?php echo $we_Table; ?>") {
-				top.we_cmd('load', "<?php echo $we_Table ?>");
+				if (top.Tree && top.Tree.treeData && top.Tree.treeData.table != "<?php echo $we_Table; ?>") {
+					top.we_cmd('load', "<?php echo $we_Table ?>");
 
-			}
+				}
 		<?php
-	if($we_doc instanceof we_binaryDocument){
+		if($we_doc instanceof we_binaryDocument){
 			$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
 		}
 	}
@@ -349,58 +349,58 @@ if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
 
 	if($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
 		?>
-			function setOpenedWithWE(val) {
-				openedWithWE = val;
-			}
-
-			function checkDocument() {
-				loc = null;
-				try {
-					loc = String(editor.location);
-				} catch (e) {
+				function setOpenedWithWE(val) {
+					openedWithWE = val;
 				}
 
-				_EditorFrame.setEditorIsHot(false);
+				function checkDocument() {
+					loc = null;
+					try {
+						loc = String(editor.location);
+					} catch (e) {
+					}
 
-				if (loc) {	//	Page is on webEdition-Server, open it with matching command
-					// close existing editor, it was closed very hard
-					top.weEditorFrameController.closeDocument(_EditorFrame.getFrameId());
+					_EditorFrame.setEditorIsHot(false);
 
-					// build command for this location
-					top.we_cmd("open_url_in_editor", loc);
+					if (loc) {	//	Page is on webEdition-Server, open it with matching command
+						// close existing editor, it was closed very hard
+						top.weEditorFrameController.closeDocument(_EditorFrame.getFrameId());
 
-				} else {	//	Page is not known - replace top and bottom frame of editor
-					//	Fill upper and lower Frame with white
-					//	If the document is editable with webedition, it will be replaced
-					//	Location not known - empty top and footer
+						// build command for this location
+						top.we_cmd("open_url_in_editor", loc);
 
-					//	close window, when in seeMode include window.
+					} else {	//	Page is not known - replace top and bottom frame of editor
+						//	Fill upper and lower Frame with white
+						//	If the document is editable with webedition, it will be replaced
+						//	Location not known - empty top and footer
+
+						//	close window, when in seeMode include window.
 		<?php
 		if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
 
-		echo we_message_reporting::getShowMessageCall(g_l('SEEM', '[alert][close_include]'), we_message_reporting::WE_MESSAGE_ERROR)
+			echo we_message_reporting::getShowMessageCall(g_l('SEEM', '[alert][close_include]'), we_message_reporting::WE_MESSAGE_ERROR)
 			?>
-						top.close();
+								top.close();
 			<?php
 		} else {
 			?>
-						_EditorFrame.initEditorFrameData(
-										{
-											"EditorType": "none_webedition",
-											"EditorContentType": "none_webedition",
-											"EditorDocumentText": "Unknown",
-											"EditorDocumentPath": "Unknown"
-										}
-						);
+								_EditorFrame.initEditorFrameData(
+												{
+													"EditorType": "none_webedition",
+													"EditorContentType": "none_webedition",
+													"EditorDocumentText": "Unknown",
+													"EditorDocumentPath": "Unknown"
+												}
+								);
 
-						editHeader.location = "about:blank";
-						editFooter.location = "<?php echo WE_INCLUDES_DIR . 'we_seem/we_SEEM_openExtDoc_footer.php' ?>";
+								editHeader.location = "about:blank";
+								editFooter.location = "<?php echo WE_INCLUDES_DIR . 'we_seem/we_SEEM_openExtDoc_footer.php' ?>";
 
 			<?php
 		}
 		?>
+					}
 				}
-			}
 		<?php
 	}
 	?>
@@ -408,7 +408,7 @@ if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
 	</script>
 	<?php
 
-function setOnload($extonly = false){
+	function setOnload($extonly = false){
 		// Don't do this with Templates and only in Preview Mode
 		// in Edit-Mode all must be reloaded !!!
 		// To remove this functionality - just use the second condition as well.
@@ -417,8 +417,8 @@ function setOnload($extonly = false){
 			return 'onload="if(typeof top.WE !== \'undefined\'){top.WE.app.getController(\'Bridge\').registerWeIframe();}"';
 		} else {
 			return ($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE/* && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW */ ?
-			'onload="if(typeof top.WE !== \'undefined\'){top.WE.app.getController(\'Bridge\').registerWeIframe(this);} if(top.edit_include){top.edit_include.close();} if(openedWithWE == 0){ checkDocument(); } setOpenedWithWE(0);"' :
-			'onload="if(typeof top.WE !== \'undefined\'){top.WE.app.getController(\'Bridge\').registerWeIframe(this);}"');
+					'onload="if(typeof top.WE !== \'undefined\'){top.WE.app.getController(\'Bridge\').registerWeIframe(this);} if(top.edit_include){top.edit_include.close();} if(openedWithWE == 0){ checkDocument(); } setOpenedWithWE(0);"' :
+					'onload="if(typeof top.WE !== \'undefined\'){top.WE.app.getController(\'Bridge\').registerWeIframe(this);}"');
 		}
 	}
 	?>
@@ -431,10 +431,10 @@ function setOnload($extonly = false){
 			<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="1,*,0,40" framespacing="0" border="0" frameborder="NO" onunload="doUnload()">
 				<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>
 				<frame <?php echo setOnload(); ?> src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>&we_complete_request=1" name="editor_<?php echo $fid; ?>" noresize/>
-			<frame <?php echo setOnload(true); ?> src="about:blank" name="contenteditor_<?php echo $fid; ?>" noresize/>
+				<frame <?php echo setOnload(true); ?> src="about:blank" name="contenteditor_<?php echo $fid; ?>" noresize/>
 
-			<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer") . '&SEEM_edit_include=' . (we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') ? 1 : 0);
-		?>" name="editFooter" scrolling=no noresize/>
+				<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_footer") . '&SEEM_edit_include=' . (we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') ? 1 : 0);
+			?>" name="editFooter" scrolling=no noresize/>
 			</frameset><noframes></noframes>
 			<?php
 			break;
@@ -444,13 +444,13 @@ function setOnload($extonly = false){
 			?>
 			<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="39,<?php echo $showContentEditor ? "0,*" : "*,0"; ?>,40" framespacing="0" border="0" frameborder="NO" onunload="doUnload();">
 				<frame src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"); ?>" name="editHeader" noresize scrolling="no"/>
-			<?php if($showContentEditor){ ?>
+				<?php if($showContentEditor){ ?>
 					<frame <?php echo setOnload(); ?> src="about:blank" name="editor_<?php echo $fid; ?>" noresize/>
 					<frame  src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>&we_complete_request=1" name="contenteditor_<?php echo $fid; ?>" noresize/>
-			<?php } else { ?>
+				<?php } else { ?>
 					<frame <?php echo setOnload(); ?> src="<?php echo we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_editor") . (isset($parastr) ? '&' . $parastr : ''); ?>&we_complete_request=1" name="editor_<?php echo $fid; ?>" noresize/>
 					<frame  src="about:blank" name="contenteditor_<?php echo $fid; ?>" noresize/>
-			<?php } ?>
+				<?php } ?>
 				<frame src="<?php echo we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer'); ?>" name="editFooter" scrolling=no noresize/>
 			</frameset>
 		<?php
@@ -459,4 +459,5 @@ function setOnload($extonly = false){
 	<body>
 	</body>
 	</html>
-<?php }
+<?php
+}

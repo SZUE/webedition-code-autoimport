@@ -25,7 +25,7 @@ if(defined('WE_SHOP_VAT_TABLE')){
 			new weTagDataOption('is_fallback_to_prefs'),
 			new weTagDataOption('is_country_fallback_to_prefs')
 		), false, '');
-		$this->Attributes[] = new weTagData_selectAttribute('match', $options, true);
+		$this->Attributes[] = new weTagData_selectAttribute('match', $options, false);
 	}
 
 }

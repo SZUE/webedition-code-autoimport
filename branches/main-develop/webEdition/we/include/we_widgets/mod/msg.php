@@ -43,8 +43,8 @@ if(defined('MESSAGING_SYSTEM')){
 	$newmsg_count = $messaging->used_msgobjs['we_message']->get_newmsg_count();
 	$newtodo_count = $messaging->used_msgobjs['we_todo']->get_newmsg_count();
 
-	$msg_cmd = "javascript:top.we_cmd('messaging_start','message');";
-	$todo_cmd = "javascript:top.we_cmd('messaging_start','todo');";
+	$msg_cmd = "javascript:top.we_cmd('messaging_start'," . we_messaging_frames::TYPE_MESSAGE . ");";
+	$todo_cmd = "javascript:top.we_cmd('messaging_start'," . we_messaging_frames::TYPE_TODO . ");";
 	$msg_button = we_html_element::htmlA(array("href" => $msg_cmd), we_html_element::htmlImg(array("src" => IMAGE_DIR . 'pd/msg/message.gif', "width" => 34, "height" => 34, "border" => 0)));
 	$todo_button = we_html_element::htmlA(array("href" => $todo_cmd), we_html_element::htmlImg(array("src" => IMAGE_DIR . 'pd/msg/todo.gif', "width" => 34, "height" => 34, "border" => 0)));
 }

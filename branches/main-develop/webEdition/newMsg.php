@@ -25,8 +25,8 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-$msg_cmd = "javascript:top.opener.we_cmd('messaging_start', 'message');";
-$todo_cmd = "javascript:top.opener.we_cmd('messaging_start', 'todo');";
+$msg_cmd = "javascript:top.opener.we_cmd('messaging_start', " . we_messaging_frames::TYPE_MESSAGE . ");";
+$todo_cmd = "javascript:top.opener.we_cmd('messaging_start', " . we_messaging_frames::TYPE_TODO . ");";
 
 $text = '';
 $msg = we_base_request::_(we_base_request::INT, 'msg', 0) - we_base_request::_(we_base_request::INT, 'omsg', 0);

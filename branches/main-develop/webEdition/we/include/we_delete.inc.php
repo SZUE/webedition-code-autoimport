@@ -271,7 +271,7 @@ if(!$wfchk){
 					$deletedItems = array();
 
 					foreach($selectedItems as $sel){
-						we_base_delete::deleteEntry($sel, $table);
+						we_base_delete::deleteEntry($sel, $table, true, false, $GLOBALS['DB_WE']);
 					}
 
 					if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	only update tree when in normal mode
@@ -375,7 +375,7 @@ if(!$wfchk){
 		$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING);
 	}
 	echo we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsElement($script);
+	we_html_element::jsElement($script);
 
 	//exit;
 }
@@ -385,9 +385,9 @@ if(!$wfchk){
 
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement(
-					($retVal ? //	document deleted -> go to seeMode startPage
-						we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');" :
-						we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR))
+				($retVal ? //	document deleted -> go to seeMode startPage
+					we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');" :
+					we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR))
 	)));
 	exit();
 }

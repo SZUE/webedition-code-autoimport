@@ -815,7 +815,7 @@ function weInputInArray(arr, val) {
 			$containerfields .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i];
 			$yuiAcContent .= "#" . $this->containerfields[$i] . ' .yui-ac-content {
 	position:absolute;
-	left:0px;
+	left:0px !important;
 	width:' . (we_base_browserDetect::isIE() ? $this->containerwidth[$i] : ($this->containerwidth[$i] + 4)) . 'px;
 	border:1px solid #404040;
 	background:#fff;
@@ -879,7 +879,9 @@ function weInputInArray(arr, val) {
 		font-size: 10px;
 	}
 	div.yuiAcLayer{
-		margin:0px; padding:0px;
+		margin:0px;
+		position: relative;
+		padding:0px;
 	}' .
 			$containerfields .
 			(we_base_browserDetect::isIE() ?

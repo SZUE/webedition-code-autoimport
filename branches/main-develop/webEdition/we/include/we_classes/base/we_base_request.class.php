@@ -220,11 +220,6 @@ class we_base_request{
 		}
 		$var = $_REQUEST;
 		$args = func_get_args();
-		/* fixme temporary until 6.3.9 release */
-		if(func_num_args() == 4 && $args[3] === null){
-			unset($args[3]);
-		}
-		/* end fix */
 		unset($args[0], $args[2]);
 		if(false && isset($_SESSION['user']['isWeSession']) && $_SESSION['user']['isWeSession'] && WE_VERSION_SUPP){
 			$argname = implode('.', $args);
@@ -235,7 +230,6 @@ class we_base_request{
 				t_e('rerequest ', $name, $args, $requests[$name][$argname]);
 			}
 		}
-
 		foreach($args as $arg){
 			if(is_string($var) || !is_array($var) || !isset($var[$arg])){
 				return $default;
@@ -284,9 +278,11 @@ class we_base_request{
 					}
 					if(is_string($var)){
 						switch($var){
+							case 'off':
 							case 'false':
 								$cmp = 0;
 								break 2;
+							case 'on':
 							case 'true':
 								$cmp = 1;
 								break 2;
