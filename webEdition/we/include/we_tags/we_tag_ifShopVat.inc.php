@@ -45,13 +45,22 @@ function we_tag_ifShopVat($attribs){
 		return ($id == $vatId);
 	} else {
 		$match = intval(weTag_getAttribute('match', $attribs, 0, we_base_request::INT));
-		$shopVatAttribs['field'] = $field = weTag_getAttribute('field', $attribs, 'id', we_base_request::STRING);
-		$shopCatID = (isset($GLOBALS['lv']) && $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME) ?
-				$GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME) :
-				$GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME));
-		$shopVatAttribs['shopcategoryid'] = $shopCatID;
+		$field = weTag_getAttribute('field', $attribs, 'id', we_base_request::STRING);
+		$lvOnly = weTag_getAttribute('lvOnly', $attribs, false, we_base_request::BOOL);
 
-		$vatField = we_tag('shopVat', $shopVatAttribs);
+		if(isset($GLOBALS['lv'])){
+			$catID = $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME) ? : 0;
+			$wedocCategory = $GLOBALS['lv']->f('wedoc_Category') ? : '';
+		} elseif(!$lvOnly) {
+			$catID = $GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME) ? : 0;
+			$wedocCategory = $GLOBALS['we_doc']->Category ? : '';
+		} else {
+			return false;
+		}
+		$attribs['shopcategoryid'] = $catID;
+		$attribs['wedoccategories'] = $wedocCategory;
+		$vatField = we_tag('shopVat', $attribs);
+
 		switch ($field){
 			case 'id':
 				return $match === 0 ? boolval($vatField) : $match === intval($vatField);

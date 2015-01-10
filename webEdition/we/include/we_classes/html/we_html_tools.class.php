@@ -282,7 +282,7 @@ this.selectedIndex = 0;' .
 	}
 
 	//FIXME: make fn more concise and make base all country selects on it
-	static function htmlSelectCountry($name, $id = '', $size = 1, $selected = array(), $multiple = false, array $attribs = array(), $width = 50, $cls = 'defaultfont', $oldHtmlspecialchars = true){
+	static function htmlSelectCountry($name = '', $id = '', $size = 1, $selected = array(), $multiple = false, array $attribs = array(), $width = 50, $cls = 'defaultfont', $oldHtmlspecialchars = true, $optsOnly = false){
 		$langcode = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 		$countrycode = array_search($langcode, getWECountries());
 
@@ -341,7 +341,7 @@ this.selectedIndex = 0;' .
 			}
 		}
 
-		return $countryselect->getHtml();
+		return $optsOnly ? $countryselect->getOptionsArray() : $countryselect->getHtml();
 	}
 
 	static function htmlInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){
