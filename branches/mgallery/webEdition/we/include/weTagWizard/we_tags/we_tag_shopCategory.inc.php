@@ -11,11 +11,13 @@ foreach($opts as $k => $v){
 	$options[] = new weTagDataOption($v, $k);
 }
 $this->Attributes[] = new weTagData_selectAttribute('id', $options, false);
-
+/* temorarily disabled
 $this->Attributes[] = new weTagData_selectAttribute('doc', array(
 	new weTagDataOption('self'),
 	new weTagDataOption('top'),
 	), false, '');
+ * 
+ */
 $this->Attributes[] = new weTagData_selectAttribute('field', array(
 	new weTagDataOption('id'),
 	new weTagDataOption('category'),

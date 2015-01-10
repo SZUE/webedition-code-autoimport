@@ -516,7 +516,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		<frame src="' . $this->getFsQueryString(self::PREVIEW) . '" name="fspreview" noresize scrolling="no"' . ((!we_base_browserDetect::isGecko()) ? ' style="border-left:1px solid black"' : '') . '>
 	</frameset>
 	<frame src="' . $this->getFsQueryString(we_selector_file::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
-	<frame src="' . HTML_DIR . 'gray2.html"  name="fspath" noresize scrolling="no">
+	<frame src="' . HTML_DIR . 'gray2.html" name="fspath" noresize scrolling="no">
 	<frame src="about:blank"  name="fscmd" noresize scrolling="no">
 </frameset>
 <body>

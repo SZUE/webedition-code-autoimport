@@ -419,6 +419,22 @@ class we_shop_category extends we_category{
 		return $getState ? array("id" => $id, "state" => $state) : $id;
 	}
 
+	public static function getInternalFieldname($field = 'ID'){
+		$fieldMap = array(
+			'id' => 'ID',
+			'category' => 'Category',
+			'path' => 'Path',
+			'title' => 'Title',
+			'description' => 'Description',
+			'is_destinationprinciple' => 'DestPrinciple',
+			'is_from doc_object' => 'is_from doc_object',
+			'is_fallback_to_standard' => 'is_fallback_to_standard',
+			'is_fallback_to_active' => 'is_fallback_to_active'
+		);
+
+		return in_array($field, $fieldMap) ? $field : (isset($fieldMap[$field]) ? $fieldMap[$field] : 'ID');
+	}
+
 	/**
 	 * returns field $catfield of all shop categories.
 	 *
@@ -503,13 +519,13 @@ class we_shop_category extends we_category{
 	 * @param object $db
 	 * @return array of string
 	 */
-	static function getShopCatFieldByID($id, $wedocCategory = '', $field = '', $showpath = false, $rootdir = '', $useFallback = false){
+	static function getShopCatFieldByID($id, $wedocCategory = '', $field = '', $showpath = false, $rootdir = '', $useFallback = true){
 		$cat = self::getShopCatById($id, $wedocCategory, $useFallback);
 		if(!$cat){
 			return false;
 		}
 
-		switch($field){
+		switch($field = self::getInternalFieldname($field)){
 			case 'Path':
 				return !$showpath ? $cat->Category : (substr($cat->Path, strlen($rootdir)));
 			case 'is_from doc_object':
@@ -584,8 +600,8 @@ class we_shop_category extends we_category{
 	 * @return we_shop_vat
 	 */
 	public static function getShopVatByIdAndCountry($id = 0, $wedocCategory = '', $country = '', $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false, $useFallback = true){
-		$country = $country && in_array(intval($id) , self::getDestPrincipleFromDB(true)) ? $country : self::getDefaultCountry();// only get vat of current (customer) country, when shop category is DestPrinciple!
 		$validID = self::checkGetValidID($id, $wedocCategory, $useFallback);
+		$country = $country && in_array(intval($validID) , self::getDestPrincipleFromDB(true)) ? $country : self::getDefaultCountry();// only get vat of current (customer) country, when shop category is DestPrinciple!
 
 		if(!$getIsFallbackToStandard && !$getIsFallbackToPrefs && isset(self::$shopVatsByCategoryCountry[$validID][$country]) && ($vat = self::$shopVatsByCategoryCountry[$validID][$country])){
 			return $getRate ? $vat->vat : $vat;

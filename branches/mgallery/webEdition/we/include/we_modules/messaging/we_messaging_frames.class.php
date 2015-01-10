@@ -37,6 +37,9 @@ class we_messaging_frames extends we_modules_frame{
 	protected $hasIconbar = true;
 	protected $useMainTree = false;
 	protected $treeDefaultWidth = 204;
+	
+	const TYPE_MESSAGE = 1;
+	const TYPE_TODO = 2;
 
 	public function __construct($viewclass, $reqTransaction, &$weTransaction){
 		parent::__construct(WE_MESSAGING_MODULE_DIR . "edit_messaging_frameset.php");
@@ -170,12 +173,12 @@ function cb_incstate() {
 		loadData();
 		';
 
-		if(($param = we_base_request::_(we_base_request::STRING, 'msg_param'))){
+		if(($param = we_base_request::_(we_base_request::INT, 'msg_param'))){
 			switch($param){
-				case 'todo':
+				case self::TYPE_TODO:
 					$f = $this->messaging->get_inbox_folder('we_todo');
 					break;
-				case 'message':
+				case self::TYPE_MESSAGE:
 					$f = $this->messaging->get_inbox_folder('we_message');
 					break;
 			}

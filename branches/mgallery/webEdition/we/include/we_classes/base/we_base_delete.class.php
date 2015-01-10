@@ -29,8 +29,8 @@ abstract class we_base_delete{
 			return true;
 		}
 		return (f('SELECT IsFolder FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE  ID=' . intval($id)) ?
-						self::checkDeleteFolder($id, $table) :
-						self::checkDeleteFile($id, $table));
+				self::checkDeleteFolder($id, $table) :
+				self::checkDeleteFile($id, $table));
 	}
 
 	private static function checkDeleteFolder($id, $table){
@@ -129,7 +129,7 @@ abstract class we_base_delete{
 
 		switch($table){
 			case FILE_TABLE:
-				we_base_file::deleteLocalFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($path, 1));
+				we_base_file::deleteLocalFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . trim($path, '/'));
 			//no break
 			case TEMPLATES_TABLE:
 				we_base_file::deleteLocalFile(preg_replace('/\.tmpl$/i', '.php', $file));
@@ -220,7 +220,7 @@ abstract class we_base_delete{
 
 		$DB_WE = ($DB_WE ? : new DB_WE());
 		if(defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE))){
-			if(we_workflow_utility::inWorkflow($id, $table)){
+			if(we_workflow_utility::inWorkflow($id, $table, $GLOBALS['DB_WE'])){
 				we_workflow_utility::removeDocFromWorkflow($id, $table, $_SESSION['user']['ID'], g_l('modules_workflow', '[doc_deleted]'));
 			}
 		}

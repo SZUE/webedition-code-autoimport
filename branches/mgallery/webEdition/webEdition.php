@@ -35,7 +35,6 @@ if(!isset($_SESSION['weS']['we_mode']) || $_SESSION['weS']['we_mode'] == we_base
 	include_once(WE_INCLUDES_PATH . 'webEdition_seem.inc.php');
 }
 
-
 //	check session
 we_html_tools::protect(null, WEBEDITION_DIR . 'index.php');
 
@@ -48,7 +47,7 @@ we_base_file::cleanTempFiles();
  */
 //	unlock everything old, when a new window is opened.
 if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) != "edit_include_document"){
-	$GLOBALS['DB_WE']->query('DELETE FROM ' . LOCK_TABLE . '	WHERE lockTime<NOW()');
+	$GLOBALS['DB_WE']->query('DELETE FROM ' . LOCK_TABLE . ' WHERE lockTime<NOW()');
 }
 $GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . '	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ')');
 

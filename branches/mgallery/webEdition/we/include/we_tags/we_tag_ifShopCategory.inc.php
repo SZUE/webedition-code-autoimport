@@ -26,13 +26,16 @@ function we_tag_ifShopCategory($attribs){
 	$field = weTag_getAttribute('field', $attribs, 'id', we_base_request::STRING);
 	$match = intval(weTag_getAttribute('match', $attribs, false, we_base_request::INT));
 	$ignorefallbacks = weTag_getAttribute('ignorefallbacks', $attribs, false, we_base_request::BOOL);
+	$lvOnly = weTag_getAttribute('lvOnly', $attribs, false, we_base_request::BOOL);
 
 	if(isset($GLOBALS['lv'])){
 		$catID = $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME) ? : 0;
 		$wedocCategory = $GLOBALS['lv']->f('wedoc_Category') ? : '';
-	} else {
+	} elseif(!$lvOnly) {
 		$catID = $GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME) ? : 0;
 		$wedocCategory = $GLOBALS['we_doc']->Category ? : '';
+	} else {
+		return false;
 	}
 
 	$validArr = we_shop_category::checkGetValidID($catID, $wedocCategory, true, true);

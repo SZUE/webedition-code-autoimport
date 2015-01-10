@@ -98,10 +98,14 @@ abstract class we_html_tools{
 		$_inputs = array(
 			'class' => 'weSelect',
 			'name' => 'sel_' . $name,
-			'onfocus' => "change$jsvarname=1;",
-			'onchange' => "if(change$jsvarname) this.form.elements['" . $name . "'].value = this.options[this.selectedIndex].text; change$jsvarname=0; this.selectedIndex = 0;" . $onChange,
+			'onfocus' => 'change' . $jsvarname . '=1;',
+			'onchange' => "if(this.selectedIndex){
+			this.form.elements['" . $name . "'].value = this.options[this.selectedIndex].text;
+}
+change" . $jsvarname . '=1;
+this.selectedIndex = 0;' .
+			$onChange,
 			'style' => (($selectboxWidth != '') ? ('width: ' . $selectboxWidth . 'px;') : ''),
-			'name' => $name,
 			'class' => 'defaultfont'
 		);
 
@@ -278,7 +282,7 @@ abstract class we_html_tools{
 	}
 
 	//FIXME: make fn more concise and make base all country selects on it
-	static function htmlSelectCountry($name, $id = '', $size = 1, $selected = array(), $multiple = false, array $attribs = array(), $width = 50, $cls = 'defaultfont', $oldHtmlspecialchars = true){
+	static function htmlSelectCountry($name = '', $id = '', $size = 1, $selected = array(), $multiple = false, array $attribs = array(), $width = 50, $cls = 'defaultfont', $oldHtmlspecialchars = true, $optsOnly = false){
 		$langcode = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 		$countrycode = array_search($langcode, getWECountries());
 
@@ -337,7 +341,7 @@ abstract class we_html_tools{
 			}
 		}
 
-		return $countryselect->getHtml();
+		return $optsOnly ? $countryselect->getOptionsArray() : $countryselect->getHtml();
 	}
 
 	static function htmlInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){
