@@ -37,51 +37,46 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 
 			$db = $GLOBALS['DB_WE'];
 			$path = f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $pathid);
-			$db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $db->escape($path) . '/%" ORDER BY Path');
+			$db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $db->escape($path) . '/%" ORDER BY IsFolder DESC, Path');
 			$result = $db->getAll();
-			$querySet = '';
-			$query = '';
+
 			$folders = array($folder);
 			$mapedId = array($pathid => $folder);
+			$itemsQuery = array();
 
 			foreach($result as $row){
-				$querySet = '(';
+				$querySet = array();
 				foreach($row as $key => $val){
 					switch($key){
 						case "ID" :
-							$querySet .= "''";
+							$querySet[] = 'DEFAULT';
 							break;
 						case "Path" :
 							$path = str_replace($path, $cmd0, $val);
-							$querySet .= ", '" . $db->escape($path) . "'";
+							$querySet[] = '"' . $db->escape($path) . '"';
 							break;
 						case "ParentID" :
-							$querySet .= ', ' . intval(isset($mapedId[$val]) ? $mapedId[$val] : 0);
+							$querySet [] = (isset($mapedId[$val]) ? intval($mapedId[$val]) : 0);
 							break;
 						default :
-							$querySet .= ", '" . $val . "'";
+							$querySet [] = '"' . $db->escape($val) . '"';
 					}
 				}
-				$querySet .= ')';
+				$querySet = '(' . implode(',', $querySet) . ')';
 				if($row['IsFolder']){
-					if($query){
-						$db->query('INSERT INTO ' . NAVIGATION_TABLE . ' VALUES ' . $query);
-					}
 					$db->query('INSERT INTO ' . NAVIGATION_TABLE . ' VALUES ' . $querySet);
 					$mapedId[$row['ID']] = $db->getInsertId();
 					$folders[] = $mapedId[$row['ID']];
-					$query = "";
 				} else {
-					$query .= ($query ? ',' : '') . $querySet;
+					$itemsQuery[] = $querySet;
 				}
-				$lastInserted = $row['IsFolder'];
 			}
-			if(!$lastInserted){
-				$db->query('INSERT INTO ' . NAVIGATION_TABLE . ' VALUES ' . $query);
+			if($itemsQuery){
+				$db->query('INSERT INTO ' . NAVIGATION_TABLE . ' VALUES ' . implode(',', $itemsQuery));
 			}
 			foreach($folders as $folder){
 				$newNavi = new we_navigation_navigation($folder);
-				$newNavi->save();
+				$newNavi->save(false, true);
 			}
 			$resp->setData('status', 'ok');
 			$resp->setData('folders', $folders);

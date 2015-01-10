@@ -57,6 +57,15 @@ class we_html_select extends we_html_baseCollection{
 	}
 
 	/**
+	 * The function returns select options as array of we_html_baseElement
+	 *
+	 * @return		array of we_html_baseElement
+	 */
+	function getOptionsArray(){
+		return $this->childs;
+	}
+
+	/**
 	 * The function add new option to a select box
 	 *
 	 * @param		$value									string
