@@ -42,6 +42,8 @@ we/include/we_widgets/dlg/usr.inc.php
 we/include/we_widgets/dlg/upb/upb.inc.php
 we/include/we_widgets/dlg/upb.inc.php
 we/include/we_widgets/dlg/tree.inc.php
+we/include/we_widgets/dlg/shp/js/gauge.min.js
+we/include/we_widgets/dlg/shp/js/excanvas.js
 we/include/we_widgets/dlg/sct.inc.php
 we/include/we_widgets/dlg/rss/we_language/Spanish_UTF-8/top_feeds.inc.php
 we/include/we_widgets/dlg/rss/we_language/Spanish_UTF-8

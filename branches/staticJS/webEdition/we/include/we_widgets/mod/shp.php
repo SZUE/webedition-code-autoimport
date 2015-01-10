@@ -187,9 +187,9 @@ if($bOrders){
 
 	//2. row
 	$shopDashboardTable->addRow();
-	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont","style"=>"color:red;"), g_l('cockpit','[shop_dashboard][canceled_order]').we_html_tools::getPixel(5, 1));
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont", "style" => "color:red;"), g_l('cockpit', '[shop_dashboard][canceled_order]') . we_html_tools::getPixel(5, 1));
 	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
-	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont","align"=>"right","style"=>"color:red;"),($amountCanceledOrders > 0 ? $amountCanceledOrders : 0));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right", "style" => "color:red;"), ($amountCanceledOrders > 0 ? $amountCanceledOrders : 0));
 	$i++;
 
 	//3. row
@@ -238,7 +238,7 @@ if($bAverageOrder){
 
 	//9. row
 	$shopDashboardTable->addRow();
-	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont","style"=>"color:red;"), g_l('cockpit', '[shop_dashboard][canceled]'));
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont", "style" => "color:red;"), g_l('cockpit', '[shop_dashboard][canceled]'));
 	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
 	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right", "style" => "color:red;"), we_util_Strings::formatNumber($canceled, $numberformat) . '&nbsp;' . $currency);
 	$i++;
@@ -271,12 +271,12 @@ $shopDashboard = '<div style="width:60%;float:left;">' .
 	$shopDashboardTable->getHtml() .
 	'</div>'
 	. '<div style="width:40%;float:right;">' . ($bTarget ? '<b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_util_Strings::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b><br/>' : '') .
-	'<canvas id="'.$newSCurrId . '_chart_div" width="160" height="160"></canvas>' .
+	'<canvas id="' . $newSCurrId . '_chart_div" width="160" height="160"></canvas>' .
 	'</div><br style="clear:both;"/>';
-	
+
 if($bTarget){
-	$shopDashboard .= "<script type='text/javascript' src='" . WE_INCLUDES_DIR . "we_widgets/dlg/shp/js/excanvas.js'></script>
-		<script type='text/javascript' src='" . WE_INCLUDES_DIR . "we_widgets/dlg/shp/js/gauge.min.js'></script>
+	$shopDashboard .= "<script type='text/javascript' src='" . LIB_DIR . "additional/canvas/excanvas.js'></script>
+		<script type='text/javascript' src='" . LIB_DIR . "additional/gauge/gauge.min.js'></script>
 		<script type='text/javascript'>
 			// Helper to execute a function after the window is loaded
 			// see http://www.google.com/search?q=addLoadEvent
@@ -314,7 +314,7 @@ if($bTarget){
 					redTo: " . ($sRevenueTarget * 0.9) . "
 				};
 
-				new Gauge(widgetDoc.getElementById('".$newSCurrId . "_chart_div'), options );
+				new Gauge(widgetDoc.getElementById('" . $newSCurrId . "_chart_div'), options );
 			});
 
 		</script>";
