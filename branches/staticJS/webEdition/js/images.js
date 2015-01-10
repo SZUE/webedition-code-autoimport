@@ -12,6 +12,7 @@ function preload(imgObj, imgSrc) {
 		eval(imgObj + '.src = "' + imgSrc + '"');
 	}
 }
+
 function changeImage(layer, imgName, imgObj) {
 	if (document.images) {
 		if (document.layers && layer != null) {

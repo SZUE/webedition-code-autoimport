@@ -210,7 +210,7 @@ class we_search_frames extends we_tool_frames{
 
 
 		return $this->getHTMLDocument(
-						$body, $head . STYLESHEET . $this->View->getJSProperty() . $this->View->getSearchJS($whichSearch));
+						$body, $head . $this->View->getJSProperty() . $this->View->getSearchJS($whichSearch));
 	}
 
 	function getTab(){

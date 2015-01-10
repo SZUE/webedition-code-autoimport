@@ -36,22 +36,6 @@ class we_messaging_headerMsg{
 		self::$messaging->add_msgobj('we_todo', 1);
 	}
 
-	static function pCSS(){
-		echo we_html_element::cssElement('
-table.msgheadertable {
-	margin:2px 0px 1em auto;
-	border-spacing:0px;
-	border: none;
-}
-table.msgheadertable td {
-	padding:0px;
-}
-table.msgheadertable tr {
-	height: 12px;
-}
-');
-	}
-
 	static function pJS(){
 		self::start();
 		?>

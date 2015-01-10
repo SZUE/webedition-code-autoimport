@@ -102,11 +102,8 @@ onunload=function() {
 		$jmenu = self::getMenu();
 
 		echo we_html_element::jsScript(JS_DIR . 'images.js') .
-		we_html_element::jsScript(JS_DIR . 'weSidebar.php') .
 		($jmenu ? $jmenu->getJS() : '');
 		we_html_element::jsElement('
-top.weSidebar = weSidebar;
-
 	preload("busy_icon","' . IMAGE_DIR . 'logo-busy.gif");
 	preload("empty_icon","' . IMAGE_DIR . 'pixel.gif");
 	function toggleBusy(foo){

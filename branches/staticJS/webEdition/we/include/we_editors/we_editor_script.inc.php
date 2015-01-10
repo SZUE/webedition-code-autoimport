@@ -21,39 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-?>
-<style type="text/css">
-	.weMarkInputError, input:invalid {
-		background-color: #ff8888 ! important;
-	}
-	.weEditmodeStyle {
-		border: 0px ! important;
-	}
-	.weEditTable{
-		border: solid #006DB8 1px;
-		background-image:url(<?php echo IMAGE_DIR; ?>backgrounds/aquaBackground.gif);
-		color: black;
-		font-size: <?php echo ((we_base_browserDetect::isMAC()) ? '11px' : ((we_base_browserDetect::isUNIX()) ? '13px' : '12px')); ?>;
-		font-family: <?php echo g_l('css', '[font_family]'); ?>;
-	}
-	.spacing0{
-		border-spacing: 0px;
-	}
-	.spacing2{
-		border-spacing: 2px;
-	}
-
-	.padding0 td{
-		padding: 0px;
-	}
-	.padding2 td{
-		padding: 2px;
-	}
-	.border0{
-		border-style: none;
-	}
-</style>
-<?php
 if(isset($GLOBALS['we_doc'])){
 	if($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE){
 		//no wyswyg
@@ -62,6 +29,14 @@ if(isset($GLOBALS['we_doc'])){
 	}
 }
 $hasGD = isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::IMAGE && $GLOBALS['we_doc']->gd_support();
+echo we_html_element::cssLink(CSS_DIR . 'editor.css') .
+ we_html_element::cssElement('.weEditTable{
+background-image:url("' . IMAGE_DIR . 'backgrounds/aquaBackground.gif");
+	font-size: ' . ((we_base_browserDetect::isMAC()) ? '11' : ((we_base_browserDetect::isUNIX()) ? '13' : '12')) . 'px;
+	font-family: ' . g_l('css', '[font_family]') . ';
+}
+');
+we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 ?>
 <script type="text/javascript"><!--
 	var we_transaction = "<?php echo we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0); ?>";
@@ -113,8 +88,6 @@ $hasGD = isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ContentType == we_base
 		'TYPE_INT_PREFIX': '<?php echo we_base_link::TYPE_INT_PREFIX; ?>',
 		'TYPE_MAIL_PREFIX': '<?php echo we_base_link::TYPE_MAIL_PREFIX; ?>'
 	}
-<?php echo we_message_reporting::getJSLevelVar(); ?>
-
 	//-->
 </script><?php
 $js = '';

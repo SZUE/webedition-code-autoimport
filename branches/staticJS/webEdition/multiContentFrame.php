@@ -35,7 +35,8 @@ if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
 }
 
 echo we_html_tools::getHtmlTop() .
- we_html_element::cssLink(CSS_DIR . 'multiEditor/multiEditor.css');
+ we_html_element::cssLink(CSS_DIR . 'multiEditor/multiEditor.css') .
+ we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 ?>
 <script type="text/javascript"><!--
 	function we_cmd() {
@@ -56,18 +57,17 @@ echo we_html_tools::getHtmlTop() .
 		'eplugin_exit_doc': "<?php echo g_l('multiEditor', '[eplugin_exit_doc]'); ?>",
 		'no_editor_left': "<?php echo we_message_reporting::prepareMsgForJS(g_l('multiEditor', '[no_editor_left]')); ?>"
 	}
-<?php echo we_message_reporting::getJSLevelVar(); ?>
-
 //-->
 </script>
 <?php
 echo we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js');
 ?>
 </head>
-<body onresize="setFrameSize()" onload="init();startMultiEditor();">
+<body onresize="setFrameSize()" onload="init();
+		startMultiEditor();">
 	<div style="position:absolute;top:0px;bottom:0px;right:0px;left:0px;overflow: hidden;background-color: white;">
 		<div style="position:absolute;top:0px;height:22px;width:100%;background-color: Silver; border-top: 1px solid #000000;" id="multiEditorDocumentTabsFrameDiv">
-			<?php include(WEBEDITION_PATH . 'multiEditor/multiTabs.inc.php'); ?>
+<?php include(WEBEDITION_PATH . 'multiEditor/multiTabs.inc.php'); ?>
 		</div>
 		<div style="position:absolute;top:22px;bottom:0px;left:0px;right:0px;overflow: hidden;" id="multiEditorEditorFramesetsDiv"><?php
 			$count = (isset($_SESSION) && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? 1 : 32;

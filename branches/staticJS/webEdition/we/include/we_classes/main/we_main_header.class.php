@@ -26,9 +26,6 @@ class we_main_header{
 
 	static function pCSS($SEEM_edit_include){
 		we_main_headermenu::pCSS();
-		if(self::hasMsg($SEEM_edit_include)){
-			we_messaging_headerMsg::pCSS();
-		}
 	}
 
 	static function pJS($SEEM_edit_include){

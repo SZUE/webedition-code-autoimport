@@ -78,7 +78,7 @@ function printHeader($login, $status = 200){
 	echo we_html_tools::getHtmlTop('webEdition') . STYLESHEET .
 	we_html_element::cssElement('html, body {height:100%;}') .
 	we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_message_reporting::jsString();
+	we_html_element::jsElement(we_message_reporting::jsString());
 
 	if($login != LOGIN_OK){
 		echo we_html_element::linkElement(array('rel' => 'home', 'href' => WEBEDITION_DIR)) .

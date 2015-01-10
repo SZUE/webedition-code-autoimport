@@ -31,6 +31,8 @@ header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 86400) . ' GMT', true);
 header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime(__FILE__)) . ' GMT', true);
 header('Cache-Control: max-age=86400, must-revalidate', true);
 header('Pragma: ', true);
+
+//FIXME: check if we can set style on body, & move the rest to static part => size relative to body
 ?>
 
 .weSelect,
@@ -51,11 +53,12 @@ header('Pragma: ', true);
 .selector,
 .tableHeader,
 .defaultfontred,
-.weMultiIconBoxHeadlineThin
+.weMultiIconBoxHeadlineThin,
 .weMultiIconBoxHeadline,
 .weDefaultStyle,
 .weDialogHeadline,
-.weObjectPreviewHeadline
+.weObjectPreviewHeadline,
+.weEditTable
 {
 font-size: <?php echo (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
@@ -66,7 +69,8 @@ font-family: <?php echo g_l('css', '[font_family]'); ?>;
 <?php echo (we_base_browserDetect::isIE()) ? '' : 'line-height: 18px;'; ?>
 }
 
-body.aqua {
+body.aqua,
+.weEditTable{
 background-image:url('<?php echo IMAGE_DIR ?>backgrounds/aquaBackground.gif');
 }
 
@@ -121,7 +125,6 @@ font-family: <?php echo g_l('css', '[font_family]'); ?>;
 .weDialogButtonsBody {
 background-image: url(<?php echo IMAGE_DIR; ?>edit/editfooterback.gif);
 }
-
 
 .weSidebarBody {
  background: #ffffff url(<?php echo IMAGE_DIR; ?>backgrounds/sidebarBackground.gif) no-repeat fixed bottom right;

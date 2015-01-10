@@ -266,7 +266,7 @@ function setTab(tab) {
 						)
 		);
 
-		return $this->getHTMLDocument($body, STYLESHEET . $this->View->getJSProperty());
+		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
 
 	protected function getHTMLEditorFooter(){

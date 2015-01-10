@@ -114,18 +114,6 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) != "edit_include
 }
 $GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . '	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ')');
 
-echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) .
- STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') .
- we_html_element::jsScript(JS_DIR . 'weNavigationHistory.php') .
- we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
- we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
- we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
- we_html_element::jsScript(JS_DIR . 'keyListener.js') .
- we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
- we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
- we_message_reporting::jsString();
 
 if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$_table_to_load = FILE_TABLE;
@@ -145,10 +133,15 @@ foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 		$jsCmd[$mod] = WE_MODULES_DIR . $mod . '/we_webEditionCmd_' . $mod . '.js';
 	}
 }
-?>
 
+echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) .
+ STYLESHEET;
+?>
 <script type="text/javascript"><!--
-<?php echo we_tool_lookup::getJsCmdInclude($jsCmd); ?>
+<?php
+echo we_tool_lookup::getJsCmdInclude($jsCmd) .
+ we_message_reporting::jsString();
+?>
 
 if (self.location !== top.location) {
 	top.location = self.location;
@@ -178,7 +171,6 @@ var userID =<?php echo $_SESSION["user"]["ID"]; ?>;
 var sess_id = "<?php echo session_id(); ?>";
 var specialUnload =<?php echo intval(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())); ?>;
 var docuLang = "<?php echo ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'); ?>";
-
 var wePerms = {
 	"ADMINISTRATOR": <?php echo permissionhandler::hasPerm("ADMINISTRATOR") ? 1 : 0; ?>,
 	"DELETE_DOCUMENT": <?php echo permissionhandler::hasPerm("DELETE_DOCUMENT") ? 1 : 0; ?>,
@@ -200,6 +192,10 @@ var g_l = {
 	'cockpit_reset_settings': '<?php echo g_l('alert', '[cockpit_reset_settings]'); ?>',
 	'cockpit_not_activated': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[cockpit_not_activated]')); ?>',
 	'no_perms': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms]')); ?>',
+	'nav_first_document': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][first_document]')); ?>',
+	'nav_last_document': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][last_document]')); ?>',
+	'nav_no_open_document': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_open_document]')); ?>',
+	'nav_no_entry': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_entry]')); ?>'
 };
 var size = {
 	'tree': {
@@ -230,6 +226,9 @@ var size = {
 		'width':<?php echo we_selector_file::WINDOW_DELSELECTOR_WIDTH; ?>,
 		'height':<?php echo we_selector_file::WINDOW_DELSELECTOR_HEIGHT; ?>
 	},
+	'sidebar': {
+		'defaultWidth':<?php echo SIDEBAR_DEFAULT_WIDTH; ?>
+	}
 };
 var tables = {
 	'FILE_TABLE': "<?php echo FILE_TABLE; ?>",
@@ -240,22 +239,18 @@ var tables = {
 	'table_to_load': "<?php echo $_table_to_load; ?>",
 	'TBL_PREFIX': '<?php echo TBL_PREFIX; ?>'
 };
-
 var dirs = {
 	"WE_SHOP_MODULE_DIR": "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : ''; ?>",
 	'WE_MODULES_DIR': "<?php echo WE_MODULES_DIR; ?>",
 	'WE_MESSAGING_MODULE_DIR': "<?php echo defined('WE_MESSAGING_MODULE_DIR') ? WE_MESSAGING_MODULE_DIR : ''; ?>",
 	'BUTTONS_DIR': "<?php echo BUTTONS_DIR; ?>"
 };
-
 var contentTypes = {
 	'TEMPLATE': '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
 	'WEDOCUMENT': '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>',
 	'OBJECT_FILE': '<?php echo we_base_ContentTypes::OBJECT_FILE; ?>',
 };
-
 var WE_EDITPAGE_CONTENT =<?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>;
-
 /*##################### messaging function #####################*/
 
 // this variable contains settings how to deal with settings
@@ -265,7 +260,6 @@ var WE_EDITPAGE_CONTENT =<?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>;
  */
 var messageSettings = <?php echo (isset($_SESSION["prefs"]["message_reporting"]) && $_SESSION["prefs"]["message_reporting"] > 0 ? we_message_reporting::WE_MESSAGE_ERROR | $_SESSION["prefs"]["message_reporting"] : (we_message_reporting::WE_MESSAGE_ERROR | we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_NOTICE)); ?>;
 var weEditorWasLoaded = false;
-
 var setPageNrCallback = {
 	success: function (o) {
 	},
@@ -276,14 +270,26 @@ var setPageNrCallback = {
 //-->
 </script>
 <?php
+echo
+we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') .
+ we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
+ we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
+ we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+ we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
+ we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
+ we_html_element::jsScript(JS_DIR . 'webEdition.js') .
+ we_html_element::jsScript(JS_DIR . 'weSidebar.js');
+
+
 foreach($jsCmd as $cur){
 	echo we_html_element::jsScript($cur);
 }
-echo we_html_element::jsScript(JS_DIR . 'webEdition.js');
 ?>
 <script type="text/javascript"><!--
-
-
+top.weSidebar = weSidebar;
 	function we_cmd() {
 		var url = "/webEdition/we_cmd.php?";
 		for (var i = 0; i < arguments.length; i++) {
@@ -324,7 +330,6 @@ if($diff){
 			case "exit_doc_question":
 				// return !! important for multiEditor
 				return new jsWindow(url, "exit_doc_question", -1, -1, 380, 130, true, false, true);
-
 			case "eplugin_exit_doc" :
 				if (typeof (top.plugin) !== "undefined" && typeof (top.plugin.document.WePlugin) !== "undefined") {
 					if (top.plugin.isInEditor(arguments[1])) {
