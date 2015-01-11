@@ -28,7 +28,8 @@ class we_object_tag{//FIXME: check why we use class/id instead of classID/ID => 
 	var $id = 0;
 	var $triggerID = 0;
 	var $ClassName = __CLASS__;
-	private $object; //TODO: make private again as soon as property is not accessed directly anymore (use public getObject())
+	private $object;
+	public $classID = 0;
 	var $avail = false;
 	var $hidedirindex = false;
 	var $objectseourls = false;
@@ -49,11 +50,11 @@ class we_object_tag{//FIXME: check why we use class/id instead of classID/ID => 
 		$this->triggerID = $triggerID;
 		$unique = md5(uniqid(__FUNCTION__, true));
 
-		$foo = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($this->id), '', $this->DB_WE);
-		if(!$foo){
+		$this->classID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($this->id), '', $this->DB_WE);
+		if(!$this->classID){
 			return;
 		}
-		$this->object = new we_object_listview($unique, 1, 0, '', 0, $foo, '', '', '(' . OBJECT_X_TABLE . $foo . '.OF_ID="' . intval($this->id) . '")' . ($condition ? ' AND ' . $condition : ''), $this->triggerID, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
+		$this->object = new we_object_listview($unique, 1, 0, '', 0, $this->classID, '', '', '(' . OBJECT_X_TABLE . $this->classID . '.OF_ID="' . intval($this->id) . '")' . ($condition ? ' AND ' . $condition : ''), $this->triggerID, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
 		$this->avail = $this->object->next_record();
 	}
 
@@ -65,10 +66,6 @@ class we_object_tag{//FIXME: check why we use class/id instead of classID/ID => 
 		return ($this->id ? $this->object->f($key) : '');
 	}
 
-	public function getObject(){//FIXME: remove this
-		return $this->object;
-	}
-
 	public function getDB(){
 		return $this->DB_WE;
 	}
@@ -76,4 +73,5 @@ class we_object_tag{//FIXME: check why we use class/id instead of classID/ID => 
 	public function getDBRecord(){
 		return ($this->id ? $this->object->getDBRecord() : array());
 	}
+
 }
