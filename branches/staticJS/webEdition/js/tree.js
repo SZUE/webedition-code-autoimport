@@ -43,11 +43,9 @@ function setTreeState() {
 }
 
 function applyLayout() {
-	if (arguments[0]) {
-		eval("if(" + treeData.treeFrame + ".document.getElementById(\"lab_" + this.id + "\"))" + treeData.treeFrame + ".document.getElementById(\"lab_" + this.id + "\").className =\"" + arguments[0] + "\";");
-	} else {
-		eval("if(" + treeData.treeFrame + ".document.getElementById(\"lab_" + this.id + "\"))" + treeData.treeFrame + ".document.getElementById(\"lab_" + this.id + "\").className =\"" + this.getlayout() + "\";");
-	}
+	eval("if(" + treeData.treeFrame + ".document.getElementById(\"lab_" + this.id + "\"))" + treeData.treeFrame + ".document.getElementById(\"lab_" + this.id + "\").className =\"" +
+					(arguments[0] ? arguments[0] : this.getlayout()) +
+					"\";");
 }
 
 function rootEntry(id, text, rootstat, offset) {
@@ -178,3 +176,4 @@ function setUnCheckNode(imgName) {
 		document.images[imgName].src = "/webEdition/images/tree/check1.gif";
 	}
 }
+

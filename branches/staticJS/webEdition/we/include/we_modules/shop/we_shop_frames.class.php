@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_frames extends we_modules_frame{
+
 	var $db;
 	var $View;
 	var $frameset;
@@ -54,15 +55,12 @@ function doYearClick(yearView){
 
 	function getJSTreeCode(){ //TODO: use we_html_element::jsElement and move to new class weShopTree
 		echo we_html_element::cssLink(CSS_DIR . 'tree.css') .
-			we_html_element::jsElement('
+		we_html_element::jsElement('
 var table="' . SHOP_TABLE . '";
 var tree_icon_dir="' . TREE_ICON_DIR . '";
 var tree_img_dir="' . TREE_IMAGE_DIR . '";
-var we_dir="' . WEBEDITION_DIR . '";
-var tree_select_statustext="' . g_l('tree', '[select_statustext]') . '";
-var tree_edit_statustext="' . g_l('tree', '[edit_statustext]') . '";
-var tree_open_statustext="' . g_l('tree', '[open_statustext]') . '";
-var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";
+var we_dir="' . WEBEDITION_DIR . '";'
+				. parent::getTree_g_l() . '
 var treeYearClick="' . g_l('modules_shop', '[treeYearClick]') . '";
 var treeYear="' . g_l('modules_shop', '[treeYear]') . '";
 var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
@@ -251,7 +249,7 @@ function we_cmd() {
 		}
 
 		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
-				we_html_element::htmlIFrame('edbody', $bodyURL . '&pnt=edbody', 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
+						we_html_element::htmlIFrame('edbody', $bodyURL . '&pnt=edbody', 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
 		);
 
 		return $this->getHTMLDocument($body);
@@ -353,8 +351,8 @@ top.content.hloaded = 1;
 		');
 
 		$tab_body_content = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
-			$we_tabs->getHTML() .
-			'</div>';
+				$we_tabs->getHTML() .
+				'</div>';
 		$tab_body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "bgcolor" => "#FFFFFF", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif"), $tab_body_content);
 
 		return $this->getHTMLDocument($tab_body, $tab_head);
@@ -420,8 +418,8 @@ top.content.hloaded = 1;
 		');
 
 		$tab_body_content = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB($headline) . '</div>' . we_html_tools::getPixel(100, 3) .
-			$we_tabs->getHTML() .
-			'</div>';
+				$we_tabs->getHTML() .
+				'</div>';
 		$tab_body = we_html_element::htmlBody(array('bgcolor' => '#FFFFFF', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif'), $tab_body_content);
 
 		return $this->getHTMLDocument($tab_body, $tab_head);

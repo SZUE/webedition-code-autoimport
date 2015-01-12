@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_banner_frames extends we_modules_frame{
+
 	var $edit_cmd = "banner_edit";
 	protected $useMainTree = false;
 	protected $treeDefaultWidth = 224;
@@ -78,24 +79,22 @@ class we_banner_frames extends we_modules_frame{
 			$IsFolder = $this->db->f("IsFolder");
 
 			$out.=($IsFolder ?
-					"  menuDaten.add(new dirEntry('" . $Icon . "'," . $ID . "," . $ParentID . ",'" . $Text . "',0,'folder','" . BANNER_TABLE . "',1));" :
-					"  menuDaten.add(new urlEntry('" . $Icon . "'," . $ID . "," . $ParentID . ",'" . $Text . "','file','" . BANNER_TABLE . "',1));");
+							"  menuDaten.add(new dirEntry('" . $Icon . "'," . $ID . "," . $ParentID . ",'" . $Text . "',0,'folder','" . BANNER_TABLE . "',1));" :
+							"  menuDaten.add(new urlEntry('" . $Icon . "'," . $ID . "," . $ParentID . ",'" . $Text . "','file','" . BANNER_TABLE . "',1));");
 		}
 
 		$out.='}';
 		echo we_html_element::cssLink(CSS_DIR . 'tree.css') .
-			we_html_element::jsScript(JS_DIR . 'images.js') .
+		we_html_element::jsScript(JS_DIR . 'images.js') .
 		we_html_element::jsScript(JS_DIR . 'tree.js') .
 		we_html_element::jsScript(JS_DIR . 'windows.js') .
 		we_html_element::jsElement('
 var table="' . BANNER_TABLE . '";
 var tree_icon_dir="' . TREE_ICON_DIR . '";
 var tree_img_dir="' . TREE_IMAGE_DIR . '";
-var we_dir="' . WEBEDITION_DIR . '";
-var tree_select_statustext="' . g_l('tree', '[select_statustext]') . '";
-var tree_edit_statustext="' . g_l('tree', '[edit_statustext]') . '";
-var tree_open_statustext="' . g_l('tree', '[open_statustext]') . '";
-var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";') .
+var we_dir="' . WEBEDITION_DIR . '";'
+				. parent::getTree_g_l()
+		) .
 		we_html_element::jsScript(JS_DIR . 'banner_tree.js') .
 		we_html_element::jsElement($out);
 	}
@@ -129,7 +128,7 @@ var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";') .
 		$tab_head = $we_tabs->getHeader();
 
 		$extraHead = $tab_head .
-			we_html_element::jsElement('
+				we_html_element::jsElement('
 				function setTab(tab){
 					switch(tab){
 						case ' . we_banner_banner::PAGE_PROPERTY . ':
@@ -144,15 +143,15 @@ var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";') .
 
 		//TODO: we have the following body in several modules!
 		$body = we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'bgcolor' => 'white', 'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif'), we_html_element::htmlDiv(array('id' => 'main'), we_html_tools::getPixel(100, 3) .
-					we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'), we_html_element::htmlNobr(
-							we_html_element::htmlB(str_replace(" ", "&nbsp;", $headline1) . ':&nbsp;') .
-							we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
-							)
+								we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'), we_html_element::htmlNobr(
+												we_html_element::htmlB(str_replace(" ", "&nbsp;", $headline1) . ':&nbsp;') .
+												we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
+												)
+										)
+								) .
+								we_html_tools::getPixel(100, 3) .
+								$we_tabs->getHTML()
 						)
-					) .
-					we_html_tools::getPixel(100, 3) .
-					$we_tabs->getHTML()
-				)
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -222,9 +221,9 @@ var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";') .
 
 	function getHTMLCmd(){
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array(), $this->View->htmlHidden("ncmd", "") .
-						$this->View->htmlHidden("nopt", "")
-					)
-				), $this->View->getJSCmd());
+										$this->View->htmlHidden("nopt", "")
+								)
+						), $this->View->getJSCmd());
 	}
 
 	function getHTMLDCheck(){

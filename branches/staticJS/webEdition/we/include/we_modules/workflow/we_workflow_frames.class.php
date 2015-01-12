@@ -91,12 +91,9 @@ class we_workflow_frames extends we_modules_frame{
 var table="' . USER_TABLE . '";
 var tree_icon_dir="' . TREE_ICON_DIR . '";
 var tree_img_dir="' . TREE_IMAGE_DIR . '";
-var we_dir="' . WEBEDITION_DIR . '";
-var tree_select_statustext="' . g_l('tree', '[select_statustext]') . '";
-var tree_edit_statustext="' . g_l('tree', '[edit_statustext]') . '";
-var tree_open_statustext="' . g_l('tree', '[open_statustext]') . '";
-var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";
-') .
+var we_dir="' . WEBEDITION_DIR . '";'
+				 . parent::getTree_g_l()
+				) .
 		we_html_element::jsScript(JS_DIR . 'workflow_tree.js') .
 		we_html_element::jsElement($out);
 	}

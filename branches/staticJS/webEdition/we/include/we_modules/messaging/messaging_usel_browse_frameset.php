@@ -37,12 +37,9 @@ echo we_html_tools::getHtmlTop() .
 var table="' . USER_TABLE . '";
 var tree_icon_dir="' . TREE_ICON_DIR . '";
 var tree_img_dir="' . TREE_IMAGE_DIR . '";
-var we_dir="' . WEBEDITION_DIR . '";
-var tree_select_statustext="' . g_l('tree', '[select_statustext]') . '";
-var tree_edit_statustext="' . g_l('tree', '[edit_statustext]') . '";
-var tree_open_statustext="' . g_l('tree', '[open_statustext]') . '";
-var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";
-') .
+var we_dir="' . WEBEDITION_DIR . '";'
+		. we_modules_frame::getTree_g_l()
+) .
  we_html_element::jsScript(JS_DIR . 'messaging_usel_browse.js');
 
 //FIXME: make the js code equal to *_tree.js
@@ -56,7 +53,7 @@ var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";
 		fr.writeln("<script type=\"text/javascript\" src=\"<?php echo JS_DIR . 'messaging_std.js'; ?>\"></" + "script>");
 
 		fr.writeln("<script type=\"text/javascript\">");
-		fr.writeln("<?php echo str_replace(array('script','"'), array('scr+ipt','\''), we_html_tools::getJSErrorHandler());?>");
+		fr.writeln("<?php echo str_replace(array('script', '"'), array('scr+ipt', '\''), we_html_tools::getJSErrorHandler()); ?>");
 		fr.writeln("var clickCount=0;");
 		fr.writeln("var wasdblclick=0;");
 		fr.writeln("var tout=null;");

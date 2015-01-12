@@ -112,7 +112,7 @@ function zeichne(startEntry, zweigEintrag) {
 			if (nf[ai].name != -1) {
 				fr.write("<a name='_" + nf[ai].name + "' href=\"javascript:doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=\"0\">");
 			}
-			fr.write("<IMG SRC=\"" + tree_img_dir + nf[ai].icon + "\" alt=\"" + tree_edit_statustext + "\">");
+			fr.write("<IMG SRC=\"" + tree_img_dir + nf[ai].icon + "\" alt=\"" + g_l.tree_edit_statustext + "\">");
 			fr.write("</a>");
 
 			if (nf[ai].checked) {
@@ -129,14 +129,14 @@ function zeichne(startEntry, zweigEintrag) {
 			var zusatz = (ai == nf.laenge) ? "end" : "";
 
 			if (nf[ai].offen == 0) {
-				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"" + tree_open_statustext + "\"></A>");
+				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"" + g_l.tree_open_statustext + "\"></A>");
 				var zusatz2 = "";
 			} else {
-				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"" + tree_close_statustext + "\"></A>");
+				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"" + g_l.tree_close_statustext + "\"></A>");
 				var zusatz2 = "open";
 			}
 			fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
-			fr.write("<IMG SRC=\"" + tree_icon_dir + "usergroup" + zusatz2 + ".gif\" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"" + tree_edit_statustext + "\">");
+			fr.write("<IMG SRC=\"" + tree_icon_dir + "usergroup" + zusatz2 + ".gif\" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"" + g_l.tree_edit_statustext + "\">");
 			fr.write("</a>");
 			fr.write("<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 			fr.write("&nbsp;<b>" + nf[ai].text + "</b>");

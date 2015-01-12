@@ -30,7 +30,7 @@ class we_users_frames extends we_modules_frame{
 		$this->useMainTree = false;
 		$this->treeFooterHeight = 40;
 		$this->treeDefaultWidth = 224;
-		$this->View = new we_users_view(WE_USERS_MODULE_DIR . "edit_users_frameset.php", "top.content");
+		$this->View = new we_users_view(WE_USERS_MODULE_DIR . 'edit_users_frameset.php', 'top.content');
 	}
 
 	function getJSCmdCode(){
@@ -51,11 +51,7 @@ var table="' . USER_TABLE . '";
 var tree_icon_dir="' . TREE_ICON_DIR . '";
 var tree_img_dir="' . TREE_IMAGE_DIR . '";
 var we_dir="' . WEBEDITION_DIR . '";
-var tree_select_statustext="' . g_l('tree', '[select_statustext]') . '";
-var tree_edit_statustext="' . g_l('tree', '[edit_statustext]') . '";
-var tree_open_statustext="' . g_l('tree', '[open_statustext]') . '";
-var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";
-';
+' . parent::getTree_g_l();
 
 		$jsCode = '
 function loadData() {
@@ -91,8 +87,8 @@ function loadData() {
 ';
 
 		return we_html_element::jsElement($jsInit) .
-			we_html_element::jsScript(JS_DIR . 'users_tree.js') .
-			we_html_element::jsElement($jsCode);
+				we_html_element::jsScript(JS_DIR . 'users_tree.js') .
+				we_html_element::jsElement($jsCode);
 	}
 
 	function getHTMLFrameset(){//TODO: use parent as soon as userTree.class exists
@@ -111,17 +107,17 @@ function loadData() {
 
 	protected function getHTMLTreeFooter(){//TODO: js an customer anpassen oder umgekehrt!
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
-			we_html_element::htmlHidden(array("name" => "cmd", "value" => "show_search"));
+				we_html_element::htmlHidden(array("name" => "cmd", "value" => "show_search"));
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => 'width:100%;margin-top:10px;'), 1, 1);
 		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
-			$hiddens .
-			we_html_button::create_button_table(
-				array(
-					we_html_tools::htmlTextInput("keyword", 10, "", "", "", "text", "150px"),
-					we_html_button::create_button("image:btn_function_search", "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);")
+				$hiddens .
+				we_html_button::create_button_table(
+						array(
+							we_html_tools::htmlTextInput("keyword", 10, "", "", "", "text", "150px"),
+							we_html_button::create_button("image:btn_function_search", "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);")
+						)
 				)
-			)
 		);
 
 		return we_html_element::htmlForm(array("name" => "we_form_treefooter"), $table->getHtml());
@@ -129,8 +125,8 @@ function loadData() {
 
 	protected function getHTMLEditor(){//TODO: Throw out the the exeption for properties/edbody and use parent
 		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=1', 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
-				we_html_element::htmlIFrame('edbody', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users', 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
-				we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter&home=1' . (($sid = we_base_request::_(we_base_request::INT, 'sid')) !== false ? '&sid=' . $sid : '&home=1'), 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;')
+						we_html_element::htmlIFrame('edbody', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users', 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
+						we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter&home=1' . (($sid = we_base_request::_(we_base_request::INT, 'sid')) !== false ? '&sid=' . $sid : '&home=1'), 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;')
 		);
 
 		return $this->getHTMLDocument($body);
@@ -149,22 +145,22 @@ function loadData() {
 		$yuiSuggest = & weSuggest::getInstance();
 
 		$user_object = (isset($_SESSION["user_session_data"]) ?
-				$_SESSION["user_session_data"] :
-				new we_users_user());
+						$_SESSION["user_session_data"] :
+						new we_users_user());
 
 		echo $this->View->getJSProperty();
 		$tab = we_base_request::_(we_base_request::INT, 'tab', 0);
 		$permBranch = oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "perm_branch", 0));
 		$_content = we_html_element::htmlHidden(array("name" => "ucmd", "value" => "",)) .
-			we_html_element::htmlHidden(array("name" => "tab", "value" => $tab)) .
-			we_html_element::htmlHidden(array("name" => "oldtab", "value" => $tab)) .
-			we_html_element::htmlHidden(array("name" => "perm_branch", "value" => $permBranch)) .
-			we_html_element::htmlHidden(array("name" => "old_perm_branch", "value" => $permBranch)) .
-			we_html_element::htmlHidden(array("name" => "obj_name", "value" => $user_object->Name,)) .
-			we_html_element::htmlHidden(array("name" => "uid", "value" => $user_object->ID,)) .
-			we_html_element::htmlHidden(array("name" => "ctype", "value" => oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "ctype", '')))) .
-			we_html_element::htmlHidden(array("name" => "ctable", "value" => oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "ctable", '')))) .
-			we_html_element::htmlHidden(array("name" => "sd", "value" => 0,));
+				we_html_element::htmlHidden(array("name" => "tab", "value" => $tab)) .
+				we_html_element::htmlHidden(array("name" => "oldtab", "value" => $tab)) .
+				we_html_element::htmlHidden(array("name" => "perm_branch", "value" => $permBranch)) .
+				we_html_element::htmlHidden(array("name" => "old_perm_branch", "value" => $permBranch)) .
+				we_html_element::htmlHidden(array("name" => "obj_name", "value" => $user_object->Name,)) .
+				we_html_element::htmlHidden(array("name" => "uid", "value" => $user_object->ID,)) .
+				we_html_element::htmlHidden(array("name" => "ctype", "value" => oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "ctype", '')))) .
+				we_html_element::htmlHidden(array("name" => "ctable", "value" => oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "ctable", '')))) .
+				we_html_element::htmlHidden(array("name" => "sd", "value" => 0,));
 
 		if($user_object){
 			if(($oldTab = we_base_request::_(we_base_request::INT, 'oldtab')) !== false && ($oldBranch = we_base_request::_(we_base_request::STRING, 'old_perm_branch')) !== false){
@@ -181,11 +177,11 @@ function loadData() {
 		$_content .= $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs();
 
 		$_form = we_html_element::htmlForm(array(
-				'name' => 'we_form',
-				'method' => 'post',
-				'autocomplete' => 'off',
-				'onsubmit' => 'return false'
-				), $_content);
+					'name' => 'we_form',
+					'method' => 'post',
+					'autocomplete' => 'off',
+					'onsubmit' => 'return false'
+						), $_content);
 		echo we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $_form);
 	}
 

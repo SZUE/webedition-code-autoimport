@@ -57,7 +57,7 @@ function zeichne(startEntry, zweigEintrag) {
 					ret += "<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">";
 				}
 			}
-			ret += "<img src=\"" + tree_img_dir + "icons/" + nf[ai].icon + "\" title=\"" + tree_edit_statustext + "\">" +
+			ret += "<img src=\"" + tree_img_dir + "icons/" + nf[ai].icon + "\" title=\"" + g_l.tree_edit_statustext + "\">" +
 							(perm_EDIT_SHOP_ORDER ?
 											"</a>" :
 											"") +
@@ -76,16 +76,16 @@ function zeichne(startEntry, zweigEintrag) {
 			var zusatz = (ai === nf.laenge) ? "end" : "";
 
 			if (nf[ai].offen === 0) {
-				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\"><img src=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" title=\"" + tree_open_statustext + "\"></a>";
+				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\"><img src=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" title=\"" + g_l.tree_open_statustext + "\"></a>";
 				var zusatz2 = "";
 			} else {
-				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\"><img src=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\" title=\"" + tree_close_statustext + "\"></a>";
+				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\"><img src=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\" title=\"" + g_l.tree_close_statustext + "\"></a>";
 				var zusatz2 = "open";
 			}
 			ret += (perm_EDIT_SHOP_ORDER ?
 							"<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
 							"") +
-							"<img src=\"" + tree_img_dir + "icons/folder" + zusatz2 + ".gif\" title=\"" + tree_edit_statustext + "\">" +
+							"<img src=\"" + tree_img_dir + "icons/folder" + zusatz2 + ".gif\" title=\"" + g_l.tree_edit_statustext + "\">" +
 							(perm_EDIT_SHOP_ORDER ?
 											"</a>" +
 											// make the month in tree clickable
