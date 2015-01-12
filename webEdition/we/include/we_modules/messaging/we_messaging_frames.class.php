@@ -37,7 +37,7 @@ class we_messaging_frames extends we_modules_frame{
 	protected $hasIconbar = true;
 	protected $useMainTree = false;
 	protected $treeDefaultWidth = 204;
-	
+
 	const TYPE_MESSAGE = 1;
 	const TYPE_TODO = 2;
 
@@ -394,10 +394,10 @@ function drawEintraege() {
 	fr.open();
 	fr.writeln("<html><head>");
 	fr.writeln("<script type=\"text/javascript\"><!--");
-	fr.writeln("' . we_html_tools::getJSErrorHandler(true) . '");
-	fr.writeln("clickCount=0;");
-	fr.writeln("wasdblclick=0;");
-	fr.writeln("tout=null");
+	fr.writeln("' . str_replace(array('script','"'), array('scr+ipt','\''), we_html_tools::getJSErrorHandler()) . '");
+	fr.writeln("var clickCount=0;");
+	fr.writeln("var wasdblclick=0;");
+	fr.writeln("var tout=null;");
 	fr.writeln("function doClick(id) {");
 	fr.writeln("top.content.we_cmd(top.content.mode,id);");
 	fr.writeln("}");
