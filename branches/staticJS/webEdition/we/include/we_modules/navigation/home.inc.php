@@ -41,7 +41,7 @@ $_starttable = new we_html_table(array("border" => 0,
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont",
 	"colspan" => 3,
 	"align" => "center"), "<strong>" .
-		$title . "</strong>");
+	$title . "</strong>");
 
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont",
 	"colspan" => 3), "");
@@ -60,9 +60,33 @@ $_y_table_back = $_y_table + 3;
 $_x_we3 = $_x_table_back + 120;
 $_y_we3 = $_y_table_back + 116;
 ?>
-	#tabelle     { position: absolute; top: 0px; left: 50px; width: 100px; height: 100px; visibility: visible; z-index: 3 }
-	#hintergrund { position: absolute; top: 3px; left: 40px; width: 251px; height: 220px; visibility: visible; z-index: 2 }
-	#modimage    { position: absolute; top: 131px; left: 286px; width: 335px; height: 329px; visibility: visible; z-index: 1 }
+	#tabelle     {
+		position: absolute;
+		top: 0px;
+		left: 50px;
+		width: 100px;
+		height: 100px;
+		visibility: visible;
+		z-index: 3 ;
+	}
+	#hintergrund {
+		position: absolute;
+		top: 3px;
+		left: 40px;
+		width: 251px;
+		height: 220px;
+		visibility: visible;
+		z-index: 2 ;
+	}
+	#modimage{
+		position: absolute;
+		top: 131px;
+		left: 286px;
+		width: 335px;
+		height: 329px;
+		visibility: visible;
+		z-index: 1;
+	}
 
 </style>
 

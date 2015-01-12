@@ -1,0 +1,658 @@
+/**
+ * webEdition CMS
+ *
+ * webEdition CMS
+ * $Rev: 8896 $
+ * $Author: mokraemer $
+ * $Date: 2015-01-06 03:06:15 +0100 (Di, 06. Jan 2015) $
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
+function set_state_edit_delete_recipient(control) {
+	var p = document.forms[0].elements[control];
+	var i = p.length;
+
+	if (i == 0) {
+		switch_button_state("edit", "edit_enabled", "disabled");
+		switch_button_state("delete", "delete_enabled", "disabled");
+		switch_button_state("delete_all", "delete_all_enabled", "disabled");
+		//edit_enabled = switch_button_state("edit", "edit_enabled", "disabled");
+		//delete_enabled = switch_button_state("delete", "delete_enabled", "disabled");
+		//delete_all_enabled = switch_button_state("delete_all", "delete_all_enabled", "disabled");
+
+	} else {
+		switch_button_state("edit", "edit_enabled", "enabled");
+		switch_button_state("delete", "delete_enabled", "enabled");
+		switch_button_state("delete_all", "delete_all_enabled", "enabled");
+		//edit_enabled = switch_button_state("edit", "edit_enabled", "enabled");
+		//delete_enabled = switch_button_state("delete", "delete_enabled", "enabled");
+		//delete_all_enabled = switch_button_state("delete_all", "delete_all_enabled", "enabled");
+	}
+}
+
+function addElement(p, value, text, sel, optionClassName) {
+	var i = p.length;
+
+	p.options[i] = new Option(text, value);
+	p.options[i].className = optionClassName;
+
+	if (sel) {
+		p.selectedIndex = i;
+	}
+}
+
+function getGroupsNum() {
+	return document.we_form.groups.value;
+}
+
+function PopulateVar(p, dest) {
+	var arr = new Array();
+
+	for (i = 0; i < p.length; i++) {
+		arr[i] = p.options[i].text;
+	}
+
+	dest.value = arr.join();
+}
+
+function PopulateMultipleVar(p, dest) {
+	var arr = new Array();
+	c = 0;
+
+	for (i = 0; i < p.length; i++) {
+		if (p.options[i].selected) {
+			c++;
+			arr[c] = p.options[i].value;
+		}
+	}
+
+	dest.value = arr.join();
+}
+
+function addEmail(group, email, html, salutation, title, firstname, lastname) {
+	var dest = document.forms[0].elements["group" + group + "_Emails"]
+	var str = dest.value;
+
+	var arr = (str.length > 0 ? str.split("\n") : new Array());
+
+	arr[arr.length] = email + "," + html + "," + salutation + "," + title + "," + firstname + "," + lastname;
+
+	dest.value = arr.join("\n");
+
+	top.content.hot = 1;
+}
+
+function editEmail(group, id, email, html, salutation, title, firstname, lastname) {
+	var dest = document.forms[0].elements["group" + group + "_Emails"]
+	var str = dest.value;
+
+	var arr = str.split("\n");
+
+	arr[id] = email + "," + html + "," + salutation + "," + title + "," + firstname + "," + lastname;
+
+	dest.value = arr.join("\n");
+
+	top.content.hot = 1;
+}
+
+function mysplice(arr, id) {
+	var newarr = new Array();
+
+	for (i = 0; i < arr.lenght; i++) {
+		if (i != id) {
+			newarr[newarr.lenght] = arr[id];
+		}
+	}
+	return newarr;
+}
+
+function delEmail(group, id) {
+	var dest = document.forms[0].elements["group" + group + "_Emails"]
+	var str = dest.value;
+	var arr = str.split("\n");
+
+	arr.splice(id, 1);
+	dest.value = arr.join("\n");
+	top.content.hot = 1;
+}
+
+function delallEmails(group) {
+	var dest = document.forms[0].elements["group" + group + "_Emails"]
+
+	dest.value = "";
+	top.content.hot = 1;
+}
+
+function inSelectBox(p, val) {
+	for (var i = 0; i < p.options.length; i++) {
+
+		if (p.options[i].text == val) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function in_array(n, h) {
+	for (var i = 0; i < h.length; i++) {
+
+		if (h[i] == n) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function markEMails() {
+}
+
+function getNumOfDocs() {
+	return 0;
+}
+
+function sprintf() {
+	if (!arguments || arguments.length < 1) {
+		return;
+	}
+
+	var argum = arguments[0];
+	var regex = /([^%]*)%(%|d|s)(.*)/;
+	var arr = new Array();
+	var iterator = 0;
+	var matches = 0;
+
+	while (arr = regex.exec(argum)) {
+		var left = arr[1];
+		var type = arr[2];
+		var right = arr[3];
+
+		matches++;
+		iterator++;
+
+		var replace = arguments[iterator];
+
+		if (type == "d") {
+			replace = parseInt(param) ? parseInt(param) : 0;
+		} else if (type == "s") {
+			replace = arguments[iterator];
+		}
+
+		argum = left + replace + right;
+	}
+
+	return argum;
+}
+
+function switchRadio(a, b) {
+	a.value = 1;
+	a.checked = true;
+	b.value = 0;
+	b.checked = false;
+
+	if (arguments[3]) {
+		c = arguments[3];
+		c.value = 0;
+		c.checked = false;
+	}
+}
+
+function clickCheck(a) {
+	if (a.checked) {
+		a.value = 1;
+	} else {
+		a.value = 0;
+	}
+}
+
+function popAndSubmit(wname, pnt, width, height) {
+	old = document.we_form.pnt.value;
+	document.we_form.pnt.value = pnt;
+
+	new jsWindow("about:blank", wname, -1, -1, width, height, true, true, true, true);
+	submitForm(wname);
+	document.we_form.pnt.value = old;
+}
+
+function doScrollTo() {
+	if (parent.scrollToVal) {
+		window.scrollTo(0, parent.scrollToVal);
+		parent.scrollToVal = 0;
+	}
+}
+
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
+
+
+/**
+ * Newsletter command controler
+ */
+function we_cmd() {
+	var args = "";
+	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
+	for (var i = 0; i < arguments.length; i++) {
+		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+		if (i < (arguments.length - 1)) {
+			url += "&";
+		}
+	}
+
+	if (arguments[0] != "switchPage") {
+		self.setScrollTo();
+	}
+
+	switch (arguments[0]) {
+		case "browse_users":
+			new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
+			break;
+
+		case "browse_server":
+			new jsWindow(url, "browse_server", -1, -1, 840, 400, true, false, true);
+			break;
+
+		case "openDocselector":
+			new jsWindow(url, "we_docselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
+			break;
+
+		case "openSelector":
+			new jsWindow(url, "we_selector", -1, -1, size.windowSelect.width, size.windowSelect.height, true, true, true, true);
+			break;
+
+		case "openNewsletterDirselector":
+			url = dirs.WE_MODULES_DIR + "newsletter/we_dirfs.php?";
+			for (var i = 0; i < arguments.length; i++) {
+				url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+				if (i < (arguments.length - 1)) {
+					url += "&";
+				}
+			}
+			new jsWindow(url, "we_newsletter_dirselector", -1, -1, 600, 400, true, true, true);
+			break;
+
+		case "add_customer":
+			document.we_form.ngroup.value = arguments[2];
+
+		case "del_customer":
+			document.we_form.ncmd.value = arguments[0];
+			document.we_form.ncustomer.value = arguments[1];
+			top.content.hot = 1;
+			submitForm();
+			break;
+
+		case "del_all_customers":
+		case "del_all_files":
+			top.content.hot = 1;
+			document.we_form.ncmd.value = arguments[0];
+			document.we_form.ngroup.value = arguments[1];
+			submitForm();
+			break;
+
+		case "add_file":
+			document.we_form.ngroup.value = arguments[2];
+		case "del_file":
+			document.we_form.ncmd.value = arguments[0];
+			document.we_form.nfile.value = arguments[1];
+			top.content.hot = 1;
+			submitForm();
+			break;
+
+		case "switchPage":
+			document.we_form.ncmd.value = arguments[0];
+			document.we_form.page.value = arguments[1];
+			submitForm();
+			break;
+
+		case "set_import":
+		case "reset_import":
+		case "set_export":
+		case "reset_export":
+			document.we_form.ncmd.value = arguments[0];
+			document.we_form.ngroup.value = arguments[1];
+			submitForm();
+			break;
+
+		case "addBlock":
+		case "delBlock":
+			document.we_form.ncmd.value = arguments[0];
+			document.we_form.blockid.value = arguments[1];
+			top.content.hot = 1;
+			submitForm();
+			break;
+
+		case "addGroup":
+		case "delGroup":
+			document.we_form.ncmd.value = arguments[0];
+			document.we_form.ngroup.value = arguments[1];
+			top.content.hot = 1;
+			submitForm();
+			break;
+
+		case "popPreview":
+			if (document.we_form.ncmd.value == "home")
+				return;
+			if (top.content.hot != 0) {
+				top.we_showMessage(g_l.must_save_preview, WE_MESSAGE_ERROR, window);
+			} else {
+				document.we_form.elements["we_cmd[0]"].value = "preview_newsletter";
+				document.we_form.gview.value = parent.edfooter.document.we_form.gview.value;
+				document.we_form.hm.value = parent.edfooter.document.we_form.hm.value;
+				popAndSubmit("newsletter_preview", "preview", 800, 800)
+			}
+			break;
+
+		case "popSend":
+			if (document.we_form.ncmd.value == "home") {
+				top.we_showMessage(g_l.no_newsletter_selected, WE_MESSAGE_ERROR, window);
+			} else if (top.content.hot != 0) {
+				top.we_showMessage(g_l.must_save, WE_MESSAGE_ERROR, window);
+			} else if (document.we_form.IsFolder.value == 1) {
+				top.we_showMessage(g_l.no_newsletter_selected, WE_MESSAGE_ERROR, window);
+			} else {
+
+				message_text = (arguments[1] ? g_l.send_test_question : g_l.send_question);
+
+				if (confirm(message_text)) {
+					document.we_form.ncmd.value = arguments[0];
+					if (arguments[1])
+						document.we_form.test.value = arguments[1];
+					submitForm();
+				}
+			}
+			break;
+
+		case "send_test":
+			if (document.we_form.ncmd.value == "home") {
+				top.we_showMessage(g_l.no_newsletter_selected, WE_MESSAGE_ERROR, window);
+			} else if (top.content.hot != 0) {
+				top.we_showMessage(g_l.must_save, WE_MESSAGE_ERROR, window);
+			} else if (document.we_form.IsFolder.value == 1) {
+				top.we_showMessage(g_l.no_newsletter_selected, WE_MESSAGE_ERROR, window);
+			} else {
+				if (confirm(g_l.test_email_question)) {
+					document.we_form.ncmd.value = arguments[0];
+					document.we_form.gview.value = parent.edfooter.document.we_form.gview.value;
+					document.we_form.hm.value = parent.edfooter.document.we_form.hm.value;
+					submitForm();
+				}
+			}
+			break;
+		case "print_lists":
+		case "domain_check":
+		case "show_log":
+			if (document.we_form.ncmd.value != "home")
+				popAndSubmit(arguments[0], arguments[0], 650, 650);
+			break;
+		case "newsletter_settings":
+			new jsWindow(modFrameSet + "?pnt=" + arguments[0], arguments[0], -1, -1, 600, 750, true, true, true, true);
+			break;
+
+		case "black_list":
+			new jsWindow(modFrameSet + "?pnt=" + arguments[0], arguments[0], -1, -1, 560, 460, true, true, true, true);
+			break;
+
+		case "edit_file":
+			if (arguments[1]) {
+				new jsWindow(modFrameSet + "?pnt=" + arguments[0] + "&art=" + arguments[1], arguments[0], -1, -1, 950, 640, true, true, true, true);
+			} else {
+				new jsWindow(modFrameSet + "?pnt=" + arguments[0], arguments[0], -1, -1, 950, 640, true, true, true, true);
+			}
+			break;
+
+		case "reload_table":
+		case "copy_newsletter":
+			top.content.hot = 1;
+			document.we_form.ncmd.value = arguments[0];
+			submitForm();
+			break;
+
+		case "add_filter":
+		case "del_filter":
+		case "del_all_filters":
+			top.content.hot = 1;
+			document.we_form.ncmd.value = arguments[0];
+			document.we_form.ngroup.value = arguments[1];
+			submitForm();
+			break;
+
+		case "switch_sendall":
+			document.we_form.ncmd.value = arguments[0];
+			top.content.hot = 1;
+			eval("if(document.we_form.sendallcheck_" + arguments[1] + ".checked) document.we_form.group" + arguments[1] + "_SendAll.value=1; else document.we_form.group" + arguments[1] + "_SendAll.value=0;");
+			submitForm();
+			break;
+
+		case "save_settings":
+			document.we_form.ncmd.value = arguments[0];
+			submitForm("newsletter_settings");
+			break;
+
+		case "import_csv":
+		case "export_csv":
+			document.we_form.ncmd.value = arguments[0];
+			submitForm();
+			break;
+
+		case "do_upload_csv":
+			document.we_form.ncmd.value = arguments[0];
+			submitForm("upload_csv");
+			break;
+
+		case "do_upload_black":
+			document.we_form.ncmd.value = arguments[0];
+			submitForm("upload_black");
+			break;
+
+		case "upload_csv":
+		case "upload_black":
+			new jsWindow(modFrameSet + "?pnt=" + arguments[0] + "&grp=" + arguments[1], arguments[0], -1, -1, 450, 270, true, true, true, true);
+			break;
+
+		case "add_email":
+			var email = document.we_form.group = arguments[1];
+			new jsWindow(modFrameSet + "?pnt=eemail&grp=" + arguments[1], "edit_email", -1, -1, 450, 270, true, true, true, true);
+			break;
+
+		case "edit_email":
+			eval("var p=document.we_form.we_recipient" + arguments[1] + ";");
+
+			if (p.selectedIndex < 0) {
+				top.we_showMessage(g_l.no_email, WE_MESSAGE_ERROR, window);
+				return;
+			}
+
+			eval("var dest=document.we_form.group" + arguments[1] + "_Emails;");
+
+			var str = dest.value;
+
+			var arr = str.split("\n");
+
+			var str2 = arr[p.selectedIndex];
+			var arr2 = str2.split(",");
+			var eid = p.selectedIndex;
+			var email = p.options[p.selectedIndex].text;
+			var htmlmail = arr2[1];
+			var salutation = arr2[2];
+			var title = arr2[3];
+			var firstname = arr2[4];
+			var lastname = arr2[5];
+
+			salutation = encodeURIComponent(salutation.replace("+", "[:plus:]"));
+			title = encodeURIComponent(title.replace("+", "[:plus:]"));
+			firstname = encodeURIComponent(firstname.replace("+", "[:plus:]"));
+			lastname = encodeURIComponent(lastname.replace("+", "[:plus:]"));
+			email = encodeURIComponent(email);
+			new jsWindow(modFrameSet + "?pnt=eemail&grp=" + arguments[1] + "&etyp=1&eid=" + eid + "&email=" + email + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 450, 270, true, true, true, true);
+			break;
+
+		case "save_black":
+		case "import_black":
+		case "export_black":
+			document.we_form.ncmd.value = arguments[0];
+			PopulateVar(document.we_form.blacklist_sel, document.we_form.black_list);
+			submitForm("black_list");
+			break;
+		case "search_email":
+			if (document.we_form.ncmd.value == "home") {
+				return;
+			}
+			var searchname = prompt(g_l.search_text, "");
+
+			if (searchname != null) {
+				searchEmail(searchname);
+			}
+
+			break;
+		case "clear_log":
+			new jsWindow(modFrameSet + "?pnt=" + arguments[0], arguments[0], -1, -1, 450, 300, true, true, true, true);
+			break;
+
+		default:
+			for (var i = 0; i < arguments.length; i++) {
+				args += "arguments[" + i + "]" + ((i < (arguments.length - 1)) ? "," : "");
+			}
+			eval("top.content.we_cmd(" + args + ")");
+	}
+}
+
+function submitForm() {
+	if (self.weWysiwygSetHiddenText) {
+		weWysiwygSetHiddenText();
+	}
+
+	var f = self.document.we_form;
+
+	f.target = (arguments[0] ? arguments[0] : "edbody");
+	f.action = (arguments[1] ? arguments[1] : modFrameSet);
+	f.method = (arguments[2] ? arguments[2] : "post");
+
+	f.submit();
+}
+
+function checkData() {
+	if (document.we_form.Text.value == "") {
+		top.we_showMessage(g_l.empty_name, WE_MESSAGE_ERROR, window);
+		return false;
+	}
+	return true;
+}
+
+function add(group, newRecipient, htmlmail, salutation, title, firstname, lastname) {
+	var p = document.forms[0].elements["we_recipient" + group];
+
+	if (newRecipient != null) {
+		if (newRecipient.length > 0) {
+			if (newRecipient.length > 255) {
+				top.we_showMessage(g_l.email_max_len, WE_MESSAGE_ERROR, window);
+				return;
+			}
+
+			if (!inSelectBox(document.forms[0].elements["we_recipient" + group], newRecipient)) {
+				if (isValidEmail(newRecipient))
+					optionClassName = "markValid";
+				else
+					optionClassName = "markNotValid";
+				addElement(document.forms[0].elements["we_recipient" + group], "#", newRecipient, true, optionClassName);
+				addEmail(group, newRecipient, htmlmail, salutation, title, firstname, lastname);
+			} else {
+				top.we_showMessage(g_l.email_exists, WE_MESSAGE_ERROR, window);
+			}
+		} else {
+			top.we_showMessage(g_l.no_email, WE_MESSAGE_ERROR, window);
+		}
+		//set_state_edit_delete_recipient("we_recipient"+group);
+	}
+}
+
+function deleteit(group) {
+	var p = document.forms[0].elements["we_recipient" + group];
+
+	if (p.selectedIndex >= 0) {
+		if (confirm(g_l.email_delete)) {
+			delEmail(group, p.selectedIndex);
+			p.options[p.selectedIndex] = null;
+		}
+	} else {
+		top.we_showMessage(g_l.no_email, WE_MESSAGE_ERROR, window);
+	}
+	//set_state_edit_delete_recipient("we_recipient"+group);
+}
+
+function deleteall(group) {
+	var p = document.forms[0].elements["we_recipient" + group];
+
+	if (confirm(g_l.email_delete_all)) {
+		delallEmails(group);
+		we_cmd("switchPage", 1);
+	}
+	//set_state_edit_delete_recipient("we_recipient"+group);
+}
+
+function editIt(group, index, editRecipient, htmlmail, salutation, title, firstname, lastname) {
+	var p = document.forms[0].elements["we_recipient" + group];
+
+	if (index >= 0 && editRecipient != null) {
+		if (editRecipient != "") {
+			if (editRecipient.length > 255) {
+				top.we_showMessage(g_l.email_max_len, WE_MESSAGE_ERROR, window);
+				return;
+			}
+			if (isValidEmail(editRecipient))
+				optionClassName = "markValid";
+			else
+				optionClassName = "markNotValid";
+			p.options[index].text = editRecipient;
+			p.options[index].className = optionClassName;
+			editEmail(group, index, editRecipient, htmlmail, salutation, title, firstname, lastname);
+		} else {
+			top.we_showMessage(g_l.no_email, WE_MESSAGE_ERROR, window);
+		}
+	}
+}
+
+function searchEmail(searchname) {
+	var f = document.we_form;
+	var c;
+	var hit = 0;
+
+	if (document.we_form.page.value == 1) {
+		for (i = 0; i < f.groups.value; i++) {
+			c = f.elements["we_recipient" + i];
+			c.selectedIndex = -1;
+
+			for (j = 0; j < c.length; j++) {
+				if (c.options[j].text == searchname) {
+					c.selectedIndex = j;
+					hit++;
+				}
+			}
+		}
+		msg = sprintf(g_l.search_finished, hit);
+		top.we_showMessage(msg, WE_MESSAGE_NOTICE, window);
+	}
+}
+
+function isValidEmail(email){
+	email = email.toLowerCase();
+	return checkMail?we.validate.email(email):true;
+	//return (email.match(/^([[:space:]_:\+\.0-9a-z-]+[\<]{1})?[_\.0-9a-z-]+@([0-9a-z-]+\.)+[a-z]{2,6}(\>)?$/) ? true : false);
+}
