@@ -199,14 +199,11 @@ abstract class we_html_forms{
 		if($wysiwyg){
 			$width = $width ? : (abs($cols) ? (abs($cols) * 5.5) : 520);
 			$height = $height ? : (abs($rows) ? (abs($rows) * 8) : 200);
-			if(!$showmenues && $commands){
-				$commands = str_replace(array('formatblock,', 'fontname,', 'fontsize,',), '', implode(',', we_wysiwyg_editor::getAllCmds()));
-				if($hidestylemenu){
-					$commands = str_replace('applystyle,', '', $commands);
-				}
+			if(!$showmenues){
+				$commands = str_replace(array('formatblock,', 'fontname,', 'fontsize,',), '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds()));
 			}
-			if($hidestylemenu && $commands){
-				$commands = str_replace('applystyle,', '', implode(',', we_wysiwyg_editor::getAllCmds()));
+			if($hidestylemenu){
+				$commands = str_replace('applystyle,', '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds()));
 			}
 
 			$out = we_wysiwyg_editor::getHeaderHTML(!$inwebedition);
