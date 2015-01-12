@@ -362,7 +362,7 @@ var size = {
 		"step":' . weTree::StepWidth . ',
 		"moveWidth":' . weTree::MoveWidth . ',
 		"deleteWidth":' . weTree::DeleteWidth . ',
-		"jsWidth":' . self::$treeWidthsJS . ';
+		"jsWidth":' . self::$treeWidthsJS . '
 	},
 };
 var currentModule="' . $module . '";
