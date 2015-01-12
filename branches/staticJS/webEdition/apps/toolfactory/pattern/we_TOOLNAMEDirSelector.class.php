@@ -69,11 +69,11 @@ echo '<?php self::makeWriteDoc($html); ?>';
 ?>
 					d.writeln('</head>');
 									d.writeln('<scr' + 'ipt>');
-									d.writeln('var ctrlpressed=false');
-									d.writeln('var shiftpressed=false');
-									d.writeln('var inputklick=false');
-									d.writeln('var wasdblclick=false');
-									d.writeln('var tout=null');
+									d.writeln('var ctrlpressed=false;');
+									d.writeln('var shiftpressed=false;');
+									d.writeln('var inputklick=false;');
+									d.writeln('var wasdblclick=false;');
+									d.writeln('var tout=null;');
 									d.writeln('document.onclick = weonclick;');
 									d.writeln('function weonclick(e){');
 									if (makeNewFolder || we_editDirID){

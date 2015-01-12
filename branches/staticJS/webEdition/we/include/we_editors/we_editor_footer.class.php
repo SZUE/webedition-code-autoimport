@@ -191,25 +191,22 @@ abstract class we_editor_footer{
 			case 'class_folder':
 				break;
 			default:
-
+				$filename = preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . $we_doc->Extension, $we_doc->Path);
 				$_edit_source = we_html_element::jsElement('
-					function editSource(){
-						if(top.plugin.editSource){
-							top.plugin.editSource("' . $we_doc->Path . '","' . $we_doc->ContentType . '");
-						}
-						else{
-							we_cmd("initPlugin","top.plugin.editSource(\'' . $we_doc->Path . '\',\'' . $we_doc->ContentType . '\')");
-						}
-					}
-					function editFile(){
-						if(top.plugin.editFile){
-							top.plugin.editFile();
-						}
-						else{
-							we_cmd("initPlugin","top.plugin.editFile();");
-						}
-					}');
-
+function editSource(){
+	if(top.plugin.editSource){
+		top.plugin.editSource("' . $filename . '","' . $we_doc->ContentType . '");
+	}else{
+		we_cmd("initPlugin","top.plugin.editSource(\'' . $filename . '\',\'' . $we_doc->ContentType . '\')");
+	}
+}
+function editFile(){
+	if(top.plugin.editFile){
+		top.plugin.editFile();
+	}else{
+		we_cmd("initPlugin","top.plugin.editFile();");
+	}
+}');
 
 				$_normalTable->addCol(2);
 				if(we_base_moduleInfo::isActive('editor')){

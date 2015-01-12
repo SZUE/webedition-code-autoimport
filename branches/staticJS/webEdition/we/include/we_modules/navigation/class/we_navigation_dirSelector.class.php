@@ -98,11 +98,11 @@ class we_navigation_dirSelector extends we_selector_directory{
 				d.open();
 		<?php
 		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
-var ctrlpressed=false
-var shiftpressed=false
-var inputklick=false
-var wasdblclick=false
-var tout=null
+var ctrlpressed=false;
+var shiftpressed=false;
+var inputklick=false;
+var wasdblclick=false;
+var tout=null;
 document.onclick = weonclick;
 function weonclick(e){
 #	if(makeNewFolder ||  we_editDirID){

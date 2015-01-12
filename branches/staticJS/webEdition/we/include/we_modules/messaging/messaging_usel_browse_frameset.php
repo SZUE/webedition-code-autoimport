@@ -56,10 +56,10 @@ var tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";
 		fr.writeln("<script type=\"text/javascript\" src=\"<?php echo JS_DIR . 'messaging_std.js'; ?>\"></" + "script>");
 
 		fr.writeln("<script type=\"text/javascript\">");
-		fr.writeln("<?php echo we_html_tools::getJSErrorHandler(true); ?>");
-		fr.writeln("clickCount=0;");
-		fr.writeln("wasdblclick=0;");
-		fr.writeln("tout=null");
+		fr.writeln("<?php echo str_replace(array('script','"'), array('scr+ipt','\''), we_html_tools::getJSErrorHandler());?>");
+		fr.writeln("var clickCount=0;");
+		fr.writeln("var wasdblclick=0;");
+		fr.writeln("var tout=null;");
 		fr.writeln("top.loaded=1;");
 		fr.writeln("</" + "script>");
 		fr.writeln('<?php echo STYLESHEET_SCRIPT; ?>');

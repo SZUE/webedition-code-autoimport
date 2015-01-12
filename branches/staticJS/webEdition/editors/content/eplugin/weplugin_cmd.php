@@ -31,12 +31,12 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		exit();
 	case "editSource" :
 		$_we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 2);
-
-		$_filename = (isset($_SESSION['weS']['we_data'][$_we_transaction][0]['Path']) && $_SESSION['weS']['we_data'][$_we_transaction][0]['Path'] ?
-				$_SESSION['weS']['we_data'][$_we_transaction][0]['Path'] :
-				we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1)
-			);
-
+		if(isset($_SESSION['weS']['we_data'][$_we_transaction][0]['Path']) && $_SESSION['weS']['we_data'][$_we_transaction][0]['Path']){
+			$doc = $_SESSION['weS']['we_data'][$_we_transaction][0];
+			$_filename = preg_replace('|/' . $doc['Filename'] . '.*$|', $doc['Filename'] . $doc['Extension'], $doc['Path']);
+		} else {
+			$_filename = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1);
+		}
 
 		$_ct = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
 		$_source = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '###EDITORPLUGIN:EMPTYSTRING###', 4);
@@ -135,8 +135,8 @@ if (
 				$we_doc->setElement('data', $tempName, 'image');
 				$_dim = we_thumbnail::getimagesize($tempName);
 				if(is_array($_dim) && count($_dim) > 0){
-					$we_doc->setElement('width', $_dim[0],'attrib');
-					$we_doc->setElement('height', $_dim[1],'attrib');
+					$we_doc->setElement('width', $_dim[0], 'attrib');
+					$we_doc->setElement('height', $_dim[1], 'attrib');
 				}
 			} else {
 				$we_doc->setElement('data', $tempName, 'dat');
