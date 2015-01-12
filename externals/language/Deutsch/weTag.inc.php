@@ -716,7 +716,7 @@ In der Benutzereingabe können lediglich Dokumente geändert werden, sofern das 
 		'description'=>'we:shipping ermittelt die bei einem Einkauf fälligen Versandkosten. Dabei wird auf den Wert des Warenkorbs, das Herkunftsland des eingeloggten Kunden und die innerhalb des Shop Moduls eingepflegten Regeln für Porto- und Versandkosten zugegriffen, um die anfallenden Kosten zu ermitteln. Mit dem Parameter "sum" übergibt man den Namen einer mit we:sum errechneten Summe. Mit dem Parameter type kann gezielt der Netto- (net), bzw. Brutto- (gros) Betrag sowie der Mehrwertsteueranteil (vat) ermittelt werden.',
 	),
 	'shopCategory'=>array(
-		'description'=>'- wird zur Zeit bearbeitet -',
+		'description'=>'Dieses Tag dient dazu, die Shop-Kategorie eines Artikels zu setzen oder auszugeben.',
 	),
 	'shopField'=>array(
 		'description'=>'Mit we:shopField können verschiedene Felder direkt bei Artikeln, bzw. im Warenkorb (Bestellung) abgespeichert werden. Diese Felder können vom Administrator mit verschiedenen Werten festgelegt werden, die der Endkunde dann einstellen kann. Neben Artikel-Varianten ist es damit möglich, eine Vielzahl von verschiedenen Artikelvariationen auf einfache Weise abzubilden.',

@@ -714,7 +714,7 @@ $l_weTag=array(
 		'description'=>'we:shipping -tagia käytetään lähetyskulujen määrittelyyn. Nämä kulut perustuvat ostoskorin arvoon, rekisteröityneen käyttäjän kotimaahan ja lähetyskulujen määrittely sääntöjä voidaan muokata Kauppa moduulissa. Parametriin "summa" määritellään we:sum -tagin nimi. "tyyppi" -parametrilla määritellään joko lähetyskulujen tyyppi.',
 	),
 	'shopCategory'=>array(
-		'description'=>'- to be edited soon -',
+		'description'=>'The we:shopCategory tag creates a select box for Shop categories in edit mode. When not in edit mode it is used to print the dynamically coumputed, valid Shop category of a document/object.',
 	),
 	'shopField'=>array(
 		'description'=>'Tämä tagi tallentaa useamman sisältökentän suoraan tuotteesta tai ostoskorista. The pääkäyttäjä voi määrittää tiettyjä arvoja joista käyttäjä voi valita tai syöttää omansa arvonsa. Näin on mahdollista kartoittaa useampia toisintoja tuotteista helposti.',

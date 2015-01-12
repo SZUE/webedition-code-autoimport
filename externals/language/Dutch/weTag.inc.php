@@ -714,7 +714,7 @@ $l_weTag=array(
 		'description'=>'Met betrekking tot de aankoop wordt we:shipping gebruikt om de verzend kosten te bepalen. Deze kosten zijn gebaseerd op de waarde van de winkelwagen, het land van herkomst van de geregistreerde gebruiker en de verzend overeenkomsten, te wijzigen in de Winkel module. De parameter "sum" bevat de naam van een met we:sum berekende som. De parameter type wordt gebruikt bij het bepalen van de netto waarde, bruto waarde of het aantal van de BTW toebehorend aan de verzendkosten.',
 	),
 	'shopCategory'=>array(
-		'description'=>'- to be edited soon -',
+		'description'=>'The we:shopCategory tag creates a select box for Shop categories in edit mode. When not in edit mode it is used to print the dynamically coumputed, valid Shop category of a document/object.',
 	),
 	'shopField'=>array(
 		'description'=>'Deze tag geeft de mogelijkheid om meerdere invoervelden direct aan een artikel/winkelwagen (bestelling) toe te voegen. De beheerder kan sommige waardes vooraf definiëren waaruit de klant een eigen waarde kan selecteren of invoeren. Hierdoor is het mogelijk om meerdere artikel varianten eenvoudig in kaart te brengen.',

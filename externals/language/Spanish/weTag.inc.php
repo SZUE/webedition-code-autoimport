@@ -715,7 +715,7 @@ Users can only change document-type includes where the name attribute is set. In
 		'description'=>'In regard to the purchase we:shipping is used to determine shipping costs. These costs are based on the value of the shopping cart, the land of origin of the registered user and the shipping cost rules editable in the Shop Module. The parameter "sum" contains the name of a sum calculated with we:sum. The parameter "type" is used to determine either the net, gros as well as the amount of the VAT contained in the shipping costs.',
 	),
 	'shopCategory'=>array(
-		'description'=>'- to be edited soon -',
+		'description'=>'The we:shopCategory tag creates a select box for Shop categories in edit mode. When not in edit mode it is used to print the dynamically coumputed, valid Shop category of a document/object.',
 	),
 	'shopField'=>array(
 		'description'=>'This tag saves various input fields directly from an article or in the shopping cart (order). The administrator can define some values from which the customer can choose or enter an own value. It is therefore possible to map many article variants in a simple way.',
