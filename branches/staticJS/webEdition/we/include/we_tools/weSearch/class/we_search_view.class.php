@@ -405,7 +405,7 @@ if (' . $this->editorBodyFrame . '.loaded) {
 	scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) +"px";
  }
 }else {
- setTimeout(\'sizeScrollContent();\', 1000);
+ setTimeout(sizeScrollContent, 1000);
 }' :
 						'');
 
@@ -692,7 +692,7 @@ function init() {
  if (' . $this->editorBodyFrame . '.loaded) {
 	sizeScrollContent();
 		} else {
-	setTimeout(\'init());\', 10);
+	setTimeout(init, 10);
  }
 }
 

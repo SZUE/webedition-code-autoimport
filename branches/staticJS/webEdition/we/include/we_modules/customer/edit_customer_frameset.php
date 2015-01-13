@@ -44,7 +44,6 @@ switch($what){
 		break;
 	default:
 		$weFrame = new we_customer_frames();
-		echo $weFrame->getHTMLDocumentHeader($what, $mode);
 		$weFrame->process();
 		echo $weFrame->getHTML($what, $mode);
 }

@@ -94,7 +94,7 @@ function getJSCommand($cmd0){
 				$openTable = $_SESSION['weS']['seemForOpenDelSelector']['Table'];
 				unset($_SESSION['weS']['seemForOpenDelSelector']['Table']);
 			}
-			return "setTimeout(top.we_cmd('openDelSelector','','" . $openTable . "','','','','','','',1),50)";
+			return "setTimeout(function(){top.we_cmd('openDelSelector','','" . $openTable . "','','','','','','',1);},50);";
 		/* case "export_documents":
 		  $_tbl = FILE_TABLE;
 		  case "export_templates":

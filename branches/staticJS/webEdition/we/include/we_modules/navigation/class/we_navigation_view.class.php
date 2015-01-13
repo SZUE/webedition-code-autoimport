@@ -273,7 +273,7 @@ function we_cmd() {
 		case "copyNaviFolder":
 			folderPath = document.we_form.CopyFolderPath.value;
 			folderID   = document.we_form.CopyFolderID.value;
-			setTimeout(copyNaviFolder(folderPath, folderID),100);
+			setTimeout(function(){copyNaviFolder(folderPath, folderID);},100);
 			break;
 		case "rebuildNavi":
 			//new jsWindow(\'' . WE_INCLUDES_PATH . 'we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=\',\'resave\',-1,-1,600,130,0,true);

@@ -277,7 +277,7 @@ function checkNode(imgName) {
 				treeData[i].applylayout();
 				if(document.images) {
 					try{
-						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.tree_image_dir+\"check1.gif\";");
+						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.tree_image_dir+\"check0.gif\";");
 					} catch(e) {
 						self.Tree.setCheckNode(imgName);
 					}
@@ -288,7 +288,7 @@ function checkNode(imgName) {
 				treeData[i].applylayout();
 				if(document.images) {
 					try{
-						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.tree_image_dir+"check1.gif";);
+						eval("if("+treeData.treeFrame+".document.images[imgName]){ "+treeData.treeFrame+".document.images[imgName].src=treeData.tree_image_dir+\"check1.gif\";}");
 					} catch(e) {
 						self.Tree.setUnCheckNode(imgName);
 					}
@@ -455,7 +455,7 @@ function drawTree(){
 		var type=typeof(' . $this->treeFrame . ');
 	}catch(e){
 		//console.log("Frame not found ' . $this->treeFrame . '");
-		window.setTimeout(drawTree(), 500);
+		window.setTimeout(drawTree, 500);
 		return;
 	}
 

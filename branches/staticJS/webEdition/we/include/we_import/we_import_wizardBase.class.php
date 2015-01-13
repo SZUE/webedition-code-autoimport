@@ -143,7 +143,7 @@ function we_cmd() {
 						} else {
 							self.wizbody.document.forms['we_form'].elements['v[docCategories]'].value=','+cats[i]+',';
 						}
-						setTimeout(\"weGetCategories('doc',self.wizbody.document.forms['we_form'].elements['v[docCategories]'].value,'rows')\",100);
+						setTimeout(function(){weGetCategories('doc',self.wizbody.document.forms['we_form'].elements['v[docCategories]'].value,'rows');},100);
 					}
 				}
 			}
@@ -171,7 +171,7 @@ function we_cmd() {
 						} else {
 							self.wizbody.document.forms['we_form'].elements['v[objCategories]'].value=','+cats[i]+',';
 						}
-						setTimeout(\"weGetCategories('obj',self.wizbody.document.forms['we_form'].elements['v[objCategories]'].value,'rows')\",100);
+						setTimeout(function(){weGetCategories('obj',self.wizbody.document.forms['we_form'].elements['v[objCategories]'].value,'rows');},100);
 					}
 				}
 			}
@@ -333,7 +333,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 
 
 					$out .= we_html_element::htmlForm(array("name" => "we_form"), $h) .
-							we_html_element::jsElement($JScript . 'setTimeout(we_import(1,-1),15);');
+							we_html_element::jsElement($JScript . 'setTimeout(function(){we_import(1,-1);},15);');
 					break;
 
 				case -1:
@@ -425,7 +425,7 @@ if (top.wizbody && top.wizbody.addLog){
 							we_html_element::htmlHidden(array("name" => "v[uniquePath]", "value" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $path : $parse->path));
 
 					$out .= we_html_element::htmlForm(array("name" => "we_form"), $h) . we_html_element::jsElement(
-									"setTimeout(\"we_import(1,0);\",15);");
+									"setTimeout(function(){we_import(1,0);},15);");
 					break;
 
 				case $v['numFiles']:
@@ -496,12 +496,12 @@ if (top.wizbody.addLog){
 
 
 									$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-													we_html_element::jsElement($JScript . "setTimeout(we_import(1," . $v['cid'] . "),15);"));
+													we_html_element::jsElement($JScript . "setTimeout(function(){we_import(1," . $v['cid'] . ");},15);"));
 								} else {
 
 									$JScript = "
 top.wizbusy.finish(" . $xmlExIm->options['rebuild'] . ");
-setTimeout(we_import(1," . $v['numFiles'] . "),15);";
+setTimeout(function(){we_import(1," . $v['numFiles'] . ");},15);";
 								}
 								$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens . we_html_element::jsElement($JScript));
 
@@ -586,7 +586,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 
 
 									$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-													we_html_element::jsElement($JScript . "setTimeout(we_import(1," . ($v["cid"] + 1) . "),15);"));
+													we_html_element::jsElement($JScript . "setTimeout(function(){we_import(1," . ($v["cid"] + 1) . ");},15);"));
 								}
 							}
 							break 2;
@@ -701,7 +701,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . "
 
 
 					$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-									we_html_element::jsElement($JScript . "setTimeout(we_import(1," . ($v["cid"] + 1) . "),15);"));
+									we_html_element::jsElement($JScript . "setTimeout(function(){we_import(1," . ($v["cid"] + 1) . ");},15);"));
 					break;
 			} // end switch
 		} else if($mode != 1){
@@ -802,7 +802,7 @@ function we_import(mode, cid) {
 								"if (top.wizbody && top.wizbody.addLog) {
 								top.wizbody.addLog(\"<br/>" . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('import', '[end_import]') . " - " . date("d.m.Y H:i:s"))) . "<br/><br/>\");
 								}" :
-								we_message_reporting::getShowMessageCall(g_l('import', '[finish_import]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'setTimeout(top.close(),100);'
+								we_message_reporting::getShowMessageCall(g_l('import', '[finish_import]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'setTimeout(top.close,100);'
 						);
 		}
 

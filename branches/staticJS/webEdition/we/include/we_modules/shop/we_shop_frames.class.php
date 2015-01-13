@@ -54,28 +54,23 @@ function doYearClick(yearView){
 	}
 
 	function getJSTreeCode(){ //TODO: use we_html_element::jsElement and move to new class weShopTree
-		echo we_html_element::cssLink(CSS_DIR . 'tree.css') .
-		we_html_element::jsElement('
+		$ret = we_html_element::cssLink(CSS_DIR . 'tree.css') .
+				we_html_element::jsElement('
 var table="' . SHOP_TABLE . '";
 var tree_icon_dir="' . TREE_ICON_DIR . '";
 var tree_img_dir="' . TREE_IMAGE_DIR . '";
 var we_dir="' . WEBEDITION_DIR . '";'
-				. parent::getTree_g_l() . '
+						. parent::getTree_g_l() . '
 var treeYearClick="' . g_l('modules_shop', '[treeYearClick]') . '";
 var treeYear="' . g_l('modules_shop', '[treeYear]') . '";
 var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
 ') .
-		we_html_element::jsScript(JS_DIR . 'shop_tree.js');
-		?>
-		<script type="text/javascript"><!--
-
-			function loadData() {
-
+				we_html_element::jsScript(JS_DIR . 'shop_tree.js');
+		$menu = 'function loadData() {
 				menuDaten.clear();
-				menuDaten.add(new self.rootEntry('0', 'root', 'root'));
+				menuDaten.add(new self.rootEntry(0, "root", "root"));';
 
 
-		<?php
 		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
 		while($this->db->next_record()){
 			//added for #6786
@@ -94,7 +89,7 @@ var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
 			}
 
 
-			echo "  menuDaten.add(new urlEntry('" . we_base_ContentTypes::FILE_ICON . "'," . $this->db->f("IntOrderID") . "," . $this->db->f("mdate") . ",'" . $this->db->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $this->db->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($this->db->f("DateShipping") > 0) ? 0 : 1) . "','" . $style . "'));\n";
+			$menu.= "  menuDaten.add(new urlEntry('" . we_base_ContentTypes::FILE_ICON . "'," . $this->db->f("IntOrderID") . "," . $this->db->f("mdate") . ",'" . $this->db->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $this->db->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($this->db->f("DateShipping") > 0) ? 0 : 1) . "','" . $style . "'));\n";
 			if($this->db->f('DateShipping') <= 0){
 				if(isset(${'l' . $this->db->f('mdate')})){
 					${'l' . $this->db->f('mdate')} ++;
@@ -117,16 +112,11 @@ var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
 		for($f = 12; $f > 0; $f--){
 			$r = (isset(${'v' . $f . $year}) ? ${'v' . $f . $year} : '');
 			$k = (isset(${'l' . $f . $year}) ? ${'l' . $f . $year} : '');
-			echo "menuDaten.add(new dirEntry('" . we_base_ContentTypes::FOLDER_ICON . "',$f+''+$year,0, '" . (($f < 10) ? "0" . $f : $f) . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : 0) . "/" . (($r > 0) ? $r : 0) . ")',0,'',''," . (($k > 0) ? 1 : 0) . "));";
+			$menu.= "menuDaten.add(new dirEntry('" . we_base_ContentTypes::FOLDER_ICON . "',$f+''+$year,0, '" . (($f < 10) ? "0" . $f : $f) . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : 0) . "/" . (($r > 0) ? $r : 0) . ")',0,'',''," . (($k > 0) ? 1 : 0) . "));";
 		} //'".$this->db->f("mdate")."'
-		echo 'top.yearshop = ' . $year . ';';
-		?>
-
-			}
-
-			//-->
-		</script>
-		<?php
+		$menu.='top.yearshop = ' . $year . ';
+			}';
+		return $ret . we_html_element::jsElement($menu);
 	}
 
 	function getHTMLFrameset(){

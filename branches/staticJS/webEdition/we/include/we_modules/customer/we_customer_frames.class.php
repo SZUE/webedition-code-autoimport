@@ -40,8 +40,7 @@ class we_customer_frames extends we_modules_frame{
 	public function getHTMLDocumentHeader($what = '', $mode = ''){
 		//We need to set this (and in corresponding frames, since the data in database is formated this way
 		if(!($mode === 'export' && we_base_request::_(we_base_request::INT, "step") == 5)){
-			return we_html_tools::headerCtCharset('text/html', DEFAULT_CHARSET) .
-				we_html_tools::getHtmlTop('', DEFAULT_CHARSET);
+			return parent::getHTMLDocumentHeader(DEFAULT_CHARSET);
 		}
 		return parent::getHTMLDocumentHeader();
 	}
@@ -442,10 +441,10 @@ top.content.hloaded = 1;');
 		$table->setCol(2, 0, array(), $select->getHtml());
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => ($mode ? '' : 'document.we_form.keyword.focus();')), we_html_element::linkElement(array('rel' => 'stylesheet', 'type' => 'text/css', 'href' => LIB_DIR . 'jscalendar/skins/aqua/theme.css', 'title' => 'Aqua')) .
+				we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => ($mode ? '' : 'document.we_form.keyword.focus();')), we_html_element::linkElement(array('rel' => 'stylesheet', 'type' => 'text/css', 'href' => LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css', 'title' => 'Aqua')) .
 					we_html_element::jsScript(JS_DIR . 'utils/weDate.js') .
-					we_html_element::jsScript(LIB_DIR . 'jscalendar/calendar.js') .
-					we_html_element::jsScript(LIB_DIR . 'jscalendar/calendar-setup.js') .
+					we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
+					we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js') .
 					we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
 					we_html_element::jsElement(
 						$this->View->getJSSearch() .
@@ -506,7 +505,7 @@ function transferDateFields() {
 							$table->getHtml(), g_l('modules_customer', '[search]'), we_html_button::position_yes_no_cancel(null, we_html_button::create_button("close", "javascript:self.close();")), "100%", 30, 558
 						)
 					) .
-					(we_base_request::_(we_base_request::BOOL, 'mode') ? we_html_element::jsElement("setTimeout(lookForDateFields(), 1);") : '')
+					(we_base_request::_(we_base_request::BOOL, 'mode') ? we_html_element::jsElement("setTimeout(lookForDateFields, 1);") : '')
 				)
 		);
 	}

@@ -109,7 +109,7 @@ TabView.prototype = {
 		this.setText(frameId, text);
 		this.setTitle(frameId, title);
 		this.selectTab(frameId);
-		setTimeout(setFrameSize(), 100);
+		setTimeout(setFrameSize, 100);
 	},
 	/**
 	 * controls the click on the close button
@@ -167,7 +167,7 @@ TabView.prototype = {
 		if (text) {
 			text.innerHTML = val;
 		}
-		setTimeout(setFrameSize(), 50);
+		setTimeout(setFrameSize, 50);
 	},
 	/**
 	 * sets the tab title

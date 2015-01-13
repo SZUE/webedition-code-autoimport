@@ -65,7 +65,7 @@ function we_cmd() {
 	switch (arguments[0]) {
 		case "exit_newsletter":
 			if (hot != 1) {
-				eval('top.opener.top.we_cmd("exit_modules")');
+				top.opener.top.we_cmd("exit_modules");
 			}
 			break;
 
@@ -74,7 +74,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(we_cmd("new_newsletter"), 10);
+				setTimeout(function(){we_cmd("new_newsletter");}, 10);
 			}
 			break;
 
@@ -83,7 +83,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(we_cmd("new_newsletter_group"), 10);
+				setTimeout(function(){we_cmd("new_newsletter_group");}, 10);
 			}
 			break;
 

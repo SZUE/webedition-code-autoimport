@@ -76,7 +76,7 @@ function initCM() {
 function initDefaultEdior() {
 	sizeEditor();
 	document.getElementById("bodydiv").style.display = "block";
-	window.setTimeout(scrollToPosition(), 50);
+	window.setTimeout(scrollToPosition, 50);
 }
 
 function initJava() {
@@ -243,7 +243,7 @@ function checkAndSetHot() {
 		if (document.weEditorApplet.isHot()) {
 			_EditorFrame.setEditorIsHot(true);
 		} else {
-			setTimeout(checkAndSetHot(), 1000);
+			setTimeout(checkAndSetHot, 1000);
 		}
 	}
 }

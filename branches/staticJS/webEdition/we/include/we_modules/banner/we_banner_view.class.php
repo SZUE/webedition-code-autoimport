@@ -207,122 +207,29 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 	}
 
 	function getJSTopCode(){
-		?>
-		<script type="text/javascript"><!--
-
-			var hot = 0;
-
-			function doUnload() {
-				if (!!jsWindow_count) {
-					for (i = 0; i < jsWindow_count; i++) {
-						eval("jsWindow" + i + "Object.close()");
-					}
-				}
-			}
-		<?php
 		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
-		?>
+		return we_html_element::jsElement('
+parent.document.title="' . $title . '";
+var dirs = {
+	"WEBEDITION_DIR": "' . WEBEDITION_DIR . '"
+};
+var g_l = {
+	"save_changed_banner":"' . g_l('modules_banner', '[save_changed_banner]') . '",
+	"no_perms": "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[no_perms]')) . '",
+	"delete_question":"' . g_l('modules_banner', '[delete_question]') . '",
+	"nothing_to_delete": "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_delete]')) . '",
+	"nothing_to_save": "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_save]')) . '"
 
-			parent.document.title = "webEdition <?php echo g_l('global', '[modules]') . ' - ' . $title; ?>";
-
-			function setHot() {
-				hot = "1";
-			}
-
-			function usetHot() {
-				hot = "0";
-			}
-
-			function we_cmd() {
-				var args = "";
-				var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
-				for (var i = 0; i < arguments.length; i++) {
-					url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
-					if (i < (arguments.length - 1)) {
-						url += "&";
-					}
-				}
-				if (hot == "1" && arguments[0] != "save_banner") {
-					if (confirm("<?php echo g_l('modules_banner', '[save_changed_banner]') ?>")) {
-						arguments[0] = "save_banner";
-					} else {
-						top.content.usetHot();
-					}
-				}
-				switch (arguments[0]) {
-					case "exit_banner":
-						if (hot != "1") {
-							eval('top.opener.top.we_cmd(\'exit_modules\')');
-						}
-						break;
-					case "new_banner":
-						if (top.content.editor.edbody.loaded) {
-							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
-							top.content.editor.edbody.submitForm();
-						} else {
-							setTimeout(we_cmd("new_banner"), 10);
-						}
-						break;
-					case "new_bannergroup":
-						if (top.content.editor.edbody.loaded) {
-							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
-							top.content.editor.edbody.submitForm();
-						} else {
-							setTimeout(we_cmd("new_bannergroup"), 10);
-						}
-						break;
-					case "delete_banner":
-		<?php
-		if(!permissionhandler::hasPerm("DELETE_BANNER")){
-			echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
-		} else {
-			?>
-							if (top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home == undefined) {
-								if (!confirm("<?php echo g_l('modules_banner', '[delete_question]') ?>")) {
-									return;
-								}
-							}
-							else {
-			<?php echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING); ?>
-								return;
-							}
-							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
-							top.content.editor.edbody.submitForm();
-		<?php } ?>
-						break;
-					case "save_banner":
-		<?php if(permissionhandler::hasPerm("EDIT_BANNER") || permissionhandler::hasPerm("NEW_BANNER")){ ?>
-							if (top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home == undefined) {
-								if (!top.content.editor.edbody.checkData()) {
-									return;
-								}
-							} else {
-			<?php echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_WARNING); ?>
-								return;
-							}
-
-							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
-							top.content.editor.edbody.submitForm();
-		<?php } ?>
-						top.content.usetHot();
-						break;
-					case "banner_edit":
-						top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
-						top.content.editor.edbody.document.we_form.bid.value = arguments[1];
-						top.content.editor.edbody.submitForm();
-						break;
-					default:
-						for (var i = 0; i < arguments.length; i++) {
-							args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
-						}
-						eval('top.opener.top.we_cmd(' + args + ')');
-				}
-			}
-			//-->
-		</script>
-		<?php
+};
+var perms={
+	"DELETE_BANNER":' . intval(permissionhandler::hasPerm("DELETE_BANNER")) . ',
+	"EDIT_BANNER":' . intval(permissionhandler::hasPerm("EDIT_BANNER")) . ',
+	"NEW_BANNER":' . intval(permissionhandler::hasPerm("NEW_BANNER")) . '
+};
+') .
+				we_html_element::jsScript(WE_WORKFLOW_MODULE_DIR . 'workflow_top.js');
 	}
 
 	function getJSFooterCode(){

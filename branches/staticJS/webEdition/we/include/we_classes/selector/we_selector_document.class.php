@@ -563,7 +563,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		weCountWriteBC++;
 	}') . '
 </head>
-<body class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">';
+<body class="defaultfont" onresize="setInfoSize()" onload="setTimeout(setInfoSize,50)">';
 		if(isset($result['ContentType']) && !empty($result['ContentType'])){
 			if($result['ContentType'] === "folder"){
 				$this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));

@@ -95,7 +95,7 @@ try {
 }
 
 if (__weEditorFrameController && (__weEditorFrameController.getVisibleEditorFrame()) || (parent.frames && parent.frames[1])) {
-	setTimeout(getPathInfos(), 250);
+	setTimeout(getPathInfos, 250);
 }
 
 var loop = 0;
@@ -120,7 +120,7 @@ function getPathInfos() {
 			loop = 0;
 		} else if (loop < 10) {
 			loop++;
-			setTimeout(getPathInfos(), 250);
+			setTimeout(getPathInfos, 250);
 		}
 	}
 	catch (e) {
@@ -156,6 +156,6 @@ function setFrameSize(){
 			fs.rows =  fsRows.join(",");
 		}
 	} else {
-		setTimeout(setFrameSize(),100);
+		setTimeout(setFrameSize,100);
 	}
 }

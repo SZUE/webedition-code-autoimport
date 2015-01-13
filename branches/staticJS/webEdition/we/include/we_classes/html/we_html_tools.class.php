@@ -690,7 +690,7 @@ this.selectedIndex = 0;' .
 		}
 		return
 				($expand ?
-						str_replace(array('script', '"'), array('scr+ipt', '\''), we_html_tools::getJSErrorHandler()) :
+						str_replace(array('script', '"'), array('scr"+"ipt', '\''), we_html_tools::getJSErrorHandler()) :
 						self::getJSErrorHandler()
 				) . //load this as early as possible
 				we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .

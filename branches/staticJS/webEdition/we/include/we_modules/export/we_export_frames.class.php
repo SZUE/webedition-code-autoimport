@@ -175,21 +175,20 @@ class we_export_frames extends we_modules_frame{
 		$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(290, 5));
 
 		$js = we_html_element::jsElement('
-				function we_save() {
-					top.content.we_cmd("save_export");
+function we_save() {
+	top.content.we_cmd("save_export");
 
-				}
-				function doProgress(progress) {
-					var elem = document.getElementById("progress");
-					if(elem.style.display == "none") elem.style.display = "";
-					setProgress(progress);
-				}
+}
+function doProgress(progress) {
+	var elem = document.getElementById("progress");
+	if(elem.style.display == "none") elem.style.display = "";
+	setProgress(progress);
+}
 
-				function hideProgress() {
-					var elem = document.getElementById("progress");
-					if(elem.style.display != "none") elem.style.display = "none";
-				}
-
+function hideProgress() {
+	var elem = document.getElementById("progress");
+	if(elem.style.display != "none") elem.style.display = "none";
+}
 		');
 
 		$text = we_base_request::_(we_base_request::STRING, "current_description", g_l('export', '[working]'));

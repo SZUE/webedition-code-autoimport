@@ -99,7 +99,7 @@ function we_cmd() {
 	switch (arguments[0]) {
 		case "exit_voting":
 			if(hot != "1") {
-				eval(\'top.opener.top.we_cmd("exit_modules")\');
+				top.opener.top.we_cmd("exit_modules");
 			}
 					break;
 

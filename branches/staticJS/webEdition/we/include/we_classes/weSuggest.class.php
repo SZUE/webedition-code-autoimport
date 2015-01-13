@@ -406,7 +406,7 @@ HTS;
 					case (yuiAcFields.set_$i.run):                        // ERROR: Request is running
 						debug('Running');
 						ajaxResponseCT +=ajaxResponseStep;
-						setTimeout(YAHOO.autocoml.doOnTextfieldBlur_$i(),ajaxResponseStep);
+						setTimeout(YAHOO.autocoml.doOnTextfieldBlur_$i,ajaxResponseStep);
 						break;
 					case (yuiAcFields.set_$i.found == 2):                 // ERROR: No result found
 						debug('No reault');
@@ -418,7 +418,7 @@ HTS;
 						if(newInputVal_$i != selInputVal_$i || newInputVal_$i != oldInputVal_$i) {
 							yuiAcFields.set_$i.run = true;
 							YAHOO.autocoml.doAjax(ajaxCallback_$i, '$postData&we_cmd[1]='+newInputVal_$i+'&we_cmd[2]='+yuiAcFields.set_{$i}.table+'&we_cmd[3]={$this->contentTypes[$i]}&we_cmd[4]={$additionalFields}&we_cmd[5]=$i');
-							setTimeout(YAHOO.autocoml.doOnTextfieldBlur_$i(),ajaxResponseStep);
+							setTimeout(YAHOO.autocoml.doOnTextfieldBlur_$i,ajaxResponseStep);
 						}
 						break;
 					case ((yuiAcFields.set_$i.selector == "docSelector" || yuiAcFields.set_$i.selector == "Docselector") && yuiAcFields.set_$i.cType=="folder") :   // ERROR: Wrong type
@@ -697,7 +697,7 @@ $doAjax
 			if(fId) {
 				if(YAHOO.autocoml.counter < 10 && yuiAcFields[yuiAcFieldsById[fId].set]['run']) {
 					YAHOO.autocoml.counter++;
-					setTimeout(YAHOO.autocoml.isValidById(fId),100);
+					setTimeout('YAHOO.autocoml.isValidById(\"'+fId+'\")',100);
 				} else {
 					YAHOO.autocoml.counter=0;
 					return yuiAcFields[yuiAcFieldsById[fId].set]['valid'];

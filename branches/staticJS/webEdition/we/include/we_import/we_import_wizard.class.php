@@ -353,7 +353,7 @@ function handle_eventNext(){
 	}
 	f.step.value = 2;
 	// timing Problem with Safari
-	setTimeout(we_submit_form(self.document.forms.we_form, \"wizbody\", \"" . $this->path . "\"),50);
+	setTimeout(function(){we_submit_form(self.document.forms.we_form, \"wizbody\", \"" . $this->path . "\");},50);
 }
 " : "
 function handle_event(evt) {
@@ -381,7 +381,7 @@ function handle_event(evt) {
 			}
 			f.step.value = 2;
 // timing Problem with Safari
-			setTimeout(we_submit_form(self.document.forms.we_form, \"wizbody\", \"" . $this->path . "\"),50);
+			setTimeout(function(){we_submit_form(self.document.forms.we_form, \"wizbody\", \"" . $this->path . "\");},50);
 			break;
 		case 'cancel':
 			top.close();

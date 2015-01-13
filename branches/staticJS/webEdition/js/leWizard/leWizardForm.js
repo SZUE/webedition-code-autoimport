@@ -115,10 +115,10 @@ leWizardForm.forward = function () {
 
 			default:
 				elem.innerHTML = (counter - 1);
-				leWizardForm.ForwardInterval = window.setTimeout(leWizardForm.forward(), 1000);
+				leWizardForm.ForwardInterval = window.setTimeout(leWizardForm.forward, 1000);
 				break;
 		}
 	} else {
-		leWizardForm.ForwardInterval = window.setTimeout(leWizardForm.forward(), 1000);
+		leWizardForm.ForwardInterval = window.setTimeout(leWizardForm.forward, 1000);
 	}
 };

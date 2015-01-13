@@ -86,7 +86,7 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') .
 
 	function setTab(table) {
 		if (we_tabs === null) {
-			setTimeout(setTab(table), 500);
+			setTimeout(function(){setTab(table);}, 500);
 			return;
 		}
 		switch (table) {

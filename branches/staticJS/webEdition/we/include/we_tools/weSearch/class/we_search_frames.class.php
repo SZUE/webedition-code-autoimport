@@ -168,7 +168,7 @@ class we_search_frames extends we_tool_frames{
 				array(
 				'class' => 'weEditorBody',
 				'onkeypress' => 'javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);',
-				'onload' => 'loaded=1;setTimeout(\'init()\',200);',
+				'onload' => 'loaded=1;setTimeout(init,200);',
 				'onresize' => 'sizeScrollContent();'
 				), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 				we_html_element::htmlForm(
@@ -202,11 +202,11 @@ class we_search_frames extends we_tool_frames{
 				array(
 					'rel' => 'stylesheet',
 					'type' => 'text/css',
-					'href' => LIB_DIR . 'jscalendar/skins/aqua/theme.css',
+					'href' => LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css',
 					'title' => 'Aqua'
-			)) . we_html_element::jsScript(LIB_DIR . 'jscalendar/calendar.js') .
+			)) . we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
 			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
-			we_html_element::jsScript(LIB_DIR . 'jscalendar/calendar-setup.js');
+			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js');
 
 
 		return $this->getHTMLDocument(

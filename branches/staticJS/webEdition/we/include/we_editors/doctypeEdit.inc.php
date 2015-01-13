@@ -53,7 +53,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 			$we_show_response = 1;
 		} else {
 			$we_JavaScript = 'opener.top.makefocus = self;' .
-				we_main_headermenu::getMenuReloadCode();
+					we_main_headermenu::getMenuReloadCode();
 			if($we_doc->we_save()){
 				$we_responseText = sprintf(g_l('weClass', '[doctype_save_ok]'), $we_doc->DocType);
 				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
@@ -143,8 +143,8 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		break;
 	default:
 		$id = (($tmp = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)) ?
-				$tmp :
-				f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']) . ' LIMIT 1'));
+						$tmp :
+						f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']) . ' LIMIT 1'));
 
 		if($id){
 			$we_doc->initByID($id, DOC_TYPES_TABLE);
@@ -205,7 +205,9 @@ function we_save_docType(doc, url) {
 	} else if (acStatusType.toLowerCase() == 'object') {
 		if (acStatus.running) {
 			countSaveLoop++;
-			setTimeout(we_save_docType(doc,url), 100);
+			setTimeout(function () {
+				we_save_docType(doc, url);
+			}, 100);
 		} else if (!acStatus.valid) {
 <?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) ?>;
 			countSaveLoop = 0;
@@ -378,8 +380,8 @@ function disableLangDefault(allnames, allvalues, deselect) {
 		$cancelbut = we_html_button::create_button("close", "javascript:self.close();if(top.opener.we_cmd){top.opener.we_cmd('switch_edit_page',0);}");
 
 		$buttons = ($we_doc->ID ?
-				we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:we_cmd('save_docType', '" . $we_transaction . "')"), "", $cancelbut) :
-				'<div align="right">' . $cancelbut . '</div>');
+						we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:we_cmd('save_docType', '" . $we_transaction . "')"), "", $cancelbut) :
+						'<div align="right">' . $cancelbut . '</div>');
 
 
 		echo we_html_multiIconBox::getJS() .

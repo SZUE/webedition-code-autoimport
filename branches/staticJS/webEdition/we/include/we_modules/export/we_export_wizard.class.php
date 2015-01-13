@@ -436,7 +436,7 @@ function we_cmd(){
 
 		$js.=we_html_element::jsElement(
 				$this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=3";
-	setTimeout(' . $this->topFrame . '.startTree(),100);
+	setTimeout(' . $this->topFrame . '.startTree,100);
 
 function populate(id,table){
 	//if(table=="' . FILE_TABLE . '") document.we_form.selDocs.value+=","+id;
@@ -475,7 +475,7 @@ function setHead(tab){
 		' : '') . '
 	}
 
-	setTimeout(' . $this->topFrame . '.startTree(),100);
+	setTimeout(' . $this->topFrame . '.startTree,100);
 	document.getElementById("' . FILE_TABLE . '").style.backgroundColor=c0;
 	document.getElementById("' . TEMPLATES_TABLE . '").style.backgroundColor=c1;' .
 				(defined('OBJECT_FILES_TABLE') ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.backgroundColor=c2;' : '' ) .
@@ -874,7 +874,7 @@ var we_tabs = new Array();
 
 				$table->setCol(0, 0, array("class" => "header_small"), we_html_tools::getPixel(5, 15) . we_html_element::htmlB(g_l('export', '[step2]')));
 				$table->setCol(1, 0, array("valign" => "top"), we_html_tools::getPixel(15, 2));
-				$table->setCol(2, 0, array("nowrap" => "nowrap"), we_html_element::jsElement('setTimeout(we_tabInit(),500);')
+				$table->setCol(2, 0, array("nowrap" => "nowrap"), we_html_element::jsElement('setTimeout(we_tabInit,500);')
 				);
 				break;
 

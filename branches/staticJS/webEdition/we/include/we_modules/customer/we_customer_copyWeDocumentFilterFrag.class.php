@@ -101,7 +101,7 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 			parent.setProgressText('copyWeDocumentCustomerFilterText', '" . g_l('modules_customerFilter', '[apply_filter_done]') . "');
 			parent.setProgress(100);
 			" . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter', '[apply_filter_done]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-			window.setTimeout(parent.top.close(), 2000);
+			window.setTimeout(parent.top.close, 2000);
 		");
 	}
 

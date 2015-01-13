@@ -278,11 +278,11 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			array(
 				"rel" => "stylesheet",
 				"type" => "text/css",
-				"href" => LIB_DIR . "jscalendar/skins/aqua/theme.css",
+				"href" => LIB_DIR . "additional/jscalendar/skins/aqua/theme.css",
 				"title" => "Aqua"
-		)) . we_html_element::jsScript(LIB_DIR . "jscalendar/calendar.js") .
+		)) . we_html_element::jsScript(LIB_DIR . "additional/jscalendar/calendar.js") .
 		we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
-		we_html_element::jsScript(LIB_DIR . "jscalendar/calendar-setup.js") .
+		we_html_element::jsScript(LIB_DIR . "additional/jscalendar/calendar-setup.js") .
 		we_html_button::create_state_changer() . we_html_element::jsElement(
 			(($type === "pad/pad") ? "
 			var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';

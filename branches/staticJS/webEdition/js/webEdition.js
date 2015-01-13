@@ -208,7 +208,10 @@ function storeTreeWidth(w) {
 }
 
 function focusise() {
-	setTimeout("self.makefocus.focus();self.makefocus=null;", 200);
+	setTimeout(function () {
+		self.makefocus.focus();
+		self.makefocus = null;
+	}, 200);
 }
 
 function we_repl(target, url) {
@@ -1238,7 +1241,7 @@ function we_cmd_base(args, url) {
 			//var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
 
 			// if we switch from we_base_constants::WE_EDITPAGE_CONTENT to another page
-			if (_isEditpageContent && args[1] !== WE_EDITPAGE_CONTENT) {
+			if (_isEditpageContent && args[1] !== constants.WE_EDITPAGE_CONTENT) {
 				// clean body to avoid flickering
 				try {
 					_currentEditorRootFrame.frames[1].document.body.innerHTML = "";
@@ -1254,7 +1257,7 @@ function we_cmd_base(args, url) {
 				// set flag to false
 				_isEditpageContent = false;
 				// if we switch to we_base_constants::WE_EDITPAGE_CONTENT from another page
-			} else if (!_isEditpageContent && args[1] === WE_EDITPAGE_CONTENT) {
+			} else if (!_isEditpageContent && args[1] === constants.WE_EDITPAGE_CONTENT) {
 				// switch to content editor frame
 				top.weEditorFrameController.switchToContentEditor();
 				// set var to new active editor frame

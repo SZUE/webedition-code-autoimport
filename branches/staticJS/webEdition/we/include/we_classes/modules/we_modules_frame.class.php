@@ -63,13 +63,15 @@ abstract class we_modules_frame{
 		return ($this->Tree->initialized ? 'function start(){startTree();}' : 'function start(){}');
 	}
 
-	public function getHTMLDocumentHeader(){
-		we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
-		return we_html_tools::getHtmlTop($this->module) . STYLESHEET;
+	public function getHTMLDocumentHeader($charset = ''){
+		$charset = ($charset? : $GLOBALS['WE_BACKENDCHARSET']);
+		we_html_tools::headerCtCharset('text/html', $charset);
+		return we_html_tools::getHtmlTop($this->module, $charset) . STYLESHEET;
 	}
 
 	function getHTMLDocument($body, $extraHead = ''){
-		return $extraHead .
+		return $this->getHTMLDocumentHeader() .
+				$extraHead .
 				we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 				we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
 				we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .

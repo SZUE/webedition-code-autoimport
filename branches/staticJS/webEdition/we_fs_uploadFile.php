@@ -208,9 +208,9 @@ if($weFileupload->processFileRequest()){
 			opener.top.unselectAllFiles();
 			opener.top.addEntry(<?php echo '"' . $we_doc->ID . '", "' . $we_doc->Icon . '", "' . $we_doc->Text . '", "' . $we_doc->IsFolder . '", "' . $we_doc->Path . '"'; ?>);
 			opener.top.doClick(<?php echo $we_doc->ID; ?>, 0);
-			setTimeout(opener.top.selectFile(<?php echo $we_doc->ID; ?>), 200);
+			setTimeout(function(){opener.top.selectFile(<?php echo $we_doc->ID; ?>);}, 200);
 		<?php } ?>
-		setTimeout(self.close(), 250);
+		setTimeout(self.close, 250);
 	<?php } ?>
 	//-->
 	</script>

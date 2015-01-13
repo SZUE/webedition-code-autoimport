@@ -207,7 +207,7 @@ function set_button_state(alldis) {
 			top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "next_enabled", "enabled");
 		}
 	}else{
-		setTimeout(set_button_state((alldis ? 1 : 0)),300);
+		setTimeout(function(){set_button_state((alldis ? 1 : 0));},300);
 	}
 }
 set_button_state(false);';
@@ -453,7 +453,7 @@ function set_button_state(alldis) {
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}
 	}else{
-		setTimeout(set_button_state((alldis ? 1 : 0)),300);
+		setTimeout(function(){set_button_state((alldis ? 1 : 0));},300);
 	}
 }
 set_button_state(false);';
@@ -700,7 +700,7 @@ set_button_state(false);';
 				  			nextBut.innerHTML = \'' . $nextButton . '\';
 						}
 					}else{
-						setTimeout(set_button_state((alldis ? 1 : 0)),300);
+						setTimeout(function(){set_button_state((alldis ? 1 : 0));},300);
 					}
 				}
 				set_button_state(false);';
@@ -1238,7 +1238,7 @@ function set_button_state(alldis) {
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}
 	}else{
-		setTimeout(set_button_state((alldis ? 1 : 0)),300);
+		setTimeout(function(){set_button_state((alldis ? 1 : 0));},300);
 	}
 }
 set_button_state(false);';
@@ -1258,12 +1258,12 @@ set_button_state(false);';
 				array(
 					"rel" => "stylesheet",
 					"type" => "text/css",
-					"href" => LIB_DIR . "jscalendar/skins/aqua/theme.css",
+					"href" => LIB_DIR . "additional/jscalendar/skins/aqua/theme.css",
 					"title" => "Aqua"
 			)) .
-			we_html_element::jsScript(LIB_DIR . 'jscalendar/calendar.js') .
+			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
 			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
-			we_html_element::jsScript(LIB_DIR . 'jscalendar/calendar-setup.js');
+			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js');
 
 		$headCal .=
 			we_html_element::jsScript(JS_DIR . 'windows.js') .

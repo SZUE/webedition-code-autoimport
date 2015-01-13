@@ -97,10 +97,12 @@ function pWebEdition_Frameset($SEEM_edit_include){
 		<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
 		<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
 		<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="plugin"></iframe>
-		<?php include(WE_USERS_MODULE_PATH . 'we_users_ping.inc.php'); ?>
 	</div>
 	<?php
 }
+
+//set/update locks & active documents
+we_users_user::updateActiveUser();
 
 /* $sn = SERVER_NAME;
 
@@ -195,7 +197,8 @@ var g_l = {
 	'nav_first_document': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][first_document]')); ?>',
 	'nav_last_document': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][last_document]')); ?>',
 	'nav_no_open_document': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_open_document]')); ?>',
-	'nav_no_entry': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_entry]')); ?>'
+	'nav_no_entry': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_entry]')); ?>',
+	'unable_to_call_ping': '<?php echo g_l('global', '[unable_to_call_ping]'); ?>'
 };
 var size = {
 	'tree': {
@@ -250,7 +253,13 @@ var contentTypes = {
 	'WEDOCUMENT': '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>',
 	'OBJECT_FILE': '<?php echo we_base_ContentTypes::OBJECT_FILE; ?>',
 };
-var WE_EDITPAGE_CONTENT =<?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>;
+var modules = {
+	'MESSAGING_SYSTEM':<?php echo intval(defined('MESSAGING_SYSTEM')); ?>
+};
+var constants = {
+	'WE_EDITPAGE_CONTENT':<?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>,
+	'PING_TIME':<?php echo we_base_constants::PING_TIME * 1000; ?>
+}
 /*##################### messaging function #####################*/
 
 // this variable contains settings how to deal with settings
@@ -281,7 +290,8 @@ we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
  we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
  we_html_element::jsScript(JS_DIR . 'webEdition.js') .
- we_html_element::jsScript(JS_DIR . 'weSidebar.js');
+ we_html_element::jsScript(JS_DIR . 'weSidebar.js') .
+ we_html_element::jsScript(JS_DIR . 'we_users_ping.js');
 
 
 foreach($jsCmd as $cur){

@@ -182,7 +182,7 @@ function populate(id,table){
 function setHead(tab){
 	' . $this->topFrame . '.table=tab;
 	' . $this->topFrame . '.document.we_form.table.value=tab;
-	setTimeout("' . $this->topFrame . '.startTree()",100);
+	setTimeout(' . $this->topFrame . '.startTree,100);
 }
 
 var SelectedItems= new Array();

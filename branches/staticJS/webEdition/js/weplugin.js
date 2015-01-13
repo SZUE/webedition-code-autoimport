@@ -135,7 +135,7 @@ function pingPlugin() {
 		}
 
 	}
-	to = window.setTimeout(pingPlugin(), 1000);
+	//to = window.setTimeout(pingPlugin(), 1000);
 }
 
 function initPlugin() {
@@ -163,7 +163,7 @@ function checkPlugin() {
 	} else {
 		wait_count++;
 		if (wait_count < wait_retry) {
-			setTimeout(checkPlugin(), 1000);
+			setTimeout(checkPlugin, 1000);
 		} else {
 			nojava();
 		}

@@ -191,7 +191,7 @@ function pb_increment() {
 		oLoadText.pb_write(Math.floor(oLoad2.percent * scale.current) + '%');
 	}
 	if (scale.current >= scale.maximum)
-		setTimeout(pb_destroy(), 500);
+		setTimeout(pb_destroy, 500);
 }
 
 function pb_destroy() {
@@ -210,7 +210,7 @@ function pb_display() {
 		oLoadText.pb_write(Math.floor(oLoad2.percent * scale.current) + '%');
 	}
 	if (scale.current <= scale.maximum) {
-		setTimeout(pb_display(), 200);
+		setTimeout(pb_display, 200);
 	} else {
 		oLoadCont.css.visibility = 'hidden';
 	}

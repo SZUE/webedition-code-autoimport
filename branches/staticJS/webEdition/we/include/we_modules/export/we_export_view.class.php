@@ -109,7 +109,7 @@ function we_cmd() {
 	switch (arguments[0]) {
 		case "exit_export":
 			if(hot != "1") {
-				eval(\'top.opener.top.we_cmd("exit_modules")\');
+				top.opener.top.we_cmd("exit_modules");
 			}
 					break;
 		case "new_export_group":

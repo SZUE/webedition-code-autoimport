@@ -35,10 +35,10 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 $content = $_view->getVersionsOfDoc();
 $foundItems = count($content);
 
-echo we_html_element::cssLink(LIB_DIR . 'jscalendar/skins/aqua/theme.css') .
- we_html_element::jsScript(LIB_DIR . 'jscalendar/calendar.js') .
+echo we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css') .
+ we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
  we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/calendar.js') .
- we_html_element::jsScript(LIB_DIR . 'jscalendar/calendar-setup.js') .
+ we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js') .
  $_view->getJS() .
  STYLESHEET .
  we_html_element::cssElement('
@@ -78,7 +78,7 @@ echo we_html_element::cssLink(LIB_DIR . 'jscalendar/skins/aqua/theme.css') .
 ?>
 </head>
 <body class="weEditorBody" onunload="doUnload()" onkeypress="javascript:if (event.keyCode == 13 || event.keyCode == 3)
-			search(true);" onload="setTimeout(init(), 200)" onresize="sizeScrollContent();">
+			search(true);" onload="setTimeout(init, 200)" onresize="sizeScrollContent();">
 	<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;">
 		<?php
 		echo $_view->getHTMLforVersions(array(

@@ -353,7 +353,7 @@ abstract class we_rebuild_wizard{
 					top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "back_enabled", "enabled");
 					top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "next_enabled", "enabled");
 				}else{
-					setTimeout(set_button_state(),300);
+					setTimeout(set_button_state,300);
 				}
 			}
 			set_button_state();';
@@ -953,7 +953,7 @@ abstract class we_rebuild_wizard{
 					top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "back_enabled", "enabled");
 					top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "next_enabled", "enabled");
 				}else{
-					setTimeout(set_button_state(),300);
+					setTimeout(set_button_state,300);
 				}
 			}
 			set_button_state();';

@@ -99,7 +99,7 @@ var we_dir="' . WEBEDITION_DIR . '";'
 	}
 
 	function getJSCmdCode(){
-		echo $this->View->getJSTopCode();
+		return $this->View->getJSTopCode();
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){
@@ -173,7 +173,7 @@ function setStatusCheck(){
 	var a=document.we_form.status_workflow;
 	var b;
 	if(top.content.editor.edbody.loaded) b=top.content.editor.edbody.getStatusContol();
-	else setTimeout(setStatusCheck(),100);
+	else setTimeout(setStatusCheck,100);
 
 	if(b==1) a.checked=true;
 	else a.checked=false;

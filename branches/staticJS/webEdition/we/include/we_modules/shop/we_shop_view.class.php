@@ -896,12 +896,12 @@ function we_cmd() {
 			// ********************************************************************************
 			// "Html output for order with articles"
 			//
-		echo we_html_element::jsScript(LIB_DIR . 'jscalendar/calendar.js') .
-			we_html_element::jsScript(LIB_DIR . 'jscalendar/calendar-setup.js') .
+		echo we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
+			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js') .
 			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
 			we_html_element::jsScript(JS_DIR . 'images.js') .
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::cssLink(LIB_DIR . 'jscalendar/skins/aqua/theme.css');
+			we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css');
 			?>
 
 			<script type="text/javascript"><!--

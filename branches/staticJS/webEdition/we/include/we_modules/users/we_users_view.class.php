@@ -76,7 +76,7 @@ function we_cmd() {
 	switch (arguments[0]) {
 		case "exit_users":
 			if(hot != "1") {
-				eval("top.opener.top.we_cmd(\'exit_modules\')");//imi: test
+				top.opener.top.we_cmd("exit_modules");
 			}
 			break;
 		case "new_user":

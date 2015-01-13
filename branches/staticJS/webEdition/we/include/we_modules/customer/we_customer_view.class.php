@@ -94,7 +94,7 @@ function we_cmd() {
 	switch (arguments[0]) {
 		case "exit_customer":
 			if(hot != "1") {
-				eval(\'top.opener.top.we_cmd("exit_modules")\');
+				top.opener.top.we_cmd("exit_modules");
 			}
 			break;
 		case "new_customer":
@@ -103,7 +103,7 @@ function we_cmd() {
 				' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value = arguments[1];
 				' . $this->topFrame . '.editor.edbody.submitForm();
 			} else {
-				setTimeout(\'we_cmd("new_customer");\', 10);
+				setTimeout(function(){we_cmd("new_customer");}, 10);
 			}
 			break;
 
