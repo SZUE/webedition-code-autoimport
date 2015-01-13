@@ -73,7 +73,6 @@ function zeichne(startEntry, zweigEintrag) {
 			var zusatz2="";
 			if (nf[ai].offen == 0) {
 				ret += "&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\"></A>";
-				//zusatz2 = "";
 			} else {
 				ret += "&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\"><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\"></A>";
 				zusatz2 = "open";

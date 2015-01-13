@@ -133,7 +133,7 @@ function checkNode(imgName) {
 			' . $this->treeFrame . '.populate(treeData[i].id,treeData.table);
 			if(treeData[i].checked==1) {
 				if(document.images) {
-					eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check0_img.src;");
+					eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.tree_image_dir+\"check0.gif\";");
 				}
 				treeData[i].checked=0;
 				if(' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length>1){
@@ -152,7 +152,7 @@ function checkNode(imgName) {
 				break;
 			} else {
 				if(document.images) {
-					eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check1_img.src;");
+					eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.tree_image_dir+\"check1.gif\";");
 				}
 				treeData[i].checked=1;
 				' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].push(treeData[i].id);

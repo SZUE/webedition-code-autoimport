@@ -90,7 +90,7 @@ function we_tag_listview($attribs){
 
 	$predefinedSQL = weTag_getAttribute('predefinedSQL', $attribs, '', we_base_request::RAW);
 	$offset = weTag_getAttribute('offset', $attribs, 0, we_base_request::INT);
-	$workspaceID = weTag_getAttribute('workspaceID', $attribs, weTag_getAttribute('workspaceid', $attribs, 0, we_base_request::INT), we_base_request::INT);
+	$workspaceID = weTag_getAttribute('workspaceID', $attribs, weTag_getAttribute('workspaceid', $attribs, 0, we_base_request::INTLIST), we_base_request::INTLIST);
 	$we_lv_ws = we_base_request::_(we_base_request::INTLIST, 'we_lv_ws_' . $name, $workspaceID);
 
 	$orderid = weTag_getAttribute('orderid', $attribs, 0, we_base_request::INT);

@@ -185,9 +185,10 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 
 			//this.form.removeChild(item);
 			this.parent.removeChild(item);
-			//FIXME: what does this do????
 			item = document.getElementById(this.name + "_variant" + this.variantCount + "_" + this.name + "_itemImageID" + z);
+			this.parent.removeChild(item);
 			item = document.getElementById(this.name + "_variant" + this.variantCount + "_" + this.name + "_itemMediaID" + z);
+			this.parent.removeChild(item);
 			item = document.getElementById(this.name + "_variant" + this.variantCount + "_" + this.name + "_itemSuccessorID" + z);
 			this.parent.removeChild(item);
 		}
@@ -205,7 +206,7 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 		var set = document.createElement("div");
 		set.setAttribute("id", this.name + "_item" + this.itemCount);
 
-		if (this.editable == true) {
+		if (this.editable === true) {
 			TabStart = "<table style=\"margin-bottom:5px;\" cellpadding=0 cellspacing=0 border=0><tr valign=\"middle\"><td style=\"width:" + this.defWidth + "px\"><input name=\"" + this.name + "_item" + this.itemCount + "\" id=\"" + this.name + "_item_input_" + this.itemCount + "\" type=\"text\" style=\"width:" + this.defWidth + "px\" onkeyup=\"" + this.name + ".updateHidden(\'item" + this.itemCount + "\',this.value)\" class=\"wetextinput\"></td><td>&nbsp;</td><td>" + butt + "</td></tr>";
 			TabEnd = "</table>";
 

@@ -25,6 +25,10 @@
  */
 
 //FIXME: compare & unite all _tree.js files
+var startloc = 0;
+var menuDaten = new container();
+var count = 0;
+var folder = 0;
 
 function drawEintraege() {
 	fr = top.content.tree.window.document.body;//IMI: set tree indstead of left
@@ -234,17 +238,9 @@ function urlEntry(icon, name, vorfahr, text, contentType, table, published, deni
 	return this;
 }
 
-
-
 function start() {
 	loadData();
 	drawEintraege();
 }
 
-var startloc = 0;
-
 self.focus();
-
-var menuDaten = new container();
-var count = 0;
-var folder = 0;

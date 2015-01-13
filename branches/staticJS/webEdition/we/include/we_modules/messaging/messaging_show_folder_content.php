@@ -47,18 +47,18 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 	default_text_color = "#000000";
 	default_color = "#ffffff";
 
-	passed_dls = new Array();
+	passed_dls = [];
 
 	function showContent(id) {
 		top.content.editor.edbody.msg_mfv.messaging_msg_view.location = "<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_message_view.php?id=" + id + "&we_transaction=<?php echo $transaction; ?>";
 	}
 
 	function check(elem, groupSel) {
-		var i, j;
+		var j;
 
 		var id = parseInt(elem.match(/\d+/));
 
-		if (top.content.multi_select == false) {
+		if (top.content.multi_select === false) {
 
 			//de-select all selected entries
 			for (j = 0; j < parent.parent.entries_selected.length; j++) {
@@ -78,20 +78,15 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 	}
 
 	function doSelectMessage(id) {
-		var i = 0;
-		var highlight_color = sel_color;
-		var highlight_text_color = sel_text_color;
-
-		if (id == -1)
+		if (id == -1) {
 			return;
-
+		}
 		showContent(id);
 
-		//IE Mac 5.01 doesnt support Array.push()
 		if (parent.parent.entries_selected.length > 0) {
-			parent.parent.entries_selected = parent.parent.entries_selected.concat(new Array(String(id)));
+			parent.parent.entries_selected.push(String(id));
 		} else {
-			parent.parent.entries_selected = new Array(String(id));
+			parent.parent.entries_selected = [String(id)];
 		}
 
 		parent.parent.last_entry_selected = id;
@@ -106,19 +101,22 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 		var i;
 
 		for (i = 0; i <= 3; i++) {
-			if (i == 0 || i == 2) {
-				if (document.getElementById("td_" + id + "_link_" + i)) {
-					document.getElementById("td_" + id + "_link_" + i).style.color = text_color;
-				}
-				if (document.getElementById("td_" + id + "_" + i)) {
-					document.getElementById("td_" + id + "_" + i).style.color = text_color;
-				}
-			} else {
-				if (i != 1 || (top.content.viewclass != "todo")) {
+			switch (i) {
+				case 0:
+				case 2:
+					if (document.getElementById("td_" + id + "_link_" + i)) {
+						document.getElementById("td_" + id + "_link_" + i).style.color = text_color;
+					}
 					if (document.getElementById("td_" + id + "_" + i)) {
 						document.getElementById("td_" + id + "_" + i).style.color = text_color;
 					}
-				}
+					break;
+				default:
+					if (i != 1 || (top.content.viewclass != "todo")) {
+						if (document.getElementById("td_" + id + "_" + i)) {
+							document.getElementById("td_" + id + "_" + i).style.color = text_color;
+						}
+					}
 			}
 			if (document.getElementById("td_" + id + "_" + i)) {
 				document.getElementById("td_" + id + "_" + i).style.backgroundColor = color;
@@ -127,10 +125,6 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 	}
 
 	function unSelectMessage(id, unsel_all) {
-		var index = -1;
-		var arr1, arr2;
-		var location;
-
 		highlight_TR(id, default_color, default_text_color);
 
 		parent.parent.entries_selected = array_rm_elem(parent.parent.entries_selected, id, -1);
@@ -144,7 +138,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 	}
 
 	function newMessage(username) {
-		new jsWindow('<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_newmessage.php?we_transaction=<?php echo $transaction; ?>&mode=u_' +encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
+		new jsWindow('<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_newmessage.php?we_transaction=<?php echo $transaction; ?>&mode=u_' + encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
 	}
 //-->
 </script>
@@ -198,7 +192,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 			showContent(parent.parent.entries_selected[parent.parent.entries_selected.length - 1]);
 
 <?php
-echo 'passed_dls = new Array(String(' . implode('), String(', $passed_dls) . '));';
+echo 'passed_dls = [String(' . implode('), String(', $passed_dls) . ')];';
 ?>
 //-->
 	</script>

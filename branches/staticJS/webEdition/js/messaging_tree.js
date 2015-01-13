@@ -30,16 +30,17 @@ var multi_select = 0;
 var startloc = 0;
 var loaded_thr = 2;
 var load_state = 0;
+var menuDaten = new container();
+var count = 0;
+var folder = 0;
+var mode = "show_folder_content";
+
 deleteMode = false;
 entries_selected = [];
 del_parents = [];
 open_folder = -1;
 viewclass = "message";
 mode = "show_folder_content";
-check0_img = new Image();
-check1_img = new Image();
-check0_img.src = tree_img_dir + "check0.gif";
-check1_img.src = tree_img_dir + "check1.gif";
 // message folders
 f1_img = new Image();
 f3_img = new Image();
@@ -80,7 +81,7 @@ function check(img) {
 			if (menuDaten[i].checked) {
 				if (left.document.images) {
 					if (left.document.images[img]) {
-						left.document.images[img].src = check0_img.src;
+						left.document.images[img].src = tree_img_dir + "check0.gif";
 					}
 				}
 				menuDaten[i].checked = false;
@@ -90,7 +91,7 @@ function check(img) {
 			else {
 				if (left.document.images) {
 					if (left.document.images[img]) {
-						left.document.images[img].src = check1_img.src;
+						left.document.images[img].src = tree_img_dir + "check1.gif";
 					}
 				}
 				menuDaten[i].checked = true;
@@ -335,7 +336,6 @@ function zeichne(startEntry, zweigEintrag) {
 			var zusatz2 = "";
 			if (nf[ai].offen === 0) {
 				ret += "&nbsp;&nbsp;<A href=\"javascript:top.content.openClose(\'" + nf[ai].name + "\',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_open_statustext + "\"></A>";
-				//zusatz2 = "";
 			} else {
 				ret += "&nbsp;&nbsp;<A href=\"javascript:top.content.openClose(\'" + nf[ai].name + "\',0)\"><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\"alt=\"" + g_l.tree_close_statustext + "\"></A>";
 				zusatz2 = "open";
@@ -591,9 +591,3 @@ function msg_start() {
 	loadData();
 	drawEintraege();
 }
-
-
-var menuDaten = new container();
-var count = 0;
-var folder = 0;
-var mode = "show_folder_content";

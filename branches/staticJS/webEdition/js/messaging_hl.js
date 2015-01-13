@@ -27,17 +27,13 @@ default_color = "#000000";
 
 // Highlighting-Stuff start
 function selectEntryHandler(id) {
-	var i, j;
-
-//		var id = parseInt(elem.match(/\d+/));
+	var j;
 
 	if (parent.multi_select === 0) {
 		//unselect all selected entries
 		for (j = 0; j < parent.entries_selected.length; j++) {
 			highlight_Elem(parent.entries_selected[j], default_color);
 		}
-
-
 		parent.entries_selected = [];
 		doSelectMessage(id, 'elem', '');
 	} else {
@@ -79,17 +75,12 @@ function highlight_Elem(id, color, fr) {
 
 function highlight_TR(id, color) {
 	var i;
-
 	for (i = 0; i <= 3; i++) {
 		document.getElementById("td_" + id + "_" + i).style.backgroundColor = color;
 	}
 }
 
 function unSelectMessage(id, show_cont, doc) {
-	var index = -1;
-	var arr1, arr2;
-
-
 	if (show_cont == 'fv') {
 		parent.entries_selected = array_rm_elem(parent.entries_selected, id, -1);
 		highlight_TR(id, default_color);

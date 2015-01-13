@@ -277,7 +277,7 @@ function checkNode(imgName) {
 				treeData[i].applylayout();
 				if(document.images) {
 					try{
-						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check0_img.src;");
+						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.tree_image_dir+\"check1.gif\";");
 					} catch(e) {
 						self.Tree.setCheckNode(imgName);
 					}
@@ -288,7 +288,7 @@ function checkNode(imgName) {
 				treeData[i].applylayout();
 				if(document.images) {
 					try{
-						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check1_img.src;");
+						eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.tree_image_dir+"check1.gif";);
 					} catch(e) {
 						self.Tree.setUnCheckNode(imgName);
 					}
@@ -396,13 +396,6 @@ function container(){
 	this.tree_states={' . implode(',', $ts) . '};
 	this.tree_layouts={' . implode(',', $tl) . '};
 	this.node_layouts={' . implode(',', $nl) . '};
-
-	this.check0_img=new Image();
-	this.check0_img.src=this.tree_image_dir+"check0.gif";
-
-	this.check1_img=new Image();
-	this.check1_img.src=this.tree_image_dir+"check1.gif";
-
 	return this;
 }';
 	}

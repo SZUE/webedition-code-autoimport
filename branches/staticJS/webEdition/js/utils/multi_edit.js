@@ -75,10 +75,9 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 			//this.form.removeChild(item);
 			this.parent.removeChild(item);
 		}
-		if (variant < (this.variantCount - 1))
-			this.currentVariant = variant;
-		else
-			this.currentVariant = this.variantCount - 1;
+		this.currentVariant = (variant < (this.variantCount - 1) ?
+						variant :
+						this.variantCount - 1);
 
 		this.showVariant(this.currentVariant);
 
@@ -97,8 +96,7 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 
 		if (this.editable === true) {
 			set.innerHTML = "<table style=\"margin-bottom:5px;\" cellpadding=0 cellspacing=0 border=0><tr valign=\"middle\"><td style=\"width:" + this.defWidth + "px\"><input name=\"" + this.name + "_item" + this.itemCount + "\" id=\"" + this.name + "_item_input_" + this.itemCount + "\" type=\"text\" style=\"width:" + this.defWidth + "px\" onkeyup=\"" + this.name + ".updateHidden(\'item" + this.itemCount + "\',this.value)\" class=\"wetextinput\"></td><td>&nbsp;</td><td>" + butt + "</td></tr></table>";
-		}
-		else {
+		} else {
 			set.innerHTML = "<table style=\"margin-bottom:5px;\" cellpadding=0 cellspacing=0 border=0><tr valign=\"middle\"><td style=\"width:" + this.defWidth + "px\"><label id=\"" + this.name + "_item_label_" + this.itemCount + "\" class=\"defaultfont\"></td><td>&nbsp;</td><td>" + butt + "</td></tr></table>";
 		}
 
@@ -157,12 +155,12 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 	this.showVariant = function (variant) {
 
 		for (var i = 0; i < this.itemCount; i++) {
-			if (typeof (this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + i]) != 'undefined') {
+			if (this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + i] !== undefined) {
 				if (variant != this.currentVariant && this.editable)
 					this.setItem(this.currentVariant, i, this.form.elements[this.name + "_item" + i].value);
-				if (this.editable)
+				if (this.editable){
 					this.form.elements[this.name + "_item" + i].value = this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + i].value;
-				else {
+				} else {
 					var item = document.getElementById(this.name + "_item_label_" + i);
 					item.innerHTML = this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + i].value;
 				}

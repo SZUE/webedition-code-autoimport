@@ -492,3 +492,34 @@ table.msgheadertable td {
 table.msgheadertable tr {
 	height: 12px;
 }
+
+/*Error log*/
+table.error{
+	background-color:#FFFFFF;
+	border: 1px solid #265da6;
+	width:610px;
+}
+table.error tr.first{
+	background-color:#f7f7f7;
+}
+table.error tr{
+	vertical-align:top;
+}
+table.error td{
+	padding:4px;
+	border-bottom: 1px solid #265da6;
+}
+table.error td.left{
+	white-space:nowrap;
+	border-right: 1px solid #265da6;
+	font-weight: bold;
+}
+table.error td.right{
+	font-style:italic;
+}
+table.error td pre{
+	font-style:normal;
+	tab-size:2;
+	-o-tab-size:2;
+	-moz-tab-size:2;
+}

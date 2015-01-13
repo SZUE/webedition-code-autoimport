@@ -58,7 +58,6 @@ function getColumnAsoc(id) {
 	return aNodeSet;
 }
 
-
 function getWidgetProps(p) {
 	var oProps = {};
 	for (i = 1; i <= _iLayoutCols; i++) {

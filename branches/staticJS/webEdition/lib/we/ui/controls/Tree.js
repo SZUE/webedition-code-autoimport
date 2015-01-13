@@ -34,8 +34,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-function we_ui_controls_Tree(treeId)
-{
+function we_ui_controls_Tree(treeId){
 
 	/**
 	 * id of the element
@@ -66,7 +65,7 @@ function we_ui_controls_Tree(treeId)
 	 *
 	 */
 
-	this.addNode = function(id, text, contentType, parentId, published, status) {
+	this.addNode = function (id, text, contentType, parentId, published, status) {
 
 		text = text.replace(/</g, "&lt;");
 		text = text.replace(/>/g, "&gt;");
@@ -114,7 +113,7 @@ function we_ui_controls_Tree(treeId)
 	 * @param id integer
 	 * @param newParentId integer
 	 */
-	this.moveNode = function(id, newParentId) {
+	this.moveNode = function (id, newParentId) {
 
 		var mNode = eval("tree_" + this.id + ".getNodeByProperty('id',id);");
 
@@ -140,7 +139,7 @@ function we_ui_controls_Tree(treeId)
 	 * @param id integer
 	 * @param mark boolean
 	 */
-	this.markNode = function(id, mark) {
+	this.markNode = function (id, mark) {
 
 		var mNodeSpan = document.getElementById('spanText_' + this.id + '_' + id + '');
 
@@ -164,7 +163,7 @@ function we_ui_controls_Tree(treeId)
 	 * @param id integer
 	 * @param status boolean
 	 */
-	this.markNodeStatus = function(id, status) {
+	this.markNodeStatus = function (id, status) {
 		var mNodeSpan = document.getElementById('spanText_' + this.id + '_' + id + '');
 		if (mNodeSpan) {
 			classB = new Array();
@@ -188,7 +187,7 @@ function we_ui_controls_Tree(treeId)
 	 * @param id integer
 	 * @param mark boolean
 	 */
-	this.markNodeP = function(id, mark) {
+	this.markNodeP = function (id, mark) {
 		var mNodeSpan = document.getElementById('spanText_' + this.id + '_' + id + '');
 		if (mNodeSpan) {
 			if (!mark) {
@@ -207,7 +206,7 @@ function we_ui_controls_Tree(treeId)
 	 * unmark all nodes
 	 *
 	 */
-	this.unmarkAllNodes = function() {
+	this.unmarkAllNodes = function () {
 
 		var nodes = eval("tree_" + this.id + "._nodes");
 		for (var i in nodes) {
@@ -222,7 +221,7 @@ function we_ui_controls_Tree(treeId)
 	 * @param id integer
 	 * @param text string
 	 */
-	this.renameNode = function(id, text) {
+	this.renameNode = function (id, text) {
 
 		text = text.replace(/</g, "&lt;");
 		text = text.replace(/>/g, "&gt;");
@@ -239,7 +238,7 @@ function we_ui_controls_Tree(treeId)
 	 *
 	 * @param id integer
 	 */
-	this.removeNode = function(id) {
+	this.removeNode = function (id) {
 
 		var mNode = eval("tree_" + this.id + ".getNodeByProperty('id',id);");
 
@@ -254,7 +253,7 @@ function we_ui_controls_Tree(treeId)
 	 *
 	 * @param id integer
 	 */
-	this.getParentId = function(id) {
+	this.getParentId = function (id) {
 
 		var mNode = eval("tree_" + this.id + ".getNodeByProperty('id',id);");
 
@@ -275,7 +274,7 @@ function we_ui_controls_Tree(treeId)
 	 *
 	 * @param id integer
 	 */
-	this.getLabel = function(id) {
+	this.getLabel = function (id) {
 
 		var mNode = eval("tree_" + this.id + ".getNodeByProperty('id',id);");
 
@@ -288,7 +287,7 @@ function we_ui_controls_Tree(treeId)
 	 *
 	 * @param id integer
 	 */
-	this.getStatus = function(id) {
+	this.getStatus = function (id) {
 
 		var mNode = eval("tree_" + this.id + ".getNodeByProperty('id',id);");
 
@@ -301,7 +300,7 @@ function we_ui_controls_Tree(treeId)
 	 *
 	 * @param id integer
 	 */
-	this.getPublished = function(id) {
+	this.getPublished = function (id) {
 
 		var mNode = eval("tree_" + this.id + ".getNodeByProperty('id',id);");
 
@@ -315,7 +314,7 @@ function we_ui_controls_Tree(treeId)
 	 * @param id integer
 	 * return boolean
 	 */
-	this.idExists = function(id) {
+	this.idExists = function (id) {
 
 		var mNode = eval("tree_" + this.id + ".getNodeByProperty('id',id);");
 
@@ -332,7 +331,7 @@ function we_ui_controls_Tree(treeId)
 	 * @param label
 	 * return boolean
 	 */
-	this.labelExists = function(label) {
+	this.labelExists = function (label) {
 
 		var mNode = eval("tree_" + this.id + ".getNodeByProperty('text',label);");
 
@@ -343,4 +342,3 @@ function we_ui_controls_Tree(treeId)
 
 	}
 }
-

@@ -175,4 +175,3 @@ function setUnCheckNode(imgName) {
 		document.images[imgName].src = "/webEdition/images/tree/check1.gif";
 	}
 }
-

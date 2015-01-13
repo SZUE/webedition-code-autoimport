@@ -24,13 +24,13 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
+$_we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 2);
 
 $out = '';
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case '':
 		exit();
 	case "editSource" :
-		$_we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 2);
 		if(isset($_SESSION['weS']['we_data'][$_we_transaction][0]['Path']) && $_SESSION['weS']['we_data'][$_we_transaction][0]['Path']){
 			$doc = $_SESSION['weS']['we_data'][$_we_transaction][0];
 			$_filename = preg_replace('|/' . $doc['Filename'] . '.*$|', $doc['Filename'] . $doc['Extension'], $doc['Path']);
@@ -63,8 +63,6 @@ if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "f
 
 		break;
 	case "editFile":
-		$_we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 1);
-
 		$we_dt = isset($_SESSION['weS']['we_data'][$_we_transaction]) ? $_SESSION['weS']['we_data'][$_we_transaction] : "";
 		include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
@@ -87,21 +85,17 @@ if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "f
 
 		break;
 	case "setSource":
-		$transactionID = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 1);
-		if(isset($_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"])){
-			$_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"] = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 2);
-			$_SESSION['weS']['we_data'][$transactionID][1]["data"]["dat"] = $_SESSION['weS']['we_data'][$transactionID][0]["elements"]["data"]["dat"];
+		if(isset($_SESSION['weS']['we_data'][$_we_transaction][0]["elements"]["data"]["dat"])){
+			$_SESSION['weS']['we_data'][$_we_transaction][0]["elements"]["data"]["dat"] = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 2);
+			$_SESSION['weS']['we_data'][$_we_transaction][1]["data"]["dat"] = $_SESSION['weS']['we_data'][$_we_transaction][0]["elements"]["data"]["dat"];
 
 			$out = we_html_element::jsElement(
-					'var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $transactionID . '");
+					'var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $_we_transaction . '");
 _EditorFrame.getContentFrame().reloadContent = true;');
 		}
 
 		break;
 	case "reloadContentFrame":
-
-		$_we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 1);
-
 		$out = we_html_element::jsElement(
 				'var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $_we_transaction . '");
 _EditorFrame.setEditorIsHot(true);
@@ -164,6 +158,4 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 	we_html_element::htmlHead(
 		we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET'])
 	) .
-	we_html_element::htmlBody(array('style' => 'background-color:white'), $out
-	)
-);
+	we_html_element::htmlBody(array('style' => 'background-color:white'), $out));

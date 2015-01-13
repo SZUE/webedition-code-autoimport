@@ -29,6 +29,10 @@
 var loaded = 0;
 var hot = 0;
 var hloaded = 0;
+var menuDaten = new container();
+var count = 0;
+var folder = 0;
+var startloc = 0;
 
 function setHot() {
 	hot = 1;
@@ -37,10 +41,6 @@ function setHot() {
 function usetHot() {
 	hot = 0;
 }
-
-var menuDaten = new container();
-var count = 0;
-var folder = 0;
 
 function drawEintraege() {
 	fr = top.content.tree.window.document.body;//IMI: set tree indstead of left
@@ -103,7 +103,6 @@ function zeichne(startEntry, zweigEintrag) {
 	}
 	return ret;
 }
-
 
 function makeNewEntry(icon, id, pid, txt, offen, ct, tab, pub) {
 	if (ct === "folder") {
@@ -256,7 +255,5 @@ function start() {
 	loadData();
 	drawEintraege();
 }
-
-var startloc = 0;
 
 self.focus();

@@ -256,7 +256,6 @@ function urlEntry(icon, name, vorfahr, text, contentType, table, published, styl
 	return this;
 }
 
-
 function start() {
 	loadData();
 	drawEintraege();

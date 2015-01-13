@@ -27,11 +27,14 @@
 //FIXME: compare & unite all _tree.js files
 
 //FIXME: add drawEintrage
-//FIXME: we have to change the class of the elements
 
 var loaded = 0;
 var hot = 0;
 var i;
+var menuDaten = new container();
+var count = 0;
+var folder = 0;
+
 entries_selected = [];
 last_entry_selected = -1;
 multi_select = 1;
@@ -51,15 +54,6 @@ function usetHot() {
 	hot = 0;
 }
 
-var menuDaten = new container();
-var count = 0;
-var folder = 0;
-
-check0_img = new Image();
-check1_img = new Image();
-check0_img.src = tree_img_dir + "check0.gif";
-check1_img.src = tree_img_dir + "check1.gif";
-
 function do_selupdate() {
 	opener.delta_sel = entries_selected;
 	opener.delta_sel_add('we_message', '&');
@@ -77,7 +71,7 @@ function check(entry) {
 			if (menuDaten[i].checked) {
 				if (document.images) {
 					if (messaging_usel_main.document.images[img])
-						messaging_usel_main.document.images[img].src = check0_img.src;
+						messaging_usel_main.document.images[img].src = tree_img_dir + "check0.gif";
 				}
 				menuDaten[i].checked = false;
 				unSelectMessage(entry, 'elem', messaging_usel_main);
@@ -85,7 +79,7 @@ function check(entry) {
 			} else {
 				if (document.images) {
 					if (messaging_usel_main.document.images[img])
-						messaging_usel_main.document.images[img].src = check1_img.src;
+						messaging_usel_main.document.images[img].src = tree_img_dir + "check1.gif";
 				}
 				menuDaten[i].checked = true;
 				doSelectMessage(entry, 'elem', messaging_usel_main);
@@ -106,9 +100,9 @@ function zeichne(startEntry, zweigEintrag) {
 		fr.write(zweigEintrag);
 		if (nf[ai].typ == 'user') {
 			if (ai == nf.laenge) {
-				fr.write("&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir + "kreuzungend.gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
+				fr.write("&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir + "kreuzungend.gif\" class=\"treeKreuz\">");
 			} else {
-				fr.write("&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir + "kreuzung.gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>");
+				fr.write("&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir + "kreuzung.gif\" class=\"treeKreuz\">");
 			}
 			if (nf[ai].name != -1) {
 				fr.write("<a name='_" + nf[ai].name + "' href=\"javascript:doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=\"0\">");
@@ -122,7 +116,7 @@ function zeichne(startEntry, zweigEintrag) {
 				checkpic = "check0.gif";
 			}
 
-			fr.write("<a href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><img src=\"" + tree_img_dir + checkpic + "\" \"width=\"16\" height=\"18\" align=\"absmiddle\" border=\"0\" alt=\"\" name=\"img_" + nf[ai].name + "\" /></a>");
+			fr.write("<a href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><img src=\"" + tree_img_dir + checkpic + "\" \" alt=\"\" name=\"img_" + nf[ai].name + "\" /></a>");
 			fr.write("&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><span id=\"" + nf[ai].name + '&' + nf[ai].text + "\" class=\"u_tree_entry\">" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") + "</span></A>&nbsp;&nbsp;<br/>\n");
 		} else {
 			var newAst = zweigEintrag;
@@ -130,13 +124,13 @@ function zeichne(startEntry, zweigEintrag) {
 			var zusatz = (ai == nf.laenge) ? "end" : "";
 			var zusatz2 = "";
 			if (nf[ai].offen === 0) {
-				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"" + g_l.tree_open_statustext + "\"></A>");
+				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_open_statustext + "\"></A>");
 			} else {
-				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"" + g_l.tree_close_statustext + "\"></A>");
+				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',0)\"><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_close_statustext + "\"></A>");
 				zusatz2 = "open";
 			}
-			fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
-			fr.write("<IMG SRC=\"" + tree_icon_dir + "usergroup" + zusatz2 + ".gif\" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"" + g_l.tree_edit_statustext + "\">");
+			fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
+			fr.write("<IMG SRC=\"" + tree_icon_dir + "usergroup" + zusatz2 + ".gif\" alt=\"" + g_l.tree_edit_statustext + "\">");
 			fr.write("</a>");
 			fr.write("<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
 			fr.write("&nbsp;<b>" + nf[ai].text + "</b>");
@@ -144,9 +138,9 @@ function zeichne(startEntry, zweigEintrag) {
 			fr.write("&nbsp;&nbsp;<br/>\n");
 			if (nf[ai].offen) {
 				if (ai == nf.laenge) {
-					newAst = newAst + "<IMG SRC=\"" + tree_img_dir + "leer.gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
+					newAst = newAst + "<IMG SRC=\"" + tree_img_dir + "leer.gif\" class=\"treeKreuz\">";
 				} else {
-					newAst = newAst + "<IMG SRC=\"" + tree_img_dir + "strich2.gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0>";
+					newAst = newAst + "<IMG SRC=\"" + tree_img_dir + "strich2.gif\" class=\"treeKreuz\">";
 				}
 				ret += zeichne(nf[ai].name, newAst);
 			}

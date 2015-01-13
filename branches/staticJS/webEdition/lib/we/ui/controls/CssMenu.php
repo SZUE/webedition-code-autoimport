@@ -60,9 +60,9 @@ class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
 
 	function getJS(){
 		return we_html_element::jsElement('
-				function menuaction(cmd) {
-					weCmdController.fire({cmdName: cmd})
-				}');
+function menuaction(cmd) {
+	weCmdController.fire({cmdName: cmd})
+}');
 	}
 
 	//remove cmdTarget in 6.4 after Java Menu is removed
