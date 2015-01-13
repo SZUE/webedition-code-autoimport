@@ -26,7 +26,7 @@ function set_state_edit_delete_recipient(control) {
 	var p = document.forms[0].elements[control];
 	var i = p.length;
 
-	if (i == 0) {
+	if (i === 0) {
 		switch_button_state("edit", "edit_enabled", "disabled");
 		switch_button_state("delete", "delete_enabled", "disabled");
 		switch_button_state("delete_all", "delete_all_enabled", "disabled");
@@ -60,7 +60,7 @@ function getGroupsNum() {
 }
 
 function PopulateVar(p, dest) {
-	var arr = new Array();
+	var arr = [];
 
 	for (i = 0; i < p.length; i++) {
 		arr[i] = p.options[i].text;
@@ -70,7 +70,7 @@ function PopulateVar(p, dest) {
 }
 
 function PopulateMultipleVar(p, dest) {
-	var arr = new Array();
+	var arr = [];
 	c = 0;
 
 	for (i = 0; i < p.length; i++) {
@@ -84,10 +84,10 @@ function PopulateMultipleVar(p, dest) {
 }
 
 function addEmail(group, email, html, salutation, title, firstname, lastname) {
-	var dest = document.forms[0].elements["group" + group + "_Emails"]
+	var dest = document.forms[0].elements["group" + group + "_Emails"];
 	var str = dest.value;
 
-	var arr = (str.length > 0 ? str.split("\n") : new Array());
+	var arr = (str.length > 0 ? str.split("\n") : []);
 
 	arr[arr.length] = email + "," + html + "," + salutation + "," + title + "," + firstname + "," + lastname;
 
@@ -97,7 +97,7 @@ function addEmail(group, email, html, salutation, title, firstname, lastname) {
 }
 
 function editEmail(group, id, email, html, salutation, title, firstname, lastname) {
-	var dest = document.forms[0].elements["group" + group + "_Emails"]
+	var dest = document.forms[0].elements["group" + group + "_Emails"];
 	var str = dest.value;
 
 	var arr = str.split("\n");
@@ -110,7 +110,7 @@ function editEmail(group, id, email, html, salutation, title, firstname, lastnam
 }
 
 function mysplice(arr, id) {
-	var newarr = new Array();
+	var newarr = [];
 
 	for (i = 0; i < arr.lenght; i++) {
 		if (i != id) {
@@ -121,7 +121,7 @@ function mysplice(arr, id) {
 }
 
 function delEmail(group, id) {
-	var dest = document.forms[0].elements["group" + group + "_Emails"]
+	var dest = document.forms[0].elements["group" + group + "_Emails"];
 	var str = dest.value;
 	var arr = str.split("\n");
 
@@ -131,7 +131,7 @@ function delEmail(group, id) {
 }
 
 function delallEmails(group) {
-	var dest = document.forms[0].elements["group" + group + "_Emails"]
+	var dest = document.forms[0].elements["group" + group + "_Emails"];
 
 	dest.value = "";
 	top.content.hot = 1;
@@ -172,11 +172,11 @@ function sprintf() {
 
 	var argum = arguments[0];
 	var regex = /([^%]*)%(%|d|s)(.*)/;
-	var arr = new Array();
+	var arr = [];
 	var iterator = 0;
 	var matches = 0;
 
-	while (arr = regex.exec(argum)) {
+	while ((arr = regex.exec(argum))) {
 		var left = arr[1];
 		var type = arr[2];
 		var right = arr[3];
@@ -250,7 +250,8 @@ function doUnload() {
 function we_cmd() {
 	var args = "";
 	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
+	var i;
+	for (i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
@@ -280,7 +281,7 @@ function we_cmd() {
 
 		case "openNewsletterDirselector":
 			url = dirs.WE_MODULES_DIR + "newsletter/we_dirfs.php?";
-			for (var i = 0; i < arguments.length; i++) {
+			for (i = 0; i < arguments.length; i++) {
 				url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 				if (i < (arguments.length - 1)) {
 					url += "&";
@@ -291,7 +292,7 @@ function we_cmd() {
 
 		case "add_customer":
 			document.we_form.ngroup.value = arguments[2];
-
+			//no break;
 		case "del_customer":
 			document.we_form.ncmd.value = arguments[0];
 			document.we_form.ncustomer.value = arguments[1];
@@ -350,22 +351,22 @@ function we_cmd() {
 		case "popPreview":
 			if (document.we_form.ncmd.value == "home")
 				return;
-			if (top.content.hot != 0) {
+			if (top.content.hot !== 0) {
 				top.we_showMessage(g_l.must_save_preview, WE_MESSAGE_ERROR, window);
 			} else {
 				document.we_form.elements["we_cmd[0]"].value = "preview_newsletter";
 				document.we_form.gview.value = parent.edfooter.document.we_form.gview.value;
 				document.we_form.hm.value = parent.edfooter.document.we_form.hm.value;
-				popAndSubmit("newsletter_preview", "preview", 800, 800)
+				popAndSubmit("newsletter_preview", "preview", 800, 800);
 			}
 			break;
 
 		case "popSend":
 			if (document.we_form.ncmd.value == "home") {
 				top.we_showMessage(g_l.no_newsletter_selected, WE_MESSAGE_ERROR, window);
-			} else if (top.content.hot != 0) {
+			} else if (top.content.hot !== 0) {
 				top.we_showMessage(g_l.must_save, WE_MESSAGE_ERROR, window);
-			} else if (document.we_form.IsFolder.value == 1) {
+			} else if (document.we_form.IsFolder.value === 1) {
 				top.we_showMessage(g_l.no_newsletter_selected, WE_MESSAGE_ERROR, window);
 			} else {
 
@@ -383,7 +384,7 @@ function we_cmd() {
 		case "send_test":
 			if (document.we_form.ncmd.value == "home") {
 				top.we_showMessage(g_l.no_newsletter_selected, WE_MESSAGE_ERROR, window);
-			} else if (top.content.hot != 0) {
+			} else if (top.content.hot !== 0) {
 				top.we_showMessage(g_l.must_save, WE_MESSAGE_ERROR, window);
 			} else if (document.we_form.IsFolder.value == 1) {
 				top.we_showMessage(g_l.no_newsletter_selected, WE_MESSAGE_ERROR, window);
@@ -517,7 +518,7 @@ function we_cmd() {
 			}
 			var searchname = prompt(g_l.search_text, "");
 
-			if (searchname != null) {
+			if (searchname !== null) {
 				searchEmail(searchname);
 			}
 
@@ -527,7 +528,7 @@ function we_cmd() {
 			break;
 
 		default:
-			for (var i = 0; i < arguments.length; i++) {
+			for (i = 0; i < arguments.length; i++) {
 				args += "arguments[" + i + "]" + ((i < (arguments.length - 1)) ? "," : "");
 			}
 			eval("top.content.we_cmd(" + args + ")");
@@ -549,7 +550,7 @@ function submitForm() {
 }
 
 function checkData() {
-	if (document.we_form.Text.value == "") {
+	if (document.we_form.Text.value === "") {
 		top.we_showMessage(g_l.empty_name, WE_MESSAGE_ERROR, window);
 		return false;
 	}
@@ -559,7 +560,7 @@ function checkData() {
 function add(group, newRecipient, htmlmail, salutation, title, firstname, lastname) {
 	var p = document.forms[0].elements["we_recipient" + group];
 
-	if (newRecipient != null) {
+	if (newRecipient !== null) {
 		if (newRecipient.length > 0) {
 			if (newRecipient.length > 255) {
 				top.we_showMessage(g_l.email_max_len, WE_MESSAGE_ERROR, window);
@@ -610,8 +611,8 @@ function deleteall(group) {
 function editIt(group, index, editRecipient, htmlmail, salutation, title, firstname, lastname) {
 	var p = document.forms[0].elements["we_recipient" + group];
 
-	if (index >= 0 && editRecipient != null) {
-		if (editRecipient != "") {
+	if (index >= 0 && editRecipient !== null) {
+		if (editRecipient !== "") {
 			if (editRecipient.length > 255) {
 				top.we_showMessage(g_l.email_max_len, WE_MESSAGE_ERROR, window);
 				return;
@@ -651,8 +652,8 @@ function searchEmail(searchname) {
 	}
 }
 
-function isValidEmail(email){
+function isValidEmail(email) {
 	email = email.toLowerCase();
-	return checkMail?we.validate.email(email):true;
+	return checkMail ? we.validate.email(email) : true;
 	//return (email.match(/^([[:space:]_:\+\.0-9a-z-]+[\<]{1})?[_\.0-9a-z-]+@([0-9a-z-]+\.)+[a-z]{2,6}(\>)?$/) ? true : false);
 }

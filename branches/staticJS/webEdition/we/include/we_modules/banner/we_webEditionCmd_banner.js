@@ -21,15 +21,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_cmd_banner(args,url) {
+	var k,fo=false;
 	switch (args[0]) {
 		case "banner_edit":
 		case "banner_edit_ifthere":
 			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			return true;
 		case "banner_default":
-			var fo = false;
 			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
+				for (k = jsWindow_count - 1; k > -1; k--) {
 					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ fo=true;wind=jsWindow" + k + "Object.wind}");
 					if (fo)
 						break;
@@ -41,9 +41,8 @@ function we_cmd_banner(args,url) {
 			new jsWindow(url, "defaultbanner", -1, -1, 500, 220, true, false, true, true);
 			return true;
 		case "banner_code":
-			var fo = false;
 			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
+				for (k = jsWindow_count - 1; k > -1; k--) {
 					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ fo=true;wind=jsWindow" + k + "Object.wind}");
 					if (fo) {
 						break;
@@ -58,9 +57,8 @@ function we_cmd_banner(args,url) {
 		case "save_banner":
 		case "exit_banner":
 		case "delete_banner":
-			var fo = false;
 			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
+				for (k = jsWindow_count - 1; k > -1; k--) {
 					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
 					if (fo) {
 						break;

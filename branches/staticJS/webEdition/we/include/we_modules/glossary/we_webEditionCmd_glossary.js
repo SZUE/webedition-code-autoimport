@@ -20,16 +20,17 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_glossary(args,url) {
+function we_cmd_glossary(args, url) {
+	var k, fo = false;
 	switch (args[0]) {
 		case "glossary_check":
 
 			var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
-			if (_EditorFrame != false
-							&& _EditorFrame.getEditorType() == "model"
-							&& (
-											_EditorFrame.getEditorContentType() == contentTypes.WEDOCUMENT
-											|| _EditorFrame.getEditorContentType() == contentTypes.OBJECT_FILE
+			if (_EditorFrame !== false &&
+							_EditorFrame.getEditorType() == "model" &&
+							(
+											_EditorFrame.getEditorContentType() == contentTypes.WEDOCUMENT ||
+											_EditorFrame.getEditorContentType() == contentTypes.OBJECT_FILE
 											)
 							) {
 
@@ -50,9 +51,8 @@ function we_cmd_glossary(args,url) {
 			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			break;
 		case "glossary_settings":
-			var fo = false;
 			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
+				for (k = jsWindow_count - 1; k > -1; k--) {
 					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ fo=true;wind=jsWindow" + k + "Object.wind}");
 					if (fo)
 						break;
@@ -68,8 +68,7 @@ function we_cmd_glossary(args,url) {
 			break;
 		case ((args[0].substr(0, 15) == "GlossaryXYZnew_") ? args[0] : false):
 			tempargs = args[0].split("\XYZ");
-			var fo = false;
-			for (var k = jsWindow_count - 1; k > -1; k--) {
+			for (k = jsWindow_count - 1; k > -1; k--) {
 				eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + tempargs[1] + "','" + tempargs[2] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
 				if (fo) {
 					break;
@@ -87,10 +86,9 @@ function we_cmd_glossary(args,url) {
 		case "save_exception":
 		case "save_glossary":
 		case "delete_glossary":
-			var fo = false;
 			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
-					if (args[1] != undefined) {
+				for (k = jsWindow_count - 1; k > -1; k--) {
+					if (args[1] !== undefined) {
 						eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "','" + args[1] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
 					} else {
 						eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");

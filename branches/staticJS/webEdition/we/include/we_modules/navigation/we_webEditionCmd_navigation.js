@@ -21,6 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_cmd_navigation(args,url) {
+	var k,fo=false;
 	switch (args[0]) {
 
 		case "navigation_edit":
@@ -33,9 +34,8 @@ function we_cmd_navigation(args,url) {
 		case "module_navigation_save":
 		case "module_navigation_delete":
 		case "module_navigation_reset_customer_filter":
-			var fo = false;
 			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
+				for (k = jsWindow_count - 1; k > -1; k--) {
 					eval("if(jsWindow" + k + "Object.ref=='edit_module'){jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
 					if (fo) {
 						break;
@@ -47,9 +47,8 @@ function we_cmd_navigation(args,url) {
 			}
 			return true;
 		case "module_navigation_rules":
-			var fo = false;
 			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
+				for (k = jsWindow_count - 1; k > -1; k--) {
 					eval("if(jsWindow" + k + "Object.ref=='edit_module'){fo=true;wind=jsWindow" + k + "Object.wind}");
 					if (fo) {
 						break;

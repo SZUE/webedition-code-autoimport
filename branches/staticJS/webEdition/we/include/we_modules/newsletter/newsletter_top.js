@@ -47,14 +47,15 @@ function doUnload() {
 function we_cmd() {
 	var args = "";
 	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
+	var i;
+	for (i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
 	}
 
-	if (hot == "1" && arguments[0] != "save_newsletter") {
+	if (hot == 1 && arguments[0] !== "save_newsletter") {
 		if (confirm(g_l.save_changed_newsletter)) {
 			arguments[0] = "save_newsletter";
 		} else {
@@ -63,7 +64,7 @@ function we_cmd() {
 	}
 	switch (arguments[0]) {
 		case "exit_newsletter":
-			if (hot != "1") {
+			if (hot != 1) {
 				eval('top.opener.top.we_cmd("exit_modules")');
 			}
 			break;
@@ -214,7 +215,7 @@ function we_cmd() {
 			break;
 
 		default:
-			for (var i = 0; i < arguments.length; i++) {
+			for (i = 0; i < arguments.length; i++) {
 				args += "arguments[" + i + "]" + ((i < (arguments.length - 1)) ? "," : "");
 			}
 			eval("top.opener.top.we_cmd(" + args + ")");
