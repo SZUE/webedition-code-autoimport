@@ -27,7 +27,7 @@ function we_tag_css($attribs){
 		return $foo;
 	}
 
-	$row = getHash('SELECT Path,IsFolder FROM ' . FILE_TABLE . ' WHERE ID=' . intval(weTag_getAttribute('id', $attribs, 0, we_base_request::INT)));
+	$row = getHash('SELECT Path,IsFolder,Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval(weTag_getAttribute('id', $attribs, 0, we_base_request::INT)));
 	if(!$row){
 		return '';
 	}
@@ -53,7 +53,7 @@ function we_tag_css($attribs){
 
 	$attribs['rel'] = weTag_getAttribute('rel', $attribs, 'stylesheet', we_base_request::STRING);
 	$attribs['type'] = 'text/css';
-	$attribs['href'] = (we_isHttps() ? '' : BASE_CSS) . $row['Path'] . ($row['IsFolder'] ? '/' : '');
+	$attribs['href'] = (we_isHttps() ? '' : BASE_CSS) . $row['Path'] . ($row['IsFolder'] ? '/' : '') . ($GLOBALS['we_editmode'] ? '?time=' . $row['Published'] : '');
 
 	return $nolink ? '' : getHtmlTag('link', $attribs) . "\n";
 }
