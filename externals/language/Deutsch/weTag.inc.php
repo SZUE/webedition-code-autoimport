@@ -2,7 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_weTag=array(
 	'ifNotShopVat'=>array(
-		'description'=>'- wird zur Zeit bearbeitet -',
+		'description'=>'Mit we:ifShopVat kann man den Mehrwertsteuersatz, des aktuellen Artikels (als Dokument oder im Warenkorb) prüfen. Das Tag kann auch mit den in Version 6.4.0 eingeführten Shop-Kategorien umgehen.',
 	),
 	'DID'=>array(
 		'description'=>'Dieses Tag gibt die ID eines webEdition-Dokuments zurück.',
@@ -341,7 +341,7 @@ $l_weTag=array(
 		'description'=>'Prüft, ob eine Seite gerade mit we:sendMail versendet wird und erlaubt Inhalte dabei aus- und einzublenden',
 	),
 	'ifNotShopCategory'=>array(
-		'description'=>'- wird zur Zeit bearbeitet -',
+		'description'=>'Mit we:ifShopCategory kann man (sowohl auf dem Dokument, als auch im Warenkorb) die aktuell gültige Shop-Kategorie eines Artikels prüfen.',
 	),
 	'ifNotShopField'=>array(
 		'description'=>'Das Tag bewirkt, daß alles, was zwischen dem Start- und Endtag steht, nur dann angezeigt wird, wenn das shopField mit dem Namen "name" ungleich dem Wert ist, welcher in "match" eingetragen ist. Ist dies der Fall, wird alles zwischen Start- und Endtag angezeigt.',
@@ -425,7 +425,7 @@ $l_weTag=array(
 		'description'=>'Prüft, ob eine Seite gerade mit we:sendMail versendet wird und erlaubt Inhalte dabei aus- und einzublenden',
 	),
 	'ifShopCategory'=>array(
-		'description'=>'- wird zur Zeit bearbeitet -',
+		'description'=>'Mit we:ifShopCategory kann man (sowohl auf dem Dokument, als auch im Warenkorb) die aktuell gültige Shop-Kategorie eines Artikels prüfen.',
 	),
 	'ifShopEmpty'=>array(
 		'description'=>'Alles, was sich zwischen dam Start- und Endtag befindet, wird angezeigt, wenn der Warenkorb leer ist.',
@@ -446,7 +446,7 @@ $l_weTag=array(
 		'description'=>'Mit we:ifShopPayVat wird ein Inhalt nur bedingt angezeigt, wenn ein eingeloggter Kunde Mehrwertsteuern entrichten muss.',
 	),
 	'ifShopVat'=>array(
-		'description'=>'Mit we:ifShopTag kann man den Mehrwertsteuersatz, des aktuellen Artikels des Dokuments, bzw. des Warenkorbs prüfen. Ist Id gesetzt, wird die des Mehrwertsteuersatzes des aktuellen (Dokument oder Warenkorb) Artikels mit der hier angegeben verglichen.',
+		'description'=>'Mit we:ifShopVat kann man den Mehrwertsteuersatz, des aktuellen Artikels (als Dokument oder im Warenkorb) prüfen. Das Tag kann auch mit den in Version 6.4.0 eingeführten Shop-Kategorien umgehen.',
 	),
 	'ifSidebar'=>array(
 		'description'=>'Dieses Tag dient dazu, den umschliessenden Inhalt nur auszugeben, wenn der Seitenaufruf innerhalb der Sidebar stattfindet.',
@@ -722,7 +722,7 @@ In der Benutzereingabe können lediglich Dokumente geändert werden, sofern das 
 		'description'=>'Mit we:shopField können verschiedene Felder direkt bei Artikeln, bzw. im Warenkorb (Bestellung) abgespeichert werden. Diese Felder können vom Administrator mit verschiedenen Werten festgelegt werden, die der Endkunde dann einstellen kann. Neben Artikel-Varianten ist es damit möglich, eine Vielzahl von verschiedenen Artikelvariationen auf einfache Weise abzubilden.',
 	),
 	'shopVat'=>array(
-		'description'=>'Dieses Tag wird verwendet, um den Mehrwertsteuersatz eines Artikels festzulegen. Mehrwertsteuersätze können direkt im Shop Modul gepflegt werden. Bei Verwendung von Shop-Kategorien (optional ab Version 6.4.0) dient es dazu, den anhand von Shop-Kategorie, Besteuerungsprinzip und Bestimmungsland ermittelten Mehrwertsteuersatz auszugeben. Ist Id gesetzt, wird in beiden Fällen der Mehrwertsteuersatz mit der angegebenen Id ausgegeben.',
+		'description'=>'Dieses Tag wird verwendet, um den Mehrwertsteuersatz eines Artikels festzulegen. Mehrwertsteuersätze können direkt im Shop Modul gepflegt werden. Bei Verwendung von Shop-Kategorien (optional ab Version 6.4.0) dient es dazu, den anhand von Shop-Kategorie, Besteuerungsprinzip und Bestimmungsland ermittelten Mehrwertsteuersatz auszugeben. Ist id gesetzt, wird in beiden Fällen der Mehrwertsteuersatz mit der angegebenen Id ausgeliefert.',
 	),
 	'showShopItemNumber'=>array(
 		'description'=>'Das we:showShopItemNumber-Tag zeigt die im Warenkorb vorhandene Anzahl der Artikel eines Typs an.',

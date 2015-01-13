@@ -2,7 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_weTag=array(
 	'ifNotShopVat'=>array(
-		'description'=>'- to be edited soon -',
+		'description'=>'Everything between the start and end tags of this tag is displayed only if the shop vat of the actual article does`n match a given id or (when using shop categories) does not have certain properties.',
 	),
 	'DID'=>array(
 		'description'=>'Deze tag stuurt het ID terug van een webEdition document.',
@@ -341,7 +341,7 @@ $l_weTag=array(
 		'description'=>'Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page',
 	),
 	'ifNotShopCategory'=>array(
-		'description'=>'- to be edited soon -',
+		'description'=>'Everything between the start- and endtag will be shown if the validated shop category of the actual article (document or shopping cart item) doesn`t have certain properties given by attributes field and match.',
 	),
 	'ifNotShopField'=>array(
 		'description'=>'Everything between the start and end tags of this tag is displayed only if the value of the attribut "match" is not identical with the value of the shopField',
@@ -425,7 +425,7 @@ $l_weTag=array(
 		'description'=>'Checks if a page is currently sent by we:sendMail and allows to exclude or include contents to the sent page',
 	),
 	'ifShopCategory'=>array(
-		'description'=>'- to be edited soon -',
+		'description'=>'Everything between the start- and endtag will be shown if the validated shop category of the actual article (document or shopping cart item) has certain properties given by attributes field and match.',
 	),
 	'ifShopEmpty'=>array(
 		'description'=>'Alles tussen de begin- en eind tag wordt getoond als de winkelmand leeg is.',
