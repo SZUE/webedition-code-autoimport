@@ -171,7 +171,7 @@ function we_trashButUp(but){
 }
 
 function wedelRow(nr,but){
-	if(typeof but.src === "undefined" || but.src.indexOf("disabled") == -1){
+	if(but.src === undefined || but.src.indexOf("disabled") == -1){
 		var prefix =  "div_uploadFiles_";
 		var num = -1;
 		var z = 0;
@@ -194,7 +194,7 @@ function wedelRow(nr,but){
 
 function checkButtons(){
 	try{
-		if(typeof(document.JUpload)=="undefined"||(typeof(document.JUpload.isActive)!="function")||document.JUpload.isActive()==false){
+		if(document.JUpload===undefined||(typeof(document.JUpload.isActive)!="function")||document.JUpload.isActive()==false){
 			checkFileinput();
 			window.setTimeout(function(){checkButtons()},1000);
 			//recheck
@@ -220,7 +220,7 @@ function setApplet() {
 		buttJUDiv.style.display="block";
 	}
 
-	//setTimeout("document.JUpload.jsRegisterUploaded(\"refreshTree\");",3000);
+	//setTimeout(document.JUpload.jsRegisterUploaded("refreshTree"),3000);
 }
 		' : '') .
 			we_html_element::jsScript(JS_DIR . "windows.js");
@@ -608,7 +608,7 @@ function weCheckAC(j){
 
 function cancel() {
 	var cf = top.imgimportcontent;
-	if(typeof cf.weFileUpload !== "undefined"){
+	if(cf.weFileUpload !== undefined){
 		cf.we_FileUpload.cancelUpload();
 	} else {
 		top.close();
@@ -623,7 +623,7 @@ function next() {
 		cf.document.we_startform.jsRequirementsOk.value = " . ($this->jsRequirementsOk ? 1 : 0) . ";
 		cf.document.we_startform.submit();
 	} else {
-		if(cf.we_FileUpload !== 'undefined'){
+		if(cf.we_FileUpload !== undefined){
 			cf.we_FileUpload.startUpload();
 		}
 	}

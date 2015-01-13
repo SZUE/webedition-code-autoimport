@@ -39,7 +39,7 @@ function init(){
 	_sInitCsv_=sCsv;
 	var oChbxType=_fo.elements['chbx_type'];
 	var iChbxTypeLen=oChbxType.length;
-	if(typeof iChbxTypeLen!='undefined'){
+	if(iChbxTypeLen!=undefined){
 		for(var i=iChbxTypeLen-1;i>=0;i--){
 			oChbxType[i].checked=(parseInt(sCsv.charAt(i)))?true:false;
 		}

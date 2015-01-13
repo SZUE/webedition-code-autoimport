@@ -103,7 +103,7 @@ echo we_html_tools::getHtmlTop() .
 			countSetTitle = 0;
 		} else {
 			if(countSetTitle < 30) {
-				setTimeout("setHeaderTitle()",100);
+				setTimeout(setHeaderTitle(),100);
 				countSetTitle++;
 			}
 		}

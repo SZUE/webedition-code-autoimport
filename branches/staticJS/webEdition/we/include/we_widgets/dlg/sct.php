@@ -211,7 +211,7 @@ function init(){
 		var aVals=aCsv[i].split(',');
 		var iOpt=0;
 		while(iOpt<aVals.length){
-			if(typeof(_aLang[aVals[iOpt]])!='undefined'){
+			if(_aLang[aVals[iOpt]]!==undefined){
 				deleteEntry(aVals[iOpt]);
 				addOption(_fo['list'+(i+1)+'1'],_aLang[aVals[iOpt]],aVals[iOpt],false);
 			}
@@ -360,7 +360,7 @@ function copySelectedOptions(from,to){
 	for (var i=0;i<from.options.length;i++){
 		var o=from.options[i];
 		if(o.selected){
-			if(options[o.value]==null||options[o.value]=='undefined'||options[o.value]!=o.text){
+			if(options[o.value]==null||options[o.value]===undefined||options[o.value]!=o.text){
 				if(!hasOptions(to)){
 					var index = 0;
 				}else{

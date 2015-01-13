@@ -556,7 +556,7 @@ function setFocusedField(elem){
 function weCheckAcFields(){
 	if(!!weFocusedField) weFocusedField.blur();
 	if(document.getElementById("weDialogType").value=="' . we_base_link::TYPE_INT . '"){
-		setTimeout("weDoCheckAcFields()",100);
+		setTimeout(weDoCheckAcFields(),100);
 	} else {
 		document.forms["we_form"].submit();
 	}
@@ -571,7 +571,7 @@ function weDoCheckAcFields(){
 	} else if(acStatusType.toLowerCase() == "object") {
 		if(acStatus.running) {
 			weAcCheckLoop++;
-			setTimeout("weDoCheckAcFields",100);
+			setTimeout(weDoCheckAcFields(),100);
 		} else if(!acStatus.valid) {' .
 						we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			weAcCheckLoop=0;
@@ -622,7 +622,7 @@ function showclasss(name, val, onCh) {' .
 	classNames = top.opener.we_classNames;')) . '
 	document.writeln(\'<select class="defaultfont" style="width:300px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onchange="\'+onCh+\'"\' : \'\')+\'>\');
 	document.writeln(\'<option value="">' . g_l('wysiwyg', '[none]') . '\');
-	if(typeof(classNames) != "undefined"){
+	if(classNames !== undefined){
 		for (var i = 0; i < classNames.length; i++) {
 			var foo = classNames[i].substring(0,1) == "." ?
 				classNames[i].substring(1,classNames[i].length) :

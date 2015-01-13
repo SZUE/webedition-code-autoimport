@@ -182,7 +182,7 @@ if($editname !== false){
 		orginal = text;
 		editPanel = document.getElementById('preview');
 		editPanel.innerHTML = text;
-		setTimeout("setAppletCode()", 1000);
+		setTimeout(setAppletCode(), 1000);
 	}
 
 	function getTextFromWysiwyg() {
@@ -254,10 +254,10 @@ if($editname !== false){
 			document.getElementById("statusText").innerHTML = "<?php echo g_l('modules_spellchecker', '[checking]'); ?>";
 			var text = getTextOnly(orginal);
 			document.spellchecker.check(text);
-			setTimeout("findNext()", 2000);
+			setTimeout(findNext(), 2000);
 		} else {
 			if (retryjava < 5) {
-				setTimeout("spellcheck()", 1000);
+				setTimeout(spellcheck(), 1000);
 				retryjava++;
 			} else {
 <?php echo we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[no_java]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
@@ -299,7 +299,7 @@ if($editname !== false){
 
 					if (document.spellchecker.isWorking()) {
 						clearTimeout(to);
-						to = setTimeout("findNext()", 500);
+						to = setTimeout(findNext(), 500);
 					} else {
 						removeHighlight();
 						if (document.getElementById("spinner").style.display != "none") {
@@ -310,7 +310,7 @@ if($editname !== false){
 					}
 				}
 			} else {
-				setTimeout("spellcheck()", 500);
+				setTimeout(spellcheck(), 500);
 			}
 		}
 	}
@@ -431,7 +431,7 @@ if($editname !== false){
 	function setAppletCode() {
 		retryjava = 0;
 		document.getElementById('appletPanel').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code), '\'') ?>';
-		setTimeout("spellcheck()", 1000);
+		setTimeout(spellcheck(), 1000);
 	}
 
 <?php

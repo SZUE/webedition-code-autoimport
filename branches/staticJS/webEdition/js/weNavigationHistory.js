@@ -22,7 +22,7 @@
  */
 function weNavigationHistory() {
 
-	this.documentHistory = new Array();
+	this.documentHistory = [];
 	this.currentIndex = -1;
 	this.saveInHistory = true;
 	this.addDocToHistory = function (table, id, ct, editcmd, url, parameters) {
@@ -35,7 +35,7 @@ function weNavigationHistory() {
 					this.documentHistory.pop();
 				} while (this.currentIndex < (this.documentHistory.length - 1));
 // resave document array
-				var newDocumentHistory = new Array();
+				var newDocumentHistory = [];
 			}
 
 			this.documentHistory.push(new weNavigationHistoryEntry(table, id, ct, editcmd, url, parameters));
@@ -82,7 +82,7 @@ function weNavigationHistory() {
 
 	this.navigateReload = function () {
 		if (this.documentHistory.length) {
-			if (_currentEditor = top.weEditorFrameController.getActiveEditorFrame()) { // reload current Editor
+			if ((_currentEditor = top.weEditorFrameController.getActiveEditorFrame())) { // reload current Editor
 				_currentEditor.setEditorReloadAllNeeded(true);
 				_currentEditor.setEditorIsActive(true);
 			} else { // reopen current Editor

@@ -115,7 +115,6 @@ function setTreeArrow(direction) {
 		}
 	} catch (e) {
 		// Nothing
-		;
 	}
 }
 
@@ -281,7 +280,7 @@ function doPostCmd(cmds, target) {
 	formElement.method = "post";
 	formElement.target = target;
 
-	var hiddens = new Array();
+	var hiddens = [];
 	for (var i = 0; i < cmds.length; i++) {
 		var hid = doc.createElement("INPUT");
 		hid.name = "we_cmd[" + i + "]";
@@ -379,10 +378,8 @@ function doUnloadSEEM(whichWindow) {
 	var docIds = "";
 	var docTables = "";
 
-	for (frameId in _usedEditors) {
-
+	for (var frameId in _usedEditors) {
 		if (_usedEditors[frameId].EditorType != "cockpit") {
-
 			docIds += _usedEditors[frameId].getEditorDocumentId() + ",";
 			docTables += _usedEditors[frameId].getEditorEditorTable() + ",";
 		}
@@ -424,18 +421,19 @@ function doUnloadSEEM(whichWindow) {
 }
 
 function doUnloadNormal(whichWindow) {
+	var tinyDialog;
 	if (!regular_logout) {
 
-		if (typeof (tinyMceDialog) !== "undefinded" && tinyMceDialog !== null) {
-			var tinyDialog = tinyMceDialog;
+		if (tinyMceDialog !== undefinded && tinyMceDialog !== null) {
+			tinyDialog = tinyMceDialog;
 			try {
 				tinyDialog.close();
 			} catch (err) {
 			}
 		}
 
-		if (typeof (tinyMceSecondaryDialog) !== "undefinded" && tinyMceSecondaryDialog !== null) {
-			var tinyDialog = tinyMceSecondaryDialog;
+		if (tinyMceSecondaryDialog !== undefinded && tinyMceSecondaryDialog !== null) {
+			tinyDialog = tinyMceSecondaryDialog;
 			try {
 				tinyDialog.close();
 			} catch (err) {
@@ -455,19 +453,20 @@ function doUnloadNormal(whichWindow) {
 		}
 		if (whichWindow != "include") { 	// only when no SEEM-edit-include window is closed
 			// FIXME: closing-actions for SEEM
+			var logoutpopup;
 			if (top.opener) {
 				if (specialUnload) {
 					top.opener.location.replace('/webEdition/we_loggingOut.php?isopener=1');
 					top.opener.focus();
 				} else {
 					top.opener.history.back();
-					var logoutpopup = window.open('/webEdition/we_loggingOut.php?isopener=0', "webEdition", "width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
+					logoutpopup = window.open('/webEdition/we_loggingOut.php?isopener=0', "webEdition", "width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
 					if (logoutpopup) {
 						logoutpopup.focus();
 					}
 				}
 			} else {
-				var logoutpopup = window.open('/webEdition/we_loggingOut.php?isopener=0', "webEdition", "width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
+				logoutpopup = window.open('/webEdition/we_loggingOut.php?isopener=0', "webEdition", "width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
 				if (logoutpopup) {
 					logoutpopup.focus();
 				}
@@ -487,7 +486,7 @@ function doUnload(whichWindow) { // triggered when webEdition-window is closed
 }
 
 
-function we_cmd_base(args,url) {
+function we_cmd_base(args, url) {
 	switch (args[0]) {
 		case "exit_modules":
 			if (jsWindow_count) {
@@ -585,13 +584,13 @@ function we_cmd_base(args,url) {
 			break;
 		case "del":
 			we_cmd('delete', 1, args[2]);
-			treeData.setstate(treeData.tree_states["select"]);
+			treeData.setstate(treeData.tree_states.select);
 			top.treeData.unselectnode();
 			top.drawTree();
 			break;
 		case "mv":
 			we_cmd('move', 1, args[2]);
-			treeData.setstate(treeData.tree_states["selectitem"]);
+			treeData.setstate(treeData.tree_states.selectitem);
 			top.treeData.unselectnode();
 			top.drawTree();
 			break;
@@ -773,7 +772,7 @@ function we_cmd_base(args,url) {
 			// set Editor hot
 			_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
 			_EditorFrame.setEditorIsHot(true);
-
+			//no break;
 		case "reload_editpage":
 		case "wrap_on_off":
 		case "restore_defaults":
@@ -1075,7 +1074,7 @@ function we_cmd_base(args,url) {
 					}
 				}
 				var tbl_prefix = tables.TBL_PREFIX,
-								table = (typeof args[1] != 'undefined' && args[1]) ? args[1] : 'tblFile';
+								table = (args[1] !== undefined && args[1]) ? args[1] : 'tblFile';
 				we_cmd("setTab", (tbl_prefix != '' && table.indexOf(tbl_prefix) !== 0 ? tbl_prefix + table : table));
 				//toggleBusy(1);
 				we_repl(self.load, url, args[0]);
@@ -1086,7 +1085,7 @@ function we_cmd_base(args,url) {
 			deleteMode = false;
 			if (SEEMODE) {
 			} else {
-				treeData.setstate(treeData.tree_states["edit"]);
+				treeData.setstate(treeData.tree_states.edit);
 				drawTree();
 
 				self.rframe.document.getElementById("bm_treeheaderDiv").style.height = "1px";
@@ -1107,8 +1106,8 @@ function we_cmd_base(args,url) {
 				if (top.deleteMode != args[1]) {
 					top.deleteMode = args[1];
 				}
-				if (!top.deleteMode && treeData.state == treeData.tree_states["select"]) {
-					treeData.setstate(treeData.tree_states["edit"]);
+				if (!top.deleteMode && treeData.state == treeData.tree_states.select) {
+					treeData.setstate(treeData.tree_states.edit);
 					drawTree();
 				}
 				self.rframe.document.getElementById("bm_treeheaderDiv").style.height = "150px";
@@ -1141,12 +1140,11 @@ function we_cmd_base(args,url) {
 					we_repl(top.weEditorFrameController.getActiveDocumentReference(), url, args[0]);
 				}
 			} else {
-
 				if (top.deleteMode != args[1]) {
 					top.deleteMode = args[1];
 				}
-				if (!top.deleteMode && treeData.state == treeData.tree_states["selectitem"]) {
-					treeData.setstate(treeData.tree_states["edit"]);
+				if (!top.deleteMode && treeData.state == treeData.tree_states.selectitem) {
+					treeData.setstate(treeData.tree_states.edit);
 					drawTree();
 				}
 				self.rframe.document.getElementById("bm_treeheaderDiv").style.height = "160px";

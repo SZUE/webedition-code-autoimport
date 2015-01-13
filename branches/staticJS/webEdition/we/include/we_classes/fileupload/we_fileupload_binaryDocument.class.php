@@ -266,7 +266,7 @@ div.dropzone_right{
 		$call = 'window.we_FileUpload.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');
 		$callback = 'we_cmd(\'editor_uploadFile\', \'legacy\');';
 
-		return 'if(typeof window.we_FileUpload === "undefined" || window.we_FileUpload.getIsLegacyMode()){' . $callback . ';}else{' . $call . ';}';
+		return 'if(window.we_FileUpload === undefined || window.we_FileUpload.getIsLegacyMode()){' . $callback . ';}else{' . $call . ';}';
 	}
 
 	public static function getJsOnLeave($callback, $type = 'switch_tab'){
@@ -282,7 +282,7 @@ div.dropzone_right{
 			$frame = '_EditorFrame.getContentEditor()';
 		}
 
-		return "var fileupload; if(typeof " . $parentObj . " !== 'undefined' && typeof (fileUpload = " . $frame . ".we_FileUpload) !== 'undefined' && fileUpload.getType() === 'binDoc' && !fileUpload.getIsLegacyMode()){fileUpload.doUploadIfReady(function(){" . $callback . "})}else{" . $callback . "}";
+		return "var fileupload; if(" . $parentObj . " !== undefined && (fileUpload = " . $frame . ".we_FileUpload) !== undefined && fileUpload.getType() === 'binDoc' && !fileUpload.getIsLegacyMode()){fileUpload.doUploadIfReady(function(){" . $callback . "})}else{" . $callback . "}";
 	}
 
 	public function processFileRequest(){

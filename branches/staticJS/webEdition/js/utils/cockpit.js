@@ -73,7 +73,7 @@ var oEvt = {
 	},
 	drag: function (oMouseEvt) {
 		oMouseEvt = oEvt.getEvt(oMouseEvt);
-		if (oMouseEvt.which == 0) {
+		if (oMouseEvt.which === 0) {
 			return oEvt.end();
 		}
 		var oDiv = oEvt.obj;
@@ -128,7 +128,7 @@ var le_dragInit = function (oMouseEvt) {
 	oWidget.oTbl = oMouseEvt;
 	oWidget.oTblRow = oWidget.oTbl.tBodies[0].rows[0];
 	oWidget.oCell = oWidget.oTblRow.cells;
-	oWidget.c = new Array();
+	oWidget.c = [];
 	var iCountDiv = 0;
 	for (var i = 0; i < oWidget.oCell.length; i++) {
 		var oCurrCell = oWidget.oCell[i];
@@ -142,7 +142,7 @@ var le_dragInit = function (oMouseEvt) {
 	}
 };
 
-var oWidget = new Object();
+var oWidget = {};
 oWidget.br = navigator.userAgent;
 oWidget.Gecko = oWidget.br.indexOf('Gecko') != -1;
 oWidget.Opera = oWidget.br.indexOf('Opera') != -1;
@@ -150,10 +150,10 @@ oWidget.Safari = oWidget.br.indexOf('Safari') != -1;
 oWidget.oShieldId = 'divShieldId';
 oWidget.oModShieldId = 'modDivShieldId';
 oWidget.hide = function () {
-	oWidget.oTbl.style.display = 'none'
+	oWidget.oTbl.style.display = 'none';
 };
 oWidget.show = function () {
-	oWidget.oTbl.style.display = ''
+	oWidget.oTbl.style.display = '';
 };
 oWidget.oMask = null;
 oWidget.p = function () {
@@ -170,7 +170,7 @@ oWidget.p = function () {
 oWidget.applyEvt = function (obj, evt) {
 	return function () {
 		return obj[evt].apply(obj, arguments);
-	}
+	};
 };
 
 oWidget.adaptOffset = function (oParent) {
@@ -188,7 +188,7 @@ oWidget.adaptOffset = function (oParent) {
 
 oWidget.setOffsetLeftTop = function (obj, bIterate) {
 	var count = 0;
-	while (obj != null) {
+	while (obj !== null) {
 		count += obj['offset' + (bIterate ? 'Left' : 'Top')];
 		obj = obj.offsetParent;
 	}
@@ -227,7 +227,7 @@ oWidget.br = function () {
 		for (var j = 0; j < oCurrCell.childNodes.length - 1; j++) {
 			var oChild = oCurrCell.childNodes[j];
 			if (oChild.tagName == 'DIV') {
-				s += s != '' ? ':' : '';
+				s += s !== '' ? ':' : '';
 				s += oChild.id.substring(2) + '_' + oCurrCell.id.substring(2);
 			}
 		}
@@ -276,7 +276,7 @@ function onInsertNode() {
 	if (oWidget.Gecko) {
 		iOffsetH -= parseInt(oNodeInsert.style.borderTopWidth) * 2;
 	}
-	var iOffsetW = (gel(this.node.id + '_res').value == 0) ? 225 : 452;
+	var iOffsetW = (gel(this.node.id + '_res').value === 0) ? 225 : 452;
 	//var iOffsetW=this.node.offsetWidth;
 	var iOffsetTrue = oWidget.setOffsetLeftTop(this.node, true);
 	var iOffsetFalse = oWidget.setOffsetLeftTop(this.node, false);
@@ -316,8 +316,9 @@ function onDragNode(iPosX, iPosY) {
 	}
 	var oBuff = null;
 	var iMax = 99999999;
+	var obj;
 	for (var i = 0; i < oWidget.c.length; i++) {
-		var obj = oWidget.c[i];
+		obj = oWidget.c[i];
 		var iCurrPos = Math.sqrt(Math.pow(iPosX - obj.node.pagePosLeft, 2) + Math.pow(iPosY - obj.node.pagePosTop, 2));
 		if (obj == this)
 			continue;
@@ -328,8 +329,8 @@ function onDragNode(iPosX, iPosY) {
 			oBuff = obj;
 		}
 	}
-	var obj = oWidget.p();
-	if (oBuff != null && obj.nextSibling != oBuff.node && !!oBuff.node.parentNode && oBuff.node.parentNode.nodeType == 1) {
+	obj = oWidget.p();
+	if (oBuff !== null && obj.nextSibling != oBuff.node && !!oBuff.node.parentNode && oBuff.node.parentNode.nodeType == 1) {
 		oBuff.node.parentNode.insertBefore(obj, oBuff.node);
 		if (oWidget.Opera) {
 			document.body.style.display = 'none';
@@ -384,9 +385,9 @@ function setPosition(obj, iPx) {
 			iNewScrollTop = Math.min(iPx - iInnerH, iScrollTop + iMarginTop);
 		}
 		var aTbll = iNewScrollTop - iScrollTop;
-		if (aTbll != 0) {
+		if (aTbll !== 0) {
 			document.body.scrollTop = iNewScrollTop;
 			obj.style.top = iOffsetTop + 'px';
 		}
-	}
+	};
 }

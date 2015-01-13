@@ -66,11 +66,11 @@ function jsWindowOpen(noPopupErrorMsg, noPopupLocation) {
 		this.wind.focus();
 
 	} catch (e) {
-		if (noPopupErrorMsg != undefined && noPopupErrorMsg.length) {
+		if (noPopupErrorMsg !== undefined && noPopupErrorMsg.length) {
 			if (!this.wind) {
 				top.we_showMessage(noPopupErrorMsg, WE_MESSAGE_ERROR, window);
 				//  disabled See Bug#1335
-				if (noPopupLocation != undefined) {
+				if (noPopupLocation !== undefined) {
 					//document.location = noPopupLocation;
 				}
 			}

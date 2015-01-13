@@ -299,7 +299,7 @@ function init(){
 				var obj=parseInt(sBinary.substr(1))?_fo.classID:_fo.DocTypeID;
 				obj.value=aInitCsv[3];
 			}
-			if(typeof aInitCsv[4]!='undefined'&&aInitCsv[4]!='')addCat(opener.base64_decode(aInitCsv[4]));
+			if(aInitCsv[4]!==undefined&&aInitCsv[4]!='')addCat(opener.base64_decode(aInitCsv[4]));
 		}
 	}
 }
@@ -334,7 +334,7 @@ function getTreeSelected(){
 	var iTemsLen=SelectedItems[table].length;
 	for(var i=0;i<iTemsLen;i++){
 		sCsvIds+=SelectedItems[table][i];
-		if(i<iTemsLen-1&&typeof SelectedItems[table][i]!='undefined'&&SelectedItems[table][i]!='') sCsvIds+=',';
+		if(i<iTemsLen-1&&SelectedItems[table][i]!=undefined&&SelectedItems[table][i]!='') sCsvIds+=',';
 	}
 	return sCsvIds;
 }

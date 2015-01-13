@@ -26,15 +26,15 @@ function weTagWizard(tagName) {
 
 	this.tagName = tagName; // name of the we:tag
 
-	this.allAttributes = new Array();  // all attributes of the we:tag
-	this.reqAttributes = new Object();  // required attributes of the we:tag
+	this.allAttributes = [];  // all attributes of the we:tag
+	this.reqAttributes = {};  // required attributes of the we:tag
 	this.typeAttributeId = '';
-	this.typeAttributeAllows = new Object(); // type depending allowed fields (id)
-	this.typeAttributeRequires = new Object(); // type depending required fields (id)
+	this.typeAttributeAllows = {}; // type depending allowed fields (id)
+	this.typeAttributeRequires = {}; // type depending required fields (id)
 
 	this.needsEndTag = false;
 
-	this.missingFields = new Array(); // missing attributes -> these are genereated by method getWeTag
+	this.missingFields = []; // missing attributes -> these are genereated by method getWeTag
 
 	this.changeType = function (newType) {
 
@@ -90,28 +90,28 @@ function weTagWizard(tagName) {
 			this.showElement('no_type_selected_attributes');
 			this.hideElement('no_attributes_for_type');
 		}
-	}
+	};
 
 	this.showElement = function(id) {
 		elem = document.getElementById(id);
 		if (elem) {
 			elem.style.display = "";
 		}
-	}
+	};
 
 	this.hideElement = function(id) {
 		elem = document.getElementById(id);
 		if (elem) {
 			elem.style.display = "none";
 		}
-	}
+	};
 
 	this.showAttribute = function(id) {
 		elem = document.getElementById("li_" + id);
 		if (elem) {
 			elem.style.display = "";
 		}
-	}
+	};
 
 	this.hideAttribute = function(id) {
 
@@ -119,7 +119,7 @@ function weTagWizard(tagName) {
 		if (elem) {
 			elem.style.display = "none";
 		}
-	}
+	};
 
 	this.getPartFromId = function(elemIdName, getId) {
 
@@ -128,7 +128,7 @@ function weTagWizard(tagName) {
 		} else {
 			return elemIdName.substr(elemIdName.indexOf("_") + 1);
 		}
-	}
+	};
 
 	this.setLabelRequired = function(elemIdName, required) {
 
@@ -145,7 +145,7 @@ function weTagWizard(tagName) {
 			}
 
 		}
-	}
+	};
 
 	this.inArray = function(needle, haystack) {
 
@@ -156,21 +156,21 @@ function weTagWizard(tagName) {
 			}
 		}
 		return false;
-	}
+	};
 
 	this.getWeTag = function() { // build the we:tag in this function and return it.
 
 		ret = "<we:" + this.tagName;
 
-		this.missingFields = new Array();
-
+		this.missingFields = [];
+		var i;
 		// differbetween case with/without type-attribute
 
 		if (this.typeAttributeId && typeAttributeAllows[document.getElementById(this.typeAttributeId).value]) {
 
 			var typeValue = document.getElementById(this.typeAttributeId).value;
 
-			for (var i=0; i<this.typeAttributeAllows[typeValue].length; i++) {
+			for (i=0; i<this.typeAttributeAllows[typeValue].length; i++) {
 
 				fieldId = this.typeAttributeAllows[typeValue][i];
 				fieldName = this.getPartFromId(fieldId);
@@ -195,13 +195,10 @@ function weTagWizard(tagName) {
 			}
 
 		} else if (this.typeAttributeId) {
-
 			// type is not selected
 			return false;
-
 		} else {
-
-			for ( i=0; i<this.allAttributes.length; i++) {
+			for (i=0; i<this.allAttributes.length; i++) {
 
 				fieldId = this.allAttributes[i];
 				fieldName = this.getPartFromId(fieldId);
@@ -219,7 +216,7 @@ function weTagWizard(tagName) {
 		}
 
 		if (this.needsEndTag) {
-			ret += ">" + document.we_form.elements['weTagData_defaultValue'].value + "</we:" + this.tagName + ">";
+			ret += ">" + document.we_form.elements.weTagData_defaultValue.value + "</we:" + this.tagName + ">";
 		} else {
 			ret += " />";
 		}
@@ -229,7 +226,7 @@ function weTagWizard(tagName) {
 		} else {
 			return ret;
 		}
-	}
+	};
 
 	this.editMultiSelector = function(cmdObj) {
 
@@ -238,7 +235,7 @@ function weTagWizard(tagName) {
 
 		val = weTextInput.getValue(cmdObj.textFieldId);
 
-		for (selId in cmdObj.selectedItems) {
+		for (var selId in cmdObj.selectedItems) {
 
 			selItem = cmdObj.selectedItems[selId];
 			if (val) {
@@ -247,5 +244,5 @@ function weTagWizard(tagName) {
 			val += selItem[textName];
 		}
 		weTextInput.setValue(cmdObj.textFieldId, val);
-	}
+	};
 }

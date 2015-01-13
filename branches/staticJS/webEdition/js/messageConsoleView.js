@@ -28,7 +28,7 @@ function messageConsoleView(conName, win) {
 	this.win = win;
 
 	// for disabling/hiding the messages the boxes
-	this.calls = new Array();
+	this.calls = [];
 	this.currentPrio = null;
 
 	/**
@@ -40,14 +40,14 @@ function messageConsoleView(conName, win) {
 			if (this.win && this.win.document) {
 
 				if (_lastMessage) { // if there is a lastMessage show it in the console window
-					this.currentPrio = _lastMessage["prio"];
+					this.currentPrio = _lastMessage.prio;
 
 					/*
 					 1 => see Notices
 					 2 => see Warnings
 					 4 => see Errors
 					 */
-					switch (_lastMessage["prio"]) {
+					switch (_lastMessage.prio) {
 
 						case 1:
 							this.win.document.getElementById("messageConsoleMessage" + this.name).innerHTML = this.win._msgNotice;
@@ -63,7 +63,7 @@ function messageConsoleView(conName, win) {
 							break;
 					}
 					this.win.document.getElementById("messageConsoleMessage" + this.name).style.display = "block";
-					this.switchImage(_lastMessage["prio"], true);
+					this.switchImage(_lastMessage.prio, true);
 					this.calls.push(null);
 
 					this.win.setTimeout("_console_" + this.name + ".hideMessage()", 5000);
@@ -72,7 +72,7 @@ function messageConsoleView(conName, win) {
 		} catch (e) {
 			//FF raises error (can't access win)
 		}
-	}
+	};
 
 	/**
 	 * switches image depending on the prio of the message
@@ -103,17 +103,13 @@ function messageConsoleView(conName, win) {
 				}
 				break;
 			default:
-				if (active) {
-					_img = this.win._imgNoticeActive;
-				} else {
-					_img = this.win._imgNotice;
-				}
+				_img = (active ?
+								this.win._imgNoticeActive :
+								this.win._imgNotice);
 				break;
 		}
 		this.win.document.getElementById("messageConsoleImage" + this.name).src = _img.src;
-
-
-	}
+	};
 
 	/**
 	 * Disabled the message after a certain time
@@ -121,12 +117,11 @@ function messageConsoleView(conName, win) {
 	this.hideMessage = function () {
 		this.calls.pop();
 
-		if (this.calls.length == 0) {
+		if (this.calls.length === 0) {
 			this.win.document.getElementById("messageConsoleMessage" + this.name).style.display = "none";
 			this.switchImage(this.currentPrio);
 		}
-
-	}
+	};
 
 	/**
 	 * registers this console to the messageConsole in mainWindow of webEdition
@@ -134,23 +129,18 @@ function messageConsoleView(conName, win) {
 	this.register = function () {
 		if (typeof (top.messageConsole) != "undefined") {
 			top.messageConsole.addObserver(this);
-
 		} else {
 			top.opener.top.messageConsole.addObserver(this);
-
 		}
-	}
+	};
 
 	this.unregister = function () {
 		if (typeof (top.messageConsole) != "undefined") {
 			top.messageConsole.removeObserver(this);
-
 		} else {
 			top.opener.top.messageConsole.removeObserver(this);
-
 		}
-
-	}
+	};
 
 	/**
 	 * opens the message console in a new window
@@ -160,7 +150,6 @@ function messageConsoleView(conName, win) {
 			top.messageConsole.openMessageConsole();
 		} else {
 			top.opener.top.messageConsole.openMessageConsole();
-
 		}
-	}
+	};
 }

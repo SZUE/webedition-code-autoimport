@@ -87,9 +87,9 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 
 	function YUIdoAjax() {
 		YAHOO.util.Connect.asyncRequest('POST', ajaxURL, ajaxCallback, 'protocol=json&cmd=Ping');
-		setTimeout("YUIdoAjax()",<?php echo we_base_constants::PING_TIME; ?> * 1000);
+		setTimeout(YUIdoAjax(),<?php echo we_base_constants::PING_TIME; ?> * 1000);
 	}
 
-	setTimeout("YUIdoAjax()",<?php echo we_base_constants::PING_TIME; ?> * 1000);
+	setTimeout(YUIdoAjax(),<?php echo we_base_constants::PING_TIME; ?> * 1000);
 //-->
 </script>

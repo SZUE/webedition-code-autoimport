@@ -52,7 +52,6 @@ function we_getTabStateImg() {
 	switch (this.state) {
 		case TAB_DISABLED:
 			return this.nameDisabled;
-			break;
 		case TAB_ACTIVE:
 			return this.nameActive;
 		default:

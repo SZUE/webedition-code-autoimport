@@ -44,7 +44,7 @@ echo $headCal .
 
 <body class="weEditorBody" onunload="doUnload()" onkeypress="javascript:if (event.keyCode == 13 || event.keyCode == 3) {
 			search(true);
-		}" onload="setTimeout('init();', 200)" onresize="sizeScrollContent();">
+		}" onload="setTimeout(init(), 200)" onresize="sizeScrollContent();">
 	<div id="mouseOverDivs_doclist"></div>
 	<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;"><?php
 		$docl = new doclistView();

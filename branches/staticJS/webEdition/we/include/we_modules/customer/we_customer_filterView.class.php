@@ -410,7 +410,7 @@ EO_SCRIPT;
 				if (_table) {
 					var _numRows = _table.rows.length;
 
-					if (typeof(rowNr) == "undefined") {
+					if (rowNr === undefined) {
 						rowNr = _numRows;
 					}
 

@@ -74,7 +74,7 @@ $js = <<<EOS
 
 	weEventController.register("docChanged", function(data, sender) {
 		var path = "";
-		if(typeof(parent.edbody.document.we_form.ParentPath)!="undefined") {
+		if(parent.edbody.document.we_form.ParentPath!==undefined) {
 			path = parent.edbody.document.we_form.ParentPath.value + "/";
 		}
 

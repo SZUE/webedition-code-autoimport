@@ -57,7 +57,7 @@ class we_dialog_abbr extends we_dialog_base{
 		return parent::getJs() .
 			(defined('GLOSSARY_TABLE') ? we_html_element::jsElement('
 					function weSaveToGlossaryFn() {alert("go");
-						if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
+						if(isTinyMCE !== undefined && isTinyMCE === true){
 							document.we_form.elements[\'weSaveToGlossary\'].value = 1;
 						} else{alert("goto")
 							eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);

@@ -103,7 +103,7 @@ function TinyWrapper(fieldname) {
 		} else {
 			return "undefined";
 		}
-	}
+	};
 
 	this.getContent = function (forcePopup) {
 		var _forcePopup = typeof forcePopup === "undefined" ? false : forcePopup;

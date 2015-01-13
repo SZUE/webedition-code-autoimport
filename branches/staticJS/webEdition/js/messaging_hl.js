@@ -31,14 +31,14 @@ function selectEntryHandler(id) {
 
 //		var id = parseInt(elem.match(/\d+/));
 
-	if (parent.multi_select == 0) {
+	if (parent.multi_select === 0) {
 		//unselect all selected entries
 		for (j = 0; j < parent.entries_selected.length; j++) {
 			highlight_Elem(parent.entries_selected[j], default_color);
 		}
 
 
-		parent.entries_selected = new Array();
+		parent.entries_selected = [];
 		doSelectMessage(id, 'elem', '');
 	} else {
 		if (array_search(id, parent.entries_selected) != -1) {
@@ -70,12 +70,10 @@ function doSelectMessage(id, mode, doc) {
 }
 
 function highlight_Elem(id, color, fr) {
-	if (fr == '') {
+	if (fr === '') {
 		document.getElementById(id).style.color = color;
-	} else {
-		if (fr.document.getElementById(id)){
-			fr.document.getElementById(id).style.color = color;
-		}
+	} else if (fr.document.getElementById(id)) {
+		fr.document.getElementById(id).style.color = color;
 	}
 }
 

@@ -15,7 +15,7 @@ function preload(imgObj, imgSrc) {
 
 function changeImage(layer, imgName, imgObj) {
 	if (document.images) {
-		if (document.layers && layer != null) {
+		if (document.layers && layer !== null) {
 			eval('if(document.' + layer + '.document.images["' + imgName + '"]!=null){ document.' + layer + '.document.images["' + imgName + '"].src = ' + imgObj + '.src;}');
 		} else {
 			if (document.images[imgName]) {

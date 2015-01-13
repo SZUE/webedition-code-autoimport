@@ -90,8 +90,8 @@ function EditorFrameController() {
 
 		if (_frames.length) {
 
-			this.EditorFrames = new Object();
-			this.FreeEditorFrames = new Array();
+			this.EditorFrames = {};
+			this.FreeEditorFrames = [];
 			this.EditorWindowsAmount = _frames.length;
 
 			for (i = 0; i < _frames.length; i++) {
@@ -165,7 +165,7 @@ function EditorFrameController() {
 		// editcmd can be one of open_cockpit
 
 		// check if a already open document shall be opened
-		if (_editorId = this.getEditorIdOfOpenDocument(table, id, editcmd, url)) { // activate open tab
+		if ((_editorId = this.getEditorIdOfOpenDocument(table, id, editcmd, url))) { // activate open tab
 
 			if (parameters !== this.getEditorFrame(_editorId).getEditorDocumentParameters()) {
 				// re-open document
@@ -328,7 +328,7 @@ function EditorFrameController() {
 
 			_UsedEditors = this.getEditorsInUse();
 
-			for (frameId in _UsedEditors) {
+			for (var frameId in _UsedEditors) {
 
 				// remove all from editor-plugin
 				top.we_cmd("remove_from_editor_plugin", _UsedEditors[frameId].getEditorTransaction());
@@ -374,7 +374,7 @@ function EditorFrameController() {
 
 				_UsedEditors = this.getEditorsInUse();
 
-				for (frameId in _UsedEditors) {
+				for (var frameId in _UsedEditors) {
 					// remove from editor plugin
 					top.we_cmd("remove_from_editor_plugin", _UsedEditors[frameId].getEditorTransaction());
 					if (!_UsedEditors[frameId].getEditorIsHot()) {
@@ -414,6 +414,7 @@ function EditorFrameController() {
 				}
 
 				_UsedEditors = this.getEditorsInUse();
+				var frameId;
 				// remove all from editor plugin
 				for (frameId in _UsedEditors) {
 					if (frameId !== activeId) {
@@ -439,7 +440,7 @@ function EditorFrameController() {
 				}
 			}
 		}
-	}
+	};
 
 	//--------------------------------------------------------------------
 	// FUNCTION:
@@ -455,11 +456,11 @@ function EditorFrameController() {
 	//   nothing
 	//--------------------------------------------------------------------
 	this.closeEditorFrame = function (frameId) {
-
+		var docRef;
 		if (this.EditorFrames[frameId]) {
 
 			if (this.EditorFrames[frameId].EditorType === "cockpit") {
-				var docRef = this.EditorFrames[frameId].getDocumentReference();
+				docRef = this.EditorFrames[frameId].getDocumentReference();
 				// close all modal dialogs
 				docRef.closeAllModalWindows();
 
@@ -469,7 +470,7 @@ function EditorFrameController() {
 				}
 
 			} else if (this.EditorFrames[frameId].EditorType === "model") {
-				var docRef = this.EditorFrames[frameId].getDocumentReference();
+				docRef = this.EditorFrames[frameId].getDocumentReference();
 				if (docRef.closeAllModalWindows) {
 					docRef.closeAllModalWindows();
 				}
@@ -488,10 +489,7 @@ function EditorFrameController() {
 
 			// remove from tree, if possible
 			// deactivate in tree
-			if (top.treeData
-							&& top.treeData.table === this.getEditorFrame(frameId).getEditorEditorTable()
-							&& this.ActiveEditorFrameId === frameId) {
-
+			if (top.treeData && top.treeData.table === this.getEditorFrame(frameId).getEditorEditorTable() && this.ActiveEditorFrameId === frameId) {
 				top.treeData.unselectnode();
 			}
 
@@ -510,7 +508,7 @@ function EditorFrameController() {
 
 					var _reachedCurrent = false;
 					this.ActiveEditorFrameId = null;
-					for (frameKey in this.EditorFrames) {
+					for (var frameKey in this.EditorFrames) {
 
 						if (!_reachedCurrent || _tmpKey === null) {
 							if (this.EditorFrames[frameKey].getEditorIsInUse()) {
@@ -623,7 +621,7 @@ function EditorFrameController() {
 		//		var _colStr = "";
 		if (!this.ActiveEditorFrameId) {
 			first = true;
-			for (frameId in this.EditorFrames) {
+			for (var frameId in this.EditorFrames) {
 
 				if (first) {
 					this.getEditorFrame(frameId).setEmptyEditor();
@@ -645,7 +643,7 @@ function EditorFrameController() {
 			}
 
 		} else {
-			for (frameId in this.EditorFrames) {
+			for (var frameId in this.EditorFrames) {
 				if (this.ActiveEditorFrameId === frameId) {
 					if (isChrome) {
 						this.getEditorFrame(frameId).EditorFrameReference.style.display = "block";
@@ -700,7 +698,7 @@ function EditorFrameController() {
 			//return objref;
 		}
 		return false;
-	}
+	};
 
 	//--------------------------------------------------------------------
 	// FUNCTION:
@@ -729,7 +727,7 @@ function EditorFrameController() {
 			return null;
 
 		}
-		for (_editorId in this.EditorFrames) {
+		for (var _editorId in this.EditorFrames) {
 			if (table && id && this.getEditorEditorTable(_editorId) === table && this.getEditorDocumentId(_editorId) == id) { // open by id
 				return _editorId;
 
@@ -745,8 +743,8 @@ function EditorFrameController() {
 	};
 
 	this.getEditorsInUse = function () {
-		var _ret = new Object();
-		for (frameId in this.EditorFrames) {
+		var _ret = {};
+		for (var frameId in this.EditorFrames) {
 			if (this.EditorFrames[frameId].getEditorIsInUse()) {
 				_ret[frameId] = this.EditorFrames[frameId];
 			}
@@ -765,7 +763,7 @@ function EditorFrameController() {
 	};
 
 	this.getEditorFrameByTransaction = function (theTransaction) {
-		for (frameId in this.EditorFrames) {
+		for (var frameId in this.EditorFrames) {
 			if (this.EditorFrames[frameId] && (this.EditorFrames[frameId].getEditorTransaction() === theTransaction)) {
 				return this.EditorFrames[frameId];
 			}
@@ -984,11 +982,9 @@ function EditorFrame(ref, elementId) {
 	};
 
 	this.initEditorFrameData = function (obj) {
-
 		this.EditorIsInUse = true;
-
 		if (obj) {
-			for (eigen in obj) {
+			for (var eigen in obj) {
 				if (typeof (obj[eigen]) === "boolean") {
 					eval("this." + eigen + " = " + obj[eigen]);
 				} else {

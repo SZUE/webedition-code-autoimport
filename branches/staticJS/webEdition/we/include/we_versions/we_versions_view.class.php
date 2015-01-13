@@ -108,7 +108,7 @@ var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
 
 var ajaxCallbackResultList = {
 	success: function(o) {
-	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+	if(o.responseText !== undefined && o.responseText != "") {
 		document.getElementById("scrollContent").innerHTML = o.responseText;
 		makeAjaxRequestParametersTop();
 		makeAjaxRequestParametersBottom();
@@ -120,7 +120,7 @@ var ajaxCallbackResultList = {
 
 var ajaxCallbackParametersTop = {
 	success: function(o) {
-	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+	if(o.responseText !== undefined && o.responseText != "") {
 		document.getElementById("parametersTop").innerHTML = o.responseText;
 	}
 },
@@ -129,7 +129,7 @@ var ajaxCallbackParametersTop = {
 }
 var ajaxCallbackParametersBottom = {
 	success: function(o) {
-	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+	if(o.responseText !== undefined && o.responseText != "") {
 		document.getElementById("parametersBottom").innerHTML = o.responseText;
 	}
 },
@@ -280,7 +280,7 @@ function checkAll() {
 
 var ajaxCallbackResetVersion = {
 	success: function(o) {
-		if(typeof(o.responseText) != "undefined") {
+		if(o.responseText !== undefined) {
 			//top.we_cmd("save_document","' . $GLOBALS['we_transaction'] . '","0","1","0", "","");
 			setTimeout(\'search(false);\', 500);
 			// reload current document => reload all open Editors on demand

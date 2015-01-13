@@ -179,10 +179,10 @@ var CropTool = {
 	patchEvent : function(evt, currentTarget){
 		if(!evt.target) evt.target = evt.srcElement;
 		if(!evt.currentTarget) evt.currentTarget = currentTarget;
-		if(typeof evt.layerX == "undefined") evt.layerX = evt.offsetX;
-		if(typeof evt.layerY == "undefined") evt.layerY = evt.offsetY;
-		if(typeof evt.clientX == "undefined") evt.clientX = evt.pageX;
-		if(typeof evt.clientY == "undefined") evt.clientY = evt.pageY;
+		if(evt.layerX === undefined) evt.layerX = evt.offsetX;
+		if(evt.layerY === undefined) evt.layerY = evt.offsetY;
+		if(evt.clientX === undefined) evt.clientX = evt.pageX;
+		if(evt.clientY === undefined) evt.clientY = evt.pageY;
 		if(!evt.stopPropagation){
 			evt.stopPropagation = function() { this.cancelBubble = true; };
 		}
@@ -195,10 +195,10 @@ var CropTool = {
 	handleEvent : function(e, sourceElement){
 		if(!e.target) e.target = e.srcElement;
 		if(!e.sourceElement) e.sourceElement = sourceElement;
-		if(typeof e.layerX == "undefined") e.layerX = e.offsetX;
-		if(typeof e.layerY == "undefined") e.layerY = e.offsetY;
-		if(typeof e.clientX == "undefined") e.clientX = e.pageX;
-		if(typeof e.clientY == "undefined") e.clientY = e.pageY;
+		if(e.layerX === undefined) e.layerX = e.offsetX;
+		if(e.layerY === undefined) e.layerY = e.offsetY;
+		if(e.clientX === undefined) e.clientX = e.pageX;
+		if(e.clientY === undefined) e.clientY = e.pageY;
 		if(!e.stopPropagation) e.stopPropagation = function() { this.cancelBubble = true; };
 		if(!e.preventDefault) e.preventDefault = function() { this.returnValue = false; };
 		return e;
@@ -749,7 +749,7 @@ var CropTool = {
 	zoom : function(px){
 		var w = this.sel.getWidth();
 		var h = this.sel.getHeight();
-		if(typeof w != "undefined" || typeof h != "undefined"){
+		if(w !== undefined ||  h !== undefined){
 			this.setCropWidth(w + px);
 			this.setCropHeight(h + px);
 		}
@@ -757,12 +757,12 @@ var CropTool = {
 
 	zoomH : function(px){
 		var w = this.sel.getWidth();
-		if(typeof w != "undefined") this.setCropWidth(w + px);
+		if(w !== undefined) this.setCropWidth(w + px);
 	},
 
 	zoomV : function(px){
 		var h = this.sel.getHeight();
-		if(typeof h != "undefined") this.setCropHeight(h + px);
+		if(h !== undefined) this.setCropHeight(h + px);
 	},
 
 	switch_button_state : function(element, button, state, type){

@@ -506,7 +506,7 @@ function transferDateFields() {
 							$table->getHtml(), g_l('modules_customer', '[search]'), we_html_button::position_yes_no_cancel(null, we_html_button::create_button("close", "javascript:self.close();")), "100%", 30, 558
 						)
 					) .
-					(we_base_request::_(we_base_request::BOOL, 'mode') ? we_html_element::jsElement("setTimeout('lookForDateFields()', 1);") : '')
+					(we_base_request::_(we_base_request::BOOL, 'mode') ? we_html_element::jsElement("setTimeout(lookForDateFields(), 1);") : '')
 				)
 		);
 	}

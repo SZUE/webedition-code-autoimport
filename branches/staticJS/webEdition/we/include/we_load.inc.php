@@ -194,7 +194,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		$js = we_html_element::jsElement('
 function loadTreeData(){
 	if(!' . $Tree->topFrame . '.treeData) {
-		window.setTimeout("loadTreeData()",500);
+		window.setTimeout(loadTreeData(),500);
 		return;
 	}' .
 				($parentFolder ? '' :

@@ -529,20 +529,20 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			function setColor(theRow,theRowNum,newColor){
 				fo=document.forms[0];
 				var theCells=null;
-				if(fo.elements['mark'].value!=''||typeof(theRow.style)=='undefined'){
+				if(fo.elements['mark'].value!=''||theRow.style===undefined){
 					return false;
 				}
-				if(typeof(document.getElementsByTagName)!='undefined'){
+				if(document.getElementsByTagName!==undefined){
 					theCells=theRow.getElementsByTagName('td');
 				}
-				else if(typeof(theRow.cells)!='undefined'){
+				else if(theRow.cells!==undefined){
 					theCells=theRow.cells;
 				}else{
 					return false;
 				}
 				var rowCellsCnt=theCells.length;
 				var domDetect=null;
-				if(typeof(window.opera)=='undefined'&&typeof(theCells[0].getAttribute)!='undefined'){
+				if(window.opera===undefined&&theCells[0].getAttribute!==undefined){
 					domDetect=true;
 				}else{
 					domDetect=false;

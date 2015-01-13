@@ -1331,7 +1331,7 @@ function doNext(){
 					we_html_element::jsElement('
 function doNext(){
 	if(' . $this->bodyFrame . '.document.we_form.step.value === "2" &&
-			typeof ' . $this->bodyFrame . '.we_FileUpload !== "undefined" &&
+			' . $this->bodyFrame . '.we_FileUpload !== undefined &&
 			' . $this->bodyFrame . '.document.we_form.import_from[1].checked){
 		' . we_fileupload_include::getJsBtnCmdStatic('upload', 'body', 'doNextAction();') . '
 		return;

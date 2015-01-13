@@ -225,7 +225,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 		setVisible("addButt", false);
 		document.getElementById("selector").style.height = "100px";
 		setVisible("dictSelector", true);
-		setTimeout("setAppletCode()", 1000);
+		setTimeout(setAppletCode(), 1000);
 	}
 
 	function hideDictSelector() {
@@ -239,7 +239,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 			document.getElementById('appletPanel').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code), '\''); ?>';
 		}
 		appletActiv = true;
-		setTimeout("checkApplet()", 2000);
+		setTimeout(checkApplet(), 2000);
 	}
 
 
@@ -276,7 +276,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 				return;
 			}
 		}
-		setTimeout("setStatusDone()", 3000);
+		setTimeout(setStatusDone(), 3000);
 	}
 
 
@@ -297,7 +297,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 
 		}
 
-		setTimeout("checkApplet()", 2000);
+		setTimeout(checkApplet(), 2000);
 	}
 
 	function deleteDict(name) {
@@ -310,7 +310,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 		if (hiddenCmd.dispatch) {
 			hiddenCmd.dispatch("refresh");
 		} else {
-			setTimeout("loadTable()", 1000);
+			setTimeout(loadTable(), 1000);
 		}
 	}
 

@@ -29,8 +29,8 @@ function gel(id_) {
 function addCss() {
 	jsCss = '<style type="text/css">';
 	for (i = 1; i <= 10; i++) {
-		jsCss += '.cls_' + i + '_collapse{width:' + oCfg.general_['cls_collapse'] + 'px;vertical-align:top;}' +
-						'.cls_' + i + '_expand{width:' + oCfg.general_['cls_expand'] + 'px;vertical-align:top;}';
+		jsCss += '.cls_' + i + '_collapse{width:' + oCfg.general_.cls_collapse + 'px;vertical-align:top;}' +
+						'.cls_' + i + '_expand{width:' + oCfg.general_.cls_expand + 'px;vertical-align:top;}';
 	}
 	jsCss += '</style>';
 	document.write(jsCss);
@@ -39,7 +39,7 @@ function addCss() {
 function getColumnAsoc(id) {
 	var oNode = gel(id);
 	var iNodeLen = oNode.childNodes.length;
-	var aNodeSet = new Array();
+	var aNodeSet = [];
 	var k = 0;
 	for (var i = 0; i < iNodeLen; i++) {
 		var oChild = oNode.childNodes[i];
@@ -51,7 +51,7 @@ function getColumnAsoc(id) {
 				'res': gel(sAttrId + '_res').value,
 				'csv': gel(sAttrId + '_csv').value,
 				'id': sAttrId
-			}
+			};
 			k++;
 		}
 	}
@@ -60,7 +60,7 @@ function getColumnAsoc(id) {
 
 
 function getWidgetProps(p) {
-	var oProps = new Object();
+	var oProps = {};
 	for (i = 1; i <= _iLayoutCols; i++) {
 		var node = gel('c_' + i);
 		if (node === null) {
@@ -107,14 +107,14 @@ function modifyLayoutCols(iCols) {
 			var aSoc = getColumnAsoc('c_' + k);
 			var aSocLen = aSoc.length;
 			for (var i = 0; i < aSocLen; i++) {
-				createWidget(aSoc[i]['type'], 0, iCols);
+				createWidget(aSoc[i].type, 0, iCols);
 			}
 			k++;
 		}
 		for (var i = _iLayoutCols; i > iCols; i--) {
 			var asoc = getColumnAsoc('c_' + i);
 			for (var j = 0; j < asoc.length; j++) {
-				gel(asoc[j]['id']).parentNode.removeChild(gel(asoc[j]['id']));
+				gel(asoc[j].id).parentNode.removeChild(gel(asoc[j].id));
 			}
 			var oRemoveCol = gel('c_' + i);
 			oRemoveCol.parentNode.removeChild(oRemoveCol);
@@ -144,12 +144,12 @@ function setPrefs(_pid, sBit, sTitleEnc) {
 }
 
 function saveSettings() {
-	var aDat = new Array();
+	var aDat = [];
 	for (var i = 0; i < _iLayoutCols; i++) {
 		var aSoc = getColumnAsoc('c_' + (i + 1));
-		aDat[i] = new Array();
+		aDat[i] = [];
 		for (var iPos in aSoc) {
-			aDat[i][iPos] = new Array();
+			aDat[i][iPos] = [];
 			var aRef = ['type', 'cls', 'res', 'csv'];
 			for (var tp in aSoc[iPos]) {
 				var idx = findInArray(aRef, tp);
@@ -159,7 +159,7 @@ function saveSettings() {
 			}
 		}
 	}
-	rss = new Array();
+	rss = [];
 	var topRssFeedsLen = _trf.length;
 	for (var i = 0; i < topRssFeedsLen; i++) {
 		rss[i] = [_trf[i][0], _trf[i][1]];
@@ -176,7 +176,7 @@ function saveSettings() {
 		alert(sDg);
 	}
 
-	fo = self.document.forms['we_form'];
+	fo = self.document.forms.we_form;
 	fo.elements['we_cmd[1]'].value = serialize(aDat);
 	fo.elements['we_cmd[2]'].value = serialize(rss);
 	top.YAHOO.util.Connect.setForm(fo);
@@ -210,8 +210,7 @@ function jsStyleCls(evt, obj, cls1, cls2) {
 			obj.className = obj.className.replace(rem, '');
 			break;
 		case 'verify':
-			return new RegExp('\\b' + cls1 + '\\b').test(obj.className)
-			break;
+			return new RegExp('\\b' + cls1 + '\\b').test(obj.className);
 	}
 }
 
@@ -264,8 +263,8 @@ function setWidth(id, w) {
 }
 
 function setWidgetWidth(id, w) {
-	var rudebox = {'_inline': w, '_bx': w + (2 * oCfg.general_['wh_edge']), '_tb': w + (2 * oCfg.general_['wh_edge']),
-		'_h': w - oCfg.general_['w_icon_bar'], '_lbl': w - (2 * oCfg.general_['w_icon_bar'])};
+	var rudebox = {'_inline': w, '_bx': w + (2 * oCfg.general_.wh_edge), '_tb': w + (2 * oCfg.general_.wh_edge),
+		'_h': w - oCfg.general_.w_icon_bar, '_lbl': w - (2 * oCfg.general_.w_icon_bar)};
 	for (var v in rudebox) {
 		setWidth(id + v, rudebox[v]);
 	}
@@ -274,9 +273,9 @@ function setWidgetWidth(id, w) {
 
 function resizeWidget(id) {
 	var _type = gel(id + '_type').value;
-	var w = (resizeIdx('get', id) == 0) ? oCfg.general_['w_expand'] : oCfg.general_['w_collapse'];
+	var w = (resizeIdx('get', id) === 0) ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
 	resizeIdx('swap', id);
-	setWidgetWidth(id, w)
+	setWidgetWidth(id, w);
 	gel(id + '_lbl').innerHTML = '';
 	setLabel(id);
 	updateJsStyleCls();
@@ -306,8 +305,9 @@ function setTheme(wizId, wizTheme) {
 		gel(wizId + '_img_cl'), gel(wizId + '_img_cr')];
 	var clsElement = gel(wizId + '_cls');
 	var replaceClsName = clsElement.value;
+	var o;
 	clsElement.value = wizTheme;
-	for (var o in objs) {
+	for (o in objs) {
 		if (!objs[o].src) {
 			jsStyleCls('swap', objs[o], objs[o].className, 'bgc_' + wizTheme);
 		} else {
@@ -316,7 +316,7 @@ function setTheme(wizId, wizTheme) {
 		}
 	}
 	var _bgObjs = [gel(wizId + '_lbl_mgnl'), gel(wizId + '_lbl'), gel(wizId + '_lbl_mgnr')];
-	for (var o in _bgObjs) {
+	for (o in _bgObjs) {
 		//_bgObjs[o].style.background = 'url("/webEdition/images/pd/header_' + wizTheme + '.gif")';
 		_bgObjs[o].classList.remove(_bgObjs[o].classList[_bgObjs[o].classList.length - 1]);
 		_bgObjs[o].classList.add("widgetTitle_" + wizTheme);
@@ -351,17 +351,17 @@ function fadeTrans(wizId, start, end, ms) {
 function toggle(wizId, wizType, prefix, postfix) {
 	var defH = eval('oCfg.' + wizType + '_props_["height"]');
 	var defRes = eval('oCfg.' + wizType + '_props_["res"]');
-	var defW = (!!defRes) ? oCfg.general_['w_expand'] : oCfg.general_['w_collapse'];
+	var defW = (!!defRes) ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
 	var asoc = {
 		'width': {
 			'_inline': defW,
-			'_bx': defW + (2 * oCfg.general_['wh_edge']),
-			'_tb': defW + (2 * oCfg.general_['wh_edge']),
-			'_h': defW - oCfg.general_['w_icon_bar'],
-			'_lbl': defW - (2 * oCfg.general_['w_icon_bar'])
+			'_bx': defW + (2 * oCfg.general_.wh_edge),
+			'_tb': defW + (2 * oCfg.general_.wh_edge),
+			'_h': defW - oCfg.general_.w_icon_bar,
+			'_lbl': defW - (2 * oCfg.general_.w_icon_bar)
 		},
 		'height': {
-			'_bx': defH + (2 * oCfg.general_['wh_edge']),
+			'_bx': defH + (2 * oCfg.general_.wh_edge),
 			'_vline_r': defH
 		}
 	};
@@ -392,8 +392,8 @@ function pushContent(wizType, wizId, cNode, prefix, postfix, sCsv) {
 		setTheme(wizId, wizTheme);
 	}
 	gel(wizId).style.display = 'block';
-	if (!!oCfg.blend_['fadeIn']) {
-		fadeTrans(wizId, 0, 100, oCfg.blend_['v']);
+	if (!!oCfg.blend_.fadeIn) {
+		fadeTrans(wizId, 0, 100, oCfg.blend_.v);
 	}
 }
 
@@ -431,11 +431,11 @@ function createWidget(typ, row, col) {
 	divClone.setAttribute('class', 'le_widget');
 	divClone.className = 'le_widget'; // for IE
 	divClone.innerHTML = sClonedNode;
-	if (!!oCfg.blend_['fadeIn']) {
+	if (!!oCfg.blend_.fadeIn) {
 		divClone.style.display = 'none';
 	}
 	if (asoc.length && row) {
-		domNode.insertBefore(divClone, gel(asoc[row - 1]['id']));
+		domNode.insertBefore(divClone, gel(asoc[row - 1].id));
 	} else { // add to empty col - before wildcard!!
 		var _td = gel("c_" + col);
 		_td.insertBefore(
@@ -453,13 +453,13 @@ function createWidget(typ, row, col) {
 			oPc.style.display = 'block';
 		}
 	}
-	if (!!oCfg.blend_['fadeIn']) {
+	if (!!oCfg.blend_.fadeIn) {
 		setOpacity(divClone.id, 0);
 	}
 	if (cloneSampleId != 'divClone') {
 		divClone.style.display = 'block';
-		if (!!oCfg.blend_['fadeIn']) {
-			fadeTrans(new_id, 0, 100, oCfg.blend_['v']);
+		if (!!oCfg.blend_.fadeIn) {
+			fadeTrans(new_id, 0, 100, oCfg.blend_.v);
 		}
 	} else {
 		top.we_cmd('edit_home', 'add', typ, new_id);
@@ -478,7 +478,7 @@ function implode(arr, delimeter, enclosure) {
 	}
 	var out = '';
 	for (var i = 0; i < arr.length; i++) {
-		if (i != 0) {
+		if (i !== 0) {
 			out += delimeter;
 		}
 		out += enclosure + encodeURI(arr[i]) + enclosure;
@@ -619,7 +619,7 @@ var ajaxCallback = {
 		alert("Could not complete the ajax request");
 
 	}
-}
+};
 
 /**
  * Old ajax functions using an iframe
@@ -693,16 +693,16 @@ function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 	initWidget(sObjId);
 }
 
-var _propsDlg = new Array();
+var _propsDlg = [];
 function propsWidget() {
 	eval('var iHeight=oCfg.' + arguments[0] + '_props_["iDlgHeight"]');
 	var uri = composeUri(arguments);
-	eval('_propsDlg["' + arguments[1] + '"]=window.open(uri,arguments[1],"location=0,status=1,scrollbars=0,width=' + oCfg.general_['iDlgWidth'] + 'px,height=' + iHeight + 'px")');
+	eval('_propsDlg["' + arguments[1] + '"]=window.open(uri,arguments[1],"location=0,status=1,scrollbars=0,width=' + oCfg.general_.iDlgWidth + 'px,height=' + iHeight + 'px")');
 }
 
 function closeAllModalWindows() {
 	try {
-		for (dialog in _propsDlg) {
+		for (var dialog in _propsDlg) {
 			_propsDlg[dialog].close();
 		}
 	} catch (e) {
@@ -757,8 +757,8 @@ function resizeIdx(a, id) {
 	var res = gel(id + '_res').value;
 	switch (a) {
 		case 'swap':
-			gel(id + '_res').value = (res == 0) ? 1 : 0;
-			gel(id + '_icon_resize').title = (res == 0) ? g_l.reduce_size : g_l.increase_size;
+			gel(id + '_res').value = (res === 0) ? 1 : 0;
+			gel(id + '_icon_resize').title = (res === 0) ? g_l.reduce_size : g_l.increase_size;
 			break;
 		case 'get':
 			return res;

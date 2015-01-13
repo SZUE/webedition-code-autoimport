@@ -64,7 +64,7 @@ function getBitString(){
 	var sBit='';
 	for(var i=0;i<_aRdo.length;i++){
 		var iCurr=getRdoChecked(_aRdo[i]);
-		sBit+=(typeof iCurr!='undefined')?iCurr:'0';
+		sBit+=(iCurr!==undefined)?iCurr:'0';
 	}
 	sBit+=_fo.elements['sct_valid'].selectedIndex;
 	return sBit;

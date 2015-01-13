@@ -124,12 +124,12 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 				for (var i = 0; i < _iLayoutCols; i++) {
 					var asoc = getColumnAsoc('c_' + (i + 1));
 					var asoc_len = asoc.length;
-					if ((typeof (dat[i]) == 'undefined' && !!asoc_len) || (typeof (dat[i]) != 'undefined' && asoc_len != dat[i].length)) {
+					if ((dat[i] === undefined && !!asoc_len) || (dat[i] !== undefined && asoc_len != dat[i].length)) {
 						return true;
 					}
 					for (var k = 0; k < asoc_len; k++) {
 						for (var j = 0; j < ix_len; j++) {
-							if (typeof (dat[i][k][ix[j]]) == 'undefined' || asoc[k][ix[j]] != dat[i][k][ix[j]]) {
+							if (dat[i][k][ix[j]] === undefined || asoc[k][ix[j]] != dat[i][k][ix[j]]) {
 								return true;
 							}
 						}

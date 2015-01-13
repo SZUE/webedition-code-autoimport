@@ -23,7 +23,7 @@
  */
 
 /*
- * JavaScript-Klasse f�r Datum-Handling
+ * JavaScript-Klasse für Datum-Handling
  *
  * Die Formatangabe ist MySQL-Konform.
  *
@@ -33,10 +33,10 @@
  */
 weDate = function (dateFormat) {
 	this.dateFormat = dateFormat || "%d.%m.%Y";
-	this.dateOnly = (dateFormat == null || dateFormat == "" || dateFormat.indexOf('%') > -1) ? true : false;
+	this.dateOnly = (dateFormat === null || dateFormat === "" || dateFormat.indexOf('%') > -1) ? true : false;
 	this.date = new Date();
 	this.timestemp = Math.floor(this.date.getTime() / 1000);
-	this.formatedDate;
+	this.formatedDate = "";
 	this.debug = "debug: " + this.timestemp + "\n";
 
 	this.dateToTimestemp = function (formDate) {
@@ -57,12 +57,14 @@ weDate = function (dateFormat) {
 					case "%Y":
 					case "%y":
 						this.intYear = parseInt(dateParts[i], 10);
-						(this.intYear < 100) && (this.intYear += (this.intYear > 29) ? 1900 : 2000);
+						if (this.intYear < 100) {
+							this.intYear += (this.intYear > 29 ? 1900 : 2000);
+						}
 						break;
 
 				}
 			}
-			this.date = new Date(this.intYear, this.intMonth, this.intDayOfMonth, 00, 00, 00, 00);
+			this.date = new Date(this.intYear, this.intMonth, this.intDayOfMonth, 0, 0, 0, 0);
 			this.timestemp = Math.floor(this.date.getTime() / 1000);
 		}
 
@@ -103,5 +105,5 @@ weDate = function (dateFormat) {
 		}
 		this.formatedDate = strDate;
 		return strDate;
-	}
-}
+	};
+};

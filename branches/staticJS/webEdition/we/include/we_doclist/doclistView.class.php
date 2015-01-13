@@ -81,7 +81,7 @@ class doclistView{
       var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
       var ajaxCallbackResultList = {
         success: function(o) {
-          if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+          if(o.responseText !== undefined && o.responseText != "") {
             document.getElementById("scrollContent_doclist").innerHTML = o.responseText;
             makeAjaxRequestParametersTop();
             makeAjaxRequestParametersBottom();
@@ -93,7 +93,7 @@ class doclistView{
       }
       var ajaxCallbackParametersTop = {
         success: function(o) {
-          if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+          if(o.responseText !== undefined && o.responseText != "") {
             document.getElementById("parametersTop").innerHTML = o.responseText;
           }
         },
@@ -103,7 +103,7 @@ class doclistView{
       }
       var ajaxCallbackParametersBottom = {
         success: function(o) {
-          if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+          if(o.responseText !== undefined && o.responseText != "") {
             document.getElementById("parametersBottom").innerHTML = o.responseText;
           }
         },
@@ -114,7 +114,7 @@ class doclistView{
 
       var ajaxCallbackgetMouseOverDivs = {
         success: function(o) {
-          if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+          if(o.responseText !== undefined && o.responseText != "") {
             document.getElementById("mouseOverDivs_doclist").innerHTML = o.responseText;
           }
         },

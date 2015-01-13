@@ -107,5 +107,5 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 		?>
 		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
-</body><?php echo we_html_element::jsElement('setTimeout("doScrollTo();",100);'); ?>
+</body><?php echo we_html_element::jsElement('setTimeout(doScrollTo(),100);'); ?>
 </html>

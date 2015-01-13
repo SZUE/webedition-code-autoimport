@@ -414,7 +414,7 @@ class we_dialog_image extends we_dialog_base{
 					//fill in all fields
 					$js = 'top.document.we_form["we_cmd[0]"].value = "";';
 					foreach($args as $k => $v){
-						$js .= 'if(typeof top.document.we_form["we_dialog_args[' . $k . ']"] !== "undefined") top.document.we_form["we_dialog_args[' . $k . ']"].value = "' . $v . '";
+						$js .= 'if(top.document.we_form.we_dialog_args[' . $k . '] !== undefined) top.document.we_form["we_dialog_args[' . $k . ']"].value = "' . $v . '";
 						';
 					}
 
@@ -427,8 +427,8 @@ class we_dialog_image extends we_dialog_base{
 
 						var rh = ' . (intval($args["width"] * $args["height"]) ? ($this->args["width"] / $args["height"]) : 0) . ';
 						var rw = ' . (intval($args["width"] * $args["height"]) ? ($this->args["height"] / $args["width"]) : 0) . ';
-						if(typeof top.document.we_form["tinyMCEInitRatioH"] !== "undefined") top.document.we_form[["tinyMCEInitRatioH"]].value = rh;
-						if(typeof top.document.we_form["tinyMCEInitRatioW"] !== "undefined") top.document.we_form[["tinyMCEInitRatioW"]].value = rw;
+						if(top.document.we_form.tinyMCEInitRatioH !== undefined) top.document.we_form.tinyMCEInitRatioH.value = rh;
+						if(top.document.we_form.tinyMCEInitRatioW !== undefined) top.document.we_form.tinyMCEInitRatioW.value = rw;
 					';
 
 					echo we_html_tools::getHtmlTop() . we_html_element::jsElement($js) . "</head></html>";
@@ -498,7 +498,7 @@ function checkWidthHeight(field){
 										'					classNames = top.opener.we_classNames;')) . '
 					document.writeln(\'<select class="defaultfont" style="width:200px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onchange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', '[none]') . '\');
-					if(typeof(classNames) != "undefined"){
+					if(classNames !== undefined){
 						for (var i = 0; i < classNames.length; i++) {
 							var foo = classNames[i].substring(0,1) == "." ?
 								classNames[i].substring(1,classNames[i].length) :

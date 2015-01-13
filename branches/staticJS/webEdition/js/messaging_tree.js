@@ -31,8 +31,8 @@ var startloc = 0;
 var loaded_thr = 2;
 var load_state = 0;
 deleteMode = false;
-entries_selected = new Array();
-del_parents = new Array();
+entries_selected = [];
+del_parents = [];
 open_folder = -1;
 viewclass = "message";
 mode = "show_folder_content";
@@ -233,7 +233,7 @@ function we_cmd() {
 		case "messaging_start_view":
 			deleteMode = false;
 			mode = "show_folder_content";
-			entries_selected = new Array();
+			entries_selected = [];
 			drawEintraege();
 			top.content.editor.edbody.location = messaging_module_dir + "messaging_work.php?we_transaction=" + we_transaction + "";
 			top.content.usetHot();
@@ -315,7 +315,7 @@ function zeichne(startEntry, zweigEintrag) {
 			}
 			if (deleteMode) {
 				if (nf[ai].name != -1) {
-					trg = "javascript:top.content.check(\"img_" + nf[ai].name + "\");"
+					trg = "javascript:top.content.check(\"img_" + nf[ai].name + "\");";
 					if (nf[ai].checked) {
 						ret += '<a href="' + trg + '"><img src="' + tree_img_dir + "check1.gif\" alt=\"" + g_l.tree_select_statustext + "\" name=\"img_" + nf[ai].name + "\"></a>";
 					} else {
@@ -325,19 +325,20 @@ function zeichne(startEntry, zweigEintrag) {
 			} else {
 				ret += "<a name=\"_" + nf[ai].name + "\" href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ");return true;\" BORDER=0>" +
 								"<IMG SRC=\"" + tree_icon_dir + nf[ai].icon + "\" alt=\"" + g_l.tree_edit_statustext + "\">" +
-								"</a>"
-				trg = "doClick(" + nf[ai].name + ");return true;"
+								"</a>";
+				trg = "doClick(" + nf[ai].name + ");return true;";
 			}
 			ret += "&nbsp;<a name=\"_" + nf[ai].name + "\" href=\"javascript://\" onclick=\"" + trg + "\"><font color=\"black\">" + (parseInt(nf[ai].published) ? " <b>" : "") + translate(nf[ai].text) + (parseInt(nf[ai].published) ? " </b>" : "") + "</font></A>&nbsp;&nbsp;<br/>";
 		} else {
 			var newAst = zweigEintrag;
 			var zusatz = (ai == nf.laenge) ? "end" : "";
-			if (nf[ai].offen == 0) {
+			var zusatz2 = "";
+			if (nf[ai].offen === 0) {
 				ret += "&nbsp;&nbsp;<A href=\"javascript:top.content.openClose(\'" + nf[ai].name + "\',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_open_statustext + "\"></A>";
-				var zusatz2 = "";
+				//zusatz2 = "";
 			} else {
 				ret += "&nbsp;&nbsp;<A href=\"javascript:top.content.openClose(\'" + nf[ai].name + "\',0)\"><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\"alt=\"" + g_l.tree_close_statustext + "\"></A>";
-				var zusatz2 = "open";
+				zusatz2 = "open";
 			}
 			if (deleteMode) {
 				if (nf[ai].name != -1) {
@@ -348,10 +349,9 @@ function zeichne(startEntry, zweigEintrag) {
 													"check0.gif"
 													) +
 									"\" alt=\"" + tree_select_statustext + "\" name=\'img_" + nf[ai].name + "\'></a>";
-
 				}
 			} else {
-				trg = "doClick(" + nf[ai].name + ");return true;"
+				trg = "doClick(" + nf[ai].name + ");return true;";
 			}
 
 			ret += "<a name=\'_" + nf[ai].name + "\' href=\"javascript://\" onclick=\"" + trg + "\" BORDER=0>" +
@@ -409,7 +409,7 @@ function deleteEntry(id) {
 		}
 		ai++;
 	}
-	if (ind != 0) {
+	if (ind !== 0) {
 		ai = ind;
 		while (ai <= menuDaten.laenge - 1) {
 			menuDaten[ai] = menuDaten[ai + 1];
@@ -520,12 +520,11 @@ function delete_menu_entries(ids) {
 	var i, done = 0;
 	var t = menuDaten;
 	var cont = new container();
-	del_parents = new Array();
+	del_parents = [];
 	for (i = 1; i <= t.laenge; i++) {
 		if (array_search(t[i].name, ids) == -1) {
 			cont.add(t[i]);
-		}
-		else {
+		} else {
 			del_parents = del_parents.concat(new Array(String(t[i].vorfahr)));
 		}
 	}

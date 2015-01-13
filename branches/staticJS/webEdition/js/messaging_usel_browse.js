@@ -27,11 +27,12 @@
 //FIXME: compare & unite all _tree.js files
 
 //FIXME: add drawEintrage
+//FIXME: we have to change the class of the elements
 
 var loaded = 0;
 var hot = 0;
 var i;
-entries_selected = new Array();
+entries_selected = [];
 last_entry_selected = -1;
 multi_select = 1;
 
@@ -127,13 +128,12 @@ function zeichne(startEntry, zweigEintrag) {
 			var newAst = zweigEintrag;
 
 			var zusatz = (ai == nf.laenge) ? "end" : "";
-
-			if (nf[ai].offen == 0) {
+			var zusatz2 = "";
+			if (nf[ai].offen === 0) {
 				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',1)\" BORDER=0><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"" + g_l.tree_open_statustext + "\"></A>");
-				var zusatz2 = "";
 			} else {
 				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',0)\" BORDER=0><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" WIDTH=19 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"" + g_l.tree_close_statustext + "\"></A>");
-				var zusatz2 = "open";
+				zusatz2 = "open";
 			}
 			fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=0>");
 			fr.write("<IMG SRC=\"" + tree_icon_dir + "usergroup" + zusatz2 + ".gif\" WIDTH=16 HEIGHT=18 align=absmiddle BORDER=0 Alt=\"" + g_l.tree_edit_statustext + "\">");
@@ -198,7 +198,7 @@ function deleteEntry(id) {
 			}
 		ai++;
 	}
-	if (ind != 0) {
+	if (ind !== 0) {
 		ai = ind;
 		while (ai <= menuDaten.laenge - 1) {
 			menuDaten[ai] = menuDaten[ai + 1];

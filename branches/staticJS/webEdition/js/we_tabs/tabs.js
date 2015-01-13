@@ -33,7 +33,7 @@ function We_TabCtrl() {
 	this.getTabCtrls = function () {
 		var tabRowWidth = 0;
 		var currCtrl = 0;
-		var ctrls = new Array();
+		var ctrls = [];
 
 		for (var i = 0; i < this.tabs.length; i++) {
 			tabRowWidth += this.tabs[i].width + 20;
@@ -42,12 +42,12 @@ function We_TabCtrl() {
 				currCtrl++;
 			}
 			if (typeof (ctrls[currCtrl]) == 'undefined') {
-				ctrls[currCtrl] = new Array();
+				ctrls[currCtrl] = [];
 			}
 			ctrls[currCtrl].push(this.tabs[i]);
 		}
 		return ctrls;
-	}
+	};
 
 	this.getActiveTab = function () {
 		for (var i = 0; i < this.tabs.length; i++) {
@@ -56,7 +56,7 @@ function We_TabCtrl() {
 			}
 		}
 		return 0;
-	}
+	};
 
 	this.setActiveTab = function (activeTab) {
 		for (i = 0; i < tabCtrl.tabs.length; i++) {
@@ -78,7 +78,7 @@ function We_TabCtrl() {
 		// workarround for mozilla mac
 		document.getElementById("tabs_table").style.display = "none";
 		document.getElementById("tabs_table").style.display = "";
-	}
+	};
 
 	this.setActiveCtrl = function (activeTab) {
 		var activeCtrl;
@@ -99,7 +99,7 @@ function We_TabCtrl() {
 				currLayer++;
 			}
 		}
-	}
+	};
 }
 
 function We_Tab(href, title, state, jscode) {
@@ -110,17 +110,17 @@ function We_Tab(href, title, state, jscode) {
 
 	this.getId = function () {
 		return we_tabs.length;
-	}
+	};
 	this.id = this.getId();
 
 	this.width = getDimension(this.title, 'tab_normal').width;
 
 	this.setState = function (state) {
 		this.state = state;
-	}
+	};
 }
 
-var tab = new Array();
+var tab = [];
 var tabContent = "";
 
 function addTab(el) {
@@ -129,15 +129,15 @@ function addTab(el) {
 
 	if (el.id == tabCtrl.getActiveTab())
 		_suffix = hovertab;
-	tabContent += '<td width="10">'
-					+ '<img name="tab_left' + el.id + '" src="' + img_path + strImgLeft + global_suffix + _suffix + '.gif" '
-					+ 'onClick="' + el.jscode + ';tabCtrl.setActiveTab(' + el.id + ');" style="cursor:pointer;">'
-					+ '</td>';
+	tabContent += '<td width="10">' +
+					'<img name="tab_left' + el.id + '" src="' + img_path + strImgLeft + global_suffix + _suffix + '.gif" ' +
+					'onClick="' + el.jscode + ';tabCtrl.setActiveTab(' + el.id + ');" style="cursor:pointer;">' +
+					'</td>';
 	classElement = new CSSClassElement(el, 'tab' + _suffix);
-	tabContent += '<td width="10">'
-					+ '<img name="tab_right' + el.id + '" src="' + img_path + strImgRight + global_suffix + _suffix + '.gif" '
-					+ 'onClick="' + el.jscode + ';tabCtrl.setActiveTab(' + el.id + ');" style="cursor:pointer;">'
-					+ '</td>';
+	tabContent += '<td width="10">' +
+					'<img name="tab_right' + el.id + '" src="' + img_path + strImgRight + global_suffix + _suffix + '.gif" ' +
+					'onClick="' + el.jscode + ';tabCtrl.setActiveTab(' + el.id + ');" style="cursor:pointer;">' +
+					'</td>';
 	return classElement;
 }
 
@@ -191,15 +191,16 @@ function CSSClassElement_setStyleClass(className) {
 
 CSSClassElement.prototype.setStyleClass = CSSClassElement_setStyleClass;
 
-CSSClassElements = new Array();
+CSSClassElements = [];
 
-var theTabLayer = new Array();
+var theTabLayer = [];
 
 we_tabInit = function () {
 	tabCtrl = new We_TabCtrl();
 	var id = 0;
-	for (var i = 0; i < we_tabs.length; i++) {
-		if (we_tabs[i].state != 0) {
+	var i;
+	for (i = 0; i < we_tabs.length; i++) {
+		if (we_tabs[i].state !== 0) {
 			tabCtrl.addTab(we_tabs[id]);
 			id++;
 		}
@@ -213,14 +214,14 @@ we_tabInit = function () {
 		var rows = frmRows.split(",");
 
 		var newFrmRows = 18 + ((tabCtrls.length - 1) * 19) + layerPosYOffset;
-		for (var i = 1; i < rows.length; i++) {
+		for (i = 1; i < rows.length; i++) {
 			newFrmRows += "," + rows[i];
 		}
 		if (frmRows != newFrmRows) {
 			parent.document.body.rows = newFrmRows;
 		}
 	}
-	for (var i = 0; i < tabCtrls.length; i++) {
+	for (i = 0; i < tabCtrls.length; i++) {
 		var activeCtrl = false;
 		var rowWidth = 0;
 		var layerPosY = 0;
@@ -235,9 +236,9 @@ we_tabInit = function () {
 			rowWidth += tabCtrls[i][y].width + 20;
 		}
 
-		tabContent += '<td width="' + (winWidth - rowWidth) + '">'
-						+ '<img src="' + img_tabline + '" width="' + (winWidth - rowWidth) + '" height="18"></td>';
-		tabContent += '</tr></table>';
+		tabContent += '<td width="' + (winWidth - rowWidth) + '">' +
+						'<img src="' + img_tabline + '" width="' + (winWidth - rowWidth) + '" height="18"></td>' +
+						'</tr></table>';
 
 		if (activeCtrl) {
 			layerPosY = (tabCtrls.length - 1) * 19 + layerPosYOffset;
@@ -253,4 +254,4 @@ we_tabInit = function () {
 						tabContent,
 						"", "visible", i);
 	}
-}
+};

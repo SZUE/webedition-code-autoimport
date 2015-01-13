@@ -73,7 +73,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout("we_cmd(\"new_newsletter\");", 10);
+				setTimeout(we_cmd("new_newsletter"), 10);
 			}
 			break;
 
@@ -82,7 +82,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout("we_cmd(\"new_newsletter_group\");", 10);
+				setTimeout(we_cmd("new_newsletter_group"), 10);
 			}
 			break;
 

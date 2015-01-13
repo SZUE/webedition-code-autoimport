@@ -1,4 +1,4 @@
-/**
+/*
  * webEdition CMS
  *
  * webEdition CMS
@@ -53,7 +53,7 @@ function _getIcon(contentType, extension) {
 		return "prog.gif";
 	} else {
 		tmp = _Contentypes[contentType];
-		if (tmp == undefined) {
+		if (tmp === undefined) {
 			return "prog.gif";
 		}
 		return _Contentypes[contentType];
@@ -76,7 +76,7 @@ function setFrameSize() {
 TabView = function (myDoc) {
 	this.myDoc = myDoc;
 	this.init();
-}
+};
 /**
  * class TabView methods and properties
  */
@@ -86,7 +86,7 @@ TabView.prototype = {
 	 * if not if will be added
 	 */
 	openTab: function (frameId, text, title) {
-		if (this.myDoc.getElementById("tab_" + frameId) == undefined) {
+		if (this.myDoc.getElementById("tab_" + frameId) === undefined) {
 			this.addTab(frameId, text, title);
 		} else {
 			this.selectTab(frameId);
@@ -109,7 +109,7 @@ TabView.prototype = {
 		this.setText(frameId, text);
 		this.setTitle(frameId, title);
 		this.selectTab(frameId);
-		setTimeout("setFrameSize()", 100);
+		setTimeout(setFrameSize(), 100);
 	},
 	/**
 	 * controls the click on the close button
@@ -134,7 +134,7 @@ TabView.prototype = {
 	 */
 	selectTab: function (frameId) {
 		this.deselectAll();
-		if (this.activeTab != null) {
+		if (this.activeTab !== null) {
 			this.deselectTab(this.activeTab);
 		}
 		if (this.myDoc.getElementById('tab_' + frameId) && typeof (this.myDoc.getElementById('tab_' + frameId)) == "object") {
@@ -167,7 +167,7 @@ TabView.prototype = {
 		if (text) {
 			text.innerHTML = val;
 		}
-		setTimeout("setFrameSize()", 50);
+		setTimeout(setFrameSize(), 50);
 	},
 	/**
 	 * sets the tab title
@@ -226,14 +226,14 @@ TabView.prototype = {
 	 * inits some vars
 	 */
 	init: function () {
-		this.tabs = new Array();
-		this.frames = new Array();
+		this.tabs = [];
+		this.frames = [];
 		this.activeTab = null;
 		this.tabContainer = this.myDoc.getElementById('tabContainer');
 		this.tabDummy = this.myDoc.getElementById('tabDummy');
-		this.contentType = new Array();
+		this.contentType = [];
 	}
-}
+};
 /**
  * document init
  */

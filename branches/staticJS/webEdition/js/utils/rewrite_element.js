@@ -57,23 +57,25 @@ function we_element_writeElement() {
 }
 we_element.prototype.writeElement = we_element_writeElement;
 function we_element_rewrite(content, className) {
-	if (className)
+	if (className){
 		this.className = className;
+	}
 	this.content = content;
 	var out = this.getContent();
+	var l;
 	if (document.layers) {
-		var l = this.layer;
+		l = this.layer;
 		l.document.open();
 		l.document.write(out);
 		l.document.close();
 	}
 	else if (document.all) {
 		document.all[this.layerId].innerHTML = out;
-	}
-	else if (document.getElementById) {
-		var l = document.getElementById(this.layerId);
-		while (l.hasChildNodes())
+	}	else if (document.getElementById) {
+		l = document.getElementById(this.layerId);
+		while (l.hasChildNodes()){
 			l.removeChild(l.lastChild);
+		}
 		var range = document.createRange();
 		range.setStartAfter(l);
 		var docFrag = range.createContextualFragment(out);
@@ -97,9 +99,9 @@ function we_element_getContent() {
 }
 we_element.prototype.getContent = we_element_getContent;
 we_element.cnt = 0;
-we_element.elements = new Array();
+we_element.elements = [];
 we_element.init = function() {
 	if (document.layers)
 	for (var l = 0; l < we_element.elements.length; l++)
 		we_element.elements[l].init();
-}
+};

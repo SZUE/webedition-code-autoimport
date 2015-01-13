@@ -331,14 +331,14 @@ if($diff){
 				// return !! important for multiEditor
 				return new jsWindow(url, "exit_doc_question", -1, -1, 380, 130, true, false, true);
 			case "eplugin_exit_doc" :
-				if (typeof (top.plugin) !== "undefined" && typeof (top.plugin.document.WePlugin) !== "undefined") {
+				if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
 					if (top.plugin.isInEditor(arguments[1])) {
 						return confirm(g_l.eplugin_exit_doc);
 					}
 				}
 				return true;
 			case "editor_plugin_doc_count":
-				if (typeof (top.plugin.document.WePlugin) !== "undefined") {
+				if (top.plugin.document.WePlugin !== undefined) {
 					return top.plugin.getDocCount();
 				}
 				return 0;

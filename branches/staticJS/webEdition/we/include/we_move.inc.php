@@ -170,7 +170,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 		acStatusType = typeof acStatus;
 		if (acStatusType.toLowerCase() == 'object') {
 			if (acStatus.running) {
-				setTimeout('press_ok_move()', 100);
+				setTimeout(press_ok_move(), 100);
 				return;
 			} else if (!acStatus.valid) {
 <?php echo we_message_reporting::getShowMessageCall(g_l('weClass', '[notValidFolder]'), we_message_reporting::WE_MESSAGE_ERROR) ?>

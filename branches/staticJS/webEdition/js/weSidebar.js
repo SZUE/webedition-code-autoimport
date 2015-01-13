@@ -29,10 +29,11 @@ function weSidebar() {
 //
 
 weSidebar.load = function (url, params) {
-	var cmd = Array();
-	cmd[0] = 'loadSidebarDocument';
-	cmd[1] = url;
-	cmd[2] = params;
+	var cmd = [
+		'loadSidebarDocument',
+		url,
+		params
+	];
 	top.we_cmd(cmd[0], cmd[1], cmd[2]);
 };
 
@@ -85,57 +86,57 @@ weSidebar.openUrl = function (url) {
 };
 
 weSidebar.openDocument = function (obj) {
-	obj['table'] = tables.FILE_TABLE;
-	obj['ct'] = (typeof obj['ct'] == "undefined" ? contentTypes.WEDOCUMENT : obj['ct']);
+	obj.table = tables.FILE_TABLE;
+	obj.ct = (obj.ct === undefined ? contentTypes.WEDOCUMENT : obj.ct);
 	weSidebar._open(obj);
 };
 
 weSidebar.openDocumentById = function () {
-	obj['id'] = (typeof arguments[0] == "undefined" ? 0 : arguments[0]);
-	obj['ct'] = (typeof arguments[1] == "undefined" ? contentTypes.WEDOCUMENT : arguments[1]);
+	obj.id = (arguments[0] === undefined ? 0 : arguments[0]);
+	obj.ct = (arguments[1] === undefined ? contentTypes.WEDOCUMENT : arguments[1]);
 	weSidebar._open(obj);
 };
 
 weSidebar.openTemplate = function (obj) {
-	obj['table'] = tables.TEMPLATES_TABLE;
-	obj['ct'] = contentTypes.TEMPLATE;
+	obj.table = tables.TEMPLATES_TABLE;
+	obj.ct = contentTypes.TEMPLATE;
 	weSidebar._open(obj);
 };
 
 weSidebar.openTemplateById = function () {
-	obj['id'] = (typeof arguments[0] == "undefined" ? 0 : arguments[0]);
+	obj.id = (arguments[0] === undefined ? 0 : arguments[0]);
 	weSidebar._open(obj);
 };
 
 weSidebar.openObject = function (obj) {
 	if (tables.OBJECT_FILES_TABLE) {
-		obj['table'] = tables.OBJECT_FILES_TABLE;
-		obj['ct'] = "objectFile";
+		obj.table = tables.OBJECT_FILES_TABLE;
+		obj.ct = "objectFile";
 		weSidebar._open(obj);
 	}
 };
 
 weSidebar.openObjectById = function () {
-	obj['id'] = (typeof arguments[0] == "undefined" ? 0 : arguments[0]);
+	obj.id = (arguments[0] === undefined ? 0 : arguments[0]);
 	weSidebar._open(obj);
 };
 
 weSidebar.openClass = function (obj) {
 	if (tables.OBJECT_TABLE) {
-		obj['table'] = tables.OBJECT_TABLE;
-		obj['ct'] = "object";
+		obj.table = tables.OBJECT_TABLE;
+		obj.ct = "object";
 		weSidebar._open(obj);
 	}
 };
 
 weSidebar.openClassById = function () {
-	obj['id'] = (typeof arguments[0] == "undefined" ? 0 : arguments[0]);
+	obj.id = (arguments[0] === undefined ? 0 : arguments[0]);
 	weSidebar._open(obj);
 };
 
 weSidebar.openCockpit = function () {
-	obj['ct'] = "cockpit";
-	obj['editcmd'] = "open_cockpit";
+	obj.ct = "cockpit";
+	obj.editcmd = "open_cockpit";
 	weSidebar._open(obj);
 };
 
@@ -148,7 +149,6 @@ weSidebar.openNavigation = function () {
 	cmd[0] = 'navigation_edit';
 	top.we_cmd(cmd[0]);
 };
-
 
 //
 // ----> Function to open doctypes
@@ -164,14 +164,14 @@ weSidebar.openDoctypes = function () {
 // ----> Internal function
 //
 weSidebar._open = function (obj) {
-	table = (typeof obj['table'] == "undefined" ? "" : obj['table']);
-	id = (typeof obj['id'] == "undefined" ? "" : obj['id']);
-	ct = (typeof obj['ct'] == "undefined" ? "" : obj['ct']);
-	editcmd = (typeof obj['editcmd'] == "undefined" ? "" : obj['editcmd']);
-	dt = (typeof obj['dt'] == "undefined" ? "" : obj['dt']);
-	url = (typeof obj['url'] == "undefined" ? "" : obj['url']);
-	code = (typeof obj['code'] == "undefined" ? "" : obj['code']);
-	mode = (typeof obj['mode'] == "undefined" ? "" : obj['mode']);
-	parameters = (typeof obj['parameters'] == "undefined" ? "" : obj['parameters']);
+	table = (obj.table === undefined ? "" : obj.table);
+	id = (obj.id === undefined ? "" : obj.id);
+	ct = (obj.ct === undefined ? "" : obj.ct);
+	editcmd = (obj.editcmd === undefined ? "" : obj.editcmd);
+	dt = (obj.dt === undefined ? "" : obj.dt);
+	url = (obj.url === undefined ? "" : obj.url);
+	code = (obj.code === undefined ? "" : obj.code);
+	mode = (obj.mode === undefined ? "" : obj.mode);
+	parameters = (obj.parameters === undefined ? "" : obj.parameters);
 	top.weEditorFrameController.openDocument(table, id, ct, editcmd, dt, url, code, mode, parameters);
 };

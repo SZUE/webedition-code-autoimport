@@ -32,8 +32,7 @@ weButton.down = function(el){
 		tds[1].className = "weBtnMiddleClicked";
 		tds[2].className = "weBtnRightClicked";
 	}
-}
-
+};
 
 weButton.up = function(el){
 	if (el.className != "weBtnDisabled") {
@@ -41,8 +40,7 @@ weButton.up = function(el){
 		return true;
 	}
 	return false;
-}
-
+};
 
 weButton.out = function(el){
 	if (el.className != "weBtnDisabled" && el.className != "weBtn") {
@@ -52,63 +50,57 @@ weButton.out = function(el){
 		tds[1].className = "weBtnMiddle";
 		tds[2].className = "weBtnRight";
 	}
-}
-
+};
 
 weButton.disable = function(id){
 	var el = document.getElementById(id);
-	if(el != null){
+	if(el !== null){
 		el.className = "weBtnDisabled";
 		var tds = el.getElementsByTagName("TD");
 		tds[0].className = "weBtnLeftDisabled";
 		tds[1].className = "weBtnMiddleDisabled";
 		tds[2].className = "weBtnRightDisabled";
 		var img = document.getElementById(el.id + "_img");
-		if(img != null && img.src.indexOf("Disabled.gif") == -1){
+		if(img !== null && img.src.indexOf("Disabled.gif") == -1){
 			img.src = img.src.replace(/\.gif/, "Disabled.gif");
 		}
 	}
-}
-
+};
 
 weButton.enable = function(id){
 	var el = document.getElementById(id);
-	if(el != null){
+	if(el !== null){
 		el.className = "weBtn";
 		var tds = el.getElementsByTagName("TD");
 		tds[0].className = "weBtnLeft";
 		tds[1].className = "weBtnMiddle";
 		tds[2].className = "weBtnRight";
 		var img = document.getElementById(el.id + "_img");
-		if(img != null){
+		if(img !== null){
 			img.src = img.src.replace(/\Disabled.gif/, ".gif");
 		}
 	}
-}
-
+};
 
 weButton.hide = function(id){
 	var el = document.getElementById(id);
-	if(el != null){
+	if(el !== null){
 		el.style.display = "none";
 	}
-}
-
+};
 
 weButton.show = function(id){
 	var el = document.getElementById(id);
-	if(el != null){
+	if(el !== null){
 		el.style.display = "block";
 	}
-}
-
+};
 
 weButton.isDisabled = function(id) {
 	var el = document.getElementById(id);
-	return (el != null && el.className == "weBtnDisabled");
-}
-
+	return (el !== null && el.className == "weBtnDisabled");
+};
 
 weButton.isEnabled = function(id) {
 	return !this.isDisabled(id);
-}
+};

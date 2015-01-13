@@ -48,14 +48,14 @@ function seeMode_dealWithLinks() {
 	for (i = 0; i < _aTags.length; i++) {
 		var _href = _aTags[i].href;
 
-		if (!(_href.indexOf("javascript:") === 0
-						|| _href.indexOf("#") === 0
-						|| (_href.indexOf("#") === document.URL.length && _href === (document.URL + _aTags[i].hash))
-						|| _href.indexOf(linkPrefix.TYPE_OBJ_PREFIX) === 0
-						|| _href.indexOf(linkPrefix.TYPE_INT_PREFIX) === 0
-						|| _href.indexOf(linkPrefix.TYPE_MAIL_PREFIX) === 0
-						|| _href.indexOf("?") === 0
-						|| _href === ""
+		if (!(_href.indexOf("javascript:") === 0 ||
+						_href.indexOf("#") === 0 ||
+						(_href.indexOf("#") === document.URL.length && _href === (document.URL + _aTags[i].hash)) ||
+						_href.indexOf(linkPrefix.TYPE_OBJ_PREFIX) === 0 ||
+						_href.indexOf(linkPrefix.TYPE_INT_PREFIX) === 0 ||
+						_href.indexOf(linkPrefix.TYPE_MAIL_PREFIX) === 0 ||
+						_href.indexOf("?") === 0 ||
+						_href === ""
 						)
 						) {
 			_aTags[i].href = "javascript:seeMode_clickLink(\'" + _aTags[i].href + "\')";
@@ -86,8 +86,8 @@ function showhideLangLink(allnames, allvalues, deselect) {
 function weDelCookie(name, path, domain) {
 	if (getCookie(name)) {
 		document.cookie = name + "=" +
-						((path == null) ? "" : "; path=" + path) +
-						((domain == null) ? "" : "; domain=" + domain) +
+						((path === null) ? "" : "; path=" + path) +
+						((domain === null) ? "" : "; domain=" + domain) +
 						"; expires=Thu, 01-Jan-70 00:00:01 GMT";
 	}
 }
@@ -127,7 +127,7 @@ function we_submitForm(target, url) {
 		f.target = target;
 		f.action = url;
 		f.method = "post";
-		if (self.weWysiwygSetHiddenText && _EditorFrame.getEditorDidSetHiddenText() == false) {
+		if (self.weWysiwygSetHiddenText && _EditorFrame.getEditorDidSetHiddenText() === false) {
 			weWysiwygSetHiddenText();
 		} else if (_EditorFrame.getEditorDidSetHiddenText()) {
 			_EditorFrame.setEditorDidSetHiddenText(false);
@@ -149,7 +149,7 @@ function doUnload() {
 }
 
 function updateCustomerFilterIfNeeded() {
-	if (_elem = document.we_form["we_" + docName + "_ParentID"]) {
+	if ((_elem = document.we_form["we_" + docName + "_ParentID"])) {
 		_parentid = _elem.value;
 		if (_parentid !== _oldparentid) {
 			top.YAHOO.util.Connect.asyncRequest('GET', '/webEdition/rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=' + we_transaction + '&table=' + docTable + '&classname=' + docClass, ajaxCallback);
@@ -166,7 +166,7 @@ function pathOfDocumentChanged() {
 
 	elem = document.we_form["we_" + docName + "_Filename"]; // documents
 	if (!elem) { // object
-		elem = document.we_form["we_" + docName + "_Text"]
+		elem = document.we_form["we_" + docName + "_Text"];
 	}
 
 	if (elem) {
@@ -179,7 +179,7 @@ function pathOfDocumentChanged() {
 		}
 
 		// path
-		if (_elem = document.we_form["we_" + docName + "_ParentPath"]) {
+		if ((_elem = document.we_form["we_" + docName + "_ParentPath"])) {
 			_filepath = _elem.value;
 		}
 		if (_filepath != "/") {
@@ -202,7 +202,7 @@ var ajaxCallback = {
 			try {
 				eval(o.responseText);
 				if (weResponse) {
-					if (weResponse["data"] === "true") {
+					if (weResponse.data === "true") {
 						_question = g_l.confirm_applyFilter;
 						if (confirm(_question)) {
 							top.we_cmd("customer_applyWeDocumentCustomerFilterFromFolder");
@@ -220,8 +220,8 @@ var ajaxCallback = {
 		}
 	},
 	failure: function (o) {
-
-	}}
+	}
+};
 
 function setScrollTo() {
 	parent.scrollToVal = isOldIE ? document.body.scrollTop : pageYOffset;
@@ -358,6 +358,7 @@ function we_cmd() {
 			if (!confirm(g_l.confirm_navDel)) {
 				break;
 			}
+			//no break;
 		default:
 			for (var i = 0; i < arguments.length; i++) {
 				args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');

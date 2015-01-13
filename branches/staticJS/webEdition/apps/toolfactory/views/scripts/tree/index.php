@@ -65,7 +65,7 @@ function subscribeLabelClick(){
 	weTree = new we_ui_controls_Tree("' . $tree->getId() . '");
 }
 function delaySubcriptionForIE9(){
-	window.setTimeout("subscribeLabelClick()", 1000);
+	window.setTimeout(subscribeLabelClick(), 1000);
 }
 	YAHOO.util.Event.addListener(window, "load", delaySubcriptionForIE9());
 

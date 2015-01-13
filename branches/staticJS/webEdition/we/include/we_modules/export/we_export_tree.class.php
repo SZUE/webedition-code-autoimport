@@ -163,7 +163,7 @@ function checkNode(imgName) {
 
 	}
 	if(top.content) {
-		if(typeof(top.content.hot) != "undefined") {
+		if(top.content.hot !== undefined) {
 			top.content.hot=1;
 		}
 	}

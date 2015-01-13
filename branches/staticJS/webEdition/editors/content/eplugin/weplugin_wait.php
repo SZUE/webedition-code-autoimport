@@ -37,8 +37,8 @@ function nojava() {
 }
 
 function checkPlugin() {
-	if(top.opener.top.plugin.isLoaded && typeof(top.opener.top.plugin.document.WePlugin)!="undefined") {
-		if(typeof(top.opener.top.plugin.document.WePlugin.isLive)!="undefined") {
+	if(top.opener.top.plugin.isLoaded && top.opener.top.plugin.document.WePlugin!==undefined) {
+		if(top.opener.top.plugin.document.WePlugin.isLive!==undefined) {
 			' . ($_callback ? ('eval("top.opener.' . $_callback . '");') : '') . '
 			self.close();
 		} else {
@@ -47,7 +47,7 @@ function checkPlugin() {
 	} else {
 		wait_count ++;
 		if(wait_count<wait_retry) {
-			setTimeout("checkPlugin()",1000);
+			setTimeout(checkPlugin(),1000);
 		} else {
 			nojava();
 		}

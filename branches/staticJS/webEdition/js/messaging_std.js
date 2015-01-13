@@ -83,10 +83,10 @@ function array_rm_elem(arr, elem, tdim_off) {
 
 function get_sel_elems(sel_box) {
 	var i;
-	var arr_sel = new Array();
+	var arr_sel = [];
 
 	for (i = 0; i < sel_box.length; i++) {
-		if (sel_box.options[i].selected == true) {
+		if (sel_box.options[i].selected === true) {
 			arr_sel = arr_sel.concat(new Array(String(sel_box.options[i].value)));
 		}
 	}

@@ -1339,7 +1339,7 @@ function selectItem() {
 			array(
 				'headline' => '',
 				'html' => we_html_tools::htmlSelect(
-					'fields', $__fields, 20, '', ($_multi ? true : false), array('style' => "width: 300px; height: 200px; margin: 5px 0px 5px 0px;", 'onclick' => "setTimeout('selectItem();',100);")),
+					'fields', $__fields, 20, '', ($_multi ? true : false), array('style' => "width: 300px; height: 200px; margin: 5px 0px 5px 0px;", 'onclick' => "setTimeout(selectItem(),100);")),
 				'space' => 0
 			)
 		);

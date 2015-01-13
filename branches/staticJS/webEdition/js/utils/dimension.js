@@ -23,7 +23,7 @@
  */
 
 function getDimension(theString, styleClassElement) {
-	var dim = new Object();
+	var dim = {};
 
 	if (document.getElementById && document.createElement) {
 		var span = document.createElement('span');
@@ -58,8 +58,8 @@ function getDimension(theString, styleClassElement) {
 		var lr = new Layer(window.innerWidth);
 		lr.document.open();
 		if (styleClassElement) {
-			lr.document.write('<span class="' + styleClassElement + '">'
-							+ theString + '<\/span>');
+			lr.document.write('<span class="' + styleClassElement + '">' +
+							theString + '<\/span>');
 		}
 		else {
 			lr.document.write(theString);

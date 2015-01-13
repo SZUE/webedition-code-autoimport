@@ -434,7 +434,7 @@ if (' . $this->editorBodyFrame . '.loaded) {
 var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
 var ajaxCallbackResultList = {
  success: function(o) {
-	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+	if(o.responseText !== undefined && o.responseText != "") {
 	 ' . $this->editorBodyFrame . '.document.getElementById("scrollContent_' . $whichSearch . '").innerHTML = o.responseText;
 	 makeAjaxRequestParametersTop();
 	 makeAjaxRequestParametersBottom();
@@ -447,7 +447,7 @@ var ajaxCallbackResultList = {
 }
 var ajaxCallbackParametersTop = {
  success: function(o) {
-	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+	if(o.responseText !== undefined && o.responseText != "") {
 	 ' . $this->editorBodyFrame . '.document.getElementById("parametersTop_' . $whichSearch . '").innerHTML = o.responseText;
 	}
  },
@@ -457,7 +457,7 @@ var ajaxCallbackParametersTop = {
 }
 var ajaxCallbackParametersBottom = {
  success: function(o) {
-	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+	if(o.responseText !== undefined && o.responseText != "") {
 	 ' . $this->editorBodyFrame . '.document.getElementById("parametersBottom_' . $whichSearch . '").innerHTML = o.responseText;
 	}
  },
@@ -467,7 +467,7 @@ var ajaxCallbackParametersBottom = {
 }
 var ajaxCallbackgetMouseOverDivs = {
  success: function(o) {
-	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+	if(o.responseText !== undefined && o.responseText != "") {
 	 ' . $this->editorBodyFrame . '.document.getElementById("mouseOverDivs_' . $whichSearch . '").innerHTML = o.responseText;
 	}
  },

@@ -59,7 +59,7 @@ class we_dialog_acronym extends we_dialog_base{
 		if(defined('GLOSSARY_TABLE') && !$this->noInternals){
 			$js .= we_html_element::jsElement('
 					function weSaveToGlossaryFn() {
-						if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
+						if(isTinyMCE !== undefined && isTinyMCE === true){
 							document.we_form.elements[\'weSaveToGlossary\'].value = 1;
 						} else{
 							eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);

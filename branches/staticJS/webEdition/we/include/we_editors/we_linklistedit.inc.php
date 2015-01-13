@@ -346,7 +346,7 @@ echo $yuiSuggest->getYuiCssFiles() .
 	function applyOnEnter(evt) {
 
 		_elemName = "target";
-		if (typeof (evt["srcElement"]) != "undefined") { // IE
+		if (evt.srcElement !== undefined) { // IE
 			_elemName = "srcElement";
 		}
 

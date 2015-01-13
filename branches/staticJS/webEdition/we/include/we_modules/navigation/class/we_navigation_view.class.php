@@ -102,7 +102,7 @@ function we_cmd() {
 			} else {
 				setTimeout(\'we_cmd("\' + arguments[0] + \'");\', 10);
 			}
-			if((typeof treeData!="undefined") && treeData){
+			if((treeData!==undefined) && treeData){
 				treeData.unselectnode();
 			}
 		break;
@@ -111,7 +111,7 @@ function we_cmd() {
 			if (' . $this->editorBodyFrame . '.loaded) {
 					if(' . $this->editorBodyFrame . '.document.we_form.presetFolder) ' . $this->editorBodyFrame . '.document.we_form.presetFolder.value = makeNewDoc;
 					var cont = true;
-					if(typeof(' . $this->editorBodyFrame . '.document.we_form.Selection)!="undefined") {
+					if(' . $this->editorBodyFrame . '.document.we_form.Selection!==undefined) {
 						if(' . $this->editorBodyFrame . '.document.we_form.Selection.options[' . $this->editorBodyFrame . '.document.we_form.Selection.selectedIndex].value=="' . we_navigation_navigation::SELECTION_DYNAMIC . '" && ' . $this->editorBodyFrame . '.document.we_form.IsFolder.value=="1"){
 							cont = confirm("' . g_l('navigation', '[save_populate_question]') . '");
 						}
@@ -273,7 +273,7 @@ function we_cmd() {
 		case "copyNaviFolder":
 			folderPath = document.we_form.CopyFolderPath.value;
 			folderID   = document.we_form.CopyFolderID.value;
-			setTimeout("copyNaviFolder(folderPath, folderID)",100);
+			setTimeout(copyNaviFolder(folderPath, folderID),100);
 			break;
 		case "rebuildNavi":
 			//new jsWindow(\'' . WE_INCLUDES_PATH . 'we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=\',\'resave\',-1,-1,600,130,0,true);
@@ -506,7 +506,7 @@ function putSortField(field){
 }
 
 function setFocus() {
-	if(typeof(document.we_form.Text)!="undefined" && ' . $this->topFrame . '.activ_tab==1){
+	if(document.we_form.Text!==undefined && ' . $this->topFrame . '.activ_tab==1){
 		document.we_form.Text.focus();
 	}
 }
@@ -628,19 +628,19 @@ function we_cmd(){
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
 function populateVars() {
-	if(typeof(categories_edit)!="undefined" && typeof(document.we_form.CategoriesCount)!="undefined"){
+	if(categories_edit!==undefined && document.we_form.CategoriesCount!==undefined){
 		document.we_form.CategoriesCount.value = categories_edit.itemCount;
 	}
-	if(typeof(sort_edit)!="undefined" && typeof(document.we_form.SortCount)!="undefined"){
+	if(sort_edit!==undefined && document.we_form.SortCount!==undefined){
 		document.we_form.SortCount.value = sort_edit.itemCount;
 	}
-	if(typeof(specificCustomersEdit)!="undefined" && typeof(document.we_form.specificCustomersEditCount)!="undefined"){
+	if(specificCustomersEdit!==undefined && document.we_form.specificCustomersEditCount!==undefined){
 		document.we_form.specificCustomersEditCount.value = specificCustomersEdit.itemCount;
 	}
-	if(typeof(blackListEdit)!="undefined" && typeof(document.we_form.blackListEditCount)!="undefined"){
+	if(blackListEdit!==undefined && document.we_form.blackListEditCount!==undefined){
 		document.we_form.blackListEditCount.value = blackListEdit.itemCount;
 	}
-	if(typeof(whiteListEdit)!="undefined" && typeof(document.we_form.whiteListEditCount)!="undefined"){
+	if(whiteListEdit!==undefined && document.we_form.whiteListEditCount!==undefined){
 		document.we_form.whiteListEditCount.value = whiteListEdit.itemCount;
 	}
 }

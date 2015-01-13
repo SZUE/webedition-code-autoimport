@@ -122,7 +122,7 @@ function _cutText($text, $l){
 
 	function keypressed(e) {
 		if (e.keyCode === 13) { // RETURN KEY => valid for all Browsers
-			setTimeout('document.we_form.txt.blur()', 30);
+			setTimeout(document.we_form.txt.blur(), 30);
 			//document.we_form
 		}
 	}

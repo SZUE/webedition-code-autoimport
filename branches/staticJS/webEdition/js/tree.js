@@ -31,8 +31,8 @@ function getTreeLayout() {
 function setTreeState() {
 	this.state = arguments[0];
 
-	if (this.state == this.tree_states["edit"]) {
-		for (i = 1; i <= this.len; i++) {
+	if (this.state == this.tree_states.edit) {
+		for (var i = 1; i <= this.len; i++) {
 			if (this[i].checked == 1) {
 				this[i].checked = 0;
 			}
@@ -63,8 +63,7 @@ function rootEntry(id, text, rootstat, offset) {
 }
 
 function node(attribs) {
-
-	for (aname in attribs) {
+	for (var aname in attribs) {
 		var val = "" + attribs[aname];
 		this[aname] = val;
 	}
@@ -79,7 +78,7 @@ function node(attribs) {
 function selectNode() {
 	if (arguments[0]) {
 		var ind;
-		if (treeData.selection != "" && treeData.selection_table == treeData.table) {
+		if (treeData.selection !== "" && treeData.selection_table == treeData.table) {
 			ind = indexOfEntry(treeData.selection);
 			if (ind != -1) {
 				var oldnode = get(treeData.selection);
@@ -99,7 +98,7 @@ function selectNode() {
 }
 
 function unselectNode() {
-	if (treeData.selection != "" && treeData.table == treeData.selection_table) {
+	if (treeData.selection !== "" && treeData.table == treeData.selection_table) {
 		var ind = indexOfEntry(treeData.selection);
 		if (ind != -1) {
 			var node = get(treeData.selection);
@@ -121,7 +120,7 @@ function deleteEntry(id) {
 		}
 		ai++;
 	}
-	if (ind != 0) {
+	if (ind !== 0) {
 		ai = ind;
 		while (ai <= treeData.len - 1) {
 			treeData[ai] = treeData[ai + 1];
@@ -156,7 +155,7 @@ function parentChecked(start) {
 				return true;
 			}
 
-			if (obj[i].parentid != 0) {
+			if (obj[i].parentid !== 0) {
 				parentChecked(obj[i].parentid);
 			}
 		}

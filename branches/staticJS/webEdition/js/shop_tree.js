@@ -33,8 +33,8 @@ var folder = 0;
 function drawEintraege() {
 	fr = top.content.tree.window.document.body;
 	fr.innerHTML = '<div id="treetable" class="tree"><nobr>' +
-					"<tr><td class=\"tree\"><nobr><a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"" + treeYearClick + "\" >" + treeYear + ": <strong>" + top.yearshop + " </strong></a> <br/>"
-	zeichne(0, "") +
+					"<tr><td class=\"tree\"><nobr><a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"" + treeYearClick + "\" >" + treeYear + ": <strong>" + top.yearshop + " </strong></a> <br/>" +
+					zeichne(0, "") +
 					"</nobr></div>" +
 					"</body></html>";
 }
@@ -74,13 +74,13 @@ function zeichne(startEntry, zweigEintrag) {
 		} else {
 			var newAst = zweigEintrag;
 			var zusatz = (ai === nf.laenge) ? "end" : "";
+			var zusatz2 = "";
 
 			if (nf[ai].offen === 0) {
 				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\"><img src=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" title=\"" + g_l.tree_open_statustext + "\"></a>";
-				var zusatz2 = "";
 			} else {
 				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\"><img src=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\" title=\"" + g_l.tree_close_statustext + "\"></a>";
-				var zusatz2 = "open";
+				zusatz2 = "open";
 			}
 			ret += (perm_EDIT_SHOP_ORDER ?
 							"<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-if (typeof (window.top.pb_vars) == 'undefined') {
+if (typeof (window.top.pb_vars) === 'undefined') {
 	var imgDir = "/webEdition/images";
 	var colorCont = "#ffffff";
 	var colorUnloaded = "#e6e8fa";
@@ -34,34 +34,32 @@ if (typeof (window.top.pb_vars) == 'undefined') {
 	document.write(pb_vars);
 }
 
-var pb_style = '';
-
-pb_style += '<style type="text/css">';
-pb_style += '#divCont {'
-				+ 'position:absolute; left:0px; top:0px;'
-				+ 'width:150; height:98; clip:rect(0px 150 150 0px);'
-				+ 'background-color:' + colorCont + ';'
-				+ 'layer-background-color:' + colorCont + ';'
-				+ '}';
-pb_style += '#divLoaded {'
-				+ 'position:absolute;'
-				+ 'layer-background-color:' + colorUnloaded + ';'
-				+ 'background-color:' + colorUnloaded + ';'
-				+ 'background-image:url(' + imgDir + '/' + bgImgUnloaded + ');'
-				+ 'layer-background-image:url(' + imgDir + '/' + bgImgUnloaded + ');'
-				+ '}';
-pb_style += '#divUnloaded {'
-				+ 'position:absolute; left:0px; top:0px;'
-				+ 'layer-background-color:' + colorLoaded + ';'
-				+ 'background-color:' + colorLoaded + ';'
-				+ 'background-image:url(' + imgDir + '/' + bgImgLoaded + ');'
-				+ 'layer-background-image:url(' + imgDir + '/' + bgImgLoaded + ');'
-				+ '}';
-pb_style += '#divText {'
-				+ 'position:absolute; background-color:transparent; font-family:Verdana;'
-				+ 'color:#006699; font-size:9px; font-weight:bold;'
-				+ '}';
-pb_style += '</style>';
+var pb_style = '<style type="text/css">' +
+				'#divCont {' +
+				'position:absolute; left:0px; top:0px;' +
+				'width:150; height:98; clip:rect(0px 150 150 0px);' +
+				'background-color:' + colorCont + ';' +
+				'layer-background-color:' + colorCont + ';' +
+				'}' +
+				'#divLoaded {' +
+				'position:absolute;' +
+				'layer-background-color:' + colorUnloaded + ';' +
+				'background-color:' + colorUnloaded + ';' +
+				'background-image:url(' + imgDir + '/' + bgImgUnloaded + ');' +
+				'layer-background-image:url(' + imgDir + '/' + bgImgUnloaded + ');' +
+				'}' +
+				'#divUnloaded {' +
+				'position:absolute; left:0px; top:0px;' +
+				'layer-background-color:' + colorLoaded + ';' +
+				'background-color:' + colorLoaded + ';' +
+				'background-image:url(' + imgDir + '/' + bgImgLoaded + ');' +
+				'layer-background-image:url(' + imgDir + '/' + bgImgLoaded + ');' +
+				'}' +
+				'#divText {' +
+				'position:absolute; background-color:transparent; font-family:Verdana;' +
+				'color:#006699; font-size:9px; font-weight:bold;' +
+				'}' +
+				'</style>';
 
 document.write(pb_style);
 
@@ -119,7 +117,7 @@ pb_object.prototype.pb_move = function (x, y) {
 	this.y = y;
 	this.css.left = x + px;
 	this.css.top = y + px;
-}
+};
 
 pb_object.prototype.pb_clip = function (t, r, b, l, setwidth) {
 	this.ct = t;
@@ -148,7 +146,7 @@ pb_object.prototype.pb_clip = function (t, r, b, l, setwidth) {
 			this.css.height = b + px;
 		}
 	}
-}
+};
 
 pb_object.prototype.pb_write = function (text, startHTML, endHTML) {
 	if (bw.ns4) {
@@ -160,7 +158,7 @@ pb_object.prototype.pb_write = function (text, startHTML, endHTML) {
 		this.ref.close();
 	} else
 		this.evnt.innerHTML = text;
-}
+};
 
 var oLoad2;
 
@@ -193,7 +191,7 @@ function pb_increment() {
 		oLoadText.pb_write(Math.floor(oLoad2.percent * scale.current) + '%');
 	}
 	if (scale.current >= scale.maximum)
-		setTimeout('pb_destroy()', 500);
+		setTimeout(pb_destroy(), 500);
 }
 
 function pb_destroy() {
@@ -212,7 +210,7 @@ function pb_display() {
 		oLoadText.pb_write(Math.floor(oLoad2.percent * scale.current) + '%');
 	}
 	if (scale.current <= scale.maximum) {
-		setTimeout('pb_display()', 200);
+		setTimeout(pb_display(), 200);
 	} else {
 		oLoadCont.css.visibility = 'hidden';
 	}

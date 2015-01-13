@@ -96,7 +96,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsScrip
 
 		parent.parent.last_entry_selected = id;
 
-		if (typeof (document.images["read_" + id]) != "undefined") {
+		if (document.images["read_" + id] !== undefined) {
 			document.images["read_" + id].src = read_img.src;
 		}
 		highlight_TR(id, sel_color, sel_text_color);

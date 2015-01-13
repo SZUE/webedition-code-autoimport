@@ -558,7 +558,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 	var weCountWriteBC = 0;
 	setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
 	function weWriteBreadCrumb(BreadCrumb){
-		if(typeof top.fspath != "undefined") top.fspath.document.body.innerHTML = BreadCrumb;
+		if(top.fspath !== undefined) top.fspath.document.body.innerHTML = BreadCrumb;
 		else if(weCountWriteBC<10) setTimeout(\'weWriteBreadCrumb(BreadCrumb)\',100);
 		weCountWriteBC++;
 	}') . '

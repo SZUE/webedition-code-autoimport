@@ -201,7 +201,7 @@ var we_dir="' . WEBEDITION_DIR . '";'
 					while(acLoopCount<20 && top.content.editor.edbody.YAHOO.autocoml.isRunnigProcess()){
 						acLoopCount++;
 						acIsRunning = true;
-						setTimeout("we_save()",100);
+						setTimeout(we_save(),100);
 					}
 					if(!acIsRunning) {
 						if(top.content.editor.edbody.YAHOO.autocoml.isValid()) {

@@ -216,17 +216,17 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 			$js = <<<EOS
 
 function weGetTop() {
-	return  (self != parent && typeof(parent.weGetTop) != "undefined"?
+	return  (self != parent && parent.weGetTop !== undefined?
 		parent.weGetTop():parent);
 }
 
 function weCC() {
-	if (typeof(weGetTop().we_core_CmdController) != "undefined") {
+	if (weGetTop().we_core_CmdController !== undefined) {
 		return weGetTop().we_core_CmdController.getInstance();
 	} else if (opener){
-		if (typeof(opener.we_core_CmdController) != "undefined") {
+		if (opener.we_core_CmdController !== undefined) {
 			return opener.we_core_CmdController.getInstance();
-		} else if (typeof(opener.weCC) != "undefined"){
+		} else if (opener.weCC !== undefined){
 			return opener.weCC();
 		}
 	}
@@ -235,12 +235,12 @@ function weCC() {
 
 function weEC() {
 	var topFrame = weGetTop();
-	if (typeof(topFrame.weEventController) !== "undefined") {
+	if (topFrame.weEventController !== undefined) {
 		return topFrame.weEventController;
 	} else if (opener){
-		if (typeof(opener.weEventController) != "undefined") {
+		if (opener.weEventController !== undefined) {
 			return opener.weEventController;
-		} else if (typeof(opener.weEC) != "undefined"){
+		} else if (opener.weEC != undefined){
 			return opener.weEC();
 		}
 	}

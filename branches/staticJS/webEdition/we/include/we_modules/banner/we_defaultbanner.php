@@ -97,7 +97,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js');
 		while (acLoopCount < 20 && YAHOO.autocoml.isRunnigProcess()) {
 			acLoopCount++;
 			acIsRunning = true;
-			setTimeout('we_save()', 100);
+			setTimeout(we_save(), 100);
 		}
 		if (!acIsRunning) {
 			if (YAHOO.autocoml.isValid()) {

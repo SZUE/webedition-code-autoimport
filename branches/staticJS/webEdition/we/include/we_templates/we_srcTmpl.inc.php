@@ -62,18 +62,18 @@ echo we_html_multiIconBox::getJS();
 echo we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js');
 switch($_SESSION['prefs']['editorMode']){
 	case 'codemirror2':
-		$initEditor = 'initCM();';
+		$initEditor = 'initCM()';
 		break;
 	case 'java':
-		$initEditor = 'initJava();';
+		$initEditor = 'initJava()';
 		break;
 	default:
-		$initEditor = 'initDefaultEdior();';
+		$initEditor = 'initDefaultEdior()';
 		break;
 }
 ?>
 </head>
-<body class="weEditorBody" style="overflow:hidden;" onload="setTimeout('<?php echo $initEditor; ?>', 200);" onunload="doUnload();
+<body class="weEditorBody" style="overflow:hidden;" onload="setTimeout(<?php echo $initEditor; ?>, 200);" onunload="doUnload();
 		parent.editorScrollPosTop = getScrollPosTop();
 		parent.editorScrollPosLeft = getScrollPosLeft();" onresize="sizeEditor();">
 	<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
@@ -514,7 +514,7 @@ function addCursorPosition ( tagText ) {
 				intStart = weForm.selectionStart;
 				intEnd = weForm.selectionEnd;
 				weForm.value = (weForm.value).substring(0, intStart) + tagText + (weForm.value).substring(intEnd, weForm.value.length);
-					window.setTimeout("scrollToPosition();",50);
+					window.setTimeout(scrollToPosition(),50);
 				weForm.focus();
 					weForm.selectionStart = eval(intStart+tagText.length);
 					weForm.selectionEnd = eval(intStart+tagText.length);

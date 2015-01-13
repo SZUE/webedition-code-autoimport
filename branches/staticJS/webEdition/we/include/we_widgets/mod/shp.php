@@ -296,7 +296,7 @@ if($bTarget){
 
 			addLoadEvent( function() {
 				var options;
-				var widgetDoc = typeof widgetFrame !== 'undefined' ? widgetFrame.document : " . ($isRefresh ? 'parent.document' : 'document') . ";
+				var widgetDoc = widgetFrame !== undefined ? widgetFrame.document : " . ($isRefresh ? 'parent.document' : 'document') . ";
 
 				// Draw the gauge using custom settings
 				options = {

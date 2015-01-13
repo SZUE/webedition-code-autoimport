@@ -118,7 +118,7 @@ parent.document.title = "{$_SERVER['SERVER_NAME']} webEdition {$translate->_('Ap
 
 /* cmdError */
 weEventController.register("cmdError", function(data, sender) {
-	if (typeof(data.errorMessage) != "undefined") {
+	if (data.errorMessage !== undefined) {
 		err = data.errorMessage;
 	} else {
 		err = "Unknown Error";
@@ -128,7 +128,7 @@ weEventController.register("cmdError", function(data, sender) {
 
 /* cmdNotice */
 weEventController.register("cmdNotice", function(data, sender) {
-	if (typeof(data.errorMessage) != "undefined") {
+	if (data.errorMessage !== undefined) {
 		err = data.errorMessage;
 	} else {
 		err = "Unknown Error";
@@ -138,7 +138,7 @@ weEventController.register("cmdNotice", function(data, sender) {
 
 /* cmdWarning */
 weEventController.register("cmdWarning", function(data, sender) {
-	if (typeof(data.errorMessage) != "undefined") {
+	if (data.errorMessage !== undefined) {
 		err = data.errorMessage;
 	} else {
 		err = "Unknown Error";
@@ -254,7 +254,7 @@ weCmdController.register('open_top', 'app_{$this->appName}_open', function(cmdOb
 /* save */
 weCmdController.register('save_top', 'app_{$this->appName}_save', function(cmdObj) {
 
-	if (typeof({$fs}.edbody) == "undefined") {
+	if ({$fs}.edbody === undefined) {
 		$nothingToSaveMessageCall
 	} else {
 		we_core_JsonRpc.callMethod(
@@ -270,7 +270,7 @@ weCmdController.register('save_top', 'app_{$this->appName}_save', function(cmdOb
 /* unpublish */
 weCmdController.register('unpublish_top', 'app_{$this->appName}_unpublish', function(cmdObj) {
 
-	if (typeof({$fs}.edbody) == 'undefined') {
+	if ({$fs}.edbody === undefined) {
 		$nothingToSaveMessageCall
 	} else {
 		cmdObj.ignoreHot = true;
@@ -288,7 +288,7 @@ weCmdController.register('unpublish_top', 'app_{$this->appName}_unpublish', func
 /* publish */
 weCmdController.register('publish_top', 'app_{$this->appName}_publish', function(cmdObj) {
 
-	if (typeof({$fs}.edbody) == 'undefined') {
+	if ({$fs}.edbody === undefined) {
 		$nothingToSaveMessageCall
 	} else {
 		cmdObj.ignoreHot = true;
@@ -305,7 +305,7 @@ weCmdController.register('publish_top', 'app_{$this->appName}_publish', function
 
 /* delete */
 weCmdController.register('delete_top', 'app_{$this->appName}_delete', function(cmdObj) {
-	if (typeof({$fs}.edbody) == "undefined") {
+	if ({$fs}.edbody === undefined) {
 		$nothingToDeleteMessageCall
 	} else {
 		we_core_JsonRpc.callMethod(

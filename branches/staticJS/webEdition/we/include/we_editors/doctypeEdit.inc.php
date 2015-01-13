@@ -205,7 +205,7 @@ function we_save_docType(doc, url) {
 	} else if (acStatusType.toLowerCase() == 'object') {
 		if (acStatus.running) {
 			countSaveLoop++;
-			setTimeout('we_save_docType(doc,url)', 100);
+			setTimeout(we_save_docType(doc,url), 100);
 		} else if (!acStatus.valid) {
 <?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) ?>;
 			countSaveLoop = 0;

@@ -55,13 +55,13 @@ function zeichne(startEntry, zweigEintrag) {
 		} else {
 			var newAst = zweigEintrag;
 			var zusatz = (ai == nf.laenge) ? "end" : "";
+			var zusatz2 = "";
 
-			if (nf[ai].offen == 0) {
+			if (nf[ai].offen === 0) {
 				ret += "&nbsp;&nbsp;<A href=\"javascript:top.content.openClose(\'" + nf[ai].name + "\',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_open_statustext + "\"></A>";
-				var zusatz2 = "";
 			} else {
 				ret += "&nbsp;&nbsp;<A href=\"javascript:top.content.openClose(\'" + nf[ai].name + "\',0)\"><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_close_statustext + "\"></A>";
-				var zusatz2 = "open";
+				zusatz2 = "open";
 			}
 			ret += "<a name=\'_" + nf[ai].name + "\' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",\'" + nf[ai].contentType + "\',\'" + nf[ai].table + "\');return true;\">" +
 							"<IMG SRC=\"" + tree_icon_dir + "usergroup" + zusatz2 + ".gif\" alt=\"" + g_l.tree_edit_statustext + "\">" +
@@ -123,7 +123,7 @@ function deleteEntry(id) {
 		}
 		ai++;
 	}
-	if (ind != 0) {
+	if (ind !== 0) {
 		ai = ind;
 		while (ai <= menuDaten.laenge - 1) {
 			menuDaten[ai] = menuDaten[ai + 1];

@@ -174,7 +174,7 @@ class we_wizard_code{
 var ajaxURL = "/webEdition/rpc/rpc.php";
 var ajaxCallback = {
 	success: function(o) {
-		if(typeof(o.responseText) != 'undefined' && o.responseText != '') {
+		if(o.responseText !== undefined && o.responseText != '') {
 			document.getElementById('tag_edit_area').value = o.responseText;
 		}
 	},

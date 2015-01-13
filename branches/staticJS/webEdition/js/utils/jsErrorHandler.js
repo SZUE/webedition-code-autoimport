@@ -53,7 +53,7 @@ try {
 		} catch (e) {
 			console.debug(e);
 		}
-	}
+	};
 } catch (e) {
 	console.debug(e);
 }

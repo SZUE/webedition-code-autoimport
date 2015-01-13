@@ -262,7 +262,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
 							top.content.editor.edbody.submitForm();
 						} else {
-							setTimeout('we_cmd("new_banner");', 10);
+							setTimeout(we_cmd("new_banner"), 10);
 						}
 						break;
 					case "new_bannergroup":
@@ -270,7 +270,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 							top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
 							top.content.editor.edbody.submitForm();
 						} else {
-							setTimeout('we_cmd("new_bannergroup");', 10);
+							setTimeout(we_cmd("new_bannergroup"), 10);
 						}
 						break;
 					case "delete_banner":

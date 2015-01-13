@@ -57,7 +57,7 @@ function setFrameSize() {
 		fsRows[0] = tabsHeight;
 		fs.rows = fsRows.join(",");
 	} else {
-		setTimeout("setFrameSize()", 100);
+		setTimeout(setFrameSize(), 100);
 	}
 }
 /**

@@ -207,7 +207,7 @@ function set_button_state(alldis) {
 			top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "next_enabled", "enabled");
 		}
 	}else{
-		setTimeout("set_button_state("+(alldis ? 1 : 0)+")",300);
+		setTimeout(set_button_state((alldis ? 1 : 0)),300);
 	}
 }
 set_button_state(false);';
@@ -453,7 +453,7 @@ function set_button_state(alldis) {
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}
 	}else{
-		setTimeout("set_button_state("+(alldis ? 1 : 0)+")",300);
+		setTimeout(set_button_state((alldis ? 1 : 0)),300);
 	}
 }
 set_button_state(false);';
@@ -700,7 +700,7 @@ set_button_state(false);';
 				  			nextBut.innerHTML = \'' . $nextButton . '\';
 						}
 					}else{
-						setTimeout("set_button_state("+(alldis ? 1 : 0)+")",300);
+						setTimeout(set_button_state((alldis ? 1 : 0)),300);
 					}
 				}
 				set_button_state(false);';
@@ -1157,7 +1157,7 @@ var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
 
 var ajaxCallbackDeleteVersionsWizard = {
 	success: function(o) {
-	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+	if(o.responseText !== undefined && o.responseText != "") {
 		parent.wizbusy.document.getElementById("progr").innerHTML = o.responseText;
 		' . we_message_reporting::getShowMessageCall(
 				addslashes(
@@ -1188,7 +1188,7 @@ var ajaxCallbackDeleteVersionsWizard = {
 
 var ajaxCallbackResetVersionsWizard = {
 	success: function(o) {
-	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+	if(o.responseText !== undefined && o.responseText != "") {
 		parent.wizbusy.document.getElementById("progr").innerHTML = o.responseText;
 		' . we_message_reporting::getShowMessageCall(
 				addslashes(
@@ -1238,7 +1238,7 @@ function set_button_state(alldis) {
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}
 	}else{
-		setTimeout("set_button_state("+(alldis ? 1 : 0)+")",300);
+		setTimeout(set_button_state((alldis ? 1 : 0)),300);
 	}
 }
 set_button_state(false);';

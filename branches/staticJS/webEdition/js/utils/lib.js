@@ -24,7 +24,7 @@
 
 function copy() {
 	var loop;
-	var tempArray = new Array();
+	var tempArray = [];
 	for (loop = 0; loop < this.length; loop++) {
 		tempArray[loop] = this[loop];
 	}
@@ -83,7 +83,7 @@ Array.prototype.unshift = unshift;
 
 function permute(theArray) {
 	var tempArray = this.copy();
-	var newArray = new Array();
+	var newArray = [];
 	var randomNum = 0;
 	for (loop = 0; loop < this.length; loop++) {
 		randomNum = Math.round(Math.random() * (tempArray.length - 1));

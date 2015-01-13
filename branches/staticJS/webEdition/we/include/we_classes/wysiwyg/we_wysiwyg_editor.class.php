@@ -983,7 +983,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				hasOpener = opener ? true : false;
 			} catch(e){}
 
-			if(typeof we_tinyMCE_' . $this->fieldName_clean . '_init != "undefined"){
+			if(we_tinyMCE_' . $this->fieldName_clean . '_init !== undefined){
 				try{
 					we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
 				} catch(e){
@@ -1059,11 +1059,11 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		var editorLevel = "";
 		var weEditorFrame = null;
 
-		if(typeof(_EditorFrame) != "undefined"){
+		if(_EditorFrame !== undefined){
 			editorLevel = "inline";
 			weEditorFrame = _EditorFrame;
 		} else {
-			if(top.opener != null && typeof(top.opener.top.weEditorFrameController) != "undefined" && typeof(top.isWeDialog) == "undefined"){
+			if(top.opener !== null && top.opener.top.weEditorFrameController !== undefined && top.isWeDialog === undefined){
 				editorLevel = "popup";
 				weEditorFrame = top.opener.top.weEditorFrameController;
 			} else {

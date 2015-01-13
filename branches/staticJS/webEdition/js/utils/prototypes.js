@@ -197,9 +197,11 @@ function serialize(o) {
 		return !(n < -2147483648 || n > 2147483647);
 	}
 	function in_ht(o) {
-		for (k in ht)
-			if (ht[k] === o)
+		for (var k in ht) {
+			if (ht[k] === o) {
 				return k;
+			}
+		}
 		return false;
 	}
 	function ser_null() {
@@ -233,7 +235,11 @@ function serialize(o) {
 		sb[p++] = ':{';
 		for (var k in a) {
 			if (typeof (a[k]) !== 'function') {
-				is_int(k) ? ser_integer(k) : ser_string(k);
+				if (is_int(k)) {
+					ser_integer(k);
+				} else {
+					ser_string(k);
+				}
 				__serialize(a[k]);
 				sb[lp]++;
 			}
@@ -287,29 +293,27 @@ function serialize(o) {
 		if (o === null || o.constructor === 'function') {
 			hv++;
 			ser_null();
-		} else
+		} else {
+			var r;
 			switch (o.constructor) {
 				case Boolean:
-				{
 					hv++;
 					ser_boolean(o);
 					break;
-				}
 				case Number:
-				{
 					hv++;
-					is_int(o) ? ser_integer(o) : ser_double(o);
+					if (is_int(o)) {
+						ser_integer(o);
+					} else {
+						ser_double(o);
+					}
 					break;
-				}
 				case String:
-				{
 					hv++;
 					ser_string(o);
 					break;
-				}
 				case Array:
-				{
-					var r = in_ht(o);
+					r = in_ht(o);
 					if (r) {
 						ser_pointref(r);
 					} else {
@@ -317,10 +321,8 @@ function serialize(o) {
 						ser_array(o);
 					}
 					break;
-				}
 				default:
-				{
-					var r = in_ht(o);
+					r = in_ht(o);
 					if (r) {
 						hv++;
 						ser_ref(r);
@@ -329,8 +331,8 @@ function serialize(o) {
 						ser_object(o);
 					}
 					break;
-				}
 			}
+		}
 	}
 	__serialize(o);
 	return sb.join('');
@@ -485,19 +487,19 @@ function unserialize(ss) {
 	function __unserialize() {
 		switch (ss.charAt(p++)) {
 			case 'N':
-				return ht[hv++] = unser_null();
+				return (ht[hv++] = unser_null());
 			case 'b':
-				return ht[hv++] = unser_boolean();
+				return (ht[hv++] = unser_boolean());
 			case 'i':
-				return ht[hv++] = unser_integer();
+				return (ht[hv++] = unser_integer());
 			case 'd':
-				return ht[hv++] = unser_double();
+				return (ht[hv++] = unser_double());
 			case 's':
-				return ht[hv++] = unser_string();
+				return (ht[hv++] = unser_string());
 			case 'U':
-				return ht[hv++] = unser_unicode_string();
+				return (ht[hv++] = unser_unicode_string());
 			case 'r':
-				return ht[hv++] = unser_ref();
+				return (ht[hv++] = unser_ref());
 			case 'a':
 				return unser_array();
 			case 'O':
@@ -625,19 +627,15 @@ var Base64 = {
 		var c = c1 = c2 = 0;
 
 		while (i < utftext.length) {
-
 			c = utftext.charCodeAt(i);
-
 			if (c < 128) {
 				string += String.fromCharCode(c);
 				i++;
-			}
-			else if ((c > 191) && (c < 224)) {
+			} else if ((c > 191) && (c < 224)) {
 				c2 = utftext.charCodeAt(i + 1);
 				string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
 				i += 2;
-			}
-			else {
+			} else {
 				c2 = utftext.charCodeAt(i + 1);
 				c3 = utftext.charCodeAt(i + 2);
 				string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));

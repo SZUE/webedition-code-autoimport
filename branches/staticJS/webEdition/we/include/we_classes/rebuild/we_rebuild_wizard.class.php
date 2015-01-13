@@ -353,7 +353,7 @@ abstract class we_rebuild_wizard{
 					top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "back_enabled", "enabled");
 					top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "next_enabled", "enabled");
 				}else{
-					setTimeout("set_button_state()",300);
+					setTimeout(set_button_state(),300);
 				}
 			}
 			set_button_state();';
@@ -804,7 +804,7 @@ abstract class we_rebuild_wizard{
 						f.target="wizbody";
 						break;
 					case "next":
-						if (typeof(document._errorMessage) != "undefined" && document._errorMessage !== ""){
+						if (document._errorMessage !== undefined && document._errorMessage !== ""){
 							' . we_message_reporting::getShowMessageCall(g_l('rebuild', '[noFieldsChecked]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							return;
 						} else {
@@ -953,7 +953,7 @@ abstract class we_rebuild_wizard{
 					top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "back_enabled", "enabled");
 					top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "next_enabled", "enabled");
 				}else{
-					setTimeout("set_button_state()",300);
+					setTimeout(set_button_state(),300);
 				}
 			}
 			set_button_state();';

@@ -1,4 +1,4 @@
-/**
+/*
  * webEdition CMS
  *
  * webEdition CMS
@@ -26,13 +26,13 @@ var reloadContent = false;
 try {
 	top.we_setEditorWasLoaded(false);
 } catch (e) {
-	;
+
 }
 var countJEditorInitAttempts = 0;
 var wizardHeight = {
 	"open": 305,
 	"closed": 140
-}
+};
 
 var editor = null;
 
@@ -76,14 +76,14 @@ function initCM() {
 function initDefaultEdior() {
 	sizeEditor();
 	document.getElementById("bodydiv").style.display = "block";
-	window.setTimeout('scrollToPosition();', 50);
+	window.setTimeout(scrollToPosition(), 50);
 }
 
 function initJava() {
 	countJEditorInitAttempts++;
 	// imi: console.log("init: " + countJEditorInitAttempts);
 	if (countJEditorInitAttempts < 10) {
-		if (document.weEditorApplet && top.weEditorWasLoaded && typeof (document.weEditorApplet.setCode) != undefined && typeof (document.weEditorApplet.initUndoManager) != undefined) {
+		if (document.weEditorApplet && top.weEditorWasLoaded && document.weEditorApplet.setCode !== undefined && document.weEditorApplet.initUndoManager !== undefined) {
 			try {
 				sizeEditor();
 				document.getElementById("weEditorApplet").style.left = "0";
@@ -118,17 +118,17 @@ function sizeEditor() { // to be fixed (on 12.12.11)
 
 	if (editarea) {
 		editarea.style.width = editorWidth + "px";
-		if (editarea.nextSibling != undefined && editarea.nextSibling.style) {
+		if (editarea.nextSibling !== undefined && editarea.nextSibling.style) {
 			editarea.nextSibling.style.width = editorWidth + "px";
 		}
 	}
 
-	if (document.weEditorApplet && typeof (document.weEditorApplet.width) != undefined) {
+	if (document.weEditorApplet && document.weEditorApplet.width !== undefined) {
 		document.weEditorApplet.width = editorWidth;
 	}
 
 	if (window.editor && window.editor.frame) {
-		if (window.editor.frame.nextSibling != undefined) {
+		if (window.editor.frame.nextSibling !== undefined) {
 			editorWidth -= window.editor.frame.nextSibling.offsetWidth;
 			document.getElementById("reindentButton").style.marginRight = (window.editor.frame.nextSibling.offsetWidth - 3) + "px";
 		}
@@ -136,12 +136,12 @@ function sizeEditor() { // to be fixed (on 12.12.11)
 	}
 
 	if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
-		if (wizardTable != null) {
+		if (wizardTable !== null) {
 			var editorHeight = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open));
 
 			if (editarea) {
 				editarea.style.height = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-				if (editarea.nextSibling != undefined && editarea.nextSibling.style)
+				if (editarea.nextSibling !== undefined && editarea.nextSibling.style)
 					editarea.nextSibling.style.height = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
 			}
 
@@ -149,7 +149,7 @@ function sizeEditor() { // to be fixed (on 12.12.11)
 				window.editor.frame.style.height = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
 			}
 
-			if (document.weEditorApplet && typeof (document.weEditorApplet.setSize) != undefined) {
+			if (document.weEditorApplet && document.weEditorApplet.setSize !== undefined) {
 				try {
 					document.weEditorApplet.height = editorHeight;
 					//document.weEditorApplet.setSize(editorWidth,editorHeight);
@@ -168,7 +168,7 @@ function sizeEditor() { // to be fixed (on 12.12.11)
 		} else {
 			if (editarea) {
 				editarea.style.height = (h - wizardHeight.closed) + "px";
-				if (editarea.nextSibling != undefined && editarea.nextSibling.style) {
+				if (editarea.nextSibling !== undefined && editarea.nextSibling.style) {
 					editarea.nextSibling.style.height = (h - wizardHeight.closed) + "px";
 				}
 			}
@@ -177,7 +177,7 @@ function sizeEditor() { // to be fixed (on 12.12.11)
 				window.editor.frame.style.height = (h - wizardHeight.closed) + "px";
 			}
 
-			if (document.weEditorApplet && typeof (document.weEditorApplet.setSize) != undefined) {
+			if (document.weEditorApplet && document.weEditorApplet.setSize !== undefined) {
 				try {
 					document.weEditorApplet.height = h - wizardHeight.closed;
 					//document.weEditorApplet.setSize(editorWidth,h - wizardHeight.closed);
@@ -193,7 +193,7 @@ function sizeEditor() { // to be fixed (on 12.12.11)
 function javaEditorSetCode() {// imi: console.log("javaEditorSetCode() called");
 	if (document.weEditorApplet.height != 3000) {
 		try {
-			document.weEditorApplet.setCode(document.forms['we_form'].elements["we_" + docName + "_txt[data]"].value);
+			document.weEditorApplet.setCode(document.forms.we_form.elements["we_" + docName + "_txt[data]"].value);
 			countJEditorInitAttempts = 0;
 		} catch (err) {
 			setTimeout(javaEditorSetCode, 1000);
@@ -216,7 +216,7 @@ function toggleTagWizard() {
 	} else {
 		var editarea = document.getElementById("editarea");
 		editarea.style.height = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-		if (editarea.nextSibling != undefined && editarea.nextSibling.style)
+		if (editarea.nextSibling !== undefined && editarea.nextSibling.style)
 			editarea.nextSibling.style.height = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
 
 		if (window.editor && window.editor.frame) {
@@ -228,30 +228,30 @@ function toggleTagWizard() {
 // ################ Java Editor specific Functions
 
 function weEditorSetHiddenText() {
-	if (document.weEditorApplet && typeof (document.weEditorApplet.getCode) != undefined) {
+	if (document.weEditorApplet && document.weEditorApplet.getCode !== undefined) {
 		if (document.weEditorApplet.isHot()) {
 			_EditorFrame.setEditorIsHot(true);
 			document.weEditorApplet.setHot(false);
 		}
-		document.forms['we_form'].elements["we_" + docName + "_txt[data]"].value = document.weEditorApplet.getCode();
+		document.forms.we_form.elements["we_" + docName + "_txt[data]"].value = document.weEditorApplet.getCode();
 	}
 }
 
 
 function checkAndSetHot() {
-	if (document.weEditorApplet && typeof (document.weEditorApplet.isHot) != undefined) {
+	if (document.weEditorApplet && document.weEditorApplet.isHot !== undefined) {
 		if (document.weEditorApplet.isHot()) {
 			_EditorFrame.setEditorIsHot(true);
 		} else {
-			setTimeout("checkAndSetHot()", 1000);
+			setTimeout(checkAndSetHot(), 1000);
 		}
 	}
 }
 
 
 function setCode() {
-	if (document.weEditorApplet && typeof (document.weEditorApplet.setCode) != undefined) {
-		document.weEditorApplet.setCode(document.forms['we_form'].elements["we_" + docName + "_txt[data]"].value);
+	if (document.weEditorApplet && document.weEditorApplet.setCode !== undefined) {
+		document.weEditorApplet.setCode(document.forms.we_form.elements["we_" + docName + "_txt[data]"].value);
 	}
 }
 
@@ -288,9 +288,9 @@ function wedoKeyDown(ta, keycode) {
 		if (ta.setSelectionRange) {
 			var selectionStart = ta.selectionStart;
 			var selectionEnd = ta.selectionEnd;
-			ta.value = ta.value.substring(0, selectionStart)
-							+ "\t"
-							+ ta.value.substring(selectionEnd);
+			ta.value = ta.value.substring(0, selectionStart) +
+							"\t" +
+							ta.value.substring(selectionEnd);
 			ta.focus();
 			ta.setSelectionRange(selectionEnd + 1, selectionEnd + 1);
 			ta.focus();
@@ -309,9 +309,9 @@ function wedoKeyDown(ta, keycode) {
 // ############ EDITOR PLUGIN ################
 
 function setSource(source) {
-	document.forms['we_form'].elements['we_' + docName + '_txt[data]'].value = source;
+	document.forms.we_form.elements['we_' + docName + '_txt[data]'].value = source;
 	//Codemirror
-	if (editor != undefined && editor != null && typeof editor == 'object') {
+	if (editor !== undefined && editor !== null && typeof editor === 'object') {
 		editor.setValue(source);
 	}
 	// for Applet
@@ -319,10 +319,10 @@ function setSource(source) {
 }
 
 function getSource() {
-	if (document.weEditorApplet && typeof (document.weEditorApplet.getCode) != undefined) {
+	if (document.weEditorApplet && document.weEditorApplet.getCode !== undefined) {
 		return document.weEditorApplet.getCode();
 	}
-	return document.forms['we_form'].elements['we_' + docName + '_txt[data]'].value;
+	return document.forms.we_form.elements['we_' + docName + '_txt[data]'].value;
 
 }
 
@@ -369,13 +369,14 @@ function search(text, caseIns) {
 	if (!text) {
 		return;
 	}
-	for (var cursor = editor.getSearchCursor(text, 0, caseIns); cursor.findNext(); ) {
+	var cursor;
+	for (cursor = editor.getSearchCursor(text, 0, caseIns); cursor.findNext(); ) {
 		marked.push(editor.markText(cursor.from(), cursor.to(), {className: "searched"}));
 	}
 	if (lastQuery !== text) {
 		lastPos = null;
 	}
-	var cursor = editor.getSearchCursor(text, lastPos || editor.getCursor(), caseIns);
+	cursor = editor.getSearchCursor(text, lastPos || editor.getCursor(), caseIns);
 	if (!cursor.findNext()) {
 		cursor = editor.getSearchCursor(text, 0, caseIns);
 		if (!cursor.findNext()) {

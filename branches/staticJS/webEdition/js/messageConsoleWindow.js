@@ -30,7 +30,6 @@ function messageConsoleWindow(win) {
 
 	this.notify = function (lastMessage) {
 		this.addMessage(lastMessage);
-
 	};
 
 	/**
@@ -38,18 +37,17 @@ function messageConsoleWindow(win) {
 	 */
 	this.register = function () {
 		top.opener.top.messageConsole.addObserver(this);
-
 	};
 
 	this.remove = function () {
 		top.opener.top.messageConsole.removeObserver(this);
+	};
 
-	}
 	this.addMessage = function (msg) {
 		var _className;
 		var _theImg;
 
-		switch (msg["prio"]) {
+		switch (msg.prio) {
 			default:
 				_className = "msgNotice";
 				_theImg = this.win._imgNoticeActive.src;
@@ -68,36 +66,29 @@ function messageConsoleWindow(win) {
 
 		var _li = this.doc.createElement("li");
 		_li.className = "defaultfont " + _className;
-		_txt = this.doc.createTextNode(msg["message"]);
+		_txt = this.doc.createTextNode(msg.message);
 		_li.appendChild(_txt);
 
 		var _pElem = this.doc.getElementById("jsMessageUl");
 		if (_pElem.childNodes.length) {
 			this.doc.getElementById("jsMessageUl").insertBefore(_li, _pElem.childNodes[0]);
-
 		} else {
 			this.doc.getElementById("jsMessageUl").appendChild(_li);
-
 		}
-	}
+	};
 
 	this.init = function () {
 		_messages = top.opener.top.messageConsole.getMessages();
 		for (i = 0; i < _messages.length; i++) {
 			this.addMessage(_messages[i]);
-
 		}
-
 	};
 
 	this.removeMessages = function () {
 		top.opener.top.messageConsole.removeMessages();
 		this.doc.getElementById("jsMessageUl").innerHTML = "";
-
-	}
-
+	};
 }
-;
 
 messageConsoleWindow = new messageConsoleWindow(window);
 messageConsoleWindow.register();

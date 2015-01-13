@@ -2343,19 +2343,19 @@ function setTab(tab) {
 			break;
 		case ' . self::TAB_PERMISSION . ':
 			if(top.content.editor.edbody.switchPage(' . self::TAB_PERMISSION . ')==false){
-				setTimeout("resetTabs()",50);
+				setTimeout(resetTabs(),50);
 			}
 			activeTab = ' . self::TAB_PERMISSION . ';
 			break;
 		case ' . self::TAB_WORKSPACES . ':
 			if(top.content.editor.edbody.switchPage(' . self::TAB_WORKSPACES . ')==false) {
-				setTimeout("resetTabs()",50);
+				setTimeout(resetTabs(),50);
 			}
 			activeTab = ' . self::TAB_WORKSPACES . ';
 			break;
 		case ' . self::TAB_SETTINGS . ':
 			if(top.content.editor.edbody.switchPage(' . self::TAB_SETTINGS . ')==false) {
-				setTimeout("resetTabs()",50);
+				setTimeout(resetTabs(),50);
 			}
 			activeTab = ' . self::TAB_SETTINGS . ';
 			break;

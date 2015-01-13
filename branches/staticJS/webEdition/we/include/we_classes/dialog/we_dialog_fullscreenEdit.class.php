@@ -62,7 +62,7 @@ function doKeyDown(e) {
 }
 
 function weDoOk() {
-	if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
+	if(isTinyMCE !== undefined && isTinyMCE === true){
 		WefullscreenDialog.writeback();
 		top.close();
 	} else{' .

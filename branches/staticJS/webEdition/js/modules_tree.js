@@ -112,7 +112,7 @@ function weSetCookie(module, value, expires, path, domain) {
 		val += val ? "," + param + ":" + moduleVals[param] : param + " : " + moduleVals[param];
 	}
 	doc.cookie = "treewidth_modules" + "=" + val +
-					((expires == null) ? "" : "; expires=" + expires.toGMTString()) +
-					((path == null) ? "" : "; path=" + path) +
-					((domain == null) ? "" : "; domain=" + domain);
+					((expires === null) ? "" : "; expires=" + expires.toGMTString()) +
+					((path === null) ? "" : "; path=" + path) +
+					((domain === null) ? "" : "; domain=" + domain);
 }

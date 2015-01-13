@@ -125,7 +125,7 @@ function we_textarea(name, value, cols, rows, width, height, autobr, autobrName,
 			break;
 		}
 	}
-	if (this.form != null) {
+	if (this.form !== null) {
 		this.form.elements[name].value = val;
 	}
 

@@ -32,7 +32,7 @@ weCheckFormEvent.addEvent = function (e, name, f) {
 	if (e.attachEvent) {
 		e.attachEvent("on" + name, f);
 	}
-}
+};
 
 weCheckFormEvent.stopEvent = function (ev) {
 	if (ev.stopPropagation) {
@@ -42,7 +42,7 @@ weCheckFormEvent.stopEvent = function (ev) {
 		ev.cancelBubble = true;
 		ev.returnValue = false;
 	}
-}
+};
 
 
 function initWeCheckForm_by_name(name) {
@@ -62,7 +62,7 @@ function initWeCheckForm_by_id(id) {
 
 function weCheckFormMandatory(form, reqFields) { //  return name of not set mandatory fields
 	//  check required fields
-	var missingFields = new Array();
+	var missingFields = [];
 
 	for (i = 0; i < reqFields.length; i++) {
 
@@ -97,13 +97,10 @@ function weCheckFormMandatory(form, reqFields) { //  return name of not set mand
 }
 
 function weCheckFormEmail(form, emailFields) {    //  return names of invalid email fields
-
-	invalidEmails = new Array();
+	invalidEmails = [];
 
 	if (emailFields.length > 0) {
-
-		pattern = "^([a-zA-Z0-9-���_\.]+)@([a-zA-Z0-9\-_\\.]+)\\.([a-zA-Z0-9]{2,4})";
-
+		pattern = "^([a-zA-Z0-9-_\.]+)@([a-zA-Z0-9\-_\\.]+)\\.([a-zA-Z0-9]{2,4})";
 		for (i = 0; i < emailFields.length; i++) {
 
 			elem = formular[emailFields[i]];

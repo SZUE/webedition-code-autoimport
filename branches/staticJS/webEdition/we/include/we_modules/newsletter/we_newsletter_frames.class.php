@@ -276,10 +276,10 @@ function populateGroups() {
 					addGroup(sprintf("' . g_l('modules_newsletter', '[mailing_list]') . '",i),i);
 				}
 		} else {
-			setTimeout("populateGroups()",100);
+			setTimeout(populateGroups(),100);
 		}
 	} else {
-		setTimeout("populateGroups()",100);
+		setTimeout(populateGroups(),100);
 	}
 }
 
@@ -319,7 +319,7 @@ function we_save() {
 		}
 
 		$post_js = we_html_element::jsElement('
-if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
+if(self.document.we_form.htmlmail_check!==undefined) {
 	if(top.opener.top.nlHTMLMail) {
 		self.document.we_form.htmlmail_check.checked = true;
 		document.we_form.hm.value=1;
@@ -329,7 +329,7 @@ if(typeof(self.document.we_form.htmlmail_check)!="undefined") {
 	}
 }');
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "onload" => "setTimeout('populateGroups()',100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden(array("name" => "hm", "value" => 0)) .
+		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "onload" => "setTimeout'populateGroups(),100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden(array("name" => "hm", "value" => 0)) .
 					$table2->getHtml() .
 					$post_js
 				)
@@ -1286,7 +1286,7 @@ function setHeaderTitle() {
 		countSetTitle = 0;
 	} else {
 		if(countSetTitle < 30) {
-			setTimeout("setHeaderTitle()",100);
+			setTimeout(setHeaderTitle(),100);
 			countSetTitle++;
 		/* @dd: code from version 5.0.0.7, generated on bugfix merge: */
 		/* please remove if not needed any more */
@@ -1305,7 +1305,7 @@ function setHeaderTitle() {
 				countSetTitle = 0;
 			} else {
 				if(countSetTitle < 30) {
-					setTimeout("setHeaderTitle()",100);
+					setTimeout(setHeaderTitle(),100);
 					countSetTitle++;
 				}
 			}
@@ -2241,7 +2241,7 @@ function clearLog(){
 
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array("class" => 'weDialogBody', 'onload' => "setTimeout('document.we_form.submit()',200)"), we_html_element::htmlForm(array('name' => 'we_form'), $this->View->htmlHidden("pnt", "send_frameset") .
+						we_html_element::htmlBody(array("class" => 'weDialogBody', 'onload' => "setTimeout(document.we_form.submit(),200)"), we_html_element::htmlForm(array('name' => 'we_form'), $this->View->htmlHidden("pnt", "send_frameset") .
 										$this->View->htmlHidden('nid', $nid) .
 										$this->View->htmlHidden('test', $test) .
 										we_html_element::htmlCenter(
@@ -2686,7 +2686,7 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 		//$laststep = ceil(we_base_request::_(we_base_request::INT, "ecount", 0) / $this->View->settings["send_step"]);
 		if(isset($this->View->settings["send_wait"]) && is_numeric($this->View->settings["send_wait"]) && $this->View->settings["send_wait"] && $egc > 0 && isset($this->View->settings["send_step"]) && is_numeric($this->View->settings["send_step"]) && $egc < ceil($ecount / $this->View->settings["send_step"])){
 			echo we_html_element::jsElement('
-setTimeout("document.we_form.submit()",' . $this->View->settings["send_wait"] . ');
+setTimeout(document.we_form.submit(),' . $this->View->settings["send_wait"] . ');
 			');
 		} else {
 			echo we_html_element::jsElement('document.we_form.submit();');
@@ -2722,7 +2722,7 @@ function init(){
 
 function startTimeout(){
 	if(to) stopTimeout();
-	to=setTimeout("reload()",' . $to . ');
+	to=setTimeout(reload(),' . $to . ');
 }
 
 function stopTimeout(){

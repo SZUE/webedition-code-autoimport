@@ -193,7 +193,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 		}
 		?>
 				orginal = "<?php echo $Text; ?>";
-				window.setTimeout("spellcheck()", 1000);
+				window.setTimeout(spellcheck(), 1000);
 
 			}
 
@@ -203,10 +203,10 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 					top.frames.glossarycheck.document.getElementById("statusText").innerHTML = "<?php echo g_l('modules_glossary', '[checking]'); ?>...";
 					var text = getTextOnly(orginal);
 					document.spellchecker.check(text);
-					window.setTimeout("findNext()", 2000);
+					window.setTimeout(findNext(), 2000);
 				} else {
 					if (retryjava < 5) {
-						window.setTimeout("spellcheck()", 1000);
+						window.setTimeout(spellcheck(), 1000);
 						retryjava++;
 					} else {
 						fadeout("spinner", 80, 10, 10);
@@ -227,15 +227,15 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 							top.frames.glossarycheck.addRow(temp, suggA);
 
 							clearTimeout(to);
-							to = window.setTimeout("findNext()", 250);
+							to = window.setTimeout(findNext(), 250);
 
 						} else if (document.spellchecker.isWorking()) {
 							clearTimeout(to);
-							to = window.setTimeout("findNext()", 250);
+							to = window.setTimeout(findNext(), 250);
 
 						} else if (retry < 7) {
 							clearTimeout(to);
-							to = window.setTimeout("findNext()", 250);
+							to = window.setTimeout(findNext(), 250);
 							retry++;
 
 						} else {
@@ -250,7 +250,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 					}
 
 				} else {
-					window.setTimeout("spellcheck()", 250);
+					window.setTimeout(spellcheck(), 250);
 
 				}
 

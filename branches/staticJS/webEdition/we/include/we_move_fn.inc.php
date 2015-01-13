@@ -102,7 +102,8 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 	// get information about the target directory
 	if(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !$targetDirectoryID){
 		return false;
-	} elseif($targetDirectoryID){
+	}
+	if($targetDirectoryID){
 		$row = getHash('SELECT IsFolder,Path,ID FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($targetDirectoryID), $DB_WE);
 		if(!$row || !$row["IsFolder"]){
 			return false;
