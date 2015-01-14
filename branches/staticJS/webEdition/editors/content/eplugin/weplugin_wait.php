@@ -35,7 +35,7 @@ var g_l={
 };
 var callBack="' . $_callback . '";
 			') .
-		we_html_element::jsElement(JS_DIR . 'weplugin.js')
+		we_html_element::jsScript(JS_DIR . 'weplugin.js')
 	) .
 	we_html_element::htmlBody(array("style" => "background-color:#ffffff;margin:20px;", "onload" => "initPlugin();"), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlCenter(
 				we_html_element::htmlImg(array("src" => IMAGE_DIR . "spinner.gif")) .

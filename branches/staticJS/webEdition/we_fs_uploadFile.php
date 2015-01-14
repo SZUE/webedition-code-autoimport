@@ -38,7 +38,7 @@ switch($we_ContentType){
 		$allowedContentTypes = $we_ContentType;
 }
 
-$weFileupload = new we_fileupload_include('we_uploadedFile', '', '', '', '', 'document.forms[0].submit()', '', 330, true, false, 0, $allowedContentTypes, '', '', 'php, php4, php5, htaccess', array(), -1);
+$weFileupload = new we_fileupload_include('we_uploadedFile', '', '', '', '', true, 'document.forms[0].submit()', '', 330, true, false, 0, $allowedContentTypes, '', '', 'php, php4, php5, htaccess', array(), -1);
 $weFileupload->setExternalProgress(true, 'progressbar', true, 120);
 
 if($weFileupload->processFileRequest()){

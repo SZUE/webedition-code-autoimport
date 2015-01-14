@@ -415,7 +415,7 @@ class we_listview_document extends we_listview_base{
 		}
 
 		$sqlarr = '';
-		$patterns = array('<>', '<=', '>=', '=', '<', '>', 'LIKE', 'IN');
+		$patterns = array('<>', '!=', '<=', '>=', '=', '<', '>', 'LIKE', 'IN');
 		foreach($logic as $oper => $arr){
 			foreach($arr as $exp){
 				foreach($patterns as $pattern){

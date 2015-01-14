@@ -27,7 +27,7 @@ function we_tag_js($attribs){
 		return $foo;
 	}
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
-	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
+	$row = getHash('SELECT Path,IsFolder,IsDynamic,Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
 
 	if(!$row){
 		return '';
@@ -35,7 +35,7 @@ function we_tag_js($attribs){
 	$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
 
 	$attribs['type'] = 'text/javascript';
-	$attribs['src'] = (we_isHttps() ? '' : BASE_JS) . $url;
+	$attribs['src'] = (we_isHttps() ? '' : BASE_JS) . $url . ($GLOBALS['we_editmode'] ? '?time=' . $row['Published'] : '');
 
 	//	prepare $attribs for output:
 	return getHtmlTag('script', removeAttribs($attribs, array('id')), '', true) . "\n";

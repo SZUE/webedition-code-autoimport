@@ -55,7 +55,7 @@ switch($contentType){
 }
 
 $mode = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
-$weFileupload = new we_fileupload_include('we_File', '', '', '', '', 'document.forms[0].submit();', '', 330, true, false, 200, $allowedContentTypes, $allowedExtensions, '', '', array(), -1);
+$weFileupload = new we_fileupload_include('we_File', '', '', '', '', true, 'document.forms[0].submit();', '', 330, true, false, 200, $allowedContentTypes, $allowedExtensions, '', '', array(), -1);
 $weFileupload->setIsFallback($mode === 'legacy' ? true : true);
 $weFileupload->setExternalProgress(true, 'progressbar', true, 120);
 

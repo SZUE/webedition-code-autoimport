@@ -1774,7 +1774,7 @@ self.focus();
 	}
 
 	function getHTMLUploadCsv($what){
-		$weFileupload = new we_fileupload_include('we_File', '', '', 'we_form', 'upload_footer', "we_cmd('do_" . $what . "');", '', 330, true, false, 0);
+		$weFileupload = new we_fileupload_include('we_File', '', '', 'we_form', 'upload_footer', true, "we_cmd('do_" . $what . "');", '', 330, true, false, 0);
 		$weFileupload->setExternalProgress(true, 'progressbar', true, 120);
 		$weFileupload->setAction($this->frameset . '?' . ($what === 'upload_csv' ? 'pnt=upload_csv&grp=0&ncmd=do_upload_csv' :
 				($what === 'upload_black' ? 'pnt=upload_black&grp=undefined&ncmd=do_upload_black' : '')));

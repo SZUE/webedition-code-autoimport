@@ -100,196 +100,67 @@ $showGlossaryCheck = (isset($_SESSION['prefs']['force_glossary_check']) && $_SES
 
 
 $_js_we_save_document = "
-	var _showGlossaryCheck = $showGlossaryCheck;
-	var countSaveLoop = 0;
-	function saveReload(){
-		self.location='" . we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer') . "';
-	}
-
-	function we_save_document(){
-		try{
-			var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();
-			if (contentEditor && contentEditor.fields_are_valid && !contentEditor.fields_are_valid()) {
-				return;
-
-			}
-		}
-		catch(e) {
-			// Nothing
-		}
-
-		if (_EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
-			we_cmd('glossary_check', '', '" . $we_transaction . "');
-		} else {
-			acStatus = '';
-			invalidAcFields = false;
-			try{
-				if(parent && parent.frames[1] && parent.frames[1].YAHOO && parent.frames[1].YAHOO.autocoml) {
-					 acStatus = parent.frames[1].YAHOO.autocoml.checkACFields();
-				}
-			}
-			catch(e) {
-				// Nothing
-			}
-			acStatusType = typeof acStatus;
-			if(parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length>0) {
-				for(i=0; i<parent.weAutoCompetionFields.length; i++) {
-					if(parent.weAutoCompetionFields[i] && parent.weAutoCompetionFields[i].id && !parent.weAutoCompetionFields[i].valid) invalidAcFields = true;
-				}
-			}
-			if (countSaveLoop > 10) {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . ";
-				countSaveLoop = 0;
-			}	else if(acStatusType.toLowerCase() == 'object' && acStatus.running) {
-				countSaveLoop++;
-				setTimeout(we_save_document,100);
-			} else if(invalidAcFields) {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . ";
-				countSaveLoop=0;
-			} else {
-				countSaveLoop=0;
+function generatedSaveDoc(){
+	var addCmd = arguments[0] ? arguments[0] : '';
 ";
 if($we_doc->userCanSave()){
-	$_js_we_save_document .= "var addCmd = arguments[0] ? arguments[0] : '';";
-
 	// publish for templates to save in version
-	$pass_publish = $showPubl ? " _EditorFrame.getEditorPublishWhenSave() " : "''";
-	if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
-		$pass_publish = " _EditorFrame.getEditorPublishWhenSave() ";
-	}
+	$pass_publish = $showPubl || ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL) ? " _EditorFrame.getEditorPublishWhenSave() " : "''";
 
 	$js_we_save_cmd = "we_cmd('save_document','','','',''," . $pass_publish . ",addCmd);";
-	$_js_we_save_document .= $we_doc->isBinary() ? we_fileupload_binaryDocument::getJsOnLeave($js_we_save_cmd) : $js_we_save_cmd;
-	//$_js_we_save_document .= $js_we_save_cmd;
-	$_js_we_save_document .= ($reloadPage ? "setTimeout(saveReload,1500);" : '');
+	$_js_we_save_document .= ($we_doc->isBinary() ?
+			we_fileupload_binaryDocument::getJsOnLeave($js_we_save_cmd) :
+			$js_we_save_cmd
+		) .
+		($reloadPage ?
+			'setTimeout(saveReload,1500);' :
+			''
+		);
 }
 
 $_js_we_save_document .= '
 			_showGlossaryCheck = ' . $showGlossaryCheck . ';
-		}
-	}
 }';
 
-//	########################	function for workflow	###########################################
-$_js_workflow_functions = "";
-if(defined('WORKFLOW_TABLE')){
-
-	$_js_workflow_functions = "
-	function put_in_workflow() {
-
-		if( _EditorFrame.getEditorIsHot() ) {
-			if(confirm('" . g_l('alert', '[' . stripTblPrefix($we_doc->Table) . '][in_wf_warning]') . "')) {
-				we_cmd('save_document','','','','',0,0,1);
-			}
-		}else {
-			top.we_cmd('workflow_isIn','" . $we_transaction . "'," . ( ($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) ? "( _EditorFrame.getEditorMakeSameDoc() ? 1 : 0 )" : "0" ) . ");
-		}
-	}
-
-	function pass_workflow() {
-		we_cmd('workflow_pass','" . $we_transaction . "');
-	}
-
-	function workflow_finish() {
-		we_cmd('workflow_finish','" . $we_transaction . "');
-	}
-
-	function decline_workflow() {
-		we_cmd('workflow_decline','" . $we_transaction . "');
-	}
-";
-}
-//	########################	function variable cansave	###########################################
-$_js_weCanSave = 'var weCanSave=' . ($we_doc->userCanSave() ? 'true' : 'false') . ';';
-
+$canWeSave = $we_doc->userCanSave();
 //	added for we:controlElement type="button" name="save" hide="true"
 $_ctrlElem = getControlElement('button', 'save');
 
-if($_ctrlElem && $_ctrlElem['hide']){
-	$_js_weCanSave .= 'weCanSave=false;'; //	we:controlElement
+if($canWeSave &&
+	(($_ctrlElem && $_ctrlElem['hide']) ||
+	(defined('WORKFLOW_TABLE') && inWorkflow($we_doc) && (!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])))
+	)){
+	$canWeSave = false;
 }
 
-
-if(defined('WORKFLOW_TABLE') && inWorkflow($we_doc)){
-	if(!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])){
-		$_js_weCanSave .= 'weCanSave=false;';
-	}
-}
-
-
-//	########################	toggleBusy call	#########################################################
-$_js_toggleBusy = 'top.toggleBusy(0);';
-
-//	########################	function we_cmd	#########################################################
-
-$_js_we_cmd = "
-	function we_cmd() {
-	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
-	for(var i = 0; i < arguments.length; i++) {
-		url += \"we_cmd[\"+i+\"]=\"+encodeURI(arguments[i]);
-		if(i < (arguments.length - 1)){
-			url += \"&\";
-		}
-	}
-		switch(arguments[0]) {
-";
-if($we_doc->Table == TEMPLATES_TABLE){ //	Its a template
-	$_js_we_cmd .= '
-		case "save_document":	// its a folder
-	' . ( $we_doc->ContentType == we_base_ContentTypes::FOLDER ?
-			"
-			top.we_cmd(\"save_document\",'" . $we_transaction . "',0,1,'','',arguments[6] ? arguments[6] : '',arguments[7] ? arguments[7] : '');" : "
-			top.we_cmd(\"save_document\",'" . $we_transaction . "',0,0,'',arguments[5] ? arguments[5] : '',arguments[6] ? arguments[6] : '',arguments[7] ? arguments[7] : '');
-" ) . '
-			return;
-		';
-} else { //	Its not a template
-	$_js_we_cmd .= '
-			case "glossary_check":
-				new jsWindow(url,"glossary_check",-1,-1,730,400,true,false,true);
-				return;
-			case "save_document":
-				top.we_cmd("save_document","' . $we_transaction . '",0,1,' . ( ($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) ? '( _EditorFrame.getEditorMakeSameDoc() ? 1 : 0 )' : '0' ) . ',arguments[5] ? arguments[5] : "",arguments[6] ? arguments[6] : "",arguments[7] ? arguments[7] : "");
-				return;
-' .
-		(isset($we_doc->IsClassFolder) ? '
-			case "object_obj_search":
-				top.we_cmd("object_obj_search","' . $we_transaction . '",document.we_form.obj_search.value,document.we_form.obj_searchField[document.we_form.obj_searchField.selectedIndex].value);
-				return;
-' : '');
-}
-
-$_js_we_cmd .= "}
-		var args = '';
-		for(var i = 0; i < arguments.length; i++) {
-			args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
-		}
-		eval('top.we_cmd('+args+')');
-	}
-";
-
-$_js_we_submitForm = '
-	function we_submitForm(target, url){
-		var f = self.document.we_form;
-		f.target = target;
-		f.action = url;
-		f.method = "post";
-		f.submit();
-	}
-';
-//	########################	build complete JS-Source #########################################################
-$_js_code = 'var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $we_transaction . '");' .
-	$_js_we_save_document .
-	$_js_workflow_functions .
-	$_js_weCanSave .
-	$_js_toggleBusy .
-	$_js_we_cmd .
-	$_js_we_submitForm;
-
-//	########################	print javascript src	#########################################################
 echo STYLESHEET .
  we_html_element::jsScript(JS_DIR . "windows.js") .
- we_html_element::jsElement($_js_code);
+ we_html_element::jsElement('
+	var we_transaction="' . $we_transaction . '";
+	var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction(we_transaction);
+	var g_l={
+		"in_wf_warning":"' . (defined('WORKFLOW_TABLE') ? g_l('alert', '[' . stripTblPrefix($we_doc->Table) . '][in_wf_warning]') : '') . '",
+		"save_error_fields_value_not_valid": "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')) . '"
+
+	};
+	var doc={
+		"ID":"' . $we_doc->ID . '",
+		"Path":"' . $we_doc->Path . '",
+		"Text":"' . $we_doc->Text . '",
+		"contentType":"' . $we_doc->ContentType . '",
+		"editFilename":"' . preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . $we_doc->Extension, $we_doc->Path) . '",
+		"makeSameDocCheck": ' . intval($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) . ',
+		"isTemplate":' . intval($we_doc->Table == TEMPLATES_TABLE) . ',
+		"isFolder":' . intval($we_doc->ContentType == we_base_ContentTypes::FOLDER) . '
+	};
+	var weCanSave=' . ($canWeSave ? 'true' : 'false') . ';
+	var _showGlossaryCheck = ' . $showGlossaryCheck . ';
+
+
+top.toggleBusy(0);
+' .
+	$_js_we_save_document) .
+ we_html_element::jsScript(JS_DIR . 'we_editor_footer.js');
 ?>
 </head>
 
@@ -299,22 +170,6 @@ if(inWorkflow($we_doc)){
 	we_editor_footer::workflow($we_doc);
 	exit();
 }
-$filename = preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . $we_doc->Extension, $we_doc->Path);
-$_edit_source = we_html_element::jsElement('
-function editSource(){
-	if(top.plugin.editSource){
-		top.plugin.editSource("' . $filename . '","' . $we_doc->ContentType . '");
-	}else{
-		we_cmd("initPlugin","top.plugin.editSource(\'' . $filename . '\',\'' . $we_doc->ContentType . '\')");
-	}
-}
-function editFile(){
-	if(top.plugin.editFile){
-		top.plugin.editFile();
-	}else{
-		we_cmd("initPlugin","top.plugin.editFile();");
-	}
-}');
 ?>
 
 <body id="footerBody">
@@ -353,56 +208,22 @@ function editFile(){
 		?>
 	</form>
 	<?php
-	$_js_tmpl = $_js_publish = $_js_permnew = '';
-
-	if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){ // a template
-		$_js_tmpl = '
-		if( _EditorFrame.getEditorAutoRebuild() ) {
-			self.document.we_form.autoRebuild.checked = true;
-		} else {
-			self.document.we_form.autoRebuild.checked = false;
-		}
-		if( _EditorFrame.getEditorMakeNewDoc() ) {
-			self.document.we_form.makeNewDoc.checked = true;
-		} else {
-			self.document.we_form.makeNewDoc.checked = false;
-		}';
+	if($we_doc->IsTextContentDoc && $haspermNew && //	$_js_permnew
+		($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)){ // not in SeeMode or in editmode
+		$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
+		$_js_permnew = ($_ctrlElem ? //	changes for we:controlElement
+				'setTextDocument(true,' . ($_ctrlElem["checked"] ? "true" : "false") . ');' :
+				'setTextDocument(false);');
+	} else {
+		$_js_permnew = '';
 	}
 
-	if($we_doc->IsTextContentDoc && $haspermNew){ //	$_js_permnew
-		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT){ // not in SeeMode or in editmode
-			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
-			if(!$_ctrlElem){ //	changes for we:controlElement
-				$_js_permnew = ($we_doc->ID ? '
-			if(self.document.we_form && self.document.we_form.makeSameDoc){
-				self.document.we_form.makeSameDoc.checked = false;
-			}
-			' : '
-			if( _EditorFrame.getEditorMakeSameDoc() ) {
-				if(self.document.we_form && self.document.we_form.makeSameDoc){
-					self.document.we_form.makeSameDoc.checked = true;
-				}
-			} else {
-				if(self.document.we_form && self.document.we_form.makeSameDoc){
-					self.document.we_form.makeSameDoc.checked = false;
-				}
-			}
-			');
-			} else { //	$_ctrlElement determines values
-				$_js_permnew = '
-			if(self.document.we_form && self.document.we_form.makeSameDoc){
-				self.document.we_form.makeSameDoc.checked = ' . ($_ctrlElem["checked"] ? "true" : "false") . ';
-				_EditorFrame.setEditorMakeSameDoc(' . $_ctrlElem["checked"] ? "true" : "false" . ');
-			}';
-			}
-		}
-	}
-
-	echo we_html_element::jsElement($_js_tmpl . $_js_publish . $_js_permnew .
-		$_edit_source .
-		"try{
-			_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');
-			}catch(e){;}"
+	echo we_html_element::jsElement(
+		'if(doc.isTemplate){
+			setTemplate();
+			}' .
+		$_js_permnew .
+		'setPath();'
 	);
 	?>
 </body>
