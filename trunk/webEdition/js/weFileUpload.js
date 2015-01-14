@@ -631,7 +631,8 @@ var weFileUpload = (function(){
 
 		this.init = function(conf){
 			_.init_abstract(conf);
-			_.view.uploadBtnName = conf.uploadBtnName || _.view.uploadBtnName;
+			_.view.uploadBtnName = conf.uploadBtnName || _.view.uploadBtnName;//disableUploadBtnOnInit
+			_.view.disableUploadBtnOnInit = conf.disableUploadBtnOnInit || false;
 		};
 
 		_.onload = function(scope){
@@ -712,6 +713,7 @@ var weFileUpload = (function(){
 
 		function View(){
 			this.uploadBtnName = '';
+			this.disableUploadBtnOnInit = false;
 
 			this.addFile = function(f){
 				var sizeText = f.isSizeOk ? _.utils.gl.sizeTextOk + _.utils.computeSize(f.file.size) + ', ' :
@@ -734,7 +736,7 @@ var weFileUpload = (function(){
 			this.repaintGUI = function(arg){
 				switch(arg.what){
 					case 'initGui' :
-						_.controller.setWeButtonState(_.view.uploadBtnName, false, true);
+						_.controller.setWeButtonState(_.view.uploadBtnName, !this.disableUploadBtnOnInit, true);
 						return;
 					case 'chunkOK' :
 						var prog = (100 / _.sender.currentFile.file.size) * _.sender.currentFile.currentWeightFile,
