@@ -299,6 +299,22 @@ if(inWorkflow($we_doc)){
 	we_editor_footer::workflow($we_doc);
 	exit();
 }
+$filename = preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . $we_doc->Extension, $we_doc->Path);
+$_edit_source = we_html_element::jsElement('
+function editSource(){
+	if(top.plugin.editSource){
+		top.plugin.editSource("' . $filename . '","' . $we_doc->ContentType . '");
+	}else{
+		we_cmd("initPlugin","top.plugin.editSource(\'' . $filename . '\',\'' . $we_doc->ContentType . '\')");
+	}
+}
+function editFile(){
+	if(top.plugin.editFile){
+		top.plugin.editFile();
+	}else{
+		we_cmd("initPlugin","top.plugin.editFile();");
+	}
+}');
 ?>
 
 <body id="footerBody">
@@ -383,6 +399,7 @@ if(inWorkflow($we_doc)){
 	}
 
 	echo we_html_element::jsElement($_js_tmpl . $_js_publish . $_js_permnew .
+		$_edit_source .
 		"try{
 			_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');
 			}catch(e){;}"
