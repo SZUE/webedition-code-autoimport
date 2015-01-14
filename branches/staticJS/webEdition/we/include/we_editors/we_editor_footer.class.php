@@ -28,7 +28,8 @@ abstract class we_editor_footer{
 //	user
 		$_username = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->isLockedByUser()));
 
-		$_messageTbl = new we_html_table(array("border" => 0,
+		$_messageTbl = new we_html_table(array(
+			"border" => 0,
 			"cellpadding" => 0,
 			"cellspacing" => 0), 2, 6);
 
@@ -45,8 +46,7 @@ abstract class we_editor_footer{
 
 
 		$_head = we_html_element::htmlHead(we_html_element::jsElement('top.toggleBusy(0);') . STYLESHEET);
-		$_body = we_html_element::htmlBody(array("background" => IMAGE_DIR . "edit/editfooterback.gif",
-				"bgcolor" => "white"), $_messageTbl->getHtml());
+		$_body = we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml());
 
 
 		echo we_html_element::htmlDocType() . we_html_element::htmlHtml($_head . $_body);
@@ -62,8 +62,7 @@ abstract class we_editor_footer{
 
 
 		$_head = we_html_element::htmlHead(we_html_element::jsElement('top.toggleBusy(0);'));
-		$_body = we_html_element::htmlBody(array('background' => IMAGE_DIR . 'edit/editfooterback.gif',
-				'bgcolor' => 'white'), $_messageTbl->getHtml());
+		$_body = we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml());
 
 
 		echo we_html_element::htmlDocType() . we_html_element::htmlHtml($_head . STYLESHEET . $_body);
@@ -81,8 +80,7 @@ abstract class we_editor_footer{
 
 
 		$_head = we_html_element::htmlHead(we_html_element::jsElement('top.toggleBusy(0);') . STYLESHEET);
-		$_body = we_html_element::htmlBody(array("background" => IMAGE_DIR . "edit/editfooterback.gif",
-				"bgcolor" => "white"), $_messageTbl->getHtml());
+		$_body = we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml());
 
 		echo we_html_element::htmlDocType() . we_html_element::htmlHtml($_head . $_body);
 	}
@@ -99,8 +97,7 @@ abstract class we_editor_footer{
 
 
 		$_head = we_html_element::htmlHead(we_html_element::jsElement('top.toggleBusy(0);') . STYLESHEET);
-		$_body = we_html_element::htmlBody(array("background" => IMAGE_DIR . "edit/editfooterback.gif",
-				"bgcolor" => "white"), $_messageTbl->getHtml());
+		$_body = we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml());
 
 		echo we_html_element::htmlDocType() . we_html_element::htmlHtml($_head . $_body);
 	}
@@ -115,9 +112,7 @@ abstract class we_editor_footer{
 
 			$_we_form = we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $_table);
 
-			echo we_html_element::htmlBody(array(
-				'style' => 'margin: 8px 0px 0px 8px;background: url(' . EDIT_IMAGE_DIR . 'editfooterback.gif);',
-				), $_we_form);
+			echo we_html_element::htmlBody(array('id' => 'footerBody'), $_we_form);
 		} else {
 
 			$_table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 4);
@@ -126,9 +121,7 @@ abstract class we_editor_footer{
 			$_table->setColContent(0, 2, we_html_tools::getPixel(16, 2));
 			$_table->setCol(0, 3, array("class" => "defaultfont"), g_l('modules_workflow', '[doc_in_wf_warning]'));
 
-			echo we_html_element::htmlBody(array(
-				'style' => 'margin: 0px 8px 0px 8px;background: url("' . EDIT_IMAGE_DIR . 'editfooterback.gif")',
-				), $_table->getHtml());
+			echo we_html_element::htmlBody(array('id' => 'footerBody'), $_table->getHtml());
 		}
 		echo '</html>';
 	}
@@ -160,7 +153,6 @@ abstract class we_editor_footer{
 		}
 
 		if(defined('WORKFLOW_TABLE') && $we_doc->IsTextContentDoc && $we_doc->ID){
-
 			//	Workflow button
 			$_ctrlElem = getControlElement('button', 'workflow'); //	look tag we:controlElement for details
 
@@ -172,7 +164,6 @@ abstract class we_editor_footer{
 		}
 
 		if($showPubl && $we_doc->ID && $we_doc->Published){
-
 			//	Park button
 			$_ctrlElem = getControlElement('button', 'unpublish'); //	look tag we:controlElement for details
 
@@ -225,36 +216,64 @@ function editFile(){
 			$_normalTable->addCol(2);
 			$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
-			//}
 		}
-		if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
-			if(defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
-				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("saveversion", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
-				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
-			}
+		switch($we_doc->ContentType){
+			case we_base_ContentTypes::TEMPLATE:
+				if(defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
+					$_normalTable->addCol(2);
+					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("saveversion", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+				}
 
-			$_normalTable->addCol(2);
-			$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("autoRebuild", false, "autoRebuild", g_l('global', '[we_rebuild_at_save]'), false, "defaultfont", " _EditorFrame.setEditorAutoRebuild( (this.checked) ? true : false );"));
-			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
-		} else if($showPubl){
-			$_ctrlElem = getControlElement('button', 'publish');
-			if(!$_ctrlElem || !$_ctrlElem['hide']){
-				$text = we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && we_schedpro::saveInScheduler($GLOBALS['we_doc']) ? 'saveInScheduler' : 'publish';
 				$_normalTable->addCol(2);
-				$_normalTable->setColAttributes(0, $_pos, array('id' => 'publish_' . $GLOBALS['we_doc']->ID));
-				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button($text, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+				$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("autoRebuild", false, "autoRebuild", g_l('global', '[we_rebuild_at_save]'), false, "defaultfont", " _EditorFrame.setEditorAutoRebuild( (this.checked) ? true : false );"));
+				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+				break;
+			default:
+				if($showPubl){
+					$_ctrlElem = getControlElement('button', 'publish');
+					if(!$_ctrlElem || !$_ctrlElem['hide']){
+						$text = we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && we_schedpro::saveInScheduler($GLOBALS['we_doc']) ? 'saveInScheduler' : 'publish';
+						$_normalTable->addCol(2);
+						$_normalTable->setColAttributes(0, $_pos, array('id' => 'publish_' . $GLOBALS['we_doc']->ID));
+						$_normalTable->setColContent(0, $_pos++, we_html_button::create_button($text, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+						$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+					}
+				}
+		}
+
+
+		switch($we_doc->Table){
+			case FILE_TABLE:
+				$hasPerm = ($we_doc->IsFolder && permissionhandler::hasPerm('DELETE_DOC_FOLDER')) ||
+					(!$we_doc->IsFolder && permissionhandler::hasPerm('DELETE_DOCUMENT'));
+				break;
+			case TEMPLATES_TABLE:
+				$hasPerm = ($we_doc->IsFolder && permissionhandler::hasPerm('DELETE_TEMP_FOLDER')) ||
+					(!$we_doc->IsFolder && permissionhandler::hasPerm('DELETE_TEMPLATE'));
+				break;
+			case OBJECT_FILES_TABLE:
+				$hasPerm = (permissionhandler::hasPerm('DELETE_OBJECTFILE'));
+				break;
+			case OBJECT_TABLE:
+				$hasPerm = ($we_doc->IsFolder && permissionhandler::hasPerm('DELETE_OBJECT'));
+				break;
+			default:
+				$hasPerm = false;
+		}
+		if($hasPerm){
+			$_ctrlElem = getControlElement('button', 'delete'); //	look tag we:controlElement for details
+			if(!$_ctrlElem || !$_ctrlElem['hide']){
+				$_normalTable->addCol(2);
+				$_normalTable->setCol(0, $_pos++, array('valign' => 'top'), we_html_button::create_button("image:btn_function_trash", "javascript:if(confirm('" . g_l('alert', '[delete_single][confirm_delete]') . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
 				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 			}
 		}
 
 
 		if($we_doc->IsTextContentDoc && $haspermNew){
-
 			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
-
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
-
 				$_normalTable->addCol(2);
 				$_normalTable->setCol(0, $_pos++, ( ($_ctrlElem && $_ctrlElem['hide'] ) ? ( array('style' => 'display:none') ) : array('style' => 'display:block')), we_html_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false)));
 				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));

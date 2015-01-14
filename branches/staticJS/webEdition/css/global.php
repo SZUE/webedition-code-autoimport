@@ -129,3 +129,9 @@ background-image: url(<?php echo IMAGE_DIR; ?>edit/editfooterback.gif);
 .weSidebarBody {
  background: #ffffff url(<?php echo IMAGE_DIR; ?>backgrounds/sidebarBackground.gif) no-repeat fixed bottom right;
 }
+
+#footerBody{
+	background-image: url('<?php echo EDIT_IMAGE_DIR ?>editfooterback.gif');
+	background-repeat:repeat;
+	margin:10px 0px 10px 0px;
+}

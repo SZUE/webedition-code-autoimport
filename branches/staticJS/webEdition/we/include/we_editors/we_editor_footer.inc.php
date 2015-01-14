@@ -140,8 +140,7 @@ $_js_we_save_document = "
 			if (countSaveLoop > 10) {
 				" . we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . ";
 				countSaveLoop = 0;
-			}
-			else if(acStatusType.toLowerCase() == 'object' && acStatus.running) {
+			}	else if(acStatusType.toLowerCase() == 'object' && acStatus.running) {
 				countSaveLoop++;
 				setTimeout(we_save_document,100);
 			} else if(invalidAcFields) {
@@ -302,7 +301,7 @@ if(inWorkflow($we_doc)){
 }
 ?>
 
-<body style="background-color:#f0f0f0; background-image: url('<?php echo EDIT_IMAGE_DIR ?>editfooterback.gif');background-repeat:repeat;margin:10px 0px 10px 0px">
+<body id="footerBody">
 	<form name="we_form" action=""<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onsubmit="sub();
 				return false;"<?php } ?>>
 		<input type="hidden" name="sel" value="<?php echo $we_doc->ID; ?>" />
@@ -321,22 +320,19 @@ if(inWorkflow($we_doc)){
 					we_editor_footer::SEEMode($we_doc, $we_transaction, $haspermNew, $showPubl);
 					break;
 			}
-		} else {
+		} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 
-			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
+			$_noPermTable = new we_html_table(array("cellpadding" => 0,
+				"cellspacing" => 0,
+				"border" => 0), 1, 4);
 
-				$_noPermTable = new we_html_table(array("cellpadding" => 0,
-					"cellspacing" => 0,
-					"border" => 0), 1, 4);
-
-				$_noPermTable->setColContent(0, 0, we_html_tools::getPixel(20, 2));
-				$_noPermTable->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
-				$_noPermTable->setColContent(0, 2, we_html_tools::getPixel(10, 2));
-				$_noPermTable->setColContent(0, 3, g_l('SEEM', '[no_permission_to_edit_document]'));
+			$_noPermTable->setColContent(0, 0, we_html_tools::getPixel(20, 2));
+			$_noPermTable->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
+			$_noPermTable->setColContent(0, 2, we_html_tools::getPixel(10, 2));
+			$_noPermTable->setColContent(0, 3, g_l('SEEM', '[no_permission_to_edit_document]'));
 
 
-				echo $_noPermTable->getHtml();
-			}
+			echo $_noPermTable->getHtml();
 		}
 		?>
 	</form>
