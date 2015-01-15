@@ -22,20 +22,21 @@
  */
 
 
-CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
+CodeMirror.defineMode("text/weTmpl", function (config, parserConfig) {
 	var webeditionOverlay = {
-		startState: function() {
+		startState: function () {
 			return {
-				insideTag: false,
-				tagName: "",
-				attrName: "",
-				typeName: "",
-				open: false,
-				close: false,
-				attrActive: false
+				'insideTag': false,
+				'tagName': "",
+				'attrName': "",
+				'typeName': "",
+				'open': false,
+				'close': false,
+				'attrActive': false,
+				'comment': false
 			};
 		},
-		token: function(stream, state) {
+		token: function (stream, state) {
 			if (state.insideTag) {
 				if (state.close) {
 					if (stream.skipTo(">")) {
@@ -68,7 +69,7 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 												if (state.typeName == "") {
 													state.typeName = (state.tagName === "object" ? "object" : "document");
 												}
-												return ((value - 0 == value) ? ("number" + " we" + state.typeName + "ID-" + value)+" WEID" : "string");
+												return ((value - 0 == value) ? ("number" + " we" + state.typeName + "ID-" + value) + " WEID" : "string");
 											case "type":
 												//console.log(value);
 												state.typeName = value;
@@ -134,7 +135,13 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 							case '>':
 								state.insideTag = false;
 								if (state.open) {
+									if (state.tagName === "comment") {
+										state.comment = true;
+									}
 									return "weOpenTag weTag weTag_" + state.tagName;
+								}
+								if (state.tagName === "comment") {
+									state.comment = false;
 								}
 								return "weCloseTag weTag";
 
@@ -152,6 +159,16 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 						}
 					}
 				}
+				if (state.comment) {
+					if (stream.match(/.*<\/we:comment/, true)) {
+						stream.backUp(12);
+						state.comment = false;
+					} else {
+						stream.skipToEnd();
+					}
+					return 'comment';
+				}
+
 				if (!stream.eol() && stream.peek() === "<") {
 					stream.next();
 				}
