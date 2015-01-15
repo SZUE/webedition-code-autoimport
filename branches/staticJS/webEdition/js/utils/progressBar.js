@@ -67,20 +67,11 @@ function bw_check() {
 	this.ver = navigator.appVersion;
 	this.agent = navigator.userAgent;
 	this.dom = document.getElementById ? 1 : 0;
-	this.opera5 = this.agent.indexOf('Opera 5') > -1;
-	this.ie5 = (this.ver.indexOf('MSIE 5') > -1 && this.dom && !this.opera5) ? 1 : 0;
-	this.ie6 = (this.ver.indexOf('MSIE 6') > -1 && this.dom && !this.opera5) ? 1 : 0;
-	this.ie4 = (document.all && !this.dom && !this.opera5) ? 1 : 0;
-	this.ie = this.ie4 || this.ie5 || this.ie6;
-	this.mac = this.agent.indexOf('Mac') > -1;
-	this.ns6 = (this.dom && parseInt(this.ver) >= 5) ? 1 : 0;
-	this.ns4 = (document.layers && !this.dom) ? 1 : 0;
-	this.bw = (this.ie6 || this.ie5 || this.ie4 || this.ns4 || this.ns6 || this.opera5);
 	return this;
 }
 bw = new bw_check();
 
-var px = bw.ns4 || window.opera ? '' : 'px';
+var px ='px';
 
 function pb_scale(maximum) {
 	this.maximum = maximum;
@@ -91,9 +82,9 @@ function pb_scale(maximum) {
 
 function pb_docsize() {
 	this.x = 0;
-	this.x2 = bw.ie && document.body.offsetWidth - 20 || innerWidth || 0;
+	this.x2 = innerWidth || 0;
 	this.y = 0;
-	this.y2 = bw.ie && document.body.offsetHeight - 5 || innerHeight || 0;
+	this.y2 = innerHeight || 0;
 	if (!this.x2 || !this.y2)
 		return;
 	this.x50 = this.x2 / 2;
@@ -103,9 +94,8 @@ function pb_docsize() {
 
 function pb_object(obj, nest) {
 	nest = (!nest) ? '' : 'document.' + nest + '.';
-	this.evnt = bw.dom ? document.getElementById(obj) : bw.ie4 ?
-					document.all[obj] : bw.ns4 ? eval(nest + 'document.layers.' + obj) : 0;
-	this.css = bw.dom || bw.ie4 ? this.evnt.style : this.evnt;
+	this.evnt = bw.dom ? document.getElementById(obj) : 0;
+	this.css = bw.dom || this.evnt;
 	this.ref = this.css;
 	this.w = this.evnt.offsetWidth || this.css.clip.width ||
 					this.ref.width || this.css.pixelWidth || 0;
@@ -124,40 +114,27 @@ pb_object.prototype.pb_clip = function (t, r, b, l, setwidth) {
 	this.cr = r;
 	this.cb = b;
 	this.cl = l;
-	if (bw.ns4) {
-		this.css.clip.top = t;
-		this.css.clip.right = r;
-		this.css.clip.bottom = b;
-		this.css.clip.left = l;
-	} else {
-		if (t < 0)
-			t = 0;
-		if (r < 0)
-			r = 0;
-		if (b < 0)
-			b = 0;
-		if (b < 0)
-			b = 0;
-		this.css.clip = 'rect(' + t + 'px ' + r + 'px ' + b + 'px ' + l + 'px)';
-		if (setwidth) {
-			this.css.pixelWidth = r;
-			this.css.pixelHeight = b;
-			this.css.width = r + px;
-			this.css.height = b + px;
-		}
+
+	if (t < 0)
+		t = 0;
+	if (r < 0)
+		r = 0;
+	if (b < 0)
+		b = 0;
+	if (b < 0)
+		b = 0;
+	this.css.clip = 'rect(' + t + 'px ' + r + 'px ' + b + 'px ' + l + 'px)';
+	if (setwidth) {
+		this.css.pixelWidth = r;
+		this.css.pixelHeight = b;
+		this.css.width = r + px;
+		this.css.height = b + px;
 	}
+
 };
 
 pb_object.prototype.pb_write = function (text, startHTML, endHTML) {
-	if (bw.ns4) {
-		if (!startHTML)
-			startHTML = '';
-		endHTML = '';
-		this.ref.open('text/html');
-		this.ref.write(startHTML + text + endHTML);
-		this.ref.close();
-	} else
-		this.evnt.innerHTML = text;
+	this.evnt.innerHTML = text;
 };
 
 var oLoad2;

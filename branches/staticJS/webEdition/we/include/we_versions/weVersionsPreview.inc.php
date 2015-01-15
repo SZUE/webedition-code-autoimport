@@ -186,10 +186,7 @@ foreach($versions as $k => $v){
 	$_versions_time_days->addOption($k, $txt);
 }
 
-$contentDiff = we_html_element::cssElement('
-td{
-	padding: 5px;
-}') .
+$contentDiff =
 	'<div style="margin-left:25px;" id="top">' . g_l('versions', '[VersionChangeTxt]') . '<br/><br/>' .
 	g_l('versions', '[VersionNumber]') . " " . $_versions_time_days->getHtml() . '
 			<div style="margin:20px 0px 0px 0px;" class="defaultfont"><a href="javascript:window.print()">' . g_l('versions', '[printPage]') . '</a></div>
@@ -606,14 +603,14 @@ echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]')
 <?php echo we_html_element::jsScript(JS_DIR . 'windows.js') . $js; ?>
 <style type="text/css" media="screen">
 	body {margin: 0;padding: 0;}
-	td {font-size:11px;vertical-align:top;}
+	td {font-size:11px;vertical-align:top;	padding: 5px;}
 	#tab1 {position:absolute;overflow:auto; }
 	#topPrint {display: none;}
 </style>
 
 <style type="text/css" media="print">
 	body {margin: 0;padding: 0;}
-	td {font-size:9px;vertical-align:top;}
+	td {font-size:9px;vertical-align:top;	padding: 5px;}
 	#tab1 {position:relative;overflow: visible;font-size:12px; }
 	#tab2 {display: none}
 	#tab3 {display: none}

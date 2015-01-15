@@ -1,0 +1,50 @@
+/**
+ * webEdition CMS
+ *
+ * $Rev: 8639 $
+ * $Author: mokraemer $
+ * $Date: 2014-11-26 12:24:47 +0100 (Mi, 26. Nov 2014) $
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package none
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
+#tabelle     {
+	position: absolute;
+	top: 0px;
+	left: 50px;
+	width: 100px;
+	height: 100px;
+	visibility: visible;
+	z-index: 3 ;
+}
+#hintergrund {
+	position: absolute;
+	top: 3px;
+	left: 40px;
+	width: 251px;
+	height: 220px;
+	visibility: visible;
+	z-index: 2 ;
+}
+#modimage{
+	position: absolute;
+	top: 131px;
+	left: 286px;
+	width: 335px;
+	height: 329px;
+	visibility: visible;
+	z-index: 1;
+}
