@@ -48,87 +48,13 @@ function _cutText($text, $l){
 }
 ?>
 <script type="text/javascript"><!--
-	var clickCount = 0;
-	var wasdblclick = 0;
-	var tout = null;
-	var mk = null;
-	var old = 0;
-
-	function doClick(id, ct, indb) {
-		if (ct === 1) {
-			if (wasdblclick) {
-				top.fscmd.selectDir(id);
-				if (top.filter !== "folder" && top.filter !== "filefolder")
-					top.fscmd.selectFile("");
-				setTimeout('wasdblclick=0;', 400);
-			} else {
-				if ((top.filter === "folder" || top.filter === "filefolder") && (!indb)) {
-					top.fscmd.selectFile(id);
-				}
-			}
-			if ((old === id) && (!wasdblclick)) {
-				clickEdit(id);
-			}
-		}
-		else {
-			top.fscmd.selectFile(id);
-			top.dirsel = 0;
-		}
-		old = id;
-	}
-
-	function doSelectFolder(entry, indb) {
-		switch (top.filter) {
-			case "all_Types":
-				if (!top.browseServer) {
-					break;
-				}
-				//no break;
-			case "folder":
-			case "filefolder":
-				if (!indb) {
-					top.fscmd.selectFile(entry);
-				}
-				top.dirsel = 1;
-		}
-	}
-
-	function clickEdit(dir) {
-		switch (top.filter) {
-			case "folder":
-			case "filefolder":
-				break;
-			default:
-				setScrollTo();
-				top.fscmd.drawDir(top.currentDir, "rename_folder", dir);
-		}
-	}
-
-	function clickEditFile(file) {
-		setScrollTo();
-		top.fscmd.drawDir(top.currentDir, "rename_file", file);
-	}
-
-	function doScrollTo() {
-		if (parent.scrollToVal) {
-			window.scrollTo(0, parent.scrollToVal);
-			parent.scrollToVal = 0;
-		}
-	}
-
 	function setScrollTo() {
 		parent.scrollToVal =<?php if(we_base_browserDetect::isIE()){ ?>document.body.scrollTop;<?php } else { ?>pageYOffset;<?php } ?>
 	}
-
-	function keypressed(e) {
-		if (e.keyCode === 13) { // RETURN KEY => valid for all Browsers
-			setTimeout(document.we_form.txt.blur, 30);
-			//document.we_form
-		}
-	}
-
 //-->
-</script>
+</script><?php
+echo we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_body.js');
+?>
 
 </head>
 <body class="grey" style="background-color:white" LINK="#000000" ALINK="#000000" VLINK="#000000" onload="doScrollTo();">

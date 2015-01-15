@@ -44,8 +44,3 @@ $table = isset($table) ? $table : FILE_TABLE;
 		</div>
 	</div>
 </div>
-<?php
-echo we_html_element::jsElement(
-	we_base_browserDetect::isIE() ? 'window.setTimeout(top.start, 1000);' :
-		'top.start();'
-);

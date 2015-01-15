@@ -131,7 +131,7 @@ function startSEEMMode(){
 //-->
 </script>
 </head>
-<body id="resizeFrame">
+<body id="resizeFrame" onload="top.start();">
 	<?php
 //	Here begins the controller of the page
 //  Edit an included file with SEEM.

@@ -43,38 +43,7 @@ class doclistView{
               }';
 		}
 
-		//workaround for z-index ans selects in ie6
-		if(((we_base_browserDetect::isIE()) && we_base_browserDetect::getIEVersion() < 7)){
-			$showHideSelects = 'var AnzahlSelects = document.getElementsByTagName("select");
-                for (var k = 0; k <= AnzahlSelects.length; k++ ) {
-                  var selectAnzahl = AnzahlSelects[k];
-                  var sATop = absTop(selectAnzahl);
-                  var sAHeight = selectAnzahl.offsetHeight;
-                  var sABottom = eval(sATop+sAHeight);
-                  var sALeft = absLeft(selectAnzahl);
-                  var sAWidth = selectAnzahl.offsetWidth;
-                  var sARight = eval(sALeft+sAWidth);
-
-                  if(elem.offsetTop-20<sATop && eval(elem.offsetTop+elemHeight+50)>sABottom && elem.offsetLeft<sARight && eval(elem.offsetLeft+elemWidth)>sALeft) {
-                    selectAnzahl.style.visibility = "hidden";
-                  }
-                  else {
-                    selectAnzahl.style.visibility = "visible";
-                  }
-                }';
-
-			$showSelects = 'var AnzahlSelects = document.getElementsByTagName("select");
-              for (var k = 0; k <= AnzahlSelects.length; k++ ) {
-                var selectAnzahl = AnzahlSelects[k];
-                if(selectAnzahl.style.visibility == "hidden") {
-                  selectAnzahl.style.visibility = "visible";
-                }
-              }';
-		} else {
-			$showHideSelects = '';
-			$showSelects = '';
-		}
-		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
+	 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 
 		return we_html_element::jsElement('
 
@@ -262,8 +231,6 @@ class doclistView{
         elem = document.getElementById(picID);
         elem.style.visibility = "hidden";
         elem.style.left = "-9999px";
-
-        ' . $showSelects . '
       }
 
 
@@ -294,8 +261,6 @@ class doclistView{
           else if((h-y)<250) {
             elem.style.top = (y - elemHeight - 10) + "px";
           }
-
-          ' . $showHideSelects . '
 
         }
       }
