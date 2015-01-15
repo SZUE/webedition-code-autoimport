@@ -256,8 +256,16 @@ class we_customer_settings{
 				return $this->field_types['input'];
 			}
 			return $this->special_field_types[$field_type] . '(\'' . implode('\',\'', explode(',', $this->FieldAdds[$fieldname]['default'])) . '\')';
+		} else {
+			switch($field_type){
+				case 'date':
+					return $this->field_types[$field_type] . ' DEFAULT "0000-00-00" ';
+				case 'dateTime':
+					return $this->field_types[$field_type] . ' DEFAULT "0000-00-00 00:00:00" ';
+				default:
+					return $this->field_types[$field_type];
+			}
 		}
-		return $this->field_types[$field_type];
 	}
 
 	function getFieldType($name){
