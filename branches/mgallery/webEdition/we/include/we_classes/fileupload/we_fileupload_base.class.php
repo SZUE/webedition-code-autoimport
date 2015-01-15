@@ -44,6 +44,7 @@ abstract class we_fileupload_base{
 	protected $footerName = '';
 	protected $contentName = '';
 	protected $uploadBtnName = 'upload_btn';
+	protected $disableUploadBtnOnInit = false;
 	protected $internalProgress = array(
 		'isInternalProgress' => false,
 		'width' => 0,
@@ -206,7 +207,8 @@ abstract class we_fileupload_base{
 				isGdOk : ' . ($this->isGdOk ? 'true' : 'false') . ',
 				htmlFileRow : \'' . $this->_getHtmlFileRow() . '\',
 				fileTable : "' . $this->fileTable . '",
-				binDocProperties : ' . json_encode($this->binDocProperties) . '
+				binDocProperties : ' . json_encode($this->binDocProperties) . ',
+				disableUploadBtnOnInit : ' . ($this->disableUploadBtnOnInit ? 'true' : 'false') . '
 			});
 		') . ($this->externalProgress['create'] ? implodeJS($progressbar->getJS('', true)) : ''));
 	}

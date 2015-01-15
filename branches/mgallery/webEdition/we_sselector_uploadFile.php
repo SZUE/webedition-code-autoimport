@@ -28,7 +28,7 @@ function weFile($f){
 	return f('SELECT 1 FROM ' . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($f) . "'");
 }
 
-$weFileupload = new we_fileupload_include('we_uploadFile', '', '', 'we_form', '', 'document.forms["we_form"].submit()', '', 330, true, false, 0);
+$weFileupload = new we_fileupload_include('we_uploadFile', '', '', 'we_form', '', true, 'document.forms["we_form"].submit()', '', 330, true, false, 0);
 $weFileupload->setExternalProgress(true, 'progressbar', true, 120);
 
 if($weFileupload->processFileRequest()){

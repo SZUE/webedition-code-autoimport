@@ -23,5 +23,5 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifVoteActive(){
-	return $GLOBALS['_we_voting']->Active;
+	return isset($GLOBALS['_we_voting']) && is_object($GLOBALS['_we_voting']) && $GLOBALS['_we_voting']->Active;
 }

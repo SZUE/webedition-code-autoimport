@@ -85,11 +85,11 @@ class we_workflow_frames extends we_modules_frame{
 				fr = top.content.tree.document;
 				fr.open();
 				fr.writeln("<html><head>");
+				fr.writeln("<?php echo str_replace(array('script', '"'), array('scr"+"ipt', '\''), we_html_tools::getJSErrorHandler());?>");
 				fr.writeln("<script type=\"text/javascript\">");
-				fr.writeln("<?php echo we_html_tools::getJSErrorHandler(true); ?>");
-				fr.writeln("clickCount=0;");
-				fr.writeln("wasdblclick=0;");
-				fr.writeln("tout=null");
+				fr.writeln("var clickCount=0;");
+				fr.writeln("var wasdblclick=0;");
+				fr.writeln("var tout=null;");
 				fr.writeln("function doClick(id,ct,table){");
 				fr.writeln("if(ct=='folder') top.content.we_cmd('workflow_edit',id,ct,table); else if(ct=='file') top.content.we_cmd('show_document',id,ct,table);");
 				fr.writeln("}");

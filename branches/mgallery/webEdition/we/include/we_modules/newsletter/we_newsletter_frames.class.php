@@ -1776,7 +1776,7 @@ self.focus();
 	}
 
 	function getHTMLUploadCsv($what){
-		$weFileupload = new we_fileupload_include('we_File', '', '', 'we_form', 'upload_footer', "we_cmd('do_" . $what . "');", '', 330, true, false, 0);
+		$weFileupload = new we_fileupload_include('we_File', '', '', 'we_form', 'upload_footer', true, "we_cmd('do_" . $what . "');", '', 330, true, false, 0);
 		$weFileupload->setExternalProgress(true, 'progressbar', true, 120);
 		$weFileupload->setAction($this->frameset . '?' . ($what === 'upload_csv' ? 'pnt=upload_csv&grp=0&ncmd=do_upload_csv' :
 						($what === 'upload_black' ? 'pnt=upload_black&grp=undefined&ncmd=do_upload_black' : '')));
@@ -2221,41 +2221,39 @@ function clearLog(){
 }
 ');
 
-		$csv = "";
-		$this->View->db->query("SELECT " . NEWSLETTER_TABLE . ".Text as NewsletterName, " . NEWSLETTER_LOG_TABLE . ".* FROM " . NEWSLETTER_TABLE . "," . NEWSLETTER_LOG_TABLE . " WHERE " . NEWSLETTER_TABLE . ".ID=" . NEWSLETTER_LOG_TABLE . ".NewsletterID;");
+		$csv = '';
+		$this->View->db->query('SELECT ' . NEWSLETTER_TABLE . '.Text as NewsletterName, ' . NEWSLETTER_LOG_TABLE . '.* FROM ' . NEWSLETTER_TABLE . ' JOIN ' . NEWSLETTER_LOG_TABLE . ' ON ' . NEWSLETTER_TABLE . '.ID=' . NEWSLETTER_LOG_TABLE . '.NewsletterID');
 		while($this->View->db->next_record()){
-			$csv.=$this->View->db->f("NewsletterName") . "," . date(g_l('weEditorInfo', '[date_format]'), $this->View->db->f("LogTime")) . "," . (g_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']') !== false ? (sprintf($lg_l('modules_newsletter', '[' . $this->View->db->f("Log") . ']'), $this->View->db->f("Param"))) : $this->View->db->f("Log")) . "\n";
+			$csv.=$this->View->db->f('NewsletterName') . "," . date(g_l('weEditorInfo', '[date_format]'), intval($this->View->db->f('LogTime'))) . ',' . (g_l('modules_newsletter', '[' . $this->View->db->f('Log') . ']') !== false ? (sprintf(g_l('modules_newsletter', '[' . $this->View->db->f('Log') . ']'), $this->View->db->f("Param"))) : $this->View->db->f('Log')) . "\n";
 		}
 
-		$link = BACKUP_DIR . "download/log_" . time() . ".csv";
+		$link = BACKUP_DIR . 'download/log_' . time() . '.csv';
 		if(!we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $link, $csv)){
-			$link = "";
+			$link = '';
 		}
 
-		$_REQUEST["lnk"] = $link;
+		$_REQUEST['lnk'] = $link;
 
 		return $this->getHTMLDocument($this->getHTMLExportCsvMessage(true), $js);
 	}
 
 	function getHTMLSendWait(){
-		$nid = we_base_request::_(we_base_request::INT, "nid", 0);
-		$test = we_base_request::_(we_base_request::BOOL, "test");
+		$nid = we_base_request::_(we_base_request::INT, 'nid', 0);
+		$test = we_base_request::_(we_base_request::BOOL, 'test');
 
-		$js = we_html_element::jsElement('
-			self.focus();
-		');
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "setTimeout('document.we_form.submit()',200)"), we_html_element::htmlForm(array("name" => "we_form"), $this->View->htmlHidden("pnt", "send_frameset") .
-								$this->View->htmlHidden("nid", $nid) .
-								$this->View->htmlHidden("test", $test) .
-								we_html_element::htmlCenter(
-										we_html_element::htmlImg(array("src" => IMAGE_DIR . "e_busy.gif")) .
-										we_html_element::htmlBr() .
-										we_html_element::htmlBr() .
-										we_html_element::htmlDiv(array("class" => "header_small"), g_l('modules_newsletter', '[prepare_newsletter]'))
+		return $this->getHTMLDocument(
+						we_html_element::htmlBody(array("class" => 'weDialogBody', 'onload' => "setTimeout('document.we_form.submit()',200)"), we_html_element::htmlForm(array('name' => 'we_form'), $this->View->htmlHidden("pnt", "send_frameset") .
+										$this->View->htmlHidden('nid', $nid) .
+										$this->View->htmlHidden('test', $test) .
+										we_html_element::htmlCenter(
+												we_html_element::htmlImg(array('src' => IMAGE_DIR . 'e_busy.gif')) .
+												we_html_element::htmlBr() .
+												we_html_element::htmlBr() .
+												we_html_element::htmlDiv(array('class' => 'header_small'), g_l('modules_newsletter', '[prepare_newsletter]'))
+										)
 								)
-						)
+						), we_html_element::jsElement('self.focus();')
 		);
-		return $this->getHTMLDocument($body, $js);
 	}
 
 	function getHTMLSendFrameset(){
@@ -2276,7 +2274,7 @@ function clearLog(){
 		}
 
 
-		$head = we_html_element::jsScript(JS_DIR . "windows.js") .
+		$head = we_html_element::jsScript(JS_DIR . 'windows.js') .
 				we_html_element::jsElement('
 function yes(){
 	doSend(' . $_offset . ',' . $_step . ');
@@ -2332,17 +2330,15 @@ self.focus();
 
 		$details = g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "test") ? '[test_no_mail]' : '[sending]'));
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $pb->getJS('', true) .
-								$_content
-						) .
-						we_html_element::jsElement('
+		return $this->getHTMLDocument(
+						we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $pb->getJS('', true) .
+										$_content
+								) .
+								we_html_element::jsElement('
 									document.we_form.details.value="' . $details . '";
 									document.we_form.details.value=document.we_form.details.value+"\n"+"' . g_l('modules_newsletter', '[campaign_starts]') . '";
 							')
-		);
-
-
-		return $this->getHTMLDocument($body);
+		));
 	}
 
 	function getHTMLSendCmd(){
@@ -2403,7 +2399,7 @@ function initControl(){
 
 self.focus();');
 
-		$body = we_html_element::htmlBody(array("marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10, "onload" => "initControl()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "nid", "value" => $nid)) .
+		echo $this->getHTMLDocument(we_html_element::htmlBody(array("marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10, "onload" => "initControl()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "nid", "value" => $nid)) .
 								we_html_element::htmlHidden(array("name" => "pnt", "value" => "send_cmd")) .
 								we_html_element::htmlHidden(array("name" => "test", "value" => $test)) .
 								we_html_element::htmlHidden(array("name" => "blockcache", "value" => $blockcache)) .
@@ -2414,8 +2410,7 @@ self.focus();');
 								we_html_element::htmlHidden(array("name" => "ecs", "value" => $ecs)) .
 								we_html_element::htmlHidden(array("name" => "reload", "value" => 1))
 						)
-		);
-		echo $this->getHTMLDocument($body, $js);
+				), $js);
 		flush();
 
 		if($gcount <= $egc){

@@ -189,8 +189,7 @@ class we_customer_settings{
 		}
 
 		$this->treeTextFormatSQL = 'COALESCE(NULLIF(TRIM(CONCAT("' . $this->Prefs['treetext_format'] . '")),""),Text)';
-		$field_names = $this->customer->getFieldsDbProperties();
-		$field_names = array_keys($field_names);
+		$field_names = array_keys($this->customer->getFieldsDbProperties());
 
 		foreach($field_names as $fieldname){
 			if(strpos($this->treeTextFormatSQL, '#' . $fieldname) !== false){
@@ -257,8 +256,16 @@ class we_customer_settings{
 				return $this->field_types['input'];
 			}
 			return $this->special_field_types[$field_type] . '(\'' . implode('\',\'', explode(',', $this->FieldAdds[$fieldname]['default'])) . '\')';
+		} else {
+			switch($field_type){
+				case 'date':
+					return $this->field_types[$field_type] . ' DEFAULT "0000-00-00" ';
+				case 'dateTime':
+					return $this->field_types[$field_type] . ' DEFAULT "0000-00-00 00:00:00" ';
+				default:
+					return $this->field_types[$field_type];
+			}
 		}
-		return $this->field_types[$field_type];
 	}
 
 	function getFieldType($name){

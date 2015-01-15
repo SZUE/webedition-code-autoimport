@@ -26,5 +26,5 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 $mod = we_base_request::_(we_base_request::STRING, 'mod');
 if(we_base_moduleInfo::isActive($mod)){
-	require_once(WE_MODULES_PATH . $mod . "/edit_" . $mod . "_frameset.php");
+	require_once(WE_MODULES_PATH . $mod . '/edit_' . $mod . '_frameset.php');
 }
