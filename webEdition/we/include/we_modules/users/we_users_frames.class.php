@@ -51,7 +51,7 @@ function drawEintraege() {
 	fr.open();
 	fr.charset = "' . DEFAULT_CHARSET . '";
 	fr.writeln("<html><head>' . addslashes(we_html_element::htmlMeta(array('http-equiv' => 'content-type', 'content' => 'text/html; charset=' . DEFAULT_CHARSET))) . '");
-	fr.writeln("' . str_replace(array('script','"'), array('scr+ipt','\''), we_html_tools::getJSErrorHandler()) . '");
+	fr.writeln("' . str_replace(array('script', '"'), array('scr"+"ipt', '\''), we_html_tools::getJSErrorHandler()) . '");
 	fr.writeln("<script type = \"text/javascript\"><!--");
 	fr.writeln("var clickCount=0;");
 	fr.writeln("var wasdblclick=0;");

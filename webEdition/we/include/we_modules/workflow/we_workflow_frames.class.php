@@ -85,8 +85,8 @@ class we_workflow_frames extends we_modules_frame{
 				fr = top.content.tree.document;
 				fr.open();
 				fr.writeln("<html><head>");
+				fr.writeln("<?php echo str_replace(array('script', '"'), array('scr"+"ipt', '\''), we_html_tools::getJSErrorHandler());?>");
 				fr.writeln("<script type=\"text/javascript\">");
-				fr.writeln("<?php echo str_replace(array('script','"'), array('scr+ipt','\''), we_html_tools::getJSErrorHandler());?>");
 				fr.writeln("var clickCount=0;");
 				fr.writeln("var wasdblclick=0;");
 				fr.writeln("var tout=null;");
