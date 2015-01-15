@@ -1,0 +1,5 @@
+Important:
+
+This is the plugin belonging to the actually implemented version of TinyMCE.
+
+The plugin under plugins/table is taken from TinyMCE version 3.2.5.
