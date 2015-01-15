@@ -143,4 +143,4 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 
 $this->Attributes = array($name, $classid, $hyperlink, $tid, $href, $target, $class, $style, $format, $num_format, $thumbnail, $id, $parentidname, $winprops, $alt, $max, $src,
 	$width, $height, $border, $hspace, $vspace, $align, $only, $onlyImg, $htmlspecialchars, $seeMode, $xml, $win2iso, $listviewname, $striphtml, $outputlanguage, $doc, $triggerid, 
-	$usekey, $vatfield, $customerid, $country, $catfield, $showpath, $rootdir);
+	$usekey, $vatfield, $catfield, $showpath, $rootdir);

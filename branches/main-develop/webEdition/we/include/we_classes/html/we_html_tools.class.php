@@ -679,10 +679,8 @@ this.selectedIndex = 0;' .
 				, $closeHtml);
 	}
 
-	public static function getJSErrorHandler($plain = false){
-		return ($plain ?
-				str_replace("\n", '', we_base_file::load(JS_PATH . 'utils/jsErrorHandler.js')) :
-				we_html_element::jsScript(JS_DIR . 'utils/jsErrorHandler.js'));
+	public static function getJSErrorHandler(){
+		return we_html_element::jsScript(JS_DIR . 'utils/jsErrorHandler.js');
 	}
 
 	public static function getHtmlInnerHead($title = 'webEdition', $charset = '', $expand = false){
@@ -690,10 +688,10 @@ this.selectedIndex = 0;' .
 			self::headerCtCharset('text/html', ($charset ? : $GLOBALS['WE_BACKENDCHARSET']));
 		}
 		return
-			($expand ?
-				we_html_element::jsElement(self::getJSErrorHandler(true)) :
-				self::getJSErrorHandler()
-			) . //load this as early as possible
+				($expand ?
+						str_replace(array('script', '"'), array('scr"+"ipt', '\''), we_html_tools::getJSErrorHandler()) :
+						self::getJSErrorHandler()
+				) . //load this as early as possible
 			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array('http-equiv' => 'expires', 'content' => 0)) .
 			we_html_element::htmlMeta(array('http-equiv' => 'Cache-Control', 'content' => 'no-cache')) .

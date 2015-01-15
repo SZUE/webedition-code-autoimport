@@ -312,12 +312,12 @@ if(isset($isIncTo_we_cmd_ext) && $isIncTo_we_cmd_ext){
 		function doUnload() {
 			closeAllModalWindows();
 
-	<?php if($we_doc->userHasAccess() == we_root::USER_HASACCESS){ ?>
-				if (!unlock && (!top.opener ||top.opener.hasOwnProperty('win'))) {	//	login to super easy edit mode
-						unlock = true;
-					}
-	<?php } ?>
-		}
+<?php if($we_doc->userHasAccess() == we_root::USER_HASACCESS){ ?>
+			if (!unlock && (!top.opener ||top.opener.win)) {	//	login to super easy edit mode
+				unlock = true;
+			}
+<?php } ?>
+	}
 
 
 	<?php if(!$we_doc->ID){ ?>

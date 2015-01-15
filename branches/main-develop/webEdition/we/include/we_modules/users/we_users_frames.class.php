@@ -50,12 +50,12 @@ function drawEintraege() {
 	fr = top.content.tree.window.document;
 	fr.open();
 	fr.charset = "' . DEFAULT_CHARSET . '";
-	fr.writeln("<HTML><HEAD>' . addslashes(we_html_element::htmlMeta(array('http-equiv' => 'content-type', 'content' => 'text/html; charset=' . DEFAULT_CHARSET))) . '");
+	fr.writeln("<html><head>' . addslashes(we_html_element::htmlMeta(array('http-equiv' => 'content-type', 'content' => 'text/html; charset=' . DEFAULT_CHARSET))) . '");
+	fr.writeln("' . str_replace(array('script', '"'), array('scr"+"ipt', '\''), we_html_tools::getJSErrorHandler()) . '");
 	fr.writeln("<script type = \"text/javascript\"><!--");
-	fr.writeln("' . we_html_tools::getJSErrorHandler(true) . '");
-	fr.writeln("clickCount=0;");
-	fr.writeln("wasdblclick=0;");
-	fr.writeln("tout=null");
+	fr.writeln("var clickCount=0;");
+	fr.writeln("var wasdblclick=0;");
+	fr.writeln("var tout=null;");
 	fr.writeln("function doClick(id,ct,table){");
 	fr.writeln("top.content.we_cmd(\'display_user\',id,ct,table);");
 	fr.writeln("}");

@@ -158,11 +158,11 @@ function RenameFolder(id){
 function writeBody(d){
 	d.open();' .
 				self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
-var ctrlpressed=false
-var shiftpressed=false
-var inputklick=false
-var wasdblclick=false
-var tout=null
+var ctrlpressed=false;
+var shiftpressed=false;
+var inputklick=false;
+var wasdblclick=false;
+var tout=null;
 function submitFolderMods(){
 //	document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value); document.we_form.submit();
 }

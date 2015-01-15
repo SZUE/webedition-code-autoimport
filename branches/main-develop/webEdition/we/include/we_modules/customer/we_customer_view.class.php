@@ -1041,7 +1041,6 @@ self.close();');
 		$this->settings->storeFieldAdd($new_field_name, 'default', $field_default);
 		$this->settings->storeFieldAdd($new_field_name, 'type', $field_type);
 
-
 		$this->db->query('ALTER TABLE ' . CUSTOMER_TABLE . ' ' . ((count($h)) ? 'CHANGE ' . $field : 'ADD') . ' ' . $new_field_name . ' ' . $this->settings->getDbType($field_type, $new_field_name) . ' NOT NULL');
 
 		$this->settings->save();

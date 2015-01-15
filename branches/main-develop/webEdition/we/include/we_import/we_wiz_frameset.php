@@ -55,7 +55,7 @@ if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
 				break;
 		}
 
-		$wizard->fileUploader = new we_fileupload_include($name, 'wizbody', '', 'we_form', 'next_btn', 'top.wizbody.handle_eventNext()', "self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;", 330, true, true, 200, $acceptedMime, $acceptedExt, '', '', array(), -1);
+		$wizard->fileUploader = new we_fileupload_include($name, 'wizbody', '', 'we_form', 'next_btn', true, 'top.wizbody.handle_eventNext()', "self.document.forms['we_form'].elements['v[rdofloc]'][1].checked=true;", 330, true, true, 200, $acceptedMime, $acceptedExt, '', '', array(), -1);
 		$wizard->fileUploader->setAction($wizard->path . '?pnt=wizbody&step=1&type=' . $type);
 		$wizard->fileUploader->setFileNameTemp($type == we_import_functions::TYPE_GENERIC_XML ? $fileNameTempGxml : $fileNameTemp);
 	}
