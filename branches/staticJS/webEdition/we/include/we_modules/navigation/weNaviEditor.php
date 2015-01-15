@@ -160,9 +160,9 @@ $_body = we_html_element::htmlBody(
 
 $_head = //FIXME: missing title
 	we_html_tools::getHtmlInnerHead() . STYLESHEET .
-	we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
-	we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
-	we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
 	we_html_element::jsElement($_js);
 
 echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($_head) . $_body);

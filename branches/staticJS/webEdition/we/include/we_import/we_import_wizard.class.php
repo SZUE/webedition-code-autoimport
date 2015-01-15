@@ -1328,9 +1328,9 @@ HTS;
 		$wepos = weGetCookieVariable('but_xml');
 		$znr = -1;
 
-		$content = we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
-				we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
-				we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
+		$content = we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+				we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+				we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
 				$hdns .
 				we_html_multiIconBox::getJS() .
 				we_html_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[gxml_import]'));
@@ -2424,9 +2424,9 @@ HTS;
 		}
 
 
-		$content = we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
-				we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
-				we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js") .
+		$content = we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+				we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+				we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
 				$hdns .
 				we_html_multiIconBox::getHTML('csv', "100%", $parts, 30, "", -1, "", "", false, g_l('import', '[csv_import]'));
 

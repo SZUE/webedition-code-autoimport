@@ -25,9 +25,9 @@ we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
- we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
- we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');
+ we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+ we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+ we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js');
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 

@@ -365,7 +365,7 @@ function submitForm() {
 
 		return
 			parent::getJSProperty() .
-			we_html_element::jsScript(JS_DIR . "libs/we/weValidate.js") .
+			we_html_element::jsScript(JS_DIR . 'weValidate.js') .
 			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 			we_html_element::jsElement('
 var g_l = {

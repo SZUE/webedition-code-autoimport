@@ -45,10 +45,10 @@ $page->setFrameset($frameset);
 $page->addJSFile(JS_DIR . 'windows.js');
 $page->addJSFile(JS_DIR . 'we_showMessage.js');
 $page->addJSFile(JS_DIR . 'images.js');
-$page->addJSFile(JS_DIR . 'libs/yui/yahoo-min.js');
-$page->addJSFile(JS_DIR . 'libs/yui/event-min.js');
-$page->addJSFile(JS_DIR . 'libs/yui/connection-min.js');
-$page->addJSFile(JS_DIR . 'libs/yui/json-min.js');
+$page->addJSFile(LIB_DIR . 'additional/yui/yahoo-min.js');
+$page->addJSFile(LIB_DIR . 'additional/yui/event-min.js');
+$page->addJSFile(LIB_DIR . 'additional/yui/connection-min.js');
+$page->addJSFile(LIB_DIR . 'additional/yui/json-min.js');
 $page->addJSFile(LIB_DIR . 'we/core/JsonRpc.js');
 
 $page->addInlineJS($this->getJSTop());

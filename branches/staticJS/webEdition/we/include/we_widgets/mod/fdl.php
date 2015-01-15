@@ -66,26 +66,26 @@ if(($maxRows = f('SELECT COUNT(DISTINCT f.Username) ' . $queryFailedLogins, '', 
 	$failedLoginsTable->setCol(1, 0, array("class" => "middlefont", "colspan" => "4", "align" => "left", "style" => "color:green;"), we_html_element::htmlB(g_l("cockpit", "[kv_failedLogins][noFailedLogins]")));
 }
 
-$failedLoginHTML = we_html_element::jsScript(JS_DIR . "libs/yui/yahoo-min.js") .
-	we_html_element::jsScript(JS_DIR . "libs/yui/event-min.js") .
-	we_html_element::jsScript(JS_DIR . "libs/yui/connection-min.js") .
+$failedLoginHTML = we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
 	we_html_element::jsElement('var ajaxCallbackResetLogins = {
-													success: function(o) {
-														if(typeof(o.responseText) != undefined && o.responseText != "") {
-															var weResponse = false;
-															try {
-																eval( "var weResponse = "+o.responseText );
-																if ( weResponse ) {
-																	if (weResponse["DataArray"]["data"] == "true") {
-																		' . ( isset($newSCurrId) ? 'rpc("","","","","","' . $newSCurrId . '","fdl/fdl");' : '' ) .
-		we_message_reporting::getShowMessageCall(g_l('cockpit', '[kv_failedLogins][deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-																		self.setTheme(_sObjId,_oSctCls[_oSctCls.selectedIndex].value);
-																	}
-																}
-															} catch (exc){}
-														}
-													},
-													failure: function(o) {
+success: function(o) {
+	if(typeof(o.responseText) != undefined && o.responseText != "") {
+		var weResponse = false;
+		try {
+			eval( "var weResponse = "+o.responseText );
+			if ( weResponse ) {
+				if (weResponse["DataArray"]["data"] == "true") {
+					' . ( isset($newSCurrId) ? 'rpc("","","","","","' . $newSCurrId . '","fdl/fdl");' : '' ) .
+we_message_reporting::getShowMessageCall(g_l('cockpit', '[kv_failedLogins][deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+					self.setTheme(_sObjId,_oSctCls[_oSctCls.selectedIndex].value);
+				}
+			}
+		} catch (exc){}
+	}
+},
+failure: function(o) {
 
-													}}') .
+}}') .
 	$failedLoginsTable->getHtml();

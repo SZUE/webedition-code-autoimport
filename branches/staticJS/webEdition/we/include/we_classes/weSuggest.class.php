@@ -130,14 +130,14 @@ class weSuggest{
 	 * @return String
 	 */
 	static function getYuiJsFiles(){
-		return we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
-			we_html_element::jsScript(JS_DIR . 'libs/yui/dom-min.js') .
-			we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
-			we_html_element::jsScript(JS_DIR . 'libs/yui/datasource-min.js') .
-			we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
-			we_html_element::jsScript(JS_DIR . 'libs/yui/animation-min.js') .
-			we_html_element::jsScript(JS_DIR . 'libs/yui/json-min.js') .
-			we_html_element::jsScript(JS_DIR . 'libs/yui/autocomplete-min.js') .
+		return we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+			we_html_element::jsScript(LIB_DIR . 'additional/yui/dom-min.js') .
+			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+			we_html_element::jsScript(LIB_DIR . 'additional/yui/datasource-min.js') .
+			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+			we_html_element::jsScript(LIB_DIR . 'additional/yui/animation-min.js') .
+			we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
+			we_html_element::jsScript(LIB_DIR . 'additional/yui/autocomplete-min.js') .
 			we_html_element::jsScript(JS_DIR . 'utils/we_cmd_encode.js');
 	}
 

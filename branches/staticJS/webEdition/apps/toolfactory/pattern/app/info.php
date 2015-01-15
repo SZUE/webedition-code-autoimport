@@ -16,10 +16,10 @@ $htmlPage = we_ui_layout_Dialog::getInstance();
 $htmlPage->addJSFile(JS_DIR . 'windows.js');
 $htmlPage->addJSFile(JS_DIR . 'we_showMessage.js');
 $htmlPage->addJSFile(JS_DIR . 'images.js');
-$htmlPage->addJSFile(JS_DIR . 'libs/yui/yahoo-min.js');
-$htmlPage->addJSFile(JS_DIR . 'libs/yui/event-min.js');
-$htmlPage->addJSFile(JS_DIR . 'libs/yui/connection-min.js');
-$htmlPage->addJSFile(JS_DIR . 'libs/yui/json-min.js');
+$htmlPage->addJSFile(LIB_DIR . 'additional/yui/yahoo-min.js');
+$htmlPage->addJSFile(LIB_DIR . 'additional/yui/event-min.js');
+$htmlPage->addJSFile(LIB_DIR . 'additional/yui/connection-min.js');
+$htmlPage->addJSFile(LIB_DIR . 'additional/yui/json-min.js');
 $htmlPage->addJSFile(LIB_DIR . 'we/core/JsonRpc.js');
 
 $appconfig = we_app_Common::getManifest($metaInfo['classname']);
