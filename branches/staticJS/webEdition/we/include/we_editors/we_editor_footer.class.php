@@ -126,6 +126,15 @@ abstract class we_editor_footer{
 		echo '</html>';
 	}
 
+	private static function addDelButton($table, $we_doc, &$_pos){
+		$_ctrlElem = getControlElement('button', 'delete'); //	look tag we:controlElement for details
+		if(!$_ctrlElem || !$_ctrlElem['hide']){
+			$table->addCol(2);
+			$table->setCol(0, $_pos++, array('valign' => 'top'), we_html_button::create_button("image:btn_function_trash", "javascript:if(confirm('" . g_l('alert', '[delete_single][confirm_delete]') . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
+			$table->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+		}
+	}
+
 	/**
 	 * @return void
 	 * @desc Prints the footer for the normal mode
@@ -200,31 +209,6 @@ abstract class we_editor_footer{
 			$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		}
-		switch($we_doc->ContentType){
-			case we_base_ContentTypes::TEMPLATE:
-				if(defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
-					$_normalTable->addCol(2);
-					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("saveversion", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
-					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
-				}
-
-				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("autoRebuild", false, "autoRebuild", g_l('global', '[we_rebuild_at_save]'), false, "defaultfont", " _EditorFrame.setEditorAutoRebuild( (this.checked) ? true : false );"));
-				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
-				break;
-			default:
-				if($showPubl){
-					$_ctrlElem = getControlElement('button', 'publish');
-					if(!$_ctrlElem || !$_ctrlElem['hide']){
-						$text = we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && we_schedpro::saveInScheduler($GLOBALS['we_doc']) ? 'saveInScheduler' : 'publish';
-						$_normalTable->addCol(2);
-						$_normalTable->setColAttributes(0, $_pos, array('id' => 'publish_' . $GLOBALS['we_doc']->ID));
-						$_normalTable->setColContent(0, $_pos++, we_html_button::create_button($text, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
-						$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
-					}
-				}
-		}
-
 
 		switch($we_doc->Table){
 			case FILE_TABLE:
@@ -244,15 +228,38 @@ abstract class we_editor_footer{
 			default:
 				$hasPerm = false;
 		}
-		if($hasPerm){
-			$_ctrlElem = getControlElement('button', 'delete'); //	look tag we:controlElement for details
-			if(!$_ctrlElem || !$_ctrlElem['hide']){
-				$_normalTable->addCol(2);
-				$_normalTable->setCol(0, $_pos++, array('valign' => 'top'), we_html_button::create_button("image:btn_function_trash", "javascript:if(confirm('" . g_l('alert', '[delete_single][confirm_delete]') . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
-				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
-			}
-		}
 
+
+		switch($we_doc->ContentType){
+			case we_base_ContentTypes::TEMPLATE:
+				if(defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
+					$_normalTable->addCol(2);
+					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("saveversion", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+				}
+				if($hasPerm){
+					self::addDelButton($_normalTable, $we_doc, $_pos);
+				}
+
+				$_normalTable->addCol(2);
+				$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("autoRebuild", false, "autoRebuild", g_l('global', '[we_rebuild_at_save]'), false, "defaultfont", " _EditorFrame.setEditorAutoRebuild( (this.checked) ? true : false );"));
+				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+				break;
+			default:
+				if($showPubl){
+					$_ctrlElem = getControlElement('button', 'publish');
+					if(!$_ctrlElem || !$_ctrlElem['hide']){
+						$text = we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && we_schedpro::saveInScheduler($GLOBALS['we_doc']) ? 'saveInScheduler' : 'publish';
+						$_normalTable->addCol(2);
+						$_normalTable->setColAttributes(0, $_pos, array('id' => 'publish_' . $GLOBALS['we_doc']->ID));
+						$_normalTable->setColContent(0, $_pos++, we_html_button::create_button($text, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+						$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
+					}
+				}
+				if($hasPerm){
+					self::addDelButton($_normalTable, $we_doc, $_pos);
+				}
+		}
 
 		if($we_doc->IsTextContentDoc && $haspermNew){
 			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
@@ -432,13 +439,7 @@ abstract class we_editor_footer{
 		//
 		$canDelete = ( (!we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')) && (($we_doc instanceof we_objectFile) ? permissionhandler::hasPerm('DELETE_OBJECTFILE') : permissionhandler::hasPerm('DELETE_DOCUMENT')));
 		if($canDelete){
-			$_ctrlElem = getControlElement('button', 'delete'); //	look tag we:controlElement for details
-			if(!$_ctrlElem || !$_ctrlElem['hide']){
-				$_seeModeTable->addCol(2);
-
-				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
-				$_seeModeTable->setCol(0, $_pos++, array('valign' => 'top'), we_html_button::create_button("image:btn_function_trash", "javascript:if(confirm('" . g_l('alert', '[delete_single][confirm_delete]') . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
-			}
+			self::addDelButton($_seeModeTable, $we_doc, $_pos);
 		}
 		echo $_seeModeTable->getHtml();
 	}

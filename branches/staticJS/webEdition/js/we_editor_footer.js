@@ -81,26 +81,16 @@ function setTemplate() {
 }
 
 function setTextDocument(hasCtrl, value) {
-	if (hasCtrl) {
-		if (self.document.we_form && self.document.we_form.makeSameDoc) {
+	if (self.document.we_form && self.document.we_form.makeSameDoc) {
+		if (hasCtrl) {
 			self.document.we_form.makeSameDoc.checked = value;
 			_EditorFrame.setEditorMakeSameDoc(value);
-		}
-	} else {
-		if (doc.ID) {
-			if (self.document.we_form && self.document.we_form.makeSameDoc) {
-				self.document.we_form.makeSameDoc.checked = false;
-			}
+		} else if (doc.ID) {
+			self.document.we_form.makeSameDoc.checked = false;
+		} else if (_EditorFrame.getEditorMakeSameDoc()) {
+			self.document.we_form.makeSameDoc.checked = true;
 		} else {
-			if (_EditorFrame.getEditorMakeSameDoc()) {
-				if (self.document.we_form && self.document.we_form.makeSameDoc) {
-					self.document.we_form.makeSameDoc.checked = true;
-				}
-			} else {
-				if (self.document.we_form && self.document.we_form.makeSameDoc) {
-					self.document.we_form.makeSameDoc.checked = false;
-				}
-			}
+			self.document.we_form.makeSameDoc.checked = false;
 		}
 	}
 }
@@ -151,50 +141,53 @@ function we_cmd() {
 }
 
 
-	function we_save_document(){
-		var countSaveLoop = 0;
-		try{
-			var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();
-			if (contentEditor && contentEditor.fields_are_valid && !contentEditor.fields_are_valid()) {
-				return;
+function we_save_document() {
+	var countSaveLoop = 0;
+	try {
+		var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();
+		if (contentEditor && contentEditor.fields_are_valid && !contentEditor.fields_are_valid()) {
+			return;
 
-			}
-		}
-		catch(e) {
-			// Nothing
-		}
-
-		if (_EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
-			we_cmd('glossary_check', '', we_transaction);
-		} else {
-			acStatus = '';
-			invalidAcFields = false;
-			try{
-				if(parent && parent.frames[1] && parent.frames[1].YAHOO && parent.frames[1].YAHOO.autocoml) {
-					 acStatus = parent.frames[1].YAHOO.autocoml.checkACFields();
-				}
-			}
-			catch(e) {
-				// Nothing
-			}
-			acStatusType = typeof acStatus;
-			if(parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length>0) {
-				for(i=0; i<parent.weAutoCompetionFields.length; i++) {
-					if(parent.weAutoCompetionFields[i] && parent.weAutoCompetionFields[i].id && !parent.weAutoCompetionFields[i].valid) invalidAcFields = true;
-				}
-			}
-			if (countSaveLoop > 10) {
-				top.we_showMessage(g_l.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
-				countSaveLoop = 0;
-			}	else if(acStatusType.toLowerCase() == 'object' && acStatus.running) {
-				countSaveLoop++;
-				setTimeout(we_save_document,100);
-			} else if(invalidAcFields) {
-				top.we_showMessage(g_l.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
-				countSaveLoop=0;
-			} else {
-				countSaveLoop=0;
-				generatedSaveDoc();
-			}
 		}
 	}
+	catch (e) {
+		// Nothing
+	}
+
+	if (_EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
+		we_cmd('glossary_check', '', we_transaction);
+	} else {
+		acStatus = '';
+		invalidAcFields = false;
+		try {
+			if (parent && parent.frames[1] && parent.frames[1].YAHOO && parent.frames[1].YAHOO.autocoml) {
+				acStatus = parent.frames[1].YAHOO.autocoml.checkACFields();
+			}
+		}
+		catch (e) {
+			// Nothing
+		}
+		acStatusType = typeof acStatus;
+		if (parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length > 0) {
+			for (i = 0; i < parent.weAutoCompetionFields.length; i++) {
+				if (parent.weAutoCompetionFields[i] && parent.weAutoCompetionFields[i].id && !parent.weAutoCompetionFields[i].valid) {
+					invalidAcFields = true;
+					break;
+				}
+			}
+		}
+		if (countSaveLoop > 10) {
+			top.we_showMessage(g_l.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
+			countSaveLoop = 0;
+		} else if (acStatusType.toLowerCase() == 'object' && acStatus.running) {
+			countSaveLoop++;
+			setTimeout(we_save_document, 100);
+		} else if (invalidAcFields) {
+			top.we_showMessage(g_l.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
+			countSaveLoop = 0;
+		} else {
+			countSaveLoop = 0;
+			generatedSaveDoc();
+		}
+	}
+}
