@@ -777,7 +777,7 @@ class we_voting_voting extends weModelBase{
 						'answertext' => '',
 						'successor' => '',
 						'additionalfields' => '',
-						'status' . $ld['status'],
+						'status' => $ld['status'],
 				)));
 			}
 			$this->LogData = '';
