@@ -41,40 +41,8 @@ echo we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.
  we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js') .
  $_view->getJS() .
  STYLESHEET .
- we_html_element::cssElement('
-#scrollContent {overflow: auto; }
-#searchTable {display: block; }
-#eintraege_pro_seite {display: inline;margin-right:10px; }
-#anzahl {display: inline;margin-right:10px;  }
-#eintraege {display: none; }
-#print {display: inline;}
-#zurueck {display: block;}
-#weiter {display: block;}
-#pageselect {display: inline;}
-#bottom{display: inline;}
-#beschreibung_print {display: none; }
-.printShow{display: block; }
-#deleteVersion{display: block; }
-#deleteAllVersions{display: block; }
-#label_deleteAllVersions{display: block; }
-#deleteButton{display: block; }', array('media' => 'screen')) .
- we_html_element::cssElement('
-#scrollContent {overflow: visible; }
-#searchTable {display: none; }
-#eintraege_pro_seite {display: none; }
-#anzahl {display: none; }
-#eintraege {display: inline;margin-right:10px; }
-#print {display: none;}
-#zurueck {display: none;}
-#weiter {display: none;}
-#pageselect {display: none;}
-#bottom{display: none;}
-#beschreibung_print {display: block; }
-.printShow{display: none; }
-#deleteVersion{display: none; }
-#deleteAllVersions{display: none; }
-#label_deleteAllVersions{display: none; }
-#deleteButton{display: none; }', array('media' => 'print'));
+ we_html_element::cssLink(CSS_DIR . 'we_versions.css', array('media' => 'screen')) .
+ we_html_element::cssLink(CSS_DIR . 'we_versions_print.css', array('media' => 'print'));
 ?>
 </head>
 <body class="weEditorBody" onunload="doUnload()" onkeypress="javascript:if (event.keyCode == 13 || event.keyCode == 3)
