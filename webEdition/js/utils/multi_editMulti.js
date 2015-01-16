@@ -203,11 +203,7 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 	}
 
 	this.addItem = function () {
-
-
-
 		var butt = this.button.replace("#####placeHolder#####", this.name + ".delItem(" + this.itemCount + ")");
-
 		var set = document.createElement("div");
 		set.setAttribute("id", this.name + "_item" + this.itemCount);
 
@@ -221,8 +217,7 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 			TabMiddle3 = "<tr valign=\"middle\" id=\"tabrowSuccessorID" + this.itemCount + "\"><td style=\"width:" + this.defWidth + "px\"><table style=\"margin-bottom:0px;\" cellpadding=0 cellspacing=0 border=0><tr valign=\"middle\"><td style=\"width:120px\" class=\"defaultfont\">" + this.successorIDText + "</td><td><input name=\"" + this.name + "_itemSuccessorID" + this.itemCount + "\" id=\"" + this.name + "_itemSuccessorID_input_" + this.itemCount + "\" type=\"text\" style=\"width:383px\" onkeyup=\"" + this.name + ".updateHidden(\'itemSuccessorID" + this.itemCount + "\',this.value)\" class=\"wetextinput\"></td></tr></table></td><td>&nbsp;</td><td>&nbsp;</td></tr>";
 
 			set.innerHTML = TabStart + TabMiddle1 + TabMiddle2 + TabMiddle3 + TabEnd;
-		}
-		else {
+		} else {
 			set.innerHTML = "<table style=\"margin-bottom:5px;\" cellpadding=0 cellspacing=0 border=0><tr valign=\"middle\"><td style=\"width:" + this.defWidth + "px\"><label id=\"" + this.name + "_item_label_" + this.itemCount + "\" class=\"defaultfont\"></td><td>&nbsp;</td><td>" + butt + "</td></tr></table>";
 		}
 

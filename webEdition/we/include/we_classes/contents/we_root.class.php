@@ -290,27 +290,21 @@ abstract class we_root extends we_class{
 			$this->CreatorID = 0;
 		}
 		$creator = $this->CreatorID ? id_to_path($this->CreatorID, USER_TABLE, $this->DB_WE) : g_l('weClass', '[nobody]');
-
-
-		if($canChange){
-
-			$textname = 'wetmp_' . $this->Name . '_CreatorID';
-			$idname = 'we_' . $this->Name . '_CreatorID';
-
-			$attribs = ' readonly';
-
-			$inputFeld = $this->htmlTextInput($textname, 24, $creator, '', $attribs, '', $width);
-			$idfield = $this->htmlHidden($idname, $this->CreatorID);
-			$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
-			$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
-			$wecmdenc5 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);");
-			$button = we_html_button::create_button('edit', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','user',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "')");
-
-			$out = we_html_tools::htmlFormElementTable($inputFeld, g_l('weClass', '[maincreator]'), 'left', 'defaultfont', $idfield, we_html_tools::getPixel(20, 4), $button);
-		} else {
-			$out = $creator;
+		if(!$canChange){
+			return $creator;
 		}
-		return $out;
+
+		$textname = 'wetmp_' . $this->Name . '_CreatorID';
+		$idname = 'we_' . $this->Name . '_CreatorID';
+
+		$inputFeld = $this->htmlTextInput($textname, 24, $creator, '', ' readonly', '', $width);
+		$idfield = $this->htmlHidden($idname, $this->CreatorID);
+		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
+		$wecmdenc5 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);");
+		$button = we_html_button::create_button('edit', "javascript:we_cmd('browse_users','" . $wecmdenc1 . "','" . $wecmdenc2 . "','user',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "')");
+
+		return we_html_tools::htmlFormElementTable($inputFeld, g_l('weClass', '[maincreator]'), 'left', 'defaultfont', $idfield, we_html_tools::getPixel(20, 4), $button);
 	}
 
 	function formRestrictOwners($canChange){
@@ -318,9 +312,8 @@ abstract class we_root extends we_class{
 			$n = 'we_' . $this->Name . '_RestrictOwners';
 			$v = $this->RestrictOwners ? true : false;
 			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[limitedAccess]'), false, 'defaultfont', "setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');");
-		} else {
-			return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td><img src="' . TREE_IMAGE_DIR . ($this->RestrictOwners ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" /></td><td class="defaultfont">&nbsp;' . g_l('weClass', '[limitedAccess]') . '</td></tr></table>';
 		}
+		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td><img src="' . TREE_IMAGE_DIR . ($this->RestrictOwners ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" /></td><td class="defaultfont">&nbsp;' . g_l('weClass', '[limitedAccess]') . '</td></tr></table>';
 	}
 
 	function formOwners($canChange = true){
