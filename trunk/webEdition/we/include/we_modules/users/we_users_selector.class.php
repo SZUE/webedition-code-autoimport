@@ -79,7 +79,7 @@ class we_users_selector extends we_selector_multiple{
 		}
 	}
 
-	function getFsQueryString($what){
+	protected function getFsQueryString($what){
 		return $_SERVER['SCRIPT_NAME'] . "?what=$what&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&filter=" . $this->filter;
 	}
 
@@ -108,7 +108,7 @@ class we_users_selector extends we_selector_multiple{
 			$q . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->db->escape($this->order)) : ''));
 	}
 
-	function printFramesetJSFunctionQueryString(){
+	protected function printFramesetJSFunctionQueryString(){
 		return we_html_element::jsElement('
 function queryString(what,id,o){
 	if(!o) o=top.order;
@@ -116,7 +116,7 @@ function queryString(what,id,o){
 }');
 	}
 
-	function printFramesetJSsetDir(){
+	protected function printFramesetJSsetDir(){
 		return we_html_element::jsElement('
 function setDir(id){' .
 				($this->filter === "user" ? '
@@ -185,7 +185,7 @@ function selectFile(id){
 }');
 	}
 
-	function printFooterTable(){
+	protected function printFooterTable(){
 		$cancel_button = we_html_button::create_button("cancel", "javascript:top.exit_close();");
 		$yes_button = we_html_button::create_button("ok", "javascript:press_ok_button();");
 		$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
@@ -222,7 +222,7 @@ function selectFile(id){
 </table>';
 	}
 
-	function printFooterJSDef(){
+	protected function printFooterJSDef(){
 		return we_html_element::jsElement("
 function press_ok_button() {
 	if(document.we_form.fname.value==''&&top.currentType!='group'){

@@ -563,14 +563,13 @@ class we_voting_voting extends weModelBase{
 
 		if(!$this->LogDB || ($userid <= 0)){
 			return self::SUCCESS;
-		} else {
-			$testtime = ($this->RevoteTime < 0 ? 0 : time() - $this->RevoteTime);
-
-			if(f('SELECT 1 FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . intval($this->ID) . ' AND `' . VOTING_LOG_TABLE . '`.`userid` = ' . intval($userid) . ' AND `' . VOTING_LOG_TABLE . '`.`time` > ' . intval($testtime) . ' LIMIT 1', '', $this->db)){
-				return self::ERROR_REVOTE;
-			}
-			return self::SUCCESS;
 		}
+		$testtime = ($this->RevoteTime < 0 ? 0 : time() - $this->RevoteTime);
+
+		if(f('SELECT 1 FROM `' . VOTING_LOG_TABLE . '` WHERE `voting`=' . intval($this->ID) . ' AND `userid`=' . intval($userid) . ' AND `time`>' . intval($testtime) . ' LIMIT 1', '', $this->db)){
+			return self::ERROR_REVOTE;
+		}
+		return self::SUCCESS;
 	}
 
 	function isActive(){
@@ -678,8 +677,8 @@ class we_voting_voting extends weModelBase{
 	function loadDB($id = '0'){
 
 		$logQuery = ($this->IsFolder ?
-				'SELECT A.*, B.* FROM `' . VOTING_TABLE . '` A, `' . VOTING_LOG_TABLE . "` B WHERE A.Path LIKE '" . $this->db->escape($this->Path) . "%' AND A.IsFolder = '0' AND A.ID = B.voting ORDER BY B.time" :
-				'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting` = ' . intval($id) . ' ORDER BY time'
+				'SELECT A.*, B.* FROM `' . VOTING_TABLE . '` A JOIN `' . VOTING_LOG_TABLE . "` B ON A.ID=B.voting WHERE A.Path LIKE '" . $this->db->escape($this->Path) . "%' AND A.IsFolder=0 ORDER BY B.time" :
+				'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `voting`=' . intval($id) . ' ORDER BY time'
 			);
 
 		$this->db->query($logQuery);
@@ -756,7 +755,7 @@ class we_voting_voting extends weModelBase{
 	 * @since 5.1.1.2 - 02.05.2008
 	 */
 	function deleteLogDataDB(){
-		$this->db->query('DELETE FROM `' . VOTING_LOG_TABLE . '` WHERE `' . VOTING_LOG_TABLE . '`.`voting`=' . intval($this->ID));
+		$this->db->query('DELETE FROM `' . VOTING_LOG_TABLE . '` WHERE `voting`=' . intval($this->ID));
 		return true;
 	}
 
@@ -767,7 +766,6 @@ class we_voting_voting extends weModelBase{
 	 * @since 6.1.0.2 - 019.09.2010
 	 */
 	function switchToLogDataDB(){
-
 		$LogData = @unserialize($this->LogData);
 		if(is_array($LogData) && !empty($LogData)){
 			foreach($LogData as $ld){
