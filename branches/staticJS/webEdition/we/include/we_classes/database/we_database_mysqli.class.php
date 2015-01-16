@@ -143,6 +143,10 @@ class DB_WE extends we_database_base{
 				return 'smallint';
 			case MYSQLI_TYPE_LONG:
 				return 'int';
+			case MYSQLI_TYPE_INT24:
+				return 'mediumint';
+			case MYSQLI_TYPE_LONGLONG:
+				return 'bigint';
 			case MYSQLI_TYPE_FLOAT:
 				return 'float';
 			case MYSQLI_TYPE_DOUBLE:
@@ -151,10 +155,6 @@ class DB_WE extends we_database_base{
 				return 'null';
 			case MYSQLI_TYPE_TIMESTAMP:
 				return 'timestamp';
-			case MYSQLI_TYPE_LONGLONG:
-				return 'bigint';
-			case MYSQLI_TYPE_INT24:
-				return 'mediumint';
 			case MYSQLI_TYPE_DATE:
 				return 'date';
 			case MYSQLI_TYPE_TIME:
@@ -164,7 +164,7 @@ class DB_WE extends we_database_base{
 			case MYSQLI_TYPE_YEAR:
 				return 'year';
 			case MYSQLI_TYPE_NEWDATE:
-				return '';
+				return 'date';
 			case MYSQLI_TYPE_BIT:
 				return 'bit';
 			case MYSQLI_TYPE_NEWDECIMAL:
@@ -177,10 +177,10 @@ class DB_WE extends we_database_base{
 				return 'tinyblob';
 			case MYSQLI_TYPE_MEDIUM_BLOB:
 				return 'mediumblob';
-			case MYSQLI_TYPE_LONG_BLOB:
-				return 'longblob';
 			case MYSQLI_TYPE_BLOB:
 				return 'blob';
+			case MYSQLI_TYPE_LONG_BLOB:
+				return 'longblob';
 			case MYSQLI_TYPE_GEOMETRY:
 				return 'geometry';
 			//252 is currently mapped to all text and blob types (MySQL 5.0.51a)

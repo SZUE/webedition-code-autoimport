@@ -125,6 +125,7 @@ if(we_base_request::_(we_base_request::STRING, 'cmd') === 'ShowPreparedPreview')
 window.open = function(){};
 window.onerror = function () {
 	return true;
+
 }
 
 if (window.addEventListener) {

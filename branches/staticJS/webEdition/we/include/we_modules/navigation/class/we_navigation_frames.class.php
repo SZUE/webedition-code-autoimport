@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_navigation_frames extends we_modules_frame{
-
 //class weNavigationFrames extends weToolFramesInterim {
 
 	var $toolDir; //TODO: replace toll/module-wide by $module
@@ -101,7 +100,6 @@ class we_navigation_frames extends we_modules_frame{
 
 		$hiddens = we_html_element::htmlHidden(array('name' => 'pnt', 'value' => 'cmd')) .
 				we_html_element::htmlHidden(array('name' => 'cmd', 'value' => 'no_cmd'));
-
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => 'white', 'style' => 'margin:10px'), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
 										we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree($_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))

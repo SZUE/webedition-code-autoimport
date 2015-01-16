@@ -265,6 +265,7 @@ function we_cmd() {
 			break;
 		case "openDirselector":
 		case "openDocselector":
+		case "openImgselector":
 			new jsWindow(url, "we_fileselector", -1, -1, winSelectSize.docSelect.width, winSelectSize.docSelect.height, true, true, true, true);
 			break;
 		case "openSelector":

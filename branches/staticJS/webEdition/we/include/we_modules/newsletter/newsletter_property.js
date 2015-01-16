@@ -2,9 +2,9 @@
  * webEdition CMS
  *
  * webEdition CMS
- * $Rev: 8896 $
- * $Author: mokraemer $
- * $Date: 2015-01-06 03:06:15 +0100 (Di, 06. Jan 2015) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -271,6 +271,7 @@ function we_cmd() {
 			new jsWindow(url, "browse_server", -1, -1, 840, 400, true, false, true);
 			break;
 
+		case "openImgselector":
 		case "openDocselector":
 			new jsWindow(url, "we_docselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;

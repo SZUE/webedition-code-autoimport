@@ -726,6 +726,7 @@ function we_cmd_base(args, url) {
 		case "openDirselector":
 			new jsWindow(url, "we_fileselector", -1, -1, size.windowDirSelect.width, size.windowDirSelect.height, true, true, true, true);
 			break;
+		case "openImgselector":
 		case "openDocselector":
 			new jsWindow(url, "we_fileselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;

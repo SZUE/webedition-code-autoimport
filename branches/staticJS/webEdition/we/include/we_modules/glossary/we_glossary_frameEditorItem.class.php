@@ -143,6 +143,7 @@ function we_cmd() {
 			document.we_form.pnt.value="cmd";
 			submitForm("cmd");
 			break;
+		case "openImgselector":
 		case "openDocselector":
 			new jsWindow(url,"we_docselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
