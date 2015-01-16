@@ -154,7 +154,7 @@ top.selectFile(top.currentID);
 		);
 	}
 
-	function printFramesetJSFunctionAddEntries(){
+	protected function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		while($this->next_record()){
 			$ret.='addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '");';
@@ -162,7 +162,7 @@ top.selectFile(top.currentID);
 		return we_html_element::jsElement($ret);
 	}
 
-	function printCmdAddEntriesHTML(){
+	protected function printCmdAddEntriesHTML(){
 		$ret = '';
 		$this->query();
 		while($this->next_record()){
@@ -174,7 +174,7 @@ top.selectFile(top.currentID);
 		return $ret;
 	}
 
-	function printFramesetJSFunctionAddEntry(){
+	protected function printFramesetJSFunctionAddEntry(){
 		return we_html_element::jsElement('
 		function addEntry(ID,icon,text,isFolder,path){
 		entries[entries.length] = new entry(ID,icon,text,isFolder,path);
@@ -196,7 +196,7 @@ top.selectFile(top.currentID);
 </table>';
 	}
 
-	function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){
 		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {

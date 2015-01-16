@@ -42,7 +42,7 @@ class we_selector_document extends we_selector_directory{
 		we_base_ContentTypes::VIDEO => 'btn_add_video',
 	);
 
-	function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false){
+	public function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false){
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter);
 		$this->fields.=',ModDate,RestrictOwners,Owners,OwnersReadOnly,CreatorID' . ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? ',Published' : '');
 		$this->canSelectDir = $canSelectDir;
@@ -124,7 +124,7 @@ class we_selector_document extends we_selector_directory{
 		}
 	}
 
-	function getExitOpen(){
+	protected function getExitOpen(){
 		$frameRef = $this->JSTextName && strpos($this->JSTextName, ".document.") > 0 ?
 			substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) :
 			'';
@@ -150,26 +150,26 @@ function exit_open() {
 				$this->dir = $this->rootDirID;
 			}
 		}
-		$this->path = "";
+		$this->path = '';
 		$this->values = array(
-			"ParentID" => 0,
-			"Text" => "/",
-			"Path" => "/",
-			"IsFolder" => 1,
-			"ModDate" => 0,
-			"RestrictOwners" => 0,
-			"Owners" => "",
-			"OwnersReadOnly" => "",
-			"CreatorID" => 0,
-			"ContentType" => "");
+			'ParentID' => 0,
+			'Text' => '/',
+			'Path' => '/',
+			'IsFolder' => 1,
+			'ModDate' => 0,
+			'RestrictOwners' => 0,
+			'Owners' => '',
+			'OwnersReadOnly' => '',
+			'CreatorID' => 0,
+			'ContentType' => '');
 		$this->id = '';
 	}
 
-	function getFsQueryString($what){
-		return $_SERVER["SCRIPT_NAME"] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&filter=" . $this->filter . (isset($this->open_doc) ? ("&open_doc=" . $this->open_doc) : "");
+	protected function getFsQueryString($what){
+		return $_SERVER['SCRIPT_NAME'] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&filter=" . $this->filter . (isset($this->open_doc) ? ("&open_doc=" . $this->open_doc) : "");
 	}
 
-	function printFramesetJSFunctions(){
+	protected function printFramesetJSFunctions(){
 		$out = '
 var contentTypes = new Array();';
 		$ct = we_base_ContentTypes::inst();
@@ -199,7 +199,7 @@ function reloadDir() {
 }');
 	}
 
-	function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){
 		return we_html_element::jsElement('
 function writeBody(d){
 	d.open();' .
@@ -231,8 +231,17 @@ function weonclick(e){
 		if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
 		top.unselectAllFiles();') . '
 #	}
-}') . '</head>
-<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0"#\'+((makeNewFolder || top.we_editDirID) ? #\' onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"#\' : "")+#\'>
+}') . '
+<style type="text/css">
+body{
+	background-color:white;
+	margin:0px;
+}
+a:link,a:visited,a:hover,a:active
+{color:#000;}
+</style>
+</head>
+<body #\'+((makeNewFolder || top.we_editDirID) ? #\' onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"#\' : "")+#\'>
 <form name="we_form" target="fscmd" action="' . $_SERVER["SCRIPT_NAME"] . '" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">
 #if(we_editDirID){
 	<input type="hidden" name="what" value="' . self::DORENAMEFOLDER . '" />
@@ -278,7 +287,7 @@ function weonclick(e){
 }');
 	}
 
-	function printFramesetJSFunctionQueryString(){
+	protected function printFramesetJSFunctionQueryString(){
 		return we_html_element::jsElement('
 function queryString(what,id,o,we_editDirID,filter){
 	if(!o) o=top.order;
@@ -291,7 +300,7 @@ function queryString(what,id,o,we_editDirID,filter){
 }');
 	}
 
-	function printFramesetJSFunctionEntry(){
+	protected function printFramesetJSFunctionEntry(){
 		return we_html_element::jsElement('
 function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 	this.ID=ID;
@@ -306,19 +315,18 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 }');
 	}
 
-	function printFramesetJSFunctionAddEntry(){
+	protected function printFramesetJSFunctionAddEntry(){
 		return we_html_element::jsElement('
 		function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 		entries[entries.length] = new entry(ID,icon,text,isFolder,path,modDate,contentType,published,title);
 		}');
 	}
 
-	function printFramesetJSFunctionAddEntries(){
+	protected function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		if($this->userCanSeeDir(true)){
 			while($this->next_record()){
-				$title = isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : '&nbsp;';
-				$title = strip_tags(str_replace(array('\\', '"', "\n",), array('\\\\', '\"', ' '), $title));
+				$title = strip_tags(strtr((isset($this->titles[$this->f("ID")]) ? $this->titles[$this->f("ID")] : '&nbsp;'), array('\\' => '\\\\', '"' => '\"', "\n" => ' ')));
 				$title = $title === '&nbsp;' ? '-' : oldHtmlspecialchars($title);
 				$published = ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? $this->f("Published") : 1);
 				$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . addcslashes($title, '"') . '");';
@@ -327,7 +335,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 		return we_html_element::jsElement($ret);
 	}
 
-	function printCmdAddEntriesHTML(){
+	protected function printCmdAddEntriesHTML(){
 		$ret = '';
 		$this->query();
 		while($this->next_record()){
@@ -361,7 +369,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 </table>';
 	}
 
-	function printHeaderTableExtraCols(){
+	protected function printHeaderTableExtraCols(){
 		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
 		return parent::printHeaderTableExtraCols() .
 			($this->filter != we_base_ContentTypes::TEMPLATE && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != we_base_ContentTypes::WEDOCUMENT ?
@@ -373,7 +381,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 				'</td>' : '');
 	}
 
-	function printHeaderJSDef(){
+	protected function printHeaderJSDef(){
 		$ret = parent::printHeaderJSDef();
 		switch($this->filter){
 			case we_base_ContentTypes::TEMPLATE:
@@ -429,7 +437,7 @@ function enableNewFileBut() {
 		return true;
 	}
 
-	function printHeaderTableSpaceRow(){
+	protected function printHeaderTableSpaceRow(){
 		return '<tr><td colspan="13">' . we_html_tools::getPixel(5, 10) . '</td></tr>';
 	}
 
@@ -446,7 +454,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
-	function printFooterTable(){
+	protected function printFooterTable($more = ''){
 		$ret = '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr><td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td></tr>
@@ -471,7 +479,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		}
 		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:press_ok_button();"), null, we_html_button::create_button("cancel", "javascript:top.exit_close();"));
 
-		$seval = $this->values["Text"] === '/' ? "" : $this->values["Text"];
+		$seval = $this->values["Text"] === '/' ? '' : $this->values["Text"];
 		$ret.= '
 	<tr>
 		<td></td>
@@ -479,9 +487,9 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			<b>' . g_l('fileselector', '[name]') . '</b>
 		</td>
 		<td></td>
-		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $seval, "", "style=\"width:100%\" readonly=\"readonly\"") . '
+		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $seval, "", 'style="width:100%" readonly="readonly"') . '
 		</td>
-		<td></td>
+		<td style="' . ($more ? 'width:150px;' : '') . '">' . $more . '</td>
 	</tr>
 	<tr>
 		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
@@ -499,7 +507,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		return $ret;
 	}
 
-	function getFrameset(){
+	protected function getFrameset(){
 		return '
 <frameset rows="' . (((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE) ? '67' : '16') . ',*,' . (!$this->filter ? 90 : 65) . ',20,0" border="0"  onunload="if(top.opener && top.opener.top && top.opener.top.toggleBusy){top.opener.top.toggleBusy();}">
 	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
@@ -834,7 +842,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		echo $out;
 	}
 
-	function printFramesetJSsetDir(){
+	protected function printFramesetJSsetDir(){
 		return we_html_element::jsElement('
 function setDir(id) {
 	showPreview(id);
