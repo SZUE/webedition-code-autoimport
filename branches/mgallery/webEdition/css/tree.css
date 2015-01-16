@@ -1,0 +1,139 @@
+/**
+ * webEdition SDK
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of the webEdition SDK. The webEdition SDK is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU Lesser General Public License can be found at
+ * http://www.gnu.org/licenses/lgpl-3.0.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionSDK/License.txt
+ *
+ *
+ * @category   we
+ * @package    we_ui
+ * @subpackage we_ui_layout
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
+ */
+
+#treetable,
+.treetable{
+	margin: 0px;
+	background-color: #F3F7FF;
+	padding: 0px;
+}
+
+.tree {
+	color: black;
+	border-width: 0px;
+	border-collapse: collapse;
+	padding: 0px;
+}
+
+#treetable table,
+.tree table{
+	border: none;
+	width: 100%;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+.tree img {
+	width: 16px;
+	height: 18px;
+	vertical-align: middle;
+}
+
+img.treeKreuz{
+	width:19px;
+}
+.item,
+.group,
+#treetable a{
+	color: black;
+}
+
+#tree .disabled a,
+#treetable a,
+#treetable a:active,
+#treetable a:visited,
+.tree a,
+.item a,
+.group a,
+.selected_item a,
+.selected_group a,
+.notpublished a,.selected_open_group a,
+.selected_notpublished_item a ,
+.selected_changed_item a,
+.checked_item a,
+.checked_group a,
+.checked_notpublished a,
+.checked_changed a,
+.selected_notpublished_item a,
+.selected_changed_item a,
+.selected_open_group a {
+	text-decoration:none;
+}
+
+.group {
+	font-weight: bold;
+}
+
+.selected_item,
+.selected_group{
+	color: black;
+	background-color: #6070B6;
+	cursor: pointer;
+}
+
+.selected_group {
+	font-weight: bold;
+}
+
+.loginDenied {
+	color:red;
+}
+
+.notpublished {
+	color: green;
+	cursor: pointer;
+}
+
+.selected_notpublished_item,
+.selected_changed_item,
+.selected_open_group,
+.checked_changed,
+.checked_item,
+.checked_group,
+.checked_notpublished{
+	color: #3366CC;
+	background-color: #D4DBFA;
+	cursor: pointer;
+}
+
+.selected_open_group,
+.checked_group{
+	color: black;
+	font-weight: bold;
+}
+#tree .disabled {
+	color: grey;
+	cursor: pointer;
+}
+
+.checked_item,
+.checked_group{
+	color: black;
+}
+
+.checked_notpublished {
+	color: red;
+}

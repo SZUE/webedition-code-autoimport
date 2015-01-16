@@ -1,0 +1,525 @@
+/**
+ * webEdition CMS
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
+body{
+	margin: 0px;
+	letter-spacing: normal ! important;
+}
+
+body.aqua,
+body.grey{
+	background-color:#bfbfbf;
+	background-repeat:repeat;
+}
+
+#weMainBody{
+	background-color:grey;
+	position:fixed;
+	top:0px;
+	left:0px;
+	right:0px;
+	bottom:0px;
+	border:0px none;
+}
+
+#resizeFrame{
+	margin:0px;
+	border:0px none;
+	position:absolute;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	overflow:hidden;
+}
+#bframeDiv{
+	position:absolute;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	display:none;
+	border-right:1px solid black;
+}
+#rframe{
+	border:0px;
+	width:100%;
+	height:100%;
+	overflow: hidden;
+}
+#vtab{
+	position:absolute;
+	top:8px;
+	left:5px;
+	z-index:10;
+	border-left:1px solid #909090;
+	border-bottom:1px solid #909090;
+	text-decoration:none
+}
+
+#baumArrows{
+	position:absolute;
+	left:5px;
+	bottom: 13px;
+}
+
+img.baumArrow{
+	margin-top: 5px;
+	width:9px;
+	height:12px;
+	border:1px solid grey;
+	padding:0 1px;
+	cursor: pointer;
+}
+#treeFrameDiv{
+	position:absolute;
+	top:0px;
+	bottom:0px;
+	left:24px;
+	right:0px;
+	border:0px;
+	overflow: hidden;
+}
+#bm_treeheaderDiv{
+	position:absolute;
+	top:0px;
+	height:1px;
+	left:0px;
+	right:0px;
+	overflow: hidden;
+}
+
+#bm_mainDiv{
+	position:absolute;
+	top:1px;
+	bottom:40px;
+	left:0px;
+	right:0px;
+	overflow: auto;
+	background-color:#F3F7FF;
+}
+
+.weSelect,
+.wetextinput,
+.wetextarea{
+	border: #AAAAAA solid 1px;
+	color: black;
+	box-sizing: border-box;
+}
+
+.wetextinput {
+	height: 20px;
+}
+
+.wetextarea {
+	height: 80px;
+}
+
+.multichooser {
+	background-color:white;
+	border: 1px grey solid;
+}
+
+.wetextinput[disabled] {
+	background-color: #EEEEEE;
+}
+
+.weMarkInputError,
+input:invalid {
+	background-color: #ff8888 ! important;
+}
+
+.weEditmodeStyle {
+	border: 0px ! important;
+}
+
+.weEditTable{
+	border: solid #006DB8 1px;
+	color: black;
+}
+
+input.wetextinput:focus{
+	border: #888888 solid 1px;
+	background-color: #dce6f2;
+}
+
+.small,
+.big,
+.defaultfont,
+.defaultfont a,
+.defaultfont a:visited,
+.middlefont,
+.middlefont a,
+.middlefont a:visited ,
+.selector{
+	color: black;
+}
+
+
+.objectDescription {
+	padding: 4px 0 4px 0;
+	max-width:50em;
+}
+
+textarea.wetextarea:focus {
+	color: black;
+	border: #888888 solid 1px;
+	background-color: #dce6f2;
+	height: 80px;
+}
+
+.changed,
+a.changed{ /*elements which are saved & published*/
+	color: #3366CC;
+	cursor: pointer;
+}
+
+.notpublished,
+a.notpublished {
+	cursor: pointer;
+}
+
+.changed a,
+.notpublished a,
+.tableHeader a,
+.tableHeader a:visited,
+.selector a {
+	text-decoration:none;
+}
+
+.notpublished,
+a.notpublished,
+.npdefaultfont,
+.npdefaultfont a,
+.npdefaultfont a:visited,
+.npshopContentfontR,
+.middlefontred,
+.middlefontred a,
+.middlefontred a:visited,
+.npshopContentfont,
+.npshopContentfont a,
+.npshopContentfont a:visited
+{
+	color: red;
+}
+
+.changeddefaultfont {
+	color: blue;
+}
+
+
+.defaultgray,
+.defaultgray a,
+.defaultgray a:visited,
+.middlefontgray,
+.middlefontgray a,
+.middlefontgray a:visited,
+.shopContentfontGR,
+.shop_fontView,
+.shopContentfontGreySmall{
+	color: #666666;
+}
+
+.pshopContentfont a:active,
+.pdefaultfont a:active,
+.middlefont a:active,
+.npdefaultfont a:active,
+.middlefontred a:active,
+.defaultgray a:active,
+.middlefontgray a:active,
+.npshopContentfont a:active,
+.defaultfont a:active,
+.todo_hist_hdr{
+	color: #006DB8;
+}
+
+.pshopContentfontR,
+.pshopContentfont,
+.pdefaultfont,
+.pshopContentfont a,
+.pshopContentfont a:visited,
+.pdefaultfont a,
+.pdefaultfont a:visited {
+	color: green;
+}
+
+.shopContentfont {
+	vertical-align: top;
+	color: black;
+	text-align:center;
+}
+
+.shopContentfontAlert {
+	color: #800000;
+	text-align:left;
+}
+
+.shopContentfontR {
+	vertical-align: top;
+	color: black;
+	text-align:right;
+}
+
+.shopContentfontGR {
+	text-align:right;
+}
+
+.npshopContentfont {
+	text-align:center;
+}
+
+.tableHeader,
+.shop_th,
+.header {
+	font-weight: bold;
+}
+
+.tableHeader,
+.tableHeader a,
+.tableHeader a:visited {
+	color: white;
+}
+
+.tableHeader a:active {
+	color: #FF0000;
+}
+
+.defaultfontred {
+	color: #6CBFF9;
+}
+
+.header {
+	color: black;
+	font-size: 20px;
+}
+
+.shop_th {
+	color: black;
+	font-size: 12px;
+	padding-bottom:5px;
+}
+
+.shop_fontView {
+	font-size: 12px;
+}
+
+.navigation_normal{
+	padding: 1px;
+	margin: 0px;
+}
+
+.navigation_hover{
+	margin: 0px;
+	border-bottom: black solid 1px;
+	border-right:	black solid 1px;
+	border-left:	#CCCCCC solid 1px;
+	border-top:		#CCCCCC solid 1px;
+	cursor:pointer;
+}
+
+optgroup{
+	font-weight: bold;
+	font-style: normal;
+}
+
+optgroup.lvl1{
+	color: darkblue;
+}
+
+optgroup.lvl2{
+	margin-left: 10px;
+}
+
+/*	Following: styles for accessibility	*/
+.weHide{
+	display:none;
+}
+
+.weDialogBody,
+.weEditorBody{
+	margin: 0px;
+	padding: 0px;
+	background-color: #EDEDED;
+}
+
+.weEditorBody {
+	padding: 10px 0px;
+}
+
+.weTreeHeader,
+.weTreeHeaderMove{
+	background-color: #F0EFF0;
+	margin:0px;
+	padding: 10px 10px;
+	border-bottom: 1px solid black;
+}
+.weTreeHeader{
+	height:129px;
+}
+
+.weTreeHeaderMove {
+	height:139px;
+}
+
+.weDefaultStyle{
+	background: transparent;
+	background-color: transparent;
+	border: 0px;
+	color: black;
+	cursor: default;
+	font-weight: normal;
+	margin: 0px;
+	padding:0px;
+	text-align: left;
+	text-decoration: none;
+}
+
+.weDialogHeadline {
+	color: black;
+	font-weight: bold;
+}
+
+.weMultiIconBoxHeadline,
+.weMultiIconBoxHeadlineThin,
+.weObjectPreviewHeadline,
+.weDocListSearchHeadline,
+.weDocListSearchHeadlineDivs,
+.weMultiIconBoxHeadline a{
+	color: #6078A2;
+}
+
+.weMultiIconBoxHeadline,
+.weObjectPreviewHeadline{
+	font-weight: bold;
+}
+
+.weMultiIconBoxHeadlineThin {
+	font-weight: normal;
+}
+
+.weObjectPreviewHeadline {
+	margin-bottom:3px;
+}
+
+.shopContentfontSmall {
+	color: black;
+	text-align:center;
+}
+.shopContentfontGreySmall {
+	text-align:left;
+}
+
+.weDocListSearchHeadline {
+	font-weight: bold;
+	margin-top:6px;
+}
+
+.weDocListSearchHeadlineDivs {
+	font-weight: bold;
+}
+
+.big {
+	text-align: left;
+}
+
+.blockWrapper {
+	overflow: auto !important;
+	display: block ;
+	background-color: white !important;
+	padding: 0px;
+}
+
+.pshopContentfontR {
+	text-align:right;
+}
+
+.pshopContentfont,
+.pdefaultfont{
+	text-align:center;
+}
+
+.header_shop {
+	font-size: 11px;
+	background-position: bottom left;
+	background-repeat: no-repeat;
+}
+
+.weDialogButtonsBody {
+	margin: 0;
+	padding: 10px 10px;
+	background-color: #EDEDED;
+}
+
+
+.weSidebarBody {
+	margin		: 5px;
+	padding		: 0px;
+}
+
+.header_small,
+.header_shop{
+	color: #006699;
+}
+
+table.msgheadertable {
+	margin:2px 0px 1em auto;
+	border-spacing:0px;
+	border: none;
+}
+table.msgheadertable td {
+	padding:0px;
+}
+table.msgheadertable tr {
+	height: 12px;
+}
+
+/*Error log*/
+table.error{
+	background-color:#FFFFFF;
+	border: 1px solid #265da6;
+	width:610px;
+}
+table.error tr.first{
+	background-color:#f7f7f7;
+}
+table.error tr{
+	vertical-align:top;
+}
+table.error td{
+	padding:4px;
+	border-bottom: 1px solid #265da6;
+}
+table.error td.left{
+	white-space:nowrap;
+	border-right: 1px solid #265da6;
+	font-weight: bold;
+}
+table.error td.right{
+	font-style:italic;
+}
+table.error td pre{
+	font-style:normal;
+	tab-size:2;
+	-o-tab-size:2;
+	-moz-tab-size:2;
+}
