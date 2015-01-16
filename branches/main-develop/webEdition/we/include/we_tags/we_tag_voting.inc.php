@@ -38,7 +38,6 @@ function we_tag_voting($attribs){
 		return $foo;
 	}
 
-	$version = ($version > 0) ? ($version - 1) : 0;
 	$GLOBALS["_we_voting_namespace"] = $name;
 
 	if($GLOBALS['we_doc']->issetElement($name)){
@@ -47,12 +46,12 @@ function we_tag_voting($attribs){
 		$GLOBALS['_we_voting'] = new we_voting_voting($id);
 	} else {
 		$__voting_matches = array();
-		if(preg_match_all('/_we_voting_answer_([0-9]+)_?([0-9]+)?/', implode(',', array_keys($_REQUEST)), $__voting_matches)){
-			$GLOBALS['_we_voting'] = new we_voting_voting($__voting_matches[1][0]);
-		}
+		$GLOBALS['_we_voting'] = (preg_match_all('/_we_voting_answer_([0-9]+)_?([0-9]+)?/', implode(',', array_keys($_REQUEST)), $__voting_matches) ?
+				new we_voting_voting($__voting_matches[1][0]) :
+				new we_voting_voting());
 	}
 
 	if(isset($GLOBALS['_we_voting'])){
-		$GLOBALS['_we_voting']->setDefVersion($version);
+		$GLOBALS['_we_voting']->setDefVersion(max( --$version, 0));
 	}
 }

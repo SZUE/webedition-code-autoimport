@@ -44,7 +44,7 @@ class we_voting_dirSelector extends we_selector_directory{
 </table>';
 	}
 
-	function printFooterTable(){
+	protected function printFooterTable(){
 		$cancel_button = we_html_button::create_button("cancel", "javascript:top.exit_close();");
 		$yes_button = we_html_button::create_button("ok", "javascript:press_ok_button();");
 		$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
@@ -81,7 +81,7 @@ class we_voting_dirSelector extends we_selector_directory{
 </table>';
 	}
 
-	function printHeaderTableExtraCols(){
+	protected function printHeaderTableExtraCols(){
 		$makefolderState = permissionhandler::hasPerm("NEW_VOTING");
 		return '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
 			we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
@@ -89,7 +89,7 @@ class we_voting_dirSelector extends we_selector_directory{
 			'</td>';
 	}
 
-	function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){
 		ob_start();
 		?><script type="text/javascript"><!--
 			function writeBody(d) {
@@ -175,7 +175,7 @@ top.unselectAllFiles();') . '
 		return ob_get_clean();
 	}
 
-	function printFramesetJSFunctionQueryString(){
+	protected function printFramesetJSFunctionQueryString(){
 		return we_html_element::jsElement('
 		function queryString(what,id,o,we_editDirID){
 		if(!o) o=top.order;
@@ -187,7 +187,7 @@ top.unselectAllFiles();') . '
 		}');
 	}
 
-	function printFramesetJSFunctionEntry(){
+	protected function printFramesetJSFunctionEntry(){
 		return we_html_element::jsElement('
 		function entry(ID,icon,text,isFolder,path){
 		this.ID=ID;
@@ -198,22 +198,22 @@ top.unselectAllFiles();') . '
 		}');
 	}
 
-	function printFramesetJSFunctionAddEntry(){
+	protected function printFramesetJSFunctionAddEntry(){
 		return we_html_element::jsElement('
-		function addEntry(ID,icon,text,isFolder,path){
+function addEntry(ID,icon,text,isFolder,path){
 		entries[entries.length] = new entry(ID,icon,text,isFolder,path);
-		}');
+}');
 	}
 
-	function printFramesetJSFunctionAddEntries(){
+	protected function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		while($this->next_record()){
-			$ret.='addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '");' . "\n";
+			$ret.='addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '");';
 		}
 		return we_html_element::jsElement($ret);
 	}
 
-	function printCmdAddEntriesHTML(){
+	protected function printCmdAddEntriesHTML(){
 		$ret = '';
 		$this->query();
 		while($this->next_record()){

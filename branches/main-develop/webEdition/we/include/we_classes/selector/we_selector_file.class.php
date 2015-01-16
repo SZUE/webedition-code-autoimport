@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_selector_file{
+abstract class we_selector_file{
 	const FRAMESET = 0;
 	const HEADER = 1;
 	const FOOTER = 2;
@@ -61,7 +61,7 @@ class we_selector_file{
 	var $col2js;
 	protected $title = '';
 
-	function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = '', $extInstanceId = ''){
+	public function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = '', $extInstanceId = ''){
 
 		if(!isset($_SESSION['weS']['we_fs_lastDir'])){
 			$_SESSION['weS']['we_fs_lastDir'] = array($table => 0);
@@ -345,7 +345,7 @@ var tout=null;
 var mk=null;');
 	}
 
-	function getFrameset(){
+	protected function getFrameset(){
 		return '<frameset rows="67,*,65,0" border="0">
 	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
     <frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" noresize scrolling="auto">
@@ -358,7 +358,7 @@ var mk=null;');
 	}
 
 	//WEEXT
-	function getExitOpen(){
+	protected function getExitOpen(){
 		return we_html_element::jsElement(!isset($this->extInstanceId) || !$this->extInstanceId ? 
 				$this->getExitOpenWe() : $this->getExitOpenExt());
 	}
@@ -427,7 +427,7 @@ function doClick(id,ct){
 }');
 	}
 
-	function printFramesetJSsetDir(){
+	protected function printFramesetJSsetDir(){
 		return we_html_element::jsElement('
 function setDir(id){
 	e = getEntry(id);
@@ -440,11 +440,11 @@ function setDir(id){
 }');
 	}
 
-	function getFsQueryString($what){
-		return $_SERVER["SCRIPT_NAME"] . "?what=$what&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&filter=" . $this->filter;
+	protected function getFsQueryString($what){
+		return $_SERVER["SCRIPT_NAME"] . '?what='.$what.'&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&filter=' . $this->filter;
 	}
 
-	function printFramesetJSFunctionQueryString(){
+	protected function printFramesetJSFunctionQueryString(){
 		return we_html_element::jsElement('
 function queryString(what,id,o){
 	if(!o) o=top.order;
@@ -453,7 +453,7 @@ function queryString(what,id,o){
 	}
 
 	protected static function makeWriteDoc($html){
-		$html = explode("\n", str_replace(array("'", 'script', '#\\\'',), array("\\'", "scr' + 'ipt", '\''), implodeJS($html)));
+		$html = explode("\n", strtr(implodeJS($html), array('\'' => '\\\'', 'script' => 'scr\'+\'ipt', '#\'' => '\'','#\\\'' => '\'',)));
 		$ret = '';
 		foreach($html as $cur){
 			$ret.=(substr($cur, 0, 1) === '#' ? substr($cur, 1) : "d.writeln('" . $cur . "');");
@@ -461,15 +461,23 @@ function queryString(what,id,o){
 		return $ret;
 	}
 
-	function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){
 		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
 				d.open();
 		<?php
 		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . '
+<style type="text/css">
+body{
+background-color:white;
+margin:0px;
+}
+a:link,a:visited,a:hover,a:active
+{color:#000;}
+</style>
 </head>
-<body bgcolor="white" LINK="#000000" ALINK="#000000" VLINK="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
+<body>
 <table border="0" cellpadding="0" cellspacing="0">');
 		?>
 				for (i = 0; i < entries.length; i++) {
@@ -498,7 +506,7 @@ function queryString(what,id,o){
 		return ob_get_clean();
 	}
 
-	function printFramesetJSFunctionEntry(){
+	protected function printFramesetJSFunctionEntry(){
 		return we_html_element::jsElement('
 function entry(ID,icon,text,isFolder,path){
 	this.ID=ID;
@@ -509,21 +517,21 @@ function entry(ID,icon,text,isFolder,path){
 }');
 	}
 
-	function printFramesetJSFunctionAddEntry(){
+	protected function printFramesetJSFunctionAddEntry(){
 		return we_html_element::jsElement('
 function addEntry(ID,icon,text,isFolder,path){
 	entries[entries.length] = new entry(ID,icon,text,isFolder,path);
 }');
 	}
 
-	function printFramesetJSFunctionClearEntry(){
+	private function printFramesetJSFunctionClearEntry(){
 		return we_html_element::jsElement('
 function clearEntries(){
 	entries = new Array();
 }');
 	}
 
-	function printFramesetJSFunctionAddEntries(){
+	protected function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		while($this->next_record()){
 			$ret.= 'addEntry(' . $this->f('ID') . ',"' . $this->f('Icon') . '","' . addcslashes($this->f('Text'), '"') . '",' . ($this->f('IsFolder') | 0) . ',"' . addcslashes($this->f('Path'), '"') . '");';
@@ -531,7 +539,7 @@ function clearEntries(){
 		return we_html_element::jsElement($ret);
 	}
 
-	function printFramesetJSFunctions(){
+	protected function printFramesetJSFunctions(){
 		$this->query();
 		return
 			$this->printFramesetJSFunctioWriteBody() .
@@ -542,9 +550,9 @@ function clearEntries(){
 			$this->printFramesetJSFunctionAddEntries();
 	}
 
-	function printBodyHTML(){
+	protected function printBodyHTML(){
 		echo we_html_element::htmlDocType() . '<html><head>' . we_html_tools::getJSErrorHandler() . '</head>
-				<body bgcolor="white" onload="top.writeBody(self.document);"></body></html>';
+				<body style="background-color:white" onload="top.writeBody(self.document);"></body></html>';
 	}
 
 	function printHeaderHTML(){
@@ -573,7 +581,17 @@ function selectIt(){
 		a.selectedIndex=a.options.length-1;
 }') . '
 </head>
-	<body background="' . IMAGE_DIR . 'backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+<style type="text/css">
+body{
+	background-image:url(\'' . IMAGE_DIR . 'backgrounds/radient.gif\');
+	background-color:#bfbfbf;
+	background-repeat:repeat;
+	margin:0px;
+}
+a:link,a:visited,a:hover,a:active
+{color:#000;}
+</style>
+	<body>
 		<form name="we_form" method="post">' .
 		((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ?
 			$this->printHeaderTable() .
@@ -585,15 +603,15 @@ function selectIt(){
 </html>';
 	}
 
-	function printHeaderTableSpaceRow(){
+	protected function printHeaderTableSpaceRow(){
 		return '<tr><td colspan="9">' . we_html_tools::getPixel(5, 10) . '</td></tr>';
 	}
 
-	function printHeaderTableExtraCols(){
+	protected function printHeaderTableExtraCols(){
 		// overwrite
 	}
 
-	function printHeaderOptions(){
+	protected function printHeaderOptions(){
 		$pid = $this->dir;
 		$out = '';
 		$c = 0;
@@ -613,7 +631,7 @@ function selectIt(){
 		return '<option value="0">/</option>' . $out;
 	}
 
-	function printHeaderTable(){
+	protected function printHeaderTable(){
 		return '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">' .
 			$this->printHeaderTableSpaceRow() . '
@@ -650,16 +668,13 @@ function selectIt(){
 </table>';
 	}
 
-	function printHeaderLine(){
-		return '
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr>
-		<td><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td>
-	</tr>
+	private function printHeaderLine(){
+		return '<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr><td><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td></tr>
 </table>';
 	}
 
-	function printHeaderJS(){
+	protected function printHeaderJS(){
 		return we_html_button::create_state_changer(false) . '
 function disableRootDirButs(){
 	root_dir_enabled = switch_button_state("root_dir", "root_dir_enabled", "disabled");
@@ -673,15 +688,15 @@ function enableRootDirButs(){
 }';
 	}
 
-	function printHeaderJSIncluddes(){
+	private function printHeaderJSIncluddes(){
 		return we_html_element::jsScript(JS_DIR . 'images.js');
 	}
 
-	function printHeaderJSDef(){
+	protected function printHeaderJSDef(){
 		return 'var rootDirButsState = ' . (($this->dir == 0) ? 0 : 1) . ';';
 	}
 
-	function printCmdHTML(){
+	protected function printCmdHTML(){
 		echo we_html_element::jsElement('
 top.clearEntries();' .
 			$this->printCmdAddEntriesHTML() .
@@ -694,7 +709,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 ');
 	}
 
-	function printCmdAddEntriesHTML(){
+	protected function printCmdAddEntriesHTML(){
 		$ret = '';
 		$this->query();
 		while($this->next_record()){
@@ -703,7 +718,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		return $ret;
 	}
 
-	function printCMDWriteAndFillSelectorHTML(){
+	protected function printCMDWriteAndFillSelectorHTML(){
 		$pid = $this->dir;
 		$out = '';
 		$c = 0;
@@ -728,14 +743,23 @@ top.fsheader.addOption("/",0);' .
 top.fsheader.selectIt();';
 	}
 
-	function printFooterHTML(){
+	protected function printFooterHTML(){
 		echo we_html_tools::getHtmlTop() .
 		STYLESHEET . implodeJS(
-			$this->printFooterJSIncluddes() .
 			$this->printFooterJSDef() .
 			$this->printFooterJS()) . '
+<style type="text/css">
+body{
+	margin:0px;
+	background-color:#bfbfbf;
+	background-repeat:repeat;
+	background-image: url(\'' . IMAGE_DIR . 'backgrounds/radient.gif\');
+}
+a:link,a:visited,a:hover,a:active
+{color:#000;}
+</style>
 </head>
-	<body background="' . IMAGE_DIR . 'backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px">
+	<body>
 	<form name="we_form" target="fscmd">' .
 		$this->printFooterTable() . '
 	</form>
@@ -743,11 +767,7 @@ top.fsheader.selectIt();';
 </html>';
 	}
 
-	function printFooterJSIncluddes(){
-		// do nothing here, overwrite!
-	}
-
-	function printFooterJSDef(){
+	protected function printFooterJSDef(){
 		return we_html_element::jsElement("
 function press_ok_button() {
 	if(document.we_form.fname.value==''){
@@ -758,11 +778,11 @@ function press_ok_button() {
 }");
 	}
 
-	function printFooterJS(){
+	protected function printFooterJS(){
 		// do nothing here, overwrite!
 	}
 
-	function printFooterTable(){
+	protected function printFooterTable(){
 		$cancel_button = we_html_button::create_button("cancel", "javascript:top.exit_close();");
 		$yes_button = we_html_button::create_button("ok", "javascript:press_ok_button();");
 		$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
@@ -799,7 +819,7 @@ function press_ok_button() {
 </table>';
 	}
 
-	function setTableLayoutInfos(){
+	private function setTableLayoutInfos(){
 		switch($this->table){
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 			case TEMPLATES_TABLE:
