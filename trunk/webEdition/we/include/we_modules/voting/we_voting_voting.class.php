@@ -54,7 +54,7 @@ class we_voting_voting extends weModelBase{
 	var $AllowSuccessors = false;
 	var $Successor = 0;
 	var $Scores;
-	var $RevoteControl = true;
+	var $RevoteControl = 0;
 	var $RevoteTime = -1;
 	var $Owners = array();
 	var $RestrictOwners = false;
@@ -100,7 +100,7 @@ class we_voting_voting extends weModelBase{
 			'AllowSuccessors' => we_base_request::BOOL,
 			'Successor' => we_base_request::INT,
 			'Scores' => we_base_request::RAW,
-			'RevoteControl' => we_base_request::BOOL,
+			'RevoteControl' => we_base_request::INT,
 			'RevoteTime' => we_base_request::INT,
 			'Owners' => we_base_request::RAW,
 			'RestrictOwners' => we_base_request::BOOL,
