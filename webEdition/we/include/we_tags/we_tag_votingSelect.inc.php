@@ -27,11 +27,8 @@ function we_tag_votingSelect($attribs){
 
 	if($GLOBALS['we_editmode'] && isset($GLOBALS['_we_voting']) && isset($GLOBALS['_we_voting_namespace'])){
 		$firstentry = weTag_getAttribute('firstentry', $attribs, '', we_base_request::RAW);
-		$submitonchange = weTag_getAttribute('submitonchange', $attribs, false, we_base_request::BOOL);
-		$reload = weTag_getAttribute('reload', $attribs, false, we_base_request::BOOL);
-		if($submitonchange){
-			$reload = true;
-		}
+		$reload = weTag_getAttribute('reload', $attribs, weTag_getAttribute('submitonchange', $attribs, false, we_base_request::BOOL), we_base_request::BOOL);
+		$parentid = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
 
 		$select_name = $GLOBALS['_we_voting_namespace'];
 
@@ -48,7 +45,13 @@ function we_tag_votingSelect($attribs){
 		$options = (isset($attribs['firstentry']) ? getHtmlTag('option', array('value' => ''), $firstentry, true) : '');
 
 		$hasOpt = false;
-		$DB_WE->query('SELECT ID,Text,Path,IsFolder FROM ' . VOTING_TABLE . ' WHERE 1 ' . we_voting_voting::getOwnersSql() . ' ORDER BY Path');
+		if($parentid){
+			$DB_WE->query('SELECT ID FROM ' . VOTING_TABLE . ' WHERE IsFolder=1 AND ParentID=' . $parentid);
+			$folders = $DB_WE->getAll(true);
+			$folders[] = $parentid;
+		}
+
+		$DB_WE->query('SELECT ID,Text,Path,IsFolder FROM ' . VOTING_TABLE . ' WHERE 1 ' . ($parentid ? ' AND ParentID IN(' . $folders . ')' : '') . we_voting_voting::getOwnersSql() . ' ORDER BY Path');
 		while($DB_WE->next_record()){
 			if($DB_WE->f('IsFolder')){
 				$options.=($hasOpt ? '</optgroup>' : '') . '<optgroup label="' . $DB_WE->f('Path') . '">';
