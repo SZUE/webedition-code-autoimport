@@ -32,7 +32,6 @@ function we_tag_a($attribs, $content){
 		}
 
 		// get attributes
-
 		$id = weTag_getAttribute('id', $attribs, 0, we_base_request::STRING);
 		if($id === 'self' && !defined('WE_REDIRECTED_SEO')){
 			$id = $GLOBALS['WE_MAIN_DOC']->ID;
@@ -50,8 +49,6 @@ function we_tag_a($attribs, $content){
 	$delshop = weTag_getAttribute('delshop', $attribs, false, true);
 	$urladd = weTag_getAttribute('params', $attribs);
 	$param = ($urladd ? array(preg_replace('|^\?|', '', $urladd)) : array());
-
-
 
 	$edit = weTag_getAttribute('edit', $attribs);
 
