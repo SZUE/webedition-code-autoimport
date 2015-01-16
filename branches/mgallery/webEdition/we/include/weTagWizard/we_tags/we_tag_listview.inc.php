@@ -27,6 +27,8 @@ $order_document = new weTagData_choiceAttribute('order', array(new weTagDataOpti
 $order_object = new weTagData_choiceAttribute('order', array(new weTagDataOption('random()'),
 	new weTagDataOption('we_id'),
 	new weTagDataOption('we_filename'),
+	new weTagDataOption('we_creationdate'),
+	new weTagDataOption('we_moddate'),
 	new weTagDataOption('we_published'),
 	), false, false, '');
 $order_search = new weTagData_choiceAttribute('order', array(new weTagDataOption('random()'),

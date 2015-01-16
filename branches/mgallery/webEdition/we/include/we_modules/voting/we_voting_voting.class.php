@@ -38,11 +38,12 @@ class we_voting_voting extends weModelBase{
 
 	//properties
 	var $ID;
-	var $Text;
 	var $ParentID;
-	var $Icon;
-	var $IsFolder;
 	var $Path;
+	var $IsFolder;
+	var $Icon;
+	var $Text;
+	var $PublishDate = 0;
 	var $QASet = array();
 	var $QASetAdditions = array();
 	var $IsRequired = false;
@@ -53,27 +54,25 @@ class we_voting_voting extends weModelBase{
 	var $AllowSuccessors = false;
 	var $Successor = 0;
 	var $Scores;
-	var $PublishDate = 0;
-	var $RestrictOwners = 0;
-	var $Owners = array();
-	var $Active = 1;
-	var $Valid = 0;
-	var $RevoteControl = 1;
+	var $RevoteControl = 0;
 	var $RevoteTime = -1;
-	// it is not automatically (un)serialized
+	var $Owners = array();
+	var $RestrictOwners = false;
 	var $Revote = '';
 	var $RevoteUserAgent = '';
+	var $Valid = 0;
+	var $Active = true;
+	var $ActiveTime = false;
+	var $FallbackIp = false;
+	var $UserAgent = false;
+	var $FallbackUserID = false;
+	var $Log = false;
+	var $LogData = array();
+	var $RestrictIP = false;
+	var $BlackList = array();
 	var $answerCount = -1;
 	var $defVersion = 0;
-	var $FallbackIp = 0;
-	var $UserAgent = 0;
-	var $FallbackUserID = 0;
-	var $Log = 0;
-	var $LogData = array();
 	var $LogDB = 0;
-	var $RestrictIP = 0;
-	var $BlackList = array();
-	var $ActiveTime = 0;
 	var $protected = array('ID', 'ParentID', 'Icon', 'IsFolder', 'Path', 'Text');
 	var $FallbackActive = 0;
 
@@ -83,67 +82,83 @@ class we_voting_voting extends weModelBase{
 	 */
 	function __construct($votingID = 0){
 		parent::__construct(VOTING_TABLE);
+		$this->persistent_slots = array(
+			'ID' => we_base_request::INT,
+			'ParentID' => we_base_request::INT,
+			'Path' => we_base_request::FILE,
+			'IsFolder' => we_base_request::BOOL,
+			'Icon' => we_base_request::FILE,
+			'Text' => we_base_request::FILE,
+			'PublishDate' => we_base_request::INT,
+			'QASet' => we_base_request::RAW,
+			'QASetAdditions' => we_base_request::RAW,
+			'IsRequired' => we_base_request::BOOL,
+			'AllowFreeText' => we_base_request::BOOL,
+			'AllowImages' => we_base_request::BOOL,
+			'AllowMedia' => we_base_request::BOOL,
+			'AllowSuccessor' => we_base_request::BOOL,
+			'AllowSuccessors' => we_base_request::BOOL,
+			'Successor' => we_base_request::INT,
+			'Scores' => we_base_request::RAW,
+			'RevoteControl' => we_base_request::INT,
+			'RevoteTime' => we_base_request::INT,
+			'Owners' => we_base_request::RAW,
+			'RestrictOwners' => we_base_request::BOOL,
+			'Revote' => we_base_request::RAW,
+			'RevoteUserAgent' => we_base_request::RAW,
+			'Valid' => we_base_request::INT,
+			'Active' => we_base_request::BOOL,
+			'ActiveTime' => we_base_request::BOOL,
+			'FallbackIp' => we_base_request::BOOL,
+			'UserAgent' => we_base_request::BOOL,
+			'FallbackUserID' => we_base_request::BOOL,
+			'Log' => we_base_request::BOOL,
+			'LogData' => we_base_request::RAW,
+			'RestrictIP' => we_base_request::BOOL,
+			'BlackList' => we_base_request::RAW,
+		);
 
 		if($votingID){
 			$this->ID = $votingID;
 			$this->load($votingID);
 		}
 
-		if(!($this->QASet)){
-			$this->QASet = array(
-				0 => array(
-					'question' => '',
-					'answers' => array(
-						0 => '',
-						1 => ''
-					)
+		$this->QASet = $this->QASet ? : array(
+			0 => array(
+				'question' => '',
+				'answers' => array(
+					0 => '',
+					1 => ''
 				)
-			);
-		}
-		if(!($this->QASetAdditions)){
-			$this->QASetAdditions = array(
-				0 => array('imageID' => '', 'mediaID' => '', 'successorID' => '')
-			);
-		}
+			)
+		);
 
-		if($this->Valid == 0){
-			$this->Valid = time() + 31536000; //365 days
-		}
+		$this->QASetAdditions = $this->QASetAdditions ? : array(
+			0 => array('imageID' => '', 'mediaID' => '', 'successorID' => '')
+		);
 
-		if($this->Valid < time() && $this->ActiveTime == 1){
-			$this->Active = 0;
-		}
-
-		if(!($this->Scores)){
-			$this->Scores = array();
-		}
-
-		if($this->PublishDate == 0){
-			$this->PublishDate = time();
-		}
+		$this->Valid = ($this->Valid? : time() + 31536000); //365 days
+		$this->Active = ($this->Valid < time() && $this->ActiveTime ? 0 : $this->Active);
+		$this->Scores = ($this->Scores? : array());
+		$this->PublishDate = ($this->PublishDate ? : time());
 	}
 
 	function load($id = 0, $isAdvanced = false){
-		if(parent::load($id)){
+		if(parent::load($id, true)){
 			$this->QASet = unserialize($this->QASet);
 			$this->QASetAdditions = unserialize($this->QASetAdditions);
 			$this->Scores = unserialize($this->Scores);
 			$this->Owners = makeArrayFromCSV($this->Owners);
 			$this->BlackList = makeArrayFromCSV($this->BlackList);
-			if(empty($this->LogData)){
+			if(!$this->LogData || $this->LogData === 'a:0:{}'){
 				$this->LogDB = true;
 			} else {
-				if($this->LogData === 'a:0:{}'){
-					$this->LogDB = true;
-				} else {
-					$this->switchToLogDataDB();
-				}
+				$this->switchToLogDataDB();
 			}
 		}
 	}
 
 	function save($with_scores = true){
-
 		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::FILE_ICON);
 
 		if($this->ActiveTime && $this->Valid < time()){
@@ -205,7 +220,7 @@ class we_voting_voting extends weModelBase{
 		$this->BlackList = array_unique($this->BlackList);
 		$this->BlackList = makeCSVFromArray($this->BlackList, true);
 
-		parent::save();
+		parent::save(false, true);
 
 		$this->Scores = ($with_scores || $oldid == 0 ? unserialize($this->Scores) : $temp);
 
@@ -243,7 +258,7 @@ class we_voting_voting extends weModelBase{
 	}
 
 	function pathExists($path){
-		return f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path = "' . $this->db->escape($path) . '" AND ID!=' . intval($this->ID) . ' LIMIT 1', '', $this->db);
+		return f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($path) . '" AND ID!=' . intval($this->ID) . ' LIMIT 1', '', $this->db);
 	}
 
 	function isSelf(){
@@ -341,22 +356,14 @@ class we_voting_voting extends weModelBase{
 	}
 
 	function isAllowedForUser(){
-
 		if($this->RestrictOwners == 0 || permissionhandler::hasPerm('ADMINISTRATOR') || in_array($_SESSION['user']['ID'], $this->Owners)){
 			return true;
 		}
 
 		$userids = array();
+		we_readParents($_SESSION['user']['ID'], $userids, USER_TABLE, 'IsFolder', 1, $this->db);
 
-		we_readParents($_SESSION['user']['ID'], $userids, USER_TABLE, 'IsFolder', 1);
-
-		foreach($userids as $uid){
-			if(in_array($uid, $this->Owners)){
-				return true;
-			}
-		}
-
-		return false;
+		return array_intersect($userids, $this->Owners) ? true : false;
 	}
 
 	function getOwnersSql(){
@@ -369,7 +376,7 @@ class we_voting_voting extends weModelBase{
 
 			$sqlarr = array();
 			foreach($userids as $uid){
-				$sqlarr[] = 'Owners LIKE ("%,' . $uid . ',%")';
+				$sqlarr[] = 'FIND_IN_SET(' . $uid . ',Owners)';
 			}
 			$owners_sql = ' AND (RestrictOwners=0 OR (' . implode(' OR ', $sqlarr) . ')) ';
 		}
