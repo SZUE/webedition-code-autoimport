@@ -22,18 +22,16 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_votingSelect($attribs, $content){
+function we_tag_votingSelect($attribs){
 	global $DB_WE;
 
 	if($GLOBALS['we_editmode'] && isset($GLOBALS['_we_voting']) && isset($GLOBALS['_we_voting_namespace'])){
-		$firstentry = weTag_getAttribute("firstentry", $attribs, '', we_base_request::RAW);
-		$submitonchange = weTag_getAttribute("submitonchange", $attribs, false, we_base_request::BOOL);
-		$reload = weTag_getAttribute("reload", $attribs, false, we_base_request::BOOL);
+		$firstentry = weTag_getAttribute('firstentry', $attribs, '', we_base_request::RAW);
+		$submitonchange = weTag_getAttribute('submitonchange', $attribs, false, we_base_request::BOOL);
+		$reload = weTag_getAttribute('reload', $attribs, false, we_base_request::BOOL);
 		if($submitonchange){
 			$reload = true;
 		}
-
-		$where = ' WHERE  IsFolder=0 ' . we_voting_voting::getOwnersSql(); //nicht auf Active pr�fen, sonst fliegen deaktivierte Votings aus den Dokumenten und man kann nicht einfach wieder aktivieren, bzw. man kann Ergebnisse anzeigen
 
 		$select_name = $GLOBALS['_we_voting_namespace'];
 
@@ -43,23 +41,22 @@ function we_tag_votingSelect($attribs, $content){
 
 		$val = oldHtmlspecialchars($GLOBALS['we_doc']->issetElement($select_name) ? $GLOBALS['we_doc']->getElement($select_name) : 0);
 
-		if($submitonchange){
-			$newAttribs['onchange'] = 'we_submitForm();';
-		} else {
-			$newAttribs['onchange'] = '_EditorFrame.setEditorIsHot(true)' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') . '';
-		}
+		$newAttribs['onchange'] = ($submitonchange ?
+				'we_submitForm();' :
+				'_EditorFrame.setEditorIsHot(true)' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') );
 
-		$options = '';
+		$options = (isset($attribs['firstentry']) ? getHtmlTag('option', array('value' => ''), $firstentry, true) : '');
 
-		if(isset($attribs['firstentry'])){
-			$options = getHtmlTag('option', array('value' => ''), $firstentry, true);
-		}
-
-		$DB_WE->query("SELECT ID,Text,Path FROM " . VOTING_TABLE . " $where ORDER BY Path;");
+		$hasOpt = false;
+		$DB_WE->query('SELECT ID,Text,Path,IsFolder FROM ' . VOTING_TABLE . ' WHERE 1 ' . we_voting_voting::getOwnersSql() . ' ORDER BY Path');
 		while($DB_WE->next_record()){
-			$options .= getHtmlTag('option', ($DB_WE->f('ID') == $val ? array('value' => $DB_WE->f("ID"), 'selected' => 'selected') : array('value' => $DB_WE->f("ID"))), $DB_WE->f("Path")) . "\n";
+			if($DB_WE->f('IsFolder')){
+				$options.=($hasOpt ? '</optgroup>' : '') . '<optgroup label="' . $DB_WE->f('Path') . '">';
+				$hasOpt = true;
+				continue;
+			}
+			$options .= getHtmlTag('option', ($DB_WE->f('ID') == $val ? array('value' => $DB_WE->f("ID"), 'selected' => 'selected') : array('value' => $DB_WE->f('ID'))), $DB_WE->f('Text'));
 		}
-
-		return getHtmlTag('select', $newAttribs, $options, true);
+		return getHtmlTag('select', $newAttribs, $options . ($hasOpt ? '</optgroup>' : ''), true);
 	}
 }
