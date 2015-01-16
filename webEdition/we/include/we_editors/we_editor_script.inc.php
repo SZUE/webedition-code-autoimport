@@ -91,11 +91,10 @@ echo we_html_element::jsScript(JS_DIR . 'we_textarea.js');
 
 if(isset($GLOBALS['we_doc'])){
 	$useSeeModeJS = array(
-		we_base_ContentTypes::WEDOCUMENT => array(we_base_constants::WE_EDITPAGE_CONTENT),
+		we_base_ContentTypes::WEDOCUMENT => array(we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW),
 		we_base_ContentTypes::TEMPLATE => array(we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE),
 		"objectFile" => array(we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW)
 	);
-
 
 	if(isset($useSeeModeJS[$GLOBALS['we_doc']->ContentType]) && in_array($GLOBALS['we_doc']->EditPageNr, $useSeeModeJS[$GLOBALS['we_doc']->ContentType])){
 		echo we_html_element::jsElement('
@@ -144,8 +143,8 @@ function seeMode_dealWithLinks() {
 
 <?php
 echo (($_we_transaction = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0)) ?
-		"_EditorFrame = _controller.getEditorFrameByTransaction('" . $_we_transaction . "');" :
-		"_EditorFrame = _controller.getEditorFrame();");
+	"_EditorFrame = _controller.getEditorFrameByTransaction('" . $_we_transaction . "');" :
+	"_EditorFrame = _controller.getEditorFrame();");
 ?>
 
 	}
