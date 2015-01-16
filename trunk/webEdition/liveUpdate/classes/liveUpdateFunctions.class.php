@@ -785,11 +785,12 @@ class liveUpdateFunctions{
 				}
 				break;
 			case 1062:
-
 				$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
 				return false;
+			case 1065:
+				//ignore empty queries
+				return true;
 			default:
-
 				$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
 				return false;
 		}
