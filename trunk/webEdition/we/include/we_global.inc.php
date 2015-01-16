@@ -1056,7 +1056,9 @@ function we_templateInit(){
 }
 
 function we_templateHead($fullHeader = false){
-	if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
+	if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition||
+		((!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode'])&&$_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE))
+		{
 		return;
 	}
 	if($fullHeader){
