@@ -64,8 +64,7 @@ function we_tag_href($attribs){
 				$intID = intval(weTag_getAttribute('startid', $attribs, 0, we_base_request::INT));
 			}
 			if($intID){
-				$foo = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID));
-				if($foo){
+				if(($foo = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID)))){
 					$intPath = $foo['Path'];
 					$ct = $foo['ContentType'];
 				}

@@ -54,6 +54,7 @@ var we_dir="' . WEBEDITION_DIR . '";
 ' . parent::getTree_g_l();
 
 		$jsCode = '
+
 function loadData() {
 	menuDaten.clear();
 ';

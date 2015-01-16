@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_newsletterConfirmLink($attribs){
+function we_tag_newsletterConfirmLink($attribs, $content){
 
 	$plain = weTag_getAttribute("plain", $attribs, false, we_base_request::BOOL);
 
@@ -32,9 +32,9 @@ function we_tag_newsletterConfirmLink($attribs){
 	if($link){
 		$attribs["href"] = $link;
 		return ($plain ?
-						$link :
-						getHtmlTag('a', $attribs, $content ? : $link)
-				);
+				$link :
+				getHtmlTag('a', $attribs, $content ? : $link)
+			);
 	}
 	return '';
 }

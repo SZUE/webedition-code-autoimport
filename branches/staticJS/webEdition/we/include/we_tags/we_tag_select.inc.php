@@ -38,7 +38,7 @@ function we_tag_select($attribs, $content){
 		$reload = weTag_getAttribute('reload', $attribs, false, we_base_request::BOOL);
 		switch(weTag_getAttribute('type', $attribs, '', we_base_request::STRING)){
 			case 'csv':
-				$vals = explode(',', weTag_getAttribute('values', $attribs, $content, '', we_base_request::RAW));
+				$vals = explode(',', weTag_getAttribute('values', $attribs, $content, we_base_request::RAW));
 				$content = '';
 				foreach($vals as $cur){
 					$content.=($cur == $val ?

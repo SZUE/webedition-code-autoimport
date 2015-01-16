@@ -102,14 +102,14 @@ class we_textDocument extends we_document{
 			$doc = parent::i_getDocumentToSave();
 			$oldDoc = ($this->ID ? f('SELECT Dat FROM ' . LINK_TABLE . ' JOIN ' . CONTENT_TABLE . ' ON CID=ID WHERE DID=' . $this->ID . ' AND Name="data"', '', $this->DB_WE) : '');
 			$ok = we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $doc);
-			$data = getHTTP(getServerUrl(true), WEBEDITION_DIR . 'index.php');
+			$data = getHTTP(getServerUrl(true), WEBEDITION_DIR . 'triggerWEtasks.php');
 			$data2 = getHTTP(getServerUrl(true), WEBEDITION_DIR . 'index.html');
-			if(strlen($data) < 2500 || strlen($data2) != filesize(WEBEDITION_PATH . 'index.html')){//generated error codes; since fopen is not capable of returning proper codes
+			if($data != 'OK' || strlen($data2) != filesize(WEBEDITION_PATH . 'index.html')){//generated error codes; since fopen is not capable of returning proper codes
 				//restore old htaccess
 				if($this->ID){
-					we_base_file::save(WEBEDITION_PATH . $this->Path, $oldDoc);
+					we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $oldDoc);
 				} else {
-					we_base_file::delete(WEBEDITION_PATH . $this->Path);
+					we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . $this->Path);
 				}
 				$this->errMsg = 'Error 500';
 				return false;

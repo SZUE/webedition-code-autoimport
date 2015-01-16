@@ -202,7 +202,6 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 
 	this.addItem = function () {
 		var butt = this.button.replace("#####placeHolder#####", this.name + ".delItem(" + this.itemCount + ")");
-
 		var set = document.createElement("div");
 		set.setAttribute("id", this.name + "_item" + this.itemCount);
 

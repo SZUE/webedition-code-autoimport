@@ -50,10 +50,9 @@ var we_dir="' . WEBEDITION_DIR . '";'
 		fr = messaging_usel_main.window.document;
 		fr.open();
 		fr.writeln("<html><head>");
+		fr.writeln("<?php echo str_replace(array('script', '"'), array('scr"+"ipt', '\''), we_html_tools::getJSErrorHandler());?>");
 		fr.writeln("<script type=\"text/javascript\" src=\"<?php echo JS_DIR . 'messaging_std.js'; ?>\"></" + "script>");
-
 		fr.writeln("<script type=\"text/javascript\">");
-		fr.writeln("<?php echo str_replace(array('script', '"'), array('scr"+"ipt', '\''), we_html_tools::getJSErrorHandler()); ?>");
 		fr.writeln("var clickCount=0;");
 		fr.writeln("var wasdblclick=0;");
 		fr.writeln("var tout=null;");
