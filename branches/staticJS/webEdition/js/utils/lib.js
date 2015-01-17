@@ -22,76 +22,31 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function copy() {
-	var loop;
-	var tempArray = [];
-	for (loop = 0; loop < this.length; loop++) {
-		tempArray[loop] = this[loop];
+function sprintf() {
+	if (!arguments || arguments.length < 1)
+		return;
+
+	var argum = arguments[0];
+	var regex = /([^%]*)%(%|d|s)(.*)/;
+	var arr = new Array();
+	var iterator = 0;
+	var matches = 0;
+
+	while (arr = regex.exec(argum)) {
+		var left = arr[1];
+		var type = arr[2];
+		var right = arr[3];
+
+		matches++;
+		iterator++;
+
+		var replace = arguments[iterator];
+
+		if (type == "d")
+			replace = parseInt(param) ? parseInt(param) : 0;
+		else if (type == "s")
+			replace = arguments[iterator];
+		argum = left + replace + right;
 	}
-	return tempArray;
+	return argum;
 }
-
-Array.prototype.copy = copy;
-
-function pop() {
-	var lastItem = this[this.length - 1];
-	this.length--;
-	return lastItem;
-}
-
-Array.prototype.pop = pop;
-
-function push(item) {
-	this[this.length] = item;
-	return this.length;
-}
-
-Array.prototype.push = push;
-
-function concat(secondArray) {
-	var firstArray = this.copy();
-
-	for (loop = 0; loop < secondArray.length; loop++) {
-		firstArray[firstArray.length] = secondArray[loop];
-	}
-	return firstArray;
-}
-
-Array.prototype.concat = concat;
-
-function shift() {
-	var newValue = this[0];
-	var origLength = this.length;
-	for (loop = 0; loop < this.length - 1; loop++) {
-		this[loop] = this[loop + 1];
-	}
-	this.length--;
-	return newValue;
-}
-
-Array.prototype.shift = shift;
-
-function unshift(item) {
-	for (loop = this.length - 1; loop >= 0; loop--) {
-		this[loop + 1] = this[loop];
-	}
-	this[0] = item;
-	return this.length;
-}
-
-Array.prototype.unshift = unshift;
-
-function permute(theArray) {
-	var tempArray = this.copy();
-	var newArray = [];
-	var randomNum = 0;
-	for (loop = 0; loop < this.length; loop++) {
-		randomNum = Math.round(Math.random() * (tempArray.length - 1));
-		newArray[loop] = tempArray[randomNum];
-		tempArray[randomNum] = tempArray[tempArray.length - 1];
-		tempArray.length--;
-	}
-	return newArray;
-}
-
-Array.prototype.permute = permute;

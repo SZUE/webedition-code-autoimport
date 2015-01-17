@@ -172,44 +172,14 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 <param name="dictionary" value="' . (isset($_SESSION['weS']['dictLang']) ? $_SESSION['weS']['dictLang'] : 'Deutsch') . '"/>
 <param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"/>
 <param name="udSize" value="' . (is_file(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') ? filesize(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') : '0') . '"/>');
+
+echo we_html_element::jsScript(JS_DIR . 'utils/lib.js');
 ?>
 
 <script type="text/javascript"><!--
 
 	var activ_tab = 1;
 	var appletActiv = false;
-
-	function sprintf() {
-		if (!arguments || arguments.length < 1) {
-			return;
-		}
-
-		var argum = arguments[0];
-		var regex = /([^%]*)%(%|d|s)(.*)/;
-		var arr = new Array();
-		var iterator = 0;
-		var matches = 0;
-
-		while (arr = regex.exec(argum)) {
-			var left = arr[1];
-			var type = arr[2];
-			var right = arr[3];
-
-			matches++;
-			iterator++;
-
-			var replace = arguments[iterator];
-
-			if (type == "d") {
-				replace = parseInt(param) ? parseInt(param) : 0;
-			} else if (type == "s") {
-				replace = arguments[iterator];
-			}
-
-			argum = left + replace + right;
-		}
-		return argum;
-	}
 
 	function setVisible(id, visible) {
 		var elem = document.getElementById(id);
@@ -323,15 +293,15 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 
 <body onload="loadTable()" class="weDialogBody">
 
-<?php echo $tabsBody; ?>
+	<?php echo $tabsBody; ?>
 
 	<div id="content" style="margin: 10px; width: 450px;">
 		<div id="tab1" style="display:block;">
-<?php echo $_tab_1 ?>
+			<?php echo $_tab_1 ?>
 
 		</div>
 		<div id="tab2" style="display:none;">
-<?php echo $_tab_2 ?>
+			<?php echo $_tab_2 ?>
 		</div>
 
 	</div>

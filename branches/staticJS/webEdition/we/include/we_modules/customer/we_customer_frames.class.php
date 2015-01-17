@@ -75,7 +75,7 @@ class we_customer_frames extends we_modules_frame{
 		$this->View->settings->load(false);
 		$extraHead = $this->Tree->getJSTreeCode() .
 			we_html_element::jsElement($this->getJSStart()) .
-			we_html_element::jsElement($this->View->getJSTreeHeader());
+			$this->View->getJSTreeHeader();
 
 		$sid = we_base_request::_(we_base_request::RAW, 'sid', false);
 		$extraUrlParams = $sid !== false ? '&sid=' . $sid : '';
@@ -276,7 +276,7 @@ top.content.hloaded = 1;');
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::jsScript(JS_DIR . "windows.js") .
 					we_html_element::jsElement("self.focus();") .
-					we_html_element::jsElement($this->View->getJSAdmin()) .
+					$this->View->getJSAdmin() .
 					we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHidden(array("name" => "cmd", "value" => "switchBranch")) .
 						we_html_element::htmlHidden(array("name" => "pnt", "value" => "customer_admin")) .
 						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_customer', '[field_admin]'), we_html_button::create_button("close", "javascript:self.close()"))
@@ -333,7 +333,7 @@ top.content.hloaded = 1;');
 		}
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::jsElement($this->View->getJSAdmin()) .
+				we_html_element::htmlBody(array("class" => "weDialogBody"), $this->View->getJSAdmin() .
 					we_html_element::jsElement("self.focus();") .
 					we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						we_html_tools::htmlDialogLayout($edit->getHtml(), (

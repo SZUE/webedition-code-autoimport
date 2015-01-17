@@ -110,31 +110,6 @@ function submitForm() {
 	f.submit();
 }
 
-function sprintf() {
-	if (!arguments || arguments.length < 1)
-		return;
-	var argum = arguments[0];
-	var regex = /([^%]*)%(%|d|s)(.*)/;
-	var arr = new Array();
-	var iterator = 0;
-	var matches = 0;
-	while (arr = regex.exec(argum)) {
-		var left = arr[1];
-		var type = arr[2];
-		var right = arr[3];
-		matches++;
-		iterator++;
-		var replace = arguments[iterator];
-		if (type == 'd') {
-			replace = parseInt(param) ? parseInt(param) : 0;
-		} else if (type == 's') {
-			replace = arguments[iterator];
-		}
-		argum = left + replace + right;
-	}
-	return argum;
-}
-
 function setStatus(val) {
 	document.we_form[uid + "_Status"].value = val;
 
