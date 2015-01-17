@@ -24,27 +24,18 @@
  */
 class we_navigation_tree extends we_modules_tree{
 
-	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
-	}
-
 	function getJSTreeFunctions(){
-
-		$out = weTree::getJSTreeFunctions();
-
-		$out .= '
+		return parent::getJSTreeFunctions(true) .'
 				function doClick(id,typ){
 					var node=' . $this->topFrame . '.get(id);
 					' . $this->topFrame . '.editor.edbody.we_cmd("module_navigation_edit",node.id);
 				}
-				' . $this->topFrame . '.loaded=1;
-			';
-		return $out;
+				';
 	}
 
 	function getJSTreeCode(){
 		return parent::getJSTreeCode() .
-			we_html_element::jsElement('drawTree.selection_table="' . NAVIGATION_TABLE . '";');
+				we_html_element::jsElement('drawTree.selection_table="' . NAVIGATION_TABLE . '";');
 	}
 
 }

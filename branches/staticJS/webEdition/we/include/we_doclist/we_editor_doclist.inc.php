@@ -36,8 +36,9 @@ $headCal = we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/
 	we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
 	we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js');
 
+$docl = new doclistView();
 echo $headCal .
- doclistView::getSearchJS() .
+ $docl->getSearchJS() .
  STYLESHEET
 ?>
 </head>
@@ -47,7 +48,6 @@ echo $headCal .
 		}" onload="setTimeout(init, 200)" onresize="sizeScrollContent();">
 	<div id="mouseOverDivs_doclist"></div>
 	<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;"><?php
-		$docl = new doclistView();
 		$view = new we_search_view();
 		$content = $docl->searchProperties();
 		$headline = $docl->makeHeadLines();

@@ -236,7 +236,7 @@ function we_cmd() {
 			mode = "show_folder_content";
 			entries_selected = [];
 			drawEintraege();
-			top.content.editor.edbody.location = messaging_module_dir + "messaging_work.php?we_transaction=" + we_transaction + "";
+			top.content.editor.edbody.location = "about:blank";
 			top.content.usetHot();
 			break;
 		case "messaging_new_folder":

@@ -136,11 +136,6 @@ function startTree(){
 }';
 	}
 
-	function getJSIncludeFunctions(){
-		return parent::getJSIncludeFunctions() .
-			$this->getJSStartTree();
-	}
-
 	function getJSLoadTree($treeItems){
 		$days = array(
 			'Sunday' => 0,

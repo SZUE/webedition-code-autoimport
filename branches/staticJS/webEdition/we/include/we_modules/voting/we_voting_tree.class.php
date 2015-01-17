@@ -87,15 +87,10 @@ function doClick(id,typ){
 	}
 
 	function getJSStartTree(){
-
 		return 'function startTree(){
 				' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid=0";
 				drawTree();
 			}';
-	}
-
-	function getJSIncludeFunctions(){
-		return weTree::getJSIncludeFunctions() . $this->getJSStartTree();
 	}
 
 	function getJSMakeNewEntry(){

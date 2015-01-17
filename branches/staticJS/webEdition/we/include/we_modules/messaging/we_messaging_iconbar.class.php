@@ -25,6 +25,7 @@
 //TODO: make weModuleIconbar.class for all Iconbars and let weMessagingIconbar inherit from it
 
 class we_messaging_iconbar{
+
 	private $parentFrameset;
 	private $weTransaction;
 	private $viewclass;
@@ -62,121 +63,18 @@ class we_messaging_iconbar{
 	}
 
 	private function getJSCode(){
-		return we_html_element::jsScript(JS_DIR . 'windows.js') . ($this->viewclass === 'todo' ? $this->getJSCodeTodo() : $this->getJSCodeMsg());
-	}
-
-	private function getJSCodeTodo(){
-		return we_html_element::jsElement('
-			function new_todo() {
-				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->weTransaction . '&mode=new", "messaging_new_todo",-1,-1,690,520,true,false,true,false);
-			}
-
-			function forward_todo() {
-				if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
-					new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->weTransaction . '&mode=forward", "messaging_new_todo",-1,-1,705,600,true,true,true,false);
-				}
-			}
-
-			function reject_todo() {
-				if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
-					new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->weTransaction . '&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
-				}
-			}
-
-			function update_todo() {
-				if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
-					new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_update_todo.php?we_transaction=' . $this->weTransaction . '&mode=reject", "messaging_new_todo",-1,-1,705,600,true,true,true,false);
-				}
-			}
-
-			function copy_messages() {
-				if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
-					top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=copy_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
-				}
-			}
-
-			function cut_messages() {
-				if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
-					top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=cut_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
-				}
-			}
-
-			function paste_messages() {
-				if (top.content.editor.edbody.entries_selected) {
-					top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=paste_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
-				}
-			}
-
-			function delete_messages() {
-				if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
-					c = confirm("' . g_l('modules_messaging', '[q_rm_todos]') . '");
-					if (c == false) {
-						return;
-					}
-					top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=delete_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
-				}
-			}
-
-			function refresh() {
-				top.content.update_messaging();
-			}
-
-			function launch_msg() {
-				if (top.content.editor.edbody.entries_selected) {
-					top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&mcmd=launch&mode=message&we_transaction=' . $this->weTransaction . '";
-				}
-			}
-		');
-	}
-
-	private function getJSCodeMsg(){
-
-		return we_html_element::jsElement('
-			function new_message(mode) {
-				if (mode == "re" && (top.content.editor.edbody.last_entry_selected == -1)) {
-					return;
-				}
-				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_newmessage.php?we_transaction=' . $this->weTransaction . '&mode=" + mode, "messaging_new_message",-1,-1,670,530,true,false,true,false);
-			}
-
-			function copy_messages() {
-				if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
-					top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=copy_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
-				}
-			}
-
-			function cut_messages() {
-				if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
-					top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=cut_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
-				}
-			}
-
-			function paste_messages() {
-				if (top.content.editor.edbody.entries_selected) {
-					top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=paste_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
-				}
-			}
-
-			function delete_messages() {
-				if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
-					c = confirm("' . g_l('modules_messaging', '[q_rm_messages]') . '");
-					if (c == false) {
-						return;
-					}
-					top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&we_transaction=' . $this->weTransaction . '&mcmd=delete_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
-				}
-			}
-
-			function refresh() {
-				top.content.update_messaging();
-			}
-
-			function launch_todo() {
-				if (top.content.editor.edbody.entries_selected) {
-					top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&mcmd=launch&mode=todo&we_transaction=' . $this->weTransaction . '";
-				}
-			}
-		');
+		return we_html_element::jsScript(JS_DIR . 'windows.js') .
+				we_html_element::jsElement('
+var dirs={
+	"WE_MESSAGING_MODULE_DIR":"' . WE_MESSAGING_MODULE_DIR . '",
+};
+var transaction="' . $this->weTransaction . '";
+var g_l={
+	"q_rm_todos":"' . g_l('modules_messaging', '[q_rm_todos]') . '",
+	"q_rm_messages":"' . g_l('modules_messaging', '[q_rm_messages]') . '"
+};
+') .
+				we_html_element::jsScript(WE_JS_MESSAGING_MODULE_DIR . 'messaging_iconbar.js');
 	}
 
 	private function getHTMLBody(){

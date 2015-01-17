@@ -85,25 +85,20 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'delete_folders'){
 			</html>
 			<?php
 			exit;
-		} else {
-			echo we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[err_delete_folders]'), we_message_reporting::WE_MESSAGE_ERROR);
 		}
+		echo we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[err_delete_folders]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 }
 ?>
 
 //-->
 </script>
-
 <?php
-$content = "<span class=\"defaultfont\">" . g_l('modules_messaging', '[deltext]') . "</span>";
-
 $form = '<form name="we_form" method="post">' .
-	we_html_tools::hidden('we_transaction', $transaction) .
-	we_html_tools::hidden('folders', '') .
-	we_html_tools::hidden('mcmd', 'delete_folders')
-	.
-	'</form>';
+		we_html_tools::hidden('we_transaction', $transaction) .
+		we_html_tools::hidden('folders', '') .
+		we_html_tools::hidden('mcmd', 'delete_folders') .
+		'</form>';
 
 $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_delete()"), "", we_html_button::create_button("cancel", "javascript:top.content.we_cmd('messaging_start_view')")
 );
@@ -112,7 +107,7 @@ $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button
 
 <body bgcolor="white" marginwidth="10" marginheight="10" leftmargin="10" topmargin="10" background="<?php echo IMAGE_DIR; ?>msg_white_bg.gif">
 	<?php
-	echo we_html_tools::htmlMessageBox(400, 120, $content, g_l('modules_messaging', '[rm_folders]'), $_buttons) .
+	echo we_html_tools::htmlMessageBox(400, 120, "<span class=\"defaultfont\">" . g_l('modules_messaging', '[deltext]') . "</span>", g_l('modules_messaging', '[rm_folders]'), $_buttons) .
 	$form
 	?>
 </body>

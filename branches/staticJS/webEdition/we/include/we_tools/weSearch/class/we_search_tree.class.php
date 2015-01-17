@@ -32,24 +32,16 @@ class we_search_tree extends we_tool_tree{
 
 	function getJSTreeFunctions(){
 
-		$out = weTree::getJSTreeFunctions();
-
-		$out .= '
+		return parent::getJSTreeFunctions(true) . '
 				function doClick(id,typ){
 					var node=' . $this->topFrame . '.get(id);
-
 					' . $this->topFrame . '.resize.right.editor.edbody.we_cmd("tool_weSearch_edit",node.id);
-
-				}
-				' . $this->topFrame . '.loaded=1;
-			';
-		return $out;
+				}';
 	}
 
 	function getJSTreeCode(){
-
 		return parent::getJSTreeCode() .
-			we_html_element::jsElement('drawTree.selection_table="' . SUCHE_TABLE . '";');
+				we_html_element::jsElement('drawTree.selection_table="' . SUCHE_TABLE . '";');
 	}
 
 }
