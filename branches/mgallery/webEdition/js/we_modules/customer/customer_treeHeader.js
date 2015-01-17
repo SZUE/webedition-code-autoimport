@@ -21,22 +21,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function applySort(){
-	document.we_form_treeheader.pnt.value="cmd";
-	document.we_form_treeheader.cmd.value="applySort";
+function applySort() {
+	document.we_form_treeheader.pnt.value = "cmd";
+	document.we_form_treeheader.cmd.value = "applySort";
 	submitForm("", "", "", "we_form_treeheader");
 }
 
 function addSorting(sortname) {
-	var found=false;
 	len = document.we_form_treeheader.sort.options.length;
-	for(i=0;i<len;i++) {
-		if(document.we_form_treeheader.sort.options[i].value==sortname){
-			found = true;
+	for (i = 0; i < len; i++) {
+		if (document.we_form_treeheader.sort.options[i].value == sortname) {
+			return;
 		}
 	}
-	if(!found){
-		document.we_form_treeheader.sort.options[len] = new Option(sortname,sortname);
-	}
+	document.we_form_treeheader.sort.options[len] = new Option(sortname, sortname);
 
 }

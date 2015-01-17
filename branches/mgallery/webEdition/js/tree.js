@@ -30,16 +30,13 @@ function getTreeLayout() {
 
 function setTreeState() {
 	this.state = arguments[0];
-
 	if (this.state == this.tree_states.edit) {
 		for (var i = 1; i <= this.len; i++) {
 			if (this[i].checked == 1) {
 				this[i].checked = 0;
 			}
 		}
-
 	}
-
 }
 
 function applyLayout() {
@@ -174,4 +171,30 @@ function setUnCheckNode(imgName) {
 	if (document.images[imgName]) {
 		document.images[imgName].src = "/webEdition/images/tree/check1.gif";
 	}
+}
+
+function clearItems() {
+	var ai = 1;
+	var deleted = 0;
+
+	while (ai <= treeData.len) {
+		if (treeData[ai].parentid == this.id) {
+			if (treeData[ai].contenttype == "group") {
+				deleted += treeData[ai].clear();
+			} else {
+				ind = ai;
+				while (ind <= treeData.len - 1) {
+					treeData[ind] = treeData[ind + 1];
+					ind++;
+				}
+				treeData.len[treeData.len] = null;
+				treeData.len--;
+			}
+			deleted++;
+		} else {
+			ai++;
+		}
+	}
+	drawTree();
+	return deleted;
 }

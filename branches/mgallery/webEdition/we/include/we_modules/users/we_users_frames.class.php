@@ -34,9 +34,7 @@ class we_users_frames extends we_modules_frame{
 	}
 
 	function getJSCmdCode(){
-
 		return $this->View->getJSTop_tmp();
-		//. we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
 	}
 
 	protected function getDoClick(){
@@ -54,7 +52,6 @@ var we_dir="' . WEBEDITION_DIR . '";
 ' . parent::getTree_g_l();
 
 		$jsCode = '
-
 function loadData() {
 	menuDaten.clear();
 ';

@@ -139,3 +139,27 @@ function we_cmd() {
 			eval("top.content.we_cmd(" + args + ")");
 	}
 }
+
+var ajaxCallbackResetLogins = {
+	success: function (o) {
+		if (typeof (o.responseText) != undefined && o.responseText != "") {
+			var weResponse = false;
+			try {
+				eval("var weResponse = " + o.responseText);
+				if (weResponse) {
+					if (weResponse["DataArray"]["data"] == "true") {
+
+						document.getElementById("FailedCustomerLogins").innerText = weResponse["DataArray"]["value"];
+					}
+				}
+			} catch (exc) {
+			}
+		}
+	},
+	failure: function (o) {
+	}
+}
+
+function resetLogins(id){
+	YAHOO.util.Connect.asyncRequest( "GET", dirs.WEBEDITION_DIR + "rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid="+id, ajaxCallbackResetLogins );
+}

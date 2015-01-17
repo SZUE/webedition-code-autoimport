@@ -24,11 +24,6 @@
  */
 class we_newsletter_tree extends weMainTree{
 
-	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
-
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
-	}
-
 	function getJSMakeNewEntry(){
 		return '
 function makeNewEntry(icon,id,pid,txt,open,ct,tab){
@@ -76,29 +71,19 @@ function updateEntry(id,text,pid){
 
 	function getJSTreeFunctions(){
 
-		return weTree::getJSTreeFunctions() . '
+		return weTree::getJSTreeFunctions(true) . '
 function doClick(id,typ){
 	var node=' . $this->topFrame . '.get(id);
 		' . $this->topFrame . '.we_cmd(\'newsletter_edit\',node.id,node.typ,node.table);
 }
-' . $this->topFrame . '.loaded=1;
-' . $this->getJSMakeNewEntry();
+';
 	}
 
 	function getJSStartTree(){
-
 		return 'function startTree(){
 				' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid=0";
 				drawTree();
 			}';
-	}
-
-	function getJSIncludeFunctions(){
-
-		$out = weTree::getJSIncludeFunctions();
-		$out.="\n" . $this->getJSStartTree() . "\n";
-
-		return $out;
 	}
 
 	function getJSInfo(){

@@ -24,10 +24,6 @@
  */
 class we_export_tree extends weMainTree{
 
-	public function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
-	}
-
 	function getJSInfo(){
 		return 'function info(text) {}';
 	}
@@ -77,7 +73,6 @@ var attribs=new Array();' .
 			$this->topFrame . '.treeData.table=' . $this->topFrame . '.table;';
 
 		foreach($treeItems as $item){
-			//if(strpos($item["contenttype"], "text") !== false || strpos($item["contenttype"], "folder") !== false || strpos($item["contenttype"], "object") !== false){
 
 			$js.="if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){ \n";
 			foreach($item as $k => $v){
@@ -94,7 +89,6 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 			}
 			$js.=$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
 					}';
-			//}
 		}
 		$js.=$this->topFrame . '.treeData.setstate(' . $this->topFrame . '.treeData.tree_states["select"]);' .
 			$this->topFrame . '.drawTree();';
@@ -106,11 +100,6 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 		return 'function startTree(){
 				' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=load&cmd=load&tab="+' . $this->topFrame . '.table+"&pid=0&openFolders="+' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table];
 			}';
-	}
-
-	function getJSTreeCode(){
-		return parent::getJSTreeCode() .
-			we_html_element::jsElement($this->getJSStartTree());
 	}
 
 	function getJSDrawTree(){

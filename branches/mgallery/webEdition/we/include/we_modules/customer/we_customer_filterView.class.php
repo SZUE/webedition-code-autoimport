@@ -156,38 +156,38 @@ function addToMultiEdit(_multEdit, paths){
 }
 EO_SCRIPT;
 
-		/* ################# Radio buttons ############### */
+		// ################# Radio buttons ###############
 		$_modeRadioOff = we_html_forms::radiobutton(we_customer_abstractFilter::OFF, $this->_filter->getMode() === we_customer_abstractFilter::OFF, 'wecf_mode', g_l('modules_customerFilter', '[mode_off]'), true, "defaultfont", "wecf_hot();updateView();");
 		$_modeRadioNone = ($this->_ShowModeNone ?
-				we_html_forms::radiobutton(we_customer_abstractFilter::NONE, $this->_filter->getMode() === we_customer_abstractFilter::NONE, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "wecf_hot();updateView();") :
-				'');
+						we_html_forms::radiobutton(we_customer_abstractFilter::NONE, $this->_filter->getMode() === we_customer_abstractFilter::NONE, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "wecf_hot();updateView();") :
+						'');
 
 		$_modeRadioAll = we_html_forms::radiobutton(we_customer_abstractFilter::ALL, $this->_filter->getMode() === we_customer_abstractFilter::ALL, 'wecf_mode', g_l('modules_customerFilter', '[mode_all]'), true, "defaultfont", "wecf_hot();updateView();");
 		$_modeRadioSpecific = we_html_forms::radiobutton(we_customer_abstractFilter::SPECIFIC, $this->_filter->getMode() === we_customer_abstractFilter::SPECIFIC, 'wecf_mode', g_l('modules_customerFilter', '[mode_specific]'), true, "defaultfont", "wecf_hot();updateView();");
 		$_modeRadioFilter = we_html_forms::radiobutton(we_customer_abstractFilter::FILTER, $this->_filter->getMode() === we_customer_abstractFilter::FILTER, 'wecf_mode', g_l('modules_customerFilter', '[mode_filter]'), true, "defaultfont", "wecf_hot();updateView();");
 
 
-		/* ################# Selector for specific customers ############### */
+		// ################# Selector for specific customers ###############
 
 		$_customers = id_to_path($this->_filter->getSpecificCustomers(), CUSTOMER_TABLE, null, false, true);
 		$_specificCustomersSelect = $this->getMultiEdit('specificCustomersEdit', $_customers, "", $this->_filter->getMode() === we_customer_abstractFilter::SPECIFIC);
 
-		/* ################# Selector blacklist ############### */
+		// ################# Selector blacklist ###############
 
 		$_blackList = id_to_path($this->_filter->getBlackList(), CUSTOMER_TABLE, null, false, true);
 		$_blackListSelect = $this->getMultiEdit('blackListEdit', $_blackList, g_l('modules_customerFilter', '[black_list]'), $this->_filter->getMode() === we_customer_abstractFilter::FILTER);
 
-		/* ################# Selector for whitelist ############### */
+		// ################# Selector for whitelist ###############
 
 		$_whiteList = id_to_path($this->_filter->getWhiteList(), CUSTOMER_TABLE, null, false, true);
 		$_whiteListSelect = $this->getMultiEdit('whiteListEdit', $_whiteList, g_l('modules_customerFilter', '[white_list]'), $this->_filter->getMode() === we_customer_abstractFilter::FILTER);
 
-		/* ################# customer filter ############### */
+		// ################# customer filter ###############
 
 		$_filterCustomers = we_customer_filterView::getDiv($this->getHTMLCustomerFilter(), 'filterCustomerDiv', $this->_filter->getMode() === we_customer_abstractFilter::FILTER, 25);
 
 
-		/* ################# concate and output ################# */
+		// ################# concate and output #################
 
 		$_space = '<div style="height:4px;"></div>';
 
@@ -214,8 +214,8 @@ function wecf_hot() {
 }
 EO_SCRIPT;
 
-		$filterCustomers = we_customer_filterView::getDiv($this->getHTMLCustomerFilter(true), 'filterCustomerDiv', true, 25);
-		return we_html_element::jsElement($_script) . $filterCustomers;
+		return we_html_element::jsElement($_script) .
+				we_customer_filterView::getDiv($this->getHTMLCustomerFilter(true), 'filterCustomerDiv', true, 25);
 	}
 
 	/**
@@ -280,7 +280,7 @@ EO_SCRIPT;
 		if(is_array($data)){
 			foreach($data as $_dat){
 				$_script .= $name . '.addItem();' .
-					$name . '.setItem(0,(' . $name . '.itemCount-1),"' . $_dat . '");';
+						$name . '.setItem(0,(' . $name . '.itemCount-1),"' . $_dat . '");';
 			}
 		}
 
@@ -289,16 +289,16 @@ EO_SCRIPT;
 		$_addbut = we_html_button::create_button("add", "javascript:we_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.addToMultiEdit(opener." . $name . ", top.allPaths);opener.wecf_hot();','','','',1)");
 
 		$_buttonTable = we_html_button::create_button_table(array(
-				we_html_button::create_button("delete_all", "javascript:removeFromMultiEdit(" . $name . ")"),
-				$_addbut
-				)
+					we_html_button::create_button("delete_all", "javascript:removeFromMultiEdit(" . $name . ")"),
+					$_addbut
+						)
 		);
 
-		$_select = we_html_tools::hidden($name . 'Control', we_base_request::_(we_base_request::RAW,$name . 'Control',0)) .
-			we_html_tools::hidden($name . 'Count', (isset($data) ? count($data) : '0')) .
-			($headline ? '<div class="defaultfont">' . $headline . '</div>' : '') .
-			'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . ($this->_width + (we_base_browserDetect::isIE() ? 13 : 0)) . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
-			'<div style="width:' . ($this->_width + 13) . 'px;" align="right">' . $_buttonTable . '</div>' . we_html_element::jsElement($_script);
+		$_select = we_html_tools::hidden($name . 'Control', we_base_request::_(we_base_request::RAW, $name . 'Control', 0)) .
+				we_html_tools::hidden($name . 'Count', (isset($data) ? count($data) : '0')) .
+				($headline ? '<div class="defaultfont">' . $headline . '</div>' : '') .
+				'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . ($this->_width + (we_base_browserDetect::isIE() ? 13 : 0)) . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
+				'<div style="width:' . ($this->_width + 13) . 'px;" align="right">' . $_buttonTable . '</div>' . we_html_element::jsElement($_script);
 		return self::getDiv($_select, $name . 'Div', $isVisible, 22);
 	}
 
@@ -334,14 +334,14 @@ EO_SCRIPT;
 
 		if(!$startEmpty && empty($_filter)){
 			$this->_filter->setFilter(
-				array(
 					array(
-						'logic' => '',
-						'field' => 'id',
-						'operation' => 0,
-						'value' => ''
+						array(
+							'logic' => '',
+							'field' => 'id',
+							'operation' => 0,
+							'value' => ''
+						)
 					)
-				)
 			);
 		}
 
@@ -349,39 +349,34 @@ EO_SCRIPT;
 		$_adv_row = '';
 		$_first = 0;
 
-		$_styleLogic = 'border: #AAAAAA solid 1px; width: 59px; margin-right: 5px;';
-		$_styleLeft = 'border: #AAAAAA solid 1px; width: 160px; margin-right: 5px;';
-		$_styleMiddle = 'border: #AAAAAA solid 1px; width: 138px; margin-right: 5px;';
-		$_styleRight = 'border: #AAAAAA solid 1px; width: 160px; margin-right: 5px;';
-
 		$_filter = $this->_filter->getFilter();
 		foreach($_filter as $_key => $_value){
 			$_adv_row .= '
 				<tr id="filterRow_' . $_i . '">
 					<td style="padding-top: ' . ($_value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				(($_i == 0) ? we_html_tools::getPixel(64, 1) : we_html_tools::htmlSelect('filterLogic_' . $_i, $_filter_logic, 1, $_value['logic'], false, array('onchange' => "wecf_logic_changed(this);", 'class' => "defaultfont", 'style' => $_styleLogic))) .
-				'</td>
+					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
+					(($_i == 0) ? we_html_tools::getPixel(64, 1) : we_html_tools::htmlSelect('filterLogic_' . $_i, $_filter_logic, 1, $_value['logic'], false, array('onchange' => "wecf_logic_changed(this);", 'class' => "defaultfont logicInput"))) .
+					'</td>
 					<td style="padding-top: ' . ($_value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				we_html_tools::htmlSelect('filterSelect_' . $_i, $_filter_args, 1, $_value['field'], false, array('onchange' => "wecf_hot();", 'class' => "defaultfont", 'style' => $_styleLeft)) .
-				'</td>
+					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
+					we_html_tools::htmlSelect('filterSelect_' . $_i, $_filter_args, 1, $_value['field'], false, array('onchange' => "wecf_hot();", 'class' => "defaultfont leftInput")) .
+					'</td>
 					<td style="padding-top: ' . ($_value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				we_html_tools::htmlSelect('filterOperation_' . $_i, $_filter_op, 1, $_value['operation'], false, array('onchange' => "wecf_hot();", 'class' => "defaultfont", 'style' => $_styleMiddle)) .
-				'</td>
+					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
+					we_html_tools::htmlSelect('filterOperation_' . $_i, $_filter_op, 1, $_value['operation'], false, array('onchange' => "wecf_hot();", 'class' => "defaultfont middleInput")) .
+					'</td>
 					<td style="padding-top: ' . ($_value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				'<input name="filterValue_' . $_i . '" value="' . $_value['value'] . '" type="text" onchange="wecf_hot();" class="defaultfont" style="' . $_styleRight . '"/>' .
-				'</td>
+					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
+					'<input name="filterValue_' . $_i . '" value="' . $_value['value'] . '" type="text" onchange="wecf_hot();" class="defaultfont rightInput"/>' .
+					'</td>
 					<td style="padding-top: ' . ($_value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				we_html_button::create_button("image:btn_function_plus", "javascript:addRow($_i)", true, 25) .
-				'</td>
+					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
+					we_html_button::create_button("image:btn_function_plus", "javascript:addRow(" . ($_i + 1) . ")", true, 25) .
+					'</td>
 					<td style="padding-left:5px;padding-top: ' . ($_value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				(($_i == 0) ? we_html_tools::getPixel(25, 1) : we_html_button::create_button("image:btn_function_trash", "javascript:delRow($_i)", true, 25)) .
-				'</td>
+					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
+					(($_i == 0) ? we_html_tools::getPixel(25, 1) : we_html_button::create_button("image:btn_function_trash", "javascript:delRow($_i)", true, 25)) .
+					'</td>
 				</tr>';
 			$_i++;
 			$_first = 1;
@@ -399,144 +394,34 @@ EO_SCRIPT;
 		</table>
 		';
 
-		$js = we_html_element::jsElement('
-			String.prototype.trim=function () {
-   				return this.replace(/^\s+|\s+$/g,"");
-			}
 
-			function addRow(rowNr) {
-
-				var _table = document.getElementById("filterTable");
-				if (_table) {
-					var _numRows = _table.rows.length;
-
-					if (rowNr === undefined) {
-						rowNr = _numRows;
-					}
-
-					var _newRow = _table.insertRow(rowNr);
-
-					_numRows++;
-
-					var _cell = document.createElement("TD");
-					_cell.style.paddingTop = "4px";
-
-		       		if (rowNr > 0) {
-						_cell.innerHTML=\'<select onchange="wecf_logic_changed(this);" class="weSelect" size="1" style="' . $_styleLogic . '">' . $_filter_logic_str . '</select>\';
-		       		} else {
-		       			_cell.innerHTML=\'' . we_html_tools::getPixel(64, 1) . '\';
-		       		}
-	       			_newRow.appendChild(_cell);
-
-					_cell = document.createElement("TD");
-					_cell.style.paddingTop = "4px";
-					_cell.innerHTML=\'<select onchange="wecf_hot();" class="weSelect" size="1" style="' . $_styleLeft . '">' . $_filter_args_str . '</select>\';
-        			_newRow.appendChild(_cell);
-
-        			_cell = document.createElement("TD");
-					_cell.style.paddingTop = "4px";
-					_cell.innerHTML=\'<select onchange="wecf_hot();" class="weSelect" size="1" style="' . $_styleMiddle . '">' . $_filter_op_str . '</select>\';
-        			_newRow.appendChild(_cell);
-
-					_cell = document.createElement("TD");
-					_cell.style.paddingTop = "4px";
-					_cell.innerHTML=\'<input onchange="wecf_hot();" type="text" style="' . $_styleRight . '"/>\';
-        			_newRow.appendChild(_cell);
-
-        			_cell = document.createElement("TD");
-					_cell.style.paddingTop = "4px";
-        			_newRow.appendChild(_cell);
-
-        			_cell = document.createElement("TD");
-					_cell.style.paddingTop = "4px";
- 					_cell.style.paddingLeft = "5px";
-        			_newRow.appendChild(_cell);
-
-        			updateFilterTable();
-        			wecf_hot();
-				}
-			}
-
-			function delRow(rowNr) {
-				var _table = document.getElementById("filterTable");
-				if(_table){
-					var _trows = _table.rows;
-					var _rowID = "filterRow_" + rowNr;
-
-		        	for (var i=0; i < _trows.length; i++) {
-		        		if (_rowID == _trows[i].id) {
-		        			_table.deleteRow(i);
-		        			break;
-		        		}
-		        	}
-
-		        	updateFilterTable();
-
-				}
-				wecf_hot();
-			}
-
-			function updateFilterTable() {
-
- 				var _table = document.getElementById("filterTable");
-				if (_table) {
-		   			var _row;
-					var _numRows = _table.rows.length;
-
-	    			// now loop through all rows and set names and buttons
-	    			for (var i = 0; i < _numRows; i++) {
-
-	    				_row = _table.rows[i];
-
-	    				_row.id = "filterRow_"+i;
-
-	    				_cell = _row.cells[0];  // logic
-	 					if (_cell.innerHTML.trim().toLowerCase().substring(0,4) == "<img" && i > 0) {
-							_cell.innerHTML=\'<select onchange="wecf_logic_changed(this);" class="weSelect" name="filterLogic_\'+i+\'" size="1" style="' . $_styleLogic . '">' . $_filter_logic_str . '</select>\';
-						}
-
-						if (i > 0) {
-							_cell.firstChild.name = "filterLogic_" + i;
-						}
-
-	    				_cell = _row.cells[1];  // field
-	    				_cell.firstChild.name = "filterSelect_"+i;
-
-	    				_cell = _row.cells[2];  // operator
-	    				_cell.firstChild.name = "filterOperation_"+i;
-
-	    				_cell = _row.cells[3];  // value
-	    				_cell.firstChild.name = "filterValue_"+i;
-
-	    				_cell = _row.cells[4];  // plus
-	    				_cell.innerHTML =\'' . we_html_button::create_button("image:btn_function_plus", "javascript:addRow('+i+')", true, 25) . '\';
-
-	    				_cell = _row.cells[5];  // trash
-	    				_cell.innerHTML = (i==0) ? \'' . we_html_tools::getPixel(25, 1) . '\' : \'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+i+')", true, 25) . '\';
-
-						if (i > 0) {
-							_cell = _row.cells[0]
-							var elem = _cell.firstChild;
-
-							var _logic = elem.options[elem.selectedIndex].value;
-							var _prevRow = _table.rows[i-1];
-
-							for (var n = 0; n < _prevRow.cells.length; n++) {
-								_prevRow.cells[n].style.paddingBottom = (_logic=="OR") ? "10px" : "0";
-							}
-							for (var n = 0; n < _row.cells.length; n++) {
-								_row.cells[n].style.paddingTop = (_logic=="OR") ? "10px" : "0";
-								_row.cells[n].style.borderTop = (_logic=="OR") ? "1px solid grey" : "0";
-							}
-						}
-					}
-       			}
-			}
-
-		');
-
-
-		return $js . $_filterTable . '<div style="height:5px;"></div>' . we_html_button::create_button("image:btn_function_plus", "javascript:addRow()");
+		return we_html_element::cssElement('
+.logicInput{
+		border: #AAAAAA solid 1px; width: 59px; margin-right: 5px;
+}
+.leftInput{
+border: #AAAAAA solid 1px; width: 160px; margin-right: 5px;
+}
+.middleInput{
+		border: #AAAAAA solid 1px; width: 138px; margin-right: 5px;
+}
+.rightInput{
+		border: #AAAAAA solid 1px; width: 160px; margin-right: 5px;
+}').
+		we_html_element::jsElement('
+var filter={
+	"logic":\'' . $_filter_logic_str . '\',
+	"args":\'' . $_filter_args_str . '\',
+	"op":\'' . $_filter_op_str . '\'
+};
+var buttons={
+	"add":\'' . we_html_button::create_button("image:btn_function_plus", "javascript:addRow(__CNT__)", true, 25) . '\',
+	"trash":\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow(__CNT__)", true, 25) . '\'
+};') .
+				we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_filter.js') .
+				$_filterTable .
+				'<div style="height:5px;"></div>' .
+				we_html_button::create_button("image:btn_function_plus", "javascript:addRow()");
 	}
 
 	/* #########################################################################################

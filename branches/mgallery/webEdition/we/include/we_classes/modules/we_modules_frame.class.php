@@ -80,11 +80,11 @@ abstract class we_modules_frame{
 
 	function getTree_g_l(){
 		return 'var g_l = {
-"tree_select_statustext":"' . g_l('tree', '[select_statustext]') . '",
-"tree_edit_statustext":"' . g_l('tree', '[edit_statustext]') . '",
-"tree_open_statustext":"' . g_l('tree', '[open_statustext]') . '",
-"tree_close_statustext":"' . g_l('tree', '[close_statustext]') . '"
-	}
+	"tree_select_statustext":"' . g_l('tree', '[select_statustext]') . '",
+	"tree_edit_statustext":"' . g_l('tree', '[edit_statustext]') . '",
+	"tree_open_statustext":"' . g_l('tree', '[open_statustext]') . '",
+	"tree_close_statustext":"' . g_l('tree', '[close_statustext]') . '"
+}
 ';
 	}
 

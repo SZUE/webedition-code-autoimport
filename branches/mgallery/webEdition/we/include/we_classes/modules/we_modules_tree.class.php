@@ -81,7 +81,6 @@ function updateEntry(id,text,pid,pub,order){
 	}
 
 	function getJSStartTree(){
-
 		return '
 function startTree(){
 	pid = arguments[0] ? arguments[0] : 0;
@@ -102,13 +101,6 @@ function reloadGroup(pid){
 		startTree(pid,offset);
 	}
 }';
-	}
-
-	function getJSIncludeFunctions(){
-
-		return weTree::getJSIncludeFunctions() .
-			$this->getJSStartTree() .
-			$this->getJSReloadGroup();
 	}
 
 	function getJSMakeNewEntry(){
@@ -175,44 +167,15 @@ function addSort(object){
 }';
 	}
 
-	function getJSClearItems(){
-		return '
-function clearItems(){
-	var ai = 1;
-	var delid = 1;
-	var deleted = 0;
-
-	while (ai <= treeData.len) {
-		if (treeData[ai].parentid == this.id){
-			if(treeData[ai].contenttype=="group"){
-				deleted+=treeData[ai].clear();
-			}else{
-				ind=ai;
-				while (ind <= treeData.len-1) {
-					treeData[ind]=treeData[ind+1];
-					ind++;
-				}
-				treeData.len[treeData.len]=null;
-				treeData.len--;
-			}
-			deleted++;
-		}else{
-			ai++;
-		}
-	}
-	return deleted;
-}';
-	}
-
 	function getHTMLContruct(){
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(//FIXME: missing title
-					we_html_tools::getHtmlInnerHead() .
-					STYLESHEET .
-					$this->getStyles()
-				) .
-				we_html_element::htmlBody(array(), '<div id="treetable"></div>'
-				)
+						we_html_element::htmlHead(//FIXME: missing title
+								we_html_tools::getHtmlInnerHead() .
+								STYLESHEET .
+								$this->getStyles()
+						) .
+						we_html_element::htmlBody(array(), '<div id="treetable"></div>'
+						)
 		);
 	}
 
@@ -223,18 +186,18 @@ function showSegment(){
 }';
 	}
 
-	function getJSTreeFunctions(){
+	function getJSTreeFunctions($overriden = false){
 		// must override
-		return weTree::getJSTreeFunctions() . '
+		return parent::getJSTreeFunctions(true) . ($overriden ? '' : '
 function doClick(id,typ){
-}' .
-			$this->topFrame . '.loaded=1;';
+}' ) .
+				$this->topFrame . '.loaded=1;';
 	}
 
 	function getJSTreeCode(){
 		// must override
 		return parent::getJSTreeCode() .
-			we_html_element::jsElement('drawTree.selection_table="";');
+				we_html_element::jsElement('drawTree.selection_table="";');
 	}
 
 }

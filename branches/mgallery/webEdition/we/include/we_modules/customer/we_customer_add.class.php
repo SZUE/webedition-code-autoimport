@@ -36,7 +36,7 @@ abstract class we_customer_add{
 			$order->addOption($ord, $ord);
 		}
 
-		$function = new we_html_select(array('name' => 'function', 'style' => 'width:130'));
+		$function = new we_html_select(array('name' => 'function', 'style' => 'width:130px;'));
 
 		$counter = 0;
 		$fhidden = '';
@@ -61,11 +61,11 @@ abstract class we_customer_add{
 									g_l('modules_customer', '[common]'));
 				}
 
-				$branch->setAttributes(array("name" => "branch_" . $counter . "_" . $fcounter, "class" => "weSelect", "onchange" => "we_cmd('selectBranch')", "style" => "width:180px;"));
+				$branch->setAttributes(array("name" => "branch_" . $counter . '_' . $fcounter, "class" => "weSelect", "onchange" => "we_cmd('selectBranch')", "style" => "width:180px;"));
 				$branch->selectOption($sort["branch"]);
 
 				$field = $pob->getHTMLFieldsSelect($sort["branch"]);
-				$field->setAttributes(array("name" => "field_" . $counter . "_" . $fcounter, "style" => "width:180px;", "class" => "weSelect", "onchange" => "we_cmd('selectBranch')"));
+				$field->setAttributes(array("name" => "field_" . $counter . '_' . $fcounter, "style" => "width:180px;", "class" => "weSelect", "onchange" => "we_cmd('selectBranch')"));
 
 				$fields_names = array_keys($pob->View->customer->getFieldsNames($sort["branch"]));
 				if($sort["branch"] == g_l('modules_customer', '[common]') || $sort["branch"] == g_l('modules_customer', '[other]')){
@@ -174,55 +174,18 @@ abstract class we_customer_add{
 
 	public static function getJSSortAdmin(&$pob){
 		return '
-function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
-}
+var frames={
+	"set":"' . $pob->frameset . '"
+};
 
-function we_cmd(){
-	var args = "";
-	var url = "' . $pob->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+var g_l={
+	"default_soting_no_del": "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[default_soting_no_del]')) . '",
+	"sortname_empty": "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[sortname_empty]')) . '",
+};
 
-	switch (arguments[0]) {
-
-		case "add_sort_field":
-			if(arguments[1]==""){
-				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[sortname_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-				break;
-			}
-			document.we_form.sortindex.value=arguments[1];
-		case "add_sort":
-			document.we_form.cmd.value=arguments[0];
-			submitForm();
-		break;
-		case "del_sort_field":
-			document.we_form.fieldindex.value=arguments[2];
-		case "del_sort":
-			if(arguments[1]=="' . $pob->settings->getSettings('default_sort_view') . '"){
-				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[default_soting_no_del]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			}
-			else{
-				document.we_form.cmd.value=arguments[0];
-				document.we_form.sortindex.value=arguments[1];
-				submitForm();
-			}
-		break;
-		case "save_sort":
-		case "selectBranch":
-			document.we_form.cmd.value=arguments[0];
-			submitForm();
-		break;
-		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-			}
-			eval(\'top.content.we_cmd(\'+args+\')\');
-	}
-	setScrollTo();
-}
+var settings={
+	"default_sort_view":"' . $pob->settings->getSettings('default_sort_view') . '"
+};
 
 function doScrollTo(){
 	if(opener.' . $pob->topFrame . '.scrollToVal){
@@ -233,55 +196,9 @@ function doScrollTo(){
 
 function setScrollTo(){
 		opener.' . $pob->topFrame . '.scrollToVal=' . (we_base_browserDetect::isIE() ? 'document.body.scrollTop' : 'pageYOffset') . ';
-}' . $pob->getJSSubmitFunction("sort_admin");
-	}
-
-	public static function getJSSearch(&$pob){
-		return '
-function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
-}
-
-function we_cmd(){
-	var args = "";
-	var url = "' . $pob->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	if(document.we_form.mode.value=="1") transferDateFields();
-	switch (arguments[0]) {
-		case "selectBranch":
-			document.we_form.cmd.value=arguments[0];
-			submitForm();
-		break;
-		case "add_search":
-			document.we_form.count.value++;
-			submitForm();
-		break;
-		case "del_search":
-			if(document.we_form.count.value>0) document.we_form.count.value--;
-			submitForm();
-		break;
-		case "search":
-			document.we_form.search.value=1;
-			submitForm();
-		break;
-		case "switchToAdvance":
-			document.we_form.mode.value="1";
-			submitForm();
-		break;
-		case "switchToSimple":
-			document.we_form.mode.value="0";
-			submitForm();
-		break;
-		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-			}
-			eval(\'top.content.we_cmd(\'+args+\')\');
-	}
-}' . $pob->getJSSubmitFunction("search");
+}' .
+				$pob->getJSSubmitFunction("sort_admin") .
+				we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_sortAdmin.js');
 	}
 
 	public static function getHTMLSearch(&$pob, &$search, &$select){
@@ -349,7 +266,7 @@ function we_cmd(){
 		$advsearch->setCol($c, 0, array("colspan" => $colspan), we_html_tools::getPixel(5, 5));
 
 		$advsearch->addRow();
-		$advsearch->setCol(++$c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array(
+		$advsearch->setCol( ++$c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array(
 					we_html_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_search')"),
 					we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_search')")
 						)

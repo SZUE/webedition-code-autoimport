@@ -108,14 +108,6 @@ function doClick(id,typ){
 			}';
 	}
 
-	function getJSIncludeFunctions(){
-
-		$out = weTree::getJSIncludeFunctions();
-		$out.="\n" . $this->getJSStartTree() . "\n";
-
-		return $out;
-	}
-
 	function getJSMakeNewEntry(){
 		return '
 function makeNewEntry(icon,id,pid,txt,open,ct,tab){

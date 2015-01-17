@@ -56,7 +56,7 @@ class weMainTree extends weTree{
 			'.selected_group {background-color: #D4DBFA;}',
 			'.selected_notpublished_item {color: red;}',
 			'.selected_open_group {color: black;}',
-			)
+				)
 		);
 	}
 
@@ -82,9 +82,9 @@ function openClose(id) {
 }';
 	}
 
-	function getJSTreeFunctions(){
+	function getJSTreeFunctions($overridden){
 
-		return weTree::getJSTreeFunctions() . '
+		return parent::getJSTreeFunctions() . ($overridden ? '' : '
 function doClick(id){
 	var node=' . $this->topFrame . '.get(id);
 	var ct=node.contenttype;
@@ -96,7 +96,7 @@ function doClick(id){
 	} else {
 		top.weEditorFrameController.openDocument(table,id,ct);
 	}
-}';
+}');
 	}
 
 	function getJSUpdateTreeScript($doc, $select = true){
@@ -123,10 +123,10 @@ while(1){
 if(weWindow.treeData){
 	var obj = weWindow.treeData;
 	var isIn = false;' .
-			($select ? '
+				($select ? '
 	weWindow.treeData.selection_table="' . $doc->Table . '";
 	weWindow.treeData.selection="' . $doc->ID . '";' :
-				'weWindow.treeData.unselectnode();') . '
+						'weWindow.treeData.unselectnode();') . '
 	if(weWindow.treeData.table == "' . $doc->Table . '"){
 		if(weWindow.treeData[top.indexOfEntry(' . $doc->ParentID . ')]){
 				var attribs={
@@ -270,12 +270,11 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab){
 		return parent::getJSIncludeFunctions() . '
 we_scrollY["' . FILE_TABLE . '"] = 0;
 we_scrollY["' . TEMPLATES_TABLE . '"] = 0;' .
-			(defined('OBJECT_TABLE') ? '
+				(defined('OBJECT_TABLE') ? '
 we_scrollY["' . OBJECT_TABLE . '"] = 0;
 we_scrollY["' . OBJECT_FILES_TABLE . '"] = 0;' :
-				'') . '
-treeData.table="' . FILE_TABLE . '";' .
-			$this->getJSMakeNewEntry();
+						'') . '
+treeData.table="' . FILE_TABLE . '";';
 	}
 
 	function getJSLoadTree($treeItems){

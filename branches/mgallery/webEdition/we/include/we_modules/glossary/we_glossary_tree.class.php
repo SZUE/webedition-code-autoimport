@@ -67,7 +67,7 @@ drawTree();
 	}
 
 	function getJSTreeFunctions(){
-		return weTree::getJSTreeFunctions() . '
+		return parent::getJSTreeFunctions(true) . '
 function doClick(id,typ){
 	var cmd = "";
 	if(top.content.hot == "1") {
@@ -87,20 +87,13 @@ function doClick(id,typ){
 	}
 
 	function getJSStartTree(){
-
 		return 'function startTree(){
 	' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid=0";
 	drawTree();
 }';
 	}
 
-	function getJSIncludeFunctions(){
-		return weTree::getJSIncludeFunctions() .
-			$this->getJSStartTree();
-	}
-
 	function getJSMakeNewEntry(){
-
 		return '
 function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
 	if(treeData[indexOfEntry(pid)]){

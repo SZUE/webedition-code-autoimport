@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weTree{
+
 	const DefaultWidth = 300;
 	const MinWidth = 200;
 	const MaxWidth = 1000;
@@ -123,6 +124,18 @@ class weTree{
 		$this->styles = $styles;
 	}
 
+	function getJSStartTree(){
+		return '';
+	}
+
+	function getJSReloadGroup(){
+		return '';
+	}
+
+	function getJSMakeNewEntry(){
+		return '';
+	}
+
 	/*
 	  the functions prints tree javascript
 	  should be placed in a frame which doesn't reloads
@@ -130,29 +143,31 @@ class weTree{
 	 */
 
 	function getJSIncludeFunctions(){
-
 		return $this->getJSDrawTree() .
-			$this->getJSUpdateItem() .
-			$this->getJSOpenClose() .
-			$this->getJSGetLayout() .
-			$this->getJSContainer() .
-			$this->getJSCheckNode() .
-			$this->getJSInfo() .
-			$this->getJSShowSegment() .
-			$this->getJSClearItems();
+				$this->getJSUpdateItem() .
+				$this->getJSOpenClose() .
+				$this->getJSGetLayout() .
+				$this->getJSContainer() .
+				$this->getJSCheckNode() .
+				$this->getJSInfo() .
+				$this->getJSShowSegment() .
+				$this->getJSStartTree() .
+				$this->getJSReloadGroup() .
+				$this->getJSMakeNewEntry() .
+				$this->getJSAddSortFunction() .
+				$this->getJSTreeFunctions();
 	}
 
 	function getJSTreeCode(){
 		return we_html_element::jsScript(JS_DIR . 'images.js') .
-			we_html_element::jsScript(JS_DIR . 'tree.js') .
-			we_html_element::jsElement('
+				we_html_element::jsScript(JS_DIR . 'tree.js') .
+				we_html_element::jsElement('
 var treeData = new container();
 
 var we_scrollY = new Array();
-//var 	setScrollY;
-
-' . $this->getJSIncludeFunctions() . '
-
+' . $this->getJSIncludeFunctions() .
+						//FIXME: we can't move the following functions, since some modules are not implemented on top of this, so they implement them their way (see banner)
+						'
 function indexOfEntry(id){
 	var ai = 1;
 	while (ai <= treeData.len) {
@@ -196,13 +211,14 @@ function containerClear(){
 	this.len =0;
 }
 
-' . $this->getJSAddSortFunction() . '
-' . $this->getJSTreeFunctions() . '
-
 var startloc=0;
 var treeHTML;
 self.focus();'
-		);
+				) . $this->customJSFile();
+	}
+
+	function customJSFile(){
+		return '';
 	}
 
 	function getJSAddSortFunction(){
@@ -222,7 +238,6 @@ function addSort(object){
 
 	function getJSTreeFunctions(){
 		return '
-//var clickCount=0;
 var wasdblclick=0;
 var tout=null;
 
@@ -243,7 +258,6 @@ function setSegment(id){
 	function getJSOpenClose(){
 		return '
 function openClose(id){
-
 	if(id==""){
 		return;
 	}
@@ -322,37 +336,7 @@ function showSegment(){
 }';
 	}
 
-	function getJSClearItems(){
-		return '
-function clearItems(){
-	var ai = 1;
-	var delid = 1;
-	var deleted = 0;
-
-	while (ai <= treeData.len) {
-		if (treeData[ai].parentid == this.id){
-			if(treeData[ai].contenttype=="group"){
-				deleted+=treeData[ai].clear();
-			}else{
-				ind=ai;
-				while (ind <= treeData.len-1) {
-					treeData[ind]=treeData[ind+1];
-					ind++;
-				}
-				treeData.len[treeData.len]=null;
-				treeData.len--;
-			}
-			deleted++;
-		}else{
-			ai++;
-		}
-	}
-	drawTree();
-	return deleted;
-}';
-	}
-
-	function getJSContainer(){
+	protected function getJSContainer(){
 		$ts = array();
 		foreach($this->tree_states as $k => $v){
 			$ts[] = '"' . $k . '":"' . $v . '"';
@@ -417,34 +401,34 @@ function updateEntry(attribs){
 
 	function getStyles(){
 		return we_html_element::cssLink(CSS_DIR . 'tree.css') .
-			($this->styles ? we_html_element::cssElement(implode("\n", $this->styles)) : '');
+				($this->styles ? we_html_element::cssElement(implode("\n", $this->styles)) : '');
 	}
 
 	// Function which control how tree contenet will be displayed
 	function getHTMLContruct($onresize = ''){
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(//FIXME: missing title
-					we_html_tools::getHtmlInnerHead() .
-					STYLESHEET .
-					$this->getStyles() .
-					we_html_element::jsScript(JS_DIR . 'tree.js')
-				) .
-				we_html_element::htmlBody(array(
-					'id' => 'treetable',
-					'onresize' => $onresize
-					), ''
-				)
+						we_html_element::htmlHead(//FIXME: missing title
+								we_html_tools::getHtmlInnerHead() .
+								STYLESHEET .
+								$this->getStyles() .
+								we_html_element::jsScript(JS_DIR . 'tree.js')
+						) .
+						we_html_element::htmlBody(array(
+							'id' => 'treetable',
+							'onresize' => $onresize
+								), ''
+						)
 		);
 	}
 
 	function getHTMLContructX($onresize = ''){
 		return
-			$this->getStyles() .
-			we_html_element::htmlDiv(array(
-				'id' => 'treetable',
-				'onresize' => $onresize
-				), ''
+				$this->getStyles() .
+				we_html_element::htmlDiv(array(
+					'id' => 'treetable',
+					'onresize' => $onresize
+						), ''
 		);
 	}
 
@@ -460,18 +444,18 @@ function drawTree(){
 	}
 
 	var out="<div class=\""+treeData.getlayout()+"\"><nobr>"+draw(treeData.startloc,"")+"</nobr></div>";' .
-			$this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
+				$this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
 }' .
-			$this->getJSDraw();
+				$this->getJSDraw();
 	}
 
 	function getJSDraw(){
 		$custom_draw = $this->getJSCustomDraw();
-		$draw_code = empty($custom_draw) ? '' : 'switch(nf[ai].typ){';
+		$draw_code = $custom_draw ? 'switch(nf[ai].typ){' : '';
 		foreach($custom_draw as $ck => $cv){
 			$draw_code.=' case "' . $ck . '":' . $cv . ' break;';
 		}
-		$draw_code .= empty($custom_draw) ? '' : '}';
+		$draw_code .= $custom_draw ? '}' : '';
 		return'
 function draw(startEntry,zweigEintrag){
 	var nf = search(startEntry);

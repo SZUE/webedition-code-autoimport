@@ -22,8 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//TODO: make weMessagingIconbar.class with weMsgIcobnbar.class and weTodoIconbar.class
-
 class we_messaging_frames extends we_modules_frame{
 	var $db;
 	var $View;
@@ -238,8 +236,6 @@ function loadData() {
 	}
 
 	protected function getHTMLEditorHeader(){
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 		$extraHead = we_html_element::jsElement('
 			function doSearch() {
 				top.content.cmd.location = "' . $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=cmd&mcmd=search_messages&searchterm=" + document.we_messaging_search.messaging_search_keyword.value;
