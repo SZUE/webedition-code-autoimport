@@ -229,7 +229,7 @@ var perms={
 	"NEW_BANNER":' . intval(permissionhandler::hasPerm("NEW_BANNER")) . '
 };
 ') .
-				we_html_element::jsScript(WE_WORKFLOW_MODULE_DIR . 'workflow_top.js');
+				we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_top.js');
 	}
 
 	function getJSFooterCode(){

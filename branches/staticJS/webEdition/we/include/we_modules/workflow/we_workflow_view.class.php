@@ -471,7 +471,7 @@ var perms={
 	"NEW_WORKFLOW":' . intval(permissionhandler::hasPerm("NEW_WORKFLOW")) . '
 };
 ') .
-				we_html_element::jsScript(WE_WORKFLOW_MODULE_DIR . 'workflow_top.js');
+				we_html_element::jsScript(WE_JS_WORKFLOW_MODULE_DIR . 'workflow_top.js');
 	}
 
 	function getCmdJS(){
@@ -525,7 +525,7 @@ function getNumOfDocs(){
 	return ' . $this->workflowDef->loadDocuments() . count($this->workflowDef->documents) . ';
 }
 ' : '')) .
-				we_html_element::jsScript(WE_WORKFLOW_MODULE_DIR . 'workflow_property.js');
+				we_html_element::jsScript(WE_JS_WORKFLOW_MODULE_DIR . 'workflow_property.js');
 	}
 
 	function processCommands(){

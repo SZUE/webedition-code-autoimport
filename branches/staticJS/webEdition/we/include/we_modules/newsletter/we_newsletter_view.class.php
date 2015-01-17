@@ -317,7 +317,7 @@ var perms={
 	"EDIT_NEWSLETTER":' . intval(permissionhandler::hasPerm("EDIT_NEWSLETTER")) . ',
 	"NEW_NEWSLETTER":' . intval(permissionhandler::hasPerm("NEW_NEWSLETTER")) . '
 };
-') . we_html_element::jsScript(WE_NEWSLETTER_MODULE_DIR . 'newsletter_top.js');
+') . we_html_element::jsScript(WE_JS_NEWSLETTER_MODULE_DIR . 'newsletter_top.js');
 	}
 
 	function getJSFooterCode(){
@@ -409,7 +409,7 @@ function setScrollTo() {
 function getStatusContol() {
 	return document.we_form.' . (isset($this->uid) ? $this->uid : "") . '_Status.value;
 }') .
-			we_html_element::jsScript(WE_NEWSLETTER_MODULE_DIR . 'newsletter_property.js');
+			we_html_element::jsScript(WE_JS_NEWSLETTER_MODULE_DIR . 'newsletter_property.js');
 	}
 
 	function processCommands(){
