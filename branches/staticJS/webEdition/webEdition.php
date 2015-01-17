@@ -131,8 +131,8 @@ if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 
 $jsCmd = array();
 foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
-	if(file_exists(WE_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.js')){
-		$jsCmd[$mod] = WE_MODULES_DIR . $mod . '/we_webEditionCmd_' . $mod . '.js';
+	if(file_exists(WE_JS_MODULES_PATH . $mod . '/we_webEditionCmd_' . $mod . '.js')){
+		$jsCmd[$mod] = WE_JS_MODULES_DIR . $mod . '/we_webEditionCmd_' . $mod . '.js';
 	}
 }
 
