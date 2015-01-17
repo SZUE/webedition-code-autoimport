@@ -217,39 +217,8 @@ top.content.hloaded = 1;
 		$group = we_base_request::_(we_base_request::INT, "group", 0);
 
 		$js = $this->View->getJSFooterCode() .
+				we_html_element::jsScript(JS_DIR . 'utils/lib.js') .
 			we_html_element::jsElement('
-function sprintf() {
-	if (!arguments || arguments.length < 1) {
-		return;
-	}
-
-	var argum = arguments[0];
-	var regex = /([^%]*)%(%|d|s)(.*)/;
-	var arr = new Array();
-	var iterator = 0;
-	var matches = 0;
-
-	while (arr = regex.exec(argum)) {
-		var left = arr[1];
-		var type = arr[2];
-		var right = arr[3];
-
-		matches++;
-		iterator++;
-
-		var replace = arguments[iterator];
-
-		if (type == "d") {
-			replace = parseInt(param) ? parseInt(param) : 0;
-		} else if (type == "s") {
-			replace = arguments[iterator];
-		}
-
-		argum = left + replace + right;
-	}
-	return argum;
-}
-
 function addGroup(text, val) {
 	 ' . ($group ? '' : 'document.we_form.gview[document.we_form.gview.length] = new Option(text,val);' ) . '
 }

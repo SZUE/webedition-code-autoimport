@@ -1,10 +1,9 @@
-<?php
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 7705 $
+ * $Author: mokraemer $
+ * $Date: 2014-06-10 21:46:56 +0200 (Di, 10. Jun 2014) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -21,10 +20,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define('BANNER_TABLE', TBL_PREFIX . 'tblbanner');
-define('BANNER_CLICKS_TABLE', TBL_PREFIX . 'tblbannerclicks');
-define('BANNER_PREFS_TABLE', TBL_PREFIX . 'tblbannerprefs');
-define('BANNER_VIEWS_TABLE', TBL_PREFIX . 'tblbannerviews');
-define('WE_JS_BANNER_MODULE_DIR', WE_JS_MODULES_DIR . 'banner/');
 
-we_base_request::registerTables(array(BANNER_TABLE, BANNER_CLICKS_TABLE, BANNER_PREFS_TABLE, BANNER_VIEWS_TABLE));
+function submitForm() {
+	var f = self.document.we_form;
+	f.target = "cmd";
+	f.method = "post";
+	f.submit();
+}

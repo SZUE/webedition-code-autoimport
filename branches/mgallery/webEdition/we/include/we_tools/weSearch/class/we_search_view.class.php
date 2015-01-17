@@ -2900,21 +2900,7 @@ function we_cmd() {
 						$this->getJSSubmitFunction());
 	}
 
-	function getJSTreeHeader(){
-		return '
-function we_cmd(){
-	var args = "";
-	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	switch (arguments[0]) {
-		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-			}
-			eval(\'' . $this->topFrame . '.we_cmd(\'+args+\')\');
-	}
-}' . $this->getJSSubmitFunction('cmd');
-	}
-
+	
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
 function submitForm() {

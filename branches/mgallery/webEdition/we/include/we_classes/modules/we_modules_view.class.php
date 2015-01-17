@@ -74,10 +74,6 @@ class we_modules_view implements we_modules_viewIF{//FIXME is this really a base
 		return we_html_element::jsScript(JS_DIR . "windows.js");
 	}
 
-	function getJSTreeHeader(){
-
-	}
-
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
 function submitForm() {

@@ -1032,39 +1032,14 @@ function CalendarChanged(calObject) {
 		<?php
 	}
 
-	function getJSTreeHeader(){
-		return '
-function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
-}
-
-function we_cmd(){
-	var args = "";
-	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	switch (arguments[0]) {
-		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-			}
-			eval(\'top.content.we_cmd(\'+args+\')\');
-	}
-}' .
-			$this->getJSSubmitFunction("cmd");
-	}
 
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
 function submitForm() {
 	var f = self.document.we_form;
-
-	f.target = (arguments[0]?arguments[0]:"' . $def_target . '");
+	f.target =  (arguments[0]?arguments[0]:"' . $def_target . '");
 	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
 	f.method = (arguments[2]?arguments[2]:"' . $def_method . '");
-
 	f.submit();
 }';
 	}

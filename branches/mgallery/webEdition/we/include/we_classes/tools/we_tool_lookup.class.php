@@ -154,10 +154,10 @@ abstract class we_tool_lookup{
 					$path = WEBEDITION_DIR . 'apps/';
 			}
 			$path.=$_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'];
-			if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . '.inc.php')){
-				include( $_SERVER['DOCUMENT_ROOT'] . $path . '.inc.php');
-			} elseif(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . '.js')){
+			if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . '.js')){
 				$includes['tool_' . $_tool['name']] = $path . '.js';
+			}elseif(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . '.inc.php')){
+				include( $_SERVER['DOCUMENT_ROOT'] . $path . '.inc.php');
 			}
 		}
 		return 'function we_cmd_tools(args,url) {

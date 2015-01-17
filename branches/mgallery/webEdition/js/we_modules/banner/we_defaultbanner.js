@@ -1,0 +1,70 @@
+/**
+ * webEdition CMS
+ *
+ * $Rev: 8972 $
+ * $Author: mokraemer $
+ * $Date: 2015-01-13 21:33:12 +0100 (Di, 13. Jan 2015) $
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package none
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
+var loaded;
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
+function we_cmd() {
+	var args = "";
+	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
+	for (var i = 0; i < arguments.length; i++) {
+		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+		if (i < (arguments.length - 1)) {
+			url += "&";
+		}
+	}
+	switch (arguments[0]) {
+		case "banner_openSelector":
+			new jsWindow(url, "we_bannerselector", -1, -1, 650, 400, true, true, true);
+			break;
+		default:
+			for (var i = 0; i < arguments.length; i++) {
+				args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
+			}
+			eval('top.content.we_cmd(' + args + ')');
+	}
+}
+
+function we_save() {
+	var acLoopCount = 0;
+	var acIsRunning = false;
+	while (acLoopCount < 20 && YAHOO.autocoml.isRunnigProcess()) {
+		acLoopCount++;
+		acIsRunning = true;
+		setTimeout(we_save, 100);
+	}
+	if (!acIsRunning) {
+		if (YAHOO.autocoml.isValid()) {
+			document.we_form.submit();
+		} else {
+			top.we_showMessage(g_l.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
+		}
+	}
+}
+
+self.focus();

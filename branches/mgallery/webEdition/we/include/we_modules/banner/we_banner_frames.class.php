@@ -165,56 +165,8 @@ var we_dir="' . WEBEDITION_DIR . '";'
 		echo we_html_tools::getHtmlTop() .
 		STYLESHEET;
 
-		$this->View->getJSFooterCode();
-
-		$extraHead = $this->View->getJSFooterCode() . we_html_element::jsElement('
-			function sprintf(){
-				if (!arguments || arguments.length < 1) return;
-
-				var argum = arguments[0];
-				var regex = /([^%]*)%(%|d|s)(.*)/;
-				var arr = new Array();
-				var iterator = 0;
-				var matches = 0;
-
-				while (arr=regex.exec(argum)){
-					var left = arr[1];
-					var type = arr[2];
-					var right = arr[3];
-
-					matches++;
-					iterator++;
-
-					var replace = arguments[iterator];
-
-					if (type=="d") replace = parseInt(param) ? parseInt(param) : 0;
-					else if (type=="s") replace = arguments[iterator];
-					argum = left + replace + right;
-				}
-				return argum;
-			}
-
-			function we_save() {
-				var acLoopCount=0;
-				var acIsRunning = false;
-				if(!!top.content.editor.edbody.YAHOO && !!top.content.editor.edbody.YAHOO.autocoml){
-					while(acLoopCount<20 && top.content.editor.edbody.YAHOO.autocoml.isRunnigProcess()){
-						acLoopCount++;
-						acIsRunning = true;
-						setTimeout(we_save,100);
-					}
-					if(!acIsRunning) {
-						if(top.content.editor.edbody.YAHOO.autocoml.isValid()) {
-							_we_save();
-						} else {
-							' . we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						}
-					}
-				} else {
-					_we_save();
-				}
-			}
-		');
+		$extraHead = we_html_element::jsScript(JS_DIR . 'utils/lib.js').
+				$this->View->getJSFooterCode();
 
 		return parent::getHTMLEditorFooter('save_banner', $extraHead);
 	}

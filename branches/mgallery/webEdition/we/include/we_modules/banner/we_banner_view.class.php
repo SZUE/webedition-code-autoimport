@@ -229,150 +229,60 @@ var perms={
 	"NEW_BANNER":' . intval(permissionhandler::hasPerm("NEW_BANNER")) . '
 };
 ') .
-				we_html_element::jsScript(WE_WORKFLOW_MODULE_DIR . 'workflow_top.js');
+				we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_top.js');
 	}
 
 	function getJSFooterCode(){
-		?>
-		<script type="text/javascript"><!--
-
-			function doUnload() {
-				if (!!jsWindow_count) {
-					for (i = 0; i < jsWindow_count; i++) {
-						eval("jsWindow" + i + "Object.close()");
-					}
-				}
-			}
-
-			function we_cmd() {
-				var args = "";
-				var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
-				for (var i = 0; i < arguments.length; i++) {
-					url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
-					if (i < (arguments.length - 1)) {
-						url += "&";
-					}
-				}
-				switch (arguments[0]) {
-					case "empty_log":
-						break;
-					default:
-						for (var i = 0; i < arguments.length; i++) {
-							args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
-						}
-						eval('parent.edbody.we_cmd(' + args + ')');
-				}
-			}
-			//-->
-		</script>
-		<?php
+		echo we_html_element::jsElement('
+var g_l={
+		"save_error_fields_value_not_valid": "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')) . '"
+};
+') .
+		we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_footer.js');
 	}
 
 	function getJSCmd(){
-		?>
-		<script type="text/javascript"><!--
-			function submitForm() {
-				var f = self.document.we_form;
-				f.target = "cmd";
-				f.method = "post";
-				f.submit();
-			}
-			//-->
-		</script>
-		<?php
+		echo we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_cmd.js');
 	}
 
 	function getJSProperty(){
-		echo we_html_element::jsScript(JS_DIR . 'windows.js');
 		?>
 		<script type="text/javascript"><!--
-			var loaded;
-
-			function doUnload() {
-				if (!!jsWindow_count) {
-					for (i = 0; i < jsWindow_count; i++) {
-						eval("jsWindow" + i + "Object.close()");
-					}
+			var g_l = {
+				'deleteStatConfirm': "<?php echo g_l('modules_banner', '[deleteStatConfirm]'); ?>"
+			};
+			var dirs = {
+				'WEBEDITION_DIR': '<?php echo WEBEDITION_DIR; ?>'
+			};
+			var size = {
+				'catSelect': {
+					'width':<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
+					'height':<?php echo we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>
+				},
+				'docSelect': {
+					'width':<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH; ?>,
+					'height':<?php echo we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>
+				},
+				'windowSelect': {
+					'width':<?php echo we_selector_file::WINDOW_SELECTOR_WIDTH; ?>,
+					'height':<?php echo we_selector_file::WINDOW_SELECTOR_HEIGHT; ?>
+				},
+				'windowDirSelect': {
+					'width':<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH; ?>,
+					'height':<?php echo we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>
+				},
+				'windowDelSelect': {
+					'width':<?php echo we_selector_file::WINDOW_DELSELECTOR_WIDTH; ?>,
+					'height':<?php echo we_selector_file::WINDOW_DELSELECTOR_HEIGHT; ?>
 				}
-			}
+			};
 
-			function we_cmd() {
-				var args = "";
-				var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
-				for (var i = 0; i < arguments.length; i++) {
-					url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
-					if (i < (arguments.length - 1)) {
-						url += "&";
-					}
-				}
-				switch (arguments[0]) {
-					case "openSelector":
-						new jsWindow(url, "we_selector", -1, -1,<?php echo we_selector_file::WINDOW_SELECTOR_WIDTH . "," . we_selector_file::WINDOW_SELECTOR_HEIGHT; ?>, true, true, true, true);
-						break;
-					case "openCatselector":
-						new jsWindow(url, "we_catselector", -1, -1,<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH . "," . we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>, true, true, true, true);
-						break;
-					case "openImgselector":
-					case "openDocselector":
-						new jsWindow(url, "we_docselector", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
-						break;
-					case "openDirselector":
-						new jsWindow(url, "we_dirselector", -1, -1,<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>, true, true, true, true);
-						break;
-					case "banner_openDirselector":
-						new jsWindow(url, "we_bannerselector", -1, -1, 600, 350, true, true, true);
-						break;
-					case "switchPage":
-						document.we_form.ncmd.value = arguments[0];
-						document.we_form.page.value = arguments[1];
-						submitForm();
-						break;
-					case "add_cat":
-					case "del_cat":
-					case "del_all_cats":
-					case "add_file":
-					case "del_file":
-					case "del_all_files":
-					case "add_folder":
-					case "del_folder":
-					case "del_customer":
-					case "del_all_customers":
-					case "del_all_folders":
-					case "add_customer":
-						document.we_form.ncmd.value = arguments[0];
-						document.we_form.ncmdvalue.value = arguments[1];
-						submitForm();
-						break;
-					case "delete_stat":
-						if (confirm("<?php echo g_l('modules_banner', '[deleteStatConfirm]'); ?>")) {
-							document.we_form.ncmd.value = arguments[0];
-							submitForm();
-						}
-						break;
-					default:
-						for (var i = 0; i < arguments.length; i++) {
-							args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
-						}
-						eval('top.content.we_cmd(' + args + ')');
-				}
-			}
 
-			function submitForm() {
-				var f = self.document.we_form;
-				f.target = (arguments[0] ? arguments[0] : "edbody");
-				f.action = (arguments[1] ? arguments[1] : "");
-				f.method = (arguments[2] ? arguments[2] : "post");
-				f.submit();
-			}
-			function checkData() {
-
-				return true;
-			}
-
-			self.focus();
 			//-->
 		</script>
 		<?php
+		echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+		we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_property.js');
 	}
 
 	function processCommands(){
@@ -629,7 +539,7 @@ var perms={
 
 		foreach($this->banner->persistents as $val => $type){
 			$varname = $this->uid . "_" . $val;
-			if(($value = we_base_request::_($type, $varname,'_no_val')) !== '_no_val'){
+			if(($value = we_base_request::_($type, $varname, '_no_val')) !== '_no_val'){
 				$this->banner->$val = $value;
 			}
 		}

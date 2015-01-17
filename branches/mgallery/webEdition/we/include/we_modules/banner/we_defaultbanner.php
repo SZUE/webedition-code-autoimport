@@ -57,68 +57,28 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $id
 
 	return $yuiSuggest->getHTML();
 }
-
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
-
 <script type="text/javascript"><!--
-	var loaded;
-	function doUnload() {
-		if (!!jsWindow_count) {
-			for (i = 0; i < jsWindow_count; i++) {
-				eval("jsWindow" + i + "Object.close()");
-			}
-		}
-	}
-	function we_cmd() {
-		var args = "";
-		var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
-		for (var i = 0; i < arguments.length; i++) {
-			url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
-			if (i < (arguments.length - 1)) {
-				url += "&";
-			}
-		}
-		switch (arguments[0]) {
-			case "banner_openSelector":
-				new jsWindow(url, "we_bannerselector", -1, -1, 650, 400, true, true, true);
-				break;
-			default:
-				for (var i = 0; i < arguments.length; i++) {
-					args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
-				}
-				eval('top.content.we_cmd(' + args + ')');
-		}
-	}
+	var dirs = {
+		"WEBEDITION_DIR": "<?php echo WEBEDITION_DIR; ?>",
+	};
+	var g_l = {
+		'save_error_fields_value_not_valid': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')); ?>'
+	};
 
-	function we_save() {
-		var acLoopCount = 0;
-		var acIsRunning = false;
-		while (acLoopCount < 20 && YAHOO.autocoml.isRunnigProcess()) {
-			acLoopCount++;
-			acIsRunning = true;
-			setTimeout(we_save, 100);
-		}
-		if (!acIsRunning) {
-			if (YAHOO.autocoml.isValid()) {
-				document.we_form.submit();
-				;
-			} else {
-<?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			}
-		}
-	}
 
-	self.focus();
 	//-->
 </script>
-<?php echo weSuggest::getYuiJsFiles(); ?>
-
+<?php
+echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'we_defaultbanner.js') .
+ weSuggest::getYuiJsFiles();
+?>
 </head>
 <body class="weDialogBody" onunload="doUnload()">
-	<form name="we_form" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" method="post"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING,'we_cmd','',0); ?>" />
+	<form name="we_form" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" method="post"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 		<?php
-		$DefaultBannerID = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'");
+		$DefaultBannerID = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . ' WHERE pref_name="DefaultBannerID"');
 		$content = formBannerChooser(300, BANNER_TABLE, $DefaultBannerID, "DefaultBannerID", "");
 		$yes_button = we_html_button::create_button("save", "javascript:we_save();");
 		$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");

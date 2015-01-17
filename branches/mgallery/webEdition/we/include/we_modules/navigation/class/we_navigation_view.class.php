@@ -609,23 +609,6 @@ var weNavTitleField = new Array();
 		return $out;
 	}
 
-	function getJSTreeHeader(){
-		return '
-function we_cmd(){
-	var args = "";
-	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	switch (arguments[0]) {
-		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-			}
-			eval(\'' . $this->topFrame . '.we_cmd(\'+args+\')\');
-	}
-}
-
-' . $this->getJSSubmitFunction("cmd");
-	}
-
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
 function populateVars() {
@@ -647,28 +630,12 @@ function populateVars() {
 }
 
 function submitForm() {
-
 	var f = self.document.we_form;
-
 	populateVars();
 
-	if (arguments[0]) {
-		f.target = arguments[0];
-	} else {
-		f.target = "' . $def_target . '";
-	}
-
-	if (arguments[1]) {
-		f.action = arguments[1];
-	} else {
-		f.action = "' . $this->frameset . '";
-	}
-
-	if (arguments[2]) {
-		f.method = arguments[2];
-	} else {
-		f.method = "' . $def_method . '";
-	}
+	f.target =  (arguments[0]?arguments[0]:"' . $def_target . '");
+	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
+	f.method = (arguments[2]?arguments[2]:"' . $def_method . '");
 	f.submit();
 }';
 	}

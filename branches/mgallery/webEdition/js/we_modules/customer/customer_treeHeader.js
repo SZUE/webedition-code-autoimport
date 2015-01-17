@@ -1,10 +1,9 @@
-<?php
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 8972 $
+ * $Author: mokraemer $
+ * $Date: 2015-01-13 21:33:12 +0100 (Di, 13. Jan 2015) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -21,10 +20,23 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define('BANNER_TABLE', TBL_PREFIX . 'tblbanner');
-define('BANNER_CLICKS_TABLE', TBL_PREFIX . 'tblbannerclicks');
-define('BANNER_PREFS_TABLE', TBL_PREFIX . 'tblbannerprefs');
-define('BANNER_VIEWS_TABLE', TBL_PREFIX . 'tblbannerviews');
-define('WE_JS_BANNER_MODULE_DIR', WE_JS_MODULES_DIR . 'banner/');
 
-we_base_request::registerTables(array(BANNER_TABLE, BANNER_CLICKS_TABLE, BANNER_PREFS_TABLE, BANNER_VIEWS_TABLE));
+function applySort(){
+	document.we_form_treeheader.pnt.value="cmd";
+	document.we_form_treeheader.cmd.value="applySort";
+	submitForm("", "", "", "we_form_treeheader");
+}
+
+function addSorting(sortname) {
+	var found=false;
+	len = document.we_form_treeheader.sort.options.length;
+	for(i=0;i<len;i++) {
+		if(document.we_form_treeheader.sort.options[i].value==sortname){
+			found = true;
+		}
+	}
+	if(!found){
+		document.we_form_treeheader.sort.options[len] = new Option(sortname,sortname);
+	}
+
+}
