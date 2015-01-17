@@ -32,8 +32,8 @@ class we_main_headermenu{
 	 */
 	public static function createMessageConsole($consoleName = 'NoName'){
 		return we_html_element::jsScript(JS_DIR . 'messageConsoleImages.js') .
-				we_html_element::jsScript(JS_DIR . 'messageConsoleView.js') .
-				we_html_element::jsElement('
+			we_html_element::jsScript(JS_DIR . 'messageConsoleView.js') .
+			we_html_element::jsElement('
 var _msgNotice  = "' . g_l('messageConsole', '[iconBar][notice]') . '";
 var _msgWarning = "' . g_l('messageConsole', '[iconBar][warning]') . '";
 var _msgError   = "' . g_l('messageConsole', '[iconBar][error]') . '";
@@ -93,9 +93,9 @@ onunload=function() {
 
 	static function getJsForCssMenu(){
 		if(we_base_browserDetect::isIE() && intval(we_base_browserDetect::inst()->getBrowserVersion()) < 9){
-			return WEBEDITION_DIR . 'css/menu/clickMenu_IE8.js';
+			return JS_DIR . 'menu/clickMenu_IE8.js';
 		}
-		return WEBEDITION_DIR . 'css/menu/clickMenu.js';
+		return JS_DIR . 'menu/clickMenu.js';
 	}
 
 	static function pJS(){
@@ -129,7 +129,7 @@ onunload=function() {
 		$we_menu = include(WE_INCLUDES_PATH . 'menu/we_menu.inc.php');
 		ksort($we_menu);
 		if(// menu for normalmode
-				isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
+			isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 			$jmenu = new we_base_menu($we_menu, "top.load");
 		} else { // menu for seemode
 			if(!permissionhandler::isUserAllowedForAction("header", "with_java")){
@@ -165,7 +165,7 @@ onunload=function() {
 				array("onclick" => "top.weNavigationHistory.navigateReload();", "imagepath" => "/navigation/reload.gif", "text" => g_l('javaMenu_global', '[reload]')),
 				array("onclick" => "top.weNavigationHistory.navigateBack();", "imagepath" => "/navigation/back.gif", "text" => g_l('javaMenu_global', '[back]')),
 				array("onclick" => "top.weNavigationHistory.navigateNext();", "imagepath" => "/navigation/next.gif", "text" => g_l('javaMenu_global', '[next]')),
-					)
+				)
 			);
 		}
 		?>

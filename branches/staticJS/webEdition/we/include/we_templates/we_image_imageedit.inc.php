@@ -50,7 +50,7 @@ echo STYLESHEET;
 		echo '<table cellpadding="0" cellspacing="0" border="0">
 ' . ($we_doc->EditPageNr == 15 ?
 			'<tr><td><select name="editmenue" size="1" onchange="var cmnd = this.options[this.selectedIndex].value; if(cmnd){if(cmnd==\'doImage_convertPNG\' || cmnd==\'doImage_convertGIF\'){_EditorFrame.setEditorIsHot(true);};we_cmd(cmnd,\'' . $we_transaction . '\');}this.selectedIndex=0"' . (($we_doc->getElement("data") && we_base_imageEdit::is_imagetype_read_supported($_gdtype) && we_base_imageEdit::gd_version() > 0) ? "" : ' disabled="disabled"') . '>
-<option value="">' . g_l('weClass', '[edit]') . '</option>
+<option value="" disabled="disabled">' . g_l('weClass', '[edit]') . '</option>
 <option value="image_resize">' . g_l('weClass', '[resize]') . '&hellip;</option>
 <option value="image_rotate">' . g_l('weClass', '[rotate]') . '&hellip;</option>
 <option value="image_crop">' . g_l('weClass', '[crop]') . '&hellip;</option>
