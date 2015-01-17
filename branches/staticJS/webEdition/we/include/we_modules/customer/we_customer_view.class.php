@@ -59,120 +59,27 @@ class we_customer_view extends we_modules_view{
 		return
 				parent::getJSTop() .
 				we_html_element::jsElement('
-var get_focus = 1;
-var activ_tab = 0;
-var hot= 0;
-var scrollToVal=0;
-
-function setHot() {
-	hot = "1";
-}
-
 parent.document.title = "' . $title . '";
+var dirs={
+	"WEBEDITION_DIR":"' . WEBEDITION_DIR . '"
+};
+var g_l={
+	"save_changed_customer":"' . g_l('modules_customer', '[save_changed_customer]') . '",
+	"delete_alert":"' . g_l('modules_customer', '[delete_alert]') . '",
+	"no_perms": "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[no_perms]')) . '",
+	"nothing_to_delete":"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_delete]')) . '",
+	"nothing_to_save":"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_save]')) . '"
+};
 
-function usetHot() {
-	hot = "0";
-}
-
-function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
-}
-
-function we_cmd() {
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	if(hot == "1" && arguments[0] != "save_customer") {
-		if(confirm("' . g_l('modules_customer', '[save_changed_customer]') . '")) {
-			arguments[0] = "save_customer";
-		} else {
-			top.content.usetHot();
-		}
-	}
-	switch (arguments[0]) {
-		case "exit_customer":
-			if(hot != "1") {
-				top.opener.top.we_cmd("exit_modules");
-			}
-			break;
-		case "new_customer":
-			if(' . $this->topFrame . '.editor.edbody.loaded) {
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = arguments[0];
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value = arguments[1];
-				' . $this->topFrame . '.editor.edbody.submitForm();
-			} else {
-				setTimeout(function(){we_cmd("new_customer");}, 10);
-			}
-			break;
-
-		case "delete_customer":
-			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
-			' . (!permissionhandler::hasPerm("DELETE_CUSTOMER") ?
-								('
-				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			') :
-								('
-					if (' . $this->topFrame . '.editor.edbody.loaded) {
-						if (confirm("' . g_l('modules_customer', '[delete_alert]') . '")) {
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-							' . $this->topFrame . '.editor.edbody.submitForm();
-						}
-					} else {
-						' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-					}
-
-			')) . '
-			break;
-
-		case "save_customer":
-			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
-			' . ((!permissionhandler::hasPerm("EDIT_CUSTOMER") && !permissionhandler::hasPerm("NEW_CUSTOMER")) ?
-								('
-				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			') :
-								('
-
-					if (' . $this->topFrame . '.editor.edbody.loaded) {
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-							' . $this->topFrame . '.editor.edbody.submitForm();
-					} else {
-						' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-					}
-			')) . '
-			top.content.usetHot();
-			break;
-
-		case "customer_edit":
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
-			' . $this->topFrame . '.editor.edbody.submitForm();
-		break;
-		case "show_admin":
-		case "show_sort_admin":
-			if(' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=="home") ' . $this->topFrame . '.editor.edbody.document.we_form.home.value="1";
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
-			' . $this->topFrame . '.editor.edbody.submitForm();
-		break;
-		case "show_search":
-		case "show_customer_settings":
-		case "export_customer":
-		case "import_customer":
-			' . $this->topFrame . '.editor.edbody.we_cmd(arguments[0]);
-		break;
-		case "load":
-			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
-		break;
-		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-			}
-			eval("top.opener.top.we_cmd(" + args + ")");
-	}
-}');
+var topFrame=' . $this->topFrame . ';
+var frameUrl="' . $this->frameset . '";
+var perms={
+	"DELETE_CUSTOMER":' . intval(permissionhandler::hasPerm("DELETE_CUSTOMER")) . ',
+	"EDIT_CUSTOMER":' . intval(permissionhandler::hasPerm("EDIT_CUSTOMER")) . ',
+	"NEW_CUSTOMER":' . intval(permissionhandler::hasPerm("NEW_CUSTOMER")) . '
+};
+') .
+				we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_top.js');
 	}
 
 	function getJSProperty(){
@@ -225,7 +132,14 @@ var g_l={
 	}
 
 	function getJSSearch(){
-		return we_customer_add::getJSSearch($this);
+		return we_html_element::jsElement('
+var frames={
+	"set":"' . $this->frameset . '"
+};
+' .
+						$this->getJSSubmitFunction("search")
+				) .
+				we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_search.js');
 	}
 
 	function getJSSettings(){
@@ -355,9 +269,8 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 			case 'show_admin':
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
 				we_html_element::jsElement('
-						url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=customer_admin";
-						new jsWindow(url,"customer_admin",-1,-1,600,420,true,true,true,false);
-					');
+url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=customer_admin";
+new jsWindow(url,"customer_admin",-1,-1,600,420,true,true,true,false);');
 				break;
 			case 'save_field':
 				$branch = we_base_request::_(we_base_request::STRING, 'branch');
@@ -410,9 +323,9 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 						$this->settings->save();
 
 						$js = '
-							opener.submitForm();
-							opener.opener.refreshForm();
-							close();';
+opener.submitForm();
+opener.opener.refreshForm();
+close();';
 				}
 				echo we_html_element::jsElement($js);
 
@@ -1118,26 +1031,7 @@ self.close();');
 								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray', 'id' => 'FailedCustomerLogins'), intval($common['failedLogins']) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME), sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS)));
 								break;
 							case 'resetFailed':
-								$tmp = 'YAHOO.util.Connect.asyncRequest( "GET", "' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=' . $this->customer->ID . '", ajaxCallbackResetLogins );';
-								$but = we_html_element::jsElement('
-var ajaxCallbackResetLogins = {
-success: function(o) {
-	if(typeof(o.responseText) != undefined && o.responseText != "") {
-		var weResponse = false;
-		try {
-			eval( "var weResponse = "+o.responseText );
-			if ( weResponse ) {
-				if (weResponse["DataArray"]["data"] == "true") {
-
-					document.getElementById("FailedCustomerLogins").innerText=weResponse["DataArray"]["value"];
-				}
-			}
-		} catch (exc){}
-	}
-},
-failure: function(o) {
-
-}}') . we_html_button::create_button('reset', 'javascript:' . $tmp);
+								$but = we_html_button::create_button('reset', 'javascript:resetLogins(' . $this->customer->ID . ')');
 								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), $but), ''));
 								break;
 							default:

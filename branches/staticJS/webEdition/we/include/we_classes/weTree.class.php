@@ -222,7 +222,6 @@ function addSort(object){
 
 	function getJSTreeFunctions(){
 		return '
-//var clickCount=0;
 var wasdblclick=0;
 var tout=null;
 
