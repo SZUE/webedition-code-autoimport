@@ -160,16 +160,17 @@ abstract class we_base_file{
 		$open = $prefix . 'open';
 		$write = $prefix . 'write';
 		$close = $prefix . 'close';
+		$len=strlen($content);
 
 		if(($fp = $open($filename, $flags))){
-			$written = $write($fp, $content, strlen($content));
+			$written = $write($fp, $content, $len);
 			@$close($fp);
 			//if we write a php file, invalidate cache if used.
 			if(substr($filename, -4) === '.php' && function_exists('opcache_invalidate')){
 				opcache_invalidate($filename, true);
 			}
 
-			return $written;
+			return $written == $len;
 		}
 		t_e('error writing file', $filename);
 		return false;
