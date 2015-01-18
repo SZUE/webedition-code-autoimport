@@ -78,7 +78,7 @@ var message_reporting={
 	"notice":"' . g_l('alert', '[notice]') . '",
 	"warning":"' . g_l('alert', '[warning]') . '",
 	"error":"' . g_l('alert', '[error]') . '"
-}';
+};';
 	}
 
 }
