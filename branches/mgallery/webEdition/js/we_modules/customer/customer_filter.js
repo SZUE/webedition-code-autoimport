@@ -23,7 +23,7 @@
 
 String.prototype.trim = function () {
 	return this.replace(/^\s+|\s+$/g, "");
-}
+};
 
 function addRow(rowNr) {
 
@@ -132,14 +132,14 @@ function updateFilterTable() {
 			_cell.innerHTML = buttons.add.replace(/__CNT__/, i + 1);
 
 			_cell = _row.cells[5];  // trash
-			if (i == 0) {
+			if (i === 0) {
 				_cell.style.width = "25px";
 			}
-			_cell.innerHTML = (i == 0 ? '<span></span>' : buttons.trash.replace(/__CNT__/, i));
+			_cell.innerHTML = (i === 0 ? '<span></span>' : buttons.trash.replace(/__CNT__/, i));
 
 
 			if (i > 0) {
-				_cell = _row.cells[0]
+				_cell = _row.cells[0];
 				var elem = _cell.firstChild;
 
 				var _logic = elem.options[elem.selectedIndex].value;

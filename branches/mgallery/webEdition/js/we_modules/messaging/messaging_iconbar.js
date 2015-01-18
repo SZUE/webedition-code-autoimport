@@ -49,7 +49,7 @@ function paste_messages() {
 function delete_messages() {
 	if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
 		c = confirm(g_l.q_rm_messages);
-		if (c == false) {
+		if (c === false) {
 			return;
 		}
 		top.content.cmd.location = dirs.WE_MESSAGING_MODULE_DIR + "edit_messaging_frameset.php?pnt=cmd&we_transaction=" + transaction + "&mcmd=delete_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
@@ -109,7 +109,7 @@ function paste_messages() {
 function delete_messages() {
 	if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
 		c = confirm(g_l.q_rm_todos);
-		if (c == false) {
+		if (c === false) {
 			return;
 		}
 		top.content.cmd.location = dirs.WE_MESSAGING_MODULE_DIR + "edit_messaging_frameset.php?pnt=cmd&we_transaction=" + transaction + "&mcmd=delete_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");

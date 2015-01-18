@@ -267,10 +267,10 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 			elemRow = document.getElementById("row_scores_" + child);
 			elemRow.parentNode.removeChild(elemRow);
 			var xcount = child + 1;
-			while (elemRow = document.getElementById("row_scores_" + xcount)) {
+			while ((elemRow = document.getElementById("row_scores_" + xcount))) {
 				elemRow.setAttribute('id', "row_scores_" + (xcount - 1));
 				var elemX;
-				if (elemX = document.getElementById("scores_" + xcount)) {
+				if ((elemX = document.getElementById("scores_" + xcount))) {
 					elemX.setAttribute('id', "scores_" + (xcount - 1));
 					elemX.setAttribute('name', "scores_" + (xcount - 1));
 				}

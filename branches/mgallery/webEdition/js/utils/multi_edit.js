@@ -93,7 +93,7 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 		set.setAttribute("id", this.name + "_item" + this.itemCount);
 
 		set.innerHTML = "<table style=\"margin-bottom:5px;\" cellpadding=0 cellspacing=0 border=0><tr valign=\"middle\"><td style=\"width:" + this.defWidth + "px\">" +
-						(this.editable == true ?
+						(this.editable === true ?
 										"<input name=\"" + this.name + "_item" + this.itemCount + "\" id=\"" + this.name + "_item_input_" + this.itemCount + "\" type=\"text\" style=\"width:" + this.defWidth + "px\" onkeyup=\"" + this.name + ".updateHidden(\'item" + this.itemCount + "\',this.value)\" class=\"wetextinput\"></td>" :
 										"<label id=\"" + this.name + "_item_label_" + this.itemCount + "\" class=\"defaultfont\"></td>"
 										) + "<td>&nbsp;</td><td>" + butt + "</td></tr></table>";
@@ -101,9 +101,9 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 		this.parent.appendChild(set);
 
 		set = null;
-			for (var j = 0; j < this.variantCount; j++) {
-				this.createItemHidden(this.name + "_variant" + j + "_" + this.name + "_item" + this.itemCount);
-			}
+		for (var j = 0; j < this.variantCount; j++) {
+			this.createItemHidden(this.name + "_variant" + j + "_" + this.name + "_item" + this.itemCount);
+		}
 
 		this.itemCount++;
 	};
@@ -128,10 +128,10 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 			elemRow = document.getElementById("row_scores_" + child);
 			elemRow.parentNode.removeChild(elemRow);
 			var xcount = child + 1;
-			while (elemRow = document.getElementById("row_scores_" + xcount)) {
+			while ((elemRow = document.getElementById("row_scores_" + xcount))) {
 				elemRow.setAttribute('id', "row_scores_" + (xcount - 1));
 				var elemX;
-				if (elemX = document.getElementById("scores_" + xcount)) {
+				if ((elemX = document.getElementById("scores_" + xcount))) {
 					elemX.setAttribute('id', "scores_" + (xcount - 1));
 					elemX.setAttribute('name', "scores_" + (xcount - 1));
 				}
@@ -152,10 +152,10 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 	this.showVariant = function (variant) {
 		for (var i = 0; i < this.itemCount; i++) {
 			if (this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + i] !== undefined) {
-				if (variant != this.currentVariant && this.editable){
+				if (variant != this.currentVariant && this.editable) {
 					this.setItem(this.currentVariant, i, this.form.elements[this.name + "_item" + i].value);
 				}
-				if (this.editable){
+				if (this.editable) {
 					this.form.elements[this.name + "_item" + i].value = this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + i].value;
 				} else {
 					var item = document.getElementById(this.name + "_item_label_" + i);

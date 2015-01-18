@@ -42,7 +42,7 @@ function we_cmd() {
 	switch (arguments[0]) {
 
 		case "add_sort_field":
-			if (arguments[1] == "") {
+			if (arguments[1] === "") {
 				top.we_showMessage(g_l.sortname_empty, WE_MESSAGE_ERROR, window);
 				break;
 			}

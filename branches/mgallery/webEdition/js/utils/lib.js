@@ -28,11 +28,11 @@ function sprintf() {
 
 	var argum = arguments[0];
 	var regex = /([^%]*)%(%|d|s)(.*)/;
-	var arr = new Array();
+	var arr = [];
 	var iterator = 0;
 	var matches = 0;
 
-	while (arr = regex.exec(argum)) {
+	while ((arr = regex.exec(argum))) {
 		var left = arr[1];
 		var type = arr[2];
 		var right = arr[3];
@@ -42,10 +42,11 @@ function sprintf() {
 
 		var replace = arguments[iterator];
 
-		if (type == "d")
+		if (type == "d"){
 			replace = parseInt(param) ? parseInt(param) : 0;
-		else if (type == "s")
+		}else if (type == "s"){
 			replace = arguments[iterator];
+		}
 		argum = left + replace + right;
 	}
 	return argum;

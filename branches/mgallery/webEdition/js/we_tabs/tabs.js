@@ -155,9 +155,9 @@ function CSSClassElement(el, className, block) {
 }
 
 function CSSClassElement_writeElement() {
-	tabContent += '<TD align="center" width="' + this.width + '" id="' + this.elementID
-					+ '" onClick="' + this.jscode + ';tabCtrl.setActiveTab(' + this.id + ');" '
-					+ this.createClassStyle() + ' nowrap unselectable="on">' + this.title + '<\/TD>\n';
+	tabContent += '<TD align="center" width="' + this.width + '" id="' + this.elementID +
+					'" onClick="' + this.jscode + ';tabCtrl.setActiveTab(' + this.id + ');" ' +
+					this.createClassStyle() + ' nowrap unselectable="on">' + this.title + '<\/TD>\n';
 
 }
 

@@ -115,7 +115,7 @@ var CropTool = {
 		elIdBottom = null;
 	},
 	addLs: function (object, eventName, listener) {
-		if (CropTool == null || CropTool == undefined) {
+		if (CropTool === null || CropTool === undefined) {
 			CropTool = window;
 		}
 		if (!object[eventName + "listeners"]) {
@@ -147,7 +147,7 @@ var CropTool = {
 			var argumentsCopy = [];
 			for (i = 0; i < arguments.length; i++)
 				argumentsCopy[i] = arguments[i];
-			if (arguments.length == 0 && window.event) {
+			if (arguments.length === 0 && window.event) {
 				argumentsCopy[0] = CropTool.patchEvent(window.event, this);
 			} else if (arguments[0] && typeof arguments[0] == "object" && arguments[0].toString().search(/event/i) != -1) {
 				argumentsCopy[0] = CropTool.patchEvent(arguments[0], this);
@@ -265,13 +265,13 @@ var CropTool = {
 		e.preventDefault();
 		e.stopPropagation();
 		var cover = document.getElementById(this.coverID);
-		if (e.altKey){
+		if (e.altKey) {
 			this.altKey = e.altKey;
 		}
-		if (e.shiftKey){
+		if (e.shiftKey) {
 			this.shiftKey = e.shiftKey;
 		}
-		if (e.ctrlKey){
+		if (e.ctrlKey) {
 			this.ctrlKey = e.ctrlKey;
 		}
 		if (this.sel.track) {
@@ -507,8 +507,8 @@ var CropTool = {
 		this.switch_button_state("save", "save_enabled", "enabled");
 	},
 	setCropSize: function (x1, y1, w, h) {
-		document.forms["we_form"].cropCoordX.value = x1;
-		document.forms["we_form"].cropCoordY.value = y1;
+		document.forms.we_form.cropCoordX.value = x1;
+		document.forms.we_form.cropCoordY.value = y1;
 		if (arguments.length > 2) {
 			this.setCropWidth(w);
 			this.setCropHeight(h);
@@ -522,16 +522,16 @@ var CropTool = {
 		var cover = document.getElementById(this.coverID);
 
 
-		if ((x1 - x1 != 0) || (x1 < 0) || (x1 > this.imgW)) {
-			if (typeof this.sel.getLeft() != "number")
-				document.forms["we_form"].cropCoordX.value = "";
-			else
-				document.forms["we_form"].cropCoordX.value = this.sel.getLeft();
-		}
-		else {
+		if ((x1 - x1 !== 0) || (x1 < 0) || (x1 > this.imgW)) {
+			if (typeof this.sel.getLeft() != "number") {
+				document.forms.we_form.cropCoordX.value = "";
+			} else {
+				document.forms.we_form.cropCoordX.value = this.sel.getLeft();
+			}
+		} else {
 			this.sel.setLeft(x1);
 			this.sel.setRight(x1 + w);
-			document.forms["we_form"].cropCoordX.value = x1;
+			document.forms.we_form.cropCoordX.value = x1;
 			if (typeof w == "number" && x1 + w > this.imgW)
 				w = this.imgW - x1;
 			if (typeof w == "number" && typeof y1 == "number" && typeof h == "number") {
@@ -548,17 +548,18 @@ var CropTool = {
 		var cov = document.getElementById(this.coverID);
 
 
-		if ((y1 - y1 != 0) || (y1 < 0) || (y1 > this.imgH)) {
-			if (typeof this.sel.getTop() != "number")
-				document.forms["we_form"].cropCoordY.value = "";
-			else
-				document.forms["we_form"].cropCoordY.value = this.sel.getTop();
-		}
-		else {
+		if ((y1 - y1 !== 0) || (y1 < 0) || (y1 > this.imgH)) {
+			if (typeof this.sel.getTop() != "number") {
+				document.forms.we_form.cropCoordY.value = "";
+			} else {
+				document.forms.we_form.cropCoordY.value = this.sel.getTop();
+			}
+		} else {
 			this.sel.setTop(y1);
-			document.forms["we_form"].cropCoordY.value = y1;
-			if (typeof h == "number" && y1 + h > this.imgH)
+			document.forms.we_form.cropCoordY.value = y1;
+			if (typeof h == "number" && y1 + h > this.imgH) {
 				h = this.imgH - y1;
+			}
 			if (typeof x1 == "number" && typeof w == "number" && typeof h == "number") {
 				this.sel.draw(x1, y1, w, h);
 				cov.style.visibility = "visible";
@@ -574,15 +575,15 @@ var CropTool = {
 		var cov = document.getElementById(this.coverID);
 
 
-		if ((w - w != 0) || (w < 1) || (w > this.imgW)) {
-			if (typeof this.sel.getWidth() != "number")
-				document.forms["we_form"].CropWidth.value = "";
-			else
-				document.forms["we_form"].CropWidth.value = this.sel.getWidth();
-		}
-		else {
+		if ((w - w !== 0) || (w < 1) || (w > this.imgW)) {
+			if (typeof this.sel.getWidth() != "number") {
+				document.forms.we_form.CropWidth.value = "";
+			} else {
+				document.forms.we_form.CropWidth.value = this.sel.getWidth();
+			}
+		} else {
 			this.sel.setWidth(w);
-			document.forms["we_form"].CropWidth.value = w;
+			document.forms.we_form.CropWidth.value = w;
 			if (typeof x1 == "number" && x1 + w > this.imgW)
 				x1 = this.imgW - w;
 			if (typeof x1 == "number" && typeof y1 == "number" && typeof h == "number") {
@@ -599,15 +600,15 @@ var CropTool = {
 		var w = this.sel.getWidth();
 		var cov = document.getElementById(this.coverID);
 
-		if ((h - h != 0) || (h < 1) || (h > this.imgH)) {
-			if (typeof this.sel.getHeight() != "number")
-				document.forms["we_form"].CropHeight.value = "";
-			else
-				document.forms["we_form"].CropHeight.value = this.sel.getHeight();
-		}
-		else {
+		if ((h - h !== 0) || (h < 1) || (h > this.imgH)) {
+			if (typeof this.sel.getHeight() != "number") {
+				document.forms.we_form.CropHeight.value = "";
+			} else {
+				document.forms.we_form.CropHeight.value = this.sel.getHeight();
+			}
+		} else {
 			this.sel.setHeight(h);
-			document.forms["we_form"].CropHeight.value = h;
+			document.forms.we_form.CropHeight.value = h;
 			if (typeof y1 == "number" && y1 + h > this.imgH)
 				y1 = this.imgH - h;
 			if (typeof x1 == "number" && typeof y1 == "number" && typeof w == "number") {
@@ -938,7 +939,7 @@ if (window.attachEvent) {
 	window.attachEvent("onunload",
 					function () {
 						var el;
-						var all_obj = new Array();
+						var all_obj = [];
 						if (document.all)
 							all_obj = document.all;
 						else if (document.getElementsByTagName && !document.all)
@@ -960,7 +961,7 @@ if (window.attachEvent) {
 
 if (!Function.prototype.apply) {
 	Function.prototype.apply = function (thisObj, params) {
-		if (thisObj == null || thisObj == undefined)
+		if (thisObj === null || thisObj === undefined)
 			thisObj = window;
 		if (!params)
 			params = [];

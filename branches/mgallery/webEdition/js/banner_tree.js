@@ -71,7 +71,7 @@ function zeichne(startEntry, zweigEintrag) {
 			var newAst = zweigEintrag;
 			var zusatz = (ai == nf.laenge ? "end" : "");
 			var zusatz2="";
-			if (nf[ai].offen == 0) {
+			if (nf[ai].offen === 0) {
 				ret += "&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\"></A>";
 			} else {
 				ret += "&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\"><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\"></A>";
@@ -133,7 +133,7 @@ function deleteEntry(id, type) {
 		}
 		ai++;
 	}
-	if (ind != 0) {
+	if (ind !== 0) {
 		ai = ind;
 		while (ai <= menuDaten.laenge - 1) {
 			menuDaten[ai] = menuDaten[ai + 1];

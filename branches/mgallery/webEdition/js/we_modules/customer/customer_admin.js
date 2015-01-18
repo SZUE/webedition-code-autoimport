@@ -62,7 +62,7 @@ function we_cmd() {
 		case "open_edit_field":
 			var field = document.we_form.fields_select.value;
 			var branch = document.we_form.branch.value;
-			if (field == "") {
+			if (field === "") {
 				top.we_showMessage(g_l.no_field, WE_MESSAGE_ERROR, window);
 			} else {
 				url = frameUrl + "?pnt=field_editor&art=edit&field=" + field + "&branch=" + branch;
@@ -71,7 +71,7 @@ function we_cmd() {
 			break;
 		case "delete_field":
 			var field = document.we_form.fields_select.value;
-			if (field == "") {
+			if (field === "") {
 				top.we_showMessage(g_l.no_field, WE_MESSAGE_ERROR, window);
 			} else {
 				if (confirm(g_l.del_fild_question)) {
@@ -91,7 +91,7 @@ function we_cmd() {
 		case "move_field_up":
 			var field = document.we_form.fields_select.value;
 			var branch = document.we_form.branch.value;
-			if (field == "") {
+			if (field === "") {
 				top.we_showMessage(g_l.no_field, WE_MESSAGE_ERROR, window);
 			} else {
 				document.we_form.cmd.value = arguments[0];
@@ -101,7 +101,7 @@ function we_cmd() {
 		case "move_field_down":
 			var field = document.we_form.fields_select.value;
 			var branch = document.we_form.branch.value;
-			if (field == "") {
+			if (field === "") {
 				top.we_showMessage(g_l.no_field, WE_MESSAGE_ERROR, window);
 			} else {
 				document.we_form.cmd.value = arguments[0];
@@ -110,7 +110,7 @@ function we_cmd() {
 			break;
 		case "open_edit_branch":
 			var branch = document.we_form.branch_select.options[document.we_form.branch_select.selectedIndex].text;
-			if (branch == "") {
+			if (branch === "") {
 				top.we_showMessage(g_l.no_branch, WE_MESSAGE_ERROR, window);
 			} else if (branch == g_l.other) {
 				top.we_showMessage(g_l.branch_no_edit, WE_MESSAGE_ERROR, window);
@@ -122,7 +122,7 @@ function we_cmd() {
 		case "save_branch":
 		case "save_field":
 			var field_name = document.we_form.name.value;
-			if (field_name == "" || field_name.match(/[^a-zA-Z0-9\_]/) != null) {
+			if (field_name === "" || field_name.match(/[^a-zA-Z0-9\_]/) !== null) {
 				top.we_showMessage(g_l.we_fieldname_notValid, WE_MESSAGE_ERROR, window);
 			} else {
 				document.we_form.cmd.value = arguments[0];
