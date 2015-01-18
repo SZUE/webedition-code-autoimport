@@ -198,3 +198,85 @@ function clearItems() {
 	drawTree();
 	return deleted;
 }
+
+
+function clickHandler(cur) {
+	var row = "";
+	if (treeData.selection_table == treeData.table && cur.id == treeData.selection) {
+		cur.selected = 1;
+	}
+	if (cur.disabled != 1) {
+		if (treeData.state == treeData.tree_states["select"]) {
+			row += "<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">";
+		} else if (treeData.state == treeData.tree_states["selectitem"] && cur.typ == "item") {
+			row += "<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">";
+		} else if (treeData.state == treeData.tree_states["selectgroup"] && cur.typ == "group") {
+			row += "<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">";
+		} else {
+			row += "<a name=\"_" + cur.id + "\" href=\"javascript://\"  ondblclick=\"" + treeData.topFrame + ".wasdblclick=1;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(" + treeData.topFrame + ".wasdblclick==0){ " + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + treeData.topFrame + ".wasdblclick=0;}',300);return true;\" onmouseover=\"" + treeData.topFrame + ".info('ID:" + cur.id + "')\" onmouseout=\"" + treeData.topFrame + ".info(' ');\">";
+		}
+	}
+	row += "<img src=" + treeData.tree_icon_dir + cur.icon + " alt=\"\">" +
+					(cur.disabled != 1 ?
+									"</a>" :
+									""
+									);
+	if (cur.disabled != 1) {
+		switch (treeData.state) {
+			case treeData.tree_states["selectitem"]:
+				row += (cur.typ == "group" ?
+								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip != "" ? " title=\"" + cur.tooltip + "\"" : "") + " class=\"" + cur.getlayout() + "\">&nbsp;" + cur.text + "</label>" :
+								"<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><img src=\"" + treeData.tree_image_dir + (cur.checked == 1 ? "check1.gif" : "check0.gif") + "\" alt=\"\" name=\"img_" + cur.id + "\"></a>" +
+								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip != "" ? " title=\"" + cur.tooltip + "\"" : "") + " class=\"" + cur.getlayout() + "\" onclick=\"" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">&nbsp;" + cur.text + "</label>"
+								);
+				break;
+			case treeData.tree_states["selectgroup"]:
+				row += (cur.typ == "item" ?
+								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip != "" ? " title=\"" + cur.tooltip + "\"" : "") + " class=\"" + cur.getlayout() + "\">&nbsp;" + cur.text + "</label>" :
+								"<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><img src=\"" + treeData.tree_image_dir + (cur.checked == 1 ? "check1.gif" : "check0.gif") + "\" alt=\"\" name=\"img_" + cur.id + "\"></a>" +
+								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip != "" ? " title=\"" + cur.tooltip + "\"" : "") + " class=\"" + cur.getlayout() + "\" onclick=\"" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">&nbsp;" + cur.text + "</label>"
+								);
+				break;
+			case treeData.tree_states["select"]:
+				row += "<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><img src=\"" + treeData.tree_image_dir + (cur.checked == 1 ? "check1.gif" : "check0.gif") + "\" alt=\"\" name=\"img_" + cur.id + "\"></a>" +
+								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip != "" ? " title=\"" + cur.tooltip + "\"" : "") + " class=\"" + cur.getlayout() + "\" onclick=\"" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">&nbsp;" + cur.text + "</label>";
+
+				break;
+			default:
+				row += "<a name=\"_" + cur.id + "\" href=\"javascript://\"  onDblClick=\"" + treeData.topFrame + ".wasdblclick=1;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(" + treeData.topFrame + ".wasdblclick==0)" + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); else " + treeData.topFrame + ".wasdblclick=0;',300);return true;\" onMouseOver=\"" + treeData.topFrame + ".info('ID:" + cur.id + "')\" onMouseOut=\"" + treeData.topFrame + ".info(' ');\"><label id=\"lab_" + cur.id + "\"" + (cur.tooltip != "" ? " title=\"" + cur.tooltip + "\"" : "") + " class=\"" + cur.getlayout() + "\">&nbsp;" + cur.text + "</label></a>";
+		}
+	} else {
+		row += "<label id=\"lab_" + cur.id + "\"" + (cur.tooltip != "" ? " title=\"" + cur.tooltip + "\"" : "") + " class=\"" + cur.getlayout() + "\">&nbsp;" + cur.text + "</label>";
+	}
+	row += "&nbsp;&nbsp;<br/>";
+	return row;
+}
+
+function drawItem(nf, ai) {
+	return "&nbsp;&nbsp;<img src=\"" + treeData.tree_image_dir + (ai == nf.len ? "kreuzungend.gif" : "kreuzung.gif") + "\" class=\"treeKreuz\" >" + clickHandler(nf[ai]);
+}
+
+function drawThreeDots(nf, ai) {
+	return "&nbsp;&nbsp;<img src=\"" + treeData.tree_image_dir + (ai == nf.len ? "kreuzungend.gif" : "kreuzung.gif") + "\" class=\"treeKreuz\" >" +
+					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\"  onclick=\"" + treeData.topFrame + ".setSegment('" + nf[ai].id + "');return true;\">" +
+					"<img src=\"" + treeData.tree_image_dir + nf[ai].icon + "\" style=\"width:100px;height:7px\" alt=\"\">" +
+					"</a>" +
+					"&nbsp;&nbsp;<br/>";
+
+}
+
+function drawGroup(nf, ai, zweigEintrag) {
+	var newAst = zweigEintrag;
+
+	row = "&nbsp;&nbsp;<a href=\"javascript:" + treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + nf[ai].id + "')\"><img src=" + treeData.tree_image_dir + (nf[ai].open == 0 ? "auf" : "zu") + (ai == nf.len ? "end" : "") + ".gif class=\"treeKreuz\" alt=\"\"></a>";
+
+	nf[ai].icon = "folder" + (nf[ai].open == 1 ? "open" : "") + (nf[ai].disabled == 1 ? "_disabled" : "") + ".gif";
+
+	row += clickHandler(nf[ai]);
+
+	if (nf[ai].open == 1) {
+		newAst += "<img src=\"" + treeData.tree_image_dir + (ai == nf.len ? "leer.gif" : "strich2.gif") + "\" class=\"treeKreuz\"/>";
+		row += draw(nf[ai].id, newAst);
+	}
+	return row;
+}

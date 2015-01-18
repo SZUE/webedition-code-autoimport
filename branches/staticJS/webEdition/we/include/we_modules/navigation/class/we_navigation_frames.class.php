@@ -45,12 +45,12 @@ class we_navigation_frames extends we_modules_frame{
 		$_frameset = $this->toolUrl . 'edit_' . $this->toolName . '_frameset.php';
 		parent::__construct($_frameset);
 
-		$this->Tree = new we_navigation_tree();
+		$this->Tree = new we_navigation_tree($this->frameset,'top.content', 'top.content', 'top.content.cmd');
 		$this->TreeSource = 'table:' . $this->Table;
 		$this->View = new we_navigation_view($_frameset, 'top.content');
 		$this->Model = &$this->View->Model;
-		$this->setupTree(NAVIGATION_TABLE, 'top.content', 'top.content', 'top.content.cmd');
-	}
+		$this->setFrames('top.content', 'top.content', 'top.content.cmd');
+}
 
 	function getHTML($what){
 		switch($what){

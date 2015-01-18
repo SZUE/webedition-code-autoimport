@@ -30,10 +30,10 @@ class we_newsletter_frames extends we_modules_frame{
 	function __construct(){
 		parent::__construct(WE_NEWSLETTER_MODULE_DIR . 'edit_newsletter_frameset.php');
 		$this->module = 'newsletter';
-		$this->View = new we_newsletter_view();
+		$this->View = new we_newsletter_view($this->frameset,'top.content', 'top.content', 'top.content.cmd');
 		$this->View->setFrames('top.content', 'top.content.tree', 'top.content.cmd');
 		$this->Tree = new we_newsletter_tree();
-		$this->setupTree(NEWSLETTER_TABLE, 'top.content', 'top.content', 'top.content.cmd');
+		$this->setFrames('top.content', 'top.content', 'top.content.cmd');
 		$this->weAutoCompleter = &weSuggest::getInstance();
 	}
 

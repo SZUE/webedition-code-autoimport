@@ -103,7 +103,12 @@ function doClick(id,typ){
 	function getJSStartTree(){
 
 		return 'function startTree(){
-	' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&cmd=mainload&pid=0";
+			frames={
+	"top":' . $this->topFrame . ',
+	"cmd":' . $this->cmdFrame . '
+};
+treeData.frames=frames;
+	frames.cmd.location=treeData.frameset+"?pnt=cmd&cmd=mainload&pid=0";
 	drawTree();
 			}';
 	}
