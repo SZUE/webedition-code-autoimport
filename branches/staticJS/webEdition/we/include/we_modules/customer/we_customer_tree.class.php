@@ -43,11 +43,6 @@ class we_customer_tree extends weTree{
 		return '';
 	}
 
-	function getJSTreeFunctions(){
-		return parent::getJSTreeFunctions() . '
-';
-	}
-
 	function getJSStartTree(){
 		return '
 function startTree(){

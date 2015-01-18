@@ -24,85 +24,24 @@
  */
 class we_export_treeMain extends weTree{
 
-	function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
-
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
+	function customJSFile(){
+		return we_html_element::jsScript(WE_JS_EXPORT_MODULE_DIR . 'export_treeMain.js');
 	}
 
 	function getJSOpenClose(){
-		return '
-function openClose(id){
-	var sort="";
-	if(id==""){
-		return;
-	}
-	var eintragsIndex = indexOfEntry(id);
-	var openstatus=(treeData[eintragsIndex].open==0?1:0);
-
-	treeData[eintragsIndex].open=openstatus;
-
-	if(openstatus && treeData[eintragsIndex].loaded!=1){
-		if(sort!=""){
-			' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&cmd=mainload&pid="+id+"&sort="+sort;
-		}else{
-			' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&cmd=mainload&pid="+id;
-		}
-	}else{
-		drawTree();
-	}
-	if(openstatus==1){
-		treeData[eintragsIndex].loaded=1;
-	}
-}
- 			';
+		return '';
 	}
 
 	function getJSUpdateItem(){
-		return '
-function updateEntry(id,text,pid){
-	var ai = 1;
-	while (ai <= treeData.len) {
-		if (treeData[ai].id==id) {
-			treeData[ai].text=text;
-			treeData[ai].parentid=pid;
-		}
-		ai++;
-	}
-	drawTree();
-}
-			';
-	}
-
-	function getJSTreeFunctions(){
-		$out = weTree::getJSTreeFunctions();
-
-		$out.='
-function doClick(id,typ){
-	var cmd = "";
-	if(top.content.hot == "1") {
-		if(confirm("' . g_l('export', '[save_changed_export]') . '")) {
-			cmd = "save_export";
-			top.content.we_cmd("save_export");
-		} else {
-			top.content.usetHot();
-			cmd = "export_edit";
-			var node=' . $this->topFrame . '.get(id);
-			' . $this->topFrame . '.editor.edbody.location=treeData.frameset+"?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
-		}
-	} else {
-		cmd = "export_edit";
-		var node=' . $this->topFrame . '.get(id);
-		' . $this->topFrame . '.editor.edbody.location=treeData.frameset+"?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
-	}
-}
-' . $this->topFrame . '.loaded=1;
-			';
-		return $out;
+		return '';
 	}
 
 	function getJSStartTree(){
-
-		return 'function startTree(){
+		return '
+var g_l={
+	"save_changed_export":"' . g_l('export', '[save_changed_export]') . '"
+};
+function startTree(){
 			frames={
 	"top":' . $this->topFrame . ',
 	"cmd":' . $this->cmdFrame . '

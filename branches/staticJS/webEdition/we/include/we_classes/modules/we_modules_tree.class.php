@@ -50,9 +50,9 @@ function openClose(id){
 
 	if(openstatus && treeData[eintragsIndex].loaded!=1){
 		if(sort!=""){
-			' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid="+id+"&sort="+sort;
+			frames.cmd.location=treeData.frameset+"?pnt=cmd&pid="+id+"&sort="+sort;
 		}else{
-			' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid="+id;
+			frames.cmd.location=treeData.frameset+"?pnt=cmd&pid="+id;
 		}
 	}else{
 		drawTree();

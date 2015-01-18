@@ -280,3 +280,50 @@ function drawGroup(nf, ai, zweigEintrag) {
 	}
 	return row;
 }
+
+function indexOfEntry(id) {
+	var ai = 1;
+	while (ai <= treeData.len) {
+		if (treeData[ai].id == id) {
+			return ai;
+		}
+		ai++;
+	}
+	return -1;
+}
+
+function get(eintrag) {
+	var nf = new container();
+	var ai = 1;
+	while (ai <= treeData.len) {
+		if (treeData[ai].id == eintrag) {
+			nf = treeData[ai];
+		}
+		ai++;
+	}
+	return nf;
+}
+
+function search(eintrag) {
+	var nf = new container();
+	var ai = 1;
+	while (ai <= treeData.len) {
+		if (treeData[ai].parentid == eintrag) {
+			nf.add(treeData[ai]);
+		}
+		ai++;
+	}
+	return nf;
+}
+
+function add(object) {
+	this[++this.len] = object;
+}
+
+function containerClear() {
+	this.len = 0;
+}
+
+var startloc = 0;
+var treeHTML;
+self.focus();

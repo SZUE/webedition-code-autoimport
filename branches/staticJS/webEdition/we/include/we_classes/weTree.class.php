@@ -142,57 +142,8 @@ class weTree{
 var frames={
 };
 var treeData = new container();
-
 var we_scrollY = new Array();
-' . $this->getJSIncludeFunctions() .
-				//FIXME: we can't move the following functions, since some modules are not implemented on top of this, so they implement them their way (see banner)
-				'
-function indexOfEntry(id){
-	var ai = 1;
-	while (ai <= treeData.len) {
-		if (treeData[ai].id == id){
-			return ai;
-		}
-		ai++;
-	}
-	return -1;
-}
-
-function get(eintrag){
-	var nf = new container();
-	var ai = 1;
-	while (ai <= treeData.len) {
-		if (treeData[ai].id == eintrag){
-			nf=treeData[ai];
-		}
-		ai++;
-	}
-	return nf;
-}
-
-function search(eintrag){
-	var nf = new container();
-	var ai = 1;
-	while (ai <= treeData.len) {
-		if (treeData[ai].parentid == eintrag){
-			nf.add(treeData[ai]);
-		}
-		ai++;
-	}
-	return nf;
-}
-
-function add(object){
-	this[++this.len] = object;
-}
-
-function containerClear(){
-	this.len =0;
-}
-
-var startloc=0;
-var treeHTML;
-self.focus();'
+' . $this->getJSIncludeFunctions()
 			) . $this->customJSFile();
 	}
 
@@ -308,7 +259,7 @@ function getLayout(){
 	function getJSShowSegment(){
 		return '
 function showSegment(){
-	parentnode=' . $this->topFrame . '.get(this.parentid);
+	parentnode=frames.top.get(this.parentid);
 	parentnode.clear();
 	we_cmd("loadFolder",treeData.table,parentnode.id,"","","",this.offset);
 	toggleBusy(1);
