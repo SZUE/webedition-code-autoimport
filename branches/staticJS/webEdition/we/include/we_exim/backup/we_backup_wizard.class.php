@@ -1085,7 +1085,7 @@ function startStep(){
 		if(isset($_SESSION['weS']['weBackupVars']['backup_file']) && isset($_SESSION['weS']['weBackupVars']['options']['export2server']) &&
 				is_file($_SESSION['weS']['weBackupVars']['backup_file']) && $_SESSION['weS']['weBackupVars']['options']['export2server'] != 1){
 
-			we_base_file::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], time());
+			we_base_file::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], 0);
 		}
 
 		if(isset($_SESSION['weS']['weBackupVars'])){
@@ -1447,7 +1447,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 											we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR));
 									return '';
 								}
-								we_base_file::insertIntoCleanUp($we_backup_obj->filename, time());
+								we_base_file::insertIntoCleanUp($we_backup_obj->filename, 0);
 								$ok = true;
 							}
 						} else {
@@ -1457,7 +1457,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 										we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR));
 								return '';
 							}
-							we_base_file::insertIntoCleanUp($we_backup_obj->filename, time());
+							we_base_file::insertIntoCleanUp($we_backup_obj->filename, 0);
 							$ok = true;
 						}
 					} else {

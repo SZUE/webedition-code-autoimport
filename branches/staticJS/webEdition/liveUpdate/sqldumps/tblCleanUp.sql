@@ -1,8 +1,9 @@
+###UPDATEDROPCOL(ID,###TBLPREFIX###tblCleanUp)###
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblCleanUp (
-  ID int(11) unsigned NOT NULL auto_increment,
   Path varchar(255) NOT NULL default '',
-  `Date` int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (ID),
-  UNIQUE KEY Path (Path),
+  `Date` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  PRIMARY KEY  (Path),
   KEY `Date` (`Date`)
 ) ENGINE=MyISAM;

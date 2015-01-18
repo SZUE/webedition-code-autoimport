@@ -1087,7 +1087,7 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 	function getDownloadFile(){
 		$download_filename = "weBackup_" . $_SESSION["user"]["Username"] . ".sql";
 		if(copy($this->dumpfilename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename)){
-			we_base_file::insertIntoCleanUp($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename, time());
+			we_base_file::insertIntoCleanUp($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename,0);
 			return $download_filename;
 		}
 		return '';

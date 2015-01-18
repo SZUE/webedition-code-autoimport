@@ -50,7 +50,7 @@ function we_tag_xmlfeed($attribs){
 	if(!is_file($cache) || $do_refresh){
 		$ret = $GLOBALS['xmlfeeds'][$name]->getFile($url, $timeout);
 		if($ret){
-			$GLOBALS['xmlfeeds'][$name]->saveCache($cache, time() + (2 * $refresh)); //keep file longer, in case of timeouts
+			$GLOBALS['xmlfeeds'][$name]->saveCache($cache, (2 * $refresh)); //keep file longer, in case of timeouts
 		} else if($timeout && is_file($cache)){
 			//timeout + last file exists
 			$GLOBALS['xmlfeeds'][$name]->loadCache($cache);
