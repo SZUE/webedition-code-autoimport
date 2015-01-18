@@ -50,9 +50,9 @@ function openClose(id){
 
 	if(openstatus && treeData[eintragsIndex].loaded!=1){
 		if(sort!=""){
-			' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid="+id+"&sort="+sort;
+			frames.cmd.location=treeData.frameset+"?pnt=cmd&pid="+id+"&sort="+sort;
 		}else{
-			' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid="+id;
+			frames.cmd.location=treeData.frameset+"?pnt=cmd&pid="+id;
 		}
 	}else{
 		drawTree();
@@ -83,9 +83,13 @@ function updateEntry(id,text,pid,pub,order){
 	function getJSStartTree(){
 		return '
 function startTree(){
+frames={
+	"top":' . $this->topFrame . ',
+	"cmd":' . $this->cmdFrame . '
+};
 	pid = arguments[0] ? arguments[0] : 0;
 	offset = arguments[1] ? arguments[1] : 0;
-	' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid="+pid+"&offset="+offset;
+	frames.cmd.location=treeData.frameset+"?pnt=cmd&pid="+pid+"&offset="+offset;
 	drawTree();
 }';
 	}

@@ -69,23 +69,21 @@ function in_array(arr,item){
 	}
 	return false;
 }
-var attribs=new Array();' .
+var attribs={};' .
 			$this->topFrame . '.treeData.table=' . $this->topFrame . '.table;';
 
 		foreach($treeItems as $item){
 
-			$js.="if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){ \n";
+			$js.="if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){"
+				. "attribs={";
 			foreach($item as $k => $v){
-				if(strtolower($k) === "checked"){
-					$js.='
-if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["id"] . '")){
-	attribs["' . strtolower($k) . '"]=\'1\';
-}else{
-	attribs["' . strtolower($k) . '"]=\'' . $v . '\';
-}';
-				} else {
-					$js.='attribs["' . strtolower($k) . '"]=\'' . $v . '\';';
-				}
+				$js.='"' . strtolower($k) . '":' .
+					(strtolower($k) === "checked" ?
+						$js.='(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["id"] . '")?
+	\'1\':
+	\'' . $v . '\'),
+' :
+						'\'' . $v . '\',');
 			}
 			$js.=$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
 					}';
@@ -98,7 +96,12 @@ if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["
 
 	function getJSStartTree(){
 		return 'function startTree(){
-				' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=load&cmd=load&tab="+' . $this->topFrame . '.table+"&pid=0&openFolders="+' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table];
+frames={
+	"top":' . $this->topFrame . ',
+	"cmd":' . $this->cmdFrame . '
+};
+treeData.frames=frames;
+				frames.cmd.location=treeData.frameset+"?pnt=load&cmd=load&tab="+frames.top.table+"&pid=0&openFolders="+frames.top.openFolders[frames.top.table];
 			}';
 	}
 

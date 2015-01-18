@@ -25,17 +25,17 @@
 class we_navigation_tree extends we_modules_tree{
 
 	function getJSTreeFunctions(){
-		return parent::getJSTreeFunctions(true) .'
+		return parent::getJSTreeFunctions(true) . '
 				function doClick(id,typ){
-					var node=' . $this->topFrame . '.get(id);
-					' . $this->topFrame . '.editor.edbody.we_cmd("module_navigation_edit",node.id);
+					var node=frames.top.get(id);
+					frames.top.editor.edbody.we_cmd("module_navigation_edit",node.id);
 				}
 				';
 	}
 
 	function getJSTreeCode(){
 		return parent::getJSTreeCode() .
-				we_html_element::jsElement('drawTree.selection_table="' . NAVIGATION_TABLE . '";');
+			we_html_element::jsElement('drawTree.selection_table="' . NAVIGATION_TABLE . '";');
 	}
 
 }

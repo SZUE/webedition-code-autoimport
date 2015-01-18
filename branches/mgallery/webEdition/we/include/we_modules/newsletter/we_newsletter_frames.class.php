@@ -32,8 +32,8 @@ class we_newsletter_frames extends we_modules_frame{
 		$this->module = 'newsletter';
 		$this->View = new we_newsletter_view();
 		$this->View->setFrames('top.content', 'top.content.tree', 'top.content.cmd');
-		$this->Tree = new we_newsletter_tree();
-		$this->setupTree(NEWSLETTER_TABLE, 'top.content', 'top.content', 'top.content.cmd');
+		$this->Tree = new we_newsletter_tree($this->frameset, 'top.content', 'top.content', 'top.content.cmd');
+		$this->setFrames('top.content', 'top.content', 'top.content.cmd');
 		$this->weAutoCompleter = &weSuggest::getInstance();
 	}
 
@@ -217,7 +217,7 @@ top.content.hloaded = 1;
 		$group = we_base_request::_(we_base_request::INT, "group", 0);
 
 		$js = $this->View->getJSFooterCode() .
-				we_html_element::jsScript(JS_DIR . 'utils/lib.js') .
+			we_html_element::jsScript(JS_DIR . 'utils/lib.js') .
 			we_html_element::jsElement('
 function addGroup(text, val) {
 	 ' . ($group ? '' : 'document.we_form.gview[document.we_form.gview.length] = new Option(text,val);' ) . '
@@ -2210,18 +2210,17 @@ function clearLog(){
 
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array("class" => 'weDialogBody', 'onload' => "setTimeout(document.we_form.submit,200)"), we_html_element::htmlForm(array('name' => 'we_form'), $this->View->htmlHidden("pnt", "send_frameset") .
-										$this->View->htmlHidden('nid', $nid) .
-										$this->View->htmlHidden('test', $test) .
-										we_html_element::htmlCenter(
-												we_html_element::htmlImg(array('src' => IMAGE_DIR . 'e_busy.gif')) .
-												we_html_element::htmlBr() .
-												we_html_element::htmlBr() .
-												we_html_element::htmlDiv(array('class' => 'header_small'), g_l('modules_newsletter', '[prepare_newsletter]'))
-										)
-								)
-						), we_html_element::jsElement('self.focus();')
-
+				we_html_element::htmlBody(array("class" => 'weDialogBody', 'onload' => "setTimeout(document.we_form.submit,200)"), we_html_element::htmlForm(array('name' => 'we_form'), $this->View->htmlHidden("pnt", "send_frameset") .
+						$this->View->htmlHidden('nid', $nid) .
+						$this->View->htmlHidden('test', $test) .
+						we_html_element::htmlCenter(
+							we_html_element::htmlImg(array('src' => IMAGE_DIR . 'e_busy.gif')) .
+							we_html_element::htmlBr() .
+							we_html_element::htmlBr() .
+							we_html_element::htmlDiv(array('class' => 'header_small'), g_l('modules_newsletter', '[prepare_newsletter]'))
+						)
+					)
+				), we_html_element::jsElement('self.focus();')
 		);
 	}
 
@@ -2300,10 +2299,10 @@ self.focus();
 		$details = g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "test") ? '[test_no_mail]' : '[sending]'));
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $pb->getJS('', true) .
-										$_content
-								) .
-								we_html_element::jsElement('
+				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $pb->getJS('', true) .
+						$_content
+					) .
+					we_html_element::jsElement('
 									document.we_form.details.value="' . $details . '";
 									document.we_form.details.value=document.we_form.details.value+"\n"+"' . g_l('modules_newsletter', '[campaign_starts]') . '";
 							')
@@ -2370,17 +2369,17 @@ self.focus();');
 
 
 		echo $this->getHTMLDocument(we_html_element::htmlBody(array("marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10, "onload" => "initControl()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "nid", "value" => $nid)) .
-								we_html_element::htmlHidden(array("name" => "pnt", "value" => "send_cmd")) .
-								we_html_element::htmlHidden(array("name" => "test", "value" => $test)) .
-								we_html_element::htmlHidden(array("name" => "blockcache", "value" => $blockcache)) .
-								we_html_element::htmlHidden(array("name" => "emailcache", "value" => $emailcache)) .
-								we_html_element::htmlHidden(array("name" => "ecount", "value" => $ecount)) .
-								we_html_element::htmlHidden(array("name" => "gcount", "value" => $gcount)) .
-								we_html_element::htmlHidden(array("name" => "egc", "value" => $egc + 1)) .
-								we_html_element::htmlHidden(array("name" => "ecs", "value" => $ecs)) .
-								we_html_element::htmlHidden(array("name" => "reload", "value" => 1))
-						)
-				), $js);
+					we_html_element::htmlHidden(array("name" => "pnt", "value" => "send_cmd")) .
+					we_html_element::htmlHidden(array("name" => "test", "value" => $test)) .
+					we_html_element::htmlHidden(array("name" => "blockcache", "value" => $blockcache)) .
+					we_html_element::htmlHidden(array("name" => "emailcache", "value" => $emailcache)) .
+					we_html_element::htmlHidden(array("name" => "ecount", "value" => $ecount)) .
+					we_html_element::htmlHidden(array("name" => "gcount", "value" => $gcount)) .
+					we_html_element::htmlHidden(array("name" => "egc", "value" => $egc + 1)) .
+					we_html_element::htmlHidden(array("name" => "ecs", "value" => $ecs)) .
+					we_html_element::htmlHidden(array("name" => "reload", "value" => 1))
+				)
+			), $js);
 		flush();
 
 		if($gcount <= $egc){

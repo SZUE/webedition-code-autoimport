@@ -54,13 +54,16 @@ abstract class we_modules_frame{
 		$this->cmdFrame = $cmdFrame;
 	}
 
+	/**
+	 * @deprecated since version 6.4.1
+	 */
 	public function setupTree($table, $topFrame, $treeFrame, $cmdFrame){
 		$this->setFrames($topFrame, $treeFrame, $cmdFrame);
 		$this->Tree->init($this->frameset, $topFrame, $treeFrame, $cmdFrame);
 	}
 
 	function getJSStart(){
-		return ($this->Tree->initialized ? 'function start(){startTree();}' : 'function start(){}');
+		return 'function start(){startTree();}';
 	}
 
 	public function getHTMLDocumentHeader($charset = ''){

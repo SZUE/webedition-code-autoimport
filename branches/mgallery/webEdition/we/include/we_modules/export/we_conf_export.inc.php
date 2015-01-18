@@ -25,5 +25,6 @@
 define('EXPORT_TABLE', TBL_PREFIX . 'tblexport');
 
 define('WE_EXPORT_MODULE_DIR', WE_MODULES_DIR . 'export/');
+define('WE_JS_EXPORT_MODULE_DIR', WE_JS_MODULES_DIR . 'export/');
 
 we_base_request::registerTables(array(EXPORT_TABLE));

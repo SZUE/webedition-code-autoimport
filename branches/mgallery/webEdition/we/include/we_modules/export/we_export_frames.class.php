@@ -36,9 +36,9 @@ class we_export_frames extends we_modules_frame{
 	function __construct(){
 		parent::__construct(WE_EXPORT_MODULE_DIR . "edit_export_frameset.php");
 		$this->Tree = new we_export_treeMain();
-		$this->SelectionTree = new we_export_tree();
+		$this->SelectionTree = new we_export_tree($this->frameset,"top.content", "top.content", "top.content.cmd");
 		$this->View = new we_export_view(WE_EXPORT_MODULE_DIR . "edit_export_frameset.php", "top.content");
-		$this->setupTree(EXPORT_TABLE, "top.content", "top.content", "top.content.cmd");
+		$this->setFrames("top.content", "top.content", "top.content.cmd");
 		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
 	}
 

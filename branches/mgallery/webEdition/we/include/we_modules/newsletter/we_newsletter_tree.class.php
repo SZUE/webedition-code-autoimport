@@ -54,65 +54,37 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab){
 }';
 	}
 
-	function getJSUpdateItem(){
-		return '
-function updateEntry(id,text,pid){
-	var ai = 1;
-	while (ai <= treeData.len) {
-		if (treeData[ai].id==id) {
-				treeData[ai].text=text;
-				treeData[ai].parentid=pid;
-		}
-		ai++;
+	function customJSFile(){
+		return we_html_element::jsScript(WE_JS_NEWSLETTER_MODULE_DIR. 'newsletter_tree.js');
 	}
-	drawTree();
-}';
+
+	function getJSUpdateItem(){
+		return '';
 	}
 
 	function getJSTreeFunctions(){
 
-		return weTree::getJSTreeFunctions(true) . '
-function doClick(id,typ){
-	var node=' . $this->topFrame . '.get(id);
-		' . $this->topFrame . '.we_cmd(\'newsletter_edit\',node.id,node.typ,node.table);
-}
-';
+		return weTree::getJSTreeFunctions(true);
 	}
 
 	function getJSStartTree(){
 		return 'function startTree(){
-				' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid=0";
+			frames={
+	"top":' . $this->topFrame . ',
+	"cmd":' . $this->cmdFrame . '
+};
+treeData.frames=frames;
+				frames.cmd.location=treeData.frameset+"?pnt=cmd&pid=0";
 				drawTree();
 			}';
 	}
 
 	function getJSInfo(){
-		return '
-function info(text) {}
-		';
+		return '';
 	}
 
 	function getJSOpenClose(){
-		return '
-function openClose(id){
-	var sort="";
-	if(id=="") return;
-	var eintragsIndex = indexOfEntry(id);
-	var openstatus=(treeData[eintragsIndex].open==0? 1:0);
-
-	treeData[eintragsIndex].open=openstatus;
-
-	if(openstatus && treeData[eintragsIndex].loaded!=1){
-		if(sort!=""){
-			' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid="+id+"&sort="+sort;
-		}else{
-			' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid="+id;
-		}
-	}else{
-		drawTree();
-	}
-	if(openstatus==1) treeData[eintragsIndex].loaded=1;
-}';
+		return '';
 	}
 
 }

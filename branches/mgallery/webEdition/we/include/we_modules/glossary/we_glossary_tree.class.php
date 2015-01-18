@@ -24,71 +24,34 @@
  */
 class we_glossary_tree extends weMainTree{
 
+	function customJSFile(){
+		return we_html_element::jsScript(WE_JS_GLOSSARY_MODULE_DIR . 'glossary_tree.js');
+	}
+
 	function getJSOpenClose(){
-		return '
-function openClose(id){
-	var sort="";
-	if(id==""){
-		return;
-	}
-	var eintragsIndex = indexOfEntry(id);
-	var openstatus=(treeData[eintragsIndex].open==0?1:0);
-
-	treeData[eintragsIndex].open=openstatus;
-
-	if(openstatus && treeData[eintragsIndex].loaded!=1){
-		' . $this->cmdFrame . '.location =treeData.frameset+"?pnt=cmd&pid="+id+
-			(sort!="" ?
-			("&sort="+sort) :
-			"");
-	}else{
-		drawTree();
-	}
-	if(openstatus==1){
-		treeData[eintragsIndex].loaded=1;
-	}
-}';
+		return '';
 	}
 
 	function getJSUpdateItem(){
-		return '
-function updateEntry(id,text,pid,pub){
-	var ai = 1;
-	while (ai <= treeData.len) {
-			if (treeData[ai].id==id) {
-				treeData[ai].text=text;
-				treeData[ai].parentid=pid;
-				treeData[ai].published=pub;
-			}
-			ai++;
-	}
-drawTree();
-}';
+		return '';
 	}
 
 	function getJSTreeFunctions(){
-		return parent::getJSTreeFunctions(true) . '
-function doClick(id,typ){
-	var cmd = "";
-	if(top.content.hot == "1") {
-		if(confirm("' . g_l('modules_glossary', '[save_changed_glossary]') . '")) {
-			cmd = "save_export";
-			top.content.we_cmd("save_glossary");
-		} else {
-			top.content.usetHot();
-			var node=' . $this->topFrame . '.get(id);
-			' . $this->topFrame . '.editor.edbody.location=treeData.frameset+"?pnt=edbody&cmd=" + node.cmd + "&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
-		}
-	} else {
-		var node=' . $this->topFrame . '.get(id);
-		' . $this->topFrame . '.editor.edbody.location=treeData.frameset+"?pnt=edbody&cmd=" + node.cmd + "&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
-	}
-}' . $this->topFrame . '.loaded=1;';
+		return parent::getJSTreeFunctions(true);
 	}
 
 	function getJSStartTree(){
-		return 'function startTree(){
-	' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid=0";
+		return '
+var g_l={
+	"save_changed_glossary":"' . g_l('modules_glossary', '[save_changed_glossary]') . '"
+};
+function startTree(){
+			frames={
+	"top":' . $this->topFrame . ',
+	"cmd":' . $this->cmdFrame . '
+};
+treeData.frames=frames;
+	frames.cmd.location=treeData.frameset+"?pnt=cmd&pid=0";
 	drawTree();
 }';
 	}
@@ -115,23 +78,17 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
 			treeData.addSort(new node(attribs));
 
 			drawTree();
-		}
+	}
 	}
 }';
 	}
 
 	function getJSInfo(){
-		return 'function info(text) {}';
+		return '';
 	}
 
 	function getJSShowSegment(){
-		return '
-function showSegment(){
-	parentnode=' . $this->topFrame . '.get(this.parentid);
-	parentnode.clear();
-	' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid="+this.parentid+"&offset="+this.offset;
-	drawTree();
-}';
+		return '';
 	}
 
 }

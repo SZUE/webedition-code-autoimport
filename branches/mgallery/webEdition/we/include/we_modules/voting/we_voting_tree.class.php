@@ -23,72 +23,30 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_voting_tree extends weMainTree{
+	function customJSFile(){
+		return we_html_element::jsScript(WE_JS_VOTING_MODULE_DIR. 'voting_tree.js');
+	}
 
 	function getJSOpenClose(){
-		return '
-function openClose(id){
-	var sort="";
-	if(id==""){
-		return;
-	}
-	var eintragsIndex = indexOfEntry(id);
-	var openstatus=(treeData[eintragsIndex].open==0?1:0);
-
-	treeData[eintragsIndex].open=openstatus;
-
-	if(openstatus && treeData[eintragsIndex].loaded!=1){
-			' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid="+id+(sort!=""?"&sort="+sort:"");
-	}else{
-		drawTree();
-	}
-	if(openstatus==1){
-		treeData[eintragsIndex].loaded=1;
-	}
-}';
+		return '';
 	}
 
 	function getJSUpdateItem(){
-		return '
-function updateEntry(id,text,pid,pub){
-	var ai = 1;
-	while (ai <= treeData.len) {
-		if (treeData[ai].id==id) {
-			treeData[ai].text=text;
-			treeData[ai].parentid=pid;
-			treeData[ai].published=pub;
-		}
-		ai++;
-	}
-	drawTree();
-}';
-	}
-
-	function getJSTreeFunctions(){
-		return weTree::getJSTreeFunctions() . '
-function doClick(id,typ){
-	var cmd = "";
-	if(top.content.hot == "1") {
-		if(confirm("' . g_l('modules_voting', '[save_changed_voting]') . '")) {
-			cmd = "save_voting";
-			top.content.we_cmd("save_voting");
-		} else {
-			top.content.usetHot();
-			cmd = "voting_edit";
-			var node=' . $this->topFrame . '.get(id);
-			' . $this->topFrame . '.editor.edbody.location=treeData.frameset+"?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
-		}
-	} else {
-		cmd = "voting_edit";
-		var node=' . $this->topFrame . '.get(id);
-		' . $this->topFrame . '.editor.edbody.location=treeData.frameset+"?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
-	}
-}
-' . $this->topFrame . '.loaded=1;';
+		return '';
 	}
 
 	function getJSStartTree(){
-		return 'function startTree(){
-				' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid=0";
+		return 'var g_l={
+			"save_changed_voting":"' . g_l('modules_voting', '[save_changed_voting]') . '"
+
+			};
+			function startTree(){
+			frames={
+	"top":' . $this->topFrame . ',
+	"cmd":' . $this->cmdFrame . '
+};
+treeData.frames=frames;
+				frames.cmd.location=treeData.frameset+"?pnt=cmd&pid=0";
 				drawTree();
 			}';
 	}
@@ -120,17 +78,11 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
 	}
 
 	function getJSInfo(){
-		return 'function info(text) {}';
+		return '';
 	}
 
 	function getJSShowSegment(){
-		return '
-function showSegment(){
-	parentnode=' . $this->topFrame . '.get(this.parentid);
-	parentnode.clear();
-	' . $this->cmdFrame . '.location=treeData.frameset+"?pnt=cmd&pid="+this.parentid+"&offset="+this.offset;
-	drawTree();
-}';
+		return '';
 	}
 
 }
