@@ -285,7 +285,7 @@ treeData.table="' . FILE_TABLE . '";';
 				$js.= 'if(' . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){"
 					. "attribs={";
 				foreach($item as $k => $v){
-					$js.='"' . strtolower($k) . '":\'' . addslashes($v) . '\',';
+					$js.='"' . strtolower($k) . '":' . ($v === 0 ? 0 : '\'' . addslashes($v) . '\'') . ',';
 				}
 
 				$js.='};' . $this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));
