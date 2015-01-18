@@ -74,10 +74,11 @@ abstract class we_message_reporting{
 
 	public static function jsString(){
 		return '
-var we_string_message_reporting_notice = "' . g_l('alert', '[notice]') . '";
-var we_string_message_reporting_warning = "' . g_l('alert', '[warning]') . '";
-var we_string_message_reporting_error = "' . g_l('alert', '[error]') . '";
-';
+var message_reporting={
+	"notice":"' . g_l('alert', '[notice]') . '",
+	"warning":"' . g_l('alert', '[warning]') . '",
+	"error":"' . g_l('alert', '[error]') . '"
+}';
 	}
 
 }

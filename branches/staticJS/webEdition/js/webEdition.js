@@ -56,17 +56,17 @@ function showMessage(message, prio, win) {
 		switch (prio) {
 			// Notice
 			case WE_MESSAGE_NOTICE:
-				win.alert(we_string_message_reporting_notice + ":\n" + message);
+				win.alert(message_reporting.notice + ":\n" + message);
 				break;
 
 				// Warning
 			case WE_MESSAGE_WARNING:
-				win.alert(we_string_message_reporting_warning + ":\n" + message);
+				win.alert(message_reporting.warning + ":\n" + message);
 				break;
 
 				// Error
 			case WE_MESSAGE_ERROR:
-				win.alert(we_string_message_reporting_error + ":\n" + message);
+				win.alert(message_reporting.error + ":\n" + message);
 				break;
 		}
 	}
