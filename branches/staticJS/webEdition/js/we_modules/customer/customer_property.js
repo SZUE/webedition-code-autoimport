@@ -142,14 +142,14 @@ function we_cmd() {
 
 var ajaxCallbackResetLogins = {
 	success: function (o) {
-		if (typeof (o.responseText) != undefined && o.responseText != "") {
+		if (o.responseText !== undefined && o.responseText !== "") {
 			var weResponse = false;
 			try {
 				eval("var weResponse = " + o.responseText);
 				if (weResponse) {
-					if (weResponse["DataArray"]["data"] == "true") {
+					if (weResponse.DataArray.data == "true") {
 
-						document.getElementById("FailedCustomerLogins").innerText = weResponse["DataArray"]["value"];
+						document.getElementById("FailedCustomerLogins").innerText = weResponse.DataArray.value;
 					}
 				}
 			} catch (exc) {
@@ -158,7 +158,7 @@ var ajaxCallbackResetLogins = {
 	},
 	failure: function (o) {
 	}
-}
+};
 
 function resetLogins(id){
 	YAHOO.util.Connect.asyncRequest( "GET", dirs.WEBEDITION_DIR + "rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid="+id, ajaxCallbackResetLogins );

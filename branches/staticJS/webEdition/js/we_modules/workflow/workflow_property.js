@@ -160,41 +160,41 @@ function delTask() {
 function checkData() {
 	var nsteps = document.we_form.wsteps;
 	var ntasks = document.we_form.wtasks;
-	if (document.we_form[uid + "_Text"].value == ""){
+	if (document.we_form[uid + "_Text"].value === ""){
 		top.we_showMessage(g_l.name_empty, WE_MESSAGE_ERROR, window);
 		return false;
 	}
 
-	if (document.we_form[uid + "_Folders"].value == "" && document.we_form[uid + "_Type"].value == 1){
+	if (document.we_form[uid + "_Folders"].value === "" && document.we_form[uid + "_Type"].value == 1){
 		top.we_showMessage(g_l.folders_empty, WE_MESSAGE_ERROR, window);
 		return false;
 	}
 
-	if (document.we_form[uid + "_ObjectFileFolders"].value == "" && document.we_form[uid + "_Type"].value == 2){
+	if (document.we_form[uid + "_ObjectFileFolders"].value === "" && document.we_form[uid + "_Type"].value == 2){
 		top.we_showMessage(g_l.folders_empty, WE_MESSAGE_ERROR, window);
 		return false;
 	}
 
-	if ((document.we_form[uid + "_DocType"].value == 0 && document.we_form[uid + "_Categories"].value == "") && document.we_form[uid + "_Type"].value == 0){
+	if ((document.we_form[uid + "_DocType"].value === 0 && document.we_form[uid + "_Categories"].value === "") && document.we_form[uid + "_Type"].value === 0){
 		top.we_showMessage(g_l.doctype_empty, WE_MESSAGE_ERROR, window);
 
 		return false;
 	}
 
-	if (document.we_form[uid + "_Objects"].value == "" && document.we_form[uid + "_Type"].value == 2){
+	if (document.we_form[uid + "_Objects"].value === "" && document.we_form[uid + "_Type"].value == 2){
 		top.we_showMessage(g_l.objects_empty, WE_MESSAGE_ERROR, window);
 		return false;
 	}
 
 	for (i = 0; i < nsteps.value; i++) {
-		if (document.we_form[uid + '_step' + i + '_Worktime'].value == "") {
+		if (document.we_form[uid + '_step' + i + '_Worktime'].value === "") {
 			var _txt = g_l.worktime_empty;
 			top.we_showMessage(_txt.replace(/%s/, i + 1), WE_MESSAGE_ERROR, window);
 			return false;
 		}
 		userempty = true;
 		for (j = 0; j < ntasks.value; j++) {
-			if (document.we_form[uid + '_task_' + i + '_' + j + '_userid'].value != 0) {
+			if (document.we_form[uid + '_task_' + i + '_' + j + '_userid'].value !== 0) {
 				userempty = false;
 			}
 		}

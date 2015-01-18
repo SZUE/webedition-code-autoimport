@@ -44,16 +44,16 @@ function info(text) {
 
 function openClose(id) {
 	var sort = "";
-	if (id == "") {
+	if (id === "") {
 		return;
 	}
 	var eintragsIndex = indexOfEntry(id);
-	var openstatus = (treeData[eintragsIndex].open == 0 ? 1 : 0);
+	var openstatus = (treeData[eintragsIndex].open === 0 ? 1 : 0);
 
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && treeData[eintragsIndex].loaded != 1) {
-		frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + id + (sort != "" ? "&sort=" + sort : "");
+		frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}

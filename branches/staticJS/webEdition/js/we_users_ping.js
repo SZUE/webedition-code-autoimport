@@ -72,7 +72,7 @@ var ajaxCallback = {
 			alert(g_l.unable_to_call_ping);
 		}
 	}
-}
+};
 
 function YUIdoAjax() {
 	YAHOO.util.Connect.asyncRequest('POST', "/webEdition/rpc/rpc.php", ajaxCallback, 'protocol=json&cmd=Ping');

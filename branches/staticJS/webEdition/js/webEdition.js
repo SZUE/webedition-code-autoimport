@@ -1079,7 +1079,7 @@ function we_cmd_base(args, url) {
 				}
 				var tbl_prefix = tables.TBL_PREFIX,
 								table = (args[1] !== undefined && args[1]) ? args[1] : 'tblFile';
-				we_cmd("setTab", (tbl_prefix != '' && table.indexOf(tbl_prefix) !== 0 ? tbl_prefix + table : table));
+				we_cmd("setTab", (tbl_prefix !== '' && table.indexOf(tbl_prefix) !== 0 ? tbl_prefix + table : table));
 				//toggleBusy(1);
 				we_repl(self.load, url, args[0]);
 			}

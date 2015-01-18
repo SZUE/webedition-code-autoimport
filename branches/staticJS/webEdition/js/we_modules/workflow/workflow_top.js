@@ -45,7 +45,7 @@ function we_cmd() {
 	}
 	if (hot == 1 && arguments[0] != "save_workflow") {
 		var hotConfirmMsg = confirm(g_l.save_changed_workflow);
-		if (hotConfirmMsg == true) {
+		if (hotConfirmMsg === true) {
 			arguments[0] = "save_workflow";
 			top.content.usetHot();
 		} else {

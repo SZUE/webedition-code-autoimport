@@ -23,7 +23,7 @@
 
 var ajaxCallbackResultList = {
 	success: function (o) {
-		if (o.responseText !== undefined && o.responseText != "") {
+		if (o.responseText !== undefined && o.responseText !== "") {
 			document.getElementById("scrollContent_doclist").innerHTML = o.responseText;
 			makeAjaxRequestParametersTop();
 			makeAjaxRequestParametersBottom();
@@ -32,49 +32,50 @@ var ajaxCallbackResultList = {
 	failure: function (o) {
 		alert("Failure");
 	}
-}
+};
+
 var ajaxCallbackParametersTop = {
 	success: function (o) {
-		if (o.responseText !== undefined && o.responseText != "") {
+		if (o.responseText !== undefined && o.responseText !== "") {
 			document.getElementById("parametersTop").innerHTML = o.responseText;
 		}
 	},
 	failure: function (o) {
 		alert("Failure");
 	}
-}
+};
+
 var ajaxCallbackParametersBottom = {
 	success: function (o) {
-		if (o.responseText !== undefined && o.responseText != "") {
+		if (o.responseText !== undefined && o.responseText !== "") {
 			document.getElementById("parametersBottom").innerHTML = o.responseText;
 		}
 	},
 	failure: function (o) {
 		alert("Failure");
 	}
-}
+};
 
 var ajaxCallbackgetMouseOverDivs = {
 	success: function (o) {
-		if (o.responseText !== undefined && o.responseText != "") {
+		if (o.responseText !== undefined && o.responseText !== "") {
 			document.getElementById("mouseOverDivs_doclist").innerHTML = o.responseText;
 		}
 	},
 	failure: function (o) {
 		alert("Failure");
 	}
-}
+};
 
 function calendarSetup(x) {
 	for (i = 0; i < x; i++) {
-		if (document.getElementById("date_picker_from" + i + "") != null) {
+		if (document.getElementById("date_picker_from" + i + "") !== null) {
 			Calendar.setup({inputField: "search[" + i + "]", ifFormat: "%d.%m.%Y", button: "date_picker_from" + i + "", align: "Tl", singleClick: true});
 		}
 	}
 }
 
 function delRow(id) {
-
 	var scrollContent = document.getElementById("scrollContent_doclist");
 	scrollContent.style.height = scrollContent.offsetHeight + 26 + "px";
 
@@ -102,8 +103,8 @@ function reload() {
 
 function next(anzahl) {
 	var scrollActive = document.getElementById("scrollActive");
-	if (scrollActive == null) {
-		document.we_form.elements['searchstart'].value = parseInt(document.we_form.elements['searchstart'].value) + anzahl;
+	if (scrollActive === null) {
+		document.we_form.elements.searchstart.value = parseInt(document.we_form.elements.searchstart.value) + anzahl;
 
 		search(false);
 	}
@@ -111,8 +112,8 @@ function next(anzahl) {
 
 function back(anzahl) {
 	var scrollActive = document.getElementById("scrollActive");
-	if (scrollActive == null) {
-		document.we_form.elements['searchstart'].value = parseInt(document.we_form.elements['searchstart'].value) - anzahl;
+	if (scrollActive === null) {
+		document.we_form.elements.searchstart.value = parseInt(document.we_form.elements.searchstart.value) - anzahl;
 		search(false);
 	}
 
@@ -140,7 +141,7 @@ function updateElem(e) {
 	var x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX;
 	var y = (document.all) ? window.event.y + document.body.scrollTop : e.pageY;
 
-	if (elem != null && elem.style.visibility == "visible") {
+	if (elem !== null && elem.style.visibility == "visible") {
 
 		elemWidth = elem.offsetWidth;
 		elemHeight = elem.offsetHeight;
@@ -257,18 +258,18 @@ function setOrder(order) {
 	columns = new Array("Text", "SiteTitle", "CreationDate", "ModDate");
 	for (var i = 0; i < columns.length; i++) {
 		if (order != columns[i]) {
-			deleteArrow = document.getElementById("" + columns[i] + "");
+			deleteArrow = document.getElementById(columns[i]);
 			deleteArrow.innerHTML = "";
 		}
 	}
-	arrow = document.getElementById("" + order + "");
-	foo = document.we_form.elements["order"].value;
+	arrow = document.getElementById(order);
+	foo = document.we_form.elements.order.value;
 
 	if (order + " DESC" == foo) {
-		document.we_form.elements["order"].value = order;
+		document.we_form.elements.order.value = order;
 		arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"" + dirs.IMAGE_DIR + "arrow_sort_asc.gif\" />";
 	} else {
-		document.we_form.elements["order"].value = order + " DESC";
+		document.we_form.elements.order.value = order + " DESC";
 		arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"" + dirs.IMAGE_DIR + "arrow_sort_desc.gif\" />";
 	}
 	search(false);
@@ -300,8 +301,9 @@ function publishDocsAjax() {
 	var checkboxes = document.getElementsByName("publish_docs_doclist");
 	for (var i = 0; i < checkboxes.length; i++) {
 		if (checkboxes[i].checked) {
-			if (check != "")
+			if (check !== ""){
 				check += ",";
+			}
 			check += checkboxes[i].value;
 		}
 	}
@@ -349,15 +351,15 @@ function publishDocs() {
 		}
 	}
 
-	if (checkboxes.length == 0) {
+	if (checkboxes.length === 0) {
 		check = false;
 	}
 
-	if (check == false) {
+	if (check === false) {
 		top.we_showMessage(g_l.notChecked, WE_MESSAGE_NOTICE, window);
 	} else {
 		Check = confirm(g_l.publish_docs);
-		if (Check == true) {
+		if (Check === true) {
 			publishDocsAjax();
 		}
 	}
@@ -370,7 +372,7 @@ var ajaxCallbackPublishDocs = {
 		// reload current document => reload all open Editors on demand
 
 		var _usedEditors = top.weEditorFrameController.getEditorsInUse();
-		for (frameId in _usedEditors) {
+		for (var frameId in _usedEditors) {
 
 			if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
 				_usedEditors[frameId].setEditorReloadAllNeeded(true);
@@ -391,7 +393,7 @@ var ajaxCallbackPublishDocs = {
 	failure: function (o) {
 		alert("Failure");
 	}
-}
+};
 
 function search(newSearch) {
 	if (canNotMakeTemp) {

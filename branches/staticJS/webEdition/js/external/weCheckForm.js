@@ -74,7 +74,7 @@ function weCheckFormMandatory(form, reqFields) { //  return name of not set mand
 				ok = false;
 			}
 		} else if (elem && elem.type && (elem.type == "select-one" || elem.type == "select-multi")) {
-			if (elem.selectedIndex == undefined || elem.options[elem.selectedIndex].value == "") { // select
+			if (elem.selectedIndex === undefined || elem.options[elem.selectedIndex].value === "") { // select
 				ok = false;
 			}
 		} else if (!elem || !elem.value) {        //  text, password, select

@@ -106,7 +106,7 @@ function remove(transaction) {
 }
 
 function isInEditor(transaction) {
-	if (self.isLoaded && transaction != null && (typeof document.WePlugin.inEditor == "function")) {
+	if (self.isLoaded && transaction !== null && (typeof document.WePlugin.inEditor == "function")) {
 		return document.WePlugin.inEditor(transaction);
 	}
 	return false;
