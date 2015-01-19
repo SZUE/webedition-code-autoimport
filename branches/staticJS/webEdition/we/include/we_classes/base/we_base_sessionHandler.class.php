@@ -50,7 +50,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	}
 
 	function close(){//FIX for php >5.5, where write is only called, if sth. in session changed
-		$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="",lockTime=NULL WHERE session_id=x\'' . session_id() . '\' AND sessionName="' . $this->sessionName . '" AND lockid="' . $this->id . '"');
+		$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="",lockTime=NULL WHERE session_id=x\'' . str_pad(session_id(), 40, '0') . '\' AND sessionName="' . $this->sessionName . '" AND lockid="' . $this->id . '"');
 		//make sure every access will be an error after close
 		//unset($_SESSION); //navigate tree will not load in phpmyadmin - they use bad code for that...
 		return true;
@@ -102,7 +102,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 				we_database_base::arraySetter(array(
 					'lockid' => $lock ? $this->id : '',
 					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-				)) . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
+				)) . ' WHERE session_id=x\'' . str_pad($sessID, 40, '0') . '\' AND sessionName="' . $this->sessionName . '"');
 
 			if($this->DB->affected_rows()){//make sure we had an successfull update
 				return true;

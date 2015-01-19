@@ -162,7 +162,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @return string
 	 */
 	function getConditionForListviewQuery($filter, $classname, $classID = 0, $ids = ''){
-		if($filter === 'off' || $filter === 'false' || $filter === false || $filter === 'all'){
+		if($filter === 'off' || $filter === 'false' || $filter === false || $filter === 'all' || $filter === ''){
 			return '';
 		}
 		if(!self::customerIsLogedIn()){ //we don't show any documents with an customerfilter

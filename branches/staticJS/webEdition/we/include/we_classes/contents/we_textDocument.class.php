@@ -142,7 +142,6 @@ class we_textDocument extends we_document{
 						break;
 					case '.less':
 						if($this->parseFile){
-							include_once(WE_LIB_PATH . 'additional/Less/lessc.inc.php');
 							$less = new lessc();
 							$less->setImportDir(array(
 								$_SERVER['DOCUMENT_ROOT'],

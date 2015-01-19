@@ -83,7 +83,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 			'Text' => we_base_request::STRING,
 			'Path' => we_base_request::FILE,
 			'Icon' => we_base_request::STRING,
-			'Subject' => we_base_request::STRING,
+			'Subject' => we_base_request::STRINGC,
 			'Sender' => we_base_request::EMAIL,
 			'Reply' => we_base_request::EMAIL,
 			'Test' => we_base_request::EMAIL,
