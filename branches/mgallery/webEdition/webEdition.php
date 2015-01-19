@@ -20,6 +20,7 @@
  * @category   webEdition
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ * IMI: testcommit 1
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
