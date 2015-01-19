@@ -52,7 +52,7 @@ if(we_base_browserDetect::isMAC() && we_base_browserDetect::isGecko()){
 	$_scid_file = $_tmp_dir . '/' . md5($l_param['scid']);
 	if(!file_exists($_scid_file)){
 		we_base_file::save($_scid_file, '');
-		we_base_file::insertIntoCleanUp($_scid_file, time() + (24 * 3600));
+		we_base_file::insertIntoCleanUp($_scid_file, (24 * 3600));
 	}
 } else {
 	$l_param['scid'] = '';

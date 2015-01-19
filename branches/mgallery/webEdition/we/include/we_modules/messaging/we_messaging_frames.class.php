@@ -342,4 +342,7 @@ function loadData() {
 			'<input type="image" src="' . $_image_path . '" border="0" alt="" />';
 	}
 
+	function getJSStart(){
+		return 'function start(){}';//tree is started somewhere else!
+	}
 }

@@ -61,7 +61,7 @@ function rootEntry(id, text, rootstat, offset) {
 
 function node(attribs) {
 	for (var aname in attribs) {
-		var val = "" + attribs[aname];
+		var val = attribs[aname];
 		this[aname] = val;
 	}
 

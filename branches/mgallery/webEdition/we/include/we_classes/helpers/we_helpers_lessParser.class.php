@@ -34,7 +34,8 @@ class we_helpers_lessParser extends Less_Parser{
 	public static function importCallBack($env){
 		$matches = array();
 		if($env->path->value && preg_match('|#WE:(\d+)#|', $env->path->value, $matches)){
-			list($path, $parentid) = getHash('SELECT Path,ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($matches[1]), null, MYSQL_NUM);
+			$hash = getHash('SELECT Path,ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($matches[1]), null, MYSQL_NUM);
+			list($path, $parentid) = ($hash? : array(0, 0));
 			return array($path ? $env->path->value : $path, $parentid ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . $parentid) : '/');
 		}
 		return null;

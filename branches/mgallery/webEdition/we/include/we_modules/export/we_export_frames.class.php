@@ -35,8 +35,8 @@ class we_export_frames extends we_modules_frame{
 
 	function __construct(){
 		parent::__construct(WE_EXPORT_MODULE_DIR . "edit_export_frameset.php");
-		$this->Tree = new we_export_treeMain();
-		$this->SelectionTree = new we_export_tree($this->frameset,"top.content", "top.content", "top.content.cmd");
+		$this->Tree = new we_export_treeMain($this->frameset, "top.content", "top.content", "top.content.cmd");
+		$this->SelectionTree = new we_export_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_export_view(WE_EXPORT_MODULE_DIR . "edit_export_frameset.php", "top.content");
 		$this->setFrames("top.content", "top.content", "top.content.cmd");
 		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
@@ -87,26 +87,20 @@ class we_export_frames extends we_modules_frame{
 			$we_tabs->addTab(new we_tab("#", g_l('export', '[log]'), '((' . $this->topFrame . '.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
 		}
 
-		$tabsHead = $we_tabs->getHeader();
+		$tabsHead = $we_tabs->getHeader() .
+			we_html_element::jsElement('
+function setTab(tab) {
+	parent.edbody.toggle("tab"+' . $this->topFrame . '.activ_tab);
+	parent.edbody.toggle("tab"+tab);
+	' . $this->topFrame . '.activ_tab=tab;
+}
+' . ($this->View->export->ID ? '' : $this->topFrame . '.activ_tab=1;') . '
 
-		$js = we_html_element::jsElement('
-				function setTab(tab) {
-					parent.edbody.toggle("tab"+' . $this->topFrame . '.activ_tab);
-					parent.edbody.toggle("tab"+tab);
-					' . $this->topFrame . '.activ_tab=tab;
-				}
+' . ($this->View->export->IsFolder == 1 ? $this->topFrame . '.activ_tab=1;' : '') . '
 
-				' . ($this->View->export->ID ? '' : $this->topFrame . '.activ_tab=1;') . '
-
-				' . ($this->View->export->IsFolder == 1 ? $this->topFrame . '.activ_tab=1;' : '') . '
-
-				top.content.hloaded = 1;
-		');
-
-		$tabsHead .=$js;
+top.content.hloaded = 1;');
 
 		$table = new we_html_table(array("style" => 'width:100%;margin-top:3px', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 1);
-
 
 		$table->setCol(0, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
 			we_html_element::htmlB(g_l('export', '[export]') . ':&nbsp;' . $this->View->export->Text)
@@ -129,7 +123,7 @@ class we_export_frames extends we_modules_frame{
 		);
 
 
-		return $this->getHTMLDocument($body, $tabsHead);
+		return $this->getHTMLDocument($body, we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') . $tabsHead);
 	}
 
 	protected function getHTMLEditorBody(){

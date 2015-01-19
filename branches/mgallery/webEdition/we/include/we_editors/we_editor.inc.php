@@ -311,7 +311,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 
 	$tempName = TEMP_DIR . we_base_file::getUniqueId() . $we_ext;
 	$fullName = $_SERVER['DOCUMENT_ROOT'] . $tempName;
-	we_base_file::insertIntoCleanUp($fullName, time());
+	we_base_file::insertIntoCleanUp($fullName, 0);
 
 	ob_start();
 	//FIXME: eval, document was included, what needs to evaluated

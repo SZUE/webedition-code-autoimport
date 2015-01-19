@@ -160,16 +160,17 @@ abstract class we_base_file{
 		$open = $prefix . 'open';
 		$write = $prefix . 'write';
 		$close = $prefix . 'close';
+		$len=strlen($content);
 
 		if(($fp = $open($filename, $flags))){
-			$written = $write($fp, $content, strlen($content));
+			$written = $write($fp, $content, $len);
 			@$close($fp);
 			//if we write a php file, invalidate cache if used.
 			if(substr($filename, -4) === '.php' && function_exists('opcache_invalidate')){
 				opcache_invalidate($filename, true);
 			}
 
-			return $written;
+			return $written == $len;
 		}
 		t_e('error writing file', $filename);
 		return false;
@@ -292,10 +293,11 @@ abstract class we_base_file{
 
 	public static function insertIntoCleanUp($path, $date){
 		$DB_WE = new DB_WE();
+		$date = ($date? : 300); //make each entry last at least 300 seconds
 		$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'Path' => $DB_WE->escape($path),
-				'Date' => intval($date)
-			)) . ' ON DUPLICATE KEY UPDATE Date=' . intval($date));
+				'Date' => sql_function('(NOW()+ INTERVAL ' . intval($date) . ' SECOND)'),
+			)) . ' ON DUPLICATE KEY UPDATE Date=(NOW()+ INTERVAL ' . intval($date) . ' SECOND)');
 	}
 
 	public static function deleteLocalFile($filename){
@@ -602,25 +604,25 @@ abstract class we_base_file{
 	}
 
 	public static function cleanTempFiles($cleanSessFiles = false){
-		$db2 = new DB_WE();
-		$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date <= ' . (time() - 300));
-		while($GLOBALS['DB_WE']->next_record()){
-			$p = $GLOBALS['DB_WE']->f('Path');
-			if(file_exists($p)){
-				self::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
+		$db = $GLOBALS['DB_WE'];
+		$db->query('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date<=NOW()');
+		$files = $db->getAll(true);
+		foreach($files as $file){
+			if(file_exists($file)){
+				self::deleteLocalFile($file);
 			}
-			$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
+			$db->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE Path="' . $file . '"');
 		}
 		if($cleanSessFiles){
 			$seesID = session_id();
-			$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
-			while($GLOBALS['DB_WE']->next_record()){
-				$p = $GLOBALS['DB_WE']->f('Path');
-				if(file_exists($p)){
-					self::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
+			$db->query('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Path LIKE "%' . $GLOBALS['DB_WE']->escape($seesID) . '%"');
+			$files = $db->getAll(true);
+			foreach($files as $file){
+				if(file_exists($file)){
+					self::deleteLocalFile($file);
 				}
-				$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
 			}
+			$db->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE Path LIKE "%' . $GLOBALS['DB_WE']->escape($seesID) . '%"');
 		}
 		$d = dir(TEMP_PATH);
 		while(false !== ($entry = $d->read())){

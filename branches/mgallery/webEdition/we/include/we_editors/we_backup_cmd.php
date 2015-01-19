@@ -205,7 +205,7 @@ run();');
 			}
 
 			if($_SESSION['weS']['weBackupVars']['options']['export2send'] == 1){
-				we_base_file::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], time() + 8 * 3600); //8h
+				we_base_file::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], 8 * 3600); //8h
 			}
 
 			echo we_html_element::jsElement(we_backup_util::getProgressJS(100, g_l('backup', '[finished]'), true) . '
