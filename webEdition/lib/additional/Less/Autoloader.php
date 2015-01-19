@@ -6,8 +6,7 @@
  * @package Less
  * @subpackage autoload
  */
-class Less_Autoloader {
-
+class Less_Autoloader{
 	/**
 	 * Registered flag
 	 *
@@ -34,8 +33,8 @@ class Less_Autoloader {
 		}
 
 		self::$libDir = dirname(__FILE__);
-
-		if(false === spl_autoload_register(array('Less_Autoloader', 'loadClass'))){
+		//WE:changed
+		if(false === spl_autoload_register(array('Less_Autoloader', 'loadClass'), true, true)){
 			throw new Exception('Unable to register Less_Autoloader::loadClass as an autoloading method.');
 		}
 
@@ -58,20 +57,19 @@ class Less_Autoloader {
 	 * @param string $className The class to load
 	 */
 	public static function loadClass($className){
-
 		// handle only package classes
 		if(strpos($className, 'Less_') !== 0){
 			return;
 		}
 
-		$className = substr($className,5);
+		$className = substr($className, 5);
 		$fileName = self::$libDir . DIRECTORY_SEPARATOR . str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
 
 		if(file_exists($fileName)){
 			require $fileName;
 			return true;
-		}else{
-			throw new Exception('file not loadable '.$fileName);
+		} else {
+			throw new Exception('file not loadable ' . $fileName);
 		}
 	}
 

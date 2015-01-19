@@ -41,7 +41,7 @@ abstract class we_autoloader{
 		'chooser' => 'we_classes/chooser',
 		'customer' => 'we_modules/customer',
 		'dialog' => 'we_classes/dialog',
-		'document'=>'we_classes/contents',
+		'document' => 'we_classes/contents',
 		'editor' => 'we_editors',
 		'exim' => 'we_exim',
 		'export' => 'we_modules/export',
@@ -84,6 +84,7 @@ abstract class we_autoloader{
 		'Image_Transform_Driver_GD' => 'lib/additional/pear/Image_Transform_Driver_GD.class.php',
 		'Image_Transform' => 'lib/additional/pear/Image_Transform.class.php',
 		'Image_IPTC' => 'lib/additional/pear/Image_IPTC.class.php',
+		'lessc' => 'lib/additional/Less/lessc.inc.php',
 		'PEAR5' => 'lib/additional/pear/PEAR5.php',
 		'PEAR_Error' => 'lib/additional/pear/PEAR.php',
 		'PEAR' => 'lib/additional/pear/PEAR.php',
@@ -210,6 +211,9 @@ abstract class we_autoloader{
 				//t_e(WE_APPS_PATH.'wephpmyadmin/phpMyAdmin/libraries/'.$domain.'.class.php');
 				include(WE_APPS_PATH . 'wephpmyadmin/phpMyAdmin/libraries/' . $name . '.class.php');
 				return true;
+			/*case 'Less':
+				include_once(WE_LIB_PATH . 'additional/Less/Autoloader.php');
+				return Less_Autoloader::loadClass($class_name);*/
 			case 'Zend':
 				self::loadZend($class_name);
 				return false;
