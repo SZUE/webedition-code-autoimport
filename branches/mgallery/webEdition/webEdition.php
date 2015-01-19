@@ -20,8 +20,6 @@
  * @category   webEdition
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
- * IMI: testcommit 1
- * IMI: testcommit 2
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
@@ -283,7 +281,7 @@ var setPageNrCallback = {
 <?php
 echo
 we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') .
+ we_html_element::jsScript(JS_DIR . 'wysiwyg/tinymce/weTinyMceDialogs.js') .
  we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
