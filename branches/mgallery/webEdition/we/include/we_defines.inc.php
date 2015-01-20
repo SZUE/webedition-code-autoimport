@@ -44,7 +44,7 @@ define('BACKUP_DIR', WEBEDITION_DIR . 'we_backup/');
 define('VERSION_DIR', WEBEDITION_DIR . 'we/versions/');
 define('LIB_DIR', WEBEDITION_DIR . 'lib/');
 define('WE_THUMB_PREVIEW_DIR', WEBEDITION_DIR . 'preview/');
-define('TINYMCE_JS_DIR', WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/');
+define('TINYMCE_JS_DIR', LIB_DIR . 'additional/tinymce/');
 define('WE_USERS_MODULE_DIR', WE_MODULES_DIR . 'users/');
 
 define('TREE_IMAGE_DIR', IMAGE_DIR . 'tree/');

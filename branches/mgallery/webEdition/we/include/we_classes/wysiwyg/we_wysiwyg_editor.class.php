@@ -264,7 +264,7 @@ class we_wysiwyg_editor{
 	height: auto;
 	width: auto;
 }') .
-			we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') .
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce.js') .
 			($loadDialogRegistry ? we_html_element::jsScript(JS_DIR . 'wysiwyg/tinymce/weTinyMceDialogs.js') : '') .
 			we_html_element::jsScript(JS_DIR . 'wysiwyg/tinymce/weTinyMceFunctions.js');
 	}
@@ -926,8 +926,9 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	theme_advanced_disable : "",
 	//paste_text_use_dialog: true,
 	//fullscreen_new_window: true,
-	content_css : "' . WEBEDITION_DIR . 'dynamic/wysiwyg/tinymce/contentCssFirst.php?' . time() . '=,' . $contentCss . WEBEDITION_DIR . 'dynamic/wysiwyg/tinymce/contentCssLast.php?' . time() . '=&tinyMceBackgroundColor=' . $this->bgcol . '",
-	popup_css_add : "' . WEBEDITION_DIR . 'dynamic/wysiwyg/tinymce/tinyDialogCss.css' . (we_base_browserDetect::isMAC() ? ',' . WEBEDITION_DIR . 'dynamic/wysiwyg/tinymce/tinyDialogCss.php' : '') . '",
+	editor_css : "' . CSS_DIR . 'wysiwyg/tinymce/editorCss.css",
+	content_css : "' . CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php?' . time() . '=,' . $contentCss . CSS_DIR . 'wysiwyg/tinymce/contentCssLast.php?' . time() . '=&tinyMceBackgroundColor=' . $this->bgcol . '",
+	popup_css_add : "' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css' . (we_base_browserDetect::isMAC() ? ',' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.php' : '') . '",
 	' . (in_array('template', $allCommands) ? $this->getTemplates() : '') . '
 
 	// Skin options

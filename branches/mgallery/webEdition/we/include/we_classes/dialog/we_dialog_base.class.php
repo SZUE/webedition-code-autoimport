@@ -240,7 +240,7 @@ function doKeyDown() {
 	function getHeaderHTML($printJS_Style = false){
 		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . STYLESHEET .
 			(isset($this->args['editor']) && $this->args['editor'] === 'tinyMce' ? static::getTinyMceJS() : '') .
-			($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(WEBEDITION_DIR . 'dynamic/wysiwyg/tinymce/weDialogCss.css') .
+			($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') .
 			'</head>';
 	}
 
