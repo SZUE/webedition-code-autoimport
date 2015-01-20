@@ -227,9 +227,9 @@ class we_shop_category extends we_category{
 		}
 
 		$db = new DB_WE();
-		self::$isCategoryMode = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_dir"', '', $db, 0);
+		self::$isCategoryMode = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="category_mode"', '', $db, 0) ? true : false;
 
-		return self::$isCategoryMode ? true : false;
+		return self::$isCategoryMode;
 	}
 
 	/**
