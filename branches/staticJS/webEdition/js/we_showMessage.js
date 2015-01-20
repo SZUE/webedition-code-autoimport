@@ -30,7 +30,7 @@ var WE_MESSAGE_WARNING = 2;
 var WE_MESSAGE_ERROR = 4;
 
 function we_showMessage(message, prio, win) {
-	if (win.top.showMessage !== null) {
+	if (win && win.top && win.top.showMessage !== null) {
 		win.top.showMessage(message, prio, win);
 	} else if (win.top.opener) {
 		if (win.top.opener.top.showMessage !== null) {
