@@ -78,4 +78,4 @@ function YUIdoAjax() {
 	YAHOO.util.Connect.asyncRequest('POST', "/webEdition/rpc/rpc.php", ajaxCallback, 'protocol=json&cmd=Ping');
 }
 
-window.setInterval(YUIdoAjax(), constants.PING_TIME);
+window.setInterval(YUIdoAjax, constants.PING_TIME);

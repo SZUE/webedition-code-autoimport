@@ -200,7 +200,7 @@ function setDir(id){
 		}
 
 		return '
-top.writeBody(top.fsbody.document);
+top.writeBody(top.fsbody.document.body);
 top.fsheader.clearOptions();' .
 			$out . '
 top.fsheader.selectIt();';

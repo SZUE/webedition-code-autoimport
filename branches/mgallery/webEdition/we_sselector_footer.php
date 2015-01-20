@@ -27,42 +27,14 @@ we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop() .
  STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'windows.js');
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsElement('
+var g_l={
+	"edit_file_nok":"' . we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_nok]')) . '",
+	"edit_file_is_folder":"' . we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_is_folder]')) . '"
+};
+') . we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_footer.js')
 ?>
-<script type="text/javascript"><!--
-	function addOption(txt, id) {
-		var a = document.forms["we_form"].elements["filter"];
-		a.options[a.options.length] = new Option(txt, id);
-		a.selectedIndex = 0;
-
-	}
-	function editFile() {
-		if (!top.dirsel) {
-			if ((top.currentID != "") && (document.forms["we_form"].elements["fname"].value != "")) {
-				if (document.forms["we_form"].elements["fname"].value != top.currentName){
-					top.currentID = top.sitepath + top.rootDir + top.currentDir + "/" + document.forms["we_form"].elements["fname"].value;
-				}
-				url = "we_sselector_editFile.php?id=" + top.currentID;
-				new jsWindow(url, "we_fseditFile", -1, -1, 600, 500, true, false, true, true);
-			}
-			else {
-<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', '[edit_file_nok]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			}
-		}
-		else {
-<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', '[edit_file_is_folder]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-		}
-	}
-
-	function doUnload() {
-		if (jsWindow_count) {
-			for (i = 0; i < jsWindow_count; i++) {
-				eval("jsWindow" + i + "Object.close()");
-			}
-		}
-	}
-//-->
-</script>
 </head>
 <body background="<?php echo IMAGE_DIR ?>backgrounds/radient.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onunload="doUnload();">
 	<form name="we_form" target="fscmd">

@@ -178,7 +178,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	/**
 	 * adds JavaScript code to the page
 	 * Will be inserted into the header section of the page
-	 * using the <script> tag
+	 * using the script tag
 	 *
 	 * @param string $js JavaScript code to add
 	 * @return void

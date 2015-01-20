@@ -30,14 +30,14 @@ var WE_MESSAGE_WARNING = 2;
 var WE_MESSAGE_ERROR = 4;
 
 function we_showMessage(message, prio, win) {
-	if (win.top.showMessage !== null) {
+	if (win && win.top && win.top.showMessage !== undefined) {
 		win.top.showMessage(message, prio, win);
 	} else if (win.top.opener) {
-		if (win.top.opener.top.showMessage !== null) {
+		if (win.top.opener.top.showMessage !== undefined) {
 			win.top.opener.top.showMessage(message, prio, win);
-		} else if (win.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.showMessage !== null) {
+		} else if (win.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.showMessage !== undefined) {
 			win.top.opener.top.opener.top.showMessage(message, prio, win);
-		} else if (win.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener.top.showMessage !== null) {
+		} else if (win.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener.top.showMessage !== undefined) {
 			win.top.opener.top.opener.top.opener.top.showMessage(message, prio, win);
 		} else {//nichts gefunden
 			if (!win) {

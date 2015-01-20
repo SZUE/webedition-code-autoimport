@@ -51,31 +51,26 @@ class we_selector_image extends we_selector_document{
 	}
 
 	protected function printCMDWriteAndFillSelectorHTML(){
-		return parent::printCMDWriteAndFillSelectorHTML().
-		'parent.frames["fsbody"].document.body.style.fontSize=parent.frames["fsfooter"].document.getElementsByName("zoom")[0].value+"%";';
+		return parent::printCMDWriteAndFillSelectorHTML() .
+				'parent.frames["fsbody"].document.body.style.fontSize=parent.frames["fsfooter"].document.getElementsByName("zoom")[0].value+"%";';
 	}
 
-		protected function printFramesetJSFunctioWriteBody(){
+	protected function getWriteBodyHead(){
 		return we_html_element::jsElement('
-function writeBody(d){
-	d.open();' .
-				self::makeWriteDoc(we_html_tools::getHtmlTop('', '', 5, true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
-var ctrlpressed=false
+			var ctrlpressed=false
 var shiftpressed=false
 var inputklick=false
 var wasdblclick=false
-function submitFolderMods(){
-	document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);document.we_form.submit();
-}
 document.onclick = weonclick;
 function weonclick(e){
-#	if(top.makeNewFolder ||  top.we_editDirID){
+	if(top.makeNewFolder ||  top.we_editDirID){
 		if(!inputklick){
-			document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);document.we_form.submit();
+			document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);
+			document.we_form.submit();
 		}else{
 			inputklick=false;
 		}
-#	}else{
+	}else{
 		inputklick=false;
 		if(document.all){
 			if(event.ctrlKey || event.altKey){ ctrlpressed=true;}
@@ -86,9 +81,9 @@ function weonclick(e){
 		}' . ($this->multiple ? '
 		if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
 		top.unselectAllFiles();') . '
-#	}
-}') . '
-<style type="text/css">
+	}
+}
+') . we_html_element::cssElement('
 div.imgDiv{
 	float: left;
 	width: 4em;
@@ -115,46 +110,52 @@ body{
 background-color:white;
 margin:0px;
 }
-</style>
-</head>
-<body #\'+((makeNewFolder || top.we_editDirID) ? #\' onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"#\' : "")+#\'>
-<form name="we_form" target="fscmd" action="' . $_SERVER["SCRIPT_NAME"] . '" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">
-#if(we_editDirID){
-	<input type="hidden" name="what" value="' . self::DORENAMEFOLDER . '" />
-	<input type="hidden" name="we_editDirID" value="#\'+top.we_editDirID+#\'" />
-#}else{
-	<input type="hidden" name="what" value="' . self::CREATEFOLDER . '" />
-#}
-	<input type="hidden" name="order" value="#\'+top.order+#\'" />
-	<input type="hidden" name="rootDirID" value="' . $this->rootDirID . '" />
-	<input type="hidden" name="table" value="' . $this->table . '" />
-	<input type="hidden" name="id" value="#\'+top.currentDir+#\'" />
+');
+	}
 
-#if(makeNewFolder){
-	<div class="imgDiv><img class="icon" src="' . ICON_DIR . 'doclist/' . we_base_ContentTypes::FOLDER_ICON . '"/><br/>
-		<input type="hidden" name="we_FolderText" value="' . g_l('fileselector', "[new_folder_name]") . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('fileselector', "[new_folder_name]") . '" class="wetextinput" style="width:100%" />
-	</div>
-#}
-
-#	for(i=0;i < entries.length; i++){
-#		var onclick = #\' onclick="weonclick(' . (we_base_browserDetect::isIE() ? "this" : "event") . ');tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(#\'+entries[i].ID+#\',0);}else{top.wasdblclick=0;}\',300);return true"#\';
-#		var ondblclick = #\' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(#\'+entries[i].ID+#\',1);return true;"#\';
-<div class="imgDiv #\' + ((entries[i].ID == top.currentID)  ? "selected" : "") + #\'" #\'+((we_editDirID || makeNewFolder) ? "" : onclick)+ (entries[i].isFolder ? ondblclick : "") + #\'>
-<img src="#\' + ((entries[i].isFolder)  ? "' . ICON_DIR . 'doclist/' . we_base_ContentTypes::FOLDER_ICON . '" : "' . WEBEDITION_DIR . 'thumbnail.php?id=" + entries[i].ID + "&amp;size=150&amp;path="+entries[i].path+"&amp;extension=.jpg&amp;size2=200") + #\'" class="icon" title="#\' + entries[i].text + #\'"/>
-<br/><div class="imgText">
-#	if(we_editDirID == entries[i].ID){
-			<input type="hidden" name="we_FolderText" value="#\'+entries[i].text+#\'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="#\'+entries[i].text+#\'" class="wetextinput" style="width:100%" />
-#	}else{
-			#\'+entries[i].text+#\'
-#	}
-</div>
-		</div>
-#	}
-
-</form>
-</body></html>') . '
-	d.close();
-}');
+	protected function printFramesetJSFunctioWriteBody(){
+		ob_start();
+		?><script type="text/javascript"><!--
+					function writeBody(d) {
+					var body =
+									'<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"] ?>" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">' +
+									(we_editDirID?
+													'<input type="hidden" name="what" value="<?php echo self::DORENAMEFOLDER ?>" />' +
+													'<input type="hidden" name="we_editDirID" value="' + top.we_editDirID + '" />':
+													'<input type="hidden" name="what" value="<?php echo self::CREATEFOLDER ?>" />'
+													) +
+									'<input type="hidden" name="order" value="' + top.order + '" />' +
+									'<input type="hidden" name="rootDirID" value="<?php echo $this->rootDirID ?>" />' +
+									'<input type="hidden" name="table" value="<?php echo $this->table ?>" />' +
+									'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
+									(makeNewFolder?
+													'<div class="imgDiv><img class="icon" src="<?php echo ICON_DIR . 'doclist/' . we_base_ContentTypes::FOLDER_ICON ?>"/><br/>' +
+													'<input type="hidden" name="we_FolderText" value="<?php echo g_l('fileselector', "[new_folder_name]") ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php echo g_l('fileselector', "[new_folder_name]") ?>" class="wetextinput" style="width:100%" />' +
+													'</div>':
+													'');
+									for (i = 0; i < entries.length; i++){
+					var onclick = ' onclick="weonclick('.(we_base_browserDetect::isIE() ? "this" : "event").');tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true"';
+									var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+									body += '<div class="imgDiv ' + ((entries[i].ID == top.currentID)  ? "selected" : "") + '" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
+									'<img src="' + ((entries[i].isFolder)  ? "<?php echo ICON_DIR . 'doclist/' . we_base_ContentTypes::FOLDER_ICON ?>" : "<?php echo WEBEDITION_DIR ?>thumbnail.php?id=" + entries[i].ID + "&amp;size=150&amp;path=" + entries[i].path + "&amp;extension=.jpg&amp;size2=200") + '" class="icon" title="' + entries[i].text + '"/>' +
+									'<br/><div class="imgText">' +
+									(we_editDirID == entries[i].ID?
+													'<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />':
+													entries[i].text
+													) +
+									'</div></div>';
+									}
+					body += '</form>';
+									d.innerHTML = body;
+									if (makeNewFolder || top.we_editDirID){
+					document.we_form.we_FolderText_tmp.focus();
+									document.we_form.we_FolderText_tmp.select();
+									}
+					}
+					//-->
+		</script>
+		<?php
+		return ob_get_clean();
 	}
 
 }
