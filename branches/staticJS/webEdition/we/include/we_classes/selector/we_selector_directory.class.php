@@ -23,10 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_selector_directory extends we_selector_multiple{
-	const NEWFOLDER = 7;
-	const RENAMEFOLDER = 9;
-	const DORENAMEFOLDER = 10;
-	const PREVIEW = 11;
 
 	protected $userCanMakeNewFolder = true;
 	protected $userCanRenameFolder = true;
@@ -93,19 +89,19 @@ class we_selector_directory extends we_selector_multiple{
 
 		echo we_html_element::jsElement('
 top.clearEntries();' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			(intval($this->dir) == intval($this->rootDirID) ?
-				'top.fsheader.disableRootDirButs();' :
-				'top.fsheader.enableRootDirButs();') .
-			'top.currentPath = "' . $this->path . '";
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() .
+				(intval($this->dir) == intval($this->rootDirID) ?
+						'top.fsheader.disableRootDirButs();' :
+						'top.fsheader.enableRootDirButs();') .
+				'top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 ');
 	}
 
 	function query(){
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' AND((1' . we_users_util::makeOwnersSql() . ') ' .
-			getWsQueryForSelector($this->table) . ')' . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
+				getWsQueryForSelector($this->table) . ')' . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 	}
 
 	protected function setDefaultDirAndID($setLastDir){
@@ -139,43 +135,31 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		return $_SERVER["SCRIPT_NAME"] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . (isset($this->open_doc) ? ("&open_doc=" . $this->open_doc) : "");
 	}
 
-	protected function printFramesetJSFunctions(){
-		return parent::printFramesetJSFunctions() . we_html_element::jsElement('
-function drawNewFolder(){
-	unselectAllFiles();
-	top.fscmd.location.replace(top.queryString(' . self::NEWFOLDER . ',currentDir));
-}
-function RenameFolder(id){
-	unselectAllFiles();
-	top.fscmd.location.replace(top.queryString(' . self::RENAMEFOLDER . ',currentDir,"",id));
-}');
+	protected function getFramsetJSFile(){
+		return parent::getFramsetJSFile() .
+				we_html_element::jsScript(JS_DIR . 'selectors/directoryFrameset.js');
 	}
 
-	protected function printFramesetJSFunctioWriteBody(){
+
+	protected function getWriteBodyHead(){
 		return we_html_element::jsElement('
-function writeBody(d){
-	d.open();' .
-				self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . we_html_element::jsElement('
 var ctrlpressed=false;
 var shiftpressed=false;
 var inputklick=false;
 var wasdblclick=false;
 var tout=null;
-function submitFolderMods(){
-//	document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value); document.we_form.submit();
-}
 document.onclick = weonclick;
 function weonclick(e){
 	if(top.fspreview.document.body){
 		top.fspreview.document.body.innerHTML = "";
 	}
-#	if(makeNewFolder ||  we_editDirID){
+if(top.makeNewFolder ||  top.we_editDirID){
 		if(!inputklick){
 			document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);document.we_form.submit();
 		}else{
 			inputklick=false;
 		}
-#	}else{
+	}else{
 		inputklick=false;
 		if(document.all){
 			if(event.ctrlKey || event.altKey){ ctrlpressed=true;}
@@ -186,61 +170,62 @@ function weonclick(e){
 		}' . ($this->multiple ? '
 		if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
 		top.unselectAllFiles();') . '
-#	}
-}') . '<style type="text/css">
-body{
-	background-color:white;
-	margin:0px;
-}
-a:link,a:visited,a:hover,a:active
-{color:#000;}
-</style>
-</head>
-<body #\'+((makeNewFolder || top.we_editDirID) ? #\' onload="document.we_form.we_FolderText_tmp.focus();document.we_form.we_FolderText_tmp.select();"#\' : "")+#\'>
-<form name="we_form" target="fscmd" action="' . $_SERVER["SCRIPT_NAME"] . '" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">
-#if(we_editDirID){
-	<input type="hidden" name="what" value="' . self::DORENAMEFOLDER . '" />
-	<input type="hidden" name="we_editDirID" value="#\' + top.we_editDirID + #\'" />
-#}else{
-	<input type="hidden" name="what" value="' . self::CREATEFOLDER . '" />
-#}
-	<input type="hidden" name="order" value="#\'+top.order+#\'" />
-	<input type="hidden" name="rootDirID" value="' . $this->rootDirID . '" />
-	<input type="hidden" name="table" value="' . $this->table . '" />
-	<input type="hidden" name="id" value="#\'+top.currentDir+#\'" />
-	<table border="0" cellpadding="0" cellspacing="0" width="100%">
-#if(makeNewFolder){
-	<tr style="background-color:#DFE9F5;">
-		<td align="center"><img src="' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" border="0" /></td>
-		<td><input type="hidden" name="we_FolderText" value="' . g_l('fileselector', '[new_folder_name]') . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('fileselector', '[new_folder_name]') . '" class="wetextinput" style="width:100%" /></td>
-		<td class="selector">' . date(g_l('date', '[format][default]')) . '</td>
-	</tr>
-#}
-#for(i=0;i < entries.length; i++){
-#	var onclick = #\' onclick="weonclick(' . (we_base_browserDetect::isIE() ? "this" : "event") . ');tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(#\'+entries[i].ID+#\',0);}else{top.wasdblclick=0;}\',300);return true"#\';
-#	var ondblclick = #\' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(#\'+entries[i].ID+#\',1);return true;"#\';
-	<tr id="line_#\'+entries[i].ID+#\'" style="#\' + ((entries[i].ID == top.currentID && (!makeNewFolder) )  ? "background-color:#DFE9F5;" : "")+#\'cursor:pointer;" #\'+((we_editDirID || makeNewFolder) ? "" : onclick)+ (entries[i].isFolder ? ondblclick : "") + #\'>
-		<td class="selector" align="center"><img src="' . TREE_ICON_DIR . '#\'+entries[i].icon+#\'" width="16" height="18" border="0" /></td>
-#if(we_editDirID == entries[i].ID){
-		<td class="selector"><input type="hidden" name="we_FolderText" value="#\'+entries[i].text+#\'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="#\'+entries[i].text+#\'" class="wetextinput" style="width:100%" />
-#}else{
-		<td class="selector" style="" title="#\'+entries[i].text+#\'">
-			#\'+cutText(entries[i].text,30)+#\'
-#}
-		</td>
-		<td class="selector">#\'+entries[i].modDate+#\'</td>
-	</tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(2, 1) . '</td></tr>
-#}
-	<tr>
-		<td width="25">' . we_html_tools::getPixel(25, 2) . '</td>
-		<td width="200">' . we_html_tools::getPixel(200, 2) . '</td>
-		<td>' . we_html_tools::getPixel(300, 2) . '</td>
-	</tr>
-</table></form>
-</body>') . '
-d.close();
+	}
 }');
+	}
+
+	protected function printFramesetJSFunctioWriteBody(){
+		ob_start();
+		?><script type="text/javascript"><!--
+					function writeBody(d) {
+						var body =
+										'<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"] ?>" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">' +
+										(we_editDirID ?
+														'<input type="hidden" name="what" value="<?php echo self::DORENAMEFOLDER ?>" />' +
+														'<input type="hidden" name="we_editDirID" value="' + top.we_editDirID + '" />'
+														:
+														'<input type="hidden" name="what" value="<?php echo self::CREATEFOLDER ?>" />'
+														) +
+										'<input type="hidden" name="order" value="' + top.order + '" />' +
+										'<input type="hidden" name="rootDirID" value="<?php echo $this->rootDirID ?>" />' +
+										'<input type="hidden" name="table" value="<?php echo $this->table ?>" />' +
+										'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
+										'<table border="0" cellpadding="0" cellspacing="0" width="100%">' +
+										(makeNewFolder ?
+														'<tr style="background-color:#DFE9F5;">' +
+														'<td align="center"><img src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON ?>" width="16" height="18" border="0" /></td>' +
+														'<td><input type="hidden" name="we_FolderText" value="<?php echo g_l('fileselector', '[new_folder_name]') ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php echo g_l('fileselector', '[new_folder_name]') ?>" class="wetextinput" style="width:100%" /></td>' +
+														'<td class="selector"><?php echo date(g_l('date', '[format][default]')) ?></td>' +
+														'</tr>' :
+														'');
+
+						for (i = 0; i < entries.length; i++) {
+							var onclick = ' onclick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true"';
+							var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+							body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? "background-color:#DFE9F5;" : "") + 'cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
+											'<td class="selector" align="center"><img src="<?php echo TREE_ICON_DIR ?>' + entries[i].icon + '" width="16" height="18" border="0" /></td>' +
+											(we_editDirID == entries[i].ID ?
+															'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
+															'<td class="selector" style="" title="' + entries[i].text + '">' + cutText(entries[i].text, 30)
+															) +
+											'</td><td class="selector">' + entries[i].modDate + '</td>' +
+											'</tr><tr><td colspan="3"><?php echo we_html_tools::getPixel(2, 1) ?></td></tr>';
+						}
+						body += '<tr>' +
+										'<td width="25"><?php echo we_html_tools::getPixel(25, 2); ?></td>' +
+										'<td width="200"><?php echo we_html_tools::getPixel(200, 2) ?></td>' +
+										'<td><?php echo we_html_tools::getPixel(300, 2) ?></td>' +
+										'</tr></table></form>';
+						d.innerHTML = body;
+						if (makeNewFolder || top.we_editDirID) {
+							document.we_form.we_FolderText_tmp.focus();
+							document.we_form.we_FolderText_tmp.select();
+						}
+					}
+					//-->
+		</script>
+		<?php
+		return ob_get_clean();
 	}
 
 	protected function printFramesetJSFunctionQueryString(){
@@ -249,9 +234,9 @@ d.close();
 		if(!o) o=top.order;
 		if(!we_editDirID) we_editDirID="";
 		return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&rootDirID=' .
-				$this->rootDirID . (isset($this->open_doc) ?
-					"&open_doc=" . $this->open_doc : '') .
-				'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
+						$this->rootDirID . (isset($this->open_doc) ?
+								"&open_doc=" . $this->open_doc : '') .
+						'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 		}');
 	}
 
@@ -311,12 +296,12 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 
 	protected function printHeaderJSDef(){
 		return parent::printHeaderJSDef() .
-			'var makefolderState = ' . ($this->userCanMakeNewFolder ? 1 : 0) . ';';
+				'var makefolderState = ' . ($this->userCanMakeNewFolder ? 1 : 0) . ';';
 	}
 
 	protected function printHeaderJS(){
 		return parent::printHeaderJS() .
-			we_html_button::create_state_changer(false) . '
+				we_html_button::create_state_changer(false) . '
 function disableNewFolderBut(){
 	btn_new_dir_enabled = switch_button_state("btn_new_dir", "new_directory_enabled", "disabled", "image");
 	makefolderState = 0;
@@ -424,37 +409,37 @@ function setRootDir(){
 			}
 		}
 		return '
-top.writeBody(top.fsbody.document);
+top.writeBody(top.fsbody.document.body);
 top.fsheader.clearOptions();' .
-			($this->rootDirID ? '' : '
+				($this->rootDirID ? '' : '
 top.fsheader.addOption("/",0);') .
-			$out . '
+				$out . '
 top.fsheader.selectIt();';
 	}
 
 	protected function printHeaderTable(){
 		return '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">' .
-			$this->printHeaderTableSpaceRow() . '
+				$this->printHeaderTableSpaceRow() . '
 	<tr valign="middle">
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="70" class="defaultfont"><b>' . g_l('fileselector', '[lookin]') . '</b></td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td><select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' .
-			$this->printHeaderOptions() . '
+				$this->printHeaderOptions() . '
 			</select>' .
-			((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ? '
+				((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ? '
 		</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="40">' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="40">' . we_html_button::create_button("image:btn_fs_back", "javascript:if(rootDirButsState){top.goBackDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>' .
-				$this->printHeaderTableExtraCols() :
-				''
-			) . '
+						$this->printHeaderTableExtraCols() :
+						''
+				) . '
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 	</tr>' .
-			$this->printHeaderTableSpaceRow() . '
+				$this->printHeaderTableSpaceRow() . '
 </table>';
 	}
 
@@ -483,8 +468,8 @@ top.fsheader.selectIt();';
 
 	protected function printHeaderTableExtraCols(){
 		return '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
-			we_html_button::create_button("image:btn_new_dir", "javascript:top.drawNewFolder();", true, 0, 0, '', '', !$this->userCanMakeNewDir(), false) .
-			'</td>';
+				we_html_button::create_button("image:btn_new_dir", "javascript:top.drawNewFolder();", true, 0, 0, '', '', !$this->userCanMakeNewDir(), false) .
+				'</td>';
 	}
 
 	protected function printHeaderTableSpaceRow(){
@@ -510,10 +495,10 @@ function doClick(id,ct){
 		}
 	}else{
 		if(top.currentID == id && (!fsbody.ctrlpressed)){' .
-				($this->userCanRenameFolder ? 'top.RenameFolder(id);' : 'selectFile(id);') . '
+						($this->userCanRenameFolder ? 'top.RenameFolder(id);' : 'selectFile(id);') . '
 
 		}else{' .
-				($this->multiple ? '
+						($this->multiple ? '
 				if(fsbody.shiftpressed){
 					var oldid = currentID;
 					var currendPos = getPositionByID(id);
@@ -536,7 +521,7 @@ function doClick(id,ct){
 					}else{' : '') . '
 
 					selectFile(id);' .
-				($this->multiple ? '
+						($this->multiple ? '
 					}
 				}' : '') . '
 		}
@@ -645,8 +630,8 @@ top.clearEntries();';
 			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notAllowed]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
-					new we_class_folder() :
-					new we_folder());
+							new we_class_folder() :
+							new we_folder());
 
 			$folder->we_new();
 			$folder->setParentID($this->dir);
@@ -742,8 +727,8 @@ top.clearEntries();';
 			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
-					new we_class_folder() :
-					new we_folder());
+							new we_class_folder() :
+							new we_folder());
 
 			$folder->initByID($this->we_editDirID, $this->table);
 			$folder->Text = $txt;
@@ -809,9 +794,9 @@ top.selectFile(top.currentID);
 			}
 			$path = f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), '', $this->db);
 			$out = we_html_tools::getHtmlTop() .
-				STYLESHEET .
-				we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .
-				we_html_element::jsElement('
+					STYLESHEET .
+					we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .
+					we_html_element::jsElement('
 	function setInfoSize() {
 		infoSize = document.body.clientHeight;
 		if(infoElem=document.getElementById("info")) {
@@ -834,7 +819,7 @@ top.selectFile(top.currentID);
 		else if(weCountWriteBC<10) setTimeout(\'weWriteBreadCrumb(BreadCrumb)\',100);
 		weCountWriteBC++;
 	}') .
-				'</head>
+					'</head>
 <body class="defaultfont" onresize="setInfoSize()" onload="setTimeout(setInfoSize,50)">';
 			if(isset($result['ContentType']) && !empty($result['ContentType'])){
 				if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
@@ -888,7 +873,7 @@ top.selectFile(top.currentID);
 							}
 
 							$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='" . $result['Path'] . "' target='_blank' align='center'><img src='" . $thumbpath . "' border='0' id='previewpic'></a></td></tr>" .
-								$previewDefauts . "
+									$previewDefauts . "
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[width]') . " x " . g_l('weClass', '[height]') . ": </td><td>" . $imagesize[0] . " x " . $imagesize[1] . " px </td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[filesize]') . ": </td><td>" . $filesize . "</td></tr>";
 

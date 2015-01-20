@@ -337,7 +337,7 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject{
 	/**
 	 * Adds a JS file to the page.
 	 * Will be inserted into the header section of the document
-	 * using the <script> tag
+	 * using the script tag
 	 *
 	 * @param string $path path to file relative to DOCUMENT_ROOT, starting with a slash or class name of element
 	 * @return void
@@ -351,7 +351,7 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject{
 	/**
 	 * Adds an array with JS files to the page.
 	 * Will be inserted into the header section of the document
-	 * using the <script> tag
+	 * using the script tag
 	 *
 	 * @param string $files path to file relative to DOCUMENT_ROOT, starting with a slash or class name of element
 	 * @return void

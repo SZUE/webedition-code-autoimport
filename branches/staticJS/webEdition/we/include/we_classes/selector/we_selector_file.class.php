@@ -23,11 +23,24 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_selector_file{
+
 	const FRAMESET = 0;
 	const HEADER = 1;
 	const FOOTER = 2;
 	const BODY = 3;
 	const CMD = 4;
+	const SETDIR = 5;
+	const CREATE_CAT = 7;
+	const NEWFOLDER = 7;
+	const CREATEFOLDER = 8;
+	const DO_RENAME_CAT = 9;
+	const RENAMEFOLDER = 9;
+	const DO_RENAME_ENTRY = 10;
+	const DORENAMEFOLDER = 10;
+	const DEL = 11;
+	const PREVIEW = 11;
+	const PROPERTIES = 12;
+	const CHANGE_CAT = 13;
 	const WINDOW_SELECTOR_WIDTH = 900;
 	const WINDOW_SELECTOR_HEIGHT = 685;
 	const WINDOW_DIRSELECTOR_WIDTH = 900;
@@ -96,8 +109,8 @@ abstract class we_selector_file{
 				$this->values = $this->db->getRecord();
 
 				$this->dir = ($this->values['IsFolder'] ?
-						$id :
-						$this->values['ParentID']);
+								$id :
+								$this->values['ParentID']);
 
 				$this->path = $this->values['Path'];
 				return;
@@ -138,8 +151,8 @@ abstract class we_selector_file{
 	function query(){
 		$wsQuery = $this->table == NAVIGATION_TABLE && get_ws($this->table) ? ' ' . getWsQueryForSelector($this->table) : '';
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
-			( ($this->filter ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
-			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
+				( ($this->filter ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
+				($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
@@ -171,10 +184,6 @@ abstract class we_selector_file{
 		}
 	}
 
-	function getFramesetJavaScriptIncludes(){
-		// overwrite
-	}
-
 	protected function printFramesetRootDirFn(){
 		return we_html_element::jsElement('function setRootDir(){	setDir(0);}');
 	}
@@ -191,91 +200,36 @@ function exit_close(){
 }');
 	}
 
-	private function getJS_keyListenerFunctions(){
-		return we_html_element::jsElement('
-function applyOnEnter(evt) {
-	_elemName = "target";
-	if (evt.srcElement !== undefined ) { // IE
-		_elemName = "srcElement";
-	}
-
-	if (	!( evt[_elemName].tagName == "SELECT" ||
-			 ( evt[_elemName].tagName == "INPUT" && evt[_elemName].name != "fname" )
-		) ) {
-		top.fsfooter.press_ok_button();
-		return true;
-	}
-
-}
-function closeOnEscape() {
-	top.exit_close();
-
-}');
-	}
-
 	function printFramesetHTML(){
 		$this->setDirAndID(); //set correct directory
 		echo we_html_tools::getHtmlTop($this->title, '', 'frameset') .
-		implodeJS(
-			we_html_element::jsScript(JS_DIR . 'keyListener.js') .
-			$this->getFramesetJavaScriptIncludes() .
-			we_html_element::jsElement('var weSelectorWindow = true;') .
-			$this->getFramesetJavaScriptDef() .
-			$this->getJS_keyListenerFunctions() .
-			$this->getExitClose() .
-			we_html_element::jsElement('
-function in_array(needle,haystack){
-	for(var i=0;i<haystack.length;i++){
-		if(haystack[i] == needle) return true;
-	}
-	return false;
-}') .
-			$this->getExitOpen() .
-			$this->printFramesetJSDoClickFn() .
-			$this->printFramesetJSsetDir() .
-			we_html_element::jsElement('
-function orderIt(o){
-	if(order == o){
-		order=o+" DESC";
-	}else{
-		order=o;
-	}
-	top.fscmd.location.replace(top.queryString(' . we_selector_file::CMD . ',top.currentDir,order));
-}
-
-function goBackDir(){
-	setDir(parentID);
-}
-
-function getEntry(id){
-	for(var i=0;i<entries.length;i++){
-		if(entries[i].ID == id) return entries[i];
-	}
-	return new entry(0,"","/",1,"/");
-}
-
-function cutText(text,l){
-	if(text.length > l){
-		return text.substring(0,l-8) + "..." + text.substring(text.length-5,text.length);
-	}else{
-		return text;
-	}
-}') .
-			$this->printFramesetRootDirFn() .
-			$this->printFramesetSelectFileHTML() .
-			$this->printFramesetUnselectFileHTML() .
-			$this->printFramesetSelectFilesFromHTML() .
-			$this->printFramesetGetFirstSelectedHTML() .
-			$this->printFramesetGetPositionByIDHTML() .
-			$this->printFramesetIsFileSelectedHTML() .
-			$this->printFramesetUnselectAllFilesHTML() .
-			$this->printFramesetJSFunctions() .
-			we_html_element::jsElement('self.focus();')
-		);
+		we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+		we_html_element::jsScript(JS_DIR . 'windows.js') .
+		we_html_element::jsElement('var weSelectorWindow = true;') .
+		$this->getFramesetJavaScriptDef() .
+		$this->getFramsetJSFile() .
+		$this->getExitClose() .
+		$this->getExitOpen() .
+		$this->printFramesetJSDoClickFn() .
+		$this->printFramesetJSsetDir() .
+		$this->printFramesetRootDirFn() .
+		$this->printFramesetSelectFileHTML() .
+		$this->printFramesetUnselectFileHTML() .
+		$this->printFramesetSelectFilesFromHTML() .
+		$this->printFramesetGetFirstSelectedHTML() .
+		$this->printFramesetGetPositionByIDHTML() .
+		$this->printFramesetIsFileSelectedHTML() .
+		$this->printFramesetUnselectAllFilesHTML() .
+		$this->printFramesetJSFunctions() .
+		we_html_element::jsElement('self.focus();');
 		?>
 		</head>
 		<?php
 		echo $this->getFrameset();
+	}
+
+	protected function getFramsetJSFile(){
+		return we_html_element::jsScript(JS_DIR . 'selectors/fileFrameset.js');
 	}
 
 	function printFramesetUnselectFileHTML(){
@@ -326,22 +280,29 @@ var currentDir="' . $this->dir . '";
 var currentPath="' . $this->path . '";
 var currentText="' . (isset($this->values["Text"]) ? $this->values["Text"] : '') . '";
 var currentType="' . (isset($this->filter) ? $this->filter : "") . '";
-
 var startPath="' . $startPath . '";
-
-
-var parentID=' . intval(($this->dir ?
-						f('SELECT ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), '', $this->db) :
-						0)) . ';
+var parentID=' . intval(($this->dir ? f('SELECT ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), '', $this->db) : 0)) . ';
 var table="' . $this->table . '";
 var order="' . $this->order . '";
-
 var entries = new Array();
-
 var clickCount=0;
 var wasdblclick=0;
 var tout=null;
-var mk=null;');
+var mk=null;
+
+var queryType={
+	"CMD":' . self::CMD . ',
+	"DEL":' . self::DEL . ',
+	"PROPERTIES":' . self::PROPERTIES . ',
+	"PREVIEW":' . self::PREVIEW . ',
+	"NEWFOLDER":' . self::NEWFOLDER . ',
+	"CREATEFOLDER":' . self::CREATEFOLDER . ',
+	"RENAMEFOLDER":' . self::RENAMEFOLDER . ',
+	"CREATE_CAT":'.self::CREATE_CAT.',
+	"DO_RENAME_ENTRY":'.self::DO_RENAME_ENTRY.',
+};
+var needIEEscape=' . intval((we_base_browserDetect::isIE() && substr($GLOBALS["WE_LANGUAGE"], -5) !== "UTF-8")) . ';
+');
 	}
 
 	protected function getFrameset(){
@@ -382,8 +343,8 @@ function exit_open(){' . ($this->JSIDName ? '
 					';
 		}
 		$out .= ($this->JSCommand ?
-				'	' . str_replace('WE_PLUS', '+', $this->JSCommand) . ';' : '') .
-			'	self.close();
+						'	' . str_replace('WE_PLUS', '+', $this->JSCommand) . ';' : '') .
+				'	self.close();
 	}';
 		return we_html_element::jsElement($out);
 	}
@@ -416,7 +377,7 @@ function setDir(id){
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER['SCRIPT_NAME'] . '?what='.$what.'&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&filter=' . $this->filter;
+		return $_SERVER['SCRIPT_NAME'] . '?what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&filter=' . $this->filter;
 	}
 
 	protected function printFramesetJSFunctionQueryString(){
@@ -427,54 +388,28 @@ function queryString(what,id,o){
 }');
 	}
 
-	protected static function makeWriteDoc($html){
-		$html = explode("\n", strtr(implodeJS($html), array('\'' => '\\\'', 'script' => 'scr\'+\'ipt', '#\'' => '\'','#\\\'' => '\'',)));
-		$ret = '';
-		foreach($html as $cur){
-			$ret.=(substr($cur, 0, 1) === '#' ? substr($cur, 1) : "d.writeln('" . $cur . "');");
-		}
-		return $ret;
-	}
-
 	protected function printFramesetJSFunctioWriteBody(){
 		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
-				d.open();
-		<?php
-		echo self::makeWriteDoc(we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT . '
-<style type="text/css">
-body{
-background-color:white;
-margin:0px;
-}
-a:link,a:visited,a:hover,a:active
-{color:#000;}
-</style>
-</head>
-<body>
-<table border="0" cellpadding="0" cellspacing="0">');
-		?>
-				for (i = 0; i < entries.length; i++) {
-					d.writeln('<tr><td class="selector" align="center">');
-					var link = '<a title="' + entries[i].text + '" href="javascript://"';
-					if (entries[i].isFolder) {
-						link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+						var body = '<table border="0" cellpadding="0" cellspacing="0">';
+						for (i = 0; i < entries.length; i++) {
+							var link = '<a title="' + entries[i].text + '" href="javascript://"';
+							if (entries[i].isFolder) {
+								link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+							}
+							link += ' onclick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
+							body += '<tr><td class="selector" align="center">' +
+											link + '<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a></td>' +
+											'<td class="selector" title="' + entries[i].text + '">' + link + cutText(entries[i].text, 70) + '</a></td></tr>' +
+											'<tr>' +
+											'<td width="25"></td>' +
+											'<td width="200"></td></tr>';
+						}
+						body += '</table>';
+						d.innerHTML = body;
 					}
-					link += ' onclick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
-					d.writeln(link + '<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a>');
-					d.writeln('</td>');
-					d.writeln('<td class="selector" title="' + entries[i].text + '">');
-					d.writeln(link + cutText(entries[i].text, 70) + '</a>');
-					d.writeln('</td></tr>');
-					d.writeln('<tr>');
-					d.writeln('<td width="25"><?php echo we_html_tools::getPixel(25, 2) ?></td>');
-					d.writeln('<td><?php echo we_html_tools::getPixel(200, 2) ?></td></tr>');
-				}
-				d.writeln('</table></body>');
-				d.close();
-			}
-			//-->
+					//-->
 		</script>
 		<?php
 		return ob_get_clean();
@@ -498,13 +433,6 @@ function addEntry(ID,icon,text,isFolder,path){
 }');
 	}
 
-	private function printFramesetJSFunctionClearEntry(){
-		return we_html_element::jsElement('
-function clearEntries(){
-	entries = new Array();
-}');
-	}
-
 	protected function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		while($this->next_record()){
@@ -516,16 +444,17 @@ function clearEntries(){
 	protected function printFramesetJSFunctions(){
 		$this->query();
 		return
-			$this->printFramesetJSFunctioWriteBody() .
-			$this->printFramesetJSFunctionQueryString() .
-			$this->printFramesetJSFunctionEntry() .
-			$this->printFramesetJSFunctionAddEntry() .
-			$this->printFramesetJSFunctionClearEntry() .
-			$this->printFramesetJSFunctionAddEntries();
+				$this->printFramesetJSFunctioWriteBody() .
+				$this->printFramesetJSFunctionQueryString() .
+				$this->printFramesetJSFunctionEntry() .
+				$this->printFramesetJSFunctionAddEntry() .
+				$this->printFramesetJSFunctionAddEntries();
 	}
 
 	protected function printBodyHTML(){
-		echo 	we_html_tools::getHtmlTop('', '', '4Trans', true) . STYLESHEET_SCRIPT.
+		echo we_html_tools::getHtmlTop('', '', '4Trans') .
+		we_html_element::jsScript(JS_DIR . 'utils/jsErrorHandler.js') .
+		STYLESHEET_SCRIPT .
 		we_html_element::cssElement('
 body{
 	background-color: white;
@@ -533,9 +462,13 @@ body{
 }
 a, a:visited, a:active{
 	color: #000000;
-}').
-			'</head>
-				<body onload="top.writeBody(self.document);"></body></html>';
+}') . $this->getWriteBodyHead() .
+		'</head>
+				<body onload="top.writeBody(self.document.body);"></body></html>';
+	}
+
+	protected function getWriteBodyHead(){
+		return '';
 	}
 
 	function printHeaderHTML(){
@@ -544,8 +477,8 @@ a, a:visited, a:active{
 		STYLESHEET .
 		$this->printHeaderJSIncluddes() .
 		we_html_element::jsElement(
-			$this->printHeaderJSDef() .
-			$this->printHeaderJS() . '
+				$this->printHeaderJSDef() .
+				$this->printHeaderJS() . '
 function clearOptions(){
 	 var a=document.forms["we_form"].elements["lookin"];
 	 for(var i=a.options.length-1;i >= 0;i--){
@@ -577,8 +510,8 @@ a:link,a:visited,a:hover,a:active
 	<body>
 		<form name="we_form" method="post">' .
 		((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ?
-			$this->printHeaderTable() .
-			$this->printHeaderLine() : '') .
+				$this->printHeaderTable() .
+				$this->printHeaderLine() : '') .
 		$this->printHeaderHeadlines() .
 		$this->printHeaderLine() .
 		'		</form>
@@ -617,23 +550,23 @@ a:link,a:visited,a:hover,a:active
 	protected function printHeaderTable(){
 		return '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">' .
-			$this->printHeaderTableSpaceRow() . '
+				$this->printHeaderTableSpaceRow() . '
 	<tr valign="middle">
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="70" class="defaultfont"><b>' . g_l('fileselector', '[lookin]') . '</b></td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td>
 		<select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' .
-			$this->printHeaderOptions() . '
+				$this->printHeaderOptions() . '
 		</select>
 		</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="40">' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="40">' . we_html_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>' .
-			$this->printHeaderTableExtraCols() .
-			'<td width="10">' . we_html_tools::getPixel(10, 29) . '</td></tr>' .
-			$this->printHeaderTableSpaceRow() . '
+				$this->printHeaderTableExtraCols() .
+				'<td width="10">' . we_html_tools::getPixel(10, 29) . '</td></tr>' .
+				$this->printHeaderTableSpaceRow() . '
 </table>';
 	}
 
@@ -682,12 +615,12 @@ function enableRootDirButs(){
 	protected function printCmdHTML(){
 		echo we_html_element::jsElement('
 top.clearEntries();' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			(($this->dir) == 0 ?
-				'top.fsheader.disableRootDirButs();' :
-				'top.fsheader.enableRootDirButs();') .
-			'top.currentPath = "' . $this->path . '";
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() .
+				(($this->dir) == 0 ?
+						'top.fsheader.disableRootDirButs();' :
+						'top.fsheader.enableRootDirButs();') .
+				'top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 ');
 	}
@@ -718,19 +651,19 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			}
 		}
 		return '
-top.writeBody(top.fsbody.document);
+top.writeBody(top.fsbody.document.body);
 
 top.fsheader.clearOptions();
 top.fsheader.addOption("/",0);' .
-			$out . '
+				$out . '
 top.fsheader.selectIt();';
 	}
 
 	protected function printFooterHTML(){
 		echo we_html_tools::getHtmlTop() .
 		STYLESHEET . implodeJS(
-			$this->printFooterJSDef() .
-			$this->printFooterJS()) . '
+				$this->printFooterJSDef() .
+				$this->printFooterJS()) . '
 <style type="text/css">
 body{
 	margin:0px;
