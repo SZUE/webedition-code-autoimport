@@ -28,12 +28,17 @@
  *
  */
 abstract class we_customer_abstractFilter{
+	/*	 * no filter */
 
 	const OFF = 0;
+	/*	 * all logged in users */
 	const ALL = 1;
+	/*	 * only specific customers */
 	const SPECIFIC = 2;
+	/*	 * customers with special fields have access */
 	const FILTER = 3;
-	const NONE = 4;
+	/*	 * only not logged in users */
+	const NOT_LOGGED_IN_USERS = 4;
 	const OP_EQ = 0;
 	const OP_NEQ = 1;
 	const OP_LESS = 2;
@@ -110,7 +115,7 @@ abstract class we_customer_abstractFilter{
 				return true;
 			case self::ALL:
 				return self::customerIsLogedIn();
-			case self::NONE:
+			case self::NOT_LOGGED_IN_USERS:
 				return !self::customerIsLogedIn();
 			case self::SPECIFIC:
 				return self::customerIsLogedIn() && in_array($_SESSION['webuser']['ID'], $this->_specificCustomers);
