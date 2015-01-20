@@ -51,7 +51,7 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 		$_mode = we_customer_abstractFilter::OFF;
 		if($navModel->LimitAccess){
 			if($navModel->LimitAccess == 2){
-				$_mode = we_customer_abstractFilter::NONE;
+				$_mode = we_customer_abstractFilter::NOT_LOGGED_IN_USERS;
 			} else if($navModel->LimitAccess == 1 && $navModel->ApplyFilter){
 				$_mode = we_customer_abstractFilter::FILTER;
 			} else if($navModel->AllCustomers == 1){
@@ -85,7 +85,7 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 			$this->setMode(we_customer_abstractFilter::OFF);
 		} else {
 			if($navItem->limitaccess == 2){
-				$this->setMode(we_customer_abstractFilter::NONE);
+				$this->setMode(we_customer_abstractFilter::NOT_LOGGED_IN_USERS);
 			} else {
 				if(isset($navItem->customers['filter']) && is_array($navItem->customers['filter']) && count($navItem->customers['filter'])){
 					$this->setMode(we_customer_abstractFilter::FILTER);
@@ -170,7 +170,7 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 				$model->AllCustomers = 1;
 				break;
 
-			case we_customer_abstractFilter::NONE:
+			case we_customer_abstractFilter::NOT_LOGGED_IN_USERS:
 				$model->LimitAccess = 2;
 				$model->ApplyFilter = 0;
 				$model->AllCustomers = 0;
@@ -201,7 +201,7 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 				$_allCustomers = 1;
 				break;
 
-			case we_customer_abstractFilter::NONE:
+			case we_customer_abstractFilter::NOT_LOGGED_IN_USERS:
 				$_limitAccess = 2;
 				$_applyFilter = 0;
 				$_allCustomers = 0;

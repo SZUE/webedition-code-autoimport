@@ -25,6 +25,6 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "shop/we_shopDirSelect.php";
-$fs = new we_shop_dirSelector(we_base_request::_(we_base_request::INT, "id", 0), we_base_request::_(we_base_request::JS, "JSIDName", ''), we_base_request::_(we_base_request::JS, "JSTextName", ''), we_base_request::_(we_base_request::JS, "JSCommand", ''), we_base_request::_(we_base_request::RAW, "order", ''), we_base_request::_(we_base_request::RAW, "we_editDirID", ''), we_base_request::_(we_base_request::RAW, "we_FolderText", ''));
+$fs = new we_shop_dirSelector(we_base_request::_(we_base_request::INT, "id", 0), isset($JSIDName) ? $JSIDName : '', isset($JSTextName) ? $JSTextName : '', isset($JSCommand) ? $JSCommand : '', we_base_request::_(we_base_request::RAW, "order", ''), we_base_request::_(we_base_request::RAW, "we_editDirID", ''), we_base_request::_(we_base_request::RAW, "we_FolderText", ''));
 
 $fs->printHTML(we_base_request::_(we_base_request::INT, "what", we_selector_file::FRAMESET));

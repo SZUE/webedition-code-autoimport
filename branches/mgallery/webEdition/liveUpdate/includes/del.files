@@ -1,4 +1,3 @@
-we/include/we_modules/messaging/messaging_work.php
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -315,6 +314,7 @@ we/include/we_modules/messaging/todo_search_frame.php
 we/include/we_modules/messaging/todo_iconbar.php
 we/include/we_modules/messaging/safariHResize.html
 we/include/we_modules/messaging/msg_html_tools.inc.php
+we/include/we_modules/messaging/messaging_work.php
 we/include/we_modules/messaging/messaging_usel_iconbar.php
 we/include/we_modules/messaging/messaging_std.inc.php
 we/include/we_modules/messaging/messaging_search_frame.php
@@ -2753,6 +2753,7 @@ editors/content/wysiwyg/acronymDialog
 editors/content/wysiwyg/abbrDialog.php
 editors/content/wysiwyg/WeWysiwygEditorWindow.php
 editors/content/wysiwyg
+editors/content/eplugin/gal
 editor/setHot.html
 editor/initEditor.html
 editor/getAttribsForTag.php

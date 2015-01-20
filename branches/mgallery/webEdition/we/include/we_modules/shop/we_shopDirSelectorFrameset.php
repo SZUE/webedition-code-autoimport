@@ -23,8 +23,8 @@
  */
 we_html_tools::protect();
 $_REQUEST['id'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
-$_REQUEST['JSIDName'] = we_base_request::_(we_base_request::JS, 'we_cmd', '', 2);
-$_REQUEST['JSTextName'] = we_base_request::_(we_base_request::JS, 'we_cmd', '', 3);
-$_REQUEST['JSCommand'] = we_base_request::_(we_base_request::JS, 'we_cmd', '', 4);
+$JSIDName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2);
+$JSTextName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
+$JSCommand = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
 
 require_once(WE_MODULES_PATH . 'raw/we_ShopDirSelect.php');

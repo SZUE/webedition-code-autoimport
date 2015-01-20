@@ -35,8 +35,8 @@ class we_customer_documentFilterView extends we_customer_filterView{
 	 */
 	function getFilterHTML(){
 		return parent::getFilterHTML() . '<div style="height: 20px;"></div>' .
-			$this->getAccessControlHTML() .
-			(($GLOBALS['we_doc']->ContentType === "folder") ? ('<div style="height: 20px;"></div>' . $this->getFolderApplyHTML()) : "");
+				$this->getAccessControlHTML() .
+				(($GLOBALS['we_doc']->ContentType === "folder") ? ('<div style="height: 20px;"></div>' . $this->getFolderApplyHTML()) : "");
 	}
 
 	/**
@@ -60,7 +60,6 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$selectorNoLoginText = "wecf_InputNoLoginText";
 		//$selectorNoLoginError = "wecf_ErrorMarkNoLoginText";
 		$cmd1 = "document.we_form.elements['" . $selectorNoLoginId . "'].value";
-
 		$selectorNoLoginButton = we_html_button::create_button("select", "javascript:we_cmd('openDocselector'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $selectorNoLoginText . "'].value") . "','" . we_base_request::encCmd("opener." . $this->getHotScript() . ";") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)") . "<div id=\"wecf_container_noLoginId\"></div>";
 
 		$yuiSuggest->setAcId("NoLogin");
@@ -114,12 +113,13 @@ class we_customer_documentFilterView extends we_customer_filterView{
 				$weAcSelector .
 				$weAcSelector2 .
 				'accessControlSelectorDiv', (!$_filter->getAccessControlOnTemplate()), 25
+
 		);
 
 
 
 		return weSuggest::getYuiFiles() .
-			$this->getDiv($_accesControl, 'accessControlDiv', $_filter->getMode() !== we_customer_abstractFilter::OFF, 0);
+				$this->getDiv($_accesControl, 'accessControlDiv', $_filter->getMode() !== we_customer_abstractFilter::OFF, 0);
 	}
 
 	/**

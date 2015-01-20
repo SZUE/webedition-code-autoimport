@@ -301,7 +301,7 @@ function publishDocsAjax() {
 	var checkboxes = document.getElementsByName("publish_docs_doclist");
 	for (var i = 0; i < checkboxes.length; i++) {
 		if (checkboxes[i].checked) {
-			if (check !== ""){
+			if (check !== "") {
 				check += ",";
 			}
 			check += checkboxes[i].value;
@@ -404,4 +404,256 @@ function search(newSearch) {
 		}
 		makeAjaxRequestDoclist();
 	}
+}
+
+function newinput() {
+	var elem = document.getElementById("filterTable");
+	newID = elem.rows.length - 1;
+	rows++;
+
+	var scrollContent = document.getElementById("scrollContent_doclist");
+	scrollContent.style.height = scrollContent.offsetHeight - 26 + "px";
+
+
+	if (elem) {
+		var newRow = document.createElement("TR");
+		newRow.setAttribute("id", "filterRow_" + rows);
+
+		var cell = document.createElement("TD");
+		cell.innerHTML = searchFields.replace(/__we_new_id__/g, rows) + '<input type="hidden" value="" name="hidden_searchFields[' + rows + ']"';
+		newRow.appendChild(cell);
+
+		cell = document.createElement("TD");
+		cell.setAttribute("id", "td_location[" + rows + "]");
+		cell.innerHTML = locationFields.replace(/__we_new_id__/g, rows);
+		newRow.appendChild(cell);
+
+		cell = document.createElement("TD");
+		cell.setAttribute("id", "td_search[" + rows + "]");
+		cell.innerHTML = search.replace(/__we_new_id__/g, rows);
+		newRow.appendChild(cell);
+
+		cell = document.createElement("TD");
+		cell.setAttribute("id", "td_delButton[" + rows + "]");
+		cell.innerHTML = trashButton.replace(/__we_new_id__/g, rows);
+		newRow.appendChild(cell);
+
+		elem.appendChild(newRow);
+	}
+}
+
+function changeit(value, rowNr) {
+	var setValue = document.getElementsByName("search[" + rowNr + "]")[0].value;
+	var from = document.getElementsByName("hidden_searchFields[" + rowNr + "]")[0].value;
+	var row = document.getElementById("filterRow_" + rowNr);
+	var locationTD = document.getElementById("td_location[" + rowNr + "]");
+	var searchTD = document.getElementById("td_search[" + rowNr + "]");
+	var delButtonTD = document.getElementById("td_delButton[" + rowNr + "]");
+	var location = document.getElementById("location[" + rowNr + "]");
+
+	switch (value) {
+		case "Content":
+			if (locationTD != null) {
+				location.disabled = true;
+			}
+			row.removeChild(searchTD);
+
+			if (delButtonTD != null) {
+				row.removeChild(delButtonTD);
+			}
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_search[" + rowNr + "]");
+			cell.innerHTML = search.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton[" + rowNr + "]");
+			cell.innerHTML = trashButton.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+			break;
+		case "temp_category":
+			if (locationTD != null) {
+				location.disabled = true;
+			}
+			row.removeChild(searchTD);
+
+			var innerhtml = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>" +
+							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"58\" value=\"\"  id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />" +
+							"</td><td><input value=\"\" name=\"searchParentID[" + rowNr + "]\" type=\"hidden\" /></td><td></td><td>" +
+							"<table title=\"" + g_l.select_value + "\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openCatselector\',document.we_form.elements[\'searchParentID[" + rowNr + "]\'].value,\'" + tables.CATEGORY_TABLE + "\',\'document.we_form.elements[\\\\\'searchParentID[" + rowNr + "]\\\\\'].value\',\'document.we_form.elements[\\\\\'search[" + rowNr + "]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">" +
+							"<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">" +
+							g_l.select_value +
+							"</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>";
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_search[" + rowNr + "]");
+			cell.innerHTML = innerhtml;
+			row.appendChild(cell);
+
+			if (delButtonTD != null) {
+				row.removeChild(delButtonTD);
+			}
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton[" + rowNr + "]");
+			cell.innerHTML = trashButton.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+			break;
+		case "temp_template_id":
+		case "MasterTemplateID":
+			if (locationTD != null) {
+				location.disabled = true;
+			}
+			row.removeChild(searchTD);
+
+			var innerhtml = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>" +
+							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"58\" value=\"\"  id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />" +
+							"</td><td><input value=\"\" name=\"searchParentID[" + rowNr + "]\" type=\"hidden\" /></td><td></td><td>" +
+							"<table title=\"" + g_l.select_value + "\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openDocselector\',document.we_form.elements[\'searchParentID[" + rowNr + "]\'].value,\'" + tables.TEMPLATES_TABLE + "\',\'document.we_form.elements[\\\\\'searchParentID[" + rowNr + "]\\\\\'].value\',\'document.we_form.elements[\\\\\'search[" + rowNr + "]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">" +
+							"<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">" +
+							g_l.select_value +
+							"</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>";
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_search[" + rowNr + "]");
+			cell.innerHTML = innerhtml;
+			row.appendChild(cell);
+
+			if (delButtonTD != null) {
+				row.removeChild(delButtonTD);
+			}
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton[" + rowNr + "]");
+			cell.innerHTML = trashButton.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+			break;
+		case "Status":
+			if (locationTD != null) {
+				location.disabled = true;
+			}
+			row.removeChild(searchTD);
+			if (delButtonTD != null) {
+				row.removeChild(delButtonTD);
+			}
+
+
+			var cell = document.createElement("TD");
+			cell.setAttribute("id", "td_search[" + rowNr + "]");
+			cell.innerHTML = searchClassFolder.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton[" + rowNr + "]");
+			cell.innerHTML = trashButton.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+			break;
+		case "Speicherart":
+			if (locationTD != null) {
+				location.disabled = true;
+			}
+			row.removeChild(searchTD);
+			if (delButtonTD != null) {
+				row.removeChild(delButtonTD);
+			}
+
+			var cell = document.createElement("TD");
+			cell.setAttribute("id", "td_search[" + rowNr + "]");
+			cell.innerHTML = searchSpeicherat.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton[" + rowNr + "]");
+			cell.innerHTML = trashButton.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+			break;
+		case "Published":
+		case "CreationDate":
+		case "ModDate":
+
+			row.removeChild(locationTD);
+
+			var cell = document.createElement("TD");
+			cell.setAttribute("id", "td_location[" + rowNr + "]");
+			cell.innerHTML = locationDateFields.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+
+			row.removeChild(searchTD);
+
+			var innerhtml = "<table id=\"search[" + rowNr + "]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>\n"
+							+ "<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 100px; \" type=\"text\" />"
+							+ "</td><td>&nbsp;</td><td><a href=\"#\">\n"
+							+ "<table id=\"date_picker_from" + rowNr + "\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
+							+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\"" >
+							+"<img src=\"" + dirs.BUTTONS_DIR + "icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>"
+							+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>";
+
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_search[" + rowNr + "]");
+			cell.innerHTML = innerhtml;
+			row.appendChild(cell);
+
+			Calendar.setup({inputField: "search[" + rowNr + "]", ifFormat: "%d.%m.%Y", button: "date_picker_from" + rowNr + "", align: "Tl", singleClick: true});
+
+			if (delButtonTD != null) {
+				row.removeChild(delButtonTD);
+			}
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton[" + rowNr + "]");
+			cell.innerHTML = trashButton.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+			break;
+		default:
+			row.removeChild(searchTD);
+
+			if (locationTD != null) {
+				row.removeChild(locationTD);
+			}
+			if (delButtonTD != null) {
+				row.removeChild(delButtonTD);
+			}
+
+			var cell = document.createElement("TD");
+			cell.setAttribute("id", "td_location[" + rowNr + "]");
+			cell.innerHTML = locationDateFields.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+
+			var cell = document.createElement("TD");
+			cell.setAttribute("id", "td_search[" + rowNr + "]");
+			cell.innerHTML = search.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton[" + rowNr + "]");
+			cell.innerHTML = trashButton.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+	}
+	switch (from) {
+		case "temp_template_id":
+		case "ContentType":
+		case "temp_category":
+		case "Status":
+		case "Speicherart":
+		case "Published":
+		case "CreationDate":
+		case "ModDate":
+			setValue = "";
+	}
+	switch (value) {
+		case "temp_template_id":
+		case "ContentType":
+		case "temp_category":
+		case "Status":
+		case "Speicherart":
+		case "Published":
+		case "CreationDate":
+		case "ModDate":
+			setValue = "";
+	}
+
+	document.getElementById("search[" + rowNr + "]").value = setValue;
+	document.getElementsByName("hidden_searchFields[" + rowNr + "]")[0].value = value;
+
 }
