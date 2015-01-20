@@ -113,7 +113,7 @@ var we_dir="' . WEBEDITION_DIR . '";'
 		$page = we_base_request::_(we_base_request::INT, "page", 0);
 
 		$headline1 = g_l('modules_banner', $isFolder ? '[group]' : '[banner]');
-		$text = we_base_request::_(we_base_request::STRING, "txt", g_l('modules_banner', ($isFolder ? '[newbannergroup]' : '[newbanner]')));
+		$text = we_base_request::_(we_base_request::STRINGC, "txt", g_l('modules_banner', ($isFolder ? '[newbannergroup]' : '[newbanner]')));
 
 		$we_tabs = new we_tabs();
 

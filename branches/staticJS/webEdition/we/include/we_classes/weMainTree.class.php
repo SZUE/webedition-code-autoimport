@@ -56,7 +56,7 @@ class weMainTree extends weTree{
 			'.selected_group {background-color: #D4DBFA;}',
 			'.selected_notpublished_item {color: red;}',
 			'.selected_open_group {color: black;}',
-			)
+				)
 		);
 	}
 
@@ -82,7 +82,7 @@ function openClose(id) {
 }';
 	}
 
-	function getJSTreeFunctions($overridden){
+	function getJSTreeFunctions($overridden = false){
 
 		return parent::getJSTreeFunctions() . ($overridden ? '' : '
 function doClick(id){
@@ -123,10 +123,10 @@ while(1){
 if(weWindow.treeData){
 	var obj = weWindow.treeData;
 	var isIn = false;' .
-			($select ? '
+				($select ? '
 	weWindow.treeData.selection_table="' . $doc->Table . '";
 	weWindow.treeData.selection="' . $doc->ID . '";' :
-				'weWindow.treeData.unselectnode();') . '
+						'weWindow.treeData.unselectnode();') . '
 	if(weWindow.treeData.table == "' . $doc->Table . '"){
 		if(weWindow.treeData[top.indexOfEntry(' . $doc->ParentID . ')]){
 				var attribs={
@@ -270,10 +270,10 @@ function makeNewEntry(icon,id,pid,txt,open,ct,tab){
 		return parent::getJSIncludeFunctions() . '
 we_scrollY["' . FILE_TABLE . '"] = 0;
 we_scrollY["' . TEMPLATES_TABLE . '"] = 0;' .
-			(defined('OBJECT_TABLE') ? '
+				(defined('OBJECT_TABLE') ? '
 we_scrollY["' . OBJECT_TABLE . '"] = 0;
 we_scrollY["' . OBJECT_FILES_TABLE . '"] = 0;' :
-				'') . '
+						'') . '
 treeData.table="' . FILE_TABLE . '";';
 	}
 
@@ -283,7 +283,7 @@ treeData.table="' . FILE_TABLE . '";';
 		if(is_array($treeItems)){
 			foreach($treeItems as $item){
 				$js.= 'if(' . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){"
-					. "attribs={";
+						. "attribs={";
 				foreach($item as $k => $v){
 					$js.='"' . strtolower($k) . '":' . ($v === 0 ? 0 : '\'' . addslashes($v) . '\'') . ',';
 				}

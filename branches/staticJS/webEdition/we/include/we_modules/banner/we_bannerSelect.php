@@ -28,12 +28,12 @@ we_html_tools::protect();
 
 if(isset($_REQUEST['we_cmd'])){
 	$_REQUEST['id'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
-	$_REQUEST['JSIDName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2);
-	$_REQUEST['JSTextName'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
-	$_REQUEST['JSCommand'] = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
+	$JSIDName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2);
+	$JSTextName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
+	$JSCommand = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
 }
 
 $_SERVER["SCRIPT_NAME"] = WE_MODULES_DIR . "banner/we_bannerSelect.php";
-$fs = new we_banner_selector(we_base_request::_(we_base_request::INT, "id", 0), we_base_request::_(we_base_request::JS, "JSIDName", ''), we_base_request::_(we_base_request::JS, "JSTextName", ''), we_base_request::_(we_base_request::JS, "JSCommand", ''), we_base_request::_(we_base_request::RAW, "order", ''));
+$fs = new we_banner_selector(we_base_request::_(we_base_request::INT, "id", 0), isset($JSIDName) ? $JSIDName : '', isset($JSTextName) ? $JSTextName : '', isset($JSCommand) ? $JSCommand : '', we_base_request::_(we_base_request::RAW, "order", ''));
 
 $fs->printHTML(we_base_request::_(we_base_request::INT, "what", we_selector_file::FRAMESET));

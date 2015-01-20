@@ -50,14 +50,7 @@ class we_customer_filterView{
 	 */
 	var $_width = 0;
 
-	/**
-	 * show Mode_none
-	 *
-	 * @var integer
-	 */
-	var $_ShowModeNone = 0;
-
-	/**
+		/**
 	 * Constructor
 	 *
 	 * @param we_customer_abstractFilter $filter
@@ -78,9 +71,7 @@ class we_customer_filterView{
 	 *
 	 * @return string
 	 */
-	function getFilterHTML($ShowModeNone = 0){
-		$this->_ShowModeNone = $ShowModeNone;
-
+	function getFilterHTML($ShowModeNone = false){
 		$_script = <<<EO_SCRIPT
 function $(id) {
 	return document.getElementById(id);
@@ -158,8 +149,8 @@ EO_SCRIPT;
 
 		// ################# Radio buttons ###############
 		$_modeRadioOff = we_html_forms::radiobutton(we_customer_abstractFilter::OFF, $this->_filter->getMode() === we_customer_abstractFilter::OFF, 'wecf_mode', g_l('modules_customerFilter', '[mode_off]'), true, "defaultfont", "wecf_hot();updateView();");
-		$_modeRadioNone = ($this->_ShowModeNone ?
-						we_html_forms::radiobutton(we_customer_abstractFilter::NONE, $this->_filter->getMode() === we_customer_abstractFilter::NONE, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "wecf_hot();updateView();") :
+		$_modeRadioNone = ($ShowModeNone ?
+						we_html_forms::radiobutton(we_customer_abstractFilter::NOT_LOGGED_IN_USERS, $this->_filter->getMode() === we_customer_abstractFilter::NOT_LOGGED_IN_USERS, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "wecf_hot();updateView();") :
 						'');
 
 		$_modeRadioAll = we_html_forms::radiobutton(we_customer_abstractFilter::ALL, $this->_filter->getMode() === we_customer_abstractFilter::ALL, 'wecf_mode', g_l('modules_customerFilter', '[mode_all]'), true, "defaultfont", "wecf_hot();updateView();");
@@ -357,14 +348,18 @@ EO_SCRIPT;
 					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
 					(($_i == 0) ? we_html_tools::getPixel(64, 1) : we_html_tools::htmlSelect('filterLogic_' . $_i, $_filter_logic, 1, $_value['logic'], false, array('onchange' => "wecf_logic_changed(this);", 'class' => "defaultfont logicInput"))) .
 					'</td>
+
 					<td style="padding-top: ' . ($_value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
 					we_html_tools::htmlSelect('filterSelect_' . $_i, $_filter_args, 1, $_value['field'], false, array('onchange' => "wecf_hot();", 'class' => "defaultfont leftInput")) .
 					'</td>
+
 					<td style="padding-top: ' . ($_value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-					we_html_tools::htmlSelect('filterOperation_' . $_i, $_filter_op, 1, $_value['operation'], false, array('onchange' => "wecf_hot();", 'class' => "defaultfont middleInput")) .
+
+				we_html_tools::htmlSelect('filterOperation_' . $_i, $_filter_op, 1, $_value['operation'], false, array('onchange' => "wecf_hot();", 'class' => "defaultfont middleInput")) .
 					'</td>
+
 					<td style="padding-top: ' . ($_value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
 					'<input name="filterValue_' . $_i . '" value="' . $_value['value'] . '" type="text" onchange="wecf_hot();" class="defaultfont rightInput"/>' .

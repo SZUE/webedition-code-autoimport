@@ -33,7 +33,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case "editSource" :
 		if(isset($_SESSION['weS']['we_data'][$_we_transaction][0]['Path']) && $_SESSION['weS']['we_data'][$_we_transaction][0]['Path']){
 			$doc = $_SESSION['weS']['we_data'][$_we_transaction][0];
-			$_filename = preg_replace('|/' . $doc['Filename'] . '.*$|', $doc['Filename'] . $doc['Extension'], $doc['Path']);
+			$_filename = preg_replace('|/' . $doc['Filename'] . '.*$|', '/' . $doc['Filename'] . $doc['Extension'], $doc['Path']);
 		} else {
 			$_filename = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1);
 		}
