@@ -41,266 +41,34 @@ var rows = ' . (isset($_REQUEST["searchFields"]) ? count($_REQUEST["searchFields
 var docID="' . $GLOBALS['we_doc']->ID . '";
 var transaction="' . $we_transaction . '";
 var dirs={
-	"IMAGE_DIR":"' . IMAGE_DIR . '"
+	"IMAGE_DIR":"' . IMAGE_DIR . '",
+	"BUTTONS_DIR":"' . BUTTONS_DIR . '"
+};
+var tables={
+	"CATEGORY_TABLE":"' . CATEGORY_TABLE . '",
+	"TEMPLATES_TABLE":"' . TEMPLATES_TABLE . '"
 };
 var searchclassFolderMode=' . $GLOBALS['we_doc']->searchclassFolder->mode . ';
 var g_l={
 	"publish_docs":"' . g_l('searchtool', '[publish_docs]') . '",
-	"notChecked": "'.we_message_reporting::prepareMsgForJS(g_l('searchtool', '[notChecked]')).'",
-	"publishOK":"'.we_message_reporting::prepareMsgForJS(g_l('searchtool', '[publishOK]')).'",
-	"noTempTableRightsDoclist":"'.we_message_reporting::prepareMsgForJS(g_l('searchtool', '[noTempTableRightsDoclist]')).'"
+	"notChecked": "' . we_message_reporting::prepareMsgForJS(g_l('searchtool', '[notChecked]')) . '",
+	"publishOK":"' . we_message_reporting::prepareMsgForJS(g_l('searchtool', '[publishOK]')) . '",
+	"noTempTableRightsDoclist":"' . we_message_reporting::prepareMsgForJS(g_l('searchtool', '[noTempTableRightsDoclist]')) . '",
+	"select_value":"' . g_l('button', '[select][value]') . '"
 };
 var canNotMakeTemp=' . intval(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()) . ';
+var searchFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFields("__we_new_id__", "doclist"), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
+var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
+var locationDateFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
+
+var search = "' . addslashes(we_html_tools::htmlTextInput('search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
+var trashButton=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow(__we_new_id__)") . '\';
+var searchClassFolder = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
+
+var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
+
 ') .
-				we_html_element::jsScript(JS_DIR . 'doclistView.js') .
-				we_html_element::jsElement('
-      elem = null;
-
-function newinput() {
-	var searchFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFields("__we_new_id__", "doclist"), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
-	var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
-	var search = "' . addslashes(we_html_tools::htmlTextInput('search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
-
-	var elem = document.getElementById("filterTable");
-	newID = elem.rows.length-1;
-	rows++;
-
-	var scrollContent = document.getElementById("scrollContent_doclist");
-	scrollContent.style.height = scrollContent.offsetHeight - 26 +"px";
-
-
-	if(elem){
-		var newRow = document.createElement("TR");
-			newRow.setAttribute("id", "filterRow_" + rows);
-
-			var cell = document.createElement("TD");
-			cell.innerHTML=searchFields.replace(/__we_new_id__/g,rows)+"<input type=\"hidden\" value=\"\" name=\"hidden_searchFields["+rows+"]\"";
-			newRow.appendChild(cell);
-
-		cell = document.createElement("TD");
-		cell.setAttribute("id", "td_location["+rows+"]");
-			cell.innerHTML=locationFields.replace(/__we_new_id__/g,rows);
-			newRow.appendChild(cell);
-
-		cell = document.createElement("TD");
-		cell.setAttribute("id", "td_search["+rows+"]");
-			cell.innerHTML=search.replace(/__we_new_id__/g,rows);
-			newRow.appendChild(cell);
-
-			cell = document.createElement("TD");
-			cell.setAttribute("id", "td_delButton["+rows+"]");
-			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rows+')") . '\';
-			newRow.appendChild(cell);
-
-		elem.appendChild(newRow);
-	}
-}
-
-
-function changeit(value, rowNr){
-	var setValue = document.getElementsByName("search["+rowNr+"]")[0].value;
-	var from = document.getElementsByName("hidden_searchFields["+rowNr+"]")[0].value;
-
-	var searchFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFields("__we_new_id__", "doclist"), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
-	var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
-	var search = "' . addslashes(we_html_tools::htmlTextInput('search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
-
-	var row = document.getElementById("filterRow_"+rowNr);
-	var locationTD = document.getElementById("td_location["+rowNr+"]");
-	var searchTD = document.getElementById("td_search["+rowNr+"]");
-	var delButtonTD = document.getElementById("td_delButton["+rowNr+"]");
-	var location = document.getElementById("location["+rowNr+"]");
-
-	if(value=="Content") {
-		if (locationTD!=null) {
-			location.disabled = true;
-		}
-		row.removeChild(searchTD);
-
-		if (delButtonTD!=null) {
-			row.removeChild(delButtonTD);
-		}
-		cell = document.createElement("TD");
-		cell.setAttribute("id", "td_search["+rowNr+"]");
-			cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-			row.appendChild(cell);
-
-			cell = document.createElement("TD");
-			cell.setAttribute("id", "td_delButton["+rowNr+"]");
-			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-			row.appendChild(cell);
-	}else if(value=="temp_category") {
-		if (locationTD!=null) {
-			location.disabled = true;
-		}
-		row.removeChild(searchTD);
-
-		var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>\n"
-				+ "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"58\" value=\"\"  id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />\n"
-				+ "</td><td><input value=\"\" name=\"searchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>\n"
-				+ "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openCatselector\',document.we_form.elements[\'searchParentID["+rowNr+"]\'].value,\'' . CATEGORY_TABLE . '\',\'document.we_form.elements[\\\\\'searchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'search["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
-				+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">\n"
-				+ "' . g_l('button', '[select][value]') . '\n"
-				+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>\n";
-
-
-		cell = document.createElement("TD");
-		cell.setAttribute("id", "td_search["+rowNr+"]");
-			cell.innerHTML=innerhtml;
-			row.appendChild(cell);
-
-		if (delButtonTD!=null) {
-			row.removeChild(delButtonTD);
-		}
-
-		cell = document.createElement("TD");
-			cell.setAttribute("id", "td_delButton["+rowNr+"]");
-			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-			row.appendChild(cell);
-	}else if(value=="temp_template_id" || value=="MasterTemplateID") {
-		if (locationTD!=null) {
-			location.disabled = true;
-		}
-		row.removeChild(searchTD);
-
-		var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>\n"
-				+ "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"58\" value=\"\"  id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />\n"
-				+ "</td><td><input value=\"\" name=\"searchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>\n"
-				+ "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openDocselector\',document.we_form.elements[\'searchParentID["+rowNr+"]\'].value,\'' . TEMPLATES_TABLE . '\',\'document.we_form.elements[\\\\\'searchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'search["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
-				+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">\n"
-				+ "' . g_l('button', '[select][value]') . '\n"
-				+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>\n";
-
-
-		cell = document.createElement("TD");
-		cell.setAttribute("id", "td_search["+rowNr+"]");
-			cell.innerHTML=innerhtml;
-			row.appendChild(cell);
-
-		if (delButtonTD!=null) {
-			row.removeChild(delButtonTD);
-		}
-
-		cell = document.createElement("TD");
-			cell.setAttribute("id", "td_delButton["+rowNr+"]");
-			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-			row.appendChild(cell);
-	}else if(value=="Status") {
-		if (locationTD!=null) {
-			location.disabled = true;
-		}
-		row.removeChild(searchTD);
-		if (delButtonTD!=null) {
-			row.removeChild(delButtonTD);
-		}
-
-		search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
-
-		var cell = document.createElement("TD");
-			cell.setAttribute("id", "td_search["+rowNr+"]");
-			cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-		row.appendChild(cell);
-
-		cell = document.createElement("TD");
-			cell.setAttribute("id", "td_delButton["+rowNr+"]");
-			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-			row.appendChild(cell);
-
-	}else if(value=="Speicherart") {
-		if (locationTD!=null) {
-			location.disabled = true;
-		}
-		row.removeChild(searchTD);
-		if (delButtonTD!=null) {
-			row.removeChild(delButtonTD);
-		}
-
-		search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
-
-		var cell = document.createElement("TD");
-			cell.setAttribute("id", "td_search["+rowNr+"]");
-			cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-		row.appendChild(cell);
-
-		cell = document.createElement("TD");
-			cell.setAttribute("id", "td_delButton["+rowNr+"]");
-			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-			row.appendChild(cell);
-
-	}else if(value=="Published" || value=="CreationDate" || value=="ModDate") {
-
-		row.removeChild(locationTD);
-
-		locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
-
-		var cell = document.createElement("TD");
-			cell.setAttribute("id", "td_location["+rowNr+"]");
-			cell.innerHTML=locationFields.replace(/__we_new_id__/g,rowNr);
-		row.appendChild(cell);
-
-		row.removeChild(searchTD);
-
-		var innerhtml= "<table id=\"search["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>\n"
-				+ "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 100px; \" type=\"text\" />"
-				+ "</td><td>&nbsp;</td><td><a href=\"#\">\n"
-				+ "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
-				+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\"">
-				+ "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>"
-				+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>";
-
-
-		cell = document.createElement("TD");
-		cell.setAttribute("id", "td_search["+rowNr+"]");
-			cell.innerHTML=innerhtml;
-			row.appendChild(cell);
-
-			Calendar.setup({inputField:"search["+rowNr+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+rowNr+"",align:"Tl",singleClick:true});
-
-		if (delButtonTD!=null) {
-			row.removeChild(delButtonTD);
-		}
-
-		cell = document.createElement("TD");
-			cell.setAttribute("id", "td_delButton["+rowNr+"]");
-			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-			row.appendChild(cell);
-
-	}else {
-		row.removeChild(searchTD);
-
-		if (locationTD!=null) {
-			row.removeChild(locationTD);
-		}
-		if (delButtonTD!=null) {
-			row.removeChild(delButtonTD);
-		}
-
-		var cell = document.createElement("TD");
-			cell.setAttribute("id", "td_location["+rowNr+"]");
-			cell.innerHTML=locationFields.replace(/__we_new_id__/g,rowNr);
-row.appendChild(cell);
-
-		var cell = document.createElement("TD");
-			cell.setAttribute("id", "td_search["+rowNr+"]");
-			cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-		row.appendChild(cell);
-
-		cell = document.createElement("TD");
-			cell.setAttribute("id", "td_delButton["+rowNr+"]");
-			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-			row.appendChild(cell);
-	}
-	if(from=="temp_template_id" || from=="ContentType" || from=="temp_category" || from=="Status" || from=="Speicherart" || from=="Published" || from=="CreationDate" || from=="ModDate"
-		 || value=="temp_template_id" || value=="ContentType" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {
-		document.getElementById("search["+rowNr+"]").value = "";
-}	else {
-	document.getElementById("search["+rowNr+"]").value = setValue;
-}
-
-	document.getElementsByName("hidden_searchFields["+rowNr+"]")[0].value = value;
-
-}
-');
+				we_html_element::jsScript(JS_DIR . 'doclistView.js');
 	}
 
 	/**
@@ -309,32 +77,26 @@ row.appendChild(cell);
 	 */
 	function getSearchDialog(){
 		$out = '<table cellpadding="0" cellspacing="0" id="defSearch" border="0" width="550" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'none' : 'block') . ';">
-        <tr>
-        <td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '
-        </td>
-        <td>' . we_html_tools::getPixel(10, 2) . '
-        </td>
-        <td>' . we_html_tools::getPixel(40, 2) . '' . we_html_button::create_button("image:btn_direction_right", "javascript:switchSearch(1)", false) . '</td>
-        <td width="100%">' . we_html_tools::getPixel(10, 2) . '
-        </td>
-        </tr>
-        </table>
-				<table cellpadding="0" cellspacing="0" border="0" id="advSearch" width="550" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
-        <tr>
-        <td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '
-        </td>
-        <td>' . we_html_tools::getPixel(10, 2) . '
-        </td>
-        <td>' . we_html_tools::getPixel(40, 2) . '' . we_html_button::create_button("image:btn_direction_down", "javascript:switchSearch(0)", false) . '</td>
-        <td width="100%">' . we_html_tools::getPixel(10, 2) . '
-        </td>
-        </tr>
-        </table>
-				<table cellpadding="2" cellspacing="0"  id="advSearch2" border="0" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
-        <tbody id="filterTable">
-        <tr>
-          <td>' . we_class::hiddenTrans() . '</td>
-        </tr>';
+<tr>
+	<td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '</td>
+	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td>' . we_html_tools::getPixel(40, 2) . '' . we_html_button::create_button("image:btn_direction_right", "javascript:switchSearch(1)", false) . '</td>
+	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
+</tr>
+</table>
+<table cellpadding="0" cellspacing="0" border="0" id="advSearch" width="550" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
+<tr>
+	<td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '</td>
+	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td>' . we_html_tools::getPixel(40, 2) . '' . we_html_button::create_button("image:btn_direction_down", "javascript:switchSearch(0)", false) . '</td>
+	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
+</tr>
+</table>
+<table cellpadding="2" cellspacing="0"  id="advSearch2" border="0" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
+<tbody id="filterTable">
+<tr>
+	<td>' . we_class::hiddenTrans() . '</td>
+</tr>';
 
 		$r = array();
 		$r2 = array();
