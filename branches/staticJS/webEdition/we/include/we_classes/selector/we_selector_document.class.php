@@ -393,12 +393,11 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 			case we_base_ContentTypes::OBJECT:
 			case we_base_ContentTypes::OBJECT_FILE:
 			case we_base_ContentTypes::WEDOCUMENT:
-				return $ret;
+				return parent::printHeaderJSDef();
 			default:
-				$ret.= '
-var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 				$btn = ($this->filter && isset($this->ctb[$this->filter]) ? $this->ctb[$this->filter] : 'btn_add_file');
-				return $ret . '
+				return parent::printHeaderJSDef().'
+var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';
 function disableNewFileBut() {
 	' . $btn . '_enabled = switch_button_state("' . $btn . '", "", "disabled", "image");
 	newFileState = 0;
@@ -899,11 +898,10 @@ function doClick(id,ct){
 			}else{
 				if (isFileSelected(id)) {
 					unselectFile(id);
-				}else{' : '') . '
-					selectFile(id);' .
-						($this->multiple ? '
+				}else{
+					selectFile(id);
 				}
-			}' : '') . '
+			}' : 'selectFile(id);') . '
 		} else {
 			showPreview(id);
 		}

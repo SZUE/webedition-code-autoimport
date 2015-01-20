@@ -475,7 +475,7 @@ a, a:visited, a:active{
 		$this->setDirAndID();
 		echo we_html_tools::getHtmlTop() .
 		STYLESHEET .
-		$this->printHeaderJSIncluddes() .
+		we_html_element::jsScript(JS_DIR . 'images.js').
 		we_html_element::jsElement(
 				$this->printHeaderJSDef() .
 				$this->printHeaderJS() . '
@@ -604,9 +604,6 @@ function enableRootDirButs(){
 }';
 	}
 
-	private function printHeaderJSIncluddes(){
-		return we_html_element::jsScript(JS_DIR . 'images.js');
-	}
 
 	protected function printHeaderJSDef(){
 		return 'var rootDirButsState = ' . (($this->dir == 0) ? 0 : 1) . ';';

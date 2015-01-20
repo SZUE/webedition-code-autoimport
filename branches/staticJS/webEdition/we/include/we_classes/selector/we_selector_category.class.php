@@ -106,10 +106,10 @@ class we_selector_category extends we_selector_multiple{
 						'<td width="40">' . we_html_button::create_button("image:btn_new_dir", 'javascript:top.drawNewFolder();', true, 0, 0, '', '', false, false) . '</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="38">' . we_html_button::create_button("image:btn_add_cat", 'javascript:top.drawNewCat();', true, 0, 0, '', '', false, false) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>' : '') .
-				($this->userCanEditCat() ?
-						'<td width="27">' . we_html_button::create_button("image:btn_function_trash", 'javascript:if(changeCatState==1){top.deleteEntry();}', true, 27, 22, '', '', false, false) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>' : '') .
+		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
+		<td width="27">' . we_html_button::create_button("image:btn_function_trash", 'javascript:if(changeCatState==1){top.deleteEntry();}', true, 27, 22, '', '', false, false) . '</td>
+		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>' :
+						'') .
 				'</tr>' .
 				$this->printHeaderTableSpaceRow() . '
 </table>';
@@ -597,11 +597,11 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 	protected function getFrameset(){
 		$isMainChooser = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'openCatselector' && !(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) || we_base_request::_(we_base_request::JS, 'we_cmd', false, 5));
 		return '<frameset rows="67,*,65,0" border="0">
-	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
-' . ($isMainChooser ? '<frameset cols="35%,65%" border="0">' : '') . '
-    	<frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" scrolling="auto">
-' . ($isMainChooser ? '<frame src="' . $this->getFsQueryString(self::PROPERTIES) . '" name="fsvalues"  scrolling="auto"></frameset>' : '') . '
-    <frame src="' . $this->getFsQueryString(we_selector_file::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
+	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">' .
+			($isMainChooser ? '<frameset cols="35%,65%" border="0">' : '') .
+				'<frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" scrolling="auto">' .
+					($isMainChooser ? '<frame src="' . $this->getFsQueryString(self::PROPERTIES) . '" name="fsvalues"  scrolling="auto"></frameset>' : '') .
+				'<frame src="' . $this->getFsQueryString(we_selector_file::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
     <frame src="about:blank"  name="fscmd" noresize scrolling="no">
 </frameset>
 <body>
