@@ -25,7 +25,7 @@ $l_modules_customerFilter=array(
 	'less_equal'=>'pienempi tai yhtäsuuri (<=)',
 	'mode_all'=>'Kaikilla sisäänkirjautuneilla asiakkailla on pääsyoikeus',
 	'mode_filter'=>'Vain tietyt kriteerit omaavilla asiakkailla on pääsyoikeus',
-	'mode_none'=>'Only not logged in users have access',
+	'mode_none'=>'Only <b>not logged in</b> users have access',
 	'mode_off'=>'Suodatin pois käytöstä (kaikilla vierailijoilla on pääsyoikeus)',
 	'mode_specific'=>'Vain valituilla asiakkailla on pääsyoikeus',
 	'not_contains'=>'does not contain',
