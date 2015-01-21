@@ -105,7 +105,7 @@ $l_alert=array(
 	'no_file_selected'=>'Er is geen bestand gekozen voor upload!',
 	'no_image'=>'Het bestand dat u hebt geselecteerd is geen afbeelding!',
 	'no_perm_to_delete_single_document'=>'You have not the needed permissions to delete the active document.',
-	'no_perms'=>'Neem a.u.b. contact op met de eigenaar (%s) of een admin<br/>als u toegang nodig hebt!',
+	'no_perms'=>'Neem a.u.b. contact op met de eigenaar of een admin<br/>als u toegang nodig hebt!',
 	'no_perms_action'=>'You don`t have the permission to perform this action.',
 	'no_perms_title'=>'Geen toestemming!',
 	

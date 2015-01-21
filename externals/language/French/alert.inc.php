@@ -105,7 +105,7 @@ $l_alert=array(
 	'no_file_selected'=>'Vous n`avez choisi aucun fichier à télécharger!',
 	'no_image'=>'Le fichier choisi n`est pas une graphique!',
 	'no_perm_to_delete_single_document'=>'Vous n`avez pas les droits nécessaires, pour supprimer le document actif.',
-	'no_perms'=>'S`il vous plaît contacter le propriétaire (%s)<br/>ou l`administrateur, si vous nécessiter accès!',
+	'no_perms'=>'S`il vous plaît contacter le propriétaire<br/>ou l`administrateur, si vous nécessiter accès!',
 	'no_perms_action'=>'Vous n`avez pas le droit nécessaires pour effectuer cette action.',
 	'no_perms_title'=>'Non authorisé',
 	

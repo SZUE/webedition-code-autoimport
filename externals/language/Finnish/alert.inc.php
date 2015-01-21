@@ -105,7 +105,7 @@ $l_alert=array(
 	'no_file_selected'=>'Tuontitiedostoa ei ole valittu!',
 	'no_image'=>'Valitsemasi tiedosto ei ole kuva!',
 	'no_perm_to_delete_single_document'=>'Sinulla ei ole tarvittavia oikeuksia dokumentin poistoon.',
-	'no_perms'=>'Ota yhteyttä omistajaan (%s) tai järjestelmänvalvojaan<br/>jos tarvitset oikeuksia!',
+	'no_perms'=>'Ota yhteyttä omistajaan tai järjestelmänvalvojaan<br/>jos tarvitset oikeuksia!',
 	'no_perms_action'=>'Sinulla ei ole oikeuksia suorittaa tätä toimintoa.',
 	'no_perms_title'=>'Pääsy estetty!',
 	

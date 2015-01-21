@@ -105,7 +105,7 @@ $l_alert=array(
 	'no_file_selected'=>'No file has been choosen for upload!',
 	'no_image'=>'The file you have selected is not an image!',
 	'no_perm_to_delete_single_document'=>'You have not the needed permissions to delete the active document.',
-	'no_perms'=>'Please contact the owner (%s) or an administrator<br/>if you need access!',
+	'no_perms'=>'Please contact the owner or an administrator<br/>if you need access!',
 	'no_perms_action'=>'You don`t have the permission to perform this action.',
 	'no_perms_title'=>'Permission denied!',
 	

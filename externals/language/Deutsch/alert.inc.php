@@ -105,7 +105,7 @@ $l_alert=array(
 	'no_file_selected'=>'Sie haben keine Datei zum Hochladen ausgewählt!',
 	'no_image'=>'Bei der ausgewählten Datei handelt es sich nicht um eine Grafik!',
 	'no_perm_to_delete_single_document'=>'Sie verfügen nicht über die benötigten Rechte, um das aktive Dokument zu löschen',
-	'no_perms'=>'Bitte wenden Sie sich an den Eigentümer (%s)<br/>oder einen Administrator, wenn Sie Zugriff benötigen!',
+	'no_perms'=>'Bitte wenden Sie sich an den Eigentümer<br/>oder einen Administrator, wenn Sie Zugriff benötigen!',
 	'no_perms_action'=>'Sie haben keine Berechtigung für diese Aktion.',
 	'no_perms_title'=>'Keine Berechtigung',
 	

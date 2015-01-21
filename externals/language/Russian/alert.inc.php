@@ -105,7 +105,7 @@ $l_alert=array(
 	'no_file_selected'=>'Не выбраны файлы к загрузке!',
 	'no_image'=>'Выбранный Вами файл не относится к графике!',
 	'no_perm_to_delete_single_document'=>'You have not the needed permissions to delete the active document.',
-	'no_perms'=>'Для получения доступа обратитесь, пожалуйста, к владельцу лицензии (%s)<br/> или к администратору! <br/>',
+	'no_perms'=>'Для получения доступа обратитесь, пожалуйста, к владельцу лицензии<br/> или к администратору! <br/>',
 	'no_perms_action'=>'You don`t have the permission to perform this action.',
 	'no_perms_title'=>'Нет полномочий!',
 	

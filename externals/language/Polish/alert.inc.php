@@ -105,7 +105,7 @@ $l_alert=array(
 	'no_file_selected'=>'Nie wybrano plików do załadowania!',
 	'no_image'=>'Wybrany plik nie jest obrazkiem!',
 	'no_perm_to_delete_single_document'=>'You have not the needed permissions to delete the active document.',
-	'no_perms'=>'Jeżeli potrzebujesz praw dostępu, zwróć się do właściciela (%s)<br/>lub administratora!',
+	'no_perms'=>'Jeżeli potrzebujesz praw dostępu, zwróć się do właściciela<br/>lub administratora!',
 	'no_perms_action'=>'You don`t have the permission to perform this action.',
 	'no_perms_title'=>'Brak uprawnień',
 	
