@@ -174,13 +174,11 @@ var sess_id = "<?php echo session_id(); ?>";
 var specialUnload =<?php echo intval(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())); ?>;
 var docuLang = "<?php echo ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'); ?>";
 var wePerms = {
-	"ADMINISTRATOR": <?php echo permissionhandler::hasPerm("ADMINISTRATOR") ? 1 : 0; ?>,
-	"DELETE_DOCUMENT": <?php echo permissionhandler::hasPerm("DELETE_DOCUMENT") ? 1 : 0; ?>,
-	"DELETE_TEMPLATE": <?php echo permissionhandler::hasPerm("DELETE_TEMPLATE") ? 1 : 0; ?>,
-	"DELETE_OBJECT": <?php echo permissionhandler::hasPerm("DELETE_OBJECT") ? 1 : 0; ?>,
-	"DELETE_OBJECTFILE": <?php echo permissionhandler::hasPerm("DELETE_OBJECTFILE") ? 1 : 0; ?>,
-	"DELETE_DOC_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_DOC_FOLDER") ? 1 : 0; ?>,
-	"DELETE_TEMP_FOLDER": <?php echo permissionhandler::hasPerm("DELETE_TEMP_FOLDER") ? 1 : 0; ?>
+<?php
+foreach($_SESSION['perms'] as $perm => $access){
+	echo '"' . $perm . '":' . ($_SESSION['perms']['ADMINISTRATOR'] ? 1 : intval($access)) . ',';
+}
+?>
 };
 var g_l = {
 	'unable_to_call_setpagenr': "<?php echo g_l('global', '[unable_to_call_setpagenr]'); ?>",
@@ -301,30 +299,30 @@ foreach($jsCmd as $cur){
 <script type="text/javascript"><!--
 top.weSidebar = weSidebar;
 	function we_cmd() {
-		var url = "/webEdition/we_cmd.php?";
-		for (var i = 0; i < arguments.length; i++) {
-			url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
-			if (i < (arguments.length - 1))
-				url += "&";
-		}
+	var url = "/webEdition/we_cmd.php?";
+					for (var i = 0; i < arguments.length; i++) {
+	url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
+					if (i < (arguments.length - 1))
+					url += "&";
+	}
 
-		/*if (window.screen) {
-		 h = ((screen.height - 100) > screen.availHeight) ? screen.height - 100 : screen.availHeight;
-		 w = screen.availWidth;
-		 }*/
+	/*if (window.screen) {
+	 h = ((screen.height - 100) > screen.availHeight) ? screen.height - 100 : screen.availHeight;
+	 w = screen.availWidth;
+	 }*/
 
-		//	When coming from a we_cmd, always mark the document as opened with we !!!!
-		if (top.weEditorFrameController && top.weEditorFrameController.getActiveDocumentReference) {
-			try {
-				var _string = ',edit_document,new_document,open_extern_document,edit_document_with_parameters,new_folder,edit_folder';
-				if (_string.indexOf("," + arguments[0] + ",") === -1) {
-					top.weEditorFrameController.getActiveDocumentReference().openedWithWE = true;
-				}
-			} catch (exp) {
+	//	When coming from a we_cmd, always mark the document as opened with we !!!!
+	if (top.weEditorFrameController && top.weEditorFrameController.getActiveDocumentReference) {
+	try {
+	var _string = ',edit_document,new_document,open_extern_document,edit_document_with_parameters,new_folder,edit_folder';
+					if (_string.indexOf("," + arguments[0] + ",") === - 1) {
+	top.weEditorFrameController.getActiveDocumentReference().openedWithWE = true;
+	}
+	} catch (exp) {
 
-			}
-		}
-		switch (arguments[0]) {
+	}
+	}
+	switch (arguments[0]) {
 <?php
 // deal with not activated modules
 $diff = array_diff(array_keys(we_base_moduleInfo::getAllModules()), $GLOBALS['_we_active_integrated_modules']);
@@ -337,22 +335,22 @@ if($diff){
 		break;';
 }
 ?>
-			case "exit_doc_question":
-				// return !! important for multiEditor
-				return new jsWindow(url, "exit_doc_question", -1, -1, 380, 130, true, false, true);
-			case "eplugin_exit_doc" :
-				if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
-					if (top.plugin.isInEditor(arguments[1])) {
-						return confirm(g_l.eplugin_exit_doc);
-					}
-				}
-				return true;
-			case "editor_plugin_doc_count":
-				if (top.plugin.document.WePlugin !== undefined) {
-					return top.plugin.getDocCount();
-				}
-				return 0;
-			default:
+	case "exit_doc_question":
+					// return !! important for multiEditor
+					return new jsWindow(url, "exit_doc_question", - 1, - 1, 380, 130, true, false, true);
+					case "eplugin_exit_doc" :
+					if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
+	if (top.plugin.isInEditor(arguments[1])) {
+	return confirm(g_l.eplugin_exit_doc);
+	}
+	}
+	return true;
+					case "editor_plugin_doc_count":
+					if (top.plugin.document.WePlugin !== undefined) {
+	return top.plugin.getDocCount();
+	}
+	return 0;
+					default:
 <?php
 $jsmods = array_keys($jsCmd);
 $jsmods[] = 'base';
@@ -361,18 +359,18 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 	echo 'if(we_cmd_' . $mod . '(arguments,url)){break;}';
 }
 ?>
-				if ((nextWindow = top.weEditorFrameController.getFreeWindow())) {
-					_nextContent = nextWindow.getDocumentReference();
+	if ((nextWindow = top.weEditorFrameController.getFreeWindow())) {
+	_nextContent = nextWindow.getDocumentReference();
 					we_repl(_nextContent, url, arguments[0]);
 					// activate tab
 					top.weMultiTabs.addTab(nextWindow.getFrameId(), ' &hellip; ', ' &hellip; ');
 					// set Window Active and show it
 					top.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
 					top.weEditorFrameController.toggleFrames();
-				} else {
-					top.showMessage(g_l.no_editor_left, WE_MESSAGE_INFO, window);
-				}
-		}
+	} else {
+	top.showMessage(g_l.no_editor_left, WE_MESSAGE_INFO, window);
+	}
+	}
 
 	}
 //-->

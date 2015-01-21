@@ -20,32 +20,69 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_users(args,url) {
+
+function we_cmd_users(args, url) {
 	switch (args[0]) {
 		case "browse_users":
-			new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
+			if (hasPerm(NEW_USER) || hasPerm(NEW_GROUP) || hasPerm(SAVE_USER) || hasPerm(SAVE_GROUP) || hasPerm(DELETE_USER) || hasPerm(DELETE_GROUP)) {
+				new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
+			} else {
+				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+			}
 			break;
 		case "users_edit":
 		case "users_edit_ifthere":
-			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+			if (hasPerm(NEW_USER) || hasPerm(NEW_GROUP) || hasPerm(SAVE_USER) || hasPerm(SAVE_GROUP) || hasPerm(DELETE_USER) || hasPerm(DELETE_GROUP)) {
+				new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+			} else {
+				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+			}
 			break;
 		case "new_user":
-		case "save_user":
-		case "new_group":
-		case "new_alias":
-		case "exit_users":
-		case "delete_user":
-		case "new_organization":
-			var fo = false;
-			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo)
-						break;
-				}
-				if (wind)
-					wind.focus();
+		if(hasPerm(NEW_USER)){
+			showNewWindow(args);
+		}else{
+				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
 			}
+			break;
+		case "save_user":
+		if(hasPerm(SAVE_USER)){
+			showNewWindow(args);
+		}else{
+				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+			}
+			break;
+		case "new_group":
+		if(hasPerm(NEW_GROUP)){
+			showNewWindow(args);
+		}else{
+				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+			}
+			break;
+		case "new_alias":
+		if(hasPerm(NEW_USER)){
+			showNewWindow(args);
+		}else{
+				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+			}
+			break;
+		case "exit_users":
+			showNewWindow(args);
+			break;
+		case "delete_user":
+		if(hasPerm(DELETE_USER)){
+			showNewWindow(args);
+		}else{
+				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+			}
+			break;
+		case "new_organization":
+		if(hasPerm(NEW_USER)){
+			showNewWindow(args);
+		}else{
+				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+			}
+			break;
 			break;
 		case "doctypes":
 			new jsWindow(url, "doctypes", -1, -1, 720, 670, true, true, true);
@@ -77,4 +114,18 @@ function we_cmd_users(args,url) {
 			return false;
 	}
 	return true;
+}
+
+function showNewWindow(args) {
+	var fo = false;
+	if (jsWindow_count) {
+		for (var k = jsWindow_count - 1; k > -1; k--) {
+			eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
+			if (fo)
+				break;
+		}
+		if (wind)
+			wind.focus();
+	}
+
 }
