@@ -95,6 +95,7 @@ color:black;
 .panel_wrapper{
 background-color: transparent;
 border: none;
+overflow:auto;
 }
 
 label{
