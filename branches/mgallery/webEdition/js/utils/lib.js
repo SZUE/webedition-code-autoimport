@@ -42,12 +42,16 @@ function sprintf() {
 
 		var replace = arguments[iterator];
 
-		if (type == "d"){
+		if (type == "d") {
 			replace = parseInt(param) ? parseInt(param) : 0;
-		}else if (type == "s"){
+		} else if (type == "s") {
 			replace = arguments[iterator];
 		}
 		argum = left + replace + right;
 	}
 	return argum;
+}
+
+function hasPerm(perm) {
+	return (wePerm.ADMINISTRATOR || wePerm[perm] ? true : false);
 }
