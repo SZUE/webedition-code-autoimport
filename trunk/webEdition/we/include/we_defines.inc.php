@@ -130,5 +130,4 @@ if(!isset($GLOBALS['WE_BACKENDCHARSET'])){
 	$GLOBALS['WE_BACKENDCHARSET'] = WE_BACKENDCHARSET;
 }
 
-include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
 
