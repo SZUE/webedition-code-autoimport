@@ -33,7 +33,7 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 var g_l={
 "no_java":"' . g_l('eplugin', '[no_java]') . '"
 };
-var callBack="' . $_callback . '";
+var callBack=\'' . $_callback . '\';
 			') .
 		we_html_element::jsScript(JS_DIR . 'weplugin.js')
 	) .

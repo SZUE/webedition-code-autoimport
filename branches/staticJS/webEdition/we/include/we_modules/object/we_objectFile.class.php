@@ -738,7 +738,7 @@ class we_objectFile extends we_document{
 		return 0;
 	}
 
-	function getFieldHTML($name, $type, $attribs, $editable = true, $variant = false){
+	function getFieldHTML($name, $type, array $attribs, $editable = true, $variant = false){
 		switch($type){
 			case self::TYPE_INPUT:
 				return $this->getInputFieldHTML($type, $name, $attribs, $editable, $variant);
@@ -834,12 +834,12 @@ class we_objectFile extends we_document{
 			}
 
 			if($asString){
-				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : ''), $editable);
+				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : array()), $editable);
 				if($c2){
 					$c .= $c2 . we_html_element::htmlBr() . we_html_tools::getPixel(2, 5) . we_html_element::htmlBr();
 				}
 			} else {
-				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : ''), $editable);
+				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : array()), $editable);
 				$parts[] = array(
 					'headline' => '',
 					'html' => $c2,
@@ -859,8 +859,8 @@ class we_objectFile extends we_document{
 				) . '</div>';
 	}
 
-	private function getMetaFieldHTML($name, $attribs, $editable = true, $variant = false){
-		$vals = ($variant ? $attribs['meta'] : $this->DefArray['meta_' . $name]['meta']);
+	private function getMetaFieldHTML($type, $name, array $attribs, $editable = true, $variant = false){
+		$vals = ($variant ? $attribs['meta'] : $this->DefArray['meta_' . $name]);
 		$element = $this->getElement($name);
 		if(!$editable){
 			return $this->getPreviewView($name, isset($vals[$element]) ? $vals[$element] : '');
@@ -870,7 +870,7 @@ class we_objectFile extends we_document{
 						$this->formSelectFromArray('meta', $name, $vals, '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["meta_" . $name]["required"] ? '*' : '') . '</span>' . ( isset($this->DefArray["meta_$name"]['editdescription']) && $this->DefArray["meta_$name"]['editdescription'] ? self::formatDescription($this->DefArray["meta_$name"]['editdescription']) : we_html_element::htmlBr()), 1, false, array('onchange' => '_EditorFrame.setEditorIsHot(true);')));
 	}
 
-	private function getObjectFieldHTML($type, $ObjectID, $attribs, $editable = true){
+	private function getObjectFieldHTML($type, $ObjectID, array $attribs, $editable = true){
 		$db = new DB_WE();
 		//FIXME: this is bad matching text instead of id's
 		$foo = getHash('SELECT o.Text,of.ID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.ID=of.TableID WHERE of.Path=o.Path AND of.IsFolder=1 AND of.ParentID=0 AND of.IsClassFolder=1 AND o.ID=' . intval($ObjectID), $db);
@@ -959,7 +959,7 @@ class we_objectFile extends we_document{
 				$objectpreview;
 	}
 
-	private function getMultiObjectFieldHTML($type, $name, $attribs, $editable = true){
+	private function getMultiObjectFieldHTML($type, $name, array $attribs, $editable = true){
 		$temp = unserialize($this->getElement($name, 'dat'));
 		$objects = isset($temp['objects']) ? $temp['objects'] : array();
 		$max = intval($this->DefArray[self::TYPE_MULTIOBJECT . '_' . $name]['max']);
@@ -1104,7 +1104,7 @@ class we_objectFile extends we_document{
 		return $content;
 	}
 
-	private function getShopVatFieldHtml($type, $name, $attribs, $we_editmode = true){
+	private function getShopVatFieldHtml($type, $name, array $attribs, $we_editmode = true){
 		if($we_editmode){
 
 			$shopVats = we_shop_vats::getAllShopVATs();
@@ -1131,7 +1131,7 @@ class we_objectFile extends we_document{
 		return $this->getPreviewView($name, $weShopVat->vat);
 	}
 
-	private function getShopCategoryFieldHtml($type, $name, $attribs, $we_editmode = true){
+	private function getShopCategoryFieldHtml($type, $name, array $attribs, $we_editmode = true){
 		if($we_editmode){
 			$values = array();
 
@@ -1155,7 +1155,7 @@ class we_objectFile extends we_document{
 		return $this->getPreviewView($name, $val);
 	}
 
-	private function getHrefFieldHTML($type, $n, $attribs, $we_editmode = true, $variant = false){
+	private function getHrefFieldHTML($type, $n, array $attribs, $we_editmode = true, $variant = false){
 		$hrefArr = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
 		if(!is_array($hrefArr)){
 			$hrefArr = array();
@@ -1236,7 +1236,7 @@ class we_objectFile extends we_document{
 </tr>';
 	}
 
-	private function htmlLinkInput($type, $n, $attribs, $we_editmode = true, $headline = true){
+	private function htmlLinkInput($type, $n, array $attribs, $we_editmode = true, $headline = true){
 		$attribs["name"] = $n;
 		$link = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
 		$link = $link ? : array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', '[new_link]'));
@@ -1360,7 +1360,7 @@ class we_objectFile extends we_document{
 				) . $languageselect->getHtml();
 	}
 
-	private function getCheckboxFieldHTML($type, $name, $attribs, $editable = true){
+	private function getCheckboxFieldHTML($type, $name, array $attribs, $editable = true){
 		if(!$editable){
 			return $this->getPreviewView($name, g_l('global', ($this->getElement($name) ? '[yes]' : '[no]')));
 		}
@@ -1368,7 +1368,7 @@ class we_objectFile extends we_document{
 				we_html_forms::checkboxWithHidden(($this->getElement($name) ? true : false), "we_" . $this->Name . "_checkbox[$name]", "", false, "defaultfont", "_EditorFrame.setEditorIsHot(true);");
 	}
 
-	private function getIntFieldHTML($type, $name, $attribs, $editable = true, $variant = false){
+	private function getIntFieldHTML($type, $name, array $attribs, $editable = true, $variant = false){
 		if(!$editable){
 			return $this->getPreviewView($name, (strlen($this->getElement($name)) ? $this->getElement($name) : ''));
 		}
@@ -1377,7 +1377,7 @@ class we_objectFile extends we_document{
 			$this->htmlTextInput("we_" . $this->Name . "_int[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'weType="' . $type . '" onchange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 	}
 
-	private function getFloatFieldHTML($type, $name, $attribs, $editable = true, $variant = false){
+	private function getFloatFieldHTML($type, $name, array $attribs, $editable = true, $variant = false){
 		if(!$editable){
 			return $this->getPreviewView($name, $this->getElement($name));
 		}
@@ -1389,7 +1389,7 @@ class we_objectFile extends we_document{
 				$this->htmlTextInput("we_" . $this->Name . "_float[$name]", 40, strlen($this->getElement($name)) ? $this->getElement($name) : "", $this->getElement($name, "len"), 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 	}
 
-	private function getDateFieldHTML($type, $name, $attribs, $editable = true, $variant = false){
+	private function getDateFieldHTML($type, $name, array $attribs, $editable = true, $variant = false){
 		if(!$editable){
 			return $this->getPreviewView($name, date(g_l('date', '[format][default]'), abs($this->getElement($name))));
 		}
@@ -1401,7 +1401,7 @@ class we_objectFile extends we_document{
 				we_html_tools::getDateInput2("we_" . $this->Name . '_date[' . $name . ']', ($d ? : time()), true);
 	}
 
-	private function getTextareaHTML($type, $name, $attribs, $editable = true, $variant = false){
+	private function getTextareaHTML($type, $name, array $attribs, $editable = true, $variant = false){
 		if(!$editable){
 			return $this->getPreviewView($name, $this->getFieldByVal($this->getElement($name), "txt", $attribs));
 		}
@@ -1433,7 +1433,7 @@ class we_objectFile extends we_document{
 				) . $textarea;
 	}
 
-	private function getImageHTML($type, $name, $attribs, $editable = true, $variant = false){
+	private function getImageHTML($type, $name, array $attribs, $editable = true, $variant = false){
 		$img = new we_imageDocument();
 		$id = $this->getElement($name);
 		if(!id_to_path($id)){
@@ -1488,7 +1488,7 @@ class we_objectFile extends we_document{
 					we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();")));
 	}
 
-	private function getBinaryHTML($type, $name, $attribs, $editable = true){
+	private function getBinaryHTML($type, $name, array $attribs, $editable = true){
 		$img = new we_otherDocument();
 		$id = $this->getElement($name);
 		$img->initByID($id, FILE_TABLE, false);
@@ -1508,7 +1508,7 @@ class we_objectFile extends we_document{
 		return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["binary_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["binary_$name"]['editdescription']) && $this->DefArray["binary_$name"]['editdescription'] ? self::formatDescription($this->DefArray["binary_$name"]['editdescription']) : we_html_element::htmlBr()) . $content;
 	}
 
-	private function getFlashmovieHTML($type, $name, $attribs, $editable = true){
+	private function getFlashmovieHTML($type, $name, array $attribs, $editable = true){
 		$img = new we_flashDocument();
 		$id = $this->getElement($name);
 		$img->initByID($id, FILE_TABLE, false);
@@ -1527,7 +1527,7 @@ class we_objectFile extends we_document{
 		return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["flashmovie_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["flashmovie_$name"]['editdescription']) && $this->DefArray["flashmovie_$name"]['editdescription'] ? self::formatDescription( $this->DefArray["flashmovie_$name"]['editdescription'])  : we_html_element::htmlBr()) . $content;
 	}
 
-	private function getQuicktimeHTML($type, $name, $attribs, $editable = true){
+	private function getQuicktimeHTML($type, $name, array $attribs, $editable = true){
 		$img = new we_quicktimeDocument();
 		$id = $this->getElement($name);
 		$img->initByID($id, FILE_TABLE, false);
@@ -2434,7 +2434,7 @@ class we_objectFile extends we_document{
 		$wasPublished = $this->Published > 0;
 		$this->oldCategory = f('SELECT Category FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
 
-		if($saveinMainDB && !we_root::we_save(1)){
+		if($saveinMainDB && !we_root::we_save()){
 			return false;
 		}
 		if($DoNotMark == false){
