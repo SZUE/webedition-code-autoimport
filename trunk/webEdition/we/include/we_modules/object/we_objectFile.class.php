@@ -2437,7 +2437,7 @@ class we_objectFile extends we_document{
 		$wasPublished = $this->Published > 0;
 		$this->oldCategory = f('SELECT Category FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
 
-		if($saveinMainDB && !we_root::we_save(1)){
+		if($saveinMainDB && !we_root::we_save()){
 			return false;
 		}
 		if($DoNotMark == false){
