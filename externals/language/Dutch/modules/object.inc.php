@@ -29,6 +29,11 @@ $l_modules_object=array(
 	'img_field'=>'Afbeelding',
 	'incObject_sameFieldname'=>'The included object has identical field names: . These are not displayed in listviews or in we:object.',
 	'input_field'=>'Tekst invoer',
+	
+	'int'=>array(
+		'signed'=>'all numbers',
+		'unsigned'=>'only positive numbers',
+	),
 	'int_field'=>'Integer',
 	'language_field'=>'Language',
 	'length'=>'Lengte',

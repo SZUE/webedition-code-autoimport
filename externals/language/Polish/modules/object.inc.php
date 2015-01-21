@@ -29,6 +29,11 @@ $l_modules_object=array(
 	'img_field'=>'Grafika',
 	'incObject_sameFieldname'=>'The included object has identical field names: . These are not displayed in listviews or in we:object.',
 	'input_field'=>'Pole wpisu tekstu',
+	
+	'int'=>array(
+		'signed'=>'all numbers',
+		'unsigned'=>'only positive numbers',
+	),
 	'int_field'=>'Caďż˝kowita',
 	'language_field'=>'Language',
 	'length'=>'Dďż˝ugoďż˝ďż˝',

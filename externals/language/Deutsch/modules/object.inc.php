@@ -29,6 +29,11 @@ $l_modules_object=array(
 	'img_field'=>'Grafik',
 	'incObject_sameFieldname'=>'Die inkludierte Klasse hat identischen Feldnamen: %s. Diese werden in Listviews und we:object nicht angezeigt.',
 	'input_field'=>'Textinput',
+	
+	'int'=>array(
+		'signed'=>'mit Vorzeichen',
+		'unsigned'=>'ohne Vorzeichen',
+	),
 	'int_field'=>'Ganzzahl (Integer)',
 	'language_field'=>'Sprache',
 	'length'=>'Länge',
