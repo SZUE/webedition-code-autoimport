@@ -14,37 +14,51 @@ tinyMCEPopup.resizeToInnerSize = function(){
 	var a = this;
 	var ratio_h = a.dom.getAttrib(document.body,"role") == "application" ? 4/6 : 1;
 	var ratio_w = typeof(isWeDialog)==="undefined" ? 4/5 : 1;
+
+	if((a.dom.getAttrib(document.body,"id") === "table")){
+		document.getElementById("advanced_panel").style.height = "auto";
+		ratio_h = 6/7;
+
+		//TODO: move the following style-fixes to css 
+		var elem = document.getElementById("insert").parentNode;
+		elem.style.float = "";
+		elem.style.marginRight = "-8px";
+		elem = document.getElementById("cancel").parentNode;
+		elem.style.float = "";
+		elem.style.marginRight = 0;
+	}
+
 	var a=this;
 	setTimeout(function(){
 		var b=a.dom.getViewPort(window);
 		a.editor.windowManager.resizeBy(a.getWindowArg("mce_width")-(b.w*ratio_w),a.getWindowArg("mce_height")-(b.h*ratio_h),a.id||window)
 	},10);
 
-	if(!tinymce.isIE && typeof(top.isWeDialog)==="undefined"
-			&& (typeof(a.dom.getAttrib(document.body,"role")) == "undefined" || a.dom.getAttrib(document.body,"role") != "application")){
+	if(!tinymce.isIE && typeof(top.isWeDialog) === "undefined"
+			&& (typeof(a.dom.getAttrib(document.body,"role")) === "undefined" || a.dom.getAttrib(document.body,"role") !== "application")){
 		a.dom.addClass(document.body,"useWeFooter");
 	}
 
 	//tinyMCEPopup.onclose does not work, so we set attribute onbeforeunload (does not work in Opera)
-	if((a.dom.getAttrib(document.body,"id") == "table" || a.dom.getAttrib(document.body,"id") == "styleprops"
-			|| a.dom.getAttrib(document.body,"id") == "tablecell" || a.dom.getAttrib(document.body,"id") == "tablerow")
-			&& top.opener != "undefined"){
+	if((a.dom.getAttrib(document.body,"id") === "table" || a.dom.getAttrib(document.body,"id") === "styleprops"
+			|| a.dom.getAttrib(document.body,"id") === "tablecell" || a.dom.getAttrib(document.body,"id") === "tablerow")
+			&& top.opener !== "undefined"){
 		a.dom.setAttrib(document.body,"onbeforeunload","top.opener.tinyMCECallRegisterDialog({},'unregisterSecondaryDialog')");
 	}
-}
+};
 
 // tinyMCEPopup.onclose does not work and onbeforeunload does not work on Opera, so we overwrite tinyMCEPopup.close
 tinyMCEPopup.tmpClose = tinyMCEPopup.close;
 tinyMCEPopup.close = function(){
 	var action = "unregisterSecondaryDialog";
 	try{
-		var action = t.document.body.id == "weFullscreenDialog" ? "unregisterDialog" : action;
+		var action = t.document.body.id === "weFullscreenDialog" ? "unregisterDialog" : action;
 	} catch(err){}
 	try{
 		top.opener.tinyMCECallRegisterDialog({},action);
 	} catch(err){}
 	tinyMCEPopup.tmpClose();
-}
+};
 
 // onInit register Dialog we-popup-managment
 tinyMCEPopup.onInit.add(function(){
@@ -63,7 +77,7 @@ tinyMCEPopup.onInit.add(function(){
 			action = "registerSecondaryDialog";
 			break;
 		case("weFullscreenDialog"):
-			action = "registerFullscreenDialog"
+			action = "registerFullscreenDialog";
 			break;
 		case("weDialogInnerFrame"):
 			action = "skip";

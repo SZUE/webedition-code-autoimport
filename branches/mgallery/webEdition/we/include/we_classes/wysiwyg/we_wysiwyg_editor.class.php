@@ -645,7 +645,7 @@ class we_wysiwyg_editor{
 			'increasecolspan' => 'merge_cells',
 			'indent' => 'indent',
 			'insertbreak' => 'weinsertbreak',
-			'insertcolumnleft' => 'col_before ',
+			'insertcolumnleft' => 'col_before',
 			'insertcolumnright' => 'col_after',
 			'inserthorizontalrule' => 'advhr',
 			'insertimage' => 'weimage',
