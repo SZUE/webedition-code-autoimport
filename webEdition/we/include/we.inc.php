@@ -125,6 +125,8 @@ if(isset($_SESSION['prefs']['Language']) && !empty($_SESSION['prefs']['Language'
 	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
 }
 
+include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
+
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 	$GLOBALS['WE_BACKENDCHARSET'] = (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] ?
 			$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
