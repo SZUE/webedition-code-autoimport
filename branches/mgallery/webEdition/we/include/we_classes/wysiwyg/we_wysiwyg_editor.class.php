@@ -970,7 +970,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 					case 79:
 					case 82:
 						//set keyCode = -1 to just let WE-keyListener cancel event 
-						event.keyCode = -1;
+						e.keyCode = -1;
 					case 83:
 						e.stopPropagation();
 						e.preventDefault();
