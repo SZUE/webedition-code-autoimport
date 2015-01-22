@@ -996,8 +996,26 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	*/
 
 	setup : function(ed){
-
 		ed.settings.language = "' . array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) . '";
+
+		ed.onKeyDown.add(function(ed, e){
+			if(e.ctrlKey || e.metaKey){
+				switch(e.keyCode){
+					case 68:
+					case 79:
+					case 82:
+						//set keyCode = -1 to just let WE-keyListener cancel event 
+						e.keyCode = -1;
+					case 83:
+						e.stopPropagation();
+						e.preventDefault();
+						top.dealWithKeyboardShortCut(e);
+						return false;
+					default:
+						//let tiny do it\'s job
+				}
+			}
+		});
 
 		ed.onInit.add(function(ed, o){
 			//TODO: clean up the mess in here!
