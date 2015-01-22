@@ -144,6 +144,7 @@ $l_cockpit=array(
 		'headline'=>'Shop Dashboard',
 		'kpi'=>'Kennzahlen',
 		'order_value_order'=>'Bestellwert/Bestellung',
+		'order_volume'=>'Bestellvolumen',
 		'payed'=>'Davon bezahlt',
 		'revenue'=>'Umsatz',
 		'revenue_order'=>'Umsatz je Bestellung',
