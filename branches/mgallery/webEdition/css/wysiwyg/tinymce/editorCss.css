@@ -29,7 +29,7 @@
 .o2k7Skin table.mceToolbar {margin-left:3px}
 .o2k7Skin .mceToolbar .mceToolbarStart span {display:block; background:url(/webEdition/lib/additional/tinymce/themes/advanced/skins/o2k7/img/button_bg_silver.png) -22px 0; width:1px; height:22px; margin-left:3px;}
 .o2k7Skin .mceToolbar td.mceFirst span {margin:0}
-.o2k7Skin .mceToolbar .mceToolbarEnd span {display:block; background:url(/webEdition/lib/additional/tinymce/themes/advanced/skins/o2k7/img/button_bg.png) -22px 0; width:1px; height:22px}
+.o2k7Skin .mceToolbar .mceToolbarEnd span {display:block; background:url(/webEdition/lib/additional/tinymce/themes/advanced/skins/o2k7/img/button_bg_silver.png) -22px 0; width:1px; height:22px}
 .o2k7Skin .mceToolbar .mceToolbarEndListBox span, .o2k7Skin .mceToolbar .mceToolbarStartListBox span {display:none}
 .o2k7Skin span.mceIcon, .o2k7Skin img.mceIcon {display:block; width:20px; height:20px}
 .o2k7Skin .mceIcon {background:url(/webEdition/lib/additional/tinymce/themes/advanced/img/icons.gif) no-repeat 20px 20px}
@@ -71,7 +71,7 @@
 .o2k7Skin .mceSplitButton span.mceAction {width:22px; background-image:url(/webEdition/lib/additional/tinymce/themes/advanced/img/icons.gif)}
 .o2k7Skin .mceSplitButton a.mceOpen {width:10px; background:url(/webEdition/lib/additional/tinymce/themes/advanced/skins/o2k7/img/button_bg_silver.png) -44px 0}
 .o2k7Skin .mceSplitButton span.mceOpen {display:none}
-.o2k7Skin table.mceSplitButtonEnabled:hover a.mceAction, .o2k7Skin .mceSplitButtonHover a.mceAction, .o2k7Skin .mceSplitButtonSelected {background:url(img/button_bg.png) 0 -22px}
+.o2k7Skin table.mceSplitButtonEnabled:hover a.mceAction, .o2k7Skin .mceSplitButtonHover a.mceAction, .o2k7Skin .mceSplitButtonSelected {background:url(/webEdition/lib/additional/tinymce/themes/advanced/skins/o2k7/img/button_bg_silver.png) 0 -22px}
 .o2k7Skin table.mceSplitButtonEnabled:hover a.mceOpen, .o2k7Skin .mceSplitButtonHover a.mceOpen, .o2k7Skin .mceSplitButtonSelected a.mceOpen {background-position:-44px -44px}
 .o2k7Skin .mceSplitButtonDisabled .mceAction {opacity:0.3; -ms-filter:'alpha(opacity=30)'; filter:alpha(opacity=30)}
 .o2k7Skin .mceSplitButtonActive {background-position:0 -44px}

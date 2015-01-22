@@ -388,11 +388,13 @@ function dealWithKeyboardShortCut(evt) {
 	// This function receives all events, when a key is pressed and forwards the event to
 	// the first keyboardlistener ("chain of responsibility")
 	switch (evt.keyCode) {
+		case -1: 
+			keyListener.cancelEvent(evt);
+			return true; 
 		case 27: // ESCAPE
 		case 13: // ENTER
 		case 116: // F5 - works only in FF
 			return keyListener.dealEvent(evt);
-
 		case 45://ins
 		case 46://del
 			return true;

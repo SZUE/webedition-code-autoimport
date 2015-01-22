@@ -961,8 +961,26 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	*/
 
 	setup : function(ed){
-
 		ed.settings.language = "' . array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) . '";
+
+		ed.onKeyDown.add(function(ed, e){
+			if(e.ctrlKey || e.metaKey){
+				switch(e.keyCode){
+					case 68:
+					case 79:
+					case 82:
+						//set keyCode = -1 to just let WE-keyListener cancel event 
+						event.keyCode = -1;
+					case 83:
+						e.stopPropagation();
+						e.preventDefault();
+						top.dealWithKeyboardShortCut(e);
+						return false;
+					default:
+						//let tiny do it\'s job
+				}
+			}
+		});
 
 		ed.onInit.add(function(ed, o){
 			//TODO: clean up the mess in here!
@@ -984,7 +1002,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				hasOpener = opener ? true : false;
 			} catch(e){}
 
-			if(we_tinyMCE_' . $this->fieldName_clean . '_init !== undefined){
+			if(typeof we_tinyMCE_' . $this->fieldName_clean . '_init !== "undefined"){
 				try{
 					we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
 				} catch(e){
@@ -1148,9 +1166,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	}
 }
 tinyMCE.addI18n(tinyMceTranslationObject);
-console.log(tinyMCE);
-var TmpFn = tinyMCE.PluginManager.load;
 
+var TmpFn = tinyMCE.PluginManager.load;
 tinyMCE.PluginManager.load = function(n, u, cb, s) {
 			var t = this, url = u;
 			function loadDependencies() {
