@@ -47,7 +47,7 @@ var ImageDialog = {
 		var fl = tinyMCEPopup.getParam('external_image_list', 'tinyMCEImageList');
 		tinyMCEPopup.resizeToInnerSize();
 		TinyMCE_EditableSelects.init();
-		this.addClassesToList('we_dialog_args[class]', 'advlink_styles');
+		this.addClassesToList('we_dialog_args[cssclass]', 'advlink_styles');
 
 		if(n.nodeName == 'IMG' && !ed.isWeDataInitialized){
 			var imgWidth, imgHeight, longdesc, src_arr;
@@ -67,7 +67,7 @@ var ImageDialog = {
 			longdesc = dom.getAttrib(n, 'longdesc');
 			nl["we_dialog_args[longdescsrc]"].value = longdesc.split('?id=',2)[1] ? longdesc.split('?id=',2)[0] : '';
 			nl["we_dialog_args[longdescid]"].value = longdesc.split('?id=',2)[1] ? longdesc.split('?id=',2)[1] : '';
-			this.selectOptionByValue(f, "we_dialog_args[class]", dom.getAttrib(n, 'class'));
+			this.selectOptionByValue(f, "we_dialog_args[cssclass]", dom.getAttrib(n, 'class'));
 
 			// parse and insert src
 			/*
@@ -116,7 +116,7 @@ var ImageDialog = {
 			var cl = '';
 			for(var i=0; i < ed.settings.theme_advanced_styles.split(/;/).length; i++){
 				cl = ed.settings.theme_advanced_styles.split(/;/)[i].split(/=/)[0];
-				nl["we_dialog_args[class]"].options[nl["we_dialog_args[class]"].length] = new Option('.' + cl, cl);
+				nl["we_dialog_args[cssclass]"].options[nl["we_dialog_args[cssclass]"].length] = new Option('.' + cl, cl);
 			}
 		}
 		*/
@@ -155,7 +155,7 @@ var ImageDialog = {
 	},
 */
 	selectOptionByValue : function(form, selName, val){
-		if(typeof(form)=='undefined' || typeof(form.elements[selName]) == 'undefined' && typeof(val) == 'undefined'){
+		if(typeof(form) === 'undefined' || typeof(form.elements[selName]) === 'undefined' && typeof(val) === 'undefined'){
 			return;
 		}
 

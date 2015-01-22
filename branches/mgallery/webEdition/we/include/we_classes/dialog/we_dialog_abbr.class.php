@@ -42,7 +42,7 @@ class we_dialog_abbr extends we_dialog_base{
 	function defaultInit(){
 		$this->args["title"] = "";
 		$this->args["lang"] = "";
-		$this->args["class"] = "";
+		$this->args["cssclass"] = "";
 		$this->args["style"] = "";
 	}
 

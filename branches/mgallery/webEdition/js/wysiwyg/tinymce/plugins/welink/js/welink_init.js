@@ -29,7 +29,7 @@ function init() {
 	if(elm != null && elm.nodeName == "A"){
 		action = "update";
 	}
-	addClassesToList('we_dialog_args[class]', 'advlink_styles');
+	addClassesToList('we_dialog_args[cssclass]', 'advlink_styles');
 
 	if(action == "update" && inst.isWeLinkInitialized === false && formObj){
 		inst.isWeLinkInitialized = true;
@@ -48,7 +48,7 @@ function init() {
 		formObj.elements['we_dialog_args[rev]'].value = inst.dom.getAttrib(elm, 'rev');
 		formObj.elements['we_dialog_args[accesskey]'].value = inst.dom.getAttrib(elm, 'accesskey', typeof(elm.accesskey) != "undefined" ? elm.accesskey : "");
 		formObj.elements['we_dialog_args[tabindex]'].value = inst.dom.getAttrib(elm, 'tabindex', typeof(elm.tabindex) != "undefined" ? elm.tabindex : "");
-		this.selectOptionByValue(formObj, "we_dialog_args[class]", inst.dom.getAttrib(elm, 'class'));
+		this.selectOptionByValue(formObj, "we_dialog_args[cssclass]", inst.dom.getAttrib(elm, 'class'));
 
 		/*
 		// analyse linktype, enter link-data and reload
@@ -79,7 +79,7 @@ function init() {
 		var cl = '';
 		for(var i=0; i < inst.settings.theme_advanced_styles.split(/;/).length; i++){
 			cl = inst.settings.theme_advanced_styles.split(/;/)[i].split(/=/)[0];
-			formObj.elements['we_dialog_args[class]'].options[formObj.elements['we_dialog_args[class]'].length] = new Option('.' + cl, cl);
+			formObj.elements['we_dialog_args[cssclass]'].options[formObj.elements['we_dialog_args[cssclass]'].length] = new Option('.' + cl, cl);
 		}
 	}
 	*/

@@ -370,7 +370,7 @@ class we_dialog_image extends we_dialog_base{
 		if($this->args["editor"] === 'tinyMce'){
 			$classSelect = we_html_tools::htmlFormElementTable($this->getClassSelect(), g_l('wysiwyg', '[css_style]'));
 		} else {
-			$foo = we_html_element::jsElement('showclasss("we_dialog_args[class]","' . (isset($this->args["class"]) ? $this->args["class"] : "") . '","");');
+			$foo = we_html_element::jsElement('showclasss("we_dialog_args[classname]","' . (isset($this->args["cssclass"]) ? $this->args["cssclass"] : "") . '","");');
 			$classSelect = $classSelect = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', '[css_style]'));
 		}
 
@@ -414,8 +414,10 @@ class we_dialog_image extends we_dialog_base{
 					//fill in all fields
 					$js = 'top.document.we_form["we_cmd[0]"].value = "";';
 					foreach($args as $k => $v){
-						$js .= 'if(top.document.we_form.we_dialog_args[' . $k . '] !== undefined) top.document.we_form["we_dialog_args[' . $k . ']"].value = "' . $v . '";
-						';
+						$js .= $k !== 'class' ? 'if(typeof top.document.we_form.we_dialog_args[' . $k . '] !== "undefined"){
+							top.document.we_form["we_dialog_args[' . $k . ']"].value = "' . $v . '";
+						}
+						' : '';
 					}
 
 					$js .= '

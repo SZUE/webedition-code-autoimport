@@ -355,7 +355,7 @@ self.focus();');
 	}
 
 	function getClassSelect(){
-		$clSelect = new we_html_select(array("name" => "we_dialog_args[class]", "id" => "we_dialog_args[class]", "size" => 1, "style" => "width: 300px;"));
+		$clSelect = new we_html_select(array("name" => "we_dialog_args[cssclass]", "id" => "we_dialog_args[cssclass]", "size" => 1, "style" => "width: 300px;"));
 		$clSelect->addOption("", g_l('wysiwyg', '[none]'));
 		$classesCSV = trim($this->args["cssclasses"], ",");
 		if(!empty($classesCSV)){
@@ -363,8 +363,8 @@ self.focus();');
 				$clSelect->addOption($val, "." . $val);
 			}
 		}
-		if(isset($this->args["class"]) && !empty($this->args["class"])){
-			$clSelect->selectOption($this->args["class"]);
+		if(isset($this->args["cssclass"]) && !empty($this->args["cssclass"])){
+			$clSelect->selectOption($this->args["cssclass"]);
 		}
 
 		return $clSelect->getHTML() . '<input type="hidden" name="we_dialog_args[cssclasses]" value="' . oldHtmlspecialchars($classesCSV) . '" />';

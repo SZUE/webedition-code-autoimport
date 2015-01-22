@@ -58,7 +58,7 @@ class we_wysiwyg_editor{
 	private $inlineedit = true;
 	private $cssClasses = '';
 	private $cssClassesJS = '';
-	private $cssClassesCSV = '';
+	private $tinyCssClasses = '';
 	var $Language = '';
 	private $_imagePath;
 	private $_image_languagePath;
@@ -132,13 +132,18 @@ class we_wysiwyg_editor{
 			$cc = explode(',', $cssClasses);
 			$tf = '';
 			$jsCl = '';
+			$csvCl = '';
 			foreach($cc as $val){
+				$val = trim($val);
 				$tf .= $val . '=' . $val . ';';
 				$jsCl .= '"' . $val . '"' . ',';
+				$csvCl .= $val . ',';
 			}
-			$this->cssClasses = rtrim($tf, ';');
+			$this->cssClasses = rtrim($csvCl, ',');
 			$this->cssClassesJS = rtrim($jsCl, ',');
+			$this->tinyCssClasses = rtrim($tf, ';');
 		}
+
 		$this->contentCss = $contentCss;
 
 		$this->Language = $Language;
@@ -525,7 +530,7 @@ class we_wysiwyg_editor{
 		$param4 = !$this->isFrontendEdit ? '' : we_base_request::encCmd('frontend');
 
 		return we_html_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . max(220, $this->width) . "', '" . $this->height . "','" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
-			'" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
+			'" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
 			'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "');", true, 25);
 	}
 
@@ -878,7 +883,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		"templates" : "' . $this->templates . '",
 		"formats" : "' . $this->formats . '"
 	},
-	weClassNames_urlEncoded : "' . urlencode($this->cssClassesCSV) . '",
+	weClassNames_urlEncoded : "' . urlencode($this->cssClasses) . '",
 	weIsFrontend : "' . ($this->isFrontendEdit ? 1 : 0) . '",
 	weWordCounter : 0,
 	weRemoveFirstParagraph : "' . ($this->removeFirstParagraph ? 1 : 0) . '",
@@ -966,20 +971,29 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		ed.onKeyDown.add(function(ed, e){
 			if(e.ctrlKey || e.metaKey){
 				switch(e.keyCode){
+					' . ($this->fullscreen || $this->isInPopup ? "case 87:" : "") . '
 					case 68:
 					case 79:
 					case 82:
 						//set keyCode = -1 to just let WE-keyListener cancel event 
 						e.keyCode = -1;
 					case 83:
+					' . ($this->fullscreen || $this->isInPopup ? "" : "case 87:") . '
 						e.stopPropagation();
 						e.preventDefault();
 						top.dealWithKeyboardShortCut(e);
 						return false;
 					default:
-						//let tiny do it\'s job
+						//let tiny do its job
 				}
 			}
+		});
+
+		ed.onDblClick.add(function(ed, e) {
+			//console.debug("Double click event: " + e.target.nodeName);
+		});
+		ed.onClick.add(function(ed, e) {
+			//console.debug("Click event: " + e.target.nodeName);
 		});
 
 		ed.onInit.add(function(ed, o){
@@ -1078,11 +1092,11 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		var editorLevel = "";
 		var weEditorFrame = null;
 
-		if(_EditorFrame !== undefined){
+		if(window._EditorFrame !== undefined){
 			editorLevel = "inline";
 			weEditorFrame = _EditorFrame;
 		} else {
-			if(top.opener !== null && top.opener.top.weEditorFrameController !== undefined && top.isWeDialog === undefined){
+			if(top.opener !== null && typeof top.opener.top.weEditorFrameController !== "undefined" && typeof top.isWeDialog === "undefined"){
 				editorLevel = "popup";
 				weEditorFrame = top.opener.top.weEditorFrameController;
 			} else {
@@ -1099,17 +1113,16 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 
 		// listeners for editorLevel = "inline"
 		//could be rather CPU-intensive. But weEditorFrameIsHot is nearly allways true, so we could try
-		/*
 		ed.onKeyDown.add(function(ed) {
-			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
+			if(!weEditorFrameIsHot && editorLevel == "inline"){
 				try{
 					weEditorFrame.setEditorIsHot(true);
 				} catch(e) {}
 				weEditorFrameIsHot = true;
 			}
 		});
-		*/
 
+		/*
 		ed.onChange.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 				try{
@@ -1118,6 +1131,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				weEditorFrameIsHot = true;
 			}
 		});
+		*/
 
 		ed.onNodeChange.add(function(ed, cm, n) {
 			var pc, tmp, td = ed.dom.getParent(n, "td");
@@ -1133,7 +1147,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				}
 			}
 		});
-
+/*
 		ed.onClick.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 				try{
@@ -1142,7 +1156,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				weEditorFrameIsHot = true;
 			}
 		});
-
+*/
 		ed.onPaste.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 				try{

@@ -52,13 +52,13 @@ function weDoImgCmd($args){
 
 	if(we_base_request::_(we_base_request::STRING, 'we_dialog_args', 'tinyMce', 'editor') != "tinyMce"){
 
-		return we_html_element::jsElement('top.opener.weWysiwygObject_' . $args["editname"] . '.insertImage("' . $args["src"] . '","' . $args["width"] . '","' . $args["height"] . '","' . $args["hspace"] . '","' . $args["vspace"] . '","' . $args["border"] . '","' . addslashes($args["alt"]) . '","' . $args["align"] . '","' . $args["name"] . '","' . $args["class"] . '","' . addslashes($args["title"]) . '","' . $args["longdesc"] . '");
+		return we_html_element::jsElement('top.opener.weWysiwygObject_' . $args["editname"] . '.insertImage("' . $args["src"] . '","' . $args["width"] . '","' . $args["height"] . '","' . $args["hspace"] . '","' . $args["vspace"] . '","' . $args["border"] . '","' . addslashes($args["alt"]) . '","' . $args["align"] . '","' . $args["name"] . '","' . $args["cssclass"] . '","' . addslashes($args["title"]) . '","' . $args["longdesc"] . '");
 top.close();
 ');
 	} else {
 		$attribs = we_base_request::_(we_base_request::BOOL, 'imgChangedCmd') && !we_base_request::_(we_base_request::BOOL, 'wasThumbnailChange') ? we_base_request::_(we_base_request::STRING, 'we_dialog_args') : $args;
 		return we_dialog_base::getTinyMceJS() .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_insert.js') .
+			we_html_element::jsScript(JS_DIR . 'wysiwyg/tinymce/plugins/weimage/js/image_insert.js') .
 			'<form name="tiny_form">
 				<input type="hidden" name="src" value="' . $args["src"] . '">
 				<input type="hidden" name="width" value="' . $attribs["width"] . '">
