@@ -115,7 +115,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 
 	if(we_tag('ifEditmode')){
 		if($name && !($id || $path)){
-			$type = weTag_getAttribute('kind', $attribs, '', we_base_request::STRING);
+			$type = weTag_getAttribute('kind', $attribs, we_base_link::TYPE_ALL, we_base_request::STRING);
 			$_name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 			$description = weTag_getAttribute('description', $attribs, g_l('tags', '[include_file]'), we_base_request::RAW);
 
@@ -126,7 +126,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 		}
 	} else //notEditmode
 	if($name && !($id || $path)){
-		$type = weTag_getAttribute('kind', $attribs, '', we_base_request::STRING);
+		$type = weTag_getAttribute('kind', $attribs, we_base_link::TYPE_ALL, we_base_request::STRING);
 		$_name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 		$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false', 'type' => $type, 'isInternal' => 1));
 		$nint = $name . we_base_link::MAGIC_INT_LINK;
