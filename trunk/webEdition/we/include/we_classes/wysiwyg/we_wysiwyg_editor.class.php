@@ -58,7 +58,7 @@ class we_wysiwyg_editor{
 	private $inlineedit = true;
 	private $cssClasses = '';
 	private $cssClassesJS = '';
-	private $cssClassesCSV = '';
+	private $tinyCssClasses = '';
 	var $Language = '';
 	private $_imagePath;
 	private $_image_languagePath;
@@ -132,13 +132,18 @@ class we_wysiwyg_editor{
 			$cc = explode(',', $cssClasses);
 			$tf = '';
 			$jsCl = '';
+			$csvCl = '';
 			foreach($cc as $val){
+				$val = trim($val);
 				$tf .= $val . '=' . $val . ';';
 				$jsCl .= '"' . $val . '"' . ',';
+				$csvCl .= $val . ',';
 			}
-			$this->cssClasses = rtrim($tf, ';');
+			$this->cssClasses = rtrim($csvCl, ',');
 			$this->cssClassesJS = rtrim($jsCl, ',');
+			$this->tinyCssClasses = rtrim($tf, ';');
 		}
+
 		$this->contentCss = $contentCss;
 
 		$this->Language = $Language;
@@ -561,7 +566,7 @@ function weWysiwygSetHiddenText(arg) {
 		$param4 = !$this->isFrontendEdit ? '' : we_base_request::encCmd('frontend');
 
 		return we_html_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . max(220, $this->width) . "', '" . $this->height . "','" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
-			'" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClassesCSV . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
+			'" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
 			'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "');", true, 25);
 	}
 
@@ -914,7 +919,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		"templates" : "' . $this->templates . '",
 		"formats" : "' . $this->formats . '"
 	},
-	weClassNames_urlEncoded : "' . urlencode($this->cssClassesCSV) . '",
+	weClassNames_urlEncoded : "' . urlencode($this->cssClasses) . '",
 	weIsFrontend : "' . ($this->isFrontendEdit ? 1 : 0) . '",
 	weWordCounter : 0,
 	weRemoveFirstParagraph : "' . ($this->removeFirstParagraph ? 1 : 0) . '",
@@ -948,7 +953,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	' . $tinyRows . '
 	theme_advanced_toolbar_location : "' . $this->buttonpos . '", //external: toolbar floating on top of textarea
 	theme_advanced_fonts: "' . $this->tinyFonts . '",
-	theme_advanced_styles: "' . $this->cssClasses . '",
+	theme_advanced_styles: "' . $this->tinyCssClasses . '",
 	theme_advanced_blockformats : "' . $this->formats . '",
 	theme_advanced_toolbar_align : "left",
 	theme_advanced_statusbar_location : "' . $this->statuspos . '",
