@@ -41,6 +41,8 @@ function tinyMceInitialize(confObject) {
 	}
 }
 
+//FIXME check if we can return/use undefined instead of the string "undefined". Maybe we will get some errors, which would otherwise silently ignored -> frameid=getId()+"xx"; can result in "undefinedxx" - not in an error.
+
 function TinyWrapper(fieldname) {
 	if (!(this instanceof TinyWrapper)) {
 		return new TinyWrapper(fieldname);
@@ -48,7 +50,7 @@ function TinyWrapper(fieldname) {
 
 	var _fn = fieldname;
 	var _isInlineedit = typeof tinyEditors[_fn] === "object";
-	var _id = _isInlineedit ? tinyEditors[_fn].id : (typeof tinyEditors[_fn] === "undefined" ? "undefined" : tinyEditors[_fn]);
+	var _id = _isInlineedit ? tinyEditors[_fn].id : (tinyEditors[_fn] === undefined ? "undefined" : tinyEditors[_fn]);
 
 	this.getFieldName = function () {
 		return _fn;
@@ -60,17 +62,8 @@ function TinyWrapper(fieldname) {
 		return _isInlineedit;
 	};
 
-	this.getEditor = function (tryPopup) {
-		var _tryPopup = typeof tryPopup === "undefined" ? false : tryPopup;
-		if (tryPopup && this.getEditorInPopup() !== "undefined") {
-			return this.getEditorInPopup();
-		}
-
-		return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? tinyEditors[_fn] : "undefined");
-	};
-
 	this.getEditorInPopup = function () {
-		if (typeof tinyEditorsInPopup[_fn] !== "undefined") {
+		if (tinyEditorsInPopup[_fn] !== undefined) {
 			try {
 				tinyEditorsInPopup[_fn].getContent();
 				return tinyEditorsInPopup[_fn];
@@ -84,17 +77,27 @@ function TinyWrapper(fieldname) {
 		}
 	};
 
+	this.getEditor = function (tryPopup) {
+		var _tryPopup = tryPopup === undefined ? false : tryPopup;
+		if (tryPopup) {
+			return this.getEditorInPopup();
+		}
+
+		return tinyEditors[_fn] === undefined ? "undefined" : (typeof tinyEditors[_fn] === "object" ? tinyEditors[_fn] : "undefined");
+	};
+
+
 	this.getTextarea = function () {
-		return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById(tinyEditors[_fn]));
+		return tinyEditors[_fn] === undefined ? "undefined" : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById(tinyEditors[_fn]));
 	};
 	this.getDiv = function () {
-		return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById("div_wysiwyg_" + tinyEditors[_fn]));
+		return tinyEditors[_fn] === undefined ? "undefined" : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById("div_wysiwyg_" + tinyEditors[_fn]));
 	};
 
 	this.getIFrame = function () {
 		var frame_id = this.getId() + '_ifr';
 
-		if (typeof tinymce !== "undefined" && tinymce.DOM) {
+		if (tinymce !== undefined && tinymce.DOM) {
 			try {
 				return tinymce.DOM.get(frame_id) !== null ? tinymce.DOM.get(frame_id) : "undefined";
 			} catch (e) {
@@ -106,7 +109,7 @@ function TinyWrapper(fieldname) {
 	};
 
 	this.getContent = function (forcePopup) {
-		var _forcePopup = typeof forcePopup === "undefined" ? false : forcePopup;
+		var _forcePopup = forcePopup === undefined ? false : forcePopup;
 		if (!_isInlineedit) {
 			if (_forcePopup) {
 				try {
@@ -162,7 +165,7 @@ function TinyWrapper(fieldname) {
 
 	this.getParam = function (param) {
 		if (this.getEditor(true) !== "undefined") {
-			if (typeof this.getEditor().settings[param] == "undefined") {
+			if (this.getEditor().settings[param] === undefined) {
 				console.log("function getParam(): The parameter you tried to derive is not defined: " + param);
 				return "undefined";
 			}
@@ -174,13 +177,13 @@ function TinyWrapper(fieldname) {
 }
 
 function tinyMCECallRegisterDialog(win, action) {
-	if (typeof (top.isRegisterDialogHere) != "undefined") {
+	if (top.isRegisterDialogHere !== undefined) {
 		try {
 			top.weRegisterTinyMcePopup(win, action);
 		} catch (err) {
 		}
 	} else {
-		if (typeof (top.opener.isRegisterDialogHere) != "undefined") {
+		if (top.opener.isRegisterDialogHere !== undefined) {
 			try {
 				top.opener.weRegisterTinyMcePopup(win, action);
 			} catch (err) {

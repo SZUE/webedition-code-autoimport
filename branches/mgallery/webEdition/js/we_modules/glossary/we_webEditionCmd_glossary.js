@@ -57,7 +57,7 @@ function we_cmd_glossary(args, url) {
 					if (fo)
 						break;
 				}
-				if (typeof (wind) != "undefined") {
+				if (window.wind !== undefined) {
 					wind.focus();
 				}
 			}

@@ -73,7 +73,7 @@ function we_core_CmdController() {
 	}
 
 	this.cmdOk = function(cmdObj) {
-		if (typeof (cmdObj.followCmd) != "undefined") {
+		if (cmdObj.followCmd !== undefined) {
 			this.fire(cmdObj.followCmd);
 		}
 	}

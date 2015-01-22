@@ -24,14 +24,14 @@
 var isTinyMCE = true;
 
 var WefullscreenDialog = { // TODO: clean code by using more vars
-	
+
 	init : function() {
 		document.getElementById('we_dialog_args[src]').innerHTML = tinyMCEPopup.editor.getContent({format : 'html'});
 	},
 
 	writeback : function() {
 		// only if inlineedit=true we set isHot from here: otherwise the editor-popup cares for setting hot itself
-		if(typeof(top.opener._EditorFrame) != "undefined" && tinyMCE.activeEditor.isDirty()){
+		if(top.opener._EditorFrame !== undefined && tinyMCE.activeEditor.isDirty()){
 			top.opener._EditorFrame.setEditorIsHot(true);
 		}
 		tinyMCEPopup.editor.execCommand('mceSetContent', true, tinyMCE.activeEditor.getContent({format : 'html'}));

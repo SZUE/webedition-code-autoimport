@@ -132,7 +132,7 @@ function we_submitForm(target, url) {
 		} else if (_EditorFrame.getEditorDidSetHiddenText()) {
 			_EditorFrame.setEditorDidSetHiddenText(false);
 		}
-		if (typeof (self.weEditorSetHiddenText) != "undefined") {
+		if ((self.weEditorSetHiddenText) !== undefined) {
 			self.weEditorSetHiddenText();
 		}
 	}
@@ -197,7 +197,7 @@ function pathOfDocumentChanged() {
 // check if parentId was changed
 var ajaxCallback = {
 	success: function (o) {
-		if (typeof (o.responseText) !== undefined && o.responseText !== '') {
+		if (o.responseText !== undefined && o.responseText !== '') {
 			var weResponse = false;
 			try {
 				eval(o.responseText);

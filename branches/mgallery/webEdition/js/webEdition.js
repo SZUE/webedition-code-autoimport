@@ -255,7 +255,7 @@ function submit_we_form(formlocation, target, url) {
 }
 
 function we_sbmtFrm(target, url, source) {
-	if (typeof (source) === "undefined") {
+	if (source === undefined) {
 		source = top.weEditorFrameController.getVisibleEditorFrame();
 	}
 	return submit_we_form(source, target, url);
@@ -731,7 +731,7 @@ function we_cmd_base(args, url) {
 			new jsWindow(url, "we_fileselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;
 		case "setTab":
-			if (self.Vtabs && self.Vtabs.setTab && (typeof treeData !== "undefined")) {
+			if (self.Vtabs && self.Vtabs.setTab && (window.treeData !== undefined)) {
 				self.Vtabs.setTab(args[1]);
 				treeData.table = args[1];
 			} else {
@@ -829,7 +829,7 @@ function we_cmd_base(args, url) {
 		case "edit_document":
 			toggleBusy(1);
 			try {
-				if ((typeof treeData !== "undefined") && treeData) {
+				if ((window.treeData !== undefined) && treeData) {
 					treeData.unselectnode();
 					if (args[1]) {
 						treeData.selection_table = args[1];
@@ -1059,9 +1059,9 @@ function we_cmd_base(args, url) {
 
 			} else {
 				treeData.unselectnode();
-				if (typeof (args[5]) != "undefined") {
+				if (args[5] !== undefined) {
 					top.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
-				} else if (typeof (args[4]) != "undefined" && args[5] == "undefined") {
+				} else if (args[4] !== undefined && args[5] === undefined) {
 					top.weEditorFrameController.openDocument(args[1], args[2], args[3], "", "", "", args[5]);
 				} else {
 					top.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4]);
@@ -1179,7 +1179,7 @@ function we_cmd_base(args, url) {
 				if (confirm(g_l.cockpit_reset_settings)) {
 					//FIXME: currently this doesn't work
 					top.weEditorFrameController.getActiveDocumentReference().location = '/webEdition/we/include/we_widgets/cmd.php?we_cmd[0]=' + args[0];
-					if ((typeof treeData !== "undefined") && treeData) {
+					if ((window.treeData !== undefined) && treeData) {
 						treeData.unselectnode();
 					}
 				}
@@ -1282,7 +1282,7 @@ function we_cmd_base(args, url) {
 				_sendToFrame.focus();
 			}
 			// if visible frame equals to editpage content and there is already content loaded
-			if (_isEditpageContent && typeof (_visibleEditorFrame.weIsTextEditor) !== "undefined" && _currentEditorRootFrame.frames[2].location !== "about:blank") {
+			if (_isEditpageContent && _visibleEditorFrame.weIsTextEditor !== undefined && _currentEditorRootFrame.frames[2].location !== "about:blank") {
 				// tell the backend the right edit page nr and break (don't send the form)
 				//YAHOO.util.Connect.setForm(_sendFromFrame.document.we_form);
 				YAHOO.util.Connect.asyncRequest('POST', "/webEdition/rpc/rpc.php", setPageNrCallback, 'protocol=json&cmd=SetPageNr&transaction=' + _we_activeTransaction + "&editPageNr=" + args[1]);

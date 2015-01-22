@@ -41,10 +41,10 @@ function We_TabCtrl() {
 				tabRowWidth = this.tabs[i].width + 20;
 				currCtrl++;
 			}
-			if (typeof (ctrls[currCtrl]) == 'undefined') {
-				ctrls[currCtrl] = [];
+			if (ctrls.currCtrl === undefined) {
+				ctrls.currCtrl = [];
 			}
-			ctrls[currCtrl].push(this.tabs[i]);
+			ctrls.currCtrl.push(this.tabs[i]);
 		}
 		return ctrls;
 	};

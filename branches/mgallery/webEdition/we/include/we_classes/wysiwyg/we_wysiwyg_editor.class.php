@@ -975,7 +975,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 					case 68:
 					case 79:
 					case 82:
-						//set keyCode = -1 to just let WE-keyListener cancel event 
+						//set keyCode = -1 to just let WE-keyListener cancel event
 						e.keyCode = -1;
 					case 83:
 					' . ($this->fullscreen || $this->isInPopup ? "" : "case 87:") . '
@@ -1016,7 +1016,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				hasOpener = opener ? true : false;
 			} catch(e){}
 
-			if(typeof we_tinyMCE_' . $this->fieldName_clean . '_init !== "undefined"){
+			if(we_tinyMCE_' . $this->fieldName_clean . '_init !== undefined){
 				try{
 					we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
 				} catch(e){
@@ -1096,7 +1096,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			editorLevel = "inline";
 			weEditorFrame = _EditorFrame;
 		} else {
-			if(top.opener !== null && typeof top.opener.top.weEditorFrameController !== "undefined" && typeof top.isWeDialog === "undefined"){
+			if(top.opener !== null && top.opener.top.weEditorFrameController !== undefined && top.isWeDialog === undefined){
 				editorLevel = "popup";
 				weEditorFrame = top.opener.top.weEditorFrameController;
 			} else {

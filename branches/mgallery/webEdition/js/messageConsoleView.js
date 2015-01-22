@@ -127,7 +127,7 @@ function messageConsoleView(conName, win) {
 	 * registers this console to the messageConsole in mainWindow of webEdition
 	 */
 	this.register = function () {
-		if (typeof (top.messageConsole) != "undefined") {
+		if (top.messageConsole !== undefined) {
 			top.messageConsole.addObserver(this);
 		} else {
 			top.opener.top.messageConsole.addObserver(this);
@@ -135,7 +135,7 @@ function messageConsoleView(conName, win) {
 	};
 
 	this.unregister = function () {
-		if (typeof (top.messageConsole) != "undefined") {
+		if (top.messageConsole !== undefined) {
 			top.messageConsole.removeObserver(this);
 		} else {
 			top.opener.top.messageConsole.removeObserver(this);
@@ -146,7 +146,7 @@ function messageConsoleView(conName, win) {
 	 * opens the message console in a new window
 	 */
 	this.openMessageConsole = function () {
-		if (typeof (top.messageConsole) != "undefined") {
+		if (top.messageConsole !== undefined) {
 			top.messageConsole.openMessageConsole();
 		} else {
 			top.opener.top.messageConsole.openMessageConsole();

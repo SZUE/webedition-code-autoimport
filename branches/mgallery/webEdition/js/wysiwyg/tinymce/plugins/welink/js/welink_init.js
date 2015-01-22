@@ -46,8 +46,8 @@ function init() {
 		formObj.elements['we_dialog_args[lang]'].value = inst.dom.getAttrib(elm, 'lang');
 		formObj.elements['we_dialog_args[hreflang]'].value = inst.dom.getAttrib(elm, 'hreflang');
 		formObj.elements['we_dialog_args[rev]'].value = inst.dom.getAttrib(elm, 'rev');
-		formObj.elements['we_dialog_args[accesskey]'].value = inst.dom.getAttrib(elm, 'accesskey', typeof(elm.accesskey) != "undefined" ? elm.accesskey : "");
-		formObj.elements['we_dialog_args[tabindex]'].value = inst.dom.getAttrib(elm, 'tabindex', typeof(elm.tabindex) != "undefined" ? elm.tabindex : "");
+		formObj.elements['we_dialog_args[accesskey]'].value = inst.dom.getAttrib(elm, 'accesskey', elm.accesskey !== undefined ? elm.accesskey : "");
+		formObj.elements['we_dialog_args[tabindex]'].value = inst.dom.getAttrib(elm, 'tabindex', elm.tabindex !== undefined ? elm.tabindex : "");
 		this.selectOptionByValue(formObj, "we_dialog_args[cssclass]", inst.dom.getAttrib(elm, 'class'));
 
 		/*
@@ -147,7 +147,7 @@ function selectOptionByValue(form, selName, val) {
 	if(typeof(form)=='undefined' || typeof(form.elements[selName]) == 'undefined' && typeof(val) == 'undefined'){
 		return;
 	}
-	
+
 	var i;
 	if(val == ''){
 		form.elements[selName].options[0].selected = true;

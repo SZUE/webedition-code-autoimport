@@ -74,7 +74,7 @@ echo $dialog->getHTML().
 
 function weDoAcronymJS(){
 	return '
-if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
+if(window.isTinyMCE !== undefined && window.isTinyMCE === true){
 	WeacronymDialog.insert();
 	top.close();
 } else{

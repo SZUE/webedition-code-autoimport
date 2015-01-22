@@ -75,7 +75,7 @@ echo $dialog->getHTML() .
 
 function weDoAbbrJS(){
 	return '
-if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
+if(window.isTinyMCE) !== undefined && window.isTinyMCE === true){
 	WeabbrDialog.insert();
 	top.close();
 } else{

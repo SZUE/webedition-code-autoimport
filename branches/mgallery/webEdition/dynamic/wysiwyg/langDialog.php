@@ -63,7 +63,7 @@ echo $dialog->getHTML().
 
 function weDoLangJS(){
 	return '
-if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
+if(window.isTinyMCE !== undefined && window.isTinyMCE === true){
 	WelangDialog.insert();
 	top.close();
 } else{

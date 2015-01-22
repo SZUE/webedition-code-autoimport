@@ -601,7 +601,7 @@ function executeAjaxRequest(param_1, initCfg, param_3, param_4, titel, widgetId)
 
 var ajaxCallback = {
 	success: function (o) {
-		if (typeof (o.responseText) !== undefined && o.responseText !== '') {
+		if (o.responseText !== undefined && o.responseText !== '') {
 			var weResponse = false;
 			try {
 				eval(o.responseText);

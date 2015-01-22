@@ -27,7 +27,7 @@ var tinyMceFullscreenDialog = null;
 var blocked = false;
 
 function weRegisterTinyMcePopup(win,action){
-		win = typeof(win) != "undefined" ? win : null;
+		win = win !== undefined ? win : null;
 		switch (action) {
 			case "registerDialog":
 				if(!blocked){

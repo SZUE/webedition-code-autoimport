@@ -335,11 +335,11 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 
 		$wrap = ($_SESSION['weS']['we_wrapcheck'] ? 'virtual' : 'off');
 
-		$code = $we_doc->getElement('data');
 
-		if($we_doc instanceof we_htmlDocument){
-			$code = $we_doc->getDocumentCode();
-		}
+		$code = ($we_doc instanceof we_htmlDocument?
+			$we_doc->getDocumentCode():
+			$we_doc->getElement('data')
+			);
 
 		$maineditor = '<table style="border:0px;padding:0px;width:95%" cellspacing="0"><tr><td>';
 
