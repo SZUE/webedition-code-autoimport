@@ -1006,12 +1006,14 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		ed.onKeyDown.add(function(ed, e){
 			if(e.ctrlKey || e.metaKey){
 				switch(e.keyCode){
+					' . ($this->fullscreen || $this->isInPopup ? "case 87:" : "") . '
 					case 68:
 					case 79:
 					case 82:
 						//set keyCode = -1 to just let WE-keyListener cancel event 
 						e.keyCode = -1;
 					case 83:
+					' . ($this->fullscreen || $this->isInPopup ? "" : "case 87:") . '
 						e.stopPropagation();
 						e.preventDefault();
 						top.dealWithKeyboardShortCut(e);
