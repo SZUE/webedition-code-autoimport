@@ -47,15 +47,16 @@ class we_selector_image extends we_selector_document{
 	}
 
 	protected function printFooterTable(){
-		return parent::printFooterTable('<input type="range" name="zoom" min="50" step="25" max="250" onchange="parent.frames[\'fsbody\'].document.body.style.fontSize=this.value+\'%\';"/>');
+		//IE doesn't support slider correctly inside tables, disable this
+		return parent::printFooterTable(we_base_browserDetect::inst()->isIE() ? '' : '<input type="range" style="width:120px;height:20px;" name="zoom" min="50" step="25" max="250" onchange="parent.frames.fsbody.document.body.style.fontSize=this.value+\'%\';"/>');
 	}
 
 	protected function printCMDWriteAndFillSelectorHTML(){
-		return parent::printCMDWriteAndFillSelectorHTML().
-		'parent.frames["fsbody"].document.body.style.fontSize=parent.frames["fsfooter"].document.getElementsByName("zoom")[0].value+"%";';
+		return parent::printCMDWriteAndFillSelectorHTML() .
+			'parent.frames.fsbody.document.body.style.fontSize=parent.frames.fsfooter.document.getElementsByName("zoom")[0].value+"%";';
 	}
 
-		protected function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){
 		return we_html_element::jsElement('
 function writeBody(d){
 	d.open();' .
