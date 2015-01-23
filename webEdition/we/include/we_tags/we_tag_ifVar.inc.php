@@ -37,6 +37,8 @@ function _we_tag_ifVar_op($operator, $first, $match){
 			return $first >= $match;
 		case 'contains':
 			return (strpos($first, $match) !== false);
+		case 'isin':
+			return (strpos($match, $first) !== false);
 	}
 }
 

@@ -63,5 +63,7 @@ function we_tag_ifField($attribs){
 			return intval($realvalue) >= intval($match);
 		case 'contains':
 			return (strpos($realvalue, $match) !== false);
+		case 'isin':
+			return (strpos($match, $realvalue) !== false);
 	}
 }
