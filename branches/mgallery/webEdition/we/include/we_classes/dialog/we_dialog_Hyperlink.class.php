@@ -542,7 +542,7 @@ function weonsubmit() {
 
 	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-				we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/welink/js/welink_init.js');
+				we_html_element::jsScript(JS_DIR . 'wysiwyg/tinymce/plugins/welink/js/welink_init.js');
 	}
 
 	function getJs(){
