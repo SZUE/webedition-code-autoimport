@@ -94,12 +94,13 @@ div.imgDiv{
 	float: left;
 	width: 4em;
 	height:4em;
-	margin: 8px;
+	margin: 1px;
 	text-align: center;
 	cursor: pointer;
+	position: relative;
 }
 img.icon{
-	max-width:3em;
+	max-width:4em;
 	max-height:3em;
 }
 div.imgText{
@@ -107,6 +108,10 @@ div.imgText{
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
+	width:100%;
+	text-align:center;
+	position: absolute;
+	bottom: 0px;
 }
 div.selected{
 	background-color:#DFE9F5;
@@ -140,8 +145,8 @@ margin:0px;
 #	for(i=0;i < entries.length; i++){
 #		var onclick = #\' onclick="weonclick(' . (we_base_browserDetect::isIE() ? "this" : "event") . ');tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(#\'+entries[i].ID+#\',0);}else{top.wasdblclick=0;}\',300);return true"#\';
 #		var ondblclick = #\' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(#\'+entries[i].ID+#\',1);return true;"#\';
-<div class="imgDiv #\' + ((entries[i].ID == top.currentID)  ? "selected" : "") + #\'" id="line_#\'+entries[i].ID+#\'" #\'+((we_editDirID || makeNewFolder) ? "" : onclick)+ (entries[i].isFolder ? ondblclick : "") + #\'>
-<img src="#\' + ((entries[i].isFolder)  ? "' . ICON_DIR . 'doclist/' . we_base_ContentTypes::FOLDER_ICON . '" : "' . WEBEDITION_DIR . 'thumbnail.php?id=" + entries[i].ID + "&amp;size=150&amp;path="+entries[i].path+"&amp;extension=.jpg&amp;size2=200") + #\'" class="icon" title="#\' + entries[i].text + #\'"/>
+<div class="imgDiv #\' + ((entries[i].ID == top.currentID)  ? "selected" : "") + #\'" title="#\' + entries[i].text + #\'" id="line_#\'+entries[i].ID+#\'" #\'+((we_editDirID || makeNewFolder) ? "" : onclick)+ (entries[i].isFolder ? ondblclick : "") + #\'>
+<img src="#\' + ((entries[i].isFolder)  ? "' . ICON_DIR . 'doclist/' . we_base_ContentTypes::FOLDER_ICON . '" : "' . WEBEDITION_DIR . 'thumbnail.php?id=" + entries[i].ID + "&amp;size=150&amp;path="+entries[i].path+"&amp;extension=.jpg&amp;size2=200") + #\'" class="icon"/>
 <br/><div class="imgText selector">
 #	if(we_editDirID == entries[i].ID){
 			<input type="hidden" name="we_FolderText" value="#\'+entries[i].text+#\'" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="#\'+entries[i].text+#\'" class="wetextinput" style="width:100%" />
