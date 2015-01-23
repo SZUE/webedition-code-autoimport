@@ -412,7 +412,7 @@ class we_dialog_image extends we_dialog_base{
 			switch($this->we_cmd[0]){
 				case 'update_editor':
 					//fill in all fields
-					$js = 'top.document.we_form["we_cmd[0]"].value = "";console.log("sali");console.log(top.document.we_form);';
+					$js = 'top.document.we_form["we_cmd[0]"].value = "";';
 					foreach($args as $k => $v){
 						$js .= $k !== 'cssclass' ? 'if(typeof top.document.we_form["we_dialog_args[\'' . $k . '\']"] !== "undefined"){
 							top.document.we_form["we_dialog_args[\'' . $k . '\']"].value = "' . $v . '";
