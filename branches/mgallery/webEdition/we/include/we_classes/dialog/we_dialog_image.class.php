@@ -412,25 +412,27 @@ class we_dialog_image extends we_dialog_base{
 			switch($this->we_cmd[0]){
 				case 'update_editor':
 					//fill in all fields
-					$js = 'top.document.we_form["we_cmd[0]"].value = "";';
+					$js = '
+top.document.we_form["we_cmd[0]"].value = "";
+
+var inputElem;';
 					foreach($args as $k => $v){
-						$js .= $k !== 'cssclass' ? 'if(typeof top.document.we_form["we_dialog_args[\'' . $k . '\']"] !== "undefined"){
-							top.document.we_form["we_dialog_args[\'' . $k . '\']"].value = "' . $v . '";
-						}
-						' : '';
+						$js .= $k !== 'cssclass' ? '
+if(inputElem = top.document.we_form.elements["we_dialog_args[' . $k . ']"]){
+	inputElem.value = "' . $v . '";
+}' : '';
 					}
-
 					$js .= '
-						try{
-							top.document.getElementById("selectThumbnail").style.display = "' . $this->getDisplayThumbsSel() . '";
-						} catch(err){
-						//console.log(top.document.getElementById("selectThumbnail"));
-						}
+try{
+	top.document.getElementById("selectThumbnail").style.display = "' . $this->getDisplayThumbsSel() . '";
+} catch(err){
+	//console.log(top.document.getElementById("selectThumbnail"));
+}
 
-						var rh = ' . (intval($args["width"] * $args["height"]) ? ($this->args["width"] / $args["height"]) : 0) . ';
-						var rw = ' . (intval($args["width"] * $args["height"]) ? ($this->args["height"] / $args["width"]) : 0) . ';
-						if(top.document.we_form.tinyMCEInitRatioH !== undefined) top.document.we_form.tinyMCEInitRatioH.value = rh;
-						if(top.document.we_form.tinyMCEInitRatioW !== undefined) top.document.we_form.tinyMCEInitRatioW.value = rw;
+var rh = ' . (intval($args["width"] * $args["height"]) ? ($this->args["width"] / $args["height"]) : 0) . ';
+var rw = ' . (intval($args["width"] * $args["height"]) ? ($this->args["height"] / $args["width"]) : 0) . ';
+if(top.document.we_form.tinyMCEInitRatioH !== undefined) top.document.we_form.tinyMCEInitRatioH.value = rh;
+if(top.document.we_form.tinyMCEInitRatioW !== undefined) top.document.we_form.tinyMCEInitRatioW.value = rw;
 					';
 
 					echo we_html_tools::getHtmlTop() . we_html_element::jsElement($js) . "</head></html>";
@@ -447,13 +449,13 @@ function we_cmd(){
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
-    case "openDocselector":
-		case "openImgselector":
-		new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
-		break;
-	case "browse_server":
-		new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
-		break;
+		case "openDocselector":
+			case "openImgselector":
+			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+			break;
+		case "browse_server":
+			new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
+			break;
 	}
 }
 

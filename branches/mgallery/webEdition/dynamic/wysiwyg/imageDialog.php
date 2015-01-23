@@ -69,7 +69,7 @@ top.close();
 				<input type="hidden" name="alt" value="' . addslashes($attribs["alt"]) . '">
 				<input type="hidden" name="align" value="' . $attribs["align"] . '">
 				<input type="hidden" name="name" value="' . $attribs["name"] . '">
-				<input type="hidden" name="class" value="' . $attribs["class"] . '">
+				<input type="hidden" name="class" value="' . $attribs["cssclass"] . '">
 				<input type="hidden" name="title" value="' . addslashes($attribs["title"]) . '">
 				<input type="hidden" name="longdesc" value="' . (intval($attribs["longdescid"]) ? $attribs["longdescsrc"] . '?id=' . intval($attribs["longdescid"]) : '') . '">
 			</form>';

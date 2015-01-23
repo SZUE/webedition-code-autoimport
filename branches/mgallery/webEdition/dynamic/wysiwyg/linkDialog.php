@@ -83,11 +83,11 @@ top.close();
 		}
 
 		return we_dialog_base::getTinyMceJS() .
-			we_html_element::jsScript(JS_DIR . 'wysiwyg/tinymce/plugins/weimage/js/welink_insert.js') .
+			we_html_element::jsScript(JS_DIR . 'wysiwyg/tinymce/plugins/welink/js/welink_insert.js') .
 			'<form name="tiny_form">
 			<input type="hidden" name="href" value="' . $href . '">
 			<input type="hidden" name="target" value="' . $args["target"] . '">
-			<input type="hidden" name="class" value="' . $args["class"] . '">
+			<input type="hidden" name="class" value="' . $args["cssclass"] . '">
 			<input type="hidden" name="lang" value="' . $args["lang"] . '">
 			<input type="hidden" name="hreflang" value="' . $args["hreflang"] . '">
 			<input type="hidden" name="title" value="' . $args["title"] . '">

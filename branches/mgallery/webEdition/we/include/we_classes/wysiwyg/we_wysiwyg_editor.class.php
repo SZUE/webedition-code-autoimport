@@ -917,7 +917,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	' . $tinyRows . '
 	theme_advanced_toolbar_location : "' . $this->buttonpos . '", //external: toolbar floating on top of textarea
 	theme_advanced_fonts: "' . $this->tinyFonts . '",
-	theme_advanced_styles: "' . $this->cssClasses . '",
+	theme_advanced_styles: "' . $this->tinyCssClasses . '",
 	theme_advanced_blockformats : "' . $this->formats . '",
 	theme_advanced_toolbar_align : "left",
 	theme_advanced_statusbar_location : "' . $this->statuspos . '",
@@ -1016,7 +1016,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				hasOpener = opener ? true : false;
 			} catch(e){}
 
-			if(we_tinyMCE_' . $this->fieldName_clean . '_init !== undefined){
+			if(window.we_tinyMCE_' . $this->fieldName_clean . '_init !== undefined){
 				try{
 					we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
 				} catch(e){
