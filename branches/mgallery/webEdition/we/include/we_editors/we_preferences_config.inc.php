@@ -104,7 +104,7 @@ $GLOBALS['configs'] = array(
 		'SMTP_AUTH' => array('SMTP authentication', we_base_request::BOOL, false),
 		'SMTP_USERNAME' => array('SMTP username', we_base_request::STRINGC, ''),
 		'SMTP_PASSWORD' => array('SMTP password', we_base_request::RAW, ''),
-		'SMTP_ENCRYPTION' => array('SMTP encryption', we_base_request::BOOL, false),
+		'SMTP_ENCRYPTION' => array('SMTP encryption', we_base_request::STRING, 0),
 //formmail stuff
 		'FORMMAIL_CONFIRM' => array('Flag if formmail confirm function should be work', we_base_request::BOOL, true), //this is restricted to admin
 		'FORMMAIL_VIAWEDOC' => array('Flag if formmail should be send only via a webEdition document', we_base_request::BOOL, false, 'FORMMAIL'),

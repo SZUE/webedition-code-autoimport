@@ -188,7 +188,7 @@ function keyEditorListener(_successor) {
 			}
 		}
 
-		if (_editor && (evt.ctrlKey)) { // || evt["metaKey"] when target bug is solved by Safari
+		if (_editor && (evt.ctrlKey) || evt.metaKey) {
 			switch (evt.keyCode) {
 				case 83: //S
 					if (evt.shiftKey) { // SHIFT + S (Publish)
@@ -246,7 +246,7 @@ function keyModuleListener(_successor) {
 
 	this.dealEvent = function (evt) {
 
-		if (top.weModuleWindow !== undefined && (evt.ctrlKey)) { // || evt["metaKey"] when target bug is solved by Safari
+		if (top.weModuleWindow !== undefined && (evt.ctrlKey || evt.metaKey)) {
 
 			if (evt.keyCode === 83) { // S (Save)
 				if (top.content &&
@@ -280,8 +280,8 @@ function keyToolListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 
 	this.dealEvent = function (evt) {
-		if (top.weToolWindow !== undefined && (evt.ctrlKey)) { // || evt["metaKey"] when target bug is solved by Safari
-			if (evt.keyCode === 83) { // S (Save)
+		if (top.weToolWindow !== undefined && (evt.ctrlKey || evt.metaKey)) {
+			if (evt.keyCode == 83) { // S (Save)
 				if (top.content &&
 								top.content.resize &&
 								top.content.resize.editor &&

@@ -996,6 +996,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			//console.debug("Click event: " + e.target.nodeName);
 		});
 
+
 		ed.onInit.add(function(ed, o){
 			//TODO: clean up the mess in here!
 			ed.pasteAsPlainText = 0;
