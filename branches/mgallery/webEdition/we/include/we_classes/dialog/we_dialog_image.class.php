@@ -394,7 +394,7 @@ class we_dialog_image extends we_dialog_base{
 				we_html_tools::hidden("imgChangedCmd", 0) . we_html_tools::hidden("wasThumbnailChange", 0) . we_html_tools::hidden("isTinyMCEInitialization", 0) .
 				we_html_tools::hidden("tinyMCEInitRatioH", 0) . we_html_tools::hidden("tinyMCEInitRatioW", 0) .
 				weSuggest::getYuiFiles() .
-				$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() . we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_init.js')),
+				$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() . we_html_element::jsScript(JS_DIR . 'wysiwyg/tinymce/plugins/weimage/js/image_init.js')),
 		);
 	}
 
@@ -412,10 +412,10 @@ class we_dialog_image extends we_dialog_base{
 			switch($this->we_cmd[0]){
 				case 'update_editor':
 					//fill in all fields
-					$js = 'top.document.we_form["we_cmd[0]"].value = "";';
+					$js = 'top.document.we_form["we_cmd[0]"].value = "";console.log("sali");console.log(top.document.we_form);';
 					foreach($args as $k => $v){
-						$js .= $k !== 'class' ? 'if(top.document.we_form.we_dialog_args[' . $k . '] !== undefined){
-							top.document.we_form["we_dialog_args[' . $k . ']"].value = "' . $v . '";
+						$js .= $k !== 'cssclass' ? 'if(typeof top.document.we_form["we_dialog_args[\'' . $k . '\']"] !== "undefined"){
+							top.document.we_form["we_dialog_args[\'' . $k . '\']"].value = "' . $v . '";
 						}
 						' : '';
 					}
