@@ -103,7 +103,7 @@ img.icon{
 	max-height:3em;
 }
 div.imgText{
-	font-size: 16px;
+	/*font-size: 16px;*/
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
