@@ -47,12 +47,13 @@ class we_selector_image extends we_selector_document{
 	}
 
 	protected function printFooterTable(){
-		return parent::printFooterTable('<input type="range" name="zoom" min="50" step="25" max="250" onchange="parent.frames[\'fsbody\'].document.body.style.fontSize=this.value+\'%\';"/>');
+		//IE doesn't support slider correctly inside tables, disable this
+		return parent::printFooterTable(we_base_browserDetect::inst()->isIE() ? '' : '<input type="range" style="width:120px;height:20px;" name="zoom" min="50" step="25" max="250" onchange="parent.frames.fsbody.document.body.style.fontSize=this.value+\'%\';"/>');
 	}
 
 	protected function printCMDWriteAndFillSelectorHTML(){
 		return parent::printCMDWriteAndFillSelectorHTML() .
-				'parent.frames["fsbody"].document.body.style.fontSize=parent.frames["fsfooter"].document.getElementsByName("zoom")[0].value+"%";';
+			'parent.frames.fsbody.document.body.style.fontSize=parent.frames.fsfooter.document.getElementsByName("zoom")[0].value+"%";';
 	}
 
 	protected function getWriteBodyHead(){
@@ -90,11 +91,15 @@ div.imgDiv{
 	height:4em;
 	margin: 8px;
 	text-align: center;
+<<<<<<< .working
+	cursor:pointer;
+=======
+	cursor: pointer;
+>>>>>>> .merge-right.r9117
 }
 img.icon{
 	max-width:3em;
 	max-height:3em;
-	cursor:pointer;
 }
 div.imgText{
 	font-size: 16px;
@@ -113,6 +118,7 @@ margin:0px;
 ');
 	}
 
+	//FIXME: printFramesetSelectFileHTML should only set a class "selected", not the background itself
 	protected function printFramesetJSFunctioWriteBody(){
 		ob_start();
 		?><script type="text/javascript"><!--
@@ -129,14 +135,14 @@ margin:0px;
 									'<input type="hidden" name="table" value="<?php echo $this->table ?>" />' +
 									'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
 									(makeNewFolder?
-													'<div class="imgDiv><img class="icon" src="<?php echo ICON_DIR . 'doclist/' . we_base_ContentTypes::FOLDER_ICON ?>"/><br/>' +
+													'<div class="imgDiv " id="line_'+entries[i].ID+'"><img class="icon" src="<?php echo ICON_DIR . 'doclist/' . we_base_ContentTypes::FOLDER_ICON ?>"/><br/>' +
 													'<input type="hidden" name="we_FolderText" value="<?php echo g_l('fileselector', "[new_folder_name]") ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php echo g_l('fileselector', "[new_folder_name]") ?>" class="wetextinput" style="width:100%" />' +
 													'</div>':
 													'');
 									for (i = 0; i < entries.length; i++){
 					var onclick = ' onclick="weonclick('.(we_base_browserDetect::isIE() ? "this" : "event").');tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true"';
 									var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-									body += '<div class="imgDiv ' + ((entries[i].ID == top.currentID)  ? "selected" : "") + '" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
+									body += '<div class="imgDiv ' + ((entries[i].ID == top.currentID)  ? "selected" : "") + '" id="line_'+entries[i].ID+'" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
 									'<img src="' + ((entries[i].isFolder)  ? "<?php echo ICON_DIR . 'doclist/' . we_base_ContentTypes::FOLDER_ICON ?>" : "<?php echo WEBEDITION_DIR ?>thumbnail.php?id=" + entries[i].ID + "&amp;size=150&amp;path=" + entries[i].path + "&amp;extension=.jpg&amp;size2=200") + '" class="icon" title="' + entries[i].text + '"/>' +
 									'<br/><div class="imgText">' +
 									(we_editDirID == entries[i].ID?
