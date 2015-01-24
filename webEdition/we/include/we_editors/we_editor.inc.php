@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -284,8 +283,8 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 		$we_doc->resetUsedElements();
 	}
 	include((substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT']) ?
-					'' : WE_INCLUDES_PATH) .
-			$we_include);
+			'' : WE_INCLUDES_PATH) .
+		$we_include);
 	$contents = ob_get_clean();
 	//usedElementNames is set after include
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
@@ -295,8 +294,8 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 		$contents = we_SEEM::parseDocument($contents);
 
 		$contents = (strpos($contents, '</head>') ?
-						str_replace('</head>', $_insertReloadFooter . '</head>', $contents) :
-						$_insertReloadFooter . $contents);
+				str_replace('</head>', $_insertReloadFooter . '</head>', $contents) :
+				$_insertReloadFooter . $contents);
 	}
 	switch($we_doc->Extension){
 		case '.js':
@@ -348,7 +347,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 
 	we_base_file::save($fullName, $contents);
 
-	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(WEBEDITION_DIR, '', $tempName));
+	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?charset=' . $GLOBALS['CHARSET'] . '&file=' . str_replace(WEBEDITION_DIR, '', $tempName));
 } else {
 	$we_JavaScript = '';
 	switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
@@ -445,7 +444,7 @@ if((($cmd0 != 'save_document' && $cmd0 != 'publish' && $cmd0 != 'unpublish') && 
 							$wasSaved = true;
 							$wasNew = (intval($we_doc->ID) == 0) ? true : false;
 							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "', '" . $we_doc->Text . "', '" . $we_doc->ID . "');" .
-									'_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
+								'_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 							if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4)){
@@ -570,7 +569,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 							if($wasNew || (!$wasPubl)){
 
 								$we_JavaScript .= ($we_doc->ContentType === "folder" ? 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");' : '') .
-										'_EditorFrame.getDocumentReference().frames[3].location.reload();';
+									'_EditorFrame.getDocumentReference().frames[3].location.reload();';
 							}
 							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
 
@@ -590,7 +589,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 					}
 					if(($js = we_base_request::_(we_base_request::JS, 'we_cmd', '', 6))){
 						$we_JavaScript .= $js;
-						$isClose =preg_match('|closeDocument|',$js);
+						$isClose = preg_match('|closeDocument|', $js);
 					} else if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4) && (!$wf_flag)){
 
 						$we_doc->makeSameNew();
@@ -675,8 +674,8 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 				if(!defined('WE_CONTENT_TYPE_SET')){
 					$charset = $we_doc->getElement('Charset');
 					$charset = $charset ? //	send charset which might be determined in template
-							$charset :
-							DEFAULT_CHARSET;
+						$charset :
+						DEFAULT_CHARSET;
 					define('WE_CONTENT_TYPE_SET', 1);
 					we_html_tools::headerCtCharset('text/html', $charset);
 				}
@@ -691,8 +690,8 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 
 // insert $_reloadFooter at right place
 					$tmpCntnt = (strpos($tmpCntnt, '</head>')) ?
-							str_replace('</head>', $_insertReloadFooter . '</head>', $tmpCntnt) :
-							$_insertReloadFooter . $tmpCntnt;
+						str_replace('</head>', $_insertReloadFooter . '</head>', $tmpCntnt) :
+						$_insertReloadFooter . $tmpCntnt;
 
 // --> Start Glossary Replacement
 
