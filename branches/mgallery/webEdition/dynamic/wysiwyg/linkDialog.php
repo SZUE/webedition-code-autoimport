@@ -55,46 +55,39 @@ function weDoLinkCmd($args){
 	$href = (strpos($args['href'], '?') !== false ? substr($args['href'], 0, strpos($args['href'], '?')) :
 			(strpos($args['href'], '#') === false ? $args['href'] : substr($args['href'], 0, strpos($args['href'], '#')))) . $param . ($anchor ? '#' . $anchor : '');
 
-	if(we_base_request::_(we_base_request::STRING, 'we_dialog_args', 'tinyMce', 'editor') != "tinyMce"){
-		return we_html_element::jsElement(
-				'top.opener.weWysiwygObject_' . $args['editname'] . '.createLink("' . $href . '","' . $args['target'] . '","' . $args['class'] . '","' . $args['lang'] . '","' . $args['hreflang'] . '","' . $args['title'] . '","' . $args['accesskey'] . '","' . $args['tabindex'] . '","' . $args['rel'] . '","' . $args['rev'] . '");
-top.close();
-');
-	} else {
-		if(strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
-			$query = array();
-			if(!empty($args['mail_subject'])){
-				$query['subject'] = $args['mail_subject'];
-			}
-			if(!empty($args['mail_cc'])){
-				$query['cc'] = $args['mail_cc'];
-			}
-			if(!empty($args['mail_bcc'])){
-				$query['bcc'] = $args['mail_bcc'];
-			}
-
-			$href = $args['href'] . (empty($query) ? '' : '?' . http_build_query($query));
-
-			$tmpClass = $args['class'];
-			foreach($args as &$val){
-				$val = '';
-			}
-			$args['class'] = $tmpClass;
+	if(strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
+		$query = array();
+		if(!empty($args['mail_subject'])){
+			$query['subject'] = $args['mail_subject'];
+		}
+		if(!empty($args['mail_cc'])){
+			$query['cc'] = $args['mail_cc'];
+		}
+		if(!empty($args['mail_bcc'])){
+			$query['bcc'] = $args['mail_bcc'];
 		}
 
-		return we_dialog_base::getTinyMceJS() .
-			we_html_element::jsScript(JS_DIR . 'wysiwyg/tinymce/plugins/welink/js/welink_insert.js') .
-			'<form name="tiny_form">
-			<input type="hidden" name="href" value="' . $href . '">
-			<input type="hidden" name="target" value="' . $args["target"] . '">
-			<input type="hidden" name="class" value="' . $args["cssclass"] . '">
-			<input type="hidden" name="lang" value="' . $args["lang"] . '">
-			<input type="hidden" name="hreflang" value="' . $args["hreflang"] . '">
-			<input type="hidden" name="title" value="' . $args["title"] . '">
-			<input type="hidden" name="accesskey" value="' . $args["accesskey"] . '">
-			<input type="hidden" name="tabindex" value="' . $args["tabindex"] . '">
-			<input type="hidden" name="rel" value="' . $args["rel"] . '">
-			<input type="hidden" name="rev" value="' . $args["rev"] . '">
-			</form>';
+		$href = $args['href'] . (empty($query) ? '' : '?' . http_build_query($query));
+
+		$tmpClass = $args['class'];
+		foreach($args as &$val){
+			$val = '';
+		}
+		$args['class'] = $tmpClass;
 	}
+
+	return we_dialog_base::getTinyMceJS() .
+		we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js') .
+		'<form name="tiny_form">
+		<input type="hidden" name="href" value="' . $href . '">
+		<input type="hidden" name="target" value="' . $args["target"] . '">
+		<input type="hidden" name="class" value="' . $args["cssclass"] . '">
+		<input type="hidden" name="lang" value="' . $args["lang"] . '">
+		<input type="hidden" name="hreflang" value="' . $args["hreflang"] . '">
+		<input type="hidden" name="title" value="' . $args["title"] . '">
+		<input type="hidden" name="accesskey" value="' . $args["accesskey"] . '">
+		<input type="hidden" name="tabindex" value="' . $args["tabindex"] . '">
+		<input type="hidden" name="rel" value="' . $args["rel"] . '">
+		<input type="hidden" name="rev" value="' . $args["rev"] . '">
+		</form>';
 }

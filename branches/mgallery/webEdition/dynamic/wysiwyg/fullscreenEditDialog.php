@@ -26,18 +26,4 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $dialog = new we_dialog_fullscreenEdit();
 $dialog->initByHttp();
-$dialog->registerOkJsFN("weDoFullscreenJS");
 echo $dialog->getHTML();
-
-function weDoFullscreenJS(){
-	return '
-if(weWysiwygSetHiddenText){
-	weWysiwygSetHiddenText();
-}
-
-eval("editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
-var src = document.we_form.elements["we_dialog_args[src]"].value;
-editorObj.setText(src);
-top.close();
-';
-}

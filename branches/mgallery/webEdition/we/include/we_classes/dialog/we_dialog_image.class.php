@@ -367,15 +367,8 @@ class we_dialog_image extends we_dialog_base{
 				'<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
 	</table>';
 
-		if($this->args["editor"] === 'tinyMce'){
-			$classSelect = we_html_tools::htmlFormElementTable($this->getClassSelect(), g_l('wysiwyg', '[css_style]'));
-		} else {
-			$foo = we_html_element::jsElement('showclasss("we_dialog_args[classname]","' . (isset($this->args["cssclass"]) ? $this->args["cssclass"] : "") . '","");');
-			$classSelect = $classSelect = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', '[css_style]'));
-		}
-
+		$classSelect = we_html_tools::htmlFormElementTable($this->getClassSelect(), g_l('wysiwyg', '[css_style]'));
 		$onclick = "checkWidthHeight(document.we_form.elements['we_dialog_args[width]']);";
-
 		$ratio = we_html_forms::checkboxWithHidden((isset($this->args["ratio"]) ? $this->args["ratio"] : false), "we_dialog_args[ratio]", g_l('thumbnails', '[ratio]'), false, "defaultfont", $onclick);
 
 		return array(
@@ -394,7 +387,7 @@ class we_dialog_image extends we_dialog_base{
 				we_html_tools::hidden("imgChangedCmd", 0) . we_html_tools::hidden("wasThumbnailChange", 0) . we_html_tools::hidden("isTinyMCEInitialization", 0) .
 				we_html_tools::hidden("tinyMCEInitRatioH", 0) . we_html_tools::hidden("tinyMCEInitRatioW", 0) .
 				weSuggest::getYuiFiles() .
-				$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() . we_html_element::jsScript(JS_DIR . 'wysiwyg/tinymce/plugins/weimage/js/image_init.js')),
+				$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() . we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_init.js')),
 		);
 	}
 
@@ -499,8 +492,7 @@ function checkWidthHeight(field){
 				function showclasss(name, val, onCh) {' .
 						(isset($this->args["cssClasses"]) && $this->args["cssClasses"] ?
 								'					var classCSV = "' . $this->args["cssClasses"] . '";
-									classNames = classCSV.split(/,/);' : ($this->args["editor"] === "tinyMce" ? 'classNames = top.opener.weclassNames_tinyMce;' :
-										'					classNames = top.opener.we_classNames;')) . '
+									classNames = classCSV.split(/,/);' : ('classNames = top.opener.weclassNames_tinyMce;')) . '
 					document.writeln(\'<select class="defaultfont" style="width:200px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onchange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', '[none]') . '\');
 					if(classNames !== undefined){

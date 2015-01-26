@@ -238,8 +238,7 @@ function doKeyDown() {
 	}
 
 	function getHeaderHTML($printJS_Style = false){
-		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . STYLESHEET .
-			(isset($this->args['editor']) && $this->args['editor'] === 'tinyMce' ? static::getTinyMceJS() : '') .
+		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . STYLESHEET . static::getTinyMceJS() .
 			($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') .
 			'</head>';
 	}
@@ -247,11 +246,11 @@ function doKeyDown() {
 	public static function getTinyMceJS(){
 		return
 			we_html_element::jsElement('var isWeDialog = true;') .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js') .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/mctabs.js') .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/form_utils.js') .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/validate.js') .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/editable_selects.js');
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/validate.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js');
 	}
 
 	function getJs(){

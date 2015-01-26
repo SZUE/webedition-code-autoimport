@@ -6,11 +6,11 @@ we_html_tools::protect($protect);
 
 $editname = we_base_request::_(we_base_request::STRING, 'we_dialog_args', false, 'editname');
 echo we_html_tools::getHtmlTop() .
-	we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js') .
-	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/mctabs.js') .
-	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/form_utils.js') .
-	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/validate.js') .
-	we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/editable_selects.js') .
+	we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
+	we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
+	we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
+	we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/validate.js') .
+	we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js') .
 	STYLESHEET;
 
 if(!isset($_SESSION['weS']['dictLang'])){
@@ -55,7 +55,7 @@ $_applet_code = we_html_element::htmlApplet(array(
 
 
 if($editname !== false){
-	$_mode = ($editname === 'tinyMce' ? 'tinyMce' : 'wysiwyg');
+	$_mode = 'tinyMce';
 }
 ?>
 
@@ -168,9 +168,6 @@ if($editname !== false){
 <?php if($_mode === 'tinyMce'){ ?>
 			editorObj = tinyMCEPopup.editor;
 			var text = editorObj.selection.isCollapsed() ? editorObj.getContent({format: "html"}) : editorObj.selection.getContent({format: "html"});
-<?php } else if($_mode === 'wysiwyg'){ ?>
-			editorObj = top.opener.weWysiwygObject_<?php echo $editname ?>;
-			var text = getTextFromWysiwyg();
 <?php } else { ?>
 			var elements = top.opener.document.getElementsByName("<?php echo $editname ?>");
 			if (elements[0]) {
@@ -187,14 +184,10 @@ if($editname !== false){
 
 	function getTextFromWysiwyg() {
 		var text = "";
-<?php if($_mode === 'wysiwyg'){ ?>
-			editorObj = top.opener.weWysiwygObject_<?php echo $editname ?>;
-<?php } else { ?>
-			var elements = top.opener.document.getElementsByName("<?php echo $editname ?>");
-			if (elements[0]) {
-				editorObj = elements[0];
-			}
-<?php } ?>
+		var elements = top.opener.document.getElementsByName("<?php echo $editname ?>");
+		if (elements[0]) {
+			editorObj = elements[0];
+		}
 
 		if (editorObj.getSelectedText) {
 			text = editorObj.getSelectedText();
@@ -236,12 +229,6 @@ if($editname !== false){
 				editorObj.execCommand('mceSetContent', false, orginal);
 			} else {
 				editorObj.execCommand('mceInsertContent', false, orginal);
-			}
-<?php } else if($_mode === 'wysiwyg'){ ?>
-			if (rangeSelection) {
-				editorObj.replaceText(orginal);
-			} else {
-				editorObj.setText(orginal);
 			}
 <?php } else { ?>
 			editorObj.value = orginal;

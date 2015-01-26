@@ -279,7 +279,7 @@ var setPageNrCallback = {
 <?php
 echo
 we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'wysiwyg/tinymce/weTinyMceDialogs.js') .
+ we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
  we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .

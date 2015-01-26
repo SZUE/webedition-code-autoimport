@@ -87,7 +87,7 @@ class we_wysiwyg_editor{
 		} else if(!preg_match('/^[a-f0-9]{6}$/i', $this->bgcol) && !preg_match('/^[a-z]*$/i', $this->bgcol)){
 			$this->bgcol = '';
 		}
-		$this->tinyParams = str_replace('\'', '"', trim($tinyParams, ' ,'));
+		$this->tinyParams = str_replace(array('\'', '&#34;', '&#8216;', '&#8217;'), '"', trim($tinyParams, ' ,'));
 		$this->templates = trim($templates, ',');
 		$this->xml = $xml ? "xhtml" : "html";
 		$this->removeFirstParagraph = $removeFirstParagraph;
@@ -247,7 +247,7 @@ class we_wysiwyg_editor{
 		if(defined('WE_WYSIWG_HEADER')){
 			if($loadDialogRegistry && !defined('WE_WYSIWG_HEADER_REG')){
 				define('WE_WYSIWG_HEADER_REG', 1);
-				return we_html_element::jsScript(JS_DIR . 'wysiwyg/tinymce/weTinyMceDialogs.js');
+				return we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js');
 			}
 			return '';
 		}
@@ -269,9 +269,9 @@ class we_wysiwyg_editor{
 	height: auto;
 	width: auto;
 }') .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce.js') .
-			($loadDialogRegistry ? we_html_element::jsScript(JS_DIR . 'wysiwyg/tinymce/weTinyMceDialogs.js') : '') .
-			we_html_element::jsScript(JS_DIR . 'wysiwyg/tinymce/weTinyMceFunctions.js');
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
+			($loadDialogRegistry ? we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') : '') .
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceFunctions.js');
 	}
 
 	function getAllCmds(){
@@ -1203,7 +1203,7 @@ tinyMCE.PluginManager.load = function(n, u, cb, s) {
 				return;
 			}
 			if (typeof u === "object"){
-				url = u.resource.indexOf("we") === 0 ? "/webEdition/js/wysiwyg/tinymce/plugins/" + u.resource + u.suffix : u.prefix + u.resource + u.suffix;
+				url = u.resource.indexOf("we") === 0 ? "' . WE_JS_TINYMCE_DIR . 'plugins/" + u.resource + u.suffix : u.prefix + u.resource + u.suffix;
 			}
 			if (url.indexOf("/") !== 0 && url.indexOf("://") == -1){
 				url = tinymce.baseURL + "/" + url;

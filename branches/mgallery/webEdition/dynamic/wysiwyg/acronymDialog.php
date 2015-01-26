@@ -74,15 +74,7 @@ echo $dialog->getHTML().
 
 function weDoAcronymJS(){
 	return '
-if(window.isTinyMCE !== undefined && window.isTinyMCE === true){
-	WeacronymDialog.insert();
-	top.close();
-} else{
-	eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
-	var title = document.we_form.elements["we_dialog_args[title]"].value;
-	var lang = document.we_form.elements["we_dialog_args[lang]"].value;
-	editorObj.editAcronym(title,lang);
-	top.close();
-}
+WeacronymDialog.insert();
+top.close();
 ';
 }

@@ -75,15 +75,7 @@ echo $dialog->getHTML() .
 
 function weDoAbbrJS(){
 	return '
-if(window.isTinyMCE) !== undefined && window.isTinyMCE === true){
-	WeabbrDialog.insert();
-	top.close();
-} else{
-	eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
-	var title = document.we_form.elements["we_dialog_args[title]"].value;
-	var lang = document.we_form.elements["we_dialog_args[lang]"].value;
-	editorObj.editAbbr(title,lang);
-	top.close();
-}
+WeabbrDialog.insert();
+top.close();
 ';
 }

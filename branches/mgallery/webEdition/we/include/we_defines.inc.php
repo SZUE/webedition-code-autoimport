@@ -40,11 +40,12 @@ define('ICON_DIR', IMAGE_DIR . 'icons/');
 define('HTML_DIR', WEBEDITION_DIR . 'html/');
 define('JS_DIR', WEBEDITION_DIR . 'js/');
 define('WE_JS_MODULES_DIR', JS_DIR . 'we_modules/');
+define('WE_JS_TINYMCE_DIR', JS_DIR . 'wysiwyg/tinymce/');
 define('BACKUP_DIR', WEBEDITION_DIR . 'we_backup/');
 define('VERSION_DIR', WEBEDITION_DIR . 'we/versions/');
 define('LIB_DIR', WEBEDITION_DIR . 'lib/');
 define('WE_THUMB_PREVIEW_DIR', WEBEDITION_DIR . 'preview/');
-define('TINYMCE_JS_DIR', LIB_DIR . 'additional/tinymce/');
+define('TINYMCE_SRC_DIR', LIB_DIR . 'additional/tinymce/');
 define('WE_USERS_MODULE_DIR', WE_MODULES_DIR . 'users/');
 
 define('TREE_IMAGE_DIR', IMAGE_DIR . 'tree/');

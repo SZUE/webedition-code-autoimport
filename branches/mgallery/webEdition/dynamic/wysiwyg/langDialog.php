@@ -63,13 +63,7 @@ echo $dialog->getHTML().
 
 function weDoLangJS(){
 	return '
-if(window.isTinyMCE !== undefined && window.isTinyMCE === true){
-	WelangDialog.insert();
-	top.close();
-} else{
-	eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
-	var lang = document.we_form.elements["we_dialog_args[lang]"].value;
-	editorObj.editLang(lang);
-	top.close();
-}';
+WelangDialog.insert();
+top.close();
+';
 }

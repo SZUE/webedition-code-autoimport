@@ -480,7 +480,7 @@ function we_tag_userInput($attribs, $content){
 			if(!$inlineedit){
 				//TODO: move js function open_wysiwyg_win to separate js file
 				echo we_html_element::jsScript(JS_DIR . 'weButton.js') .
-				we_html_element::jsScript(JS_DIR . 'wysiwyg/tinymce/weTinyMceDialogs.js') .
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
 				we_html_element::jsElement('
 function open_wysiwyg_win(){
 	//var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
