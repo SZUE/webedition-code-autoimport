@@ -76,8 +76,8 @@ function we_tag_write($attribs){
 
 		if($ok){
 			$isOwner = ($protected && isset($_SESSION['webuser']['ID']) ?
-							($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->WebUserID) :
-							$userid && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->getElement($userid)));
+					($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->WebUserID) :
+					$userid && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->getElement($userid)));
 
 			$isAdmin = $admin && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin];
 
@@ -104,10 +104,11 @@ function we_tag_write($attribs){
 					}
 				}
 				$GLOBALS['we_' . $type . '_write_ok'] = true;
-				checkAndCreateImage($name, ($type === 'document') ? 'we_document' : 'we_object');
-				checkAndCreateFlashmovie($name, ($type === 'document') ? 'we_document' : 'we_object');
-				checkAndCreateQuicktime($name, ($type === 'document') ? 'we_document' : 'we_object');
-				checkAndCreateBinary($name, ($type === 'document') ? 'we_document' : 'we_object');
+				$checkType = ($type === 'document' ? 'we_document' : 'we_object');
+				checkAndCreateImage($name, $checkType);
+				checkAndCreateFlashmovie($name, $checkType);
+				checkAndCreateQuicktime($name, $checkType);
+				checkAndCreateBinary($name, $checkType);
 
 				$GLOBALS['we_' . $type][$name]->i_checkPathDiffAndCreate();
 				if(!$objname){
@@ -167,7 +168,7 @@ function we_tag_write($attribs){
 							case 'increment':
 								$z = 1;
 								$footext = $objname . '_' . $z;
-								while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . "/" . $footext)) . "'")){
+								while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . "/" . $footext)) . '"')){
 									$z++;
 									$footext = $objname . '_' . $z;
 								}
@@ -180,11 +181,9 @@ function we_tag_write($attribs){
 				if($doWrite){
 					$ret = $GLOBALS['we_' . $type][$name]->we_save();
 					if($publish && !$doworkflow){
-						if($type === 'document' && (!$GLOBALS['we_' . $type][$name]->IsDynamic) && isset($GLOBALS['we_doc'])){ // on static HTML Documents we have to do it different
-							$ret1 = $GLOBALS['we_doc']->we_publish();
-						} else {
-							$ret1 = $GLOBALS['we_' . $type][$name]->we_publish();
-						}
+						$ret1 = ($type === 'document' && (!$GLOBALS['we_' . $type][$name]->IsDynamic) && isset($GLOBALS['we_doc']) ? // on static HTML Documents we have to do it different
+								$GLOBALS['we_doc']->we_publish() :
+								$GLOBALS['we_' . $type][$name]->we_publish());
 					}
 
 					if($doworkflow){
@@ -225,8 +224,8 @@ function we_tag_write($attribs){
 						case 'object':
 							$classname = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid));
 							$mailtext = sprintf(g_l('global', '[std_mailtext_newObj]'), $path, $classname) . "\n" .
-									($triggerid ? id_to_path($triggerid) . '?we_objectID=' : 'ObjectID: ') .
-									$GLOBALS['we_object'][$name]->OF_ID;
+								($triggerid ? id_to_path($triggerid) . '?we_objectID=' : 'ObjectID: ') .
+								$GLOBALS['we_object'][$name]->OF_ID;
 							$subject = g_l('global', '[std_subject_newObj]');
 							break;
 						default:
@@ -351,7 +350,7 @@ function checkAndCreateQuicktime($formname, $type = 'we_document'){
 						// document has already an image
 						// so change binary data
 						$quicktimeDocument->initByID(
-								$quicktimeId);
+							$quicktimeId);
 					}
 
 					$quicktimeDocument->Filename = $_SESSION[$_quicktimeDataId]['fileName'];
@@ -489,7 +488,7 @@ function checkAndCreateBinary($formname, $type = 'we_document'){
 						// document has already an image
 						// so change binary data
 						$binaryDocument->initByID(
-								$binaryId);
+							$binaryId);
 					}
 
 					$binaryDocument->Filename = $_SESSION[$_binaryDataId]['fileName'];
