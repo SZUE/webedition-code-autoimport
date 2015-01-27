@@ -483,10 +483,10 @@ extra_files_desc=new Array();';
 						case 'tmp':
 						case 'lastlog.php':
 						case '.htaccess':
-							continue;
+							continue 2;
 						default:
 							if(@is_dir($dstr . $entry)){
-								continue;
+								continue 2;
 							}
 					}
 

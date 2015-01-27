@@ -216,29 +216,6 @@ abstract class we_base_util{
 	}
 
 	/**
-	 * returns array of directory IDs of all directories which are located inside $folderID (recursive)
-	 *
-	 * @return array
-	 * @param int $folderID
-	 */
-	static function getFoldersInFolder($folderID, $table = FILE_TABLE, we_database_base $db = null){
-		$outArray = array(
-			$folderID
-		);
-		$db = ($db ? : new DB_WE());
-		$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
-		$new = array();
-		while($db->next_record()){
-			$new[] = $db->f('ID');
-		}
-		foreach($new as $cur){
-			$tmpArray = self::getFoldersInFolder($cur, $table, $db);
-			$outArray = array_merge($outArray, $tmpArray);
-		}
-		return $outArray;
-	}
-
-	/**
 	 * Converts a given number in a via array specified system.
 	 * as default a number is converted in the matching chars 0->^,1->a,2->b, ...
 	 * other systems can simply set via the parameter $chars for example -> array(0,1)
