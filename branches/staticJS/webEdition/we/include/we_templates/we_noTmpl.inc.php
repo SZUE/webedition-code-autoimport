@@ -73,7 +73,7 @@ echo we_html_element::htmlDocType();
 <pre class="defaultfont">	&lt;/body&gt;
 &lt;/html&gt;</pre>';
 				echo we_html_tools::htmlMessageBox(667, 650, $foo);
-				?>
+				?><input type="hidden" name="we_complete_request" value="1"/>
 			</form>
 		</body>
 	<?php } else { ?>

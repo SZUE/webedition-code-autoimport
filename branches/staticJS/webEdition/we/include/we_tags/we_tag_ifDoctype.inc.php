@@ -27,7 +27,7 @@ function we_tag_ifDoctype($attribs){
 		print($foo);
 		return false;
 	}
-	$matchArr = weTag_getAttribute('doctypes', $attribs, array(), we_base_request::FILELISTA);
+	$matchArr = explode(',', weTag_getAttribute('doctypes', $attribs, '', we_base_request::STRING));
 
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 
@@ -41,9 +41,9 @@ function we_tag_ifDoctype($attribs){
 		$doctype = $doc->DocType;
 	}
 
-	if(isset($doctype) && $doctype != false){
+	if(isset($doctype) && $doctype !== false){
 		foreach($matchArr as $match){
-			if($doctype == f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $GLOBALS['DB_WE']->escape($match) . '"', 'ID', $GLOBALS['DB_WE'])){
+			if($doctype == f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $GLOBALS['DB_WE']->escape($match) . '"')){
 				return true;
 			}
 		}

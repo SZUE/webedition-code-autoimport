@@ -87,7 +87,7 @@ class we_wysiwyg_editor{
 		} else if(!preg_match('/^[a-f0-9]{6}$/i', $this->bgcol) && !preg_match('/^[a-z]*$/i', $this->bgcol)){
 			$this->bgcol = '';
 		}
-		$this->tinyParams = str_replace('\'', '"', trim($tinyParams, ' ,'));
+		$this->tinyParams = str_replace(array('\'', '&#34;', '&#8216;', '&#8217;'), '"', trim($tinyParams, ' ,'));
 		$this->templates = trim($templates, ',');
 		$this->xml = $xml ? "xhtml" : "html";
 		$this->removeFirstParagraph = $removeFirstParagraph;

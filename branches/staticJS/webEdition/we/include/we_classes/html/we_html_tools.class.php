@@ -688,10 +688,10 @@ this.selectedIndex = 0;' .
 			self::headerCtCharset('text/html', ($charset ? : $GLOBALS['WE_BACKENDCHARSET']));
 		}
 		return
-				($expand ?
-						str_replace(array('script', '"'), array('scr"+"ipt', '\''), we_html_tools::getJSErrorHandler()) :
-						self::getJSErrorHandler()
-				) . //load this as early as possible
+			($expand ?
+				str_replace(array('script', '"'), array('scr"+"ipt', '\''), we_html_tools::getJSErrorHandler()) :
+				self::getJSErrorHandler()
+			) . //load this as early as possible
 			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array('http-equiv' => 'expires', 'content' => 0)) .
 			we_html_element::htmlMeta(array('http-equiv' => 'Cache-Control', 'content' => 'no-cache')) .
@@ -720,7 +720,7 @@ this.selectedIndex = 0;' .
 	static function headerCtCharset($content, $charset, $skipsent = false){
 		$GLOBALS['we']['PageCharset'] = $charset;
 		if(!$skipsent || ($skipsent && !headers_sent())){
-			header('Content-Type: ' . $content . '; charset=' . $charset);
+			header('Content-Type: ' . $content . '; charset=' . $charset, true);
 		}
 	}
 

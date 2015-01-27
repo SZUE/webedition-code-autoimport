@@ -16,7 +16,7 @@
  *
  *
  * @category   we
- * @package none
+ * @package    none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
@@ -24,7 +24,7 @@
  * Utility class for string manipulation and creation
  *
  * @category   we
- * @package none
+ * @package    none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 abstract class we_util_Strings{
@@ -34,7 +34,7 @@ abstract class we_util_Strings{
 	/**
 	 * Returns an unique ID
 	 *
-	 * @param integer $length  length of generated ID
+	 * @param integer $length  length of generated ID (default: 32)
 	 * @return string
 	 */
 	static function createUniqueId($length = 32){
@@ -42,11 +42,12 @@ abstract class we_util_Strings{
 	}
 
 	/**
-	 * Returns cvs of array values
-	 *@deprecated since version 6.3.8
-	 * @param string $arr
-	 * @param string $prePostKomma
-	 * @param string $sep
+	 * Returns CSV of array values.
+	 *
+	 * @deprecated since version 6.3.8
+	 * @param string $arr  The array to be converted
+	 * @param boolean $prePostKomma Flag to add leading and tailing separators (default: false)
+	 * @param string $sep  The separator to be used (default: ',')
 	 * @return string
 	 */
 	static function makeCSVFromArray($arr, $prePostKomma = false, $sep = ","){
@@ -72,9 +73,10 @@ abstract class we_util_Strings{
 	}
 
 	/**
-	 * Returns an array of cvs values
-	 *@deprecated since version 6.3.8
-	 * @param string $csv
+	 * Returns an array of CSV values
+	 *
+	 * @deprecated since version 6.3.8
+	 * @param string $csv  The comma separated string
 	 * @return array
 	 */
 	static function makeArrayFromCSV($csv){
@@ -101,7 +103,7 @@ abstract class we_util_Strings{
 	 * Returns a quoted string
 	 *
 	 * @param string $text
-	 * @param boolean $quoteForSingle
+	 * @param boolean $quoteForSingle (default: true)
 	 * @return string
 	 */
 	static function quoteForJSString($text, $quoteForSingle = true){
@@ -111,10 +113,10 @@ abstract class we_util_Strings{
 	}
 
 	/**
-	 * Returns a shortened string
+	 * Returns a shortened string representation of a path (e.g. '/path/.../file.php')
 	 *
-	 * @param string $path
-	 * @param integer $len
+	 * @param string $path  The path to be shortened.
+	 * @param integer $len  Length (lower bound), when to start shortening (minimum = 10).
 	 * @return string
 	 */
 	static function shortenPath($path, $len){
@@ -125,6 +127,17 @@ abstract class we_util_Strings{
 		return substr($path, 0, $l) . '...' . substr($path, $l * -1);
 	}
 
+	/**
+	 * Splits up the given path every n-th character and adds a space separator in between
+	 *
+	 * Example for $len = 10:
+	 *   input:  "file(filename)"
+	 *   output: "/segment-1 /segment-2 /segment-3 /file"
+	 *
+	 * @param string $path  The path to be split up.
+	 * @param integer $len  Length, when to start the next segment (minimum = 10).
+	 * @return string
+	 */
 	static function shortenPathSpace($path, $len){
 		if(strlen($path) <= $len || strlen($path) < 10){
 			return $path;
@@ -134,10 +147,12 @@ abstract class we_util_Strings{
 	}
 
 	/**
-	 * Returns a formatted string
+	 * Returns a formatted string representation for the given float.
 	 *
-	 * @param float value
-	 * @param string format
+	 * @param float   $value     The float to format
+	 * @param string  $format    The number format to use (default:english,
+	 *                           available: german, deutsch, french, swiss, english)
+	 * @param integer $precision The number of decimal points (default: 2)
 	 * @return string
 	 */
 	static function formatNumber($number, $format = '', $precision = self::PRECISION){
@@ -156,10 +171,15 @@ abstract class we_util_Strings{
 	}
 
 	/**
-	 * splits a version (string) to a number.
+	 * Converts a version string to a number.
 	 *
-	 * @param string $version
-	 * @param bool $isApp
+	 * Examples:
+	 *  - "3.2.4.0" -> 3240
+	 *  - "6.4.0.0" -> 6400
+	 *  - "7.0.0.0" -> 7000
+	 *
+	 * @param string $version  The version to convert into a number
+	 * @param bool $isApp      Handle minor version (default: false)
 	 * @return float
 	 */
 	static function version2number($version, $isApp = false){
@@ -191,11 +211,17 @@ abstract class we_util_Strings{
 	}
 
 	/**
-	 * this function converts a versionnumber (integer/float) to the number as string
-	 * each number separated with ".". Parameter isApp determines if the versionnumber might by float to allow for 0.something.
+	 * This function converts a version number (integer/float) to the string
+	 * representative. Each number separated with ".". Parameter isApp determines
+	 * if the version number might be float to allow for 0.something.
 	 *
-	 * @param float $number
-	 * @param bool $isApp
+	 * Examples:
+	 *  - 3240 -> 3.2.4.0
+	 *  - 6400 -> 6.4.0.0
+	 *  - 7000 -> 7.0.0.0
+	 *
+	 * @param float $number  The version number to convert into a string.
+	 * @param bool  $isApp   Handle minor version (default: false)
 	 * @return string
 	 */
 	static function number2version($number, $isApp = false){
@@ -256,9 +282,11 @@ abstract class we_util_Strings{
 	}
 
 	/**
-	 * this function prints recursively any array or object
+	 * This function prints recursively any array or object.
 	 *
-	 * @param  $val
+	 * @param *       $val   The variable to print
+ 	 * @param boolean $html  Whether to apply oldHtmlspecialchars (default: true)
+	 * @param boolean $useTA Whether output is formated as textarea (dfault: false)
 	 * @return void
 	 */
 	static function p_r($val, $html = true, $useTA = false){

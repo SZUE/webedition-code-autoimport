@@ -44,12 +44,12 @@ if(file_exists($filename)){
 			case 'text/plain': //let the browser decide
 			case 'application/x-empty':
 				break;
-/*			case 'image/svg+xml':
-			case 'image/svg-xml':
-				header_remove('Cache-Control');
-				header_remove('Pragma');*/
+			/* 			case 'image/svg+xml':
+			  case 'image/svg-xml':
+			  header_remove('Cache-Control');
+			  header_remove('Pragma'); */
 			default:
-				header('Content-Type: ' . $mimetype);
+				header('Content-Type: ' . $mimetype . (($charset = we_base_request::_(we_base_request::STRING, 'charset')) ? '; charset=' . $charset : ''));
 		}
 	}
 
