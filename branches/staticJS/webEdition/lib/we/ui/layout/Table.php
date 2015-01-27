@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -30,7 +29,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
-
 	/**
 	 * Two dimensional array to hold the HTML for the cells
 	 *
@@ -289,7 +287,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 						if(!isset($attribs['valign'])){
 							$attribs['valign'] = 'top';
 						}
-						$html .= we_xml_Tags::createStartTag('td', $attribs);
+						$html .= getHtmlTag('td', $attribs, '', false, true);
 					} else {
 						$html .= '<td valign="top">';
 					}

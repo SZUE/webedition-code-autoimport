@@ -312,7 +312,7 @@ EOS;
 			'</head>';
 		return ($this->_framesetHTML !== '' ?
 				$html . $this->_framesetHTML . '</html>' :
-				$html . we_xml_Tags::createStartTag('body', $this->_bodyAttributes) . $this->getBodyHTML() . '</body></html>');
+				$html . getHtmlTag('body', $this->_bodyAttributes, $this->getBodyHTML()) . '</html>');
 	}
 
 	/**
