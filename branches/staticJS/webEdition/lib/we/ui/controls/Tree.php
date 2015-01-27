@@ -1,5 +1,4 @@
 <?php
-
 /* webEdition SDK
  *
  * This source is part of the webEdition SDK. The webEdition SDK is
@@ -29,7 +28,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
-
 	/**
 	 * _nodes attribute
 	 *
@@ -143,12 +141,13 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 	 * @return array
 	 */
 	public static function doSelect($_table, $parentID = 0, $start = 0, $anzahl = 0){
-		$db = we_io_DB::sharedAdapter();
+		$db = new DB_WE();
 
 		$table = $_table;
 		$limit = ($start === 0 && $anzahl === 0) ? '' : (is_numeric($start) && is_numeric($anzahl)) ? 'LIMIT ' . abs($start) . ',' . abs($anzahl) . '' : '';
 
-		$nodes = $db->fetchAll('SELECT ' . escape_sql_query($table) . ".*,LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr FROM `" . escape_sql_query($table) . "` WHERE ParentID= ? ORDER BY IsFolder DESC, isNr DESC,Nr ,lowtext , Text $limit ", $parentID);
+		$db->query('SELECT ' . escape_sql_query($table) . ".*,LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr FROM `" . escape_sql_query($table) . "` WHERE ParentID= " . intval($parentID) . " ORDER BY IsFolder DESC, isNr DESC,Nr ,lowtext , Text $limit ");
+		$nodes = $db->getAll();
 
 		if(!empty($nodes)){
 			if(!array_key_exists('Published', $nodes[0])){
@@ -326,7 +325,8 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		$controller = Zend_Controller_Front::getInstance();
 		$appPath = $controller->getParam('appPath');
 		include($appPath . '/conf/meta.conf.php');
-		return (substr($metaInfo['datasource'], 0, 6) === 'table:' && we_io_DB::tableExists($metaInfo['maintable']) ?
+		$db=new DB_WE();
+		return (substr($metaInfo['datasource'], 0, 6) === 'table:' && $db->isTabExist($metaInfo['maintable']) ?
 				'table' :
 				(substr($metaInfo['datasource'], 0, 7) === 'custom:' ?
 					'custom' : 'custom'));

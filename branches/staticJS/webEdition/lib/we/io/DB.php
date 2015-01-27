@@ -24,6 +24,7 @@
  * Base class for data base
  *
  * @category   we
+ * @deprecated since version 6.4.0
  * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
@@ -38,10 +39,12 @@ class we_io_DB{
 
 	/**
 	 * create new adapter
+ * @deprecated since version 6.4.0
 	 *
 	 * @return object
 	 */
 	static function newAdapter(){
+		t_e('deprecated','this class is deprecated');
 		$DBpar = array('username' => DB_USER, 'password' => DB_PASSWORD, 'dbname' => DB_DATABASE);
 		if(stripos(DB_HOST, ':') !== false){
 			list($host, $port) = explode(':', DB_HOST);
@@ -62,6 +65,7 @@ class we_io_DB{
 
 	/**
 	 * shared adapter
+ * @deprecated since version 6.4.0
 	 *
 	 * @return object
 	 */
@@ -74,13 +78,14 @@ class we_io_DB{
 
 	/**
 	 * checks if table exists in $tab
+ * @deprecated since version 6.4.0
 	 *
 	 * @param string $tab
 	 * @return boolean
 	 */
 	static function tableExists($tab){
-		$_db = we_io_DB::sharedAdapter();
-		return ($_db->fetchAll("SHOW TABLES LIKE '$tab'") ? true : false);
+		$_db = new DB_WE();
+		return ($_db->isTabExist($tab) ? true : false);
 	}
 
 }

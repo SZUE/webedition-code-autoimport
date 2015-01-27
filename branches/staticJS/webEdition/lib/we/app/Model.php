@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -28,7 +27,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_app_Model extends we_core_AbstractModel{
-
 	/**
 	 * id attribute
 	 *
@@ -171,7 +169,7 @@ class we_app_Model extends we_core_AbstractModel{
 	 * @return boolean
 	 */
 	public function isSelf(){
-		$db = we_io_DB::sharedAdapter();
+		$db = new DB_WE();
 
 		if($this->ID){
 			$count = 0;
@@ -180,7 +178,7 @@ class we_app_Model extends we_core_AbstractModel{
 				if($parentid == $this->ID){
 					return true;
 				}
-				$parentid = $db->fetchOne('SELECT ParentID FROM ' . escape_sql_query($this->_table) . ' WHERE ID = ?', $parentid);
+				$parentid = f('SELECT ParentID FROM ' . escape_sql_query($this->_table) . ' WHERE ID=' . intval($parentid), '', $db);
 				$count++;
 				if($count == 9999){
 					return false;
@@ -208,20 +206,20 @@ class we_app_Model extends we_core_AbstractModel{
 	 * @return string
 	 */
 	protected function _evalPath($id = 0){
-		$db = we_io_DB::sharedAdapter();
+		$db = new DB_WE();
 		$path = '';
 		if($id == 0){
 			$id = $this->ParentID;
 			$path = $this->Text;
 		}
 
-		$result = $db->fetchAssoc('SELECT Text,ParentID FROM ' . $this->_table . ' WHERE ' . $this->_primaryKey . ' = ?', $id);
-		$path = '/' . (isset($result[0]['Text']) ? $result[0]['Text'] : '') . $path;
-		$pid = isset($result[0]['ParentID']) ? intval($result[0]['ParentID']) : 0;
+		$result = getHash('SELECT Text,ParentID FROM ' . $this->_table . ' WHERE ' . $this->_primaryKey . '=' . intval($id), $db);
+		$path = '/' . (isset($result['Text']) ? $result['Text'] : '') . $path;
+		$pid = isset($result['ParentID']) ? intval($result['ParentID']) : 0;
 		while($pid > 0){
-			$result = $db->fetchAssoc('SELECT Text,ParentID FROM ' . $this->_table . ' WHERE ' . $this->_primaryKey . ' = ?', $pid);
-			$path = '/' . $result[0]['Text'] . $path;
-			$pid = intval($result[0]['ParentID']);
+			$result = getHash('SELECT Text,ParentID FROM ' . $this->_table . ' WHERE ' . $this->_primaryKey . '=' . $pid, $db);
+			$path = '/' . $result['Text'] . $path;
+			$pid = intval($result['ParentID']);
 		}
 		return $path;
 	}
@@ -233,10 +231,10 @@ class we_app_Model extends we_core_AbstractModel{
 	 * @return void
 	 */
 	public function updateChildPaths($oldpath){
-		$db = we_io_DB::sharedAdapter();
+		$db = new DB_WE();
 		if($this->IsFolder && $oldpath != '' && $oldpath != '/' && $oldpath != $this->Path){
-			$result = $db->fetchAssoc('SELECT ' . $this->_primaryKey . ' FROM ' . $this->_table . '  WHERE Path like ? AND ' . $this->_primaryKey . ' <> ?', array($oldpath . '%', $this->{$this->_primaryKey}));
-
+			$db->query('SELECT ' . $this->_primaryKey . ' FROM ' . $this->_table . '  WHERE Path like "' . $db->escape($oldpath . '%') . '" AND ' . $this->_primaryKey . ' !=' . intval($this->{$this->_primaryKey}));
+			$result = $db->getAll();
 			foreach($result as $row){
 				$updateFields = array('Path' => $this->_evalPath($row[$this->_primaryKey]));
 				$cond = $this->_primaryKey . '=' . intval($row[$this->_primaryKey]);
@@ -261,14 +259,13 @@ class we_app_Model extends we_core_AbstractModel{
 	 * @return void
 	 */
 	public function deleteChilds(){
-		$db = we_io_DB::sharedAdapter();
-		$stmt = $db->query('SELECT ' . $this->_primaryKey . ' FROM ' . $this->_table . ' WHERE ParentID = ?', $this->{$this->_primaryKey});
-		$id = $stmt->fetchColumn(0);
-		while($id){
+		$db = new DB_WE();
+		$db->query('SELECT ' . $this->_primaryKey . ' FROM ' . $this->_table . ' WHERE ParentID=' . intval($this->{$this->_primaryKey}));
+		while($db->next_record()){
+			$id = $db->f($this->_primaryKey);
 			$class = get_class($this);
 			$child = new $class($id);
 			$child->delete();
-			$id = $stmt->fetchColumn(0);
 		}
 	}
 
