@@ -51,13 +51,13 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$okBut = $back && $ok ? we_html_button::create_button_table(array($back, $ok)) : ($back ? : $ok);
 		}
 
-		return we_html_button::position_yes_no_cancel($okBut, '', we_html_button::create_button('cancel', "javascript:top.close();"));
+		return we_html_button::position_yes_no_cancel($okBut, '', we_html_button::create_button('cancel', 'javascript:top.close();'));
 	}
 
 	function initByHref($href, $target = '', $class = '', $param = '', $anchor = '', $lang = '', $hreflang = '', $title = '', $accesskey = '', $tabindex = '', $rel = '', $rev = ''){
 		if($href){
 			$this->args["href"] = $href;
-			list($type, $ref) = explode(':', $this->args["href"]);
+			list($type, $ref) = explode(':', $this->args['href']);
 			$type.=':';
 
 			// Object Links and internal links are not possible when outside webEdition
