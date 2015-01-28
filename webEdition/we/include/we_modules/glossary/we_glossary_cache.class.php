@@ -120,10 +120,11 @@ class we_glossary_cache{
 		$Items = array();
 
 		while($DB_WE->next_record()){
-			$Text = $DB_WE->f('Text');
 			$Type = $DB_WE->f('Type');
-			$Title = $DB_WE->f('Title');
+			$Text = trim($DB_WE->f('Text'));
+			$Title = trim($DB_WE->f('Title'));
 			$Attributes = @unserialize($DB_WE->f('Attributes'));
+			$Attributes = array_map('trim', $Attributes);
 
 
 			if($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8' && isset($GLOBALS['we_doc']->elements['Charset']['dat']) && $GLOBALS['we_doc']->elements['Charset']['dat'] != 'UTF-8'){
@@ -132,8 +133,7 @@ class we_glossary_cache{
 			}
 
 			$Text = oldHtmlspecialchars($Text, ENT_NOQUOTES);
-
-			$Title = trim(oldHtmlspecialchars($Title, ENT_QUOTES));
+			$Title = oldHtmlspecialchars($Title, ENT_QUOTES);
 
 			$temp = array(
 				'Fullword' => $DB_WE->f('Fullword')
@@ -144,9 +144,9 @@ class we_glossary_cache{
 			}
 
 			// Language
-			if(isset($Attributes['lang']) && trim($Attributes['lang']) != ""){
-				$temp['lang'] = trim($Attributes['lang']);
-				$temp['xml:lang'] = trim($Attributes['lang']);
+			if(isset($Attributes['lang']) && $Attributes['lang']){
+				$temp['lang'] = $Attributes['lang'];
+				$temp['xml:lang'] = $temp['lang'];
 			}
 
 			// Language
@@ -154,76 +154,74 @@ class we_glossary_cache{
 				$urladd = array();
 
 				if(isset($Attributes['mode'])){
-					$Attributes['mode'] = trim($Attributes['mode']);
+					$Attributes['mode'] = $Attributes['mode'];
 					switch($Attributes['mode']){
 						// External Link
 						case "extern":
 
 							// Href
-							$temp['href'] = (isset($Attributes['ExternUrl']) && trim($Attributes['ExternUrl']) != "" && trim($Attributes['ExternUrl']) != we_base_link::EMPTY_EXT ?
-									trim($Attributes['ExternUrl']) :
+							$temp['href'] = (isset($Attributes['ExternUrl']) && $Attributes['ExternUrl'] && $Attributes['ExternUrl'] != we_base_link::EMPTY_EXT ?
+									$Attributes['ExternUrl'] :
 									'');
 
 							// Parameter
-							if(isset($Attributes['ExternParameter']) && trim($Attributes['ExternParameter']) != ""){
-								$urladd[] = trim($Attributes['ExternParameter']);
+							if(isset($Attributes['ExternParameter']) && $Attributes['ExternParameter']){
+								$urladd[] = $Attributes['ExternParameter'];
 							}
 							break;
 						// Internal Link
 						case "intern":
 
 							// LinkID
-							$temp['href'] = (isset($Attributes['InternLinkID']) && trim($Attributes['InternLinkID']) != 0 ?
+							$temp['href'] = (isset($Attributes['InternLinkID']) && $Attributes['InternLinkID'] ?
 									id_to_path($Attributes['InternLinkID']) :
 									'');
 
 							// Parameter
-							if(isset($Attributes['InternParameter']) && trim($Attributes['InternParameter']) != ""){
-								$urladd[] = trim($Attributes['InternParameter']);
+							if(isset($Attributes['InternParameter']) && $Attributes['InternParameter']){
+								$urladd[] = $Attributes['InternParameter'];
 							}
 							break;
 						// Object Link
 						case "object":
 							// LinkID
-							$temp['href'] = (isset($Attributes['ObjectLinkPath']) && trim($Attributes['ObjectLinkPath']) != "" ?
-									trim($Attributes['ObjectLinkPath']) :
+							$temp['href'] = (isset($Attributes['ObjectLinkPath']) && $Attributes['ObjectLinkPath'] ?
+									$Attributes['ObjectLinkPath'] :
 									'');
 
-							if(isset($Attributes['ObjectLinkID']) && trim($Attributes['ObjectLinkID']) != ""){
-								$urladd[] = 'we_objectID=' . trim($Attributes['ObjectLinkID']);
+							if(isset($Attributes['ObjectLinkID']) && $Attributes['ObjectLinkID']){
+								$urladd[] = 'we_objectID=' . $Attributes['ObjectLinkID'];
 							}
 
 							// Parameter
-							if(isset($Attributes['ObjectParameter']) && trim($Attributes['ObjectParameter']) != ""){
-								$urladd[] = trim($Attributes['ObjectParameter']);
+							if(isset($Attributes['ObjectParameter']) && $Attributes['ObjectParameter']){
+								$urladd[] = $Attributes['ObjectParameter'];
 							}
 							break;
 
 						case 'category':// Category Link
 
 							$temp['href'] = '';
-							if(isset($Attributes['modeCategory']) && trim($Attributes['modeCategory']) === "intern"){
-
+							if(isset($Attributes['modeCategory']) && $Attributes['modeCategory'] === 'intern'){
 								// LinkID
-								if(isset($Attributes['CategoryInternLinkID']) && trim($Attributes['CategoryInternLinkID']) != ""){
+								if(isset($Attributes['CategoryInternLinkID']) && $Attributes['CategoryInternLinkID']){
 									$temp['href'] .= id_to_path($Attributes['CategoryInternLinkID']);
 								}
 							} else {
-
 								// Href
-								if(isset($Attributes['CategoryUrl']) && trim($Attributes['CategoryUrl']) != ""){
-									$temp['href'] .= trim($Attributes['CategoryUrl']);
+								if(isset($Attributes['CategoryUrl']) && $Attributes['CategoryUrl']){
+									$temp['href'] .= $Attributes['CategoryUrl'];
 								}
 							}
 
 							// Cat Parameter & Cat ID
-							if(isset($Attributes['CategoryCatParameter']) && trim($Attributes['CategoryCatParameter']) != "" && isset($Attributes['CategoryLinkID']) && trim($Attributes['CategoryLinkID']) != ""){
-								$urladd[] = trim($Attributes['CategoryCatParameter']) . "=" . trim($Attributes['CategoryLinkID']);
+							if(isset($Attributes['CategoryCatParameter']) && $Attributes['CategoryCatParameter'] && isset($Attributes['CategoryLinkID']) && $Attributes['CategoryLinkID']){
+								$urladd[] = $Attributes['CategoryCatParameter'] . '=' . $Attributes['CategoryLinkID'];
 							}
 
 							// Parameter
-							if(isset($Attributes['CategoryParameter']) && trim($Attributes['CategoryParameter']) != ""){
-								$urladd[] = trim($Attributes['CategoryParameter']);
+							if(isset($Attributes['CategoryParameter']) && $Attributes['CategoryParameter']){
+								$urladd[] = $Attributes['CategoryParameter'];
 							}
 							break;
 					}
@@ -231,58 +229,57 @@ class we_glossary_cache{
 
 
 				// Attribute
-				if(isset($Attributes['attribute']) && trim($Attributes['attribute']) != ""){
-					$temp['attribute'] = ' ' . addslashes(trim($Attributes['attribute']) . " ");
+				if(isset($Attributes['attribute']) && $Attributes['attribute']){
+					$temp['attribute'] = ' ' . addslashes($Attributes['attribute'] . " ");
 				}
 
 				// Target
-				if(isset($Attributes['target']) && trim($Attributes['target']) != ""){
-					$temp['target'] = trim($Attributes['target']);
+				if(isset($Attributes['target']) && $Attributes['target']){
+					$temp['target'] = $Attributes['target'];
 				}
 
 				// hreflang
-				if(isset($Attributes['hreflang']) && trim($Attributes['hreflang']) != ""){
-					$temp['hreflang'] = trim($Attributes['hreflang']);
+				if(isset($Attributes['hreflang']) && $Attributes['hreflang']){
+					$temp['hreflang'] = $Attributes['hreflang'];
 				}
 
 				// Accesskey
-				if(isset($Attributes['accesskey']) && trim($Attributes['accesskey']) != ""){
-					$temp['accesskey'] = trim($Attributes['accesskey']);
+				if(isset($Attributes['accesskey']) && $Attributes['accesskey']){
+					$temp['accesskey'] = $Attributes['accesskey'];
 				}
 
 				// tabindex
-				if(isset($Attributes['tabindex']) && trim($Attributes['tabindex']) != ""){
-					$temp['tabindex'] = trim($Attributes['tabindex']);
+				if(isset($Attributes['tabindex']) && $Attributes['tabindex']){
+					$temp['tabindex'] = $Attributes['tabindex'];
 				}
 
 				// rel
-				if(isset($Attributes['rel']) && trim($Attributes['rel']) != ""){
-					$temp['rel'] = trim($Attributes['rel']);
+				if(isset($Attributes['rel']) && $Attributes['rel']){
+					$temp['rel'] = $Attributes['rel'];
 				}
 
 				// rev
-				if(isset($Attributes['rev']) && trim($Attributes['rev']) != ""){
-					$temp['rev'] = trim($Attributes['rev']);
+				if(isset($Attributes['rev']) && $Attributes['rev']){
+					$temp['rev'] = $Attributes['rev'];
 				}
 
-				$temp['href'] .= $urladd ? '?' . implode('&', $urladd) : '';
-
-				// Anchor
-				if(isset($Attributes['anchor']) && trim($Attributes['anchor']) != ""){
-					$temp['href'] .= '#' . trim($Attributes['anchor']);
-				}
+				$temp['href'] .= ($urladd ? '?' . implode('&', $urladd) : '') .
+					// Anchor
+					(isset($Attributes['anchor']) && $Attributes['anchor'] ?
+						'#' . $Attributes['anchor'] :
+						'');
 
 				// popup_open
 				if(isset($Attributes['popup_open']) && $Attributes['popup_open'] == 1){
 					// popup_width
-					$width = (isset($Attributes['popup_width']) && trim($Attributes['popup_width']) ? trim($Attributes['popup_width']) : 100);
+					$width = (isset($Attributes['popup_width']) && $Attributes['popup_width'] ? $Attributes['popup_width'] : 100);
 
 					// popup_height
-					$height = (isset($Attributes['popup_height']) && trim($Attributes['popup_height']) ? trim($Attributes['popup_height']) : 100);
+					$height = (isset($Attributes['popup_height']) && $Attributes['popup_height'] ? $Attributes['popup_height'] : 100);
 
 					$temp['onclick'] = 'var we_winOpts=\'\';' .
 						// popup_center
-						(isset($Attributes['popup_center']) && trim($Attributes['popup_center']) ?'
+						(isset($Attributes['popup_center']) && $Attributes['popup_center'] ? '
 if (window.screen) {
 	var w=' . $width . ';
 	var h=' . $height . ';
@@ -296,12 +293,12 @@ if (window.screen) {
 	we_winOpts = \'left=\'+x+\',top=\'+y;
 }' :
 // popup_xposition
-							(isset($Attributes['popup_xposition']) && trim($Attributes['popup_xposition']) ?
-								"we_winOpts += (we_winOpts ? ',' : '')+'left=" . trim($Attributes['popup_xposition']) . "';" :
+							(isset($Attributes['popup_xposition']) && $Attributes['popup_xposition'] ?
+								"we_winOpts += (we_winOpts ? ',' : '')+'left=" . $Attributes['popup_xposition'] . "';" :
 								'') .
 							// popup_yposition
-							(isset($Attributes['popup_yposition']) && trim($Attributes['popup_yposition']) ?
-								"we_winOpts += (we_winOpts ? ',' : '')+'top=" . trim($Attributes['popup_yposition']) . "';" :
+							(isset($Attributes['popup_yposition']) && $Attributes['popup_yposition'] ?
+								"we_winOpts += (we_winOpts ? ',' : '')+'top=" . $Attributes['popup_yposition'] . "';" :
 								'')
 						) .
 						// popup_width
