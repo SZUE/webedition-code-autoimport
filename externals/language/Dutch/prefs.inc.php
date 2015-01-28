@@ -17,12 +17,6 @@ $l_prefs=array(
 	'backup_fast'=>'Snel',
 	'backup_slow'=>'Langzaam',
 	'backwardcompatibility'=>'Backward compatibility',
-	
-	'base'=>array(
-		'css'=>'Domain for CSS files',
-		'img'=>'Domain for images',
-		'js'=>'Domain for JS files',
-	),
 	'blockFor'=>'Blokkeer voor',
 	'blockFormmail'=>'Beperk formmail aanvragen',
 	'blocked_until'=>'Geblokkeerd tot',
@@ -246,6 +240,7 @@ $l_prefs=array(
 	'proxyuser'=>'Gebruikersnaam',
 	'question_change_to_seem_start'=>'Wilt u het geselecteerde document wijzigen?',
 	'removefirstparagraph_default'=>'Default value for the<br/><em>removefirstparagraph</em> attribute in<br/>&lt;we:textarea&gt;',
+	'replaceacronym'=>'HTML5: replace acronym tag with abbr tag',
 	'save'=>'Bezig met bewaren van voorkeuren, even geduld a.u.b. ...',
 	'save_wait'=>'Bezig met bewaren van voorkeuren',
 	'saved'=>'Voorkeuren zijn succesvol bewaard.',

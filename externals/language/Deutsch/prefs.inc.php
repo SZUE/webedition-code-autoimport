@@ -17,12 +17,6 @@ $l_prefs=array(
 	'backup_fast'=>'Schnell',
 	'backup_slow'=>'Langsam',
 	'backwardcompatibility'=>'Abwärtskompatibilität',
-	
-	'base'=>array(
-		'css'=>'CSS Basis-URL',
-		'img'=>'Bilder Basis-URL',
-		'js'=>'JS Basis-URL',
-	),
 	'blockFor'=>'Blockieren für',
 	'blockFormmail'=>'Formmail Anfragen begrenzen',
 	'blocked_until'=>'Geblockt bis',
@@ -247,6 +241,7 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 	'proxyuser'=>'Benutzername',
 	'question_change_to_seem_start'=>'Möchten Sie zum ausgewählten Dokument wechseln?',
 	'removefirstparagraph_default'=>'Standard Einstellung für<br/><em>removefirstparagraph</em>-Attribut in<br/>&lt;we:textarea&gt;',
+	'replaceacronym'=>'HTML5: Acronym-Tag durch Abbr-Tag ersetzen',
 	'save'=>'Einstellungen werden gespeichert, einen Moment ...',
 	'save_wait'=>'Speichere Einstellungen',
 	'saved'=>'Die Einstellungen wurden erfolgreich gespeichert.',

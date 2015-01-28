@@ -17,12 +17,6 @@ $l_prefs=array(
 	'backup_fast'=>'Rapide',
 	'backup_slow'=>'Lente',
 	'backwardcompatibility'=>'Compatibilité avec les versions antérieures',
-	
-	'base'=>array(
-		'css'=>'Domain for CSS files',
-		'img'=>'Domain for images',
-		'js'=>'Domain for JS files',
-	),
 	'blockFor'=>'Bloquer pour',
 	'blockFormmail'=>'Limiter les requettes formmail',
 	'blocked_until'=>'Bloqué jusqu`à',
@@ -246,6 +240,7 @@ $l_prefs=array(
 	'proxyuser'=>'Nom d`utilisateur',
 	'question_change_to_seem_start'=>'Voulez-vous changer au document choisi?',
 	'removefirstparagraph_default'=>'Default value for the<br/><em>removefirstparagraph</em> attribute in<br/>&lt;we:textarea&gt;',
+	'replaceacronym'=>'HTML5: replace acronym tag with abbr tag',
 	'save'=>'Enregistrement des préférences en cours, un moment s`il vous plaît ...',
 	'save_wait'=>'Enregistrement des préférence',
 	'saved'=>'Les préférences ont été enregistré avec succès.',

@@ -17,12 +17,6 @@ $l_prefs=array(
 	'backup_fast'=>'Nopea',
 	'backup_slow'=>'Hidas',
 	'backwardcompatibility'=>'Backward compatibility',
-	
-	'base'=>array(
-		'css'=>'Domain for CSS files',
-		'img'=>'Domain for images',
-		'js'=>'Domain for JS files',
-	),
 	'blockFor'=>'Estä ajaksi',
 	'blockFormmail'=>'Rajoita formmail pyyntöjä',
 	'blocked_until'=>'Estetty asti',
@@ -246,6 +240,7 @@ $l_prefs=array(
 	'proxyuser'=>'Käyttäjänimi',
 	'question_change_to_seem_start'=>'Haluatko siirtyä valittuun dokumenttiin?',
 	'removefirstparagraph_default'=>'Default value for the<br/><em>removefirstparagraph</em> attribute in<br/>&lt;we:textarea&gt;',
+	'replaceacronym'=>'HTML5: replace acronym tag with abbr tag',
 	'save'=>'Tallennetaan asetuksia, hetkinen ...',
 	'save_wait'=>'Tallennetaan asetuksia',
 	'saved'=>'Asetukset on tallennettu.',
