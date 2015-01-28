@@ -126,7 +126,7 @@ class we_core_Local{
 		} else {
 			if(!isset($_SESSION)){
 				if(!isset($_SERVER['TMP'])){
-					$_SERVER['TMP'] = WEBEDITION_PATH . 'we/zendcache';
+					$_SERVER['TMP'] = WEBEDITION_PATH . 'we/cache';
 				}
 				/* 				try{
 				  Zend_Session::setOptions(array('name' => SESSION_NAME));

@@ -143,26 +143,28 @@ function showMessage(message, prio, win){
 }
 
 function cleanWEZendCache(){
-	if(file_exists(ZENDCACHE_PATH . 'clean')){
+	if(file_exists(WE_CACHE_PATH . 'clean')){
 		$cache = getWEZendCache();
 		$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
 //remove file
-		unlink(ZENDCACHE_PATH . 'clean');
+		unlink(WE_CACHE_PATH . 'clean');
 	}
 }
 
 /* * ***************************************************************************
  * CLEAN Temporary Data left over from last logout  bug #4240
  * *************************************************************************** */
-if(is_dir(WEBEDITION_PATH . 'we/cache')){
-	we_base_file::deleteLocalFolder(WEBEDITION_PATH . 'we/cache', true);
-}
-//FIXME: remove? => updater?
-if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
-	we_base_file::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
-}
-if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller.php')){
-	we_base_file::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller.php', true);
+$removePaths = array(
+	WEBEDITION_PATH . 'we/include/we_modules/navigation/cache', //old navi-cache
+	$_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller',
+	$_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller.php',
+	WEBEDITION_PATH . 'we/zendcache', //old specific zend cache dir
+);
+
+foreach($removePaths as $path){
+	if(is_dir($path)){
+		we_base_file::deleteLocalFolder($path, true);
+	}
 }
 
 we_base_file::cleanTempFiles(true);

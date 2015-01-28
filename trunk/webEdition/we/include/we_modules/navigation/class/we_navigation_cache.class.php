@@ -24,7 +24,7 @@
  */
 class we_navigation_cache{
 
-	const CACHEDIR = '/webEdition/we/include/we_modules/navigation/cache/';
+	const CACHEDIR = WE_CACHE_PATH;
 
 	static $rebuildRootCnt = 0;
 
