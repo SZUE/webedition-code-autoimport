@@ -149,7 +149,8 @@ class we_textDocument extends we_document{
 							));
 							$less->setFormatter('classic');
 							try{
-								$doc = $less->compile($doc);
+								//we prepend an extra / before #WE, to make parser believe this is an absolute path
+								$doc = str_replace('/#WE:','#WE:',$less->compile(preg_replace('|(#WE:\d+#)|', '/$1',$doc)));
 							} catch (exception $e){
 								$this->errMsg = $e->getMessage();
 								return false;
