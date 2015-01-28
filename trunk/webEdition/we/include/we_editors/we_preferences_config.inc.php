@@ -74,6 +74,7 @@ $GLOBALS['configs'] = array(
 		'REMOVEFIRSTPARAGRAPH_DEFAULT' => array('Default setting for removeparagraph attribute', we_base_request::BOOL, false),
 		'HIDENAMEATTRIBINWEIMG_DEFAULT' => array('Default setting for hide name attribute in weimg output', we_base_request::BOOL, false),
 		'HIDENAMEATTRIBINWEFORM_DEFAULT' => array('Default setting for hide name attribute in weform output', we_base_request::BOOL, false),
+		'REPLACEACRONYM' => array('Remove unsupported html5 acronym tag', we_base_request::BOOL, false),
 // we_css
 		'CSSAPPLYTO_DEFAULT' => array('Default setting for we:css attribute applyto', we_base_request::STRING, 'around'),
 // hooks
