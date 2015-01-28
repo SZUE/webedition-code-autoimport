@@ -419,7 +419,10 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		}
 	}
 
-	public function doUpdate(){
+	public function doUpdate($calledByLU = false){
+		if($calledByLU){
+			t_e('we_updater::doUpdate() called by LiveUpdate');
+		}
 		$db = new DB_WE();
 		self::replayUpdateDB();
 
