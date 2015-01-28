@@ -27,8 +27,11 @@ we_html_tools::protect();
 // prevent persmissions overriding
 $perms = $_SESSION['perms'];
 // init document
-
+if(!isset($we_transaction)){
+	$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we_transaction, 1));
+}
 $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
+$GLOBALS['we_transaction'] = $we_transaction;
 
 include(WE_INCLUDES_PATH . '/we_editors/we_init_doc.inc.php');
 
