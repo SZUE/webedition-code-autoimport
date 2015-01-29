@@ -1,4 +1,15 @@
-CREATE TABLE ###TBLPREFIX###tblNewsletterLog (
+###UPDATEDROPCOL(UserTable,###TBLPREFIX###UserTable)###
+/* query separator */
+###UPDATEDROPCOL(expires,###TBLPREFIX###UserTable)###
+/* query separator */
+###UPDATEDROPCOL(token,###TBLPREFIX###UserTable)###
+/* query separator */
+###UPDATEDROPCOL(password,###TBLPREFIX###UserTable)###
+/* query separator */
+###UPDATEDROPCOL(loginPage,###TBLPREFIX###UserTable)###
+/* query separator */
+
+CREATE TABLE ###TBLPREFIX###UserTable (
   ID bigint(20) unsigned NOT NULL auto_increment,
   NewsletterID int(11) unsigned NOT NULL default '0',
   stamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -12,4 +23,4 @@ CREATE TABLE ###TBLPREFIX###tblNewsletterLog (
 ###ONCOL(LogTime,###TBLPREFIX###tblNewsletterLog) UPDATE ###TBLPREFIX###tblNewsletterLog SET stamp=FROM_UNIXTIME(LogTime);###
 
 /* query separator */
-###ONCOL(LogTime,###TBLPREFIX###tblNewsletterLog) ALTER TABLE ###TBLPREFIX###tblNewsletterLog DROP LogTime;###
+###UPDATEDROPCOL(LogTime,###TBLPREFIX###UserTable)###
