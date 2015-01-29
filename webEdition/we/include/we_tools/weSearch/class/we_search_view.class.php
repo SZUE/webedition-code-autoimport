@@ -1953,7 +1953,7 @@ function calendarSetup(x){
 				if($where != ''){
 
 					if(isset($folderID) && ($folderID != '' && $folderID != 0)){
-						$where = ' AND (1 ' . $where . ')' . $this->searchclass->ofFolderAndChildsOnly($folderID, $_table);
+						$where = ' AND (1 ' . $where . ')' . we_search_search::ofFolderAndChildsOnly($folderID, $_table);
 					}
 
 					if($_table == VERSIONS_TABLE){
@@ -1964,7 +1964,7 @@ function calendarSetup(x){
 					}
 
 					if($workspaces){
-						$where = ' AND (1 ' . $where . ')' . $this->searchclass->ofFolderAndChildsOnly($workspaces, $_table);
+						$where = ' AND (1 ' . $where . ')' . we_search_search::ofFolderAndChildsOnly($workspaces, $_table);
 					}
 
 					$whereQuery = '1 ' . $where;
@@ -1998,10 +1998,10 @@ function calendarSetup(x){
 							$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] = ' AND ((' . OBJECT_FILES_TABLE . '.RestrictOwners=0 OR ' . OBJECT_FILES_TABLE . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',' . OBJECT_FILES_TABLE . '.Owners)))';
 							$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] = ' AND ((' . FILE_TABLE . '.RestrictOwners=0 OR ' . FILE_TABLE . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',' . FILE_TABLE . '.Owners)))';
 							if(!empty($workspacesTblFile)){
-								$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] .= $where = ' ' . $this->searchclass->ofFolderAndChildsOnly($workspacesTblFile[0], $_table);
+								$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] .= $where = ' ' . we_search_search::ofFolderAndChildsOnly($workspacesTblFile[0], $_table);
 							}
 							if(isset($workspacesObjFile) && !empty($workspacesObjFile)){
-								$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] .= $where = " " . $this->searchclass->ofFolderAndChildsOnly($workspacesObjFile[0], $_table);
+								$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] .= $where = " " . we_search_search::ofFolderAndChildsOnly($workspacesObjFile[0], $_table);
 							}
 
 							if(!$isCheckedFileTable && $isCheckedObjFileTable){
