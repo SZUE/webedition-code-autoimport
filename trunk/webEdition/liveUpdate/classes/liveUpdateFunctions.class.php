@@ -752,7 +752,7 @@ class liveUpdateFunctions{
 									$duplicate = true;
 									$this->QueryLog['tableChanged'][] = $tableName;
 								} else {
-									$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
+									$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $_query --";
 								}
 								$success = false;
 							}
@@ -765,7 +765,7 @@ class liveUpdateFunctions{
 								$db->lock(array($tableName => 'write', $backupName => 'read'));
 								foreach($alterQueries as $_query){
 									if(trim($query) && !$db->query(trim($_query))){
-										$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
+										$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $_query --";
 									}
 								}
 								$db->query('INSERT IGNORE INTO ' . $db->escape($tableName) . ' SELECT * FROM ' . $db->escape($backupName));
@@ -784,13 +784,13 @@ class liveUpdateFunctions{
 				}
 				break;
 			case 1062:
-				$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
+				$this->QueryLog['entryExists'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n<!-- $query -->";
 				return false;
 			case 1065:
 				//ignore empty queries
 				return true;
 			default:
-				$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
+				$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $query --";
 				return false;
 		}
 
@@ -854,6 +854,10 @@ class liveUpdateFunctions{
 		$GLOBALS['liveUpdateError']["errorString"] = $errstr;
 		$GLOBALS['liveUpdateError']["errorFile"] = $errfile;
 		$GLOBALS['liveUpdateError']["errorLine"] = $errline;
+		if(function_exists('error_handler')){
+			//log errors to system log, if we have one.
+			error_handler($errno, $errstr, $errfile, $errline, $errcontext);
+		}
 	}
 
 }
