@@ -48,6 +48,7 @@ class we_template extends we_document{
 		$this->Published = 1;
 		$this->InWebEdition = true;
 		$this->ContentType = we_base_ContentTypes::TEMPLATE;
+		$this->Extension = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::TEMPLATE);
 	}
 
 	function copyDoc($id){
