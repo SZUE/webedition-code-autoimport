@@ -754,7 +754,8 @@ function weWysiwygSetHiddenText(arg) {
 	}
 
 	function getTemplates(){
-		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE (ID IN (' . implode(',', array_map('intval', explode(',', $this->templates))) . ') ) AND Published!=0');
+		//FIXME: the ParentID query will only hold for depth 1 folders
+		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE (ID IN (' . implode(',', array_map('intval', explode(',', $this->templates))) . ') OR ParentID IN (' . implode(',', array_map('intval', explode(',', $this->templates))) . ') ) AND Published!=0 AND isFolder=0');
 		$tmplArr = $GLOBALS['DB_WE']->getAll(true);
 
 		$templates = array();
