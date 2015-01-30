@@ -68,7 +68,7 @@ function we_tag_listview($attribs){
 	$name = weTag_getAttribute('name', $attribs, 0, we_base_request::STRING);
 	$doctype = weTag_getAttribute('doctype', $attribs, '', we_base_request::STRING);
 	$class = weTag_getAttribute('classid', $attribs, 0, we_base_request::INT);
-	$we_lv_cats = we_base_request::_(we_base_request::FILELIST, 'we_lv_cats_' . $name, weTag_getAttribute('categories', $attribs, '', we_base_request::STRING));
+	$we_lv_cats = we_base_request::_(we_base_request::FILELIST, 'we_lv_cats_' . $name, weTag_getAttribute('categories', $attribs, '', we_base_request::FILELIST));
 	$categoryids = weTag_getAttribute('categoryids', $attribs, '', we_base_request::INTLIST);
 	$we_lv_categoryids = we_base_request::_(we_base_request::INTLIST, 'we_lv_categoryids_' . $name, $categoryids);
 	$we_lv_catOr = we_base_request::_(we_base_request::BOOL, 'we_lv_catOr_' . $name, weTag_getAttribute('catOr', $attribs, false, we_base_request::BOOL));

@@ -674,6 +674,8 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
+		$this->temp_template_id = $this->TemplateID;
+		$this->temp_category = $this->Category;
 		return parent::we_publish($DoNotMark, $saveinMainDB, $skipHook);
 	}
 

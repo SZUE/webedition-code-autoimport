@@ -591,7 +591,6 @@ class liveUpdateFunctions{
 		}
 		if(preg_match('/###ONCOL\((.*),(.*)\)(.+);###/', $query, $matches)){
 			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Field="' . $matches[1] . '"');
-			t_e($query);
 			$query = ($db->num_rows() ? $matches[3] : '');
 		}
 		//handle if key is not set, should be used after table def. so handling code, e.g. truncate, copy... can be put here

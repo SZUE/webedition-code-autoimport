@@ -67,7 +67,8 @@ define('WE_USERS_MODULE_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_USERS_MODULE_DIR);
 
 //paths without "DIRS"
 define('WE_FRAGMENT_PATH', WEBEDITION_PATH . 'fragments/');
-define('ZENDCACHE_PATH', WEBEDITION_PATH . 'we/zendcache/');
+define('WE_CACHE_PATH', WEBEDITION_PATH . 'we/cache/');
+define('ZENDCACHE_PATH', WE_CACHE_PATH);//FIXME: remove
 
 include_once (WE_INCLUDES_PATH . 'we_version.php');
 

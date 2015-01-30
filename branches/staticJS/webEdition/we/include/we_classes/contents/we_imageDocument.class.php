@@ -245,13 +245,6 @@ class we_imageDocument extends we_binaryDocument{
 		if(!$this->getElement('RollOverFlag')){
 			return '';
 		}
-		if(!$src){
-			$src = (we_isHttps() ? '' : BASE_IMG) . $this->Path; //FIXME:remove BASE_IMG
-		}
-
-		if(!$src_over){
-			$src_over = (we_isHttps() ? '' : BASE_IMG) . f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('RollOverID')), 'Path', $this->DB_WE);
-		}
 
 		if(!$this->getElement('name')){
 			$this->setElement('name', 'ro_' . $this->Name, 'attrib');
@@ -260,8 +253,8 @@ class we_imageDocument extends we_binaryDocument{
 		$js = '
 img' . self::$imgCnt . 'Over = new Image();
 img' . self::$imgCnt . 'Out = new Image();
-img' . self::$imgCnt . 'Over.src = "' . $src_over . '";
-img' . self::$imgCnt . 'Out.src = "' . $src . '";';
+img' . self::$imgCnt . 'Over.src = "' . ($src_over? : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('RollOverID')), '', $this->DB_WE)) . '";
+img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		return ($useScript ? we_html_element::jsElement($js) : $js);
 	}
 
@@ -418,10 +411,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 			srand((double) microtime() * 1000000);
 			$randval = rand();
 			$src = $dyn ?
-				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' .
-				$this->ContentType . '&we_cmd[2]=' .
-				$GLOBALS['we_transaction'] . '&rand=' . $randval :
-				($this->getElement('LinkType') == we_base_link::TYPE_INT ? (we_isHttps() ? '' : BASE_IMG) : '') .
+				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . $randval :
 				$img_path;
 
 			if($this->issetElement('sizingrel')){

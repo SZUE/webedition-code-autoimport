@@ -74,13 +74,11 @@ $GLOBALS['configs'] = array(
 		'REMOVEFIRSTPARAGRAPH_DEFAULT' => array('Default setting for removeparagraph attribute', we_base_request::BOOL, false),
 		'HIDENAMEATTRIBINWEIMG_DEFAULT' => array('Default setting for hide name attribute in weimg output', we_base_request::BOOL, false),
 		'HIDENAMEATTRIBINWEFORM_DEFAULT' => array('Default setting for hide name attribute in weform output', we_base_request::BOOL, false),
+		'REPLACEACRONYM' => array('Remove unsupported html5 acronym tag', we_base_request::BOOL, false),
 // we_css
 		'CSSAPPLYTO_DEFAULT' => array('Default setting for we:css attribute applyto', we_base_request::STRING, 'around'),
 // hooks
 		'EXECUTE_HOOKS' => array('Default setting for hook execution', we_base_request::BOOL, false),
-		'BASE_IMG' => array('url used prior all internal we:img tags (deprecated)', we_base_request::URL, ''), //FIXME: remove in 6.4
-		'BASE_CSS' => array('url used prior all we:css tags(deprecated)', we_base_request::URL, ''), //FIXME: remove in 6.4
-		'BASE_JS' => array('url used prio all we:js tags(deprecated)', we_base_request::URL, ''), //FIXME: remove in 6.4
 // xhtml
 		'XHTML_DEFAULT' => array('Default setting for xml attribute', we_base_request::BOOL, false),
 		'XHTML_DEBUG' => array('Enable XHTML debug', we_base_request::BOOL, false),

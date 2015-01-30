@@ -606,13 +606,13 @@ abstract class we_root extends we_class{
 
 	/* get the data from an element */
 
-	function getElement($name, $key = 'dat', $default = ''){//FIXME should we bother bdid?
+	function getElement($name, $key = 'dat', $default = '', $defaultOnEmpty = false){//FIXME should we bother bdid?
 		switch($key){
 			case 'dat':
 				//check bdid first
 				return (isset($this->elements[$name]['bdid']) && $this->elements[$name]['bdid'] ?
 						$this->elements[$name]['bdid'] :
-						(isset($this->elements[$name]['dat']) ?
+						(isset($this->elements[$name]['dat']) && (!$defaultOnEmpty || $this->elements[$name]['dat']) ?
 							$this->elements[$name]['dat'] :
 							$default));
 			default:

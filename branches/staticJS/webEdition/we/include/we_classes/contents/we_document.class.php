@@ -217,7 +217,10 @@ class we_document extends we_root{
 		}
 		return $this->Extensions ?
 			we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $selected, $this->Extensions, 100, 'onselect="_EditorFrame.setEditorIsHot(true);"', permissionhandler::hasPerm('EDIT_DOCEXTENSION')), g_l('weClass', '[extension]')) :
-			'';
+			we_html_element::htmlHidden(array(
+				'name' => 'we_' . $this->Name . '_Extension',
+				'value' => $selected
+		));
 	}
 
 	public function formPath(){
@@ -1576,8 +1579,7 @@ class we_document extends we_root{
 		$this->i_savePersistentSlotsToDB('Filehash,RebuildDate');
 	}
 
-	public static function parseInternalLinks(&$text, $pid, $path = '', $doBaseReplace = true){
-		$doBaseReplace&=we_isHttps(); //FIXME:remove
+	public static function parseInternalLinks(&$text, $pid, $path = ''){
 		$DB_WE = new DB_WE();
 		$regs = array();
 		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
