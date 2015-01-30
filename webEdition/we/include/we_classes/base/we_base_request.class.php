@@ -33,7 +33,7 @@ class we_base_request{
 	const RAW = 'raw';
 	const URL = 'url';
 	const EMAIL = 'email'; //add email_list
-	const STRING = 'string'; //FIXME: add string_list
+	const STRING = 'string';
 	const HTML = 'html';
 
 	/**
@@ -47,6 +47,7 @@ class we_base_request{
 	const FILE = 'file';
 	const FILELIST = 'filelist';
 	const FILELISTA = 'filelista';
+	const STRING_LIST = 'stringL';
 //only temporary
 	const STRINGC = 'stringC';
 	const RAW_CHECKED = 'rawC';
@@ -171,6 +172,9 @@ class we_base_request{
 			case self::STRING://strips tags
 				$var = filter_var($var, FILTER_SANITIZE_STRING);
 				return;
+			case self::STRING_LIST:
+				$var = array_map('trim', explode(',', filter_var($var, FILTER_SANITIZE_STRING)));
+				return;
 			case self::HTML:
 				$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
 				return;
@@ -184,16 +188,6 @@ class we_base_request{
 		}
 		$var = $default;
 	}
-
-	/* function we_defineTables(array $tables){
-	  if(!isset($GLOBALS['we']['allTables'])){
-	  $GLOBALS['we']['allTables'] = array();
-	  }
-	  foreach($tables as $tab => $name){
-	  define($tab, TBL_PREFIX . $name);
-	  $GLOBALS['we']['allTables'][$tab] = TBL_PREFIX . $name;
-	  }
-	  } */
 
 	public static function filterVar($var, $varType, $default = ''){
 		//FIXME: remove checker at release
@@ -255,6 +249,7 @@ class we_base_request{
 				case self::CMD://this must change&is ok!
 				case self::RAW_CHECKED:
 				case self::STRINGC:
+				case self::STRING_LIST:
 				case self::INTLISTA:
 					//we didn't change anything.
 					return $var;
