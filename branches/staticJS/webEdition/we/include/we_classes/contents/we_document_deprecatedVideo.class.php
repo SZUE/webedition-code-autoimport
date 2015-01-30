@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 8758 $
+ * $Author: mokraemer $
+ * $Date: 2014-12-17 00:21:57 +0100 (Mi, 17. Dez 2014) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -22,9 +22,13 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$parts = array(
-	array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $GLOBALS['we_doc']->formPath(), 'space' => 140),
-	array('icon' => 'default.gif', 'headline' => g_l('weClass', '[other]'), 'html' => $GLOBALS['we_doc']->formOther(), 'space' => 140));
+class we_document_deprecatedVideo extends we_document_video{
 
-echo we_html_multiIconBox::getJS() .
-	we_html_multiIconBox::getHTML('weVideoProp', '100%', $parts, 20);
+	public function getPropertyPage(){
+		echo we_html_multiIconBox::getJS() .
+		we_html_multiIconBox::getHTML('weVideoProp', '100%', array(
+			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
+			array('icon' => 'default.gif', 'headline' => g_l('weClass', '[other]'), 'html' => $this->formOther(), 'space' => 140)), 20);
+	}
+
+}

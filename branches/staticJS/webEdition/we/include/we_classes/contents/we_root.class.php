@@ -1332,4 +1332,9 @@ abstract class we_root extends we_class{
 		exit();
 	}
 
+//FIXME: make abstract
+	public function getPropertyPage(){
+
+	}
+
 }

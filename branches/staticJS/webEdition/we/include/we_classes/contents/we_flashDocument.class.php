@@ -24,7 +24,7 @@
  */
 /*  a class for handling flashDocuments. */
 
-class we_flashDocument extends we_document_video{
+class we_flashDocument extends we_document_deprecatedVideo{
 	/* Parameternames which are placed within the object-Tag */
 	var $ObjectParamNames = array('align', 'border', 'id', 'height', 'hspace', 'name', 'width', 'vspace', 'only', 'style');
 
@@ -336,7 +336,7 @@ class we_flashDocument extends we_document_video{
 		if(!$this->getElement('height')){
 			$this->setElement('height', $this->getElement('origheight'), 'attrib');
 		}
-		
+
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
 		if(parent::we_save($resave)){
 			if($docChanged){

@@ -1594,7 +1594,7 @@ class we_document extends we_root{
 					if(show_SeoLinks() && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$foo['Path'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 					}
-					$text = str_replace($reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . ($doBaseReplace && $foo['isImage'] ? BASE_IMG : '') . $foo['Path'] . ($reg[3] ? '?' : '') . $reg[4], $text);
+					$text = str_replace($reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . $foo['Path'] . ($reg[3] ? '?' : '') . $reg[4], $text);
 				} else {
 					$text = preg_replace(array(
 						'-<(a|img) [^>]*' . $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
@@ -1611,7 +1611,7 @@ class we_document extends we_root{
 				list(,$imgID,$thumbID) = $reg;
 				$thumbObj = new we_thumbnail();
 				if($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)){
-					$text = str_replace('src="' . we_base_link::TYPE_THUMB_PREFIX . $imgID . ',' . $thumbID . '"', 'src="' . ($doBaseReplace ? BASE_IMG : '') . $thumbObj->getOutputPath(false, true) . '"', $text);
+					$text = str_replace('src="' . we_base_link::TYPE_THUMB_PREFIX . $imgID . ',' . $thumbID . '"', 'src="' . $thumbObj->getOutputPath(false, true) . '"', $text);
 				} else {
 					$text = preg_replace('|<img[^>]+src="' . we_base_link::TYPE_THUMB_PREFIX . $imgID . ',' . $thumbID . '"[^>]+>|Ui', '', $text);
 				}

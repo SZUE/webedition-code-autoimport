@@ -24,7 +24,7 @@
  */
 /*  a class for handling quicktimeDocuments. */
 
-class we_quicktimeDocument extends we_document_video{
+class we_quicktimeDocument extends we_document_deprecatedVideo{
 	/* Parameternames which are placed within the object-Tag */
 	var $ObjectParamNames = array("width", "height", "name", "vspace", "hspace", "style");
 

@@ -784,6 +784,17 @@ we_templateInit();?>';
 		return preg_replace('/.tmpl$/i', '.php', parent::getRealPath($old));
 	}
 
+	public function getPropertyPage(){
+		echo we_html_multiIconBox::getHTML('', '100%', array(
+			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
+			array('icon' => 'mastertemplate.gif', 'headline' => g_l('weClass', '[master_template]'), 'html' => $this->formMasterTemplate(), 'space' => 140),
+			array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[documents]'), 'html' => $this->formTemplateDocuments(), 'space' => 140),
+			array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => 140),
+			array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => 140)
+			)
+			, 20);
+	}
+
 	public static function we_getCodeMirror2Tags($css, $setting, $weTags = true){
 		$ret = '';
 		$allTags = array();

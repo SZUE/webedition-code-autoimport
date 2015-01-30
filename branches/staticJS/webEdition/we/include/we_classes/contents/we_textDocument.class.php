@@ -181,4 +181,15 @@ class we_textDocument extends we_document{
 		return we_html_forms::checkboxWithHidden((bool) $this->parseFile, 'we_' . $this->Name . '_parseFile', g_l('weClass', '[parseFile]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 	}
 
+	public function getPropertyPage(){
+
+		echo we_html_multiIconBox::getHTML('', '100%', array(
+			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 120),
+			($this->ContentType == we_base_ContentTypes::CSS ? array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formParseFile(), 'space' => 140) : null),
+			array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => 120),
+			array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 120),
+			array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copy' . $this->ContentType . ']'), 'html' => $this->formCopyDocument(), 'space' => 120))
+			, 30);
+	}
+
 }
