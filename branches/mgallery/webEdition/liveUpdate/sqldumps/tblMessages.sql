@@ -1,3 +1,16 @@
+###UPDATEDROPCOL(clickid,###TBLPREFIX###tblMessages)###
+/* query separator */
+###UPDATEDROPCOL(Timestamp,###TBLPREFIX###tblMessages)###
+/* query separator */
+###UPDATEDROPCOL(IP,###TBLPREFIX###tblMessages)###
+/* query separator */
+###UPDATEDROPCOL(Referer,###TBLPREFIX###tblMessages)###
+/* query separator */
+###UPDATEDROPCOL(DID,###TBLPREFIX###tblMessages)###
+/* query separator */
+###UPDATEDROPCOL(Page,###TBLPREFIX###tblMessages)###
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblMessages (
   ID int(11) unsigned NOT NULL auto_increment,
   ParentID int(11) unsigned default NULL,

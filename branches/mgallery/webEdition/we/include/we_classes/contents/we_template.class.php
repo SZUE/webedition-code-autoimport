@@ -48,6 +48,7 @@ class we_template extends we_document{
 		$this->Published = 1;
 		$this->InWebEdition = true;
 		$this->ContentType = we_base_ContentTypes::TEMPLATE;
+		$this->Extension = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::TEMPLATE);
 	}
 
 	function copyDoc($id){
@@ -782,6 +783,17 @@ we_templateInit();?>';
 
 	function getRealPath($old = false){
 		return preg_replace('/.tmpl$/i', '.php', parent::getRealPath($old));
+	}
+
+	public function getPropertyPage(){
+		echo we_html_multiIconBox::getHTML('', '100%', array(
+			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
+			array('icon' => 'mastertemplate.gif', 'headline' => g_l('weClass', '[master_template]'), 'html' => $this->formMasterTemplate(), 'space' => 140),
+			array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[documents]'), 'html' => $this->formTemplateDocuments(), 'space' => 140),
+			array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => 140),
+			array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => 140)
+			)
+			, 20);
 	}
 
 	public static function we_getCodeMirror2Tags($css, $setting, $weTags = true){

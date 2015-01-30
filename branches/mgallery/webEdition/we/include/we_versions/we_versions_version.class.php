@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_versions_version{
-
 	protected $ID;
 	protected $documentID;
 	protected $documentTable;
@@ -1065,7 +1064,7 @@ class we_versions_version{
 		}
 
 		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "save_document" &&
-				we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){
+			we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){
 			$status = "published";
 		}
 
@@ -1095,8 +1094,8 @@ class we_versions_version{
 			$lastEntry = $_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]];
 
 			$diffExists = (is_array($document) && $lastEntry ?
-							(self::getHashValue(self::removeUnneededCompareFields($document)) != $lastEntry) :
-							false);
+					(self::getHashValue(self::removeUnneededCompareFields($document)) != $lastEntry) :
+					false);
 
 			$lastEntry = self::getLastEntry($document["ID"], $document["Table"], $db);
 
@@ -1114,9 +1113,9 @@ class we_versions_version{
 			foreach($tblversionsFields as $fieldName){
 				if($fieldName != 'ID'){
 					$set[$fieldName] = (isset($document[$fieldName]) ?
-									$document[$fieldName] :
-									$this->makePersistentEntry($fieldName, $status, $document, $documentObj)
-							);
+							$document[$fieldName] :
+							$this->makePersistentEntry($fieldName, $status, $document, $documentObj)
+						);
 				}
 			}
 
@@ -1255,9 +1254,9 @@ class we_versions_version{
 									$lastEntryField = array();
 								} else {
 									$lastEntryField = unserialize(
-											(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
-													html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
-													gzuncompress($lastEntryField))
+										(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
+											html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
+											gzuncompress($lastEntryField))
 									);
 								}
 								switch($val){
@@ -1436,26 +1435,10 @@ class we_versions_version{
 
 		extract($GLOBALS, EXTR_SKIP); // globalen Namensraum herstellen.
 
-		$isdyn = !isset($GLOBALS['WE_IS_DYN']) ? 'notSet' : $GLOBALS['WE_IS_DYN'];
+		$isdyn = isset($GLOBALS['WE_IS_DYN']) ? $GLOBALS['WE_IS_DYN'] : 'notSet';
 
 //usually the site file always exists
 		if($includepath != '' && file_exists($includepath)){
-
-			$_opt = getHttpOption();
-			if($_opt != "none"){
-				$f = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . 'tmpSavedObj.txt';
-				we_base_file::save($f, serialize($we_doc));
-
-				$path = substr($we_doc->Path, 1);
-				$location = SITE_DIR . $path;
-				$contents = getHTTP(getServerUrl(true), $location . "?vers_we_obj=1");
-
-				if(ini_get("short_open_tag") == 1){
-					$contents = str_replace("<?xml", '<?php echo "<?xml"; ?>', $contents);
-				}
-
-				we_base_file::delete($f);
-			} else {
 				ob_start();
 				@include($includepath);
 				ob_end_clean();
@@ -1467,7 +1450,6 @@ class we_versions_version{
 				ob_start();
 				@include($includepath);
 				$contents = ob_get_clean();
-			}
 		} else {
 			ob_start();
 			if(!defined('NO_SESS')){
@@ -1616,8 +1598,8 @@ class we_versions_version{
 							case "documentElements":
 								if($v){
 									$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
-													html_entity_decode(urldecode($v), ENT_QUOTES) :
-													gzuncompress($v))
+											html_entity_decode(urldecode($v), ENT_QUOTES) :
+											gzuncompress($v))
 									);
 									$resetDoc->elements = $docElements;
 								}
@@ -1625,8 +1607,8 @@ class we_versions_version{
 							case 'documentScheduler':
 								if($v){
 									$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
-													html_entity_decode(urldecode($v), ENT_QUOTES) :
-													gzuncompress($v))
+											html_entity_decode(urldecode($v), ENT_QUOTES) :
+											gzuncompress($v))
 									);
 									$resetDoc->schedArr = $docElements;
 								}
@@ -1634,8 +1616,8 @@ class we_versions_version{
 							case 'documentCustomFilter':
 								if($v){
 									$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
-													html_entity_decode(urldecode($v), ENT_QUOTES) :
-													gzuncompress($v))
+											html_entity_decode(urldecode($v), ENT_QUOTES) :
+											gzuncompress($v))
 									);
 									$resetDoc->documentCustomerFilter = new we_customer_documentFilter();
 									foreach($docElements as $k => $v){
@@ -1683,7 +1665,7 @@ class we_versions_version{
 
 								$parentID = (isset($_SESSION['weS']['versions']['lastPathID'])) ? $_SESSION['weS']['versions']['lastPathID'] : 0;
 								$folder = (defined('OBJECT_FILES_TABLE') && $resetArray['documentTable'] == OBJECT_FILES_TABLE ?
-												new we_class_folder() : new we_folder());
+										new we_class_folder() : new we_folder());
 
 								$folder->we_new();
 								$folder->setParentID($parentID);

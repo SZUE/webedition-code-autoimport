@@ -24,6 +24,7 @@
 
 /**
  * Class to check webEdition settings and installation properties
+ * @deprecated since version 6.4.0
  *
  * @category   we
  * @package none
@@ -33,11 +34,13 @@
 class we_util_Sys_Webedition extends we_util_Sys{
 
 	/**
-	 * tries to identify the version of the currently installed webEdition
+	 * @deprecated since version 6.4.0
+ * tries to identify the version of the currently installed webEdition
 	 * @return version string without dots (i.e. "5501") or false, if the version could not be identified.
 	 */
 	public static function version(){
-		if(!defined('WE_VERSION')){
+	t_e('deprecated',__FUNCTION__);
+	if(!defined('WE_VERSION')){
 			return false;
 		}
 		return WE_VERSION;
@@ -46,13 +49,15 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	/**
 	 * compares specified webEdition version with the currently installed webEdition version
 	 * @param int $reference target version to be compared to current webEdition version
-	 * @param string $operator
+	  * @deprecated since version 6.4.0
+* @param string $operator
 	 * @see we_util_Sys::_versionCompare()
 	 * @example we_util_Sys_Webedition::versionCompare("5501");
 	 * @example we_util_Sys_Webedition::versionCompare("5501", "<");
 	 */
 	public static function versionCompare($version = '', $operator = ''){
-		return parent::_versionCompare($version, self::version(), $operator);
+	t_e('deprecated',__FUNCTION__);
+	return parent::_versionCompare($version, self::version(), $operator);
 	}
 
 	/**
@@ -61,10 +66,12 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	 * @return int
 	 * 		-1	module not installed or an error occured on fetching module installation informations from webEdition
 	 * 		0	module installed but inactive (only available for integrated modules)
-	 * 		1	module installed and active
+	 * @deprecated since version 6.4.0
+ * 		1	module installed and active
 	 */
 	public static function module($property = ""){
-		if(empty($property)){
+	t_e('deprecated',__FUNCTION__);
+	if(empty($property)){
 			return -1;
 		}
 
@@ -79,10 +86,12 @@ class we_util_Sys_Webedition extends we_util_Sys{
 
 	/**
 	 * builds a list of all installed modules (active and inactive) and returns it to the caller
-	 *
+	 * * @deprecated since version 6.4.0
+
 	 * @return array a list of all installed webEdition modules or (bool)false, if an error occured
 	 */
 	public static function modulesInstalled(){
+t_e('deprecated',__FUNCTION__);
 		// not implemented yet
 		return array();
 	}
@@ -90,21 +99,25 @@ class we_util_Sys_Webedition extends we_util_Sys{
 
 	/**
 	 * builds a list of all available modules and returns it to the caller
-	 *
+	 * * @deprecated since version 6.4.0
+
 	 * @return array a list of all available webEdition modules or (bool)false, if an error occured
 	 */
 	public static function modulesAvailable(){
-		return we_base_moduleInfo::getAllModules();
+	t_e('deprecated',__FUNCTION__);
+	return we_base_moduleInfo::getAllModules();
 	}
 
 	/**
 	 * checks if a requested tool is installed
-	 * this implementation is preliminary and WILL be changed once the we_tool-implementation is completed
+	 * @deprecated since version 6.4.0
+ * this implementation is preliminary and WILL be changed once the we_tool-implementation is completed
 	 * @param string tool name
 	 * @return false (not installed) or true (installed)
 	 */
 	public static function tool($property = ""){
-		if(!$property){
+	t_e('deprecated',__FUNCTION__);
+	if(!$property){
 			return false;
 		}
 		$tooldir = WE_APPS_PATH . $property;
@@ -120,25 +133,29 @@ class we_util_Sys_Webedition extends we_util_Sys{
 
 	/**
 	 * get the version of the requested tool (if it is installed)
-	 * @param string tool name
+	 * @deprecated since version 6.4.0
+ * @param string tool name
 	 * @return string version
 	 */
 	public static function toolVersion($property = ""){
-		// not imlpemented yet
+	t_e('deprecated',__FUNCTION__);
+	// not imlpemented yet
 		return "1.0";
 	}
 
 	/**
 	 * compares specified tool version with the currently installed version of this tool
 	 * @param string tool name
-	 * @param int $reference target version to be compared to currently installed tool version
+	  * @deprecated since version 6.4.0
+* @param int $reference target version to be compared to currently installed tool version
 	 * @param string $operator
 	 * @see we_util_Sys::_versionCompare()
 	 * @example we_util_Sys_Webedition::toolVersionCompare("5.1");
 	 * @example we_util_Sys_Webedition::toolVersionCompare("5.1", "<");
 	 */
 	public static function toolVersionCompare($property = "", $reference = "", $operator = ""){
-		if(!$property || !$reference){
+	t_e('deprecated',__FUNCTION__);
+	if(!$property || !$reference){
 			return false;
 		}
 		$version = self::toolVersion($property);

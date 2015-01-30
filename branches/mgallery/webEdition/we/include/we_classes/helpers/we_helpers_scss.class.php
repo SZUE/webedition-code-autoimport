@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -24,7 +23,8 @@
  */
 include_once(WE_LIB_PATH . 'additional/scssphp/scss.inc.php');
 
-class we_helpers_scss extends scssc {
+class we_helpers_scss extends \Leafo\ScssPhp\Compiler{
+	public $includedFiles = array();
 
 	protected function importFile($path, $out){
 		if(!is_numeric($path)){
@@ -37,7 +37,8 @@ class we_helpers_scss extends scssc {
 			$tree = $this->importCache[$path];
 		} else {
 			$code = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.Type="txt" AND l.Name="data" AND l.DocumentTable="tblFile" AND l.DID=' . intval($path));
-			$parser = new scss_parser($fname, false);
+			$this->includedFiles[]=$path;
+			$parser = new \Leafo\ScssPhp\Parser($fname, false);
 			$tree = $parser->parse($code);
 			$this->parsedFiles[] = $fname;
 
@@ -53,6 +54,7 @@ class we_helpers_scss extends scssc {
 
 	// results the file path for an import url if it exists
 	public function findImport($url){
+		$matches = array();
 		if(preg_match('|#WE:(\d+)#|', $url, $matches)){
 			$url = intval($matches[1]);
 			return (f('SELECT Extension FROM ' . FILE_TABLE . ' WHERE ID=' . $url) === '.scss' ? $url : null);

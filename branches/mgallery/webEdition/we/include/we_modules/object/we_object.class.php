@@ -2409,4 +2409,58 @@ class we_object extends we_document{
 		return array();
 	}
 
+	public function getPropertyPage(){
+		if($this->EditPageNr != we_base_constants::WE_EDITPAGE_WORKSPACE){
+			$parts = array(
+				array(
+					'headline' => g_l('weClass', '[path]'),
+					'html' => $this->formPath(),
+					'space' => 140,
+					'icon' => 'path.gif'
+				),
+				array(
+					'headline' => g_l('modules_object', '[default]'),
+					'html' => $this->formDefault(),
+					'space' => 140,
+					'icon' => 'default.gif'
+				),
+				array(
+					'headline' => g_l('weClass', '[Charset]'),
+					'html' => $this->formCharset(),
+					'space' => 140,
+					'icon' => 'charset.gif'
+				),
+				array(
+					'headline' => g_l('weClass', '[CSS]'),
+					'html' => $this->formCSS(),
+					'space' => 140,
+					'icon' => 'css.gif'
+				),
+				array(
+					'headline' => g_l('modules_object', '[copyClass]'),
+					'html' => $this->formCopyDocument(),
+					'space' => 140,
+					'icon' => 'copy.gif'
+				)
+			);
+		} else {
+			$parts = array(
+				array(
+					'headline' => g_l('weClass', '[workspaces]'),
+					'html' => $this->formWorkspaces(),
+					'space' => 140,
+					'icon' => 'workspace.gif'
+				),
+				array(
+					'headline' => g_l('modules_object', '[behaviour]'),
+					'html' => $this->formWorkspacesFlag(),
+					'space' => 140,
+					'icon' => 'display.gif'
+				)
+			);
+		}
+		echo we_html_multiIconBox::getJS() .
+		we_html_multiIconBox::getHTML('', '100%', $parts, 30, '', -1, '', '', false);
+	}
+
 }

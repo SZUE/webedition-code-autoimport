@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_glossary_replace{
-
 	const configFile = 'we_conf_glossary_settings.inc.php';
 
 	public static function useAutomatic(){
@@ -38,8 +37,8 @@ abstract class we_glossary_replace{
 	 */
 	public static function replace($content, $language){
 		return (self::useAutomatic() ?
-						self::doReplace($content, $language) :
-						$content);
+				self::doReplace($content, $language) :
+				$content);
 	}
 
 	/**
@@ -62,8 +61,8 @@ abstract class we_glossary_replace{
 		$replace = array(
 			'' => $cache->get(we_glossary_glossary::TYPE_TEXTREPLACE), //text replacement must come first, since othe might generate iritation annotations
 			'<span ' => $cache->get(we_glossary_glossary::TYPE_FOREIGNWORD),
-			'<abbr ' => $cache->get(we_glossary_glossary::TYPE_ABBREVATION),
-			'<acronym ' => $cache->get(we_glossary_glossary::TYPE_ACRONYM),
+			'<abbr ' => (REPLACEACRONYM ? array_merge($cache->get(we_glossary_glossary::TYPE_ABBREVATION), $cache->get(we_glossary_glossary::TYPE_ACRONYM)) : $cache->get(we_glossary_glossary::TYPE_ABBREVATION)),
+			'<acronym ' => (REPLACEACRONYM ? array() : $cache->get(we_glossary_glossary::TYPE_ACRONYM)),
 			'<a ' => $cache->get(we_glossary_glossary::TYPE_LINK),
 		);
 		unset($cache);
@@ -109,8 +108,8 @@ abstract class we_glossary_replace{
 
 		$replBody = strtr($replBody, array('@@@we@@@' => '\''));
 		return (isset($matches[1]) ?
-						str_replace($srcBody, $replBody, $src) :
-						$replBody);
+				str_replace($srcBody, $replBody, $src) :
+				$replBody);
 	}
 
 	/**

@@ -24,7 +24,7 @@
 
 /**
  * class    we_shop_listviewOrder
- * @desc    class for tag <we:listview type="banner">
+ * @desc    class for tag <we:listview type="'>
  *
  */
 class we_shop_listviewOrder extends we_listview_base{
@@ -51,7 +51,7 @@ class we_shop_listviewOrder extends we_listview_base{
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, 0, $cols);
 
 		$this->docID = $docID;
-		$this->condition = $condition ? : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
+		$this->condition = $condition ? : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
 
 		if(strpos($this->condition, 'ID') !== false && strpos($this->condition, 'IntID') === false){
 			$this->condition = str_replace('ID', 'IntID', $this->condition);
@@ -83,17 +83,17 @@ class we_shop_listviewOrder extends we_listview_base{
 		// IMPORTANT for seeMode !!!! #5317
 		$this->LastDocPath = (isset($_SESSION['weS']['last_webEdition_document'])) ? $_SESSION['weS']['last_webEdition_document']['Path'] : '';
 
-		$group = " GROUP BY IntOrderID ";
+		$group = ' GROUP BY IntOrderID ';
 
-		if($this->desc && $this->order != '' && (!preg_match("|.+ desc$|i", $this->order))){
-			$this->order .= " DESC";
+		if($this->desc && $this->order != '' && (!preg_match('|.+ desc$|i', $this->order))){
+			$this->order .= ' DESC';
 		}
 
 		if($this->order != ''){
 			if(trim($this->order) === 'ID' || trim($this->order) === 'CustomerID' || trim($this->order) === 'ArticleID' || trim($this->order) === 'Quantity' || trim($this->order) === 'Payment_Type'){
 				$this->order = 'Int' . $this->order;
 			}
-			$orderstring = " ORDER BY " . $this->order . " ";
+			$orderstring = ' ORDER BY ' . $this->order . ' ';
 		} else {
 			$orderstring = '';
 		}
@@ -109,16 +109,15 @@ class we_shop_listviewOrder extends we_listview_base{
 			$format[] = 'UNIX_TIMESTAMP(' . $field . ') AS ' . $field;
 		}
 
-		$this->DB_WE->query('SELECT IntOrderID as OrderID, IntCustomerID as CustomerID, IntPayment_Type as Payment_Type, strSerialOrder,' . implode(',', $format) . ' FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0)
-					? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
+		$this->DB_WE->query('SELECT IntOrderID as OrderID, IntCustomerID as CustomerID, IntPayment_Type as Payment_Type, strSerialOrder,' . implode(',', $format) . ' FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
 	function next_record(){
 		$ret = $this->DB_WE->next_record();
 		if($ret){
-			$strSerialOrder = unserialize($this->DB_WE->Record["strSerialOrder"]);
-			unset($this->DB_WE->Record["strSerialOrder"]);
+			$strSerialOrder = unserialize($this->DB_WE->Record['strSerialOrder']);
+			unset($this->DB_WE->Record['strSerialOrder']);
 			if(is_array($strSerialOrder)){
 				if(is_array($strSerialOrder['we_sscf'])){
 					foreach($strSerialOrder['we_sscf'] as $key => &$value){
@@ -151,24 +150,25 @@ class we_shop_listviewOrder extends we_listview_base{
 					$this->DB_WE->Record['shopPricename'] = $strSerialOrder['we_shopPricename'];
 				}
 			}
-			//$this->DB_WE->Record["CustomerID"] = $this->DB_WE->Record["IntCustomerID"];
-			$this->DB_WE->Record["we_cid"] = $this->DB_WE->Record["CustomerID"];
-			//$this->DB_WE->Record["OrderID"] = $this->DB_WE->Record["IntOrderID"];
-			$this->DB_WE->Record["we_orderid"] = $this->DB_WE->Record["OrderID"];
-			$this->DB_WE->Record["wedoc_Path"] = $this->Path . "?we_orderid=" . $this->DB_WE->Record["OrderID"];
-			$this->DB_WE->Record["WE_PATH"] = $this->Path . "?we_orderid=" . $this->DB_WE->Record["OrderID"];
-			$this->DB_WE->Record["WE_TEXT"] = $this->DB_WE->Record["OrderID"];
-			$this->DB_WE->Record["WE_ID"] = $this->DB_WE->Record["OrderID"];
-			$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath . "?we_orderid=" . $this->DB_WE->Record["OrderID"];
+			//$this->DB_WE->Record['CustomerID'] = $this->DB_WE->Record['IntCustomerID'];
+			$this->DB_WE->Record['we_cid'] = $this->DB_WE->Record['CustomerID'];
+			//$this->DB_WE->Record['OrderID'] = $this->DB_WE->Record['IntOrderID'];
+			$this->DB_WE->Record['we_orderid'] = $this->DB_WE->Record['OrderID'];
+			$this->DB_WE->Record['wedoc_Path'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'];
+			$this->DB_WE->Record['WE_PATH'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'];
+			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['OrderID'];
+			$this->DB_WE->Record['WE_ID'] = $this->DB_WE->Record['OrderID'];
+			$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?we_orderid=' . $this->DB_WE->Record['OrderID'];
 			$this->count++;
 			return true;
 		}
 		$this->stop_next_row = $this->shouldPrintEndTR();
 		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-			$this->DB_WE->Record = array();
-			$this->DB_WE->Record["WE_PATH"] = "";
-			$this->DB_WE->Record["WE_TEXT"] = "";
-			$this->DB_WE->Record["WE_ID"] = "";
+			$this->DB_WE->Record = array(
+				'WE_PATH' => '',
+				'WE_TEXT' => '',
+				'WE_ID' => '',
+			);
 			$this->count++;
 			return true;
 		}

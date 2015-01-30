@@ -176,7 +176,15 @@ we/include/we_tools/MultiDirTemplateAndDefaultChooser.inc.php
 we/include/we_tools/MultiDirChooser2.inc.php
 we/include/we_tools/MultiDirChooser.inc.php
 we/include/we_tools/MultiDirAndTemplateChooser.inc.php
+we/include/we_templates/we_webedition_properties.inc.php
+we/include/we_templates/we_textfile_properties.inc.php
+we/include/we_templates/we_template_properties.inc.php
 we/include/we_templates/we_quicktime_properties.inc.php
+we/include/we_templates/we_other_properties.inc.php
+we/include/we_templates/we_image_properties.inc.php
+we/include/we_templates/we_htmlfile_properties.inc.php
+we/include/we_templates/we_folder_properties.inc.php
+we/include/we_templates/we_flash_properties.inc.php
 we/include/we_templates/we_editor_live.inc.php
 we/include/we_templates/we_editor_flash_preview.inc.php
 we/include/we_tags/we_tag_tracker.inc.php
@@ -278,6 +286,8 @@ we/include/we_modules/schedule/we_editor_schedpro.inc.php
 we/include/we_modules/object/we_webEditionCmd_object.inc.php
 we/include/we_modules/object/we_searchobject_class.inc.php
 we/include/we_modules/object/we_objecttag.inc.php
+we/include/we_modules/object/we_object_properties.inc.php
+we/include/we_modules/object/we_objectFile_properties.inc.php
 we/include/we_modules/object/we_objectFile.inc.php
 we/include/we_modules/object/we_objectEx.inc.php
 we/include/we_modules/object/we_object.inc.php
@@ -286,6 +296,7 @@ we/include/we_modules/object/we_listview_multiobject.class.php
 we/include/we_modules/object/we_editor_info_objectFile.inc.php
 we/include/we_modules/object/we_editor_contentobjectFile.inc.php
 we/include/we_modules/object/we_class_folder.inc.php
+we/include/we_modules/object/we_classFolder_properties.inc.php
 we/include/we_modules/newsletter/we_webEditionCmd_newsletter.inc.php
 we/include/we_modules/newsletter/weNewsletterView.php
 we/include/we_modules/newsletter/weNewsletterTreeLoader.php

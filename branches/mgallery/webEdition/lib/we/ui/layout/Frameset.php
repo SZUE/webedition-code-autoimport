@@ -112,7 +112,7 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 				if($frame instanceof we_ui_layout_Frameset){
 					$html .= $frame->getHTML();
 				} else {
-					$html .= we_xml_Tags::createStartTag('frame', $frame, NULL, true);
+					$html .= getHtmlTag('frame', $frame, true);
 				}
 			}
 			$html .= '</frameset>';

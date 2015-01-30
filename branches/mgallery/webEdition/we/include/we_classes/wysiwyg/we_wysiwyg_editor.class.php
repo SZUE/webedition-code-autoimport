@@ -718,7 +718,9 @@ class we_wysiwyg_editor{
 	}
 
 	function getTemplates(){
-		$tmplArr = explode(',', str_replace(' ', '', $this->templates));
+		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE (ID IN (' . implode(',', array_map('intval', explode(',', $this->templates))) . ') ) AND Published!=0');
+		$tmplArr = $GLOBALS['DB_WE']->getAll(true);
+
 		$templates = array();
 		foreach($tmplArr as $i => $cur){
 			$tmplDoc = new we_document();
@@ -730,7 +732,7 @@ class we_wysiwyg_editor{
 					}
 				//no break
 				case we_base_ContentTypes::WEDOCUMENT:
-					$templates[] = '{title: "' . (isset($tmplDoc->elements['Title']['dat']) && $tmplDoc->elements['Title']['dat'] ? $tmplDoc->elements['Title']['dat'] : 'no title ' . ($i + 1)) . '", src : "' . $tmplDoc->Path . '", description: "' . (isset($tmplDoc->elements['Description']['dat']) && $tmplDoc->elements['Description']['dat'] ? $tmplDoc->elements['Description']['dat'] : 'no description ' . ($i + 1)) . '"}';
+					$templates[] = '{title: "' . $tmplDoc->getElement('Title', 'dat', 'no title ' . ($i + 1), true) . '", src : "' . $tmplDoc->Path . '?pub=' . $tmplDoc->Published . '", description: "' . $tmplDoc->getElement('Description', 'dat', 'no description ' . ($i + 1), true) . '"}';
 			}
 		}
 

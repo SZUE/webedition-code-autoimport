@@ -44,8 +44,10 @@ class we_util_Sys{
 	 * @example we_util_Sys::_versionCompare("1.1", "1,0"); // will return 1
 	 * @example we_util_Sys::_versionCompare("1.0", "1,1", "<"); // will return (bool)true
 	 * @example we_util_Sys::_versionCompare("1.0", "1,1", ">"); // will return (bool)false
+	  * @deprecated since version 6.4.0
 	 */
 	protected static function _versionCompare($version = "", $reference = "", $operator = null){
+t_e('deprecated',__FUNCTION__);
 		/*
 		 * will soon replace the code of following methods:
 		 * - we_util_Sys_Webedition::versionCompare()

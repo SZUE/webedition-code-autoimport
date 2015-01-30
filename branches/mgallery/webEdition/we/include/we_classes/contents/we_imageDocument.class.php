@@ -245,13 +245,6 @@ class we_imageDocument extends we_binaryDocument{
 		if(!$this->getElement('RollOverFlag')){
 			return '';
 		}
-		if(!$src){
-			$src = (we_isHttps() ? '' : BASE_IMG) . $this->Path; //FIXME:remove BASE_IMG
-		}
-
-		if(!$src_over){
-			$src_over = (we_isHttps() ? '' : BASE_IMG) . f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('RollOverID')), 'Path', $this->DB_WE);
-		}
 
 		if(!$this->getElement('name')){
 			$this->setElement('name', 'ro_' . $this->Name, 'attrib');
@@ -260,8 +253,8 @@ class we_imageDocument extends we_binaryDocument{
 		$js = '
 img' . self::$imgCnt . 'Over = new Image();
 img' . self::$imgCnt . 'Out = new Image();
-img' . self::$imgCnt . 'Over.src = "' . $src_over . '";
-img' . self::$imgCnt . 'Out.src = "' . $src . '";';
+img' . self::$imgCnt . 'Over.src = "' . ($src_over? : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('RollOverID')), '', $this->DB_WE)) . '";
+img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		return ($useScript ? we_html_element::jsElement($js) : $js);
 	}
 
@@ -418,10 +411,7 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 			srand((double) microtime() * 1000000);
 			$randval = rand();
 			$src = $dyn ?
-				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' .
-				$this->ContentType . '&we_cmd[2]=' .
-				$GLOBALS['we_transaction'] . '&rand=' . $randval :
-				($this->getElement('LinkType') == we_base_link::TYPE_INT ? (we_isHttps() ? '' : BASE_IMG) : '') .
+				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . $randval :
 				$img_path;
 
 			if($this->issetElement('sizingrel')){
@@ -1011,4 +1001,17 @@ img' . self::$imgCnt . 'Out.src = "' . $src . '";';
 		}
 	}
 
+	public function getPropertyPage(){
+		echo we_html_multiIconBox::getJS() .
+ we_html_multiIconBox::getHTML("weImgProp", "100%", array(
+	array("icon" => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), "space" => 140),
+	array("icon" => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable(), "space" => 140),
+	array("icon" => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), "space" => 140),
+	array("icon" => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation(), "space" => 140),
+	array("icon" => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), "space" => 140),
+	array("icon" => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), "space" => 140),
+	array("icon" => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), "space" => 140),
+	), 20);
+
+	}
 }

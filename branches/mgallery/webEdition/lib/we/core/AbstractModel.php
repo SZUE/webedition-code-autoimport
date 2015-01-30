@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -28,7 +27,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_core_AbstractModel extends we_core_AbstractObject{
-
 	/**
 	 * primaryKey attribute
 	 *
@@ -101,9 +99,8 @@ class we_core_AbstractModel extends we_core_AbstractObject{
 	 * @return boolean returns true on success, othewise false
 	 */
 	public function load($id = 0){
-		$db = we_io_DB::sharedAdapter();
-		$stm = $db->query('SELECT * FROM ' . $this->_table . ' WHERE ' . $this->_primaryKey . ' = ?', $id);
-		$row = $stm->fetch();
+		$db = new DB_WE();
+		$row = getHash('SELECT * FROM ' . $this->_table . ' WHERE ' . $this->_primaryKey . '=' . intval($id), $db);
 		if($row){
 			foreach($row as $key => $value){
 				$this->$key = $value;
@@ -119,7 +116,7 @@ class we_core_AbstractModel extends we_core_AbstractObject{
 	 * @return string
 	 */
 	protected function _getPKCondition(){
-		return $this->_primaryKey . ' = ' . abs($this->{$this->_primaryKey});
+		return $this->_primaryKey . '=' . intval($this->{$this->_primaryKey});
 	}
 
 	/**
@@ -128,14 +125,11 @@ class we_core_AbstractModel extends we_core_AbstractObject{
 	 * @return void
 	 */
 	public function save($skipHook = 0){
-		$db = we_io_DB::sharedAdapter();
+		$db = new DB_WE();
 
 		// check if there is another entry with the same path
 
-		$stm = $db->query('SELECT ID FROM ' . $this->_table . ' WHERE Text = ? AND ParentID = ? AND IsFolder = ? AND ID != ?', array($this->Text, intval($this->ParentID), intval($this->IsFolder), intval($this->ID)));
-
-		$row = $stm->fetch();
-		if($row){
+		if(f('SELECT 1 FROM ' . $this->_table . ' WHERE Text="' . $db->escape($this->Text) . '" AND ParentID=' . intval($this->ParentID) . ' AND IsFolder=' . intval($this->IsFolder) . ' AND ID !=' . intval($this->ID), '', $db)){
 			throw new we_core_ModelException('Error saving model. Path already exists!', we_service_ErrorCodes::kPathExists);
 		}
 		$updateArray = array();
@@ -147,15 +141,15 @@ class we_core_AbstractModel extends we_core_AbstractObject{
 
 		if(!isset($this->{$this->_primaryKey}) || !$this->{$this->_primaryKey}){
 			try{
-				$db->delete($this->_table, $this->_getPKCondition());
-				$db->insert($this->_table, $updateArray);
+				$db->query('DELETE FROM ' . $this->_table . ' WHERE ' . $this->_getPKCondition());
+				$db->query('INSERT INTO ' . $this->_table . ' SET ' . we_database_base::arraySetter($updateArray));
 			} catch (Exception $e){
 				throw new we_core_ModelException('Error inserting model to database with db exception: ' . $e->getMessage(), we_service_ErrorCodes::kDBError);
 			}
-			$this->{$this->_primaryKey} = $db->lastInsertId();
+			$this->{$this->_primaryKey} = $db->getInsertId();
 		} else {
 			try{
-				$db->update($this->_table, $updateArray, $this->_getPKCondition());
+				$db->query('UPDATE ' . $this->_table . ' SET ' . we_database_base::arraySetter($updateArray) . ' WHERE ' . $this->_getPKCondition());
 			} catch (Exception $e){
 				throw new we_core_ModelException('Error updating model in database with db exception: ' . $e->getMessage(), we_service_ErrorCodes::kDBError);
 			}
@@ -173,9 +167,9 @@ class we_core_AbstractModel extends we_core_AbstractObject{
 	 * @return void
 	 */
 	public function delete($skipHook = 0){
-		$db = we_io_DB::sharedAdapter();
+		$db = new DB_WE();
 		try{
-			$db->delete($this->_table, $this->_getPKCondition());
+			$db->query('DELETE FROM ' . $this->_table . ' WHERE ' . $this->_getPKCondition());
 			/* hook */
 			if(!$skipHook){
 				$hook = new weHook('delete', $this->_appName, array($this));

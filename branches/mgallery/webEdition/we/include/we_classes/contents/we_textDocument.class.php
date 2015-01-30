@@ -143,13 +143,15 @@ class we_textDocument extends we_document{
 					case '.less':
 						if($this->parseFile){
 							$less = new lessc();
+							we_helpers_lessParser::$includedFiles = array();
 							$less->setImportDir(array(
 								$_SERVER['DOCUMENT_ROOT'],
 								$_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(),
 							));
 							$less->setFormatter('classic');
 							try{
-								$doc = $less->compile($doc);
+								//we prepend an extra / before #WE, to make parser believe this is an absolute path
+								$doc = str_replace('/#WE:', '#WE:', $less->compile(preg_replace('|(#WE:\d+#)|', '/$1', $doc)));
 							} catch (exception $e){
 								$this->errMsg = $e->getMessage();
 								return false;
@@ -159,6 +161,7 @@ class we_textDocument extends we_document{
 					case '.scss':
 						if($this->parseFile){
 							$scss = new we_helpers_scss();
+							we_helpers_scss::$includedFiles = array(); //due to rebuild!
 							$scss->setImportPaths(array_unique(array('', $_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(), $_SERVER['DOCUMENT_ROOT'] . '/')));
 							try{
 								$doc = $scss->compile($doc);
@@ -171,6 +174,7 @@ class we_textDocument extends we_document{
 			//no break;
 			case we_base_ContentTypes::JS:
 				$doc = self::replaceWEIDs($doc);
+				//FIXME: write all dependend files to database link, this should be the same table, as used for media queries in 6.5
 				break;
 			default:
 		}
@@ -179,6 +183,17 @@ class we_textDocument extends we_document{
 
 	function formParseFile(){
 		return we_html_forms::checkboxWithHidden((bool) $this->parseFile, 'we_' . $this->Name . '_parseFile', g_l('weClass', '[parseFile]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+	}
+
+	public function getPropertyPage(){
+
+		echo we_html_multiIconBox::getHTML('', '100%', array(
+			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 120),
+			($this->ContentType == we_base_ContentTypes::CSS ? array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formParseFile(), 'space' => 140) : null),
+			array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => 120),
+			array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 120),
+			array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copy' . $this->ContentType . ']'), 'html' => $this->formCopyDocument(), 'space' => 120))
+			, 30);
 	}
 
 }

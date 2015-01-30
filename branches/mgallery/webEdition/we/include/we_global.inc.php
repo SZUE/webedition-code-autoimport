@@ -1164,7 +1164,7 @@ function we_TemplateExit($param = 0){
 }
 
 function getWEZendCache($lifetime = 1800){
-	return Zend_Cache::factory('Core', 'File', array('lifetime' => $lifetime, 'automatic_serialization' => true), array('cache_dir' => ZENDCACHE_PATH));
+	return Zend_Cache::factory('Core', 'File', array('lifetime' => $lifetime, 'automatic_serialization' => true), array('cache_dir' => WE_CACHE_PATH));
 }
 
 /**
