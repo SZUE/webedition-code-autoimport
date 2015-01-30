@@ -48,7 +48,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 	if(!$useListsArray){
 		switch($type){
 			case 'customer':
-				$tmpAbos = makeArrayFromCSV(weTag_getAttribute('mailingList', $attribs, '', we_base_request::STRING));
+				$tmpAbos = weTag_getAttribute('mailingList', $attribs, '', we_base_request::STRING_LIST);
 				if(empty($tmpAbos) || (strlen($tmpAbos[0]) == 0)){
 					$abos[0] = $fieldGroup . '_Ok';
 				} else {// #6100
@@ -67,7 +67,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 	} elseif(isset($_REQUEST['we_subscribe_list__']) && is_array($_REQUEST['we_subscribe_list__'])){
 		switch($type){
 			case 'customer':
-				$tmpAbos = makeArrayFromCSV(weTag_getAttribute('mailingList', $attribs, '', we_base_request::STRING));
+				$tmpAbos = weTag_getAttribute('mailingList', $attribs, '', we_base_request::STRING_LIST);
 				foreach($_REQUEST['we_subscribe_list__'] as $nr){
 					$abos[] = $fieldGroup . '_' . $tmpAbos[intval($nr)];
 				}
@@ -423,8 +423,8 @@ function we_tag_addDelNewsletterEmail($attribs){
 						}
 						$set .= $abo . "='" . $__db->escape($setVal) . "', ";
 					}
-					
-					
+
+
 
 					if($updateCustomerFields){
 						$__db->query('UPDATE ' . CUSTOMER_ADMIN_TABLE . ' SET Value="' . $__db->escape(serialize($customerFields)) . '" WHERE Name="FieldAdds"');
@@ -436,7 +436,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 						$set = rtrim($set, ","); //Fix #9336
 						t_e('warning','missing newsletter customer settings', 'no customer html field found in settings: field "ID" is not allowed');
 					}
-					
+
 					$__db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . $set . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $__db->escape($f["subscribe_mail"]) . '"');
 					break;
 				case 'emailonly':
