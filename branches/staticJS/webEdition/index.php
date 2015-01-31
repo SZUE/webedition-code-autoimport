@@ -339,7 +339,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	 * *********************************************************************** */
 
 	$GLOBALS['loginpage'] = ($login == LOGIN_OK) ? false : true;
-	include(WE_INCLUDES_PATH . 'we_templates/we_info.inc.php');
+	include(WE_INCLUDES_PATH . 'we_editors/we_info.inc.php');
 
 	$dialogtable = '<noscript style="color:#fff;">Please activate Javascript!' . we_html_element::htmlBr() . we_html_element::htmlBr() . '</noscript>
 <table cellpadding="0" cellspacing="0" border="0" style="margin-left: auto; margin-right: auto;text-align:left;">
@@ -384,7 +384,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	//	Here is table to log in
 	$GLOBALS['loginpage'] = ($login == LOGIN_OK) ? false : true;
 
-	include(WE_INCLUDES_PATH . 'we_templates/we_info.inc.php');
+	include(WE_INCLUDES_PATH . 'we_editors/we_info.inc.php');
 
 	$_layouttable->setCol(1, 0, array('background' => IMAGE_DIR . 'info/left2.gif'), we_html_tools::getPixel($_layoutLeft2, 1));
 	$_layouttable->setCol(1, 1, array('colspan' => 3, 'width' => $_contenttable), $_loginTable);

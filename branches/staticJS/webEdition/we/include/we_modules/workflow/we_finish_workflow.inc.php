@@ -53,4 +53,4 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION["user"]["
 	$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 }
 
-include(WE_INCLUDES_PATH . 'we_templates/we_editor_save.inc.php');
+include(WE_INCLUDES_PATH . 'we_editors/we_editor_save.inc.php');

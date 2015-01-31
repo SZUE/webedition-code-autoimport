@@ -89,12 +89,12 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 	function editor(){
 		switch($this->EditPageNr){
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
-				return "we_templates/we_editor_properties.inc.php";
+				return "we_editors/we_editor_properties.inc.php";
 			case we_base_constants::WE_EDITPAGE_INFO:
-				return "we_templates/we_editor_info.inc.php";
+				return "we_editors/we_editor_info.inc.php";
 			case we_base_constants::WE_EDITPAGE_CONTENT:
 				$GLOBALS["we_editmode"] = true;
-				return "we_templates/we_srcTmpl.inc.php";
+				return "we_editors/we_srcTmpl.inc.php";
 			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				$GLOBALS["we_editmode"] = true;
 				$GLOBALS["we_file_to_delete_after_include"] = TEMP_PATH . we_base_file::getUniqueId();
@@ -107,13 +107,13 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 				return $GLOBALS["we_file_to_delete_after_include"];
 			case we_base_constants::WE_EDITPAGE_VARIANTS:
 				$GLOBALS["we_editmode"] = true;
-				return 'we_templates/we_editor_variants.inc.php';
+				return 'we_editors/we_editor_variants.inc.php';
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
 				return "we_editors/we_editor_versions.inc.php";
 			default:
 				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
-				return "we_templates/we_editor_properties.inc.php";
+				return "we_editors/we_editor_properties.inc.php";
 		}
 	}
 
@@ -815,7 +815,7 @@ we_templateInit();?>';
 			return $ret;
 		}
 
-		$all = include(WE_INCLUDES_PATH . 'we_templates/htmlTags.inc.php');
+		$all = include(WE_INCLUDES_PATH . 'accessibility/htmlTags.inc.php');
 		$allTags = array_merge($allTags, ($setting['htmlTag'] ? $all['html'] : array()), ($setting['html5Tag'] ? $all['html5'] : array()));
 		if(!$allTags){
 			return '';

@@ -164,9 +164,9 @@ class we_class_folder extends we_folder{
 				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
 			//no break
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
-				return 'we_templates/we_editor_properties.inc.php';
+				return 'we_editors/we_editor_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_INFO:
-				return 'we_templates/we_editor_info.inc.php';
+				return 'we_editors/we_editor_info.inc.php';
 			case we_base_constants::WE_EDITPAGE_CFWORKSPACE:
 				return 'we_modules/object/we_classFolder_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_FIELDS:
