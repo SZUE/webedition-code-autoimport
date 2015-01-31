@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weOrderContainer{
-
 	// DEBUG
 	var $debug = false;
 	// private Target Frame
@@ -39,19 +38,13 @@ class weOrderContainer{
 		$this->containerType = $type;
 	}
 
-	function getJS($jsPath){
-		if(!defined('weOrderContainer_JS_loaded')){
-			$src = we_html_element::jsScript($jsPath . '/weOrderContainer.js');
-			define("weOrderContainer_JS_loaded", true);
-		} else {
-			$src = '';
-		}
-		$src .= we_html_element::jsElement('var ' . $this->containerId . ' = new weOrderContainer("' . $this->containerId . '");');
-
-		return $src;
+	function getJS(){
+		return (!defined('weOrderContainer_JS_loaded') && define('weOrderContainer_JS_loaded', true) ?
+				we_html_element::jsScript(JS_DIR . '/weOrderContainer.js') :
+				''
+			) .
+			we_html_element::jsElement('var ' . $this->containerId . ' = new weOrderContainer("' . $this->containerId . '");');
 	}
-
-// end: getJs
 
 	function getContainer($attribs = array()){
 
@@ -63,7 +56,7 @@ class weOrderContainer{
 		}
 
 		$src = '<' . $this->containerType . ' id="' . $this->containerId . '"' . $style . $attrib . '>'
-				. '</' . $this->containerType . '>';
+			. '</' . $this->containerType . '>';
 
 		return $src;
 	}
@@ -111,15 +104,15 @@ class weOrderContainer{
 		}
 
 		$style = ($this->debug ?
-						' style="display: block; width: 90%; height: 90%; overflow: auto; border: 1px #ff0000 solid; font-family: verdana, arial; font-size: 11px; color: #000000; padding: 5px;"' :
-						' style="display: none;"');
+				' style="display: block; width: 90%; height: 90%; overflow: auto; border: 1px #ff0000 solid; font-family: verdana, arial; font-size: 11px; color: #000000; padding: 5px;"' :
+				' style="display: none;"');
 
 		return ($string != "" || $this->debug ?
-						'<' . $this->containerType . ' id="' . $this->containerId . '"' . $style . '>'
-						. $string
-						. '</' . $this->containerType . '>' : '') .
-				we_html_element::jsElement($cmd) .
-				$this->getDisableButtonJS();
+				'<' . $this->containerType . ' id="' . $this->containerId . '"' . $style . '>'
+				. $string
+				. '</' . $this->containerType . '>' : '') .
+			we_html_element::jsElement($cmd) .
+			$this->getDisableButtonJS();
 	}
 
 // end: getResponse

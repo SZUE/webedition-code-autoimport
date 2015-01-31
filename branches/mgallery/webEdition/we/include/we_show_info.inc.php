@@ -26,7 +26,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 </head>
 <body style="background-color:#EBEBEB;margin: 0px 0px 0px 0px;" onblur="self.close()" onclick="self.close()" onload="self.focus();">
 <center><?php
-	include (WE_INCLUDES_PATH . 'we_templates/we_info.inc.php');
+	include (WE_INCLUDES_PATH . 'we_editors/we_info.inc.php');
 	?>
 </center>
 </body>

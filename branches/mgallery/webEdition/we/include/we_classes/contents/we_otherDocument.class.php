@@ -44,7 +44,7 @@ class we_otherDocument extends we_binaryDocument{
 	function editor(){
 		switch($this->EditPageNr){
 			case we_base_constants::WE_EDITPAGE_PREVIEW:
-				return 'we_templates/we_editor_other_preview.inc.php';
+				return 'we_editors/we_editor_other_preview.inc.php';
 			default:
 				return parent::editor();
 		}

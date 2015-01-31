@@ -445,7 +445,7 @@ if(
 
 					if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2)){
 //this is the second call to save_document (see next else command)
-						include(WE_INCLUDES_PATH . 'we_templates/we_template_save_question.inc.php'); // this includes the gui for the save question dialog
+						include(WE_INCLUDES_PATH . 'we_editors/we_template_save_question.inc.php'); // this includes the gui for the save question dialog
 						$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 						exit();
 					} else if(!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) && $somethingNeedsToBeResaved){
@@ -484,7 +484,7 @@ if(
 					if(!isset($TEMPLATE_SAVE_CODE2) || !$TEMPLATE_SAVE_CODE2){
 						$we_responseText = g_l('weEditor', '[text/weTmpl][no_template_save]');
 						$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-						include(WE_INCLUDES_PATH . 'we_templates/we_editor_save.inc.php');
+						include(WE_INCLUDES_PATH . 'we_editors/we_editor_save.inc.php');
 						exit();
 					}
 //FIXME: is this safe??? Code-Injection!
@@ -504,13 +504,13 @@ if(
 						if(!permissionhandler::hasPerm('ADMINISTRATOR') && $we_doc->ContentType != we_base_ContentTypes::OBJECT && $we_doc->ContentType != we_base_ContentTypes::OBJECT_FILE && !in_workspace($we_doc->ParentID, get_ws($we_doc->Table), $we_doc->Table)){
 							$we_responseText = g_l('alert', '[' . FILE_TABLE . '][not_im_ws]');
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-							include(WE_INCLUDES_PATH . 'we_templates/we_editor_save.inc.php');
+							include(WE_INCLUDES_PATH . 'we_editors/we_editor_save.inc.php');
 							exit();
 						}
 						if(!$we_doc->userCanSave()){
 							$we_responseText = g_l('alert', '[access_denied]');
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-							include(WE_INCLUDES_PATH . 'we_templates/we_editor_save.inc.php');
+							include(WE_INCLUDES_PATH . 'we_editors/we_editor_save.inc.php');
 							exit();
 						}
 
@@ -635,17 +635,16 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 				$we_responseText = g_l('weEditor', '[incompleteRequest]');
 				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				//will show the message
-				include(WE_INCLUDES_PATH . 'we_templates/we_editor_publish.inc.php');
+				include(WE_INCLUDES_PATH . 'we_editors/we_editor_publish.inc.php');
 				break;
-			} else {
-				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
-
-				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-					we_schedpro::trigger_schedule();
-					$we_JavaScript .= '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');'; // save/ rename a document
-				}
 			}
-			include(WE_INCLUDES_PATH . 'we_templates/we_editor_save.inc.php');
+			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
+
+			if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
+				we_schedpro::trigger_schedule();
+				$we_JavaScript .= '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');'; // save/ rename a document
+			}
+			include(WE_INCLUDES_PATH . 'we_editors/we_editor_save.inc.php');
 			break;
 		case 'unpublish':
 			if($we_doc->Published){
@@ -676,7 +675,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 				$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_not_published]'), $we_doc->Path);
 				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 			}
-			include(WE_INCLUDES_PATH . 'we_templates/we_editor_publish.inc.php');
+			include(WE_INCLUDES_PATH . 'we_editors/we_editor_publish.inc.php');
 			break;
 		default:
 			$we_include = $we_doc->editor();
@@ -701,7 +700,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 					define('WE_CONTENT_TYPE_SET', 1);
 					we_html_tools::headerCtCharset('text/html', $charset);
 				}
-				$we_include = (file_exists($we_include) ? $we_include : WE_INCLUDES_PATH . 'we_templates/' . we_template::NO_TEMPLATE_INC);
+				$we_include = (file_exists($we_include) ? $we_include : WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC);
 				include($we_include);
 				$contents = ob_get_clean();
 

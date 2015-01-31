@@ -582,12 +582,12 @@ class we_object extends we_document{
 			$this->save();
 			$GLOBALS['we_responseText'] = sprintf(g_l('weClass', '[response_save_ok]'), $this->Path);
 			$GLOBALS['we_responseTextType'] = we_message_reporting::WE_MESSAGE_NOTICE;
-			return 'we_templates/we_editor_save.inc.php';
+			return 'we_editors/we_editor_save.inc.php';
 		}
 		switch($this->EditPageNr){
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
 			case we_base_constants::WE_EDITPAGE_WORKSPACE:
-				return 'we_templates/we_editor_properties.inc.php';
+				return 'we_editors/we_editor_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_INFO:
 				return 'we_modules/object/we_editor_info_object.inc.php';
 			case we_base_constants::WE_EDITPAGE_CONTENT:
@@ -595,7 +595,7 @@ class we_object extends we_document{
 			default:
 				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
-				return 'we_templates/we_editor_properties.inc.php';
+				return 'we_editors/we_editor_properties.inc.php';
 		}
 	}
 

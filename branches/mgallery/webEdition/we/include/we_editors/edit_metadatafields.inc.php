@@ -153,7 +153,7 @@ function build_dialog($selected_setting = 'ui'){
 
 		// THUMBNAILS
 		case 'dialog':
-			$_headline = we_html_element::htmlDiv(array('class' => 'weDialogHeadline', 'style' => 'padding:10 25 5 25;'), g_l('metadata', '[headline]'));
+			$_headline = we_html_element::htmlDiv(array('class' => 'weDialogHeadline', 'style' => 'padding:10px 25px 5px 25px;'), g_l('metadata', '[headline]'));
 
 			// read already defined metadata fields from db:
 			$GLOBALS['DB_WE']->query('SELECT * FROM ' . METADATA_TABLE);

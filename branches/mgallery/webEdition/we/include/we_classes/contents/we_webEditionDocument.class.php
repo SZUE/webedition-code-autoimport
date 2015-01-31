@@ -147,12 +147,12 @@ class we_webEditionDocument extends we_textContentDocument{
 	function editor(){
 		switch($this->EditPageNr){
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
-				return 'we_templates/we_editor_properties.inc.php';
+				return 'we_editors/we_editor_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_INFO:
 				if(isset($GLOBALS['WE_MAIN_DOC'])){
 					$GLOBALS["WE_MAIN_DOC"]->InWebEdition = true; //Bug 3417
 				}
-				return 'we_templates/we_editor_info.inc.php';
+				return 'we_editors/we_editor_info.inc.php';
 
 			case we_base_constants::WE_EDITPAGE_CONTENT:
 				$GLOBALS['we_editmode'] = true;
@@ -161,9 +161,9 @@ class we_webEditionDocument extends we_textContentDocument{
 				$GLOBALS['we_editmode'] = false;
 				break;
 			case we_base_constants::WE_EDITPAGE_VALIDATION:
-				return 'we_templates/validateDocument.inc.php';
+				return 'we_editors/validateDocument.inc.php';
 			case we_base_constants::WE_EDITPAGE_VARIANTS:
-				return 'we_templates/we_editor_variants.inc.php';
+				return 'we_editors/we_editor_variants.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
 				return 'we_editors/editor_weDocumentCustomerFilter.inc.php';
 			default:
@@ -371,7 +371,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		weSuggest::setStaticInstance(false); //avoid modification on suggestor
 		$include = $this->editor();
 		$this->EditPageNr = $oldEdit;
-		if($include && $include != WE_INCLUDES_PATH . 'we_templates/' . we_template::NO_TEMPLATE_INC){
+		if($include && $include != WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC){
 			ob_start();
 			//FIX for old code
 			$DB_WE = $GLOBALS['DB_WE'];
@@ -461,7 +461,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	private function setTemplatePath(){
 		$this->TemplatePath = $this->TemplateID ?
 			TEMPLATES_PATH . f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($this->TemplateID), 'Path', $this->DB_WE) :
-			WE_INCLUDES_PATH . 'we_templates/' . we_template::NO_TEMPLATE_INC;
+			WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC;
 	}
 
 	function setTemplateID($templID){

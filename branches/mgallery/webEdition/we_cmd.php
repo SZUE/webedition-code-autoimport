@@ -95,7 +95,7 @@ function findInclude($cmd){
 		case 'editThumbs':
 			return 'we_editors/we_thumbnails.inc.php';
 		case 'editMetadataFields':
-			return 'we_editors/we_metadata_fields/edit_metadatafields.inc.php';
+			return 'we_editors/edit_metadatafields.inc.php';
 		case 'show':
 			$GLOBALS['FROM_WE_SHOW_DOC'] = true;
 			return 'we_showDocument.inc.php';
@@ -199,9 +199,9 @@ function findInclude($cmd){
 		case 'pref_ext_changed':
 			return 'we_prefs.inc.php';
 		case 'exit_doc_question':
-			return 'we_templates/we_exit_doc_question.inc.php';
+			return 'we_editors/we_exit_doc_question.inc.php';
 		case 'exit_multi_doc_question':
-			return 'we_templates/we_exit_multi_doc_question.inc.php';
+			return 'we_editors/we_exit_multi_doc_question.inc.php';
 		case 'browse_server':
 			return 'we_editors/we_sfileselector_frameset.inc.php';
 		case 'make_backup':
@@ -237,9 +237,9 @@ function findInclude($cmd){
 			return 'wysiwygWindow.inc.php';
 		//  stuff about accessibility/validation
 		case 'checkDocument':
-			return 'accessibility/checkDocument.inc.php'; //  Here request is performed
+			return 'we_editors/checkDocument.inc.php'; //  Here request is performed
 		case 'customValidationService':
-			return 'we_templates/customizeValidation.inc.php'; //  edit parameters
+			return 'we_editors/customizeValidation.inc.php'; //  edit parameters
 
 		default:
 			//	In we.inc.php all names of the active modules have already been searched
@@ -285,5 +285,3 @@ if(($inc = findInclude($cmd))){
 	echo (!in_array($cmd, $cmds_no_js) ? we_html_element::jsElement('parent.openedWithWE = 1;') : '') .
 	(in_array($cmd, array('edit_document', 'switch_edit_page', 'load_editor')) ? we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') : '');
 }
-
-exit();
