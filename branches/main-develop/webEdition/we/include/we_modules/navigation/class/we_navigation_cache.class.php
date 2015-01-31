@@ -23,8 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_navigation_cache{
-
-	const CACHEDIR = '/webEdition/we/include/we_modules/navigation/cache/';
+	const CACHEDIR = WE_CACHE_PATH;
 
 	static $rebuildRootCnt = 0;
 
@@ -33,7 +32,7 @@ class we_navigation_cache{
 		if(in_array($id, $deleted)){
 			return;
 		}
-		$db=new DB_WE();
+		$db = new DB_WE();
 		self::delCacheNavigationEntry(0);
 		//self::cacheRootNavigation();
 		$_id = $id;
@@ -75,15 +74,15 @@ class we_navigation_cache{
 	}
 
 	static function delCacheNavigationEntry($id){
-		we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $id . '.php');
+		we_base_file::delete(self::CACHEDIR . 'navigation_' . $id . '.php');
 	}
 
 	static function saveCacheNavigation($id, $_naviItemes){
-		we_base_file::save($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $id . '.php', gzdeflate(serialize($_naviItemes->items), 9));
+		we_base_file::save(self::CACHEDIR . 'navigation_' . $id . '.php', gzdeflate(serialize($_naviItemes->items), 9));
 	}
 
 	static function getCacheFromFile($parentid){
-		$_cache = $_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'navigation_' . $parentid . '.php';
+		$_cache = self::CACHEDIR . 'navigation_' . $parentid . '.php';
 
 		if(file_exists($_cache)){
 			return @unserialize(@gzinflate(we_base_file::load($_cache)));
@@ -92,7 +91,7 @@ class we_navigation_cache{
 	}
 
 	static function getCachedRule(){//FIXME: this file is never written!
-		$_cache = $_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'rules.php';
+		$_cache = self::CACHEDIR . 'rules.php';
 		if(file_exists($_cache)){
 			return we_base_file::load($_cache);
 		}
@@ -103,15 +102,15 @@ class we_navigation_cache{
 	 * Used on upgrade to remove all navigation entries
 	 */
 	static function clean($force = false){
-		if(file_exists($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'clean')){
-			unlink($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . 'clean');
+		if(file_exists(self::CACHEDIR . 'clean')){
+			unlink(self::CACHEDIR . 'clean');
 			$force = true;
 		}
 		if($force){
-			$files = scandir($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR);
+			$files = scandir(self::CACHEDIR);
 			foreach($files as $file){
 				if(strpos($file, 'navigation_') === 0){
-					unlink($_SERVER['DOCUMENT_ROOT'] . self::CACHEDIR . $file);
+					unlink(self::CACHEDIR . $file);
 				}
 			}
 		}

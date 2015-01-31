@@ -53,7 +53,7 @@ function we_tag_css($attribs){
 
 	$attribs['rel'] = weTag_getAttribute('rel', $attribs, 'stylesheet', we_base_request::STRING);
 	$attribs['type'] = 'text/css';
-	$attribs['href'] = (we_isHttps() ? '' : BASE_CSS) . $row['Path'] . ($row['IsFolder'] ? '/' : '') . ($GLOBALS['we_editmode'] ? '?time=' . $row['Published'] : '');
+	$attribs['href'] = $row['Path'] . ($row['IsFolder'] ? '/' : '') . ($GLOBALS['we_editmode'] ? '?time=' . $row['Published'] : '');
 
 	return $nolink ? '' : getHtmlTag('link', $attribs) . "\n";
 }

@@ -309,12 +309,6 @@ if($newDocElements){
 			$oldVal = '';
 		}
 
-		/*
-		  $newVal = shortenPathSpace($newVal, $pathLength);
-		  if($oldVersion) {
-		  $oldVal = shortenPathSpace($oldVal, $pathLength);
-		  }
-		 */
 		//make sure none of them is an array
 		if(is_array($newVal)){
 			$newVal = print_r($newVal, true);

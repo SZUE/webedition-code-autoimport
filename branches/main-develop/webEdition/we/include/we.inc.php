@@ -125,11 +125,11 @@ if(isset($_SESSION['prefs']['Language']) && !empty($_SESSION['prefs']['Language'
 	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
 }
 
+include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
+
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 	$GLOBALS['WE_BACKENDCHARSET'] = (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] ?
 			$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
-
-	include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
 
 	//send header?
 	switch(isset($_REQUEST['we_cmd']) && !is_array($_REQUEST['we_cmd']) ? we_base_request::_(we_base_request::STRING, 'we_cmd', '__default__') : ''){

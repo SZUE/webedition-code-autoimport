@@ -488,8 +488,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			<b>' . g_l('fileselector', '[name]') . '</b>
 		</td>
 		<td></td>
-		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $seval, "", 'style="width:100%" readonly="readonly"') . '
-		</td>
+		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $seval, "", 'style="width:100%" readonly="readonly"') . '</td>
 		<td style="' . ($more ? 'width:150px;' : '') . '">' . $more . '</td>
 	</tr>
 	<tr>

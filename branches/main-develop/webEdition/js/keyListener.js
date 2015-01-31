@@ -37,7 +37,7 @@ function keyBoardListener(_successor) {
 	 * abstract function overwrite this!!!
 	 * @param {Event} evt
 	 */
-	this.dealEvent = function(evt) {
+	this.dealEvent = function (evt) {
 		alert("You MUST overwrite the function dealEvent!!");
 		return this.next(evt);
 
@@ -46,7 +46,7 @@ function keyBoardListener(_successor) {
 	 *
 	 * @param {Event} evt
 	 */
-	this.next = function(evt) {
+	this.next = function (evt) {
 		if (this.successor != null) {
 			return this.successor.dealEvent(evt);
 		}
@@ -57,7 +57,7 @@ function keyBoardListener(_successor) {
 	 * cancels an event if possible
 	 * @param {Event} evt
 	 */
-	this.cancelEvent = function(evt) {
+	this.cancelEvent = function (evt) {
 
 		if (document.attachEvent) {
 			evt.returnValue = false;
@@ -94,30 +94,30 @@ function keyBoardListener(_successor) {
 function keyDialogListener(_successor) {
 
 	this.successor = (_successor ? _successor : null);
-	this.dealEvent = function(evt) {
+	this.dealEvent = function (evt) {
 
 
 		switch (evt.keyCode) {
 			case 27:// ESCAPE
-		// does function closeOnEscape exist!!
+				// does function closeOnEscape exist!!
 				if (typeof (top.closeOnEscape) == "function") {
 
-			if (top.closeOnEscape()) {
-				this.cancelEvent(evt);
-				top.close();
-				return true;
-			}
-		}
+					if (top.closeOnEscape()) {
+						this.cancelEvent(evt);
+						top.close();
+						return true;
+					}
+				}
 
 				break;
 			case 13:// ENTER
-		// does function applyOnEnter exist?
+				// does function applyOnEnter exist?
 				if (typeof (top.applyOnEnter) == "function") {
-			if (top.applyOnEnter(evt)) {
-				this.cancelEvent(evt);
-				return true;
-			}
-		}
+					if (top.applyOnEnter(evt)) {
+						this.cancelEvent(evt);
+						return true;
+					}
+				}
 
 				break;
 		}
@@ -140,16 +140,16 @@ keyDialogListener.prototype = new keyBoardListener();
 function keyDialogSaveListener(_successor) {
 
 	this.successor = (_successor ? _successor : null);
-	this.dealEvent = function(evt) {
+	this.dealEvent = function (evt) {
 
 		switch (evt["keyCode"]) {
 			case 83:// S (Save)
 				if (typeof (top.saveOnKeyBoard) == "function" && evt["ctrlKey"]) {
-				if (top.saveOnKeyBoard()) {
-					this.cancelEvent(evt);
-					return true;
+					if (top.saveOnKeyBoard()) {
+						this.cancelEvent(evt);
+						return true;
+					}
 				}
-			}
 				break;
 		}
 
@@ -173,7 +173,7 @@ keyDialogSaveListener.prototype = new keyBoardListener();
 function keyEditorListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 
-	this.dealEvent = function(evt) {
+	this.dealEvent = function (evt) {
 		_editor = false;
 		_editorType = "";
 
@@ -188,7 +188,7 @@ function keyEditorListener(_successor) {
 			}
 		}
 
-		if (_editor && (evt["ctrlKey"])) { // || evt["metaKey"] when target bug is solved by Safari
+		if (_editor && (evt["ctrlKey"]) || evt["metaKey"]) {
 			switch (evt["keyCode"]) {
 				case 83: //S
 					if (evt["shiftKey"]) { // SHIFT + S (Publish)
@@ -244,9 +244,9 @@ keyEditorListener.prototype = new keyBoardListener();
 function keyModuleListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 
-	this.dealEvent = function(evt) {
+	this.dealEvent = function (evt) {
 
-		if (top.weModuleWindow !== undefined && (evt["ctrlKey"])) { // || evt["metaKey"] when target bug is solved by Safari
+		if (top.weModuleWindow !== undefined && (evt["ctrlKey"] || evt["metaKey"])) {
 
 			if (evt["keyCode"] == 83) { // S (Save)
 				if (top.content &&
@@ -279,8 +279,8 @@ keyModuleListener.prototype = new keyBoardListener();
 function keyToolListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 
-	this.dealEvent = function(evt) {
-		if (top.weToolWindow !== undefined && (evt["ctrlKey"])) { // || evt["metaKey"] when target bug is solved by Safari
+	this.dealEvent = function (evt) {
+		if (top.weToolWindow !== undefined && (evt["ctrlKey"] || evt["metaKey"])) {
 			if (evt["keyCode"] == 83) { // S (Save)
 				if (top.content &&
 								top.content.resize &&
@@ -316,7 +316,7 @@ keyToolListener.prototype = new keyBoardListener();
  */
 function keyTagWizardListener(_successor) {
 	this.successor = (_successor ? _successor : null);
-	this.dealEvent = function(evt) {
+	this.dealEvent = function (evt) {
 
 		if (evt["keyCode"] == 73) { // I (Open Tag-Wizard Prompt)
 
@@ -349,26 +349,26 @@ keyTagWizardListener.prototype = new keyBoardListener();
  */
 function keyReloadListener(_successor) {
 	this.successor = (_successor ? _successor : null);
-	this.dealEvent = function(evt) {
+	this.dealEvent = function (evt) {
 
 		if (top.weEditorFrameController !== undefined) {
 			switch (evt["keyCode"]) {
 				case 82:// R Reload
-			if (evt["ctrlKey"] || evt["metaKey"]) {
+					if (evt["ctrlKey"] || evt["metaKey"]) {
 
-					this.cancelEvent(evt);
-					return true;
-				}
+						this.cancelEvent(evt);
+						return true;
+					}
 					break;
 				case 90://Z Back
 					if (evt["ctrlKey"]) {
 						this.cancelEvent(evt);
 						return true;
-			}
+					}
 					break;
 				case 116:
-				this.cancelEvent(evt);
-				return true;
+					this.cancelEvent(evt);
+					return true;
 			}
 		}
 		return this.next(evt);
@@ -391,14 +391,17 @@ function dealWithKeyboardShortCut(evt) {
 	// This function receives all events, when a key is pressed and forwards the event to
 	// the first keyboardlistener ("chain of responsibility")
 	switch (evt["keyCode"]) {
+		case -1:
+			keyListener.cancelEvent(evt);
+			return true;
 		case 27: // ESCAPE
 		case 13: // ENTER
 		case 116: // F5 - works only in FF
-		return keyListener.dealEvent(evt);
+			return keyListener.dealEvent(evt);
 
 		case 45://ins
 		case 46://del
-		return true;
+			return true;
 		case 67: //C
 		case 86: //V
 			if (evt["ctrlKey"] || evt["metaKey"]) {

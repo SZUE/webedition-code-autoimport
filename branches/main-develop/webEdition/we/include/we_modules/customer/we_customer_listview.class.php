@@ -24,7 +24,7 @@
 
 /**
  * class    we_customer_listview
- * @desc    class for tag <we:listview type="banner">
+ * @desc    class for tag <we:listview type="customer">
  *
  */
 class we_customer_listview extends we_listview_base{
@@ -89,20 +89,20 @@ class we_customer_listview extends we_listview_base{
 	function next_record(){
 		$ret = $this->DB_WE->next_record();
 		if($ret){
-			$this->DB_WE->Record["wedoc_Path"] = $this->Path . "?we_cid=" . $this->DB_WE->Record["ID"];
-			$this->DB_WE->Record["WE_PATH"] = $this->Path . "?we_cid=" . $this->DB_WE->Record["ID"];
-			$this->DB_WE->Record["WE_TEXT"] = $this->DB_WE->Record["Username"];
-			$this->DB_WE->Record["WE_ID"] = $this->DB_WE->Record["ID"];
-			$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath . "?we_cid=" . $this->DB_WE->Record["ID"];
+			$this->DB_WE->Record['wedoc_Path'] = $this->Path . '?we_cid=' . $this->DB_WE->Record['ID'];
+			$this->DB_WE->Record['WE_PATH'] = $this->Path . '?we_cid=' . $this->DB_WE->Record['ID'];
+			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['Username'];
+			$this->DB_WE->Record['WE_ID'] = $this->DB_WE->Record['ID'];
+			$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?we_cid=' . $this->DB_WE->Record['ID'];
 			$this->count++;
 			return true;
 		}
 		$this->stop_next_row = $this->shouldPrintEndTR();
 		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 			$this->DB_WE->Record = array(
-				"WE_PATH" => "",
-				"WE_TEXT" => "",
-				"WE_ID" => "",
+				'WE_PATH' => '',
+				'WE_TEXT' => '',
+				'WE_ID' => '',
 			);
 			$this->count++;
 			return true;

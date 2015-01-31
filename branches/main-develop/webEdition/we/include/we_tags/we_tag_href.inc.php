@@ -55,6 +55,7 @@ function we_tag_href($attribs){
 
 	switch($type){
 		default:
+		case '':
 		case we_base_link::TYPE_INT:
 		case we_base_link::TYPE_ALL:
 			$int = ($type == we_base_link::TYPE_INT || $GLOBALS['we_doc']->getElement($nint) != '') ? $GLOBALS['we_doc']->getElement($nint) : false;
@@ -155,8 +156,8 @@ function we_tag_href($attribs){
 	}
 
 	return
-			'<table class="weEditTable padding0 spacing2">' .
-			($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT ? '
+		'<table class="weEditTable padding0 spacing2">' .
+		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT ? '
 <tr>
 	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_html_forms::radiobutton(1, $int, $int_elem_Name, $span . g_l('tags', '[int_href]') . ':</span>') : $span . g_l('tags', '[int_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="1" />' ) . '</td>
 	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' . $yuiSuggest->getHTML() . '</td>
@@ -164,22 +165,22 @@ function we_tag_href($attribs){
 	<td class="weEditmodeStyle">' . $open . '</td>
 	<td class="weEditmodeStyle">' . $trashbut . '</td>
 	</tr>' : '') .
-			($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_EXT ? '
+		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_EXT ? '
 <tr>
 	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_html_forms::radiobutton(0, !$int, $int_elem_Name, $span . g_l('tags', '[ext_href]') . ':</span>') : $span . g_l('tags', '[ext_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="0" />') . '</td>
 	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' .
-					getHtmlTag('input', array_merge(removeAttribs($attribs, array('onkeydown', 'onKeyDown')), array(
-						'style' => 'width:' . ($size) . 'px;',
-						'onchange' => ($type == we_base_link::TYPE_ALL ? 'this.form.elements[\'' . $int_elem_Name . '\'][1].checked=true;' : ''),
-						'type' => "text",
-						'name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']',
-						'placeholder' => "http://example.org",
-						'value' => $extPath
-					)))
-					. '</td>
+			getHtmlTag('input', array_merge(removeAttribs($attribs, array('onkeydown', 'onKeyDown')), array(
+				'style' => 'width:' . ($size) . 'px;',
+				'onchange' => ($type == we_base_link::TYPE_ALL ? 'this.form.elements[\'' . $int_elem_Name . '\'][1].checked=true;' : ''),
+				'type' => "text",
+				'name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']',
+				'placeholder' => "http://example.org",
+				'value' => $extPath
+			)))
+			. '</td>
 	<td class="weEditmodeStyle">' . $but2 . '</td>
 	<td class="weEditmodeStyle">' . $trashbut2 . '</td>
 </tr>' : '') . '
 </table>' .
-			($include && $include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '');
+		($include && $include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '');
 }

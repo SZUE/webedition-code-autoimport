@@ -1,19 +1,17 @@
 /*FIXME: mv to tblSettings*/
-###UPDATEONLY###CREATE TEMPORARY TABLE IF NOT EXISTS _newNewsPref(
-  pref_name varchar(30) NOT NULL default '',
-  pref_value longtext NOT NULL,
-  PRIMARY KEY name (pref_name(30))
-)ENGINE = MYISAM;
+###ONCOL(id,###TBLPREFIX###tblNewsletterPrefs)CREATE TEMPORARY TABLE IF NOT EXISTS _newNewsPref( pref_name varchar(30) NOT NULL default '',  pref_value longtext NOT NULL,  PRIMARY KEY name (pref_name(30)))ENGINE = MYISAM;###
 /* query separator */
-###UPDATEONLY###INSERT IGNORE INTO _newNewsPref SELECT DISTINCT * FROM ###TBLPREFIX###tblNewsletterPrefs GROUP BY pref_name;
+###ONCOL(id,###TBLPREFIX###tblNewsletterPrefs)INSERT IGNORE INTO _newNewsPref SELECT DISTINCT pref_name,pref_value FROM ###TBLPREFIX###tblNewsletterPrefs GROUP BY pref_name;###
 /* query separator */
-###UPDATEONLY###TRUNCATE ###TBLPREFIX###tblNewsletterPrefs;
+###ONCOL(id,###TBLPREFIX###tblNewsletterPrefs)TRUNCATE ###TBLPREFIX###tblNewsletterPrefs;###
 /* query separator */
-###UPDATEONLY###INSERT INTO ###TBLPREFIX###tblNewsletterPrefs SELECT * FROM _newNewsPref;
+###ONCOL(id,###TBLPREFIX###tblNewsletterPrefs)INSERT INTO ###TBLPREFIX###tblNewsletterPrefs SELECT * FROM _newNewsPref;###
+/* query separator */
+###ONCOL(id,###TBLPREFIX###tblNewsletterPrefs)DROP TEMPORARY TABLE IF EXISTS _newNewsPref;###
+/* query separator */
+###UPDATEDROPCOL(ID,###TBLPREFIX###tblNewsletterPrefs)###
 /* query separator */
 
-###UPDATEONLY###DROP TEMPORARY TABLE IF EXISTS _newNewsPref;
-/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblNewsletterPrefs (
   pref_name varchar(30) NOT NULL default '',

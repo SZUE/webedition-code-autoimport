@@ -160,16 +160,17 @@ abstract class we_base_file{
 		$open = $prefix . 'open';
 		$write = $prefix . 'write';
 		$close = $prefix . 'close';
+		$len = strlen($content);
 
 		if(($fp = $open($filename, $flags))){
-			$written = $write($fp, $content, strlen($content));
+			$written = $write($fp, $content, $len);
 			@$close($fp);
 			//if we write a php file, invalidate cache if used.
 			if(substr($filename, -4) === '.php' && function_exists('opcache_invalidate')){
 				opcache_invalidate($filename, true);
 			}
 
-			return $written;
+			return $written == $len;
 		}
 		t_e('error writing file', $filename);
 		return false;
@@ -727,6 +728,29 @@ abstract class we_base_file{
 			unlink($old);
 		}
 		return true;
+	}
+
+	/**
+	 * returns array of directory IDs of all directories which are located inside $folderID (recursive)
+	 *
+	 * @return array
+	 * @param int $folderID
+	 */
+	static function getFoldersInFolder($folderID, $table = FILE_TABLE, we_database_base $db = null){
+		$outArray = array(
+			$folderID
+		);
+		$db = ($db ? : new DB_WE());
+		$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
+		$new = array();
+		while($db->next_record()){
+			$new[] = $db->f('ID');
+		}
+		foreach($new as $cur){
+			$tmpArray = self::getFoldersInFolder($cur, $table, $db);
+			$outArray = array_merge($outArray, $tmpArray);
+		}
+		return $outArray;
 	}
 
 }

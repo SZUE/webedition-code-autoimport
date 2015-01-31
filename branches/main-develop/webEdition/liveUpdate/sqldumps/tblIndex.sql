@@ -1,3 +1,14 @@
+###UPDATEDROPCOL(viewid,###TBLPREFIX###tblIndex)###
+/* query separator */
+###UPDATEDROPCOL(Timestamp,###TBLPREFIX###tblIndex)###
+/* query separator */
+###UPDATEDROPCOL(IP,###TBLPREFIX###tblIndex)###
+/* query separator */
+###UPDATEDROPCOL(Referer,###TBLPREFIX###tblIndex)###
+/* query separator */
+###UPDATEDROPCOL(Page,###TBLPREFIX###tblIndex)###
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblIndex (
   DID int(11) unsigned NOT NULL default '0',
   `Text` text NOT NULL,

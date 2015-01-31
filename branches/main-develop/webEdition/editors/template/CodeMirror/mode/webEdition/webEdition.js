@@ -26,13 +26,14 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 	var webeditionOverlay = {
 		startState: function() {
 			return {
-				insideTag: false,
-				tagName: "",
-				attrName: "",
-				typeName: "",
-				open: false,
-				close: false,
-				attrActive: false
+				'insideTag': false,
+				'tagName': "",
+				'attrName': "",
+				'typeName': "",
+				'open': false,
+				'close': false,
+				'attrActive': false,
+				'comment': false
 			};
 		},
 		token: function(stream, state) {
@@ -134,7 +135,13 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 							case '>':
 								state.insideTag = false;
 								if (state.open) {
+									if (state.tagName === "comment") {
+										state.comment = true;
+									}
 									return "weOpenTag weTag weTag_" + state.tagName;
+								}
+								if (state.tagName === "comment") {
+									state.comment = false;
 								}
 								return "weCloseTag weTag";
 
@@ -152,6 +159,16 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 						}
 					}
 				}
+				if (state.comment) {
+					if (stream.match(/.*<\/we:comment/, true)) {
+						stream.backUp(12);
+						state.comment = false;
+					} else {
+						stream.skipToEnd();
+					}
+					return 'comment';
+				}
+
 				if (!stream.eol() && stream.peek() === "<") {
 					stream.next();
 				}

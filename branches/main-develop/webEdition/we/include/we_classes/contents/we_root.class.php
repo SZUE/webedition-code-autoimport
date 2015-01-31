@@ -611,13 +611,13 @@ abstract class we_root extends we_class{
 
 	/* get the data from an element */
 
-	function getElement($name, $key = 'dat', $default = ''){//FIXME should we bother bdid?
+	function getElement($name, $key = 'dat', $default = '', $defaultOnEmpty = false){//FIXME should we bother bdid?
 		switch($key){
 			case 'dat':
 				//check bdid first
 				return (isset($this->elements[$name]['bdid']) && $this->elements[$name]['bdid'] ?
 						$this->elements[$name]['bdid'] :
-						(isset($this->elements[$name]['dat']) ?
+						(isset($this->elements[$name]['dat']) && (!$defaultOnEmpty || $this->elements[$name]['dat']) ?
 							$this->elements[$name]['dat'] :
 							$default));
 			default:
@@ -1075,7 +1075,7 @@ abstract class we_root extends we_class{
 	}
 
 	function i_filenameDouble(){
-		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Filename="' . $this->DB_WE->escape($this->Filename) . '" AND ID != ' . intval($this->ID), '', $this->DB_WE);
+		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Filename="' . $this->DB_WE->escape($this->Filename) . '" AND ID!=' . intval($this->ID), '', $this->DB_WE);
 	}
 
 	function i_urlDouble(){

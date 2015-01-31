@@ -1052,11 +1052,13 @@ function we_templateInit(){
 //check if CHARSET is valid
 		$charset = $GLOBALS['we_doc']->getElement('Charset');
 		$GLOBALS['CHARSET'] = (!in_array($charset, we_base_charsetHandler::getAvailCharsets()) ? DEFAULT_CHARSET : $charset);
+		we_html_tools::headerCtCharset('text/html', $GLOBALS['CHARSET'], true);
 	}
 }
 
 function we_templateHead($fullHeader = false){
-	if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
+	if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition ||
+		((!isset($GLOBALS['we_editmode']) || (!$GLOBALS['we_editmode']) && isset($_SESSION['weS']) && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE))){
 		return;
 	}
 	if($fullHeader){
@@ -1065,7 +1067,7 @@ function we_templateHead($fullHeader = false){
 			return;
 		}
 	}
-	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' : '') .
+	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' . we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['CHARSET']) : '') .
 	we_html_tools::getJSErrorHandler() .
 	STYLESHEET_BUTTONS_ONLY .
 	SCRIPT_BUTTONS_ONLY .
@@ -1162,7 +1164,7 @@ function we_TemplateExit($param = 0){
 }
 
 function getWEZendCache($lifetime = 1800){
-	return Zend_Cache::factory('Core', 'File', array('lifetime' => $lifetime, 'automatic_serialization' => true), array('cache_dir' => ZENDCACHE_PATH));
+	return Zend_Cache::factory('Core', 'File', array('lifetime' => $lifetime, 'automatic_serialization' => true), array('cache_dir' => WE_CACHE_PATH));
 }
 
 /**

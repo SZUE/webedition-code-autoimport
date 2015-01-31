@@ -871,35 +871,38 @@ UNIQUE KEY k (docID,docTable)
 		return $sql;
 	}
 
-	function ofFolderAndChildsOnly($folderID, $table){
+	static function ofFolderAndChildsOnly($folderID, $table){//move this to view class; or verse visa
+		$DB_WE = new DB_WE();
 		$_SESSION['weS']['weSearch']['countChilds'] = array();
 		$childsOfFolderId = array();
 		//fix #2940
 		if(is_array($folderID)){
 			if($folderID){
 				foreach($folderID as $k){
-					$childsOfFolderId = $this->getChildsOfParentId($k, $table);
+					$childsOfFolderId = self::getChildsOfParentId($k, $table, $DB_WE);
 					$ids = makeCSVFromArray($childsOfFolderId);
 				}
 				return ' AND ' . $table . '.ParentID IN (' . $ids . ')';
 			}
 		} else {
-			$childsOfFolderId = $this->getChildsOfParentId($folderID, $table);
+			$childsOfFolderId = self::getChildsOfParentId($folderID, $table, $DB_WE);
 			$ids = makeCSVFromArray($childsOfFolderId);
 
 			return ' AND ' . $table . '.ParentID IN (' . $ids . ')';
 		}
 	}
 
-	function getChildsOfParentId($folderID, $table, we_database_base $DB_WE = null){
-		$DB_WE = $DB_WE ? : new DB_WE();
+	private static function getChildsOfParentId($folderID, $table, we_database_base $DB_WE){
+		if($table === VERSIONS_TABLE){ //we don't have parents & folders
+			return $_SESSION['weS']['weSearch']['countChilds'];
+		}
 
 		$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
 		$ids = $DB_WE->getAll(true);
 		$_SESSION['weS']['weSearch']['countChilds'] = array_merge($_SESSION['weS']['weSearch']['countChilds'], $ids);
 
 		foreach($ids as $id){
-			$this->getChildsOfParentId($id, $table, $DB_WE);
+			self::getChildsOfParentId($id, $table, $DB_WE);
 		}
 
 		$_SESSION['weS']['weSearch']['countChilds'][] = $folderID;
