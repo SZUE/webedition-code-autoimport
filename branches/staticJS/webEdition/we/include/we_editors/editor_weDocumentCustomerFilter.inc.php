@@ -51,15 +51,15 @@ $parts[] = array(
 
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo 
- we_html_element::jsScript(JS_DIR . 'windows.js') .
+require(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+echo
+we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
  (isset($yuiSuggest) ? // webuser filter is not displayed at images, so $yuiSuggest is not defined!
 	weSuggest::getYuiFiles() : '') .
  '</head><body class="weEditorBody"><form name="we_form" onsubmit="return false">' .
  we_class::hiddenTrans() .
- ($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') ?
+ (!($we_doc instanceof we_imageDocument) && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') ?
 	we_html_tools::hidden('we_edit_weDocumentCustomerFilter', 1) : '') .
  we_html_multiIconBox::getHTML('weDocProp', '100%', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]')) .
  '<input type="hidden" name="we_complete_request" value="1"/></form>

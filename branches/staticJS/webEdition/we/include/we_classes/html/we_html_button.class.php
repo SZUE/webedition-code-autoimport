@@ -299,7 +299,9 @@ function switch_button_state(element, button, state, type) {
 		//	Create button array
 		$_buttons = array();
 		//	button order depends on OS
-		$_order = (we_base_browserDetect::isMAC() ? array('no_button', 'cancel_button', 'yes_button') : array('yes_button', 'no_button', 'cancel_button'));
+		$_order = (we_base_browserDetect::isMAC() ?
+			array('no_button', 'cancel_button', 'yes_button') :
+			array('yes_button', 'no_button', 'cancel_button'));
 
 		//	Existing buttons are added to array
 		for($_i = 0; $_i < count($_order); $_i++){

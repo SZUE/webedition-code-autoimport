@@ -113,6 +113,7 @@ abstract class we_autoloader{
 			'we_webEditionDocument' => 'we_webEditionDocument.class.php',
 		),
 		'we_classes' => array(
+			'doclistView' => 'doclistView.class.php',
 			'DB_WE' => 'database/DB_WE.inc.php', //pseudo-element which loads a wrapper, doesn't contain a real class!
 			'metadatatag' => 'listview/metadatatag.class.php',
 			'permissionhandler' => 'permissionhandler/permissionhandler.class.php',
@@ -132,6 +133,7 @@ abstract class we_autoloader{
 			'weTree' => 'weTree.class.php',
 			'we_updater' => 'we_updater.class.php',
 			'weToolLookup' => 'tools/we_tool_lookup.class.php',
+			'we_message_reporting' => 'we_message_reporting.class.php',
 		),
 		'we_modules' => array(
 			'we_class_folder' => 'object/we_class_folder.class.php',
@@ -163,12 +165,6 @@ abstract class we_autoloader{
 			'weTagData_sqlRowAttribute' => 'weTagData_sqlRowAttribute.class.php',
 			'weTagData_textAttribute' => 'weTagData_textAttribute.class.php',
 			'weTagData_typeAttribute' => 'weTagData_typeAttribute.class.php',
-		),
-		'we_doclist' => array(
-			'doclistView' => 'doclistView.class.php',
-		),
-		'we_message_reporting' => array(
-			'we_message_reporting' => 'we_message_reporting.class.php',
 		),
 	);
 
@@ -211,9 +207,9 @@ abstract class we_autoloader{
 				//t_e(WE_APPS_PATH.'wephpmyadmin/phpMyAdmin/libraries/'.$domain.'.class.php');
 				include(WE_APPS_PATH . 'wephpmyadmin/phpMyAdmin/libraries/' . $name . '.class.php');
 				return true;
-			/*case 'Less':
-				include_once(WE_LIB_PATH . 'additional/Less/Autoloader.php');
-				return Less_Autoloader::loadClass($class_name);*/
+			/* case 'Less':
+			  include_once(WE_LIB_PATH . 'additional/Less/Autoloader.php');
+			  return Less_Autoloader::loadClass($class_name); */
 			case 'Zend':
 				self::loadZend($class_name);
 				return false;

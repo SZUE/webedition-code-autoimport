@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -68,7 +67,7 @@ var searchClassFolder = "' . str_replace("\n", "\\n", addslashes(we_html_tools::
 var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
 
 ') .
-				we_html_element::jsScript(JS_DIR . 'doclistView.js');
+			we_html_element::jsScript(JS_DIR . 'doclistView.js');
 	}
 
 	/**
@@ -98,9 +97,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	<td>' . we_class::hiddenTrans() . '</td>
 </tr>';
 
-		$r = array();
-		$r2 = array();
-		$r3 = array();
+		$r = $r2 = $r3 = array();
 		if(isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search)){
 			foreach($GLOBALS['we_doc']->searchclassFolder->search as $k => $v){
 				$r[] = $GLOBALS['we_doc']->searchclassFolder->search [$k];
@@ -154,12 +151,10 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "MasterTemplateID" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "temp_template_id"){
 					$_linkPath = $GLOBALS['we_doc']->searchclassFolder->search [$i];
-
 					$_rootDirID = 0;
 
-					$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchParentID[" . $i . "]'].value");
-					$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['search[" . $i . "]'].value");
-					$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
+					$cmd1 = "document.we_form.elements['searchParentID[" . $i . "]'].value";
+					$_cmd = "javascript:we_cmd('openDocselector'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['search[" . $i . "]'].value") . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
 					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'searchParentID[' . $i . ']', "value" => "")), we_html_tools::getPixel(5, 4), $_button);
 
@@ -189,19 +184,18 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		}
 
 		$out .= '</tbody></table>
-			<table cellpadding="0" cellspacing="0" id="advSearch3" border="0" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
-        <tr>
-          <td colspan="4">' . we_html_tools::getPixel(20, 10) . '</td>
-        </tr>
-        <tr>
-          <td width="215">' . we_html_button::create_button("add", "javascript:newinput();") . '</td>
-          <td width="155"></td>
-          <td width="188" align="right">' . we_html_button::create_button("search", "javascript:search(true);") . '</td>
-          <td></td>
-        </tr>
-
-        </table>' .
-				we_html_element::jsElement('calendarSetup(' . $GLOBALS['we_doc']->searchclassFolder->height . ');');
+<table cellpadding="0" cellspacing="0" id="advSearch3" border="0" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
+	<tr>
+		<td colspan="4">' . we_html_tools::getPixel(20, 10) . '</td>
+	</tr>
+	<tr>
+		<td width="215">' . we_html_button::create_button("add", "javascript:newinput();") . '</td>
+		<td width="155"></td>
+		<td width="188" align="right">' . we_html_button::create_button("search", "javascript:search(true);") . '</td>
+		<td></td>
+	</tr>
+</table>' .
+			we_html_element::jsElement('calendarSetup(' . $GLOBALS['we_doc']->searchclassFolder->height . ');');
 
 		return $out;
 	}
@@ -229,25 +223,20 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			}
 		}
 
-		if(isset($GLOBALS['we_cmd_obj']) && is_object($GLOBALS['we_cmd_obj'])){
-			$obj = $GLOBALS['we_cmd_obj'];
-		} else {
-			$obj = $GLOBALS['we_doc'];
-		}
+		$obj = (isset($GLOBALS['we_cmd_obj']) && is_object($GLOBALS['we_cmd_obj']) ?
+				$GLOBALS['we_cmd_obj'] :
+				$GLOBALS['we_doc']);
 
 		$obj->searchclassFolder->searchstart = we_base_request::_(we_base_request::INT, "searchstart", 0);
 
 		$_table = FILE_TABLE;
 		$searchFields = we_base_request::_(we_base_request::STRING, 'searchFields', $obj->searchclassFolder->searchFields);
-		$searchText = we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->search, 'search');
+		$searchText = array_map('trim', we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->search, 'search'));
 		$location = we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->location, 'location');
 		$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->order, 'order');
 		$_view = we_base_request::_(we_base_request::INT, 'we_cmd', $obj->searchclassFolder->setView, 'setView');
 		$_searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', $obj->searchclassFolder->searchstart, 'searchstart');
 		$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', $obj->searchclassFolder->anzahl, 'anzahl');
-
-
-		$searchText = array_map('trim', $searchText);
 
 		$where = '';
 		$op = ' AND ';
@@ -267,7 +256,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 				if(isset($searchText[0])){
 					$searchString = (isset($searchText[$i]) ? $searchText[$i] : $searchText[0]);
 				}
-				if(isset($searchString) && $searchString != ""){
+				if(isset($searchString) && $searchString){
 
 					switch($searchFields[$i]){
 						default:
@@ -328,7 +317,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 			$where .= ' AND ParentID = ' . intval($obj->ID);
 
-			$whereQuery = "1 " . $where;
+			$whereQuery = '1 ' . $where;
 			switch($_table){
 				case FILE_TABLE:
 					$whereQuery .= ' AND ((RestrictOwners=0 OR RestrictOwners=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners)))';
@@ -465,14 +454,14 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 					if($fs > 0){
 						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]);
 						$imageView = "<img src='" . (file_exists($thumbpath = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($_result[$f]['Extension'])) ?
-										$thumbpath :
-										WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"]
-								) . "' border='0' /></a>";
+								$thumbpath :
+								WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"]
+							) . "' border='0' /></a>";
 
 						$imageViewPopup = "<img src='" . (file_exists($thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($_result[$f]["Extension"])) ?
-										$thumbpathPopup :
-										WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"]
-								) . "' border='0' /></a>";
+								$thumbpathPopup :
+								WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"]
+							) . "' border='0' /></a>";
 					} else {
 						$imagesize = array(0, 0);
 						$thumbpath = ICON_DIR . 'doclist/' . we_base_ContentTypes::IMAGE_ICON;
@@ -489,8 +478,8 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 				if($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
 					$templateID = ($_result[$f]["Published"] >= $_result[$f]["ModDate"] && $_result[$f]["Published"] ?
-									$_result[$f]["TemplateID"] :
-									$_result[$f]["temp_template_id"]);
+							$_result[$f]["TemplateID"] :
+							$_result[$f]["temp_template_id"]);
 
 					$templateText = g_l('searchtool', '[no_template]');
 					if($templateID){
@@ -561,12 +550,12 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', (isset($GLOBALS['we_transaction']) ? $GLOBALS['we_transaction'] : 0));
 
 		return
-				we_html_tools::hidden("we_transaction", $we_transaction) .
-				we_html_tools::hidden("order", $order) .
-				we_html_tools::hidden("todo", "") .
-				we_html_tools::hidden("mode", $mode) .
-				we_html_tools::hidden("setView", $setView) .
-				'<table border="0" cellpadding="0" cellspacing="0">
+			we_html_tools::hidden("we_transaction", $we_transaction) .
+			we_html_tools::hidden("order", $order) .
+			we_html_tools::hidden("todo", "") .
+			we_html_tools::hidden("mode", $mode) .
+			we_html_tools::hidden("setView", $setView) .
+			'<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>' . we_html_tools::getPixel(19, 12) . '</td>
 		<td style="font-size:12px;width:125px;">' . g_l('searchtool', '[eintraege_pro_seite]') . ':</td>
@@ -590,7 +579,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		}
 
 		return
-				'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+			'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
 	<tr>
 	 <td>' . $publishButtonCheckboxAll . '</td>
 	 <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
@@ -615,19 +604,19 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		}
 
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
-				($searchstart ?
-						we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
-						we_html_button::create_button("back", "", true, 100, 22, "", "", true)
-				) .
-				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
+			($searchstart ?
+				we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
+				we_html_button::create_button("back", "", true, 100, 22, "", "", true)
+			) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
         <td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
-				(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
-				' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
-				(($searchstart + $anzahl) < $we_search_anzahl ?
-						we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
-						we_html_button::create_button("next", "", true, 100, 22, "", "", true)
-				) .
-				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
+			(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
+			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
+			(($searchstart + $anzahl) < $we_search_anzahl ?
+				we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
+				we_html_button::create_button("next", "", true, 100, 22, "", "", true)
+			) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
 		if($anzahl){
@@ -646,7 +635,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		}
 
 		$out .= $select .
-				'</td></tr></table>';
+			'</td></tr></table>';
 
 		return $out;
 	}
@@ -656,12 +645,10 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	 * @return string, html
 	 */
 	function getHTMLforDoclist($content){
-
 		$marginLeft = "0";
 
 		$out = '<table width="100%" border="0" cellspacing="0" cellpadding="0" style="width:100%;">
-          <tr>
-            <td class="defaultfont">';
+<tr><td class="defaultfont">';
 
 		foreach($content as $i => $c){
 			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
@@ -682,7 +669,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			}
 
 			$out .= $rightContent .
-					'</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
+				'</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
 
 			if($i < (count($content) - 1) && (!isset($c["noline"]))){
 				$out .= '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>';

@@ -637,13 +637,12 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 				//will show the message
 				include(WE_INCLUDES_PATH . 'we_templates/we_editor_publish.inc.php');
 				break;
-			} else {
-				$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
+			}
+			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 
-				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-					we_schedpro::trigger_schedule();
-					$we_JavaScript .= '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');'; // save/ rename a document
-				}
+			if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
+				we_schedpro::trigger_schedule();
+				$we_JavaScript .= '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');'; // save/ rename a document
 			}
 			include(WE_INCLUDES_PATH . 'we_templates/we_editor_save.inc.php');
 			break;

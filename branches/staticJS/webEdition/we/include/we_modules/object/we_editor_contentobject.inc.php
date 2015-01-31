@@ -27,13 +27,13 @@ we_html_tools::protect();
 
 //	---> Setting the Content-Type
 
-$charset = (isset($we_doc->elements["Charset"]["dat"]) && $we_doc->elements["Charset"]["dat"] ? //	send charset which might be determined in template
-		$we_doc->elements["Charset"]["dat"] : DEFAULT_CHARSET);
+$charset = (isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat'] ? //	send charset which might be determined in template
+		$we_doc->elements['Charset']['dat'] : DEFAULT_CHARSET);
 
 echo we_html_tools::getHtmlTop('', $charset, 5);
 
 //	---> initialize some vars
-$jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "classEntry");
+$jsGUI = new weOrderContainer('_EditorFrame.getContentEditor()', 'classEntry');
 
 
 //	---> Loading the Stylesheets
@@ -52,7 +52,7 @@ echo STYLESHEET;
 //	---> Loading some Javascript
 
 echo we_html_element::jsScript(JS_DIR . 'windows.js') .
- $jsGUI->getJS(WEBEDITION_DIR . 'js');
+ $jsGUI->getJS();
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 

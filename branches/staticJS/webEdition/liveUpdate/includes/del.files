@@ -1,3 +1,10 @@
+we/include/we_message_reporting/we_message_reporting.class.php
+we/include/we_message_reporting
+we/include/we_doclist/doclistView.class.php
+we/include/we_doclist
+we/include/we_doclist/we_editor_doclist.inc.php
+we/include/we_editors/we_metadata_fields/edit_metadatafields.inc.php
+we/include/we_editors/we_metadata_fields
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js

@@ -75,24 +75,24 @@ class we_wizard_code{
 		while(false !== ($_entry = $_dir->read())){
 
 			// ignore files . and ..
-			if($_entry === "." || $_entry === ".."){
+			if($_entry === '.' || $_entry === '..'){
 				// ignore these
 				// get the snippets by file if extension is xml
-			} elseif(!is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && substr_compare($_entry, ".xml", -4, 4, true) == 0){
+			} elseif(!is_dir($this->SnippetPath . $SnippetDir . '/' . $_entry) && substr_compare($_entry, '.xml', -4, 4, true) == 0){
 				// get the snippet
-				$_snippet = new we_wizard_codeSnippet($this->SnippetPath . $SnippetDir . "/" . $_entry);
+				$_snippet = new we_wizard_codeSnippet($this->SnippetPath . $SnippetDir . '/' . $_entry);
 				$_item = array(
 					'type' => 'option',
 					'name' => $_snippet->getName(),
-					'value' => $SnippetDir . "/" . $_entry
+					'value' => $SnippetDir . '/' . $_entry
 				);
 				$Snippets[] = $_item;
 
 				// enter subdirectory only if depth is smaller than 2
-			} elseif(is_dir($this->SnippetPath . $SnippetDir . "/" . $_entry) && $Depth < 2){
+			} elseif(is_dir($this->SnippetPath . $SnippetDir . '/' . $_entry) && $Depth < 2){
 
 				$information = array();
-				$_infoFile = $this->SnippetPath . $SnippetDir . "/" . $_entry . "/" . "_information.php";
+				$_infoFile = $this->SnippetPath . $SnippetDir . '/' . $_entry . '/_information.php';
 				if(file_exists($_infoFile) && is_file($_infoFile)){
 					include ($_infoFile);
 				}
@@ -105,7 +105,7 @@ class we_wizard_code{
 				$_folder = array(
 					'type' => 'optgroup',
 					'name' => $_foldername,
-					'value' => $this->_getSnippetsByDir($SnippetDir . "/" . $_entry, $Depth)
+					'value' => $this->_getSnippetsByDir($SnippetDir . '/' . $_entry, $Depth)
 				);
 				$Snippets[] = $_folder;
 			}
@@ -140,20 +140,20 @@ class we_wizard_code{
 		$_select = "<select id=\"codesnippet_" . $type . "\" name=\"codesnippet_" . $type . "\"  size=\"7\" style=\"width:250px; height: 100px; display: none;\" ondblclick=\"YUIdoAjax(this.value);\" onchange=\"weButton.enable('btn_direction_right_applyCode')\">\n";
 		foreach($_options as $option){
 			if($option['type'] === 'optgroup' && count($option['value']) > 0){
-				$_select .= "<optgroup label=\"" . $option['name'] . "\">\n";
+				$_select .= '<optgroup label="' . $option['name'] . '">';
 
 				foreach($option['value'] as $optgroupoption){
 
 					if($optgroupoption['type'] === 'option'){
-						$_select .= "<option value=\"" . $optgroupoption['value'] . "\">" . $optgroupoption['name'] . "</option>\n";
+						$_select .= '<option value="' . $optgroupoption['value'] . '">' . $optgroupoption['name'] . '</option>';
 					}
 				}
-				$_select .= "</optgroup>\n";
+				$_select .= '</optgroup>';
 			} elseif($option['type'] === 'option'){
-				$_select .= "<option value=\"" . $option['value'] . "\">" . $option['name'] . "</option>\n";
+				$_select .= '<option value="' . $option['value'] . '">' . $option['name'] . '</option>';
 			}
 		}
-		$_select .= "</select>\n";
+		$_select .= '</select>';
 
 		return $_select;
 	}
