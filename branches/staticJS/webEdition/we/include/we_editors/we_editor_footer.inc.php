@@ -148,7 +148,7 @@ echo STYLESHEET .
 		"Path":"' . $we_doc->Path . '",
 		"Text":"' . $we_doc->Text . '",
 		"contentType":"' . $we_doc->ContentType . '",
-		"editFilename":"' . preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . $we_doc->Extension, $we_doc->Path) . '",
+		"editFilename":"' . preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : ''), $we_doc->Path) . '",
 		"makeSameDocCheck": ' . intval($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) . ',
 		"isTemplate":' . intval($we_doc->Table == TEMPLATES_TABLE) . ',
 		"isFolder":' . intval($we_doc->ContentType == we_base_ContentTypes::FOLDER) . '

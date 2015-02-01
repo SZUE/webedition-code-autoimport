@@ -33,68 +33,18 @@ $deleteAllButton = we_html_button::create_button("delete", "javascript:messageCo
 $closeButton = we_html_button::create_button("close", "javascript:window.close();");
 
 $_buttons = we_html_button::position_yes_no_cancel($deleteAllButton, null, $closeButton);
+
+echo
+we_html_element::cssLink(CSS_DIR . 'messageConsole.css') .
+ we_html_element::jsScript(JS_DIR . 'messageConsoleWindow.js');
 ?>
-<style type="text/css">
-	#jsMessageUl {
-		border-top			: 1px solid black;
-		background			: #fff;
-		list-style-type		: none;
-		margin				: 0px;
-		padding				: 0px;
-
-	}
-
-	#jsMessageUl li {
-		border-bottom		: 1px solid black;
-		margin				: 0px 0px 0px 0px;
-		padding				: 8px 0px 8px 35px;
-		background-repeat	: no-repeat;
-		background-position	: 6px 50%;
-	}
-
-	#headlineDiv {
-		height				: 40px;
-	}
-	#headlineDiv div {
-		padding				: 10px 0px 0px 10px;
-	}
-
-	#messageDiv {
-		background			: #fff;
-		overflow			: auto;
-		height				: 420px ! important;
-	}
-
-	.dialogButtonDiv {
-		left				: 0px;
-		height				: 40px;
-		background-image	: url(<?php echo IMAGE_DIR; ?>edit/editfooterback.gif);
-		position			: absolute;
-		bottom				: 0px;
-		width				: 100%;
-	}
-
-	li.msgNotice {
-		background			: url(<?php echo IMAGE_DIR; ?>messageConsole/noticeActive.gif);
-		color				: black;
-	}
-	li.msgWarning {
-		background			: url(<?php echo IMAGE_DIR; ?>messageConsole/warningActive.gif);
-		color				: darkgray;
-	}
-	li.msgError {
-		background			: url(<?php echo IMAGE_DIR; ?>messageConsole/errorActive.gif);
-		color				: red;
-	}
-</style>
-<?php echo we_html_element::jsScript(JS_DIR . 'messageConsoleImages.js') . we_html_element::jsScript(JS_DIR . 'messageConsoleWindow.js'); ?>
 </head>
 
 <body onload="messageConsoleWindow.init();" onunload="messageConsoleWindow.remove();" class="weDialogBody" style="overflow:hidden;">
 
 	<div id="headlineDiv">
 		<div class="weDialogHeadline">
-			<?php echo g_l('messageConsole', '[headline]') ?>
+<?php echo g_l('messageConsole', '[headline]') ?>
 		</div>
 	</div>
 	<div id="messageDiv">
@@ -102,7 +52,7 @@ $_buttons = we_html_button::position_yes_no_cancel($deleteAllButton, null, $clos
 	</div>
 	<div class="dialogButtonDiv">
 		<div style="padding: 10px 10px 0px 0px;">
-			<?php echo $_buttons; ?>
+<?php echo $_buttons; ?>
 		</div>
 	</div>
 </body>

@@ -66,7 +66,7 @@ function messageConsoleView(conName, win) {
 					this.switchImage(_lastMessage.prio, true);
 					this.calls.push(null);
 
-					this.win.setTimeout("_console_" + this.name + ".hideMessage", 5000);
+					this.win.setTimeout("_console_" + this.name + ".hideMessage()", 5000);
 				}
 			}
 		} catch (e) {
@@ -89,26 +89,16 @@ function messageConsoleView(conName, win) {
 		var _img;
 		switch (prio) {
 			case 2:
-				if (active) {
-					_img = this.win._imgWarningActive;
-				} else {
-					_img = this.win._imgWarning;
-				}
+				_img = "imgWarning";
 				break;
 			case 4:
-				if (active) {
-					_img = this.win._imgErrorActive;
-				} else {
-					_img = this.win._imgError;
-				}
+				_img = "imgError";
 				break;
 			default:
-				_img = (active ?
-								this.win._imgNoticeActive :
-								this.win._imgNotice);
+				_img = "imgNotice";
 				break;
 		}
-		this.win.document.getElementById("messageConsoleImage" + this.name).src = _img.src;
+		this.win.document.getElementById("messageConsoleImage" + this.name).className = _img + (active ? "Active" : "");
 	};
 
 	/**
@@ -127,7 +117,7 @@ function messageConsoleView(conName, win) {
 	 * registers this console to the messageConsole in mainWindow of webEdition
 	 */
 	this.register = function () {
-		if (typeof (top.messageConsole) != "undefined") {
+		if (top.messageConsole !== undefined) {
 			top.messageConsole.addObserver(this);
 		} else {
 			top.opener.top.messageConsole.addObserver(this);
@@ -135,7 +125,7 @@ function messageConsoleView(conName, win) {
 	};
 
 	this.unregister = function () {
-		if (typeof (top.messageConsole) != "undefined") {
+		if (top.messageConsole !== undefined) {
 			top.messageConsole.removeObserver(this);
 		} else {
 			top.opener.top.messageConsole.removeObserver(this);
@@ -146,7 +136,7 @@ function messageConsoleView(conName, win) {
 	 * opens the message console in a new window
 	 */
 	this.openMessageConsole = function () {
-		if (typeof (top.messageConsole) != "undefined") {
+		if (top.messageConsole !== undefined) {
 			top.messageConsole.openMessageConsole();
 		} else {
 			top.opener.top.messageConsole.openMessageConsole();

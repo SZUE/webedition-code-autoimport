@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  * TBD if we divide this class in several classes
  */
 class liveUpdateFunctions{
-
 	var $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
@@ -41,7 +39,7 @@ class liveUpdateFunctions{
 	 */
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
-		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . we_database_base::arraySetter(array(
+		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE .' '. we_database_base::arraySetter(array(
 					'aktion' => $action,
 					'versionsnummer' => $version,
 					'error' => $errorCode
@@ -118,7 +116,7 @@ class liveUpdateFunctions{
 				"\$_SERVER[\"DOCUMENT_ROOT\"]",
 				'$GLOBALS[\'DOCUMENT_ROOT\']',
 				"\$GLOBALS[\"DOCUMENT_ROOT\]",
-					), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+				), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 		}
 		return $content;
 	}
@@ -602,25 +600,12 @@ class liveUpdateFunctions{
 			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Key_name="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP KEY ' . $db->escape($matches[1]) : '');
 		}
-		/* if (LIVEUPDATE_TABLE_PREFIX && strpos($query,'###TBLPREFIX###')===false) {
-
-		  $query = preg_replace("/^INSERT INTO /", "INSERT INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^INSERT IGNORE INTO /", "INSERT IGNORE INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^CREATE TABLE /", "CREATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^DELETE FROM /", "DELETE FROM " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^ALTER TABLE /", "ALTER TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-
-		  $query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
-		  } */
 
 		// second, we need to check if there is a collation
 		$Charset = we_database_base::getCharset();
 		$Collation = we_database_base::getCollation();
 		if($Charset != '' && $Collation != ''){
-			if(stripos($query, "CREATE TABLE ") === 0){
+			if(stripos($query, 'CREATE TABLE ') === 0){
 				if(strtoupper($Charset) === 'UTF-8'){//#4661
 					$Charset = 'utf8';
 				}
@@ -631,7 +616,16 @@ class liveUpdateFunctions{
 			}
 		}
 
-		if(!$query || $db->query($query)){
+		$tabExists = false;
+		if(preg_match('/CREATE TABLE (\w+) \(/', $query, $matches)){
+			if($db->isTabExist($matches[1])){//tab exists
+				$db->Errno = 1050;
+				$tabExists = true;
+			}
+		}
+
+
+		if(!$query || (!$tabExists && $db->query($query))){
 			return true;
 		}
 
@@ -692,10 +686,10 @@ class liveUpdateFunctions{
 					$alterQueries = array();
 
 					// get all queries to change existing fields
-					if(!empty($changeFields)){
+					if($changeFields){
 						$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
 					}
-					if(!empty($addFields)){
+					if($addFields){
 						$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
 					}
 
@@ -752,7 +746,7 @@ class liveUpdateFunctions{
 									$duplicate = true;
 									$this->QueryLog['tableChanged'][] = $tableName;
 								} else {
-									$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
+									$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $_query --";
 								}
 								$success = false;
 							}
@@ -765,7 +759,7 @@ class liveUpdateFunctions{
 								$db->lock(array($tableName => 'write', $backupName => 'read'));
 								foreach($alterQueries as $_query){
 									if(trim($query) && !$db->query(trim($_query))){
-										$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
+										$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $_query --";
 									}
 								}
 								$db->query('INSERT IGNORE INTO ' . $db->escape($tableName) . ' SELECT * FROM ' . $db->escape($backupName));
@@ -784,13 +778,13 @@ class liveUpdateFunctions{
 				}
 				break;
 			case 1062:
-				$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
+				$this->QueryLog['entryExists'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n<!-- $query -->";
 				return false;
 			case 1065:
 				//ignore empty queries
 				return true;
 			default:
-				$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
+				$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $query --";
 				return false;
 		}
 
@@ -854,6 +848,10 @@ class liveUpdateFunctions{
 		$GLOBALS['liveUpdateError']["errorString"] = $errstr;
 		$GLOBALS['liveUpdateError']["errorFile"] = $errfile;
 		$GLOBALS['liveUpdateError']["errorLine"] = $errline;
+		if(function_exists('error_handler')){
+			//log errors to system log, if we have one.
+			error_handler($errno, $errstr, $errfile, $errline, $errcontext);
+		}
 	}
 
 }

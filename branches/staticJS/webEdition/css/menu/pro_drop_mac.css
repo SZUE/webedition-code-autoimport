@@ -89,7 +89,6 @@
 
 #nav li div.click:hover ul.sub li:hover a{
 	color: #ffffff;
-	display: block;
 }
 
 #nav li div.click:hover ul.sub li:hover li a,
@@ -103,11 +102,7 @@
 	width: 12.8em;
 	line-height: 1.9ex;
 	padding-left: 2.4em;
-	padding-right: 1em;
-	text-indent: -1em;
 	margin: 0px 0px 1px 0px;
-	padding-top: 1px;
-	padding-bottom: 1px;
 }
 
 #nav li div.click:hover ul.sub li ul li a{
@@ -142,7 +137,6 @@
 	border: 1px solid #cccccc;
 	width: 15em;
 	padding: 4px 0px 5px 0px;
-	border-radius: 5px;
 	color: #000000;
 }
 
