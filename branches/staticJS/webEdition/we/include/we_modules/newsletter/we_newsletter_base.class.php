@@ -148,7 +148,7 @@ class we_newsletter_base{
 			return array();
 		}
 		$ret = array();
-		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";', 'pref_value', new DB_WE());
+		$_default_html = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail";', '', new DB_WE());
 
 		foreach($arr as $row){
 			if($row != ""){
@@ -169,7 +169,7 @@ class we_newsletter_base{
 		if(!$arr){
 			return array();
 		}
-		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail"');
+		$_default_html = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail"');
 		$ret = array();
 		foreach($arr as $file){
 			if(strpos($file, '..') === false){
@@ -217,7 +217,7 @@ class we_newsletter_base{
 		}
 		$ret = array();
 		$countEMails = 0;
-		$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail"');
+		$_default_html = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail"');
 		foreach($arr as $file){
 			if(strpos($file, '..') === false){
 				$data = str_replace("\r\n", "\n", we_base_file::load($_SERVER['DOCUMENT_ROOT'] . $file));

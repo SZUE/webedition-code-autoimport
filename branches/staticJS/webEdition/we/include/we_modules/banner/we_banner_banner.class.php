@@ -304,7 +304,7 @@ class we_banner_banner extends we_banner_base{
 						'page' => $page
 			));
 		} else {
-			$id = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . ' WHERE pref_name="DefaultBannerID"', '', $db);
+			$id = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="banner" AND pref_name="DefaultBannerID"', '', $db);
 
 			$bannerID = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id), '', $db);
 			if($bannerID){

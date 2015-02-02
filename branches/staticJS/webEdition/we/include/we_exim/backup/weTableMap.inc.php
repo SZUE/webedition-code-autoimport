@@ -74,7 +74,6 @@ if(defined('OBJECT_TABLE')){
 if(defined('CUSTOMER_TABLE')){
 	$tableMap['customer'] = array(
 		strtolower(stripTblPrefix(CUSTOMER_TABLE)) => CUSTOMER_TABLE,
-		strtolower(stripTblPrefix(CUSTOMER_ADMIN_TABLE)) => CUSTOMER_ADMIN_TABLE,
 		strtolower(stripTblPrefix(CUSTOMER_FILTER_TABLE)) => CUSTOMER_FILTER_TABLE,
 		strtolower(stripTblPrefix(CUSTOMER_AUTOLOGIN_TABLE)) => CUSTOMER_AUTOLOGIN_TABLE
 	);
@@ -117,7 +116,6 @@ if(defined('NEWSLETTER_TABLE')){
 		strtolower(stripTblPrefix(NEWSLETTER_GROUP_TABLE)) => NEWSLETTER_GROUP_TABLE,
 		strtolower(stripTblPrefix(NEWSLETTER_BLOCK_TABLE)) => NEWSLETTER_BLOCK_TABLE,
 		strtolower(stripTblPrefix(NEWSLETTER_LOG_TABLE)) => NEWSLETTER_LOG_TABLE,
-		strtolower(stripTblPrefix(NEWSLETTER_PREFS_TABLE)) => NEWSLETTER_PREFS_TABLE,
 		strtolower(stripTblPrefix(NEWSLETTER_CONFIRM_TABLE)) => NEWSLETTER_CONFIRM_TABLE
 	);
 }
@@ -126,7 +124,6 @@ if(defined('BANNER_TABLE')){
 	$tableMap['banner'] = array(
 		strtolower(stripTblPrefix(BANNER_TABLE)) => BANNER_TABLE,
 		strtolower(stripTblPrefix(BANNER_CLICKS_TABLE)) => BANNER_CLICKS_TABLE,
-		strtolower(stripTblPrefix(BANNER_PREFS_TABLE)) => BANNER_PREFS_TABLE,
 		strtolower(stripTblPrefix(BANNER_VIEWS_TABLE)) => BANNER_VIEWS_TABLE
 	);
 }

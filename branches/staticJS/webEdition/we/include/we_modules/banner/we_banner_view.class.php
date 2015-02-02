@@ -565,14 +565,15 @@ var g_l={
 
 	function getSettings(){
 		$db = new DB_WE();
-		$db->query('SELECT pref_name,pref_value FROM ' . BANNER_PREFS_TABLE);
+		$db->query('SELECT pref_name,pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="banner"');
 		return $db->getAllFirst(false);
 	}
 
 	function saveSettings($settings){
 		$db = new DB_WE();
 		foreach($settings as $key => $value){
-			$db->query('REPLACE INTO ' . BANNER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			$db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+						'tool' => 'banner',
 						'pref_name' => $key,
 						'pref_value' => $value
 			)));

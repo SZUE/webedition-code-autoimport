@@ -1243,7 +1243,6 @@ function addLocale() {
 }
 
 function deleteLocale() {
-
 	if(document.getElementById('locale_temp_locales').selectedIndex > -1) {
 		var LocaleIndex = document.getElementById('locale_temp_locales').selectedIndex;
 		var LocaleValue =  document.getElementById('locale_temp_locales').options[LocaleIndex].value;
@@ -1255,22 +1254,18 @@ function deleteLocale() {
 		}
 		resetLocales();
 	}
-
 }
 
 function defaultLocale() {
-
 	if(document.getElementById('locale_temp_locales').selectedIndex > -1) {
 		var LocaleIndex = document.getElementById('locale_temp_locales').selectedIndex;
 		var LocaleValue =  document.getElementById('locale_temp_locales').options[LocaleIndex].value;
 
 		setDefaultLocale(LocaleValue);
 	}
-
 }
 
 function setDefaultLocale(Value) {
-
 	if(document.getElementById('locale_temp_locales').options.length > 0) {
 		Index = 0;
 		for(i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
@@ -1287,7 +1282,6 @@ function setDefaultLocale(Value) {
 }
 
 function resetLocales() {
-
 	if(document.getElementById('locale_temp_locales').options.length > 0) {
 		var temp = new Array(document.getElementById('locale_temp_locales').options.length);
 		for(i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
@@ -2501,19 +2495,17 @@ function set_state_error_handler() {
 			$_val = get_value('message_reporting');
 
 			$_js = we_html_element::jsElement('
-			function handle_message_reporting_click() {
-				val = 0;
-				var fields = new Array("message_reporting_notices", "message_reporting_warnings", "message_reporting_errors");
-				for (i=0;i<fields.length;i++) {
+function handle_message_reporting_click() {
+	val = 0;
+	var fields = new Array("message_reporting_notices", "message_reporting_warnings", "message_reporting_errors");
+	for (i=0;i<fields.length;i++) {
 
-					if (document.getElementById(fields[i]).checked) {
-						val += parseInt(document.getElementById(fields[i]).value);
-					}
-				}
-				document.getElementById("message_reporting").value = val;
-
-			}');
-
+		if (document.getElementById(fields[i]).checked) {
+			val += parseInt(document.getElementById(fields[i]).value);
+		}
+	}
+	document.getElementById("message_reporting").value = val;
+}');
 
 			$_html = "<input type=\"hidden\" id=\"message_reporting\" name=\"newconf[message_reporting]\" value=\"$_val\" />" . we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_ERROR, 1, "message_reporting_errors", g_l('prefs', '[message_reporting][show_errors]'), false, "defaultfont", "handle_message_reporting_click();", true) . "<br />" .
 				we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_WARNING, $_val & we_message_reporting::WE_MESSAGE_WARNING, "message_reporting_warnings", g_l('prefs', '[message_reporting][show_warnings]'), false, "defaultfont", "handle_message_reporting_click();") . "<br />" .

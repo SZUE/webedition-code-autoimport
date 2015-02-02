@@ -32,7 +32,6 @@ define('DATE_ONLY_FORMAT', 'Y-m-d');
 class we_customer_settings{
 
 	private $db;
-	private $table = CUSTOMER_ADMIN_TABLE;
 	public $customer;
 	public $properties = array();
 	private $changedFieldTypes = array(
@@ -120,7 +119,6 @@ class we_customer_settings{
 
 	function __construct(){
 		$this->db = new DB_WE();
-		//$this->table = CUSTOMER_ADMIN_TABLE;
 		$this->customer = new we_customer_customer();
 		$this->properties = array(
 			'default_saveRegisteredUser_register' => 'false',
@@ -143,9 +141,9 @@ class we_customer_settings{
 
 	function load($tryFromSession = true){
 		$modified = false;
-		$this->db->query('SELECT Name,Value FROM ' . $this->table);
+		$this->db->query('SELECT pref_name,pref_value FROM ' . SETTINGS_TABLE.' WHERE tool="webadmin"');
 		while($this->db->next_record()){
-			$this->properties[$this->db->f('Name')] = $this->db->f('Value');
+			$this->properties[$this->db->f('pref_name')] = $this->db->f('pref_value');
 		}
 
 		if(isset($this->properties['SortView'])){
@@ -210,7 +208,7 @@ class we_customer_settings{
 		$this->properties['Prefs'] = serialize($this->Prefs);
 
 		foreach($this->properties as $key => $value){
-			$this->db->query('REPLACE INTO ' . $this->table . ' SET Value="' . $this->db->escape($value) . '",Name="' . $key . '"');
+			$this->db->query('REPLACE INTO ' . SETTINGS_TABLE. ' SET tool="webadmin",pref_value="' . $this->db->escape($value) . '",pref_name="' . $key . '"');
 		}
 		return true;
 	}

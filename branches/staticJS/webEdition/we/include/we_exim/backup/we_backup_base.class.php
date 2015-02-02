@@ -153,8 +153,8 @@ abstract class we_backup_base{
 
 		if(defined('CUSTOMER_TABLE')){
 			$this->table_map = array_merge($this->table_map, array(
-				'tblwebuser' => CUSTOMER_TABLE,
-				'tblwebadmin' => CUSTOMER_ADMIN_TABLE));
+				'tblwebuser' => CUSTOMER_TABLE
+				));
 		}
 
 		if(defined('OBJECT_TABLE')){
@@ -201,7 +201,6 @@ abstract class we_backup_base{
 				'tblnewslettergroup' => NEWSLETTER_GROUP_TABLE,
 				'tblnewsletterblock' => NEWSLETTER_BLOCK_TABLE,
 				'tblnewsletterlog' => NEWSLETTER_LOG_TABLE,
-				'tblnewsletterprefs' => NEWSLETTER_PREFS_TABLE,
 				'tblnewsletterconfirm' => NEWSLETTER_CONFIRM_TABLE
 				)
 			);
@@ -211,7 +210,6 @@ abstract class we_backup_base{
 			$this->table_map = array_merge($this->table_map, array(
 				'tblbanner' => BANNER_TABLE,
 				'tblbannerclicks' => BANNER_CLICKS_TABLE,
-				'tblbannerprefs' => BANNER_PREFS_TABLE,
 				'tblbannerviews' => BANNER_VIEWS_TABLE
 				)
 			);

@@ -1,4 +1,5 @@
-js/messageConsoleImages.js
+liveUpdate/sqldumps/tblNewsletterPrefs.sql
+liveUpdate/sqldumps/tblbannerprefs.sql
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -2315,6 +2316,9 @@ menuapplet/menuapplet.zip
 menuapplet/menuapplet.cab
 menuapplet
 liveUpdate/templates/register.inc.php
+liveUpdate/sqldumps/tblWebAdmin.sql
+liveUpdate/sqldumps/tblMessages.sql
+liveUpdate/sqldumps/tblIcons.sql
 liveUpdate/sqldumps/tblContentTypes.sql
 licenses/ckeditor/LICENSE.html
 licenses/ckeditor
@@ -2436,6 +2440,7 @@ js/weJsStrings.php
 js/weJsStrings.inc.php
 js/weDOM_Safari.js
 js/seeMode.php
+js/messageConsoleImages.js
 js/md5.js
 js/libs/yui/yahoo-min.js
 js/libs/yui/treeview/treeview-min.js

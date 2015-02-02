@@ -68,7 +68,7 @@ switch($type){
 			$bid = $bannerData["bannerID"];
 		}
 		if(!$bid){
-			$id = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'");
+			$id = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="banner" AND pref_name="DefaultBannerID"');
 			$bid = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id));
 		}
 

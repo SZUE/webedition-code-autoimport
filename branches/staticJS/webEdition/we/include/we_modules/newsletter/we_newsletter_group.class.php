@@ -202,7 +202,7 @@ class we_newsletter_group extends we_newsletter_base{
 
 	static function getSettings(){
 		$db = new DB_WE();
-		$db->query('SELECT pref_name,pref_value FROM ' . NEWSLETTER_PREFS_TABLE);
+		$db->query('SELECT pref_name,pref_value FROM ' . SETTINGS_TABLE.' WHERE tool="newsletter"');
 		return $db->getAllFirst(false);
 	}
 

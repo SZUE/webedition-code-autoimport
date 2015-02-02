@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 define('CUSTOMER_TABLE', TBL_PREFIX . 'tblWebUser');
-define('CUSTOMER_ADMIN_TABLE', TBL_PREFIX . 'tblWebAdmin');
 define('CUSTOMER_FILTER_TABLE', TBL_PREFIX . 'tblcustomerfilter');
 define('CUSTOMER_AUTOLOGIN_TABLE', TBL_PREFIX . 'tblWebUserAutoLogin');
 define('CUSTOMER_SESSION_TABLE', TBL_PREFIX . 'tblWebUserSessions');
@@ -33,4 +32,4 @@ define('WE_CUSTOMER_MODULE_PATH', WE_MODULES_PATH . 'customer/');
 define('WE_CUSTOMER_MODULE_DIR', WE_MODULES_DIR . 'customer/');
 define('WE_JS_CUSTOMER_MODULE_DIR', WE_JS_MODULES_DIR . 'customer/');
 
-we_base_request::registerTables(array(CUSTOMER_TABLE, CUSTOMER_ADMIN_TABLE, CUSTOMER_FILTER_TABLE, CUSTOMER_AUTOLOGIN_TABLE, CUSTOMER_SESSION_TABLE));
+we_base_request::registerTables(array(CUSTOMER_TABLE, CUSTOMER_FILTER_TABLE, CUSTOMER_AUTOLOGIN_TABLE, CUSTOMER_SESSION_TABLE));

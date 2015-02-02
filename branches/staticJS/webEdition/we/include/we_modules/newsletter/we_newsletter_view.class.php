@@ -1556,7 +1556,7 @@ self.close();');
 							implode(',', array_map('intval', explode(',', $this->newsletter->groups[$group - 1]->Customers))));
 
 
-			$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";', 'pref_value', $this->db);
+			$_default_html = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail"', '', $this->db);
 			$selectX = $this->settings['customer_email_field'] .
 					($emails_only ? '' :
 							',' . $this->settings['customer_html_field'] . ',' .
@@ -1633,7 +1633,7 @@ self.close();');
 			'use_base_href' => 1
 		);
 
-		$db->query('SELECT pref_name,pref_value FROM ' . NEWSLETTER_PREFS_TABLE);
+		$db->query('SELECT pref_name,pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter"');
 		while($db->next_record()){
 			$ret[$db->f("pref_name")] = $db->f("pref_value");
 		}
@@ -1645,7 +1645,7 @@ self.close();');
 
 	function putSetting($name, $value){
 		$db = new DB_WE();
-		$db->query('INSERT IGNORE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => $name, pref_value => $value)));
+		$db->query('INSERT IGNORE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array('tool' => 'newsletter', 'pref_name' => $name, pref_value => $value)));
 	}
 
 	function saveSettings(){
@@ -1653,14 +1653,14 @@ self.close();');
 		// WORKARROUND BUG NR 7450
 		foreach($this->settings as $key => $value){
 			if($key != 'black_list'){
-				$db->query('REPLACE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => $key, 'pref_value' => $value)));
+				$db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array('tool' => 'newsletter', 'pref_name' => $key, 'pref_value' => $value)));
 			}
 		}
 	}
 
 	function saveSetting($name, $value){
 		$db = new DB_WE();
-		$db->query('REPLACE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => $name, 'pref_value' => $value)));
+		$db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array('tool' => 'newsletter', 'pref_name' => $name, 'pref_value' => $value)));
 	}
 
 	function getBlackList(){
