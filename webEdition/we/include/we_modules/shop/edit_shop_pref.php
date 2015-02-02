@@ -33,7 +33,7 @@ function prepareFieldname($str){
 
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
-	STYLESHEET;
+ STYLESHEET;
 
 
 $ignoreFields = explode(',', we_shop_shop::ignoredEditFields);
@@ -47,17 +47,18 @@ foreach($customerTableFields as $tblField){
 }
 
 if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data in arrays ..
-	$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-			'tool' => "shop",
-			'pref_name' => 'shop_location',
-			'pref_value' => we_base_request::_(we_base_request::STRING, "shoplocation")
-	)));
+	$settings = array(
+		'shop_location' => we_base_request::_(we_base_request::STRING, 'shoplocation'),
+		'category_mode' => we_base_request::_(we_base_request::INT, 'categorymode'),
+	);
 
+	foreach($settings as $dbField => $value){
 		$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-			'tool' => "shop",
-			'pref_name' => 'category_mode',
-			'pref_value' => we_base_request::_(we_base_request::INT, "categorymode")
-	)));
+				'tool' => "shop",
+				'pref_name' => $dbField,
+				'pref_value' => $value
+		)));
+	}
 
 	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array(
 			'strDateiname' => "shop_pref",
@@ -133,7 +134,7 @@ $_row = 0;
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[shopcats][use_shopCats]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$yesno = array(0 => 'false', 1 =>'true');
+$yesno = array(0 => 'false', 1 => 'true');
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('categorymode', $yesno, 1, $categorymode, false, array("id" => "categorymode", "onchange" => "document.getElementById('shop_holders_location').style.display = (this.value == 1 ? '' : 'none'); document.getElementById('shop_holders_location_br').style.display = (this.value == 1 ? '' : 'none');")));
 $_htmlTable->setRow($_row, array('id' => 'shop_holders_location_br', 'style' => 'display:' . ($categorymode ? '' : 'none')));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
@@ -215,7 +216,7 @@ $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(2
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][orderCustomerFields]'));
 $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $orderFields, min(count($orderFields) ,5), implode(',', $fields['orderCustomerFields']), true, array(), 'value', 280));
+$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $orderFields, min(count($orderFields), 5), implode(',', $fields['orderCustomerFields']), true, array(), 'value', 280));
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][CountryField]'));

@@ -7,10 +7,7 @@ CREATE TABLE ###TBLPREFIX###tblSettings (
   PRIMARY KEY  (tool,pref_name)
 ) ENGINE=MyISAM;
 
-/* query separator */
-###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool='shop',pref_name='edit_shop_properties',pref_value='a:2:{s:14:"customerFields";a:0:{}s:19:"orderCustomerFields";a:0:{}}';
-/* query separator */
-###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool='shop',pref_name='shop_pref',pref_value='€|19|german';
+###UPDATEONLY###DELETE FROM ###TBLPREFIX###tblSettings WHERE tool='shop' AND pref_name IN ('edit_shop_properties','shop_pref');
 /* query separator */
 ###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool='glossary',pref_name='weGlossaryAutomaticReplacement',pref_value='1';
 
