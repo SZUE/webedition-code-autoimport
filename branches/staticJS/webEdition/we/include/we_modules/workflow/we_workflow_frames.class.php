@@ -138,12 +138,11 @@ function setTab(tab){
 top.content.hloaded=1;') .
 			$tab_header;
 
-		$mainDiv = we_html_element::htmlDiv(array('id' => 'main'), we_html_tools::getPixel(100, 3) .
-				we_html_element::htmlDiv(array('style' => 'margin:0px;padding-left:10px;', 'id' => 'headrow'), we_html_element::htmlNobr(
+		$mainDiv = we_html_element::htmlDiv(array('id' => 'main'),
+				we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
 						we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
 						we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
 				)) .
-				we_html_tools::getPixel(100, 3) .
 				$we_tabs->getHTML()
 		);
 

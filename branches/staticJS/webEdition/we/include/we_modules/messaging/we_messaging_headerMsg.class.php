@@ -77,7 +77,7 @@ class we_messaging_headerMsg{
 		$msg_cmd = "we_cmd('messaging_start', " . we_messaging_frames::TYPE_MESSAGE . ");";
 		$todo_cmd = "we_cmd('messaging_start', " . we_messaging_frames::TYPE_TODO . ");";
 		?>
-		<table class="msgheadertable">
+		<table>
 			<?php echo '
 <tr>
 	<td id="msgCount" align="right" class="middlefont"><div onclick="' . $msg_cmd . '">0</div></td>

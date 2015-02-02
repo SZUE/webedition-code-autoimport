@@ -188,15 +188,15 @@ $_js_we_cmd = 'function we_cmd() {
 
 echo STYLESHEET .
  we_html_element::jsElement(
-		'var _EditorFrame = top.weEditorFrameController.getEditorFrame(parent.name);
+	'var _EditorFrame = top.weEditorFrameController.getEditorFrame(parent.name);
 _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
-		$_js_we_setPath .
-		$_js_we_cmd);
+	$_js_we_setPath .
+	$_js_we_cmd);
 ?>
 </head>
-<body id="eHeaderBody" style="background: #C8D8EC url(<?php echo IMAGE_DIR; ?>backgrounds/header.gif);margin: 0px 0px 0px 0px;" onload="setFrameSize()" onresize="setFrameSize()">
+<body id="eHeaderBody" onload="setFrameSize()" onresize="setFrameSize()">
 	<div id="main" ><?php
-		echo '<div style="margin:3px 0px 3px 5px;" id="headrow">&nbsp;' . we_html_element::htmlB(str_replace(' ', '&nbsp;', ($we_doc->ContentType ? g_l('contentTypes', '[' . $we_doc->ContentType . ']') : ''))) . ': ' .
+		echo '<div id="headrow">&nbsp;' . ($we_doc->ContentType ? we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) : '') . ': ' .
 		($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="' . WEBEDITION_DIR . 'openBrowser.php?url=' . $we_doc->ID . '" target="browser">' : '') .
 		'<span id="h_path"></span>' . ($we_doc->Table == FILE_TABLE && $we_doc->ID ? '</a>' : '') . ' (ID: <span id="h_id"></span>)';
 		switch($we_doc->ContentType){
@@ -212,7 +212,7 @@ _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
 			default:
 		}
 		echo '</div>' . ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-				$we_tabs->getHTML() : '');
+			$we_tabs->getHTML() : '');
 		?></div>
 </body>
 </html>

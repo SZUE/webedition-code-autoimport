@@ -53,6 +53,30 @@ body.grey{
 	right:0px;
 	overflow:hidden;
 }
+#vtabs{
+	position:absolute;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	width:24px;
+	overflow: hidden;
+	background-image: url(/webEdition/images/v-tabs/background.gif);
+	background-repeat:repeat-y;
+	border-top:1px solid black;
+}
+
+#bm_searchField{
+	position:absolute;
+	bottom:0px;
+	height:40px;
+	left:0px;
+	right:0px;
+	overflow: hidden;
+	background-repeat:repeat;
+	margin:0px;
+	background-image: url(/webEdition/images/edit/editfooterback.gif);
+}
+
 #bframeDiv{
 	position:absolute;
 	top:0px;
@@ -117,6 +141,37 @@ img.baumArrow{
 	right:0px;
 	overflow: auto;
 	background-color:#F3F7FF;
+}
+
+#eHeaderBody{
+	background: #C8D8EC url(/webEdition/images/backgrounds/header.gif);
+	margin: 0px;
+}
+
+#headrow{
+	margin:3px 0px 3px 5px;
+}
+
+#cmdDiv{
+	position:absolute;
+	left:0px;
+	right:0px;
+	bottom:0px;
+	height: 0px;
+}
+
+#mainWindow,
+#resize{
+	position:absolute;
+	top:32px;
+	left:0px;
+	right:0px;
+	bottom:0px;
+	border: 0px;
+}
+
+#resize.withIconBar{
+	top:72px;
 }
 
 .weSelect,
@@ -480,16 +535,38 @@ optgroup.lvl2{
 	color: #006699;
 }
 
-table.msgheadertable {
-	margin:2px 0px 1em auto;
+#msgheadertable{
+	position:absolute;
+	top:0px;
+	bottom:0px;
+	right:5px;
+	width:60px;
+}
+
+#msgheadertable table{
+	margin:2px 0px 2px auto;
 	border-spacing:0px;
 	border: none;
 }
-table.msgheadertable td {
+
+#msgheadertable table td {
 	padding:0px;
 }
-table.msgheadertable tr {
+
+#msgheadertable table tr {
 	height: 12px;
+}
+
+#headerDiv{
+	position:fixed;
+	top:0px;
+	left:0px;
+	right:0px;
+	height:32px;
+	border-bottom: 1px solid black;
+	background-color:#efefef;
+	background-image: url(/webEdition/images/menu/background.gif);
+	background-repeat: repeat-x;
 }
 
 /*Error log*/
