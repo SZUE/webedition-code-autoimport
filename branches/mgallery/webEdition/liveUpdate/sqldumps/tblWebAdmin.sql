@@ -1,14 +1,10 @@
-###UPDATEONLY###CREATE TEMPORARY TABLE IF NOT EXISTS _tblWebAdmin(
-  Name varchar(255) NOT NULL default '',
-  `Value` text NOT NULL,
-  PRIMARY KEY (Name)
-)ENGINE = MYISAM;
+###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblWebAdmin) CREATE TEMPORARY TABLE IF NOT EXISTS _tblWebAdmin( Name varchar(255) NOT NULL default '', `Value` text NOT NULL,  PRIMARY KEY (Name))ENGINE = MYISAM;
 /* query separator */
-###UPDATEONLY###INSERT IGNORE INTO _tblWebAdmin SELECT DISTINCT * FROM ###TBLPREFIX###tblWebAdmin GROUP BY Name;
+###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblWebAdmin) INSERT IGNORE INTO _tblWebAdmin SELECT DISTINCT * FROM ###TBLPREFIX###tblWebAdmin GROUP BY Name;###
 /* query separator */
-###UPDATEONLY###TRUNCATE ###TBLPREFIX###tblWebAdmin;
+###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblWebAdmin) TRUNCATE ###TBLPREFIX###tblWebAdmin;###
 /* query separator */
-###UPDATEONLY###INSERT INTO ###TBLPREFIX###tblWebAdmin SELECT * FROM _tblWebAdmin;
+###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblWebAdmin) INSERT INTO ###TBLPREFIX###tblWebAdmin SELECT * FROM _tblWebAdmin;###
 /* query separator */
 
 ###UPDATEONLY###DROP TEMPORARY TABLE IF EXISTS _tblWebAdmin;
