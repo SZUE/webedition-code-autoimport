@@ -602,6 +602,10 @@ class liveUpdateFunctions{
 			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Key_name="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP KEY ' . $db->escape($matches[1]) : '');
 		}
+		if(preg_match('/###ONTAB\((.*)\)(.+);###/', $query, $matches)){
+			$query = ($db->isTabExist($matches[1]) ? $matches[2] : '');
+		}
+
 
 		// second, we need to check if there is a collation
 		$Charset = we_database_base::getCharset();
