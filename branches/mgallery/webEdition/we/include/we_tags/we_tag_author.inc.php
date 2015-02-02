@@ -41,7 +41,7 @@ function we_tag_author($attribs){
 					break;
 				case 'we_listview_search'://listview type=search
 					$oid = f('SELECT OID FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($GLOBALS['lv']->getDBf('WE_ID')) . ' OR OID=' . intval($GLOBALS['lv']->getDBf('WE_ID')));
-					if($oid > 0){//object
+					if($oid){//object
 						$objID = $GLOBALS['lv']->getDBf('WE_ID');
 					} else {//document
 						$docID = $GLOBALS['lv']->getDBf('WE_ID');
@@ -53,7 +53,7 @@ function we_tag_author($attribs){
 			}
 
 			if(!$authorID){
-				$authorID = (isset($objID) && $objID > 0 ?
+				$authorID = (isset($objID) && $objID  ?
 								f('SELECT ' . $author . ' FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($objID)) :
 								f('SELECT ' . $author . ' FROM ' . FILE_TABLE . ' WHERE ID=' . intval($docID)));
 			}

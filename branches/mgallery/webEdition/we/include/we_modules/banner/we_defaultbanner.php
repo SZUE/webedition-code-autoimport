@@ -28,7 +28,11 @@ echo we_html_tools::getHtmlTop(g_l('modules_banner', '[defaultbanner]')) .
  STYLESHEET;
 
 if(we_base_request::_(we_base_request::BOOL, "ok")){
-	$GLOBALS['DB_WE']->query('REPLACE INTO ' . BANNER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => 'DefaultBannerID', 'pref_value' => we_base_request::_(we_base_request::INT, "DefaultBannerID", 0))));
+	$GLOBALS['DB_WE']->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				'tool' => 'banner',
+				'pref_name' => 'DefaultBannerID',
+				'pref_value' => we_base_request::_(we_base_request::INT, "DefaultBannerID", 0)
+	)));
 
 	echo we_html_element::jsElement('top.close();') . '</head><body></body></html>';
 	exit();
@@ -78,7 +82,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 <body class="weDialogBody" onunload="doUnload()">
 	<form name="we_form" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" method="post"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 		<?php
-		$DefaultBannerID = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . ' WHERE pref_name="DefaultBannerID"');
+		$DefaultBannerID = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="banner" AND pref_name="DefaultBannerID"');
 		$content = formBannerChooser(300, BANNER_TABLE, $DefaultBannerID, "DefaultBannerID", "");
 		$yes_button = we_html_button::create_button("save", "javascript:we_save();");
 		$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");

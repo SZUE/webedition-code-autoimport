@@ -1394,7 +1394,7 @@ function changeFieldValue(val,valueField) {
 
 	function getHTMLEmailEdit(){
 		$type = we_base_request::_(we_base_request::INT, 'etyp', 0);
-		$htmlmail = we_base_request::_(we_base_request::RAW, 'htmlmail', f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . " WHERE pref_name='default_htmlmail'", '', $this->db));
+		$htmlmail = we_base_request::_(we_base_request::RAW, 'htmlmail', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail"', '', $this->db));
 		$id = we_base_request::_(we_base_request::INT, 'eid', 0);
 		$email = we_base_request::_(we_base_request::EMAIL, 'email', '');
 		$group = we_base_request::_(we_base_request::STRING, 'grp', '');

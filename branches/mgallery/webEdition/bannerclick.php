@@ -40,7 +40,7 @@ if(!$id){
 		$id = $_COOKIE["webid_" . $bannername];
 	}
 	if(!$id){
-		$id = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . ' WHERE pref_name="DefaultBannerID"');
+		$id = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="banner" AND pref_name="DefaultBannerID"');
 	}
 }
 

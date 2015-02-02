@@ -28,7 +28,7 @@ function we_tag_ifMale(){
 	}
 	static $maleSalutation = '';
 	if(isset($GLOBALS['WE_SALUTATION']) && $GLOBALS['WE_SALUTATION']){
-		$maleSalutation = $maleSalutation ? : f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="' . we_newsletter_newsletter::MALE_SALUTATION_FIELD . '"');
+		$maleSalutation = $maleSalutation ? : f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="' . we_newsletter_newsletter::MALE_SALUTATION_FIELD . '"');
 
 		$maleSalutation = $maleSalutation ? : g_l('modules_newsletter', '[default][male]');
 

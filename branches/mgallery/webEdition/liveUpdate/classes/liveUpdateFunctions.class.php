@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,6 +28,7 @@
  * TBD if we divide this class in several classes
  */
 class liveUpdateFunctions{
+
 	var $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
@@ -39,7 +41,7 @@ class liveUpdateFunctions{
 	 */
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
-		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE .' '. we_database_base::arraySetter(array(
+		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . ' ' . we_database_base::arraySetter(array(
 					'aktion' => $action,
 					'versionsnummer' => $version,
 					'error' => $errorCode
@@ -116,7 +118,7 @@ class liveUpdateFunctions{
 				"\$_SERVER[\"DOCUMENT_ROOT\"]",
 				'$GLOBALS[\'DOCUMENT_ROOT\']',
 				"\$GLOBALS[\"DOCUMENT_ROOT\]",
-				), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+					), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 		}
 		return $content;
 	}
@@ -584,12 +586,10 @@ class liveUpdateFunctions{
 		$query = str_replace(array('###TBLPREFIX###', '###UPDATEONLY###'), array(LIVEUPDATE_TABLE_PREFIX, ''), trim($query));
 		$matches = array();
 		if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/', $query, $matches)){
-			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Field="' . $matches[1] . '"');
-			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP COLUMN ' . $db->escape($matches[1]) : '');
+			$query = ($db->isColExist($matches[2], $matches[1])? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP COLUMN ' . $db->escape($matches[1]) : '');
 		}
 		if(preg_match('/###ONCOL\((.*),(.*)\)(.+);###/', $query, $matches)){
-			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Field="' . $matches[1] . '"');
-			$query = ($db->num_rows() ? $matches[3] : '');
+			$query = ($db->isColExist($matches[2], $matches[1]) ? $matches[3] : '');
 		}
 		//handle if key is not set, should be used after table def. so handling code, e.g. truncate, copy... can be put here
 		if(preg_match('/###ONKEYFAILED\(([^,]+),([^)]+)\)([^#]+)###/', $query, $matches)){
@@ -600,6 +600,10 @@ class liveUpdateFunctions{
 			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Key_name="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP KEY ' . $db->escape($matches[1]) : '');
 		}
+		if(preg_match('/###ONTAB\((.*)\)(.+);###/', $query, $matches)){
+			$query = ($db->isTabExist($matches[1]) ? $matches[2] : '');
+		}
+
 
 		// second, we need to check if there is a collation
 		$Charset = we_database_base::getCharset();
