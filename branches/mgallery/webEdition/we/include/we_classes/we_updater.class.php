@@ -385,8 +385,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 						'Description' => $data['default']['Description'],
 					)) . ' WHERE ID=' . $db->f('ID'));
 			}
-			//FIXME: enable this, & change to existent after 6.4
-			//$db->delCol(CATEGORY_TABLE, 'Catfields');
+			$db->delCol(CATEGORY_TABLE, 'Catfields');
 		}
 	}
 
@@ -419,22 +418,49 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		}
 	}
 
+	private static function meassure($name){
+		static $last = 0;
+		static $times = array();
+		$last = $last? : microtime(true);
+		if($name == -1){
+			t_e('notice', 'time for updates', $times);
+			return;
+		}
+		$now = microtime(true);
+		$times[] = $name . ': ' . ($now - $last);
+		$last = $now;
+	}
+
 	public function doUpdate(){
 		$db = new DB_WE();
+		self::meassure('start');
 		self::replayUpdateDB();
+		self::meassure('replayUpdateDB');
 
 		self::updateTables($db);
+		self::meassure('updateTables');
 		self::updateUsers($db);
+		self::meassure('updateUsers');
 		self::updateObjectFilesX();
+		self::meassure('updateObjectFilesX');
 		self::updateScheduler();
+		self::meassure('updateScheduler');
 		self::updateVoting();
+		self::meassure('updateVoting');
 		self::convertTemporaryDoc();
+		self::meassure('convertTemporaryDoc');
 		self::updateLangLink();
+		self::meassure('updateLangLink');
 		self::fixInconsistentTables();
+		self::meassure('fixInconsistentTables');
 		self::updateGlossar();
+		self::meassure('updateGlossar');
 		self::updateCats();
+		self::meassure('updateCats');
 		self::fixHistory();
+		self::meassure('fixHistory');
 		self::replayUpdateDB();
+		self::meassure('replayUpdateDB');
 	}
 
 }

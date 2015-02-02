@@ -81,8 +81,8 @@ function delRow(id) {
 
 	var elem = document.getElementById("filterTable");
 	if (elem) {
-		trows = elem.rows;
-		rowID = "filterRow_" + id;
+		var trows = elem.rows;
+		var rowID = "filterRow_" + id;
 
 		for (i = 0; i < trows.length; i++) {
 			if (rowID == trows[i].id) {
@@ -118,23 +118,20 @@ function back(anzahl) {
 	}
 
 }
+
 function showImageDetails(picID) {
-	elem = document.getElementById(picID);
+	var elem = document.getElementById(picID);
 	elem.style.visibility = "visible";
 
 }
 
 function hideImageDetails(picID) {
-	elem = document.getElementById(picID);
+	var elem = document.getElementById(picID);
 	elem.style.visibility = "hidden";
 	elem.style.left = "-9999px";
 }
 
-
-document.onmousemove = updateElem;
-
 function updateElem(e) {
-
 	var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 	var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
 
@@ -172,13 +169,11 @@ function absTop(el) {
 					el.offsetTop + absTop(el.offsetParent) : el.offsetTop;
 }
 
-
 function openToEdit(tab, id, contentType) {
 	top.weEditorFrameController.openDocument(tab, id, contentType);
 }
 
 function switchSearch(mode) {
-
 	document.we_form.mode.value = mode;
 	var defSearch = document.getElementById("defSearch");
 	var advSearch = document.getElementById("advSearch");
@@ -294,7 +289,6 @@ function checkAllPubChecks() {
 
 }
 
-
 function publishDocsAjax() {
 	var args = "";
 	var check = "";
@@ -312,7 +306,6 @@ function publishDocsAjax() {
 	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=\"" + dirs.IMAGE_DIR + "logo-busy.gif\" /></td></tr></table>";
 
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&" + args + "");
-
 }
 
 
@@ -655,5 +648,6 @@ function changeit(value, rowNr) {
 
 	document.getElementById("search[" + rowNr + "]").value = setValue;
 	document.getElementsByName("hidden_searchFields[" + rowNr + "]")[0].value = value;
-
 }
+
+document.onmousemove = updateElem;

@@ -267,7 +267,6 @@ EOS;
 				}
 				$this->addJSFile(we_main_headermenu::getJsForCssMenu());
 				$this->addCSSFile(LIB_DIR . 'we/ui/themes/default/we_ui_controls_MessageConsole/style.css');
-				$this->addJSFile(WEBEDITION_DIR . 'js/messageConsoleImages.js');
 				$this->addJSFile(WEBEDITION_DIR . 'js/messageConsoleView.js');
 			}
 			$js = <<<EOS

@@ -66,7 +66,6 @@ class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement{
 		parent::__construct($properties);
 
 		// add needed JS Files
-		$this->addJSFile(JS_DIR . 'messageConsoleImages.js');
 		$this->addJSFile(JS_DIR . 'messageConsoleView.js');
 
 		// add needed CSS Files
@@ -113,9 +112,7 @@ EOS;
 	<table>
 	<tr>
 		<td valign="middle">
-		<span class="$headerClass" id="messageConsoleMessage$this->_consoleName" style="display: none;">
-			--
-		</span>
+		<span class="$headerClass" id="messageConsoleMessage$this->_consoleName" style="display: none;">--</span>
 		</td>
 		<td>
 			<div onclick="_console_$this->_consoleName.openMessageConsole();" class="$iconClassNormal" onmouseover="this.className=&quot;$iconClassOver&quot;" onmouseout="this.className=&quot;$iconClassNormal&quot;"><img id="messageConsoleImage$this->_consoleName" src="$imgPath" /></div>

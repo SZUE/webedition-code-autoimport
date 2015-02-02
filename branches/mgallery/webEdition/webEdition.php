@@ -85,18 +85,18 @@ function pWebEdition_Frameset($SEEM_edit_include){
 			break;
 	}
 	?>
-	<div style="position:absolute;top:0px;left:0px;right:0px;height:32px;border-bottom: 1px solid black;">
+	<div id="headerDiv">
 		<?php we_main_header::pbody($SEEM_edit_include); ?>
 	</div>
-	<div style="position:absolute;top:32px;left:0px;right:0px;bottom:0px;border: 0px;">
+	<div id="mainWindow">
 		<iframe src="<?php echo WEBEDITION_DIR; ?>resizeframe.php?<?php echo $we_cmds ? '?' . $we_cmds : ''; ?>" id="rframe" name="rframe"></iframe>
 	</div>
-	<div style="position:absolute;left:0px;right:0px;bottom:0px;height: 0px;">
+	<div id="cmdDiv">
 		<iframe src="about:blank" style="overflow: hidden;" name="load"></iframe>
 		<iframe src="about:blank" style="overflow: hidden;" name="load2"></iframe>
-		<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="ad"></iframe>
-		<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="postframe"></iframe>
-		<iframe src="about:blank" style="border-right:1px solid black;width:100%;height:100%;overflow: hidden;" name="plugin"></iframe>
+		<iframe src="about:blank" style="overflow: hidden;" name="ad"></iframe>
+		<iframe src="about:blank" style="overflow: hidden;" name="postframe"></iframe>
+		<iframe src="about:blank" style="overflow: hidden;" name="plugin"></iframe>
 	</div>
 	<?php
 }

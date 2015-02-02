@@ -49,7 +49,6 @@ function startNormalMode(){
 	$_sidebarwidth = getSidebarWidth();
 	$_treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= weTree::MinWidth) ? $_COOKIE["treewidth_main"] : weTree::DefaultWidth;
 	?>
-	<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;border: 0px;">
 		<div style="width:<?php echo $_treewidth; ?>px;display:block;" id="bframeDiv">
 			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 		</div>
@@ -64,7 +63,6 @@ function startNormalMode(){
 				?>
 			</div>
 		<?php } ?>
-	</div>
 	<?php
 }
 

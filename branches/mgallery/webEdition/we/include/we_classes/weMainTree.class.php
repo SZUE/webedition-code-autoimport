@@ -83,7 +83,6 @@ function openClose(id) {
 	}
 
 	function getJSTreeFunctions($overridden = false){
-
 		return parent::getJSTreeFunctions() . ($overridden ? '' : '
 function doClick(id){
 	var node=' . $this->topFrame . '.get(id);

@@ -66,7 +66,7 @@ function messageConsoleView(conName, win) {
 					this.switchImage(_lastMessage.prio, true);
 					this.calls.push(null);
 
-					this.win.setTimeout("_console_" + this.name + ".hideMessage", 5000);
+					this.win.setTimeout("_console_" + this.name + ".hideMessage()", 5000);
 				}
 			}
 		} catch (e) {
@@ -89,26 +89,16 @@ function messageConsoleView(conName, win) {
 		var _img;
 		switch (prio) {
 			case 2:
-				if (active) {
-					_img = this.win._imgWarningActive;
-				} else {
-					_img = this.win._imgWarning;
-				}
+				_img = "imgWarning";
 				break;
 			case 4:
-				if (active) {
-					_img = this.win._imgErrorActive;
-				} else {
-					_img = this.win._imgError;
-				}
+				_img = "imgError";
 				break;
 			default:
-				_img = (active ?
-								this.win._imgNoticeActive :
-								this.win._imgNotice);
+				_img = "imgNotice";
 				break;
 		}
-		this.win.document.getElementById("messageConsoleImage" + this.name).src = _img.src;
+		this.win.document.getElementById("messageConsoleImage" + this.name).className = _img + (active ? "Active" : "");
 	};
 
 	/**

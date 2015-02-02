@@ -23,24 +23,23 @@
  */
 $table = isset($table) ? $table : FILE_TABLE;
 ?>
-<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;">
-	<div style="position:absolute;top:0px;bottom:0px;left:0px;width:24px;overflow: hidden;background-image: url(<?php echo IMAGE_DIR; ?>v-tabs/background.gif);background-repeat:repeat-y;border-top:1px solid black;">
-		<?php include(WE_INCLUDES_PATH . 'we_vtabs.inc.php'); ?>
+<div id="vtabs">
+	<?php include(WE_INCLUDES_PATH . 'we_vtabs.inc.php'); ?>
+</div>
+<div id="treeFrameDiv">
+	<div id="bm_treeheaderDiv">
+		<iframe frameBorder="0" src="about:blank" name="treeheader" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 	</div>
-	<div id="treeFrameDiv">
-		<div id="bm_treeheaderDiv">
-			<iframe frameBorder="0" src="about:blank" name="treeheader" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
-		</div>
-		<div id="bm_mainDiv">
-			<?php
-			$Tree = new weMainTree('webEdition.php', 'top', 'top.resize.left.tree', 'top.load');
-			echo $Tree->getHTMLContructX('if(top.treeResized){top.treeResized();}');
-			?>
-		</div>
-		<div style="position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;background-repeat:repeat;margin:0px;background-image: url(<?php echo EDIT_IMAGE_DIR ?>editfooterback.gif);">
-			<?php
-			include(WE_INCLUDES_PATH . 'treeInfo.inc.php');
-			?>
-		</div>
+	<div id="bm_mainDiv">
+		<?php
+		$Tree = new weMainTree('webEdition.php', 'top', 'top.resize.left.tree', 'top.load');
+		echo $Tree->getHTMLContructX('if(top.treeResized){top.treeResized();}');
+		?>
+	</div>
+	<div id="bm_searchField">
+		<?php
+		include(WE_INCLUDES_PATH . 'treeInfo.inc.php');
+		?>
 	</div>
 </div>
+

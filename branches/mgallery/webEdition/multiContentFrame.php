@@ -64,20 +64,18 @@ echo we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js');
 ?>
 </head>
 <body onresize="setFrameSize()" onload="init();
-		startMultiEditor();">
-	<div style="position:absolute;top:0px;bottom:0px;right:0px;left:0px;overflow: hidden;background-color: white;">
-		<div style="position:absolute;top:0px;height:22px;width:100%;background-color: Silver; border-top: 1px solid #000000;" id="multiEditorDocumentTabsFrameDiv">
-<?php include(WEBEDITION_PATH . 'multiEditor/multiTabs.inc.php'); ?>
-		</div>
-		<div style="position:absolute;top:22px;bottom:0px;left:0px;right:0px;overflow: hidden;" id="multiEditorEditorFramesetsDiv"><?php
-			$count = (isset($_SESSION) && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? 1 : 32;
+		startMultiEditor();" style="overflow: hidden;">
+	<div id="multiEditorDocumentTabsFrameDiv">
+		<?php include(WEBEDITION_PATH . 'multiEditor/multiTabs.inc.php'); ?>
+	</div>
+	<div id="multiEditorEditorFramesetsDiv"><?php
+		$count = (isset($_SESSION) && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? 1 : 32;
 
-			for($i = 0; $i < $count; $i++){
-				//'overflow:hidden;' removed to fix bug #6540
-				echo '<iframe frameBorder="0" style="' . ($i == 0 ? 'width:100%;height:100%;' : (we_base_browserDetect::isChrome() ? 'width:100%;height:100%;display:none;' : 'width:0px;height:0px;')) . 'margin:0px;border:0px;" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize ></iframe>';
-			}
-			?>
-		</div>
+		for($i = 0; $i < $count; $i++){
+			//'overflow:hidden;' removed to fix bug #6540
+			echo '<iframe style="' . ($i == 0 ? '' : (we_base_browserDetect::isChrome() ? 'display:none;' : 'width:0px;height:0px;')) . '" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize ></iframe>';
+		}
+		?>
 	</div>
 </body>
 </html>

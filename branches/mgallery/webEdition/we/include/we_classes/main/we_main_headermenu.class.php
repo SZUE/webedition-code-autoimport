@@ -31,8 +31,7 @@ class we_main_headermenu{
 	 * @return string
 	 */
 	public static function createMessageConsole($consoleName = 'NoName'){
-		return we_html_element::jsScript(JS_DIR . 'messageConsoleImages.js') .
-			we_html_element::jsScript(JS_DIR . 'messageConsoleView.js') .
+		return we_html_element::jsScript(JS_DIR . 'messageConsoleView.js') .
 			we_html_element::jsElement('
 var _msgNotice  = "' . g_l('messageConsole', '[iconBar][notice]') . '";
 var _msgWarning = "' . g_l('messageConsole', '[iconBar][warning]') . '";
@@ -46,17 +45,15 @@ onunload=function() {
 	_console_' . $consoleName . '.unregister();
 }
 ') . '
-<div style="position:relative;float:left;">
-	<table>
+<div id="messageConsole">
+<table>
 	<tr>
 		<td valign="middle">
-		<span class="small" id="messageConsoleMessage' . $consoleName . '" style="display: none; background-color: white; border: 1px solid #cdcdcd; padding: 2px 4px 2px 4px; margin: 3px 10px 0 0;">
-			--
-		</span>
+	<div class="small messageConsoleMessage" id="messageConsoleMessage' . $consoleName . '">--</div>
 		</td>
 		<td>
-			<div onclick="_console_' . $consoleName . '.openMessageConsole();" class="navigation_normal" onmouseover="this.className=\'navigation_hover\'" onmouseout="this.className=\'navigation_normal\'"><img id="messageConsoleImage' . $consoleName . '" src="' . IMAGE_DIR . 'messageConsole/notice.gif" style="border: none; padding: 1px;" /></div>
-		</td>
+	<div onclick="_console_' . $consoleName . '.openMessageConsole();" class="navigation" id="messageConsoleImageDiv"><div id="messageConsoleImage' . $consoleName . '" class="imgNotice"></div></div>
+</td>
 	</tr>
 	</table>
 </div>';
@@ -177,22 +174,19 @@ onunload=function() {
 				}
 				?>
 			</div>
-			<div style="position:relative;bottom:0px;border:0px;padding-left: 10px;float:left;" >
+			<div id="navigationHistory">
 				<?php
-				if(!empty($navigationButtons)){
+				if($navigationButtons){
 					foreach($navigationButtons as $button){
-						echo '<div style = "float:left;margin-top:5px;" class = "navigation_normal" onclick = "' . $button['onclick'] . '" onmouseover = "this.className=\'navigation_hover\'" onmouseout = "this.className=\'navigation_normal\'"><img border = "0" hspace = "2" src = "' . IMAGE_DIR . $button['imagepath'] . '" width = "17" height = "18" alt = "' . $button['text'] . '" title = "' . $button['text'] . '"></div>';
+						echo '<div class="navigation" onclick="' . $button['onclick'] . '"><img src="' . IMAGE_DIR . $button['imagepath'] . '" alt="' . $button['text'] . '" title="' . $button['text'] . '"></div>';
 					}
 				}
 				?></div>
-			<div style="position:absolute;top:0px;bottom:0px;right:10px;border:0px;" >
-
-
-				<?php
+			<div style="position:absolute;top:0px;bottom:0px;right:10px;border:0px;" ><?php
 				echo self::createMessageConsole('mainWindow');
 				?>
-				<img src="<?php echo IMAGE_DIR ?>pixel.gif" alt="" name="busy" width="20" height="19">
-				<img src="<?php echo IMAGE_DIR ?>webedition.gif" alt="" style="width:78px;height:25px;padding-left: 10px;padding-right: 5px;padding-top:3px;">
+				<img src="<?php echo IMAGE_DIR ?>pixel.gif" alt="" name="busy" width="20" height="19"/>
+				<img src="<?php echo IMAGE_DIR ?>webedition.gif" alt="" id="weHeaderLogo"/>
 			</div>
 		</div>
 		<?php
