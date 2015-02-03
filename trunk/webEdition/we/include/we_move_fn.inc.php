@@ -97,8 +97,6 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 		return false;
 	}
 
-	$table = addslashes($table);
-
 	// get information about the target directory
 	if(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !$targetDirectoryID){
 		return false;
