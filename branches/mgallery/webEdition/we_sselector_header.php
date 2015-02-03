@@ -31,7 +31,7 @@ echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_header.js');
 ?>
 </head>
-<body background="<?php echo IMAGE_DIR ?>backgrounds/radient.gif" LINK="#000000" ALINK="#000000" VLINK="#000000" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onload="setLookin();
+<body class="selectorHeader" onload="setLookin();
 		self.focus()">
 	<form name="we_form" method="post">
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">

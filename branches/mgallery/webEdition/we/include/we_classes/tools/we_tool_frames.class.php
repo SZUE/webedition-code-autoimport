@@ -284,7 +284,7 @@ function setTab(tab) {
 function we_save() {
 	' . $this->topFrame . '.we_cmd("tool_' . $this->toolName . '_save");
 }') .
-				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif"), we_html_element::htmlForm(array(), $_but_table)
+				we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm(array(), $_but_table)
 				)
 		);
 	}
@@ -371,7 +371,7 @@ function we_save() {
 		$hiddens = we_html_element::htmlHidden(array('name' => 'pnt', 'value' => 'cmd')) .
 			we_html_element::htmlHidden(array('name' => 'cmd', 'value' => 'no_cmd'));
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => 'white', 'style' => 'margin:10px',), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
+		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
 						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree($_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))
 					)
 		));

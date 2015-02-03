@@ -25,6 +25,7 @@
 //TEST: was it ok to abandon treefooter?
 
 class we_glossary_frames extends we_modules_frame{
+
 	var $_space_size = 150;
 	var $_text_size = 75;
 	var $_width_size = 535;
@@ -33,7 +34,7 @@ class we_glossary_frames extends we_modules_frame{
 	function __construct(){
 		$this->module = "glossary";
 		parent::__construct(WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php");
-		$this->Tree = new we_glossary_tree($this->frameset,"top.content", "top.content", "top.content.cmd");
+		$this->Tree = new we_glossary_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_glossary_view(WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php", "top.content");
 		$this->setFrames("top.content", "top.content", "top.content.cmd");
 	}
@@ -44,7 +45,7 @@ class we_glossary_frames extends we_modules_frame{
 
 	function getHTMLFrameset(){
 		return parent::getHTMLFrameset(
-				$this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart())
+						$this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart())
 		);
 	}
 
@@ -128,10 +129,7 @@ class we_glossary_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLTreeFooter(){
-		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), ""
-				)
-		);
+		return $this->getHTMLDocument(we_html_element::htmlBody(array("id" => "footerBody"), ""));
 	}
 
 	function getHTMLCmd(){
@@ -144,17 +142,17 @@ class we_glossary_frames extends we_modules_frame{
 		$rootjs = "";
 		if(!$pid){
 			$rootjs.=
-				$this->Tree->topFrame . '.treeData.clear();' .
-				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
+					$this->Tree->topFrame . '.treeData.clear();' .
+					$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
 		}
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
-			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
+				we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("bgcolor" => "white", "style" => 'margin:10px'), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_glossary_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, "")))
-					)
-				)
+						we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+										we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_glossary_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, "")))
+								)
+						)
 		);
 	}
 

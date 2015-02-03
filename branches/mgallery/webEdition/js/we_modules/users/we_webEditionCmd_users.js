@@ -24,7 +24,7 @@
 function we_cmd_users(args, url) {
 	switch (args[0]) {
 		case "browse_users":
-			if (hasPerm(NEW_USER) || hasPerm(NEW_GROUP) || hasPerm(SAVE_USER) || hasPerm(SAVE_GROUP) || hasPerm(DELETE_USER) || hasPerm(DELETE_GROUP)) {
+			if (hasPerm(wePerms.NEW_USER) || hasPerm(wePerms.NEW_GROUP) || hasPerm(wePerms.SAVE_USER) || hasPerm(wePerms.SAVE_GROUP) || hasPerm(wePerms.DELETE_USER) || hasPerm(wePerms.DELETE_GROUP)) {
 				new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 			} else {
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
@@ -32,35 +32,35 @@ function we_cmd_users(args, url) {
 			break;
 		case "users_edit":
 		case "users_edit_ifthere":
-			if (hasPerm(NEW_USER) || hasPerm(NEW_GROUP) || hasPerm(SAVE_USER) || hasPerm(SAVE_GROUP) || hasPerm(DELETE_USER) || hasPerm(DELETE_GROUP)) {
+			if (hasPerm(wePerms.NEW_USER) || hasPerm(wePerms.NEW_GROUP) || hasPerm(wePerms.SAVE_USER) || hasPerm(wePerms.SAVE_GROUP) || hasPerm(wePerms.DELETE_USER) || hasPerm(wePerms.DELETE_GROUP)) {
 				new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			} else {
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "new_user":
-		if(hasPerm(NEW_USER)){
+		if(hasPerm(wePerms.NEW_USER)){
 			showNewWindow(args);
 		}else{
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "save_user":
-		if(hasPerm(SAVE_USER)){
+		if(hasPerm(wePerms.SAVE_USER)){
 			showNewWindow(args);
 		}else{
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "new_group":
-		if(hasPerm(NEW_GROUP)){
+		if(hasPerm(wePerms.NEW_GROUP)){
 			showNewWindow(args);
 		}else{
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "new_alias":
-		if(hasPerm(NEW_USER)){
+		if(hasPerm(wePerms.NEW_USER)){
 			showNewWindow(args);
 		}else{
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
@@ -70,14 +70,14 @@ function we_cmd_users(args, url) {
 			showNewWindow(args);
 			break;
 		case "delete_user":
-		if(hasPerm(DELETE_USER)){
+		if(hasPerm(wePerms.DELETE_USER)){
 			showNewWindow(args);
 		}else{
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "new_organization":
-		if(hasPerm(NEW_USER)){
+		if(hasPerm(wePerms.NEW_USER)){
 			showNewWindow(args);
 		}else{
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);

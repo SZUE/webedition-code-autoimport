@@ -73,18 +73,7 @@ class we_glossary_frameEditor{
 	}
 
 	function buildFooter(&$weGlossaryFrames, $content = ""){
-
-		$_body = array(
-			'bgcolor' => 'white',
-			'background' => IMAGE_DIR . 'edit/editfooterback.gif',
-			'marginwidth' => 0,
-			'marginheight' => 0,
-			'leftmargin' => 0,
-			'topmargin' => 0,
-		);
-
-		$body = we_html_element::htmlBody($_body, $content);
-
+		$body = we_html_element::htmlBody(array('id'=>'footerBody'), $content);
 		return $weGlossaryFrames->getHTMLDocument($body);
 	}
 

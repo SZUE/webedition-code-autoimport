@@ -37,11 +37,6 @@ $_table->setColContent(0, 0, we_html_tools::getPixel(20, 6));
 $_table->setColContent(1, 1, we_html_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();"));
 
 
-$_body = we_html_element::htmlBody(array("bgcolor" => "white",
-			"background" => EDIT_IMAGE_DIR . "editfooterback.gif",
-			"marginwidth" => 0,
-			"marginheight" => 0,
-			"leftmargin" => 0,
-			"topmargin" => 0), $_table->getHtml());
+$_body = we_html_element::htmlBody(array("id" => "footerBody"), $_table->getHtml());
 
 echo we_html_element::htmlDocType() . we_html_element::htmlHtml(STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY . $_body);

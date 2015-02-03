@@ -123,7 +123,7 @@ var g_l={
 	"we_fieldname_notValid":"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[we_fieldname_notValid]')) . '"
 };' . $this->getJSSubmitFunction("customer_admin")
 				) .
-				we_html_element::jsElement(WE_JS_CUSTOMER_MODULE_DIR . 'customer_admin.js');
+				we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_admin.js');
 	}
 
 	function getJSTreeHeader(){
@@ -963,7 +963,7 @@ self.close();');
 
 				$img->initByID($imgId, FILE_TABLE);
 				return '
-<table cellpadding="2" cellspacing="2" style="border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">
+<table class="weEditTable" cellpadding="2" cellspacing="2">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="center">' . $img->getHtml() . '
 			<input type="hidden" name="' . $field . '" value="' . $imgId . '" /></td>

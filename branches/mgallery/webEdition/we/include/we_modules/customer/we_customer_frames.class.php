@@ -213,7 +213,7 @@ top.content.hloaded = 1;'));
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "show_search"));
 
-		$table = new we_html_table(array('style' => 'margin-top:10px', "border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => '100%'), 1, 1);
+		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => '100%'), 1, 1);
 		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
 			$hiddens .
 			we_html_button::create_button_table(
@@ -365,14 +365,11 @@ top.content.hloaded = 1;'));
 
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
 
-
 		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
 
-
-
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("bgcolor" => "white", "style" => 'margin:10px'), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						we_html_element::jsElement(
 							(we_base_request::_(we_base_request::STRING, 'error') ?
 								we_message_reporting::getShowMessageCall(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR) : '') .

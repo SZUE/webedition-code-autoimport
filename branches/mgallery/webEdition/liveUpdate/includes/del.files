@@ -1,5 +1,3 @@
-liveUpdate/sqldumps/tblNewsletterPrefs.sql
-liveUpdate/sqldumps/tblbannerprefs.sql
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -2316,7 +2314,9 @@ menuapplet/menuapplet.zip
 menuapplet/menuapplet.cab
 menuapplet
 liveUpdate/templates/register.inc.php
+liveUpdate/sqldumps/tblbannerprefs.sql
 liveUpdate/sqldumps/tblWebAdmin.sql
+liveUpdate/sqldumps/tblNewsletterPrefs.sql
 liveUpdate/sqldumps/tblMessages.sql
 liveUpdate/sqldumps/tblIcons.sql
 liveUpdate/sqldumps/tblContentTypes.sql
@@ -2537,9 +2537,11 @@ images/info/info.xcf
 images/icons/no_windowsmedia.gif
 images/icons/no_realmedia.gif
 images/button/icons/edit_real.gif
+images/backgrounds/radient.gif
 images/backgrounds/bgWhiteLineTop.gif
 images/backgrounds/bgWhiteLineLeft.gif
 images/backgrounds/bgGrayLineTop.gif
+images/backgrounds/aquaBackground.gif
 html/white_inc.html
 html/whiteWithTopLine.html
 html/whiteWithLeftLine.html
@@ -2551,6 +2553,7 @@ html/ieResize.html
 html/grayWithTopLine.html
 html/frameheader.html
 html/blank.html
+html/aqua_nb.html
 html/aqua.html
 headermenu.php
 header.php

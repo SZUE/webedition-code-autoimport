@@ -31,7 +31,7 @@ if(isset($GLOBALS['we_doc'])){
 $hasGD = isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::IMAGE && $GLOBALS['we_doc']->gd_support();
 echo we_html_element::cssLink(CSS_DIR . 'editor.css') .
  we_html_element::cssElement('.weEditTable{
-background-image:url("' . IMAGE_DIR . 'backgrounds/aquaBackground.gif");
+	background-color: #F5F5F5;
 	font-size: ' . ((we_base_browserDetect::isMAC()) ? '11' : ((we_base_browserDetect::isUNIX()) ? '13' : '12')) . 'px;
 	font-family: ' . g_l('css', '[font_family]') . ';
 }

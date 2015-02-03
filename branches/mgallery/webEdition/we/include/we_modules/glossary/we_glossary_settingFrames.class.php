@@ -50,7 +50,7 @@ class we_glossary_settingFrames{
 			STYLESHEET .
 			we_html_element::jsScript(JS_DIR . 'formFunctions.js') .
 			'</head>' .
-			we_html_element::htmlBody(array('class' => 'weDialogBody', 'style' => 'background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);background-repeat:repeat;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
+			we_html_element::htmlBody(array('class' => 'weDialogBody')
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlExIFrame('content', $this->getHTMLContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
 					we_html_element::htmlIFrame('cmdFrame',  'about:blank', 'position:absolute;height:1px;bottom:0px;left:0px;right:0px;overflow: hidden;')

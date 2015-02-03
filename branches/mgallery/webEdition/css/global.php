@@ -69,11 +69,6 @@ font-family: <?php echo g_l('css', '[font_family]'); ?>;
 <?php echo (we_base_browserDetect::isIE()) ? '' : 'line-height: 18px;'; ?>
 }
 
-body.aqua,
-.weEditTable{
-background-image:url('<?php echo IMAGE_DIR ?>backgrounds/aquaBackground.gif');
-}
-
 .shopContentfontGreySmall,
 .shopContentfontSmall {
 font-size: <?php echo (we_base_browserDetect::isMAC()) ? 9 : ((we_base_browserDetect::isUNIX()) ? 11 : 10); ?>px;
@@ -122,16 +117,6 @@ font-size: <?php echo (we_base_browserDetect::isGecko() && we_base_browserDetect
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
 
-.weDialogButtonsBody {
-background-image: url(<?php echo IMAGE_DIR; ?>edit/editfooterback.gif);
-}
-
 .weSidebarBody {
  background: #ffffff url(<?php echo IMAGE_DIR; ?>backgrounds/sidebarBackground.gif) no-repeat fixed bottom right;
-}
-
-#footerBody{
-	background-image: url('<?php echo EDIT_IMAGE_DIR ?>editfooterback.gif');
-	background-repeat:repeat;
-	margin:10px 0px 10px 0px;
 }
