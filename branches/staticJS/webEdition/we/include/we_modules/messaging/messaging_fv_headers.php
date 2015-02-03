@@ -43,7 +43,6 @@ $so = we_base_request::_(we_base_request::STRING, 'so');
 		text-decoration:none
 	}
 	body{
-		background-image: url('<?php echo IMAGE_DIR; ?>backgrounds/header_with_black_line.gif');
 		margin-left: 7px;
 		margin-top: 6px;
 	}
@@ -52,7 +51,7 @@ $so = we_base_request::_(we_base_request::STRING, 'so');
 	}
 </style>
 </head>
-<body>
+<body id="eHeaderBody">
 	<table cellpadding="0" cellspacing="0">
 		<tr>
 			<?php if(we_base_request::_(we_base_request::STRING, "viewclass") != "todo"){ ?>

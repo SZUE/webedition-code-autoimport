@@ -23,7 +23,8 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop();
+echo we_html_tools::getHtmlTop().
+		STYLESHEET;
 
 $we_tabs = new we_tabs();
 
@@ -91,7 +92,7 @@ echo $tab_header;
 	//-->
 </script>
 </head>
-<body style="background: #C8D8EC url(<?php echo IMAGE_DIR; ?>backgrounds/header.gif);margin: 0px 0px 0px 0px;" link="black" alink="#1559b0" vlink="black" onload="setFrameSize()" onresize="setFrameSize()">
+<body id="eHeaderBody" link="black" alink="#1559b0" vlink="black" onload="setFrameSize()" onresize="setFrameSize()">
 	<div id="main" ><?php echo $we_tabs->getHTML(); ?></div>
 </body>
 </html>

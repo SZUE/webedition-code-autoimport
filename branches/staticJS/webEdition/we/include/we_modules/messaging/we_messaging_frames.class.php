@@ -326,7 +326,7 @@ function loadData() {
 			);
 		}
 
-		return $this->getHTMLDocument(we_html_element::htmlBody($attribs = array('background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif'), $table->getHTML()), $extraHead);
+		return $this->getHTMLDocument(we_html_element::htmlBody($attribs = array('id' => 'eHeaderBody'), $table->getHTML()), $extraHead);
 	}
 
 	protected function getHTMLEditorFooter(){

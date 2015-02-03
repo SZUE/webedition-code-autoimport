@@ -33,7 +33,7 @@ body {
 	width:100%;
 	margin: 0px; padding: 0;
 	border: 0px;
-	background-image:url(/webEdition/images/multiTabs/tabsBG_border.gif);
+	/*background-image:url(/webEdition/images/multiTabs/tabsBG_border.gif);*/
 	overflow:hidden;
 }
 div.tabNormal {

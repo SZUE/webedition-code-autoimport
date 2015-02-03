@@ -21,6 +21,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+var elem = null;
+
 var ajaxCallbackResultList = {
 	success: function (o) {
 		if (o.responseText !== undefined && o.responseText !== "") {
@@ -90,7 +92,6 @@ function delRow(id) {
 			}
 		}
 	}
-
 }
 
 function init() {
@@ -120,13 +121,13 @@ function back(anzahl) {
 }
 
 function showImageDetails(picID) {
-	var elem = document.getElementById(picID);
+	elem = document.getElementById(picID);
 	elem.style.visibility = "visible";
 
 }
 
 function hideImageDetails(picID) {
-	var elem = document.getElementById(picID);
+	elem = document.getElementById(picID);
 	elem.style.visibility = "hidden";
 	elem.style.left = "-9999px";
 }
@@ -148,11 +149,9 @@ function updateElem(e) {
 		if ((w - x) < 400 && (h - y) < 250) {
 			elem.style.left = (x - elemWidth - 10) + "px";
 			elem.style.top = (y - elemHeight - 10) + "px";
-		}
-		else if ((w - x) < 400) {
+		} else if ((w - x) < 400) {
 			elem.style.left = (x - elemWidth - 10) + "px";
-		}
-		else if ((h - y) < 250) {
+		} else if ((h - y) < 250) {
 			elem.style.top = (y - elemHeight - 10) + "px";
 		}
 

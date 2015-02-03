@@ -149,12 +149,7 @@ top.content.hloaded=1;') .
 		$body = we_html_element::htmlBody(array(
 				'onresize' => 'setFrameSize()',
 				'onload' => 'setFrameSize()',
-				'bgcolor' => 'white',
-				'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif',
-				'marginwidth' => 0,
-				'marginheight' => 0,
-				'leftmargin' => 0,
-				'topmargin' => 0,
+				'id' => 'eHeaderBody',
 				), $mainDiv .
 				we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')
 		);

@@ -47,7 +47,7 @@ var tables={
 	"CATEGORY_TABLE":"' . CATEGORY_TABLE . '",
 	"TEMPLATES_TABLE":"' . TEMPLATES_TABLE . '"
 };
-var searchclassFolderMode=' . $GLOBALS['we_doc']->searchclassFolder->mode . ';
+var searchclassFolderMode=' . intval($GLOBALS['we_doc']->searchclassFolder->mode) . ';
 var g_l={
 	"publish_docs":"' . g_l('searchtool', '[publish_docs]') . '",
 	"notChecked": "' . we_message_reporting::prepareMsgForJS(g_l('searchtool', '[notChecked]')) . '",

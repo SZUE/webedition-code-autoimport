@@ -2519,6 +2519,7 @@ images/pd/dunkel_rechts_unten.gif
 images/pd/dunkel_rechts_oben.gif
 images/pd/dunkel_links_unten.gif
 images/pd/dunkel_links_oben.gif
+images/multiTabs/tabsBG_border.gif
 images/login/left.jpg
 images/login/bottom_l2.jpg
 images/java_menu/menu-arrow.gif
@@ -2536,6 +2537,15 @@ images/icons/no_windowsmedia.gif
 images/icons/no_realmedia.gif
 images/button/icons/edit_real.gif
 images/backgrounds/radient.gif
+images/backgrounds/header_with_black_lines.gif
+images/backgrounds/header_with_black_line.gif
+images/backgrounds/doclistBg/ruDoclistDiv.gif
+images/backgrounds/doclistBg/roDoclistDiv.gif
+images/backgrounds/doclistBg/muDoclistDiv.gif
+images/backgrounds/doclistBg/moDoclistDiv.gif
+images/backgrounds/doclistBg/luDoclistDiv.gif
+images/backgrounds/doclistBg/loDoclistDiv.gif
+images/backgrounds/doclistBg
 images/backgrounds/bgWhiteLineTop.gif
 images/backgrounds/bgWhiteLineLeft.gif
 images/backgrounds/bgGrayLineTop.gif
