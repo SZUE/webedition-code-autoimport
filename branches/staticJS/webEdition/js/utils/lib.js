@@ -53,5 +53,5 @@ function sprintf() {
 }
 
 function hasPerm(perm) {
-	return (wePerm.ADMINISTRATOR || wePerm[perm] ? true : false);
+	return (wePerms.ADMINISTRATOR || wePerms[perm] ? true : false);
 }

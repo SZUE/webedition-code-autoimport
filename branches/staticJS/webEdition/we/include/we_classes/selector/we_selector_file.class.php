@@ -498,16 +498,10 @@ function selectIt(){
 }') . '
 </head>
 <style type="text/css">
-body{
-	background-image:url(\'' . IMAGE_DIR . 'backgrounds/radient.gif\');
-	background-color:#bfbfbf;
-	background-repeat:repeat;
-	margin:0px;
-}
 a:link,a:visited,a:hover,a:active
 {color:#000;}
 </style>
-	<body>
+	<body class="selectorHeader">
 		<form name="we_form" method="post">' .
 		((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ?
 				$this->printHeaderTable() .
@@ -662,17 +656,11 @@ top.fsheader.selectIt();';
 				$this->printFooterJSDef() .
 				$this->printFooterJS()) . '
 <style type="text/css">
-body{
-	margin:0px;
-	background-color:#bfbfbf;
-	background-repeat:repeat;
-	background-image: url(\'' . IMAGE_DIR . 'backgrounds/radient.gif\');
-}
 a:link,a:visited,a:hover,a:active
 {color:#000;}
 </style>
 </head>
-	<body>
+	<body class="selectorFooter">
 	<form name="we_form" target="fscmd">' .
 		$this->printFooterTable() . '
 	</form>
@@ -742,8 +730,7 @@ function press_ok_button() {
 <td></td>
 <td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"Text\");'>" . g_l('fileselector', '[filename]') . "</a></b></td>
 <td class='selector'>&nbsp;<b>ID</b></td>
-<td class='selector'>&nbsp;<b><a href='#' onclick='javascript:top.orderIt(\"ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></b></td>
-				";
+<td class='selector'>&nbsp;<b><a href='#' onclick='javascript:top.orderIt(\"ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></b></td>";
 				break;
 			default:
 				$this->col2js = "entries[i].title";
@@ -752,8 +739,7 @@ function press_ok_button() {
 <td></td>
 <td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"Text\");'>" . g_l('fileselector', '[filename]') . "</a></b></td>
 <td class='selector'><b>" . g_l('fileselector', '[title]') . "</b></td>
-<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></b></td>
-				";
+<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></b></td>";
 		}
 	}
 

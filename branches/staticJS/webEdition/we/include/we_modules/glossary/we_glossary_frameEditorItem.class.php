@@ -203,7 +203,6 @@ function submitForm() {
 			'border' => 0,
 			'cellpadding' => 0,
 			'cellspacing' => 0,
-			'style' => 'margin-top:10px',
 			), 1, 6);
 		$table2->setRow(0, array("valign" => "middle"));
 		if($ShowUnpublish){

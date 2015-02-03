@@ -48,7 +48,6 @@ class we_glossary_frameEditorException extends we_glossary_frameEditor{
 			'border' => 0,
 			'cellpadding' => 0,
 			'cellspacing' => 0,
-			'style' => 'margin-top:10px'
 			), 1, 2);
 		$table2->setRow(0, array("valign" => "middle"));
 		$table2->setCol(0, 0, array("nowrap" => null), we_html_tools::getPixel(10, 20));

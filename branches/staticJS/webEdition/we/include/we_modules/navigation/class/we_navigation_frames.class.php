@@ -102,7 +102,7 @@ class we_navigation_frames extends we_modules_frame{
 		$hiddens = we_html_element::htmlHidden(array('name' => 'pnt', 'value' => 'cmd')) .
 				we_html_element::htmlHidden(array('name' => 'cmd', 'value' => 'no_cmd'));
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => 'white', 'style' => 'margin:10px'), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
+		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
 										we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree($_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))
 								)
 		));
@@ -1761,7 +1761,7 @@ function ' . $prefix . 'setLinkSelection(value){
 									), ""));
 		}
 
-		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => 'width:400px;margin-top:10px;'), 1, 2);
+		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => 'width:400px;'), 1, 2);
 		$table2->setColContent(0, 0, we_html_button::create_button_table(
 						array(
 					we_html_button::create_button("save", "javascript:we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))
@@ -1780,12 +1780,7 @@ function ' . $prefix . 'setLinkSelection(value){
 					}
 					') . we_html_element::htmlBody(
 								array(
-							"bgcolor" => "white",
-							"background" => IMAGE_DIR . "edit/editfooterback.gif",
-							"marginwidth" => 0,
-							"marginheight" => 0,
-							"leftmargin" => 0,
-							"topmargin" => 0,
+							"id" => "footerBody",
 							"onload" => "document.we_form.makeNewDoc.checked=" . $this->topFrame . ".makeNewDoc;"
 								), we_html_element::htmlForm(array(), $table2->getHtml())));
 	}

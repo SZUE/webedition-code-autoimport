@@ -259,7 +259,7 @@ function we_save() {
 
 		$select = new we_html_select(array("name" => "gview"));
 
-		$table2 = new we_html_table(array('style' => 'margin-top:10px', "border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 10);
+		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 10);
 		if($mode == 0){
 			$table2->setRow(0, array("valign" => "middle"));
 
@@ -298,7 +298,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 	}
 }');
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "onload" => "setTimeout'populateGroups(),100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden(array("name" => "hm", "value" => 0)) .
+		$body = we_html_element::htmlBody(array("id" => "footerBody", "onload" => "setTimeout(populateGroups,100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden(array("name" => "hm", "value" => 0)) .
 					$table2->getHtml() .
 					$post_js
 				)
@@ -450,7 +450,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			we_html_element::htmlHidden(array("name" => "ncmd", "value" => "")) .
 			we_html_element::htmlHidden(array("name" => "nopt", "value" => ""));
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "white", "style" => 'margin:10px',), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_newsletter_treeLoader::getItems($pid)))
 					)
 		));

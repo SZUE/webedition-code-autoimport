@@ -428,7 +428,7 @@ function closeAllType(){
 
 	protected function getHTMLTreeFooter(){
 
-		$body = we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), ""
+		$body = we_html_element::htmlBody(array("id" => "footerBody"), ""
 		);
 
 		return $this->getHTMLDocument($body);

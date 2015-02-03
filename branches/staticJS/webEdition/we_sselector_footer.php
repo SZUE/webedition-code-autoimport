@@ -36,7 +36,7 @@ var g_l={
 ') . we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_footer.js')
 ?>
 </head>
-<body background="<?php echo IMAGE_DIR ?>backgrounds/radient.gif" style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px" onunload="doUnload();">
+<body class="selectorFooter" onunload="doUnload();">
 	<form name="we_form" target="fscmd">
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
 			<tr><td colspan="5"><img src="<?php echo IMAGE_DIR ?>umr_h_small.gif" width="100%" height="2" border="0"></td></tr>

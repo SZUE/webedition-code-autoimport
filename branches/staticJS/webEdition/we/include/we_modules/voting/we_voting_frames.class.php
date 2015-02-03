@@ -149,7 +149,7 @@ class we_voting_frames extends we_modules_frame{
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}
 
-		$table2 = new we_html_table(array('style' => 'margin-top:10px', "border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 2);
+		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 2);
 		$table2->setRow(0, array("valign" => "middle"));
 		$table2->setCol(0, 0, array("nowrap" => null), we_html_tools::getPixel(5, 5));
 		$table2->setCol(0, 1, array("nowrap" => null), we_html_button::create_button("save", "javascript:we_save()", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_VOTING') && !permissionhandler::hasPerm('EDIT_VOTING')))
@@ -161,7 +161,7 @@ class we_voting_frames extends we_modules_frame{
 					function we_save() {
 						top.content.we_cmd("save_voting");
 					}') .
-						we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", ), we_html_element::htmlForm(array(), $table2->getHtml())
+						we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm(array(), $table2->getHtml())
 						)
 		);
 	}
@@ -817,7 +817,7 @@ function refreshTexts(){
 
 	protected function getHTMLTreeFooter(){
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("bgcolor" => "white", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), "")
+				we_html_element::htmlBody(array("id" => "footerBody", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), "")
 		);
 	}
 
@@ -839,7 +839,7 @@ function refreshTexts(){
 			we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array("bgcolor" => "white", "style" => 'margin:10px',), we_html_element::htmlForm(
+						we_html_element::htmlBody(array(), we_html_element::htmlForm(
 										array("name" => "we_form"), $hiddens . we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_voting_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, "")))
 								)
 						)

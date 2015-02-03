@@ -509,7 +509,7 @@ var tables = {
 	"OBJECT_TABLE": "' . (defined('OBJECT_TABLE') ? OBJECT_TABLE : '') . '"
 };
 var uid="' . $this->uid . '";
-var g_l:{
+var g_l={
 	"worktime_empty": "' . addslashes(g_l('modules_workflow', '[worktime_empty]')) . '",
 	"user_empty":"' . addslashes(g_l('modules_workflow', '[user_empty]')) . '",
 	"del_last_step":"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[del_last_step]')) . '",
