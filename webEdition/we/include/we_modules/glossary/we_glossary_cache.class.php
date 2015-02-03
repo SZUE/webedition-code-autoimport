@@ -123,7 +123,7 @@ class we_glossary_cache{
 			$Type = $DB_WE->f('Type');
 			$Text = trim($DB_WE->f('Text'));
 			$Title = trim($DB_WE->f('Title'));
-			$Attributes = @unserialize($DB_WE->f('Attributes'));
+			$Attributes = substr($DB_WE->f('Attributes'), 0, 2) == 'a:' ? unserialize($DB_WE->f('Attributes')) : array();
 			$Attributes = array_map('trim', $Attributes);
 
 
