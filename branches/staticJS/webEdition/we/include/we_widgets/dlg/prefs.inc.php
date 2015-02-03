@@ -29,7 +29,7 @@ var _fo,_sInitCls,_oSctCls;
 var _iInitCls=0;
 
 function initPrefs(){
-	_oSctCls=_fo.elements['sct_cls'];
+	_oSctCls=_fo.elements.sct_cls;
 	var iSctClsLen=_oSctCls.length;
 	_sInitCls=_sCls_;
 	for(var i=iSctClsLen-1;i>=0;i--){

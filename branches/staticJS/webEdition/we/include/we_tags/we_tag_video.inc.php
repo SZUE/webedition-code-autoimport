@@ -47,7 +47,7 @@ function we_tag_video($attribs){
 		$startid = weTag_getAttribute('startid', $attribs, 0, we_base_request::INT);
 		$parentid = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
 		// Create "Edit" button
-		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $fname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage'); opener._EditorFrame.setEditorIsHot(true);");
 
 		$button = we_html_button::create_button('image:btn_edit_video', "javascript:we_cmd('openDocselector','" . ($id ? : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "',''," . $parentid . ", '" . we_base_ContentTypes::VIDEO . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true);

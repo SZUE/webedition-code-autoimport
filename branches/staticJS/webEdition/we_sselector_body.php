@@ -284,12 +284,12 @@ var i = 0;';
 	if($nf === "new_folder" || (( $nf === "rename_folder" || $nf === "rename_file") && $set_rename)){
 		?>
 		<script type="text/javascript"><!--
-		document.forms["we_form"].elements["txt"].focus();
-			document.forms["we_form"].elements["txt"].select();
+		document.we_form.elements.txt.focus();
+			document.we_form.elements.txt.select();
 	<?php if($nf === "rename_folder" || $nf === "rename_file"){ ?>
-				document.forms["we_form"].elements["oldtxt"].value = document.forms["we_form"].elements["txt"].value;
+				document.we_form.elements.oldtxt.value = document.we_form.elements.txt.value;
 	<?php } ?>
-			document.forms["we_form"].elements["pat"].value = top.currentDir;
+			document.we_form.elements.pat.value = top.currentDir;
 			//-->
 		</script>
 		<?php

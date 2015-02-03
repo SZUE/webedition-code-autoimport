@@ -37,7 +37,7 @@ function init(){
 	_oCsv_=opener.gel(_sObjId+'_csv')
 	var sCsv=_oCsv_.value;
 	_sInitCsv_=sCsv;
-	var oChbxType=_fo.elements['chbx_type'];
+	var oChbxType=_fo.elements.chbx_type;
 	var iChbxTypeLen=oChbxType.length;
 	if(iChbxTypeLen!=undefined){
 		for(var i=iChbxTypeLen-1;i>=0;i--){
@@ -51,7 +51,7 @@ function init(){
 
 function getBinary(){
 	var sBinary='';
-	var oChbx=_fo.elements['chbx_type'];
+	var oChbx=_fo.elements.chbx_type;
 ";
 
 if(defined('FILE_TABLE') && defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){

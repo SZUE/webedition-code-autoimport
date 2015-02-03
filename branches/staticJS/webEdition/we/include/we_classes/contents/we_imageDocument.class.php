@@ -785,17 +785,17 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$RollOverPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($RollOverID), 'Path', $this->DB_WE);
 
 		$checkFlagName = 'check_' . $this->Name . '_RollOverFlag';
-		$cmd1 = "document.forms['we_form'].elements['" . $idname . "'].value";
-		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
+		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][2].checked=true;");
 		$but1 = we_html_button::create_button('select', "javascript:we_cmd('openImgselector', " . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
-		$cmd1 = "document.forms['we_form'].elements['" . $RollOverIDName . "'].value";
-		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $RollOverPathname . "'].value");
+		$cmd1 = "document.we_form.elements['" . $RollOverIDName . "'].value";
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $RollOverPathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['" . $RollOverFlagName . "'].value=1;opener.document.we_form.elements['" . $checkFlagName . "'].checked=true;");
 		$but2 = we_html_button::create_button('select', "javascript:we_cmd('openImgselector', " . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
-		$cmd1 = "document.forms['we_form'].elements['" . $extname . "'].value";
+		$cmd1 = "document.we_form.elements['" . $extname . "'].value";
 		$wecmdenc4 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][1].checked=true;");
 		$butExt = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ?
 			we_html_button::create_button('select', "javascript:we_cmd('browse_server','" . we_base_request::encCmd($cmd1) . "',''," . $cmd1 . ",'" . $wecmdenc4 . "')") : "";
@@ -804,8 +804,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			$objidname = 'we_' . $this->Name . '_txt[ObjID]';
 			$objtextname = 'we_' . $this->Name . '_txt[ObjPath]';
 			$objPath = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($this->getElement('ObjID')), '', $this->DB_WE);
-			$cmd1 = "document.forms['we_form'].elements['" . $objidname . "'].value";
-			$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $objtextname . "'].value");
+			$cmd1 = "document.we_form.elements['" . $objidname . "'].value";
+			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $objtextname . "'].value");
 			$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][3].checked=true;");
 			$butObj = we_html_button::create_button('select', "javascript:we_cmd('openImgselector'," . $cmd1 . ",'" . OBJECT_FILES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 		}

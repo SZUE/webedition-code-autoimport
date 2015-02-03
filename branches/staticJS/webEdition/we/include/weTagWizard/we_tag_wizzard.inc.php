@@ -145,8 +145,8 @@ function we_cmd(){
 				self.close();;
 				' : '
 				var contentEditor = opener.top.weEditorFrameController.getVisibleEditorFrame();
-				contentEditor.document.we_form.elements["tag_edit_area"].value=strWeTag;
-    			contentEditor.document.we_form.elements["tag_edit_area"].select();
+				contentEditor.document.we_form.elements.tag_edit_area.value=strWeTag;
+    			contentEditor.document.we_form.elements.tag_edit_area.select();
     			self.close();'
 	) . '
 			} else {

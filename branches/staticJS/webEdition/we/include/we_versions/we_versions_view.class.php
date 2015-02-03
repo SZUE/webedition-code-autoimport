@@ -403,13 +403,13 @@ function setOrder(order){
 		}
 	}
 	arrow = document.getElementById(""+order+"");
-	orderVal = document.we_form.elements["order"].value;
+	orderVal = document.we_form.elements.order.value;
 
 	if(order+" DESC"==orderVal){
-		document.we_form.elements["order"].value=order;
+		document.we_form.elements.order.value=order;
 		arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_asc.gif\" />";
 	}else{
-		document.we_form.elements["order"].value=order+" DESC";
+		document.we_form.elements.order.value=order+" DESC";
 		arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_desc.gif\" />";
 	}
 	search(false);

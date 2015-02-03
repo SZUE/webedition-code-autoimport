@@ -44,8 +44,8 @@ function init(){
 	for(var i=0;i<_aRdo.length;i++){
 		_fo.elements['rdo_'+_aRdo[i]][_sInitBin.charAt(i)].checked=true;
 	}
-	_fo.elements['sct_valid'].options[_sInitBin.charAt(4)].selected=true;
-	var oSctTitle=_fo.elements['sct_title'];
+	_fo.elements.sct_valid.options[_sInitBin.charAt(4)].selected=true;
+	var oSctTitle=_fo.elements.sct_title;
 	for(var i=oSctTitle.length-1;i>=0;i--){
 		oSctTitle.options[i].selected=(oSctTitle.options[i].text==_sInitTitle)?true:false;
 	}
@@ -66,12 +66,12 @@ function getBitString(){
 		var iCurr=getRdoChecked(_aRdo[i]);
 		sBit+=(iCurr!==undefined)?iCurr:'0';
 	}
-	sBit+=_fo.elements['sct_valid'].selectedIndex;
+	sBit+=_fo.elements.sct_valid.selectedIndex;
 	return sBit;
 }
 
 function getTitle(){
-	var oSctTitle=_fo.elements['sct_title'];
+	var oSctTitle=_fo.elements.sct_title;
 	return oSctTitle[oSctTitle.selectedIndex].value;
 }
 

@@ -81,17 +81,17 @@ function we_tag_object($attribs){
 		if($GLOBALS['we_editmode']){
 			$delbutton = we_html_button::create_button('image:btn_function_trash', "javascript:document.forms[0].elements['" . $idname . "'].value=0;document.forms[0].elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
 			$open = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', "javascript:if(document.forms[0].elements['" . $idname . "'].value){top.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "', document.forms[0].elements['" . $idname . "'].value,'');}");
-			$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
-			$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
+			$cmd1 = "document.we_form.elements['" . $idname . "'].value";
+			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 			$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('reload_editpage');opener._EditorFrame.setEditorIsHot(true);");
 
 
-			$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+			$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
 
 			$yuiSuggest = &weSuggest::getInstance();
 			$yuiSuggest->setAcId($name . we_base_file::getUniqueId(), f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classid));
-			$yuiSuggest->setContentType('folder,'.we_base_ContentTypes::OBJECT_FILE);
+			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
 			$yuiSuggest->setInput($textname, $path);
 			$yuiSuggest->setResult($idname, $we_oid);
 			$yuiSuggest->setMaxResults(10);

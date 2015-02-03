@@ -586,9 +586,9 @@ function doUnload() {
 	 */
 	private function _getContentHTML(){
 		// Suorce Directory
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['from'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.from.value");
 		$_from_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
-				we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "','" . we_base_ContentTypes::FOLDER . "',document.we_form.elements['from'].value)") :
+				we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "','" . we_base_ContentTypes::FOLDER . "',document.we_form.elements.from.value)") :
 				"";
 
 		$_input = we_html_tools::htmlTextInput("from", 30, $this->from, "", "readonly", "text", 300);
@@ -597,9 +597,9 @@ function doUnload() {
 						$_input, g_l('siteimport', '[importFrom]'), "left", "defaultfont", we_html_tools::getPixel(10, 1), $_from_button, "", "", "", 0);
 
 		// Destination Directory
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['to'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['toPath'].value");
-		$_to_button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['to'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.to.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.toPath.value");
+		$_to_button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements.to.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
 
 		//$_hidden = we_html_tools::hidden("to",$this->to);
 		//$_input = we_html_tools::htmlTextInput("toPath",30,id_to_path($this->to),"",'readonly="readonly"',"text",300);
@@ -621,12 +621,12 @@ function doUnload() {
 		$_importTo = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
 
 		// Checkboxes
-		$weoncklick = "if(this.checked && (!this.form.elements['htmlPages'].checked)){this.form.elements['htmlPages'].checked = true;}";
-		$weoncklick .= ((!permissionhandler::hasPerm("NEW_HTML")) && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")) ? "if((!this.checked) && this.form.elements['htmlPages'].checked){this.form.elements['htmlPages'].checked = false;}" : "";
+		$weoncklick = "if(this.checked && (!this.form.elements.htmlPages.checked)){this.form.elements.htmlPages.checked = true;}";
+		$weoncklick .= ((!permissionhandler::hasPerm("NEW_HTML")) && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")) ? "if((!this.checked) && this.form.elements.htmlPages.checked){this.form.elements.htmlPages.checked = false;}" : "";
 
 		$_images = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_GRAFIK") ? $this->images : false, "images", g_l('siteimport', '[importImages]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_GRAFIK"));
 
-		$_htmlPages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTML") ? $this->htmlPages : ((permissionhandler::hasPerm("NEW_WEBEDITIONSITE") && $this->createWePages) ? true : false), "htmlPages", g_l('siteimport', '[importHtmlPages]'), false, "defaultfont", "if(this.checked){this.form.elements['check_createWePages'].disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements['check_createWePages'].disabled=true;document.getElementById('label__createWePages').style.color='grey';}", !permissionhandler::hasPerm("NEW_HTML"));
+		$_htmlPages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTML") ? $this->htmlPages : ((permissionhandler::hasPerm("NEW_WEBEDITIONSITE") && $this->createWePages) ? true : false), "htmlPages", g_l('siteimport', '[importHtmlPages]'), false, "defaultfont", "if(this.checked){this.form.elements.check_createWePages.disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements.check_createWePages.disabled=true;document.getElementById('label__createWePages').style.color='grey';}", !permissionhandler::hasPerm("NEW_HTML"));
 		$_createWePages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") ? $this->createWePages : false, "createWePages", g_l('siteimport', '[createWePages]') . "&nbsp;&nbsp;", false, "defaultfont", $weoncklick, !permissionhandler::hasPerm("NEW_WEBEDITIONSITE"));
 		$_flashmovies = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_FLASH") ? $this->flashmovies : false, "flashmovies", g_l('siteimport', '[importFlashmovies]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_FLASH"));
 		$_quicktime = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_QUICKTIME") ? $this->quicktime : false, "quicktime", g_l('siteimport', '[importQuicktime]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_QUICKTIME"));
@@ -1025,9 +1025,9 @@ function doUnload() {
 	 */
 	private static function _formPathHTML($templateName, $myid){
 		$path = id_to_path($myid, TEMPLATES_TABLE);
-		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['templateParentID'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['templateDirName'].value");
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.forms['we_form'].elements['templateParentID'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','')");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.templateParentID.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.templateDirName.value");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements.templateParentID.value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','')");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("TplPath");

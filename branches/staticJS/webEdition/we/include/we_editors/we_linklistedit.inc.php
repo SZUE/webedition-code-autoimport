@@ -353,7 +353,7 @@ echo $yuiSuggest->getYuiCssFiles() .
 		if (!(evt[_elemName].tagName == "SELECT" ||
 						(evt[_elemName].tagName == "INPUT" && (evt[_elemName].name == "href_int" || evt[_elemName].name == "href_obj" || evt[_elemName].name == "src_int"))
 						)) {
-			document.forms['we_form'].submit();
+			document.we_form.submit();
 			return true;
 
 		}
@@ -523,8 +523,8 @@ if($ok && $cmd === "edit_link_at_class"){
 		$extLink = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("href", 30, $href, '', 'placeholder="http://www.example.com"', "url", 300), "", "left", "defaultfont", we_html_tools::getPixel($butspace, 20), $but, "", "", "", 0);
 		$emailLink = we_html_tools::htmlTextInput("emaillink", 30, $emaillink, "", 'placeholder="user@example.com"', "text", 300);
 
-		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['id'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['href_int'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.id.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.href_int.value");
 
 		$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
@@ -540,8 +540,8 @@ if($ok && $cmd === "edit_link_at_class"){
 
 		$intLink = $yuiSuggest->getHTML();
 		if(defined('OBJECT_TABLE')){
-			$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['obj_id'].value");
-			$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['href_obj'].value");
+			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.obj_id.value");
+			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.href_obj.value");
 			$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 
 			$yuiSuggest->setAcId("Obj");
@@ -647,8 +647,8 @@ if($ok && $cmd === "edit_link_at_class"){
 		$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.img_src.value, '')") : "";
 		$extImg = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("img_src", 30, $img_src, "", "", "text", 300), "", "left", "defaultfont", we_html_tools::getPixel(10, 2), $but, "", "", "", 0);
 
-		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['img_id'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['src_int'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.img_id.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.src_int.value");
 		$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].img_id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 		$yuiSuggest->setAcId("Image");
@@ -708,7 +708,7 @@ if($ok && $cmd === "edit_link_at_class"){
 	<tr><td colspan="12" class="small">' . g_l('linklistEdit', '[title]') . '</td></tr>
 	<tr><td colspan="12">' . we_html_tools::htmlTextInput("img_title", 20, $img_title, "", '', "text", 300) . '</td></tr>
 </table>';
-		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:document.forms['we_form'].submit()"), null, we_html_button::create_button("cancel", "javascript:self.close()"));
+		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:document.we_form.submit()"), null, we_html_button::create_button("cancel", "javascript:self.close()"));
 
 		$_parts = array(
 			array('headline' => 'URL',

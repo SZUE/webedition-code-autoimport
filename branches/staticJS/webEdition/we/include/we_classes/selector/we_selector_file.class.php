@@ -480,20 +480,20 @@ a, a:visited, a:active{
 				$this->printHeaderJSDef() .
 				$this->printHeaderJS() . '
 function clearOptions(){
-	 var a=document.forms["we_form"].elements["lookin"];
+	 var a=document.we_form.elements.lookin;
 	 for(var i=a.options.length-1;i >= 0;i--){
 		a.options[i] = null;
 	 }
 }
 function addOption(txt,id){
-		var a=document.forms["we_form"].elements["lookin"];
+		var a=document.we_form.elements.lookin;
 		a.options[a.options.length]=new Option(txt,id);
 		if(a.options.length>0) a.selectedIndex=a.options.length-1;
 		else a.selectedIndex=0;
 
 }
 function selectIt(){
-		var a=document.forms["we_form"].elements["lookin"];
+		var a=document.we_form.elements.lookin;
 		a.selectedIndex=a.options.length-1;
 }') . '
 </head>

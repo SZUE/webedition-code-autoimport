@@ -396,21 +396,21 @@ we_html_element::jsElement(
 		$yuiSuggest = & weSuggest::getInstance();
 
 		$rootDirID = 0;
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['LinkID'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['LinkPath'].value");
-		$_cmd_doc = "javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "','',0)";
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['LinkID'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['LinkPath'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.LinkID.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.LinkPath.value");
+		$_cmd_doc = "javascript:we_cmd('openDocselector',document.we_form.elements.LinkID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "','',0)";
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.LinkID.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.LinkPath.value");
 		$wecmdenc3 = we_base_request::encCmd("opener." . $this->topFrame . ".we_cmd('populateFolderWs');");
-		$_cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','objectFile',0)" : '';
+		$_cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('openDocselector',document.we_form.elements.LinkID.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','objectFile',0)" : '';
 
 		$_button_doc = we_html_button::create_button_table(array(
 					we_html_button::create_button('select', $_cmd_doc, true, 0, 0, '', '', false),
-					we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements["LinkID"].value,"")', true, 100, 22, '', '', false)
+					we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false)
 						), 2);
 		$_button_obj = we_html_button::create_button_table(array(
 					we_html_button::create_button('select', $_cmd_obj, true, 0, 0, '', '', false),
-					(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements["LinkID"].value,"")', true, 100, 22, '', '', false) : '')
+					(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false) : '')
 						), 2);
 
 		$_buttons = '<div id="docFolderLink" style="display: ' . ((empty($this->Model->FolderSelection) || $this->Model->FolderSelection == we_navigation_navigation::STPYE_DOCLINK) ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objFolderLink" style="display: ' . ($this->Model->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? 'inline' : 'none') . '">' . $_button_obj . '</div>';
@@ -442,7 +442,7 @@ we_html_element::jsElement(
 		$yuiSuggest->setTable($this->Model->FolderSelection == we_navigation_navigation::STPYE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE));
 		$yuiSuggest->setWidth($this->_width_size - 190);
 		$yuiSuggest->setSelectButton($_buttons);
-		$yuiSuggest->setTrashButton(we_html_button::create_button('image:btn_function_trash', 'javascript:document.we_form.elements["LinkID"].value=0;document.we_form.elements["LinkPath"].value="";', true, 27, 22));
+		$yuiSuggest->setTrashButton(we_html_button::create_button('image:btn_function_trash', 'javascript:document.we_form.elements.LinkID.value=0;document.we_form.elements.LinkPath.value="";', true, 27, 22));
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
@@ -506,7 +506,7 @@ we_html_element::jsElement(
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.CopyFolderID.value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.CopyFolderPath.value");
 
-		$_cmd = "javascript:we_cmd('openNavigationDirselector',document.we_form.elements['CopyFolderID'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $cmd . "')";
+		$_cmd = "javascript:we_cmd('openNavigationDirselector',document.we_form.elements.CopyFolderID.value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $cmd . "')";
 		$_button_copyFolder = we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', $_disabled);
 
 		$parts[] = array(
@@ -685,26 +685,26 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 
 		$rootDirID = 0;
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['LinkID'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['LinkPath'].value");
-		$wecmdenc3 = we_base_request::encCmd("opener.switch_button_state('open_navigation_doc', '', opener.document.we_form.elements['LinkID'].value>0?'enabled':'disabled');");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.LinkID.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.LinkPath.value");
+		$wecmdenc3 = we_base_request::encCmd("opener.switch_button_state('open_navigation_doc', '', opener.document.we_form.elements.LinkID.value>0?'enabled':'disabled');");
 
-		$_cmd_doc = "javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
+		$_cmd_doc = "javascript:we_cmd('openDocselector',document.we_form.elements.LinkID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['LinkID'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['LinkPath'].value");
-		$wecmdenc3 = we_base_request::encCmd('opener.' . $this->topFrame . ".we_cmd('populateWorkspaces');opener.switch_button_state('open_navigation_obj', '', opener.document.we_form.elements['LinkID'].value>0?'enabled':'disabled');");
-		$_cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('openDocselector',document.we_form.elements['LinkID'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
-		$_cmd_cat = "javascript:we_cmd('openCatselector',document.we_form.elements['LinkID'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'LinkID\\'].value','document.we_form.elements[\\'LinkPath\\'].value','opener." . $this->topFrame . ".we_cmd(\"populateText\");opener." . $this->topFrame . ".mark();','','" . $rootDirID . "')";
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.LinkID.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.LinkPath.value");
+		$wecmdenc3 = we_base_request::encCmd('opener.' . $this->topFrame . ".we_cmd('populateWorkspaces');opener.switch_button_state('open_navigation_obj', '', opener.document.we_form.elements.LinkID.value>0?'enabled':'disabled');");
+		$_cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('openDocselector',document.we_form.elements.LinkID.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
+		$_cmd_cat = "javascript:we_cmd('openCatselector',document.we_form.elements.LinkID.value,'" . CATEGORY_TABLE . "','document.we_form.elements.LinkID.value','document.we_form.elements.LinkPath.value','opener." . $this->topFrame . ".we_cmd(\"populateText\");opener." . $this->topFrame . ".mark();','','" . $rootDirID . "')";
 
 		$_button_doc = we_html_button::create_button_table(array(
 					we_html_button::create_button('select', $_cmd_doc, true, 0, 0, '', '', $disabled),
-					we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements["LinkID"].value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_doc')
+					we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_doc')
 						), 2);
 
 		$_button_obj = we_html_button::create_button_table(array(
 					we_html_button::create_button('select', $_cmd_obj, true, 0, 0, '', '', $disabled),
-					(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements["LinkID"].value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_obj') : '')
+					(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_obj') : '')
 						), 2);
 		$_button_cat = we_html_button::create_button('select', $_cmd_cat, true, 0, 0, '', '', $disabled);
 
@@ -1029,9 +1029,9 @@ function onSelectionClassChangeJS(value) {
 			mayBeEmpty : false
 		}
 	);
-	document.we_form.elements["FolderID"].value=classDirs[value];
-	document.we_form.elements["FolderPath"].value=classPaths[value];
-	document.we_form.elements["FolderPath"].disabled=!hasClassSubDirs[value];
+	document.we_form.elements.FolderID.value=classDirs[value];
+	document.we_form.elements.FolderPath.value=classPaths[value];
+	document.we_form.elements.FolderPath.disabled=!hasClassSubDirs[value];
 	' . $this->topFrame . '.we_cmd(\'populateWorkspaces\');
 	' . $this->topFrame . '.mark();
 }
@@ -1372,18 +1372,18 @@ function selectItem() {
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['FolderID'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['FolderPath'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener." . $this->topFrame . ".mark();");
-		$_button_doc = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
+		$_button_doc = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements.FolderID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 		$_countSubDirs = 1;
 		if(defined('OBJECT_FILES_TABLE') && ($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS || $this->Model->SelectionType == we_navigation_navigation::STPYE_OBJLINK)){
 			$_classDirID = f('SELECT ' . OBJECT_FILES_TABLE . '.ID AS classDirID FROM ' . OBJECT_TABLE . ' LEFT JOIN ' . OBJECT_FILES_TABLE . ' ON (' . OBJECT_TABLE . '.Path=' . OBJECT_FILES_TABLE . '.Path) WHERE ' . OBJECT_TABLE . '.ID=' . $this->Model->ClassID . '', 'classDirID', $this->db);
 			$_countSubDirs = f('SELECT COUNT(ID) as CountSubDirs FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID=' . $_classDirID . ' AND IsFolder=1', 'CountSubDirs', $this->db);
 		}
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['FolderID'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['FolderPath'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.FolderID.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.FolderPath.value");
 		$wecmdenc3 = we_base_request::encCmd("opener." . $this->topFrame . ".mark();");
 
-		$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',classDirs[document.we_form.elements['ClassID'].options[document.we_form.elements['ClassID'].selectedIndex].value])", true, 100, 22, "", "", ($_countSubDirs ? false : true), false, "_XFolder") : '';
-		$_button_cat = we_html_button::create_button('select', "javascript:we_cmd('openCatselector',document.we_form.elements['FolderID'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'FolderID\\'].value','document.we_form.elements[\\'FolderPath\\'].value','opener." . $this->topFrame . ".mark();','','" . $rootDirID . "')");
+		$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements.FolderID.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',classDirs[document.we_form.elements.ClassID.options[document.we_form.elements.ClassID.selectedIndex].value])", true, 100, 22, "", "", ($_countSubDirs ? false : true), false, "_XFolder") : '';
+		$_button_cat = we_html_button::create_button('select', "javascript:we_cmd('openCatselector',document.we_form.elements.FolderID.value,'" . CATEGORY_TABLE . "','document.we_form.elements.FolderID.value','document.we_form.elements.FolderPath.value','opener." . $this->topFrame . ".mark();','','" . $rootDirID . "')");
 		$_buttons = '<div id="docFolder" style="display: ' . (($this->Model->SelectionType == we_navigation_navigation::STPYE_DOCTYPE) ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objFolder" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS ? 'inline' : 'none') . '">' . $_button_obj . '</div><div id="catFolder" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STPYE_CATEGORY ? 'inline' : 'none') . '">' . $_button_cat . '</div>';
 
 		$_table = $this->Model->SelectionType == we_navigation_navigation::STPYE_DOCTYPE ? FILE_TABLE :

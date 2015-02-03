@@ -286,7 +286,7 @@ class we_voting_frames extends we_modules_frame{
 		$idname = 'owner_id';
 		$textname = 'owner_text';
 		$cmd1 = "document.forms[0].elements['" . $idname . "'].value";
-		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc5 = we_base_request::encCmd("fillIDs();opener.we_cmd('users_add_owner',top.allPaths,top.allIsFolder);");
 		$table->setCol(2, 0, array('colspan' => 2, 'align' => 'right'), we_html_element::htmlHidden(array('name' => $idname, 'value' => '')) .
 			we_html_element::htmlHidden(array('name' => $textname, 'value' => '')) .
@@ -354,7 +354,7 @@ class we_voting_frames extends we_modules_frame{
 			$charset = $GLOBALS['WE_BACKENDCHARSET'];
 //$GLOBALS['weDefaultCharset'] = get_value("default_charset");
 			$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, '', 255, "", "text", 200);
-			$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, '', false, array("onchange" => "document.forms[0].elements['the_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 325, "defaultfont", false);
+			$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, '', false, array("onchange" => "document.forms[0].elements.the_charset.value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 325, "defaultfont", false);
 			$import_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
 
 
@@ -789,10 +789,10 @@ function refreshTexts(){
 
 	function getHTMLDirChooser(){
 		$path = id_to_path($this->View->voting->ParentID, VOTING_TABLE);
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['ParentID'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['ParentPath'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.ParentID.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.ParentPath.value");
 		$wecmdenc3 = we_base_request::encCmd("top.opener._EditorFrame.setEditorIsHot(true);");
-		$button = we_html_button::create_button('select', "javascript:top.content.setHot(); we_cmd('voting_openDirselector',document.we_form.elements['ParentID'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','')");
+		$button = we_html_button::create_button('select', "javascript:top.content.setHot(); we_cmd('voting_openDirselector',document.we_form.elements.ParentID.value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','')");
 		$width = 416;
 
 		$yuiSuggest = & weSuggest::getInstance();
