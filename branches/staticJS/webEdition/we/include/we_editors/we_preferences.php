@@ -1703,7 +1703,7 @@ for(i=0;i<elements.length; ++i){
 var hot = false;
 ' . (!permissionhandler::hasPerm("CHANGE_START_DOCUMENT") ? we_html_button::create_state_changer(false) : "") . "
 function set_state_edit_delete_recipient() {
-	var p = document.forms[0].elements[\"we_recipient\"];
+	var p = document.forms[0].elements.we_recipient;
 	var i = p.length;
 
 	if (i == 0) {
@@ -1716,7 +1716,7 @@ function set_state_edit_delete_recipient() {
 }
 
 function inSelectBox(val) {
-	var p = document.forms[0].elements[\"we_recipient\"];
+	var p = document.forms[0].elements.we_recipient;
 
 	for (var i = 0; i < p.options.length; i++) {
 		if (p.options[i].text == val) {
@@ -1727,7 +1727,7 @@ function inSelectBox(val) {
 }
 
 function addElement(value, text, sel) {
-	var p = document.forms[0].elements[\"we_recipient\"];
+	var p = document.forms[0].elements.we_recipient;
 	var i = p.length;
 
 	p.options[i] =  new Option(text, value);
@@ -1748,7 +1748,7 @@ function in_array(n, h) {
 
 function add_recipient() {
 	var newRecipient = prompt(\"" . g_l('alert', '[input_name]') . "\", \"\");
-	var p = document.forms[0].elements[\"we_recipient\"];
+	var p = document.forms[0].elements.we_recipient;
 
 	if (newRecipient != null) {
 		if (newRecipient.length > 0) {
@@ -1773,7 +1773,7 @@ function add_recipient() {
 }
 
 function delete_recipient() {
-	var p = document.forms[0].elements[\"we_recipient\"];
+	var p = document.forms[0].elements.we_recipient;
 
 	if (p.selectedIndex >= 0) {
 		if (confirm(\"" . g_l('alert', '[delete_recipient]') . "\")) {
@@ -1790,7 +1790,7 @@ function delete_recipient() {
 }
 
 function edit_recipient() {
-	var p = document.forms[0].elements[\"we_recipient\"];
+	var p = document.forms[0].elements.we_recipient;
 
 	if (p.selectedIndex >= 0) {
 		var editRecipient = p.options[p.selectedIndex].text;
@@ -1824,7 +1824,7 @@ function edit_recipient() {
 
 function send_recipients() {
 	if (hot) {
-		var p = document.forms[0].elements[\"we_recipient\"];
+		var p = document.forms[0].elements.we_recipient;
 		var v = document.forms[0].elements[\"newconf[formmail_values]\"];
 
 		v.value = \"\";
@@ -2346,9 +2346,9 @@ function set_state_auth() {
 
 			$_navigation_directoryindex_names = we_html_tools::htmlTextInput("newconf[NAVIGATION_DIRECTORYINDEX_NAMES]", 22, get_value("NAVIGATION_DIRECTORYINDEX_NAMES"), "", "", "text", 225);
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value");
-			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements['error_document_no_objectfile_text'].value");
+			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.error_document_no_objectfile_text.value");
 			$_acButton1 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)");
-			$_acButton2 = we_html_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[ERROR_DOCUMENT_NO_OBJECTFILE]\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
+			$_acButton2 = we_html_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[ERROR_DOCUMENT_NO_OBJECTFILE]\'].value = 0;document.forms[0].elements.error_document_no_objectfile_text.value = \'\'');
 
 			$yuiSuggest->setAcId("doc2");
 			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
@@ -2612,7 +2612,7 @@ function set_xhtml_field(val, field){
 			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
 
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
-			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements['SECURITY_LIMIT_CUSTOMER_REDIRECT_text'].value");
+			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value");
 
 			$yuiSuggest->setAcId('SECURITY_LIMIT_CUSTOMER_REDIRECT_doc');
 			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);

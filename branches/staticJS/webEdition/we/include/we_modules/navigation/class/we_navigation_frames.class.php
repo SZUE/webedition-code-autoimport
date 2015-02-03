@@ -1003,13 +1003,13 @@ function onFolderSelectionChangeJS(value) {
 }
 
 function onSelectionTypeChangeJS(value) {
-	if(document.we_form.elements[\'Selection\'].value=="' . we_navigation_navigation::SELECTION_STATIC . '"){
+	if(document.we_form.elements.Selection.value=="' . we_navigation_navigation::SELECTION_STATIC . '"){
 		onFolderSelectionChangeJS(value);
 	} else {
 		var objects = ' . defined('OBJECT_FILES_TABLE') . ';
 		if(objects == 1 && value=="' . we_navigation_navigation::STPYE_CLASS . '"){
-			document.we_form.elements[\'ClassID\'].selectedIndex = 0;
-			onSelectionClassChangeJS(document.we_form.elements[\'ClassID\'].options[0].value);
+			document.we_form.elements.ClassID.selectedIndex = 0;
+			onSelectionClassChangeJS(document.we_form.elements.ClassID.options[0].value);
 		} else{
 			YAHOO.autocoml.modifySetById("yuiAcInputFolderPath",{
 					table : value == "' . we_navigation_navigation::STPYE_DOCTYPE . '" ? "' . FILE_TABLE . '" : "' . CATEGORY_TABLE . '",
@@ -1556,7 +1556,7 @@ function ' . $prefix . 'setLinkSelection(value){
 				), 1, 3);
 		$table->setCol(0, 0, null, we_html_tools::htmlTextInput("Charset", 15, $value, '', '', 'text', 120));
 		$table->setCol(0, 1, null, we_html_tools::getPixel(2, 10, 0));
-		$table->setCol(0, 2, null, we_html_tools::htmlSelect("CharsetSelect", $charsets, 1, $value, false, array('onblur' => 'document.forms[0].elements[\'Charset\'].value=this.options[this.selectedIndex].value;', 'onchange' => 'document.forms[0].elements[\'Charset\'].value=this.options[this.selectedIndex].value;document.we_form.submit();'), 'value', ($this->_width_size - 122), "defaultfont", false));
+		$table->setCol(0, 2, null, we_html_tools::htmlSelect("CharsetSelect", $charsets, 1, $value, false, array('onblur' => 'document.forms[0].elements.Charset.value=this.options[this.selectedIndex].value;', 'onchange' => 'document.forms[0].elements.Charset.value=this.options[this.selectedIndex].value;document.we_form.submit();'), 'value', ($this->_width_size - 122), "defaultfont", false));
 
 		return $table->getHtml();
 	}

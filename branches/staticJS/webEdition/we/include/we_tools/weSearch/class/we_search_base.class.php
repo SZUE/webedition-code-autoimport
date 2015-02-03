@@ -221,11 +221,11 @@ class we_search_base{
 _EditorFrame.setEditorIsHot(false);
 
 function next(){
-	document.we_form.elements[\'SearchStart\'].value = parseInt(document.we_form.elements[\'SearchStart\'].value) + ' . $this->anzahl . ';
+	document.we_form.elements.SearchStart.value = parseInt(document.we_form.elements.SearchStart.value) + ' . $this->anzahl . ';
 	top.we_cmd("reload_editpage");
 }
 function back(){
-	document.we_form.elements[\'SearchStart\'].value = parseInt(document.we_form.elements[\'SearchStart\'].value) - ' . $this->anzahl . ';
+	document.we_form.elements.SearchStart.value = parseInt(document.we_form.elements.SearchStart.value) - ' . $this->anzahl . ';
 	top.we_cmd("reload_editpage");
 }');
 	}
@@ -234,12 +234,12 @@ function back(){
 		return we_html_element::jsElement('
 function setOrder(order){
 
-	foo = document.we_form.elements[\'Order\'].value;
+	foo = document.we_form.elements.Order.value;
 
 	if(((foo.substring(foo.length-5,foo.length) == " DESC") && (foo.substring(0,order.length-5) == order)) || foo != order){
-		document.we_form.elements[\'Order\'].value=order;
+		document.we_form.elements.Order.value=order;
 	}else{
-		document.we_form.elements[\'Order\'].value=order+" DESC";
+		document.we_form.elements.Order.value=order+" DESC";
 	}
 	top.we_cmd("reload_editpage");
 }');

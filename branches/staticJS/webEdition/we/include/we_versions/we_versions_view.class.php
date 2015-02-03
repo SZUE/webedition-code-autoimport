@@ -374,7 +374,7 @@ function next(anzahl){
 	}
 	msBack = zeit.getTime();
 	if(diffBack>1000 || diffBack==0) {
-		document.we_form.elements[\'searchstart\'].value = parseInt(document.we_form.elements[\'searchstart\'].value) + anzahl;
+		document.we_form.elements.searchstart.value = parseInt(document.we_form.elements.searchstart.value) + anzahl;
 
 		search(false);
 	}
@@ -387,7 +387,7 @@ function back(anzahl){
 	}
 	msNext = zeit.getTime();
 	if(diffNext>1000 || diffNext==0) {
-		document.we_form.elements[\'searchstart\'].value = parseInt(document.we_form.elements[\'searchstart\'].value) - anzahl;
+		document.we_form.elements.searchstart.value = parseInt(document.we_form.elements.searchstart.value) - anzahl;
 
 		search(false);
 	}
@@ -775,7 +775,7 @@ function delRow(id) {
 	<td>' . we_html_tools::getPixel(19, 12) . '</td>
 	<td id="eintraege_pro_seite" style="font-size:12px;width:130px;">' . g_l('versions', '[eintraege_pro_seite]') . ':</td>
 	<td class="defaultgray" style="width:70px;">' .
-			we_html_tools::htmlSelect('anzahl', $anzahl_all, 1, $_anzahl, "", array('id' => "anzahl", 'onchange' => 'this.form.elements[\'searchstart\'].value=0;search(false);')) . '
+			we_html_tools::htmlSelect('anzahl', $anzahl_all, 1, $_anzahl, "", array('id' => "anzahl", 'onchange' => 'this.form.elements.searchstart.value=0;search(false);')) . '
 	</td>
 	<td class="defaultfont" id="eintraege">' . g_l('versions', '[eintraege]') . '</td>
 	<td>' . $this->getNextPrev($foundItems) . '</td>
@@ -839,7 +839,7 @@ function delRow(id) {
 
 		$page = ceil($searchstart / $anzahl) * $anzahl;
 
-		$select = we_html_tools::htmlSelect('page', $pages, 1, $page, false, array('id' => 'pageselect', 'onchange' => 'this.form.elements[\'searchstart\'].value=this.value;search(false);'));
+		$select = we_html_tools::htmlSelect('page', $pages, 1, $page, false, array('id' => 'pageselect', 'onchange' => 'this.form.elements.searchstart.value=this.value;search(false);'));
 
 		if(!isset($GLOBALS['setInputSearchstart'])){
 			if(!defined('searchstart')){

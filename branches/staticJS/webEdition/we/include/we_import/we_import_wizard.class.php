@@ -712,8 +712,8 @@ handle_event("previous");');
 
 			// --
 
-			$wecmdenc1 = we_base_request::encCmd("document.forms[\"we_form\"].elements[\"v[navigation_dir_id]\"].value");
-			$wecmdenc2 = we_base_request::encCmd("document.forms[\"we_form\"].elements[\"v[navigation_dir]\"].value");
+			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements[\"v[navigation_dir_id]\"].value");
+			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements[\"v[navigation_dir]\"].value");
 
 			$btnDocDir = we_html_button::create_button("select", "javascript:we_cmd('openNavigationDirselector','" . $wecmdenc1 . "','','" . $wecmdenc2 . "');");
 

@@ -637,7 +637,7 @@ function absTop(el) {
 function next(anzahl){
 var scrollActive = document.getElementById("scrollActive");
 if(scrollActive==null) {' .
-						$this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value) + anzahl;
+						$this->editorBodyFrame . '.document.we_form.elements.searchstart' . $whichSearch . '.value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements.searchstart' . $whichSearch . '.value) + anzahl;
 	search(false);
 
  }
@@ -646,7 +646,7 @@ if(scrollActive==null) {' .
 function back(anzahl){
 	var scrollActive = document.getElementById("scrollActive");
 	if(scrollActive==null) {' .
-						$this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value) - anzahl;
+						$this->editorBodyFrame . '.document.we_form.elements.searchstart' . $whichSearch . '.value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements.searchstart' . $whichSearch . '.value) - anzahl;
 		search(false);
 	}
 }
@@ -2900,7 +2900,7 @@ function we_cmd() {
 						$this->getJSSubmitFunction());
 	}
 
-	
+
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
 function submitForm() {
