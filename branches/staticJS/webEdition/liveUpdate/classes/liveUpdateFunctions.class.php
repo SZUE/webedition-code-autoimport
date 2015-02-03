@@ -34,6 +34,7 @@ class liveUpdateFunctions{
 		'tableChanged' => array(),
 		'error' => array(),
 		'entryExists' => array(),
+		'tableExists' => array(), //needed from server functions
 	);
 
 	/*
@@ -41,7 +42,7 @@ class liveUpdateFunctions{
 	 */
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
-		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . ' ' . we_database_base::arraySetter(array(
+		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'aktion' => $action,
 					'versionsnummer' => $version,
 					'error' => $errorCode
@@ -586,7 +587,7 @@ class liveUpdateFunctions{
 		$query = str_replace(array('###TBLPREFIX###', '###UPDATEONLY###'), array(LIVEUPDATE_TABLE_PREFIX, ''), trim($query));
 		$matches = array();
 		if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/', $query, $matches)){
-			$query = ($db->isColExist($matches[2], $matches[1])? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP COLUMN ' . $db->escape($matches[1]) : '');
+			$query = ($db->isColExist($matches[2], $matches[1]) ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP COLUMN ' . $db->escape($matches[1]) : '');
 		}
 		if(preg_match('/###ONCOL\((.*),(.*)\)(.+);###/', $query, $matches)){
 			$query = ($db->isColExist($matches[2], $matches[1]) ? $matches[3] : '');
@@ -848,13 +849,18 @@ class liveUpdateFunctions{
 	 */
 	static function liveUpdateErrorHandler($errno, $errstr, $errfile, $errline, $errcontext){
 
-		$GLOBALS['liveUpdateError']["errorNr"] = $errno;
-		$GLOBALS['liveUpdateError']["errorString"] = $errstr;
-		$GLOBALS['liveUpdateError']["errorFile"] = $errfile;
-		$GLOBALS['liveUpdateError']["errorLine"] = $errline;
+		$GLOBALS['liveUpdateError'] = array(
+			"errorNr" => $errno,
+			"errorString" => $errstr,
+			"errorFile" => $errfile,
+			"errorLine" => $errline,
+		);
 		if(function_exists('error_handler')){
-			//log errors to system log, if we have one.
-			error_handler($errno, $errstr, $errfile, $errline, $errcontext);
+			if(strpos($errstr, 'MYSQL-ERROR') !== 0){
+				//don't handle mysql errors, they're handled by updatelog - since some of them are "wanted"
+				//log errors to system log, if we have one.
+				error_handler($errno, $errstr, $errfile, $errline, $errcontext);
+			}
 		}
 	}
 

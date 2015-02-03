@@ -343,8 +343,8 @@ class we_app_Common{
 			self::$_config = new Zend_Config_Xml($filename, null, true);
 			// add $_SERVER['DOCUMENT_ROOT'] to <applicationpath> value
 			if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
-				if(substr(self::$_config->applicationpath, 0, 1) != "/"){
-					$newpath = $_SERVER['DOCUMENT_ROOT'] . "/" . self::$_config->applicationpath;
+				if(self::$_config->applicationpath{0} != '/'){
+					$newpath = $_SERVER['DOCUMENT_ROOT'] . '/' . self::$_config->applicationpath;
 				} else {
 					$newpath = $_SERVER['DOCUMENT_ROOT'] . self::$_config->applicationpath;
 				}
@@ -520,7 +520,7 @@ class we_app_Common{
 		self::readConfig();
 		$manifest = self::getManifestXml($filename, $query);
 		// add "/manifest" to relative xpath queries:
-		if(substr($query, 0, 1) === "/"){
+		if($query{0} === "/"){
 			$query = "/manifest" . $query;
 		}
 		$result = @$manifest->xpath($query);

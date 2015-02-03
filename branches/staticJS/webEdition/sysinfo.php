@@ -77,10 +77,10 @@ function ini_get_bool($val){
 
 function ini_get_message($val){
 	$bool = ini_get($val);
-	if($val == 1){
+	if($val === 1){
 		return 'on';
 	}
-	if($val == 0){
+	if($val === 0){
 		return 'off';
 	}
 	switch(strtolower($bool)){
