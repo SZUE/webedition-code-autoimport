@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class metadatatag{
-
 	private $DB_WE;
 	var $ClassName = __CLASS__;
 	private $object;
@@ -35,23 +34,16 @@ class metadatatag{
 
 		if($name){
 			$unique = md5(uniqid(__FILE__, true));
-			if(!isset($GLOBALS["lv"])){
-				// determine the id of the element
-				$_value = $GLOBALS['we_doc']->getElement($name, "bdid");
-				if(!$_value){
-					$_value = $GLOBALS['we_doc']->getElement($name);
-				}
-			} else {
-				$_value = $GLOBALS["lv"]->f($name);
-			}
-			$this->id = 0;
-			if(is_numeric($_value)){
-				// it is an id
-				$this->id = $_value;
-			} else if($_value){
-				// is this possible
-				//TODO: check if this can happen
-			}
+			$_value = (isset($GLOBALS["lv"]) ?
+					$GLOBALS["lv"]->f($name) :
+					// determine the id of the element
+					($GLOBALS['we_doc']->getElement($name, 'bdid')? :
+						$GLOBALS['we_doc']->getElement($name)
+					)
+				);
+
+			// it is an id
+			$this->id = (is_numeric($_value) ? $_value : 0);
 			if(!$this->id){
 				return;
 			}

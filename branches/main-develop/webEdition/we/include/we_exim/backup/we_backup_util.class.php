@@ -152,22 +152,21 @@ abstract class we_backup_util{
 	}
 
 	static function canImportBinary($id, $path){
-
-		if($id && $_SESSION['weS']['weBackupVars']['options']['backup_binary']){
-			return true;
+		if($id){
+			return $_SESSION['weS']['weBackupVars']['options']['backup_binary'];
 		}
-		if(!$id){
-			if(($path == WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php' || $path == WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php') && $_SESSION['weS']['weBackupVars']['handle_options']['settings']){
-				return true;
-			}
+		static $settingsFiles = array();
+		$settingsFiles = $settingsFiles? : we_backup_backup::getSettingsFiles(true);
+		$isSetting = in_array($path, $settingsFiles);
 
-			if($_SESSION['weS']['weBackupVars']['options']['backup_extern'] && ($path != WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php' || $path != WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php')){
-				return true;
-			}
-
-			if(strpos($path, WE_MODULES_DIR . 'spellchecker') === 0 && $_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
-				return true;
-			}
+		if(($_SESSION['weS']['weBackupVars']['handle_options']['settings'] && $isSetting) ||
+			($_SESSION['weS']['weBackupVars']['options']['backup_extern'] && !$isSetting) ||
+			($_SESSION['weS']['weBackupVars']['handle_options']['spellchecker'] && strpos($path, WE_MODULES_DIR . 'spellchecker') === 0 ) ||
+			($_SESSION['weS']['weBackupVars']['handle_options']['hooks'] && strpos($path, WE_INCLUDES_PATH . 'we_hook/custom_hooks') === 0) ||
+			($_SESSION['weS']['weBackupVars']['handle_options']['customTags'] && strpos($path, WE_INCLUDES_PATH . 'we_tags/custom_tags') === 0) ||
+			($_SESSION['weS']['weBackupVars']['handle_options']['customTags'] && strpos($path, WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags') === 0)
+		){
+			return true;
 		}
 
 		return false;
@@ -184,13 +183,10 @@ abstract class we_backup_util{
 		we_exim_contentProvider::binary2file($bin, $fh, $fwrite);
 	}
 
-	static function exportFiles($to, $files){
-		$count = count($files);
-
+	static function exportFiles($to, array $files){
 		if(($fh = $_SESSION['weS']['weBackupVars']['open']($to, 'ab'))){
-			for($i = 0; $i < $count; $i++){
-				$file_to_export = $files[$i];
-				self::exportFile($file_to_export, $fh, $_SESSION['weS']['weBackupVars']['write']);
+			foreach($files as $file){
+				self::exportFile($file, $fh, $_SESSION['weS']['weBackupVars']['write']);
 			}
 			$_SESSION['weS']['weBackupVars']['close']($fh);
 		}
@@ -356,4 +352,3 @@ abstract class we_backup_util{
 	}
 
 }
-

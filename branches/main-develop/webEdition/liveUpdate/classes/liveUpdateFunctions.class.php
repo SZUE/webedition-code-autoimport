@@ -34,6 +34,7 @@ class liveUpdateFunctions{
 		'tableChanged' => array(),
 		'error' => array(),
 		'entryExists' => array(),
+		'tableExists' => array(), //needed from server functions
 	);
 
 	/*
@@ -41,7 +42,7 @@ class liveUpdateFunctions{
 	 */
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
-		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . we_database_base::arraySetter(array(
+		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'aktion' => $action,
 					'versionsnummer' => $version,
 					'error' => $errorCode
@@ -602,25 +603,16 @@ class liveUpdateFunctions{
 			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Key_name="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP KEY ' . $db->escape($matches[1]) : '');
 		}
-		/* if (LIVEUPDATE_TABLE_PREFIX && strpos($query,'###TBLPREFIX###')===false) {
+		if(preg_match('/###ONTAB\((.*)\)(.+);###/', $query, $matches)){
+			$query = ($db->isTabExist($matches[1]) ? $matches[2] : '');
+		}
 
-		  $query = preg_replace("/^INSERT INTO /", "INSERT INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^INSERT IGNORE INTO /", "INSERT IGNORE INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^CREATE TABLE /", "CREATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^DELETE FROM /", "DELETE FROM " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^ALTER TABLE /", "ALTER TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-
-		  $query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
-		  } */
 
 		// second, we need to check if there is a collation
 		$Charset = we_database_base::getCharset();
 		$Collation = we_database_base::getCollation();
 		if($Charset != '' && $Collation != ''){
-			if(stripos($query, "CREATE TABLE ") === 0){
+			if(stripos($query, 'CREATE TABLE ') === 0){
 				if(strtoupper($Charset) === 'UTF-8'){//#4661
 					$Charset = 'utf8';
 				}
@@ -631,7 +623,16 @@ class liveUpdateFunctions{
 			}
 		}
 
-		if(!$query || $db->query($query)){
+		$tabExists = false;
+		if(preg_match('/CREATE TABLE (\w+) \(/', $query, $matches)){
+			if($db->isTabExist($matches[1])){//tab exists
+				$db->Errno = 1050;
+				$tabExists = true;
+			}
+		}
+
+
+		if(!$query || (!$tabExists && $db->query($query))){
 			return true;
 		}
 
@@ -692,10 +693,10 @@ class liveUpdateFunctions{
 					$alterQueries = array();
 
 					// get all queries to change existing fields
-					if(!empty($changeFields)){
+					if($changeFields){
 						$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
 					}
-					if(!empty($addFields)){
+					if($addFields){
 						$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
 					}
 
@@ -850,13 +851,18 @@ class liveUpdateFunctions{
 	 */
 	static function liveUpdateErrorHandler($errno, $errstr, $errfile, $errline, $errcontext){
 
-		$GLOBALS['liveUpdateError']["errorNr"] = $errno;
-		$GLOBALS['liveUpdateError']["errorString"] = $errstr;
-		$GLOBALS['liveUpdateError']["errorFile"] = $errfile;
-		$GLOBALS['liveUpdateError']["errorLine"] = $errline;
+		$GLOBALS['liveUpdateError'] = array(
+			"errorNr" => $errno,
+			"errorString" => $errstr,
+			"errorFile" => $errfile,
+			"errorLine" => $errline,
+		);
 		if(function_exists('error_handler')){
+			if(strpos($errstr, 'MYSQL-ERROR') !== 0){
+				//don't handle mysql errors, they're handled by updatelog - since some of them are "wanted"
 			//log errors to system log, if we have one.
 			error_handler($errno, $errstr, $errfile, $errline, $errcontext);
+			}
 		}
 	}
 
