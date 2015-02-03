@@ -8,15 +8,15 @@ CREATE TABLE ###TBLPREFIX###tblSettings (
 ) ENGINE=MyISAM;
 
 /* query separator */
-###ONTAB(###TBLPREFIX###tblWebAdmin)INSERT INTO ###TBLPREFIX###tblSettings VALUES (SELECT "webadmin",Name,Value FROM ###TBLPREFIX###tblWebAdmin);###
+###ONTAB(###TBLPREFIX###tblWebAdmin)INSERT INTO ###TBLPREFIX###tblSettings (SELECT "webadmin",Name,Value FROM ###TBLPREFIX###tblWebAdmin);###
 /* query separator */
 ###ONTAB(###TBLPREFIX###tblWebAdmin)DROP TABLE IF EXISTS ###TBLPREFIX###tblWebAdmin;###
 /* query separator */
-###ONTAB(###TBLPREFIX###tblbannerprefs)INSERT INTO ###TBLPREFIX###tblSettings VALUES (SELECT "banner",pref_name,pref_value FROM ###TBLPREFIX###tblbannerprefs);###
+###ONTAB(###TBLPREFIX###tblbannerprefs)INSERT INTO ###TBLPREFIX###tblSettings (SELECT "banner",pref_name,pref_value FROM ###TBLPREFIX###tblbannerprefs);###
 /* query separator */
 ###ONTAB(###TBLPREFIX###tblbannerprefs)DROP TABLE IF EXISTS ###TBLPREFIX###tblbannerprefs;###
 /* query separator */
-###ONTAB(###TBLPREFIX###tblNewsletterPrefs)INSERT INTO ###TBLPREFIX###tblSettings VALUES (SELECT "newsletter",pref_name,pref_value FROM ###TBLPREFIX###tblNewsletterPrefs);###
+###ONTAB(###TBLPREFIX###tblNewsletterPrefs)INSERT INTO ###TBLPREFIX###tblSettings (SELECT "newsletter",pref_name,pref_value FROM ###TBLPREFIX###tblNewsletterPrefs);###
 /* query separator */
 ###ONTAB(###TBLPREFIX###tblNewsletterPrefs)DROP TABLE IF EXISTS ###TBLPREFIX###tblNewsletterPrefs;###
 
