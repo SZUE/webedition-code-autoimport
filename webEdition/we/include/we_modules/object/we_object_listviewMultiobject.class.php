@@ -70,26 +70,14 @@ class we_object_listviewMultiobject extends we_listview_base{
 		$data = 0;
 		if(isset($GLOBALS['we_lv_array']) && count($GLOBALS['we_lv_array']) > 1){
 			$parent_lv = $GLOBALS['we_lv_array'][(count($GLOBALS['we_lv_array']) - 1)];
-			$prefix = ($parent_lv instanceof we_shop_listviewOrderitem) ? '' : 'we_'; //Fix #7873
-			if(isset($parent_lv->DB_WE->Record[$prefix . $name]) && $parent_lv->DB_WE->Record[$prefix . $name]){
-				$data = unserialize($parent_lv->DB_WE->Record[$prefix . $name]);
+						if(($dat = $parent_lv->f($name))){
+				$data = unserialize($dat);
 			}
+
 		} elseif(isset($GLOBALS['lv'])){
-			switch(get_class($GLOBALS['lv'])){
-				case 'we_shop_shop':
-				case 'we_shop_listviewOrderitem':
 					if(($dat = $GLOBALS['lv']->f($name))){
 						$data = unserialize($dat);
 					}
-					break;
-				default://FIXME: determine where we use we_, & generalize this
-					if(($dat = $GLOBALS['lv']->f($name))){
-						$data = unserialize($dat);
-					} elseif(isset($GLOBALS['lv']->DB_WE->Record['we_' . $name]) && $GLOBALS['lv']->DB_WE->Record['we_' . $name]){
-						$data = unserialize($GLOBALS['lv']->DB_WE->Record['we_' . $name]);
-					}
-					break;
-			}
 		} else {
 			if($GLOBALS['we_doc']->getElement($name)){
 				$data = unserialize($GLOBALS['we_doc']->getElement($name));
