@@ -890,8 +890,7 @@ var we_tabs = new Array();
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js) .
-				we_html_element::htmlBody(array("bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif",
-					'style' => 'margin:0px;'), $js2 .
+				we_html_element::htmlBody(array("id" => "eHeaderBody"), $js2 .
 					$table->getHtml() .
 					we_html_element::htmlForm(array("name" => "we_form", "target" => "load", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "pnt", "value" => "load")) .
 						we_html_element::htmlHidden(array("name" => "cmd", "value" => "load")) .

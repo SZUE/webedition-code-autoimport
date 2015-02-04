@@ -342,64 +342,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	include(WE_INCLUDES_PATH . 'we_editors/we_info.inc.php');
 
 	$dialogtable = '<noscript style="color:#fff;">Please activate Javascript!' . we_html_element::htmlBr() . we_html_element::htmlBr() . '</noscript>
-<table cellpadding="0" cellspacing="0" border="0" style="margin-left: auto; margin-right: auto;text-align:left;">
-	<tr>
-		<td style="background-color:#386AAB;"></td>
-		<td rowspan="2">' . $_loginTable . '</td>
-		<td valign="top" style="background-image:url(' . IMAGE_DIR . 'login/right.jpg);background-repeat:repeat-y;">' . we_html_element::htmlImg(array('src' => IMAGE_DIR . 'login/top_r.jpg')) . '</td>
-
-	</tr>
-	<tr>
-		<td  valign="bottom" style="background-color:#386AAB;"></td>
-
-		<td valign="bottom" style="height:296px;background-image:url(' . IMAGE_DIR . 'login/right.jpg);background-repeat:repeat-y;">' . we_html_element::htmlImg(array('src' => IMAGE_DIR . 'login/bottom_r.jpg')) . '</td>
-
-	</tr>
-	<tr>
-		<td></td>
-		<td style="background-image:url(' . IMAGE_DIR . 'login/bottom.jpg);background-repeat:repeat-x;">' . we_html_element::htmlImg(array('src' => IMAGE_DIR . 'login/bottom_l.jpg')) . '</td>
-		<td>' . we_html_element::htmlImg(array('src' => IMAGE_DIR . 'login/bottom_r2.jpg')) . '</td>
-	</tr>
-
-</table>';
-
-
-
-	//	PHP-Table
-	$_contenttable = 432;
-	$_layoutLeft = 14;
-	$_layoutLeft2 = 3;
-	$_layoutMiddle = 406;
-	$_layoutRight1 = 12;
-	$_layoutRight2 = 10;
-	$_layoutRight = ($_layoutRight1 + $_layoutRight2);
-
-	$_layouttable = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'width' => 440), 4, 5);
-
-	$_layouttable->setCol(0, 0, null, we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/top_left2.gif', 'width' => $_layoutLeft2, 'height' => 21)));
-	$_layouttable->setCol(0, 1, null, we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/top_left.gif', 'width' => $_layoutLeft, 'height' => 21)));
-	$_layouttable->setCol(0, 2, array('background' => IMAGE_DIR . 'info/top.gif', 'width' => $_layoutMiddle, 'class' => 'small', 'align' => 'right'), '&nbsp;');
-	$_layouttable->setCol(0, 3, array('colspan' => 2, 'width' => $_layoutRight), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/top_right.gif', 'width' => $_layoutRight, 'height' => 21)));
-
-	//	Here is table to log in
-	$GLOBALS['loginpage'] = ($login == LOGIN_OK) ? false : true;
-
-	include(WE_INCLUDES_PATH . 'we_editors/we_info.inc.php');
-
-	$_layouttable->setCol(1, 0, array('background' => IMAGE_DIR . 'info/left2.gif'), we_html_tools::getPixel($_layoutLeft2, 1));
-	$_layouttable->setCol(1, 1, array('colspan' => 3, 'width' => $_contenttable), $_loginTable);
-	$_layouttable->setCol(1, 4, array('width' => $_layoutRight2, 'background' => IMAGE_DIR . 'info/right.gif'), we_html_tools::getPixel($_layoutRight2, 1));
-
-	$_layouttable->setCol(2, 0, array('width' => $_layoutLeft2), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/bottom_left2.gif', 'width' => $_layoutLeft2, 'height' => 16)));
-	$_layouttable->setCol(2, 1, null, we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/bottom_left.gif', 'width' => $_layoutLeft, 'height' => 16)));
-	$_layouttable->setCol(2, 2, array('background' => IMAGE_DIR . 'info/bottom.gif'), we_html_tools::getPixel(1, 16));
-	$_layouttable->setCol(2, 3, array('colspan' => 2, 'width' => $_layoutRight), we_html_element::htmlImg(array('src' => IMAGE_DIR . 'info/bottom_right.gif', 'width' => $_layoutRight, 'height' => 16)));
-
-	$_layouttable->setCol(3, 0, null, we_html_tools::getPixel($_layoutLeft2, 1));
-	$_layouttable->setCol(3, 1, null, we_html_tools::getPixel($_layoutLeft, 1));
-	$_layouttable->setCol(3, 2, null, we_html_tools::getPixel($_layoutMiddle, 1));
-	$_layouttable->setCol(3, 3, null, we_html_tools::getPixel($_layoutRight1, 1));
-	$_layouttable->setCol(3, 4, null, we_html_tools::getPixel($_layoutRight2, 1));
+' . $_loginTable;
 
 	/*	 * ***********************************************************************
 	 * GENERATE NEEDED JAVASCRIPTS

@@ -135,7 +135,7 @@ function loadData() {
 			echo we_html_element::htmlBody(array('style' => 'background-color:#F0EFF0;'), '');
 		} else {
 			$user_object = $_SESSION["user_session_data"];
-			echo we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'style' => 'background:white url(' . IMAGE_DIR . 'backgrounds/header_with_black_line.gif);'), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));
+			echo we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'id' => 'eHeaderBody'), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));
 		}
 	}
 

@@ -39,7 +39,7 @@ class we_tab{
 			}
 		}
 
-		$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;<img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr>' . (we_base_browserDetect::isSafari() ? '<span><img src="' . IMAGE_DIR . 'pixel.gif" height="0" /></span>' : '') . '</div>';
+		$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;</nobr>' . (we_base_browserDetect::isSafari() ? '<span><img src="' . IMAGE_DIR . 'pixel.gif" height="0" /></span>' : '') . '</div>';
 	}
 
 	function getHTML(){

@@ -61,7 +61,7 @@ var g_l={
 						<b><?php echo g_l('fileselector', '[type]'); ?></b></td>
 					<td></td>
 					<td class="defaultfont">
-						<select name="filter" class="weSelect" size="1" onchange="top.fscmd.setFilter(document.forms['we_form'].elements['filter'].options[document.forms['we_form'].elements['filter'].selectedIndex].value)" style="width:100%">
+						<select name="filter" class="weSelect" size="1" onchange="top.fscmd.setFilter(document.we_form.elements.filter.options[document.we_form.elements.filter.selectedIndex].value)" style="width:100%">
 							<option value="<?php echo str_replace(' ', '%20', g_l('contentTypes', '[all_Types]')); ?>"><?php echo g_l('contentTypes', '[all_Types]'); ?></option>
 							<?php
 							$ct = we_base_ContentTypes::inst();

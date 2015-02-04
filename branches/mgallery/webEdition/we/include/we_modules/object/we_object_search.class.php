@@ -112,7 +112,7 @@ class we_object_search extends we_search_base{
 		return we_html_element::jsElement('
 				function toggleShowVisible(c) {
 					c.value=(c.checked ? 1 : 0);
-					document.we_form.elements[\'SearchStart\'].value = 0;
+					document.we_form.elements.SearchStart.value = 0;
 					top.we_cmd(\'reload_editpage\');
 				}');
 	}

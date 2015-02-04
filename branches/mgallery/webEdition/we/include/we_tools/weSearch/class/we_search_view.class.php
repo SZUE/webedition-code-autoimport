@@ -637,7 +637,7 @@ function absTop(el) {
 function next(anzahl){
 var scrollActive = document.getElementById("scrollActive");
 if(scrollActive==null) {' .
-						$this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value) + anzahl;
+						$this->editorBodyFrame . '.document.we_form.elements.searchstart' . $whichSearch . '.value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements.searchstart' . $whichSearch . '.value) + anzahl;
 	search(false);
 
  }
@@ -646,7 +646,7 @@ if(scrollActive==null) {' .
 function back(anzahl){
 	var scrollActive = document.getElementById("scrollActive");
 	if(scrollActive==null) {' .
-						$this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value) - anzahl;
+						$this->editorBodyFrame . '.document.we_form.elements.searchstart' . $whichSearch . '.value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements.searchstart' . $whichSearch . '.value) - anzahl;
 		search(false);
 	}
 }
@@ -2655,91 +2655,69 @@ function calendarSetup(x){
 
 		$out .= '</td></tr></table>';
 
-		$allDivs = ($whichSearch != "doclist" ?
-						$this->makeMouseOverDivs($x, $content, $whichSearch) :
-						we_search_view::makeMouseOverDivs($x, $content, $whichSearch));
-
+		$allDivs = self::makeMouseOverDivs($x, $content, $whichSearch);
 
 		$out .= we_html_element::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes($allDivs) . "';");
 
 		return $out;
 	}
 
-	function makeMouseOverDivs($x, $content, $whichSearch){
+	static function makeMouseOverDivs($x, $content, $whichSearch){
 		$allDivs = '';
 
-		$width = (we_base_browserDetect::isIE() ? "400px" : "398px");
-
 		for($n = 0; $n < $x; $n++){
-			$outDivs = '<div style="position:absolute;left:-9999px;width:400px;text-align:left;z-index:10000;visibility:visible;" class="middlefont" id="ImgDetails_' . $n . '_' . $whichSearch . '">
-			<div style="width:17px;height:22px;position:absolute;top:0px;left:0px;background-image:url(' . IMAGE_DIR . 'backgrounds/doclistBg/loDoclistDiv.gif);"></div>
-			<div style="width:365px;height:22px;position:absolute;top:0px;left:17px;padding-top:3px;background-image:url(' . IMAGE_DIR . 'backgrounds/doclistBg/moDoclistDiv.gif);" class="weDocListSearchHeadlineDivs">' . $content[$n][10]["dat"] . '</div>
-			<div style="width:18px;height:22px;position:absolute;top:0px;left:382px;background-image:url(' . IMAGE_DIR . 'backgrounds/doclistBg/roDoclistDiv.gif);"></div>
-			<div style="width:' . $width . ';position:relative;top:22px;left:0px;border-right:1px solid #A8A7A8;border-left:1px solid #A8A7A8;">
-			<div style="width:100%;height:1px;overflow:hidden;background-color:#DDDDDD;">
-			</div>
-			<div style="width:100%;background-color:#EDEDED;position:relative;">
-			<div style="padding:15px;position:absolute;">' . $content[$n][5]["dat"] . '</div>
-			<div style="padding:15px;position:relative;top:0px;left:160px;width:200px;">
+			$outDivs = '<div style="position:absolute;left:-9999px;width:400px;text-align:left;z-index:10000;visibility:visible;border:1px solid #bab9ba; border-radius:20px;background-color:#EDEDED;" class="middlefont" id="ImgDetails_' . $n . '_' . $whichSearch . '">
+			<div style="margin-left:18px;margin-right:18px;height:22px;padding-top:3px;" class="weDocListSearchHeadlineDivs">' . $content[$n][10]["dat"] . '</div>
+			<div style="width:100%;border-top:1px solid #DDDDDD;">
+				<div style="padding:15px;display: inline-block;">' . $content[$n][5]["dat"] . '</div>
 
-			<table style="font-size:10px;" border="0" cellspacing="0" cellpadding="3">
-			<tr>
-			<td colspan="2" style="font-size:12px;">' . $content[$n][9]["dat"] . '<br/><br/></td></tr>
-			<tr><td valign="top">' . g_l('searchtool', '[idDiv]') . ': </td><td>' . $content[$n][16]["dat"] . '</td></tr>
-			<tr><td valign="top">' . g_l('searchtool', '[dateityp]') . ': </td><td>' . $content[$n][8]["dat"] . '</td></tr>';
-			if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE || $content[$n][12]["dat"] == we_base_ContentTypes::APPLICATION){
-				$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[groesse]') . ': </td><td>' . $content[$n][6]["dat"] . '</td></tr>';
-				if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE){
-					$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[aufloesung]') . ': </td><td>' . $content[$n][7]["dat"] . '</td></tr>';
-				}
-			}
-			if($content[$n][12]["dat"] == we_base_ContentTypes::WEDOCUMENT){
-				$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[template]') . ': ' . '</td>
-					<td>' . $content[$n][14]["dat"] . '</td></tr>';
-			}
-			$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[creator]') . ': </td><td>' . $content[$n][13]["dat"] . '</td></tr>
-			<tr><td valign="top">' . g_l('searchtool', '[created]') . ': </td><td>' . $content[$n][3]["dat"] . '</td></tr>
-			<tr><td valign="top">' . g_l('searchtool', '[modified]') . ': </td><td>' . $content[$n][4]["dat"] . '</td></tr></table>
-			</div>
-			<div style="padding:0px 0px 6px 15px;position:relative;top:0px;left:0px;width:360px;">';
-			if($content[$n][11]["dat"] != ""){
+					<table style="font-size:10px;margin-left:150px;width:200px;display:inline-table;" border="0" cellspacing="0" cellpadding="3">
+					<tr>
+					<td colspan="2" style="font-size:12px;">' . $content[$n][9]["dat"] . '<br/><br/></td></tr>
+					<tr><td valign="top">' . g_l('searchtool', '[idDiv]') . ': </td><td>' . $content[$n][16]["dat"] . '</td></tr>
+					<tr><td valign="top">' . g_l('searchtool', '[dateityp]') . ': </td><td>' . $content[$n][8]["dat"] . '</td></tr>';
+					if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE || $content[$n][12]["dat"] == we_base_ContentTypes::APPLICATION){
+						$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[groesse]') . ': </td><td>' . $content[$n][6]["dat"] . '</td></tr>';
+						if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE){
+							$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[aufloesung]') . ': </td><td>' . $content[$n][7]["dat"] . '</td></tr>';
+						}
+					}
+					if($content[$n][12]["dat"] == we_base_ContentTypes::WEDOCUMENT){
+						$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[template]') . ': ' . '</td>
+							<td>' . $content[$n][14]["dat"] . '</td></tr>';
+					}
+					$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[creator]') . ': </td><td>' . $content[$n][13]["dat"] . '</td></tr>
+					<tr><td valign="top">' . g_l('searchtool', '[created]') . ': </td><td>' . $content[$n][3]["dat"] . '</td></tr>
+					<tr><td valign="top">' . g_l('searchtool', '[modified]') . ': </td><td>' . $content[$n][4]["dat"] . '</td></tr></table>
+
+				<div style="padding:0px 0px 6px 15px;width:360px;">';
+			if($content[$n][11]["dat"]){
 				$outDivs .= '<table cellpadding="0" cellspacing="0" border="0" style="font-size:10px;"><tr><td valign="top">' . g_l('searchtool', '[beschreibung]') . ':</td><td>' . we_html_tools::getPixel(
 								15, 5) . '</td><td>' .
 						we_util_Strings::shortenPath($content[$n][11]["dat"], 150) .
 						'</td></tr></table>';
 			}
 			$outDivs .= '</div>
-				</div>';
+			</div>';
 			if($content[$n][15]["dat"]){
-				$outDivs .= '<div style="width:100%;position:relative;top:0px;height:1px;overflow:hidden;background-color:#DDDDDD;"></div>
-					<div style="width:100%;position:relative;top:0px;height:1px;overflow:hidden;background-color:#FFF;"></div>
-					<div style="width:100%;position:relative;top:0px;height:20px;overflow:hidden;background-color:#DDDDDD;">
-						<div style="margin:5px 0px 0px 15px">' . g_l('searchtool', '[metafelder]') . ':</div>
-						</div>
-						<div style="width:100%;position:relative;top:0px;background-color:#FFF;">
-						<div style="padding:10px 0px 10px 15px;">
+				$outDivs .= '
+					<div style="height:20px;overflow:hidden;border-top:1px solid #DDDDDD;margin-top:15px;padding:5px 0px 0px 15px;">' . g_l('searchtool', '[metafelder]') . ':</div>
+						<div style="background-color:#FFF;margin:10px 10px 10px 15px;">
 						<table style="font-size:10px;" border="0" cellspacing="0" cellpadding="3">';
 				foreach($content[$n][15]["dat"] as $k => $v){
 					$outDivs .= '<tr><td>' . we_util_Strings::shortenPath($k, 90) . ':' . '</td><td>' . we_util_Strings::shortenPath($v, 90) . '</td></tr>';
 				}
 				$outDivs .= '</table>
-					</div>
 					</div>';
 			}
 
-			$outDivs .= '<div style="width:100%;position:relative;top:0px;height:1px;overflow:hidden;background-color:#DDDDDD;">
+			$outDivs .= '
 				</div>
-				</div>
-				<div style="position:relative;">
-				<div style="width:15px;height:20px;position:absolute;top:20px;background-image:url(' . IMAGE_DIR . 'backgrounds/doclistBg/luDoclistDiv.gif);"></div>
-					<div style="width:371px;height:20px;position:absolute;top:20px;left:15px;background-image:url(' . IMAGE_DIR . 'backgrounds/doclistBg/muDoclistDiv.gif);"></div>
-						<div style="width:14px;height:20px;position:absolute;top:20px;left:386px;background-image:url(' . IMAGE_DIR . 'backgrounds/doclistBg/ruDoclistDiv.gif);"></div>
-							</div>
-							</div>';
+				</div>';
 			$allDivs .= $outDivs;
 		}
 
-		return $allDivs;
+		return str_replace("\n", '', $allDivs);
 	}
 
 	function tblListRow($content, $class = "middlefont", $bgColor = ""){
@@ -2900,7 +2878,7 @@ function we_cmd() {
 						$this->getJSSubmitFunction());
 	}
 
-	
+
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
 function submitForm() {

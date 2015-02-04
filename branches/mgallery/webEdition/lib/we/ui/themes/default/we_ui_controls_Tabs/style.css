@@ -27,7 +27,6 @@
 	margin: 0px;
 	padding: 0;
 	border: 0px;
-	background-image:url(/webEdition/images/multiTabs/tabsBG_border.gif);
 	position:relative;
 	width:100%;
 	float:left;
@@ -44,8 +43,8 @@
 .we_ui_controls_Tab_Normal {
 	float:left;
 	height:21px;
-	background-image:url(/webEdition/images/multiTabs/tabsBG_normal.gif);
-	background-repeat: repeat-x;
+	background-color: #D3D3D3;
+	background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);/*tabsBG_normal.gif*/
 	cursor:pointer;
 	position:relative;
 	z-index:1;
@@ -54,8 +53,7 @@
 .we_ui_controls_Tab_Active {
 	float:left;
 	height:21px;
-	background-image:url(/webEdition/images/multiTabs/tabsBG_active2.gif);
-	background-repeat: repeat-x;
+	background-color:#ededed;/*tabsBG_active2.gif*/
 	cursor:pointer;
 	position:relative;
 	vertical-align:middle;
@@ -65,8 +63,8 @@
 .we_ui_controls_Tab_Active_Bottomline {
 	float:left;
 	height:21px;
-	background-image:url(/webEdition/images/multiTabs/tabsBG_active.gif);
-	background-repeat: repeat-x;
+	background-color:#ededed;/*tabsBG_active.gif*/
+	border-bottom: 1px solid #999999;
 	cursor:pointer;
 	position:relative;
 	z-index:1;
@@ -76,7 +74,8 @@
 .we_ui_controls_Tab_Disabled {
 	float:left;
 	height:21px;
-	background-image:url(/webEdition/images/multiTabs/tabsBG_active.gif);
+	background-color:#ededed;/*tabsBG_active.gif*/
+	border-bottom: 1px solid #999999;
 	background-repeat: repeat-x;
 	cursor:default;
 	position:relative;

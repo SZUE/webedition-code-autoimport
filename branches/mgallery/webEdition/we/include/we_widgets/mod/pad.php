@@ -341,7 +341,7 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				if(!isHotNote()){
 					cancelNote();
 					setColor(gel(id+'_tr'),id,'#EDEDED');
-					fo.elements['mark'].value=id;
+					fo.elements.mark.value=id;
 					populate(id);
 				}
 			}
@@ -358,7 +358,7 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				gel('props').style.display='none';
 				gel('notices').style.height='250px';
 				gel('view').style.display='block';
-				var oMark=fo.elements['mark'];
+				var oMark=fo.elements.mark;
 				var mark=oMark.value;
 				if(mark!=''){
 					oMark.value='';
@@ -370,14 +370,14 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			// deletes a note
 			function deleteNote(){
 				var fo=document.forms[0];
-				var mark=fo.elements['mark'].value;
+				var mark=fo.elements.mark.value;
 				var q_ID=gel(mark+'_ID').value;
 				parent.rpc(_ttlB64Esc.concat(','+_sInitProps),q_ID,'delete','',_ttlB64Esc,_sObjId,'pad/pad');
 			}
 
 			function isHotNote(){
 				var fo=document.forms[0];
-				var _id=fo.elements['mark'].value;
+				var _id=fo.elements.mark.value;
 				var q_init;
 				if(_id!='')q_init=getInitialQueryById(_id);
 				else q_init={'Validity':'always','ValidFrom':'','ValidUntil':'','Priority':'low','Title':'','Text':''};
@@ -392,7 +392,7 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			// saves a note, using the function rpc() in home.inc.php (750)
 			function saveNote(){
 				var fo=document.forms[0];
-				var _id=fo.elements['mark'].value;
+				var _id=fo.elements.mark.value;
 				var q_init;
 				if(_id!='') q_init=getInitialQueryById(_id);
 				else q_init={'Validity':'always','ValidFrom':'','ValidUntil':'','Priority':'low','Title':'','Text':''};
@@ -477,18 +477,18 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 
 			function getCurrentQuery(){
 				var fo=document.forms[0];
-				var oSctValid=fo.elements['sct_valid'];
+				var oSctValid=fo.elements.sct_valid;
 				var validSel=oSctValid.options[oSctValid.selectedIndex].value;
-				var oRdoPrio=fo.elements['rdo_prio'];
-				var sValidFrom=fo.elements['f_ValidFrom'].value;
-				var sValidUntil=fo.elements['f_ValidUntil'].value;
+				var oRdoPrio=fo.elements.rdo_prio;
+				var sValidFrom=fo.elements.f_ValidFrom.value;
+				var sValidUntil=fo.elements.f_ValidUntil.value;
 				return asoc={
 					'Validity':(validSel==0)?'always':((validSel==1)?'date':'period'),
 					'ValidFrom':convertDate(sValidFrom,'%Y-%m-%d'),
 					'ValidUntil':convertDate(sValidUntil,'%Y-%m-%d'),
 					'Priority':(oRdoPrio[0].checked)?'high':(oRdoPrio[1].checked)?'medium':'low',
-					'Title':fo.elements['props_title'].value,
-					'Text':fo.elements['props_text'].value
+					'Title':fo.elements.props_title.value,
+					'Text':fo.elements.props_text.value
 				};
 			}
 
@@ -496,7 +496,7 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				fo=document.forms[0];
 				var sValidity=gel(r+'_Valid').value;
 				var sValidityIndex = sValidity == 'always' ? 0 : (sValidity == 'date' ? 1 : 2);
-				var oSctValid=fo.elements['sct_valid'];
+				var oSctValid=fo.elements.sct_valid;
 				var iSctValidLen=oSctValid.length;
 				for(var i=iSctValidLen-1;i>=0;i--){
 					if(oSctValid.options[i].value==sValidityIndex){
@@ -505,31 +505,31 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 					}
 				}
 				toggleTblValidity();
-				fo.elements['f_ValidFrom'].value=convertDate(gel(r+'_ValidFrom').value,'%d.%m.%Y');
-				fo.elements['f_ValidUntil'].value=convertDate(gel(r+'_ValidUntil').value,'%d.%m.%Y');
+				fo.elements.f_ValidFrom.value=convertDate(gel(r+'_ValidFrom').value,'%d.%m.%Y');
+				fo.elements.f_ValidUntil.value=convertDate(gel(r+'_ValidUntil').value,'%d.%m.%Y');
 				var prio=gel(r+'_Priority').value;
-				fo.elements['rdo_prio'][prio=='high'?0:prio=='medium'?1:2].checked=true;
-				fo.elements['props_title'].value=gel(r+'_Title').value;
-				fo.elements['props_text'].value=gel(r+'_Text').value;
+				fo.elements.rdo_prio[prio=='high'?0:prio=='medium'?1:2].checked=true;
+				fo.elements.props_title.value=gel(r+'_Title').value;
+				fo.elements.props_text.value=gel(r+'_Text').value;
 				switch_button_state('delete','delete_enabled','enabled');
 				displayNote();
 			}
 
 			function unpopulate(){
 				fo=document.forms[0];
-				var oSctValid=fo.elements['sct_valid'];
+				var oSctValid=fo.elements.sct_valid;
 				oSctValid.options[0].selected=true;
-				fo.elements['f_ValidFrom'].value='';
-				fo.elements['f_ValidUntil'].value='';
-				fo.elements['rdo_prio'][2].checked=true;
-				fo.elements['props_title'].value='';
-				fo.elements['props_text'].value='';
+				fo.elements.f_ValidFrom.value='';
+				fo.elements.f_ValidUntil.value='';
+				fo.elements.rdo_prio[2].checked=true;
+				fo.elements.props_title.value='';
+				fo.elements.props_text.value='';
 			}
 
 			function setColor(theRow,theRowNum,newColor){
 				fo=document.forms[0];
 				var theCells=null;
-				if(fo.elements['mark'].value!=''||theRow.style===undefined){
+				if(fo.elements.mark.value!=''||theRow.style===undefined){
 					return false;
 				}
 				if(document.getElementsByTagName!==undefined){

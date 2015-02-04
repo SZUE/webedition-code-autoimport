@@ -143,9 +143,7 @@ class we_search_frames extends we_tool_frames{
 
 		$body = we_html_element::htmlBody(
 						array(
-					'bgcolor' => '#C8D8EC',
-					'background' => IMAGE_DIR . 'backgrounds/header_with_black_line.gif',
-					'style' => 'margin:0px 0px 0px 0px',
+					'id' => 'eHeaderBody',
 					'onload' => 'setFrameSize()',
 					'onresize' => 'setFrameSize()'
 						), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB(

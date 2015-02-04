@@ -18,6 +18,13 @@ way to fit your requirements.
 .preload3 {
 }
 
+.menuDiv {
+	background-color: #efefef;
+	background-color:#efefef;
+	background: linear-gradient(#f7f7f6,#e6e6e6);/*images/menu/background.gif*/
+	margin: 0px;
+}
+
 #nav {
 	padding: 0px 0px 0px 6px;
 	margin: 0px;

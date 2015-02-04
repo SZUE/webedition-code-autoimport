@@ -222,13 +222,13 @@ function init(){
 }
 
 function addEntry(sText,sValue){
-	var oSctPool=_fo.elements['sct_pool'];
+	var oSctPool=_fo.elements.sct_pool;
 	oSctPool.options[0].text='';
 	oSctPool.options[oSctPool.options.length]=new Option(sText,sValue,false,false);
 }
 
 function deleteEntry(sValue){
-	var oSctPool=_fo.elements['sct_pool'];
+	var oSctPool=_fo.elements.sct_pool;
 	for(var i=1;i<oSctPool.length;i++){
 		if(oSctPool.options[i].value==sValue){
 			oSctPool.options[i]=null;

@@ -36,15 +36,14 @@ foreach($this->Data['allTabs'] as $tabname){
 
 
 // get output
-$_tabHead = $tabs->getHeader();
 
 $bodyContent = '<div id="main"><div id="headrow"></div>' .
 	$tabs->getHTML() .
 	'</div>';
 
 $_body = we_html_element::htmlBody(array(
-		'style' => 'background: #C8D8EC url(' . IMAGE_DIR . 'backgrounds/header.gif);margin: 0px;',
+		'id' => 'eHeaderBody',
 		'onload' => 'setFrameSize();',
 		'onresize' => 'setFrameSize()'), $bodyContent);
 
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($_tabHead) . $_body);
+echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($tabs->getHeader()) . $_body);

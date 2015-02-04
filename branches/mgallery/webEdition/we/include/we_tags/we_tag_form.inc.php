@@ -167,7 +167,7 @@ function we_tag_form($attribs){
 			$onmailerror = weTag_getAttribute('onmailerror', $attribs, 0, we_base_request::INT);
 			$onrecipienterror = weTag_getAttribute('onrecipienterror', $attribs, 0, we_base_request::INT);
 			$oncaptchaerror = weTag_getAttribute('oncaptchaerror', $attribs, 0, we_base_request::INT);
-			$recipient = weTag_getAttribute('recipient', $attribs, '', we_base_request::STRING); //FIXME:email_list???
+			$recipient = weTag_getAttribute('recipient', $attribs, '', we_base_request::EMAILLIST);
 
 			$preconfirm = $confirmmail && $preconfirm ? str_replace("'", "\\'", $GLOBALS['we_doc']->getElement($preconfirm)) : '';
 			$postconfirm = $confirmmail && $postconfirm ? str_replace("'", "\\'", $GLOBALS['we_doc']->getElement($postconfirm)) : '';

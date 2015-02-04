@@ -73,11 +73,11 @@ function handleButtonState(){
 }
 
 function toggleRssTopFeed(){
-	var oSctRss=_fo.elements['sct_rss'];
+	var oSctRss=_fo.elements.sct_rss;
 	var sUri=oSctRss.options[oSctRss.selectedIndex].value;
 	var sTitle=oSctRss.options[oSctRss.selectedIndex].text;
-	var oIptNewUri=_fo.elements['ipt_newUri'];
-	var oIptNewTitle=_fo.elements['ipt_newTitle'];
+	var oIptNewUri=_fo.elements.ipt_newUri;
+	var oIptNewTitle=_fo.elements.ipt_newTitle;
 	oIptNewUri.value=sUri;
 	oIptNewTitle.value=sTitle;
 	handleButtonState(oSctRss.selectedIndex,'overwrite','delete');
@@ -90,32 +90,32 @@ function init(){
 	var sUri=opener.base64_decode(aCsv[0]);
 	_sInitUri=sUri;
 	_sInitRssCfg=aCsv[1];
-	var oSctRss=_fo.elements['sct_rss'];
+	var oSctRss=_fo.elements.sct_rss;
 	populateSct(oSctRss);
 	var iSctRssLen=oSctRss.length;
-	_fo.elements['ipt_uri'].value=sUri;
-	_fo.elements['ipt_uri'].title=sUri;
+	_fo.elements.ipt_uri.value=sUri;
+	_fo.elements.ipt_uri.title=sUri;
 
 	for(var i=iSctRssLen-1;i>=0;i--){
 		oSctRss.options[i].selected=(oSctRss.options[i].value==sUri)?true:false;
 	}
 	toggleRssTopFeed();
-	var oChbxConf=_fo.elements['chbx_conf'];
+	var oChbxConf=_fo.elements.chbx_conf;
 	var iChbxConfLen=oChbxConf.length;
 	for(var i=iChbxConfLen-1;i>=0;i--){
 		oChbxConf[i].checked=(parseInt(_sInitRssCfg.charAt(i)))?true:false;
 	}
-	var oSctConf=_fo.elements['sct_conf'];
+	var oSctConf=_fo.elements.sct_conf;
 	_iInitRssCfgNumEntries=aCsv[2];
 	oSctConf.options[_iInitRssCfgNumEntries].selected=true;
 	_sInitTbCfg=aCsv[3];
-	var oChbxTb=_fo.elements['chbx_tb'];
+	var oChbxTb=_fo.elements.chbx_tb;
 	var iChbxTbLen=oChbxTb.length;
 	for(var i=iChbxTbLen-1;i>=0;i--){
 		oChbxTb[i].checked=(parseInt(aCsv[3].charAt(i)))?true:false;
 	}
 	_iInitTbTitlePers=aCsv[4];
-	var oRdoTitle=_fo.elements['rdo_title'];
+	var oRdoTitle=_fo.elements.rdo_title;
 	oRdoTitle[aCsv[4]].checked=true;
 	initPrefs();
 }
@@ -125,19 +125,19 @@ function onChangeSctRss(obj){
 	var sTitle=obj.options[obj.selectedIndex].text;
 	toggleRssTopFeed();
 	if(sUri!=''){
-		var oIptUri=_fo.elements['ipt_uri'];
+		var oIptUri=_fo.elements.ipt_uri;
 		oIptUri.value=sUri;
 		oIptUri.title=sUri;
 	}
 }
 
 function handleTopRssFeed(sAction){
-	var oIptUri=_fo.elements['ipt_uri'];
-	var oSctRss=_fo.elements['sct_rss'];
+	var oIptUri=_fo.elements.ipt_uri;
+	var oSctRss=_fo.elements.sct_rss;
 	var iSelIdx=oSctRss.selectedIndex;
-	var oIptNewTitle=_fo.elements['ipt_newTitle'];
+	var oIptNewTitle=_fo.elements.ipt_newTitle;
 	var sNewTitle=oIptNewTitle.value;
-	var oIptNewUri=_fo.elements['ipt_newUri'];
+	var oIptNewUri=_fo.elements.ipt_newUri;
 	var sNewUri=oIptNewUri.value;
 	switch(sAction){
 		case 'overwrite':
@@ -202,10 +202,10 @@ function onDisableRdoGroup(sId){
 }
 
 function getTbPersTitle(sUri){
-	var oRdoTitle=_fo.elements['rdo_title'];
+	var oRdoTitle=_fo.elements.rdo_title;
 	var sTbTitle='';
 	if(oRdoTitle[1].checked==true){
-		var oSctRss=_fo.elements['sct_rss'];
+		var oSctRss=_fo.elements.sct_rss;
 		for(var i=1;_iTopRssFeedsLen>i;i++){
 			if(oSctRss.options[i].value==sUri){
 				sTbTitle=oSctRss.options[i].text;
@@ -218,7 +218,7 @@ function getTbPersTitle(sUri){
 
 function displayRssFeed(sUri,bOnChange){
 	var sRssCfgBinary=getBinary('conf');
-	var sRssCfgSelIdx=_fo.elements['sct_conf'].selectedIndex;
+	var sRssCfgSelIdx=_fo.elements.sct_conf.selectedIndex;
 	if(!bOnChange||(_sLastPreviewUri!=''&&sUri!=_sLastPreviewUri)||(_sLastPreviewUri==''&&sUri!=_sInitUri)||
 		_sInitRssCfg!=sRssCfgBinary||_iInitRssCfgNumEntries!=sRssCfgSelIdx){
 		_sLastPreviewUri=sUri;
@@ -228,8 +228,8 @@ function displayRssFeed(sUri,bOnChange){
 }
 
 function resetRssFeed(){
-	var iSctConfSel=_fo.elements['sct_conf'].selectedIndex;
-	var iRdoTitleSel=(_fo.elements['rdo_title'].checked)?0:1;
+	var iSctConfSel=_fo.elements.sct_conf.selectedIndex;
+	var iRdoTitleSel=(_fo.elements.rdo_title.checked)?0:1;
 	if((_sLastPreviewUri!=''&&_sInitUri!=_sLastPreviewUri)||
 		(getBinary('conf')!=_sInitRssCfg)||
 		(getBinary('tb')!=_sInitTbCfg)||
@@ -251,20 +251,20 @@ function getBinary(postfix){
 
 function save(){
 	var debug='';
-	var oIptUri=_fo.elements['ipt_uri'];
+	var oIptUri=_fo.elements.ipt_uri;
 	var sUri=oIptUri.value;
 	if(!isUrl(sUri)){
 		//" . we_message_reporting::getShowMessageCall(
 		g_l('cockpit', '[invalid_url]'), we_message_reporting::WE_MESSAGE_ERROR) . "
 		//return;
 	}
-	var oSctConf=_fo.elements['sct_conf'];
+	var oSctConf=_fo.elements.sct_conf;
 	var oCsv_=opener.gel(_sObjId+'_csv');
-	var oRdoTitle=_fo.elements['rdo_title'];
+	var oRdoTitle=_fo.elements.rdo_title;
 	oCsv_.value=opener.base64_encode(sUri)+','+getBinary('conf')+','+oSctConf.selectedIndex+
 		','+getBinary('tb')+','+((oRdoTitle[0].checked)?0:1);
 	if(_bIsHotTopRssFeeds){
-		var oSctRss=_fo.elements['sct_rss'];
+		var oSctRss=_fo.elements.sct_rss;
 		var aNewTopRssFeeds=new Array();
 		for(var i=0;_iTopRssFeedsLen>i;i++){
 			aNewTopRssFeeds[i]=[opener.base64_encode(oSctRss.options[i+1].text),
@@ -283,7 +283,7 @@ function save(){
 }
 
 function preview(){
-	var oIptUri=_fo.elements['ipt_uri'];
+	var oIptUri=_fo.elements.ipt_uri;
 	var sUri=oIptUri.value;
 	if(!isUrl(sUri)){
 		" . we_message_reporting::getShowMessageCall(

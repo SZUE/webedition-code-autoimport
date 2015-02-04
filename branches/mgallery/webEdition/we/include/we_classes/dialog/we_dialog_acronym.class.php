@@ -60,6 +60,7 @@ class we_dialog_acronym extends we_dialog_base{
 			$js .= we_html_element::jsElement('
 					function weSaveToGlossaryFn() {
 						document.we_form.elements[\'weSaveToGlossary\'].value = 1;
+
 						document.we_form.submit();
 					}');
 		}

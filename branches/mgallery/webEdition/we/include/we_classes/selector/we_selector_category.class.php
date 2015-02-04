@@ -637,7 +637,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 				$parentPath = implode('/', $tmp);
 				$path = $parentPath . '/' . $category;
 			}
-			$js = "top.frames['fsvalues'].document.we_form.elements['FolderID'].value = '" . $parentid . "';top.frames['fsvalues'].document.we_form.elements['FolderIDPath'].value = '" . $parentPath . "';";
+			$js = "top.frames.fsvalues.document.we_form.elements.FolderID.value = '" . $parentid . "';top.frames.fsvalues.document.we_form.elements.FolderIDPath.value = '" . $parentPath . "';";
 		} else {
 			$path = ($parentid ? $targetPath : '') . '/' . $category;
 		}
@@ -655,7 +655,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		}
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop() .
-		we_html_element::jsElement($js . 'top.setDir(top.fsheader.document.we_form.elements[\'lookin\'].value);' .
+		we_html_element::jsElement($js . 'top.setDir(top.fsheader.document.we_form.elements.lookin.value);' .
 				($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_ok]'), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_notok]'), $category), we_message_reporting::WE_MESSAGE_ERROR) )
 		) .
 		'</head><body></body></html>';
@@ -684,7 +684,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 			$title = $result ? $result['Title'] : '';
 			$description = $result ? $result["Description"] : '';
 
-			$dir_chooser = we_html_button::create_button('select', "javascript:we_cmd('openSelector', document.we_form.elements['FolderID'].value, '" . CATEGORY_TABLE . "', 'document.we_form.elements[\\'FolderID\\'].value', 'document.we_form.elements[\\'FolderIDPath\\'].value', '', '', '', '1', '', 'false', 1)");
+			$dir_chooser = we_html_button::create_button('select', "javascript:we_cmd('openSelector', document.we_form.elements.FolderID.value, '" . CATEGORY_TABLE . "', 'document.we_form.elements.FolderID.value', 'document.we_form.elements.FolderIDPath.value', '', '', '', '1', '', 'false', 1)");
 
 			$yuiSuggest = &weSuggest::getInstance();
 			$yuiSuggest->setAcId('Doc');

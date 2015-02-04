@@ -188,44 +188,44 @@ function doClick(opt) {
 		switch(opt) {
 			case 10:
 			' . ((defined('WORKFLOW_TABLE')) ? ('
-			if(document.forms["we_form"].elements["handle_workflow"].checked){
-				document.forms["we_form"].elements["handle_workflow"].checked=false;
+			if(document.we_form.elements.handle_workflow.checked){
+				document.we_form.elements.handle_workflow.checked=false;
 				mess+="\n-' . g_l('backup', '[' . $mode . '_workflow_data]') . '";
 			}
 			') : ('')) . '
 			' . ((defined('NEWSLETTER_TABLE')) ? ('
-			if(document.forms["we_form"].elements["handle_newsletter"].checked){
-				document.forms["we_form"].elements["handle_newsletter"].checked=false;
+			if(document.we_form.elements.handle_newsletter.checked){
+				document.we_form.elements.handle_newsletter.checked=false;
 				mess+="\n-' . g_l('backup', '[' . $mode . '_newsletter_data]') . '";
 			}
 			') : ('')) . '
 			' . ((defined('BANNER_TABLE')) ? ('
-			if(document.forms["we_form"].elements["handle_banner"].checked){
-				document.forms["we_form"].elements["handle_banner"].checked=false;
+			if(document.we_form.elements.handle_banner.checked){
+				document.we_form.elements.handle_banner.checked=false;
 				mess+="\n-' . g_l('backup', '[' . $mode . '_banner_data]') . '";
 			}
 			') : ('')) . '
 			' . (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? ('
-			if(document.forms["we_form"].elements["handle_schedule"].checked){
-				document.forms["we_form"].elements["handle_schedule"].checked=false;
+			if(document.we_form.elements.handle_schedule.checked){
+				document.we_form.elements.handle_schedule.checked=false;
 				mess+="\n-' . g_l('backup', '[' . $mode . '_schedule_data]') . '";
 			}
 			') : ('')) . '
-			if(document.forms["we_form"].elements["handle_versions"].checked){
-				document.forms["we_form"].elements["handle_versions"].checked=false;
+			if(document.we_form.elements.handle_versions.checked){
+				document.we_form.elements.handle_versions.checked=false;
 				mess+="\n-' . g_l('backup', '[' . $mode . '_versions_data]') . '";
 			}
 
-			if(document.forms["we_form"].elements["handle_versions_binarys"].checked){
-				document.forms["we_form"].elements["handle_versions_binarys"].checked=false;
+			if(document.we_form.elements.handle_versions_binarys.checked){
+				document.we_form.elements.handle_versions_binarys.checked=false;
 				mess+="\n-' . g_l('backup', '[' . $mode . '_versions_binarys_data]') . '";
 			}
-			if(document.forms["we_form"].elements["handle_temporary"].checked){
-				document.forms["we_form"].elements["handle_temporary"].checked=false;
+			if(document.we_form.elements.handle_temporary.checked){
+				document.we_form.elements.handle_temporary.checked=false;
 				mess+="\n-' . g_l('backup', '[' . $mode . '][temporary_data]') . '";
 			}
-			if(document.forms["we_form"].elements["handle_history"].checked){
-				document.forms["we_form"].elements["handle_history"].checked=false;
+			if(document.we_form.elements.handle_history.checked){
+				document.we_form.elements.handle_history.checked=false;
 				mess+="\n-' . g_l('backup', '[' . $mode . '][history_data]') . '";
 			}
 			if(mess!="") {
@@ -237,17 +237,17 @@ function doClick(opt) {
 			' . ((defined('OBJECT_TABLE')) ? ('
 			case 11:
 				' . (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? ('
-				if(document.forms["we_form"].elements["handle_schedule"].checked){
-					document.forms["we_form"].elements["handle_schedule"].checked=false;
+				if(document.we_form.elements.handle_schedule.checked){
+					document.we_form.elements.handle_schedule.checked=false;
 					mess+="\n-' . g_l('backup', '[' . $mode . '_schedule_data]') . '";
 				}
 			') : ('')) . '
-			if(document.forms["we_form"].elements["handle_versions"].checked){
-				document.forms["we_form"].elements["handle_versions"].checked=false;
+			if(document.we_form.elements.handle_versions.checked){
+				document.we_form.elements.handle_versions.checked=false;
 				mess+="\n-' . g_l('backup', '[' . $mode . '_versions_data]') . '";
 			}
-			if(document.forms["we_form"].elements["handle_versions_binarys"].checked){
-				document.forms["we_form"].elements["handle_versions_binarys"].checked=false;
+			if(document.we_form.elements.handle_versions_binarys.checked){
+				document.we_form.elements.handle_versions_binarys.checked=false;
 				mess+="\n-' . g_l('backup', '[' . $mode . '_versions_binarys_data]') . '";
 			}
 			if(mess!="") {
@@ -257,8 +257,8 @@ function doClick(opt) {
 			break;
 			case 12:
 
-			if(document.forms["we_form"].elements["handle_versions_binarys"].checked){
-				document.forms["we_form"].elements["handle_versions_binarys"].checked=false;
+			if(document.we_form.elements.handle_versions_binarys.checked){
+				document.we_form.elements.handle_versions_binarys.checked=false;
 				mess+="\n-' . g_l('backup', '[' . $mode . '_versions_binarys_data]') . '";
 			}
 			if(mess!="") {
@@ -276,13 +276,13 @@ function doClick(opt) {
 			break;
 			case 20:
 				' . ((defined('WORKFLOW_TABLE')) ? ('
-				if(document.forms["we_form"].elements["handle_workflow"].checked){
-					document.forms["we_form"].elements["handle_workflow"].checked=false;
+				if(document.we_form.elements.handle_workflow.checked){
+					document.we_form.elements.handle_workflow.checked=false;
 					mess+="\n-' . g_l('backup', '[' . $mode . '_workflow_data]') . '";
 				}
 			' . ((defined('MESSAGING_SYSTEM')) ? ('
-				if(document.forms["we_form"].elements["handle_todo"].checked){
-					document.forms["we_form"].elements["handle_todo"].checked=false;
+				if(document.we_form.elements.handle_todo.checked){
+					document.we_form.elements.handle_todo.checked=false;
 					mess+="\n-' . g_l('backup', '[' . $mode . '_todo_data]') . '";
 				}
 			') : ('')) . '
@@ -295,14 +295,14 @@ function doClick(opt) {
 			' . ((defined('CUSTOMER_TABLE')) ? ('
 			case 25:
 				' . ((defined('SHOP_TABLE')) ? ('
-				if(document.forms["we_form"].elements["handle_shop"].checked){
-					document.forms["we_form"].elements["handle_shop"].checked=false;
+				if(document.we_form.elements.handle_shop.checked){
+					document.we_form.elements.handle_shop.checked=false;
 					mess+="\n-' . g_l('backup', '[' . $mode . '_shop_data]') . '";
 				}
 			') : ('')) . '
 			' . ((defined('NEWSLETTER_TABLE')) ? ('
-				if(document.forms["we_form"].elements["handle_newsletter"].checked){
-					document.forms["we_form"].elements["handle_newsletter"].checked=false;
+				if(document.we_form.elements.handle_newsletter.checked){
+					document.we_form.elements.handle_newsletter.checked=false;
 					mess+="\n-' . g_l('backup', '[' . $mode . '_newsletter_data]') . '";
 				}
 			') : ('')) . '

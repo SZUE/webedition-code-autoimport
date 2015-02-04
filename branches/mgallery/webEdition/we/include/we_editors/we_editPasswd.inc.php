@@ -56,16 +56,16 @@ function getLoad(){
 
 		if(!we_users_user::comparePasswords($userData['UseSalt'], $_SESSION['user']['Username'], $userData['passwd'], $oldpasswd)){
 			$js = we_message_reporting::getShowMessageCall(g_l('global', '[pass_not_match]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-top.document.forms[0].elements["oldpasswd"].focus();
-top.document.forms[0].elements["oldpasswd"].select();';
+top.document.forms[0].elements.oldpasswd.focus();
+top.document.forms[0].elements.oldpasswd.select();';
 		} else if(strlen($newpasswd) < 4){
 			$js = we_message_reporting::getShowMessageCall(g_l('global', '[pass_to_short]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-top.document.forms[0].elements["newpasswd"].focus();
-top.document.forms[0].elements["newpasswd"].select();';
+top.document.forms[0].elements.newpasswd.focus();
+top.document.forms[0].elements.newpasswd.select();';
 		} else if($newpasswd != $newpasswd2){
 			$js = we_message_reporting::getShowMessageCall(g_l('global', '[pass_not_confirmed]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-top.document.forms[0].elements["newpasswd2"].focus();
-top.document.forms[0].elements["newpasswd2"].select();';
+top.document.forms[0].elements.newpasswd2.focus();
+top.document.forms[0].elements.newpasswd2.select();';
 		} else {
 			$useSalt = 0;
 			//essential leave this line

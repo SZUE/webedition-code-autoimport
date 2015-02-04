@@ -26,7 +26,7 @@ var date_ord = 0;
 var size_ord = 0;
 
 function addOption(txt, id) {
-	var a = document.forms["we_form"].elements["lookin"];
+	var a = document.we_form.elements.lookin;
 	a.options[a.options.length] = new Option(txt, id);
 	a.selectedIndex = (a.options.length > 0 ? a.options.length - 1 : 0);
 }
@@ -82,7 +82,7 @@ function reorder(name) {
 function setLookin() {
 	var dirs = new Array();
 	var foo = new Array();
-	var a = document.forms["we_form"].elements["lookin"];
+	var a = document.we_form.elements.lookin;
 	var c = 0;
 
 	a.options.length = 0;

@@ -206,15 +206,6 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 	}
 
 	/**
-	 * Retrieve tab image border
-	 *
-	 * @return string
-	 */
-	protected function getTabImageBorder(){
-		return '<img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" border="0" ' . $this->_getComputedClassAttrib(self::kTabImageBorder_Class) . ' height="21" />';
-	}
-
-	/**
 	 * Retrieve tabs HTML
 	 *
 	 * @return string
@@ -247,7 +238,7 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 					$class = self::kTabDisabled_Class;
 					$onClick = 'return false;';
 				}
-				$hiddenStyle = '';
+				$hiddenStyle = 'border-right:1px solid #888888;';
 				if($this->getTabAttribute($v, 'hidden')){
 					$hiddenStyle = 'style="display:none;"';
 				}
@@ -258,7 +249,6 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 					'</td>' .
 					($this->getTabAttribute($v, 'close') ? '<td><img style="width:16px;height:16px;padding-left:5px;" src="' . self::kTabCloseIconPath . '" border="0" onMouseOut="this.src=\'' . self::kTabCloseIconPath . '\'" onClick="' . htmlentities($this->getTabAttribute($v, 'onCloseClick')) . 'we_ui_controls_Tabs.close(\'' . $this->getId() . '\',\'' . $id . '\');" onMouseOver="this.src=\'' . self::kTabCloseIconMouseOverPath . '\'" /></td>' : '') .
 					'</tr></table>' .
-					$this->getTabImageBorder() .
 					'</div>';
 			}
 		}

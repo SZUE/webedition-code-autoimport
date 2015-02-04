@@ -41,8 +41,8 @@ function init(){
 	_fo=document.forms[0];
 	_oCsv_=opener.gel(_sObjId+'_csv')
 	_sInitCsv_=_oCsv_.value;
-	_oSctDate=_fo.elements['sct_date'];
-	_oSctNumEntries=_fo.elements['sct_amount_entries'];
+	_oSctDate=_fo.elements.sct_date;
+	_oSctNumEntries=_fo.elements.sct_amount_entries;
 	initPrefs();
 }
 
@@ -57,7 +57,7 @@ function getBinary(postfix){
 }
 
 function addUserToField(){
-	var iNewUsrId=_fo.elements['UserIDTmp'].value;
+	var iNewUsrId=_fo.elements.UserIDTmp.value;
 	var aUsers=_sUsers.split(',');
 	var iUsersLen=aUsers.length;
 	var bUsrExists=false;
@@ -163,7 +163,7 @@ $idname = 'UserIDTmp';
 $users = makeArrayFromCSV($sUsers);
 
 $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
-$wecmdenc2 = we_base_request::encCmd("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].document.forms[0].elements['UserNameTmp'].value");
+$wecmdenc2 = we_base_request::encCmd("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].document.forms[0].elements.UserNameTmp.value");
 $wecmdenc5 = we_base_request::encCmd("opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].addUserToField();");
 
 $content = '<table border="0" cellpadding="0" cellspacing="0" width="300">

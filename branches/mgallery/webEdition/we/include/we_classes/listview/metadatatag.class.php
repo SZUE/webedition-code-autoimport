@@ -30,10 +30,12 @@ class metadatatag{
 	var $avail = false;
 	var $id = 0;
 
-	function __construct($name){
+	function __construct($name, $id = 0){
 		$this->DB_WE = new DB_WE();
 
-		if($name){
+		if($id){
+			$this->id = $id;
+		} elseif($name){
 			$unique = md5(uniqid(__FILE__, true));
 			if(!isset($GLOBALS["lv"])){
 				// determine the id of the element
@@ -52,12 +54,12 @@ class metadatatag{
 				// is this possible
 				//TODO: check if this can happen
 			}
-			if(!$this->id){
-				return;
-			}
-			$this->object = new we_listview_document($unique, 1, 0, "", false, "", "", false, false, 0, "", "", false, "", "", "", "", "", "", "off", true, "", $this->id, '', false, false, 0);
-			$this->avail = ($this->object->next_record());
 		}
+		if(!$this->id){
+			return;
+		}
+		$this->object = new we_listview_document($unique, 1, 0, "", false, "", "", false, false, 0, "", "", false, "", "", "", "", "", "", "off", true, "", $this->id, '', false, false, 0);
+		$this->avail = ($this->object->next_record());
 	}
 
 	public function getDBf($key){

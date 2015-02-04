@@ -81,7 +81,7 @@ var g_l={
 		$buttons = $this->viewclass === 'todo' ? $this->buttonsTodo : $this->buttonsMsg;
 
 		$j = 0;
-		$table = new we_html_table(array('border' => 0, 'cellpadding' => 8, 'cellspacing' => 0, 'width' => 'auto', 'style' => 'margin-top: 5px'), 1, count($buttons));
+		$table = new we_html_table(array('border' => 0, 'cellpadding' => 8, 'cellspacing' => 0), 1, count($buttons));
 		foreach($buttons as $button){
 			$table->setCol(0, $j++, array('width' => 36), we_html_button::create_button($button[0], $button[1], true));
 			if($button[2]){
@@ -90,7 +90,7 @@ var g_l={
 			}
 		}
 
-		return we_html_element::htmlBody($attribs = array('background' => IMAGE_DIR . 'backgrounds/iconbarBack.gif'), $table->getHTML());
+		return we_html_element::htmlBody($attribs = array('id' => 'iconBar'), $table->getHTML());
 	}
 
 }

@@ -33,31 +33,31 @@ body {
 	width:100%;
 	margin: 0px; padding: 0;
 	border: 0px;
-	background-image:url(/webEdition/images/multiTabs/tabsBG_border.gif);
 	overflow:hidden;
 }
+
+div.tabActive,
 div.tabNormal {
-	margin: 0px; padding: 0;
+	margin: 0px;
+	padding: 0;
 	border:0px;
 	float:left;
 	display: inline-block;
-	background-image:url(/webEdition/images/multiTabs/tabsBG_normal.gif);
-	background-repeat: repeat-x;
 	line-height:21px;
 	font-size:17px;
 	cursor:pointer;
+	border-right:1px solid #888888;
 }
+
+div.tabNormal {
+	background-color: #D3D3D3;
+	background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);/*tabsBG_normal.gif*/
+}
+
 div.tabActive {
-	margin: 0px; padding: 0;
-	border:0px;
-	float:left;
-	display: inline-block;
-	background-image:url(/webEdition/images/multiTabs/tabsBG_active2.gif);
-	background-repeat: repeat-x;
-	line-height:21px;
-	font-size:17px;
-	cursor:pointer;
+	background-color:#ededed;/*tabsBG_active2.gif*/
 }
+
 span.text{
 	margin:0px; padding:0px;
 	font-size: 10px;

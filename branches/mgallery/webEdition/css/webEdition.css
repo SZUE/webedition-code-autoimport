@@ -74,9 +74,10 @@ body.selectorFooter{
 	left:0px;
 	width:24px;
 	overflow: hidden;
-	background-color:#f0f0f0;
-	background: linear-gradient(to right,#EAEAEA, #CECECE); /*menu/background.gif*/
+	background-color:#dddddd;
+	background: linear-gradient(to right,#EAEAEA, #CFCFCF); /*menu/background.gif*/
 	border-top:1px solid black;
+	/*border-right:1px solid #767676;*/
 }
 
 #bm_searchField{
@@ -157,10 +158,19 @@ img.baumArrow{
 	background-color:#F3F7FF;
 }
 
+#treeheader,
+#naviDiv,
 #eHeaderBody{
-	background: #C8D8EC url(/webEdition/images/backgrounds/header.gif);
+	background-color: #C8D8EC;
+	background: linear-gradient(#c9d9ed, #afc3de); /*backgrounds/header.gif*/
 	margin: 0px;
 }
+
+#iconBar{
+	border-top: 1px solid #a5a4a4;
+	background: linear-gradient(white, #e6e7e6); /*backgrounds/header.gif*/
+}
+
 
 #headrow{
 	margin:3px 0px 3px 5px;
@@ -176,12 +186,15 @@ img.baumArrow{
 
 #mainWindow,
 #resize{
-	position:absolute;
+	/*changed due to chrome
+ position:absolute;
 	top:32px;
 	left:0px;
 	right:0px;
 	bottom:0px;
-	border: 0px;
+	border: 0px;*/
+	height:100%;
+	width:100%;
 }
 
 #resize.withIconBar{

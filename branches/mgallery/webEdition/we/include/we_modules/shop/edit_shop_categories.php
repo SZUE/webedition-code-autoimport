@@ -116,7 +116,7 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 				}
 			}
 		}
-		
+
 	}
 
 	$shopCategories = we_shop_category::getShopCatFieldsFromDir('', false, true, $shopCategoriesDir, true, true, true, '', 'Path');
@@ -239,13 +239,13 @@ $jsFunction = '
 			break;
 
 			case "save":
-				document.forms["we_form"]["we_cmd[0]"].value = "saveShopCatRels";
+				document.we_form["we_cmd[0]"].value = "saveShopCatRels";
 				document.we_form.onsaveclose.value = 1;
 				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
 			break;
 
 			case "save_notclose":
-				document.forms["we_form"]["we_cmd[0]"].value = "saveShopCatRels";
+				document.we_form["we_cmd[0]"].value = "saveShopCatRels";
 				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
 			break;
 		}
@@ -253,12 +253,12 @@ $jsFunction = '
 
 	function we_switch_active_by_id(id){
 		try{
-			document.getElementById("destPrincipleRow_" + id).style.display = 
-				document.getElementById("defCountryRow_" + id).style.display = 
+			document.getElementById("destPrincipleRow_" + id).style.display =
+				document.getElementById("defCountryRow_" + id).style.display =
 				(document.getElementById("check_weShopCatIsActive[" + id + "]").checked) ? "" : "none";
 
-			document.getElementById("countriesRow_" + id).style.display = 
-				document.getElementById("check_weShopCatIsActive[" + id + "]").checked && 
+			document.getElementById("countriesRow_" + id).style.display =
+				document.getElementById("check_weShopCatIsActive[" + id + "]").checked &&
 				(document.getElementById("taxPrinciple_tmp[" + id + "]").value == 1) ? "" : "none";
 		} catch(e){}
 	}
@@ -268,7 +268,7 @@ $jsFunction = '
 			var active = isShopCatsDir ? true : document.getElementById("check_weShopCatIsActive[" + id + "]").checked;
 
 			document.getElementById("taxPrinciple_tmp[" + id + "]").value = obj.value;
-			document.getElementById("countriesRow_" + id).style.display = 
+			document.getElementById("countriesRow_" + id).style.display =
 				(active && obj.value == 1) ? "" : "none";
 		} catch(e){}
 	}

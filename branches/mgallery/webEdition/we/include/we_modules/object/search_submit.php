@@ -129,8 +129,8 @@ switch(we_base_request::_(we_base_request::STRING, 'todo')){
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
 			echo we_html_element::jsElement('
-					if (top.weEditorFrameController.getDocumentReferenceByTransaction("' . $_SESSION['weS']['we_data'][$we_transaction] . '").frames["1"].document.we_form && top.weEditorFrameController.getDocumentReferenceByTransaction("' . $_SESSION['weS']['we_data'][$we_transaction] . '").frames["1"].document.we_form.elements[\'SearchStart\']) {
-						top.weEditorFrameController.getDocumentReferenceByTransaction("' . $_SESSION['weS']['we_data'][$we_transaction] . '").frames["1"].document.we_form.elements[\'SearchStart\'].value = 0;
+					if (top.weEditorFrameController.getDocumentReferenceByTransaction("' . $_SESSION['weS']['we_data'][$we_transaction] . '").frames["1"].document.we_form && top.weEditorFrameController.getDocumentReferenceByTransaction("' . $_SESSION['weS']['we_data'][$we_transaction] . '").frames["1"].document.we_form.elements.SearchStart) {
+						top.weEditorFrameController.getDocumentReferenceByTransaction("' . $_SESSION['weS']['we_data'][$we_transaction] . '").frames["1"].document.we_form.elements.SearchStart.value = 0;
 					}
 					top.we_cmd("switch_edit_page","' . $go . '");
 			');

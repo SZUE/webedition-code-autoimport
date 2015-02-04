@@ -50,7 +50,7 @@ if(!$cmd || $cmd != "save_last"){
 		}
 
 		function setDir(dir) {
-			var a = top.fsheader.document.forms["we_form"].elements["lookin"].options;
+			var a = top.fsheader.document.we_form.elements.lookin.options;
 			if (a.length - 2 > -1) {
 				for (j = 0; j < a.length; j++) {
 					if (a[j].value === dir) {
@@ -75,7 +75,7 @@ if(!$cmd || $cmd != "save_last"){
 		}
 
 		function goUp() {
-			var a = top.fsheader.document.forms["we_form"].elements["lookin"].options;
+			var a = top.fsheader.document.we_form.elements.lookin.options;
 			if (a.length - 2 > -1) {
 				setDir(a[a.length - 2].value);
 			} else {
@@ -87,7 +87,7 @@ if(!$cmd || $cmd != "save_last"){
 			if (fid !== "/") {
 				top.currentID = top.sitepath + top.rootDir + top.currentDir + ((top.currentDir != "/") ? "/" : "") + fid;
 				top.currentName = fid;
-				top.fsfooter.document.forms["we_form"].elements["fname"].value = fid;
+				top.fsfooter.document.we_form.elements.fname.value = fid;
 				if (top.fsbody.document.getElementById(fid)) {
 					for (var i = 0; i < top.allentries.length; i++) {
 						if (top.fsbody.document.getElementById(top.allentries[i]))
@@ -98,7 +98,7 @@ if(!$cmd || $cmd != "save_last"){
 			} else {
 				top.currentID = top.sitepath;
 				top.currentName = fid;
-				top.fsfooter.document.forms["we_form"].elements["fname"].value = fid;
+				top.fsfooter.document.we_form.elements.fname.value = fid;
 				if (top.fsbody.document.getElementById(fid)) {
 					for (var i = 0; i < top.allentries.length; i++) {
 						if (top.fsbody.document.getElementById(top.allentries[i]))
@@ -154,7 +154,7 @@ if(!$cmd || $cmd != "save_last"){
 		}
 
 		function delFile() {
-			if ((top.currentID !== "") && (top.fsfooter.document.forms["we_form"].elements["fname"].value !== "")) {
+			if ((top.currentID !== "") && (top.fsfooter.document.we_form.elements.fname.value !== "")) {
 				top.fscmd.location = "we_sselector_cmd.php?cmd=delete_file&fid=" + top.currentID + "&ask=" + arguments[0];
 			} else {
 	<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', '[edit_file_nok]'), we_message_reporting::WE_MESSAGE_ERROR); ?>

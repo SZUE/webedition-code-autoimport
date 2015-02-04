@@ -40,8 +40,8 @@ function init(){
 	_fo=document.forms[0];
 	_oCsv_=opener.gel(_sObjId+'_csv')
 	_sInitCsv_=_oCsv_.value;
-	_oSctDate=_fo.elements['sct_date'];
-	_fo.elements['revenueTarget'].value=_sInitNum;
+	_oSctDate=_fo.elements.sct_date;
+	_fo.elements.revenueTarget.value=_sInitNum;
 	initPrefs();
 	//alert('form: ' + _fo.name);
 }
@@ -58,12 +58,12 @@ function getBinary(postfix){
 
 
 function getCsv(){
-	return getBinary('type')+';'+_oSctDate.selectedIndex+';'+_fo.elements['revenueTarget'].value;
+	return getBinary('type')+';'+_oSctDate.selectedIndex+';'+_fo.elements.revenueTarget.value;
 }
 
 function refresh(bRender){
 	if(bRender)_sLastPreviewCsv=getCsv();
-	opener.rpc(getBinary('type'),_oSctDate.selectedIndex,document.forms[0].elements['revenueTarget'].value,'','',_sObjId,_sShpInc);
+	opener.rpc(getBinary('type'),_oSctDate.selectedIndex,document.forms[0].elements.revenueTarget.value,'','',_sObjId,_sShpInc);
 }
 
 function save(){

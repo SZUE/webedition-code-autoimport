@@ -63,12 +63,12 @@ function getHTMLDirSelector($_selType){
 	$showAC = true;
 	$rootDirID = 0;
 	$folderID = 0;
-	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['FolderID'].value");
-	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['FolderPath'].value");
-	$_button_doc = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
-	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['FolderID'].value");
-	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['FolderPath'].value");
-	$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')") : '';
+	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.FolderID.value");
+	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.FolderPath.value");
+	$_button_doc = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements.FolderID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
+	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.FolderID.value");
+	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.FolderPath.value");
+	$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements.FolderID.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')") : '';
 
 	$_buttons = '<div id="docFolder" style="display: ' . (!$_selType ? "inline" : "none") . '">' . $_button_doc . "</div>" . '<div id="objFolder" style="display: ' . ($_selType ? "inline" : "none") . '">' . $_button_obj . "</div>";
 	$_path = id_to_path($folderID, (!$_selType ? FILE_TABLE : (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "")));
@@ -286,7 +286,7 @@ function init(){
 	_oCsv_=opener.gel(_sObjId+'_csv');
 	_sInitCsv_=_oCsv_.value;
 	_sInitTitle_=opener.gel(_sObjId+'_prefix').value;
-	_fo.elements['title'].value=_sInitTitle_;
+	_fo.elements.title.value=_sInitTitle_;
 	var aInitCsv=_sInitCsv_.split(';');
 	var dir=aInitCsv[2].split(',');
 	var sBinary='" . $selBinary . "';
@@ -349,7 +349,7 @@ function preview(){
 }
 
 function exit_close(){
-	var sTitle=_fo.elements['title'].value;
+	var sTitle=_fo.elements.title.value;
 	var sSel=(_fo.Selection.selectedIndex)?'1':'0';
 	var sSwitch=(_fo.headerSwitch.selectedIndex)?'1':'0';
 	var sCsv=(parseInt(sSel))?getTreeSelected():getCsv(parseInt(sSwitch));

@@ -183,7 +183,7 @@ top.content.hloaded = 1;
 
 		$tabHead = $we_tabs->getHeader() . $js;
 
-		$body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif"), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . oldHtmlspecialchars($textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
+		$body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "id" => "eHeaderBody"), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . oldHtmlspecialchars($textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
 				$we_tabs->getHTML() .
 				'</div>'
 		);
@@ -764,13 +764,13 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 	}
 
 	function getHTMLCopy(){
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['copyid'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['copyid_text'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.copyid.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.copyid_text.value");
 		$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('copy_newsletter');");
 
 		return $this->View->htmlHidden('copyid', 0) .
 			$this->View->htmlHidden('copyid_text', "") .
-			we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements['copyid'].value,'" . NEWSLETTER_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . get_ws(NEWSLETTER_TABLE) . "')");
+			we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements.copyid.value,'" . NEWSLETTER_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . get_ws(NEWSLETTER_TABLE) . "')");
 	}
 
 	function getHTMLCustomer($group){
@@ -1519,7 +1519,7 @@ function changeFieldValue(val,valueField) {
 		$js = $this->View->getJSProperty() .
 			we_html_element::jsElement('
 function addBlack() {
-	var p=document.forms[0].elements["blacklist_sel"];
+	var p=document.we_form.elements.blacklist_sel;
 	var newRecipient=prompt("' . g_l('modules_newsletter', '[add_email]') . '","");
 
 	if (newRecipient != null) {
@@ -1541,7 +1541,7 @@ function addBlack() {
 }
 
 function deleteBlack() {
-	var p=document.forms[0].elements["blacklist_sel"];
+	var p=document.we_form.elements.blacklist_sel;
 
 	if (p.selectedIndex >= 0) {
 		if (confirm("' . g_l('modules_newsletter', '[email_delete]') . '")) {
@@ -1551,7 +1551,7 @@ function deleteBlack() {
 }
 
 function deleteallBlack() {
-	var p=document.forms[0].elements["blacklist_sel"];
+	var p=document.we_form.elements.blacklist_sel;
 
 	if (confirm("' . g_l('modules_newsletter', '[email_delete_all]') . '")) {
 		p.options.length = 0;
@@ -1559,7 +1559,7 @@ function deleteallBlack() {
 }
 
 function editBlack() {
-	var p=document.forms[0].elements["blacklist_sel"];
+	var p=document.we_form.elements.blacklist_sel;
 	var index=p.selectedIndex;
 
 	if (index >= 0) {

@@ -557,7 +557,7 @@ function weCheckAcFields(){
 	if(document.getElementById("weDialogType").value=="' . we_base_link::TYPE_INT . '"){
 		setTimeout(weDoCheckAcFields,100);
 	} else {
-		document.forms["we_form"].submit();
+		document.we_form.submit();
 	}
 }
 
@@ -576,7 +576,7 @@ function weDoCheckAcFields(){
 			weAcCheckLoop=0;
 		} else {
 			weAcCheckLoop=0;
-			document.forms["we_form"].submit();
+			document.we_form.submit();
 		}
 	} else {' .
 						we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '

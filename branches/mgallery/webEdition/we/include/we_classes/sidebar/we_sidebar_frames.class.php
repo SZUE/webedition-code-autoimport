@@ -61,7 +61,7 @@ class we_sidebar_frames{
 		</style>
 		</head>
 		<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px;overflow:hidden;">
-			<div id="weSidebarHeader" name="weSidebarHeader" style="overflow: hidden;position:absolute;top:0px;left:0px;right:0px;height:22px;background-color: silver;	background-image: url('<?php echo IMAGE_DIR; ?>/backgrounds/multitabBG.gif');font-family: Verdana, Arial, sans-serif;font-size: 10px;">
+			<div id="weSidebarHeader" name="weSidebarHeader" style="overflow: hidden;position:absolute;top:0px;left:0px;right:0px;height:22px;background-color: silver;font-family: Verdana, Arial, sans-serif;font-size: 10px;">
 				<div id="Headline">
 					<?php echo g_l('sidebar', '[headline]'); ?>
 				</div>
