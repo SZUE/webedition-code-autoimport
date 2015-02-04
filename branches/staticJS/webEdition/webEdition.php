@@ -61,6 +61,86 @@ function info(text){
 	}
 }
 
+//	Here begins the code for showing the correct frameset.
+//	To improve readability the different cases are outsourced
+//	in several functions, for SEEM, normal or edit_include-Mode.
+
+function getSidebarWidth(){
+// Get the width of the sidebar
+	if(SIDEBAR_DISABLED != 1 && SIDEBAR_SHOW_ON_STARTUP == 1){
+		return SIDEBAR_DEFAULT_WIDTH;
+	}
+	return 0;
+}
+
+/**
+ * function startNormalMode()
+ * @desc	This function writes the frameset in the resizeframe for the webedition-start
+  in the normal mode.
+ */
+function startNormalMode(){
+	$_sidebarwidth = getSidebarWidth();
+	$_treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= weTree::MinWidth) ? $_COOKIE["treewidth_main"] : weTree::DefaultWidth;
+	?>
+	<div style="width:<?php echo $_treewidth; ?>px;display:block;" id="bframeDiv">
+		<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
+	</div>
+	<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:<?php echo $_treewidth; ?>px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
+		<iframe frameBorder="0" src="<?php echo WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
+	</div>
+	<?php if(!(SIDEBAR_DISABLED == 1)){ ?>
+		<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;border-left:1px solid black;" id="sidebarDiv">
+			<?php
+			$weFrame = new we_sidebar_frames();
+			$weFrame->getHTML('');
+			?>
+		</div>
+	<?php } ?>
+	<?php
+}
+
+/**
+ * function startEditInclude()
+ * @desc	This function writes the frameset in the resizeframe for an edit-include-window
+ */
+function startEditIncludeMode(){
+	$we_cmds = "we_cmd[0]=edit_document&";
+
+	foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $i => $v){
+		$we_cmds .= "we_cmd[" . $i . "]=" . $v . "&";
+	}
+}
+
+/**
+ * function startSEEMMode()
+ * @desc	This function writes the frameset in the resizeframe for the webedition-start
+  in the SEEM-mode.
+ */
+
+
+function startSEEMMode(){
+	$_sidebarwidth = getSidebarWidth();
+	?>
+	<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;border: 0px;">
+		<div id="bframeDiv">
+			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
+		</div>
+		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:0px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
+			<iframe frameBorder="0" src="<?php echo WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
+		</div>
+		<?php if($_sidebarwidth > 0){ ?>
+			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;border-left:1px solid black;" id="sidebarDiv">
+				<?php
+				$weFrame = new we_sidebar_frames();
+				$weFrame->getHTML('');
+				?>
+
+			</div>
+		<?php } ?>
+	</div>
+	<?php
+}
+
 /**
  * @return void
  * @desc the frameset for the SeeMode
@@ -69,18 +149,12 @@ function pWebEdition_Frameset($SEEM_edit_include){
 	switch($_SESSION['weS']['we_mode']){
 		default:
 		case we_base_constants::MODE_NORMAL:
-			$we_cmds = '';
 			break;
 		case we_base_constants::MODE_SEE:
 			$we_cmds = '';
 			if(isset($GLOBALS["SEEM_edit_include"]) && $GLOBALS["SEEM_edit_include"]){ // edit include file
-				$_REQUEST["SEEM_edit_include"] = true;
-				$we_cmds = "?we_cmd[0]=edit_document&";
-
-				for($i = 1; $i < count($_REQUEST['we_cmd']); $i++){
-					$we_cmds .= "we_cmd[" . $i . "]=" . $_REQUEST['we_cmd'][$i] . "&";
-				}
-				$we_cmds.='&SEEM_edit_include=true';
+				$_REQUEST['SEEM_edit_include'] = true;
+				$_REQUEST['we_cmd'][0] = 'edit_document';
 			}
 			break;
 	}
@@ -88,8 +162,21 @@ function pWebEdition_Frameset($SEEM_edit_include){
 	<div id="headerDiv">
 		<?php we_main_header::pbody($SEEM_edit_include); ?>
 	</div>
-	<div id="mainWindow">
-		<iframe src="<?php echo WEBEDITION_DIR; ?>resizeframe.php?<?php echo $we_cmds ? '?' . $we_cmds : ''; ?>" id="rframe" name="rframe"></iframe>
+	<div id="resizeFrame" ><?php
+		//	Here begins the controller of the page
+//  Edit an included file with SEEM.
+		if($SEEM_edit_include){
+			startEditIncludeMode();
+
+//  We are in SEEM-Mode
+		} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
+			startSEEMMode();
+
+//  Open webEdition normally
+		} else {
+			startNormalMode();
+		}
+		?>
 	</div>
 	<div id="cmdDiv">
 		<iframe src="about:blank" style="overflow: hidden;" name="load"></iframe>
@@ -339,6 +426,10 @@ if($diff){
 					case "exit_doc_question":
 									// return !! important for multiEditor
 									return new jsWindow(url, "exit_doc_question", - 1, - 1, 380, 130, true, false, true);
+									case "loadVTab":
+									var op = top.makeFoldersOpenString();
+									parent.we_cmd("load", arguments[1], 0, op, top.treeData.table);
+									break;
 									case "eplugin_exit_doc" :
 									if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
 					if (top.plugin.isInEditor(arguments[1])) {
@@ -381,24 +472,24 @@ $SEEM_edit_include = we_base_request::_(we_base_request::BOOL, "SEEM_edit_includ
 we_main_header::pCSS($SEEM_edit_include);
 ?>
 </head>
-<body id="weMainBody" onbeforeunload="doUnload()">
-	<?php
-	flush();
+<body id="weMainBody" onload="top.start();" onbeforeunload="doUnload()">
+<?php
+flush();
 //	get the frameset for the actual mode.
-	pWebEdition_Frameset($SEEM_edit_include);
-	we_main_header::pJS($SEEM_edit_include);
+pWebEdition_Frameset($SEEM_edit_include);
+we_main_header::pJS($SEEM_edit_include);
 //	get the Treefunctions for docselector
-	pWebEdition_Tree();
-	?>
+pWebEdition_Tree();
+?>
 </body>
 </html>
-<?php
-if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
-	flush();
-	if(function_exists('fastcgi_finish_request')){
-		fastcgi_finish_request();
-	}
-	session_write_close();
+	<?php
+	if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
+		flush();
+		if(function_exists('fastcgi_finish_request')){
+			fastcgi_finish_request();
+		}
+		session_write_close();
 // trigger scheduler
-	we_schedpro::trigger_schedule();
-}
+		we_schedpro::trigger_schedule();
+	}

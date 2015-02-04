@@ -83,7 +83,7 @@ function EditorFrameController() {
 	this.init = function () {
 
 		// init references to FramesetWindow and Frameset
-		this.MultiEditorFramesetWindow = top.rframe.bm_content_frame;
+		this.MultiEditorFramesetWindow = top.bm_content_frame;
 		this.MultiEditorFrameset = this.MultiEditorFramesetWindow.document.getElementById("multiEditorFrameset");
 
 		var _frames = this.MultiEditorFramesetWindow.document.getElementsByTagName("iframe");
@@ -895,7 +895,7 @@ function EditorFrame(ref, elementId) {
 
 	this.FrameId = elementId;
 
-	this.EditorFrameWindow = top.rframe.bm_content_frame.window.frames[elementId];
+	this.EditorFrameWindow = top.bm_content_frame.window.frames[elementId];
 	this.EditorFrameReference = ref; // not needed yet !!!
 
 	this.EditorType = null;	// model|cockpit|none_webedition, etc

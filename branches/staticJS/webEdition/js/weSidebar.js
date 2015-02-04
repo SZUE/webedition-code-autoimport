@@ -63,18 +63,18 @@ weSidebar.open = function () {
 };
 
 weSidebar.close = function () {
-	top.rframe.document.getElementById("bm_content_frameDiv").style.right = "0px";
-	top.rframe.document.getElementById("sidebarDiv").style.width = "0px";
+	top.document.getElementById("bm_content_frameDiv").style.right = "0px";
+	top.document.getElementById("sidebarDiv").style.width = "0px";
 };
 
 
 weSidebar.resize = function (width) {
-	top.rframe.document.getElementById("bm_content_frameDiv").style.right = width + "px";
-	top.rframe.document.getElementById("sidebarDiv").style.width = width + "px";
+	top.document.getElementById("bm_content_frameDiv").style.right = width + "px";
+	top.document.getElementById("sidebarDiv").style.width = width + "px";
 };
 
 weSidebar.reload = function () {
-	top.rframe.weSidebarContent.location.reload();
+	top.weSidebarContent.location.reload();
 };
 
 //

@@ -1079,7 +1079,7 @@ for ( frameId in _usedEditors ) {
 							//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
 							$obj->getUpdateTreeScript(false) . "
 if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
-	 top.rframe.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
+	 top.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
 }
 weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
 					}
@@ -1095,7 +1095,7 @@ weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
 							//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
 							$obj->getUpdateTreeScript(false) . "
 if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
-	top.rframe.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
+	top.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
 }
 weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
 					}

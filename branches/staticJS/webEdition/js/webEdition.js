@@ -105,13 +105,13 @@ function doClickDirect(id, ct, table, fenster) {
 
 function setTreeArrow(direction) {
 	try {
-		self.rframe.document.getElementById("arrowImg").src = dirs.BUTTONS_DIR + "icons/direction_" + direction + ".gif";
+		self.document.getElementById("arrowImg").src = dirs.BUTTONS_DIR + "icons/direction_" + direction + ".gif";
 		if (direction === "right") {
-			self.rframe.document.getElementById("incBaum").style.backgroundColor = "gray";
-			self.rframe.document.getElementById("decBaum").style.backgroundColor = "gray";
+			self.document.getElementById("incBaum").style.backgroundColor = "gray";
+			self.document.getElementById("decBaum").style.backgroundColor = "gray";
 		} else {
-			self.rframe.document.getElementById("incBaum").style.backgroundColor = "";
-			self.rframe.document.getElementById("decBaum").style.backgroundColor = "";
+			self.document.getElementById("incBaum").style.backgroundColor = "";
+			self.document.getElementById("decBaum").style.backgroundColor = "";
 		}
 	} catch (e) {
 		// Nothing
@@ -154,7 +154,7 @@ function treeResized() {
 
 var oldTreeWidth = size.tree.default;
 function toggleTree() {
-	var tfd = self.rframe.document.getElementById("treeFrameDiv");
+	var tfd = self.document.getElementById("treeFrameDiv");
 	var w = top.getTreeWidth();
 
 	if (tfd.style.display == "none") {
@@ -172,12 +172,12 @@ function toggleTree() {
 }
 
 function getTreeWidth() {
-	var w = self.rframe.document.getElementById("bframeDiv").style.width;
+	var w = self.document.getElementById("bframeDiv").style.width;
 	return w.substr(0, w.length - 2);
 }
 
 function getSidebarWidth() {
-	var obj = self.rframe.document.getElementById("sidebarDiv");
+	var obj = self.document.getElementById("sidebarDiv");
 	if (obj === undefined || obj === null) {
 		return 0;
 	}
@@ -186,15 +186,15 @@ function getSidebarWidth() {
 }
 
 function setSidebarWidth() {
-	var obj = self.rframe.document.getElementById("sidebarDiv");
+	var obj = self.document.getElementById("sidebarDiv");
 	if (obj !== undefined && obj !== null) {
 		obj.style.left = w + "px";
 	}
 }
 
 function setTreeWidth(w) {
-	self.rframe.document.getElementById("bframeDiv").style.width = w + "px";
-	self.rframe.document.getElementById("bm_content_frameDiv").style.left = w + "px";
+	self.document.getElementById("bframeDiv").style.width = w + "px";
+	self.document.getElementById("bm_content_frameDiv").style.left = w + "px";
 	if (w > size.tree.hidden) {
 		storeTreeWidth(w);
 	}
@@ -329,9 +329,9 @@ function openBrowser(url) {
 }
 
 function start() {
-	self.Tree = self.rframe;
-	self.Vtabs = self.rframe;
-	self.TreeInfo = self.rframe;
+	self.Tree = self;
+	self.Vtabs = self;
+	self.TreeInfo = self;
 	if (tables.table_to_load) {
 		we_cmd("load", tables.table_to_load);
 	}
@@ -515,7 +515,7 @@ function we_cmd_base(args, url) {
 			top.weSidebar.open("default");
 			break;
 		case "loadSidebarDocument":
-			top.rframe.weSidebarContent.location.href = url;
+			top.weSidebarContent.location.href = url;
 			break;
 		case "versions_preview":
 			new jsWindow(url, "version_preview", -1, -1, 1000, 750, true, false, true, false);
@@ -561,7 +561,7 @@ function we_cmd_base(args, url) {
 			break;
 		case "do_delete":
 			toggleBusy(1);
-			submit_we_form(self.rframe.treeheader, self.load, url);
+			submit_we_form(self.treeheader, self.load, url);
 			//we_sbmtFrmC(self.load,url);
 			break;
 		case "move_single_document":
@@ -570,7 +570,7 @@ function we_cmd_base(args, url) {
 			break;
 		case "do_move":
 			toggleBusy(1);
-			submit_we_form(self.rframe.treeheader, self.load, url);
+			submit_we_form(self.treeheader, self.load, url);
 			//we_sbmtFrmC(self.load,url);
 			break;
 		case "change_passwd":
@@ -1092,8 +1092,8 @@ function we_cmd_base(args, url) {
 				treeData.setstate(treeData.tree_states.edit);
 				drawTree();
 
-				self.rframe.document.getElementById("bm_treeheaderDiv").style.height = "1px";
-				self.rframe.document.getElementById("bm_mainDiv").style.top = "1px";
+				self.document.getElementById("bm_treeheaderDiv").style.height = "1px";
+				self.document.getElementById("bm_mainDiv").style.top = "1px";
 				top.setTreeWidth(widthBeforeDeleteMode);
 				top.setSidebarWidth(widthBeforeDeleteModeSidebar);
 			}
@@ -1114,8 +1114,8 @@ function we_cmd_base(args, url) {
 					treeData.setstate(treeData.tree_states.edit);
 					drawTree();
 				}
-				self.rframe.document.getElementById("bm_treeheaderDiv").style.height = "150px";
-				self.rframe.document.getElementById("bm_mainDiv").style.top = "150px";
+				self.document.getElementById("bm_treeheaderDiv").style.height = "150px";
+				self.document.getElementById("bm_mainDiv").style.top = "150px";
 
 				var width = top.getTreeWidth();
 
@@ -1131,7 +1131,7 @@ function we_cmd_base(args, url) {
 				widthBeforeDeleteModeSidebar = widthSidebar;
 
 				if (args[2] != 1) {
-					we_repl(self.rframe.treeheader, url, args[0]);
+					we_repl(self.treeheader, url, args[0]);
 				}
 			}
 			break;
@@ -1151,8 +1151,8 @@ function we_cmd_base(args, url) {
 					treeData.setstate(treeData.tree_states.edit);
 					drawTree();
 				}
-				self.rframe.document.getElementById("bm_treeheaderDiv").style.height = "160px";
-				self.rframe.document.getElementById("bm_mainDiv").style.top = "160px";
+				self.document.getElementById("bm_treeheaderDiv").style.height = "160px";
+				self.document.getElementById("bm_mainDiv").style.top = "160px";
 
 				var width = top.getTreeWidth();
 
@@ -1168,7 +1168,7 @@ function we_cmd_base(args, url) {
 				widthBeforeDeleteModeSidebar = widthSidebar;
 
 				if (args[2] != 1) {
-					we_repl(self.rframe.treeheader, url, args[0]);
+					we_repl(self.treeheader, url, args[0]);
 				}
 			}
 			break;
