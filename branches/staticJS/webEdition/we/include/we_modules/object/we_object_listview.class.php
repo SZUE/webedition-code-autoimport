@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -28,6 +29,7 @@
  *
  */
 class we_object_listview extends we_object_listviewBase{
+
 	var $ClassName = __CLASS__;
 	var $customerFilterType = false;
 	var $customers = '';
@@ -75,8 +77,8 @@ class we_object_listview extends we_object_listviewBase{
 		$_obxTable = OBJECT_X_TABLE . $this->classID;
 
 		$where_lang = ($this->languages ?
-				' AND ' . $_obxTable . '.OF_Language IN ("' . implode('","', explode(',', $this->languages)) . '")' :
-				'');
+						' AND ' . $_obxTable . '.OF_Language IN ("' . implode('","', explode(',', $this->languages)) . '")' :
+						'');
 
 		if($this->desc && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';
@@ -85,12 +87,12 @@ class we_object_listview extends we_object_listviewBase{
 		$this->we_predefinedSQL = $we_predefinedSQL;
 
 		$this->Path = ($this->docID ?
-				id_to_path($this->docID, FILE_TABLE, $this->DB_WE) :
-				($this->triggerID && show_SeoLinks() ?
-					id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE) :
-					(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '')
-				)
-			);
+						id_to_path($this->docID, FILE_TABLE, $this->DB_WE) :
+						($this->triggerID && show_SeoLinks() ?
+								id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE) :
+								(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '')
+						)
+				);
 
 
 		// IMPORTANT for seeMode !!!! #5317
@@ -105,18 +107,18 @@ class we_object_listview extends we_object_listviewBase{
 		if($calendar){
 			$this->fetchCalendar($this->condition, $calendar_select, $calendar_where, $matrix);
 		}
-		$sqlParts = $this->makeSQLParts($matrix, $this->classID, $this->order, $this->condition,true);
+		$sqlParts = $this->makeSQLParts($matrix, $this->classID, $this->order, $this->condition, true);
 		//allways join the file table itself
 		$sqlParts['tables'].=' JOIN `' . OBJECT_FILES_TABLE . '` ON `' . OBJECT_FILES_TABLE . '`.ID=`' . OBJECT_X_TABLE . $this->classID . '`.OF_ID';
 
 		$pid_tail = (isset($GLOBALS['we_doc']) ? makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table) : '1');
 
 		$cat_tail = ($this->cats || $this->categoryids ?
-				we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", $this->categoryids) : '');
+						we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", $this->categoryids) : '');
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName, $this->classID, $id) :
-				'');
+						we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName, $this->classID, $id) :
+						'');
 
 		$webUserID_tail = '';
 		if($this->customers && $this->customers !== "*"){
@@ -194,24 +196,24 @@ class we_object_listview extends we_object_listviewBase{
 		}
 	}
 
-		function next_record(){
+	function next_record(){
 		$count = $this->count;
 		$fetch = false;
 		if($this->calendar_struct['calendar']){
 			if($this->count >= $this->anz){
 				return false;
 			}
-				parent::next_record();
-				$count = $this->calendar_struct['count'];
-				$fetch = $this->calendar_struct['forceFetch'];
-				$this->DB_WE->Record = array();
+			parent::next_record();
+			$count = $this->calendar_struct['count'];
+			$fetch = $this->calendar_struct['forceFetch'];
+			$this->DB_WE->Record = array();
 		}
 
 		if(!$this->calendar_struct['calendar'] || $fetch){
 			$ret = $this->DB_WE->next_record();
 
 			if($ret){
-				$tmp = getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $this->DB_WE->f('OF_ID'), null, MYSQL_ASSOC);
+				$tmp = getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $this->DB_WE->f('OF_ID'));
 				foreach($tmp as $key => $val){
 					$this->DB_WE->Record['we_wedoc_' . $key] = $val;
 				}
@@ -220,31 +222,32 @@ class we_object_listview extends we_object_listviewBase{
 				$this->DB_WE->Record['we_wedoc_Path'] = $this->Path . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
 				$this->DB_WE->Record['we_wedoc_WebUserID'] = isset($this->DB_WE->Record['OF_WebUserID']) ? $this->DB_WE->Record['OF_WebUserID'] : 0; // needed for ifRegisteredUserCanChange tag
 				$this->DB_WE->Record['we_WE_CUSTOMER_ID'] = $this->DB_WE->Record['we_wedoc_WebUserID'];
-				$path_parts = pathinfo($this->Path);
-				if($this->objectseourls && $this->DB_WE->Record['OF_Url'] != '' && show_SeoLinks()){
-					if(!$this->triggerID && $this->DB_WE->Record['OF_TriggerID'] != 0){
-						$path_parts = pathinfo(id_to_path($this->DB_WE->f('OF_TriggerID')));
-					}
-					$this->DB_WE->Record['we_WE_PATH'] = ($path_parts && $path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-						(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-							'' :
-							$path_parts['filename'] . '/' ) .
-						$this->DB_WE->Record['OF_Url'];
-				} else {
-					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->DB_WE->Record['we_WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
-					} else {
-						$this->DB_WE->Record['we_WE_PATH'] = $this->Path . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
-					}
-				}
 				$this->DB_WE->Record['we_WE_TRIGGERID'] = ($this->triggerID ? : intval($this->DB_WE->f('OF_TriggerID')));
 				$this->DB_WE->Record['we_WE_URL'] = $this->DB_WE->f('OF_Url');
 				$this->DB_WE->Record['we_WE_TEXT'] = $this->DB_WE->f('OF_Text');
 				$this->DB_WE->Record['we_WE_ID'] = $this->DB_WE->f('OF_ID');
 				$this->DB_WE->Record['we_wedoc_Category'] = $this->DB_WE->f('OF_Category');
 				$this->DB_WE->Record['we_WE_SHOPVARIANTS'] = 0;
-				if(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && isset($this->DB_WE->Record['we_' . WE_SHOP_VARIANTS_ELEMENT_NAME])){
-					$ShopVariants = @unserialize($this->DB_WE->Record['we_' . WE_SHOP_VARIANTS_ELEMENT_NAME]);
+
+
+				$path_parts = pathinfo($this->Path);
+				if($this->objectseourls && $this->DB_WE->Record['OF_Url'] && show_SeoLinks()){
+					if(!$this->triggerID && $this->DB_WE->Record['OF_TriggerID']){
+						$path_parts = pathinfo(id_to_path($this->DB_WE->f('OF_TriggerID')));
+					}
+					$this->DB_WE->Record['we_WE_PATH'] = ($path_parts && $path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
+							(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+									'' :
+									$path_parts['filename'] . '/'
+							) . $this->DB_WE->Record['OF_Url'];
+				} else {
+					$this->DB_WE->Record['we_WE_PATH'] = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+									($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
+									$this->Path
+							) . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
+				}
+				if(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && ($dat = $this->f(WE_SHOP_VARIANTS_ELEMENT_NAME))){
+					$ShopVariants = unserialize($dat);
 					if(is_array($ShopVariants) && count($ShopVariants) > 0){
 						$this->DB_WE->Record['we_WE_SHOPVARIANTS'] = count($ShopVariants);
 					}
