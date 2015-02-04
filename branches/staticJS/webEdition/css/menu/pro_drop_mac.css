@@ -57,8 +57,8 @@
 }
 
 #nav li div.click:hover ul{
-	background-color: transparent;
-	background: url(/webEdition/images/menu/bg_mac.png) repeat;
+	background-color: white;
+/*	background: url(/webEdition/images/menu/bg_mac.png) repeat;*/
 	opacity: 0.98;
 	border: 1px solid #cccccc;
 	width: 16.6em;
@@ -80,7 +80,8 @@
 }
 
 #nav li div.click:hover ul.sub li:hover{
-	background: url(/webEdition/images/menu/bg_mac_active.gif) repeat;
+	/*background: url(/webEdition/images/menu/bg_mac_active.gif) repeat;*/
+	background-color: #225ff5;
 	opacity: 1.0;
 	border-top: solid 1px #3366ff;
 	border-bottom: solid 1px #0066ff;
@@ -89,6 +90,7 @@
 
 #nav li div.click:hover ul.sub li:hover a{
 	color: #ffffff;
+	display: block;
 }
 
 #nav li div.click:hover ul.sub li:hover li a,
@@ -102,7 +104,11 @@
 	width: 12.8em;
 	line-height: 1.9ex;
 	padding-left: 2.4em;
+	padding-right: 1em;
+	text-indent: -1em;
 	margin: 0px 0px 1px 0px;
+	padding-top: 1px;
+	padding-bottom: 1px;
 }
 
 #nav li div.click:hover ul.sub li ul li a{

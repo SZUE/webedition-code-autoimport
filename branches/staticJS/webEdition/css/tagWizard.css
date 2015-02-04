@@ -45,8 +45,8 @@ h1 {
 
 #divTagName {
 	height: 35px;
-	background: #C7D7EB;
-	background-image: url('/webEdition/images/menu/background.gif');
+	background-color:#efefef;
+	background: linear-gradient(#f7f7f6,#e6e6e6);/*images/menu/background.gif*/
 }
 
 #divContent {
