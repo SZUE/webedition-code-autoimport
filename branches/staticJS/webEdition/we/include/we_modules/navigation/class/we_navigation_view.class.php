@@ -612,19 +612,19 @@ var weNavTitleField = new Array();
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
 function populateVars() {
-	if(categories_edit!==undefined && document.we_form.CategoriesCount!==undefined){
+	if(this.categories_edit!==undefined && document.we_form.CategoriesCount!==undefined){
 		document.we_form.CategoriesCount.value = categories_edit.itemCount;
 	}
-	if(sort_edit!==undefined && document.we_form.SortCount!==undefined){
+	if(this.sort_edit!==undefined && document.we_form.SortCount!==undefined){
 		document.we_form.SortCount.value = sort_edit.itemCount;
 	}
-	if(specificCustomersEdit!==undefined && document.we_form.specificCustomersEditCount!==undefined){
+	if(this.specificCustomersEdit!==undefined && document.we_form.specificCustomersEditCount!==undefined){
 		document.we_form.specificCustomersEditCount.value = specificCustomersEdit.itemCount;
 	}
-	if(blackListEdit!==undefined && document.we_form.blackListEditCount!==undefined){
+	if(this.blackListEdit!==undefined && document.we_form.blackListEditCount!==undefined){
 		document.we_form.blackListEditCount.value = blackListEdit.itemCount;
 	}
-	if(whiteListEdit!==undefined && document.we_form.whiteListEditCount!==undefined){
+	if(this.whiteListEdit!==undefined && document.we_form.whiteListEditCount!==undefined){
 		document.we_form.whiteListEditCount.value = whiteListEdit.itemCount;
 	}
 }

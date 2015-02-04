@@ -37,7 +37,6 @@ function we_tag_metadata($attribs){
 	}
 
 	$GLOBALS['lv'] = new metadatatag($name, $id);
-//$lv = clone($GLOBALS["lv"]); // for backwards compatibility
 	if(is_array($GLOBALS['we_lv_array']))
 		$GLOBALS['we_lv_array'][] = clone($GLOBALS["lv"]);
 

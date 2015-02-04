@@ -42,18 +42,17 @@ div.tab{
 	border-bottom: 1px solid #888888;
 	border-right: 1px solid #888888;
 	display:inline-block;
-	background-image:url("/webEdition/images/multiTabs/tabsBG_normal.gif");
-	background-repeat: repeat-x;
+	background-color: #D3D3D3;
+	background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);/*tabsBG_normal.gif*/
 	line-height:21px;
 	cursor:pointer;
 }
-div.tabOver{
+div.tab:hover{
 	margin: 0px; padding: 0px;
 	border-bottom: 1px solid #888888;
 	border-right: 1px solid #888888;
 	display:inline-block;
-	background-image:url("/webEdition/images/multiTabs/tabsBG_over.gif");
-	background-repeat: repeat-x;
+	background: linear-gradient(#cbd3dc, #bfc6cf 50%,#999999);/*tabsBG_over.gif*/
 	line-height:21px;
 	cursor:pointer;
 }

@@ -253,10 +253,10 @@ function setTab(tab) {
 			include($this->toolDir . 'home.inc.php');
 			$out = ob_get_clean();
 			return
-				we_html_element::jsElement('
+				/*we_html_element::jsElement('
 								' . $this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&home=1";
 								' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter&home=1";
-			') . $out;
+			') .*/ $out;
 		}
 
 		$body = we_html_element::htmlBody(array("class" => "weEditorBody", 'onload' => 'loaded=1;'), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . WE_VERSION) .
