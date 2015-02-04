@@ -12,7 +12,7 @@
 	</prolog>
 	<body>
 		<p><![CDATA[
-<we:form type="formmail" recipient="spam@webedition.invalid" from="spam@webedition.invalid" required="Title,FirstName,LastName,email,Message" order="Title,FirstName,LastName,Street,Number,ZipCode,City,Phone,email,Message" subject="Contact form from the website" onerror="ID" onsuccess="ID" onmailerror="ID" xml="true">
+<we:form type="formmail" recipient="spam@webedition.invalid" from="spam@webedition.invalid" required="title,firstName,lastName,email,message" subject="Contact form from the website" onerror="ID" onsuccess="ID" onmailerror="ID" xml="true">
   <p>__GL([miscellaneous][ContactForm][required])__</p>
   <fieldset>
     <legend>__GL([miscellaneous][ContactForm][yourData])__</legend>
@@ -25,40 +25,40 @@
       </select>
     </p>
     <p>
-      <label for="FirstName">__GL([miscellaneous][ContactForm][forename])__*:</label>
-      <input type="text" name="FirstName" id="FirstName" />
+      <label for="firstName">__GL([miscellaneous][ContactForm][forename])__*:</label>
+      <input type="text" name="firstName" id="firstName" />
     </p>
     <p>
-      <label for="LastName">__GL([miscellaneous][ContactForm][surname])__*:</label>
-      <input type="text" name="LastName" id="LastName" />
+      <label for="lastName">__GL([miscellaneous][ContactForm][surname])__*:</label>
+      <input type="text" name="lastName" id="lastName" />
     </p>
     <p>
-      <label for="Street">__GL([miscellaneous][ContactForm][street])__:</label>
-      <input type="text" name="Street" id="Street" />
+      <label for="street">__GL([miscellaneous][ContactForm][street])__:</label>
+      <input type="text" name="street" id="street" />
     </p>
     <p>
       <label for="number">__GL([miscellaneous][ContactForm][no])__:</label>
       <input type="text" name="number" id="number" />
     </p>
     <p>
-      <label for="ZipCode">__GL([miscellaneous][ContactForm][zip])__:</label>
-      <input type="text" name="ZipCode" id="ZipCode" />
+      <label for="zipCode">__GL([miscellaneous][ContactForm][zip])__:</label>
+      <input type="text" name="zipCode" id="zipCode" />
     </p>
     <p>
-      <label for="City">__GL([miscellaneous][ContactForm][city])__:</label>
-      <input type="text" name="City" id="City" />
+      <label for="city">__GL([miscellaneous][ContactForm][city])__:</label>
+      <input type="text" name="city" id="city" />
     </p>
     <p>
-      <label for="Phone">__GL([miscellaneous][ContactForm][phone])__:</label>
-      <input type="text" name="Phone" id="Phone" />
+      <label for="phone">__GL([miscellaneous][ContactForm][phone])__:</label>
+      <input type="text" name="phone" id="phone" />
     </p>
     <p>
-      <label for="EMailAddress">__GL([miscellaneous][ContactForm][mail])__*:</label>
-      <input type="text" name="EMailAddress" id="EMailAddress" />
+      <label for="email">__GL([miscellaneous][ContactForm][mail])__*:</label>
+      <input type="text" name="email" id="email" />
     </p>
     <p>
-      <label for="Mitteilung">__GL([miscellaneous][ContactForm][message])__*:</label>
-      <textarea cols="19" rows="6" name="Message" id="Message"></textarea>
+      <label for="message">__GL([miscellaneous][ContactForm][message])__*:</label>
+      <textarea cols="19" rows="6" name="message" id="message"></textarea>
     </p>
   </fieldset>
   <p>
