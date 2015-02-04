@@ -244,7 +244,7 @@ class we_shop_Basket{
 					we_shop_variants::useVariantForShopObject($Record, $variant, $obj);
 
 					// add variant to path ...
-					$Record['we_WE_PATH'] = $Record['we_WE_PATH'] . '&amp;' . WE_SHOP_VARIANT_REQUEST . '=' . $variant;
+					$Record['we_WE_PATH'] .= '?' . WE_SHOP_VARIANT_REQUEST . '=' . $variant;
 				}
 				$Record['WE_VARIANT'] = $variant;
 				$Record['we_obj'] = $id;
