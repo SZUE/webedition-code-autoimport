@@ -68,27 +68,13 @@ class we_object_listviewMultiobject extends we_listview_base{
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, 0, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType);
 
 		$data = 0;
-		if(isset($GLOBALS['we_lv_array']) && count($GLOBALS['we_lv_array']) > 1){
-			$parent_lv = $GLOBALS['we_lv_array'][(count($GLOBALS['we_lv_array']) - 1)];
-			$prefix = ($parent_lv instanceof we_shop_listviewOrderitem) ? '' : 'we_'; //Fix #7873
-			if(isset($parent_lv->DB_WE->Record[$prefix . $name]) && $parent_lv->DB_WE->Record[$prefix . $name]){
-				$data = unserialize($parent_lv->DB_WE->Record[$prefix . $name]);
+		if(isset($GLOBALS['we_lv_array']) && ($parent_lv = end($GLOBALS['we_lv_array']))){
+			if(($dat = $parent_lv->f($name))){
+				$data = unserialize($dat);
 			}
 		} elseif(isset($GLOBALS['lv'])){
-			switch(get_class($GLOBALS['lv'])){
-				case 'we_shop_shop':
-				case 'we_shop_listviewOrderitem':
-					if(($dat = $GLOBALS['lv']->f($name))){
-						$data = unserialize($dat);
-					}
-					break;
-				default://FIXME: determine where we use we_, & generalize this
-					if(($dat = $GLOBALS['lv']->f($name))){
-						$data = unserialize($dat);
-					} elseif(isset($GLOBALS['lv']->DB_WE->Record['we_' . $name]) && $GLOBALS['lv']->DB_WE->Record['we_' . $name]){
-						$data = unserialize($GLOBALS['lv']->DB_WE->Record['we_' . $name]);
-					}
-					break;
+			if(($dat = $GLOBALS['lv']->f($name))){
+				$data = unserialize($dat);
 			}
 		} else {
 			if($GLOBALS['we_doc']->getElement($name)){
@@ -100,15 +86,14 @@ class we_object_listviewMultiobject extends we_listview_base{
 			return;
 		}
 		// remove not set values
-		$temp = $data['objects'];
-		$empty = array_keys($temp, "");
+		$empty = array_keys($data['objects'], "");
 		$objects = array();
-		foreach($temp as $key => $val){
+		foreach($data['objects'] as $key => $val){
 			if(!in_array($key, $empty)){
 				$objects[] = $val;
 			}
 		}
-		if(empty($objects)){
+		if(!$objects){
 			return;
 		}
 		$this->objects = $objects;
@@ -128,7 +113,7 @@ class we_object_listviewMultiobject extends we_listview_base{
 
 		$where_lang = '';
 
-		if($this->languages != ''){
+		if($this->languages){
 			$where_lang = array();
 			$langArray = makeArrayFromCSV($this->languages);
 			foreach($langArray as $lang){
