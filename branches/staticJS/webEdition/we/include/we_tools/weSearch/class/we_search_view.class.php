@@ -23,6 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_search_view{
+	const VIEW_LIST = 'list';
+	const VIEW_ICONS = 'icons';
 
 	var $Model;
 	var $toolName;
@@ -1738,7 +1740,7 @@ function calendarSetup(x){
 			$location = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'location' . $whichSearch);
 			$searchText = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch); //allow to search for tags
 			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'Order' . $whichSearch);
-			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'setView' . $whichSearch);
+			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', self::VIEW_LIST, 'setView' . $whichSearch);
 
 			$_searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart' . $whichSearch);
 			$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'anzahl' . $whichSearch);
@@ -2357,8 +2359,8 @@ function calendarSetup(x){
  <td class="defaultgray" style="width:60px;">
  ' . we_html_tools::htmlSelect($anzahl, $values, 1, $_anzahl, "", array('onchange' => 'this.form.elements["' . $searchstart . '"].value=0;search(false);')) . '</td>
  <td style="width:400px;">' . $this->getNextPrev($foundItems, $whichSearch) . '</td>
- <td style="width:35px;">' . we_html_button::create_button("image:iconview", "javascript:setView(1);", true, "", "", "", "", false) . '</td>
- <td>' . we_html_button::create_button("image:listview", "javascript:setView(0);", true, "", "", "", "", false) . '</td>
+ <td style="width:35px;">' . we_html_button::create_button("image:iconview", "javascript:setView('" . self::VIEW_ICONS . "');", true, "", "", "", "", false) . '</td>
+ <td>' . we_html_button::create_button("image:listview", "javascript:setView('" . self::VIEW_LIST . "');", true, "", "", "", "", false) . '</td>
 </tr>
 <tr>
 	<td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td>
@@ -2624,8 +2626,10 @@ function calendarSetup(x){
 
 	public function tabListContent($view = "", $content = "", $class = "", $whichSearch = ""){
 		$x = count($content);
-		if($view == 0){
-			$out = '<table style="table-layout:fixed;white-space:nowrap;border:0px;width:100%;padding:0 0 0 0;margin:0 0 0 0;">
+		switch($view){
+			default:
+			case self::VIEW_LIST:
+				$out = '<table style="table-layout:fixed;white-space:nowrap;border:0px;width:100%;padding:0 0 0 0;margin:0 0 0 0;">
 <colgroup>
 <col style="width:30px;text-align:center;"/>
 <col style="width:2%;text-align:left;"/>
@@ -2635,31 +2639,32 @@ function calendarSetup(x){
 <col style="width:18%;text-align:left;"/>
 </colgroup>';
 
-			for($m = 0; $m < $x; $m++){
-				$out .= '<tr>' . ($whichSearch != "doclist" ?
-								$this->tblListRow($content[$m]) :
-								we_search_view::tblListRow($content[$m])) . '</tr>';
-			}
-			$out .= '</tbody></table>';
-			return $out;
+				for($m = 0; $m < $x; $m++){
+					$out .= '<tr>' . ($whichSearch != "doclist" ?
+									$this->tblListRow($content[$m]) :
+									we_search_view::tblListRow($content[$m])) . '</tr>';
+				}
+				$out .= '</tbody></table>';
+				return $out;
+			case self::VIEW_ICONS:
+				$out = '<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="center">';
+
+				for($m = 0; $m < $x; $m++){
+					$out .= '<div style="float:left;width:180px;height:100px;margin:20px 0px 0px 20px;z-index:1;">' .
+							($whichSearch != "doclist" ?
+									$this->tblListRowIconView($content[$m], $class, $m, $whichSearch) :
+									we_search_view::tblListRowIconView($content[$m], $class, $m, $whichSearch)
+							) . '</div>';
+				}
+
+				$out .= '</td></tr></table>';
+
+				$allDivs = self::makeMouseOverDivs($x, $content, $whichSearch);
+
+				$out .= we_html_element::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes($allDivs) . "';");
+
+				return $out;
 		}
-		$out = '<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="center">';
-
-		for($m = 0; $m < $x; $m++){
-			$out .= '<div style="float:left;width:180px;height:100px;margin:20px 0px 0px 20px;z-index:1;">' .
-					($whichSearch != "doclist" ?
-							$this->tblListRowIconView($content[$m], $class, $m, $whichSearch) :
-							we_search_view::tblListRowIconView($content[$m], $class, $m, $whichSearch)
-					) . '</div>';
-		}
-
-		$out .= '</td></tr></table>';
-
-		$allDivs = self::makeMouseOverDivs($x, $content, $whichSearch);
-
-		$out .= we_html_element::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes($allDivs) . "';");
-
-		return $out;
 	}
 
 	static function makeMouseOverDivs($x, $content, $whichSearch){
@@ -2676,17 +2681,17 @@ function calendarSetup(x){
 					<td colspan="2" style="font-size:12px;">' . $content[$n][9]["dat"] . '<br/><br/></td></tr>
 					<tr><td valign="top">' . g_l('searchtool', '[idDiv]') . ': </td><td>' . $content[$n][16]["dat"] . '</td></tr>
 					<tr><td valign="top">' . g_l('searchtool', '[dateityp]') . ': </td><td>' . $content[$n][8]["dat"] . '</td></tr>';
-					if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE || $content[$n][12]["dat"] == we_base_ContentTypes::APPLICATION){
-						$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[groesse]') . ': </td><td>' . $content[$n][6]["dat"] . '</td></tr>';
-						if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE){
-							$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[aufloesung]') . ': </td><td>' . $content[$n][7]["dat"] . '</td></tr>';
-						}
-					}
-					if($content[$n][12]["dat"] == we_base_ContentTypes::WEDOCUMENT){
-						$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[template]') . ': ' . '</td>
+			if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE || $content[$n][12]["dat"] == we_base_ContentTypes::APPLICATION){
+				$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[groesse]') . ': </td><td>' . $content[$n][6]["dat"] . '</td></tr>';
+				if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE){
+					$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[aufloesung]') . ': </td><td>' . $content[$n][7]["dat"] . '</td></tr>';
+				}
+			}
+			if($content[$n][12]["dat"] == we_base_ContentTypes::WEDOCUMENT){
+				$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[template]') . ': ' . '</td>
 							<td>' . $content[$n][14]["dat"] . '</td></tr>';
-					}
-					$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[creator]') . ': </td><td>' . $content[$n][13]["dat"] . '</td></tr>
+			}
+			$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[creator]') . ': </td><td>' . $content[$n][13]["dat"] . '</td></tr>
 					<tr><td valign="top">' . g_l('searchtool', '[created]') . ': </td><td>' . $content[$n][3]["dat"] . '</td></tr>
 					<tr><td valign="top">' . g_l('searchtool', '[modified]') . ': </td><td>' . $content[$n][4]["dat"] . '</td></tr></table>
 
@@ -2877,7 +2882,6 @@ function we_cmd() {
 }' .
 						$this->getJSSubmitFunction());
 	}
-
 
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '

@@ -7,6 +7,7 @@ CREATE TABLE ###TBLPREFIX###tblSettings (
   PRIMARY KEY  (tool,pref_name)
 ) ENGINE=MyISAM;
 
+###UPDATEONLY###DELETE FROM ###TBLPREFIX###tblSettings WHERE tool='shop' AND pref_name IN ('edit_shop_properties','shop_pref');
 /* query separator */
 ###ONTAB(###TBLPREFIX###tblWebAdmin)INSERT INTO ###TBLPREFIX###tblSettings (SELECT "webadmin",Name,Value FROM ###TBLPREFIX###tblWebAdmin);###
 /* query separator */

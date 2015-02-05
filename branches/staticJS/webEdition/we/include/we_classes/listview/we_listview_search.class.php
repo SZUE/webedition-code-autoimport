@@ -244,10 +244,10 @@ class we_listview_search extends we_listview_base{
 				$this->DB_WE->Record["wedoc_Path"] = $this->DB_WE->Record["Path"];
 				$this->DB_WE->Record["WE_PATH"] = $this->DB_WE->Record["Path"];
 			}
-			$this->DB_WE->Record["WE_LANGUAGE"] = $this->DB_WE->Record["Language"];
-			$this->DB_WE->Record["WE_TEXT"] = $this->DB_WE->Record["Text"];
-			$this->DB_WE->Record["wedoc_Category"] = $this->DB_WE->Record["Category"];
-			$this->DB_WE->Record["WE_ID"] = (isset($this->DB_WE->Record["DID"]) && $this->DB_WE->Record["DID"]) ? $this->DB_WE->Record["DID"] : (isset($this->DB_WE->Record["OID"]) ? $this->DB_WE->Record["OID"] : 0);
+			$this->DB_WE->Record['WE_LANGUAGE'] = $this->DB_WE->Record['Language'];
+			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record["Text"];
+			$this->DB_WE->Record['wedoc_Category'] = $this->DB_WE->Record["Category"];
+			$this->DB_WE->Record['WE_ID'] = (isset($this->DB_WE->Record['DID']) && $this->DB_WE->Record['DID']) ? $this->DB_WE->Record['DID'] : (isset($this->DB_WE->Record['OID']) ? $this->DB_WE->Record['OID'] : 0);
 			$this->count++;
 			return true;
 		}

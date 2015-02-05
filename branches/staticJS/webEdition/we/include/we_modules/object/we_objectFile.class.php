@@ -2361,12 +2361,12 @@ class we_objectFile extends we_document{
 				$sessDat = unserialize(we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE));
 				if($sessDat){
 //fixed: at least TableID must be fetched
-					$this->i_getPersistentSlotsFromDB(/* "TableID,Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID" */);
+					$this->i_getPersistentSlotsFromDB();
 //overwrite with new data
 					$this->i_initSerializedDat($sessDat, false);
 //make sure at least TableID is set from db
 //and Published as well #5742
-					$this->i_getPersistentSlotsFromDB('TableID,Published');
+					$this->i_getPersistentSlotsFromDB('TableID,Published,Text,Path,ParentID');
 					$this->i_getUniqueIDsAndFixNames();
 				} else {
 					$this->we_load(we_class::LOAD_MAID_DB);

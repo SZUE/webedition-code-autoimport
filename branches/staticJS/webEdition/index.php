@@ -144,6 +144,10 @@ function showMessage(message, prio, win){
 
 function cleanWEZendCache(){
 	if(file_exists(WE_CACHE_PATH . 'clean')){
+		if(!is_writeable(WE_CACHE_PATH)){
+			t_e('cachedir '.WE_CACHE_PATH.' is not writeable expect errors, undefined behaviour');
+			return;
+		}
 		$cache = getWEZendCache();
 		$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
 //remove file
