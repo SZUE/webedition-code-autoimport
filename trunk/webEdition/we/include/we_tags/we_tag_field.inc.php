@@ -268,7 +268,7 @@ function we_tag_field($attribs){
 			break;
 
 		case 'multiobject':
-			$temp = unserialize($GLOBALS['lv']->getDBf('we_' . $name));
+			$temp = unserialize($GLOBALS['lv']->f($name));
 			$out = (isset($temp['objects']) && !empty($temp['objects']) ? implode(',', $temp['objects']) : '');
 			break;
 		case 'country' :
