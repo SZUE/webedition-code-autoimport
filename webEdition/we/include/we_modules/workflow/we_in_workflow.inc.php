@@ -66,7 +66,7 @@ echo STYLESHEET;
 			$all = array();
 			$wfDoc = ($we_doc->Table == FILE_TABLE ?
 					we_workflow_utility::getWorkflowDocumentForDoc($GLOBALS['DB_WE'], $we_doc->DocType, $we_doc->Category, $we_doc->ParentID, $all) :
-					we_workflow_utility::getWorkflowDocumentForObject($GLOBALS['DB_WE'], $we_doc->TableID, $we_doc->Category, $we_doc->ParentID));
+						we_workflow_utility::getWorkflowDocumentForObject($GLOBALS['DB_WE'], $we_doc->TableID, $we_doc->Category, $we_doc->ParentID, $all));
 			$wfID = $wfDoc->workflowID;
 			if($wfID){
 				?>
