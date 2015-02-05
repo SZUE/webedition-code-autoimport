@@ -604,10 +604,18 @@ abstract class we_listview_base{
 		return $_close;
 	}
 
+	/**
+	 * @deprecated
+	 * @return type
+	 */
 	public function getDBRecord(){
 		return $this->DB_WE->getRecord();
 	}
 
+	/**
+	 * @deprecated
+	 * @return type
+	 */
 	public function getDBf($field){
 		return $this->DB_WE->f($field);
 	}
