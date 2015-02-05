@@ -48,7 +48,11 @@ class we_workflow_base{
 			foreach($tableInfo as $cur){
 				$fieldName = $cur["name"];
 				if(isset($this->persistents[$fieldName])){
-					$this->$fieldName = $this->db->f($fieldName);
+					$this->$fieldName = ($this->persistents[$fieldName] == we_base_request::INTLISTA ?
+									($this->db->f($fieldName) === '' ?
+											array() :
+											explode(',', trim($this->db->f($fieldName), ','))) :
+									$this->db->f($fieldName));
 				}
 			}
 		}
@@ -57,10 +61,10 @@ class we_workflow_base{
 	function save(){
 		$sets = $wheres = array();
 		foreach(array_keys($this->persistents) as $val){
-			if($val === "ID"){
-				$wheres[] = $val . '=' . intval($this->{$val});
+			if($val === 'ID'){
+				$wheres[] = 'ID=' . intval($this->{$val});
 			} else {
-				$sets[$val] = $this->{$val};
+				$sets[$val] = is_array($this->{$val}) ? implode(',', array_unique($this->{$val})) : $this->{$val};
 			}
 		}
 		$where = implode(',', $wheres);
