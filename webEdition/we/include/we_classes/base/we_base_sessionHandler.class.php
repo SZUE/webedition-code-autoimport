@@ -2,6 +2,7 @@
 
 class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	//prevent crashed or killed sessions to stay
+
 	private $execTime;
 	private $sessionName;
 	private $DB;
@@ -50,14 +51,15 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	}
 
 	function close(){//FIX for php >5.5, where write is only called, if sth. in session changed
-		$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="",lockTime=NULL WHERE session_id=x\'' . str_pad(session_id(), 40, '0') . '\' AND sessionName="' . $this->sessionName . '" AND lockid="' . $this->id . '"');
+		$sessID = $this->DB->escape(self::getSessionID(session_id()));
+		$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="",lockTime=NULL WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" AND lockid="' . $this->id . '"');
 		//make sure every access will be an error after close
 		//unset($_SESSION); //navigate tree will not load in phpmyadmin - they use bad code for that...
 		return true;
 	}
 
 	function read($sessID){
-		$sessID = $this->DB->escape(str_pad(self::getSessionID($sessID), 40, '0'));
+		$sessID = $this->DB->escape(self::getSessionID($sessID));
 		if(f('SELECT 1 FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"')){//session exists
 			$max = $this->execTime * 10;
 			while(!(($data = f('SELECT session_data FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" ' . ( --$max ? 'AND touch+INTERVAL ' . SYSTEM_WE_SESSION_TIME . ' second>NOW()' : ''), '', $this->DB)) &&
@@ -97,12 +99,13 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		if(!$sessData && !$lock){
 			return $this->destroy($sessID);
 		}
+		$sessID = self::getSessionID($sessID);
 		if(md5($sessID . $sessData) == $this->hash){//if nothing changed,we don't have to bother the db
 			$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET ' .
-				we_database_base::arraySetter(array(
-					'lockid' => $lock ? $this->id : '',
-					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-				)) . ' WHERE session_id=x\'' . str_pad($sessID, 40, '0') . '\' AND sessionName="' . $this->sessionName . '"');
+					we_database_base::arraySetter(array(
+						'lockid' => $lock ? $this->id : '',
+						'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
+					)) . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
 
 			if($this->DB->affected_rows()){//make sure we had an successfull update
 				return true;
@@ -111,23 +114,22 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 
 
 		$sessData = SYSTEM_WE_SESSION_CRYPT && $this->crypt ? we_customer_customer::cryptData(gzcompress($sessData, 4), $this->crypt, true) : gzcompress($sessData, 4);
-		$sessID = self::getSessionID($sessID);
 
 		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'sessionName' => $this->sessionName,
-				'session_id' => sql_function('x\'' . $sessID . '\''),
-				'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
-				'lockid' => $lock ? $this->id : '',
-				'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-				/* 'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
-				  -				'tmp' => serialize($_SESSION), */
+					'sessionName' => $this->sessionName,
+					'session_id' => sql_function('x\'' . $sessID . '\''),
+					'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
+					'lockid' => $lock ? $this->id : '',
+					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
+						/* 'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
+						  -				'tmp' => serialize($_SESSION), */
 		)));
 		return true;
 	}
 
 	function destroy($sessID){
 		unset($_SESSION);
-		$sessID = $this->DB->escape(str_pad(self::getSessionID($sessID), 40, '0'));
+		$sessID = $this->DB->escape(self::getSessionID($sessID));
 		$this->DB->query('DELETE FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $this->DB->escape($sessID) . '\' AND sessionName="' . $this->sessionName . '"');
 		return true;
 	}
@@ -141,13 +143,13 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	private static function getSessionID($sessID){
 		if($sessID){
 			if(preg_match('|^([a-f0-9]){32,40}$|', $sessID)){
-				return $sessID;
+				return str_pad($sessID, 40, '0');
 			}
 		} else {
 			session_regenerate_id();
 			$sessID = session_id();
 			if(preg_match('|^([a-f0-9]){32,40}$|', $sessID)){
-				return $sessID;
+				return str_pad($sessID, 40, '0');
 			}
 		}
 		//if we had fallen here we have bad session settings, determine by string length
@@ -184,8 +186,12 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		if($tmp){//remaining part
 			$newID.=dechex($tmp);
 		}
+		$newID = substr(str_pad($newID, 40, '0'), 0, 40);
 
-		session_id(str_pad($newID, 40, '0'));
+		if(headers_sent()){
+			return $newID;
+		}
+		session_id($newID);
 		//note: id in cookie will still be delivered in 5/6 bits!
 		return session_id();
 	}
