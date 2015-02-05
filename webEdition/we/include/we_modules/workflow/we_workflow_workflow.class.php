@@ -40,13 +40,13 @@ class we_workflow_workflow extends we_workflow_base{
 	var $ID = 0;
 	var $Text;
 	var $Type = self::FOLDER;
-	var $Folders = ',0,';
+	var $Folders = array(0);
 	var $FolderPath = '';
-	var $DocType = 0;
-	var $Objects = '';
-	var $Categories = '';
-	var $ObjectFileFolders = ',0,';
-	var $ObjCategories = '';
+	var $DocType = array();
+	var $Objects = array();
+	var $Categories = array();
+	var $ObjectFileFolders = array(0);
+	var $ObjCategories = array();
 	var $Status = self::STATE_INACTIVE;
 	var $EmailPath = 0;
 	var $LastStepAutoPublish = 0;
@@ -74,12 +74,12 @@ class we_workflow_workflow extends we_workflow_base{
 			'ID' => we_base_request::INT,
 			'Text' => we_base_request::STRING,
 			'Type' => we_base_request::INT,
-			'DocType' => we_base_request::INTLIST,
-			'Folders' => we_base_request::INTLIST,
-			'ObjectFileFolders' => we_base_request::INTLIST,
-			'Objects' => we_base_request::INTLIST,
-			'Categories' => we_base_request::INTLIST,
-			'ObjCategories' => we_base_request::INTLIST,
+			'DocType' => we_base_request::INTLISTA,
+			'Folders' => we_base_request::INTLISTA,
+			'ObjectFileFolders' => we_base_request::INTLISTA,
+			'Objects' => we_base_request::INTLISTA,
+			'Categories' => we_base_request::INTLISTA,
+			'ObjCategories' => we_base_request::INTLISTA,
 			'Status' => we_base_request::INT,
 			'EmailPath' => we_base_request::BOOL,
 			'LastStepAutoPublish' => we_base_request::BOOL,
@@ -287,7 +287,7 @@ class we_workflow_workflow extends we_workflow_base{
 	function getObjectWorkflow($object, $categories, $folderID, we_database_base $db, array &$all){
 		$workflowID = 0;
 		$wfIDs = array();
-		$tail = ($folderID ? ' AND FIND_IN_SET(' . intval($folderID) . ',ObjectFileFolders)' : '');
+		$tail = ($folderID ? ' AND (FIND_IN_SET(' . intval($folderID) . ',ObjectFileFolders) OR FIND_IN_SET(0,ObjectFileFolders))' : '');
 
 		$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE FIND_IN_SET(' . intval($object) . ',Objects) AND Type=' . self::OBJECT . ' AND Status=' . self::STATE_ACTIVE . $tail);
 		while($db->next_record()){

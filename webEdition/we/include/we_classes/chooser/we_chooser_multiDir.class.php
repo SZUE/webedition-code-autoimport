@@ -70,8 +70,8 @@ class we_chooser_multiDir{
 	<td><img src="' . TREE_ICON_DIR . $this->Record[$this->fieldsArr[0]] . '" width="16" height="18" /></td>
 	<td class="' . $this->css . '">' . $this->Record[$this->fieldsArr[1]] . '</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-						we_html_button::create_button('image:btn_function_trash', "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','" . $this->Record["ID"] . "'" . (strlen($this->thirdDelPar) ? ",'" . $this->thirdDelPar . "'" : "") . ");") :
-						'') . '</td>
+								we_html_button::create_button('image:btn_function_trash', "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','" . $this->Record["ID"] . "'" . (strlen($this->thirdDelPar) ? ",'" . $this->thirdDelPar . "'" : "") . ");") :
+								'') . '</td>
 </tr>';
 		}
 	}
@@ -83,8 +83,8 @@ class we_chooser_multiDir{
 	<td><img src="' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" /></td>
 	<td class="' . $this->css . '">/</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-						we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
-						'') . '</td>
+								we_html_button::create_button("image:btn_function_trash", "javascript:if(typeof(_EditorFrame)!='undefined'){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
+								'') . '</td>
 </tr>';
 		}
 	}
@@ -108,7 +108,7 @@ class we_chooser_multiDir{
 	<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(abs($this->width - 66), 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 
 		$this->nr = 0;
-		$idArr = is_array($this->ids) ? $this->ids : makeArrayFromCSV($this->ids);
+		$idArr = is_array($this->ids) ? $this->ids : ($this->ids === '' ? array() : explode(',', trim($this->ids, ',')));
 
 		foreach($idArr as $id){
 			$this->Record = getHash('SELECT ID,' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id), $this->db);
