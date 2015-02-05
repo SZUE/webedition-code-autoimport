@@ -46,9 +46,9 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 	$we_doc->setElement($name . 'width', we_base_request::_(we_base_request::INT, 'width', 200));
 	$we_doc->setElement($name . 'bgcolor', we_base_request::_(we_base_request::STRING, 'bgcolor', ''));
 	$we_doc->setElement($name . 'class', we_base_request::_(we_base_request::STRING, 'class', ''));
-	$we_doc->setElement($name . 'cssClasses', we_base_request::_(we_base_request::RAW, 'cssClasses', ''));
-	$we_doc->setElement($name . 'tinyparams', we_base_request::_(we_base_request::RAW, 'tinyparams', ''));
-	$we_doc->setElement($name . 'templates', we_base_request::_(we_base_request::RAW, 'templates', ''));
+	$we_doc->setElement($name . 'cssClasses', implode(',',we_base_request::_(we_base_request::STRING_LIST, 'cssClasses', array())));
+	$we_doc->setElement($name . 'tinyparams', we_base_request::_(we_base_request::RAW_CHECKED, 'tinyparams', ''));
+	$we_doc->setElement($name . 'templates', we_base_request::_(we_base_request::INTLIST, 'templates', ''));
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
 	$js = 'opener._EditorFrame.setEditorIsHot(true);'

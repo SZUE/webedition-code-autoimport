@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_messaging_headerMsg{
-
 	private static $messaging = 0;
 
 	private static function start(){
@@ -38,34 +37,16 @@ class we_messaging_headerMsg{
 
 	static function pJS(){
 		self::start();
+		echo we_html_element::jsScript(JS_DIR . 'header_msg.js');
 		?>
 		<script type="text/javascript"><!--
 
-			function header_msg_update(newmsg_count, newtodo_count) {
-				var msgTD = document.getElementById("msgCount");
-				var todoTD = document.getElementById("todoCount");
-				var changed = (newmsg_count > msgTD.firstChild.innerHTML) || (newtodo_count > todoTD.firstChild.innerHTML);
-				var oldMsg = msgTD.firstChild.innerHTML;
-				var oldTodo = todoTD.firstChild.innerHTML;
-				msgTD.className = "middlefont" + ((newmsg_count > 0) ? "red" : "");
-				todoTD.className = "middlefont" + ((newtodo_count > 0) ? "red" : "");
-				msgTD.firstChild.innerHTML = newmsg_count;
-				todoTD.firstChild.innerHTML = newtodo_count;
-				if (changed) {
-					new jsWindow("<?php echo WEBEDITION_DIR; ?>newMsg.php?msg=" + newmsg_count + "&todo=" + newtodo_count + "&omsg=" + oldMsg + "&otodo=" + oldTodo, "we_delinfo", -1, -1, 550, 200, true, true, true);
-				}
-			}
 		<?php
 		if(defined('MESSAGING_SYSTEM')){
 			$newmsg_count = self::$messaging->used_msgobjs['we_message']->get_newmsg_count();
 			$newtodo_count = self::$messaging->used_msgobjs['we_todo']->get_newmsg_count();
-			?>
-
-				if (top.weEditorFrameController && top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().quickstart && typeof (top.weEditorFrameController.getActiveDocumentReference().setMsgCount) == 'function' && typeof (top.weEditorFrameController.getActiveDocumentReference().setTaskCount) == 'function') {
-					top.weEditorFrameController.getActiveDocumentReference().setMsgCount(<?php echo abs($newmsg_count); ?>);
-					top.weEditorFrameController.getActiveDocumentReference().setTaskCount(<?php echo abs($newtodo_count); ?>);
-				}
-		<?php } ?>
+			echo 'header_msg_update(' . $newmsg_count . ', ' . $newtodo_count . ');';
+			} ?>
 		//-->
 		</script>
 		<?php

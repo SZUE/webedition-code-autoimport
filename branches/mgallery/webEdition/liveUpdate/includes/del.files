@@ -1,5 +1,3 @@
-images/v-tabs/background.gif
-images/menu/background.gif
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -2305,6 +2303,7 @@ rpc/cmds/tools/navigation/rpcCopyNavigationFolderCmd.class.php
 rpc/cmds/tools/navigation
 rewrite_we_conf_global.php
 restore_we_conf_global.php
+resizeframe.php
 registerScreen.php
 noAvailable.php
 multiEditor/multiTabs.php
@@ -2561,7 +2560,6 @@ images/icons/no_realmedia.gif
 images/gruen.gif
 images/button/icons/edit_real.gif
 images/backgrounds/radient.gif
-images/backgrounds/multitabBG.gif
 images/backgrounds/multitabBG.gif
 images/backgrounds/iconbarBack.gif
 images/backgrounds/header_with_black_lines.gif

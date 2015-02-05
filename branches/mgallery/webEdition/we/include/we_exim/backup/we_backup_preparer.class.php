@@ -306,7 +306,7 @@ abstract class we_backup_preparer{
 		return $list;
 	}
 
-	private static function getFileList(array &$list, $dir = '', $with_dirs = false, $rem_doc_root = true){
+	public static function getFileList(array &$list, $dir = '', $with_dirs = false, $rem_doc_root = true){
 		$dir = ($dir ? : $_SERVER['DOCUMENT_ROOT']);
 		if(!is_readable($dir) || !is_dir($dir)){
 			return false;
@@ -318,12 +318,10 @@ abstract class we_backup_preparer{
 			switch($entry){
 				case '.':
 				case '..':
-				case 'CVS':
 				case 'webEdition':
 				case 'sql_dumps':
 				case '.project':
 				case '.trustudio.dbg.php':
-				case 'LanguageChanges.csv':
 				case $thumbDir:
 					continue;
 				default:

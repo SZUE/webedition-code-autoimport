@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_object_tag{//FIXME: check why we use class/id instead of classID/ID => causes unneeded differentiation in e.g. we:form
-	private $DB_WE;
+	public $DB_WE; //FIXME: change this to private!
 	var $class = '';
 	var $id = 0;
 	var $triggerID = 0;
@@ -56,6 +56,10 @@ class we_object_tag{//FIXME: check why we use class/id instead of classID/ID => 
 		}
 		$this->object = new we_object_listview($unique, 1, 0, '', 0, $this->classID, '', '', '(' . OBJECT_X_TABLE . $this->classID . '.OF_ID="' . intval($this->id) . '")' . ($condition ? ' AND ' . $condition : ''), $this->triggerID, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
 		$this->avail = $this->object->next_record();
+	}
+
+	public function getID(){
+		return $this->id;
 	}
 
 	public function getDBf($key){

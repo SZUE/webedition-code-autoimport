@@ -572,47 +572,49 @@ extra_files_desc=new Array();';
 		$parts[] = array("headline" => "", "html" => we_html_button::create_button("delete", "javascript:delOldFiles();", true, 100, 22, '', '', false, false), "space" => 0);
 
 		$form_properties = array(
-			10 => "handle_core",
+			10 => 'handle_core',
 			11 => defined('OBJECT_TABLE') ? 'handle_object' : '',
-			12 => "handle_versions",
-			13 => "handle_versions_binarys",
-			14 => "handle_binary",
-			20 => "handle_user",
-			25 => defined('CUSTOMER_TABLE') ? "handle_customer" : '',
-			30 => defined('SHOP_TABLE') ? "handle_shop" : '',
-			35 => defined('WORKFLOW_TABLE') ? "handle_workflow" : '',
-			40 => defined('MESSAGING_SYSTEM') ? "handle_todo" : '',
-			45 => defined('NEWSLETTER_TABLE') ? "handle_newsletter" : '',
-			50 => defined('BANNER_TABLE') ? "handle_banner" : '',
-			55 => we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? "handle_schedule" : '',
-			60 => we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT) ? "handle_export" : '',
-			65 => defined('VOTING_TABLE') ? "handle_voting" : '',
-			70 => defined('SPELLCHECKER') ? "handle_spellchecker" : '',
-			75 => defined('GLOSSARY_TABLE') ? "handle_glossary" : '',
-			100 => "handle_settings",
-			101 => "handle_temporary",
-			102 => "handle_history",
-			300 => "handle_extern",
-			310 => "convert_charset",
-			320 => "backup_log"
+			12 => 'handle_versions',
+			13 => 'handle_versions_binarys',
+			14 => 'handle_binary',
+			20 => 'handle_user',
+			25 => defined('CUSTOMER_TABLE') ? 'handle_customer' : '',
+			30 => defined('SHOP_TABLE') ? 'handle_shop' : '',
+			35 => defined('WORKFLOW_TABLE') ? 'handle_workflow' : '',
+			40 => defined('MESSAGING_SYSTEM') ? 'handle_todo' : '',
+			45 => defined('NEWSLETTER_TABLE') ? 'handle_newsletter' : '',
+			50 => defined('BANNER_TABLE') ? 'handle_banner' : '',
+			55 => we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? 'handle_schedule' : '',
+			60 => we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT) ? 'handle_export' : '',
+			65 => defined('VOTING_TABLE') ? 'handle_voting' : '',
+			70 => defined('SPELLCHECKER') ? 'handle_spellchecker' : '',
+			75 => defined('GLOSSARY_TABLE') ? 'handle_glossary' : '',
+			98 => 'handle_hooks',
+			99 => 'handle_customtags',
+			100 => 'handle_settings',
+			101 => 'handle_temporary',
+			102 => 'handle_history',
+			300 => 'handle_extern',
+			310 => 'convert_charset',
+			320 => 'backup_log'
 		);
 
 		$i = 0;
 		$_tools = we_tool_lookup::getToolsForBackup();
 		foreach($_tools as $_tool){
-			$form_properties[700 + $i] = "handle_tool[" . $_tool . ']';
+			$form_properties[700 + $i] = 'handle_tool[' . $_tool . ']';
 			$i++;
 		}
 
 		ksort($form_properties);
 
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[import_options]'), we_html_tools::TYPE_INFO, 600, false), "space" => 70, "noline" => 1);
+		$parts[] = array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[import_options]'), we_html_tools::TYPE_INFO, 600, false), 'space' => 70, 'noline' => 1);
 
-		$docheck = "";
-		$douncheck = "";
-		$doclick = "";
-		$doclickall1 = "";
-		$doclickall2 = "";
+		$docheck = '';
+		$douncheck = '';
+		$doclick = '';
+		$doclickall1 = '';
+		$doclickall2 = '';
 		foreach($form_properties as $k => $v){
 			if(!$v){
 				continue;
@@ -636,7 +638,7 @@ extra_files_desc=new Array();';
 				break;
 			';
 			if($k > 2 && $k < 101){
-				$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, $v, g_l('backup', '[' . str_replace('handle', 'import', $v) . '_data]'), false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1);
+				$parts[] = array('headline' => '', 'html' => we_html_forms::checkbox(1, true, $v, g_l('backup', '[' . str_replace('handle', 'import', $v) . '_data]'), false, 'defaultfont', "doClick($k);"), "space" => 70, "noline" => 1);
 				$doclickall1.="doCheck($k);";
 			} else {
 				$doclickall2.="doCheck($k);";
@@ -829,6 +831,8 @@ self.focus();');
 			2 => "export_send",
 			10 => "handle_core",
 			14 => "handle_binary",
+			98 => "handle_hooks",
+			99 => "handle_customtags",
 			100 => "handle_settings",
 			101 => "handle_temporary",
 			102 => "handle_history",
@@ -875,7 +879,6 @@ self.focus();');
 		}
 		$form_properties[12] = "handle_versions";
 		$form_properties[13] = "handle_versions_binarys";
-
 
 		$i = 0;
 		$_tools = we_tool_lookup::getToolsForBackup();
@@ -1317,6 +1320,8 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 					"core" => we_base_request::_(we_base_request::BOOL, "handle_core"),
 					"object" => we_base_request::_(we_base_request::BOOL, "handle_object"),
 					"schedule" => we_base_request::_(we_base_request::BOOL, "handle_schedule"),
+					"hooks" => we_base_request::_(we_base_request::BOOL, "handle_hooks"),
+					"customTags" => we_base_request::_(we_base_request::BOOL, "handle_customtags"),
 					"settings" => we_base_request::_(we_base_request::BOOL, "handle_settings"),
 					"export" => we_base_request::_(we_base_request::BOOL, "handle_export"),
 					"voting" => we_base_request::_(we_base_request::BOOL, "handle_voting"),
@@ -1414,6 +1419,8 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 					"core" => we_base_request::_(we_base_request::BOOL, "handle_core"),
 					"object" => we_base_request::_(we_base_request::BOOL, "handle_object"),
 					"schedule" => we_base_request::_(we_base_request::BOOL, "handle_schedule"),
+					"hooks" => we_base_request::_(we_base_request::BOOL, "handle_hooks"),
+					"customTags" => we_base_request::_(we_base_request::BOOL, "handle_customtags"),
 					"settings" => we_base_request::_(we_base_request::BOOL, "handle_settings"),
 					"export" => we_base_request::_(we_base_request::BOOL, "handle_export"),
 					"voting" => we_base_request::_(we_base_request::BOOL, "handle_voting"),

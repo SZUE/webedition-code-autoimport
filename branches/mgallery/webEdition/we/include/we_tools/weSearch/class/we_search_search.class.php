@@ -47,7 +47,7 @@ class we_search_search extends we_search_base{
 	/**
 	 * @var string: set view, either iconview (1) or listview (0, default)
 	 */
-	var $setView = 0;
+	var $setView = we_search_view::VIEW_LIST;
 
 	/**
 	 * @var array with fields to search in
@@ -68,7 +68,7 @@ class we_search_search extends we_search_base{
 	 * @abstract get data from fields, used in the doclistsearch
 	 */
 	function initSearchData(){
-		$view = we_base_request::_(we_base_request::INT, 'setView');
+		$view = we_base_request::_(we_base_request::STRING, 'setView');
 		if(isset($GLOBALS['we_doc'])){
 			$obj = $GLOBALS['we_doc'];
 			$obj->searchclassFolder->searchstart = we_base_request::_(we_base_request::INT, 'searchstart', $obj->searchclassFolder->searchstart);
@@ -79,10 +79,10 @@ class we_search_search extends we_search_base{
 			$obj->searchclassFolder->search = we_base_request::_(we_base_request::STRING, 'search', $obj->searchclassFolder->search);
 
 			if($view !== false){
-				$this->db->query('UPDATE ' . FILE_TABLE . ' SET listview=' . $view . ' WHERE ID=' . intval($obj->ID));
+				$this->db->query('UPDATE ' . FILE_TABLE . ' SET viewType="' .$this->db->escape($view) . '" WHERE ID=' . intval($obj->ID));
 				$obj->searchclassFolder->setView = $view;
 			} else {
-				$obj->searchclassFolder->setView = f('SELECT listview FROM ' . FILE_TABLE . ' WHERE ID=' . intval($obj->ID));
+				$obj->searchclassFolder->setView = f('SELECT viewType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($obj->ID));
 			}
 
 			$searchFields = we_base_request::_(we_base_request::STRING, 'searchFields');
@@ -93,7 +93,7 @@ class we_search_search extends we_search_base{
 				$obj->searchclassFolder->height = (we_base_request::_(we_base_request::INT, 'searchstart') !== false ? 0 : 1);
 			}
 		} elseif($view !== false && ($id = we_base_request::_(we_base_request::INT, 'id')) !== false){
-			$this->db->query('UPDATE ' . FILE_TABLE . ' SET listview=' . $view . ' WHERE ID=' . $id);
+			$this->db->query('UPDATE ' . FILE_TABLE . ' SET viewType="' . $this->db->escape($view) . '" WHERE ID=' . $id);
 		}
 	}
 

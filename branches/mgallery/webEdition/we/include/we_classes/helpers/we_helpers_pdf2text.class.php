@@ -100,7 +100,8 @@ class we_helpers_pdf2text{
 		$data = fread($file, self::INFO_PORTION);
 		//read portion from the end
 		fseek($file, $offset);
-		$data .= fread($file, self::INFO_PORTION);
+		//best data is in the end, so try this first!
+		$data = fread($file, self::INFO_PORTION) . $data;
 		fclose($file);
 		$match = array();
 		$info = '';
@@ -113,13 +114,12 @@ class we_helpers_pdf2text{
 					break;
 				}
 			}
-			for($data = $this->readPortion($this->file); !empty($data); $data = $this->readPortion()){
-				if(preg_match('#[\r\n ]+(' . $info . ' ' . self::OBJ . '.*' . self::ENDOBJ . ')#Us', $data, $match)){
-					$this->readPortion(-1);
-					$this->parsePDF($match[0]);
-					break;
-				}
+
+			$data = $this->searchObjInFile($info);
+			if(!$data){
+				return array();
 			}
+			$this->parsePDF($data);
 			$info = isset($this->data[$info]) ? $this->data[$info] : '';
 			$this->data = array();
 			if(!is_array($info)){
@@ -144,8 +144,7 @@ class we_helpers_pdf2text{
 			case '('://string
 				return CheckAndConvertISOfrontend(preg_replace_callback('#\\\\(\d{3})#', 'we_helpers_pdf2text::setOctChar', trim($str, self::TRIM_STRING)));
 			case '<'://hex
-				$str = trim($str, '<>');
-				$str = str_split($str, 2);
+				$str = str_split(trim($str, '<>'), 2);
 				$out = '';
 				foreach($str as $cur){
 					$out.=chr(hexdec($cur));
@@ -618,9 +617,28 @@ class we_helpers_pdf2text{
 		return substr($data, 0, $pos);
 	}
 
+	private function searchObjInFile($objName){
+		$file = fopen($this->file, 'r');
+		$data = '';
+		$match = array();
+
+		while(($read = fread($file, self::READPORTION))){
+			if(($pos = strpos($read, $objName . ' ' . self::OBJ)) !== FALSE){
+				$data = substr($read, $pos - 2);
+				if(preg_match('#[\r\n ]+(' . $objName . ' ' . self::OBJ . '.*' . self::ENDOBJ . ')#Us', $data, $match)){
+					fclose($file);
+					return $match[1];
+				}
+
+				break;
+			}
+		}
+		fclose($file);
+	}
+
 	private function parsePDF($data){
 		$matches = $matches2 = $matches3 = array();
-		preg_match_all('#(\d+ \d+) obj[\r\n]+(.*)endobj#Us', $data, $matches, PREG_SET_ORDER);
+		preg_match_all('#(\d+ \d+) ' . self::OBJ . '[\r\n]?(.*)endobj#Us', $data, $matches, PREG_SET_ORDER);
 		defined('DEBUG') && $this->mem();
 		unset($data);
 		defined('DEBUG') && $this->mem();

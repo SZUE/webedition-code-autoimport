@@ -35,7 +35,7 @@ CREATE TABLE ###TBLPREFIX###tblFile (
   OwnersReadOnly text NOT NULL,
   `Language` varchar(5) NOT NULL default '',
   WebUserID bigint(20) unsigned NOT NULL default '0',
-  listview tinyint(1) unsigned NOT NULL default '0',
+	viewType enum('list','icons') NOT NULL default 'list',
   InGlossar tinyint(1) unsigned NOT NULL default '0',
 	urlMap varchar(100) NOT NULL default '',
 	parseFile tinyint(1) unsigned NOT NULL default '0',
@@ -46,3 +46,8 @@ CREATE TABLE ###TBLPREFIX###tblFile (
 	KEY TemplateID (TemplateID,IsDynamic),
 	KEY ParentID(ParentID,IsSearchable,Published)
 ) ENGINE=MyISAM;
+
+/* query separator */
+###ONCOL(listview,###TBLPREFIX###tblFile) UPDATE ###TBLPREFIX###tblFile SET viewType="icons" WHERE listview=1;###
+/* query separator */
+###UPDATEDROPCOL(listview,###TBLPREFIX###tblFile)###

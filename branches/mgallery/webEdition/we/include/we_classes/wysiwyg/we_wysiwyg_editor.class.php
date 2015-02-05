@@ -1032,14 +1032,14 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 					var editor = opener.top.weEditorFrameController.ActiveEditorFrameId;
 					var wedoc = null;
 					try{
-						wedoc = opener.top.rframe.bm_content_frame.frames[editor].frames["contenteditor_" + editor];
+						wedoc = opener.top.bm_content_frame.frames[editor].frames["contenteditor_" + editor];
 						wedoc.tinyEditorsInPopup["' . $this->fieldName . '"] = ed;
 						wedoc.we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
 					}catch(e){
 						//opener.console.log("no external init function for ' . $this->fieldName . ' found");
 					}
 					try{
-						wedoc = opener.top.rframe.bm_content_frame.frames[editor].frames["editor_" + editor];
+						wedoc = opener.top.bm_content_frame.frames[editor].frames["editor_" + editor];
 						wedoc.tinyEditorsInPopup["' . $this->fieldName . '"] = ed;
 						wedoc.we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
 					}catch(e){

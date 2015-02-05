@@ -59,8 +59,8 @@ body.selectorFooter{
 #resizeFrame{
 	margin:0px;
 	border:0px none;
-	position:absolute;
-	top:0px;
+	position:fixed;
+	top:32px;
 	bottom:0px;
 	left:0px;
 	right:0px;
@@ -184,17 +184,13 @@ img.baumArrow{
 	height: 0px;
 }
 
-#mainWindow,
 #resize{
-	/*changed due to chrome
  position:absolute;
 	top:32px;
 	left:0px;
 	right:0px;
 	bottom:0px;
-	border: 0px;*/
-	height:100%;
-	width:100%;
+	border: 0px;
 }
 
 #resize.withIconBar{
@@ -599,7 +595,7 @@ optgroup.lvl2{
 }
 
 #headerDiv{
-	position:fixed;
+	position:absolute;
 	top:0px;
 	left:0px;
 	right:0px;
