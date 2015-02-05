@@ -65,7 +65,7 @@ function we_isFieldNotEmpty($attribs){
 			$data = (isset($GLOBALS['lv']) ?
 							(($GLOBALS['lv'] instanceof we_shop_shop) ? //FIXME: change this - we don't need getObject any more!
 									unserialize($GLOBALS['lv']->getDBf($orig_match)) :
-									unserialize($GLOBALS['lv']->getDBf('we_' . $orig_match))) :
+									unserialize($GLOBALS['lv']->f($orig_match))) :
 							unserialize($GLOBALS['we_doc']->getElement($orig_match)));
 
 			if(isset($data['objects']) && is_array($data['objects']) && !empty($data['objects'])){
