@@ -46,10 +46,18 @@ class we_customer_customertag{
 		$this->avail = $this->object->next_record();
 	}
 
+	/**
+	 * @deprecated
+	 * @return type
+	 */
 	public function getDBf($key){
 		return ($this->id ? $this->object->getDBf($key) : '');
 	}
 
+		/**
+	 * @deprecated
+	 * @return type
+	 */
 	public function getDBRecord(){
 		return ($this->id ? $this->object->getDBRecord() : array());
 	}
@@ -58,6 +66,10 @@ class we_customer_customertag{
 		return ($this->id ? $this->object->f($key) : '');
 	}
 
+	/**
+	 * @deprecated
+	 * @return type
+	 */
 	public function getObject(){//FIXME: remove this
 		return $this->object;
 	}
