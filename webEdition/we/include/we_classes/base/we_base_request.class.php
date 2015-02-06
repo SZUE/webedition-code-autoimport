@@ -133,7 +133,7 @@ class we_base_request{
 				return;
 			case self::EMAILLIST:
 				$var = str_replace('mailto:', '', $var);
-				$mails = aray_map('trim', explode(',', $var));
+				$mails = array_map('trim', explode(',', $var));
 				$regs = array();
 				foreach($mails as &$mail){
 					if(preg_match('-("[\S ]+"|\S+) <(\S+@\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
