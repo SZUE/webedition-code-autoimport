@@ -52,7 +52,7 @@ function we_tag_sessionField($attribs, $content){
 	}
 
 	switch($type){
-		case "date" :
+		case 'date' :
 			$currentdate = weTag_getAttribute("currentdate", $attribs, false, we_base_request::BOOL);
 			$minyear = weTag_getAttribute("minyear", $attribs, 0, we_base_request::INT);
 			$maxyear = weTag_getAttribute("maxyear", $attribs, 0, we_base_request::INT);

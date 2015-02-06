@@ -106,15 +106,15 @@ class we_workflow_documentStep extends we_workflow_base{
 			if($workflowTask->userID){
 				//send todo to next user
 				$path = "<b>" . g_l('modules_workflow', '[' . stripTblPrefix($workflowDoc->document->ContentType === 'objectFile' ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . $workflowDoc->document->Table . '\',\'' . $workflowDoc->document->ID . '\',\'' . $workflowDoc->document->ContentType . '\');");" >' . $workflowDoc->document->Path . '</a>';
-				$mess = "<p><b>" . g_l('modules_workflow', '[todo_next]') . "</b></p><p>" . $desc . "</p><p>" . $path . "</p>";
+				$mess = "<p><b>" . g_l('modules_workflow', '[todo_next]') . '</b></p><p>' . $desc . '</p><p>' . $path . "</p>";
 
 				$cur->todoID = $this->sendTodo($workflowTask->userID, g_l('modules_workflow', '[todo_subject]'), $mess . "<p>" . $path . "</p>", $deadline);
 				if($workflowTask->Mail){
 					$foo = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($workflowTask->userID), "", $this->db);
-					$this_user = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $this->db);
+					$this_user = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), $this->db);
 					if($foo){
 						$desc = str_replace('<br />', "\n", $desc);
-						$mess = g_l('modules_workflow', '[todo_next]') . " ID:" . $workflowDoc->document->ID . ", Pfad:" . $workflowDoc->document->Path . "\n\n" . $desc;
+						$mess = g_l('modules_workflow', '[todo_next]') . ' ID:' . $workflowDoc->document->ID . ', '.g_l('weClass', '[path]').':' . $workflowDoc->document->Path . "\n\n" . $desc;
 
 
 						we_mail($foo, correctUml(g_l('modules_workflow', '[todo_next]') . ($workflowDoc->document->Path ? ' ' . $workflowDoc->document->Path : '')), $mess, (isset($this_user["Email"]) && $this_user["Email"] ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
@@ -167,7 +167,7 @@ class we_workflow_documentStep extends we_workflow_base{
 			$this->Status = self::STATUS_APPROVED;
 			$this->finishDate = time();
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE_FORCE, $desc);
+			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE_FORCE, $desc);
 			return true;
 		}
 		$i = $this->findTaskByUser($uID);
@@ -199,7 +199,7 @@ class we_workflow_documentStep extends we_workflow_base{
 				}
 			}
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE, $desc);
+			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE, $desc);
 			return true;
 		}
 		return false;
@@ -213,7 +213,7 @@ class we_workflow_documentStep extends we_workflow_base{
 			$this->Status = self::STATUS_APPROVED;
 			$this->finishDate = time();
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE_FORCE, $desc);
+			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE_FORCE, $desc);
 			return true;
 		}
 		$i = $this->findTaskByUser($uID);
@@ -245,7 +245,7 @@ class we_workflow_documentStep extends we_workflow_base{
 				}
 			}
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE, $desc);
+			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_APPROVE, $desc);
 			return true;
 		}
 		return false;
@@ -259,19 +259,20 @@ class we_workflow_documentStep extends we_workflow_base{
 			$this->Status = self::STATUS_CANCELED;
 			$this->finishDate = time();
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_DECLINE, $desc);
+			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_DECLINE, $desc);
 			return true;
 		}
 		$i = $this->findTaskByUser($uID);
 		if($i > -1){
 			$this->tasks[$i]->decline();
+			//FIXME: since next var is unused, does this operation do anything except ressource usage?
 			$workflowStep = new we_workflow_step($this->workflowStepID);
 			$this->Status = self::STATUS_CANCELED;
 			if($this->Status == self::STATUS_APPROVED || $this->Status == self::STATUS_CANCELED){
 				$this->finishDate = time();
 			}
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_DECLINE, $desc);
+			we_workflow_log::logDocumentEvent($this->workflowDocID, $uID, we_workflow_log::TYPE_DECLINE, $desc);
 			return true;
 		}
 		return false;
@@ -297,17 +298,13 @@ class we_workflow_documentStep extends we_workflow_base{
 		return $num;
 	}
 
-	//---------------------------------- STATIC FUNCTIONS -------------------------------
 
 	/**
 	 * return all steps for workflow document (created)
 	 *
 	 */
-	static function __getAllSteps($workflowDocumentID){
-
-		$db = new DB_WE();
-
-		$db->query('SELECT ID FROM ' . WORKFLOW_DOC_STEP_TABLE . ' WHERE workflowDocID=' . intval($workflowDocumentID) . " ORDER BY ID");
+	static function __getAllSteps($workflowDocumentID, we_database_base $db){
+		$db->query('SELECT ID FROM ' . WORKFLOW_DOC_STEP_TABLE . ' WHERE workflowDocID=' . intval($workflowDocumentID) . ' ORDER BY ID');
 		$docSteps = array();
 		while($db->next_record()){
 			$docSteps[] = new self($db->f("ID"));
@@ -320,7 +317,6 @@ class we_workflow_documentStep extends we_workflow_base{
 	 *
 	 */
 	static function __createAllSteps($workflowID){
-
 		$db = new DB_WE();
 		$db->query('SELECT ID FROM ' . WORKFLOW_STEP_TABLE . ' WHERE workflowID =' . intval($workflowID) . ' ORDER BY ID');
 		$docSteps = array();
