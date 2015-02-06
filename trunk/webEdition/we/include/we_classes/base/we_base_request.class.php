@@ -23,9 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_request{
+
 	private static $allTables = array();
 
 	/* converts an csv of ints to an array */
+
 	const INTLISTA = 'intListA';
 	const INT = 'int';
 	const FLOAT = 'float';
@@ -48,6 +50,7 @@ class we_base_request{
 	const FILELIST = 'filelist';
 	const FILELISTA = 'filelista';
 	const STRING_LIST = 'stringL';
+	const EMAILLIST = 'emailL'; //add email_list
 //only temporary
 	const STRINGC = 'stringC';
 	const RAW_CHECKED = 'rawC';
@@ -90,8 +93,8 @@ class we_base_request{
 				return;
 			case self::CMD:
 				$var = strpos($var, 'WECMDENC_') !== false ?
-					base64_decode(urldecode(substr($var, 9))) :
-					$var;
+						base64_decode(urldecode(substr($var, 9))) :
+						$var;
 				return;
 			case self::UNIT:
 				$regs = array(); //FIMXE: check for %d[em,ex,pt,%...]?
@@ -128,8 +131,24 @@ class we_base_request{
 			case self::TABLE: //FIXME: this doesn't hold for OBJECT_X_TABLE - make sure we don't use them in requests
 				$var = $var && in_array($var, self::$allTables) ? $var : $default;
 				return;
+			case self::EMAILLIST:
+				$var = str_replace('mailto:', '', $var);
+				$mails = aray_map('trim', explode(',', $var));
+				$regs = array();
+				foreach($mails as &$mail){
+					if(preg_match('-("[\S ]+"|\S+) <(\S+@\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
+						if(filter_var($regs[2], FILTER_VALIDATE_EMAIL) !== false){
+							continue;
+						}
+					}//if format didn't match, filter the whole var as one address
+
+					$mail = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $mail), FILTER_SANITIZE_EMAIL);
+				}
+				$var = implode(',', array_filter($mails));
+				return;
 			case self::EMAIL://removes mailto:
 				$regs = array();
+				$var = str_replace('mailto:', '', $var);
 				if(preg_match('-("[\S ]+"|\S+) <(\S+@\S+)>-', $var, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
 					if(filter_var($regs[2], FILTER_VALIDATE_EMAIL) !== false){
 						return;
@@ -143,7 +162,7 @@ class we_base_request{
 				$var = explode(',', trim(strtr($var, array(
 					'../' => '',
 					'//' => ''
-						)), ','));
+								)), ','));
 				foreach($var as &$cur){
 					$cur = filter_var($cur, FILTER_SANITIZE_URL);
 					if(strpos($cur, rtrim(WEBEDITION_DIR, '/')) === 0){//file-selector has propably access
