@@ -58,7 +58,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$we_doc->add_thumbnails(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', 0, 1));
 		break;
 	case 'copyDocument':
-		$we_doc->copyDoc(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
+		$_insertReloadFooter = $we_doc->copyDoc(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 		$we_doc->InWebEdition = true;
 		break;
 	case 'delete_list':

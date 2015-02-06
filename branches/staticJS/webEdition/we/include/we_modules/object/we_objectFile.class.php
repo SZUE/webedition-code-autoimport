@@ -2760,8 +2760,9 @@ class we_objectFile extends we_document{
 				if($regs[0] === 'OF'){
 					$data[$cur['name']] = (isset($this->$name) ? $this->$name : '');
 				} else {
-					$name = ($regs[0] == self::TYPE_OBJECT) ? ('we_object_' . $name) : $name;
-					$data[$cur['name']] = $this->getElement($name);
+					$name = ($regs[0] == self::TYPE_OBJECT ? ('we_object_' . $name) : $name);
+					$val = $this->getElement($name);
+					$data[$cur['name']] = is_array($val) ? serialize($val) : $val;
 				}
 			}
 		}
@@ -2943,7 +2944,7 @@ class we_objectFile extends we_document{
 	function initVariantDataFromDb(){
 		if(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
 			$dat = $this->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME);
-			if($dat && !is_array($dat)){
+			if($dat && !is_array($dat) && substr($dat, 0, 2) === 'a:'){
 // unserialize the variant data when loading the model
 				$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, unserialize($dat), 'variant');
 			}

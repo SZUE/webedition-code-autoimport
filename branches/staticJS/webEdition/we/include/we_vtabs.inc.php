@@ -36,13 +36,13 @@ $svgPre = '<defs>
 
 $svg = array(
 	'normal' => $svgPre . '<rect fill="url(#gradAct#ID#)" width="17px" height="83px"/>
-	<text class="middlefont" style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;" x="-41px" y="13px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>
+	<text class="defaultfont" style="text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;" x="-41px" y="13px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>
 	<rect width="18px" fill="#909090" height="1px" />',
 	'active' => '<rect fill="#f3f7ff" width="19px" height="83px"/>
-	<text class="middlefont" style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;" x="-41px" y="13px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>
+	<text class="defaultfont" style="text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;" x="-41px" y="13px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>
 	<rect width="18px" fill="#909090" height="1px" />',
 	'disabled' => $svgPre . '<rect fill="url(#gradDis#ID#)" width="17px" height="83px"/>
-	<text class="middlefont" style="text-decoration:none;text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;fill:black;fill-opacity:1;stroke:none;" x="-41px" y="13px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>
+	<text class="defaultfont" style="text-anchor: middle;font-style:normal;font-weight:normal;letter-spacing:0px;word-spacing:0px;" x="-41px" y="13px" transform="matrix(0,-1,1,0,0,0)">REPLACE</text>
 	<rect width="18px" fill="#909090" height="1px" />',
 );
 

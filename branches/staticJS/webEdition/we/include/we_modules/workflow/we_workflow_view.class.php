@@ -424,14 +424,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	}
 
 	function htmlHidden($name, $value = ''){
-		if(!is_array($value)){
-			return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
-		}
-		$ret = '';
-		foreach($value as $val){
-			$ret.=we_html_element::htmlHidden(array('name' => trim($name) . '[]', 'value' => oldHtmlspecialchars($val)));
-		}
-		return $ret;
+		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => is_array($value) ? implode(',', $value) : oldHtmlspecialchars($value)));
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -521,6 +514,7 @@ var g_l={
 };
 ' . (!$this->show ? '
 
+
 function getNumOfDocs(){
 	return ' . $this->workflowDef->loadDocuments() . count($this->workflowDef->documents) . ';
 }
@@ -528,6 +522,7 @@ function getNumOfDocs(){
 				we_html_element::jsScript(JS_DIR . 'utils/lib.js') .
 				we_html_element::jsScript(WE_JS_WORKFLOW_MODULE_DIR . 'workflow_property.js');
 	}
+
 
 	function processCommands(){
 
@@ -541,115 +536,115 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 					');
 				break;
 			case 'add_cat':
-				$arr = makeArrayFromCSV($this->workflowDef->Categories);
+				$arr = $this->workflowDef->Categories;
 				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wcat'))){
 					foreach($ids as $id){
 						if(strlen($id) && (!in_array($id, $arr))){
 							array_push($arr, $id);
 						}
 					}
-					$this->workflowDef->Categories = makeCSVFromArray($arr, true);
+					$this->workflowDef->Categories = $arr;
 				}
 				break;
 			case 'del_cat':
-				$arr = makeArrayFromCSV($this->workflowDef->Categories);
+				$arr = $this->workflowDef->Categories;
 				if(($cat = we_base_request::_(we_base_request::INT, 'wcat'))){
 					if(($pos = array_search($cat, $arr)) !== false){
 						unset($arr[$pos]);
 					}
-					$this->workflowDef->Categories = makeCSVFromArray($arr, true);
+					$this->workflowDef->Categories = $arr;
 				}
 				break;
 			case 'del_all_cats':
-				$this->workflowDef->Categories = '';
+				$this->workflowDef->Categories = array();
 				break;
 			case 'add_objcat':
-				$arr = makeArrayFromCSV($this->workflowDef->ObjCategories);
+				$arr = $this->workflowDef->ObjCategories;
 				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wocat'))){
 					foreach($ids as $id){
 						if((!in_array($id, $arr))){
 							$arr[] = $id;
 						}
 					}
-					$this->workflowDef->ObjCategories = makeCSVFromArray($arr, true);
+					$this->workflowDef->ObjCategories = $arr;
 				}
 				break;
 			case 'del_objcat':
-				$arr = makeArrayFromCSV($this->workflowDef->ObjCategories);
+				$arr = $this->workflowDef->ObjCategories;
 				if(($cat = we_base_request::_(we_base_request::INT, 'wcat'))){
 					if(($pos = array_search($cat, $arr)) !== false){
 						unset($arr[$pos]);
-						$this->workflowDef->ObjCategories = makeCSVFromArray($arr, true);
+						$this->workflowDef->ObjCategories = $arr;
 					}
 				}
 				break;
 			case 'del_all_objcats':
-				$this->workflowDef->ObjCategories = '';
+				$this->workflowDef->ObjCategories = array();
 				break;
 			case 'add_folder':
-				$arr = makeArrayFromCSV($this->workflowDef->Folders);
-				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wfolder'))){
+				$arr = $this->workflowDef->Folders;
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wfolder')) !== false){
 					foreach($ids as $id){
 						if((!in_array($id, $arr))){
 							$arr[] = $id;
 						}
 					}
-					$this->workflowDef->Folders = makeCSVFromArray($arr, true);
+					$this->workflowDef->Folders = $arr;
 				}
 				break;
 			case 'del_folder':
-				$arr = makeArrayFromCSV($this->workflowDef->Folders);
+				$arr = $this->workflowDef->Folders;
 				if(($id = we_base_request::_(we_base_request::INT, 'wfolder')) !== false){
 					if(($pos = array_search($id, $arr)) !== false){
 						unset($arr[$pos]);
-						$this->workflowDef->Folders = makeCSVFromArray($arr, true);
+						$this->workflowDef->Folders = $arr;
 					}
 				}
 				break;
 			case 'del_all_folders':
-				$this->workflowDef->Folders = '';
+				$this->workflowDef->Folders = array();
 				break;
 			case 'add_object_file_folder':
-				$arr = makeArrayFromCSV($this->workflowDef->ObjectFileFolders);
-				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'woffolder'))){
+				$arr = $this->workflowDef->ObjectFileFolders;
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'woffolder')) !== false){
 					foreach($ids as $id){
 						if((!in_array($id, $arr))){
 							$arr[] = $id;
 						}
 					}
-					$this->workflowDef->ObjectFileFolders = makeCSVFromArray($arr, true);
+					$this->workflowDef->ObjectFileFolders = $arr;
 				}
 				break;
 			case 'del_object_file_folder':
-				$arr = makeArrayFromCSV($this->workflowDef->ObjectFileFolders);
-				if(($id = we_base_request::_(we_base_request::INT, 'woffolder'))){
+				$arr = $this->workflowDef->ObjectFileFolders;
+				if(($id = we_base_request::_(we_base_request::INT, 'woffolder')) !== false){
 					if(($pos = array_search($id, $arr)) !== false){
 						unset($arr[$pos]);
-						$this->workflowDef->ObjectFileFolders = makeCSVFromArray($arr, true);
+						$this->workflowDef->ObjectFileFolders = $arr;
 					}
 				}
 				break;
 			case 'del_all_object_file_folders':
-				$this->workflowDef->ObjectFileFolders = '';
+				$this->workflowDef->ObjectFileFolders = array();
 				break;
 			case 'add_object':
-				$arr = makeArrayFromCSV($this->workflowDef->Objects);
+				$arr = $this->workflowDef->Objects;
 				if(($id = we_base_request::_(we_base_request::INT, 'wobject'))){
 					$arr[] = $id;
-					$this->workflowDef->Objects = makeCSVFromArray($arr, true);
+					$this->workflowDef->Objects = $arr;
 				}
 				break;
 			case 'del_object':
-				$arr = makeArrayFromCSV($this->workflowDef->Objects);
+				$arr = $this->workflowDef->Objects;
 				if(($id = we_base_request::_(we_base_request::INT, 'wobject'))){
 					if(($pos = array_search($id, $arr)) !== false){
 						unset($arr[$pos]);
-						$this->workflowDef->Objects = makeCSVFromArray($arr, true);
+						$this->workflowDef->Objects = $arr;
 					}
 				}
 				break;
 			case 'del_all_objects':
-				$this->workflowDef->Objects = '';
+				$this->workflowDef->Objects = array();
 				break;
 			case 'reload':
 				echo we_html_element::jsElement('
@@ -693,8 +688,8 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 					foreach($this->workflowDef->documents as $v){
 						$childs.="top.content.deleteEntry(" . $v["ID"] . ",'file');";
 					}
-					if(($dts = we_base_request::_(we_base_request::INT, $this->uid . '_DocType')) !== false){
-						$this->workflowDef->DocType = makeCSVFromArray($dts, true);
+					if(($dts = we_base_request::_(we_base_request::INTLISTA, $this->uid . '_DocType')) !== false){
+						$this->workflowDef->DocType = $dts;
 					}
 
 					$this->workflowDef->save();
@@ -1011,11 +1006,10 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			'space' => 0,
 		);
 
-
+		ob_start();
 		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-		return we_html_element::jsScript(JS_DIR . 'windows.js') .
-				we_html_element::jsElement('
+		return ob_end_clean() . we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 		function openToEdit(tab,id,contentType){
 		if(top.opener && top.opener.top.weEditorFrameController) {
 			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);

@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_workflow_document extends we_workflow_base{
+
 	const STATUS_UNKNOWN = 0;
 	const STATUS_FINISHED = 1;
 	const STATUS_CANCELED = 2;
@@ -47,11 +48,11 @@ class we_workflow_document extends we_workflow_base{
 		$this->table = WORKFLOW_DOC_TABLE;
 		$this->ClassName = __CLASS__;
 		$this->persistents = array(
-			"ID" => we_base_request::INT,
-			"workflowID" => we_base_request::INT,
-			"documentID" => we_base_request::INT,
-			"userID" => we_base_request::INT,
-			"Status" => we_base_request::INT,
+			'ID' => we_base_request::INT,
+			'workflowID' => we_base_request::INT,
+			'documentID' => we_base_request::INT,
+			'userID' => we_base_request::INT,
+			'Status' => we_base_request::INT,
 		);
 
 
@@ -86,7 +87,7 @@ class we_workflow_document extends we_workflow_base{
 				}
 			}
 
-			$this->steps = we_workflow_documentStep::__getAllSteps($this->ID);
+			$this->steps = we_workflow_documentStep::__getAllSteps($this->ID, $this->db);
 		}
 	}
 
@@ -116,8 +117,8 @@ class we_workflow_document extends we_workflow_base{
 			} else {
 				$this->document->we_publish();
 			}
-			$path = "<b>" . g_l('modules_workflow', '[' . stripTblPrefix($this->workflow->Type == 2 ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . $this->document->Table . '\',\'' . $this->document->ID . '\',\'' . $this->document->ContentType . '\');");" >' . $this->document->Path . '</a>';
-			$mess = "<p><b>" . g_l('modules_workflow', '[auto_published]') . "</b></p><p>" . $desc . "</p><p>" . $path . "</p>";
+			$path = '<b>' . g_l('modules_workflow', '[' . stripTblPrefix($this->workflow->Type == 2 ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . $this->document->Table . '\',\'' . $this->document->ID . '\',\'' . $this->document->ContentType . '\');");" >' . $this->document->Path . '</a>';
+			$mess = '<p><b>' . g_l('modules_workflow', '[auto_published]') . '</b></p><p>' . $desc . '</p><p>' . $path . '</p>';
 			$deadline = time();
 			$this->sendTodo($this->userID, g_l('modules_workflow', '[auto_published]'), $mess, $deadline, 1);
 			$desc = str_replace('<br />', "\n", $desc);
@@ -136,8 +137,8 @@ class we_workflow_document extends we_workflow_base{
 		if($this->steps[$i]->Status == we_workflow_documentStep::STATUS_CANCELED){
 			$this->finishWorkflow(1, $uID);
 
-			$path = "<b>" . g_l('modules_workflow', '[' . stripTblPrefix($this->workflow->Type == 2 ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . $this->document->Table . '\',\'' . $this->document->ID . '\',\'' . $this->document->ContentType . '\');");" >' . $this->document->Path . '</a>';
-			$mess = "<p><b>" . g_l('modules_workflow', '[todo_returned]') . "</b></p><p>" . $desc . "</p><p>" . $path . "</p>";
+			$path = '<b>' . g_l('modules_workflow', '[' . stripTblPrefix($this->workflow->Type == 2 ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . $this->document->Table . '\',\'' . $this->document->ID . '\',\'' . $this->document->ContentType . '\');");" >' . $this->document->Path . '</a>';
+			$mess = '<p><b>' . g_l('modules_workflow', '[todo_returned]') . '</b></p><p>' . $desc . '</p><p>' . $path . '</p>';
 			$deadline = time() + 3600;
 			$this->sendTodo($this->userID, g_l('modules_workflow', '[todo_returned]'), $mess, $deadline, 1);
 			$desc = str_replace('<br />', "\n", $desc);
@@ -165,7 +166,7 @@ class we_workflow_document extends we_workflow_base{
 		}
 	}
 
-	function finishWorkflow($force = 0, $uID = 0, we_database_base $db = null){
+	function finishWorkflow($force = 0, $uID = 0){
 		if($force){
 			$this->Status = self::STATUS_CANCELED;
 			foreach($this->steps as &$sv){
@@ -179,11 +180,11 @@ class we_workflow_document extends we_workflow_base{
 				}
 			}
 			//insert into document Log
-			$this->Log->logDocumentEvent($this->ID, $uID, we_workflow_log::TYPE_DOC_FINISHED_FORCE, "", $db);
+			we_workflow_log::logDocumentEvent($this->ID, $uID, we_workflow_log::TYPE_DOC_FINISHED_FORCE, "", $this->db);
 			return true;
 		}
 		$this->Status = self::STATUS_FINISHED;
-		$this->Log->logDocumentEvent($this->ID, $uID, we_workflow_log::TYPE_DOC_FINISHED, "", $db);
+		we_workflow_log::logDocumentEvent($this->ID, $uID, we_workflow_log::TYPE_DOC_FINISHED, "", $this->db);
 
 		return true;
 	}
@@ -251,8 +252,8 @@ class we_workflow_document extends we_workflow_base{
 
 	public static function find($documentID, $type = '0,1', $status = self::STATUS_UNKNOWN, we_database_base $db = null){
 		$db = $db? : new DB_WE();
-		$id = f('SELECT ' . WORKFLOW_DOC_TABLE . '.ID FROM ' . WORKFLOW_DOC_TABLE . ' LEFT JOIN ' . WORKFLOW_TABLE . ' ON ' . WORKFLOW_DOC_TABLE . '.workflowID=' . WORKFLOW_TABLE . '.ID' .
-			' WHERE ' . WORKFLOW_DOC_TABLE . '.documentID=' . intval($documentID) . " AND " . WORKFLOW_DOC_TABLE . ".Status IN (" . $db->escape($status) . ")" . ($type ? " AND " . WORKFLOW_TABLE . ".Type IN (" . $db->escape($type) . ")" : "") . ' ORDER BY ' . WORKFLOW_DOC_TABLE . '.ID DESC', '', $db);
+		$id = f('SELECT doc.ID FROM ' . WORKFLOW_DOC_TABLE . ' doc JOIN ' . WORKFLOW_TABLE . ' wf ON doc.workflowID=wf.ID' .
+				' WHERE doc.documentID=' . intval($documentID) . ' AND doc.Status IN (' . $db->escape($status) . ')' . ($type ? ' AND wf.Type IN (' . $db->escape($type) . ')' : '') . ' ORDER BY doc.ID DESC', '', $db);
 		return ($id ? new self($id) : false);
 	}
 
@@ -261,7 +262,7 @@ class we_workflow_document extends we_workflow_base{
 	 *    if workflow for that document exists, function will return it
 	 */
 	public static function createNew($documentID, $type, $workflowID, $userID){
-		if(($newWfDoc = self::find($documentID, $type))){
+		if(($newWfDoc = self::find($documentID, $type, self::STATUS_UNKNOWN, $this->db))){
 			return $newWfDoc;
 		}
 
