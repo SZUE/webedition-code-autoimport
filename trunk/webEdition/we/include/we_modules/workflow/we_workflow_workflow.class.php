@@ -287,7 +287,7 @@ class we_workflow_workflow extends we_workflow_base{
 	function getObjectWorkflow($object, $categories, $folderID, we_database_base $db, array &$all){
 		$workflowID = 0;
 		$wfIDs = array();
-		$tail = ($folderID ? ' AND (FIND_IN_SET(' . intval($folderID) . ',ObjectFileFolders) OR FIND_IN_SET(0,ObjectFileFolders))' : '');
+		$tail = ($folderID ? ' AND (FIND_IN_SET(' . intval($folderID) . ',ObjectFileFolders) OR FIND_IN_SET(0,ObjectFileFolders) OR ObjectFileFolders="")' : '');
 
 		$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE FIND_IN_SET(' . intval($object) . ',Objects) AND Type=' . self::OBJECT . ' AND Status=' . self::STATE_ACTIVE . $tail);
 		while($db->next_record()){
