@@ -132,7 +132,8 @@ class we_base_request{
 				$var = $var && in_array($var, self::$allTables) ? $var : $default;
 				return;
 			case self::EMAILLIST:
-				$mails = explode(',', $var);
+				$var = str_replace('mailto:', '', $var);
+				$mails = array_map('trim', explode(',', $var));
 				$regs = array();
 				foreach($mails as &$mail){
 					if(preg_match('-("[\S ]+"|\S+) <(\S+@\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
@@ -147,6 +148,7 @@ class we_base_request{
 				return;
 			case self::EMAIL://removes mailto:
 				$regs = array();
+				$var = str_replace('mailto:', '', $var);
 				if(preg_match('-("[\S ]+"|\S+) <(\S+@\S+)>-', $var, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
 					if(filter_var($regs[2], FILTER_VALIDATE_EMAIL) !== false){
 						return;

@@ -79,7 +79,7 @@ class we_template extends we_document{
 			$this->setElement($k, $temp->getElement($k), 'txt');
 		}
 		$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
-		echo we_html_element::jsElement('
+		return we_html_element::jsElement('
 var _currentEditorRootFrame = top.weEditorFrameController.getActiveDocumentReference();
 _currentEditorRootFrame.frames[2].reloadContent = true;');
 	}

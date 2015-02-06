@@ -22,7 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_workflow_log{
+abstract class we_workflow_log{
+
 	const TYPE_APPROVE = 1;
 	const TYPE_APPROVE_FORCE = 2;
 	const TYPE_DECLINE = 3;
@@ -33,28 +34,27 @@ class we_workflow_log{
 	const TYPE_DOC_REMOVED = 8;
 	const NUMBER_LOGS = 8;
 
-	function logDocumentEvent($workflowDocID, $userID, $type, $description, we_database_base $db = null){
+	static function logDocumentEvent($workflowDocID, $userID, $type, $description, we_database_base $db = null){
 		$db = $db? : new DB_WE();
-		$db->query('INSERT INTO ' . WORKFLOW_LOG_TABLE . " (ID, RefID, userID, logDate, Type, Description) VALUES ('', " . intval($workflowDocID) . ", " . intval($userID) . ", UNIX_TIMESTAMP(), " . intval($type) . ", '" . $db->escape($description) . "');");
-	}
-
-	function logWorkflowEvent($workflowID, $userID, $type, $description){
-		$db = new DB_WE();
-		$db->query('INSERT INTO ' . WORKFLOW_LOG_TABLE . " (ID, RefID, userID, logDate, Type, Description) VALUES ('', " . intval($workflowID) . ", " . intval($userID) . ", UNIX_TIMESTAMP(), " . intval($type) . ", '" . $db->escape($description) . "');");
+		$db->query('INSERT INTO ' . WORKFLOW_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'RefID' => $workflowDocID,
+					'userID' => $userID,
+					'logDate' => sql_function('UNIX_TIMESTAMP()'),
+					'Type' => $type,
+					'Description' => $description
+		)));
 	}
 
 	static function getLogForDocument($docID, $order = "DESC", $wfType = 0){
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
 		$db = new DB_WE();
-		$q = 'SELECT ' . WORKFLOW_LOG_TABLE . '.* FROM ' . WORKFLOW_LOG_TABLE . ',' . WORKFLOW_DOC_TABLE . ',' . WORKFLOW_TABLE . ' WHERE ' . WORKFLOW_DOC_TABLE . '.workflowID=' . WORKFLOW_TABLE . '.ID AND ' . WORKFLOW_TABLE . '.Type IN(' . $wfType . ') AND ' . WORKFLOW_LOG_TABLE . '.RefID=' . WORKFLOW_DOC_TABLE . '.ID AND  ' . WORKFLOW_DOC_TABLE . '.documentID=' . intval($docID) . ' ORDER BY ' . WORKFLOW_LOG_TABLE . '.logDate ' . $db->escape($order) . ',ID DESC';
 
+		$q = 'FROM ' . WORKFLOW_LOG_TABLE . ' log JOIN ' . WORKFLOW_DOC_TABLE . ' doc ON log.RefID=doc.ID JOIN ' . WORKFLOW_TABLE . ' wf ON doc.workflowID=wf.ID WHERE wf.Type IN(' . $wfType . ') AND doc.documentID=' . intval($docID) . ' ORDER BY log.logDate ' . $db->escape($order) . ',ID DESC';
 
-		$db->query($q);
+		$db->query('SELECT 1 ' . $q);
+		$GLOBALS['ANZ_LOGS'] = $db->num_rows();
 
-		$GLOBALS["ANZ_LOGS"] = $db->num_rows();
-
-		$q .= ' LIMIT ' . $offset . ', ' . self::NUMBER_LOGS;
-		$db->query($q);
+		$db->query('SELECT log.* ' . $q . ' LIMIT ' . $offset . ', ' . self::NUMBER_LOGS);
 		$hash = $db->getAll();
 
 		foreach($hash as $k => $v){
@@ -88,13 +88,11 @@ class we_workflow_log{
 		return $hash;
 	}
 
-	function getLogForUser($userID){
-		$db = new DB_WE();
-		$db->query('SELECT * FROM ' . WORKFLOW_LOG_TABLE . ' WHERE userID=' . intval($userID));
-		return $db->Record;
+	static function getLogForUser($userID){
+		return getHash('SELECT * FROM ' . WORKFLOW_LOG_TABLE . ' WHERE userID=' . intval($userID));
 	}
 
-	function clearLog($stamp = 0){
+	static function clearLog($stamp = 0){
 		$db = new DB_WE();
 		$db->query('DELETE FROM ' . WORKFLOW_LOG_TABLE . ' ' . ($stamp ? 'WHERE logDate<' . intval($stamp) : ''));
 	}
