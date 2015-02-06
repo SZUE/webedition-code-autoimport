@@ -1247,7 +1247,8 @@ function press_yes() {
 							}
 
 							if(defined('WORKFLOW_TABLE')){
-								$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined('OBJECT_FILES_TABLE') && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE)) > 0) ?
+								$db = new DB_WE();
+								$nextbut = (we_workflow_utility::getAllWorkflowDocs(FILE_TABLE, $db) || (defined('OBJECT_FILES_TABLE') && we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE, $db)) ?
 												we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) " . $startImportCall . ";") :
 												we_html_button::create_button("restore_backup", "javascript:" . $startImportCall));
 							} else {
@@ -1255,7 +1256,8 @@ function press_yes() {
 							}
 						} else {
 							if(defined('WORKFLOW_TABLE')){
-								$nextbut = (count(we_workflow_utility::getAllWorkflowDocs(FILE_TABLE)) > 0 || (defined('OBJECT_FILES_TABLE') && count(we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE)) > 0) ?
+								$db = new DB_WE();
+								$nextbut = (we_workflow_utility::getAllWorkflowDocs(FILE_TABLE, $db) || (defined('OBJECT_FILES_TABLE') && we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE, $db)) ?
 												we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) top.body.startImport();") :
 												we_html_button::create_button("restore_backup", "javascript:top.body.startImport();"));
 							} else {

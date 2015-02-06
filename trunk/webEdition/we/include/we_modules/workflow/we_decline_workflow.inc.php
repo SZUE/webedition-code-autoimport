@@ -23,13 +23,12 @@
  */
 we_html_tools::protect();
 if($cmd === "ok"){
-	$wf_text = we_base_request::_(we_base_request::STRING, "wf_text");
-	$wf_select = we_base_request::_(we_base_request::RAW, "wf_select", "");
-	$force = (!we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]));
+	$wf_text = we_base_request::_(we_base_request::STRING, 'wf_text');
+	$wf_select = we_base_request::_(we_base_request::RAW, 'wf_select', "");
+	$force = (!we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID']));
 
-	$ok = we_workflow_utility::decline($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"], $wf_text, $force);
 
-	if($ok){
+	if(we_workflow_utility::decline($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID'], $wf_text, $force)){
 
 		$msg = g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][decline_workflow_ok]');
 		$msgType = we_message_reporting::WE_MESSAGE_NOTICE;
@@ -40,7 +39,7 @@ if($cmd === "ok"){
 			$script = "opener.top.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
 		} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 
-			$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();';
+			$script = 'top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();';
 		}
 
 		if(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO)){

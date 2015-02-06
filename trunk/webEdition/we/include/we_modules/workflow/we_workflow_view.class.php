@@ -1276,10 +1276,10 @@ function checkData(){
 			'space' => 0,
 		);
 
-
+		ob_start();
 		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+		return ob_end_clean() . we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 		function openToEdit(tab,id,contentType){
 		if(top.opener && top.opener.top.weEditorFrameController) {
 			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);

@@ -33,12 +33,10 @@ class we_workflow_base{
 	var $persistents = array();
 	var $table = "";
 	var $ClassName = __CLASS__;
-	var $Log;
 
 	function __construct(){
 		$this->uid = 'wf_' . md5(uniqid(__FILE__, true));
 		$this->db = new DB_WE();
-		$this->Log = new we_workflow_log();
 	}
 
 	function load(){
