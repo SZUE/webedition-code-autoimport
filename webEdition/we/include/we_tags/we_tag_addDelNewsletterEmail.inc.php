@@ -273,8 +273,8 @@ function we_tag_addDelNewsletterEmail($attribs){
 						$mailtextHTML = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:' . $phf . '####', $placeholderReplaceValue, $mailtextHTML);
 					}
 				}
-				$recipientCC = weTag_getAttribute('recipientCC', $attribs, '', we_base_request::EMAIL);
-				$recipientBCC = weTag_getAttribute('recipientBCC', $attribs, '', we_base_request::EMAIL);
+				$recipientCC = weTag_getAttribute('recipientCC', $attribs, '', we_base_request::EMAILLIST);
+				$recipientBCC = weTag_getAttribute('recipientBCC', $attribs, '', we_base_request::EMAILLIST);
 				$includeimages = weTag_getAttribute('includeimages', $attribs, false, we_base_request::BOOL);
 				$toCC = explode(',', $recipientCC);
 				$we_recipientCC = array();
