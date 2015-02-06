@@ -7,6 +7,7 @@ CREATE TABLE ###TBLPREFIX###tblSettings (
   PRIMARY KEY  (tool,pref_name)
 ) ENGINE=MyISAM;
 
+/* query separator */
 ###UPDATEONLY###DELETE FROM ###TBLPREFIX###tblSettings WHERE tool='shop' AND pref_name IN ('edit_shop_properties','shop_pref');
 /* query separator */
 ###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool='glossary',pref_name='weGlossaryAutomaticReplacement',pref_value='1';
