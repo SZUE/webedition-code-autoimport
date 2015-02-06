@@ -258,7 +258,7 @@ function we_cmd(){
 				$aid = $this->messaging->Folder_ID;
 				$js_out = '
 					aid = ' . $aid . ';
-					top.content.updateEntry(aid, -1, "' . $this->messaging->available_folders[we_messaging_messaging::array_ksearch('ID', $aid, $this->messaging->available_folders)]['Name'] . ' - (' . $this->messaging->get_message_count($aid, '') . ')", -1, 1));
+					top.content.updateEntry(aid, -1, "' . $this->messaging->available_folders[we_messaging_messaging::array_ksearch('ID', $aid, $this->messaging->available_folders)]['Name'] . ' - (' . $this->messaging->get_message_count($aid, '') . ')", -1, 1);
 				';
 				return we_html_element::jsElement($js_out);
 			case 'update_treeview':
