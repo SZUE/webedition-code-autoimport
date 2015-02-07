@@ -89,7 +89,7 @@ onunload=function() {
 	}
 
 	static function getJsForCssMenu(){
-		if(we_base_browserDetect::isIE() && intval(we_base_browserDetect::inst()->getBrowserVersion()) < 9){
+		if(we_base_browserDetect::isIE() && intval(we_base_browserDetect::inst()->getBrowserVersion()) < 9){//FIXME: remove support
 			return JS_DIR . 'menu/clickMenu_IE8.js';
 		}
 		return JS_DIR . 'menu/clickMenu.js';

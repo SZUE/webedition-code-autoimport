@@ -427,7 +427,7 @@ function doUnloadNormal(whichWindow) {
 	var tinyDialog;
 	if (!regular_logout) {
 
-		if (tinyMceDialog !== undefinded && tinyMceDialog !== null) {
+		if (window.tinyMceDialog !== undefinded && window.tinyMceDialog !== null) {
 			tinyDialog = tinyMceDialog;
 			try {
 				tinyDialog.close();
