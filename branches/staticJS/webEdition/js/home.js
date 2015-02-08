@@ -343,14 +343,13 @@ function fadeTrans(wizId, start, end, ms) {
 }
 
 function toggle(wizId, wizType, prefix, postfix) {
-	var defH = oCfg[wizType + '_props_']["height"];
 	var defRes = oCfg[wizType + '_props_']["res"];
 	var defW = (!!defRes) ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
 	var asoc = {
 		'width': {
 			'_inline': defW,
 			'_bx': defW + (2 * oCfg.general_.wh_edge)
-		},
+		}
 	};
 	var props = {
 		'prefix': prefix, 'postfix': postfix, 'type': wizType, 'res': defRes
@@ -543,7 +542,8 @@ function updateWidgetContent(widgetType, widgetId, contentData, titel) {
 	var oContent = gel(widgetId + '_content');
 	oContent.style.display = 'block';
 	hideLoadingSymbol(widgetId);
-	eval(((widgetType === 'pad') ? 'docIFrm.getElementById(widgetType)' : 'oInline') + '.innerHTML=contentData;');
+	var doc = (widgetType === 'pad' ? docIFrm.getElementById(widgetType) : oInline);
+	doc.innerHTML = contentData;
 	if (widgetType === 'pad') {
 		iFrmScr.calendarSetup();
 	}
@@ -670,8 +670,8 @@ function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 	oContent.style.display = 'block';
 
 	hideLoadingSymbol(sObjId);
-
-	eval(((sType === 'rss' || sType === 'pad') ? 'docIFrm.getElementById(sType)' : 'oInline') + '.innerHTML=oDoc.innerHTML;');
+	var doc = (sType === 'rss' || sType === 'pad' ? docIFrm.getElementById(sType) : oInline);
+	doc.innerHTML = oDoc.innerHTML;
 	if (sType === 'pad') {
 		iFrmScr.calendarSetup();
 	}
