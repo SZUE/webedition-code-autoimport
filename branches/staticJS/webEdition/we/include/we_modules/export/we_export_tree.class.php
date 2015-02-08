@@ -76,16 +76,17 @@ var attribs={};' .
 
 			$js.="if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){"
 				. "attribs={";
+			$elems = '';
 			foreach($item as $k => $v){
-				$js.='"' . strtolower($k) . '":' .
+				$elems.='"' . strtolower($k) . '":' .
 					(strtolower($k) === "checked" ?
-						$js.='(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["id"] . '")?
+						'(in_array(' . $this->topFrame . '.SelectedItems.' . $item['table'] . ',"' . $item["id"] . '")?
 	\'1\':
 	\'' . $v . '\'),
 ' :
 						'\'' . $v . '\',');
 			}
-			$js.=$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
+			$js.=rtrim($elems, ',') . '};' . $this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
 					}';
 		}
 		$js.=$this->topFrame . '.treeData.setstate(' . $this->topFrame . '.treeData.tree_states["select"]);' .

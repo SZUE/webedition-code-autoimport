@@ -354,7 +354,7 @@ weCmdController.register('exit_top', 'app_{$this->appName}_exit', function(cmdOb
 
 /* help */
 weCmdController.register('help_top', 'app_{$this->appName}_help', function(cmdObj) {
-	var dialog = new we_ui_layout_Dialog("/webEdition/getHelp.php", 900, 700, null);
+	var dialog = new we_ui_layout_Dialog("'http://help.webedition.org/index.php?language=de', 900, 700, null);
 	dialog.open();
 });
 

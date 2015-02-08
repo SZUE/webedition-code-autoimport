@@ -71,6 +71,46 @@ class we_export_wizard{
 		"handle_categorys" => 0,
 		"export_depth" => 1
 	);
+	private $exportVarTypes = array(
+		"extype" => we_base_request::STRING,
+		"selection" => we_base_request::STRING,
+		"type" => we_base_request::STRING,
+		"doctype" => we_base_request::INT,
+		"classname" => we_base_request::INT,
+		"dir" => we_base_request::INT,
+		"art" => we_base_request::STRING,
+		"categories" => we_base_request::STRING,
+		"selDocs" => we_base_request::INTLIST,
+		"selTempl" => we_base_request::INTLIST,
+		"selObjs" => we_base_request::INTLIST,
+		"selClasses" => we_base_request::INTLIST,
+		"finalDocs" => we_base_request::RAW,
+		"finalObjs" => we_base_request::RAW,
+		"file_name" => we_base_request::FILE,
+		"export_to" => we_base_request::STRING,
+		"path" => we_base_request::FILE,
+		"filename" => we_base_request::FILE,
+		"csv_delimiter" => we_base_request::RAW,
+		"csv_enclose" => we_base_request::RAW,
+		"csv_lineend" => we_base_request::STRING,
+		"csv_fieldnames" => we_base_request::RAW,
+		"csv_fields" => we_base_request::RAW,
+		"cdata" => we_base_request::STRING,
+		"RefTable" => we_base_request::RAW,
+		"CurrentRef" => we_base_request::INT,
+		"step" => we_base_request::INT,
+		"handle_def_templates" => we_base_request::BOOL,
+		"handle_document_includes" => we_base_request::BOOL,
+		"handle_document_linked" => we_base_request::BOOL,
+		"handle_def_classes" => we_base_request::BOOL,
+		"handle_object_includes" => we_base_request::BOOL,
+		"handle_object_linked" => we_base_request::BOOL,
+		"handle_object_embeds" => we_base_request::BOOL,
+		"handle_class_defs" => we_base_request::BOOL,
+		"handle_doctypes" => we_base_request::BOOL,
+		"handle_categorys" => we_base_request::BOOL,
+		"export_depth" => we_base_request::INT
+	);
 
 	public function __construct($frameset = ""){
 		$this->setFrameset($frameset);
@@ -121,10 +161,10 @@ class we_export_wizard{
 		if(isset($_SESSION['weS']['exportVars_session'])){
 			$this->exportVars = $_SESSION['weS']['exportVars_session'];
 		}
-		foreach(array_keys($this->exportVars) as $k){
-			$var = we_base_request::_(we_base_request::RAW, $k, null);
+		foreach($this->exportVarTypes as $key=>$type){
+			$var = we_base_request::_($type, $key, null);
 			if($var !== null){
-				$this->exportVars[$k] = $var;
+				$this->exportVars[$key] = $var;
 			}
 		}
 		$_SESSION['weS']['exportVars_session'] = $this->exportVars;
@@ -160,8 +200,8 @@ var path="/";
 
 var SelectedItems= new Array();
 SelectedItems["' . FILE_TABLE . '"]=new Array();' .
-	(defined('OBJECT_FILES_TABLE') ? (
-		'SelectedItems["' . OBJECT_FILES_TABLE . '"]=new Array();
+				(defined('OBJECT_FILES_TABLE') ? (
+					'SelectedItems["' . OBJECT_FILES_TABLE . '"]=new Array();
 	SelectedItems["' . OBJECT_TABLE . '"]=new Array();
 	') : '') . '
 
@@ -169,7 +209,7 @@ SelectedItems["' . TEMPLATES_TABLE . '"]=new Array();
 
 var openFolders= new Array();
 openFolders["' . FILE_TABLE . '"]="";' .
-	(defined('OBJECT_FILES_TABLE') ? ('
+				(defined('OBJECT_FILES_TABLE') ? ('
 openFolders["' . OBJECT_FILES_TABLE . '"]="";
 openFolders["' . OBJECT_TABLE . '"]="";
 ') : '') . '
@@ -514,7 +554,7 @@ function we_submit(){
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) .
 					STYLESHEET .
-					$this->Tree->getStyles() .
+					we_html_element::cssLink(CSS_DIR . 'tree.css').
 					$js
 				) .
 				we_html_element::htmlBody(array(
@@ -534,7 +574,6 @@ function we_submit(){
 	private function getHTMLStep4(){
 //	define different parts of the export wizard
 		$_space = 100;
-		$parts = array();
 
 		$extype = $this->exportVars["extype"];
 		$filename = $this->exportVars["filename"];
@@ -545,14 +584,14 @@ function we_submit(){
 
 		$handle_def_classes = $this->exportVars["handle_def_classes"];
 		$handle_object_includes = $this->exportVars["handle_object_includes"];
-		$handle_object_linked = $this->exportVars["handle_object_linked"];
+		//$handle_object_linked = $this->exportVars["handle_object_linked"];
 
 		$handle_doctypes = $this->exportVars["handle_doctypes"];
 		$handle_categorys = $this->exportVars["handle_categorys"];
 
 
 		$handle_object_embeds = $this->exportVars["handle_object_embeds"];
-		$handle_class_defs = $this->exportVars["handle_class_defs"];
+		//$handle_class_defs = $this->exportVars["handle_class_defs"];
 
 
 		$export_depth = $this->exportVars["export_depth"];
@@ -611,22 +650,21 @@ function setState(a) {
 		$formattable->setCol(2, 0, null, we_html_forms::checkboxWithHidden(($handle_object_includes ? true : false), "handle_object_includes", g_l('export', '[handle_object_includes]')));
 		$formattable->setCol(3, 0, null, we_html_forms::checkboxWithHidden(($handle_document_linked ? true : false), "handle_document_linked", g_l('export', '[handle_document_linked]')));
 
-		$parts[] = array("headline" => g_l('export', '[handle_document_options]') . we_html_element::htmlBr() . g_l('export', '[handle_template_options]'), "html" => $formattable->getHtml(), "space" => $_space);
+		$formattable2 = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
+		$formattable2->setCol(0, 0, array("colspan" => 2), we_html_forms::checkboxWithHidden(($handle_def_classes ? true : false), "handle_def_classes", g_l('export', '[handle_def_classes]')));
+		$formattable2->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($handle_object_embeds ? true : false), "handle_object_embeds", g_l('export', '[handle_object_embeds]')));
+//$formattable2->setCol(2,0,null,we_html_forms::checkboxWithHidden(($handle_class_defs ? true : false),"handle_class_defs",g_l('export',"[handle_class_defs]")));
 
-		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
-		$formattable->setCol(0, 0, array("colspan" => 2), we_html_forms::checkboxWithHidden(($handle_def_classes ? true : false), "handle_def_classes", g_l('export', '[handle_def_classes]')));
-		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($handle_object_embeds ? true : false), "handle_object_embeds", g_l('export', '[handle_object_embeds]')));
-//$formattable->setCol(2,0,null,we_html_forms::checkboxWithHidden(($handle_class_defs ? true : false),"handle_class_defs",g_l('export',"[handle_class_defs]")));
+		$formattable3 = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 2, 1);
+		$formattable3->setCol(0, 0, null, we_html_forms::checkboxWithHidden(($handle_doctypes ? true : false), "handle_doctypes", g_l('export', '[handle_doctypes]')));
+		$formattable3->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($handle_categorys ? true : false), "handle_categorys", g_l('export', '[handle_categorys]')));
 
-		$parts[] = array("headline" => g_l('export', '[handle_object_options]') . we_html_element::htmlBr() . g_l('export', '[handle_classes_options]'), "html" => $formattable->getHtml(), "space" => $_space);
-
-		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 2, 1);
-		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden(($handle_doctypes ? true : false), "handle_doctypes", g_l('export', '[handle_doctypes]')));
-		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($handle_categorys ? true : false), "handle_categorys", g_l('export', '[handle_categorys]')));
-
-		$parts[] = array("headline" => g_l('export', '[handle_doctype_options]'), "html" => $formattable->getHtml(), "space" => $_space);
-
-		$parts[] = array("headline" => g_l('export', '[export_depth]'), "html" => we_html_element::htmlLabel(array(), g_l('export', '[to_level]')) . we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50), "space" => $_space);
+		$parts = array(
+			array("headline" => g_l('export', '[handle_document_options]') . we_html_element::htmlBr() . g_l('export', '[handle_template_options]'), "html" => $formattable->getHtml(), "space" => $_space),
+			array("headline" => g_l('export', '[handle_object_options]') . we_html_element::htmlBr() . g_l('export', '[handle_classes_options]'), "html" => $formattable2->getHtml(), "space" => $_space),
+			array("headline" => g_l('export', '[handle_doctype_options]'), "html" => $formattable3->getHtml(), "space" => $_space),
+			array("headline" => g_l('export', '[export_depth]'), "html" => we_html_element::htmlLabel(array(), g_l('export', '[to_level]')) . we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50), "space" => $_space)
+		);
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(STYLESHEET . $js) .
@@ -807,7 +845,8 @@ function setState(a) {
 
 		switch($step){
 			case 3:
-				$js = we_html_element::jsElement('
+				//FIXME: is this ever called???
+				/*$js = we_html_element::jsElement('
 function addOpenFolder(id){
 	if (top.openFolders[top.table]=="") top.openFolders[top.table]+=id;
 	else top.openFolders[top.table]+=","+id;
@@ -860,8 +899,7 @@ var js_path  = "' . JS_DIR . '";
 var img_path = "' . IMAGE_DIR . "tabs/" . '";
 var suffix   = "";
 var layerPosYOffset = 22;') .
-					we_html_element::jsScript(JS_DIR . 'images.js') .
-					we_html_element::jsScript(JS_DIR . 'we_tabs/tabs.js');
+					we_html_element::jsScript(JS_DIR . 'images.js');
 
 				$js2 = we_html_element::jsElement('
 var winWidth  = getWindowWidth(window);
@@ -875,7 +913,7 @@ var we_tabs = new Array();
 				$table->setCol(0, 0, array("class" => "header_small"), we_html_tools::getPixel(5, 15) . we_html_element::htmlB(g_l('export', '[step2]')));
 				$table->setCol(1, 0, array("valign" => "top"), we_html_tools::getPixel(15, 2));
 				$table->setCol(2, 0, array("nowrap" => "nowrap"), we_html_element::jsElement('setTimeout(we_tabInit,500);')
-				);
+				);*/
 				break;
 
 			case 1:
