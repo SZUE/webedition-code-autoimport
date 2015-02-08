@@ -131,38 +131,6 @@ echo implode(',', $tmp);
 ?>
 	);
 
-	var oldWidth = <?php echo weTree::DefaultWidth; ?>;
-
-	function incTree() {
-		var w = parseInt(getTreeWidth());
-		if ((w ><?php echo weTree::MinWidth; ?>) && (w <<?php echo weTree::MaxWidth; ?>)) {
-			w +=<?php echo weTree::StepWidth; ?>;
-			setTreeWidth(w);
-		}
-		if (w >=<?php echo weTree::MaxWidth; ?>) {
-			w =<?php echo weTree::MaxWidth; ?>;
-			self.document.getElementById("incBaum").style.backgroundColor = "grey";
-		}
-	}
-
-	function decTree() {
-		var w = parseInt(getTreeWidth());
-		w -=<?php echo weTree::StepWidth; ?>;
-		if (w ><?php echo weTree::MinWidth; ?>) {
-			setTreeWidth(w);
-			self.document.getElementById("incBaum").style.backgroundColor = "";
-		}
-		if (w <=<?php echo weTree::MinWidth; ?> && ((w +<?php echo weTree::StepWidth; ?>) >=<?php echo weTree::MinWidth; ?>)) {
-			toggleTree();
-		}
-	}
-
-
-	function treeOut() {
-		if (getTreeWidth() <= <?php echo weTree::MinWidth; ?>) {
-			toggleTree();
-		}
-	}
 //-->
 </script>
 <div id="vtab">

@@ -171,10 +171,41 @@ function toggleTree() {
 	}
 }
 
+function treeOut() {
+	if (getTreeWidth() <= size.tree.min) {
+		toggleTree();
+	}
+}
+
 function getTreeWidth() {
 	var w = self.document.getElementById("bframeDiv").style.width;
 	return w.substr(0, w.length - 2);
 }
+
+function incTree() {
+	var w = parseInt(getTreeWidth());
+	if ((w > size.tree.min) && (w < size.tree.max)) {
+		w += size.tree.step;
+		setTreeWidth(w);
+	}
+	if (w >= size.tree.max) {
+		w = size.tree.max;
+		self.document.getElementById("incBaum").style.backgroundColor = "grey";
+	}
+}
+
+function decTree() {
+	var w = parseInt(getTreeWidth());
+	w -= size.tree.step;
+	if (w > size.tree.min) {
+		setTreeWidth(w);
+		self.document.getElementById("incBaum").style.backgroundColor = "";
+	}
+	if (w <= size.tree.min && ((w + size.tree.step) >= size.tree.min)) {
+		toggleTree();
+	}
+}
+
 
 function getSidebarWidth() {
 	var obj = self.document.getElementById("sidebarDiv");
@@ -389,9 +420,7 @@ function doUnloadSEEM(whichWindow) {
 	}
 
 	if (docIds) {
-
-		top.we_cmd('users_unlock', docIds, '<?php echo $_SESSION["user"]["ID"]; ?>', docTables);
-
+		top.we_cmd('users_unlock', docIds, userID, docTables);
 		if (top.opener) {
 			top.opener.focus();
 
