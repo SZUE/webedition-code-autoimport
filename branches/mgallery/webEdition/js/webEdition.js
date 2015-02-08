@@ -427,7 +427,7 @@ function doUnloadNormal(whichWindow) {
 	var tinyDialog;
 	if (!regular_logout) {
 
-		if (tinyMceDialog !== undefinded && tinyMceDialog !== null) {
+		if (window.tinyMceDialog !== undefinded && window.tinyMceDialog !== null) {
 			tinyDialog = tinyMceDialog;
 			try {
 				tinyDialog.close();
@@ -659,7 +659,7 @@ function we_cmd_base(args, url) {
 				}
 				wind.focus();
 			}
-			url = "/webEdition/getHelp.php";
+			url = "http://help.webedition.org/index.php?language=" + helpLang;
 			new jsWindow(url, "help", -1, -1, 800, 600, true, false, true, true);
 			break;
 		case "info_modules":
@@ -687,7 +687,7 @@ function we_cmd_base(args, url) {
 				}
 				wind.focus();
 			}
-			url = "/webEdition/getHelp.php";
+			url = "http://help.webedition.org/index.php?language=" + helpLang;
 			new jsWindow(url, "help", -1, -1, 800, 600, true, false, true, true);
 			break;
 		case "info_tools":
@@ -705,10 +705,7 @@ function we_cmd_base(args, url) {
 			new jsWindow(url, "info", -1, -1, 432, 350, true, false, true);
 			break;
 		case "help":
-			url = "/webEdition/getHelp.php" + (args[1] ?
-							"?hid=" + args[1] :
-							""
-							);
+			url = "http://help.webedition.org/index.php?language=" + helpLang;
 			new jsWindow(url, "help", -1, -1, 720, 600, true, false, true, true);
 			break;
 		case "help_forum":

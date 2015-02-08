@@ -95,11 +95,9 @@ class we_app_TopFrameView extends Zend_View{
 		} else {
 			$infowindow = WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=info";
 		}
-		if(file_exists($_SERVER['DOCUMENT_ROOT'] . $this->appDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'help.php')){
-			$helpwindow = $this->appDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'help.php';
-		} else {
-			$helpwindow = WEBEDITION_DIR . "getHelp.php";
-		}
+		$helpwindow = (file_exists($_SERVER['DOCUMENT_ROOT'] . $this->appDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'help.php')?
+			$this->appDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'help.php':
+			'http://help.webedition.org/index.php?language=' . $GLOBALS['WE_LANGUAGE']);
 
 		$js = <<<EOS
 

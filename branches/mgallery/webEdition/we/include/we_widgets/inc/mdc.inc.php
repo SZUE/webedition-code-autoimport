@@ -30,7 +30,7 @@ $oTblCont->setCol(
 		0, 0, null, we_html_element::htmlDiv(
 				array(
 			"id" => "m_" . $iCurrId . "_inline",
-			"style" => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
+			"style" => "width:100%;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
 				), $mdc));
 $aLang = array(
 	($splitMdc[0] != "") ? base64_decode($splitMdc[0]) : g_l('cockpit', (!$splitMdc[1][1] ? '[my_documents]' : '[my_objects]')),

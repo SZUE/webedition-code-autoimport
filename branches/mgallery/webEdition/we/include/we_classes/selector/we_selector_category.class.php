@@ -181,8 +181,8 @@ document.onclick = weonclick;
 function weonclick(e){
 if(top.makeNewFolder || top.makeNewCat || top.we_editCatID){
 if(!inputklick){' . (we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8' ?
-								'document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);' :
-								'document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;') . '
+								'document.we_form.we_EntryText.value=escape(top.fsbody.document.we_form.we_EntryText_tmp.value);' :
+								'document.we_form.we_EntryText.value=top.fsbody.document.we_form.we_EntryText_tmp.value;') . '
 document.we_form.submit();
 }else{
 inputklick=false;
@@ -190,10 +190,10 @@ inputklick=false;
 }else{
 inputklick=false;
 if(document.all){
-if(event.ctrlKey || event.altKey){
+if(e.ctrlKey || e.altKey){
 ctrlpressed=true;
 }
-if(event.shiftKey){
+if(e.shiftKey){
 shiftpressed=true;
 }
 }else{
@@ -229,7 +229,7 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){
 										'<input type="hidden" name="rootDirID" value="<?php echo $this->rootDirID; ?>" />' +
 										'<input type="hidden" name="table" value="' + table + '" />' +
 										'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
-										'<table border="0" cellpadding="0" cellspacing="0" width="100%">' +
+										'<table border="0" cellpadding="0" cellspacing="0" width="35%">' +
 										(makeNewFolder ?
 														'<tr style="background-color:#DFE9F5;">' +
 														'<td align="center"><img src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>' +
@@ -238,13 +238,13 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){
 														(makeNewCat ?
 																		'<tr style="background-color:#DFE9F5;">' +
 																		'<td align="center"><img src="<?php echo TREE_ICON_DIR ?>cat.gif" width="16" height="18" border="0" /></td>' +
-																		'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_cat_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_cat_name + '" class="wetextinput" style="width:100%" /></td>' +
+																		'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_cat_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_cat_name + '" class="wetextinput" style="width:35%" /></td>' +
 																		'</tr>' :
 																		'')
 														);
 
 						for (i = 0; i < entries.length; i++) {
-							var onclick = ' onclick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event") ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true;"';
+							var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true;"';
 							var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 							body += '<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >' +
 											'<td class="selector" width="25" align="center">' +
@@ -254,7 +254,7 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){
 															'<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" /></td>' +
 															'<td class="selector"' + (we_editCatID ? '' : '') + ' title="' + entries[i].text + '">' + cutText(entries[i].text, 80)
 															) +
-											'</td></tr><tr><td colspan="2" width="2" height="1"></td></tr>';
+											'</td></tr>';
 						}
 						body += '<tr><td width="25" height="2"></td>' +
 										'<td width="150" height="2"></td>' +

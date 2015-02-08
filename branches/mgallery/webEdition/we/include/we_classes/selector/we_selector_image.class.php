@@ -74,8 +74,8 @@ function weonclick(e){
 	}else{
 		inputklick=false;
 		if(document.all){
-			if(event.ctrlKey || event.altKey){ ctrlpressed=true;}
-			if(event.shiftKey){ shiftpressed=true;}
+			if(e.ctrlKey || e.altKey){ ctrlpressed=true;}
+			if(e.shiftKey){ shiftpressed=true;}
 		}else{
 			if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
 			if(e.shiftKey){ shiftpressed=true;}
@@ -141,7 +141,7 @@ margin:0px;
 														'</div>' :
 														'');
 						for (i = 0; i < entries.length; i++) {
-							var onclick = ' onclick="weonclick(<?php echo (we_base_browserDetect::isIE() ? "this" : "event"); ?>);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true"';
+							var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true"';
 							var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 							body += '<div class="imgDiv ' + ((entries[i].ID == top.currentID) ? "selected" : "") + '" id="line_' + entries[i].ID + '" title="' + entries[i].text + '" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
 											'<img src="' + ((entries[i].isFolder) ? "<?php echo ICON_DIR . 'doclist/' . we_base_ContentTypes::FOLDER_ICON ?>" : "<?php echo WEBEDITION_DIR ?>thumbnail.php?id=" + entries[i].ID + "&amp;size=150&amp;path=" + entries[i].path + "&amp;extension=.jpg&amp;size2=200") + '" class="icon"/>' +

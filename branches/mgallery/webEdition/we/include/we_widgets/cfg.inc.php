@@ -28,8 +28,7 @@ $small = 202;
 $large = 432;
 $iDlgWidth = 480;
 
-$sc1 = array();
-$sc2 = array();
+$sc1 = $sc2 = array();
 
 // define shortcuts
 $shortCuts_left = array();

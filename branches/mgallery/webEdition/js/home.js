@@ -262,17 +262,13 @@ function setWidth(id, w) {
 }
 
 function setWidgetWidth(id, w) {
-	var rudebox = {'_inline': w, '_bx': w + (2 * oCfg.general_.wh_edge), '_tb': w + (2 * oCfg.general_.wh_edge),
-		'_h': w - oCfg.general_.w_icon_bar, '_lbl': w - (2 * oCfg.general_.w_icon_bar)};
-	for (var v in rudebox) {
-		setWidth(id + v, rudebox[v]);
-	}
+		setWidth(id+"_bx", w);
 }
 
 
 function resizeWidget(id) {
 	var _type = gel(id + '_type').value;
-	var w = (resizeIdx('get', id) === 0) ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
+	var w = (resizeIdx('get', id) == 0) ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
 	resizeIdx('swap', id);
 	setWidgetWidth(id, w);
 	gel(id + '_lbl').innerHTML = '';
@@ -300,8 +296,7 @@ function initWidget(_id) {
 }
 
 function setTheme(wizId, wizTheme) {
-	var objs = [gel(wizId + '_wrapper'), gel(wizId + '_vll'), gel(wizId + '_vlr'), gel(wizId + '_bottom'),
-		gel(wizId + '_img_cl'), gel(wizId + '_img_cr')];
+	var objs = [gel(wizId + '_wrapper')];
 	var clsElement = gel(wizId + '_cls');
 	var replaceClsName = clsElement.value;
 	var o;
@@ -314,7 +309,7 @@ function setTheme(wizId, wizTheme) {
 			objs[o].src = _source.replace(replaceClsName, wizTheme);
 		}
 	}
-	var _bgObjs = [gel(wizId + '_lbl_mgnl'), gel(wizId + '_lbl'), gel(wizId + '_lbl_mgnr')];
+	var _bgObjs = [gel(wizId + '_lbl')];
 	for (o in _bgObjs) {
 		//_bgObjs[o].style.background = 'url("/webEdition/images/pd/header_' + wizTheme + '.gif")';
 		_bgObjs[o].classList.remove(_bgObjs[o].classList[_bgObjs[o].classList.length - 1]);
@@ -756,8 +751,8 @@ function resizeIdx(a, id) {
 	var res = gel(id + '_res').value;
 	switch (a) {
 		case 'swap':
-			gel(id + '_res').value = (res === 0) ? 1 : 0;
-			gel(id + '_icon_resize').title = (res === 0) ? g_l.reduce_size : g_l.increase_size;
+			gel(id + '_res').value = (res == 0) ? 1 : 0;
+			gel(id + '_icon_resize').title = (res == 0) ? g_l.reduce_size : g_l.increase_size;
 			break;
 		case 'get':
 			return res;

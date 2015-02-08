@@ -25,7 +25,7 @@
 $oTblCont = new we_html_table(
 	array(
 	"id" => "m_" . $iCurrId . "_inline",
-	"style" => "width:" . $iWidth . "px;",
+	"style" => "width:100%;",
 	"cellpadding" => 0,
 	"cellspacing" => 0,
 	"border" => 0

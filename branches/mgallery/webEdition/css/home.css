@@ -98,8 +98,11 @@ div.le_widget:first-child{
 }
 .widgetTitle{
 	border-bottom: 2px solid white;
+	height:32px;
+	line-height: 32px;
+	position: relative;
+	top: -14px;
 }
-
 .bgc_white{
 	background-color:#FFFFFF;
 }
@@ -154,4 +157,32 @@ div.le_widget:first-child{
 }
 .widgetTitle_yellow{
 	background-color: #CBCB5D;
+}
+
+.widget,
+.widget_controls{
+	border-radius: 10px;
+	width:100%;
+}
+.widget{
+	border: 1px solid #B7B7B7;
+	padding-bottom: 11px;
+}
+
+.widget td{
+	padding: 0px;
+	vertical-align: top;
+}
+
+.widget_controls{
+	background-color:lightgrey;/*for old browsers*/
+	background: linear-gradient(white, #E1E1E1 50%);/*edit/editfooterback.gif*/
+	height: 30px;
+	border-bottom: 1px solid #B7B7B7;
+}
+
+div.widgetTitle,
+div.content{
+	padding-left:11px;
+	padding-right:11px;
 }

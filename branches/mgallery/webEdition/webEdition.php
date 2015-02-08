@@ -255,11 +255,12 @@ self.focus();
 				var weSidebar = null;
 // seeMode
 				var SEEMODE =<?php echo intval($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE); ?>;
-				var seeMode_edit_include = <?php echo (isset($SEEM_edit_include) && $SEEM_edit_include) ? "true" : "false"; ?>; // in edit_include mode of seeMode
+				var seeMode_edit_include = <?php echo (isset($SEEM_edit_include) && $SEEM_edit_include) ? 'true' : 'false'; ?>; // in edit_include mode of seeMode
 				var userID =<?php echo $_SESSION["user"]["ID"]; ?>;
 				var sess_id = "<?php echo session_id(); ?>";
 				var specialUnload =<?php echo intval(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())); ?>;
 				var docuLang = "<?php echo ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'); ?>";
+				var helpLang= "<?php echo $GLOBALS["WE_LANGUAGE"]; ?>"
 				var wePerms = {
 <?php
 foreach($_SESSION['perms'] as $perm => $access){

@@ -38,7 +38,7 @@ $_iFrmPadAtts['src'] = WE_INCLUDES_DIR . 'we_widgets/mod/pad.php?' . http_build_
 				6 => $aProps[1],
 				7 => 'home')));
 $_iFrmPadAtts['id'] = 'm_' . $iCurrId . '_inline';
-$_iFrmPadAtts['style'] = 'width:' . $iWidth . 'px;height:287px';
+$_iFrmPadAtts['style'] = 'width:100%;height:287px';
 $_iFrmPadAtts['scrolling'] = 'no';
 $_iFrmPadAtts['marginheight'] = 0;
 $_iFrmPadAtts['marginwidth'] = 0;
@@ -47,7 +47,7 @@ $_iFrmPadAtts['frameborder'] = 0;
 $_iFrmPad = str_replace('>', ' allowtransparency="true">', getHtmlTag('iframe', $_iFrmPadAtts, '', true));
 
 $oTblCont = new we_html_table(array(
-	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
+	"cellpadding" => 0, "cellspacing" => 0, "border" => 0,'width'=>'100%'
 		), 1, 1);
 $oTblCont->setCol(0, 0, null, $_iFrmPad);
 $aLang = array(
