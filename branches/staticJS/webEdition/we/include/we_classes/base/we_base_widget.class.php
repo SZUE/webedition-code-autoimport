@@ -52,29 +52,28 @@ abstract class we_base_widget{
 		$w_icon = (3 * $w_i0) + (2 * $w_i1);
 		$h_i0 = 10;
 		$show_seizer = false;
-		$w_seizer = 30;
 		$gap = 10;
 		$w+=22;
 
 		$oDrag = new we_html_table(array("id" => $iId . "_h", "style" => "width:100%"), 1, 1);
-		$oDrag->setCol(0, 0, array("width" => $w_icon), $show_seizer ? we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_seizer.gif")) : we_html_tools::getPixel('100%', 1));
+		$oDrag->setCol(0, 0, array("width" => $w_icon), $show_seizer ? we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_seizer.gif")) : we_html_tools::getPixel('100%', 16));
 		//$oDrag->setCol(0, 1, array("id" => $iId . "_lbl_old", "align" => "center", "class" => "label", "style" => "width:100%;"), "");
 
 		$oIco_prc = new we_html_table(array(), 1, 3);
-		$oIco_prc->setCol(0, 0, array("width" => $w_i0, "valign" => "middle",'style'=>'padding-right:5px;'), we_html_element::htmlA(array("id" => $iId . "_props", "href" => "#", "onclick" => "propsWidget('" . $sType . "','" . $iId . "',gel('" . $iId . "_csv').value);this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_props.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[properties]')))));
-		$oIco_prc->setCol(0, 1, array("width" => $w_i0, "valign" => "middle",'style'=>'padding-right:5px;'), we_html_element::htmlA(array("id" => $iId . "_resize", "href" => "#", "onclick" => "resizeWidget('" . $iId . "');this.blur();"), we_html_element::htmlImg(array("id" => $iId . "_icon_resize", "src" => IMAGE_DIR . "pd/tb_resize.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', ($iRes == 0 ? '[increase_size]' : '[reduce_size]'))))));
+		$oIco_prc->setCol(0, 0, array("width" => $w_i0, "valign" => "middle", 'style' => 'padding-right:5px;'), we_html_element::htmlA(array("id" => $iId . "_props", "href" => "#", "onclick" => "propsWidget('" . $sType . "','" . $iId . "',gel('" . $iId . "_csv').value);this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_props.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[properties]')))));
+		$oIco_prc->setCol(0, 1, array("width" => $w_i0, "valign" => "middle", 'style' => 'padding-right:5px;'), we_html_element::htmlA(array("id" => $iId . "_resize", "href" => "#", "onclick" => "resizeWidget('" . $iId . "');this.blur();"), we_html_element::htmlImg(array("id" => $iId . "_icon_resize", "src" => IMAGE_DIR . "pd/tb_resize.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', ($iRes == 0 ? '[increase_size]' : '[reduce_size]'))))));
 		$oIco_prc->setCol(0, 2, array("width" => $w_i0, "valign" => "middle"), we_html_element::htmlA(array("id" => $iId . "_remove", "href" => "#", "onclick" => "removeWidget('" . $iId . "');this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_close.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[close]')))));
 
 		$oIco_pc = new we_html_table(array(), 1, 2);
-		$oIco_pc->setCol(0, 0, array("width" => $w_i0, "valign" => "middle",'style'=>'padding-left:15px;padding-right:5px;'), we_html_element::htmlA(array("id" => $iId . "_props", "href" => "#", "onclick" => "propsWidget('" . $sType . "','" . $iId . "',gel('" . $iId . "_csv').value);this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_props.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[properties]')))));
-		$oIco_pc->setCol(0, 1, array("width" => $w_i0,"valign" => "middle"), we_html_element::htmlA(array("id" => $iId . "_remove", "href" => "#", "onclick" => "removeWidget('" . $iId . "');this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_close.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[close]')))));
+		$oIco_pc->setCol(0, 0, array("width" => $w_i0, "valign" => "middle", 'style' => 'padding-left:15px;padding-right:5px;'), we_html_element::htmlA(array("id" => $iId . "_props", "href" => "#", "onclick" => "propsWidget('" . $sType . "','" . $iId . "',gel('" . $iId . "_csv').value);this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_props.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[properties]')))));
+		$oIco_pc->setCol(0, 1, array("width" => $w_i0, "valign" => "middle"), we_html_element::htmlA(array("id" => $iId . "_remove", "href" => "#", "onclick" => "removeWidget('" . $iId . "');this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_close.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[close]')))));
 
-		$ico_obj = ($resize) ? 'oIco_prc' : 'oIco_pc';
+		$ico_obj = ($resize ? 'oIco_prc' : 'oIco_pc');
 		$sIco = ($sType != "_reCloneType_") ? $$ico_obj->getHtml() :
 			we_html_element::htmlDiv(array("id" => $iId . "_ico_prc", "style" => "display:block;"), $oIco_prc->getHtml()) .
 			we_html_element::htmlDiv(array("id" => $iId . "_ico_pc", "style" => "display:none;"), $oIco_pc->getHtml());
 
-		$oTb = new we_html_table(array("id" => $iId . "_tb", 'class'=>'widget_controls'), 1, 2);
+		$oTb = new we_html_table(array("id" => $iId . "_tb", 'class' => 'widget_controls'), 1, 2);
 		$oTb->setCol(0, 0, array(), $oDrag->getHtml());
 		$oTb->setCol(0, 1, array("width" => $w_icon), $sIco);
 
@@ -82,21 +81,18 @@ abstract class we_base_widget{
 			self::$js.="setLabel('" . $iId . "','" . str_replace("'", "\'", $aLabel[0]) . "','" . str_replace("'", "\'", $aLabel[1]) . "');" .
 				"initWidget('" . $iId . "');";
 		}
-		$oBox = we_html_element::htmlDiv(
-			array("id" => $iId . "_bx", "style" => "width:" . $w  . "px;", "class" => 'widget bgc_' . $sCls),
-		$oTb->getHtml().
-		we_html_element::htmlDiv(array("id" => $iId . "_lbl", "class" => "label widgetTitle widgetTitle_" . $sCls,)).
-		we_html_element::htmlDiv(array("id" => $iId . "_wrapper", "style" => "text-align:left;vertical-align:top;", "class" => "content"), we_html_tools::getPixel(1, $gap) . we_html_element::htmlBr() . we_html_element::htmlDiv(array("id" => $iId . "_content"), ((isset($oContent)) ? $oContent->getHtml() : "")) .
-			we_html_element::htmlHidden(array("id" => $iId . "_prefix", "value" => $aLabel[0])) .
-			we_html_element::htmlHidden(array("id" => $iId . "_postfix", "value" => $aLabel[1])) .
-			we_html_element::htmlHidden(array("id" => $iId . "_res", "value" => $iRes)) .
-			we_html_element::htmlHidden(array("id" => $iId . "_type", "value" => $sType)) .
-			we_html_element::htmlHidden(array("id" => $iId . "_cls", "value" => $sCls)) .
-			we_html_element::htmlHidden(array("id" => $iId . "_csv", "value" => $sCsv))
-		)
-			);
-
-		return $oBox;
+		return we_html_element::htmlDiv(
+				array("id" => $iId . "_bx", "style" => "width:" . $w . "px;", "class" => 'widget bgc_' . $sCls), $oTb->getHtml() .
+				we_html_element::htmlDiv(array("id" => $iId . "_lbl", "class" => "label widgetTitle widgetTitle_" . $sCls,)) .
+				we_html_element::htmlDiv(array("id" => $iId . "_wrapper", "class" => "content"), we_html_element::htmlDiv(array("id" => $iId . "_content"), ((isset($oContent)) ? $oContent->getHtml() : "")) .
+					we_html_element::htmlHidden(array('id' => $iId . '_prefix', 'value' => $aLabel[0])) .
+					we_html_element::htmlHidden(array('id' => $iId . '_postfix', 'value' => $aLabel[1])) .
+					we_html_element::htmlHidden(array('id' => $iId . '_res', 'value' => $iRes)) .
+					we_html_element::htmlHidden(array('id' => $iId . '_type', 'value' => $sType)) .
+					we_html_element::htmlHidden(array('id' => $iId . '_cls', 'value' => $sCls)) .
+					we_html_element::htmlHidden(array('id' => $iId . '_csv', 'value' => $sCsv))
+				)
+		);
 	}
 
 	public static function getJs(){

@@ -164,9 +164,9 @@ div.le_widget:first-child{
 	border-radius: 10px;
 	width:100%;
 }
+
 .widget{
 	border: 1px solid #B7B7B7;
-	padding-bottom: 11px;
 }
 
 .widget td{
@@ -179,6 +179,12 @@ div.le_widget:first-child{
 	background: linear-gradient(white, #E1E1E1 50%);/*edit/editfooterback.gif*/
 	height: 30px;
 	border-bottom: 1px solid #B7B7B7;
+}
+div.content{
+	text-align:left;
+	vertical-align:top;
+	padding-top:10px;
+	padding-bottom:11px;
 }
 
 div.widgetTitle,

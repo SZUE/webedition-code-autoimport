@@ -221,14 +221,14 @@ if($bAverageOrder){
 	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
 	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(we_util_Strings::formatNumber($total, $numberformat) . '&nbsp;' . $currency));
 	$i++;
-	
+
 	//canceled volume
 	$shopDashboardTable->addRow();
 	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont","style"=>"color:red;"), g_l('cockpit', '[shop_dashboard][canceled]'));
 	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
 	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right", "style" => "color:red;"), we_util_Strings::formatNumber($canceled, $numberformat) . '&nbsp;' . $currency);
 	$i++;
-	
+
 	//revenue
 	$shopDashboardTable->addRow();
 	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][revenue]')));
@@ -303,7 +303,7 @@ if($bTarget){
 
 			addLoadEvent( function() {
 				var options;
-				var widgetDoc = widgetFrame !== undefined ? widgetFrame.document : " . ($isRefresh ? 'parent.document' : 'document') . ";
+				var widgetDoc = window.widgetFrame !== undefined ? window.widgetFrame.document : " . ($isRefresh ? 'parent.document' : 'document') . ";
 
 				// Draw the gauge using custom settings
 				options = {
