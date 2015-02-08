@@ -145,6 +145,7 @@ $l_global=array(
 	'username_wrong_chars'=>'Username may only contain alpha-numeric characters (a-z, A-Z and 0-9) and `.`, `_`, `@` or `-`!',
 	'values'=>'Values',
 	'variant_field'=>'Variant field',
+	'vfile'=>'Media',
 	'vspace'=>'Vspace',
 	'warning'=>'Warning',
 	'we_alert'=>'This function is not availabe in the demo version of webEdition!',

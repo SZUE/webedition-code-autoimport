@@ -145,6 +145,7 @@ $l_global=array(
 	'username_wrong_chars'=>'De gebruikersbaam mag alleen alfa-numerieke karakters bevatten (a-z, A-Z en 0-9) en `.`, `_` of `-`!',
 	'values'=>'Waardes',
 	'variant_field'=>'Variant veld',
+	'vfile'=>'Media',
 	'vspace'=>'Vspace',
 	'warning'=>'Waarschuwing',
 	'we_alert'=>'Deze functie is niet beschikbaar in de demo-versie van webEdition!',

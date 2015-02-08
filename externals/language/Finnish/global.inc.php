@@ -145,6 +145,7 @@ $l_global=array(
 	'username_wrong_chars'=>'Käyttäjätunnus voi sisältää vain alfa-numeerisia merkkejä (a-z, A-Z ja 0-9) ja `.`, `_` tai `-`!',
 	'values'=>'Arvot',
 	'variant_field'=>'Muunnelmakenttä',
+	'vfile'=>'Media',
 	'vspace'=>'Pystyväli (Vspace)',
 	'warning'=>'Varoitus',
 	'we_alert'=>'Toimintoa ei ole webEditionin demoversiossa!',
