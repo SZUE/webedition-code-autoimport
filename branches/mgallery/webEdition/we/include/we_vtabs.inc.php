@@ -133,15 +133,11 @@ echo implode(',', $tmp);
 
 	var oldWidth = <?php echo weTree::DefaultWidth; ?>;
 
-	function toggleTree() {
-		top.toggleTree();
-	}
-
 	function incTree() {
-		var w = parseInt(top.getTreeWidth());
+		var w = parseInt(getTreeWidth());
 		if ((w ><?php echo weTree::MinWidth; ?>) && (w <<?php echo weTree::MaxWidth; ?>)) {
 			w +=<?php echo weTree::StepWidth; ?>;
-			top.setTreeWidth(w);
+			setTreeWidth(w);
 		}
 		if (w >=<?php echo weTree::MaxWidth; ?>) {
 			w =<?php echo weTree::MaxWidth; ?>;
@@ -150,10 +146,10 @@ echo implode(',', $tmp);
 	}
 
 	function decTree() {
-		var w = parseInt(top.getTreeWidth());
+		var w = parseInt(getTreeWidth());
 		w -=<?php echo weTree::StepWidth; ?>;
 		if (w ><?php echo weTree::MinWidth; ?>) {
-			top.setTreeWidth(w);
+			setTreeWidth(w);
 			self.document.getElementById("incBaum").style.backgroundColor = "";
 		}
 		if (w <=<?php echo weTree::MinWidth; ?> && ((w +<?php echo weTree::StepWidth; ?>) >=<?php echo weTree::MinWidth; ?>)) {
@@ -163,7 +159,7 @@ echo implode(',', $tmp);
 
 
 	function treeOut() {
-		if (top.getTreeWidth() <= <?php echo weTree::MinWidth; ?>) {
+		if (getTreeWidth() <= <?php echo weTree::MinWidth; ?>) {
 			toggleTree();
 		}
 	}
@@ -198,7 +194,7 @@ if(($tab = we_base_request::_(we_base_request::STRING, "table"))){
 	</script>
 </div>
 <div id="baumArrows">
-<img class="baumArrow" src="<?php echo BUTTONS_DIR ?>icons/function_plus.gif" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();">
-<img class="baumArrow" src="<?php echo BUTTONS_DIR ?>icons/function_minus.gif" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();">
-<img class="baumArrow" src="<?php echo BUTTONS_DIR ?>icons/direction_<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>.gif" onclick="toggleTree();">
+<img class="baumArrow" id="incBaum" src="<?php echo BUTTONS_DIR ?>icons/function_plus.gif" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();">
+<img class="baumArrow" id="decBaum" src="<?php echo BUTTONS_DIR ?>icons/function_minus.gif" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();">
+<img class="baumArrow" id="arrowImg" src="<?php echo BUTTONS_DIR ?>icons/direction_<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>.gif" onclick="toggleTree();">
 </div>
