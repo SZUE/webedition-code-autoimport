@@ -109,16 +109,16 @@ var oEvt = {
 		return oDiv;
 	},
 	getEvt: function (oMouseEvt) {
-		if (typeof oMouseEvt == 'undefined') {
+		if (oMouseEvt !== undefined) {
 			oMouseEvt = window.event;
 		}
-		if (typeof oMouseEvt.layerX == 'undefined') {
+		if (oMouseEvt.layerX !== undefined) {
 			oMouseEvt.layerX = oMouseEvt.offsetX;
 		}
-		if (typeof oMouseEvt.layerY == 'undefined') {
+		if (oMouseEvt.layerY !== undefined) {
 			oMouseEvt.layerY = oMouseEvt.offsetY;
 		}
-		if (typeof oMouseEvt.which == 'undefined') {
+		if (oMouseEvt.which !== undefined) {
 			oMouseEvt.which = oMouseEvt.button;
 		}
 		return oMouseEvt;
@@ -145,7 +145,6 @@ var le_dragInit = function (oMouseEvt) {
 var oWidget = {};
 oWidget.br = navigator.userAgent;
 oWidget.Gecko = oWidget.br.indexOf('Gecko') != -1;
-oWidget.Opera = oWidget.br.indexOf('Opera') != -1;
 oWidget.Safari = oWidget.br.indexOf('Safari') != -1;
 oWidget.oShieldId = 'divShieldId';
 oWidget.oModShieldId = 'modDivShieldId';
@@ -284,13 +283,7 @@ function onInsertNode() {
 	this.node.style.width = iOffsetW + 'px';
 	oNodeInsert.style.height = '1px';
 	// set height, if it is narrow
-	if (iOffsetW <= 300) {
-		oNodeInsert.style.width = iOffsetW + "px";
-
-	} else {
-		oNodeInsert.style.width = "100%";
-
-	}
+	oNodeInsert.style.width = (iOffsetW <= 300 ? iOffsetW + "px" : "100%");
 
 	this.node.parentNode.insertBefore(oNodeInsert, this.node.nextSibling);
 	this.node.style.position = 'absolute';
@@ -332,10 +325,6 @@ function onDragNode(iPosX, iPosY) {
 	obj = oWidget.p();
 	if (oBuff !== null && obj.nextSibling != oBuff.node && !!oBuff.node.parentNode && oBuff.node.parentNode.nodeType == 1) {
 		oBuff.node.parentNode.insertBefore(obj, oBuff.node);
-		if (oWidget.Opera) {
-			document.body.style.display = 'none';
-			document.body.style.display = '';
-		}
 	}
 }
 
@@ -351,10 +340,11 @@ function drop() {
 	var bInsertNode = false;
 	oWidget.hide();
 	this.node.style.position = '';
-	this.node.style.width = '';
-	this.node.style.zIndex = '';
-	this.node.style.filter = '';
-	this.node.style.opacity = '';
+	this.node.style.left = '0px';
+	 this.node.style.zIndex = '';
+	this.node.style.top = '0px';
+	 this.node.style.filter = '';
+	 this.node.style.opacity = '';
 	var oNodeDiv = oWidget.p();
 	if (oNodeDiv.nextSibling != this.origNextSibling) {
 		oNodeDiv.parentNode.insertBefore(this.node, oNodeDiv.nextSibling);
@@ -362,10 +352,6 @@ function drop() {
 	}
 	oNodeDiv.parentNode.removeChild(oNodeDiv);
 	oWidget.show();
-	if (oWidget.Opera) {
-		document.body.style.display = 'none';
-		document.body.style.display = '';
-	}
 	return bInsertNode;
 }
 

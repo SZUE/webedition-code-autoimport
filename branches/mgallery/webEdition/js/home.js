@@ -43,7 +43,7 @@ function getColumnAsoc(id) {
 	var k = 0;
 	for (var i = 0; i < iNodeLen; i++) {
 		var oChild = oNode.childNodes[i];
-		if (oChild.tagName == 'DIV' && oChild.className == 'le_widget') {
+		if (oChild.className === 'le_widget') {
 			var sAttrId = oChild.getAttribute('id');
 			aNodeSet[k] = {
 				'type': gel(sAttrId + '_type').value,
@@ -67,7 +67,7 @@ function getWidgetProps(p) {
 		}
 		for (var j = 0; j < node.childNodes.length; j++) {
 			var child = node.childNodes[j];
-			if (child.tagName == 'DIV' && child.className == 'le_widget') {
+			if (child.className === 'le_widget') {
 				var attr_id = child.getAttribute('id');
 				oProps[attr_id] = gel(attr_id + '_' + p).value;
 			}
@@ -185,8 +185,8 @@ function saveSettings() {
 function hasExpandedWidget(node) {
 	for (var i = 0; i < node.childNodes.length; i++) {
 		var currentChild = node.childNodes[i];
-		if (currentChild.tagName == 'DIV' && currentChild.className == 'le_widget') {
-			if (gel(currentChild.getAttribute('id') + '_res').value == 1) {
+		if (currentChild.className === 'le_widget') {
+			if (gel(currentChild.getAttribute('id') + '_res').value === "1") {
 				return true;
 			}
 		}
@@ -241,14 +241,14 @@ function setLabel(id, prefix, postfix) {
 	var el_label = gel(id + '_lbl');
 	var w = parseInt(el_label.style.width);
 	var suspensionPts = '';
-	if (typeof (prefix) == 'undefined' || typeof (postfix) == 'undefined') {
+	if (prefix === undefined || postfix === undefined) {
 		label = getLabel(id);
 	} else {
 		label = strip_tags(prefix + postfix);
 		label = label.replace(/\[\[/g, "<");
 		label = label.replace(/\]\]/g, ">");
 	}
-	if (label.indexOf("<span") == -1) {
+	if (label.indexOf("<span") === -1) {
 		while (getDimension(label + suspensionPts, 'label').width + 10 > w) {
 			label = label.substring(0, label.length - 1);
 			suspensionPts = '&hellip;';
@@ -262,13 +262,13 @@ function setWidth(id, w) {
 }
 
 function setWidgetWidth(id, w) {
-		setWidth(id+"_bx", w);
+	setWidth(id + "_bx", w);
 }
 
 
 function resizeWidget(id) {
 	var _type = gel(id + '_type').value;
-	var w = (resizeIdx('get', id) == 0) ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
+	var w = (resizeIdx('get', id) === "0") ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
 	resizeIdx('swap', id);
 	setWidgetWidth(id, w);
 	gel(id + '_lbl').innerHTML = '';
@@ -279,16 +279,16 @@ function resizeWidget(id) {
 }
 
 function initWidget(_id) {
-	if (gel(_id + '_type').value == "sct") {
+	if (gel(_id + '_type').value === "sct") {
 		var _width = "100%";
-		if (resizeIdx('get', _id) == 1) {
+		if (resizeIdx('get', _id) === "1") {
 			_width = "48%";
 		}
 
 		var _elem = gel(_id);
 		var _inlineDivs = _elem.getElementsByTagName('div');
 		for (i = 0; i < _inlineDivs.length; i++) {
-			if (_inlineDivs[i].className == "sct_row") {
+			if (_inlineDivs[i].className === "sct_row") {
 				_inlineDivs[i].style.width = _width;
 			}
 		}
@@ -343,20 +343,12 @@ function fadeTrans(wizId, start, end, ms) {
 }
 
 function toggle(wizId, wizType, prefix, postfix) {
-	var defH = eval('oCfg.' + wizType + '_props_["height"]');
-	var defRes = eval('oCfg.' + wizType + '_props_["res"]');
+	var defRes = oCfg[wizType + '_props_']["res"];
 	var defW = (!!defRes) ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
 	var asoc = {
 		'width': {
 			'_inline': defW,
-			'_bx': defW + (2 * oCfg.general_.wh_edge),
-			'_tb': defW + (2 * oCfg.general_.wh_edge),
-			'_h': defW - oCfg.general_.w_icon_bar,
-			'_lbl': defW - (2 * oCfg.general_.w_icon_bar)
-		},
-		'height': {
-			'_bx': defH + (2 * oCfg.general_.wh_edge),
-			'_vline_r': defH
+			'_bx': defW + (2 * oCfg.general_.wh_edge)
 		}
 	};
 	var props = {
@@ -364,25 +356,25 @@ function toggle(wizId, wizType, prefix, postfix) {
 	};
 	for (var att_name in asoc) {
 		for (var v in asoc[att_name]) {
-			eval('gel(wizId+v).style.' + att_name + '=asoc[att_name][v]+"px"');
+			gel(wizId + v).style[att_name] = asoc[att_name][v] + "px";
 		}
 	}
 	for (var p in props) {
 		gel(wizId + '_' + p).value = props[p];
 	}
-	if (defRes == 1 && !jsStyleCls('verify', gel('c_1'), 'cls_1_expand')) {
+	if (defRes === "1" && !jsStyleCls('verify', gel('c_1'), 'cls_1_expand')) {
 		updateJsStyleCls();
 	}
 }
 
 function pushContent(wizType, wizId, cNode, prefix, postfix, sCsv) {
 	var cNodeReceptor = gel(wizId + '_content');
-	var wizTheme = eval("oCfg." + wizType + "_props_['cls']");
+	var wizTheme = oCfg[wizType + "_props_"]['cls'];
 	cNodeReceptor.innerHTML = cNode;
 	gel(wizId + '_csv').value = sCsv;
 	toggle(wizId, wizType, prefix, postfix);
 	setLabel(wizId);
-	if (wizTheme != 'white') {
+	if (wizTheme !== 'white') {
 		setTheme(wizId, wizTheme);
 	}
 	gel(wizId).style.display = 'block';
@@ -415,9 +407,9 @@ function createWidget(typ, row, col) {
 	}
 	var nodeToClone = gel(cloneSampleId);
 	var regex = cloneSampleId;
-	var re = new RegExp(((cloneSampleId == 'divClone') ? new_id + '|clone' : cloneSampleId), 'g');
+	var re = new RegExp(((cloneSampleId === 'divClone') ? new_id + '|clone' : cloneSampleId), 'g');
 	var sClonedNode = nodeToClone.innerHTML.replace(re, new_id);
-	if (cloneSampleId == 'divClone') {
+	if (cloneSampleId === 'divClone') {
 		sClonedNode = sClonedNode.replace(/_reCloneType_/g, typ);
 	}
 	var divClone = document.createElement('DIV');
@@ -450,7 +442,7 @@ function createWidget(typ, row, col) {
 	if (!!oCfg.blend_.fadeIn) {
 		setOpacity(divClone.id, 0);
 	}
-	if (cloneSampleId != 'divClone') {
+	if (cloneSampleId !== 'divClone') {
 		divClone.style.display = 'block';
 		if (!!oCfg.blend_.fadeIn) {
 			fadeTrans(new_id, 0, 100, oCfg.blend_.v);
@@ -464,10 +456,10 @@ function createWidget(typ, row, col) {
 }
 
 function implode(arr, delimeter, enclosure) {
-	if (typeof (delimeter) == 'undefined') {
+	if (delimeter === undefined) {
 		delimeter = ',';
 	}
-	if (typeof (enclosure) == 'undefined') {
+	if (enclosure === undefined) {
 		enclosure = "'";
 	}
 	var out = '';
@@ -550,7 +542,8 @@ function updateWidgetContent(widgetType, widgetId, contentData, titel) {
 	var oContent = gel(widgetId + '_content');
 	oContent.style.display = 'block';
 	hideLoadingSymbol(widgetId);
-	eval(((widgetType === 'pad') ? 'docIFrm.getElementById(widgetType)' : 'oInline') + '.innerHTML=contentData;');
+	var doc = (widgetType === 'pad' ? docIFrm.getElementById(widgetType) : oInline);
+	doc.innerHTML = contentData;
 	if (widgetType === 'pad') {
 		iFrmScr.calendarSetup();
 	}
@@ -677,8 +670,8 @@ function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 	oContent.style.display = 'block';
 
 	hideLoadingSymbol(sObjId);
-
-	eval(((sType === 'rss' || sType === 'pad') ? 'docIFrm.getElementById(sType)' : 'oInline') + '.innerHTML=oDoc.innerHTML;');
+	var doc = (sType === 'rss' || sType === 'pad' ? docIFrm.getElementById(sType) : oInline);
+	doc.innerHTML = oDoc.innerHTML;
 	if (sType === 'pad') {
 		iFrmScr.calendarSetup();
 	}
@@ -689,9 +682,9 @@ function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 
 var _propsDlg = [];
 function propsWidget() {
-	eval('var iHeight=oCfg.' + arguments[0] + '_props_["iDlgHeight"]');
+	var iHeight = oCfg[arguments[0] + '_props_']["iDlgHeight"];
 	var uri = composeUri(arguments);
-	eval('_propsDlg["' + arguments[1] + '"]=window.open(uri,arguments[1],"location=0,status=1,scrollbars=0,width=' + oCfg.general_.iDlgWidth + 'px,height=' + iHeight + 'px")');
+	_propsDlg[arguments[1]] = window.open(uri, arguments[1], 'location=0,status=1,scrollbars=0,width=' + oCfg.general_.iDlgWidth + 'px,height=' + iHeight + 'px');
 }
 
 function closeAllModalWindows() {
@@ -751,8 +744,8 @@ function resizeIdx(a, id) {
 	var res = gel(id + '_res').value;
 	switch (a) {
 		case 'swap':
-			gel(id + '_res').value = (res == 0) ? 1 : 0;
-			gel(id + '_icon_resize').title = (res == 0) ? g_l.reduce_size : g_l.increase_size;
+			gel(id + '_res').value = (res === "0") ? "1" : "0";
+			gel(id + '_icon_resize').title = (res === "0") ? g_l.reduce_size : g_l.increase_size;
 			break;
 		case 'get':
 			return res;

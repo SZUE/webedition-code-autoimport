@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -30,7 +29,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
-
 	/**
 	 * _framespacing attribute
 	 *
@@ -254,11 +252,9 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 
 		$messageConsole = new we_ui_controls_MessageConsole(array('consoleName' => 'toolFrame'));
 
-		$table = new we_html_table(array("width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
-		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $jmenu->getHTML(false));
-		$table->setCol(0, 1, array("align" => "right", "valign" => "top", 'style' => 'padding-right: 10px; padding-top: 4px'), $messageConsole->getHTML());
-
-		return we_html_element::htmlDiv(array('class' => 'menuDiv'), $table->getHTML());
+		return
+			we_html_element::htmlDiv(array('class' => 'menuDiv'), $jmenu->getHTML(false)) .
+			we_html_element::htmlDiv(array('style' => 'width:5em;position: absolute;top: 0px;right: 0px;'), $messageConsole->getHTML());
 	}
 
 }
