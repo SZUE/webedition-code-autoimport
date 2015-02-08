@@ -33,7 +33,9 @@ $tableMap = array(
 		strtolower(stripTblPrefix(THUMBNAILS_TABLE)) => THUMBNAILS_TABLE,
 		strtolower(stripTblPrefix(NAVIGATION_TABLE)) => NAVIGATION_TABLE,
 		strtolower(stripTblPrefix(NAVIGATION_RULE_TABLE)) => NAVIGATION_RULE_TABLE,
-		strtolower(stripTblPrefix(METADATA_TABLE)) => METADATA_TABLE
+		strtolower(stripTblPrefix(METADATA_TABLE)) => METADATA_TABLE,
+		strtolower(stripTblPrefix(VFILE_TABLE)) => VFILE_TABLE,
+		strtolower(stripTblPrefix(FILELINK_TABLE)) => FILELINK_TABLE,
 	),
 	'versions' => array(
 		strtolower(stripTblPrefix(VERSIONS_TABLE)) => VERSIONS_TABLE,
