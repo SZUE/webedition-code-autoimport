@@ -40,8 +40,6 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 	 */
 	public function save($args){
 
-		$utf8_decode = true;
-
 		$translate = we_core_Local::addTranslation('apps.xml');
 
 		if(!isset($args[0])){

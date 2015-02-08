@@ -204,7 +204,7 @@ this.selectedIndex = 0;' .
 		return $out;
 	}
 
-	static function htmlDialogBorder4Row($content, $class = 'middlefont', $bgColor = ''){
+	private static function htmlDialogBorder4Row($content, $class = 'middlefont', $bgColor = ''){
 		$anz = count($content);
 		$out = '<td style="border-bottom: 1px solid silver;background-image:url(' . IMAGE_DIR . 'box/shaddowBox3_l.gif);">' .
 			self::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
