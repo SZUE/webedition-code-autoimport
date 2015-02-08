@@ -29,7 +29,7 @@ $oTblCont->setCol(
 	0, 0, null, we_html_element::htmlDiv(
 		array(
 		"id" => "m_" . $iCurrId . "_inline",
-		"style" => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
+		"style" => "width:100%;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
 		), $sc->getHtml()));
 $aLang = array(
 	g_l('cockpit', '[shortcuts]'), ''

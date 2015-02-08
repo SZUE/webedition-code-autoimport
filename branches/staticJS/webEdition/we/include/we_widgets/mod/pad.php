@@ -225,31 +225,15 @@ $oTblBtnProps->setCol(0, 0, array(
 // Table with the note list
 $oPad = new we_html_table(
 	array(
-	"width" => "100%",
+	"style" => "table-layout:fixed;width:100%;padding-top:6px;padding-bottom:6px;background-color:white;",
 	"cellpadding" => 0,
 	"cellspacing" => 0,
 	"border" => 0,
-	"style" => "table-layout:fixed;"
-	), 3, 3);
-$oPad->setCol(0, 0, array(
-	"width" => 6
-	), we_html_element::htmlImg(array(
-		"src" => IMAGE_DIR . "pd/pad_corner_lt.gif", "width" => 6, "height" => 4
-)));
-$oPad->setCol(0, 1, array("class" => "cl_notes"), "");
-$oPad->setCol(0, 2, array("width" => 6), we_html_element::htmlImg(array(
-		"src" => IMAGE_DIR . "pd/pad_corner_rt.gif", "width" => 6, "height" => 4
-)));
-$oPad->setCol(1, 0, array("colspan" => 3, "class" => "cl_notes"), we_html_element::htmlDiv(array(
+	), 1, 1);
+
+$oPad->setCol(0, 0, array("colspan" => 3, "class" => "cl_notes"), we_html_element::htmlDiv(array(
 		"id" => "notices"
 		), getNoteList($_sql, $bDate, $bDisplay)));
-$oPad->setCol(2, 0, array('width' => 6), we_html_element::htmlImg(array(
-		'src' => IMAGE_DIR . 'pd/pad_corner_lb.gif', "width" => 6, "height" => 6
-)));
-$oPad->setCol(2, 1, array("class" => "cl_notes"), "");
-$oPad->setCol(2, 2, array("width" => 6), we_html_element::htmlImg(array(
-		"src" => IMAGE_DIR . "pd/pad_corner_rb.gif", "width" => 6, "height" => 6
-)));
 
 $_notepad = $oPad->getHTML() .
 	we_html_element::htmlDiv(array("id" => "props"), $oTblProps->getHTML()) .

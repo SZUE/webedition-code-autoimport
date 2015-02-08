@@ -24,7 +24,7 @@
 
 /**
  * class
- * @desc    class for tag <we:listview type="search">
+ * @desc    class for tag <we:listview type='search'>
  *          the difference to the normal listview is, that you can only
  *          display the fields from the index table (tblIndex) which are
  *          Title, Description we_text, we_path
@@ -52,7 +52,7 @@ class we_listview_search extends we_listview_base{
 	 * @param   docType       string - doctype
 	 * @param   class         integer - ID of a class. Search only in Objects of this class
 	 * @param   cats          string - comma separated categories
-	 * @param   catOr         boolean - set to true if it should be an "OR condition"
+	 * @param   catOr         boolean - set to true if it should be an 'OR condition'
 	 * @param   casesensitive boolean - set to true when a search should be case sensitive
 	 * @param   workspaceID   string - commaseperated list of id's of workspace
 	 * @param   cols   		  integer - to display a table this is the number of cols
@@ -64,7 +64,7 @@ class we_listview_search extends we_listview_base{
 		$this->triggerID = $triggerID;
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
-		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : "");
+		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 
 		$where_lang = ($this->languages ?
 				' AND ' . INDEX_TABLE . '.Language IN ("' . implode('","', makeArrayFromCSV($this->languages)) . '") ' :
@@ -94,8 +94,8 @@ class we_listview_search extends we_listview_base{
 						if(trim($o)){
 							$foo = preg_split('/ +/', $o);
 							$oname = $foo[0];
-							$otype = isset($foo[1]) ? $foo[1] : "";
-							$orderArr[] = array("oname" => $oname, "otype" => $otype);
+							$otype = isset($foo[1]) ? $foo[1] : '';
+							$orderArr[] = array('oname' => $oname, 'otype' => $otype);
 						}
 					}
 					$this->order = '';
@@ -109,7 +109,7 @@ class we_listview_search extends we_listview_base{
 							case 'ID':
 							case 'Workspace':
 							case 'Description':
-								$this->order .= $o["oname"] . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+								$this->order .= $o['oname'] . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
 						}
 					}
 					$this->order = rtrim($this->order, ',');
@@ -145,7 +145,7 @@ class we_listview_search extends we_listview_base{
 
 
 		$bedingungen = preg_split('/ +/', $this->search);
-		$ranking = "0";
+		$ranking = '0';
 		$spalten = array(($this->casesensitive ? 'BINARY ' : '') . INDEX_TABLE . '.Text');
 		foreach($bedingungen as $v1){
 			if(preg_match('|^[-\+]|', $v1)){
@@ -154,7 +154,7 @@ class we_listview_search extends we_listview_base{
 				$klammer = array();
 				reset($spalten);
 				foreach($spalten as $v){
-					$klammer[] = sprintf("%s LIKE '%%%s%%'", $v, addslashes($bed));
+					$klammer[] = sprintf('%s LIKE "%%%s%%"', $v, addslashes($bed));
 				}
 				if($not){
 					$bedingungen3_sql[] = $not . '(' . implode($klammer, ' OR ') . ')';
@@ -165,18 +165,18 @@ class we_listview_search extends we_listview_base{
 				$klammer = array();
 				reset($spalten);
 				foreach($spalten as $v){
-					$klammer[] = sprintf("%s LIKE '%%%s%%'", $v, addslashes($v1));
+					$klammer[] = sprintf('%s LIKE "%%%s%%"', $v, addslashes($v1));
 				}
-				$bed2 = "(" . implode($klammer, " OR ") . ")";
-				$ranking .= "-" . $bed2;
+				$bed2 = '(' . implode($klammer, ' OR ') . ')';
+				$ranking .= '-' . $bed2;
 				$bedingungen2_sql[] = $bed2;
 			}
 		}
 
 		if(isset($bedingungen_sql) && count($bedingungen_sql) > 0){
-			$bedingung_sql1 = " ( " . implode($bedingungen_sql, ' AND ') . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" AND " . implode($bedingungen3_sql, " AND ")) : "") . " ) ";
+			$bedingung_sql1 = ' ( ' . implode($bedingungen_sql, ' AND ') . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (' AND ' . implode($bedingungen3_sql, ' AND ')) : '') . ' ) ';
 		} else if(isset($bedingungen2_sql) && count($bedingungen2_sql) > 0){
-			$bedingung_sql2 = " ( ( " . implode($bedingungen2_sql, ' OR ') . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (" ) AND " . implode($bedingungen3_sql, " AND ")) : " ) ") . " ) ";
+			$bedingung_sql2 = ' ( ( ' . implode($bedingungen2_sql, ' OR ') . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (' ) AND ' . implode($bedingungen3_sql, ' AND ')) : ' ) ') . ' ) ';
 		} else if(isset($bedingungen3_sql) && count($bedingungen3_sql) > 0){
 			$bedingung_sql2 = implode($bedingungen3_sql, ' AND ');
 		}
@@ -186,7 +186,7 @@ class we_listview_search extends we_listview_base{
 		} else {
 			$bedingung_sql = $bedingung_sql2;
 		}
-		if($this->workspaceID != ""){
+		if($this->workspaceID){
 			$workspaces = makeArrayFromCSV($this->workspaceID);
 			$cond = array();
 			foreach($workspaces as $id){
@@ -218,35 +218,35 @@ class we_listview_search extends we_listview_base{
 		if($ret){
 			if($this->DB_WE->Record['OID'] && $this->objectseourls && show_SeoLinks()){
 				$db = new DB_WE();
-				$path_parts = pathinfo($_SERVER["SCRIPT_NAME"]);
-				$objectdaten = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->DB_WE->Record["OID"]) . ' LIMIT 1', $db);
+				$path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
+				$objectdaten = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->DB_WE->Record['OID']) . ' LIMIT 1', $db);
 				$objecttriggerid = ($this->triggerID ? : $objectdaten['TriggerID']);
 
 				if($objecttriggerid){
 					$path_parts = pathinfo(id_to_path($objecttriggerid));
 				}
-				$pidstr = ($this->DB_WE->Record["WorkspaceID"] ? '?pid=' . intval($this->DB_WE->Record["WorkspaceID"]) : '');
+				$pidstr = ($this->DB_WE->Record['WorkspaceID'] ? '?pid=' . intval($this->DB_WE->Record['WorkspaceID']) : '');
 
 				if(NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-					$this->DB_WE->Record["WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') .
+					$this->DB_WE->Record['WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') .
 						($objectdaten['Url'] ?
 							'/' . $objectdaten['Url'] . $pidstr :
-							'/?we_objectID=' . $this->DB_WE->Record["OID"] . str_replace('?', '&amp;', $pidstr));
+							'/?we_objectID=' . $this->DB_WE->Record['OID'] . str_replace('?', '&amp;', $pidstr));
 				} else {
-					$this->DB_WE->Record["WE_PATH"] = ($objectdaten['Url'] ?
+					$this->DB_WE->Record['WE_PATH'] = ($objectdaten['Url'] ?
 							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objectdaten['Url'] . $pidstr :
-							$_SERVER["SCRIPT_NAME"] . '?we_objectID=' . $this->DB_WE->Record["OID"] . str_replace('?', '&amp;', $pidstr));
+							$_SERVER['SCRIPT_NAME'] . '?we_objectID=' . $this->DB_WE->Record['OID'] . str_replace('?', '&amp;', $pidstr));
 				}
-				$this->DB_WE->Record["wedoc_Path"] = $this->DB_WE->Record["WE_PATH"];
-				$this->DB_WE->Record["we_WE_URL"] = $objectdaten['Url'];
-				$this->DB_WE->Record["we_WE_TRIGGERID"] = $objecttriggerid;
+				$this->DB_WE->Record['wedoc_Path'] = $this->DB_WE->Record['WE_PATH'];
+				$this->DB_WE->Record['we_WE_URL'] = $objectdaten['Url'];
+				$this->DB_WE->Record['we_WE_TRIGGERID'] = $objecttriggerid;
 			} else {
-				$this->DB_WE->Record["wedoc_Path"] = $this->DB_WE->Record["Path"];
-				$this->DB_WE->Record["WE_PATH"] = $this->DB_WE->Record["Path"];
+				$this->DB_WE->Record['wedoc_Path'] = $this->DB_WE->Record['Path'];
+				$this->DB_WE->Record['WE_PATH'] = $this->DB_WE->Record['Path'];
 			}
 			$this->DB_WE->Record['WE_LANGUAGE'] = $this->DB_WE->Record['Language'];
-			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record["Text"];
-			$this->DB_WE->Record['wedoc_Category'] = $this->DB_WE->Record["Category"];
+			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['Text'];
+			$this->DB_WE->Record['wedoc_Category'] = $this->DB_WE->Record['Category'];
 			$this->DB_WE->Record['WE_ID'] = (isset($this->DB_WE->Record['DID']) && $this->DB_WE->Record['DID']) ? $this->DB_WE->Record['DID'] : (isset($this->DB_WE->Record['OID']) ? $this->DB_WE->Record['OID'] : 0);
 			$this->count++;
 			return true;
@@ -254,10 +254,10 @@ class we_listview_search extends we_listview_base{
 		$this->stop_next_row = $this->shouldPrintEndTR();
 		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 			$this->DB_WE->Record = array(
-				"WE_LANGUAGE" => '',
-				"WE_PATH" => '',
-				"WE_TEXT" => '',
-				"WE_ID" => '',
+				'WE_LANGUAGE' => '',
+				'WE_PATH' => '',
+				'WE_TEXT' => '',
+				'WE_ID' => '',
 			);
 			$this->count++;
 			return true;

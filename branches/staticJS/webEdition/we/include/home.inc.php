@@ -210,7 +210,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 				include(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
 				$$aProps[0] = we_base_widget::create('m_' . $iCurrId, $aProps[0], $oTblCont, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
 				$s2 .= we_html_element::htmlDiv(
-						array("id" => "m_" . $iCurrId, "class" => "le_widget"), $$aProps[0]->getHtml());
+						array("id" => "m_" . $iCurrId, "class" => "le_widget"), $$aProps[0]);
 			}
 		}
 		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . (($bExtendedCol) ? '_expand' : '_collapse') . '">' .
@@ -254,7 +254,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		) . we_html_element::htmlDiv(array("id" => "widgets"), "") .
 		$oTblWidgets->getHtml() .
 		we_base_widget::getJs() .
-		we_html_element::htmlDiv(array("id" => "divClone"), $oClone->getHtml())
+		we_html_element::htmlDiv(array("id" => "divClone"), $oClone)
 	);
 } else { // no right to see cockpit!!!
 	echo
