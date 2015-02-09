@@ -67,17 +67,17 @@ class installer extends installerBase {
 		}
 
 		if ($message) {
-			$message .= '<br />\\\n';
+			$message .= '<br />';
 		}
 
 		$errorMessage = '"<div class=\'errorDiv\'>"
-				. "' . $headline . '<br />\\\n"
+				. "' . $headline . '<br />"
 				. "' . $message . '"
-				. ($GLOBALS["liveUpdateError"]["errorString"] ?	"' . $GLOBALS['lang']['installer']['errorMessage'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorString"] . "</code><br />\\\n"
-				.												"' . $GLOBALS['lang']['installer']['errorIn'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorFile"] . "</code><br />\\\n"
-				. 												"' . $GLOBALS['lang']['installer']['errorLine'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorLine"] . "</code>\\\n"
+				. ($GLOBALS["liveUpdateError"]["errorString"] ?	"' . $GLOBALS['lang']['installer']['errorMessage'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorString"] . "</code><br />"
+				.												"' . $GLOBALS['lang']['installer']['errorIn'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorFile"] . "</code><br />"
+				. 												"' . $GLOBALS['lang']['installer']['errorLine'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorLine"] . "</code>"
 															   : "")
-				. "</div>\\\n"';
+				. "</div>"';
 
 		return $errorMessage;
 	}
@@ -99,7 +99,7 @@ class installer extends installerBase {
 
 		$errorMessage = ' . $this->getErrorMessage($headline, $message) . ';
 
-		print \'
+		echo \'
 			<script type="text/javascript">
 				top.leContent.appendErrorText("\' . $errorMessage . \'");
 				alert("\' . strip_tags($errorMessage) . \'");

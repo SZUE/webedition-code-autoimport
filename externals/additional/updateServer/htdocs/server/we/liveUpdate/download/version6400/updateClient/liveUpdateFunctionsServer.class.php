@@ -9,6 +9,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		'tableChanged' => array(),
 		'error' => array(),
 		'entryExists' => array(),
+		'tableExists' => array(), //needed from server functions
 	);
 
 	/*
@@ -809,6 +810,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 				case 1062:
 					$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
 					return false;
+				case 1065:
+					return true;
 				default:
 					$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
 					return false;

@@ -4,7 +4,12 @@
 //code aus 6300
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
-	var $QueryLog = array();
+	var $QueryLog = array('success' => array(),
+		'tableChanged' => array(),
+		'error' => array(),
+		'entryExists' => array(),
+		'tableExists' => array(), //needed from server functions
+		);
 
 	/*
 	 * Functions for updatelog
@@ -799,6 +804,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 				case '1062':
 					$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
 					return false;
+				case 1065:
+				return true;
 				default:
 					$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
 					return false;
