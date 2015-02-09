@@ -898,12 +898,12 @@ class installer extends installerBase {
 			$Length = ($_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
 			// filename on the client
-			$Index = $Paths[$Position] . ".part" . $Part;
+//			$Index = $Paths[$Position] . ".part" . $Part;
 
 			// value of the part -> must be base64_encoded
 			$Value = updateUtil::encodeCode(substr($Content, $Start, $Length));
 
-			$fileArray[$Paths[$Position] . ".part" . $Part] = $Value;
+			$fileArray[$Paths[$Position] . ".'part" . $Part."'"] = $Value;
 
 			if($Start + $Length >= $FileSize) {
 				if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])) {

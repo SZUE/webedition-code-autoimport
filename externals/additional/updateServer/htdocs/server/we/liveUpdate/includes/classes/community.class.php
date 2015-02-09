@@ -14,39 +14,39 @@ class community extends communityBase {
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/community/confirmDeauthentication.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
-	
+
 	function getDeauthenticationWindow() {
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/community/deauthenticate.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
-	
+
 	function getAuthenticationFormWindow() {
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/community/authenticateForm.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
-	
+
 	function getAuthenticationWindow() {
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/community/reauthenticate.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
-	
+
 	function getReauthenticationFormWindow() {
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/community/reauthenticateForm.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
-	
+
 	function getReauthenticationWindow() {
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/community/authenticate.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
-	
+
 	function getNotAvailableAtTheMomentResponse() {
 		//$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/notification/upgradeMaintenance.inc.php');
 		//return updateUtil::getResponseString($ret);
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(SHARED_TEMPLATE_DIR . '/notification/maintenance.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
-	
+
 	/**
 	 * returns next step according to installation step names
 	 *
@@ -287,16 +287,16 @@ class community extends communityBase {
 			}
 
 		}
-		
+
 		$Content = "";
 		for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
 			$Content .= $liveUpdateFnc->getFileContent(' . $Realname . '."part" . $i);
 
 		}
-		
+
 		if ($liveUpdateFnc->filePutContent( ' . $Realname . ', $Content ) ) {
 			$successFiles[] = $path;
-			
+
 		}
 		for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
 			$liveUpdateFnc->deleteFile(' . $Realname . '."part" . $i);
@@ -321,7 +321,7 @@ class community extends communityBase {
 
 		}
 ?>';
-		
+
 		return $retArray;
 
 	}
@@ -566,7 +566,7 @@ class community extends communityBase {
 		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 
 		$retArray['Type'] = 'eval';
-		//$retArray['Type'] = 'executePatches';		
+		//$retArray['Type'] = 'executePatches';
 		$retArray['Code'] = '<?php
 
 		' . updateUtil::getOverwriteClassesCode() . '
@@ -674,9 +674,9 @@ class community extends communityBase {
 			$NextUpdateDetail = installer::getNextUpdateDetail();
 			if(key_exists($NextUpdateDetail, $GLOBALS['lang']['installer'])) {
 				$message .= "<br /><strong>" . $GLOBALS['lang']['installer'][$NextUpdateDetail] . "</strong>";
-				
+
 			}
-			
+
 			$activateStep = '
 			top.frames["updatecontent"].finishLiInstallerStep("' . $_REQUEST['detail'] . '");
 			top.frames["updatecontent"].activateLiInstallerStep("' . installer::getNextUpdateDetail() . '");';
@@ -784,8 +784,8 @@ class community extends communityBase {
 		return $errorMessage;
 
 	}
-	
-	
+
+
 	function getDownloadChangesResponse() {
 
 		// current position
@@ -797,99 +797,99 @@ class community extends communityBase {
 
 		$fileArray = array();
 		$Position = $_REQUEST['position'];
-		
+
 		$Content = updateUtil::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 		$FileSize = strlen($Content);
-			
+
 		// If file is too large to transfer in one request, split it!
 		// when first part(s) are transfered do the next part until complete
 		// file is transfered
-		
+
 		if(		(isset($_REQUEST['part']) && $_REQUEST['part'] > 0)
 			||	$FileSize > $_SESSION['DOWNLOAD_KBYTES_PER_STEP']*1024) {
-				
+
 			// Check which part have to be transfered
 			$Part = isset($_REQUEST['part']) ? $_REQUEST['part'] : 0;
-			
+
 			// get offset and length of the substr from the file
 			$Start = ($Part * $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 			$Length = ($_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
-			
+
 			// filename on the client
 			$Index = $Paths[$Position] . ".part" . $Part;
-			
+
 			// value of the part -> must be base64_encoded
 			$Value = updateUtil::encodeCode(substr($Content, $Start, $Length));
-			
-			$fileArray[$Paths[$Position] . ".part" . $Part] = $Value;
-			
+
+			$fileArray[$Paths[$Position] . ".'part" . $Part."'"] = $Value;
+
 			if($Start + $Length >= $FileSize) {
 				if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])) {
 					$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail() );
-			
+
 					// :IMPORTANT:
 					return updateUtil::getResponseString(installer::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent(), $Paths[$Position], $Part));
-				
+
 				} else {
 					$Position++;
 					$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail'] ) . "&position=" . $Position;
-					
+
 					// :IMPORTANT:
 					return updateUtil::getResponseString(installer::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent(), $Paths[$Position-1], $Part));
-					
+
 				}
 
-				
+
 			} else {
 				$Part += 1;
 				$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail'] ) . "&part=" . $Part . "&position=" . $Position;
-				
+
 				// :IMPORTANT:
 				return updateUtil::getResponseString(installer::_getDownloadFilesResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent()));
 
 			}
-			
+
 		// Only whole files	with max. $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] kbytes per step
 		} else {
-			
+
 			$ResponseSize = 0;
 			do {
-				
+
 				if($Position >= sizeof($Paths)) {
 					break;
-					
+
 				}
-				
+
 				$FileSize = filesize($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
-				
+
 				// response + size of next file < max size for response
 				if( $ResponseSize + $FileSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024 ) {
 					$ResponseSize += $FileSize;
-					
+
 					$fileArray[$Paths[$Position]] = updateUtil::getFileContentEncoded($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 					$Position++;
-					
+
 				} else {
 					break;
-					
+
 				}
-				
+
 			} while ( $ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024 );
 
 			if ( $Position >= sizeof($_SESSION['clientChanges']['allChanges']) ) {
 				$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail() );
-		
+
 			} else {
 				$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail'] ) . "&position=$Position";
-			
+
 			}
-	
+
 			// :IMPORTANT:
 			return updateUtil::getResponseString(installer::_getDownloadFilesResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent()));
-			
+
 		}
 
-		
+
 	}
 
 }

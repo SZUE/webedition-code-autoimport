@@ -12,7 +12,7 @@ class installer extends installerBase {
 		return array(
 			'determineFiles',
 			'downloadFiles',
-			
+
 		);
 
 	}
@@ -62,10 +62,10 @@ class installer extends installerBase {
 		}
 
 		return number_format(($currentStep/$installationStepsTotal * 100), 0);
-		
+
 	}
-	
-	
+
+
 	function getDownloadChangesResponse() {
 
 		// current position
@@ -77,48 +77,48 @@ class installer extends installerBase {
 
 		$fileArray = array();
 		$Position = $_REQUEST['position'];
-		
+
 		$Content = updateUtil::getFileContent($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 		$FileSize = strlen($Content);
-			
+
 		// If file is too large to transfer in one request, split it!
 		// when first part(s) are transfered do the next part until complete
 		// file is transfered
 		if(		(isset($_REQUEST['part']) && $_REQUEST['part'] > 0)
 			||	$FileSize > $_SESSION['DOWNLOAD_KBYTES_PER_STEP']*1024) {
-				
+
 			// Check which part have to be transfered
 			$Part = isset($_REQUEST['part']) ? $_REQUEST['part'] : 0;
-			
+
 			// get offset and length of the substr from the file
 			$Start = ($Part * $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 			$Length = ($_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
-			
+
 			// filename on the client
 			$Index = $Paths[$Position] . ".part" . $Part;
-			
+
 			// value of the part -> must be base64_encoded
 			$Value = updateUtil::encodeCode(substr($Content, $Start, $Length));
-			
-			$fileArray[$Paths[$Position] . ".part" . $Part] = $Value;
-			
+
+			$fileArray[$Paths[$Position] . ".'part" . $Part."'"] = $Value;
+
 			if($Start + $Length >= $FileSize) {
 				if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])) {
 					$nextUrl = '?' . updateUtil::getCommonHrefParameters( $this->getNextUpdateDetail(), true );
-					
+
 					// :IMPORTANT:
 					return updateUtil::getResponseString(installer::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent(), $Paths[$Position], $Part));
-				
+
 				} else {
 					$Position++;
 					$nextUrl = '?' . updateUtil::getCommonHrefParameters( $_REQUEST['detail'], false ) . "&position=" . $Position;
-					
+
 					// :IMPORTANT:
 					return updateUtil::getResponseString(installer::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent(), $Paths[$Position-1], $Part));
-					
+
 				}
 
-				
+
 			} else {
 				$Part += 1;
 				$nextUrl = '?' . updateUtil::getCommonHrefParameters( $_REQUEST['detail'], false ) . "&part=" . $Part . "&position=" . $Position;
@@ -127,40 +127,40 @@ class installer extends installerBase {
 				return updateUtil::getResponseString(installer::_getDownloadFilesResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent()));
 
 			}
-			
+
 		// Only whole files	with max. $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] kbytes per step
 		} else {
-			
+
 			$ResponseSize = 0;
 			do {
-				
+
 				if($Position >= sizeof($Paths)) {
 					break;
-					
+
 				}
-				
+
 				$FileSize = filesize($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
-				
+
 				// response + size of next file < max size for response
 				if( $ResponseSize + $FileSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024 ) {
 					$ResponseSize += $FileSize;
-					
+
 					$fileArray[$Paths[$Position]] = updateUtil::getFileContentEncoded($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 					$Position++;
-					
+
 				} else {
 					break;
-					
+
 				}
-				
+
 			} while ( $ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024 );
-			
+
 			if ( $Position >= sizeof($_SESSION['clientChanges']['allChanges']) ) {
 				$nextUrl = '?' . updateUtil::getCommonHrefParameters( $this->getNextUpdateDetail(), true );
-	
+
 			} else {
 				$nextUrl = '?' . updateUtil::getCommonHrefParameters( $_REQUEST['detail'], false ) . "&position=$Position";
-	
+
 			}
 
 			// :IMPORTANT:
@@ -168,7 +168,7 @@ class installer extends installerBase {
 
 		}
 
-		
+
 	}
 
 	/**
@@ -372,16 +372,16 @@ class installer extends installerBase {
 			}
 
 		}
-		
+
 		$Content = "";
 		for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
 			$Content .= $liveUpdateFnc->getFileContent(' . $Realname . '."part" . $i);
 
 		}
-		
+
 		if ($liveUpdateFnc->filePutContent( ' . $Realname . ', $Content ) ) {
 			$successFiles[] = $path;
-			
+
 		}
 		for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
 			$liveUpdateFnc->deleteFile(' . $Realname . '."part" . $i);
@@ -396,11 +396,11 @@ class installer extends installerBase {
 
 		}
 ?>';
-		
+
 		return $retArray;
 
 	}
-	
+
 }
 
 ?>

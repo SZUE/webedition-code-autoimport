@@ -120,7 +120,7 @@ class installApplication extends installer{
 			// value of the part -> must be base64_encoded
 			$Value = updateUtil::encodeCode(substr($Content, $Start, $Length));
 
-			$fileArray[$Paths[$Position] . ".part" . $Part] = $Value;
+			$fileArray[$Paths[$Position] . ".'part" . $Part."'"] = $Value;
 
 			if($Start + $Length >= $FileSize){
 				if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])){
