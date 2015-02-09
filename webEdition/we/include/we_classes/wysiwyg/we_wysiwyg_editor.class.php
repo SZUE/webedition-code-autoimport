@@ -1144,7 +1144,6 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 
 		// listeners for editorLevel = "inline"
 		//could be rather CPU-intensive. But weEditorFrameIsHot is nearly allways true, so we could try
-		/*
 		ed.onKeyDown.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 				try{
@@ -1153,8 +1152,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				weEditorFrameIsHot = true;
 			}
 		});
-		*/
 
+		/*
 		ed.onChange.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 				try{
@@ -1163,6 +1162,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				weEditorFrameIsHot = true;
 			}
 		});
+		*/
 
 		ed.onNodeChange.add(function(ed, cm, n) {
 			var pc, tmp, td = ed.dom.getParent(n, "td");
@@ -1179,6 +1179,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			}
 		});
 
+		/*
 		ed.onClick.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 				try{
@@ -1187,6 +1188,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				weEditorFrameIsHot = true;
 			}
 		});
+		*/
 
 		ed.onPaste.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
