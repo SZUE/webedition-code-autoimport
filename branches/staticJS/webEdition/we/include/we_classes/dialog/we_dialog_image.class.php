@@ -367,15 +367,8 @@ class we_dialog_image extends we_dialog_base{
 				'<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
 	</table>';
 
-		if($this->args["editor"] === 'tinyMce'){
-			$classSelect = we_html_tools::htmlFormElementTable($this->getClassSelect(), g_l('wysiwyg', '[css_style]'));
-		} else {
-			$foo = we_html_element::jsElement('showclasss("we_dialog_args[class]","' . (isset($this->args["class"]) ? $this->args["class"] : "") . '","");');
-			$classSelect = $classSelect = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', '[css_style]'));
-		}
-
+		$classSelect = we_html_tools::htmlFormElementTable($this->getClassSelect(), g_l('wysiwyg', '[css_style]'));
 		$onclick = "checkWidthHeight(document.we_form.elements['we_dialog_args[width]']);";
-
 		$ratio = we_html_forms::checkboxWithHidden((isset($this->args["ratio"]) ? $this->args["ratio"] : false), "we_dialog_args[ratio]", g_l('thumbnails', '[ratio]'), false, "defaultfont", $onclick);
 
 		return array(
@@ -394,7 +387,7 @@ class we_dialog_image extends we_dialog_base{
 				we_html_tools::hidden("imgChangedCmd", 0) . we_html_tools::hidden("wasThumbnailChange", 0) . we_html_tools::hidden("isTinyMCEInitialization", 0) .
 				we_html_tools::hidden("tinyMCEInitRatioH", 0) . we_html_tools::hidden("tinyMCEInitRatioW", 0) .
 				weSuggest::getYuiFiles() .
-				$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() . we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weimage/js/image_init.js')),
+				$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() . we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_init.js')),
 		);
 	}
 
@@ -412,23 +405,27 @@ class we_dialog_image extends we_dialog_base{
 			switch($this->we_cmd[0]){
 				case 'update_editor':
 					//fill in all fields
-					$js = 'top.document.we_form["we_cmd[0]"].value = "";';
+					$js = '
+top.document.we_form["we_cmd[0]"].value = "";
+
+var inputElem;';
 					foreach($args as $k => $v){
-						$js .= 'if(top.document.we_form.we_dialog_args[' . $k . '] !== undefined) top.document.we_form["we_dialog_args[' . $k . ']"].value = "' . $v . '";
-						';
+						$js .= $k !== 'cssclass' ? '
+if(inputElem = top.document.we_form.elements["we_dialog_args[' . $k . ']"]){
+	inputElem.value = "' . $v . '";
+}' : '';
 					}
-
 					$js .= '
-						try{
-							top.document.getElementById("selectThumbnail").style.display = "' . $this->getDisplayThumbsSel() . '";
-						} catch(err){
-						//console.log(top.document.getElementById("selectThumbnail"));
-						}
+try{
+	top.document.getElementById("selectThumbnail").style.display = "' . $this->getDisplayThumbsSel() . '";
+} catch(err){
+	//console.log(top.document.getElementById("selectThumbnail"));
+}
 
-						var rh = ' . (intval($args["width"] * $args["height"]) ? ($this->args["width"] / $args["height"]) : 0) . ';
-						var rw = ' . (intval($args["width"] * $args["height"]) ? ($this->args["height"] / $args["width"]) : 0) . ';
-						if(top.document.we_form.tinyMCEInitRatioH !== undefined) top.document.we_form.tinyMCEInitRatioH.value = rh;
-						if(top.document.we_form.tinyMCEInitRatioW !== undefined) top.document.we_form.tinyMCEInitRatioW.value = rw;
+var rh = ' . (intval($args["width"] * $args["height"]) ? ($this->args["width"] / $args["height"]) : 0) . ';
+var rw = ' . (intval($args["width"] * $args["height"]) ? ($this->args["height"] / $args["width"]) : 0) . ';
+if(top.document.we_form.tinyMCEInitRatioH !== undefined) top.document.we_form.tinyMCEInitRatioH.value = rh;
+if(top.document.we_form.tinyMCEInitRatioW !== undefined) top.document.we_form.tinyMCEInitRatioW.value = rw;
 					';
 
 					echo we_html_tools::getHtmlTop() . we_html_element::jsElement($js) . "</head></html>";
@@ -445,13 +442,13 @@ function we_cmd(){
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
-    case "openDocselector":
-		case "openImgselector":
-		new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
-		break;
-	case "browse_server":
-		new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
-		break;
+		case "openDocselector":
+			case "openImgselector":
+			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+			break;
+		case "browse_server":
+			new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
+			break;
 	}
 }
 
@@ -495,8 +492,7 @@ function checkWidthHeight(field){
 				function showclasss(name, val, onCh) {' .
 						(isset($this->args["cssClasses"]) && $this->args["cssClasses"] ?
 								'					var classCSV = "' . $this->args["cssClasses"] . '";
-									classNames = classCSV.split(/,/);' : ($this->args["editor"] === "tinyMce" ? 'classNames = top.opener.weclassNames_tinyMce;' :
-										'					classNames = top.opener.we_classNames;')) . '
+									classNames = classCSV.split(/,/);' : ('classNames = top.opener.weclassNames_tinyMce;')) . '
 					document.writeln(\'<select class="defaultfont" style="width:200px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onchange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', '[none]') . '\');
 					if(classNames !== undefined){

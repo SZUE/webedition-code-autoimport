@@ -46,7 +46,7 @@ h1 {
 #divTagName {
 	height: 35px;
 	background-color:#efefef;
-	background: linear-gradient(#f7f7f6,#e6e6e6);/*images/menu/background.gif*/
+	background: linear-gradient(#F7F7F7, #E8E8E8); /*menu/background.gif*/
 }
 
 #divContent {

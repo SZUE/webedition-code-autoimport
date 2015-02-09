@@ -42,7 +42,7 @@ class we_dialog_lang extends we_dialog_base{
 
 	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/welang/js/lang_init.js');
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welang/js/lang_init.js');
 	}
 
 	function getJs(){
@@ -50,17 +50,7 @@ class we_dialog_lang extends we_dialog_base{
 			(defined('GLOSSARY_TABLE') && !$this->noInternals ?
 				we_html_element::jsElement('
 function weSaveToGlossaryFn() {
-	if(isTinyMCE !== undefined && isTinyMCE === true){
-		document.we_form.elements.weSaveToGlossary.value = 1;
-	} else{
-		eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
-		document.we_form.elements.weSaveToGlossary.value = 1;
-		if(editorObj.getSelectedText().length > 0) {
-			document.we_form.elements.text.value = editorObj.getSelectedText();
-		} else {
-			document.we_form.elements.text.value = editorObj.getNodeUnderInsertionPoint("SPAN",true,false).innerHTML;
-		}
-	}
+	document.we_form.elements[\'weSaveToGlossary\'].value = 1;
 	document.we_form.submit();
 }') : '');
 	}

@@ -98,7 +98,7 @@ function decTree() {
 		setTreeWidth(w);
 		self.document.getElementById("incBaum").style.backgroundColor = "";
 	}
-	if (w <= size.tree.min && ((w + ' . weTree::StepWidth . ') >= size.tree.min)) {
+	if (w <= size.tree.min && ((w + size.tree.step) >= size.tree.min)) {
 		toggleTree();
 	}
 }

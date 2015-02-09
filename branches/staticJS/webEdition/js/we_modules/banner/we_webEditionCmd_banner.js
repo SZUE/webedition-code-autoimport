@@ -34,7 +34,7 @@ function we_cmd_banner(args,url) {
 					if (fo)
 						break;
 				}
-				if (typeof (wind) != "undefined") {
+				if (window.wind !== undefined) {
 					wind.focus();
 				}
 			}

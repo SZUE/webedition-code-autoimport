@@ -25,7 +25,7 @@
 var weRpcFailedCnt = 0;
 var ajaxCallback = {
 	success: function (o) {
-		if (typeof (o.responseText) !== undefined && o.responseText !== '') {
+		if (o.responseText !== undefined && o.responseText !== '') {
 			try {
 				eval("var result=" + o.responseText);
 			} catch (exp) {

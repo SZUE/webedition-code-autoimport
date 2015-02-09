@@ -48,37 +48,44 @@ $svg = array(
 
 $vtab = array(
 	'FILE_TABLE' => array(
-		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/v-tabs/documents',
+		//'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/v-tabs/documents',
 		'show' => permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') || permissionhandler::hasPerm('ADMINISTRATOR'),
 		'size' => array(19, 83),
 		'desc' => g_l('global', '[documents]'),
 	),
 	'TEMPLATES_TABLE' => array(
-		'file' => 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/v-tabs/templates',
+	//	'file' => 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/v-tabs/templates',
 		'show' => permissionhandler::hasPerm('CAN_SEE_TEMPLATES'),
 		'size' => array(19, 83),
 		'desc' => g_l('global', '[templates]'),
 	),
 	'OBJECT_FILES_TABLE' => array(
-		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/v-tabs/objects',
+		//'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/v-tabs/objects',
 		'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'),
 		'size' => array(19, 83),
 		'desc' => g_l('global', '[objects]'),
 	),
 	'OBJECT_TABLE' => array(
-		'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/v-tabs/classes',
+		//'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/v-tabs/classes',
 		'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS"),
 		'size' => array(19, 83),
 		'desc' => g_l('javaMenu_object', '[classes]'),
+	),
+		'VFILE_TABLE' => array(
+		//'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/v-tabs/classes',
+		'show' => /*permissionhandler::hasPerm("CAN_SEE_OBJECTS")*/true,
+		'size' => array(19, 83),
+		'desc' => g_l('global', '[vfile]'),
 	)
+
 );
-foreach($vtab as &$val){
+/*foreach($vtab as &$val){
 	if(file_exists(WE_INCLUDES_PATH . $val['file'] . '_normal.gif')){
 		$val['size'] = getimagesize(WE_INCLUDES_PATH . $val['file'] . '_normal.gif');
 	}
 }
 unset($val);
-
+*/
 echo we_html_element::jsScript(JS_DIR . 'images.js') .
  we_html_element::jsScript(JS_DIR . 'we_vtabs.js');
 ?>
@@ -114,7 +121,7 @@ $tmp = array();
 $id = 0;
 $pos = 0;
 foreach($vtab as $tab => $val){
-	$file = WE_INCLUDES_DIR . $val['file'];
+	//$file = WE_INCLUDES_DIR . $val['file'];
 	$tmp[] = ($val['show'] ?
 			'new we_tab("#",\'' . str_replace(array('REPLACE', '#ID#', "\n"), array($val['desc'], ++$id, ''), $svg['normal']) . '\', \'' . str_replace(array('REPLACE', '#ID#', "\n"), array($val['desc'], ++$id, ''), $svg['active']) . '\', \'' . str_replace(array('REPLACE', '#ID#', "\n"), array($val['desc'], ++$id, ''), $svg['disabled']) . '\', ' . $val['size'][0] . ',' . $val['size'][1] . ' ,' . ($val['show'] ? we_tab::NORMAL : we_tab::DISABLED) . ', "if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);",true,' . $pos . ')' :
 			'null');
@@ -124,42 +131,6 @@ echo implode(',', $tmp);
 ?>
 	);
 
-	var oldWidth = <?php echo weTree::DefaultWidth; ?>;
-
-	function toggleTree() {
-		top.toggleTree();
-	}
-
-	function incTree() {
-		var w = parseInt(top.getTreeWidth());
-		if ((w ><?php echo weTree::MinWidth; ?>) && (w <<?php echo weTree::MaxWidth; ?>)) {
-			w +=<?php echo weTree::StepWidth; ?>;
-			top.setTreeWidth(w);
-		}
-		if (w >=<?php echo weTree::MaxWidth; ?>) {
-			w =<?php echo weTree::MaxWidth; ?>;
-			self.document.getElementById("incBaum").style.backgroundColor = "grey";
-		}
-	}
-
-	function decTree() {
-		var w = parseInt(top.getTreeWidth());
-		w -=<?php echo weTree::StepWidth; ?>;
-		if (w ><?php echo weTree::MinWidth; ?>) {
-			top.setTreeWidth(w);
-			self.document.getElementById("incBaum").style.backgroundColor = "";
-		}
-		if (w <=<?php echo weTree::MinWidth; ?> && ((w +<?php echo weTree::StepWidth; ?>) >=<?php echo weTree::MinWidth; ?>)) {
-			toggleTree();
-		}
-	}
-
-
-	function treeOut() {
-		if (top.getTreeWidth() <= <?php echo weTree::MinWidth; ?>) {
-			toggleTree();
-		}
-	}
 //-->
 </script>
 <div id="vtab">
@@ -191,7 +162,7 @@ if(($tab = we_base_request::_(we_base_request::STRING, "table"))){
 	</script>
 </div>
 <div id="baumArrows">
-<img class="baumArrow" src="<?php echo BUTTONS_DIR ?>icons/function_plus.gif" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();">
-<img class="baumArrow" src="<?php echo BUTTONS_DIR ?>icons/function_minus.gif" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();">
-<img class="baumArrow" src="<?php echo BUTTONS_DIR ?>icons/direction_<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>.gif" onclick="toggleTree();">
+<img class="baumArrow" id="incBaum" src="<?php echo BUTTONS_DIR ?>icons/function_plus.gif" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();">
+<img class="baumArrow" id="decBaum" src="<?php echo BUTTONS_DIR ?>icons/function_minus.gif" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();">
+<img class="baumArrow" id="arrowImg" src="<?php echo BUTTONS_DIR ?>icons/direction_<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>.gif" onclick="toggleTree();">
 </div>

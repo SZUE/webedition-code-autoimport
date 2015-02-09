@@ -223,7 +223,7 @@ function EditorFrameController() {
 
 					}
 
-				} else if (typeof (code) !== "undefined" && code) { // open new document with standard code
+				} else if (code !== undefined && code) { // open new document with standard code
 					we_cmd('new_document', table, id, ct, "", "", "", "", dt, "", code);
 
 				} else {
@@ -772,13 +772,13 @@ function EditorFrameController() {
 	};
 
 	this.getEditorFrame = function (frameId) {
-		if (typeof (frameId) === "string" && frameId !== "undefined") {
+		if (frameId !== undefined) {
 			return this.EditorFrames[frameId];
-		} else if (this.ActiveEditorFrameId) {
-			return this.EditorFrames[this.ActiveEditorFrameId];
-		} else {
-			return false;
 		}
+		if (this.ActiveEditorFrameId) {
+			return this.EditorFrames[this.ActiveEditorFrameId];
+		}
+		return false;
 	};
 
 	this.getDocumentReferenceByTransaction = function (theTransaction) {

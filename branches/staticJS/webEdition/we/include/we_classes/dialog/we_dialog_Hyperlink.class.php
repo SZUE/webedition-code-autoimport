@@ -388,7 +388,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			}
 		}
 
-		$_anchorSel = (isset($this->args["editor"]) && $this->args["editor"] === 'tinyMce') ? '<div id="anchorlistcontainer"></div>' : we_html_element::jsElement('showanchors("anchors","","this.form.elements[\'we_dialog_args[anchor]\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;")');
+		$_anchorSel = '<div id="anchorlistcontainer"></div>';
 		$_anchorInput = we_html_tools::htmlTextInput("we_dialog_args[anchor]", 30, $this->args["anchor"], "", 'onblur="checkAnchor(this)"', "text", 300);
 
 		$_anchor = we_html_tools::htmlFormElementTable($_anchorInput, "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_anchorSel, "", "", "", 0);
@@ -396,8 +396,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		$_param = we_html_tools::htmlTextInput("we_dialog_args[param]", 30, htmlspecialchars(urldecode(utf8_decode($this->args["param"]))), '', '', 'text', 300);
 
 		// CSS STYLE
-		$classSelect = $this->args["editor"] === 'tinyMce' ? $this->getClassSelect() : we_html_element::jsElement('showclasss("we_dialog_args[class]", "' . $this->args["class"] . '", "");');
-
+		$classSelect = $this->getClassSelect();
 
 		// lang
 		$_lang = $this->getLangField("lang", g_l('wysiwyg', '[link_lang]'), 145);
@@ -542,7 +541,7 @@ function weonsubmit() {
 
 	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-				we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/welink/js/welink_init.js');
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_init.js');
 	}
 
 	function getJs(){
@@ -618,9 +617,7 @@ function we_cmd() {
 function showclasss(name, val, onCh) {' .
 						(isset($this->args["cssClasses"]) && $this->args["cssClasses"] ? '
 	var classCSV = "' . $this->args['cssClasses'] . '";
-	classNames = classCSV.split(/,/);' : ($this->args["editor"] === 'tinyMce' ? '
-	classNames = top.opener.weclassNames_tinyMce;' : '
-	classNames = top.opener.we_classNames;')) . '
+	classNames = classCSV.split(/,/);' : ('classNames = top.opener.weclassNames_tinyMce;')) . '
 	document.writeln(\'<select class="defaultfont" style="width:300px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onchange="\'+onCh+\'"\' : \'\')+\'>\');
 	document.writeln(\'<option value="">' . g_l('wysiwyg', '[none]') . '\');
 	if(classNames !== undefined){

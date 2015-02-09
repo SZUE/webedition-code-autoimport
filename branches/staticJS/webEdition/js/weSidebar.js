@@ -43,14 +43,14 @@ weSidebar.load = function (url, params) {
 weSidebar.open = function () {
 	var cmd = Array();
 // load document if needed
-	if (typeof arguments[0] != "undefined") {
+	if (arguments[0] !== undefined) {
 		weSidebar.load(arguments[0]);
 	} else if (arguments[0] == "default") {
 		weSidebar.load('');
 	}
 
 // get width of sidebar frame
-	if (typeof arguments[1] != "undefined") {
+	if (arguments[1] !== undefined) {
 		width = parseInt(arguments[1]);
 	} else {
 		width = size.sidebar.defaultWidth;

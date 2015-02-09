@@ -40,11 +40,12 @@ define('ICON_DIR', IMAGE_DIR . 'icons/');
 define('HTML_DIR', WEBEDITION_DIR . 'html/');
 define('JS_DIR', WEBEDITION_DIR . 'js/');
 define('WE_JS_MODULES_DIR', JS_DIR . 'we_modules/');
+define('WE_JS_TINYMCE_DIR', JS_DIR . 'wysiwyg/tinymce/');
 define('BACKUP_DIR', WEBEDITION_DIR . 'we_backup/');
 define('VERSION_DIR', WEBEDITION_DIR . 'we/versions/');
 define('LIB_DIR', WEBEDITION_DIR . 'lib/');
 define('WE_THUMB_PREVIEW_DIR', WEBEDITION_DIR . 'preview/');
-define('TINYMCE_JS_DIR', WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/');
+define('TINYMCE_SRC_DIR', LIB_DIR . 'additional/tinymce/');
 define('WE_USERS_MODULE_DIR', WE_MODULES_DIR . 'users/');
 
 define('TREE_IMAGE_DIR', IMAGE_DIR . 'tree/');
@@ -104,6 +105,8 @@ define('NAVIGATION_RULE_TABLE', TBL_PREFIX . 'tblnavigationrules');
 define('USER_TABLE', TBL_PREFIX . 'tblUser');
 define('LOCK_TABLE', TBL_PREFIX . 'tblLock');
 define('SETTINGS_TABLE', TBL_PREFIX . 'tblSettings');
+define('VFILE_TABLE', TBL_PREFIX . 'tblVFile');
+define('FILELINK_TABLE', TBL_PREFIX . 'tblFileLink');
 
 //NOTE: you have to register the tables at we.inc!
 

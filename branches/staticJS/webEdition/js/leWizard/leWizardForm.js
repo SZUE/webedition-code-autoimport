@@ -94,8 +94,8 @@ leWizardForm.checkSubmit = function (source) {
 
 
 leWizardForm.setFocus = function (name) {
-	field = eval('document.leWebForm.' + name);
-	if (field !== undefined) {
+	if (document.leWebForm[name] !== undefined) {
+		field = document.leWebForm[name];
 		// do it twice, cause ie ignores sometimes the first call
 		field.focus();
 		field.focus();

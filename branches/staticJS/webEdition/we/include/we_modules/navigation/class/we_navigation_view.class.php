@@ -102,7 +102,7 @@ function we_cmd() {
 			} else {
 				setTimeout(\'we_cmd("\' + arguments[0] + \'");\', 10);
 			}
-			if((treeData!==undefined) && treeData){
+			if((window.treeData!==undefined) && treeData){
 				treeData.unselectnode();
 			}
 		break;
@@ -612,19 +612,19 @@ var weNavTitleField = new Array();
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
 function populateVars() {
-	if(this.categories_edit!==undefined && document.we_form.CategoriesCount!==undefined){
+	if(window.categories_edit!==undefined && document.we_form.CategoriesCount!==undefined){
 		document.we_form.CategoriesCount.value = categories_edit.itemCount;
 	}
-	if(this.sort_edit!==undefined && document.we_form.SortCount!==undefined){
+	if(window.sort_edit!==undefined && document.we_form.SortCount!==undefined){
 		document.we_form.SortCount.value = sort_edit.itemCount;
 	}
-	if(this.specificCustomersEdit!==undefined && document.we_form.specificCustomersEditCount!==undefined){
+	if(window.specificCustomersEdit!==undefined && document.we_form.specificCustomersEditCount!==undefined){
 		document.we_form.specificCustomersEditCount.value = specificCustomersEdit.itemCount;
 	}
-	if(this.blackListEdit!==undefined && document.we_form.blackListEditCount!==undefined){
+	if(window.blackListEdit!==undefined && document.we_form.blackListEditCount!==undefined){
 		document.we_form.blackListEditCount.value = blackListEdit.itemCount;
 	}
-	if(this.whiteListEdit!==undefined && document.we_form.whiteListEditCount!==undefined){
+	if(window.whiteListEdit!==undefined && document.we_form.whiteListEditCount!==undefined){
 		document.we_form.whiteListEditCount.value = whiteListEdit.itemCount;
 	}
 }

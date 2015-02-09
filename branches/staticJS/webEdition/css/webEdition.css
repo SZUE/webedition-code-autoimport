@@ -66,6 +66,7 @@ body.selectorFooter{
 	right:0px;
 	overflow:hidden;
 }
+
 #vtabs{
 	position:absolute;
 	top:0px;
@@ -73,8 +74,8 @@ body.selectorFooter{
 	left:0px;
 	width:24px;
 	overflow: hidden;
-	background-color: #dddddd;
-	background: linear-gradient(to right,#eaeaea,#cfcfcf);/*v-tabs/background.gif*/
+	background-color:#dddddd;
+	background: linear-gradient(to right,#EAEAEA, #CFCFCF); /*menu/background.gif*/
 	border-top:1px solid black;
 	/*border-right:1px solid #767676;*/
 }
@@ -587,6 +588,12 @@ optgroup.lvl2{
 	height: 12px;
 }
 
+#toolMenu,
+#headerDiv{
+	background-color:#f0f0f0;
+	background: linear-gradient(#F7F7F7, #E8E8E8); /*menu/background.gif*/
+}
+
 #headerDiv{
 	position:absolute;
 	top:0px;
@@ -594,8 +601,6 @@ optgroup.lvl2{
 	right:0px;
 	height:32px;
 	border-bottom: 1px solid black;
-	background-color:#efefef;
-	background: linear-gradient(#f7f7f6,#e6e6e6);/*images/menu/background.gif*/
 }
 
 /*Error log*/

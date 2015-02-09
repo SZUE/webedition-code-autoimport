@@ -247,7 +247,7 @@ class we_wysiwyg_editor{
 		if(defined('WE_WYSIWG_HEADER')){
 			if($loadDialogRegistry && !defined('WE_WYSIWG_HEADER_REG')){
 				define('WE_WYSIWG_HEADER_REG', 1);
-				return we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js');
+				return we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js');
 			}
 			return '';
 		}
@@ -269,9 +269,9 @@ class we_wysiwyg_editor{
 	height: auto;
 	width: auto;
 }') .
-			we_html_element::jsScript(WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/tiny_mce.js') .
-			($loadDialogRegistry ? we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') : '') .
-			we_html_element::jsScript(JS_DIR . 'weTinyMceFunctions.js');
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
+			($loadDialogRegistry ? we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') : '') .
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceFunctions.js');
 	}
 
 	function getAllCmds(){
@@ -650,7 +650,7 @@ class we_wysiwyg_editor{
 			'increasecolspan' => 'merge_cells',
 			'indent' => 'indent',
 			'insertbreak' => 'weinsertbreak',
-			'insertcolumnleft' => 'col_before ',
+			'insertcolumnleft' => 'col_before',
 			'insertcolumnright' => 'col_after',
 			'inserthorizontalrule' => 'advhr',
 			'insertimage' => 'weimage',
@@ -826,7 +826,7 @@ function we_tinyMCE_' . $this->fieldName_clean . '_init(ed){
 
 /*
 read more about event listeners of the tiny editor object in the tinyMCE API,
-and have a look at /webEdition/js/weTinyMceFunctions to see what TinyWrapper can do for you
+and have a look at /webEdition/js/wysiwyg/tinymce/weTinyMceFunctions to see what TinyWrapper can do for you
 */
 
 ' : '') . '
@@ -934,8 +934,9 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	theme_advanced_disable : "",
 	//paste_text_use_dialog: true,
 	//fullscreen_new_window: true,
-	content_css : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCssFirst.php?' . time() . '=,' . $contentCss . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCssLast.php?' . time() . '=&tinyMceBackgroundColor=' . $this->bgcol . '",
-	popup_css_add : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/tinyDialogCss.css' . (we_base_browserDetect::isMAC() ? ',' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/tinyDialogCss.php' : '') . '",
+	editor_css : "' . CSS_DIR . 'wysiwyg/tinymce/editorCss.css",
+	content_css : "' . CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php?' . time() . '=,' . $contentCss . CSS_DIR . 'wysiwyg/tinymce/contentCssLast.php?' . time() . '=&tinyMceBackgroundColor=' . $this->bgcol . '",
+	popup_css_add : "' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css' . (we_base_browserDetect::isMAC() ? ',' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.php' : '') . '",
 	' . (in_array('template', $allCommands) ? $this->getTemplates() : '') . '
 
 	// Skin options
@@ -986,10 +987,18 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 						top.dealWithKeyboardShortCut(e);
 						return false;
 					default:
-						//let tiny do it\'s job
+						//let tiny do its job
 				}
 			}
 		});
+
+		ed.onDblClick.add(function(ed, e) {
+			//console.debug("Double click event: " + e.target.nodeName);
+		});
+		ed.onClick.add(function(ed, e) {
+			//console.debug("Click event: " + e.target.nodeName);
+		});
+
 
 		ed.onInit.add(function(ed, o){
 			//TODO: clean up the mess in here!
@@ -1011,7 +1020,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				hasOpener = opener ? true : false;
 			} catch(e){}
 
-			if(we_tinyMCE_' . $this->fieldName_clean . '_init !== undefined){
+			if(window.we_tinyMCE_' . $this->fieldName_clean . '_init !== undefined){
 				try{
 					we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
 				} catch(e){
@@ -1087,7 +1096,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		var editorLevel = "";
 		var weEditorFrame = null;
 
-		if(_EditorFrame !== undefined){
+		if(window._EditorFrame !== undefined){
 			editorLevel = "inline";
 			weEditorFrame = _EditorFrame;
 		} else {
@@ -1108,17 +1117,16 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 
 		// listeners for editorLevel = "inline"
 		//could be rather CPU-intensive. But weEditorFrameIsHot is nearly allways true, so we could try
-		/*
 		ed.onKeyDown.add(function(ed) {
-			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
+			if(!weEditorFrameIsHot && editorLevel == "inline"){
 				try{
 					weEditorFrame.setEditorIsHot(true);
 				} catch(e) {}
 				weEditorFrameIsHot = true;
 			}
 		});
-		*/
 
+		/*
 		ed.onChange.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 				try{
@@ -1127,6 +1135,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				weEditorFrameIsHot = true;
 			}
 		});
+		*/
 
 		ed.onNodeChange.add(function(ed, cm, n) {
 			var pc, tmp, td = ed.dom.getParent(n, "td");
@@ -1142,7 +1151,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				}
 			}
 		});
-
+/*
 		ed.onClick.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 				try{
@@ -1151,7 +1160,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				weEditorFrameIsHot = true;
 			}
 		});
-
+*/
 		ed.onPaste.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 				try{
@@ -1175,6 +1184,41 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	}
 }
 tinyMCE.addI18n(tinyMceTranslationObject);
+
+var TmpFn = tinyMCE.PluginManager.load;
+tinyMCE.PluginManager.load = function(n, u, cb, s) {
+			var t = this, url = u;
+			function loadDependencies() {
+				var dependencies = t.dependencies(n);
+				tinymce.each(dependencies, function(dep) {
+					var newUrl = t.createUrl(u, dep);
+					t.load(newUrl.resource, newUrl, undefined, undefined);
+				});
+				if (cb) {
+					if (s) {
+						cb.call(s);
+					} else {
+						cb.call(tinymce.ScriptLoader);
+					}
+				}
+			}
+			if (t.urls[n]){
+				return;
+			}
+			if (typeof u === "object"){
+				url = u.resource.indexOf("we") === 0 ? "' . WE_JS_TINYMCE_DIR . 'plugins/" + u.resource + u.suffix : u.prefix + u.resource + u.suffix;
+			}
+			if (url.indexOf("/") !== 0 && url.indexOf("://") == -1){
+				url = tinymce.baseURL + "/" + url;
+			}
+			t.urls[n] = url.substring(0, url.lastIndexOf("/"));
+			if (t.lookup[n]) {
+				loadDependencies();
+			} else {
+				tinymce.ScriptLoader.add(url, loadDependencies, s);
+			}
+		};
+
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 ') .
 			'

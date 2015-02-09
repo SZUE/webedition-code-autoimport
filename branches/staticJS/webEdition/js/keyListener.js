@@ -188,8 +188,8 @@ function keyEditorListener(_successor) {
 			}
 		}
 
-		if (_editor && (evt["ctrlKey"]) || evt["metaKey"]) {
-			switch (evt["keyCode"]) {
+		if (_editor && (evt.ctrlKey) || evt.metaKey) {
+			switch (evt.keyCode) {
 				case 83: //S
 					if (evt.shiftKey) { // SHIFT + S (Publish)
 						self.focus(); // focus, to avoid a too late onchange of editor
@@ -246,7 +246,7 @@ function keyModuleListener(_successor) {
 
 	this.dealEvent = function (evt) {
 
-		if (top.weModuleWindow !== undefined && (evt["ctrlKey"] || evt["metaKey"])) {
+		if (top.weModuleWindow !== undefined && (evt.ctrlKey || evt.metaKey)) {
 
 			if (evt.keyCode === 83) { // S (Save)
 				if (top.content &&
@@ -280,8 +280,8 @@ function keyToolListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 
 	this.dealEvent = function (evt) {
-		if (top.weToolWindow !== undefined && (evt["ctrlKey"] || evt["metaKey"])) {
-			if (evt["keyCode"] == 83) { // S (Save)
+		if (top.weToolWindow !== undefined && (evt.ctrlKey || evt.metaKey)) {
+			if (evt.keyCode == 83) { // S (Save)
 				if (top.content &&
 								top.content.resize &&
 								top.content.resize.editor &&
@@ -388,14 +388,13 @@ function dealWithKeyboardShortCut(evt) {
 	// This function receives all events, when a key is pressed and forwards the event to
 	// the first keyboardlistener ("chain of responsibility")
 	switch (evt.keyCode) {
-		case -1:
+		case -1: 
 			keyListener.cancelEvent(evt);
-			return true;
+			return true; 
 		case 27: // ESCAPE
 		case 13: // ENTER
 		case 116: // F5 - works only in FF
 			return keyListener.dealEvent(evt);
-
 		case 45://ins
 		case 46://del
 			return true;

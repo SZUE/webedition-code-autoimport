@@ -238,20 +238,19 @@ function doKeyDown() {
 	}
 
 	function getHeaderHTML($printJS_Style = false){
-		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . STYLESHEET .
-			(isset($this->args['editor']) && $this->args['editor'] === 'tinyMce' ? static::getTinyMceJS() : '') .
-			($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/weDialogCss.css') .
+		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . STYLESHEET . static::getTinyMceJS() .
+			($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') .
 			'</head>';
 	}
 
 	public static function getTinyMceJS(){
 		return
 			we_html_element::jsElement('var isWeDialog = true;') .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'tiny_mce_popup.js') .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/mctabs.js') .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/form_utils.js') .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/validate.js') .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'utils/editable_selects.js');
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/validate.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js');
 	}
 
 	function getJs(){
@@ -355,7 +354,7 @@ self.focus();');
 	}
 
 	function getClassSelect(){
-		$clSelect = new we_html_select(array("name" => "we_dialog_args[class]", "id" => "we_dialog_args[class]", "size" => 1, "style" => "width: 300px;"));
+		$clSelect = new we_html_select(array("name" => "we_dialog_args[cssclass]", "id" => "we_dialog_args[cssclass]", "size" => 1, "style" => "width: 300px;"));
 		$clSelect->addOption("", g_l('wysiwyg', '[none]'));
 		$classesCSV = trim($this->args["cssclasses"], ",");
 		if(!empty($classesCSV)){
@@ -363,8 +362,8 @@ self.focus();');
 				$clSelect->addOption($val, "." . $val);
 			}
 		}
-		if(isset($this->args["class"]) && !empty($this->args["class"])){
-			$clSelect->selectOption($this->args["class"]);
+		if(isset($this->args["cssclass"]) && !empty($this->args["cssclass"])){
+			$clSelect->selectOption($this->args["cssclass"]);
 		}
 
 		return $clSelect->getHTML() . '<input type="hidden" name="we_dialog_args[cssclasses]" value="' . oldHtmlspecialchars($classesCSV) . '" />';

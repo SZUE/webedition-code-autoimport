@@ -41,7 +41,7 @@ class we_dialog_fullscreenEdit extends we_dialog_base{
 
 	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/wefullscreen/js/fullscreen_init.js');
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/wefullscreen/js/fullscreen_init.js');
 	}
 
 	function getJs(){
@@ -62,15 +62,8 @@ function doKeyDown(e) {
 }
 
 function weDoOk() {
-	if(isTinyMCE !== undefined && isTinyMCE === true){
 		WefullscreenDialog.writeback();
 		top.close();
-	} else{' .
-				($this->pageNr == $this->numPages && $this->JsOnly ? '
-			if (!textareaFocus) {
-				' . $this->getOkJs() . '
-			}' : '') . '
-	}
 }
 
 function IsDigit(e) {
