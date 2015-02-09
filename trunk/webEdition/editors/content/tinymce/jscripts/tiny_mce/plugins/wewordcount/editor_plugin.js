@@ -38,7 +38,7 @@
                 g = tinymce.VK;
             e.countre = c.getParam("wordcount_countregex", /[\w\u2019\'-]+/g);
             e.cleanre = c.getParam("wordcount_cleanregex", /[0-9.(),;:!?%#$?\'\"_+=\\\/-]*/g);
-            e.update_rate = c.getParam("wordcount_update_rate", 2000);
+            e.update_rate = c.getParam("wordcount_update_rate", 200);
             e.update_on_delete = c.getParam("wordcount_update_on_delete", true);
             e.id = c.id + "-word-count";
             c.onPostRender.add(function (i, h) {
