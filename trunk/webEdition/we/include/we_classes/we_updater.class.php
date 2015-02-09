@@ -44,7 +44,7 @@ class we_updater{
 		}
 	}
 
-	static function updateTables($DB_WE){
+	static function updateTables($DB_WE = null){
 		$db2 = new DB_WE();
 		$tables = $db2->table_names(TBL_PREFIX . 'tblOwner');
 		$DB_WE = $DB_WE ? : new DB_WE(); //old code calls without object
@@ -381,9 +381,9 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 			while($db->next_record()){
 				$data = unserialize($db->f('Catfields'));
 				$udb->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'Title' => $data['default']['Title'],
-						'Description' => $data['default']['Description'],
-					)) . ' WHERE ID=' . $db->f('ID'));
+							'Title' => $data['default']['Title'],
+							'Description' => $data['default']['Description'],
+						)) . ' WHERE ID=' . $db->f('ID'));
 			}
 			$db->delCol(CATEGORY_TABLE, 'Catfields');
 		}
