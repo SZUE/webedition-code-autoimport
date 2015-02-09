@@ -46,7 +46,6 @@ class we_messaging_headerMsg{
 	}
 
 	static function pbody(){
-		self::start();
 		//start with 0 to get popup with new count
 		$msg_cmd = "we_cmd('messaging_start', " . we_messaging_frames::TYPE_MESSAGE . ");";
 		$todo_cmd = "we_cmd('messaging_start', " . we_messaging_frames::TYPE_TODO . ");";

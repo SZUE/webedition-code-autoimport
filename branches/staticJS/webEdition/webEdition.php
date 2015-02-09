@@ -82,7 +82,7 @@ function startNormalMode(){
 	$_sidebarwidth = getSidebarWidth();
 	$_treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= weTree::MinWidth) ? $_COOKIE["treewidth_main"] : weTree::DefaultWidth;
 	?>
-	<div style="width:<?php echo $_treewidth; ?>px;" id="bframeDiv">
+	<div style="width:<?php echo $_treewidth; ?>px;display:block;" id="bframeDiv">
 		<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 	</div>
 	<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:<?php echo $_treewidth; ?>px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
@@ -154,7 +154,7 @@ function pWebEdition_Frameset($SEEM_edit_include){
 	<div id="cmdDiv">
 		<iframe src="about:blank" name="load"></iframe>
 		<iframe src="about:blank" name="load2"></iframe>
-		<!-- <iframe src="about:blank" name="ad"></iframe> -->
+		<!--<iframe src="about:blank" name="ad"></iframe>-->
 		<iframe src="about:blank" name="postframe"></iframe>
 		<iframe src="about:blank" name="plugin"></iframe>
 	</div>
