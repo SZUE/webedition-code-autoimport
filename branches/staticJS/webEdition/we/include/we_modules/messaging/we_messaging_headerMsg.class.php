@@ -23,31 +23,24 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_messaging_headerMsg{
-	private static $messaging = 0;
-
-	private static function start(){
-		if(is_object(self::$messaging)){
-			return;
-		}
-		self::$messaging = new we_messaging_messaging($_SESSION['weS']['we_data']["we_transaction"]);
-		self::$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
-		self::$messaging->add_msgobj('we_message', 1);
-		self::$messaging->add_msgobj('we_todo', 1);
-	}
 
 	static function pJS(){
-		self::start();
 		echo we_html_element::jsScript(JS_DIR . 'header_msg.js');
 		?>
 		<script type="text/javascript"><!--
-
 		<?php
 		if(defined('MESSAGING_SYSTEM')){
-			$newmsg_count = self::$messaging->used_msgobjs['we_message']->get_newmsg_count();
-			$newtodo_count = self::$messaging->used_msgobjs['we_todo']->get_newmsg_count();
+			$messaging = new we_messaging_messaging($_SESSION['weS']['we_data']['we_transaction']);
+			$messaging->set_login_data($_SESSION['user']['ID'], $_SESSION['user']['Username']);
+			$messaging->add_msgobj('we_message', 1);
+			$messaging->add_msgobj('we_todo', 1);
+
+			$newmsg_count = $messaging->used_msgobjs['we_message']->get_newmsg_count();
+			$newtodo_count =$messaging->used_msgobjs['we_todo']->get_newmsg_count();
 			echo 'header_msg_update(' . $newmsg_count . ', ' . $newtodo_count . ');';
-			} ?>
-		//-->
+		}
+		?>
+			//-->
 		</script>
 		<?php
 	}

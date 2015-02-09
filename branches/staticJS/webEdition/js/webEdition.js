@@ -152,13 +152,13 @@ function treeResized() {
 	}
 }
 
-var oldTreeWidth = size.tree.default;
+var oldTreeWidth = size.tree.defaultWidth;
 function toggleTree() {
 	var tfd = self.document.getElementById("treeFrameDiv");
 	var w = top.getTreeWidth();
 
 	if (tfd.style.display == "none") {
-		oldTreeWidth = (oldTreeWidth < size.tree.min ? size.tree.default : oldTreeWidth);
+		oldTreeWidth = (oldTreeWidth < size.tree.min ? size.tree.defaultWidth : oldTreeWidth);
 		setTreeWidth(oldTreeWidth);
 		tfd.style.display = "block";
 		setTreeArrow("left");
