@@ -1,9 +1,9 @@
 CREATE TABLE ###TBLPREFIX###tblFileLink (
   ID int(11) unsigned NOT NULL auto_increment,
-	`table` enum('tblFile','tblObjectFiles','tblVFile') NOT NULL default 'tblFile',
-	type enum('image','master','archive') NOT NULL default '',
+	DocumentTable enum('tblFile','tblObjectFiles','tblVFile') NOT NULL default 'tblFile',
+	type enum('image','master','archive') NOT NULL default 'image',
 	remObj int unsigned NOT NULL default '0',
-	position int unsigned NOT NULL default '0',
-	PRIMARY KEY  (ID,table,type),
-	KEY remObj (table,remObj)
+	`position` int unsigned NOT NULL default '0',
+	PRIMARY KEY  (ID,DocumentTable,type),
+	KEY remObj (DocumentTable,remObj)
 ) ENGINE=MyISAM;
