@@ -1151,7 +1151,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				}
 			}
 		});
-/*
+
+		/*
 		ed.onClick.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 				try{
@@ -1160,7 +1161,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				weEditorFrameIsHot = true;
 			}
 		});
-*/
+		*/
+
 		ed.onPaste.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 				try{
