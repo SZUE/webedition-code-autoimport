@@ -10,7 +10,6 @@ if(!is_readable("../../we/include/conf/we_conf.inc.php")){
 }
 //die Vorbilder includen mehr, aber wozu?
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once(WE_INCLUDES_PATH . 'we_classes/base/weFile.class.php');
 
 function up6300_updatePrefs(){
 	if(method_exists('we_user','readPrefs')){
