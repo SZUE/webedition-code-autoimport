@@ -244,7 +244,7 @@ class we_listview_document extends we_listview_base{
 			$extraSelect = ',' . ($random ? ' RAND() as RANDOM ' : $ranking . ' AS ranking ') . $calendar_select;
 			$limit = (($this->maxItemsPerPage > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : '');
 		} else {
-			if($this->workspaceID != ''){
+			if($this->workspaceID){
 				$workspaces = explode(',', $this->workspaceID);
 				if($this->subfolders){ // all entries with given parentIds
 					$cond = array();
@@ -262,14 +262,14 @@ class we_listview_document extends we_listview_base{
 		}
 		$this->DB_WE->query(
 				'SELECT ' . FILE_TABLE . '.ID, ' . FILE_TABLE . '.WebUserID' . $extraSelect .
-				' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID ' . $joinstring .
+				' FROM ' . FILE_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' ON (' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") LEFT JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID ' . $joinstring .
 				($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' ON ' . INDEX_TABLE . '.DID=' . FILE_TABLE . '.ID' : '') .
 				' WHERE ' . $orderwhereString .
 				($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : 1) . ' ' .
 				$where_lang . ' ' .
 				$cond_where . ' ' .
 				$ws_where . ' AND ' .
-				FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
+				FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 ' .
 				(isset($bedingung_sql) ? ' AND ' . $bedingung_sql : '') .
 				(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . '.DocType=' . intval($dt)) : '') .
 				' ' . $sql_tail . $calendar_where . ' GROUP BY ID ' . $orderstring .
