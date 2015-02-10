@@ -29,7 +29,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $id = we_base_request::_(we_base_request::INT, "id", 0);
 $bid = we_base_request::_(we_base_request::INT, "bid", 0);
 $did = we_base_request::_(we_base_request::INT, "did", 0);
-$paths = we_base_request::_(we_base_request::FILELIST, "paths", "");
+$paths = we_base_request::_(we_base_request::WEFILELIST, "paths", "");
 $target = we_base_request::_(we_base_request::RAW, "target", "");
 $height = we_base_request::_(we_base_request::INT, "height", 0);
 $width = we_base_request::_(we_base_request::INT, "width", 0);
