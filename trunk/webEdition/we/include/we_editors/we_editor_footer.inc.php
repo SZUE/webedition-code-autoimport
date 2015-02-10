@@ -100,55 +100,54 @@ $showGlossaryCheck = (isset($_SESSION['prefs']['force_glossary_check']) && $_SES
 
 
 $_js_we_save_document = "
-	var _showGlossaryCheck = $showGlossaryCheck;
-	var countSaveLoop = 0;
-	function saveReload(){
-		self.location='" . we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer') . "';
+var _showGlossaryCheck = $showGlossaryCheck;
+var countSaveLoop = 0;
+function saveReload(){
+	self.location='" . we_class::url(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=load_edit_footer') . "';
+}
+
+function we_save_document(){
+	try{
+		var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();
+		if (contentEditor && contentEditor.fields_are_valid && !contentEditor.fields_are_valid()) {
+			return;
+
+		}
+	}
+	catch(e) {
+		// Nothing
 	}
 
-	function we_save_document(){
+	if (_EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
+		we_cmd('glossary_check', '', '" . $we_transaction . "');
+	} else {
+		acStatus = '';
+		invalidAcFields = false;
 		try{
-			var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();
-			if (contentEditor && contentEditor.fields_are_valid && !contentEditor.fields_are_valid()) {
-				return;
-
+			if(parent && parent.frames[1] && parent.frames[1].YAHOO && parent.frames[1].YAHOO.autocoml) {
+				 acStatus = parent.frames[1].YAHOO.autocoml.checkACFields();
 			}
 		}
 		catch(e) {
 			// Nothing
 		}
-
-		if (_EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
-			we_cmd('glossary_check', '', '" . $we_transaction . "');
+		acStatusType = typeof acStatus;
+		if(parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length>0) {
+			for(i=0; i<parent.weAutoCompetionFields.length; i++) {
+				if(parent.weAutoCompetionFields[i] && parent.weAutoCompetionFields[i].id && !parent.weAutoCompetionFields[i].valid) invalidAcFields = true;
+			}
+		}
+		if (countSaveLoop > 10) {
+			" . we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . ";
+			countSaveLoop = 0;
+		}else if(acStatusType.toLowerCase() == 'object' && acStatus.running) {
+			countSaveLoop++;
+			setTimeout('we_save_document()',100);
+		}else if(invalidAcFields) {
+			" . we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . ";
+			countSaveLoop=0;
 		} else {
-			acStatus = '';
-			invalidAcFields = false;
-			try{
-				if(parent && parent.frames[1] && parent.frames[1].YAHOO && parent.frames[1].YAHOO.autocoml) {
-					 acStatus = parent.frames[1].YAHOO.autocoml.checkACFields();
-				}
-			}
-			catch(e) {
-				// Nothing
-			}
-			acStatusType = typeof acStatus;
-			if(parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length>0) {
-				for(i=0; i<parent.weAutoCompetionFields.length; i++) {
-					if(parent.weAutoCompetionFields[i] && parent.weAutoCompetionFields[i].id && !parent.weAutoCompetionFields[i].valid) invalidAcFields = true;
-				}
-			}
-			if (countSaveLoop > 10) {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . ";
-				countSaveLoop = 0;
-			}
-			else if(acStatusType.toLowerCase() == 'object' && acStatus.running) {
-				countSaveLoop++;
-				setTimeout('we_save_document()',100);
-			} else if(invalidAcFields) {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . ";
-				countSaveLoop=0;
-			} else {
-				countSaveLoop=0;
+			countSaveLoop=0;
 ";
 if($we_doc->userCanSave()){
 	$_js_we_save_document .= "var addCmd = arguments[0] ? arguments[0] : '';";
@@ -176,29 +175,28 @@ $_js_workflow_functions = "";
 if(defined('WORKFLOW_TABLE')){
 
 	$_js_workflow_functions = "
-	function put_in_workflow() {
+function put_in_workflow() {
 
-		if( _EditorFrame.getEditorIsHot() ) {
-			if(confirm('" . g_l('alert', '[' . stripTblPrefix($we_doc->Table) . '][in_wf_warning]') . "')) {
-				we_cmd('save_document','','','','',0,0,1);
-			}
-		}else {
-			top.we_cmd('workflow_isIn','" . $we_transaction . "'," . ( ($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) ? "( _EditorFrame.getEditorMakeSameDoc() ? 1 : 0 )" : "0" ) . ");
+	if( _EditorFrame.getEditorIsHot() ) {
+		if(confirm('" . g_l('alert', '[' . stripTblPrefix($we_doc->Table) . '][in_wf_warning]') . "')) {
+			we_cmd('save_document','','','','',0,0,1);
 		}
+	}else {
+		top.we_cmd('workflow_isIn','" . $we_transaction . "'," . ( ($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) ? "( _EditorFrame.getEditorMakeSameDoc() ? 1 : 0 )" : "0" ) . ");
 	}
+}
 
-	function pass_workflow() {
-		we_cmd('workflow_pass','" . $we_transaction . "');
-	}
+function pass_workflow() {
+	we_cmd('workflow_pass','" . $we_transaction . "');
+}
 
-	function workflow_finish() {
-		we_cmd('workflow_finish','" . $we_transaction . "');
-	}
+function workflow_finish() {
+	we_cmd('workflow_finish','" . $we_transaction . "');
+}
 
-	function decline_workflow() {
-		we_cmd('workflow_decline','" . $we_transaction . "');
-	}
-";
+function decline_workflow() {
+	we_cmd('workflow_decline','" . $we_transaction . "');
+}";
 }
 //	########################	function variable cansave	###########################################
 $_js_weCanSave = 'var weCanSave=' . ($we_doc->userCanSave() ? 'true' : 'false') . ';';
