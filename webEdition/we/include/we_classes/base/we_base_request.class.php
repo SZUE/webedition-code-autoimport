@@ -54,6 +54,10 @@ class we_base_request{
 //only temporary
 	const STRINGC = 'stringC';
 	const RAW_CHECKED = 'rawC';
+	// the following types do not sanitize, so they will allow spaces,...
+	const WEFILE = 'wefile';
+	const WEFILELIST = 'wefilelist';
+	const WEFILELISTA = 'wefilelista';
 //remove these types!!!
 	const JS = 'js';
 	const SERIALIZED = 'serial';
@@ -157,6 +161,8 @@ class we_base_request{
 
 				$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
 				return;
+			case self::WEFILELIST:
+			case self::WEFILELISTA:
 			case self::FILELISTA:
 			case self::FILELIST:
 				$var = explode(',', trim(strtr($var, array(
@@ -164,17 +170,18 @@ class we_base_request{
 					'//' => ''
 								)), ','));
 				foreach($var as &$cur){
-					$cur = filter_var($cur, FILTER_SANITIZE_URL);
+					$cur = ($type == self::WEFILELIST || $type == self::WEFILELISTA ? $cur : filter_var($cur, FILTER_SANITIZE_URL));
 					if(strpos($cur, rtrim(WEBEDITION_DIR, '/')) === 0){//file-selector has propably access
 						if(!(strstr($cur, SITE_DIR) || strstr($cur, TEMP_DIR))){//allow site/tmp dir
 							$cur = isset($GLOBALS['supportDebugging']) ? $cur : '-1';
 						}
 					}
 				}
-				$var = $type == self::FILELIST ? implode(',', $var) : $var;
+				$var = ($type == self::FILELIST || self::WEFILELIST ? implode(',', $var) : $var);
 				return;
+			case self::WEFILE:
 			case self::FILE:
-				$var = strtr(filter_var($var, FILTER_SANITIZE_URL), array(
+				$var = strtr(($type == self::FILE ? filter_var($var, FILTER_SANITIZE_URL) : $var), array(
 					'../' => '',
 					'//' => '/'
 				));

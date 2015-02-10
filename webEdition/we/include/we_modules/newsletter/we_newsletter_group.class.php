@@ -54,7 +54,7 @@ class we_newsletter_group extends we_newsletter_base{
 		$this->persistents = array(
 			'NewsletterID' => we_base_request::INT,
 			'Emails' => we_base_request::RAW_CHECKED,
-			'Extern' => we_base_request::FILELIST,
+			'Extern' => we_base_request::WEFILELIST,
 			'Customers' => we_base_request::RAW,
 			'SendAll' => we_base_request::BOOL,
 			'Filter' => we_base_request::SERIALIZED_KEEP

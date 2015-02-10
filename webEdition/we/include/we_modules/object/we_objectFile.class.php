@@ -158,7 +158,7 @@ class we_objectFile extends we_document{
 			}
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
-			$cats = makeIDsFromPathCVS(we_base_request::_(we_base_request::FILELISTA, 'we_ui_' . $formname . '_categories'), CATEGORY_TABLE);
+			$cats = makeIDsFromPathCVS(we_base_request::_(we_base_request::WEFILELISTA, 'we_ui_' . $formname . '_categories'), CATEGORY_TABLE);
 			$GLOBALS['we_object'][$formname]->Category = $cats;
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
