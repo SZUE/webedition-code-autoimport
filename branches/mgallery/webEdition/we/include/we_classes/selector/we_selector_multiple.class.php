@@ -101,7 +101,6 @@ var shiftpressed=false;
 var wasdblclick=false;
 var inputklick=false;
 var tout=null;
-document.onclick = weonclick;
 function weonclick(e){
 		if(document.all){
 			if(e.ctrlKey || e.altKey){

@@ -96,9 +96,12 @@ function selectFile(id) {
 			top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
 		currentPath = e.path;
 		currentID = id;
-		if (id)
+		if (id) {
 			top.fsheader.enableDelBut();
-		we_editCatID = 0;
+		}
+		if (id !== we_editCatID) {
+			we_editCatID = 0;
+		}
 	} else {
 		top.fsfooter.document.we_form.fname.value = "";
 		currentPath = "";
@@ -182,13 +185,11 @@ function drawNewFolder() {
 	unselectAllFiles();
 	top.makeNewFolder = true;
 	top.writeBody(top.fsbody.document.body);
-	top.makeNewFolder = false;
 }
 function drawNewCat() {
 	unselectAllFiles();
 	top.makeNewCat = true;
 	top.writeBody(top.fsbody.document.body);
-	top.makeNewCat = false;
 }
 function deleteEntry() {
 	if (confirm(g_l.deleteQuestion)) {
@@ -212,5 +213,4 @@ function RenameEntry(id) {
 	top.we_editCatID = id;
 	top.writeBody(top.fsbody.document.body);
 	selectFile(id);
-	top.we_editCatID = 0;
 }

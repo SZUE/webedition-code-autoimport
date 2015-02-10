@@ -64,10 +64,10 @@ var shiftpressed=false;
 var inputklick=false;
 var wasdblclick=false;
 var tout=null;
-document.onclick = weonclick;
 function weonclick(e){
 if(top.makeNewFolder ||  top.we_editDirID){
 if(!inputklick){
+top.makeNewFolder =top.we_editDirID=false;
 document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);document.we_form.submit();
 }else{
 inputklick=false;

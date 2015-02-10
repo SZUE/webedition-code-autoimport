@@ -98,10 +98,10 @@ var ctrlpressed=false
 var shiftpressed=false
 var inputklick=false
 var wasdblclick=false
-document.onclick = weonclick;
 function weonclick(e){
 if(top.makeNewFolder ||  top.we_editDirID){
 if(!inputklick){
+top.makeNewFolder =  top.we_editDirID=false;
 document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);
 document.we_form.submit();
 }else{
@@ -161,8 +161,8 @@ top.unselectAllFiles();') . '
 										'<td><?php echo we_html_tools::getPixel(200, 2) ?></td></tr></table></form>';
 						d.innerHTML = body;
 						if (makeNewFolder || top.we_editDirID) {
-							document.we_form.we_FolderText_tmp.focus();
-							document.we_form.we_FolderText_tmp.select();
+							top.fsbody.document.we_form.we_FolderText_tmp.focus();
+							top.fsbody.document.we_form.we_FolderText_tmp.select();
 						}
 					}
 					//-->

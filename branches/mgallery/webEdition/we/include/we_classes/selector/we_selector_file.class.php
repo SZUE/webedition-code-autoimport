@@ -301,7 +301,7 @@ var queryType={
 	"CREATE_CAT":'.self::CREATE_CAT.',
 	"DO_RENAME_ENTRY":'.self::DO_RENAME_ENTRY.',
 };
-var needIEEscape=' . intval((we_base_browserDetect::isIE() && substr($GLOBALS["WE_LANGUAGE"], -5) !== "UTF-8")) . ';
+var needIEEscape=' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8') . ';
 ');
 	}
 
@@ -459,12 +459,14 @@ function addEntry(ID,icon,text,isFolder,path){
 body{
 	background-color: white;
 	margin: 0px;
+	height:100%;
+	width:100%;
 }
 a, a:visited, a:active{
 	color: #000000;
 }') . $this->getWriteBodyHead() .
 		'</head>
-				<body onload="top.writeBody(self.document.body);"></body></html>';
+				<body onload="top.writeBody(self.document.body);" onclick="weonclick(event);"></body></html>';
 	}
 
 	protected function getWriteBodyHead(){

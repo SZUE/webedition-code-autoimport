@@ -148,13 +148,13 @@ var shiftpressed=false;
 var inputklick=false;
 var wasdblclick=false;
 var tout=null;
-document.onclick = weonclick;
 function weonclick(e){
 	if(top.fspreview.document.body){
 		top.fspreview.document.body.innerHTML = "";
 	}
 if(top.makeNewFolder ||  top.we_editDirID){
 		if(!inputklick){
+		top.makeNewFolder =top.we_editDirID=false;
 			document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);document.we_form.submit();
 		}else{
 			inputklick=false;
@@ -218,8 +218,8 @@ if(top.makeNewFolder ||  top.we_editDirID){
 										'</tr></table></form>';
 						d.innerHTML = body;
 						if (makeNewFolder || top.we_editDirID) {
-							document.we_form.we_FolderText_tmp.focus();
-							document.we_form.we_FolderText_tmp.select();
+							top.fsbody.document.we_form.we_FolderText_tmp.focus();
+							top.fsbody.document.we_form.we_FolderText_tmp.select();
 						}
 					}
 					//-->
@@ -603,10 +603,9 @@ function selectFile(id){
 	function printNewFolderHTML(){
 		echo '<script type="text/javascript"><!--
 top.clearEntries();
-top.makeNewFolder = 1;' .
+top.makeNewFolder = true;' .
 		$this->printCmdAddEntriesHTML() .
 		$this->printCMDWriteAndFillSelectorHTML() . '
-top.makeNewFolder = 0;
 //-->
 </script>';
 	}
@@ -710,7 +709,7 @@ top.clearEntries();
 top.we_editDirID=' . $this->we_editDirID . ';' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.we_editDirID = "";
+			'
 //-->
 </script>';
 		}

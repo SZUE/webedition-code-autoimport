@@ -177,12 +177,12 @@ var shiftpressed=false;
 var inputklick=false;
 var wasdblclick=false;
 var tout=null;
-document.onclick = weonclick;
 function weonclick(e){
 if(top.makeNewFolder || top.makeNewCat || top.we_editCatID){
 if(!inputklick){' . (we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8' ?
 								'document.we_form.we_EntryText.value=escape(top.fsbody.document.we_form.we_EntryText_tmp.value);' :
 								'document.we_form.we_EntryText.value=top.fsbody.document.we_form.we_EntryText_tmp.value;') . '
+top.makeNewFolder=top.makeNewCat=top.we_editCatID=false;
 document.we_form.submit();
 }else{
 inputklick=false;
@@ -215,57 +215,58 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){
 		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
-						var body = (needIEEscape ?
-										'<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">' :
-										'<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">') +
-										(top.we_editCatID ?
-														'<input type="hidden" name="what" value="' + queryType.DO_RENAME_ENTRY + '" />' +
-														'<input type="hidden" name="we_editCatID" value="' + top.we_editCatID + '" />' :
-														(makeNewFolder ?
-																		'<input type="hidden" name="what" value="' + queryType.CREATEFOLDER + '" />' :
-																		'<input type="hidden" name="what" value="' + queryType.CREATE_CAT + '" />')
-														) +
-										'<input type="hidden" name="order" value="' + top.order + '" />' +
-										'<input type="hidden" name="rootDirID" value="<?php echo $this->rootDirID; ?>" />' +
-										'<input type="hidden" name="table" value="' + table + '" />' +
-										'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
-										'<table border="0" cellpadding="0" cellspacing="0" width="35%">' +
-										(makeNewFolder ?
-														'<tr style="background-color:#DFE9F5;">' +
-														'<td align="center"><img src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>' +
-														'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" style="width:100%" /></td>' +
-														'</tr>' :
-														(makeNewCat ?
-																		'<tr style="background-color:#DFE9F5;">' +
-																		'<td align="center"><img src="<?php echo TREE_ICON_DIR ?>cat.gif" width="16" height="18" border="0" /></td>' +
-																		'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_cat_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_cat_name + '" class="wetextinput" style="width:35%" /></td>' +
-																		'</tr>' :
-																		'')
-														);
+				var body = (needIEEscape ?
+								'<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">' :
+								'<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">'
+								) +
+								(we_editCatID ?
+												'<input type="hidden" name="what" value="' + queryType.DO_RENAME_ENTRY + '" />' +
+												'<input type="hidden" name="we_editCatID" value="' + top.we_editCatID + '" />' :
+												(makeNewFolder ?
+																'<input type="hidden" name="what" value="' + queryType.CREATEFOLDER + '" />' :
+																'<input type="hidden" name="what" value="' + queryType.CREATE_CAT + '" />'
+																)) +
+								'<input type="hidden" name="order" value="' + top.order + '" />' +
+								'<input type="hidden" name="rootDirID" value="<?php echo $this->rootDirID; ?>" />' +
+								'<input type="hidden" name="table" value="' + table + '" />' +
+								'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
+								'<table border="0" cellpadding="0" cellspacing="0" width="35%">' +
+								(makeNewFolder ?
+												'<tr style="background-color:#DFE9F5;">' +
+												'<td align="center"><img src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>' +
+												'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" style="width:100%" /></td>' +
+												'</tr>' :
+												(makeNewCat ?
+																'<tr style="background-color:#DFE9F5;">' +
+																'<td align="center"><img src="<?php echo TREE_ICON_DIR ?>cat.gif" width="16" height="18" border="0" /></td>' +
+																'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_cat_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_cat_name + '" class="wetextinput" style="width:35%" /></td>' +
+																'</tr>' :
+																'')
+												);
 
-						for (i = 0; i < entries.length; i++) {
-							var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true;"';
-							var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-							body += '<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >' +
-											'<td class="selector" width="25" align="center">' +
-											(we_editCatID == entries[i].ID ?
-															'<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" /></td>' +
-															'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
-															'<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" /></td>' +
-															'<td class="selector"' + (we_editCatID ? '' : '') + ' title="' + entries[i].text + '">' + cutText(entries[i].text, 80)
-															) +
-											'</td></tr>';
-						}
-						body += '<tr><td width="25" height="2"></td>' +
-										'<td width="150" height="2"></td>' +
-										'</tr></table></form>';
-						d.innerHTML = body;
-						if (makeNewFolder || makeNewCat || we_editCatID) {
-							document.we_form.we_EntryText_tmp.focus();
-							document.we_form.we_EntryText_tmp.select();
-						}
-					}
-					//-->
+				for (i = 0; i < entries.length; i++) {
+					var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true;"';
+					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+					body += '<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >' +
+									'<td class="selector" width="25" align="center">' +
+									(we_editCatID == entries[i].ID ?
+													'<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" /></td>' +
+													'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
+													'<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" /></td>' +
+													'<td class="selector"' + (we_editCatID ? '' : '') + ' title="' + entries[i].text + '">' + cutText(entries[i].text, 80)
+													) +
+									'</td></tr>';
+				}
+				body += '<tr><td width="25" height="2"></td>' +
+								'<td width="150" height="2"></td>' +
+								'</tr></table></form>';
+				d.innerHTML = body;
+				if (makeNewFolder || makeNewCat || we_editCatID) {
+					top.fsbody.document.we_form.we_EntryText_tmp.focus();
+					top.fsbody.document.we_form.we_EntryText_tmp.select();
+				}
+			}
+			//-->
 		</script>
 		<?php
 		return ob_get_clean();
@@ -598,9 +599,9 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		$isMainChooser = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'openCatselector' && !(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) || we_base_request::_(we_base_request::JS, 'we_cmd', false, 5));
 		return '<frameset rows="67,*,65,0" border="0">
 	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">' .
-			($isMainChooser ? '<frameset cols="35%,65%" border="0">' : '') .
+				($isMainChooser ? '<frameset cols="35%,65%" border="0">' : '') .
 				'<frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" scrolling="auto">' .
-					($isMainChooser ? '<frame src="' . $this->getFsQueryString(self::PROPERTIES) . '" name="fsvalues"  scrolling="auto"></frameset>' : '') .
+				($isMainChooser ? '<frame src="' . $this->getFsQueryString(self::PROPERTIES) . '" name="fsvalues"  scrolling="auto"></frameset>' : '') .
 				'<frame src="' . $this->getFsQueryString(we_selector_file::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
     <frame src="about:blank"  name="fscmd" noresize scrolling="no">
 </frameset>
