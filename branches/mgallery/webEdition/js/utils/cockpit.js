@@ -109,7 +109,7 @@ var oEvt = {
 		return oDiv;
 	},
 	getEvt: function (oMouseEvt) {
-		if (oMouseEvt !== undefined) {
+		if (oMouseEvt === undefined) {
 			oMouseEvt = window.event;
 		}
 		if (oMouseEvt.layerX !== undefined) {
