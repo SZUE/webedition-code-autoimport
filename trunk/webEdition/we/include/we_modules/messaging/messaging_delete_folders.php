@@ -66,9 +66,9 @@ $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
 <?php
 if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'delete_folders'){
-	$folders = we_base_request::_(we_base_request::INTLISTA, 'folders');
+	$folders = we_base_request::_(we_base_request::INTLISTA, 'folders', array());
 
-	if($folders[0] != ""){
+	if($folders){
 
 		$res = $messaging->delete_folders($folders);
 		$v = array_shift($res);
@@ -99,11 +99,11 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'delete_folders'){
 $content = "<span class=\"defaultfont\">" . g_l('modules_messaging', '[deltext]') . "</span>";
 
 $form = '<form name="we_form" method="post">' .
-	we_html_tools::hidden('we_transaction', $transaction) .
-	we_html_tools::hidden('folders', '') .
-	we_html_tools::hidden('mcmd', 'delete_folders')
-	.
-	'</form>';
+		we_html_tools::hidden('we_transaction', $transaction) .
+		we_html_tools::hidden('folders', '') .
+		we_html_tools::hidden('mcmd', 'delete_folders')
+		.
+		'</form>';
 
 $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_delete()"), "", we_html_button::create_button("cancel", "javascript:top.content.we_cmd('messaging_start_view')")
 );

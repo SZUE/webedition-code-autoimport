@@ -305,9 +305,8 @@ class we_document extends we_root{
 		return we_html_button::create_state_changer() . $navis->get();
 	}
 
-	function addCat($id){
+	function addCat(array $ids){
 		$cats = makeArrayFromCSV($this->Category);
-		$ids = makeArrayFromCSV($id);
 		foreach($ids as $id){
 			if($id && (!in_array($id, $cats))){
 				$cats[] = $id;

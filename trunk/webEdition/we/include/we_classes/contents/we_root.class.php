@@ -24,6 +24,7 @@
  */
 /* the parent class for tree-objects */
 abstract class we_root extends we_class{
+
 	const USER_HASACCESS = 1;
 	const FILE_LOCKED = -3;
 	const USER_NO_PERM = -2;
@@ -31,6 +32,7 @@ abstract class we_root extends we_class{
 	const FILE_NOT_IN_USER_WORKSPACE = -1;
 
 	/* ParentID of the object (ID of the Parent-Folder of the Object) */
+
 	var $ParentID = 0;
 
 	/* Parent Path of the object (Path of the Parent-Folder of the Object) */
@@ -321,15 +323,15 @@ abstract class we_root extends we_class{
 		$ownersReadOnly = $this->OwnersReadOnly ? unserialize($this->OwnersReadOnly) : array();
 
 		$content = '<table style="border-spacing: 0px;border-style:none;width:370px;" cellpadding="0">' .
-			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
+				'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 		if($owners){
 			foreach($owners as $owner){
 				$foo = getHash('SELECT ID,Path,Icon from ' . USER_TABLE . ' WHERE ID=' . intval($owner), $this->DB_WE);
 				$icon = isset($foo['Icon']) ? TREE_ICON_DIR . $foo['Icon'] : TREE_ICON_DIR . 'user.gif';
 				$_path = isset($foo['Path']) ? $foo['Path'] : '';
 				$content .= '<tr><td><img src="' . $icon . '" width="16" height="18" /></td><td class="defaultfont">' . $_path . '</td><td>' .
-					we_html_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);', !$canChange) .
-					'</td><td>' . ($canChange ? we_html_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('users_del_owner','" . $owner . "');") : '') . '</td></tr>';
+						we_html_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);', !$canChange) .
+						'</td><td>' . ($canChange ? we_html_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('users_del_owner','" . $owner . "');") : '') . '</td></tr>';
 			}
 		} else {
 			$content .= '<tr><td><img src="' . TREE_ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', '[onlyOwner]') . '</td><td></td><td></td></tr>';
@@ -342,7 +344,7 @@ abstract class we_root extends we_class{
 		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
 		$wecmdenc5 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('users_add_owner',top.allIDs);");
 		$addbut = $canChange ?
-			$this->htmlHidden($idname, '') . $this->htmlHidden($textname, '') . we_html_button::create_button('add', "javascript:we_cmd('browse_users','document.forms[\'we_form\'].elements[\'" . $idname . "\'].value','" . $wecmdenc2 . "','',document.forms['we_form'].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);") : "";
+				$this->htmlHidden($idname, '') . $this->htmlHidden($textname, '') . we_html_button::create_button('add', "javascript:we_cmd('browse_users','document.forms[\'we_form\'].elements[\'" . $idname . "\'].value','" . $wecmdenc2 . "','',document.forms['we_form'].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);") : "";
 
 		$content = '<table style="border-spacing: 0px;border-style:none;width:500px;" cellpadding="0">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
@@ -358,10 +360,10 @@ abstract class we_root extends we_class{
 <tr><td class="defaultfont">' . $this->formCreator($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_OWNER'), 388) . '</td></tr>
 <tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
 <tr><td>' . $this->formRestrictOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' .
-			($this->RestrictOwners ?
-				'<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
+				($this->RestrictOwners ?
+						'<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
 <tr><td>' . $this->formOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
-			'</table>';
+				'</table>';
 	}
 
 	function del_all_owners(){
@@ -370,7 +372,7 @@ abstract class we_root extends we_class{
 
 	function add_owner($id){
 		$owners = makeArrayFromCSV($this->Owners);
-		$ids = makeArrayFromCSV($id);
+		$ids = is_array($id) ? $id : explode(',', $id);
 		foreach($ids as $id){
 			if($id && (!in_array($id, $owners))){
 				$owners[] = $id;
@@ -616,10 +618,10 @@ abstract class we_root extends we_class{
 			case 'dat':
 				//check bdid first
 				return (isset($this->elements[$name]['bdid']) && $this->elements[$name]['bdid'] ?
-						$this->elements[$name]['bdid'] :
-						(isset($this->elements[$name]['dat']) && (!$defaultOnEmpty || $this->elements[$name]['dat']) ?
-							$this->elements[$name]['dat'] :
-							$default));
+								$this->elements[$name]['bdid'] :
+								(isset($this->elements[$name]['dat']) && (!$defaultOnEmpty || $this->elements[$name]['dat']) ?
+										$this->elements[$name]['dat'] :
+										$default));
 			default:
 				return (isset($this->elements[$name][$key]) ? $this->elements[$name][$key] : $default);
 		}
@@ -933,7 +935,7 @@ abstract class we_root extends we_class{
 	protected function i_getContentData(){
 
 		$this->DB_WE->query('SELECT * FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->ID) .
-			' AND l.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '"'
+				' AND l.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '"'
 		);
 		$filter = array('Name', 'DID', 'Ord');
 		while($this->DB_WE->next_record()){
@@ -1006,13 +1008,13 @@ abstract class we_root extends we_class{
 						$cid = $cid ? : $this->DB_WE->getInsertId();
 						$this->elements[$k]['id'] = $cid; // update Object itself
 						if(!$cid || !$this->DB_WE->query('REPLACE INTO ' . LINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-									'DID' => $this->ID,
-									'CID' => $cid,
-									'Name' => $k,
-									'Type' => $v["type"],
-									'DocumentTable' => stripTblPrefix($this->Table)
-								))
-							)){
+											'DID' => $this->ID,
+											'CID' => $cid,
+											'Name' => $k,
+											'Type' => $v["type"],
+											'DocumentTable' => stripTblPrefix($this->Table)
+										))
+								)){
 							//this should never happen
 							return false;
 						}
@@ -1070,8 +1072,8 @@ abstract class we_root extends we_class{
 	function i_fileExtensionNotValid(){
 		if(isset($this->Extension)){
 			$ext = (substr($this->Extension, 0, 1) === '.' ?
-					substr($this->Extension, 1) :
-					$this->Extension);
+							substr($this->Extension, 1) :
+							$this->Extension);
 
 			return !(preg_match('/^[a-zA-Z0-9]+$/iD', $ext) || !$ext);
 		}
@@ -1334,8 +1336,8 @@ abstract class we_root extends we_class{
 		we_html_element::jsElement('top.toggleBusy(0);') .
 		'</head>' . we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_tools::htmlDialogLayout('<p class="defaultfont">' . sprintf(g_l('alert', '[temporaere_no_access_text]'), $this->Text, f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID))) . '</p>', g_l('alert', '[temporaere_no_access]')) .
 //	For SEEM-Mode
-			($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
-				'<a href="javascript://" style="text-decoration:none" onclick="top.weNavigationHistory.navigateReload()" >' . g_l('SEEM', '[try_doc_again]') . '</a>' : '')
+				($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
+						'<a href="javascript://" style="text-decoration:none" onclick="top.weNavigationHistory.navigateReload()" >' . g_l('SEEM', '[try_doc_again]') . '</a>' : '')
 		) .
 		'</html>';
 		exit();

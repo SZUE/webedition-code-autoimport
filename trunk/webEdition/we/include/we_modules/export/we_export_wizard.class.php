@@ -1419,8 +1419,8 @@ if (top.footer.setProgress){
 		switch(we_base_request::_(we_base_request::STRING, "wcmd")){
 			case "add_cat":
 				$arr = makeArrayFromCSV($this->exportVars["categories"]);
-				if(($cat = we_base_request::_(we_base_request::INTLIST, "cat"))){
-					foreach(makeArrayFromCSV($cat) as $id){
+				if(($cat = we_base_request::_(we_base_request::INTLISTA, "cat", array()))){
+					foreach($cat as $id){
 						if(strlen($id) && (!in_array($id, $arr))){
 							$arr[] = $id;
 						}
