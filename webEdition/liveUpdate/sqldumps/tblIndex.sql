@@ -12,7 +12,7 @@
 /* query separator */
 ###UPDATEDROPKEY(UDID,###TBLPREFIX###tblIndex)###
 /* query separator */
-###ONKEYFAILED(search,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex DROP KEY PRIMARY;###
+###ONKEYFAILED(search,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex DROP PRIMARY KEY;###
 /* query separator */
 ###ONKEYFAILED(search,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex DROP COLUMN ID;###
 /* query separator */
@@ -40,5 +40,6 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
 	KEY wsp (Workspace)
 ) ENGINE=MyISAM;
 
-###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD PRIMARY KEY (ID,WorkspaceID,ClassID);###
 /* query separator */
+###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD PRIMARY KEY (ID,WorkspaceID,ClassID);###
+
