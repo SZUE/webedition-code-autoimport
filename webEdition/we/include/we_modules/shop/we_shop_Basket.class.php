@@ -192,11 +192,8 @@ class we_shop_Basket{
 			case we_shop_shop::DOCUMENT:
 				// unfortunately this is not made with initDocById,
 				// but its much faster -> so we use it
-				$DB_WE->query('SELECT c.BDID,c.Dat ,l.Name FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID=' . intval($id) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
-				while($DB_WE->next_record()){
-					$tmp = $DB_WE->f('BDID');
-					$Record[$DB_WE->f('Name')] = $tmp ? : $DB_WE->f('Dat');
-				}
+				$DB_WE->query('SELECT l.Name,IF(c.BDID>0,c.BDID,c.Dat) AS Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID=' . intval($id) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+				$Record = $DB_WE->getAllFirst(false);
 
 				if($variant){
 					we_shop_variants::useVariantForShop($Record, $variant);
@@ -209,7 +206,7 @@ class we_shop_Basket{
 				}
 
 				$Record['WE_PATH'] = $Record['wedoc_Path'] . ($variant ? '?' . WE_SHOP_VARIANT_REQUEST . '=' . $variant : '');
-				$Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id), '', $DB_WE);
+				$Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($id), '', $DB_WE);
 				$Record['WE_VARIANT'] = $variant;
 				$Record['WE_ID'] = intval($id);
 
@@ -224,7 +221,7 @@ class we_shop_Basket{
 				}
 				break;
 			case we_shop_shop::OBJECT:
-				$classID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($id), '',$DB_WE);
+				$classID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($id), '', $DB_WE);
 				if(!$classID){
 					t_e('fatal shop error', $id, $_REQUEST);
 					return array();
