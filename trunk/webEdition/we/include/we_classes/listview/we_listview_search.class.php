@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -31,6 +32,7 @@
  *
  */
 class we_listview_search extends we_listview_base{
+
 	var $docType = ''; /* doctype string */
 	var $class = 0; /* ID of a class. Search only in Objects of this class */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
@@ -67,8 +69,8 @@ class we_listview_search extends we_listview_base{
 		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 
 		$where_lang = ($this->languages ?
-				' AND ' . INDEX_TABLE . '.Language IN ("' . implode('","', makeArrayFromCSV($this->languages)) . '") ' :
-				'');
+						' AND ' . INDEX_TABLE . '.Language IN ("' . implode('","', makeArrayFromCSV($this->languages)) . '") ' :
+						'');
 
 		// correct order
 		$orderArr = array();
@@ -80,7 +82,7 @@ class we_listview_search extends we_listview_base{
 			case 'we_id':
 			case 'we_creationdate':
 			case 'we_filename':
-				$ord = str_replace('we_id', INDEX_TABLE . '.DID' . ($this->desc ? ' DESC' : '') . ',' . INDEX_TABLE . '.OID' . ($this->desc ? ' DESC' : ''), $this->order);
+				$ord = str_replace('we_id', INDEX_TABLE . '.ID' . ($this->desc ? ' DESC' : ''), $this->order);
 				//$ord = str_replace("we_creationdate",FILE_TABLE . ".CreationDate",$ord); // NOTE: this won't work, cause Indextable doesn't know this field & filetable is not used in this query
 				$ord = str_replace('we_creationdate', '', $ord);
 				$this->order = str_replace('we_filename', INDEX_TABLE . '.Path', $ord);
@@ -101,12 +103,14 @@ class we_listview_search extends we_listview_base{
 					$this->order = '';
 					foreach($orderArr as $o){
 						switch($o['oname']){
-							case 'Title':
-							case 'Path':
-							case 'Text':
 							case 'OID':
 							case 'DID':
 							case 'ID':
+								$this->order .= 'ID' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+								break;
+							case 'Title':
+							case 'Path':
+							case 'Text':
 							case 'Workspace':
 							case 'Description':
 								$this->order .= $o['oname'] . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
@@ -199,17 +203,17 @@ class we_listview_search extends we_listview_base{
 		}
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName) :
-				'');
+						we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName) :
+						'');
 
-		$where = ' WHERE ' . $bedingung_sql . ' ' . $dtcl_query . ' ' . $cat_tail . ' ' . $ws_where . ' ' . $where_lang . ' ' . $weDocumentCustomerFilter_tail . ' GROUP BY OID,DID';
+		$where = ' WHERE ' . $bedingung_sql . ' ' . $dtcl_query . ' ' . $cat_tail . ' ' . $ws_where . ' ' . $where_lang . ' ' . $weDocumentCustomerFilter_tail;
 		$this->DB_WE->query('SELECT 1 FROM ' . INDEX_TABLE . $where);
 		$this->anz_all = $this->DB_WE->num_rows();
 
 		$this->DB_WE->query(
-			'SELECT ' . INDEX_TABLE . '.Category, ' . INDEX_TABLE . '.DID,' . INDEX_TABLE . '.OID,' . INDEX_TABLE . '.ClassID,' . INDEX_TABLE . '.Text,' . INDEX_TABLE . '.Workspace,' . INDEX_TABLE . '.WorkspaceID,' . INDEX_TABLE . '.Title,' . INDEX_TABLE . '.Description,' . INDEX_TABLE . '.Path,' . INDEX_TABLE . '.Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking ' .
-			'FROM ' . INDEX_TABLE .
-			$where . ' ORDER BY ranking' . ($this->order ? (',' . $this->order) : '') . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ''));
+				'SELECT ' . INDEX_TABLE . '.Category,' . INDEX_TABLE . '.ID,' . INDEX_TABLE . '.ID AS DID,' . INDEX_TABLE . '.ID AS OID,' . INDEX_TABLE . '.ClassID,' . INDEX_TABLE . '.Text,' . INDEX_TABLE . '.Workspace,' . INDEX_TABLE . '.WorkspaceID,' . INDEX_TABLE . '.Title,' . INDEX_TABLE . '.Description,' . INDEX_TABLE . '.Path,' . INDEX_TABLE . '.Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking ' .
+				'FROM ' . INDEX_TABLE .
+				$where . ' ORDER BY ranking' . ($this->order ? (',' . $this->order) : '') . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
@@ -229,13 +233,13 @@ class we_listview_search extends we_listview_base{
 
 				if(NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$this->DB_WE->Record['WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') .
-						($objectdaten['Url'] ?
-							'/' . $objectdaten['Url'] . $pidstr :
-							'/?we_objectID=' . $this->DB_WE->Record['OID'] . str_replace('?', '&amp;', $pidstr));
+							($objectdaten['Url'] ?
+									'/' . $objectdaten['Url'] . $pidstr :
+									'/?we_objectID=' . $this->DB_WE->Record['OID'] . str_replace('?', '&amp;', $pidstr));
 				} else {
 					$this->DB_WE->Record['WE_PATH'] = ($objectdaten['Url'] ?
-							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objectdaten['Url'] . $pidstr :
-							$_SERVER['SCRIPT_NAME'] . '?we_objectID=' . $this->DB_WE->Record['OID'] . str_replace('?', '&amp;', $pidstr));
+									($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objectdaten['Url'] . $pidstr :
+									$_SERVER['SCRIPT_NAME'] . '?we_objectID=' . $this->DB_WE->Record['OID'] . str_replace('?', '&amp;', $pidstr));
 				}
 				$this->DB_WE->Record['wedoc_Path'] = $this->DB_WE->Record['WE_PATH'];
 				$this->DB_WE->Record['we_WE_URL'] = $objectdaten['Url'];

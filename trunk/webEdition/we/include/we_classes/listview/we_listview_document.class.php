@@ -263,7 +263,7 @@ class we_listview_document extends we_listview_base{
 		$this->DB_WE->query(
 				'SELECT ' . FILE_TABLE . '.ID, ' . FILE_TABLE . '.WebUserID' . $extraSelect .
 				' FROM ' . FILE_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' ON (' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") LEFT JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID ' . $joinstring .
-				($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' ON ' . INDEX_TABLE . '.DID=' . FILE_TABLE . '.ID' : '') .
+				($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' ON (' . INDEX_TABLE . '.ID=' . FILE_TABLE . '.ID AND ' . INDEX_TABLE . '.ClassID=0)' : '') .
 				' WHERE ' . $orderwhereString .
 				($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : 1) . ' ' .
 				$where_lang . ' ' .
@@ -301,7 +301,7 @@ class we_listview_document extends we_listview_base{
 				'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID' .
 				($random ? ',RAND() as RANDOM' : ($this->search ? ',' . $ranking . ' AS ranking' : '')) .
 				' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID' .
-				($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' ON ' . INDEX_TABLE . '.DID=' . FILE_TABLE . '.ID' : '') .
+				($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' ON (' . INDEX_TABLE . '.ID=' . FILE_TABLE . '.ID AND ' . INDEX_TABLE . '.ClassID=0)' : '') .
 				$joinstring .
 				' WHERE ' .
 				$orderwhereString .
@@ -351,7 +351,7 @@ class we_listview_document extends we_listview_base{
 				}
 
 				$this->Record['WE_PATH'] = $this->Record['wedoc_Path'];
-				$this->Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($id), '', $this->DB_WE);
+				$this->Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($id), '', $this->DB_WE);
 				$this->Record['WE_ID'] = intval($id);
 
 				if($this->customers && $this->Record['wedoc_WebUserID']){
