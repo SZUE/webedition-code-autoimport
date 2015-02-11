@@ -27,12 +27,12 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 	var $rowPrefix = '';
 	var $catField = '';
 
-	public function __construct($width = "", $ids = "", $cmd_del = "", $addbut = "", $ws = "", $fields = "Icon,Path", $table = FILE_TABLE, $css = "defaultfont", $thirdDelPar = "", $extraDelFn = ""){
+	public function __construct($width = '', $ids = '', $cmd_del = '', $addbut = '', $ws = '', $fields = 'Icon,Path', $table = FILE_TABLE, $css = 'defaultfont', $thirdDelPar = '', $extraDelFn = ''){
 		parent::__construct($width, $ids, $cmd_del, $addbut, $ws, $fields, $table, $css, $thirdDelPar, $extraDelFn);
 	}
 
 	function getLine($lineNr){
-		$_catFieldJS = "";
+		$_catFieldJS = '';
 		/* 	if($this->catField){
 		  $_ids = str_replace("," . $this->Record["ID"] . ",", ",", $this->ids);
 		  } */

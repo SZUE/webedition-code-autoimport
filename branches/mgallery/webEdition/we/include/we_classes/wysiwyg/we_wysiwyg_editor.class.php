@@ -1153,6 +1153,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		});
 
 		/*
+		/*
 		ed.onClick.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 				try{

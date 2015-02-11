@@ -350,8 +350,8 @@ abstract class we_listview_base{
 	 *
 	 */
 	public function getNextLink($attribs){
-		$only = weTag_getAttribute('only', $attribs,'',we_base_request::STRING);
-		$urlID = weTag_getAttribute('id', $attribs,0,we_base_request::INT);
+		$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
+		$urlID = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
 
 			$month = $this->calendar_struct['month_human'];

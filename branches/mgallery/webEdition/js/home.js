@@ -197,19 +197,10 @@ function hasExpandedWidget(node) {
 function jsStyleCls(evt, obj, cls1, cls2) {
 	switch (evt) {
 		case 'swap':
-			obj.className = !jsStyleCls('verify', obj, cls1) ? obj.className.replace(cls2, cls1) : obj.className.replace(cls1, cls2);
-			break;
-		case 'add':
-			if (!jsStyleCls('verify', obj, cls1)) {
-				obj.className += obj.className ? ' ' + cls1 : cls1;
-			}
-			break;
-		case 'remove':
-			var rem = obj.className.match(' ' + cls1) ? ' ' + cls1 : cls1;
-			obj.className = obj.className.replace(rem, '');
+			obj.className = !obj.classList.contains(cls1) ? obj.className.replace(cls2, cls1) : obj.className.replace(cls1, cls2);
 			break;
 		case 'verify':
-			return new RegExp('\\b' + cls1 + '\\b').test(obj.className);
+			return obj.classList.contains(cls1);
 	}
 }
 
@@ -223,11 +214,11 @@ function updateJsStyleCls() {
 			cls1 = 'cls_' + i + '_collapse';
 			cls2 = 'cls_' + i + '_expand';
 		}
-		if (!jsStyleCls('verify', oCol, cls1)) {
-			if (jsStyleCls('verify', oCol, cls2)) {
+		if (!oCol.classList.contains(cls1)) {
+			if (oCol.classList.contains(cls2)) {
 				jsStyleCls('swap', oCol, cls2, cls1);
 			} else {
-				jsStyleCls('add', oCol, cls1);
+				oCol.classList.add(cls1);
 			}
 		}
 	}
@@ -296,22 +287,19 @@ function initWidget(_id) {
 }
 
 function setTheme(wizId, wizTheme) {
-	var objs = [gel(wizId + '_wrapper')];
+	var objs = [gel(wizId + '_bx')];
 	var clsElement = gel(wizId + '_cls');
 	var replaceClsName = clsElement.value;
 	var o;
 	clsElement.value = wizTheme;
 	for (o in objs) {
-		if (!objs[o].src) {
-			jsStyleCls('swap', objs[o], objs[o].className, 'bgc_' + wizTheme);
-		} else {
-			var _source = objs[o].src;
-			objs[o].src = _source.replace(replaceClsName, wizTheme);
+		if (objs[o].classList.contains("bgc_" + replaceClsName)) {
+			objs[o].classList.remove("bgc_" + replaceClsName);
+			objs[o].classList.add('bgc_' + wizTheme);
 		}
 	}
 	var _bgObjs = [gel(wizId + '_lbl')];
 	for (o in _bgObjs) {
-		//_bgObjs[o].style.background = 'url("/webEdition/images/pd/header_' + wizTheme + '.gif")';
 		_bgObjs[o].classList.remove(_bgObjs[o].classList[_bgObjs[o].classList.length - 1]);
 		_bgObjs[o].classList.add("widgetTitle_" + wizTheme);
 	}
@@ -362,7 +350,7 @@ function toggle(wizId, wizType, prefix, postfix) {
 	for (var p in props) {
 		gel(wizId + '_' + p).value = props[p];
 	}
-	if (defRes === "1" && !jsStyleCls('verify', gel('c_1'), 'cls_1_expand')) {
+	if (defRes === "1" && !gel('c_1').classList.contains('cls_1_expand')) {
 		updateJsStyleCls();
 	}
 }

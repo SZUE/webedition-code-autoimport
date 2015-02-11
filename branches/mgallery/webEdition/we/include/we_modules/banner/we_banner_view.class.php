@@ -331,8 +331,7 @@ var g_l={
 				break;
 			case "add_cat":
 				$arr = makeArrayFromCSV($this->banner->CategoryIDs);
-				if(($ids = we_base_request::_(we_base_request::INTLIST, "ncmdvalue"))){
-					$ids = makeArrayFromCSV($ids);
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", array()))){
 					foreach($ids as $id){
 						if($id && (!in_array($id, $arr))){
 							$arr[] = $id;
@@ -357,8 +356,8 @@ var g_l={
 				break;
 			case "add_file":
 				$arr = makeArrayFromCSV($this->banner->FileIDs);
-				if(($ids = we_base_request::_(we_base_request::INTLIST, "ncmdvalue"))){
-					foreach(makeArrayFromCSV($ids) as $id){
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", array()))){
+					foreach($ids as $id){
 						if($id && (!in_array($id, $arr))){
 							$arr[] = $id;
 						}
@@ -381,8 +380,8 @@ var g_l={
 				break;
 			case "add_folder":
 				$arr = makeArrayFromCSV($this->banner->FolderIDs);
-				if(($ids = we_base_request::_(we_base_request::INTLIST, "ncmdvalue"))){
-					foreach(makeArrayFromCSV($ids) as $id){
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", array()))){
+					foreach($ids as $id){
 						if(strlen($id) && (!in_array($id, $arr))){
 							$arr[] = $id;
 						}
@@ -392,8 +391,8 @@ var g_l={
 				break;
 			case "add_customer":
 				$arr = makeArrayFromCSV($this->banner->Customers);
-				if(($ids = we_base_request::_(we_base_request::INTLIST, "ncmdvalue"))){
-					foreach(makeArrayFromCSV($ids) as $id){
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", array()))){
+					foreach($ids as $id){
 						if($id && (!in_array($id, $arr))){
 							$arr[] = $id;
 						}

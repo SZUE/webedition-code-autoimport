@@ -52,8 +52,8 @@ class rpcGetCategoryCmd extends rpcCmd{
 		return $resp;
 	}
 
-	function getCategory($obj, $categories, $catField = ""){
-		$cats = new we_chooser_multiDirExtended(410, $categories, "delete_" . $obj . "Cat", "", "", "Icon,Path", CATEGORY_TABLE);
+	function getCategory($obj, $categories, $catField = ''){
+		$cats = new we_chooser_multiDirExtended(410, $categories, 'delete_' . $obj . 'Cat', '', '', 'Icon,Path', CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
 		$cats->setCatField($catField);
 		return $cats->getTableRows();

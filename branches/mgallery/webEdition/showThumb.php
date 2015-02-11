@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) && ($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 't', $we_transaction)) && ($id = we_base_request::_(we_base_request::INTLIST, 'id'))){
+if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) && ($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 't', $we_transaction)) && ($thumbIDs = we_base_request::_(we_base_request::INTLISTA, 'id',array()))){
 
 	$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
@@ -36,7 +36,6 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) && ($we_transaction
 
 	$table = '<table border="0" cellpadding="5" cellspacing="0"><tr>';
 
-	$thumbIDs = makeArrayFromCSV($id);
 	foreach($thumbIDs as $thumbid){
 		$thumbObj = new we_thumbnail();
 		$thumbObj->initByThumbID($thumbid, $we_doc->ID, $we_doc->Filename, $we_doc->Path, $we_doc->Extension, $we_doc->getElement("origwidth"), $we_doc->getElement("origheight"), $we_doc->getDocument());
@@ -68,5 +67,5 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) && ($we_transaction
 
 	$table .= '</tr></table>';
 
-	echo we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin: 5px'), $table) . "</html>";
+	echo we_html_element::htmlBody(array('bgcolor' => '#ffffff', 'style' => 'margin: 5px 5px 5px 5px'), $table) . '</html>';
 }

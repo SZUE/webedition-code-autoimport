@@ -24,6 +24,7 @@
  */
 class we_selector_category extends we_selector_multiple{
 
+
 	private $we_editCatID = '';
 	private $EntryText = '';
 	private $noChoose = false;
@@ -106,10 +107,11 @@ class we_selector_category extends we_selector_multiple{
 						'<td width="40">' . we_html_button::create_button("image:btn_new_dir", 'javascript:top.drawNewFolder();', true, 0, 0, '', '', false, false) . '</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="38">' . we_html_button::create_button("image:btn_add_cat", 'javascript:top.drawNewCat();', true, 0, 0, '', '', false, false) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td width="27">' . we_html_button::create_button("image:btn_function_trash", 'javascript:if(changeCatState==1){top.deleteEntry();}', true, 27, 22, '', '', false, false) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>' :
-						'') .
+
+		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>' : '') .
+				($this->userCanEditCat() ?
+						'<td width="27">' . we_html_button::create_button("image:btn_function_trash", 'javascript:if(changeCatState==1){top.deleteEntry();}', true, 27, 22, '', '', false, false) . '</td>
+		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>' : '') .
 				'</tr>' .
 				$this->printHeaderTableSpaceRow() . '
 </table>';
@@ -168,6 +170,7 @@ function enableDelBut(){
 
 	function getExitClose(){
 		return '';
+
 	}
 
 	protected function getWriteBodyHead(){
@@ -327,6 +330,7 @@ var g_l={
 			)));
 			$folderID = $this->db->getInsertId();
 			$js.='top.currentPath = "' . $Path . '";
+
 top.currentID = "' . $folderID . '";
 top.hot = 1; // this is hot for category edit!!
 
@@ -388,6 +392,7 @@ top.selectFile(top.currentID);') .
 				$this->renameChildrenPath($this->we_editCatID);
 			}
 			$js.='top.currentPath = "' . $Path . '";
+
 top.hot = 1; // this is hot for category edit!!
 top.currentID = "' . $this->we_editCatID . '";
 if(top.currentID){
@@ -407,6 +412,7 @@ top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;') .
 
 	protected function printFramesetJSDoClickFn(){
 		return we_html_element::jsElement('
+
 function showPref(id) {
 	if(self.fsvalues) self.fsvalues.location = "' . $this->getFsQueryString(self::PROPERTIES) . '&catid="+id;
 }
@@ -485,9 +491,8 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop();
 
-		if(($cats = we_base_request::_(we_base_request::INTLIST, 'todel'))){
+		if(($catsToDel = we_base_request::_(we_base_request::INTLISTA, 'todel',array()))){
 			$finalDelete = array();
-			$catsToDel = explode(',', $cats);
 			$catlistNotDeleted = "";
 			$changeToParent = false;
 			foreach($catsToDel as $id){

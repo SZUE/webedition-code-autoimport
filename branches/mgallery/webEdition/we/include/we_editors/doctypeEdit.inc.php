@@ -106,7 +106,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 	case 'add_dt_template':
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
 		$foo = makeArrayFromCSV($we_doc->Templates);
-		$ids = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', '', 1);
+		$ids = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 1);
 		foreach($ids as $id){
 			if(!in_array($id, $foo)){
 				$foo[] = $id;
@@ -131,7 +131,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		break;
 	case "dt_add_cat":
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
-		if(($id = we_base_request::_(we_base_request::INTLIST, 'we_cmd', 0, 1))){
+		if(($id = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 1))){
 			$we_doc->addCat($id);
 		}
 		break;

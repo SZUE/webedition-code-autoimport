@@ -158,7 +158,7 @@ class we_objectFile extends we_document{
 			}
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
-			$cats = makeIDsFromPathCVS(we_base_request::_(we_base_request::FILELISTA, 'we_ui_' . $formname . '_categories'), CATEGORY_TABLE);
+			$cats = makeIDsFromPathCVS(we_base_request::_(we_base_request::WEFILELISTA, 'we_ui_' . $formname . '_categories'), CATEGORY_TABLE);
 			$GLOBALS['we_object'][$formname]->Category = $cats;
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
@@ -1704,18 +1704,20 @@ class we_objectFile extends we_document{
 		return $tarr[$pos];
 	}
 
-	function add_workspace($id){
+	function add_workspace(array $ids){
 		//$ExtraWorkspaces = makeArrayFromCSV($this->ExtraWorkspaces);
 		$workspaces = makeArrayFromCSV($this->Workspaces);
 		$templates = makeArrayFromCSV($this->Templates);
 		//$extraTemplates = makeArrayFromCSV($this->ExtraTemplates);
 
-		if(!in_array($id, $workspaces)){
-			$workspaces[] = $id;
-			$tid = $this->getTemplateFromWs($id);
-			$templates[] = $tid;
-			$this->Workspaces = makeCSVFromArray($workspaces, true);
-			$this->Templates = makeCSVFromArray($templates, true);
+		foreach($ids as $id){
+			if(!in_array($id, $workspaces)){
+				$workspaces[] = $id;
+				$tid = $this->getTemplateFromWs($id);
+				$templates[] = $tid;
+				$this->Workspaces = makeCSVFromArray($workspaces, true);
+				$this->Templates = makeCSVFromArray($templates, true);
+			}
 		}
 	}
 

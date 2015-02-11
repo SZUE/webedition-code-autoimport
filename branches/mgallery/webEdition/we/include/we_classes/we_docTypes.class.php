@@ -141,9 +141,8 @@ class we_docTypes extends we_class{
 		return we_html_tools::htmlFormElementTable($cats->get(), g_l('weClass', '[category]'));
 	}
 
-	public function addCat($id){
+	public function addCat(array $ids){
 		$cats = makeArrayFromCSV($this->Category);
-		$ids = makeArrayFromCSV($id);
 		foreach($ids as $id){
 			if($id && (!in_array($id, $cats))){
 				$cats[] = $id;

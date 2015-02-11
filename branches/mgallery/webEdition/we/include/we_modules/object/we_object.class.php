@@ -1449,6 +1449,7 @@ class we_object extends we_document{
 						), 5
 				) .
 				'</td></tr>';
+
 	}
 
 	function dhtmledit($name, $i = 0){
@@ -1548,6 +1549,7 @@ class we_object extends we_document{
 								we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('users_del_user','" . $user . "');_EditorFrame.setEditorIsHot(true);") :
 								''
 						) . '</td></tr>';
+
 			}
 		} else {
 			$content .= '<tr><td><img src="' . TREE_ICON_DIR . 'user.gif" width="16" height="18" /></td><td class="defaultfont">' . g_l('weClass', '[onlyOwner]') . '</td><td></td></tr>';
@@ -1579,7 +1581,7 @@ class we_object extends we_document{
 
 	function add_user($id){
 		$users = makeArrayFromCSV($this->Users);
-		$ids = makeArrayFromCSV($id);
+		$ids = is_array($id) ? $id : explode(',', $id);
 		foreach($ids as $id){
 			if($id && (!in_array($id, $users))){
 				$users[] = $id;
@@ -1805,15 +1807,16 @@ class we_object extends we_document{
 				} elseif(preg_match('/urlfield1([^%]*)/', $key, $regs)){
 					$anz = (!$regs[1] ? 64 : abs($regs[1]));
 					$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlfield1%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-							$this->htmlTextInput("we_" . $this->Name . "_input[urlfield1_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+
+								$this->htmlTextInput("we_" . $this->Name . "_input[urlfield1_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 				} elseif(preg_match('/urlfield2([^%]*)/', $key, $regs)){
 					$anz = (!$regs[1] ? 64 : abs($regs[1]));
 					$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlfield2%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-							$this->htmlTextInput("we_" . $this->Name . "_input[urlfield2_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+								$this->htmlTextInput("we_" . $this->Name . "_input[urlfield2_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 				} elseif(preg_match('/urlfield3([^%]*)/', $key, $regs)){
 					$anz = (!$regs[1] ? 64 : abs($regs[1]));
 					$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlfield3%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-							$this->htmlTextInput("we_" . $this->Name . "_input[urlfield3_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+								$this->htmlTextInput("we_" . $this->Name . "_input[urlfield3_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 				} else {
 					$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%" . $key . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;";
 				}
@@ -1970,9 +1973,8 @@ class we_object extends we_document{
 		$this->Templates = makeCSVFromArray($arr, true);
 	}
 
-	function add_workspace($id){
+	function add_workspace(array $ids){
 		$workspaces = makeArrayFromCSV($this->Workspaces);
-		$ids = makeArrayFromCSV($id);
 		foreach($ids as $id){
 			if(strlen($id) && (!in_array($id, $workspaces))){
 				$workspaces[] = $id;

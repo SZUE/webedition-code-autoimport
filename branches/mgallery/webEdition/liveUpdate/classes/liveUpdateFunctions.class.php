@@ -268,11 +268,7 @@ class liveUpdateFunctions{
 	 * @return boolean true if the file is not existent after this call
 	 */
 	function deleteFile($file){
-		if(file_exists($file)){
-			return @unlink($file);
-		} else {
-			return true;
-		}
+		return (file_exists($file) ? @unlink($file) : true);
 	}
 
 	/**
