@@ -39,3 +39,6 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
 	KEY search (ID,ClassID),
 	KEY wsp (Workspace)
 ) ENGINE=MyISAM;
+
+###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD PRIMARY KEY (ID,WorkspaceID,ClassID);###
+/* query separator */
