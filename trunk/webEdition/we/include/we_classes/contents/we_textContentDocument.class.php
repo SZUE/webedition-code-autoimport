@@ -89,14 +89,14 @@ abstract class we_textContentDocument extends we_textDocument{
 					continue;
 				}
 
-				if(isset($v['type']) && $v['type'] === 'txt'){
+				if(isset($v['type']) && $v['type'] === 'txt' && !preg_match('|^a:\d:{|', $_dat)){
 					$text .= ' ' . $_dat;
 				}
 			}
 			//variants ar initialized, so nothing special to do
 		}
 
-		$maxDB = 65535;//min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
+		$maxDB = 65535; //min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
 		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 							'ID' => intval($this->ID),
 							'DID' => intval($this->ID),

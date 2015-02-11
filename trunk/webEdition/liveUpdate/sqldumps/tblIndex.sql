@@ -37,7 +37,8 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
   Language varchar(5) default NULL,
   PRIMARY KEY (ID,WorkspaceID,ClassID),
 	KEY search (ID,ClassID),
-	KEY wsp (Workspace)
+	KEY wsp (Workspace),
+	FULLTEXT text (Text)
 ) ENGINE=MyISAM;
 
 /* query separator */
