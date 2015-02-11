@@ -81,7 +81,7 @@ class we_otherDocument extends we_binaryDocument{
 
 	public function insertAtIndex(array $only = null, array $fieldTypes = null){
 		if(!($this->IsSearchable && $this->Published)){
-			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
+			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($this->ID));
 			return true;
 		}
 
@@ -144,6 +144,7 @@ class we_otherDocument extends we_binaryDocument{
 		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', $text), 0, $maxDB);
 
 		$set = array(
+			'ID' => intval($this->ID),
 			'DID' => intval($this->ID),
 			'Text' => $text,
 			'Workspace' => $this->ParentPath,
