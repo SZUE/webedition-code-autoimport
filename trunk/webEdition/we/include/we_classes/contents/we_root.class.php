@@ -888,6 +888,10 @@ abstract class we_root extends we_class{
 						foreach($v as $name => $v2){
 							$v2 = we_base_util::cleanNewLine($v2);
 							switch($type){
+								case 'LanguageDocName':
+								case 'LanguageDocID':
+									//Bug #8950
+									break;
 								case 'date':
 									preg_match('|(.*)_(.*)|', $name, $regs);
 									list(, $name, $what) = $regs;
