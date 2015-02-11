@@ -68,9 +68,7 @@ class we_listview_search extends we_listview_base{
 		$this->hidedirindex = $hidedirindex;
 		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 
-		$where_lang = ($this->languages ?
-						' AND Language IN ("' . implode('","', makeArrayFromCSV($this->languages)) . '") ' :
-						'');
+		$where_lang = ($this->languages ? ' AND Language IN ("' . implode('","', makeArrayFromCSV($this->languages)) . '") ' : '');
 
 		// correct order
 		$orderArr = array();
@@ -91,33 +89,33 @@ class we_listview_search extends we_listview_base{
 				$orderArr1 = array_map('trim', explode(',', $this->order));
 				if(in_array('random()', $orderArr1)){
 					$random = true;
-				} else {
-					foreach($orderArr1 as $o){
-						if(trim($o)){
-							$foo = preg_split('/ +/', $o);
-							$oname = $foo[0];
-							$otype = isset($foo[1]) ? $foo[1] : '';
-							$orderArr[] = array('oname' => $oname, 'otype' => $otype);
-						}
-					}
-					$this->order = '';
-					foreach($orderArr as $o){
-						switch($o['oname']){
-							case 'OID':
-							case 'DID':
-							case 'ID':
-								$this->order .= 'ID' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
-								break;
-							case 'Title':
-							case 'Path':
-							case 'Text':
-							case 'Workspace':
-							case 'Description':
-								$this->order .= $o['oname'] . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
-						}
-					}
-					$this->order = rtrim($this->order, ',');
+					break;
 				}
+				foreach($orderArr1 as $o){
+					if(trim($o)){
+						$foo = preg_split('/ +/', $o);
+						$oname = $foo[0];
+						$otype = isset($foo[1]) ? $foo[1] : '';
+						$orderArr[] = array('oname' => $oname, 'otype' => $otype);
+					}
+				}
+				$this->order = '';
+				foreach($orderArr as $o){
+					switch($o['oname']){
+						case 'OID':
+						case 'DID':
+						case 'ID':
+							$this->order .= 'ID' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+							break;
+						case 'Title':
+						case 'Path':
+						case 'Text':
+						case 'Workspace':
+						case 'Description':
+							$this->order .= $o['oname'] . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					}
+				}
+				$this->order = rtrim($this->order, ',');
 		}
 
 
@@ -126,19 +124,19 @@ class we_listview_search extends we_listview_base{
 		}
 
 		$this->docType = trim($docType);
-		$this->class = $class;
+		$this->class = intval($class);
 		$this->casesensitive = $casesensitive;
+		$this->search = $this->DB_WE->escape($this->search);
 
 		$cat_tail = ($this->cats ? we_category::getCatSQLTail($this->cats, INDEX_TABLE, $this->catOr, $this->DB_WE) : '');
 		$dt = ($this->docType ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $this->DB_WE->escape($this->docType) . '"', '', $this->DB_WE) : 0);
-		$cl = $this->class;
 
-		if($dt && $cl){
-			$dtcl_query = ' AND (Doctype="' . $this->DB_WE->escape($dt) . '" OR ClassID=' . intval($cl) . ') ';
+		if($dt && $this->class){
+			$dtcl_query = ' AND (Doctype="' . $this->DB_WE->escape($dt) . '" OR ClassID=' . $this->class . ') ';
 		} else if($dt){
 			$dtcl_query = ' AND Doctype="' . $this->DB_WE->escape($dt) . '" ';
-		} else if($cl){
-			$dtcl_query = ' AND ClassID=' . intval($cl) . ' ';
+		} else if($this->class){
+			$dtcl_query = ' AND ClassID=' . $this->class . ' ';
 		} else {
 			$dtcl_query = '';
 		}
@@ -147,30 +145,26 @@ class we_listview_search extends we_listview_base{
 
 		$spalte = ($this->casesensitive ? 'BINARY ' : '') . 'Text';
 		$bOR = $bAND = array();
-		$this->search = $this->DB_WE->escape($this->search);
 		foreach(preg_split('/ +/', $this->search) as $v1){
 			if(preg_match('|^[-\+]|', $v1)){
 				$bAND[] = (preg_match('|^-|', $v1) ? 'NOT ' : '') .
 						$spalte . ' LIKE "%' . preg_replace('|^[-\+]|', '', $v1) . '%"';
 			} else {
-				$first = $spalte . ' LIKE "%' . $v1 . '%"';
-				$ranking .= '-(' . $first . ')';
-				$bOR[] = $first;
+				$bOR[] = $spalte . ' LIKE "%' . $v1 . '%"';
 			}
 		}
+		
 		if($bOR){
 			$bAND[] = '(' . implode(' OR ', $bOR) . ')';
 		}
 
 		$bedingung_sql = '(' . implode(' AND ', $bAND) . ')';
 		$ranking = '(ROUND(MATCH(Text) AGAINST("' . str_replace(array('+', '-'), '', $this->search) . '"),3))';
-		
 
 		if($this->workspaceID){
-			$workspaces = makeArrayFromCSV($this->workspaceID);
+			$workspaces = id_to_path(explode(',', $this->workspaceID), FILE_TABLE, $this->DB_WE, false, true);
 			$cond = array();
-			foreach($workspaces as $id){
-				$workspace = id_to_path($id, FILE_TABLE, $this->DB_WE);
+			foreach($workspaces as $workspace){
 				$cond[] = '(Workspace LIKE "' . $this->DB_WE->escape($workspace) . '/%" OR Workspace="' . $this->DB_WE->escape($workspace) . '")';
 			}
 			$ws_where = ' AND (' . implode(' OR ', $cond) . ')';
