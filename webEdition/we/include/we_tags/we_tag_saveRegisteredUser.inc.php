@@ -25,8 +25,8 @@ function we_tag_saveRegisteredUser($attribs){
 	$changesessiondata = weTag_getAttribute('changesessiondata', $attribs, true, we_base_request::BOOL);
 	$default_register = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"') === 'true';
 	$registerallowed = (isset($attribs['register']) ? weTag_getAttribute('register', $attribs, $default_register, we_base_request::BOOL) : $default_register);
-	$protected = weTag_getAttribute('protected', $attribs, '', we_base_request::STRING_LIST);
-	$allowed = weTag_getAttribute('allowed', $attribs, '', we_base_request::STRING_LIST);
+	$protected = weTag_getAttribute('protected', $attribs, array(), we_base_request::STRING_LIST);
+	$allowed = weTag_getAttribute('allowed', $attribs, array(), we_base_request::STRING_LIST);
 	$GLOBALS['we_customer_written'] = false;
 	if(!(defined('CUSTOMER_TABLE') && isset($_REQUEST['s']))){
 		return;
@@ -253,7 +253,7 @@ function we_tag_saveRegisteredUser_keepInput(){
 	}
 }
 
-function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
+function we_tag_saveRegisteredUser_processRequest(array $protected, array $allowed){
 	$set = array();
 
 	foreach($_REQUEST['s'] as $name => $val){
