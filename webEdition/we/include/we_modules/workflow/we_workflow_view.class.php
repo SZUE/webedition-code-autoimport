@@ -804,7 +804,7 @@ function checkData(){
 				break;
 			case 'add_cat':
 				$arr = $this->workflowDef->Categories;
-				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wcat'))){
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wcat', array()))){
 					foreach($ids as $id){
 						if(strlen($id) && (!in_array($id, $arr))){
 							array_push($arr, $id);
@@ -827,7 +827,7 @@ function checkData(){
 				break;
 			case 'add_objcat':
 				$arr = $this->workflowDef->ObjCategories;
-				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wocat'))){
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wocat', array()))){
 					foreach($ids as $id){
 						if((!in_array($id, $arr))){
 							$arr[] = $id;
@@ -1004,7 +1004,7 @@ function checkData(){
 				break;
 			case 'empty_log':
 				$stamp = 0;
-				if(($t = we_base_request::_(we_base_request::INTLISTA, 'wopt'))){
+				if(($t = we_base_request::_(we_base_request::INTLISTA, 'wopt', array()))){
 					$stamp = mktime($t[3], $t[4], 0, $t[1], $t[0], $t[2]);
 				}
 				$this->Log->clearLog($stamp);

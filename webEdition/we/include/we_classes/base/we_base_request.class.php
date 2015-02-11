@@ -50,7 +50,8 @@ class we_base_request{
 	const FILELIST = 'filelist';
 	const FILELISTA = 'filelista';
 	const STRING_LIST = 'stringL';
-	const EMAILLIST = 'emailL'; //add email_list
+	const EMAILLIST = 'emailL';
+	const EMAILLISTA = 'emailLA';
 //only temporary
 	const STRINGC = 'stringC';
 	const RAW_CHECKED = 'rawC';
@@ -135,6 +136,7 @@ class we_base_request{
 			case self::TABLE: //FIXME: this doesn't hold for OBJECT_X_TABLE - make sure we don't use them in requests
 				$var = $var && in_array($var, self::$allTables) ? $var : $default;
 				return;
+			case self::EMAILLISTA:
 			case self::EMAILLIST:
 				$var = str_replace('mailto:', '', $var);
 				$mails = array_map('trim', explode(',', $var));
@@ -148,7 +150,7 @@ class we_base_request{
 
 					$mail = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $mail), FILTER_SANITIZE_EMAIL);
 				}
-				$var = implode(',', array_filter($mails));
+				$var = ($type == self::EMAILLISTA ? array_filter($mails) : implode(',', array_filter($mails)));
 				return;
 			case self::EMAIL://removes mailto:
 				$regs = array();

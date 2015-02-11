@@ -31,38 +31,38 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 			if($dt >= 0){
 				$values = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $dt);
 
-				$ids_arr = makeArrayFromCSV($values["Templates"]);
+				$ids_arr = makeArrayFromCSV($values['Templates']);
 
-				$paths_arr = id_to_path($values["Templates"], TEMPLATES_TABLE, null, false, true);
+				$paths_arr = id_to_path($values['Templates'], TEMPLATES_TABLE, null, false, true);
 				$TPLselect = new we_html_select(array(
-					"name" => "docTypeTemplateId",
-					"size" => 1,
-					"class" => "weSelect",
-					"onclick" => (defined('OBJECT_TABLE')) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : "",
+					'name' => 'docTypeTemplateId',
+					'size' => 1,
+					'class' => 'weSelect',
+					'onclick' => (defined('OBJECT_TABLE')) ? "self.document.forms['we_form'].elements['v[import_type]'][0].checked=true;" : '',
 					//"onchange"  => "we_submit_form(self.document.forms['we_form'], 'wizbody', '".$this->path."');",
-					"style" => "width: 300px")
+					'style' => 'width: 300px')
 				);
 				$optid = 0;
 				foreach($paths_arr as $templateID => $path){
 					$TPLselect->insertOption($optid, $templateID, $path);
 					$optid++;
 				}
-				$templateElement = we_html_tools::htmlFormElementTable($TPLselect->getHTML(), g_l('import', '[template]'), "left", "defaultfont");
-				$categories = ($values["Category"] ? $categories : $this->getCategories("doc", $values["Category"], 'v[docCategories]'));
+				$templateElement = we_html_tools::htmlFormElementTable($TPLselect->getHTML(), g_l('import', '[template]'), 'left', 'defaultfont');
+				$categories = ($values['Category'] ? $categories : $this->getCategories('doc', $values['Category'], 'v[docCategories]'));
 
 				$categories = strtr($categories, array("\r" => "", "\n" => ""));
 				if($ids_arr){
-					$_docTypeLayerDisplay = "block";
-					$_noDocTypeLayerDisplay = "none";
+					$_docTypeLayerDisplay = 'block';
+					$_noDocTypeLayerDisplay = 'none';
 				} else {
-					$_docTypeLayerDisplay = "none";
-					$_noDocTypeLayerDisplay = "block";
+					$_docTypeLayerDisplay = 'none';
+					$_noDocTypeLayerDisplay = 'block';
 				}
-				$_templateName = "";
-				if(isset($values["TemplateID"]) && $values["TemplateID"] > 0){
-					$_templateName = f("SELECT Path FROM " . TEMPLATES_TABLE . " WHERE ID=" . intval($values["TemplateID"]));
+				$_templateName = '';
+				if(isset($values['TemplateID']) && $values['TemplateID'] > 0){
+					$_templateName = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($values['TemplateID']));
 				}
-				$resp->setData("elements", array(
+				$resp->setData('elements', array(
 					"self.document.forms['we_form'].elements['v[store_to_id]']" => array("value" => $values["ParentID"] | 0),
 					"self.document.forms['we_form'].elements['v[store_to_path]']" => array("value" => $values["ParentPath"] | "/"),
 					"self.document.forms['we_form'].elements['v[we_TemplateID]']" => array("value" => $values["TemplateID"] | 0),
@@ -100,8 +100,8 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 		return $resp;
 	}
 
-	function getCategories($obj, $categories, $catField = ""){
-		$cats = new we_chooser_multiDirExtended(410, $categories, "delete_" . $obj . "Cat", "", "", "Icon,Path", CATEGORY_TABLE);
+	private function getCategories($obj, $categories, $catField = ''){
+		$cats = new we_chooser_multiDirExtended(410, $categories, 'delete_' . $obj . 'Cat', '', '', 'Icon,Path', CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
 		$cats->setCatField($catField);
 		return $cats->getTableRows();
