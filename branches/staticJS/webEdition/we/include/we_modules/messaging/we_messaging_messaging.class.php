@@ -26,6 +26,7 @@
 
 class we_messaging_messaging extends we_class{
 	/* Flag which is set when the file is not new */
+
 	var $we_transact;
 	var $Folder_ID = -1;
 	var $userid = -1;
@@ -157,8 +158,8 @@ class we_messaging_messaging extends we_class{
 		return implode(',', $this->ids_selected);
 	}
 
-	function set_ids_selected($entrsel){
-		$this->ids_selected = explode(',', $entrsel);
+	function set_ids_selected(array $entrsel){
+		$this->ids_selected = $entrsel;
 	}
 
 	function reset_ids_selected(){
@@ -217,8 +218,7 @@ class we_messaging_messaging extends we_class{
 
 	/* Clipboard methods */
 
-	function set_clipboard($entrsel, $mode){
-		$ids = explode(',', $entrsel);
+	function set_clipboard(array $entrsel, $mode){
 		$this->clipboard = array();
 		foreach($ids as $id){
 			$offs = self::array_ksearch('ID', $id, $this->selected_set);
@@ -359,7 +359,7 @@ class we_messaging_messaging extends we_class{
 					continue;
 				}
 			}
-			t_e('error in delete items', $_REQUEST, $this->used_msgobjs[$cn],$val);
+			t_e('error in delete items', $_REQUEST, $this->used_msgobjs[$cn], $val);
 			echo 'Couldn\'t delete Message ID = ' . $val['ID'] . '<br/>';
 		}
 	}
@@ -521,19 +521,21 @@ class we_messaging_messaging extends we_class{
 	function get_message_count($folderid, $classname = ''){
 		$classname = $this->available_folders[self::array_ksearch('ID', $folderid, $this->available_folders)]['ClassName'];
 		return (isset($classname) ?
-				$this->used_msgobjs[$classname]->get_count($folderid) :
-				-1);
+						$this->used_msgobjs[$classname]->get_count($folderid) :
+						-1);
 	}
 
-	function delete_folders($ids){
-		$ret = array();
-		$ret['ids'] = array();
-		$nids = array();
+	function delete_folders(array $ids){
+		$ret = array(
+			'ids' => array()
+		);
+		$nids = $m = array();
 		for($i = 0, $len = count($ids); $i < $len; $i++){
 			preg_match('/\d+$/', $ids[$i], $m);
 			$nids[] = $m[0];
 		}
 
+		$s_hash = array();
 		foreach($nids as $f_id){
 			$cn = $this->available_folders[self::array_ksearch('ID', $f_id, $this->available_folders)]['ClassName'];
 			if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
@@ -547,10 +549,11 @@ class we_messaging_messaging extends we_class{
 			$mo_ret = $this->used_msgobjs[$key]->delete_folders($val);
 			if($mo_ret['res'] == 1){
 				$ret['ids'] = array_merge($ret['ids'], $mo_ret["ids"]);
-				foreach($mo_ret['ids'] as $id)
+				foreach($mo_ret['ids'] as $id){
 					if(($ind = self::array_ksearch('ID', $id, $this->available_folders)) != -1){
 						array_splice($this->available_folders, $ind, 1);
 					}
+				}
 			}
 		}
 
@@ -948,12 +951,12 @@ class we_messaging_messaging extends we_class{
 		$matchArray = array("Name" => $fooArray);
 
 		$mergedArray = array_merge(
-			array(
+				array(
 			array(
 				'ID' => 0,
 				'Name' => "-- " . g_l('modules_messaging', '[nofolder]') . " --"
 			)
-			), self::array_hash_construct($this->available_folders, array('ID', 'Name'), $matchArray)
+				), self::array_hash_construct($this->available_folders, array('ID', 'Name'), $matchArray)
 		);
 
 		$_arr1 = array('ID', 'Name');

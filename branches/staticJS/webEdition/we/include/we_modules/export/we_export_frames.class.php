@@ -781,8 +781,8 @@ function closeAllType(){
 		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case 'add_cat':
 				$arr = makeArrayFromCSV($this->View->export->Categorys);
-				if(($cat = we_base_request::_(we_base_request::INTLIST, "cat"))){
-					foreach(makeArrayFromCSV($cat) as $id){
+				if(($cat = we_base_request::_(we_base_request::INTLISTA, "cat", array()))){
+					foreach($cat as $id){
 						if(strlen($id) && (!in_array($id, $arr))){
 							$arr[] = $id;
 						}

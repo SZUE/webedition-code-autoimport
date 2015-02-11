@@ -267,11 +267,11 @@ class we_dialog_image extends we_dialog_base{
 
 			$yuiSuggest->setAcId("Image");
 			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::IMAGE);
-			//Bug #3556, orig, imageChanged wird aufgerufen sobald man mit der Maus klickt, und bevor das input feld gef�llt ist
-			//$yuiSuggest->setInput("we_dialog_args[fileSrc]",str_replace('"','&quot;',(isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")),array("onfocus"=>"document.we_form.elements[2].checked=true;","onchange"=>"imageChanged()"));
 			$yuiSuggest->setInput("we_dialog_args[fileSrc]", str_replace('"', '&quot;', (isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")), array("onfocus" => "document.we_form.elements[2].checked=true;", "onchange" => "document.we_form.elements['we_dialog_args[type]'][1].checked=true;"));
-			//Bug #3556 imageChanged wird aufgerufen wenn das input feld verlassen wird, nicht ideal, macht es aber nutzbar
-			$yuiSuggest->setDoOnTextfieldBlur('imageChanged();');
+			//Bug #3556:
+			//$yuiSuggest->setDoOnTextfieldBlur('imageChanged();');
+			//#8587: Better solution for #3556:
+			$yuiSuggest->setDoOnItemSelect("if(param2[2][1]!=='undefined'&&param2[2][1]){document.we_form.elements['we_dialog_args[fileID]']=param2[2][1];if(param2[2][2]!=='undefined'&&param2[2][2]!=='folder'){imageChanged();}}");
 			$yuiSuggest->setLabel($radioBut);
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);

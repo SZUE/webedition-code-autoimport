@@ -24,7 +24,7 @@
 include_once(WE_LIB_PATH . 'additional/scssphp/scss.inc.php');
 
 class we_helpers_scss extends \Leafo\ScssPhp\Compiler{
-	public $includedFiles = array();
+	public static $includedFiles = array();
 
 	protected function importFile($path, $out){
 		if(!is_numeric($path)){

@@ -92,7 +92,7 @@ function submitForm() {
 		switch(($mcmd = we_base_request::_(we_base_request::STRING, "mcmd", "goToDefaultCase"))){
 			case 'search_messages':
 			case 'show_folder_content':
-				return $this->get_folder_content(we_base_request::_(we_base_request::INT, 'id', 0), we_base_request::_(we_base_request::STRING, 'sort', ""), we_base_request::_(we_base_request::RAW, 'entrsel', ""), we_base_request::_(we_base_request::RAW, 'searchterm', ""), 1) .
+				return $this->get_folder_content(we_base_request::_(we_base_request::INT, 'id', 0), we_base_request::_(we_base_request::STRING, 'sort', ""), we_base_request::_(we_base_request::INTLISTA, 'entrsel', array()), we_base_request::_(we_base_request::RAW, 'searchterm', ""), 1) .
 						$this->print_fc_html() .
 						$this->update_treeview();
 			case 'launch':
@@ -108,7 +108,7 @@ function submitForm() {
 						break 2;
 				}
 
-				return $this->get_folder_content($f['ID'], '', '', '', 0) .
+				return $this->get_folder_content($f['ID'], '', array(), '', 0) .
 						$this->print_fc_html() .
 						$this->update_treeview() .
 						we_html_element::jsElement('
@@ -168,11 +168,11 @@ function submitForm() {
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 				return $out;
 			case 'copy_msg':
-				$this->messaging->set_clipboard(we_base_request::_(we_base_request::INTLIST, 'entrsel'), 'copy');
+				$this->messaging->set_clipboard(we_base_request::_(we_base_request::INTLISTA, 'entrsel', array()), 'copy');
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 				break;
 			case 'cut_msg':
-				$this->messaging->set_clipboard(we_base_request::_(we_base_request::INTLIST, 'entrsel'), 'cut');
+				$this->messaging->set_clipboard(we_base_request::_(we_base_request::INTLISTA, 'entrsel', array()), 'cut');
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 				break;
 			case 'paste_msg':
@@ -199,7 +199,7 @@ function submitForm() {
 
 				return we_html_element::jsElement($js_out) . $this->update_treeview();
 			case 'delete_msg':
-				$this->messaging->set_ids_selected(we_base_request::_(we_base_request::INTLIST, 'entrsel'));
+				$this->messaging->set_ids_selected(we_base_request::_(we_base_request::INTLISTA, 'entrsel',array()));
 				$this->messaging->delete_items();
 				$this->messaging->reset_ids_selected();
 				$this->messaging->get_fc_data(we_base_request::_(we_base_request::INT, 'id', 0), we_base_request::_(we_base_request::STRING, 'sort', ''), we_base_request::_(we_base_request::RAW, 'searchterm', ''), 1);
@@ -230,7 +230,7 @@ function submitForm() {
 				$id = $this->messaging->Folder_ID;
 				$blank = isset($blank) ? $blank : true;
 				if(($this->messaging->cont_from_folder != 1) && ($id != -1)){
-					if(($ids = we_base_request::_(we_base_request::INTLIST, 'entrsel'))){
+					if(($ids = we_base_request::_(we_base_request::INTLISTA, 'entrsel',array()))){
 						$this->messaging->set_ids_selected($ids);
 					}
 
@@ -301,7 +301,7 @@ top.content.menuDaten.add(new top.content.self.rootEntry(0,"root","root"));';
 				}
 				return $out;
 			case 'delete_folders':
-				if(($folders = we_base_request::_(we_base_request::INTLISTA, 'folders'))){
+				if(($folders = we_base_request::_(we_base_request::INTLIST, 'folders'))){
 
 					$out .= we_html_element::jsElement('
 					top.content.delete_menu_entries(new Array(String(' . implode('), String(', $folders) . ')));
@@ -347,7 +347,7 @@ if (top.content.editor.edbody.msg_mfv.messaging_messages_overview) {
 	}
 
 	private function refresh_work($blank = false){
-		if(($eSel = we_base_request::_(we_base_request::STRING, "entrsel"))){
+		if(($eSel = we_base_request::_(we_base_request::INTLISTA, "entrsel",array()))){
 			$this->messaging->set_ids_selected($eSel);
 		}
 
@@ -356,9 +356,9 @@ if (top.content.editor.edbody.msg_mfv.messaging_messages_overview) {
 		return $this->print_fc_html($blank) . $this->update_treeview();
 	}
 
-	private function get_folder_content($id, $sort = '', $entrsel = '', $searchterm = '', $usecache = 1){
+	private function get_folder_content($id, $sort = '', array $entrsel = array(), $searchterm = '', $usecache = 1){
 
-		if($entrsel != ''){
+		if($entrsel){
 			$this->messaging->set_ids_selected($entrsel);
 		}
 
