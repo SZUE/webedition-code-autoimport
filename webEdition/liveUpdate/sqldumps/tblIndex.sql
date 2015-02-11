@@ -26,7 +26,7 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
   DID int(11) unsigned NOT NULL default '0',
 	OID int(11) unsigned NOT NULL default '0',
   WorkspaceID int(11) unsigned NOT NULL default '0',
-  `Text` mediumtext NOT NULL,
+  `Text` text NOT NULL,
   Workspace varchar(1000) NOT NULL default '',
   Category varchar(255) NOT NULL default '',
   ClassID int(11) unsigned NOT NULL default '0',

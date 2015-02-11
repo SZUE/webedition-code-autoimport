@@ -2068,10 +2068,11 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
-		$maxDB = min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
+		$maxDB = 65535;//min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
 		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
 
 		if(!$text){
+			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID='.$this->TableID.' AND ID=' . intval($this->ID));
 			//no need to keep an entry without relevant data in the index
 			return true;
 		}
