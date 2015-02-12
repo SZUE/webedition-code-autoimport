@@ -14,6 +14,7 @@ $operator = new weTagData_selectAttribute('operator', array(new weTagDataOption(
 	new weTagDataOption('greater'),
 	new weTagDataOption('greater|equal'),
 	new weTagDataOption('contains'),
+	new weTagDataOption('isin'),
 	), false, '');
 $striphtml = new weTagData_selectAttribute('striphtml', array(new weTagDataOption('false'),
 	new weTagDataOption('true'),
