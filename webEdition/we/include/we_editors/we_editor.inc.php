@@ -28,7 +28,7 @@ we_html_tools::protect();
 $perms = $_SESSION['perms'];
 // init document
 if(!isset($we_transaction)){
-	$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we_transaction, 1));
+	$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 1));
 }
 $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 $GLOBALS['we_transaction'] = $we_transaction;
