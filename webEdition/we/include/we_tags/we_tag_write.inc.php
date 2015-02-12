@@ -75,11 +75,15 @@ function we_tag_write($attribs){
 		}
 
 		if($ok){
-			$isOwner = ($protected && isset($_SESSION['webuser']['ID']) ?
-					($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->WebUserID) :
-					$userid && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->getElement($userid)));
+			$isOwner = (isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] ?
+					($protected && isset($_SESSION['webuser']['ID']) ?
+						($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->WebUserID) :
+						$userid && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->getElement($userid))) :
+					false);
 
-			$isAdmin = $admin && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin];
+			$isAdmin = (isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] ?
+					$admin && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin] :
+					false);
 
 			$isNew = (($GLOBALS['we_' . $type][$name]->ID == 0) ? ($admin/* only if this field is used */ ? $isAdmin : true) : false); //FR #8411
 
@@ -87,7 +91,7 @@ function we_tag_write($attribs){
 				$doWrite = true;
 				//$newObject = ($GLOBALS['we_'.$type][$name]->ID) ? false : true;
 				if($protected){
-					if(!isset($_SESSION['webuser']['ID'])){
+					if(!isset($_SESSION['webuser']['ID']) || !isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered']){
 						$GLOBALS['we_' . $type . '_write_ok'] = false;
 						return;
 					}
@@ -95,7 +99,7 @@ function we_tag_write($attribs){
 						$GLOBALS['we_' . $type][$name]->WebUserID = $_SESSION['webuser']['ID'];
 					}
 				} elseif($userid){
-					if(!isset($_SESSION['webuser']['ID'])){
+					if(!isset($_SESSION['webuser']['ID']) || !isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered']){
 						$GLOBALS['we_' . $type . '_write_ok'] = false;
 						return;
 					}
@@ -253,7 +257,7 @@ function we_tag_write($attribs){
 }
 
 function checkAndCreateFlashmovie($formname, $type = 'we_document'){
-	$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
+	$webuserId = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 	$regs = array();
 	foreach($_REQUEST as $key => $_flashmovieDataId){
 		if(preg_match('|^WE_UI_FLASHMOVIE_DATA_ID_(.*)$|', $key, $regs)){
@@ -325,7 +329,7 @@ function checkAndCreateFlashmovie($formname, $type = 'we_document'){
 }
 
 function checkAndCreateQuicktime($formname, $type = 'we_document'){
-	$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
+	$webuserId = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 	$regs = array();
 	foreach($_REQUEST as $key => $_quicktimeDataId){
 		if(preg_match('|^WE_UI_QUICKTIME_DATA_ID_(.*)$|', $key, $regs)){
@@ -397,7 +401,7 @@ function checkAndCreateQuicktime($formname, $type = 'we_document'){
 }
 
 function checkAndCreateImage($formname, $type = 'we_document'){
-	$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
+	$webuserId = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 	$regs = array();
 	foreach($_REQUEST as $key => $_imgDataId){
 		if(preg_match('|^WE_UI_IMG_DATA_ID_(.*)$|', $key, $regs)){
@@ -463,7 +467,7 @@ function checkAndCreateImage($formname, $type = 'we_document'){
 }
 
 function checkAndCreateBinary($formname, $type = 'we_document'){
-	$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
+	$webuserId = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 	$regs = array();
 	foreach($_REQUEST as $key => $_binaryDataId){
 		if(preg_match('|^WE_UI_BINARY_DATA_ID_(.*)$|', $key, $regs)){

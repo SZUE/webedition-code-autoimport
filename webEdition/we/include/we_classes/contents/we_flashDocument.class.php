@@ -336,7 +336,7 @@ class we_flashDocument extends we_document_video{
 		if(!$this->getElement('height')){
 			$this->setElement('height', $this->getElement('origheight'), 'attrib');
 		}
-		
+
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
 		if(parent::we_save($resave)){
 			if($docChanged){
@@ -383,7 +383,7 @@ class we_flashDocument extends we_document_video{
 		if(!(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"]) && isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"]) )){
 			return;
 		}
-		$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
+		//$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 
 		foreach($_FILES['we_ui_' . $formname]['name'] as $videoName => $filename){
 
