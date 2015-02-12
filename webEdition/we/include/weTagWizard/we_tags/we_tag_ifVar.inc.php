@@ -27,4 +27,5 @@ $this->Attributes[] = new weTagData_selectAttribute('operator', array(new weTagD
 	new weTagDataOption('greater'),
 	new weTagDataOption('greater|equal'),
 	new weTagDataOption('contains'),
+	new weTagDataOption('isin'),
 	), false, '');
