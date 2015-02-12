@@ -22,10 +22,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 echo we_html_tools::getHtmlTop();
+$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 1);
 ?>
 
 <script  type="text/javascript"><!--
-	var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?php echo $GLOBALS['we_transaction']; ?>");
+	var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?php echo $we_transaction; ?>");
 	var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();
 
 <?php
@@ -83,20 +84,20 @@ for (frameId in _usedEditors) {
 		//	JS, when not in seem
 		$isTmpl = $we_doc->ContentType == we_base_ContentTypes::TEMPLATE && (permissionhandler::hasPerm("NEW_WEBEDITIONSITE") || permissionhandler::hasPerm("ADMINISTRATOR"));
 		echo ($isTmpl ?
-				'if( _EditorFrame.getEditorMakeNewDoc() == true ) {' .
-				(isset($saveTemplate) && $saveTemplate ?
-						"	top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','','" . $we_doc->ID . "');" :
-						''
-				) .
-				'} else {' :
-				(($isObject = $we_doc->ContentType === 'object' && (permissionhandler::hasPerm('NEW_OBJECTFILE') || permissionhandler::hasPerm("ADMINISTRATOR"))) ?
-						"if( _EditorFrame.getEditorMakeNewDoc() == true ) {
+			'if( _EditorFrame.getEditorMakeNewDoc() == true ) {' .
+			(isset($saveTemplate) && $saveTemplate ?
+				"	top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','','" . $we_doc->ID . "');" :
+				''
+			) .
+			'} else {' :
+			(($isObject = $we_doc->ContentType === 'object' && (permissionhandler::hasPerm('NEW_OBJECTFILE') || permissionhandler::hasPerm("ADMINISTRATOR"))) ?
+				"if( _EditorFrame.getEditorMakeNewDoc() == true ) {
 				top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');
 			} else {" : '')) .
 		(!isset($isClose) || !$isClose ? //if we close the document, we should not reload any header etc.
-				'if ( _EditorFrame.getEditorIsInUse() ) {_EditorFrameDocumentRef.frames[0].location.reload();}' : '') .
+			'if ( _EditorFrame.getEditorIsInUse() ) {_EditorFrameDocumentRef.frames[0].location.reload();}' : '') .
 		($isTmpl || $isObject ?
-				'}' : '');
+			'}' : '');
 	}
 }
 
@@ -126,38 +127,38 @@ if(isEditInclude){
 }';
 		}
 		$_jsCommand .=
-				(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW ? //	alert or confirm
-						"
+			(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW ? //	alert or confirm
+				"
 if(!showAlert){
 	if(confirm(\"" . $we_responseText . "\\n\\n" . g_l('SEEM', '[confirm][change_to_preview]') . "\")){
-		_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS['we_transaction'] . "');
+		_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');
 	} else {
-		_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');
+		_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $we_transaction . "');
 	}
 } else {
 	" . we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) . "
 }" :
-						//	alert when in preview mode
-						we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
-						"_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');" .
-						//	JavaScript: generated in we_editor.inc.php
-						we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5)
-				) .
-				(isset($GLOBALS["publish_doc"]) && $GLOBALS["publish_doc"] == true ?
-						"
+				//	alert when in preview mode
+				we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
+				"_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $we_transaction . "');" .
+				//	JavaScript: generated in we_editor.inc.php
+				we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5)
+			) .
+			(isset($GLOBALS["publish_doc"]) && $GLOBALS["publish_doc"] == true ?
+				"
 if(isEditInclude){
 	" . we_message_reporting::getShowMessageCall(g_l('SEEM', '[alert][changed_include]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 			weWindow.top.we_cmd("reload_editpage");
 			weWindow.edit_include.close();
 			top.close();
 }' :
-						''
-				);
+				''
+			);
 	} else { //	alert in normal mode
 		$_jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
-				//	JavaScript: generated in we_editor.inc.php
-				(isset($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : '') . //fixme: isset only because of workflow_finish as command
-				we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5); //should be empty
+			//	JavaScript: generated in we_editor.inc.php
+			(isset($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : '') . //fixme: isset only because of workflow_finish as command
+			we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5); //should be empty
 	}
 	echo $_jsCommand;
 }

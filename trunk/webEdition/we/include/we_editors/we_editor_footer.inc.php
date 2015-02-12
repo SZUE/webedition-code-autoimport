@@ -97,7 +97,7 @@ $showGlossaryCheck = (isset($_SESSION['prefs']['force_glossary_check']) && $_SES
 	$we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === "objectFile"
 	) ? 1 : 0);
 
-$js = 'var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $we_transaction . '");'."
+$js = 'var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $we_transaction . '");' . "
 var _showGlossaryCheck = $showGlossaryCheck;
 var countSaveLoop = 0;
 function saveReload(){
@@ -277,7 +277,7 @@ function we_footerLoaded(){
 ';
 
 if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){ // a template
-		$js.= '
+	$js.= '
 		if( _EditorFrame.getEditorAutoRebuild() ) {
 			self.document.we_form.autoRebuild.checked = true;
 		} else {
@@ -288,13 +288,13 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){ // a template
 		} else {
 			self.document.we_form.makeNewDoc.checked = false;
 		}';
-	}
+}
 
-	if($we_doc->IsTextContentDoc && $haspermNew){
-		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT){ // not in SeeMode or in editmode
-			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
-			if(!$_ctrlElem){ //	changes for we:controlElement
-				$js.= ($we_doc->ID ? '
+if($we_doc->IsTextContentDoc && $haspermNew){
+	if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT){ // not in SeeMode or in editmode
+		$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
+		if(!$_ctrlElem){ //	changes for we:controlElement
+			$js.= ($we_doc->ID ? '
 			if(self.document.we_form && self.document.we_form.makeSameDoc){
 				self.document.we_form.makeSameDoc.checked = false;
 			}
@@ -309,17 +309,17 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){ // a template
 				}
 			}
 			');
-			} else { //	$_ctrlElement determines values
-				$js .= '
+		} else { //	$_ctrlElement determines values
+			$js .= '
 			if(self.document.we_form && self.document.we_form.makeSameDoc){
 				self.document.we_form.makeSameDoc.checked = ' . ($_ctrlElem["checked"] ? "true" : "false") . ';
 				_EditorFrame.setEditorMakeSameDoc(' . $_ctrlElem["checked"] ? "true" : "false" . ');
 			}';
-			}
 		}
 	}
+}
 
-	$js.='try{
+$js.='try{
 			_EditorFrame.getDocumentReference().frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");
 			}catch(e){}
 }';
@@ -378,5 +378,5 @@ if(inWorkflow($we_doc)){
 		}
 		?>
 	</form>
-	</body>
+</body>
 </html>
