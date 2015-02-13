@@ -39,7 +39,7 @@ function we_tag_navigationEntry($attribs, $content){
 					weTag_getAttribute('current', $attribs, false, we_base_request::BOOL) :
 					we_navigation_items::TEMPLATE_DEFAULT_CURRENT);
 
-	$positions = weTag_getAttribute('position', $attribs, array(we_navigation_items::TEMPLATE_DEFAULT_POSITION), we_base_request::STRING_LIST);
+	$positions = weTag_getAttribute('position', $attribs, we_navigation_items::TEMPLATE_DEFAULT_POSITION, we_base_request::STRING_LIST);
 
 	if(!isset($GLOBALS['we_navigation'][$navigationName])){
 		echo parseError('we:navigationentry "' . $navigationName . '" not set');
