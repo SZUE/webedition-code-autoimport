@@ -28,8 +28,8 @@ function we_tag_formfield($attribs){
 	}
 	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
 
-	$types = weTag_getAttribute("type", $attribs, array("textinput"), we_base_request::STRING_LIST);
-	$attrs = weTag_getAttribute("attribs", $attribs, array(), we_base_request::STRING_LIST);
+	$types = weTag_getAttribute("type", $attribs, 'textinput', we_base_request::STRING_LIST);
+	$attrs = weTag_getAttribute("attribs", $attribs, '', we_base_request::STRING_LIST);
 	$ffname = $GLOBALS['we_doc']->getElement($name, 'ffname');
 
 	$type_sel = $GLOBALS['we_doc']->getElement($name, 'fftype') ? : ($types ? $types[0] : 'textinput');

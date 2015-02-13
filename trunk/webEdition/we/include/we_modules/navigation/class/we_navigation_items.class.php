@@ -463,6 +463,7 @@ class we_navigation_items{
 	}
 
 	function setTemplate($content, $type, $level, $current, $position){
+		
 		$this->templates[$type][$level][$current][$position] = $content;
 	}
 
