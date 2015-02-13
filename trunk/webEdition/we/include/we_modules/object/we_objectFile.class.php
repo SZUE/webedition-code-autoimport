@@ -2819,6 +2819,8 @@ class we_objectFile extends we_document{
 		$contents = ob_get_clean();
 		if(isset($backupdoc)){
 			$GLOBALS['we_doc'] = $backupdoc;
+		}else{
+			unset($GLOBALS['we_doc']);
 		}
 
 		return $contents;

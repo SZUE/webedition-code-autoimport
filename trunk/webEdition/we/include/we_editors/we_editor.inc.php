@@ -27,11 +27,11 @@ we_html_tools::protect();
 // prevent persmissions overriding
 $perms = $_SESSION['perms'];
 // init document
-if(!isset($we_transaction)){
+if(!isset($we_transaction) || !$we_transaction){//we_session assumes to have transaction in parameter 'we_transaction'
 	$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 1));
 }
-$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 $GLOBALS['we_transaction'] = $we_transaction;
+$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 
 include(WE_INCLUDES_PATH . '/we_editors/we_init_doc.inc.php');
 
@@ -363,7 +363,6 @@ if(
 			}
 		}
 	}
-
 	we_base_file::save($fullName, $contents);
 
 	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?charset=' . $GLOBALS['CHARSET'] . '&file=' . str_replace(WEBEDITION_DIR, '', $tempName));
