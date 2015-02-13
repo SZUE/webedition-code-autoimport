@@ -126,7 +126,7 @@ function doClick(id){
 isEditInclude = false;
 weWindow = top;
 while(1){
-	if(!weWindow.top.opener || weWindow.top.opener.top.win){
+	if(!weWindow.top.opener || weWindow.treeData){
 			break;
 	} else {
 		 isEditInclude = true;
