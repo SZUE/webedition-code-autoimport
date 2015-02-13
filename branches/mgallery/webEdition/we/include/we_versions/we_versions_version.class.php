@@ -1042,7 +1042,7 @@ class we_versions_version{
 	 * @abstract make new version-entry in DB
 	 */
 	function saveVersion($document, $status = "saved"){
-		if(!isset($_SESSION["user"]["ID"])){
+		if(!isset($_SESSION['user']['ID'])){
 			return;
 		}
 		$documentObj = "";
@@ -1056,11 +1056,9 @@ class we_versions_version{
 			$document["documentCustomerFilter"] = self::objectToArray($document["documentCustomerFilter"]);
 		}
 
-		$writeVersion = true;
-
 //preferences
 		if(!$this->CheckPreferencesCtypes($document["ContentType"])){
-			$writeVersion = false;
+			return;
 		}
 
 		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "save_document" &&
@@ -1080,54 +1078,64 @@ class we_versions_version{
 			$status = "published";
 		}
 
-		if($document["ContentType"] === we_base_ContentTypes::OBJECT_FILE || $document["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $document["ContentType"] == we_base_ContentTypes::HTML || ($document["ContentType"] == we_base_ContentTypes::TEMPLATE && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL)){
-			if($document["ContentType"] != we_base_ContentTypes::TEMPLATE && (defined('VERSIONS_CREATE') && VERSIONS_CREATE) && $status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
-				$writeVersion = false;
+		switch($document["ContentType"]){
+			case we_base_ContentTypes::TEMPLATE:
+				if((defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL)){
+					if($status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
+						return;
 			}
-			if($document["ContentType"] == we_base_ContentTypes::TEMPLATE && (defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL) && $status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
-				$writeVersion = false;
+					break;
+				}
+				return;
+			case we_base_ContentTypes::OBJECT_FILE:
+			case we_base_ContentTypes::WEDOCUMENT:
+			case we_base_ContentTypes::HTML:
+				if((defined('VERSIONS_CREATE') && VERSIONS_CREATE) && $status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
+					return;
 			}
 		}
 
 //look if there were made changes
-		if(isset($_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]]) && $_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]] != ''){
-			$lastEntry = $_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]];
+		if(isset($_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]]) && $_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document['ID']] != ''){
+			$lastEntry = $_SESSION['weS']['versions']['versionToCompare'][$document['Table']][$document['ID']];
 
 			$diffExists = (is_array($document) && $lastEntry ?
 					(self::getHashValue(self::removeUnneededCompareFields($document)) != $lastEntry) :
 					false);
 
-			$lastEntry = self::getLastEntry($document["ID"], $document["Table"], $db);
+			$lastEntry = self::getLastEntry($document['ID'], $document['Table'], $db);
 
-			if((($status === 'published' || $status === 'saved') && isset($lastEntry['status']) && $status == $lastEntry['status']) && !$diffExists && $this->versionsExist($document["ID"], $document["ContentType"])){
-				$writeVersion = false;
+			switch($status){
+				case 'published':
+				case 'saved':
+					if(isset($lastEntry['status']) && $status == $lastEntry['status'] && !$diffExists && $this->versionsExist($document['ID'], $document['ContentType'])){
+						return;
+					}
 			}
 		}
 
-		if($writeVersion){
-			$mods = true;
-			$tblversionsFields = self::getFieldsFromTable(VERSIONS_TABLE, $db);
+		$mods = true;
+		$tblversionsFields = self::getFieldsFromTable(VERSIONS_TABLE, $db);
 
-			$set = array();
+		$set = array();
 
-			foreach($tblversionsFields as $fieldName){
-				if($fieldName != 'ID'){
-					$set[$fieldName] = (isset($document[$fieldName]) ?
-							$document[$fieldName] :
-							$this->makePersistentEntry($fieldName, $status, $document, $documentObj)
-						);
-				}
-			}
-
-			if($set && $mods){
-				$db->query('INSERT INTO ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter($set));
-				$vers = (isset($document["version"]) ? $document["version"] : $this->version);
-				$db->query('UPDATE ' . VERSIONS_TABLE . ' SET active=0 WHERE documentID=' . intval($document['ID']) . ' AND documentTable="' . $db->escape($document["Table"]) . '" AND version!=' . intval($vers));
-				$_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]] = self::getHashValue(self::removeUnneededCompareFields($document));
+		foreach($tblversionsFields as $fieldName){
+			if($fieldName != 'ID'){
+				$set[$fieldName] = (isset($document[$fieldName]) ?
+						$document[$fieldName] :
+						$this->makePersistentEntry($fieldName, $status, $document, $documentObj, $lastEntry)
+					);
 			}
 		}
 
-		$this->CheckPreferencesTime($document["ID"], $document["Table"]);
+
+		if($set && $mods){
+			$db->query('INSERT INTO ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter($set));
+			$vers = (isset($document["version"]) ? $document["version"] : $this->version);
+			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET active=0 WHERE documentID=' . intval($document['ID']) . ' AND documentTable="' . $db->escape($document["Table"]) . '" AND version!=' . intval($vers));
+			$_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]] = self::getHashValue(self::removeUnneededCompareFields($document));
+		}
+		$this->CheckPreferencesTime($document['ID'], $document['Table']);
 	}
 
 	/**
@@ -1162,7 +1170,7 @@ class we_versions_version{
 				}
 				break;
 			case 'timestamp':
-				$lastEntryVersion = f("SELECT ID FROM " . VERSIONS_TABLE . " WHERE documentID=" . intval($document["ID"]) . " AND documentTable='" . $db->escape($document["Table"]) . "' LIMIT 1", 'ID', $db);
+				$lastEntryVersion = f('SELECT ID FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($document["ID"]) . ' AND documentTable="' . $db->escape($document["Table"]) . '" LIMIT 1', 'ID', $db);
 				$entry = ($lastEntryVersion ? time() : $document['CreationDate']);
 				break;
 			case 'status':
@@ -1185,30 +1193,33 @@ class we_versions_version{
 			case 'binaryPath':
 				$binaryPath = '';
 				$this->Filehash = '';
-				if(!($document['ContentType'] === we_base_ContentTypes::OBJECT_FILE || $document['ContentType'] == we_base_ContentTypes::TEMPLATE)){
-					$documentPath = substr($document["Path"], 1);
-					$siteFile = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $documentPath;
+				switch($document['ContentType']){
+					case 'objectFile':
+					case we_base_ContentTypes::TEMPLATE:
+						break;
+					default:
+						$documentPath = substr($document["Path"], 1);
+						$siteFile = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $documentPath;
 
-					$vers = $this->getVersion();
+						$vers = $this->getVersion();
 
-					$versionName = $document['ID'] . '_' . $document['Table'] . '_' . $vers . $document['Extension'];
-					$binaryPath = VERSION_DIR . $versionName . '.gz';
+						$versionName = $document['ID'] . '_' . $document['Table'] . '_' . $vers . $document['Extension'];
+						$binaryPath = VERSION_DIR . $versionName . '.gz';
 
-					if($document['IsDynamic']){
-						$this->writePreviewDynFile($document['ID'], $siteFile, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
-					} elseif(file_exists($siteFile) && $document['Extension'] === '.php' && ($document['ContentType'] == we_base_ContentTypes::WEDOCUMENT || $document['ContentType'] == we_base_ContentTypes::HTML)){
-
-						we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
-					} elseif(isset($document['TemplatePath']) && $document['TemplatePath'] && substr($document['TemplatePath'], -18) != '/' . we_template::NO_TEMPLATE_INC && $document['ContentType'] == we_base_ContentTypes::WEDOCUMENT){
-						$includeTemplate = preg_replace('/.tmpl$/i', '.php', $document['TemplatePath']);
-						$this->writePreviewDynFile($document['ID'], $includeTemplate, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
-					} else {
-						we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
-					}
-					$usepath = $_SERVER['DOCUMENT_ROOT'] . $binaryPath;
-					if(file_exists($usepath) && is_file($usepath)){
-						$this->Filehash = sha1_file($usepath);
-					}
+						if($document['IsDynamic']){
+							$this->writePreviewDynFile($document['ID'], $siteFile, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
+						} elseif(file_exists($siteFile) && $document['Extension'] === '.php' && ($document['ContentType'] == we_base_ContentTypes::WEDOCUMENT || $document['ContentType'] == we_base_ContentTypes::HTML)){
+							we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
+						} elseif(isset($document['TemplatePath']) && $document['TemplatePath'] && substr($document['TemplatePath'], -18) != '/' . we_template::NO_TEMPLATE_INC && $document['ContentType'] == we_base_ContentTypes::WEDOCUMENT){
+							$includeTemplate = preg_replace('/.tmpl$/i', '.php', $document['TemplatePath']);
+							$this->writePreviewDynFile($document['ID'], $includeTemplate, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
+						} else {
+							we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
+						}
+						$usepath = $_SERVER['DOCUMENT_ROOT'] . $binaryPath;
+						if(file_exists($usepath) && is_file($usepath)){
+							$this->Filehash = sha1_file($usepath);
+						}
 				}
 				$this->binaryPath = $binaryPath;
 				$entry = $binaryPath;
@@ -1425,13 +1436,11 @@ class we_versions_version{
 	}
 
 	function getDocContent($we_doc, $includepath = ""){
-
-		$contents = "";
 		update_time_limit(0);
 		$requestBackup = $_REQUEST;
 		$docBackup = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false;
-
 		$GLOBALS['getDocContentVersioning'] = true;
+		$transBackup = $GLOBALS['we_transaction'];
 
 		extract($GLOBALS, EXTR_SKIP); // globalen Namensraum herstellen.
 
@@ -1439,17 +1448,15 @@ class we_versions_version{
 
 //usually the site file always exists
 		if($includepath != '' && file_exists($includepath)){
-				ob_start();
-				@include($includepath);
-				ob_end_clean();
+			ob_start();
+			include($includepath);
+			ob_end_clean();
+			$_REQUEST = $requestBackup;
+			extract($GLOBALS, EXTR_SKIP); // globalen Namensraum herstellen.
 
-				$_REQUEST = $requestBackup;
-
-				extract($GLOBALS, EXTR_SKIP); // globalen Namensraum herstellen.
-
-				ob_start();
-				@include($includepath);
-				$contents = ob_get_clean();
+			ob_start();
+			include($includepath);
+			$contents = ob_get_clean();
 		} else {
 			ob_start();
 			if(!defined('NO_SESS')){
@@ -1464,6 +1471,9 @@ class we_versions_version{
 			include(WE_INCLUDES_PATH . 'we_showDocument.inc.php');
 			$contents = ob_get_clean();
 		}
+
+		//Note: some globals are overwritten by the above code, restore at least we_transaction
+		$GLOBALS['we_transaction'] = $transBackup;
 
 		if($docBackup){
 			$GLOBALS['we_doc'] = $docBackup;
@@ -1566,7 +1576,6 @@ class we_versions_version{
 			$resetArray = array();
 			$tblFields = array();
 			$tableInfo = $db->metadata(VERSIONS_TABLE);
-
 			$we_transaction = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0);
 
 			foreach($tableInfo as $cur){

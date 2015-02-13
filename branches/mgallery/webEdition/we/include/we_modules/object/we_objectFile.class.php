@@ -2021,7 +2021,7 @@ class we_objectFile extends we_document{
 
 	public function insertAtIndex(array $only = null, array $fieldTypes = null){
 		if(!($this->IsSearchable && $this->Published)){
-			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($this->ID));
+			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID='.$this->TableID.' AND ID=' . intval($this->ID));
 			return true;
 		}
 
@@ -2065,10 +2065,11 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
-		$maxDB = min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
+		$maxDB = 65535;//min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
 		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
 
 		if(!$text){
+			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID='.$this->TableID.' AND ID=' . intval($this->ID));
 			//no need to keep an entry without relevant data in the index
 			return true;
 		}
@@ -2082,6 +2083,7 @@ class we_objectFile extends we_document{
 
 		if(!$ws){
 			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+								'ID' => $this->ID,
 								'OID' => $this->ID,
 								'Text' => $text,
 								'Workspace' => '',
@@ -2102,6 +2104,7 @@ class we_objectFile extends we_document{
 					$wsPath = '/';
 				}
 				if(!$this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+									'ID' => $this->ID,
 									'OID' => $this->ID,
 									'Text' => $text,
 									'Workspace' => $wsPath,
@@ -2489,13 +2492,13 @@ class we_objectFile extends we_document{
 		//	weNavigationCache::clean(true);
 		$this->rewriteNavigation();
 
-		return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($this->ID));
+		return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID=' . intval($this->ID));
 	}
 
 	public function we_republish($rebuildMain = true){
 		return ($this->Published && $this->ModDate <= $this->Published ?
 						$this->we_publish(true, $rebuildMain) :
-						$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($this->ID))
+						$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID='.$this->TableID.' AND ID=' . intval($this->ID))
 				);
 	}
 
@@ -2813,6 +2816,8 @@ class we_objectFile extends we_document{
 		$contents = ob_get_clean();
 		if(isset($backupdoc)){
 			$GLOBALS['we_doc'] = $backupdoc;
+		}else{
+			unset($GLOBALS['we_doc']);
 		}
 
 		return $contents;

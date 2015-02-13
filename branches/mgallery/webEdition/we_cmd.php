@@ -114,8 +114,6 @@ function findInclude($cmd){
 			return 'we_editors/we_edit_frameset.inc.php';
 		case 'edit_include_document':
 			return 'we_editors/SEEM_edit_include_document.inc.php';
-		case 'load_editor':
-			return 'we_editors/we_editor.inc.php';
 		case 'load_edit_header':
 			return 'we_editors/we_editor_header.inc.php';
 		case 'load_edit_footer':
@@ -168,6 +166,7 @@ function findInclude($cmd){
 		case 'delete_navi':
 		case 'delete_all_navi':
 		case 'revert_published':
+		case 'load_editor':
 			return 'we_editors/we_editor.inc.php';
 		case 'edit_linklist':
 		case 'edit_link':

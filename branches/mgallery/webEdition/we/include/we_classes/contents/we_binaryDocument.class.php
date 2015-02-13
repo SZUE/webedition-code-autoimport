@@ -165,7 +165,7 @@ class we_binaryDocument extends we_document{
 
 	function insertAtIndex(){
 		if(!(isset($this->IsSearchable) && $this->IsSearchable && $this->Published)){
-			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE DID=' . intval($this->ID));
+			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($this->ID));
 			return true;
 		}
 
@@ -179,7 +179,9 @@ class we_binaryDocument extends we_document{
 				}
 			}
 		}
-		$set = array('DID' => intval($this->ID),
+		$set = array(
+			'ID' => intval($this->ID),
+			'DID' => intval($this->ID),
 			'Text' => $text,
 			'Workspace' => $this->ParentPath,
 			'WorkspaceID' => intval($this->ParentID),
