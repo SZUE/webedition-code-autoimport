@@ -23,12 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_object_tag{//FIXME: check why we use class/id instead of classID/ID => causes unneeded differentiation in e.g. we:form
-	public $DB_WE; //FIXME: change this to private!
+	public $DB_WE; //FIXME: change this to private in 6.5 Alpha 1!
 	var $class = '';
 	var $id = 0;
 	var $triggerID = 0;
 	var $ClassName = __CLASS__;
-	private $object;
+	public $object; //FIXME: change this to private in 6.5 Alpha 1!
 	var $avail = false;
 	var $hidedirindex = false;
 	var $objectseourls = false;
