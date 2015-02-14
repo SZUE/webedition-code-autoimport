@@ -42,7 +42,7 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 	if(($targetDirectroy = we_base_request::_(we_base_request::INT, 'we_target')) === false){
 		$script .= 'top.toggleBusy(0);' .
 				we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
-	} elseif(($selectedItems = we_base_request::_(we_base_request::INTLISTA, 'sel'))){
+	} elseif(($selectedItems = we_base_request::_(we_base_request::INTLISTA, 'sel', array()))){
 
 		// list of all item names which should be moved
 		$items2move = array();

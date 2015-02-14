@@ -158,7 +158,7 @@ class we_objectFile extends we_document{
 			}
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
-			$cats = makeIDsFromPathCVS(we_base_request::_(we_base_request::FILELISTA, 'we_ui_' . $formname . '_categories'), CATEGORY_TABLE);
+			$cats = makeIDsFromPathCVS(we_base_request::_(we_base_request::WEFILELISTA, 'we_ui_' . $formname . '_categories'), CATEGORY_TABLE);
 			$GLOBALS['we_object'][$formname]->Category = $cats;
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
@@ -1480,7 +1480,7 @@ class we_objectFile extends we_document{
 
 		return ($variant ?
 						'' :
-						'<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["img_" . $name]["required"] ? '*' : '') . '</b></span>' . ( isset($this->DefArray["img_$name"]['editdescription']) && $this->DefArray["img_$name"]['editdescription'] ?self::formatDescription( $this->DefArray["img_$name"]['editdescription']) : we_html_element::htmlBr())
+						'<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["img_" . $name]["required"] ? '*' : '') . '</b></span>' . ( isset($this->DefArray["img_$name"]['editdescription']) && $this->DefArray["img_$name"]['editdescription'] ? self::formatDescription($this->DefArray["img_$name"]['editdescription']) : we_html_element::htmlBr())
 				) .
 				'<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
 // show thumbnail of image if there exists one:
@@ -1527,7 +1527,7 @@ class we_objectFile extends we_document{
 
 		$content .= we_html_button::create_button_table(array(we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id ? : (isset($this->DefArray["flashmovie_$name"]['defaultdir']) ? $this->DefArray["flashmovie_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (isset($this->DefArray["flashmovie_$name"]['rootdir']) && $this->DefArray["flashmovie_$name"]['rootdir'] ? $this->DefArray["flashmovie_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::FLASH . "')"),
 					we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','flashmovie_" . $name . "')")));
-		return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["flashmovie_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["flashmovie_$name"]['editdescription']) && $this->DefArray["flashmovie_$name"]['editdescription'] ? self::formatDescription( $this->DefArray["flashmovie_$name"]['editdescription'])  : we_html_element::htmlBr()) . $content;
+		return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["flashmovie_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["flashmovie_$name"]['editdescription']) && $this->DefArray["flashmovie_$name"]['editdescription'] ? self::formatDescription($this->DefArray["flashmovie_$name"]['editdescription']) : we_html_element::htmlBr()) . $content;
 	}
 
 	private function getQuicktimeHTML($name, $attribs, $editable = true){
@@ -1542,7 +1542,7 @@ class we_objectFile extends we_document{
 		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','quicktime_" . $name . "');opener._EditorFrame.setEditorIsHot(true);");
 
-		return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["quicktime_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["quicktime_$name"]['editdescription']) && $this->DefArray["quicktime_$name"]['editdescription'] ? self::formatDescription( $this->DefArray["quicktime_$name"]['editdescription'])  : we_html_element::htmlBr()) .
+		return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["quicktime_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["quicktime_$name"]['editdescription']) && $this->DefArray["quicktime_$name"]['editdescription'] ? self::formatDescription($this->DefArray["quicktime_$name"]['editdescription']) : we_html_element::htmlBr()) .
 				'<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' . $img->getHtml() .
 				we_html_button::create_button_table(array(we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . ($id ? : (isset($this->DefArray["quicktime_$name"]['defaultdir']) ? $this->DefArray["quicktime_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (isset($this->DefArray["quicktime_$name"]['rootdir']) && $this->DefArray["quicktime_$name"]['rootdir'] ? $this->DefArray["quicktime_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::QUICKTIME . "')"),
 					we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "',quicktime_" . $name . "')")));
@@ -1707,18 +1707,20 @@ class we_objectFile extends we_document{
 		return $tarr[$pos];
 	}
 
-	function add_workspace($id){
+	function add_workspace(array $ids){
 		//$ExtraWorkspaces = makeArrayFromCSV($this->ExtraWorkspaces);
 		$workspaces = makeArrayFromCSV($this->Workspaces);
 		$templates = makeArrayFromCSV($this->Templates);
 		//$extraTemplates = makeArrayFromCSV($this->ExtraTemplates);
 
-		if(!in_array($id, $workspaces)){
-			$workspaces[] = $id;
-			$tid = $this->getTemplateFromWs($id);
-			$templates[] = $tid;
-			$this->Workspaces = makeCSVFromArray($workspaces, true);
-			$this->Templates = makeCSVFromArray($templates, true);
+		foreach($ids as $id){
+			if(!in_array($id, $workspaces)){
+				$workspaces[] = $id;
+				$tid = $this->getTemplateFromWs($id);
+				$templates[] = $tid;
+				$this->Workspaces = makeCSVFromArray($workspaces, true);
+				$this->Templates = makeCSVFromArray($templates, true);
+			}
 		}
 	}
 
@@ -2022,7 +2024,7 @@ class we_objectFile extends we_document{
 
 	public function insertAtIndex(array $only = null, array $fieldTypes = null){
 		if(!($this->IsSearchable && $this->Published)){
-			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($this->ID));
+			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID='.$this->TableID.' AND ID=' . intval($this->ID));
 			return true;
 		}
 
@@ -2066,10 +2068,11 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
-		$maxDB = min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
+		$maxDB = 65535;//min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
 		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
 
 		if(!$text){
+			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID='.$this->TableID.' AND ID=' . intval($this->ID));
 			//no need to keep an entry without relevant data in the index
 			return true;
 		}
@@ -2083,6 +2086,7 @@ class we_objectFile extends we_document{
 
 		if(!$ws){
 			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+								'ID' => $this->ID,
 								'OID' => $this->ID,
 								'Text' => $text,
 								'Workspace' => '',
@@ -2103,6 +2107,7 @@ class we_objectFile extends we_document{
 					$wsPath = '/';
 				}
 				if(!$this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+									'ID' => $this->ID,
 									'OID' => $this->ID,
 									'Text' => $text,
 									'Workspace' => $wsPath,
@@ -2490,13 +2495,13 @@ class we_objectFile extends we_document{
 		//	weNavigationCache::clean(true);
 		$this->rewriteNavigation();
 
-		return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($this->ID));
+		return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID=' . intval($this->ID));
 	}
 
 	public function we_republish($rebuildMain = true){
 		return ($this->Published && $this->ModDate <= $this->Published ?
 						$this->we_publish(true, $rebuildMain) :
-						$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE OID=' . intval($this->ID))
+						$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID='.$this->TableID.' AND ID=' . intval($this->ID))
 				);
 	}
 
@@ -2763,8 +2768,9 @@ class we_objectFile extends we_document{
 				if($regs[0] === 'OF'){
 					$data[$cur['name']] = (isset($this->$name) ? $this->$name : '');
 				} else {
-					$name = ($regs[0] == self::TYPE_OBJECT) ? ('we_object_' . $name) : $name;
-					$data[$cur['name']] = $this->getElement($name);
+					$name = ($regs[0] == self::TYPE_OBJECT ? ('we_object_' . $name) : $name);
+					$val = $this->getElement($name);
+					$data[$cur['name']] = is_array($val) ? serialize($val) : $val;
 				}
 			}
 		}
@@ -2813,6 +2819,8 @@ class we_objectFile extends we_document{
 		$contents = ob_get_clean();
 		if(isset($backupdoc)){
 			$GLOBALS['we_doc'] = $backupdoc;
+		}else{
+			unset($GLOBALS['we_doc']);
 		}
 
 		return $contents;
@@ -2946,7 +2954,7 @@ class we_objectFile extends we_document{
 	function initVariantDataFromDb(){
 		if(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
 			$dat = $this->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME);
-			if($dat && !is_array($dat)){
+			if($dat && !is_array($dat) && substr($dat, 0, 2) === 'a:'){
 // unserialize the variant data when loading the model
 				$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, unserialize($dat), 'variant');
 			}

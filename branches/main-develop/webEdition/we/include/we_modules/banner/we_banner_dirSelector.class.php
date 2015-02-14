@@ -249,7 +249,7 @@ top.clearEntries();
 				$we_responseText = sprintf(g_l('modules_banner', '[group_path_exists]'), $folder->Path);
 				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
-				if(preg_match('/[%/\\"\']/', $folder->Text)){
+				if(preg_match('|[%/\\"\']|', $folder->Text)){
 					$we_responseText = g_l('modules_banner', '[wrongtext]');
 					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				} else {

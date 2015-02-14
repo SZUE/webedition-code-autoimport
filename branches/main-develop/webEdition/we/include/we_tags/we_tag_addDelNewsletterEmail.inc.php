@@ -49,7 +49,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 		switch($type){
 			case 'customer':
 				$tmpAbos = weTag_getAttribute('mailingList', $attribs, '', we_base_request::STRING_LIST);
-				if(empty($tmpAbos) || (strlen($tmpAbos[0]) == 0)){
+				if(!$tmpAbos || $tmpAbos[0] == ''){
 					$abos[0] = $fieldGroup . '_Ok';
 				} else {// #6100
 					foreach($tmpAbos as $abo){
@@ -273,10 +273,9 @@ function we_tag_addDelNewsletterEmail($attribs){
 						$mailtextHTML = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:' . $phf . '####', $placeholderReplaceValue, $mailtextHTML);
 					}
 				}
-				$recipientCC = weTag_getAttribute('recipientCC', $attribs, '', we_base_request::EMAIL);
-				$recipientBCC = weTag_getAttribute('recipientBCC', $attribs, '', we_base_request::EMAIL);
+				$toCC = weTag_getAttribute('recipientCC', $attribs, array(), we_base_request::EMAILLISTA);
+				$toBCC = weTag_getAttribute('recipientBCC', $attribs, array(), we_base_request::EMAILLISTA);
 				$includeimages = weTag_getAttribute('includeimages', $attribs, false, we_base_request::BOOL);
-				$toCC = explode(',', $recipientCC);
 				$we_recipientCC = array();
 				foreach($toCC as $cc){
 					if(strpos($cc, '@') === false){
@@ -295,7 +294,6 @@ function we_tag_addDelNewsletterEmail($attribs){
 						}
 					}
 				}
-				$toBCC = explode(',', $recipientBCC);
 				$we_recipientBCC = array();
 				foreach($toBCC as $bcc){
 					if(strpos($bcc, '@') === false){

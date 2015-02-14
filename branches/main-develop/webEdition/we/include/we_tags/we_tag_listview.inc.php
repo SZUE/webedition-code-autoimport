@@ -68,7 +68,7 @@ function we_tag_listview($attribs){
 	$name = weTag_getAttribute('name', $attribs, 0, we_base_request::STRING);
 	$doctype = weTag_getAttribute('doctype', $attribs, '', we_base_request::STRING);
 	$class = weTag_getAttribute('classid', $attribs, 0, we_base_request::INT);
-	$we_lv_cats = we_base_request::_(we_base_request::FILELIST, 'we_lv_cats_' . $name, weTag_getAttribute('categories', $attribs, '', we_base_request::FILELIST));
+	$we_lv_cats = we_base_request::_(we_base_request::WEFILELIST, 'we_lv_cats_' . $name, weTag_getAttribute('categories', $attribs, '', we_base_request::WEFILELIST));
 	$categoryids = weTag_getAttribute('categoryids', $attribs, '', we_base_request::INTLIST);
 	$we_lv_categoryids = we_base_request::_(we_base_request::INTLIST, 'we_lv_categoryids_' . $name, $categoryids);
 	$we_lv_catOr = we_base_request::_(we_base_request::BOOL, 'we_lv_catOr_' . $name, weTag_getAttribute('catOr', $attribs, false, we_base_request::BOOL));
@@ -243,7 +243,7 @@ function we_tag_listview($attribs){
 			$filterdatestart = weTag_getAttribute('filterdatestart', $attribs, -1, we_base_request::INT);
 			$filterdateend = weTag_getAttribute('filterdateend', $attribs, -1, we_base_request::INT);
 			$bannerid = f('SELECT ID FROM ' . BANNER_TABLE . ' WHERE PATH="' . $GLOBALS[DB_WE]->escape($path) . '"');
-			if($customer && defined('CUSTOMER_TABLE') && (!we_banner_banner::customerOwnsBanner($_SESSION['webuser']['ID'], $bannerid, $GLOBALS['DB_WE']))){
+			if($customer && defined('CUSTOMER_TABLE') && isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && (!we_banner_banner::customerOwnsBanner($_SESSION['webuser']['ID'], $bannerid, $GLOBALS['DB_WE']))){
 				$bannerid = 0;
 			}
 			$GLOBALS['lv'] = new we_banner_listview($name, $we_rows, $order, $bannerid, $usefilter, $filterdatestart, $filterdateend);

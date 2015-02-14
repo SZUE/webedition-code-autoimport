@@ -249,7 +249,11 @@ class we_tag_tagParser{
 
 		//@Lukas: =>384
 		if(!$gt){
-			return parseError(sprintf(g_l('parser', '[incompleteTag]'), $tagname), $tag);
+			$data = '';
+			for($i = $ipos - 2; $i < $ipos + 5; $i++){
+				$data.="\n" . ($i == $ipos ? '!-> ' : '    ') . $this->tags[$i];
+			}
+			return parseError(sprintf(g_l('parser', '[incompleteTag]'), $tagname), 'Parsed tags around:' . $data);
 		}
 		//tags which need an endtag are not allowed to be selfclosing
 		//FIXME: ok or not?

@@ -216,15 +216,11 @@ abstract class we_shop_variants{
 	}
 
 	public static function getAllVariationFields($model, $pos = false){
-
 		$elements = $model->elements;
-
 		$variationElements = array();
 
 		foreach($elements as $element => $elemArr){
-
 			if(strpos($element, WE_SHOP_VARIANTS_PREFIX) !== false){
-
 				$variationElements[$element] = $elemArr;
 			}
 		}
@@ -232,14 +228,13 @@ abstract class we_shop_variants{
 
 		if($pos === false){
 			return $variationElements;
-		} else {
-			foreach($variationElements as $name => $value){
-				if(self::getNrFromElemName($name) != $pos){
-					unset($variationElements[$name]);
-				}
-			}
-			return $variationElements;
 		}
+		foreach($variationElements as $name => $value){
+			if(self::getNrFromElemName($name) != $pos){
+				unset($variationElements[$name]);
+			}
+		}
+		return $variationElements;
 	}
 
 	private static function moveVariant(&$model, $pos, $direction){
@@ -300,7 +295,7 @@ abstract class we_shop_variants{
 		foreach(array_keys($variationFields) as $name){
 			unset($model->elements[$name]);
 		}
-		if(is_array(($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'][$delPos]))){
+		if(is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'][$delPos])){
 			unset($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'][$delPos]);
 		}
 	}
@@ -581,20 +576,20 @@ abstract class we_shop_variants{
 	public static function edit($isObject, $command, $we_doc){
 		switch($command){
 			case 'shop_insert_variant':
-				self::insertVariant($we_doc, we_base_request::_(we_base_request::INT, 'we_cmd', '', 1));
+				self::insertVariant($we_doc, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 				break;
 			case 'shop_move_variant_up':
-				self::moveVariant($we_doc, we_base_request::_(we_base_request::INT, 'we_cmd', '', 1), 'up');
+				self::moveVariant($we_doc, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1), 'up');
 				break;
 			case 'shop_move_variant_down':
-				self::moveVariant($we_doc, we_base_request::_(we_base_request::INT, 'we_cmd', '', 1), 'down');
+				self::moveVariant($we_doc, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1), 'down');
 				break;
 			case 'shop_remove_variant':
-				self::removeVariant($we_doc, we_base_request::_(we_base_request::INT, 'we_cmd', '', 1));
+				self::removeVariant($we_doc, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 				break;
 			case 'shop_preview_variant':
 				self::correctModelFields($we_doc, false);
-				self::useVariant($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2));
+				self::useVariant($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 2));
 
 				echo $we_doc->getDocument();
 				exit;

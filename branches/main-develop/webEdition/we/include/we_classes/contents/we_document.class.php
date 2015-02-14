@@ -203,7 +203,7 @@ class we_document extends we_root{
 	protected function formExtension2(){
 		$doctype = isset($this->DocType) ? $this->DocType : '';
 
-		if($this->ID == 0 && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'load_editor' && $doctype == ''){ //	Neues Dokument oder Dokument ohne DocType
+		if(!$this->ID && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'load_editor' && $doctype == ''){ //	Neues Dokument oder Dokument ohne DocType
 			switch($this->ContentType){
 				case we_base_ContentTypes::HTML: //	is HTML-File
 					$selected = DEFAULT_HTML_EXT;
@@ -305,9 +305,8 @@ class we_document extends we_root{
 		return we_html_button::create_state_changer() . $navis->get();
 	}
 
-	function addCat($id){
+	function addCat(array $ids){
 		$cats = makeArrayFromCSV($this->Category);
-		$ids = makeArrayFromCSV($id);
 		foreach($ids as $id){
 			if($id && (!in_array($id, $cats))){
 				$cats[] = $id;
@@ -619,6 +618,7 @@ class we_document extends we_root{
 		if($this->ContentType){
 			$exts = we_base_ContentTypes::inst()->getExtension($this->ContentType);
 			$this->Extensions = is_array($exts) && $exts ? $exts : array();
+			$this->Extension = $this->Extension? : (!is_array($exts) ? $exts : '');
 		}
 	}
 

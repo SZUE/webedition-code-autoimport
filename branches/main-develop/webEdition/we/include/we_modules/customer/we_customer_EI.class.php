@@ -26,16 +26,18 @@ abstract class we_customer_EI{
 
 	public static function exportCustomers($options = array()){
 		$code = '';
-		if($options['format'] == we_import_functions::TYPE_GENERIC_XML){
-			$code = self::exportXML($options);
-		}
-		if($options['format'] === 'csv'){
-			$code = self::exportCSV($options);
+		switch($options['format']){
+			case we_import_functions::TYPE_GENERIC_XML:
+				$code = self::exportXML($options);
+				break;
+			case 'csv':
+				$code = self::exportCSV($options);
+				break;
 		}
 		// write to file
-		if($code != ''){
-			self::save2File($options['filename'], $code);
-		}
+		return ($code ?
+				self::save2File($options['filename'], $code) :
+				false);
 	}
 
 	public static function getDataset($type, $filename, $arrgs = array()){
@@ -56,7 +58,7 @@ abstract class we_customer_EI{
 		return $customer->getFieldset();
 	}
 
-	public static function exportXML($options = array()){
+	public static function exportXML(array $options = array()){
 		if(isset($options['customers']) && is_array($options['customers'])){
 
 			$customer = new we_customer_customer();
@@ -75,7 +77,7 @@ abstract class we_customer_EI{
 							if(!$customer->isProtected($k)){
 								$value = $customer->{$k};
 								if($value != ''){
-									$value = ($options['cdata'] ? '<![CDATA[' . $value . ']]>' : htmlentities($value));//FIXME: is this a good idea??
+									$value = ($options['cdata'] ? '<![CDATA[' . $value . ']]>' : htmlentities($value)); //FIXME: is this a good idea??
 								}
 								$customer_xml->addChild(new we_html_baseElement($k, true, null, $value));
 							}
@@ -109,8 +111,7 @@ abstract class we_customer_EI{
 	function getXMLDataset($filename, $dataset){
 		$xp = new we_xml_parser($_SERVER['DOCUMENT_ROOT'] . $filename);
 		$nodeSet = $xp->evaluate($xp->root . '/' . $dataset . '[1]/child::*');
-		$nodes = array();
-		$attrs = array();
+		$nodes = $attrs = array();
 
 		foreach($nodeSet as $node){
 			$nodeName = $xp->nodeName($node);
@@ -127,7 +128,7 @@ abstract class we_customer_EI{
 		return $nodes;
 	}
 
-	function exportCSV($options = array()){
+	function exportCSV(array $options = array()){
 		if(isset($options['customers']) && is_array($options['customers'])){
 			$customer_csv = array();
 			$customer = new we_customer_customer();
@@ -149,21 +150,32 @@ abstract class we_customer_EI{
 
 			$field_names = array();
 			foreach($fields as $k => $v){
-				if(!$customer->isProtected($k))
+				if(!$customer->isProtected($k)){
 					$field_names[] = $k;
+				}
 			}
 
 			$csv_out = '';
 			$enclose = trim($options['csv_enclose']);
-			$lineend = trim($options['csv_lineend']);
+			switch(trim($options['csv_lineend'])){
+				case g_l('modules_customer', '[unix]'):
+					$lineend = "\n";
+					break;
+				case g_l('modules_customer', '[mac]') :
+					$lineend = "\r";
+					break;
+				default:
+					$lineend = "\r\n";
+					break;
+			}
 			$delimiter = $enclose . ($options['csv_delimiter'] === '\t' ? "\t" : trim($options['csv_delimiter'])) . $enclose;
 
 			if($options['csv_fieldnames']){
-				$csv_out.=$enclose . implode($delimiter, $field_names) . $enclose . ($lineend == g_l('modules_customer', '[unix]') ? "\n" : ($lineend == g_l('modules_customer', '[mac]') ? "\r" : "\r\n"));
+				$csv_out.=$enclose . implode($delimiter, $field_names) . $enclose . $lineend;
 			}
 
 			foreach($customer_csv as $ck => $cv){
-				$csv_out.=$enclose . implode($delimiter, $cv) . $enclose . ($lineend == g_l('modules_customer', '[unix]') ? "\n" : ($lineend == g_l('modules_customer', '[mac]') ? "\r" : "\r\n"));
+				$csv_out.=$enclose . implode($delimiter, $cv) . $enclose . $lineend;
 			}
 
 			return $csv_out;

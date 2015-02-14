@@ -27,11 +27,11 @@ we_html_tools::protect();
 // prevent persmissions overriding
 $perms = $_SESSION['perms'];
 // init document
-if(!isset($we_transaction)){
-	$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we_transaction, 1));
+if(!isset($we_transaction) || !$we_transaction){//we_session assumes to have transaction in parameter 'we_transaction'
+	$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 1));
 }
-$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 $GLOBALS['we_transaction'] = $we_transaction;
+$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 
 include(WE_INCLUDES_PATH . '/we_editors/we_init_doc.inc.php');
 
@@ -65,10 +65,10 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$we_doc->del_thumbnails(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 		break;
 	case 'do_add_thumbnails':
-		$we_doc->add_thumbnails(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', 0, 1));
+		$we_doc->add_thumbnails(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 1));
 		break;
 	case 'copyDocument':
-		$we_doc->copyDoc(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
+		$_insertReloadFooter = $we_doc->copyDoc(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 		$we_doc->InWebEdition = true;
 		break;
 	case 'delete_list':
@@ -127,13 +127,13 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_CONTENT;
 		break;
 	case 'users_add_owner':
-		$we_doc->add_owner(we_base_request::_(we_base_request::INTLIST, 'we_cmd', 0, 1));
+		$we_doc->add_owner(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 1));
 		break;
 	case 'users_del_owner':
 		$we_doc->del_owner(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 		break;
 	case 'users_add_user':
-		$we_doc->add_user(we_base_request::_(we_base_request::INTLIST, 'we_cmd', 0, 1));
+		$we_doc->add_user(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 1));
 		break;
 	case 'users_del_user':
 		$we_doc->del_user(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
@@ -151,7 +151,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		break;
 
 	case 'object_add_workspace':
-		$we_doc->add_workspace(we_base_request::_(we_base_request::INTLIST, 'we_cmd', 0, 1));
+		$we_doc->add_workspace(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 1));
 		break;
 	case 'object_del_workspace':
 		$we_doc->del_workspace(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
@@ -373,7 +373,6 @@ if(
 			}
 		}
 	}
-
 	we_base_file::save($fullName, $contents);
 
 	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?charset=' . $GLOBALS['CHARSET'] . '&file=' . str_replace(WEBEDITION_DIR, '', $tempName));

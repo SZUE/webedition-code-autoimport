@@ -262,7 +262,7 @@ class we_quicktimeDocument extends we_document_video{
 		if(!(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"]) && isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"]) )){
 			return;
 		}
-		$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
+		//$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 
 			foreach($_FILES['we_ui_'.$formname]['name'] as $videoName => $filename){
 

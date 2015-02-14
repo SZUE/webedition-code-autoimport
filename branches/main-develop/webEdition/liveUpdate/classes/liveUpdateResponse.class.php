@@ -81,6 +81,7 @@ class liveUpdateResponse{
 				//t_e($this->Code);
 				$c = strtr($this->Code, array('we_forms' => 'we_html_forms', '$we_button->' => 'we_html_button::', 'new we_button()' => '""', 'getMysqlVer' => 'we_database_base::getMysqlVer'));
 //FIXME:eval
+				//t_e($c);
 				return eval('?>' . $c);
 
 			case 'state':

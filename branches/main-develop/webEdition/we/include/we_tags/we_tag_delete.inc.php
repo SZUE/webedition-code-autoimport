@@ -85,13 +85,18 @@ function we_tag_delete($attribs){
 		}
 	}
 
-	$isOwner = ($protected ?
-			($_SESSION['webuser']['ID'] == $doc->WebUserID) :
-			($userid ?
-				($_SESSION['webuser']['ID'] == $doc->getElement($userid)) : false));
+	$isOwner = (isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] ?
+			($protected ?
+				($_SESSION['webuser']['ID'] == $doc->WebUserID) :
+				($userid ?
+					($_SESSION['webuser']['ID'] == $doc->getElement($userid)) : false)) : false);
 
 
-	$isAdmin = ($admin ? isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin] : false);
+	$isAdmin = (isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] ?
+			($admin ?
+				isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin] :
+				false) :
+			false);
 
 	if($isAdmin || $isOwner || $forceedit){
 		we_base_delete::deleteEntry($docID, $table);

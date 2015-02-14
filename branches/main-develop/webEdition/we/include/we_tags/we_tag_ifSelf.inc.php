@@ -24,18 +24,15 @@
  */
 function we_tag_ifSelf($attribs){
 
-	$id = weTag_getAttribute('id', $attribs, '', we_base_request::INTLIST);
+	$ids = weTag_getAttribute('id', $attribs, array(), we_base_request::INTLISTA)? :
+			(explode(',', isset($GLOBALS['we_obj']) ?
+							$GLOBALS['we_obj']->ID :
+							(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass ?
+									$GLOBALS['lv']->ID :
+									$GLOBALS['WE_MAIN_DOC']->ID)));
 
-	if(!$id){
-		$id = (isset($GLOBALS['we_obj']) ?
-						$GLOBALS['we_obj']->ID :
-						(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass ?
-								$GLOBALS['lv']->ID :
-								$GLOBALS['WE_MAIN_DOC']->ID));
-	}
 	$type = weTag_getAttribute('doc', $attribs, weTag_getAttribute('type', $attribs, '', we_base_request::STRING), we_base_request::STRING);
 
-	$ids = explode(',', $id);
 
 	switch($type){
 		case 'listview':

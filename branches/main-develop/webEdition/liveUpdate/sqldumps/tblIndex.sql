@@ -8,10 +8,23 @@
 /* query separator */
 ###UPDATEDROPCOL(Page,###TBLPREFIX###tblIndex)###
 /* query separator */
+###UPDATEDROPKEY(DID,###TBLPREFIX###tblIndex)###
+/* query separator */
+###UPDATEDROPKEY(UDID,###TBLPREFIX###tblIndex)###
+/* query separator */
+###ONKEYFAILED(search,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex DROP PRIMARY KEY;###
+/* query separator */
+###ONKEYFAILED(search,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex DROP COLUMN ID;###
+/* query separator */
+###ONKEYFAILED(search,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex ADD ID int(11) unsigned NOT NULL default '0' FIRST;###
+/* query separator */
+###ONKEYFAILED(search,###TBLPREFIX###tblIndex)UPDATE ###TBLPREFIX###tblIndex SET ID=IF(OID>0,OID,DID);###
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblIndex (
-  DID int(11) unsigned NULL default NULL,
-  OID bigint(20) unsigned NULL default NULL,
+	ID int(11) unsigned NOT NULL default '0',
+  DID int(11) unsigned NOT NULL default '0',
+	OID int(11) unsigned NOT NULL default '0',
   WorkspaceID int(11) unsigned NOT NULL default '0',
   `Text` text NOT NULL,
   Workspace varchar(1000) NOT NULL default '',
@@ -22,15 +35,12 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
   Description text NOT NULL,
   Path varchar(255) NOT NULL default '',
   Language varchar(5) default NULL,
-  PRIMARY KEY (`OID`,WorkspaceID,`DID`),
-  UNIQUE KEY `UDID` (`DID`)
+  PRIMARY KEY (ID,WorkspaceID,ClassID),
+	KEY search (ID,ClassID),
+	KEY wsp (Workspace),
+	FULLTEXT text (Text)
 ) ENGINE=MyISAM;
 
 /* query separator */
-###ONKEYFAILED(UDID,###TBLPREFIX###tblIndex)UPDATE ###TBLPREFIX###tblIndex SET DID=NULL WHERE DID=0;###
-/* query separator */
-###ONKEYFAILED(UDID,###TBLPREFIX###tblIndex)UPDATE ###TBLPREFIX###tblIndex SET OID=NULL WHERE OID=0;###
-/* query separator */
-###ONKEYFAILED(UDID,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD UNIQUE KEY `UDID` (`DID`);###
-/* query separator */
-###UPDATEDROPKEY(DID,###TBLPREFIX###tblIndex)###
+###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD PRIMARY KEY (ID,WorkspaceID,ClassID);###
+

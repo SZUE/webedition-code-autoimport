@@ -253,7 +253,7 @@ function we_tag_saveRegisteredUser_keepInput(){
 	}
 }
 
-function we_tag_saveRegisteredUser_processRequest($protected, $allowed){
+function we_tag_saveRegisteredUser_processRequest(array $protected, array $allowed){
 	$set = array();
 
 	foreach($_REQUEST['s'] as $name => $val){

@@ -514,8 +514,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				break;
 			case "add_cat":
 				$arr = makeArrayFromCSV($this->banner->CategoryIDs);
-				if(($ids = we_base_request::_(we_base_request::INTLIST, "ncmdvalue"))){
-					$ids = makeArrayFromCSV($ids);
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", array()))){
 					foreach($ids as $id){
 						if($id && (!in_array($id, $arr))){
 							$arr[] = $id;
@@ -540,8 +539,8 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				break;
 			case "add_file":
 				$arr = makeArrayFromCSV($this->banner->FileIDs);
-				if(($ids = we_base_request::_(we_base_request::INTLIST, "ncmdvalue"))){
-					foreach(makeArrayFromCSV($ids) as $id){
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", array()))){
+					foreach($ids as $id){
 						if($id && (!in_array($id, $arr))){
 							$arr[] = $id;
 						}
@@ -564,8 +563,8 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				break;
 			case "add_folder":
 				$arr = makeArrayFromCSV($this->banner->FolderIDs);
-				if(($ids = we_base_request::_(we_base_request::INTLIST, "ncmdvalue"))){
-					foreach(makeArrayFromCSV($ids) as $id){
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", array()))){
+					foreach($ids as $id){
 						if(strlen($id) && (!in_array($id, $arr))){
 							$arr[] = $id;
 						}
@@ -575,8 +574,8 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				break;
 			case "add_customer":
 				$arr = makeArrayFromCSV($this->banner->Customers);
-				if(($ids = we_base_request::_(we_base_request::INTLIST, "ncmdvalue"))){
-					foreach(makeArrayFromCSV($ids) as $id){
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", array()))){
+					foreach($ids as $id){
 						if($id && (!in_array($id, $arr))){
 							$arr[] = $id;
 						}
@@ -722,7 +721,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 
 		foreach($this->banner->persistents as $val => $type){
 			$varname = $this->uid . "_" . $val;
-			if(($value = we_base_request::_($type, $varname,'_no_val')) !== '_no_val'){
+			if(($value = we_base_request::_($type, $varname, '_no_val')) !== '_no_val'){
 				$this->banner->$val = $value;
 			}
 		}

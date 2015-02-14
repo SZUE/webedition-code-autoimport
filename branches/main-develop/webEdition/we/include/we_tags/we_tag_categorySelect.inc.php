@@ -40,11 +40,11 @@ function we_tag_categorySelect($attribs, $content){
 	$values = '';
 	if($isuserinput && $GLOBALS['WE_FORM']){
 		$objekt = isset($GLOBALS['we_object'][$GLOBALS['WE_FORM']]) ?
-			$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
-			(isset($GLOBALS['we_document'][$GLOBALS['WE_FORM']]) ?
-				$GLOBALS['we_document'][$GLOBALS['WE_FORM']] :
-				(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] :
-					false));
+				$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
+				(isset($GLOBALS['we_document'][$GLOBALS['WE_FORM']]) ?
+						$GLOBALS['we_document'][$GLOBALS['WE_FORM']] :
+						(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] :
+								false));
 		if($objekt){
 			$values = $objekt->Category;
 		}
@@ -55,8 +55,8 @@ function we_tag_categorySelect($attribs, $content){
 	} else {
 		// Bug Fix #750
 		$valuesArray = (isset($GLOBALS[$name]) && is_array($GLOBALS[$name])) ?
-			$GLOBALS[$name] :
-			explode(',', $GLOBALS[$name]);
+				$GLOBALS[$name] :
+				explode(',', $GLOBALS[$name]);
 	}
 
 	$attribs['name'] = $name;
@@ -82,18 +82,18 @@ function we_tag_categorySelect($attribs, $content){
 		//$whereTag = !$fromTag ? '' : ($fromTag === 'shopcategory' ? ' AND IsFolder=0' : ' AND ID IN('. trim($catIDs, ',') .')');
 		$whereTag = !$fromTag ? '' : ' AND ID IN(' . trim($catIDs, ',') . ')';
 
-		$db->query('SELECT ID,Path,Category FROM ' . CATEGORY_TABLE . ' WHERE ' . ($rootdir === '/' ? 1 : ' Path LIKE "' . $db->escape($rootdir) . '/%"') . $whereTag . ' ORDER BY ' . $dbfield);
+		$db->query('SELECT ID,Path,Category FROM ' . CATEGORY_TABLE . ' WHERE ' . ($rootdir === '/' ? 1 : ' Path LIKE "' . $db->escape(rtrim($rootdir, '/')) . '/%"') . $whereTag . ' ORDER BY ' . $dbfield);
 		while($db->next_record()){
 			$deep = count(explode('/', $db->f('Path'))) - 2;
 			$field = ($rootdir && ($rootdir != '/') && $showpath ?
-					preg_replace('|^' . preg_quote($rootdir, '|') . '|', '', $db->f($dbfield)) :
-					$db->f($dbfield));
+							preg_replace('|^' . preg_quote($rootdir, '|') . '|', '', $db->f($dbfield)) :
+							$db->f($dbfield));
 
 			if($field){
 				$content .= getHtmlTag('option', array(
 					'value' => $db->f($valueField),
 					(in_array($db->f($valueField), $valuesArray) ? 'selected' : null) => 'selected'
-					), str_repeat($indent, $deep) . $field);
+						), str_repeat($indent, $deep) . $field);
 			}
 		}
 	} else {

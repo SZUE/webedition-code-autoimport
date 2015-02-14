@@ -290,7 +290,7 @@ function we_save() {
 
 }');
 
-		$select = new we_html_select(array("name" => "gview"));
+		$select = new we_html_select(array('name' => 'gview'));
 
 		$table2 = new we_html_table(array('style' => 'margin-top:10px', "border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 10);
 		if($mode == 0){
@@ -2265,7 +2265,7 @@ function clearLog(){
 		$ret = $this->View->cacheNewsletter();
 
 
-		$_offset = ($this->View->newsletter->Offset != 0) ? ($this->View->newsletter->Offset + 1) : 0;
+		$_offset = ($this->View->newsletter->Offset) ? ($this->View->newsletter->Offset + 1) : 0;
 		$_step = $this->View->newsletter->Step;
 
 		if($this->View->settings['send_step'] <= $_offset){
@@ -2312,30 +2312,21 @@ self.focus();
 	}
 
 	function getHTMLSendBody(){
-		$details = "";
-		$pro = we_base_request::_(we_base_request::INT, "pro", 0);
-
-		$pb = new we_progressBar((int) $pro);
+		$pb = new we_progressBar(we_base_request::_(we_base_request::INT, "pro", 0));
 		$pb->setStudLen(400);
 		$pb->addText(g_l('modules_newsletter', '[sending]'), 0, "title");
 
-		$_textarea = we_html_element::htmlTextarea(array("name" => "details", "cols" => 60, "rows" => 15, "style" => "width:530px;height:300px;"), oldHtmlspecialchars($details));
 		$_footer = '<table width="580" border="0" cellpadding="0" cellspacing="0"><tr><td align="left">' .
 				$pb->getHTML() . '</td><td align="right">' .
 				we_html_button::create_button("close", "javascript:top.close();") .
 				'</td></tr></table>';
 
-		$_content = we_html_tools::htmlDialogLayout($_textarea, g_l('modules_newsletter', '[details]'), $_footer);
-
-
-		$details = g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "test") ? '[test_no_mail]' : '[sending]'));
-
 		return $this->getHTMLDocument(
 						we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $pb->getJS('', true) .
-										$_content
+										we_html_tools::htmlDialogLayout(we_html_element::htmlTextarea(array("name" => "details", "cols" => 60, "rows" => 15, "style" => "width:530px;height:300px;")), g_l('modules_newsletter', '[details]'), $_footer)
 								) .
 								we_html_element::jsElement('
-									document.we_form.details.value="' . $details . '";
+									document.we_form.details.value="' . g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "test") ? '[test_no_mail]' : '[sending]')) . '";
 									document.we_form.details.value=document.we_form.details.value+"\n"+"' . g_l('modules_newsletter', '[campaign_starts]') . '";
 							')
 		));

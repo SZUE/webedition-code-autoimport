@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -25,7 +24,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 if(defined('MESSAGING_SYSTEM')){
-
+	$_transact = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
 	$_SESSION['weS']['we_data'][$_transact] = array();
 
 	$_we_messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_transact]);

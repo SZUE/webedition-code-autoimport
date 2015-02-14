@@ -35,7 +35,7 @@ function we_tag_form($attribs){
 	$doctype = weTag_getAttribute('doctype', $attribs, '', we_base_request::STRING);
 	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
 	$tid = weTag_getAttribute('tid', $attribs, 0, we_base_request::INT);
-	$categories = weTag_getAttribute('categories', $attribs, '', we_base_request::FILELIST);
+	$categories = weTag_getAttribute('categories', $attribs, '', we_base_request::WEFILELIST);
 	$onsubmit = weTag_getAttribute('onSubmit', $attribs, weTag_getAttribute('onsubmit', $attribs, '', we_base_request::JS), we_base_request::JS);
 	$remove = weTag_getAttribute('remove', $attribs, '', we_base_request::RAW);
 	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
