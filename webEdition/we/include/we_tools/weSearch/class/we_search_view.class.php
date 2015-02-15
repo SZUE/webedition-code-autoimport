@@ -2102,7 +2102,7 @@ function calendarSetup(x){
 		);
 	}
 
-	function makeContent($_result, $view, $whichSearch){
+	private function makeContent($_result, $view, $whichSearch){
 		$DB_WE = new DB_WE();
 
 		$content = array();
