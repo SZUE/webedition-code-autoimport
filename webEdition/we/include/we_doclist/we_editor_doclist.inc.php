@@ -48,7 +48,7 @@ echo $headCal .
 	<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;"><?php
 		$view = new we_search_view();
 		$content = doclistView::searchProperties($GLOBALS['we_doc']->Table);
-		$headline = doclistView::makeHeadLines();
+		$headline = doclistView::makeHeadLines($GLOBALS['we_doc']->Table);
 		$foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
 		$_parts = array(
 			array("html" => doclistView::getSearchDialog()),
