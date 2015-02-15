@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -26,13 +25,13 @@
 /**
  * @abstract class making the view for the document list
  */
-class doclistView{
+abstract class doclistView{
 
 	/**
 	 * @abstract create javascript for document list
 	 * @return javascript code
 	 */
-	function getSearchJS(){
+	public static function getSearchJS(){
 		$h = 0;
 		$addinputRows = "";
 		if($GLOBALS['we_doc']->searchclassFolder->mode){
@@ -77,675 +76,645 @@ class doclistView{
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 
 		return we_html_element::jsElement('
-
-      var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
-      var ajaxCallbackResultList = {
-        success: function(o) {
-          if(typeof(o.responseText) != "undefined" && o.responseText != "") {
-            document.getElementById("scrollContent_doclist").innerHTML = o.responseText;
-            makeAjaxRequestParametersTop();
-            makeAjaxRequestParametersBottom();
-          }
-        },
-        failure: function(o) {
-          alert("Failure");
-        }
-      }
-      var ajaxCallbackParametersTop = {
-        success: function(o) {
-          if(typeof(o.responseText) != "undefined" && o.responseText != "") {
-            document.getElementById("parametersTop").innerHTML = o.responseText;
-          }
-        },
-        failure: function(o) {
-          alert("Failure");
-        }
-      }
-      var ajaxCallbackParametersBottom = {
-        success: function(o) {
-          if(typeof(o.responseText) != "undefined" && o.responseText != "") {
-            document.getElementById("parametersBottom").innerHTML = o.responseText;
-          }
-        },
-        failure: function(o) {
-          alert("Failure");
-        }
-      }
-
-      var ajaxCallbackgetMouseOverDivs = {
-        success: function(o) {
-          if(typeof(o.responseText) != "undefined" && o.responseText != "") {
-            document.getElementById("mouseOverDivs_doclist").innerHTML = o.responseText;
-          }
-        },
-        failure: function(o) {
-          alert("Failure");
-        }
-      }
-
-      function search(newSearch) {
-
-      	if(' . intval(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()) . ') {
-   			' . we_message_reporting::getShowMessageCall(g_l('searchtool', '[noTempTableRightsDoclist]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-      	}
-      	else {
-	        if(newSearch) {
-	          document.we_form.searchstart.value=0;
-	        }
-	        makeAjaxRequestDoclist();
-	    }
-      }
-
-      function makeAjaxRequestDoclist() {
-        getMouseOverDivs();
-        var args = "";
-        var newString = "";
-        for(var i = 0; i < document.we_form.elements.length; i++) {
-          newString = document.we_form.elements[i].name;
-          args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
-        }
-        var scroll = document.getElementById("scrollContent_doclist");
-        scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
-        YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=doclist&cmd=GetSearchResult&classname=we_folder&id=' . $GLOBALS['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
-      }
-
-      function makeAjaxRequestParametersTop() {
-        var args = "";
-        var newString = "";
-        for(var i = 0; i < document.we_form.elements.length; i++) {
-          newString = document.we_form.elements[i].name;
-          args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
-        }
-          YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=top&classname=we_folder&id=' . $GLOBALS['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
-      }
-
-      function makeAjaxRequestParametersBottom() {
-        var args = "";
-        var newString = "";
-        for(var i = 0; i < document.we_form.elements.length; i++) {
-          newString = document.we_form.elements[i].name;
-          args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
-        }
-          YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=bottom&classname=we_folder&id=' . $GLOBALS['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
-      }
-
-      function getMouseOverDivs() {
-        var args = "";
-        var newString = "";
-        for(var i = 0; i < document.we_form.elements.length; i++) {
-          newString = document.we_form.elements[i].name;
-          args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
-        }
-        YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackgetMouseOverDivs, "protocol=json&cns=doclist&cmd=GetMouseOverDivs&whichsearch=doclist&classname=we_folder&id=' . $GLOBALS['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
-      }
-
-      function switchSearch(mode) {
-
-        document.we_form.mode.value=mode;
-        var defSearch = document.getElementById("defSearch");
-        var advSearch = document.getElementById("advSearch");
-        var advSearch2 = document.getElementById("advSearch2");
-        var advSearch3 = document.getElementById("advSearch3");
-        var scrollContent = document.getElementById("scrollContent_doclist");
-
-        scrollheight = 30;
-
-        var elem = document.getElementById("filterTable");
-        newID = elem.rows.length-1;
-
-        for(i=0;i<newID;i++) {
-          scrollheight = scrollheight + 26;
-        }
-
-        if (mode==1) {
-          scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) +"px";
-          defSearch.style.display = "none";
-          advSearch.style.display = "block";
-          advSearch2.style.display = "block";
-          advSearch3.style.display = "block";
-        }else {
-          scrollContent.style.height = (scrollContent.offsetHeight + scrollheight) +"px";
-          defSearch.style.display = "block";
-          advSearch.style.display = "none";
-          advSearch2.style.display = "none";
-          advSearch3.style.display = "none";
-        }
-
-      }
-
-      function openToEdit(tab,id,contentType){
-
-        top.weEditorFrameController.openDocument(tab,id,contentType);
-
-      }
-
-
-      function setOrder(order){
-
-	      columns = new Array("Text", "SiteTitle", "CreationDate", "ModDate");
-	      for(var i=0;i<columns.length;i++) {
-	        if(order!=columns[i]) {
-	          deleteArrow = document.getElementById(""+columns[i]+"");
-	          deleteArrow.innerHTML = "";
-	        }
-	      }
-	      arrow = document.getElementById(""+order+"");
-	      foo = document.we_form.elements["order"].value;
-
-	      if(order+" DESC"==foo){
-	        document.we_form.elements["order"].value=order;
-	        arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_asc.gif\" />";
-	      }else{
-	        document.we_form.elements["order"].value=order+" DESC";
-	        arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_desc.gif\" />";
-	      }
-	      search(false);
-      }
-
-      function setview(setView){
-
-        document.we_form.setView.value=setView;
-
-        search(false);
-
-      }
-
-      elem = null;
-
-      function showImageDetails(picID){
-        elem = document.getElementById(picID);
-        elem.style.visibility = "visible";
-
-      }
-
-      function hideImageDetails(picID){
-        elem = document.getElementById(picID);
-        elem.style.visibility = "hidden";
-        elem.style.left = "-9999px";
-
-        ' . $showSelects . '
-      }
-
-
-      document.onmousemove = updateElem;
-
-      function updateElem(e) {
-
-        var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-        var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
-
-        var x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX;
-        var y = (document.all) ? window.event.y + document.body.scrollTop  : e.pageY;
-
-        if (elem != null && elem.style.visibility == "visible") {
-
-          elemWidth = elem.offsetWidth;
-          elemHeight = elem.offsetHeight;
-          elem.style.left = (x + 10) + "px";
-          elem.style.top = (y - 120) + "px";
-
-          if((w-x)<400 && (h-y)<250) {
-            elem.style.left = (x - elemWidth - 10) + "px";
-            elem.style.top = (y - elemHeight - 10) + "px";
-          }
-          else if((w-x)<400) {
-            elem.style.left = (x - elemWidth - 10) + "px";
-          }
-          else if((h-y)<250) {
-            elem.style.top = (y - elemHeight - 10) + "px";
-          }
-
-          ' . $showHideSelects . '
-
-        }
-      }
-
-      function absLeft(el) {
-           return (el.offsetParent)?
-          el.offsetLeft+absLeft(el.offsetParent) : el.offsetLeft;
-        }
-
-       function absTop(el) {
-          return (el.offsetParent)?
-        el.offsetTop+absTop(el.offsetParent) : el.offsetTop;
-        }
-
-
-      function sizeScrollContent() {
-
-        var elem = document.getElementById("filterTable");
-        newID = elem.rows.length-1;
-
-        scrollheight = ' . $h . ';
-
-        ' . $addinputRows . '
-
-        var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-        var scrollContent = document.getElementById("scrollContent_doclist");
-
-        var height = ' . (we_base_browserDetect::isIE() ? 200 : 180) . ';
-        if((h - height)>0) {
-          scrollContent.style.height=(h - height)+"px";
-        }
-        if((scrollContent.offsetHeight - scrollheight)>0){
-          scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) +"px";
-        }
-      }
-
-      function init() {
-
-        sizeScrollContent();
-
-      }
-
-      function reload() {
-
-        top.we_cmd("reload_editpage");
-
-      }
-
-      function next(anzahl){
-        var scrollActive = document.getElementById("scrollActive");
-   		if(scrollActive==null) {
-          document.we_form.elements[\'searchstart\'].value = parseInt(document.we_form.elements[\'searchstart\'].value) + anzahl;
-
-          search(false);
-        }
-      }
-
-      function back(anzahl){
-        var scrollActive = document.getElementById("scrollActive");
-   		if(scrollActive==null) {
-          document.we_form.elements[\'searchstart\'].value = parseInt(document.we_form.elements[\'searchstart\'].value) - anzahl;
-
-          search(false);
-        }
-
-      }
-
-      var rows = ' . (isset($_REQUEST["searchFields"]) ? count($_REQUEST["searchFields"]) - 1 : 0) . ';
-
-      function newinput() {
-
-        var searchFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFields("__we_new_id__", "doclist"), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
-        var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
-        var search = "' . addslashes(we_html_tools::htmlTextInput('search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
-
-        var elem = document.getElementById("filterTable");
-        newID = elem.rows.length-1;
-        rows++;
-
-        var scrollContent = document.getElementById("scrollContent_doclist");
-        scrollContent.style.height = scrollContent.offsetHeight - 26 +"px";
-
-
-        if(elem){
-          var newRow = document.createElement("TR");
-            newRow.setAttribute("id", "filterRow_" + rows);
-
-            var cell = document.createElement("TD");
-            cell.innerHTML=searchFields.replace(/__we_new_id__/g,rows)+"<input type=\"hidden\" value=\"\" name=\"hidden_searchFields["+rows+"]\"";
-            newRow.appendChild(cell);
-
-          cell = document.createElement("TD");
-          cell.setAttribute("id", "td_location["+rows+"]");
-            cell.innerHTML=locationFields.replace(/__we_new_id__/g,rows);
-            newRow.appendChild(cell);
-
-          cell = document.createElement("TD");
-          cell.setAttribute("id", "td_search["+rows+"]");
-            cell.innerHTML=search.replace(/__we_new_id__/g,rows);
-            newRow.appendChild(cell);
-
-            cell = document.createElement("TD");
-            cell.setAttribute("id", "td_delButton["+rows+"]");
-            cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rows+')") . '\';
-            newRow.appendChild(cell);
-
-          elem.appendChild(newRow);
-        }
-      }
-
-
-      function changeit(value, rowNr){
-      	var setValue = document.getElementsByName("search["+rowNr+"]")[0].value;
-        var from = document.getElementsByName("hidden_searchFields["+rowNr+"]")[0].value;
-
-        var searchFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFields("__we_new_id__", "doclist"), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
-        var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
-        var search = "' . addslashes(we_html_tools::htmlTextInput('search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
-
-        var row = document.getElementById("filterRow_"+rowNr);
-        var locationTD = document.getElementById("td_location["+rowNr+"]");
-        var searchTD = document.getElementById("td_search["+rowNr+"]");
-        var delButtonTD = document.getElementById("td_delButton["+rowNr+"]");
-        var location = document.getElementById("location["+rowNr+"]");
-
-        if(value=="Content") {
-          if (locationTD!=null) {
-            location.disabled = true;
-          }
-          row.removeChild(searchTD);
-
-          if (delButtonTD!=null) {
-            row.removeChild(delButtonTD);
-          }
-          cell = document.createElement("TD");
-          cell.setAttribute("id", "td_search["+rowNr+"]");
-            cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-            row.appendChild(cell);
-
-            cell = document.createElement("TD");
-            cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-            row.appendChild(cell);
-        }
-        else if(value=="temp_category") {
-          if (locationTD!=null) {
-            location.disabled = true;
-          }
-          row.removeChild(searchTD);
-
-          var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>\n"
-              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"58\" value=\"\"  id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />\n"
-              + "</td><td><input value=\"\" name=\"searchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>\n"
-              + "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openCatselector\',document.we_form.elements[\'searchParentID["+rowNr+"]\'].value,\'' . CATEGORY_TABLE . '\',\'document.we_form.elements[\\\\\'searchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'search["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
-              + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">\n"
-              + "' . g_l('button', '[select][value]') . '\n"
-              + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>\n";
-
-
-          cell = document.createElement("TD");
-          cell.setAttribute("id", "td_search["+rowNr+"]");
-            cell.innerHTML=innerhtml;
-            row.appendChild(cell);
-
-          if (delButtonTD!=null) {
-            row.removeChild(delButtonTD);
-          }
-
-          cell = document.createElement("TD");
-            cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-            row.appendChild(cell);
-        }
-        else if(value=="temp_template_id" || value=="MasterTemplateID") {
-          if (locationTD!=null) {
-            location.disabled = true;
-          }
-          row.removeChild(searchTD);
-
-          var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>\n"
-              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"58\" value=\"\"  id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />\n"
-              + "</td><td><input value=\"\" name=\"searchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>\n"
-              + "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openDocselector\',document.we_form.elements[\'searchParentID["+rowNr+"]\'].value,\'' . TEMPLATES_TABLE . '\',\'document.we_form.elements[\\\\\'searchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'search["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
-              + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">\n"
-              + "' . g_l('button', '[select][value]') . '\n"
-              + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>\n";
-
-
-          cell = document.createElement("TD");
-          cell.setAttribute("id", "td_search["+rowNr+"]");
-            cell.innerHTML=innerhtml;
-            row.appendChild(cell);
-
-          if (delButtonTD!=null) {
-            row.removeChild(delButtonTD);
-          }
-
-          cell = document.createElement("TD");
-            cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-            row.appendChild(cell);
-        }
-        else if(value=="Status") {
-          if (locationTD!=null) {
-            location.disabled = true;
-          }
-          row.removeChild(searchTD);
-          if (delButtonTD!=null) {
-            row.removeChild(delButtonTD);
-          }
-
-          search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
-
-          var cell = document.createElement("TD");
-            cell.setAttribute("id", "td_search["+rowNr+"]");
-            cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-          row.appendChild(cell);
-
-          cell = document.createElement("TD");
-            cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-            row.appendChild(cell);
-
-        }
-        else if(value=="Speicherart") {
-          if (locationTD!=null) {
-            location.disabled = true;
-          }
-          row.removeChild(searchTD);
-          if (delButtonTD!=null) {
-            row.removeChild(delButtonTD);
-          }
-
-          search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
-
-          var cell = document.createElement("TD");
-            cell.setAttribute("id", "td_search["+rowNr+"]");
-            cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-          row.appendChild(cell);
-
-          cell = document.createElement("TD");
-            cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-            row.appendChild(cell);
-
-        }
-        else if(value=="Published" || value=="CreationDate" || value=="ModDate") {
-
-          row.removeChild(locationTD);
-
-          locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
-
-          var cell = document.createElement("TD");
-            cell.setAttribute("id", "td_location["+rowNr+"]");
-            cell.innerHTML=locationFields.replace(/__we_new_id__/g,rowNr);
-          row.appendChild(cell);
-
-          row.removeChild(searchTD);
-
-          var innerhtml= "<table id=\"search["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>\n"
-              + "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 100px; \" type=\"text\" />"
-              + "</td><td>&nbsp;</td><td><a href=\"#\">\n"
-              + "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
-              + "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\"">
-              + "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>"
-              + "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>";
-
-
-          cell = document.createElement("TD");
-          cell.setAttribute("id", "td_search["+rowNr+"]");
-            cell.innerHTML=innerhtml;
-            row.appendChild(cell);
-
-            Calendar.setup({inputField:"search["+rowNr+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+rowNr+"",align:"Tl",singleClick:true});
-
-          if (delButtonTD!=null) {
-            row.removeChild(delButtonTD);
-          }
-
-          cell = document.createElement("TD");
-            cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-            row.appendChild(cell);
-
-        }
-        else {
-          row.removeChild(searchTD);
-
-          if (locationTD!=null) {
-            row.removeChild(locationTD);
-          }
-          if (delButtonTD!=null) {
-            row.removeChild(delButtonTD);
-          }
-
-          var cell = document.createElement("TD");
-            cell.setAttribute("id", "td_location["+rowNr+"]");
-            cell.innerHTML=locationFields.replace(/__we_new_id__/g,rowNr);
+var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
+var ajaxCallbackResultList = {
+	success: function(o) {
+		if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+			document.getElementById("scrollContent_doclist").innerHTML = o.responseText;
+			makeAjaxRequestParametersTop();
+			makeAjaxRequestParametersBottom();
+		}
+	},
+	failure: function(o) {
+		alert("Failure");
+	}
+}
+var ajaxCallbackParametersTop = {
+	success: function(o) {
+		if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+			document.getElementById("parametersTop").innerHTML = o.responseText;
+		}
+	},
+	failure: function(o) {
+		alert("Failure");
+	}
+}
+var ajaxCallbackParametersBottom = {
+	success: function(o) {
+		if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+			document.getElementById("parametersBottom").innerHTML = o.responseText;
+		}
+	},
+	failure: function(o) {
+		alert("Failure");
+	}
+}
+
+var ajaxCallbackgetMouseOverDivs = {
+	success: function(o) {
+		if(typeof(o.responseText) != "undefined" && o.responseText != "") {
+			document.getElementById("mouseOverDivs_doclist").innerHTML = o.responseText;
+		}
+	},
+	failure: function(o) {
+		alert("Failure");
+	}
+}
+
+function search(newSearch) {
+	if(' . intval(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()) . ') {
+	' . we_message_reporting::getShowMessageCall(g_l('searchtool', '[noTempTableRightsDoclist]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+	}
+	else {
+		if(newSearch) {
+			document.we_form.searchstart.value=0;
+		}
+		makeAjaxRequestDoclist();
+}
+}
+
+function makeAjaxRequestDoclist() {
+	getMouseOverDivs();
+	var args = "";
+	var newString = "";
+	for(var i = 0; i < document.we_form.elements.length; i++) {
+		newString = document.we_form.elements[i].name;
+		args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
+	}
+	var scroll = document.getElementById("scrollContent_doclist");
+	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
+	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=doclist&cmd=GetSearchResult&classname=we_folder&id=' . $GLOBALS['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
+}
+
+function makeAjaxRequestParametersTop() {
+	var args = "";
+	var newString = "";
+	for(var i = 0; i < document.we_form.elements.length; i++) {
+		newString = document.we_form.elements[i].name;
+		args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
+	}
+		YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=top&classname=we_folder&id=' . $GLOBALS['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
+}
+
+function makeAjaxRequestParametersBottom() {
+	var args = "";
+	var newString = "";
+	for(var i = 0; i < document.we_form.elements.length; i++) {
+		newString = document.we_form.elements[i].name;
+		args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
+	}
+		YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=bottom&classname=we_folder&id=' . $GLOBALS['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
+}
+
+function getMouseOverDivs() {
+	var args = "";
+	var newString = "";
+	for(var i = 0; i < document.we_form.elements.length; i++) {
+		newString = document.we_form.elements[i].name;
+		args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
+	}
+	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackgetMouseOverDivs, "protocol=json&cns=doclist&cmd=GetMouseOverDivs&whichsearch=doclist&classname=we_folder&id=' . $GLOBALS['we_doc']->ID . '&we_transaction=' . $we_transaction . '"+args+"");
+}
+
+function switchSearch(mode) {
+	document.we_form.mode.value=mode;
+	var defSearch = document.getElementById("defSearch");
+	var advSearch = document.getElementById("advSearch");
+	var advSearch2 = document.getElementById("advSearch2");
+	var advSearch3 = document.getElementById("advSearch3");
+	var scrollContent = document.getElementById("scrollContent_doclist");
+
+	scrollheight = 30;
+
+	var elem = document.getElementById("filterTable");
+	newID = elem.rows.length-1;
+
+	for(i=0;i<newID;i++) {
+		scrollheight = scrollheight + 26;
+	}
+
+	if (mode==1) {
+		scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) +"px";
+		defSearch.style.display = "none";
+		advSearch.style.display = "block";
+		advSearch2.style.display = "block";
+		advSearch3.style.display = "block";
+	}else {
+		scrollContent.style.height = (scrollContent.offsetHeight + scrollheight) +"px";
+		defSearch.style.display = "block";
+		advSearch.style.display = "none";
+		advSearch2.style.display = "none";
+		advSearch3.style.display = "none";
+	}
+}
+
+function openToEdit(tab,id,contentType){
+	top.weEditorFrameController.openDocument(tab,id,contentType);
+}
+
+
+function setOrder(order){
+	columns = new Array("Text", "SiteTitle", "CreationDate", "ModDate");
+	for(var i=0;i<columns.length;i++) {
+		if(order!=columns[i]) {
+			deleteArrow = document.getElementById(""+columns[i]+"");
+			deleteArrow.innerHTML = "";
+		}
+	}
+	arrow = document.getElementById(""+order+"");
+	foo = document.we_form.elements["order"].value;
+
+	if(order+" DESC"==foo){
+		document.we_form.elements["order"].value=order;
+		arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_asc.gif\" />";
+	}else{
+		document.we_form.elements["order"].value=order+" DESC";
+		arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_desc.gif\" />";
+	}
+	search(false);
+}
+
+function setview(setView){
+	document.we_form.setView.value=setView;
+	search(false);
+}
+
+elem = null;
+
+function showImageDetails(picID){
+	elem = document.getElementById(picID);
+	elem.style.visibility = "visible";
+}
+
+function hideImageDetails(picID){
+	elem = document.getElementById(picID);
+	elem.style.visibility = "hidden";
+	elem.style.left = "-9999px";
+
+	' . $showSelects . '
+}
+
+document.onmousemove = updateElem;
+
+function updateElem(e) {
+	var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+	var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
+	var x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX;
+	var y = (document.all) ? window.event.y + document.body.scrollTop  : e.pageY;
+
+	if (elem != null && elem.style.visibility == "visible") {
+
+		elemWidth = elem.offsetWidth;
+		elemHeight = elem.offsetHeight;
+		elem.style.left = (x + 10) + "px";
+		elem.style.top = (y - 120) + "px";
+
+		if((w-x)<400 && (h-y)<250) {
+			elem.style.left = (x - elemWidth - 10) + "px";
+			elem.style.top = (y - elemHeight - 10) + "px";
+		}
+		else if((w-x)<400) {
+			elem.style.left = (x - elemWidth - 10) + "px";
+		}
+		else if((h-y)<250) {
+			elem.style.top = (y - elemHeight - 10) + "px";
+		}
+		' . $showHideSelects . '
+	}
+}
+
+function absLeft(el) {
+		 return (el.offsetParent)?
+		el.offsetLeft+absLeft(el.offsetParent) : el.offsetLeft;
+	}
+
+ function absTop(el) {
+		return (el.offsetParent)?
+	el.offsetTop+absTop(el.offsetParent) : el.offsetTop;
+	}
+
+
+function sizeScrollContent() {
+	var elem = document.getElementById("filterTable");
+	newID = elem.rows.length-1;
+	scrollheight = ' . $h . ';
+
+	' . $addinputRows . '
+
+	var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+	var scrollContent = document.getElementById("scrollContent_doclist");
+
+	var height = ' . (we_base_browserDetect::isIE() ? 200 : 180) . ';
+	if((h - height)>0) {
+		scrollContent.style.height=(h - height)+"px";
+	}
+	if((scrollContent.offsetHeight - scrollheight)>0){
+		scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) +"px";
+	}
+}
+
+function init() {
+	sizeScrollContent();
+}
+
+function reload() {
+	top.we_cmd("reload_editpage");
+}
+
+function next(anzahl){
+	var scrollActive = document.getElementById("scrollActive");
+if(scrollActive==null) {
+		document.we_form.elements[\'searchstart\'].value = parseInt(document.we_form.elements[\'searchstart\'].value) + anzahl;
+		search(false);
+	}
+}
+
+function back(anzahl){
+	var scrollActive = document.getElementById("scrollActive");
+if(scrollActive==null) {
+		document.we_form.elements[\'searchstart\'].value = parseInt(document.we_form.elements[\'searchstart\'].value) - anzahl;
+		search(false);
+	}
+}
+
+var rows = ' . (isset($_REQUEST["searchFields"]) ? count($_REQUEST["searchFields"]) - 1 : 0) . ';
+
+function newinput() {
+	var searchFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFields("__we_new_id__", "doclist"), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
+	var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
+	var search = "' . addslashes(we_html_tools::htmlTextInput('search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
+
+	var elem = document.getElementById("filterTable");
+	newID = elem.rows.length-1;
+	rows++;
+
+	var scrollContent = document.getElementById("scrollContent_doclist");
+	scrollContent.style.height = scrollContent.offsetHeight - 26 +"px";
+
+
+	if(elem){
+		var newRow = document.createElement("TR");
+			newRow.setAttribute("id", "filterRow_" + rows);
+
+			var cell = document.createElement("TD");
+			cell.innerHTML=searchFields.replace(/__we_new_id__/g,rows)+"<input type=\"hidden\" value=\"\" name=\"hidden_searchFields["+rows+"]\"";
+			newRow.appendChild(cell);
+
+		cell = document.createElement("TD");
+		cell.setAttribute("id", "td_location["+rows+"]");
+			cell.innerHTML=locationFields.replace(/__we_new_id__/g,rows);
+			newRow.appendChild(cell);
+
+		cell = document.createElement("TD");
+		cell.setAttribute("id", "td_search["+rows+"]");
+			cell.innerHTML=search.replace(/__we_new_id__/g,rows);
+			newRow.appendChild(cell);
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton["+rows+"]");
+			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rows+')") . '\';
+			newRow.appendChild(cell);
+
+		elem.appendChild(newRow);
+	}
+}
+
+
+function changeit(value, rowNr){
+	var setValue = document.getElementsByName("search["+rowNr+"]")[0].value;
+	var from = document.getElementsByName("hidden_searchFields["+rowNr+"]")[0].value;
+
+	var searchFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFields("__we_new_id__", "doclist"), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
+	var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
+	var search = "' . addslashes(we_html_tools::htmlTextInput('search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
+
+	var row = document.getElementById("filterRow_"+rowNr);
+	var locationTD = document.getElementById("td_location["+rowNr+"]");
+	var searchTD = document.getElementById("td_search["+rowNr+"]");
+	var delButtonTD = document.getElementById("td_delButton["+rowNr+"]");
+	var location = document.getElementById("location["+rowNr+"]");
+
+	if(value=="Content") {
+		if (locationTD!=null) {
+			location.disabled = true;
+		}
+		row.removeChild(searchTD);
+
+		if (delButtonTD!=null) {
+			row.removeChild(delButtonTD);
+		}
+		cell = document.createElement("TD");
+		cell.setAttribute("id", "td_search["+rowNr+"]");
+			cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
 			row.appendChild(cell);
 
-          var cell = document.createElement("TD");
-            cell.setAttribute("id", "td_search["+rowNr+"]");
-            cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-          row.appendChild(cell);
-
-          cell = document.createElement("TD");
-            cell.setAttribute("id", "td_delButton["+rowNr+"]");
-            cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-            row.appendChild(cell);
-        }
-        if(from=="temp_template_id" || from=="ContentType" || from=="temp_category" || from=="Status" || from=="Speicherart" || from=="Published" || from=="CreationDate" || from=="ModDate"
-           || value=="temp_template_id" || value=="ContentType" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {
-        	document.getElementById("search["+rowNr+"]").value = "";
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton["+rowNr+"]");
+			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+			row.appendChild(cell);
+	}
+	else if(value=="temp_category") {
+		if (locationTD!=null) {
+			location.disabled = true;
 		}
-		else {
-		    document.getElementById("search["+rowNr+"]").value = setValue;
+		row.removeChild(searchTD);
+
+		var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>\n"
+				+ "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"58\" value=\"\"  id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />\n"
+				+ "</td><td><input value=\"\" name=\"searchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>\n"
+				+ "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openCatselector\',document.we_form.elements[\'searchParentID["+rowNr+"]\'].value,\'' . CATEGORY_TABLE . '\',\'document.we_form.elements[\\\\\'searchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'search["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
+				+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">\n"
+				+ "' . g_l('button', '[select][value]') . '\n"
+				+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>\n";
+
+
+		cell = document.createElement("TD");
+		cell.setAttribute("id", "td_search["+rowNr+"]");
+			cell.innerHTML=innerhtml;
+			row.appendChild(cell);
+
+		if (delButtonTD!=null) {
+			row.removeChild(delButtonTD);
 		}
 
-        document.getElementsByName("hidden_searchFields["+rowNr+"]")[0].value = value;
-
-      }
-
-      function checkAllPubChecks() {
-
-		var checkAll = document.getElementsByName("publish_all");
-		var checkboxes = document.getElementsByName("publish_docs_doclist");
-		var check = false;
-
-		if(checkAll[0].checked) {
-			check = true;
+		cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton["+rowNr+"]");
+			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+			row.appendChild(cell);
+	}
+	else if(value=="temp_template_id" || value=="MasterTemplateID") {
+		if (locationTD!=null) {
+			location.disabled = true;
 		}
-		for(var i = 0; i < checkboxes.length; i++) {
-			checkboxes[i].checked = check;
+		row.removeChild(searchTD);
+
+		var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>\n"
+				+ "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"58\" value=\"\"  id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />\n"
+				+ "</td><td><input value=\"\" name=\"searchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>\n"
+				+ "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openDocselector\',document.we_form.elements[\'searchParentID["+rowNr+"]\'].value,\'' . TEMPLATES_TABLE . '\',\'document.we_form.elements[\\\\\'searchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'search["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
+				+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">\n"
+				+ "' . g_l('button', '[select][value]') . '\n"
+				+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>\n";
+
+
+		cell = document.createElement("TD");
+		cell.setAttribute("id", "td_search["+rowNr+"]");
+			cell.innerHTML=innerhtml;
+			row.appendChild(cell);
+
+		if (delButtonTD!=null) {
+			row.removeChild(delButtonTD);
 		}
+
+		cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton["+rowNr+"]");
+			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+			row.appendChild(cell);
+	}
+	else if(value=="Status") {
+		if (locationTD!=null) {
+			location.disabled = true;
+		}
+		row.removeChild(searchTD);
+		if (delButtonTD!=null) {
+			row.removeChild(delButtonTD);
+		}
+
+		search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
+
+		var cell = document.createElement("TD");
+			cell.setAttribute("id", "td_search["+rowNr+"]");
+			cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
+		row.appendChild(cell);
+
+		cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton["+rowNr+"]");
+			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+			row.appendChild(cell);
 
 	}
-
-	function publishDocs() {
-
-		var checkAll = document.getElementsByName("publish_all");
-		var checkboxes = document.getElementsByName("publish_docs_doclist");
-		var check = false;
-
-		for(var i = 0; i < checkboxes.length; i++) {
-			if(checkboxes[i].checked) {
-				check = true;
-				break;
-			}
+	else if(value=="Speicherart") {
+		if (locationTD!=null) {
+			location.disabled = true;
+		}
+		row.removeChild(searchTD);
+		if (delButtonTD!=null) {
+			row.removeChild(delButtonTD);
 		}
 
-		if(checkboxes.length==0) {
-			check = false;
+		search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
+
+		var cell = document.createElement("TD");
+			cell.setAttribute("id", "td_search["+rowNr+"]");
+			cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
+		row.appendChild(cell);
+
+		cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton["+rowNr+"]");
+			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+			row.appendChild(cell);
+
+	}
+	else if(value=="Published" || value=="CreationDate" || value=="ModDate") {
+
+		row.removeChild(locationTD);
+
+		locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
+
+		var cell = document.createElement("TD");
+			cell.setAttribute("id", "td_location["+rowNr+"]");
+			cell.innerHTML=locationFields.replace(/__we_new_id__/g,rowNr);
+		row.appendChild(cell);
+
+		row.removeChild(searchTD);
+
+		var innerhtml= "<table id=\"search["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>\n"
+				+ "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 100px; \" type=\"text\" />"
+				+ "</td><td>&nbsp;</td><td><a href=\"#\">\n"
+				+ "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
+				+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\"">
+				+ "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>"
+				+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>";
+
+
+		cell = document.createElement("TD");
+		cell.setAttribute("id", "td_search["+rowNr+"]");
+			cell.innerHTML=innerhtml;
+			row.appendChild(cell);
+
+			Calendar.setup({inputField:"search["+rowNr+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+rowNr+"",align:"Tl",singleClick:true});
+
+		if (delButtonTD!=null) {
+			row.removeChild(delButtonTD);
 		}
 
-		if(check==false) {
-			' . we_message_reporting::getShowMessageCall(g_l('searchtool', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-		}
-		else {
+		cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton["+rowNr+"]");
+			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+			row.appendChild(cell);
 
-			Check = confirm("' . g_l('searchtool', '[publish_docs]') . '");
-				if (Check == true) {
-					publishDocsAjax();
+	}
+	else {
+		row.removeChild(searchTD);
+
+		if (locationTD!=null) {
+			row.removeChild(locationTD);
+		}
+		if (delButtonTD!=null) {
+			row.removeChild(delButtonTD);
+		}
+
+		var cell = document.createElement("TD");
+			cell.setAttribute("id", "td_location["+rowNr+"]");
+			cell.innerHTML=locationFields.replace(/__we_new_id__/g,rowNr);
+row.appendChild(cell);
+
+		var cell = document.createElement("TD");
+			cell.setAttribute("id", "td_search["+rowNr+"]");
+			cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
+		row.appendChild(cell);
+
+		cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton["+rowNr+"]");
+			cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+			row.appendChild(cell);
+	}
+	if(from=="temp_template_id" || from=="ContentType" || from=="temp_category" || from=="Status" || from=="Speicherart" || from=="Published" || from=="CreationDate" || from=="ModDate"
+		 || value=="temp_template_id" || value=="ContentType" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {
+		document.getElementById("search["+rowNr+"]").value = "";
+}
+else {
+	document.getElementById("search["+rowNr+"]").value = setValue;
+}
+
+	document.getElementsByName("hidden_searchFields["+rowNr+"]")[0].value = value;
+
+}
+
+function checkAllPubChecks() {
+
+var checkAll = document.getElementsByName("publish_all");
+var checkboxes = document.getElementsByName("publish_docs_doclist");
+var check = false;
+
+if(checkAll[0].checked) {
+check = true;
+}
+for(var i = 0; i < checkboxes.length; i++) {
+checkboxes[i].checked = check;
+}
+
+}
+
+function publishDocs() {
+
+var checkAll = document.getElementsByName("publish_all");
+var checkboxes = document.getElementsByName("publish_docs_doclist");
+var check = false;
+
+for(var i = 0; i < checkboxes.length; i++) {
+if(checkboxes[i].checked) {
+	check = true;
+	break;
+}
+}
+
+if(checkboxes.length==0) {
+check = false;
+}
+
+if(check==false) {
+' . we_message_reporting::getShowMessageCall(g_l('searchtool', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+}
+else {
+
+Check = confirm("' . g_l('searchtool', '[publish_docs]') . '");
+	if (Check == true) {
+		publishDocsAjax();
+	}
+}
+}
+
+var ajaxCallbackPublishDocs = {
+success: function(o) {
+' . we_message_reporting::getShowMessageCall(g_l('searchtool', '[publishOK]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+
+	// reload current document => reload all open Editors on demand
+
+var _usedEditors =  top.weEditorFrameController.getEditorsInUse();
+for (frameId in _usedEditors) {
+
+	if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
+		_usedEditors[frameId].setEditorReloadAllNeeded(true);
+		_usedEditors[frameId].setEditorIsActive(true);
+
+	} else {
+		_usedEditors[frameId].setEditorReloadAllNeeded(true);
+	}
+}
+_multiEditorreload = true;
+
+//reload tree
+top.we_cmd("load", top.treeData.table ,0);
+
+document.getElementById("resetBusy").innerHTML = "";
+
+},
+failure: function(o) {
+ alert("Failure");
+}
+}
+
+function publishDocsAjax() {
+
+var args = "";
+var check = "";
+var checkboxes = document.getElementsByName("publish_docs_doclist");
+for(var i = 0; i < checkboxes.length; i++) {
+if(checkboxes[i].checked) {
+		if(check!="") check += ",";
+		check += checkboxes[i].value;
+}
+}
+args += "&we_cmd[0]="+encodeURI(check);
+var scroll = document.getElementById("resetBusy");
+scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
+
+YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&"+args+"");
+}
+
+function calendarSetup(x){
+	for(i=0;i<x;i++) {
+		if(document.getElementById("date_picker_from"+i+"") != null) {
+			Calendar.setup({inputField:"search["+i+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+i+"",align:"Tl",singleClick:true});
+		}
+	}
+}
+
+function delRow(id) {
+	var scrollContent = document.getElementById("scrollContent_doclist");
+	scrollContent.style.height = scrollContent.offsetHeight + 26 +"px";
+	var elem = document.getElementById("filterTable");
+
+	if(elem){
+		trows = elem.rows;
+		rowID = "filterRow_" + id;
+
+				for (i=0;i<trows.length;i++) {
+					if(rowID == trows[i].id) {
+						elem.deleteRow(i);
+					}
 				}
-		}
 	}
 
-	 var ajaxCallbackPublishDocs = {
-	    success: function(o) {
-	    ' . we_message_reporting::getShowMessageCall(g_l('searchtool', '[publishOK]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-
-	     	// reload current document => reload all open Editors on demand
-
-			var _usedEditors =  top.weEditorFrameController.getEditorsInUse();
-			for (frameId in _usedEditors) {
-
-				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-					_usedEditors[frameId].setEditorReloadAllNeeded(true);
-					_usedEditors[frameId].setEditorIsActive(true);
-
-				} else {
-					_usedEditors[frameId].setEditorReloadAllNeeded(true);
-				}
-			}
-			_multiEditorreload = true;
-
-			//reload tree
-			top.we_cmd("load", top.treeData.table ,0);
-
-			document.getElementById("resetBusy").innerHTML = "";
-
-	    },
-	    failure: function(o) {
-	     alert("Failure");
-	    }
-	 }
-
-	function publishDocsAjax() {
-
-		var args = "";
-		var check = "";
-		var checkboxes = document.getElementsByName("publish_docs_doclist");
-		for(var i = 0; i < checkboxes.length; i++) {
-			if(checkboxes[i].checked) {
-		    	if(check!="") check += ",";
-		    	check += checkboxes[i].value;
-			}
-		}
-		args += "&we_cmd[0]="+encodeURI(check);
-		var scroll = document.getElementById("resetBusy");
-		scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
-
-		YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&"+args+"");
-
-	}
-
-      function calendarSetup(x){
-        for(i=0;i<x;i++) {
-          if(document.getElementById("date_picker_from"+i+"") != null) {
-            Calendar.setup({inputField:"search["+i+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+i+"",align:"Tl",singleClick:true});
-          }
-        }
-      }
-
-      function delRow(id) {
-
-        var scrollContent = document.getElementById("scrollContent_doclist");
-        scrollContent.style.height = scrollContent.offsetHeight + 26 +"px";
-
-        var elem = document.getElementById("filterTable");
-        if(elem){
-          trows = elem.rows;
-          rowID = "filterRow_" + id;
-
-              for (i=0;i<trows.length;i++) {
-                if(rowID == trows[i].id) {
-                  elem.deleteRow(i);
-                }
-              }
-        }
-
-      }
-
-    ');
+}');
 	}
 
 	/**
 	 * @abstract create search dialog-box
 	 * @return html for search dialog box
 	 */
-	function getSearchDialog(){
+	public static function getSearchDialog(){
 		$out = '<table cellpadding="0" cellspacing="0" id="defSearch" border="0" width="550" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'none' : 'block') . ';">
         <tr>
         <td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '
@@ -774,9 +743,7 @@ class doclistView{
           <td>' . we_class::hiddenTrans() . '</td>
         </tr>';
 
-		$r = array();
-		$r2 = array();
-		$r3 = array();
+		$r = $r2 = $r3 = array();
 		if(isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search)){
 			foreach($GLOBALS['we_doc']->searchclassFolder->search as $k => $v){
 				$r[] = $GLOBALS['we_doc']->searchclassFolder->search [$k];
@@ -877,7 +844,7 @@ class doclistView{
         </tr>
 
         </table>' .
-				we_html_element::jsElement('calendarSetup(' . $GLOBALS['we_doc']->searchclassFolder->height . ');');
+			we_html_element::jsElement('calendarSetup(' . $GLOBALS['we_doc']->searchclassFolder->height . ');');
 
 		return $out;
 	}
@@ -886,8 +853,7 @@ class doclistView{
 	 * @abstract executes the search and writes the result into arrays
 	 * @return array with search results
 	 */
-	function searchProperties(){
-
+	public static function searchProperties($table = FILE_TABLE){
 		$DB_WE = new DB_WE();
 		$foundItems = 0;
 		$content = $_result = $saveArrayIds = $searchText = array();
@@ -905,51 +871,44 @@ class doclistView{
 			}
 		}
 
-		if(isset($GLOBALS['we_cmd_obj']) && is_object($GLOBALS['we_cmd_obj'])){
-			$obj = $GLOBALS['we_cmd_obj'];
-		} else {
-			$obj = $GLOBALS['we_doc'];
-		}
+		$obj = (isset($GLOBALS['we_cmd_obj']) && is_object($GLOBALS['we_cmd_obj']) ?
+				$GLOBALS['we_cmd_obj'] :
+				$GLOBALS['we_doc']);
 
 		$obj->searchclassFolder->searchstart = we_base_request::_(we_base_request::INT, "searchstart", 0);
 
-		$_table = FILE_TABLE;
 		$searchFields = we_base_request::_(we_base_request::STRING, 'searchFields', $obj->searchclassFolder->searchFields);
-		$searchText = we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->search, 'search');
+		$searchText = array_map('trim', we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->search, 'search'));
 		$location = we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->location, 'location');
 		$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->order, 'order');
 		$_view = we_base_request::_(we_base_request::INT, 'we_cmd', $obj->searchclassFolder->setView, 'setView');
 		$_searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', $obj->searchclassFolder->searchstart, 'searchstart');
 		$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', $obj->searchclassFolder->anzahl, 'anzahl');
 
-
-		$searchText = array_map('trim', $searchText);
-
 		$where = '';
 		$op = ' AND ';
-		$obj->searchclassFolder->settable($_table);
+		$obj->searchclassFolder->settable($table);
 
 
 		if(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()){
 			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', '[noTempTableRightsDoclist]'), we_message_reporting::WE_MESSAGE_NOTICE));
 			return '';
 		}
-		if($obj->ID != 0){
+		if($obj->ID){
 			$obj->searchclassFolder->createTempTable();
 
-			for($i = 0; $i < count($searchFields); $i++){
-
+			foreach($searchFields as $i => $searchField){
 				$w = "";
 				if(isset($searchText[0])){
 					$searchString = (isset($searchText[$i]) ? $searchText[$i] : $searchText[0]);
 				}
 				if(isset($searchString) && $searchString != ""){
 
-					switch($searchFields[$i]){
+					switch($searchField){
 						default:
 						case "Text":
-							if(isset($searchFields[$i]) && isset($location[$i])){
-								$where .= $obj->searchclassFolder->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
+							if(isset($searchField) && isset($location[$i])){
+								$where .= $obj->searchclassFolder->searchfor($searchString, $searchField, $location[$i], $table);
 							}
 						case "Content":
 						case "Status":
@@ -960,9 +919,9 @@ class doclistView{
 							break;
 					}
 
-					switch($searchFields[$i]){
+					switch($searchField){
 						case "Content":
-							$w = $obj->searchclassFolder->searchContent($searchString, $_table);
+							$w = $obj->searchclassFolder->searchContent($searchString, $table);
 							if(!$where){
 								$where .= " AND " . ($w ? $w : '0');
 							} elseif($w != ""){
@@ -971,7 +930,7 @@ class doclistView{
 							break;
 
 						case 'Title':
-							$w = $obj->searchclassFolder->searchInTitle($searchString, $_table);
+							$w = $obj->searchclassFolder->searchInTitle($searchString, $table);
 							if(!$where){
 								$where = ' AND ' . ($w ? $w : '0');
 							} elseif($w != ''){
@@ -981,8 +940,8 @@ class doclistView{
 						case "Status":
 						case "Speicherart":
 							if($searchString != ""){
-								if($_table == FILE_TABLE){
-									$w = $obj->searchclassFolder->getStatusFiles($searchString, $_table);
+								if($table == FILE_TABLE){
+									$w = $obj->searchclassFolder->getStatusFiles($searchString, $table);
 									$where .= $w;
 								}
 							}
@@ -990,12 +949,12 @@ class doclistView{
 						case "CreatorName":
 						case "WebUserName":
 							if($searchString != ""){
-								$w = $obj->searchclassFolder->searchSpecial($searchString, $_table, $searchFields[$i], $location[$i]);
+								$w = $obj->searchclassFolder->searchSpecial($searchString, $table, $searchField, $location[$i]);
 								$where .= $w;
 							}
 							break;
 						case "temp_category":
-							$w = $obj->searchclassFolder->searchCategory($searchString, $_table, $searchFields[$i]);
+							$w = $obj->searchclassFolder->searchCategory($searchString, $table, $searchField);
 							$where .= $w;
 							break;
 					}
@@ -1005,7 +964,7 @@ class doclistView{
 			$where .= ' AND ParentID = ' . intval($obj->ID);
 
 			$whereQuery = "1 " . $where;
-			switch($_table){
+			switch($table){
 				case FILE_TABLE:
 					$whereQuery .= ' AND ((RestrictOwners=0 OR RestrictOwners=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners)))';
 					break;
@@ -1018,9 +977,9 @@ class doclistView{
 			}
 
 			$obj->searchclassFolder->setwhere($whereQuery);
-			$obj->searchclassFolder->insertInTempTable($whereQuery, $_table, $obj->Path . '/');
+			$obj->searchclassFolder->insertInTempTable($whereQuery, $table, $obj->Path . '/');
 
-			$foundItems = $obj->searchclassFolder->countitems($whereQuery, $_table);
+			$foundItems = $obj->searchclassFolder->countitems($whereQuery, $table);
 			$_SESSION['weS']['weSearch']['foundItems'] = $foundItems;
 
 			$obj->searchclassFolder->selectFromTempTable($_searchstart, $_anzahl, $_order);
@@ -1028,50 +987,42 @@ class doclistView{
 			while($obj->searchclassFolder->next_record()){
 				if(!isset($saveArrayIds[$obj->searchclassFolder->Record ['ContentType']][$obj->searchclassFolder->Record ['ID']])){
 					$saveArrayIds[$obj->searchclassFolder->Record ['ContentType']][$obj->searchclassFolder->Record ['ID']] = $obj->searchclassFolder->Record ['ID'];
-					$_result[] = array_merge(array('Table' => $_table), $obj->searchclassFolder->Record);
+					$_result[] = array_merge(array('Table' => $table), $obj->searchclassFolder->Record);
 				}
 			}
 		}
 
-		if($_SESSION['weS']['weSearch']['foundItems'] > 0){
-			$_db2 = new DB_WE();
-			$_db2->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
+		if($_SESSION['weS']['weSearch']['foundItems']){
+			$DB_WE->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
 
 			foreach($_result as $k => $v){
 				$_result[$k]["Description"] = "";
 				if($_result[$k]["Table"] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
-					$DB_WE->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ID=' . intval($_result[$k]["ID"]) . ' AND b.Name="Description" AND b.DocumentTable="' . FILE_TABLE . '"');
-					while($DB_WE->next_record()){
-						$_result[$k]["Description"] = $DB_WE->f('Dat');
-					}
+					$_result[$k]["Description"] = f('SELECT c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ID=' . intval($_result[$k]["ID"]) . ' AND b.Name="Description" AND b.DocumentTable="' . FILE_TABLE . '"', '', $DB_WE);
 				} else {
-					$_db2->query('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($_result[$k]["ID"]) . ' AND DocTable="tblFile" AND Active=1');
-					while($_db2->next_record()){
-						$tempDoc = unserialize($_db2->f('DocumentObject'));
-						if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat'] != ""){
-							$_result[$k]["Description"] = $tempDoc[0]['elements']['Description']['dat'];
+					if(($obj = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($_result[$k]["ID"]) . ' AND DocTable="tblFile" AND Active=1', '', $DB_WE))){
+						$tempDoc = unserialize($obj);
+						if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat']){
+							$_result[$k]['Description'] = $tempDoc[0]['elements']['Description']['dat'];
 						}
 					}
 				}
 			}
-
-
-			$content = $this->makeContent($_result, $_view);
+			$content = self::makeContent($DB_WE, $_result, $_view);
 		}
-
 		return $content;
 	}
 
-	function makeHeadLines(){
+	public static function makeHeadLines(){
 		return array(
-			array("dat" => '<a href="javascript:setOrder(\'Text\');">' . g_l('searchtool', '[dateiname]') . '</a> <span id="Text" >' . $this->getSortImage('Text') . '</span>'),
-			array("dat" => '<a href="javascript:setOrder(\'SiteTitle\');">' . g_l('searchtool', '[seitentitel]') . '</a> <span id="SiteTitle" >' . $this->getSortImage('SiteTitle') . '</span>'),
-			array("dat" => '<a href="javascript:setOrder(\'CreationDate\');">' . g_l('searchtool', '[created]') . '</a> <span id="CreationDate" >' . $this->getSortImage('CreationDate') . '</span>'),
-			array("dat" => '<a href="javascript:setOrder(\'ModDate\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate" >' . $this->getSortImage('ModDate') . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'Text\');">' . g_l('searchtool', '[dateiname]') . '</a> <span id="Text" >' . self::getSortImage('Text') . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'SiteTitle\');">' . g_l('searchtool', '[seitentitel]') . '</a> <span id="SiteTitle" >' . self::getSortImage('SiteTitle') . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'CreationDate\');">' . g_l('searchtool', '[created]') . '</a> <span id="CreationDate" >' . self::getSortImage('CreationDate') . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'ModDate\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate" >' . self::getSortImage('ModDate') . '</span>'),
 		);
 	}
 
-	function getSortImage($for){
+	private static function getSortImage($for){
 		$order = we_base_request::_(we_base_request::RAW, 'order', $GLOBALS['we_doc']->searchclassFolder->order);
 
 		if(strpos($order, $for) === 0){
@@ -1083,9 +1034,7 @@ class doclistView{
 		return we_html_tools::getPixel(11, 8);
 	}
 
-	function makeContent($_result, $view){
-		$DB_WE = new DB_WE();
-
+	private function makeContent(we_database_base $DB_WE, $_result, $view){
 		$we_PathLength = 30;
 
 		$resultCount = count($_result);
@@ -1115,17 +1064,17 @@ class doclistView{
 				$published = 1;
 			}
 
-			$ext = isset($_result[$f]["Extension"]) ? $_result[$f]["Extension"] : "";
-			$Icon = we_base_ContentTypes::inst()->getIcon($_result[$f]["ContentType"], we_base_ContentTypes::FILE_ICON, $ext);
+			$ext = isset($_result[$f]['Extension']) ? $_result[$f]['Extension'] : '';
+			$Icon = we_base_ContentTypes::inst()->getIcon($_result[$f]['ContentType'], we_base_ContentTypes::FILE_ICON, $ext);
 
 			if($view == 0){
-				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] === "objectFile") && permissionhandler::hasPerm('PUBLISH')) ? we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '';
+				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]['ContentType'] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]['ContentType'] == we_base_ContentTypes::HTML || $_result[$f]['ContentType'] === 'objectFile') && permissionhandler::hasPerm('PUBLISH')) ? we_html_forms::checkbox($_result[$f]['docID'] . '_' . $_result[$f]['docTable'], 0, 'publish_docs_doclist', '', false, 'middlefont', '') : we_html_tools::getPixel(20, 10) : '';
 
 				$content[$f] = array(
-					array("dat" => $publishCheckbox),
-					array("dat" => '<img src="' . TREE_ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
+					array('dat' => $publishCheckbox),
+					array('dat' => '<img src="' . TREE_ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]['docID'] . '\',\'' . $_result[$f]['ContentType'] . '\')" class="' . $fontColor . ' middlefont" title="' . $_result[$f]['Text'] . '"><u>' . we_util_Strings::shortenPath($_result[$f]['Text'], $we_PathLength)),
-					array("dat" => '<nobr>' . g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']') . '</nobr>'),
+					//array("dat" => '<nobr>' . g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']') . '</nobr>'),
 					array("dat" => '<nobr>' . we_util_Strings::shortenPath($_result[$f]["SiteTitle"], $we_PathLength) . '</nobr>'),
 					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
 					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-") . '</nobr>')
@@ -1141,14 +1090,14 @@ class doclistView{
 					if($fs > 0){
 						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]);
 						$imageView = "<img src='" . (file_exists($thumbpath = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($_result[$f]['Extension'])) ?
-										$thumbpath :
-										WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"]
-								) . "' border='0' /></a>";
+								$thumbpath :
+								WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"]
+							) . "' border='0' /></a>";
 
 						$imageViewPopup = "<img src='" . (file_exists($thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($_result[$f]["Extension"])) ?
-										$thumbpathPopup :
-										WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"]
-								) . "' border='0' /></a>";
+								$thumbpathPopup :
+								WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"]
+							) . "' border='0' /></a>";
 					} else {
 						$imagesize = array(0, 0);
 						$thumbpath = ICON_DIR . 'doclist/' . we_base_ContentTypes::IMAGE_ICON;
@@ -1165,8 +1114,8 @@ class doclistView{
 
 				if($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
 					$templateID = ($_result[$f]["Published"] >= $_result[$f]["ModDate"] && $_result[$f]["Published"] ?
-									$_result[$f]["TemplateID"] :
-									$_result[$f]["temp_template_id"]);
+							$_result[$f]["TemplateID"] :
+							$_result[$f]["temp_template_id"]);
 
 					$templateText = g_l('searchtool', '[no_template]');
 					if($templateID){
@@ -1226,7 +1175,7 @@ class doclistView{
 	 * @abstract generates html for search result
 	 * @return string, html search result
 	 */
-	function getSearchParameterTop($foundItems){
+	public static function getSearchParameterTop($foundItems){
 		$anzahl = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
 		$order = we_base_request::_(we_base_request::STRING, 'we_cmd', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->searchclassFolder->order : '', 'order');
@@ -1237,17 +1186,17 @@ class doclistView{
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', (isset($GLOBALS['we_transaction']) ? $GLOBALS['we_transaction'] : 0));
 
 		return
-				we_html_tools::hidden("we_transaction", $we_transaction) .
-				we_html_tools::hidden("order", $order) .
-				we_html_tools::hidden("todo", "") .
-				we_html_tools::hidden("mode", $mode) .
-				we_html_tools::hidden("setView", $setView) .
-				'<table border="0" cellpadding="0" cellspacing="0">
+			we_html_tools::hidden("we_transaction", $we_transaction) .
+			we_html_tools::hidden("order", $order) .
+			we_html_tools::hidden("todo", "") .
+			we_html_tools::hidden("mode", $mode) .
+			we_html_tools::hidden("setView", $setView) .
+			'<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>' . we_html_tools::getPixel(19, 12) . '</td>
 		<td style="font-size:12px;width:125px;">' . g_l('searchtool', '[eintraege_pro_seite]') . ':</td>
 		<td class="defaultgray" style="width:60px;">' . we_html_tools::htmlSelect("anzahl", $anzahl, 1, $_anzahl, "", array('onchange' => 'this.form.elements[\'searchstart\'].value=0;search(false);')) . '</td>
-		<td>' . $this->getNextPrev($foundItems) . '</td>
+		<td>' . self::getNextPrev($foundItems) . '</td>
 		<td>' . we_html_tools::getPixel(10, 12) . '</td>
 		<td style="width:50px;">' . we_html_button::create_button("image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $id . "')", true, 40, "", "", "", false) . '</td>
 		<td>' . we_html_button::create_button("image:iconview", "javascript:setview(1);", true, 40, "", "", "", false) . '</td>
@@ -1257,21 +1206,27 @@ class doclistView{
 </table>';
 	}
 
-	function getSearchParameterBottom($foundItems){
-		if(permissionhandler::hasPerm('PUBLISH')){
-			$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
-			$publishButton = we_html_button::create_button("publish", "javascript:publishDocs();", true, 100, 22, "", "");
-		} else {
-			$publishButton = $publishButtonCheckboxAll = "";
+	public static function getSearchParameterBottom($table, $foundItems){
+		switch($table){
+			case TEMPLATES_TABLE:
+				$publishButton = $publishButtonCheckboxAll = "";
+				break;
+			default:
+				if(permissionhandler::hasPerm('PUBLISH')){
+					$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
+					$publishButton = we_html_button::create_button("publish", "javascript:publishDocs();", true, 100, 22, "", "");
+				} else {
+					$publishButton = $publishButtonCheckboxAll = "";
+				}
 		}
 
 		return
-				'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+			'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
 	<tr>
 	 <td>' . $publishButtonCheckboxAll . '</td>
 	 <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
 	 <td class="defaultgray" style="width:60px;" id="resetBusy">' . we_html_tools::getPixel(30, 12) . '</td>
-	 <td style="width:370px;">' . $this->getNextPrev($foundItems, false) . '</td>
+	 <td style="width:370px;">' . self::getNextPrev($foundItems, false) . '</td>
 	</tr>
 </table>';
 	}
@@ -1280,7 +1235,7 @@ class doclistView{
 	 * @abstract generates html for paging GUI
 	 * @return string, html for paging GUI
 	 */
-	function getNextPrev($we_search_anzahl, $isTop = true){
+	private static function getNextPrev($we_search_anzahl, $isTop = true){
 		if(($obj = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'obj'))){
 			$anzahl = $_SESSION['weS']['weSearch']['anzahl'];
 			$searchstart = $_SESSION['weS']['weSearch']['searchstart'];
@@ -1291,19 +1246,19 @@ class doclistView{
 		}
 
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
-				($searchstart ?
-						we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
-						we_html_button::create_button("back", "", true, 100, 22, "", "", true)
-				) .
-				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
+			($searchstart ?
+				we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
+				we_html_button::create_button("back", "", true, 100, 22, "", "", true)
+			) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
         <td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
-				(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
-				' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
-				(($searchstart + $anzahl) < $we_search_anzahl ?
-						we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
-						we_html_button::create_button("next", "", true, 100, 22, "", "", true)
-				) .
-				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
+			(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
+			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
+			(($searchstart + $anzahl) < $we_search_anzahl ?
+				we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
+				we_html_button::create_button("next", "", true, 100, 22, "", "", true)
+			) .
+			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
 		if($anzahl){
@@ -1322,7 +1277,7 @@ class doclistView{
 		}
 
 		$out .= $select .
-				'</td></tr></table>';
+			'</td></tr></table>';
 
 		return $out;
 	}
@@ -1331,13 +1286,10 @@ class doclistView{
 	 * @abstract writes the complete html code
 	 * @return string, html
 	 */
-	function getHTMLforDoclist($content){
-
-		$marginLeft = "0";
-
+	public static function getHTMLforDoclist($content){
 		$out = '<table width="100%" border="0" cellspacing="0" cellpadding="0" style="width:100%;">
-          <tr>
-            <td class="defaultfont">';
+<tr>
+	<td class="defaultfont">';
 
 		foreach($content as $i => $c){
 			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
@@ -1348,7 +1300,7 @@ class doclistView{
 			$leftContent = $icon ? : (($leftWidth && (!$_forceRightHeadline)) ? $headline : "");
 			$rightContent = '<div class="defaultfont">' . ((($icon && $headline) || ($leftContent === "") || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
 
-			$out .= '<div style="margin-left:' . $marginLeft . 'px" >';
+			$out .= '<div style="margin-left:0px" >';
 
 			if($leftContent || $leftWidth){
 				if((!$leftContent) && $leftWidth){
@@ -1358,7 +1310,7 @@ class doclistView{
 			}
 
 			$out .= $rightContent .
-					'</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
+				'</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
 
 			if($i < (count($content) - 1) && (!isset($c["noline"]))){
 				$out .= '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>';
