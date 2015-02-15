@@ -1013,10 +1013,10 @@ function delRow(id) {
 		return $content;
 	}
 
-	public static function makeHeadLines(){
+	public static function makeHeadLines($table){
 		return array(
 			array("dat" => '<a href="javascript:setOrder(\'Text\');">' . g_l('searchtool', '[dateiname]') . '</a> <span id="Text" >' . self::getSortImage('Text') . '</span>'),
-			array("dat" => '<a href="javascript:setOrder(\'SiteTitle\');">' . g_l('searchtool', '[seitentitel]') . '</a> <span id="SiteTitle" >' . self::getSortImage('SiteTitle') . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'SiteTitle\');">' . ($table == TEMPLATES_TABLE ? g_l('weClass', '[path]') : g_l('searchtool', '[seitentitel]') ) . '</a> <span id="SiteTitle" >' . self::getSortImage('SiteTitle') . '</span>'),
 			array("dat" => '<a href="javascript:setOrder(\'CreationDate\');">' . g_l('searchtool', '[created]') . '</a> <span id="CreationDate" >' . self::getSortImage('CreationDate') . '</span>'),
 			array("dat" => '<a href="javascript:setOrder(\'ModDate\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate" >' . self::getSortImage('ModDate') . '</span>'),
 		);
