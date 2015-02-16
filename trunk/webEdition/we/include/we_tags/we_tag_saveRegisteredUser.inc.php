@@ -55,16 +55,18 @@ function we_tag_saveRegisteredUser($attribs){
 					$set['ModifiedBy'] = 'frontend';
 
 					$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set));
-
-					// User in session speichern
-					$_SESSION['webuser'] = array(
-						'ID' => f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"'),
-						'registered' => true, //needed for reload
-					);
-					$GLOBALS['we_customer_write_ID'] = $_SESSION['webuser']['ID'];
-					$GLOBALS['we_customer_written'] = true;
-					//make sure to always load session data
-					$changesessiondata = true;
+					$id = $GLOBALS['DB_WE']->getInsertId();
+					if($id){
+						// User in session speichern
+						$_SESSION['webuser'] = array(
+							'ID' => $id,
+							'registered' => true, //needed for reload
+						);
+						$GLOBALS['we_customer_write_ID'] = $_SESSION['webuser']['ID'];
+						$GLOBALS['we_customer_written'] = true;
+						//make sure to always load session data
+						$changesessiondata = true;
+					}
 				}
 			} else { // Username existiert schon!
 				// Eingabe in Session schreiben, damit die eingegebenen Werte erhalten bleiben!
@@ -88,7 +90,7 @@ function we_tag_saveRegisteredUser($attribs){
 		// existierender User (Daten werden von User geaendert)!!
 		$Username = we_base_request::_(we_base_request::STRING, 's', $_SESSION['webuser']['Username'], 'Username');
 
-		if(f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS["DB_WE"]->escape($Username) . '" AND ID!=' . intval($_SESSION['webuser']['ID']))){
+		if(f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape($Username) . '" AND ID!=' . intval($_SESSION['webuser']['ID']))){
 			$userexists = $userexists ? : g_l('customer', '[username_exists]');
 			echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(sprintf($userexists, $_REQUEST['s']['Username']), we_message_reporting::WE_MESSAGE_FRONTEND));
 		} elseif(isset($_REQUEST['s'])){
@@ -113,8 +115,8 @@ function we_tag_saveRegisteredUser($attribs){
 	}
 
 	//die neuen daten in die session schreiben
-	$oldReg = $_SESSION['webuser']['registered'];
-	if($changesessiondata){
+	$oldReg = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'];
+	if($changesessiondata && $oldReg){
 		//keep Password if known
 		if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
 			//FIXME: on register password is in $_REQUEST['s']['Password']
@@ -127,7 +129,6 @@ function we_tag_saveRegisteredUser($attribs){
 		if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
 			$_SESSION['webuser']['_Password'] = $oldPwd;
 		}
-		$_SESSION['webuser']['registered'] = true;
 	}
 	//don't set anything that wasn't set before
 	$_SESSION['webuser']['registered'] = $oldReg;
