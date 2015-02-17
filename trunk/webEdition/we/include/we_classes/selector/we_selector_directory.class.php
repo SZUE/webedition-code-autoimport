@@ -872,16 +872,22 @@ top.selectFile(top.currentID);
 	}') .
 			'</head>
 <body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50);weWriteBreadCrumb(\'' . $path . '\');">';
-		if(isset($result['ContentType']) && !empty($result['ContentType'])){
-			if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
-				$query = $this->db->query('SELECT l.Name, c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($this->id) . ' AND l.DocumentTable!="tblTemplates"');
-				$metainfos = $this->db->getAllFirst(false);
-			} elseif($this->table == FILE_TABLE && $result['ContentType'] = we_base_ContentTypes::FOLDER){
-				$query = $this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
-				$folderFolders = array();
-				$folderFiles = array();
-				while($this->db->next_record()){
-					$this->db->f('IsFolder') ? $folderFolders[$this->db->f('ID')] = $this->db->f('Text') : $folderFiles[$this->db->f('ID')] = $this->db->f('Text');
+		if(isset($result['ContentType']) && $result['ContentType']){
+			if($this->table == FILE_TABLE){
+				if($result['ContentType'] == we_base_ContentTypes::FOLDER){
+					$query = $this->db->query('SELECT ID,Text,IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
+					$folderFolders = array();
+					$folderFiles = array();
+					while($this->db->next_record()){
+						if($this->db->f('IsFolder')){
+							$folderFolders[$this->db->f('ID')] = $this->db->f('Text');
+						} else {
+							$folderFiles[$this->db->f('ID')] = $this->db->f('Text');
+						}
+					}
+				} else {
+					$query = $this->db->query('SELECT l.Name,c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($this->id) . ' AND l.DocumentTable!="tblTemplates"');
+					$metainfos = $this->db->getAllFirst(false);
 				}
 			}
 
@@ -918,7 +924,8 @@ top.selectFile(top.currentID);
 							$thumbpath = WE_THUMB_PREVIEW_DIR . $this->id . '.' . $extension;
 							$created = filemtime($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 							if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath) || ($created > filemtime($_SERVER['DOCUMENT_ROOT'] . $thumbpath))){
-								$thumb = we_base_imageEdit::edit_image($_SERVER['DOCUMENT_ROOT'] . $result['Path'], $extension, $_SERVER['DOCUMENT_ROOT'] . $thumbpath, null, 150, 200);
+								//create thumb
+								we_base_imageEdit::edit_image($_SERVER['DOCUMENT_ROOT'] . $result['Path'], $extension, $_SERVER['DOCUMENT_ROOT'] . $thumbpath, null, 150, 200);
 							}
 						} else {
 							$thumbpath = $result['Path'];
