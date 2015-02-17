@@ -1254,7 +1254,7 @@ class we_objectFile extends we_document{
 		}
 
 		return ($headline ?
-						'<span class="weObjectPreviewHeadline">' . $n . '</span>' . ( $we_editmode && isset($this->DefArray["link_" . $n]['editdescription']) && $this->DefArray["link_" . $n]['editdescription'] ? self::formatDescription($this->DefArray["link_" . $n]['editdescription']) : we_html_element::htmlBr() ) :
+						'<span class="weObjectPreviewHeadline">' . $n .($this->DefArray["link_" . $n]["required"] ? "*" : ""). '</span>' . ( $we_editmode && isset($this->DefArray["link_" . $n]['editdescription']) && $this->DefArray["link_" . $n]['editdescription'] ? self::formatDescription($this->DefArray["link_" . $n]['editdescription']) : we_html_element::htmlBr() ) :
 						'') . ($startTag ? $startTag . $content . '</a>' : $content) . ($we_editmode ? ($buttons) : "");
 	}
 

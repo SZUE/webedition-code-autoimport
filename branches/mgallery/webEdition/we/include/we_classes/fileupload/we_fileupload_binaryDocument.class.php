@@ -58,7 +58,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 	public function setTypeCondition(){
 		switch($this->contentType){
 			case we_base_ContentTypes::IMAGE;
-				$mime = implode(',',we_base_ContentTypes::inst()->getRealContentTypes($this->contentType));
+				$mime = implode(',', we_base_ContentTypes::inst()->getRealContentTypes($this->contentType));
 				$ext = we_base_imageEdit::IMAGE_EXTENSIONS;
 				break;
 			case we_base_ContentTypes::VIDEO:
@@ -377,7 +377,7 @@ div.dropzone_right{
 
 	private function postProcess($fileNameTemp, $fileName = '', $fileCt = ''){
 		if(!isset($_SESSION['weS']['we_data'][$this->transaction])){
-			return 'some error response';
+			return array(false, 'transaction is not correct');
 		}
 		$we_dt = $_SESSION['weS']['we_data'][$this->transaction];
 		include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');

@@ -2202,7 +2202,6 @@ function calendarSetup(x){
 						$publishCheckbox = '';
 				}
 
-
 				$content[$f] = array(
 					array("dat" => we_html_tools::getPixel(20, 1) . $publishCheckbox),
 					array("dat" => '<img src="' . TREE_ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
