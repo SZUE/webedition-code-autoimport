@@ -387,7 +387,7 @@ abstract class we_customer_abstractFilter{
 	 * @return boolean
 	 */
 	public static function customerIsLogedIn(){
-		return isset($_SESSION) && isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['ID'];
+		return isset($_SESSION) && isset($_SESSION['webuser']) && isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && $_SESSION['webuser']['ID'];
 	}
 
 	/**

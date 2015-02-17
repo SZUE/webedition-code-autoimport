@@ -41,21 +41,19 @@ function we_tag_bannerSelect($attribs){
 		$newAttribs['onchange'] = 'we_submitForm();';
 	}
 
-	$options = '';
-	if($firstentry){
-		$options = getHtmlTag('option', array('value' => ''), $firstentry, true);
-		$select .= '<option value="">' . $firstentry . '</option>';
-	}
+	$options = ($firstentry ? getHtmlTag('option', array('value' => ''), $firstentry, true) : '');
+
 	$GLOBALS['DB_WE']->query('SELECT ID,Text,Path,Customers FROM ' . BANNER_TABLE . ' ' . $where . ' ORDER BY Path');
 	$res = $GLOBALS['DB_WE']->getAll();
 	foreach($res as $record){
-		if((!defined('CUSTOMER_TABLE')) || (!$customer) || ($customer && defined('CUSTOMER_TABLE') && we_banner_banner::customerOwnsBanner($_SESSION['webuser']['ID'], $record['ID'], $GLOBALS['DB_WE']))){
+		if((!defined('CUSTOMER_TABLE')) || (!$customer) || ($customer && defined('CUSTOMER_TABLE') && isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] &&
+			we_banner_banner::customerOwnsBanner($_SESSION['webuser']['ID'], $record['ID'], $GLOBALS['DB_WE']))){
 			if(!isset($_REQUEST[$name])){
 				$_REQUEST[$name] = $record['Path'];
 			}
 			$options .= ($_REQUEST[$name] == $record['Path'] ?
-							getHtmlTag('option', array('value' => $record['Path'], 'selected' => 'selected'), $showpath ? $record['Path'] : $record['Text']) :
-							getHtmlTag('option', array('value' => $record['Path']), $showpath ? $record['Path'] : $record['Text']));
+					getHtmlTag('option', array('value' => $record['Path'], 'selected' => 'selected'), $showpath ? $record['Path'] : $record['Text']) :
+					getHtmlTag('option', array('value' => $record['Path']), $showpath ? $record['Path'] : $record['Text']));
 		}
 	}
 

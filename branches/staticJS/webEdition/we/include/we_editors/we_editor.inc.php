@@ -27,11 +27,11 @@ we_html_tools::protect();
 // prevent persmissions overriding
 $perms = $_SESSION['perms'];
 // init document
-if(!isset($we_transaction)){
-	$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we_transaction, 1));
+if(!isset($we_transaction) || !$we_transaction){//we_session assumes to have transaction in parameter 'we_transaction'
+	$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 1));
 }
-$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 $GLOBALS['we_transaction'] = $we_transaction;
+$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 
 include(WE_INCLUDES_PATH . '/we_editors/we_init_doc.inc.php');
 
@@ -167,7 +167,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$we_doc->delElement($name);
 		break;
 	case 'add_cat':
-		$we_doc->addCat(we_base_request::_(we_base_request::INTLIST, 'we_cmd', 0, 1));
+		$we_doc->addCat(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', 0, 1));
 		break;
 	case 'delete_cat':
 		$we_doc->delCat(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
@@ -363,7 +363,6 @@ if(
 			}
 		}
 	}
-
 	we_base_file::save($fullName, $contents);
 
 	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?charset=' . $GLOBALS['CHARSET'] . '&file=' . str_replace(WEBEDITION_DIR, '', $tempName));

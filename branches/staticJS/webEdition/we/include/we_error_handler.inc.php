@@ -234,7 +234,7 @@ function getVariableMax($var, we_database_base $db = null){
 			}
 			$ret = '';
 			//FIXME: clone will be reduced to unsetting weS+webuser if all vars have moved
-			if(isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID'])){
+			if(isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID'])&& $_SESSION['webuser']['registered']){
 				$ret.= 'webUser: ' . print_r(array('ID' => $_SESSION['webuser']['ID'], 'Username' => $_SESSION['webuser']['Username'] . '(' . $_SESSION['webuser']['Forename'] . ' ' . $_SESSION['webuser']['Surname'] . ')'), true);
 			}
 			if(isset($_SESSION['user']) && isset($_SESSION['user']['ID'])){

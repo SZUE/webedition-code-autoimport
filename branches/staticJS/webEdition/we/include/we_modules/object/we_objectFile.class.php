@@ -1254,7 +1254,7 @@ class we_objectFile extends we_document{
 		}
 
 		return ($headline ?
-						'<span class="weObjectPreviewHeadline">' . $n . '</span>' . ( $we_editmode && isset($this->DefArray["link_" . $n]['editdescription']) && $this->DefArray["link_" . $n]['editdescription'] ? self::formatDescription($this->DefArray["link_" . $n]['editdescription']) : we_html_element::htmlBr() ) :
+						'<span class="weObjectPreviewHeadline">' . $n .($this->DefArray["link_" . $n]["required"] ? "*" : ""). '</span>' . ( $we_editmode && isset($this->DefArray["link_" . $n]['editdescription']) && $this->DefArray["link_" . $n]['editdescription'] ? self::formatDescription($this->DefArray["link_" . $n]['editdescription']) : we_html_element::htmlBr() ) :
 						'') . ($startTag ? $startTag . $content . '</a>' : $content) . ($we_editmode ? ($buttons) : "");
 	}
 
@@ -2065,10 +2065,11 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
-		$maxDB = min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
+		$maxDB = 65535;//min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
 		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
 
 		if(!$text){
+			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID='.$this->TableID.' AND ID=' . intval($this->ID));
 			//no need to keep an entry without relevant data in the index
 			return true;
 		}
@@ -2815,6 +2816,8 @@ class we_objectFile extends we_document{
 		$contents = ob_get_clean();
 		if(isset($backupdoc)){
 			$GLOBALS['we_doc'] = $backupdoc;
+		}else{
+			unset($GLOBALS['we_doc']);
 		}
 
 		return $contents;

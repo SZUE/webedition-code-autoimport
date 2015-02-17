@@ -30,6 +30,7 @@ img.multiIcon{
 }
 ') .
  we_html_element::jsScript(JS_DIR . 'windows.js');
+$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 2);
 ?>
 <script type="text/javascript"><!--
 	function revertToPublished() {
@@ -41,7 +42,7 @@ img.multiIcon{
 
 <?php if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'revert_published'){ ?>
 
-		var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?php echo $GLOBALS['we_transaction']; ?>");
+		var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?php echo $we_transaction; ?>");
 
 		_EditorFrame.setEditorIsHot(false);
 

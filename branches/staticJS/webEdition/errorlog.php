@@ -93,17 +93,23 @@ function getNavButtons($size, $pos, $id){
   $val = $key . ': ' . $val;
   } */
 
-function getPosData($bt){
+function getPosData($bt, $file, $lineNo){
 	$ret = '';
 	$matches = array();
-	preg_match_all('|#\d+ [^\]]*\[([^:\]]*):(\d+)|', $bt, $matches);
+	
+	if(!$bt || $bt == '-' || !preg_match_all('|#\d+ [^\]]*\[([^:\]]*):(\d+)|', $bt, $matches)){
+		$matches = array(
+			1 => array(0=>str_replace('SECURITY_REPL_DOC_ROOT/','', $file)),
+			2 => array(0=>$lineNo)
+		);
+	}
+
 	$max = 8;
 	foreach($matches[1] as $i => $file){
 		if(!--$max){
 			break;
 		}
 		$lineNo = $matches[2][$i];
-
 		$lines = we_base_file::loadLines((strpos($file, $_SERVER['DOCUMENT_ROOT']) === 0 || strpos($file, realpath(WEBEDITION_PATH)) === 0 ? '' : $_SERVER['DOCUMENT_ROOT'] . '/' ) . $file, max(1, $lineNo - 1), $lineNo + 5);
 		if($lines){
 			array_walk($lines, function(&$val, $key){
@@ -150,7 +156,7 @@ switch(we_base_request::_(we_base_request::STRING, 'function', 'last')){
 		$cur = getHash('SELECT ID,Type,Function,File,Line,Text,Backtrace,Date FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id . ' ORDER By ID ASC LIMIT 1', $db, MYSQL_ASSOC);
 		$sep = "\n" . str_repeat('-', 80) . "\n";
 		if($cur){
-			$cur['Source-Code'] = getPosData($cur['Backtrace']);
+			$cur['Source-Code'] = getPosData($cur['Backtrace'], $cur['File'], $cur['Line']);
 		}
 		$data = '';
 		foreach($cur as $key => $val){
@@ -204,7 +210,7 @@ if($size && !$cur){//nothing found, go to last element
 }
 
 if($size && $cur){
-	$cur['posData'] = getPosData($cur['Backtrace']);
+	$cur['posData'] = getPosData($cur['Backtrace'], $cur['File'], $cur['Line']);
 }
 
 $data = getInfoTable($cur);

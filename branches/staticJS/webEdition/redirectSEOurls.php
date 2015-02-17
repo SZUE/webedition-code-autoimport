@@ -99,12 +99,10 @@ while($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] != '/
 		$objectid = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 AND Url="' . $db->escape($searchforInternal) . '" LIMIT 1'));
 		if($objectid){
 			$notfound = false;
-		} else {
-			$path_parts = pathinfo($path_parts['dirname']);
+			break;
 		}
-	} else {
-		$path_parts = pathinfo($path_parts['dirname']);
 	}
+	$path_parts = pathinfo($path_parts['dirname']);
 }
 
 if($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] === '/' && $hiddendirindex){

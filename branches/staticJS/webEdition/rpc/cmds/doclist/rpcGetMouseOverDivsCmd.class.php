@@ -46,8 +46,7 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 
 		switch($setView){
 			case we_search_view::VIEW_ICONS:
-				$docl = new doclistView();
-				$content = $docl->searchProperties($whichsearch);
+			$content = doclistView::searchProperties();
 
 				$x = $searchstart + $anzahl;
 				if($x > count($content)){

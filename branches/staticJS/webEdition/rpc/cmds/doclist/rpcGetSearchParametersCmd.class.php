@@ -36,14 +36,13 @@ class rpcGetSearchParametersCmd extends rpcCmd{
 		$_SESSION['weS']['weSearch']['searchstart'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart');
 
 		$GLOBALS['we_cmd_obj'] = true;
-		$docl = new doclistView();
 		switch($pos){
 			case "top":
-				$code = $docl->getSearchParameterTop($foundItems);
+				$code = doclistView::getSearchParameterTop($foundItems);
 				break;
 			case "bottom":
 				$GLOBALS['setInputSearchstart'] = 1;
-				$code = $docl->getSearchParameterBottom($foundItems);
+				$code = doclistView::getSearchParameterBottom($foundItems);
 		}
 
 		$resp->setData("data", $code);

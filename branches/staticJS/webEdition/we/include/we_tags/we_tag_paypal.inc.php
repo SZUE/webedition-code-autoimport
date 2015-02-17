@@ -215,29 +215,7 @@ function we_tag_paypal($attribs){
 					// bug #8717
 					$itemPrice = we_base_util::std_numberformat(isset($item['serial']['we_' . $pricename]) ? $item['serial']['we_' . $pricename] : $item['serial'][$pricename]);
 
-					//seems to be gros product prices and customer do not need pay tax
-					//so we have to calculate the correct net article price
-					//bug #5701
-					if(!$useVat && !$netprices){
-						if(we_shop_category::isCategoryMode()){
-							$wedocCategory = ((isset($item['serial']['we_wedoc_Category'])) ? $item['serial']['we_wedoc_Category'] : $item['serial']['wedoc_Category']);
-							$billingCountry = $countrycode ? : we_shop_category::getDefaultCountry();
-							$shopVat = we_shop_category::getShopVatByIdAndCountry((isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0), $wedocCategory, $billingCountry, true);
-						} else {
-							$vatId = isset($item['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $item['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
-							$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);
-						}
-						$shopVat = (1 + ($shopVat / 100));
-						//paypal allows only two decimal places
-						$itemPrice = round(($itemPrice / $shopVat), 2);
-					} else {
-						//paypal allows only two decimal places
-						$itemPrice = round($itemPrice, 2); //#6546
-					}
-
-					$p->add_field('amount_' . $i, $itemPrice);
-
-					// foreach article we must determine the correct tax-rate. some redundancy here...
+					// foreach article we must determine the correct tax-rate
 					if(we_shop_category::isCategoryMode()){
 						$wedocCategory = ((isset($item['serial']['we_wedoc_Category'])) ? $item['serial']['we_wedoc_Category'] : $item['serial']['wedoc_Category']);
 						$billingCountry = $countrycode ? : we_shop_category::getDefaultCountry();
@@ -260,13 +238,32 @@ function we_tag_paypal($attribs){
 					}
 					$item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] = $shopCategory ? : 0;
 
-					if($netprices && $useVat){ //Bug 4549
-						$totalVat = $itemPrice / 100 * $shopVat;
-						$totalVats = number_format($totalVat, 2);
-						// add the polychronic taxes
-						$p->add_field('tax_' . $i, $totalVats);
+					switch(true){
+						/**
+						* seems to be gros product prices and customer do not need pay tax
+						* so we have to calculate the correct net article price
+						* bug #5701
+						*/
+						case (!$useVat && !$netprices) :
+							$shopVat = (1 + ($shopVat / 100));
+							//paypal allows only two decimal places
+							$itemPrice = ($itemPrice / $shopVat);	
+							break;
+						case ($netprices && $useVat) :
+							$totalVat = $itemPrice / 100 * $shopVat;
+							$totalVats = round($totalVat, 2);
+							// add the polychronic taxes
+							$p->add_field('tax_' . $i, $totalVats);
+							break;
+						default:
+							break;
 					}
-
+					
+					//round itemprice first here, because for calculating correct vat we need orign itemprice
+					$itemPrice = round($itemPrice, 2); //#6546
+					
+					$p->add_field('amount_' . $i, $itemPrice);
+					
 					// determine the shipping cost by accumulating the total
 					$summit += ( $itemPrice * $item['quantity']);
 				}

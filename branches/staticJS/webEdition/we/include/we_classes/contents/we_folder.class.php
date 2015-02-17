@@ -100,17 +100,17 @@ class we_folder extends we_root{
 	 * adjust EditPageNrs for CUSTOMERFILTER AND DOCLIST
 	 */
 	function adjustEditPageNr(){
-		if(isWE()){
-			if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
-
-				if($this->Table == FILE_TABLE || $this->Table == OBJECT_FILES_TABLE){
-					array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_WEBUSER);
-				}
+		if(!isWE()){
+			return;
+		}
+		if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
+			if($this->Table == FILE_TABLE || $this->Table == OBJECT_FILES_TABLE){
+				array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_WEBUSER);
 			}
+		}
 
-			if($this->Table == FILE_TABLE){
-				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_DOCLIST;
-			}
+		if($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE){
+			$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_DOCLIST;
 		}
 	}
 
@@ -306,15 +306,15 @@ class we_folder extends we_root{
 		$DB_WE->query('UPDATE ' . $DB_WE->escape($this->Table) . ' SET Language="' . $DB_WE->escape($this->Language) . '" WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ((Published=0 AND ContentType="folder") OR (Published!=0 AND ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '")))');
 
 		// Change Language of unpublished documents
-		$DB_WE->query('SELECT ID,DocumentObject FROM ' . $DB_WE->escape($this->Table) . ' a JOIN ' . TEMPORARY_DOC_TABLE . ' t ON t.DocumentID=a.ID WHERE a.Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND a.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '") AND t.DocTable="' . stripTblPrefix($this->Table) . '" AND t.Active=1');
+		/*$DB_WE->query('SELECT ID,DocumentObject FROM ' . $DB_WE->escape($this->Table) . ' a JOIN ' . TEMPORARY_DOC_TABLE . ' t ON t.DocumentID=a.ID WHERE a.Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND a.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '") AND t.DocTable="' . stripTblPrefix($this->Table) . '" AND t.Active=1');
 
-		while($DB_WE->next_record()){
-			if(($DocumentObject = $DB_WE->f('DocumentObject'))){
-				$DocumentObject = unserialize($DocumentObject);
-				$DocumentObject[0]['Language'] = $this->Language;
-				$DB_WE2->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $DB_WE->escape(serialize($DocumentObject)) . '" WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable="' . stripTblPrefix($this->Table) . '" AND Active=1');
-			}
-		}
+		  while($DB_WE->next_record()){
+		  if(($DocumentObject = $DB_WE->f('DocumentObject'))){
+		  $DocumentObject = unserialize($DocumentObject);
+		  $DocumentObject[0]['Language'] = $this->Language;
+		  $DB_WE2->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $DB_WE->escape(serialize($DocumentObject)) . '" WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable="' . stripTblPrefix($this->Table) . '" AND Active=1');
+		  }
+		  } */
 
 		// Sprache auch bei den einzelnen Objekten aendern
 		if($this->Table == OBJECT_FILES_TABLE){
@@ -667,6 +667,17 @@ class we_folder extends we_root{
 			}
 		}
 		return $ret[($onlyUrl ? 'url' : 'full') . ($hostMatch ? '_host' : '')];
+	}
+
+	public static function getUrlFromID($id){
+		if(!$id){
+			return '';
+		}
+		$replace = self::getUrlReplacements($GLOBALS['DB_WE'], true, true);
+		$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
+		return $replace ?
+				preg_replace($replace, array_keys($replace), $path) :
+				$path;
 	}
 
 	public function getPropertyPage(){

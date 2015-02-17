@@ -48,7 +48,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 	if(!$useListsArray){
 		switch($type){
 			case 'customer':
-				$tmpAbos = weTag_getAttribute('mailingList', $attribs, array(), we_base_request::STRING_LIST);
+				$tmpAbos = weTag_getAttribute('mailingList', $attribs, '', we_base_request::STRING_LIST);
 				if(!$tmpAbos || $tmpAbos[0] == ''){
 					$abos[0] = $fieldGroup . '_Ok';
 				} else {// #6100
@@ -67,7 +67,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 	} elseif(isset($_REQUEST['we_subscribe_list__']) && is_array($_REQUEST['we_subscribe_list__'])){
 		switch($type){
 			case 'customer':
-				$tmpAbos = weTag_getAttribute('mailingList', $attribs, array(), we_base_request::STRING_LIST);
+				$tmpAbos = weTag_getAttribute('mailingList', $attribs, '', we_base_request::STRING_LIST);
 				foreach($_REQUEST['we_subscribe_list__'] as $nr){
 					$abos[] = $fieldGroup . '_' . $tmpAbos[intval($nr)];
 				}
