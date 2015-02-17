@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_selector_directory extends we_selector_multiple{
-
 	const NEWFOLDER = 7;
 	const RENAMEFOLDER = 9;
 	const DORENAMEFOLDER = 10;
@@ -94,19 +93,19 @@ class we_selector_directory extends we_selector_multiple{
 
 		echo we_html_element::jsElement('
 top.clearEntries();' .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				(intval($this->dir) == intval($this->rootDirID) ?
-						'top.fsheader.disableRootDirButs();' :
-						'top.fsheader.enableRootDirButs();') .
-				'top.currentPath = "' . $this->path . '";
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			(intval($this->dir) == intval($this->rootDirID) ?
+				'top.fsheader.disableRootDirButs();' :
+				'top.fsheader.enableRootDirButs();') .
+			'top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 ');
 	}
 
 	function query(){
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' AND((1' . we_users_util::makeOwnersSql() . ') ' .
-				getWsQueryForSelector($this->table) . ')' . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
+			getWsQueryForSelector($this->table) . ')' . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 	}
 
 	protected function setDefaultDirAndID($setLastDir){
@@ -250,9 +249,9 @@ d.close();
 		if(!o) o=top.order;
 		if(!we_editDirID) we_editDirID="";
 		return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&rootDirID=' .
-						$this->rootDirID . (isset($this->open_doc) ?
-								"&open_doc=" . $this->open_doc : '') .
-						'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
+				$this->rootDirID . (isset($this->open_doc) ?
+					"&open_doc=" . $this->open_doc : '') .
+				'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 		}');
 	}
 
@@ -312,12 +311,12 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 
 	protected function printHeaderJSDef(){
 		return parent::printHeaderJSDef() .
-				'var makefolderState = ' . ($this->userCanMakeNewFolder ? 1 : 0) . ';';
+			'var makefolderState = ' . ($this->userCanMakeNewFolder ? 1 : 0) . ';';
 	}
 
 	protected function printHeaderJS(){
 		return parent::printHeaderJS() .
-				we_html_button::create_state_changer(false) . '
+			we_html_button::create_state_changer(false) . '
 function disableNewFolderBut(){
 	btn_new_dir_enabled = switch_button_state("btn_new_dir", "new_directory_enabled", "disabled", "image");
 	makefolderState = 0;
@@ -427,35 +426,35 @@ function setRootDir(){
 		return '
 top.writeBody(top.fsbody.document);
 top.fsheader.clearOptions();' .
-				($this->rootDirID ? '' : '
+			($this->rootDirID ? '' : '
 top.fsheader.addOption("/",0);') .
-				$out . '
+			$out . '
 top.fsheader.selectIt();';
 	}
 
 	protected function printHeaderTable(){
 		return '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">' .
-				$this->printHeaderTableSpaceRow() . '
+			$this->printHeaderTableSpaceRow() . '
 	<tr valign="middle">
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="70" class="defaultfont"><b>' . g_l('fileselector', '[lookin]') . '</b></td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td><select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' .
-				$this->printHeaderOptions() . '
+			$this->printHeaderOptions() . '
 			</select>' .
-				((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ? '
+			((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ? '
 		</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="40">' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="40">' . we_html_button::create_button("image:btn_fs_back", "javascript:if(rootDirButsState){top.goBackDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>' .
-						$this->printHeaderTableExtraCols() :
-						''
-				) . '
+				$this->printHeaderTableExtraCols() :
+				''
+			) . '
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 	</tr>' .
-				$this->printHeaderTableSpaceRow() . '
+			$this->printHeaderTableSpaceRow() . '
 </table>';
 	}
 
@@ -484,8 +483,8 @@ top.fsheader.selectIt();';
 
 	protected function printHeaderTableExtraCols(){
 		return '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
-				we_html_button::create_button("image:btn_new_dir", "javascript:top.drawNewFolder();", true, 0, 0, '', '', !$this->userCanMakeNewDir(), false) .
-				'</td>';
+			we_html_button::create_button("image:btn_new_dir", "javascript:top.drawNewFolder();", true, 0, 0, '', '', !$this->userCanMakeNewDir(), false) .
+			'</td>';
 	}
 
 	protected function printHeaderTableSpaceRow(){
@@ -511,10 +510,10 @@ function doClick(id,ct){
 		}
 	}else{
 		if(top.currentID == id && (!fsbody.ctrlpressed)){' .
-						($this->userCanRenameFolder ? 'top.RenameFolder(id);' : 'selectFile(id);') . '
+				($this->userCanRenameFolder ? 'top.RenameFolder(id);' : 'selectFile(id);') . '
 
 		}else{' .
-						($this->multiple ? '
+				($this->multiple ? '
 				if(fsbody.shiftpressed){
 					var oldid = currentID;
 					var currendPos = getPositionByID(id);
@@ -537,7 +536,7 @@ function doClick(id,ct){
 					}else{' : '') . '
 
 					selectFile(id);' .
-						($this->multiple ? '
+				($this->multiple ? '
 					}
 				}' : '') . '
 		}
@@ -646,8 +645,8 @@ top.clearEntries();';
 			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notAllowed]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
-							new we_class_folder() :
-							new we_folder());
+					new we_class_folder() :
+					new we_folder());
 
 			$folder->we_new();
 			$folder->setParentID($this->dir);
@@ -743,8 +742,8 @@ top.clearEntries();';
 			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
-							new we_class_folder() :
-							new we_folder());
+					new we_class_folder() :
+					new we_folder());
 
 			$folder->initByID($this->we_editDirID, $this->table);
 			$folder->Text = $txt;
@@ -768,7 +767,7 @@ top.clearEntries();';
 if(top.opener.top.makeNewEntry) ref = top.opener.top;
 else if(top.opener.top.opener) ref = top.opener.top.opener.top;
 ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '","' . $this->table . '");' .
-								($this->canSelectDir ? '
+						($this->canSelectDir ? '
 top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
@@ -780,8 +779,8 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 
 
 		print
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() . '
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() . '
 top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 //-->
@@ -790,27 +789,30 @@ top.selectFile(top.currentID);
 	}
 
 	function printPreviewHTML(){
-		if($this->id){
-			$query = $this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id));
-			while($this->db->next_record()){
-				$result = array(
-					'Text' => $this->db->f('Text'),
-					'Path' => $this->db->f('Path'),
-					'ContentType' => $this->db->f('ContentType'),
-					'Type' => $this->db->f('Type'),
-					'CreationDate' => $this->db->f('CreationDate'),
-					'ModDate' => $this->db->f('ModDate'),
-					'Filename' => $this->db->f('Filename'),
-					'Extension' => $this->db->f('Extension'),
-					'MasterTemplateID' => $this->db->f('MasterTemplateID'),
-					'IncludedTemplates' => $this->db->f('IncludedTemplates'),
-					'ClassName' => $this->db->f('ClassName'),
-					'Templates' => $this->db->f('Templates'),
-				);
-			}
-			$path = f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), "Path", $this->db);
-			$out = we_html_tools::getHtmlTop() .
-					STYLESHEET . we_html_element::cssElement('
+		if(!$this->id){
+			return;
+		}
+		$data = gatHash('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), $this->db);
+		if($data){
+			$result = array(
+				'Text' => $data['Text'],
+				'Path' => $data['Path'],
+				'ContentType' => $data['ContentType'],
+				'Type' => $data['Type'],
+				'CreationDate' => $data['CreationDate'],
+				'ModDate' => $data['ModDate'],
+				'Filename' => $data['Filename'],
+				'Extension' => $data['Extension'],
+				'MasterTemplateID' => $data['MasterTemplateID'],
+				'IncludedTemplates' => $data['IncludedTemplates'],
+				'ClassName' => $data['ClassName'],
+				'Templates' => $data['Templates'],
+			);
+		}
+		$path = $data ? $data['Path'] : '';
+
+		$out = we_html_tools::getHtmlTop() .
+			STYLESHEET . we_html_element::cssElement('
 	body {
 		margin:0px;
 		padding:0px;
@@ -860,32 +862,34 @@ top.selectFile(top.currentID);
 		}
 	}
 	var weCountWriteBC = 0;
-	setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
 	function weWriteBreadCrumb(BreadCrumb){
-		if(top.fspath && top.fspath.document && top.fspath.document.body) top.fspath.document.body.innerHTML = BreadCrumb;
-		else if(weCountWriteBC<10) setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
+		if(top.fspath && top.fspath.document && top.fspath.document.body){
+			top.fspath.document.body.innerHTML = BreadCrumb;
+		}else if(weCountWriteBC<10){
+			setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
+		}
 		weCountWriteBC++;
 	}') .
-					'</head>
-<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">';
-			if(isset($result['ContentType']) && !empty($result['ContentType'])){
-				if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
-					$query = $this->db->query('SELECT l.Name, c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($this->id) . ' AND l.DocumentTable!="tblTemplates"');
-					$metainfos = $this->db->getAllFirst(false);
-				} elseif($this->table == FILE_TABLE && $result['ContentType'] = we_base_ContentTypes::FOLDER){
-					$query = $this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
-					$folderFolders = array();
-					$folderFiles = array();
-					while($this->db->next_record()){
-						$this->db->f('IsFolder') ? $folderFolders[$this->db->f('ID')] = $this->db->f('Text') : $folderFiles[$this->db->f('ID')] = $this->db->f('Text');
-					}
+			'</head>
+<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50);weWriteBreadCrumb("' . $path . '");">';
+		if(isset($result['ContentType']) && !empty($result['ContentType'])){
+			if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
+				$query = $this->db->query('SELECT l.Name, c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($this->id) . ' AND l.DocumentTable!="tblTemplates"');
+				$metainfos = $this->db->getAllFirst(false);
+			} elseif($this->table == FILE_TABLE && $result['ContentType'] = we_base_ContentTypes::FOLDER){
+				$query = $this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
+				$folderFolders = array();
+				$folderFiles = array();
+				while($this->db->next_record()){
+					$this->db->f('IsFolder') ? $folderFolders[$this->db->f('ID')] = $this->db->f('Text') : $folderFiles[$this->db->f('ID')] = $this->db->f('Text');
 				}
+			}
 
-				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path']) ? filesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']) : 0;
+			$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path']) ? filesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']) : 0;
 
-				$filesize = we_base_file::getHumanFileSize($fs);
-				$next = 0;
-				$previewDefauts = "
+			$filesize = we_base_file::getHumanFileSize($fs);
+			$next = 0;
+			$previewDefauts = "
 <tr><td class='info' width='100%'>
 	<div style='overflow:auto; height:100%' id='info'>
 	<table cellpadding='0' cellspacing='0' width='100%'>
@@ -896,107 +900,106 @@ top.selectFile(top.currentID);
 			<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div style='float:left; vertical-align:baseline; margin-right:4px;'><img src='" . TREE_ICON_DIR . "bearbeiten.gif' border='0' vspace='0' hspace='0'></div></a>
 			<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div>" . $this->id . "</div></a>
 		</td></tr>";
-				if($result['CreationDate']){
-					$previewDefauts .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[created]') . ": </td><td>" . date(g_l('date', '[format][default]'), $result['CreationDate']) . "</td></tr>";
-				}
-				if($result['ModDate']){
-					$previewDefauts .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[modified]') . ": </td><td>" . date(g_l('date', '[format][default]'), $result['ModDate']) . "</td></tr>";
-				}
-				$previewDefauts .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[type]') . ": </td><td>" . (g_l('contentTypes', '[' . $result['ContentType'] . ']', true) !== false ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType']) . "</td></tr>";
+			if($result['CreationDate']){
+				$previewDefauts .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[created]') . ": </td><td>" . date(g_l('date', '[format][default]'), $result['CreationDate']) . "</td></tr>";
+			}
+			if($result['ModDate']){
+				$previewDefauts .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[modified]') . ": </td><td>" . date(g_l('date', '[format][default]'), $result['ModDate']) . "</td></tr>";
+			}
+			$previewDefauts .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[type]') . ": </td><td>" . (g_l('contentTypes', '[' . $result['ContentType'] . ']', true) !== false ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType']) . "</td></tr>";
 
-				$out .= '<table cellpadding="0" cellspacing="0" height="100%" width="100%">';
-				switch($result['ContentType']){
-					case we_base_ContentTypes::IMAGE:
-						if(file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){
-							$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
-							if($imagesize[0] > 150 || $imagesize[1] > 150){
-								$extension = substr($result['Extension'], 1);
-								$thumbpath = WE_THUMB_PREVIEW_DIR . $this->id . '.' . $extension;
-								$created = filemtime($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
-								if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath) || ($created > filemtime($_SERVER['DOCUMENT_ROOT'] . $thumbpath))){
-									$thumb = we_base_imageEdit::edit_image($_SERVER['DOCUMENT_ROOT'] . $result['Path'], $extension, $_SERVER['DOCUMENT_ROOT'] . $thumbpath, null, 150, 200);
-								}
-							} else {
-								$thumbpath = $result['Path'];
+			$out .= '<table cellpadding="0" cellspacing="0" height="100%" width="100%">';
+			switch($result['ContentType']){
+				case we_base_ContentTypes::IMAGE:
+					if(file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){
+						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
+						if($imagesize[0] > 150 || $imagesize[1] > 150){
+							$extension = substr($result['Extension'], 1);
+							$thumbpath = WE_THUMB_PREVIEW_DIR . $this->id . '.' . $extension;
+							$created = filemtime($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
+							if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath) || ($created > filemtime($_SERVER['DOCUMENT_ROOT'] . $thumbpath))){
+								$thumb = we_base_imageEdit::edit_image($_SERVER['DOCUMENT_ROOT'] . $result['Path'], $extension, $_SERVER['DOCUMENT_ROOT'] . $thumbpath, null, 150, 200);
 							}
+						} else {
+							$thumbpath = $result['Path'];
+						}
 
-							$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='" . $result['Path'] . "' target='_blank' align='center'><img src='" . $thumbpath . "' border='0' id='previewpic'></a></td></tr>" .
-									$previewDefauts . "
+						$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='" . $result['Path'] . "' target='_blank' align='center'><img src='" . $thumbpath . "' border='0' id='previewpic'></a></td></tr>" .
+							$previewDefauts . "
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[width]') . " x " . g_l('weClass', '[height]') . ": </td><td>" . $imagesize[0] . " x " . $imagesize[1] . " px </td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[filesize]') . ": </td><td>" . $filesize . "</td></tr>";
 
-							$next = 0;
-							$out .= "
+						$next = 0;
+						$out .= "
 <tr><td colspan='2' class='headline'>" . g_l('weClass', '[metainfo]') . "</td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[Title]') . ": </td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[Description]') . ": </td><td>" . (isset($metainfos['Description']) ? $metainfos['Description'] : '') . "</td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[Keywords]') . ": </td><td>" . (isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '') . "</td></tr>";
 
-							$next = 0;
-							$out .= "
+						$next = 0;
+						$out .= "
 <tr><td colspan='2' class='headline'>" . g_l('weClass', '[attribs]') . "</td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[Title]') . ": </td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[name]') . ": </td><td>" . (isset($metainfos['name']) ? $metainfos['name'] : '') . "</td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[alt]') . ": </td><td>" . (isset($metainfos['alt']) ? $metainfos['alt'] : '') . "</td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[width]') . " x " . g_l('weClass', '[height]') . ": </td><td>" . (isset($metainfos['width']) ? $metainfos['width'] : '') . " x " . (isset($metainfos['height']) ? $metainfos['height'] : '') . " px </td></tr>";
+					}
+					break;
+				case "folder":
+					$out .= $previewDefauts;
+					if(isset($folderFolders) && is_array($folderFolders) && count($folderFolders)){
+						$next = 0;
+						$out .= "<tr><td colspan='2' class='headline'>" . g_l('fileselector', '[folders]') . "</td></tr>";
+						foreach($folderFolders as $fId => $fxVal){
+							$out .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . $fId . ": </td><td>" . $fxVal . "</td></tr>";
 						}
-						break;
-					case "folder":
-						$out .= $previewDefauts;
-						if(isset($folderFolders) && is_array($folderFolders) && count($folderFolders)){
-							$next = 0;
-							$out .= "<tr><td colspan='2' class='headline'>" . g_l('fileselector', '[folders]') . "</td></tr>";
-							foreach($folderFolders as $fId => $fxVal){
-								$out .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . $fId . ": </td><td>" . $fxVal . "</td></tr>";
-							}
+					}
+					if(isset($folderFiles) && is_array($folderFiles) && count($folderFiles)){
+						$next = 0;
+						$out .= "<tr><td colspan='2' class='headline'>" . g_l('fileselector', '[files]') . "</td></tr>";
+						foreach($folderFiles as $fId => $fxVal){
+							$out .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . $fId . ": </td><td>" . $fxVal . "</td></tr>";
 						}
-						if(isset($folderFiles) && is_array($folderFiles) && count($folderFiles)){
-							$next = 0;
-							$out .= "<tr><td colspan='2' class='headline'>" . g_l('fileselector', '[files]') . "</td></tr>";
-							foreach($folderFiles as $fId => $fxVal){
-								$out .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . $fId . ": </td><td>" . $fxVal . "</td></tr>";
-							}
-						}
-						break;
-					case we_base_ContentTypes::TEMPLATE:
-						$out .= $previewDefauts;
-						if(isset($result['MasterTemplateID']) && !empty($result['MasterTemplateID'])){
-							$mastertemppath = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($result['MasterTemplateID']), "Path", $this->db);
-							$next = 0;
-							$out .= "
+					}
+					break;
+				case we_base_ContentTypes::TEMPLATE:
+					$out .= $previewDefauts;
+					if(isset($result['MasterTemplateID']) && !empty($result['MasterTemplateID'])){
+						$mastertemppath = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($result['MasterTemplateID']), "Path", $this->db);
+						$next = 0;
+						$out .= "
 <tr><td colspan='2' class='headline'>" . g_l('weClass', '[master_template]') . "</td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>ID:</td><td>" . $result['MasterTemplateID'] . "</td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[path]') . ":</td><td>" . $mastertemppath . "</td></tr>";
-						}
-						break;
-					case we_base_ContentTypes::WEDOCUMENT:
-						$out .= $previewDefauts . "
+					}
+					break;
+				case we_base_ContentTypes::WEDOCUMENT:
+					$out .= $previewDefauts . "
 <tr><td colspan='2' class='headline'>" . g_l('weClass', '[metainfo]') . "</td></tr>";
-						$next = 0;
-						$out .= "
+					$next = 0;
+					$out .= "
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[Title]') . ":</td><td>" . (isset($metainfos['Title']) ? $metainfos['Title'] : '') . "</td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[Charset]') . ":</td><td>" . (isset($metainfos['Charset']) ? $metainfos['Charset'] : '') . "</td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[Keywords]') . ":</td><td>" . (isset($metainfos['Keywords']) ? $metainfos['Keywords'] : '') . "</td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[Description]') . ":</td><td>" . (isset($metainfos['Description']) ? $metainfos['Description'] : '') . "</td></tr>";
-						break;
-					case we_base_ContentTypes::HTML:
-					case we_base_ContentTypes::CSS:
-					case we_base_ContentTypes::JS:
-					case we_base_ContentTypes::APPLICATION:
-						$out .= $previewDefauts;
-						$out .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[filesize]') . ":</td><td>" . $filesize . "</td></tr>";
-						break;
-					case "object":
-					case "objectFile":
-					default:
-						$out .= $previewDefauts;
-						break;
-				}
-				$out .= '</table></div></td></tr></table>';
+					break;
+				case we_base_ContentTypes::HTML:
+				case we_base_ContentTypes::CSS:
+				case we_base_ContentTypes::JS:
+				case we_base_ContentTypes::APPLICATION:
+					$out .= $previewDefauts;
+					$out .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[filesize]') . ":</td><td>" . $filesize . "</td></tr>";
+					break;
+				case "object":
+				case "objectFile":
+				default:
+					$out .= $previewDefauts;
+					break;
 			}
-			$out .= '</body></html>';
-			echo $out;
+			$out .= '</table></div></td></tr></table>';
 		}
+		$out .= '</body></html>';
+		echo $out;
 	}
 
 }
