@@ -871,7 +871,7 @@ top.selectFile(top.currentID);
 		weCountWriteBC++;
 	}') .
 			'</head>
-<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50);weWriteBreadCrumb(\'' . $path . '\');">';
+<body class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50);weWriteBreadCrumb(\'' . $path . '\');">';
 		if(isset($result['ContentType']) && $result['ContentType']){
 			if($this->table == FILE_TABLE){
 				if($result['ContentType'] == we_base_ContentTypes::FOLDER){
