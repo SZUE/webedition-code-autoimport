@@ -792,7 +792,7 @@ top.selectFile(top.currentID);
 		if(!$this->id){
 			return;
 		}
-		$data = gatHash('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), $this->db);
+		$data = getHash('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), $this->db);
 		if($data){
 			$result = array(
 				'Text' => $data['Text'],
