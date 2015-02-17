@@ -871,7 +871,7 @@ top.selectFile(top.currentID);
 		weCountWriteBC++;
 	}') .
 			'</head>
-<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50);weWriteBreadCrumb("' . $path . '");">';
+<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50);weWriteBreadCrumb(\'' . $path . '\');">';
 		if(isset($result['ContentType']) && !empty($result['ContentType'])){
 			if($this->table == FILE_TABLE && $result['ContentType'] != "folder"){
 				$query = $this->db->query('SELECT l.Name, c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($this->id) . ' AND l.DocumentTable!="tblTemplates"');
