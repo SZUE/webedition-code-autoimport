@@ -528,8 +528,8 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			return;
 		}
 
-		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db, MYSQL_ASSOC);
-		$path = isset($result['Path']) ? $result['Path'] : "";
+		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db);
+		$path = $result ? $result['Path'] : '';
 		$out = we_html_tools::getHtmlTop() .
 			STYLESHEET . we_html_element::cssElement('
 	body {
@@ -580,14 +580,16 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		}
 	}
 	var weCountWriteBC = 0;
-	setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
 	function weWriteBreadCrumb(BreadCrumb){
-		if(typeof top.fspath != "undefined") top.fspath.document.body.innerHTML = BreadCrumb;
-		else if(weCountWriteBC<10) setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
+		if(top.fspath && top.fspath.document && top.fspath.document.body){
+			top.fspath.document.body.innerHTML = BreadCrumb;
+		}else if(weCountWriteBC<10){
+			setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
+		}
 		weCountWriteBC++;
 	}') . '
 </head>
-<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50)">';
+<body bgcolor="white" class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50);weWriteBreadCrumb("' . $path . '");">';
 		if(isset($result['ContentType']) && !empty($result['ContentType'])){
 			if($result['ContentType'] === "folder"){
 				$this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
