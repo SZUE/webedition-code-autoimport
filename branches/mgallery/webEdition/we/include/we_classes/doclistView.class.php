@@ -26,7 +26,7 @@
 /**
  * @abstract class making the view for the document list
  */
-class doclistView{
+abstract class doclistView{
 
 	/**
 	 * @abstract create javascript for document list
@@ -75,7 +75,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	 * @abstract create search dialog-box
 	 * @return html for search dialog box
 	 */
-	function getSearchDialog(){
+	public static function getSearchDialog(){
 		$out = '<table cellpadding="0" cellspacing="0" id="defSearch" border="0" width="550" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'none' : 'block') . ';">
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '</td>
@@ -205,7 +205,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	 * @abstract executes the search and writes the result into arrays
 	 * @return array with search results
 	 */
-	function searchProperties(){
+	public static function searchProperties($table = FILE_TABLE){
 
 		$DB_WE = new DB_WE();
 		$foundItems = 0;
@@ -230,7 +230,6 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 		$obj->searchclassFolder->searchstart = we_base_request::_(we_base_request::INT, "searchstart", 0);
 
-		$_table = FILE_TABLE;
 		$searchFields = we_base_request::_(we_base_request::STRING, 'searchFields', $obj->searchclassFolder->searchFields);
 		$searchText = array_map('trim', we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->search, 'search'));
 		$location = we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->location, 'location');
@@ -241,29 +240,29 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 		$where = '';
 		$op = ' AND ';
-		$obj->searchclassFolder->settable($_table);
+		$obj->searchclassFolder->settable($table);
 
 
 		if(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()){
 			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', '[noTempTableRightsDoclist]'), we_message_reporting::WE_MESSAGE_NOTICE));
 			return '';
 		}
-		if($obj->ID != 0){
+		if($obj->ID){
 			$obj->searchclassFolder->createTempTable();
 
-			for($i = 0; $i < count($searchFields); $i++){
+			foreach($searchFields as $i => $searchField){
 
 				$w = "";
 				if(isset($searchText[0])){
 					$searchString = (isset($searchText[$i]) ? $searchText[$i] : $searchText[0]);
 				}
-				if(isset($searchString) && $searchString){
+				if(isset($searchString) && $searchString != ""){
 
-					switch($searchFields[$i]){
+					switch($searchField){
 						default:
 						case "Text":
-							if(isset($searchFields[$i]) && isset($location[$i])){
-								$where .= $obj->searchclassFolder->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
+							if(isset($searchField) && isset($location[$i])){
+								$where .= $obj->searchclassFolder->searchfor($searchString, $searchField, $location[$i], $table);
 							}
 						case "Content":
 						case "Status":
@@ -274,9 +273,9 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 							break;
 					}
 
-					switch($searchFields[$i]){
+					switch($searchField){
 						case "Content":
-							$w = $obj->searchclassFolder->searchContent($searchString, $_table);
+							$w = $obj->searchclassFolder->searchContent($searchString, $table);
 							if(!$where){
 								$where .= " AND " . ($w ? $w : '0');
 							} elseif($w != ""){
@@ -285,7 +284,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 							break;
 
 						case 'Title':
-							$w = $obj->searchclassFolder->searchInTitle($searchString, $_table);
+							$w = $obj->searchclassFolder->searchInTitle($searchString, $table);
 							if(!$where){
 								$where = ' AND ' . ($w ? $w : '0');
 							} elseif($w != ''){
@@ -295,8 +294,8 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 						case "Status":
 						case "Speicherart":
 							if($searchString != ""){
-								if($_table == FILE_TABLE){
-									$w = $obj->searchclassFolder->getStatusFiles($searchString, $_table);
+								if($table == FILE_TABLE){
+									$w = $obj->searchclassFolder->getStatusFiles($searchString, $table);
 									$where .= $w;
 								}
 							}
@@ -304,12 +303,12 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 						case "CreatorName":
 						case "WebUserName":
 							if($searchString != ""){
-								$w = $obj->searchclassFolder->searchSpecial($searchString, $_table, $searchFields[$i], $location[$i]);
+								$w = $obj->searchclassFolder->searchSpecial($searchString, $table, $searchField, $location[$i]);
 								$where .= $w;
 							}
 							break;
 						case "temp_category":
-							$w = $obj->searchclassFolder->searchCategory($searchString, $_table, $searchFields[$i]);
+							$w = $obj->searchclassFolder->searchCategory($searchString, $table, $searchField);
 							$where .= $w;
 							break;
 					}
@@ -319,7 +318,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			$where .= ' AND ParentID = ' . intval($obj->ID);
 
 			$whereQuery = '1 ' . $where;
-			switch($_table){
+			switch($table){
 				case FILE_TABLE:
 					$whereQuery .= ' AND ((RestrictOwners=0 OR RestrictOwners=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners)))';
 					break;
@@ -332,9 +331,9 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			}
 
 			$obj->searchclassFolder->setwhere($whereQuery);
-			$obj->searchclassFolder->insertInTempTable($whereQuery, $_table, $obj->Path . '/');
+			$obj->searchclassFolder->insertInTempTable($whereQuery, $table, $obj->Path . '/');
 
-			$foundItems = $obj->searchclassFolder->countitems($whereQuery, $_table);
+			$foundItems = $obj->searchclassFolder->countitems($whereQuery, $table);
 			$_SESSION['weS']['weSearch']['foundItems'] = $foundItems;
 
 			$obj->searchclassFolder->selectFromTempTable($_searchstart, $_anzahl, $_order);
@@ -342,50 +341,45 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			while($obj->searchclassFolder->next_record()){
 				if(!isset($saveArrayIds[$obj->searchclassFolder->Record ['ContentType']][$obj->searchclassFolder->Record ['ID']])){
 					$saveArrayIds[$obj->searchclassFolder->Record ['ContentType']][$obj->searchclassFolder->Record ['ID']] = $obj->searchclassFolder->Record ['ID'];
-					$_result[] = array_merge(array('Table' => $_table), $obj->searchclassFolder->Record);
+					$_result[] = array_merge(array('Table' => $table), $obj->searchclassFolder->Record);
 				}
 			}
 		}
 
-		if($_SESSION['weS']['weSearch']['foundItems'] > 0){
-			$_db2 = new DB_WE();
-			$_db2->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
+		if($_SESSION['weS']['weSearch']['foundItems']){
+			$DB_WE->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
 
 			foreach($_result as $k => $v){
 				$_result[$k]["Description"] = "";
 				if($_result[$k]["Table"] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
-					$DB_WE->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ID=' . intval($_result[$k]["ID"]) . ' AND b.Name="Description" AND b.DocumentTable="' . FILE_TABLE . '"');
-					while($DB_WE->next_record()){
-						$_result[$k]["Description"] = $DB_WE->f('Dat');
-					}
+					$_result[$k]["Description"] = f('SELECT c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ID=' . intval($_result[$k]["ID"]) . ' AND b.Name="Description" AND b.DocumentTable="' . FILE_TABLE . '"', '', $DB_WE);
 				} else {
-					$_db2->query('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($_result[$k]["ID"]) . ' AND DocTable="tblFile" AND Active=1');
-					while($_db2->next_record()){
-						$tempDoc = unserialize($_db2->f('DocumentObject'));
-						if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat'] != ""){
-							$_result[$k]["Description"] = $tempDoc[0]['elements']['Description']['dat'];
+					if(($obj = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($_result[$k]["ID"]) . ' AND DocTable="tblFile" AND Active=1', '', $DB_WE))){
+						$tempDoc = unserialize($obj);
+						if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat']){
+							$_result[$k]['Description'] = $tempDoc[0]['elements']['Description']['dat'];
 						}
 					}
 				}
 			}
 
 
-			$content = $this->makeContent($_result, $_view);
+			$content = self::makeContent($DB_WE, $_result, $_view);
 		}
 
 		return $content;
 	}
 
-	function makeHeadLines(){
+	public static function makeHeadLines($table){
 		return array(
-			array("dat" => '<a href="javascript:setOrder(\'Text\');">' . g_l('searchtool', '[dateiname]') . '</a> <span id="Text" >' . $this->getSortImage('Text') . '</span>'),
-			array("dat" => '<a href="javascript:setOrder(\'SiteTitle\');">' . g_l('searchtool', '[seitentitel]') . '</a> <span id="SiteTitle" >' . $this->getSortImage('SiteTitle') . '</span>'),
-			array("dat" => '<a href="javascript:setOrder(\'CreationDate\');">' . g_l('searchtool', '[created]') . '</a> <span id="CreationDate" >' . $this->getSortImage('CreationDate') . '</span>'),
-			array("dat" => '<a href="javascript:setOrder(\'ModDate\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate" >' . $this->getSortImage('ModDate') . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'Text\');">' . g_l('searchtool', '[dateiname]') . '</a> <span id="Text" >' . self::getSortImage('Text') . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'SiteTitle\');">' . ($table == TEMPLATES_TABLE ? g_l('weClass', '[path]') : g_l('searchtool', '[seitentitel]') ) . '</a> <span id="SiteTitle" >' . self::getSortImage('SiteTitle') . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'CreationDate\');">' . g_l('searchtool', '[created]') . '</a> <span id="CreationDate" >' . self::getSortImage('CreationDate') . '</span>'),
+			array("dat" => '<a href="javascript:setOrder(\'ModDate\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate" >' . self::getSortImage('ModDate') . '</span>'),
 		);
 	}
 
-	function getSortImage($for){
+	private static function getSortImage($for){
 		$order = we_base_request::_(we_base_request::RAW, 'order', $GLOBALS['we_doc']->searchclassFolder->order);
 
 		if(strpos($order, $for) === 0){
@@ -397,8 +391,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		return we_html_tools::getPixel(11, 8);
 	}
 
-	function makeContent($_result, $view){
-		$DB_WE = new DB_WE();
+	private function makeContent(we_database_base $DB_WE, $_result, $view){
 
 		$we_PathLength = 30;
 
@@ -429,17 +422,17 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 				$published = 1;
 			}
 
-			$ext = isset($_result[$f]["Extension"]) ? $_result[$f]["Extension"] : "";
-			$Icon = we_base_ContentTypes::inst()->getIcon($_result[$f]["ContentType"], we_base_ContentTypes::FILE_ICON, $ext);
+			$ext = isset($_result[$f]['Extension']) ? $_result[$f]['Extension'] : '';
+			$Icon = we_base_ContentTypes::inst()->getIcon($_result[$f]['ContentType'], we_base_ContentTypes::FILE_ICON, $ext);
 
 			if($view == 0){
 				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] === we_base_ContentTypes::OBJECT_FILE) && permissionhandler::hasPerm('PUBLISH')) ? we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '';
 
 				$content[$f] = array(
-					array("dat" => $publishCheckbox),
-					array("dat" => '<img src="' . TREE_ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
+					array('dat' => $publishCheckbox),
+					array('dat' => '<img src="' . TREE_ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]['docID'] . '\',\'' . $_result[$f]['ContentType'] . '\')" class="' . $fontColor . ' middlefont" title="' . $_result[$f]['Text'] . '"><u>' . we_util_Strings::shortenPath($_result[$f]['Text'], $we_PathLength)),
-					array("dat" => '<nobr>' . g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']') . '</nobr>'),
+					//array("dat" => '<nobr>' . g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']') . '</nobr>'),
 					array("dat" => '<nobr>' . we_util_Strings::shortenPath($_result[$f]["SiteTitle"], $we_PathLength) . '</nobr>'),
 					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
 					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-") . '</nobr>')
@@ -540,7 +533,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	 * @abstract generates html for search result
 	 * @return string, html search result
 	 */
-	function getSearchParameterTop($foundItems){
+	public static function getSearchParameterTop($foundItems){
 		$anzahl = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
 		$order = we_base_request::_(we_base_request::STRING, 'we_cmd', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->searchclassFolder->order : '', 'order');
@@ -561,7 +554,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		<td>' . we_html_tools::getPixel(19, 12) . '</td>
 		<td style="font-size:12px;width:125px;">' . g_l('searchtool', '[eintraege_pro_seite]') . ':</td>
 		<td class="defaultgray" style="width:60px;">' . we_html_tools::htmlSelect("anzahl", $anzahl, 1, $_anzahl, "", array('onchange' => 'this.form.elements.searchstart.value=0;search(false);')) . '</td>
-		<td>' . $this->getNextPrev($foundItems) . '</td>
+		<td>' . self::getNextPrev($foundItems) . '</td>
 		<td>' . we_html_tools::getPixel(10, 12) . '</td>
 		<td style="width:50px;">' . we_html_button::create_button("image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $id . "')", true, 40, "", "", "", false) . '</td>
 		<td>' . we_html_button::create_button("image:iconview", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
@@ -571,12 +564,18 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 </table>';
 	}
 
-	function getSearchParameterBottom($foundItems){
+	public static function getSearchParameterBottom($table, $foundItems){
+		switch($table){
+			case TEMPLATES_TABLE:
+				$publishButton = $publishButtonCheckboxAll = "";
+				break;
+			default:
 		if(permissionhandler::hasPerm('PUBLISH')){
 			$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
 			$publishButton = we_html_button::create_button("publish", "javascript:publishDocs();", true, 100, 22, "", "");
 		} else {
 			$publishButton = $publishButtonCheckboxAll = "";
+				}
 		}
 
 		return
@@ -585,7 +584,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	 <td>' . $publishButtonCheckboxAll . '</td>
 	 <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
 	 <td class="defaultgray" style="width:60px;" id="resetBusy">' . we_html_tools::getPixel(30, 12) . '</td>
-	 <td style="width:370px;">' . $this->getNextPrev($foundItems, false) . '</td>
+	 <td style="width:370px;">' . self::getNextPrev($foundItems, false) . '</td>
 	</tr>
 </table>';
 	}
@@ -594,7 +593,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	 * @abstract generates html for paging GUI
 	 * @return string, html for paging GUI
 	 */
-	function getNextPrev($we_search_anzahl, $isTop = true){
+	private static function getNextPrev($we_search_anzahl, $isTop = true){
 		if(($obj = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'obj'))){
 			$anzahl = $_SESSION['weS']['weSearch']['anzahl'];
 			$searchstart = $_SESSION['weS']['weSearch']['searchstart'];
@@ -645,8 +644,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	 * @abstract writes the complete html code
 	 * @return string, html
 	 */
-	function getHTMLforDoclist($content){
-		$marginLeft = "0";
+	public static function getHTMLforDoclist($content){
 
 		$out = '<table width="100%" border="0" cellspacing="0" cellpadding="0" style="width:100%;">
 <tr><td class="defaultfont">';
@@ -660,7 +658,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			$leftContent = $icon ? : (($leftWidth && (!$_forceRightHeadline)) ? $headline : "");
 			$rightContent = '<div class="defaultfont">' . ((($icon && $headline) || ($leftContent === "") || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
 
-			$out .= '<div style="margin-left:' . $marginLeft . 'px" >';
+			$out .= '<div style="margin-left:0px" >';
 
 			if($leftContent || $leftWidth){
 				if((!$leftContent) && $leftWidth){

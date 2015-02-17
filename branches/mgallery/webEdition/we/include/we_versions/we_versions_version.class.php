@@ -1123,7 +1123,7 @@ class we_versions_version{
 			if($fieldName != 'ID'){
 				$set[$fieldName] = (isset($document[$fieldName]) ?
 						$document[$fieldName] :
-						$this->makePersistentEntry($fieldName, $status, $document, $documentObj, $lastEntry)
+						$this->makePersistentEntry($fieldName, $status, $document, $documentObj)
 					);
 			}
 		}

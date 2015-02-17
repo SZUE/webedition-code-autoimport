@@ -11,3 +11,4 @@ $this->Attributes[] = new weTagData_selectAttribute('submitonchange', array(new 
 $this->Attributes[] = new weTagData_selectAttribute('reload', array(new weTagDataOption('false'),
 	new weTagDataOption('true'),
 	), false, '');
+$this->Attributes[] = new weTagData_textAttribute('parentid', false, '');

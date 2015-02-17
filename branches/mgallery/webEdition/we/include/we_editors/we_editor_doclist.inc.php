@@ -36,9 +36,8 @@ $headCal = we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/
 	we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
 	we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js');
 
-$docl = new doclistView();
 echo $headCal .
- $docl->getSearchJS() .
+ doclistView::getSearchJS() .
  STYLESHEET
 ?>
 </head>
@@ -49,12 +48,12 @@ echo $headCal .
 	<div id="mouseOverDivs_doclist"></div>
 	<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;"><?php
 		$view = new we_search_view();
-		$content = $docl->searchProperties();
-		$headline = $docl->makeHeadLines();
+		$content = doclistView::searchProperties($GLOBALS['we_doc']->Table);
+		$headline = doclistView::makeHeadLines($GLOBALS['we_doc']->Table);
 		$foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
 		$_parts = array(
 			array("html" => doclistView::getSearchDialog()),
-			array("html" => "<div id='parametersTop'>" . $docl->getSearchParameterTop($foundItems) . "</div>" . $view->tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . $docl->getSearchParameterBottom($foundItems) . "</div>"),
+			array("html" => "<div id='parametersTop'>" . doclistView::getSearchParameterTop($foundItems) . '</div>' . $view->tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . doclistView::getSearchParameterBottom($GLOBALS['we_doc']->Table,$foundItems) . "</div>"),
 		);
 
 		echo doclistView::getHTMLforDoclist($_parts);

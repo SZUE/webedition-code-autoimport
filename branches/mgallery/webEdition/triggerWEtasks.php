@@ -34,5 +34,4 @@ $_tooltasks = we_tool_lookup::getExternTriggeredTasks();
 foreach($_tooltasks as $task){
 	include($task);
 }
-?>
-OK
+?>OK

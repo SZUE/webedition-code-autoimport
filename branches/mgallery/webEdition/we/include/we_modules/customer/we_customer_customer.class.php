@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,6 +28,7 @@
  *
  */
 class we_customer_customer extends weModelBase{
+
 	const NOPWD_CHANGE = '__WE__PWD_NO_CHANGE';
 	const ENCRYPT_NONE = 0;
 	const ENCRYPT_SYMMETRIC = 1;
@@ -292,7 +294,8 @@ class we_customer_customer extends weModelBase{
 
 	static function customerNameExist($name, we_database_base $db = null){
 		$db = $db ? : new DB_WE();
-		return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '" LIMIT 1', '', $db));
+		$name = trim($name);
+		return ($name ? f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '" LIMIT 1', '', $db) : true);
 	}
 
 	function customerFieldValueExist($fieldname, $value, $condition = ''){
@@ -329,7 +332,7 @@ class we_customer_customer extends weModelBase{
 				$useSalt = 0;
 				$pwd = we_users_user::makeSaltedPassword($useSalt, '', $pass, 10);
 				return ($useSalt != we_users_user::SALT_CRYPT ?
-						$pass : $pwd);
+								$pass : $pwd);
 		}
 	}
 
