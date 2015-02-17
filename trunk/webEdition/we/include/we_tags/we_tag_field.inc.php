@@ -114,7 +114,7 @@ function we_tag_field($attribs){
 	}
 	$seeMode = weTag_getAttribute('seeMode', $attribs, true, we_base_request::BOOL);
 	if(isset($attribs['seeMode'])){
-		$attribs['seeMode'] = $value;
+		$attribs['seeMode'] = $seeMode;
 	}
 
 	//zusatz typen für verchiedene field-Typen
