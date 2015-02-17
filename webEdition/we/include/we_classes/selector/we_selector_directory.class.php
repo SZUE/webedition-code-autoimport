@@ -797,16 +797,16 @@ top.selectFile(top.currentID);
 			$result = array(
 				'Text' => $data['Text'],
 				'Path' => $data['Path'],
-				'ContentType' => $data['ContentType'],
-				'Type' => $data['Type'],
-				'CreationDate' => $data['CreationDate'],
-				'ModDate' => $data['ModDate'],
+				'ContentType' => isset($data['ContentType']) ? $data['ContentType'] : '',
+				'Type' => isset($data['Type']) ? $data['Type'] : '',
+				'CreationDate' => isset($data['CreationDate']) ? $data['CreationDate'] : '',
+				'ModDate' => isset($data['ModDate']) ? $data['ModDate'] : '',
 				'Filename' => $data['Filename'],
-				'Extension' => $data['Extension'],
-				'MasterTemplateID' => $data['MasterTemplateID'],
-				'IncludedTemplates' => $data['IncludedTemplates'],
-				'ClassName' => $data['ClassName'],
-				'Templates' => $data['Templates'],
+				'Extension' => isset($data['Extension']) ? $data['Extension'] : '',
+				'MasterTemplateID' => isset($data['MasterTemplateID']) ? $data['MasterTemplateID'] : '',
+				'IncludedTemplates' => isset($data['IncludedTemplates']) ? $data['IncludedTemplates'] : '',
+				'ClassName' => isset($data['ClassName']) ? $data['ClassName'] : '',
+				'Templates' => isset($data['Templates']) ? $data['Templates'] : '',
 			);
 		}
 		$path = $data ? $data['Path'] : '';
