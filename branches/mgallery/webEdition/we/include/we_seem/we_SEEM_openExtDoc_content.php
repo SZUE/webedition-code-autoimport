@@ -43,7 +43,10 @@ if(($content = we_base_file::load($path . '?' . urldecode(we_base_request::_(we_
 	$_table->setColContent(3, 1, we_html_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();"));
 
 	echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(STYLESHEET) .
+		we_html_element::htmlHead(STYLESHEET .
+			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
+			we_html_element::jsScript(JS_DIR . 'attachKeyListener.js')
+		) .
 		we_html_element::htmlBody(array("style" => 'background-color:#F3F7FF;'), $_table->getHtml())
 	);
 }

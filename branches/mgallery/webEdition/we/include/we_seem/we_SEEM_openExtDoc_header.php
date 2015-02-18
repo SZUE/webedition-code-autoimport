@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,8 +29,8 @@ we_html_tools::protect();
 $_webEditionSiteUrl = getServerUrl() . SITE_DIR;
 $url = we_base_request::_(we_base_request::URL, 'url');
 $_errormsg = (strpos($url, $_webEditionSiteUrl) === 0 ?
-				g_l('SEEM', '[ext_doc_tmp]') :
-				sprintf(g_l('SEEM', '[ext_doc]'), $url));
+		g_l('SEEM', '[ext_doc_tmp]') :
+		sprintf(g_l('SEEM', '[ext_doc]'), $url));
 
 
 $_table = new we_html_table(array("cellpadding" => 0,
@@ -46,6 +45,10 @@ $_table->setCol(1, 3, array("class" => "middlefontred"), $_errormsg);
 
 
 echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		STYLESHEET .
-		we_html_element::htmlBody(array("id" => 'eHeaderBody',), $_table->getHtml())
+	we_html_element::htmlHead(STYLESHEET .
+		we_html_tools::getJSErrorHandler() .
+		we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
+		we_html_element::jsScript(JS_DIR . 'attachKeyListener.js')
+	) .
+	we_html_element::htmlBody(array("id" => 'eHeaderBody',), $_table->getHtml())
 );
