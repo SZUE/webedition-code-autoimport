@@ -42,7 +42,7 @@ $newUrl = $arr["scheme"] . "://" . $arr["host"] . ( isset($arr["port"]) ? (":" .
 
 
 //	we also need some functionality here to check if the location of the doc was cahnged
-echo we_html_tools::getHtmlTop('','','frameset');
+echo we_html_tools::getHtmlTop('', '', 'frameset');
 ?>
 <script type="text/javascript"><!--
 
@@ -99,7 +99,7 @@ echo we_html_tools::getHtmlTop('','','frameset');
 	}
 	//-->
 </script>
-</head>
+</head><!--
 <frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="40,*,40" framespacing="0" border="0" frameborder="NO">
 
 	<frame src="<?php echo WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_header.php?filepath=<?php echo urlencode($_url); ?>&url=<?php echo $newUrl ?>" name="extDocHeader" noresize scrolling="no">
@@ -109,4 +109,17 @@ echo we_html_tools::getHtmlTop('','','frameset');
 			openedWithWE = 0;" src="<?php echo WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_content.php?filepath=<?php echo urlencode($_url); ?>&url=<?php echo $newUrl ?>&paras=<?php echo (isset($parastr) ? urlencode($parastr) : ""); ?>" name="extDocContent" noresize>
 	<frame src="<?php echo WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_footer.php" name="extDocFooter" noresize>
 </frameset><noframes></noframes>
+-->
+
+
+<body onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});">
+	<?php
+	$headerSize = 35;
+	echo we_html_element::htmlIFrame('extDocHeader', we_class::url(WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_header.php?filepath=" . urlencode($_url) . "&url=" . $newUrl), 'position:absolute;top:0px;left:0px;right:0px;height:' . $headerSize . 'px;', '', '', false) .
+	we_html_element::htmlIFrame('extDocContent', we_class::url(WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_content.php?filepath=" . urlencode($_url) . '&url=' . $newUrl . '&paras=' . (isset($parastr) ? urlencode($parastr) : "") . '&we_complete_request=1'), 'position:absolute;top:' . $headerSize . 'px;left:0px;right:0px;bottom:40px;', '', 'if (openedWithWE == 0) {checkDocument();}openedWithWE = 0;') .
+	we_html_element::htmlIFrame('extDocFooter', we_class::url(WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_footer.php"), 'position:absolute;bottom:0px;left:0px;right:0px;height:40px;', '', '', false);
+	?>
+</body>
+
+
 </html>

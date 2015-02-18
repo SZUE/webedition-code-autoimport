@@ -3097,7 +3097,7 @@ class we_objectFile extends we_document{
 		}
 
 // check if object is published.
-		if(!$GLOBALS['we_doc']->InWebEdition && !$foo['Published']){
+		if(!$GLOBALS['we_doc']||(!$GLOBALS['we_doc']->InWebEdition && !$foo['Published'])){
 			$GLOBALS['we_link_not_published'] = 1;
 			return '';
 		}
