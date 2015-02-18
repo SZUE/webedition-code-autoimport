@@ -801,7 +801,7 @@ top.selectFile(top.currentID);
 				'Type' => isset($data['Type']) ? $data['Type'] : '',
 				'CreationDate' => isset($data['CreationDate']) ? $data['CreationDate'] : '',
 				'ModDate' => isset($data['ModDate']) ? $data['ModDate'] : '',
-				'Filename' => $data['Filename'],
+				'Filename' => isset($data['Filename']) ? $data['Filename'] : '',
 				'Extension' => isset($data['Extension']) ? $data['Extension'] : '',
 				'MasterTemplateID' => isset($data['MasterTemplateID']) ? $data['MasterTemplateID'] : '',
 				'IncludedTemplates' => isset($data['IncludedTemplates']) ? $data['IncludedTemplates'] : '',
