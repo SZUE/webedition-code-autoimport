@@ -95,7 +95,7 @@ for (frameId in _usedEditors) {
 				top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');
 			} else {" : '')) .
 		(!isset($isClose) || !$isClose ? //if we close the document, we should not reload any header etc.
-				'if ( _EditorFrame.getEditorIsInUse() ) {_EditorFrameDocumentRef.frames[0].location.reload();}' : '') .
+				'if ( _EditorFrame.getEditorIsInUse() ) {_EditorFrameDocumentRef.frames.editHeader.location.reload();}' : '') .
 		($isTmpl || $isObject ?
 				'}' : '');
 	}
@@ -131,16 +131,16 @@ if(isEditInclude){
 						"
 if(!showAlert){
 	if(confirm(\"" . $we_responseText . "\\n\\n" . g_l('SEEM', '[confirm][change_to_preview]') . "\")){
-		_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS['we_transaction'] . "');
+		_EditorFrameDocumentRef.frames.editHeader.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS['we_transaction'] . "');
 	} else {
-		_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');
+		_EditorFrameDocumentRef.frames.editHeader.we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');
 	}
 } else {
 	" . we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) . "
 }" :
 						//	alert when in preview mode
 						we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
-						"_EditorFrameDocumentRef.frames[0].we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');" .
+						"_EditorFrameDocumentRef.frames.editHeader.we_cmd('switch_edit_page'," . $GLOBALS['we_doc']->EditPageNr . ",'" . $GLOBALS['we_transaction'] . "');" .
 						//	JavaScript: generated in we_editor.inc.php
 						we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5)
 				) .

@@ -49,7 +49,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 
 	<?php echo $GLOBALS['we_doc']->getUpdateTreeScript(true); ?>
 
-		_EditorFrame.getDocumentReference().frames[3].location.reload();
+		_EditorFrame.getDocumentReference().frames.editFooter.location.reload();
 
 
 <?php } ?>

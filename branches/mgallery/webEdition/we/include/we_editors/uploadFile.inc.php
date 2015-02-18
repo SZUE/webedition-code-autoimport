@@ -158,7 +158,7 @@ if($weFileupload->processFileRequest()){
 		?>
 		opener.we_cmd("update_file");
 		_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
-		_EditorFrame.getDocumentReference().frames[0].we_setPath("<?php echo $we_doc->Path; ?>", "<?php echo $we_doc->Text; ?>");
+		_EditorFrame.getDocumentReference().frames.editHeader.we_setPath("<?php echo $we_doc->Path; ?>", "<?php echo $we_doc->Text; ?>");
 		self.close();
 	<?php } ?>
 	//-->

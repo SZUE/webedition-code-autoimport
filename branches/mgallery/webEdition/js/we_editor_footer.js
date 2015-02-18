@@ -97,7 +97,7 @@ function setTextDocument(hasCtrl, value) {
 
 function setPath() {
 	try {
-		_EditorFrame.getDocumentReference().frames[0].we_setPath(doc.Path, doc.Text, doc.ID);
+		_EditorFrame.getDocumentReference().frames.editHeader.we_setPath(doc.Path, doc.Text, doc.ID);
 	} catch (e) {
 	}
 }

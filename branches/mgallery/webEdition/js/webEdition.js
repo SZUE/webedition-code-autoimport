@@ -456,7 +456,7 @@ function doUnloadNormal(whichWindow) {
 	var tinyDialog;
 	if (!regular_logout) {
 
-		if (window.tinyMceDialog !== undefinded && window.tinyMceDialog !== null) {
+		if (window.tinyMceDialog !== undefined && window.tinyMceDialog !== null) {
 			tinyDialog = tinyMceDialog;
 			try {
 				tinyDialog.close();
@@ -464,7 +464,7 @@ function doUnloadNormal(whichWindow) {
 			}
 		}
 
-		if (tinyMceSecondaryDialog !== undefinded && tinyMceSecondaryDialog !== null) {
+		if (tinyMceSecondaryDialog !== undefined && tinyMceSecondaryDialog !== null) {
 			tinyDialog = tinyMceSecondaryDialog;
 			try {
 				tinyDialog.close();
@@ -567,7 +567,7 @@ function we_cmd_base(args, url) {
 					top.we_showMessage(g_l.no_perms_action, WE_MESSAGE_ERROR, window);
 				} else if (window.confirm(g_l.delete_single_confirm_delete + "\n" + path)) {
 					url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
-					submit_we_form(top.weEditorFrameController.getActiveDocumentReference().frames["3"], self.load, url2 + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
+					submit_we_form(top.weEditorFrameController.getActiveDocumentReference().frames.editFooter, self.load, url2 + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 				}
 			} else {
 				top.we_showMessage(g_l.no_document_opened, WE_MESSAGE_ERROR, window);
@@ -582,7 +582,7 @@ function we_cmd_base(args, url) {
 				if (!hasPermDelete(eTable, (cType === "folder"))) {
 					top.we_showMessage(g_l.no_perms_action, WE_MESSAGE_ERROR, window);
 				} else {
-					submit_we_form(top.weEditorFrameController.getActiveDocumentReference().frames["3"], self.load, url + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
+					submit_we_form(top.weEditorFrameController.getActiveDocumentReference().editFooter, self.load, url + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 				}
 			} else {
 				top.we_showMessage(g_l.no_document_opened, WE_MESSAGE_ERROR, window);
@@ -595,7 +595,7 @@ function we_cmd_base(args, url) {
 			break;
 		case "move_single_document":
 			toggleBusy(1);
-			submit_we_form(top.weEditorFrameController.getActiveDocumentReference().frames["3"], self.load, url);
+			submit_we_form(top.weEditorFrameController.getActiveDocumentReference().editFooter, self.load, url);
 			break;
 		case "do_move":
 			toggleBusy(1);
@@ -648,7 +648,7 @@ function we_cmd_base(args, url) {
 			we_repl(self.load, url, args[0]);
 			break;
 		case "reload_editfooter":
-			we_repl(top.weEditorFrameController.getActiveDocumentReference().frames[3], url, args[0]);
+			we_repl(top.weEditorFrameController.getActiveDocumentReference().frames.editFooter, url, args[0]);
 			break;
 		case "rebuild":
 			new jsWindow(url, "rebuild", -1, 0, 609, 645, true, false, true);

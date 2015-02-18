@@ -461,7 +461,7 @@ if(
 							}
 							$wasSaved = true;
 							$wasNew = (intval($we_doc->ID) == 0) ? true : false;
-							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "', '" . $we_doc->Text . "', '" . $we_doc->ID . "');" .
+							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames.editHeader.we_setPath('" . $we_doc->Path . "', '" . $we_doc->Text . "', '" . $we_doc->ID . "');" .
 								'_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
@@ -546,7 +546,7 @@ if(
 										$GLOBALS['publish_doc'] = true;
 										if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW) && (!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4))){
 											$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");
-_EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the footer with the buttons
+_EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // reload the footer with the buttons
 										}
 									} else {
 										$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
@@ -587,9 +587,9 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 							if($wasNew || (!$wasPubl)){
 
 								$we_JavaScript .= ($we_doc->ContentType === "folder" ? 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");' : '') .
-									'_EditorFrame.getDocumentReference().frames[3].location.reload();';
+									'_EditorFrame.getDocumentReference().frames.editFooter.location.reload();';
 							}
-							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
+							$we_JavaScript .= "_EditorFrame.getDocumentReference().frames.editHeader.we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
 
 
 							if(!we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
@@ -611,7 +611,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 					} else if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4) && (!$wf_flag)){
 
 						$we_doc->makeSameNew();
-						$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
+						$we_JavaScript .= "_EditorFrame.getDocumentReference().frames.editHeader.we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', '" . $we_doc->ID . "');";
 //	switch to propertiy page, when user is allowed to do so.
 						switch($_SESSION['weS']['we_mode']){
 							case we_base_constants::MODE_SEE:
@@ -655,7 +655,7 @@ _EditorFrame.getDocumentReference().frames[3].location.reload();'; // reload the
 					}
 //	When unpublishing a document stay where u are.
 //	uncomment the following line to switch to preview page.
-					$GLOBALS['we_responseJS'] .= '_EditorFrame.getDocumentReference().frames[3].location.reload();';
+					$GLOBALS['we_responseJS'] .= '_EditorFrame.getDocumentReference().frames.editFooter.location.reload();';
 
 					$we_JavaScript = '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
 				} else {

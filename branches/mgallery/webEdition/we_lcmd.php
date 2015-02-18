@@ -33,17 +33,17 @@ echo we_html_tools::getHtmlTop('command-bridge', '', 5);
 function getJSCommand($cmd0){
 	switch($cmd0){
 		case 'trigger_save_document':
-			return'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames[3] && top.weEditorFrameController.getActiveDocumentReference().frames[3].weCanSave){
+			return'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames.editFooter && top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.weCanSave){
 	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);
-	top.weEditorFrameController.getActiveDocumentReference().frames[3].we_save_document();
+	top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.we_save_document();
 }else{
 	' . we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 }
 ';
 		case 'trigger_publish_document':
-			return 'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames[3] && top.weEditorFrameController.getActiveDocumentReference().frames[3].weCanSave){
+			return 'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames.editFooter && top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.weCanSave){
 	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);
-	top.weEditorFrameController.getActiveDocumentReference().frames[3].we_save_document();
+	top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.we_save_document();
 }else{
 	' . we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_publish]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 }

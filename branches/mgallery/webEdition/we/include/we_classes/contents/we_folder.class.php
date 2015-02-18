@@ -305,7 +305,6 @@ class we_folder extends we_root{
 		// Change language of published documents, objects
 		$DB_WE->query('UPDATE ' . $DB_WE->escape($this->Table) . ' SET Language="' . $DB_WE->escape($this->Language) . '" WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ((Published=0 AND ContentType="folder") OR (Published!=0 AND ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '")))');
 
-		// Change Language of unpublished documents
 
 		// Sprache auch bei den einzelnen Objekten aendern
 		if($this->Table == OBJECT_FILES_TABLE){

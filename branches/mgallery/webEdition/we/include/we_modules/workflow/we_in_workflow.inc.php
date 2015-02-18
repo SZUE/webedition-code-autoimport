@@ -38,7 +38,7 @@ if($cmd === 'ok'){
 				break;
 			default:
 			case we_base_constants::MODE_NORMAL:
-				$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();';
+				$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();';
 		}
 
 		if($cmd2){ // make same new

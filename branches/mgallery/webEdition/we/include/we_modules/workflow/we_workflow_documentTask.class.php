@@ -60,7 +60,7 @@ class we_workflow_documentTask extends we_workflow_base{
 			"workflowTaskID" => we_base_request::INT,
 			"Date" => we_base_request::INT,
 			"todoID" => we_base_request::INT,
-			"Status" => we_base_request::RAW,
+			"Status" => we_base_request::INT,
 		);
 
 		if($wfDocumentTask){

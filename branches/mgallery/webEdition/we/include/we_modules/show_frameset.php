@@ -58,6 +58,6 @@ function we_cmd() {
 	$bid = $mod === 'shop' && $cmd1 !== false ? $cmd1 : we_base_request::_(we_base_request::RAW, 'bid');
 
 	echo we_html_element::htmlExIFrame('navi', WE_MODULES_PATH . 'navi.php', 'background-color:white;position:absolute;top:0px;height:21px;left:0px;right:0px;overflow: hidden;') .
-		we_html_element::htmlIFrame('content', WE_MODULES_DIR . 'show.php?mod=' . $mod . ($cmd1 === false ? '' : '&msg_param=' . $cmd1) . ($sid !== false ? '&sid=' . $sid : '') . ($bid !== false ? '&bid=' . $bid : ''), 'position:absolute;top:21px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+		we_html_element::htmlIFrame('content', WE_MODULES_DIR . 'show.php?mod=' . $mod . ($cmd1 === false ? '' : '&msg_param=' . $cmd1) . ($sid !== false ? '&sid=' . $sid : '') . ($bid !== false ? '&bid=' . $bid : ''), 'position:absolute;top:21px;bottom:0px;left:0px;right:0px;overflow: hidden;', '', '', false)
 	;
 	?></body></html>

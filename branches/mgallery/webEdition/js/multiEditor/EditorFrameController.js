@@ -1164,15 +1164,15 @@ function EditorFrame(ref, elementId) {
 					_theEditorFrame.location.href = _href;
 					//_theEditorFrame.location.reload();
 				} else {
-					if (_theEditorFrame.frames[0]) {
-						_theEditorFrame.frames[0].location.reload();
+					if (_theEditorFrame.frames.editHeader) {
+						_theEditorFrame.frames.editHeader.location.reload();
 					}
 					var contentEditor = this.getContentEditor();
 					if (contentEditor) {
 						top.we_cmd("reload_editpage");
 					}
-					if (_theEditorFrame.frames[3]) {
-						_theEditorFrame.frames[3].location.reload();
+					if (_theEditorFrame.frames.editFooter) {
+						_theEditorFrame.frames.editFooter.location.reload();
 					}
 				}
 				// reload all 3 frames
@@ -1230,44 +1230,56 @@ function EditorFrame(ref, elementId) {
 
 	this.switchToContentEditor = function (nr) {
 		var framesets = this.getEditorFrameWindow().document.getElementsByTagName("FRAMESET");
+		if (framesets.length) {//fixme:remove
+			var frameset = framesets[0]; //this.getEditorFrameWindow().document.getElementById("_editorFrameset");
+			if (!frameset) {
+				return null;
+			}
+			var rows = frameset.rows;
+			if (!rows) {
+				return null;
+			}
+			var parts = rows.split(",");
+			if (nr === 1 && parts[1] !== "*") {
+				parts[1] = "*";
+				parts[2] = "0";
+			} else if (nr === 2 && parts[2] !== "*") {
+				parts[2] = "*";
+				parts[1] = "0";
+			} else {
+				return;
+			}
 
-		var frameset = framesets[0]; //this.getEditorFrameWindow().document.getElementById("_editorFrameset");
-		if (!frameset) {
-			return null;
-		}
-		var rows = frameset.rows;
-		if (!rows) {
-			return null;
-		}
-		var parts = rows.split(",");
-		if (nr === 1 && parts[1] !== "*") {
-			parts[1] = "*";
-			parts[2] = "0";
-		} else if (nr === 2 && parts[2] !== "*") {
-			parts[2] = "*";
-			parts[1] = "0";
+			frameset.rows = parts.join(",");
 		} else {
-			return;
+			var iframe = this.getEditorFrameWindow().document.getElementsByTagName("IFRAME");
+			iframe[nr].parentElement.style.display = 'block';
+			iframe[(nr === 1 ? 2 : 1)].parentElement.style.display = 'none';
 		}
-
-		frameset.rows = parts.join(",");
 	};
 
 	this.getContentEditorHeightForFrameNr = function (nr) {
 		var framesets = this.getEditorFrameWindow().document.getElementsByTagName("FRAMESET");
-		var frameset = framesets[0];
-		if (!frameset) {
-			return null;
+		if (framesets.length) {
+			//FIXME: remove if frames obsolete
+			var frameset = framesets[0];
+			if (!frameset) {
+				return null;
+			}
+			var rows = frameset.rows;
+			if (!rows) {
+				return null;
+			}
+			var parts = rows.split(",");
+			return parts[nr];
+		} else {
+			var iframes = this.getEditorFrameWindow().document.getElementsByTagName("IFRAME");
+			//note embedded elements such as cockpit don't have a
+			return (iframes[nr] && iframes[nr].parentElement.style.display === "none" ? "0" : "+1");
 		}
-		var rows = frameset.rows;
-		if (!rows) {
-			return null;
-		}
-		var parts = rows.split(",");
-		return parts[nr];
 	};
 
-	this.getContentEditor = function () {
+	this.getContentEditor = function () {//iframes are frames in dom too
 		if (this.getContentEditorHeightForFrameNr(1) === "0") {
 			return this.getEditorFrameWindow().frames[2];
 		} else if (this.getContentEditorHeightForFrameNr(2) === "0") {

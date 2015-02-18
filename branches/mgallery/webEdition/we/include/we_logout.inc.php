@@ -49,14 +49,14 @@ if(!isset($GLOBALS['isIncluded']) || !$GLOBALS['isIncluded']){
 		}catch(err){}
 	}
 
-	if(typeof(top.tinyMceDialog) !== "undefinded" && top.tinyMceDialog !== null){
+	if(top.tinyMceDialog !== undefined && top.tinyMceDialog !== null){
 		var tinyDialog = top.tinyMceDialog;
 		try{
 			tinyDialog.close();
 		}catch(err){}
 	}
 
-	if(typeof(top.tinyMceSecondaryDialog) !== "undefinded" && top.tinyMceSecondaryDialog !== null){
+	if(top.tinyMceSecondaryDialog !== undefined && top.tinyMceSecondaryDialog !== null){
 		var tinyDialog = top.tinyMceSecondaryDialog;
 		try{
 			tinyDialog.close();

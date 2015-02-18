@@ -332,7 +332,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				if(!file_exists($configFile) || !is_file($configFile)){
 					we_glossary_settingControl::saveSettings(true);
 				}
-				include($configFile);
 
 				//FIXME: these values should be obtained from global settings
 				$Languages = array(

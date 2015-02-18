@@ -52,7 +52,7 @@ class we_navigation_ruleFrames{
 		return we_html_tools::getHtmlTop(g_l('navigation', '[menu_highlight_rules]')) . STYLESHEET . '</head>' .
 			we_html_element::htmlBody(array('class ' => 'weDialogBody')
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlIFrame('content', $this->Frameset . '?pnt=content', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
+					, we_html_element::htmlIFrame('content', $this->Frameset . '?pnt=content', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
 					we_html_element::htmlIFrame('cmdFrame',  "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 			)) .
 			'</html>';

@@ -128,34 +128,34 @@ function getPathInfos() {
 	}
 }
 
-function setFrameSize(){
+function setFrameSize() {
 	var tabsHeight;
-	if(document.getElementById('tabContainer').offsetWidth > 0) {
-		if(document.getElementById('naviDiv')){
+	if (document.getElementById('tabContainer').offsetWidth > 0) {
+		if (document.getElementById('naviDiv')) {
 			tabsHeight = document.getElementById('main').offsetHeight;
-			document.getElementById('naviDiv').style.height = tabsHeight+"px";
-			document.getElementById('contentDiv').style.top = tabsHeight+"px";
-		}else if(parent.document.getElementById("edheaderDiv")){
+			document.getElementById('naviDiv').style.height = tabsHeight + "px";
+			document.getElementById('contentDiv').style.top = tabsHeight + "px";
+		} else if (parent.document.getElementById("edheaderDiv")) {
 			tabsHeight = document.getElementById('main').offsetHeight;
-			parent.document.getElementById('edheaderDiv').style.height = tabsHeight+"px";
-			parent.document.getElementById('edbodyDiv').style.top = tabsHeight+"px";
-		}else if(parent.document.getElementsByName('editHeaderDiv').length>0){
+			parent.document.getElementById('edheaderDiv').style.height = tabsHeight + "px";
+			parent.document.getElementById('edbodyDiv').style.top = tabsHeight + "px";
+		} else if (parent.document.getElementsByName('editHeaderDiv').length > 0) {
 			tabsHeight = document.getElementById('main').offsetHeight;
-			var tmp=parent.document.getElementsByName("editHeaderDiv");
-			var nList=tmp[0].parentNode.getElementsByTagName("div");
-			nList[0].style.height = tabsHeight+"px";
-			nList[1].style.top = tabsHeight+"px";
-			nList[2].style.top = tabsHeight+"px";
-		}else if(parent.document.getElementsByTagName("FRAMESET")){
+			var tmp = parent.document.getElementsByName("editHeaderDiv");
+			var nList = tmp[0].parentNode.getElementsByTagName("div");
+			nList[0].style.height = tabsHeight + "px";
+			nList[1].style.top = tabsHeight + "px";
+			nList[2].style.top = tabsHeight + "px";
+		} else if (parent.document.getElementsByTagName("FRAMESET")) {
 			//FIXME: remove this if frames are obsolete
 			var fs = parent.document.getElementsByTagName("FRAMESET")[0];
 			//document.getElementById('main').style.overflow = "hidden";
 			tabsHeight = document.getElementById('main').offsetHeight;
 			var fsRows = fs.rows.split(',');
 			fsRows[0] = tabsHeight;
-			fs.rows =  fsRows.join(",");
+			fs.rows = fsRows.join(",");
 		}
 	} else {
-		setTimeout(setFrameSize,100);
+		setTimeout(setFrameSize, 100);
 	}
 }

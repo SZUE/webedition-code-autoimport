@@ -195,15 +195,15 @@ function keyEditorListener(_successor) {
 						self.focus(); // focus, to avoid a too late onchange of editor
 						this.cancelEvent(evt);
 						_activeEditorFrame.setEditorPublishWhenSave(true);
-						if (typeof (_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document) === "function") {
-							_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document();
+						if (typeof (_activeEditorFrame.getEditorFrameWindow().frames.editFooter.we_save_document) === "function") {
+							_activeEditorFrame.getEditorFrameWindow().frames.editFooter.we_save_document();
 						}
 					} else {// S (Save)
 						self.focus();  // focus, to avoid a too late onchange of editor
 						this.cancelEvent(evt);
 						_activeEditorFrame.setEditorPublishWhenSave(false);
-						if (typeof (_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document) === "function") {
-							_activeEditorFrame.getEditorFrameWindow().frames[3].we_save_document();
+						if (typeof (_activeEditorFrame.getEditorFrameWindow().frames.editFooter.we_save_document) === "function") {
+							_activeEditorFrame.getEditorFrameWindow().frames.editFooter.we_save_document();
 						}
 					}
 					return true;
@@ -323,9 +323,9 @@ function keyTagWizardListener(_successor) {
 				_activeEditorFrame = top.weEditorFrameController.getActiveEditorFrame();
 
 				if (_activeEditorFrame.getEditorContentType() === "text/weTmpl" &&
-								_activeEditorFrame.getEditorFrameWindow().frames[3].tagGroups.alltags !== undefined) {
+								_activeEditorFrame.getEditorFrameWindow().frames.editFooter.tagGroups.alltags !== undefined) {
 
-					_activeEditorFrame.getEditorFrameWindow().frames[3].openTagWizardPrompt();
+					_activeEditorFrame.getEditorFrameWindow().frames.editFooter.openTagWizardPrompt();
 					this.cancelEvent(evt);
 					return true;
 				}
@@ -388,9 +388,9 @@ function dealWithKeyboardShortCut(evt) {
 	// This function receives all events, when a key is pressed and forwards the event to
 	// the first keyboardlistener ("chain of responsibility")
 	switch (evt.keyCode) {
-		case -1: 
+		case -1:
 			keyListener.cancelEvent(evt);
-			return true; 
+			return true;
 		case 27: // ESCAPE
 		case 13: // ENTER
 		case 116: // F5 - works only in FF
