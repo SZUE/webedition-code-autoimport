@@ -527,12 +527,11 @@ function changeit(value, rowNr){
 		row.removeChild(searchTD);
 
 		var innerhtml= "<table id=\"search["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>\n"
-		+ "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 100px;\" type=\"text\" />\n"
-		+ "</td><td>&nbsp;</td><td><a href=\"#\">\n"
-		+ "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n"
-		+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" >"
+		+ "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 100px;\" type=\"text\" />"
+		+ "</td><td>&nbsp;</td><td><a href=\"#\">"
+		+ "<button id=\"date_picker_from"+rowNr+"\" class=\"weBtn\">"
 		+ "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>"
-	+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>";
+	+ "</button></a></td></tr></tbody></table>";
 
 
 	cell = document.createElement("TD");

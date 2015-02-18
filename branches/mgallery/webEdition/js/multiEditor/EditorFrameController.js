@@ -1167,8 +1167,7 @@ function EditorFrame(ref, elementId) {
 					if (_theEditorFrame.frames.editHeader) {
 						_theEditorFrame.frames.editHeader.location.reload();
 					}
-					var contentEditor = this.getContentEditor();
-					if (contentEditor) {
+					if (this.getContentEditor()) {
 						top.we_cmd("reload_editpage");
 					}
 					if (_theEditorFrame.frames.editFooter) {

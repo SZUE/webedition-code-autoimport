@@ -54,14 +54,25 @@ abstract class we_html_button{
 	 * @static
 	 */
 	static function getButton($value, $id, $cmd = '', $width = self::WIDTH, $title = '', $disabled = false, $margin = '', $padding = '', $key = '', $float = '', $display = '', $important = true, $isFormButton = false, $cssInline = false){
-		return '<table  ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
-			' id="' . $id . '" class="weBtn' . ($disabled ? 'Disabled' : '') .
-			'"' . self::getInlineStyleByParam(($width ? : ($width == self::AUTO_WIDTH ? 0 : self::WIDTH)), '', $float, $margin, $padding, $display, '', $important) .
-			' onmouseout="weButton.out(this);" onmousedown="weButton.down(this);" onmouseup="if(weButton.up(this)){' . oldHtmlspecialchars($cmd) . ';}">' .
-			'<tr><td class="weBtnLeft' . ($disabled ? 'Disabled' : '') . '" ></td>' .
-			'<td class="weBtnMiddle' . ($disabled ? 'Disabled' : '') . '">' . $value . '</td>' .
-			'<td class="weBtnRight' . ($disabled ? 'Disabled' : '') . '">' . ($isFormButton ? we_html_tools::getPixel(1, 1) : '') . '</td>' .
-			'</tr></table>';
+
+		$isTextButton = strpos($value, '<') === false;
+		return /* '<table  ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
+			  ' id="' . $id . '" class="weBtn' . ($disabled ? 'Disabled' : '') .
+			  '"' . self::getInlineStyleByParam(($width ? : ($width == self::AUTO_WIDTH ? 0 : self::WIDTH)), '', $float, $margin, $padding, $display, '', $important) .
+			  ' onmouseout="weButton.out(this);" onmousedown="weButton.down(this);" onmouseup="if(weButton.up(this)){' . oldHtmlspecialchars($cmd) . ';}">' .
+			  '<tr><td class="weBtnLeft' . ($disabled ? 'Disabled' : '') . '" ></td>' .
+			  '<td class="weBtnMiddle' . ($disabled ? 'Disabled' : '') . '">' . $value . '</td>' .
+			  '<td class="weBtnRight' . ($disabled ? 'Disabled' : '') . '">' . ($isFormButton ? we_html_tools::getPixel(1, 1) : '') . '</td>' .
+			  '</tr></table>' . */
+
+			'<button type="' . ($isFormButton ? 'submit' : 'button') . '" ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
+			($disabled ? ' disabled="disabled"' : '') .
+			' id="' . $id . '" class="weBtn" ' . self::getInlineStyleByParam(($width ? : ($width == self::AUTO_WIDTH ? 0 : self::WIDTH)), '', $float, $margin, $padding, $display, '', $important) .
+			' onclick="' . oldHtmlspecialchars($cmd) . '"' .
+			'>' . $value . '</button>'
+
+
+		;
 	}
 
 	/**
@@ -80,7 +91,7 @@ abstract class we_html_button{
 
 		$_imp = $important ? ' ! important' : '';
 
-		return ' style="border-style:none; padding:0px;border-spacing:0px;' . ($width > 0 ? 'width:' . $width . 'px' . $_imp . ';' : '') .
+		return ' style="' . /* border-style:none; padding:0px;border-spacing:0px;' . */ ($width > 0 ? 'width:' . $width . 'px' . $_imp . ';' : '') .
 			($height ? 'height:' . $height . 'px' . $_imp . ';' : '') .
 			($float ? 'float:' . $float . $_imp . ';' : '') .
 			($clear ? 'clear:' . $clear . $_imp . ';' : '') .
@@ -283,7 +294,7 @@ function switch_button_state(element, button, state, type) {
 	 */
 	static function position_yes_no_cancel($yes_button, $no_button = null, $cancel_button = null, $gap = 10, $align = '', $attribs = array(), $aligngap = 0){
 		//	Create default attributes for table
-		$align = /*$align ? 'right' :*/ 'right';
+		$align = /* $align ? 'right' : */ 'right';
 		$attr = array(
 			'style' => 'border-style:none; padding-top:0px;padding-bottom:0px;padding-left:' . ($align === 'left' ? $aligngap : 0) . 'px;padding-right:' . ($align === 'right' ? $aligngap : 0) . 'px;border-spacing:0px;',
 			'align' => $align,
@@ -300,8 +311,8 @@ function switch_button_state(element, button, state, type) {
 		$_buttons = array();
 		//	button order depends on OS
 		$_order = (we_base_browserDetect::isMAC() ?
-			array('no_button', 'cancel_button', 'yes_button') :
-			array('yes_button', 'no_button', 'cancel_button'));
+				array('no_button', 'cancel_button', 'yes_button') :
+				array('yes_button', 'no_button', 'cancel_button'));
 
 		//	Existing buttons are added to array
 		for($_i = 0; $_i < count($_order); $_i++){

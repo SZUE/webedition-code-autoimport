@@ -2739,6 +2739,16 @@ images/icons/no_windowsmedia.gif
 images/icons/no_realmedia.gif
 images/gruen.gif
 images/button/icons/edit_real.gif
+images/button/btn_normal_right.gif
+images/button/btn_normal_middle.gif
+images/button/btn_normal_left.gif
+images/button/btn_disabled_right.gif
+images/button/btn_disabled_middle.gif
+images/button/btn_disabled_left.gif
+images/button/btn_diabled_middle.gif
+images/button/btn_clicked_right.gif
+images/button/btn_clicked_middle.gif
+images/button/btn_clicked_left.gif
 images/backgrounds/radient.gif
 images/backgrounds/multitabBG.gif
 images/backgrounds/iconbarBack.gif
