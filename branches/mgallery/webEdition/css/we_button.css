@@ -156,6 +156,7 @@ button.weBtn{
 	padding-right: 0.5em !important;
 	box-shadow: 2px 2px 2px #555555;
 	margin-right:0.5em;
+	margin-bottom: 1ex;
 }
 
 /*button.weBtn:hover{
