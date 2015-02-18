@@ -176,6 +176,8 @@ foreach($_SESSION['perms'] as $perm => $access){
 				'hidden':<?php echo weTree::HiddenWidth; ?>,
 								'defaultWidth':<?php echo weTree::DefaultWidth; ?>,
 								'min':<?php echo weTree::MinWidth; ?>,
+								'max':<?php echo weTree::MaxWidth; ?>,
+								'step':<?php echo weTree::StepWidth; ?>,
 								'moveWidth':<?php echo weTree::MoveWidth; ?>,
 								'deleteWidth':<?php echo weTree::DeleteWidth; ?>
 
@@ -400,7 +402,6 @@ we_main_header::pCSS();
 	<div id="cmdDiv">
 		<iframe src="about:blank" name="load"></iframe>
 		<iframe src="about:blank" name="load2"></iframe>
-		<!--<iframe src="about:blank" name="ad"></iframe>-->
 		<iframe src="about:blank" name="postframe"></iframe>
 		<iframe src="about:blank" name="plugin"></iframe>
 	</div>

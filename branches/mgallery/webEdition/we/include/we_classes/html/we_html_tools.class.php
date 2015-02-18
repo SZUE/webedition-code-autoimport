@@ -693,6 +693,7 @@ this.selectedIndex = 0;' .
 				self::getJSErrorHandler()
 			) . //load this as early as possible
 			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
+			we_html_element::htmlMeta(array('name' => 'viewport', 'content' => 'width=device-width; height=device-height; maximum-scale=1.0; initial-scale=1.0; user-scalable=yes')) .
 			we_html_element::htmlMeta(array('http-equiv' => 'expires', 'content' => 0)) .
 			we_html_element::htmlMeta(array('http-equiv' => 'Cache-Control', 'content' => 'no-cache')) .
 			we_html_element::htmlMeta(array('http-equiv' => 'pragma', 'content' => 'no-cache')) .

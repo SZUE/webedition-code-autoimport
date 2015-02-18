@@ -410,10 +410,12 @@ abstract class we_html_element{
 	}
 
 	public static function htmlIFrame($name, $src, $style = '', $iframestyle = '', $onload = '', $scroll = true){
+		static $isApple = -1;
+		$isApple = ($isApple !== -1 ? $isApple : we_base_browserDetect::inst()->getBrowser() == we_base_browserDetect::APPLE);
 		$iframestyle = $iframestyle ? : 'border:0px;width:100%;height:100%;overflow: ' . (false && we_base_browserDetect::isFF() ? 'auto' : 'hidden') . ';';
 		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div')
 				, we_html_baseElement::getHtmlCode(
-					new we_html_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'frameBorder' => 0, 'src' => $src, 'style' => $iframestyle, 'onload' => ($scroll ? 'this.contentDocument.body.style.overflow=\'auto !important\';this.contentDocument.body.style[\'-webkit-overflow-scrolling\']=\'touch !important\';' : '') . $onload))
+					new we_html_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'frameBorder' => 0, 'src' => $src, 'style' => $iframestyle, 'onload' => ($scroll ? 'this.contentDocument.body.style.overflow=\'' . ($isApple ? 'scroll !important' : 'auto') . '\';' . ($isApple ? 'this.contentDocument.body.style[\'-webkit-overflow-scrolling\']=\'touch !important\';' : '') : '') . $onload))
 		));
 	}
 

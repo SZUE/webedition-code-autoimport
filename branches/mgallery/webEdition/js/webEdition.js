@@ -190,7 +190,10 @@ function incTree() {
 	}
 	if (w >= size.tree.max) {
 		w = size.tree.max;
+		setTreeWidth(w);
 		self.document.getElementById("incBaum").style.backgroundColor = "grey";
+	}else{
+
 	}
 }
 

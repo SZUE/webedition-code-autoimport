@@ -713,8 +713,3 @@ table.error td pre{
 .imgErrorActive{
 	background-image: url(/webEdition/images/messageConsole/errorActive.gif);
 }
-
-iframe.scroll body{
-	overflow:scroll !important;
-	-webkit-overflow-scrolling:touch !important;
-}
