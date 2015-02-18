@@ -1367,7 +1367,7 @@ class we_objectFile extends we_document{
 		if(!$editable){
 			return $this->getPreviewView($name, g_l('global', ($this->getElement($name) ? '[yes]' : '[no]')));
 		}
-		return '<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["checkbox_" . $name]["required"] ? "*" : "") . "</b></span>" . ( isset($this->DefArray["checkbox_" . $name]['editdescription']) && $this->DefArray["checkbox_" . $name]['editdescription'] ? self::formatDescription($this->DefArray["checkbox_" . $name]['editdescription']) : we_html_element::htmlBr()) .
+		return '<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray['checkbox_' . $name]["required"] ? "*" : "") . "</b></span>" . ( isset($this->DefArray["checkbox_" . $name]['editdescription']) && $this->DefArray["checkbox_" . $name]['editdescription'] ? self::formatDescription($this->DefArray["checkbox_" . $name]['editdescription']) : we_html_element::htmlBr()) .
 				we_html_forms::checkboxWithHidden(($this->getElement($name) ? true : false), "we_" . $this->Name . "_checkbox[$name]", "", false, "defaultfont", "_EditorFrame.setEditorIsHot(true);");
 	}
 

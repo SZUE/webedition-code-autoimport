@@ -53,14 +53,14 @@ abstract class we_html_button{
 	 * @param boolean $important
 	 * @static
 	 */
-	static function getButton($value, $id, $cmd = '', $width = self::WIDTH, $title = '', $disabled = false, $margin = '', $padding = '', $key = '', $float = '', $display = '', $important = true, $isFormButton = false, $cssInline = false){
+	static function getButton($value, $id, $cmd = '', $width = self::WIDTH, $title = '', $disabled = false, $margin = '', $padding = '', $key = '', $float = '', $display = '', $important = true, $isFormButton = false){
 		return '<table  ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
 			' id="' . $id . '" class="weBtn' . ($disabled ? 'Disabled' : '') .
 			'"' . self::getInlineStyleByParam(($width ? : ($width == self::AUTO_WIDTH ? 0 : self::WIDTH)), '', $float, $margin, $padding, $display, '', $important) .
 			' onmouseout="weButton.out(this);" onmousedown="weButton.down(this);" onmouseup="if(weButton.up(this)){' . oldHtmlspecialchars($cmd) . ';}">' .
 			'<tr><td class="weBtnLeft' . ($disabled ? 'Disabled' : '') . '" ></td>' .
 			'<td class="weBtnMiddle' . ($disabled ? 'Disabled' : '') . '">' . $value . '</td>' .
-			'<td class="weBtnRight' . ($disabled ? 'Disabled' : '') . '">' . ($isFormButton ? we_html_tools::getPixel(1, 1) : '') . '</td>' .
+			'<td class="weBtnRight' . ($disabled ? 'Disabled' : '') . '"'.($isFormButton ? 'style="margin-right:1px;"' : '').'></td>' .
 			'</tr></table>';
 	}
 

@@ -1450,12 +1450,13 @@ class we_versions_version{
 		if($includepath != '' && file_exists($includepath)){
 			ob_start();
 			include($includepath);
-			ob_end_clean();
+/*			ob_end_clean();
 			$_REQUEST = $requestBackup;
 			extract($GLOBALS, EXTR_SKIP); // globalen Namensraum herstellen.
 
 			ob_start();
-			include($includepath);
+			include($includepath);*/
+			//the above won't work, since php-functions are included multiple times
 			$contents = ob_get_clean();
 		} else {
 			ob_start();
