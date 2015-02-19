@@ -109,7 +109,7 @@ class we_fileupload_include extends we_fileupload_base{
 	//TODO: split and move selector to base
 	public function getHTML(){
 		$butBrowse = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? we_html_button::create_button('browse', 'javascript:void(0)', true, 84, we_html_button::HEIGHT, '', '', false, false, '_btn') :
-			we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, ($this->dimensions['width'] - 103), we_html_button::HEIGHT, '', '', false, false, '_btn'));
+			we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, ($this->dimensions['width'] - 110), we_html_button::HEIGHT, '', '', false, false, '_btn'));
 
 		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
 
@@ -125,16 +125,16 @@ class we_fileupload_include extends we_fileupload_base{
 <div id="div_' . $this->name . '_legacy" style="display:none">' . we_html_element::htmlInput(array('type' => 'file', 'name' => $this->name . '_legacy', 'id' => $this->name . '_legacy')) . '</div>
 <div id="div_' . $this->name . '" style="float:left;margin-top:' . $this->dimensions['marginTop'] . 'px;margin-bottom:' . $this->dimensions['marginBottom'] . 'px;">
 	<div>
-		<div class="we_fileInputWrapper" id="div_' . $this->name . '_fileInputWrapper" style="vertical-align:top;display:inline-block;height:22px; ">
+		<div class="we_fileInputWrapper" id="div_' . $this->name . '_fileInputWrapper" style="vertical-align:top;display:inline-block;height:26px; ">
 			' . $fileInput . '
 			' . $butBrowse . '
 		</div>
 		<div style="vertical-align: top; display: inline-block; height: 22px">
 			' . $butReset . '
 		</div>
-		<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" style="display:' . ($this->isDragAndDrop ? 'block' : 'none') . '">' . g_l('importFiles', '[dragdrop_text]') . '</div>
+		<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" style="margin-top:0.5em;display:' . ($this->isDragAndDrop ? 'block' : 'none') . '">' . g_l('importFiles', '[dragdrop_text]') . '</div>
 		<div id="div_' . $this->name . '_fileName" style="height:26px;padding-top:10px;display:' . ($this->isDragAndDrop ? 'none' : 'block') . '"></div>
-		<div style="display:block;">
+		<div style="display:block;padding:0.6em 0 0 0.2em">
 			<div id="div_' . $this->name . '_message" style="height:26px;font-size:12px;">
 				&nbsp;
 			</div>
