@@ -27,7 +27,7 @@ div.we_file_drag{
 	font-weight: normal;
 	font-size: 12px;
 	text-align: center;
-	margin: 1em 0;
+	margin: 1em 0.2em 0 0.1em;
 	color: #555;
 	border: 2px dotted #555;
 	/*border-radius: 7px;*/
@@ -44,7 +44,6 @@ div.we_fileInputWrapper{
 	overflow: hidden;
 	position: relative;
 	cursor: pointer;
-	background-color: #DDF;
 }
 .fileInput{
 	cursor: pointer;

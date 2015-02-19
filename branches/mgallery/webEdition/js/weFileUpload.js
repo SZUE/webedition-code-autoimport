@@ -1037,7 +1037,7 @@ var weFileUpload = (function () {
 				}
 
 				if (replace) {
-					_.view.elems.footer.document.getElementById(btn === 'cancel' ? 'div_cancelButton' : 'next').getElementsByTagName('td')[1].innerHTML = replace;
+					_.view.elems.footer.weButton.setText(btn, replace);
 				}
 			};
 		}

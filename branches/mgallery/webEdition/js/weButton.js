@@ -91,6 +91,16 @@ weButton.enable = function (id) {
 	}
 };
 
+weButton.setText = function (id, text) {
+	var el = document.getElementById(id);
+	if (el !== null && text !== undefined) {
+		if(el.tagName === "BUTTON"){
+			el.innerHTML = text;
+			return;
+		}
+	}
+};
+
 weButton.hide = function (id) {
 	var el = document.getElementById(id);
 	if (el !== null) {

@@ -184,9 +184,9 @@ div.dropzone_right{
 				'id' => $this->name . '_x2',
 				'accept' => implode(',', $this->typeCondition['accepted']['mime']))
 		);
-		$divFileInput = we_html_element::htmlDiv(array('id' => 'div_we_File_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'height:23px;margin-top:22px;width:' . $width['button'] . 'px;'), $fileInput . $btnBrowse);
-		$divBtnReset = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnReset', 'style' => 'margin-top:22px;display:none;'), $btnReset);
-		$divBtnUpload = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnUpload', 'style' => 'margin-top: 6px;'), $btnUpload);
+		$divFileInput = we_html_element::htmlDiv(array('id' => 'div_we_File_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'height:26px;margin-top:18px;width:' . ($width['button'] + 4) . 'px;'), $fileInput . $btnBrowse);
+		$divBtnReset = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnReset', 'style' => 'height:26px;margin-top:18px;display:none;'), $btnReset);
+		$divBtnUpload = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnUpload', 'style' => 'margin-top: 4px;'), $btnUpload);
 		$divBtnCancel = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnCancel', 'style' => 'margin-top:16px;display:none;'), $btnCancel);
 
 		$progress = new we_progressBar(20, 0, true);

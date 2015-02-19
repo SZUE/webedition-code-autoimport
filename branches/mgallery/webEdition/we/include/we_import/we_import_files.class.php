@@ -572,7 +572,7 @@ function setApplet() {
 			exit();
 		}
 
-		$cancelButton = '<div id="div_cancelButton">' . we_html_button::create_button("cancel", "javascript:cancel()") . '</div>';
+		$cancelButton = we_html_button::create_button("cancel", "javascript:cancel()", true, 0, 0, '', '', false, false);
 		$closeButton = we_html_button::create_button("close", "javascript:cancel()");
 		$progressbar = '';
 

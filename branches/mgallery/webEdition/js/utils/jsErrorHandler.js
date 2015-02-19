@@ -23,6 +23,11 @@
 
 try {
 	window.onerror = function (msg, file, line, col, errObj) {
+		console = top.console || console;//FIXME: fast and dirty fix for some popups
+		if(typeof console.debug !== 'function'){
+			return;
+		}
+
 		console.debug(msg);
 		if (errObj) {
 			console.debug(errObj);
