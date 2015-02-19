@@ -22,7 +22,175 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-require_once (WE_INCLUDES_PATH . 'we_widgets/mod/wePadFunctions.inc.php');
+
+function convertDate($date){
+	return implode('.', array_reverse(explode('-', $date)));
+}
+
+/**
+ * Creates the HTML code for the date picker button
+ *
+ * @param unknown_type $_label
+ * @param unknown_type $_name
+ * @param unknown_type $_btn
+ * @return unknown
+ */
+function getDateSelector($_label, $_name, $_btn){
+	$btnDatePicker = we_html_button::create_button('image:date_picker', 'javascript:', null, null, null, null, null, null, false, $_btn);
+	$oSelector = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0, 'id' => $_name . '_cell'), 1, 5);
+	$oSelector->setCol(0, 0, array('class' => 'middlefont'), $_label);
+	$oSelector->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
+	$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, '', 10, 'id="' . $_name . '" readonly="1"', "text", 70, 0));
+	$oSelector->setCol(0, 3, null, we_html_tools::getPixel(5, 1));
+	$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));
+	return $oSelector->getHTML();
+}
+
+/**
+ * Creates the HTML code with the note list
+ *
+ * @param unknown_type $_sql
+ * @param unknown_type $bDate
+ * @return unknown
+ */
+function getNoteList($_sql, $bDate, $bDisplay){
+	global $DB_WE;
+	$DB_WE->query($_sql);
+	$_notes = '<table width="100%" cellspacing="0" cellpadding="0" border="0">';
+	$_rcd = 0;
+	$_fields = array(
+		'ID',
+		'WidgetName',
+		'UserID',
+		'CreationDate',
+		'Title',
+		'Text',
+		'Priority',
+		'Valid',
+		'ValidFrom',
+		'ValidUntil'
+	);
+	while($DB_WE->next_record()){
+		foreach($_fields as $_fld){
+			$dbf = $DB_WE->f($_fld);
+
+			$_fldValue = CheckAndConvertISObackend(str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), ($_fld === 'ValidUntil' && ($dbf === '3000-01-01' || $dbf === '0000-00-00' || !$dbf) ? '' : $dbf)));
+			$_notes .= we_html_element::htmlHidden(
+					array(
+						'id' => $_rcd . '_' . $_fld,
+						'style' => 'display:none;',
+						'value' => $_fldValue
+			));
+		}
+
+		$validity = $DB_WE->f("Valid");
+		switch($bDate){
+			case 1 :
+				$showDate = ($validity === 'always' ? '-' : convertDate($DB_WE->f("ValidFrom")));
+				break;
+			case 2 :
+				$showDate = ($validity === 'always' || $validity === 'date' ? '-' : convertDate($DB_WE->f("ValidUntil")));
+				break;
+			default :
+				$showDate = convertDate($DB_WE->f("CreationDate"));
+		}
+
+		$today = date("Ymd");
+		$vFrom = str_replace('-', '', $DB_WE->f("ValidFrom"));
+		$vTill = str_replace('-', '', $DB_WE->f("ValidUntil"));
+		if($bDisplay == 1 && $DB_WE->f("Valid") != 'always'){
+			if($DB_WE->f('Valid') === 'date'){
+				if($today < $vFrom){
+					continue;
+				}
+			} else {
+				if($today < $vFrom || $today > $vTill){
+					continue;
+				}
+			}
+		}
+		$showTitle = str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), $DB_WE->f("Title"));
+		$_notes .= '<tr style="cursor:pointer;" id="' . $_rcd . '_tr" onmouseover="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $_rcd . ',\'#EDEDED\');}" onmouseout="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $_rcd . ',\'#FFFFFF\');}" onmousedown="selectNote(' . $_rcd . ');">
+		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
+		<td width="15" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(
+				array(
+					"src" => IMAGE_DIR . "pd/prio_" . $DB_WE->f("Priority") . ".gif",
+					"width" => 13,
+					"height" => 14
+			)) . '</td>
+		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
+		<td width="60" valign="middle" class="middlefont" align="center">' . $showDate . '</td>
+		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
+		<td valign="middle" class="middlefont">' . CheckAndConvertISObackend($showTitle) . '</td>
+		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
+		</tr>';
+		$_rcd++;
+	}
+	$_notes .= '</table>';
+	return $_notes;
+}
+
+function getCSS(){
+	return '
+body{
+	background-color:transparent;
+}
+.cl_notes{
+	background-color:#FFFFFF;
+}
+#notices{
+	position:relative;
+	top:0px;
+	display:block;
+	height:250px;
+	overflow:auto;
+}
+#props{
+	position:absolute;
+	bottom:0px;
+	display:none;
+}
+#view{
+	position:absolute;
+	bottom:0px;
+	display:block;
+	height:22px;
+}
+.wetextinput{
+	color:black;
+	border:#AAAAAA solid 1px;
+	height:18px;
+	vertical-align:middle;
+	' . (we_base_browserDetect::isIE() ? '' : 'line-height:normal;') . ';
+	font-size:' . ((we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11)) . 'px;
+}
+input.wetextinput:focus {
+	color:black;
+	border:#888888 solid 1px;
+	background-color:#DCE6F2;
+	height:18px;
+	' . (we_base_browserDetect::isIE() ? '' : 'line-height:normal;') . ';
+	font-size:' . ((we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11)) . 'px;
+}
+.wetextarea {
+	color:black;
+	border:#AAAAAA solid 1px;
+	height:80px;
+	' . (we_base_browserDetect::isIE() ? '' : 'line-height:normal;') . ';
+	font-size:' . ((we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11)) . 'px;
+}
+textarea.wetextarea:focus {
+	color:black;
+	border:#888888 solid 1px;
+	background-color:#DCE6F2;
+	height:80px;
+	' . (we_base_browserDetect::isIE() ? '' : 'line-height:normal;') . ';
+	font-size:' . ((we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11)) . 'px;
+}
+select{
+	border:#AAAAAA solid 1px;
+}';
+}
 
 we_html_tools::protect();
 /**
@@ -269,300 +437,101 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::jsScript(LIB_DIR . "additional/jscalendar/calendar-setup.js") .
 		we_html_button::create_state_changer() . we_html_element::jsElement(
 			(($type === "pad/pad") ? "
-			var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';
-			var _sCls_=parent.gel(_sObjId+'_cls').value;
-			var _sType='pad';
-			var _sTb='" . g_l('cockpit', '[notes]') . " - " . $title . "';
-			function init(){
-				parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
-			}
-			" : "
-			var _sObjId='m_" . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 5) . "';
-			var _sTb='" . $title . "';
-			var _sInitProps='" . $_sInitProps . "';") . "
-			var _ttlB64Esc='';
-			if(typeof parent.base64_encode=='function')_ttlB64Esc=escape(parent.base64_encode(_sTb));
+var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';
+var _sCls_=parent.gel(_sObjId+'_cls').value;
+var _sType='pad';
+var _sTb='" . g_l('cockpit', '[notes]') . " - " . $title . "';
+function init(){
+	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
+}
+" : "
+var _sObjId='m_" . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 5) . "';
+var _sTb='" . $title . "';
+var _sInitProps='" . $_sInitProps . "';") . "
+var _ttlB64Esc='';
+if(typeof parent.base64_encode=='function')_ttlB64Esc=escape(parent.base64_encode(_sTb));
 
-			function gel(id_){
-				return document.getElementById?document.getElementById(id_):null;
-			}
+// saves a note, using the function rpc() in home.inc.php (750)
+function saveNote(){
+	var fo=document.forms[0];
+	var _id=fo.elements.mark.value;
+	var q_init;
+	if(_id!='') q_init=getInitialQueryById(_id);
+	else q_init={'Validity':'always','ValidFrom':'','ValidUntil':'','Priority':'low','Title':'','Text':''};
+	var q_curr=getCurrentQuery();
+	var hot=false;
+	var idx=['Title','Text','Priority','Validity','ValidFrom','ValidUntil'];
+	var csv='';
+	var idx_len=idx.length;
+	for(var i=0;i<idx_len;i++){
+		if(q_init[idx[i]]!=q_curr[idx[i]])hot=true;
+		csv+=(idx[i]=='Title'||idx[i]=='Text')?parent.base64_encode(q_curr[idx[i]]):q_curr[idx[i]];
+		if(i<idx_len-1)csv+=';';
+	}
 
-			function weEntity2char(weString){
-				weString = weString.replace('&lt;','<');
-				weString = weString.replace('&gt;','>');
-				return weString;
-			}
+	if(_id!=''){
+		if(hot){
+			// update note
 
-			function weChar2entity(weString){
-				weString = weString.replace('<','&lt;');
-				weString = weString.replace('>','&gt;');
-				return weString;
-			}
-
-			function weEntity2char(weString){
-				weString = weString.replace('&lt;','<');
-				weString = weString.replace('&gt;','>');
-				return weString;
-			}
-
-			function weChar2entity(weString){
-				weString = weString.replace('<','&lt;');
-				weString = weString.replace('>','&gt;');
-				return weString;
-			}
-
-			function calendarSetup(){
-				Calendar.setup({inputField:'f_ValidFrom',ifFormat:'%d.%m.%Y',button:'date_picker_from',align:'Tl',singleClick:true});
-				Calendar.setup({inputField:'f_ValidUntil',ifFormat:'%d.%m.%Y',button:'date_picker_until',align:'Tl',singleClick:true});
-			}
-
-			function getCls(){
-				return parent.gel(_sObjId+'_cls').value;
-			}
-			// displays the note dialog on click on a note
-			function selectNote(id){
-				var fo=document.forms[0];
-				if(!isHotNote()){
-					cancelNote();
-					setColor(gel(id+'_tr'),id,'#EDEDED');
-					fo.elements.mark.value=id;
-					populate(id);
+			if(q_curr['Validity'] == 'period') {
+				weValidFrom = q_curr['ValidFrom'].replace(/-/g, '');
+				weValidUntil = q_curr['ValidUntil'].replace(/-/g, '');
+				if(weValidFrom>weValidUntil) {
+					" . we_message_reporting::getShowMessageCall(
+	g_l('cockpit', '[until_befor_from]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+					return false;
 				}
 			}
-			// displays the note dialog on click the add note button
-			function displayNote(){
-				gel('view').style.display='none';
-				gel('notices').style.height='90px';
-				gel('props').style.display='block';
-				toggleTblValidity();
-			}
-			//close a open note
-			function cancelNote(){
-				fo=document.forms[0];
-				gel('props').style.display='none';
-				gel('notices').style.height='250px';
-				gel('view').style.display='block';
-				var oMark=fo.elements.mark;
-				var mark=oMark.value;
-				if(mark!=''){
-					oMark.value='';
-					setColor(gel(mark+'_tr'),mark,'#FFFFFF');
-				}
-				unpopulate();
-				switch_button_state('delete','delete_enabled','disabled');
-			}
-			// deletes a note
-			function deleteNote(){
-				var fo=document.forms[0];
-				var mark=fo.elements.mark.value;
-				var q_ID=gel(mark+'_ID').value;
-				parent.rpc(_ttlB64Esc.concat(','+_sInitProps),q_ID,'delete','',_ttlB64Esc,_sObjId,'pad/pad');
-			}
-
-			function isHotNote(){
-				var fo=document.forms[0];
-				var _id=fo.elements.mark.value;
-				var q_init;
-				if(_id!='')q_init=getInitialQueryById(_id);
-				else q_init={'Validity':'always','ValidFrom':'','ValidUntil':'','Priority':'low','Title':'','Text':''};
-				var q_curr=getCurrentQuery();
-				var idx=['Title','Text','Priority','Validity','ValidFrom','ValidUntil'];
-				var idx_len=idx.length;
-				for(var i=0;i<idx_len;i++){
-					if(q_init[idx[i]]!=q_curr[idx[i]]) return true;
-				}
+			if(q_curr['Title']=='') {
+				" . we_message_reporting::getShowMessageCall(
+	g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 				return false;
 			}
-			// saves a note, using the function rpc() in home.inc.php (750)
-			function saveNote(){
-				var fo=document.forms[0];
-				var _id=fo.elements.mark.value;
-				var q_init;
-				if(_id!='') q_init=getInitialQueryById(_id);
-				else q_init={'Validity':'always','ValidFrom':'','ValidUntil':'','Priority':'low','Title':'','Text':''};
-				var q_curr=getCurrentQuery();
-				var hot=false;
-				var idx=['Title','Text','Priority','Validity','ValidFrom','ValidUntil'];
-				var csv='';
-				var idx_len=idx.length;
-				for(var i=0;i<idx_len;i++){
-					if(q_init[idx[i]]!=q_curr[idx[i]])hot=true;
-					csv+=(idx[i]=='Title'||idx[i]=='Text')?parent.base64_encode(q_curr[idx[i]]):q_curr[idx[i]];
-					if(i<idx_len-1)csv+=';';
-				}
-
-				if(_id!=''){
-					if(hot){
-						// update note
-
-						if(q_curr['Validity'] == 'period') {
-							weValidFrom = q_curr['ValidFrom'].replace(/-/g, '');
-							weValidUntil = q_curr['ValidUntil'].replace(/-/g, '');
-							if(weValidFrom>weValidUntil) {
-								" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[until_befor_from]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-								return false;
-							}
-						}
-						if(q_curr['Title']=='') {
-							" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-							return false;
-						}
-						var q_ID=gel(_id+'_ID').value;
-						parent.rpc(_ttlB64Esc.concat(','+_sInitProps),(q_ID+';'+encodeURI(csv)),'update','',_ttlB64Esc,_sObjId,'pad/pad',escape(q_curr['Title']),escape(q_curr['Text']));
-					}else{
-						" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[note_not_modified]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-					}
-				}else{
-					if(hot){
-						// insert note
-						if(q_curr['Validity'] == 'period') {
-							weValidFrom = q_curr['ValidFrom'].replace(/-/g, '');
-							weValidUntil = q_curr['ValidUntil'].replace(/-/g, '');
-							if(weValidFrom>weValidUntil) {
-								" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[until_befor_from]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-								return false;
-							} else if(!weValidFrom || !weValidUntil) {
-								" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[date_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-								return false;
-							}
-						} else if(q_curr['Validity'] == 'date' && !q_curr['ValidFrom']){
-								" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[date_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-								return false;
-						}
-						if(q_curr['Title']=='') {
-							" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-							return false;
-						}
-						parent.rpc(_ttlB64Esc.concat(','+_sInitProps),escape(csv),'insert','',_ttlB64Esc,_sObjId,'pad/pad',escape(q_curr['Title']),escape(q_curr['Text']));
-					}else{
-						" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-					}
-				}
-			}
-
-			function getInitialQueryById(id){
-				return asoc={
-					'Validity':gel(id+'_Valid').value,
-					'ValidFrom':gel(id+'_ValidFrom').value,
-					'ValidUntil':gel(id+'_ValidUntil').value,
-					'Priority':gel(id+'_Priority').value,
-					'Title':gel(id+'_Title').value,
-					'Text':gel(id+'_Text').value
-				};
-			}
-
-			function getCurrentQuery(){
-				var fo=document.forms[0];
-				var oSctValid=fo.elements.sct_valid;
-				var validSel=oSctValid.options[oSctValid.selectedIndex].value;
-				var oRdoPrio=fo.elements.rdo_prio;
-				var sValidFrom=fo.elements.f_ValidFrom.value;
-				var sValidUntil=fo.elements.f_ValidUntil.value;
-				return asoc={
-					'Validity':(validSel==0)?'always':((validSel==1)?'date':'period'),
-					'ValidFrom':convertDate(sValidFrom,'%Y-%m-%d'),
-					'ValidUntil':convertDate(sValidUntil,'%Y-%m-%d'),
-					'Priority':(oRdoPrio[0].checked)?'high':(oRdoPrio[1].checked)?'medium':'low',
-					'Title':fo.elements.props_title.value,
-					'Text':fo.elements.props_text.value
-				};
-			}
-
-			function populate(r){
-				fo=document.forms[0];
-				var sValidity=gel(r+'_Valid').value;
-				var sValidityIndex = sValidity == 'always' ? 0 : (sValidity == 'date' ? 1 : 2);
-				var oSctValid=fo.elements.sct_valid;
-				var iSctValidLen=oSctValid.length;
-				for(var i=iSctValidLen-1;i>=0;i--){
-					if(oSctValid.options[i].value==sValidityIndex){
-						oSctValid.options[i].selected=true;
-						break;
-					}
-				}
-				toggleTblValidity();
-				fo.elements.f_ValidFrom.value=convertDate(gel(r+'_ValidFrom').value,'%d.%m.%Y');
-				fo.elements.f_ValidUntil.value=convertDate(gel(r+'_ValidUntil').value,'%d.%m.%Y');
-				var prio=gel(r+'_Priority').value;
-				fo.elements.rdo_prio[prio=='high'?0:prio=='medium'?1:2].checked=true;
-				fo.elements.props_title.value=gel(r+'_Title').value;
-				fo.elements.props_text.value=gel(r+'_Text').value;
-				switch_button_state('delete','delete_enabled','enabled');
-				displayNote();
-			}
-
-			function unpopulate(){
-				fo=document.forms[0];
-				var oSctValid=fo.elements.sct_valid;
-				oSctValid.options[0].selected=true;
-				fo.elements.f_ValidFrom.value='';
-				fo.elements.f_ValidUntil.value='';
-				fo.elements.rdo_prio[2].checked=true;
-				fo.elements.props_title.value='';
-				fo.elements.props_text.value='';
-			}
-
-			function setColor(theRow,theRowNum,newColor){
-				fo=document.forms[0];
-				var theCells=null;
-				if(fo.elements.mark.value!=''||theRow.style===undefined){
+			var q_ID=gel(_id+'_ID').value;
+			parent.rpc(_ttlB64Esc.concat(','+_sInitProps),(q_ID+';'+encodeURI(csv)),'update','',_ttlB64Esc,_sObjId,'pad/pad',escape(q_curr['Title']),escape(q_curr['Text']));
+		}else{
+			" . we_message_reporting::getShowMessageCall(
+	g_l('cockpit', '[note_not_modified]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+		}
+	}else{
+		if(hot){
+			// insert note
+			if(q_curr['Validity'] == 'period') {
+				weValidFrom = q_curr['ValidFrom'].replace(/-/g, '');
+				weValidUntil = q_curr['ValidUntil'].replace(/-/g, '');
+				if(weValidFrom>weValidUntil) {
+					" . we_message_reporting::getShowMessageCall(
+	g_l('cockpit', '[until_befor_from]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+					return false;
+				} else if(!weValidFrom || !weValidUntil) {
+					" . we_message_reporting::getShowMessageCall(
+	g_l('cockpit', '[date_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 					return false;
 				}
-				if(document.getElementsByTagName!==undefined){
-					theCells=theRow.getElementsByTagName('td');
-				}
-				else if(theRow.cells!==undefined){
-					theCells=theRow.cells;
-				}else{
+			} else if(q_curr['Validity'] == 'date' && !q_curr['ValidFrom']){
+					" . we_message_reporting::getShowMessageCall(
+	g_l('cockpit', '[date_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 					return false;
-				}
-				var rowCellsCnt=theCells.length;
-				var domDetect=null;
-				if(window.opera===undefined&&theCells[0].getAttribute!==undefined){
-					domDetect=true;
-				}else{
-					domDetect=false;
-				}
-				var c=null;
-				if(domDetect){
-					for(c=0;c<rowCellsCnt;c++){
-						theCells[c].setAttribute('bgcolor',newColor,0);
-					}
-				}else{
-					for(c=0;c<rowCellsCnt;c++){
-						theCells[c].style.backgroundColor=newColor;
-					}
-				}
-				return true;
 			}
-
-			function convertDate(sDate,sFormat){
-				var fixedImplode='';
-				var arr=sDate.split((sFormat=='%Y-%m-%d')?'.':'-')
-				separator=(sFormat=='%Y-%m-%d')?'-':'.';
-				for(var x=arr.length-1;x>=0;x--){
-					fixedImplode+=(separator+String(arr[x]));
-				}
-				fixedImplode=fixedImplode.substring(separator.length,fixedImplode.length);
-				return fixedImplode;
+			if(q_curr['Title']=='') {
+				" . we_message_reporting::getShowMessageCall(
+	g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+				return false;
 			}
-		")) . we_html_element::htmlBody(
+			parent.rpc(_ttlB64Esc.concat(','+_sInitProps),escape(csv),'insert','',_ttlB64Esc,_sObjId,'pad/pad',escape(q_curr['Title']),escape(q_curr['Text']));
+		}else{
+			" . we_message_reporting::getShowMessageCall(
+	g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+		}
+	}
+}") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js')) . we_html_element::htmlBody(
 		array(
 		"marginwidth" => 0,
 		"marginheight" => 0,
 		"leftmargin" => 0,
 		"topmargin" => 0,
-		"onload" => (($type === "pad/pad") ? "if(parent!=self)init();" : "")
+		"onload" => (($type === "pad/pad") ? "if(parent!=self)init();" : "") . 'calendarSetup();'
 		), we_html_element::htmlForm(array("style" => "display:inline;"), we_html_element::htmlDiv(
 				array("id" => "pad"), $_notepad .
-				we_html_element::htmlHidden(array("name" => "mark", "value" => "")) .
-				we_html_element::jsElement("calendarSetup();")
+				we_html_element::htmlHidden(array("name" => "mark", "value" => ""))
 ))));

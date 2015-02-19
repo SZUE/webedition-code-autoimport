@@ -29,6 +29,7 @@ input:invalid {
 	border: 0px ! important;
 }
 .weEditTable{
+	background-color: #F5F5F5;
 	border: solid #006DB8 1px;
 	color: black;
 }

@@ -25,6 +25,7 @@ we/templates/dummy
 we/include/xhtml.inc.php
 we/include/webEdition_seem.inc.php
 we/include/webEdition_normal.inc.php
+we/include/we_widgets/mod/wePadFunctions.inc.php
 we/include/we_widgets/mod/usr.inc.php
 we/include/we_widgets/mod/upb.inc.php
 we/include/we_widgets/mod/sct.inc.php

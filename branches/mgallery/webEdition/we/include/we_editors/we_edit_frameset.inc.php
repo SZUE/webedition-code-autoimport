@@ -310,12 +310,8 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 <?php if(!$we_doc->ID){ ?>
 		if (top.Tree && top.Tree.treeData && top.Tree.treeData.table != "<?php echo $we_Table; ?>") {
 			top.we_cmd('load', "<?php echo $we_Table ?>");
-
 		}
 	<?php
-	if($we_doc instanceof we_binaryDocument){
-		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
-	}
 }
 ?>
 
@@ -402,6 +398,10 @@ function setOnload(){
 	return ($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE/* && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW */ ?
 			'if(top.edit_include){top.edit_include.close();} if(openedWithWE == 0){ checkDocument(); } setOpenedWithWE(0);' :
 			'');
+}
+
+if(!$we_doc->ID && $we_doc instanceof we_binaryDocument){
+	$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
 }
 ?>
 </head><?php
