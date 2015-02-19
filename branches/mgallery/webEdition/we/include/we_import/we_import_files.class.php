@@ -642,7 +642,7 @@ function next() {
 		$pb = new we_progressBar($prog);
 		$pb->setStudLen(200);
 		$pb->addText(sprintf(g_l('importFiles', '[import_file]'), $formnum + 1), 0, "progress_title");
-		$progressbar = '<div style="margin:0 0 6px 12px" id="progressbar"' . (($this->step == 0) ? 'style="display:none' : '') . '">' . $pb->getHTML() . '</div>';
+		$progressbar = '<div id="progressbar" style="margin:0 0 6px 12px;' . (($this->step == 0) ? 'display:none;' : '') . '">' . $pb->getHTML() . '</div>';
 		$js .= $pb->getJSCode();
 
 		$prevNextButtons = $prevButton ? we_html_button::create_button_table(array($prevButton, $nextButton)) : null;
