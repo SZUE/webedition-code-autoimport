@@ -455,7 +455,7 @@ var cont = new top.container();
 for(var i=1;i<=obj.len;i++){
 	if(obj[i].checked!=1 ' . ($dontDeleteClassFolders ? ' || obj[i].parentid==0' : '') . '){
 		if(obj[i].parentid != 0){
-			if(!parentChecked(obj[i].parentid)){
+			if(!top.parentChecked(obj[i].parentid)){
 				cont.add(obj[i]);
 			}
 		}else{

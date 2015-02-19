@@ -56,8 +56,8 @@ weButton.out = function (el) {
 weButton.disable = function (id) {
 	var el = document.getElementById(id);
 	if (el !== null) {
-		if(el.tagName == "BUTTON"){
-			el.disable=true;
+		if(el.tagName === "BUTTON"){
+			el.disabled = true;
 			return;
 		}/*
 		el.className = "weBtnDisabled";
@@ -75,8 +75,8 @@ weButton.disable = function (id) {
 weButton.enable = function (id) {
 	var el = document.getElementById(id);
 	if (el !== null) {
-		if(el.tagName == "BUTTON"){
-			el.disable=false;
+		if(el.tagName === "BUTTON"){
+			el.disabled = false;
 			return;
 		}/*
 		el.className = "weBtn";

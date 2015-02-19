@@ -216,6 +216,7 @@ var weFileUpload = (function () {
 					fileNum: 0,
 					dataArray: null,
 					currentPos: 0,
+					size: f.size,
 					partNum: 0,
 					totalParts: Math.ceil(f.size / _.sender.chunkSize),
 					lastChunkSize: f.size % _.sender.chunkSize,
@@ -262,17 +263,99 @@ var weFileUpload = (function () {
 			this.currentWeight = 0;
 			this.currentWeightTag = 0;//FIXME: find better name
 			this.isAutostartPermitted = false;
-
+			this.transformAll = {
+					doTrans : false,
+					width : 0,
+					height : 0,
+					widthSelect : 'pixel',
+					heightSelect : 'pixel',
+					keepRatio : true,
+					quality : 0.8,
+					degrees : 0
+			};
 			this.resetParams = function () {
 			};
 
 			this.prepareUpload = function () {
 				return true;
 			};
+			
+
+			//new client side image editing
+			this.transformAndSendFile = function(cur){
+				var reader = new FileReader();
+				reader.onloadend = function() {
+					var tempImg = new Image();
+					tempImg.src = reader.result;
+					tempImg.onload = function() {
+						var MAX_WIDTH = 600;
+						var MAX_HEIGHT = 600;
+						var tempW = tempImg.width;
+						var tempH = tempImg.height;
+						if (tempW > tempH) {
+							if (tempW > MAX_WIDTH) {
+								tempH *= MAX_WIDTH / tempW;
+								tempW = MAX_WIDTH;
+							}
+						} else {
+							if (tempH > MAX_HEIGHT) {
+								tempW *= MAX_HEIGHT / tempH;
+								tempH = MAX_HEIGHT;
+							}
+						}
+
+						var canvas = document.createElement('canvas'),
+							ctx = canvas.getContext("2d"),
+							deg = 0, 
+							x = 0, y = 0;
+
+						canvas.width = tempW;
+						canvas.height = tempH;
+						switch(deg){
+							case 90:
+								canvas.width = tempH;
+								canvas.height = tempW;
+								x = -tempW;
+								break;
+							case 270:
+								canvas.width = tempH;
+								canvas.height = tempW;
+								y = -tempH;
+								break;
+							case 180:
+								x = -tempW;
+								y = -tempH;
+								break;
+							default:
+						}
+						ctx.rotate(-Math.PI*deg/180);
+						ctx.drawImage(tempImg, x, y,  tempW, tempH);
+
+						canvas.toBlob(function(blob){
+							var arrayBufferNew = null;
+							var fr = new FileReader();
+							fr.onload  = function(e) {
+								arrayBufferNew = this.result;
+								cur.dataArray = new Uint8Array(arrayBufferNew);
+								_.sender.sendNextChunk(true);
+
+							};
+							cur.size = blob.size;
+							//_.view.setInternalProgress(0);
+							cur.totalParts = Math.ceil(blob.size / _.sender.chunkSize);
+							cur.lastChunkSize = blob.size % _.sender.chunkSize;
+							fr.readAsArrayBuffer(blob);
+							},"image/jpeg",0.8
+						);
+
+					};
+				};
+				reader.readAsDataURL(cur.file);
+			};
 
 			this.sendNextFile = function () {
 				var cur, fr = null, cnt,
-								that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
+				that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
 
 				if (this.uploadFiles.length > 0) {
 					this.currentFile = cur = this.uploadFiles.shift();
@@ -280,20 +363,28 @@ var weFileUpload = (function () {
 						this.isUploading = true;
 						_.view.repaintGUI({what: 'startSendFile'});
 
-						if (cur.file.size <= this.chunkSize) {
+						if (cur.size <= this.chunkSize && !this.transformAll.doTrans) {//&& !cur.doTrans!!
 							this.sendNextChunk(false);
 						} else {
 							if (_.view.elems.fileSelect && _.view.elems.fileSelect.value) {
 								_.view.elems.fileSelect.value = '';
 							}
-							fr = new FileReader();
-							fr.onload = function (e) {
-								cnt = e.target.result;
-								cur.dataArray = new Uint8Array(cnt);
-								//from inside FileReader we must reference sender by that (or _.sender)
-								that.sendNextChunk(true);
-							};
-							fr.readAsArrayBuffer(cur.file);
+							
+							var transformables = new Array('image/jpeg', 'image/gif', 'image/png');//TODO: add all transformable types
+
+							//clientside editing diabled!
+							if(false && this.transformAll.doTrans && transformables.indexOf(cur.type) !== -1){//TODO: && !cur.doTrans!!)
+								_.sender.transformAndSendFile(cur);
+							} else {
+								fr = new FileReader();
+								fr.onload = function(e) {
+									cnt = e.target.result;
+									cur.dataArray = new Uint8Array(cnt);
+									//from inside FileReader we must reference sender by that (or _.sender)
+									that.sendNextChunk(true);
+								};
+								fr.readAsArrayBuffer(cur.file);
+							}
 						}
 					} else {
 						this.processError({'from': 'gui', 'msg': cur.error});
@@ -306,9 +397,9 @@ var weFileUpload = (function () {
 				}
 			};
 
-			this.sendNextChunk = function (split) {
+			this.sendNextChunk = function(split) {
 				var resp, oldPos, blob,
-								cur = this.currentFile;
+				cur = this.currentFile;
 
 				if (this.isCancelled) {
 					this.isCancelled = false;
@@ -323,18 +414,18 @@ var weFileUpload = (function () {
 						blob = new Blob([cur.dataArray.subarray(oldPos, cur.currentPos)]);
 
 						this.sendChunk(
-										blob,
-										cur.file.name,
-										(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
-										(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
-										cur.partNum,
-										cur.totalParts,
-										cur.fileNameTemp,
-										cur.file.size
-										);
+							blob,
+							cur.file.name,
+							(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
+							(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
+							cur.partNum,
+							cur.totalParts,
+							cur.fileNameTemp,
+							cur.size
+						);
 					}
 				} else {
-					this.sendChunk(cur.file, cur.file.name, cur.file.type, cur.file.size, 1, 1, '', cur.file.size);
+					this.sendChunk(cur.file, cur.file.name, cur.file.type, cur.size, 1, 1, '', cur.size);
 				}
 			};
 
@@ -399,7 +490,7 @@ var weFileUpload = (function () {
 							}
 							return;
 						case 'failure':
-							this.currentWeight = this.currentWeightTag + cur.file.size;
+							this.currentWeight = this.currentWeightTag + cur.size;
 							this.currentWeightTag = this.currentWeight;
 							_.view.repaintGUI({what: 'chunkNOK', message: resp.message});
 							if (this.uploadFiles.length !== 0) {
@@ -711,7 +802,7 @@ var weFileUpload = (function () {
 				}
 				this.uploadFiles = [this.preparedFiles[0]];
 				this.totalFiles = 1;
-				this.totalWeight = this.preparedFiles[0].file.size;
+				this.totalWeight = this.preparedFiles[0].file.size;//size?
 				this.currentWeight = 0;
 				return true;
 			};
@@ -731,7 +822,7 @@ var weFileUpload = (function () {
 			this.disableUploadBtnOnInit = false;
 
 			this.addFile = function (f) {
-				var sizeText = f.isSizeOk ? _.utils.gl.sizeTextOk + _.utils.computeSize(f.file.size) + ', ' :
+				var sizeText = f.isSizeOk ? _.utils.gl.sizeTextOk + _.utils.computeSize(f.size) + ', ' :
 								'<span style="color:red;">' + _.utils.gl.sizeTextNok + '</span>';
 				var typeText = f.isTypeOk ? _.utils.gl.typeTextOk + f.type :
 								'<span style="color:red;">' + _.utils.gl.typeTextNok + f.type + '</span>';
@@ -754,7 +845,7 @@ var weFileUpload = (function () {
 						_.controller.setWeButtonState(_.view.uploadBtnName, !this.disableUploadBtnOnInit, true);
 						return;
 					case 'chunkOK' :
-						var prog = (100 / _.sender.currentFile.file.size) * _.sender.currentFile.currentWeightFile,
+						var prog = (100 / _.sender.currentFile.size) * _.sender.currentFile.currentWeightFile,
 										digits = _.sender.currentFile.totalParts > 1000 ? 2 : (_.sender.currentFile.totalParts > 100 ? 1 : 0);
 
 						if (this.elems.progress) {
@@ -785,7 +876,7 @@ var weFileUpload = (function () {
 							document.images[_.fieldName + '_progress_image'].src = '/webEdition/images/balken.gif';
 							this.elems.progress.style.display = '';
 							this.elems.progressMoreText.style.display = '';
-							this.elems.progressMoreText.innerHTML = ' / ' + _.utils.computeSize(_.sender.currentFile.file.size);
+							this.elems.progressMoreText.innerHTML = ' / ' + _.utils.computeSize(_.sender.currentFile.size);
 						}
 						if (this.extProgress.isExtProgress) {
 							this.elems.extProgressDiv.style.display = '';
@@ -882,6 +973,21 @@ var weFileUpload = (function () {
 			_.onload_abstract(that);
 			_.controller.setWeButtonText('next', 'upload');
 			_.controller.enableWeButton('next', false);
+			
+			//init transformAll object
+			var sf = document.we_startform,
+				t = _.sender.transformAll;
+
+			t.width = sf.width.value ? parseInt(sf.width.value) : t.width;
+			t.height = sf.height.value ? parseInt(sf.height.value) : t.height;
+			t.degrees = sf.degrees.value ? parseInt(sf.degrees.value) : t.degrees;
+			t.doTrans = t.degrees || t.width || t.height ? true : false
+			if(t.doTrans){
+				t.widthSelect = sf.widthSelect.value ? sf.widthSelect.value : t.widthSelect;
+				t.heightSelect = sf.heightSelect.value ? sf.heightSelect.value : t.heightSelect;
+				t.keepRatio = sf.keepRatio.value ? true : t.keepRatio;
+				t.quality = sf.quality.value ? parseFloat(sf.quality.value) : t.quality;
+			}
 		};
 
 		function Controller() {
@@ -900,7 +1006,7 @@ var weFileUpload = (function () {
 
 					_.sender.preparedFiles[index] = f.isSizeOk ? f : null;
 					nameField.value = f.file.name;
-					sizeField.innerHTML = f.isSizeOk ? _.utils.computeSize(f.file.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>';
+					sizeField.innerHTML = f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>';
 				}
 
 				if (f.isSizeOk) {
@@ -951,7 +1057,7 @@ var weFileUpload = (function () {
 							this.preparedFiles[i].fileNum = c++;
 							this.uploadFiles.push(this.preparedFiles[i]);
 							this.mapFiles.push(i);
-							this.totalWeight += this.preparedFiles[i].file.size;
+							this.totalWeight += this.preparedFiles[i].file.size;//size?
 							document.getElementById('div_rowButtons_' + i).style.display = 'none';
 							document.getElementById('div_rowProgress_' + i).style.display = '';
 						}
@@ -984,7 +1090,7 @@ var weFileUpload = (function () {
 
 			this.appendMoreData = function (fd) {
 				var sf = document.we_startform,
-								cur = this.currentFile;
+				cur = this.currentFile;
 
 				fd.append('weFormNum', cur.fileNum + 1);
 				fd.append('weFormCount', this.totalFiles);
@@ -994,7 +1100,9 @@ var weFileUpload = (function () {
 				fd.append('step', 1);
 				fd.append('importToID', sf.importToID.value);
 
-				if (cur.partNum === cur.totalParts && this.isGdOk) {
+				var transformables = new Array('image/jpeg', 'image/gif', 'image/png');//TODO: add all transformable types
+				//clientside editing disabled!
+				if (true || cur.partNum === cur.totalParts && this.isGdOk && transformables.indexOf(cur.type) === -1) {//transformables are transformed by js
 					fd.append('thumbs', sf.thumbs.value);
 					fd.append('width', sf.width.value);
 					fd.append('height', sf.height.value);
@@ -1072,7 +1180,7 @@ var weFileUpload = (function () {
 								row = this.htmlFileRow.replace(/WEFORMNUM/g, index).
 								replace(/WE_FORM_NUM/g, (this.nextTitleNr++)).
 								replace(/FILENAME/g, (f.file.name)).
-								replace(/FILESIZE/g, (f.isSizeOk ? _.utils.computeSize(f.file.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
+								replace(/FILESIZE/g, (f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
 
 				weAppendMultiboxRow(row, '', 0, 0, 0, -1);
 
@@ -1139,7 +1247,7 @@ var weFileUpload = (function () {
 				switch (arg.what) {
 					case 'chunkOK' :
 						digits = cur.totalParts > 1000 ? 2 : (cur.totalParts > 100 ? 1 : 0);//FIXME: make fn on UtilsAbstract
-						fileProg = (100 / cur.file.size) * cur.currentWeightFile;
+						fileProg = (100 / cur.size) * cur.currentWeightFile;
 						totalProg = (100 / s.totalWeight) * s.currentWeight;
 						i = s.mapFiles[cur.fileNum];
 						j = i + 1;
@@ -1347,7 +1455,7 @@ var weFileUpload = (function () {
 				if (typeof this.preparedFiles[0] === 'object' && this.preparedFiles[0] !== null && this.preparedFiles[0].isUploadable) {
 					this.preparedFiles[0].fileNum = 0;
 					this.uploadFiles.push(this.preparedFiles[0]);
-					this.totalWeight = this.preparedFiles[0].file.size;
+					this.totalWeight = this.preparedFiles[0].file.size;//size?
 				}
 
 				this.totalFiles = this.uploadFiles.length;
@@ -1405,7 +1513,7 @@ var weFileUpload = (function () {
 			this.STATE_UPLOAD = 3;
 
 			this.addFile = function (f) {
-				var sizeText = f.isSizeOk ? _.utils.gl.sizeTextOk + _.utils.computeSize(f.file.size) + ', ' :
+				var sizeText = f.isSizeOk ? _.utils.gl.sizeTextOk + _.utils.computeSize(f.size) + ', ' :
 								'<span style="color:red;">' + _.utils.gl.sizeTextNok + '</span>';
 				var typeText = f.isTypeOk ? _.utils.gl.typeTextOk + f.type :
 								'<span style="color:red;">' + _.utils.gl.typeTextNok + f.type + '</span>';
@@ -1425,7 +1533,7 @@ var weFileUpload = (function () {
 					_.sender.isAutostartPermitted = false;
 				}
 
-				if (this.binDocType === 'image' && f.uploadConditionsOk && f.file.size < 4194304) {
+				if (this.binDocType === 'image' && f.uploadConditionsOk && f.size < 4194304) {
 					var reader = new FileReader();
 					reader.onloadstart = function (e) {
 						_.view.elems.dragInnerRight.appendChild(_.view.spinner);
@@ -1433,8 +1541,8 @@ var weFileUpload = (function () {
 
 					reader.onload = function (e) {
 						var maxSize = 100,
-										mode = 'resize',
-										image = new Image();
+						mode = 'resize',
+						image = new Image();
 
 						image.onload = function () {
 							if (mode !== 'resize') {
@@ -1448,8 +1556,8 @@ var weFileUpload = (function () {
 								_.view.elems.dragInnerRight.appendChild(_.view.preview);
 							} else {
 								var width = image.width,
-												height = image.height,
-												cv = document.createElement('canvas');
+								height = image.height,
+								cv = document.createElement('canvas');
 
 								if (width > height) {
 									if (width > maxSize) {
@@ -1477,7 +1585,7 @@ var weFileUpload = (function () {
 						image.src = e.target.result;
 					};
 
-					if (f.file.size < 4194304) {
+					if (f.size < 4194304) {
 						reader.readAsDataURL(f.file);
 					} else {
 						this.preview = new Image();
@@ -1557,7 +1665,7 @@ var weFileUpload = (function () {
 				switch (arg.what) {
 					case 'chunkOK' :
 						digits = cur.totalParts > 1000 ? 2 : (cur.totalParts > 100 ? 1 : 0);//FIXME: make fn on UtilsAbstract
-						fileProg = (100 / cur.file.size) * cur.currentWeightFile;
+						fileProg = (100 / cur.size) * cur.currentWeightFile;
 						this.setInternalProgress(fileProg.toFixed(digits));
 						opacity = fileProg / 100;
 						if (this.preview) {
@@ -1594,7 +1702,7 @@ var weFileUpload = (function () {
 			//TODO: use progress fns from abstract after adapting them to standard progress
 			this.setInternalProgress = function (progress, index) {
 				var coef = this.intProgress.width / 100,
-								mt = typeof _.sender.currentFile === 'object' ? ' / ' + _.utils.computeSize(_.sender.currentFile.file.size) : '';
+								mt = typeof _.sender.currentFile === 'object' ? ' / ' + _.utils.computeSize(_.sender.currentFile.size) : '';
 
 				document.images.progress_image_fileupload.width = coef * progress;
 				document.images.progress_image_bg_fileupload.width = (coef * 100) - (coef * progress);
