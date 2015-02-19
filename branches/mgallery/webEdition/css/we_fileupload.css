@@ -27,12 +27,13 @@ div.we_file_drag{
 	font-weight: normal;
 	font-size: 12px;
 	text-align: center;
-	margin: 1em 0.2em 0 0.1em;
+	margin: 1em 0.4em 0 0.1em;
 	color: #555;
-	border: 2px dotted #555;
-	/*border-radius: 7px;*/
 	cursor: default;
 	background-color: white;
+	/*border: 2px dotted #555;*/
+	border-radius: 4px;
+	box-shadow: 2px 2px 2px #555555;
 }
 div.we_file_drag_hover{
 	color: #00cc00;

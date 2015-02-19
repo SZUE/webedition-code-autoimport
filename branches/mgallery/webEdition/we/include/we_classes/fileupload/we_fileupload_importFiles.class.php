@@ -104,21 +104,23 @@ class we_fileupload_importFiles extends we_fileupload_base{
 		return str_replace(array("\n\r", "\r\n", "\r", "\n"), "", '<table cellspacing="0" cellpadding="0" border="0" width="520"><tbody><tr height="28" width="520">
 			<td width="20" valign="bottom"></td>
 			<td class="weMultiIconBoxHeadline" width="80" valign="bottom">' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span><span style="display:inline-block;width:20px;height:5px;"></span></td>
-			<td valign="bottom" width="270"><input id="name_uploadFiles_WEFORMNUM" display:inline-block; type="text" size="' . (we_base_browserDetect::isOpera() ? 34 : 38) . '" readonly="readonly" value="FILENAME" /></td>
+			<td valign="bottom" width="260"><input id="name_uploadFiles_WEFORMNUM" display:inline-block; type="text" size="' . (we_base_browserDetect::isOpera() ? 34 : 38) . '" readonly="readonly" value="FILENAME" /></td>
 			<td width valign="bottom" width="150">
 				<div style="display: block" id="div_rowButtons_WEFORMNUM">
 					<table cellspacing="0" cellpadding="0" border="0"><tbody><tr width="150">
 							<td valign="bottom" width="2"></td>
 							<td valign="bottom" width="76"><span id="size_uploadFiles_WEFORMNUM">FILESIZE<span></td>
-							<td width="20" valign="bottom" align="middle"><img style="visibility:hidden;" width="14" height="18" src="/webEdition/images/fileUpload/alert.gif" id="alert_img_WEFORMNUM" title=""></td>
-							<td valign="bottom" width="27" height="22">
+							<td width="16" valign="bottom" align="middle"><img style="visibility:hidden;" width="14" height="18" src="/webEdition/images/fileUpload/alert.gif" id="alert_img_WEFORMNUM" title=""></td>
+							<td valign="bottom" width="32" height="22">
 								<div class="fileInputWrapper" style="vertical-align: bottom; display: inline-block; height: 22px; width: 27px;">
 									<input class="fileInput fileInputList fileInputHidden" type="file" id="fileInput_uploadFiles_WEFORMNUM" name="" />
 									' . $butEdit . '
 								</div>
 							</td>
 							<td valign="bottom" width="27" align="right" height="22">
+								<div style="vertical-align: bottom; display: inline-block; height: 22px; width: 27px;">
 								' . $butTrash . '
+								</div>
 							</td>
 					</tr></tbody></table>
 				</div>

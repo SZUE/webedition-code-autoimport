@@ -127,9 +127,11 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		return self::isFallback() || self::isLegacyMode() ? '' : we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::cssElement('
 div.we_file_drag{
 	width: 300px;
-	border-radius: 0px;
-	border: dotted 2px gray;
+	margin: 1em 0.2em 0 0.1em;
 	height: 116px;
+	border: dotted 2px gray;
+	border-radius: 0px;
+	box-shadow: none;
 }
 div.we_file_drag_binDoc{
 	float:left;
