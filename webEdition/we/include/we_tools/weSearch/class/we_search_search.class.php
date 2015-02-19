@@ -632,7 +632,7 @@ class we_search_search extends we_search_base{
 
 				//first check published documents
 				$this->db->query('SELECT l.DID,c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.Name="Title" AND l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"');
-				$titles=$db->getAllFirst(false);
+				$titles=$$this->db->getAllFirst(false);
 
 				//check unpublished documents
 				$this->db->query('SELECT DocumentID, DocumentObject  FROM `' . TEMPORARY_DOC_TABLE . '` WHERE DocTable="tblFile" AND Active=1 ' . $tmpTableWhere);
