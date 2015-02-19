@@ -526,9 +526,9 @@ class we_search_search extends we_search_base{
 				return ($contents ? ' ' . $table . '.ID IN (' . implode(',', $contents) . ')' : '');
 			case VERSIONS_TABLE:
 				//FIXME: versions are searched even if the field is not checked!
-						$contents = array();
+				$contents = array();
 
-				$_db->query('SELECT ID,documentElements  FROM ' . VERSIONS_TABLE.' WHERE documentElements!=""');
+				$_db->query('SELECT ID,documentElements  FROM ' . VERSIONS_TABLE . ' WHERE documentElements!=""');
 				while($_db->next_record()){
 					$elements = unserialize((substr_compare($_db->f('documentElements'), 'a%3A', 0, 4) == 0 ?
 									html_entity_decode(urldecode($_db->f('documentElements')), ENT_QUOTES) :
@@ -551,7 +551,7 @@ class we_search_search extends we_search_base{
 					}
 				}
 
-				return ($contents ? '  ' . $table . '.ID IN (' . implode(',',$contents) . ')' : '');
+				return ($contents ? '  ' . $table . '.ID IN (' . implode(',', $contents) . ')' : '');
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$Ids = $regs = array();
 
@@ -632,7 +632,7 @@ class we_search_search extends we_search_base{
 
 				//first check published documents
 				$this->db->query('SELECT l.DID,c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.Name="Title" AND l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"');
-				$titles=$$this->db->getAllFirst(false);
+				$titles = $this->db->getAllFirst(false);
 
 				//check unpublished documents
 				$this->db->query('SELECT DocumentID, DocumentObject  FROM `' . TEMPORARY_DOC_TABLE . '` WHERE DocTable="tblFile" AND Active=1 ' . $tmpTableWhere);
