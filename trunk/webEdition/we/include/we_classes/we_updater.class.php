@@ -38,8 +38,7 @@ class we_updater{
 			$d->close();
 		}
 		$GLOBALS['we']['errorhandler']['sql'] = true;
-		$entries = $lf->getQueryLog('error');
-		if(!empty($entries)){
+		if(($entries = $lf->getQueryLog('error'))){
 			t_e('Errors while updating tables', $entries);
 		}
 	}
