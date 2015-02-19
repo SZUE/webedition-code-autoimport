@@ -51,7 +51,7 @@ abstract class we_import_wizardBase{
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => "wiz_next('wizbody', '" . $this->path . '?' . $args . "');")
 						, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 								, we_html_element::htmlIFrame('wizbody', "about:blank", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto') .
-								we_html_element::htmlIFrame('wizbusy', "about:blank", 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;','','',false) .
+								we_html_element::htmlIFrame('wizbusy', "about:blank", 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;', '', '', false) .
 								we_html_element::htmlIFrame('wizcmd', $this->path . "?pnt=wizcmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		));
 
