@@ -783,7 +783,7 @@ top.selectFile(top.currentID);
 				'Type' => $data['Type'],
 				'CreationDate' => $data['CreationDate'],
 				'ModDate' => $data['ModDate'],
-				'Filename' => $data['Filename'],
+				'Filename' => isset($data['Filename']) ? $data['Filename'] : '',
 				'Extension' => $data['Extension'],
 				'MasterTemplateID' => $data['MasterTemplateID'],
 				'IncludedTemplates' => $data['IncludedTemplates'],
