@@ -282,7 +282,7 @@ function init() {
 			$allData = getHash('SELECT Name,Width,Height,Quality,Ratio,Maxsize,Interlace,Fitinside,Format FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . $id);
 			if(!$allData){
 				$allData = array('Name' => '', 'Width' => '', 'Height' => '', 'Quality' => '', 'Ratio' => '', 'Maxsize' => '', 'Interlace' => '', 'Fitinside' => '', 'Format' => '');
-			}
+			} 
 
 			$_thumbnail_name = ($id != -1) ? $allData['Name'] : -1;
 
