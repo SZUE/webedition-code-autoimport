@@ -169,6 +169,9 @@ $l_buttons_global=array(
 	'btn_help'=>array(
 		'alt'=>'Ohje',
 	),
+	'btn_import_files'=>array(
+		'alt'=>'Import files',
+	),
 	'btn_mail_resend'=>array(
 		'alt'=>'resend e-mail',
 	),
