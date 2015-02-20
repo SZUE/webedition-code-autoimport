@@ -13,6 +13,8 @@ $l_importFiles=array(
 	'finished'=>'La importación fue exitosa!',
 	'image_options_close'=>'Ocultar opciones de imagen',
 	'image_options_open'=>'Mostrar opciones de imagen',
+	'imgsSearchable'=>'Searchable',
+	'imgsSearchable_label'=>'Set images searchable',
 	'import_expl'=>'Clic en el botón proximo al campo de entrada para seleccionar un archivo en su disco duro. Después de la selección aparece un nuevo campo de entrada y Ud puede seleccionar otro archivo. Por favor, note que el tamaño maximo del archivo de  %s no debe ser excedido por las restricciones de PHP!<br/><br/>Clic en "Siguiente", para iniciar la importación.',
 	'import_expl_js'=>'The new File Upload (beta):<br/><br/>
 

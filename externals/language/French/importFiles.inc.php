@@ -13,6 +13,8 @@ $l_importFiles=array(
 	'finished'=>'L&rsquo;import a été terminé avec succès!',
 	'image_options_close'=>'Cacher les les fonctions graphiques',
 	'image_options_open'=>'Afficher les fonctions graphiques',
+	'imgsSearchable'=>'Searchable',
+	'imgsSearchable_label'=>'Set images searchable',
 	'import_expl'=>'Avec un clic sur le bouton à coté du saisi de texte vous pouvez choisir un fichier sur votre disque dur local. Après la séléction un autre champ de saisi apparaîtra dans lequel vous pouvez choisir un autre fichier. Considérez que la taille par fichier ne doit pas dépasser %s à cause de restriction de PHP!<br/><br/>Cliquez "Avancer", pour démarrer l`import.',
 	'import_expl_js'=>'The new File Upload (beta):<br/><br/>
 

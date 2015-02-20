@@ -13,6 +13,8 @@ $l_importFiles=array(
 	'finished'=>'Het importeren is succesvol beïndigd!',
 	'image_options_close'=>'Verberg afbeeldings functies',
 	'image_options_open'=>'Toon afbeeldings functies',
+	'imgsSearchable'=>'Searchable',
+	'imgsSearchable_label'=>'Set images searchable',
 	'import_expl'=>'Klik op de button naast het invoer veld om een bestand te selecteren vanaf uw harde schijf. Na de selectie verschijnt er een nieuw invoer veld en kunt u een nieuw bestand selecteren. Let er wel op dat de maximale bestandsgrootte van %s niet overschreden wordt vanwege restricties binnen PHP!<br/><br/>Klik op "Volgende", om te beginnen met importeren.',
 	'import_expl_js'=>'The new File Upload (beta):<br/><br/>
 

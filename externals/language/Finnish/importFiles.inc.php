@@ -13,6 +13,8 @@ $l_importFiles=array(
 	'finished'=>'Tuonti onnistui!',
 	'image_options_close'=>'Piilota kuvatoiminnot',
 	'image_options_open'=>'Näytä kuvatoiminnot',
+	'imgsSearchable'=>'Searchable',
+	'imgsSearchable_label'=>'Set images searchable',
 	'import_expl'=>'Paina seuraava painiketta syöttökentässä valitaksesi tiedoston kovalevyltäsi. Valinnan jälkeen ilmestyy uusi syöttökenttä ja voit valita uuden tiedoston. Huomaa että tiedoston maksimikokoa %s ei voida ylittää johtuen PHP:n rajoituksesta!<br/><br/>Paina "Seuraava" -painiketta aloittaaksesi tuonnin.',
 	'import_expl_js'=>'The new File Upload (beta):<br/><br/>
 

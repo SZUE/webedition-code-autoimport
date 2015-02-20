@@ -13,6 +13,8 @@ $l_importFiles=array(
 	'finished'=>'Pomyślnie zakończono importowanie pliku!',
 	'image_options_close'=>'Wyłącz funkcje grafiki',
 	'image_options_open'=>'Wyświetl funkcje grafiki',
+	'imgsSearchable'=>'Searchable',
+	'imgsSearchable_label'=>'Set images searchable',
 	'import_expl'=>'Poprzez kliknięcie przycisku obok pola wprowadzenia można wybrać plik z dysku. Po wyborze jednego ukarze się kolejne okno w którym można wybrać następne pliki. Należy uważać, aby maksymalna wielkość pliku nie przekroczyła %s!<br/><br/>Kliknij na "Dalej", aby rozpocząć importowanie.',
 	'import_expl_js'=>'The new File Upload (beta):<br/><br/>
 
