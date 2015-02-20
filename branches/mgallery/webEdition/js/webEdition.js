@@ -984,6 +984,9 @@ function we_cmd_base(args, url) {
 		case "import":
 			new jsWindow(url, "import", -1, -1, 600, 620, true, false, true);
 			break;
+		case "import_files":
+			new jsWindow(url, "import_files", -1, -1, 600, 620, true, false, true);
+			break;
 		case "export":
 			new jsWindow(url, "export", -1, -1, 600, 540, true, false, true);
 			break;

@@ -97,6 +97,11 @@ class we_fileupload_importFiles extends we_fileupload_base{
 		return we_html_element::htmlBody(array("class" => "weDialogBody"), $content);
 	}
 
+	//TODO: add param filetype
+	public static function getBtnImportFiles($importToID = 0){
+		return we_html_button::create_button("image:btn_import_files", "javascript:top.we_cmd('import_files','" . $importToID . "')", true, 50);
+	}
+
 	protected function _getHtmlFileRow(){
 		$butEdit = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_edit', 'javascript:void(0)');
 		$butTrash = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash', "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);");

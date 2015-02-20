@@ -62,7 +62,7 @@ class we_import_files{
 		}
 
 		$this->categories = we_base_request::_(we_base_request::RAW, "categories", $this->categories);
-		$this->importToID = we_base_request::_(we_base_request::INT, "importToID", $this->importToID);
+		$this->importToID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1) ? : we_base_request::_(we_base_request::INT, "importToID", $this->importToID);
 		$this->sameName = we_base_request::_(we_base_request::STRING, "sameName", $this->sameName);
 		$this->importMetadata = we_base_request::_(we_base_request::INT, "importMetadata", $this->importMetadata);
 		$this->step = we_base_request::_(we_base_request::INT, "step", $this->step);
@@ -234,14 +234,14 @@ function setApplet() {
 
 	function getStep1(){
 		$yuiSuggest = & weSuggest::getInstance();
+		$predefinedPID = $this->importToID;
 		$this->loadPropsFromSession();
 		unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
 
 		// create Start Screen ##############################################################################
-
 		$wsA = makeArrayFromCSV(get_def_ws());
 		$ws = $wsA ? $wsA[0] : 0;
-		$store_id = $this->importToID ? : $ws;
+		$store_id = $predefinedPID ? : ($this->importToID ? : $ws);
 
 		$path = id_to_path($store_id);
 		$wecmdenc1 = we_base_request::encCmd('document.we_startform.importToID.value');
@@ -944,7 +944,7 @@ function next() {
 		// set and return html code
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody')
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlIFrame('imgimportcontent', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&cmd=content&jsRequirementsOk=" . ($this->jsRequirementsOk ? 1 : 0) . ($_step > -1 ? '&step=' . $_step : ''), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto') .
+					, we_html_element::htmlIFrame('imgimportcontent', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&importToID=" . $this->importToID . "&cmd=content&jsRequirementsOk=" . ($this->jsRequirementsOk ? 1 : 0) . ($_step > -1 ? '&step=' . $_step : ''), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto') .
 					we_html_element::htmlIFrame('imgimportbuttons', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&cmd=buttons&jsRequirementsOk=" . ($this->jsRequirementsOk ? 1 : 0) . ($_step > -1 ? '&step=' . $_step : ''), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;','','',false)
 		));
 
