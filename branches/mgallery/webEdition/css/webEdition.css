@@ -205,6 +205,10 @@ overflow: hidden;
 #resize.withIconBar{
 	top:72px;
 }
+.weSelect,
+.wetextinput{
+	background-color: white;
+}
 
 .weSelect,
 .wetextinput,
