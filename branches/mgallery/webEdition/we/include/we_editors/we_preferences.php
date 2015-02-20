@@ -1116,10 +1116,27 @@ function build_dialog($selected_setting = 'ui'){
 			$CSSAPPLYTO_DEFAULT->addOption('wysiwyg', 'wysiwyg');
 			$CSSAPPLYTO_DEFAULT->selectOption(get_value('CSSAPPLYTO_DEFAULT') ? : 'around');
 
+			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[WYSIWYG_IMAGESTARTDIR]'].value");
+			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.wysiwyg_imgstartdir_text.value");
+			$_acButton1 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[WYSIWYG_IMAGESTARTDIR]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::FOLDER . "', 1)");
+			$_acButton2 = we_html_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[WYSIWYG_IMAGESTARTDIR]\'].value = 0;document.forms[0].elements.wysiwyg_imgstartdir_text.value = \'\'');
+
+			$yuiSuggest->setAcId("doc2");
+			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
+			$yuiSuggest->setInput('wysiwyg_imgstartdir_text', ( WYSIWYG_IMAGESTARTDIR ? id_to_path(WYSIWYG_IMAGESTARTDIR) : ''));
+			$yuiSuggest->setMaxResults(20);
+			$yuiSuggest->setMayBeEmpty(true);
+			$yuiSuggest->setResult('newconf[WYSIWYG_IMAGESTARTDIR]', ( WYSIWYG_IMAGESTARTDIR ? : 0));
+			$yuiSuggest->setSelector(weSuggest::DirSelector);
+			$yuiSuggest->setWidth(226);
+			$yuiSuggest->setSelectButton($_acButton1, 10);
+			$yuiSuggest->setTrashButton($_acButton2, 4);
+
 			$_settings = array(
 				array('headline' => g_l('prefs', '[default_php_setting]'), 'html' => getTrueFalseSelect('WE_PHP_DEFAULT'), 'space' => 200),
 				array('headline' => g_l('prefs', '[xhtml_default]'), 'html' => getTrueFalseSelect('XHTML_DEFAULT'), 'space' => 200),
 				array('headline' => g_l('prefs', '[inlineedit_default]'), 'html' => getTrueFalseSelect('INLINEEDIT_DEFAULT'), 'space' => 200),
+				array('headline' => g_l('prefs', '[imagestartid_default]'), 'html' => $yuiSuggest->getHTML(), 'space' => 200),
 				array('headline' => g_l('prefs', '[commands_default]'), 'html' => '<div>' . $commands_default_tmp . '</div><div style="margin-top:4px">' . $COMMANDS_DEFAULT . '</div>', 'space' => 200),
 				array('headline' => g_l('prefs', '[removefirstparagraph_default]'), 'html' => getTrueFalseSelect('REMOVEFIRSTPARAGRAPH_DEFAULT'), 'space' => 200),
 				array('headline' => g_l('prefs', '[showinputs_default]'), 'html' => getTrueFalseSelect('SHOWINPUTS_DEFAULT'), 'space' => 200),
@@ -1128,7 +1145,6 @@ function build_dialog($selected_setting = 'ui'){
 				array('headline' => g_l('prefs', '[replaceacronym]'), 'html' => getYesNoSelect('REPLACEACRONYM'), 'space' => 200),
 				array('headline' => g_l('prefs', '[cssapplyto_default]'), 'html' => $CSSAPPLYTO_DEFAULT->getHtml(), 'space' => 200),
 			);
-
 
 			return create_dialog(''/* , 'we:tag Standards' g_l('prefs', '[tab][defaultAttribs]') */, $_settings, -1, '', '', (isset($_needed_JavaScript) ? $_needed_JavaScript : ''));
 

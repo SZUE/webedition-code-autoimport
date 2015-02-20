@@ -310,6 +310,9 @@ define("WE_THUMBNAIL_DIRECTORY", "/__we_thumbs__");
 // Default setting for inlineedit attribute
 define("INLINEEDIT_DEFAULT", 0);
 
+// Default setting for attribute imagestartdir in wetextarea
+define("WYSIWYG_IMAGESTARTDIR", 0);
+
 // Default setting for removeparagraph attribute
 define("REMOVEFIRSTPARAGRAPH_DEFAULT", 0);
 

@@ -191,9 +191,11 @@ define("BACKUP_STEPS", 7);
 // Directory in which to save thumbnails
 define("WE_THUMBNAIL_DIRECTORY", "/__we_thumbs__");
 
-
 // Default setting for inlineedit attribute
 define("INLINEEDIT_DEFAULT", 0);
+
+// Default setting for attribute imagestartdir in wetextarea
+define("WYSIWYG_IMAGESTARTDIR", 0);
 
 // Default setting for xml attribute
 define("XHTML_DEFAULT", 1);

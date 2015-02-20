@@ -67,8 +67,8 @@ $GLOBALS['configs'] = array(
 		'WE_ERROR_MAIL_ADDRESS' => array('E-Mail address to which to mail errors', we_base_request::EMAIL, ''),
 		'ERROR_DOCUMENT_NO_OBJECTFILE' => array('Document to open when trying to open non-existing object', we_base_request::INT, 0),
 		'DISABLE_TEMPLATE_CODE_CHECK' => array('Disable the check for php-errors in templates', we_base_request::BOOL, false),
-// inlineedit default value
 		'INLINEEDIT_DEFAULT' => array('Default setting for inlineedit attribute', we_base_request::BOOL, true),
+		'WYSIWYG_IMAGESTARTDIR' => array('Default setting for attribute imagestartdir in wetextarea', we_base_request::INT, 0),
 		'WE_PHP_DEFAULT' => array('Default setting for php attribute', we_base_request::BOOL, false),
 		'COMMANDS_DEFAULT' => array('Default setting for commands attribute', we_base_request::STRING, ''),
 		'REMOVEFIRSTPARAGRAPH_DEFAULT' => array('Default setting for removeparagraph attribute', we_base_request::BOOL, false),
