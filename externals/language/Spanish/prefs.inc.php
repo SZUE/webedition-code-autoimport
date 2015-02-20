@@ -154,6 +154,7 @@ $l_prefs=array(
 	Further information can be found in the online documentation.<br/><br/>Allow execution of hooks?',
 	'html'=>'Páginas HTML',
 	'html_extensions'=>'Extensiones HTML',
+	'imagestartid_default'=>'Default value for the<br/><em>imagestartid</em> attribute in<br/>&lt;we:textarea&gt;',
 	'inlineedit_default'=>'Valor por defecto para el atributo <br/><em>inlineedit</em> en <br/>&lt;we:textarea&gt;',
 	'install_editor_plugin'=>'Para poder usar el Plugin del editor de webEdition, este debe estar instalado.',
 	'install_editor_plugin_text'=>'El Plugin del editor de webEdition será instalado...',

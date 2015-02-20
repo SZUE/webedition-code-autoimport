@@ -154,6 +154,7 @@ $l_prefs=array(
 	Nähere Infos finden Sie in der Online-Dokumentation.<br/><br/>Möchten Sie die Ausführung von Hooks zulassen?',
 	'html'=>'HTML-Dateien',
 	'html_extensions'=>'HTML-Erweiterungen',
+	'imagestartid_default'=>'Standard Einstellung für<br/><em>imagestartid</em>-Attribut in<br/>&lt;we:textarea&gt;',
 	'inlineedit_default'=>'Standard Einstellung für<br/><em>inlineedit</em>-Attribut in<br/>&lt;we:textarea&gt;',
 	'install_editor_plugin'=>'Um das webEdition Editor PlugIn in Ihrem Browser benutzen zu können, muss es installiert werden.',
 	'install_editor_plugin_text'=>'Das webEdition Editor PlugIn wird installiert...',

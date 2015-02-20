@@ -154,6 +154,7 @@ $l_prefs=array(
 	Lisää tietoa löytyy Online-dokumentaatiosta.<br/><br/>Salli koukkujen käyttö?',
 	'html'=>'HTML -sivut',
 	'html_extensions'=>'HTML -sivujen pääte',
+	'imagestartid_default'=>'Default value for the<br/><em>imagestartid</em> attribute in<br/>&lt;we:textarea&gt;',
 	'inlineedit_default'=>'Oletusarvo<br/><em>inlineedit</em> määreelle<br/>&lt;we:textarea&gt; -tagissa',
 	'install_editor_plugin'=>'Käyttääksesi webEdition -järjestelmän editori plugin laajennusta sinun on asennettava se.',
 	'install_editor_plugin_text'=>'Asennetaan webEdition editori plugin laajennusta...',
