@@ -1232,7 +1232,16 @@ var weFileUpload = (function () {
 			};
 
 			this.reloadOpener = function () {
-				top.opener.top.we_cmd('load', 'tblFile');
+				try{
+					var activeFrame = top.opener.top.weEditorFrameController.getActiveEditorFrame();
+
+					if(document.we_startform.importToID.value === activeFrame.EditorDocumentId && activeFrame.EditorEditPageNr === 16){
+						top.opener.top.we_cmd('switch_edit_page',16, activeFrame.EditorTransaction);
+					}
+					top.opener.top.we_cmd('load', 'tblFile');
+				} catch(e){
+					//
+				}
 			};
 
 			this.repaintGUI = function (arg) {

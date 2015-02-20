@@ -557,9 +557,9 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		<td>' . we_html_tools::getPixel(10, 12) . '</td>
 		<td>' . we_html_button::create_button("image:iconview", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
 		<td>' . we_html_button::create_button("image:listview", "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>
-		<td>' . we_html_tools::getPixel(10, 12) . '</td>
-		<td style="width:50px;">' . we_fileupload_importFiles::getBtnImportFiles(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->ID : 0) . '</td>
-		<td style="width:50px;">' . we_html_button::create_button("image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $id . "')", true, 50, "", "", "", false) . '</td>
+		<td>' . we_html_tools::getPixel(10, 12) . '</td>' . 
+		(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->Table === FILE_TABLE ? we_html_baseElement::getHtmlCode(new we_html_baseElement('td', true, array('style' => 'width:50px;'), we_fileupload_importFiles::getBtnImportFiles($GLOBALS['we_doc']->ID))) : '') .
+		'<td style="width:50px;">' . we_html_button::create_button("image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $id . "')", true, 50, "", "", "", false) . '</td>
 	</tr>
 	<tr><td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td></tr>
 </table>';
