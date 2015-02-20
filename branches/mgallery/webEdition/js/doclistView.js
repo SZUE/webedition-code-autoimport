@@ -215,7 +215,7 @@ function makeAjaxRequestDoclist() {
 	}
 	var scroll = document.getElementById("scrollContent_doclist");
 	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=\"" + dirs.IMAGE_DIR + "logo-busy.gif\"/><div id=\'scrollActive\'></div></td></tr></table>";
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=doclist&cmd=GetSearchResult&classname=we_folder&id=" + docID + "&we_transaction=" + transaction + args + "");
+	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=doclist&cmd=GetSearchResult&classname=we_folder&id=" + docID + "&table=" + docTable + "&we_transaction=" + transaction + args + "");
 }
 
 function makeAjaxRequestParametersTop() {
@@ -225,7 +225,7 @@ function makeAjaxRequestParametersTop() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=top&classname=we_folder&id=" + docID + "&we_transaction=" + transaction + args + "");
+	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=top&classname=we_folder&id=" + docID + "&table=" + docTable + "&we_transaction=" + transaction + args + "");
 }
 
 function makeAjaxRequestParametersBottom() {
@@ -235,7 +235,7 @@ function makeAjaxRequestParametersBottom() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=bottom&classname=we_folder&id=" + docID + "&we_transaction=" + transaction + args + "");
+	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&cns=doclist&cmd=GetSearchParameters&position=bottom&classname=we_folder&id=" + docID + "&table=" + docTable + "&we_transaction=" + transaction + args + "");
 }
 
 function getMouseOverDivs() {
@@ -245,7 +245,7 @@ function getMouseOverDivs() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackgetMouseOverDivs, "protocol=json&cns=doclist&cmd=GetMouseOverDivs&whichsearch=doclist&classname=we_folder&id=" + docID + "&we_transaction=" + transaction + args);
+	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackgetMouseOverDivs, "protocol=json&cns=doclist&cmd=GetMouseOverDivs&whichsearch=doclist&classname=we_folder&id=" + docID + "&table=" + docTable + "&we_transaction=" + transaction + args);
 }
 
 function setOrder(order) {
