@@ -1098,19 +1098,23 @@ var weFileUpload = (function () {
 				fd.append('cmd', 'buttons');
 				fd.append('jsRequirementsOk', 1);
 				fd.append('step', 1);
+
 				fd.append('importToID', sf.importToID.value);
+				fd.append('sameName', sf.sameName.value);
+				fd.append('categories', sf.categories.value);
+				fd.append('importMetadata', sf.importMetadata.value);
+				fd.append('imgsSearchable', sf.imgsSearchable.value);
+				fd.append('thumbs', sf.thumbs.value);
 
 				var transformables = new Array('image/jpeg', 'image/gif', 'image/png');//TODO: add all transformable types
 				//clientside editing disabled!
 				if (true || cur.partNum === cur.totalParts && this.isGdOk && transformables.indexOf(cur.type) === -1) {//transformables are transformed by js
-					fd.append('thumbs', sf.thumbs.value);
 					fd.append('width', sf.width.value);
 					fd.append('height', sf.height.value);
 					fd.append('widthSelect', sf.widthSelect.value);
 					fd.append('heightSelect', sf.heightSelect.value);
 					fd.append('keepRatio', sf.keepRatio.value);
 					fd.append('quality', sf.quality.value);
-					fd.append('sameName', sf.sameName.value);
 					fd.append('degrees', sf.degrees.value);
 				}
 

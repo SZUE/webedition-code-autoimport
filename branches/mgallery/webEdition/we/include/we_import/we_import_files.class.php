@@ -27,6 +27,7 @@ class we_import_files{
 	var $step = 0;
 	var $sameName = "overwrite";
 	var $importMetadata = true;
+	private $imgsSearchable = false;
 	var $cmd = '';
 	var $thumbs = '';
 	var $width = '';
@@ -65,6 +66,7 @@ class we_import_files{
 		$this->importToID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1) ? : we_base_request::_(we_base_request::INT, "importToID", $this->importToID);
 		$this->sameName = we_base_request::_(we_base_request::STRING, "sameName", $this->sameName);
 		$this->importMetadata = we_base_request::_(we_base_request::INT, "importMetadata", $this->importMetadata);
+		$this->imgsSearchable = we_base_request::_(we_base_request::INT, "imgsSearchable", $this->imgsSearchable);
 		$this->step = we_base_request::_(we_base_request::INT, "step", $this->step);
 		$this->cmd = we_base_request::_(we_base_request::RAW, "cmd", $this->cmd);
 		$this->thumbs = we_base_request::_(we_base_request::RAW, "thumbs", $this->thumbs);
@@ -298,6 +300,13 @@ function setApplet() {
 				'headline' => g_l('importFiles', '[metadata]') . '',
 				'html' => we_html_forms::checkboxWithHidden(
 					$this->importMetadata == true, 'importMetadata', g_l('importFiles', '[import_metadata]')),
+				'space' => 150
+			);
+
+			$parts[] = array(
+				'headline' => g_l('importFiles', '[imgsSearchable]') . '',
+				'html' => we_html_forms::checkboxWithHidden(
+					$this->imgsSearchable == true, 'imgsSearchable', g_l('importFiles', '[imgsSearchable_label]')),
 				'space' => 150
 			);
 
@@ -867,6 +876,7 @@ function next() {
 				$we_doc->Published = time();
 				if($we_ContentType == we_base_ContentTypes::IMAGE){
 					$we_doc->Thumbs = $this->thumbs;
+					$we_doc->IsSearchable = $this->imgsSearchable;
 
 					$newWidth = 0;
 					$newHeight = 0;
@@ -935,7 +945,9 @@ function next() {
 			we_html_element::htmlHidden(array("name" => "keepRatio", "value" => $this->keepRatio)) .
 			we_html_element::htmlHidden(array("name" => "degrees", "value" => $this->degrees)) .
 			we_html_element::htmlHidden(array("name" => "quality", "value" => $this->quality)) .
-			we_html_element::htmlHidden(array("name" => "categories", "value" => $this->categories));
+			we_html_element::htmlHidden(array("name" => "categories", "value" => $this->categories)) .
+			we_html_element::htmlHidden(array("name" => "imgsSearchable", "value" => $this->imgsSearchable)) .
+			we_html_element::htmlHidden(array("name" => "importMetadata", "value" => $this->importMetadata));
 	}
 
 	function _getFrameset(){
