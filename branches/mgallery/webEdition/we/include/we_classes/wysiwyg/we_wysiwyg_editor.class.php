@@ -68,10 +68,11 @@ class we_wysiwyg_editor{
 	private $htmlSpecialchars = true; // in wysiwyg default was "true" (although Tag-Hilfe says "false")
 	private $contentCss = '';
 	private $isInPopup = false;
+	private $imageStartID = 0;
 
 	const CONDITIONAL = true;
 
-	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats){
+	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats = '', $imageStartID = 0){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->restrictContextmenu = $contextmenu ? ',' . $contextmenu . ',' : '';
 		$this->createContextmenu = trim($contextmenu, " ,'") === 'none' || trim($contextmenu, " ,'") === 'false' ? false : true;
@@ -162,6 +163,7 @@ class we_wysiwyg_editor{
 		$this->ref = preg_replace('%[^0-9a-zA-Z_]%', '', $this->name);
 		$this->hiddenValue = $value;
 		$this->isInPopup = $isInPopup;
+		$this->imageStartID = $imageStartID;
 
 		//FIXME: what to do with scripts??
 		/*
@@ -886,6 +888,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		"templates" : "' . $this->templates . '",
 		"formats" : "' . $this->formats . '"
 	},
+	weImageStartID : ' . $this->imageStartID . ',
 	weClassNames_urlEncoded : "' . urlencode($this->cssClasses) . '",
 	weIsFrontend : "' . ($this->isFrontendEdit ? 1 : 0) . '",
 	weWordCounter : 0,

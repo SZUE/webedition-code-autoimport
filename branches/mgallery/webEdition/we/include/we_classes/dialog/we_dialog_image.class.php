@@ -259,8 +259,9 @@ class we_dialog_image extends we_dialog_base{
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileID]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileSrc]'].value");
 			$wecmdenc3 = we_base_request::encCmd("opener.document.we_form.elements['we_dialog_args[type]'][1].checked=true;opener.imageChanged();");
+			$startDirID = $this->args['selectorStartDirID'] ? : (WYSIWYG_IMAGESTARTDIR ? : 0); 
 
-			$but = we_html_button::create_button("select", "javascript:we_cmd('openImgselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "'," . WYSIWYG_IMAGESTARTDIR . ",'','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"
+			$but = we_html_button::create_button("select", "javascript:we_cmd('openImgselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "'," . $startDirID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"
 			);
 
 			$radioBut = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "we_dialog_args[type]", g_l('wysiwyg', '[internal_image]'), true, "defaultfont", "imageChanged();");
