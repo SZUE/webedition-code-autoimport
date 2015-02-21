@@ -18,6 +18,7 @@ $bgcolor = new weTagData_textAttribute('bgcolor', false, '');
 $class = new weTagData_textAttribute('class', false, '');
 if(defined('FILE_TABLE')){
 	$editorcss = new weTagData_selectorAttribute('editorcss', FILE_TABLE, 'text/css', false, '');
+	$imagestartid = new weTagData_selectorAttribute('imagestartid', FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, '');
 }
 $ignoredocumentcss = new weTagData_selectAttribute('ignoredocumentcss', weTagData_selectAttribute::getTrueFalse(), false, '');
 $html = new weTagData_selectAttribute('html', weTagData_selectAttribute::getTrueFalse(), false, '');
@@ -60,8 +61,8 @@ $tinyparams = new weTagData_textAttribute('tinyparams', false, '');
 $templates = new weTagData_textAttribute('templates', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('wysiwyg', array(
-	new weTagDataOption('true', false, '', array($name, $cols, $rows, $autobr, $width, $height, $class, $bgcolor, $editorcss, $ignoredocumentcss, $htmlspecialchars, $commands, $contextmenu, $fontnames, $formats, $abbr, $removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $templates, $tinyparams), array($name)),
+	new weTagDataOption('true', false, '', array($name, $cols, $rows, $autobr, $width, $height, $class, $bgcolor, $editorcss, $ignoredocumentcss, $htmlspecialchars, $commands, $contextmenu, $fontnames, $formats, $abbr, $removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $templates, $tinyparams, $imagestartid), array($name)),
 	new weTagDataOption('false', false, '', array($name, $cols, $rows, $class, $autobr, $html, $htmlspecialchars, $php, $abbr, $spellcheck), array($name))), false, '');
 
 $this->Attributes = array($name, $cols, $rows, $class, $autobr, $importrtf, $width, $height, $bgcolor, $editorcss, $ignoredocumentcss, $html, $htmlspecialchars, $php, $commands, $contextmenu, $fontnames, $formats, $xml, $abbr,
-	$removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $templates, $tinyparams);
+	$removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $templates, $tinyparams, $imagestartid);

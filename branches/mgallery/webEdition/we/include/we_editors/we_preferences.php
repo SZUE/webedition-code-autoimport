@@ -1116,17 +1116,17 @@ function build_dialog($selected_setting = 'ui'){
 			$CSSAPPLYTO_DEFAULT->addOption('wysiwyg', 'wysiwyg');
 			$CSSAPPLYTO_DEFAULT->selectOption(get_value('CSSAPPLYTO_DEFAULT') ? : 'around');
 
-			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[WYSIWYG_IMAGESTARTDIR]'].value");
-			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.wysiwyg_imgstartdir_text.value");
-			$_acButton1 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[WYSIWYG_IMAGESTARTDIR]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::FOLDER . "', 1)");
-			$_acButton2 = we_html_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[WYSIWYG_IMAGESTARTDIR]\'].value = 0;document.forms[0].elements.wysiwyg_imgstartdir_text.value = \'\'');
+			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value");
+			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.imagestartid_default_text.value");
+			$_acButton1 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::FOLDER . "', 1)");
+			$_acButton2 = we_html_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[IMAGESTARTID_DEFAULT]\'].value = 0;document.forms[0].elements.imagestartid_default_text.value = \'\'');
 
 			$yuiSuggest->setAcId("doc2");
 			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-			$yuiSuggest->setInput('wysiwyg_imgstartdir_text', ( WYSIWYG_IMAGESTARTDIR ? id_to_path(WYSIWYG_IMAGESTARTDIR) : ''));
+			$yuiSuggest->setInput('imagestartid_default_text', (IMAGESTARTID_DEFAULT ? id_to_path(IMAGESTARTID_DEFAULT) : ''));
 			$yuiSuggest->setMaxResults(20);
 			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult('newconf[WYSIWYG_IMAGESTARTDIR]', ( WYSIWYG_IMAGESTARTDIR ? : 0));
+			$yuiSuggest->setResult('newconf[IMAGESTARTID_DEFAULT]', (IMAGESTARTID_DEFAULT ? : 0));
 			$yuiSuggest->setSelector(weSuggest::DirSelector);
 			$yuiSuggest->setWidth(226);
 			$yuiSuggest->setSelectButton($_acButton1, 10);
