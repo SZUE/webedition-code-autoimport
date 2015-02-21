@@ -43,8 +43,8 @@ class we_selector_document extends we_selector_directory{
 		we_base_ContentTypes::VIDEO => 'btn_add_video',
 	);
 
-	public function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false){
-		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter);
+	public function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false, $startDirID = 0){
+		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter, $startDirID);
 		$this->fields.=',ModDate,RestrictOwners,Owners,OwnersReadOnly,CreatorID' . ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? ',Published' : '');
 		$this->canSelectDir = $canSelectDir;
 
@@ -145,7 +145,7 @@ function exit_open() {
 	}
 
 	protected function setDefaultDirAndID($setLastDir){
-		$this->dir = $setLastDir && isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0;
+		$this->dir = $this->startDirID ? : ($setLastDir && isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0);
 		if($this->rootDirID){
 			if(!in_parentID($this->dir, $this->rootDirID, $this->table, $this->db)){
 				$this->dir = $this->rootDirID;
@@ -167,7 +167,7 @@ function exit_open() {
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER['SCRIPT_NAME'] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&filter=" . $this->filter . (isset($this->open_doc) ? ("&open_doc=" . $this->open_doc) : "");
+		return $_SERVER['SCRIPT_NAME'] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&startDirID=" . $this->startDirID . "&filter=" . $this->filter . (isset($this->open_doc) ? ("&open_doc=" . $this->open_doc) : "");
 	}
 
 	protected function printFramesetJSFunctions(){

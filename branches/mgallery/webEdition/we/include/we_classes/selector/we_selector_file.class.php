@@ -73,8 +73,9 @@ abstract class we_selector_file{
 	protected $filter = '';
 	var $col2js;
 	protected $title = '';
+	protected $startDirID = 0;
 
-	public function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = ''){
+	public function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = '', $startDirID = 0){
 
 		if(!isset($_SESSION['weS']['we_fs_lastDir'])){
 			$_SESSION['weS']['we_fs_lastDir'] = array($table => 0);
@@ -94,6 +95,7 @@ abstract class we_selector_file{
 		$this->JSCommand = $JSCommand;
 		$this->rootDirID = intval($rootDirID);
 		$this->filter = $filter;
+		$this->startDirID = $startDirID;
 		$this->setDirAndID();
 		$this->setTableLayoutInfos();
 	}
@@ -120,7 +122,7 @@ abstract class we_selector_file{
 	}
 
 	protected function setDefaultDirAndID($setLastDir){
-		$this->dir = $setLastDir ? ( isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0;
+		$this->dir = $this->startDirID ? : ($setLastDir ? ( isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0);
 		$this->id = $this->dir;
 
 		$this->path = '';
@@ -377,7 +379,7 @@ function setDir(id){
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER['SCRIPT_NAME'] . '?what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&filter=' . $this->filter;
+		return $_SERVER['SCRIPT_NAME'] . '?what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startDirID=' . $this->startDirID . '&filter=' . $this->filter;
 	}
 
 	protected function printFramesetJSFunctionQueryString(){

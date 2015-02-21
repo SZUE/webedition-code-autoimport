@@ -28,8 +28,8 @@ class we_selector_directory extends we_selector_multiple{
 	protected $we_editDirID = "";
 	protected $FolderText = '';
 
-	function __construct($id, $table = "", $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $we_editDirID = 0, $FolderText = "", $rootDirID = 0, $multiple = 0, $filter = ''){
-		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $multiple, $filter);
+	function __construct($id, $table = "", $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $we_editDirID = 0, $FolderText = "", $rootDirID = 0, $multiple = 0, $filter = '', $startDirID = 0){
+		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $multiple, $filter, $startDirID);
 		switch($this->table){
 			case FILE_TABLE:
 			case TEMPLATES_TABLE:
@@ -104,7 +104,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	}
 
 	protected function setDefaultDirAndID($setLastDir){
-		$this->dir = $setLastDir ? (isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0;
+		$this->dir = $this->startDirID ? : ($setLastDir ? (isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0);
 		$ws = get_ws($this->table, true);
 		if($ws && strpos($ws, ("," . $this->dir . ",")) !== true){
 			$this->dir = "";
@@ -131,7 +131,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER["SCRIPT_NAME"] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . (isset($this->open_doc) ? ("&open_doc=" . $this->open_doc) : "");
+		return $_SERVER["SCRIPT_NAME"] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&startDirID=" . $this->startDirID . "&order=" . $this->order . (isset($this->open_doc) ? ("&open_doc=" . $this->open_doc) : "");
 	}
 
 	protected function getFramsetJSFile(){

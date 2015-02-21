@@ -27,8 +27,8 @@ class we_selector_multiple extends we_selector_file{
 
 	var $multiple = true;
 
-	function __construct($id, $table = FILE_TABLE, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $rootDirID = 0, $multiple = true, $filter = ""){
-		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $filter);
+	function __construct($id, $table = FILE_TABLE, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $rootDirID = 0, $multiple = true, $filter = "", $startDirID = 0){
+		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $filter, $startDirID);
 		if(defined('CUSTOMER_TABLE') && $table == CUSTOMER_TABLE){
 			$this->fields = str_replace('Text', 'CONCAT(Text," (",Forename," ", Surname,")") AS Text', $this->fields);
 		}
