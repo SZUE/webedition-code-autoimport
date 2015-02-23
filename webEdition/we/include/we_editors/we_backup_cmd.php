@@ -335,8 +335,7 @@ run();');
 		} else {
 
 // perform update
-			$updater = new we_updater();
-			$updater->doUpdate();
+			we_updater::doUpdate();
 
 			if($_SESSION['weS']['weBackupVars']['options']['format'] === 'sql'){
 				we_backup_importSql::delBackupTable();

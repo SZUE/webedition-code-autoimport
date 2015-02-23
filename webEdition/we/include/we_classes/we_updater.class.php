@@ -19,9 +19,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //FIXME: remove this file almost complete; at least all DB queries. Replace by Update-Script calls on DB-Files.
-class we_updater{
+abstract class we_updater{
 
-	static function replayUpdateDB($specFile = ''){
+	private static function replayUpdateDB($specFile = ''){
 		include_once(WEBEDITION_PATH . 'liveUpdate/conf/conf.inc.php');
 		include_once(WEBEDITION_PATH . 'liveUpdate/classes/liveUpdateFunctions.class.php');
 		$lf = new liveUpdateFunctions();
@@ -43,7 +43,7 @@ class we_updater{
 		}
 	}
 
-	static function updateTables($DB_WE = null){
+	private static function updateTables($DB_WE = null){
 		$db2 = new DB_WE();
 		$tables = $db2->table_names(TBL_PREFIX . 'tblOwner');
 		$DB_WE = $DB_WE ? : new DB_WE(); //old code calls without object
@@ -98,7 +98,7 @@ class we_updater{
 		}
 	}
 
-	static function fix_user($db){
+	private static function fix_user($db){
 		//FIXME: since this is done ever and ever, remove this after 6.4.3
 		$db2 = new DB_WE();
 		$db->query('SELECT ID,username,ParentID,Path FROM ' . USER_TABLE);
@@ -126,7 +126,7 @@ class we_updater{
 		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user.gif' WHERE Type=" . we_users_user::TYPE_USER);
 	}
 
-	static function updateUnindexedCols($tab, $col){
+	private static function updateUnindexedCols($tab, $col){
 		global $DB_WE;
 		$DB_WE->query('SHOW COLUMNS FROM ' . $DB_WE->escape($tab) . " LIKE '" . $DB_WE->escape($col) . "'");
 		$query = array();
@@ -140,7 +140,7 @@ class we_updater{
 		}
 	}
 
-	static function updateUsers($DB_WE){
+	public static function updateUsers($DB_WE){ // from 6300/update6300.php
 		$DB_WE = $DB_WE? : new DB_WE();
 		self::fix_user($DB_WE);
 
@@ -173,14 +173,14 @@ class we_updater{
 		return true;
 	}
 
-	static function updateScheduler(){
+	private static function updateScheduler(){
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			we_schedpro::check_and_convert_to_sched_pro();
 		}
 		return true;
 	}
 
-	static function updateObjectFilesX(){
+	private static function updateObjectFilesX(){
 		if(defined('OBJECT_X_TABLE')){
 			$_db = new DB_WE();
 			//correct folder properties
@@ -269,7 +269,7 @@ class we_updater{
 		return true;
 	}
 
-	static function updateVoting(){
+	private static function updateVoting(){
 		if(defined('VOTING_TABLE')){
 			//this looks weird but means just :\"question inside the table
 			$GLOBALS['DB_WE']->query('UPDATE ' . VOTING_TABLE . ' SET
@@ -327,7 +327,7 @@ class we_updater{
 		}
 	}
 
-	static function convertTemporaryDoc(){
+	private static function convertTemporaryDoc(){
 		if($GLOBALS['DB_WE']->isColExist(TEMPORARY_DOC_TABLE, 'ID')){
 			$GLOBALS['DB_WE']->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE Active=0');
 			$GLOBALS['DB_WE']->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocTable="tblFile" WHERE DocTable  LIKE "%tblFile"');
@@ -338,7 +338,7 @@ class we_updater{
 		}
 	}
 
-	static function fixInconsistentTables(){
+	public static function fixInconsistentTables(){//from backup
 		$db = $GLOBALS['DB_WE'];
 		$db->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')
 UNION
@@ -362,7 +362,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		//FIXME: clean inconsistent objects
 	}
 
-	static function updateGlossar(){
+	public static function updateGlossar(){//from 6340/update6340.php
 		//FIXME: remove after 7.0
 		if(defined('GLOSSARY_TABLE')){
 			foreach($GLOBALS['weFrontendLanguages'] as $lang){
@@ -372,7 +372,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		}
 	}
 
-	static function updateCats(){
+	private static function updateCats(){
 		$db = $GLOBALS['DB_WE'];
 		if($db->isColExist(CATEGORY_TABLE, 'Catfields') && f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE . ' WHERE Title=""') == f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE)){
 			$db->query('SELECT ID,Catfields FROM ' . CATEGORY_TABLE . ' WHERE Catfields!=""');
@@ -388,7 +388,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		}
 	}
 
-	static function fixHistory($db = null){
+	public static function fixHistory($db = null){ //called from 6370/update6370.php
 		$db = $db? : new DB_WE();
 		if($db->isColExist(HISTORY_TABLE, 'ID')){
 			$db->query('SELECT h1.ID FROM ' . HISTORY_TABLE . ' h1 LEFT JOIN ' . HISTORY_TABLE . ' h2 ON h1.DID=h2.DID AND h1.DocumentTable=h2.DocumentTable AND h1.ModDate=h2.ModDate WHERE h1.ID<h2.ID');
@@ -430,7 +430,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		$last = $now;
 	}
 
-	public function doUpdate(){
+	public static function doUpdate(){
 		$db = new DB_WE();
 		self::meassure('start');
 		self::replayUpdateDB();
