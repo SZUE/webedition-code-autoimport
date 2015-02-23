@@ -39,7 +39,7 @@ class liveUpdateTemplates{
 	 * @param integer $height
 	 * @return string
 	 */
-	function getContainer($headline, $content, $buttons = '', $width = 550, $height = 400){
+	static function getContainer($headline, $content, $buttons = '', $width = 550, $height = 400){
 		$buttonDiv = '';
 
 		$headlineHeight = 30;
@@ -94,7 +94,7 @@ class liveUpdateTemplates{
 		return we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']) . we_html_element::htmlDocType() . '<html><head>' .
 			liveUpdateTemplates::getHtmlHead() .
 			$header . '</head><body>' .
-			liveUpdateTemplates::getContainer($headline, $content, $buttons, $contentWidth, $contentHeight) .
+			self::getContainer($headline, $content, $buttons, $contentWidth, $contentHeight) .
 			'</body></html>';
 	}
 

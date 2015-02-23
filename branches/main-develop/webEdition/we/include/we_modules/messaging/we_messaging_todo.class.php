@@ -143,24 +143,21 @@ class we_messaging_todo extends we_messaging_proto{
 	}
 
 	function delete_items(&$i_headers){
-		if(empty($i_headers)){
+		if(!$i_headers){
 			return -1;
 		}
 
-		$cond = '';
+		$ids = array();
 		foreach($i_headers as $ih){
-			$cond .= 'ID=' . intval($ih['_ID']) . ' OR ';
+			$ids [] = intval($ih['_ID']);
 		}
 
-		$cond = substr($cond, 0, -4);
-
-		$this->DB_WE->query('DELETE FROM ' . $this->DB_WE->escape($this->table) . ' WHERE (' . $this->DB_WE->escape($cond) . ') AND obj_type=' . we_messaging_proto::TODO_NR . " AND UserID=" . intval($this->userid));
-
+		$this->DB_WE->query('DELETE FROM ' . $this->DB_WE->escape($this->table) . ' WHERE ID IN (' . implode(',', $ids) . ') AND obj_type=' . we_messaging_proto::TODO_NR . ' AND UserID=' . intval($this->userid));
 		return 1;
 	}
 
 	function history_update($id, $userid, $fromuserid, $comment, $action, $status = -1){
-		return $this->DB_WE->query('INSERT INTO ' . MSG_TODOHISTORY_TABLE . ' ' .
+		return $this->DB_WE->query('INSERT INTO ' . MSG_TODOHISTORY_TABLE . ' SET ' .
 						we_database_base::arraySetter(array(
 							'ParentID' => $id,
 							'UserID' => $userid,

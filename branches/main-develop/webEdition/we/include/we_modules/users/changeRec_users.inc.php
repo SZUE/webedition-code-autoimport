@@ -33,16 +33,16 @@ if(permissionhandler::hasPerm("ADMINISTRATOR")){
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 	$childs = array();
-	pushChilds($childs, $we_doc->ID, $we_doc->Table);
+	pushChilds($childs, $we_doc->ID, $we_doc->Table, $GLOBALS['DB_WE']);
 	$childlist = makeCSVFromArray($childs);
 	if($childlist){
 		$q = 'UPDATE ' . $we_doc->Table . ' SET ' .
-			we_database_base::arraySetter(array(
-				'CreatorID' => $we_doc->CreatorID,
-				'Owners' => $we_doc->Owners,
-				'RestrictOwners' => $we_doc->RestrictOwners,
-				'OwnersReadOnly' => $we_doc->OwnersReadOnly
-			)) . ' WHERE ID IN(' . $childlist . ')';
+				we_database_base::arraySetter(array(
+					'CreatorID' => $we_doc->CreatorID,
+					'Owners' => $we_doc->Owners,
+					'RestrictOwners' => $we_doc->RestrictOwners,
+					'OwnersReadOnly' => $we_doc->OwnersReadOnly
+				)) . ' WHERE ID IN(' . $childlist . ')';
 		$ok = $DB_WE->query($q);
 	}
 }

@@ -67,11 +67,14 @@ if(!$wfchk){
 						'}');
 	} else {
 		$script = 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING);
+		$wfchk_html .= we_html_element::jsElement(
+						'function confirmDel(){}'
+		);
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' .
 			we_html_tools::hidden("sel", implode(',', $selectedItems)) . "</form>";
 } elseif(in_array($wecmd0, array("do_delete", 'delete_single_document'))){
-	if(($selectedItems = we_base_request::_(we_base_request::INTLISTA, "sel",array()))){
+	if(($selectedItems = we_base_request::_(we_base_request::INTLISTA, "sel", array()))){
 		//	look which documents must be deleted.
 		$retVal = 1;
 		$idInfos = array(
@@ -139,7 +142,7 @@ if(!$wfchk){
 
 				if($table == FILE_TABLE){
 					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $selectedItem);
-					if(!empty($users)){
+					if($users){
 						$retVal = -2;
 						break;
 					}
@@ -147,14 +150,14 @@ if(!$wfchk){
 					// check if childrenfolders are workspaces
 					$childs = array();
 
-					pushChilds($childs, $selectedItem, $table, true);
+					pushChilds($childs, $selectedItem, $table, true, $GLOBALS['DB_WE']);
 					$users = array();
 					foreach($childs as $ch){
 						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $childs));
 					}
 					$users = array_unique($users);
 
-					if(!empty($users)){
+					if($users){
 						$retVal = -4;
 						break;
 					}
@@ -162,7 +165,7 @@ if(!$wfchk){
 
 				if($table == TEMPLATES_TABLE){
 					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $selectedItem, "workSpaceTmp");
-					if(!empty($users)){
+					if($users){
 						$retVal = -2;
 						break;
 					}
@@ -170,14 +173,14 @@ if(!$wfchk){
 					// check if childrenfolders are workspaces
 					$childs = array();
 
-					pushChilds($childs, $selectedItem, $table, true);
+					pushChilds($childs, $selectedItem, $table, true, $GLOBALS['DB_WE']);
 					$users = array();
 					foreach($childs as $ch){
 						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $childs, "workSpaceTmp"));
 					}
 					$users = array_unique($users);
 
-					if(!empty($users)){
+					if($users){
 						$retVal = -4;
 						break;
 					}
@@ -186,34 +189,34 @@ if(!$wfchk){
 				if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE){
 
 					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $selectedItem, "workSpaceObj");
-					if(!empty($users)){
+					if($users){
 						$retVal = -2;
 						break;
 					}
 
 					$childs = array();
 
-					pushChilds($childs, $selectedItem, $table, true);
+					pushChilds($childs, $selectedItem, $table, true, $GLOBALS['DB_WE']);
 					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $childs, "workSpaceObj");
 
-					if(!empty($users)){
+					if($users){
 						$retVal = -4;
 						break;
 					}
 				}
 				if(defined('OBJECT_FILES_TABLE') && $table == FILE_TABLE){
 					$objects = getObjectsForDocWorkspace($selectedItem, $GLOBALS['DB_WE']);
-					if(!empty($objects)){
+					if($objects){
 						$retVal = -3;
 						break;
 					}
 
 					$childs = array();
 
-					pushChilds($childs, $selectedItem, $table, true);
+					pushChilds($childs, $selectedItem, $table, true, $GLOBALS['DB_WE']);
 					$objects = getObjectsForDocWorkspace($childs, $GLOBALS['DB_WE']);
 
-					if(!empty($objects)){
+					if($objects){
 						$retVal = -5;
 						break;
 					}

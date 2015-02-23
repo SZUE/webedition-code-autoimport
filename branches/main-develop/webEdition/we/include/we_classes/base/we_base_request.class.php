@@ -268,7 +268,7 @@ class we_base_request{
 		} else {
 			$oldVar = $var;
 			self::_weRequest($var, '', array($type, $default));
-
+/*
 			switch($type){
 				case self::URL:
 					$oldVar = urldecode($var);
@@ -346,7 +346,7 @@ class we_base_request{
 
 				t_e('changed values', $type, $args, $oldVar, $var);
 				//don't break we
-			}
+			}*/
 		}
 		return $var;
 	}

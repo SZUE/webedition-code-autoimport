@@ -635,8 +635,7 @@ $this->file_list=' . var_export($this->file_list, true) . ';';
 	}
 
 	function doUpdate(){
-		$updater = new we_updater();
-		$updater->doUpdate();
+		we_updater::doUpdate();
 	}
 
 	function clearTemporaryData($docTable){

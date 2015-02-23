@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -74,10 +73,9 @@ abstract class we_workflow_utility{
 
 	public static function decline($docID, $table, $userID, $desc, $force = false){
 		//decline step
-		$desc = nl2br($desc);
 		$doc = self::getWorkflowDocument($docID, $table);
-		if(!isset($doc->ID)){
-			if($doc->decline($userID, $desc, $force)){
+		if($doc && $doc->ID){
+			if($doc->decline($userID, nl2br($desc), $force)){
 				$doc->save();
 				return true;
 			}
@@ -171,7 +169,7 @@ abstract class we_workflow_utility{
 		}
 		$i = $doc->findLastActiveStep();
 		return (($i <= 0) || ($i < count($doc->steps) - 1) || ($doc->steps[$i]->findNumOfFinishedTasks() < count($doc->steps[$i]->tasks)) ?
-						false : true);
+				false : true);
 	}
 
 	/**
@@ -284,8 +282,8 @@ abstract class we_workflow_utility{
 		$db = new DB_WE();
 		$ret = '';
 		$db->query('SELECT ' . WORKFLOW_DOC_TABLE . '.ID AS docID,' . WORKFLOW_DOC_STEP_TABLE . '.ID AS docstepID,' . WORKFLOW_STEP_TABLE . '.ID AS stepID ' .
-				'FROM ' . WORKFLOW_DOC_TABLE . ' LEFT JOIN ' . WORKFLOW_DOC_STEP_TABLE . ' ON ' . WORKFLOW_DOC_TABLE . '.ID=' . WORKFLOW_DOC_STEP_TABLE . '.workflowDocID LEFT JOIN ' . WORKFLOW_STEP_TABLE . ' ON ' . WORKFLOW_DOC_STEP_TABLE . '.workflowStepID=' . WORKFLOW_STEP_TABLE . '.ID ' .
-				'WHERE ' . WORKFLOW_DOC_STEP_TABLE . '.startDate!=0 AND (' . WORKFLOW_DOC_STEP_TABLE . '.startDate+ ROUND(' . WORKFLOW_STEP_TABLE . '.Worktime*3600))<' . time() . ' AND ' . WORKFLOW_DOC_STEP_TABLE . '.finishDate=0 AND ' . WORKFLOW_DOC_STEP_TABLE . '.Status=' . we_workflow_documentStep::STATUS_UNKNOWN . ' AND ' . WORKFLOW_DOC_TABLE . '.Status=' . we_workflow_document::STATUS_UNKNOWN);
+			'FROM ' . WORKFLOW_DOC_TABLE . ' LEFT JOIN ' . WORKFLOW_DOC_STEP_TABLE . ' ON ' . WORKFLOW_DOC_TABLE . '.ID=' . WORKFLOW_DOC_STEP_TABLE . '.workflowDocID LEFT JOIN ' . WORKFLOW_STEP_TABLE . ' ON ' . WORKFLOW_DOC_STEP_TABLE . '.workflowStepID=' . WORKFLOW_STEP_TABLE . '.ID ' .
+			'WHERE ' . WORKFLOW_DOC_STEP_TABLE . '.startDate!=0 AND (' . WORKFLOW_DOC_STEP_TABLE . '.startDate+ ROUND(' . WORKFLOW_STEP_TABLE . '.Worktime*3600))<' . time() . ' AND ' . WORKFLOW_DOC_STEP_TABLE . '.finishDate=0 AND ' . WORKFLOW_DOC_STEP_TABLE . '.Status=' . we_workflow_documentStep::STATUS_UNKNOWN . ' AND ' . WORKFLOW_DOC_TABLE . '.Status=' . we_workflow_document::STATUS_UNKNOWN);
 		while($db->next_record()){
 			update_time_limit(50);
 			$workflowDocument = new we_workflow_document($db->f('docID'));
