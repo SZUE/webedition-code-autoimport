@@ -126,16 +126,11 @@ $js = we_html_element::jsElement('
 
 	function pingPlugin() {
 		if(document.WePlugin && self.isLoaded) {
-
 			c++;
-			//document.getElementById("debug").innerHTML += c + "<br/>";
-
 			if(document.WePlugin.hasMessages) {
 				if(document.WePlugin.hasMessages()) {
 					var messages = document.WePlugin.getMessages();
 					eval(""+messages);
-					//document.getElementById("debug").innerHTML += c + "<br/>" + messages+"<br/>";
-
 				}
 			}
 
@@ -198,7 +193,7 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlMeta(array('http-equiv' => 'content-type', 'content' => 'text/html; charset=' . $GLOBALS['WE_BACKENDCHARSET'])) .
 		we_html_element::htmlTitle('start wePlugin') .
 		$js) .
-	we_html_element::htmlBody(array('bgcolor' => 'white', 'onload' => "to=window.setTimeout('pingPlugin()',5000);"), we_html_element::htmlDiv(array('id' => 'debug'), '') .
+	we_html_element::htmlBody(array('bgcolor' => 'white', 'onload' => "to=window.setTimeout('pingPlugin()',5000);"),
 		we_html_element::htmlHidden(array('name' => 'hm', 'value' => 0)) .
 		$applet .
 		we_html_element::htmlForm(array('name' => 'we_form', 'target' => 'load', 'action' => WEBEDITION_DIR . 'editors/content/eplugin/weplugin_cmd.php', 'method' => 'post', 'accept-charset' => $charset), we_html_element::htmlHidden(array('name' => 'we_cmd[0]', 'value' => '')) .

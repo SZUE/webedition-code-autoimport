@@ -250,7 +250,6 @@ function getBinary(postfix){
 }
 
 function save(){
-	var debug='';
 	var oIptUri=_fo.elements['ipt_uri'];
 	var sUri=oIptUri.value;
 	if(!isUrl(sUri)){

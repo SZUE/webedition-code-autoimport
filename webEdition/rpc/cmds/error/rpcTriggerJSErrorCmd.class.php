@@ -25,7 +25,10 @@
 class rpcTriggerJSErrorCmd extends rpcCmd{
 
 	function execute(){
+		if(isset($_REQUEST['we_cmd'])){
+			//why bother, if we don't know the source
 		t_e('notice', $_REQUEST['we_cmd']);
+		}
 	}
 
 }
