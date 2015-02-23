@@ -50,7 +50,7 @@ function jsWindow(url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resiza
 	this.open = jsWindowOpen;
 	this.close = jsWindowClose;
 	this.obj = this.name + "Object";
-	eval(this.obj + "=this");
+	eval(this.obj + "=this;");
 	if (openAtStartup) {
 		this.open(noPopupErrorMsg, noPopupLocation);
 	}
