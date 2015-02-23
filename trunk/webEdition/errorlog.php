@@ -143,17 +143,17 @@ $step = we_base_request::_(we_base_request::INT, 'step', 0);
 switch(we_base_request::_(we_base_request::STRING, 'function', 'last')){
 	default:
 	case 'last':
-		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By ID DESC LIMIT 1');
+		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER BY ID DESC LIMIT 1');
 		$pos = $size;
 		break;
 	case 'first':
-		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By ID ASC LIMIT 1');
+		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER BY ID ASC LIMIT 1');
 		$pos = 1;
 		break;
 	case 'export':
 		header('Content-Type: text/plain');
 		header('Content-Disposition: attachment; filename=error' . $id . '.txt');
-		$cur = getHash('SELECT ID,Type,Function,File,Line,Text,Backtrace,Date FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id . ' ORDER By ID ASC LIMIT 1', $db, MYSQL_ASSOC);
+		$cur = getHash('SELECT ID,Type,Function,File,Line,Text,Backtrace,Date FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id . ' ORDER BY ID ASC LIMIT 1', $db, MYSQL_ASSOC);
 		$sep = "\n" . str_repeat('-', 80) . "\n";
 		if($cur){
 			$cur['Source-Code'] = getPosData($cur['Backtrace'], $cur['File'], $cur['Line']);
@@ -180,33 +180,33 @@ session.auto_start: ' . ini_get('session.auto_start') . $sep .
 		//`Request` text NOT NULL,
 		exit();
 	case 'pos':
-		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id . ' ORDER By ID ASC LIMIT 1');
+		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id . ' ORDER BY ID ASC LIMIT 1');
 		$pos = $size - f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID>=' . $id) + 1;
 		break;
 	case 'delete':
 		$db->query('DELETE FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id);
-		$size = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '`');
+		$size = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '`')-1;
 		//no break;
-	case 'prev':
-		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID<' . $id . ' ORDER By ID DESC LIMIT 1');
-		$pos = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID<' . $id);
-		break;
 	case 'next':
-		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id . ' ORDER By ID ASC LIMIT 1');
+		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id . ' ORDER BY ID ASC LIMIT 1');
 		$pos = $size - f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id) + 1;
 		break;
+	case 'prev':
+		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID<' . $id . ' ORDER BY ID DESC LIMIT 1');
+		$pos = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID<' . $id);
+		break;
 	case 'nextX':
-		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID>=' . $id . ' ORDER By ID ASC LIMIT ' . $step . ',1');
+		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID>=' . $id . ' ORDER BY ID ASC LIMIT ' . $step . ',1');
 		$pos = $size - f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $cur['ID']);
 		break;
 	case 'prevX':
-		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID<=' . $id . ' ORDER By ID DESC LIMIT ' . $step . ',1');
+		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID<=' . $id . ' ORDER BY ID DESC LIMIT ' . $step . ',1');
 		$pos = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID<=' . $cur['ID']);
 		break;
 }
 
 if($size && !$cur){//nothing found, go to last element
-	$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER By ID DESC LIMIT 1');
+	$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER BY ID DESC LIMIT 1');
 	$pos = $size;
 }
 
