@@ -55,7 +55,7 @@ class liveUpdateFunctions{
 	 * @param integer $errorCode
 	 * @param string $version
 	 */
-	function insertQueryLogEntries($type, $premessage = '', $errorCode, $version){
+	function insertQueryLogEntries($type, $premessage, $errorCode, $version){
 		// insert notices first
 		if(isset($this->QueryLog[$type])){
 			$message = $premessage;
@@ -348,11 +348,9 @@ class liveUpdateFunctions{
 			return true;
 		}
 
-		// decode parameters
-		$needle = $this->decodeCode($needle);
-		$replace = $this->decodeCode($replace);
-
 		if(file_exists($filePath)){
+			$needle = $this->decodeCode($needle);
+			$replace = $this->decodeCode($replace);
 			$oldContent = $this->getFileContent($filePath);
 			$replace = $this->checkReplaceDocRoot($replace);
 			$newContent = ($needle ? preg_replace('/' . preg_quote($needle) . '/', $replace, $oldContent) : $replace );
@@ -374,17 +372,6 @@ class liveUpdateFunctions{
 	 */
 	function executePatch($path){
 		include_once($path);
-		return true;
-
-		if(file_exists($path)){
-			$code = $this->getFileContent($path);
-			/** läuft nicht durch
-			  $patchSuccess = eval('?>' . escapeshellcmd($code));
-			 */
-			//FIXME:eval
-			$patchSuccess = eval('?>' . $code);
-			return ($patchSuccess === false ? false : true);
-		}
 		return true;
 	}
 
@@ -422,7 +409,7 @@ class liveUpdateFunctions{
 	 * @param string $tableName
 	 * @return array
 	 */
-	function getKeysFromTable($tableName){
+	function getKeysFromTable($tableName,$lowerKeys=false){
 		$db = new DB_WE();
 		$keysOfTable = array();
 		$db->query('SHOW INDEX FROM ' . $db->escape($tableName));
@@ -437,10 +424,12 @@ class liveUpdateFunctions{
 				$indexType = 'INDEX';
 			}
 
-			if(!isset($keysOfTable[$db->f('Key_name')]) || !in_array($indexType, $keysOfTable[$db->f('Key_name')])){
-				$keysOfTable[$db->f('Key_name')]['index'] = $indexType;
+			$key=$lowerKeys?strtolower($db->f('Key_name')):$db->f('Key_name');
+
+			if(!isset($keysOfTable[$key]) || !in_array($indexType, $keysOfTable[$key])){
+				$keysOfTable[$key]['index'] = $indexType;
 			}
-			$keysOfTable[$db->f('Key_name')][$db->f('Seq_in_index')] = $db->f('Column_name') . ($db->f('Sub_part') ? '(' . $db->f('Sub_part') . ')' : '');
+			$keysOfTable[$key][$db->f('Seq_in_index')] = $db->f('Column_name') . ($db->f('Sub_part') ? '(' . $db->f('Sub_part') . ')' : '');
 		}
 
 		return $keysOfTable;
@@ -663,7 +652,7 @@ class liveUpdateFunctions{
 					$newTable = $this->getFieldsOfTable($tmpName, $db);
 
 					// get keys from existing and new table
-					$origTableKeys = $this->getKeysFromTable($tableName);
+					$origTableKeys = $this->getKeysFromTable($tableName,true);
 					$newTableKeys = $this->getKeysFromTable($tmpName);
 
 
@@ -698,16 +687,16 @@ class liveUpdateFunctions{
 					$addKeys = array();
 					$changedKeys = array();
 					foreach($newTableKeys as $keyName => $indexes){
-
-						if(isset($origTableKeys[$keyName])){
+						$lkeyName=  strtolower($keyName);
+						if(isset($origTableKeys[$lkeyName])){
 							//index-type changed
-							if($origTableKeys[$keyName]['index'] != $indexes['index']){
+							if($origTableKeys[$lkeyName]['index'] != $indexes['index']){
 								$changedKeys[$keyName] = $indexes;
 								continue;
 							}
 
 							for($i = 1; $i < count($indexes); $i++){
-								if(!in_array($indexes[$i], $origTableKeys[$keyName])){
+								if(!in_array($indexes[$i], $origTableKeys[$lkeyName])){
 									$changedKeys[$keyName] = $indexes;
 									break;
 								}
@@ -731,7 +720,7 @@ class liveUpdateFunctions{
 						$alterQueries = array_merge(array('ALTER TABLE `' . $tableName . '` DROP INDEX _temp'), $alterQueries);
 					}
 
-					if(!empty($alterQueries)){
+					if($alterQueries){
 						// execute all queries
 						$success = true;
 						$duplicate = false;

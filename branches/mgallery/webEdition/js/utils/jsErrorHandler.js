@@ -24,13 +24,10 @@
 try {
 	window.onerror = function (msg, file, line, col, errObj) {
 		console = top.console || console;//FIXME: fast and dirty fix for some popups
-		if(typeof console.debug !== 'function'){
-			return;
-		}
-
-		console.debug(msg);
+		log = (console.debug !== undefined ? console.debug : console.log);
+		log(msg);
 		if (errObj) {
-			console.debug(errObj);
+			log(errObj);
 		}
 		try {//we don' want to raise errors inside
 			postData = 'we_cmd[msg]=' + encodeURIComponent(msg);
@@ -56,9 +53,9 @@ try {
 			xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 			xmlhttp.send(postData);
 		} catch (e) {
-			console.debug(e);
+			log(e);
 		}
 	};
 } catch (e) {
-	console.debug(e);
+	log(e);
 }

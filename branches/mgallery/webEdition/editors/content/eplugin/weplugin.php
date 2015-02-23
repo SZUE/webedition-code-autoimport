@@ -25,6 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 
+
 $charset = '';
 
 //FIXME: charset
@@ -34,8 +35,7 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlTitle('start wePlugin') .
 		we_html_element::jsScript(JS_DIR . 'weplugin.js')
 	) .
-	we_html_element::htmlBody(array('style' => 'background-color:white', 'onload' => "to=window.setInterval(pingPlugin,5000);"), we_html_element::htmlDiv(array('id' => 'debug'), '') .
-		we_html_element::htmlHidden(array('name' => 'hm', 'value' => 0)) .
+	we_html_element::htmlBody(array('style' => 'background-color:white', 'onload' => "to=window.setInterval(pingPlugin,5000);"), we_html_element::htmlHidden(array('name' => 'hm', 'value' => 0)) .
 		we_html_element::htmlApplet(array(
 			'name' => 'WePlugin',
 			'code' => 'EPlugin',

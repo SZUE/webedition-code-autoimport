@@ -142,7 +142,7 @@ function updateFilterTable() {
 				_cell = _row.cells[0];
 				var elem = _cell.firstChild;
 
-				var _logic = elem.options[elem.selectedIndex].value;
+				var _logic = elem.selectedIndex!==undefined?elem.options[elem.selectedIndex].value:"OR";
 				var _prevRow = _table.rows[i - 1];
 
 				for (var n = 0; n < _prevRow.cells.length; n++) {

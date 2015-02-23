@@ -417,6 +417,7 @@ var buttons={
 				$_filterTable .
 				'<div style="height:5px;"></div>' .
 				we_html_button::create_button("image:btn_function_plus", "javascript:addRow()");
+
 	}
 
 	/* #########################################################################################
