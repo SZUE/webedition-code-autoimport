@@ -416,8 +416,7 @@ abstract class we_rebuild_base{
 	 * @return array
 	 */
 	public static function getObjects(){
-		$updater = new we_updater();
-		$updater->updateObjectFilesX();
+		we_updater::doUpdate();
 		$data = array();
 		if(permissionhandler::hasPerm('REBUILD_OBJECTS')){
 			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE Published > 0 ORDER BY ID');

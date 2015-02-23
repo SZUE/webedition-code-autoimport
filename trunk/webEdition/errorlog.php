@@ -96,7 +96,7 @@ function getNavButtons($size, $pos, $id){
 function getPosData($bt, $file, $lineNo){
 	$ret = '';
 	$matches = array();
-	
+
 	if(!$bt || $bt == '-' || !preg_match_all('|#\d+ [^\]]*\[([^:\]]*):(\d+)|', $bt, $matches)){
 		$matches = array(
 			1 => array(0=>str_replace('SECURITY_REPL_DOC_ROOT/','', $file)),
@@ -186,13 +186,14 @@ session.auto_start: ' . ini_get('session.auto_start') . $sep .
 	case 'delete':
 		$db->query('DELETE FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id);
 		$size = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '`');
-	case 'next':
-		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id . ' ORDER By ID ASC LIMIT 1');
-		$pos = $size - f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id) + 1;
-		break;
+		//no break;
 	case 'prev':
 		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID<' . $id . ' ORDER By ID DESC LIMIT 1');
 		$pos = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID<' . $id);
+		break;
+	case 'next':
+		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id . ' ORDER By ID ASC LIMIT 1');
+		$pos = $size - f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id) + 1;
 		break;
 	case 'nextX':
 		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID>=' . $id . ' ORDER By ID ASC LIMIT ' . $step . ',1');
