@@ -49,7 +49,7 @@ abstract class we_workflow_log{
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
 		$db = new DB_WE();
 
-		$q = 'FROM ' . WORKFLOW_LOG_TABLE . ' log JOIN ' . WORKFLOW_DOC_TABLE . ' doc ON log.RefID=doc.ID JOIN ' . WORKFLOW_TABLE . ' wf ON doc.workflowID=wf.ID WHERE wf.Type IN(' . $wfType . ') AND doc.documentID=' . intval($docID) . ' ORDER BY log.logDate ' . $db->escape($order) . ',ID DESC';
+		$q = 'FROM ' . WORKFLOW_LOG_TABLE . ' log JOIN ' . WORKFLOW_DOC_TABLE . ' doc ON log.RefID=doc.ID JOIN ' . WORKFLOW_TABLE . ' wf ON doc.workflowID=wf.ID WHERE wf.Type IN(' . $wfType . ') AND doc.documentID=' . intval($docID) . ' ORDER BY log.logDate ' . $db->escape($order) . ',doc.ID DESC';
 
 		$db->query('SELECT 1 ' . $q);
 		$GLOBALS['ANZ_LOGS'] = $db->num_rows();

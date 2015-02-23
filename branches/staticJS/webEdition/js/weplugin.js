@@ -121,15 +121,11 @@ function getDocCount() {
 
 function pingPlugin() {
 	if (document.WePlugin && self.isLoaded) {
-
 		c++;
-		//document.getElementById("debug").innerHTML += c + "<br/>";
-
 		if (document.WePlugin.hasMessages) {
 			if (document.WePlugin.hasMessages()) {
 				var messages = document.WePlugin.getMessages();
 				eval("" + messages);
-				//document.getElementById("debug").innerHTML += c + "<br/>" + messages+"<br/>";
 
 			}
 		}

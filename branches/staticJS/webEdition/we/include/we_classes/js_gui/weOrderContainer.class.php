@@ -23,8 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weOrderContainer{
-	// DEBUG
-	var $debug = false;
 	// private Target Frame
 	var $targetFrame = "";
 	// private containerId
@@ -48,14 +46,12 @@ class weOrderContainer{
 
 	function getContainer($attribs = array()){
 
-		$style = ($this->debug ? ' style="display: block; border: 1px #ff0000 solid;"' : '');
-
 		$attrib = "";
 		foreach($attribs as $name => $value){
 			$attrib .= " " . $name . "=\"" . $value . "\"";
 		}
 
-		$src = '<' . $this->containerType . ' id="' . $this->containerId . '"' . $style . $attrib . '>'
+		$src = '<' . $this->containerType . ' id="' . $this->containerId . '"' . $attrib . '>'
 			. '</' . $this->containerType . '>';
 
 		return $src;
@@ -103,12 +99,8 @@ class weOrderContainer{
 			return "";
 		}
 
-		$style = ($this->debug ?
-				' style="display: block; width: 90%; height: 90%; overflow: auto; border: 1px #ff0000 solid; font-family: verdana, arial; font-size: 11px; color: #000000; padding: 5px;"' :
-				' style="display: none;"');
-
-		return ($string != "" || $this->debug ?
-				'<' . $this->containerType . ' id="' . $this->containerId . '"' . $style . '>'
+		return ($string != "" ?
+						'<' . $this->containerType . ' id="' . $this->containerId . '" style="display: none;">'
 				. $string
 				. '</' . $this->containerType . '>' : '') .
 			we_html_element::jsElement($cmd) .

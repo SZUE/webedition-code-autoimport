@@ -246,7 +246,7 @@ class we_search_search extends we_search_base{
 	function searchInTitle($keyword, $table){
 		$_db2 = new DB_WE();
 		//first check published documents
-		$_db2->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . " c on (l.CID = c.ID) WHERE l.Name='Title' AND c.Dat LIKE '%" . $_db2->escape(trim($keyword)) . "%' AND NOT l.DocumentTable!='" . TEMPLATES_TABLE . "'");
+		$_db2->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.Name="Title" AND c.Dat LIKE "%' . $_db2->escape(trim($keyword)) . '%" AND NOT l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"');
 		$titles = $_db2->getAll(true);
 
 		//check unpublished documents
@@ -510,31 +510,26 @@ class we_search_search extends we_search_base{
 
 	function searchContent($keyword, $table){
 		$_db = new DB_WE();
-		$contents = array();
 		switch($table){
 			case FILE_TABLE:
+				$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE c.Dat LIKE "%' . $this->db->escape(trim($keyword)) . '%" AND l.Name!="completeData" AND l.DocumentTable="' . $_db->escape(stripTblPrefix(FILE_TABLE)) . '"');
+				$contents = $_db->getAll(true);
+
+				$_db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . $_db->escape(trim($keyword)) . "%' AND DocTable='" . $this->db->escape(stripTblPrefix($table)) . "' AND Active = 1");
+				$contents = array_unique(array_merge($contents, $_db->getAll(true)));
+
+				return ($contents ? ' ' . $table . '.ID IN (' . implode(',', $contents) . ')' : '');
 			case TEMPLATES_TABLE:
-				$_db->query('SELECT l.Name, c.Dat, l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . " c on (l.CID = c.ID) WHERE c.Dat LIKE '%" . $this->db->escape(
-								trim($keyword)) . "%' AND l.Name!='completeData' AND l.DocumentTable='" . $_db->escape(stripTblPrefix($table)) . "'");
-				while($_db->next_record()){
-					$contents[] = $_db->f('DID');
-				}
+				$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE c.Dat LIKE "%' . $this->db->escape(trim($keyword)) . '%" AND l.Name="data" AND l.DocumentTable="' . $_db->escape(stripTblPrefix(TEMPLATES_TABLE)) . '"');
+				$contents = $_db->getAll(true);
 
-				if($table == FILE_TABLE){
-					$_db->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . $_db->escape(trim($keyword)) . "%' AND DocTable='" . $this->db->escape(stripTblPrefix($table)) . "' AND Active = 1");
-					while($_db->next_record()){
-						$contents[] = $_db->f('DocumentID');
-					}
-				}
-
-				return ($contents ? ' ' . $table . '.ID IN (' . makeCSVFromArray($contents) . ')' : '');
+				return ($contents ? ' ' . $table . '.ID IN (' . implode(',', $contents) . ')' : '');
 			case VERSIONS_TABLE:
 				//FIXME: versions are searched even if the field is not checked!
-				$_db->query('SELECT ID,documentElements  FROM ' . VERSIONS_TABLE);
+				$contents = array();
+
+				$_db->query('SELECT ID,documentElements  FROM ' . VERSIONS_TABLE . ' WHERE documentElements!=""');
 				while($_db->next_record()){
-					if(!$_db->f('documentElements')){
-						continue;
-					}
 					$elements = unserialize((substr_compare($_db->f('documentElements'), 'a%3A', 0, 4) == 0 ?
 									html_entity_decode(urldecode($_db->f('documentElements')), ENT_QUOTES) :
 									gzuncompress($_db->f('documentElements')))
@@ -556,7 +551,7 @@ class we_search_search extends we_search_base{
 					}
 				}
 
-				return ($contents ? '  ' . $table . '.ID IN (' . makeCSVFromArray($contents) . ')' : '');
+				return ($contents ? '  ' . $table . '.ID IN (' . implode(',', $contents) . ')' : '');
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$Ids = $regs = array();
 
@@ -580,7 +575,7 @@ class we_search_search extends we_search_base{
 							}
 						}
 					}
-					if(empty($fields)){
+					if(!$fields){
 						continue;
 					}
 					$where = array();
@@ -592,7 +587,7 @@ class we_search_search extends we_search_base{
 					$Ids = array_merge($Ids, $_db->getAll(true));
 				}
 				//only saved objects
-				$_db->query('SELECT DocumentID  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . $_db->escape(trim($keyword)) . "%' AND DocTable='tblObjectFiles' AND Active = 1");
+				$_db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentObject LIKE "%' . $_db->escape(trim($keyword)) . '%" AND DocTable="tblObjectFiles" AND Active=1');
 				$Ids = array_merge($Ids, $_db->getAll(true));
 
 				return ($Ids ? '  ' . OBJECT_FILES_TABLE . '.ID IN (' . implode(',', $Ids) . ')' : '');
@@ -635,14 +630,12 @@ class we_search_search extends we_search_base{
 				}
 				$this->db->query('INSERT INTO  SEARCH_TEMP_TABLE SELECT "",ID,"' . FILE_TABLE . '",Text,Path,ParentID,IsFolder,temp_template_id,TemplateID,ContentType,"",CreationDate,CreatorID,ModDate,Published,Extension,"","" FROM `' . FILE_TABLE . '` ' . $this->where);
 
-				$titles = array();
 				//first check published documents
-				$this->db->query('SELECT l.Name, c.Dat, l.DID FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c on (l.CID = c.ID) WHERE l.Name="Title" AND l.DocumentTable!="' . TEMPLATES_TABLE . '"');
-				while($this->db->next_record()){
-					$titles[$this->db->f('DID')] = $this->db->f('Dat');
-				}
+				$this->db->query('SELECT l.DID,c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.Name="Title" AND l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"');
+				$titles = $this->db->getAllFirst(false);
+
 				//check unpublished documents
-				$this->db->query('SELECT DocumentID, DocumentObject  FROM `' . TEMPORARY_DOC_TABLE . '` WHERE DocTable = "tblFile" AND Active = 1 ' . $tmpTableWhere);
+				$this->db->query('SELECT DocumentID, DocumentObject  FROM `' . TEMPORARY_DOC_TABLE . '` WHERE DocTable="tblFile" AND Active=1 ' . $tmpTableWhere);
 				while($this->db->next_record()){
 					$tempDoc = unserialize($this->db->f('DocumentObject'));
 					if(isset($tempDoc[0]['elements']['Title'])){

@@ -577,7 +577,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 			} else {
 				switch($this->table){
 					case FILE_TABLE:
-						$this->db->query('SELECT l.Name, c.Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($this->id));
+						$this->db->query('SELECT l.Name, c.Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($this->id) . ' AND l.DocumentTable!="tblTemplates"');
 						$metainfos = $this->db->getAllFirst(false);
 						break;
 					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
