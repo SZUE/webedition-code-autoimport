@@ -692,7 +692,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 					if($sessDat &&
 							$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
-						$this->i_getPersistentSlotsFromDB($this->primaryDBFiels);
+						$this->i_getPersistentSlotsFromDB(self::primaryDBFiels);
 						break;
 					}
 				}

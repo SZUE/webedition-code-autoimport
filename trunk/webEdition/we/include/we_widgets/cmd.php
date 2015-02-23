@@ -70,7 +70,7 @@ function transmit(){
 
 var widgetFrame = top.weEditorFrameController.getActiveDocumentReference();
 ";
-		print we_html_element::htmlDocType() .
+		echo we_html_element::htmlDocType() .
 			we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_element::cssElement('div,span{display:none;}') . we_html_element::jsElement($js)) .
