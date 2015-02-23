@@ -84,11 +84,11 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		$tmp[] = $ParentID;
 		$where = ' WHERE  ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')';
 
-		$elem = "ID,ParentID,Path,Text,IsFolder,Icon,ModDate" .
+		$elem = "ID,ParentID,Path,Text,IsFolder" .
 			(($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE)) ? ',Published' : '') .
 			((defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) ? ',IsClassFolder' : '') .
 			($table == FILE_TABLE || $table == TEMPLATES_TABLE ? ",Extension" : '') .
-			($table == FILE_TABLE || $table == TEMPLATES_TABLE || (defined('OBJECT_TABLE') && $table == OBJECT_TABLE) || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) ? ",ContentType" : '');
+			($table == FILE_TABLE || $table == TEMPLATES_TABLE || (defined('OBJECT_TABLE') && $table == OBJECT_TABLE) || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) ? ",ContentType,Icon,ModDate" : '');
 
 		$DB_WE->query('SELECT ' . $elem . ', LOWER(Text) AS lowtext, ABS(REPLACE(Text,"info","")) AS Nr, (Text REGEXP "^[0-9]") AS isNr FROM ' . $table . ' ' . $where . ' ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext' . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 		$ct = we_base_ContentTypes::inst();
@@ -98,7 +98,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 			$tree_count++;
 			$ID = $DB_WE->f("ID");
 			$Path = $DB_WE->f("Path");
-			$ContentType = $DB_WE->f("ContentType");
+			$ContentType = $table === VFILE_TABLE ? ($DB_WE->f('IsFolder') ? we_base_ContentTypes::FOLDER : we_base_ContentTypes::COLLECTION) : $DB_WE->f("ContentType");
 			$published = ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && ($table == OBJECT_FILES_TABLE)) ?
 					(($DB_WE->f("Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate")) ?
 						-1 :

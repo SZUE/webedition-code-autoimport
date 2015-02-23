@@ -664,10 +664,12 @@ class we_document extends we_root{
 		if(!parent::we_save($resave)){
 			return false;
 		}
-		$ret = $this->i_writeDocument();
+
+		$ret = $this->i_writeDocument();//FIXME: skip this when document is no real document (e.g.collections)
 		if(!$ret || ($this->errMsg != '')){
 			return false;
 		}
+
 		$this->OldPath = $this->Path;
 
 		if($resave == 0){ // NO rebuild!!!

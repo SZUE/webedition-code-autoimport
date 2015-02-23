@@ -68,6 +68,9 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 	case we_base_ContentTypes::WEDOCUMENT:
 		$we_doc = new we_webEditionDocument(); //($showDoc ? new we_webEditionDocument() : new we_view_webEditionDocument());
 		break;
+	case we_base_ContentTypes::COLLECTION:
+		$we_doc = new we_collection();
+		break;
 	case we_base_ContentTypes::HTML:
 		$we_doc = new we_htmlDocument();
 		break;

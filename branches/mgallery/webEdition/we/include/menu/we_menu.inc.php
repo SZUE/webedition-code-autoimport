@@ -187,6 +187,17 @@ $we_menu = array(
 		'perm' => 'NEW_OBJECT',
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
 	),
+	array(// separator
+		'parent' => 1010000,
+		'perm' => '', //NEW_COLLECTION',
+		'hide' => $seeMode
+	),
+	array(// File > COLLECTION
+		'text' => 'Sammlung', //g_l('javaMenu_global', '[collection]'),//FIXME: g_l()
+		'parent' => 1010000,
+		'cmd' => 'new_collection',
+		'perm' => '' //NEW_COLLECTION',
+	),
 	/* 	$we_menu[1011100]['parent'] = 1010000; // separator
 	  // File > New > Wizards
 	  'text'=> g_l('javaMenu_global', '[wizards]') . '&hellip;',

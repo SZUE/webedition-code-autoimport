@@ -128,7 +128,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'new_documen
 }
 
 
-if(($doct = we_base_request::_(we_base_request::INT, 'we_cmd', false, 8)) !== false && ($we_Table == FILE_TABLE) && ($we_ContentType === we_base_ContentTypes::WEDOCUMENT)){
+if(($doct = we_base_request::_(we_base_request::INT, 'we_cmd', false, 8)) !== false && ($we_Table === FILE_TABLE) && ($we_ContentType === we_base_ContentTypes::WEDOCUMENT)){
 	$we_doc->changeDoctype($doct);
 	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 1);
 } else if($doct !== false && (defined('OBJECT_FILES_TABLE') && $we_Table == OBJECT_FILES_TABLE) && ($we_ContentType === we_base_ContentTypes::OBJECT_FILE)){

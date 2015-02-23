@@ -45,6 +45,7 @@ class we_base_ContentTypes{
 	const FOLDER = 'folder';
 	const OBJECT = 'object';
 	const OBJECT_FILE = 'objectFile';
+	const COLLECTION = 'text/weCollection';
 
 	private $ct;
 
@@ -242,6 +243,15 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => false,
 				'Icon' => 'objectFile.gif',
 			),
+			self::COLLECTION => array(
+				'Extension' => '',
+				'ExtensionIsFilename' => false,
+				'Permission' => '',
+				'DefaultCode' => '',
+				'IsRealFile' => false,//TODO: use this when saving
+				'IsWebEditionFile' => false,
+				'Icon' => 'collection.gif',
+			)
 		);
 	}
 

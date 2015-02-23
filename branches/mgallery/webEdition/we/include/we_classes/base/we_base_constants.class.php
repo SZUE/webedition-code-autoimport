@@ -55,5 +55,6 @@ abstract class we_base_constants{
 	const WE_EDITPAGE_IMAGEEDIT = 15;
 	const WE_EDITPAGE_DOCLIST = 16;
 	const WE_EDITPAGE_VERSIONS = 17;
+	const WE_EDITPAGE_COLLECTION = 18;
 
 }

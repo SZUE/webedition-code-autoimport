@@ -64,7 +64,7 @@ abstract class we_selector_file{
 	var $JSIDName;
 	protected $db;
 	var $sessionID = '';
-	protected $fields = 'ID,ParentID,Text,Path,IsFolder,Icon';
+	protected $fields = 'ID,ParentID,Text,Path,IsFolder';
 	var $values = array();
 	var $openerFormName = 'we_form';
 	protected $order = 'Text';
@@ -89,6 +89,15 @@ abstract class we_selector_file{
 //check table
 
 		$this->table = $table;
+		switch($this->table){//FIXME: are there more types with icon? category?
+			case FILE_TABLE:
+			case TEMPLATES_TABLE:
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
+				$this->fields.= ',Icon';
+				break;
+			default:
+		}
 
 		$this->JSIDName = $JSIDName;
 		$this->JSTextName = $JSTextName;
