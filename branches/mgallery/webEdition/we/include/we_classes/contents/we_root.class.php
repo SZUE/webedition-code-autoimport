@@ -170,6 +170,13 @@ abstract class we_root extends we_class{
 		return true;
 	}
 
+	/**
+	 * @desc	the function modifies document EditPageNrs set
+	 */
+	function checkTabs(){
+		//to be overriden
+	}
+
 	//FIXME: make this __sleep
 	function saveInSession(&$save){
 		$save = array(
@@ -433,6 +440,35 @@ abstract class we_root extends we_class{
 		return !we_users_util::isUserInUsers($_SESSION['user']['ID'], $readers);
 	}
 
+	public function formPath(){
+		$disable = ( ($this->ContentType == we_base_ContentTypes::HTML || $this->ContentType == we_base_ContentTypes::WEDOCUMENT) && $this->Published);
+		if($this->ContentType === we_base_ContentTypes::HTACESS){
+			$vals = we_base_ContentTypes::inst()->getExtension($this->ContentType, true);
+			$this->Filename = $this->Filename ? : current($vals);
+			$filenameinput = $this->formSelectFromArray('', 'Filename', array_combine($vals, $vals), g_l('weClass', '[filename]'));
+		} else {
+			$filenameinput = $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 388, 255, 'onchange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"');
+		}
+		return $disable ? ('<span class="defaultfont">' . $this->Path . '</span>') : '
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td>' . $filenameinput . '</td>
+		<td></td>
+		<td>' . $this->formExtension2() . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(20, 4) . '</td>
+		<td>' . we_html_tools::getPixel(20, 2) . '</td>
+		<td>' . we_html_tools::getPixel(100, 2) . '</td>
+	</tr>
+	<tr><td colspan="3">' . $this->formDirChooser(388) . '</td></tr>
+</table>';
+	}
+
+	protected function formExtension2(){
+		return '';
+	}
+
 	function formCopyDocument(){
 		$idname = 'we_' . $this->Name . '_CopyID';
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
@@ -659,6 +695,11 @@ abstract class we_root extends we_class{
 	/** returns the Path dynamically (use it, when the class-variable Path is not set)  */
 	function getPath(){
 		return rtrim($this->getParentPath(), '/') . '/' . ( isset($this->Filename) ? $this->Filename : '' ) . ( isset($this->Extension) ? $this->Extension : '' );
+	}
+
+	/** returns the Path dynamically (use it, when the class-variable Text is not set)  */
+	function getText(){
+		return $this->Text;
 	}
 
 	/** get the Path of the Parent-Object */
@@ -919,6 +960,7 @@ abstract class we_root extends we_class{
 				$this->setElement($k, mktime($dates[$k]['hour'], $dates[$k]['minute'], 0, $dates[$k]['month'], $dates[$k]['day'], $dates[$k]['year']), 'date');
 			}
 		}
+		$this->Text = $this->getText();
 		$this->ParentPath = $this->getParentPath();
 		$this->Path = $this->getPath();
 	}

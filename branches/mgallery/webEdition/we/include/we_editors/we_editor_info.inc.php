@@ -65,7 +65,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 <div style="margin-bottom:10px;">' . g_l('weEditorInfo', '[' . $GLOBALS['we_doc']->ContentType . ']') . '</div>';
 
 
-	if($GLOBALS['we_doc']->ContentType != "folder"){
+	if($GLOBALS['we_doc']->ContentType !== "folder" && $GLOBALS['we_doc']->ContentType !== we_base_ContentTypes::COLLECTION){
 		$fs = $GLOBALS['we_doc']->getFilesize();
 
 		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[file_size]') . '</div>' .
@@ -111,7 +111,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 			'icon' => 'cal.gif'
 		);
 
-		if($GLOBALS['we_doc']->Table != TEMPLATES_TABLE){
+		if($GLOBALS['we_doc']->Table !== TEMPLATES_TABLE && $GLOBALS['we_doc']->Table !== VFILE_TABLE){
 			$rp = $GLOBALS['we_doc']->getRealPath();
 			$http = $GLOBALS['we_doc']->getHttpPath();
 

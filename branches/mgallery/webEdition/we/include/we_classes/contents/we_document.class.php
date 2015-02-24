@@ -223,31 +223,6 @@ class we_document extends we_root{
 		));
 	}
 
-	public function formPath(){
-		$disable = ( ($this->ContentType == we_base_ContentTypes::HTML || $this->ContentType == we_base_ContentTypes::WEDOCUMENT) && $this->Published);
-		if($this->ContentType === we_base_ContentTypes::HTACESS){
-			$vals = we_base_ContentTypes::inst()->getExtension($this->ContentType, true);
-			$this->Filename = $this->Filename ? : current($vals);
-			$filenameinput = $this->formSelectFromArray('', 'Filename', array_combine($vals, $vals), g_l('weClass', '[filename]'));
-		} else {
-			$filenameinput = $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 388, 255, 'onchange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"');
-		}
-		return $disable ? ('<span class="defaultfont">' . $this->Path . '</span>') : '
-<table border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td>' . $filenameinput . '</td>
-		<td></td>
-		<td>' . $this->formExtension2() . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(20, 4) . '</td>
-		<td>' . we_html_tools::getPixel(20, 2) . '</td>
-		<td>' . we_html_tools::getPixel(100, 2) . '</td>
-	</tr>
-	<tr><td colspan="3">' . $this->formDirChooser(388) . '</td></tr>
-</table>';
-	}
-
 	function formMetaInfos(){
 		return '
 <table border="0" cellpadding="0" cellspacing="0">

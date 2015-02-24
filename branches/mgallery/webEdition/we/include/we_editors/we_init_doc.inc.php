@@ -30,8 +30,13 @@ if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) ==
 if(isset($GLOBALS['we_ContentType']) && !isset($we_ContentType)){
 	$we_ContentType = $GLOBALS['we_ContentType'];
 }
-if((!isset($we_ContentType)) && ((!isset($we_dt)) || (!is_array($we_dt)) || (!$we_dt[0]['ClassName'])) && isset($we_ID) && $we_ID && isset($we_Table) && $we_Table){
-	$we_ContentType = f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . intval($we_ID));
+
+if(!isset($we_ContentType)){
+	if(isset($we_dt) && is_array($we_dt) && isset($we_dt[0]['ContentType']) && $we_dt[0]['ContentType']){
+		$we_ContentType = $we_dt[0]['ContentType'];
+	} else if((!isset($we_dt) || !is_array($we_dt) || !isset($we_dt[0]['ClassName']) || !$we_dt[0]['ClassName']) && isset($we_ID) && $we_ID && isset($we_Table) && $we_Table){
+			$we_ContentType = f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . intval($we_ID));
+	}
 }
 
 $showDoc = isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC'];
@@ -118,7 +123,7 @@ if(!isset($dontMakeGlobal)){
 }
 
 //if document opens get initial object for versioning if no versions exist
-if(in_array(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), array('load_edit_footer', 'switch_edit_page'))){
+if(in_array(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), array('load_edit_footer', 'switch_edit_page')) && $we_doc->Table !== VFILE_TABLE){
 	$version = new we_versions_version();
 	$version->setInitialDocObject($GLOBALS['we_doc']);
 }
