@@ -1,6 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weEditor=array(
+	'text/weCollection'=>array(
+		'response_path_exists'=>'Die Sammlung `%s` konnte nicht gespeichert werden, da es bereits eine andere Sammlung oder ein anderes Verzeichnis an dieser Stelle gibt!',
+	),
 	'application/*'=>array(
 		'filename_empty'=>'Sie haben noch keinen Dateinamen eingegeben!',
 		'response_path_exists'=>'Die Datei `%s` konnte nicht gespeichert werden, da es bereits eine andere Datei oder ein anderes Verzeichnis an dieser Stelle gibt!',
@@ -164,6 +167,14 @@ Erlaubte Zeichen sind allle außer <>?":|\\/* .',
 		'response_unpublish_ok'=>'Die Text-Datei `%s` wurde erfolgreich geparkt!',
 		'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
 		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
+	),
+	'text/weCollection'=>array(
+		'filename_empty'=>'Sie haben noch keinen Namen für die Sammlung eingegeben!',
+		'response_save_noperms_to_create_folders'=>'Die Sammlung konnte nicht gespeichert werden, da Sie nicht die notwendigen Rechte besitzen, um neue Verzeichnisse (%s) anzulegen!',
+		'response_save_notok'=>'Fehler beim Speichern der Sammlung `%s`!',
+		'response_save_ok'=>'Die Sammlung `%s` wurde erfolgreich gespeichert!',
+		'we_filename_notAllowed'=>'Der eingegebene Name ist für Sammlungen nicht erlaubt!',
+		'we_filename_notValid'=>'Der eingegebene Name ist für Sammlungen nicht gültig!\nErlaubte Zeichen sind allle außer <>?":|\\/* .',
 	),
 	'text/weTmpl'=>array(
 		'filename_empty'=>'Sie haben noch keinen Dateinamen eingegeben!',

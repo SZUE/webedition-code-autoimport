@@ -1,6 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weEditor=array(
+	'text/weCollection'=>array(
+		'response_path_exists'=>'The collection `%s` could not be saved because another collection or directory is positioned at the same location!',
+	),
 	'application/*'=>array(
 		'filename_empty'=>'Er is geen naam ingevoerd voor dit document!',
 		'response_path_exists'=>'Het document `%s` kon niet bewaard worden omdat een ander document of directory zich op dezelfde plek bevind!',
@@ -164,6 +167,14 @@ All characters except <>?":|\\/* are valid.',
 		'response_unpublish_ok'=>'Het tekst bestand `%s` is succesvol gedepubliceerd!',
 		'we_filename_notAllowed'=>'De bestandsnaam die u heeft ingevoerd is niet toegestaan!',
 		'we_filename_notValid'=>'Ongeldige bestandsnaam\nGeldige karakters zijn alfa-numeriek, boven- en onderkast, eveneens als de underscore, koppelteken en punt (a-z, A-Z, 0-9, _, -, .)',
+	),
+	'text/weCollection'=>array(
+		'filename_empty'=>'No name has been entered for this collection!',
+		'response_save_noperms_to_create_folders'=>'The collection could not be saved because you do not have the neccessary rights to create folders (%s)!',
+		'response_save_notok'=>'Error while saving collection `%s`!',
+		'response_save_ok'=>'The collection `%s` has been successfully saved!',
+		'we_filename_notAllowed'=>'The collection name you have entered is not allowed!',
+		'we_filename_notValid'=>'Invalid collection name\nAll characters except <>?":|\\/* are valid.',
 	),
 	'text/weTmpl'=>array(
 		'filename_empty'=>'Er is geen naam ingevoerd voor dit document!',

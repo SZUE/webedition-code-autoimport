@@ -1,6 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weEditor=array(
+	'text/weCollection'=>array(
+		'response_path_exists'=>'The collection `%s` could not be saved because another collection or directory is positioned at the same location!',
+	),
 	'application/*'=>array(
 		'filename_empty'=>'Ningún nombre ha sido entrado para este documento!',
 		'response_path_exists'=>'El documento `%s` no pudo ser salvado porque otro documento o directorio está situado en la misma ubicación!',
@@ -164,6 +167,14 @@ All characters except <>?":|\\/* are valid.',
 		'response_unpublish_ok'=>'El archivo de texto `%s` ha sido exitosamente des-publicado!',
 		'we_filename_notAllowed'=>'El nombre de archivo entrado no es permitido!',
 		'we_filename_notValid'=>'Nombre de archivo no válido\nLos carácteres válidos son alpha-númericos, mayúsculas y minúsculas, así como también subrayados, guión y punto (a-z, A-Z, 0-9, _, -, .)',
+	),
+	'text/weCollection'=>array(
+		'filename_empty'=>'No name has been entered for this collection!',
+		'response_save_noperms_to_create_folders'=>'The collection could not be saved because you do not have the neccessary rights to create folders (%s)!',
+		'response_save_notok'=>'Error while saving collection `%s`!',
+		'response_save_ok'=>'The collection `%s` has been successfully saved!',
+		'we_filename_notAllowed'=>'The collection name you have entered is not allowed!',
+		'we_filename_notValid'=>'Invalid collection name\nAll characters except <>?":|\\/* are valid.',
 	),
 	'text/weTmpl'=>array(
 		'filename_empty'=>'Ningún nombre ha sido entrado para este documento!',

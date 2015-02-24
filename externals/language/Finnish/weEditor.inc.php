@@ -1,6 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weEditor=array(
+	'text/weCollection'=>array(
+		'response_path_exists'=>'The collection `%s` could not be saved because another collection or directory is positioned at the same location!',
+	),
 	'application/*'=>array(
 		'filename_empty'=>'Dokumentille ei ole annettu nimeä!',
 		'response_path_exists'=>'Dokumenttia `%s` ei voitu tallentaa, koska samanniminen tiedosto tai hakemisto sijaitsee kohteessa!',
@@ -164,6 +167,14 @@ Sallitut kirjaimet ovat alfa-numeerisia , isot ja pienet kirjaimet, alaviiva, ta
 		'response_unpublish_ok'=>'Tekstitiedosto `%s` on poistettu julkaisusta!',
 		'we_filename_notAllowed'=>'Annettu tiedoston nimi ei ole sallittu!',
 		'we_filename_notValid'=>'Virheellinen tiedoston nimi!\nSallitut merkit ovat alfa-numeerisia, isot ja pienet kirjaimet, alaviiva, tavuviiva ja piste (a-z, A-Z, 0-9, _, -, .)',
+	),
+	'text/weCollection'=>array(
+		'filename_empty'=>'No name has been entered for this collection!',
+		'response_save_noperms_to_create_folders'=>'The collection could not be saved because you do not have the neccessary rights to create folders (%s)!',
+		'response_save_notok'=>'Error while saving collection `%s`!',
+		'response_save_ok'=>'The collection `%s` has been successfully saved!',
+		'we_filename_notAllowed'=>'The collection name you have entered is not allowed!',
+		'we_filename_notValid'=>'Invalid collection name\nAll characters except <>?":|\\/* are valid.',
 	),
 	'text/weTmpl'=>array(
 		'filename_empty'=>'Dokumentille ei ole annettu nimeä!',

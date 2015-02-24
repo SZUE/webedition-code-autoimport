@@ -1,6 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_weEditor=array(
+	'text/weCollection'=>array(
+		'response_path_exists'=>'The collection `%s` could not be saved because another collection or directory is positioned at the same location!',
+	),
 	'application/*'=>array(
 		'filename_empty'=>'Nie wprowadzono nazwy pliku!',
 		'response_path_exists'=>'Nie udało się zapisać pliku `%s`, ponieważ w tym miejscu znajduje się już plik lub katalog!',
@@ -164,6 +167,14 @@ All characters except <>?":|\\/* are valid.',
 		'response_unpublish_ok'=>'Udało się wycofać plik tekstowy `%s`!',
 		'we_filename_notAllowed'=>'Wprowadzona nazwa pliku jest niedozwolona!',
 		'we_filename_notValid'=>'Wprowadzona nazwa pliku jest nieprawidłowa!\nDozwolone znaki to litery od a do z (wielkie lub małe) , cyfry, znak podkrelenia (_), minus (-) oraz kropka (.).',
+	),
+	'text/weCollection'=>array(
+		'filename_empty'=>'No name has been entered for this collection!',
+		'response_save_noperms_to_create_folders'=>'The collection could not be saved because you do not have the neccessary rights to create folders (%s)!',
+		'response_save_notok'=>'Error while saving collection `%s`!',
+		'response_save_ok'=>'The collection `%s` has been successfully saved!',
+		'we_filename_notAllowed'=>'The collection name you have entered is not allowed!',
+		'we_filename_notValid'=>'Invalid collection name\nAll characters except <>?":|\\/* are valid.',
 	),
 	'text/weTmpl'=>array(
 		'filename_empty'=>'Nie wprowadzono nazwy pliku!',
