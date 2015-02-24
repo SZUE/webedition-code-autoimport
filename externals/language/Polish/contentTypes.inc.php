@@ -16,6 +16,7 @@ $l_contentTypes=array(
 	'text/html'=>'Strona HTML',
 	'text/js'=>'JavaScript',
 	'text/plain'=>'Strona text',
+	'text/weCollection'=>'Collection',
 	'text/weTmpl'=>'Szablon webEdition',
 	'text/webedition'=>'Strona webEdition',
 	'text/xml'=>'Plik XML',

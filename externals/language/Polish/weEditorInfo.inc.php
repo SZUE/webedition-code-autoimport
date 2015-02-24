@@ -32,6 +32,7 @@ $l_weEditorInfo=array(
 	'text/js'=>'Dokument Javascript',
 	'text/php'=>'Dokument PHP',
 	'text/plain'=>'Dokument textowy',
+	'text/weCollection'=>'Collection',
 	'text/weTmpl'=>'Szablon',
 	'text/webedition'=>'Dokument webEdition',
 	'text/xml'=>'XML document',

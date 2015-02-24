@@ -16,6 +16,7 @@ $l_contentTypes=array(
 	'text/html'=>'HTML -sivu',
 	'text/js'=>'Javascript -tiedosto',
 	'text/plain'=>'Tekstisivu',
+	'text/weCollection'=>'Collection',
 	'text/weTmpl'=>'webEdition -sivupohja',
 	'text/webedition'=>'webEdition -sivu',
 	'text/xml'=>'XML -tiedosto',

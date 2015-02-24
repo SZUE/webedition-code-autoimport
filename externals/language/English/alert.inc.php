@@ -152,6 +152,9 @@ $l_alert=array(
 		'in_wf_warning'=>'The template has to be saved before it can be put in the workflow!\nDo you want to save the template right now?',
 		'not_im_ws'=>'The template is not located inside your workspace!',
 	),
+	'tblVFiles'=>array(
+		'in_wf_warning'=>'The collection has to be saved before it can be put in the workflow!\nDo you want to save the collection right now?',
+	),
 	'template_in_use'=>'The template is in use and cannot be removed!',
 	'template_save_warning1'=>'This template is used by one published document. Should it be resaved?',
 	'template_save_warning2'=>'This template is used by other templates and documents, should they be resaved?',

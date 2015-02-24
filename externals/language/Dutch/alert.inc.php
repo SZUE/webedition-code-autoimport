@@ -152,6 +152,9 @@ $l_alert=array(
 		'in_wf_warning'=>'Het sjabloon moet eerst bewaard worden voordat het in de workflow geplaatst kan worden!\nWilt u het sjabloon nu bewaren?',
 		'not_im_ws'=>'Het sjabloon bevindt zich niet in uw werkgebied!',
 	),
+	'tblVFiles'=>array(
+		'in_wf_warning'=>'The collection has to be saved before it can be put in the workflow!\nDo you want to save the collection right now?',
+	),
 	'template_in_use'=>'Het sjabloon is in gebruik en kan niet verwijderd worden!',
 	'template_save_warning1'=>'Dit sjabloon wordt gebruikt door één gepubliceerd document. Moet deze opnieuw bewaard worden?',
 	'template_save_warning2'=>'Dit sjabloon wordt gebruikt door andere sjablonen en documenten, moeten deze opnieuw bewaard worden?',

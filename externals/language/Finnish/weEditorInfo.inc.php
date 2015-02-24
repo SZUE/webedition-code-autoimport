@@ -32,6 +32,7 @@ $l_weEditorInfo=array(
 	'text/js'=>'JavaScript -tiedosto',
 	'text/php'=>'PHP -tiedosto',
 	'text/plain'=>'Tekstitiedosto',
+	'text/weCollection'=>'Collection',
 	'text/weTmpl'=>'Sivupohja',
 	'text/webedition'=>'webEdition -dokumentti',
 	'text/xml'=>'XML -dokumentti',

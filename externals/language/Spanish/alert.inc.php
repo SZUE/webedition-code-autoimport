@@ -152,6 +152,9 @@ $l_alert=array(
 		'in_wf_warning'=>'La plantilla debe ser salvada antes de poder ser colocada en el flujo de trabajo!\Desea UD salvar la plantilla ahora?',
 		'not_im_ws'=>'La plantilla no está situado dentro de su área de trabajo!',
 	),
+	'tblVFiles'=>array(
+		'in_wf_warning'=>'The collection has to be saved before it can be put in the workflow!\nDo you want to save the collection right now?',
+	),
 	'template_in_use'=>'La plantilla está siendo usada y no se puede remover!',
 	'template_save_warning1'=>'This template is used by one published document. Should it be resaved?',
 	'template_save_warning2'=>'This template is used by other templates and documents, should they be resaved?',

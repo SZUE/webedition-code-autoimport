@@ -152,6 +152,9 @@ $l_alert=array(
 		'in_wf_warning'=>'Bevor das Template in den Workflow gegeben werden kann, muß es gespeichert werden!\nSoll das Template jetzt gespeichert werden?',
 		'not_im_ws'=>'Die Vorlage befindet sich nicht in Ihrem Arbeitsbereich!',
 	),
+	'tblVFiles'=>array(
+		'in_wf_warning'=>'Bevor die Sammlung in den Workflow gegeben werden kann, muß es gespeichert werden!\nSoll die Sammlung jetzt gespeichert werden?',
+	),
 	'template_in_use'=>'Die Vorlage wird benutzt und kann daher nicht entfernt werden!',
 	'template_save_warning1'=>'Diese Vorlage wird von einem veröffentlichten Dokument benutzt. Soll dieses Dokument neu gespeichert werden?',
 	'template_save_warning2'=>'Diese Vorlage wird von anderen Vorlagen und Dokumenten benutzt. Sollen diese neu gespeichert werden?',

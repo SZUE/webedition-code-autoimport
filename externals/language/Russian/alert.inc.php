@@ -152,6 +152,9 @@ $l_alert=array(
 		'in_wf_warning'=>'Перед передачей данного шаблона в поток его нужно сохранить!\nСохранить шаблон?',
 		'not_im_ws'=>'Данный шаблон не из Вашего рабочего пространства!',
 	),
+	'tblVFiles'=>array(
+		'in_wf_warning'=>'The collection has to be saved before it can be put in the workflow!\nDo you want to save the collection right now?',
+	),
 	'template_in_use'=>'Данный шаблон в работе и не может быть удален!',
 	'template_save_warning1'=>'This template is used by one published document. Should it be resaved?',
 	'template_save_warning2'=>'This template is used by other templates and documents, should they be resaved?',
