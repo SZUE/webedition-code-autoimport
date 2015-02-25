@@ -80,6 +80,8 @@ function getJSCommand($cmd0){
 			return 'top.we_cmd("new","' . FILE_TABLE . '","","folder");';
 		case 'new_template_folder':
 			return 'top.we_cmd("new","' . TEMPLATES_TABLE . '","","folder");';
+		case 'new_collection_folder':
+			return 'top.we_cmd("new","' . VFILE_TABLE . '","","folder");';
 		case 'new_collection':
 			return 'top.we_cmd("new","' . VFILE_TABLE . '","","' . we_base_ContentTypes::COLLECTION . '");';
 		case 'delete_documents':

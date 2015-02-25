@@ -201,7 +201,7 @@ if(top.makeNewFolder ||  top.we_editDirID){
 					var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true"';
 					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 					body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? "background-color:#DFE9F5;" : "") + 'cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
-									'<td class="selector" align="center"><img src="<?php echo TREE_ICON_DIR ?>' + entries[i].icon + '" width="16" height="18" border="0" /></td>' +
+									'<td class="selector" align="center"><img src="<?php echo TREE_ICON_DIR ?>' + (entries[i].icon ? entries[i].icon : "<?php echo we_base_ContentTypes::FOLDER_ICON ?>") + '" width="16" height="18" border="0" /></td>' +
 									(we_editDirID == entries[i].ID ?
 													'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 													'<td class="selector" style="" title="' + entries[i].text + '">' + cutText(entries[i].text, 30)

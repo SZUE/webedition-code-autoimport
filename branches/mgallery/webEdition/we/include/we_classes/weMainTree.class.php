@@ -88,8 +88,9 @@ function doClick(id){
 	var node=' . $this->topFrame . '.get(id);
 	var ct=node.contenttype;
 	var table=node.table;
+	var id = node.we_id ? node.we_id : id;
 	setScrollY();
-	if(' . $this->topFrame . '.wasdblclick && ct != \'folder\' && table!=\'' . TEMPLATES_TABLE . '\'' . (defined('OBJECT_TABLE') ? ' && table!=\'' . OBJECT_TABLE . '\' && table!=\'' . OBJECT_FILES_TABLE . '\'' : '' ) . '){
+	if(' . $this->topFrame . '.wasdblclick && ct != \'folder\' && table!=\'' . TEMPLATES_TABLE . '\' && table!=\'' . VFILE_TABLE . '\'' . (defined('OBJECT_TABLE') ? ' && table!=\'' . OBJECT_TABLE . '\' && table!=\'' . OBJECT_FILES_TABLE . '\'' : '' ) . '){
 		top.openBrowser(id);
 		setTimeout(\'wasdblclick=0;\',400);
 	} else {
@@ -178,7 +179,7 @@ if(weWindow.treeData){
 		return '
 function getLayout(){
 		if(this.typ=="threedots") return treeData.node_layouts["threedots"];
-		var layout_key=(this.typ=="group" ? "group" : "item")+
+		var layout_key=(this.typ=="group"&&this.contenttype!=="text/weCollection" ? "group" : "item")+
 			(this.selected==1 ? "-selected" : "")+
 			(this.disabled==1 ? "-disabled" : "")+
 			(this.checked==1 ? "-checked" : "")+

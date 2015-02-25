@@ -213,7 +213,7 @@ function clickHandler(cur) {
 		} else if (treeData.state == treeData.tree_states.selectgroup && cur.typ == "group") {
 			row += "<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">";
 		} else {
-			row += "<a name=\"_" + cur.id + "\" href=\"javascript://\"  ondblclick=\"" + treeData.topFrame + ".wasdblclick=1;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(" + treeData.topFrame + ".wasdblclick==0){ " + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + treeData.topFrame + ".wasdblclick=0;}',300);return true;\" onmouseover=\"" + treeData.topFrame + ".info('ID:" + cur.id + "')\" onmouseout=\"" + treeData.topFrame + ".info(' ');\">";
+			row += "<a name=\"_" + cur.id + "\" href=\"javascript://\"  ondblclick=\"" + treeData.topFrame + ".wasdblclick=1;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(" + treeData.topFrame + ".wasdblclick==0){ " + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + treeData.topFrame + ".wasdblclick=0;}',300);return true;\" onmouseover=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onmouseout=\"" + treeData.topFrame + ".info(' ');\">";
 		}
 	}
 	row += "<img src=" + treeData.tree_icon_dir + cur.icon + " alt=\"\">" +
@@ -243,7 +243,7 @@ function clickHandler(cur) {
 
 				break;
 			default:
-				row += "<a name=\"_" + cur.id + "\" href=\"javascript://\"  onDblClick=\"" + treeData.topFrame + ".wasdblclick=1;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(" + treeData.topFrame + ".wasdblclick==0)" + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); else " + treeData.topFrame + ".wasdblclick=0;',300);return true;\" onMouseOver=\"" + treeData.topFrame + ".info('ID:" + cur.id + "')\" onMouseOut=\"" + treeData.topFrame + ".info(' ');\"><label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + cur.tooltip + "\"" : "") + " class=\"" + cur.getlayout() + "\">&nbsp;" + cur.text + "</label></a>";
+				row += "<a name=\"_" + cur.id + "\" href=\"javascript://\"  onDblClick=\"" + treeData.topFrame + ".wasdblclick=1;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(" + treeData.topFrame + ".wasdblclick==0)" + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); else " + treeData.topFrame + ".wasdblclick=0;',300);return true;\" onMouseOver=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onMouseOut=\"" + treeData.topFrame + ".info(' ');\"><label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + cur.tooltip + "\"" : "") + " class=\"" + cur.getlayout() + "\">&nbsp;" + cur.text + "</label></a>";
 		}
 	} else {
 		row += "<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + cur.tooltip + "\"" : "") + " class=\"" + cur.getlayout() + "\">&nbsp;" + cur.text + "</label>";
@@ -270,7 +270,9 @@ function drawGroup(nf, ai, zweigEintrag) {
 
 	row = "&nbsp;&nbsp;<a href=\"javascript:" + treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + nf[ai].id + "')\"><img src=" + treeData.tree_image_dir + (nf[ai].open === 0 ? "auf" : "zu") + (ai == nf.len ? "end" : "") + ".gif class=\"treeKreuz\" alt=\"\"></a>";
 
-	nf[ai].icon = "folder" + (nf[ai].open == 1 ? "open" : "") + (nf[ai].disabled == 1 ? "_disabled" : "") + ".gif";
+	if(nf[ai].contenttype !== 'text/weCollection'){
+		nf[ai].icon = "folder" + (nf[ai].open == 1 ? "open" : "") + (nf[ai].disabled == 1 ? "_disabled" : "") + ".gif";
+	}
 
 	row += clickHandler(nf[ai]);
 
