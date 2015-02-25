@@ -31,11 +31,11 @@ we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js');
 </head>
 <body class="weEditorBody">
 	<form name="we_form"><?php echo we_class::hiddenTrans(); ?>
-		<input type="hidden" name="we_collection_csv" value="1"/>
+		<?php echo $GLOBALS['we_doc']->formInputField('', 'Collection', 'Collection', 40, 410); ?>
 		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 
-
+	<br/><br/>
 ATTENTION: this is a dummy to develop editor's JS
 <div id="content_table">
 	<div class="drop_reference" draggable="true" ondragstart="drag(event)" id="drag1" ondrop="drop(event)" ondragover="allowDrop(event)" ondragenter="enterDrag(event)">

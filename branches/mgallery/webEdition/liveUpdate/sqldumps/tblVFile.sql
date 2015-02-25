@@ -11,7 +11,7 @@ CREATE TABLE ###TBLPREFIX###tblVFile (
   RestrictOwners tinyint(1) unsigned NOT NULL default '0',
   Owners varchar(255) NOT NULL default '',
   OwnersReadOnly text NOT NULL,
-  Content text NOT NULL default '',
+  Collection text NOT NULL default '',
 	PRIMARY KEY  (ID),
   KEY Path (Path(30),IsFolder),
 	KEY ParentID(ParentID)
