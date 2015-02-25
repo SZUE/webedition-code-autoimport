@@ -1478,7 +1478,7 @@ function checkData(){
 			(($anz - $offset) < $numRows ? $anz : $offset + $numRows) .
 			we_html_tools::getPixel(5, 1) . ' ' . g_l('global', '[from]') . ' ' . we_html_tools::getPixel(5, 1) . $anz . '</b></td><td>' . we_html_tools::getPixel(23, 1) .
 			((($offset + $numRows) < $anz) ?
-				we_html_button::create_button('next', WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=$art&type=$type&offset=" . ($offset + $numRows) . "&order=$order") :
+				we_html_button::create_button('next', WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=$art&type=$type&offset=" . ($offset + $numRows)/* . "&order=$order"*/) :
 				we_html_button::create_button('next', '', '', 100, 22, '', '', true)
 			) .
 			'</td><td></tr></table>';
