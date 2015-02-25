@@ -623,3 +623,10 @@ margin-right:1em;
 div.le_widget:first-child{
 margin-top:0px;
 }
+
+select.defaultfont{
+	border: #AAAAAA solid 1px;
+}
+select.defaultfont:focus{
+	border: #888888 solid 1px;
+}
