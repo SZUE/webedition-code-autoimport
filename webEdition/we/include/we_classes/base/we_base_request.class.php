@@ -219,11 +219,11 @@ class we_base_request{
 
 	public static function filterVar($var, $varType, $default = ''){
 		//FIXME: remove checker at release
-		$preVar = $var;
+		//$preVar = $var;
 		self::_weRequest($var, '', array($varType, $default));
-		if($varType != self::INTLIST && !is_bool($var) && !is_array($var) && $preVar != $var && $var != $default){
+/*		if($varType != self::INTLIST && !is_bool($var) && !is_array($var) && $preVar != $var && $var != $default){
 			t_e('changed var/tag attribute', $preVar, $var);
-		}
+		}*/
 		return $var;
 	}
 
