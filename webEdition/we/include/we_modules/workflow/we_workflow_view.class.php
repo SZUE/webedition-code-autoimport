@@ -55,15 +55,15 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	}
 
 	function getHiddensFormPropertyPage(){
-		array_push($this->hiddens, 'Text', 'Type', 'Folders', 'FolderPath', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'DocType', 'Objects', 'EmailPath', 'LastStepAutoPublish');
+		array_push($this->hiddens, 'Text', 'Type', 'Folders', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'DocType', 'Objects', 'EmailPath', 'LastStepAutoPublish');
 
 		return '';
 	}
 
 	function getHiddensFormOverviewPage(){
 		//we need the following vars since fields expect this hidden fields & selectors don't generate a hidden field itself
-		array_push($this->hiddens, 'Type', 'Folders', 'FolderPath', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'DocType', 'Objects');
-		
+		array_push($this->hiddens, 'Type', 'Folders', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'DocType', 'Objects');
+
 		$out = $this->htmlHidden('wcat', '0') .
 			$this->htmlHidden('wocat', '0') .
 			$this->htmlHidden('wfolder', '0') .
