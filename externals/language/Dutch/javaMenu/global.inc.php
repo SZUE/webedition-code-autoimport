@@ -12,6 +12,7 @@ $l_javaMenu_global=array(
 	'close_all_but_active_document'=>'Close inactive documents',
 	'close_all_documents'=>'Sluit alle documenten',
 	'close_single_document'=>'Sluit document',
+	'collection_directory'=>'Collection directory',
 	'common'=>'Gebruikelijk',
 	'css_stylesheet'=>'CSS Stylesheet',
 	'default_settings'=>'Reset default settings',

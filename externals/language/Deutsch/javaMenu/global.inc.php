@@ -12,6 +12,7 @@ $l_javaMenu_global=array(
 	'close_all_but_active_document'=>'Schließe inaktive Tabs',
 	'close_all_documents'=>'Schließe alle Tabs',
 	'close_single_document'=>'Schließe Tab',
+	'collection_directory'=>'Sammlungen Verzeichnis',
 	'common'=>'Allgemein',
 	'css_stylesheet'=>'CSS-Datei',
 	'default_settings'=>'Standard-Einstellungen wiederherstellen',

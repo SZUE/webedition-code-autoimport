@@ -12,6 +12,7 @@ $l_javaMenu_global=array(
 	'close_all_but_active_document'=>'Sulje kaikki ei-aktiiviset dokumentit',
 	'close_all_documents'=>'Sulje kaikki dokumentit',
 	'close_single_document'=>'Sulje dokumentti',
+	'collection_directory'=>'Collection directory',
 	'common'=>'Yleiset',
 	'css_stylesheet'=>'CSS tyylitiedosto',
 	'default_settings'=>'Palauta vakioasetukset',
