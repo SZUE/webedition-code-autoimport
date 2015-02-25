@@ -23,6 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
+	const PAGE_PROPERTIES = 0;
+	const PAGE_OVERVIEW = 1;
+
 	// workflow array; format workflow[workflowID]=workflow_name
 	var $workflows = array();
 	//default workflow
@@ -32,14 +35,14 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	//what is current display 0-workflow(default);1-document;
 	var $show = 0;
 	//wat page is currentlly displed 0-properties(default);1-overview;
-	var $page = 0;
+	var $page = self::PAGE_PROPERTIES;
 	var $hiddens = array();
 
 	function __construct(){
 		parent::__construct();
 		$this->workflowDef = new we_workflow_workflow();
 		$this->documentDef = new we_workflow_document();
-		array_push($this->hiddens, 'ID', 'Status', 'Folders', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'DocType', 'Objects');
+		array_push($this->hiddens, 'ID', 'Status');
 	}
 
 	function getHiddens(){
@@ -52,25 +55,19 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	}
 
 	function getHiddensFormPropertyPage(){
-		return $this->htmlHidden($this->uid . '_Text', $this->workflowDef->Text) .
-			$this->htmlHidden($this->uid . '_Type', $this->workflowDef->Type) .
-			$this->htmlHidden($this->uid . '_FolderPath', $this->workflowDef->FolderPath) .
-			$this->htmlHidden($this->uid . '_Folders', $this->workflowDef->Folders) .
-			$this->htmlHidden($this->uid . '_ObjectFileFolders', $this->workflowDef->ObjectFileFolders) .
-			$this->htmlHidden($this->uid . '_DocType', $this->workflowDef->DocType) .
-			$this->htmlHidden($this->uid . '_Categories', $this->workflowDef->Categories) .
-			$this->htmlHidden($this->uid . '_ObjCategories', $this->workflowDef->ObjCategories) .
-			$this->htmlHidden($this->uid . '_Objects', $this->workflowDef->Objects) .
-			$this->htmlHidden($this->uid . '_EmailPath', $this->workflowDef->EmailPath) .
-			$this->htmlHidden($this->uid . '_LastStepAutoPublish', $this->workflowDef->LastStepAutoPublish);
+		array_push($this->hiddens, 'Text', 'Type', 'Folders', 'FolderPath', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'DocType', 'Objects', 'EmailPath', 'LastStepAutoPublish');
+
+		return '';
 	}
 
 	function getHiddensFormOverviewPage(){
+		//we need the following vars since fields expect this hidden fields & selectors don't generate a hidden field itself
+		array_push($this->hiddens, 'Type', 'Folders', 'FolderPath', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'DocType', 'Objects');
+		
 		$out = $this->htmlHidden('wcat', '0') .
 			$this->htmlHidden('wocat', '0') .
 			$this->htmlHidden('wfolder', '0') .
 			$this->htmlHidden('woffolder', '0') .
-			$this->htmlHidden('Type', '0') .
 			$this->htmlHidden('wobject', '0');
 
 		$counter = 0;
@@ -119,32 +116,32 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		if($this->show){
 			$content .=$this->getDocumentInfo();
 		} else {
-			$content .=$this->workflowHiddens();
-
-			if($this->page == 0){
-
-				$_space = 143;
-				$parts = array(
-					$this->getWorkflowHeaderMultiboxParts($_space),
-					$parts[] = array(
-					'headline' => g_l('modules_workflow', '[type]'),
-					'space' => $_space - 25,
-					'html' => $this->getWorkflowTypeHTML()),
-					array(
-						'headline' => g_l('modules_workflow', '[specials]'),
+			switch($this->page){
+				case self::PAGE_PROPERTIES:
+					$_space = 143;
+					$parts = array(
+						$this->getWorkflowHeaderMultiboxParts($_space),
+						$parts[] = array(
+						'headline' => g_l('modules_workflow', '[type]'),
 						'space' => $_space - 25,
-						'html' => '<br/>' .
-						we_html_forms::checkboxWithHidden($this->workflowDef->EmailPath, $this->uid . '_EmailPath', g_l('modules_workflow', '[EmailPath]'), false, 'defaultfont', '', false) .
-						we_html_forms::checkboxWithHidden($this->workflowDef->LastStepAutoPublish, $this->uid . '_LastStepAutoPublish', g_l('modules_workflow', '[LastStepAutoPublish]'), false, 'defaultfont', '', false)
-					),
-				);
-				//	Workflow-Type
-				$content .= $this->getHiddensFormOverviewPage() .
-					we_html_multiIconBox::getHTML('workflowProperties', '100%', $parts, 30);
-			} else {
-				$content .= $this->getHiddensFormPropertyPage() .
-					we_html_tools::htmlDialogLayout($this->getStepsHTML(), '');
+						'html' => $this->getWorkflowTypeHTML()),
+						array(
+							'headline' => g_l('modules_workflow', '[specials]'),
+							'space' => $_space - 25,
+							'html' => '<br/>' .
+							we_html_forms::checkboxWithHidden($this->workflowDef->EmailPath, $this->uid . '_EmailPath', g_l('modules_workflow', '[EmailPath]'), false, 'defaultfont', '', false) .
+							we_html_forms::checkboxWithHidden($this->workflowDef->LastStepAutoPublish, $this->uid . '_LastStepAutoPublish', g_l('modules_workflow', '[LastStepAutoPublish]'), false, 'defaultfont', '', false)
+						),
+					);
+					//	Workflow-Type
+					$content .= $this->getHiddensFormOverviewPage() .
+						we_html_multiIconBox::getHTML('workflowProperties', '100%', $parts, 30);
+					break;
+				case self::PAGE_OVERVIEW:
+					$content .= $this->getHiddensFormPropertyPage() .
+						we_html_tools::htmlDialogLayout($this->getStepsHTML(), '');
 			}
+			$content .=$this->workflowHiddens();
 		}
 		$content .='</form>';
 		$body = we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $content);
@@ -796,7 +793,7 @@ function checkData(){
 		switch(we_base_request::_(we_base_request::STRING, 'wcmd', '')){
 			case 'new_workflow':
 				$this->workflowDef = new we_workflow_workflow();
-				$this->page = 0;
+				$this->page = self::PAGE_PROPERTIES;
 				echo we_html_element::jsElement('
 					top.content.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader";
 					top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edfooter";
@@ -973,7 +970,7 @@ function checkData(){
 			case 'show_document':
 				if(($id = we_base_request::_(we_base_request::INT, 'wid'))){
 					$this->show = 1;
-					$this->page = 0;
+					$this->page = self::PAGE_PROPERTIES;
 					$this->documentDef->load($id);
 					echo we_html_element::jsElement('
 					top.content.editor.edheader.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflow_frameset.php?pnt=edheader&art=1&txt=' . $this->documentDef->document->Text . '";
@@ -1000,7 +997,7 @@ function checkData(){
 				}
 				break;
 			case 'reload_table':
-				$this->page = 1;
+				$this->page = self::PAGE_OVERVIEW;
 				break;
 			case 'empty_log':
 				$stamp = 0;
@@ -1025,7 +1022,7 @@ function checkData(){
 
 		$wsteps = we_base_request::_(we_base_request::INT, 'wsteps', 0);
 		$wtasks = we_base_request::_(we_base_request::INT, 'wtasks', 0);
-		$this->page = we_base_request::_(we_base_request::INT, 'page', 0);
+		$this->page = we_base_request::_(we_base_request::INT, 'page', self::PAGE_PROPERTIES);
 
 
 		$this->workflowDef->steps = array();
