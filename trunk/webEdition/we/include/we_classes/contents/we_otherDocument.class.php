@@ -102,6 +102,7 @@ class we_otherDocument extends we_binaryDocument{
 			case '.xls':
 			case '.pps':
 			case '.ppt':
+				break;
 			case '.rtf':
 				$content = $this->i_getDocument(1000000);
 				break;
