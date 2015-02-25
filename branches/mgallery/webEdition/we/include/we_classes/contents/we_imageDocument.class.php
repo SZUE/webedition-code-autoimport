@@ -795,6 +795,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['" . $RollOverFlagName . "'].value=1;opener.document.we_form.elements['" . $checkFlagName . "'].checked=true;");
 		$but2 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', " . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
+
 		$cmd1 = "document.we_form.elements['" . $extname . "'].value";
 		$wecmdenc4 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][1].checked=true;");
 		$butExt = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ?

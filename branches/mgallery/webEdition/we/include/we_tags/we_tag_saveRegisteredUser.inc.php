@@ -90,7 +90,7 @@ function we_tag_saveRegisteredUser($attribs){
 				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(($passempty ? : g_l('customer', '[password_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
 			}
 		}
-	} else if($uid === $_SESSION['webuser']['ID'] && $_SESSION['webuser']['registered']){ // existing user
+	} else if($uid == $_SESSION['webuser']['ID'] && $_SESSION['webuser']['registered']){ // existing user
 		// existierender User (Daten werden von User geaendert)!!
 		$weUsername = $username? : $_SESSION['webuser']['Username'];
 
@@ -106,8 +106,7 @@ function we_tag_saveRegisteredUser($attribs){
 			we_saveCustomerImages();
 			$set_a = we_tag_saveRegisteredUser_processRequest($protected, $allowed);
 			$password = we_base_request::_(we_base_request::RAW, 's', false, 'Password');
-
-			if($password != we_customer_customer::NOPWD_CHANGE && $password != $_SESSION['webuser']['Password']){//bei Password�nderungen m�ssen die Autologins des Users gel�scht werden
+			if($password != we_customer_customer::NOPWD_CHANGE && !we_customer_customer::comparePassword(f('SELECT Password FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $_SESSION['webuser']['ID']), $password)){//bei Passwordaenderungen muessen die Autologins des Users geloescht werden
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($_SESSION['webuser']['ID']));
 			}
 			if($set_a){

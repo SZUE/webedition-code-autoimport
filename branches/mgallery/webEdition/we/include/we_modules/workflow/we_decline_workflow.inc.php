@@ -39,7 +39,8 @@ if($cmd === "ok"){
 			$script = "opener.top.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
 		} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 
-			$script = 'top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();';
+
+			$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();';
 		}
 
 		if(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO)){

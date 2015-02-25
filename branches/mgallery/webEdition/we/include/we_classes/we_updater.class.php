@@ -43,7 +43,7 @@ abstract class we_updater{
 		}
 	}
 
-	private static function updateTables($DB_WE = null){
+	public static function updateTables($DB_WE = null){ // update6360.php
 		$db2 = new DB_WE();
 		$tables = $db2->table_names(TBL_PREFIX . 'tblOwner');
 		$DB_WE = $DB_WE ? : new DB_WE(); //old code calls without object
