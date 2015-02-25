@@ -120,3 +120,10 @@ font-family: <?php echo g_l('css', '[font_family]'); ?>;
 .weSidebarBody {
  background: #ffffff url(<?php echo IMAGE_DIR; ?>backgrounds/sidebarBackground.gif) no-repeat fixed bottom right;
 }
+
+select.defaultfont{
+	border: #AAAAAA solid 1px;
+}
+select.defaultfont:focus{
+	border: #888888 solid 1px;
+}

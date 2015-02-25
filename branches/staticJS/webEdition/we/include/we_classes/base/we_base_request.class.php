@@ -201,7 +201,7 @@ class we_base_request{
 				$var = filter_var($var, FILTER_SANITIZE_STRING);
 				return;
 			case self::STRING_LIST:
-				$var = array_map('trim', explode(',', filter_var($var, FILTER_SANITIZE_STRING)));
+				$var = array_filter(array_map('trim', explode(',', filter_var($var, FILTER_SANITIZE_STRING))));
 				return;
 			case self::HTML:
 				$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -219,11 +219,11 @@ class we_base_request{
 
 	public static function filterVar($var, $varType, $default = ''){
 		//FIXME: remove checker at release
-		$preVar = $var;
+		//$preVar = $var;
 		self::_weRequest($var, '', array($varType, $default));
-		if($varType != self::INTLIST && !is_bool($var) && !is_array($var) && $preVar != $var && $var != $default){
+/*		if($varType != self::INTLIST && !is_bool($var) && !is_array($var) && $preVar != $var && $var != $default){
 			t_e('changed var/tag attribute', $preVar, $var);
-		}
+		}*/
 		return $var;
 	}
 

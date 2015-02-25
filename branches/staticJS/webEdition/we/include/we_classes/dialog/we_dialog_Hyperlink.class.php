@@ -421,7 +421,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				'<div style="position:relative; top:15px"><table cellpadding="0" cellspacing="0" border="0" height="65">
 	<tr>
 		<td class="defaultgray" valign="top" width="100" height="20">' . g_l('weClass', '[linkType]') . '</td>
-		<td valign="top"><select name="we_dialog_args[type]" id="weDialogType" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">' . $_select_type . '</select></td>
+		<td valign="top"><select name="we_dialog_args[type]" class="defaultfont" id="weDialogType" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">' . $_select_type . '</select></td>
 	</tr>
 	<tr class="we_change ' . we_base_link::TYPE_EXT . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_EXT) ? "table-row" : "none") . ';">
 		<td class="defaultgray" valign="top" width="100">' . g_l('linklistEdit', '[external_link]') . '</td><td valign="top" >' . $_external_link . '</td>
@@ -519,7 +519,7 @@ function weonsubmit() {
 	}
 
 	function getRevRelSelect($type){
-		return '<input type="text" name="we_dialog_args[' . $type . ']" value="' . oldHtmlspecialchars($this->args["$type"]) . '" style="width:70px;" /><select name="' . $type . '_sel" size="1" style="width:75px;" onchange="this.form.elements[\'we_dialog_args[' . $type . ']\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
+		return '<input type="text" class="wetextinput" name="we_dialog_args[' . $type . ']" value="' . oldHtmlspecialchars($this->args["$type"]) . '" style="width:70px;" /><select class="defaultfont" name="' . $type . '_sel" size="1" style="width:75px;" onchange="this.form.elements[\'we_dialog_args[' . $type . ']\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
 	<option></option>
 	<option>contents</option>
 	<option>chapter</option>

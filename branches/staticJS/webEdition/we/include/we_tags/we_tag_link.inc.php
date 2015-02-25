@@ -31,8 +31,7 @@ function we_tag_link($attribs, $content){
 			return $GLOBALS['we']['ll']->getLinktag($link, $attribs) . ($only ? '' : $linkcontent . '</a>');
 		}
 		return $linkcontent;
-	}
-	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
+	}elseif(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
