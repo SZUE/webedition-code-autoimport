@@ -38,15 +38,15 @@ function we_tag_a($attribs, $content){
 		}
 	}
 	$confirm = weTag_getAttribute('confirm', $attribs);
-	$button = weTag_getAttribute('button', $attribs, false, true);
-	$hrefonly = weTag_getAttribute('hrefonly', $attribs, false, true);
-	$return = weTag_getAttribute('return', $attribs, false, true);
+	$button = weTag_getAttribute('button', $attribs, false, we_base_request::BOOL);
+	$hrefonly = weTag_getAttribute('hrefonly', $attribs, false, we_base_request::BOOL);
+	$return = weTag_getAttribute('return', $attribs, false, we_base_request::BOOL);
 	$target = weTag_getAttribute('target', $attribs);
-	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, true);
-	$shop = weTag_getAttribute('shop', $attribs, false, true);
+	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
+	$shop = weTag_getAttribute('shop', $attribs, false, we_base_request::BOOL);
 	$amount = weTag_getAttribute('amount', $attribs, 1);
-	$delarticle = weTag_getAttribute('delarticle', $attribs, false, true);
-	$delshop = weTag_getAttribute('delshop', $attribs, false, true);
+	$delarticle = weTag_getAttribute('delarticle', $attribs, false, we_base_request::BOOL);
+	$delshop = weTag_getAttribute('delshop', $attribs, false, we_base_request::BOOL);
 	$urladd = weTag_getAttribute('params', $attribs);
 	$param = ($urladd ? array(preg_replace('|^\?|', '', $urladd)) : array());
 
