@@ -87,7 +87,7 @@ function we_tag_formfield($attribs){
 	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		$tmp_select = '<select name="' . $nameprefix . 'fftype]" onchange="setScrollTo();we_cmd(\'reload_editpage\');">' . "\n";
 		foreach($types as $k){
-			$tmp_select .= '<option value="' . $k . '"' . (($k == $type_sel) ? ' selected="selected"' : '') . '>' . $k . '</option>' . "\n";
+			$tmp_select .= '<option value="' . $k . '"' . (($k == $type_sel) ? ' selected="selected"' : '') . '>' . $k . '</option>';
 		}
 		$tmp_select .= '</select>';
 		$tbl = '<table width="223" style="padding:4px;border:0px;" class="weEditTable">
