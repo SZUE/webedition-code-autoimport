@@ -635,15 +635,6 @@ class installApplication extends installer{
 		$ReplaceCode = '
 			// replaceCode and make needed directories
 		if (
-			!$liveUpdateFnc->checkMakeDir( $_SESSION["le_installationDirectory"] . "/webEdition/we_backup", 0777 ) ||
-			!$liveUpdateFnc->checkMakeDir( $_SESSION["le_installationDirectory"] . "/webEdition/we_backup/tmp", 0777 ) ||
-			!$liveUpdateFnc->checkMakeDir( $_SESSION["le_installationDirectory"] . "/webEdition/we_backup/download", 0777 ) ||
-			!$liveUpdateFnc->checkMakeDir( $_SESSION["le_installationDirectory"] . "/webEdition/we/templates", 0777 ) ||
-			!$liveUpdateFnc->checkMakeDir( $_SESSION["le_installationDirectory"] . "/webEdition/we/tmp", 0777 ) ||
-			!$liveUpdateFnc->checkMakeDir( $_SESSION["le_installationDirectory"] . "/webEdition/we/versions", 0777 ) ||
-			!$liveUpdateFnc->checkMakeDir( $_SESSION["le_installationDirectory"] . "/webEdition/we/include/we_tags/custom_tags", 0777 ) ||
-			!$liveUpdateFnc->checkMakeDir( $_SESSION["le_installationDirectory"] . "/webEdition/we/include/weTagWizard/we_tags/custom_tags", 0777 ) ||
-			!$liveUpdateFnc->checkMakeDir( $_SESSION["le_installationDirectory"] . "/webEdition/site", 0777 ) ||
 
 			!$liveUpdateFnc->filePutContent( $_SESSION["le_installationDirectory"] . "' . $replaceVersionDemo['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceVersionDemo['replace']) . '"), "' . $version . '", "' . $version_type . '", "' . $zf_version . '", "' . $subversion . '", "' . $version_type_version . '", "' . $version_branch . '", "' . $version_name . '"), ".php","' . $_SESSION['clientExtension'] . '"))  ||
 			!$liveUpdateFnc->filePutContent( $_SESSION["le_installationDirectory"] . "' . $replaceWeConfDemo['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceWeConfDemo['replace']) . '"), $_SESSION["le_db_host"], $_SESSION["le_db_database"], base64_encode($_SESSION["le_db_user"]), base64_encode($_SESSION["le_db_password"]), $_SESSION["le_db_connect"], $_SESSION["le_db_prefix"], $_SESSION["le_db_charset"], $_SESSION["le_db_collation"], "' . $licenceName . '", "' . $_SESSION['clientSyslngNEW'] . '", "' . $_SESSION['client_backend_charset'] . '"), ".php","' . $_SESSION['clientExtension'] . '"))  ||
