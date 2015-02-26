@@ -1431,6 +1431,4 @@ if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!isset($SEEM_
 	session_write_close();
 // trigger scheduler
 	we_schedpro::trigger_schedule();
-	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it
-//	@chmod($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR, 0777);
 }
