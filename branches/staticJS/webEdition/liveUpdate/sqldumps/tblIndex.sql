@@ -10,6 +10,8 @@
 /* query separator */
 ###UPDATEDROPKEY(DID,###TBLPREFIX###tblIndex)###
 /* query separator */
+###UPDATEDROPKEY(OID,###TBLPREFIX###tblIndex)###
+/* query separator */
 ###UPDATEDROPKEY(UDID,###TBLPREFIX###tblIndex)###
 /* query separator */
 ###ONKEYFAILED(search,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex DROP PRIMARY KEY;###

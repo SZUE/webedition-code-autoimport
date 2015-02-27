@@ -57,7 +57,7 @@ abstract class we_backup_preparer{
 			'limits' => array(
 				'mem' => we_convertIniSizes(ini_get('memory_limit')),
 				'exec' => min(30, ($execTime > 120 ? ($execTime > 2000 ? 5 : 15) : $execTime)),
-				/*fix for really faulty php installations, e.g. 1&1
+				/* fix for really faulty php installations, e.g. 1&1
 				 * 1&1 execution time >2000, no matter if the script gets killed after 15 seconds
 				 * df execution time = 180,  no matter if the script gets killed after 20 seconds
 				 */
@@ -215,6 +215,8 @@ abstract class we_backup_preparer{
 			'tools' => array(),
 			'spellchecker' => we_base_request::_(we_base_request::BOOL, 'handle_spellchecker'),
 			'glossary' => we_base_request::_(we_base_request::BOOL, 'handle_glossary'),
+			"hooks" => we_base_request::_(we_base_request::BOOL, "handle_hooks"),
+			"customTags" => we_base_request::_(we_base_request::BOOL, "handle_customtags"),
 			'backup' => $options['backup_extern'],
 		);
 
@@ -443,14 +445,14 @@ abstract class we_backup_preparer{
 							}');
 				} else {
 					return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
-							'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+									'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 				}
 			case 'customer':
 				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
-						'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+								'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 			default:
 				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[format_unknown]'), we_message_reporting::WE_MESSAGE_WARNING) .
-						'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+								'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
 		}
 	}
 
@@ -504,7 +506,7 @@ abstract class we_backup_preparer{
 						break;
 					}
 					fwrite($fp, $data);
-				} while(true);
+				}while(true);
 				fclose($fp);
 			} else {
 				fclose($fs);
