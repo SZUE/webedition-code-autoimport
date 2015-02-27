@@ -128,7 +128,10 @@ if(isset($_SESSION['prefs']['Language']) && !empty($_SESSION['prefs']['Language'
 
 define('SCRIPT_BUTTONS_ONLY', we_html_element::jsScript(JS_DIR . 'weButton.js'));
 define('STYLESHEET_BUTTONS_ONLY', we_html_element::cssLink(CSS_DIR . 'we_button.css'));
-define('STYLESHEET_SCRIPT', we_html_element::cssLink(CSS_DIR . 'global.php') . STYLESHEET_BUTTONS_ONLY . we_html_element::cssLink(CSS_DIR . 'webEdition.css'));
+define('STYLESHEET_SCRIPT', we_html_element::cssLink(CSS_DIR . 'global.php') .
+		STYLESHEET_BUTTONS_ONLY .
+		we_html_element::cssLink(CSS_DIR . 'webEdition.css') .
+		we_html_element::cssLink(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css'));
 define('STYLESHEET', STYLESHEET_SCRIPT . SCRIPT_BUTTONS_ONLY);
 
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages

@@ -30,6 +30,7 @@
 class we_customer_customer extends weModelBase{
 
 	const NOPWD_CHANGE = '__WE__PWD_NO_CHANGE';
+	const ENCRYPTED_DATA = '**ENCRYPTED**';
 	const ENCRYPT_NONE = 0;
 	const ENCRYPT_SYMMETRIC = 1;
 	const ENCRYPT_HASH = 2;
@@ -393,6 +394,24 @@ class we_customer_customer extends weModelBase{
 			case '2y'://can't be decoded
 				return '';
 		}
+	}
+
+	public static function getEncryptedFields(){
+		static $fields = -1;
+		if(is_array($fields)){
+			return $fields;
+		}
+		$customerFields = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"', '', $__db);
+		$customerFields = $customerFields ? unserialize($customerFields) : '';
+		if($customerFields){
+			$fields = array();
+			foreach($customerFields as $key => $value){
+				if(isset($value['encryption']) && $value['encryption']){
+					$fields[$key] = self::ENCRYPTED_DATA;
+				}
+			}
+		}
+		return $fields;
 	}
 
 }

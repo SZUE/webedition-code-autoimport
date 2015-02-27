@@ -141,7 +141,7 @@ class we_customer_settings{
 
 	function load($tryFromSession = true){
 		$modified = false;
-		$this->db->query('SELECT pref_name,pref_value FROM ' . SETTINGS_TABLE.' WHERE tool="webadmin"');
+		$this->db->query('SELECT pref_name,pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin"');
 		while($this->db->next_record()){
 			$this->properties[$this->db->f('pref_name')] = $this->db->f('pref_value');
 		}
@@ -171,6 +171,10 @@ class we_customer_settings{
 					$modified = true;
 					$tmp = $props = $this->customer->getFieldDbProperties($name);
 					$this->FieldAdds[$name]['type'] = $this->getOldFieldType($tmp['Type']);
+				}
+				if(!isset($this->FieldAdds[$name]['encrypt'])){
+					$modified = true;
+					$this->FieldAdds[$name]['encrypt'] = 0;
 				}
 			}
 		}
@@ -202,13 +206,14 @@ class we_customer_settings{
 	}
 
 	function save(){
+		//FIXME: make Fieldadds more fields in DB
 		$this->properties['FieldAdds'] = serialize($this->FieldAdds);
 		$this->properties['SortView'] = serialize($this->SortView);
 		$this->properties['EditSort'] = $this->EditSort;
 		$this->properties['Prefs'] = serialize($this->Prefs);
 
 		foreach($this->properties as $key => $value){
-			$this->db->query('REPLACE INTO ' . SETTINGS_TABLE. ' SET tool="webadmin",pref_value="' . $this->db->escape($value) . '",pref_name="' . $key . '"');
+			$this->db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="webadmin",pref_value="' . $this->db->escape($value) . '",pref_name="' . $key . '"');
 		}
 		return true;
 	}
@@ -310,8 +315,8 @@ class we_customer_settings{
 		$this->FieldAdds[$fieldName][$addName] = $value;
 	}
 
-	function retriveFieldAdd($fieldName, $addName, $value){
-		return $this->FieldAdds[$fieldName][$addName];
+	function retriveFieldAdd($fieldName, $addName, $default=''){
+		return isset($this->FieldAdds[$fieldName][$addName]) ? $this->FieldAdds[$fieldName][$addName] : $default;
 	}
 
 	function removeFieldAdd($fieldName){

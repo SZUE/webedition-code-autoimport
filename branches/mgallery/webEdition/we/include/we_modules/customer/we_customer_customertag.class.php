@@ -22,9 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_customer_customertag{
+class we_customer_customertag{//FIXME: remove this class
 
-	private $DB_WE;
 	var $class = '';
 	var $id = 0;
 	var $ClassName = __CLASS__;
@@ -38,7 +37,7 @@ class we_customer_customertag{
 			return;
 		}
 
-		$this->DB_WE = new DB_WE();
+
 		$this->hidedirindex = $hidedirindex;
 		$unique = md5(uniqid(__FILE__, true));
 

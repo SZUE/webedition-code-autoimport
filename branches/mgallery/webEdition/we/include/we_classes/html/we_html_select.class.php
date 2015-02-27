@@ -87,9 +87,9 @@ class we_html_select extends we_html_baseCollection{
 	 *
 	 * @return		void
 	 */
-	function addOptions($opt_num = 1, $values = array(), $texts = array()){
-		for($i = 0; $i < $opt_num; $i++){
-			$this->childs[] = new we_html_baseElement("option", true, array("value" => $values[$i]), $texts[$i]);
+	function addOptions($entries = array()){
+		foreach($entries as $value => $text){
+			$this->childs[] = new we_html_baseElement("option", true, array("value" => $value), $text);
 		}
 	}
 

@@ -1333,7 +1333,7 @@ Array.prototype.contains = function(obj) {
 
 			//Locales
 			$_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'locale_temp_locales', 'size' => 10, 'id' => 'locale_temp_locales', 'style' => 'width: 340px'));
-			$_select_box->addOptions(count($locales), array_keys($locales), array_values($locales));
+			$_select_box->addOptions($locales);
 
 			$_enabled_buttons = (count($locales) > 0);
 
@@ -1373,7 +1373,7 @@ Array.prototype.contains = function(obj) {
 			$Languages = array_merge($TopLanguages, $Languages);
 
 			$_languages = new we_html_select(array('name' => 'newconf[locale_language]', 'id' => 'locale_language', 'style' => 'width: 139px', 'class' => 'weSelect'));
-			$_languages->addOptions(count($Languages), array_keys($Languages), array_values($Languages));
+			$_languages->addOptions($Languages);
 
 			// Countries
 			$Countries = g_l('countries', '');
@@ -1396,7 +1396,7 @@ Array.prototype.contains = function(obj) {
 			$Countries = array_merge(array('' => ''), $TopCountries, $Countries);
 
 			$_countries = new we_html_select(array('name' => 'newconf[locale_country]', 'id' => 'locale_country', 'style' => 'width: 139px', 'class' => 'weSelect'));
-			$_countries->addOptions(count($Countries), array_keys($Countries), array_values($Countries));
+			$_countries->addOptions($Countries);
 
 			// Button
 			$_add_button = we_html_button::create_button('add', 'javascript:addLocale()', true, 139);

@@ -136,3 +136,16 @@ function we_cmd() {
 			eval('top.content.we_cmd(' + args + ')');
 	}
 }
+
+function setStatusEncryption(type) {
+	var encSelect = document.getElementsByName('field_encrypt')[0];
+	switch (type) {
+		case 'input':
+		case 'textarea':
+			encSelect.disabled = false;
+			break;
+		default:
+			encSelect.disabled = true;
+	}
+
+}

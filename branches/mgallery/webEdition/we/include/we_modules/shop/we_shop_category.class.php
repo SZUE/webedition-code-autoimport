@@ -22,12 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class we_shop_category extends we_category{
-	public $DestPrinciple = 0;//make getter and set private
+
+	public $DestPrinciple = 0; //make getter and set private
 	public $CatFallbackState = 0;
 	public $IsInactive = 0;
-
 	//FIXME: move some of these static vars to session
 	private static $isCategoryMode = -1;
 	private static $shopCatDir = false;
@@ -42,7 +41,6 @@ class we_shop_category extends we_category{
 	const IS_CAT_FALLBACK_TO_ACTIVE = 2;
 	const IS_CAT_FALLBACK_TO_WEDOCCAT = 3;
 	const IS_CAT_FALLBACK_TO_WEDOCCAT_AND_ACTIVE = 5;
-
 	const USE_IS_ACTIVE = true;
 
 	function __construct($id = 0){
@@ -71,7 +69,7 @@ class we_shop_category extends we_category{
 
 		return in_array(intval($this->ID), $ids) ? 1 : 0;
 	}
-	
+
 	/**
 	 * get field IsInactive of this shop category
 	 *
@@ -165,7 +163,7 @@ class we_shop_category extends we_category{
 		$db = new DB_WE();
 		$ids = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_isInactive"', '', $db, -1);
 		self::$activeShopCats = explode(',', $ids);
-		
+
 		return $asArray ? self::$activeShopCats : $ids;
 	}
 
@@ -219,7 +217,7 @@ class we_shop_category extends we_category{
 	/**
 	 * return true when category mode is activated in shop prefs
 	 *
-	 * @return bool 
+	 * @return bool
 	 */
 	public static function isCategoryMode(){
 		if(self::$isCategoryMode !== -1){
@@ -275,7 +273,7 @@ class we_shop_category extends we_category{
 	}
 
 	/**
-	 * returns all shop category ids, optionally with or without shop categories dir 
+	 * returns all shop category ids, optionally with or without shop categories dir
 	 *
 	 * @param bool $incCatsDir: include shop categories dir
 	 * @param int $dir: get categories from alternate dir than last saved in db
@@ -294,7 +292,7 @@ class we_shop_category extends we_category{
 	/**
 	 * writes mapping for inactive shop categories to static var $shopCatMapping
 	 *
-	 * @param array of int $inactives: ids of inactive shop catgories 
+	 * @param array of int $inactives: ids of inactive shop catgories
 	 *
 	 * @return void
 	 */
@@ -310,19 +308,18 @@ class we_shop_category extends we_category{
 
 		//debug
 		/*
-		$arr = array();
-		foreach(self::$shopCatMapping as $id => $val){
-			$arr[$id] = !in_array($val, $inactives) ? "ok" : "bad";
-		}
-		unset($arr[self::getShopCatDir()]);
-		t_e("check is shopCatMapping ok", $arr, self::$shopCatMapping);
-		 * 
+		  $arr = array();
+		  foreach(self::$shopCatMapping as $id => $val){
+		  $arr[$id] = !in_array($val, $inactives) ? "ok" : "bad";
+		  }
+		  unset($arr[self::getShopCatDir()]);
+		  t_e("check is shopCatMapping ok", $arr, self::$shopCatMapping);
+		 *
 		 */
-
 	}
 
 	/**
-	 * returns all shop categories (as defined by shop categories directory). 
+	 * returns all shop categories (as defined by shop categories directory).
 	 * Optionally it returns shop categories inside of some driectory defined by $dir.
 	 * Use only, when we_shop_category objects are absolutely needed: if not, use getShopCatFieldsFromDir allFields=true.
 	 *
@@ -345,7 +342,7 @@ class we_shop_category extends we_category{
 	}
 
 	/**
-	 * returns true if $id is some shop catregory's id 
+	 * returns true if $id is some shop catregory's id
 	 * Optionally it returns shop categories inside of some driectory defined by $dir.
 	 *
 	 * @param int $id
@@ -353,7 +350,7 @@ class we_shop_category extends we_category{
 	 */
 	public static function isShopCategoryID($id){
 		$ids = count(self::$shopCatIDs) ? self::$shopCatIDs : self::getAllShopCatIDs(false);
-		$ids[] =self::getShopCatDir();
+		$ids[] = self::getShopCatDir();
 
 		return in_array(intval($id), $ids);
 	}
@@ -490,7 +487,7 @@ class we_shop_category extends we_category{
 			foreach($ret as $k => &$v){
 				if(!$allFields && $field === 'DestPrinciple'){
 					$v = in_array($k, $destPrincipleIds) ? 1 : 0;
-				} elseif(!$allFields && $field === 'IsInactive') {
+				} elseif(!$allFields && $field === 'IsInactive'){
 					$v = in_array($k, $isInactiveIds) ? 1 : 0;
 				} else {
 					$v['DestPrinciple'] = in_array($k, $destPrincipleIds) ? 1 : 0;
@@ -532,9 +529,9 @@ class we_shop_category extends we_category{
 				return ($cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_WEDOCCAT || $cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_WEDOCCAT_AND_ACTIVE) ? 1 : 0;
 			case 'is_fallback_to_standard':
 				return $cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_STANDARD ? 1 : 0;
-			case 'is_fallback_to_active' : 
+			case 'is_fallback_to_active' :
 				return ($cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_ACTIVE || $cat->CatFallbackState === self::IS_CAT_FALLBACK_TO_WEDOCCAT_AND_ACTIVE) ? 1 : 0;
-			default: 
+			default:
 				return $cat->$field;
 		}
 	}
@@ -601,7 +598,7 @@ class we_shop_category extends we_category{
 	 */
 	public static function getShopVatByIdAndCountry($id = 0, $wedocCategory = '', $country = '', $getRate = false, $getIsFallbackToStandard = false, $getIsFallbackToPrefs = false, $useFallback = true){
 		$validID = self::checkGetValidID($id, $wedocCategory, $useFallback);
-		$country = $country && in_array(intval($validID) , self::getDestPrincipleFromDB(true)) ? $country : self::getDefaultCountry();// only get vat of current (customer) country, when shop category is DestPrinciple!
+		$country = $country && in_array(intval($validID), self::getDestPrincipleFromDB(true)) ? $country : self::getDefaultCountry(); // only get vat of current (customer) country, when shop category is DestPrinciple!
 
 		if(!$getIsFallbackToStandard && !$getIsFallbackToPrefs && isset(self::$shopVatsByCategoryCountry[$validID][$country]) && ($vat = self::$shopVatsByCategoryCountry[$validID][$country])){
 			return $getRate ? $vat->vat : $vat;
@@ -625,16 +622,16 @@ class we_shop_category extends we_category{
 	 * @return object
 	 */
 	public static function getCountryFromCustomer($useFallback = false, $customer = false, $customerId = 0, $getAllData = false){
-		if(!$customer){
-			if(isset($_SESSION['webuser'])){
-				$customer = $_SESSION['webuser'];
-			} elseif($customerId){
-				$cust = new we_customer_customertag($GLOBALS[$customerId]);
-				$carray = $cust->getDBRecord();
-				unset($cust);
-				$customer = ($carray ? : false);
-			}
-		}
+		$customer = ($customer? :
+						(isset($_SESSION['webuser']) ?
+								$_SESSION['webuser'] :
+								($customerId ?
+										(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($GLOBALS[$customerId]))? :
+												false) :
+										false
+								)
+						)
+				);
 
 		if($customer){
 			$stateField = we_shop_vatRule::getStateField();

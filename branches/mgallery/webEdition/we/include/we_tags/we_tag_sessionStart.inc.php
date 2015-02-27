@@ -170,7 +170,8 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin){ //FIXM
 			if((SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD) == 0){
 				unset($u['Password']);
 			}
-			$_SESSION['webuser'] = $u;
+
+			$_SESSION['webuser'] = array_merge($u, we_customer_customer::getEncryptedFields());
 			//keep Password if known
 			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
 				$_SESSION['webuser']['_Password'] = $_REQUEST['s']['Password'];
@@ -211,7 +212,7 @@ function wetagsessionStartdoAutoLogin(){
 				unset($u['Password']);
 			}
 
-			$_SESSION['webuser'] = $u;
+			$_SESSION['webuser'] = array_merge($u, we_customer_customer::getEncryptedFields());
 			//try to decrypt password if possible
 			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
 				$_SESSION['webuser']['_Password'] = we_customer_customer::decryptData($_SESSION['webuser']['Password']);

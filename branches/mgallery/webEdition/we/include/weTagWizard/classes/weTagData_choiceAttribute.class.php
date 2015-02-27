@@ -58,39 +58,36 @@ class weTagData_choiceAttribute extends weTagDataAttribute{
 
 		$select = new we_html_select(array(
 			'onchange' => ($this->Multiple ?
-				'var valSel=this.options[this.selectedIndex].value; var valTa = document.getElementById(\'' . $this->getIdName() . '\').value; document.getElementById(\'' . $this->getIdName() . '\').value=((valTa==\'\' || (valSel==\'\')) ? valSel : (valTa+\',\'+valSel));' :
-				'document.getElementById(\'' . $this->getIdName() . '\').value=this.options[this.selectedIndex].value;'),
+					'var valSel=this.options[this.selectedIndex].value; var valTa = document.getElementById(\'' . $this->getIdName() . '\').value; document.getElementById(\'' . $this->getIdName() . '\').value=((valTa==\'\' || (valSel==\'\')) ? valSel : (valTa+\',\'+valSel));' :
+					'document.getElementById(\'' . $this->getIdName() . '\').value=this.options[this.selectedIndex].value;'),
 			'class' => 'defaultfont selectinput'
 		));
 
 
-		$texts = array('----');
-		$values = array('');
-
+		$entries = array('' => '----');
 		foreach($this->Options as $option){
 			if($option->Value == we_html_tools::OPTGROUP){
-				$select->addOptions(count($texts), $values, $texts);
+				$select->addOptions($entries);
 				$select->addOptionGroup(array('label' => htmlentities($option->Name)));
-				$texts = $values = array();
+				$entries = array();
 			} else {
-				$texts[] = $option->getName();
-				$values[] = htmlspecialchars($option->Value);
+				$entries[htmlspecialchars($option->Value)] = $option->getName();
 			}
 		}
 
-		$select->addOptions(count($texts), $values, $texts);
+		$select->addOptions($entries);
 
 		return '
 <table class="attribute">
 <tr>
 	<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
 	<td class="attributeField">' . we_html_element::htmlInput(
-				array(
-					'name' => $this->Name,
-					'value' => $this->Value,
-					'id' => $this->getIdName(),
-					'class' => 'wetextinput'
-			)) . '</td>
+						array(
+							'name' => $this->Name,
+							'value' => $this->Value,
+							'id' => $this->getIdName(),
+							'class' => 'wetextinput'
+				)) . '</td>
 	<td class="attributeButton">' . $select->getHtml() . '</td>
 </tr>
 </table>';

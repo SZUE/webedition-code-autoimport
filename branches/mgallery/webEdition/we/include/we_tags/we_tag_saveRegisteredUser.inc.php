@@ -126,7 +126,7 @@ function we_tag_saveRegisteredUser($attribs){
 			//FIXME: on register password is in $_REQUEST['s']['Password']
 			$oldPwd = $_SESSION['webuser']['_Password'];
 		}
-		$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $_SESSION['webuser']['ID'], null, MYSQL_ASSOC);
+		$_SESSION['webuser'] = array_merge(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $_SESSION['webuser']['ID'], null, MYSQL_ASSOC), we_customer_customer::getEncryptedFields());
 		if((SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD) == 0){
 			unset($_SESSION['webuser']['Password']);
 		}
@@ -260,6 +260,7 @@ function we_tag_saveRegisteredUser_keepInput(){
 
 function we_tag_saveRegisteredUser_processRequest(array $protected, array $allowed){
 	$set = array();
+	$allEncryptedFields = we_customer_customer::getEncryptedFields();
 
 	foreach($_REQUEST['s'] as $name => $val){
 		switch($name){
@@ -280,9 +281,12 @@ function we_tag_saveRegisteredUser_processRequest(array $protected, array $allow
 						($name === 'Password' && $val == we_customer_customer::NOPWD_CHANGE)){
 					continue;
 				}
-				$set[$name] = ($name === 'Password' ?
-								we_customer_customer::cryptPassword($val) :
-								we_base_util::rmPhp($val));
+				$set[$name] = (isset($allEncryptedFields[$name]) && $val != we_customer_customer::ENCRYPTED_DATA ?
+								we_customer_customer::cryptData(we_base_util::rmPhp($val), SECURITY_ENCRYPTION_KEY, false) :
+								($name === 'Password' ?
+										we_customer_customer::cryptPassword($val) :
+										we_base_util::rmPhp($val)
+								));
 				break;
 		}
 	}

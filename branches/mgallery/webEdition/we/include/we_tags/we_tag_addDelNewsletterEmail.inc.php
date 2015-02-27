@@ -386,7 +386,8 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 
 					$set = array();
-					$customerFields = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"', '', $__db) ? unserialize($customerFields) : '';
+					$customerFields = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"', '', $__db);
+					$customerFields = $customerFields ? unserialize($customerFields) : '';
 					$updateCustomerFields = false;
 					foreach($abos as $abo){
 						if(isset($customerFields[$abo]['default']) && ($customerFields[$abo]['default'])){
