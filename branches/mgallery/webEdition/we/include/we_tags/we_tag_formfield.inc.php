@@ -23,20 +23,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_formfield($attribs){
-	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
-	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
+	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 
-	$types = weTag_getAttribute("type", $attribs, 'textinput', we_base_request::STRING_LIST);
-	$attrs = weTag_getAttribute("attribs", $attribs, '', we_base_request::STRING_LIST);
+	$types = weTag_getAttribute('type', $attribs, 'textinput', we_base_request::STRING_LIST);
+	$attrs = weTag_getAttribute('attribs', $attribs, '', we_base_request::STRING_LIST);
 	$ffname = $GLOBALS['we_doc']->getElement($name, 'ffname');
 
 	$type_sel = $GLOBALS['we_doc']->getElement($name, 'fftype') ? : ($types ? $types[0] : 'textinput');
 
 	$nameprefix = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . '#';
 
-	$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, we_base_request::BOOL);
+	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
 	$ff = array();
 
 	// here add some mandatory fields
@@ -84,10 +84,10 @@ function we_tag_formfield($attribs){
 		}
 	}
 
-	if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]){
+	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
 		$tmp_select = '<select name="' . $nameprefix . 'fftype]" onchange="setScrollTo();we_cmd(\'reload_editpage\');">' . "\n";
 		foreach($types as $k){
-			$tmp_select .= '<option value="' . $k . '"' . (($k == $type_sel) ? ' selected="selected"' : '') . '>' . $k . '</option>' . "\n";
+			$tmp_select .= '<option value="' . $k . '"' . (($k == $type_sel) ? ' selected="selected"' : '') . '>' . $k . '</option>';
 		}
 		$tmp_select .= '</select>';
 		$tbl = '<table width="223" style="padding:4px;border:0px;" class="weEditTable">
@@ -116,7 +116,7 @@ function we_tag_formfield($attribs){
 				if($m['change'] == 1){
 					if(count($default) > 1){
 						$valselect = '<select name="' . $name . 'tmp" size="1" onchange="this.form.elements[\'' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']\'].value=this.options[this.selectedIndex].value;">' .
-								'<option value=""></option>';
+							'<option value=""></option>';
 						foreach($default as $v){
 							$valselect .= '<option value="' . $v . '">' . $v . '</option>';
 						}
@@ -156,19 +156,19 @@ function we_tag_formfield($attribs){
 				$tbl .= '	<tr>
 		<td class="weEditmodeStyle" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global', '[values]') . ':</nobr></td>
 		<td class="weEditmodeStyle" width="161"><textarea name="' . $nameprefix . 'ffvalues]" cols="30" rows="5">' . $GLOBALS['we_doc']->getElement(
-								$name, 'ffvalues') . '</textarea></td>
+						$name, 'ffvalues') . '</textarea></td>
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global', '[default]') . ':</nobr></td>
 		<td class="weEditmodeStyle" width="161"><input type="text" name="' . $nameprefix . 'ffdefault]" size="24" value="' . $GLOBALS['we_doc']->getElement(
-								$name, 'ffdefault') . '" /></td>
+						$name, 'ffdefault') . '" /></td>
 	</tr>';
 				break;
 			case 'file':
 				$tbl .= '	<tr>
 		<td class="weEditmodeStyle" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global', '[max_file_size]') . ':</nobr></td>
 		<td class="weEditmodeStyle" width="161"><input type="text" name="' . $nameprefix . 'ffmaxfilesize]" size="24" value="' . $GLOBALS['we_doc']->getElement(
-								$name, 'ffmaxfilesize') . '" /></td>
+						$name, 'ffmaxfilesize') . '" /></td>
 	</tr>';
 				break;
 			case 'radio':
@@ -176,8 +176,8 @@ function we_tag_formfield($attribs){
 				$tbl .= '	<tr>
 		<td class="weEditmodeStyle" width="62" style="color: black; font-size: 12px; font-family: Verdana, sans-serif" align="right"><nobr>' . g_l('global', '[checked]') . ':</nobr></td>
 		<td class="weEditmodeStyle" width="161"><select name="' . $nameprefix . 'ffchecked]" size="1"><option value="0"' . ($GLOBALS['we_doc']->getElement(
-								$name, 'ffchecked') ? "" : " selected") . '>' . g_l('global', '[no]') . '</option><option value="1"' . ($GLOBALS['we_doc']->getElement(
-								$name, 'ffchecked') ? " selected" : "") . '>' . g_l('global', '[yes]') . '</option></select></td>
+						$name, 'ffchecked') ? "" : " selected") . '>' . g_l('global', '[no]') . '</option><option value="1"' . ($GLOBALS['we_doc']->getElement(
+						$name, 'ffchecked') ? " selected" : "") . '>' . g_l('global', '[yes]') . '</option></select></td>
 	</tr>';
 				break;
 		}
@@ -188,10 +188,9 @@ function we_tag_formfield($attribs){
 
 	$tagEndTag = false;
 
-	$tagName = '';
-	$tagAtts = array(
-		'xml' => $xml, 'name' => oldHtmlspecialchars($GLOBALS['we_doc']->getElement($attribs["name"], 'ffname'))
-	);
+	$tagAtts = removeAttribs($attribs, array('doc', 'type', 'attribs'));
+	$tagAtts['name'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($attribs['name'], 'ffname'));
+
 	$tagContent = '';
 
 	switch($type_sel){
@@ -332,11 +331,11 @@ function we_tag_formfield($attribs){
 			break;
 		case 'file':
 			$ret = getHtmlTag(
-					'input', array(
+				'input', array(
 				'type' => 'hidden',
 				'name' => 'MAX_FILE_SIZE',
 				'value' => oldHtmlspecialchars(
-						$GLOBALS['we_doc']->getElement($name, 'ffmaxfilesize')),
+					$GLOBALS['we_doc']->getElement($name, 'ffmaxfilesize')),
 				'xml' => $xml
 			));
 			break;

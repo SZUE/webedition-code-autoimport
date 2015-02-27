@@ -1828,7 +1828,7 @@ function doUnload() {
 					}
 				case '.':
 				case '..':
-					continue;
+					continue 2;
 			}
 			// now we have to check if the file should be imported
 			$PathOfEntry = $importDirectory . $this->_slash . $entry;
