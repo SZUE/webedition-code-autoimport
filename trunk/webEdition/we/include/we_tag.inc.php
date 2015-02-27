@@ -79,7 +79,13 @@ function we_tag($name, $attribs = array(), $content = ''){
 	$user = weTag_getAttribute('user', $attribs);
 	if(defined('WE_PROFILER')){
 		$bt = WE_PROFILER_54 ? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1) : debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-		$GLOBALS['we_profile'][] = array('tag' => $name, 'line' => $bt[0]['line'], 'file' => $bt[0]['file'], 'time' => round((microtime(true) - WE_PROFILER), 5) . ' s', 'mem' => round(((memory_get_usage() / 1024))) . ' kB');
+		$prof = array('tag' => $name, 'line' => $bt[0]['line'], 'file' => $bt[0]['file'], 'time' => round((microtime(true) - WE_PROFILER), 5) . ' s', 'mem' => round(((memory_get_usage() / 1024))) . ' kB');
+		$GLOBALS['we_profile'][] = $prof;
+		//annotate tag, if possible
+		$attribs['data-time'] = $prof['time'];
+		$attribs['data-mem'] = $prof['mem'];
+		$attribs['data-line'] = $prof['line'];
+		$attribs['data-file'] = $prof['file'];
 	}
 	//make sure comment attribute is never shown
 	if($name === 'setVar' || $name === 'xmlnode'){//special handling inside tag setVar and xmlnode
@@ -561,13 +567,6 @@ function we_tag_ifNotEmpty($attribs){
 	return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || !we_tag('ifEmpty', $attribs);
 }
 
-function we_tag_ifNotEqual($attribs){
-	if(isset($attribs['_name_orig'])){
-		$attribs['name'] = $attribs['_name_orig'];
-	}
-	return !we_tag('ifEqual', $attribs);
-}
-
 function we_tag_ifNotVar($attribs){
 	if(isset($attribs['_name_orig'])){
 		$attribs['name'] = $attribs['_name_orig'];
@@ -575,12 +574,6 @@ function we_tag_ifNotVar($attribs){
 	return !we_tag('ifVar', $attribs);
 }
 
-function we_tag_ifNotVarSet($attribs){
-	if(isset($attribs['_name_orig'])){
-		$attribs['name'] = $attribs['_name_orig'];
-	}
-	return !we_tag('ifVarSet', $attribs);
-}
 
 function we_tag_ifReturnPage(){
 	return we_base_request::_(we_base_request::RAW_CHECKED, 'we_returnpage') !== false;
