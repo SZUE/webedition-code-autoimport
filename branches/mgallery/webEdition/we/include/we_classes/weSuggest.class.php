@@ -159,16 +159,9 @@ class weSuggest{
 		}
 
 		$safariEventListener = '';
-		$initVars = '	var ajaxMaxResponseTime = 1500;
-var ajaxResponseStep = 100;
-var ajaxResponseCT = 0;
-var countMark = 0;
+		$initVars = '
 var width= ' . $this->width . ';
 var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
-var selInputVal=[];
-var oldInputVal=[];
-var newInputVal=[];
-
 			';
 		// WORKSPACES
 		$weFieldWS = array();
