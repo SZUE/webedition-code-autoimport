@@ -162,6 +162,13 @@ class weSuggest{
 		$initVars = '
 var width= ' . $this->width . ';
 var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
+var ajaxMaxResponseTime = 1500;
+var ajaxResponseStep = 100;
+var ajaxResponseCT = 0;
+var countMark = 0;
+var selInputVal=[];
+var oldInputVal=[];
+var newInputVal=[];
 			';
 		// WORKSPACES
 		$weFieldWS = array();
