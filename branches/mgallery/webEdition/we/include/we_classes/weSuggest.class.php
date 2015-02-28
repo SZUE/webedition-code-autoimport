@@ -222,7 +222,7 @@ HTS;
 			if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 				if($this->setOnSelectFields[$i]){
 					$fildsObj .=",
-'fields_id': ['" . implode('\',\'', $this->setOnSelectFields[$i][$j]) . '\']' . ",
+'fields_id': ['" . implode('\',\'', $this->setOnSelectFields[$i]) . '\']' . ",
 'fields_val': [document.getElementById('" . implode("').value,document.getElementById('", $this->setOnSelectFields[$i]) . "').value]";
 				}
 				$onSelect .= <<<HTS
@@ -1080,27 +1080,3 @@ YAHOO.util.Event.addListener(this,'load',YAHOO.autocoml.init);
 	}
 
 }
-
-/*doOnDataReturnEvent_$i: function(param1,param2) {
-			param=param2.toString();
-			params=param.split(',');
-			if(params.length<4) {
-				if(document.getElementById('yuiAcFields[$i].id').value == "/" && (yuiAcFields[$i].selector == "dirSelector" || yuiAcFields[$i].selector == "Dirselector" || yuiAcFields[$i].selector == "selector")) {
-					document.getElementById(yuiAcFields[$i].fields_id[0]).value = '0';
-					YAHOO.autocoml.unmarkNotValid($i);
-					if(parent && parent.weAutoCompetionFields) parent.weAutoCompetionFields[$i].valid = true;
-				} else if (document.getElementById('yuiAcFields[$i].id').value =="" && (yuiAcFields[$i].selector == "docSelector" || yuiAcFields[$i].selector == "Docselector") && yuiAcFields[$i].mayBeEmpty) {
-					document.getElementById(yuiAcFields[$i].fields_id[0]).value = "";
-					YAHOO.autocoml.unmarkNotValid($i);
-					if(parent && parent.weAutoCompetionFields) parent.weAutoCompetionFields[$i].valid = true;
-				} else {
-					YAHOO.autocoml.markNotValid($i);
-					if(parent && parent.weAutoCompetionFields) parent.weAutoCompetionFields[$i].valid = false;
-
-				}
-			} else {
-				document.getElementById('" . $weErrorMarkId . "').style.visibility = 'hidden';
-				if(parent && parent.weAutoCompetionFields) parent.weAutoCompetionFields[$i].valid = true;
-			}
-			yuiAcFields[$i].run = false;
-		},*/
