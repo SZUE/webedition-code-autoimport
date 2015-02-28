@@ -22,24 +22,73 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-div.yui-ac-bd ul, div.yui-ac-bd li{
+div.yui-ac-bd li{
 	margin:0px;
 	padding:0px;
+	list-style:none;
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 10px;
+}
+div.yui-ac-bd ul{
+	margin:-7px;
+	margin-top:-5px;
 	list-style:none;
 	font-family: Verdana, Arial, sans-serif;
 	font-size: 10px;
 	line-height:11px;
+	background-color: #FFFFFF;
+	padding:5px 0;
+	margin-left:0px;
 }
-div.yui-ac-bd ul, div.yui-ac-bd ui{
-	margin:-7px;
-	margin-top:-5px;
-	padding:0px;
-	list-style:none;
-	font-family: Verdana, Arial, sans-serif;
-	font-size: 10px;
-}
+
 div.yuiAcLayer{
 	margin:0px;
 	position: relative;
 	padding:0px;
+	z-index: 9000;
+}
+
+.yui-ac-content {
+	position:absolute;
+	left:0px !important;
+	border:1px solid #404040;
+	background:#fff;
+	overflow:hidden;
+	z-index:9050;
+	margin-top:-10px;
+	height:auto !important;
+}
+
+li.yui-ac-highlight{
+	background:#B5D5FF;
+}
+
+.yui-ac-shadow{
+	position:absolute;
+	margin:.3em;
+	width:100%;
+	background:#a0a0a0;
+	z-index:9049;
+}
+
+.ysearchquery {
+	position:absolute;
+	right:10px;
+	color:#808080;
+	z-index:10;
+}
+
+.yui-ac-container{
+	position:absolute;
+	top:30px !important;
+}
+
+.yui-ac-container li{
+	padding:0 5px;
+	cursor:default;
+	white-space:nowrap;
+}
+
+.yui-ac-input {
+	width:100%;
 }

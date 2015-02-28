@@ -52,7 +52,6 @@ class weSuggest{
 	const DirSelector = 'dirSelector';
 
 	var $inputfields = array();
-	var $containerfields = array();
 	var $containerwidth = array();
 	var $tables = array();
 	var $rootDirs = array();
@@ -698,62 +697,19 @@ YAHOO.util.Event.addListener(this,'load',YAHOO.autocoml.init);
 	 * @return unknown
 	 */
 	function getYuiCss(){//FIXME: add class to these fields instead of individual styling of id
-		$inputfields = $containerfields = $yuiAcContent = $ysearchquery = $yuiAcShadow = $ul = $li = $yuAcHighlight = $layer = $layerZ = "";
+		$inputfields = $yuiAcContent = "";
 		for($i = 0; $i < count($this->inputfields); $i++){
 			$inputfields .= ($i > 0 ? ", " : "") . "#" . $this->inputfields[$i];
-			$containerfields .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i];
 			$yuiAcContent .= "#" . $this->containerfields[$i] . ' .yui-ac-content {
-	position:absolute;
-	left:0px !important;
-	width:' . (we_base_browserDetect::isIE() ? $this->containerwidth[$i] : ($this->containerwidth[$i] + 4)) . 'px;
-	border:1px solid #404040;
-	background:#fff;
-	overflow:hidden;
-	z-index:9050;
-	margin-top:-10px;
+	width:' . ($this->containerwidth[$i] + 4) . 'px;
 }';
-			$ysearchquery .= ($i > 0 ? ', ' : '') . "#" . $this->containerfields[$i] . ' .ysearchquery';
-			$yuiAcShadow .= ($i > 0 ? ", " : "") . "#" . $this->containerfields[$i] . ' .yui-ac-shadow';
-			$ul .= ($i > 0 ? ", " : "") . '#' . $this->containerfields[$i] . ' ul';
-			$li .= ($i > 0 ? ", " : "") . '#' . $this->containerfields[$i] . ' li';
-			$yuAcHighlight .= ($i > 0 ? ', ' : '') . '#' . $this->containerfields[$i] . ' li.yui-ac-highlight';
 		}
-		foreach($this->layer as $i => $cur){
-			$layer .= ($i > 0 ? ", " : "") . "#" . $cur;
-			$layerZ .= "#" . $cur . ' {z-index:' . (9010 - $i) . ';}';
-		}
-		$out = ($layer ? $layerZ : '') .
-			$inputfields . ' {width:100%;}' .
+
+		$out = $inputfields . ' {width:100%;}' .
 			$yuiAcContent . ' ' .
-			$ysearchquery . ' {
-	position:absolute;
-	right:10px;
-	color:#808080;
-	z-index:10;
-}' .
-			$yuiAcShadow . ' {
-			position:absolute;
-			margin:.3em;
-			width:100%;
-			background:#a0a0a0;
-			z-index:9049;
-}' .
-			$ul . ' {
-			padding:5px 0;
-			margin-left:0px;
-			background-color:#ffffff
-}' .
-			$li . ' {
-			padding:0 5px;
-			cursor:default;
-			white-space:nowrap;
-}' .
-			$yuAcHighlight . ' {
-	background:#B5D5FF;
-}
-' .
-			$containerfields .
-			(we_base_browserDetect::isIE() ?
+			'
+.yui-ac-container' .
+			(we_base_browserDetect::isIE() ? //FIXME: make it ie independent
 				' {
 	position:relative;
 	top:0px !important;
@@ -762,11 +718,9 @@ YAHOO.util.Event.addListener(this,'load',YAHOO.autocoml.init);
 	z-index:10000
 }' : //$inputfields {position:absolute;width:100%; margin-top:-2px} /* abs for ie quirks */
 				'{
-	position:absolute;
-	top:30px !important;
 }' );
 
-		return $inputfields ? we_html_element::cssElement($out, array('scoped' => 'scoped')) : '';
+		return $this->inputfields ? we_html_element::cssElement($out, array('scoped' => 'scoped')) : '';
 	}
 
 	function getHTML(){
