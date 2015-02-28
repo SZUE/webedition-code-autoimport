@@ -69,7 +69,6 @@ function initCM() {
 		});
 
 	} catch (e) {
-		//console.log("CM init error");
 	}
 }
 

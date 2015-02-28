@@ -299,7 +299,7 @@ class we_voting_frames extends we_modules_frame{
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->View->voting->Text, '', 'style="width: ' . $this->_width_size . 'px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"'), g_l('modules_voting', '[headline_name]')) .
 				we_html_element::htmlBr() .
 				$this->getHTMLDirChooser() .
-				weSuggest::getYuiJsFiles() . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() .
+				weSuggest::getYuiFiles() . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() .
 				we_html_element::htmlBr() .
 				(!$this->View->voting->IsFolder ? we_html_tools::htmlFormElementTable(we_html_tools::getDateInput2('PublishDate%s', $this->View->voting->PublishDate, false, '', 'top.content.setHot();'), g_l('modules_voting', '[headline_publish_date]')) : ''),
 				'space' => $this->_space_size,

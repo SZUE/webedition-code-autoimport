@@ -210,12 +210,6 @@ var ajaxCallback = {
 					}
 				}
 			} catch (exc) {
-				try {
-					//console.log('error in return of GetUpdateDocumentCustomerFilterQuestion' + o.responseText);
-				} catch (ex) {
-
-				}
-
 			}
 		}
 	},

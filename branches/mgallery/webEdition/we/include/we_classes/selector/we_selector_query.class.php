@@ -154,11 +154,6 @@ class we_selector_query{
 		$isFolder = 0;
 		$addCT = 0;
 
-
-
-
-
-
 		$types = array_unique(array_filter($types));
 
 		$q = array();

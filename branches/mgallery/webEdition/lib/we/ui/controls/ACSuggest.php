@@ -1,4 +1,4 @@
-<?php
+			<?php
 
 /**
  * webEdition SDK
@@ -407,18 +407,17 @@ class we_ui_controls_ACSuggest{
 			return;
 		}
 
-		$safariEventListener = "";
-		$initVars = '
-var ajaxMaxResponseTime = 1500;
-var ajaxResponseStep = 100;
-var ajaxResponseCT = 0;
-var countMark = 0;
-var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";';
-		/* WORKSPACES */
+		$safariEventListener = '';
+		$initVars = '	var ajaxMaxResponseTime = 1500;
+			var ajaxResponseStep = 100;
+			var ajaxResponseCT = 0;
+			var countMark = 0;
+			var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";';
+		// WORKSPACES
 		$weFieldWS = 'var weWorkspacePathArray = new Array();';
-		/* AC-FIEDS BY ID */
+		// AC-FIEDS BY ID
 		$fildsById = 'var yuiAcFieldsById = new Array();';
-		/* AC-FIEDS */
+		// AC-FIEDS
 		$fildsObj = 'var yuiAcFields = {';
 		$invalidFields = <<<HTS
 if(parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length>0) {
@@ -458,7 +457,7 @@ HTS;
 					$ix++;
 				}
 			}
-			$weFieldWS .= "\tweWorkspacePathArray[$i] = new Array($weWorkspacePathArrayJS);\n";
+			$weFieldWS .= 'weWorkspacePathArray[' . $i . '] = new Array(' . $weWorkspacePathArrayJS . ');';
 
 			$weAcFields .= <<<HTS
 if(parent && parent.weAutoCompetionFields && !parent.weAutoCompetionFields[$i]) {
@@ -591,13 +590,13 @@ HTS;
 HTS;
 			}
 			if(isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]){
-				$initVars .= "	var oldInputVal_" . $i . ";\n";
-				$initVars .= "	var newInputVal_" . $i . ";\n";
+				$initVars .= "	var oldInputVal_" . $i . ";
+					var newInputVal_" . $i . ";";
 				$additionalFields = "";
 				if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 					for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){
-						$initVars .= "	var old_" . $this->setOnSelectFields[$i][$j] . ";\n";
-						$additionalFields .= ($j > 0 ? "," : "") . $this->setOnSelectFields[$i][$j];
+						$initVars .= "	var old_" . str_replace('-', '_', $this->setOnSelectFields[$i][$j]) . ";";
+						$additionalFields .= ($j > 0 ? "," : "") . str_replace('-', '_', $this->setOnSelectFields[$i][$j]);
 					}
 				}
 				$onBlur .= <<<HTS
@@ -614,7 +613,7 @@ HTS;
 				var wsPathInput_$i = document.getElementById(yuiAcFields.set_$i.id).value;
 				for(i=0; i<yuiAcFields.set_{$i}.workspace.length; i++) {
 					if(wsPathInput_$i.length >= yuiAcFields.set_{$i}.workspace[i].length) {
-						if(wsPathInput_$i.substr(0,yuiAcFields.set_{$i}.workspace[i].length) == yuiAcFields.set_{$i}.workspace[i])	{
+						if(wsPathInput_$i.substr(0,yuiAcFields.set_{$i}.workspace[i].length) == yuiAcFields.set_{$i}.workspace[i]){
 							wsValid_$i = true;
 						}
 					}
@@ -632,24 +631,19 @@ HTS;
 			} else {
 				switch(true) {
 					case (!wsValid_$i):                                   // ERROR: Not valid workspace
-						debug('Not valid workspace');
 						YAHOO.autocoml.markNotValid($i);
 						break;
 					case (ajaxResponseCT > ajaxMaxResponseTime):          // ERROR: No respone - timeout
-						debug('Timeout');
 						YAHOO.autocoml.markNotValid($i);
 						break;
 					case (yuiAcFields.set_$i.run):                        // ERROR: Request is running
-						debug('Running');
 						ajaxResponseCT +=ajaxResponseStep;
 						setTimeout(YAHOO.autocoml.doOnTextfieldBlur_$i,ajaxResponseStep);
 						break;
 					case (yuiAcFields.set_$i.found == 2):                 // ERROR: No result found
-						debug('No reault');
 						YAHOO.autocoml.markNotValid($i);
 						break;
 					case (yuiAcFields.set_$i.found == 0):                 // ERROR: Nothing found
-						debug('found=0');
 						newInputVal_$i = document.getElementById(yuiAcFields.set_$i.id).value;
 						if(newInputVal_$i != selInputVal_$i || newInputVal_$i != oldInputVal_$i) {
 							yuiAcFields.set_$i.run = true;
@@ -658,11 +652,9 @@ HTS;
 						}
 						break;
 					case ((yuiAcFields.set_$i.selector == "docSelector" || yuiAcFields.set_$i.selector == "Docselector") && yuiAcFields.set_$i.cType=="folder") :   // ERROR: Wrong type
-						debug('folder');
 						YAHOO.autocoml.markNotValid($i);
 						break;
 					default:
-						debug('checkfields');
 						YAHOO.autocoml.checkFields();
 				}
 			}
@@ -683,9 +675,9 @@ HTS;
 
 HTS;
 
-				$onFocus .= "		doOnTextfieldFocus_" . $i . ": function() {\n";
-				$onFocus .= "			ajaxResponseCT=0;\n";
-				$onFocus .= "			oldInputVal_" . $i . " = document.getElementById('" . $this->inputfields[$i] . "').value;\n";
+				$onFocus .= "		doOnTextfieldFocus_" . $i . ": function() {
+							ajaxResponseCT=0;
+							oldInputVal_" . $i . " = document.getElementById('" . $this->inputfields[$i] . "').value;";
 				if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 					for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){
 						$onFocus .= "			old_" . $this->setOnSelectFields[$i][$j] . " = document.getElementById('" . $this->setOnSelectFields[$i][$j] . "').value;\n";
@@ -706,8 +698,6 @@ HTS;
 HTS;
 
 				$initVars .= <<<HTS
-
-
 	var ajaxCallback_$i = {
 		success: function(o) {
 			if(o.responseText != undefined && o.responseText != ''){
@@ -963,7 +953,7 @@ $doAjax
 
 YAHOO.util.Event.addListener(this,'load',YAHOO.autocoml.init);
 {$this->preCheck}
-" . ($client->getBrowser() == we_ui_Client::kBrowserWebkit ? $safariEventListener : "") . "
+" . (we_base_browserDetect::isSafari() ? $safariEventListener : "") . "
 
 function weInputAppendClass(inp, cls) {
 	if (inp.className) {
@@ -1022,8 +1012,6 @@ function weInputInArray(arr, val) {
 		  var weShowDebug = true;
 		  var debugsizeW=145;
 		  var debugsizeH='100%';
-		  function debug(text){
-		  }
 		  function doDebugResizeW(){
 		  if(debugsizeW<600) {
 		  debugsize=600;

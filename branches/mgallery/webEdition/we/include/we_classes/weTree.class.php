@@ -369,7 +369,6 @@ function drawTree(){
 	try{
 		var type=typeof(' . $this->treeFrame . ');
 	}catch(e){
-		//console.log("Frame not found ' . $this->treeFrame . '");
 		window.setTimeout(drawTree, 500);
 		return;
 	}

@@ -71,10 +71,7 @@ CodeMirror.defineMode("text/weTmpl", function (config, parserConfig) {
 												}
 												return ((value - 0 == value) ? ("number" + " we" + state.typeName + "ID-" + value) + " WEID" : "string");
 											case "type":
-												//console.log(value);
 												state.typeName = value;
-
-												//console.log(state.typeName);
 												return null;
 										}
 										return null;

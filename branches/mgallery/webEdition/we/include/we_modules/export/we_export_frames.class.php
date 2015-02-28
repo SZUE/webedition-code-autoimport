@@ -141,7 +141,7 @@ top.content.hloaded = 1;');
 			return ob_get_clean();
 		}
 		$yuiSuggest = & weSuggest::getInstance();
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;start();", "onunload" => "doUnload()"), weSuggest::getYuiJsFiles() . we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()) . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs()
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;start();", "onunload" => "doUnload()"), weSuggest::getYuiFiles() . we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()) . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs()
 		);
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}

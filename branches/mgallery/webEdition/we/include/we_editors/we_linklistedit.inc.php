@@ -130,10 +130,10 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		'target' => we_base_request::_(we_base_request::STRING, 'target', ''),
 		'jswin' => we_base_request::_(we_base_request::BOOL, 'jswin'),
 		'jscenter' => we_base_request::_(we_base_request::BOOL, 'jscenter'),
-		'jsposx' => we_base_request::_(we_base_request::UNIT, 'jsposx',''),
-		'jsposy' => we_base_request::_(we_base_request::UNIT, 'jsposy',''),
-		'jswidth' => we_base_request::_(we_base_request::UNIT, 'jswidth',''),
-		'jsheight' => we_base_request::_(we_base_request::UNIT, 'jsheight',''),
+		'jsposx' => we_base_request::_(we_base_request::UNIT, 'jsposx', ''),
+		'jsposy' => we_base_request::_(we_base_request::UNIT, 'jsposy', ''),
+		'jswidth' => we_base_request::_(we_base_request::UNIT, 'jswidth', ''),
+		'jsheight' => we_base_request::_(we_base_request::UNIT, 'jsheight', ''),
 		'jsstatus' => we_base_request::_(we_base_request::BOOL, 'jsstatus'),
 		'jsscrollbars' => we_base_request::_(we_base_request::BOOL, 'jsscrollbars'),
 		'jsmenubar' => we_base_request::_(we_base_request::BOOL, 'jsmenubar'),
@@ -145,8 +145,8 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		'text' => we_base_request::_(we_base_request::HTML, 'text'),
 		'type' => ($type == we_base_link::TYPE_MAIL) ? we_base_link::TYPE_INT : $type,
 		'ctype' => we_base_request::_(we_base_request::STRING, 'ctype'),
-		'width' => we_base_request::_(we_base_request::UNIT, 'width',''),
-		'height' => we_base_request::_(we_base_request::UNIT, 'height',''),
+		'width' => we_base_request::_(we_base_request::UNIT, 'width', ''),
+		'height' => we_base_request::_(we_base_request::UNIT, 'height', ''),
 		'border' => we_base_request::_(we_base_request::INT, 'border'),
 		'hspace' => we_base_request::_(we_base_request::INT, 'hspace'),
 		'vspace' => we_base_request::_(we_base_request::INT, 'vspace'),
@@ -329,10 +329,8 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 	}
 }
 
-echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'),  $we_doc->getElement('Charset'));
-$yuiSuggest = & weSuggest::getInstance();
-echo $yuiSuggest->getYuiCssFiles() .
- $yuiSuggest->getYuiJsFiles() .
+echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getElement('Charset')) .
+ weSuggest::getYuiFiles() .
  we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
@@ -468,7 +466,7 @@ if($ok && $cmd === "edit_link_at_class"){
 			var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 
 			for (var i = 0; i < arguments.length; i++) {
-				url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
+				url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 				if (i < (arguments.length - 1)) {
 					url += "&";
 				}
@@ -528,6 +526,7 @@ if($ok && $cmd === "edit_link_at_class"){
 
 		$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
+		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("Doc");
 		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
 		$yuiSuggest->setInput("href_int", $href_int);
@@ -545,7 +544,7 @@ if($ok && $cmd === "edit_link_at_class"){
 			$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 
 			$yuiSuggest->setAcId("Obj");
-			$yuiSuggest->setContentType("folder,".we_base_ContentTypes::OBJECT_FILE);
+			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
 			$yuiSuggest->setInput("href_obj", $href_obj);
 			$yuiSuggest->setMaxResults(20);
 			$yuiSuggest->setMayBeEmpty(true);

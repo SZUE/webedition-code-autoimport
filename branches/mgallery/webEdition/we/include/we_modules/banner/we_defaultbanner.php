@@ -76,7 +76,7 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $id
 <?php
 echo we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'we_defaultbanner.js') .
- weSuggest::getYuiJsFiles();
+ weSuggest::getYuiFiles();
 ?>
 </head>
 <body class="weDialogBody" onunload="doUnload()">

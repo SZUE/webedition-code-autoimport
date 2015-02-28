@@ -29,11 +29,7 @@ var ajaxCallback = {
 			try {
 				eval("var result=" + o.responseText);
 			} catch (exp) {
-				try {
-					//console.log(exp + " " + o.responseText);
-				} catch (ex) {
-					var result = '';
-				}
+				var result = '';
 			}
 			if (result && result.Success) {
 				var num_users = result.DataArray.num_users;

@@ -75,7 +75,7 @@ class we_navigation_ruleFrames{
 			array(
 				'headline' => g_l('navigation', '[rules][available_rules]'),
 				'space' => 200,
-				'html' => weSuggest::getYuiJsFiles() . '<table border="0" cellpadding="0" cellspacing="0">
+				'html' => weSuggest::getYuiFiles() . '<table border="0" cellpadding="0" cellspacing="0">
 										<tr><td>' . we_html_tools::htmlSelect(
 					'navigationRules', $_rules, 8, '', false, array('style' => "width: 275px;", 'onclick' => 'we_cmd(\'navigation_edit_rule\', this.value)')) . '</td>
 											<td>' . we_html_tools::getPixel(10, 1) . '</td>

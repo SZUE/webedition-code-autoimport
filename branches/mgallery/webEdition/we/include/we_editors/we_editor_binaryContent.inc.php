@@ -25,7 +25,8 @@ echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-echo STYLESHEET;
+echo STYLESHEET .
+ weSuggest::getYuiFiles();
 ?></head>
 <body class="weEditorBody">
 	<form name="we_form" method="post" onsubmit="return false;"><?php

@@ -259,7 +259,7 @@ class we_dialog_image extends we_dialog_base{
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileID]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileSrc]'].value");
 			$wecmdenc3 = we_base_request::encCmd("opener.document.we_form.elements['we_dialog_args[type]'][1].checked=true;opener.imageChanged();");
-			$startID = $this->args['selectorStartID'] ? : (IMAGESTARTID_DEFAULT ? : 0); 
+			$startID = $this->args['selectorStartID'] ? : (IMAGESTARTID_DEFAULT ? : 0);
 
 			$but = we_html_button::create_button("select", "javascript:we_cmd('openImgselector',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "'," . $startID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");"
 			);
@@ -420,7 +420,6 @@ if(inputElem = top.document.we_form.elements["we_dialog_args[' . $k . ']"]){
 try{
 	top.document.getElementById("selectThumbnail").style.display = "' . $this->getDisplayThumbsSel() . '";
 } catch(err){
-	//console.log(top.document.getElementById("selectThumbnail"));
 }
 
 var rh = ' . (intval($args["width"] * $args["height"]) ? ($this->args["width"] / $args["height"]) : 0) . ';

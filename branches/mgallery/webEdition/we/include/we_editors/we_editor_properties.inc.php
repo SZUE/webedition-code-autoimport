@@ -32,7 +32,8 @@ we_html_tools::headerCtCharset('text/html', $charset);
 echo we_html_tools::getHtmlTop('', $charset) .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo STYLESHEET;
+echo STYLESHEET .
+ weSuggest::getYuiFiles();
 ?>
 </head>
 <body class="weEditorBody" onunload="doUnload()">
@@ -43,8 +44,7 @@ echo STYLESHEET;
 		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 	<?php
-	echo weSuggest::getYuiFiles() .
-	$yuiSuggest->getYuiCss() .
+	echo $yuiSuggest->getYuiCss() .
 	$yuiSuggest->getYuiJs();
 	?>
 </body>

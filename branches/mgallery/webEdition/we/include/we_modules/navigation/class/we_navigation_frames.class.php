@@ -1038,7 +1038,7 @@ function onSelectionClassChangeJS(value) {
 			$out .= $this->getHTMLEditorPreview();
 		} else {
 			// Property tab content
-			$out .= weSuggest::getYuiJsFiles() .
+			$out .= weSuggest::getYuiFiles() .
 					we_html_element::htmlDiv(
 							array(
 						'id' => 'tab1', 'style' => ($tabNr == 1 ? 'display: block;' : 'display: none')

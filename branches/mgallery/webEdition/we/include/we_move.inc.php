@@ -138,7 +138,7 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 
 echo we_html_tools::getHtmlTop() . STYLESHEET .
  $script .
- weSuggest::getYuiJsFiles();
+ weSuggest::getYuiFiles();
 ?>
 <script type="text/javascript"><!--
 	top.treeData.setstate(top.treeData.tree_states["selectitem"]);

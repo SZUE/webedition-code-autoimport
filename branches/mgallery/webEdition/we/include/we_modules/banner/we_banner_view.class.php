@@ -86,7 +86,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 			include(WE_MODULES_PATH . 'home.inc.php');
 			return ob_get_clean();
 		}
-		$out = STYLESHEET . $this->getJSProperty() . weSuggest::getYuiJsFiles() . '
+		$out = STYLESHEET . $this->getJSProperty() . weSuggest::getYuiFiles() . '
 				</head>
 				<body class="weEditorBody" onload="loaded=1;" onunload="doUnload()">
 				<form name="we_form" onsubmit="return false;">' .

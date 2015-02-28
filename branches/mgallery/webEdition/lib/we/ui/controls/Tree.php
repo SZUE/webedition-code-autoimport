@@ -417,7 +417,6 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 				        //of the returned data and create child nodes.
 				        success: function(oResponse) {
 				            YAHOO.log("XHR transaction was successful.", "info", "example");
-				          //console.log(oResponse.responseText);
 				            var oResults = eval("(" + oResponse.responseText + ")");
 				            if((oResults.ResultSet.Result) && (oResults.ResultSet.Result.length)) {
 				                //Result is an array if more than one result, string otherwise

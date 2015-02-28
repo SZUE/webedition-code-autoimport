@@ -699,7 +699,6 @@ class we_users_user{
 					if($settingvalue != $GLOBALS['WE_LANGUAGE']){
 						$save_javascript .= "
 if (top.frames[0]) {
-//console.log(top.frames[0].name);
 	top.frames[0].location.reload();
 }
 
@@ -1260,13 +1259,13 @@ _multiEditorreload = true;";
 		$yuiSuggest = & weSuggest::getInstance();
 		switch($tab){
 			case self::TAB_DATA:
-				return weSuggest::getYuiJsFiles() .
+				return weSuggest::getYuiFiles() .
 						$this->formGeneralData() .
 						$yuiSuggest->getYuiCss();
 			case self::TAB_PERMISSION:
 				return $this->formPermissions($perm_branch);
 			case self::TAB_WORKSPACES:
-				return weSuggest::getYuiJsFiles() .
+				return weSuggest::getYuiFiles() .
 						$this->formWorkspace() .
 						$yuiSuggest->getYuiCss();
 			case self::TAB_SETTINGS:

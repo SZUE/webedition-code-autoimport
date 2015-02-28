@@ -276,7 +276,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	// creates the Template PopupMenue
 	function formTemplatePopup($leftsize, $disable){
 		if($this->DocType){
-			$templateFromDoctype = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->DocType) . ' LIMIT 1', 'Templates', $this->DB_WE);
+			$templateFromDoctype = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->DocType) . ' LIMIT 1', '', $this->DB_WE);
 		}
 		if($disable){
 			$myid = intval($this->TemplateID ? : 0);

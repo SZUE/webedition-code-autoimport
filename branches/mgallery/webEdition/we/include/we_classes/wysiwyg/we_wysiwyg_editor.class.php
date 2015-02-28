@@ -820,8 +820,6 @@ function we_tinyMCE_' . $this->fieldName_clean . '_init(ed){
 	//example of adding event listener
 	var this_editor = TinyWrapper("' . $this->fieldName . '");
 	this_editor.on("KeyPress", function(ed, event){
-			//console.log(ed.editorId);
-			//console.log(event.charCode);
 	});
 }
 */
@@ -1012,7 +1010,6 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			try{
 				ed.setContent(openerDocument.getElementById("' . $this->name . '").value)
 			}catch(e){
-				//console.log("failed getting content from main window");
 			}
 			' : '') . '
 			' . ($this->fieldName ? '
@@ -1058,7 +1055,6 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 					}
 				}
 			} else{
-				//console.log("no external init function for ' . $this->fieldName . ' defined");
 			}
 			' : '') . '
 		});

@@ -1341,7 +1341,7 @@ function changeFieldValue(val,valueField) {
 
 		switch($this->View->page){
 			case 0:
-				$out.=weSuggest::getYuiJsFiles() .
+				$out.=weSuggest::getYuiFiles() .
 					$this->View->htmlHidden("home", 0) .
 					$this->View->htmlHidden("fromPage", 0);
 
@@ -1364,7 +1364,7 @@ function changeFieldValue(val,valueField) {
 					$this->getHTMLNewsletterGroups();
 				break;
 			case 2:
-				$out.=weSuggest::getYuiJsFiles() .
+				$out.=weSuggest::getYuiFiles() .
 					$this->View->getHiddensMailingPage() .
 					$this->View->getHiddensPropertyPage() .
 					$this->View->htmlHidden("fromPage", 2) .
@@ -1374,7 +1374,7 @@ function changeFieldValue(val,valueField) {
 					$this->weAutoCompleter->getYuiJs();
 				break;
 			default:
-				$out.=weSuggest::getYuiJsFiles() .
+				$out.=weSuggest::getYuiFiles() .
 					$this->View->getHiddensPropertyPage() .
 					$this->View->getHiddensMailingPage() .
 					$this->View->getHiddensContentPage() .

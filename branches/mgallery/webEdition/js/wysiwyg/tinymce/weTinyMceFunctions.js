@@ -115,19 +115,16 @@ function TinyWrapper(fieldname) {
 				try {
 					return tinyEditorsInPopup[_fn].getContent();
 				} catch (err) {
-					//console.log("No Editor \'" + _fn + "\' in Popup found!");
 				}
 			}
 			try {
 				return document.getElementById(tinyEditors[_fn]).value;
 			} catch (err) {
-				//console.log("No Editor \'" + _fn + "\' found!");
 			}
 		} else {
 			try {
 				return tinyEditors[_fn].getContent();
 			} catch (err) {
-				//console.log("No Editor \'" + _fn + "\' found!");
 			}
 		}
 	};
@@ -138,18 +135,15 @@ function TinyWrapper(fieldname) {
 				document.getElementById(tinyEditors[_fn]).value = cnt;
 				document.getElementById("div_wysiwyg_" + tinyEditors[_fn]).innerHTML = cnt;
 			} catch (err) {
-				//console.log("No Editor \'" + _fn + "\' found!");
 			}
 			try {
 				tinyEditorsInPopup[_fn].setContent(cnt);
 			} catch (err) {
-				//console.log("No Editor \'" + _fn + "\' in Popup found!");
 			}
 		} else {
 			try {
 				tinyEditors[_fn].setContent(cnt);
 			} catch (err) {
-				//console.log("No Editor \'" + _fn + "\' found!");
 			}
 		}
 	};
