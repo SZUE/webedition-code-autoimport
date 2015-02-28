@@ -21,13 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var ajaxMaxResponseTime = 1500;
-var ajaxResponseStep = 100;
-var ajaxResponseCT = 0;
-var countMark = 0;
-var selInputVal=[];
-var oldInputVal=[];
-var newInputVal=[];
 
 function weInputAppendClass(inp, cls) {
 	if (inp.className) {
