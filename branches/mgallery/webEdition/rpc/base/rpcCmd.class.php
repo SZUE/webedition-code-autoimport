@@ -47,7 +47,6 @@ class rpcCmd{
 	var $Permissions = array();
 	var $Status = self::STATUS_OK;
 	var $Parameters = array();
-
 	function rpcCmd($shell){
 		$this->checkSession();
 		$this->checkParameters();
