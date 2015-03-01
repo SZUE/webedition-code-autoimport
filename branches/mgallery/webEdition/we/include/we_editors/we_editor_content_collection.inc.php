@@ -26,21 +26,20 @@ $yuiSuggest = & weSuggest::getInstance();
 echo we_html_tools::getHtmlTop();
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 echo STYLESHEET .
-we_html_element::jsScript(JS_DIR . 'windows.js') .
-we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
-we_html_element::jsElement('
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
+ we_html_element::jsElement('
 var we_name = "' . $GLOBALS['we_doc']->Name . '";
-var we_remTable = "' . $GLOBALS['we_doc']->remTable . '";');//make this vars too inner var of some function collection 
-
+var we_remTable = "' . $GLOBALS['we_doc']->remTable . '";'); //make this vars too inner var of some function collection
 ?>
 
 </head>
 <body class="weEditorBody">
-	<form name="we_form"><?php echo we_class::hiddenTrans();
-		echo '<div style="margin-left:20px;">SELECT: remTable(FILE_TABLE|OBJECT_FILES_TABLE) => actually FILE_TABLE is used by default<br><br></div>';
-
-		echo we_html_element::htmlDiv(array('style' => 'margin-left:20px;'), $GLOBALS['we_doc']->formInputField('', 'Collection', 'Collection', 40, 410));
-		echo $GLOBALS['we_doc']->formCollection();
+	<form name="we_form"><?php
+		echo we_class::hiddenTrans() .
+		'<div style="margin-left:20px;">SELECT: remTable(FILE_TABLE|OBJECT_FILES_TABLE) => actually FILE_TABLE is used by default<br><br></div>' .
+		we_html_element::htmlDiv(array('style' => 'margin-left:20px;'), $GLOBALS['we_doc']->formInputField('', 'Collection', 'Collection', 40, 410)) .
+		$GLOBALS['we_doc']->formCollection();
 		?>
 		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>

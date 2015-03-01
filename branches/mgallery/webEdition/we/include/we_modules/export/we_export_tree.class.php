@@ -248,7 +248,7 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 				$elem .= ',ContentType';
 		}
 
-		$DB_WE->query('SELECT ' . $elem . ', ABS(text) as Nr, (text REGEXP "^[0-9]") AS isNr FROM ' . $DB_WE->escape($table) . ' ' . $where . ' ORDER BY isNr DESC,Nr,Text');
+		$DB_WE->query('SELECT ' . $elem . ' FROM ' . $DB_WE->escape($table) . ' ' . $where . ' ORDER BY (text REGEXP "^[0-9]") DESC,ABS(text),Text');
 
 		while($DB_WE->next_record()){
 			$ID = $DB_WE->f("ID");

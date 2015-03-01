@@ -68,7 +68,7 @@ class we_banner_frames extends we_modules_frame{
 			menuDaten.clear();
 			startloc=' . $startloc . ';';
 
-		$this->db->query('SELECT ID,ParentID,Path,Text,Icon,IsFolder,ABS(text) as Nr, (text REGEXP "^[0-9]") as isNr FROM ' . BANNER_TABLE . ' ORDER BY isNr DESC,Nr,Text');
+		$this->db->query('SELECT ID,ParentID,Path,Text,Icon,IsFolder FROM ' . BANNER_TABLE . ' ORDER BY (text REGEXP "^[0-9]") DESC,ABS(text),Text');
 		while($this->db->next_record()){
 			$ID = $this->db->f("ID");
 			$ParentID = $this->db->f("ParentID");

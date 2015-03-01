@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_tool_treeDataSource{
-
 	var $SourceType;
 	var $SourceName;
 
@@ -79,7 +78,7 @@ class we_tool_treeDataSource{
 			$wsQuery = !empty($_aWsQuery) ? '(' . implode(' OR ', $_aWsQuery) . ') AND ' : '';
 		}
 
-		$prevoffset = max(0,$offset - $segment);
+		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$items[] = array(
 				'icon' => 'arrowup.gif',
@@ -97,10 +96,9 @@ class we_tool_treeDataSource{
 			);
 		}
 
-		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . " " . $addWhere;
+		$where = ' WHERE ' . $wsQuery . ' ParentID=' . intval($ParentID) . ' ' . $addWhere;
 
-		$db->query("SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from " . $db->escape($table) . " $where ORDER BY isNr DESC,Nr,Text " . ($segment ? "LIMIT " . abs($offset) . "," . abs($segment) . ";" : ";" ));
-		$now = time();
+		$db->query('SELECT ' . $elem . ' FROM ' . $db->escape($table) . $where . ' ORDER BY (text REGEXP "^[0-9]") DESC,abs(text),Text ' . ($segment ? 'LIMIT ' . abs($offset) . ',' . abs($segment) : '' ));
 
 		while($db->next_record()){
 
@@ -127,7 +125,7 @@ class we_tool_treeDataSource{
 			$items[] = array_merge($fileds, $typ);
 		}
 
-		$total = f("SELECT COUNT(1) as total FROM " . $db->escape($table) . ' ' . $where, 'total', $db);
+		$total = f('SELECT COUNT(1) FROM ' . $db->escape($table) . ' ' . $where, '', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(

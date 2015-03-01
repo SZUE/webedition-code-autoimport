@@ -146,20 +146,12 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		$table = $_table;
 		$limit = ($start === 0 && $anzahl === 0) ? '' : (is_numeric($start) && is_numeric($anzahl)) ? 'LIMIT ' . abs($start) . ',' . abs($anzahl) . '' : '';
 
-		$db->query('SELECT ' . escape_sql_query($table) . ".*,LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr FROM `" . escape_sql_query($table) . "` WHERE ParentID= " . intval($parentID) . " ORDER BY IsFolder DESC, isNr DESC,Nr ,lowtext , Text $limit ");
+		$db->query('SELECT * FROM ' . $db->escape($table) . ' WHERE ParentID= ' . intval($parentID) . ' ORDER BY IsFolder DESC,(Text REGEXP "^[0-9]") DESC,abs(Text),Text ' . $limit);
 		$nodes = $db->getAll();
 
 		if(!empty($nodes)){
-			if(!array_key_exists('Published', $nodes[0])){
-				$addPublished = true;
-			} else {
-				$addPublished = false;
-			}
-			if(!array_key_exists('Status', $nodes[0])){
-				$addStatus = true;
-			} else {
-				$addStatus = false;
-			}
+			$addPublished = (!array_key_exists('Published', $nodes[0]));
+			$addStatus = (!array_key_exists('Status', $nodes[0]));
 			foreach($nodes as &$node){
 				if($addPublished){
 					$node['Published'] = 1;
@@ -325,7 +317,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		$controller = Zend_Controller_Front::getInstance();
 		$appPath = $controller->getParam('appPath');
 		include($appPath . '/conf/meta.conf.php');
-		$db=new DB_WE();
+		$db = new DB_WE();
 		return (substr($metaInfo['datasource'], 0, 6) === 'table:' && $db->isTabExist($metaInfo['maintable']) ?
 				'table' :
 				(substr($metaInfo['datasource'], 0, 7) === 'custom:' ?

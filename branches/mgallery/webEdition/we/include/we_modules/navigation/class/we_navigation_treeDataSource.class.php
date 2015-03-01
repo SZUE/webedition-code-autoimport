@@ -50,7 +50,7 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 			$wsQuery = $_aWsQuery ? '(' . implode(' OR ', $_aWsQuery) . ') AND ' : '';
 		}
 
-		$prevoffset = max(0,$offset - $segment);
+		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$items[] = array(
 				'icon' => 'arrowup.gif',
@@ -68,10 +68,9 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 			);
 		}
 
-		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . " " . $addWhere;
+		$where = ' WHERE ' . $wsQuery . ' ParentID=' . intval($ParentID) . ' ' . $addWhere;
 
-		$db->query(
-			"SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from $table $where ORDER BY Ordn, isNr DESC,Nr,Text " . ($segment ? "LIMIT $offset,$segment;" : ";"));
+		$db->query('SELECT ' . $elem . ' FROM ' . $table . $where . ' ORDER BY Ordn,(text REGEXP "^[0-9]") DESC,abs(text),Text' . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 		$now = time();
 
 		while($db->next_record()){

@@ -140,15 +140,15 @@ abstract class we_glossary_treeLoader{
 			$Items[] = $Item;
 		}
 
-		$Db->query('SELECT ID, Type, Language, Text, Icon, abs(Text) AS Nr, (Text REGEXP "^[0-9]") AS isNr, Published FROM ' . GLOSSARY_TABLE . ' ' .
-			$Where . ' ORDER BY isNr DESC, Nr, Text ' .
-			($Segment ? 'LIMIT ' . intval($Offset) . ',' . intval($Segment) : ''));
+		$Db->query('SELECT ID,Type,Language,Text,Icon,Published FROM ' . GLOSSARY_TABLE . ' ' .
+			$Where . ' ORDER BY (Text REGEXP "^[0-9]") DESC,abs(Text),Text' .
+			($Segment ? ' LIMIT ' . intval($Offset) . ',' . intval($Segment) : ''));
 
 		while($Db->next_record(MYSQL_ASSOC)){
 
 			$Item = array(
 				'id' => $Db->f('ID'),
-				'parentid' => $Language . "_" . $Type,
+				'parentid' => $Language . '_' . $Type,
 				'text' => $Db->f('Text'),
 				'typ' => 'item',
 				'open' => 0,

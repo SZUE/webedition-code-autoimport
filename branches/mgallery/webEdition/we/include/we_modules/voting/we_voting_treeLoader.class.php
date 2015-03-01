@@ -36,7 +36,7 @@ abstract class we_voting_treeLoader{
 
 		$owners_sql = we_voting_voting::getOwnersSql();
 
-		$prevoffset = max(0,$offset - $segment);
+		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$items[] = array(
 				"icon" => "arrowup.gif",
@@ -54,9 +54,9 @@ abstract class we_voting_treeLoader{
 			);
 		}
 
-		$where = " WHERE ParentID=" . intval($ParentID) . " " . $addWhere . $owners_sql;
+		$where = ' WHERE ParentID=' . intval($ParentID) . ' ' . $addWhere . $owners_sql;
 
-		$db->query("SELECT " . $db->escape($elem) . ", abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from " . $db->escape($table) . " $where ORDER BY isNr DESC,Nr,Text " . ($segment ? "LIMIT " . abs($offset) . "," . abs($segment) . ";" : ";" ));
+		$db->query('SELECT ' . $db->escape($elem) . ' FROM ' . $db->escape($table) . $where . ' ORDER BY (text REGEXP "^[0-9]") DESC,ABS(text),Text' . ($segment ? ' LIMIT ' . abs($offset) . "," . abs($segment) : '' ));
 		$now = time();
 
 		while($db->next_record()){

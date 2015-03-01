@@ -57,26 +57,26 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 	function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs = array(), $collections = array()){
 		global $openFolders, $parentpaths, $wsQuery, $treeItems;
 
-		if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("CAN_SEE_TEMPLATES")) || ($table == FILE_TABLE && !permissionhandler::hasPerm("CAN_SEE_DOCUMENTS"))){
+		if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm('CAN_SEE_TEMPLATES')) || ($table == FILE_TABLE && !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS'))){
 			return 0;
 		}
 		$prevoffset = max(0,$offset - $segment);
 		if($offset && $segment){
 			$treeItems[] = array(
-				"icon" => "arrowup.gif",
-				"id" => "prev_" . $ParentID,
-				"parentid" => $ParentID,
-				"text" => "display (" . $prevoffset . "-" . $offset . ")",
-				"contenttype" => "arrowup",
-				"isclassfolder" => 0,
-				"table" => $table,
-				"checked" => 0,
-				"typ" => "threedots",
-				"open" => 0,
-				"published" => 0,
-				"disabled" => 0,
-				"tooltip" => "",
-				"offset" => $prevoffset
+				'icon' => 'arrowup.gif',
+				'id' => 'prev_' . $ParentID,
+				'parentid' => $ParentID,
+				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
+				'contenttype' => 'arrowup',
+				'isclassfolder' => 0,
+				'table' => $table,
+				'checked' => 0,
+				'typ' => 'threedots',
+				'open' => 0,
+				'published' => 0,
+				'disabled' => 0,
+				'tooltip' => '',
+				'offset' => $prevoffset
 			);
 		}
 		$DB_WE = new DB_WE();
@@ -91,9 +91,9 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 			($table === FILE_TABLE || $table === TEMPLATES_TABLE || (defined('OBJECT_TABLE') && $table === OBJECT_TABLE) || (defined('OBJECT_FILES_TABLE') && $table === OBJECT_FILES_TABLE) ? ',ContentType,Icon,ModDate' : '') .
 			($table === VFILE_TABLE ? ',Collection,remTable' : '');
 
-		$where = $collectionIDs ? ' WHERE ID IN(' . implode(',', $collectionIDs) . ') AND IsFolder = 0 AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')' :
-			' WHERE  ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')';
-		$DB_WE->query('SELECT ' . $elem . ', LOWER(Text) AS lowtext, ABS(REPLACE(Text,"info","")) AS Nr, (Text REGEXP "^[0-9]") AS isNr FROM ' . $table . ' ' . $where . ' ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext' . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
+		$where = $collectionIDs ? ' WHERE ID IN(' . implode(',', $collectionIDs) . ') AND IsFolder=0 AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')' :
+			' WHERE ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')';
+		$DB_WE->query('SELECT ' . $elem . ' FROM ' . $table . ' ' . $where . ' ORDER BY IsFolder DESC,(Text REGEXP "^[0-9]") DESC,ABS(REPLACE(Text,"info","")),Text' . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
 		$docCollections[] = array();
 		$docCollectionIDs = array();
@@ -103,13 +103,13 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		$tree_count = 0;
 		while($DB_WE->next_record()){
 			$tree_count++;
-			$ID = $DB_WE->f("ID");
-			$Path = $DB_WE->f("Path");
+			$ID = $DB_WE->f('ID');
+			$Path = $DB_WE->f('Path');
 			$ContentType = $table === VFILE_TABLE ? ($DB_WE->f('IsFolder') ? we_base_ContentTypes::FOLDER : we_base_ContentTypes::COLLECTION) : $DB_WE->f("ContentType");
 			$published = ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && ($table == OBJECT_FILES_TABLE)) ?
-					(($DB_WE->f("Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate")) ?
+					(($DB_WE->f('Published') != 0) && ($DB_WE->f('Published') < $DB_WE->f('ModDate')) ?
 						-1 :
-						$DB_WE->f("Published")) :
+						$DB_WE->f('Published')) :
 					1);
 
 			$tmpItems[$ID] = array(

@@ -282,7 +282,7 @@ top.selectFile(top.currentID);
 	}
 
 	function query(){
-		$this->db->query('SELECT ' . $this->fields . ', ABS(text) as Nr, (text REGEXP "^[0-9]") as isNr FROM ' . $this->table . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' ' . getWsQueryForSelector(NAVIGATION_TABLE) . ' ORDER BY Ordn, isNr DESC,Nr,Text');
+		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->table . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' ' . getWsQueryForSelector(NAVIGATION_TABLE) . ' ORDER BY Ordn, (text REGEXP "^[0-9]") DESC,ABS(text),Text');
 	}
 
 	function printDoRenameFolderHTML(){

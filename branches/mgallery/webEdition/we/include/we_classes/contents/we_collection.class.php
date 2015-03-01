@@ -87,7 +87,7 @@ class we_collection extends we_root{
 		// write "blank" collection row to js var
 		$out = we_html_element::jsElement("var newRow = '" . str_replace(array("'"), "\'", str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $this->getRowCollection($yuiSuggest, 'XX'))) . "';");
 		// TODO: do this as soon as we can initiate new acSuggest on client side without reloading editor
-		 * 
+		 *
 		 */
 
 		foreach($items as $item){
@@ -130,7 +130,7 @@ class we_collection extends we_root{
 			$rowControllsArr[] = we_html_button::create_button('image:btn_function_trash', 'javascript:deleteRow(this)');
 			$rowControlls =  we_html_button::create_button_table($rowControllsArr, 5);
 
-			//FIXMDE: use we_html_table
+			//FIXME: use we_html_table
 			$rowHtml = '<table cellspacing="0" draggable="false">
 					<tr style="background-color:#f5f5f5;" height="34px">
 						<td width="60px" style="padding:0 0 0 20px;" class="weMultiIconBoxHeadline">Nr. <span id="label_' . $index . '">' . $index . '</span></td>

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_search_search extends we_search_base{
-
 	//for doclist!
 	/**
 	 * @var integer: number of searchfield-rows
@@ -80,7 +79,7 @@ class we_search_search extends we_search_base{
 			$obj->searchclassFolder->search = we_base_request::_(we_base_request::STRING, 'search', $obj->searchclassFolder->search);
 
 			if($view !== false){
-				$this->db->query('UPDATE ' . FILE_TABLE . ' SET viewType="' .$this->db->escape($view) . '" WHERE ID=' . intval($obj->ID));
+				$this->db->query('UPDATE ' . FILE_TABLE . ' SET viewType="' . $this->db->escape($view) . '" WHERE ID=' . intval($obj->ID));
 				$obj->searchclassFolder->setView = $view;
 			} else {
 				$obj->searchclassFolder->setView = f('SELECT viewType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($obj->ID));
@@ -437,10 +436,10 @@ class we_search_search extends we_search_base{
 						"AND ((" . $this->db->escape($table) . ".Published=0 OR " . $this->db->escape($table) . ".Published < " . $this->db->escape($table) . ".ModDate) AND (" . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::OBJECT_FILE . "'))");
 			case "dynamisch" :
 				return ($table !== FILE_TABLE && $table !== VERSIONS_TABLE ? '' :
-								"AND ((" . $this->db->escape($table) . ".IsDynamic=1) AND (" . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "'))");
+						"AND ((" . $this->db->escape($table) . ".IsDynamic=1) AND (" . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "'))");
 			case "statisch" :
 				return ($table !== FILE_TABLE && $table !== VERSIONS_TABLE ? '' :
-								"AND ((" . $this->db->escape($table) . ".IsDynamic=0) AND (" . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "'))");
+						"AND ((" . $this->db->escape($table) . ".IsDynamic=0) AND (" . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "'))");
 			case "deleted" :
 				return ($table === VERSIONS_TABLE ? "AND v.status='deleted' " : '');
 		}
@@ -497,10 +496,10 @@ class we_search_search extends we_search_base{
 						}
 					}
 					$where .= ' AND ' . ($mtof ?
-									$table . '.ID IN (' . makeCSVFromArray($arr) . ') ' :
-									($_ids[0] ?
-											$table . '.ID IN (' . makeCSVFromArray($_ids[0]) . ') ' :
-											' 0'));
+							$table . '.ID IN (' . makeCSVFromArray($arr) . ') ' :
+							($_ids[0] ?
+								$table . '.ID IN (' . makeCSVFromArray($_ids[0]) . ') ' :
+								' 0'));
 				}
 			}
 		}
@@ -531,8 +530,8 @@ class we_search_search extends we_search_base{
 				$_db->query('SELECT ID,documentElements  FROM ' . VERSIONS_TABLE . ' WHERE documentElements!=""');
 				while($_db->next_record()){
 					$elements = unserialize((substr_compare($_db->f('documentElements'), 'a%3A', 0, 4) == 0 ?
-									html_entity_decode(urldecode($_db->f('documentElements')), ENT_QUOTES) :
-									gzuncompress($_db->f('documentElements')))
+							html_entity_decode(urldecode($_db->f('documentElements')), ENT_QUOTES) :
+							gzuncompress($_db->f('documentElements')))
 					);
 
 					if(is_array($elements)){
@@ -543,7 +542,7 @@ class we_search_search extends we_search_base{
 									break;
 								default:
 									if(isset($v['dat']) &&
-											stristr((is_array($v['dat']) ? serialize($v['dat']) : $v['dat']), $keyword)){
+										stristr((is_array($v['dat']) ? serialize($v['dat']) : $v['dat']), $keyword)){
 										$contents[] = $_db->f('ID');
 									}
 							}
@@ -608,7 +607,7 @@ class we_search_search extends we_search_base{
 			return;
 		}
 
-		$this->db->query('SELECT SEARCH_TEMP_TABLE.*,LOWER(' . $sortierung[0] . ') AS lowtext, ABS(' . $sortierung[0] . ') as Nr, (' . $sortierung[0] . " REGEXP '^[0-9]') as isNr  FROM SEARCH_TEMP_TABLE  ORDER BY IsFolder DESC, isNr " . $sortIsNr . ',Nr ' . $sortNr . ',lowtext ' . $sortNr . ', ' . $order . '  LIMIT ' . $searchstart . ',' . $anzahl);
+		$this->db->query('SELECT SEARCH_TEMP_TABLE.*,ABS(' . $sortierung[0] . ') AS Nr, (' . $sortierung[0] . " REGEXP '^[0-9]') AS isNr  FROM SEARCH_TEMP_TABLE  ORDER BY IsFolder DESC, isNr " . $sortIsNr . ',Nr ' . $sortNr . ',' . $sortierung[0] . ',' . $sortNr . ', ' . $order . '  LIMIT ' . $searchstart . ',' . $anzahl);
 	}
 
 //FIXME path is only implemented for filetable
@@ -654,7 +653,7 @@ class we_search_search extends we_search_base{
 			case VERSIONS_TABLE:
 				if($_SESSION['weS']['weSearch']['onlyDocs'] || $_SESSION['weS']['weSearch']['ObjectsAndDocs']){
 					$query = "INSERT INTO  SEARCH_TEMP_TABLE SELECT '',v.documentID,v.documentTable,v.Text,v.Path,v.ParentID,'','',v.TemplateID,v.ContentType,'',v.timestamp,v.modifierID,'','',v.Extension,v.TableID,v.ID " .
-							'FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . FILE_TABLE . ' f ON v.documentID=f.ID ' . $this->where . ' ' . $_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'];
+						'FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . FILE_TABLE . ' f ON v.documentID=f.ID ' . $this->where . ' ' . $_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'];
 					if(stristr($query, "v.status='deleted'")){
 						$query = str_replace(FILE_TABLE . ".", "v.", $query);
 					}
@@ -662,7 +661,7 @@ class we_search_search extends we_search_base{
 				}
 				if(defined('OBJECT_FILES_TABLE') && ($_SESSION['weS']['weSearch']['onlyObjects'] || $_SESSION['weS']['weSearch']['ObjectsAndDocs'])){
 					$query = "INSERT INTO SEARCH_TEMP_TABLE SELECT '',v.documentID,v.documentTable,v.Text,v.Path,v.ParentID,'','',v.TemplateID,v.ContentType,'',v.timestamp,v.modifierID,'','',v.Extension,v.TableID,v.ID "
-							. 'FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . OBJECT_FILES_TABLE . ' f ON v.documentID=f.ID ' . $this->where . " " . $_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'];
+						. 'FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . OBJECT_FILES_TABLE . ' f ON v.documentID=f.ID ' . $this->where . " " . $_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'];
 					if(stristr($query, "v.status='deleted'")){
 						$query = str_replace(OBJECT_FILES_TABLE . ".", "v.", $query);
 					}
@@ -776,8 +775,8 @@ UNIQUE KEY k (docID,docTable)
 						if(($searchfield === 'temp_template_id' && $this->table == FILE_TABLE) || ($searchfield === 'TemplateID' && $this->table == VERSIONS_TABLE)){
 							if($this->table == FILE_TABLE){
 								$sql .= $this->sqlwhere($tablename . '.TemplateID', $searching, $operator . '( (Published >= ModDate AND Published !=0 AND ') .
-										$this->sqlwhere($searchfield, $searching, ' ) OR (Published < ModDate AND ') .
-										'))';
+									$this->sqlwhere($searchfield, $searching, ' ) OR (Published < ModDate AND ') .
+									'))';
 							} elseif($this->table == VERSIONS_TABLE){
 								$sql .= $this->sqlwhere($tablename . '.TemplateID', $searching, $operator . ' ');
 							}
@@ -896,7 +895,7 @@ UNIQUE KEY k (docID,docTable)
 		$_SESSION['weS']['weSearch']['countChilds'][] = $folderID;
 		// doppelte Eintr�ge aus array entfernen
 		$_SESSION['weS']['weSearch']['countChilds'] = array_values(
-				array_unique($_SESSION['weS']['weSearch']['countChilds']));
+			array_unique($_SESSION['weS']['weSearch']['countChilds']));
 
 		return $_SESSION['weS']['weSearch']['countChilds'];
 	}

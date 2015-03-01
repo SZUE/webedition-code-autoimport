@@ -74,13 +74,11 @@ class we_newsletter_treeLoader{
 			);
 		}
 
-		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . " " . $addWhere;
+		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . ' ' . $addWhere;
 
-		$db->query('SELECT ' . $db->escape($elem) . ", abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from $table $where ORDER BY isNr DESC,Nr,Text " . ($segment ? "LIMIT $offset,$segment;" : ";" ));
-		$now = time();
+		$db->query('SELECT ' . $db->escape($elem) . " FROM $table $where ORDER BY (text REGEXP '^[0-9]') DESC,abs(text),Text " . ($segment ? 'LIMIT '.$offset.','.$segment : '' ));
 
 		while($db->next_record()){
-
 			$typ = array(
 				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
 				'open' => 0,
@@ -96,8 +94,9 @@ class we_newsletter_treeLoader{
 			$fileds = array();
 
 			foreach($db->Record as $k => $v){
-				if(!is_numeric($k))
+				if(!is_numeric($k)){
 					$fileds[strtolower($k)] = $v;
+				}
 			}
 
 			$items[] = array_merge($fileds, $typ);
