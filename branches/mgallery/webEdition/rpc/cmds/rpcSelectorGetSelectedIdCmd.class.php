@@ -35,7 +35,6 @@ class rpcSelectorGetSelectedIdCmd extends rpcCmd{
 		$contentTypes = explode(',', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3));
 		$selectorSuggest->queryTable($search, $table, $contentTypes);
 		$resp->setData("data", $selectorSuggest->getResult());
-t_e($resp,$resp->getData('data'),$selectorSuggest->getResult());
 		return $resp;
 	}
 

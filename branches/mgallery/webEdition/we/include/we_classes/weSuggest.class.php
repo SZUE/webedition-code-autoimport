@@ -160,8 +160,8 @@ class weSuggest{
 
 		$safariEventListener = '';
 		$initVars = '
-var width= ' . $this->width . ';
-var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
+YAHOO.autocoml.width= ' . $this->width . ';
+YAHOO.autocoml.ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
 			';
 		// WORKSPACES
 		$weFieldWS = array();
@@ -172,7 +172,6 @@ var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
 
 
 		$declare = $onSelect = $onBlur = '';
-		$postData = 'protocol=text&cmd=SelectorGetSelectedId';
 		// loop fields
 		for($i = 0; $i < count($this->inputfields); $i++){
 			$safariEventListener .= "YAHOO.util.Event.addListener('" . $this->inputfields[$i] . "','blur',YAHOO.autocoml.doSafariOnTextfieldBlur_$i);";
@@ -208,8 +207,7 @@ var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
 'fields_val': [document.getElementById('" . implode("').value,document.getElementById('", $this->setOnSelectFields[$i]) . "').value]";
 				}
 				$onSelect .= <<<HTS
-
-		protoSuggestObj.doOnItemSelect_$i= function(param1,param2,i) {
+		YAHOO.autocoml.doOnItemSelect_$i= function(param1,param2,i) {
 			param=param2.toString();
 			params=param.split(',');
 			YAHOO.autocoml.doOnItemSelect(param1,param2,i);
@@ -225,15 +223,15 @@ HTS;
 					}
 				}
 				$onBlur .= <<<HTS
-		protoSuggestObj.doSafariOnTextfieldBlur_$i= function(e) {
-			YAHOO.autocoml.doOnTextfieldBlur_$i(0,0,$i);
+		YAHOO.autocoml.doSafariOnTextfieldBlur_$i= function(e) {
+			YAHOO.autocoml.doOnTextfieldBlur_$i(1,1,$i);
 		};
 
-		protoSuggestObj.doOnTextfieldBlur_$i= function(x,y,i) {
+		YAHOO.autocoml.doOnTextfieldBlur_$i= function(x,y,i) {
 			if(!YAHOO.autocoml.doOnTextfieldBlur(i)){
-				newInputVal[i] = document.getElementById(yuiAcFields[i].id).value;
-				if(newInputVal[i] != selInputVal[i] || newInputVal[i] != oldInputVal[i]) {
-					yuiAcFields[i].run = true;
+				YAHOO.autocoml.newInputVal[i] = document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).value;
+				if(YAHOO.autocoml.newInputVal[i] != YAHOO.autocoml.selInputVal[i] || YAHOO.autocoml.newInputVal[i] != YAHOO.autocoml.oldInputVal[i]) {
+					YAHOO.autocoml.yuiAcFields[i].run = true;
 					YAHOO.autocoml.doAjax({
 		success: function(o) {
 			YAHOO.autocoml.ajaxSuccess(o,$i);
@@ -241,13 +239,17 @@ HTS;
 		failure: function(o) {
 			YAHOO.autocoml.ajaxFailure(o,$i);
 		}
-	}, '$postData&we_cmd[1]='+newInputVal[i]+'&we_cmd[2]='+yuiAcFields[i].table+'&we_cmd[3]={$this->contentTypes[$i]}&we_cmd[4]={$additionalFields}&we_cmd[5]='+i);
-					setTimeout("YAHOO.autocoml.doOnTextfieldBlur_"+i+"(0,0,"+i+")",ajaxResponseStep);
+	}, 'protocol=text&cmd=SelectorGetSelectedId&we_cmd[1]='+YAHOO.autocoml.newInputVal[i]+'&we_cmd[2]='+YAHOO.autocoml.yuiAcFields[i].table+'&we_cmd[3]={$this->contentTypes[$i]}&we_cmd[4]={$additionalFields}&we_cmd[5]='+i);
+				if(x==y==0){
+				  //call from timeout
+				}else{
+					setTimeout("YAHOO.autocoml.doOnTextfieldBlur_"+i+"(0,0,"+i+")",YAHOO.autocoml.ajaxResponseStep);
+				}
 				}
 			}
 
 			{$this->_doOnTextfieldBlur[$i]}
-			yuiAcFields[i].changed=false;
+			YAHOO.autocoml.yuiAcFields[i].changed=false;
 		};
 HTS;
 			}
@@ -258,17 +260,17 @@ HTS;
 				if(inst == -1 || inst == i){
 				var select=' . (isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i]) ? 1 : 0) . ';
 				var check=' . (isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i] ? 1 : 0) . ';
-				var myInput = document.getElementById(yuiAcFields[i].id);
+				var myInput = document.getElementById(YAHOO.autocoml.yuiAcFields[i].id);
 				var myContainer = document.getElementById("' . $this->containerfields[$i] . '");
 				YAHOO.autocoml.setupInstance(i,select,check,myInput,myContainer);
-				oACDS[i].scriptQueryAppend  = "protocol=text&cmd=SelectorSuggest&we_cmd[2]="+yuiAcFields[i].table+"&we_cmd[3]="+yuiAcFields[i].cTypes+"&we_cmd[4]=' . $weSelfContentType . '&we_cmd[5]=' . $weSelfID . '&we_cmd[6]="+yuiAcFields[i].rootDir;
-				oACDS[i].scriptQueryParam  = "we_cmd[1]";
-				oAutoComp[i].maxResultsDisplayed = ' . $this->weMaxResults[$i] . ';
+				YAHOO.autocoml.oACDS[i].scriptQueryAppend  = "protocol=text&cmd=SelectorSuggest&we_cmd[2]="+YAHOO.autocoml.yuiAcFields[i].table+"&we_cmd[3]="+YAHOO.autocoml.yuiAcFields[i].cTypes+"&we_cmd[4]=' . $weSelfContentType . '&we_cmd[5]=' . $weSelfID . '&we_cmd[6]="+YAHOO.autocoml.yuiAcFields[i].rootDir;
+				YAHOO.autocoml.oACDS[i].scriptQueryParam  = "we_cmd[1]";
+				YAHOO.autocoml.oAutoComp[i].maxResultsDisplayed = ' . $this->weMaxResults[$i] . ';
 				if(select){
-				oAutoComp[i].itemSelectEvent.subscribe(YAHOO.autocoml.doOnItemSelect_' . $i . ',i);
+				YAHOO.autocoml.oAutoComp[i].itemSelectEvent.subscribe(YAHOO.autocoml.doOnItemSelect_' . $i . ',i);
 					}
 					if(check){
-					oAutoComp[i].textboxBlurEvent.subscribe(YAHOO.autocoml.doOnTextfieldBlur_' . $i . ',i);
+					YAHOO.autocoml.oAutoComp[i].textboxBlurEvent.subscribe(YAHOO.autocoml.doOnTextfieldBlur_' . $i . ',i);
 						}
 			}
 			';
@@ -276,22 +278,21 @@ HTS;
 
 		return we_html_element::jsElement("
 			$initVars
-var weWorkspacePathArray = [" . implode(',', $weFieldWS) . "];
-var yuiAcFieldsById = {" . implode(',', $fildsById) . "};
-var yuiAcFields = [$fildsObj];
+YAHOO.autocoml.yuiAcFieldsById = {" . implode(',', $fildsById) . "};
+YAHOO.autocoml.yuiAcFields = [$fildsObj];
 
 $onSelect
 $onBlur
 
-protoSuggestObj.init= function(param,inst) {
+YAHOO.autocoml.init= function(param,inst) {
 			inst = inst === undefined ? -1 : inst;
 			$declare
-			for(i=0;i<yuiAcFields.length;++i){
+			for(i=0;i<YAHOO.autocoml.yuiAcFields.length;++i){
 			if((inst == -1 || inst == i) && parent && parent.weAutoCompetionFields && !parent.weAutoCompetionFields[i]) {
 				parent.weAutoCompetionFields[i] = {
-					'id' : yuiAcFields[i].id,
+					'id' : YAHOO.autocoml.yuiAcFields[i].id,
 					'valid' : true,
-					'cType' : yuiAcFields[i].cType
+					'cType' : YAHOO.autocoml.yuiAcFields[i].cType
 				}
 			}
 			}
@@ -303,7 +304,6 @@ protoSuggestObj.init= function(param,inst) {
 				}
 			}
 		};
-YAHOO.autocoml = protoSuggestObj;
 
 YAHOO.util.Event.addListener(this,'load',YAHOO.autocoml.init);
 {$this->preCheck}
