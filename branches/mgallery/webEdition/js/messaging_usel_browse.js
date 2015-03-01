@@ -155,7 +155,7 @@ function makeNewEntry(icon, id, pid, txt, offen, ct, tab, pub) {
 
 	if (table == tab) {
 		if (menuDaten[indexOfEntry(pid)]) {
-			if (ct == "folder") {
+			if (ct === "folder") {
 				menuDaten.addSort(new dirEntry(icon, id, pid, txt, offen, ct, tab));
 			} else {
 				menuDaten.addSort(new urlEntry(icon, id, pid, txt, ct, tab, pub));

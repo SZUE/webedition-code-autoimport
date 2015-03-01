@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-function startDrag(evt, table, id){
+function startDrag(evt, table, id) {
 	evt.dataTransfer.setData('text', 'item,' + table + ',' + id);
 }
 
@@ -274,7 +274,7 @@ function drawGroup(nf, ai, zweigEintrag) {
 
 	row = "&nbsp;&nbsp;<a href=\"javascript:" + treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + nf[ai].id + "')\"><img src=" + treeData.tree_image_dir + (nf[ai].open === 0 ? "auf" : "zu") + (ai == nf.len ? "end" : "") + ".gif class=\"treeKreuz\" alt=\"\"></a>";
 
-	if(nf[ai].contenttype !== 'text/weCollection'){
+	if (nf[ai].contenttype !== 'text/weCollection') {
 		nf[ai].icon = "folder" + (nf[ai].open == 1 ? "open" : "") + (nf[ai].disabled == 1 ? "_disabled" : "") + ".gif";
 	}
 
@@ -328,6 +328,19 @@ function add(object) {
 
 function containerClear() {
 	this.len = 0;
+}
+
+function updateTreeAfterDel(ind) {
+	if (ind !== 0) {
+		ai = ind;
+		while (ai <= menuDaten.laenge - 1) {
+			menuDaten[ai] = menuDaten[ai + 1];
+			ai++;
+		}
+		menuDaten.laenge[menuDaten.laenge] = null;
+		menuDaten.laenge--;
+		drawEintraege();
+	}
 }
 
 var startloc = 0;

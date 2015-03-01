@@ -70,7 +70,7 @@ function zeichne(startEntry, zweigEintrag) {
 		} else {
 			var newAst = zweigEintrag;
 			var zusatz = (ai == nf.laenge ? "end" : "");
-			var zusatz2="";
+			var zusatz2 = "";
 			if (nf[ai].offen === 0) {
 				ret += "&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\"></A>";
 			} else {
@@ -133,16 +133,7 @@ function deleteEntry(id, type) {
 		}
 		ai++;
 	}
-	if (ind !== 0) {
-		ai = ind;
-		while (ai <= menuDaten.laenge - 1) {
-			menuDaten[ai] = menuDaten[ai + 1];
-			ai++;
-		}
-		menuDaten.laenge[menuDaten.laenge] = null;
-		menuDaten.laenge--;
-		drawEintraege();
-	}
+	updateTreeAfterDel(ind);
 }
 
 function openClose(name, status) {
@@ -154,7 +145,7 @@ function openClose(name, status) {
 function indexOfEntry(name) {
 	var ai = 1;
 	while (ai <= menuDaten.laenge) {
-		if ((menuDaten[ai].typ == 'root') || (menuDaten[ai].typ == 'folder')) {
+		if ((menuDaten[ai].typ === 'root') || (menuDaten[ai].typ === 'folder')) {
 			if (menuDaten[ai].name == name) {
 				return ai;
 			}

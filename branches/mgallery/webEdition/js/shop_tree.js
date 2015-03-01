@@ -143,16 +143,7 @@ function deleteEntry(id) {
 		}
 		ai++;
 	}
-	if (ind !== 0) {
-		ai = ind;
-		while (ai <= menuDaten.laenge - 1) {
-			menuDaten[ai] = menuDaten[ai + 1];
-			ai++;
-		}
-		menuDaten.laenge[menuDaten.laenge] = null;
-		menuDaten.laenge--;
-		drawEintraege();
-	}
+	updateTreeAfterDel(ind);
 }
 
 function openClose(name, status) {

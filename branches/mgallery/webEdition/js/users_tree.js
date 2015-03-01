@@ -148,7 +148,7 @@ function openClose(name, status) {
 function indexOfEntry(name) {
 	var ai = 1;
 	while (ai <= menuDaten.laenge) {
-		if ((menuDaten[ai].typ == "root") || (menuDaten[ai].typ == "folder")) {
+		if ((menuDaten[ai].typ === "root") || (menuDaten[ai].typ === "folder")) {
 			if (menuDaten[ai].name == name) {
 				return ai;
 			}
@@ -205,7 +205,7 @@ function rootEntry(name, text, rootstat) {
 	this.name = name;
 	this.text = text;
 	this.loaded = true;
-	this.typ = "root";
+	this.typ = 'root';
 	this.rootstat = rootstat;
 	return this;
 }

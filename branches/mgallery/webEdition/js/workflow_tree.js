@@ -161,7 +161,7 @@ function openClose(name, status) {
 function indexOfEntry(name) {
 	var ai = 1;
 	while (ai <= menuDaten.laenge) {
-		if ((menuDaten[ai].typ == 'root') || (menuDaten[ai].typ == 'folder')) {
+		if ((menuDaten[ai].typ === 'root') || (menuDaten[ai].typ === 'folder')) {
 			if (menuDaten[ai].name == name) {
 				return ai;
 			}
