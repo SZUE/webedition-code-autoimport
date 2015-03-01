@@ -76,7 +76,7 @@ function unselectAllFiles() {
 		top.fsbody.document.getElementById("line_" + entries[i].ID).style.backgroundColor = "white";
 	}
 	top.fsfooter.document.we_form.fname.value = "";
-	top.fsheader.disableDelBut()
+	top.fsheader.disableDelBut();
 }
 
 function selectFile(id) {
@@ -168,7 +168,7 @@ function doClick(id, ct) {
 
 function setDir(id) {
 	e = getEntry(id);
-	if (id == 0) {
+	if (id === 0) {
 		e.text = "";
 	}
 	currentID = id;

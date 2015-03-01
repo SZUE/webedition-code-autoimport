@@ -44,7 +44,7 @@
 
 			e.addButton('weabbr', {
 				title: 'xhtmlxtras.abbr_desc',
-				'class' : 'mce_' + e.settings.wePluginClasses['weabbr'],
+				'class' : 'mce_' + e.settings.wePluginClasses.weabbr,
 				cmd: 'mceWeabbr'
 			});
 

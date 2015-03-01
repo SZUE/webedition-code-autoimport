@@ -80,15 +80,15 @@ function reorder(name) {
 }
 
 function setLookin() {
-	var dirs = new Array();
-	var foo = new Array();
+	var dirs = [];
+	var foo = [];
 	var a = document.we_form.elements.lookin;
 	var c = 0;
 
 	a.options.length = 0;
 	foo = top.currentDir.split("/");
 	for (j = 0; j < foo.length; j++) {
-		if (foo[j] != "") {
+		if (foo[j] !== "") {
 			dirs[c] = foo[j];
 			c++;
 		}
@@ -96,7 +96,7 @@ function setLookin() {
 	foo = top.rootDir.split("/");
 	root = "/";
 	for (j = 0; j < foo.length; j++) {
-		if (foo[j] != "") {
+		if (foo[j] !== "") {
 			root = foo[j];
 		}
 	}

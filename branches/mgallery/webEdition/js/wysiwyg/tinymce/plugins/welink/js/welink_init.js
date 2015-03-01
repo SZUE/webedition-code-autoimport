@@ -5,7 +5,7 @@
 function preinit() {
 	var url;
 
-	if(url = tinyMCEPopup.getParam("external_link_list_url")){
+	if ((url = tinyMCEPopup.getParam("external_link_list_url"))) {
 		document.write('<script language="javascript" type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
 	}
 }
@@ -13,25 +13,25 @@ function preinit() {
 function init() {
 	tinyMCEPopup.resizeToInnerSize();
 
-	var formObj = document.forms["we_form"];
+	var formObj = document.forms.we_form;
 	var inst = tinyMCEPopup.editor;
 	var elm = inst.selection.getNode();
 	var action = "insert";
 	var html;
 
 	// Anchor list
-	html = getAnchorListHTML('anchorlist','we_dialog_args[anchor]');
-	if(html != ""){
+	html = getAnchorListHTML('anchorlist', 'we_dialog_args[anchor]');
+	if (html !== "") {
 		document.getElementById("anchorlistcontainer").innerHTML = html;
 	}
 
 	elm = inst.dom.getParent(elm, "A");
-	if(elm != null && elm.nodeName == "A"){
+	if (elm !== null && elm.nodeName === "A") {
 		action = "update";
 	}
 	addClassesToList('we_dialog_args[cssclass]', 'advlink_styles');
 
-	if(action == "update" && inst.isWeLinkInitialized === false && formObj){
+	if (action == "update" && inst.isWeLinkInitialized === false && formObj) {
 		inst.isWeLinkInitialized = true;
 
 		//var href = inst.dom.getAttrib(elm, 'href');
@@ -51,44 +51,44 @@ function init() {
 		this.selectOptionByValue(formObj, "we_dialog_args[cssclass]", inst.dom.getAttrib(elm, 'class'));
 
 		/*
-		// analyse linktype, enter link-data and reload
-		//var linktype = this.getLinkType(urlParts[0]);
-		//this.selectOptionByValue(formObj, 'we_dialog_args[type]', linktype);
+		 // analyse linktype, enter link-data and reload
+		 //var linktype = this.getLinkType(urlParts[0]);
+		 //this.selectOptionByValue(formObj, 'we_dialog_args[type]', linktype);
 
-		switch(linktype){
-			case "int":
-				//formObj.elements['we_dialog_args[fileID]'].value = urlParts[0].split('document:')[1];
-				break;
-			case "obj":
-				//formObj.elements['we_dialog_args[objID]'].value = urlParts[0].split('object:')[1];
-				break;
-			case "ext":
-				//formObj.elements['we_dialog_args[extHref]'].value = urlParts[0];
-				break;
-			case "mail":
-				//formObj.elements['we_dialog_args[mailHref]'].value = urlParts[0].split(':')[1];
-				break;
-			default:
-				break;
-		}
-		//this.doReload(formObj);
-		*/
+		 switch(linktype){
+		 case "int":
+		 //formObj.elements['we_dialog_args[fileID]'].value = urlParts[0].split('document:')[1];
+		 break;
+		 case "obj":
+		 //formObj.elements['we_dialog_args[objID]'].value = urlParts[0].split('object:')[1];
+		 break;
+		 case "ext":
+		 //formObj.elements['we_dialog_args[extHref]'].value = urlParts[0];
+		 break;
+		 case "mail":
+		 //formObj.elements['we_dialog_args[mailHref]'].value = urlParts[0].split(':')[1];
+		 break;
+		 default:
+		 break;
+		 }
+		 //this.doReload(formObj);
+		 */
 	}
 	/*
-	if(typeof(inst.settings.theme_advanced_styles) !== 'undefined' && inst.settings.theme_advanced_styles != ''){
-		var cl = '';
-		for(var i=0; i < inst.settings.theme_advanced_styles.split(/;/).length; i++){
-			cl = inst.settings.theme_advanced_styles.split(/;/)[i].split(/=/)[0];
-			formObj.elements['we_dialog_args[cssclass]'].options[formObj.elements['we_dialog_args[cssclass]'].length] = new Option('.' + cl, cl);
-		}
-	}
-	*/
+	 if(typeof(inst.settings.theme_advanced_styles) !== 'undefined' && inst.settings.theme_advanced_styles != ''){
+	 var cl = '';
+	 for(var i=0; i < inst.settings.theme_advanced_styles.split(/;/).length; i++){
+	 cl = inst.settings.theme_advanced_styles.split(/;/)[i].split(/=/)[0];
+	 formObj.elements['we_dialog_args[cssclass]'].options[formObj.elements['we_dialog_args[cssclass]'].length] = new Option('.' + cl, cl);
+	 }
+	 }
+	 */
 }
 
 // we_functions
 
 function doReload(form) {
-	form.elements['we_what'].value = "dialog";//verhindert Neuladen
+	form.elements.we_what.value = "dialog";//verhindert Neuladen
 	form.target = 'we_weHyperlinkDialog_edit_area';
 	form.submit();
 }
@@ -104,11 +104,11 @@ function getUrlParts(url) {
 	var anchArr = url.split('#');
 	u = anchArr.shift();
 	anch = (anchArr[0]) ? anchArr.join('#') : anch;
-/*
-	var paramArr = u.split('?');
-	u = paramArr.shift();
-	param = (paramArr[0]) ? paramArr.join('?') : param;
-*/
+	/*
+	 var paramArr = u.split('?');
+	 u = paramArr.shift();
+	 param = (paramArr[0]) ? paramArr.join('?') : param;
+	 */
 	return new Array(u, anch, param);
 }
 
@@ -118,14 +118,14 @@ function addClassesToList(list_id, specific_option) {
 	styles = tinyMCEPopup.getParam(specific_option, styles);
 
 	//TODO: Do not write classes in weDialog, so we do not need to delete them here...
-	for (var i=styleSelectElm.length-1; i > 0; i--) {
+	for (var i = styleSelectElm.length - 1; i > 0; i--) {
 		styleSelectElm.remove(i);
 	}
 
 	if (styles) {
 		var stylesAr = styles.split(';');
 
-		for (var i=0; i<stylesAr.length; i++) {
+		for (i = 0; i < stylesAr.length; i++) {
 			if (stylesAr !== "") {
 				var key, value;
 
@@ -136,7 +136,7 @@ function addClassesToList(list_id, specific_option) {
 			}
 		}
 	} else {
-		tinymce.each(tinyMCEPopup.editor.dom.getClasses(), function(o) {
+		tinymce.each(tinyMCEPopup.editor.dom.getClasses(), function (o) {
 			styleSelectElm.options[styleSelectElm.length] = new Option(o.title || o['class'], o['class']);
 		});
 	}
@@ -144,31 +144,31 @@ function addClassesToList(list_id, specific_option) {
 }
 
 function selectOptionByValue(form, selName, val) {
-	if(typeof(form)=='undefined' || typeof(form.elements[selName]) == 'undefined' && typeof(val) == 'undefined'){
+	if (typeof (form) == 'undefined' || typeof (form.elements[selName]) == 'undefined' && typeof (val) == 'undefined') {
 		return;
 	}
 
 	var i;
-	if(val == ''){
+	if (val === '') {
 		form.elements[selName].options[0].selected = true;
-		for(i=1; i < form.elements[selName].options.length; i++){
-				form.elements[selName].options[i].selected = false;
+		for (i = 1; i < form.elements[selName].options.length; i++) {
+			form.elements[selName].options[i].selected = false;
 		}
 	} else {
 		var found = false;
-		for(i=1; i < form.elements[selName].options.length; i++){
-			if(form.elements[selName].options[i].value == val){
+		for (i = 1; i < form.elements[selName].options.length; i++) {
+			if (form.elements[selName].options[i].value == val) {
 				form.elements[selName].options[i].selected = true;
 				found = true;
-			} else{
+			} else {
 				form.elements[selName].options[i].selected = false;
 			}
 		}
-		if(!found){
+		if (!found) {
 			//i++;
 			form.elements[selName].options[i] = new Option('--------------------------------------', '');
-			form.elements[selName].options[i+1] = new Option(val, val);
-			form.elements[selName].options[i+1].selected = true;
+			form.elements[selName].options[i + 1] = new Option(val, val);
+			form.elements[selName].options[i + 1].selected = true;
 		}
 	}
 }
@@ -178,21 +178,21 @@ function selectOptionByValue(form, selName, val) {
 function getAnchorListHTML(id, target) {
 	var ed = tinyMCEPopup.editor, nodes = ed.dom.select('a'), name, i, len, html = "";
 
-	for(i=0, len=nodes.length; i<len; i++){
-		if((name = ed.dom.getAttrib(nodes[i], "name")) != "")
+	for (i = 0, len = nodes.length; i < len; i++) {
+		if ((name = ed.dom.getAttrib(nodes[i], "name")) !== "")
 			html += '<option value="' + name + '">' + name + '</option>';
 	}
 
-	if(html == ""){
+	if (html === "") {
 		return "";
 	}
 
-	html = '<select id="' + id + '" name="' + id + '" class="defaultfont" style="width:100px"'
-	+ ' onchange="this.form.elements[\''+ target +'\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;"'
-	+ '>'
-	+ '<option value=""></option>'
-	+ html
-	+ '</select>';
+	html = '<select id="' + id + '" name="' + id + '" class="defaultfont" style="width:100px"' +
+					' onchange="this.form.elements[\'' + target + '\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;"' +
+					'>' +
+					'<option value=""></option>' +
+					html +
+					'</select>';
 
 	return html;
 }
@@ -202,11 +202,11 @@ function getAnchorListHTML(id, target) {
 
 function checkPrefix(n) {
 
-	if(n.value && Validator.isEmail(n) && !/^\s*mailto:/i.test(n.value) && confirm(tinyMCEPopup.getLang('welink_dlg.is_email'))){
+	if (n.value && Validator.isEmail(n) && !/^\s*mailto:/i.test(n.value) && confirm(tinyMCEPopup.getLang('welink_dlg.is_email'))) {
 		n.value = 'mailto:' + n.value;
 	}
 
-	if(/^\s*www\./i.test(n.value) && confirm(tinyMCEPopup.getLang('welink_dlg.is_external'))){
+	if (/^\s*www\./i.test(n.value) && confirm(tinyMCEPopup.getLang('welink_dlg.is_external'))) {
 		n.value = 'http://' + n.value;
 	}
 }

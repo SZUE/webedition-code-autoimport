@@ -37,7 +37,7 @@ function we_showMessage(message, prio, win) {
 			win.top.opener.top.showMessage(message, prio, win);
 		} else if (win.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.showMessage !== undefined) {
 			win.top.opener.top.opener.top.showMessage(message, prio, win);
-		} else if (win.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener != null &&  win.top.opener.top.opener.top.opener.top.showMessage !== undefined) {
+		} else if (win.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener !== null &&  win.top.opener.top.opener.top.opener.top.showMessage !== undefined) {
 			win.top.opener.top.opener.top.opener.top.showMessage(message, prio, win);
 		} else {//nichts gefunden
 			if (!win) {

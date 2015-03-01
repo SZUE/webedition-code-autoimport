@@ -44,7 +44,7 @@
 			});
 
 			e.addButton('weacronym', {
-				'class' : 'mce_' + e.settings.wePluginClasses['weacronym'],
+				'class' : 'mce_' + e.settings.wePluginClasses.weacronym,
 				title: 'xhtmlxtras.acronym_desc',
 				cmd: 'mceWeacronym'
 			});

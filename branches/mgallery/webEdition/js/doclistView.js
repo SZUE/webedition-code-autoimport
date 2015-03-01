@@ -445,12 +445,12 @@ function changeit(value, rowNr) {
 
 	switch (value) {
 		case "Content":
-			if (locationTD != null) {
+			if (locationTD !== null) {
 				location.disabled = true;
 			}
 			row.removeChild(searchTD);
 
-			if (delButtonTD != null) {
+			if (delButtonTD !== null) {
 				row.removeChild(delButtonTD);
 			}
 			cell = document.createElement("TD");
@@ -464,7 +464,7 @@ function changeit(value, rowNr) {
 			row.appendChild(cell);
 			break;
 		case "temp_category":
-			if (locationTD != null) {
+			if (locationTD !== null) {
 				location.disabled = true;
 			}
 			row.removeChild(searchTD);
@@ -482,7 +482,7 @@ function changeit(value, rowNr) {
 			cell.innerHTML = innerhtml;
 			row.appendChild(cell);
 
-			if (delButtonTD != null) {
+			if (delButtonTD !== null) {
 				row.removeChild(delButtonTD);
 			}
 
@@ -493,7 +493,7 @@ function changeit(value, rowNr) {
 			break;
 		case "temp_template_id":
 		case "MasterTemplateID":
-			if (locationTD != null) {
+			if (locationTD !== null) {
 				location.disabled = true;
 			}
 			row.removeChild(searchTD);
@@ -510,7 +510,7 @@ function changeit(value, rowNr) {
 			cell.innerHTML = innerhtml;
 			row.appendChild(cell);
 
-			if (delButtonTD != null) {
+			if (delButtonTD !== null) {
 				row.removeChild(delButtonTD);
 			}
 
@@ -520,11 +520,11 @@ function changeit(value, rowNr) {
 			row.appendChild(cell);
 			break;
 		case "Status":
-			if (locationTD != null) {
+			if (locationTD !== null) {
 				location.disabled = true;
 			}
 			row.removeChild(searchTD);
-			if (delButtonTD != null) {
+			if (delButtonTD !== null) {
 				row.removeChild(delButtonTD);
 			}
 
@@ -540,11 +540,11 @@ function changeit(value, rowNr) {
 			row.appendChild(cell);
 			break;
 		case "Speicherart":
-			if (locationTD != null) {
+			if (locationTD !== null) {
 				location.disabled = true;
 			}
 			row.removeChild(searchTD);
-			if (delButtonTD != null) {
+			if (delButtonTD !== null) {
 				row.removeChild(delButtonTD);
 			}
 
@@ -587,7 +587,7 @@ function changeit(value, rowNr) {
 
 			Calendar.setup({inputField: "search[" + rowNr + "]", ifFormat: "%d.%m.%Y", button: "date_picker_from" + rowNr + "", align: "Tl", singleClick: true});
 
-			if (delButtonTD != null) {
+			if (delButtonTD !== null) {
 				row.removeChild(delButtonTD);
 			}
 
@@ -599,10 +599,10 @@ function changeit(value, rowNr) {
 		default:
 			row.removeChild(searchTD);
 
-			if (locationTD != null) {
+			if (locationTD !== null) {
 				row.removeChild(locationTD);
 			}
-			if (delButtonTD != null) {
+			if (delButtonTD !== null) {
 				row.removeChild(delButtonTD);
 			}
 

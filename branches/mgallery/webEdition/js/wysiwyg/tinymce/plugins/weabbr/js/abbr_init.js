@@ -24,24 +24,24 @@
 var isTinyMCE = true;
 
 var WeabbrDialog = { // TODO: clean code by using more vars
-	
+
 	sel : '',
 	inst : '',
 	elm : '',
 	isAbbr : false,
-	
+
 	init : function() {
 		var langValue = '';
 		var titleValue = '';
-		
+
 		inst = tinyMCEPopup.editor;
 		elm = inst.selection.getNode();
 		sel = inst.selection.getContent({format : 'text'});
 
 		var printAsSelection = '';
-		
-		if(sel === ''){ 
-			// no selection, but cursor inside ABBR (the only case where acronym-Button is active without selection): 
+
+		if(sel === ''){
+			// no selection, but cursor inside ABBR (the only case where acronym-Button is active without selection):
 			sel = elm.innerHTML;
 			this.isAbbr = true;
 		} else{
@@ -54,16 +54,16 @@ var WeabbrDialog = { // TODO: clean code by using more vars
 			langValue = elm.getAttribute('lang') ? elm.getAttribute('lang') : '';
 			titleValue = elm.getAttribute('title') ? elm.getAttribute('title') : '';
 		}
-		
-		document.forms["we_form"].elements['we_dialog_args[lang]'].value = langValue;
-		document.forms["we_form"].elements['we_dialog_args[title]'].value = titleValue;
-		document.forms["we_form"].elements['text'].value = sel; //Selected Text to insert into glossary
+
+		document.forms.we_form.elements['we_dialog_args[lang]'].value = langValue;
+		document.forms.we_form.elements['we_dialog_args[title]'].value = titleValue;
+		document.forms.we_form.elements.text.value = sel; //Selected Text to insert into glossary
 	},
 
 	insert : function() {
-		var langValue = document.forms["we_form"].elements['we_dialog_args[lang]'].value;
-		var titleValue = document.forms["we_form"].elements['we_dialog_args[title]'].value;
-		
+		var langValue = document.forms.we_form.elements['we_dialog_args[lang]'].value;
+		var titleValue = document.forms.we_form.elements['we_dialog_args[title]'].value;
+
 		if(this.isAbbr){//if there is an existing ACRONYM selected: just manipulate lang-Attribute
 			if(titleValue !== ''){
 				inst.selection.getNode().setAttribute('title', titleValue);
@@ -85,7 +85,7 @@ var WeabbrDialog = { // TODO: clean code by using more vars
 					blank += '&nbsp;';
 				}
 				blank = isBlank ? blank.substr(0,blank.length-6) + ' ' : blank;
-			
+
 				var visual = inst.hasVisual ? ' class="mceItemWeAbbr"' : '';
 				var content = '<abbr lang="' + langValue + '" title="' + titleValue + '"' + visual + '>' + sel + '</abbr>' + blank;
 				inst.execCommand('mceInsertContent', false, content);

@@ -30,7 +30,7 @@
 			// Register buttons
 			ed.addButton('weadaptitalic', {
 				title : 'advanced.italic_desc',
-				'class' : 'mce_' + ed.settings.wePluginClasses['weadaptitalic'],
+				'class' : 'mce_' + ed.settings.wePluginClasses.weadaptitalic,
 				cmd : 'italic'
 			});
 

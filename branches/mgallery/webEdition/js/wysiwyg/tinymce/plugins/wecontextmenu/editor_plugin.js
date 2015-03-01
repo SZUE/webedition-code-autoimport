@@ -102,7 +102,7 @@
 					Event.remove(ed.getDoc(), 'click', hideMenu);
 					t._menu = null;
 				}
-			};
+			}
 
 			ed.onMouseDown.add(hide);
 			ed.onKeyDown.add(hide);
@@ -157,7 +157,7 @@
 				if(sel && groups[pa][2] == 'top'){
 					return m;
 				}
-				return groups[pa][0] = groups[pa][0] ? groups[pa][0] : getParent(groups[pa][2],sel).addMenu({title : groups[pa][1]});
+				return (groups[pa][0] = groups[pa][0] ? groups[pa][0] : getParent(groups[pa][2],sel).addMenu({title : groups[pa][1]}));
 			}
 
 			var groups = {
@@ -182,7 +182,7 @@
 
 			var langSuffix = ed.settings.language === 'de' ? 'de_' : '';
 
-			var items = new Array();
+			var items = [];
 			items.push(
 				['weadaptbold',ed.settings.wePluginClasses.weadaptbold,'prop'],
 				['weadaptitalic',ed.settings.wePluginClasses.weadaptitalic,'prop'],
@@ -298,33 +298,33 @@
 			if(ed.controlManager.controls[ed.editorId + '_table'] && ed.controlManager.controls[ed.editorId + '_table'].active){
 				ed.controlManager.controls[ed.editorId + '_table'].active = 0;
 				set_tableprops_active = true;
-				active_groups['table'] = true;
-				active_groups['table_col'] = true;
-				active_groups['table_cell'] = true;
-				active_groups['table_row'] = true;
+				active_groups.table = true;
+				active_groups.table_col = true;
+				active_groups.table_cell = true;
+				active_groups.table_row = true;
 			}
 			if((ed.controlManager.controls[ed.editorId + '_moveforward'] && !ed.controlManager.controls[ed.editorId + '_moveforward'].disabled) ||
 				(ed.controlManager.controls[ed.editorId + '_movebackward'] && !ed.controlManager.controls[ed.editorId + '_movebackward'].disabled)){
-				active_groups['layer'] = true;
+				active_groups.layer = true;
 			}
-			if((ed.controlManager.controls[ed.editorId + '_justifyleft'] && ed.controlManager.controls[ed.editorId + '_justifyleft'].active)
-				|| (ed.controlManager.controls[ed.editorId + '_justifycenter'] && ed.controlManager.controls[ed.editorId + '_justifycenter'].active)
-				|| (ed.controlManager.controls[ed.editorId + '_justifyright'] && ed.controlManager.controls[ed.editorId + '_justifyright'].active)
-				|| (ed.controlManager.controls[ed.editorId + '_justifyfull'] && ed.controlManager.controls[ed.editorId + '_justifyfull'].active)){
-				active_groups['justify'] = true;
+			if((ed.controlManager.controls[ed.editorId + '_justifyleft'] && ed.controlManager.controls[ed.editorId + '_justifyleft'].active)||
+				 (ed.controlManager.controls[ed.editorId + '_justifycenter'] && ed.controlManager.controls[ed.editorId + '_justifycenter'].active)||
+				 (ed.controlManager.controls[ed.editorId + '_justifyright'] && ed.controlManager.controls[ed.editorId + '_justifyright'].active)||
+				 (ed.controlManager.controls[ed.editorId + '_justifyfull'] && ed.controlManager.controls[ed.editorId + '_justifyfull'].active)){
+				active_groups.justify = true;
 			}
 			if(ed.controlManager.controls[ed.editorId + '_welink'] && ed.controlManager.controls[ed.editorId + '_welink'].active) {
-				active_items['weadaptunlink'] = true;
+				active_items.weadaptunlink = true;
 			}
 			if(ed.controlManager.controls[ed.editorId + '_outdent'] && !ed.controlManager.controls[ed.editorId + '_outdent'].disabled) {
-				active_items['indent'] = true;
-				active_items['outdent'] = true;
+				active_items.indent = true;
+				active_items.outdent = true;
 			}
 			if(ed.controlManager.controls[ed.editorId + '_undo'] && !ed.controlManager.controls[ed.editorId + '_undo'].disabled) {
-				active_items['undo'] = true;
+				active_items.undo = true;
 			}
 			if(ed.controlManager.controls[ed.editorId + '_redo'] && !ed.controlManager.controls[ed.editorId + '_redo'].disabled) {
-				active_items['redo'] = true;
+				active_items.redo = true;
 			}
 
 			//display top menu
@@ -346,7 +346,7 @@
 			for(var group in groups){
 				groups[group][0]=null;
 			}
-			groups['top'][0] = m;
+			groups.top[0] = m;
 			if(is_active_items === true && sep){
 				m.addSeparator();
 			}
@@ -363,7 +363,7 @@
 						}
 						menu_item = ed.controlManager.controls[ed.editorId + '_' + items[i][0]];
 						item = getParent(items[i][2]).add({title : items[i][3] ? items[i][1] : menu_item.settings.title, icon : items[i][1], cmd : menu_item.settings.cmd, value : (!items[i][3] ? null : items[i][4])});
-						item.setActive(menu_item.active || (items[i][1] === 'table_props' && set_tableprops_active))
+						item.setActive(menu_item.active || (items[i][1] === 'table_props' && set_tableprops_active));
 						item.setDisabled(menu_item.disabled || (items[i][1] === 'table_props' && !set_tableprops_active));
 						lastgroup = items[i][2];
 						sep = true;

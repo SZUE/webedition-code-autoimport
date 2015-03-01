@@ -26,24 +26,24 @@ var isTinyMCE = true;
 
 
 var WeacronymDialog = { // TODO: clean code by using more vars
-	
+
 	sel : '',
 	inst : '',
 	elm : '',
 	isAcronym : false,
-	
+
 	init : function() {
 		var langValue = '';
 		var titleValue = '';
-		
+
 		inst = tinyMCEPopup.editor;
 		elm = inst.selection.getNode();
 		sel = inst.selection.getContent({format : 'text'});
 
 		var printAsSelection = '';
-		
-		if(sel === ''){ 
-			// no selection, but cursor inside ACRONYM (the only case where acronym-Button is active without selection): 
+
+		if(sel === ''){
+			// no selection, but cursor inside ACRONYM (the only case where acronym-Button is active without selection):
 			sel = elm.innerHTML;
 			this.isAcronym = true;
 		} else{
@@ -56,16 +56,16 @@ var WeacronymDialog = { // TODO: clean code by using more vars
 			langValue = elm.getAttribute('lang') ? elm.getAttribute('lang') : '';
 			titleValue = elm.getAttribute('title') ? elm.getAttribute('title') : '';
 		}
-		
-		document.forms["we_form"].elements['we_dialog_args[lang]'].value = langValue;
-		document.forms["we_form"].elements['we_dialog_args[title]'].value = titleValue;
-		document.forms["we_form"].elements['text'].value = sel; //Selected Text to insert into glossary
+
+		document.forms.we_form.elements['we_dialog_args[lang]'].value = langValue;
+		document.forms.we_form.elements['we_dialog_args[title]'].value = titleValue;
+		document.forms.we_form.elements.text.value = sel; //Selected Text to insert into glossary
 	},
 
 	insert : function() {
-		var langValue = document.forms["we_form"].elements['we_dialog_args[lang]'].value;
-		var titleValue = document.forms["we_form"].elements['we_dialog_args[title]'].value;
-		
+		var langValue = document.forms.we_form.elements['we_dialog_args[lang]'].value;
+		var titleValue = document.forms.we_form.elements['we_dialog_args[title]'].value;
+
 		if(this.isAcronym){//if there is an existing ACRONYM selected: just manipulate lang-Attribute
 			if(titleValue !== ''){
 				inst.selection.getNode().setAttribute('title', titleValue);

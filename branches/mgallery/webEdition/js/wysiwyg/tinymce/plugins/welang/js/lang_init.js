@@ -26,24 +26,24 @@ var isTinyMCE = true;
 
 
 var WelangDialog = { // TODO: clean code by using more vars
-	
+
 	sel : '',
 	inst : '',
 	elm : '',
 	isSpan : false,
 	isLangSpan : false,
-	
+
 	init : function() {
 		var langValue = '';
-		
+
 		inst = tinyMCEPopup.editor;
 		elm = inst.selection.getNode();
 		sel = inst.selection.getContent({format : 'text'});
 
 		var printAsSelection = '';
-		
-		if(sel === ''){ 
-			// no selection, but cursor inside SPAN with lang-attribute (the only case where lang-Button is active without selection): 
+
+		if(sel === ''){
+			// no selection, but cursor inside SPAN with lang-attribute (the only case where lang-Button is active without selection):
 			// we will manipulate this lang-attribute
 			sel = elm.innerHTML;
 			this.isLangSpan = true;
@@ -59,24 +59,24 @@ var WelangDialog = { // TODO: clean code by using more vars
 		if(this.isLangSpan){
 			langValue = elm.getAttribute('lang') ? elm.getAttribute('lang') : '';
 		}
-		
-		document.forms["we_form"].elements['we_dialog_args[lang]'].value = langValue;
-		document.forms["we_form"].elements['text'].value = sel; //Selected Text to insert into glossary
+
+		document.forms.we_form.elements['we_dialog_args[lang]'].value = langValue;
+		document.forms.we_form.elements.text.value = sel; //Selected Text to insert into glossary
 	},
 
 	insert : function() {
-		var lang = document.forms["we_form"].elements['we_dialog_args[lang]'].value;
+		var lang = document.forms.we_form.elements['we_dialog_args[lang]'].value;
 		if(this.isLangSpan){//if there is an existing SPAN selected: just manipulate lang-Attribute
 			if(lang !== ''){
-				inst.selection.getNode().setAttribute('lang', document.forms["we_form"].elements['we_dialog_args[lang]'].value);
-				
+				inst.selection.getNode().setAttribute('lang', document.forms.we_form.elements['we_dialog_args[lang]'].value);
+
 			} else{//remove attribute lang
 				inst.selection.getNode().removeAttribute('lang');
 				if(inst.selection.getNode().attributes.length === 0){//if no attributes left: remove SPAN
 					inst.dom.remove(inst.selection.getNode(), 1);
 				}
 			}
-			
+
 		} else{//no SPAN selected: insert tight and move blanks to the right of SPAN
 			if(lang !== ''){
 				var blank = '';
@@ -87,9 +87,9 @@ var WelangDialog = { // TODO: clean code by using more vars
 					blank += '&nbsp;';
 				}
 				blank = isBlank ? blank.substr(0,blank.length-6) + ' ' : blank;
-				
+
 				var visual = inst.hasVisual ? ' class="mceItemWeLang"' : '';
-				var content = '<span lang="' + document.forms["we_form"].elements['we_dialog_args[lang]'].value + '"' + visual + '>' + sel + '</span>' + blank;
+				var content = '<span lang="' + document.forms.we_form.elements['we_dialog_args[lang]'].value + '"' + visual + '>' + sel + '</span>' + blank;
 				inst.execCommand('mceInsertContent', false, content);
 			}
 		}

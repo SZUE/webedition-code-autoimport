@@ -331,7 +331,7 @@ function fadeTrans(wizId, start, end, ms) {
 }
 
 function toggle(wizId, wizType, prefix, postfix) {
-	var defRes = oCfg[wizType + '_props_']["res"];
+	var defRes = oCfg[wizType + '_props_'].res;
 	var defW = (!!defRes) ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
 	var asoc = {
 		'width': {
@@ -357,7 +357,7 @@ function toggle(wizId, wizType, prefix, postfix) {
 
 function pushContent(wizType, wizId, cNode, prefix, postfix, sCsv) {
 	var cNodeReceptor = gel(wizId + '_content');
-	var wizTheme = oCfg[wizType + "_props_"]['cls'];
+	var wizTheme = oCfg[wizType + "_props_"].cls;
 	cNodeReceptor.innerHTML = cNode;
 	gel(wizId + '_csv').value = sCsv;
 	toggle(wizId, wizType, prefix, postfix);
@@ -670,7 +670,7 @@ function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 
 var _propsDlg = [];
 function propsWidget() {
-	var iHeight = oCfg[arguments[0] + '_props_']["iDlgHeight"];
+	var iHeight = oCfg[arguments[0] + '_props_'].iDlgHeight;
 	var uri = composeUri(arguments);
 	_propsDlg[arguments[1]] = window.open(uri, arguments[1], 'location=0,status=1,scrollbars=0,width=' + oCfg.general_.iDlgWidth + 'px,height=' + iHeight + 'px');
 }

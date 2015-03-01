@@ -229,7 +229,6 @@ class we_exim_XMLExIm{
 	}
 
 	function getIDs($selIDs, $table, $with_dirs = false){
-		$ret = array();
 		$tmp = array();
 		$db = new DB_WE();
 		$allow = $this->queryForAllowed($table);

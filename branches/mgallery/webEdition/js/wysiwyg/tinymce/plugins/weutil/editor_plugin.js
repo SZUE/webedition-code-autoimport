@@ -26,20 +26,20 @@
  * Moxiecode Systems AB, http://tinymce.moxiecode.com/license.
  */
 
-(function() {
+(function () {
 	tinymce.create('tinymce.plugins.WeUtilPlugin', {
-		init : function(ed, url) {
+		init: function (ed, url) {
 			this.editor = ed;
 
-			ed.onNodeChange.add(function(ed, cm, n, co) {
+			ed.onNodeChange.add(function (ed, cm, n, co) {
 				var mapTable = {
-					'strong' : 'weadaptbold',
-					'b' : 'weadaptbold',
-					'em' : 'weadaptitalic',
-					'i' : 'weadaptitalic',
-					'acronym' : 'weacronym',
-					'abbr' : 'weabbr',
-					'img' : 'weimage'
+					'strong': 'weadaptbold',
+					'b': 'weadaptbold',
+					'em': 'weadaptitalic',
+					'i': 'weadaptitalic',
+					'acronym': 'weacronym',
+					'abbr': 'weabbr',
+					'img': 'weimage'
 				};
 
 				n = ed.dom.getParent(n, 'STRONG,B,EM,I,ACRONYM,ABBR,A,IMG,SPAN');
@@ -61,39 +61,38 @@
 
 				if (n && n.nodeName) {
 					do {
-						switch(n.nodeName.toLowerCase()){
+						switch (n.nodeName.toLowerCase()) {
 							case 'a':
-								if(!n.getAttribute('name')){
+								if (!n.getAttribute('name')) {
 									cm.setActive('welink', 1);
 									cm.setDisabled('welink', false);
 									cm.setDisabled('weadaptunlink', false);
 								}
 								break;
 							case 'span':
-								if(n.getAttribute('lang') && n.getAttribute('style') !== ''){
+								if (n.getAttribute('lang') && n.getAttribute('style') !== '') {
 									cm.setActive('welang', 1);
 									cm.setDisabled('welang', false);
 								}
 							default:
-								if(typeof mapTable[n.nodeName.toLowerCase()] !== 'undefined'){
+								if (typeof mapTable[n.nodeName.toLowerCase()] !== 'undefined') {
 									cm.setActive(mapTable[n.nodeName.toLowerCase()], 1);
 									cm.setDisabled(mapTable[n.nodeName.toLowerCase()], false);
 								}
 						}
-					} while (n = n.parentNode);
+					} while ((n = n.parentNode));
 				}
 
 			});
 
 		},
-
-		getInfo : function() {
+		getInfo: function () {
 			return {
-				longname : 'webEdition e.V.',
-				author : 'webEdition e.V.',
-				authorurl : 'http://webedition.org',
-				infourl : 'http://webedition.org',
-				version : tinymce.majorVersion + "." + tinymce.minorVersion
+				longname: 'webEdition e.V.',
+				author: 'webEdition e.V.',
+				authorurl: 'http://webedition.org',
+				infourl: 'http://webedition.org',
+				version: tinymce.majorVersion + "." + tinymce.minorVersion
 			};
 		}
 	});

@@ -83,7 +83,6 @@ function we_cmd_users(args, url) {
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
-			break;
 		case "doctypes":
 			new jsWindow(url, "doctypes", -1, -1, 720, 670, true, true, true);
 			break;

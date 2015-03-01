@@ -4,11 +4,11 @@
 			e.addCommand('mceWeimage', function () {
 				e.isWeDataInitialized = false;
 				if (e.dom.getAttrib(e.selection.getNode(), 'class', '').indexOf('mceItem') != -1) {
-					return
+					return;
 				}
 				wesrc = "";
 				if (e.selection.getNode().nodeName == 'IMG' && e.dom.getAttrib(e.selection.getNode(), 'src', '')) {
-					wesrc = e.dom.getAttrib(e.selection.getNode(), 'src', '')
+					wesrc = e.dom.getAttrib(e.selection.getNode(), 'src', '');
 				}
 
 				e.windowManager.open({
@@ -17,7 +17,6 @@
 					width: 600 + parseInt(e.getLang('weimage.delta_width', 0)),
 					height: 610 + parseInt(e.getLang('weimage.delta_height', 0)),
 					inline: 1,
-					popup_css: false
 				}, {
 					plugin_url: f
 				});
@@ -33,8 +32,8 @@
 				author: 'webEdition e.V',
 				authorurl: 'http://www.webedition.org',
 				infourl: 'http://www.webedition.org'
-			}
+			};
 		}
 	});
-	tinymce.PluginManager.add('weimage', tinymce.plugins.WeimagePlugin)
+	tinymce.PluginManager.add('weimage', tinymce.plugins.WeimagePlugin);
 })();

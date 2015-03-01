@@ -83,7 +83,7 @@ function cancelNote() {
 	gel('view').style.display = 'block';
 	var oMark = fo.elements.mark;
 	var mark = oMark.value;
-	if (mark != '') {
+	if (mark !== '') {
 		oMark.value = '';
 		setColor(gel(mark + '_tr'), mark, '#FFFFFF');
 	}
@@ -101,7 +101,7 @@ function deleteNote() {
 function isHotNote() {
 	var fo = document.forms[0];
 	var _id = fo.elements.mark.value;
-	var q_init = (_id != '' ?
+	var q_init = (_id !== '' ?
 					getInitialQueryById(_id) :
 					{'Validity': 'always', 'ValidFrom': '', 'ValidUntil': '', 'Priority': 'low', 'Title': '', 'Text': ''}
 	);
@@ -118,14 +118,14 @@ function isHotNote() {
 }
 
 function getInitialQueryById(id) {
-	return asoc = {
+	return (asoc = {
 		'Validity': gel(id + '_Valid').value,
 		'ValidFrom': gel(id + '_ValidFrom').value,
 		'ValidUntil': gel(id + '_ValidUntil').value,
 		'Priority': gel(id + '_Priority').value,
 		'Title': gel(id + '_Title').value,
 		'Text': gel(id + '_Text').value
-	};
+	});
 }
 
 function getCurrentQuery() {
@@ -135,14 +135,14 @@ function getCurrentQuery() {
 	var oRdoPrio = fo.elements.rdo_prio;
 	var sValidFrom = fo.elements.f_ValidFrom.value;
 	var sValidUntil = fo.elements.f_ValidUntil.value;
-	return asoc = {
-		'Validity': (validSel == 0) ? 'always' : ((validSel == 1) ? 'date' : 'period'),
+	return (asoc = {
+		'Validity': (validSel === 0) ? 'always' : ((validSel == 1) ? 'date' : 'period'),
 		'ValidFrom': convertDate(sValidFrom, '%Y-%m-%d'),
 		'ValidUntil': convertDate(sValidUntil, '%Y-%m-%d'),
 		'Priority': (oRdoPrio[0].checked) ? 'high' : (oRdoPrio[1].checked) ? 'medium' : 'low',
 		'Title': fo.elements.props_title.value,
 		'Text': fo.elements.props_text.value
-	};
+	});
 }
 
 function populate(r) {
@@ -182,7 +182,7 @@ function unpopulate() {
 function setColor(theRow, theRowNum, newColor) {
 	fo = document.forms[0];
 	var theCells = null;
-	if (fo.elements.mark.value != '' || theRow.style === undefined) {
+	if (fo.elements.mark.value !== '' || theRow.style === undefined) {
 		return false;
 	}
 	if (document.getElementsByTagName !== undefined) {
@@ -214,7 +214,7 @@ function setColor(theRow, theRowNum, newColor) {
 
 function convertDate(sDate, sFormat) {
 	var fixedImplode = '';
-	var arr = sDate.split((sFormat == '%Y-%m-%d') ? '.' : '-')
+	var arr = sDate.split((sFormat == '%Y-%m-%d') ? '.' : '-');
 	separator = (sFormat == '%Y-%m-%d') ? '-' : '.';
 	for (var x = arr.length - 1; x >= 0; x--) {
 		fixedImplode += (separator + String(arr[x]));

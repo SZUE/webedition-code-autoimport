@@ -4,7 +4,7 @@ tinyMCEPopup.requireLangPack();
 
 function preinit() {
 	var url;
-	if (url = tinyMCEPopup.getParam("external_link_list_url")) {
+	if ((url = tinyMCEPopup.getParam("external_link_list_url"))) {
 		document.write('<script language="javascript" type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
 	}
 }
@@ -18,7 +18,7 @@ function setAttrib(elm, attrib, value) {
 	var valueElm = formObj.elements[attrib.toLowerCase()];
 	var dom = tinyMCEPopup.editor.dom;
 
-	if (value === undefined || value == null) {
+	if (value === undefined || value === null) {
 		value = "";
 
 		if (valueElm) {
@@ -38,20 +38,20 @@ function getAnchorListHTML(id, target) {
 	var ed = tinyMCEPopup.editor, nodes = ed.dom.select('a'), name, i, len, html = "";
 
 	for (i = 0, len = nodes.length; i < len; i++) {
-		if ((name = ed.dom.getAttrib(nodes[i], "name")) != "")
+		if ((name = ed.dom.getAttrib(nodes[i], "name")) !== "")
 			html += '<option value="#' + name + '">' + name + '</option>';
 	}
 
-	if (html == "") {
+	if (html === "") {
 		return "";
 	}
 
-	html = '<select id="' + id + '" name="' + id + '" class="mceAnchorList"'
-					+ ' onchange="this.form.' + target + '.value=this.options[this.selectedIndex].value"'
-					+ '>'
-					+ '<option value="">---</option>'
-					+ html
-					+ '</select>';
+	html = '<select id="' + id + '" name="' + id + '" class="mceAnchorList"' +
+					' onchange="this.form.' + target + '.value=this.options[this.selectedIndex].value"' +
+					'>' +
+					'<option value="">---</option>' +
+					html +
+					'</select>';
 
 	return html;
 }
@@ -64,7 +64,7 @@ function insertAction() {
 	elm = inst.dom.getParent(elm, "A");
 
 	// Remove element if there is no href
-	if (!document.forms['tiny_form'].href.value) {
+	if (!document.forms.tiny_form.href.value) {
 		i = inst.selection.getBookmark();
 		inst.dom.remove(elm, 1);
 		inst.selection.moveToBookmark(i);
@@ -76,7 +76,7 @@ function insertAction() {
 
 	// Create new anchor elements
 
-	if (elm == null) {
+	if (elm === null) {
 		inst.getDoc().execCommand("unlink", false, null);
 		tinyMCEPopup.execCommand("mceInsertLink", false, "#mce_temp_url#", {skip_undo: 1});
 		elementArray = tinymce.grep(inst.dom.select("a"), function (n) {
@@ -102,7 +102,7 @@ function insertAction() {
 }
 
 function setAllAttribs(elm) {
-	var formObj = document.forms['tiny_form'];
+	var formObj = document.forms.tiny_form;
 	var href = formObj.href.value.replace(/ /g, '%20');
 	var target = formObj.target.value;
 

@@ -145,7 +145,7 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 	 */
 	function __construct($properties = null){
 		//get instance from an autocompleter
-		$this->_suggestObj = &we_ui_controls_ACSuggest::getInstance();
+		$this->_suggestObj = &weSuggest::getInstance();
 		//get object from a button
 		$this->_buttonObj = new we_ui_controls_Button();
 

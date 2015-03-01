@@ -279,7 +279,7 @@ var weFileUpload = (function () {
 			this.prepareUpload = function () {
 				return true;
 			};
-			
+
 
 			//new client side image editing
 			this.transformAndSendFile = function(cur){
@@ -306,7 +306,7 @@ var weFileUpload = (function () {
 
 						var canvas = document.createElement('canvas'),
 							ctx = canvas.getContext("2d"),
-							deg = 0, 
+							deg = 0,
 							x = 0, y = 0;
 
 						canvas.width = tempW;
@@ -369,7 +369,7 @@ var weFileUpload = (function () {
 							if (_.view.elems.fileSelect && _.view.elems.fileSelect.value) {
 								_.view.elems.fileSelect.value = '';
 							}
-							
+
 							var transformables = new Array('image/jpeg', 'image/gif', 'image/png');//TODO: add all transformable types
 
 							//clientside editing diabled!
@@ -973,7 +973,7 @@ var weFileUpload = (function () {
 			_.onload_abstract(that);
 			_.controller.setWeButtonText('next', 'upload');
 			_.controller.enableWeButton('next', false);
-			
+
 			//init transformAll object
 			var sf = document.we_startform,
 				t = _.sender.transformAll;
@@ -981,7 +981,7 @@ var weFileUpload = (function () {
 			t.width = sf.width.value ? parseInt(sf.width.value) : t.width;
 			t.height = sf.height.value ? parseInt(sf.height.value) : t.height;
 			t.degrees = sf.degrees.value ? parseInt(sf.degrees.value) : t.degrees;
-			t.doTrans = t.degrees || t.width || t.height ? true : false
+			t.doTrans = t.degrees || t.width || t.height ? true : false;
 			if(t.doTrans){
 				t.widthSelect = sf.widthSelect.value ? sf.widthSelect.value : t.widthSelect;
 				t.heightSelect = sf.heightSelect.value ? sf.heightSelect.value : t.heightSelect;

@@ -35,7 +35,7 @@
 			// Register buttons
 			ed.addButton('weadaptbold', {
 				title : 'advanced.bold_desc',
-				'class' : 'mce_' + ed.settings.wePluginClasses['weadaptbold'],
+				'class' : 'mce_' + ed.settings.wePluginClasses.weadaptbold,
 				cmd : 'bold'
 			});
 			// ed.onNodeChange.add(function(ed, cm, n) {} => moved to weutil
