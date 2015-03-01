@@ -177,7 +177,7 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 			$weFieldWS[] = '[' . ($weWorkspacePathArray ? '"' . implode('","', $weWorkspacePathArray) . '"' : '') . ']';
 
 
-			$fildsById[] = "	'" . $this->inputfields[$i] . "':{'index':'" . $i . "','set':'$i'}";
+			$fildsById[] = "	'" . $this->inputfields[$i] . "':$i";
 			$fildsObj .=
 				($i > 0 ? ',' : '') . "{
 			'id' : '" . $this->inputfields[$i] . "',

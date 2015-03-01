@@ -285,9 +285,10 @@ YAHOO.autocoml = {
 			}
 		}
 		//	YAHOO.autocoml.unmarkNotValid(i);
-		if (parent && parent.weAutoCompetionFields)
+		if (parent && parent.weAutoCompetionFields){
 			parent.weAutoCompetionFields[YAHOO.autocoml.yuiAcFields[i].id] = false;
-		YAHOO.autocoml.yuiAcFields[i].set = '';
+		}
+		YAHOO.autocoml.yuiAcFields[i].sel = '';
 	},
 	doAjax: function (callback, postdata) {
 		var request = YAHOO.util.Connect.asyncRequest('POST', YAHOO.autocoml.ajaxURL, callback, postdata);
@@ -359,11 +360,11 @@ YAHOO.autocoml = {
 	},
 	checkOnContainerCollapse: function (setNr) {
 		set = YAHOO.autocoml.yuiAcFields[setNr];
-		if (set.set == '') {
+		if (set.sel == '') {
 		}
 	},
 	modifySetById: function (fId, param, value) {
-		set = YAHOO.autocoml.yuiAcFieldsById[fId].set;
+		set = YAHOO.autocoml.yuiAcFieldsById[fId];
 		if (typeof param === 'object') {
 			for (var name in param) {
 				YAHOO.autocoml.yuiAcFields[set][name] = YAHOO.autocoml.yuiAcFields[set][name] !== undefined ? param[name] : YAHOO.autocoml.yuiAcFields[set][name];
@@ -374,7 +375,7 @@ YAHOO.autocoml = {
 		YAHOO.autocoml.init(undefined, set);
 	},
 	getParamById: function (fId, param) {
-		set = YAHOO.autocoml.yuiAcFieldsById[fId].set;
+		set = YAHOO.autocoml.yuiAcFieldsById[fId];
 		return YAHOO.autocoml.yuiAcFields[set][param];
 	},
 	getYuiAcFields: function () {
@@ -382,12 +383,12 @@ YAHOO.autocoml = {
 	},
 	isValidById: function (fId) {
 		if (fId) {
-			if (YAHOO.autocoml.counter < 10 && YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId].set]['run']) {
+			if (YAHOO.autocoml.counter < 10 && YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]]['run']) {
 				YAHOO.autocoml.counter++;
 				setTimeout('YAHOO.autocoml.isValidById(\"' + fId + '\")', 100);
 			} else {
 				YAHOO.autocoml.counter = 0;
-				return YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId].set]['valid'];
+				return YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]]['valid'];
 			}
 		} else {
 			return false;
@@ -397,7 +398,7 @@ YAHOO.autocoml = {
 	isValid: function () {
 		var isValid = true;
 		for (fId in YAHOO.autocoml.yuiAcFieldsById) {
-			if (document.getElementById(fId).style.display != 'none' && !YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId].set]['valid']) {
+			if (document.getElementById(fId).style.display != 'none' && !YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]]['valid']) {
 				isValid = false;
 			}
 		}
@@ -406,25 +407,25 @@ YAHOO.autocoml = {
 	isRunnigProcess: function () {
 		var isRunning = false;
 		for (fId in YAHOO.autocoml.yuiAcFieldsById) {
-			if (document.getElementById(fId).style.display != 'none' && YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId].set]['run']) {
+			if (document.getElementById(fId).style.display != 'none' && YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]]['run']) {
 				isRunning = true;
 			}
 		}
 		return isRunning;
 	},
 	setValidById: function (fId) {
-		YAHOO.autocoml.unmarkNotValid(YAHOO.autocoml.yuiAcFieldsById[fId].index);
-		YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId].set]['valid'] = true;
+		YAHOO.autocoml.unmarkNotValid(YAHOO.autocoml.yuiAcFieldsById[fId]);
+		YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]]['valid'] = true;
 	},
 	setNotValidById: function (fId) {
-		YAHOO.autocoml.markNotValid(YAHOO.autocoml.yuiAcFieldsById[fId].index);
-		YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId].set]['valid'] = false;
+		YAHOO.autocoml.markNotValid(YAHOO.autocoml.yuiAcFieldsById[fId]);
+		YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]]['valid'] = false;
 	},
 	restoreById: function (fId) {
-		set = YAHOO.autocoml.yuiAcFieldsById[fId].set;
-		YAHOO.autocoml.markValid(YAHOO.autocoml.yuiAcFieldsById[fId].index);
-		document.getElementById(fId).value = YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId].set]['old'];
-		document.getElementById(YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId].set].fields_id[0]).value = YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId].set]['fields_val'][0];
+		set = YAHOO.autocoml.yuiAcFieldsById[fId];
+		YAHOO.autocoml.markValid(YAHOO.autocoml.yuiAcFieldsById[fId]);
+		document.getElementById(fId).value = YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]]['old'];
+		document.getElementById(YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]].fields_id[0]).value = YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]]['fields_val'][0];
 	},
 	setOldVal: function (set) {
 	},
