@@ -23,40 +23,11 @@
  */
 
 function weInputAppendClass(inp, cls) {
-	if (inp.className) {
-		var _class = inp.className;
-		var _arr = _class.split(/ /);
-		if (!weInputInArray(_arr, cls)) {
-			_arr.push(cls);
-		}
-		var _newCls = _arr.join(' ');
-		inp.className = _newCls;
-	} else {
-		inp.setAttribute('class', cls);
-	}
+	inp.classList.add(cls);
 }
 
 function weInputRemoveClass(inp, cls) {
-	if (inp.className) {
-		var _class = inp.className;
-		var _arr = _class.split(/ /);
-		if (weInputInArray(_arr, cls)) {
-			var _newArr = new Array();
-			var _l = _arr.length;
-			for (var i = 0; i < _l; i++) {
-				if (_arr[i] !== cls) {
-					_newArr.push(_arr[i]);
-				}
-			}
-
-			if (_newArr.length > 0) {
-				var _newCls = _newArr.join(' ');
-				inp.className = _newCls;
-			} else {
-				inp.className = null;
-			}
-		}
-	}
+	inp.classList.remove(cls);
 }
 
 function weInputInArray(arr, val) {
@@ -69,9 +40,6 @@ function weInputInArray(arr, val) {
 	return false;
 }
 
-
-
-
 YAHOO.autocoml = {
 	oACDS: [],
 	selInputVal: [],
@@ -83,29 +51,29 @@ YAHOO.autocoml = {
 	ajaxResponseCT: 0,
 	ajaxResponseStep: 100,
 	ajaxMaxResponseTime: 1500,
-	doOnTextfieldBlur: function (i) {
+	doOnTextfieldBlur: function (x, y, i) {
 		ret = true;
 		//document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).blur();
 		wsValid = true;
 		if (YAHOO.autocoml.yuiAcFields[i].workspace.length > 0) {
 			wsValid = false;
 			var wsPathInput = document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).value;
-			for (i = 0; i < YAHOO.autocoml.yuiAcFields[i].workspace.length; i++) {
-				if (wsPathInput.length >= YAHOO.autocoml.yuiAcFields[i].workspace[i].length) {
-					if (wsPathInput.substr(0, YAHOO.autocoml.yuiAcFields[i].workspace[i].length) == YAHOO.autocoml.yuiAcFields[i].workspace[i]) {
+			for (j = 0; j < YAHOO.autocoml.yuiAcFields[i].workspace.length; j++) {
+				if (wsPathInput.length >= YAHOO.autocoml.yuiAcFields[i].workspace[j].length) {
+					if (wsPathInput.substr(0, YAHOO.autocoml.yuiAcFields[i].workspace[j].length) == YAHOO.autocoml.yuiAcFields[i].workspace[j]) {
 						wsValid = true;
 					}
 				}
 			}
 		}
 		var rootDirValid = (YAHOO.autocoml.yuiAcFields[i].rootDir !== '' && document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).value.indexOf(YAHOO.autocoml.yuiAcFields[i].rootDir) !== 0) ? false : true;
-		if (document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).value == '/' && (YAHOO.autocoml.yuiAcFields[i].selector == 'dirSelector' || YAHOO.autocoml.yuiAcFields[i].selector == 'Dirselector' || YAHOO.autocoml.yuiAcFields[i].selector == 'selector') && wsValid && rootDirValid) {
+		if (document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).value === '/' && (YAHOO.autocoml.yuiAcFields[i].selector === 'dirSelector' || YAHOO.autocoml.yuiAcFields[i].selector === 'Dirselector' || YAHOO.autocoml.yuiAcFields[i].selector === 'selector') && wsValid && rootDirValid) {
 			//FIXME: what about the rest?
 			document.getElementById(YAHOO.autocoml.yuiAcFields[i].fields_id[0]).value = '0';
 			YAHOO.autocoml.yuiAcFields[i].newval = '/';
 			YAHOO.autocoml.yuiAcFields[i].run = false;
 			YAHOO.autocoml.unmarkNotValid(i);
-		} else if (document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).value == '' && (YAHOO.autocoml.yuiAcFields[i].selector == 'docSelector' || YAHOO.autocoml.yuiAcFields[i].selector == 'Docselector' || YAHOO.autocoml.yuiAcFields[i].selector == 'dirSelector' || YAHOO.autocoml.yuiAcFields[i].selector == 'Dirselector' || YAHOO.autocoml.yuiAcFields[i].selector == 'selector') && YAHOO.autocoml.yuiAcFields[i].mayBeEmpty) {
+		} else if (document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).value === '' && (YAHOO.autocoml.yuiAcFields[i].selector === 'docSelector' || YAHOO.autocoml.yuiAcFields[i].selector === 'Docselector' || YAHOO.autocoml.yuiAcFields[i].selector === 'dirSelector' || YAHOO.autocoml.yuiAcFields[i].selector === 'Dirselector' || YAHOO.autocoml.yuiAcFields[i].selector === 'selector') && YAHOO.autocoml.yuiAcFields[i].mayBeEmpty) {
 			//FIXME: what about the rest?
 			document.getElementById(YAHOO.autocoml.yuiAcFields[i].fields_id[0]).value = '';
 			YAHOO.autocoml.yuiAcFields[i].run = false;
@@ -123,13 +91,29 @@ YAHOO.autocoml = {
 					break;
 				case (YAHOO.autocoml.yuiAcFields[i].run):                        // ERROR: Request is running
 					YAHOO.autocoml.ajaxResponseCT += YAHOO.autocoml.ajaxResponseStep;
-					setTimeout('YAHOO.autocoml.doOnTextfieldBlur_' + i + '(0,0,' + i + ')', YAHOO.autocoml.ajaxResponseStep);
+					setTimeout('YAHOO.autocoml.doOnTextfieldBlur(0,0,' + i + ')', YAHOO.autocoml.ajaxResponseStep);
 					break;
 				case (YAHOO.autocoml.yuiAcFields[i].found == 2):                 // ERROR: No result found
 					YAHOO.autocoml.markNotValid(i);
 					break;
 				case (YAHOO.autocoml.yuiAcFields[i].found == 0):                 // ERROR: Nothing found
-					ret = false;
+					YAHOO.autocoml.newInputVal[i] = document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).value;
+					if (YAHOO.autocoml.newInputVal[i] != YAHOO.autocoml.selInputVal[i] || YAHOO.autocoml.newInputVal[i] != YAHOO.autocoml.oldInputVal[i]) {
+						YAHOO.autocoml.yuiAcFields[i].run = true;
+						YAHOO.autocoml.doAjax({
+							success: function (o) {
+								YAHOO.autocoml.ajaxSuccess(o, i);
+							},
+							failure: function (o) {
+								YAHOO.autocoml.ajaxFailure(o, i);
+							}
+						}, 'protocol=text&cmd=SelectorGetSelectedId&we_cmd[1]=' + YAHOO.autocoml.newInputVal[i] + '&we_cmd[2]=' + YAHOO.autocoml.yuiAcFields[i].table + '&we_cmd[3]=' + YAHOO.autocoml.cTypes + '&we_cmd[4]=' + YAHOO.autocoml.yuiAcFields[i].checkValues + '&we_cmd[5]=' + i);
+						if (x == y == 0) {
+							//call from timeout
+						} else {
+							setTimeout("YAHOO.autocoml.doOnTextfieldBlur(0, 0, " + i + ")", YAHOO.autocoml.ajaxResponseStep);
+						}
+					}
 					break;
 				case ((YAHOO.autocoml.yuiAcFields[i].selector == 'docSelector' || YAHOO.autocoml.yuiAcFields[i].selector == 'Docselector') && YAHOO.autocoml.yuiAcFields[i].cType == 'folder') :   // ERROR: Wrong type
 					YAHOO.autocoml.markNotValid(i);
@@ -146,9 +130,12 @@ YAHOO.autocoml = {
 		}
 		inputID = YAHOO.autocoml.yuiAcFields[i].id;
 		resultID = YAHOO.autocoml.yuiAcFields[i].fields_id[0];
+		if (YAHOO.autocoml.yuiAcFields[i].blur !== undefined) {
+			YAHOO.autocoml.yuiAcFields[i].blur();
+		}
 
+		YAHOO.autocoml.yuiAcFields[i].changed = false;
 
-		return ret;
 	},
 	doOnDataRequestEvent: function (x, y, i) {
 		YAHOO.autocoml.yuiAcFields[i].found = 0;
@@ -208,20 +195,27 @@ YAHOO.autocoml = {
 		YAHOO.autocoml.oACDS[i].responseType = YAHOO.widget.DS_XHR.TYPE_FLAT;
 		YAHOO.autocoml.oACDS[i].maxCacheEntries = 60;
 		YAHOO.autocoml.oACDS[i].queryMatchSubset = false;
+		YAHOO.autocoml.oACDS[i].scriptQueryParam = "we_cmd[1]";
+		YAHOO.autocoml.oACDS[i].scriptQueryAppend = "protocol=text&cmd=SelectorSuggest&we_cmd[2]=" + YAHOO.autocoml.yuiAcFields[i].table + "&we_cmd[3]=" + YAHOO.autocoml.yuiAcFields[i].cTypes + "&we_cmd[4]=" + YAHOO.autocoml.selfType + "&we_cmd[5]=" + YAHOO.autocoml.selfID + "&we_cmd[6]=" + YAHOO.autocoml.yuiAcFields[i].rootDir;
+
 		if (YAHOO.autocoml.oAutoComp[i] !== undefined) {
 			YAHOO.autocoml.oAutoComp[i].destroy();
 		}
 		YAHOO.autocoml.oAutoComp[i] = new YAHOO.widget.AutoComplete(myInput, myContainer, YAHOO.autocoml.oACDS[i]);
 		YAHOO.autocoml.oAutoComp[i].queryDelay = 0;
+		YAHOO.autocoml.oAutoComp[i].maxResultsDisplayed = YAHOO.autocoml.yuiAcFields[i].maxResults;
+
 		if (select) {
 			YAHOO.autocoml.oAutoComp[i].dataRequestEvent.subscribe(YAHOO.autocoml.doOnDataRequestEvent, i);
 			YAHOO.autocoml.oAutoComp[i].unmatchedItemSelectEvent.subscribe(YAHOO.autocoml.doOnUnmatchedItemSelectEvent, i);
 			YAHOO.autocoml.oAutoComp[i].dataErrorEvent.subscribe(YAHOO.autocoml.doOnDataErrorEvent, i);
 			YAHOO.autocoml.oAutoComp[i].dataReturnEvent.subscribe(YAHOO.autocoml.doOnDataReturnEvent, i);
+			YAHOO.autocoml.oAutoComp[i].itemSelectEvent.subscribe(YAHOO.autocoml.doOnItemSelect, i);
 		}
 		if (check) {
 			YAHOO.autocoml.oAutoComp[i].containerCollapseEvent.subscribe(YAHOO.autocoml.doOnContainerCollapse, i);
 			YAHOO.autocoml.oAutoComp[i].textboxFocusEvent.subscribe(YAHOO.autocoml.doOnTextfieldFocus, i);
+			YAHOO.autocoml.oAutoComp[i].textboxBlurEvent.subscribe(YAHOO.autocoml.doOnTextfieldBlur, i);
 		}
 		YAHOO.autocoml.oAutoComp[i].formatResult = function (oResultItem, sQuery) {
 			var sKey = oResultItem[0];
@@ -277,6 +271,9 @@ YAHOO.autocoml = {
 		YAHOO.autocoml.yuiAcFields[i].newval = document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).value;
 		inputID = YAHOO.autocoml.yuiAcFields[i].id;
 		resultID = YAHOO.autocoml.yuiAcFields[i].fields_id[0];
+		if (YAHOO.autocoml.yuiAcFields[i].itemSelect !== undefined) {
+			YAHOO.autocoml.yuiAcFields[i].itemSelect(param1, param2, param, params);
+		}
 	},
 	doOnTextfieldFocus: function (x, y, i) {
 		YAHOO.autocoml.ajaxResponseCT = 0;
@@ -427,9 +424,38 @@ YAHOO.autocoml = {
 		set = YAHOO.autocoml.yuiAcFieldsById[fId].set;
 		YAHOO.autocoml.markValid(YAHOO.autocoml.yuiAcFieldsById[fId].index);
 		document.getElementById(fId).value = YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId].set]['old'];
-		document.getElementById(YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId].set]['fields_id'][0]).value = YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId].set]['fields_val'][0];
+		document.getElementById(YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId].set].fields_id[0]).value = YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId].set]['fields_val'][0];
 	},
 	setOldVal: function (set) {
+	},
+	init: function (param, inst) {
+		inst = inst === undefined ? -1 : inst;
+		for (i = 0; i < YAHOO.autocoml.yuiAcFields.length; ++i) {
+			if (inst == -1 || inst == i) {
+				var select = (YAHOO.autocoml.yuiAcFields[i].fields_id !== undefined);
+				var check = (YAHOO.autocoml.yuiAcFields[i].checkField !== undefined);
+				var myInput = document.getElementById(YAHOO.autocoml.yuiAcFields[i].id);
+				var myContainer = document.getElementById(YAHOO.autocoml.yuiAcFields[i].container);
+				YAHOO.autocoml.setupInstance(i, select, check, myInput, myContainer);
+
+				if (parent && parent.weAutoCompetionFields && !parent.weAutoCompetionFields[i]) {
+					parent.weAutoCompetionFields[i] = {
+						'id': YAHOO.autocoml.yuiAcFields[i].id,
+						'valid': true,
+						'cType': YAHOO.autocoml.yuiAcFields[i].cType
+					}
+				}
+			}
+		}
+		if (parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length > 0) {
+			for (i = 0;
+							i < parent.weAutoCompetionFields.length;
+							i++) {
+				if (parent.weAutoCompetionFields[i] && parent.weAutoCompetionFields[i].id && !parent.weAutoCompetionFields[i].valid) {
+					YAHOO.autocoml.markNotValid(i);
+				}
+			}
+		}
 	}
 
 };

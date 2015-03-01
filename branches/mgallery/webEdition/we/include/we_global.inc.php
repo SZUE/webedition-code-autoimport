@@ -1102,7 +1102,7 @@ function we_templatePostContent($force = false, $fullPoster = false){//force on 
 		}
 		$yuiSuggest = &weSuggest::getInstance();
 		//FIXME: check this new field to determine if all data has been transmitted
-		echo $yuiSuggest->getYuiCode() . '<input type="hidden" name="we_complete_request" value="1"/></form>' .
+		echo $yuiSuggest->getYuiJs() . '<input type="hidden" name="we_complete_request" value="1"/></form>' .
 		we_html_element::jsElement('setTimeout(doScrollTo,100);') .//FIXME: make this body onload
 		($fullPoster ? '</body></html>' : '');
 	}

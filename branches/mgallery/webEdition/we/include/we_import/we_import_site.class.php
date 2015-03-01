@@ -618,7 +618,7 @@ function doUnload() {
 		$yuiSuggest->setWidth(300);
 		$yuiSuggest->setSelectButton($_to_button, 10);
 
-		$_importTo = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
+		$_importTo = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();
 
 		// Checkboxes
 		$weoncklick = "if(this.checked && (!this.form.elements.htmlPages.checked)){this.form.elements.htmlPages.checked = true;}";
@@ -1041,7 +1041,7 @@ function doUnload() {
 		$yuiSuggest->setTable(TEMPLATES_TABLE);
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setSelectButton($button);
-		$dirChooser = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
+		$dirChooser = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();
 
 		/*
 

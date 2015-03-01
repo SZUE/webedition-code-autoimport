@@ -1391,9 +1391,8 @@ class we_object extends we_document{
 		  $yuiSuggest->setWidth(246);
 		  $yuiSuggest->setSelectButton($button,10);
 		  $yuiSuggest->setTrashButton($delbutton,5);
-		  $yuiSuggest->setAddJS("YAHOO.autocoml.init;");
 
-		  return weSuggest::getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiCode();
+		  return weSuggest::getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiJs();
 		 */
 		return we_html_tools::htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", 246, 0), "", "left", "defaultfont", $this->htmlHidden($idname, $myid), we_html_tools::getPixel(10, 4), $button, we_html_tools::getPixel(5, 4), $delbutton) . ($DoubleNames ? '<span style="color:red" >' . sprintf(g_l('modules_object', '[incObject_sameFieldname]'), implode(', ', $DoubleNames)) . '</span>' : '');
 	}

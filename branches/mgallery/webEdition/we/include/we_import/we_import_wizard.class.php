@@ -729,7 +729,7 @@ handle_event("previous");');
 			$yuiSuggest->setWidth(280);
 			$yuiSuggest->setSelectButton($btnDocDir, 10);
 
-			$docPath = $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
+			$docPath = $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();
 
 			$dir_table = new we_html_table($attribs, 2, 2);
 			if((isset($v["import_navigation"]) && !$v["import_navigation"])){
@@ -1308,7 +1308,7 @@ HTS;
 				'space' => 120),
 			array(
 				'headline' => (defined('OBJECT_TABLE')) ? $radioDocs : g_l('import', '[documents]'),
-				'html' => weSuggest::getYuiFiles() . $doctypeElement . we_html_tools::getPixel(1, 4) . $templateElement . we_html_tools::getPixel(1, 4) . $storeTo . $yuiSuggest->getYuiCode() . we_html_tools::getPixel(1, 4) . $specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
+				'html' => weSuggest::getYuiFiles() . $doctypeElement . we_html_tools::getPixel(1, 4) . $templateElement . we_html_tools::getPixel(1, 4) . $storeTo . $yuiSuggest->getYuiJs() . we_html_tools::getPixel(1, 4) . $specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
 				we_html_tools::htmlFormElementTable($docCategories, g_l('import', '[categories]'), 'left', 'defaultfont'),
 				'space' => 120,
 				'noline' => 1)
@@ -2386,7 +2386,7 @@ HTS;
 					$specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
 					$seaPu->getHtml() . we_html_tools::getPixel(1, 4) .
 					we_html_tools::htmlFormElementTable($docCategories, g_l('import', '[categories]'), "left", "defaultfont") .
-					(defined('OBJECT_TABLE') ? '' : $yuiSuggest->getYuiCode()),
+					(defined('OBJECT_TABLE') ? '' : $yuiSuggest->getYuiJs()),
 					"space" => 120,
 					"noline" => 1
 				)
@@ -2398,7 +2398,7 @@ HTS;
 					$objStoreTo . we_html_tools::getPixel(1, 4) .
 					$objSeaPu->getHtml() . we_html_tools::getPixel(1, 4) .
 					we_html_tools::htmlFormElementTable($objCategories, g_l('import', '[categories]'), "left", "defaultfont")
-					. $yuiSuggest->getYuiCode(),
+					. $yuiSuggest->getYuiJs(),
 					"space" => 120,
 					"noline" => 1
 				);

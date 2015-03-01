@@ -2809,7 +2809,7 @@ function calendarSetup(x){
 		return
 			weSuggest::getYuiFiles() .
 			$yuiSuggest->getHTML() .
-			$yuiSuggest->getYuiCode();
+			$yuiSuggest->getYuiJs();
 	}
 
 	//----------- Utility functions ------------------

@@ -1690,7 +1690,6 @@ function delElement(elvalues,elem) {
 				$yuiSuggest->setTable($k);
 				$yuiSuggest->setWidth(290);
 				$yuiSuggest->setSelectButton($button, 10);
-				//$yuiSuggest->setDoOnTextfieldBlur('');
 
 				$weAcSelector = $yuiSuggest->getHTML();
 

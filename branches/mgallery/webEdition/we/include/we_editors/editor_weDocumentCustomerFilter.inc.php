@@ -115,5 +115,5 @@ function formWebuser($canChange, $width = 388){
 	$yuiSuggest->setTrashButton($_trashBut);
 	$yuiSuggest->setTable(CUSTOMER_TABLE);
 
-	return weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
+	return weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();
 }

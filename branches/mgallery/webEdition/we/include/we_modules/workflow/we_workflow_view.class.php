@@ -363,7 +363,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 				<tr valign="top">
 					<td colspan="2" nowrap>' . we_html_button::create_button_table(array(we_html_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();addStep()", true, 30), we_html_button::create_button("image:btn_function_trash", "javascript:top.content.setHot();delStep()", true, 30))) . '</td></tr>
 				</table>' .
-			$yuiSuggest->getYuiCode() .
+			$yuiSuggest->getYuiJs() .
 			$this->htmlHidden("wsteps", $counter) .
 			$this->htmlHidden("wtasks", $counter1);
 	}

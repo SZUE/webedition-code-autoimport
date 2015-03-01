@@ -45,7 +45,7 @@
  * 			"true",																														// Feld darf leer bleiben
  * 			10																															// Abstand zwischen Input-Feld und Button
  * 		);
- * echo $yuiSuggest->getYuiCode																											// Generieter CSS- und JS-Code
+ * echo $yuiSuggest->getYuiJs																											// Generieter CSS- und JS-Code
  */
 class weSuggest{
 	const DocSelector = 'docSelector';
@@ -96,8 +96,6 @@ class weSuggest{
 	var $createButtonSpace = '';
 	var $table = FILE_TABLE;
 	var $width = 280;
-	/*	 * ************************************* */
-	var $addJS = '';
 	var $doOnItemSelect = '';
 	var $doOnTextfieldBlur = '';
 	private static $giveStatic = true;
@@ -134,9 +132,6 @@ class weSuggest{
 			we_html_element::jsScript(JS_DIR . 'weSuggest.js');
 	}
 
-	function getYuiCode(){
-		return self::getYuiJs();
-	}
 
 	/**
 	 * This function generates the individual js code for the autocomletion
@@ -162,6 +157,8 @@ class weSuggest{
 		$initVars = '
 YAHOO.autocoml.width= ' . $this->width . ';
 YAHOO.autocoml.ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
+YAHOO.autocoml.selfType="' . $weSelfContentType . '";
+YAHOO.autocoml.selfID="' . $weSelfID . '";
 			';
 		// WORKSPACES
 		$weFieldWS = array();
@@ -171,9 +168,9 @@ YAHOO.autocoml.ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
 		$fildsObj = '';
 
 
-		$declare = $onSelect = $onBlur = '';
 		// loop fields
 		for($i = 0; $i < count($this->inputfields); $i++){
+			//FIXME: do we need this for safari any more?
 			$safariEventListener .= "YAHOO.util.Event.addListener('" . $this->inputfields[$i] . "','blur',YAHOO.autocoml.doSafariOnTextfieldBlur_$i);";
 			//$weErrorMarkId = str_replace("Input", "ErrorMark", $this->inputfields[$i]);
 			$weWorkspacePathArray = id_to_path(get_ws($this->tables[$i]), $this->tables[$i], null, false, true);
@@ -184,6 +181,7 @@ YAHOO.autocoml.ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
 			$fildsObj .=
 				($i > 0 ? ',' : '') . "{
 			'id' : '" . $this->inputfields[$i] . "',
+			'container': '" . $this->containerfields[$i] . "',
 			'old': document.getElementById('" . $this->inputfields[$i] . "').value,
 			'selector': '" . $this->selectors[$i] . "',
 			'sel': '',
@@ -194,11 +192,13 @@ YAHOO.autocoml.ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
 			'valid': true,
 			'countMark': 0,
 			'changed': false,
+			'maxResults':" . $this->weMaxResults[$i] . ",
 			'table': '" . $this->tables[$i] . "',
 			'rootDir': '" . $this->rootDirs[$i] . "',
 			'cTypes': '" . $this->contentTypes[$i] . "',
 			'workspace': [" . ($weWorkspacePathArray ? '"' . implode('","', $weWorkspacePathArray) . '"' : '') . "],
-			'mayBeEmpty': " . ($this->inputMayBeEmpty[$i] ? "true" : "false");
+			'mayBeEmpty': " . ($this->inputMayBeEmpty[$i] ? "true" : "false") . ",
+			'checkField': " . intval(isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]);
 
 			if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 				if($this->setOnSelectFields[$i]){
@@ -206,14 +206,12 @@ YAHOO.autocoml.ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
 'fields_id': ['" . implode('\',\'', $this->setOnSelectFields[$i]) . '\']' . ",
 'fields_val': [document.getElementById('" . implode("').value,document.getElementById('", $this->setOnSelectFields[$i]) . "').value]";
 				}
-				$onSelect .= <<<HTS
-		YAHOO.autocoml.doOnItemSelect_$i= function(param1,param2,i) {
-			param=param2.toString();
-			params=param.split(',');
-			YAHOO.autocoml.doOnItemSelect(param1,param2,i);
-			{$this->_doOnItemSelect[$i]}
-		};
-HTS;
+			}
+			if($this->_doOnItemSelect[$i]){
+				$fildsObj .=',itemSelect:function(param1,param2,param,params){' . $this->_doOnItemSelect[$i] . '}';
+			}
+			if($this->_doOnTextfieldBlur[$i]){
+				$fildsObj .=',blur:function(){' . $this->_doOnTextfieldBlur[$i] . '}';
 			}
 			if(isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]){
 				$additionalFields = "";
@@ -221,100 +219,36 @@ HTS;
 					for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){
 						$additionalFields .= ($j > 0 ? "," : "") . str_replace('-', '_', $this->setOnSelectFields[$i][$j]);
 					}
+					$fildsObj .=",
+						'checkValues':'" . $additionalFields . "'";
 				}
-				$onBlur .= <<<HTS
-		YAHOO.autocoml.doSafariOnTextfieldBlur_$i= function(e) {
-			YAHOO.autocoml.doOnTextfieldBlur_$i(1,1,$i);
-		};
 
-		YAHOO.autocoml.doOnTextfieldBlur_$i= function(x,y,i) {
-			if(!YAHOO.autocoml.doOnTextfieldBlur(i)){
-				YAHOO.autocoml.newInputVal[i] = document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).value;
-				if(YAHOO.autocoml.newInputVal[i] != YAHOO.autocoml.selInputVal[i] || YAHOO.autocoml.newInputVal[i] != YAHOO.autocoml.oldInputVal[i]) {
-					YAHOO.autocoml.yuiAcFields[i].run = true;
-					YAHOO.autocoml.doAjax({
-		success: function(o) {
-			YAHOO.autocoml.ajaxSuccess(o,$i);
-		},
-		failure: function(o) {
-			YAHOO.autocoml.ajaxFailure(o,$i);
-		}
-	}, 'protocol=text&cmd=SelectorGetSelectedId&we_cmd[1]='+YAHOO.autocoml.newInputVal[i]+'&we_cmd[2]='+YAHOO.autocoml.yuiAcFields[i].table+'&we_cmd[3]={$this->contentTypes[$i]}&we_cmd[4]={$additionalFields}&we_cmd[5]='+i);
-				if(x==y==0){
-				  //call from timeout
-				}else{
-					setTimeout("YAHOO.autocoml.doOnTextfieldBlur_"+i+"(0,0,"+i+")",YAHOO.autocoml.ajaxResponseStep);
-				}
-				}
-			}
 
-			{$this->_doOnTextfieldBlur[$i]}
-			YAHOO.autocoml.yuiAcFields[i].changed=false;
-		};
-HTS;
+				/* 				$onBlur .= <<<HTS
+				  YAHOO.autocoml.doSafariOnTextfieldBlur_$i= function(e) {
+				  YAHOO.autocoml.doOnTextfieldBlur(1,1,$i);
+				  };
+				  HTS; */
 			}
 			// EOF loop fields
 
-			$fildsObj .= "		}";
-			$declare .= 'i=' . $i . ';
-				if(inst == -1 || inst == i){
-				var select=' . (isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i]) ? 1 : 0) . ';
-				var check=' . (isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i] ? 1 : 0) . ';
-				var myInput = document.getElementById(YAHOO.autocoml.yuiAcFields[i].id);
-				var myContainer = document.getElementById("' . $this->containerfields[$i] . '");
-				YAHOO.autocoml.setupInstance(i,select,check,myInput,myContainer);
-				YAHOO.autocoml.oACDS[i].scriptQueryAppend  = "protocol=text&cmd=SelectorSuggest&we_cmd[2]="+YAHOO.autocoml.yuiAcFields[i].table+"&we_cmd[3]="+YAHOO.autocoml.yuiAcFields[i].cTypes+"&we_cmd[4]=' . $weSelfContentType . '&we_cmd[5]=' . $weSelfID . '&we_cmd[6]="+YAHOO.autocoml.yuiAcFields[i].rootDir;
-				YAHOO.autocoml.oACDS[i].scriptQueryParam  = "we_cmd[1]";
-				YAHOO.autocoml.oAutoComp[i].maxResultsDisplayed = ' . $this->weMaxResults[$i] . ';
-				if(select){
-				YAHOO.autocoml.oAutoComp[i].itemSelectEvent.subscribe(YAHOO.autocoml.doOnItemSelect_' . $i . ',i);
-					}
-					if(check){
-					YAHOO.autocoml.oAutoComp[i].textboxBlurEvent.subscribe(YAHOO.autocoml.doOnTextfieldBlur_' . $i . ',i);
-						}
-			}
-			';
+			$fildsObj .= " }";
 		}
 
 		return we_html_element::jsElement("
-			$initVars
-YAHOO.autocoml.yuiAcFieldsById = {" . implode(',', $fildsById) . "};
-YAHOO.autocoml.yuiAcFields = [$fildsObj];
+						$initVars
+						YAHOO.autocoml.yuiAcFieldsById = {" . implode(',', $fildsById) . "};
+						YAHOO.autocoml.yuiAcFields = [$fildsObj];
 
-$onSelect
-$onBlur
-
-YAHOO.autocoml.init= function(param,inst) {
-			inst = inst === undefined ? -1 : inst;
-			$declare
-			for(i=0;i<YAHOO.autocoml.yuiAcFields.length;++i){
-			if((inst == -1 || inst == i) && parent && parent.weAutoCompetionFields && !parent.weAutoCompetionFields[i]) {
-				parent.weAutoCompetionFields[i] = {
-					'id' : YAHOO.autocoml.yuiAcFields[i].id,
-					'valid' : true,
-					'cType' : YAHOO.autocoml.yuiAcFields[i].cType
-				}
-			}
-			}
-			if(parent && parent.weAutoCompetionFields && parent.weAutoCompetionFields.length>0) {
-				for(i=0; i< parent.weAutoCompetionFields.length; i++) {
-					if(parent.weAutoCompetionFields[i] && parent.weAutoCompetionFields[i].id && !parent.weAutoCompetionFields[i].valid) {
-						YAHOO.autocoml.markNotValid(i);
-					}
-				}
-			}
-		};
-
-YAHOO.util.Event.addListener(this,'load',YAHOO.autocoml.init);
-{$this->preCheck}
-" . (we_base_browserDetect::isSafari() ? $safariEventListener : "") . "
-
-
-{$this->addJS}
-");
+					YAHOO.util.Event.addListener(this, 'load', YAHOO.autocoml.init);
+					{$this->preCheck}
+					" . /* (we_base_browserDetect::isSafari() ? $safariEventListener : "") . */ "
+					");
 	}
 
 	function getHTML(){
+
+
 		$inputId = $this->inputId ? : 'yuiAcInput' . $this->acId;
 		$resultId = $this->resultId ? : 'yuiAcResult' . $this->acId;
 		$containerWidth = $this->containerWidth ? : $this->width;
@@ -322,20 +256,20 @@ YAHOO.util.Event.addListener(this,'load',YAHOO.autocoml.init);
 		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir);
 		$inputField = $this->_htmlTextInput($this->inputName, 30, $this->inputValue, "", 'id="' . $inputId . '" ' . $this->inputAttribs, "text", $this->width, 0, "", $this->inputDisabled);
 		$resultField = we_html_tools::hidden($this->resultName, $this->resultValue, array('id' => $resultId));
-		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer"' . ($this->selectButton ? 'style="margin-right:' . $this->selectButtonSpace . 'px"' : '') . '>' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
+		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer"' . ($this->selectButton ? 'style="margin-right  : ' . $this->selectButtonSpace . 'px"' : '') . '>' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
 
 
 		$html = we_html_tools::htmlFormElementTable(
 				array(
 				"text" => $resultField . $autoSuggest,
 				"valign" => "top",
-				"style" => "height:10px"), $this->label, 'left', 'defaultfont', (
+				"style" => "height  : 10px"), $this->label, 'left', 'defaultfont', (
 				$this->selectButton ?
 					array("text" => '<div style="">' . $this->selectButton . '</div>', "valign" => "top") :
 					''
 				), we_html_tools::getPixel(intval($this->trashButtonSpace), 4), (
 				$this->trashButton ?
-					array("text" => '<div style="margin-right:' . $this->trashButtonSpace . 'px">' . $this->trashButton . '</div>', "valign" => "top") :
+					array("text" => '<div style="margin-right :        ' . $this->trashButtonSpace . 'px">' . $this->trashButton . '</div>', "valign" => "top") :
 					''
 				), (
 				$this->openButton ?
@@ -378,7 +312,9 @@ YAHOO.util.Event.addListener(this,'load',YAHOO.autocoml.init);
 	}
 
 	function _htmlTextInput($name, $size = 20, $value = "", $maxlength = "", $attribs = "", $type = "text", $width = 0, $height = 0, $markHot = "", $disabled = false){
-		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . ((strpos($width, "px") || strpos($width, "%")) ? "" : "px") . ';') : '') . ($height ? ('height: ' . $height . ((strpos($height, "px") || strpos($height, "%")) ? "" : "px") . ';') : '') . '"') : '';
+		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . ((strpos($width, "px") || strpos($width, "%")) ? "" : "px") . ';
+						') : '') . ($height ? ('height: ' . $height . ((strpos($height, "px") || strpos($height, "%")) ? "" : "px") . ';
+						') : '') . '"') : '';
 		return '<input type="' . trim($type) . '" name="' . trim($name) . '" size="' . abs($size) . '" value="' . oldHtmlspecialchars($value) . '" ' . ($maxlength ? (' maxlength="' . abs($maxlength) . '"') : '') . $attribs . $style . ' />';
 	}
 
@@ -387,15 +323,6 @@ YAHOO.util.Event.addListener(this,'load',YAHOO.autocoml.init);
 	function setAcId($val, $rootDir = ""){
 		$this->acId = str_replace('-', '_', $val);
 		$this->rootDir = $rootDir;
-	}
-
-	/**
-	 * Additional javascript code
-	 *
-	 * @param unknown_type $val
-	 */
-	function setAddJS($val){
-		$this->addJS = $val;
 	}
 
 	/**
@@ -447,7 +374,8 @@ YAHOO.util.Event.addListener(this,'load',YAHOO.autocoml.init);
 						break;
 					case "onchange":
 						$_onchange = 1;
-						$this->inputAttribs .= $key . '="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1}' : '') . $val . '" ';
+						$this->inputAttribs .= $key . '="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);
+						hot = 1}' : '') . $val . '" ';
 						break;
 					case "class":
 						$_class = 1;
@@ -462,10 +390,14 @@ YAHOO.util.Event.addListener(this,'load',YAHOO.autocoml.init);
 				$this->inputAttribs .= 'class="wetextinput" ';
 			}
 			if(!isset($_onchange)){
-				$this->inputAttribs .= ' onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1}; ' : '') . '" ';
+				$this->inputAttribs .= ' onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);
+						hot = 1};
+						' : '') . '" ';
 			}
 		} else {
-			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);hot=1;}' : '') . '" ';
+			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);
+						hot = 1;
+						}' : '') . '" ';
 		}
 		if(!$this->inputId){
 			$this->setInputId();

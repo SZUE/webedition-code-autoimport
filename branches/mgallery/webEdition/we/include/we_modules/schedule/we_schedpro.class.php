@@ -245,7 +245,7 @@ function checkFooter(){
 				$yuiSuggest->setWidth(320);
 				$yuiSuggest->setSelectButton($button);
 
-				$extracont = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
+				$extracont = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();
 				$extraheadl = g_l('modules_schedule', '[dirctory]');
 		}
 

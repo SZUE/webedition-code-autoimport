@@ -82,7 +82,7 @@ class we_document_video extends we_binaryDocument{
 		<td>' . $this->formInput2(155, 'name', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
 	</tr>
 </table>' .
-			$yuiSuggest->getYuiCode()
+			$yuiSuggest->getYuiJs()
 		;
 	}
 
