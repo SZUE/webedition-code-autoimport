@@ -172,7 +172,7 @@ function loadData() {
 			$_content .= $user_object->formDefinition($tab, $permBranch);
 		}
 
-		$_content .= $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs();
+		$_content .= $yuiSuggest->getYuiJs();
 
 		$_form = we_html_element::htmlForm(array(
 					'name' => 'we_form',

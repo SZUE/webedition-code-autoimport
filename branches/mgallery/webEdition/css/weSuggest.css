@@ -30,14 +30,13 @@ div.yui-ac-bd li{
 	font-size: 10px;
 }
 div.yui-ac-bd ul{
-	margin:-7px;
-	margin-top:-5px;
+	margin:0px;
 	list-style:none;
 	font-family: Verdana, Arial, sans-serif;
 	font-size: 10px;
 	line-height:11px;
 	background-color: #FFFFFF;
-	padding:5px 0;
+	padding:0px 0px;
 	margin-left:0px;
 }
 
@@ -56,7 +55,7 @@ div.yuiAcLayer{
 	overflow:hidden;
 	z-index:9050;
 	margin-top:-10px;
-	height:auto !important;
+	width:100% !important;
 }
 
 li.yui-ac-highlight{
@@ -81,6 +80,7 @@ li.yui-ac-highlight{
 .yui-ac-container{
 	position:absolute;
 	top:30px !important;
+	width:100%;
 }
 
 .yui-ac-container li{

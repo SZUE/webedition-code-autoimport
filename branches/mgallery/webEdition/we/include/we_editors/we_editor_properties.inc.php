@@ -44,8 +44,7 @@ echo STYLESHEET .
 		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 	<?php
-	echo $yuiSuggest->getYuiCss() .
-	$yuiSuggest->getYuiJs();
+	echo 	$yuiSuggest->getYuiJs();
 	?>
 </body>
 </html>

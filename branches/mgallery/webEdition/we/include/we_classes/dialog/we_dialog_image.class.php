@@ -388,7 +388,7 @@ class we_dialog_image extends we_dialog_base{
 				we_html_tools::hidden("imgChangedCmd", 0) . we_html_tools::hidden("wasThumbnailChange", 0) . we_html_tools::hidden("isTinyMCEInitialization", 0) .
 				we_html_tools::hidden("tinyMCEInitRatioH", 0) . we_html_tools::hidden("tinyMCEInitRatioW", 0) .
 				weSuggest::getYuiFiles() .
-				$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() . we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_init.js')),
+				$yuiSuggest->getYuiJs() . we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_init.js')),
 		);
 	}
 

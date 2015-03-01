@@ -757,7 +757,6 @@ function we_checkName() {
 		' . $table->getHtml() . "<br/>" . $ta . "<br/>" . $saveBut . '
 	</div>' : '' ) .
 		(isset($yuiSuggest) ?
-				$yuiSuggest->getYuiCss() .
 				$yuiSuggest->getYuiJs() : '') .
 		'</body></html>';
 	}

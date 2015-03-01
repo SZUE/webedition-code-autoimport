@@ -1260,14 +1260,12 @@ _multiEditorreload = true;";
 		switch($tab){
 			case self::TAB_DATA:
 				return weSuggest::getYuiFiles() .
-						$this->formGeneralData() .
-						$yuiSuggest->getYuiCss();
+						$this->formGeneralData() ;
 			case self::TAB_PERMISSION:
 				return $this->formPermissions($perm_branch);
 			case self::TAB_WORKSPACES:
 				return weSuggest::getYuiFiles() .
-						$this->formWorkspace() .
-						$yuiSuggest->getYuiCss();
+						$this->formWorkspace() ;
 			case self::TAB_SETTINGS:
 				return $this->formPreferences($perm_branch);
 		}

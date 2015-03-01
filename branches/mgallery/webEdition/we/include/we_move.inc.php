@@ -321,7 +321,6 @@ echo
 			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . '</p></p>
 <div>' . $_buttons . '</div></div>' . we_html_tools::hidden("sel", "") .
  '</form>' .
- $yuiSuggest->getYuiCss() .
  $yuiSuggest->getYuiJs() .
  '</body>
 </html>';

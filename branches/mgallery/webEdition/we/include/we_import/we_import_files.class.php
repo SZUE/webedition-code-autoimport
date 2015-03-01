@@ -399,7 +399,7 @@ function setApplet() {
 
 		$body = we_html_element::htmlBody(array(
 				"class" => "weDialogBody"
-				), $startsrceen . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs());
+				), $startsrceen . $yuiSuggest->getYuiJs());
 
 		return $this->_getHtmlPage($body, $this->_getJS(''));
 	}

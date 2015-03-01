@@ -430,7 +430,7 @@ function we_cmd(){
 				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $js . weSuggest::getYuiFiles()) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						we_html_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('export', '[step2]'))
-					) . $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs()
+					)  . $yuiSuggest->getYuiJs()
 				)
 		);
 	}

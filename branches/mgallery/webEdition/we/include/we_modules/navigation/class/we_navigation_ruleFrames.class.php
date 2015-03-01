@@ -338,7 +338,7 @@ function we_cmd(){
 			we_html_multiIconBox::getHTML(
 				'navigationRules', "100%", $parts, 30, we_html_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[rules][navigation_rules]')) . '
 	</form>' .
-			$yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs() .
+			$yuiSuggest->getYuiJs() .
 			'</body></html>';
 	}
 

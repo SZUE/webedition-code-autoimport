@@ -447,7 +447,6 @@ function weonsubmit() {
 	</tr>' : '') . '
 </table></div>' .
 				weSuggest::getYuiFiles() .
-				$yuiSuggest->getYuiCss() .
 				$yuiSuggest->getYuiJs()
 			),
 			array('html' => '<table cellpadding="0" cellspacing="0" border="0">

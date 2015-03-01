@@ -91,6 +91,6 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 		echo we_html_tools::htmlDialogLayout($content, g_l('modules_banner', '[defaultbanner]'), $buttons, "100%", 30, 175);
 		?>
 	</form>
-	<?php echo $yuiSuggest->getYuiCss() . $yuiSuggest->getYuiJs(); ?>
+	<?php echo  $yuiSuggest->getYuiJs(); ?>
 </body>
 </html>

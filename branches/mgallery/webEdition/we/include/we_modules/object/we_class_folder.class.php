@@ -820,7 +820,6 @@ class we_class_folder extends we_folder{
 		</form>
 		' .
 			weSuggest::getYuiFiles() .
-			$yuiSuggest->getYuiCss() .
 			$yuiSuggest->getYuiJs();
 	}
 

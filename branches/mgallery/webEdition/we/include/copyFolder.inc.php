@@ -166,7 +166,6 @@ function incTemp(val) {
 	) .
 	'</form>' .
 	'<iframe frameborder="0" src="about:blank" name="pbUpdateFrame" width="0" height="0" id="pbUpdateFrame"></iframe>' .
-	$yuiSuggest->getYuiCss() .
 	$yuiSuggest->getYuiJs();
 	'</body></html>';
 } else {

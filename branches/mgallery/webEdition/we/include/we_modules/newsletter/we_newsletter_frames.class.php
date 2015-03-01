@@ -1351,7 +1351,6 @@ function changeFieldValue(val,valueField) {
 				}
 
 				$out.=$this->getHTMLNewsletterHeader() .
-					$this->weAutoCompleter->getYuiCss() .
 					$this->weAutoCompleter->getYuiJs();
 				break;
 			case 1:
@@ -1370,7 +1369,6 @@ function changeFieldValue(val,valueField) {
 					$this->View->htmlHidden("fromPage", 2) .
 					$this->View->htmlHidden("blockid", 0) .
 					$this->getHTMLNewsletterBlocks() .
-					$this->weAutoCompleter->getYuiCss() .
 					$this->weAutoCompleter->getYuiJs();
 				break;
 			default:
@@ -1381,7 +1379,6 @@ function changeFieldValue(val,valueField) {
 					$this->View->htmlHidden("fromPage", 3) .
 					$this->View->htmlHidden("blockid", 0) .
 					we_html_multiIconBox::getHTML('', "100%", $this->getHTMLReporting(), 30, '', -1, '', '', false) .
-					$this->weAutoCompleter->getYuiCss() .
 					$this->weAutoCompleter->getYuiJs();
 		}
 

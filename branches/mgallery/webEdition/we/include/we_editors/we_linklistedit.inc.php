@@ -841,7 +841,6 @@ if($ok && $cmd === "edit_link_at_class"){
 			<input type="hidden" name="we_field" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3); ?>" />
 			<?php
 			echo we_html_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]')) .
-			$yuiSuggest->getYuiCss() .
 			$yuiSuggest->getYuiJs();
 			?>
 		</form>
