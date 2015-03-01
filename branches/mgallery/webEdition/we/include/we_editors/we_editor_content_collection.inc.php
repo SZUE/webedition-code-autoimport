@@ -28,7 +28,9 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 echo STYLESHEET .
 we_html_element::jsScript(JS_DIR . 'windows.js') .
 we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
-we_html_element::jsElement('var we_name = "' . $GLOBALS['we_doc']->Name . '";');
+we_html_element::jsElement('
+var we_name = "' . $GLOBALS['we_doc']->Name . '";
+var we_remTable = "' . $GLOBALS['we_doc']->remTable . '";');//make this vars too inner var of some function collection 
 
 ?>
 

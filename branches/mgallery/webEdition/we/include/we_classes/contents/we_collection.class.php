@@ -27,7 +27,7 @@
 class we_collection extends we_root{
 
 	protected $Collection = '';
-	protected $remTable;
+	public $remTable;
 
 	/** Constructor
 	 * @return we_collection
@@ -105,10 +105,10 @@ class we_collection extends we_root{
 			$idname = 'we_' . $this->Name . '_ItemID_' . $index;
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
-			$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.retrieveCsv();");
+			$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.repaintAndRetrieveCsv();");
 			$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $idname . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','',1)");
 			$openbutton = we_html_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['" . $idname . "'].value){top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . $ctype . "','" . $etype . "'); }");
-			$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputItem_" . $index ."');_EditorFrame.setEditorIsHot(true);retrieveCsv();", true, 27, 22);
+			$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputItem_" . $index ."');_EditorFrame.setEditorIsHot(true);repaintAndRetrieveCsv();", true, 27, 22);
 			$yuiSuggest->setTable(FILE_TABLE);
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setAcId('Item_' . $index);
@@ -120,7 +120,7 @@ class we_collection extends we_root{
 			$yuiSuggest->setTrashButton($trashButton);
 			$yuiSuggest->setSelectButton($button);
 			$yuiSuggest->setOpenButton($openbutton);
-			$yuiSuggest->setDoOnItemSelect("retrieveCsv();");
+			$yuiSuggest->setDoOnItemSelect("repaintAndRetrieveCsv();");
 
 			$rowControllsArr = array();
 			$rowControllsArr[] = we_html_button::create_button('image:btn_add_listelement', "javascript:_EditorFrame.setEditorIsHot(true);addRows(this);top.we_cmd('switch_edit_page',1,we_transaction);", true, 100, 22);

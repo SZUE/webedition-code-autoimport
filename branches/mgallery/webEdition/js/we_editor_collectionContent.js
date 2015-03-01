@@ -1,3 +1,7 @@
+
+
+//TODO: check if there's really no possibility to get TransferData 
+
 var spacer = document.createElement("div");
 spacer.style.height = '34px';
 spacer.style.backgroundColor = 'white';
@@ -11,6 +15,7 @@ var lastY = 0;
 var dragID = 0;
 var dragEl = null;
 var removed = false;
+isDragRow = false;
 
 function repaintAndRetrieveCsv(addIndex, addNum){
 	var addAtIndex = addIndex || 0;
@@ -55,7 +60,7 @@ function moveDown(elem){
 
 function addRows(elem){
 	var el = getRow(elem);
-	var index = el.id.substr(5);top.console.debug('numselect_' + index);
+	var index = el.id.substr(5);//top.console.debug('numselect_' + index);
 
 	repaintAndRetrieveCsv(index, document.getElementById('numselect_' + index).value);
 }
@@ -81,6 +86,7 @@ function allowDrop(ev) {
 
 function drag(ev) {
 	//console.debug("start y: " + ev.target.id);
+	isDragRow = true;
 	lastY = ev.clientY;
 	dragEl = ev.target;
 	dragID = ev.target.id;
@@ -89,34 +95,58 @@ function drag(ev) {
 }
 
 function enterDrag(ev){
-	var el = ev.target;
+	var el = getRow(ev.target);
 
-	while(el.className !== 'drop_reference' && el.className !== 'content_table'){//console.debug("loop");
-		el = el.parentNode;
-	}
-	//console.debug(el.id + ' - ' + dragID);
+	//TODO: to avoid problems use ev.dataTransfer.getData("text")); to decide what element is dragged: => add fromTree as first param when from tree
+	if(isDragRow === true){
+		if(el.id !== dragID){
+			el = lastY < ev.clientY ? el.nextSibling : el;
 
-	if(el.id !== dragID){
-		//console.debug(ev);
+			if(!removed){
+				document.getElementById('content_table').removeChild(dragEl);
+				removed = true;
+			}
 
-		el = lastY < ev.clientY ? el.nextSibling : el;
-		
-		if(!removed){
-			document.getElementById('content_table').removeChild(dragEl);
-			removed = true;
+			if(spacer.parentNode){
+				document.getElementById('content_table').removeChild(spacer);
+			}
+			document.getElementById('content_table').insertBefore(spacer, el);
+			lastY = ev.clientY + (lastY < ev.clientY ? 20 : 20);
 		}
-		
-		if(spacer.parentNode){
-			document.getElementById('content_table').removeChild(spacer);
+	} else {
+		var t = document.getElementById('content_table'), index;
+		for(var i = 0; i < t.childNodes.length; i++){
+			index = t.childNodes[i].id.substr(5);
+			document.getElementById('drag_' + index).style.border = '1px solid #006db8';
 		}
-		document.getElementById('content_table').insertBefore(spacer, el);
-		lastY = ev.clientY + (lastY < ev.clientY ? 20 : 20);
+		el.style.border = '1px solid #00cc00';
 	}
 }
 
 function drop(ev) {
-	ev.preventDefault();
-	var data = ev.dataTransfer.getData("text");
-	document.getElementById('content_table').replaceChild(dragEl, spacer);
-	repaintAndRetrieveCsv();
+	if(isDragRow){
+		isDragRow = false;
+		ev.preventDefault();
+		var data = ev.dataTransfer.getData("text");
+		document.getElementById('content_table').replaceChild(dragEl, spacer);
+		repaintAndRetrieveCsv();
+	} else {
+		ev.preventDefault();
+		//top.console.debug(we_remTable);
+		var el = getRow(ev.target), index, data, item, id, table;
+
+		index = el.id.substr(5);
+		data = ev.dataTransfer.getData("text").split(',');
+		el.style.border = '1px solid #006db8';
+
+		//check table, if item or group and get path fpr ID(s) by ajax
+		if(we_remTable === data[1]){
+			document.getElementById('yuiAcInputItem_' + index).value = "get path using ajax: id = " + data[2];
+			document.getElementById('yuiAcResultItem_' + index).value = data[2];
+			repaintAndRetrieveCsv();
+		} else {
+			alert("your object's table does not match remTable");
+		}
+		
+	}
 }
