@@ -71,7 +71,7 @@ function yearSelect($select_name){
 		$opts[$yearNow] = $yearNow;
 		$yearNow--;
 	}
-	return we_class::htmlSelect($select_name, $opts, 1, we_base_request::_(we_base_request::RAW, $select_name, ''), false, array('id' => $select_name));
+	return we_class::htmlSelect($select_name, $opts, 1, we_base_request::_(we_base_request::INT, $select_name, ''), false, array('id' => $select_name));
 }
 
 function monthSelect($select_name, $selectedMonth){
