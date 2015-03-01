@@ -1115,14 +1115,12 @@ function startStep(){
 		$yesCmd = "self.close();";
 		$noCmd = "top.opener.top.body.clearExtern();" . $yesCmd;
 
-		$js = we_html_element::jsElement('self.focus();');
-
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onBlur" => "self.focus()", "onload" => "self.focus();"), we_html_element::htmlForm(
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onblur" => "self.focus()", "onload" => "self.focus();"), we_html_element::htmlForm(
 								array("name" => "we_form"), we_html_tools::htmlYesNoCancelDialog($txt, IMAGE_DIR . "alert.gif", "ja", "nein", "", $yesCmd, $noCmd)
 						)
 		);
 
-		$head = we_html_tools::getHtmlInnerHead(g_l('backup', '[wizard_title]')) . $js . STYLESHEET;
+		$head = we_html_tools::getHtmlInnerHead(g_l('backup', '[wizard_title]')) .  STYLESHEET;
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 						we_html_element::htmlHead($head) .

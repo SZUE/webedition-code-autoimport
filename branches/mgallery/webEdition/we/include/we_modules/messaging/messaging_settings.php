@@ -33,29 +33,26 @@ $messaging->init($_SESSION['weS']['we_data']['we_messagin_setting']);
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[settings]')) .
  we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 ?>
-<script type="text/javascript"><!--
 <?php
 if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'save_settings' && ($cstep = we_base_request::_(we_base_request::STRING, 'check_step'))){
 	if($messaging->save_settings(array('check_step' => $cstep))){
 		echo we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
 		?>
-		window.close();
-		//-->
 		</script>
 		</head>
-		<body></body>
+		<body onload="window.close();"></body>
 		</html>
 		<?php
 		exit;
 	}
 }
 ?>
+<script type="text/javascript"><!--
 function save() {
-document.settings.submit();
-}
+		document.settings.submit();
+	}
 //-->
 </script>
-
 <?php
 we_html_tools::protect();
 

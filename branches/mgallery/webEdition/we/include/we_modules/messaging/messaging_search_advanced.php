@@ -34,30 +34,24 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[search_advanced]')) .
  STYLESHEET;
-?>
-<script type="text/javascript"><!--
-<?php
 if(we_base_request::_(we_base_request::BOOL, 'save')){
 	$messaging->set_search_settings(we_base_request::_(we_base_request::STRING, 'search_fields'), we_base_request::_(we_base_request::INT, 'search_folders', array()));
 	$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 	?>
-	self.close();
-	//-->
-	</script>
 	</head>
-	<body>
+	<body onload="self.close();">
 	</body>
 	</html>
 	<?php
 } else {
 	?>
-	function save_settings() {
-	document.search_adv.submit();
-	}
-	//-->
+	<script type="text/javascript"><!--
+		function save_settings() {
+			document.search_adv.submit();
+		}
+		//-->
 	</script>
 	</head>
-
 	<body class="weDialogBody">
 		<form action="<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_search_advanced.php" name="search_adv" >
 			<input type="hidden" name="we_transaction" value="<?php echo we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'); ?>" />

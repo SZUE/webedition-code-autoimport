@@ -125,15 +125,11 @@ echo we_html_tools::getHtmlTop() .
 /* * ************ some config  ************** */
 $feldnamen = explode("|", f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
 $waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
-$dbPreisname = "Preis";
 $numberformat = $feldnamen[2];
-$notInc = "tblTemplates";
 
-if(isset($feldnamen[3])){
-	$fe = explode(",", $feldnamen[3]); //determine more than just one class-ID
-} else {
-	$fe = array(0);
-}
+$fe = (isset($feldnamen[3]) ?
+		explode(",", $feldnamen[3]) : //determine more than just one class-ID
+		array(0));
 
 if(empty($classid)){
 	$classid = $fe[0];

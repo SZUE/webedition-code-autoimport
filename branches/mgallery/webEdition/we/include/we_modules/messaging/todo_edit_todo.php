@@ -44,7 +44,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 ?>
 
 <script type="text/javascript"><!--
-	rcpt_sel = new Array();
+	rcpt_sel = [];
 
 	function update_rcpts() {
 		var rcpt_str = rcpt_sel[0][2];

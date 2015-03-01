@@ -30,15 +30,16 @@ function we_tag_ifShopPayVat($attribs){
 	if(we_tag('ifRegisteredUser', array(), '')){
 		$customer = $_SESSION['webuser'];
 	} elseif(isset($GLOBALS[$namefrom]) && $GLOBALS[$namefrom]){
-		$customer = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($GLOBALS[$namefrom]))? : false;
+		$customer = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($GLOBALS[$namefrom]));
+		$customer = $customer ? array_merge($customer, we_customer_customer::getEncryptedFields()) : array();
 	} else {
 		$customer = false;
 	}
 
 	$country = (!$customer && $usefallback ?
-					(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_location"', '', $GLOBALS['DB_WE'], -1) ? :
-							'') :
-					'');
+			(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_location"', '', $GLOBALS['DB_WE'], -1) ? :
+				'') :
+			'');
 
 	return $weShopVatRule->executeVatRule($customer, $country);
 }

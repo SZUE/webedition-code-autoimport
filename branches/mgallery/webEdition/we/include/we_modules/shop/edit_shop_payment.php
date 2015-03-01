@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -203,14 +202,11 @@ $Parts[] = array("html" => $_htmlTable->getHtml());
 $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:document.we_form.submit();"), "", we_html_button::create_button("cancel", "javascript:self.close();")
 );
 
-$frame = we_html_multiIconBox::getHTML('', '100%', $Parts, 30, $_buttons, -1, '', '', false, g_l('modules_shop', '[paymentP]'), '', '', 'hidden');
-
-
-echo we_html_element::jsElement('self.focus();') . '
+echo '
 </head>
-<body class="weDialogBody">
+<body class="weDialogBody" onload="self.focus();">
 
 
 <form name="we_form" method="post" style="margin-top:16px;">
-' . $frame . '</form>
+' . we_html_multiIconBox::getHTML('', '100%', $Parts, 30, $_buttons, -1, '', '', false, g_l('modules_shop', '[paymentP]'), '', '', 'hidden') . '</form>
 </body></html>';

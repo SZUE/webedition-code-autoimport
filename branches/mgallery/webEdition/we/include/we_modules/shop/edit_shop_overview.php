@@ -32,7 +32,6 @@ echo we_html_tools::getHtmlTop() .
 $feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"'));
 
 $waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
-$dbPreisname = 'Preis';
 $numberformat = $feldnamen[2];
 $mwst = ($feldnamen[1]) ? (($feldnamen[1] / 100) + 1) : "";
 $year = abs(substr($_REQUEST["mid"], -4));

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_category extends we_category{
-
 	public $DestPrinciple = 0; //make getter and set private
 	public $CatFallbackState = 0;
 	public $IsInactive = 0;
@@ -623,17 +622,18 @@ class we_shop_category extends we_category{
 	 */
 	public static function getCountryFromCustomer($useFallback = false, $customer = false, $customerId = 0, $getAllData = false){
 		$customer = ($customer? :
-						(isset($_SESSION['webuser']) ?
-								$_SESSION['webuser'] :
-								($customerId ?
-										(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($GLOBALS[$customerId]))? :
-												false) :
-										false
-								)
-						)
-				);
+				(isset($_SESSION['webuser']) ?
+					$_SESSION['webuser'] :
+					($customerId ?
+						(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($GLOBALS[$customerId]))? :
+							false) :
+						false
+					)
+				)
+			);
 
 		if($customer){
+			$customer = array_merge($customer, we_customer_customer::getEncryptedFields());
 			$stateField = we_shop_vatRule::getStateField();
 			if(isset($customer[$stateField]) && ($c = $customer[$stateField])){
 				return $getAllData ? array('country' => $c, 'isFallback' => false, "customer" => $customer) : $c;

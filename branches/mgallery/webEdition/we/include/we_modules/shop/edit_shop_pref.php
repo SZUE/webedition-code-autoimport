@@ -237,11 +237,9 @@ $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(2
 
 $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button('save', 'javascript:if(document.getElementById("categorymode").value == 1 && document.getElementById("shoplocation").value === ""){' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[preferences][save_alert]'), we_message_reporting::WE_MESSAGE_ERROR) . '}else{document.we_form.submit();}'), '', we_html_button::create_button('cancel', 'javascript:self.close();'));
 
-$frame = we_html_tools::htmlDialogLayout($_htmlTable->getHtml(), g_l('modules_shop', '[pref]'), $_buttons);
-
-echo we_html_element::jsElement('self.focus();') . '
+echo '
 	</head>
-	<body class="weDialogBody">
+	<body class="weDialogBody" onload="self.focus();">
 	<form name="we_form" method="post" style="margin-left:8px; margin-top:16px;">
-	' . $frame . '</form>
+	' . we_html_tools::htmlDialogLayout($_htmlTable->getHtml(), g_l('modules_shop', '[pref]'), $_buttons) . '</form>
  	</body></html>';

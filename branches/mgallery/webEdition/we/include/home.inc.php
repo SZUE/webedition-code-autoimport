@@ -107,14 +107,14 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	foreach($aDat as $d){
 		$i = 0;
 		$count_i = count($d);
-		echo "\t\t[";
+		echo "[";
 		reset($d);
 		while((list(, $v) = each($d))){
 			$i++;
-			echo "{'type':'" . $v[0] . "','cls':'" . $v[1] . "','res':'" . $v[2] . "','csv':'" . $v[3] . "'}" . (($i < $count_i) ? "," : "") . "\n";
+			echo "{'type':'" . $v[0] . "','cls':'" . $v[1] . "','res':'" . $v[2] . "','csv':'" . $v[3] . "'}" . (($i < $count_i) ? "," : "");
 		}
 		$j++;
-		echo "]" . (($j < $count_j) ? "," : "") . "\n";
+		echo "]" . (($j < $count_j) ? "," : "");
 	}
 	?>
 			];

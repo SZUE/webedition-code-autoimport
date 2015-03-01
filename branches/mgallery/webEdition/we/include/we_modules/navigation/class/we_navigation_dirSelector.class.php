@@ -86,9 +86,9 @@ class we_navigation_dirSelector extends we_selector_directory{
 	protected function printHeaderTableExtraCols(){
 		$makefolderState = permissionhandler::hasPerm("EDIT_NAVIGATION");
 		return '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
-				we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
-				we_html_button::create_button("image:btn_new_dir", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
-				'</td>';
+			we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
+			we_html_button::create_button("image:btn_new_dir", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+			'</td>';
 	}
 
 	protected function getWriteBodyHead(){
@@ -179,9 +179,9 @@ top.unselectAllFiles();') . '
 		if(!o) o=top.order;
 		if(!we_editDirID) we_editDirID="";
 		return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\' + what + \'&rootDirID=' .
-						$this->rootDirID . (isset($this->open_doc) ?
-								'&open_doc=' . $this->open_doc : '') .
-						'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
+				$this->rootDirID . (isset($this->open_doc) ?
+					'&open_doc=' . $this->open_doc : '') .
+				'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
 		}');
 	}
 
@@ -314,11 +314,11 @@ if(top.opener.top.updateEntry){
 	ref = top.opener.top;
 	ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '",1,0);
 }' . ($this->canSelectDir ?
-						'top.currentPath = "' . $folder->Path . '";
+					'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 ' :
-						''
+					''
 				);
 			}
 		}

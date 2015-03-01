@@ -313,29 +313,24 @@ function we_cmd() {
 
 		// Get Country and Lanfield Data
 		$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $this->db);
-		if($strFelder !== ''){
-			$CLFields = unserialize($strFelder);
-		} else {
-			$CLFields['stateField'] = '-';
-			$CLFields['stateFieldIsISO'] = 0;
-			$CLFields['languageField'] = '-';
-			$CLFields['languageFieldIsISO'] = 0;
-		}
-		$this->CLFields = $CLFields; //imi
+		$this->CLFields = ($strFelder ? unserialize($strFelder) : array(
+				'stateField' => '-',
+				'stateFieldIsISO' => 0,
+				'languageField' => '-',
+				'languageFieldIsISO' => 0
+		));
+
 		// config
 		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', 'strFelder', $this->db));
 		$waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
-		$dbPreisname = 'price';
 		$numberformat = $feldnamen[2];
 		$classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
 		$this->classIds = makeArrayFromCSV($classid);
 		$mwst = ($feldnamen[1] ? : '');
-		$notInc = 'tblTemplates';
 
 		$da = '%d.%m.%Y';
 		$dateform = '00.00.0000';
 		$db = '%d.%m.%Y %H:%i';
-		$datetimeform = '00.00.0000 00:00';
 
 		$this->processCommands(); //imi
 
@@ -354,7 +349,6 @@ function we_cmd() {
 		}
 
 		if(($id = we_base_request::_(we_base_request::INT, 'deleteaarticle'))){
-
 			$this->db->query('DELETE FROM ' . SHOP_TABLE . ' WHERE IntID=' . $id);
 			if(f('SELECT COUNT(1) FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db) < 1){
 				$letzerartikel = 1;
@@ -363,7 +357,6 @@ function we_cmd() {
 
 		// Get Customer data
 		$_REQUEST['cid'] = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db);
-
 
 		if(($fields = @unserialize(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"', '', $this->db)))){
 			// we have an array with following syntax:
@@ -466,9 +459,8 @@ function we_cmd() {
 			// - pay VAT?
 			// - prices are net?
 			if($ArticleId){
-
 				// first unserialize order-data
-				if(!empty($SerialOrder[0])){
+				if($SerialOrder[0]){
 					$orderData = @unserialize($SerialOrder[0]);
 					$customCartFields = isset($orderData[WE_SHOP_CART_CUSTOM_FIELD]) ? $orderData[WE_SHOP_CART_CUSTOM_FIELD] : array();
 				} else {
@@ -511,12 +503,18 @@ function we_cmd() {
 			}
 
 			foreach($_customer as $key => $value){
-
 				if(in_array($key, $fields['customerFields'])){
-					if(($key == $CLFields['stateField'] && $CLFields['stateFieldIsISO'])){
-						$value = g_l('countries', '[' . strtoupper($value) . ']');
-					} elseif($key == $CLFields['languageField'] && $CLFields['languageFieldIsISO']){
-						$value = g_l('languages', '[' . strtolower($value) . ']');
+					switch($key){
+						case $this->CLFields['stateField']:
+							if($this->CLFields['stateFieldIsISO']){
+								$value = g_l('countries', '[' . strtoupper($value) . ']');
+							}
+							break;
+						case $this->CLFields['languageField']:
+							if($this->CLFields['languageFieldIsISO']){
+								$value = g_l('languages', '[' . strtolower($value) . ']');
+							}
+							break;
 					}
 					$customerFieldTable .='
 		<tr height="25">
@@ -608,21 +606,20 @@ function we_cmd() {
 			</tr>';
 
 
-			$articlePrice = 0;
-			$totalPrice = 0;
+			$articlePrice = $totalPrice = 0;
 			$articleVatArray = array();
 			// now loop through all articles in this order
-			for($i = 0; $i < count($ArticleId); $i++){
+			foreach($ArticleId as $i=>$currentArticle){
 
 				// now init each article
 				$shopArticleObject = (empty($Serial[$i]) ? // output 'document-articles' if $Serial[$d] is empty. This is when an order has been extended
 						// this should not happen any more
-						we_shop_Basket::getserial($ArticleId[$i], we_shop_shop::DOCUMENT) :
+						we_shop_Basket::getserial($currentArticle, we_shop_shop::DOCUMENT) :
 						// output if $Serial[$i] is not empty. This is when a user ordered an article online
 						@unserialize($Serial[$i]));
 
 				if($shopArticleObject === false){
-					t_e('Error in DB-data', $ArticleId[$i], $Serial[$i]);
+					t_e('Error in DB-data', $currentArticle, $Serial[$i]);
 					continue;
 				}
 
@@ -1031,7 +1028,6 @@ function CalendarChanged(calObject) {
 		</html>
 		<?php
 	}
-
 
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '

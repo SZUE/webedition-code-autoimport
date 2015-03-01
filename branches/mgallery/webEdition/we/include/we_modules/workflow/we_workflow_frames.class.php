@@ -92,8 +92,8 @@ var table="' . USER_TABLE . '";
 var tree_icon_dir="' . TREE_ICON_DIR . '";
 var tree_img_dir="' . TREE_IMAGE_DIR . '";
 var we_dir="' . WEBEDITION_DIR . '";'
-				 . parent::getTree_g_l()
-				) .
+			. parent::getTree_g_l()
+		) .
 		we_html_element::jsScript(JS_DIR . 'workflow_tree.js') .
 		we_html_element::jsElement($out);
 	}
@@ -138,8 +138,7 @@ function setTab(tab){
 top.content.hloaded=1;') .
 			$tab_header;
 
-		$mainDiv = we_html_element::htmlDiv(array('id' => 'main'),
-				we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
+		$mainDiv = we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
 						we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
 						we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
 				)) .
@@ -192,10 +191,9 @@ function we_save() {
 	}
 
 	function getHTMLLog($docID, $type = 0){
-		$extraHead = we_html_element::jsElement('self.focus();');
-		$body = we_html_element::htmlBody(array('class' => 'weDialogBody'), we_workflow_view::getLogForDocument($docID, $type));
-
-		return $this->getHTMLDocument($body, $extraHead);
+		return $this->getHTMLDocument(
+				we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'self.focus();'), we_workflow_view::getLogForDocument($docID, $type))
+		);
 	}
 
 	function getHTMLCmd(){

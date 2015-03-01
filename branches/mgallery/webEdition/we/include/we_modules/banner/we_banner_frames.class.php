@@ -176,7 +176,7 @@ var we_dir="' . WEBEDITION_DIR . '";'
 	}
 
 	function getHTMLDCheck(){
-		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $this->View->getHTMLDCheck()), we_html_element::jsElement('self.focus();'));
+		return $this->getHTMLDocument(we_html_element::htmlBody(array('onload'=>'self.focus();'), $this->View->getHTMLDCheck()));
 	}
 
 }

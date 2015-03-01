@@ -344,7 +344,7 @@ function getMainDialog(){
 
 echo
 we_html_element::jsScript(JS_DIR . 'keyListener.js') .
- we_html_element::jsElement('self.focus();
+ we_html_element::jsElement('
 function closeOnEscape() {
 	return true;
 
@@ -357,7 +357,7 @@ function saveOnKeyBoard() {
 }'
 ) . STYLESHEET .
  '</head>' .
- we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
+ we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;','onload'=>'self.focus();')
 	, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 		, we_html_element::htmlExIFrame('we_metadatafields', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: hidden;', 'weDialogBody') .
 		we_html_element::htmlExIFrame('we_metadatafields_footer', getFooter(), 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')

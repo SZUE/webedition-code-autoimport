@@ -60,8 +60,8 @@ if(we_base_request::_(we_base_request::STRING, 'mode') === 'save_addrbook'){
 
 	echo 'function doOnLoad() {' .
 	($messaging->save_addresses($addrbook) ?
-			we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[addr_book_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) :
-			we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[error_occured]'), we_message_reporting::WE_MESSAGE_ERROR)
+		we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[addr_book_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) :
+		we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[error_occured]'), we_message_reporting::WE_MESSAGE_ERROR)
 	) . '}';
 } else {
 
@@ -71,14 +71,17 @@ if(we_base_request::_(we_base_request::STRING, 'mode') === 'save_addrbook'){
 ';
 }
 
-$addrbook_str = '';
+
 $t_arr = $messaging->get_addresses();
 
-if(!empty($t_arr)){
+if($t_arr){
+	$addrbook_str = array();
 	foreach($t_arr as $elem){
-		$addrbook_str .= 'new Array("' . $elem[0] . '","' . $elem[1] . '","' . $elem[2] . '"),';
+		$addrbook_str[] = '["' . $elem[0] . '","' . $elem[1] . '","' . $elem[2] . '"]';
 	}
-	$addrbook_str = substr($addrbook_str, 0, -1);
+	$addrbook_str = implode(',', $addrbook_str);
+} else {
+	$addrbook_str = '';
 }
 
 $rcpts_str = array();
@@ -86,14 +89,14 @@ $rcpts = explode(',', we_base_request::_(we_base_request::RAW, "rs", ''));
 $db = new DB_WE();
 foreach($rcpts as $rcpt){
 	if(($uid = we_users_user::getUserID($rcpt, $db)) != -1){
-		$rcpts_str[]= 'new Array("we_messaging","' . $uid . '","' . $rcpt . '")';
+		$rcpts_str[] = '["we_messaging","' . $uid . '","' . $rcpt . '"]';
 	}
 }
 ?>
 
-delta_sel = new Array();
-addrbook_sel = new Array(<?php echo $addrbook_str ?>);
-current_sel = new Array(<?php echo implode(',',$rcpts_str); ?>);
+delta_sel = [];
+addrbook_sel = [<?php echo $addrbook_str ?>];
+current_sel = [<?php echo implode(',', $rcpts_str); ?>];
 
 function init() {
 	var i;

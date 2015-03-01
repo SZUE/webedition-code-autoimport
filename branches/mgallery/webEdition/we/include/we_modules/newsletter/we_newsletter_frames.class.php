@@ -520,7 +520,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 						we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
 						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button("close", "javascript:self.close();")
 					)
-			)), we_html_element::jsElement('self.focus();'));
+		)));
 		flush();
 	}
 
@@ -562,7 +562,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 						we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
 						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button("close", "javascript:self.close();")
 					)
-			)), we_html_element::jsElement('self.focus();'));
+		)));
 		flush();
 	}
 
@@ -577,8 +577,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		}
 
 
-		$js = we_html_element::jsElement('self.focus();') .
-			$this->View->getJSProperty();
+		$js = $this->View->getJSProperty();
 
 		$texts = array('send_step', 'send_wait', 'test_account', 'default_sender', 'default_reply', we_newsletter_newsletter::FEMALE_SALUTATION_FIELD, we_newsletter_newsletter::MALE_SALUTATION_FIELD);
 		$radios = array('reject_malformed', 'reject_not_verified', 'reject_save_malformed', 'log_sending', 'default_htmlmail', 'isEmbedImages', 'title_or_salutation', 'use_base_href', 'use_https_refer', 'use_port');
@@ -689,7 +688,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$gml_table->setCol(2, 1, array('align' => 'right'), $deselect);
 		$gml_table->setCol(3, 0, array(), we_html_tools::getPixel(5, 5));
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $this->View->getHiddens() .
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(array("name" => "we_form"), $this->View->getHiddens() .
 					we_html_tools::htmlDialogLayout(
 						$table->getHtml() .
 						we_html_tools::getPixel(5, 10) .
@@ -2207,7 +2206,7 @@ function clearLog(){
 
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("class" => 'weDialogBody', 'onload' => "setTimeout(document.we_form.submit,200)"), we_html_element::htmlForm(array('name' => 'we_form'), $this->View->htmlHidden("pnt", "send_frameset") .
+				we_html_element::htmlBody(array("class" => 'weDialogBody', 'onload' => "self.focus();setTimeout(document.we_form.submit,200)"), we_html_element::htmlForm(array('name' => 'we_form'), $this->View->htmlHidden("pnt", "send_frameset") .
 						$this->View->htmlHidden('nid', $nid) .
 						$this->View->htmlHidden('test', $test) .
 						we_html_element::htmlCenter(
@@ -2217,7 +2216,7 @@ function clearLog(){
 							we_html_element::htmlDiv(array('class' => 'header_small'), g_l('modules_newsletter', '[prepare_newsletter]'))
 						)
 					)
-				), we_html_element::jsElement('self.focus();')
+				)
 		);
 	}
 
@@ -2288,7 +2287,7 @@ self.focus();
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $pb->getJS('', true) .
-										we_html_tools::htmlDialogLayout(we_html_element::htmlTextarea(array("name" => "details", "cols" => 60, "rows" => 15, "style" => "width:530px;height:300px;")), g_l('modules_newsletter', '[details]'), $_footer)
+						we_html_tools::htmlDialogLayout(we_html_element::htmlTextarea(array("name" => "details", "cols" => 60, "rows" => 15, "style" => "width:530px;height:300px;")), g_l('modules_newsletter', '[details]'), $_footer)
 					) .
 					we_html_element::jsElement('
 									document.we_form.details.value="' . g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "test") ? '[test_no_mail]' : '[sending]')) . '";
@@ -2640,13 +2639,10 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 
 		we_base_file::delete(WE_NEWSLETTER_CACHE_DIR . $emailcache . "_" . $egc);
 		//$laststep = ceil(we_base_request::_(we_base_request::INT, "ecount", 0) / $this->View->settings["send_step"]);
-		if(isset($this->View->settings["send_wait"]) && is_numeric($this->View->settings["send_wait"]) && $this->View->settings["send_wait"] && $egc > 0 && isset($this->View->settings["send_step"]) && is_numeric($this->View->settings["send_step"]) && $egc < ceil($ecount / $this->View->settings["send_step"])){
-			echo we_html_element::jsElement('
-setTimeout(document.we_form.submit,' . $this->View->settings["send_wait"] . ');
-			');
-		} else {
-			echo we_html_element::jsElement('document.we_form.submit();');
-		}
+		echo we_html_element::jsElement((isset($this->View->settings["send_wait"]) && is_numeric($this->View->settings["send_wait"]) && $this->View->settings["send_wait"] && $egc > 0 && isset($this->View->settings["send_step"]) && is_numeric($this->View->settings["send_step"]) && $egc < ceil($ecount / $this->View->settings["send_step"]) ?
+				'setTimeout(document.we_form.submit,' . $this->View->settings["send_wait"] . ');' :
+				'document.we_form.submit();'
+		));
 		flush();
 	}
 
@@ -2755,18 +2751,14 @@ self.focus();');
 		$placeholderfields = $placeholderfieldsmatches[1];
 		unset($placeholderfieldsmatches);
 
-		$fromCustomer = false;
-		$placeholderReplaceValue = "";
-		if(is_array($customerInfos) && isset($customerInfos[8]) && isset($customerInfos[9]) && $customerInfos[9] === 'customer'){
-			$fromCustomer = true;
-			$this->View->db->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($customerInfos[8]));
-			$this->View->db->next_record();
-		}
+		$fromCustomer = (is_array($customerInfos) && isset($customerInfos[8]) && isset($customerInfos[9]) && $customerInfos[9] === 'customer' ?
+				array_merge(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($customerInfos[8]), $this->View->db), we_customer_customer::getEncryptedFields()) :
+				array());
 
 		foreach($placeholderfields as $phf){
-			$placeholderReplaceValue = $fromCustomer ? $this->View->db->f($phf) : "";
+			$placeholderReplaceValue = $fromCustomer && isset($fromCustomer[$phf]) ? $fromCustomer[$phf] : "";
 			$content = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:' . $phf . '####', $placeholderReplaceValue, $content);
-			$content_plain = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:' . $phf . '####', $this->View->db->f($phf), $content_plain);
+			$content_plain = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:' . $phf . '####', $placeholderReplaceValue, $content_plain);
 		}
 	}
 

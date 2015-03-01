@@ -392,13 +392,13 @@ class we_messaging_messaging extends we_class{
 
 		if(isset($search_fields)){
 			foreach($search_fields as $elem){
-				if(!empty($this->si2sf[$elem])){
+				if($this->si2sf[$elem]){
 					$this->search_fields[] = $this->si2sf[$elem];
 				}
 			}
 		}
 
-		$tmp = self::array_get_kvals('ID', $this->available_folders);
+		//$tmp = self::array_get_kvals('ID', $this->available_folders);
 		if(isset($search_folder_ids)){
 			foreach($search_folder_ids as $elem){
 				if(in_array($elem, self::array_get_kvals('ID', $this->available_folders))){
@@ -456,7 +456,7 @@ class we_messaging_messaging extends we_class{
 		}
 
 		/* save the used message objects */
-		foreach($this->used_msgobjs as $key => $val){
+		foreach(array_keys($this->used_msgobjs) as $key){
 			$this->used_msgobjs[$key]->saveInSession($save[$key]);
 		}
 	}
