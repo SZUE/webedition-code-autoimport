@@ -1,152 +1,185 @@
+weCollectionEdit = {
+	maxIndex: 0,
+	blankRow: '',
+	lastY: 0,
+	dragID: 0,
+	dragEl: null,
+	removed: false,
+	isDragRow: false,
+	spacer: null,
 
-
-//TODO: check if there's really no possibility to get TransferData 
-
-var spacer = document.createElement("div");
-spacer.style.height = '34px';
-spacer.style.backgroundColor = 'white';
-spacer.style.border = '1px solid #006db8';
-spacer.style.width = '804px';
-spacer.style.marginTop = '4px';
-spacer.setAttribute("ondrop","drop(event)");
-spacer.setAttribute("ondragover","allowDrop(event)");
-
-var lastY = 0; 
-var dragID = 0;
-var dragEl = null;
-var removed = false;
-isDragRow = false;
-
-function repaintAndRetrieveCsv(addIndex, addNum){
-	var addAtIndex = addIndex || 0;
-	var addNumber = addNum || 0;
-
-	var t = document.getElementById('content_table'), index, csv = ',';
-	for(var i = 0; i < t.childNodes.length; i++){
-		index = t.childNodes[i].id.substr(5);
-		csv += document.getElementById('yuiAcResultItem_' + index).value + ',';
-		document.getElementById('label_' + index).innerHTML = i + 1;
-		document.getElementById('btn_direction_up_' + index).disabled = (i === 0);
-		document.getElementById('btn_direction_down_' + index).disabled = (i === (t.childNodes.length - 1));
-
-		if(addAtIndex && addAtIndex == index && addNum){
-			while(addNum > 0){
-				csv += -1 + ',';
-				addNum--;
-			}
+	getSpacer: function(){
+		if(this.spacer !== null){
+			return this.spacer;
 		}
-	}
-	document.we_form.elements['we_' + we_name + '_Collection'].value = csv;
-}
 
-function moveUp(elem){
-	var el = getRow(elem);
+		this.spacer = document.createElement("div");
+		this.spacer.style.height = '34px';
+		this.spacer.style.backgroundColor = 'white';
+		this.spacer.style.border = '1px solid #006db8';
+		this.spacer.style.width = '804px';
+		this.spacer.style.marginTop = '4px';
+		this.spacer.setAttribute("ondrop","weCollectionEdit.drop(event)");
+		this.spacer.setAttribute("ondragover","weCollectionEdit.allowDrop(event)");
 
-	if(el.parentNode.firstChild !== el){
-		el.parentNode.insertBefore(el, el.previousSibling);
-		repaintAndRetrieveCsv();
-	}
-}
+		return this.spacer;
+	}, 
 
-function moveDown(elem){
-	var el = getRow(elem);
-	var sib = el.nextSibling;
+	repaintAndRetrieveCsv: function(addIndex, addNum){
+		var addAtIndex = addIndex || 0;
+		var addNumber = addNum || 0;
 
-	if(true || sib){
-		el.parentNode.insertBefore(el.nextSibling, el);
-		repaintAndRetrieveCsv();
-	}
-}
-
-function addRows(elem){
-	var el = getRow(elem);
-	var index = el.id.substr(5);//top.console.debug('numselect_' + index);
-
-	repaintAndRetrieveCsv(index, document.getElementById('numselect_' + index).value);
-}
-
-function deleteRow(elem){
-	var el = getRow(elem);
-
-	el.parentNode.removeChild(el);
-	repaintAndRetrieveCsv();
-}
-
-function getRow(el){
-	while(el.className !== 'drop_reference' && el.className !== 'content_table'){
-		el = el.parentNode;
-	}
-
-	return el;
-}
-
-function allowDrop(ev) {
-	ev.preventDefault();
-}
-
-function drag(ev) {
-	//console.debug("start y: " + ev.target.id);
-	isDragRow = true;
-	lastY = ev.clientY;
-	dragEl = ev.target;
-	dragID = ev.target.id;
-	removed = false;
-	ev.dataTransfer.setData("text", ev.target.id);
-}
-
-function enterDrag(ev){
-	var el = getRow(ev.target);
-
-	//TODO: to avoid problems use ev.dataTransfer.getData("text")); to decide what element is dragged: => add fromTree as first param when from tree
-	if(isDragRow === true){
-		if(el.id !== dragID){
-			el = lastY < ev.clientY ? el.nextSibling : el;
-
-			if(!removed){
-				document.getElementById('content_table').removeChild(dragEl);
-				removed = true;
-			}
-
-			if(spacer.parentNode){
-				document.getElementById('content_table').removeChild(spacer);
-			}
-			document.getElementById('content_table').insertBefore(spacer, el);
-			lastY = ev.clientY + (lastY < ev.clientY ? 20 : 20);
-		}
-	} else {
-		var t = document.getElementById('content_table'), index;
+		var t = document.getElementById('content_table'), index, csv = ',';
 		for(var i = 0; i < t.childNodes.length; i++){
 			index = t.childNodes[i].id.substr(5);
-			document.getElementById('drag_' + index).style.border = '1px solid #006db8';
+			csv += document.getElementById('yuiAcResultItem_' + index).value + ',';
+			document.getElementById('label_' + index).innerHTML = i + 1;
+			document.getElementById('btn_direction_up_' + index).disabled = (i === 0);
+			document.getElementById('btn_direction_down_' + index).disabled = (i === (t.childNodes.length - 1));
+
+			if(addAtIndex && addAtIndex == index && addNum){
+				while(addNum > 0){
+					csv += -1 + ',';
+					addNum--;
+				}
+			}
 		}
-		el.style.border = '1px solid #00cc00';
-	}
-}
+		document.we_form.elements['we_' + we_name + '_Collection'].value = csv;
+	},
 
-function drop(ev) {
-	if(isDragRow){
-		isDragRow = false;
-		ev.preventDefault();
-		var data = ev.dataTransfer.getData("text");
-		document.getElementById('content_table').replaceChild(dragEl, spacer);
-		repaintAndRetrieveCsv();
-	} else {
-		ev.preventDefault();
-		//top.console.debug(we_remTable);
-		var el = getRow(ev.target), index, data, item, id, table;
+	moveUp: function(elem){
+		var el = this.getRow(elem);
 
-		index = el.id.substr(5);
-		data = ev.dataTransfer.getData("text").split(',');
-		el.style.border = '1px solid #006db8';
+		if(el.parentNode.firstChild !== el){
+			el.parentNode.insertBefore(el, el.previousSibling);
+			this.repaintAndRetrieveCsv();
+		}
+	},
 
-		//check table, if item or group and get path fpr ID(s) by ajax
-		if(we_remTable === data[1]){
-			document.getElementById('yuiAcInputItem_' + index).value = "get path using ajax: id = " + data[2];
-			document.getElementById('yuiAcResultItem_' + index).value = data[2];
-			repaintAndRetrieveCsv();
+	moveDown: function(elem){
+		var el = this.getRow(elem);
+		var sib = el.nextSibling;
+
+		if(true || sib){
+			el.parentNode.insertBefore(el.nextSibling, el);
+			this.repaintAndRetrieveCsv();
+		}
+	},
+
+	addRows: function(elem){
+		var el = this.getRow(elem),
+			num = document.getElementById('numselect_' + el.id.substr(5)).value,
+			div, newElem, cmd = [];
+
+		for(var i = 0; i < num; i++){
+			div = document.createElement("div");
+			div.innerHTML = this.blankRow.replace(/XX/g, ++this.maxIndex);
+			newElem = document.getElementById('content_table').insertBefore(div.firstChild, el.nextSibling);
+
+			cmd[1] = document.we_form.elements['we_' + we_name + '_ItemID_' + this.maxIndex].value;
+			cmd[2] = we_remTable;
+			cmd[3] = weCmdEnc(weCollectionEdit.selectorCmds[0].replace(/XX/g, this.maxIndex));
+			cmd[4] = weCmdEnc(weCollectionEdit.selectorCmds[1].replace(/XX/g, this.maxIndex));
+			cmd[5] = weCmdEnc(weCollectionEdit.selectorCmds[2].replace(/XX/g, this.maxIndex));
+			
+			document.getElementById("select_" + this.maxIndex).onclick = function(){we_cmd('openDocselector',cmd[1],cmd[2],cmd[3],cmd[4],cmd[5]);};
+
+			el = newElem;
+		}
+
+		this.repaintAndRetrieveCsv();
+		//	this.repaintAndRetrieveCsv(index, document.getElementById('numselect_' + index).value);
+	},
+
+
+	deleteRow: function(elem){
+		var el = this.getRow(elem);
+
+		el.parentNode.removeChild(el);
+		this.repaintAndRetrieveCsv();
+	},
+
+	getRow: function(elem){
+		while(elem.className !== 'drop_reference' && elem.className !== 'content_table'){
+			elem = elem.parentNode;
+		}
+
+		return elem;
+	},
+
+	allowDrop: function(evt){
+		evt.preventDefault();
+	},
+
+	drag: function(evt) {
+		//console.debug("start y: " + evt.target.id);
+		this.isDragRow = true;
+		this.lastY = evt.clientY;
+		this.dragEl = evt.target;
+		this.dragID = evt.target.id;
+		this.removed = false;
+		evt.dataTransfer.setData("text", evt.target.id);
+	},
+
+	enterDrag: function(evt){
+		var el = this.getRow(evt.target);
+
+		//TODO: to avoid problems use evt.dataTransfer.getData("text")); to decide what element is dragged: => add fromTree as first param when from tree
+		if(this.isDragRow === true){
+			if(el.id !== this.dragID){
+				el = this.lastY < evt.clientY ? el.nextSibling : el;
+
+				if(!this.removed){
+					document.getElementById('content_table').removeChild(this.dragEl);
+					this.removed = true;
+				}
+
+				if(this.getSpacer().parentNode){
+					document.getElementById('content_table').removeChild(this.getSpacer());
+				}
+				document.getElementById('content_table').insertBefore(this.getSpacer(), el);
+				this.lastY = evt.clientY + (this.lastY < evt.clientY ? 20 : 20);
+			}
 		} else {
-			alert("your object's table does not match remTable");
+			var t = document.getElementById('content_table'), index;
+			for(var i = 0; i < t.childNodes.length; i++){
+				index = t.childNodes[i].id.substr(5);
+				document.getElementById('drag_' + index).style.border = '1px solid #006db8';
+			}
+			el.style.border = '1px solid #00cc00';
 		}
-		
+	},
+
+	drop: function(evt) {
+		if(this.isDragRow){
+			this.isDragRow = false;
+			evt.preventDefault();
+			var data = evt.dataTransfer.getData("text");
+			document.getElementById('content_table').replaceChild(this.dragEl, this.getSpacer());
+			this.repaintAndRetrieveCsv();
+		} else {
+			evt.preventDefault();
+			var el = this.getRow(evt.target), index, data, item, id, table;
+
+			index = el.id.substr(5);
+			data = evt.dataTransfer.getData("text").split(',');
+			el.style.border = '1px solid #006db8';
+
+			//check table, if item or group and get path fpr ID(s) by ajax
+			if(we_remTable === data[1]){
+				if(data[0] === 'item'){
+					document.getElementById('yuiAcInputItem_' + index).value = "get path using ajax: id = " + data[2];
+					document.getElementById('yuiAcResultItem_' + index).value = data[2];
+					this.repaintAndRetrieveCsv();
+				} else {
+					alert("drag folder");
+				}
+			} else {
+				alert("your object's table does not match remTable");
+			}
+
+		}
 	}
-}
+	
+	
+};

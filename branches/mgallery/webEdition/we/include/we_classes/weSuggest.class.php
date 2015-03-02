@@ -51,6 +51,8 @@ class weSuggest{
 	const DocSelector = 'docSelector';
 	const DirSelector = 'dirSelector';
 
+	private $noautoinit = false;
+	private $noAutoInits = array();
 	var $inputfields = array();
 	var $containerwidth = array();
 	var $tables = array();
@@ -166,73 +168,76 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 		$fildsById = array();
 		// AC-FIEDS
 		$fildsObj = '';
+		$firstDone = false;
 
 
 		// loop fields
 		for($i = 0; $i < count($this->inputfields); $i++){
-			//FIXME: do we need this for safari any more?
-			$safariEventListener .= "YAHOO.util.Event.addListener('" . $this->inputfields[$i] . "','blur',YAHOO.autocoml.doSafariOnTextfieldBlur_$i);";
-			//$weErrorMarkId = str_replace("Input", "ErrorMark", $this->inputfields[$i]);
-			$weWorkspacePathArray = id_to_path(get_ws($this->tables[$i]), $this->tables[$i], null, false, true);
-			$weFieldWS[] = '[' . ($weWorkspacePathArray ? '"' . implode('","', $weWorkspacePathArray) . '"' : '') . ']';
+			if(!$this->noAutoInits[$i]){
+				//FIXME: do we need this for safari any more?
+				$safariEventListener .= "YAHOO.util.Event.addListener('" . $this->inputfields[$i] . "','blur',YAHOO.autocoml.doSafariOnTextfieldBlur_$i);";
+				//$weErrorMarkId = str_replace("Input", "ErrorMark", $this->inputfields[$i]);
+				$weWorkspacePathArray = id_to_path(get_ws($this->tables[$i]), $this->tables[$i], null, false, true);
+				$weFieldWS[] = '[' . ($weWorkspacePathArray ? '"' . implode('","', $weWorkspacePathArray) . '"' : '') . ']';
 
+				$fildsById[] = "	'" . $this->inputfields[$i] . "':$i";
+				$fildsObj .=
+					($firstDone ? ',' : '') . "{
+				'id' : '" . $this->inputfields[$i] . "',
+				'container': '" . $this->containerfields[$i] . "',
+				'old': document.getElementById('" . $this->inputfields[$i] . "').value,
+				'selector': '" . $this->selectors[$i] . "',
+				'sel': '',
+				'newval': null,
+				'run': false,
+				'found': 0,
+				'cType': '',
+				'valid': true,
+				'countMark': 0,
+				'changed': false,
+				'maxResults':" . $this->weMaxResults[$i] . ",
+				'table': '" . $this->tables[$i] . "',
+				'rootDir': '" . $this->rootDirs[$i] . "',
+				'cTypes': '" . $this->contentTypes[$i] . "',
+				'workspace': [" . ($weWorkspacePathArray ? '"' . implode('","', $weWorkspacePathArray) . '"' : '') . "],
+				'mayBeEmpty': " . ($this->inputMayBeEmpty[$i] ? "true" : "false") . ",
+				'checkField': " . intval(isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]);
 
-			$fildsById[] = "	'" . $this->inputfields[$i] . "':$i";
-			$fildsObj .=
-				($i > 0 ? ',' : '') . "{
-			'id' : '" . $this->inputfields[$i] . "',
-			'container': '" . $this->containerfields[$i] . "',
-			'old': document.getElementById('" . $this->inputfields[$i] . "').value,
-			'selector': '" . $this->selectors[$i] . "',
-			'sel': '',
-			'newval': null,
-			'run': false,
-			'found': 0,
-			'cType': '',
-			'valid': true,
-			'countMark': 0,
-			'changed': false,
-			'maxResults':" . $this->weMaxResults[$i] . ",
-			'table': '" . $this->tables[$i] . "',
-			'rootDir': '" . $this->rootDirs[$i] . "',
-			'cTypes': '" . $this->contentTypes[$i] . "',
-			'workspace': [" . ($weWorkspacePathArray ? '"' . implode('","', $weWorkspacePathArray) . '"' : '') . "],
-			'mayBeEmpty': " . ($this->inputMayBeEmpty[$i] ? "true" : "false") . ",
-			'checkField': " . intval(isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]);
-
-			if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
-				if($this->setOnSelectFields[$i]){
-					$fildsObj .=",
-'fields_id': ['" . implode('\',\'', $this->setOnSelectFields[$i]) . '\']' . ",
-'fields_val': [document.getElementById('" . implode("').value,document.getElementById('", $this->setOnSelectFields[$i]) . "').value]";
-				}
-			}
-			if($this->_doOnItemSelect[$i]){
-				$fildsObj .=',itemSelect:function(param1,param2,param,params){' . $this->_doOnItemSelect[$i] . '}';
-			}
-			if($this->_doOnTextfieldBlur[$i]){
-				$fildsObj .=',blur:function(){' . $this->_doOnTextfieldBlur[$i] . '}';
-			}
-			if(isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]){
-				$additionalFields = "";
 				if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
-					for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){
-						$additionalFields .= ($j > 0 ? "," : "") . str_replace('-', '_', $this->setOnSelectFields[$i][$j]);
+					if($this->setOnSelectFields[$i]){
+						$fildsObj .=",
+	'fields_id': ['" . implode('\',\'', $this->setOnSelectFields[$i]) . '\']' . ",
+	'fields_val': [document.getElementById('" . implode("').value,document.getElementById('", $this->setOnSelectFields[$i]) . "').value]";
 					}
-					$fildsObj .=",
-						'checkValues':'" . $additionalFields . "'";
 				}
+				if($this->_doOnItemSelect[$i]){
+					$fildsObj .=',itemSelect:function(param1,param2,param,params){' . $this->_doOnItemSelect[$i] . '}';
+				}
+				if($this->_doOnTextfieldBlur[$i]){
+					$fildsObj .=',blur:function(){' . $this->_doOnTextfieldBlur[$i] . '}';
+				}
+				if(isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]){
+					$additionalFields = "";
+					if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
+						for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){
+							$additionalFields .= ($j > 0 ? "," : "") . str_replace('-', '_', $this->setOnSelectFields[$i][$j]);
+						}
+						$fildsObj .=",
+							'checkValues':'" . $additionalFields . "'";
+					}
 
 
-				/* 				$onBlur .= <<<HTS
-				  YAHOO.autocoml.doSafariOnTextfieldBlur_$i= function(e) {
-				  YAHOO.autocoml.doOnTextfieldBlur(1,1,$i);
-				  };
-				  HTS; */
+					/* 				$onBlur .= <<<HTS
+					  YAHOO.autocoml.doSafariOnTextfieldBlur_$i= function(e) {
+					  YAHOO.autocoml.doOnTextfieldBlur(1,1,$i);
+					  };
+					  HTS; */
+				}
+				// EOF loop fields
+
+				$fildsObj .= " }";
+				$firstDone = true;
 			}
-			// EOF loop fields
-
-			$fildsObj .= " }";
 		}
 
 		return we_html_element::jsElement("
@@ -253,7 +258,7 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 		$resultId = $this->resultId ? : 'yuiAcResult' . $this->acId;
 		$containerWidth = $this->containerWidth ? : $this->width;
 
-		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir);
+		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir, $this->noautoinit);
 		$inputField = $this->_htmlTextInput($this->inputName, 30, $this->inputValue, "", 'id="' . $inputId . '" ' . $this->inputAttribs, "text", $this->width, 0, "", $this->inputDisabled);
 		$resultField = we_html_tools::hidden($this->resultName, $this->resultValue, array('id' => $resultId));
 		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer"' . ($this->selectButton ? 'style="margin-right  : ' . $this->selectButtonSpace . 'px"' : '') . '>' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
@@ -323,6 +328,10 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 	function setAcId($val, $rootDir = ""){
 		$this->acId = str_replace('-', '_', $val);
 		$this->rootDir = $rootDir;
+	}
+
+	function setNoAutoInit($noautoinit = false){
+		$this->noautoinit = $noautoinit;
 	}
 
 	/**
@@ -518,8 +527,9 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 	 * @param unknown_type $checkFieldsValue
 	 * @param unknown_type $containerwidth
 	 */
-	function setAutocompleteField($inputFieldId, $containerFieldId, $table, $contentType = '', $selector = '', $maxResults = 10, $queryDelay = 0, $layerId = null, $setOnSelectFields = null, $checkFieldsValue = true, $containerwidth = "100%", $inputMayBeEmpty = 'true', $rootDir = ''){
+	function setAutocompleteField($inputFieldId, $containerFieldId, $table, $contentType = '', $selector = '', $maxResults = 10, $queryDelay = 0, $layerId = null, $setOnSelectFields = null, $checkFieldsValue = true, $containerwidth = "100%", $inputMayBeEmpty = 'true', $rootDir = '', $noautoinit = false){
 		$this->inputfields[] = $inputFieldId;
+		$this->noAutoInits[] = $noautoinit;t_e("noauto", $this->noAutoInits);
 		$this->containerfields[] = $containerFieldId;
 		$this->tables[] = $table;
 		$this->rootDirs[] = $rootDir;
