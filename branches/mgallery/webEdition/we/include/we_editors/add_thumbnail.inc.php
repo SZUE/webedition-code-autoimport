@@ -92,7 +92,7 @@ function we_cmd(){
 			}
 			eval(\'parent.we_cmd(\'+args+\')\');
 	}
-}') . we_html_button::create_state_changer();
+}');
 
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
 

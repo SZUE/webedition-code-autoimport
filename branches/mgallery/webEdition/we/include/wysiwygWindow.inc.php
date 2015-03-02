@@ -135,11 +135,10 @@ top.close();');
 	} else {
 
 		echo STYLESHEET .
-		we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsElement('top.focus();');
+		we_html_element::jsScript(JS_DIR . 'windows.js');
 		?>
 	</head>
-	<body class="weDialogBody">
+<body class="weDialogBody" onload="top.focus();">
 		<form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" name="we_form" method="post">
 			<input type="hidden" name="we_okpressed" value="1" />
 			<?php

@@ -421,9 +421,6 @@ if($editname !== false){
 		setTimeout(spellcheck, 1000);
 	}
 
-<?php
-echo we_html_button::create_state_changer(false);
-?>
 //-->
 </script>
 </head>

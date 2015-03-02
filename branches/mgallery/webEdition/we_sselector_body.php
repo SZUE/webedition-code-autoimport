@@ -153,7 +153,7 @@ echo we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_body.js');
 				$final[] = $arFile[$key];
 			}
 
-			$js = 'top.allentries = new Array();
+			$js = 'top.allentries = [];
 var i = 0;';
 			foreach($final as $key => $entry){
 				$js.='top.allentries[i++] = "' . $entry . '";';

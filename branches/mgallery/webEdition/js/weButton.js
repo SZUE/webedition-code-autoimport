@@ -25,76 +25,76 @@
 function weButton() {
 }
 /*
-weButton.down = function (el) {
-	if (el.className != "weBtnDisabled") {
-		var tds = el.getElementsByTagName("TD");
-		el.className = "weBtnClicked";
-		tds[0].className = "weBtnLeftClicked";
-		tds[1].className = "weBtnMiddleClicked";
-		tds[2].className = "weBtnRightClicked";
-	}
-};
+ weButton.down = function (el) {
+ if (el.className != "weBtnDisabled") {
+ var tds = el.getElementsByTagName("TD");
+ el.className = "weBtnClicked";
+ tds[0].className = "weBtnLeftClicked";
+ tds[1].className = "weBtnMiddleClicked";
+ tds[2].className = "weBtnRightClicked";
+ }
+ };
 
-weButton.up = function (el) {
-	if (el.className != "weBtnDisabled") {
-		weButton.out(el);
-		return true;
-	}
-	return false;
-};
+ weButton.up = function (el) {
+ if (el.className != "weBtnDisabled") {
+ weButton.out(el);
+ return true;
+ }
+ return false;
+ };
 
-weButton.out = function (el) {
-	if (el.className != "weBtnDisabled" && el.className != "weBtn") {
-		var tds = el.getElementsByTagName("TD");
-		el.className = "weBtn";
-		tds[0].className = "weBtnLeft";
-		tds[1].className = "weBtnMiddle";
-		tds[2].className = "weBtnRight";
-	}
-};
-*/
+ weButton.out = function (el) {
+ if (el.className != "weBtnDisabled" && el.className != "weBtn") {
+ var tds = el.getElementsByTagName("TD");
+ el.className = "weBtn";
+ tds[0].className = "weBtnLeft";
+ tds[1].className = "weBtnMiddle";
+ tds[2].className = "weBtnRight";
+ }
+ };
+ */
 weButton.disable = function (id) {
 	var el = document.getElementById(id);
 	if (el !== null) {
-		if(el.tagName === "BUTTON"){
+		if (el.tagName === "BUTTON") {
 			el.disabled = true;
 			return;
 		}/*
-		el.className = "weBtnDisabled";
-		var tds = el.getElementsByTagName("TD");
-		tds[0].className = "weBtnLeftDisabled";
-		tds[1].className = "weBtnMiddleDisabled";
-		tds[2].className = "weBtnRightDisabled";
-		var img = document.getElementById(el.id + "_img");
-		if (img !== null && img.src.indexOf("Disabled.gif") == -1) {
-			img.src = img.src.replace(/\.gif/, "Disabled.gif");
-		}*/
+		 el.className = "weBtnDisabled";
+		 var tds = el.getElementsByTagName("TD");
+		 tds[0].className = "weBtnLeftDisabled";
+		 tds[1].className = "weBtnMiddleDisabled";
+		 tds[2].className = "weBtnRightDisabled";
+		 var img = document.getElementById(el.id + "_img");
+		 if (img !== null && img.src.indexOf("Disabled.gif") == -1) {
+		 img.src = img.src.replace(/\.gif/, "Disabled.gif");
+		 }*/
 	}
 };
 
 weButton.enable = function (id) {
 	var el = document.getElementById(id);
 	if (el !== null) {
-		if(el.tagName === "BUTTON"){
+		if (el.tagName === "BUTTON") {
 			el.disabled = false;
 			return;
 		}/*
-		el.className = "weBtn";
-		var tds = el.getElementsByTagName("TD");
-		tds[0].className = "weBtnLeft";
-		tds[1].className = "weBtnMiddle";
-		tds[2].className = "weBtnRight";
-		var img = document.getElementById(el.id + "_img");
-		if (img !== null) {
-			img.src = img.src.replace(/\Disabled.gif/, ".gif");
-		}*/
+		 el.className = "weBtn";
+		 var tds = el.getElementsByTagName("TD");
+		 tds[0].className = "weBtnLeft";
+		 tds[1].className = "weBtnMiddle";
+		 tds[2].className = "weBtnRight";
+		 var img = document.getElementById(el.id + "_img");
+		 if (img !== null) {
+		 img.src = img.src.replace(/\Disabled.gif/, ".gif");
+		 }*/
 	}
 };
 
 weButton.setText = function (id, text) {
 	var el = document.getElementById(id);
 	if (el !== null && text !== undefined) {
-		if(el.tagName === "BUTTON"){
+		if (el.tagName === "BUTTON") {
 			el.innerHTML = text;
 			return;
 		}
@@ -123,3 +123,14 @@ weButton.isDisabled = function (id) {
 weButton.isEnabled = function (id) {
 	return !this.isDisabled(id);
 };
+
+function switch_button_state(element, button, state, type) {
+	if (state == "enabled") {
+		weButton.enable(element);
+		return true;
+	} else if (state == "disabled") {
+		weButton.disable(element);
+	}
+
+	return false;
+}

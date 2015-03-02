@@ -673,7 +673,7 @@ extra_files_desc=new Array();';
 				we_html_element::jsScript(JS_DIR . "windows.js") .
 				(!we_fileupload_include::USE_LEGACY_FOR_BACKUP && isset($fileUploaderHead) ? $fileUploaderHead : '') .
 				we_backup_wizard::getJSDep("import", $docheck, $doclick, $douncheck) .
-				we_html_element::jsElement(we_html_button::create_state_changer(false) . '
+				we_html_element::jsElement('
 function startBusy() {
 	top.busy.location="' . $this->frameset . '?pnt=busy&operation_mode=busy&step=4";
 }

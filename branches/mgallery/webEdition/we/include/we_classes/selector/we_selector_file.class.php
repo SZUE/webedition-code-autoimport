@@ -598,7 +598,7 @@ a:link,a:visited,a:hover,a:active
 	}
 
 	protected function printHeaderJS(){
-		return we_html_button::create_state_changer(false) . '
+		return '
 function disableRootDirButs(){
 	root_dir_enabled = switch_button_state("root_dir", "root_dir_enabled", "disabled");
 	btn_fs_back_enabled = switch_button_state("btn_fs_back", "back_enabled", "disabled", "image");

@@ -222,3 +222,21 @@ function convertDate(sDate, sFormat) {
 	fixedImplode = fixedImplode.substring(separator.length, fixedImplode.length);
 	return fixedImplode;
 }
+
+function toggleTblValidity() {
+	var weNoteValidity = getCurrentQuery().Validity;
+	if (getCurrentQuery().Validity == "always") {
+		document.getElementById("f_ValidFrom_cell").style.visibility = "hidden";
+		document.getElementById("f_ValidUntil_cell").style.visibility = "hidden";
+	} else if (weNoteValidity == "date") {
+		document.getElementById("f_ValidFrom_cell").style.visibility = "visible";
+		document.getElementById("f_ValidUntil_cell").style.visibility = "hidden";
+	} else {
+		document.getElementById("f_ValidFrom_cell").style.visibility = "visible";
+		document.getElementById("f_ValidUntil_cell").style.visibility = "visible";
+	}
+}
+
+function init() {
+	parent.rpcHandleResponse(_sType, _sObjId, document.getElementById(_sType), _sTb);
+}

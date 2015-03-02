@@ -109,7 +109,7 @@ abstract class we_html_button{
 	 * This function creates the JavaScript that switches the state of a button.
 	 *
 	 * @param      $standalone                             bool                (optional)
-	 *
+	 * @deprecated: use weButton.js instead
 	 * @return     string
 	 */
 	static function create_state_changer($standalone = true){

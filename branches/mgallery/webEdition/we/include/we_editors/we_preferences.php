@@ -706,7 +706,7 @@ function build_dialog($selected_setting = 'ui'){
 			 * *************************************************************** */
 
 			// Generate needed JS
-			$_needed_JavaScript = we_html_button::create_state_changer();
+			$_needed_JavaScript = '';
 
 			if(we_base_preferences::userIsAllowed('WE_SEEM')){
 				// Build maximize window
@@ -720,108 +720,108 @@ function build_dialog($selected_setting = 'ui'){
 			if(we_base_preferences::userIsAllowed('seem_start_type')){
 				// Generate needed JS
 				$_needed_JavaScript .= we_html_element::jsElement("
-							function selectSidebarDoc() {
-								myWind = false;
+function selectSidebarDoc() {
+	myWind = false;
 
-								for (k = parent.opener.top.jsWindow_count; k > -1; k--) {
-									eval('if (parent.opener.top.jsWindow' + k + 'Object) {' +
-										 ' if (parent.opener.top.jsWindow' + k + \"Object.ref == 'preferences') {\" +
-										 '     myWind = parent.opener.top.jsWindow' + k + \"Object.wind;\" +
-										 \"     myWindStr = 'top.jsWindow\" + k + \"Object.wind';\" +
-										 ' }' +
-										 '}');
+	for (k = parent.opener.top.jsWindow_count; k > -1; k--) {
+		eval('if (parent.opener.top.jsWindow' + k + 'Object) {' +
+			 ' if (parent.opener.top.jsWindow' + k + \"Object.ref == 'preferences') {\" +
+			 '     myWind = parent.opener.top.jsWindow' + k + \"Object.wind;\" +
+			 \"     myWindStr = 'top.jsWindow\" + k + \"Object.wind';\" +
+			 ' }' +
+			 '}');
 
-									if (myWind) {
-										break;
-									}
-								}
-								parent.opener.top.we_cmd('openDocselector',document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value,'" . FILE_TABLE . "',myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value',myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value','','', '', '" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
-							}
+		if (myWind) {
+			break;
+		}
+	}
+	parent.opener.top.we_cmd('openDocselector',document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value,'" . FILE_TABLE . "',myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value',myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value','','', '', '" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+}
 
-							function select_seem_start() {
-								myWind = false;
+function select_seem_start() {
+	myWind = false;
 
-								for (k = parent.opener.top.jsWindow_count; k > -1; k--) {
-									eval('if (parent.opener.top.jsWindow' + k + 'Object) {' +
-										 '	if (parent.opener.top.jsWindow' + k + \"Object.ref == 'preferences') {\" +
-										 '		myWind = parent.opener.top.jsWindow' + k + \"Object.wind;\" +
-										 \"		myWindStr = 'top.jsWindow\" + k + \"Object.wind';\" +
-										 '	}' +
-										 '}');
+	for (k = parent.opener.top.jsWindow_count; k > -1; k--) {
+		eval('if (parent.opener.top.jsWindow' + k + 'Object) {' +
+			 '	if (parent.opener.top.jsWindow' + k + \"Object.ref == 'preferences') {\" +
+			 '		myWind = parent.opener.top.jsWindow' + k + \"Object.wind;\" +
+			 \"		myWindStr = 'top.jsWindow\" + k + \"Object.wind';\" +
+			 '	}' +
+			 '}');
 
-									if (myWind) {
-										break;
-									}
-								}
-								if(document.getElementById('seem_start_type').value == 'object') {
-								" .
-						//FIXME frames['content'] will probably not work here
+		if (myWind) {
+			break;
+		}
+	}
+	if(document.getElementById('seem_start_type').value == 'object') {
+	" .
+//FIXME frames['content'] will probably not work here
 						(defined('OBJECT_FILES_TABLE') ?
 							"parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_object')[0].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '', '', 'objectFile',1);" : '') .
 						"} else {
-									parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_document')[0].value, '" . FILE_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '', '', '" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
-								}
-							}
-							function show_seem_chooser(val) {
-								if(val == 'document') {
-									if(!!document.getElementById('selectordummy')) {
-										document.getElementById('selectordummy').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_object')) {
-										document.getElementById('seem_start_object').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_weapp')) {
-										document.getElementById('seem_start_weapp').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_document')) {
-										document.getElementById('seem_start_document').style.display = 'block';
-									}
+		parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_document')[0].value, '" . FILE_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '', '', '" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+	}
+}
+function show_seem_chooser(val) {
+	if(val == 'document') {
+		if(!!document.getElementById('selectordummy')) {
+			document.getElementById('selectordummy').style.display = 'none';
+		}
+		if(!!document.getElementById('seem_start_object')) {
+			document.getElementById('seem_start_object').style.display = 'none';
+		}
+		if(!!document.getElementById('seem_start_weapp')) {
+			document.getElementById('seem_start_weapp').style.display = 'none';
+		}
+		if(!!document.getElementById('seem_start_document')) {
+			document.getElementById('seem_start_document').style.display = 'block';
+		}
 
-							" .
+" .
 						(defined('OBJECT_FILES_TABLE') ?
 							"} else if(val == 'object') {
-									if(!!document.getElementById('selectordummy')) {
-										document.getElementById('selectordummy').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_weapp')) {
-										document.getElementById('seem_start_weapp').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_document')) {
-										document.getElementById('seem_start_document').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_object')) {
-										document.getElementById('seem_start_object').style.display = 'block';
-									}
-							" : '') . "
-								} else if(val == 'weapp'){
-									if(!!document.getElementById('selectordummy')) {
-										document.getElementById('selectordummy').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_document')) {
-										document.getElementById('seem_start_document').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_weapp')) {
-										document.getElementById('seem_start_weapp').style.display = 'block';
-									}
-									if(!!document.getElementById('seem_start_object')) {
-										document.getElementById('seem_start_object').style.display = 'none';
-									}
-								} else {
-									if(!!document.getElementById('selectordummy')) {
-										document.getElementById('selectordummy').style.display = 'block';
-									}
-									if(!!document.getElementById('seem_start_document')) {
-										document.getElementById('seem_start_document').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_weapp')) {
-										document.getElementById('seem_start_weapp').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_object')) {
-										document.getElementById('seem_start_object').style.display = 'none';
-									}
+		if(!!document.getElementById('selectordummy')) {
+			document.getElementById('selectordummy').style.display = 'none';
+		}
+		if(!!document.getElementById('seem_start_weapp')) {
+			document.getElementById('seem_start_weapp').style.display = 'none';
+		}
+		if(!!document.getElementById('seem_start_document')) {
+			document.getElementById('seem_start_document').style.display = 'none';
+		}
+		if(!!document.getElementById('seem_start_object')) {
+			document.getElementById('seem_start_object').style.display = 'block';
+		}
+" : '') . "
+	} else if(val == 'weapp'){
+		if(!!document.getElementById('selectordummy')) {
+			document.getElementById('selectordummy').style.display = 'none';
+		}
+		if(!!document.getElementById('seem_start_document')) {
+			document.getElementById('seem_start_document').style.display = 'none';
+		}
+		if(!!document.getElementById('seem_start_weapp')) {
+			document.getElementById('seem_start_weapp').style.display = 'block';
+		}
+		if(!!document.getElementById('seem_start_object')) {
+			document.getElementById('seem_start_object').style.display = 'none';
+		}
+	} else {
+		if(!!document.getElementById('selectordummy')) {
+			document.getElementById('selectordummy').style.display = 'block';
+		}
+		if(!!document.getElementById('seem_start_document')) {
+			document.getElementById('seem_start_document').style.display = 'none';
+		}
+		if(!!document.getElementById('seem_start_weapp')) {
+			document.getElementById('seem_start_weapp').style.display = 'none';
+		}
+		if(!!document.getElementById('seem_start_object')) {
+			document.getElementById('seem_start_object').style.display = 'none';
+		}
 
-								}
-							}");
+	}
+}");
 
 				// Cockpit
 				$_document_path = $_object_path = '';
@@ -1100,8 +1100,6 @@ function build_dialog($selected_setting = 'ui'){
 				break;
 			}
 
-			$_needed_JavaScript = '';
-
 			/**
 			 * inlineedit setting
 			 */
@@ -1146,7 +1144,7 @@ function build_dialog($selected_setting = 'ui'){
 				array('headline' => g_l('prefs', '[cssapplyto_default]'), 'html' => $CSSAPPLYTO_DEFAULT->getHtml(), 'space' => 200),
 			);
 
-			return create_dialog(''/* , 'we:tag Standards' g_l('prefs', '[tab][defaultAttribs]') */, $_settings, -1, '', '', (isset($_needed_JavaScript) ? $_needed_JavaScript : ''));
+			return create_dialog(''/* , 'we:tag Standards' g_l('prefs', '[tab][defaultAttribs]') */, $_settings, -1);
 
 		case 'countries':
 			if(!we_base_preferences::userIsAllowed('WE_COUNTRIES_DEFAULT')){
@@ -1272,59 +1270,7 @@ function deleteLocale() {
 	}
 }
 
-function defaultLocale() {
-	if(document.getElementById('locale_temp_locales').selectedIndex > -1) {
-		var LocaleIndex = document.getElementById('locale_temp_locales').selectedIndex;
-		var LocaleValue =  document.getElementById('locale_temp_locales').options[LocaleIndex].value;
-
-		setDefaultLocale(LocaleValue);
-	}
-}
-
-function setDefaultLocale(Value) {
-	if(document.getElementById('locale_temp_locales').options.length > 0) {
-		Index = 0;
-		for(i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
-			if(document.getElementById('locale_temp_locales').options[i].value == Value) {
-				Index = i;
-			}
-			document.getElementById('locale_temp_locales').options[i].style.background = '#ffffff';
-		}
-		document.getElementById('locale_temp_locales').options[Index].style.background = '#cccccc';
-		document.getElementById('locale_temp_locales').options[Index].selected = false;
-		document.getElementById('locale_default').value = Value;
-	}
-
-}
-
-function resetLocales() {
-	if(document.getElementById('locale_temp_locales').options.length > 0) {
-		var temp = new Array(document.getElementById('locale_temp_locales').options.length);
-		for(i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
-			temp[i] = document.getElementById('locale_temp_locales').options[i].value;
-		}
-		document.getElementById('locale_locales').value = temp.join(\",\");
-	}
-
-}
-
-function initLocale(Locale) {
-	if(Locale != \"\") {
-		setDefaultLocale(Locale);
-	}
-	resetLocales();
-}
-
-Array.prototype.contains = function(obj) {
-	var i, listed = false;
-	for (i=0; i<this.length; i++) {
-		if (this[i] === obj) {
-			listed = true;
-			break;
-		}
-	}
-	return listed;
-}");
+");
 
 			$postJs = we_html_element::jsElement('initLocale("' . $default . '");');
 
@@ -1465,51 +1411,6 @@ Array.prototype.contains = function(obj) {
 			//EDITOR PLUGIN
 
 			$_needed_JavaScript = we_html_element::jsElement('
-
-function setJavaEditorDisabled(disabled) {
-	document.getElementById("_newconf[specify_jeditor_colors]").disabled = disabled;
-	document.getElementById("label__newconf[specify_jeditor_colors]").style.color = (disabled ? "grey" : "");
-	document.getElementById("label__newconf[specify_jeditor_colors]").style.cursor = (disabled ? "default" : "pointer");
-	if (document.getElementById("_newconf[specify_jeditor_colors]").checked) {
-		setEditorColorsDisabled(disabled);
-	} else {
-		setEditorColorsDisabled(true);
-	}
-}
-
-function setEditorColorsDisabled(disabled) {
-	setColorChooserDisabled("editorFontcolor", disabled);
-	setColorChooserDisabled("editorWeTagFontcolor", disabled);
-	setColorChooserDisabled("editorWeAttributeFontcolor", disabled);
-	setColorChooserDisabled("editorHTMLTagFontcolor", disabled);
-	setColorChooserDisabled("editorHTMLAttributeFontcolor", disabled);
-	setColorChooserDisabled("editorPiTagFontcolor", disabled);
-	setColorChooserDisabled("editorCommentFontcolor", disabled);
-}
-
-function setColorChooserDisabled(id, disabled) {
-	var td = document.getElementById("color_newconf["+ id+"]");
-	td.setAttribute("class", disabled ? "disabled" : "");
-	td.firstChild.style.cursor = disabled ? "default" : "pointer";
-	document.getElementById("label_"+id).style.color=disabled ? "grey" : "";
-}
-
-function displayEditorOptions(editor) {
-	tmp=document.getElementsByClassName("editor");
-	for( var k=0; k<tmp .length; k++ ) {
-		tmp[k].style.display="none";
-	}
-
-	tmp=document.getElementsByClassName("editor_"+editor);
-	for( var k=0; k<tmp .length; k++ ) {
-		tmp[k].style.display="block";
-	}
-}
-
-function initEditorMode() {
-	displayEditorOptions(document.getElementsByName("newconf[editorMode]")[0].options[document.getElementsByName("newconf[editorMode]")[0].options.selectedIndex].value);
-}
-
 if(window.onload) {
 	var previousOnload = window.onload;
 	window.onload = function(e) {
@@ -1717,50 +1618,7 @@ for(i=0;i<elements.length; ++i){
 				// Generate needed JS
 				$_needed_JavaScript = we_html_element::jsElement('
 var hot = false;
-' . (!permissionhandler::hasPerm("CHANGE_START_DOCUMENT") ? we_html_button::create_state_changer(false) : "") . "
-function set_state_edit_delete_recipient() {
-	var p = document.forms[0].elements.we_recipient;
-	var i = p.length;
-
-	if (i == 0) {
-		edit_enabled = switch_button_state('edit', 'edit_enabled', 'disabled');
-		delete_enabled = switch_button_state('delete', 'delete_enabled', 'disabled');
-	} else {
-		edit_enabled = switch_button_state('edit', 'edit_enabled', 'enabled');
-		delete_enabled = switch_button_state('delete', 'delete_enabled', 'enabled');
-	}
-}
-
-function inSelectBox(val) {
-	var p = document.forms[0].elements.we_recipient;
-
-	for (var i = 0; i < p.options.length; i++) {
-		if (p.options[i].text == val) {
-			return true;
-		}
-	}
-	return false;
-}
-
-function addElement(value, text, sel) {
-	var p = document.forms[0].elements.we_recipient;
-	var i = p.length;
-
-	p.options[i] =  new Option(text, value);
-
-	if (sel) {
-		p.selectedIndex = i;
-	}
-}
-
-function in_array(n, h) {
-	for (var i = 0; i < h.length; i++) {
-		if (h[i] == n) {
-			return true;
-		}
-	}
-	return false;
-}
+' . "
 
 function add_recipient() {
 	var newRecipient = prompt(\"" . g_l('alert', '[input_name]') . "\", \"\");
@@ -1837,51 +1695,7 @@ function edit_recipient() {
 		}
 	}
 }
-
-function send_recipients() {
-	if (hot) {
-		var p = document.forms[0].elements.we_recipient;
-		var v = document.forms[0].elements[\"newconf[formmail_values]\"];
-
-		v.value = \"\";
-
-		for (var i = 0; i < p.options.length; i++) {
-			v.value += p.options[i].value + \"<#>\" + p.options[i].text + ( (i < (p.options.length -1 )) ? \"<##>\" : \"\");
-		}
-	}
-}
-
-function formmailLogOnOff() {
-	var formmail_log = document.forms[0].elements[\"newconf[FORMMAIL_LOG]\"];
-	var formmail_block = document.forms[0].elements[\"newconf[FORMMAIL_BLOCK]\"];
-	var formmail_emptylog = document.forms[0].elements[\"newconf[FORMMAIL_EMPTYLOG]\"];
-	var formmail_span = document.forms[0].elements[\"newconf[FORMMAIL_SPAN]\"];
-	var formmail_trials = document.forms[0].elements[\"newconf[FORMMAIL_TRIALS]\"];
-	var formmail_blocktime = document.forms[0].elements[\"newconf[FORMMAIL_BLOCKTIME]\"];
-
-	var flag = formmail_log.options[formmail_log.selectedIndex].value == 1;
-
-	formmail_emptylog.disabled = !flag;
-
-	formmail_block.disabled = !flag;
-	if (formmail_block.options[formmail_block.selectedIndex].value == 1) {
-		formmail_span.disabled = !flag;
-		formmail_trials.disabled = !flag;
-		formmail_blocktime.disabled = !flag;
-	}
-}
-function formmailBlockOnOff() {
-	var formmail_block = document.forms[0].elements[\"newconf[FORMMAIL_BLOCK]\"];
-	var formmail_span = document.forms[0].elements[\"newconf[FORMMAIL_SPAN]\"];
-	var formmail_trials = document.forms[0].elements[\"newconf[FORMMAIL_TRIALS]\"];
-	var formmail_blocktime = document.forms[0].elements[\"newconf[FORMMAIL_BLOCKTIME]\"];
-
-	var flag = formmail_block.options[formmail_block.selectedIndex].value == 1;
-
-	formmail_span.disabled = !flag;
-	formmail_trials.disabled = !flag;
-	formmail_blocktime.disabled = !flag;
-}");
+");
 
 				// Build dialog if user has permission
 				$_settings[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[formmail_information]'), we_html_tools::TYPE_INFO, 450, false), "space" => 0);
@@ -2086,22 +1900,6 @@ function formmailBlockOnOff() {
 			/**
 			 * Proxy server
 			 */
-			// Generate needed JS
-			$_needed_JavaScript = we_html_element::jsElement("
-							function set_state() {
-								if (document.getElementsByName('newconf[useproxy]')[0].checked == true) {
-									_new_state = false;
-								} else {
-									_new_state = true;
-								}
-
-								document.getElementsByName('newconf[proxyhost]')[0].disabled = _new_state;
-								document.getElementsByName('newconf[proxyport]')[0].disabled = _new_state;
-								document.getElementsByName('newconf[proxyuser]')[0].disabled = _new_state;
-								document.getElementsByName('newconf[proxypass]')[0].disabled = _new_state;
-							}");
-
-
 			// Check Proxy settings  ...
 			$_proxy = get_value("proxy_proxy");
 
@@ -2122,7 +1920,7 @@ function formmailBlockOnOff() {
 				array("headline" => g_l('prefs', '[proxypass]'), "html" => $_proxypass, "space" => 200, "noline" => 1),
 			);
 			// Build dialog element if user has permission
-			return create_dialog("", /* g_l('prefs', '[tab][proxy]'), */ $_settings, -1, "", "", $_needed_JavaScript);
+			return create_dialog("", /* g_l('prefs', '[tab][proxy]'), */ $_settings, -1);
 
 
 		case "advanced":
@@ -2198,7 +1996,7 @@ function formmailBlockOnOff() {
 			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->selectOption(get_value("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH") ? 1 : 0);
 			$_settings[] = array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->getHtml(), "space" => 200);
 
-			return create_dialog("", /* g_l('prefs', '[tab][advanced]'), */ $_settings, -1, '', '', isset($_needed_JavaScript) ? $_needed_JavaScript : '');
+			return create_dialog("", /* g_l('prefs', '[tab][advanced]'), */ $_settings, -1);
 
 		case "system":
 			if(!permissionhandler::hasPerm("ADMINISTRATOR")){
@@ -2209,10 +2007,6 @@ function formmailBlockOnOff() {
 				we_html_tools::htmlTextInput("newconf[FILE_UPLOAD_MAX_UPLOAD_SIZE]", 22, get_value("FILE_UPLOAD_MAX_UPLOAD_SIZE"), "", ' onkeypress="return IsDigit(event);"', "number", 60) . ' MB</td><td style="padding-left:20px;" class="small">' .
 				g_l('prefs', '[upload][we_max_size_hint]') .
 				'</td></tr></table>';
-			$_needed_JavaScript = we_html_element::jsElement('function IsDigit(e) {
-					var key =  (e != null && e.charCode?e.charCode:event.keyCode);
-					return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
-				}');
 
 			// FILE UPLOAD
 			$_fileuploader_use_legacy = we_html_forms::checkbox(1, get_value('FILE_UPLOAD_USE_LEGACY'), 'newconf[FILE_UPLOAD_USE_LEGACY]', g_l('prefs', '[upload][use_legacy]'), false, 'defaultfont', '');
@@ -2261,21 +2055,6 @@ function formmailBlockOnOff() {
 					$_file = we_base_preferences::changeSourceCode('define', $_file, 'DB_SET_CHARSET', $tmp);
 				}
 			}
-
-			// Generate needed JS
-			$_needed_JavaScript .= we_html_element::jsElement("
-function set_state_auth() {
-	if (document.getElementsByName('useauthEnabler')[0].checked == true) {
-		document.getElementsByName('newconf[useauth]')[0].value = 1;
-		_new_state = false;
-	} else {
-		document.getElementsByName('newconf[useauth]')[0].value = 0;
-		_new_state = true;
-	}
-
-	document.getElementsByName('newconf[HTTP_USERNAME]')[0].disabled = _new_state;
-	document.getElementsByName('newconf[HTTP_PASSWORD]')[0].disabled = _new_state;
-}");
 
 			// Check authentication settings  ...
 			$_auth = get_value("HTTP_USERNAME");
@@ -2348,7 +2127,7 @@ function set_state_auth() {
 				array("headline" => g_l('prefs', '[session][crypt][title]'), "html" => $cryptSession->getHtml(), "space" => 200),
 			);
 			// Build dialog element if user has permission
-			return create_dialog("", /* g_l('prefs', '[tab][system]'), */ $_settings, -1, "", "", $_needed_JavaScript);
+			return create_dialog("", /* g_l('prefs', '[tab][system]'), */ $_settings, -1);
 
 		case "seolinks":
 			/*			 * *******************************************************************
@@ -2357,7 +2136,6 @@ function set_state_auth() {
 			if(!permissionhandler::hasPerm("ADMINISTRATOR")){
 				break;
 			}
-			$_needed_JavaScript = "";
 			// Build dialog if user has permission
 
 			$_navigation_directoryindex_names = we_html_tools::htmlTextInput("newconf[NAVIGATION_DIRECTORYINDEX_NAMES]", 22, get_value("NAVIGATION_DIRECTORYINDEX_NAMES"), "", "", "text", 225);
@@ -2398,53 +2176,12 @@ function set_state_auth() {
 				array('headline' => g_l('prefs', '[error_no_object_found]'), 'html' => $yuiSuggest->getHTML(), 'space' => 200, "noline" => 1),
 				array('headline' => g_l('prefs', '[suppress404code]'), 'html' => getTrueFalseSelect('SUPPRESS404CODE'), 'space' => 200, 'noline' => 0),
 			);
-			return create_dialog('', /* g_l('prefs', '[tab][seolinks]'), */ $_settings, -1, '', '', null, $_needed_JavaScript);
+			return create_dialog('', /* g_l('prefs', '[tab][seolinks]'), */ $_settings, -1, '', '', null);
 
 		case 'error_handling':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				break;
 			}
-
-			// Generate needed JS
-			$_needed_JavaScript = we_html_element::jsElement("
-function set_state_error_handler() {
-	if (document.getElementsByName('newconf[WE_ERROR_HANDLER]')[0].checked == true) {
-		_new_state = false;
-		_new_style = 'black';
-		_new_cursor = document.all ? 'hand' : 'pointer';
-	} else {
-		_new_state = true;
-		_new_style = 'gray';
-		_new_cursor = '';
-	}
-
-	document.getElementsByName('newconf[WE_ERROR_NOTICES]')[0].disabled = _new_state;
-	document.getElementsByName('newconf[WE_ERROR_WARNINGS]')[0].disabled = _new_state;
-	document.getElementsByName('newconf[WE_ERROR_ERRORS]')[0].disabled = _new_state;
-	document.getElementsByName('newconf[WE_ERROR_DEPRECATED]')[0].disabled = _new_state;
-
-	document.getElementById('label_newconf[WE_ERROR_NOTICES]').style.color = _new_style;
-	document.getElementById('label_newconf[WE_ERROR_WARNINGS]').style.color = _new_style;
-	document.getElementById('label_newconf[WE_ERROR_ERRORS]').style.color = _new_style;
-	document.getElementById('label_newconf[WE_ERROR_DEPRECATED]').style.color = _new_style;
-
-	document.getElementById('label_newconf[WE_ERROR_NOTICES]').style.cursor = _new_cursor;
-	document.getElementById('label_newconf[WE_ERROR_WARNINGS]').style.cursor = _new_cursor;
-	document.getElementById('label_newconf[WE_ERROR_ERRORS]').style.cursor = _new_cursor;
-	document.getElementById('label_newconf[WE_ERROR_DEPRECATED]').style.cursor = _new_cursor;
-
-	document.getElementsByName('newconf[WE_ERROR_SHOW]')[0].disabled = _new_state;
-	document.getElementsByName('newconf[WE_ERROR_LOG]')[0].disabled = _new_state;
-	document.getElementsByName('newconf[WE_ERROR_MAIL]')[0].disabled = _new_state;
-
-	document.getElementById('label_newconf[WE_ERROR_SHOW]').style.color = _new_style;
-	document.getElementById('label_newconf[WE_ERROR_LOG]').style.color = _new_style;
-	document.getElementById('label_newconf[WE_ERROR_MAIL]').style.color = _new_style;
-
-	document.getElementById('label_newconf[WE_ERROR_SHOW]').style.cursor = _new_cursor;
-	document.getElementById('label_newconf[WE_ERROR_LOG]').style.cursor = _new_cursor;
-	document.getElementById('label_newconf[WE_ERROR_MAIL]').style.cursor = _new_cursor;
-}");
 
 			/**
 			 * Error handler
@@ -2501,7 +2238,7 @@ function set_state_error_handler() {
 				array('headline' => g_l('prefs', '[error_displaying]'), 'html' => $_error_display_table->getHtml(), 'space' => 200),
 			);
 
-			return create_dialog('settings_error_expert', /* g_l('prefs', '[tab][error_handling]'), */ $_settings, $_foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'), $_needed_JavaScript);
+			return create_dialog('settings_error_expert', /* g_l('prefs', '[tab][error_handling]'), */ $_settings, $_foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'));
 
 		/*		 * *******************************************************************
 		 * Validation (XHTML)
@@ -2509,19 +2246,6 @@ function set_state_error_handler() {
 		case 'message_reporting':
 
 			$_val = get_value('message_reporting');
-
-			$_js = we_html_element::jsElement('
-function handle_message_reporting_click() {
-	val = 0;
-	var fields = new Array("message_reporting_notices", "message_reporting_warnings", "message_reporting_errors");
-	for (i=0;i<fields.length;i++) {
-
-		if (document.getElementById(fields[i]).checked) {
-			val += parseInt(document.getElementById(fields[i]).value);
-		}
-	}
-	document.getElementById("message_reporting").value = val;
-}');
 
 			$_html = "<input type=\"hidden\" id=\"message_reporting\" name=\"newconf[message_reporting]\" value=\"$_val\" />" . we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_ERROR, 1, "message_reporting_errors", g_l('prefs', '[message_reporting][show_errors]'), false, "defaultfont", "handle_message_reporting_click();", true) . "<br />" .
 				we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_WARNING, $_val & we_message_reporting::WE_MESSAGE_WARNING, "message_reporting_warnings", g_l('prefs', '[message_reporting][show_warnings]'), false, "defaultfont", "handle_message_reporting_click();") . "<br />" .
@@ -2532,7 +2256,7 @@ function handle_message_reporting_click() {
 				array('headline' => g_l('prefs', '[message_reporting][headline]'), 'html' => $_html, 'space' => 200),
 			);
 
-			return create_dialog('settings_message_reporting', /* g_l('prefs', '[tab][message_reporting]'), */ $_settings, -1, '', '', $_js);
+			return create_dialog('settings_message_reporting', /* g_l('prefs', '[tab][message_reporting]'), */ $_settings, -1);
 
 		/*		 * *******************************************************************
 		 * Validation (XHTML)
@@ -2541,30 +2265,6 @@ function handle_message_reporting_click() {
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				break;
 			}
-
-			$js = we_html_element::jsElement('
-mainXhtmlFields  = Array("setXhtml_remove_wrong","setXhtml_show_wrong");
-showXhtmlFields = Array("setXhtml_show_wrong_text","setXhtml_show_wrong_js","setXhtml_show_wrong_error_log");
-
-function disable_xhtml_fields(val,fields){
-		for(i=0;i<fields.length;i++){
-				elem = document.forms[0][fields[i]];
-				label = document.getElementById("label_" + fields[i]);
-				if(val == 1){
-						elem.disabled = false;
-						label.style.color = "black";
-						label.style.cursor = document.all ? "hand" : "pointer";
-				} else {
-						elem.disabled = true;
-						label.style.color = "grey";
-						label.style.cursor = "";
-				}
-		}
-}
-
-function set_xhtml_field(val, field){
-		document.forms[0][field].value = (val ? 1 : 0);
-}');
 
 			//  activate xhtml_debug
 			$_xhtml_debug = we_html_forms::checkbox(1, get_value('XHTML_DEBUG'), 'setXhtml_debug', g_l('prefs', '[xhtml_debug_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[XHTML_DEBUG]\');disable_xhtml_fields(this.checked, mainXhtmlFields);disable_xhtml_fields((document.forms[0][\'setXhtml_show_wrong\'].checked && this.checked), showXhtmlFields);') .
@@ -2601,7 +2301,7 @@ function set_xhtml_field(val, field){
 				array('html' => $_xhtml_show_wrong_error_log, 'space' => 220, 'noline' => 1),
 			);
 
-			return create_dialog('', /* g_l('prefs', '[tab][validation]'), */ $_settings, -1, '', '', $js);
+			return create_dialog('', /* g_l('prefs', '[tab][validation]'), */ $_settings, -1);
 
 		case 'security':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -2612,20 +2312,20 @@ function set_xhtml_field(val, field){
 			$customer_table->setCol($row, 0, array('class' => 'defaultfont', 'width' => '20px'), '');
 			$customer_table->setCol($row, 1, array('class' => 'defaultfont', 'colspan' => 5), g_l('prefs', '[security][customer][disableLogins]') . ':');
 			$customer_table->setCol($row, 6, array('width' => 300));
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
 			$customer_table->setCol($row, 2, array('width' => '20px'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'width:2em;text-align:center'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'text-align:center;'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
 
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value");
@@ -2643,11 +2343,11 @@ function set_xhtml_field(val, field){
 
 			$customer_table->setCol($row, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array(), 's');
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
 
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('SECURITY_DELETE_SESSION')));
 
@@ -2776,16 +2476,7 @@ function checkAll(val) {
 	checked=(val.checked)?1:0;
 	' . $jsCheckboxCheckAll . ';
 }
-
-function checkAllRevert() {
-	var checkbox = document.getElementById("version_all");
-	checkbox.checked = false;
-}
-
-function openVersionWizard() {
-	parent.opener.top.we_cmd("versions_wizard");
-
-}');
+');
 
 			$_SESSION['weS']['versions']['logPrefs'] = array();
 			foreach($versionsPrefs as $v){
@@ -3079,16 +2770,16 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	}
 	$doSave = true;
 }
-
+echo STYLESHEET . we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() . we_html_element::jsScript(JS_DIR . 'preferences.js');
 if($doSave && !$acError){
 	save_all_values();
 
-	echo STYLESHEET .
+	echo
 	we_html_element::jsElement('
-							function doClose() {
+function doClose() {
 
-								var _multiEditorreload = false;
-							   ' . $save_javascript .
+	var _multiEditorreload = false;
+' . $save_javascript .
 		(!$email_saved ? we_message_reporting::getShowMessageCall(g_l('prefs', '[error_mail_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) : we_message_reporting::getShowMessageCall(g_l('prefs', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) . '
 var childs=top.document.getElementById("tabContainer").children;
 childs[0].className="tabActive";
@@ -3146,8 +2837,7 @@ function setColorField(name) {
 }' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR) : ""));
 
 
-	echo STYLESHEET .
-	$_we_cmd_js . we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() . '</head>' .
+	echo $_we_cmd_js . '</head>' .
 	we_html_element::htmlBody(array('class' => 'weDialogBody'), $_form) .
 	$yuiSuggest->getYuiJs() .
 	'</html>';

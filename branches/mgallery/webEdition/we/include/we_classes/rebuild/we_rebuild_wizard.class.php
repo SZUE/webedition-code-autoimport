@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -54,8 +53,8 @@ abstract class we_rebuild_wizard{
 		$pb = $WE_PB->getHTML();
 
 		$js = $WE_PB->getJSCode() .
-				we_html_element::jsElement(
-						'function showRefreshButton() {
+			we_html_element::jsElement(
+				'function showRefreshButton() {
 				  prevBut = document.getElementById("prev");
 				  nextBut = document.getElementById("next");
 				  refrBut = document.getElementById("refresh");
@@ -97,12 +96,12 @@ abstract class we_rebuild_wizard{
 
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead(
-								we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]')) .
-								STYLESHEET .
-								($dc ? '' : we_html_button::create_state_changer()) . $js) .
-						we_html_element::htmlBody(array('style' => 'overflow:hidden', "class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
-						)
+				we_html_element::htmlHead(
+					we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]')) .
+					STYLESHEET .
+					$js) .
+				we_html_element::htmlBody(array('style' => 'overflow:hidden', "class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
+				)
 		);
 	}
 
@@ -185,10 +184,10 @@ abstract class we_rebuild_wizard{
 		);
 
 		$_navRebuildHTML = '<div>' .
-				we_html_forms::radiobutton("rebuild_navigation", ($type === "rebuild_navigation" && permissionhandler::hasPerm("REBUILD_NAVIGATION")), "type", g_l('rebuild', '[navigation]'), false, "defaultfont", "setNavStatDocDisabled()", !permissionhandler::hasPerm("REBUILD_NAVIGATION"), g_l('rebuild', '[txt_rebuild_navigation]'), 0, 495) .
-				'</div><div style="padding:10px 20px;">' .
-				we_html_forms::checkbox(1, false, 'rebuildStaticAfterNavi', g_l('rebuild', '[rebuildStaticAfterNaviCheck]'), false, 'defaultfont', '', true, g_l('rebuild', '[rebuildStaticAfterNaviHint]'), 0, 475) .
-				'</div>';
+			we_html_forms::radiobutton("rebuild_navigation", ($type === "rebuild_navigation" && permissionhandler::hasPerm("REBUILD_NAVIGATION")), "type", g_l('rebuild', '[navigation]'), false, "defaultfont", "setNavStatDocDisabled()", !permissionhandler::hasPerm("REBUILD_NAVIGATION"), g_l('rebuild', '[txt_rebuild_navigation]'), 0, 495) .
+			'</div><div style="padding:10px 20px;">' .
+			we_html_forms::checkbox(1, false, 'rebuildStaticAfterNavi', g_l('rebuild', '[rebuildStaticAfterNaviCheck]'), false, 'defaultfont', '', true, g_l('rebuild', '[rebuildStaticAfterNaviHint]'), 0, 475) .
+			'</div>';
 
 		$parts[] = array(
 			"headline" => "",
@@ -265,7 +264,7 @@ abstract class we_rebuild_wizard{
 			set_button_state(' . ($allbutdisabled ? 1 : 0) . ');';
 
 		$js .=
-				'function setNavStatDocDisabled() {
+			'function setNavStatDocDisabled() {
 		var radio = document.getElementById("type");
 		var check = document.getElementById("rebuildStaticAfterNavi");
 		var checkLabel = document.getElementById("label_rebuildStaticAfterNavi");
@@ -479,7 +478,7 @@ abstract class we_rebuild_wizard{
 	private static function formThumbs($thumbs){
 		$GLOBALS['DB_WE']->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER By Name');
 		$Thselect = g_l('rebuild', '[thumbnails]') . "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" .
-				'<select class="defaultfont" name="thumbs[]" size="10" multiple style="width: 520px">';
+			'<select class="defaultfont" name="thumbs[]" size="10" multiple style="width: 520px">';
 
 		$thumbsArray = makeArrayFromCSV($thumbs);
 		while($GLOBALS['DB_WE']->next_record()){
@@ -493,8 +492,8 @@ abstract class we_rebuild_wizard{
 		$metaDataFields = we_metadata_metaData::getDefinedMetaDataFields();
 
 		$_html = we_html_element::jsElement('document._errorMessage=' . (!empty($metaFields) ? '""' : '"' . addslashes(g_l('rebuild', '[noFieldsChecked]')) . '"')) .
-				we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[expl_rebuild_metadata]'), we_html_tools::TYPE_INFO, 520) .
-				'<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', '[metadata]') . ':</div>' . "\n";
+			we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[expl_rebuild_metadata]'), we_html_tools::TYPE_INFO, 520) .
+			'<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', '[metadata]') . ':</div>' . "\n";
 
 		$selAllBut = we_html_button::create_button("selectAll", "javascript:we_cmd('select_all_fields');");
 		$deselAllBut = we_html_button::create_button("deselectAll", "javascript:we_cmd('deselect_all_fields');");
@@ -507,10 +506,10 @@ abstract class we_rebuild_wizard{
 		}
 
 		$_html .= we_html_button::create_button_table(
-						array(
-					$selAllBut,
-					$deselAllBut
-						), 10, array('style' => 'margin:10px 0 20px 0;')
+				array(
+				$selAllBut,
+				$deselAllBut
+				), 10, array('style' => 'margin:10px 0 20px 0;')
 		);
 
 		$_html .= we_html_forms::checkbox(1, $onlyEmpty, 'onlyEmpty', g_l('rebuild', '[onlyEmpty]'));
@@ -545,12 +544,12 @@ abstract class we_rebuild_wizard{
 		}
 
 		$all_content = (permissionhandler::hasPerm('ADMINISTRATOR') ?
-						we_html_forms::checkbox(1, $maintable, 'maintable', g_l('rebuild', '[rebuild_maintable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;') :
-						'');
+				we_html_forms::checkbox(1, $maintable, 'maintable', g_l('rebuild', '[rebuild_maintable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;') :
+				'');
 
 		$filter_content = we_rebuild_wizard::formCategory($categories, $catAnd) . '<br/>' . we_html_tools::getPixel(2, 5) . '<br/>' .
-				we_rebuild_wizard::formDoctypes($doctypes) . '<br/>' . we_html_tools::getPixel(2, 10) . '<br/>' .
-				we_rebuild_wizard::formFolders($folders);
+			we_rebuild_wizard::formDoctypes($doctypes) . '<br/>' . we_html_tools::getPixel(2, 10) . '<br/>' .
+			we_rebuild_wizard::formFolders($folders);
 
 		$filter_content = we_html_forms::radiobutton('rebuild_filter', ($btype === 'rebuild_filter' && permissionhandler::hasPerm('REBUILD_FILTERD') || ($btype === 'rebuild_all' && (!permissionhandler::hasPerm('REBUILD_ALL')) && permissionhandler::hasPerm('REBUILD_FILTERD'))), 'btype', g_l('rebuild', '[rebuild_filter]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('REBUILD_FILTERD')), g_l('rebuild', '[txt_rebuild_filter]'), 0, 495, '', $filter_content);
 
@@ -640,8 +639,8 @@ abstract class we_rebuild_wizard{
 		$parts = array();
 
 		$content = we_rebuild_wizard::formThumbs($thumbs) .
-				'<br/>' . we_html_tools::getPixel(2, 15) . '<br/>' .
-				we_rebuild_wizard::formFolders($thumbsFolders, true, 520);
+			'<br/>' . we_html_tools::getPixel(2, 15) . '<br/>' .
+			we_rebuild_wizard::formFolders($thumbsFolders, true, 520);
 
 		$parts[] = array(
 			'headline' => '',
@@ -706,8 +705,8 @@ abstract class we_rebuild_wizard{
 		}
 
 		$content = we_rebuild_wizard::formMetadata($metaFields, $onlyEmpty) .
-				we_html_element::htmlBr() . we_html_tools::getPixel(2, 15) . we_html_element::htmlBr() .
-				we_rebuild_wizard::formFolders($metaFolders, true, 520);
+			we_html_element::htmlBr() . we_html_tools::getPixel(2, 15) . we_html_element::htmlBr() .
+			we_rebuild_wizard::formFolders($metaFolders, true, 520);
 
 
 
@@ -755,10 +754,10 @@ abstract class we_rebuild_wizard{
 		$step = we_base_request::_(we_base_request::INT, 'step');
 		$resp = we_base_request::_(we_base_request::STRING, 'responseText');
 		$tail = ($btype ? '&amp;btype=' . rawurlencode($btype) : '') .
-				($type ? '&amp;type=' . rawurlencode($type) : '') .
-				($tid ? '&amp;templateID=' . $tid : '') .
-				($step ? '&amp;step=' . $step : '') .
-				($resp ? '&amp;responseText=' . rawurlencode($resp) : '');
+			($type ? '&amp;type=' . rawurlencode($type) : '') .
+			($tid ? '&amp;templateID=' . $tid : '') .
+			($step ? '&amp;step=' . $step : '') .
+			($resp ? '&amp;responseText=' . rawurlencode($resp) : '');
 
 		$taskname = md5(session_id() . '_rebuild');
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;
@@ -768,24 +767,24 @@ abstract class we_rebuild_wizard{
 
 		if($tail){
 			$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => "wizcmd.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body" . $tail . "';")
-							, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-									, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy&amp;dc=1", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
-									we_html_element::htmlIFrame('wizcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+						, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy&amp;dc=1", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
+						we_html_element::htmlIFrame('wizcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 			));
 		} else {
 			$height = (we_base_browserDetect::isFF() ? 60 : 40);
 			$body = we_html_element::htmlBody(array('id' => 'weMainBody')
-							, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-									, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body", 'position:absolute;top:0px;bottom:' . $height . 'px;left:0px;right:0px;overflow: hidden') .
-									we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy", 'position:absolute;height:' . $height . 'px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
-									we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=cmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+						, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body", 'position:absolute;top:0px;bottom:' . $height . 'px;left:0px;right:0px;overflow: hidden') .
+						we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy", 'position:absolute;height:' . $height . 'px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
+						we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=cmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 			));
 		}
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead(
-								we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]')) . STYLESHEET
-						) . $body);
+				we_html_element::htmlHead(
+					we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]')) . STYLESHEET
+				) . $body);
 	}
 
 	/**
@@ -796,7 +795,7 @@ abstract class we_rebuild_wizard{
 	 */
 	static function getPage2Js($folders = 'folders'){
 		return
-				'function handle_event(what){
+			'function handle_event(what){
 				f = document.we_form;
 				switch(what){
 					case "previous":
@@ -970,16 +969,16 @@ abstract class we_rebuild_wizard{
 			return '';
 		}
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead(
-								we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]')) .
-								STYLESHEET .
-								($contents[0] ?
-										we_html_element::jsScript(JS_DIR . 'windows.js') .
-										we_html_element::jsElement($contents[0]) : '')) .
-						we_html_element::htmlBody(array(
-							"class" => "weDialogBody"
-								), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => WEBEDITION_DIR . "we_cmd.php"), $contents[1])
-						)
+				we_html_element::htmlHead(
+					we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]')) .
+					STYLESHEET .
+					($contents[0] ?
+						we_html_element::jsScript(JS_DIR . 'windows.js') .
+						we_html_element::jsElement($contents[0]) : '')) .
+				we_html_element::htmlBody(array(
+					"class" => "weDialogBody"
+					), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => WEBEDITION_DIR . "we_cmd.php"), $contents[1])
+				)
 		);
 	}
 

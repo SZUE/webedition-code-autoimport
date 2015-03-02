@@ -274,7 +274,7 @@ class we_document extends we_root{
 			$navis->CanDelete = false;
 		}
 
-		return we_html_button::create_state_changer() . $navis->get();
+		return $navis->get();
 	}
 
 	function addCat(array $ids){

@@ -134,7 +134,7 @@ class we_selector_category extends we_selector_multiple{
 	}
 
 	protected function printHeaderJS(){
-		return we_html_button::create_state_changer(false) . '
+		return '
 
 function disableRootDirButs(){
 	root_dir_enabled = switch_button_state("root_dir", "root_dir_enabled", "disabled");

@@ -407,22 +407,6 @@ $_notepad = $oPad->getHTML() .
 	we_html_element::htmlDiv(array("id" => "props"), $oTblProps->getHTML()) .
 	we_html_element::htmlDiv(array("id" => "view"), $oTblBtnProps->getHTML());
 
-$_notepad .= we_html_element::jsElement('
-function toggleTblValidity(){
-	var weNoteValidity = getCurrentQuery().Validity;
-	if (getCurrentQuery().Validity=="always") {
-		document.getElementById("f_ValidFrom_cell").style.visibility = "hidden";
-		document.getElementById("f_ValidUntil_cell").style.visibility = "hidden";
-	} else if(weNoteValidity=="date"){
-		document.getElementById("f_ValidFrom_cell").style.visibility = "visible";
-		document.getElementById("f_ValidUntil_cell").style.visibility = "hidden";
-	} else {
-		document.getElementById("f_ValidFrom_cell").style.visibility = "visible";
-		document.getElementById("f_ValidUntil_cell").style.visibility = "visible";
-	}
-}
-toggleTblValidity();');
-
 echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 	we_html_element::htmlHead(
 		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[notepad]')) . STYLESHEET . we_html_element::cssElement(
@@ -435,15 +419,12 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		)) . we_html_element::jsScript(LIB_DIR . "additional/jscalendar/calendar.js") .
 		we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 		we_html_element::jsScript(LIB_DIR . "additional/jscalendar/calendar-setup.js") .
-		we_html_button::create_state_changer() . we_html_element::jsElement(
+		we_html_element::jsElement(
 			(($type === "pad/pad") ? "
 var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';
 var _sCls_=parent.gel(_sObjId+'_cls').value;
 var _sType='pad';
 var _sTb='" . g_l('cockpit', '[notes]') . " - " . $title . "';
-function init(){
-	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
-}
 " : "
 var _sObjId='m_" . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 5) . "';
 var _sTb='" . $title . "';
@@ -530,7 +511,7 @@ function saveNote(){
 		"marginheight" => 0,
 		"leftmargin" => 0,
 		"topmargin" => 0,
-		"onload" => (($type === "pad/pad") ? "if(parent!=self)init();" : "") . 'calendarSetup();'
+		"onload" => (($type === "pad/pad") ? "if(parent!=self)init();" : "") . 'calendarSetup();toggleTblValidity();'
 		), we_html_element::htmlForm(array("style" => "display:inline;"), we_html_element::htmlDiv(
 				array("id" => "pad"), $_notepad .
 				we_html_element::htmlHidden(array("name" => "mark", "value" => ""))

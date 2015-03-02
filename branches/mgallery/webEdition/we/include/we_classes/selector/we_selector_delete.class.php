@@ -53,7 +53,7 @@ class we_selector_delete extends we_selector_multiple{
 	}
 
 	protected function printFooterJS(){
-		return we_html_button::create_state_changer() . we_html_element::jsElement('
+		return we_html_element::jsElement('
 function disableDelBut(){
 	delete_enabled = switch_button_state("delete", "delete_enabled", "disabled");
 }

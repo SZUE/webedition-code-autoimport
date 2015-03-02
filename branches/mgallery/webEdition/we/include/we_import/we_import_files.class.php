@@ -585,8 +585,7 @@ function setApplet() {
 		$closeButton = we_html_button::create_button("close", "javascript:cancel()");
 		$progressbar = '';
 
-		$js = we_html_element::jsElement(
-				we_html_button::create_state_changer(false) . '
+		$js = we_html_element::jsElement('
 var weFormNum = ' . $formnum . ';
 var weFormCount = ' . $formcount . ';
 

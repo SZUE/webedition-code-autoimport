@@ -94,7 +94,7 @@ $_parts = array(
 	)
 );
 
-$_js = we_html_button::create_state_changer(false) . '
+$_js = '
 function save() {
 	var dir = document.we_form.ParentID;
 	' . $_cmd . '

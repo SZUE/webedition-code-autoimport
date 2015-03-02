@@ -1288,7 +1288,6 @@ _multiEditorreload = true;";
 
 	function formGroupData(){
 		$_attr = array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 0);
-		$js = we_html_button::create_state_changer();
 
 		$_tableObj = new we_html_table($_attr, 5, 1);
 
@@ -1341,7 +1340,7 @@ _multiEditorreload = true;";
 			)
 		);
 
-		return $js . we_html_multiIconBox::getHTML('', '100%', $parts, 30);
+		return we_html_multiIconBox::getHTML('', '100%', $parts, 30);
 	}
 
 	function getUserfield($name, $lngkey, $type = 'text', $maxlen = 255, $noNull = false, $attribs = ''){

@@ -286,7 +286,7 @@ function we_cmd() {
 			eval("' . $this->topFrame . '.we_cmd("+args+")");
 	}
 }
-' . we_html_button::create_state_changer(false) . '
+
 var copyNaviFolderUrl = "' . WEBEDITION_DIR . 'rpc/rpc.php";
 function copyNaviFolder(folderPath,folderID) {
 	var parentPos = selfNaviPath.indexOf(folderPath);

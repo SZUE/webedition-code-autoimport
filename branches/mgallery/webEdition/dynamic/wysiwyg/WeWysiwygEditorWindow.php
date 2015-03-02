@@ -49,10 +49,10 @@ window.close();');
 		<?php
 	} else {
 		echo STYLESHEET .
-		we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('top.focus();');
+		we_html_element::jsScript(JS_DIR . 'windows.js');
 		?>
 	</head>
-	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" style="background-image:url(<?php echo IMAGE_DIR; ?>backgrounds/aquaBackground.gif);">
+	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" style="background-image:url(<?php echo IMAGE_DIR; ?>backgrounds/aquaBackground.gif);" onload="top.focus()">
 		<form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" name="we_form" method="post">
 			<input type="hidden" name="we_okpressed" value="1" />
 			<?php
@@ -102,7 +102,7 @@ window.close();');
 				'', //test
 				we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 17), //$spell
 				false //frontendEdit
-			);//FIXME: what about the missing params?
+			); //FIXME: what about the missing params?
 
 			$cancelBut = we_html_button::create_button('cancel', 'javascript:top.close()');
 			$okBut = we_html_button::create_button('ok', 'javascript:weWysiwygSetHiddenText();document.we_form.submit();');

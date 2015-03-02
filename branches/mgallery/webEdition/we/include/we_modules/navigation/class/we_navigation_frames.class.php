@@ -443,7 +443,7 @@ function setTab(tab) {
     } else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
      top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
     }
-   }}' . we_html_button::create_state_changer(false)) .
+   }}') .
 			'<div style="display: block;">' .
 			we_html_tools::htmlSelect(
 				'FolderSelection', $_seltype, 1, $this->Model->FolderSelection, false, array('onchange' => "onFolderSelectionChangeJS(this.value);setFolderSelection(this.value);" . $this->topFrame . ".mark();", 'style' => 'width: ' . $this->_width_size . 'px; margin-top: 5px;'), 'value', $this->_width_size) . '
@@ -730,7 +730,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
      top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
     }
 		}
-   }' . we_html_button::create_state_changer(false)) .
+   }') .
 			'<div style="margin-top:5px">' . $yuiSuggest->getHTML() . '</div>' . $this->getHTMLWorkspace();
 	}
 
@@ -1270,7 +1270,7 @@ function addCat(paths){
 		$_selection = we_base_request::_(we_base_request::INT, 'selection'); // templateid or classid
 		$_cmd = we_base_request::_(we_base_request::JS, 'cmd'); // js command
 		$_multi = we_base_request::_(we_base_request::JS, 'multi'); // js command
-		$_js = we_html_button::create_state_changer(false) . '
+		$_js = '
 function setFields() {
 	var list = document.we_form.fields.options;
 

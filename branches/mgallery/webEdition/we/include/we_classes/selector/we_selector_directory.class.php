@@ -298,8 +298,7 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 	}
 
 	protected function printHeaderJS(){
-		return parent::printHeaderJS() .
-			we_html_button::create_state_changer(false) . '
+		return parent::printHeaderJS() .'
 function disableNewFolderBut(){
 	btn_new_dir_enabled = switch_button_state("btn_new_dir", "new_directory_enabled", "disabled", "image");
 	makefolderState = 0;
