@@ -217,10 +217,10 @@ function RenameEntry(id) {
 
 function showPref(id) {
 	if (self.fsvalues)
-		self.fsvalues.location = "' . $this->getFsQueryString(self::PROPERTIES) . '&catid=" + id;
+		self.fsvalues.location = top.queryString(queryType.PROPERTIES) + "&catid=" + id;
 }
 
 function hidePref() {
 	if (self.fsvalues)
-		self.fsvalues.location = "' . $this->getFsQueryString(self::PROPERTIES) . '";
+		self.fsvalues.location = top.queryString(queryType.PROPERTIES);
 }

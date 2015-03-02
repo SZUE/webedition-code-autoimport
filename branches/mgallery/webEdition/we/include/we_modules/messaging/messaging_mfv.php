@@ -27,11 +27,9 @@ echo we_html_tools::getHtmlTop('', '', 'frameset') .
  STYLESHEET;
 ?>
 </head>
-<frameset rows="160,*" framespacing="0" border="1" frameborder="1">
+<frameset rows="160,*" >
 	<frame src="<?php echo HTML_DIR ?>white.html" name="messaging_messages_overview" scrolling="auto" noresize onload="top.content.cb_incstate();" style="border-bottom:1px solid black"/>
 	<frame src="<?php echo HTML_DIR ?>white.html" name="messaging_msg_view" onload="top.content.cb_incstate();" scrolling="auto"/>
 </frameset>
-<body>
-</body>
 
 </html>

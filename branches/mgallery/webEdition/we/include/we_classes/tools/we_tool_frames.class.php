@@ -112,10 +112,8 @@ abstract class we_tool_frames extends we_modules_frame{
 		}
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=right" . (($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '') . (($sid = we_base_request::_(we_base_request::INT, 'sid')) ? '&sid=' . $sid : ''), "name" => "right"));
 
-		$noframeset = new we_html_baseElement("noframes");
-
 		// set and return html code
-		$body = $frameset->getHtml() . $noframeset->getHTML();
+		$body = $frameset->getHtml();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -125,9 +123,8 @@ abstract class we_tool_frames extends we_modules_frame{
 		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
 		$frameset->setAttributes(array("cols" => "*"));
 		$frameset->addFrame(array("src" => $this->frameset . "?pnt=editor" . (($tab = we_base_request::_(we_base_request::INT, 'tab') ) ? '&tab=' . $tab : '') . (($sid = we_base_request::_(we_base_request::INT, 'sid')) ? '&sid=' . $sid : ''), "name" => "editor", "noresize" => null, "scrolling" => "no"));
-		$noframeset = new we_html_baseElement("noframes");
 		// set and return html code
-		$body = $frameset->getHtml() . $noframeset->getHTML();
+		$body = $frameset->getHtml();
 
 		return $this->getHTMLDocument($body);
 	}
@@ -136,7 +133,6 @@ abstract class we_tool_frames extends we_modules_frame{
 		$tab = we_base_request::_(we_base_request::INT, 'tab');
 		$sid = we_base_request::_(we_base_request::STRING, 'sid');
 		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
-		$noframeset = new we_html_baseElement("noframes");
 
 		$frameset->setAttributes(array("rows" => "40,*,40"));
 		$frameset->addFrame(array('src' => $this->frameset . ($sid !== false ? '?sid=' . $sid : '?home=1') . ($tab ? '&tab=' . $tab : '') . '&pnt=edheader', 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
@@ -144,7 +140,7 @@ abstract class we_tool_frames extends we_modules_frame{
 		$frameset->addFrame(array('src' => $this->frameset . ($sid !== false ? '?sid=' . $sid : '?home=1') . '&pnt=edfooter', 'name' => 'edfooter', 'scrolling' => 'no'));
 
 		// set and return html code
-		$body = $frameset->getHtml() . $noframeset->getHTML();
+		$body = $frameset->getHtml() ;
 
 		return $this->getHTMLDocument($body);
 	}

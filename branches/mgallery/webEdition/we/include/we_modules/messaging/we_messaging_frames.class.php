@@ -282,9 +282,8 @@ function loadData() {
 		$frameset->addFrame(array("src" => HTML_DIR . 'white.html', 'noresize' => null, 'scrolling' => 'no'));
 		$frameset->addFrame(array("src" => WE_MESSAGING_MODULE_DIR . 'messaging_mfv.php', "name" => "msg_mfv", "noresize" => null, "scrolling" => "no"));
 
-		$noframeset = new we_html_baseElement("noframes");
 
-		return $this->getHTMLDocument($frameset->getHtml() . $noframeset->getHTML());
+		return $this->getHTMLDocument($frameset->getHtml());
 	}
 
 	function getHTMLFvHeaders(){

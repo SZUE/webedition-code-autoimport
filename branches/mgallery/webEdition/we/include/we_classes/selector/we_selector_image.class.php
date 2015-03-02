@@ -30,19 +30,17 @@ class we_selector_image extends we_selector_document{
 	}
 
 	protected function getFrameset(){
-		return '
-<frameset rows="67,*,65,20,0" border="0"  onunload="if(top.opener && top.opener.top && top.opener.top.toggleBusy){top.opener.top.toggleBusy();}">
-	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
-	<frameset cols="*,200" border="1">
-		<frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" noresize scrolling="auto">
-		<frame src="' . $this->getFsQueryString(self::PREVIEW) . '" name="fspreview" noresize scrolling="no"' . ((!we_base_browserDetect::isGecko()) ? ' style="border-left:1px solid black"' : '') . '>
-	</frameset>
-	<frame src="' . $this->getFsQueryString(we_selector_file::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
-	<frame src="' . HTML_DIR . 'gray2.html"  name="fspath" noresize scrolling="no">
-	<frame src="about:blank"  name="fscmd" noresize scrolling="no">
-</frameset>
-<body>
-</body>
+		return
+				STYLESHEET .
+				we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+				'<body class="selector">' .
+				we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
+				we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview') .
+				we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) .
+				we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path') .
+				we_html_element::htmlIFrame('fspath', HTML_DIR . 'gray2.html', '', '', '', false) .
+				we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
+				'</body>
 </html>';
 	}
 
@@ -58,10 +56,11 @@ class we_selector_image extends we_selector_document{
 
 	protected function getWriteBodyHead(){
 		return we_html_element::jsElement('
-			var ctrlpressed=false
-var shiftpressed=false
-var inputklick=false
-var wasdblclick=false
+			var ctrlpressed=false;
+var shiftpressed=false;
+var inputklick=false;
+var wasdblclick=false;
+var tout=false;
 function weonclick(e){
 	if(top.makeNewFolder ||  top.we_editDirID){
 		if(!inputklick){
@@ -86,38 +85,6 @@ function weonclick(e){
 		top.unselectAllFiles();
 		}
 	}
-}
-') . we_html_element::cssElement('
-div.imgDiv{
-	float: left;
-	width: 4em;
-	height:4em;
-	margin: 1px;
-	text-align: center;
-	cursor: pointer;
-	position: relative;
-}
-img.icon{
-	max-width:4em;
-	max-height:3em;
-}
-div.imgText{
-	/*font-size: 16px;*/
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-	width:100%;
-	text-align:center;
-	position: absolute;
-	bottom: 0px;
-}
-div.selected{
-	background-color:#DFE9F5;
-	border: 1px solid grey;
-}
-body{
-background-color:white;
-margin:0px;
 }
 ');
 	}

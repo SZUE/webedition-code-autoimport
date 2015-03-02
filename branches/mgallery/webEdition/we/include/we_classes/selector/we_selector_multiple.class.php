@@ -130,7 +130,7 @@ function weonclick(e){
 		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
-						var body = '';
+						var body = '<table>';
 						for (i = 0; i < entries.length; i++) {
 							var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true;"';
 							var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
@@ -139,7 +139,7 @@ function weonclick(e){
 											'<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />' +
 											'</td>' +
 											'<td class="selector"  title="' + entries[i].text + '">' + cutText(entries[i].text, 80) + '</td>' +
-											'</tr><tr><td colspan="2"><?php echo we_html_tools::getPixel(2, 1); ?></td></tr>'
+											'</tr>'
 						}
 						body += '<tr><td width="25"><?php echo we_html_tools::getPixel(25, 2) ?></td>' +
 										'<td><?php echo we_html_tools::getPixel(150, 2) ?></td>' +

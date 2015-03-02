@@ -718,22 +718,3 @@ table.error td pre{
 	background-image: url(/webEdition/images/messageConsole/errorActive.gif);
 }
 
-body.selectorBody{
-	background-color: white;
-	margin: 0px;
-	height:100%;
-	width:100%;
-}
-
-body.selectorBody a,
-body.selectorBody a:visited,
-body.selectorBody a:active
-body.selectorHeader a,
-body.selectorHeader a:visited,
-body.selectorHeader a:active
-body.selectorFooter a,
-body.selectorFooter a:visited,
-body.selectorFooter a:active
-{
-	color: #000000;
-}

@@ -260,14 +260,15 @@ var needIEEscape=' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKEN
 	}
 
 	protected function getFrameset(){
-		return '<frameset rows="67,*,65,0" border="0">
-	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">
-    <frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" noresize scrolling="auto">
-    <frame src="' . $this->getFsQueryString(we_selector_file::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
-    <frame src="about:blank"  name="fscmd" noresize scrolling="no">
-</frameset>
-<body>
-</body>
+		return
+				STYLESHEET.
+		we_html_element::cssLink(CSS_DIR.'selectors.css').
+				'<body class="selector">' .
+				we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '',false) .
+				we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '',true) .
+				we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '',false) .
+				we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '',false) .
+				'</body>
 </html>';
 	}
 
@@ -371,19 +372,21 @@ function queryString(what,id,o){
 		echo we_html_tools::getHtmlTop('', '', '4Trans') .
 		we_html_element::jsScript(JS_DIR . 'utils/jsErrorHandler.js') .
 		STYLESHEET_SCRIPT .
+		we_html_element::cssLink(CSS_DIR . 'selectors.css') .
 		$this->getWriteBodyHead() .
 		'</head>
 				<body class="selectorBody" onload="top.writeBody(self.document.body);" onclick="weonclick(event);"></body></html>';
 	}
 
 	protected function getWriteBodyHead(){
-		return '';
+
 	}
 
 	function printHeaderHTML(){
 		$this->setDirAndID();
 		echo we_html_tools::getHtmlTop() .
 		STYLESHEET .
+		we_html_element::cssLink(CSS_DIR . 'selectors.css') .
 		we_html_element::jsScript(JS_DIR . 'images.js') .
 		we_html_element::jsElement(
 				$this->printHeaderJSDef() . '
@@ -424,6 +427,7 @@ function enableDelBut(){
 if(top.options.userCanEditCat){
 	switch_button_state("btn_function_trash", "btn_function_trash_enabled", "enabled", "image");
 	changeCatState = 1;
+	}
 }
 
 function clearOptions(){
@@ -577,7 +581,9 @@ top.fsheader.selectIt();';
 
 	protected function printFooterHTML(){
 		echo we_html_tools::getHtmlTop() .
-		STYLESHEET . implodeJS(
+		STYLESHEET .
+		we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+		implodeJS(
 				$this->printFooterJSDef() .
 				we_html_element::jsElement('
 function disableDelBut(){

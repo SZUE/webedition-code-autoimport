@@ -546,16 +546,18 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 
 	protected function getFrameset(){
 		$isMainChooser = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'openCatselector' && !(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) || we_base_request::_(we_base_request::JS, 'we_cmd', false, 5));
-		return '<frameset rows="67,*,65,0" border="0">
-	<frame src="' . $this->getFsQueryString(we_selector_file::HEADER) . '" name="fsheader" noresize scrolling="no">' .
-				($isMainChooser ? '<frameset cols="35%,65%" border="0">' : '') .
-				'<frame src="' . $this->getFsQueryString(we_selector_file::BODY) . '" name="fsbody" scrolling="auto">' .
-				($isMainChooser ? '<frame src="' . $this->getFsQueryString(self::PROPERTIES) . '" name="fsvalues"  scrolling="auto"></frameset>' : '') .
-				'<frame src="' . $this->getFsQueryString(we_selector_file::FOOTER) . '"  name="fsfooter" noresize scrolling="no">
-    <frame src="about:blank"  name="fscmd" noresize scrolling="no">
-</frameset>
-<body>
-</body>
+		return
+				STYLESHEET .
+				we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+				'<body class="selector">' .
+				we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
+				we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) .
+				($isMainChooser ?
+						we_html_element::htmlIFrame('fsvalues', $this->getFsQueryString(we_selector_file::PROPERTIES), '', '', '', true) : ''
+				) .
+				we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false) .
+				we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
+				'</body>
 </html>';
 	}
 

@@ -28,6 +28,7 @@ class we_users_selector extends we_selector_multiple{
 
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $multiple, $filter);
 		$this->title = g_l('fileselector', '[userSelector][title]');
+		$this->fields.= ',Icon';
 
 		//FIXME: fix userSelector String
 		//$GLOBALS["l_fileselector"]["filename"] = ($this->filter == "group") ? g_l('fileselector',"[groupname]") : g_l('fileselector',"[username]");

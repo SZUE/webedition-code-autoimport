@@ -99,19 +99,7 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 	}
 	//-->
 </script>
-</head><!--
-<frameset onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" rows="40,*,40" framespacing="0" border="0" frameborder="NO">
-
-	<frame src="<?php echo WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_header.php?filepath=<?php echo urlencode($_url); ?>&url=<?php echo $newUrl ?>" name="extDocHeader" noresize scrolling="no">
-	<frame onload="if (openedWithWE == 0) {
-				checkDocument();
-			}
-			openedWithWE = 0;" src="<?php echo WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_content.php?filepath=<?php echo urlencode($_url); ?>&url=<?php echo $newUrl ?>&paras=<?php echo (isset($parastr) ? urlencode($parastr) : ""); ?>" name="extDocContent" noresize>
-	<frame src="<?php echo WEBEDITION_DIR . "we/include/we_seem/"; ?>we_SEEM_openExtDoc_footer.php" name="extDocFooter" noresize>
-</frameset><noframes></noframes>
--->
-
-
+</head>
 <body onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});">
 	<?php
 	$headerSize = 35;
