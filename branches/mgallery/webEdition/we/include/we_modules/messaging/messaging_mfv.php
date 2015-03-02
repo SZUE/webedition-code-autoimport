@@ -26,10 +26,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 echo we_html_tools::getHtmlTop('', '', 'frameset') .
  STYLESHEET;
 ?>
-</head>
-<frameset rows="160,*" >
-	<frame src="<?php echo HTML_DIR ?>white.html" name="messaging_messages_overview" scrolling="auto" noresize onload="top.content.cb_incstate();" style="border-bottom:1px solid black"/>
-	<frame src="<?php echo HTML_DIR ?>white.html" name="messaging_msg_view" onload="top.content.cb_incstate();" scrolling="auto"/>
-</frameset>
-
+</head><body><?php
+	echo we_html_element::htmlIFrame('messaging_messages_overview', HTML_DIR . 'white.html', 'position:absolute;top:0px;height:160px;left:0px;right:0px;border-bottom:1px solid black;', '', 'top.content.cb_incstate();', true) .
+	we_html_element::htmlIFrame('messaging_msg_view', HTML_DIR . 'white.html', 'position:absolute;top:160px;bottom:0px;left:0px;right:0px;', '', '', true);
+	?>
+</body>
 </html>

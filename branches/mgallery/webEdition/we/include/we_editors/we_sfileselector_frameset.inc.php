@@ -93,9 +93,14 @@ if(($cmd4 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4))){
 //-->
 </script>
 <?php
-echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
+echo we_html_element::jsScript(JS_DIR . 'keyListener.js') . STYLESHEET;
 ?>
 </head>
+<body>
+	<?php
+	//echo we_html_element::htmlIFrame('messaging_messages_overview', HTML_DIR .'white.html', 'position:absolute;top:0px;height:160px;left:0px;right:0px;border-bottom:1px solid black;', '', 'top.content.cb_incstate();', true)
+	?>
+</body>
 <frameset rows="73,*,<?php echo (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2) ? 60 : 90); ?>,0" onload="top.fscmd.selectDir()">
   <frame src="we_sselector_header.php?ret=<?php echo ($cmd1 ? 1 : 0); ?>&filter=<?php echo $filter; ?>&currentDir=<?php echo $currentDir; ?>" name="fsheader" noresize scrolling="no"/>
 	<frame src="about:blank" name="fsbody" noresize scrolling="auto"/>
