@@ -125,6 +125,10 @@ class we_selector_document extends we_selector_directory{
 		}
 	}
 
+	protected function getFramsetJSFile(){
+		return parent::getFramsetJSFile() . we_html_element::jsScript(JS_DIR . 'selectors/document_selector.js');
+	}
+
 	protected function getExitOpen(){
 		$frameRef = $this->JSTextName && strpos($this->JSTextName, ".document.") > 0 ?
 				substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) :
@@ -170,36 +174,6 @@ function exit_open() {
 		return $_SERVER['SCRIPT_NAME'] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&startID=" . $this->startID . "&filter=" . $this->filter . (isset($this->open_doc) ? ("&open_doc=" . $this->open_doc) : "");
 	}
 
-	protected function printFramesetJSFunctions(){
-		$out = '
-var contentTypes = new Array();';
-		$ct = we_base_ContentTypes::inst();
-		foreach($ct->getContentTypes() as $ctypes){
-			if(g_l('contentTypes', '[' . $ctypes . ']') !== false){
-				$out.='contentTypes["' . $ctypes . '"]  = "' . g_l('contentTypes', '[' . $ctypes . ']') . '";';
-			}
-		}
-		return parent::printFramesetJSFunctions() . we_html_element::jsElement($out . '
-function setFilter(ct) {
-	top.fscmd.location.replace(top.queryString(queryType.CMD,top.currentDir,"","",ct));
-}
-
-function showPreview(id) {
-	if(top.fspreview) {
-		top.fspreview.location.replace(top.queryString(queryType.PREVIEW,id));
-	}
-}
-
-function newFile() {
-	url="we_fs_uploadFile.php?pid="+top.currentDir+"&tab="+top.table+"&ct=' . rawurlencode($this->filter) . '";
-	new jsWindow(url,"we_fsuploadFile",-1,-1,450,660,true,false,true);
-}
-
-function reloadDir() {
-	top.fscmd.location.replace(top.queryString(queryType.CMD,top.currentDir));
-}');
-	}
-
 	protected function getWriteBodyHead(){
 		return we_html_element::jsElement('
 var ctrlpressed=false
@@ -223,9 +197,12 @@ function weonclick(e){
 		}else{
 			if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
 			if(e.shiftKey){ shiftpressed=true;}
-		}' . ($this->multiple ? '
-		if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
-		top.unselectAllFiles();') . '
+		}
+		if(top.options.multiple){
+		if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}
+		}else{
+		top.unselectAllFiles();
+		}
 	}
 }');
 	}
@@ -265,7 +242,7 @@ function weonclick(e){
 															cutText(entries[i].text, 25)
 															) +
 											'</td>' +
-											'<td class="selector" title="'+<?php echo $this->col2js; ?>+'">' + cutText(<?php echo $this->col2js; ?>, 30) + '</td>' +
+											'<td class="selector" title="' +<?php echo $this->col2js; ?> + '">' + cutText(<?php echo $this->col2js; ?>, 30) + '</td>' +
 											'<td class="selector">' + entries[i].modDate + '</td>' +
 											'</tr><tr><td colspan="4"><?php echo we_html_tools::getPixel(2, 1); ?></td></tr>';
 						}
@@ -293,28 +270,6 @@ function queryString(what,id,o,we_editDirID,filter){
 								"&open_doc=" . $this->open_doc : '') .
 						'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "")+(filter ? ("&filter="+filter) : "");
 }');
-	}
-
-	protected function printFramesetJSFunctionEntry(){
-		return we_html_element::jsElement('
-function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
-	this.ID=ID;
-	this.icon=icon;
-	this.text=text;
-	this.isFolder=isFolder;
-	this.path=path;
-	this.modDate=modDate;
-	this.contentType=contentType;
-	this.published=published;
-	this.title=title;
-}');
-	}
-
-	protected function printFramesetJSFunctionAddEntry(){
-		return we_html_element::jsElement('
-		function addEntry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
-		entries[entries.length] = new entry(ID,icon,text,isFolder,path,modDate,contentType,published,title);
-		}');
 	}
 
 	protected function printFramesetJSFunctionAddEntries(){
@@ -387,7 +342,6 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 	}
 
 	protected function printHeaderJSDef(){
-		$ret = parent::printHeaderJSDef();
 		switch($this->filter){
 			case we_base_ContentTypes::TEMPLATE:
 			case we_base_ContentTypes::OBJECT:
@@ -399,12 +353,12 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 				return parent::printHeaderJSDef() . '
 var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';
 function disableNewFileBut() {
-	' . $btn . '_enabled = switch_button_state("' . $btn . '", "", "disabled", "image");
+	switch_button_state("' . $btn . '", "", "disabled", "image");
 	newFileState = 0;
 }
 
 function enableNewFileBut() {
-	' . $btn . '_enabled = switch_button_state("' . $btn . '", "", "enabled", "image");
+	switch_button_state("' . $btn . '", "", "enabled", "image");
 	newFileState = 1;
 }';
 		}
@@ -825,103 +779,19 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		echo $out;
 	}
 
-	protected function printFramesetJSsetDir(){
-		return we_html_element::jsElement('
-function setDir(id) {
-	showPreview(id);
-	if(top.fspreview.document.body){
-		top.fspreview.document.body.innerHTML = "";
-	}
-	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',id));
-	e = getEntry(id);
-	fspath.document.body.innerHTML = e.path;
-}');
-	}
-
-	function printFramesetSelectFileHTML(){
-		return we_html_element::jsElement('
-function selectFile(id){
-	fname = top.fsfooter.document.getElementsByName("fname");
-	if(id){
-		e = getEntry(id);
-		fspath.document.body.innerHTML = e.path;
-		if(fname&& fname[0].value != e.text &&
-			fname[0].value.indexOf(e.text+",") == -1 &&
-			fname[0].value.indexOf(","+e.text+",") == -1 &&
-			fname[0].value.indexOf(","+e.text+",") == -1 ){
-				fname[0].value =  top.fsfooter.document.we_form.fname.value ?
-					(fname[0].value + "," + e.text) :
-					e.text;
+	function getFramesetJavaScriptDef(){
+		$ctypes = array();
+		$ct = we_base_ContentTypes::inst();
+		foreach($ct->getContentTypes() as $ctype){
+			if(g_l('contentTypes', '[' . $ctype . ']') !== false){
+				$ctypes[] = '"' . $ctype . '" : "' . g_l('contentTypes', '[' . $ctype . ']') . '"';
+			}
 		}
 
-		if(top.fsbody.document.getElementById("line_"+id)) top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
-		currentPath = e.path;
-		currentID = id;
-		we_editDirID = 0;
-		currentType = e.contentType;
-
-		showPreview(id);
-	}else{
-		fname[0].value = "";
-		currentPath = "";
-		we_editDirID = 0;
-	}
-}');
-	}
-
-	protected
-			function printFramesetJSDoClickFn(){
-		return we_html_element::jsElement('
-function doClick(id,ct){
-	if(top.fspreview.document.body){
-		top.fspreview.document.body.innerHTML = "";
-	}
-	if(ct==1){
-		if(wasdblclick){
-			setDir(id);
-			setTimeout("wasdblclick=0;",400);
-		}
-	} else {
-		if(getEntry(id).contentType != "folder" || ' . ($this->canSelectDir ? "true" : "false") . '){' .
-						($this->multiple ? '
-			if(fsbody.shiftpressed){
-				var oldid = currentID;
-				var currendPos = getPositionByID(id);
-				var firstSelected = getFirstSelected();
-
-				if(currendPos > firstSelected){
-					selectFilesFrom(firstSelected,currendPos);
-				}else if(currendPos < firstSelected){
-					selectFilesFrom(currendPos,firstSelected);
-				}else{
-					selectFile(id);
-				}
-				currentID = oldid;
-
-			}else if(!fsbody.ctrlpressed){
-				selectFile(id);
-			}else{
-				if (isFileSelected(id)) {
-					unselectFile(id);
-				}else{
-					selectFile(id);
-				}
-			}' : 'selectFile(id);') . '
-		} else {
-			showPreview(id);
-		}
-	}
-	if(fsbody.ctrlpressed){
-		fsbody.ctrlpressed = 0;
-	}
-	if(fsbody.shiftpressed){
-		fsbody.shiftpressed = 0;
-	}
-}
-
-function previewFolder(id) {
-	alert(id);
-}');
+		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
+options.canSelectDir=' . intval($this->canSelectDir) . ';
+var contentTypes = {' . implode(',', $ctypes) . '};
+			');
 	}
 
 }

@@ -77,3 +77,57 @@ function cutText(text, l) {
 function clearEntries() {
 	entries = [];
 }
+
+function exit_close() {
+	if (top.opener.top.opener && top.opener.top.opener.top.toggleBusy) {
+		top.opener.top.opener.top.toggleBusy();
+	} else if (top.opener.top.toggleBusy) {
+		top.opener.top.toggleBusy();
+	}
+	self.close();
+}
+
+function doClick(id, ct) {
+	if (ct == 1) {
+		if (wasdblclick) {
+			setDir(id);
+			setTimeout("wasdblclick=0;", 400);
+		}
+	} else {
+		selectFile(id);
+	}
+}
+
+function setDir(id) {
+	e = getEntry(id);
+	currentID = id;
+	currentDir = id;
+	currentPath = e.path;
+	currentText = e.text;
+	top.fsfooter.document.we_form.fname.value = e.text;
+	top.fscmd.location.replace(top.queryString(queryType.CMD, id));
+}
+
+function setRootDir() {
+	setDir(options.rootDirID);
+}
+
+function selectFile(id) {
+	e = getEntry(id);
+	top.fsfooter.document.we_form.fname.value = e.text;
+	currentText = e.text;
+	currentPath = e.path;
+	currentID = id;
+}
+
+function entry(ID, icon, text, isFolder, path) {
+	this.ID = ID;
+	this.icon = icon;
+	this.text = text;
+	this.isFolder = isFolder;
+	this.path = path;
+}
+
+function addEntry(ID,icon,text,isFolder,path){
+	entries[entries.length] = new entry(ID,icon,text,isFolder,path);
+}

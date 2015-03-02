@@ -52,17 +52,6 @@ class we_selector_delete extends we_selector_multiple{
 		}
 	}
 
-	protected function printFooterJS(){
-		return we_html_element::jsElement('
-function disableDelBut(){
-	delete_enabled = switch_button_state("delete", "delete_enabled", "disabled");
-}
-function enableDelBut(){
-	delete_enabled = switch_button_state("delete", "delete_enabled", "enabled");
-}
-');
-	}
-
 	protected function printFramesetJSFunctions(){
 		$tmp = (isset($_SESSION['weS']['seemForOpenDelSelector']['ID']) ? $_SESSION['weS']['seemForOpenDelSelector']['ID'] : 0);
 		unset($_SESSION['weS']['seemForOpenDelSelector']['ID']);
@@ -96,47 +85,8 @@ function deleteEntry(){
 }');
 	}
 
-	protected function printFramesetJSDoClickFn(){
-		return we_html_element::jsElement('
-function doClick(id,ct){
-	if(ct==1){
-		if(wasdblclick){
-			setDir(id);
-			setTimeout("wasdblclick=0;",400);
-		}
-	}else{
-		if(fsbody.shiftpressed){
-			var oldid = currentID;
-			var currendPos = getPositionByID(id);
-			var firstSelected = getFirstSelected();
-
-			if(currendPos > firstSelected){
-				selectFilesFrom(firstSelected,currendPos);
-			}else if(currendPos < firstSelected){
-				selectFilesFrom(currendPos,firstSelected);
-			}else{
-				selectFile(id);
-			}
-			currentID = oldid;
-
-		}else if(!fsbody.ctrlpressed){
-			selectFile(id);
-		}else{
-			if (isFileSelected(id)) {
-				unselectFile(id);
-			}else{
-				selectFile(id);
-			}
-		}
-
-	}
-	if(fsbody.ctrlpressed){
-		fsbody.ctrlpressed = 0;
-	}
-	if(fsbody.shiftpressed){
-		fsbody.shiftpressed = 0;
-	}
-}');
+	protected function getFramsetJSFile(){
+		return parent::getFramsetJSFile() .we_html_element::jsScript(JS_DIR . 'selectors/delete_selector.js');
 	}
 
 	protected function printCmdHTML(){
@@ -151,59 +101,6 @@ top.fsheader.enableRootDirButs();
 top.fsfooter.enableDelBut();') . '
 top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";');
-	}
-
-	function printFramesetSelectFileHTML(){
-		return we_html_element::jsElement('
-function selectFile(id){
-	if(id){
-		e = getEntry(id);
-
-		if( top.fsfooter.document.we_form.fname.value != e.text &&
-			top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
-			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
-			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 ){
-
-			top.fsfooter.document.we_form.fname.value =  top.fsfooter.document.we_form.fname.value ?
-				(top.fsfooter.document.we_form.fname.value + "," + e.text) :
-				e.text;
-		}
-		if(top.fsbody.document.getElementById("line_"+id)) top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
-		currentPath = e.path;
-		currentID = id;
-		if(id) top.fsfooter.enableDelBut();
-		we_editDelID = 0;
-	}else{
-		top.fsfooter.document.we_form.fname.value = "";
-		currentPath = "";
-		we_editDelID = 0;
-	}
-}');
-	}
-
-	function printFramesetUnselectAllFilesHTML(){
-		return we_html_element::jsElement('
-function unselectAllFiles(){
-	for	(var i=0;i < entries.length; i++){
-		top.fsbody.document.getElementById("line_"+entries[i].ID).style.backgroundColor="white";
-	}
-	top.fsfooter.document.we_form.fname.value = "";
-	top.fsfooter.disableDelBut();
-}');
-	}
-
-	protected function printFramesetJSsetDir(){
-		return we_html_element::jsElement('
-function setDir(id){
-	e = getEntry(id);
-	if(id==0) e.text="";
-	currentID = id;
-	currentDir = id;
-	currentPath = e.path;
-	top.fsfooter.document.we_form.fname.value = e.text;
-	if(id) top.fsfooter.enableDelBut();
-	top.fscmd.location.replace(top.queryString(' . we_selector_file::CMD . ',id));
-}');
 	}
 
 	function renameChildrenPath($id){

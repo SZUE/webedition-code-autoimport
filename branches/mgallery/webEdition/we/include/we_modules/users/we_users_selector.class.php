@@ -98,10 +98,10 @@ class we_users_selector extends we_selector_multiple{
 		$upath = '';
 		//}
 		$this->db->query('SELECT ' . $this->db->escape($this->fields) . ' FROM ' .
-			$this->db->escape($this->table) .
-			' WHERE ParentID=' . intval($this->dir) .
-			($upath ? ' AND Path LIKE "' . $this->db->escape($upath) . '%" ' : '') .
-			$q . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->db->escape($this->order)) : ''));
+				$this->db->escape($this->table) .
+				' WHERE ParentID=' . intval($this->dir) .
+				($upath ? ' AND Path LIKE "' . $this->db->escape($upath) . '%" ' : '') .
+				$q . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->db->escape($this->order)) : ''));
 	}
 
 	protected function printFramesetJSFunctionQueryString(){
@@ -112,22 +112,15 @@ function queryString(what,id,o){
 }');
 	}
 
-	protected function printFramesetJSsetDir(){
-		return we_html_element::jsElement('
-function setDir(id){' .
-				($this->filter === "user" ? '
-	currentDir = id;
-	top.fscmd.location.replace(top.queryString(' . we_selector_file::CMD . ',id));' : '
-	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',id));'
-				) . '
-}');
+	protected function getFramsetJSFile(){
+		return parent::getFramsetJSFile() . we_html_element::jsScript(JS_DIR . 'selectors/users_selector.js');
 	}
 
 	function printSetDirHTML(){
 		$js = 'top.clearEntries();' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.fsheader.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() .
+				'top.fsheader.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
 
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			$go = true;
@@ -148,37 +141,6 @@ top.fsfooter.document.we_form.fname.value = "' . $this->values["Text"] . '";';
 		$js.= 'top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";';
 		echo we_html_element::jsElement($js);
-	}
-
-	function printFramesetSelectFileHTML(){
-		return we_html_element::jsElement('
-function selectFile(id){
-	if(id){
-		e=top.getEntry(id);' .
-				($this->filter === "user" ? '
-			if(!e.isFolder){' : ''
-				) . '
-				if( top.fsfooter.document.we_form.fname.value != e.text &&
-					top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
-					top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
-					top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 ){
-
-					top.fsfooter.document.we_form.fname.value =  top.fsfooter.document.we_form.fname.value ?
-						(top.fsfooter.document.we_form.fname.value + "," + e.text) :
-						e.text;
-				}
-				top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
-				currentPath = e.path;
-				currentID = id;' .
-				($this->filter === "user" ? '
-			}' : ''
-				) . '
-
-	}else{
-		top.fsfooter.document.we_form.fname.value = "";
-		currentPath = "";
-	}
-}');
 	}
 
 	protected function printFooterTable(){

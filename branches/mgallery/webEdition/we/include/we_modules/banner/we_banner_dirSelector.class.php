@@ -114,10 +114,17 @@ if(e.ctrlKey || e.altKey){ ctrlpressed=true;}
 if(e.shiftKey){ shiftpressed=true;}
 }else{
 if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
-if(e.shiftKey){ shiftpressed=true;}
-}' . ($this->multiple ? '
-if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
-top.unselectAllFiles();') . '
+if(e.shiftKey){
+	shiftpressed=true;
+}
+}
+if(top.options.multiple){
+	if((self.shiftpressed==false) && (self.ctrlpressed==false)){
+		top.unselectAllFiles();
+	}
+}else{
+	top.unselectAllFiles();
+}
 	}
 }');
 	}
@@ -236,28 +243,26 @@ top.clearEntries();
 			$folder->Icon = "banner_folder.gif";
 			$folder->Text = $txt;
 			$folder->Path = $folder->getPath();
-			$this->db->query("SELECT ID FROM " . $this->table . " WHERE Path='" . $this->db->escape($folder->Path) . "'");
+			$this->db->query('SELECT ID FROM ' . $this->table . ' WHERE Path="' . $this->db->escape($folder->Path) . '"');
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('modules_banner', '[group_path_exists]'), $folder->Path);
 				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+			} else if(preg_match('|[%/\\"\']|', $folder->Text)){
+				$we_responseText = g_l('modules_banner', '[wrongtext]');
+				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
-				if(preg_match('|[%/\\"\']|', $folder->Text)){
-					$we_responseText = g_l('modules_banner', '[wrongtext]');
-					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-				} else {
-					$folder->we_save();
-					echo 'var ref;
+				$folder->we_save();
+				echo 'var ref;
 if(top.opener.top.content.makeNewEntry){
 	ref = top.opener.top.content;
 	ref.makeNewEntry("banner_folder.gif",' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1,"folder","' . $this->table . '",1);
 }
 ';
-					if($this->canSelectDir){
-						echo 'top.currentPath = "' . $folder->Path . '";
+				if($this->canSelectDir){
+					echo 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 ';
-					}
 				}
 			}
 		}
@@ -318,9 +323,8 @@ top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 			}
 		}
 
-		print
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() . '
+		echo $this->printCmdAddEntriesHTML() .
+		$this->printCMDWriteAndFillSelectorHTML() . '
 top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 //-->

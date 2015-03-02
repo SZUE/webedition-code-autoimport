@@ -24,7 +24,6 @@
  */
 class we_selector_category extends we_selector_multiple{
 
-
 	private $we_editCatID = '';
 	private $EntryText = '';
 	private $noChoose = false;
@@ -37,6 +36,7 @@ class we_selector_category extends we_selector_multiple{
 		$this->EntryText = $EntryText;
 		$this->noChoose = $noChoose;
 		$this->multiple = true;
+		$this->fields.= ',IF(IsFolder,"folder.gif","cat.gif") AS Icon';
 	}
 
 	function printHTML($what = we_selector_file::FRAMESET){
@@ -82,7 +82,7 @@ class we_selector_category extends we_selector_multiple{
 
 	protected function getFramsetJSFile(){
 		return parent::getFramsetJSFile() .
-				we_html_element::jsScript(JS_DIR . 'selectors/categoryFrameset.js');
+				we_html_element::jsScript(JS_DIR . 'selectors/category_selector.js');
 	}
 
 	protected function getFsQueryString($what){
@@ -133,46 +133,6 @@ class we_selector_category extends we_selector_multiple{
 		return 'var changeCatState=' . ($this->userCanChangeCat() ? 1 : 0) . ';';
 	}
 
-	protected function printHeaderJS(){
-		return '
-
-function disableRootDirButs(){
-	root_dir_enabled = switch_button_state("root_dir", "root_dir_enabled", "disabled");
-	btn_fs_back_enabled = switch_button_state("btn_fs_back", "back_enabled", "disabled", "image");
-	rootDirButsState = 0;
-}
-function enableRootDirButs(){
-	root_dir_enabled = switch_button_state("root_dir", "root_dir_enabled", "enabled");
-	btn_fs_back_enabled = switch_button_state("btn_fs_back", "back_enabled", "enabled", "image");
-	rootDirButsState = 1;
-}
-
-function disableNewBut(){
-	btn_new_dir_enabled = switch_button_state("btn_new_dir", "new_directory_enabled", "disabled", "image");
-	btn_add_cat_enabled = switch_button_state("btn_add_cat", "newCategorie_enabled", "disabled", "image");
-}
-function enableNewBut(){' .
-				($this->userCanEditCat() ? '
-	btn_new_dir_enabled = switch_button_state("btn_new_dir", "new_directory_enabled", "enabled", "image");
-	btn_add_cat_enabled = switch_button_state("btn_add_cat", "newCategorie_enabled", "enabled", "image");' : '') . '
-}
-function disableDelBut(){
-	btn_function_trash_enabled = switch_button_state("btn_function_trash", "btn_function_trash_enabled", "disabled", "image");
-	changeCatState = 0;
-}
-function enableDelBut(){
-' . ($this->userCanEditCat() ? '
-	btn_function_trash_enabled = switch_button_state("btn_function_trash", "btn_function_trash_enabled", "enabled", "image");
-	changeCatState = 1;
-' : '') . '
-}';
-	}
-
-	function getExitClose(){
-		return '';
-
-	}
-
 	protected function getWriteBodyHead(){
 		return we_html_element::jsElement('
 var ctrlpressed=false;
@@ -218,58 +178,57 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){
 		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
-				var body = (needIEEscape ?
-								'<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">' :
-								'<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">'
-								) +
-								(we_editCatID ?
-												'<input type="hidden" name="what" value="' + queryType.DO_RENAME_ENTRY + '" />' +
-												'<input type="hidden" name="we_editCatID" value="' + top.we_editCatID + '" />' :
-												(makeNewFolder ?
-																'<input type="hidden" name="what" value="' + queryType.CREATEFOLDER + '" />' :
-																'<input type="hidden" name="what" value="' + queryType.CREATE_CAT + '" />'
-																)) +
-								'<input type="hidden" name="order" value="' + top.order + '" />' +
-								'<input type="hidden" name="rootDirID" value="<?php echo $this->rootDirID; ?>" />' +
-								'<input type="hidden" name="table" value="' + table + '" />' +
-								'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
-								'<table border="0" cellpadding="0" cellspacing="0" width="35%">' +
-								(makeNewFolder ?
-												'<tr style="background-color:#DFE9F5;">' +
-												'<td align="center"><img src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>' +
-												'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" style="width:100%" /></td>' +
-												'</tr>' :
-												(makeNewCat ?
-																'<tr style="background-color:#DFE9F5;">' +
-																'<td align="center"><img src="<?php echo TREE_ICON_DIR ?>cat.gif" width="16" height="18" border="0" /></td>' +
-																'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_cat_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_cat_name + '" class="wetextinput" style="width:35%" /></td>' +
-																'</tr>' :
-																'')
-												);
+						var body = (needIEEscape ?
+										'<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">' :
+										'<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">'
+										) +
+										(we_editCatID ?
+														'<input type="hidden" name="what" value="' + queryType.DO_RENAME_ENTRY + '" />' +
+														'<input type="hidden" name="we_editCatID" value="' + top.we_editCatID + '" />' :
+														(makeNewFolder ?
+																		'<input type="hidden" name="what" value="' + queryType.CREATEFOLDER + '" />' :
+																		'<input type="hidden" name="what" value="' + queryType.CREATE_CAT + '" />'
+																		)) +
+										'<input type="hidden" name="order" value="' + top.order + '" />' +
+										'<input type="hidden" name="rootDirID" value="<?php echo $this->rootDirID; ?>" />' +
+										'<input type="hidden" name="table" value="' + table + '" />' +
+										'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
+										'<table border="0" cellpadding="0" cellspacing="0" width="35%">' +
+										(makeNewFolder ?
+														'<tr style="background-color:#DFE9F5;">' +
+														'<td align="center"><img src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>' +
+														'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" style="width:100%" /></td>' +
+														'</tr>' :
+														(makeNewCat ?
+																		'<tr style="background-color:#DFE9F5;">' +
+																		'<td align="center"><img src="<?php echo TREE_ICON_DIR ?>cat.gif" width="16" height="18" border="0" /></td>' +
+																		'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_cat_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_cat_name + '" class="wetextinput" style="width:35%" /></td>' +
+																		'</tr>' :
+																		'')
+														);
 
-				for (i = 0; i < entries.length; i++) {
-					var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true;"';
-					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-					body += '<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >' +
-									'<td class="selector" width="25" align="center">' +
-									(we_editCatID == entries[i].ID ?
-													'<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" /></td>' +
-													'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
-													'<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" /></td>' +
-													'<td class="selector"' + (we_editCatID ? '' : '') + ' title="' + entries[i].text + '">' + cutText(entries[i].text, 80)
-													) +
-									'</td></tr>';
-				}
-				body += '<tr><td width="25" height="2"></td>' +
-								'<td width="150" height="2"></td>' +
-								'</tr></table></form>';
-				d.innerHTML = body;
-				if (makeNewFolder || makeNewCat || we_editCatID) {
-					top.fsbody.document.we_form.we_EntryText_tmp.focus();
-					top.fsbody.document.we_form.we_EntryText_tmp.select();
-				}
-			}
-			//-->
+						for (i = 0; i < entries.length; i++) {
+							var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true;"';
+							var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+							body += '<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >' +
+											'<td class="selector" width="25" align="center">' +
+											'<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" /></td>' +
+											(we_editCatID == entries[i].ID ?
+															'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
+															'<td class="selector"' + (we_editCatID ? '' : '') + ' title="' + entries[i].text + '">' + cutText(entries[i].text, 80)
+															) +
+											'</td></tr>';
+						}
+						body += '<tr><td width="25" height="2"></td>' +
+										'<td width="150" height="2"></td>' +
+										'</tr></table></form>';
+						d.innerHTML = body;
+						if (makeNewFolder || makeNewCat || we_editCatID) {
+							top.fsbody.document.we_form.we_EntryText_tmp.focus();
+							top.fsbody.document.we_form.we_EntryText_tmp.select();
+						}
+					}
+					//-->
 		</script>
 		<?php
 		return ob_get_clean();
@@ -278,8 +237,12 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){
 	protected function printFramesetJSFunctionQueryString(){
 		return we_html_element::jsElement('
 		function queryString(what,id,o,we_editCatID){
-		if(!o) o=top.order;
-		if(!we_editCatID) we_editCatID="";
+		if(!o){
+		o=top.order;
+		}
+		if(!we_editCatID){
+		we_editCatID="";
+		}
 		return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&rootDirID=' . $this->rootDirID . '&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editCatID ? ("&we_editCatID="+we_editCatID) : "");
 		}');
 	}
@@ -298,9 +261,11 @@ var perms={
 
 var g_l={
 	"deleteQuestion":\'' . g_l('fileselector', '[deleteQuestion]') . '\',
-		"new_folder_name":"' . g_l('fileselector', '[new_folder_name]') . '",
-		"new_cat_name":"' . g_l('fileselector', '[new_cat_name]') . '",
+	"new_folder_name":"' . g_l('fileselector', '[new_folder_name]') . '",
+	"new_cat_name":"' . g_l('fileselector', '[new_cat_name]') . '",
 };
+options.userCanEditCat=' . intval($this->userCanEditCat()) . ';
+
 ');
 	}
 
@@ -330,7 +295,6 @@ var g_l={
 			)));
 			$folderID = $this->db->getInsertId();
 			$js.='top.currentPath = "' . $Path . '";
-
 top.currentID = "' . $folderID . '";
 top.hot = 1; // this is hot for category edit!!
 
@@ -410,18 +374,6 @@ top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;') .
 		'</head><body></body></html>';
 	}
 
-	protected function printFramesetJSDoClickFn(){
-		return we_html_element::jsElement('
-
-function showPref(id) {
-	if(self.fsvalues) self.fsvalues.location = "' . $this->getFsQueryString(self::PROPERTIES) . '&catid="+id;
-}
-
-function hidePref() {
-	if(self.fsvalues) self.fsvalues.location = "' . $this->getFsQueryString(self::PROPERTIES) . '";
-}');
-	}
-
 	protected function printCmdHTML(){
 		echo we_html_element::jsElement('
 top.clearEntries();' .
@@ -434,14 +386,6 @@ top.fsheader.enableRootDirButs();
 top.fsheader.enableDelBut();' ) . '
 top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";');
-	}
-
-	function printFramesetSelectFileHTML(){
-		return '';
-	}
-
-	protected function printFramesetJSsetDir(){
-		return '';
 	}
 
 	function renameChildrenPath($id, we_database_base $db = null){
@@ -491,7 +435,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop();
 
-		if(($catsToDel = we_base_request::_(we_base_request::INTLISTA, 'todel',array()))){
+		if(($catsToDel = we_base_request::_(we_base_request::INTLISTA, 'todel', array()))){
 			$finalDelete = array();
 			$catlistNotDeleted = "";
 			$changeToParent = false;

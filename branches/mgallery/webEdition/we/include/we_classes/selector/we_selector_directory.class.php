@@ -136,7 +136,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 
 	protected function getFramsetJSFile(){
 		return parent::getFramsetJSFile() .
-			we_html_element::jsScript(JS_DIR . 'selectors/directoryFrameset.js');
+			we_html_element::jsScript(JS_DIR . 'selectors/directory_selector.js');
 	}
 
 	protected function getWriteBodyHead(){
@@ -165,9 +165,12 @@ if(top.makeNewFolder ||  top.we_editDirID){
 		}else{
 			if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
 			if(e.shiftKey){ shiftpressed=true;}
-		}' . ($this->multiple ? '
-		if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
-		top.unselectAllFiles();') . '
+		}
+		if(top.options.multiple){
+		if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}
+		}else{
+		top.unselectAllFiles();
+		}
 	}
 }');
 	}
@@ -238,25 +241,6 @@ if(top.makeNewFolder ||  top.we_editDirID){
 		}');
 	}
 
-	protected function printFramesetJSFunctionEntry(){
-		return we_html_element::jsElement('
-function entry(ID,icon,text,isFolder,path,modDate){
-	this.ID=ID;
-	this.icon=icon;
-	this.text=text;
-	this.isFolder=isFolder;
-	this.path=path;
-	this.modDate=modDate;
-}');
-	}
-
-	protected function printFramesetJSFunctionAddEntry(){
-		return we_html_element::jsElement('
-function addEntry(ID,icon,text,isFolder,path,modDate){
-	entries[entries.length] = new entry(ID,icon,text,isFolder,path,modDate);
-}');
-	}
-
 	protected function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		while($this->next_record()){
@@ -295,19 +279,6 @@ function addEntry(ID,icon,text,isFolder,path,modDate){
 	protected function printHeaderJSDef(){
 		return parent::printHeaderJSDef() .
 			'var makefolderState = ' . ($this->userCanMakeNewFolder ? 1 : 0) . ';';
-	}
-
-	protected function printHeaderJS(){
-		return parent::printHeaderJS() .'
-function disableNewFolderBut(){
-	btn_new_dir_enabled = switch_button_state("btn_new_dir", "new_directory_enabled", "disabled", "image");
-	makefolderState = 0;
-}
-function enableNewFolderBut(){
-
-	btn_new_dir_enabled = switch_button_state("btn_new_dir", "new_directory_enabled", "enabled", "image");
-	makefolderState = 1;
-}';
 	}
 
 	protected function userCanSeeDir($showAll = false){
@@ -378,38 +349,32 @@ function enableNewFolderBut(){
 		return true;
 	}
 
-	protected function printFramesetRootDirFn(){
-		return we_html_element::jsElement('
-function setRootDir(){
-	setDir(' . intval($this->rootDirID) . ');
-}');
-	}
-
 	protected function printCMDWriteAndFillSelectorHTML(){
 		$pid = $this->dir;
 		$out = '';
 		$c = 0;
 		while($pid != 0){
 			$c++;
-			$this->db->query("SELECT ID,Text,ParentID FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($pid));
+			$this->db->query('SELECT ID,Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid));
 			if($this->db->next_record()){
-				$out = 'top.fsheader.addOption("' . $this->db->f("Text") . '",' . $this->db->f("ID") . ');' . $out;
+				$out = 'top.fsheader.addOption("' . $this->db->f('Text') . '",' . $this->db->f('ID') . ');' . $out;
 			}
 			$pid = $this->db->f("ParentID");
 			if($c > 500){
 				$pid = 0;
 			}
 			if($this->rootDirID){
-				if($this->db->f("ID") == $this->rootDirID){
+				if($this->db->f('ID') == $this->rootDirID){
 					$pid = 0;
 				}
 			}
 		}
 		return '
 top.writeBody(top.fsbody.document.body);
-top.fsheader.clearOptions();' .
-			($this->rootDirID ? '' : '
-top.fsheader.addOption("/",0);') .
+top.fsheader.clearOptions();
+if(top.options.rootDirID){
+	top.fsheader.addOption("/",0);
+}' .
 			$out . '
 top.fsheader.selectIt();';
 	}
@@ -473,78 +438,6 @@ top.fsheader.selectIt();';
 		return '<tr><td colspan="11">' . we_html_tools::getPixel(5, 10) . '</td></tr>';
 	}
 
-	protected function printFramesetJSDoClickFn(){
-		return we_html_element::jsElement('
-function showPreview(id) {
-	if(top.fspreview) {
-		top.fspreview.location.replace(top.queryString(' . self::PREVIEW . ',id));
-	}
-}
-
-function doClick(id,ct){
-	if(top.fspreview.document.body){
-		top.fspreview.document.body.innerHTML = "";
-	}
-	if(ct==1){
-		if(wasdblclick){
-			setDir(id);
-			setTimeout("wasdblclick=0;",400);
-		}
-	}else{
-		if(top.currentID == id && (!fsbody.ctrlpressed)){' .
-				($this->userCanRenameFolder ? 'top.RenameFolder(id);' : 'selectFile(id);') . '
-
-		}else{' .
-				($this->multiple ? '
-				if(fsbody.shiftpressed){
-					var oldid = currentID;
-					var currendPos = getPositionByID(id);
-					var firstSelected = getFirstSelected();
-
-					if(currendPos > firstSelected){
-						selectFilesFrom(firstSelected,currendPos);
-					}else if(currendPos < firstSelected){
-						selectFilesFrom(currendPos,firstSelected);
-					}else{
-						selectFile(id);
-					}
-					currentID = oldid;
-
-				}else if(!fsbody.ctrlpressed){
-					selectFile(id);
-				}else{
-					if (isFileSelected(id)) {
-						unselectFile(id);
-					}else{' : '') . '
-
-					selectFile(id);' .
-				($this->multiple ? '
-					}
-				}' : '') . '
-		}
-	}
-	if(fsbody.ctrlpressed){
-		fsbody.ctrlpressed = 0;
-	}
-	if(fsbody.shiftpressed){
-		fsbody.shiftpressed = 0;
-	}
-}');
-	}
-
-	protected function printFramesetJSsetDir(){
-		return we_html_element::jsElement('
-function setDir(id){
-	showPreview(id);
-	if(top.fspreview.document.body){
-		top.fspreview.document.body.innerHTML = "";
-	}
-	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',id));
-	e = getEntry(id);
-	fspath.document.body.innerHTML = e.path;
-}');
-	}
-
 	function printSetDirHTML(){
 		echo '<script type="text/javascript"><!--
 top.clearEntries();' .
@@ -567,34 +460,6 @@ top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 //-->
 </script>';
-	}
-
-	function printFramesetSelectFileHTML(){
-		return we_html_element::jsElement('
-function selectFile(id){
-	if(id){
-		showPreview(id);
-		e = getEntry(id);
-		if( top.fsfooter.document.we_form.fname.value != e.text &&
-			top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
-			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
-			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 ){
-
-			top.fsfooter.document.we_form.fname.value =  top.fsfooter.document.we_form.fname.value ?
-				(top.fsfooter.document.we_form.fname.value + "," + e.text) :
-				e.text;
-		}
-		if(top.fsbody.document.getElementById("line_"+id)) top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
-		currentPath = e.path;
-		currentID = id;
-
-		we_editDirID = 0;
-	}else{
-		top.fsfooter.document.we_form.fname.value = "";
-		currentPath = "";
-		we_editDirID = 0;
-	}
-}');
 	}
 
 	function printNewFolderHTML(){
@@ -696,7 +561,10 @@ top.selectFile(top.currentID);
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 var makeNewFolder=0;
 var we_editDirID="";
-var old=0;');
+var old=0;
+options.userCanRenameFolder='.intval($this->userCanRenameFolder).';
+options.userCanMakeNewFolder='.intval($this->userCanMakeNewFolder).';
+');
 	}
 
 	function printRenameFolderHTML(){

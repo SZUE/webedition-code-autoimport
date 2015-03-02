@@ -214,3 +214,13 @@ function RenameEntry(id) {
 	top.writeBody(top.fsbody.document.body);
 	selectFile(id);
 }
+
+function showPref(id) {
+	if (self.fsvalues)
+		self.fsvalues.location = "' . $this->getFsQueryString(self::PROPERTIES) . '&catid=" + id;
+}
+
+function hidePref() {
+	if (self.fsvalues)
+		self.fsvalues.location = "' . $this->getFsQueryString(self::PROPERTIES) . '";
+}

@@ -29,26 +29,10 @@ class we_shop_dirSelector extends we_selector_multiple{
 		$this->title = g_l('fileselector', '[shopDirSelector][title]');
 	}
 
-	protected function printFramesetJSDoClickFn(){
-		return we_html_element::jsElement('
-function doClick(id,ct){
-	if(ct==1){
-		if(wasdblclick){
-			setDir(id);
-			setTimeout("wasdblclick=0;",400);
-		}
-	}else{
-		e=top.getEntry(id);
-		if(e.isFolder){
-			if(top.currentID == id){
-				top.RenameFolder(id);
-			}
-		}else{
-			selectFile(id);
-		}
+	protected function getFramsetJSFile(){
+		return parent::getFramsetJSFile() .we_html_element::jsScript(JS_DIR . 'selectors/shopDir_selector.js');
 	}
-}');
-	}
+
 
 	function printHeaderHeadlines(){
 		return '
@@ -63,13 +47,6 @@ function doClick(id,ct){
 		<td width="300">' . we_html_tools::getPixel(300, 1) . '</td>
 	</tr>
 </table>';
-	}
-
-	protected function printFramesetJSsetDir(){
-		return we_html_element::jsElement('
-function setDir(id){
-	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',id));
-}');
 	}
 
 	function printSetDirHTML(){

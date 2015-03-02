@@ -26,7 +26,7 @@ if(!$_SESSION['user']['Username']){
 }
 
 we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
-echo we_html_tools::getHtmlTop('','','frameset');
+echo we_html_tools::getHtmlTop('', '', 'frameset');
 
 $docroot = str_replace('\\', '/', rtrim($_SERVER['DOCUMENT_ROOT'], '/'));
 $cmd1 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);
@@ -35,11 +35,11 @@ $cmd1 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);
 $filter = we_base_request::_(we_base_request::STRING, 'we_cmd', 'all_Types', 2);
 $url = we_base_request::_(we_base_request::URL, 'we_cmd', '', 3);
 $currentDir = str_replace('\\', '/', ( $url ?
-		($url === '/' ? '' :
-			( parse_url($url) === FALSE && is_dir($docroot . $url) ?
-				$url :
-				dirname($url))) :
-		''));
+				($url === '/' ? '' :
+						( parse_url($url) === FALSE && is_dir($docroot . $url) ?
+								$url :
+								dirname($url))) :
+				''));
 $currentName = ($filter != we_base_ContentTypes::FOLDER ? basename($url) : '');
 if(!file_exists($docroot . $currentDir . '/' . $currentName)){
 	$currentDir = '';
@@ -68,16 +68,15 @@ $selectOwn = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 6);
 	var allentries = new Array();
 
 	function exit_close() {
-<?php if($cmd1){ ?>
+		if (!browseServer) {
 			var foo = (!currentID || (currentID === sitepath) ? "/" : currentID.substring(sitepath.length));
 
 			opener.<?php echo $cmd1; ?> = foo;
 			if (!!opener.postSelectorSelect) {
 				opener.postSelectorSelect('selectFile');
 			}
-
-	<?php
-}
+		}
+<?php
 if(($cmd4 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4))){
 	echo $cmd4 . ';';
 }
@@ -99,8 +98,8 @@ echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
 </head>
 <frameset rows="73,*,<?php echo (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2) ? 60 : 90); ?>,0" onload="top.fscmd.selectDir()">
   <frame src="we_sselector_header.php?ret=<?php echo ($cmd1 ? 1 : 0); ?>&filter=<?php echo $filter; ?>&currentDir=<?php echo $currentDir; ?>" name="fsheader" noresize scrolling="no">
-	<frame src="about:blank" name="fsbody" noresize scrolling="auto">
-	<frame  src="we_sselector_footer.php?ret=<?php echo ($cmd1 ? 1 : 0); ?>&filter=<?php echo $filter; ?>&currentName=<?php echo $currentName; ?>" name="fsfooter" noresize scrolling="no">
-	<frame src="we_sselector_cmd.php?ret=<?php echo ($cmd1 ? 1 : 0); ?>&filter=<?php echo $filter; ?>&currentName=<?php echo $currentName; ?>&selectOwn=<?php echo $selectOwn; ?>" name="fscmd" noresize scrolling="no">
-</frameset>
-</html>
+		<frame src="about:blank" name="fsbody" noresize scrolling="auto">
+			<frame  src="we_sselector_footer.php?ret=<?php echo ($cmd1 ? 1 : 0); ?>&filter=<?php echo $filter; ?>&currentName=<?php echo $currentName; ?>" name="fsfooter" noresize scrolling="no">
+				<frame src="we_sselector_cmd.php?ret=<?php echo ($cmd1 ? 1 : 0); ?>&filter=<?php echo $filter; ?>&currentName=<?php echo $currentName; ?>&selectOwn=<?php echo $selectOwn; ?>" name="fscmd" noresize scrolling="no">
+					</frameset>
+					</html>

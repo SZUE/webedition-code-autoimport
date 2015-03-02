@@ -115,9 +115,12 @@ if(e.shiftKey){ shiftpressed=true;}
 }else{
 if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
 if(e.shiftKey){ shiftpressed=true;}
-}' . ($this->multiple ? '
-if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
-top.unselectAllFiles();') . '
+}
+if(top.options.multiple){
+if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}
+}else{
+top.unselectAllFiles();
+}
 	}
 }
 ');
@@ -333,37 +336,9 @@ top.selectFile(top.currentID);
 </head><body></body></html>';
 	}
 
-	function printFramesetSelectFileHTML(){
-		return we_html_element::jsElement('
-function selectFile(id){
-	if(id){
-		e = getEntry(id);
-		if( top.fsfooter.document.we_form.fname.value != e.text &&
-			top.fsfooter.document.we_form.fname.value.indexOf(e.text+",") == -1 &&
-			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 &&
-			top.fsfooter.document.we_form.fname.value.indexOf(","+e.text+",") == -1 ){
-
-			top.fsfooter.document.we_form.fname.value =  top.fsfooter.document.we_form.fname.value ?
-				(top.fsfooter.document.we_form.fname.value + "," + e.text) :
-				e.text;
-
-			var show = top.fsfooter.document.getElementById("showDiv");
-			if(show){
-				show.innerHTML = top.fsfooter.document.we_form.fname.value;
-			}
-
-		}
-		if(top.fsbody.document.getElementById("line_"+id)) top.fsbody.document.getElementById("line_"+id).style.backgroundColor="#DFE9F5";
-		currentPath = e.path;
-		currentID = id;
-
-		we_editDirID = 0;
-	}else{
-		top.fsfooter.document.we_form.fname.value = "";
-		currentPath = "";
-		we_editDirID = 0;
+	protected function getFramsetJSFile(){
+		return parent::getFramsetJSFile() .we_html_element::jsScript(JS_DIR . 'selectors/naviagationDir_selector.js');
 	}
-}');
-	}
+
 
 }

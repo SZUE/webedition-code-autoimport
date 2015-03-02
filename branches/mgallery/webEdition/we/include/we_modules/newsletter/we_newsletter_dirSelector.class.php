@@ -220,9 +220,12 @@ if(e.shiftKey){ shiftpressed=true;}
 }else{
 if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
 if(e.shiftKey){ shiftpressed=true;}
-}' . ($this->multiple ? '
-if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
-top.unselectAllFiles();') . '
+}
+if(top.options.multiple){
+if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}
+}else{
+top.unselectAllFiles();
+}
 	}');
 	}
 

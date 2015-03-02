@@ -1317,7 +1317,7 @@ _multiEditorreload = true;";
 		$_tableObj->setCol(3, 0, null, we_html_tools::getPixel(560, 10));
 		$_tableObj->setCol(4, 0, null, we_html_tools::htmlFormElementTable($weAcSelector, g_l('modules_users', '[group]')));
 
-		$content = '<select name="' . $this->Name . '_Users" size="8" style="width:560px" onchange="if(this.selectedIndex > -1){edit_enabled = switch_button_state(\'edit\', \'edit_enabled\', \'enabled\');}else{edit_enabled = switch_button_state(\'edit\', \'edit_enabled\', \'disabled\');}" ondblclick="top.content.we_cmd(\'display_user\',document.we_form.' . $this->Name . '_Users.value)">';
+		$content = '<select name="' . $this->Name . '_Users" size="8" style="width:560px" onchange="if(this.selectedIndex > -1){switch_button_state(\'edit\', \'edit_enabled\', \'enabled\');}else{switch_button_state(\'edit\', \'edit_enabled\', \'disabled\');}" ondblclick="top.content.we_cmd(\'display_user\',document.we_form.' . $this->Name . '_Users.value)">';
 		if($this->ID){
 			$this->DB_WE->query('SELECT ID,username,Text,Type FROM ' . USER_TABLE . ' WHERE Type IN (0,2) AND ParentID=' . intval($this->ID));
 			while($this->DB_WE->next_record()){
