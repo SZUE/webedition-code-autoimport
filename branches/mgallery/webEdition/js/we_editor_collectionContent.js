@@ -69,26 +69,17 @@ weCollectionEdit = {
 	addRows: function(elem){
 		var el = this.getRow(elem),
 			num = document.getElementById('numselect_' + el.id.substr(5)).value,
-			div, newElem, cmd = [];
+			div, newElem, cmd1, cmd2;
 
 		for(var i = 0; i < num; i++){
+			cmd1 = weCmdEnc(weCollectionEdit.selectorCmds[0].replace(/XX/g, ++this.maxIndex));
+			cmd2 = weCmdEnc(weCollectionEdit.selectorCmds[1].replace(/XX/g, this.maxIndex));
 			div = document.createElement("div");
-			div.innerHTML = this.blankRow.replace(/XX/g, ++this.maxIndex);
+			div.innerHTML = this.blankRow.replace(/XX/g, this.maxIndex).replace(/CMD1/, cmd1).replace(/CMD2/, cmd2)
 			newElem = document.getElementById('content_table').insertBefore(div.firstChild, el.nextSibling);
-
-			cmd[1] = document.we_form.elements['we_' + we_name + '_ItemID_' + this.maxIndex].value;
-			cmd[2] = we_remTable;
-			cmd[3] = weCmdEnc(weCollectionEdit.selectorCmds[0].replace(/XX/g, this.maxIndex));
-			cmd[4] = weCmdEnc(weCollectionEdit.selectorCmds[1].replace(/XX/g, this.maxIndex));
-			cmd[5] = weCmdEnc(weCollectionEdit.selectorCmds[2].replace(/XX/g, this.maxIndex));
-			
-			document.getElementById("select_" + this.maxIndex).onclick = function(){we_cmd('openDocselector',cmd[1],cmd[2],cmd[3],cmd[4],cmd[5]);};
-
 			el = newElem;
 		}
-
 		this.repaintAndRetrieveCsv();
-		//	this.repaintAndRetrieveCsv(index, document.getElementById('numselect_' + index).value);
 	},
 
 

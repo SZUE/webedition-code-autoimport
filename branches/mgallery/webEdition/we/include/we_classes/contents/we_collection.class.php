@@ -106,28 +106,31 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		$wecmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmd2 = "document.we_form.elements['" . $textname . "'].value";
 		$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);opener.weCollectionEdit.repaintAndRetrieveCsv();";
-		$this->jsFormCollection .= $noAcAutoInit ? 'weCollectionEdit.selectorCmds = ["' . $wecmd1 . '","' . $wecmd2 . '","' . $wecmd3 . '"];' : ''; 
-
-		//$this->jsFormCollection .= $noAcAutoInit ? 'weCollectionEdit.selectorCmd_1 = "' . $wecmd1 . '";' : '';
-
-
-		$wecmdenc1 = we_base_request::encCmd($wecmd1);
-		$wecmdenc2 = we_base_request::encCmd($wecmd2);
+		
+		if($noAcAutoInit){
+			$this->jsFormCollection .= 'weCollectionEdit.selectorCmds = ["' . $wecmd1 . '","' . $wecmd2 . '"];'; 
+			$wecmdenc1 = 'CMD1';
+			$wecmdenc2 = 'CMD2';
+		} else {
+			$wecmdenc1 = we_base_request::encCmd($wecmd1);
+			$wecmdenc2 = we_base_request::encCmd($wecmd2);
+		}
 		$wecmdenc3 = we_base_request::encCmd($wecmd3);
 
 		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $idname . "'].value,'" . $this->remTable . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','',1)", true, 0, 0, '', '', false, false, '_' . $index);
 		$openbutton = we_html_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['" . $idname . "'].value){top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . ($this->remTable === FILE_TABLE ? we_base_ContentTypes::TEMPLATE : we_base_ContentTypes::OBJECT_FILE) . "','" . $this->remTable . "'); }");
 		$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputItem_" . $index ."');_EditorFrame.setEditorIsHot(true);weCollectionEdit.repaintAndRetrieveCsv();", true, 27, 22);
-		$yuiSuggest->setTable(TEMPLATES_TABLE);
-		$yuiSuggest->setContentType('folder,text/weTmpl');
+		$yuiSuggest->setTable($this->remTable);
+		$yuiSuggest->setContentType('');
+		$yuiSuggest->setCheckFieldValue(0);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setAcId('Item_' . $index, true);
+		$yuiSuggest->setAcId('Item_' . $index);
 		$yuiSuggest->setNoAutoInit($noAcAutoInit);
 		$yuiSuggest->setInput($textname, $item['path'], array("onmouseover" => "document.getElementById('drag_" . $index . "').draggable=false", "onmouseout" => "document.getElementById('drag_" . $index . "').draggable=true"));
 		$yuiSuggest->setResult($idname, $item['id']);
 		$yuiSuggest->setWidth(210);
-		$yuiSuggest->setMaxResults(10);//$yuiSuggest->setOpenButton
-		$yuiSuggest->setMayBeEmpty(1);
+		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setTrashButton($trashButton);
 		$yuiSuggest->setSelectButton($button);
 		$yuiSuggest->setOpenButton($openbutton);
