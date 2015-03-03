@@ -144,7 +144,7 @@ foreach($tables as $ctable => $ids){
 	$paths = ((!permissionhandler::hasPerm('ADMINISTRATOR') || ($table != TEMPLATES_TABLE && (defined('OBJECT_TABLE') ? ($table != OBJECT_TABLE) : true))) && isset($workspace[$table]) ?
 					$workspace[$table] : '');
 
-	$queries[] = '(SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners,"' . $ctable . '" AS ctable FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', $ids) . ')' . ($paths ? (' AND (' . $paths . ')') : '') . ')';
+	$queries[] = '(SELECT ID,Path,' . ($table !== VFILE_TABLE ? 'Icon,' : '') . 'Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners,"' . $ctable . '" AS ctable FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', $ids) . ')' . ($paths ? (' AND (' . $paths . ')') : '') . ')';
 }
 
 $lastModified = '<table style="width:100%">';
@@ -165,9 +165,8 @@ if($queries){
 						true);
 
 		if($show){
-			if(!$icon = (isset($file['Icon']) && $file['Icon'] ? $file['Icon'] : '')){t_e("file", $file);
-				$contentTypes = we_base_ContentTypes::inst();
-				$icon = (isset($file['ContentType']) && $file['ContentType']) ? $contentTypes->getIcon($file['ContentType']) : $contentTypes->getIcon(we_base_ContentTypes::TEXT);
+			if(!$icon = (isset($file['Icon']) && $file['Icon'] ? $file['Icon'] : '')){
+				$icon = (isset($file['ContentType']) && $file['ContentType']) ? we_base_ContentTypes::inst()->getIcon($file['ContentType']) : we_base_ContentTypes::inst()->getIcon(we_base_ContentTypes::TEXT);
 			}
 
 			$isOpen = $hist['isOpen'];

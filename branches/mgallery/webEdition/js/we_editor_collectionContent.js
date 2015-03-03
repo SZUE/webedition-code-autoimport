@@ -29,20 +29,22 @@ weCollectionEdit = {
 		var addAtIndex = addIndex || 0;
 		var addNumber = addNum || 0;
 
-		var t = document.getElementById('content_table'), index, csv = ',';
+		var t = document.getElementById('content_table'), index, csv = ',', val;
 		for(var i = 0; i < t.childNodes.length; i++){
 			index = t.childNodes[i].id.substr(5);
-			csv += document.getElementById('yuiAcResultItem_' + index).value + ',';
+			val = document.getElementById('yuiAcResultItem_' + index).value;
+			csv += (val != 0 ? val : -1) + ',';
 			document.getElementById('label_' + index).innerHTML = i + 1;
 			document.getElementById('btn_direction_up_' + index).disabled = (i === 0);
 			document.getElementById('btn_direction_down_' + index).disabled = (i === (t.childNodes.length - 1));
-
+			/*
 			if(addAtIndex && addAtIndex == index && addNum){
 				while(addNum > 0){
 					csv += -1 + ',';
 					addNum--;
 				}
 			}
+			*/
 		}
 		document.we_form.elements['we_' + we_name + '_Collection'].value = csv;
 	},

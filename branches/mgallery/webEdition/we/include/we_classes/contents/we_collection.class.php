@@ -88,7 +88,7 @@ class we_collection extends we_root{
 		$rows = '';
 		foreach($items as $item){
 			$index++;
-			$rows .= $this->getCollectionRow($item, $index, $yuiSuggest, count($items));
+			$rows .= $this->getCollectionRow($item, $index, $yuiSuggest, count($items), true);// last param: ac disabled!
 		}
 		
 		// write "blank" collection row to js var
@@ -121,8 +121,8 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		$openbutton = we_html_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['" . $idname . "'].value){top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . ($this->remTable === FILE_TABLE ? we_base_ContentTypes::TEMPLATE : we_base_ContentTypes::OBJECT_FILE) . "','" . $this->remTable . "'); }");
 		$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputItem_" . $index ."');_EditorFrame.setEditorIsHot(true);weCollectionEdit.repaintAndRetrieveCsv();", true, 27, 22);
 		$yuiSuggest->setTable($this->remTable);
-		$yuiSuggest->setContentType('');
-		$yuiSuggest->setCheckFieldValue(0);
+		$yuiSuggest->setContentType('folder,text/webedition,image/*');
+		$yuiSuggest->setCheckFieldValue(false);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setAcId('Item_' . $index);
 		$yuiSuggest->setNoAutoInit($noAcAutoInit);
