@@ -101,10 +101,9 @@ echo we_html_element::jsScript(JS_DIR . "keyListener.js") .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js');
 ?>
 </head>
-<frameset rows="26,*">
-	<frame src="<?php echo WE_INCLUDES_DIR; ?>we_tools/tools_header.php?tool=<?php echo $tool; ?>" name="navi" noresize scrolling="no"/>
-	<frame src="<?php echo WE_INCLUDES_DIR; ?>we_tools/tools_content.php?tool=<?php
-	echo $tool . ($modelid ? ('&modelid=' . $modelid) : '') . ($tab ? ('&tab=' . $tab) : '');
-	?>" name="content" noresize scrolling="no"/>
-</frameset>
+<body><?php
+	echo we_html_element::htmlIFrame('navi', WE_INCLUDES_DIR . 'we_tools/tools_header.php?tool=' . $tool, 'position:absolute;top:0px;left:0px;right:0px;height:26px;', '', '', false) .
+	we_html_element::htmlIFrame('content', WE_INCLUDES_DIR . 'we_tools/tools_content.php?tool=' . $tool . ($modelid ? ('&modelid=' . $modelid) : '') . ($tab ? ('&tab=' . $tab) : ''), 'position:absolute;top:26px;left:0px;right:0px;bottom:0px;', '', '', false);
+	?>
+</body>
 </html>

@@ -29,6 +29,7 @@ function we_isNotEmpty($attribs){
 	$doc = we_getDocForTag($docAttr, false);
 
 	switch($type){
+		case 'checkbox':
 		case 'object':
 			return (bool) $doc->getElement($match);
 		case 'binary' :
