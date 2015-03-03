@@ -24,7 +24,6 @@
 
 mainXhtmlFields = ["setXhtml_remove_wrong", "setXhtml_show_wrong"];
 showXhtmlFields = ["setXhtml_show_wrong_text", "setXhtml_show_wrong_js", "setXhtml_show_wrong_error_log"];
-
 Array.prototype.contains = function (obj) {
 	var i, listed = false;
 	for (i = 0; i < this.length; i++) {
@@ -43,7 +42,6 @@ function checkAllRevert() {
 
 function openVersionWizard() {
 	parent.opener.top.we_cmd("versions_wizard");
-
 }
 
 function disable_xhtml_fields(val, fields) {
@@ -93,25 +91,20 @@ function set_state_error_handler() {
 	document.getElementsByName('newconf[WE_ERROR_WARNINGS]')[0].disabled = _new_state;
 	document.getElementsByName('newconf[WE_ERROR_ERRORS]')[0].disabled = _new_state;
 	document.getElementsByName('newconf[WE_ERROR_DEPRECATED]')[0].disabled = _new_state;
-
 	document.getElementById('label_newconf[WE_ERROR_NOTICES]').style.color = _new_style;
 	document.getElementById('label_newconf[WE_ERROR_WARNINGS]').style.color = _new_style;
 	document.getElementById('label_newconf[WE_ERROR_ERRORS]').style.color = _new_style;
 	document.getElementById('label_newconf[WE_ERROR_DEPRECATED]').style.color = _new_style;
-
 	document.getElementById('label_newconf[WE_ERROR_NOTICES]').style.cursor = _new_cursor;
 	document.getElementById('label_newconf[WE_ERROR_WARNINGS]').style.cursor = _new_cursor;
 	document.getElementById('label_newconf[WE_ERROR_ERRORS]').style.cursor = _new_cursor;
 	document.getElementById('label_newconf[WE_ERROR_DEPRECATED]').style.cursor = _new_cursor;
-
 	document.getElementsByName('newconf[WE_ERROR_SHOW]')[0].disabled = _new_state;
 	document.getElementsByName('newconf[WE_ERROR_LOG]')[0].disabled = _new_state;
 	document.getElementsByName('newconf[WE_ERROR_MAIL]')[0].disabled = _new_state;
-
 	document.getElementById('label_newconf[WE_ERROR_SHOW]').style.color = _new_style;
 	document.getElementById('label_newconf[WE_ERROR_LOG]').style.color = _new_style;
 	document.getElementById('label_newconf[WE_ERROR_MAIL]').style.color = _new_style;
-
 	document.getElementById('label_newconf[WE_ERROR_SHOW]').style.cursor = _new_cursor;
 	document.getElementById('label_newconf[WE_ERROR_LOG]').style.cursor = _new_cursor;
 	document.getElementById('label_newconf[WE_ERROR_MAIL]').style.cursor = _new_cursor;
@@ -201,7 +194,6 @@ function defaultLocale() {
 	if (document.getElementById('locale_temp_locales').selectedIndex > -1) {
 		var LocaleIndex = document.getElementById('locale_temp_locales').selectedIndex;
 		var LocaleValue = document.getElementById('locale_temp_locales').options[LocaleIndex].value;
-
 		setDefaultLocale(LocaleValue);
 	}
 }
@@ -224,7 +216,6 @@ function setDefaultLocale(Value) {
 function set_state_edit_delete_recipient() {
 	var p = document.forms[0].elements.we_recipient;
 	var i = p.length;
-
 	if (i == 0) {
 		edit_enabled = switch_button_state('edit', 'edit_enabled', 'disabled');
 		delete_enabled = switch_button_state('delete', 'delete_enabled', 'disabled');
@@ -236,7 +227,6 @@ function set_state_edit_delete_recipient() {
 
 function inSelectBox(val) {
 	var p = document.forms[0].elements.we_recipient;
-
 	for (var i = 0; i < p.options.length; i++) {
 		if (p.options[i].text == val) {
 			return true;
@@ -248,9 +238,7 @@ function inSelectBox(val) {
 function addElement(value, text, sel) {
 	var p = document.forms[0].elements.we_recipient;
 	var i = p.length;
-
 	p.options[i] = new Option(text, value);
-
 	if (sel) {
 		p.selectedIndex = i;
 	}
@@ -269,9 +257,7 @@ function send_recipients() {
 	if (hot) {
 		var p = document.forms[0].elements.we_recipient;
 		var v = document.forms[0].elements["newconf[formmail_values]"];
-
 		v.value = "";
-
 		for (var i = 0; i < p.options.length; i++) {
 			v.value += p.options[i].value + "<#>" + p.options[i].text + ((i < (p.options.length - 1)) ? "<##>" : "");
 		}
@@ -285,11 +271,8 @@ function formmailLogOnOff() {
 	var formmail_span = document.forms[0].elements["newconf[FORMMAIL_SPAN]"];
 	var formmail_trials = document.forms[0].elements["newconf[FORMMAIL_TRIALS]"];
 	var formmail_blocktime = document.forms[0].elements["newconf[FORMMAIL_BLOCKTIME]"];
-
 	var flag = formmail_log.options[formmail_log.selectedIndex].value == 1;
-
 	formmail_emptylog.disabled = !flag;
-
 	formmail_block.disabled = !flag;
 	if (formmail_block.options[formmail_block.selectedIndex].value == 1) {
 		formmail_span.disabled = !flag;
@@ -302,9 +285,7 @@ function formmailBlockOnOff() {
 	var formmail_span = document.forms[0].elements["newconf[FORMMAIL_SPAN]"];
 	var formmail_trials = document.forms[0].elements["newconf[FORMMAIL_TRIALS]"];
 	var formmail_blocktime = document.forms[0].elements["newconf[FORMMAIL_BLOCKTIME]"];
-
 	var flag = formmail_block.options[formmail_block.selectedIndex].value == 1;
-
 	formmail_span.disabled = !flag;
 	formmail_trials.disabled = !flag;
 	formmail_blocktime.disabled = !flag;
@@ -321,4 +302,252 @@ function set_state() {
 	document.getElementsByName('newconf[proxyport]')[0].disabled = _new_state;
 	document.getElementsByName('newconf[proxyuser]')[0].disabled = _new_state;
 	document.getElementsByName('newconf[proxypass]')[0].disabled = _new_state;
+}
+
+function addLocale() {
+	var LanguageIndex = document.getElementById('locale_language').selectedIndex;
+	var LanguageValue = document.getElementById('locale_language').options[LanguageIndex].value;
+	var LanguageText = document.getElementById('locale_language').options[LanguageIndex].text;
+	var CountryIndex = document.getElementById('locale_country').selectedIndex;
+	var CountryValue = document.getElementById('locale_country').options[CountryIndex].value;
+	var CountryText = document.getElementById('locale_country').options[CountryIndex].text;
+	if (LanguageValue.substr(0, 1) === "~") {
+		LanguageValue = LanguageValue.substr(1);
+	}
+	if (LanguageValue === "") {
+		return;
+	}
+
+	if (CountryValue.substr(0, 1) === "~") {
+		CountryValue = CountryValue.substr(1);
+	}
+	if (CountryValue !== "") {
+		var LocaleValue = LanguageValue + '_' + CountryValue;
+		var LocaleText = LanguageText + ' (' + CountryText + ')';
+	} else {
+		var LocaleValue = LanguageValue;
+		var LocaleText = LanguageText;
+	}
+
+	var found = false;
+	for (i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
+		if (document.getElementById('locale_temp_locales').options[i].value === LocaleValue) {
+			found = true;
+		}
+	}
+
+	if (found === true) {
+		top.we_showMessage(g_l.language_already_exists, WE_MESSAGE_ERROR, window);
+	} else if (CountryValue === "") {
+		top.we_showMessage(g_l.language_country_missing, WE_MESSAGE_ERROR, window);
+	} else {
+		document.getElementById('locale_temp_locales').options[document.getElementById('locale_temp_locales').options.length] = new Option(LocaleText, LocaleValue, false, false);
+		if (document.getElementById('locale_temp_locales').options.length === 1) {
+			setDefaultLocale(LocaleValue);
+		}
+		if (modules.SPELLCHECKER) {
+// Wörterbuch hinzufügen
+			if (confirm(g_l.add_dictionary_question)) {
+				top.opener.top.we_cmd('spellchecker_edit_ifthere');
+			}
+		}
+
+	}
+	resetLocales();
+}
+
+function deleteLocale() {
+	if (document.getElementById('locale_temp_locales').selectedIndex > -1) {
+		var LocaleIndex = document.getElementById('locale_temp_locales').selectedIndex;
+		var LocaleValue = document.getElementById('locale_temp_locales').options[LocaleIndex].value;
+		if (LocaleValue == document.getElementById('locale_default').value) {
+			top.we_showMessage(g_l.cannot_delete_default_language, WE_MESSAGE_ERROR, window);
+		} else {
+			document.getElementById('locale_temp_locales').options[LocaleIndex] = null;
+		}
+		resetLocales();
+	}
+}
+
+function delete_recipient() {
+	var p = document.forms[0].elements.we_recipient;
+	if (p.selectedIndex >= 0) {
+		if (confirm(g_l.delete_recipient)) {
+			hot = true;
+			var d = document.forms[0].elements["newconf[formmail_deleted]"];
+			d.value += ((d.value) ? "," : "") + p.options[p.selectedIndex].value;
+			p.options[p.selectedIndex] = null;
+			set_state_edit_delete_recipient();
+		}
+	}
+}
+
+function add_recipient() {
+	var newRecipient = prompt(g_l.input_name, "");
+	var p = document.forms[0].elements.we_recipient;
+	if (newRecipient !== null) {
+		if (newRecipient.length > 0) {
+			if (newRecipient.length > 255) {
+				top.we_showMessage(g_l.max_name_recipient, WE_MESSAGE_ERROR, window);
+				return;
+			}
+
+			if (!inSelectBox(newRecipient)) {
+				addElement("#", newRecipient, true);
+				hot = true;
+				set_state_edit_delete_recipient();
+				send_recipients();
+			} else {
+				top.we_showMessage(g_l.recipient_exists, WE_MESSAGE_ERROR, window);
+			}
+		} else {
+			top.we_showMessage(g_l.not_entered_recipient, WE_MESSAGE_ERROR, window);
+		}
+	}
+}
+
+
+function edit_recipient() {
+	var p = document.forms[0].elements.we_recipient;
+	if (p.selectedIndex >= 0) {
+		var editRecipient = p.options[p.selectedIndex].text;
+		editRecipient = prompt(g_l.recipient_new_name, editRecipient);
+	}
+
+	if (p.selectedIndex >= 0 && editRecipient != null) {
+		if (editRecipient !== "") {
+			if (p.options[p.selectedIndex].text == editRecipient) {
+				return;
+			}
+
+			if (editRecipient.length > 255) {
+				top.we_showMessage(g_l.max_name_recipient, WE_MESSAGE_ERROR, window);
+				return;
+			}
+
+			if (!inSelectBox(editRecipient)) {
+				p.options[p.selectedIndex].text = editRecipient;
+				hot = true;
+				send_recipients();
+			} else {
+				top.we_showMessage(g_l.recipient_exists, WE_MESSAGE_ERROR, window);
+			}
+		} else {
+			top.we_showMessage(g_l.not_entered_recipient, WE_MESSAGE_ERROR, window);
+		}
+	}
+}
+
+function show_seem_chooser(val) {
+	switch (val) {
+		case 'document':
+			if (!!document.getElementById('selectordummy')) {
+				document.getElementById('selectordummy').style.display = 'none';
+			}
+			if (!!document.getElementById('seem_start_object')) {
+				document.getElementById('seem_start_object').style.display = 'none';
+			}
+			if (!!document.getElementById('seem_start_weapp')) {
+				document.getElementById('seem_start_weapp').style.display = 'none';
+			}
+			if (!!document.getElementById('seem_start_document')) {
+				document.getElementById('seem_start_document').style.display = 'block';
+			}
+
+			break;
+
+		case 'weapp':
+			if (!!document.getElementById('selectordummy')) {
+				document.getElementById('selectordummy').style.display = 'none';
+			}
+			if (!!document.getElementById('seem_start_document')) {
+				document.getElementById('seem_start_document').style.display = 'none';
+			}
+			if (!!document.getElementById('seem_start_weapp')) {
+				document.getElementById('seem_start_weapp').style.display = 'block';
+			}
+			if (!!document.getElementById('seem_start_object')) {
+				document.getElementById('seem_start_object').style.display = 'none';
+			}
+			break;
+		case 'object':
+			if (tables.OBJECT_FILES_TABLE) {
+				if (!!document.getElementById('selectordummy')) {
+					document.getElementById('selectordummy').style.display = 'none';
+				}
+				if (!!document.getElementById('seem_start_weapp')) {
+					document.getElementById('seem_start_weapp').style.display = 'none';
+				}
+				if (!!document.getElementById('seem_start_document')) {
+					document.getElementById('seem_start_document').style.display = 'none';
+				}
+				if (!!document.getElementById('seem_start_object')) {
+					document.getElementById('seem_start_object').style.display = 'block';
+				}
+				break;
+
+			}
+			//no break
+		default:
+			if (!!document.getElementById('selectordummy')) {
+				document.getElementById('selectordummy').style.display = 'block';
+			}
+			if (!!document.getElementById('seem_start_document')) {
+				document.getElementById('seem_start_document').style.display = 'none';
+			}
+			if (!!document.getElementById('seem_start_weapp')) {
+				document.getElementById('seem_start_weapp').style.display = 'none';
+			}
+			if (!!document.getElementById('seem_start_object')) {
+				document.getElementById('seem_start_object').style.display = 'none';
+			}
+
+	}
+}
+
+function selectSidebarDoc() {
+	myWind = false;
+
+	for (k = parent.opener.top.jsWindow_count; k > -1; k--) {
+		eval('if (parent.opener.top.jsWindow' + k + 'Object) {' +
+						' if (parent.opener.top.jsWindow' + k + "Object.ref == 'preferences') {" +
+						'     myWind = parent.opener.top.jsWindow' + k + "Object.wind;" +
+						"     myWindStr = 'top.jsWindow" + k + "Object.wind';" +
+						' }' +
+						'}');
+
+		if (myWind) {
+			break;
+		}
+	}
+	parent.opener.top.we_cmd('openDocselector', document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value, tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value', myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value', '', '', '', contentTypes.WEDOCUMENT, perms.CAN_SELECT_OTHER_USERS_FILES);
+}
+
+function select_seem_start() {
+	myWind = false;
+
+	for (k = parent.opener.top.jsWindow_count; k > -1; k--) {
+		eval('if (parent.opener.top.jsWindow' + k + 'Object) {' +
+						'	if (parent.opener.top.jsWindow' + k + "Object.ref == 'preferences') {" +
+						'		myWind = parent.opener.top.jsWindow' + k + "Object.wind;" +
+						"		myWindStr = 'top.jsWindow" + k + "Object.wind';" +
+						'	}' +
+						'}');
+
+		if (myWind) {
+			break;
+		}
+	}
+	if (document.getElementById('seem_start_type').value == 'object') {
+//FIXME frames['content'] will probably not work here
+		if (tables.OBJECT_FILES_TABLE) {
+			parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_object')[0].value, tables.OBJECT_FILES_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '', '', 'objectFile', 1);
+		}
+	} else {
+		parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_document')[0].value, tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '', '', contentTypes.WEDOCUMENT, perms.CAN_SELECT_OTHER_USERS_FILES);
+	}
+}
+
+function startPrefs() {
+	initEditorMode();
 }

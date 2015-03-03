@@ -148,8 +148,12 @@ class we_selector_query{
 		}
 
 		$rootOnly = $rootDir && ($search === "/" || strpos($rootDir, $search) === 0);
-		$where = $rootOnly ? "Path LIKE '" . $rootDir . "'" :
-				"Path REGEXP '^" . preg_quote(preg_quote($search)) . "[^/]*$'" . (($rootDir) ? " AND (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" : "");
+		$where = ($rootOnly ?
+				"Path LIKE '" . $rootDir . "'" :
+				"Path REGEXP '^" . preg_quote(preg_quote($search)) . "[^/]*$'" . (
+						($rootDir) ?
+						" AND (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" :
+					''));
 
 		$isFolder = 0;
 		$addCT = 0;
@@ -218,7 +222,7 @@ class we_selector_query{
 			$ctntQuery = '';
 		}
 
-		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ParentID = ' . intval($id) . ' AND ( IsFolder = 1 ' . $ctntQuery . ' ) ' .
+		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ParentID=' . intval($id) . ' AND (IsFolder=1 ' . $ctntQuery . ' ) ' .
 				$userExtraSQL . ' ORDER BY IsFolder DESC, Path ');
 	}
 
@@ -228,7 +232,7 @@ class we_selector_query{
 	 * @param integer $id
 	 * @param string $table
 	 */
-	function getItemById($id, $table, $fields = "", $useExtraSQL = true){
+	function getItemById($id, $table, $fields = '', $useExtraSQL = true){
 		$_votingTable = defined('VOTING_TABLE') ? VOTING_TABLE : "";
 		switch($table){
 			case $_votingTable:
@@ -268,7 +272,7 @@ class we_selector_query{
 				$this->addQueryField($val);
 			}
 		}
-		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE	Path = "' . $this->db->escape($path) . '" ' . $userExtraSQL);
+		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE	Path="' . $this->db->escape($path) . '" ' . $userExtraSQL);
 		return $this->getResult();
 	}
 

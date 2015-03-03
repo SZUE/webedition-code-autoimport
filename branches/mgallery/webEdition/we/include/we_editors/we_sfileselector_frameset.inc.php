@@ -71,7 +71,7 @@ $selectOwn = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 6);
 		if (!browseServer) {
 			var foo = (!currentID || (currentID === sitepath) ? "/" : currentID.substring(sitepath.length));
 
-			opener.<?php echo $cmd1; ?> = foo;
+			opener.<?php echo $cmd1?:'x'; ?> = foo;
 			if (!!opener.postSelectorSelect) {
 				opener.postSelectorSelect('selectFile');
 			}
@@ -96,11 +96,11 @@ if(($cmd4 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4))){
 echo we_html_element::jsScript(JS_DIR . 'keyListener.js') . STYLESHEET;
 ?>
 </head>
-<body>
+<!--<body>
 	<?php
 	//echo we_html_element::htmlIFrame('messaging_messages_overview', HTML_DIR .'white.html', 'position:absolute;top:0px;height:160px;left:0px;right:0px;border-bottom:1px solid black;', '', 'top.content.cb_incstate();', true)
 	?>
-</body>
+</body>-->
 <frameset rows="73,*,<?php echo (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2) ? 60 : 90); ?>,0" onload="top.fscmd.selectDir()">
   <frame src="we_sselector_header.php?ret=<?php echo ($cmd1 ? 1 : 0); ?>&filter=<?php echo $filter; ?>&currentDir=<?php echo $currentDir; ?>" name="fsheader" noresize scrolling="no"/>
 	<frame src="about:blank" name="fsbody" noresize scrolling="auto"/>

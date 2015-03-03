@@ -44,18 +44,20 @@ div.yuiAcLayer{
 	margin:0px;
 	position: relative;
 	padding:0px;
-	z-index: 9000;
+	/*z-index: 9000;*/
 }
 
 .yui-ac-content {
 	position:absolute;
 	left:0px !important;
 	border:1px solid #404040;
+	border-radius: 2px;
 	background:#fff;
 	overflow:hidden;
 	z-index:9050;
 	margin-top:-10px;
 	width:100% !important;
+	box-shadow: 5px 5px 5px #a0a0a0;
 }
 
 li.yui-ac-highlight{

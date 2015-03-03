@@ -53,9 +53,9 @@ $tabname = we_base_request::_(we_base_request::STRING, 'tabname', 'setting_ui');
  *
  * @return         string
  */
-function create_dialog($name, array $content, $expand = -1, $show_text = '', $hide_text = '', $JS = ''){
+function create_dialog($name, array $content, $expand = -1, $show_text = '', $hide_text = ''){
 	$_output = ($JS ? : '') .
-		($expand != -1 ? we_html_multiIconBox::getJS() : '');
+			($expand != -1 ? we_html_multiIconBox::getJS() : '');
 
 	// Return HTML code of dialog
 	return $_output . we_html_multiIconBox::getHTML($name, '100%', $content, 30, '', $expand, $show_text, $hide_text);
@@ -63,12 +63,12 @@ function create_dialog($name, array $content, $expand = -1, $show_text = '', $hi
 
 function getColorInput($name, $value, $disabled = false, $width = 20, $height = 20){
 	return we_html_tools::hidden($name, $value) . '<table cellpadding="0" cellspacing="0" style="border:1px solid grey;margin:2px 0;"><tr><td' .
-		($disabled ? ' class="disabled"' : '') .
-		' id="color_' . $name . '" ' .
-		($value ? (' style="background-color:' . $value . ';"') : '') .
-		'><a style="cursor:' .
-		($disabled ? "default" : "pointer") .
-		';" href="javascript:if(document.getElementById(&quot;color_' . $name . '&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\'' . $name . '\',document.we_form.elements[\'' . $name . '\'].value,&quot;opener.setColorField(\'' . $name . '\');&quot;);}">' . we_html_tools::getPixel($width, $height) . '</a></td></tr></table>';
+			($disabled ? ' class="disabled"' : '') .
+			' id="color_' . $name . '" ' .
+			($value ? (' style="background-color:' . $value . ';"') : '') .
+			'><a style="cursor:' .
+			($disabled ? "default" : "pointer") .
+			';" href="javascript:if(document.getElementById(&quot;color_' . $name . '&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\'' . $name . '\',document.we_form.elements[\'' . $name . '\'].value,&quot;opener.setColorField(\'' . $name . '\');&quot;);}">' . we_html_tools::getPixel($width, $height) . '</a></td></tr></table>';
 }
 
 /**
@@ -123,11 +123,11 @@ function get_value($settingname){
 
 			//if not found in global_config or other config - simply return '' - this should not happen - should we return something more error-specific?
 			return defined($settingname) ?
-				constant($settingname) :
-				(isset($GLOBALS['configs']['global'][$settingname]) ? $GLOBALS['configs']['global'][$settingname][2] :
-					(isset($GLOBALS['configs']['other'][$settingname]) ? $GLOBALS['configs']['other'][$settingname][1] :
-						'')
-				);
+					constant($settingname) :
+					(isset($GLOBALS['configs']['global'][$settingname]) ? $GLOBALS['configs']['global'][$settingname][2] :
+							(isset($GLOBALS['configs']['other'][$settingname]) ? $GLOBALS['configs']['other'][$settingname][1] :
+									'')
+					);
 	}
 }
 
@@ -705,9 +705,6 @@ function build_dialog($selected_setting = 'ui'){
 			 * SEEM
 			 * *************************************************************** */
 
-			// Generate needed JS
-			$_needed_JavaScript = '';
-
 			if(we_base_preferences::userIsAllowed('WE_SEEM')){
 				// Build maximize window
 				$_seem_disabler = we_html_forms::checkbox(1, get_value('WE_SEEM') == 0 ? 1 : 0, 'newconf[WE_SEEM]', g_l('prefs', '[seem_deactivate]'));
@@ -718,110 +715,6 @@ function build_dialog($selected_setting = 'ui'){
 
 			// SEEM start document
 			if(we_base_preferences::userIsAllowed('seem_start_type')){
-				// Generate needed JS
-				$_needed_JavaScript .= we_html_element::jsElement("
-function selectSidebarDoc() {
-	myWind = false;
-
-	for (k = parent.opener.top.jsWindow_count; k > -1; k--) {
-		eval('if (parent.opener.top.jsWindow' + k + 'Object) {' +
-			 ' if (parent.opener.top.jsWindow' + k + \"Object.ref == 'preferences') {\" +
-			 '     myWind = parent.opener.top.jsWindow' + k + \"Object.wind;\" +
-			 \"     myWindStr = 'top.jsWindow\" + k + \"Object.wind';\" +
-			 ' }' +
-			 '}');
-
-		if (myWind) {
-			break;
-		}
-	}
-	parent.opener.top.we_cmd('openDocselector',document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value,'" . FILE_TABLE . "',myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value',myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value','','', '', '" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
-}
-
-function select_seem_start() {
-	myWind = false;
-
-	for (k = parent.opener.top.jsWindow_count; k > -1; k--) {
-		eval('if (parent.opener.top.jsWindow' + k + 'Object) {' +
-			 '	if (parent.opener.top.jsWindow' + k + \"Object.ref == 'preferences') {\" +
-			 '		myWind = parent.opener.top.jsWindow' + k + \"Object.wind;\" +
-			 \"		myWindStr = 'top.jsWindow\" + k + \"Object.wind';\" +
-			 '	}' +
-			 '}');
-
-		if (myWind) {
-			break;
-		}
-	}
-	if(document.getElementById('seem_start_type').value == 'object') {
-	" .
-//FIXME frames['content'] will probably not work here
-						(defined('OBJECT_FILES_TABLE') ?
-							"parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_object')[0].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '', '', 'objectFile',1);" : '') .
-						"} else {
-		parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_document')[0].value, '" . FILE_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '', '', '" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
-	}
-}
-function show_seem_chooser(val) {
-	if(val == 'document') {
-		if(!!document.getElementById('selectordummy')) {
-			document.getElementById('selectordummy').style.display = 'none';
-		}
-		if(!!document.getElementById('seem_start_object')) {
-			document.getElementById('seem_start_object').style.display = 'none';
-		}
-		if(!!document.getElementById('seem_start_weapp')) {
-			document.getElementById('seem_start_weapp').style.display = 'none';
-		}
-		if(!!document.getElementById('seem_start_document')) {
-			document.getElementById('seem_start_document').style.display = 'block';
-		}
-
-" .
-						(defined('OBJECT_FILES_TABLE') ?
-							"} else if(val == 'object') {
-		if(!!document.getElementById('selectordummy')) {
-			document.getElementById('selectordummy').style.display = 'none';
-		}
-		if(!!document.getElementById('seem_start_weapp')) {
-			document.getElementById('seem_start_weapp').style.display = 'none';
-		}
-		if(!!document.getElementById('seem_start_document')) {
-			document.getElementById('seem_start_document').style.display = 'none';
-		}
-		if(!!document.getElementById('seem_start_object')) {
-			document.getElementById('seem_start_object').style.display = 'block';
-		}
-" : '') . "
-	} else if(val == 'weapp'){
-		if(!!document.getElementById('selectordummy')) {
-			document.getElementById('selectordummy').style.display = 'none';
-		}
-		if(!!document.getElementById('seem_start_document')) {
-			document.getElementById('seem_start_document').style.display = 'none';
-		}
-		if(!!document.getElementById('seem_start_weapp')) {
-			document.getElementById('seem_start_weapp').style.display = 'block';
-		}
-		if(!!document.getElementById('seem_start_object')) {
-			document.getElementById('seem_start_object').style.display = 'none';
-		}
-	} else {
-		if(!!document.getElementById('selectordummy')) {
-			document.getElementById('selectordummy').style.display = 'block';
-		}
-		if(!!document.getElementById('seem_start_document')) {
-			document.getElementById('seem_start_document').style.display = 'none';
-		}
-		if(!!document.getElementById('seem_start_weapp')) {
-			document.getElementById('seem_start_weapp').style.display = 'none';
-		}
-		if(!!document.getElementById('seem_start_object')) {
-			document.getElementById('seem_start_object').style.display = 'none';
-		}
-
-	}
-}");
 
 				// Cockpit
 				$_document_path = $_object_path = '';
@@ -1093,7 +986,7 @@ function show_seem_chooser(val) {
 
 			// Build dialog
 			$_settings[] = array('headline' => g_l('prefs', '[dimension]'), 'html' => $_window_html->getHtml(), 'space' => 200);
-			return create_dialog('', /* g_l('prefs', '[tab][ui]'), */ $_settings, -1, '', '', (isset($_needed_JavaScript) ? $_needed_JavaScript : ''));
+			return create_dialog('', /* g_l('prefs', '[tab][ui]'), */ $_settings, -1);
 
 		case 'defaultAttribs':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -1196,86 +1089,11 @@ function show_seem_chooser(val) {
 			$default = get_value('locale_default');
 			$locales = get_value('locale_locales');
 
-			$preJs = we_html_element::jsElement("
-function addLocale() {
-	var LanguageIndex = document.getElementById('locale_language').selectedIndex;
-	var LanguageValue = document.getElementById('locale_language').options[LanguageIndex].value;
-	var LanguageText = document.getElementById('locale_language').options[LanguageIndex].text;
-
-	var CountryIndex = document.getElementById('locale_country').selectedIndex;
-	var CountryValue = document.getElementById('locale_country').options[CountryIndex].value;
-	var CountryText = document.getElementById('locale_country').options[CountryIndex].text;
-
-	if(LanguageValue.substr(0, 1) == \"~\") {
-		LanguageValue = LanguageValue.substr(1);
-	}
-	if(LanguageValue == \"\") {
-		return;
-	}
-
-	if(CountryValue.substr(0, 1) == \"~\") {
-		CountryValue = CountryValue.substr(1);
-	}
-	if(CountryValue != \"\") {
-		var LocaleValue = LanguageValue + '_' + CountryValue;
-		var LocaleText = LanguageText + ' (' + CountryText + ')';
-	} else {
-		var LocaleValue = LanguageValue;
-		var LocaleText = LanguageText;
-	}
-
-	var found = false;
-	for(i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
-		if(document.getElementById('locale_temp_locales').options[i].value == LocaleValue) {
-			found = true;
-		}
-	}
-
-	if(found == true) {
-		" . we_message_reporting::getShowMessageCall(g_l('prefs', '[language_already_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-	} else {
-		if (CountryValue == \"\") {
-			" . we_message_reporting::getShowMessageCall(g_l('prefs', '[language_country_missing]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-		} else {
-
-			var option = new Option(LocaleText, LocaleValue, false, false);
-			document.getElementById('locale_temp_locales').options[document.getElementById('locale_temp_locales').options.length] = option
-
-			if(document.getElementById('locale_temp_locales').options.length == 1) {
-				setDefaultLocale(LocaleValue);
-			}
-" . (defined('SPELLCHECKER') ? "
-			// Wörterbuch hinzufügen
-			if(confirm('" . g_l('prefs', '[add_dictionary_question]') . "')) {
-				top.opener.top.we_cmd('spellchecker_edit_ifthere');
-			}
-" : '') . "
-		}
-	}
-	resetLocales();
-
-}
-
-function deleteLocale() {
-	if(document.getElementById('locale_temp_locales').selectedIndex > -1) {
-		var LocaleIndex = document.getElementById('locale_temp_locales').selectedIndex;
-		var LocaleValue =  document.getElementById('locale_temp_locales').options[LocaleIndex].value;
-
-		if(LocaleValue == document.getElementById('locale_default').value) {
-			" . we_message_reporting::getShowMessageCall(g_l('prefs', '[cannot_delete_default_language]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-		} else {
-			document.getElementById('locale_temp_locales').options[LocaleIndex] = null;
-		}
-		resetLocales();
-	}
-}
-
-");
 
 			$postJs = we_html_element::jsElement('initLocale("' . $default . '");');
 
 			$_hidden_fields = we_html_element::htmlHidden(array('name' => 'newconf[locale_default]', 'value' => $default, 'id' => 'locale_default')) .
-				we_html_element::htmlHidden(array('name' => 'newconf[locale_locales]', 'value' => implode(',', array_keys($locales)), 'id' => 'locale_locales'));
+					we_html_element::htmlHidden(array('name' => 'newconf[locale_locales]', 'value' => implode(',', array_keys($locales)), 'id' => 'locale_locales'));
 
 			//Locales
 			$_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'locale_temp_locales', 'size' => 10, 'id' => 'locale_temp_locales', 'style' => 'width: 340px'));
@@ -1349,22 +1167,21 @@ function deleteLocale() {
 
 			// Build final HTML code
 			$_add_html = g_l('prefs', '[locale_languages]') . '<br />' .
-				$_languages->getHtml() . '<br /><br />' .
-				g_l('prefs', '[locale_countries]') . '<br />' .
-				$_countries->getHtml() . '<br /><br />' .
-				$_add_button;
+					$_languages->getHtml() . '<br /><br />' .
+					g_l('prefs', '[locale_countries]') . '<br />' .
+					$_countries->getHtml() . '<br /><br />' .
+					$_add_button;
 
-			//Todo: remove: g_l('prefs', '[langlink_support_backlinks_information]'), g_l('prefs', '[langlink_support_backlinks]'),g_l('prefs', '[langlink_support_recursive_information]'),g_l('prefs', '[langlink_support_recursive]')
+			//Todo: remove: g_l('prefs', '[langlink_support_backlinks_information]'), g_l('prefs', '[langlink_support_backlinks]'),g_l('prefs', '[langlink_support_recursive_information]'),g_l('prefs', '[langlink_support_recursive]') g_l('prefs', '[langlink_abandoned_options]')
 			$_settings = array(
 				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[locale_information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0),
 				array('headline' => '', 'html' => $_editlist_table->getHtml(), 'space' => 0),
 				array('headline' => g_l('prefs', '[locale_add]'), 'html' => $_add_html, 'space' => 200),
 				array('headline' => g_l('prefs', '[langlink_headline]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0, 'noline' => 1),
 				array('headline' => g_l('prefs', '[langlink_support]'), 'html' => getTrueFalseSelect('LANGLINK_SUPPORT'), 'space' => 200, 'noline' => 1),
-				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_abandoned_options]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0, 'noline' => 1),
 			);
 
-			return $preJs . create_dialog('', /* g_l('prefs', '[tab][language]'), */ $_settings) . $postJs;
+			return create_dialog('', /* g_l('prefs', '[tab][language]'), */ $_settings) . $postJs;
 
 		case 'extensions':
 			//FILE EXTENSIONS
@@ -1409,19 +1226,6 @@ function deleteLocale() {
 
 		case 'editor':
 			//EDITOR PLUGIN
-
-			$_needed_JavaScript = we_html_element::jsElement('
-if(window.onload) {
-	var previousOnload = window.onload;
-	window.onload = function(e) {
-		previousOnload(e);
-		initEditorMode();
-	};
-}else {
-	window.onload = function(e) {
-		initEditorMode();
-	};
-}');
 
 			$_attr = ' class="defaultfont" style="width:150px;"';
 			$_attr_dis = ' class="defaultfont" style="width:150px;color:grey;"';
@@ -1519,35 +1323,35 @@ if(window.onload) {
 
 			//Build activation of code completion
 			$_template_editor_codecompletion_code = we_html_forms::checkbox(1, get_value('editorCodecompletion-WE'), 'editorCodecompletion0', 'WE-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][WE]\');') .
-				we_html_tools::hidden('newconf[editorCodecompletion][WE]', get_value('editorCodecompletion-WE')) .
-				we_html_forms::checkbox(1, get_value('editorCodecompletion-htmlTag'), 'editorCodecompletion1', 'HTML-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlTag]\');') .
-				we_html_tools::hidden('newconf[editorCodecompletion][htmlTag]', get_value('editorCodecompletion-htmlTag')) .
-				we_html_forms::checkbox(1, get_value('editorCodecompletion-htmlDefAttr'), 'editorCodecompletion2', 'HTML-Default-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlDefAttr]\');') .
-				we_html_tools::hidden('newconf[editorCodecompletion][htmlDefAttr]', get_value('editorCodecompletion-htmlDefAttr')) .
-				we_html_forms::checkbox(1, get_value('editorCodecompletion-htmlAttr'), 'editorCodecompletion3', 'HTML-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlAttr]\');') .
-				we_html_tools::hidden('newconf[editorCodecompletion][htmlAttr]', get_value('editorCodecompletion-htmlAttr')) .
-				we_html_forms::checkbox(1, get_value('editorCodecompletion-htmlJSAttr'), 'editorCodecompletion4', 'HTML-JS-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlJSAttr]\');') .
-				we_html_tools::hidden('newconf[editorCodecompletion][htmlJSAttr]', get_value('editorCodecompletion-htmlJSAttr')) .
-				we_html_forms::checkbox(1, get_value('editorCodecompletion-html5Tag'), 'editorCodecompletion5', 'HTML5-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][html5Tag]\');') .
-				we_html_tools::hidden('newconf[editorCodecompletion][html5Tag]', get_value('editorCodecompletion-html5Tag')) .
-				we_html_forms::checkbox(1, get_value('editorCodecompletion-html5Attr'), 'editorCodecompletion6', 'HTML5-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][html5Attr]\');') .
-				we_html_tools::hidden('newconf[editorCodecompletion][html5Attr]', get_value('editorCodecompletion-html5Attr'));
+					we_html_tools::hidden('newconf[editorCodecompletion][WE]', get_value('editorCodecompletion-WE')) .
+					we_html_forms::checkbox(1, get_value('editorCodecompletion-htmlTag'), 'editorCodecompletion1', 'HTML-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlTag]\');') .
+					we_html_tools::hidden('newconf[editorCodecompletion][htmlTag]', get_value('editorCodecompletion-htmlTag')) .
+					we_html_forms::checkbox(1, get_value('editorCodecompletion-htmlDefAttr'), 'editorCodecompletion2', 'HTML-Default-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlDefAttr]\');') .
+					we_html_tools::hidden('newconf[editorCodecompletion][htmlDefAttr]', get_value('editorCodecompletion-htmlDefAttr')) .
+					we_html_forms::checkbox(1, get_value('editorCodecompletion-htmlAttr'), 'editorCodecompletion3', 'HTML-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlAttr]\');') .
+					we_html_tools::hidden('newconf[editorCodecompletion][htmlAttr]', get_value('editorCodecompletion-htmlAttr')) .
+					we_html_forms::checkbox(1, get_value('editorCodecompletion-htmlJSAttr'), 'editorCodecompletion4', 'HTML-JS-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlJSAttr]\');') .
+					we_html_tools::hidden('newconf[editorCodecompletion][htmlJSAttr]', get_value('editorCodecompletion-htmlJSAttr')) .
+					we_html_forms::checkbox(1, get_value('editorCodecompletion-html5Tag'), 'editorCodecompletion5', 'HTML5-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][html5Tag]\');') .
+					we_html_tools::hidden('newconf[editorCodecompletion][html5Tag]', get_value('editorCodecompletion-html5Tag')) .
+					we_html_forms::checkbox(1, get_value('editorCodecompletion-html5Attr'), 'editorCodecompletion6', 'HTML5-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][html5Attr]\');') .
+					we_html_tools::hidden('newconf[editorCodecompletion][html5Attr]', get_value('editorCodecompletion-html5Attr'));
 
 
 			$_template_editor_tabstop_code = we_html_forms::checkbox(1, get_value('editorShowTab'), 'editorShowTab', g_l('prefs', '[show]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowTab]\');') .
-				we_html_tools::hidden('newconf[editorShowTab]', get_value('editorShowTab')) .
-				'<table border="0" cellpadding="0" cellspacing="0">
+					we_html_tools::hidden('newconf[editorShowTab]', get_value('editorShowTab')) .
+					'<table border="0" cellpadding="0" cellspacing="0">
 				<tr><td class="defaultfont" style="width:200px;">' . g_l('prefs', '[editor_tabSize]') . '</td><td>' . we_html_tools::htmlTextInput("newconf[editorTabSize]", 2, get_value("editorTabSize"), 2, "", "number", 135) . '</td></tr>
 			</table>';
 
 			$_template_editor_Wrap_code = we_html_forms::checkbox(1, get_value('editorWrap'), 'editorWrap', g_l('prefs', '[editor_enable]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorWrap]\');') .
-				we_html_tools::hidden('newconf[editorWrap]', get_value('editorWrap'));
+					we_html_tools::hidden('newconf[editorWrap]', get_value('editorWrap'));
 
 			$_template_editor_autoIndent_code = we_html_forms::checkbox(1, get_value('editorAutoIndent'), 'editorAutoIndent', g_l('prefs', '[editor_enable]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorAutoIndent]\');') .
-				we_html_tools::hidden('newconf[editorAutoIndent]', get_value('editorAutoIndent'));
+					we_html_tools::hidden('newconf[editorAutoIndent]', get_value('editorAutoIndent'));
 
 			$_template_editor_tooltips_code = we_html_forms::checkbox(1, get_value('editorTooltips'), 'newconf[editorTooltips]', g_l('prefs', '[editorTooltips]'), true, 'defaultfont', '') .
-				we_html_forms::checkbox(1, get_value('editorTooltipsIDs'), 'newconf[editorTooltipsIDs]', g_l('prefs', '[editorTooltipsIDs]'), true, 'defaultfont', '');
+					we_html_forms::checkbox(1, get_value('editorTooltipsIDs'), 'newconf[editorTooltipsIDs]', g_l('prefs', '[editorTooltipsIDs]'), true, 'defaultfont', '');
 
 			$_template_editor_tooltip_font_specify = (get_value('editorTooltipFontname') != '' && get_value('editorTooltipFontname') != 'none');
 			$_template_editor_tooltip_font_size_specify = (get_value('editorTooltipFontsize') != '' && get_value('editorTooltipFontsize') != -1);
@@ -1576,8 +1380,8 @@ if(window.onload) {
 			//Build activation of integration of documentation
 			$_template_editor_autoClose = we_html_forms::checkbox(1, get_value('editorDocuintegration'), 'newconf[editorDocuintegration]', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '') .
 //remove fonts not available
-				we_html_element::jsScript(LIB_DIR . 'additional/fontdetect/fontdetect.js') .
-				we_html_element::jsElement('
+					we_html_element::jsScript(LIB_DIR . 'additional/fontdetect/fontdetect.js') .
+					we_html_element::jsElement('
 var detective = new Detector();
 var elements=document.getElementsByName("newconf[editorFontname]")[0].children;
 var elements2=document.getElementsByName("newconf[editorTooltipFontname]")[0].children;
@@ -1602,10 +1406,10 @@ for(i=0;i<elements.length; ++i){
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_completion]'), 'html' => $_template_editor_codecompletion_code, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $_template_editor_tooltips_code . $_template_editor_tooltip_font_specify_code . $_template_editor_tooltip_font_specify_table, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoCloseTags]'), 'html' => $_template_editor_autoClose, 'space' => 150),
-				//array('class'=>'editor editor_codemirror2','headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $_template_editor_docuintegration_code, 'space' => 150),
+					//array('class'=>'editor editor_codemirror2','headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $_template_editor_docuintegration_code, 'space' => 150),
 			);
 
-			return create_dialog("settings_editor_predefined", /* g_l('prefs', '[tab][editor]'), */ $_settings, count($_settings), g_l('prefs', '[show_predefined]'), g_l('prefs', '[hide_predefined]'), $_needed_JavaScript);
+			return create_dialog("settings_editor_predefined", /* g_l('prefs', '[tab][editor]'), */ $_settings, count($_settings), g_l('prefs', '[show_predefined]'), g_l('prefs', '[hide_predefined]'));
 
 		case "recipients":
 			if(!we_base_preferences::userIsAllowed('FORMMAIL_VIAWEDOC')){
@@ -1614,89 +1418,6 @@ for(i=0;i<elements.length; ++i){
 			$_settings = array();
 			//FORMMAIL RECIPIENTS
 			if(we_base_preferences::userIsAllowed('FORMMAIL_BLOCK')){
-
-				// Generate needed JS
-				$_needed_JavaScript = we_html_element::jsElement('
-var hot = false;
-' . "
-
-function add_recipient() {
-	var newRecipient = prompt(\"" . g_l('alert', '[input_name]') . "\", \"\");
-	var p = document.forms[0].elements.we_recipient;
-
-	if (newRecipient != null) {
-		if (newRecipient.length > 0) {
-			if (newRecipient.length > 255 ) {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', '[max_name_recipient]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-				return;
-			}
-
-			if (!inSelectBox(newRecipient)) {
-				addElement(\"#\", newRecipient, true);
-				hot = true;
-
-				set_state_edit_delete_recipient();
-				send_recipients();
-			} else {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', '[recipient_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-			}
-		} else {
-			" . we_message_reporting::getShowMessageCall(g_l('alert', '[not_entered_recipient]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-		}
-	}
-}
-
-function delete_recipient() {
-	var p = document.forms[0].elements.we_recipient;
-
-	if (p.selectedIndex >= 0) {
-		if (confirm(\"" . g_l('alert', '[delete_recipient]') . "\")) {
-			hot = true;
-
-			var d = document.forms[0].elements[\"newconf[formmail_deleted]\"];
-
-			d.value += ((d.value)  ? \",\" : \"\") + p.options[p.selectedIndex].value;
-			p.options[p.selectedIndex] = null;
-
-			set_state_edit_delete_recipient();
-		}
-	}
-}
-
-function edit_recipient() {
-	var p = document.forms[0].elements.we_recipient;
-
-	if (p.selectedIndex >= 0) {
-		var editRecipient = p.options[p.selectedIndex].text;
-
-		editRecipient = prompt(\"" . g_l('alert', '[recipient_new_name]') . "\", editRecipient);
-	}
-
-	if (p.selectedIndex >= 0 && editRecipient != null) {
-		if (editRecipient != \"\") {
-			if (p.options[p.selectedIndex].text == editRecipient) {
-				return;
-			}
-
-			if (editRecipient.length > 255 ) {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', '[max_name_recipient]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-				return;
-			}
-
-			if (!inSelectBox(editRecipient)) {
-				p.options[p.selectedIndex].text = editRecipient;
-				hot = true;
-				send_recipients();
-			} else {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', '[recipient_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-			}
-		} else {
-			" . we_message_reporting::getShowMessageCall(g_l('alert', '[not_entered_recipient]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-		}
-	}
-}
-");
-
 				// Build dialog if user has permission
 				$_settings[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[formmail_information]'), we_html_tools::TYPE_INFO, 450, false), "space" => 0);
 
@@ -1716,7 +1437,7 @@ function edit_recipient() {
 
 				// Create needed hidden fields
 				$_hidden_fields = we_html_element::htmlHidden(array("name" => "newconf[formmail_values]", "value" => "")) .
-					we_html_element::htmlHidden(array("name" => "newconf[formmail_deleted]", "value" => ""));
+						we_html_element::htmlHidden(array("name" => "newconf[formmail_deleted]", "value" => ""));
 
 				// Create edit list
 				$_editlist_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 2, 3);
@@ -1806,8 +1527,8 @@ function edit_recipient() {
 
 				// table is IE fix. Without table IE has a gap on the left of the input
 				$_formmail_trials = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-					we_html_tools::htmlTextInput("newconf[FORMMAIL_TRIALS]", 24, get_value("FORMMAIL_TRIALS"), "", "", "text", 88, 0, "", $_isDisabled) .
-					'</td></tr></table>';
+						we_html_tools::htmlTextInput("newconf[FORMMAIL_TRIALS]", 24, get_value("FORMMAIL_TRIALS"), "", "", "text", 88, 0, "", $_isDisabled) .
+						'</td></tr></table>';
 
 				$_settings[] = array('html' => $_formmail_trials, "space" => 250, "headline" => g_l('prefs', '[formmailTrials]'), "noline" => 1);
 
@@ -1862,7 +1583,7 @@ function edit_recipient() {
 				$_settings[] = array('html' => $_formmail_blocktime->getHtml(), "space" => 250, "headline" => g_l('prefs', '[blockFor]'), "noline" => 1);
 			}
 
-			return create_dialog("", /* g_l('prefs', '[formmail_recipients]'), */ $_settings, -1, "", "", $_needed_JavaScript);
+			return create_dialog("", /* g_l('prefs', '[formmail_recipients]'), */ $_settings, -1);
 
 		case "modules":
 			if(!we_base_preferences::userIsAllowed('active_integrated_modules')){
@@ -1949,10 +1670,10 @@ function edit_recipient() {
 			 */
 			$_we_doctype_workspace_behavior = get_value("WE_DOCTYPE_WORKSPACE_BEHAVIOR");
 			$_we_doctype_workspace_behavior_table = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-				we_html_forms::radiobutton(0, (!$_we_doctype_workspace_behavior), "newconf[WE_DOCTYPE_WORKSPACE_BEHAVIOR]", g_l('prefs', '[we_doctype_workspace_behavior_0]'), true, "defaultfont", "", false, g_l('prefs', '[we_doctype_workspace_behavior_hint0]'), 0, 430) .
-				'</td></tr><tr><td style="padding-top:10px;">' .
-				we_html_forms::radiobutton(1, $_we_doctype_workspace_behavior, "newconf[WE_DOCTYPE_WORKSPACE_BEHAVIOR]", g_l('prefs', '[we_doctype_workspace_behavior_1]'), true, "defaultfont", "", false, g_l('prefs', '[we_doctype_workspace_behavior_hint1]'), 0, 430) .
-				'</td></tr></table>';
+					we_html_forms::radiobutton(0, (!$_we_doctype_workspace_behavior), "newconf[WE_DOCTYPE_WORKSPACE_BEHAVIOR]", g_l('prefs', '[we_doctype_workspace_behavior_0]'), true, "defaultfont", "", false, g_l('prefs', '[we_doctype_workspace_behavior_hint0]'), 0, 430) .
+					'</td></tr><tr><td style="padding-top:10px;">' .
+					we_html_forms::radiobutton(1, $_we_doctype_workspace_behavior, "newconf[WE_DOCTYPE_WORKSPACE_BEHAVIOR]", g_l('prefs', '[we_doctype_workspace_behavior_1]'), true, "defaultfont", "", false, g_l('prefs', '[we_doctype_workspace_behavior_hint1]'), 0, 430) .
+					'</td></tr></table>';
 
 			$_settings[] = array("headline" => g_l('prefs', '[we_doctype_workspace_behavior]'), "html" => $_we_doctype_workspace_behavior_table, "space" => 200);
 
@@ -2004,17 +1725,17 @@ function edit_recipient() {
 			}
 
 			$_we_max_upload_size = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-				we_html_tools::htmlTextInput("newconf[FILE_UPLOAD_MAX_UPLOAD_SIZE]", 22, get_value("FILE_UPLOAD_MAX_UPLOAD_SIZE"), "", ' onkeypress="return IsDigit(event);"', "number", 60) . ' MB</td><td style="padding-left:20px;" class="small">' .
-				g_l('prefs', '[upload][we_max_size_hint]') .
-				'</td></tr></table>';
+					we_html_tools::htmlTextInput("newconf[FILE_UPLOAD_MAX_UPLOAD_SIZE]", 22, get_value("FILE_UPLOAD_MAX_UPLOAD_SIZE"), "", ' onkeypress="return IsDigit(event);"', "number", 60) . ' MB</td><td style="padding-left:20px;" class="small">' .
+					g_l('prefs', '[upload][we_max_size_hint]') .
+					'</td></tr></table>';
 
 			// FILE UPLOAD
 			$_fileuploader_use_legacy = we_html_forms::checkbox(1, get_value('FILE_UPLOAD_USE_LEGACY'), 'newconf[FILE_UPLOAD_USE_LEGACY]', g_l('prefs', '[upload][use_legacy]'), false, 'defaultfont', '');
 
 			$_we_new_folder_mod = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-				we_html_tools::htmlTextInput("newconf[WE_NEW_FOLDER_MOD]", 22, get_value("WE_NEW_FOLDER_MOD"), 3, ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
-				g_l('prefs', '[we_new_folder_mod_hint]') .
-				'</td></tr></table>';
+					we_html_tools::htmlTextInput("newconf[WE_NEW_FOLDER_MOD]", 22, get_value("WE_NEW_FOLDER_MOD"), 3, ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
+					g_l('prefs', '[we_new_folder_mod_hint]') .
+					'</td></tr></table>';
 
 			// Build db select box
 			$_db_connect = new we_html_select(array('name' => 'newconf[DB_CONNECT]', 'class' => 'weSelect'));
@@ -2063,7 +1784,7 @@ function edit_recipient() {
 
 			// Build dialog if user has permission
 			$_use_auth = we_html_tools::hidden('newconf[useauth]', $_auth) .
-				we_html_forms::checkbox(1, $_auth, "useauthEnabler", g_l('prefs', '[useauth]'), false, "defaultfont", "set_state_auth();");
+					we_html_forms::checkbox(1, $_auth, "useauthEnabler", g_l('prefs', '[useauth]'), false, "defaultfont", "set_state_auth();");
 
 			/**
 			 * User name
@@ -2091,7 +1812,7 @@ function edit_recipient() {
 			$EXECUTE_HOOKS->selectOption(get_value("EXECUTE_HOOKS") ? 1 : 0);
 
 			$hooksHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[hooks_information]'), we_html_tools::TYPE_INFO, 450, false) . '<br/>' .
-				$EXECUTE_HOOKS->getHtml();
+					$EXECUTE_HOOKS->getHtml();
 
 			$useSession = new we_html_select(array("name" => "newconf[SYSTEM_WE_SESSION]", "class" => "weSelect", 'onchange' => 'alert(\'' . g_l('prefs', '[session][crypt][alert]') . '\');'));
 			$useSession->addOption(0, g_l('prefs', '[no]'));
@@ -2099,7 +1820,7 @@ function edit_recipient() {
 			$useSession->selectOption(get_value("SYSTEM_WE_SESSION") ? 1 : 0);
 
 			$sessionTime = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-				we_html_tools::htmlTextInput("newconf[SYSTEM_WE_SESSION_TIME]", 22, abs(get_value("SYSTEM_WE_SESSION_TIME")), "", ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">s</td></tr></table>';
+					we_html_tools::htmlTextInput("newconf[SYSTEM_WE_SESSION_TIME]", 22, abs(get_value("SYSTEM_WE_SESSION_TIME")), "", ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">s</td></tr></table>';
 
 			$cryptSession = new we_html_select(array("name" => 'newconf[SYSTEM_WE_SESSION_CRYPT]', 'class' => "weSelect", 'onchange' => 'alert(\'' . g_l('prefs', '[session][crypt][alert]') . '\');'));
 			$cryptSession->addOption(0, g_l('prefs', '[no]'));
@@ -2108,7 +1829,7 @@ function edit_recipient() {
 			$cryptSession->selectOption(get_value('SYSTEM_WE_SESSION_CRYPT'));
 
 			$sessionHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[session][information]'), we_html_tools::TYPE_INFO, 450, false) . '<br/>' .
-				$useSession->getHtml();
+					$useSession->getHtml();
 
 
 			$_settings = array(
@@ -2191,7 +1912,7 @@ function edit_recipient() {
 			// Create checkboxes
 			$_template_error_handling_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 8, 1);
 			$_template_error_handling_table->setCol(0, 0, null, we_html_forms::checkbox(1, get_value('DISABLE_TEMPLATE_CODE_CHECK'), 'DISABLE_TEMPLATE_CODE_CHECK', g_l('prefs', '[disable_template_code_check]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_CODE_CHECK]\');') .
-				we_html_tools::hidden('newconf[DISABLE_TEMPLATE_CODE_CHECK]', get_value('DISABLE_TEMPLATE_CODE_CHECK')));
+					we_html_tools::hidden('newconf[DISABLE_TEMPLATE_CODE_CHECK]', get_value('DISABLE_TEMPLATE_CODE_CHECK')));
 
 			// Create checkboxes
 			$_we_error_handler = we_html_forms::checkbox(1, get_value('WE_ERROR_HANDLER'), 'newconf[WE_ERROR_HANDLER]', g_l('prefs', '[error_use_handler]'), false, 'defaultfont', 'set_state_error_handler();');
@@ -2248,8 +1969,8 @@ function edit_recipient() {
 			$_val = get_value('message_reporting');
 
 			$_html = "<input type=\"hidden\" id=\"message_reporting\" name=\"newconf[message_reporting]\" value=\"$_val\" />" . we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_ERROR, 1, "message_reporting_errors", g_l('prefs', '[message_reporting][show_errors]'), false, "defaultfont", "handle_message_reporting_click();", true) . "<br />" .
-				we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_WARNING, $_val & we_message_reporting::WE_MESSAGE_WARNING, "message_reporting_warnings", g_l('prefs', '[message_reporting][show_warnings]'), false, "defaultfont", "handle_message_reporting_click();") . "<br />" .
-				we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_NOTICE, $_val & we_message_reporting::WE_MESSAGE_NOTICE, "message_reporting_notices", g_l('prefs', '[message_reporting][show_notices]'), false, "defaultfont", "handle_message_reporting_click();");
+					we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_WARNING, $_val & we_message_reporting::WE_MESSAGE_WARNING, "message_reporting_warnings", g_l('prefs', '[message_reporting][show_warnings]'), false, "defaultfont", "handle_message_reporting_click();") . "<br />" .
+					we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_NOTICE, $_val & we_message_reporting::WE_MESSAGE_NOTICE, "message_reporting_notices", g_l('prefs', '[message_reporting][show_notices]'), false, "defaultfont", "handle_message_reporting_click();");
 
 			$_settings = array(
 				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[message_reporting][information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0),
@@ -2268,27 +1989,27 @@ function edit_recipient() {
 
 			//  activate xhtml_debug
 			$_xhtml_debug = we_html_forms::checkbox(1, get_value('XHTML_DEBUG'), 'setXhtml_debug', g_l('prefs', '[xhtml_debug_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[XHTML_DEBUG]\');disable_xhtml_fields(this.checked, mainXhtmlFields);disable_xhtml_fields((document.forms[0][\'setXhtml_show_wrong\'].checked && this.checked), showXhtmlFields);') .
-				we_html_tools::hidden('newconf[XHTML_DEBUG]', get_value('XHTML_DEBUG'));
+					we_html_tools::hidden('newconf[XHTML_DEBUG]', get_value('XHTML_DEBUG'));
 
 			//  activate xhtml_remove_wrong
 			$_xhtml_remove_wrong = we_html_forms::checkbox(1, get_value('XHTML_REMOVE_WRONG'), 'setXhtml_remove_wrong', g_l('prefs', '[xhtml_remove_wrong]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_remove_wrong\');', !get_value('XHTML_DEBUG')) .
-				we_html_tools::hidden('newconf[XHTML_REMOVE_WRONG]', get_value('XHTML_REMOVE_WRONG'));
+					we_html_tools::hidden('newconf[XHTML_REMOVE_WRONG]', get_value('XHTML_REMOVE_WRONG'));
 
 			//  activate xhtml_show_wrong
 			$_xhtml_show_wrong = we_html_forms::checkbox(1, get_value('xhtml_show_wrong'), 'setXhtml_show_wrong', g_l('prefs', '[xhtml_show_wrong_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong]\');disable_xhtml_fields(this.checked,showXhtmlFields);', !get_value('XHTML_DEBUG')) .
-				we_html_tools::hidden('newconf[xhtml_show_wrong]', get_value('xhtml_show_wrong'));
+					we_html_tools::hidden('newconf[xhtml_show_wrong]', get_value('xhtml_show_wrong'));
 
 			//  activate xhtml_show_wrong_text
 			$_xhtml_show_wrong_text = we_html_forms::checkbox(1, get_value('xhtml_show_wrong_text'), 'setXhtml_show_wrong_text', g_l('prefs', '[xhtml_show_wrong_text_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_text]\');', !get_value('xhtml_show_wrong')) .
-				we_html_tools::hidden('newconf[xhtml_show_wrong_text]', get_value('xhtml_show_wrong_text'));
+					we_html_tools::hidden('newconf[xhtml_show_wrong_text]', get_value('xhtml_show_wrong_text'));
 
 			//  activate xhtml_show_wrong_text
 			$_xhtml_show_wrong_js = we_html_forms::checkbox(1, get_value('xhtml_show_wrong_js'), 'setXhtml_show_wrong_js', g_l('prefs', '[xhtml_show_wrong_js_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_js]\');', !get_value('xhtml_show_wrong')) .
-				we_html_tools::hidden('newconf[xhtml_show_wrong_js]', get_value('xhtml_show_wrong_js'));
+					we_html_tools::hidden('newconf[xhtml_show_wrong_js]', get_value('xhtml_show_wrong_js'));
 
 			//  activate xhtml_show_wrong_text
 			$_xhtml_show_wrong_error_log = we_html_forms::checkbox(1, get_value('xhtml_show_wrong_error_log'), 'setXhtml_show_wrong_error_log', g_l('prefs', '[xhtml_show_wrong_error_log_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_error_log]\');', !get_value('xhtml_show_wrong')) .
-				we_html_tools::hidden('newconf[xhtml_show_wrong_error_log]', get_value('xhtml_show_wrong_error_log'));
+					we_html_tools::hidden('newconf[xhtml_show_wrong_error_log]', get_value('xhtml_show_wrong_error_log'));
 
 			$_settings = array(
 				array('html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[xhtml_debug_explanation]'), we_html_tools::TYPE_INFO, 450), 'space' => 0, 'noline' => 1),
@@ -2312,20 +2033,20 @@ function edit_recipient() {
 			$customer_table->setCol($row, 0, array('class' => 'defaultfont', 'width' => '20px'), '');
 			$customer_table->setCol($row, 1, array('class' => 'defaultfont', 'colspan' => 5), g_l('prefs', '[security][customer][disableLogins]') . ':');
 			$customer_table->setCol($row, 6, array('width' => 300));
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
 			$customer_table->setCol($row, 2, array('width' => '20px'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'width:2em;text-align:center'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'text-align:center;'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
 
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value");
@@ -2343,11 +2064,11 @@ function edit_recipient() {
 
 			$customer_table->setCol($row, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array(), 's');
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
 
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('SECURITY_DELETE_SESSION')));
 
@@ -2495,7 +2216,7 @@ function checkAll(val) {
 				'name' => 'newconf[VERSIONS_TIME_DAYS]',
 				'style' => '',
 				'class' => 'weSelect'
-				)
+					)
 			);
 
 			$_versions_time_days->addOption(-1, '');
@@ -2523,7 +2244,7 @@ function checkAll(val) {
 				'name' => 'newconf[VERSIONS_TIME_YEARS]',
 				'style' => '',
 				'class' => 'weSelect'
-				)
+					)
 			);
 			$_versions_time_years->addOption(-1, '');
 			$_versions_time_years->addOption(secondsYear, g_l('prefs', '[1_year]'));
@@ -2540,7 +2261,7 @@ function checkAll(val) {
 				'name' => 'newconf[VERSIONS_TIME_DAYS_TMPL]',
 				'style' => '',
 				'class' => 'weSelect'
-				)
+					)
 			);
 
 			$_versions_time_days_tmpl->addOption(-1, '');
@@ -2567,7 +2288,7 @@ function checkAll(val) {
 				'name' => 'newconf[VERSIONS_TIME_YEARS_TMPL]',
 				'style' => '',
 				'class' => 'weSelect'
-				)
+					)
 			);
 			$_versions_time_years_tmpl->addOption(-1, '');
 			$_versions_time_years_tmpl->addOption(secondsYear, g_l('prefs', '[1_year]'));
@@ -2770,7 +2491,39 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	}
 	$doSave = true;
 }
-echo STYLESHEET . we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() . we_html_element::jsScript(JS_DIR . 'preferences.js');
+?>
+<script type="text/javascript"><!--
+					var hot = false;
+	var g_l = {
+		'language_already_exists': '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_already_exists]')); ?>',
+		'language_country_missing': '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_country_missing]')); ?>',
+		'cannot_delete_default_language': '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[cannot_delete_default_language]')); ?>',
+		'max_name_recipient': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[max_name_recipient]')); ?>',
+		'recipient_exists': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[recipient_exists]')); ?>',
+		'not_entered_recipient': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[not_entered_recipient]')); ?>',
+		'add_dictionary_question': '<?php echo g_l('prefs', '[add_dictionary_question]'); ?>',
+		'delete_recipient': '<?php echo g_l('alert', '[delete_recipient]'); ?>',
+		'recipient_new_name': '<?php echo g_l('alert', '[recipient_new_name]'); ?>',
+		'input_name': '<?php echo g_l('alert', '[input_name]'); ?>'
+	};
+	var modules = {
+		'SPELLCHECKER': '<?php echo intval(defined('SPELLCHECKER')); ?>'
+	};
+	var tables = {
+		'OBJECT_FILES_TABLE': '<?php echo (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''); ?>',
+		'FILE_TABLE': '<?php echo (defined('FILE_TABLE') ? FILE_TABLE : ''); ?>'
+	};
+	var perms = {
+		'CAN_SELECT_OTHER_USERS_FILES': '<?php echo (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1); ?>'
+	};
+	var contentTypes = {
+		'WEDOCUMENT': '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>'
+	};
+	var args = "";
+	var url = "<?php echo WEBEDITION_DIR; ?> 'we_cmd.php?";
+//--></</script><?php
+echo STYLESHEET . we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() .
+ we_html_element::jsScript(JS_DIR . 'preferences.js');
 if($doSave && !$acError){
 	save_all_values();
 
@@ -2778,67 +2531,65 @@ if($doSave && !$acError){
 	we_html_element::jsElement('
 function doClose() {
 
-	var _multiEditorreload = false;
+var _multiEditorreload = false;
 ' . $save_javascript .
-		(!$email_saved ? we_message_reporting::getShowMessageCall(g_l('prefs', '[error_mail_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) : we_message_reporting::getShowMessageCall(g_l('prefs', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) . '
+			(!$email_saved ? we_message_reporting::getShowMessageCall(g_l('prefs', '[error_mail_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) : we_message_reporting::getShowMessageCall(g_l('prefs', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) . '
 var childs=top.document.getElementById("tabContainer").children;
 childs[0].className="tabActive";
 for(i=1;i<childs.length;++i){
 	childs[i].className="tabNormal";
-}
+	}
 
-this.location = "' . WE_INCLUDES_DIR . 'we_editors/we_preferences.php";
-setTimeout(function(){
+	this.location = "' . WE_INCLUDES_DIR . 'we_editors/we_preferences.php";
+	setTimeout(function(){
 	top.document.getElementById("tabContainer").children[0].click();
-}, 1000);
+	}, 1000);
 
 
-							}
-					   ') .
+	}
+	') .
 	'</head>' .
 	we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'doClose()'), build_dialog('saved')) . '</html>';
 } else {
 	$_form = we_html_element::htmlForm(array('onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden(array('name' => 'save_settings', 'value' => 0)) . render_dialog());
 
 	$_we_cmd_js = we_html_element::jsElement('function we_cmd(){
+		 for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+switch (arguments[0]){
+case "browse_server":
+new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
+break;
+case "openImgselector":
+case "openDocselector":
+new jsWindow(url,"openDocselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
+break;
+case "show_formmail_log":
+url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailLog.php"
+new jsWindow(url,"openDocselector",-1,-1,840,400,true,false,true);
+break;
+case "show_formmail_block_log":
+url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailBlockLog.php"
+new jsWindow(url,"openDocselector",-1,-1,840,400,true,false,true);
+break;
+case "openColorChooser":
+new jsWindow(url,"we_colorChooser",-1,-1,430,370,true,true,true);
+break;
 
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	switch (arguments[0]){
-		case "browse_server":
-            new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
-			break;
-		case "openImgselector":
-		case "openDocselector":
-			new jsWindow(url,"openDocselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
-			break;
-		case "show_formmail_log":
-			url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailLog.php"
-			new jsWindow(url,"openDocselector",-1,-1,840,400,true,false,true);
-			break;
-		case "show_formmail_block_log":
-			url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailBlockLog.php"
-			new jsWindow(url,"openDocselector",-1,-1,840,400,true,false,true);
-			break;
-		case "openColorChooser":
-			new jsWindow(url,"we_colorChooser",-1,-1,430,370,true,true,true);
-			break;
-
-		default:
-			for(var i = 0; i < arguments.length; i++){
-				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-			}
-			eval(\'parent.we_cmd(\'+args+\')\');
-	}
+default:
+for(var i = 0; i < arguments.length; i++){
+args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
+}
+eval(\'parent.we_cmd(\'+args+\')\');
+}
 }
 
 function setColorField(name) {
-	document.getElementById("color_" + name).style.backgroundColor=document.we_form.elements[name].value;
+document.getElementById("color_" + name).style.backgroundColor=document.we_form.elements[name].value;
 }' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR) : ""));
 
 
 	echo $_we_cmd_js . '</head>' .
-	we_html_element::htmlBody(array('class' => 'weDialogBody'), $_form) .
+	we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'startPrefs();'), $_form) .
 	$yuiSuggest->getYuiJs() .
 	'</html>';
 }

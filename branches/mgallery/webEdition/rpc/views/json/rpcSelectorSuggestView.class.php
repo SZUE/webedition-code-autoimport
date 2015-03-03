@@ -26,11 +26,11 @@ class rpcSelectorSuggestView extends rpcView{
 
 	function getResponse($response){
 		header('Content-type: text/plain');
-		$suggests = $response->getData("data");
+		$suggests = $response->getData('data');
 		$html = '';
 		if(is_array($suggests)){
 			foreach($suggests as $sug){
-				$html .= $sug['Path'] . "	" . $sug['ID'] . (isset($sug['ContentType']) ? "	" . $sug['ContentType'] : "") . "\n";
+				$html .= $sug['Path'] . '	' . $sug['ID'] . (isset($sug['ContentType']) ? '	' . $sug['ContentType'] : '') . "\n";
 			}
 		}
 		return $html;
