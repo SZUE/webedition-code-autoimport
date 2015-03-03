@@ -44,8 +44,8 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 				we_cmd("reload_editpage");
 				break;
 			case "reload_editpage":
-				if (top.opener.top.weEditorFrameController.getActiveDocumentReference().frames["1"].we_cmd) {
-					top.opener.top.weEditorFrameController.getActiveDocumentReference().frames["1"].we_cmd("reload_editpage");
+				if (top.opener.top.weEditorFrameController.getActiveDocumentReference().frames[1].we_cmd) {
+					top.opener.top.weEditorFrameController.getActiveDocumentReference().frames[1].we_cmd("reload_editpage");
 				}
 				window.focus();
 				break;

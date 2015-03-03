@@ -41,41 +41,41 @@ $bTarget = isset($sKPIs[3]) && $sKPIs[3] ? true : false;
 $iDate = intval($aCols[1]);
 $sRevenueTarget = intval($aCols[2]);
 
-switch($iDate){
+switch($iDate){//FIXME: use cast & between to make this perform better
 	default:
 	case 0 : //heute
-		$queryShopDateCondtion = '(DATE(DateOrder) = DATE(CURDATE()))';
-		$timestampCustomer = '(MemberSince >= UNIX_TIMESTAMP(NOW()))';
+		$queryShopDateCondtion = '(CAST(DateOrder AS DATE) = CURDATE())';
+		$timestampCustomer = '(MemberSince >= UNIX_TIMESTAMP(CURDATE()))';
 		$interval = g_l('cockpit', '[today]');
 		break;
 	case 1 : //diese woche
-		$queryShopDateCondtion = '(WEEK(DateOrder,1) = WEEK(NOW(),1) AND YEAR(DateOrder) = YEAR(NOW()))';
-		$timestampCustomer = '(WEEK(FROM_UNIXTIME(MemberSince),1) = WEEK(NOW(),1) AND YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(NOW()))';
+		$queryShopDateCondtion = '(YEARWEEK(DateOrder,1) = YEARWEEK(CURDATE(),1))';
+		$timestampCustomer = '(YEARWEEK(FROM_UNIXTIME(MemberSince),1) = YEARWEEK(CURDATE(),1))';
 		$interval = g_l('cockpit', '[this_week]');
 		break;
 	case 2 : //letzte woche
-		$queryShopDateCondtion = '(WEEK(DateOrder) = WEEK(CURDATE())-1 AND YEAR(DateOrder) = YEAR(CURDATE()))';
-		$timestampCustomer = '(WEEK(FROM_UNIXTIME(MemberSince),1) = WEEK(NOW()-INTERVAL 7 DAY,1) AND (YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(NOW()-INTERVAL 7 DAY)))';
+		$queryShopDateCondtion = '(YEARWEEK(DateOrder,1) = YEARWEEK(CURDATE(),1)-1)';
+		$timestampCustomer = '(YEARWEEK(FROM_UNIXTIME(MemberSince),1) = YEARWEEK(CURDATE(),1)-1)';
 		$interval = g_l('cockpit', '[last_week]');
 		break;
 	case 3 : //dieser monat
 		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()) AND MONTH(DateOrder) = MONTH(CURDATE()))';
-		$timestampCustomer = '(MONTH(FROM_UNIXTIME(MemberSince)) = MONTH(NOW()) AND YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(NOW()))';
+		$timestampCustomer = '(MONTH(FROM_UNIXTIME(MemberSince)) = MONTH(CURDATE()) AND YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(CURDATE()))';
 		$interval = g_l('cockpit', '[this_month]');
 		break;
 	case 4 : //letzter monat
-		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(NOW()-INTERVAL 1 MONTH) AND MONTH(DateOrder) = MONTH(NOW()-INTERVAL 1 MONTH))';
-		$timestampCustomer = '(MONTH(FROM_UNIXTIME(MemberSince)) = MONTH(NOW()-INTERVAL 1 MONTH) AND YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(NOW()-INTERVAL 1 MONTH))';
+		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()-INTERVAL 1 MONTH) AND MONTH(DateOrder) = MONTH(CURDATE()-INTERVAL 1 MONTH))';
+		$timestampCustomer = '(MONTH(FROM_UNIXTIME(MemberSince)) = MONTH(CURDATE()-INTERVAL 1 MONTH) AND YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(CURDATE()-INTERVAL 1 MONTH))';
 		$interval = g_l('cockpit', '[last_month]');
 		break;
 	case 5 : //dieses jahr
 		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()))';
-		$timestampCustomer = '(YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(NOW()))';
+		$timestampCustomer = '(YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(CURDATE()))';
 		$interval = g_l('cockpit', '[this_year]');
 		break;
 	case 6 : //letztes jahr
 		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()) - 1)';
-		$timestampCustomer = '(YEAR(FROM_UNIXTIME(MemberSince)) = (YEAR(NOW())-1))';
+		$timestampCustomer = '(YEAR(FROM_UNIXTIME(MemberSince)) = (YEAR(CURDATE())-1))';
 		$interval = g_l('cockpit', '[last_year]');
 		break;
 }

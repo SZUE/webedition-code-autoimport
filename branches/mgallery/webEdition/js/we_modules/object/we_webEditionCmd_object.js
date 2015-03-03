@@ -88,9 +88,9 @@ function we_cmd_object(args,url) {
 		case "object_del_extraworkspace":
 		case "object_changeTempl_ob":
 		case "object_ws_from_class":
-			if (!we_sbmtFrm(top.weEditorFrameController.getActiveDocumentReference().frames["1"], url)) {
+			if (!we_sbmtFrm(top.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
 				url += "&we_transaction=" + args[2];
-				we_repl(top.weEditorFrameController.getActiveDocumentReference().frames["1"], url, args[0]);
+				we_repl(top.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
 			}
 			break;
 		case "object_toggleExtraWorkspace":

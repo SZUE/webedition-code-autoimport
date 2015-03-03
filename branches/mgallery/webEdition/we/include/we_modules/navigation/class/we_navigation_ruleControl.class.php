@@ -61,7 +61,7 @@ class we_navigation_ruleControl{
 
 				if($save && $this->NavigationRule->save()){
 
-					$js = "doc = top.frames['content'];
+					$js = "doc = top.frames.content;
 							doc.weSelect." . ($isNew ? 'addOption' : 'updateOption') . "('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');
 							doc.weSelect.selectOption('navigationRules', " . $this->NavigationRule->ID . ");
 							doc.weInput.setValue('ID', " . $this->NavigationRule->ID . ");" .
@@ -72,7 +72,7 @@ class we_navigation_ruleControl{
 			case "delete_navigation_rule" :
 				if($this->NavigationRule->delete()){
 
-					$js = "doc = top.frames['content'];
+					$js = "doc = top.frames.content;
 						doc.weSelect.removeOption('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');
 						doc.weInput.setValue('ID', 0);";
 				}
@@ -113,7 +113,7 @@ class we_navigation_ruleControl{
 				}
 
 				$js = "
-doc = top.frames['content'];
+doc = top.frames.content;
 doc.clearNavigationForm();
 
 doc.weInput.setValue('ID', " . $this->NavigationRule->ID . ");
@@ -157,8 +157,8 @@ $_selectWorkspace";
 					}
 
 					$js = "
-							doc = top.frames['content'];
-							var optionList = new Array();
+							doc = top.frames.content;
+							var optionList = [];
 							$optionList
 							doc.weSelect.setOptions('WorkspaceID', optionList);
 						";

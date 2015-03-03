@@ -137,8 +137,8 @@ echo STYLESHEET;
 		}
 		switch (arguments[0]) {
 			case 'checkDocument':
-				if (top.weEditorFrameController.getActiveDocumentReference().frames["1"].we_submitForm) {
-					top.weEditorFrameController.getActiveDocumentReference().frames["1"].we_submitForm("validation", url);
+				if (top.weEditorFrameController.getActiveDocumentReference().frames[1].we_submitForm) {
+					top.weEditorFrameController.getActiveDocumentReference().frames[1].we_submitForm("validation", url);
 				}
 				break;
 			default:

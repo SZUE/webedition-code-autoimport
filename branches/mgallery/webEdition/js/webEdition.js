@@ -889,7 +889,7 @@ function we_cmd_base(args, url) {
 				// set Window Active and show it
 				top.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
 				top.weEditorFrameController.toggleFrames();
-				if (_nextContent.frames && _nextContent.frames["1"]) {
+				if (_nextContent.frames && _nextContent.frames[1]) {
 					if (!we_sbmtFrm(_nextContent, url)) {
 						we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
 					}
@@ -946,8 +946,8 @@ function we_cmd_base(args, url) {
 			break;
 		case "save_document":
 			var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
-			if (_EditorFrame && _EditorFrame.getEditorFrameWindow().frames && _EditorFrame.getEditorFrameWindow().frames["1"]) {
-				_EditorFrame.getEditorFrameWindow().frames["1"].focus();
+			if (_EditorFrame && _EditorFrame.getEditorFrameWindow().frames && _EditorFrame.getEditorFrameWindow().frames[1]) {
+				_EditorFrame.getEditorFrameWindow().frames[1].focus();
 			}
 
 			toggleBusy(1);

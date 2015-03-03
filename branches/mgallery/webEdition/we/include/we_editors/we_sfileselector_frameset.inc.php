@@ -100,8 +100,8 @@ echo we_html_element::jsScript(JS_DIR . 'keyListener.js') . STYLESHEET;
 	<?php
 	$footerHeight = (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2) ? 60 : 90);
 	echo we_html_element::htmlIFrame('fsheader', 'we_sselector_header.php?ret=' . ($cmd1 ? 1 : 0) . '&filter=' . $filter . '&currentDir=' . $currentDir, 'position:absolute;top:0px;height:73px;left:0px;right:0px;', '', '', false) .
-	we_html_element::htmlIFrame('fsbody', 'about:blank', 'position:absolute;top:73px;bottom:' . $footerHeight . 'px;left:0px;right:0px;', '', 'top.content.cb_incstate();', true) .
-	we_html_element::htmlIFrame('fsfooter', 'we_sselector_footer.php?ret=' . ($cmd1 ? 1 : 0) . '&filter=' . $filter . '&currentName=' . $currentName, 'position:absolute;bottom:0px;height:' . $footerHeight . 'px;left:0px;right:0px;', '', 'top.content.cb_incstate();', false) .
+	we_html_element::htmlIFrame('fsbody', 'about:blank', 'position:absolute;top:73px;bottom:' . $footerHeight . 'px;left:0px;right:0px;', '', '', true) .
+	we_html_element::htmlIFrame('fsfooter', 'we_sselector_footer.php?ret=' . ($cmd1 ? 1 : 0) . '&filter=' . $filter . '&currentName=' . $currentName, 'position:absolute;bottom:0px;height:' . $footerHeight . 'px;left:0px;right:0px;', '', '', false) .
 	we_html_element::htmlIFrame('fscmd', 'we_sselector_cmd.php?ret=' . ($cmd1 ? 1 : 0) . '&filter=' . $filter . '&currentName=' . $currentName . '&selectOwn=' . $selectOwn, 'display:none;', '', '', false);
 	?>
 </body>

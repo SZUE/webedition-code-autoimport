@@ -28,8 +28,6 @@ var loaded = 0;
 var hot = 0;
 var multi_select = 0;
 var startloc = 0;
-var loaded_thr = 2;
-var load_state = 0;
 var menuDaten = new container();
 var count = 0;
 var folder = 0;
@@ -117,7 +115,7 @@ function r_tree_open(id) {
 }
 
 function update_messaging() {
-	if (!deleteMode && (mode == "show_folder_content") && (load_state >= loaded_thr)) {
+	if (!deleteMode && (mode == "show_folder_content") ) {
 		if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
 			ent_str = "&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
 		} else {

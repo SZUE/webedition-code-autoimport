@@ -51,7 +51,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 	passed_dls = [];
 
 	function showContent(id) {
-		top.content.editor.edbody.msg_mfv.messaging_msg_view.location = "<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_message_view.php?id=" + id + "&we_transaction=<?php echo $transaction; ?>";
+		top.content.editor.edbody.messaging_msg_view.location = "<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_message_view.php?id=" + id + "&we_transaction=<?php echo $transaction; ?>";
 	}
 
 	function check(elem, groupSel) {
@@ -132,7 +132,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 		//document.images["img_" + id].src = check0_img.src;
 
 		if (parent.parent.entries_selected.length === 0) {
-			top.content.editor.edbody.msg_mfv.messaging_msg_view.location = "about:blank";
+			top.content.editor.edbody.messaging_msg_view.location = "about:blank";
 		} else {
 			showContent(parent.parent.entries_selected[parent.parent.entries_selected.length - 1]);
 		}

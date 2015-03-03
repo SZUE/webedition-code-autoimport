@@ -122,7 +122,7 @@ function submitForm() {
 			case 'show_message':
 				if(isset($id)){
 					$out .= we_html_element::jsElement('
-					top.content.editor.edbody.msg_mfv.messaging_msg_view.location="' . (WE_MESSAGING_MODULE_DIR . 'messaging_message_view.php?we_transaction=' . $this->transaction . '&id= ' . $id) . '";
+					top.content.editor.edbody.messaging_msg_view.location="' . (WE_MESSAGING_MODULE_DIR . 'messaging_message_view.php?we_transaction=' . $this->transaction . '&id= ' . $id) . '";
 					');
 				}
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
@@ -150,8 +150,8 @@ function submitForm() {
 			case 'reset_right_view':
 				return we_html_element::jsElement('
 				top.content.editor.edbody.entries_selected = new Array();
-				top.content.editor.edbody.msg_mfv.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
-				top.content.editor.edbody.msg_mfv.messaging_msg_view.location="about:blank"
+				top.content.editor.edbody.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
+				top.content.editor.edbody.messaging_msg_view.location="about:blank"
 				');
 			case 'update_todo':
 				if($this->messaging->selected_message){
@@ -186,8 +186,8 @@ function submitForm() {
 				$js_out = '
 				top.content.editor.edbody.entries_selected = new Array();
 				top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
-				top.content.editor.edbody.msg_mfv.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
-				top.content.editor.edbody.msg_mfv.messaging_msg_view.location="about:blank";
+				top.content.editor.edbody.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
+				top.content.editor.edbody.messaging_msg_view.location="about:blank";
 				';
 
 				$aid = $this->messaging->Folder_ID;
@@ -210,8 +210,8 @@ function submitForm() {
 				top.content.editor.edbody.entries_selected = new Array();
 				//we_class::2xok
 				top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
-				top.content.editor.edbody.msg_mfv.messaging_messages_overview.location=" ' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
-				top.content.editor.edbody.msg_mfv.messaging_msg_view.location="about:blank";
+				top.content.editor.edbody.messaging_messages_overview.location=" ' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
+				top.content.editor.edbody.messaging_msg_view.location="about:blank";
 				';
 
 				$aid = $this->messaging->Folder_ID;
@@ -339,10 +339,10 @@ top.content.menuDaten.add(new top.content.self.rootEntry(0,"root","root"));';
 		return we_html_element::jsElement('
 top.content.editor.edbody.entries_selected = new Array(' . $this->messaging->get_ids_selected() . ');
 top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
-if (top.content.editor.edbody.msg_mfv.messaging_messages_overview) {
-	top.content.editor.edbody.msg_mfv.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . "messaging_show_folder_content.php") . '";
+if (top.content.editor.edbody.messaging_messages_overview) {
+	top.content.editor.edbody.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . "messaging_show_folder_content.php") . '";
 }' .
-						($blank ? 'top.content.editor.edbody.msg_mfv.messaging_msg_view.location="about:blank";' : '')
+						($blank ? 'top.content.editor.edbody.messaging_msg_view.location="about:blank";' : '')
 		);
 	}
 

@@ -110,7 +110,7 @@ function we_cmd_shop(args, url) {
 		case "shop_move_variant_down":
 		case "shop_remove_variant":
 			url += "#f" + (parseInt(args[1]) - 1);
-			we_sbmtFrm(top.weEditorFrameController.getActiveDocumentReference().frames["1"], url);
+			we_sbmtFrm(top.weEditorFrameController.getActiveDocumentReference().frames[1], url);
 			break;
 		case 'shop_preview_variant':
 			url += "#f" + (parseInt(args[1]) - 1);

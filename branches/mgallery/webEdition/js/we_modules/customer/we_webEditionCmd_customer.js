@@ -52,9 +52,9 @@ function we_cmd_customer(args,url) {
 			we_repl(self.load, url, args[0]);
 			return true;
 		case "customer_applyWeDocumentCustomerFilterFromFolder":
-			if (!we_sbmtFrm(top.weEditorFrameController.getActiveDocumentReference().frames["1"], url)) {
+			if (!we_sbmtFrm(top.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
 				url += "&we_transaction=" + args[2];
-				we_repl(top.weEditorFrameController.getActiveDocumentReference().frames["1"], url, args[0]);
+				we_repl(top.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
 			}
 			return true;
 	}

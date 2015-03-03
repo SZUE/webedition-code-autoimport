@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_frames extends we_modules_frame{
+
 	var $db;
 	var $View;
 	var $frameset;
@@ -54,17 +55,17 @@ function doYearClick(yearView){
 
 	function getJSTreeCode(){ //TODO: use we_html_element::jsElement and move to new class weShopTree
 		$ret = we_html_element::cssLink(CSS_DIR . 'tree.css') .
-			we_html_element::jsElement('
+				we_html_element::jsElement('
 var table="' . SHOP_TABLE . '";
 var tree_icon_dir="' . TREE_ICON_DIR . '";
 var tree_img_dir="' . TREE_IMAGE_DIR . '";
 var we_dir="' . WEBEDITION_DIR . '";'
-				. parent::getTree_g_l() . '
+						. parent::getTree_g_l() . '
 var treeYearClick="' . g_l('modules_shop', '[treeYearClick]') . '";
 var treeYear="' . g_l('modules_shop', '[treeYear]') . '";
 var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
 ') . we_html_element::jsScript(JS_DIR . 'tree.js') .
-			we_html_element::jsScript(JS_DIR . 'shop_tree.js');
+				we_html_element::jsScript(JS_DIR . 'shop_tree.js');
 		$menu = 'function loadData() {
 				menuDaten.clear();
 				menuDaten.add(new self.rootEntry(0, "root", "root"));';
@@ -238,7 +239,7 @@ function we_cmd() {
 		}
 
 		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', '', '', false) .
-				we_html_element::htmlIFrame('edbody', $bodyURL . '&pnt=edbody', 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
+						we_html_element::htmlIFrame('edbody', $bodyURL . '&pnt=edbody', 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
 		);
 
 		return $this->getHTMLDocument($body);
@@ -279,14 +280,9 @@ function we_cmd() {
 			$bodyURL = 'edit_shop_article_extend.php?typ=document';
 		}
 
-		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
-		$frameset->setAttributes(array("rows" => "40,*"));
-		$frameset->addFrame(array('src' => 'edit_shop_frameset.php?pnt=edheader&top=1&home=' . $home . '&mid=' . $mid . '&bid=' . $bid . '&typ=object&ViewClass=' . $classid, 'name' => 'edheader', 'noresize' => null, 'scrolling' => 'no'));
-		$frameset->addFrame(array('src' => $bodyURL, 'name' => 'edbody', 'scrolling' => 'auto'));
-
-		$body = $frameset->getHtml();
-
-		return $this->getHTMLDocument($body);
+		$body = we_html_element::htmlIFrame('edheader', 'edit_shop_frameset.php?pnt=edheader&top=1&home=' . $home . '&mid=' . $mid . '&bid=' . $bid . '&typ=object&ViewClass=' . $classid, 'position:absolute;top:0px;height:40px;left:0px;right:0px;', '', '', false) .
+				we_html_element::htmlIFrame('edbody', $bodyURL, 'position:absolute;top:40px;bottom:0px;left:0px;right:0px;', '', '', true);
+		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $body));
 	}
 
 	protected function getHTMLEditorHeader(){
@@ -340,8 +336,8 @@ top.content.hloaded = 1;
 		');
 
 		$tab_body_content = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
-			$we_tabs->getHTML() .
-			'</div>';
+				$we_tabs->getHTML() .
+				'</div>';
 		$tab_body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "id" => "eHeaderBody"), $tab_body_content);
 
 		return $this->getHTMLDocument($tab_body, $tab_head);
@@ -407,8 +403,8 @@ top.content.hloaded = 1;
 		');
 
 		$tab_body_content = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB($headline) . '</div>' . we_html_tools::getPixel(100, 3) .
-			$we_tabs->getHTML() .
-			'</div>';
+				$we_tabs->getHTML() .
+				'</div>';
 		$tab_body = we_html_element::htmlBody(array('id' => 'eHeaderBody'), $tab_body_content);
 
 		return $this->getHTMLDocument($tab_body, $tab_head);

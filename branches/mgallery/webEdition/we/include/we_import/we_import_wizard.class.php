@@ -1777,8 +1777,8 @@ function we_cmd() {
 	}
 }
 function set_button_state() {
-	top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
-	top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');
+	top.frames.wizbusy.back_enabled = top.frames.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
+	top.frames.wizbusy.next_enabled = top.frames.wizbusy.switch_button_state('next', 'next_enabled', 'enabled');
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -2065,8 +2065,8 @@ function we_cmd() {
 	}
 }
 function set_button_state() {
-	top.frames['wizbusy'].back_enabled = top.frames['wizbusy'].switch_button_state('back', 'back_enabled', 'enabled');
-	top.frames['wizbusy'].next_enabled = top.frames['wizbusy'].switch_button_state('next', 'next_enabled', 'enabled');
+	top.frames.wizbusy.back_enabled = top.frames.wizbusy.switch_button_state('back', 'back_enabled', 'enabled');
+	top.frames.wizbusy.next_enabled = top.frames.wizbusy.switch_button_state('next', 'next_enabled', 'enabled');
 }
 function we_submit_form(f, target, url) {
 	f.target = target;

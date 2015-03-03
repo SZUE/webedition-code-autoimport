@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_messaging_frames extends we_modules_frame{
+
 	var $db;
 	var $View;
 	var $frameset;
@@ -88,22 +89,21 @@ var messaging_module_dir="' . WE_MESSAGING_MODULE_DIR . '";
 parent.document.title = "' . $title . '";
 we_transaction = "' . $this->transaction . '";
 var we_frameset="' . $this->frameset . '";'
-			. parent::getTree_g_l() . '
+				. parent::getTree_g_l() . '
 var table="' . MESSAGES_TABLE . '";
 var save_changed_folder="' . g_l('modules_messaging', '[save_changed_folder]') . '";
 ';
 
 		$jsOut = '
 function cb_incstate() {
-	load_state++;
-	if (!loaded && load_state >= loaded_thr) {
+	if (!loaded) {
 		loaded = true;
 		loadData();
 		' . (isset($f) ?
-				'r_tree_open(' . $f['ID'] . ');
+						'r_tree_open(' . $f['ID'] . ');
 we_cmd("show_folder_content", ' . $f['ID'] . ');' :
-				'drawEintraege();'
-			) . '
+						'drawEintraege();'
+				) . '
 	}
 }
 
@@ -159,10 +159,10 @@ function loadData() {
 			}
 			$jsOut .= '
 	menuDaten.add(' .
-				(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'])) >= 0 ?
-					'new dirEntry("' . $iconbasename . '.gif",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",false,"parent_Folder","' . MESSAGES_TABLE . '", ' . $sf_cnt . ', "' . $iconbasename . '", "' . $folder['view_class'] . '")
+					(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'])) >= 0 ?
+							'new dirEntry("' . $iconbasename . '.gif",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",false,"parent_Folder","' . MESSAGES_TABLE . '", ' . $sf_cnt . ', "' . $iconbasename . '", "' . $folder['view_class'] . '")
 				' :
-					'new urlEntry("' . $iconbasename . '.gif",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')","leaf_Folder","' . MESSAGES_TABLE . '", "' . $iconbasename . '", "' . $folder['view_class'] . '")
+							'new urlEntry("' . $iconbasename . '.gif",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')","leaf_Folder","' . MESSAGES_TABLE . '", "' . $iconbasename . '", "' . $folder['view_class'] . '")
 				') . ');';
 		}
 		$jsOut .= '
@@ -170,10 +170,10 @@ function loadData() {
 
 		';
 		return we_html_element::cssLink(CSS_DIR . 'tree.css') .
-			we_html_element::jsElement($jsinit) .
-			we_html_element::jsScript(JS_DIR . 'tree.js') .
-			we_html_element::jsScript(JS_DIR . 'messaging_tree.js') .
-			we_html_element::jsElement($jsOut);
+				we_html_element::jsElement($jsinit) .
+				we_html_element::jsScript(JS_DIR . 'tree.js') .
+				we_html_element::jsScript(JS_DIR . 'messaging_tree.js') .
+				we_html_element::jsElement($jsOut);
 	}
 
 	protected function getDoClick(){
@@ -206,10 +206,10 @@ function loadData() {
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
 		$extraHead = $this->getJSCmdCode() .
-			we_html_element::jsScript(JS_DIR . 'messaging_std.js') .
-			we_html_element::jsScript(JS_DIR . 'messaging_hl.js') .
-			$this->getJSTreeCode() .
-			we_html_element::jsElement($this->getJSStart());
+				we_html_element::jsScript(JS_DIR . 'messaging_std.js') .
+				we_html_element::jsScript(JS_DIR . 'messaging_hl.js') .
+				$this->getJSTreeCode() .
+				we_html_element::jsElement($this->getJSStart());
 
 		return parent::getHTMLFrameset($extraHead, '&we_transaction=' . $this->transaction);
 	}
@@ -229,7 +229,7 @@ function loadData() {
 
 	protected function getHTMLEditor(){
 		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&we_transaction=' . $this->transaction, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 35px; overflow: hidden;', 'width: 100%; overflow: hidden', '', '', false) .
-				we_html_element::htmlIFrame('edbody', $this->frameset . '?pnt=edbody&we_transaction=' . $this->transaction, 'position: absolute; top: 35px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
+						we_html_element::htmlIFrame('edbody', $this->frameset . '?pnt=edbody&we_transaction=' . $this->transaction, 'position: absolute; top: 35px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
 		);
 
 		return $this->getHTMLDocument($body);
@@ -256,34 +256,32 @@ function loadData() {
 		$table = new we_html_table(array('style' => 'margin: 4px 0px 0px 7px;', 'border' => 0), 1, 2);
 
 		$table->setCol(0, 0, array('class' => 'defaultfont'), g_l('modules_messaging', $searchlabel) .
-			we_html_tools::getPixel(10, 1) .
-			we_html_tools::htmlTextInput('messaging_search_keyword', 15, we_base_request::_(we_base_request::RAW, 'messaging_search_keyword', ''), 15) .
-			we_html_tools::getPixel(10, 1)
+				we_html_tools::getPixel(10, 1) .
+				we_html_tools::htmlTextInput('messaging_search_keyword', 15, we_base_request::_(we_base_request::RAW, 'messaging_search_keyword', ''), 15) .
+				we_html_tools::getPixel(10, 1)
 		);
 
 		$buttons = we_html_button::create_button_table(array(
-				we_html_button::create_button("search", "javascript:doSearch();"),
-				we_html_button::create_button("advanced", "javascript:launchAdvanced()", true),
-				we_html_button::create_button("reset_search", "javascript:clearSearch();")), 10);
+					we_html_button::create_button("search", "javascript:doSearch();"),
+					we_html_button::create_button("advanced", "javascript:launchAdvanced()", true),
+					we_html_button::create_button("reset_search", "javascript:clearSearch();")), 10);
 
 		$table->setCol(0, 1, array('class' => 'defaultfont'), $buttons);
 		$form = we_html_element::htmlForm(
-				array('name' => 'we_messaging_search', 'action' => $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=edheader&viewclass=' . $this->viewclass, 'onSubmit' => 'return doSearch()'), $hidden . $table->getHtml()
+						array('name' => 'we_messaging_search', 'action' => $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=edheader&viewclass=' . $this->viewclass, 'onSubmit' => 'return doSearch()'), $hidden . $table->getHtml()
 		);
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('style' => 'background-color: white;border-top:1px solid black;'), we_html_element::htmlNobr($form)), $extraHead);
 	}
 
 	protected function getHTMLEditorBody(){
+		$content = we_html_element::htmlIFrame('messaging_fv_headers', $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=msg_fv_headers', 'position:absolute;top:0px;height:26px;left:0px;right:0px;', '', '', false) .
+				we_html_element::htmlIFrame('x', 'about:blank', 'display:none', '', '', false) . //FIXME: is this command window??
+				we_html_element::htmlDiv(array('style' => 'position:absolute;top:26px;bottom:26px;left:0px;right:0px;'), we_html_element::htmlIFrame('messaging_messages_overview', HTML_DIR . 'white.html', 'position:absolute;top:0px;height:160px;left:0px;right:0px;border-bottom:1px solid black;', '', '', true) .
+						we_html_element::htmlIFrame('messaging_msg_view', HTML_DIR . 'white.html', 'position:absolute;top:160px;bottom:0px;left:0px;right:0px;', '', '', true)
+		);
 
-		$frameset = new we_html_frameset(array("framespacing" => 0, "border" => 0, "frameborder" => "no"));
-		$frameset->setAttributes(array("rows" => "26,1,*", 'framespacing' => 0, 'border' => 0, 'frameborder' => 'NO'));
-		$frameset->addFrame(array("src" => $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=msg_fv_headers', 'name' => 'messaging_fv_headers', 'noresize' => null, 'scrolling' => 'no'));
-		$frameset->addFrame(array("src" => HTML_DIR . 'white.html', 'noresize' => null, 'scrolling' => 'no'));
-		$frameset->addFrame(array("src" => WE_MESSAGING_MODULE_DIR . 'messaging_mfv.php', "name" => "msg_mfv", "noresize" => null, "scrolling" => "no"));
-
-
-		return $this->getHTMLDocument($frameset->getHtml());
+		return $this->getHTMLDocument(we_html_element::htmlBody(array('onload' => "top.content.cb_incstate();"), $content));
 	}
 
 	function getHTMLFvHeaders(){
@@ -296,7 +294,7 @@ function loadData() {
 				entrstr = "";
 				top.content.cmd.location = "' . $this->frameset . '?pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $this->transaction . '";
 			}') .
-			we_html_element::cssElement('.defaultfont a {color:black; text-decoration:none}
+				we_html_element::cssElement('.defaultfont a {color:black; text-decoration:none}
 		');
 
 		$colsArray = we_base_request::_(we_base_request::STRING, "viewclass") != "todo" ? array(
@@ -304,7 +302,7 @@ function loadData() {
 			array(170, 'date', '[date]'),
 			array(120, 'sender', '[from]'),
 			array(70, 'isread', '[is_read]'),
-			) : array(
+				) : array(
 			array(200, 'subject', '[subject]'),
 			array(170, 'deadline', '[deadline]'),
 			array(120, 'priority', '[priority]'),
@@ -321,7 +319,7 @@ function loadData() {
 		$table->setCol(0, 0, array('width' => 18), we_html_tools::pPixel(18, 1));
 		for($i = 0; $i < count($colsArray); $i++){
 			$table->setCol(0, $i + 1, array('class' => 'defaultfont', 'width' => $colsArray[$i][0]), '<a href="javascript:doSort(\'' . $colsArray[$i][1] . '\');"><b>' . g_l('modules_messaging', $colsArray[$i][2]) .
-				'</b>&nbsp;' . (we_base_request::_(we_base_request::STRING, "si") == $colsArray[$i][1] ? self::sort_arrow("arrow_sortorder_" . we_base_request::_(we_base_request::STRING, 'so'), "") : we_html_tools::getPixel(1, 1)) . '</a>'
+					'</b>&nbsp;' . (we_base_request::_(we_base_request::STRING, "si") == $colsArray[$i][1] ? self::sort_arrow("arrow_sortorder_" . we_base_request::_(we_base_request::STRING, 'so'), "") : we_html_tools::getPixel(1, 1)) . '</a>'
 			);
 		}
 
@@ -338,7 +336,7 @@ function loadData() {
 
 		// Check if we have to create a form or href
 		return $href ? '<a href="' . $href . '"><img src="' . $_image_path . '" border="0" alt="" /></a>' :
-			'<input type="image" src="' . $_image_path . '" border="0" alt="" />';
+				'<input type="image" src="' . $_image_path . '" border="0" alt="" />';
 	}
 
 	function getJSStart(){
