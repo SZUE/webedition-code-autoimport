@@ -95,8 +95,8 @@ function we_tag_listview($attribs){
 
 	$orderid = weTag_getAttribute('orderid', $attribs, 0, we_base_request::INT);
 
-	$we_lv_languages = we_base_request::_(we_base_request::RAW, 'we_lv_languages_' . $name, weTag_getAttribute('languages', $attribs, '', we_base_request::STRING));
-	$we_lv_pagelanguage = we_base_request::_(we_base_request::RAW, 'we_lv_pagelanguage_' . $name, weTag_getAttribute('pagelanguage', $attribs, '', we_base_request::STRING));
+	$we_lv_languages = we_base_request::_(we_base_request::STRING, 'we_lv_languages_' . $name, weTag_getAttribute('languages', $attribs, '', we_base_request::STRING));
+	$we_lv_pagelanguage = we_base_request::_(we_base_request::STRING, 'we_lv_pagelanguage_' . $name, weTag_getAttribute('pagelanguage', $attribs, '', we_base_request::STRING));
 	$showself = weTag_getAttribute('showself', $attribs, false, we_base_request::BOOL);
 
 	$triggerid = weTag_getAttribute('triggerid', $attribs, 0, we_base_request::INT);
@@ -183,7 +183,7 @@ function we_tag_listview($attribs){
 					$we_lv_pagelanguage = $we_lv_pagelanguage === 'self' || $we_lv_pagelanguage === 'top' ? $we_lv_ownlanguage : we_getDocForTag($docAttr)->Language;
 
 					if($we_lv_langguagesdoc instanceof we_objectFile){
-						$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;
+						$we_lv_pageID = $we_lv_langguagesdoc->ID;
 						$we_lv_linktype = 'tblObjectFile';
 					} else {
 						$we_lv_pageID = $we_lv_langguagesdoc->ID;

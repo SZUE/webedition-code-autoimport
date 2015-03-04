@@ -1034,10 +1034,14 @@ function we_templateInit(){
 			$GLOBALS['WE_MAIN_ID'] = $GLOBALS['we_doc']->ID;
 		}
 		if(!isset($GLOBALS['WE_MAIN_DOC'])){
-			$GLOBALS['WE_MAIN_DOC'] = clone($GLOBALS['we_doc']);
+			$GLOBALS['WE_MAIN_DOC'] = isset($GLOBALS['we_obj']) ? $GLOBALS['we_obj'] : clone($GLOBALS['we_doc']);
 		}
 		if(!isset($GLOBALS['WE_MAIN_DOC_REF'])){
-			$GLOBALS['WE_MAIN_DOC_REF'] = &$GLOBALS['we_doc'];
+			if(isset($GLOBALS['we_obj'])){
+				$GLOBALS['WE_MAIN_DOC_REF'] = &$GLOBALS['we_obj'];
+			} else {
+				$GLOBALS['WE_MAIN_DOC_REF'] = &$GLOBALS['we_doc'];
+			}
 		}
 		if(!isset($GLOBALS['WE_MAIN_EDITMODE'])){
 			$GLOBALS['WE_MAIN_EDITMODE'] = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : false;
@@ -1103,7 +1107,7 @@ function we_templatePostContent($force = false, $fullPoster = false){//force on 
 		$yuiSuggest = &weSuggest::getInstance();
 		//FIXME: check this new field to determine if all data has been transmitted
 		echo $yuiSuggest->getYuiJs() . '<input type="hidden" name="we_complete_request" value="1"/></form>' .
-		we_html_element::jsElement('setTimeout(doScrollTo,100);') .//FIXME: make this body onload
+		we_html_element::jsElement('setTimeout(doScrollTo,100);') . //FIXME: make this body onload
 		($fullPoster ? '</body></html>' : '');
 	}
 }
