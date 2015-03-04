@@ -93,13 +93,19 @@ function we_isFieldNotEmpty($attribs){
 		case 'href' :
 			switch(get_class($GLOBALS['lv'])){
 				case 'we_object_listview':
+				case 'we_object_listviewMultiobject':
 				case 'we_object_tag':
 					$hrefArr = $GLOBALS['lv']->f($match) ? unserialize($GLOBALS['lv']->f($match)) : array();
 					if(!$hrefArr){
 						return false;
 					}
 					$hreftmp = trim(we_document::getHrefByArray($hrefArr));
-					if(!$hreftmp || $hreftmp === '/' || $hreftmp{0} === '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp))){
+					/**
+					* TODO: file_exists only work when the choosen webEdition document is in the correct DOCUMENT_ROOT
+					* but within multi domains we have cross DOCUMENT_ROOT references!!!
+					*/
+					$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'],true);
+					if(!$hreftmp || $hreftmp === '/' || $hreftmp{0} === '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . preg_replace($urlReplace, array_keys($urlReplace), $hreftmp)))){
 						return false;
 					}
 					return true;
