@@ -12,8 +12,11 @@ CREATE TABLE ###TBLPREFIX###tblVFile (
   Owners varchar(255) NOT NULL default '',
   OwnersReadOnly text NOT NULL,
   remTable enum('tblFile','tblObjectFiles') NOT NULL default 'tblFile',
-  Collection text NOT NULL default '',
-	PRIMARY KEY  (ID),
+  remCT varchar(255) NOT NULL default '',
+  remClass  int(11) unsigned NOT NULL default '0',
+  fileCollection text NOT NULL default '',
+  objectCollection text NOT NULL default '',
+  PRIMARY KEY  (ID),
   KEY Path (Path(30),IsFolder),
-	KEY ParentID(ParentID)
+  KEY ParentID(ParentID)
 ) ENGINE=MyISAM;
