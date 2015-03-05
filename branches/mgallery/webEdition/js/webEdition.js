@@ -1093,8 +1093,6 @@ function we_cmd_base(args, url) {
 				treeData.unselectnode();
 				if (args[5] !== undefined) {
 					top.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
-				} else if (args[4] !== undefined && args[5] === undefined) {
-					top.weEditorFrameController.openDocument(args[1], args[2], args[3], "", "", "", args[5]);
 				} else {
 					top.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4]);
 				}
