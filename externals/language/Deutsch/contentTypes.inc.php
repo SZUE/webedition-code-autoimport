@@ -18,6 +18,7 @@ $l_contentTypes=array(
 	'text/plain'=>'Text-Datei',
 	'text/weCollection'=>'Sammlung',
 	'text/weTmpl'=>'webEdition-Vorlage',
+	'text/weCollection'=>'Sammlung',
 	'text/webedition'=>'webEdition-Seite',
 	'text/xml'=>'XML-Datei',
 	'video/*'=>'Video-Datei',

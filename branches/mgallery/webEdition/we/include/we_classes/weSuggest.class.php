@@ -529,7 +529,7 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 	 */
 	function setAutocompleteField($inputFieldId, $containerFieldId, $table, $contentType = '', $selector = '', $maxResults = 10, $queryDelay = 0, $layerId = null, $setOnSelectFields = null, $checkFieldsValue = true, $containerwidth = "100%", $inputMayBeEmpty = 'true', $rootDir = '', $noautoinit = false){
 		$this->inputfields[] = $inputFieldId;
-		$this->noAutoInits[] = $noautoinit;t_e("noauto", $this->noAutoInits);
+		$this->noAutoInits[] = $noautoinit;
 		$this->containerfields[] = $containerFieldId;
 		$this->tables[] = $table;
 		$this->rootDirs[] = $rootDir;

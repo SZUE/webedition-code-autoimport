@@ -89,7 +89,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 			((defined('OBJECT_FILES_TABLE') && $table === OBJECT_FILES_TABLE) ? ',IsClassFolder' : '') .
 			($table === FILE_TABLE || $table === TEMPLATES_TABLE ? ',Extension' : '') .
 			($table === FILE_TABLE || $table === TEMPLATES_TABLE || (defined('OBJECT_TABLE') && $table === OBJECT_TABLE) || (defined('OBJECT_FILES_TABLE') && $table === OBJECT_FILES_TABLE) ? ',ContentType,Icon,ModDate' : '') .
-			($table === VFILE_TABLE ? ',Collection,remTable' : '');
+			($table === VFILE_TABLE ? ',fileCollection,objectCollection,remTable' : '');
 
 		$where = $collectionIDs ? ' WHERE ID IN(' . implode(',', $collectionIDs) . ') AND IsFolder=0 AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')' :
 			' WHERE ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')';
@@ -131,11 +131,12 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 			);
 
 			if($table === VFILE_TABLE && $ContentType === we_base_ContentTypes::COLLECTION){
-				$collection = makeArrayFromCSV($DB_WE->f("Collection"));
 				if($DB_WE->f("remTable") === 'tblObjectFiles'){//FIXME: use constant, but no prefix!
+					$collection = makeArrayFromCSV($DB_WE->f("objectCollection"));
 					$objCollections[$ID] = $collection;
 					$objCollectionIDs = array_merge($objCollectionIDs, $collection);
 				} else {
+					$collection = makeArrayFromCSV($DB_WE->f("fileCollection"));
 					$docCollections[$ID] = $collection;
 					$docCollectionIDs = array_merge($docCollectionIDs, $collection);
 				}
@@ -157,6 +158,22 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		}
 
 		if($table === VFILE_TABLE){
+			// FIXME: no '', 0 and -1 as IDs in tblVFile!!
+			$tmpDocCollectionIDs = array();
+			$tmpObjCollectionIDs = array();
+			foreach($docCollectionIDs as $id){
+				if($id && $id != -1){
+					$tmpDocCollectionIDs[] = $id;
+				}
+			}
+			foreach($objCollectionIDs as $id){
+				if($id && $id != -1){
+					$tmpObjCollectionIDs[] = $id;
+				}
+			}
+			$docCollectionIDs = $tmpDocCollectionIDs;
+			$objCollectionIDs = $tmpObjCollectionIDs;
+
 			if(count($docCollectionIDs = array_unique($docCollectionIDs))){
 				getItems(FILE_TABLE, 0, 0, 0, $docCollectionIDs, $docCollections);
 			}
@@ -228,7 +245,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 	if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 		$Tree = new weMainTree("webEdition.php", "top", "top.left.tree", "top.load");
 		$treeItems = array();
-		getItems($table, $parentFolder, $offset, $Tree->default_segment);t_e("tree", $treeItems);
+		getItems($table, $parentFolder, $offset, $Tree->default_segment);
 
 		$js = we_html_element::jsElement('
 function loadTreeData(){

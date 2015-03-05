@@ -34,6 +34,7 @@ $l_weEditorInfo=array(
 	'text/plain'=>'Text-Datei',
 	'text/weCollection'=>'Sammlung',
 	'text/weTmpl'=>'Vorlage',
+	'text/weCollection'=>'Sammlung',
 	'text/webedition'=>'webEdition-Seite',
 	'text/xml'=>'XML-Datei',
 	'video/*'=>'Video-Datei',

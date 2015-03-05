@@ -62,6 +62,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
 				'Icon' => self::IMAGE_ICON,
+				'Table' => array(FILE_TABLE),
 			),
 			self::XML => array(//this entry must stay before text/html, text/we because fileextensions are not distinct
 				'Extension' => '.xml',
@@ -71,6 +72,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
 				'Icon' => self::FILE_ICON,
+				'Table' => array(FILE_TABLE),
 			),
 			self::HTML => array(
 				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml', '.xsl'),
@@ -87,6 +89,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'IsRealFile' => true,
 				'Icon' => 'html.gif',
+				'Table' => array(FILE_TABLE),
 			),
 			self::WEDOCUMENT => array(
 				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml'),
@@ -96,6 +99,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'IsRealFile' => false,
 				'Icon' => 'we_dokument.gif',
+				'Table' => array(FILE_TABLE),
 			),
 			self::TEMPLATE => array(
 				'Extension' => '.tmpl',
@@ -123,6 +127,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
 				'Icon' => 'we_template.gif',
+				'Table' => array(TEMPLATES_TABLE),
 			),
 			self::JS => array(
 				'Extension' => '.js',
@@ -132,6 +137,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
 				'Icon' => 'javascript.gif',
+				'Table' => array(FILE_TABLE),
 			),
 			self::CSS => array(
 				'Extension' => array('.css', '.less', '.scss', '.sass'),
@@ -141,6 +147,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
 				'Icon' => 'css.gif',
+				'Table' => array(FILE_TABLE),
 			),
 			self::HTACESS => array(
 				'Extension' => array('.htaccess', '.htpasswd'),
@@ -149,7 +156,8 @@ class we_base_ContentTypes{
 				'DefaultCode' => '',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Icon' => 'htaccess.gif'
+				'Icon' => 'htaccess.gif',
+				'Table' => array(FILE_TABLE),
 			),
 			self::TEXT => array(
 				'Extension' => array('.txt', '.csv'),
@@ -159,6 +167,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
 				'Icon' => self::FILE_ICON,
+				'Table' => array(FILE_TABLE),
 			),
 			'folder' => array(
 				'Extension' => '',
@@ -168,6 +177,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
 				'Icon' => self::FOLDER_ICON,
+				'Table' => array(FILE_TABLE, TEMPLATES_TABLE, OBJECT_TABLE, OBJECT_FILES_TABLE, VFILE_TABLE),
 			),
 			'class_folder' => array(
 				'Extension' => '',
@@ -177,6 +187,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
 				'Icon' => self::CLASS_FOLDER_ICON,
+				'Table' => array(OBJECT_FILES_TABLE),
 			),
 			self::FLASH => array(
 				'Extension' => array('.swf'/* ,'.mp4','.m4v' */),
@@ -186,6 +197,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
 				'Icon' => 'flashmovie.gif',
+				'Table' => array(FILE_TABLE),
 			),
 			self::QUICKTIME => array(
 				'Extension' => array('.mov', '.moov', '.qt'),
@@ -195,6 +207,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
 				'Icon' => 'quicktime.gif',
+				'Table' => array(FILE_TABLE),
 			),
 			self::VIDEO => array(
 				'Extension' => array('.mp4', '.m4v', '.ogg', '.webm'),
@@ -205,6 +218,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
 				'Icon' => 'video.svg',
+				'Table' => array(FILE_TABLE),
 			),
 			self::AUDIO => array(
 				'Extension' => array('.mp3', '.wav', '.ogg'),
@@ -215,6 +229,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
 				'Icon' => 'audio.svg',
+				'Table' => array(FILE_TABLE),
 			),
 			self::APPLICATION => array(
 				'Extension' => array('.doc', '.xls', '.ppt', '.zip', '.sit', '.bin', '.hqx', '.exe', '.pdf'),
@@ -224,6 +239,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
 				'Icon' => self::FILE_ICON,
+				'Table' => array(FILE_TABLE),
 			),
 			self::OBJECT => array(
 				'Extension' => '',
@@ -233,6 +249,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
 				'Icon' => 'object.gif',
+				'Table' => array(OBJECT_TABLE),
 			),
 			self::OBJECT_FILE => array(
 				'Extension' => '',
@@ -242,6 +259,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
 				'Icon' => 'objectFile.gif',
+				'Table' => array(OBJECT_FILES_TABLE),
 			),
 			self::COLLECTION => array(
 				'Extension' => '',
@@ -251,6 +269,7 @@ class we_base_ContentTypes{
 				'IsRealFile' => false,//TODO: use this when saving
 				'IsWebEditionFile' => false,
 				'Icon' => 'collection.gif',
+				'Table' => array(VFILE_TABLE)
 			)
 		);
 	}
@@ -265,7 +284,17 @@ class we_base_ContentTypes{
 		return isset($this->ct[$name]);
 	}
 
-	public function getContentTypes(){
+	public function getContentTypes($filter = '', $filterOmitFolder = false){
+		if($filter){
+			$ret = array();
+			foreach($this->ct as $k => $v){
+				if(in_array($filter , $v['Table']) && !($filterOmitFolder && ($v === self::FOLDER || $v === 'class_folder'))){
+					$ret[] = $k;
+				}
+			}
+
+			return $ret;
+		}
 		return array_keys($this->ct);
 	}
 

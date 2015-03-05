@@ -24,8 +24,8 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-function treeStartDrag(evt, type, table, id) {
-	evt.dataTransfer.setData('text', type + ',' + table + ',' + id);
+function treeStartDrag(evt, type, table, id, ct) {
+	evt.dataTransfer.setData('text', type + ',' + table + ',' + id + ',' + ct);
 }
 
 function getTreeLayout() {
@@ -247,7 +247,7 @@ function clickHandler(cur) {
 
 				break;
 			default:
-				row += "<a ondragstart=\"treeStartDrag(event,('" + cur.contenttype + "' === 'folder' ? 'folder' : 'item'),'" + cur.table + "'," + parseInt(cur.id) + ")\" name=\"_" + cur.id + "\" href=\"javascript://\"  onDblClick=\"" + treeData.topFrame + ".wasdblclick=1;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(" + treeData.topFrame + ".wasdblclick==0)" + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); else " + treeData.topFrame + ".wasdblclick=0;',300);return true;\" onMouseOver=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onMouseOut=\"" + treeData.topFrame + ".info(' ');\"><label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + cur.tooltip + "\"" : "") + " class=\"" + cur.getlayout() + "\">&nbsp;" + cur.text + "</label></a>";
+				row += "<a ondragstart=\"treeStartDrag(event,('" + cur.contenttype + "' === 'folder' ? 'dragFolder' : 'dragItem'),'" + cur.table + "'," + parseInt(cur.id) + ", '" + cur.contenttype + "')\" name=\"_" + cur.id + "\" href=\"javascript://\"  onDblClick=\"" + treeData.topFrame + ".wasdblclick=1;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(" + treeData.topFrame + ".wasdblclick==0)" + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); else " + treeData.topFrame + ".wasdblclick=0;',300);return true;\" onMouseOver=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onMouseOut=\"" + treeData.topFrame + ".info(' ');\"><label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + cur.tooltip + "\"" : "") + " class=\"" + cur.getlayout() + "\">&nbsp;" + cur.text + "</label></a>";
 		}
 	} else {
 		row += "<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + cur.tooltip + "\"" : "") + " class=\"" + cur.getlayout() + "\">&nbsp;" + cur.text + "</label>";

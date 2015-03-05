@@ -27,7 +27,10 @@
 class we_collection extends we_root{
 
 	protected $Collection = '';
-	public $remTable;
+	protected $fileCollection = '';
+	protected $objectCollection = '';
+	public $remTable; // TODO: make getter and mark protected
+	public $remCT; // TODO: make getter and mark protected
 	protected $jsFormCollection = '';
 
 	/** Constructor
@@ -36,7 +39,7 @@ class we_collection extends we_root{
 	 */
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'Collection');
+		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable');
 		$this->remTable = FILE_TABLE;
 
 		if(isWE()){
@@ -68,11 +71,67 @@ class we_collection extends we_root{
 		echo we_html_multiIconBox::getJS() .
 		we_html_multiIconBox::getHTML('weOtherDocProp', '100%', array(
 			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
+			array('icon' => 'cache.gif', 'headline' => 'Inhalt', 'html' => $this->formContent(), 'space' => 140),
 			array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 140))
 			, 20);
 	}
 
-	function formCollection(){t_e("col", $this->Collection);
+	function formContent(){
+		$valsRemTable = array(
+			'tblFile' => g_l('navigation', '[documents]')
+		);
+		if(defined('OBJECT_TABLE')){
+			$valsRemTable['tblObjectFiles'] = g_l('navigation', '[objects]');
+		}
+	
+		$mimeTypes = we_base_ContentTypes::inst()->getContentTypes(FILE_TABLE, true);
+		
+		/*
+		$docTypes[-1] = '- egal -';// TODO: GL
+		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->DB_WE));
+		while($this->DB_WE->next_record()){
+			$docTypes[$this->DB_WE->f("ID")] = $this->DB_WE->f('DocType');
+		}
+		*/
+
+		
+
+		$classID2Name = array();
+		$allowedClasses = we_users_util::getAllowedClasses($this->DB_WE);
+
+		if(defined('OBJECT_TABLE')){
+			$this->DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE);
+			while($this->DB_WE->next_record()){
+				if(in_array($this->DB_WE->f('ID'), $allowedClasses)){
+					$classID2Name[$this->DB_WE->f('ID')] = $this->DB_WE->f('Text');
+				}
+			}
+		}
+		
+		$html = 
+		we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->remTable, false, array('onchange' => '', 'style' => 'width: 390px; margin-top: 5px;'), 'value', 390) .
+		'<div id="doctype" style="' . ($this->remTable === 'tblFile' ? 'display: block' : 'display: none') . '; width:390px;margin-top:5px;">' .
+			//we_html_tools::htmlFormElementTable(
+				//we_html_tools::htmlSelect('DocTypeID', $docTypes, 1, $this->Model->DocTypeID, false, array('onchange' => 'clearFields();' . $this->topFrame . '.mark();'), 'value', $this->_width_size), g_l('navigation', '[doctype]')
+			//) . '
+		'</div>
+		<div id="doctype" style="' . ($this->remTable === 'tblFile' ? 'display: block' : 'display: none') . '; width:390px;margin-top:5px;">' .
+			we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlSelect('we_' . $this->Name . '_remCT', $mimeTypes, 10, $this->remCT, true, array('onchange' => ''), 'value', 390), g_l('navigation', '[doctype]')
+			) . '
+		</div>
+		<div id="classname" style="' . ($this->remTable === 'tblObjectFiles' ? 'display: block' : 'display: none') . '; width: 390px;margin-top:5px;">' .
+			(defined('OBJECT_TABLE') ? we_html_tools::htmlFormElementTable(
+					we_html_tools::htmlSelect(
+						'ClassID', $classID2Name, 1, 0, false, array('onchange' => ""), 'value', 390), g_l('navigation', '[class]')) : '') . '
+		</div>';
+		
+		return $html;
+	}
+	
+	function formCollection(){
+		$this->remTable = FILE_TABLE; // FIXME: why do we have IDs in remTable here??
+		$this->Collection = $this->remTable == FILE_TABLE ? $this->fileCollection : $this->objectCollection;
 
 		// one $yuiSuggest instance for all rows
 		$yuiSuggest = &weSuggest::getInstance();
@@ -137,11 +196,11 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		$yuiSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
 
 		$rowControllsArr = array();
-		$rowControllsArr[] = we_html_button::create_button('image:btn_add_listelement', "javascript:_EditorFrame.setEditorIsHot(true);weCollectionEdit.addRows(this);//top.we_cmd('switch_edit_page',1,we_transaction);", true, 100, 22);
+		$rowControllsArr[] = we_html_button::create_button('image:btn_add_listelement', "javascript:_EditorFrame.setEditorIsHot(true);weCollectionEdit.doClickAdd(this);//top.we_cmd('switch_edit_page',1,we_transaction);", true, 100, 22);
 		$rowControllsArr[] = we_html_tools::htmlSelect('numselect_' . $index, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10), 1, '', false, array('id' => 'numselect_' . $index));
-		$rowControllsArr[] = we_html_button::create_button('image:btn_direction_up', 'javascript:weCollectionEdit.moveUp(this);', true, 0, 0, '', '', ($index === 1 ? true : false), false, '_' . $index);
-		$rowControllsArr[] = we_html_button::create_button('image:btn_direction_down', 'javascript:weCollectionEdit.moveDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
-		$rowControllsArr[] = we_html_button::create_button('image:btn_function_trash', 'javascript:weCollectionEdit.deleteRow(this)');
+		$rowControllsArr[] = we_html_button::create_button('image:btn_direction_up', 'javascript:weCollectionEdit.doClickUp(this);', true, 0, 0, '', '', ($index === 1 ? true : false), false, '_' . $index);
+		$rowControllsArr[] = we_html_button::create_button('image:btn_direction_down', 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
+		$rowControllsArr[] = we_html_button::create_button('image:btn_function_trash', 'javascript:weCollectionEdit.doClickDelete(this)');
 		$rowControlls =  we_html_button::create_button_table($rowControllsArr, 5);
 
 		//FIXME: use we_html_table
@@ -158,8 +217,8 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 				'id' => 'drag_' . $index, 
 				'class' => 'drop_reference', 
 				'draggable' => 'true', 
-				'ondragstart' => 'weCollectionEdit.drag(event)', 
-				'ondrop' => 'weCollectionEdit.drop(event)', 
+				'ondragstart' => 'weCollectionEdit.startDragRow(event)', 
+				'ondrop' => 'weCollectionEdit.dropOnRow(event)', 
 				'ondragover' => 'weCollectionEdit.allowDrop(event)', 
 				'ondragenter' => 'weCollectionEdit.enterDrag(event)'
 			), $rowHtml);
