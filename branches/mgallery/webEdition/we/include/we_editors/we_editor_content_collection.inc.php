@@ -30,19 +30,30 @@ we_html_element::jsScript(JS_DIR . 'windows.js') .
 we_html_element::jsScript(JS_DIR . 'utils/we_cmd_encode.js') .
 we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
 we_html_element::jsElement('
-var we_name = "' . $GLOBALS['we_doc']->Name . '";
-var we_remTable = "' . $GLOBALS['we_doc']->remTable . '";
-var we_fileTable = "' . FILE_TABLE . '";'); //make this vars too inner var of some function collection
+	
+weCollectionEdit.we_doc = {
+	name: "' .$GLOBALS['we_doc']->Name. '",
+	remTable: "' . $GLOBALS['we_doc']->remTable . '",
+	remCT: "' . $GLOBALS['we_doc']->remCT . '",
+	remCT: "' . $GLOBALS['we_doc']->remClass . '",
+};
 
+weCollectionEdit.we_const = {
+	TBL_PREFIX: "' . TBL_PREFIX . '",
+	FILE_TABLE: "' . FILE_TABLE . '",
+	OBJECT_FILES_TABLE: "' . OBJECT_FILES_TABLE . '",
+}')
 ?>
 
 </head>
-<body class="weEditorBody">
+<body class="weEditorBody" style="height:100%;overflow:hidden;">
 	<form name="we_form"><?php
 		echo we_class::hiddenTrans() .
-		'<div style="margin-left:20px;">SELECT: remTable(FILE_TABLE|OBJECT_FILES_TABLE) => actually FILE_TABLE is used by default<br><br></div>' .
-		we_html_element::htmlDiv(array('style' => 'margin-left:20px;'), $GLOBALS['we_doc']->formInputField('', 'fileCollection', 'fileCollection', 40, 410)) .
-		we_html_element::htmlDiv(array('style' => 'margin-left:20px;'), $GLOBALS['we_doc']->formInputField('', 'objectCollection', 'objectCollection', 40, 410)) .
+		'remTable: ' . $GLOBALS['we_doc']->remTable . '<br/>
+		remCT: ' . $GLOBALS['we_doc']->remCT . '<br/>
+		remClass: ' . $GLOBALS['we_doc']->remClass . '<br/>' .
+		we_html_element::htmlDiv(array('style' => 'margin-left:20px;'), $GLOBALS['we_doc']->formInputField('', 'fileCollection', 'fileCollection', 40, 410, '')) .
+		we_html_element::htmlDiv(array('style' => 'margin-left:20px;'), $GLOBALS['we_doc']->formInputField('', 'objectCollection', 'objectCollection', 40, 410, '')) .
 		$GLOBALS['we_doc']->formCollection();
 		?>
 		<input type="hidden" name="we_complete_request" value="1"/>

@@ -1,16 +1,102 @@
+wePropertiesEdit = {
+	hasOptions: function(obj){
+		if(obj!=null&&obj.options!=null){ return true; }
+		return false;
+	},
+
+	moveSelectedOptions: function(from,to){
+		if(arguments.length>3){
+			var regex=arguments[3];
+			if (regex!='') {
+				unSelectMatchingOptions(from,regex);
+			}
+		}
+		if(!this.hasOptions(from)){ return; }
+		for(var i=0;i<from.options.length;i++){
+			var o=from.options[i];
+			if(o.selected){
+				if(!this.hasOptions(to)){
+					var index=0;
+				}else{
+					var index=to.options.length;
+				}
+				to.options[index]=new Option(o.text,o.value,false,false);
+			}
+		}
+		for(var i=(from.options.length-1);i>=0;i--){
+			var o=from.options[i];
+			if(o.selected){
+				from.options[i]=null;
+			}
+		}
+		if((arguments.length<3)||(arguments[2]==true)){
+			this.sortSelect(from);
+			this.sortSelect(to);
+		}
+		from.selectedIndex=-1;
+		to.selectedIndex=-1;
+		this.retrieveCsv();
+	},
+
+	sortSelect: function(obj){
+		var o=new Array();
+		if(!this.hasOptions(obj)){ return; }
+		for(var i=0;i<obj.options.length;i++){
+			o[o.length]=new Option(obj.options[i].text,obj.options[i].value,obj.options[i].defaultSelected,obj.options[i].selected);
+		}
+		if(o.length==0){ return; }
+		o=o.sort(
+			function(a,b){
+				if((a.text+'')<(b.text+'')){ return -1; }
+				if((a.text+'')>(b.text+'')){ return 1; }
+				return 0;
+			}
+		);
+		for(var i=0;i<o.length;i++){
+			obj.options[i]=new Option(o[i].text,o[i].value,o[i].defaultSelected,o[i].selected);
+		}
+	},
+
+	retrieveCsv: function(){
+		var mimeListTo = document.getElementById('mimeListTo'), 
+			mimeStr = '';
+
+		for(var i = 0; i < mimeListTo.options.length; i++){
+			mimeStr += mimeListTo.options[i].value + ',';
+		}
+		document.getElementById('we_remCT').value = mimeStr ? ',' + mimeStr : mimeStr;
+	}
+};
+
+
+
 weCollectionEdit = {
+	we_const: {// FIXME: move such "constants" to webEdition.js ("global" namespace)
+		TBL_PREFIX: '',
+		FILE_TABLE: '',
+		OBJECT_FILES_TABLE: ''
+	},
+
+	we_doc: {
+		name: '',
+		remTable: '',
+		remCT: '',
+		remClass: ''
+	},
+
 	maxIndex: 0,
 	blankRow: '',
-	lastY: 0,
-	dragID: 0,
-	dragEl: null,
-	removed: false,
-	isDragRow: false,
-	dd: {
-		fillEmptyRows: false
-	},
-	spacer: null,
+	collectionName: '',
 
+	dd: {
+		dragID: 0,
+		dragEl: null,
+		lastY: 0,
+		removed: false,
+		isDragRow: false,
+		fillEmptyRows: false,
+		spacer: null
+	},
 
 	doClickUp: function(elem){
 		var el = this.getRow(elem);
@@ -49,21 +135,21 @@ weCollectionEdit = {
 	},
 
 	getSpacer: function(){
-		if(this.spacer !== null){
-			return this.spacer;
+		if(this.dd.spacer !== null){
+			return this.dd.spacer;
 		}
 
-		this.spacer = document.createElement("div");
-		this.spacer.style.height = '34px';
-		this.spacer.style.backgroundColor = 'white';
-		this.spacer.style.border = '1px solid #006db8';
-		this.spacer.style.width = '804px';
-		this.spacer.style.marginTop = '4px';
-		this.spacer.setAttribute("ondrop","weCollectionEdit.dropOnRow(event)");
-		this.spacer.setAttribute("ondragover","weCollectionEdit.allowDrop(event)");
+		this.dd.spacer = document.createElement("div");
+		this.dd.spacer.style.height = '34px';
+		this.dd.spacer.style.backgroundColor = 'white';
+		this.dd.spacer.style.border = '1px solid #006db8';
+		this.dd.spacer.style.width = '804px';
+		this.dd.spacer.style.marginTop = '4px';
+		this.dd.spacer.setAttribute("ondrop","weCollectionEdit.dropOnRow(event)");
+		this.dd.spacer.setAttribute("ondragover","weCollectionEdit.allowDrop(event)");
 
-		return this.spacer;
-	}, 
+		return this.dd.spacer;
+	},
 
 	getRow: function(elem){
 		while(elem.className !== 'drop_reference' && elem.className !== 'content_table'){
@@ -143,7 +229,10 @@ weCollectionEdit = {
 			document.getElementById('btn_direction_up_' + index).disabled = (i === 0);
 			document.getElementById('btn_direction_down_' + index).disabled = (i === (t.childNodes.length - 1));
 		}
-		document.we_form.elements['we_' + we_name + '_fileCollection'].value = csv;
+		if(!this.collectionName){
+			this.collectionName = (this.we_const.TBL_PREFIX + this.we_doc.remTable === this.we_const.FILE_TABLE) ? '_fileCollection' : '_objectCollection';
+		}
+		document.we_form.elements['we_' + this.we_doc.name + this.collectionName].value = csv;
 	},
 
 	allowDrop: function(evt){
@@ -153,22 +242,22 @@ weCollectionEdit = {
 	enterDrag: function(evt){
 		var el = this.getRow(evt.target),
 			data = evt.dataTransfer.getData("text").split(',');
-		
+
 		switch(data[0]){
 			case 'moveRow':
-				if(el.id !== this.dragID){
-					el = this.lastY < evt.clientY ? el.nextSibling : el;
+				if(el.id !== this.dd.dragID){
+					el = this.dd.lastY < evt.clientY ? el.nextSibling : el;
 
-					if(!this.removed){
-						document.getElementById('content_table').removeChild(this.dragEl);
-						this.removed = true;
+					if(!this.dd.removed){
+						document.getElementById('content_table').removeChild(this.dd.dragEl);
+						this.dd.removed = true;
 					}
 
 					if(this.getSpacer().parentNode){
 						document.getElementById('content_table').removeChild(this.getSpacer());
 					}
 					document.getElementById('content_table').insertBefore(this.getSpacer(), el);
-					this.lastY = evt.clientY + (this.lastY < evt.clientY ? 20 : 20);
+					this.dd.lastY = evt.clientY + (this.dd.lastY < evt.clientY ? 20 : 20);
 				}
 				break;
 			case 'dragItem':
@@ -186,11 +275,11 @@ weCollectionEdit = {
 	},
 
 	startDragRow: function(evt) {
-		this.isDragRow = true;
-		this.lastY = evt.clientY;
-		this.dragEl = evt.target;
-		this.dragID = evt.target.id;
-		this.removed = false;
+		this.dd.isDragRow = true;
+		this.dd.lastY = evt.clientY;
+		this.dd.dragEl = evt.target;
+		this.dd.dragID = evt.target.id;
+		this.dd.removed = false;
 		evt.dataTransfer.setData('text', 'moveRow,' + evt.target.id);
 	},
 
@@ -202,8 +291,8 @@ weCollectionEdit = {
 
 		switch(data[0]){
 			case 'moveRow':
-				this.isDragRow = false;
-				document.getElementById('content_table').replaceChild(this.dragEl, this.getSpacer());
+				this.dd.isDragRow = false;
+				document.getElementById('content_table').replaceChild(this.dd.dragEl, this.getSpacer());
 				this.repaintAndRetrieveCsv();
 				break;
 			case 'dragItem':
@@ -211,8 +300,9 @@ weCollectionEdit = {
 				el = this.getRow(evt.target);
 				index = el.id.substr(5);
 				el.style.border = '1px solid #006db8';
-
-				if(we_remTable === data[1]){
+//top.console.debug(this.we_const.TBL_PREFIX + this.we_doc.remTable);
+//top.console.debug(data);
+				if(this.we_const.TBL_PREFIX + this.we_doc.remTable === data[1]){
 					this.setDataFromServer(index, data[2], data[1], (data[0] === 'dragItem' ? 'item' : 'folder'), '', (data[0] === 'dragIitem' ? false : true));
 				} else {
 					alert("the tree you try to drag from doesn't match your collection's table property");
@@ -228,7 +318,7 @@ weCollectionEdit = {
 			if(id){
 				var postData;
 
-				table = table || we_fileTable;
+				table = table || this.we_const.TBL_PREFIX + this.we_const.FILE_TABLE;
 				type = type || 'item';
 				ct = ct || '';
 				recursive = recursive || 0;

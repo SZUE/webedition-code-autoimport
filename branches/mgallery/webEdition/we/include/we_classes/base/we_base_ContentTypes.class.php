@@ -288,7 +288,7 @@ class we_base_ContentTypes{
 		if($filter){
 			$ret = array();
 			foreach($this->ct as $k => $v){
-				if(in_array($filter , $v['Table']) && !($filterOmitFolder && ($v === self::FOLDER || $v === 'class_folder'))){
+				if(in_array($filter , $v['Table']) && !($filterOmitFolder && ($k === self::FOLDER || $k === 'class_folder'))){
 					$ret[] = $k;
 				}
 			}

@@ -39,9 +39,7 @@ class we_collection extends we_root{
 	 */
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable');
-		$this->remTable = FILE_TABLE;
-
+		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass');
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_INFO);
 			if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
@@ -68,12 +66,13 @@ class we_collection extends we_root{
 	}
 
 	public function getPropertyPage(){
-		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML('weOtherDocProp', '100%', array(
-			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
-			array('icon' => 'cache.gif', 'headline' => 'Inhalt', 'html' => $this->formContent(), 'space' => 140),
-			array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 140))
-			, 20);
+		echo we_html_multiIconBox::getJS() . 
+			we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
+			we_html_multiIconBox::getHTML('weOtherDocProp', '100%', array(
+				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
+				array('icon' => 'cache.gif', 'headline' => 'Inhalt', 'html' => $this->formContent(), 'space' => 140),
+				array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 140))
+				, 20);
 	}
 
 	function formContent(){
@@ -83,22 +82,64 @@ class we_collection extends we_root{
 		if(defined('OBJECT_TABLE')){
 			$valsRemTable['tblObjectFiles'] = g_l('navigation', '[objects]');
 		}
-	
-		$mimeTypes = we_base_ContentTypes::inst()->getContentTypes(FILE_TABLE, true);
-		
-		/*
-		$docTypes[-1] = '- egal -';// TODO: GL
-		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->DB_WE));
-		while($this->DB_WE->next_record()){
-			$docTypes[$this->DB_WE->f("ID")] = $this->DB_WE->f('DocType');
-		}
-		*/
 
-		
+		$allMime = we_base_ContentTypes::inst()->getContentTypes(FILE_TABLE, true);
+		$remCtArr = makeArrayFromCSV($this->remCT);
+		$tmpRemCT = ',';
+		$selectedMime = $unselectedMime = array();
+
+		foreach($allMime as $mime){
+			if(in_array($mime, $remCtArr)){
+				$selectedMime[$mime] = g_l('contentTypes', '[' . $mime . ']');
+				$tmpRemCT .= $mime . ',';// we need verified mime types!
+			} else {
+				$unselectedMime[$mime] = g_l('contentTypes', '[' . $mime . ']');
+			}
+		}
+		$this->remCT = $tmpRemCT;
+
+		$mimeListFrom = we_html_tools::htmlSelect(
+			'mimeListFrom',
+			$unselectedMime,
+			13,
+			'',
+			true,
+			array("id" => "mimeListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListFrom'],this.form['mimeListTo'],true);"),
+			'value',
+			184
+			);
+		$mimeListTo = we_html_tools::htmlSelect(
+			'mimeListTo',
+			$selectedMime,
+			13,
+			'',
+			true,
+			array("id" => "mimeListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListTo'],this.form['mimeListFrom'],true);"),
+			'value',
+			184
+			);
+
+		$mimeTable = new we_html_table(array("border" => 0, "width" => 388, "cellpadding" => 0, "cellspacing" => 0, "style" => "margin-top:10px"), 1, 3);
+		$mimeTable->setCol(0, 0, null, $mimeListFrom);
+		$mimeTable->setCol(
+			0, 1, array(
+			"align" => "center", "valign" => "middle"
+			), we_html_element::htmlA(array(
+				"href" => "#",
+				"onclick" => "wePropertiesEdit.moveSelectedOptions(document.getElementById('mimeListFrom'),document.getElementById('mimeListTo'),true);return false;"
+				), we_html_element::htmlImg(array(
+					"src" => IMAGE_DIR . "pd/arrow_right.gif", "border" => 0
+			))) . we_html_element::htmlBr() . we_html_element::htmlBr() .
+			we_html_element::htmlA(array(
+				"href" => "#",
+				"onclick" => "wePropertiesEdit.moveSelectedOptions(document.getElementById('mimeListTo'),document.getElementById('mimeListFrom'),true);return false;"
+				), we_html_element::htmlImg(array(
+					"src" => IMAGE_DIR . "pd/arrow_left.gif", "border" => 0
+			))));
+		$mimeTable->setCol(0, 2, null, $mimeListTo);
 
 		$classID2Name = array();
 		$allowedClasses = we_users_util::getAllowedClasses($this->DB_WE);
-
 		if(defined('OBJECT_TABLE')){
 			$this->DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE);
 			while($this->DB_WE->next_record()){
@@ -107,37 +148,30 @@ class we_collection extends we_root{
 				}
 			}
 		}
-		
+
 		$html = 
-		we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->remTable, false, array('onchange' => '', 'style' => 'width: 390px; margin-top: 5px;'), 'value', 390) .
-		'<div id="doctype" style="' . ($this->remTable === 'tblFile' ? 'display: block' : 'display: none') . '; width:390px;margin-top:5px;">' .
-			//we_html_tools::htmlFormElementTable(
-				//we_html_tools::htmlSelect('DocTypeID', $docTypes, 1, $this->Model->DocTypeID, false, array('onchange' => 'clearFields();' . $this->topFrame . '.mark();'), 'value', $this->_width_size), g_l('navigation', '[doctype]')
-			//) . '
+		we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->remTable, false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'width: 388px; margin-top: 5px;'), 'value', 388) .
+		'<div id="mimetype" style="' . ($this->remTable === 'tblFile' ? 'display: block' : 'display: none') . '; width:388px;margin-top:5px;">' .
+				'<br/>Erlaubte Dokumente auf folgende Typen einschränken:<br>' .
+				we_html_element::htmlHidden(array('id' => 'we_remCT', 'name' => 'we_' . $this->Name . '_remCT', 'value' => $this->remCT)) .
+				$mimeTable->getHTML() .
 		'</div>
-		<div id="doctype" style="' . ($this->remTable === 'tblFile' ? 'display: block' : 'display: none') . '; width:390px;margin-top:5px;">' .
-			we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlSelect('we_' . $this->Name . '_remCT', $mimeTypes, 10, $this->remCT, true, array('onchange' => ''), 'value', 390), g_l('navigation', '[doctype]')
-			) . '
-		</div>
 		<div id="classname" style="' . ($this->remTable === 'tblObjectFiles' ? 'display: block' : 'display: none') . '; width: 390px;margin-top:5px;">' .
 			(defined('OBJECT_TABLE') ? we_html_tools::htmlFormElementTable(
-					we_html_tools::htmlSelect(
-						'ClassID', $classID2Name, 1, 0, false, array('onchange' => ""), 'value', 390), g_l('navigation', '[class]')) : '') . '
+					'<br/>Erlaubte Objekte auf folgende Klasse einschränken:<br/>' . we_html_tools::htmlSelect("we_" . $this->Name . "_remClass", $classID2Name, 1, $this->remClass, false, array('onchange' => ""), 'value', 388)) : '') . '
 		</div>';
 		
 		return $html;
 	}
-	
+
 	function formCollection(){
-		$this->remTable = FILE_TABLE; // FIXME: why do we have IDs in remTable here??
-		$this->Collection = $this->remTable == FILE_TABLE ? $this->fileCollection : $this->objectCollection;
+		$this->Collection = $this->remTable == stripTblPrefix(FILE_TABLE) ? $this->fileCollection : $this->objectCollection;
 
 		// one $yuiSuggest instance for all rows
 		$yuiSuggest = &weSuggest::getInstance();
 
 		//prepare items array: nonexisting IDs are thrown out by id_to_path. reenter empty rows (id = -1) after setting paths
-		$tmpItems = id_to_path($this->Collection, FILE_TABLE, $this->DB_WE, false, true);
+		$tmpItems = id_to_path($this->Collection, ($this->remTable == stripTblPrefix(FILE_TABLE) ? FILE_TABLE : OBJECT_FILES_TABLE), $this->DB_WE, false, true);
 		$items = array();
 		foreach(explode(',', trim($this->Collection, ',')) as $id){
 			$items[] = array("id" => intval($id), "path" => isset($tmpItems[$id]) ? $tmpItems[$id] : '');
@@ -155,7 +189,7 @@ class we_collection extends we_root{
 weCollectionEdit.maxIndex = " . count($items) . "; 
 weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $this->getCollectionRow(array("id" => -1, "path" => '/'), 'XX', $yuiSuggest, 1, true))) . "';";
 
-		return we_html_element::jsElement($this->jsFormCollection) . we_html_element::htmlDiv(array('id' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;'), $rows);
+		return we_html_element::jsElement($this->jsFormCollection) . we_html_element::htmlDiv(array('id' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px'), $rows);
 	}
 
 	function getCollectionRow($item, $index, &$yuiSuggest, $itemsNum = 0, $noAcAutoInit = false){
@@ -220,7 +254,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 				'ondragstart' => 'weCollectionEdit.startDragRow(event)', 
 				'ondrop' => 'weCollectionEdit.dropOnRow(event)', 
 				'ondragover' => 'weCollectionEdit.allowDrop(event)', 
-				'ondragenter' => 'weCollectionEdit.enterDrag(event)'
+				'ondragenter' => 'weCollectionEdit.enterDrag(event)',
 			), $rowHtml);
 	}
 
