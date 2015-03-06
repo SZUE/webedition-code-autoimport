@@ -17,7 +17,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 */
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
-		$GLOBALS['DB_WE']->query("INSERT INTO " . UPDATE_LOG_TABLE . " (datum, aktion, versionsnummer, error)	VALUES (NOW(), \"" . addslashes($action) . "\", \"$version\", $errorCode)");
+		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . ' (datum, aktion, versionsnummer, error)	VALUES (NOW(), "' . addslashes($action) . "\", \"$version\", $errorCode)");
 	}
 
 	/**
@@ -26,7 +26,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @param integer $errorCode
 	 * @param string $version
 	 */
-	function insertQueryLogEntries($type, $premessage = '', $errorCode, $version){
+	function insertQueryLogEntries($type, $premessage, $errorCode, $version){
 
 		// insert notices first
 		if(isset($this->QueryLog[$type])){
@@ -149,7 +149,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 					if(is_dir($_entry)){
 						$this->deleteDir($_entry);
 					} else{
-						unlink($_entry);
+						$this->deleteFile($_entry);
 					}
 				}
 			}
@@ -231,9 +231,12 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 */
 	function checkMakeDir($dirPath, $mod = 0755){
 		// open_base_dir - seperate document-root from rest
-		if(strpos($dirPath, LIVEUPDATE_SOFTWARE_DIR) === 0){
-			$preDir = LIVEUPDATE_SOFTWARE_DIR;
-			$dir = substr($dirPath, strlen(LIVEUPDATE_SOFTWARE_DIR));
+		$dirPath = rtrim(str_replace(array('///', '//'), '/', $dirPath), '/');
+
+		$dir = (defined('LIVEUPDATE_SOFTWARE_DIR') ? LIVEUPDATE_SOFTWARE_DIR : WEBEDITION_PATH);
+		if(strpos($dirPath, $dir) === 0){
+			$preDir = $dir;
+			$dir = substr($dirPath, strlen($dir));
 		} else{
 			$preDir = '';
 			$dir = $dirPath;
@@ -265,11 +268,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return boolean true if the file is not existent after this call
 	 */
 	function deleteFile($file){
-		if(file_exists($file)){
-			return @unlink($file);
-		} else{
-			return true;
-		}
+		return (file_exists($file) ? @unlink($file) : true);
 	}
 
 	/**
@@ -284,24 +283,33 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		if($source == $destination){
 			return true;
 		}
+		if(filesize($source) == 0){//assume error, add warning, keep file!
+			$this->QueryLog['error'][] = 'File ' . $source . ' was empty, not overwriting!';
+			//keep going
+			return true;
+		}
 
 		if($this->checkMakeDir(dirname($destination))){
 			if($this->deleteFile($destination)){
+				if(!isset($_SESSION['weS']['moveOk'])){
+					touch($source . 'x');
+					$_SESSION['weS']['moveOk'] = @rename($source . 'x', $destination . 'x');
+					$this->deleteFile($destination . 'x');
+					$this->QueryLog['success'][] = 'Using ' . ($_SESSION['weS']['moveOk'] ? 'move' : 'copy') . ' for installation';
+				}
+
+				if($_SESSION['weS']['moveOk']){
+					return rename($source, $destination);
+				}
 				//rename seems to have problems - we do it old school way: copy, on success delete
-				//return rename($source, $destination);
 				if(copy($source, $destination)){
 					$this->deleteFile($source);
 					//should we handle file deletion?
 					return true;
-				} else{
-					return false;
 				}
-			} else{
-				return false;
 			}
-		} else{
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -341,30 +349,17 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		if(strpos($filePath, 'we/include/we_version') !== false || !$this->replaceDocRootNeeded()){
 			return true;
 		}
-		// decode parameters
-		$needle = $this->decodeCode($needle);
-		$replace = $this->decodeCode($replace);
 
 		if(file_exists($filePath)){
+			$needle = $this->decodeCode($needle);
+			$replace = $this->decodeCode($replace);
 			$oldContent = $this->getFileContent($filePath);
 			$replace = $this->checkReplaceDocRoot($replace);
-			if($needle){
-				/* This version is used in OnlineInstaller! which one is correct?
-				  $newneedle= preg_quote($needle, '~');
-				  $newContent = preg_replace('~'.$newneedle.'~', $replace, $oldContent);
-				 */
-				$newContent = preg_replace('/' . preg_quote($needle) . '/', $replace, $oldContent);
-			} else{
-				$newContent = $replace;
-			}
+			$newContent = ($needle ? preg_replace('/' . preg_quote($needle) . '/', $replace, $oldContent) : $replace );
 
-			if(!$this->filePutContent($filePath, $newContent)){
-				return false;
+			return ($this->filePutContent($filePath, $newContent));
 			}
-		} else{
 			return false;
-		}
-		return true;
 	}
 
 	/*
@@ -379,18 +374,6 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 */
 	function executePatch($path){
 		include_once($path);
-		return true;
-
-		if(file_exists($path)){
-
-			$code = $this->getFileContent($path);
-			/** läuft nicht durch
-			  $patchSuccess = eval('?>' . escapeshellcmd($code));
-			 */
-			//FIXME:eval
-			$patchSuccess = eval('?>' . $code);
-			return ($patchSuccess === false ? false : true);
-		}
 		return true;
 	}
 
@@ -429,7 +412,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @param string $tableName
 	 * @return array
 	 */
-	function getKeysFromTable($tableName){
+	function getKeysFromTable($tableName,$lowerKeys=false){
 		$db = new DB_WE();
 		$keysOfTable = array();
 		$db->query('SHOW INDEX FROM ' . $db->escape($tableName));
@@ -444,10 +427,12 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 				$indexType = 'INDEX';
 			}
 
-			if(!isset($keysOfTable[$db->f('Key_name')]) || !in_array($indexType, $keysOfTable[$db->f('Key_name')])){
-				$keysOfTable[$db->f('Key_name')]['index'] = $indexType;
+			$key=$lowerKeys?strtolower($db->f('Key_name')):$db->f('Key_name');
+
+			if(!isset($keysOfTable[$key]) || !in_array($indexType, $keysOfTable[$key])){
+				$keysOfTable[$key]['index'] = $indexType;
 			}
-			$keysOfTable[$db->f('Key_name')][$db->f('Seq_in_index')] = $db->f('Column_name') . ($db->f('Sub_part') ? '(' . $db->f('Sub_part') . ')' : '');
+			$keysOfTable[$key][$db->f('Seq_in_index')] = $db->f('Column_name') . ($db->f('Sub_part') ? '(' . $db->f('Sub_part') . ')' : '');
 		}
 
 		return $keysOfTable;
@@ -543,7 +528,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	}
 
 	/**
-	 *
+	 * @deprecated since version now
 	 * @param string $path
 	 * @return boolean
 	 */
@@ -564,25 +549,12 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	function executeQueriesInFiles($path){
 
 		$db = new DB_WE();
-		if($this->isInsertQueriesFile($path)){
-			$success = true;
-			$queryArray = file($path);
-			if($queryArray){
-				foreach($queryArray as $query){
-					if(trim($query)){
-						$success &= $this->executeUpdateQuery($query, $db);
-					}
-				}
-			}
-		} else{
 			$content = $this->getFileContent($path);
 			$queries = explode("/* query separator */", $content);
-			//$success = $this->executeUpdateQuery($content);
 			$success = true;
 			foreach($queries as $query){
 				$success &= $this->executeUpdateQuery($query, $db);
 			}
-		}
 		return $success;
 	}
 
@@ -592,7 +564,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @param string $query
 	 */
 	function executeUpdateQuery($query, we_database_base $db = null){
-		$db = ($db ? $db : new DB_WE());
+		$db = ($db ? : new DB_WE());
 
 		// when executing a create statement, try to create table,
 		// change fields when needed.
@@ -608,42 +580,30 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Field="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP COLUMN ' . $db->escape($matches[1]) : '');
 		}
-		if(preg_match('/###ONCOL\((.*),(.*)\)([^#]+)###/', $query, $matches)){
-			$keys = $this->getKeysFromTable($matches[2]);
-			if(isset($keys[$matches[1]])){
-				$query = $matches[3];
-			}
+		if(preg_match('/###ONCOL\((.*),(.*)\)(.+);###/', $query, $matches)){
+			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Field="' . $matches[1] . '"');
+			$query = ($db->num_rows() ? $matches[3] : '');
 		}
 		//handle if key is not set, should be used after table def. so handling code, e.g. truncate, copy... can be put here
-		if(preg_match('/###ONKEYFAILED\((.*),(.*)\)([^#]+)###/', $query, $matches)){
+		if(preg_match('/###ONKEYFAILED\(([^,]+),([^)]+)\)([^#]+)###/', $query, $matches)){
 			$keys = $this->getKeysFromTable($matches[2]);
-			if(!isset($keys[$matches[1]])){
-				$query = $matches[3];
+			$query = (!isset($keys[$matches[1]]) ? $matches[3] : '');
 			}
-		}
-		if(preg_match('/###UPDATEDROPKEY\((.*),(.*)\)###/', $query, $matches)){
-			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Key_name="' . $matches[1] . '"');
+		if(preg_match('/###UPDATEDROPKEY\(([^,]+),([^)]+)\)###/', $query, $matches)){
+			$db->query('SHOW KEYS FROM ' . $db->escape($matches[2]) . ' WHERE Key_name="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP KEY ' . $db->escape($matches[1]) : '');
 		}
-		/* if (LIVEUPDATE_TABLE_PREFIX && strpos($query,'###TBLPREFIX###')===false) {
+		if(preg_match('/###ONTAB\((.*)\)(.+);###/', $query, $matches)){
+			$query = ($db->isTabExist($matches[1]) ? $matches[2] : '');
+		}
 
-		  $query = preg_replace("/^INSERT INTO /", "INSERT INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^INSERT IGNORE INTO /", "INSERT IGNORE INTO " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^CREATE TABLE /", "CREATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^DELETE FROM /", "DELETE FROM " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^ALTER TABLE /", "ALTER TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-		  $query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-
-		  $query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
-		  } */
+		
 
 		// second, we need to check if there is a collation
 		$Charset = we_database_base::getCharset();
 		$Collation = we_database_base::getCollation();
 		if($Charset != '' && $Collation != ''){
-			if(stripos($query, "CREATE TABLE ") === 0){
+			if(stripos($query, 'CREATE TABLE ') === 0){
 				if(strtoupper($Charset) === 'UTF-8'){//#4661
 					$Charset = 'utf8';
 				}
@@ -654,9 +614,18 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			}
 		}
 
-		if(!$query || $db->query($query)){
+		$tabExists = false;
+		if(preg_match('/CREATE TABLE (\w+) \(/', $query, $matches)){
+			if($db->isTabExist($matches[1])){//tab exists
+				$db->Errno = 1050;
+				$tabExists = true;
+			}
+		}
+
+
+		if(!$query || (!$tabExists && $db->query($query))){
 			return true;
-		} else {
+		}
 
 			switch($db->Errno){
 
@@ -692,7 +661,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 						$newTable = $this->getFieldsOfTable($tmpName, $db);
 
 						// get keys from existing and new table
-						$origTableKeys = $this->getKeysFromTable($tableName);
+					$origTableKeys = $this->getKeysFromTable($tableName,true);
 						$newTableKeys = $this->getKeysFromTable($tmpName);
 
 
@@ -716,10 +685,10 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 						$alterQueries = array();
 
 						// get all queries to change existing fields
-						if(!empty($changeFields)){
+					if($changeFields){
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
 						}
-						if(!empty($addFields)){
+					if($addFields){
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
 						}
 
@@ -728,15 +697,16 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 						$changedKeys = array();
 						foreach($newTableKeys as $keyName => $indexes){
 
-							if(isset($origTableKeys[$keyName])){
+						$lkeyName=  strtolower($keyName);
+						if(isset($origTableKeys[$lkeyName])){
 								//index-type changed
-								if($origTableKeys[$keyName]['index'] != $indexes['index']){
+							if($origTableKeys[$lkeyName]['index'] != $indexes['index']){
 									$changedKeys[$keyName] = $indexes;
 									continue;
 								}
 
 								for($i = 1; $i < count($indexes); $i++){
-									if(!in_array($indexes[$i], $origTableKeys[$keyName])){
+								if(!in_array($indexes[$i], $origTableKeys[$lkeyName])){
 										$changedKeys[$keyName] = $indexes;
 										break;
 									}
@@ -760,7 +730,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 							$alterQueries = array_merge(array('ALTER TABLE `' . $tableName . '` DROP INDEX _temp'), $alterQueries);
 						}
 
-						if(!empty($alterQueries)){
+					if($alterQueries){
 							// execute all queries
 							$success = true;
 							$duplicate = false;
@@ -816,8 +786,6 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 					$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
 					return false;
 			}
-			return false;
-		}
 		return true;
 	}
 
@@ -907,17 +875,21 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @param integer $errline
 	 * @param string $errcontext
 	 */
-	/*
 	  static function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
-	  $GLOBALS['liveUpdateError']["errorNr"] = $errno;
-	  $GLOBALS['liveUpdateError']["errorString"] = $errstr;
-	  $GLOBALS['liveUpdateError']["errorFile"] = $errfile;
-	  $GLOBALS['liveUpdateError']["errorLine"] = $errline;
 
-	  //		ob_start('error_log');
-	  //		var_dump($liveUpdateError);
-	  //		ob_end_clean();
+		$GLOBALS['liveUpdateError'] = array(
+			"errorNr" => $errno,
+			"errorString" => $errstr,
+			"errorFile" => $errfile,
+			"errorLine" => $errline,
+		);
+		if(function_exists('error_handler')){
+			if(strpos($errstr, 'MYSQL-ERROR') !== 0){
+				//don't handle mysql errors, they're handled by updatelog - since some of them are "wanted"
+				//log errors to system log, if we have one.
+				error_handler($errno, $errstr, $errfile, $errline, $errcontext);
 	  }
-	 */
+		}
 }
 
+}
