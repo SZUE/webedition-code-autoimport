@@ -585,7 +585,7 @@ class liveUpdateFunctions{
 			$query = (!isset($keys[$matches[1]]) ? $matches[3] : '');
 		}
 		if(preg_match('/###UPDATEDROPKEY\(([^,]+),([^)]+)\)###/', $query, $matches)){
-			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Key_name="' . $matches[1] . '"');
+			$db->query('SHOW KEYS FROM ' . $db->escape($matches[2]) . ' WHERE Key_name="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP KEY ' . $db->escape($matches[1]) : '');
 		}
 		if(preg_match('/###ONTAB\((.*)\)(.+);###/', $query, $matches)){
