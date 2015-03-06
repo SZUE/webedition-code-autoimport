@@ -343,6 +343,7 @@ function init() {
 
 			// Build dialog
 			return create_dialog('settings_predefined', g_l('thumbnails', '[thumbnails]'), array(
+				array('html' => $_thumbnails_table->getHtml(), 'space' => 200),
 				array('headline' => g_l('thumbnails', '[name]'), 'html' => $_thumbnail_name_input, 'space' => 200),
 				array('headline' => g_l('thumbnails', '[properties]'), 'html' => $_window_html->getHtml(), 'space' => 200),
 				array('headline' => g_l('thumbnails', '[format]'), 'html' => $_thumbnail_format_select->getHtml(), 'space' => 200),
