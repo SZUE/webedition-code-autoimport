@@ -313,7 +313,8 @@ class liveUpdateFunctions{
 					touch($source . 'x');
 					$_SESSION['weS']['moveOk'] = @rename($source . 'x', $destination . 'x');
 					$this->deleteFile($destination . 'x');
-					$this->QueryLog['success'][] = 'Using ' . ($_SESSION['weS']['moveOk'] ? 'move' : 'copy') . ' for installation';
+					$this->deleteFile($source . 'x');
+					$this->insertUpdateLogEntry('Using ' . ($_SESSION['weS']['moveOk'] ? 'move' : 'copy') . ' for installation', WE_VERSION, 0);
 				}
 
 				if($_SESSION['weS']['moveOk']){
