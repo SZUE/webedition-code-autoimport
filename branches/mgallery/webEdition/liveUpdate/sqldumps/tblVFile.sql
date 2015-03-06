@@ -13,7 +13,7 @@ CREATE TABLE ###TBLPREFIX###tblVFile (
   OwnersReadOnly text NOT NULL,
   remTable enum('tblFile','tblObjectFiles') NOT NULL default 'tblFile',
   remCT varchar(255) NOT NULL default '',
-  remClass  int(11) unsigned NOT NULL default '0',
+  remClass TEXT NOT NULL default '',
   fileCollection text NOT NULL default '',
   objectCollection text NOT NULL default '',
   PRIMARY KEY  (ID),

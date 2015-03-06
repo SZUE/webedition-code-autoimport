@@ -4,13 +4,10 @@ wePropertiesEdit = {
 		return false;
 	},
 
-	moveSelectedOptions: function(from,to){
-		if(arguments.length>3){
-			var regex=arguments[3];
-			if (regex!='') {
-				unSelectMatchingOptions(from,regex);
-			}
-		}
+	moveSelectedOptions: function(from,to, sort, type){
+		sort = sort || true;
+		type = type || 'document';
+
 		if(!this.hasOptions(from)){ return; }
 		for(var i=0;i<from.options.length;i++){
 			var o=from.options[i];
@@ -29,13 +26,13 @@ wePropertiesEdit = {
 				from.options[i]=null;
 			}
 		}
-		if((arguments.length<3)||(arguments[2]==true)){
+		if(sort){
 			this.sortSelect(from);
 			this.sortSelect(to);
 		}
 		from.selectedIndex=-1;
 		to.selectedIndex=-1;
-		this.retrieveCsv();
+		this.retrieveCsv(type);
 	},
 
 	sortSelect: function(obj){
@@ -57,18 +54,17 @@ wePropertiesEdit = {
 		}
 	},
 
-	retrieveCsv: function(){
-		var mimeListTo = document.getElementById('mimeListTo'), 
+	retrieveCsv: function(type){
+		type = type || 'document';
+		var mimeListTo = document.getElementById(type === 'document' ? 'mimeListTo' : 'classListTo'), 
 			mimeStr = '';
 
 		for(var i = 0; i < mimeListTo.options.length; i++){
 			mimeStr += mimeListTo.options[i].value + ',';
 		}
-		document.getElementById('we_remCT').value = mimeStr ? ',' + mimeStr : mimeStr;
+		document.getElementById(type === 'document' ? 'we_remCT' : 'we_remClass').value = mimeStr ? ',' + mimeStr : mimeStr;
 	}
 };
-
-
 
 weCollectionEdit = {
 	we_const: {// FIXME: move such "constants" to webEdition.js ("global" namespace)

@@ -52,8 +52,6 @@ weCollectionEdit.we_const = {
 		'remTable: ' . $GLOBALS['we_doc']->remTable . '<br/>
 		remCT: ' . $GLOBALS['we_doc']->remCT . '<br/>
 		remClass: ' . $GLOBALS['we_doc']->remClass . '<br/>' .
-		we_html_element::htmlDiv(array('style' => 'margin-left:20px;'), $GLOBALS['we_doc']->formInputField('', 'fileCollection', 'fileCollection', 40, 410, '')) .
-		we_html_element::htmlDiv(array('style' => 'margin-left:20px;'), $GLOBALS['we_doc']->formInputField('', 'objectCollection', 'objectCollection', 40, 410, '')) .
 		$GLOBALS['we_doc']->formCollection();
 		?>
 		<input type="hidden" name="we_complete_request" value="1"/>
