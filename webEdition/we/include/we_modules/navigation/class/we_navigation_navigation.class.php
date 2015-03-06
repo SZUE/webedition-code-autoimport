@@ -217,28 +217,28 @@ class we_navigation_navigation extends weModelBase{
 	private function _getFilterOfDocument(){
 		switch(($this->IsFolder ? $this->FolderSelection : $this->SelectionType)){
 			case self::STPYE_OBJLINK:
-				$_table = OBJECT_FILES_TABLE;
-				$_id = $this->LinkID;
+				$table = OBJECT_FILES_TABLE;
+				$id = $this->LinkID;
 				break;
 			case self::STPYE_DOCLINK:
-				$_table = FILE_TABLE;
-				$_id = $this->LinkID;
+				$table = FILE_TABLE;
+				$id = $this->LinkID;
 				break;
 			default:
-				$_id = 0;
-				$_table = "";
+				$id = 0;
+				$table = "";
 		}
 
 		$this->LimitAccess = 0;
 
-		if($_id && $_table){
-			$_docFilter = we_customer_documentFilter::getFilterByIdAndTable($_id, $_table);
-			if($_docFilter){
-				we_navigation_customerFilter::translateModeToNavModel($_docFilter->getMode(), $this);
-				$this->Customers = $_docFilter->getSpecificCustomers();
-				$this->CustomerFilter = $_docFilter->getFilter();
-				$this->BlackList = $_docFilter->getBlackList();
-				$this->WhiteList = $_docFilter->getWhiteList();
+		if($id && $table){
+			$docFilter = we_customer_documentFilter::getFilterByIdAndTable($id, $table);
+			if($docFilter){
+				we_navigation_customerFilter::translateModeToNavModel($docFilter->getMode(), $this);
+				$this->Customers = $docFilter->getSpecificCustomers();
+				$this->CustomerFilter = $docFilter->getFilter();
+				$this->BlackList = $docFilter->getBlackList();
+				$this->WhiteList = $docFilter->getWhiteList();
 			}
 		}
 	}
