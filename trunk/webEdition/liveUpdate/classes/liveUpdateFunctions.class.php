@@ -224,6 +224,24 @@ class liveUpdateFunctions{
 	}
 
 	/**
+	 * This function checks if a given file is writable and tries to chmod() if necessary
+	 *
+	 * @param string $filePath
+	 * @return boolean
+	 */
+	function checkMakeFileWritable($filePath = '', $mod = 0750){
+		$filePath = LIVEUPDATE_SOFTWARE_DIR . $filePath;
+
+		if(file_exists($filePath) && !is_writable($filePath)){
+			if(!chmod($filePath, $mod)){
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * This function checks if given dir exists, if not tries to create it
 	 *
 	 * @param string $dirPath
@@ -293,8 +311,9 @@ class liveUpdateFunctions{
 			if($this->deleteFile($destination)){
 				if(!isset($_SESSION['weS']['moveOk'])){
 					touch($source . 'x');
-					$_SESSION['weS']['moveOk'] = rename($source . 'x', $destination . 'x');
+					$_SESSION['weS']['moveOk'] = @rename($source . 'x', $destination . 'x');
 					$this->deleteFile($destination . 'x');
+					$this->QueryLog['success'][] = 'Using ' . ($_SESSION['weS']['moveOk'] ? 'move' : 'copy') . ' for installation';
 				}
 
 				if($_SESSION['weS']['moveOk']){
@@ -409,7 +428,7 @@ class liveUpdateFunctions{
 	 * @param string $tableName
 	 * @return array
 	 */
-	function getKeysFromTable($tableName,$lowerKeys=false){
+	function getKeysFromTable($tableName, $lowerKeys = false){
 		$db = new DB_WE();
 		$keysOfTable = array();
 		$db->query('SHOW INDEX FROM ' . $db->escape($tableName));
@@ -424,7 +443,7 @@ class liveUpdateFunctions{
 				$indexType = 'INDEX';
 			}
 
-			$key=$lowerKeys?strtolower($db->f('Key_name')):$db->f('Key_name');
+			$key = $lowerKeys ? strtolower($db->f('Key_name')) : $db->f('Key_name');
 
 			if(!isset($keysOfTable[$key]) || !in_array($indexType, $keysOfTable[$key])){
 				$keysOfTable[$key]['index'] = $indexType;
@@ -654,7 +673,7 @@ class liveUpdateFunctions{
 					$newTable = $this->getFieldsOfTable($tmpName, $db);
 
 					// get keys from existing and new table
-					$origTableKeys = $this->getKeysFromTable($tableName,true);
+					$origTableKeys = $this->getKeysFromTable($tableName, true);
 					$newTableKeys = $this->getKeysFromTable($tmpName);
 
 
@@ -689,7 +708,7 @@ class liveUpdateFunctions{
 					$addKeys = array();
 					$changedKeys = array();
 					foreach($newTableKeys as $keyName => $indexes){
-						$lkeyName=  strtolower($keyName);
+						$lkeyName = strtolower($keyName);
 						if(isset($origTableKeys[$lkeyName])){
 							//index-type changed
 							if($origTableKeys[$lkeyName]['index'] != $indexes['index']){
@@ -823,6 +842,38 @@ class liveUpdateFunctions{
 		$_language_directory->close();
 
 		return $_installedLanguages;
+	}
+
+	function removeObsoleteFiles($path){
+		if(is_file($path . 'del.files')){
+			$all = array();
+			if($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES)){
+				$delFiles = array();
+				foreach($all as $cur){
+					if(file_exists(WEBEDITION_PATH . $cur)){
+						if(is_file(WEBEDITION_PATH . $cur)){
+							$delFiles[] = $cur;
+							unlink(WEBEDITION_PATH . $cur);
+						} elseif(is_dir(WEBEDITION_PATH . $cur)){
+							$delFiles[] = 'Folder: ' . $cur;
+							we_util_File::deleteLocalFolder(WEBEDITION_PATH . $cur, false);
+						}
+					}
+				}
+			}
+			unlink($path . 'del.files');
+			file_put_contents($path . 'deleted.files', ($all ? "Deleted Files: " . count($delFiles) . "\n\n" . implode("\n", $delFiles) : "File del.files empty"));
+		}
+
+		return true;
+	}
+
+	function removeDirOnlineInstaller(){
+		if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
+			we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
+		}
+
+		return true;
 	}
 
 	/**
