@@ -60,6 +60,25 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm('CAN_SEE_TEMPLATES')) || ($table == FILE_TABLE && !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS'))){
 			return 0;
 		}
+
+		$DB_WE = new DB_WE();
+		if($table == VFILE_TABLE){// TODO: permision
+			$DB_WE->query('SELECT ID,remObj,remTable,position FROM ' . FILELINK_TABLE . ' WHERE DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" ORDER BY ID, position ASC');
+
+			$docCollections = $docCollectionIDs = $objCollections = $objCollectionIDs = array();
+			while($DB_WE->next_record()){
+				if($DB_WE->f('remTable') === stripTblPrefix(FILE_TABLE)){
+					$docCollections[$DB_WE->f('ID')] = !isset($docCollections[$DB_WE->f('ID')]) ? array() : $docCollections[$DB_WE->f('ID')];
+					$docCollections[$DB_WE->f('ID')][$DB_WE->f('position')] = $DB_WE->f('remObj');
+					$docCollectionIDs[] = $DB_WE->f('remObj');
+				} else {
+					$objectCollections[$DB_WE->f('ID')] = !isset($objectCollections[$DB_WE->f('ID')]) ? array() : $objectCollections[$DB_WE->f('ID')];
+					$objectCollections[$DB_WE->f('ID')][$DB_WE->f('position')] = $DB_WE->f('remObj');
+					$objCollectionIDs = $DB_WE->f('remObj');
+				}
+			}
+		}
+
 		$prevoffset = max(0,$offset - $segment);
 		if($offset && $segment){
 			$treeItems[] = array(
@@ -79,7 +98,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 				'offset' => $prevoffset
 			);
 		}
-		$DB_WE = new DB_WE();
+
 		$tmp = array_filter($openFolders);
 		$tmp[] = $ParentID;
 		$ct = we_base_ContentTypes::inst();
@@ -89,16 +108,12 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 			((defined('OBJECT_FILES_TABLE') && $table === OBJECT_FILES_TABLE) ? ',IsClassFolder' : '') .
 			($table === FILE_TABLE || $table === TEMPLATES_TABLE ? ',Extension' : '') .
 			($table === FILE_TABLE || $table === TEMPLATES_TABLE || (defined('OBJECT_TABLE') && $table === OBJECT_TABLE) || (defined('OBJECT_FILES_TABLE') && $table === OBJECT_FILES_TABLE) ? ',ContentType,Icon,ModDate' : '') .
-			($table === VFILE_TABLE ? ',fileCollection,objectCollection,remTable' : '');
+			($table === VFILE_TABLE ? ',remTable' : '');
 
 		$where = $collectionIDs ? ' WHERE ID IN(' . implode(',', $collectionIDs) . ') AND IsFolder=0 AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')' :
 			' WHERE ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')';
 		$DB_WE->query('SELECT ' . $elem . ' FROM ' . $table . ' ' . $where . ' ORDER BY IsFolder DESC,(Text REGEXP "^[0-9]") DESC,ABS(REPLACE(Text,"info","")),Text' . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
-		$docCollections[] = array();
-		$docCollectionIDs = array();
-		$objCollections[] = array();
-		$objCollectionIDs = array();
 		$tmpItems = array();
 		$tree_count = 0;
 		while($DB_WE->next_record()){
@@ -129,26 +144,15 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 				"tooltip" => $ID,
 				"offset" => $offset
 			);
-
-			if($table === VFILE_TABLE && $ContentType === we_base_ContentTypes::COLLECTION){
-				if($DB_WE->f("remTable") === 'tblObjectFiles'){//FIXME: use constant, but no prefix!
-					$collection = makeArrayFromCSV($DB_WE->f("objectCollection"));
-					$objCollections[$ID] = $collection;
-					$objCollectionIDs = array_merge($objCollectionIDs, $collection);
-				} else {
-					$collection = makeArrayFromCSV($DB_WE->f("fileCollection"));
-					$docCollections[$ID] = $collection;
-					$docCollectionIDs = array_merge($docCollectionIDs, $collection);
-				}
-			}
 		}
 
 		if($collectionIDs){
-			foreach($collections as $id => $items){
+			foreach($collections as $collectionID => $items){
+				$i = 0;
 				foreach($items as $itemID){
 					if(isset($tmpItems[$itemID])){
-						$tmpItems[$itemID]['parentid'] = $id;
-						$tmpItems[$itemID]['id'] = $id . '_' . $itemID;
+						$tmpItems[$itemID]['parentid'] = $collectionID;
+						$tmpItems[$itemID]['id'] = $collectionID . '_' . $i++ . '_' . $itemID;
 						$treeItems[] = $tmpItems[$itemID];
 					}
 				}
@@ -158,22 +162,6 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		}
 
 		if($table === VFILE_TABLE){
-			// FIXME: no '', 0 and -1 as IDs in tblVFile!!
-			$tmpDocCollectionIDs = array();
-			$tmpObjCollectionIDs = array();
-			foreach($docCollectionIDs as $id){
-				if($id && $id != -1){
-					$tmpDocCollectionIDs[] = $id;
-				}
-			}
-			foreach($objCollectionIDs as $id){
-				if($id && $id != -1){
-					$tmpObjCollectionIDs[] = $id;
-				}
-			}
-			$docCollectionIDs = $tmpDocCollectionIDs;
-			$objCollectionIDs = $tmpObjCollectionIDs;
-
 			if(count($docCollectionIDs = array_unique($docCollectionIDs))){
 				getItems(FILE_TABLE, 0, 0, 0, $docCollectionIDs, $docCollections);
 			}

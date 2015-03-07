@@ -40,6 +40,7 @@ class we_collection extends we_root{
 	function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass');
+
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_INFO);
 			if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
@@ -135,7 +136,6 @@ class we_collection extends we_root{
 			))));
 		$mimeTable->setCol(0, 2, null, $mimeListTo);
 
-		
 		$selectedClasses = array();
 		$unselectedClasses = array();
 		$allClasses = array();
@@ -208,50 +208,17 @@ class we_collection extends we_root{
 	}
 
 	function formCollection(){
-		if($this->remTable == stripTblPrefix(FILE_TABLE)){
-			$activeCollection = 'fileCollection';
-			$fields = 'ID,Path,ContentType';
-			$table = FILE_TABLE;
-			$prop = 'remCT';
-			$cField = 'ContentType';
-		} else {
-			$activeCollection = 'objectCollection';
-			$fields = 'ID,Path,TableID';
-			$table = OBJECT_FILES_TABLE;
-			$prop = 'remClass';
-			$cField = 'TableID';
+		$items = $this->i_getVerifiedCollection(false, true, true);
+		if($items[count($items) - 1][id] !== -1){
+			$items[] = array('id' => -1, 'path' => '', 'type' => '');
 		}
 
-		//prepare items array: nonexisting IDs are thrown out db-query
-		$this->DB_WE->query('SELECT ' . $fields . ' FROM ' . $table . ' WHERE ID IN (' . trim($this->$activeCollection, ',') . ') AND NOT IsFolder');
-		$verifiedItems = array();
-		while($this->DB_WE->next_record()){
-			if(!trim($this->$prop, ',') || in_array($this->DB_WE->f($cField), makeArrayFromCSV($this->$prop))){
-				$verifiedItems[$this->DB_WE->f('ID')] = array('id' => $this->DB_WE->f('ID'), 'path' => $this->DB_WE->f('Path'), 'type' => $this->DB_WE->f($cField));
-			}
-		}
-
-		// throw out items when ContentType doesn't match and reenter empty items (id = -1)
-		$items = array();
-		$emptyItem = array('id' => -1, 'path' => '', 'type' => '');
-		$tmpCollection = ',';
-		foreach(explode(',', trim($this->$activeCollection, ',')) as $id){
-			$id = intval($id);
-			if(isset($verifiedItems[$id]) || $id === -1){
-				$items[] = $id === -1 ? $emptyItem : $verifiedItems[$id];
-				$tmpCollection .= $id . ',';
-			}
-		}
-		$items = $items ? : array($emptyItem);
-		$this->$activeCollection = $tmpCollection;
-
-		// one $yuiSuggest instance for all rows
 		$yuiSuggest = &weSuggest::getInstance();
 		$index = 0;
 		$rows = '';
 		foreach($items as $item){
 			$index++;
-			$rows .= $this->getCollectionRow($item, $index, $yuiSuggest, count($items), true);// last param: ac disabled!
+			$rows .= $this->getCollectionRow($item, $index, $yuiSuggest, count($items), true);
 		}
 
 		// write "blank" collection row to js var
@@ -272,7 +239,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		$wecmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmd2 = "document.we_form.elements['" . $textname . "'].value";
 		$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);opener.weCollectionEdit.repaintAndRetrieveCsv();";
-		
+
 		if($noSelectorAutoInit){
 			$this->jsFormCollection .= 'weCollectionEdit.selectorCmds = ["' . $wecmd1 . '","' . $wecmd2 . '"];'; 
 			$wecmdenc1 = 'CMD1';
@@ -283,11 +250,11 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		}
 		$wecmdenc3 = we_base_request::encCmd($wecmd3);
 
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','',1)", true, 0, 0, '', '', false, false, '_' . $index);
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")", true, 0, 0, '', '', false, false, '_' . $index);
 		$openbutton = we_html_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['" . $idname . "'].value){top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . (addTblPrefix($this->remTable) === FILE_TABLE ? we_base_ContentTypes::TEMPLATE : we_base_ContentTypes::OBJECT_FILE) . "','" . addTblPrefix($this->remTable) . "'); }");
 		$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputItem_" . $index ."');_EditorFrame.setEditorIsHot(true);weCollectionEdit.repaintAndRetrieveCsv();", true, 27, 22);
 		$yuiSuggest->setTable(addTblPrefix($this->remTable));
-		$yuiSuggest->setContentType('folder,text/webedition,image/*');
+		$yuiSuggest->setContentType('folder,' . trim($this->remCT, ','));
 		$yuiSuggest->setCheckFieldValue(false);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setAcId('Item_' . $index);
@@ -341,9 +308,110 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		$this->Filename = $this->Text;
 	}
 
+	public function we_save($resave = 0, $skipHook = 0){
+		$this->errMsg = '';
+
+		if(!$skipHook){// TODO: integrate hooks?
+
+		}
+
+		if(!parent::we_save($resave)){
+			return false;
+		}
+
+		$ret = $this->i_writeFileLinks();// FIXME: is there a standard function called by some parent to save non-persistent data?
+		if(!$ret || ($this->errMsg != '')){
+			return false;
+		}
+
+		return $ret;
+	}
+
 	//FIXME: maybe add column Filename to db to avoid setting Text = Filename and Filename = Text when initializing or saving we_doc!
 	function getText(){
 		return $this->Filename;
+	}
+
+	protected function i_getContentData(){
+		//!! parent::i_getContentData();
+
+		$this->DB_WE->query('SELECT remObj,remTable FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" ORDER BY position ASC');
+
+		$this->fileCollection = ',';
+		$this->ObjectCollection = ',';
+		while($this->DB_WE->next_record()){
+			if($this->DB_WE->f('remTable') == stripTblPrefix(FILE_TABLE)){
+				$this->fileCollection .= $this->DB_WE->f('remObj') . ',';
+			} else {
+				$this->objectCollection .= $this->DB_WE->f('remObj') . ',';
+			}
+		}
+		$this->fileCollection .= '-1,';
+		$this->objectCollection .= '-1,';
+	}
+
+	function i_writeFileLinks(){
+		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '"');
+
+		$i = 0;
+		foreach($this->i_getVerifiedCollection() as $remObj){
+			$ret &= $this->DB_WE->query('INSERT INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'ID' => $this->ID,
+					'DocumentTable' => stripTblPrefix(VFILE_TABLE),
+					'type' => 'archive',
+					'remObj' => $remObj,
+					'remTable' => $this->remTable,
+					'position' => $i++,
+			)));
+		}
+
+		return $ret;
+	}
+
+	// verify collection against remTable, remCT, remClass and ID
+	private function i_getVerifiedCollection($skipEmpty = true, $full = false, $resetCollection = false){
+		if($this->remTable == stripTblPrefix(FILE_TABLE)){
+			$activeCollectionName = 'fileCollection';
+			$fields = 'ID,Path,ContentType';
+			$table = FILE_TABLE;
+			$prop = 'remCT';
+			$cField = 'ContentType';
+		} else {
+			$activeCollectionName = 'objectCollection';
+			$fields = 'ID,Path,TableID';
+			$table = OBJECT_FILES_TABLE;
+			$prop = 'remClass';
+			$cField = 'TableID';
+		}
+		$this->$activeCollectionName = !trim($this->$activeCollectionName, ',') ? ',-1,' : $this->$activeCollectionName;
+
+		$this->DB_WE->query('SELECT ' . $fields . ' FROM ' . $table . ' WHERE ID IN (' . trim($this->$activeCollectionName, ',') . ') AND NOT IsFolder');
+		$verifiedItems = array();
+		while($this->DB_WE->next_record()){
+			if(!trim($this->$prop, ',') || in_array($this->DB_WE->f($cField), makeArrayFromCSV($this->$prop))){
+				$verifiedItems[$this->DB_WE->f('ID')] = $full ? array('id' => $this->DB_WE->f('ID'), 'path' => $this->DB_WE->f('Path'), 'type' => $this->DB_WE->f($cField)) : $this->DB_WE->f('ID');
+			}
+		}
+
+		$ret = array();
+		$tempCollection = ',';
+		$emptyItem = array('id' => -1, 'path' => '', 'type' => '');
+		foreach(explode(',', trim($this->$activeCollectionName, ',')) as $id){
+			$id = intval($id);
+			if(isset($verifiedItems[$id])){
+				$ret[] = $verifiedItems[$id];
+			}
+			if(!$skipEmpty && $id === -1){
+				$ret[] = $full ? $emptyItem : -1;
+			}
+			$tempCollection .= $id . ',';
+		}
+
+		if($resetCollection){
+			$this->$activeCollectionName = $tempCollection;
+		}
+
+		return $ret;
 	}
 
 }

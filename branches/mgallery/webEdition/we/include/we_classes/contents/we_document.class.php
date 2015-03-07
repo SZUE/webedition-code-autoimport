@@ -640,7 +640,7 @@ class we_document extends we_root{
 			return false;
 		}
 
-		$ret = $this->i_writeDocument();//FIXME: skip this when document is no real document (e.g.collections)
+		$ret = $this->i_writeDocument();
 		if(!$ret || ($this->errMsg != '')){
 			return false;
 		}

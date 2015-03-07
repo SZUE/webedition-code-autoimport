@@ -168,7 +168,6 @@ weCollectionEdit = {
 		div = document.createElement("div");
 		div.innerHTML = this.blankRow.replace(/XX/g, this.maxIndex).replace(/CMD1/, cmd1).replace(/CMD2/, cmd2);
 
-
 		newElem = document.getElementById('content_table').insertBefore(div.firstChild, el.nextSibling);
 		document.getElementById('yuiAcInputItem_' + this.maxIndex).value = path;
 		document.getElementById('yuiAcResultItem_' + this.maxIndex).value = id;
@@ -263,7 +262,12 @@ weCollectionEdit = {
 					index = t.childNodes[i].id.substr(5);
 					document.getElementById('drag_' + index).style.border = '1px solid #006db8';
 				}
-				el.style.border = '1px solid #00cc00';
+
+				if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
+					el.style.border = '1px solid #00cc00';
+				} else {
+					el.style.border = '1px solid red';
+				}
 				break;
 			default: 
 				return;
@@ -296,10 +300,16 @@ weCollectionEdit = {
 				el = this.getRow(evt.target);
 				index = el.id.substr(5);
 				el.style.border = '1px solid #006db8';
-//top.console.debug(this.we_const.TBL_PREFIX + this.we_doc.remTable);
-//top.console.debug(data);
+
 				if(this.we_const.TBL_PREFIX + this.we_doc.remTable === data[1]){
-					this.setDataFromServer(index, data[2], data[1], (data[0] === 'dragItem' ? 'item' : 'folder'), '', (data[0] === 'dragIitem' ? false : true));
+					
+					
+					if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
+						this.setDataFromServer(index, data[2], data[1], (data[0] === 'dragItem' ? 'item' : 'folder'), this.we_doc.remCT, (data[0] === 'dragIitem' ? false : true));
+					} else {
+						//alert("the item you try to drag from doesn't match your collection's content types");
+					}
+
 				} else {
 					alert("the tree you try to drag from doesn't match your collection's table property");
 				}

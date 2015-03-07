@@ -32,10 +32,10 @@ we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
 we_html_element::jsElement('
 	
 weCollectionEdit.we_doc = {
-	name: "' .$GLOBALS['we_doc']->Name. '",
+	name: "' . $GLOBALS['we_doc']->Name. '",
 	remTable: "' . $GLOBALS['we_doc']->remTable . '",
 	remCT: "' . $GLOBALS['we_doc']->remCT . '",
-	remCT: "' . $GLOBALS['we_doc']->remClass . '",
+	remClass: "' . $GLOBALS['we_doc']->remClass . '"
 };
 
 weCollectionEdit.we_const = {

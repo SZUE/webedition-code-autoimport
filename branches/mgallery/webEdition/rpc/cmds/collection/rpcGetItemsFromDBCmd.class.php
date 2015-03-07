@@ -33,7 +33,7 @@ class rpcGetItemsFromDBCmd extends rpcCmd{
 			
 			$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 'table');
 			$type = we_base_request::_(we_base_request::STRING, 'we_cmd', 'item', 'type');
-			$ct = we_base_request::_(we_base_request::STRING_LIST, 'we_cmd', '', 'ct');t_e('ct', $ct);
+			$ct = we_base_request::_(we_base_request::STRING_LIST, 'we_cmd', '', 'ct'); // FIXME: take ct from tblVFile, not from JS!
 			$recursive = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'recursive');
 			$resp->setData("itemsArray", $this->getDocsInFolder($id, $table, ($type === 'item'), $recursive, $ct, true));
 		}
@@ -44,7 +44,7 @@ class rpcGetItemsFromDBCmd extends rpcCmd{
 	function getDocsInFolder($id, $table, $idToPath = false, $recursive = true, $contentTypes = array(), $checkWs = true, we_database_base $db = null){
 		$db = $db ? : new DB_WE();
 		$result = $todo = array();
-		
+
 		$wspaces = array();
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $DB_WE, false, true);
