@@ -193,12 +193,12 @@ class we_collection extends we_root{
 		$classTable->setCol(0, 2, null, $classListTo);
 
 		$html = we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->remTable, false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'width: 388px; margin-top: 5px;'), 'value', 388) .
-		'<div id="mimetype" style="' . ($this->remTable === 'tblFile' ? 'display: block' : 'display: none') . '; width:388px;margin-top:5px;">' .
+		'<div id="mimetype" style="' . ($this->remTable === 'tblObjectFiles' ? 'display:none' : 'display:block') . '; width:388px;margin-top:5px;">' .
 			'<br/>Erlaubte Dokumente auf folgende Typen einschränken:<br>' .
 			we_html_element::htmlHidden(array('id' => 'we_remCT', 'name' => 'we_' . $this->Name . '_remCT', 'value' => $this->remCT)) .
 			$mimeTable->getHTML() .
 		'</div>
-		<div id="classname" style="' . ($this->remTable === 'tblObjectFiles' ? 'display: block' : 'display: none') . '; width: 380px;margin-top:5px;">' .
+		<div id="classname" style="' . ($this->remTable === 'tblObjectFiles' ? 'display:block' : 'display:none') . '; width: 380px;margin-top:5px;">' .
 			(defined('OBJECT_TABLE') ? '<br/>Erlaubte Objekte auf folgende Klassen einschränken:<br/>' . 
 				we_html_element::htmlHidden(array('id' => 'we_remClass', 'name' => 'we_' . $this->Name . '_remClass', 'value' => $this->remClass)) .
 				$classTable->getHTML() : '') .
