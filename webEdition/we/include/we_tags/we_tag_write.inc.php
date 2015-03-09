@@ -229,7 +229,7 @@ function we_tag_write($attribs){
 							$classname = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid));
 							$mailtext = sprintf(g_l('global', '[std_mailtext_newObj]'), $path, $classname) . "\n" .
 								($triggerid ? id_to_path($triggerid) . '?we_objectID=' : 'ObjectID: ') .
-								$GLOBALS['we_object'][$name]->OF_ID;
+								$GLOBALS['we_object'][$name]->ID;
 							$subject = g_l('global', '[std_subject_newObj]');
 							break;
 						default:
