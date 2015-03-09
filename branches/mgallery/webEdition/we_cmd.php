@@ -183,6 +183,8 @@ function findInclude($cmd){
 			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_delete.inc.php' : 'home.inc.php');
 		case 'move':
 			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_move.inc.php' : 'home.inc.php');
+		case 'addToCollection':
+			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_addToCollection.inc.php' : 'home.inc.php');
 		case 'do_delete':
 		case 'delete_single_document':
 			return 'we_delete.inc.php';

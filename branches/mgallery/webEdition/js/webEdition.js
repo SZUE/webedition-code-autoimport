@@ -605,6 +605,11 @@ function we_cmd_base(args, url) {
 			submit_we_form(self.treeheader, self.load, url);
 			//we_sbmtFrmC(self.load,url);
 			break;
+		case "do_addToCollection":
+			toggleBusy(1);
+			submit_we_form(self.treeheader, self.load, url);
+			//we_sbmtFrmC(self.load,url);
+			break;
 		case "change_passwd":
 			new jsWindow(url, "we_change_passwd", -1, -1, 250, 220, true, false, true, false);
 			break;
@@ -626,6 +631,12 @@ function we_cmd_base(args, url) {
 		case "mv":
 			we_cmd('move', 1, args[2]);
 			treeData.setstate(treeData.tree_states.selectitem);
+			top.treeData.unselectnode();
+			top.drawTree();
+			break;//add_to_collection
+		case "addTC":
+			we_cmd('addToCollection', 1, args[2]);
+			treeData.setstate(treeData.tree_states.select);
 			top.treeData.unselectnode();
 			top.drawTree();
 			break;
@@ -1202,7 +1213,38 @@ function we_cmd_base(args, url) {
 				}
 			}
 			break;
+		case "addToCollection":
+			if (SEEMODE) {
+				//
+			} else {
+				if (top.deleteMode != args[1]) {
+					top.deleteMode = args[1];
+				}
+				if (!top.deleteMode && treeData.state == treeData.tree_states.select) {
+					treeData.setstate(treeData.tree_states.edit);
+					drawTree();
+				}
+				self.document.getElementById("bm_treeheaderDiv").style.height = "160px";
+				self.document.getElementById("bm_mainDiv").style.top = "160px";
 
+				var width = top.getTreeWidth();
+
+				widthBeforeDeleteMode = width;
+
+				if (width < size.tree.moveWidth) {
+					top.setTreeWidth(size.tree.moveWidth);
+				}
+				top.storeTreeWidth(widthBeforeDeleteMode);
+
+				var widthSidebar = top.getSidebarWidth();
+
+				widthBeforeDeleteModeSidebar = widthSidebar;
+
+				if (args[2] != 1) {
+					we_repl(self.treeheader, url, args[0]);
+				}
+			}
+			break;
 		case "reset_home":
 			var _currEditor = top.weEditorFrameController.getActiveEditorFrame();
 			if (_currEditor && _currEditor.getEditorType() === "cockpit") {

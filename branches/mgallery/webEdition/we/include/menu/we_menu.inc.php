@@ -328,6 +328,29 @@ $we_menu = array(
 		'perm' => 'MOVE_TEMPLATE',
 		'hide' => $seeMode,
 	),
+	/*
+	1095000 => array(// File > add to collection
+		'text' => 'Zu Sammlung zufügen',
+		'parent' => 1000000,
+		'hide' => $seeMode,
+		'perm' => '',
+	),
+	array(// File > add to collection > documents
+		'text' => g_l('javaMenu_global', '[documents]'),
+		'parent' => 1095000,
+		'cmd' => 'add_documents_to_collection',// FIXME: g_l()
+		'perm' => '',
+		'hide' => $seeMode,
+	),
+	array(/// File > add to collection > objects
+		'text' => g_l('javaMenu_object', '[objects]'),
+		'parent' => 1095000,
+		'cmd' => 'add_objectfiles_to_collection',// FIXME: g_l()
+		'perm' => '',
+		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
+	),
+	 * 
+	 */
 	array(// separator
 		'parent' => 1000000
 	),

@@ -33,6 +33,8 @@ class we_collection extends we_root{
 	public $remCT; // TODO: make getter and mark protected
 	protected $jsFormCollection = '';
 
+	private $tmpFoldersDone = array();
+
 	/** Constructor
 	 * @return we_collection
 	 * @desc Constructor for we_collection
@@ -413,5 +415,126 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 
 		return $ret;
 	}
+
+	function getVerifiedRemObjectsByID($IDs = array(), $returnFull = false, $recursive = true, $table = '', $numRecursion = 0, $foldersDone = array(), $checkWs = true, $wspaces = array()){
+		$IDs = is_array($IDs) ? $IDs : array($IDs);
+		if(empty($IDs)){
+			return -1;
+		}
+		if($table && $table !== stripTblPrefix($this->remTable)){
+			return -2;
+		}
+
+		if($checkWs && (empty($wspaces))){
+			if(($ws = get_ws($table))){
+				$wsPathArray = id_to_path($ws, $table, $this->DB_WE, false, true);
+				foreach($wsPathArray as $path){
+					$wspaces[] = " Path LIKE '" . $this->DB_WE->escape($path) . "/%' OR " . getQueryParents($path);
+					while($path != '/' && $path != '\\' && $path){
+						$parentpaths[] = $path;
+						$path = dirname($path);
+					}
+				}
+			} elseif(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+				$ac = we_users_util::getAllowedClasses($this->DB_WE);
+				foreach($ac as $cid){
+					$path = id_to_path($cid, OBJECT_TABLE);
+					$wspaces[] = " Path LIKE '" . $this->DB_WE->escape($path) . "/%' OR Path='" . $this->DB_WE->escape($path) . "'";
+				}
+			}
+			$wspaces = empty($wspaces) ? array(false) : $wspaces;
+		}
+		$wsQuery = ($checkWs && $wspaces[0] !== false ? ' AND (' . implode(' OR ', $wspaces) . ') ' : ' OR RestrictOwners=0 ' );
+
+		$result = $todo = array();
+		$this->DB_WE->query('SELECT ID,ParentID,Path,ContentType FROM ' . addTblPrefix($this->remTable) . ' WHERE ' . ($numRecursion === 0 ? 'ID' : 'ParentID') . ' IN (' . implode(',', $IDs) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ') ORDER BY Path ASC');
+		while($this->DB_WE->next_record()){
+			$id = $this->DB_WE->f('ID');
+			if(($recursive || $numRecursion < 2) && $this->DB_WE->f('ContentType') === 'folder' && !isset($foldersDone[$id])){
+				$todo[] = $id;
+				$foldersDone[] = $id;
+			}
+			if((!$this->remCT || in_array($this->DB_WE->f('ContentType'), explode(',', $this->remCT))) && $this->DB_WE->f('ContentType') !== 'folder'){
+				if($this->DB_WE->f('ParentID') == 0){
+					$resultRoot[$id] = $returnFull ? array('id' => $id, 'path' => $this->DB_WE->f('Path'), 'ct' => $this->DB_WE->f('ContentType')) : $id;
+				} else {
+					$result[$this->DB_WE->f('Path')] = array('id' => $id, 'path' => $this->DB_WE->f('Path'), 'ct' => $this->DB_WE->f('ContentType'));
+				}
+			}
+		}
+
+		if(!empty($todo)){
+			$result = array_merge($result, $this->getVerifiedRemObjectsByID($todo, $returnFull, true, '', ++$numRecursion, $foldersDone, true, $wspaces));
+		}
+
+		if($numRecursion === 1){
+			ksort($result);
+			$tmpResult = array();
+			foreach($result as $res){
+				$tmpResult[$res['id']] = $returnFull ? $res : $res['id'];
+			}
+			$result = array_merge($tmpResult, $resultRoot);
+		}
+
+		return $result;
+	}
+
+	function getVerifiedRemObjectsByID_v2($IDs = array(), $returnFull = false, $recursive = true, $table = '', $numRecursion = 0, $foldersDone = array(), $checkWs = true, $wspaces = array()){
+		$IDs = is_array($IDs) ? $IDs : array($IDs);
+		if(empty($IDs)){
+			return -1;
+		}
+		if($table && $table !== stripTblPrefix($this->remTable)){
+			return -2;
+		}
+
+		if(++$numRecursion === 1){
+			$this->tmpFoldersDone = array();
+		}
+
+		if($checkWs && (empty($wspaces))){
+			if(($ws = get_ws($table))){
+				$wsPathArray = id_to_path($ws, $table, $this->DB_WE, false, true);
+				foreach($wsPathArray as $path){
+					$wspaces[] = " Path LIKE '" . $this->DB_WE->escape($path) . "/%' OR " . getQueryParents($path);
+					while($path != '/' && $path != '\\' && $path){
+						$parentpaths[] = $path;
+						$path = dirname($path);
+					}
+				}
+			} elseif(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+				$ac = we_users_util::getAllowedClasses($this->DB_WE);
+				foreach($ac as $cid){
+					$path = id_to_path($cid, OBJECT_TABLE);
+					$wspaces[] = " Path LIKE '" . $this->DB_WE->escape($path) . "/%' OR Path='" . $this->DB_WE->escape($path) . "'";
+				}
+			}
+			$wspaces = empty($wspaces) ? array(false) : $wspaces;
+		}
+		$wsQuery = ($checkWs && $wspaces[0] !== false ? ' AND (' . implode(' OR ', $wspaces) . ') ' : ' OR RestrictOwners=0 ' );
+
+		$result = array();
+		foreach($IDs as $curID){
+			$todo = array();
+			$this->DB_WE->query('SELECT ID,Path,ContentType FROM ' . addTblPrefix($this->remTable) . ' WHERE ' . ($numRecursion === 1 ? 'ID' : 'ParentID') . '=' . $curID . ' AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ') ORDER BY Path ASC');
+			while($this->DB_WE->next_record()){
+				$id = $this->DB_WE->f('ID');
+				if(($recursive || $numRecursion < 2) && $this->DB_WE->f('ContentType') === 'folder' && !isset($foldersDone[$id])){
+					$todo[] = $id;
+					$this->tmpFoldersDone = $id;
+				}
+				if((!$this->remCT || in_array($this->DB_WE->f('ContentType'), explode(',', $this->remCT))) && $this->DB_WE->f('ContentType') !== 'folder'){
+					$result['id_' . $id] = $returnFull ? array('id' => $id, 'path' => $this->DB_WE->f('Path'), 'ct' => $this->DB_WE->f('ContentType')) : $id;
+				}
+			}
+
+			foreach($todo as $id){
+				$result = array_merge($result, $this->getVerifiedRemObjectsByID_v2($id, $returnFull, true, '', $numRecursion, $foldersDone, true, $wspaces));
+			}
+		}
+
+		return $result;
+	}
+
 
 }

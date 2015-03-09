@@ -92,6 +92,8 @@ function getJSCommand($cmd0){
 			return 'top.we_cmd("mv",1,"' . FILE_TABLE . '");';
 		case 'move_templates':
 			return 'top.we_cmd("mv",1,"' . TEMPLATES_TABLE . '");';
+		case 'add_documents_to_collection':
+			return 'top.we_cmd("addTC",1,"' . FILE_TABLE . '");';
 		case 'openDelSelector':
 			$openTable = FILE_TABLE;
 			if(isset($_SESSION['weS']['seemForOpenDelSelector']['Table'])){
