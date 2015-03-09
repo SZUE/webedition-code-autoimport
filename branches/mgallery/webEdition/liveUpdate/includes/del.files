@@ -19,8 +19,10 @@ wysiwyg/acronymDialog.php
 wysiwyg/abbrDialog.php
 wysiwyg
 we_vtabs.php
+we_backup/tmp/dummy
 we_backup/download/dummy
 we_ajaxcmd.php
+we/versions/dummy
 we/templates/dummy
 we/include/xhtml.inc.php
 we/include/webEdition_seem.inc.php
@@ -217,6 +219,7 @@ we/include/we_tags/we_tag_makeMail.inc.php
 we/include/we_tags/we_tag_list.inc.php
 we/include/we_tags/we_tag_ifCustomerResetPasswordFailed.inc.php
 we/include/we_tags/we_tag_econda.inc.php
+we/include/we_tags/custom_tags/dummy
 we/include/we_tag_elements.inc.php
 we/include/we_tagParser.inc.php
 we/include/we_perms.inc.php
@@ -374,6 +377,8 @@ we/include/we_modules/glossary/weGlossaryFrameEditor.php
 we/include/we_modules/glossary/weGlossaryCache.php
 we/include/we_modules/glossary/weGlossary.php
 we/include/we_modules/glossary/languages.inc.php
+we/include/we_modules/glossary/dict/dummy
+we/include/we_modules/glossary/cache/dummy
 we/include/we_modules/export/we_webEditionCmd_export.inc.php
 we/include/we_modules/export/we_exportDirSelectorFrameset.php
 we/include/we_modules/export/we_exportDirSelector.php
@@ -1963,6 +1968,7 @@ we/include/we_import/we_wiz_import.inc.php
 we/include/we_import/we_import_CSVFix.class.php
 we/include/we_import/importFunctions.class.inc.php
 we/include/we_html_tools.inc.php
+we/include/we_hook/custom_hooks/dummy
 we/include/we_export/weExportWizard.inc.php
 we/include/we_export/weExportTree.inc.php
 we/include/we_export/export_frameset.php
@@ -2229,6 +2235,7 @@ we/include/weTagWizard/data/we_tag_groups.inc.php
 we/include/weTagWizard/data/module_tags.inc.php
 we/include/weTagWizard/data
 we/include/weTagWizard/classes/weTagWizard.class.php
+we/include/weCodeWizard/data/custom/dummy
 we/include/weCodeWizard/data/English_UTF-8/search/_information.php
 we/include/weCodeWizard/data/English_UTF-8/search/SearchResult.xml
 we/include/weCodeWizard/data/English_UTF-8/search/SearchForm.xml
@@ -2306,6 +2313,7 @@ mozillamenu.php
 menuapplet/menuapplet.zip
 menuapplet/menuapplet.cab
 menuapplet
+liveUpdate/tmp/dummy
 liveUpdate/templates/register.inc.php
 liveUpdate/sqldumps/tblbannerprefs.sql
 liveUpdate/sqldumps/tblWebAdmin.sql
@@ -3468,6 +3476,8 @@ apps/toolfactory/pattern/hook/custom_hooks/weCustomHook_TOOLNAME_unpublish.inc.p
 apps/toolfactory/pattern/hook/custom_hooks/weCustomHook_TOOLNAME_save.inc.php
 apps/toolfactory/pattern/hook/custom_hooks/weCustomHook_TOOLNAME_publish.inc.php
 apps/toolfactory/pattern/hook/custom_hooks/weCustomHook_TOOLNAME_delete.inc.php
+apps/toolfactory/pattern/hook/custom_hooks/dummy
 apps/toolfactory/lang/no/default.xml
 apps/toolfactory/hook/we_jsCmdHook_toolfactory.inc.php
 apps/toolfactory/hook/custom_hooks/weCustomHook_toolfactory_save.inc.php
+apps/toolfactory/hook/custom_hooks/dummy
