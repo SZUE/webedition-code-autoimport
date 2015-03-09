@@ -979,16 +979,21 @@ var weFileUpload = (function(){
 				fd.append('step', 1);
 				fd.append('importToID', sf.importToID.value);
 
-				if(cur.partNum === cur.totalParts && this.isGdOk){
-					fd.append('thumbs', sf.thumbs.value);
-					fd.append('width', sf.width.value);
-					fd.append('height', sf.height.value);
-					fd.append('widthSelect', sf.widthSelect.value);
-					fd.append('heightSelect', sf.heightSelect.value);
-					fd.append('keepRatio', sf.keepRatio.value);
-					fd.append('quality', sf.quality.value);
+				if(cur.partNum === cur.totalParts){
+					fd.append('categories', sf.categories.value);
+					fd.append('importMetadata', sf.importMetadata.value);
 					fd.append('sameName', sf.sameName.value);
-					fd.append('degrees', sf.degrees.value);
+
+					if(this.isGdOk){
+						fd.append('thumbs', sf.thumbs.value);
+						fd.append('width', sf.width.value);
+						fd.append('height', sf.height.value);
+						fd.append('widthSelect', sf.widthSelect.value);
+						fd.append('heightSelect', sf.heightSelect.value);
+						fd.append('keepRatio', sf.keepRatio.value);
+						fd.append('quality', sf.quality.value);
+						fd.append('degrees', sf.degrees.value);
+					}
 				}
 
 				return fd;
