@@ -49,7 +49,10 @@ class we_shop_listviewOrder extends we_listview_base{
 	function __construct($name, $rows, $offset, $order, $desc, $condition, $cols, $docID, $hidedirindex){
 
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, 0, $cols);
-
+		if($GLOBALS['WE_MAIN_DOC']->InWebEdition){
+			//do nothing inside we
+			return;
+		}
 		$this->docID = $docID;
 		$this->condition = $condition ? : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
 
@@ -83,7 +86,6 @@ class we_shop_listviewOrder extends we_listview_base{
 		// IMPORTANT for seeMode !!!! #5317
 		$this->LastDocPath = (isset($_SESSION['weS']['last_webEdition_document'])) ? $_SESSION['weS']['last_webEdition_document']['Path'] : '';
 
-		$group = ' GROUP BY IntOrderID ';
 
 		if($this->desc && $this->order != '' && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';
@@ -98,7 +100,7 @@ class we_shop_listviewOrder extends we_listview_base{
 			$orderstring = '';
 		}
 
-		$where = $this->condition ? (' WHERE ' . $this->condition) . $group : $group;
+		$where = ($this->condition ? (' WHERE ' . $this->condition) : '') . ' GROUP BY IntOrderID';
 
 		$this->anz_all = f('SELECT COUNT(1) FROM ' . SHOP_TABLE . $where, '', $this->DB_WE);
 		$format = array();
@@ -109,7 +111,7 @@ class we_shop_listviewOrder extends we_listview_base{
 			$format[] = 'UNIX_TIMESTAMP(' . $field . ') AS ' . $field;
 		}
 
-		$this->DB_WE->query('SELECT IntOrderID as OrderID, IntCustomerID as CustomerID, IntPayment_Type as Payment_Type, strSerialOrder,' . implode(',', $format) . ' FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
+		$this->DB_WE->query('SELECT IntOrderID as OrderID, IntCustomerID as CustomerID, IntPayment_Type as Payment_Type, strSerialOrder,' . implode(',', $format) . ' FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . max(100, $this->maxItemsPerPage)) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
