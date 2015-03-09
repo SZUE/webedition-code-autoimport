@@ -18,7 +18,7 @@
 /* query separator */
 ###ONKEYFAILED(search,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex DROP COLUMN ID;###
 /* query separator */
-###ONKEYFAILED(search,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex ADD ID int(11) unsigned NOT NULL default '0' FIRST;###
+###ONKEYFAILED(search,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex ADD ID int unsigned NOT NULL default '0' FIRST;###
 /* query separator */
 ###ONKEYFAILED(search,###TBLPREFIX###tblIndex)UPDATE ###TBLPREFIX###tblIndex SET ID=IF(OID>0,OID,DID);###
 /* query separator */
@@ -46,3 +46,5 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
 /* query separator */
 ###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD PRIMARY KEY (ID,WorkspaceID,ClassID);###
 
+/* query separator */
+###UPDATEONLY###DROP TABLE IF EXISTS ###TBLPREFIX###tblIndex_Backup;

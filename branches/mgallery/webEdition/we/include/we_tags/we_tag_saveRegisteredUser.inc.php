@@ -39,9 +39,8 @@ function we_tag_saveRegisteredUser($attribs){
 	$uid = we_base_request::_(we_base_request::INT, 's', false, 'ID');
 	$username = trim(we_base_request::_(we_base_request::STRINGC, 's', '', 'Username'));
 	$password = we_base_request::_(we_base_request::RAW, 's', false, 'Password');
-
 	//register new User
-	if($uid !== false && $uid <= 0 && (!isset($_SESSION['webuser']['ID'])) && $registerallowed && (!isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered'])){ // neuer User
+	if(($uid === false || $uid <= 0) && (!isset($_SESSION['webuser']['ID'])) && $registerallowed && (!isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered'])){ // neuer User
 		if($password && $username){ // wenn password und Username nicht leer
 			if(!we_customer_customer::customerNameExist($username, $GLOBALS['DB_WE'])){ // username existiert noch nicht!
 				$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'new', 'tagname' => 'saveRegisteredUser'));
@@ -76,7 +75,7 @@ function we_tag_saveRegisteredUser($attribs){
 				// Eingabe in Session schreiben, damit die eingegebenen Werte erhalten bleiben!
 				we_tag_saveRegisteredUser_keepInput();
 
-				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(sprintf(($userexists ? : g_l('customer', '[username_exists]')), $username), we_message_reporting::WE_MESSAGE_FRONTEND));
+				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(sprintf(($userexists ? : g_l('modules_customer', '[username_exists]')), $username), we_message_reporting::WE_MESSAGE_FRONTEND));
 			}
 		} else { // Password oder Username leer!
 			// Eingabe in Session schreiben, damit die eingegebenen Werte erhalten bleiben!
@@ -85,9 +84,9 @@ function we_tag_saveRegisteredUser($attribs){
 			}
 
 			if(strlen($username) == 0){
-				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(($userempty ? : g_l('customer', '[username_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
+				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(($userempty ? : g_l('modules_customer', '[username_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
 			} else if(strlen($password) == 0){
-				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(($passempty ? : g_l('customer', '[password_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
+				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(($passempty ? : g_l('modules_customer', '[password_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
 			}
 		}
 	} else if($uid == $_SESSION['webuser']['ID'] && $_SESSION['webuser']['registered']){ // existing user
@@ -95,7 +94,7 @@ function we_tag_saveRegisteredUser($attribs){
 		$weUsername = $username? : $_SESSION['webuser']['Username'];
 
 		if(f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape($weUsername) . '" AND ID!=' . intval($_SESSION['webuser']['ID']))){
-			$userexists = $userexists ? : g_l('customer', '[username_exists]');
+			$userexists = $userexists ? : g_l('modules_customer', '[username_exists]');
 			echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(sprintf($userexists, $weUsername), we_message_reporting::WE_MESSAGE_FRONTEND));
 		} elseif(isset($_REQUEST['s'])){
 			// es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert

@@ -1,4 +1,3 @@
-we/include/we_modules/messaging/messaging_mfv.php
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -216,7 +215,6 @@ we/include/we_tags/we_tag_redirectObjectSeoUrls.inc.php
 we/include/we_tags/we_tag_onlinemonitor.inc.php
 we/include/we_tags/we_tag_makeMail.inc.php
 we/include/we_tags/we_tag_list.inc.php
-we/include/we_tags/we_tag_ifVotingFieldNotEmpty.inc.php
 we/include/we_tags/we_tag_ifCustomerResetPasswordFailed.inc.php
 we/include/we_tags/we_tag_econda.inc.php
 we/include/we_tag_elements.inc.php
@@ -346,6 +344,7 @@ we/include/we_modules/messaging/messaging_std.inc.php
 we/include/we_modules/messaging/messaging_search_frame.php
 we/include/we_modules/messaging/messaging_right.php
 we/include/we_modules/messaging/messaging_mview.php
+we/include/we_modules/messaging/messaging_mfv.php
 we/include/we_modules/messaging/messaging_interfaces.inc.php
 we/include/we_modules/messaging/messaging_iconbar.php
 we/include/we_modules/messaging/messaging_header.php
