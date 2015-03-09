@@ -61,12 +61,12 @@ class we_sidebar_frames{
 		</style>
 		</head>
 		<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px;overflow:hidden;">
-			<div id="weSidebarHeader" name="weSidebarHeader" style="overflow: hidden;position:absolute;top:0px;left:0px;right:0px;height:22px;background-color: silver;	background-image: url('<?php echo IMAGE_DIR; ?>/backgrounds/multitabBG.gif');font-family: Verdana, Arial, sans-serif;font-size: 10px;">
+			<div id="weSidebarHeader" name="weSidebarHeader" style="overflow: hidden;position:absolute;top:0px;left:0px;right:0px;height:22px;background-color: silver;	background-image: url('<?php echo IMAGE_DIR; ?>backgrounds/multitabBG.gif');font-family: Verdana, Arial, sans-serif;font-size: 10px;">
 				<div id="Headline">
 					<?php echo g_l('sidebar', '[headline]'); ?>
 				</div>
 				<div id="CloseButton">
-					<img src="<?php echo IMAGE_DIR; ?>/multiTabs/close.gif" border="0" vspace="0" hspace="0" onclick="top.weSidebar.close();" onmouseover="this.src = '<?php echo IMAGE_DIR; ?>/multiTabs/closeOver.gif'" onmouseout="this.src = '<?php echo IMAGE_DIR; ?>/multiTabs/close.gif'" />
+					<img src="<?php echo IMAGE_DIR; ?>multiTabs/close.gif" border="0" vspace="0" hspace="0" onclick="top.weSidebar.close();" onmouseover="this.src = '<?php echo IMAGE_DIR; ?>multiTabs/closeOver.gif'" onmouseout="this.src = '<?php echo IMAGE_DIR; ?>multiTabs/close.gif'" />
 				</div>
 			</div>
 			<div style="position:absolute;top:22px;left:0px;right:0px;bottom:40px;border-bottom: 1px solid black;border-top: 1px solid black;">
