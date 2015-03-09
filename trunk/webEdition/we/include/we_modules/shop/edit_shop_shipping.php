@@ -206,8 +206,8 @@ foreach($customerTableFields as $tblField){
 }
 $shopVats = we_shop_vats::getAllShopVATs();
 $selectFieldsVat = array();
-foreach($shopVats as $id => $shopVat){
-	$selectFieldsVat[$id] = $shopVat->vat . '% - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory  . ')';
+foreach($shopVats as $id => $shopVat){ //Fix #9625 use shopVat->Id as key instead of the sorted array $id!
+	$selectFieldsVat[$shopVat->id] = $shopVat->vat . '% - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory  . ')';
 }
 // selectBox with all existing shippings
 // select menu with all available shipping costs
