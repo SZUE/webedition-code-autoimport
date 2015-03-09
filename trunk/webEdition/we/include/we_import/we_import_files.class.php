@@ -935,7 +935,9 @@ function next() {
 			we_html_element::htmlHidden(array("name" => "keepRatio", "value" => $this->keepRatio)) .
 			we_html_element::htmlHidden(array("name" => "degrees", "value" => $this->degrees)) .
 			we_html_element::htmlHidden(array("name" => "quality", "value" => $this->quality)) .
-			we_html_element::htmlHidden(array("name" => "categories", "value" => $this->categories));
+			we_html_element::htmlHidden(array("name" => "categories", "value" => $this->categories)) .
+			we_html_element::htmlHidden(array("name" => "importMetadata", "value" => $this->importMetadata));
+			//we_html_element::htmlHidden(array("name" => "imgsSearchable", "value" => $this->imgsSearchable));
 	}
 
 	function _getFrameset(){
