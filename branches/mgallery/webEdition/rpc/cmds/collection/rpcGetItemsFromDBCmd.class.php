@@ -27,60 +27,29 @@ class rpcGetItemsFromDBCmd extends rpcCmd{
 	function execute(){
 		$resp = new rpcResponse();
 
-		if(!($id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'id'))){
+		$IDs = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 'id');
+		if(empty($IDs)){
 			$resp->setData("error", array("Missing field id"));
-		} else {
-			
-			$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 'table');
-			$type = we_base_request::_(we_base_request::STRING, 'we_cmd', 'item', 'type');
-			$ct = we_base_request::_(we_base_request::STRING_LIST, 'we_cmd', '', 'ct'); // FIXME: take ct from tblVFile, not from JS!
-			$recursive = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'recursive');
-			$resp->setData("itemsArray", $this->getDocsInFolder($id, $table, ($type === 'item'), $recursive, $ct, true));
+			return $resp;
 		}
+
+		$collection = new we_collection();
+		$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 'transaction');
+		if($transaction && $we_dt = isset($_SESSION['weS']['we_data'][$transaction]) ? $_SESSION['weS']['we_data'][$transaction] : ''){
+			$collection->we_initSessDat($we_dt);
+		} else if($collectionID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'collection')){
+			$collection->initByID($collectionID);
+		} else {
+			$resp->setData("error", array("no collection error"));
+			return $resp;
+		}
+
+		$full = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'full');
+		$recursive = we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 'recursive');
+
+		$resp->setData("itemsArray", $collection->getVerifiedRemObjectsByID($IDs, $full, $recursive));
 
 		return $resp;
-	}
-
-	function getDocsInFolder($id, $table, $idToPath = false, $recursive = true, $contentTypes = array(), $checkWs = true, we_database_base $db = null){
-		$db = $db ? : new DB_WE();
-		$result = $todo = array();
-
-		$wspaces = array();
-		if(($ws = get_ws($table))){
-			$wsPathArray = id_to_path($ws, $table, $DB_WE, false, true);
-
-			foreach($wsPathArray as $path){
-				$wspaces[] = " Path LIKE '" . $DB_WE->escape($path) . "/%' OR " . getQueryParents($path);
-				while($path != '/' && $path != '\\' && $path){
-					$parentpaths[] = $path;
-					$path = dirname($path);
-				}
-			}
-		} elseif(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
-			$ac = we_users_util::getAllowedClasses($DB_WE);
-			foreach($ac as $cid){
-				$path = id_to_path($cid, OBJECT_TABLE);
-				$wspaces[] = " Path LIKE '" . $DB_WE->escape($path) . "/%' OR Path='" . $DB_WE->escape($path) . "'";
-			}
-		}
-		$wsQuery = ($checkWs && $wspaces ? ' AND (' . implode(' OR ', $wspaces) . ') ' : ' OR RestrictOwners=0 ' );
-
-		$db->query('SELECT ID,Path,ContentType FROM ' . $db->escape($table) . ' WHERE ' . (boolval($idToPath) ? 'ID' : 'ParentID') . '=' . intval($id) . ' AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')');
-		while($db->next_record()){
-			if(!$idToPath && $recursive && $db->f('ContentType') === 'folder'){
-				$todo[] = $db->f('ID');
-			} 
-
-			if((empty($contentTypes) || in_array($db->f('ContentType'), $contentTypes)) && !($db->f('ContentType') === 'folder')){
-				$result[] = array('id' => $db->f('ID'), 'path' => $db->f('Path'), 'ct' => $db->f('ContentType'));
-			}
-		}
-
-		foreach($todo as $id){
-			$result = array_merge($result, $this->getDocsInFolder($id, $table, false, true, $contentTypes, false, $db));
-		}
-
-		return $result;
 	}
 
 }

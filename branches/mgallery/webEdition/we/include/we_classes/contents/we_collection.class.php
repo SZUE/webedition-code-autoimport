@@ -29,9 +29,16 @@ class we_collection extends we_root{
 	protected $Collection = '';
 	protected $fileCollection = '';
 	protected $objectCollection = '';
-	public $remTable; // TODO: make getter and mark protected
-	public $remCT; // TODO: make getter and mark protected
+	protected $remTable;
+	protected $remCT;
+	protected $remClass;
 	protected $jsFormCollection = '';
+
+	protected $insertPrefs;
+	protected $insertRecursive;
+	protected $useEmpty;
+	protected $doubleOk;
+	
 
 	private $tmpFoldersDone = array();
 
@@ -41,7 +48,7 @@ class we_collection extends we_root{
 	 */
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass');
+		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass', 'insertPrefs', 'insertRecursive', 'useEmpty', 'doubleOk');
 
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_INFO);
@@ -49,6 +56,31 @@ class we_collection extends we_root{
 				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_WEBUSER;
 			}
 		}
+	}
+
+	public function getRemTable(){
+		return $this->remTable;
+	}
+
+	public function getRemCT(){
+		return $this->remCT;
+	}
+
+	public function getRemClass(){
+		return $this->remClass;
+	}
+
+	public function getCollection(){
+		return $this->i_getVerifiedCollection();
+	}
+
+	//FIXME: maybe add column Filename to db to avoid setting Text = Filename and Filename = Text when initializing or saving we_doc!
+	public function getText(){
+		return $this->Filename;
+	}
+
+	public function initByID($ID){
+		parent::initByID($ID, VFILE_TABLE);
 	}
 
 	function editor(){
@@ -210,8 +242,12 @@ class we_collection extends we_root{
 	}
 
 	function formCollection(){
+		$checkboxes = we_html_forms::checkboxWithHidden($this->insertRecursive, 'we_' . $GLOBALS['we_doc']->Name . '_insertRecursive', 'Verzeichnisse rekursiv einfügen') .
+			we_html_forms::checkboxWithHidden($this->useEmpty, 'we_' . $GLOBALS['we_doc']->Name . '_useEmpty', 'Leere Felder im Anschluss an die Einfügeposition auffüllen') .
+			we_html_forms::checkboxWithHidden($this->doubleOk, 'we_' . $GLOBALS['we_doc']->Name . '_doubleOk', 'Doubletten zulassen');
+
 		$items = $this->i_getVerifiedCollection(false, true, true);
-		if($items[count($items) - 1][id] !== -1){
+		if($items[count($items) - 1]['id'] !== -1){
 			$items[] = array('id' => -1, 'path' => '', 'type' => '');
 		}
 
@@ -229,8 +265,11 @@ weCollectionEdit.maxIndex = " . count($items) . ";
 weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $this->getCollectionRow(array("id" => -1, "path" => '/'), 'XX', $yuiSuggest, 1, true, true))) . "';";
 
 		return we_html_element::jsElement($this->jsFormCollection) .
-			we_html_element::htmlDiv(array('style' => 'margin-left:20px;'), $GLOBALS['we_doc']->formInputField('', 'fileCollection', 'fileCollection', 40, 410, '')) .
-			we_html_element::htmlDiv(array('style' => 'margin-left:20px;'), $GLOBALS['we_doc']->formInputField('', 'objectCollection', 'objectCollection', 40, 410, '')) .
+			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;'), 'Einfügen ganzer Verzeichnisse mit Drag and Drop:') .
+			we_html_element::htmlDiv(array('style' => 'width:806px;padding:10px 0 0 20px;margin-left:20px;'), $checkboxes) .
+			we_html_element::htmlDiv(array('style' => 'width:806px;margin:20px 0 0 20px;padding:10px;'), 
+					we_html_element::htmlDiv(array(), $GLOBALS['we_doc']->formInputField('', 'fileCollection', 'fileCollection', 40, 410, '')) .
+					we_html_element::htmlDiv(array(), $GLOBALS['we_doc']->formInputField('', 'objectCollection', 'objectCollection', 40, 410, ''))) .
 			we_html_element::htmlDiv(array('id' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px'), $rows);
 	}
 
@@ -308,6 +347,9 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		parent::we_load($from);
 		$this->ContentType = $this->IsFolder ? 'folder' : we_base_ContentTypes::COLLECTION;
 		$this->Filename = $this->Text;
+		$this->insertRecursive = $this->insertPrefs[0];
+		$this->useEmpty = $this->insertPrefs[1];
+		$this->doubleOk = $this->insertPrefs[2];
 	}
 
 	public function we_save($resave = 0, $skipHook = 0){
@@ -316,6 +358,8 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		if(!$skipHook){// TODO: integrate hooks?
 
 		}
+
+		$this->insertPrefs = strval($this->insertRecursive . $this->useEmpty . $this->doubleOk);
 
 		if(!parent::we_save($resave)){
 			return false;
@@ -327,11 +371,6 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		}
 
 		return $ret;
-	}
-
-	//FIXME: maybe add column Filename to db to avoid setting Text = Filename and Filename = Text when initializing or saving we_doc!
-	function getText(){
-		return $this->Filename;
 	}
 
 	protected function i_getContentData(){
@@ -416,7 +455,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		return $ret;
 	}
 
-	function getVerifiedRemObjectsByID($IDs = array(), $returnFull = false, $recursive = true, $table = '', $numRecursion = 0, $foldersDone = array(), $checkWs = true, $wspaces = array()){
+	function getVerifiedRemObjectsByID($IDs = array(), $returnFull = false, $recursive = true, $table = '', $recursion = 0, $foldersDone = array(), $checkWs = true, $wspaces = array()){
 		$IDs = is_array($IDs) ? $IDs : array($IDs);
 		if(empty($IDs)){
 			return -1;
@@ -426,8 +465,8 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		}
 
 		if($checkWs && (empty($wspaces))){
-			if(($ws = get_ws($table))){
-				$wsPathArray = id_to_path($ws, $table, $this->DB_WE, false, true);
+			if(($ws = get_ws($this->remTable))){
+				$wsPathArray = id_to_path($ws, $this->remTable, $this->DB_WE, false, true);
 				foreach($wsPathArray as $path){
 					$wspaces[] = " Path LIKE '" . $this->DB_WE->escape($path) . "/%' OR " . getQueryParents($path);
 					while($path != '/' && $path != '\\' && $path){
@@ -435,7 +474,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 						$path = dirname($path);
 					}
 				}
-			} elseif(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+			} elseif(defined('OBJECT_FILES_TABLE') && $this->remTable == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 				$ac = we_users_util::getAllowedClasses($this->DB_WE);
 				foreach($ac as $cid){
 					$path = id_to_path($cid, OBJECT_TABLE);
@@ -446,28 +485,43 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		}
 		$wsQuery = ($checkWs && $wspaces[0] !== false ? ' AND (' . implode(' OR ', $wspaces) . ') ' : ' OR RestrictOwners=0 ' );
 
-		$result = $todo = array();
-		$this->DB_WE->query('SELECT ID,ParentID,Path,ContentType FROM ' . addTblPrefix($this->remTable) . ' WHERE ' . ($numRecursion === 0 ? 'ID' : 'ParentID') . ' IN (' . implode(',', $IDs) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ') ORDER BY Path ASC');
+		$result = $resultRoot = $todo = array();
+
+		if($this->remTable === stripTblPrefix(OBJECT_FILES_TABLE)){
+			$typeField = 'TableID';
+			$typeProp = 'remClass';
+			$whereType = $this->remClass ? 'AND TableID IN (' . trim($this->remClass, ',') . ',0) ' : '';
+			$classField = ',TableID';
+			
+		} else {
+			$typeField = 'ContentType';
+			$typeProp = 'remCT';
+			$whereType = trim($this->remCT, "',") ? 'AND ContentType IN ("' . (str_replace(',', '","', trim($this->remCT, ','))) . '","folder") ' : '';
+			$classField = '';
+		}
+
+		$this->DB_WE->query('SELECT ID,ParentID,Path,ContentType' . $classField . ' FROM ' . addTblPrefix($this->remTable) . ' WHERE ' . ($recursion === 0 ? 'ID' : 'ParentID') . ' IN (' . implode(',', $IDs) . ') ' . $whereType . 'AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ') ORDER BY Path ASC');
 		while($this->DB_WE->next_record()){
-			$id = $this->DB_WE->f('ID');
-			if(($recursive || $numRecursion < 2) && $this->DB_WE->f('ContentType') === 'folder' && !isset($foldersDone[$id])){
-				$todo[] = $id;
-				$foldersDone[] = $id;
+			$data = $this->DB_WE->getRecord();
+			if(($recursive || $recursion === 0) && $data['ContentType'] === 'folder' && !isset($foldersDone[$data['ID']])){
+				$todo[] = $data['ID'];
+				$foldersDone[] = $data['ID'];
 			}
-			if((!$this->remCT || in_array($this->DB_WE->f('ContentType'), explode(',', $this->remCT))) && $this->DB_WE->f('ContentType') !== 'folder'){
-				if($this->DB_WE->f('ParentID') == 0){
-					$resultRoot[$id] = $returnFull ? array('id' => $id, 'path' => $this->DB_WE->f('Path'), 'ct' => $this->DB_WE->f('ContentType')) : $id;
+			if($data['ContentType'] !== 'folder'){
+			//if((!$this->$typeProp || in_array($data[$typeField], explode(',', $this->$typeProp))) && $data['ContentType'] !== 'folder'){
+				if($data['ParentID'] == 0){
+					$resultRoot[$data['ID']] = $returnFull ? array('id' => $data['ID'], 'path' => $data['Path'], 'ct' => $data[$typeField]) : $data['ID'];
 				} else {
-					$result[$this->DB_WE->f('Path')] = array('id' => $id, 'path' => $this->DB_WE->f('Path'), 'ct' => $this->DB_WE->f('ContentType'));
+					$result[$data['Path']] = array('id' => $data['ID'], 'path' => $data['Path'], 'ct' => $data[$typeField]);
 				}
 			}
 		}
 
 		if(!empty($todo)){
-			$result = array_merge($result, $this->getVerifiedRemObjectsByID($todo, $returnFull, true, '', ++$numRecursion, $foldersDone, true, $wspaces));
+			$result = array_merge($result, $this->getVerifiedRemObjectsByID($todo, $returnFull, $recursive, '', $recursion + 1, $foldersDone, true, $wspaces));
 		}
 
-		if($numRecursion === 1){
+		if($recursion++ === 0){ // when finishing the initial call, sort complete result (on root level folders first, then items)
 			ksort($result);
 			$tmpResult = array();
 			foreach($result as $res){
@@ -478,63 +532,5 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 
 		return $result;
 	}
-
-	function getVerifiedRemObjectsByID_v2($IDs = array(), $returnFull = false, $recursive = true, $table = '', $numRecursion = 0, $foldersDone = array(), $checkWs = true, $wspaces = array()){
-		$IDs = is_array($IDs) ? $IDs : array($IDs);
-		if(empty($IDs)){
-			return -1;
-		}
-		if($table && $table !== stripTblPrefix($this->remTable)){
-			return -2;
-		}
-
-		if(++$numRecursion === 1){
-			$this->tmpFoldersDone = array();
-		}
-
-		if($checkWs && (empty($wspaces))){
-			if(($ws = get_ws($table))){
-				$wsPathArray = id_to_path($ws, $table, $this->DB_WE, false, true);
-				foreach($wsPathArray as $path){
-					$wspaces[] = " Path LIKE '" . $this->DB_WE->escape($path) . "/%' OR " . getQueryParents($path);
-					while($path != '/' && $path != '\\' && $path){
-						$parentpaths[] = $path;
-						$path = dirname($path);
-					}
-				}
-			} elseif(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
-				$ac = we_users_util::getAllowedClasses($this->DB_WE);
-				foreach($ac as $cid){
-					$path = id_to_path($cid, OBJECT_TABLE);
-					$wspaces[] = " Path LIKE '" . $this->DB_WE->escape($path) . "/%' OR Path='" . $this->DB_WE->escape($path) . "'";
-				}
-			}
-			$wspaces = empty($wspaces) ? array(false) : $wspaces;
-		}
-		$wsQuery = ($checkWs && $wspaces[0] !== false ? ' AND (' . implode(' OR ', $wspaces) . ') ' : ' OR RestrictOwners=0 ' );
-
-		$result = array();
-		foreach($IDs as $curID){
-			$todo = array();
-			$this->DB_WE->query('SELECT ID,Path,ContentType FROM ' . addTblPrefix($this->remTable) . ' WHERE ' . ($numRecursion === 1 ? 'ID' : 'ParentID') . '=' . $curID . ' AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ') ORDER BY Path ASC');
-			while($this->DB_WE->next_record()){
-				$id = $this->DB_WE->f('ID');
-				if(($recursive || $numRecursion < 2) && $this->DB_WE->f('ContentType') === 'folder' && !isset($foldersDone[$id])){
-					$todo[] = $id;
-					$this->tmpFoldersDone = $id;
-				}
-				if((!$this->remCT || in_array($this->DB_WE->f('ContentType'), explode(',', $this->remCT))) && $this->DB_WE->f('ContentType') !== 'folder'){
-					$result['id_' . $id] = $returnFull ? array('id' => $id, 'path' => $this->DB_WE->f('Path'), 'ct' => $this->DB_WE->f('ContentType')) : $id;
-				}
-			}
-
-			foreach($todo as $id){
-				$result = array_merge($result, $this->getVerifiedRemObjectsByID_v2($id, $returnFull, true, '', $numRecursion, $foldersDone, true, $wspaces));
-			}
-		}
-
-		return $result;
-	}
-
 
 }

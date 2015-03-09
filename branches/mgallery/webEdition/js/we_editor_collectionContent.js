@@ -83,6 +83,7 @@ weCollectionEdit = {
 	maxIndex: 0,
 	blankRow: '',
 	collectionName: '',
+	csv: '',
 
 	dd: {
 		dragID: 0,
@@ -171,11 +172,11 @@ weCollectionEdit = {
 		newElem = document.getElementById('content_table').insertBefore(div.firstChild, el.nextSibling);
 		document.getElementById('yuiAcInputItem_' + this.maxIndex).value = path;
 		document.getElementById('yuiAcResultItem_' + this.maxIndex).value = id;
-		
+
 		if(repaint){
 			this.repaintAndRetrieveCsv();
 		}
-		
+
 		return newElem;
 	},
 
@@ -191,25 +192,32 @@ weCollectionEdit = {
 
 		//set first item on drop row
 		if(items.length){
+			this.dd.fillEmptyRows = document.we_form['check_we_' + this.we_doc.name + '_useEmpty'].checked;
+			this.dd.doubleOk = document.we_form['check_we_' + this.we_doc.name + '_doubleOk'].checked;
+
 			item = items.shift();
-			document.getElementById('yuiAcInputItem_' + index).value = item.path;
-			document.getElementById('yuiAcResultItem_' + index).value = item.id;
+			if(this.dd.doubleOk || this.csv.search(',' + item.id + ',') === -1){
+				document.getElementById('yuiAcInputItem_' + index).value = item.path;
+				document.getElementById('yuiAcResultItem_' + index).value = item.id;
+			}
 		}
 
 		for(var i = 0; i < items.length; i++){
-			if(this.dd.fillEmptyRows && !rowsFull && el.nextSibling && typeof el.nextSibling.id !== 'undefined' && el.nextSibling.id.substr(0, 5) === 'drag_'){
-				index = el.nextSibling.id.substr(5);
-				id = document.getElementById('yuiAcResultItem_' + index).value;
-				if(id == -1 || id == 0){
-					document.getElementById('yuiAcInputItem_' + index).value = items[i].path;
-					document.getElementById('yuiAcResultItem_' + index).value = items[i].id;
-					el = el.nextSibling;
-					continue;
-				} else {
-					rowsFull = true;
+			if(this.dd.doubleOk || this.csv.search(',' + items[i].id + ',') === -1){
+				if(this.dd.fillEmptyRows && !rowsFull && el.nextSibling && typeof el.nextSibling.id !== 'undefined' && el.nextSibling.id.substr(0, 5) === 'drag_'){
+					index = el.nextSibling.id.substr(5);
+					id = document.getElementById('yuiAcResultItem_' + index).value;
+					if(id == -1 || id == 0){
+						document.getElementById('yuiAcInputItem_' + index).value = items[i].path;
+						document.getElementById('yuiAcResultItem_' + index).value = items[i].id;
+						el = el.nextSibling;
+						continue;
+					} else {
+						rowsFull = true;
+					}
 				}
+				el = this.addRow(el, false, items[i].id, items[i].path);
 			}
-			el = this.addRow(el, false, items[i].id, items[i].path);
 		}
 		this.repaintAndRetrieveCsv();
 	},
@@ -224,10 +232,15 @@ weCollectionEdit = {
 			document.getElementById('btn_direction_up_' + index).disabled = (i === 0);
 			document.getElementById('btn_direction_down_' + index).disabled = (i === (t.childNodes.length - 1));
 		}
+		if(val != -1){
+			this.addRow(t.lastChild, true);
+		}
+
 		if(!this.collectionName){
 			this.collectionName = (this.we_const.TBL_PREFIX + this.we_doc.remTable === this.we_const.FILE_TABLE) ? '_fileCollection' : '_objectCollection';
 		}
 		document.we_form.elements['we_' + this.we_doc.name + this.collectionName].value = csv;
+		this.csv = csv;
 	},
 
 	allowDrop: function(evt){
@@ -305,7 +318,7 @@ weCollectionEdit = {
 					
 					
 					if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
-						this.setDataFromServer(index, data[2], data[1], (data[0] === 'dragItem' ? 'item' : 'folder'), this.we_doc.remCT, (data[0] === 'dragIitem' ? false : true));
+						this.setDataFromServer(index, data[2]);
 					} else {
 						//alert("the item you try to drag from doesn't match your collection's content types");
 					}
@@ -319,28 +332,22 @@ weCollectionEdit = {
 		}
 	},
 
-	setDataFromServer: function (index, id, table, type, ct, recursive) {
+	setDataFromServer: function (index, id) {
 		try {
 			if(id){
 				var postData;
-
-				table = table || this.we_const.TBL_PREFIX + this.we_const.FILE_TABLE;
-				type = type || 'item';
-				ct = ct || '';
-				recursive = recursive || 0;
-
-				postData = 'we_cmd[id]=' + encodeURIComponent(id);
-				postData += '&we_cmd[table]=' + encodeURIComponent(table);
-				postData += '&we_cmd[type]=' + encodeURIComponent(type);
-				postData += '&we_cmd[ct]=' + encodeURIComponent(ct);
-				postData += '&we_cmd[recursive]=' + encodeURIComponent(recursive);
+				postData = 'we_cmd[transaction]=' + encodeURIComponent(we_transaction);
+				postData += '&we_cmd[id]=' + encodeURIComponent(id);
+				postData += '&we_cmd[collection]=' + encodeURIComponent(this.we_doc.ID);
+				postData += '&we_cmd[full]=' + encodeURIComponent(1);
+				postData += '&we_cmd[recursive]=' + encodeURIComponent(document.we_form['check_we_' + this.we_doc.name + '_insertRecursive'].checked);
 
 				xhr = new XMLHttpRequest();
 				xhr.onreadystatechange = function () {
 					if (xhr.readyState === 4) {
 						if (xhr.status === 200) {
 							var respArr = JSON.parse(xhr.responseText);
-							if(type === 'item'){
+							if(respArr.length === 1){
 								document.getElementById('yuiAcInputItem_' + index).value = respArr[0].path;
 								document.getElementById('yuiAcResultItem_' + index).value = respArr[0].id;
 								weCollectionEdit.repaintAndRetrieveCsv();
