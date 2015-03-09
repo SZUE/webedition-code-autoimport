@@ -153,7 +153,7 @@ class we_listview_search extends we_listview_base{
 				$bOR[] = $spalte . ' LIKE "%' . $v1 . '%"';
 			}
 		}
-		
+
 		if($bOR){
 			$bAND[] = '(' . implode(' OR ', $bOR) . ')';
 		}
