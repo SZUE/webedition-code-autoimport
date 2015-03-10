@@ -180,7 +180,7 @@ function we_tag_field($attribs){
 	}
 
 	$classid = ($classid ?
-					$classid :
+					:
 					(isset($GLOBALS['lv']) ? (($GLOBALS['lv'] instanceof we_object_tag) && method_exists($GLOBALS['lv'], 'getObject') && isset($GLOBALS['lv']->getObject()->classID) ? $GLOBALS['lv']->getObject()->classID :
 									(method_exists($GLOBALS['lv'], 'getObject') && isset($GLOBALS['lv']->getObject()->classID) ? $GLOBALS['lv']->getObject()->classID :
 											(isset($GLOBALS['lv']->classID) ? $GLOBALS['lv']->classID : ( ($GLOBALS['lv'] instanceof we_shop_shop) ? $GLOBALS['lv']->f('wedoc_TableID') : '')))) : //Fix #9223
