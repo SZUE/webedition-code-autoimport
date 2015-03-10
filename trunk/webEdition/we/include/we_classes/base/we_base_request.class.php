@@ -108,7 +108,7 @@ class we_base_request{
 				return;
 			case self::FLOAT:
 				//FIXME: check for country dependencies (eg. 1.3333,22)
-				$var = floatval(str_replace(',', '.', $var));
+				$var = ($var === '' ? $default : floatval(str_replace(',', '.', $var)));
 				return;
 			case self::BOOL:
 				if(is_bool($var)){
