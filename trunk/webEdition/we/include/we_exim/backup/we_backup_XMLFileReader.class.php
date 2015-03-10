@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_backup_XMLFileReader{
-	const READ_SIZE = 8192;
+	const READ_SIZE = 32768;
 
 	static $file = array();
 
