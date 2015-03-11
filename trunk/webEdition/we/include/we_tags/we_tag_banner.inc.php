@@ -23,11 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_banner($attribs, $content){
-	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
 
-	$bannername = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+	$bannername = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 	$paths = weTag_getAttribute('paths', $attribs, '', we_base_request::RAW);
 	$type = weTag_getAttribute('type', $attribs, 'js', we_base_request::STRING);
 	$target = weTag_getAttribute("target", $attribs, '', we_base_request::STRING);
