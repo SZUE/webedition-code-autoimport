@@ -68,6 +68,7 @@ abstract class we_message_reporting{
 			'###NL###',
 			'\\\\',
 			'\\"',
+			'\n'
 			), $message
 		);
 	}
