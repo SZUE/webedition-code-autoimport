@@ -348,7 +348,8 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		}
 		$wecmdenc3 = we_base_request::encCmd($wecmd3);
 
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")", true, 0, 0, '', '', false, false, '_' . $index);
+		$button = we_html_button::create_button("image:add_file", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")", true, 44, 0, '', '', false, false, '_' . $index);
+		$addFromTreeButton = we_html_button::create_button("image:import_files", "javascript:weCollectionEdit.doClickAddItems(this);", true, 44, 22);
 		$openbutton = we_html_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['" . $idname . "'].value){top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . (addTblPrefix($this->remTable) === FILE_TABLE ? we_base_ContentTypes::TEMPLATE : we_base_ContentTypes::OBJECT_FILE) . "','" . addTblPrefix($this->remTable) . "'); }");
 		$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputItem_" . $index ."');_EditorFrame.setEditorIsHot(true);weCollectionEdit.repaintAndRetrieveCsv();", true, 27, 22);
 		$yuiSuggest->setTable(addTblPrefix($this->remTable));
@@ -359,12 +360,13 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		$yuiSuggest->setNoAutoInit($noAcAutoInit);
 		$yuiSuggest->setInput($textname, $item['path'], array("onmouseover" => "document.getElementById('drag_" . $index . "').draggable=false", "onmouseout" => "document.getElementById('drag_" . $index . "').draggable=true"));
 		$yuiSuggest->setResult($idname, $item['id']);
-		$yuiSuggest->setWidth(210);
+		$yuiSuggest->setWidth(240);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setTrashButton($trashButton);
-		$yuiSuggest->setSelectButton($button);
-		$yuiSuggest->setOpenButton($openbutton);
+		$yuiSuggest->setTrashButton($trashButton, 4);
+		$yuiSuggest->setSelectButton($button, 4);
+		$yuiSuggest->setAdditionalButton($addFromTreeButton, 6);
+		$yuiSuggest->setOpenButton($openbutton, 4);
 		$yuiSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
 
 		$rowControllsArr = array();
@@ -373,6 +375,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		$rowControllsArr[] = we_html_button::create_button('image:btn_direction_up', 'javascript:weCollectionEdit.doClickUp(this);', true, 0, 0, '', '', ($index === 1 ? true : false), false, '_' . $index);
 		$rowControllsArr[] = we_html_button::create_button('image:btn_direction_down', 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
 		$rowControllsArr[] = we_html_button::create_button('image:btn_function_trash', 'javascript:weCollectionEdit.doClickDelete(this)');
+
 		$rowControlls =  we_html_button::create_button_table($rowControllsArr, 5);
 
 		//FIXME: use we_html_table

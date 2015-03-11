@@ -222,7 +222,7 @@ function getSidebarWidth() {
 function setSidebarWidth() {
 	var obj = self.document.getElementById("sidebarDiv");
 	if (obj !== undefined && obj !== null) {
-		obj.style.left = w + "px";
+		obj.style.left = top.w + "px";
 	}
 }
 
@@ -634,7 +634,7 @@ function we_cmd_base(args, url) {
 			top.treeData.unselectnode();
 			top.drawTree();
 			break;//add_to_collection
-		case "addTC":
+		case "tocollection":
 			we_cmd('addToCollection', 1, args[2]);
 			treeData.setstate(treeData.tree_states.select);
 			top.treeData.unselectnode();
@@ -1213,7 +1213,7 @@ function we_cmd_base(args, url) {
 				}
 			}
 			break;
-		case "addToCollection":
+		case "addToCollection":// FIXME: 100% redundant code in cases delete, move and addToCollection...
 			if (SEEMODE) {
 				//
 			} else {

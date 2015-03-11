@@ -74,6 +74,7 @@ weCollectionEdit = {
 	},
 
 	we_doc: {
+		ID: 0, 
 		name: '',
 		remTable: '',
 		remCT: '',
@@ -122,6 +123,13 @@ weCollectionEdit = {
 			el = this.addRow(el, false);
 		}
 		this.repaintAndRetrieveCsv();
+	},
+
+	doClickAddItems: function(elem){
+		var el = this.getRow(elem),
+			index = el.id.substr(5);
+
+		top.we_cmd('addToCollection', 1, this.we_const.TBL_PREFIX + this.we_doc.remTable, this.we_doc.ID, this.we_doc.Path, index);
 	},
 
 	doClickDelete: function(elem){
@@ -188,6 +196,8 @@ weCollectionEdit = {
 		var el = this.getRow(elem),
 			index = el.id.substr(5),
 			rowsFull = false,
+			isFirstSet = false,
+			itemsSet = [[],[]],
 			item, id;
 
 		//set first item on drop row
@@ -195,15 +205,22 @@ weCollectionEdit = {
 			this.dd.fillEmptyRows = document.we_form['check_we_' + this.we_doc.name + '_useEmpty'].checked;
 			this.dd.doubleOk = document.we_form['check_we_' + this.we_doc.name + '_doubleOk'].checked;
 
-			item = items.shift();
-			if(this.dd.doubleOk || this.csv.search(',' + item.id + ',') === -1){
-				document.getElementById('yuiAcInputItem_' + index).value = item.path;
-				document.getElementById('yuiAcResultItem_' + index).value = item.id;
+			while(!isFirstSet && items.length){
+				var item = items.shift();
+				if(this.dd.doubleOk || this.csv.search(',' + item.id + ',') === -1){
+					document.getElementById('yuiAcInputItem_' + index).value = item.path;
+					document.getElementById('yuiAcResultItem_' + index).value = item.id;
+					itemsSet[0].push(item.id);
+					isFirstSet = true;
+				} else {
+					itemsSet[1].push(item.id);
+				}
 			}
 		}
 
 		for(var i = 0; i < items.length; i++){
 			if(this.dd.doubleOk || this.csv.search(',' + items[i].id + ',') === -1){
+				itemsSet[0].push(items[i].id);
 				if(this.dd.fillEmptyRows && !rowsFull && el.nextSibling && typeof el.nextSibling.id !== 'undefined' && el.nextSibling.id.substr(0, 5) === 'drag_'){
 					index = el.nextSibling.id.substr(5);
 					id = document.getElementById('yuiAcResultItem_' + index).value;
@@ -217,9 +234,12 @@ weCollectionEdit = {
 					}
 				}
 				el = this.addRow(el, false, items[i].id, items[i].path);
+			} else {
+				itemsSet[1].push(items[i].id);
 			}
 		}
 		this.repaintAndRetrieveCsv();
+		return itemsSet;
 	},
 
 	repaintAndRetrieveCsv: function(){
@@ -318,7 +338,7 @@ weCollectionEdit = {
 					
 					
 					if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
-						this.setDataFromServer(index, data[2]);
+						this.callForVerifiedItemsAndInsert(index, data[2]);
 					} else {
 						//alert("the item you try to drag from doesn't match your collection's content types");
 					}
@@ -332,7 +352,7 @@ weCollectionEdit = {
 		}
 	},
 
-	setDataFromServer: function (index, id) {
+	callForVerifiedItemsAndInsert: function (index, id, message) {
 		try {
 			if(id){
 				var postData;
@@ -352,9 +372,11 @@ weCollectionEdit = {
 								document.getElementById('yuiAcResultItem_' + index).value = respArr[0].id;
 								weCollectionEdit.repaintAndRetrieveCsv();
 							} else {
-								weCollectionEdit.addItems(document.getElementById('drag_' + index), respArr);
+								var ret = weCollectionEdit.addItems(document.getElementById('drag_' + index), respArr);
+								if(message){
+									//top.console.debug(ret);
+								}
 							}
-							
 						} else {
 							top.console.debug('http request failed');
 							return false;

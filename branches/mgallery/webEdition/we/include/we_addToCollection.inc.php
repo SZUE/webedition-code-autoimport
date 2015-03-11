@@ -25,7 +25,8 @@ require_once (WE_INCLUDES_PATH . 'we_addToCollection_fn.inc.php');
 
 we_html_tools::protect();
 $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2);
-
+$targetCollection = we_base_request::_(we_base_request::INT, 'we_cmd', '', 3);
+$targetCollectionPath = we_base_request::_(we_base_request::URL, 'we_cmd', '', 4);
 $script = '';
 
 /* FIXME: adapt when collection perms are implemented
@@ -51,7 +52,6 @@ if($cmd0 === 'do_addToCollection'){
 		$collection = new we_collection();
 		if(($transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_targetTransaction', '')) && isset($_SESSION['weS']['we_data'][$transaction])){
 			$collection->we_initSessDat(($sess = $_SESSION['weS']['we_data'][$transaction]));
-			$fromSession = true; 
 		} else if(($collectionID = we_base_request::_(we_base_request::INT, 'we_target', 0))){
 			$collection->initByID($collectionID);
 		}
@@ -68,9 +68,9 @@ if($cmd0 === 'do_addToCollection'){
 					$collection->save();
 				}
 				$collection->saveInSession($_SESSION['weS']['we_data'][$transaction]);
-				$script .= 'top.toggleBusy(0);' .we_message_reporting::getShowMessageCall("inserted: " . implode(',', $result[0]) . ". as doublettes rejected: ". implode(',', $result[1]) .". other items may not have matched the collection's content types.", we_message_reporting::WE_MESSAGE_INFO);
+				$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall('inserted: ' . implode(',', $result[0]) . '. as doublettes rejected: '. implode(',', $result[1]) .'. \nother items may not have matched the collection\'s content types.', we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
-				$script .= 'top.toggleBusy(0);' .we_message_reporting::getShowMessageCall("none of the items selected do not matches the collection's content types", we_message_reporting::WE_MESSAGE_INFO);
+				$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall("none of the items selected do not matches the collection's content types", we_message_reporting::WE_MESSAGE_INFO);
 			}
 		}
 	}
@@ -119,54 +119,55 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 				return;
 			}
 		}
-		
 
 		// check if collection is open
 		var _usedEditors = top.weEditorFrameController.getEditorsInUse(),
-			_isCollLoaded = false,
-			_isEditCollectionActive = false,
-			_editor,
 			_collID = document.getElementById('yuiAcResultDir').value,
-			_collTransaction,
-			_collReference;
+			_isOpen = false,
+			_isEditorCollActive = false,
+			_frameId,
+			_transaction,
+			_editor,
+			_contentEditor;
 
 		_collID = _collID ? _collID : 0;
-		for (frameId in _usedEditors) {top.console.debug(_usedEditors[frameId].getEditorEditorTable());
-			if (_usedEditors[frameId].getEditorEditorTable() == '<?php echo VFILE_TABLE; ?>' && _usedEditors[frameId].getEditorDocumentId() == _collID) {
-				_isCollLoaded = true;
-				_collTransaction = _usedEditors[frameId].getEditorTransaction();
-				_editor = _usedEditors[frameId];
-				if(_usedEditors[frameId].getEditorEditPageNr() == 1){
-					_isEditCollectionActive = true;
-					_collReference = _usedEditors[frameId].getContentEditor();
+		for (_frameId in _usedEditors) {
+			_editor = _usedEditors[_frameId];
+			if (_editor.getEditorEditorTable() == '<?php echo VFILE_TABLE; ?>' && _editor.getEditorDocumentId() == _collID) {
+				_isOpen = true;
+				_transaction = _editor.getEditorTransaction();
+				if(_editor.getEditorEditPageNr() == 1){
+					_isEditorCollActive = true;
+					_contentEditor = _editor.getContentEditor();
 				} else {
-					_usedEditors[frameId].setEditorIsHot(true);
+					_editor.setEditorIsHot(true);
 				}
 			}
 		}
 
-		if(_isCollLoaded){
-			if(_isEditCollectionActive){
-				var contentTable = _collReference.document.getElementById('content_table'), 
+		if(_isOpen){
+			if(_isEditorCollActive){
+				var contentTable = _contentEditor.document.getElementById('content_table'), 
 					index,
 					acResult, 
 					lastIndexNotEmpty = contentTable.firstChild.id.substr(5);
 
 				for(var i = 0; i < contentTable.childNodes.length; i++){
 					index = contentTable.childNodes[i].id.substr(5);
-					lastIndexNotEmpty = _collReference.document.getElementById('yuiAcResultItem_' + index).value != -1 ? contentTable.childNodes[i].nextSibling.id.substr(5) : lastIndexNotEmpty;
+					lastIndexNotEmpty = _contentEditor.document.getElementById('yuiAcResultItem_' + index).value != -1 ? contentTable.childNodes[i].nextSibling.id.substr(5) : lastIndexNotEmpty;
 				}
 
-				_collReference.weCollectionEdit.setDataFromServer(lastIndexNotEmpty, sel);// FIXME: use other fn name
-				// FIXME: get some answer and make message
-				// FIXME: uncheck all checkboxes
+				_contentEditor.weCollectionEdit.callForVerifiedItemsAndInsert(lastIndexNotEmpty, sel, true);
 				_editor.setEditorIsHot(true);
+
 				for (var i = 1; i <= top.treeData.len; i++) {
-					top.console.log(top.treeData[i]);
+					if(top.treeData[i].constructor.name === 'node' && top.treeData[i].checked){
+						top.checkNode('img_' + top.treeData[i].id);
+					}
 				}
 				return;
 			}
-			document.we_form.we_targetTransaction.value = _collTransaction;
+			document.we_form.we_targetTransaction.value = _transaction;
 		}
 		we_cmd('do_addToCollection', '', '<?php echo $table; ?>');
 	}
@@ -220,10 +221,10 @@ $idname = 'we_target';
 
 $yuiSuggest->setAcId('Dir');
 $yuiSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::COLLECTION);
-$yuiSuggest->setInput($textname);
+$yuiSuggest->setInput($textname, $targetCollectionPath);
 $yuiSuggest->setMaxResults(4);
 $yuiSuggest->setMayBeEmpty(false);
-$yuiSuggest->setResult($idname);
+$yuiSuggest->setResult($idname, $targetCollection);
 $yuiSuggest->setSelector(weSuggest::DocSelector);
 $yuiSuggest->setTable(VFILE_TABLE);
 $yuiSuggest->setWidth(250);

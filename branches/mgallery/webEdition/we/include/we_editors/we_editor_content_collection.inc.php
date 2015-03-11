@@ -32,6 +32,7 @@ we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
 we_html_element::jsElement('
 weCollectionEdit.we_doc = {
 	ID: "' . $GLOBALS['we_doc']->ID . '",
+	Path: "' . $GLOBALS['we_doc']->Path . '",
 	name: "' . $GLOBALS['we_doc']->Name. '",
 	remTable: "' . $GLOBALS['we_doc']->getRemTable() . '",
 	remCT: "' . $GLOBALS['we_doc']->getRemCT() . '",

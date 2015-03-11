@@ -94,6 +94,8 @@ class weSuggest{
 	var $trashButtonSpace = '';
 	var $openButton = '';
 	var $openButtonSpace = '';
+	var $additionalButton = '';
+	var $additionalButtonSpace = '';
 	var $createButton = '';
 	var $createButtonSpace = '';
 	var $table = FILE_TABLE;
@@ -270,11 +272,15 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 				"valign" => "top",
 				"style" => "height  : 10px"), $this->label, 'left', 'defaultfont', (
 				$this->selectButton ?
-					array("text" => '<div style="">' . $this->selectButton . '</div>', "valign" => "top") :
+					array("text" => '<div style="margin-right : ' . $this->selectButtonSpace . 'px"">' . $this->selectButton . '</div>', "valign" => "top") :
+					''
+				), (
+				$this->additionalButton ?
+					array("text" => '<div style="margin-right : ' . $this->additionalButtonSpace . 'px">' . $this->additionalButton . '</div>', "valign" => "top") :
 					''
 				), we_html_tools::getPixel(intval($this->trashButtonSpace), 4), (
 				$this->trashButton ?
-					array("text" => '<div style="margin-right :        ' . $this->trashButtonSpace . 'px">' . $this->trashButton . '</div>', "valign" => "top") :
+					array("text" => '<div style="margin-right : ' . $this->trashButtonSpace . 'px">' . $this->trashButton . '</div>', "valign" => "top") :
 					''
 				), (
 				$this->openButton ?
@@ -502,6 +508,11 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 	function setOpenButton($val, $space = 10){
 		$this->openButton = $val;
 		$this->openButtonSpace = $space;
+	}
+
+	function setAdditionalButton($val, $space = 10){
+		$this->additionalButton = $val;
+		$this->additionalButtonSpace = $space;
 	}
 
 	function setCreateButton($val, $space = 10){
