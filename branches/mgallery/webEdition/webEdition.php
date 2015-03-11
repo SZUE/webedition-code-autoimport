@@ -119,6 +119,7 @@ echo we_tool_lookup::getJsCmdInclude($jsCmd) .
 
 if (self.location !== top.location) {
 top.location = self.location;
+
 				}
 
 self.focus();

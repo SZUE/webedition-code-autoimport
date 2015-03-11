@@ -131,7 +131,7 @@ class we_backup_backup extends we_backup_base{
 		$attributes = $xmlBrowser->getAttributes($nodeset);
 
 		$tablename = $attributes["name"];
-		if($this->isFixed($tablename) || $tablename == ""){
+		if($tablename == "" || $this->isFixed($tablename)){
 			return;
 		}
 		$tablename = $this->fixTableName($tablename);

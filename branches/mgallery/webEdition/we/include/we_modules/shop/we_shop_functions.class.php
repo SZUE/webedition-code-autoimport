@@ -34,9 +34,8 @@ class we_shop_functions{
 		foreach(we_shop_statusMails::$StatusFields as $field){
 			$format[] = 'DATE_FORMAT(' . $field . ',"' . $da . '") AS format' . $field;
 		}
-		$query = 'SELECT IntOrderID, ' . implode(',', we_shop_statusMails::$StatusFields) . ', ' . implode(',', $format) . ' FROM ' . SHOP_TABLE . ' WHERE IntCustomerID=' . intval($customerId) . ' GROUP BY IntOrderId ORDER BY IntID DESC';
 
-		$GLOBALS['DB_WE']->query($query);
+		$GLOBALS['DB_WE']->query('SELECT IntOrderID, ' . implode(',', we_shop_statusMails::$StatusFields) . ', ' . implode(',', $format) . ' FROM ' . SHOP_TABLE . ' WHERE IntCustomerID=' . intval($customerId) . ' GROUP BY IntOrderId ORDER BY IntID DESC');
 
 		$orderStr = '<table class="defaultfont" width="1200">';
 		if($GLOBALS['DB_WE']->num_rows()){
@@ -54,10 +53,10 @@ class we_shop_functions{
 			while($GLOBALS['DB_WE']->next_record()){
 
 				$orderStr .= '<tr>';
-				if(permissionhandler::hasPerm("EDIT_SHOP_ORDER")){
+				if(permissionhandler::hasPerm('EDIT_SHOP_ORDER')){
 					$orderStr .= ($sameModul ?
-							('<td>' . we_html_button::create_button('image:btn_edit_edit', 'javascript:top.content.editor.location = \'' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';') . '</td>') :
-							('<td>' . we_html_button::create_button('image:btn_edit_edit', 'javascript:top.document.location = \'' . WE_MODULES_DIR . 'show_frameset.php?mod=shop&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';') . '</td>')
+							('<td>' . we_html_button::create_button('image:btn_edit_edit', 'javascript:top.content.editor.location=\'' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';') . '</td>') :
+							('<td>' . we_html_button::create_button('image:btn_edit_edit', 'javascript:top.document.location=\'' . WE_MODULES_DIR . 'show_frameset.php?mod=shop&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';') . '</td>')
 						);
 				} else {
 					$orderStr .='<td></td>';

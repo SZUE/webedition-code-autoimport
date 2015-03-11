@@ -1115,7 +1115,17 @@ var weFileUpload = (function () {
 					fd.append('heightSelect', sf.heightSelect.value);
 					fd.append('keepRatio', sf.keepRatio.value);
 					fd.append('quality', sf.quality.value);
-					fd.append('degrees', sf.degrees.value);
+
+					if(this.isGdOk){
+						fd.append('thumbs', sf.thumbs.value);
+						fd.append('width', sf.width.value);
+						fd.append('height', sf.height.value);
+						fd.append('widthSelect', sf.widthSelect.value);
+						fd.append('heightSelect', sf.heightSelect.value);
+						fd.append('keepRatio', sf.keepRatio.value);
+						fd.append('quality', sf.quality.value);
+						fd.append('degrees', sf.degrees.value);
+					}
 				}
 
 				return fd;

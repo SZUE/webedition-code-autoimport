@@ -86,7 +86,9 @@ function printHeader($login, $status = 200){
 	}
 
 	echo we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
-	we_html_element::jsElement('cookieBackup = document.cookie;
+	we_html_element::jsElement('
+	isLoginScreen = true;
+	cookieBackup = document.cookie;
 	document.cookie = "cookie=yep";
 	cookieOk = document.cookie.indexOf("cookie=yep") > -1;
 	document.cookie = cookieBackup;

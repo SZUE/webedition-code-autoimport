@@ -287,6 +287,7 @@ we/include/we_modules/shop/show_variant.inc.php
 we/include/we_modules/shop/shopFunctions.inc.php
 we/include/we_modules/shop/handle_shop_dbitemConnect.php
 we/include/we_modules/shop/edit_shop_payment.inc.php
+we/include/we_modules/shop/edit_shop_orderlistTop.php
 we/include/we_modules/shop/edit_shop_optionsTop.php
 we/include/we_modules/shop/edit_shop_iconbarHeader.php
 we/include/we_modules/shop/edit_shop_header.php
@@ -294,6 +295,7 @@ we/include/we_modules/shop/edit_shop_editorHeaderTop.php
 we/include/we_modules/shop/edit_shop_editorHeader.php
 we/include/we_modules/shop/edit_shop_editorFramesetTop.php
 we/include/we_modules/shop/edit_shop_editorFrameset.php
+we/include/we_modules/shop/edit_shop_articleTop.php
 we/include/we_modules/schedule/we_webEditionCmd_schedule.inc.php
 we/include/we_modules/schedule/we_schedule_prop.inc.php
 we/include/we_modules/schedule/we_schedpro_defines.inc.php
@@ -2116,6 +2118,7 @@ we/include/we_classes/tools/weToolLookup.class.php
 we/include/we_classes/tools/weToolFrames.class.php
 we/include/we_classes/taskFragment.class.php
 we/include/we_classes/smtp.class.php
+we/include/we_classes/sidebar/we_sidebar_documentParser.class
 we/include/we_classes/rebuild/we_rebuild_wizard.inc.php
 we/include/we_classes/rebuild/we_rebuild.class.php
 we/include/we_classes/rebuild/rebuildFragment.inc.php
@@ -2231,6 +2234,7 @@ we/include/weTagWizard/we_tags/we_tag_redirectObjectSeoUrls.inc.php
 we/include/weTagWizard/we_tags/we_tag_makeMail.inc.php
 we/include/weTagWizard/we_tags/we_tag_list.inc.php
 we/include/weTagWizard/we_tags/we_tag_ifCustomerResetPasswordFailed.inc.php
+we/include/weTagWizard/we_tags/custom_tags/dummy
 we/include/weTagWizard/data/we_tag_groups.inc.php
 we/include/weTagWizard/data/module_tags.inc.php
 we/include/weTagWizard/data

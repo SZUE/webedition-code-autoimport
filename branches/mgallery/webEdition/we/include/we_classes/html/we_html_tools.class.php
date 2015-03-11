@@ -534,7 +534,7 @@ this.selectedIndex = 0;' .
 		$name = preg_replace('/^(.+)]$/', '${1}%s]', $name);
 		if(!$format || $_dayPos > -1){
 			$days = getHtmlTag('option', array_merge($_attsOption, array('value' => 0)), '--');
-			;
+
 			for($i = 1; $i <= 31; $i++){
 				$_atts2 = ($time && $day == $i) ? array('selected' => 'selected') : array();
 				$days .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
