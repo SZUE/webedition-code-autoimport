@@ -191,6 +191,8 @@ function findInclude($cmd){
 		case 'do_move':
 		case 'move_single_document':
 			return 'we_move.inc.php';
+		case 'do_addToCollection':
+			return 'we_addToCollection.inc.php';
 		case 'editor_uploadFile':
 			return 'we_editors/uploadFile.inc.php';
 		case 'do_upload_file':

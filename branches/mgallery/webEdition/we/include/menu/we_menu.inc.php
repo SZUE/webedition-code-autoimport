@@ -328,9 +328,8 @@ $we_menu = array(
 		'perm' => 'MOVE_TEMPLATE',
 		'hide' => $seeMode,
 	),
-	/*
 	1095000 => array(// File > add to collection
-		'text' => 'Zu Sammlung zufügen',
+		'text' => 'In Sammlung',
 		'parent' => 1000000,
 		'hide' => $seeMode,
 		'perm' => '',
@@ -349,8 +348,6 @@ $we_menu = array(
 		'perm' => '',
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
 	),
-	 * 
-	 */
 	array(// separator
 		'parent' => 1000000
 	),

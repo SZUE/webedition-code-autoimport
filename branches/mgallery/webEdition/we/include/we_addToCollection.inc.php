@@ -43,24 +43,36 @@ $yuiSuggest = & weSuggest::getInstance();
 $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 if($cmd0 === 'do_addToCollection'){
 	$db = new DB_WE();
-	if(($targetCollection = we_base_request::_(we_base_request::INT, 'we_target')) === 0){
-		$script .= 'top.toggleBusy(0);' .
-				we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
-	} elseif(($selectedItems = we_base_request::_(we_base_request::INTLISTA, 'sel', array()))){
-		
+	if(($targetCollection = we_base_request::_(we_base_request::INT, 'we_target', 0)) === 0){
+		$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
+	} elseif(!($sel = we_base_request::_(we_base_request::INTLISTA, 'sel', array()))){
+		$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
+	} else {
 		$collection = new we_collection();
-		$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 'we_targetTransaction');
-		if($transaction && $we_dt = isset($_SESSION['weS']['we_data'][$transaction]) ? $_SESSION['weS']['we_data'][$transaction] : ''){
-			$collection->we_initSessDat($we_dt);
-		} else if($collectionID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'collection')){
+		if(($transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_targetTransaction', '')) && isset($_SESSION['weS']['we_data'][$transaction])){
+			$collection->we_initSessDat(($sess = $_SESSION['weS']['we_data'][$transaction]));
+			$fromSession = true; 
+		} else if(($collectionID = we_base_request::_(we_base_request::INT, 'we_target', 0))){
 			$collection->initByID($collectionID);
 		}
 
-		$items = $collection->getVerifiedRemObjectsByID($IDs, false, true);
-		// TODO: some function to insert items into fileCollection (recursive, useEmpty and doubleOK!!)
-	} else {
-		$script .= 'top.toggleBusy(0);' .
-				we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
+		if($collection->getRemTable() !== stripTblPrefix(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2))){
+			$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall('wrong table for this collection', we_message_reporting::WE_MESSAGE_ERROR);
+		} else {
+			$collBefore = $collection->getCollection();
+			if(($items = $collection->getVerifiedRemObjectsFromIDs($sel, false))){
+				$result = $collection->addItemsToCollection($items);
+				if(isset($sess)){
+					$collection->saveInSession($sess);
+				} else {
+					$collection->save();
+				}
+				$collection->saveInSession($_SESSION['weS']['we_data'][$transaction]);
+				$script .= 'top.toggleBusy(0);' .we_message_reporting::getShowMessageCall("inserted: " . implode(',', $result[0]) . ". as doublettes rejected: ". implode(',', $result[1]) .". other items may not have matched the collection's content types.", we_message_reporting::WE_MESSAGE_INFO);
+			} else {
+				$script .= 'top.toggleBusy(0);' .we_message_reporting::getShowMessageCall("none of the items selected do not matches the collection's content types", we_message_reporting::WE_MESSAGE_INFO);
+			}
+		}
 	}
 	$script = we_html_element::jsScript(JS_DIR . 'windows.js') .
 			we_html_element::jsElement($script);
@@ -92,7 +104,6 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 <?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR) ?>
 			return;
 		}
-top.console.log(sel);
 
 		// check if selected target exists
 		var acStatus = '';
@@ -109,9 +120,8 @@ top.console.log(sel);
 			}
 		}
 		
-		// get complete items-data using rpc, rpcGetItemsFromDBCmd.
 
-		// check if collection to add is open
+		// check if collection is open
 		var _usedEditors = top.weEditorFrameController.getEditorsInUse(),
 			_isCollLoaded = false,
 			_isEditCollectionActive = false,
@@ -129,6 +139,8 @@ top.console.log(sel);
 				if(_usedEditors[frameId].getEditorEditPageNr() == 1){
 					_isEditCollectionActive = true;
 					_collReference = _usedEditors[frameId].getContentEditor();
+				} else {
+					_usedEditors[frameId].setEditorIsHot(true);
 				}
 			}
 		}
@@ -145,14 +157,17 @@ top.console.log(sel);
 					lastIndexNotEmpty = _collReference.document.getElementById('yuiAcResultItem_' + index).value != -1 ? contentTable.childNodes[i].nextSibling.id.substr(5) : lastIndexNotEmpty;
 				}
 
-				_collReference.weCollectionEdit.setDataFromServer(lastIndexNotEmpty, sel);
+				_collReference.weCollectionEdit.setDataFromServer(lastIndexNotEmpty, sel);// FIXME: use other fn name
+				// FIXME: get some answer and make message
+				// FIXME: uncheck all checkboxes
 				_editor.setEditorIsHot(true);
+				for (var i = 1; i <= top.treeData.len; i++) {
+					top.console.log(top.treeData[i]);
+				}
 				return;
 			}
 			document.we_form.we_targetTransaction.value = _collTransaction;
 		}
-		// submit form using we_cmd
-
 		we_cmd('do_addToCollection', '', '<?php echo $table; ?>');
 	}
 

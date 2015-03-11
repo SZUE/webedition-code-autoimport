@@ -25,10 +25,14 @@
 /*  a class for handling flashDocuments. */
 
 class we_collection extends we_root{
-
-	protected $Collection = '';
+	/*
+	 * FIXME: maybe abandon file- and objectCollection and make one $collection only?
+	 * we have both collections for not immediately deleting existing collections when changing remTable without saving collection:
+	 * they exist in collection objects only: the remObjects of the matching one are written to tblFileLink when saving
+	 */
 	protected $fileCollection = '';
 	protected $objectCollection = '';
+
 	protected $remTable;
 	protected $remCT;
 	protected $remClass;
@@ -70,8 +74,61 @@ class we_collection extends we_root{
 		return $this->remClass;
 	}
 
-	public function getCollection(){
-		return $this->i_getVerifiedCollection();
+	public function getCollection($asArray = false){
+		$coll = $this->remTable === stripTblPrefix(FILE_TABLE) ? $this->fileCollection : $this->objectCollection;
+
+		return $asArray ? explode(',', trim($coll, ',')) : $coll;
+	}
+
+	// verify collection against remTable, remCT, remClass and ID
+	public function getCollectionVerified($skipEmpty = true, $full = false, $updateCollection = false){
+		if($this->remTable == stripTblPrefix(FILE_TABLE)){
+			$activeCollectionName = 'fileCollection';
+			$fields = 'ID,Path,ContentType';
+			$table = FILE_TABLE;
+			$prop = 'remCT';
+			$cField = 'ContentType';
+		} else {
+			$activeCollectionName = 'objectCollection';
+			$fields = 'ID,Path,TableID';
+			$table = OBJECT_FILES_TABLE;
+			$prop = 'remClass';
+			$cField = 'TableID';
+		}
+		$this->$activeCollectionName = !trim($this->$activeCollectionName, ',') ? ',-1,' : $this->$activeCollectionName;
+
+		$this->DB_WE->query('SELECT ' . $fields . ' FROM ' . $table . ' WHERE ID IN (' . trim($this->$activeCollectionName, ',') . ') AND NOT IsFolder');
+		$verifiedItems = array();
+		while($this->DB_WE->next_record()){
+			if(!trim($this->$prop, ',') || in_array($this->DB_WE->f($cField), makeArrayFromCSV($this->$prop))){
+				$verifiedItems[$this->DB_WE->f('ID')] = $full ? array('id' => $this->DB_WE->f('ID'), 'path' => $this->DB_WE->f('Path'), 'type' => $this->DB_WE->f($cField)) : $this->DB_WE->f('ID');
+			}
+		}
+
+		$ret = array();
+		$tempCollection = ',';
+		$emptyItem = array('id' => -1, 'path' => '', 'type' => '');
+		foreach(explode(',', trim($this->$activeCollectionName, ',')) as $id){
+			$id = intval($id);
+			if(isset($verifiedItems[$id])){
+				$ret[] = $verifiedItems[$id];
+			}
+			if(!$skipEmpty && $id === -1){
+				$ret[] = $full ? $emptyItem : -1;
+			}
+			$tempCollection .= $id . ',';
+		}
+
+		if($updateCollection){
+			$this->$activeCollectionName = $tempCollection;
+		}
+
+		return $ret;
+	}
+
+	public function setCollection($coll){
+		$collectionName = $this->remTable === stripTblPrefix(FILE_TABLE) ? 'fileCollection' : 'objectCollection';
+		$this->$collectionName = ',' . implode(',', $coll) . ',';
 	}
 
 	//FIXME: maybe add column Filename to db to avoid setting Text = Filename and Filename = Text when initializing or saving we_doc!
@@ -246,7 +303,7 @@ class we_collection extends we_root{
 			we_html_forms::checkboxWithHidden($this->useEmpty, 'we_' . $GLOBALS['we_doc']->Name . '_useEmpty', 'Leere Felder im Anschluss an die Einfügeposition auffüllen') .
 			we_html_forms::checkboxWithHidden($this->doubleOk, 'we_' . $GLOBALS['we_doc']->Name . '_doubleOk', 'Doubletten zulassen');
 
-		$items = $this->i_getVerifiedCollection(false, true, true);
+		$items = $this->getCollectionVerified(false, true, true);
 		if($items[count($items) - 1]['id'] !== -1){
 			$items[] = array('id' => -1, 'path' => '', 'type' => '');
 		}
@@ -395,7 +452,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '"');
 
 		$i = 0;
-		foreach($this->i_getVerifiedCollection() as $remObj){
+		foreach($this->getCollectionVerified() as $remObj){
 			$ret &= $this->DB_WE->query('INSERT INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => $this->ID,
 					'DocumentTable' => stripTblPrefix(VFILE_TABLE),
@@ -409,53 +466,36 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		return $ret;
 	}
 
-	// verify collection against remTable, remCT, remClass and ID
-	private function i_getVerifiedCollection($skipEmpty = true, $full = false, $resetCollection = false){
-		if($this->remTable == stripTblPrefix(FILE_TABLE)){
-			$activeCollectionName = 'fileCollection';
-			$fields = 'ID,Path,ContentType';
-			$table = FILE_TABLE;
-			$prop = 'remCT';
-			$cField = 'ContentType';
-		} else {
-			$activeCollectionName = 'objectCollection';
-			$fields = 'ID,Path,TableID';
-			$table = OBJECT_FILES_TABLE;
-			$prop = 'remClass';
-			$cField = 'TableID';
-		}
-		$this->$activeCollectionName = !trim($this->$activeCollectionName, ',') ? ',-1,' : $this->$activeCollectionName;
+	public function addItemsToCollection($items){
+		$coll = $this->getCollection(true);
+		array_pop($coll);// FIXME: maybe abandon the ending -1 inserted on we_load()?
 
-		$this->DB_WE->query('SELECT ' . $fields . ' FROM ' . $table . ' WHERE ID IN (' . trim($this->$activeCollectionName, ',') . ') AND NOT IsFolder');
-		$verifiedItems = array();
-		while($this->DB_WE->next_record()){
-			if(!trim($this->$prop, ',') || in_array($this->DB_WE->f($cField), makeArrayFromCSV($this->$prop))){
-				$verifiedItems[$this->DB_WE->f('ID')] = $full ? array('id' => $this->DB_WE->f('ID'), 'path' => $this->DB_WE->f('Path'), 'type' => $this->DB_WE->f($cField)) : $this->DB_WE->f('ID');
+		$last = count($coll) - 1;
+		if($this->useEmpty){
+			// find last collection item not empty
+			for($i = 0; $i < count($coll); $i++){
+				if($coll[$i] != -1){
+					$last = $i;
+				}
 			}
 		}
 
-		$ret = array();
-		$tempCollection = ',';
-		$emptyItem = array('id' => -1, 'path' => '', 'type' => '');
-		foreach(explode(',', trim($this->$activeCollectionName, ',')) as $id){
-			$id = intval($id);
-			if(isset($verifiedItems[$id])){
-				$ret[] = $verifiedItems[$id];
+		$result = array(array(), array());
+		foreach($items as $item){
+			if($this->doubleOk || !in_array($item, $coll)){
+				$coll[++$last] = $result[0][] = $item;
+			} else {
+				$result[1][] = $item;
 			}
-			if(!$skipEmpty && $id === -1){
-				$ret[] = $full ? $emptyItem : -1;
-			}
-			$tempCollection .= $id . ',';
 		}
 
-		if($resetCollection){
-			$this->$activeCollectionName = $tempCollection;
-		}
+		$coll[] = -1;
+		$this->setCollection($coll);
 
-		return $ret;
+		return $result;
 	}
 
-	function getVerifiedRemObjectsByID($IDs = array(), $returnFull = false, $recursive = true, $table = '', $recursion = 0, $foldersDone = array(), $checkWs = true, $wspaces = array()){
+	public function getVerifiedRemObjectsFromIDs($IDs = array(), $returnFull = false, $recursive = -1, $table = '', $recursion = 0, $foldersDone = array(), $checkWs = true, $wspaces = array()){
 		$IDs = is_array($IDs) ? $IDs : array($IDs);
 		if(empty($IDs)){
 			return -1;
@@ -463,6 +503,8 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		if($table && $table !== stripTblPrefix($this->remTable)){
 			return -2;
 		}
+
+		$recursive = $recursive === -1 ? $this->insertRecursive : $recursive;
 
 		if($checkWs && (empty($wspaces))){
 			if(($ws = get_ws($this->remTable))){
@@ -518,7 +560,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		}
 
 		if(!empty($todo)){
-			$result = array_merge($result, $this->getVerifiedRemObjectsByID($todo, $returnFull, $recursive, '', $recursion + 1, $foldersDone, true, $wspaces));
+			$result = array_merge($result, $this->getVerifiedRemObjectsFromIDs($todo, $returnFull, $recursive, '', $recursion + 1, $foldersDone, true, $wspaces));
 		}
 
 		if($recursion++ === 0){ // when finishing the initial call, sort complete result (on root level folders first, then items)
