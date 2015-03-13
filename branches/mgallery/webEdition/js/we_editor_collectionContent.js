@@ -96,6 +96,15 @@ weCollectionEdit = {
 		spacer: null
 	},
 
+	g_l: {
+		info_insertion: 'Inserted: ##INS##\nAs duplicates rejected: ##REJ##\n\nOthers items may have been rejecected because of inapropriate class/mime type.'
+	},
+
+	init: function(){
+		this.collectionName = (this.we_const.TBL_PREFIX + this.we_doc.remTable === this.we_const.FILE_TABLE) ? '_fileCollection' : '_objectCollection';
+		this.collectionCsv = document.we_form.elements['we_' + this.we_doc.name + this.collectionName].value;
+	},
+
 	doClickUp: function(elem){
 		var el = this.getRow(elem);
 
@@ -127,9 +136,17 @@ weCollectionEdit = {
 
 	doClickAddItems: function(elem){
 		var el = this.getRow(elem),
-			index = el.id.substr(5);
+			index = el.id.substr(5),
+			pos = -1;
 
-		top.we_cmd('addToCollection', 1, this.we_const.TBL_PREFIX + this.we_doc.remTable, this.we_doc.ID, this.we_doc.Path, index);
+		for(var i = 0; i < el.parentNode.childNodes.length; i++){
+			if(el.parentNode.childNodes[i].id == el.id){
+				pos = i; 
+				break;
+			}
+		}
+
+		top.we_cmd('addToCollection', 1, this.we_const.TBL_PREFIX + this.we_doc.remTable, this.we_doc.ID, this.we_doc.Path, index, pos);
 	},
 
 	doClickDelete: function(elem){
@@ -207,7 +224,7 @@ weCollectionEdit = {
 
 			while(!isFirstSet && items.length){
 				var item = items.shift();
-				if(this.dd.doubleOk || this.csv.search(',' + item.id + ',') === -1){
+				if(this.dd.doubleOk || this.collectionCsv.search(',' + item.id + ',') === -1){
 					document.getElementById('yuiAcInputItem_' + index).value = item.path;
 					document.getElementById('yuiAcResultItem_' + index).value = item.id;
 					itemsSet[0].push(item.id);
@@ -219,7 +236,7 @@ weCollectionEdit = {
 		}
 
 		for(var i = 0; i < items.length; i++){
-			if(this.dd.doubleOk || this.csv.search(',' + items[i].id + ',') === -1){
+			if(this.dd.doubleOk || this.collectionCsv.search(',' + items[i].id + ',') === -1){
 				itemsSet[0].push(items[i].id);
 				if(this.dd.fillEmptyRows && !rowsFull && el.nextSibling && typeof el.nextSibling.id !== 'undefined' && el.nextSibling.id.substr(0, 5) === 'drag_'){
 					index = el.nextSibling.id.substr(5);
@@ -243,16 +260,20 @@ weCollectionEdit = {
 	},
 
 	repaintAndRetrieveCsv: function(){
-		var t = document.getElementById('content_table'), index, csv = ',', val;
+		var t = document.getElementById('content_table'), row, index, csv = ',', val, btns;
 		for(var i = 0; i < t.childNodes.length; i++){
-			index = t.childNodes[i].id.substr(5);
-			val = document.getElementById('yuiAcResultItem_' + index).value;
-			csv += (val != 0 ? val : -1) + ',';
+			row = t.childNodes[i];
+			btns = row.getElementsByTagName('BUTTON');
+			index = row.id.substr(5);
+			val = parseInt(document.getElementById('yuiAcResultItem_' + index).value);
+			csv += (val !== 0 ? val : -1) + ',';
 			document.getElementById('label_' + index).innerHTML = i + 1;
-			document.getElementById('btn_direction_up_' + index).disabled = (i === 0);
-			document.getElementById('btn_direction_down_' + index).disabled = (i === (t.childNodes.length - 1));
+			btns[2].disabled = btns[3].disabled = (val === - 1);
+			btns[5].disabled = (i === 0);
+			btns[6].disabled = (i === (t.childNodes.length - 1));
+			btns[7].disabled = (t.childNodes.length === 1);
 		}
-		if(val != -1){
+		if(val !== -1){
 			this.addRow(t.lastChild, true);
 		}
 
@@ -260,7 +281,8 @@ weCollectionEdit = {
 			this.collectionName = (this.we_const.TBL_PREFIX + this.we_doc.remTable === this.we_const.FILE_TABLE) ? '_fileCollection' : '_objectCollection';
 		}
 		document.we_form.elements['we_' + this.we_doc.name + this.collectionName].value = csv;
-		this.csv = csv;
+		this.collectionCsv = csv;
+		top.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 	},
 
 	allowDrop: function(evt){
@@ -352,12 +374,12 @@ weCollectionEdit = {
 		}
 	},
 
-	callForVerifiedItemsAndInsert: function (index, id, message) {
+	callForVerifiedItemsAndInsert: function (index, csvIDs, message) {
 		try {
-			if(id){
+			if(csvIDs){
 				var postData;
 				postData = 'we_cmd[transaction]=' + encodeURIComponent(we_transaction);
-				postData += '&we_cmd[id]=' + encodeURIComponent(id);
+				postData += '&we_cmd[id]=' + encodeURIComponent(csvIDs);
 				postData += '&we_cmd[collection]=' + encodeURIComponent(this.we_doc.ID);
 				postData += '&we_cmd[full]=' + encodeURIComponent(1);
 				postData += '&we_cmd[recursive]=' + encodeURIComponent(document.we_form['check_we_' + this.we_doc.name + '_insertRecursive'].checked);
@@ -372,9 +394,9 @@ weCollectionEdit = {
 								document.getElementById('yuiAcResultItem_' + index).value = respArr[0].id;
 								weCollectionEdit.repaintAndRetrieveCsv();
 							} else {
-								var ret = weCollectionEdit.addItems(document.getElementById('drag_' + index), respArr);
+								var resp = weCollectionEdit.addItems(document.getElementById('drag_' + index), respArr);
 								if(message){
-									//top.console.debug(ret);
+									top.we_showMessage(weCollectionEdit.g_l.info_insertion.replace(/##INS##/, resp[0]).replace(/##REJ##/, resp[1]), 1, window);
 								}
 							}
 						} else {
@@ -386,6 +408,7 @@ weCollectionEdit = {
 				xhr.open('POST', '/webEdition/rpc/rpc.php?protocol=json&cmd=GetItemsFromDB&cns=collection', true);
 				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 				xhr.send(postData);
+				// set max waiting time
 			}
 		} catch (e) {
 			top.console.debug(e);

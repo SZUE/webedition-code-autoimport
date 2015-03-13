@@ -74,7 +74,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 				} else {
 					$objectCollections[$DB_WE->f('ID')] = !isset($objectCollections[$DB_WE->f('ID')]) ? array() : $objectCollections[$DB_WE->f('ID')];
 					$objectCollections[$DB_WE->f('ID')][$DB_WE->f('position')] = $DB_WE->f('remObj');
-					$objCollectionIDs = $DB_WE->f('remObj');
+					$objCollectionIDs[] = $DB_WE->f('remObj');
 				}
 			}
 		}

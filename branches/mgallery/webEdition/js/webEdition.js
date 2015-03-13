@@ -907,7 +907,6 @@ function we_cmd_base(args, url) {
 				} else {
 					we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
 				}
-
 			} else {
 				alert(g_l.no_editor_left);
 			}

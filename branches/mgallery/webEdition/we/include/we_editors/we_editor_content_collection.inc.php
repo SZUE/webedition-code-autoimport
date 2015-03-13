@@ -45,14 +45,14 @@ weCollectionEdit.we_const = {
 	OBJECT_FILES_TABLE: "' . OBJECT_FILES_TABLE . '",
 };
 
-weCollectionEdit.csv = ",' . implode(',', $GLOBALS['we_doc']->getCollection()) . ',";
+//weCollectionEdit.csv = ",' . implode(',', $GLOBALS['we_doc']->getCollection()) . ',";
 ');
 // FIXME: set weCollectionEdit.csv when first used in addItems()...
 
 ?>
 
 </head>
-<body class="weEditorBody" style="height:100%;overflow:hidden;">
+<body class="weEditorBody" style="height:100%;overflow:hidden;" onload="weCollectionEdit.init();">
 	<form name="we_form"><?php
 		echo we_class::hiddenTrans() . 
 		$GLOBALS['we_doc']->formCollection();

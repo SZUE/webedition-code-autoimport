@@ -322,11 +322,13 @@ weCollectionEdit.maxIndex = " . count($items) . ";
 weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $this->getCollectionRow(array("id" => -1, "path" => '/'), 'XX', $yuiSuggest, 1, true, true))) . "';";
 
 		return we_html_element::jsElement($this->jsFormCollection) .
+			we_html_element::htmlHidden(array('name' => 'we_' . $this->Name . '_fileCollection', 'value' => $this->fileCollection)) .
+			we_html_element::htmlHidden(array('name' => 'we_' . $this->Name . '_objectCollection', 'value' => $this->objectCollection)) .
 			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;'), 'Einfügen ganzer Verzeichnisse mit Drag and Drop:') .
 			we_html_element::htmlDiv(array('style' => 'width:806px;padding:10px 0 0 20px;margin-left:20px;'), $checkboxes) .
-			we_html_element::htmlDiv(array('style' => 'width:806px;margin:20px 0 0 20px;padding:10px;'), 
-					we_html_element::htmlDiv(array(), $GLOBALS['we_doc']->formInputField('', 'fileCollection', 'fileCollection', 40, 410, '')) .
-					we_html_element::htmlDiv(array(), $GLOBALS['we_doc']->formInputField('', 'objectCollection', 'objectCollection', 40, 410, ''))) .
+			//we_html_element::htmlDiv(array('style' => 'width:806px;margin:20px 0 0 20px;padding:10px;'), 
+			//		we_html_element::htmlDiv(array(), $GLOBALS['we_doc']->formInputField('', 'fileCollection', 'fileCollection', 40, 410, '')) .
+			//		we_html_element::htmlDiv(array(), $GLOBALS['we_doc']->formInputField('', 'objectCollection', 'objectCollection', 40, 410, ''))) .
 			we_html_element::htmlDiv(array('id' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px'), $rows);
 	}
 
@@ -350,8 +352,8 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 
 		$button = we_html_button::create_button("image:add_file", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")", true, 44, 0, '', '', false, false, '_' . $index);
 		$addFromTreeButton = we_html_button::create_button("image:import_files", "javascript:weCollectionEdit.doClickAddItems(this);", true, 44, 22);
-		$openbutton = we_html_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['" . $idname . "'].value){top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . (addTblPrefix($this->remTable) === FILE_TABLE ? we_base_ContentTypes::TEMPLATE : we_base_ContentTypes::OBJECT_FILE) . "','" . addTblPrefix($this->remTable) . "'); }");
-		$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputItem_" . $index ."');_EditorFrame.setEditorIsHot(true);weCollectionEdit.repaintAndRetrieveCsv();", true, 27, 22);
+		$openbutton = we_html_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['" . $idname . "'].value){top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . (addTblPrefix($this->remTable) === FILE_TABLE ? we_base_ContentTypes::TEMPLATE : we_base_ContentTypes::OBJECT_FILE) . "','" . addTblPrefix($this->remTable) . "'); }", true, 27, 22, '', '', $item['id'] === -1, false, '_' . $index);
+		$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputItem_" . $index ."');_EditorFrame.setEditorIsHot(true);weCollectionEdit.repaintAndRetrieveCsv();", true, 27, 22, '', '', $item['id'] === -1, false, '_' . $index);
 		$yuiSuggest->setTable(addTblPrefix($this->remTable));
 		$yuiSuggest->setContentType('folder,' . trim($this->remCT, ','));
 		$yuiSuggest->setCheckFieldValue(false);
@@ -469,31 +471,38 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		return $ret;
 	}
 
-	public function addItemsToCollection($items){
+	public function addItemsToCollection($items, $pos = -1){
 		$coll = $this->getCollection(true);
 		array_pop($coll);// FIXME: maybe abandon the ending -1 inserted on we_load()?
 
-		$last = count($coll) - 1;
-		if($this->useEmpty){
-			// find last collection item not empty
-			for($i = 0; $i < count($coll); $i++){
-				if($coll[$i] != -1){
-					$last = $i;
+		if($pos === -1){
+			$pos = count($coll);
+			if($this->useEmpty){
+				// find last collection item not empty
+				for($i = 0; $i < count($coll); $i++){
+					if($coll[$i] != -1){
+						$pos = $i;
+					}
 				}
+				$pos++;
 			}
 		}
-
-		$result = array(array(), array());
+		$tmpColl = array_slice($coll, $pos);
+		$newColl = array_slice($coll, 0, $pos);
+		$result = [[],[]];
+		$isFirstSet = false;
 		foreach($items as $item){
 			if($this->doubleOk || !in_array($item, $coll)){
-				$coll[++$last] = $result[0][] = $item;
+				$newColl[] = $result[0][] = $item;
+				if(!$isFirstSet || ($this->useEmpty && isset($tmpColl[0]) && $tmpColl[0] == -1)){
+					array_shift($tmpColl);
+					$isFirstSet = true;
+				}
 			} else {
 				$result[1][] = $item;
 			}
 		}
-
-		$coll[] = -1;
-		$this->setCollection($coll);
+		$this->setCollection(array_merge($newColl, $tmpColl, array(-1)));
 
 		return $result;
 	}
