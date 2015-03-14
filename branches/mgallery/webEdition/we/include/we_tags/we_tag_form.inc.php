@@ -91,15 +91,15 @@ function we_tag_form($attribs){
 						)) .
 						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
 							'value' => (isset($GLOBALS['lv']->classID) || isset($GLOBALS['we_doc']->ClassID) ?
-									(isset($GLOBALS['lv']) && $GLOBALS['lv']->getDBf('OF_ID') != '' ?
-											$GLOBALS['lv']->getDBf('OF_ID') :
-											($GLOBALS['we_doc']->getDBf('OF_ID') ? :
+									(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_ID')?
+											$GLOBALS['lv']->f('WE_ID') :
+											($GLOBALS['we_doc']->getDBf('OF_ID') ? ://FIXME: wtf???? where is this set??? which kind of document is not object, but has this record?
 													(isset($GLOBALS['we_doc']->OF_ID) ?
 															$GLOBALS['we_doc']->OF_ID :
 															$GLOBALS['we_doc']->ID))) :
 									(isset($GLOBALS['lv']) ?
 											($GLOBALS['lv'] instanceof we_object_tag ?
-													$GLOBALS['lv']->id :
+													$GLOBALS['lv']->f('WE_ID') :
 													(isset($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1]) && $GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] != '' ?
 															$GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] :
 															$GLOBALS['we_doc']->ID)

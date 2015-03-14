@@ -119,8 +119,8 @@ function we_tag_listview($attribs){
 
 	// deprecated, because subfolders acts the other way arround as it should
 	$subfolders = (isset($attribs['subfolders'])) ?
-			!weTag_getAttribute('subfolders', $attribs, false, we_base_request::BOOL) :
-			weTag_getAttribute('recursive', $attribs, true, we_base_request::BOOL);
+		!weTag_getAttribute('subfolders', $attribs, false, we_base_request::BOOL) :
+		weTag_getAttribute('recursive', $attribs, true, we_base_request::BOOL);
 
 	$we_lv_subfolders = isset($_REQUEST['we_lv_subfolders_' . $name]) ? (bool) $_REQUEST['we_lv_subfolders_' . $name] : $subfolders;
 
@@ -174,7 +174,7 @@ function we_tag_listview($attribs){
 			switch(isset($GLOBALS['lv']) ? get_class($GLOBALS['lv']) : ''){
 				case 'we_object_listview':
 				case 'we_object_tag':
-					$we_lv_pageID = $GLOBALS['lv']->getDBf('OF_ID');
+					$we_lv_pageID = $GLOBALS['lv']->f('WE_ID');
 					$we_lv_linktype = 'tblObjectFile';
 					$we_lv_pagelanguage = $we_lv_pagelanguage === 'self' ? $GLOBALS['lv']->getDBf('OF_Language') : ($we_lv_pagelanguage === 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);
 					$we_lv_ownlanguage = $GLOBALS['lv']->getDBf('OF_Language');
@@ -255,14 +255,8 @@ function we_tag_listview($attribs){
 			}
 			$defaultname = weTag_getAttribute('defaultname', $attribs, '', we_base_request::STRING);
 			$docId = weTag_getAttribute('documentid', $attribs, 0, we_base_request::INT);
-			$objectId = weTag_getAttribute('objectid', $attribs, 0, we_base_request::INT);
-			if($objectId == 0){
-				switch(isset($GLOBALS['lv']) ? get_class($GLOBALS['lv']) : ''){
-					case 'we_object_tag':
-					case 'we_object_listview':
-						$objectId = $GLOBALS['lv']->getDBf('OF_ID');
-				}
-			}
+			$objectId = weTag_getAttribute('objectid', $attribs, 0, we_base_request::INT)? : intval($GLOBALS['lv']->f('WE_ID'));
+
 			$GLOBALS['lv'] = new we_shop_listviewShopVariants($name, $we_rows, $defaultname, $docId, $objectId, $we_offset, $hidedirindex, $objectseourls, $triggerid);
 			break;
 		case 'category':

@@ -385,14 +385,14 @@ function we_tag_field($attribs){
 						if($type === 'select'){// bugfix #6399
 							$attribs['name'] = $attribs['_name_orig'];
 						}
-				}
-
-				$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht inLV, #4648
-				if($orgName === 'WE_PATH'){
-					$path_parts = pathinfo($normVal);
-					if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition && NAVIGATION_DIRECTORYINDEX_NAMES && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$normVal = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
-					}
+					default:
+						$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), $testtype, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht inLV, #4648
+						if($orgName === 'WE_PATH'){
+							$path_parts = pathinfo($normVal);
+							if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition && NAVIGATION_DIRECTORYINDEX_NAMES && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+								$normVal = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
+							}
+						}
 				}
 			}
 			// bugfix 7557
@@ -400,6 +400,7 @@ function we_tag_field($attribs){
 			// wird in den eingebundenen Objekten ueberprueft ob das Feld existiert
 
 			if($type === 'select' && $normVal === ''){
+				//FIXME: remove getDBRecord
 				$dbRecord = array_keys($GLOBALS['lv']->getDBRecord()); // bugfix #6399
 				foreach($dbRecord as $_glob_key){
 					if(substr($_glob_key, 0, 13) === 'we_we_object_'){
@@ -618,7 +619,7 @@ function we_tag_field($attribs){
 			case 'we_object_tag':
 				$triggerid = $triggerid ? : $GLOBALS['lv']->triggerID;
 				$showlink = $showlink || $triggerid;
-				$tailOwnId = isset($tailOwnId) ? $tailOwnId : '?we_objectID=' . $GLOBALS['lv']->getDBf('OF_ID');
+				$tailOwnId = isset($tailOwnId) ? $tailOwnId : '?we_objectID=' . $GLOBALS['lv']->f('WE_ID');
 				break;
 			case 'we_object_listviewMultiobject':
 				$showlink = $GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID;

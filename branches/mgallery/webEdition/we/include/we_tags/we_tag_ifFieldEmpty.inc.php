@@ -50,23 +50,22 @@ function we_isFieldNotEmpty($attribs){
 						break;
 					case 'year':
 						$sd = mktime(0, 0, 0, 1, 1, $GLOBALS['lv']->calendar_struct['year_human']);
-						$sd = mktime(23, 59, 59, 12, 31, $GLOBALS['lv']->calendar_struct['year_human']);
+						$ed = mktime(23, 59, 59, 12, 31, $GLOBALS['lv']->calendar_struct['year_human']);
 						break;
 				}
 				if(isset($sd) && isset($ed)){
 					foreach($GLOBALS['lv']->calendar_struct['storage'] as $entry){
-						if($sd < $entry && $ed > $entry)
+						if($sd < $entry && $ed > $entry){
 							return true;
+						}
 					}
 				}
 			}
 			return false;
 		case 'multiobject':
-			$data = (isset($GLOBALS['lv']) ?
-							(($GLOBALS['lv'] instanceof we_shop_shop) ? //FIXME: change this - we don't need getObject any more!
-									unserialize($GLOBALS['lv']->getDBf($orig_match)) :
-									unserialize($GLOBALS['lv']->f($orig_match))) :
-							unserialize($GLOBALS['we_doc']->getElement($orig_match)));
+			$data = unserialize((isset($GLOBALS['lv']) ?
+					$GLOBALS['lv']->f($orig_match) :
+					$GLOBALS['we_doc']->getElement($orig_match)));
 
 			if(isset($data['objects']) && is_array($data['objects']) && !empty($data['objects'])){
 				$test = array_count_values($data['objects']);
@@ -101,10 +100,10 @@ function we_isFieldNotEmpty($attribs){
 					}
 					$hreftmp = trim(we_document::getHrefByArray($hrefArr));
 					/**
-					* TODO: file_exists only work when the choosen webEdition document is in the correct DOCUMENT_ROOT
-					* but within multi domains we have cross DOCUMENT_ROOT references!!!
-					*/
-					$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'],true);
+					 * TODO: file_exists only work when the choosen webEdition document is in the correct DOCUMENT_ROOT
+					 * but within multi domains we have cross DOCUMENT_ROOT references!!!
+					 */
+					$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
 					if(!$hreftmp || $hreftmp === '/' || $hreftmp{0} === '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . preg_replace($urlReplace, array_keys($urlReplace), $hreftmp)))){
 						return false;
 					}

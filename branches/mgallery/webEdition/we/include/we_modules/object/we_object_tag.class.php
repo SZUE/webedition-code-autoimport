@@ -58,10 +58,18 @@ class we_object_tag{//FIXME: check why we use class/id instead of classID/ID => 
 		$this->avail = $this->object->next_record();
 	}
 
+	/**
+	 *
+	 * @deprecate since 6.4.0
+	 */
 	public function getID(){
 		return $this->id;
 	}
 
+	/**
+	 *
+	 * @deprecate since 6.4.0
+	 */
 	public function getDBf($key){
 		return ($this->id ? $this->object->getDBf($key) : '');
 	}
@@ -70,10 +78,18 @@ class we_object_tag{//FIXME: check why we use class/id instead of classID/ID => 
 		return ($this->id ? $this->object->f($key) : '');
 	}
 
+	/**
+	 *
+	 * @deprecate since 6.4.0
+	 */
 	public function getDB(){
 		return $this->DB_WE;
 	}
 
+	/**
+	 *
+	 * @deprecate since 6.4.0
+	 */
 	public function getDBRecord(){
 		return ($this->id ? $this->object->getDBRecord() : array());
 	}

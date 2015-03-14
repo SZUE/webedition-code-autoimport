@@ -101,7 +101,7 @@ function we_tag_a($attribs, $content){
 					$idd = ((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$foo])) && $GLOBALS['lv']->IDs[$foo] != '') ?
 							$GLOBALS['lv']->IDs[$foo] :
 							((isset($GLOBALS['lv']->classID)) ?
-									$GLOBALS['lv']->getDBf('OF_ID') :
+									$GLOBALS['lv']->f('WE_ID') :
 									((isset($GLOBALS['we_obj']->ID)) ?
 											$GLOBALS['we_obj']->ID :
 											$GLOBALS['WE_MAIN_DOC']->ID));
@@ -145,7 +145,7 @@ function we_tag_a($attribs, $content){
 					$idd = (isset($GLOBALS['lv']->IDs[$foo]) && $GLOBALS['lv']->IDs[$foo] != '') ?
 							$GLOBALS['lv']->IDs[$foo] :
 							((isset($GLOBALS['lv']->classID)) ?
-									$GLOBALS['lv']->getDBf('OF_ID') :
+									$GLOBALS['lv']->f('WE_ID') :
 									((isset($GLOBALS['we_obj']->ID)) ?
 											$GLOBALS['we_obj']->ID :
 											$GLOBALS['WE_MAIN_DOC']->ID));
