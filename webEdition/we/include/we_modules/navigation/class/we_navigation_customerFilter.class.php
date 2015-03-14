@@ -80,13 +80,15 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 	 * @param we_navigation_item $navItem
 	 */
 	function initByNavItem(&$navItem){
-
-		if($navItem->limitaccess == 0){
-			$this->setMode(we_customer_abstractFilter::OFF);
-		} else {
-			if($navItem->limitaccess == 2){
+		switch($navItem->limitaccess){
+			case 0:
+				$this->setMode(we_customer_abstractFilter::OFF);
+				return;
+			case 2:
 				$this->setMode(we_customer_abstractFilter::NOT_LOGGED_IN_USERS);
-			} else {
+				return;
+			case 1:
+			default:
 				if(isset($navItem->customers['filter']) && is_array($navItem->customers['filter']) && count($navItem->customers['filter'])){
 					$this->setMode(we_customer_abstractFilter::FILTER);
 					$_custFilter = $navItem->customers['filter'];
@@ -105,7 +107,6 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 				} else {
 					$this->setMode(we_customer_abstractFilter::ALL);
 				}
-			}
 		}
 	}
 
