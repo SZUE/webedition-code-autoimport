@@ -484,18 +484,8 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function getDynamicChilds(){
-		$_items = array();
-
 		$this->db->query('SELECT ID,Ordn FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND IsFolder=0 AND Depended=1 ORDER BY Ordn;');
-
-		while($this->db->next_record()){
-			$_items[] = array(
-				'id' => $this->db->f('ID'),
-				'ordn' => $this->db->f('Ordn')
-			);
-		}
-
-		return $_items;
+		return $this->db->getAll();
 	}
 
 	function populateGroup($_items){
@@ -572,7 +562,7 @@ class we_navigation_navigation extends weModelBase{
 		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', '', $this->db);
 	}
 
-	function getDynamicPreview(&$storage, $rules = false){
+	function getDynamicPreview(array &$storage, $rules = false){
 		$_items = array();
 
 		foreach($storage['items'] as $item){
