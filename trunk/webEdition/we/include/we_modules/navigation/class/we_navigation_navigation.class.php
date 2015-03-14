@@ -84,7 +84,7 @@ class we_navigation_navigation extends weModelBase{
 	var $WorkspaceID = -1;
 	var $CatParameter = 'catid';
 	var $Parameter = '';
-	var $LinkSelection = 'intern';
+	var $LinkSelection = self::LSELECTION_INTERN;
 	var $Url = 'http://';
 	var $UrlID = 0;
 	var $Charset = '';
@@ -489,9 +489,7 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function populateGroup($_items){
-
 		$_info = $this->getDynamicEntries();
-
 		$_new_items = array();
 
 		foreach($_info as $_k => $_item){
@@ -503,7 +501,7 @@ class we_navigation_navigation extends weModelBase{
 
 			$_navigation->SelectionType = ($this->SelectionType == self::STPYE_DOCTYPE ? self::STPYE_DOCLINK : ($this->SelectionType == self::STPYE_CATEGORY ? self::STPYE_CATLINK : self::STPYE_OBJLINK));
 			$_navigation->LinkID = $_item['id'];
-			$_navigation->Ordn = isset($_items[$_k]) ? $_items[$_k]['ordn'] : $_k;
+			$_navigation->Ordn = isset($_items[$_k]) ? $_items[$_k]['Ordn'] : $_k;
 			$_navigation->Depended = 1;
 			$_navigation->Text = $_item['field'] ? : $_item['text'];
 			$_navigation->IconID = $this->IconID;
@@ -530,10 +528,9 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function depopulateGroup(){
-
 		$_items = $this->getDynamicChilds();
 		foreach($_items as $_id){
-			$_navigation = new we_navigation_navigation($_id['id']);
+			$_navigation = new we_navigation_navigation($_id['ID']);
 			if($_navigation->delete()){
 
 			}
@@ -720,7 +717,7 @@ class we_navigation_navigation extends weModelBase{
 					break;
 				case self::STPYE_CATEGORY:
 				case self::STPYE_CATLINK:
-					$_path = $this->LinkSelection === 'extern' ? $this->Url : ($_path = isset($storage[$this->UrlID]) ? $storage[$this->UrlID] : id_to_path($this->UrlID, FILE_TABLE));
+					$_path = $this->LinkSelection === self::LSELECTION_EXTERN ? $this->Url : ($_path = isset($storage[$this->UrlID]) ? $storage[$this->UrlID] : id_to_path($this->UrlID, FILE_TABLE));
 					if(!empty($this->CatParameter)){
 						$_param = $this->CatParameter . '=' . $_id . (!empty($_param) ? '&' : '') . $_param;
 					}
