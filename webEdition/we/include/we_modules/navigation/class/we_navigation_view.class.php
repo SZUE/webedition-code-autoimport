@@ -539,7 +539,7 @@ function setStaticSelection(value){
 	if(value=="' . we_navigation_navigation::STPYE_CATEGORY . '"){
 		setVisible("dynUrl",true);
 		setVisible("dynamic_LinkSelectionDiv",true);
-		dynamic_setLinkSelection("intern");
+		dynamic_setLinkSelection("' . we_navigation_navigation::LSELECTION_INTERN . '");
 	} else {
 
 		setVisible("dynUrl",false);
@@ -564,10 +564,10 @@ function setStaticSelection(value){
 
 		if(value=="' . we_navigation_navigation::STYPE_URLLINK . '") {
 			setVisible("LinkSelectionDiv",false);
-			setLinkSelection("extern");
+			setLinkSelection("' . we_navigation_navigation::LSELECTION_EXTERN . '");
 		} else if(value=="' . we_navigation_navigation::STPYE_CATLINK . '") {
 			setVisible("LinkSelectionDiv",true);
-			setLinkSelection("intern");
+			setLinkSelection("' . we_navigation_navigation::LSELECTION_INTERN . '");
 		}
 
 	}
@@ -792,7 +792,7 @@ function submitForm() {
 					if($this->Model->hasDynChilds()){
 						$_old_items = $this->Model->depopulateGroup();
 						foreach($_old_items as $_id){
-							$js .= $this->topFrame . '.deleteEntry(' . $_id['id'] . ');';
+							$js .= $this->topFrame . '.deleteEntry(' . $_id['ID'] . ');';
 						}
 					}
 					$_items = $this->Model->populateGroup($_old_items);
@@ -805,7 +805,7 @@ function submitForm() {
 					if($this->Model->hasDynChilds()){
 						$_old_items = $this->Model->depopulateGroup();
 						foreach($_old_items as $_id){
-							$js .= $this->topFrame . '.deleteEntry(' . $_id['id'] . ');';
+							$js .= $this->topFrame . '.deleteEntry(' . $_id['ID'] . ');';
 						}
 					}
 				}
@@ -1094,7 +1094,6 @@ function submitForm() {
 		}
 
 		if($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){
-
 			if(($wid = we_base_request::_(we_base_request::INT, 'WorkspaceIDClass')) !== false){
 				$this->Model->WorkspaceID = $wid;
 			}
@@ -1111,8 +1110,9 @@ function submitForm() {
 			}
 		}
 
+
 		if($this->Model->IsFolder == 0){
-			$this->Model->Charset = $this->Model->findCharset($this->Model->ParentID | 0);
+			$this->Model->Charset = $this->Model->findCharset($this->Model->ParentID);
 		}
 
 		if(($code = we_base_request::_(we_base_request::RAW_CHECKED, 'previewCode'))){

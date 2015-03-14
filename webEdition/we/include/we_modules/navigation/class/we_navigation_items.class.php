@@ -485,7 +485,7 @@ class we_navigation_items{
 				$_ids[] = $_db->Record['LinkID'];
 			} elseif($_db->Record['Selection'] == we_navigation_navigation::SELECTION_STATIC && $_db->Record['SelectionType'] == we_navigation_navigation::STPYE_DOCLINK){
 				$_ids[] = $_db->Record['LinkID'];
-			} elseif(($_db->Record['SelectionType'] == we_navigation_navigation::STPYE_CATEGORY || $_db->Record['SelectionType'] == we_navigation_navigation::STPYE_CATLINK) && $_db->Record['LinkSelection'] != 'extern'){
+			} elseif(($_db->Record['SelectionType'] == we_navigation_navigation::STPYE_CATEGORY || $_db->Record['SelectionType'] == we_navigation_navigation::STPYE_CATLINK) && $_db->Record['LinkSelection'] != we_navigation_navigation::LSELECTION_EXTERN){
 				$_ids[] = $_db->Record['UrlID'];
 			}
 
