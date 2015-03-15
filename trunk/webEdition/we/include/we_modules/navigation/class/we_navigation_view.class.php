@@ -176,6 +176,9 @@ function we_cmd() {
 
 			')) . '
 		break;
+		case "move_abs":
+			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&cmd="+arguments[0]+"&pos="+arguments[1];
+		break;
 		case "move_up":
 		case "move_down":
 			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&cmd="+arguments[0];
@@ -673,6 +676,13 @@ function submitForm() {
 }';
 	}
 
+	function getEditNaviPosition(){
+		$this->db->query('SELECT Ordn,Text FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . $this->Model->ParentID . ' ORDER BY Ordn');
+		$values = $this->db->getAllFirst(false);
+		$values[-1] = g_l('navigation','[end]');
+		return $values;
+	}
+
 	function processCommands(){
 		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 			case 'module_navigation_new':
@@ -859,13 +869,17 @@ function submitForm() {
 			case 'switchPage':
 
 				break;
-			case 'move_up' :
-				if($this->Model->reorderUp()){
-					echo we_html_element::jsElement('
-								' .
+			case 'move_abs':
+				if($this->Model->reorderAbs(we_base_request::_(we_base_request::INT, 'pos'))){
+					$posVals = $this->getEditNaviPosition();
+					$posText = '';
+					foreach($posVals as $val => $text){
+						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
+					}
+
+					echo we_html_element::jsElement(
 						$this->editorBodyForm . '.Ordn.value=' . ($this->Model->Ordn + 1) . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
-
 								' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
 								' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
 
@@ -873,8 +887,30 @@ function submitForm() {
 									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "disabled");
 								} else {
 									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
-								}
-								'
+								}' .
+						$this->editorBodyForm . '.Position.innerHTML=\'' . $posText . '\';'
+					);
+				}
+				break;
+			case 'move_up' :
+				if($this->Model->reorderUp()){
+					$posVals = $this->getEditNaviPosition();
+					$posText = '';
+					foreach($posVals as $val => $text){
+						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
+					}
+					echo we_html_element::jsElement(
+						$this->editorBodyForm . '.Ordn.value=' . ($this->Model->Ordn + 1) . ';' .
+						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
+								' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
+								' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
+
+								if(' . $this->editorBodyForm . '.Ordn.value==1){
+									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "disabled");
+								} else {
+									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
+								}' .
+						$this->editorBodyForm . '.Position.innerHTML=\'' . $posText . '\';'
 					);
 				}
 				break;
@@ -882,8 +918,12 @@ function submitForm() {
 				if($this->Model->reorderDown()){
 					$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db);
 					$_num = f('SELECT MAX(Ordn) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), 'OrdCount', $this->db);
-					echo we_html_element::jsElement('
-									' .
+					$posVals = $this->getEditNaviPosition();
+					$posText = '';
+					foreach($posVals as $val => $text){
+						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
+					}
+					echo we_html_element::jsElement(
 						$this->editorBodyForm . '.Ordn.value=' . ($this->Model->Ordn + 1) . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
 									' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
@@ -892,8 +932,8 @@ function submitForm() {
 										' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "disabled");
 									} else {
 										' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
-									}
-									'
+								}' .
+						$this->editorBodyForm . '.Position.innerHTML=\'' . $posText . '\';'
 					);
 				}
 				break;
