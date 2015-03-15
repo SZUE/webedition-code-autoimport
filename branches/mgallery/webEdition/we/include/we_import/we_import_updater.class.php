@@ -444,14 +444,14 @@ class we_import_updater extends we_exim_XMLExIm{
 					$this->updateField($object, 'LinkID', FILE_TABLE);
 				}
 				switch(isset($object->Selection) ? $object->Selection : ''){
-					case 'dynamic':
+					case we_navigation_navigation::SELECTION_DYNAMIC:
 						switch($object->SelectionType){
-							case 'doctype':
+							case we_navigation_navigation::STPYE_DOCTYPE:
 								$this->updateField($object, 'DocTypeID', DOC_TYPES_TABLE);
 								$this->updateField($object, 'FolderID', FILE_TABLE);
 								break;
 
-							case 'classname':
+							case we_navigation_navigation::STPYE_CLASS:
 								if(defined('OBJECT_TABLE')){
 									$this->updateField($object, 'ClassID', OBJECT_TABLE);
 									$this->updateField($object, 'FolderID', OBJECT_FILES_TABLE);
@@ -459,26 +459,26 @@ class we_import_updater extends we_exim_XMLExIm{
 								}
 								break;
 
-							case 'category':
+							case we_navigation_navigation::STPYE_CATEGORY:
 								$this->updateField($object, 'FolderID', CATEGORY_TABLE);
-								if($object->LinkSelection === 'intern'){
+								if($object->LinkSelection === we_navigation_navigation::LSELECTION_INTERN){
 									$this->updateField($object, 'UrlID', FILE_TABLE);
 								}
 								break;
 						}
 						break;
 
-					case 'static':
+					case we_navigation_navigation::SELECTION_STATIC:
 						switch($object->SelectionType){
-							case 'docLink' :
+							case we_navigation_navigation::STPYE_DOCLINK:
 								$this->updateField($object, 'LinkID', FILE_TABLE);
 								break;
-							case 'objLink' :
+							case we_navigation_navigation::STPYE_OBJLINK:
 								$this->updateField($object, 'LinkID', OBJECT_FILES_TABLE);
 								break;
-							case 'catLink' :
+							case we_navigation_navigation::STPYE_CATLINK:
 								$this->updateField($object, 'LinkID', CATEGORY_TABLE);
-								if($object->LinkSelection === 'intern'){
+								if($object->LinkSelection === we_navigation_navigation::LSELECTION_INTERN){
 									$this->updateField($object, 'UrlID', FILE_TABLE);
 								}
 								break;

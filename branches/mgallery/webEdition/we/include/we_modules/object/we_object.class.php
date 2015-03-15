@@ -1536,7 +1536,7 @@ class we_object extends we_document{
 
 		if($users){
 			$this->DB_WE->query('SELECT ID,Path,Icon FROM ' . USER_TABLE . ' WHERE ID IN(' . implode(',', $users) . ')');
-			$allUsers = $this->DB_WE->getAllFirst();
+			$allUsers = $this->DB_WE->getAllFirst(true, MYSQL_ASSOC);
 			foreach($allUsers as $user => $data){
 				$content .= '<tr><td><img src="' . TREE_ICON_DIR . $data["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $data["Path"] . '</td><td>' .
 						($canChange ?

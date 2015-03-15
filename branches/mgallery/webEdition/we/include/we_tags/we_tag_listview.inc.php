@@ -73,7 +73,7 @@ function we_tag_listview($attribs){
 	$we_lv_categoryids = we_base_request::_(we_base_request::INTLIST, 'we_lv_categoryids_' . $name, $categoryids);
 	$we_lv_catOr = we_base_request::_(we_base_request::BOOL, 'we_lv_catOr_' . $name, weTag_getAttribute('catOr', $attribs, false, we_base_request::BOOL));
 
-	$rows = weTag_getAttribute('rows', $attribs, 100000000, we_base_request::INT);
+	$we_rows = intval(weTag_getAttribute('rows', $attribs, 100000000, we_base_request::INT));
 	$order = weTag_getAttribute('order', $attribs, '', we_base_request::STRING);
 	//FIXME: XSS
 	$we_lv_order = we_base_request::_(we_base_request::STRING, 'we_lv_order_' . $name, $order);
@@ -89,7 +89,7 @@ function we_tag_listview($attribs){
 	$we_lv_desc = we_base_request::_(we_base_request::BOOL, 'we_lv_desc_' . $name, $desc);
 
 	$predefinedSQL = weTag_getAttribute('predefinedSQL', $attribs, '', we_base_request::RAW);
-	$offset = weTag_getAttribute('offset', $attribs, 0, we_base_request::INT);
+	$we_offset = intval(weTag_getAttribute('offset', $attribs, 0, we_base_request::INT));
 	$workspaceID = weTag_getAttribute('workspaceID', $attribs, weTag_getAttribute('workspaceid', $attribs, 0, we_base_request::INTLIST), we_base_request::INTLIST);
 	$we_lv_ws = we_base_request::_(we_base_request::INTLIST, 'we_lv_ws_' . $name, $workspaceID);
 
@@ -129,22 +129,20 @@ function we_tag_listview($attribs){
 	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, we_base_request::BOOL);
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 
-	if($we_lv_languages === 'self' || $we_lv_languages === 'top'){
-		$we_lv_langguagesdoc = we_getDocForTag($we_lv_languages);
-		$we_lv_languages = $we_lv_langguagesdoc->Language;
-		unset($we_lv_langguagesdoc);
+	switch($we_lv_languages){
+		case 'self':
+		case 'top':
+			$we_lv_langguagesdoc = we_getDocForTag($we_lv_languages);
+			$we_lv_languages = $we_lv_langguagesdoc->Language;
+			unset($we_lv_langguagesdoc);
 	}
-	//FIXME: XSS -> what type is we_lv_calendar
-	$we_lv_calendar = we_base_request::_(we_base_request::RAW, 'we_lv_calendar_' . $name, $calendar);
-	$we_lv_datefield = we_base_request::_(we_base_request::RAW, 'we_lv_datefield_' . $name, $datefield);
-	$we_lv_date = we_base_request::_(we_base_request::RAW, 'we_lv_date_' . $name, ($date ? : date('Y-m-d')));
-	$we_lv_weekstart = we_base_request::_(we_base_request::RAW, 'we_lv_weekstart_' . $name, $weekstart);
 
-	if($we_lv_cats === 'we_doc'){
-		$we_lv_cats = we_category::we_getCatsFromDoc($GLOBALS['we_doc'], ',', true, $GLOBALS['DB_WE']);
-	}
-	$we_offset = intval($offset);
-	$we_rows = intval($rows);
+	$we_lv_calendar = we_base_request::_(we_base_request::STRING, 'we_lv_calendar_' . $name, $calendar);
+	$we_lv_datefield = we_base_request::_(we_base_request::STRING, 'we_lv_datefield_' . $name, $datefield);
+	$we_lv_date = we_base_request::_(we_base_request::STRING, 'we_lv_date_' . $name, ($date ? : date('Y-m-d')));
+	$we_lv_weekstart = we_base_request::_(we_base_request::STRING, 'we_lv_weekstart_' . $name, $weekstart);
+
+	$we_lv_cats = ($we_lv_cats === 'we_doc' ? we_category::we_getCatsFromDoc($GLOBALS['we_doc'], ',', true, $GLOBALS['DB_WE']) : $we_lv_cats);
 
 	switch($type){
 		case 'document':

@@ -256,11 +256,6 @@ function setTab(tab) {
 			'style' => 'margin-top: 5px;'
 			), 1, 3);
 
-		$_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('navigation', '[order]') . ':');
-
-		$_table->setColContent(0, 1, we_html_tools::htmlTextInput('Ordn', '', ($this->Model->Ordn + 1), '', 'disabled="true" readonly style="width: 35px" onBlur="var r=parseInt(this.value);if(isNaN(r)) this.value=' . $this->Model->Ordn . '; else{ this.value=r; ' . $this->topFrame . '.mark();}"'));
-
-
 		$_parentid = (isset($this->Model->Text) && $this->Model->Text && isset($this->Model->ID) && $this->Model->ID ?
 				f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db) :
 				(we_base_request::_(we_base_request::STRING, 'presetFolder') ?
@@ -270,8 +265,14 @@ function setTab(tab) {
 						0)
 				));
 
+		$_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('navigation', '[order]') . ':');
+		if($this->Model->ID){
+			$_table->setColContent(0, 1, //we_html_tools::htmlTextInput('Ordn', '', ($this->Model->Ordn + 1), '', 'disabled="true" readonly style="width: 35px"') .
+				we_html_element::htmlHidden(array('name' => 'Ordn', 'value' => ($this->Model->Ordn + 1))) .
+				we_html_tools::htmlSelect('Position', $this->View->getEditNaviPosition(), 1, $this->Model->Ordn, false, array('onchange' => $this->topFrame . '.we_cmd(\'move_abs\',this.value);'))
+			);
 
-		$_num = $_parentid ? f('SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), 'OrdCount', new DB_WE()) : 0;
+			$_num = $this->Model->ID ? f('SELECT COUNT(ID) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid)) : 0;
 
 		$_table->setColContent(0, 2, we_html_button::create_button_table(
 				array(
@@ -279,7 +280,8 @@ function setTab(tab) {
 				we_html_button::create_button('image:direction_down', 'javascript:' . $this->topFrame . '.we_cmd("move_down");', true, 100, 22, '', '', (($this->Model->Ordn < ($_num - 1)) ? false : true), false)
 				), 10, array(
 				'style' => 'margin-left: 15px'
-		)));
+			)));
+		}
 		// name and folder block
 		// icen selector block
 		$uniqname = 'weIconNaviAttrib';
@@ -1510,18 +1512,18 @@ function selectItem() {
 
 		return we_html_element::jsElement('
 function ' . $prefix . 'setLinkSelection(value){
-		setVisible("' . $prefix . 'intern",(value=="intern"));
-		setVisible("' . $prefix . 'extern",(value!="intern"));
+		setVisible("' . $prefix . 'intern",(value=="' . we_navigation_navigation::LSELECTION_INTERN . '"));
+		setVisible("' . $prefix . 'extern",(value!="' . we_navigation_navigation::LSELECTION_INTERN . '"));
 }') . '<div id="' . $prefix . 'LinkSelectionDiv" style="display: ' . (($this->Model->SelectionType == we_navigation_navigation::STPYE_CATLINK || $this->Model->SelectionType == we_navigation_navigation::STPYE_CATEGORY) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlSelect(
 					$prefix . 'LinkSelection', array(
-					'intern' => g_l('navigation', '[intern]'),
-					'extern' => g_l('navigation', '[extern]')
+					we_navigation_navigation::LSELECTION_INTERN => g_l('navigation', '[intern]'),
+					we_navigation_navigation::LSELECTION_EXTERN => g_l('navigation', '[extern]')
 					), 1, $this->Model->LinkSelection, false, array('style' => 'width: ' . $this->_width_size . 'px;', 'onchange' => $prefix . 'setLinkSelection(this.value);' . $this->topFrame . '.mark();'), 'value'), g_l('navigation', '[linkSelection]')) . '</div>
-				<div id="' . $prefix . 'intern" style="display: ' . (($this->Model->LinkSelection === 'intern' && $this->Model->SelectionType != we_navigation_navigation::STYPE_URLLINK) ? 'block' : 'none') . ';margin-top: 5px;">
+				<div id="' . $prefix . 'intern" style="display: ' . (($this->Model->LinkSelection === we_navigation_navigation::LSELECTION_INTERN && $this->Model->SelectionType != we_navigation_navigation::STYPE_URLLINK) ? 'block' : 'none') . ';margin-top: 5px;">
 				' . $weAcSelector . '
 				</div>
-				<div id="' . $prefix . 'extern" style="display: ' . (($this->Model->LinkSelection === 'extern' || $this->Model->SelectionType == we_navigation_navigation::STYPE_URLLINK) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlTextInput(
+				<div id="' . $prefix . 'extern" style="display: ' . (($this->Model->LinkSelection === we_navigation_navigation::LSELECTION_EXTERN || $this->Model->SelectionType == we_navigation_navigation::STYPE_URLLINK) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlTextInput(
 				$prefix . 'Url', 58, $this->Model->Url, '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $this->_width_size) . '</div>
 				<div style="margin-top: 5px;">' . we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput(

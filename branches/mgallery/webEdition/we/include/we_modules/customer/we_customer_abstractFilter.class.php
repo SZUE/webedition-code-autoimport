@@ -190,7 +190,7 @@ abstract class we_customer_abstractFilter{
 			$flag = true;
 		}
 
-		if(!empty($invalidFields)){
+		if($invalidFields){
 			t_e('Customerfilter on document ? has invalid Parameters, maybe deleted Customer fields: ' . implode(',', $invalidFields));
 		}
 
