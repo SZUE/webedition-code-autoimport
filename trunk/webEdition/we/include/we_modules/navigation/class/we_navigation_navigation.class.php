@@ -681,7 +681,7 @@ class we_navigation_navigation extends weModelBase{
 					if($this->FolderSelection == self::STPYE_OBJLINK){
 						if(NAVIGATION_OBJECTSEOURLS){
 							$_db = new DB_WE();
-							$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->LinkID) . ' LIMIT 1', $_db);
+							$objectdaten = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->LinkID) . ' LIMIT 1', $_db);
 							$objecturl = isset($objectdaten['Url']) ? $objectdaten['Url'] : '';
 							$objecttriggerid = isset($objectdaten['TriggerID']) ? $objectdaten['TriggerID'] : 0;
 							if(!$objecturl){
