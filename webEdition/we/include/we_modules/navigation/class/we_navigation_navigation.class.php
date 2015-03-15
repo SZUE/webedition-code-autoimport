@@ -447,7 +447,9 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function saveField($name, $serialize = false){
-		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $this->db->escape($name) . '="' . $this->db->escape(($serialize ? serialize($this->$name) : $this->$name)) . '" WHERE ID=' . intval($this->ID));
+		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
+				$name => ($serialize ? serialize($this->$name) : $this->$name)
+			)) . ' WHERE ID=' . intval($this->ID));
 		return $this->db->affected_rows();
 	}
 
@@ -631,39 +633,58 @@ class we_navigation_navigation extends weModelBase{
 		return $_items;
 	}
 
-	function reorder($pid){
-		$count = 0;
-		$this->db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($pid) . ' ORDER BY Ordn');
-		$ids = $this->db->getAll(true);
-		foreach($ids as $id){
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . ($count++) . ' WHERE ID=' . $id);
+	public function reorderAbs($newPos){
+		if(!$this->ID || $this->Ordn == $newPos){
+			return false;
 		}
+		if($newPos == -1){//last entry
+			$this->Ordn = 99999;
+			$this->saveField('Ordn');
+			$this->reorder($this->ParentID);
+			$this->Ordn = f('SELECT Ordn FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), '', $this->db);
+		} else {
+			//check position
+			if($newPos < 0 || $newPos > $max = f('SELECT MAX(Ordn) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db)){
+				return false;
+			}
+			$inc = ($this->Ordn < $newPos ? -1 : 1);
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=Ordn+' . $inc . ' WHERE Ordn>' . ($inc < 0 ? $this->Ordn : $newPos) . ' AND ParentID=' . $this->ParentID);
+			$this->Ordn = $newPos;
+			$this->saveField('Ordn');
+			$this->reorder($this->ParentID);
+		}
+		return true;
+	}
+
+	private function reorder($pid){
+		$this->db->query('SET @count:=-1');
+		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=(@count:=@count+1) WHERE ParentID=' . intval($pid) . ' ORDER BY Ordn');
 	}
 
 	function reorderUp(){
-		if($this->ID && $this->Ordn > 0){
-			$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $this->db);
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($_parentid) . ' AND Ordn=' . abs($this->Ordn - 1));
-			$this->Ordn--;
+		if(!($this->ID && $this->Ordn > 0)){
+			return false;
+		}
+		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . abs($this->Ordn - 1));
+		$this->Ordn--;
+		$this->saveField('Ordn');
+		$this->reorder($this->ParentID);
+		return true;
+	}
+
+	function reorderDown(){
+		if(!$this->ID){
+			return false;
+		}
+		$_num = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
+		if($this->Ordn < ($_num - 1)){
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . abs($this->Ordn + 1));
+			$this->Ordn++;
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 			return true;
 		}
-		return false;
-	}
 
-	function reorderDown(){
-		if($this->ID){
-			$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), '', $this->db);
-			$_num = f('SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), '', $this->db);
-			if($this->Ordn < ($_num - 1)){
-				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . abs($this->Ordn + 1));
-				$this->Ordn++;
-				$this->saveField('Ordn');
-				$this->reorder($this->ParentID);
-				return true;
-			}
-		}
 		return false;
 	}
 
