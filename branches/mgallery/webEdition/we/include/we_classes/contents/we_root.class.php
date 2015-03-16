@@ -787,7 +787,7 @@ abstract class we_root extends we_class{
 		$this->OldPath = $this->Path;
 	}
 
-	public function we_save($resave = 0){
+	public function we_save($resave = 0){t_e("save obj on root");
 		//$this->i_setText;
 		if($this->PublWhenSave){
 			$this->Published = time();
@@ -1234,6 +1234,33 @@ abstract class we_root extends we_class{
 	}
 
 	function registerFileLinks(){
+		foreach($this->elements as $v){
+			switch(isset($v['type']) ? $v['type'] : ''){
+				case 'audio':
+				case 'binary':
+				case 'flashmovie':
+				case 'href':
+				case 'img':
+				case 'quicktime':
+				case 'video':
+					if(isset($v['bdid']) && $v['bdid']){
+						$this->FileLinks[] = $v['bdid'];
+					}
+					break;
+				case 'link':
+					if(isset($v['dat']) && ($link = unserialize($v['dat']))){
+						if($link['type'] === 'int' && $link['id']){
+							$this->FileLinks[] = $link['id'];
+						}
+						if($link['img_id']){
+							$this->FileLinks[] = $link['img_id'];
+						}
+					}
+				default: 
+					//
+			}
+		}
+
 		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '"');
 
 		if(!empty($this->FileLinks)){

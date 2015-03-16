@@ -675,51 +675,12 @@ $this->TemplatePath = $path ?
 		}
 	}
 
-	function registerFileLinks(){
-		$tmpFileLinks = array();
-		foreach($this->elements as $k => $v){
-			switch(isset($v['type']) ? $v['type'] : ''){
-				case 'audio':
-				case 'binary':
-				case 'flashmovie':
-				case 'href':
-				case 'img':
-				case 'quicktime':
-				case 'video':
-					if(isset($v['bdid']) && $v['bdid']){
-						$this->FileLinks[] = $v['bdid'];
-					}
-					break;
-				case 'link':
-					if(isset($v['dat']) && ($link = unserialize($v['dat']))){
-						if($link['type'] === 'int' && $link['id']){
-							$this->FileLinks[] = $link['id'];
-						}
-						if($link['img_id']){
-							$this->FileLinks[] = $link['img_id'];
-						}
-					}
-				default: 
-					//
-			}
-		}
-
-		if(!empty($tmpFileLinks)){
-			$whereType = 'AND ContentType IN (' . we_base_ContentTypes::APPLICATION . ', ' . we_base_ContentTypes::APPLICATION . ', ' . we_base_ContentTypes::FLASH . ', ' . we_base_ContentTypes::IMAGE . ', ' . we_base_ContentTypes::QUICKTIME . ', ' . we_base_ContentTypes::VIDEO . ')';
-			$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($tmpFileLinks)) . ') ' . $whereType);
-			while($this->DB_WE->next_record()){
-				$this->FileLinks[] = array($this->DB_WE->f('remTable'));
-			}
-		}
-
-		parent::registerFileLinks();
-	}
-
 	public function we_save($resave = 0, $skipHook = 0){
 		$this->parseTextareaFields();
 		// First off correct corupted fields
 		$this->correctFields();
 		$this->registerFileLinks();
+
 //FIXME: maybe use $this->getUsedElements() to unset unused elements?! add setting to do this? check rebuild!!!
 		// Bug Fix #6615
 		$this->temp_template_id = $this->TemplateID;

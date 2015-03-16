@@ -2237,6 +2237,9 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
+
+		$this->registerFileLinks();
+
 		if($this->canHaveVariants()){
 			we_shop_variants::correctModelFields($this);
 		}
