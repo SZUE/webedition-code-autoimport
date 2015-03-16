@@ -61,6 +61,8 @@ class we_imageDocument extends we_binaryDocument{
 	 * @param boolean $resave
 	 */
 	public function we_save($resave = 0){
+		$this->registerFileLinks();
+
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
 		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0, 'attrib');
@@ -85,6 +87,17 @@ class we_imageDocument extends we_binaryDocument{
 		}
 
 		return false;
+	}
+
+	function registerFileLinks(){
+		if(isset($this->elements['LinkID']['dat']) && $this->elements['LinkID']['dat']){// FIXME: dat => bdid
+			$this->FileLinks[] = $this->elements['LinkID']['dat'];
+		}
+		if(isset($this->elements['RollOverID']['dat']) && $this->elements['RollOverID']['dat']){// FIXME: dat => bdid
+			$this->FileLinks[] = $this->elements['RollOverID']['dat'];
+		}
+
+		parent::registerFileLinks();
 	}
 
 	/**

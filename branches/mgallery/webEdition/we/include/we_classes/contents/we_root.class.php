@@ -787,7 +787,7 @@ abstract class we_root extends we_class{
 		$this->OldPath = $this->Path;
 	}
 
-	public function we_save($resave = 0){t_e("save obj on root");
+	public function we_save($resave = 0){
 		//$this->i_setText;
 		if($this->PublWhenSave){
 			$this->Published = time();
