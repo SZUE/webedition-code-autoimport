@@ -20,9 +20,10 @@
  *
  * @category   webEdition
  * @package none
+ * @deprecated since version 6.4.1
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_customer_customertag{
+class we_customer_customertag{//FIXME: remove in 6.6
 
 	private $DB_WE;
 	var $class = '';
