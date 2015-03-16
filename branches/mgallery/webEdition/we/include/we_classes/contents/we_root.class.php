@@ -1261,7 +1261,7 @@ abstract class we_root extends we_class{
 			}
 		}
 
-		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '"');
+		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" AND type="media"');
 
 		if(!empty($this->FileLinks)){
 			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO .'")';
@@ -1277,14 +1277,13 @@ abstract class we_root extends we_class{
 				$ret &= $this->DB_WE->query('INSERT INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => $this->ID,
 					'DocumentTable' => stripTblPrefix($this->Table),
-					'type' => 'image',// FIXME: change to "media"
+					'type' => 'media',// FIXME: change to "media"
 					'remObj' => $remObj,
 					'remTable' => stripTblPrefix(FILE_TABLE),
 					'position' => 0,
 				)));
 			}
 		}
-		
 		//FIXME: we should return $ret
 	}
 

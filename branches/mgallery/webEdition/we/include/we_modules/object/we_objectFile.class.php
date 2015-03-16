@@ -2218,24 +2218,9 @@ class we_objectFile extends we_document{
 	}
 
 	function parseTextareaFields(){
-		$regs = array();
 		foreach($this->elements as $element){
 			if($element['type'] === 'text'){
-				if(preg_match_all('|src="/[^">]+\\?id=(\\d+)"|i', $element['dat'], $regs, PREG_SET_ORDER)){
-					foreach($regs as $reg){
-						$this->FileLinks[] = intval($reg[1]);
-					}
-				}
-				if(preg_match_all('|src="/[^">]+\\?thumb=(\\d+,\\d+)"|i', $element['dat'], $regs, PREG_SET_ORDER)){
-					foreach($regs as $reg){
-						$this->FileLinks[] = intval(strstr($reg[1], ',', true));
-					}
-				}
-				if(preg_match_all('|href="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)|i', $element['dat'], $regs, PREG_SET_ORDER)){
-					foreach($regs as $reg){
-						$this->FileLinks[] = intval($reg[1]);
-					}
-				}
+				$this->FileLinks = array_merge($this->FileLinks, we_wysiwyg_editor::reparseInternalLinks($element['dat']));
 			}
 		}
 	}

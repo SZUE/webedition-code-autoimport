@@ -560,6 +560,30 @@ class we_wysiwyg_editor{
 		return $editValue;
 	}
 
+	public static function reparseInternalLinks(&$content, $replace = false){
+		$regs = $internalIDs = array();
+		
+		if(preg_match_all('|src="/[^">]+\\?id=(\\d+)"|i', $content, $regs, PREG_SET_ORDER)){
+			foreach($regs as $reg){
+				$content = $replace ? str_replace($reg[0], 'src="' . we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $content) : $content;
+				$internalIDs[] = intval($reg[1]);
+			}
+		}
+		if(preg_match_all('|src="/[^">]+\\?thumb=(\\d+,\\d+)"|i', $content, $regs, PREG_SET_ORDER)){
+			foreach($regs as $reg){
+				$content = $replace ? str_replace($reg[0], 'src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', $content) : $content;
+				$internalIDs[] = intval(strstr($reg[1], ',', true));
+			}
+		}
+		if(preg_match_all('|href="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)|i', $content, $regs, PREG_SET_ORDER)){
+			foreach($regs as $reg){
+				$internalIDs[] = intval($reg[1]);
+			}
+		}
+
+		return $internalIDs;
+	}
+
 	function getToolbarRows(){
 		$width = $this->width - 12;
 		$maxGroupWidth = $this->maxGroupWidth - 2;

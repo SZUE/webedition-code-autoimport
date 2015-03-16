@@ -572,7 +572,6 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		$path = $result['Path'];
 		$parentid = we_base_request::_(we_base_request::INT, 'FolderID', $result['ParentID']);
 		$category = we_base_request::_(we_base_request::STRING, 'Category', $result['Category']);
-
 		$targetPath = id_to_path($parentid, CATEGORY_TABLE);
 
 		$js = '';
@@ -602,6 +601,9 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 					'Description' => $description,
 					'Catfields' => serialize(array('default' => array('Title' => $title, 'Category' => $category)))//FIXME: remove in 6.5
 				)) . ' WHERE ID=' . $catId);
+		
+		$updateok &= $this->saveFileLinks($catId, we_wysiwyg_editor::reparseInternalLinks($description));
+
 		if($updateok){
 			$this->renameChildrenPath($catId);
 		}
@@ -705,6 +707,35 @@ function we_checkName() {
 		(isset($yuiSuggest) ?
 				$yuiSuggest->getYuiJs() : '') .
 		'</body></html>';
+	}
+
+	function saveFileLinks($id, $fileLinks){// FIXME: use object property for $id and $fileLinks
+											// FIXME: maybe move this function to sme new fileLink class
+		$db = $GLOBALS['DB_WE'];
+		$ret = $db->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($id) . ' AND DocumentTable="' . stripTblPrefix(CATEGORY_TABLE) . '" AND type="media"');
+		if(!empty($fileLinks)){
+			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO .'")';
+			$db->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($fileLinks)) . ') ' . $whereType);
+			$fileLinks = array();
+			while($db->next_record()){
+				$fileLinks[] = $db->f('ID');
+			}
+		}
+
+		if(!empty($fileLinks)){
+			foreach(array_unique($fileLinks) as $remObj){
+				$ret &= $db->query('INSERT INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'ID' => $id,
+					'DocumentTable' => stripTblPrefix(CATEGORY_TABLE),
+					'type' => 'media',
+					'remObj' => $remObj,
+					'remTable' => stripTblPrefix(FILE_TABLE),
+					'position' => 0,
+				)));
+			}
+		}
+
+		return $ret;
 	}
 
 }
