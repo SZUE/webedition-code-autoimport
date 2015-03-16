@@ -397,6 +397,18 @@ abstract class we_rebuild_base{
 			($_template_query ? ' AND ' . $_template_query . ' ' : '');
 		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsDynamic=0 AND Published>0 AND ContentType IN("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::CSS . '","' . we_base_ContentTypes::JS . '") ' . $query . ' ORDER BY LENGTH(Path)');
 
+		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsFolder=1 OR Published>0 ' . ($folders ? $_folders_query : '') . 'ORDER BY IsFolder DESC, LENGTH(Path)');
+		while($GLOBALS['DB_WE']->next_record()){
+			$data[] = array(
+				'id' => $GLOBALS['DB_WE']->f('ID'),
+				'type' => 'document',
+				'cn' => $GLOBALS['DB_WE']->f('ClassName'),
+				'mt' => $maintable,
+				'tt' => $tmptable,
+				'path' => $GLOBALS['DB_WE']->f('Path'),
+				'it' => 0);
+		}
+
 		while($GLOBALS['DB_WE']->next_record()){
 			$data[] = array(
 				'id' => $GLOBALS['DB_WE']->f('ID'),

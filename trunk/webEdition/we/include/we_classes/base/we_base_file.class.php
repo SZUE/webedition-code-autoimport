@@ -319,7 +319,7 @@ abstract class we_base_file{
 		$mod = octdec(intval(WE_NEW_FOLDER_MOD));
 
 // check for directories: create it if we could no write into it:
-		if(!@mkdir($path, $mod, $recursive)){
+		if(!mkdir($path, $mod, $recursive)){
 			t_e('warning', "Could not create local Folder at 'we_util_File/checkAndMakeFolder()': '" . $path . "'");
 			return false;
 		}
@@ -339,11 +339,11 @@ abstract class we_base_file{
 
 		$cf = array($completeDirPath);
 
-		$parent = str_replace("\\", "/", dirname($completeDirPath));
+		$parent = str_replace('\\', '/', dirname($completeDirPath));
 
 		while(!self::checkAndMakeFolder($parent)){
 			$cf[] = $parent;
-			$parent = str_replace("\\", "/", dirname($parent));
+			$parent = str_replace('\\', '/', dirname($parent));
 		}
 
 		for($i = (count($cf) - 1); $i >= 0; $i--){

@@ -88,7 +88,7 @@ class we_binaryDocument extends we_document{
 		parent::i_getContentData();
 		$_sitePath = $this->getSitePath();
 		$_realPath = $this->getRealPath();
-		if(!file_exists($_sitePath) && file_exists($_realPath)){
+		if(!file_exists($_sitePath) && file_exists($_realPath) && !is_dir($_realPath)){
 			we_base_file::makeHardLink($_realPath, $this->getSitePath());
 		}
 		if(file_exists($_sitePath) && filesize($_sitePath)){
