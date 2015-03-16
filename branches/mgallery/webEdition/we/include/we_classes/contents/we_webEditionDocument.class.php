@@ -591,6 +591,7 @@ $this->TemplatePath = $path ?
 	function correctFields(){
 		// this is new for shop-variants
 		$this->correctVariantFields();
+		/*
 		$regs = array();
 		$allElements = $this->getUsedElements();
 		if(isset($allElements['textarea'])){
@@ -611,6 +612,8 @@ $this->TemplatePath = $path ?
 				$this->setElement($name, $value);
 			}
 		}
+		 * 
+		 */
 		//FIXME: it is better to use $this->getUsedElements - only we:input type="date" is not handled... => this will call the TP which is not desired since this method is called on save in frontend
 		$types = $this->getFieldTypes($this->getTemplateCode());
 
@@ -643,9 +646,80 @@ $this->TemplatePath = $path ?
 		}
 	}
 
+	function parseTextareaFields(){
+		$regs = array();
+		$allElements = $this->getUsedElements();
+		if(isset($allElements['textarea'])){
+			foreach($allElements['textarea'] as $name){
+				//Bugfix for buggy tiny implementation where internal links looked like href="/img.gif?id=123" #7210
+				$value = $this->getElement($name);
+				if(preg_match_all('|src="/[^">]+\\?id=(\\d+)"|i', $value, $regs, PREG_SET_ORDER)){
+					foreach($regs as $reg){
+						$value = str_replace($reg[0], 'src="' . we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $value);
+						$this->FileLinks[] = intval($reg[1]);
+					}
+				}
+				if(preg_match_all('|src="/[^">]+\\?thumb=(\\d+,\\d+)"|i', $value, $regs, PREG_SET_ORDER)){
+					foreach($regs as $reg){
+						$value = str_replace($reg[0], 'src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', $value);
+						$this->FileLinks[] = intval(strstr($reg[1], ',', true));
+					}
+				}
+				if(preg_match_all('|href="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)|i', $value, $regs, PREG_SET_ORDER)){
+					foreach($regs as $reg){
+						$this->FileLinks[] = intval($reg[1]);
+					}
+				}
+				$this->setElement($name, $value);
+			}
+		}
+	}
+
+	function registerFileLinks(){
+		$tmpFileLinks = array();
+		foreach($this->elements as $k => $v){
+			switch(isset($v['type']) ? $v['type'] : ''){
+				case 'audio':
+				case 'binary':
+				case 'flashmovie':
+				case 'href':
+				case 'img':
+				case 'quicktime':
+				case 'video':
+					if(isset($v['bdid']) && $v['bdid']){
+						$this->FileLinks[] = $v['bdid'];
+					}
+					break;
+				case 'link':
+					if(isset($v['dat']) && ($link = unserialize($v['dat']))){
+						if($link['type'] === 'int' && $link['id']){
+							$this->FileLinks[] = $link['id'];
+						}
+						if($link['img_id']){
+							$this->FileLinks[] = $link['img_id'];
+						}
+					}
+				default: 
+					//
+			}
+		}
+
+		if(!empty($tmpFileLinks)){
+			$whereType = 'AND ContentType IN (' . we_base_ContentTypes::APPLICATION . ', ' . we_base_ContentTypes::APPLICATION . ', ' . we_base_ContentTypes::FLASH . ', ' . we_base_ContentTypes::IMAGE . ', ' . we_base_ContentTypes::QUICKTIME . ', ' . we_base_ContentTypes::VIDEO . ')';
+			$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($tmpFileLinks)) . ') ' . $whereType);
+			while($this->DB_WE->next_record()){
+				$this->FileLinks[] = array($this->DB_WE->f('remTable'));
+			}
+		}
+
+		parent::registerFileLinks();
+	}
+
 	public function we_save($resave = 0, $skipHook = 0){
+		$this->parseTextareaFields();
 		// First off correct corupted fields
 		$this->correctFields();
+		$this->registerFileLinks();
 //FIXME: maybe use $this->getUsedElements() to unset unused elements?! add setting to do this? check rebuild!!!
 		// Bug Fix #6615
 		$this->temp_template_id = $this->TemplateID;

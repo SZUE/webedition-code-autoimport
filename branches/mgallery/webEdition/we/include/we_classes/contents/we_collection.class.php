@@ -441,7 +441,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		$this->DB_WE->query('SELECT remObj,remTable FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" ORDER BY position ASC');
 
 		$this->fileCollection = ',';
-		$this->ObjectCollection = ',';
+		$this->objectCollection = ',';
 		while($this->DB_WE->next_record()){
 			if($this->DB_WE->f('remTable') == stripTblPrefix(FILE_TABLE)){
 				$this->fileCollection .= $this->DB_WE->f('remObj') . ',';

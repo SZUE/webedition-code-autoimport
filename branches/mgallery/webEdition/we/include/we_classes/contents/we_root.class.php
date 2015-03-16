@@ -89,6 +89,8 @@ abstract class we_root extends we_class{
 	var $RestrictOwners = 0;
 	protected $LockUser = 0;
 
+	protected $FileLinks = array();
+
 	/* Constructor */
 
 	function __construct(){
@@ -1225,6 +1227,38 @@ abstract class we_root extends we_class{
 
 	function correctFields(){
 
+	}
+
+	function parseWysiwygFields(){
+
+	}
+
+	function registerFileLinks(){
+		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '"');
+
+		if(!empty($this->FileLinks)){
+			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO .'")';
+			$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->FileLinks)) . ') ' . $whereType);
+			$this->FileLinks = array();
+			while($this->DB_WE->next_record()){
+				$this->FileLinks[] = $this->DB_WE->f('ID');
+			}
+		}
+
+		if(!empty($this->FileLinks)){
+			foreach(array_unique($this->FileLinks) as $remObj){
+				$ret &= $this->DB_WE->query('INSERT INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'ID' => $this->ID,
+					'DocumentTable' => stripTblPrefix($this->Table),
+					'type' => 'image',// FIXME: change to "media"
+					'remObj' => $remObj,
+					'remTable' => stripTblPrefix(FILE_TABLE),
+					'position' => 0,
+				)));
+			}
+		}
+		
+		//FIXME: we should return $ret
 	}
 
 	public function we_republish(){
