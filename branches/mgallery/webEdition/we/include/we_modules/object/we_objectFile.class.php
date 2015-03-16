@@ -2217,7 +2217,30 @@ class we_objectFile extends we_document{
 		return parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath === '/' || strpos($this->Path, $this->RootDirPath) !== 0;
 	}
 
-	public function we_save($resave = 0, $skipHook = 0){
+	function parseTextareaFields(){
+		$regs = array();
+		foreach($this->elements as $element){
+			if($element['type'] === 'text'){
+				if(preg_match_all('|src="/[^">]+\\?id=(\\d+)"|i', $element['dat'], $regs, PREG_SET_ORDER)){
+					foreach($regs as $reg){
+						$this->FileLinks[] = intval($reg[1]);
+					}
+				}
+				if(preg_match_all('|src="/[^">]+\\?thumb=(\\d+,\\d+)"|i', $element['dat'], $regs, PREG_SET_ORDER)){
+					foreach($regs as $reg){
+						$this->FileLinks[] = intval(strstr($reg[1], ',', true));
+					}
+				}
+				if(preg_match_all('|href="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)|i', $element['dat'], $regs, PREG_SET_ORDER)){
+					foreach($regs as $reg){
+						$this->FileLinks[] = intval($reg[1]);
+					}
+				}
+			}
+		}
+	}
+
+	public function we_save($resave = 0, $skipHook = 0){t_e("save on of", $this->elements, $this);
 		if(intval($this->TableID) == 0 || $this->IsFolder){
 			return false;
 		}
@@ -2237,7 +2260,7 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
-
+		$this->parseTextareaFields();
 		$this->registerFileLinks();
 
 		if($this->canHaveVariants()){
