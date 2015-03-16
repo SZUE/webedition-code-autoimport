@@ -470,7 +470,7 @@ class we_navigation_items{
 		$this->Storage['ids'] = array();
 
 		$_pathArr = id_to_path($id, NAVIGATION_TABLE, null, false, true);
-		$_path = (isset($_pathArr[0]) ? we_base_file::clearPath($_pathArr[0] . '/%') : '');
+		$_path = we_base_file::clearPath((isset($_pathArr[0]) ? $_pathArr[0] : '') . '/%');
 
 		$_ids = array();
 
@@ -515,6 +515,7 @@ class we_navigation_items{
 		if(isset($this->Storage['ids'][$id])){
 			return $this->Storage['ids'][$id];
 		}
+
 
 		return ($this->Storage['ids'][$id] = id_to_path($id, FILE_TABLE));
 	}
