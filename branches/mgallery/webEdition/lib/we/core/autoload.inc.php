@@ -56,10 +56,6 @@ if(get_magic_quotes_gpc()) {
 
 //make we_autoloader the first autoloader
 $ret = spl_autoload_register('we_autoloader::autoload', false, true);
-//FIXME: remove workaround php 5.2
-if($ret != true){
-	spl_autoload_register('we_autoloader::autoload', true);
-}
 
 if(!defined('DATETIME_INITIALIZED')){// to prevent additional initialization if set somewhere else, i.e in we_conf.inc.php, this also allows later to make that an settings-item
 	if(!date_default_timezone_set(@date_default_timezone_get())){

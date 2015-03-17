@@ -500,20 +500,6 @@ $this->TemplatePath = $path ?
 		}
 	}
 
-	function makeBlockName($block, $field){
-		$block = str_replace('[0-9]+', '####BLOCKNR####', $block);
-		$field = str_replace('[0-9]+', '####BLOCKNR####', $field);
-		$out = preg_quote($field . 'blk_' . $block . '__') . '[0-9]+';
-		return str_replace('####BLOCKNR####', '[0-9]+', $out);
-	}
-
-	function makeLinklistName($block, $field){
-		$block = str_replace('[0-9]+', '####BLOCKNR####', $block);
-		$field = str_replace('[0-9]+', '####BLOCKNR####', $field);
-		$out = preg_quote($field . $block . '_TAGS_') . '[0-9]+';
-		return str_replace('####BLOCKNR####', '[0-9]+', $out);
-	}
-
 	public function insertAtIndex(array $only = null, array $fieldTypes = array()){
 		if($this->ContentType == we_base_ContentTypes::WEDOCUMENT){
 			$only = $this->getUsedElements(true);

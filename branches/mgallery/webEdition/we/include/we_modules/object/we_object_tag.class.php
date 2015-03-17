@@ -20,9 +20,11 @@
  *
  * @category   webEdition
  * @package none
+ * @deprecated since version 6.4.1
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_object_tag{//FIXME: check why we use class/id instead of classID/ID => causes unneeded differentiation in e.g. we:form
+class we_object_tag{//FIXME: remove in 6.6
+//FIXME: check why we use class/id instead of classID/ID => causes unneeded differentiation in e.g. we:form
 	public $DB_WE; //FIXME: change this to private in 6.5 Alpha 1!
 	var $class = '';
 	var $id = 0;
