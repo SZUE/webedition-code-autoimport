@@ -47,8 +47,6 @@ if(file_exists(WEBEDITION_PATH . 'apps/' . $tool . '/index.php')){
 		(isset($REQUEST['tab']) ? '/tab/' . intval($REQUEST['tab']) : ''));
 	exit();
 }
-switch($tool){
-	case 'weSearch':
-	case 'navigation':
+if($tool === 'weSearch'){
 		require_once(WE_INCLUDES_PATH . 'we_tools/' . $tool . '/edit_' . $tool . '_frameset.php');
 }

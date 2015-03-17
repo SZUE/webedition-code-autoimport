@@ -22,6 +22,7 @@ way to fit your requirements.
 	background-color: #efefef;
 	background: linear-gradient(#f7f7f6,#e6e6e6);/*images/menu/background.gif*/
 	margin: 0px;
+	border-bottom: 1px solid black;
 }
 
 #nav {

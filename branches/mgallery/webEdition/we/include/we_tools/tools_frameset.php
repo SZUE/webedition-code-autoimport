@@ -102,8 +102,8 @@ echo we_html_element::jsScript(JS_DIR . "keyListener.js") .
 ?>
 </head>
 <body><?php
-	echo we_html_element::htmlIFrame('navi', WE_INCLUDES_DIR . 'we_tools/tools_header.php?tool=' . $tool, 'position:absolute;top:0px;left:0px;right:0px;height:26px;', '', '', false) .
-	we_html_element::htmlIFrame('content', WE_INCLUDES_DIR . 'we_tools/tools_content.php?tool=' . $tool . ($modelid ? ('&modelid=' . $modelid) : '') . ($tab ? ('&tab=' . $tab) : ''), 'position:absolute;top:26px;left:0px;right:0px;bottom:0px;', '', '', false);
+	echo we_html_element::htmlIFrame('navi', WE_INCLUDES_DIR . 'we_tools/tools_header.php?tool=' . $tool, 'position:absolute;top:0px;left:0px;right:0px;height:21px;', '', '', false) .
+	we_html_element::htmlIFrame('content', WE_INCLUDES_DIR . 'we_tools/tools_content.php?tool=' . $tool . ($modelid ? ('&modelid=' . $modelid) : '') . ($tab ? ('&tab=' . $tab) : ''), 'position:absolute;top:21px;left:0px;right:0px;bottom:0px;border-top:1px solid #999999;', '', '', false);
 	?>
 </body>
 </html>

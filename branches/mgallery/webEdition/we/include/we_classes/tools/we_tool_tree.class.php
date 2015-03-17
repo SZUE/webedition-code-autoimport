@@ -175,14 +175,12 @@ function addSort(object){
 
 		function getHTMLContruct(){
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead(//FIXME: missing title
-								we_html_tools::getHtmlInnerHead() .
-								STYLESHEET .
-								$this->getStyles()
-						) .
-						we_html_element::htmlBody(array(
-								), '<div id="treetable"></div>'
-						)
+			we_html_element::htmlHead(//FIXME: missing title
+					we_html_tools::getHtmlInnerHead() .
+					STYLESHEET .
+					$this->getStyles()
+			) .
+			we_html_element::htmlBody(array('style' => 'height:100%'), '<div id="treetable" style="height:100%;border-right:1px solid black"></div>')
 		);
 	}
 
