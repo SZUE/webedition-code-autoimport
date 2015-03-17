@@ -21,7 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once (WE_INCLUDES_PATH . 'we_addToCollection_fn.inc.php');
 
 we_html_tools::protect();
 $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2);
