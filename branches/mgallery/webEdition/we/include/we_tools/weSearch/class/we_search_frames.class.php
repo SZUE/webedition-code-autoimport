@@ -101,6 +101,12 @@ class we_search_frames extends we_tool_frames{
 				'id' => 'tab_2', 'style' => "display:$displayEntry"
 			)));
 		}
+		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){// FIXME: add some media related perm // FIXME: g_l()
+			$we_tabs->addTab(new we_tab(
+					'#', 'Medien', '((' . $this->topFrame . '.activ_tab==5) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('5');", array(
+				'id' => 'tab_5', 'style' => "display:$displayEntry"
+			)));
+		}
 		$we_tabs->addTab(new we_tab(
 				'#', g_l('searchtool', '[advSearch]'), '((' . $this->topFrame . '.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array(
 			'id' => 'tab_3', 'style' => "display:$displayEntry"
@@ -113,36 +119,28 @@ class we_search_frames extends we_tool_frames{
 		)));
 
 		$tabsHead = $we_tabs->getHeader();
-
 		$tabNr = $this->getTab();
-
 		$activeTabJS = $this->topFrame . '.activ_tab = ' . $tabNr . ';';
-
 		$tabsHead .= we_html_element::jsElement($activeTabJS . '
-
-        function setTab(tab) {
-          switch (tab) {
-
-            // Add new tab handlers here
-
-            default: // just toggle content to show
-                parent.edbody.document.we_form.pnt.value = "edbody";
-                parent.edbody.document.we_form.tabnr.value = tab;
-                parent.edbody.submitForm();
-            break;
-          }
-          self.focus();
-          ' . $this->topFrame . '.activ_tab=tab;
-
-        }');
+function setTab(tab) {
+	switch (tab) {
+		// Add new tab handlers here
+		default: // just toggle content to show
+			parent.edbody.document.we_form.pnt.value = "edbody";
+			parent.edbody.document.we_form.tabnr.value = tab;
+			parent.edbody.submitForm();
+		break;
+	}
+	self.focus();
+	' . $this->topFrame . '.activ_tab=tab;
+}
+		');
 
 
 		$setActiveTabJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
-
 		$Text = we_search_model::getLangText($this->Model->Path, $this->Model->Text);
-
 		$body = we_html_element::htmlBody(
-						array(
+				array(
 					'id' => 'eHeaderBody',
 					'onload' => 'setFrameSize()',
 					'onresize' => 'setFrameSize()'
@@ -156,41 +154,42 @@ class we_search_frames extends we_tool_frames{
 
 	protected function getHTMLEditorBody(){
 		$body = we_html_element::htmlBody(
-						array(
-					'class' => 'weEditorBody',
-					'onkeypress' => 'javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);',
-					'onload' => 'loaded=1;setTimeout(init,200);',
-					'onresize' => 'sizeScrollContent();'
-						), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
-						we_html_element::htmlForm(
-								array(
-							'name' => 'we_form', 'onsubmit' => 'return false'
-								), $this->getHTMLProperties() . we_html_element::htmlHidden(
-										array(
-											'name' => 'predefined', 'value' => $this->Model->predefined
-								)) . we_html_element::htmlHidden(
-										array(
-											'name' => 'savedSearchName', 'value' => $this->Model->Text
+			array(
+				'class' => 'weEditorBody',
+				'onkeypress' => 'javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') search(true);',
+				'onload' => 'loaded=1;setTimeout(init,200);',
+				'onresize' => 'sizeScrollContent();'
+					), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
+					we_html_element::htmlForm(array(
+						'name' => 'we_form', 'onsubmit' => 'return false'
+							), $this->getHTMLProperties() . we_html_element::htmlHidden(
+									array(
+										'name' => 'predefined', 'value' => $this->Model->predefined
+							)) . we_html_element::htmlHidden(
+									array(
+										'name' => 'savedSearchName', 'value' => $this->Model->Text
 		))));
 
-		$whichSearch = 'DocSearch';
-
+		$whichSearch = we_search_view::SEARCH_DOCS;
 		$tabNr = $this->getTab();
 
 		switch($tabNr){
 			case 1 :
-				$whichSearch = 'DocSearch';
+				$whichSearch = we_search_view::SEARCH_DOCS;
 				break;
 			case 2 :
-				$whichSearch = 'TmplSearch';
+				$whichSearch = we_search_view::SEARCH_TMPL;
 				break;
 			case 3 :
-				$whichSearch = 'AdvSearch';
+				$whichSearch = we_search_view::SEARCH_ADV;
+				break;
+			case 5 :
+				$whichSearch = we_search_view::SEARCH_MEDIA;
 				break;
 		}
 
 		$head = we_html_element::linkElement(
-						array(
+			array(
 							'rel' => 'stylesheet',
 							'type' => 'text/css',
 							'href' => LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css',
@@ -200,8 +199,7 @@ class we_search_frames extends we_tool_frames{
 				we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js');
 
 
-		return $this->getHTMLDocument(
-						$body, $head . $this->View->getJSProperty() . $this->View->getSearchJS($whichSearch));
+		return $this->getHTMLDocument($body, $head . $this->View->getJSProperty() . $this->View->getSearchJS($whichSearch));
 	}
 
 	function getTab(){
@@ -259,6 +257,9 @@ class we_search_frames extends we_tool_frames{
 					'id' => 'tab2', 'style' => ($tabNr == 2 ? 'display: block;' : 'display: none')
 						), $this->getHTMLSearchtool($this->getHTMLTabTemplates())) .
 				we_html_element::htmlDiv(array(
+					'id' => 'tab5', 'style' => ($tabNr == 5 ? 'display: block;' : 'display: none')
+						), $this->getHTMLSearchtool($this->getHTMLTabMedia())) .
+				we_html_element::htmlDiv(array(
 					'id' => 'tab3', 'style' => ($tabNr == 3 ? 'display: block;' : 'display: none')
 						), $this->getHTMLSearchtool($this->getHTMLTabAdvanced())) .
 				we_html_element::htmlDiv(array(
@@ -283,19 +284,19 @@ class we_search_frames extends we_tool_frames{
 
 	function getHTMLTabDocuments(){
 		//parameter: search of the tab (load only search dependent model data in the view)
-		$innerSearch = 'DocSearch';
+		$innerSearch = we_search_view::SEARCH_DOCS;
 
 		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
 		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
-		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxes($innerSearch) . '</div>';
+		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogOptions($innerSearch) . '</div>';
 
 		$content = $this->View->searchProperties($innerSearch);
 		$headline = $this->View->makeHeadLines($innerSearch);
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
 
 		$_searchResult_block = '<div>
-      <div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
-      </div>';
+		<div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
+		</div>';
 
 		return array(
 			array(
@@ -319,17 +320,56 @@ class we_search_frames extends we_tool_frames{
 	}
 
 	function getHTMLTabTemplates(){
-		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector('TmplSearch') . '</div>';
-		$_searchField_block = '<div>' . $this->View->getSearchDialog('TmplSearch') . '</div>';
-		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxes('TmplSearch') . '</div>';
-		$content = $this->View->searchProperties('TmplSearch');
-		$headline = $this->View->makeHeadLines('TmplSearch');
+		$innerSearch = we_search_view::SEARCH_TMPL;
+
+		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
+		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
+		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogOptions($innerSearch) . '</div>';
+		$content = $this->View->searchProperties($innerSearch);
+		$headline = $this->View->makeHeadLines($innerSearch);
 		$foundItems = $_SESSION['weS']['weSearch']['foundItemsTmplSearch'];
 
 		$_searchResult_block = '<div>
-      <div id="parametersTop_TmplSearch">' . $this->View->getSearchParameterTop(
-						$foundItems, 'TmplSearch') . '</div>' . $this->View->tblList($content, $headline, 'TmplSearch') . '<div id="parametersBottom_TmplSearch">' . $this->View->getSearchParameterBottom($foundItems, 'TmplSearch') . '</div>
-      </div>';
+		<div id="parametersTop_' . $innerSearch . '">' . $this->View->getSearchParameterTop(
+						$foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id="parametersBottom_TmplSearch">' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
+		</div>';
+
+		return array(
+			array(
+				'headline' => g_l('searchtool', '[suchenIn]'),
+				'html' => $_searchDirChooser_block,
+				'space' => $this->_space_size
+			),
+			array(
+				'headline' => g_l('searchtool', '[text]'),
+				'html' => $_searchField_block,
+				'space' => $this->_space_size
+			),
+			array(
+				'headline' => g_l('searchtool', '[optionen]'),
+				'html' => $_searchCheckboxes_block,
+				'space' => $this->_space_size
+			),
+			array(
+				'headline' => '', 'html' => $_searchResult_block, 'space' => $this->_space_size
+		));
+	}
+
+	function getHTMLTabMedia(){
+		//parameter: search of the tab (load only search dependent model data in the view)
+		$innerSearch = we_search_view::SEARCH_MEDIA;
+
+		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
+		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
+		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogOptions($innerSearch) . '</div>';
+
+		$content = $this->View->searchProperties($innerSearch);
+		$headline = $this->View->makeHeadLines($innerSearch);
+		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
+
+		$_searchResult_block = '<div>
+		<div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
+		</div>';
 
 		return array(
 			array(

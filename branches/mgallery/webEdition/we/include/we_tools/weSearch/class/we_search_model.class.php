@@ -59,6 +59,7 @@ class we_search_model extends we_tool_model{
 	 */
 	var $searchstartDocSearch = 0;
 	var $searchstartTmplSearch = 0;
+	var $searchstartMediaSearch = 0;
 	var $searchstartAdvSearch = 0;
 
 	/**
@@ -66,6 +67,7 @@ class we_search_model extends we_tool_model{
 	 */
 	var $searchDocSearch = array();
 	var $searchTmplSearch = array();
+	var $searchMediaSearch = array();
 	var $searchAdvSearch = array();
 
 	/**
@@ -73,6 +75,7 @@ class we_search_model extends we_tool_model{
 	 */
 	var $locationDocSearch = array();
 	var $locationTmplSearch = array();
+	var $locationMediaSearch = array();
 	var $locationAdvSearch = array();
 
 	/**
@@ -89,6 +92,14 @@ class we_search_model extends we_tool_model{
 	var $searchForContentTmplSearch = 0;
 
 	/**
+	 * @var tinyint: flag that shows what you are searching for in the mediaearch
+	 */
+	var $searchForTextMediaSearch = 1;
+	var $searchForTitleMediaSearch = 0;
+	var $searchForContentMediaSearch = 0;
+	public $searchForLinkedMediaSearch = 'both';// FIXME: make setter/getter and set private
+
+	/**
 	 * @var array: shows which tables you have to search in in the advsearch
 	 */
 	var $search_tables_advSearch = array();
@@ -98,12 +109,14 @@ class we_search_model extends we_tool_model{
 	 */
 	var $folderIDDoc;
 	var $folderIDTmpl;
+	var $folderIDMedia;
 
 	/**
 	 * @var tinyint: flag that shows what view is set in each search
 	 */
 	var $setViewDocSearch = 0;
 	var $setViewTmplSearch = 0;
+	var $setViewMediaSearch = 0;
 	var $setViewAdvSearch = 0;
 
 	/**
@@ -111,6 +124,7 @@ class we_search_model extends we_tool_model{
 	 */
 	var $anzahlDocSearch = 10;
 	var $anzahlTmplSearch = 10;
+	var $anzahlMediaSearch = 10;
 	var $anzahlAdvSearch = 10;
 
 	/**
@@ -118,6 +132,7 @@ class we_search_model extends we_tool_model{
 	 */
 	var $OrderDocSearch = "Text";
 	var $OrderTmplSearch = "Text";
+	var $OrderMediaSearch = "Text";
 	var $OrderAdvSearch = "Text";
 
 	/**
@@ -125,6 +140,7 @@ class we_search_model extends we_tool_model{
 	 */
 	var $searchFieldsDocSearch = array();
 	var $searchFieldsTmplSearch = array();
+	var $searchFieldsMediaSearch = array();
 	var $searchFieldsAdvSearch = array();
 	var $activTab = 1;
 

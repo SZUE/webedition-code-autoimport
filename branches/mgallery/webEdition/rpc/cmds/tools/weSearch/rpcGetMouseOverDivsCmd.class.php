@@ -49,7 +49,7 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 				$code = we_search_view::makeMouseOverDivs($x, $content, $whichsearch);
 				break;
 			default:
-			case we_we_search_view::VIEW_LIST:
+			case we_search_view::VIEW_LIST:
 				$code = "";
 		}
 

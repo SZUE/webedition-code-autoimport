@@ -25,6 +25,10 @@
 class we_search_view{
 	const VIEW_LIST = 'list';
 	const VIEW_ICONS = 'icons';
+	const SEARCH_DOCS = 'DocSearch';
+	const SEARCH_MEDIA = 'MediaSearch';
+	const SEARCH_TMPL = 'TmplSearch';
+	const SEARCH_ADV = 'AdvSearch';
 
 	var $Model;
 	var $toolName;
@@ -412,13 +416,16 @@ if (' . $this->editorBodyFrame . '.loaded) {
 				'');
 
 		switch($whichSearch){
-			case "DocSearch" :
+			case self::SEARCH_DOCS :
 				$anzahl = $this->Model->anzahlDocSearch;
 				break;
-			case "TmplSearch" :
+			case self::SEARCH_TMPL :
 				$anzahl = $this->Model->anzahlTmplSearch;
 				break;
-			case "AdvSearch" :
+			case self::SEARCH_MEDIA :
+				$anzahl = $this->Model->anzahlMediaSearch;
+				break;
+			case self::SEARCH_ADV :
 				$anzahl = $this->Model->anzahlAdvSearch;
 				break;
 			default:
@@ -484,7 +491,7 @@ function search(newSearch) {
 					we_message_reporting::getShowMessageCall(g_l('searchtool', '[noTempTableRightsSearch]'), we_message_reporting::WE_MESSAGE_NOTICE) : '
 
 		var Checks = new Array();
-		' . ($whichSearch === "AdvSearch" ? '
+		' . ($whichSearch === self::SEARCH_ADV ? '
 
 		var m = 0;
 		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
@@ -499,7 +506,7 @@ function search(newSearch) {
 		if(Checks.length==0) {' .
 						we_message_reporting::getShowMessageCall(g_l('searchtool', '[nothingCheckedAdv]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 		}' : '') .
-					($whichSearch === "DocSearch" ? '
+					($whichSearch === self::SEARCH_DOCS ? '
 		var m = 0;
 		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
 			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
@@ -513,7 +520,21 @@ function search(newSearch) {
 		if(Checks.length==0) {' .
 						we_message_reporting::getShowMessageCall(g_l('searchtool', '[nothingCheckedTmplDoc]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 		}' : '') .
-					($whichSearch === "TmplSearch" ? '
+					($whichSearch === self::SEARCH_MEDIA ? '
+		var m = 0;
+		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
+			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
+			if(table=="searchForTextMediaSearch" || table=="searchForTitleMediaSearch" || table=="searchForContentMediaSearch") {
+				if(encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
+					Checks[m] = encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+					m++;
+				}
+			}
+		}
+		if(Checks.length==0) {' .
+						we_message_reporting::getShowMessageCall(g_l('searchtool', '[nothingCheckedTmplMedia]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+		}' : '') .
+					($whichSearch === self::SEARCH_TMPL ? '
 		var m = 0;
 		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
 			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
@@ -539,9 +560,14 @@ function makeAjaxRequestDoclist() {
  getMouseOverDivs();
  var args = "";
  var newString = "";
- for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
+ for(var i = 0, elem; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
+	elem = ' . $this->editorBodyFrame . '.document.we_form.elements[i];
+	if(elem.type === "radio" && !elem.checked){
+		continue;
+	}
+	
+	newString = elem.name;
+	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(elem.value);
  }
  ' . $this->editorBodyFrame . '.document.getElementById("scrollContent_' . $whichSearch . '").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
  YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchResult&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
@@ -1295,15 +1321,19 @@ function calendarSetup(x){
 			$searchstart = $_SESSION['weS']['weSearch']['searchstart' . $whichSearch];
 		} else {
 			switch($whichSearch){
-				case "DocSearch" :
+				case self::SEARCH_DOCS :
 					$anzahl = $this->Model->anzahlDocSearch;
 					$searchstart = $this->Model->searchstartDocSearch;
 					break;
-				case "TmplSearch" :
+				case self::SEARCH_TMPL :
 					$anzahl = $this->Model->anzahlTmplSearch;
 					$searchstart = $this->Model->searchstartTmplSearch;
 					break;
-				case "AdvSearch" :
+				case self::SEARCH_MEDIA :
+					$anzahl = $this->Model->anzahlMediaSearch;
+					$searchstart = $this->Model->searchstartMediaSearch;
+					break;
+				case self::SEARCH_ADV :
 					$anzahl = $this->Model->anzahlAdvSearch;
 					$searchstart = $this->Model->searchstartAdvSearch;
 					break;
@@ -1361,7 +1391,7 @@ function calendarSetup(x){
 		return we_html_tools::getPixel(11, 8);
 	}
 
-	function getSearchDialogCheckboxes($whichSearch){
+	function getSearchDialogOptions($whichSearch){
 
 		$_table = new we_html_table(
 			array(
@@ -1373,18 +1403,24 @@ function calendarSetup(x){
 			), 4, 2);
 
 		switch($whichSearch){
-			case "DocSearch" :
+			case self::SEARCH_DOCS :
 				$_table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextDocSearch ? true : false, "searchForTextDocSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-
 				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleDocSearch ? true : false, "searchForTitleDocSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
-
 				$_table->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentDocSearch ? true : false, "searchForContentDocSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
-
 				break;
-			case "TmplSearch" :
+			case self::SEARCH_TMPL :
 				$_table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextTmplSearch ? true : false, "searchForTextTmplSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-
 				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentTmplSearch ? true : false, "searchForContentTmplSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				break;
+			case self::SEARCH_MEDIA :
+				$_table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextMediaSearch ? true : false, "searchForTextMediaSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleMediaSearch ? true : false, "searchForTitleMediaSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$_table->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentMediaSearch ? true : false, "searchForContentMediaSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+
+				$radio = we_html_forms::radiobutton("linked", $this->Model->searchForLinkedMediaSearch === 'linked' ? 1 : 0, "searchForLinkedMediaSearch", 'nur verlinkte Medien suchen') .
+				we_html_forms::radiobutton("notlinked", $this->Model->searchForLinkedMediaSearch === 'notlinked' ? 1 : 0, "searchForLinkedMediaSearch", 'nur unverlinkte Medien suchen') .
+				we_html_forms::radiobutton("both", $this->Model->searchForLinkedMediaSearch !== 'linked' && $this->Model->searchForLinkedMediaSearch !== 'notlinked'? 1 : 0, "searchForLinkedMediaSearch", 'verlinkte und unverlinkte Medien suchen');
+				$_table->setCol(3, 0, array(), $radio);
 
 				break;
 		}
@@ -1561,7 +1597,7 @@ function calendarSetup(x){
 	function getSearchDialog($whichSearch){
 
 		switch($whichSearch){
-			case "DocSearch" :
+			case self::SEARCH_DOCS :
 				$this->Model->locationDocSearch = (($op = we_base_request::_(we_base_request::STRING, "locationDocSearch")) ?
 						$op :
 						array("CONTAIN"));
@@ -1574,32 +1610,25 @@ function calendarSetup(x){
 				if($this->Model->searchForTextDocSearch){
 					$this->Model->searchFieldsDocSearch[] = "Text";
 				}
-
 				if($this->Model->searchForTitleDocSearch){
 					$this->Model->searchFieldsDocSearch[] = "Title";
 				}
-
 				if($this->Model->searchForContentDocSearch){
 					$this->Model->searchFieldsDocSearch[] = "Content";
 				}
-
 				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && we_base_request::_(we_base_request::INT, "tab") == 1){
 					$this->Model->searchDocSearch[0] = ($_SESSION['weS']['weSearch']["keyword"]);
 					if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
 						$this->Model->searchDocSearch[0] = utf8_encode($this->Model->searchDocSearch[0]);
 					}
-
 					unset($_SESSION['weS']['weSearch']["keyword"]);
 				}
-
 				if(!is_array($this->Model->searchDocSearch)){
 					$this->Model->searchDocSearch = unserialize($this->Model->searchDocSearch);
 				}
-
 				$searchInput = we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchDocSearch) && is_array($this->Model->searchDocSearch) && isset($this->Model->searchDocSearch[0]) ? $this->Model->searchDocSearch[0] : ''), "", "", "search", 380);
-
 				break;
-			case "TmplSearch" :
+			case self::SEARCH_TMPL :
 				$this->Model->locationTmplSearch = (($op = we_base_request::_(we_base_request::STRING, "locationTmplSearch")) ?
 						$op :
 						array("CONTAIN"));
@@ -1612,11 +1641,9 @@ function calendarSetup(x){
 				if($this->Model->searchForTextTmplSearch){
 					$this->Model->searchFieldsTmplSearch[] = "Text";
 				}
-
 				if($this->Model->searchForContentTmplSearch){
 					$this->Model->searchFieldsTmplSearch[] = "Content";
 				}
-
 				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && we_base_request::_(we_base_request::INT, "tab") == 2){
 					$this->Model->searchTmplSearch[0] = $_SESSION['weS']['weSearch']["keyword"];
 					if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
@@ -1624,13 +1651,45 @@ function calendarSetup(x){
 					}
 					unset($_SESSION['weS']['weSearch']["keyword"]);
 				}
-
 				if(!is_array($this->Model->searchTmplSearch)){
 					$this->Model->searchTmplSearch = unserialize($this->Model->searchTmplSearch);
 				}
-
 				$searchInput = we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchTmplSearch) && is_array($this->Model->searchTmplSearch) && isset($this->Model->searchTmplSearch[0]) ? $this->Model->searchTmplSearch[0] : ''), "", "", "search", 380);
+				break;
 
+			case self::SEARCH_MEDIA :
+				$this->Model->locationMediaSearch = (($op = we_base_request::_(we_base_request::STRING, "locationMediaSearch")) ?
+						$op :
+						array("CONTAIN"));
+
+				$this->Model->searchFieldsMediaSearch = array();
+				$locationName = "locationMediaSearch[0]";
+				$searchTextName = "searchMediaSearch[0]";
+				$searchTables = "search_tables_MediaSearch[" . FILE_TABLE . "]";
+
+				if($this->Model->searchForTextMediaSearch){
+					$this->Model->searchFieldsMediaSearch[] = "Text";
+				}
+				if($this->Model->searchForTitleMediaSearch){
+					$this->Model->searchFieldsMediaSearch[] = "Title";
+				}
+				if($this->Model->searchForContentMediaSearch){
+					$this->Model->searchFieldsMediaSearch[] = "Content";
+				}
+
+				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && we_base_request::_(we_base_request::INT, "tab") == 1){
+					$this->Model->searchMediaSearch[0] = ($_SESSION['weS']['weSearch']["keyword"]);
+					if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
+						$this->Model->searchMediaSearch[0] = utf8_encode($this->Model->searchMediaSearch[0]);
+					}
+					unset($_SESSION['weS']['weSearch']["keyword"]);
+				}
+
+				if(!is_array($this->Model->searchMediaSearch)){
+					$this->Model->searchMediaSearch = unserialize($this->Model->searchMediaSearch);
+				}
+
+				$searchInput = we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchMediaSearch) && is_array($this->Model->searchMediaSearch) && isset($this->Model->searchMediaSearch[0]) ? $this->Model->searchMediaSearch[0] : ''), "", "", "search", 380);
 				break;
 		}
 
@@ -1671,7 +1730,7 @@ function calendarSetup(x){
 			}
 
 			switch($whichSearch){
-				case 'DocSearch':
+				case self::SEARCH_DOCS:
 					$_tables[0] = FILE_TABLE;
 					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDDoc');
 					foreach(we_base_request::_(we_base_request::RAW, 'we_cmd') as $k => $v){
@@ -1690,7 +1749,7 @@ function calendarSetup(x){
 						}
 					}
 					break;
-				case 'TmplSearch':
+				case self::SEARCH_TMPL:
 					$_tables[0] = TEMPLATES_TABLE;
 					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDTmpl');
 					foreach(we_base_request::_(we_base_request::RAW, 'we_cmd') as $k => $v){
@@ -1700,6 +1759,25 @@ function calendarSetup(x){
 									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Text';
 									break;
 								case 'searchForContentTmplSearch':
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Content';
+									break;
+							}
+						}
+					}
+					break;
+				case self::SEARCH_MEDIA:
+					$_tables[0] = FILE_TABLE;
+					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDDoc');
+					foreach(we_base_request::_(we_base_request::RAW, 'we_cmd') as $k => $v){
+						if(is_string($v) && $v == 1){
+							switch($k){
+								case 'searchForTextMediaSearch':
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Text';
+									break;
+								case 'searchForTitleMediaSearch':
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Title';
+									break;
+								case 'searchForContentMediaSearch':
 									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Content';
 									break;
 							}
@@ -1735,6 +1813,7 @@ function calendarSetup(x){
 			$searchFields = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'searchFields' . $whichSearch);
 			$location = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'location' . $whichSearch);
 			$searchText = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch); //allow to search for tags
+			t_e("st", $searchText, we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch));
 			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'Order' . $whichSearch);
 			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', self::VIEW_LIST, 'setView' . $whichSearch);
 
@@ -1744,7 +1823,7 @@ function calendarSetup(x){
 			$obj = $this->Model;
 
 			switch($whichSearch){
-				case 'DocSearch':
+				case self::SEARCH_DOCS:
 					$obj->searchstartDocSearch = we_base_request::_(we_base_request::STRING, "searchstartDocSearch", $obj->searchstartDocSearch);
 					$_table = FILE_TABLE;
 					$_tables[0] = $_table;
@@ -1756,13 +1835,11 @@ function calendarSetup(x){
 					$_view = $obj->setViewDocSearch;
 					$_searchstart = $obj->searchstartDocSearch;
 					$_anzahl = $obj->anzahlDocSearch;
-
 					break;
-				case 'TmplSearch':
+				case self::SEARCH_TMPL:
 					$obj->searchstartTmplSearch = we_base_request::_(we_base_request::INT, "searchstartTmplSearch", $obj->searchstartTmplSearch);
 					$_table = TEMPLATES_TABLE;
 					$_tables[0] = $_table;
-
 					$searchFields = $obj->searchFieldsTmplSearch;
 					$searchText = $obj->searchTmplSearch;
 					$location = $obj->locationTmplSearch;
@@ -1772,7 +1849,20 @@ function calendarSetup(x){
 					$_searchstart = $obj->searchstartTmplSearch;
 					$_anzahl = $obj->anzahlTmplSearch;
 					break;
-				case 'AdvSearch':
+				case self::SEARCH_MEDIA:
+					$obj->searchstartMediaSearch = we_base_request::_(we_base_request::STRING, "searchstartMediaSearch", $obj->searchstartMediaSearch);
+					$_table = FILE_TABLE;
+					$_tables[0] = $_table;
+					$searchFields = $obj->searchFieldsMediaSearch;
+					$searchText = $obj->searchMediaSearch;
+					$location = $obj->locationMediaSearch;
+					$folderID = $obj->folderIDMedia;
+					$_order = $obj->OrderMediaSearch;
+					$_view = $obj->setViewMediaSearch;
+					$_searchstart = $obj->searchstartMediaSearch;
+					$_anzahl = $obj->anzahlMediaSearch;
+					break;
+				case self::SEARCH_ADV:
 					$obj->searchstartAdvSearch = we_base_request::_(we_base_request::INT, "searchstartAdvSearch", $obj->searchstartAdvSearch);
 					if(!($obj->searchFieldsAdvSearch)){
 						$obj->searchFieldsAdvSearch = array("ID");
@@ -1824,7 +1914,7 @@ function calendarSetup(x){
 				$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = count($_result);
 			}
 		} elseif(
-			($obj->IsFolder != 1 && ( ($whichSearch === 'DocSearch' && $tab === 1) || ($whichSearch === 'TmplSearch' && $tab === 2) || ($whichSearch === 'AdvSearch' && $tab === 3)) ) ||
+			($obj->IsFolder != 1 && ( ($whichSearch === self::SEARCH_DOCS && $tab === 1) || ($whichSearch === self::SEARCH_TMPL && $tab === 2) || ($whichSearch === self::SEARCH_ADV && $tab === 3)) || ($whichSearch === self::SEARCH_MEDIA && $tab === 5) ) ||
 			(we_base_request::_(we_base_request::INT, 'cmdid')) ||
 			(($view = we_base_request::_(we_base_request::STRING, 'view')) === "GetSearchResult" || $view === "GetMouseOverDivs")
 		){
@@ -1834,7 +1924,7 @@ function calendarSetup(x){
 				return;
 			}
 			$this->searchclass->createTempTable();
-			$op = ($whichSearch === "AdvSearch" ? ' AND ' : ' OR ');
+			$op = ($whichSearch === self::SEARCH_ADV ? ' AND ' : ' OR ');
 
 			foreach($_tables as $_table){
 				$where = '';
@@ -1847,7 +1937,7 @@ function calendarSetup(x){
 				for($i = 0; $i < count($searchFields); $i++){
 					$w = '';
 					if(isset($searchText[0])){
-						$searchString = ($whichSearch === 'AdvSearch' && isset($searchText[$i]) ?
+						$searchString = ($whichSearch === self::SEARCH_ADV && isset($searchText[$i]) ?
 								($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8" ? utf8_encode($searchText[$i]) : $searchText[$i]) :
 								($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8" ? utf8_encode($searchText[0]) : $searchText[0]));
 					}
@@ -1856,7 +1946,7 @@ function calendarSetup(x){
 							$searchString = str_replace(array('\\', '_', '%'), array('\\\\', '\_', '\%'), $searchString);
 						}
 
-						if($whichSearch === "AdvSearch" && isset($location[$i])){
+						if($whichSearch === self::SEARCH_ADV && isset($location[$i])){
 							switch($searchFields[$i]){
 								case "Content":
 								case "Status":
@@ -2315,7 +2405,7 @@ function calendarSetup(x){
 		} else {
 
 			switch($whichSearch){
-				case "DocSearch" :
+				case self::SEARCH_DOCS :
 					$_view = $this->Model->setViewDocSearch;
 					$view = "setViewDocSearch";
 					$_order = $this->Model->OrderDocSearch;
@@ -2324,7 +2414,7 @@ function calendarSetup(x){
 					$anzahl = "anzahlDocSearch";
 					$searchstart = "searchstartDocSearch";
 					break;
-				case "TmplSearch" :
+				case self::SEARCH_TMPL :
 					$_view = $this->Model->setViewTmplSearch;
 					$view = "setViewTmplSearch";
 					$_order = $this->Model->OrderTmplSearch;
@@ -2333,7 +2423,16 @@ function calendarSetup(x){
 					$anzahl = "anzahlTmplSearch";
 					$searchstart = "searchstartTmplSearch";
 					break;
-				case "AdvSearch" :
+				case self::SEARCH_MEDIA :
+					$_view = $this->Model->setViewMediaSearch;
+					$view = "setViewMediaSearch";
+					$_order = $this->Model->OrderMediaSearch;
+					$order = "OrderMediaSearch";
+					$_anzahl = $this->Model->anzahlMediaSearch;
+					$anzahl = "anzahlMediaSearch";
+					$searchstart = "searchstartMediaSearch";
+					break;
+				case self::SEARCH_ADV :
 					$_view = $this->Model->setViewAdvSearch;
 					$view = "setViewAdvSearch";
 					$_order = $this->Model->OrderAdvSearch;
@@ -2372,7 +2471,7 @@ function calendarSetup(x){
 		$resetButton = (permissionhandler::hasPerm('RESET_VERSIONS') && $whichSearch === "AdvSearch" ?
 				we_html_button::create_button("reset", "javascript:resetVersions();", true, 100, 22, "", "") :
 				'');
-		if(permissionhandler::hasPerm('PUBLISH') && ($whichSearch === "AdvSearch" || $whichSearch === "DocSearch")){
+		if(permissionhandler::hasPerm('PUBLISH') && ($whichSearch === self::SEARCH_ADV || $whichSearch === self::SEARCH_DOCS)){
 			$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all_" . $whichSearch, "", false, "middlefont", "checkAllPubChecks('" . $whichSearch . "')");
 			$publishButton = we_html_button::create_button("publish", "javascript:publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
 		} else {
@@ -2583,13 +2682,16 @@ function calendarSetup(x){
 		$view = 0;
 
 		switch($whichSearch){
-			case "DocSearch" :
+			case self::SEARCH_DOCS :
 				$view = $this->Model->setViewDocSearch;
 				break;
-			case "TmplSearch" :
+			case self::SEARCH_TMPL :
 				$view = $this->Model->setViewTmplSearch;
 				break;
-			case "AdvSearch" :
+			case self::SEARCH_DOCS :
+				$view = $this->Model->setViewMediaSearch;
+				break;
+			case self::SEARCH_ADV :
 				$view = $this->Model->setViewAdvSearch;
 				break;
 			// for doclistsearch
@@ -2773,14 +2875,15 @@ function calendarSetup(x){
 
 	function getDirSelector($whichSearch){
 		switch($whichSearch){
-			case "DocSearch" :
+			case self::SEARCH_DOCS :
+			case self::SEARCH_MEDIA :
 				$folderID = "folderIDDoc";
 				$folderPath = "folderPathDoc";
 				$table = FILE_TABLE;
 				$pathID = $this->Model->folderIDDoc;
 				$ACname = "docu";
 				break;
-			case "TmplSearch" :
+			case self::SEARCH_TMPL :
 				$folderID = "folderIDTmpl";
 				$folderPath = "folderPathTmpl";
 				$table = TEMPLATES_TABLE;
