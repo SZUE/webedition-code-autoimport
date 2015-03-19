@@ -623,16 +623,15 @@ top.content.hloaded = 1;
 		if(isset($_REQUEST["mid"]) && $_REQUEST["mid"]){
 			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][overview]'), we_tab::ACTIVE, "//"));
 		} else {
-			if($resultD && $resultO){ //docs and objects
-				$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_1]'), we_tab::ACTIVE, "setTab(0);"));
-				$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_2]'), we_tab::NORMAL, "setTab(1);"));
-			} elseif($resultD && !$resultO){ // docs but no objects
-				$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_1]'), we_tab::NORMAL, "setTab(0);"));
-			} elseif(!$resultD && $resultO){ // no docs but objects
-				$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_2]'), we_tab::NORMAL, "setTab(1);"));
-			}
-			if(isset($yearTrans) && $yearTrans != 0){
-				$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_3]'), we_tab::NORMAL, "setTab(2);"));
+			switch(true){
+				default:
+				case ($resultD):
+					$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_1]'), we_tab::ACTIVE, "setTab(0);"));
+				case ($resultO):
+					$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_2]'), ($resultD ? we_tab::NORMAL : we_tab::ACTIVE), "setTab(1);"));	
+				case (isset($yearTrans) && $yearTrans != 0):
+					$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_3]'), we_tab::NORMAL, "setTab(2);"));
+					break;
 			}
 		}
 		$we_tabs->onResize();

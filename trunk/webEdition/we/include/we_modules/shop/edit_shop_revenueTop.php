@@ -109,7 +109,20 @@ echo we_html_tools::getHtmlTop() .
 		}
 	}
 
-') . '
+') . we_html_element::jsElement('
+	function we_cmd() {
+		switch (arguments[0]) {
+			case "openOrder": //TODO: check this adress: mit oder ohne tree? Bisher: left
+				if(top.content.tree.window.doClick) {
+					top.content.tree.window.doClick(arguments[1], arguments[2], arguments[3]);//TODO: check this adress
+				}
+				break;
+			default: // not needed yet
+				break;
+		}
+	}
+
+'). '
 <style type="text/css">
 	table.revenueTable {
 		border-collapse: collapse;
@@ -184,8 +197,8 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 		$orderData = (($serialOrder = $DB_WE->f('strSerialOrder')) ? unserialize($serialOrder) : array());
 		
 		
-		$netPrice = $orderData['we_shopPriceIsNet'] ? $DB_WE->f('Price') :  ($DB_WE->f('Price')/(1+(intval($shopArticleObject['shopvat'])/100)));
-		$grosPrice = $orderData['we_shopPriceIsNet'] ? ($DB_WE->f('Price')*(1+(intval($shopArticleObject['shopvat'])/100))) : $DB_WE->f('Price');
+		$netPrice = $orderData['we_shopPriceIsNet'] ? $DB_WE->f('Price') :  ($DB_WE->f('Price')/(1+(floatval($shopArticleObject['shopvat'])/100)));
+		$grosPrice = $orderData['we_shopPriceIsNet'] ? ($DB_WE->f('Price')*(1+(floatval($shopArticleObject['shopvat'])/100))) : $DB_WE->f('Price');
 
 		$priceToShow = $orderData['we_shopCalcVat'] ? $grosPrice : $netPrice;
 		$articleSum = $DB_WE->f('IntQuantity')*$priceToShow;
@@ -352,7 +365,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 
 		$variantStr = '';
 		if(isset($articleData['WE_VARIANT']) && $articleData['WE_VARIANT']){
-			$variantStr = '<br />' . g_l('modules_shop', '[variant]') . ': ' . $articleData['WE_VARIANT'];
+			$variantStr = '<br /><strong>' . g_l('modules_shop', '[variant]') . ': ' . $articleData['WE_VARIANT'].'</strong>';
 		}
 
 		$customFields = '';
@@ -364,7 +377,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 		}
 
 		$content[] = array(
-			array('dat' => $orderRow['IntOrderID']),
+			array('dat' => '<a href="javascript:we_cmd(\'openOrder\','.$orderRow['IntOrderID'].',\'shop\',\''.SHOP_TABLE.'\');">'.$orderRow['IntOrderID'].'</a>'),
 			array('dat' => $orderRow[WE_SHOP_TITLE_FIELD_NAME] . '<span class="small">' . $variantStr . ' ' . $customFields . '</span>'),
 			array('dat' => $orderRow['IntQuantity']),
 			array('dat' => we_util_Strings::formatNumber($orderRow['Price']) . $waehr),
