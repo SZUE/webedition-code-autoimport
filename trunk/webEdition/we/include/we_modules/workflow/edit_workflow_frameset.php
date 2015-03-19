@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,10 +22,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-$protect = we_base_moduleInfo::isActive('workflow') && we_users_util::canEditModule('workflow') ? null : array(false);
+$what = we_base_request::_(we_base_request::STRING, 'pnt', 'frameset');
+//protect, but not, if call on document
+$protect = we_base_moduleInfo::isActive('workflow') && ($what === 'log' || we_users_util::canEditModule('workflow')) ? null : array(false);
 we_html_tools::protect($protect);
 
-$what = we_base_request::_(we_base_request::RAW, 'pnt','frameset');
 $mode = we_base_request::_(we_base_request::INT, 'art', 0);
 $type = we_base_request::_(we_base_request::INTLIST, 'type', 0);
 
