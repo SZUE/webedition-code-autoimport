@@ -178,9 +178,7 @@ if(isset($daten)){
 				explode(",", $shopConfig[3]) : //determine more than just one class-ID
 				array(0));
 				
-		$selVal = we_base_request::_(we_base_request::STRING, $select_name);
-		
-		t_e('warning','selVal',$selVal);	
+		$selVal = we_base_request::_(we_base_request::STRING, $select_name);	
 
 		$menu = '<label for="' . $select_name . '">' . $label . '</label>'."\n";
 		$menu .= '<select name="' . $select_name . '" onchange="document.location.href=\'' . $_SERVER['SCRIPT_NAME'] . '?typ=object&ViewClass=\' + this.options[this.selectedIndex].value ">'."\n";
