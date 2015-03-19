@@ -58,6 +58,7 @@ weSearch = {
 	elem: null,
 
 	init: function(we_const, conf, g_l){top.console.debug("running");
+		/*
 		this.we_const = we_const;
 		this.conf = conf;
 		this.g_l = g_l;
@@ -69,6 +70,7 @@ weSearch = {
 				this.init();
 			}, 10);
 		}
+		*/
 
 		document.onmousemove = this.updateElem();
 	},
@@ -313,7 +315,7 @@ weSearch = {
 			deleteArrow, arrow, foo;
 
 		for(var i=0; i < columns.length;i++) {
-			if(order != columns[i]) {
+			if(order !== columns[i]) {
 				deleteArrow = document.getElementById(columns[i] + '_' + whichSearch);
 				deleteArrow.innerHTML = '';
 			}
@@ -321,7 +323,7 @@ weSearch = {
 		arrow = document.getElementById(order + '_' + whichSearch);
 		foo = document.we_form.elements['Order' + whichSearch].value;
 
-		if(order + ' DESC' == foo){
+		if(order + ' DESC' === foo){
 			document.we_form.elements['Order' + whichSearch].value=order;
 			arrow.innerHTML = '<img border="0" width="11" height="8" src="' + this.we_const.IMAGE_DIR + 'arrow_sort_asc.gif" />';
 		}else{
@@ -378,11 +380,7 @@ weSearch = {
 			cell.innerHTML = '<input type="hidden" value="" name="hidden_searchFieldsAdvSearch[' + this.conf.rows + ']" value="">' + this.elems.searchFields.replace(/__we_new_id__/g, this.conf.rows);
 			newRow.appendChild(cell);
 
-			cell = document.createElement('TD');
-			cell.setAttribute('id', 'td_locationAdvSearch[' + this.conf.rows + ']');
-			cell.innerHTML = this.elems.selLocation.replace(/__we_new_id__/g, this.conf.rows);
-			newRow.appendChild(cell);
-
+			newRow.appendChild(this.getCell('locationAdvSearch', this.conf.rows));
 			newRow.appendChild(this.getCell('searchAdvSearch', this.conf.rows));
 			newRow.appendChild(this.getCell('delButton', this.conf.rows));
 
@@ -397,12 +395,17 @@ weSearch = {
 			case 'delButton':
 				cell.setAttribute('id', 'td_delButton[' + rowID + ']');
 				cell.innerHTML = this.elems.btnTrash.replace(/__we_new_id__/g, rowID);
-				return cell;
+				break;
 			case 'searchAdvSearch':
 				cell.setAttribute('id', 'td_searchAdvSearch[' + rowID + ']');
 				cell.innerHTML = this.elems.fieldSearch.replace(/__we_new_id__/g, rowID).replace(/__we_read_only__/g, arguments[2] ? 'readonly="1" ' : '');
-				return cell;
+				break;
+			case 'locationAdvSearch':
+				cell.setAttribute("id", "td_locationAdvSearch[" + rowID + "]");
+				cell.innerHTML = this.elems.selLocation.replace(/__we_new_id__/g, rowID);
+				break;
 		}
+		return cell;
 		
 	},
 
@@ -429,8 +432,6 @@ weSearch = {
 
 		var setValue = document.getElementsByName('searchAdvSearch[' + rowNr + ']')[0].value;
 		var from = document.getElementsByName('hidden_searchFieldsAdvSearch[' + rowNr + ']')[0].value;
-		var searchFields = this.elems.searchFields;
-		var locationFields = this.elems.selLocation;
 		var row = document.getElementById('filterRow_' + rowNr);
 		var locationTD = document.getElementById('td_locationAdvSearch[' + rowNr + ']');
 		var searchTD = document.getElementById('td_searchAdvSearch[' + rowNr + ']');
@@ -560,13 +561,7 @@ weSearch = {
 			case 'ModDate':
 
 				row.removeChild(locationTD);
-				locationFields = this.elems.selLocation;
-	
-				var cell = document.createElement("TD");
-				cell.setAttribute("id", "td_locationAdvSearch["+rowNr+"]");
-				cell.innerHTML = this.elems.selLocation.replace(/__we_new_id__/g,rowNr);
-				row.appendChild(cell);
-
+				row.appendChild(this.getCell('locationAdvSearch', rowNr));
 				row.removeChild(searchTD);
 
 				// FIXME: move datepicker-button to search_view
@@ -635,17 +630,8 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				cell = document.createElement("TD");
-				cell.setAttribute("id", "td_locationAdvSearch["+rowNr+"]");
-				cell.innerHTML=this.elems.selFields.replace(/__we_new_id__/g,rowNr);
-				row.appendChild(cell);
-
-				cell = document.createElement("TD");
-				cell.setAttribute("id", "td_locationAdvSearch["+rowNr+"]");
-				cell.innerHTML = this.elems.selLocation.replace(/__we_new_id__/g,rowNr);
-				row.appendChild(cell);
-
-				row.appendChild(this.getCell('searchAdvSearch', this.conf.rows));
+				row.appendChild(this.getCell('locationAdvSearch', rowNr));
+				row.appendChild(this.getCell('searchAdvSearch', rowNr));
 				row.appendChild(this.getCell('delButton', rowNr));
 
 				document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
@@ -842,7 +828,7 @@ weSearch = {
 	calendarSetup: function(x){
 		for(i=0;i<x;i++) {
 			if(document.getElementById("date_picker_from"+i+"") != null) {
-				Calendar.setup({inputField:"searchAdvSearch["+i+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+i+"",align:"Tl",singleClick:true});
+				//Calendar.setup({inputField:"searchAdvSearch["+i+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+i+"",align:"Tl",singleClick:true});
 			}
 		}
 	}

@@ -455,9 +455,9 @@ weSearch.elems = {
 	selSpeicherart: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]"))) . '\',
 	selLocation: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]"))) . '\',
 	selModFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchAdvSearch[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]"))) . '\',
-	selUsers: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchAdvSearch[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]"))) . '\'
-	pixel: "' . addslashes(we_html_tools::getPixel(5, 4)) . '",
-	searchFields: \'' . str_replace(array("\n", '\"'), array('\n', '"'), addslashes(we_html_tools::htmlSelect('searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);")))) . '\'
+	selUsers: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchAdvSearch[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]"))) . '\',
+	pixel: \'' . str_replace("'", "\'", we_html_tools::getPixel(5, 4)) . '\',
+	searchFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);"))) . '\'
 };
 weSearch.g_l = {
 	noTempTableRightsSearch: "' . g_l('searchtool', '[noTempTableRightsSearch]') . '",
@@ -1833,7 +1833,7 @@ weSearch.g_l = {
  <td colspan="7" align="right"></td>
 </tr>
 </table></div>' .
-			we_html_element::jsElement("calendarSetup(" . $this->searchclass->height . ");");
+			we_html_element::jsElement("weSearch.calendarSetup(" . $this->searchclass->height . ");");
 
 		return $out;
 	}
