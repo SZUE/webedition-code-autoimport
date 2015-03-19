@@ -175,13 +175,21 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 
 	//get table entries
 	$orderRows = array();
-	$DB_WE->query('SELECT strSerial,strSerialOrder,IntOrderID,IntCustomerID,IntArticleID,IntQuantity,(IntQuantity*Price) AS articleSum,DatePayment,DateOrder,DateCancellation,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment, DATE_FORMAT(DateCancellation, "%d.%m.%Y") AS formatDateCancellation, Price ' . $query . ' ORDER BY ' . we_base_request::_(we_base_request::STRING, 'orderBy', 'IntOrderID') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
+	$DB_WE->query('SELECT strSerial,strSerialOrder,IntOrderID,IntCustomerID,IntArticleID,IntQuantity,DatePayment,DateOrder,DateCancellation,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment, DATE_FORMAT(DateCancellation, "%d.%m.%Y") AS formatDateCancellation, Price ' . $query . ' ORDER BY ' . we_base_request::_(we_base_request::STRING, 'orderBy', 'IntOrderID') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
 	while($DB_WE->next_record()){
 
 		// for the articlelist, we need also all these article, so save them in array
 		// initialize all data saved for an article
 		$shopArticleObject = unserialize($DB_WE->f('strSerial'));
 		$orderData = (($serialOrder = $DB_WE->f('strSerialOrder')) ? unserialize($serialOrder) : array());
+		
+		
+		$netPrice = $orderData['we_shopPriceIsNet'] ? $DB_WE->f('Price') :  ($DB_WE->f('Price')/(1+(intval($shopArticleObject['shopvat'])/100)));
+		$grosPrice = $orderData['we_shopPriceIsNet'] ? ($DB_WE->f('Price')*(1+(intval($shopArticleObject['shopvat'])/100))) : $DB_WE->f('Price');
+
+		$priceToShow = $orderData['we_shopCalcVat'] ? $grosPrice : $netPrice;
+		$articleSum = $DB_WE->f('IntQuantity')*$priceToShow;
+
 
 		$orderRows[] = array(
 			'articleArray' => $shopArticleObject,
@@ -190,14 +198,14 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 			'IntCustomerID' => $DB_WE->f('IntCustomerID'),
 			'IntArticleID' => $DB_WE->f('IntArticleID'), // also for ordering
 			'IntQuantity' => $DB_WE->f('IntQuantity'),
-			'articleSum' => $DB_WE->f('articleSum'),
+			'articleSum' => $articleSum,
 			'DatePayment' => $DB_WE->f('DatePayment'),
 			'DateOrder' => $DB_WE->f('DateOrder'),
 			'DateCancellation' => $DB_WE->f('DateCancellation'),
 			'formatDateOrder' => $DB_WE->f('formatDateOrder'), // also for ordering
 			'formatDatePayment' => $DB_WE->f('formatDatePayment'), // also for ordering
 			'formatDateCancellation' => $DB_WE->f('formatDateCancellation'), // also for ordering
-			'Price' => $DB_WE->f('Price'), // also for ordering
+			'Price' => $priceToShow, // also for ordering
 			WE_SHOP_TITLE_FIELD_NAME => (isset($shopArticleObject[WE_SHOP_TITLE_FIELD_NAME]) ? $shopArticleObject[WE_SHOP_TITLE_FIELD_NAME] : $shopArticleObject['we_' . WE_SHOP_TITLE_FIELD_NAME]), // also for ordering
 			'orderArray' => $orderData,
 		);
@@ -276,45 +284,46 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 	// generate vat table
 	$vatTable = '';
 	if(isset($articleVatArray)){
+		ksort($articleVatArray);
 		$vatTable .= '
-<tr>
-	<td>' . we_html_tools::getPixel(1, 10) . '</td>
-<tr>
-	<td colspan="6" class="shopContentfontR">' . g_l('modules_shop', '[includedVat]') . ':</td>
-</tr>';
+			<tr>
+				<td colspan="7">' . we_html_tools::getPixel(1, 10) . '</td>
+			</tr>
+			<tr>
+				<td colspan="7" class="shopContentfontR">' . g_l('modules_shop', '[includedVat]') . ':</td>
+			</tr>';
 		foreach($articleVatArray as $_vat => $_amount){
 			$vatTable .= '
-<tr>
-	<td colspan="5"></td>
-	<td class="shopContentfontR">' . $_vat . '&nbsp;%</td>
-	<td class="shopContentfontR">' . we_util_Strings::formatNumber($_amount) . $waehr . '</td>
-</tr>';
+				<tr>
+					<td colspan="5"></td>
+					<td class="shopContentfontR">' . $_vat . '&nbsp;%</td>
+					<td class="shopContentfontR">' . we_util_Strings::formatNumber($_amount) . $waehr . '</td>
+				</tr>'."\n";
 		}
 	}
 
 	$parts[] = array(
 		'html' => '
-<table class="defaultfont" width="680" cellpadding="2">
-<tr>
-	<th>' . g_l('modules_shop', '[anual]') . '</th>
-	<th>' . ($selectedMonth ? g_l('modules_shop', '[monat]') : '' ) . '</th>
-	<th>' . g_l('modules_shop', '[anzahl]') . '</th>
-	<th>' . g_l('modules_shop', '[unbearb]') . '</th>
-	<th>' . g_l('modules_shop', '[schonbezahlt]') . '</th>
-	<th>' . g_l('modules_shop', '[unbezahlt]') . '</th>
-	<th>' . g_l('modules_shop', '[umsatzgesamt]') . '</th>
-</tr>
-<tr class="shopContentfont">
-	<td>' . $selectedYear . '</td>
-	<td>' . ($selectedMonth > 0 ? $selectedMonth : '' ) . '</td>
-	<td>' . $amountOrders . '</td>
-	<td class="npshopContentfontR">' . ($amountOrders - $editedOrders) . '</td>
-	<td>' . we_util_Strings::formatNumber($payed) . $waehr . '</td>
-	<td class="npshopContentfontR">' . we_util_Strings::formatNumber($unpayed) . $waehr . '</td>
-	<td class="shopContentfontR">' . we_util_Strings::formatNumber($total) . $waehr . '</td>
-</tr>' .
-		$vatTable . '
-</table>',
+			<table class="defaultfont" width="680" cellpadding="2">
+			<tr>
+				<th>' . g_l('modules_shop', '[anual]') . '</th>
+				<th>' . ($selectedMonth ? g_l('modules_shop', '[monat]') : '' ) . '</th>
+				<th>' . g_l('modules_shop', '[anzahl]') . '</th>
+				<th>' . g_l('modules_shop', '[unbearb]') . '</th>
+				<th>' . g_l('modules_shop', '[schonbezahlt]') . '</th>
+				<th>' . g_l('modules_shop', '[unbezahlt]') . '</th>
+				<th class="shopContentfontR">' . g_l('modules_shop', '[umsatzgesamt]') . '</th>
+			</tr>'. "\n" .'
+			<tr class="shopContentfont">
+				<td>' . $selectedYear . '</td>
+				<td>' . ($selectedMonth > 0 ? $selectedMonth : '' ) . '</td>
+				<td>' . $amountOrders . '</td>
+				<td class="npshopContentfontR">' . ($amountOrders - $editedOrders) . '</td>
+				<td>' . we_util_Strings::formatNumber($payed) . $waehr . '</td>
+				<td class="npshopContentfontR">' . we_util_Strings::formatNumber($unpayed) . $waehr . '</td>
+				<td class="shopContentfontR">' . we_util_Strings::formatNumber($total) . $waehr . '</td>
+			</tr>' . "\n" . 
+			$vatTable . '</table>'. "\n",
 		'space' => 0
 	);
 
