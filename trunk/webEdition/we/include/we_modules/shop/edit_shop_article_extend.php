@@ -129,11 +129,9 @@ $dbPreisname = "Preis";
 $numberformat = $feldnamen[2];
 $notInc = "tblTemplates";
 
-if(isset($feldnamen[3])){
-	$fe = explode(",", $feldnamen[3]); //determine more than just one class-ID
-} else {
-	$fe = array(0);
-}
+
+//determine more than just one class-ID
+$fe = isset($feldnamen[3]) ? explode(",", $feldnamen[3]) : array(0);
 
 if(empty($classid)){
 	$classid = $fe[0];
@@ -171,24 +169,31 @@ if(isset($daten)){
 
 	/*	 * ************ selectbox function ************** */
 
-	function array_select($arr_value, $select_name, $label){ // function for a selectbox for the purpose of selecting a class..
-		$fe = (isset($GLOBALS['feldnamen'][3]) ?
-				explode(",", $GLOBALS['feldnamen'][3]) : //determine more than just one class-ID
+	function array_select($arr_value, $select_name, $label){ // function for a selectbox for the purpose of selecting a class
+		$shopConfig = !empty($GLOBALS['feldnamen']) ? 
+			$GLOBALS['feldnamen'] : 
+			explode("|", f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
+	
+		$fe = (isset($shopConfig[3]) ?
+				explode(",", $shopConfig[3]) : //determine more than just one class-ID
 				array(0));
+				
+		$selVal = we_base_request::_(we_base_request::STRING, $select_name);
+		
+		t_e('warning','selVal',$selVal);	
 
-		$menu = '<label for="' . $select_name . '">' . $label . '</label>
-<select name="' . $select_name . "\" onchange=\"document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?typ=object&ViewClass='+ this.options[this.selectedIndex].value\">\n";
+		$menu = '<label for="' . $select_name . '">' . $label . '</label>'."\n";
+		$menu .= '<select name="' . $select_name . '" onchange="document.location.href=\'' . $_SERVER['SCRIPT_NAME'] . '?typ=object&ViewClass=\' + this.options[this.selectedIndex].value ">'."\n";
 
-		$selVal == we_base_request::_(we_base_request::STRING, $select_name);
 		foreach($fe as $val){
 			if($val != ''){
-				$menu .= "  <option value=\"" . $val . "\"" .
-					(($val == $selVal) ? " selected=\"selected\"" : "") . '>' .
-					f('SELECT ' . OBJECT_TABLE . '.Text as ClassIDName FROM ' . OBJECT_TABLE . ' WHERE ' . OBJECT_TABLE . '.ID = ' . intval($val), ' ', $GLOBALS['DB_WE']) .
-					'</option>';
+				$optionLabel = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID = '. intval($val), 'Text', $GLOBALS['DB_WE']);
+				$menu .= '<option value="' . $val . '"' .(($val == $selVal) ? ' selected="selected"' : '') . '>' . $optionLabel .'</option>'."\n";
 			}
 		}
-		$menu .= '</select><input type="hidden" name="typ" value="object" />';
+		$menu .= '</select>'."\n";
+		$menu .= '<input type="hidden" name="typ" value="object" />';
+		
 		return $menu;
 	}
 
