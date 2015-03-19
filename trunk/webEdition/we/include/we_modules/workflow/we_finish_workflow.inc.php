@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -41,7 +40,8 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION["user"]["
 		if(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO)){
 			$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
 		}
-			$we_JavaScript .= 'opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript();
+		//this should never be opener
+		$we_JavaScript .= 'if(opener){opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();}else{top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();}_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript();
 	} else {
 		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
 		$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
