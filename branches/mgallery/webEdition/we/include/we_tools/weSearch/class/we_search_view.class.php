@@ -391,29 +391,7 @@ case "tool_weSearch_new_forObjects":
 		}
 
 
-		$scrollContentFunction = ($this->Model->IsFolder == 0 ? '
-if (' . $this->editorBodyFrame . '.loaded) {
- var elem = document.getElementById("filterTableAdvSearch");
- newID = elem.rows.length-1;
 
- scrollheight = ' . $h . ';' .
-				$addinputRows . '
- var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
- var scrollContent = document.getElementById("scrollContent_' . $whichSearch . '");
-
- var heightDiv = ' . (we_base_browserDetect::isIE() ? 200 : 180) . ';
-
- if((h - heightDiv)>0){
-	scrollContent.style.height = (h - heightDiv)+"px";
- }
-
- if((scrollContent.offsetHeight - scrollheight)>0){
-	scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) +"px";
- }
-}else {
- setTimeout(sizeScrollContent, 1000);
-}' :
-				'');
 
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
@@ -437,878 +415,61 @@ if (' . $this->editorBodyFrame . '.loaded) {
 		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
 
 		$showHideSelects = $showSelects = '';
-
-
-		$_js = we_html_element::jsElement('
-var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
-var ajaxCallbackResultList = {
- success: function(o) {
-	if(o.responseText !== undefined && o.responseText != "") {
-	 ' . $this->editorBodyFrame . '.document.getElementById("scrollContent_' . $whichSearch . '").innerHTML = o.responseText;
-	 makeAjaxRequestParametersTop();
-	 makeAjaxRequestParametersBottom();
-
-	}
- },
- failure: function(o) {
-	//alert("Failure");
- }
-}
-var ajaxCallbackParametersTop = {
- success: function(o) {
-	if(o.responseText !== undefined && o.responseText != "") {
-	 ' . $this->editorBodyFrame . '.document.getElementById("parametersTop_' . $whichSearch . '").innerHTML = o.responseText;
-	}
- },
- failure: function(o) {
-	//alert("Failure");
- }
-}
-var ajaxCallbackParametersBottom = {
- success: function(o) {
-	if(o.responseText !== undefined && o.responseText != "") {
-	 ' . $this->editorBodyFrame . '.document.getElementById("parametersBottom_' . $whichSearch . '").innerHTML = o.responseText;
-	}
- },
- failure: function(o) {
-	//alert("Failure");
- }
-}
-var ajaxCallbackgetMouseOverDivs = {
- success: function(o) {
-	if(o.responseText !== undefined && o.responseText != "") {
-	 ' . $this->editorBodyFrame . '.document.getElementById("mouseOverDivs_' . $whichSearch . '").innerHTML = o.responseText;
-	}
- },
- failure: function(o) {
-	//alert("Failure");
- }
-}
-
-
-function search(newSearch) {
-	' . (intval(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()) ?
-					we_message_reporting::getShowMessageCall(g_l('searchtool', '[noTempTableRightsSearch]'), we_message_reporting::WE_MESSAGE_NOTICE) : '
-
-		var Checks = new Array();
-		' . ($whichSearch === self::SEARCH_ADV ? '
-
-		var m = 0;
-		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-			if(table.substring(0,23)=="search_tables_advSearch") {
-				if(encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
-					Checks[m] = encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
-					m++;
-				}
-			}
-		}
-		if(Checks.length==0) {' .
-						we_message_reporting::getShowMessageCall(g_l('searchtool', '[nothingCheckedAdv]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		}' : '') .
-					($whichSearch === self::SEARCH_DOCS ? '
-		var m = 0;
-		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-			if(table=="searchForTextDocSearch" || table=="searchForTitleDocSearch" || table=="searchForContentDocSearch") {
-				if(encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
-					Checks[m] = encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
-					m++;
-				}
-			}
-		}
-		if(Checks.length==0) {' .
-						we_message_reporting::getShowMessageCall(g_l('searchtool', '[nothingCheckedTmplDoc]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		}' : '') .
-					($whichSearch === self::SEARCH_MEDIA ? '
-		var m = 0;
-		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-			if(table=="searchForTextMediaSearch" || table=="searchForTitleMediaSearch" || table=="searchForContentMediaSearch") {
-				if(encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
-					Checks[m] = encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
-					m++;
-				}
-			}
-		}
-		if(Checks.length==0) {' .
-						we_message_reporting::getShowMessageCall(g_l('searchtool', '[nothingCheckedTmplMedia]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		}' : '') .
-					($whichSearch === self::SEARCH_TMPL ? '
-		var m = 0;
-		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-			if(table=="searchForTextTmplSearch" || table=="searchForContentTmplSearch") {
-				if(encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
-					Checks[m] = encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
-					m++;
-				}
-			}
-		}
-		if(Checks.length==0) {' .
-						we_message_reporting::getShowMessageCall(g_l('searchtool', '[nothingCheckedTmplDoc]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		}' : '') . '
-		 if(Checks.length!=0) {
-			 if(newSearch) {' .
-					$this->editorBodyFrame . '.document.we_form.searchstart' . $whichSearch . '.value=0;
-			 }
-			 makeAjaxRequestDoclist();
-	}') . '
-}
-
-function makeAjaxRequestDoclist() {
- getMouseOverDivs();
- var args = "";
- var newString = "";
- for(var i = 0, elem; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-	elem = ' . $this->editorBodyFrame . '.document.we_form.elements[i];
-	if(elem.type === "radio" && !elem.checked){
-		continue;
-	}
-	
-	newString = elem.name;
-	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(elem.value);
- }
- ' . $this->editorBodyFrame . '.document.getElementById("scrollContent_' . $whichSearch . '").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
- YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchResult&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
-}
-
-function makeAjaxRequestParametersTop() {
- var args = "";
- var newString = "";
- for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
- }
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchParameters&position=top&whichsearch=' . $whichSearch . '&classname' . $this->Model->ModelClassName . '=&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
-}
-
-function makeAjaxRequestParametersBottom() {
- var args = "";
- var newString = "";
- for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
- }
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchParameters&position=bottom&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
-}
-
-function getMouseOverDivs() {
- var args = "";
- var newString = "";
- for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
- }
- YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackgetMouseOverDivs, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetMouseOverDivs&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
-}
-
-function setView(value){
- ' . $this->editorBodyFrame . '.document.we_form.setView' . $whichSearch . '.value=value;
- search(false);
-}
-
-elem = null;
-
-function showImageDetails(picID){
- elem = document.getElementById(picID);
- elem.style.visibility = "visible";
-}
-
-function hideImageDetails(picID){
- elem = document.getElementById(picID);
- elem.style.visibility = "hidden";
- elem.style.left = "-9999px";
- ' . $showSelects . '
-}
-
-
-document.onmousemove = updateElem;
-
-function updateElem(e) {
- var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
- var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
- x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX;
- y = (document.all) ? window.event.y + document.body.scrollTop  : e.pageY;
-
- if (elem != null && elem.style.visibility == "visible") {
-		elemWidth = elem.offsetWidth;
-		elemHeight = elem.offsetHeight;
-		elem.style.left = (x + 10) + "px";
-		elem.style.top = (y - 120) + "px";
-
-		if((w-x)<400 && (h-y)<250) {
-		 elem.style.left = (x - elemWidth - 10) + "px";
-		 elem.style.top = (y - elemHeight - 10) + "px";
-		}
-		else if((w-x)<400) {
-		 elem.style.left = (x - elemWidth - 10) + "px";
-		}
-		else if((h-y)<250) {
-		 elem.style.top = (y - elemHeight - 10) + "px";
-		}
-		' . $showHideSelects . '
- }
-}
-
-function absLeft(el) {
-		return (el.offsetParent)?
-	 el.offsetLeft+absLeft(el.offsetParent) : el.offsetLeft;
- }
-
-function absTop(el) {
-	 return (el.offsetParent)?
-	 el.offsetTop+absTop(el.offsetParent) : el.offsetTop;
- }
-
-
-function next(anzahl){
-var scrollActive = document.getElementById("scrollActive");
-if(scrollActive==null) {' .
-						$this->editorBodyFrame . '.document.we_form.elements.searchstart' . $whichSearch . '.value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements.searchstart' . $whichSearch . '.value) + anzahl;
-	search(false);
-
- }
-}
-
-function back(anzahl){
-	var scrollActive = document.getElementById("scrollActive");
-	if(scrollActive==null) {' .
-						$this->editorBodyFrame . '.document.we_form.elements.searchstart' . $whichSearch . '.value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements.searchstart' . $whichSearch . '.value) - anzahl;
-		search(false);
-	}
-}
-
-function openToEdit(tab,id,contentType){
- if(top.opener && top.opener.top.weEditorFrameController) {
-	top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
- } else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
-	top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
- } else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
-	top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
- }
-}
-
-
-function setOrder(order, whichSearch){
-
-	columns = new Array("Text", "SiteTitle", "CreationDate", "ModDate");
-	for(var i=0;i<columns.length;i++) {
-	 if(order!=columns[i]) {
-		deleteArrow = document.getElementById(""+columns[i]+"_"+whichSearch);
-		deleteArrow.innerHTML = "";
-	 }
-	}
-	arrow = document.getElementById(order+"_"+whichSearch);
-	foo = document.we_form.elements["Order"+whichSearch].value;
-
-	if(order+" DESC"==foo){
-	 document.we_form.elements["Order"+whichSearch].value=order;
-	 arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_asc.gif\" />";
-	}else{
-	 document.we_form.elements["Order"+whichSearch].value=order+" DESC";
-	 arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_desc.gif\" />";
-	}
-	search(false);
-}
-
-function sizeScrollContent() {
- ' . $scrollContentFunction . '
-}
-
-function init() {
- if (' . $this->editorBodyFrame . '.loaded) {
-	sizeScrollContent();
-		} else {
-	setTimeout(init, 10);
- }
-}
-
-var rows = ' . (isset($_REQUEST["searchFieldsAdvSearch"]) ? count($_REQUEST["searchFieldsAdvSearch"]) - 1 : 0) . ';
-
-function newinputAdvSearch() {
-
- var searchFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
- var locationFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
- var search = "' . addslashes(we_html_tools::htmlTextInput('searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
-
- var elem = document.getElementById("filterTableAdvSearch");
- newID = elem.rows.length-1;
- rows++;
-
- var scrollContent = document.getElementById("scrollContent_' . $whichSearch . '");
- //scrollContent.style.height = scrollContent.offsetHeight - 28 +"px";
-
- if(elem){
-	var newRow = document.createElement("TR");
-		 newRow.setAttribute("id", "filterRow_" + rows);
-
-		 var cell = document.createElement("TD");
-		 cell.innerHTML=searchFields.replace(/__we_new_id__/g,rows)+"<input type=\"hidden\" value=\"\" name=\"hidden_searchFieldsAdvSearch["+rows+"]\"";;
-	newRow.appendChild(cell);
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_locationAdvSearch["+rows+"]");
-		 cell.innerHTML=locationFields.replace(/__we_new_id__/g,rows);
-		 newRow.appendChild(cell);
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_searchAdvSearch["+rows+"]");
-		 cell.innerHTML=search.replace(/__we_new_id__/g,rows);
-		 newRow.appendChild(cell);
-
-		 cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rows+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rows+')") . '\';
-		 newRow.appendChild(cell);
-
-	elem.appendChild(newRow);
- }
-}
-
-function delRow(id) {
- var scrollContent = document.getElementById("scrollContent_' . $whichSearch . '");
- //scrollContent.style.height = scrollContent.offsetHeight + 28 +"px";
-
- var elem = document.getElementById("filterTableAdvSearch");
- if(elem){
-	trows = elem.rows;
-	rowID = "filterRow_" + id;
-	for (i=0;i<trows.length;i++) {
-	 if(rowID == trows[i].id) {
-		elem.deleteRow(i);
-	 }
-	}
- }
-}
-
-function changeit(value, rowNr){
- var setValue = document.getElementsByName("searchAdvSearch["+rowNr+"]")[0].value;
- var from = document.getElementsByName("hidden_searchFieldsAdvSearch["+rowNr+"]")[0].value;
-
- var searchFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
- var locationFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
- var search = "' . addslashes(we_html_tools::htmlTextInput('searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
-
- var row = document.getElementById("filterRow_"+rowNr);
- var locationTD = document.getElementById("td_locationAdvSearch["+rowNr+"]");
- var searchTD = document.getElementById("td_searchAdvSearch["+rowNr+"]");
- var delButtonTD = document.getElementById("td_delButton["+rowNr+"]");
- var location = document.getElementById("locationAdvSearch["+rowNr+"]");
-
- if(value=="Content") {
-	if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-		 row.appendChild(cell);
-
-		 cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
-		 document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
-
- }
- else if(value=="temp_category") {
-	if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-
-	var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>"
-		+ "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" type=\"text\" />"
-		+ "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\"></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>"
-		+ "<button title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onclick=\"we_cmd(\'openCatselector\',document.we_form.elements[\'searchAdvSearchParentID["+rowNr+"]\'].value,\'' . CATEGORY_TABLE . '\',\'document.we_form.elements[\\\\\'searchAdvSearchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'searchAdvSearch["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');\">"
-		+ "' . g_l('button', '[select][value]') . '"
-		+ "</button></td></tr></tbody></table>";
-
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=innerhtml;
-		 row.appendChild(cell);
-
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
- }
- else if(value=="temp_template_id" || value=="MasterTemplateID") {
-	if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-
-	var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>"
-		+ "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" type=\"text\" />"
-		+ "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>"
-		+ "<button title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onclick=\"we_cmd(\'openDocselector\',document.we_form.elements[\'searchAdvSearchParentID["+rowNr+"]\'].value,\'' . TEMPLATES_TABLE . '\',\'document.we_form.elements[\\\\\'searchAdvSearchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'searchAdvSearch["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');\">"
-		+ "' . g_l('button', '[select][value]') . '"
-		+ "</button></td></tr></tbody></table>";
-
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=innerhtml;
-		 row.appendChild(cell);
-
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
- }
- else if(value=="ParentIDDoc" || value=="ParentIDObj" || value=="ParentIDTmpl") {
-	if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-
-	var table;
-
-	if (value=="ParentIDDoc") {
-	 table = "' . FILE_TABLE . '";
-	}
-	else if (value=="ParentIDObj") {
-	 table = "' . $objectFilesTable . '";
-	}
-	else if (value=="ParentIDTmpl") {
-	 table = "' . TEMPLATES_TABLE . '";
-	}
-
-	var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>"
-		+ "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" type=\"text\" />"
-		+ "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>"
-		+ "<button title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onclick=\"we_cmd(\'openDirselector\',document.we_form.elements[\'searchAdvSearchParentID["+rowNr+"]\'].value,\'"+table+"\',\'document.we_form.elements[\\\\\'searchAdvSearchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'searchAdvSearch["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');\">"
-		+ "' . g_l('button', '[select][value]') . '"
-		+ "</button></td></tr></tbody></table>";
-
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=innerhtml;
-		 row.appendChild(cell);
-
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
- }
- else if(value=="Status") {
-	if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	search = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
-
-	var cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-	row.appendChild(cell);
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
-
- }
- else if(value=="Speicherart") {
-	if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	search = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
-
-	var cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-	row.appendChild(cell);
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
-
- }
- else if(value=="Published" || value=="CreationDate" || value=="ModDate") {
-
-	row.removeChild(locationTD);
-
-	locationFields = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'locationAdvSearch[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
-
-	var cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_locationAdvSearch["+rowNr+"]");
-		 cell.innerHTML=locationFields.replace(/__we_new_id__/g,rowNr);
-	row.appendChild(cell);
-
-	row.removeChild(searchTD);
-
-	var innerhtml= "<table id=\"searchAdvSearch["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>"
-		+ "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 100px;\" type=\"text\" />"
-		+ "</td><td>&nbsp;</td><td><a href=\"#\">"
-		+ "<button id=\"date_picker_from"+rowNr+"\" class=\"weBtn\">"
-		+ "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>"
-		+ "</button></a></td></tr></tbody></table>";
-
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=innerhtml;
-		 row.appendChild(cell);
-
-		 Calendar.setup({inputField:"searchAdvSearch["+rowNr+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+rowNr+"",align:"Tl",singleClick:true});
-
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
-
- }
- else if(value=="allModsIn") {
-if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	search = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
-
-	var cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-	row.appendChild(cell);
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
- }
-
-else if(value=="modifierID") {
- if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	search = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
-
-	var cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-	row.appendChild(cell);
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
-
-}
- else {
-	row.removeChild(searchTD);
-
-	if (locationTD!=null) {
-	 row.removeChild(locationTD);
-	}
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_locationAdvSearch["+rowNr+"]");
-		 cell.innerHTML=locationFields.replace(/__we_new_id__/g,rowNr);
-		 row.appendChild(cell);
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-		 row.appendChild(cell);
-
-		 cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
-
-		 document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
-
- }
-
- switch(from){
- case "allModsIn":
- case "MasterTemplateID":
- case "ParentIDTmpl":
- case "ParentIDObj":
- case "ParentIDDoc":
- case "temp_template_id":
- case "ContentType":
- case "temp_category":
- case "Status":
- case "Speicherart":
- case "Published":
- case "CreationDate":
- case "ModDate":
-	 document.getElementById("searchAdvSearch["+rowNr+"]").value = "";
-		 /*|| value =="allModsIn" || value =="MasterTemplateID" || value=="ParentIDTmpl" || value=="ParentIDObj" || value=="ParentIDDoc" || value=="temp_template_id" || value=="ContentType" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {*/
-
- default:
-	 document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
-}
-
- document.getElementsByName("hidden_searchFieldsAdvSearch["+rowNr+"]")[0].value = value;
-
-}
-
-var ajaxCallbackResetVersion = {
- success: function(o) {
-	 //top.we_cmd("save_document","' . $GLOBALS['we_transaction'] . '","0","1","0", "","");
-	 ' . we_message_reporting::getShowMessageCall(
-					g_l('versions', '[resetAllVersionsOK]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-	 // reload current document => reload all open Editors on demand
-	 var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
-	 for (frameId in _usedEditors) {
-
-		 if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-			 _usedEditors[frameId].setEditorReloadAllNeeded(true);
-			 _usedEditors[frameId].setEditorIsActive(true);
-
-		 } else {
-			 _usedEditors[frameId].setEditorReloadAllNeeded(true);
-		 }
-	 }
-	 _multiEditorreload = true;
-
-	 //reload tree
-	 if(top.opener.treeData) {
-		 top.opener.we_cmd("load", top.opener.treeData.table ,0);
-	 }
-	 document.getElementById("resetBusyAdvSearch").innerHTML = "";
- },
- failure: function(o) {
- }
-}
-
-function resetVersionAjax(id, documentID, version, table) {
- document.getElementById("resetBusyAdvSearch").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
-
-YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id="+id+"&documentID="+documentID+"&version="+version+"&documentTable="+table+"&we_transaction=' . $GLOBALS['we_transaction'] . '");
-
-}
-
-function resetVersions() {
-
- var checkboxes = new Array();
- check = false;
- var m = 0;
-			for(var i = 0; i < document.we_form.elements.length; i++) {
-				var table = document.we_form.elements[i].name;
-				if(table.substring(0,12)=="resetVersion") {
-					if(document.we_form.elements[i].checked == true) {
-						checkboxes[m] = document.we_form.elements[i].value;
-						check = true;
-						m++;
-					}
-				}
-		 }
-
-
- if(check==false) {
-	 ' . we_message_reporting::getShowMessageCall(
-					g_l('versions', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
- }else {
-	 Check = confirm("' . g_l('versions', '[resetVersionsSearchtool]') . '");
-	 if (Check == true) {
-		 var vals = "";
-		 for(var i = 0; i < checkboxes.length; i++) {
-			 if(vals!="") vals += ",";
-			 vals += checkboxes[i];
-			 if(document.getElementById("publishVersion_"+checkboxes[i])!=null) {
-				 if(document.getElementById("publishVersion_"+checkboxes[i]).checked) {
-					 vals += "___1";
-				 }
-				 else {
-					 vals += "___0";
-				 }
-			 }
-		 }
-		 resetVersionAjax(vals, 0, 0, 0);
-
-	 }
-
- }
-
-}
-
-function checkAllPubChecks(whichSearch) {
-
- var checkAll = document.getElementsByName("publish_all_"+whichSearch);
- var checkboxes = document.getElementsByName("publish_docs_"+whichSearch);
- var check = false;
-
- if(checkAll[0].checked) {
-	 check = true;
- }
- for(var i = 0; i < checkboxes.length; i++) {
-	 checkboxes[i].checked = check;
- }
-
-}
-
-function publishDocs(whichSearch) {
-
- var checkAll = document.getElementsByName("publish_all_"+whichSearch);
- var checkboxes = document.getElementsByName("publish_docs_"+whichSearch);
- var check = false;
-
- for(var i = 0; i < checkboxes.length; i++) {
-	 if(checkboxes[i].checked) {
-		 check = true;
-		 break;
-	 }
- }
-
- if(checkboxes.length==0) {
-	 check = false;
- }
-
- if(check==false) {
-	 ' . we_message_reporting::getShowMessageCall(
-					g_l('searchtool', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
- }
- else {
-
-	 Check = confirm("' . g_l('searchtool', '[publish_docs]') . '");
-		 if (Check == true) {
-			 publishDocsAjax(whichSearch);
-		 }
- }
-}
-
-var ajaxCallbackPublishDocs = {
-	 success: function(o) {
-
-		 // reload current document => reload all open Editors on demand
-
-	 var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
-	 for (frameId in _usedEditors) {
-
-		 if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-			 _usedEditors[frameId].setEditorReloadAllNeeded(true);
-			 _usedEditors[frameId].setEditorIsActive(true);
-
-		 } else {
-			 _usedEditors[frameId].setEditorReloadAllNeeded(true);
-		 }
-	 }
-	 _multiEditorreload = true;
-
-	 //reload tree
-	 if(top.opener.treeData) {
-		 top.opener.we_cmd("load", top.opener.treeData.table ,0);
-	 }
-	 document.getElementById("resetBusyAdvSearch").innerHTML = "";
-		 document.getElementById("resetBusyDocSearch").innerHTML = "";
-		 ' . we_message_reporting::getShowMessageCall(
-					g_l('searchtool', '[publishOK]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-
-	 },
-	 failure: function(o) {
-		//alert("Failure");
-	 }
-}
-
-function publishDocsAjax(whichSearch) {
-
-	var args = "";
-	var check = "";
-	var checkboxes = document.getElementsByName("publish_docs_"+whichSearch);
-	for(var i = 0; i < checkboxes.length; i++) {
-		if(checkboxes[i].checked) {
-				if(check!="") check += ",";
-				check += checkboxes[i].value;
-		}
-	}
-	args += "&we_cmd[0]="+encodeURI(check);
-	var scroll = document.getElementById("resetBusy"+whichSearch);
-	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
-
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&"+args+"");
-
-}
-
- function previewVersion(ID) {
-	top.we_cmd("versions_preview", ID, 0);
-	//new jsWindow("' . WEBEDITION_DIR . 'we/include/we_versions/weVersionsPreview.php?ID="+ID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
-
-}
-
-function calendarSetup(x){
- for(i=0;i<x;i++) {
-	if(document.getElementById("date_picker_from"+i+"") != null) {
-	 Calendar.setup({inputField:"searchAdvSearch["+i+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+i+"",align:"Tl",singleClick:true});
-	}
- }
-}');
-
+		$_js = we_html_element::jsScript(JS_DIR . 'we_modules/search/search_view.js') .
+				we_html_element::jsElement('
+weSearch.we_const = {
+	WEBEDITION_DIR: "' . WEBEDITION_DIR . '",
+	IMAGE_DIR: "' . IMAGE_DIR . '",
+	BUTTONS_DIR: "' . BUTTONS_DIR . '",
+	CATEGORY_TABLE: "' . CATEGORY_TABLE . '",
+	TEMPLATES_TABLE: "' . TEMPLATES_TABLE . '",
+	FILE_TABLE: "' . FILE_TABLE . '",
+	OBJECT_FILES_TABLE: "' . OBJECT_FILES_TABLE . '",
+	WE_MESSAGE_NOTICE: "' . we_message_reporting::WE_MESSAGE_NOTICE . '",
+	WE_MESSAGE_ERROR: "' . we_message_reporting::WE_MESSAGE_ERROR . '",
+	SEARCH_DOCS: "' . self::SEARCH_DOCS . '",
+	SEARCH_TMPL: "' . self::SEARCH_TMPL . '",
+	SEARCH_MEDIA: "' . self::SEARCH_MEDIA . '",
+	SEARCH_ADV: "' . self::SEARCH_ADV . '"
+};
+weSearch.conf = {
+	whichsearch: "' . $whichSearch . '",
+	editorBodyFrame : "' . $this->editorBodyFrame . '",
+	ajaxURL: "' . WEBEDITION_DIR . 'rpc/rpc.php",
+	tab: "' . $tab . '",
+	modelClassName: "' . $this->Model->ModelClassName . '",
+	modelID: "' . $this->Model->ID . '",
+	modelIsFolder: ' . ($this->Model->IsFolder ? 1 : 0) . ',
+	showSelects: ' . ($showSelects ? 1 : 0) . ',
+	rows: ' . (isset($_REQUEST["searchFieldsAdvSearch"]) ? count($_REQUEST["searchFieldsAdvSearch"]) - 1 : 0) . ',
+	we_transaction: "' . $GLOBALS["we_transaction"] . '",
+	isIE: ' . (we_base_browserDetect::isIE() ? 1 : 0) . ',
+	checkRightTempTable: ' . (we_search_search::checkRightTempTable() ? 1 : 0) . ',
+	checkRightDropTable: ' . (we_search_search::checkRightDropTable() ? 1 : 0) . '
+};
+weSearch.elems = {
+	btnTrash: \'' . str_replace("'", "\'", we_html_button::create_button('image:btn_function_trash', "javascript:weSearch.delRow(__we_new_id__)")) . '\',
+	btnSelector: \'' . str_replace("'", "\'", we_html_button::create_button('select', "javascript:we_cmd('__we_selector__', document.we_form.elements['searchAdvSearchParentID[__we_new_id__]'].value, '__we_sel_table__', 'document.we_form.elements[\\\'searchAdvSearchParentID[__we_new_id__]\\\'].value', 'document.we_form.elements[\\\'searchAdvSearch[__we_new_id__]\\\'].value');")) . '\',
+	fieldSearch: \'' . str_replace("'", "\'", we_html_tools::htmlTextInput('searchAdvSearch[__we_new_id__]', 58, '', '', ' __we_read_only__class="wetextinput" id="searchAdvSearch[__we_new_id__]"', 'text', 170)) . '\',
+	selStatus: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]"))) . '\',
+	selSpeicherart: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]"))) . '\',
+	selLocation: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]"))) . '\',
+	selModFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchAdvSearch[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]"))) . '\',
+	selUsers: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchAdvSearch[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]"))) . '\'
+	pixel: "' . addslashes(we_html_tools::getPixel(5, 4)) . '",
+	searchFields: \'' . str_replace(array("\n", '\"'), array('\n', '"'), addslashes(we_html_tools::htmlSelect('searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);")))) . '\'
+};
+weSearch.g_l = {
+	noTempTableRightsSearch: "' . g_l('searchtool', '[noTempTableRightsSearch]') . '",
+	nothingCheckedAdv: \'' . g_l('searchtool', '[nothingCheckedAdv]') . '\',
+	nothingCheckedTmplDoc: \'' . g_l('searchtool', '[nothingCheckedTmplDoc]') . '\',
+	buttonSelectValue: "' . g_l('button', '[select][value]') . '",
+	versionsResetAllVersionsOK: "' . g_l('versions', '[resetAllVersionsOK]') . '",
+	versionsNotChecked: "' . g_l('versions', '[notChecked]') . '",
+	searchtool__notChecked: "' . g_l('searchtool', '[notChecked]') . '",
+	searchtool__publishOK: "' . g_l('searchtool', '[publishOK]') . '"
+};
+');
 		return $_js;
 	}
 
@@ -1424,7 +585,7 @@ function calendarSetup(x){
 
 				break;
 		}
-		$_table->setCol(2, 1, array('align' => 'right'), we_html_button::create_button("search", "javascript:search(true);"));
+		$_table->setCol(2, 1, array('align' => 'right'), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}
@@ -1589,7 +750,7 @@ function calendarSetup(x){
 
 		$_table->setCol(1, 2, array(
 			'align' => 'right'
-			), we_html_button::create_button("search", "javascript:search(true);"));
+			), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}
@@ -2563,7 +1724,7 @@ function calendarSetup(x){
 			array();
 
 		for($i = 0; $i < $this->searchclass->height; $i++){
-			$button = we_html_button::create_button("image:btn_function_trash", 'javascript:delRow(' . $i . ');', true, '', '', '', '', false);
+			$button = we_html_button::create_button("image:btn_function_trash", 'javascript:weSearch.delRow(' . $i . ');', true, '', '', '', '', false);
 
 			$locationDisabled = $handle = '';
 
@@ -2656,7 +1817,7 @@ function calendarSetup(x){
 
 			$out .= '<tr id="filterRow_' . $i . '">
      <td>' . we_html_tools::hidden("hidden_searchFieldsAdvSearch[" . $i . "]", isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : "") .
-				we_html_tools::htmlSelect("searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, ""), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) .
+				we_html_tools::htmlSelect("searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, ""), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onchange' => 'weSearch.changeit(this.value, ' . $i . ');')) .
 				'</td>
      <td id="td_locationAdvSearch[' . $i . ']">' . we_html_tools::htmlSelect("locationAdvSearch[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch) && isset($this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'locationAdvSearch[' . $i . ']')) . '</td>
      <td id="td_searchAdvSearch[' . $i . ']">' . $searchInput . '</td>
@@ -2667,7 +1828,7 @@ function calendarSetup(x){
 		$out .= '</tbody></table>' .
 			'<table>
 <tr>
- <td>' . we_html_button::create_button("add", "javascript:newinputAdvSearch();") . '</td>
+ <td>' . we_html_button::create_button("add", "javascript:weSearch.newinputAdvSearch();") . '</td>
  <td>' . we_html_tools::getPixel(10, 10) . '</td>
  <td colspan="7" align="right"></td>
 </tr>
