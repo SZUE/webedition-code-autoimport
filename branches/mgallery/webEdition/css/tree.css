@@ -103,7 +103,7 @@ img.treeKreuz{
 }
 
 .notpublished {
-	color: green;
+	color: red;
 	cursor: pointer;
 }
 

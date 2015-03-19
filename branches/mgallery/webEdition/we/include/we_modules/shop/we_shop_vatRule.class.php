@@ -70,7 +70,7 @@ class we_shop_vatRule{
 				// now check additional fields
 				foreach($this->conditionalRules as $rule){
 					$ret = $rule['returnValue'] === 'true' ? true : false;
-					$field = $customer[$rule['customerField']];
+					$field = $rule['customerField'] ? $customer[$rule['customerField']] : '';
 
 					if(in_array($state, $rule['states'])){
 						switch($rule['condition']){

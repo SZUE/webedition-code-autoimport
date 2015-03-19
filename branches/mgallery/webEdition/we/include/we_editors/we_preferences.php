@@ -330,6 +330,11 @@ _multiEditorreload = true;";
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
 			$_file = we_base_preferences::changeSourceCode('define', $_file, $settingname, implode(',', array_keys(we_base_request::_(we_base_request::INT, 'newconf', 0, 'countries'), 1)), true, $comment);
 			return;
+		case 'SYSTEM_WE_SESSION_TIME':
+			//check, that a session lasts at least 90 seconds, due to we-pings, this is sufficient for WE - other is up to the user.
+			$_file = &$GLOBALS['config_files']['conf_global']['content'];
+			$_file = we_base_preferences::changeSourceCode('define', $_file, $settingname, max($settingvalue, 90), true, $comment);
+			return;
 
 		case 'WE_SEEM':
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];

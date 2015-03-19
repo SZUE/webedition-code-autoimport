@@ -90,7 +90,7 @@ $GLOBALS['configs'] = array(
 		'WE_DOCTYPE_WORKSPACE_BEHAVIOR' => array('Which Doctypes should be shown for which workspace false=normal behaviour , true=new behaviour', we_base_request::BOOL, false),
 		'SCHEDULER_TRIGGER' => array('decide how the scheduler works', we_base_request::INT, 1), //postdoc
 		'SYSTEM_WE_SESSION' => array('use webedition session handling', we_base_request::BOOL, false),
-		'SYSTEM_WE_SESSION_TIME' => array('time after which the session is killed if not active anymore', we_base_request::INT, get_cfg_var('session.gc_maxlifetime')),
+		'SYSTEM_WE_SESSION_TIME' => array('time after which the session is killed if not active anymore', we_base_request::INT, get_cfg_var('session.gc_maxlifetime')? : 1440),
 		'SYSTEM_WE_SESSION_CRYPT' => array('crypt we session before save', we_base_request::INT, 2),
 // accessibility
 		'SHOWINPUTS_DEFAULT' => array('Default setting for showinputs attribute', we_base_request::BOOL, true),

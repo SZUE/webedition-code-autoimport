@@ -42,7 +42,7 @@ class rpcGetSearchParametersCmd extends rpcCmd{
 				break;
 			case "bottom":
 				$GLOBALS['setInputSearchstart'] = 1;
-				$code = doclistView::getSearchParameterBottom($foundItems);
+				$code = doclistView::getSearchParameterBottom(FILE_TABLE, $foundItems);
 		}
 
 		$resp->setData("data", $code);
