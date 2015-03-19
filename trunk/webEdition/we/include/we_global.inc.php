@@ -1053,7 +1053,10 @@ function we_templateInit(){
 //check if CHARSET is valid
 		$charset = $GLOBALS['we_doc']->getElement('Charset');
 		$GLOBALS['CHARSET'] = (!in_array($charset, we_base_charsetHandler::getAvailCharsets()) ? DEFAULT_CHARSET : $charset);
-		we_html_tools::headerCtCharset('text/html', $GLOBALS['CHARSET'], true);
+		if((!defined('WE_CONTENT_TYPE_SET'))){
+			define('WE_CONTENT_TYPE_SET', 1);
+			we_html_tools::headerCtCharset('text/html', $GLOBALS['CHARSET'], true);
+		}
 	}
 }
 
