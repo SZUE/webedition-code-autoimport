@@ -129,17 +129,12 @@ class we_util_Mailer extends Zend_Mail{
 			default:
 			case 'php':
 				//this should set return-path
-				$safeMode = ini_get('safe_mode');
 				$suhosin = extension_loaded('suhosin');
-				if(!empty($reply) && !$safeMode && !$suhosin){
-					$_reply = $this->parseEmailUser($reply);
-					$tr = new Zend_Mail_Transport_Sendmail('-f' . $_reply['email']);
-				} else {
-					$_sender = $sender ? $this->parseEmailUser($sender) : '';
-					$tr = ($_sender && isset($_sender['email']) && $_sender['email'] != '' && !$safeMode && !$suhosin ?
-							new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
-							new Zend_Mail_Transport_Sendmail());
-				}
+				$_sender = $sender ? $this->parseEmailUser($sender) : '';
+				$tr = ($_sender && isset($_sender['email']) && $_sender['email'] != '' && !$suhosin ?
+						new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
+						new Zend_Mail_Transport_Sendmail());
+
 				Zend_Mail::setDefaultTransport($tr);
 				break;
 		}
@@ -167,7 +162,10 @@ class we_util_Mailer extends Zend_Mail{
 		if($sender){
 			$_sender = $this->parseEmailUser($sender);
 			$this->setFrom($_sender['email'], $_sender['name']);
+		}else{
+			$this->setFrom('noreply','noreply');
 		}
+
 		$this->setSubject($subject);
 		$this->setIsEmbedImages($isEmbedImages);
 		$this->setIsUseBaseHref(true);
@@ -179,7 +177,7 @@ class we_util_Mailer extends Zend_Mail{
 				$_toCC = $this->parseEmailUser($_toCC);
 				$this->addCc($_toCC['email'], $_toCC['name']);
 			}
-		} else if($toCC != ""){
+		} else if($toCC){
 			$_toCC = $this->parseEmailUser($toCC);
 			$this->addCc($_toCC['email'], $_toCC['name']);
 		}

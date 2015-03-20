@@ -204,7 +204,7 @@ class we_messaging_messaging extends we_class{
 	}
 
 	public static function array_ksearch($key, $val, array &$arr, $pos = 0){
-		foreach($arr as $pos=>$entry){
+		foreach($arr as $pos => $entry){
 			if($entry[$key] == $val){
 				return $pos;
 			}
@@ -334,7 +334,7 @@ class we_messaging_messaging extends we_class{
 		$s_hash = array();
 		foreach($this->ids_selected as $id){
 			$offset = self::array_ksearch('ID', $id, $this->selected_set);
-			if($offset==-1){
+			if($offset == -1){
 				continue;
 			}
 			$cn = $this->selected_set[$offset]['hdrs']['ClassName'];
@@ -501,10 +501,13 @@ class we_messaging_messaging extends we_class{
 			return NULL;
 		}
 
-		while(($c = self::array_ksearch('obj_type', we_messaging_proto::FOLDER_INBOX, $this->available_folders, $c)) != -1 && $this->available_folders[$c]['ClassName'] != $classname)
+		while(($c = self::array_ksearch('obj_type', we_messaging_proto::FOLDER_INBOX, $this->available_folders, $c)) != -1 && $this->available_folders[$c]['ClassName'] != $classname){
 			$c++;
-		$r = isset($this->available_folders[$c]) ? $this->available_folders[$c] : NULL;
-		return $r;
+			if($c > 100){
+				return NULL;
+			}
+		}
+		return isset($this->available_folders[$c]) ? $this->available_folders[$c] : NULL;
 	}
 
 	function &get_addresses(){
