@@ -501,7 +501,6 @@ class we_folder extends we_root{
 	################ internal functions ######
 
 	function writeFolder($pub = 0){
-		t_e('x');
 		if($this->Path == $this->OldPath || !$this->OldPath){
 			return $this->saveToServer();
 		}
