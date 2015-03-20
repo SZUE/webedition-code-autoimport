@@ -362,13 +362,16 @@ function setTab(tab) {
 		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
 		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
 		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogOptions($innerSearch) . '</div>';
+		$_searchFilter_block = '<div>' . $this->View->getSearchDialogFilter($innerSearch) . '</div>';
 
 		$content = $this->View->searchProperties($innerSearch);
 		$headline = $this->View->makeHeadLines($innerSearch);
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
 
 		$_searchResult_block = '<div>
-		<div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
+		<div id=\'parametersTop_' . $innerSearch . '\'><span style="color: #aaaaaa"> => TODO: zweizeilige Einträge mit Thumb und Verlinkungs-Dropdown in zweiter Zeile. <br>'
+				. ' -- Löschen-Checkbox für Media-Dokumente die weder verlinkt noch geschützt sind<br>'
+				. ' -- IsProtected ausgeben + Info, ob alt/title gesetzt sind<br><br></span>' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
 		</div>';
 
 		return array(
@@ -379,12 +382,12 @@ function setTab(tab) {
 			),
 			array(
 				'headline' => g_l('searchtool', '[text]'),
-				'html' => $_searchField_block,
+				'html' => $_searchField_block . $_searchCheckboxes_block,
 				'space' => $this->_space_size
 			),
 			array(
-				'headline' => g_l('searchtool', '[optionen]'),
-				'html' => $_searchCheckboxes_block,
+				'headline' => 'Filter',//g_l('searchtool', '[optionen]'),
+				'html' => $_searchFilter_block,
 				'space' => $this->_space_size
 			),
 			array(

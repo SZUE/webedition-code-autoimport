@@ -409,7 +409,8 @@ class we_search_search extends we_search_base{
 		return $where;
 	}
 
-	function getStatusFiles($status, $table){
+	function getStatusFiles($status, $table){//IMI: IMPORTANT: veröffentlichungsstatus grenzt die contenttypes auf djenigen ein, die solch einen status haben!!
+											// also kann auch beim verlinkungsstatus auf media-docs eingegremzt werden
 		switch($status){
 			case "jeder" :
 				return "AND (" . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::OBJECT_FILE . "')";
@@ -595,6 +596,28 @@ class we_search_search extends we_search_base{
 		return '';
 	}
 
+	function searchMediaLinking($linkingState = -1, $table, $holdAllLinks = true){
+		$_db = new DB_WE();
+		$linkingState = intval($linkingState);
+
+		$fields = $holdAllLinks ? 'ID,DocumentTable,remObj' : 'DISTINCT remObj';
+		$_db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' WHERE type = "media" AND remTable = "' . stripTblPrefix(FILE_TABLE) . '" AND position = 0' );
+
+		$IDs = $MediaLinkings = array();
+		if($holdAllLinks){
+			while($_db->next_record()){
+				$rec = $_db->getRecord();
+				$mediaLinkings['mediaID_' . $rec['remObj']][] = array('ID' => $rec['ID'], 'Table' => $rec['DocumentTable']);
+				$IDs[] = $rec['remObj'];
+			}
+		}
+
+		if($linkingState !== -1){
+			$IDs = $IDs ? array_unique($IDs) : $_db->getAll(true);
+			return $IDs ? (' AND ' . FILE_TABLE . '.ID ' . ($linkingState === 2 ? 'NOT ' : ' ') . 'IN(' . implode(',', $IDs) . ')') : '';
+		}
+	}
+
 	function selectFromTempTable($searchstart, $anzahl, $order){
 		$sortIsNr = 'DESC';
 		$sortNr = '';
@@ -627,7 +650,7 @@ class we_search_search extends we_search_base{
 					$this->where .= ' AND Path LIKE "' . $this->db->escape($path) . '%" ';
 					$tmpTableWhere = ' AND DocumentID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%" )';
 				}
-				$this->db->query('INSERT INTO  SEARCH_TEMP_TABLE SELECT "",ID,"' . FILE_TABLE . '",Text,Path,ParentID,IsFolder,temp_template_id,TemplateID,ContentType,"",CreationDate,CreatorID,ModDate,Published,Extension,"","" FROM `' . FILE_TABLE . '` ' . $this->where);
+				$this->db->query('INSERT INTO  SEARCH_TEMP_TABLE SELECT "",ID,"' . FILE_TABLE . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,"",CreationDate,CreatorID,ModDate,Published,Extension,"","" FROM `' . FILE_TABLE . '` ' . $this->where);
 
 				//first check published documents
 				$this->db->query('SELECT l.DID,c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.Name="Title" AND l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"');
@@ -696,6 +719,7 @@ Text VARCHAR( 255 ) NOT NULL ,
 Path VARCHAR( 255 ) NOT NULL ,
 ParentID BIGINT( 20 ) NOT NULL ,
 IsFolder TINYINT( 1 ) NOT NULL ,
+IsProtected TINYINT( 1 ) NOT NULL ,
 temp_template_id INT( 11 ) NOT NULL ,
 TemplateID INT( 11 ) NOT NULL ,
 ContentType VARCHAR( 32 ) NOT NULL ,

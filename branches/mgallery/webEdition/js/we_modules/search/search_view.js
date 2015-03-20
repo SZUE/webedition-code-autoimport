@@ -72,15 +72,15 @@ weSearch = {
 		}
 		*/
 
-		document.onmousemove = this.updateElem();
+		//document.onmousemove = this.updateElem();
 	},
 
 	ajaxCallbackResultList: {
 		success: function(o) {
 			if(o.responseText !== undefined && o.responseText != '') {
-				editorBodyFrame.document.getElementById('scrollContent_' + this.conf.whichsearch).innerHTML = o.responseText;
-				this.makeAjaxRequestParametersTop();
-				this.makeAjaxRequestParametersBottom();
+				weSearch.conf.editorBodyFrame.document.getElementById('scrollContent_' + weSearch.conf.whichsearch).innerHTML = o.responseText;
+				weSearch.makeAjaxRequestParametersTop();
+				weSearch.makeAjaxRequestParametersBottom();
 			}
 		},
 
@@ -92,7 +92,7 @@ weSearch = {
 	ajaxCallbackParametersTop: {
 		success: function(o) {
 			if(o.responseText !== undefined && o.responseText != '') {
-				editorBodyFrame.document.getElementById('parametersTop_' + this.conf.whichsearch).innerHTML = o.responseText;
+				weSearch.conf.editorBodyFrame.document.getElementById('parametersTop_' + weSearch.conf.whichsearch).innerHTML = o.responseText;
 			}
 		},
 
@@ -104,7 +104,7 @@ weSearch = {
 	ajaxCallbackParametersBottom: {
 		success: function(o) {
 			if(o.responseText !== undefined && o.responseText != "") {
-				editorBodyFrame.document.getElementById('parametersBottom_' + this.conf.whichsearch).innerHTML = o.responseText;
+				weSearch.conf.editorBodyFrame.document.getElementById('parametersBottom_' + weSearch.conf.whichsearch).innerHTML = o.responseText;
 			}
 		},
 
@@ -116,7 +116,7 @@ weSearch = {
 	ajaxCallbackgetMouseOverDivs: {
 		success: function(o) {
 			if(o.responseText !== undefined && o.responseText != "") {
-				editorBodyFrame.document.getElementById('mouseOverDivs_' + this.conf.whichsearch).innerHTML = o.responseText;
+				weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch).innerHTML = o.responseText;
 			}
 		},
 
@@ -127,14 +127,14 @@ weSearch = {
 
 	search: function(newSearch) {
 		if(!this.conf.checkRightTempTable && !this.conf.heckRightDropTable){
-			top.we_showMessage(this.g_l.noTempTableRightsSearch, this.we_const.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(this.g_l.noTempTableRightsSearch, this.we_const.WE_MESSAGE_NOTICE, window);top.console.debug("hier??");
 			return;
 		}
 
-		var Checks = new Array(), m, i, table;
+		var Checks = new Array(), m = 0, i, table;
 		
 		switch(this.conf.whichsearch){
-			case this.const.SEARCH_ADV:
+			case this.we_const.SEARCH_ADV:
 				for(i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
 					table = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 					if(table.substring(0,23) === 'search_tables_advSearch') {
@@ -144,12 +144,12 @@ weSearch = {
 						}
 					}
 				}
-				if(Checks.length==0) {
+				if(Checks.length === 0) {
 					top.we_showMessage(this.g_l.nothingCheckedAdv, this.we_const.WE_MESSAGE_ERROR, window);
 				}
 				break;
-			case this.const.SEARCH_DOCS:
-			case this.const.SEARCH_MEDIA:
+			case this.we_const.SEARCH_DOCS:
+			case this.we_const.SEARCH_MEDIA:top.console.debug(this.conf.editorBodyFrame.document.we_form.elements);
 				for(i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
 					table = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 					if(table === 'searchForText' + this.conf.whichsearch || table === 'searchForTitle' + this.conf.whichsearch || table === 'searchForContent' + this.conf.whichsearch) {
@@ -158,12 +158,13 @@ weSearch = {
 							m++;
 						}
 					}
-				}
-				if(Checks.length === 0) {
+				}top.console.debug('cl', Checks.length);
+				if(Checks.length == 0) {
+					top.console.debug('not checked', this.g_l.nothingCheckedTmplDoc);
 					top.we_showMessage(this.g_l.nothingCheckedTmplDoc, this.we_const.WE_MESSAGE_ERROR, window);
 				}
 				break;
-			case this.const.SEARCH_TMPL:
+			case this.we_const.SEARCH_TMPL:
 				for(var i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
 					table = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 					if(table == 'searchForText' + this.conf.whichsearch || table === 'searchForContent' + this.conf.whichsearch) {
@@ -664,7 +665,7 @@ weSearch = {
 	ajaxCallbackResetVersion: {
 		success: function(o) {
 			//top.we_cmd("save_document","' . $GLOBALS['we_transaction'] . '","0","1","0", "","");
-			top.we_showMessage(this.g_l.versionsResetAllVersionsOK, this.we_const.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(weSearch.g_l.versionsResetAllVersionsOK, weSearch.we_const.WE_MESSAGE_NOTICE, window);
 
 			// reload current document => reload all open Editors on demand
 			var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
@@ -732,6 +733,13 @@ weSearch = {
 		}
 	},
 
+	setview: function(setView) {
+		/*
+		document.we_form.setView.value = setView;
+		this.search(false);
+		*/
+	},
+
 	checkAllPubChecks: function(whichSearch) {
 		var checkAll = document.getElementsByName("publish_all_"+whichSearch);
 		var checkboxes = document.getElementsByName("publish_docs_"+whichSearch);
@@ -794,7 +802,7 @@ weSearch = {
 		}
 		document.getElementById("resetBusyAdvSearch").innerHTML = "";
 		document.getElementById("resetBusyDocSearch").innerHTML = "";
-		top.we_showMessage(this.g_l.searchtool__publishOK, this.we_const.WE_MESSAGE_NOTICE, window);
+		top.we_showMessage(weSearch.g_l.searchtool__publishOK, weSearch.we_const.WE_MESSAGE_NOTICE, window);
 
 		},
 		failure: function(o) {
