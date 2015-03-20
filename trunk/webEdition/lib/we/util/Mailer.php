@@ -135,8 +135,8 @@ class we_util_Mailer extends Zend_Mail{
 					$_reply = $this->parseEmailUser($reply);
 					$tr = new Zend_Mail_Transport_Sendmail('-f' . $_reply['email']);
 				} else {
-					$_sender = $this->parseEmailUser($sender);
-					$tr = (isset($_sender['email']) && $_sender['email'] != '' && !$safeMode && !$suhosin ?
+					$_sender = $sender ? $this->parseEmailUser($sender) : '';
+					$tr = ($_sender && isset($_sender['email']) && $_sender['email'] != '' && !$safeMode && !$suhosin ?
 							new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
 							new Zend_Mail_Transport_Sendmail());
 				}

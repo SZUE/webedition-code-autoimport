@@ -614,12 +614,12 @@ function removePHP($val){
 	return we_base_util::rmPhp($val);
 }
 
-function we_mail($recipient, $subject, $txt, $from = ''){
+function we_mail($recipient, $subject, $txt, $from = '', $replyTo = ''){
 	if(runAtWin() && $txt){
 		$txt = str_replace("\n", "\r\n", $txt);
 	}
 
-	$phpmail = new we_util_Mailer($recipient, $subject, $from);
+	$phpmail = new we_util_Mailer($recipient, $subject, $from, $replyTo);
 	$phpmail->setCharSet($GLOBALS['WE_BACKENDCHARSET']);
 	$txtMail = strip_tags($txt);
 	if($txt != $txtMail){

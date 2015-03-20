@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@
  * Document Definition base class
  */
 class we_workflow_base{
-
 	var $uid;
 	var $db;
 	var $persistents = array();
@@ -47,10 +45,10 @@ class we_workflow_base{
 				$fieldName = $cur["name"];
 				if(isset($this->persistents[$fieldName])){
 					$this->$fieldName = ($this->persistents[$fieldName] == we_base_request::INTLISTA ?
-									($this->db->f($fieldName) === '' ?
-											array() :
-											explode(',', trim($this->db->f($fieldName), ','))) :
-									$this->db->f($fieldName));
+							($this->db->f($fieldName) === '' ?
+								array() :
+								explode(',', trim($this->db->f($fieldName), ','))) :
+							$this->db->f($fieldName));
 				}
 			}
 		}
@@ -87,8 +85,7 @@ class we_workflow_base{
 
 	function sendMessage($userID, $subject, $description){
 		$errs = array();
-		$foo = f("SELECT username FROM " . USER_TABLE . " WHERE ID=" . intval($userID), "", $this->db);
-		$rcpts = array($foo); /* user names */
+		$rcpts = array(f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), '', $this->db));
 		we_messaging_message::newMessage($rcpts, $subject, $description, $errs);
 	}
 
@@ -96,7 +93,7 @@ class we_workflow_base{
 		$foo = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), "", $this->db);
 		if($foo && we_check_email($foo)){
 			$this_user = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $this->db);
-			we_mail($foo, correctUml($subject), $description, (isset($this_user["Email"]) && $this_user["Email"] ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
+			we_mail($foo, correctUml($subject), $description, '', (isset($this_user["Email"]) && $this_user["Email"] ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
 		}
 	}
 
