@@ -577,7 +577,7 @@ weSearch.g_l = {
 				/*
 				 * FIXME: use advsearch-like fields for not to translate them later: 
 				 * searchMediaSearch[x],
-				 * searchFieldsMediaSearch[x] = 'IsLinked';
+				 * searchFieldsMediaSearch[x] = 'IsUsed';
 				 * 
 				 * IMPORTANT: these two fields must stay OR-connected => maybe let them be as they are anyway...
 				 */
@@ -607,7 +607,7 @@ weSearch.g_l = {
 				/*
 				 * FIXME: use advsearch-like fields for not to translate them later: 
 				 * searchMediaSearch[x],
-				 * searchFieldsMediaSearch[x] = 'IsLinked';
+				 * searchFieldsMediaSearch[x] = 'IsUsed';
 				 * 
 				 * for contenttypes:
 				 * use some js to make csv: 
@@ -626,11 +626,11 @@ weSearch.g_l = {
 				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($this->Model->searchForPdfMediaSearch ? true : false, "searchForPdfMediaSearch", 'Pdf-Dateien', false, 'defaultfont', ''));
 				$_table->setCol(2, 1, array(), we_html_tools::getPixel(20, 10));
 
-				$_table->setCol(3, 0, array(), 'Verlinkungsstatus: ');
-				$_table->setCol(3, 1, array(), we_html_tools::htmlSelect('searchForIsLinkedMediaSearch', array('-1' => 'alle', '1' => 'nur verlinkte Medien suchen', '2' => 'nur unverlinkte Medien suchen'), 1, $this->Model->searchForIsLinkedMediaSearch));
+				$_table->setCol(3, 0, array(), 'Verwendungsstatus: ');
+				$_table->setCol(3, 1, array(), we_html_tools::htmlSelect('searchForIsUsedMediaSearch', array('-1' => 'alle', '1' => 'nur benutzte Medien', '2' => 'nur unbenutzte Medien'), 1, $this->Model->searchForIsUsedMediaSearch, false, array(), 'value', 220));
 
 				$_table->setCol(4, 0, array(), 'Schutz: ');
-				$_table->setCol(4, 1, array(), we_html_tools::htmlSelect('searchForIsProtectedMediaSearch', array('-1' => 'alle', '1' => 'nur geschützte Medien suchen', '2' => 'nur ungeschützte Medien suchen'), 1, $this->Model->searchForIsProtectedMediaSearch));
+				$_table->setCol(4, 1, array(), we_html_tools::htmlSelect('searchForIsProtectedMediaSearch', array('-1' => 'alle', '1' => 'nur geschützte Medien', '2' => 'nur ungeschützte Medien'), 1, $this->Model->searchForIsProtectedMediaSearch, false, array(), 'value', 220));
 				break;
 			default: 
 				return;
@@ -1004,8 +1004,8 @@ weSearch.g_l = {
 								/*
 								 * FIXME: After introducing advsearch-like fields for filter options the following cases are obsolete!
 								 */
-								case 'searchForIsLinkedMediaSearch': //search
-									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'IsLinked';
+								case 'searchForIsUsedMediaSearch': //search
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'IsUsed';
 									$_REQUEST['we_cmd']['search' . $whichSearch][] = $v;
 									break;
 								case 'searchForIsProtectedMediaSearch':
@@ -1030,10 +1030,10 @@ weSearch.g_l = {
 									break;
 							}
 					}
-					if($searchForContentTypesMediaSearch){
-						$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'ContentType';
-						$_REQUEST['we_cmd']['search' . $whichSearch][] = trim($searchForContentTypesMediaSearch, ',');
-					}
+
+					$searchForContentTypesMediaSearch = $searchForContentTypesMediaSearch ? : "'" . we_base_ContentTypes::IMAGE . "','" . we_base_ContentTypes::VIDEO . "','" . we_base_ContentTypes::QUICKTIME . "','" . we_base_ContentTypes::AUDIO . "','" . we_base_ContentTypes::FLASH . "'";
+					$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'ContentType';
+					$_REQUEST['we_cmd']['search' . $whichSearch][] = trim($searchForContentTypesMediaSearch, ',');
 					break;
 				default:
 					foreach(we_base_request::_(we_base_request::RAW, 'we_cmd') as $k => $v){
@@ -1204,7 +1204,7 @@ weSearch.g_l = {
 								case "CreatorName":
 								case "WebUserName":
 								case "temp_category":
-								case "IsLinked":
+								case "IsUsed":
 									break;
 								default:
 									$where .= $this->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
@@ -1281,8 +1281,8 @@ weSearch.g_l = {
 								$w = $this->searchclass->searchCategory($searchString, $_table, $searchFields[$i]);
 								$where .= $w;
 								break;
-							case 'IsLinked':
-								$w = $this->searchclass->searchMediaLinking($searchString, $_table);
+							case 'IsUsed':
+								$w = $this->searchclass->searchMediaLinks($searchString, $_table);
 								$where .= $w;
 								break;
 							case 'ContentType': 

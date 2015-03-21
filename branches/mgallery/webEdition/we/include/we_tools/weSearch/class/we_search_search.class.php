@@ -596,25 +596,26 @@ class we_search_search extends we_search_base{
 		return '';
 	}
 
-	function searchMediaLinking($linkingState = -1, $table, $holdAllLinks = true){
+	function searchMediaLinks($useState = -1, $table = '', $holdAllLinks = true){
 		$_db = new DB_WE();
-		$linkingState = intval($linkingState);
+		$useState = intval($useState);
 
 		$fields = $holdAllLinks ? 'ID,DocumentTable,remObj' : 'DISTINCT remObj';
 		$_db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' WHERE type = "media" AND remTable = "' . stripTblPrefix(FILE_TABLE) . '" AND position = 0' );
 
-		$IDs = $MediaLinkings = array();
+		$IDs = $MediaLinks = array();
 		if($holdAllLinks){
 			while($_db->next_record()){
 				$rec = $_db->getRecord();
-				$mediaLinkings['mediaID_' . $rec['remObj']][] = array('ID' => $rec['ID'], 'Table' => $rec['DocumentTable']);
+				$MediaLinks['mediaID_' . $rec['remObj']][] = array('ID' => $rec['ID'], 'Table' => $rec['DocumentTable']);
+				// TODO: hold $Medialinks available in property or session
 				$IDs[] = $rec['remObj'];
 			}
 		}
 
-		if($linkingState !== -1){
+		if($useState !== -1){
 			$IDs = $IDs ? array_unique($IDs) : $_db->getAll(true);
-			return $IDs ? (' AND ' . FILE_TABLE . '.ID ' . ($linkingState === 2 ? 'NOT ' : ' ') . 'IN(' . implode(',', $IDs) . ')') : '';
+			return $IDs ? (' AND ' . FILE_TABLE . '.ID ' . ($useState === 2 ? 'NOT ' : ' ') . 'IN(' . implode(',', $IDs) . ')') : '';
 		}
 	}
 
