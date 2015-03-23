@@ -155,13 +155,7 @@ class we_search_search extends we_search_base{
 		);
 
 		if($whichSearch === we_search_view::SEARCH_MEDIA){
-			$tableFields = array_merge(array(
-				'meta__Description' => 'Metadaten: Beschreibung',// FIXME: G_L()
-				'meta__Keywords' => 'Metadaten: Schlüsselwörter',// FIXME: G_L()
-				), 
-				$this->getFieldsAdditionalMeta(), 
-				$tableFields
-			);
+			$tableFields = array_merge($this->getFieldsMeta(true), $tableFields);
 
 			unset($tableFields['Text']);
 			unset($tableFields['ParentIDObj']);
@@ -210,14 +204,18 @@ class we_search_search extends we_search_base{
 		return $tableFields;
 	}
 
-	function getFieldsAdditionalMeta($getTypes = false){
+	function getFieldsMeta( $usePrefix = false, $getTypes = false){
 		$_db = new DB_WE();
 		$_db->query('SELECT tag,type DocType FROM ' . METADATA_TABLE);
-		$ret = array();
+		$ret = array(
+			($usePrefix ? 'meta__' : '') . 'Title' => ($getTypes ? 'text' : 'Metadaten: Titel'),// FIXME: G_L()
+			($usePrefix ? 'meta__' : '') . 'Description' => ($getTypes ? 'text' : 'Metadaten: Beschreibung'),// FIXME: G_L()
+			($usePrefix ? 'meta__' : '') . 'Keywords' => ($getTypes ? 'text' : 'Metadaten: Schlüsselwörter'),// FIXME: G_L()
+		);
 		while($_db->next_record()){
-			$ret['meta__' . $_db->f('tag')] = $getTypes ? $_db->f('type') : 'Metadaten: ' . $_db->f('tag');
+			$ret[($usePrefix ? 'meta__' : '') . $_db->f('tag')] = $getTypes ? $_db->f('type') : 'Metadaten: ' . $_db->f('tag');
 		}
-		//$ret['-'] = '';
+
 		return $ret;
 	}
 
@@ -280,7 +278,7 @@ class we_search_search extends we_search_base{
 	function searchInTitle($keyword, $table){
 		$_db2 = new DB_WE();
 		//first check published documents
-		$_db2->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.Name="Title" AND c.Dat LIKE "%' . $_db2->escape(trim($keyword)) . '%" AND NOT l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"');
+		$_db2->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.Name="Title" AND c.Dat LIKE "%' . $_db2->escape(trim($keyword)) . '%" AND l.DocumentTable="' . stripTblPrefix($table) . '"');
 		$titles = $_db2->getAll(true);
 
 		//check unpublished documents
@@ -295,7 +293,7 @@ class we_search_search extends we_search_base{
 			}
 		}
 
-		return ($titles ? ' ' . $table . '.ID IN (' . makeCSVFromArray($titles) . ')' : '');
+		return ($titles ? ' ' . $table . '.ID IN (' . makeCSVFromArray($titles) . ') ' : '');
 	}
 
 	function searchCategory($keyword, $table){
@@ -448,21 +446,14 @@ class we_search_search extends we_search_base{
 		$this->collectionMetaSearches[] = array($search, $field, $location);
 	}
 
-	/*
-	 * Implemented for media search only! Copy fron searchInTitle: why LEFT join??
-	 */
-	function searchInMeta(){
-		if(empty($this->collectionMetaSearches)){
-			return; 
-		}
-
+	function searchInAllMetas($keyword){
 		$_db = new DB_WE();
 		$where = '(';
 		$c = 0;
-		//l.Name="Title" AND c.Dat LIKE "%' . $_db->escape(trim($keyword)) . '%""
-		foreach($this->collectionMetaSearches as $v){
-			if($v[0 && $v[1]]){
-				$where .= ($c !== 0 ? 'OR ' : '') . '(l.Name="' . $v[1] . '" AND c.Dat LIKE "%' . $_db->escape(trim($v[0])) . '%") ';
+
+		foreach($this->getFieldsMeta() as $k => $v){
+			if($v[0] && $v[1]){
+				$where .= ($c !== 0 ? 'OR ' : '') . '(l.Name="' . $k . '" AND c.Dat LIKE "%' . $_db->escape($keyword) . '%") ';
 				$c++;
 			}
 		}
@@ -474,7 +465,47 @@ class we_search_search extends we_search_base{
 		$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE ' . $where . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ' . $where);
 		$IDs = $_db->getAll(true);
 
-		return $IDs ? 'AND ID IN (' . implode(',', $IDs) . ')' : '';
+		return $IDs ? 'ID IN (' . implode(',', $IDs) . ')' : '';
+	}
+
+	function searchInMeta($keyword, $searchField, $searchlocation = 'LIKE', $table = ''){
+		if($table !== FILE_TABLE){// FIXME: actually no meta search on Versions or unpublished docs!!
+			return;
+		}
+		$_db = new DB_WE();
+
+		$reverse = false;
+		if(isset($searchlocation)){
+			switch($searchlocation){
+				case 'END' :
+					$searching = " LIKE '%" . $_db->escape($keyword) . "' ";
+					break;
+				case 'START' :
+					$searching = " LIKE '" . $_db->escape($keyword) . "%' ";
+					break;
+				case 'IS' :
+					$reverse = $keyword === '#EMPTY#' ? : false;
+					$searching = " = '" . $_db->escape($keyword) . "' ";
+					break;
+				case 'IN':
+					$searching = ' IN ("' . implode('","', array_map('trim', explode(',', $keyword))) . '") ';
+					break;
+				case '<' :
+				case '<=' :
+				case '>' :
+				case '>=' :
+					$searching = ' ' . $searchlocation . " '" . $_db->escape($keyword) . "' ";
+					break;
+				default :
+					$searching = " LIKE '%" . $_db->escape(trim($keyword)) . "%' ";
+					break;
+			}
+		}
+
+		$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.Name="' . $searchField . '" ' . ($reverse ? '' : 'AND c.Dat ' . $searching . '') . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+		$IDs = $_db->getAll(true);
+
+		return $IDs ? 'AND ID ' . ($reverse ? 'NOT' : '') . ' IN (' . implode(',', $IDs) . ')' : 'AND 0';
 	}
 
 	function getStatusFiles($status, $table){//IMI: IMPORTANT: veröffentlichungsstatus grenzt die contenttypes auf djenigen ein, die solch einen status haben!!

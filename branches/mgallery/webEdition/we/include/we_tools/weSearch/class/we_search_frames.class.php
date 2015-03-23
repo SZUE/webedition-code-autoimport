@@ -356,7 +356,6 @@ function setTab(tab) {
 	}
 
 	function getHTMLTabMedia(){
-		//parameter: search of the tab (load only search dependent model data in the view)
 		$innerSearch = we_search_view::SEARCH_MEDIA;
 
 		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';

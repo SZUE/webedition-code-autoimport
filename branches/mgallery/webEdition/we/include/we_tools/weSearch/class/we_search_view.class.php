@@ -560,7 +560,7 @@ weSearch.g_l = {
 			'border' => 0,
 			'cellpadding' => 2,
 			'cellspacing' => 0,
-			'width' => 500,
+			'width' => $whichSearch === self::SEARCH_MEDIA ? 590 : 500,
 			'height' => 50
 			), 5, 2);
 
@@ -575,17 +575,13 @@ weSearch.g_l = {
 				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentTmplSearch ? true : false, "searchForContentTmplSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 				break;
 			case self::SEARCH_MEDIA :
-				/*
-				 * FIXME: use advsearch-like fields for not to translate them later: 
-				 * searchMediaSearch[x],
-				 * searchFieldsMediaSearch[x] = 'IsUsed';
-				 * 
-				 * IMPORTANT: these two fields must stay OR-connected => maybe let them be as they are anyway...
-				 */
-				$_table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextMediaSearch ? true : false, "searchForTextMediaSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleMediaSearch ? true : false, "searchForTitleMediaSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
-				$_table->setCol(2, 0, array(), 'Hinweis: Bei fehlendem Suchwort werden alle Medien-Dokumente ausgegeben!');
+				$_table->setCol(0, 0, array('style' => 'padding-top: 10px'), we_html_tools::htmlAlertAttentionBox('Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.', we_html_tools::TYPE_INFO, 440));
 
+				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextMediaSearch ? true : false, "searchForTextMediaSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleMediaSearch ? true : false, "searchForTitleMediaSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$_table->setCol(3, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForMetaMediaSearch ? true : false, "searchForMetaMediaSearch", 'In Metadaten', false, 'defaultfont', ''));//FIXME: G_L()
+				$_table->setCol(3, 1, array('align' => 'right'), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
+				
 				return $_table->getHtml();
 		}
 		$_table->setCol(4, 1, array('align' => 'right'), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
@@ -599,7 +595,7 @@ weSearch.g_l = {
 			'border' => 0,
 			'cellpadding' => 2,
 			'cellspacing' => 0,
-			'width' => 500,
+			'width' => 590,
 			'height' => 50
 			), 7, 3);
 
@@ -609,7 +605,7 @@ weSearch.g_l = {
 				 * FIXME: add meta tags using advsearch gui elements! (they are AND-connected)
 				 */
 				$n = 1;
-				$_table->setCol(0, 0, array(), 'Dateityp: ');
+				$_table->setCol(0, 0, array(), 'Dateityp einschränken: ');
 				$_table->setCol(0, 1, array(), we_html_element::htmlHidden(array('name' => 'searchFieldsMediaSearch[' . $n . ']', 'value' => 'ContentType')) .
 						we_html_element::htmlHidden(array('name' => 'searchMediaSearch[' . $n . ']', 'value' => '')) .
 						we_html_element::htmlHidden(array('name' => 'locationMediaSearch[' . $n++ . ']', 'value' => 'IN')) .
@@ -903,7 +899,7 @@ weSearch.g_l = {
 				}
 
 				$searchInput = we_html_element::htmlHidden(array('name' => $searchFieldName, 'value' => 'keyword')) .
-						we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchMediaSearch) && is_array($this->Model->searchMediaSearch) && isset($this->Model->searchMediaSearch[0]) ? $this->Model->searchMediaSearch[0] : ''), "", "", "search", 380);
+						we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchMediaSearch) && is_array($this->Model->searchMediaSearch) && isset($this->Model->searchMediaSearch[0]) ? $this->Model->searchMediaSearch[0] : ''), "", "", "search", 440);
 				break;
 		}
 
@@ -988,21 +984,13 @@ weSearch.g_l = {
 						if(is_string($v) && $v == 1){
 							switch($k){
 								case 'searchForTextMediaSearch':
-									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Text';
-									$_REQUEST['we_cmd']['search' . $whichSearch][] = $_REQUEST['we_cmd']['search' . $whichSearch][0];
-									$_REQUEST['we_cmd']['location' . $whichSearch][] = 'CONTAIN';
-									break;
 								case 'searchForTitleMediaSearch':
-									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Title';
+								case 'searchForMetaMediaSearch':
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = $k === 'searchForTextMediaSearch' ? 'Text' :
+										($k === 'searchForTitleMediaSearch' ? 'Title' : 'Meta');
 									$_REQUEST['we_cmd']['search' . $whichSearch][] = $_REQUEST['we_cmd']['search' . $whichSearch][0];
 									$_REQUEST['we_cmd']['location' . $whichSearch][] = 'CONTAIN';
 									break;
-								case 'searchForContentSearch':
-									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Content';
-									$_REQUEST['we_cmd']['search' . $whichSearch][] = $_REQUEST['we_cmd']['search' . $whichSearch][0];
-									$_REQUEST['we_cmd']['location' . $whichSearch][] = 'CONTAIN';
-									break;
-
 								case 'searchForImageMediaSearch':
 									$searchForContentTypesMediaSearch .= "'" . we_base_ContentTypes::IMAGE . "',";
 									break;
@@ -1014,7 +1002,6 @@ weSearch.g_l = {
 									break;
 								case 'searchForPdfMediaSearch':
 									$searchForContentTypesMediaSearch .= "'#PDF#',";
-									// FIXME: add some extemstions-condition: WHERE (contenttxpe IN () OR ext = 'pdf')
 									break;
 							}
 						}
@@ -1022,7 +1009,15 @@ weSearch.g_l = {
 					foreach(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'searchFields' . $whichSearch) as $k => $v){
 						switch($v){
 							case 'ContentType':
-								$_REQUEST['we_cmd']['search' . $whichSearch][$k] = trim($searchForContentTypesMediaSearch, ',');
+								if(!$cts = trim($searchForContentTypesMediaSearch, ',')){
+									$cts = "'" . we_base_ContentTypes::IMAGE . "','" . we_base_ContentTypes::VIDEO . "','" . we_base_ContentTypes::QUICKTIME . "','" . we_base_ContentTypes::FLASH . "','" . we_base_ContentTypes::AUDIO . "','#PDF#'";
+								}
+								$_REQUEST['we_cmd']['search' . $whichSearch][$k] = $cts;
+								break;
+							default:
+								if(strpos($v, 'meta__') === 0 && $_REQUEST['we_cmd']['search' . $whichSearch][$k] === '' && $_REQUEST['we_cmd']['location' . $whichSearch][$k] === 'IS'){
+									$_REQUEST['we_cmd']['search' . $whichSearch][$k] = "#EMPTY#";
+								}
 						}
 					}
 					break;
@@ -1169,6 +1164,7 @@ weSearch.g_l = {
 
 			foreach($_tables as $_table){
 				$where = '';
+				$where_OR = '';
 				$this->searchclass->settable($_table);
 
 				if(!defined('OBJECT_TABLE') || (defined('OBJECT_TABLE') && $_table != OBJECT_TABLE)){
@@ -1177,6 +1173,7 @@ weSearch.g_l = {
 
 				for($i = 0; $i < count($searchFields); $i++){
 					$w = '';
+					$done = false;
 					if(isset($searchText[0])){
 						$searchString = (($whichSearch === self::SEARCH_ADV || $whichSearch === self::SEARCH_MEDIA) && isset($searchText[$i]) ?
 								($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8" ? utf8_encode($searchText[$i]) : $searchText[$i]) :
@@ -1187,6 +1184,39 @@ weSearch.g_l = {
 							$searchString = str_replace(array('\\', '_', '%'), array('\\\\', '\_', '\%'), $searchString);
 						}
 
+						if($_table === FILE_TABLE && $whichSearch === self::SEARCH_MEDIA){
+							$done = true;
+							switch($searchFields[$i]){
+								case "Title": // IMPORTANT: in media search options are generally AND-linked, but not "search in Title, Text, Meta!
+									$where_OR .= ($where_OR ? 'OR ' : '') . $this->searchclass->searchInTitle($searchString, $_table);
+									break;
+								case "Text":
+									$where_OR .= ($where_OR ? 'OR ' : '') . $_table . '.`Text` LIKE "%' . $DB_WE->escape(trim($searchString)) . '%" ';
+									break;
+								case "Meta":
+									$where_OR .= ($where_OR ? 'OR ' : '') . $this->searchclass->searchInAllMetas($searchString);
+									break;
+								case 'ContentType':
+									if(strpos($searchString , "'#PDF#'") !== false){
+										$searchString = str_replace(array("',#PDF'", "'#PDF#'"), '', $searchString);
+										$where .= ' AND (' . $_table . '.ContentType IN (' . trim($searchString, ',') . ') OR ' . $_table . '.Extension = ".pdf") ';
+									} else {
+										$where .= ' AND ' . $_table . '.ContentType IN (' . $searchString . ')';
+									}
+									break;
+								case 'IsUsed':
+									$w = $this->searchclass->searchMediaLinks($searchString, $_table);
+									$where .= $w;
+									break;
+								default; 
+									$done = false;
+							}
+							if(substr($searchFields[$i], 0, 6) === 'meta__'){
+								$where .= $this->searchclass->searchInMeta($searchString, substr($searchFields[$i], 6), $location[$i], $_table);
+								$done = true;
+							}
+						}
+
 						if($whichSearch === self::SEARCH_ADV && isset($location[$i])){
 							switch($searchFields[$i]){
 								case "Content":
@@ -1195,40 +1225,47 @@ weSearch.g_l = {
 								case "CreatorName":
 								case "WebUserName":
 								case "temp_category":
-								case "IsUsed":
 									break;
 								default:
 									$where .= $this->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
 							}
 						}
 
-						if($_table === FILE_TABLE && ($whichSearch === self::SEARCH_ADV || $whichSearch === self::SEARCH_MEDIA)){
+						if(!$done){
 							switch($searchFields[$i]){
-								case "Title":
-									$where_OR .= $this->searchclass->searchInTitle($searchString, $_table);
-									break;
-								case "Text":
-									$where_OR .= $this->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
-									break;
-								case "Meta":
-									//
-									break;
-								default:
-									//$where .= $this->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
-							}
+								case 'Content':
+									$objectTable = defined('OBJECT_TABLE') ? OBJECT_TABLE : '';
+									if($objectTable != "" && $_table == $objectTable){
 
-							if(substr($searchFields[$i], 0, 6) === 'meta__'){
-								$this->searchclass->addToSearchInMeta($searchString, substr($searchFields[$i], 6), $location[$i]);
-							}
-						}
+									} else {
+										$w = $this->searchclass->searchContent($searchString, $_table);
+										if($where == '' && $w == ''){
+											$where .= ' AND 0 ';
+										} elseif($where == '' && $w != ''){
+											$where .= ' AND ' . $w;
+										} elseif($w != ''){
+											$where .= $op . ' ' . $w;
+										}
+									}
+									break;
 
-						switch($searchFields[$i]){
-							case 'Content':
-								$objectTable = defined('OBJECT_TABLE') ? OBJECT_TABLE : '';
-								if($objectTable != "" && $_table == $objectTable){
+								case 'modifierID':
+									if($_table == VERSIONS_TABLE){
+										$w .= $this->searchclass->searchModifier($searchString, $_table);
+										$where .= $w;
+									}
+									break;
 
-								} else {
-									$w = $this->searchclass->searchContent($searchString, $_table);
+								case 'allModsIn':
+									if($_table == VERSIONS_TABLE){
+										$w .= $this->searchclass->searchModFields($searchString, $_table);
+										$where .= $w;
+									}
+									break;
+
+								case 'Title':
+									$w = $this->searchclass->searchInTitle($searchString, $_table);
+
 									if($where == '' && $w == ''){
 										$where .= ' AND 0 ';
 									} elseif($where == '' && $w != ''){
@@ -1236,89 +1273,46 @@ weSearch.g_l = {
 									} elseif($w != ''){
 										$where .= $op . ' ' . $w;
 									}
-								}
-								break;
-
-							case 'modifierID':
-								if($_table == VERSIONS_TABLE){
-									$w .= $this->searchclass->searchModifier($searchString, $_table);
-									$where .= $w;
-								}
-								break;
-
-							case 'allModsIn':
-								if($_table == VERSIONS_TABLE){
-									$w .= $this->searchclass->searchModFields($searchString, $_table);
-									$where .= $w;
-								}
-								break;
-
-							case 'Title':
-								$w = $this->searchclass->searchInTitle($searchString, $_table);
-
-								if($where == '' && $w == ''){
-									$where .= ' AND 0 ';
-								} elseif($where == '' && $w != ''){
-									$where .= ' AND ' . $w;
-								} elseif($w != ''){
-									$where .= $op . ' ' . $w;
-								}
-								break;
-							case 'Status':
-							case 'Speicherart':
-								if($_table == FILE_TABLE || $_table == VERSIONS_TABLE || $_table == OBJECT_FILES_TABLE){
-									$w = $this->searchclass->getStatusFiles($searchString, $_table);
-									if($_table == VERSIONS_TABLE){
-										$docTableChecked = (in_array(FILE_TABLE, $_tables)) ? true : false;
-										$objTableChecked = (defined('OBJECT_FILES_TABLE') && (in_array(OBJECT_FILES_TABLE, $_tables))) ? true : false;
-										if($objTableChecked && $docTableChecked){
-											$w .= ' AND (v.documentTable="' . FILE_TABLE . '" OR documentTable="' . OBJECT_FILES_TABLE . '") ';
-										} elseif($docTableChecked){
-											$w .= ' AND v.documentTable="' . FILE_TABLE . '" ';
-										} elseif($objTableChecked){
-											$w .= ' AND v.documentTable="' . OBJECT_FILES_TABLE . '" ';
+									break;
+								case 'Status':
+								case 'Speicherart':
+									if($_table == FILE_TABLE || $_table == VERSIONS_TABLE || $_table == OBJECT_FILES_TABLE){
+										$w = $this->searchclass->getStatusFiles($searchString, $_table);
+										if($_table == VERSIONS_TABLE){
+											$docTableChecked = (in_array(FILE_TABLE, $_tables)) ? true : false;
+											$objTableChecked = (defined('OBJECT_FILES_TABLE') && (in_array(OBJECT_FILES_TABLE, $_tables))) ? true : false;
+											if($objTableChecked && $docTableChecked){
+												$w .= ' AND (v.documentTable="' . FILE_TABLE . '" OR documentTable="' . OBJECT_FILES_TABLE . '") ';
+											} elseif($docTableChecked){
+												$w .= ' AND v.documentTable="' . FILE_TABLE . '" ';
+											} elseif($objTableChecked){
+												$w .= ' AND v.documentTable="' . OBJECT_FILES_TABLE . '" ';
+											}
 										}
+										$where .= $w;
 									}
+									break;
+								case 'CreatorName':
+								case 'WebUserName':
+									if(isset($searchFields[$i]) && isset($location[$i])){
+										$w = $this->searchclass->searchSpecial($searchString, $searchFields[$i], $location[$i]);
+										$where .= ' AND ' . $w;
+									}
+									break;
+								case 'temp_category':
+									$w = $this->searchclass->searchCategory($searchString, $_table, $searchFields[$i]);
 									$where .= $w;
-								}
-								break;
-							case 'CreatorName':
-							case 'WebUserName':
-								if(isset($searchFields[$i]) && isset($location[$i])){
-									$w = $this->searchclass->searchSpecial($searchString, $searchFields[$i], $location[$i]);
-									$where .= ' AND ' . $w;
-								}
-								break;
-							case 'temp_category':
-								$w = $this->searchclass->searchCategory($searchString, $_table, $searchFields[$i]);
-								$where .= $w;
-								break;
-							case 'IsUsed':
-								$w = $this->searchclass->searchMediaLinks($searchString, $_table);
-								$where .= $w;
-								break;
-							case 'ContentType': 
-								if($whichSearch === self::SEARCH_MEDIA){
-									if(strpos ($searchString , "'#PDF#'") !== -1){
-										$searchString = str_replace(array("',#PDF'", "'#PDF#'"), '', $searchString);
-										$where .= ' AND (' . $_table . '.ContentType IN (' . trim($searchString, ',') . ') OR ' . $_table . '.Extension = ".pdf")';
-									} else {
-										$where .= ' AND ' . $_table . '.ContentType IN (' . $searchString . ')';
+									break;
+								default:
+									if($whichSearch != "AdvSearch"){
+										$where .= $this->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
 									}
-								}
-								break;
-							default:
-								if($whichSearch != "AdvSearch"){
-									$where .= $this->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
-								}
+							}
 						}
 					}
 				}
-				if($_table === FILE_TABLE && $whichSearch === self::SEARCH_MEDIA){
-					$where .= $this->searchclass->searchInMeta();
-				}
 
-				if($where != ''){
+				if($where || $where_OR){
 
 					if(isset($folderID) && ($folderID != '' && $folderID != 0)){
 						$where = ' AND (1 ' . $where . ')' . we_search_search::ofFolderAndChildsOnly($folderID, $_table);
@@ -1342,6 +1336,9 @@ weSearch.g_l = {
 
 					switch($_table){
 						case FILE_TABLE:
+							if($where_OR){
+								$whereQuery .= ' AND (' . $where_OR . ') ';
+							}
 							$whereQuery .= $restrictUserQuery;
 							break;
 
@@ -1386,7 +1383,6 @@ weSearch.g_l = {
 					}
 
 					$this->searchclass->setwhere($whereQuery);
-
 					$this->searchclass->insertInTempTable($whereQuery, $_table);
 				}
 			}
@@ -2347,6 +2343,7 @@ weSearch.g_l = {
 	}
 
 	function getDirSelector($whichSearch){
+		$yuiSuggest = & weSuggest::getInstance();
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
 				$folderID = "folderIDDoc";
@@ -2354,6 +2351,7 @@ weSearch.g_l = {
 				$table = FILE_TABLE;
 				$pathID = $this->Model->folderIDDoc;
 				$ACname = "docu";
+				$yuiSuggest->setWidth(380);
 				break;
 			case self::SEARCH_MEDIA :
 				$folderID = "folderIDMedia";
@@ -2361,6 +2359,7 @@ weSearch.g_l = {
 				$table = FILE_TABLE;
 				$pathID = $this->Model->folderIDMedia;
 				$ACname = "docu";
+				$yuiSuggest->setWidth(320);
 				break;
 			case self::SEARCH_TMPL :
 				$folderID = "folderIDTmpl";
@@ -2368,12 +2367,13 @@ weSearch.g_l = {
 				$table = TEMPLATES_TABLE;
 				$pathID = $this->Model->folderIDTmpl;
 				$ACname = "Tmpl";
+				$yuiSuggest->setWidth(380);
 				break;
 		}
 
 		$_path = id_to_path($pathID, $table, $this->db);
 
-		$yuiSuggest = & weSuggest::getInstance();
+		
 		$yuiSuggest->setAcId($ACname);
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput($folderPath, $_path);
@@ -2383,7 +2383,6 @@ weSearch.g_l = {
 		$yuiSuggest->setResult($folderID, $pathID);
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable($table);
-		$yuiSuggest->setWidth(380);
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $folderID . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $folderPath . "'].value");
 		$yuiSuggest->setSelectButton(
