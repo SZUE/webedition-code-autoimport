@@ -347,7 +347,7 @@ weSearch = {
 				scrollheight = this.conf.isIE ? 155 : 170;
 			}
 
-			var elem = document.getElementById('filterTableAdvSearch'),
+			var elem = document.getElementById('filterTable' + this.conf.whichsearch),
 				//newID = elem.rows.length - 1,
 				h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
 				scrollContent = document.getElementById("scrollContent_' . $whichSearch . '"),
@@ -366,7 +366,7 @@ weSearch = {
 	},
 
 	newinputAdvSearch: function() {
-		var elem = document.getElementById('filterTableAdvSearch'),
+		var elem = document.getElementById('filterTable' + this.conf.whichsearch),
 			newID = elem.rows.length-1,
 			scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
 			newRow, cell;
@@ -378,17 +378,22 @@ weSearch = {
 			newRow.setAttribute('id', 'filterRow_' + this.conf.rows);
 
 			cell = document.createElement('TD');
-			cell.innerHTML = '<input type="hidden" value="" name="hidden_searchFieldsAdvSearch[' + this.conf.rows + ']" value="">' + this.elems.searchFields.replace(/__we_new_id__/g, this.conf.rows);
+			cell.innerHTML = '<input type="hidden" value="" name="hidden_searchFields' + this.conf.whichsearch + '[' + this.conf.rows + ']" value="">' + this.elems.searchFields.replace(/__we_new_id__/g, this.conf.rows);
 			newRow.appendChild(cell);
 
-			newRow.appendChild(this.getCell('locationAdvSearch', this.conf.rows));
-			newRow.appendChild(this.getCell('searchAdvSearch', this.conf.rows));
+			newRow.appendChild(this.getCell('location' + this.conf.whichsearch, this.conf.rows));
+			newRow.appendChild(this.getCell('search' + this.conf.whichsearch, this.conf.rows));
 			newRow.appendChild(this.getCell('delButton', this.conf.rows));
 
 			elem.appendChild(newRow);
 		}
 	},
-	
+
+	newinpuMediaSearch: function() {
+		top.console.debug('is fn');
+
+	},
+
 	getCell: function(type, rowID){
 		var cell = document.createElement('TD'),
 			html;
@@ -405,6 +410,14 @@ weSearch = {
 				cell.setAttribute("id", "td_locationAdvSearch[" + rowID + "]");
 				cell.innerHTML = this.elems.selLocation.replace(/__we_new_id__/g, rowID);
 				break;
+			case 'searchMediaSearch':
+				cell.setAttribute('id', 'td_searchMediaSearch[' + rowID + ']');
+				cell.innerHTML = this.elems.fieldSearch.replace(/__we_new_id__/g, rowID).replace(/__we_read_only__/g, arguments[2] ? 'readonly="1" ' : '');
+				break;
+			case 'locationMediaSearch':
+				cell.setAttribute("id", "td_locationMediaSearch[" + rowID + "]");
+				cell.innerHTML = this.elems.selLocation.replace(/__we_new_id__/g, rowID);
+				break;
 		}
 		return cell;
 		
@@ -412,7 +425,7 @@ weSearch = {
 
 	delRow: function(id) {
 		var scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
-			elem = document.getElementById("filterTableAdvSearch");
+			elem = document.getElementById("filterTable" + this.conf.whichsearch);
 
 		if(elem){
 			var trows = elem.rows,
@@ -431,13 +444,13 @@ weSearch = {
 			// just wait 1 ms!
 		}, 1);
 
-		var setValue = document.getElementsByName('searchAdvSearch[' + rowNr + ']')[0].value;
-		var from = document.getElementsByName('hidden_searchFieldsAdvSearch[' + rowNr + ']')[0].value;
+		var setValue = document.getElementsByName('search' + this.conf.whichsearch + '[' + rowNr + ']')[0].value;
+		var from = document.getElementsByName('hidden_searchFields' + this.conf.whichsearch + '[' + rowNr + ']')[0].value;
 		var row = document.getElementById('filterRow_' + rowNr);
-		var locationTD = document.getElementById('td_locationAdvSearch[' + rowNr + ']');
-		var searchTD = document.getElementById('td_searchAdvSearch[' + rowNr + ']');
+		var locationTD = document.getElementById('td_location' + this.conf.whichsearch + '[' + rowNr + ']');
+		var searchTD = document.getElementById('td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 		var delButtonTD = document.getElementById('td_delButton[' + rowNr + ']');
-		var location = document.getElementById('locationAdvSearch[' + rowNr + ']');
+		var location = document.getElementById('location' + this.conf.whichsearch + '[' + rowNr + ']');
 
 		switch(value){
 			case 'Content':
@@ -450,9 +463,9 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				row.appendChild(this.getCell('searchAdvSearch', this.conf.rows));
+				row.appendChild(this.getCell('search' + this.conf.whichsearch, this.conf.rows));
 				row.appendChild(this.getCell('delButton', rowNr));
-				document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
+				document.getElementById("search" + this.conf.whichsearch + "["+rowNr+"]").value = setValue;
 				break;
 			case 'temp_category':
 				if (locationTD !== null) {
@@ -462,12 +475,12 @@ weSearch = {
 
 				var innerhtml= '<table border="0" cellpadding="0" cellspacing="0"><tbody><tr>\n'
 								+ '<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>\n'
-								+ '<td><input value="" name="searchAdvSearchParentID[' + rowNr + ']" type="hidden"></td><td>' + this.elems.pixel + '</td>\n'
+								+ '<td><input value="" name="search" + this.conf.whichsearch + "ParentID[' + rowNr + ']" type="hidden"></td><td>' + this.elems.pixel + '</td>\n'
 								+ '<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, this.we_const.CATEGORY_TABLE).replace(/__we_selector__/, 'openCatselector') + '</td>'
 							+ '</tr></tbody></table>';
 
 				var cell = document.createElement('TD');
-				cell.setAttribute('id', 'td_searchAdvSearch[' + rowNr + ']');
+				cell.setAttribute('id', 'td_search" + this.conf.whichsearch + "[' + rowNr + ']');
 				cell.innerHTML=innerhtml;
 				row.appendChild(cell);
 
@@ -485,12 +498,12 @@ weSearch = {
 
 				var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>\n"
 						+ '<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>\n'
-						+ '<td><input value="" name="searchAdvSearchParentID[' + rowNr + ']" type="hidden"></td><td>' + this.elems.pixel + '</td>\n'
+						+ '<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td>' + this.elems.pixel + '</td>\n'
 						+ '<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, this.we_const.TEMPLATES_TABLE).replace(/__we_selector__/, 'openDocselector') + '</td>'
 					+ "</tr></tbody></table>";
 
 				cell = document.createElement("TD");
-				cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "["+rowNr+"]");
 				cell.innerHTML=innerhtml;
 				row.appendChild(cell);
 
@@ -511,12 +524,12 @@ weSearch = {
 
 				var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>" 
 						+ '<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>\n'
-						+ '<td><input value="" name="searchAdvSearchParentID[' + rowNr + ']" type="hidden"></td><td>' + this.elems.pixel + '</td>\n'
+						+ '<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td>' + this.elems.pixel + '</td>\n'
 						+ '<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, table).replace(/__we_selector__/, 'openDirselector') + '</td>'
 					+ "</tr></tbody></table>";
 
 				cell = document.createElement("TD");
-				cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "["+rowNr+"]");
 				cell.innerHTML=innerhtml;
 				row.appendChild(cell);
 
@@ -535,7 +548,7 @@ weSearch = {
 				}
 
 				var cell = document.createElement("TD");
-				cell.setAttribute("id", "td_searchAdvSearch[" + rowNr + "]");
+				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "[" + rowNr + "]");
 				cell.innerHTML = this.elems.selStatus.replace(/__we_new_id__/g, rowNr);
 				row.appendChild(cell);
 
@@ -551,7 +564,7 @@ weSearch = {
 				}
 
 				var cell = document.createElement("TD");
-				cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "["+rowNr+"]");
 				cell.innerHTML = this.elems.selSpeicherart.replace(/__we_new_id__/g,rowNr);
 				row.appendChild(cell);
 
@@ -562,11 +575,11 @@ weSearch = {
 			case 'ModDate':
 
 				row.removeChild(locationTD);
-				row.appendChild(this.getCell('locationAdvSearch', rowNr));
+				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr));
 				row.removeChild(searchTD);
 
 				// FIXME: move datepicker-button to search_view
-				var innerhtml= "<table id=\"searchAdvSearch["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>\n"
+				var innerhtml= "<table id=\"search" + this.conf.whichsearch + "["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>\n"
 						+ "<td></td>"
 						+ "<td></td>"
 						+ '<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ').replace('width: 170px', 'width: 100px') + '</td>\n'
@@ -576,11 +589,11 @@ weSearch = {
 
 
 				cell = document.createElement("TD");
-				cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "["+rowNr+"]");
 					 cell.innerHTML=innerhtml;
 					 row.appendChild(cell);
 
-					 Calendar.setup({inputField:"searchAdvSearch[" + rowNr + "]",ifFormat:"%d.%m.%Y",button:"date_picker_from" + rowNr + "",align:"Tl",singleClick:true});
+					 Calendar.setup({inputField:"search" + this.conf.whichsearch + "[" + rowNr + "]",ifFormat:"%d.%m.%Y",button:"date_picker_from" + rowNr + "",align:"Tl",singleClick:true});
 
 				if (delButtonTD!=null) {
 					row.removeChild(delButtonTD);
@@ -599,7 +612,7 @@ weSearch = {
 				}
 
 				var cell = document.createElement("TD");
-				cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "["+rowNr+"]");
 				cell.innerHTML = this.elems.selModFields.replace(/__we_new_id__/g,rowNr);
 				row.appendChild(cell);
 
@@ -615,7 +628,7 @@ weSearch = {
 				}
 
 				var cell = document.createElement("TD");
-				cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
+				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "["+rowNr+"]");
 				cell.innerHTML = this.elems.selUsers.replace(/__we_new_id__/g,rowNr);
 				row.appendChild(cell);
 
@@ -631,11 +644,11 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				row.appendChild(this.getCell('locationAdvSearch', rowNr));
-				row.appendChild(this.getCell('searchAdvSearch', rowNr));
+				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr));
+				row.appendChild(this.getCell('search' + this.conf.whichsearch, rowNr));
 				row.appendChild(this.getCell('delButton', rowNr));
 
-				document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
+				document.getElementById("search" + this.conf.whichsearch + "["+rowNr+"]").value = setValue;
 		};
 
 		switch(from){
@@ -652,13 +665,13 @@ weSearch = {
 			case "Published":
 			case "CreationDate":
 			case "ModDate":
-				document.getElementById("searchAdvSearch["+rowNr+"]").value = "";
+				document.getElementById("search" + this.conf.whichsearch + "["+rowNr+"]").value = "";
 				//|| value =="allModsIn" || value =="MasterTemplateID" || value=="ParentIDTmpl" || value=="ParentIDObj" || value=="ParentIDDoc" || value=="temp_template_id" || value=="ContentType" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {
 			default:
-				document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
+				document.getElementById("search" + this.conf.whichsearch + "["+rowNr+"]").value = setValue;
 		};
 
-		document.getElementsByName("hidden_searchFieldsAdvSearch["+rowNr+"]")[0].value = value;
+		document.getElementsByName("hidden_searchFields" + this.conf.whichsearch + "["+rowNr+"]")[0].value = value;
 
 	},
 
@@ -683,14 +696,14 @@ weSearch = {
 			if(top.opener.treeData) {
 				top.opener.we_cmd("load", top.opener.treeData.table ,0);
 			}
-			document.getElementById("resetBusyAdvSearch").innerHTML = "";
+			document.getElementById("resetBusy" + this.conf.whichsearch).innerHTML = "";
 		},
 		failure: function(o) {
 		}
 	},
 
 	resetVersionAjax: function(id, documentID, version, table) {
-		document.getElementById("resetBusyAdvSearch").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
+		document.getElementById("resetBusy" + this.conf.whichsearch).innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
 
 		YAHOO.util.Connect.asyncRequest("POST", this.conf.ajaxURL, this.ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id="+id+"&documentID="+documentID+"&version="+version+"&documentTable="+table+"&we_transaction=' . $GLOBALS['we_transaction'] . '");
 	},
@@ -800,7 +813,7 @@ weSearch = {
 		if(top.opener.treeData) {
 			top.opener.we_cmd("load", top.opener.treeData.table ,0);
 		}
-		document.getElementById("resetBusyAdvSearch").innerHTML = "";
+		document.getElementById("resetBusy" + this.conf.whichsearch).innerHTML = "";
 		document.getElementById("resetBusyDocSearch").innerHTML = "";
 		top.we_showMessage(weSearch.g_l.searchtool__publishOK, weSearch.we_const.WE_MESSAGE_NOTICE, window);
 
@@ -836,7 +849,7 @@ weSearch = {
 	calendarSetup: function(x){
 		for(i=0;i<x;i++) {
 			if(document.getElementById("date_picker_from"+i+"") != null) {
-				//Calendar.setup({inputField:"searchAdvSearch["+i+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+i+"",align:"Tl",singleClick:true});
+				//Calendar.setup({inputField:"search" + this.conf.whichsearch + "["+i+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+i+"",align:"Tl",singleClick:true});
 			}
 		}
 	}

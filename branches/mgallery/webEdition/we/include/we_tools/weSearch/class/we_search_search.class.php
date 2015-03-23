@@ -64,6 +64,8 @@ class we_search_search extends we_search_base{
 	 */
 	var $search = array();
 
+	private $collectionMetaSearches = array();
+
 	/**
 	 * @abstract get data from fields, used in the doclistsearch
 	 */
@@ -124,7 +126,7 @@ class we_search_search extends we_search_base{
 		return $vals;
 	}
 
-	function getFields($row, $whichSearch = ''){
+	function getFields($row = 0, $whichSearch = ''){
 
 		$tableFields = array(
 			'ID' => g_l('searchtool', '[ID]'),
@@ -152,6 +154,28 @@ class we_search_search extends we_search_base{
 			'modifierID' => g_l('versions', '[modUser]')
 		);
 
+		if($whichSearch === we_search_view::SEARCH_MEDIA){
+			$tableFields = array_merge(array(
+				'meta__Description' => 'Metadaten: Beschreibung',// FIXME: G_L()
+				'meta__Keywords' => 'Metadaten: Schlüsselwörter',// FIXME: G_L()
+				), 
+				$this->getFieldsAdditionalMeta(), 
+				$tableFields
+			);
+
+			unset($tableFields['Text']);
+			unset($tableFields['ParentIDObj']);
+			unset($tableFields['ParentIDTmpl']);
+			unset($tableFields['temp_template_id']);
+			unset($tableFields['MasterTemplateID']);
+			unset($tableFields['ContentType']);
+			unset($tableFields['WebUserID']);
+			unset($tableFields['WebUserName']);
+			unset($tableFields['Content']);
+			unset($tableFields['Status']);
+			unset($tableFields['Speicherart']);
+			unset($tableFields['Published']);
+		}
 
 		if($whichSearch === 'doclist'){
 			unset($tableFields['Path']);
@@ -184,6 +208,17 @@ class we_search_search extends we_search_base{
 		}
 
 		return $tableFields;
+	}
+
+	function getFieldsAdditionalMeta($getTypes = false){
+		$_db = new DB_WE();
+		$_db->query('SELECT tag,type DocType FROM ' . METADATA_TABLE);
+		$ret = array();
+		while($_db->next_record()){
+			$ret['meta__' . $_db->f('tag')] = $getTypes ? $_db->f('type') : 'Metadaten: ' . $_db->f('tag');
+		}
+		//$ret['-'] = '';
+		return $ret;
 	}
 
 	function getFieldsStatus(){
@@ -407,6 +442,39 @@ class we_search_search extends we_search_base{
 		$where .= ')';
 
 		return $where;
+	}
+
+	function addToSearchInMeta($search, $field, $location){
+		$this->collectionMetaSearches[] = array($search, $field, $location);
+	}
+
+	/*
+	 * Implemented for media search only! Copy fron searchInTitle: why LEFT join??
+	 */
+	function searchInMeta(){
+		if(empty($this->collectionMetaSearches)){
+			return; 
+		}
+
+		$_db = new DB_WE();
+		$where = '(';
+		$c = 0;
+		//l.Name="Title" AND c.Dat LIKE "%' . $_db->escape(trim($keyword)) . '%""
+		foreach($this->collectionMetaSearches as $v){
+			if($v[0 && $v[1]]){
+				$where .= ($c !== 0 ? 'OR ' : '') . '(l.Name="' . $v[1] . '" AND c.Dat LIKE "%' . $_db->escape(trim($v[0])) . '%") ';
+				$c++;
+			}
+		}
+		if($c === 0){
+			return;
+		}
+		$where .= ')';
+
+		$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE ' . $where . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ' . $where);
+		$IDs = $_db->getAll(true);
+
+		return $IDs ? 'AND ID IN (' . implode(',', $IDs) . ')' : '';
 	}
 
 	function getStatusFiles($status, $table){//IMI: IMPORTANT: veröffentlichungsstatus grenzt die contenttypes auf djenigen ein, die solch einen status haben!!
