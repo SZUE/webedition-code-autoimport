@@ -96,8 +96,14 @@ class we_search_model extends we_tool_model{
 	 */
 	var $searchForTextMediaSearch = 1;
 	var $searchForTitleMediaSearch = 0;
-	var $searchForContentMediaSearch = 0;
-	public $searchForLinkedMediaSearch = 'both';// FIXME: make setter/getter and set private
+	var $searchForMetaMediaSearch = 0;
+
+	public $searchForImageMediaSearch = 1;
+	public $searchForVideoMediaSearch = 0;
+	public $searchForAudioMediaSearch = 0;
+	public $searchForPdfMediaSearch = 1;
+
+	public $search_contentTypes_mediaSearch = array();
 
 	/**
 	 * @var array: shows which tables you have to search in in the advsearch

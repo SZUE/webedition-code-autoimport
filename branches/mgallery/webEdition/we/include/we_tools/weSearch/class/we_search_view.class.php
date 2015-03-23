@@ -882,8 +882,8 @@ weSearch.g_l = {
 				if($this->Model->searchForTitleMediaSearch){
 					$this->Model->searchFieldsMediaSearch[] = "Title";
 				}
-				if($this->Model->searchForContentMediaSearch){
-					$this->Model->searchFieldsMediaSearch[] = "Content";
+				if($this->Model->searchForMetaMediaSearch){
+					$this->Model->searchFieldsMediaSearch[] = "Meta";
 				}
 
 				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && we_base_request::_(we_base_request::INT, "tab") == 1){
