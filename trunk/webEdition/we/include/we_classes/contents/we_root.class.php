@@ -931,10 +931,7 @@ abstract class we_root extends we_class{
 	}
 
 	protected function i_getContentData(){
-
-		$this->DB_WE->query('SELECT * FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->ID) .
-			' AND l.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '"'
-		);
+		$this->DB_WE->query('SELECT * FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->ID) . ' AND l.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '"');
 		$filter = array('Name', 'DID', 'Ord');
 		while($this->DB_WE->next_record()){
 			$Name = $this->DB_WE->f('Name');
@@ -945,8 +942,7 @@ abstract class we_root extends we_class{
 			} elseif($this->i_isElement($Name)){
 				foreach($this->DB_WE->Record as $k => $v){
 					if(!in_array($k, $filter) && !is_numeric($k)){
-						$k = strtolower($k);
-						$this->elements[$Name][$k] = $v;
+						$this->elements[$Name][strtolower($k)] = $v;
 					}
 				}
 				$this->elements[$Name]['table'] = CONTENT_TABLE;
@@ -996,11 +992,12 @@ abstract class we_root extends we_class{
 					if($data){
 						$data = we_database_base::arraySetter($data);
 						$key = $v['type'] . '_' . $k;
-						$cid = 0;
 						if(isset($replace[$key])){
 							$cid = $replace[$key];
 							$data.=',ID=' . $cid;
 							unset($replace[$key]);
+						} else {
+							$cid = 0;
 						}
 						$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE . ' SET ' . $data);
 						$cid = $cid ? : $this->DB_WE->getInsertId();
