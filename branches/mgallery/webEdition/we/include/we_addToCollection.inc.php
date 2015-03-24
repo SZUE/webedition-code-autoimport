@@ -21,7 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 we_html_tools::protect();
 $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2);
 $targetCollection = we_base_request::_(we_base_request::INT, 'we_cmd', '', 3);
@@ -31,14 +30,14 @@ $insertPos = ($pos = we_base_request::_(we_base_request::INT, 'we_cmd', -1, 6)) 
 $script = '';
 
 /* FIXME: adapt when collection perms are implemented
- * 
-if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("MOVE_TEMPLATE")) ||
-		($table == FILE_TABLE && !permissionhandler::hasPerm("MOVE_DOCUMENT")) ||
-		(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !permissionhandler::hasPerm("MOVE_OBJECTFILES"))){
-	require_once (WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
-	exit();
-}
- * 
+ *
+  if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("MOVE_TEMPLATE")) ||
+  ($table == FILE_TABLE && !permissionhandler::hasPerm("MOVE_DOCUMENT")) ||
+  (defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !permissionhandler::hasPerm("MOVE_OBJECTFILES"))){
+  require_once (WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
+  exit();
+  }
+ *
  */
 $yuiSuggest = & weSuggest::getInstance();
 $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
@@ -70,21 +69,21 @@ if($cmd0 === 'do_addToCollection'){
 				} else {
 					$collection->save();
 				}
-				$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall('Inserted: ' . implode(',', $result[0]) . '\nAs duplicates rejected: '. implode(',', $result[1]) .'. \n\nOthers items may have been rejecected because of inapropriate class/mime type.', we_message_reporting::WE_MESSAGE_ERROR);
+				$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall('Inserted: ' . implode(',', $result[0]) . '\nAs duplicates rejected: ' . implode(',', $result[1]) . '. \n\nOthers items may have been rejecected because of inapropriate class/mime type.', we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall("none of the items selected do not matches the collection's content types", we_message_reporting::WE_MESSAGE_INFO);
 			}
 		}
 	}
 	$script = we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsElement($script);
+		we_html_element::jsElement($script);
 }
 
 echo we_html_tools::getHtmlTop() .
-	STYLESHEET .
-	$script .
-	we_html_element::jsScript(JS_DIR . 'weAddToCollection.js') .
-	we_html_element::jsElement('
+ STYLESHEET .
+ $script .
+ we_html_element::jsScript(JS_DIR . 'weAddToCollection.js') .
+ we_html_element::jsElement('
 	weAddToCollection.init({
 			table: "' . $table . '",
 			targetInsertIndex: ' . $insertIndex . ',
@@ -96,7 +95,7 @@ echo we_html_tools::getHtmlTop() .
 			VFILE_TABLE: "' . VFILE_TABLE . '"
 		}
 	);') .
-	weSuggest::getYuiFiles();
+ weSuggest::getYuiFiles();
 
 if($cmd0 === "do_addToCollection"){
 	echo "</head><body></body></html>";
@@ -135,12 +134,13 @@ $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button
 echo
 '</head><body class="weTreeHeaderMove">
 <form name="we_form" method="post" onsubmit="return false">' .
-we_html_element::htmlHidden(array('name' => 'we_targetTransaction')) . 
-we_html_element::htmlHidden(array('name' => 'we_targetInsertPos', 'value' => $insertPos)) .
-we_html_element::htmlHidden(array('name' => 'sel')) . '
+ we_html_element::htmlHiddens(array(
+	'we_targetTransaction' => '',
+	'we_targetInsertPos' => $insertPos,
+	'name' => 'sel')) . '
 <div style="width:370px;">
 <h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(
-		g_l('newFile', '[title_move]')) . '</h1>
+	g_l('newFile', '[title_move]')) . '</h1>
 <p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">addToCollectionText</span>
 			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . '</p></p>
 <div>' . $_buttons . '</div></div>

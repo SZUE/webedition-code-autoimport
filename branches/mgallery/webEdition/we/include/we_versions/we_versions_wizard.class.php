@@ -212,22 +212,17 @@ function set_button_state(alldis) {
 }
 set_button_state(false);';
 
-		$hiddenFields = "";
-		foreach($version_delete as $k => $v){
-			$hiddenFields .= we_html_element::htmlHidden(array("name" => $k, "value" => $v));
-		}
-
-		foreach($version_reset as $k => $v){
-			$hiddenFields .= we_html_element::htmlHidden(array("name" => $k, "value" => $v));
-		}
+		$hiddenFields = we_html_element::htmlHiddens($version_delete) .
+			we_html_element::htmlHiddens($version_reset);
 
 		return array(
 			$js,
 			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[versioning]')) .
 			$hiddenFields .
-			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
-			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => 1))
+			we_html_element::htmlHiddens(array(
+				"fr" => "body",
+				"we_cmd[0]" => "versions_wizard",
+				"step" => 1))
 		);
 	}
 
@@ -466,10 +461,11 @@ set_button_state(false);';
 		return array(
 			$js,
 			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
-			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
-			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => 2))
+			we_html_element::htmlHiddens(array(
+				"fr" => "body",
+				"type" => $type,
+				"we_cmd[0]" => "versions_wizard",
+				"step" => 2))
 		);
 	}
 
@@ -717,10 +713,11 @@ set_button_state(false);';
 			$js,
 			we_html_multiIconBox::getHTML(
 				"", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
-			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
-			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => 2))
+			we_html_element::htmlHiddens(array(
+				"fr" => "body",
+				"type" => $type,
+				"we_cmd[0]" => "versions_wizard",
+				"step" => 2))
 		);
 	}
 
@@ -914,22 +911,18 @@ set_button_state(false);';
 			"space" => 0
 		);
 
-		$hiddenFields = "";
-		foreach($version_delete as $k => $v){
-			$hiddenFields .= we_html_element::htmlHidden(array(
-					"name" => $k, "value" => $v
-			));
-		}
+		$hiddenFields = we_html_element::htmlHiddens($version_delete);
 
 		return array(
 			self::getPage2Js(!empty($cont), 'delete'),
 			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
 			$hiddenFields .
-			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
-			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => 3))
-		);
+			we_html_element::htmlHiddens(array(
+				"fr" => "body",
+				"type" => $type,
+				"we_cmd[0]" => "versions_wizard",
+				"step" => 3)
+		));
 	}
 
 	static function getReset2(){
@@ -1042,19 +1035,17 @@ set_button_state(false);';
 			"space" => 0
 		);
 
-		$hiddenFields = "";
-		foreach($version_reset as $k => $v){
-			$hiddenFields .= we_html_element::htmlHidden(array("name" => $k, "value" => $v));
-		}
+		$hiddenFields = we_html_element::htmlHiddens($version_reset);
 
 		return array(
 			self::getPage2Js(!empty($cont), "reset"),
 			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
 			$hiddenFields .
-			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
-			we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "versions_wizard")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => 3))
+			we_html_element::htmlHiddens(array(
+				"fr" => "body",
+				"type" => $type,
+				"we_cmd[0]" => "versions_wizard",
+				"step" => 3))
 		);
 	}
 

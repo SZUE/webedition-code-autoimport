@@ -147,7 +147,7 @@ function showMessage(message, prio, win){
 function cleanWEZendCache(){
 	if(file_exists(WE_CACHE_PATH . 'clean')){
 		if(!is_writeable(WE_CACHE_PATH)){
-			t_e('cachedir '.WE_CACHE_PATH.' is not writeable expect errors, undefined behaviour');
+			t_e('cachedir ' . WE_CACHE_PATH . ' is not writeable expect errors, undefined behaviour');
 			return;
 		}
 		$cache = getWEZendCache();
@@ -333,11 +333,12 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	 * GENERATE LOGIN
 	 * *************************************************************************** */
 
-	$_hidden_values = we_html_element::htmlHidden(array('name' => 'checkLogin', 'value' => session_id())) .
-		we_html_element::htmlHidden(array('name' => 'indexDate', 'value' => date('d.m.Y, H:i:s')));
+	$_hidden_values = we_html_element::htmlHiddens(array(
+		'checkLogin' => session_id(),
+			'indexDate' => date('d.m.Y, H:i:s')));
 
 	if($ignore_browser){
-		$_hidden_values .= we_html_element::htmlHidden(array('name' => 'ignore_browser', 'value' => 'true'));
+		$_hidden_values .= we_html_element::htmlHidden('ignore_browser','true');
 	}
 
 	/*	 * ***********************************************************************

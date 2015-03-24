@@ -492,7 +492,7 @@ abstract class we_root extends we_class{
 		}
 
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
-		return we_root::htmlFormElementTable(we_root::htmlTextInput($textname, 30, $username, '', ' readonly', 'text', $width, 0), 'User', 'left', 'defaultfont', we_root::htmlHidden($idname, $userid), we_html_tools::getPixel(20, 4), we_html_button::create_button('select', "javascript:we_cmd('browse_users','document.we_form.elements['" . $idname . "'].value','" . $wecmdenc2 . "','user')"));
+		return we_root::htmlFormElementTable(we_root::htmlTextInput($textname, 30, $username, '', ' readonly', 'text', $width, 0), 'User', 'left', 'defaultfont', we_html_element::htmlHidden($idname, $userid), we_html_tools::getPixel(20, 4), we_html_button::create_button('select', "javascript:we_cmd('browse_users','document.we_form.elements['" . $idname . "'].value','" . $wecmdenc2 . "','user')"));
 	}
 
 	//FIXME: this should be a general selector
@@ -1253,7 +1253,7 @@ abstract class we_root extends we_class{
 							$this->FileLinks[] = $link['img_id'];
 						}
 					}
-				default: 
+				default:
 					//
 			}
 		}

@@ -53,14 +53,6 @@ abstract class we_modules_frame{
 		$this->cmdFrame = $cmdFrame;
 	}
 
-	/**
-	 * @deprecated since version 6.4.1
-	 */
-	public function setupTree($table, $topFrame, $treeFrame, $cmdFrame){
-		$this->setFrames($topFrame, $treeFrame, $cmdFrame);
-		$this->Tree->init($this->frameset, $topFrame, $treeFrame, $cmdFrame);
-	}
-
 	function getJSStart(){
 		return 'function start(){startTree();}';
 	}

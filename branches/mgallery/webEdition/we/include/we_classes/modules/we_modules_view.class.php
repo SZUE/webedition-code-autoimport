@@ -39,7 +39,7 @@ class we_modules_view implements we_modules_viewIF{//FIXME is this really a base
 	//----------- Utility functions ------------------
 
 	function htmlHidden($name, $value = ''){
-		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
+		return we_html_element::htmlHidden(trim($name), oldHtmlspecialchars($value));
 	}
 
 	//-----------------Init -------------------------------

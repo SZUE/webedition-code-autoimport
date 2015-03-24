@@ -854,7 +854,7 @@ self.close();');
 				if(!$this->customer->ID && $value == null){
 					$value = $props['default'];
 				}
-				$out = we_html_element::htmlHidden(array('name' => $field, 'value' => $value));
+				$out = we_html_element::htmlHidden($field, $value);
 				$values = explode(',', $value);
 				$defs = explode(',', $props['default']);
 				$cnt = count($defs);
@@ -951,7 +951,7 @@ self.close();');
 				$date_format = DATE_ONLY_FORMAT;
 				$format = g_l('weEditorInfo', '[date_only_format]');
 			case 'dateTime':
-				//$out = we_html_element::htmlHidden(array('name' => $field, 'value' => $value));
+				//$out = rray('name' => $field, 'value' => $value));
 				try{
 					$value = $value && $value != '0000-00-00' ? new DateTime($value /* ? $value : $this->settings->getSettings('start_year') . '-01-01' */) : 0;
 				}catch(Exception $e){

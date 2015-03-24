@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,7 +29,7 @@ we_html_tools::protect($protect);
 
 //FIXME: mak sowme view class for this editor and use processVariables() and processCommands()?
 //process request
-$shopCategoriesDir = ($val = we_base_request::_(we_base_request::INT, 'weShopCatDir', false)) !== false ? $val : we_shop_category::getShopCatDir();//(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_dir"', '', $DB_WE, -1));
+$shopCategoriesDir = ($val = we_base_request::_(we_base_request::INT, 'weShopCatDir', false)) !== false ? $val : we_shop_category::getShopCatDir(); //(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_dir"', '', $DB_WE, -1));
 $relations = array();
 $saveSuccess = false;
 $onsaveClose = we_base_request::_(we_base_request::BOOL, 'onsaveclose', false);
@@ -116,7 +115,6 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 				}
 			}
 		}
-
 	}
 
 	$shopCategories = we_shop_category::getShopCatFieldsFromDir('', false, true, $shopCategoriesDir, true, true, true, '', 'Path');
@@ -136,7 +134,7 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 			}
 
 			$j = 0;
-			$table->setCol($i, 1, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 140), '<abbr title="ShopCatID: '.$cat['ID'].'">'.$cat['Category'].'</abbr>');
+			$table->setCol($i, 1, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 140), '<abbr title="ShopCatID: ' . $cat['ID'] . '">' . $cat['Category'] . '</abbr>');
 			$table->setCol($i, 2, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 20));
 			$table->setCol($i++, 3, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'colspan' => 2, 'nowrap' => 'nowrap', 'width' => 174), $cat['Path']);
 			if($cat['ID'] != $shopCategoriesDir){
@@ -147,7 +145,7 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 			//set attribute $unique for radio button to 'true' for corret labels
 			$taxPrinciple = we_html_forms::radioButton(0, ($cat['DestPrinciple'] == 0 ? '1' : '0'), 'weShopCatDestPrinciple[' . $cat['ID'] . ']', g_l('modules_shop', '[shopcats][text_originPrinciple]'), true, 'defaultfont', 'we_switch_principle_by_id(' . $cat['ID'] . ', this, ' . ($isShopCatsDir ? 'true' : 'false') . ')') .
 				we_html_forms::radioButton(1, ($cat['DestPrinciple'] == 1 ? '1' : '0'), 'weShopCatDestPrinciple[' . $cat['ID'] . ']', g_l('modules_shop', '[shopcats][text_destPrinciple]'), true, 'defaultfont', 'we_switch_principle_by_id(' . $cat['ID'] . ', this, ' . ($isShopCatsDir ? 'true' : 'false') . ')') .
-				we_html_element::htmlHidden(array('id' => 'taxPrinciple_tmp[' . $cat['ID'] . ']', 'value' => $cat['DestPrinciple']));
+				we_html_element::htmlHidden('taxPrinciple_tmp[' . $cat['ID'] . ']', $cat['DestPrinciple'], 'taxPrinciple_tmp[' . $cat['ID'] . ']');
 
 			$table->setRow($i, array('id' => 'destPrincipleRow_' . $cat['ID'], 'style' => ($cat['IsInactive'] == 1 ? 'display: none;' : '')));
 			$table->setCol($i, 3, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 174, 'style' => 'padding-bottom: 10px'), g_l('modules_shop', '[shopcats][title_taxationMode]'));
@@ -280,7 +278,6 @@ $parts = array(
 		'headline' => g_l('modules_shop', '[shopcats][text_shopCatDir]'),
 		'space' => 200,
 		'html' => $selCategoryDirs,
-
 	),
 );
 

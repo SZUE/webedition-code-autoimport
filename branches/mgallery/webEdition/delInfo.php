@@ -50,7 +50,8 @@ $parts = array(
 		"headline" => we_html_tools::htmlAlertAttentionBox($_SESSION['weS']['delete_files_info'], we_html_tools::TYPE_ALERT, 500),
 		"html" => "",
 		"space" => 10,
-		"noline" => 1),
+		"noline" => 1
+		),
 	array(
 		"headline" => "",
 		"html" => we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 475px; height: 350px; border:1px #dce6f2 solid;"), $table->getHtml()),

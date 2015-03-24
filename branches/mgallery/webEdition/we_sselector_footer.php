@@ -45,14 +45,11 @@ var g_l={
 			if(we_base_request::_(we_base_request::BOOL, "ret")){
 				$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");
 				$yes_button = we_html_button::create_button("ok", "javascript:top.exit_close();");
-				$down_button = null;
 			} else {
 				$cancel_button = we_html_button::create_button("close", "javascript:top.exit_close();");
 				$yes_button = we_html_button::create_button("edit", "javascript:editFile();");
-				//TODO: since .htaccess might be active, we have to call a php-script for download
-				$down_button = null; //we_button::create_button("download", "javascript:downloadFile();");
 			}
-			$buttons = we_html_button::position_yes_no_cancel($yes_button, $down_button, $cancel_button);
+			$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 			if(we_base_request::_(we_base_request::STRING, "filter") === "all_Types"){
 				?>
 				<tr>

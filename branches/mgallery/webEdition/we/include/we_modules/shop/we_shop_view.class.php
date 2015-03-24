@@ -42,7 +42,7 @@ class we_shop_view{
 	//----------- Utility functions ------------------
 
 	function htmlHidden($name, $value = ''){
-		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
+		return we_html_element::htmlHidden(trim($name), oldHtmlspecialchars($value));
 	}
 
 	//-----------------Init -------------------------------
@@ -609,7 +609,7 @@ function we_cmd() {
 			$articlePrice = $totalPrice = 0;
 			$articleVatArray = array();
 			// now loop through all articles in this order
-			foreach($ArticleId as $i=>$currentArticle){
+			foreach($ArticleId as $i => $currentArticle){
 
 				// now init each article
 				$shopArticleObject = (empty($Serial[$i]) ? // output 'document-articles' if $Serial[$d] is empty. This is when an order has been extended

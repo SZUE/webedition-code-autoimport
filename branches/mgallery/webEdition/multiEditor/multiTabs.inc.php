@@ -67,16 +67,6 @@ switch($browser->getBrowser()){
 	default:
 		$heightPlus = 1;
 		$tabDummy = '<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)"><nobr>&nbsp;<span class="spacer">&nbsp;<img src="' . IMAGE_DIR . 'pixel.gif" id="###loadId###" title="" class="status"/>&nbsp;</span><span id="###tabTextId###" class="text"></span><span class="spacer"><img id="###modId###" class="status modified"/><img src="' . IMAGE_DIR . 'multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src=\'' . IMAGE_DIR . 'multiTabs/closeOver.gif\'" onmouseout="this.src=\'' . IMAGE_DIR . 'multiTabs/close.gif\'" class="close" />&nbsp;</span></nobr></div>';
-	/* 	switch($browser->getSystem()){
-	  case we_base_browserDetect::SYS_MAC:
-	  $tabContainerMargin = "0px";
-	  break;
-	  case we_base_browserDetect::SYS_UNIX:
-	  $tabContainerMargin = "0px";
-	  break;
-	  default:
-	  $tabContainerMargin = "-1px";
-	  } */
 }
 
 echo we_html_element::jsElement($_contentTypes . '

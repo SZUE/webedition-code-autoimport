@@ -151,7 +151,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 			$_modetable->setCol(0, 1, array("align" => "right", "valign" => "bottom", "rowspan" => 2), (WE_LOGIN_WEWINDOW == 1 ? '<input type="hidden" name="popup" value="popup"/>' : '') . $loginButton);
 		} else {
 			$_modetable->setCol(0, 0, array(), we_html_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]')));
-			$_modetable->setCol(0, 1, array("align" => "right", "valign" => "bottom", "rowspan" => 2), we_html_element::htmlHidden(array("name" => "mode", "value" => "normal")) . $loginButton);
+			$_modetable->setCol(0, 1, array("align" => "right", "valign" => "bottom", "rowspan" => 2), we_html_element::htmlHidden("mode", "normal") . $loginButton);
 		}
 	} else { //	normal login
 		//	15th Mode

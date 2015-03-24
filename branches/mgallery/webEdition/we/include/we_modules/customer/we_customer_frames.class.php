@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_customer_frames extends we_modules_frame{
-
 	var $View;
 	var $jsOut_fieldTypesByName;
 	public $module = 'customer';
@@ -75,8 +74,8 @@ class we_customer_frames extends we_modules_frame{
 		$this->View->customer->clearSessionVars();
 		$this->View->settings->load(false);
 		$extraHead = $this->Tree->getJSTreeCode() .
-				we_html_element::jsElement($this->getJSStart()) .
-				$this->View->getJSTreeHeader();
+			we_html_element::jsElement($this->getJSStart()) .
+			$this->View->getJSTreeHeader();
 
 		$sid = we_base_request::_(we_base_request::RAW, 'sid', false);
 		$extraUrlParams = $sid !== false ? '&sid=' . $sid : '';
@@ -101,8 +100,8 @@ class we_customer_frames extends we_modules_frame{
 		if(is_array($fields_names)){
 			foreach($fields_names as $k => $field){
 				$select->addOption($k, ($this->View->customer->isProperty($field) ?
-								$this->View->settings->getPropertyTitle($field) :
-								$field)
+						$this->View->settings->getPropertyTitle($field) :
+						$field)
 				);
 			}
 		}
@@ -132,7 +131,7 @@ class we_customer_frames extends we_modules_frame{
 		$tabs->addTab(new we_tab('#', g_l('modules_customer', '[other]'), we_tab::NORMAL, "setTab('" . g_l('modules_customer', '[other]') . "');", array("id" => "other")));
 		$tabs->addTab(new we_tab("#", g_l('modules_customer', '[all]'), we_tab::NORMAL, "setTab('" . g_l('modules_customer', '[all]') . "');", array("id" => "all")));
 		$extraJS .= "aTabs['" . g_l('modules_customer', '[other]') . "']='other';" .
-				"aTabs['" . g_l('modules_customer', '[all]') . "']='all';";
+			"aTabs['" . g_l('modules_customer', '[all]') . "']='all';";
 //((top.content.activ_tab=="' . g_l('modules_customer','[other]') . '") ? TAB_ACTIVE : TAB_NORMAL)
 
 		if(defined('SHOP_TABLE')){
@@ -150,10 +149,10 @@ class we_customer_frames extends we_modules_frame{
 		$table = new we_html_table(array("width" => '100%', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
 		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
-				we_html_element::htmlB(
-						g_l('modules_customer', '[customer]') . ":&nbsp;" . $this->View->customer->Username .
-						we_html_tools::getPixel(1, 10)
-				)
+			we_html_element::htmlB(
+				g_l('modules_customer', '[customer]') . ":&nbsp;" . $this->View->customer->Username .
+				we_html_tools::getPixel(1, 10)
+			)
 		);
 
 		$extraJS .= 'if(top.content.activ_tab) document.getElementById(aTabs[top.content.activ_tab]).className="tabActive"; else document.getElementById("common").className="tabActive"';
@@ -163,19 +162,19 @@ class we_customer_frames extends we_modules_frame{
 
 		//TODO: we have the following body in several modules!
 		$body = we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'id' => 'eHeaderBody',), we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
-												we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('modules_customer', '[customer]')) . ':&nbsp;') .
-												we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
-												)
-										)
-								) .
-								$tabs->getHTML()
-						) .
-						we_html_element::jsElement($extraJS)
+							we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('modules_customer', '[customer]')) . ':&nbsp;') .
+							we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
+							)
+						)
+					) .
+					$tabs->getHTML()
+				) .
+				we_html_element::jsElement($extraJS)
 		);
 
 		return $this->getHTMLDocument($body, $tabs->getHeader() .
-						we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
-						we_html_element::jsElement('
+				we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
+				we_html_element::jsElement('
 function setTab(tab) {
 	' . $this->topFrame . '.activ_tab=tab;
 	parent.edbody.we_cmd(\'switchPage\',tab);
@@ -190,7 +189,7 @@ top.content.hloaded = 1;'));
 			$hiddens['cmd'] = 'home';
 			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
-			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden(array('name' => 'home', 'value' => 0)));
+			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', 0));
 			$GLOBALS['mod'] = 'customer';
 			ob_start();
 			include(WE_MODULES_PATH . 'home.inc.php');
@@ -200,9 +199,9 @@ top.content.hloaded = 1;'));
 		$branch = we_base_request::_(we_base_request::STRING, 'branch', g_l('modules_customer', '[common]'));
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(
-								array('class' => 'weEditorBody', 'onload' => 'loaded=1', 'onunload' => 'doUnload()'), we_html_element::htmlForm(
-										array('name' => 'we_form', 'autocomplete' => 'off'), $this->View->getCommonHiddens($hiddens) .
-										$this->View->getHTMLProperties($branch))), $this->View->getJSProperty());
+					array('class' => 'weEditorBody', 'onload' => 'loaded=1', 'onunload' => 'doUnload()'), we_html_element::htmlForm(
+						array('name' => 'we_form', 'autocomplete' => 'off'), $this->View->getCommonHiddens($hiddens) .
+						$this->View->getHTMLProperties($branch))), $this->View->getJSProperty());
 	}
 
 	protected function getHTMLTreeHeader(){
@@ -210,18 +209,19 @@ top.content.hloaded = 1;'));
 	}
 
 	protected function getHTMLTreeFooter(){
-		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
-				we_html_element::htmlHidden(array("name" => "cmd", "value" => "show_search"));
+		$hiddens = we_html_element::htmlHiddens(array(
+				"pnt" => "cmd",
+				"cmd" => "show_search"));
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => '100%'), 1, 1);
 		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
-				$hiddens .
-				we_html_button::create_button_table(
-						array(
-							we_html_tools::htmlTextInput("keyword", 10, '', '', '', "text", "150px"),
-							we_html_button::create_button("image:btn_function_search", "javascript:submitForm('cmd', '', '', 'we_form_treefooter')")
-						)
+			$hiddens .
+			we_html_button::create_button_table(
+				array(
+					we_html_tools::htmlTextInput("keyword", 10, '', '', '', "text", "150px"),
+					we_html_button::create_button("image:btn_function_search", "javascript:submitForm('cmd', '', '', 'we_form_treefooter')")
 				)
+			)
 		);
 
 		return we_html_element::htmlForm(array("name" => "we_form_treefooter", "target" => "cmd"), $table->getHtml());
@@ -237,7 +237,7 @@ top.content.hloaded = 1;'));
 
 		$fields = $this->getHTMLFieldsSelect($branch);
 		$fields->setAttributes(array("name" => "fields_select", "size" => 15, "onchange" => '', "style" => "width:350px;height:250px;"));
-		//$hiddens = we_html_element::htmlHidden(array("name" => "field", "value" => ''));
+		//$hiddens = rray("name" => "field", "value" => ''));
 
 		$buttons_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 12, 1);
 		$buttons_table->setCol(0, 0, array(), we_html_button::create_button("add", "javascript:we_cmd('open_add_field')"));
@@ -271,13 +271,14 @@ top.content.hloaded = 1;'));
 		$table->setCol(4, 2, array("valign" => "top"), $buttons_table->getHtml());
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();', 'style' => 'overflow:hidden'), we_html_element::jsScript(JS_DIR . "windows.js") .
-								$this->View->getJSAdmin() .
-								we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHidden(array("name" => "cmd", "value" => "switchBranch")) .
-										we_html_element::htmlHidden(array("name" => "pnt", "value" => "customer_admin")) .
-										we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_customer', '[field_admin]'), we_html_button::create_button("close", "javascript:self.close()"))
-								)
-						)
+				we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();', 'style' => 'overflow:hidden'), we_html_element::jsScript(JS_DIR . "windows.js") .
+					$this->View->getJSAdmin() .
+					we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
+							"cmd" => "switchBranch",
+							"pnt" => "customer_admin")) .
+						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_customer', '[field_admin]'), we_html_button::create_button("close", "javascript:self.close()"))
+					)
+				)
 		);
 	}
 
@@ -285,17 +286,18 @@ top.content.hloaded = 1;'));
 		$field = we_base_request::_(we_base_request::STRING, "field", '');
 		$branch = we_base_request::_(we_base_request::STRING, "branch", g_l('modules_customer', '[other]'));
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "field_editor")) .
-				we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd")) .
-				we_html_element::htmlHidden(array("name" => "branch", "value" => "$branch")) .
-				we_html_element::htmlHidden(array("name" => "art", "value" => "$mode")) .
-				($type === "field" ? we_html_element::htmlHidden(array("name" => "field", "value" => "$field")) : '');
+		$hiddens = we_html_element::htmlHiddens(array(
+				"pnt" => "field_editor",
+				"cmd" => "no_cmd",
+				"branch" => "$branch",
+				"art" => "$mode",
+				($type === "field" ? "field" : '') => "$field"));
 
 		$cancel = we_html_button::create_button("cancel", "javascript:self.close();");
 
 		switch($type){
 			case "branch":
-				$hiddens.=we_html_element::htmlHidden(array("name" => "pnt", "value" => "branch_editor"));
+				$hiddens.=we_html_element::htmlHidden("pnt", "branch_editor");
 				$edit = new we_html_table(array("border" => 0, "cellpadding" => 3, "cellspacing" => 3, "width" => 300), 1, 2);
 				$edit->setCol(0, 0, array("valign" => "middle", "class" => "defaultgray"), g_l('modules_customer', '[field_name]'));
 				$edit->setCol(0, 1, array("valign" => "middle", "class" => "defaultfont"), we_html_tools::htmlTextInput("name", 26, $branch, '', ''));
@@ -303,7 +305,7 @@ top.content.hloaded = 1;'));
 				$save = we_html_button::create_button("save", "javascript:we_cmd('save_branch')");
 				break;
 			default:
-				$hiddens.=we_html_element::htmlHidden(array("name" => "pnt", "value" => "field_editor"));
+				$hiddens.=we_html_element::htmlHidden("pnt", "field_editor");
 				$field_props = $this->View->getFieldProperties($field);
 
 				$types = new we_html_select(array("name" => "field_type", "class" => "weSelect", "style" => "width:200px;", 'onchange' => 'setStatusEncryption(this.value);'));
@@ -344,17 +346,17 @@ top.content.hloaded = 1;'));
 		}
 
 		return
-				$this->getHTMLDocument(
-						we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();setStatusEncryption(\'' . $curType . '\');'), $this->View->getJSAdmin() .
-								we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-										we_html_tools::htmlDialogLayout($edit->getHtml(), (
-												$type === "branch" ?
-														(g_l('modules_customer', '[edit_branche]')) :
-														g_l('modules_customer', ($mode === "edit" ? '[edit_field]' : '[add_field]'))
-												), we_html_button::position_yes_no_cancel($save, null, $cancel)
-										)
-								)
+			$this->getHTMLDocument(
+				we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();setStatusEncryption(\'' . $curType . '\');'), $this->View->getJSAdmin() .
+					we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+						we_html_tools::htmlDialogLayout($edit->getHtml(), (
+							$type === "branch" ?
+								(g_l('modules_customer', '[edit_branche]')) :
+								g_l('modules_customer', ($mode === "edit" ? '[edit_field]' : '[add_field]'))
+							), we_html_button::position_yes_no_cancel($save, null, $cancel)
 						)
+					)
+				)
 		);
 	}
 
@@ -364,8 +366,8 @@ top.content.hloaded = 1;'));
 			exit();
 		}
 		$pid = ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8') ?
-				utf8_encode($p) :
-				$p;
+			utf8_encode($p) :
+			$p;
 
 		$sortField = we_base_request::_(we_base_request::STRING, 'sort');
 		if($sortField !== false){
@@ -379,17 +381,18 @@ top.content.hloaded = 1;'));
 
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
-				we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
+		$hiddens = we_html_element::htmlHiddens(array(
+				"pnt" => "cmd",
+				"cmd" => "no_cmd"));
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-										we_html_element::jsElement(
-												(we_base_request::_(we_base_request::STRING, 'error') ?
-														we_message_reporting::getShowMessageCall(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR) : '') .
-												$this->Tree->getJSLoadTree($pid, we_customer_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $sortField : ''))))
-								)
-						)
+				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+						we_html_element::jsElement(
+							(we_base_request::_(we_base_request::STRING, 'error') ?
+								we_message_reporting::getShowMessageCall(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR) : '') .
+							$this->Tree->getJSLoadTree($pid, we_customer_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $sortField : ''))))
+					)
+				)
 		);
 	}
 
@@ -398,10 +401,11 @@ top.content.hloaded = 1;'));
 
 		$mode = we_base_request::_(we_base_request::INT, 'mode', 0);
 
-		$hiddens = we_html_element::htmlHidden(array('name' => 'pnt', 'value' => 'search')) .
-				we_html_element::htmlHidden(array('name' => 'cmd', 'value' => 'search')) .
-				we_html_element::htmlHidden(array('name' => 'search', 'value' => 1)) .
-				we_html_element::htmlHidden(array('name' => 'mode', 'value' => $mode));
+		$hiddens = we_html_element::htmlHiddens(array(
+				'pnt' => 'search',
+				'cmd' => 'search',
+				'search' => 1,
+				'mode' => $mode));
 
 		$search_but = we_html_button::create_button('image:btn_function_search', "javascript:we_cmd('search')");
 
@@ -421,14 +425,14 @@ top.content.hloaded = 1;'));
 
 			$search->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
 			$search->setCol(3, 0, array('align' => 'right', 'colspan' => $colspan), we_html_button::create_button_table(
-							array(
-								we_html_element::htmlDiv(array('class' => 'defaultfont'), g_l('modules_customer', '[advanced_search]')),
-								$sw,
-								$search_but
-							)
+					array(
+						we_html_element::htmlDiv(array('class' => 'defaultfont'), g_l('modules_customer', '[advanced_search]')),
+						$sw,
+						$search_but
 					)
+				)
 			);
-			$hiddens.=we_html_element::htmlHidden(array('name' => 'count', 'value' => 1));
+			$hiddens.=we_html_element::htmlHidden('count', 1);
 
 			$max_res = $this->View->settings->getMaxSearchResults();
 			$result = array();
@@ -446,25 +450,25 @@ top.content.hloaded = 1;'));
 		$table->setCol(2, 0, array(), $select->getHtml());
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => ($mode ? '' : 'document.we_form.keyword.focus();')), we_html_element::linkElement(array('rel' => 'stylesheet', 'type' => 'text/css', 'href' => LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css', 'title' => 'Aqua')) .
-								we_html_element::jsScript(JS_DIR . 'utils/weDate.js') .
-								we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
-								we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js') .
-								we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
-								$this->View->getJSSearch() .
-								we_html_element::jsElement(
-										$this->jsOut_fieldTypesByName . "
+				we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => ($mode ? '' : 'document.we_form.keyword.focus();')), we_html_element::linkElement(array('rel' => 'stylesheet', 'type' => 'text/css', 'href' => LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css', 'title' => 'Aqua')) .
+					we_html_element::jsScript(JS_DIR . 'utils/weDate.js') .
+					we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
+					we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js') .
+					we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
+					$this->View->getJSSearch() .
+					we_html_element::jsElement(
+						$this->jsOut_fieldTypesByName . "
 var date_format_dateonly = '" . g_l('date', '[format][mysqlDate]') . "';
 var fieldDate = new weDate(date_format_dateonly);
 ") .
-								we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_functions.js') .
-								we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
-										we_html_tools::htmlDialogLayout(
-												$table->getHtml(), g_l('modules_customer', '[search]'), we_html_button::position_yes_no_cancel(null, we_html_button::create_button("close", "javascript:self.close();")), "100%", 30, 558
-										)
-								) .
-								(we_base_request::_(we_base_request::BOOL, 'mode') ? we_html_element::jsElement("setTimeout(lookForDateFields, 1);") : '')
+					we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_functions.js') .
+					we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
+						we_html_tools::htmlDialogLayout(
+							$table->getHtml(), g_l('modules_customer', '[search]'), we_html_button::position_yes_no_cancel(null, we_html_button::create_button("close", "javascript:self.close();")), "100%", 30, 558
 						)
+					) .
+					(we_base_request::_(we_base_request::BOOL, 'mode') ? we_html_element::jsElement("setTimeout(lookForDateFields, 1);") : '')
+				)
 		);
 	}
 
@@ -520,13 +524,14 @@ var fieldDate = new weDate(date_format_dateonly);
 		$save = we_html_button::create_button("save", "javascript:we_cmd('save_settings')");
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(array("name" => "we_form"), we_html_tools::htmlDialogLayout(
-										we_html_element::htmlHidden(array("name" => "pnt", "value" => "settings")) .
-										we_html_element::htmlHidden(array("name" => "cmd", "value" => '')) .
-										$table->getHtml() .
-										we_html_tools::getPixel(5, 10), g_l('modules_customer', '[settings]'), we_html_button::position_yes_no_cancel($save, $close)
-								)
-						)
-						. ($closeflag ? we_html_element::jsElement('top.close();') : '')
+						we_html_element::htmlHiddens(array(
+							"pnt" => "settings",
+							"cmd" => '')) .
+						$table->getHtml() .
+						we_html_tools::getPixel(5, 10), g_l('modules_customer', '[settings]'), we_html_button::position_yes_no_cancel($save, $close)
+					)
+				)
+				. ($closeflag ? we_html_element::jsElement('top.close();') : '')
 		);
 
 		return $this->getHTMLDocument($body, we_html_element::jsElement($this->View->getJSSettings()));

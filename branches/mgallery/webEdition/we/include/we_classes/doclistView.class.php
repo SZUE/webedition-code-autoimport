@@ -156,7 +156,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 					$cmd1 = "document.we_form.elements['searchParentID[" . $i . "]'].value";
 					$_cmd = "javascript:we_cmd('openDocselector'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['search[" . $i . "]'].value") . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
 					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
-					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'searchParentID[' . $i . ']', "value" => "")), we_html_tools::getPixel(5, 4), $_button);
+					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchParentID[' . $i . ']',""), we_html_tools::getPixel(5, 4), $_button);
 
 					$searchInput = $selector;
 				}
@@ -167,7 +167,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 					$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
 					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
-					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'searchParentID[' . $i . ']', "value" => "")), we_html_tools::getPixel(5, 4), $_button);
+					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchParentID[' . $i . ']', ""), we_html_tools::getPixel(5, 4), $_button);
 
 					$searchInput = $selector;
 				}
@@ -558,7 +558,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		<td>' . we_html_tools::getPixel(10, 12) . '</td>
 		<td>' . we_html_button::create_button("image:iconview", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
 		<td>' . we_html_button::create_button("image:listview", "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>
-		<td>' . we_html_tools::getPixel(10, 12) . '</td>' . 
+		<td>' . we_html_tools::getPixel(10, 12) . '</td>' .
 		($id && $table === FILE_TABLE ? we_html_baseElement::getHtmlCode(new we_html_baseElement('td', true, array('style' => 'width:50px;'), we_fileupload_importFiles::getBtnImportFiles($id))) : '') .
 		'<td style="width:50px;">' . we_html_button::create_button("image:btn_new_dir", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $id . "')", true, 50, "", "", "", false) . '</td>
 	</tr>

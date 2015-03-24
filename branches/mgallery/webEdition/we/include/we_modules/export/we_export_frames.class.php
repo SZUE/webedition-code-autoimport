@@ -28,7 +28,6 @@ class we_export_frames extends we_modules_frame{
 	var $SelectionTree;
 	var $editorBodyFrame;
 	var $_space_size = 130;
-	var $_text_size = 75;
 	var $_width_size = 535;
 	protected $treeDefaultWidth = 220;
 	public $module = "export";
@@ -109,8 +108,7 @@ top.content.hloaded = 1;');
 		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
 
 		//TODO: we have the following body in several modules!
-		$body = we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()',  'id' => 'eHeaderBody'), we_html_element::htmlDiv(array('id' => 'main'),
-			we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
+		$body = we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'id' => 'eHeaderBody'), we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
 							we_html_element::htmlB(str_replace(" ", "&nbsp;", g_l('export', '[export]')) . ':&nbsp;') .
 							we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
 							)
@@ -133,7 +131,7 @@ top.content.hloaded = 1;');
 			$hiddens["cmd"] = "home";
 			$GLOBALS["we_print_not_htmltop"] = true;
 			$GLOBALS["we_head_insert"] = $this->View->getJSProperty();
-			$GLOBALS["we_body_insert"] = we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden(array("name" => "home", "value" => 0))
+			$GLOBALS["we_body_insert"] = we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)
 			);
 			$GLOBALS["mod"] = "export";
 			ob_start();
@@ -241,7 +239,7 @@ function addLog(text){
 
 		$parts[] = array(
 			"headline" => g_l('export', '[export_to]'),
-			"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Filename", $this->_text_size, $this->View->export->Filename, '', 'style="width: ' . $this->_width_size . 'px;" onchange="' . $this->topFrame . '.hot=1;"'), g_l('export', '[filename]')),
+			"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Filename", 75, $this->View->export->Filename, '', 'style="width: ' . $this->_width_size . 'px;" onchange="' . $this->topFrame . '.hot=1;"'), g_l('export', '[filename]')),
 			"space" => $this->_space_size,
 			"noline" => 1
 		);
@@ -510,9 +508,10 @@ function closeAllType(){
 			$xmlExIm->savePerserves();
 
 			$all = $xmlExIm->RefTable->getLastCount();
-			$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
-				we_html_element::htmlHidden(array("name" => "all", "value" => $all)) .
-				we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export"));
+			$hiddens = we_html_element::htmlHiddens(array(
+					"pnt" => "cmd",
+					"all" => $all,
+					"cmd" => "do_export"));
 
 			return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 					we_html_element::htmlHead('') .
@@ -558,9 +557,10 @@ function closeAllType(){
 
 			$xmlExIm->savePerserves();
 
-			$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
-				we_html_element::htmlHidden(array("name" => "all", "value" => $all)) .
-				we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export"));
+			$hiddens = we_html_element::htmlHiddens(array(
+					"pnt" => "cmd",
+					"all" => $all,
+					"cmd" => "do_export"));
 
 			return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 					we_html_element::htmlHead('') .
@@ -632,9 +632,10 @@ function closeAllType(){
 						') . "\n";
 		$_SESSION['weS']['ExImCurrentRef'] = $xmlExIm->RefTable->current;
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
-			we_html_element::htmlHidden(array("name" => "all", "value" => $all)) .
-			we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export"));
+		$hiddens = we_html_element::htmlHiddens(array(
+				"pnt" => "cmd",
+				"all" => $all,
+				"cmd" => "do_export"));
 
 		$head = //FIXME: missing title
 			we_html_tools::getHtmlInnerHead() . STYLESHEET;
@@ -737,7 +738,7 @@ function closeAllType(){
 
 	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
+	private function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$button = we_html_button::create_button("select", "javascript:top.content.setHot();formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
 
@@ -755,7 +756,7 @@ function closeAllType(){
 		') . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly onchange="' . $this->topFrame . '.hot=1;"', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
-	function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){
+	private function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){
 		$Pathvalue = ($Pathvalue ? : f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), "", $this->db));
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
@@ -809,8 +810,9 @@ function closeAllType(){
 
 
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "Categorys", "value" => $this->View->export->Categorys)) .
-			we_html_element::htmlHidden(array("name" => "cat", "value" => we_base_request::_(we_base_request::RAW, "cat", "")));
+		$hiddens = we_html_element::htmlHiddens(array(
+				"Categorys" => $this->View->export->Categorys,
+				"cat" => we_base_request::_(we_base_request::RAW, "cat", "")));
 
 
 		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot(); we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->View->export->Categorys) ? false : true));

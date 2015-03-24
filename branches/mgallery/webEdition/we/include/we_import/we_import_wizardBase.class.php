@@ -234,12 +234,13 @@ function we_cmd() {
 					we_html_element::htmlBody(array(
 						"class" => "weDialogBody",
 						"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "?pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state) set_button_state();"
-						), we_html_element::htmlForm($a, we_html_element::htmlHidden(array("name" => "pnt", "value" => "wizbody")) .
-							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-							we_html_element::htmlHidden(array("name" => "v[type]", "value" => $type)) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $step)) .
-							we_html_element::htmlHidden(array("name" => "mode", "value" => $mode)) .
-							we_html_element::htmlHidden(array("name" => "button_state", "value" => 0)) .
+						), we_html_element::htmlForm($a, we_html_element::htmlHiddens(array(
+								"pnt" => "wizbody",
+								"type" => $type,
+								"v[type]" => $type,
+								"step" => $step,
+								"mode" => $mode,
+								"button_state" => 0)) .
 							$content
 						)
 					)
@@ -419,8 +420,9 @@ if (top.wizbody && top.wizbody.addLog){
 					if($v["type"] == we_import_functions::TYPE_GENERIC_XML){
 						$h.=$this->getHdns("attributes", $attributes) . $this->getHdns("attrs", $attrs);
 					}
-					$h .= we_html_element::htmlHidden(array("name" => "v[numFiles]", "value" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $num_files : $parse->fileId)) .
-						we_html_element::htmlHidden(array("name" => "v[uniquePath]", "value" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $path : $parse->path));
+					$h .= we_html_element::htmlHiddens(array(
+							"v[numFiles]" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $num_files : $parse->fileId,
+							"v[uniquePath]" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $path : $parse->path));
 
 					$out .= we_html_element::htmlForm(array("name" => "we_form"), $h) . we_html_element::jsElement(
 							"setTimeout(function(){we_import(1,0);},15);");
@@ -703,11 +705,12 @@ top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . "
 					break;
 			} // end switch
 		} else if($mode != 1){
-			$out .= we_html_element::htmlForm(array('id' => 'wizardBaseForm', "name" => "we_form"), we_html_element::htmlHidden(array("name" => "v[mode]", "value" => "")) .
-					we_html_element::htmlHidden(array("name" => "v[cid]", "value" => "")) .
-					we_html_element::htmlHidden(array("name" => "mode", "value" => "")) .
-					we_html_element::htmlHidden(array("name" => "type", "value" => "")) .
-					we_html_element::htmlHidden(array("name" => "cid", "value" => "")));
+			$out .= we_html_element::htmlForm(array('id' => 'wizardBaseForm', "name" => "we_form"), we_html_element::htmlHiddens(array(
+						"v[mode]" => "",
+						"v[cid]" => "",
+						"mode" => "",
+						"type" => "",
+						"cid" => "")));
 		}
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(

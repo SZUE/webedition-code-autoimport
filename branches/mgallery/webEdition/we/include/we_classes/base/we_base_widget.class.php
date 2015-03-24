@@ -85,12 +85,12 @@ abstract class we_base_widget{
 				array("id" => $iId . "_bx", "style" => "width:" . $w . "px;", "class" => 'widget bgc_' . $sCls), $oTb->getHtml() .
 				we_html_element::htmlDiv(array("id" => $iId . "_lbl", "class" => "label widgetTitle widgetTitle_" . $sCls,)) .
 				we_html_element::htmlDiv(array("id" => $iId . "_wrapper", "class" => "content"), we_html_element::htmlDiv(array("id" => $iId . "_content"), ((isset($oContent)) ? $oContent->getHtml() : "")) .
-					we_html_element::htmlHidden(array('id' => $iId . '_prefix', 'value' => $aLabel[0])) .
-					we_html_element::htmlHidden(array('id' => $iId . '_postfix', 'value' => $aLabel[1])) .
-					we_html_element::htmlHidden(array('id' => $iId . '_res', 'value' => $iRes)) .
-					we_html_element::htmlHidden(array('id' => $iId . '_type', 'value' => $sType)) .
-					we_html_element::htmlHidden(array('id' => $iId . '_cls', 'value' => $sCls)) .
-					we_html_element::htmlHidden(array('id' => $iId . '_csv', 'value' => $sCsv))
+					we_html_element::htmlHidden($iId . '_prefix', $aLabel[0], $iId . '_prefix') .
+					we_html_element::htmlHidden($iId . '_postfix', $aLabel[1], $iId . '_postfix') .
+					we_html_element::htmlHidden($iId . '_res', $iRes, $iId . '_res') .
+					we_html_element::htmlHidden($iId . '_type', $sType, $iId . '_type') .
+					we_html_element::htmlHidden($iId . '_cls', $sCls, $iId . '_cls') .
+					we_html_element::htmlHidden($iId . '_csv', $sCsv, $iId . '_csv')
 				)
 		);
 	}

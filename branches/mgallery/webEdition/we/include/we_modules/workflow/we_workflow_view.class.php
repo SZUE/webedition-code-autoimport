@@ -421,7 +421,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	}
 
 	function htmlHidden($name, $value = ''){
-		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => is_array($value) ? implode(',', $value) : oldHtmlspecialchars($value)));
+		return we_html_element::htmlHidden(trim($name), is_array($value) ? implode(',', $value) : oldHtmlspecialchars($value));
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */

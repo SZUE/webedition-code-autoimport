@@ -459,20 +459,20 @@ function saveNote(){
 				weValidUntil = q_curr['ValidUntil'].replace(/-/g, '');
 				if(weValidFrom>weValidUntil) {
 					" . we_message_reporting::getShowMessageCall(
-	g_l('cockpit', '[until_befor_from]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+				g_l('cockpit', '[until_befor_from]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 					return false;
 				}
 			}
 			if(q_curr['Title']=='') {
 				" . we_message_reporting::getShowMessageCall(
-	g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+				g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 				return false;
 			}
 			var q_ID=gel(_id+'_ID').value;
 			parent.rpc(_ttlB64Esc.concat(','+_sInitProps),(q_ID+';'+encodeURI(csv)),'update','',_ttlB64Esc,_sObjId,'pad/pad',escape(q_curr['Title']),escape(q_curr['Text']));
 		}else{
 			" . we_message_reporting::getShowMessageCall(
-	g_l('cockpit', '[note_not_modified]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+				g_l('cockpit', '[note_not_modified]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 		}
 	}else{
 		if(hot){
@@ -482,27 +482,27 @@ function saveNote(){
 				weValidUntil = q_curr['ValidUntil'].replace(/-/g, '');
 				if(weValidFrom>weValidUntil) {
 					" . we_message_reporting::getShowMessageCall(
-	g_l('cockpit', '[until_befor_from]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+				g_l('cockpit', '[until_befor_from]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 					return false;
 				} else if(!weValidFrom || !weValidUntil) {
 					" . we_message_reporting::getShowMessageCall(
-	g_l('cockpit', '[date_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+				g_l('cockpit', '[date_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 					return false;
 				}
 			} else if(q_curr['Validity'] == 'date' && !q_curr['ValidFrom']){
 					" . we_message_reporting::getShowMessageCall(
-	g_l('cockpit', '[date_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+				g_l('cockpit', '[date_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 					return false;
 			}
 			if(q_curr['Title']=='') {
 				" . we_message_reporting::getShowMessageCall(
-	g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+				g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 				return false;
 			}
 			parent.rpc(_ttlB64Esc.concat(','+_sInitProps),escape(csv),'insert','',_ttlB64Esc,_sObjId,'pad/pad',escape(q_curr['Title']),escape(q_curr['Text']));
 		}else{
 			" . we_message_reporting::getShowMessageCall(
-	g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+				g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 		}
 	}
 }") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js')) . we_html_element::htmlBody(
@@ -514,5 +514,5 @@ function saveNote(){
 		"onload" => (($type === "pad/pad") ? "if(parent!=self)init();" : "") . 'calendarSetup();toggleTblValidity();'
 		), we_html_element::htmlForm(array("style" => "display:inline;"), we_html_element::htmlDiv(
 				array("id" => "pad"), $_notepad .
-				we_html_element::htmlHidden(array("name" => "mark", "value" => ""))
+				we_html_element::htmlHidden("mark", "")
 ))));

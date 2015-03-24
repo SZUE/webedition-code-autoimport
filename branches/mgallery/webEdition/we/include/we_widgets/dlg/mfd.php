@@ -181,12 +181,9 @@ if(permissionhandler::hasPerm('EDIT_MFD_USER') && $users){
 $content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
 
 $sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><tr><td>' . we_html_element::htmlDiv(
-		array("class" => "multichooser"), $content) . we_html_element::htmlHidden(array(
-		"name" => "UserNameTmp",
-		"value" => ""
-	)) . we_html_element::htmlHidden(array(
-		"name" => "UserIDTmp",
-		"value" => ""
+		array("class" => "multichooser"), $content) . we_html_element::htmlHiddens(array(
+		"UserNameTmp" => "",
+		"UserIDTmp" => ""
 	)) . '</td></tr>' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_html_button::create_button_table(
 			array(
 				we_html_button::create_button('delete_all', "javascript:delUser(-1)", true, -1, -1, "", "", (count($users)) ? false : true),

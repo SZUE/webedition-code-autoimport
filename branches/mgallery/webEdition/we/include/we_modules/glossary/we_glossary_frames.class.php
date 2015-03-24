@@ -25,9 +25,7 @@
 //TEST: was it ok to abandon treefooter?
 
 class we_glossary_frames extends we_modules_frame{
-
 	var $_space_size = 150;
-	var $_text_size = 75;
 	var $_width_size = 535;
 	protected $treeDefaultWidth = 280;
 
@@ -45,7 +43,7 @@ class we_glossary_frames extends we_modules_frame{
 
 	function getHTMLFrameset(){
 		return parent::getHTMLFrameset(
-						$this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart())
+				$this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart())
 		);
 	}
 
@@ -142,17 +140,18 @@ class we_glossary_frames extends we_modules_frame{
 		$rootjs = "";
 		if(!$pid){
 			$rootjs.=
-					$this->Tree->topFrame . '.treeData.clear();' .
-					$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
 		}
-		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
-				we_html_element::htmlHidden(array("name" => "cmd", "value" => "no_cmd"));
+		$hiddens = we_html_element::htmlHiddens(array(
+				"pnt" => "cmd",
+				"cmd" => "no_cmd"));
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-										we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_glossary_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, "")))
-								)
-						)
+				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_glossary_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, "")))
+					)
+				)
 		);
 	}
 

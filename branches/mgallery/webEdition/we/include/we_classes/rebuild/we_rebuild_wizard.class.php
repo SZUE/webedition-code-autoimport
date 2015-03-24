@@ -275,36 +275,37 @@ abstract class we_rebuild_wizard{
 		$dthidden = "";
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		foreach($doctypesArray as $k => $v){
-			$dthidden .= we_html_element::htmlHidden(array("name" => "doctypes[$k]", "value" => $v));
+			$dthidden .= we_html_element::htmlHidden("doctypes[$k]", $v);
 		}
 
 		$thumbsHidden = "";
 		$thumbsArray = makeArrayFromCSV($thumbs);
 		foreach($thumbsArray as $k => $v){
-			$thumbsHidden .= we_html_element::htmlHidden(array("name" => "thumbs[$k]", "value" => $v));
+			$thumbsHidden .= we_html_element::htmlHidden("thumbs[$k]", $v);
 		}
 
 		$metaFieldsHidden = "";
 		foreach($metaFields as $_key => $_val){
-			$metaFieldsHidden .= we_html_element::htmlHidden(array("name" => '_field[' . $_key . ']', "value" => $_val));
+			$metaFieldsHidden .= we_html_element::htmlHidden('_field[' . $_key . ']', $_val);
 		}
 
 		return array($js, we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('rebuild', '[rebuild]')) .
 			$dthidden .
 			$thumbsHidden .
 			$metaFieldsHidden .
-			we_html_element::htmlHidden(array("name" => "catAnd", "value" => $catAnd)) .
-			we_html_element::htmlHidden(array("name" => "thumbsFolders", "value" => $thumbsFolders)) .
-			we_html_element::htmlHidden(array("name" => "metaFolders", "value" => $metaFolders)) .
-			we_html_element::htmlHidden(array("name" => "maintable", "value" => $maintable)) .
-			we_html_element::htmlHidden(array("name" => "tmptable", "value" => $tmptable)) .
-			we_html_element::htmlHidden(array("name" => "categories", "value" => $categories)) .
-			we_html_element::htmlHidden(array("name" => "folders", "value" => $folders)) .
-			we_html_element::htmlHidden(array("name" => "fr", "value" => "body")) .
-			we_html_element::htmlHidden(array("name" => "btype", "value" => $btype)) .
-			we_html_element::htmlHidden(array("name" => "onlyEmpty", "value" => $onlyEmpty)) .
-			we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "rebuild")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => 1)));
+			we_html_element::htmlHiddens(array(
+				"catAnd" => $catAnd,
+				"thumbsFolders" => $thumbsFolders,
+				"metaFolders" => $metaFolders,
+				"maintable" => $maintable,
+				"tmptable" => $tmptable,
+				"categories" => $categories,
+				"folders" => $folders,
+				"fr" => "body",
+				"btype" => $btype,
+				"onlyEmpty" => $onlyEmpty,
+				"we_cmd[0]" => "rebuild",
+				"step" => 1)));
 	}
 
 	/**
@@ -575,28 +576,29 @@ abstract class we_rebuild_wizard{
 		$thumbsHidden = '';
 		$thumbsArray = makeArrayFromCSV($thumbs);
 		foreach($thumbsArray as $i => $cur){
-			$thumbsHidden .= we_html_element::htmlHidden(array('name' => 'thumbs[' . $i . ']', 'value' => $cur));
+			$thumbsHidden .= we_html_element::htmlHidden('thumbs[' . $i . ']', $cur);
 		}
 
 		$metaFieldsHidden = '';
 		if($metaFields){
 			foreach($metaFields as $_key => $_val){
-				$metaFieldsHidden .= we_html_element::htmlHidden(array('name' => '_field[' . $_key . ']', 'value' => $_val));
+				$metaFieldsHidden .= we_html_element::htmlHidden('_field[' . $_key . ']', $_val);
 			}
 		}
 		return array(we_rebuild_wizard::getPage2Js(), we_html_multiIconBox::getHTML('', '100%', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_documents]')) .
 			$thumbsHidden .
 			$metaFieldsHidden .
-			we_html_element::htmlHidden(array('name' => 'thumbsFolders', 'value' => $thumbsFolders)) .
-			we_html_element::htmlHidden(array('name' => 'metaFolders', 'value' => $metaFolders)) .
-			we_html_element::htmlHidden(array('name' => 'metaFields', 'value' => $metaFields)) .
-			we_html_element::htmlHidden(array('name' => 'onlyEmpty', 'value' => $onlyEmpty)) .
-			we_html_element::htmlHidden(array('name' => 'folders', 'value' => $folders)) .
-			we_html_element::htmlHidden(array('name' => 'categories', 'value' => $categories)) .
-			we_html_element::htmlHidden(array('name' => 'fr', 'value' => 'body')) .
-			we_html_element::htmlHidden(array('name' => 'type', 'value' => $type)) .
-			we_html_element::htmlHidden(array('name' => 'we_cmd[0]', 'value' => 'rebuild')) .
-			we_html_element::htmlHidden(array('name' => 'step', 'value' => 2)));
+			we_html_element::htmlHiddens(array(
+				'thumbsFolders' => $thumbsFolders,
+				'metaFolders' => $metaFolders,
+				'metaFields' => $metaFields,
+				'onlyEmpty' => $onlyEmpty,
+				'folders' => $folders,
+				'categories' => $categories,
+				'fr' => 'body',
+				'type' => $type,
+				'we_cmd[0]' => 'rebuild',
+				'step' => 2)));
 	}
 
 	/**
@@ -651,25 +653,26 @@ abstract class we_rebuild_wizard{
 		$dthidden = '';
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		foreach($doctypesArray as $key => $val){
-			$dthidden .= we_html_element::htmlHidden(array('name' => 'doctypes[' . $key . ']', 'value' => $val));
+			$dthidden .= we_html_element::htmlHidden('doctypes[' . $key . ']', $val);
 		}
 		$metaFieldsHidden = '';
 		foreach($metaFields as $_key => $_val){
-			$metaFieldsHidden .= we_html_element::htmlHidden(array('name' => "_field[$_key]", 'value' => $_val));
+			$metaFieldsHidden .= we_html_element::htmlHidden("_field[$_key]", $_val);
 		}
 		return array(we_rebuild_wizard::getPage2Js('thumbsFolders'), we_html_multiIconBox::getHTML('', '100%', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_thumbnails]')) .
 			$dthidden .
 			$metaFieldsHidden .
-			we_html_element::htmlHidden(array('name' => 'catAnd', 'value' => $catAnd)) .
-			we_html_element::htmlHidden(array('name' => 'thumbsFolders', 'value' => $thumbsFolders)) .
-			we_html_element::htmlHidden(array('name' => 'metaFolders', 'value' => $metaFolders)) .
-			we_html_element::htmlHidden(array('name' => 'onlyEmpty', 'value' => $onlyEmpty)) .
-			we_html_element::htmlHidden(array('name' => 'folders', 'value' => $folders)) .
-			we_html_element::htmlHidden(array('name' => 'categories', 'value' => $categories)) .
-			we_html_element::htmlHidden(array('name' => 'fr', 'value' => 'body')) .
-			we_html_element::htmlHidden(array('name' => 'type', 'value' => $type)) .
-			we_html_element::htmlHidden(array('name' => 'we_cmd[0]', 'value' => 'rebuild')) .
-			we_html_element::htmlHidden(array('name' => 'step', 'value' => 2)));
+			we_html_element::htmlHiddens(array(
+				'catAnd' => $catAnd,
+				'thumbsFolders' => $thumbsFolders,
+				'metaFolders' => $metaFolders,
+				'onlyEmpty' => $onlyEmpty,
+				'folders' => $folders,
+				'categories' => $categories,
+				'fr' => 'body',
+				'type' => $type,
+				'we_cmd[0]' => 'rebuild',
+				'step' => 2)));
 	}
 
 	static function getRebuildMetadata(){
@@ -721,25 +724,26 @@ abstract class we_rebuild_wizard{
 		$dthidden = '';
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		for($i = 0; $i < count($doctypesArray); $i++){
-			$dthidden .= we_html_element::htmlHidden(array('name' => 'doctypes[' . $i . ']', 'value' => $doctypesArray[$i]));
+			$dthidden .= we_html_element::htmlHidden('doctypes[' . $i . ']', $doctypesArray[$i]);
 		}
 		$thumbsHidden = '';
 		$thumbsArray = makeArrayFromCSV($thumbs);
 		for($i = 0; $i < count($thumbsArray); $i++){
-			$thumbsHidden .= we_html_element::htmlHidden(array('name' => 'thumbs[' . $i . ']', 'value' => $thumbsArray[$i]));
+			$thumbsHidden .= we_html_element::htmlHidden('thumbs[' . $i . ']', $thumbsArray[$i]);
 		}
 		return array(we_rebuild_wizard::getPage2Js('metaFolders'), we_html_multiIconBox::getHTML('', '100%', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_metadata]')) .
 			$dthidden .
 			$thumbsHidden .
-			we_html_element::htmlHidden(array('name' => 'catAnd', 'value' => $catAnd)) .
-			we_html_element::htmlHidden(array('name' => 'metaFolders', 'value' => $metaFolders)) .
-			we_html_element::htmlHidden(array('name' => 'thumbsFolders', 'value' => $thumbsFolders)) .
-			we_html_element::htmlHidden(array('name' => 'folders', 'value' => $folders)) .
-			we_html_element::htmlHidden(array('name' => 'categories', 'value' => $categories)) .
-			we_html_element::htmlHidden(array('name' => 'fr', 'value' => 'body')) .
-			we_html_element::htmlHidden(array('name' => 'type', 'value' => $type)) .
-			we_html_element::htmlHidden(array('name' => 'we_cmd[0]', 'value' => 'rebuild')) .
-			we_html_element::htmlHidden(array('name' => 'step', 'value' => 2)));
+			we_html_element::htmlHiddens(array(
+				'catAnd' => $catAnd,
+				'metaFolders' => $metaFolders,
+				'thumbsFolders' => $thumbsFolders,
+				'folders' => $folders,
+				'categories' => $categories,
+				'fr' => 'body',
+				'type' => $type,
+				'we_cmd[0]' => 'rebuild',
+				'step' => 2)));
 	}
 
 	/**

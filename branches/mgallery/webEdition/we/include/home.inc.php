@@ -245,9 +245,10 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});oTblWidgets=gel('le_tblWidgets');initDragWidgets();",
 		), we_html_element::htmlForm(
 			array("name" => "we_form"
-			), we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "save")) .
-			we_html_element::htmlHidden(array("name" => "we_cmd[1]", "value" => "")) .
-			we_html_element::htmlHidden(array("name" => "we_cmd[2]", "value" => ""))
+			), we_html_element::htmlHiddens(array(
+				"we_cmd[0]"=> "save",
+				"we_cmd[1]"=> "",
+				"we_cmd[2]"=> ""))
 		) .
 		we_html_element::htmlDiv(array("id" => "rpcBusy", "style" => "display:none;"), we_html_element::htmlImg(
 				array("src" => IMAGE_DIR . "pd/busy.gif",))

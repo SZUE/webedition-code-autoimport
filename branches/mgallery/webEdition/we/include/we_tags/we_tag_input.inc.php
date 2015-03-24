@@ -57,7 +57,7 @@ function we_tag_input($attribs, $content){
 					$attribs['checked'] = 'checked';
 				}
 
-				return we_html_element::htmlHidden(array('name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']', 'value' => $val)) .
+				return we_html_element::htmlHidden('we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']', $val) .
 						getHtmlTag('input', $attribs);
 
 			case 'country':

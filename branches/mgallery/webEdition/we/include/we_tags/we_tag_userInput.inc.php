@@ -483,7 +483,6 @@ function we_tag_userInput($attribs, $content){
 				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
 				we_html_element::jsElement('
 function open_wysiwyg_win(){
-	//var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
 	var url = "' . WEBEDITION_DIR . 'we_cmd_frontend.php?";
 	for(var i = 0; i < arguments.length; i++) {
 	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);

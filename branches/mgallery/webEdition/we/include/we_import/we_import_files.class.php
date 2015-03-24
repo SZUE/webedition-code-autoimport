@@ -267,7 +267,7 @@ function setApplet() {
 				'headline' => g_l('importFiles', '[destination_dir]'),
 				'html' =>
 				we_html_tools::hidden('we_cmd[0]', 'import_files') . we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', '2') . we_html_tools::hidden('jsRequirementsOk', 0) . // fix for categories require reload!
-				we_html_element::htmlHidden(array('name' => 'categories', 'value' => '')) .
+				we_html_element::htmlHidden('categories', '') .
 				$yuiSuggest->getHTML(),
 				'space' => 150
 			),
@@ -524,9 +524,7 @@ function setApplet() {
 		$content = we_html_element::htmlForm(
 				array(
 				"action" => WEBEDITION_DIR . "we_cmd.php", "name" => "we_startform", "method" => "post"
-				), we_html_element::htmlHidden(array(
-					'name' => 'step', 'value' => 3
-				)) . we_html_multiIconBox::getHTML(
+				), we_html_element::htmlHidden('step', 3) . we_html_multiIconBox::getHTML(
 					"uploadFiles", "100%", $parts, 30, "", -1, "", "", "", g_l('importFiles', '[step3]')))// bugfix 1001
 		;
 
@@ -929,24 +927,25 @@ function next() {
 	}
 
 	function _getHiddens(){
-		return we_html_element::htmlHidden(array("name" => "we_cmd[0]", "value" => "import_files")) .
-			we_html_element::htmlHidden(array("name" => "cmd", "value" => "buttons")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => 1)) .
-			we_html_element::htmlHidden(array("name" => "weFormNum", "value" => 0)) .
-			we_html_element::htmlHidden(array("name" => "weFormCount", "value" => 0)) .
-			we_html_element::htmlHidden(array("name" => "importToID", "value" => $this->importToID)) .
-			we_html_element::htmlHidden(array("name" => "sameName", "value" => $this->sameName)) .
-			we_html_element::htmlHidden(array("name" => "thumbs", "value" => $this->thumbs)) .
-			we_html_element::htmlHidden(array("name" => "width", "value" => $this->width)) .
-			we_html_element::htmlHidden(array("name" => "height", "value" => $this->height)) .
-			we_html_element::htmlHidden(array("name" => "widthSelect", "value" => $this->widthSelect)) .
-			we_html_element::htmlHidden(array("name" => "heightSelect", "value" => $this->heightSelect)) .
-			we_html_element::htmlHidden(array("name" => "keepRatio", "value" => $this->keepRatio)) .
-			we_html_element::htmlHidden(array("name" => "degrees", "value" => $this->degrees)) .
-			we_html_element::htmlHidden(array("name" => "quality", "value" => $this->quality)) .
-			we_html_element::htmlHidden(array("name" => "categories", "value" => $this->categories)) .
-			we_html_element::htmlHidden(array("name" => "imgsSearchable", "value" => $this->imgsSearchable)) .
-			we_html_element::htmlHidden(array("name" => "importMetadata", "value" => $this->importMetadata));
+		return we_html_element::htmlHiddens(array(
+				"we_cmd[0]" => "import_files",
+				"cmd" => "buttons",
+				"step" => 1,
+				"weFormNum" => 0,
+				"weFormCount" => 0,
+				"importToID" => $this->importToID,
+				"sameName" => $this->sameName,
+				"thumbs" => $this->thumbs,
+				"width" => $this->width,
+				"height" => $this->height,
+				"widthSelect" => $this->widthSelect,
+				"heightSelect" => $this->heightSelect,
+				"keepRatio" => $this->keepRatio,
+				"degrees" => $this->degrees,
+				"quality" => $this->quality,
+				"categories" => $this->categories,
+				"imgsSearchable" => $this->imgsSearchable,
+				"importMetadata" => $this->importMetadata));
 	}
 
 	function _getFrameset(){

@@ -217,10 +217,7 @@ class we_document extends we_root{
 		}
 		return $this->Extensions ?
 			we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $selected, $this->Extensions, 100, 'onselect="_EditorFrame.setEditorIsHot(true);"', permissionhandler::hasPerm('EDIT_DOCEXTENSION')), g_l('weClass', '[extension]')) :
-			we_html_element::htmlHidden(array(
-				'name' => 'we_' . $this->Name . '_Extension',
-				'value' => $selected
-		));
+			we_html_element::htmlHidden('we_' . $this->Name . '_Extension', $selected);
 	}
 
 	function formMetaInfos(){
@@ -253,7 +250,7 @@ class we_document extends we_root{
 		} else {
 			$delallbut = '';
 		}
-		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', we_html_button::create_button_table(array($delallbut, $addbut)), "module_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
+		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', we_html_button::create_button_table(array($delallbut, $addbut)), 'module_navigation_edit_navi', 'Icon,Path', NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
 		$NoDelNavis = $navItems;
 		foreach($NoDelNavis as $_path){
@@ -1587,7 +1584,7 @@ class we_document extends we_root{
 		}
 		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '(\d+),(\d+)"/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				list(,$imgID,$thumbID) = $reg;
+				list(, $imgID, $thumbID) = $reg;
 				$thumbObj = new we_thumbnail();
 				if($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)){
 					$text = str_replace('src="' . we_base_link::TYPE_THUMB_PREFIX . $imgID . ',' . $thumbID . '"', 'src="' . $thumbObj->getOutputPath(false, true) . '"', $text);

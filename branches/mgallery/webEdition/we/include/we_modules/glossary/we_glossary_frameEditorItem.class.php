@@ -182,7 +182,7 @@ function submitForm() {
 					'showLinkMode("' . ($weGlossaryFrames->View->Glossary->getAttribute('mode') ? : "intern") . '");' :
 					'') .
 				($weGlossaryFrames->View->Glossary->getAttribute('mode') === "category" ?
-					'showLinkModeCategory("' . ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ?  : "intern") . '");' :
+					'showLinkModeCategory("' . ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ? : "intern") . '");' :
 					'')
 		);
 
@@ -243,8 +243,8 @@ function we_save() {
 			we_glossary_glossary::TYPE_TEXTREPLACE => g_l('modules_glossary', '[textreplacement]'),
 		);
 
-		$hidden = we_html_element::htmlHidden(array('name' => 'newone', 'value' => ($weGlossaryFrames->View->Glossary->ID == 0 ? 1 : 0)))
-			. we_html_element::htmlHidden(array('name' => 'Published', 'id' => 'Published', 'value' => $weGlossaryFrames->View->Glossary->ID == 0 ? 1 : ($weGlossaryFrames->View->Glossary->Published > 0 ? 1 : 0)));
+		$hidden = we_html_element::htmlHidden('newone', ($weGlossaryFrames->View->Glossary->ID == 0 ? 1 : 0)) .
+			we_html_element::htmlHidden('Published', $weGlossaryFrames->View->Glossary->ID == 0 ? 1 : ($weGlossaryFrames->View->Glossary->Published > 0 ? 1 : 0), 'Published');
 
 
 		$language = ($weGlossaryFrames->View->Glossary->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
@@ -403,7 +403,7 @@ function we_save() {
 			$_linkPath = $_linkID = $_internParameter = "";
 		}
 
-		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][InternLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'link[Attributes][InternLinkID]', "value" => $_linkID)), we_html_tools::getPixel(20, 4), $_button);
+		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][InternLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][InternLinkID]', $_linkID), we_html_tools::getPixel(20, 4), $_button);
 
 		return '<div id="mode_intern" style="display: none;">'
 			. '<table border="0" cellpadding="0" cellspacing="0">
@@ -452,7 +452,7 @@ function we_save() {
 		$_cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $_rootDirID . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 		$_button = we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', false);
 
-		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][ObjectLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'link[Attributes][ObjectLinkID]', "value" => $_linkID)), we_html_tools::getPixel(20, 4), $_button);
+		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][ObjectLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][ObjectLinkID]', $_linkID), we_html_tools::getPixel(20, 4), $_button);
 
 		$_wsid = ($this->View->Glossary->getAttribute('ObjectLinkID') ? we_navigation_dynList::getWorkspacesForObject($this->View->Glossary->getAttribute('ObjectLinkID')) : array());
 
@@ -505,7 +505,7 @@ function we_save() {
 		$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['link[Attributes][CategoryLinkID]'].value,'" . CATEGORY_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $_rootDirID . "')";
 		$_button = we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', false);
 
-		$selector1 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'link[Attributes][CategoryLinkID]', "value" => $_linkID)), we_html_tools::getPixel(20, 4), $_button
+		$selector1 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryLinkID]', $_linkID), we_html_tools::getPixel(20, 4), $_button
 		);
 
 		$_rootDirID = 0;
@@ -515,7 +515,7 @@ function we_save() {
 		$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['link[Attributes][CategoryInternLinkID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "')";
 		$_button = we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', false);
 
-		$selector2 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryInternLinkPath]', 58, $_internLinkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'link[Attributes][CategoryInternLinkID]', "value" => $_internLinkID)), we_html_tools::getPixel(20, 4), $_button
+		$selector2 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryInternLinkPath]', 58, $_internLinkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryInternLinkID]', $_internLinkID), we_html_tools::getPixel(20, 4), $_button
 		);
 
 		return '<div id="mode_category" style="display: none;">

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_newsletter_frames extends we_modules_frame{
-
 	const def_width = 450;
 
 	private $weAutoCompleter;
@@ -115,8 +114,8 @@ class we_newsletter_frames extends we_modules_frame{
 				var hot = 0;
 				var scrollToVal = 0;
 			') .
-				$this->Tree->getJSTreeCode() .
-				we_html_element::jsElement($this->getJSStart());
+			$this->Tree->getJSTreeCode() .
+			we_html_element::jsElement($this->getJSStart());
 
 		return parent::getHTMLFrameset($extraHead);
 	}
@@ -185,8 +184,8 @@ top.content.hloaded = 1;
 		$tabHead = $we_tabs->getHeader() . $js;
 
 		$body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "id" => "eHeaderBody"), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . oldHtmlspecialchars($textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
-						$we_tabs->getHTML() .
-						'</div>'
+				$we_tabs->getHTML() .
+				'</div>'
 		);
 		return $this->getHTMLDocument($body, $tabHead);
 	}
@@ -218,8 +217,8 @@ top.content.hloaded = 1;
 		$group = we_base_request::_(we_base_request::INT, "group", 0);
 
 		$js = $this->View->getJSFooterCode() .
-				we_html_element::jsScript(JS_DIR . 'utils/lib.js') .
-				we_html_element::jsElement('
+			we_html_element::jsScript(JS_DIR . 'utils/lib.js') .
+			we_html_element::jsElement('
 function addGroup(text, val) {
 	 ' . ($group ? '' : 'document.we_form.gview[document.we_form.gview.length] = new Option(text,val);' ) . '
 }
@@ -267,9 +266,9 @@ function we_save() {
 			$table2->setCol(0, 0, array("nowrap" => null), we_html_tools::getPixel(15, 5));
 
 			$table2->setCol(0, 1, array("nowrap" => null), ((permissionhandler::hasPerm("NEW_NEWSLETTER") || permissionhandler::hasPerm("EDIT_NEWSLETTER")) ?
-							we_html_button::create_button("save", "javascript:we_save()") :
-							""
-					)
+					we_html_button::create_button("save", "javascript:we_save()") :
+					""
+				)
 			);
 
 			if(!$group){
@@ -281,9 +280,9 @@ function we_save() {
 				$table2->setCol(0, 7, array("nowrap" => null), we_html_button::create_button("preview", "javascript:we_cmd('popPreview')"));
 				$table2->setCol(0, 8, array("nowrap" => null), we_html_tools::getPixel(5, 5));
 				$table2->setCol(0, 9, array("nowrap" => null), (permissionhandler::hasPerm("SEND_NEWSLETTER") ?
-								we_html_button::create_button("send", "javascript:we_cmd('popSend')") :
-								""
-						)
+						we_html_button::create_button("send", "javascript:we_cmd('popSend')") :
+						""
+					)
 				);
 			}
 		}
@@ -299,10 +298,10 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 	}
 }');
 
-		$body = we_html_element::htmlBody(array("id" => "footerBody", "onload" => "setTimeout(populateGroups,100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden(array("name" => "hm", "value" => 0)) .
-								$table2->getHtml() .
-								$post_js
-						)
+		$body = we_html_element::htmlBody(array("id" => "footerBody", "onload" => "setTimeout(populateGroups,100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden("hm", 0) .
+					$table2->getHtml() .
+					$post_js
+				)
 		);
 
 		return $this->getHTMLDocument($body, $js);
@@ -322,13 +321,13 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		}
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_tools::htmlDialogLayout(
-												we_html_element::htmlDiv(array(), we_html_tools::getPixel(10, 5)) .
-												we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $content) .
-												we_html_element::htmlDiv(array(), we_html_tools::getPixel(10, 15)), g_l('modules_newsletter', '[show_log]'), we_html_button::create_button("close", "javascript:self.close();")
-										)
-								)
-						), we_html_element::jsElement("self.focus();"));
+				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_tools::htmlDialogLayout(
+							we_html_element::htmlDiv(array(), we_html_tools::getPixel(10, 5)) .
+							we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $content) .
+							we_html_element::htmlDiv(array(), we_html_tools::getPixel(10, 15)), g_l('modules_newsletter', '[show_log]'), we_html_button::create_button("close", "javascript:self.close();")
+						)
+					)
+				), we_html_element::jsElement("self.focus();"));
 	}
 
 	/*
@@ -442,18 +441,19 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		}
 
 		$rootjs = (!$pid ?
-						$this->Tree->topFrame . '.treeData.clear();' .
-						$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' :
-						'');
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' :
+				'');
 
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
-				we_html_element::htmlHidden(array("name" => "ncmd", "value" => "")) .
-				we_html_element::htmlHidden(array("name" => "nopt", "value" => ""));
+		$hiddens = we_html_element::htmlHiddens(array(
+				"pnt" => "cmd",
+				"ncmd" => "",
+				"nopt" => ""));
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-										we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_newsletter_treeLoader::getItems($pid)))
-								)
+						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_newsletter_treeLoader::getItems($pid)))
+					)
 		));
 	}
 
@@ -482,7 +482,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$c = 0;
 		for($k = 1; $k < $count; $k++){
 			$out.=we_html_element::htmlBr() .
-					we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(sprintf(g_l('modules_newsletter', '[mailing_list]'), $k)));
+				we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(sprintf(g_l('modules_newsletter', '[mailing_list]'), $k)));
 			$gc = 0;
 			if(defined('CUSTOMER_TABLE')){
 				$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab2 . g_l('modules_newsletter', '[customers]'));
@@ -514,13 +514,13 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		}
 
 		$out.=we_html_element::htmlBr() .
-				we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[sum_all]') . ":" . $c)) .
-				we_html_element::htmlBr();
+			we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[sum_all]') . ":" . $c)) .
+			we_html_element::htmlBr();
 		echo self::getHTMLDocument(we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onload" => "self.focus()"), we_html_tools::htmlDialogLayout(
-										we_html_element::htmlBr() .
-										we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
-										we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button("close", "javascript:self.close();")
-								)
+						we_html_element::htmlBr() .
+						we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
+						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button("close", "javascript:self.close();")
+					)
 		)));
 		flush();
 	}
@@ -534,8 +534,8 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$count = count($this->View->newsletter->groups) + 1;
 
 		$out = we_html_element::htmlBr() .
-				we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[domain_check_begins]'))) .
-				we_html_element::htmlBr();
+			we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[domain_check_begins]'))) .
+			we_html_element::htmlBr();
 
 		for($k = 1; $k < $count; $k++){
 
@@ -556,15 +556,24 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			}
 		}
 		$out.=we_html_element::htmlBr() .
-				we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[domain_check_ends]'))) .
-				we_html_element::htmlBr();
+			we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[domain_check_ends]'))) .
+			we_html_element::htmlBr();
 		echo self::getHTMLDocument(we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onload" => "self.focus()"), we_html_tools::htmlDialogLayout(
-										we_html_element::htmlBr() .
-										we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
-										we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button("close", "javascript:self.close();")
-								)
+						we_html_element::htmlBr() .
+						we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
+						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button("close", "javascript:self.close();")
+					)
 		)));
 		flush();
+	}
+
+	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
+
+	private function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = '', $acObject = null, $contentType = ''){
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
+
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? $button : '');
 	}
 
 	function getHTMLSettings(){
@@ -685,21 +694,21 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$gml_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 538), 4, 2);
 		$gml_table->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_newsletter', '[global_mailing_list]'));
 		$gml_table->setCol(1, 0, array(), we_html_tools::getPixel(5, 5));
-		$gml_table->setCol(2, 0, array(), $this->View->formFileChooser(380, "global_mailing_list", $settings["global_mailing_list"]));
+		$gml_table->setCol(2, 0, array(), $this->formFileChooser(380, "global_mailing_list", $settings["global_mailing_list"]));
 		$gml_table->setCol(2, 1, array('align' => 'right'), $deselect);
 		$gml_table->setCol(3, 0, array(), we_html_tools::getPixel(5, 5));
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(array("name" => "we_form"), $this->View->getHiddens() .
-								we_html_tools::htmlDialogLayout(
-										$table->getHtml() .
-										we_html_tools::getPixel(5, 10) .
-										$radios_code .
-										we_html_tools::getPixel(5, 15) .
-										$gml_table->getHtml() .
-										we_html_tools::getPixel(5, 10), g_l('modules_newsletter', '[settings]'), we_html_button::position_yes_no_cancel($save, $close)
-								)
-						)
-						. ($closeflag ? we_html_element::jsElement('top.close();') : "")
+					we_html_tools::htmlDialogLayout(
+						$table->getHtml() .
+						we_html_tools::getPixel(5, 10) .
+						$radios_code .
+						we_html_tools::getPixel(5, 15) .
+						$gml_table->getHtml() .
+						we_html_tools::getPixel(5, 10), g_l('modules_newsletter', '[settings]'), we_html_button::position_yes_no_cancel($save, $close)
+					)
+				)
+				. ($closeflag ? we_html_element::jsElement('top.close();') : "")
 		);
 
 		return $this->getHTMLDocument($body, $js);
@@ -760,7 +769,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		<td>' . we_html_tools::getPixel(24, $height) . '</td>
 		<td></td>
 </tr></table>'
-				);
+			);
 	}
 
 	function getHTMLCopy(){
@@ -768,9 +777,9 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.copyid_text.value");
 		$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('copy_newsletter');");
 
-		return $this->View->htmlHidden('copyid', 0) .
-				$this->View->htmlHidden('copyid_text', "") .
-				we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements.copyid.value,'" . NEWSLETTER_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . get_ws(NEWSLETTER_TABLE) . "')");
+		return we_html_element::htmlHiddens(array('copyid' => 0,
+				'copyid_text' => "")) .
+			we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements.copyid.value,'" . NEWSLETTER_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . get_ws(NEWSLETTER_TABLE) . "')");
 	}
 
 	function getHTMLCustomer($group){
@@ -798,14 +807,14 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 
 		$buttons = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ?
-				array($delallbut, $addbut) :
-				array($delallbut);
+			array($delallbut, $addbut) :
+			array($delallbut);
 
 		$cats = new we_chooser_multiFile(self::def_width, $this->View->newsletter->groups[$group]->Extern, "del_file", we_html_button::create_button_table($buttons), "edit_file");
 
 		$cats->extraDelFn = 'document.we_form.ngroup.value=' . $group;
-		return $this->View->htmlHidden('fileselect', '') .
-				$cats->get();
+		return we_html_element::htmlHiddens(array('fileselect' => '')) .
+			$cats->get();
 	}
 
 	function getHTMLCustomerFilter($group){
@@ -892,8 +901,8 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 		$js = we_html_element::jsElement("calendarSetup(" . $group . "," . $k . ");");
 
-		return $this->View->htmlHidden("filter_" . $group, count($filter)) .
-				$table->getHtml() . $js;
+		return we_html_element::htmlHiddens(array("filter_" . $group => count($filter))) .
+			$table->getHtml() . $js;
 	}
 
 	/**
@@ -974,7 +983,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$import_box = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 8, 1);
 
 			$import_box->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
-			$import_box->setCol(1, 0, array(), $this->View->formFileChooser(200, "csv_file" . $group, "/", ""));
+			$import_box->setCol(1, 0, array(), $this->formFileChooser(200, "csv_file" . $group, "/", ""));
 			$import_box->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
 			$import_box->setCol(3, 0, array(), we_html_button::create_button("upload", "javascript:we_cmd('upload_csv',$group)"));
 			$import_box->setCol(4, 0, array(), we_html_tools::getPixel(5, 5));
@@ -982,7 +991,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$import_box->setCol(6, 0, array(), we_html_tools::getPixel(10, 10));
 			$import_box->setCol(7, 0, array("nowrap" => null), we_html_button::create_button_table(array($ok, $cancel)));
 
-			$table->setCol(5, 0, array("colspan" => 3), $this->View->htmlHidden("csv_import", $group) . $import_box->getHtml());
+			$table->setCol(5, 0, array("colspan" => 3), we_html_element::htmlHiddens(array("csv_import" => $group)) . $import_box->getHtml());
 		}
 
 		// Export dialog
@@ -993,21 +1002,71 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$export_box = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 1);
 
 			$export_box->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
-			$export_box->setCol(1, 0, array(), $this->View->formFileChooser(200, "csv_dir" . $group, "/", "", "folder"));
+			$export_box->setCol(1, 0, array(), $this->formFileChooser(200, "csv_dir" . $group, "/", "", "folder"));
 			$export_box->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
 			$export_box->setCol(3, 0, array("nowrap" => null), we_html_button::create_button_table(array($ok, $cancel)));
 
-			$table->setCol(5, 0, array("colspan" => 3), $this->View->htmlHidden("csv_export", $group) . $export_box->getHtml());
+			$table->setCol(5, 0, array("colspan" => 3), we_html_element::htmlHiddens(array("csv_export" => $group)) . $export_box->getHtml());
 		}
 
 		return $table->getHtml();
+	}
+
+	private function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = '', $open_doc = '', $acObject = null, $contentType = ''){
+		if(!$Pathvalue){
+			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), '', $this->db);
+		}
+
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
+		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','','" . $open_doc . "')");
+		if(is_object($acObject)){
+
+			$yuiSuggest = $acObject;
+			$yuiSuggest->setAcId($IDName);
+			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
+			$yuiSuggest->setInput($Pathname, $Pathvalue);
+			$yuiSuggest->setMaxResults(10);
+			$yuiSuggest->setMayBeEmpty(true);
+			$yuiSuggest->setResult($IDName, $IDValue);
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
+			$yuiSuggest->setTable($table);
+			$yuiSuggest->setWidth($width);
+			$yuiSuggest->setSelectButton($button);
+			return $yuiSuggest->getHTML();
+		}
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'top.content.hot=1; readonly', 'text', $width, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(trim($IDName), oldHtmlspecialchars($IDValue)), we_html_tools::getPixel(20, 4), $button);
+	}
+
+	private function formWeDocChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = '', $filter = we_base_ContentTypes::WEDOCUMENT, $acObject = null){
+		$Pathvalue = $Pathvalue? : f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), '', $this->db);
+
+		$wecmd1 = "document.we_form.elements['" . $IDName . "'].value";
+
+		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector'," . $wecmd1 . ",'" . $table . "','" . we_base_request::encCmd($wecmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value") . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
+		if(is_object($acObject)){
+			$yuiSuggest = $acObject;
+			$yuiSuggest->setAcId($IDName);
+			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME)));
+			$yuiSuggest->setInput($Pathname, $Pathvalue);
+			$yuiSuggest->setMaxResults(10);
+			$yuiSuggest->setMayBeEmpty(true);
+			$yuiSuggest->setResult($IDName, $IDValue);
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
+			$yuiSuggest->setTable($table);
+			$yuiSuggest->setWidth($width);
+			$yuiSuggest->setSelectButton($button);
+			return $yuiSuggest->getHTML();
+		}
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", 'top.content.hot=1; readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(trim($IDName), oldHtmlspecialchars($IDValue)), we_html_tools::getPixel(20, 4), $button);
 	}
 
 	function getHTMLNewsletterBlocks(){
 		$counter = 0;
 
 		$parts = array(
-			array("headline" => "", "html" => $this->View->htmlHidden("blocks", count($this->View->newsletter->blocks)), "space" => 140, "noline" => 1)
+			array("headline" => "", "html" => we_html_element::htmlHiddens(array("blocks" => count($this->View->newsletter->blocks))), "space" => 140, "noline" => 1)
 		);
 
 		foreach($this->View->newsletter->blocks as $block){
@@ -1021,50 +1080,50 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			}
 
 			$selected = $block->Groups ? : "1";
-			$content.=$this->View->htmlHidden("block" . $counter . "_Groups", $selected) .
-					$this->View->htmlHidden("block" . $counter . "_Pack", $block->Pack) .
-					we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_GroupsSel", $values, 5, $selected, true, array("style" => 'width:440px;', "onchange" => "PopulateMultipleVar(document.we_form.block" . $counter . "_GroupsSel,document.we_form.block" . $counter . "_Groups);top.content.hot=1")), g_l('modules_newsletter', '[block_lists]'));
+			$content.=we_html_element::htmlHiddens(array("block" . $counter . "_Groups" => $selected,
+					"block" . $counter . "_Pack" => $block->Pack)) .
+				we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_GroupsSel", $values, 5, $selected, true, array("style" => 'width:440px;', "onchange" => "PopulateMultipleVar(document.we_form.block" . $counter . "_GroupsSel,document.we_form.block" . $counter . "_Groups);top.content.hot=1")), g_l('modules_newsletter', '[block_lists]'));
 
 			switch($block->Type){
 				case we_newsletter_block::DOCUMENT:
-					$content.=we_html_tools::htmlFormElementTable($this->View->formWeDocChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=1;", we_base_ContentTypes::WEDOCUMENT, $this->weAutoCompleter), g_l('modules_newsletter', '[block_document]')) .
-							we_html_tools::htmlFormElementTable(we_html_forms::checkbox((($block->Field) ? 0 : 1), (($block->Field) ? false : true), "block" . $counter . "_use_def_template", g_l('modules_newsletter', '[use_default]'), false, "defaultfont", "top.content.hot=1;if(document.we_form.block" . $counter . "_use_def_template.checked){ document.we_form.block" . $counter . "_Field.value=0; document.we_form.block" . $counter . "_FieldPath.value='';}"), "&nbsp;&nbsp;&nbsp;") .
-							we_html_tools::htmlFormElementTable($this->View->formWeChooser(TEMPLATES_TABLE, 320, 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "if(opener.document.we_form.block" . $counter . "_use_def_template.checked) opener.document.we_form.block" . $counter . "_use_def_template.checked=false;opener.top.content.hot=1;", "", $this->weAutoCompleter, 'folder,' . we_base_ContentTypes::TEMPLATE), g_l('modules_newsletter', '[block_template]'));
+					$content.=we_html_tools::htmlFormElementTable($this->formWeDocChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=1;", we_base_ContentTypes::WEDOCUMENT, $this->weAutoCompleter), g_l('modules_newsletter', '[block_document]')) .
+						we_html_tools::htmlFormElementTable(we_html_forms::checkbox((($block->Field) ? 0 : 1), (($block->Field) ? false : true), "block" . $counter . "_use_def_template", g_l('modules_newsletter', '[use_default]'), false, "defaultfont", "top.content.hot=1;if(document.we_form.block" . $counter . "_use_def_template.checked){ document.we_form.block" . $counter . "_Field.value=0; document.we_form.block" . $counter . "_FieldPath.value='';}"), "&nbsp;&nbsp;&nbsp;") .
+						we_html_tools::htmlFormElementTable($this->formWeChooser(TEMPLATES_TABLE, 320, 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "if(opener.document.we_form.block" . $counter . "_use_def_template.checked) opener.document.we_form.block" . $counter . "_use_def_template.checked=false;opener.top.content.hot=1;", "", $this->weAutoCompleter, 'folder,' . we_base_ContentTypes::TEMPLATE), g_l('modules_newsletter', '[block_template]'));
 					break;
 
 				case we_newsletter_block::DOCUMENT_FIELD:
-					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=1;", "", $this->weAutoCompleter, "folder," . we_base_ContentTypes::WEDOCUMENT), g_l('modules_newsletter', '[block_document]'));
+					$content.=we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=1;", "", $this->weAutoCompleter, "folder," . we_base_ContentTypes::WEDOCUMENT), g_l('modules_newsletter', '[block_document]'));
 
 					if($block->LinkID){
 						$values = $this->View->getFields($block->LinkID, FILE_TABLE);
 
 						$content.=(!empty($values) ?
-										we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_Field", $values, 1, $block->Field, "", array("style" => 'width:440px;', "onkeyup" => 'top.content.hot=1;')), g_l('modules_newsletter', '[block_document_field]')) :
-										we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'))
-								);
+								we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_Field", $values, 1, $block->Field, "", array("style" => 'width:440px;', "onkeyup" => 'top.content.hot=1;')), g_l('modules_newsletter', '[block_document_field]')) :
+								we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'))
+							);
 					}
 					break;
 
 				case we_newsletter_block::OBJECT:
-					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=1;", (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]')) .
-							we_html_tools::htmlFormElementTable($this->View->formWeChooser(TEMPLATES_TABLE, 320, 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "opener.top.content.hot=1;", "", $this->weAutoCompleter, 'folder,' . we_base_ContentTypes::TEMPLATE), g_l('modules_newsletter', '[block_template]'));
+					$content.=we_html_tools::htmlFormElementTable($this->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.top.content.hot=1;", (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]')) .
+						we_html_tools::htmlFormElementTable($this->formWeChooser(TEMPLATES_TABLE, 320, 0, "block" . $counter . "_Field", (!is_numeric($block->Field) ? 0 : $block->Field), "block" . $counter . "_FieldPath", "", "opener.top.content.hot=1;", "", $this->weAutoCompleter, 'folder,' . we_base_ContentTypes::TEMPLATE), g_l('modules_newsletter', '[block_template]'));
 					break;
 
 				case we_newsletter_block::OBJECT_FIELD:
-					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=1;", (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]'));
+					$content.=we_html_tools::htmlFormElementTable($this->formWeChooser(OBJECT_FILES_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "opener.we_cmd(\'switchPage\',2);opener.top.content.hot=1;", (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1), $this->weAutoCompleter, "folder,objectFile"), g_l('modules_newsletter', '[block_object]'));
 
 					if($block->LinkID){
 						$values = $this->View->getFields($block->LinkID, OBJECT_FILES_TABLE);
 
 						$content.=(!empty($values) ?
-										we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_Field", $values, 1, $block->Field, false, array('OnChange' => "top.content.hot=1;")), g_l('modules_newsletter', '[block_object_field]')) :
-										we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'))
-								);
+								we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_Field", $values, 1, $block->Field, false, array('OnChange' => "top.content.hot=1;")), g_l('modules_newsletter', '[block_object_field]')) :
+								we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'))
+							);
 					}
 					break;
 
 				case we_newsletter_block::FILE:
-					$content.=we_html_tools::htmlFormElementTable($this->View->formFileChooser(320, "block" . $counter . "_Field", (is_numeric($block->Field) ? "" : ((substr($block->Field, 0, 1) != "/") ? "" : $block->Field))), g_l('modules_newsletter', '[block_file]'));
+					$content.=we_html_tools::htmlFormElementTable($this->formFileChooser(320, "block" . $counter . "_Field", (is_numeric($block->Field) ? "" : ((substr($block->Field, 0, 1) != "/") ? "" : $block->Field))), g_l('modules_newsletter', '[block_file]'));
 					break;
 
 				case we_newsletter_block::TEXT:
@@ -1080,16 +1139,16 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 						"bgcolor" => "white",
 					);
 					$blockHtml = preg_replace(
-							array(
+						array(
 						'/(href=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/',
 						'/(src=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/'
-							), '${1}${3}${5}', stripslashes($block->Html));
+						), '${1}${3}${5}', stripslashes($block->Html));
 
 
 					$content.=we_html_tools::htmlFormElementTable(we_html_element::htmlTextArea(array("cols" => 40, "rows" => 10, "name" => "block" . $counter . "_Source", "onchange" => "top.content.hot=1;", "style" => "width:440px;"), oldHtmlspecialchars($block->Source)), g_l('modules_newsletter', '[block_plain]')) .
-							we_html_element::jsScript(JS_DIR . "we_textarea.js") .
-							we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("block" . $counter . "_Html", $blockHtml, $attribs, "", "", true, "", true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]')) .
-							we_html_element::jsElement('
+						we_html_element::jsScript(JS_DIR . "we_textarea.js") .
+						we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("block" . $counter . "_Html", $blockHtml, $attribs, "", "", true, "", true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]')) .
+						we_html_element::jsElement('
 function extraInit(){
 	if(typeof weWysiwygInitializeIt == "function"){
 		weWysiwygInitializeIt();
@@ -1101,7 +1160,7 @@ window.onload=extraInit;');
 					break;
 
 				case we_newsletter_block::ATTACHMENT:
-					$content.=we_html_tools::htmlFormElementTable($this->View->formWeChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "", "", $this->weAutoCompleter, implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME))), g_l('modules_newsletter', '[block_attachment]'));
+					$content.=we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, 320, 0, "block" . $counter . "_LinkID", $block->LinkID, "block" . $counter . "_LinkPath", "", "", "", $this->weAutoCompleter, implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME))), g_l('modules_newsletter', '[block_attachment]'));
 					break;
 
 				case we_newsletter_block::URL:
@@ -1115,9 +1174,9 @@ window.onload=extraInit;');
 			$trash = we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('delBlock','" . $counter . "')");
 
 			$buttons.=(count($this->View->newsletter->blocks) > 1 ?
-							we_html_button::position_yes_no_cancel($plus, $trash) :
-							we_html_button::position_yes_no_cancel($plus)
-					);
+					we_html_button::position_yes_no_cancel($plus, $trash) :
+					we_html_button::position_yes_no_cancel($plus)
+				);
 
 			$parts[] = array("headline" => sprintf(g_l('modules_newsletter', '[block]'), ($counter + 1)), "html" => $content, "space" => 140);
 			$parts[] = array("headline" => "", "html" => $buttons, "space" => 140);
@@ -1152,19 +1211,46 @@ window.onload=extraInit;');
 			$wepos = weGetCookieVariable("but_newsletter_group_box_$i");
 
 			$out.= we_html_multiIconBox::getHTML("newsletter_group_box_$i", "100%", $parts, 30, "", 0, "", "", (($wepos === "down") || ($count < 2 ? true : false)), sprintf(g_l('modules_newsletter', '[mailing_list]'), ($i + 1))) .
-					we_html_element::htmlBr() . '<div style="margin-right:30px;">' . $buttons . '</div>';
+				we_html_element::htmlBr() . '<div style="margin-right:30px;">' . $buttons . '</div>';
 		}
 
 		return $out;
+	}
+
+	function formNewsletterDirChooser($width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = '', $acObject = null){
+		if(!$Pathvalue){
+			$Pathvalue = f('SELECT Path FROM ' . NEWSLETTER_TABLE . ' WHERE ID=' . intval($IDValue), '', $this->db);
+		}
+
+		$wecmd1 = "document.we_form.elements['" . $IDName . "'].value";
+
+		$button = we_html_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector'," . $wecmd1 . ",'" . we_base_request::encCmd($wecmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value") . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "')");
+		if(is_object($acObject)){
+			$yuiSuggest = $acObject;
+			$yuiSuggest->setAcId('PathGroup');
+			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
+			$yuiSuggest->setInput($Pathname, str_replace('\\', '/', $Pathvalue));
+			$yuiSuggest->setMaxResults(10);
+			$yuiSuggest->setMayBeEmpty(true);
+			$yuiSuggest->setResult($IDName, $IDValue);
+			$yuiSuggest->setSelector(weSuggest::DirSelector);
+			$yuiSuggest->setTable(NEWSLETTER_TABLE);
+			$yuiSuggest->setWidth($width);
+			$yuiSuggest->setSelectButton($button);
+
+			return $yuiSuggest->getHTML();
+		}
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'top.content.hot=1; readonly id="yuiAcInputPathGroup"', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(trim($IDName), oldHtmlspecialchars($IDValue)), we_html_tools::getPixel(20, 4), $button
+		);
 	}
 
 	function getHTMLNewsletterHeader(){
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 3, 1);
 		$table->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", 37, stripslashes($this->View->newsletter->Text), "", 'onKeyUp="top.content.hot=1;" id="yuiAcInputPathName" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"', 'text', self::def_width), g_l('modules_newsletter', '[name]')));
 		$table->setCol(1, 0, array(), we_html_tools::getPixel(10, 10));
-		$table->setCol(2, 0, array(), we_html_tools::htmlFormElementTable($this->View->formNewsletterDirChooser((self::def_width - 120), 0, "ParentID", $this->View->newsletter->ParentID, "Path", dirname($this->View->newsletter->Path), "opener.top.content.hot=1;", $this->weAutoCompleter), g_l('modules_newsletter', '[dir]')));
+		$table->setCol(2, 0, array(), we_html_tools::htmlFormElementTable($this->formNewsletterDirChooser((self::def_width - 120), 0, "ParentID", $this->View->newsletter->ParentID, "Path", dirname($this->View->newsletter->Path), "opener.top.content.hot=1;", $this->weAutoCompleter), g_l('modules_newsletter', '[dir]')));
 
-		//$table->setCol(2,0,array(),we_html_tools::htmlFormElementTable($this->View->formWeDocChooser(NEWSLETTER_TABLE,320,0,"ParentID",$this->View->newsletter->ParentID,"Path",dirname($this->View->newsletter->Path),"opener.top.content.hot=1;","folder"),g_l('modules_newsletter','[dir]')));
+		//$table->setCol(2,0,array(),we_html_tools::htmlFormElementTable($this->formWeDocChooser(NEWSLETTER_TABLE,320,0,"ParentID",$this->View->newsletter->ParentID,"Path",dirname($this->View->newsletter->Path),"opener.top.content.hot=1;","folder"),g_l('modules_newsletter','[dir]')));
 		$parts = array(
 			array("headline" => "", "html" => "", "space" => 140, "noline" => 1),
 			array("headline" => g_l('modules_newsletter', '[path]'), "html" => $table->getHtml(), "space" => 140),
@@ -1178,19 +1264,19 @@ window.onload=extraInit;');
 			$table->setCol(3, 0, array(), we_html_tools::getPixel(10, 10));
 
 			$chk = ($this->View->newsletter->Sender == $this->View->newsletter->Reply ?
-							we_html_element::htmlInput(array("type" => "checkbox", "value" => 1, "checked" => null, "name" => "reply_same", "onclick" => $this->topFrame . ".hot=1;if(document.we_form.reply_same.checked) document.we_form.Reply.value=document.we_form.Sender.value")) :
-							we_html_element::htmlInput(array("type" => "checkbox", "value" => 0, "name" => "reply_same", "onclick" => $this->topFrame . ".hot=1;if(document.we_form.reply_same.checked) document.we_form.Reply.value=document.we_form.Sender.value"))
-					);
+					we_html_element::htmlInput(array("type" => "checkbox", "value" => 1, "checked" => null, "name" => "reply_same", "onclick" => $this->topFrame . ".hot=1;if(document.we_form.reply_same.checked) document.we_form.Reply.value=document.we_form.Sender.value")) :
+					we_html_element::htmlInput(array("type" => "checkbox", "value" => 0, "name" => "reply_same", "onclick" => $this->topFrame . ".hot=1;if(document.we_form.reply_same.checked) document.we_form.Reply.value=document.we_form.Sender.value"))
+				);
 			$table->setCol(4, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Reply", 37, $this->View->newsletter->Reply, "", "onKeyUp='top.content.hot=1;'") . "&nbsp;&nbsp;" . $chk . "&nbsp;" . we_html_element::htmlLabel(array("class" => "defaultfont", "onclick" => $this->topFrame . ".hot=1;if(document.we_form.reply_same.checked){document.we_form.reply_same.checked=false;}else{document.we_form.Reply.value=document.we_form.Sender.value;document.we_form.reply_same.checked=true;}"), g_l('modules_newsletter', '[reply_same]')), g_l('modules_newsletter', '[reply]')));
 			$table->setCol(5, 0, array(), we_html_tools::getPixel(10, 10));
 			$table->setCol(6, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Test", 37, $this->View->newsletter->Test, "", "onKeyUp='top.content.hot=1;'"), g_l('modules_newsletter', '[test_email]')));
 			$table->setCol(7, 0, array(), we_html_tools::getPixel(10, 10));
 
 			$_embedImagesChk = ($this->View->newsletter->isEmbedImages ?
-							we_html_element::htmlInput(array("type" => "checkbox", "value" => 1, "name" => "isEmbedImagesChk", "onclick" => $this->topFrame . ".hot=1;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}", "checked" => null), g_l('modules_newsletter', '[isEmbedImages]')) :
-							we_html_element::htmlInput(array("type" => "checkbox", "value" => 1, "name" => "isEmbedImagesChk", "onclick" => $this->topFrame . ".hot=1;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}"), g_l('modules_newsletter', '[isEmbedImages]'))
-					);
-			$_embedImagesHid = we_html_element::htmlHidden(array("name" => "isEmbedImages", "value" => $this->View->newsletter->isEmbedImages));
+					we_html_element::htmlInput(array("type" => "checkbox", "value" => 1, "name" => "isEmbedImagesChk", "onclick" => $this->topFrame . ".hot=1;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}", "checked" => null), g_l('modules_newsletter', '[isEmbedImages]')) :
+					we_html_element::htmlInput(array("type" => "checkbox", "value" => 1, "name" => "isEmbedImagesChk", "onclick" => $this->topFrame . ".hot=1;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}"), g_l('modules_newsletter', '[isEmbedImages]'))
+				);
+			$_embedImagesHid = we_html_element::htmlHidden("isEmbedImages", $this->View->newsletter->isEmbedImages);
 			$_embedImagesLab = we_html_element::htmlLabel(array("class" => "defaultfont", "onclick" => $this->topFrame . ".hot=1;if(document.we_form.isEmbedImagesChk.checked){ document.we_form.isEmbedImagesChk.checked=false; document.we_form.isEmbedImages.value=0; }else{document.we_form.isEmbedImagesChk.checked=true;document.we_form.isEmbedImages.value=1;}"), g_l('modules_newsletter', '[isEmbedImages]'));
 
 			$table->setCol(8, 0, array(), we_html_tools::htmlFormElementTable($_embedImagesHid . $_embedImagesChk . "&nbsp;" . $_embedImagesLab, ""));
@@ -1201,7 +1287,7 @@ window.onload=extraInit;');
 		}
 
 		return we_html_multiIconBox::getHTML("newsletter_header", "100%", $parts, 30, "", -1, "", "", false) .
-				we_html_element::htmlBr();
+			we_html_element::htmlBr();
 	}
 
 	/**
@@ -1215,7 +1301,7 @@ window.onload=extraInit;');
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
-			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getHiddens(array('ncmd' => 'home')) . $this->View->htmlHidden("home", 0));
+			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHidden('home', 0));
 			$GLOBALS['mod'] = 'newsletter';
 			ob_start();
 			include(WE_MODULES_PATH . 'home.inc.php');
@@ -1225,10 +1311,10 @@ window.onload=extraInit;');
 		}
 
 		$js = $this->View->getJSProperty() .
-				we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
-				we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
-				we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js') .
-				we_html_element::jsElement('
+			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
+			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js') .
+			we_html_element::jsElement('
 if (top.content.get_focus) {
 	self.focus();
 } else {
@@ -1326,64 +1412,58 @@ function changeFieldValue(val,valueField) {
 	.markNotValid { background: #FFCCCC }
 	.markValid { background: #FFFFFF }
 ') .
-				we_html_element::linkElement(
-						array(
-							"rel" => "stylesheet",
-							"type" => "text/css",
-							"href" => LIB_DIR . "additional/jscalendar/skins/aqua/theme.css",
-							"title" => "Aqua"
+			we_html_element::linkElement(
+				array(
+					"rel" => "stylesheet",
+					"type" => "text/css",
+					"href" => LIB_DIR . "additional/jscalendar/skins/aqua/theme.css",
+					"title" => "Aqua"
 		));
 
 
 		$out = $this->View->getHiddens() .
-				$this->View->newsletterHiddens() .
-				$this->View->getHiddensProperty();
+			$this->View->newsletterHiddens() .
+			$this->View->getHiddensProperty();
 
 		switch($this->View->page){
 			case 0:
 				$out.=weSuggest::getYuiFiles() .
-						$this->View->htmlHidden("home", 0) .
-						$this->View->htmlHidden("fromPage", 0);
+					we_html_element::htmlHiddens(array('home' => 0, "fromPage" => 0));
 
 				if($this->View->newsletter->IsFolder == 0){
 					$out.=$this->View->getHiddensMailingPage() .
-							$this->View->getHiddensContentPage();
+						$this->View->getHiddensContentPage();
 				}
 
 				$out.=$this->getHTMLNewsletterHeader() .
-						$this->weAutoCompleter->getYuiJs();
+					$this->weAutoCompleter->getYuiJs();
 				break;
 			case 1:
 				$out.=$this->View->getHiddensPropertyPage() .
-						$this->View->getHiddensContentPage() .
-						$this->View->htmlHidden("fromPage", 1) .
-						$this->View->htmlHidden("ncustomer", "") .
-						$this->View->htmlHidden("nfile", "") .
-						$this->View->htmlHidden("ngroup", "") .
-						$this->getHTMLNewsletterGroups();
+					$this->View->getHiddensContentPage() .
+					we_html_element::htmlHiddens(array("fromPage" => 1, "ncustomer" => '', "nfile" => '', "ngroup" => '')) .
+					$this->getHTMLNewsletterGroups();
 				break;
 			case 2:
 				$out.=weSuggest::getYuiFiles() .
-						$this->View->getHiddensMailingPage() .
-						$this->View->getHiddensPropertyPage() .
-						$this->View->htmlHidden("fromPage", 2) .
-						$this->View->htmlHidden("blockid", 0) .
-						$this->getHTMLNewsletterBlocks() .
-						$this->weAutoCompleter->getYuiJs();
+					$this->View->getHiddensMailingPage() .
+					$this->View->getHiddensPropertyPage() .
+					we_html_element::htmlHiddens(array("fromPage" => 2, "blockid" => 0)) .
+					$this->getHTMLNewsletterBlocks() .
+					$this->weAutoCompleter->getYuiJs();
 				break;
 			default:
 				$out.=weSuggest::getYuiFiles() .
-						$this->View->getHiddensPropertyPage() .
-						$this->View->getHiddensMailingPage() .
-						$this->View->getHiddensContentPage() .
-						$this->View->htmlHidden("fromPage", 3) .
-						$this->View->htmlHidden("blockid", 0) .
-						we_html_multiIconBox::getHTML('', "100%", $this->getHTMLReporting(), 30, '', -1, '', '', false) .
-						$this->weAutoCompleter->getYuiJs();
+					$this->View->getHiddensPropertyPage() .
+					$this->View->getHiddensMailingPage() .
+					$this->View->getHiddensContentPage() .
+					we_html_element::htmlHiddens(array("fromPage" => 3, "blockid" => 0)) .
+					we_html_multiIconBox::getHTML('', "100%", $this->getHTMLReporting(), 30, '', -1, '', '', false) .
+					$this->weAutoCompleter->getYuiJs();
 		}
 
 		$body = we_html_element::htmlBody(array("onload" => "self.loaded=1;if(self.doScrollTo){self.doScrollTo();}; setHeaderTitle();", "class" => "weEditorBody", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onsubmit" => "return false;"), $out
-						)
+				)
 		);
 //$this->getHTMLDocumentHeader();
 		return $this->getHTMLDocument($body, $js . $css);
@@ -1465,15 +1545,15 @@ function changeFieldValue(val,valueField) {
 		$close = we_html_button::create_button("close", "javascript:self.close();");
 		$save = we_html_button::create_button("save", "javascript:save();");
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "document.we_form.emailfield.select();document.we_form.emailfield.focus();"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "save();return false;"), we_html_element::htmlHidden(array("name" => "group", "value" => $group)) .
-								($type ?
-										we_html_element::htmlHidden(array("name" => "id", "value" => $id)) :
-										""
-								) .
-								we_html_tools::htmlDialogLayout(
-										$table->getHtml(), g_l('modules_newsletter', $type ? '[edit_email]' : '[add_email]'), we_html_button::position_yes_no_cancel($save, $close)
-								)
-						)
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "document.we_form.emailfield.select();document.we_form.emailfield.focus();"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "save();return false;"), we_html_element::htmlHidden("group", $group) .
+					($type ?
+						we_html_element::htmlHidden("id", $id) :
+						""
+					) .
+					we_html_tools::htmlDialogLayout(
+						$table->getHtml(), g_l('modules_newsletter', $type ? '[edit_email]' : '[add_email]'), we_html_button::position_yes_no_cancel($save, $close)
+					)
+				)
 		);
 
 		return $this->getHTMLDocument($body, $js);
@@ -1514,7 +1594,7 @@ function changeFieldValue(val,valueField) {
 		}
 
 		$js = $this->View->getJSProperty() .
-				we_html_element::jsElement('
+			we_html_element::jsElement('
 function addBlack() {
 	var p=document.we_form.elements.blacklist_sel;
 	var newRecipient=prompt("' . g_l('modules_newsletter', '[add_email]') . '","");
@@ -1613,7 +1693,7 @@ self.focus();
 
 				if(strpos($filepath, '..') !== false){
 					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 				} else {
 					$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $filepath, "rb");
@@ -1637,7 +1717,7 @@ self.focus();
 						}
 					} else {
 						echo we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 					}
 				}
@@ -1647,7 +1727,7 @@ self.focus();
 				we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, str_replace(",", "\n", $this->View->settings["black_list"]));
 
 				$js.=we_html_element::jsScript(JS_DIR . "windows.js") .
-						we_html_element::jsElement('new jsWindow("' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);');
+					we_html_element::jsElement('new jsWindow("' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);');
 				break;
 		}
 
@@ -1695,7 +1775,7 @@ self.focus();
 			$import_box = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 8, 1);
 
 			$import_box->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
-			$import_box->setCol(1, 0, array(), $this->View->formFileChooser(200, "csv_file", "/", ""));
+			$import_box->setCol(1, 0, array(), $this->formFileChooser(200, "csv_file", "/", ""));
 			$import_box->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
 			$import_box->setCol(3, 0, array(), we_html_button::create_button("upload", "javascript:we_cmd('upload_black')"));
 			$import_box->setCol(4, 0, array(), we_html_tools::getPixel(5, 5));
@@ -1703,8 +1783,8 @@ self.focus();
 			$import_box->setCol(6, 0, array(), we_html_tools::getPixel(10, 10));
 			$import_box->setCol(7, 0, array("nowrap" => null), we_html_button::create_button_table(array($ok, $cancel)));
 
-			$table->setCol(3, 0, array("colspan" => 3), $this->View->htmlHidden("csv_import", 1) .
-					$import_box->getHtml()
+			$table->setCol(3, 0, array("colspan" => 3), we_html_element::htmlHiddens(array("csv_import" => 1)) .
+				$import_box->getHtml()
 			);
 		} elseif($seb){
 			$ok = we_html_button::create_button("ok", "javascript:document.we_form.seb.value=0;we_cmd('export_black');");
@@ -1712,12 +1792,12 @@ self.focus();
 			$export_box = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 1);
 
 			$export_box->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
-			$export_box->setCol(1, 0, array(), $this->View->formFileChooser(200, "csv_dir", "/", "", "folder"));
+			$export_box->setCol(1, 0, array(), $this->formFileChooser(200, "csv_dir", "/", "", "folder"));
 			$export_box->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
 			$export_box->setCol(3, 0, array("nowrap" => null), we_html_button::create_button_table(array($ok, $cancel)));
 
-			$table->setCol(3, 0, array("colspan" => 3), $this->View->htmlHidden("csv_export", 1) .
-					$export_box->getHtml()
+			$table->setCol(3, 0, array("colspan" => 3), we_html_element::htmlHiddens(array("csv_export" => 1)) .
+				$export_box->getHtml()
 			);
 		}
 
@@ -1727,13 +1807,13 @@ self.focus();
 
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "save();return false;"), $this->View->getHiddens() .
-								$this->View->htmlHidden("black_list", $this->View->settings["black_list"]) .
-								$this->View->htmlHidden("sib", $sib) .
-								$this->View->htmlHidden("seb", $seb) .
-								we_html_tools::htmlDialogLayout(
-										$table->getHtml(), g_l('modules_newsletter', '[black_list]'), we_html_button::position_yes_no_cancel($save, null, $cancel)
-								)
-						)
+					we_html_element::htmlHiddens(array("black_list" => $this->View->settings["black_list"],
+						"sib" => $sib,
+						"seb" => $seb)) .
+					we_html_tools::htmlDialogLayout(
+						$table->getHtml(), g_l('modules_newsletter', '[black_list]'), we_html_button::position_yes_no_cancel($save, null, $cancel)
+					)
+				)
 		);
 
 		return $this->getHTMLDocument($body, $js);
@@ -1743,7 +1823,7 @@ self.focus();
 		$weFileupload = new we_fileupload_include('we_File', '', '', 'we_form', 'upload_footer', true, "we_cmd('do_" . $what . "');", '', 330, true, false, 0);
 		$weFileupload->setExternalProgress(true, 'progressbar', true, 120);
 		$weFileupload->setAction($this->frameset . '?' . ($what === 'upload_csv' ? 'pnt=upload_csv&grp=0&ncmd=do_upload_csv' :
-						($what === 'upload_black' ? 'pnt=upload_black&grp=undefined&ncmd=do_upload_black' : '')));
+				($what === 'upload_black' ? 'pnt=upload_black&grp=undefined&ncmd=do_upload_black' : '')));
 
 		$cancel = we_html_button::create_button("cancel", "javascript:" . $weFileupload->getJsBtnCmd('cancel'));
 		$upload = we_html_button::create_button("upload", "javascript:" . $weFileupload->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer');
@@ -1754,7 +1834,7 @@ self.focus();
 		$footerTable->setCol(0, 1, $attribs = array('align' => 'right'), $buttons);
 
 		$js = $this->View->getJSProperty() .
-				we_html_element::jsElement('
+			we_html_element::jsElement('
 					self.focus();
 		') . $weFileupload->getJs();
 
@@ -1765,12 +1845,12 @@ self.focus();
 		$table->setCol(2, 0, array("valign" => "middle"), $weFileupload->getHTML());
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "enctype" => "multipart/form-data"), we_html_element::htmlCenter(
-										$this->View->getHiddens() .
-										(($grp = we_base_request::_(we_base_request::STRING, 'grp')) !== false ? $this->View->htmlHidden("group", $grp) : '') .
-										$this->View->htmlHidden("MAX_FILE_SIZE", $weFileupload->getMaxUploadSize()) .
-										we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_newsletter', '[csv_upload]'), $footerTable->getHTML(), "100%", 30, "", "hidden")
-								)
-						)
+						$this->View->getHiddens() .
+						(($grp = we_base_request::_(we_base_request::STRING, 'grp')) !== false ? we_html_element::htmlHiddens(array("group" => $grp)) : '') .
+						we_html_element::htmlHiddens(array("MAX_FILE_SIZE" => $weFileupload->getMaxUploadSize())) .
+						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_newsletter', '[csv_upload]'), $footerTable->getHTML(), "100%", 30, "", "hidden")
+					)
+				)
 		);
 
 		return $this->getHTMLDocument($body, $weFileupload->getCSS() . $js);
@@ -1804,18 +1884,17 @@ self.focus();
 		}
 
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "group", "value" => /* (isset($group)
-									  ? $group : "") */'')) .
-								($allowClear ?
-										$this->View->htmlHidden("pnt", "clear_log") .
-										$this->View->htmlHidden("ncmd", "do_clear_log") .
-										we_html_tools::htmlDialogLayout(
-												$table->getHtml(), g_l('modules_newsletter', '[clear_log]'), we_html_button::position_yes_no_cancel($ok, null, $cancel), "100%", 30, "", "hidden") :
-										we_html_tools::htmlDialogLayout(
-												$table->getHtml(), g_l('modules_newsletter', '[csv_download]'), we_html_button::position_yes_no_cancel(null, $close, null), "100%", 30, "", "hidden")
-								) .
-								we_html_element::jsElement("self.focus();")
-						)
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden("group", '') .
+					($allowClear ?
+						we_html_element::htmlHiddens(array("pnt" => "clear_log",
+							"ncmd" => "do_clear_log")) .
+						we_html_tools::htmlDialogLayout(
+							$table->getHtml(), g_l('modules_newsletter', '[clear_log]'), we_html_button::position_yes_no_cancel($ok, null, $cancel), "100%", 30, "", "hidden") :
+						we_html_tools::htmlDialogLayout(
+							$table->getHtml(), g_l('modules_newsletter', '[csv_download]'), we_html_button::position_yes_no_cancel(null, $close, null), "100%", 30, "", "hidden")
+					) .
+					we_html_element::jsElement("self.focus();")
+				)
 		);
 
 		return ($allowClear ? $body : $this->getHTMLDocument($body));
@@ -1836,13 +1915,13 @@ self.focus();
 		$order = we_base_request::_(we_base_request::RAW, "order", "");
 		for($i = 0; $i < 14; $i = $i + 2){
 			$sorter_code[$i] = "<br/>" . ($order == $i ?
-							we_html_element::htmlInput(array("type" => "radio", "value" => $i, "name" => "order", "checked" => true, "onclick" => "submitForm('edit_file')")) . "&darr;" :
-							we_html_element::htmlInput(array("type" => "radio", "value" => $i, "name" => "order", "onclick" => "submitForm('edit_file')")) . "&darr;"
-					);
+					we_html_element::htmlInput(array("type" => "radio", "value" => $i, "name" => "order", "checked" => true, "onclick" => "submitForm('edit_file')")) . "&darr;" :
+					we_html_element::htmlInput(array("type" => "radio", "value" => $i, "name" => "order", "onclick" => "submitForm('edit_file')")) . "&darr;"
+				);
 			$sorter_code[$i + 1] = ($order == $i + 1 ?
-							we_html_element::htmlInput(array("type" => "radio", "value" => $i + 1, "name" => "order", "checked" => true, "onclick" => "submitForm('edit_file')")) . "&uarr;" :
-							we_html_element::htmlInput(array("type" => "radio", "value" => $i + 1, "name" => "order", "onclick" => "submitForm('edit_file')")) . "&uarr;"
-					);
+					we_html_element::htmlInput(array("type" => "radio", "value" => $i + 1, "name" => "order", "checked" => true, "onclick" => "submitForm('edit_file')")) . "&uarr;" :
+					we_html_element::htmlInput(array("type" => "radio", "value" => $i + 1, "name" => "order", "onclick" => "submitForm('edit_file')")) . "&uarr;"
+				);
 		}
 
 		$headlines = array(
@@ -1996,7 +2075,7 @@ self.focus();
 		}
 
 		$js = $this->View->getJSProperty() .
-				we_html_element::jsElement('
+			we_html_element::jsElement('
 self.focus();
 function editEmailFile(eid,email,htmlmail,salutation,title,firstname,lastname){
 	new jsWindow("' . $this->frameset . '?pnt=eemail&eid="+eid+"&etyp=2&email="+email+"&htmlmail="+htmlmail+"&salutation="+salutation+"&title="+title+"&firstname="+firstname+"&lastname="+lastname,"edit_email",-1,-1,430,270,true,true,true,true);
@@ -2058,7 +2137,7 @@ function postSelectorSelect(wePssCmd) {
 
 		$chooser = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 2, 1);
 		$chooser->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
-		$chooser->setCol(1, 0, array(), $this->View->formFileChooser(420, "csv_file", ($open_file ? : ($csv_file ? : "/")), "", "", 'readonly="readonly" onchange="alert(100)"'));
+		$chooser->setCol(1, 0, array(), $this->formFileChooser(420, "csv_file", ($open_file ? : ($csv_file ? : "/")), "", "", 'readonly="readonly" onchange="alert(100)"'));
 		//$chooser->setCol(2,0,array(),we_html_tools::getPixel(5,15));
 		//$chooser->setCol(3,0,array(),we_button::create_button_table(array($close,$edit)));
 		//$chooser->setCol(4,0,array(),we_html_tools::getPixel(5,15));
@@ -2067,8 +2146,8 @@ function postSelectorSelect(wePssCmd) {
 		$nextprev = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 5);
 
 		$colcontent = ($offset ?
-						we_html_button::create_button("back", "javascript:document.we_form.offset.value=" . ($offset - $numRows) . ";submitForm('edit_file');") :
-						we_html_button::create_button("back", "#", false, 100, 22, "", "", true));
+				we_html_button::create_button("back", "javascript:document.we_form.offset.value=" . ($offset - $numRows) . ";submitForm('edit_file');") :
+				we_html_button::create_button("back", "#", false, 100, 22, "", "", true));
 
 		$nextprev->setCol(0, 0, array(), $colcontent);
 
@@ -2077,16 +2156,16 @@ function postSelectorSelect(wePssCmd) {
 
 		if(($anz - $offset) < $numRows){
 			$colcontent = ( $anz ? $offset + 1 : 0 ) . "-" . $anz .
-					we_html_tools::getPixel(5, 1) .
-					g_l('global', '[from]') .
-					we_html_tools::getPixel(5, 1) .
-					$anz;
+				we_html_tools::getPixel(5, 1) .
+				g_l('global', '[from]') .
+				we_html_tools::getPixel(5, 1) .
+				$anz;
 		} else {
 			$colcontent = ( $anz ? $offset + 1 : 0 ) . "-" . $offset + $numRows .
-					we_html_tools::getPixel(5, 1) .
-					g_l('global', '[from]') .
-					we_html_tools::getPixel(5, 1) .
-					$anz;
+				we_html_tools::getPixel(5, 1) .
+				g_l('global', '[from]') .
+				we_html_tools::getPixel(5, 1) .
+				$anz;
 		}
 
 		$nextprev->setCol(0, 2, array("class" => "defaultfont"), we_html_element::htmlB($colcontent));
@@ -2094,9 +2173,9 @@ function postSelectorSelect(wePssCmd) {
 		$nextprev->setCol(0, 3, array(), we_html_tools::getPixel(10, 5));
 
 		$colcontent = (($offset + $numRows) < $anz ?
-						we_html_button::create_button("next", "javascript:document.we_form.offset.value=" . ($offset + $numRows) . ";submitForm('edit_file');") :
-						we_html_button::create_button("next", "#", false, 100, 22, "", "", true)
-				);
+				we_html_button::create_button("next", "javascript:document.we_form.offset.value=" . ($offset + $numRows) . ";submitForm('edit_file');") :
+				we_html_button::create_button("next", "#", false, 100, 22, "", "", true)
+			);
 
 		$nextprev->setCol(0, 4, array(), $colcontent);
 
@@ -2117,10 +2196,10 @@ function postSelectorSelect(wePssCmd) {
 			);
 
 			$out = $nextprev->getHtml() .
-					we_html_tools::getPixel(5, 5) .
-					we_html_tools::htmlDialogBorder3(850, 300, $content, $headlines) .
-					we_html_tools::getPixel(5, 5) .
-					$end;
+				we_html_tools::getPixel(5, 5) .
+				we_html_tools::htmlDialogBorder3(850, 300, $content, $headlines) .
+				we_html_tools::getPixel(5, 5) .
+				$end;
 		} else {
 			if(!$csv_file && empty($csv_file) && strlen($csv_file) < 4){
 				$_nlMessage = g_l('modules_newsletter', '[no_file_selected]');
@@ -2136,28 +2215,29 @@ function postSelectorSelect(wePssCmd) {
 			}
 
 			$out = we_html_element::htmlDiv(array("class" => "middlefontgray", "align" => "center"), "--&nbsp;" . $_nlMessage . "&nbsp;--" . $selectStatus2)
-					. '<br/><br/>' .
-					we_html_button::create_button("image:function_plus", "javascript:editEmailFile(" . count($emails) . ",'','','','','','')");
+				. '<br/><br/>' .
+				we_html_button::create_button("image:function_plus", "javascript:editEmailFile(" . count($emails) . ",'','','','','','')");
 		}
 
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => ($open_file ? "submitForm('edit_file')" : "" )), we_html_element::htmlForm(array("name" => "we_form"), $this->View->htmlHidden("ncmd", "edit_file") .
-								$this->View->htmlHidden("pnt", "edit_file") .
-								$this->View->htmlHidden("order", $order) .
-								$this->View->htmlHidden("offset", $offset) .
-								$this->View->htmlHidden("nrid", "") .
-								$this->View->htmlHidden("email", "") .
-								$this->View->htmlHidden("htmlmail", "") .
-								$this->View->htmlHidden("salutation", "") .
-								$this->View->htmlHidden("title", "") .
-								$this->View->htmlHidden("firstname", "") .
-								$this->View->htmlHidden("lastname", "") .
-								$this->View->htmlHidden("etyp", "") .
-								$this->View->htmlHidden("eid", "") .
-								//we_button::create_button_table(array($close,$edit)).
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => ($open_file ? "submitForm('edit_file')" : "" )), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
+						"ncmd" => "edit_file",
+						"pnt" => "edit_file",
+						"order" => $order,
+						"offset" => $offset,
+						"nrid" => "",
+						"email" => "",
+						"htmlmail" => "",
+						"salutation" => "",
+						"title" => "",
+						"firstname" => "",
+						"lastname" => "",
+						"etyp" => "",
+						"eid" => "")) .
+					//we_button::create_button_table(array($close,$edit)).
 
-								we_html_tools::htmlDialogLayout($chooser->getHtml() . '<br/>' . $out, g_l('modules_newsletter', '[select_file]'), we_html_button::create_button_table(array($close, $edit)), "100%", 30, 597)
-						)
+					we_html_tools::htmlDialogLayout($chooser->getHtml() . '<br/>' . $out, g_l('modules_newsletter', '[select_file]'), we_html_button::create_button_table(array($close, $edit)), "100%", 30, 597)
+				)
 		);
 
 		return $this->getHTMLDocument($body, $js);
@@ -2169,10 +2249,10 @@ function postSelectorSelect(wePssCmd) {
 		if(we_base_request::_(we_base_request::STRING, "ncmd") === "do_clear_log"){
 			$this->View->db->query("DELETE FROM " . NEWSLETTER_LOG_TABLE);
 			return
-					we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-					we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[log_is_clear]'), we_message_reporting::WE_MESSAGE_NOTICE)
-							. 'self.close();'
+				we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+				we_html_element::jsElement(
+					we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[log_is_clear]'), we_message_reporting::WE_MESSAGE_NOTICE)
+					. 'self.close();'
 			);
 		}
 
@@ -2207,17 +2287,18 @@ function clearLog(){
 
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array("class" => 'weDialogBody', 'onload' => "self.focus();setTimeout(document.we_form.submit,200)"), we_html_element::htmlForm(array('name' => 'we_form'), $this->View->htmlHidden("pnt", "send_frameset") .
-										$this->View->htmlHidden('nid', $nid) .
-										$this->View->htmlHidden('test', $test) .
-										we_html_element::htmlCenter(
-												we_html_element::htmlImg(array('src' => IMAGE_DIR . 'e_busy.gif')) .
-												we_html_element::htmlBr() .
-												we_html_element::htmlBr() .
-												we_html_element::htmlDiv(array('class' => 'header_small'), g_l('modules_newsletter', '[prepare_newsletter]'))
-										)
-								)
+				we_html_element::htmlBody(array("class" => 'weDialogBody', 'onload' => "self.focus();setTimeout(document.we_form.submit,200)"), we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
+							"pnt" => "send_frameset",
+							'nid' => $nid,
+							'test' => $test)) .
+						we_html_element::htmlCenter(
+							we_html_element::htmlImg(array('src' => IMAGE_DIR . 'e_busy.gif')) .
+							we_html_element::htmlBr() .
+							we_html_element::htmlBr() .
+							we_html_element::htmlDiv(array('class' => 'header_small'), g_l('modules_newsletter', '[prepare_newsletter]'))
 						)
+					)
+				)
 		);
 	}
 
@@ -2240,7 +2321,7 @@ function clearLog(){
 
 
 		$head = we_html_element::jsScript(JS_DIR . 'windows.js') .
-				we_html_element::jsElement('
+			we_html_element::jsElement('
 function yes(){
 	doSend(' . $_offset . ',' . $_step . ');
 }
@@ -2264,8 +2345,8 @@ self.focus();
 ');
 
 		$body = we_html_element::htmlIFrame('send_body', $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=msg_fv_headers', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;', '', '', false) .
-				we_html_element::htmlIFrame('send_cmd', $this->frameset . "?pnt=send_cmd", 'position:absolute;width:0px;height:0px;', '', '', false) .
-				we_html_element::htmlIFrame('send_control', $this->frameset . "?pnt=send_control&nid=$nid&test=$test&blockcache=" . $ret["blockcache"] . "&emailcache=" . $ret["emailcache"] . "&ecount=" . $ret["ecount"] . "&gcount=" . $ret["gcount"], 'position:absolute;width:0px;height:0px;', '', '', false)
+			we_html_element::htmlIFrame('send_cmd', $this->frameset . "?pnt=send_cmd", 'position:absolute;width:0px;height:0px;', '', '', false) .
+			we_html_element::htmlIFrame('send_control', $this->frameset . "?pnt=send_control&nid=$nid&test=$test&blockcache=" . $ret["blockcache"] . "&emailcache=" . $ret["emailcache"] . "&ecount=" . $ret["ecount"] . "&gcount=" . $ret["gcount"], 'position:absolute;width:0px;height:0px;', '', '', false)
 		;
 		return $this->getHTMLDocument(we_html_element::htmlBody(array("onload" => (($this->View->newsletter->Step != 0 || $this->View->newsletter->Offset != 0) ? "ask(" . $this->View->newsletter->Step . "," . $this->View->newsletter->Offset . ");" : "no();")), $body), $head);
 	}
@@ -2276,15 +2357,15 @@ self.focus();
 		$pb->addText(g_l('modules_newsletter', '[sending]'), 0, "title");
 
 		$_footer = '<table width="580" border="0" cellpadding="0" cellspacing="0"><tr><td align="left">' .
-				$pb->getHTML() . '</td><td align="right">' .
-				we_html_button::create_button("close", "javascript:top.close();") .
-				'</td></tr></table>';
+			$pb->getHTML() . '</td><td align="right">' .
+			we_html_button::create_button("close", "javascript:top.close();") .
+			'</td></tr></table>';
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $pb->getJS('', true) .
-										we_html_tools::htmlDialogLayout(we_html_element::htmlTextarea(array("name" => "details", "cols" => 60, "rows" => 15, "style" => "width:530px;height:300px;")), g_l('modules_newsletter', '[details]'), $_footer)
-								) .
-								we_html_element::jsElement('
+				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $pb->getJS('', true) .
+						we_html_tools::htmlDialogLayout(we_html_element::htmlTextarea(array("name" => "details", "cols" => 60, "rows" => 15, "style" => "width:530px;height:300px;")), g_l('modules_newsletter', '[details]'), $_footer)
+					) .
+					we_html_element::jsElement('
 									document.we_form.details.value="' . g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "test") ? '[test_no_mail]' : '[sending]')) . '";
 									document.we_form.details.value=document.we_form.details.value+"\n"+"' . g_l('modules_newsletter', '[campaign_starts]') . '";
 							')
@@ -2350,18 +2431,19 @@ function initControl(){
 self.focus();');
 
 
-		echo $this->getHTMLDocument(we_html_element::htmlBody(array("marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10, "onload" => "initControl()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "nid", "value" => $nid)) .
-								we_html_element::htmlHidden(array("name" => "pnt", "value" => "send_cmd")) .
-								we_html_element::htmlHidden(array("name" => "test", "value" => $test)) .
-								we_html_element::htmlHidden(array("name" => "blockcache", "value" => $blockcache)) .
-								we_html_element::htmlHidden(array("name" => "emailcache", "value" => $emailcache)) .
-								we_html_element::htmlHidden(array("name" => "ecount", "value" => $ecount)) .
-								we_html_element::htmlHidden(array("name" => "gcount", "value" => $gcount)) .
-								we_html_element::htmlHidden(array("name" => "egc", "value" => $egc + 1)) .
-								we_html_element::htmlHidden(array("name" => "ecs", "value" => $ecs)) .
-								we_html_element::htmlHidden(array("name" => "reload", "value" => 1))
-						)
-				), $js);
+		echo $this->getHTMLDocument(we_html_element::htmlBody(array("marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10, "onload" => "initControl()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
+						"nid" => $nid,
+						"pnt" => "send_cmd",
+						"test" => $test,
+						"blockcache" => $blockcache,
+						"emailcache" => $emailcache,
+						"ecount", "value" => $ecount,
+						"gcount" => $gcount,
+						"egc" => $egc + 1,
+						"ecs" => $ecs,
+						"reload" => 1))
+				)
+			), $js);
 		flush();
 
 		if($gcount <= $egc){
@@ -2550,8 +2632,8 @@ self.focus();');
 			$not_black = !$this->View->isBlack($email); //Bug #5791 Prüfung muss vor der aufbereitung der Adresse erfolgen
 			if($lastname && $firstname || $title && $lastname){
 				$emailName = ($title ? $title . ' ' : '') .
-						($firstname ? $firstname . ' ' : '') .
-						$lastname . '<' . $email . '>';
+					($firstname ? $firstname . ' ' : '') .
+					$lastname . '<' . $email . '>';
 				//$email = $emailName;
 			} else {
 				$emailName = $email;
@@ -2635,8 +2717,8 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 		we_base_file::delete(WE_NEWSLETTER_CACHE_DIR . $emailcache . "_" . $egc);
 		//$laststep = ceil(we_base_request::_(we_base_request::INT, "ecount", 0) / $this->View->settings["send_step"]);
 		echo we_html_element::jsElement((isset($this->View->settings["send_wait"]) && is_numeric($this->View->settings["send_wait"]) && $this->View->settings["send_wait"] && $egc > 0 && isset($this->View->settings["send_step"]) && is_numeric($this->View->settings["send_step"]) && $egc < ceil($ecount / $this->View->settings["send_step"]) ?
-						'setTimeout(document.we_form.submit,' . $this->View->settings["send_wait"] . ');' :
-						'document.we_form.submit();'
+				'setTimeout(document.we_form.submit,' . $this->View->settings["send_wait"] . ');' :
+				'document.we_form.submit();'
 		));
 		flush();
 	}
@@ -2689,17 +2771,18 @@ function reload(){
 
 self.focus();');
 
-		$body = we_html_element::htmlBody(array("style" => 'margin:10px', "onload" => "startTimeout()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "send_cmd", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "nid", "value" => $nid)) .
-								we_html_element::htmlHidden(array("name" => "pnt", "value" => "send_cmd")) .
-								we_html_element::htmlHidden(array("name" => "retry", "value" => 1)) .
-								we_html_element::htmlHidden(array("name" => "test", "value" => 0)) .
-								we_html_element::htmlHidden(array("name" => "blockcache", "value" => $blockcache)) .
-								we_html_element::htmlHidden(array("name" => "emailcache", "value" => $emailcache)) .
-								we_html_element::htmlHidden(array("name" => "ecount", "value" => $ecount)) .
-								we_html_element::htmlHidden(array("name" => "gcount", "value" => $gcount)) .
-								we_html_element::htmlHidden(array("name" => "ecs", "value" => $ecs)) .
-								we_html_element::htmlHidden(array("name" => "reload", "value" => 0))
-						)
+		$body = we_html_element::htmlBody(array("style" => 'margin:10px', "onload" => "startTimeout()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "send_cmd", "action" => $this->frameset), we_html_element::htmlHiddens(array(
+						"nid" => $nid,
+						"pnt" => "send_cmd",
+						"retry" => 1,
+						"test" => 0,
+						"blockcache" => $blockcache,
+						"emailcache" => $emailcache,
+						"ecount" => $ecount,
+						"gcount" => $gcount,
+						"ecs" => $ecs,
+						"reload" => 0))
+				)
 		);
 		echo $this->getHTMLDocument($body, $js);
 		flush();
@@ -2747,8 +2830,8 @@ self.focus();');
 		unset($placeholderfieldsmatches);
 
 		$fromCustomer = (is_array($customerInfos) && isset($customerInfos[8]) && isset($customerInfos[9]) && $customerInfos[9] === 'customer' ?
-						array_merge(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($customerInfos[8]), $this->View->db), we_customer_customer::getEncryptedFields()) :
-						array());
+				array_merge(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($customerInfos[8]), $this->View->db), we_customer_customer::getEncryptedFields()) :
+				array());
 
 		foreach($placeholderfields as $phf){
 			$placeholderReplaceValue = $fromCustomer && isset($fromCustomer[$phf]) ? $fromCustomer[$phf] : "";

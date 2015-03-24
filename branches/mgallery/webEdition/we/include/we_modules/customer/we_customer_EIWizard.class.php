@@ -84,7 +84,7 @@ class we_customer_EIWizard{
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody')
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlIFrame('body', $this->frameset . "?pnt=eibody&art=" . $mode . "&step=1", 'position:absolute;top:0px;bottom:45px;left:0px;right:0px;overflow: auto', 'border:0px;width:100%;height:100%;overflow: auto;') .
-					we_html_element::htmlIFrame('footer', $this->frameset . "?pnt=eifooter&art=" . $mode . "&step=1", 'position:absolute;height:45px;bottom:0px;left:0px;right:0px;overflow: hidden','','',false) .
+					we_html_element::htmlIFrame('footer', $this->frameset . "?pnt=eifooter&art=" . $mode . "&step=1", 'position:absolute;height:45px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
 					we_html_element::htmlIFrame('load', $this->frameset . "?pnt=eiload&step=1", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		));
 
@@ -109,8 +109,8 @@ class we_customer_EIWizard{
 						$this->getHTMLStep0());
 			default:
 				return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-								we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]'))) .
-								we_html_element::htmlBody(array("bgcolor" => "white", "style" => 'margin:10px'), "aba")
+						we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]'))) .
+						we_html_element::htmlBody(array("bgcolor" => "white", "style" => 'margin:10px'), "aba")
 				);
 		}
 	}
@@ -135,8 +135,8 @@ class we_customer_EIWizard{
 				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET) .
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
-							//we_html_element::htmlHidden(array("name"=>"pnt","value"=>"eibody")).
-							//we_html_element::htmlHidden(array("name"=>"step","value"=>"1")).
+							//("name"=>"pnt","value"=>"eibody")).
+							//array("name"=>"step","value"=>"1")).
 							$this->getHiddens(array("art" => self::ART_EXPORT, "step" => 1)) .
 							we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step1]'))
 						)
@@ -313,16 +313,14 @@ class we_customer_EIWizard{
 				array("headline" => 'Fehler', "html" => '<b>Die Auswahl ist leer</b>', "space" => $_space)
 			);
 			$js = we_html_element::jsElement(
-					 $this->bodyFrame . '.document.we_form.step.value--;
+					$this->bodyFrame . '.document.we_form.step.value--;
 	' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_EXPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
 	' . $this->bodyFrame . '.document.we_form.submit();'
-
-
-				); //FIXME: disable next button
+			); //FIXME: disable next button
 		}
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 					we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
-						//we_html_element::htmlHidden(array("name"=>"step",""=>"4")).
+						//name"=>"step",""=>"4")).
 						$this->getHiddens(array("art" => self::ART_EXPORT, "step" => 3)) .
 						we_html_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step3]'))
 					)
@@ -413,63 +411,69 @@ class we_customer_EIWizard{
 
 				switch($options["step"]){
 					case 1:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_IMPORT)) .
-							($filename ? we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) : '') .
-							we_html_element::htmlHidden(array("name" => "source", "value" => $source)) .
-							we_html_element::htmlHidden(array("name" => "import_from", "value" => $import_from)) .
-							we_html_element::htmlHidden(array("name" => "xml_from", "value" => $xml_from)) .
-							we_html_element::htmlHidden(array("name" => "xml_to", "value" => $xml_to)) .
-							we_html_element::htmlHidden(array("name" => "dataset", "value" => $dataset)) .
-							we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
-							we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose)) .
-							we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
-							we_html_element::htmlHidden(array("name" => "the_charset", "value" => $the_charset)) .
-							we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames));
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_IMPORT,
+								($filename ? "filename" : '') => $filename,
+								"source" => $source,
+								"import_from" => $import_from,
+								"xml_from" => $xml_from,
+								"xml_to" => $xml_to,
+								"dataset" => $dataset,
+								"csv_delimiter" => $csv_delimiter,
+								"csv_enclose" => $csv_enclose,
+								"csv_lineend" => $csv_lineend,
+								"the_charset" => $the_charset,
+								"csv_fieldnames" => $csv_fieldnames));
 
 					case 2:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_IMPORT)) .
-							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-							($filename ? we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) : '') .
-							we_html_element::htmlHidden(array("name" => "xml_from", "value" => $xml_from)) .
-							we_html_element::htmlHidden(array("name" => "xml_to", "value" => $xml_to)) .
-							we_html_element::htmlHidden(array("name" => "dataset", "value" => $dataset)) .
-							we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
-							we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose)) .
-							we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
-							we_html_element::htmlHidden(array("name" => "the_charset", "value" => $the_charset)) .
-							we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames));
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_IMPORT,
+								"type" => $type,
+								($filename ? "filename" : '') => $filename,
+								"xml_from" => $xml_from,
+								"xml_to" => $xml_to,
+								"dataset" => $dataset,
+								"csv_delimiter" => $csv_delimiter,
+								"csv_enclose" => $csv_enclose,
+								"csv_lineend" => $csv_lineend,
+								"the_charset" => $the_charset,
+								"csv_fieldnames" => $csv_fieldnames
+						));
 
 					case 3:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_IMPORT)) .
-							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-							we_html_element::htmlHidden(array("name" => "source", "value" => $source)) .
-							($filename ? we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) : '') .
-							we_html_element::htmlHidden(array("name" => "import_from", "value" => $import_from)) .
-							we_html_element::htmlHidden(array("name" => "dataset", "value" => $dataset));
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_IMPORT,
+								"type" => $type,
+								"source" => $source,
+								($filename ? "filename" : '') => $filename,
+								"import_from" => $import_from,
+								"dataset" => $dataset));
 
 					case 4:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_IMPORT)) .
-							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-							($filename ? we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) : '') .
-							we_html_element::htmlHidden(array("name" => "source", "value" => $source)) .
-							we_html_element::htmlHidden(array("name" => "import_from", "value" => $import_from)) .
-							we_html_element::htmlHidden(array("name" => "dataset", "value" => $dataset)) .
-							we_html_element::htmlHidden(array("name" => "xml_from", "value" => $xml_from)) .
-							we_html_element::htmlHidden(array("name" => "xml_to", "value" => $xml_to)) .
-							we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
-							'<input type="hidden" name="csv_enclose" value=' . ($csv_enclose === '"' ? "'\"'" : "\"$csv_enclose\"") . ' />' .
-							we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
-							we_html_element::htmlHidden(array("name" => "the_charset", "value" => $the_charset)) .
-							we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames)) .
-							we_html_element::htmlHidden(array("name" => "cmd", "value" => self::ART_IMPORT));
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_IMPORT,
+								"type" => $type,
+								"source" => $source,
+								"import_from" => $import_from,
+								"dataset" => $dataset,
+								"xml_from" => $xml_from,
+								"xml_to" => $xml_to,
+								"csv_delimiter" => $csv_delimiter,
+								"csv_lineend", "value" => $csv_lineend,
+								"the_charset" => $the_charset,
+								"csv_fieldnames" => $csv_fieldnames,
+								"cmd", "value" => self::ART_IMPORT,
+								($filename ? "filename" : '') => $filename,
+								"csv_enclose" => ($csv_enclose === '"' ? '\"' : $csv_enclose)
+						));
 				}
 				return '';
 
@@ -497,74 +501,78 @@ class we_customer_EIWizard{
 					foreach($fields_names as $field){
 						$varname = "filter_" . $field . "_" . $i;
 						if(($f = we_base_request::_(we_base_request::STRING, $varname)) !== false){
-							$filter.=we_html_element::htmlHidden(array("name" => $varname, "value" => $f));
+							$filter.=we_html_element::htmlHidden($varname, $f);
 						}
 					}
 				}
 
 				switch($options["step"]){
 					case 1:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_EXPORT)) .
-							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-							we_html_element::htmlHidden(array("name" => "selection", "value" => $selection)) .
-							we_html_element::htmlHidden(array("name" => "export_to", "value" => $export_to)) .
-							we_html_element::htmlHidden(array("name" => "path", "value" => $path)) .
-							we_html_element::htmlHidden(array("name" => "cdata", "value" => $cdata)) .
-							we_html_element::htmlHidden(array("name" => "customers", "value" => $customers)) .
-							($filename ? we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) : '') .
-							we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
-							we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose)) .
-							we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
-							we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames)) .
-							we_html_element::htmlHidden(array("name" => "filter_count", "value" => $filter_count)) .
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_EXPORT,
+								"type" => $type,
+								"selection" => $selection,
+								"export_to" => $export_to,
+								"path" => $path,
+								"cdata" => $cdata,
+								"customers" => $customers,
+								($filename ? "filename" : '') => $filename,
+								"csv_delimiter" => $csv_delimiter,
+								"csv_enclose" => $csv_enclose,
+								"csv_lineend" => $csv_lineend,
+								"csv_fieldnames" => $csv_fieldnames,
+								"filter_count" => $filter_count)) .
 							$filter;
 
 					case 2:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_EXPORT)) .
-							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-							we_html_element::htmlHidden(array("name" => "selection", "value" => $selection)) .
-							we_html_element::htmlHidden(array("name" => "export_to", "value" => $export_to)) .
-							we_html_element::htmlHidden(array("name" => "path", "value" => $path)) .
-							we_html_element::htmlHidden(array("name" => "cdata", "value" => $cdata)) .
-							we_html_element::htmlHidden(array("name" => "customers", "value" => $customers)) .
-							($filename ? we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) : '') .
-							we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
-							we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose)) .
-							we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
-							we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames)) .
-							we_html_element::htmlHidden(array("name" => "filter_count", "value" => $filter_count));
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_EXPORT,
+								"type" => $type,
+								"selection" => $selection,
+								"export_to" => $export_to,
+								"path" => $path,
+								"cdata" => $cdata,
+								"customers" => $customers,
+								($filename ? "filename" : '') => $filename,
+								"csv_delimiter" => $csv_delimiter,
+								"csv_enclose" => $csv_enclose,
+								"csv_lineend" => $csv_lineend,
+								"csv_fieldnames" => $csv_fieldnames,
+								"filter_count" => $filter_count));
 
 					case 3:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_EXPORT)) .
-							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-							we_html_element::htmlHidden(array("name" => "selection", "value" => $selection)) .
-							we_html_element::htmlHidden(array("name" => "customers", "value" => $customers)) .
-							we_html_element::htmlHidden(array("name" => "filter_count", "value" => $filter_count)) .
-							we_html_element::htmlHidden(array("name" => "cmd", "value" => self::ART_EXPORT)) .
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_EXPORT,
+								"type" => $type,
+								"selection" => $selection,
+								"customers" => $customers,
+								"filter_count" => $filter_count,
+								"cmd" => self::ART_EXPORT)) .
 							$filter;
 
 					case 4:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_EXPORT)) .
-							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-							we_html_element::htmlHidden(array("name" => "selection", "value" => $selection)) .
-							we_html_element::htmlHidden(array("name" => "export_to", "value" => $export_to)) .
-							we_html_element::htmlHidden(array("name" => "path", "value" => $path)) .
-							we_html_element::htmlHidden(array("name" => "cdata", "value" => $cdata)) .
-							we_html_element::htmlHidden(array("name" => "customers", "value" => $customers)) .
-							($filename ? we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) : '') .
-							we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
-							we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose)) .
-							we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
-							we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames)) .
-							we_html_element::htmlHidden(array("name" => "filter_count", "value" => $filter_count)) .
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_EXPORT,
+								"type" => $type,
+								"selection" => $selection,
+								"export_to" => $export_to,
+								"path" => $path,
+								"cdata" => $cdata,
+								"customers" => $customers,
+								($filename ? "filename" : '') => $filename,
+								"csv_delimiter" => $csv_delimiter,
+								"csv_enclose" => $csv_enclose,
+								"csv_lineend" => $csv_lineend,
+								"csv_fieldnames" => $csv_fieldnames,
+								"filter_count" => $filter_count)) .
 							$filter;
 				}
 				return '';
@@ -1164,9 +1172,9 @@ function doNext(){
 }');
 
 				return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-								we_html_element::htmlHead($head) .
-								we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px;', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
-								)
+						we_html_element::htmlHead($head) .
+						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px;', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
+						)
 				);
 
 			default:
@@ -1184,9 +1192,9 @@ function doNext(){
 }');
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head) .
-						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
-						)
+				we_html_element::htmlHead($head) .
+				we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
+				)
 		);
 	}
 
@@ -1236,29 +1244,32 @@ function doNext(){
 			t_e('noting to export', $customers, $_REQUEST);
 		}
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "eiload")) .
-			we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_EXPORT)) .
-			we_html_element::htmlHidden(array("name" => "customers", "value" => implode(',', $customers))) .
-			we_html_element::htmlHidden(array("name" => "file_format", "value" => $file_format)) .
-			we_html_element::htmlHidden(array("name" => "filename", "value" => $file_name)) .
-			we_html_element::htmlHidden(array("name" => "export_to", "value" => $export_to)) .
-			we_html_element::htmlHidden(array("name" => "path", "value" => $path)) .
-			we_html_element::htmlHidden(array("name" => "all", "value" => count($customers))) .
-			we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => 4));
+		$hiddens = we_html_element::htmlHiddens(array(
+				"pnt" => "eiload",
+				"art" => self::ART_EXPORT,
+				"customers" => implode(',', $customers),
+				"file_format" => $file_format,
+				"filename" => $file_name,
+				"export_to" => $export_to,
+				"path" => $path,
+				"all" => count($customers),
+				"cmd" => "do_export",
+				"step" => 4));
 
 		if($file_format == we_import_functions::TYPE_GENERIC_XML){
-			$hiddens.=we_html_element::htmlHidden(array("name" => "cdata", "value" => $cdata));
+			$hiddens.=we_html_element::htmlHidden("cdata", $cdata);
 		}
 
 		if($file_format == self::TYPE_CSV){
-			$hiddens.=we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
+			$hiddens.=
 				($csv_enclose === '"' ?
 					"<input type='hidden' name='csv_enclose' value='" . $csv_enclose . "' />" :
-					we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose))
+					we_html_element::htmlHidden("csv_enclose", $csv_enclose)
 				) .
-				we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
-				we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames ? 1 : 0));
+				we_html_element::htmlHiddens(array(
+					"csv_delimiter" => $csv_delimiter,
+					"csv_lineend" => $csv_lineend,
+					"csv_fieldnames" => $csv_fieldnames ? 1 : 0));
 		}
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
@@ -1278,13 +1289,14 @@ function doNext(){
 		$all = we_base_request::_(we_base_request::INT, "all", 0);
 		$cdata = we_base_request::_(we_base_request::INT, "cdata", 0);
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "file_format", "value" => $file_format)) .
-			we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) .
-			we_html_element::htmlHidden(array("name" => "export_to", "value" => $export_to)) .
-			we_html_element::htmlHidden(array("name" => "path", "value" => $path));
+		$hiddens = we_html_element::htmlHiddens(array(
+				"file_format" => $file_format,
+				"filename" => $filename,
+				"export_to" => $export_to,
+				"path" => $path));
 
 		if($file_format == we_import_functions::TYPE_GENERIC_XML){
-			$hiddens.=we_html_element::htmlHidden(array("name" => "cdata", "value" => $cdata));
+			$hiddens.=we_html_element::htmlHidden("cdata", $cdata);
 		}
 		if($file_format == self::TYPE_CSV){
 			$csv_delimiter = we_base_request::_(we_base_request::RAW, 'csv_delimiter', '');
@@ -1292,12 +1304,14 @@ function doNext(){
 			$csv_lineend = we_base_request::_(we_base_request::RAW, 'csv_lineend', '');
 			$csv_fieldnames = we_base_request::_(we_base_request::BOOL, 'csv_fieldnames', true);
 
-			$hiddens.=we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
+			$hiddens.=
 				($csv_enclose === '"' ?
 					"<input type='hidden' name='csv_enclose' value='" . $csv_enclose . "' />" :
-					we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose))
+					we_html_element::htmlHidden("csv_enclose", $csv_enclose)
 				) .
-				we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend));
+				we_html_element::htmlHiddens(array(
+					"csv_delimiter" => $csv_delimiter,
+					"csv_lineend" => $csv_lineend));
 		}
 		if($customers){
 			$options = array(
@@ -1320,19 +1334,21 @@ function doNext(){
 			$success = we_customer_EI::exportCustomers($options);
 		}
 
-		$hiddens.=we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_EXPORT)) .
+		$hiddens.=we_html_element::htmlHidden("art", self::ART_EXPORT) .
 			($customers ?
 				(
-				we_html_element::htmlHidden(array("name" => "pnt", "value" => "eiload")) .
-				we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export")) .
-				we_html_element::htmlHidden(array("name" => "firstexec", "value" => 0)) .
-				we_html_element::htmlHidden(array("name" => "all", "value" => $all)) .
-				we_html_element::htmlHidden(array("name" => "customers", "value" => implode(',', $customers)))
+				we_html_element::htmlHiddens(array(
+					"pnt" => "eiload",
+					"cmd" => "do_export",
+					"firstexec" => 0,
+					"all" => $all,
+					"customers" => implode(',', $customers)))
 				) :
 				(
-				we_html_element::htmlHidden(array("name" => "pnt", "value" => "eiload")) .
-				we_html_element::htmlHidden(array("name" => "cmd", "value" => "end_export"))
-				//we_html_element::htmlHidden(array("name" => "success", "value" => $success))
+				we_html_element::htmlHiddens(array(
+					"pnt" => "eiload",
+					"cmd" => "end_export"))
+				//rray("name" => "success", "value" => $success))
 				)
 			);
 
@@ -1366,12 +1382,13 @@ function doNext(){
 		$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET;
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead($head) .
-				we_html_element::htmlBody(array("onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-						we_html_element::htmlHidden(array("name" => "step", "value" => 4)) .
-						we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_EXPORT)) .
-						we_html_element::htmlHidden(array("name" => "export_to", "value" => $export_to)) .
-						we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) .
-						we_html_element::htmlHidden(array("name" => "path", "value" => $path))
+				we_html_element::htmlBody(array("onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), we_html_element::htmlHiddens(array(
+							"pnt" => "eibody",
+							"step" => 4,
+							"art" => self::ART_EXPORT,
+							"export_to" => $export_to,
+							"filename" => $filename,
+							"path" => $path))
 					)
 				)
 		);
@@ -1402,9 +1419,9 @@ function doNextAction(){
 }');
 
 			return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-							we_html_element::htmlHead($head) .
-							we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin: 5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
-							)
+					we_html_element::htmlHead($head) .
+					we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin: 5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
+					)
 			);
 		}
 		return '';
@@ -1420,9 +1437,9 @@ function doNext(){
 }');
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head) .
-						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin: 5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
-						)
+				we_html_element::htmlHead($head) .
+				we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin: 5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
+				)
 		);
 	}
 
@@ -1462,20 +1479,21 @@ function doNext(){
 
 		$filesnum = we_customer_EI::prepareImport($options);
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "eiload")) .
-			we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_IMPORT)) .
-			we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_import")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => 5)) .
-			we_html_element::htmlHidden(array("name" => "tmpdir", "value" => $filesnum["tmp_dir"])) .
-			we_html_element::htmlHidden(array("name" => "fstart", "value" => 0)) .
-			we_html_element::htmlHidden(array("name" => "fcount", "value" => $filesnum["file_count"])) .
-			we_html_element::htmlHidden(array("name" => "same", "value" => $same));
+		$hiddens = we_html_element::htmlHiddens(array(
+				"pnt" => "eiload",
+				"art" => self::ART_IMPORT,
+				"cmd" => "do_import",
+				"step" => 5,
+				"tmpdir" => $filesnum["tmp_dir"],
+				"fstart" => 0,
+				"fcount" => $filesnum["file_count"],
+				"same" => $same));
 
 		foreach($field_mappings as $key => $field){
-			$hiddens.=we_html_element::htmlHidden(array("name" => "field_mappings[$key]", "value" => "$field"));
+			$hiddens.=we_html_element::htmlHidden("field_mappings[$key]", "$field");
 		}
 		foreach($att_mappings as $key => $field){
-			$hiddens.=we_html_element::htmlHidden(array("name" => "att_mappings[$key]", "value" => "$field"));
+			$hiddens.=we_html_element::htmlHidden("att_mappings[$key]", "$field");
 		}
 
 		$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) .
@@ -1487,9 +1505,9 @@ function doNext(){
 					');
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head) .
-						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
-						)
+				we_html_element::htmlHead($head) .
+				we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
+				)
 		);
 	}
 
@@ -1514,20 +1532,21 @@ function doNext(){
 		}
 		$fstart++;
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "eiload")) .
-			we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_IMPORT)) .
-			we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_import")) .
-			we_html_element::htmlHidden(array("name" => "tmpdir", "value" => $tmpdir)) .
-			we_html_element::htmlHidden(array("name" => "fstart", "value" => $fstart)) .
-			we_html_element::htmlHidden(array("name" => "fcount", "value" => $fcount)) .
-			we_html_element::htmlHidden(array("name" => "impno", "value" => $impno)) .
-			we_html_element::htmlHidden(array("name" => "same", "value" => $same));
+		$hiddens = we_html_element::htmlHiddens(array(
+				"pnt" => "eiload",
+				"art" => self::ART_IMPORT,
+				"cmd" => "do_import",
+				"tmpdir" => $tmpdir,
+				"fstart" => $fstart,
+				"fcount" => $fcount,
+				"impno" => $impno,
+				"same" => $same));
 
 		foreach($field_mappings as $key => $field){
-			$hiddens.=we_html_element::htmlHidden(array("name" => "field_mappings[$key]", "value" => "$field"));
+			$hiddens.=we_html_element::htmlHidden("field_mappings[$key]", "$field");
 		}
 		foreach($att_mappings as $key => $field){
-			$hiddens.=we_html_element::htmlHidden(array("name" => "att_mappings[$key]", "value" => "$field"));
+			$hiddens.=we_html_element::htmlHidden("att_mappings[$key]", "$field");
 		}
 
 		$percent = ($fcount == 0 || $fcount == '0' ? 0 : min(100, max(0, (int) (($fstart / $fcount) * 100))) );
@@ -1541,10 +1560,10 @@ function doNext(){
 }');
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head) .
-						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens
-								)
-						)
+				we_html_element::htmlHead($head) .
+				we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens
+					)
+				)
 		);
 	}
 
@@ -1561,14 +1580,15 @@ function doNext(){
 }');
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head) .
-						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "tmpdir", "value" => $tmpdir)) .
-										we_html_element::htmlHidden(array("name" => "impno", "value" => $impno)) .
-										we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-										we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_IMPORT)) .
-										we_html_element::htmlHidden(array("name" => "step", "value" => 5))
-								)
-						)
+				we_html_element::htmlHead($head) .
+				we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), we_html_element::htmlHiddens(array(
+							"tmpdir" => $tmpdir,
+							"impno" => $impno,
+							"pnt" => "eibody",
+							"art" => self::ART_IMPORT,
+							"step" => 5))
+					)
+				)
 		);
 	}
 
@@ -1626,7 +1646,7 @@ function doNext(){
 
 	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
+	private function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
 
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement('
@@ -1667,7 +1687,7 @@ function formDirChooser() {
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button("select", "javascript:formDirChooser('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
+		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
 	}
 
 	function getHTMLCustomer(){
@@ -1675,7 +1695,7 @@ function formDirChooser() {
 		switch(we_base_request::_(we_base_request::STRING, "wcmd")){
 			case "add_customer":
 				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", array());
-				$customers= array_unique(array_merge($customers,we_base_request::_(we_base_request::INTLISTA, "cus", array())));
+				$customers = array_unique(array_merge($customers, we_base_request::_(we_base_request::INTLISTA, "cus", array())));
 				break;
 			case "del_customer":
 				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", array());
@@ -1714,8 +1734,8 @@ function selector_cmd(){
 }
 ' . $this->topFrame . '.customers="' . implode(',', $customers) . '";');
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "wcmd", "value" => "")) .
-			we_html_element::htmlHidden(array("name" => "cus", "value" => we_base_request::_(we_base_request::INTLIST, "cus", "")));
+		$hiddens = we_html_element::htmlHiddens(array("wcmd" => "",
+				"cus" => we_base_request::_(we_base_request::INTLIST, "cus", "")));
 
 
 		$delallbut = we_html_button::create_button("delete_all", "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", ($customers ? false : true));
@@ -1724,19 +1744,6 @@ function selector_cmd(){
 
 		$custs->isEditable = permissionhandler::hasPerm("EDIT_CUSTOMER");
 		return $js . $hiddens . $custs->get();
-	}
-
-	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = 0, $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
-		if(!$Pathvalue){
-			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), '', $this->db);
-		}
-
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
-		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:selector_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
-
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", 'readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
 	}
 
 	private function getHTMLChooser($name, $value, $values, $title){
@@ -1821,7 +1828,7 @@ document.we_form.filter_count.value="' . $count . '";');
 				$c++;
 			} else {
 				$table->addRow();
-				$table->setCol($c, 0, array("colspan" => $colspan), we_html_element::htmlHidden(array("name" => "filter_logic_0", "value" => "")));
+				$table->setCol($c, 0, array("colspan" => $colspan), we_html_element::htmlHidden("filter_logic_0", ""));
 				$c++;
 			}
 
@@ -1843,8 +1850,8 @@ document.we_form.filter_count.value="' . $count . '";');
 		$table->setCol($c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array($plus, $trash)));
 
 		return $js .
-			//we_html_element::htmlHidden(array("name"=>"filter_count","value"=>$count)).
-			we_html_element::htmlHidden(array("name" => "fcmd", "value" => "")) .
+			//(array("name"=>"filter_count","value"=>$count)).
+			we_html_element::htmlHidden("fcmd", "") .
 			$table->getHtml();
 	}
 

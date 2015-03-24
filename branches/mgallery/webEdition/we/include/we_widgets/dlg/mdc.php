@@ -79,9 +79,8 @@ function getHTMLDirSelector($_selType){
 			), we_html_tools::htmlFormElementTable(
 				"<div id=\"yuiAcLayerDoc\" class=\"yuiAcLayer\">" . $yuiSuggest->getErrorMarkPlaceHolder(
 					"yuiAcErrorMarkDoc") . we_html_tools::htmlTextInput(
-					"FolderPath", 58, $_path, "", 'onchange="" id="yuiAcInputDoc"', "text", (420 - 120), 0) . "<div id=\"yuiAcContainerDoc\"></div></div>", g_l('cockpit', '[dir]'), "left", "defaultfont", we_html_tools::getPixel(300, 20), we_html_element::htmlHidden(array(
-					"name" => "FolderID", "value" => $folderID, "id" => "yuiAcIdDoc"
-				)), we_html_tools::getPixel(20, 4), $_buttons));
+					"FolderPath", 58, $_path, "", 'onchange="" id="yuiAcInputDoc"', "text", (420 - 120), 0) . "<div id=\"yuiAcContainerDoc\"></div></div>", g_l('cockpit', '[dir]'), "left", "defaultfont", we_html_tools::getPixel(300, 20), we_html_element::htmlHidden("FolderID", $folderID, "yuiAcIdDoc"
+				), we_html_tools::getPixel(20, 4), $_buttons));
 }
 
 $docTypes = array(0 => g_l('cockpit', '[no_entry]'));
@@ -429,14 +428,10 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		array(
 		"class" => "weDialogBody", "onload" => "init();startInit();"
 		), we_html_element::htmlForm(
-			"", we_html_element::htmlHidden(array(
-				"name" => "table", "value" => ""
-			)) . we_html_element::htmlHidden(array(
-				"name" => "FolderID", "value" => 0
-			)) . we_html_element::htmlHidden(
-				array(
-					"name" => "CategoriesControl",
-					"value" => we_base_request::_(we_base_request::INT, 'CategoriesCount', 0)
+			"", we_html_element::htmlHiddens(array(
+				"table" => "",
+				"FolderID" => 0,
+				"CategoriesControl" => we_base_request::_(we_base_request::INT, 'CategoriesCount', 0)
 			)) . $sTblWidget . we_html_element::jsElement($jsTree))));
 if($showAC){
 	echo $yuiSuggest->getYuiJs();

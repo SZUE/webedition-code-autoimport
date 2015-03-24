@@ -35,7 +35,7 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlTitle('start wePlugin') .
 		we_html_element::jsScript(JS_DIR . 'weplugin.js')
 	) .
-	we_html_element::htmlBody(array('style' => 'background-color:white', 'onload' => "to=window.setInterval(pingPlugin,5000);"), we_html_element::htmlHidden(array('name' => 'hm', 'value' => 0)) .
+	we_html_element::htmlBody(array('style' => 'background-color:white', 'onload' => "to=window.setInterval(pingPlugin,5000);"), we_html_element::htmlHidden('hm', 0) .
 		we_html_element::htmlApplet(array(
 			'name' => 'WePlugin',
 			'code' => 'EPlugin',
@@ -80,11 +80,12 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			'lan_add_button' => g_l('eplugin', '[lan_add_button]'),
 			)
 		) .
-		we_html_element::htmlForm(array('name' => 'we_form', 'target' => 'load', 'action' => WEBEDITION_DIR . 'editors/content/eplugin/weplugin_cmd.php', 'method' => 'post', 'accept-charset' => $charset), we_html_element::htmlHidden(array('name' => 'we_cmd[0]', 'value' => '')) .
-			we_html_element::htmlHidden(array('name' => 'we_cmd[1]', 'value' => '')) .
-			we_html_element::htmlHidden(array('name' => 'we_cmd[2]', 'value' => '')) .
-			we_html_element::htmlHidden(array('name' => 'we_cmd[3]', 'value' => '')) .
-			we_html_element::htmlHidden(array('name' => 'we_cmd[4]', 'value' => ''))
+		we_html_element::htmlForm(array('name' => 'we_form', 'target' => 'load', 'action' => WEBEDITION_DIR . 'editors/content/eplugin/weplugin_cmd.php', 'method' => 'post', 'accept-charset' => $charset), we_html_element::htmlHiddens(array(
+				'we_cmd[0]' => '',
+				'we_cmd[1]' => '',
+				'we_cmd[2]' => '',
+				'we_cmd[3]' => '',
+				'we_cmd[4]' => ''))
 		)
 	)
 );
