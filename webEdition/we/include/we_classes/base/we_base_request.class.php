@@ -196,10 +196,10 @@ class we_base_request{
 				return;
 			case self::STRINGC:
 			case self::STRING://strips tags
-				$var = filter_var($var, FILTER_SANITIZE_STRING);
+				$var = filter_var($var, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 				return;
 			case self::STRING_LIST:
-				$var = array_filter(array_map('trim', explode(',', filter_var($var, FILTER_SANITIZE_STRING))));
+				$var = array_filter(array_map('trim', explode(',', filter_var($var, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES))));
 				return;
 			case self::HTML:
 				$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -267,85 +267,85 @@ class we_base_request{
 			$oldVar = $var;
 			self::_weRequest($var, '', array($type, $default));
 			/*
-			  switch($type){
-			  case self::URL:
-			  $oldVar = urldecode($var);
-			  $cmp = '' . $var;
-			  break;
-			  case self::CMD://this must change&is ok!
-			  case self::RAW_CHECKED:
-			  case self::STRINGC:
-			  case self::STRING_LIST:
-			  case self::INTLISTA:
-			  //we didn't change anything.
-			  return $var;
-			  case self::INTLIST:
-			  $oldVar = trim($var, ',');
-			  $cmp = '' . $var;
-			  break;
-			  case self::INT:
-			  if($oldVar === ''){//treat empty as 0
-			  return $var;
-			  }
-			  $cmp = '' . $var;
-			  break;
-			  case self::FILELIST:
-			  $cmp = '' . $var;
-			  $oldVar = trim($oldVar, ',');
-			  break;
-			  case self::BOOL://bool is transfered as 0/1
-			  if($oldVar === ''){//treat empty as 0
-			  $oldVar = 0;
-			  }
-			  if(is_string($var)){
-			  switch($var){
-			  case 'off':
-			  case 'false':
-			  $cmp = 0;
-			  break 2;
-			  case 'on':
-			  case 'true':
-			  $cmp = 1;
-			  break 2;
-			  }
-			  } elseif(is_bool($var)){
-			  $cmp = $var;
-			  break;
-			  }
-			  $cmp = '' . intval($var);
-			  break;
-			  case self::RAW:
-			  case self::STRING:
-			  case self::JS:
-			  if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP && $var){//show this only during development
-			  if($var == ('' . intval($oldVar))){
-			  t_e('notice', 'variable could be int/bool?', $args, $var);
-			  } elseif(str_replace(',', '.', $var) == ('' . floatval($oldVar))){
-			  t_e('notice', 'variable could be float', $args, $var);
-			  } elseif(strpos($var, '@')){
-			  t_e('notice', 'variable could be mail', $args, $var);
-			  } elseif(strpos($var, '://')){
-			  t_e('notice', 'variable could be url', $args, $var);
-			  } elseif(strpos($var, '/') === 0){
-			  t_e('notice', 'variable could be file', $args, $var);
-			  } elseif($type != self::JS && count(explode(',', $var)) > 2){
-			  t_e('notice', 'variable could be list', $args, $var);
-			  } elseif(strpos($var, 'a:') === 0 || strpos($var, 's:') === 0){
-			  t_e('notice', 'variable could be serial', $args, $var);
-			  } elseif(strpos($var, 'tbl') === 0){
-			  t_e('notice', 'variable could be table', $args, $var);
-			  }
-			  }
-			  //no break;
-			  default:
-			  $cmp = '' . $var;
-			  }
-			  if($oldVar != $cmp){
+			switch($type){
+				case self::URL:
+					$oldVar = urldecode($var);
+					$cmp = '' . $var;
+					break;
+				case self::CMD://this must change&is ok!
+				case self::RAW_CHECKED:
+				case self::STRINGC:
+				case self::STRING_LIST:
+				case self::INTLISTA:
+					//we didn't change anything.
+					return $var;
+				case self::INTLIST:
+					$oldVar = trim($var, ',');
+					$cmp = '' . $var;
+					break;
+				case self::INT:
+					if($oldVar === ''){//treat empty as 0
+						return $var;
+					}
+					$cmp = '' . $var;
+					break;
+				case self::FILELIST:
+					$cmp = '' . $var;
+					$oldVar = trim($oldVar, ',');
+					break;
+				case self::BOOL://bool is transfered as 0/1
+					if($oldVar === ''){//treat empty as 0
+						$oldVar = 0;
+					}
+					if(is_string($var)){
+						switch($var){
+							case 'off':
+							case 'false':
+								$cmp = 0;
+								break 2;
+							case 'on':
+							case 'true':
+								$cmp = 1;
+								break 2;
+						}
+					} elseif(is_bool($var)){
+						$cmp = $var;
+						break;
+					}
+					$cmp = '' . intval($var);
+					break;
+				case self::RAW:
+				case self::STRING:
+				case self::JS:
+					if(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP && $var){//show this only during development
+						if($var == ('' . intval($oldVar))){
+							t_e('notice', 'variable could be int/bool?', $args, $var);
+						} elseif(str_replace(',', '.', $var) == ('' . floatval($oldVar))){
+							t_e('notice', 'variable could be float', $args, $var);
+						} elseif(strpos($var, '@')){
+							t_e('notice', 'variable could be mail', $args, $var);
+						} elseif(strpos($var, '://')){
+							t_e('notice', 'variable could be url', $args, $var);
+						} elseif(strpos($var, '/') === 0){
+							t_e('notice', 'variable could be file', $args, $var);
+						} elseif($type != self::JS && count(explode(',', $var)) > 2){
+							t_e('notice', 'variable could be list', $args, $var);
+						} elseif(strpos($var, 'a:') === 0 || strpos($var, 's:') === 0){
+							t_e('notice', 'variable could be serial', $args, $var);
+						} elseif(strpos($var, 'tbl') === 0){
+							t_e('notice', 'variable could be table', $args, $var);
+						}
+					}
+				//no break;
+				default:
+					$cmp = '' . $var;
+			}
+			if($oldVar != $cmp){
 
-			  t_e('changed values', $type, $args, $oldVar, $var);
-			  //don't break we
+				t_e('changed values', $type, $args, $oldVar, $var);
+				//don't break we
 			  } */
-		}
+			}
 		return $var;
 	}
 
