@@ -448,7 +448,7 @@ function we_cmd() {
 		if($resultD){
 			$iconBarTable->addCol();
 			$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_shop_sum", "javascript:top.content.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=document '", true));
-		} elseif(!empty($resultO)){
+		} elseif($resultO){
 			$iconBarTable->addCol();
 			$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_shop_sum", "javascript:top.content.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=$classid '", true));
 		}
@@ -486,20 +486,19 @@ function we_cmd() {
 			$bodyURL = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=shop';
 		} elseif($mid){
 			$year = substr($mid, (strlen($mid) - 4));
-			$month = str_replace($year, '', $_REQUEST["mid"]);
+			$month = str_replace($year, '', $mid);
 			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_revenueTop.php?ViewYear=' . $year . '&ViewMonth=' . $month;
 		} elseif($yearView){
-			$year = $yearView;
-			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_revenueTop.php?ViewYear=' . $year;
+			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_revenueTop.php?ViewYear=' . $yearView;
 		} else {
 			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?bid=' . $bid;
 		}
 
-		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
-				we_html_element::htmlIFrame('edbody', $bodyURL . '&pnt=edbody', 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
+		return $this->getHTMLDocument(
+				we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;') .
+					we_html_element::htmlIFrame('edbody', $bodyURL . '&pnt=edbody', 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
+				)
 		);
-
-		return $this->getHTMLDocument($body);
 	}
 
 	function getHTMLEditorTop(){// TODO: merge getHTMLRight and getHTMLRightTop
@@ -628,7 +627,7 @@ top.content.hloaded = 1;
 				case ($resultD):
 					$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_1]'), we_tab::ACTIVE, "setTab(0);"));
 				case ($resultO):
-					$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_2]'), ($resultD ? we_tab::NORMAL : we_tab::ACTIVE), "setTab(1);"));	
+					$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_2]'), ($resultD ? we_tab::NORMAL : we_tab::ACTIVE), "setTab(1);"));
 				case (isset($yearTrans) && $yearTrans != 0):
 					$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_3]'), we_tab::NORMAL, "setTab(2);"));
 					break;

@@ -31,11 +31,11 @@ require_once('base/rpcJsonView.class.php');
 
 class rpcCmdShell{
 
-	var $Protocol;
-	var $Cmd;
-	var $View;
-	var $Response;
-	var $Status = rpcCmd::STATUS_OK;
+	protected $Protocol;
+	protected $Cmd;
+	protected $View;
+	protected $Response;
+	protected $Status = rpcCmd::STATUS_OK;
 
 	function __construct(&$cmd, $protocol){
 
