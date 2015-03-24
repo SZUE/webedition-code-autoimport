@@ -26,7 +26,7 @@ class we_sidebar_frames{
 
 	var $_frameset = '';
 
-	function __construct(){
+	public function __construct(){
 		$this->_frameset = WEBEDITION_DIR . 'sideBarFrame.php';
 	}
 
