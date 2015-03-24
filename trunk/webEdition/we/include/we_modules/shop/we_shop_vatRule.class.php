@@ -87,7 +87,7 @@ class we_shop_vatRule{
 		return ($this->defaultValue === 'true' ? true : false);
 	}
 
-	public static function initByRequest(){//FIXME: this is unchecked
+	public static function initByRequest(){
 		return new self(
 			we_base_request::_(we_base_request::STRING, 'defaultValue'), we_base_request::_(we_base_request::STRING, 'stateField'), self::makeArrayFromReq(we_base_request::_(we_base_request::STRING, 'liableToVat')), self::makeArrayFromReq(we_base_request::_(we_base_request::STRING, 'notLiableToVat')), self::makeArrayFromConditionField(), we_base_request::_(we_base_request::STRING, 'stateFieldIsISO')
 		);
