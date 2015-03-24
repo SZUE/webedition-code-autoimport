@@ -117,17 +117,16 @@ class we_category extends weModelBase{
 				'');
 	}
 
-	static function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false, $noDirs = false, $complete = false){
+	static function we_getCatsFromIDs($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false,$complete = false){
 		return ($catIDs ?
-				self::we_getCategories($catIDs, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir, $asArray, $noDirs, $complete) :
+				self::we_getCategories($catIDs, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir, $asArray, $complete) :
 				($asArray ?
 					array() :
 					'')
 			);
 	}
 
-	//FIXME: throw out unused params added when implementing shopCategories
-	static function we_getCategories($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false, $assoc = false, $noDirs = false, $complete = false, $includeDir = false, $order = ''){
+	static function we_getCategories($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false, $assoc = false, $complete = false, $includeDir = false, $order = ''){
 		$db = ($db ? : new DB_WE());
 		$cats = array();
 		$whereIDs = trim($catIDs, ',') ? ' ID IN(' . trim($catIDs, ',') . ')' : 1;
@@ -135,7 +134,6 @@ class we_category extends weModelBase{
 		$whereIncludeDir = $onlyindir && $includeDir !== false ? ' OR (Path = "' . $db->escape($onlyindir) . '")' : '';
 		$orderBy = $order ? ' ORDER BY ' . $db->escape($order) : '';
 		$field = $catfield ? : ($showpath ? 'Path' : 'Category');
-		$asArray = $complete ? : $asArray;
 		$showpath &=!$catfield;
 
 		$db->query('SELECT ID,Path,Category,Title,Description, IsFolder, ParentID FROM ' . CATEGORY_TABLE . ' WHERE (' . $whereIDs . $whereDir . ')' . $whereIncludeDir . $orderBy);
@@ -166,7 +164,7 @@ class we_category extends weModelBase{
 			}
 		}
 
-		return $asArray ? $cats : implode($tokken, $cats);
+		return ($complete || $asArray) ? $cats : implode($tokken, $cats);
 	}
 
 }

@@ -106,7 +106,6 @@ img.icon{
 	margin-right:auto;
 }
 div.imgText{
-	/*font-size: 16px;*/
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
