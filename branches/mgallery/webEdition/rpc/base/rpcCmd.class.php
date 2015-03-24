@@ -42,11 +42,11 @@ class rpcCmd{
 	const STATUS_NO_SESSION = 7;
 	const STATUS_NO_VIEW = 8;
 
-	var $CmdShell;
-	var $ExtraViews = array();
-	var $Permissions = array();
-	var $Status = self::STATUS_OK;
-	var $Parameters = array();
+	protected $CmdShell;
+	protected $ExtraViews = array();
+	protected $Permissions = array();
+	protected $Status = self::STATUS_OK;
+	protected $Parameters = array();
 	function rpcCmd($shell){
 		$this->checkSession();
 		$this->checkParameters();

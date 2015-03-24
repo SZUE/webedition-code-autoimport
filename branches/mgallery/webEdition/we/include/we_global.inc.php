@@ -614,12 +614,12 @@ function removePHP($val){
 	return we_base_util::rmPhp($val);
 }
 
-function we_mail($recipient, $subject, $txt, $from = ''){
+function we_mail($recipient, $subject, $txt, $from = '', $replyTo = ''){
 	if(runAtWin() && $txt){
 		$txt = str_replace("\n", "\r\n", $txt);
 	}
 
-	$phpmail = new we_util_Mailer($recipient, $subject, $from);
+	$phpmail = new we_util_Mailer($recipient, $subject, $from, $replyTo);
 	$phpmail->setCharSet($GLOBALS['WE_BACKENDCHARSET']);
 	$txtMail = strip_tags($txt);
 	if($txt != $txtMail){
@@ -1057,7 +1057,10 @@ function we_templateInit(){
 //check if CHARSET is valid
 		$charset = $GLOBALS['we_doc']->getElement('Charset');
 		$GLOBALS['CHARSET'] = (!in_array($charset, we_base_charsetHandler::getAvailCharsets()) ? DEFAULT_CHARSET : $charset);
-		we_html_tools::headerCtCharset('text/html', $GLOBALS['CHARSET'], true);
+		if((!defined('WE_CONTENT_TYPE_SET'))){
+			define('WE_CONTENT_TYPE_SET', 1);
+			we_html_tools::headerCtCharset('text/html', $GLOBALS['CHARSET'], true);
+		}
 	}
 }
 

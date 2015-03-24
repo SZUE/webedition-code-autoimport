@@ -51,7 +51,7 @@ class we_messaging_email extends we_messaging_proto{
 		//$cc = join(',', $rcpts);
 		//FIXME: more receipients not supported
 
-		if(we_mail($to, $data['subject'], $data['body'], $from)){
+		if(we_mail($to, $data['subject'], $data['body'], '', $from)){
 			$results['err'] = g_l('modules_messaging', '[error_occured]') . ': ' . g_l('modules_messaging', '[mail_not_sent]');
 			$results['failed'] = $rcpts;
 		} else {

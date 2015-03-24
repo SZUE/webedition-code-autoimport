@@ -75,7 +75,6 @@ function we_tag_listview($attribs){
 
 	$we_rows = intval(weTag_getAttribute('rows', $attribs, 100000000, we_base_request::INT));
 	$order = weTag_getAttribute('order', $attribs, '', we_base_request::STRING);
-	//FIXME: XSS
 	$we_lv_order = we_base_request::_(we_base_request::STRING, 'we_lv_order_' . $name, $order);
 
 	$we_lv_numorder = we_base_request::_(we_base_request::BOOL, 'we_lv_numorder_' . $name, weTag_getAttribute('numorder', $attribs, false, we_base_request::BOOL));

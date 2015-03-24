@@ -152,7 +152,7 @@ class we_navigation_items{
 		return $items;
 	}
 
-	function loopAllRules(/* $id */){
+	function loopAllRules(){
 		if(!$this->hasCurrent){
 // add defined rules
 			$newRules = we_navigation_ruleControl::getAllNavigationRules();
@@ -161,7 +161,7 @@ class we_navigation_items{
 				$this->currentRules[] = $rule;
 			}
 
-			$this->checkCurrent(/* $this->items['id' . $id]->items */);
+			$this->checkCurrent();
 		}
 	}
 
@@ -192,12 +192,11 @@ class we_navigation_items{
 
 		foreach($this->items as &$_item){
 			if(is_object($_item) && method_exists($_item, 'isCurrent')){
-				$this->hasCurrent = ($_item->isCurrent($this));
-				break;
+				$this->hasCurrent |= ($_item->isCurrent($this));
 			}
 		}
 		unset($_item);
-		$this->loopAllRules(/* $parentid */);
+		$this->loopAllRules();
 		return true;
 	}
 
@@ -225,20 +224,17 @@ class we_navigation_items{
 
 		foreach($items as $_item){
 
-			if(!empty($_item['id'])){
-				if(isset($_item['name']) && !empty($_item['name'])){
+			if($_item['id']){
+				if(isset($_item['name']) && $_item['name']){
 					$_item['text'] = $_item['name'];
 				}
-				$this->items['id' . $_item['id']] = new we_navigation_item(
-					$_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '');
+				$this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '');
 
 				if(isset($this->items['id' . $_item['parentid']])){
 					$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
 				}
 
-				if($this->items['id' . $_item['id']]->isCurrent($this)){
-					$this->hasCurrent = true;
-				}
+				$this->hasCurrent |= ($this->items['id' . $_item['id']]->isCurrent($this));
 
 // add currentRules
 				if(isset($_item['currentRule'])){
@@ -247,7 +243,7 @@ class we_navigation_items{
 			}
 		}
 
-		$this->loopAllRules(/* $_navigation->ID */);
+		$this->loopAllRules();
 
 //make avail in cache
 		self::$cache[$parentid] = $this->items;
@@ -270,13 +266,13 @@ class we_navigation_items{
 		return false;
 	}
 
-	function setCurrent($navigationID/*, $current*/){
+	function setCurrent($navigationID){
 		if(isset($this->items['id' . $navigationID])){
 			$this->items['id' . $navigationID]->setCurrent($this, true);
 		}
 	}
 
-	function checkCurrent(/* &$items */){
+	function checkCurrent(){
 		if(!isset($GLOBALS['WE_MAIN_DOC'])){
 			return false;
 		}
@@ -345,9 +341,10 @@ class we_navigation_items{
 			}
 
 			if($_ponder == 0){
-				$this->setCurrent($_rule->NavigationID/*, $_rule->SelfCurrent*/);
+				$this->setCurrent($_rule->NavigationID);
 				return true;
-			} elseif($_ponder <= $_score){
+			}
+			if($_ponder <= $_score){
 				if(NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
 					$this->setCurrent($_rule->NavigationID);
 				} else {
@@ -489,7 +486,7 @@ class we_navigation_items{
 				$_ids[] = $_db->Record['UrlID'];
 			}
 
-			if(!empty($_db->Record['IconID'])){
+			if($_db->Record['IconID']){
 				$_ids[] = $_db->Record['IconID'];
 			}
 		}

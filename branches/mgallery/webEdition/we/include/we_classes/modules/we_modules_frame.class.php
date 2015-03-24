@@ -245,7 +245,7 @@ function loadFinished(){
 				we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', 'width: 100%; overflow: hidden', '', '', false)
 		);
 
-		return $this->getHTMLDocument($body, $extraHead = '');
+		return $this->getHTMLDocument($body, $extraHead);
 	}
 
 	protected function getHTMLEditorHeader(){

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  * This class describe document step in workflow process
  */
 class we_workflow_documentStep extends we_workflow_base{
-
 	const STATUS_UNKNOWN = 0;
 	const STATUS_APPROVED = 1;
 	const STATUS_CANCELED = 2;
@@ -114,10 +112,10 @@ class we_workflow_documentStep extends we_workflow_base{
 					$this_user = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), $this->db);
 					if($foo){
 						$desc = str_replace('<br />', "\n", $desc);
-						$mess = g_l('modules_workflow', '[todo_next]') . ' ID:' . $workflowDoc->document->ID . ', '.g_l('weClass', '[path]').':' . $workflowDoc->document->Path . "\n\n" . $desc;
+						$mess = g_l('modules_workflow', '[todo_next]') . ' ID:' . $workflowDoc->document->ID . ', ' . g_l('weClass', '[path]') . ':' . $workflowDoc->document->Path . "\n\n" . $desc;
 
 
-						we_mail($foo, correctUml(g_l('modules_workflow', '[todo_next]') . ($workflowDoc->document->Path ? ' ' . $workflowDoc->document->Path : '')), $mess, (isset($this_user["Email"]) && $this_user["Email"] ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
+						we_mail($foo, correctUml(g_l('modules_workflow', '[todo_next]') . ($workflowDoc->document->Path ? ' ' . $workflowDoc->document->Path : '')), $mess, '', (isset($this_user["Email"]) && $this_user["Email"] ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
 					}
 				}
 			}
@@ -297,7 +295,6 @@ class we_workflow_documentStep extends we_workflow_base{
 		}
 		return $num;
 	}
-
 
 	/**
 	 * return all steps for workflow document (created)

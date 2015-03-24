@@ -89,6 +89,7 @@ function weonclick(e){
 ');
 	}
 
+
 	//FIXME: printFramesetSelectFileHTML should only set a class "selected", not the background itself
 	protected function printFramesetJSFunctioWriteBody(){
 		ob_start();

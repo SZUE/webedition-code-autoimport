@@ -34,11 +34,15 @@ if($cmd === 'ok'){
 		switch($_SESSION['weS']['we_mode']){
 			case we_base_constants::MODE_SEE:
 
-				$script = "opener.top.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
+				$script = "if(opener){opener.top.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');}else{top.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');}";
 				break;
 			default:
 			case we_base_constants::MODE_NORMAL:
-				$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();';
+				$script = 'if(opener){
+opener.top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();
+}else{
+top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();
+}';
 		}
 
 		if($cmd2){ // make same new

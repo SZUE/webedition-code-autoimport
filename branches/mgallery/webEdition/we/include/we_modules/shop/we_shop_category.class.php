@@ -448,8 +448,6 @@ class we_shop_category extends we_category{
 	 * @return array of string
 	 */
 	static function getShopCatFieldsFromDir($field = '', $activeOnly = false, $allFields = false, $dir = 0, $includeDir = true, $assoc = true, $showpath = false, $rootdir = '', $order = ''){
-		$order = $order ? : ($field ? : 'ID');
-
 		if(!($path = (id_to_path(($dir ? : self::getShopCatDir()), CATEGORY_TABLE)))){
 			return array();
 		}
@@ -458,15 +456,14 @@ class we_shop_category extends we_category{
 			$destPrincipleIds = self::getDestPrincipleFromDB(true);
 			$assoc = true;
 		}
-		$tmpField = $field === 'DestPrinciple' ? 'ID' : $field;
 
 		if($field === 'IsInactive' || $allFields){
 			$isInactiveIds = self::getIsInactiveFromDB(true);
 			$assoc = true;
 		}
-		$tmpField = $field === 'IsInactive' ? 'ID' : $field;
+		$tmpField = ($field === 'IsInactive' || $field === 'DestPrinciple' ? 'ID' : $field);
 
-		$ret = parent::we_getCategories('', ',', $showpath, null, $rootdir, $tmpField, $path, true, ($activeOnly ? : $assoc), false, $allFields, $includeDir, $order);
+		$ret = parent::we_getCategories('', ',', $showpath, null, $rootdir, $tmpField, $path, true, ($activeOnly ? : $assoc), $allFields, $includeDir, ($order ? : ($field ? : 'ID')));
 		if($activeOnly){
 			$isInactiveIds = isset($isInactiveIds) ? $isInactiveIds : self::getIsInactiveFromDB(true);
 			$numCats = count($ret) - ($includeDir ? 1 : 0);
