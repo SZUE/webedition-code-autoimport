@@ -806,7 +806,9 @@ abstract class we_SEEM{
 					$newForm .= '>';
 				}
 				//  Now add some hidden fields.
-				$newForm .= '<input type="hidden" name="we_cmd[0]" value="open_form_in_editor"><input type="hidden" name="original_action" value="' . $formArray[1][$i] . '" />';
+				$newForm .= we_html_element::htmlHiddens(array(
+					"we_cmd[0]"=>"open_form_in_editor",
+					"original_action"=>$formArray[1][$i]));
 			}
 
 			$code = str_replace($formArray[0][$i], $newForm, $code);

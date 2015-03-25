@@ -605,9 +605,9 @@ function openTagWizWithReturn (Ereignis) {
 			$wepos = weGetCookieVariable("but_weTMPLDocEdit");
 			$znr = 1;
 		}
-		echo '<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] === 'java' ? '' : 'style="display:none;"') . '>' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === "down"), "", 'toggleTagWizard();') . '</div>';
+		echo '<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] === 'java' ? '' : 'style="display:none;"') . '>' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === "down"), "", 'toggleTagWizard();') . '</div>'.
+			we_html_element::htmlHidden("we_complete_request", 1);
 		?>
-		<input type="hidden" name="we_complete_request" value="1"/>
 	</form></body>
 
 <?php

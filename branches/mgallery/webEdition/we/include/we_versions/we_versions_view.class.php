@@ -1045,7 +1045,7 @@ function delRow(id) {
 		return $out;
 	}
 
-	function tblListRow($content){
+	private static function tblListRow($content){
 		//$anz = count($content) - 1;
 		return '<td valign="top" style="width:15px;">' . we_html_tools::getPixel(1, 1) . '</td>
 <td valign="top" style="width:110px;height:30px;" class="middlefont">' . ((isset($content[0]["dat"]) && $content[0]["dat"]) ? $content[0]["dat"] : "&nbsp;") . '</td>

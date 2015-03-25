@@ -52,8 +52,8 @@ echo we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.
 		echo $_view->getHTMLforVersions(array(
 			array("html" => "<div id='searchTable'>" . $_view->getBodyTop() . "</div>"),
 			array("html" => "<div id='parametersTop'>" . $_view->getParameterTop($foundItems) . "</div>" . $_view->tblList($content, $_view->makeHeadLines()) . "<div id='parametersBottom'>" . $_view->getParameterBottom($foundItems) . "</div>")
-		));
+		)).
+			we_html_element::htmlHidden("we_complete_request", 1);
 		?>
-		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body></html>

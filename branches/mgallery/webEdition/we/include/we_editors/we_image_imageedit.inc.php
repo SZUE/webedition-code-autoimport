@@ -63,9 +63,9 @@ echo STYLESHEET;
 <tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>' :
 			''
 		) . '<tr><td>' . $we_doc->getHtml(true) . '</td></tr>'
-		. '</table>';
+		. '</table>'.
+			we_html_element::htmlHidden("we_complete_request", 1);
 		?>
-		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body>
 </html>

@@ -177,7 +177,7 @@ function doKeyDown() {
 				we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
 
 		return $this->getFormHTML() . $dialogContent .
-			'<input type="hidden" name="we_what" value="cmd" />' . $this->getHiddenArgs() . '</form>';
+			we_html_element::htmlHidden("we_what","cmd"). $this->getHiddenArgs() . '</form>';
 	}
 
 	function getDialogHeight(){

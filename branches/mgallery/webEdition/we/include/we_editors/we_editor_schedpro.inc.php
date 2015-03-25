@@ -54,9 +54,9 @@ echo STYLESHEET .
 		);
 		echo we_html_multiIconBox::getJS() .
 		we_schedpro::getMainJS($we_doc) .
-		we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
+		we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false) .
+		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
-		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body>
 </html>

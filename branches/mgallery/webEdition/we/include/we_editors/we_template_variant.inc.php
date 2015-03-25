@@ -70,9 +70,9 @@ echo STYLESHEET;
 			)
 		);
 
-		echo we_html_multiIconBox::getHTML('template_variant', '100%', $parts, 30, '', -1, '', '', false);
+		echo we_html_multiIconBox::getHTML('template_variant', '100%', $parts, 30, '', -1, '', '', false).
+			we_html_element::htmlHidden("we_complete_request", 1);
 		?>
-		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body>
 </html>

@@ -86,8 +86,8 @@ echo STYLESHEET . we_html_element::cssElement('
 
 			echo we_html_multiIconBox::getHTML('weOtherDocPrev', '100%', $parts, 20);
 		}
+		echo we_html_element::htmlHidden("we_complete_request", 1);
 		?>
-		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body>
 

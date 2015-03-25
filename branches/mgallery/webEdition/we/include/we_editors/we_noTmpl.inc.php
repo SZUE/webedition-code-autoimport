@@ -72,8 +72,9 @@ echo we_html_element::htmlDocType();
 ' . we_tag('textarea', array('name' => 'BODY', 'rows' => 15, 'cols' => 80, 'wrap' => 'virtual', 'style' => 'width: 600px;')) . '
 <pre class="defaultfont">	&lt;/body&gt;
 &lt;/html&gt;</pre>';
-				echo we_html_tools::htmlMessageBox(667, 650, $foo);
-				?><input type="hidden" name="we_complete_request" value="1"/>
+				echo we_html_tools::htmlMessageBox(667, 650, $foo) .
+				we_html_element::htmlHidden("we_complete_request", 1);
+				?>
 			</form>
 		</body>
 	<?php } else { ?>

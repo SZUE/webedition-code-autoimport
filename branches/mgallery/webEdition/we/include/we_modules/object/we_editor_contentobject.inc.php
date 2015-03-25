@@ -121,8 +121,8 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			we_html_element::jsElement('classEntry.add(document, \'' . $uniqid . '\', null);') .
 			$jsGUI->getDisableButtonJS();
 		}
+		echo we_html_element::htmlHidden("we_complete_request", 1);
 		?>
-		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body>
 </html>
