@@ -38,11 +38,8 @@ class we_navigation_items{
 	var $currentRules = array();
 	private $Storage = array(); //FIXME: make this static
 
-	function getCustomerData($navi){
-		$_customer = array(
-			'id' => '', 'filter' => '', 'blacklist' => '', 'whitelist' => '', 'usedocumentfilter' => 1
-		);
-
+	static function getCustomerData(we_navigation_navigation $navi){
+		//FIXME: check if we need this csv/unserialize code any more
 		if(!is_array($navi->Customers)){
 			$navi->Customers = makeArrayFromCSV($navi->Customers);
 		}
@@ -59,16 +56,21 @@ class we_navigation_items{
 			$navi->CustomerFilter = @unserialize($navi->CustomerFilter);
 		}
 
-		if($navi->LimitAccess){
-			$_customer['id'] = $navi->AllCustomers == 0 ? $navi->Customers : array();
-			$_customer['filter'] = $navi->ApplyFilter == 1 ? $navi->CustomerFilter : array();
-			$_customer['blacklist'] = $navi->ApplyFilter == 1 ? $navi->BlackList : array();
-			$_customer['whitelist'] = $navi->ApplyFilter == 1 ? $navi->WhiteList : array();
-			$_customer['usedocumentfilter'] = $navi->UseDocumentFilter ? 1 : 0;
-			return $_customer;
-		}
-
-		return $_customer;
+		return ($navi->LimitAccess ?
+				array(
+				'id' => $navi->AllCustomers == 0 ? $navi->Customers : array(),
+				'filter' => $navi->ApplyFilter == 1 ? $navi->CustomerFilter : array(),
+				'blacklist' => $navi->ApplyFilter == 1 ? $navi->BlackList : array(),
+				'whitelist' => $navi->ApplyFilter == 1 ? $navi->WhiteList : array(),
+				'usedocumentfilter' => $navi->UseDocumentFilter ? 1 : 0
+				) :
+				array(
+				'id' => '',
+				'filter' => '',
+				'blacklist' => '',
+				'whitelist' => '',
+				'usedocumentfilter' => 1
+		));
 	}
 
 	function initByNavigationObject($showRoot = true){
@@ -82,7 +84,7 @@ class we_navigation_items{
 
 		$this->readItemsFromDb($this->rootItem);
 
-		$this->items['id' . $navigation->ID] = new we_navigation_item($navigation->ID, $navigation->LinkID, ($navigation->IsFolder ? ($navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $navigation->Text, $navigation->Display, $navigation->getHref($navigation->SelectionType, $navigation->LinkID, $navigation->Url, $navigation->Parameter, $navigation->WorkspaceID), $showRoot ? we_base_ContentTypes::FOLDER : 'root', $this->id2path($navigation->IconID), $navigation->Attributes, $navigation->LimitAccess, $this->getCustomerData($navigation), $navigation->CurrentOnUrlPar, $navigation->CurrentOnAnker);
+		$this->items['id' . $navigation->ID] = new we_navigation_item($navigation->ID, $navigation->LinkID, ($navigation->IsFolder ? ($navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $navigation->Text, $navigation->Display, $navigation->getHref($navigation->SelectionType, $navigation->LinkID, $navigation->Url, $navigation->Parameter, $navigation->WorkspaceID), $showRoot ? we_base_ContentTypes::FOLDER : 'root', $this->id2path($navigation->IconID), $navigation->Attributes, $navigation->LimitAccess, self::getCustomerData($navigation), $navigation->CurrentOnUrlPar, $navigation->CurrentOnAnker);
 
 		$items = $navigation->getDynamicPreview($this->Storage);
 
@@ -116,7 +118,7 @@ class we_navigation_items{
 		}
 	}
 
-	function getStaticSavedDynamicItems(we_navigation_navigation $_nav, $rules = false){
+	private static function getStaticSavedDynamicItems(we_navigation_navigation $_nav, $rules = false){
 		$items = array();
 		$dyn_items = $_nav->getDynamicEntries();
 		if(is_array($dyn_items)){
@@ -150,7 +152,7 @@ class we_navigation_items{
 		return $items;
 	}
 
-	function loopAllRules(/* $id */){
+	function loopAllRules(){
 		if(!$this->hasCurrent){
 // add defined rules
 			$newRules = we_navigation_ruleControl::getAllNavigationRules();
@@ -159,12 +161,11 @@ class we_navigation_items{
 				$this->currentRules[] = $rule;
 			}
 
-			$this->checkCurrent(/* $this->items['id' . $id]->items */);
+			$this->checkCurrent();
 		}
 	}
 
 	function initFromCache($parentid = 0, $showRoot = true){
-		$this->items = array();
 		$this->rootItem = $parentid;
 		$this->setDefaultTemplates();
 
@@ -191,11 +192,11 @@ class we_navigation_items{
 
 		foreach($this->items as &$_item){
 			if(is_object($_item) && method_exists($_item, 'isCurrent')){
-				$this->hasCurrent = ($_item->isCurrent($this));
+				$this->hasCurrent |= ($_item->isCurrent($this));
 			}
 		}
 		unset($_item);
-		$this->loopAllRules(/* $parentid */);
+		$this->loopAllRules();
 		return true;
 	}
 
@@ -217,26 +218,23 @@ class we_navigation_items{
 		$this->setDefaultTemplates();
 
 		$this->items['id' . $_navigation->ID] = new we_navigation_item(
-			$_navigation->ID, $_navigation->LinkID, ($_navigation->IsFolder ? ($_navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $_navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $_navigation->Text, $_navigation->Display, $_navigation->getHref($this->Storage['ids']), $showRoot ? ($_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? we_base_ContentTypes::FOLDER : 'item')) : 'root', $this->id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, $this->getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
+			$_navigation->ID, $_navigation->LinkID, ($_navigation->IsFolder ? ($_navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $_navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $_navigation->Text, $_navigation->Display, $_navigation->getHref($this->Storage['ids']), $showRoot ? ($_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? we_base_ContentTypes::FOLDER : 'item')) : 'root', $this->id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, self::getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
 
 		$items = $_navigation->getDynamicPreview($this->Storage, true);
 
 		foreach($items as $_item){
 
-			if(!empty($_item['id'])){
-				if(isset($_item['name']) && !empty($_item['name'])){
+			if($_item['id']){
+				if(isset($_item['name']) && $_item['name']){
 					$_item['text'] = $_item['name'];
 				}
-				$this->items['id' . $_item['id']] = new we_navigation_item(
-					$_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '');
+				$this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '');
 
 				if(isset($this->items['id' . $_item['parentid']])){
 					$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
 				}
 
-				if($this->items['id' . $_item['id']]->isCurrent($this)){
-					$this->hasCurrent = true;
-				}
+				$this->hasCurrent |= ($this->items['id' . $_item['id']]->isCurrent($this));
 
 // add currentRules
 				if(isset($_item['currentRule'])){
@@ -245,7 +243,7 @@ class we_navigation_items{
 			}
 		}
 
-		$this->loopAllRules(/* $_navigation->ID */);
+		$this->loopAllRules();
 
 //make avail in cache
 		self::$cache[$parentid] = $this->items;
@@ -254,14 +252,12 @@ class we_navigation_items{
 		$this->Storage = array();
 	}
 
-	function checkCategories($idRule, $idDoc){
-		$idsRule = makeArrayFromCSV($idRule);
-
-		if(empty($idsRule)){
+	function checkCategories(array $idsRule, $idDoc){
+		if(!$idsRule){
 			return true;
 		}
 
-		foreach($idsRule as $rule){
+		foreach($idsRule as $rule){//FIXME: is this used this way, not to check for ===0????
 			if(strpos($idDoc, ",$rule,") !== false){
 				return true;
 			}
@@ -270,13 +266,13 @@ class we_navigation_items{
 		return false;
 	}
 
-	function setCurrent($navigationID, $current){
+	function setCurrent($navigationID){
 		if(isset($this->items['id' . $navigationID])){
 			$this->items['id' . $navigationID]->setCurrent($this, true);
 		}
 	}
 
-	function checkCurrent(/* &$items */){
+	function checkCurrent(){
 		if(!isset($GLOBALS['WE_MAIN_DOC'])){
 			return false;
 		}
@@ -305,7 +301,7 @@ class we_navigation_items{
 					if(!$_isObject){
 						$parentPath = $this->id2path($_rule->FolderID);
 
-						if(!empty($parentPath) && $parentPath != '/'){
+						if($parentPath && $parentPath != '/'){
 							$parentPath .= '/';
 						}
 					}
@@ -336,9 +332,8 @@ class we_navigation_items{
 				}
 			}
 
-			$_cats = makeArrayFromCSV($_rule->Categories);
-			if(!empty($_cats)){
-				if($this->checkCategories($_rule->Categories, $GLOBALS['WE_MAIN_DOC']->Category)){
+			if(($cats = makeArrayFromCSV($_rule->Categories))){
+				if($this->checkCategories($cats, $GLOBALS['WE_MAIN_DOC']->Category)){
 					$_ponder--;
 				} else {
 					$_ponder = 999; // remove from selection
@@ -346,11 +341,12 @@ class we_navigation_items{
 			}
 
 			if($_ponder == 0){
-				$this->setCurrent($_rule->NavigationID, $_rule->SelfCurrent);
+				$this->setCurrent($_rule->NavigationID);
 				return true;
-			} elseif($_ponder <= $_score){
+			}
+			if($_ponder <= $_score){
 				if(NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
-					$this->setCurrent($_rule->NavigationID, null);
+					$this->setCurrent($_rule->NavigationID);
 				} else {
 					$_score = $_ponder;
 					$_candidate = $_rule->NavigationID;
@@ -358,7 +354,7 @@ class we_navigation_items{
 			}
 		}
 		if($_candidate != 0){
-			$this->setCurrent($_candidate, null);
+			$this->setCurrent($_candidate);
 			return true;
 		}
 
@@ -463,7 +459,6 @@ class we_navigation_items{
 	}
 
 	function setTemplate($content, $type, $level, $current, $position){
-		
 		$this->templates[$type][$level][$current][$position] = $content;
 	}
 
@@ -472,40 +467,34 @@ class we_navigation_items{
 		$this->Storage['ids'] = array();
 
 		$_pathArr = id_to_path($id, NAVIGATION_TABLE, null, false, true);
-		$_path = isset($_pathArr[0]) ? $_pathArr[0] : "";
-
-		$_db = new DB_WE();
-
-		$_path = we_base_file::clearPath($_path . '/%');
+		$_path = we_base_file::clearPath((isset($_pathArr[0]) ? $_pathArr[0] : '') . '/%');
 
 		$_ids = array();
 
+		$_db = new DB_WE();
 		$_db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $_db->escape($_path) . '" ' . ($id ? ' OR ID=' . intval($id) : '') . ' ORDER BY Ordn');
 		while($_db->next_record()){
 			$_tmpItem = $_db->getRecord();
 			$_tmpItem["Name"] = $_tmpItem["Text"];
 			$this->Storage['items'][] = $_tmpItem;
-			unset($_tmpItem);
 
 			if($_db->Record['IsFolder'] == 1 && ($_db->Record['FolderSelection'] === '' || $_db->Record['FolderSelection'] == we_navigation_navigation::STPYE_DOCLINK)){
 				$_ids[] = $_db->Record['LinkID'];
 			} elseif($_db->Record['Selection'] == we_navigation_navigation::SELECTION_STATIC && $_db->Record['SelectionType'] == we_navigation_navigation::STPYE_DOCLINK){
 				$_ids[] = $_db->Record['LinkID'];
-			} elseif(($_db->Record['SelectionType'] == we_navigation_navigation::STPYE_CATEGORY || $_db->Record['SelectionType'] == we_navigation_navigation::STPYE_CATLINK) && $_db->Record['LinkSelection'] != 'extern'){
+			} elseif(($_db->Record['SelectionType'] == we_navigation_navigation::STPYE_CATEGORY || $_db->Record['SelectionType'] == we_navigation_navigation::STPYE_CATLINK) && $_db->Record['LinkSelection'] != we_navigation_navigation::LSELECTION_EXTERN){
 				$_ids[] = $_db->Record['UrlID'];
 			}
 
-			if(!empty($_db->Record['IconID'])){
+			if($_db->Record['IconID']){
 				$_ids[] = $_db->Record['IconID'];
 			}
 		}
 
-		if(!empty($_ids)){
+		if($_ids){
 			array_unique($_ids);
 			$_db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $_ids) . ') ORDER BY ID');
-			while($_db->next_record()){
-				$this->Storage['ids'][$_db->f('ID')] = $_db->f('Path');
-			}
+			$this->Storage['ids'] = $_db->getAllFirst(false, MYSQL_ASSOC);
 		}
 	}
 
@@ -523,9 +512,9 @@ class we_navigation_items{
 		if(isset($this->Storage['ids'][$id])){
 			return $this->Storage['ids'][$id];
 		}
-		$_path = id_to_path($id, FILE_TABLE);
-		$this->Storage['ids'][$id] = $_path;
-		return $_path;
+
+
+		return ($this->Storage['ids'][$id] = id_to_path($id, FILE_TABLE));
 	}
 
 }

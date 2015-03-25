@@ -25,14 +25,9 @@
 abstract class we_backup_preparer{
 
 	private static function checkFilePermission(){
-
-		if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR)){
-			we_backup_util::addLog('Error: Can\'t write to ' . $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR);
-			return false;
-		}
-
 		if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/')){
 			we_backup_util::addLog('Error: Can\'t write to ' . $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/');
+			t_e('Error: Can\'t write to ' . $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/');
 			return false;
 		}
 		return true;
@@ -57,7 +52,7 @@ abstract class we_backup_preparer{
 			'limits' => array(
 				'mem' => we_convertIniSizes(ini_get('memory_limit')),
 				'exec' => min(30, ($execTime > 120 ? ($execTime > 2000 ? 5 : 15) : $execTime)),
-				/*fix for really faulty php installations, e.g. 1&1
+				/* fix for really faulty php installations, e.g. 1&1
 				 * 1&1 execution time >2000, no matter if the script gets killed after 15 seconds
 				 * df execution time = 180,  no matter if the script gets killed after 20 seconds
 				 */
@@ -137,7 +132,7 @@ abstract class we_backup_preparer{
 		$_offset = strlen(we_backup_backup::weXmlExImProtectCode);
 		$_SESSION['weS']['weBackupVars']['offset'] = (we_base_file::loadLine($_SESSION['weS']['weBackupVars']['backup_file'], 0, ($_offset)) == we_backup_backup::weXmlExImProtectCode) ? $_offset : 0;
 		$_SESSION['weS']['weBackupVars']['options']['compress'] = we_base_file::isCompressed($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION;
-		if($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION){
+		if(false && $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION){
 			$_SESSION['weS']['weBackupVars']['backup_file'] = self::makeCleanGzip($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']);
 			we_base_file::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], time() + (8 * 3600)); //valid for 8 hours
 			$_SESSION['weS']['weBackupVars']['offset'] = 0;
@@ -215,6 +210,8 @@ abstract class we_backup_preparer{
 			'tools' => array(),
 			'spellchecker' => we_base_request::_(we_base_request::BOOL, 'handle_spellchecker'),
 			'glossary' => we_base_request::_(we_base_request::BOOL, 'handle_glossary'),
+			"hooks" => we_base_request::_(we_base_request::BOOL, "handle_hooks"),
+			"customTags" => we_base_request::_(we_base_request::BOOL, "handle_customtags"),
 			'backup' => $options['backup_extern'],
 		);
 

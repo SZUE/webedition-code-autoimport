@@ -252,7 +252,7 @@ this.selectedIndex = 0;' .
 		return self::htmlSelect($name, $vals, $size, $value, false, $attribs, 'value');
 	}
 
-	static function htmlSelect($name, $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $compare = 'value', $width = 0, $cls = 'defaultfont', $oldHtmlspecialchars = true){
+	static function htmlSelect($name, array $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $compare = 'value', $width = 0, $cls = 'defaultfont', $oldHtmlspecialchars = true){
 		$ret = '';
 		$selIndex = is_array($selectedIndex) ? $selectedIndex : makeArrayFromCSV($selectedIndex);
 		$optgroup = false;
@@ -531,7 +531,7 @@ this.selectedIndex = 0;' .
 		$name = preg_replace('/^(.+)]$/', '${1}%s]', $name);
 		if(!$format || $_dayPos > -1){
 			$days = getHtmlTag('option', array_merge($_attsOption, array('value' => 0)), '--');
-			;
+
 			for($i = 1; $i <= 31; $i++){
 				$_atts2 = ($time && $day == $i) ? array('selected' => 'selected') : array();
 				$days .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
@@ -557,10 +557,10 @@ this.selectedIndex = 0;' .
 			for($i = 1; $i <= 12; $i++){
 				switch($monthType){//Bug #4095
 					case 'F':
-						$val = CheckAndConvertISOfrontend(g_l('date', '[month][long][' . ($i - 1) . ']'));
+						$val = g_l('date', '[month][long][' . ($i - 1) . ']');
 						break;
 					case 'M':
-						$val = CheckAndConvertISOfrontend(g_l('date', '[month][short][' . ($i - 1) . ']'));
+						$val = g_l('date', '[month][short][' . ($i - 1) . ']');
 						break;
 					default:
 						$val = sprintf('%02d', $i);

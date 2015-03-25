@@ -2453,7 +2453,8 @@ function calendarSetup(x){
 		$locationAdvSearch = we_base_request::_(we_base_request::STRING, 'locationAdvSearch');
 		$this->Model->locationAdvSearch = ($locationAdvSearch && is_array($locationAdvSearch) ?
 				$locationAdvSearch :
-				array_values($this->Model->locationAdvSearch) );
+				is_array($this->Model->locationAdvSearch) ? array_values($this->Model->locationAdvSearch) :
+					array());
 
 		$this->Model->searchAdvSearch = is_array($this->Model->searchAdvSearch) ?
 			array_values($this->Model->searchAdvSearch) :

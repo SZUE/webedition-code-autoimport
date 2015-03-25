@@ -50,7 +50,10 @@ class we_shop_listviewOrderitem extends we_listview_base{
 	function __construct($name, $rows, $offset, $order, $desc, $condition, $cols, $docID, $orderID, $hidedirindex){
 
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, 0, $cols);
-
+		if($GLOBALS['WE_MAIN_DOC']->InWebEdition){
+			//do nothing inside we
+			return;
+		}
 		$this->docID = $docID;
 		$this->orderID = $orderID;
 		$this->condition = $condition ? : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
@@ -67,7 +70,6 @@ class we_shop_listviewOrderitem extends we_listview_base{
 			'Payment_Type' => 'IntPayment_Type',
 		));
 
-
 		$this->Path = ($this->docID ? id_to_path($this->docID, FILE_TABLE, $this->DB_WE) : (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : ''));
 
 		$this->hidedirindex = $hidedirindex;
@@ -78,7 +80,7 @@ class we_shop_listviewOrderitem extends we_listview_base{
 			$this->order .= ' DESC';
 		}
 
-		if(!empty($this->order)){
+		if($this->order){
 			switch(trim($this->order)){
 				case 'ID':
 				case 'CustomerID':
@@ -97,7 +99,6 @@ class we_shop_listviewOrderitem extends we_listview_base{
 				($this->condition ? (' WHERE IntOrderID=' . $this->name . ' AND ' . $this->condition ) : ' WHERE IntOrderID=' . $this->orderID . ' ') :
 				($this->condition ? (' WHERE ' . $this->condition ) : ' '));
 
-
 		$this->anz_all = f('SELECT COUNT(1) FROM ' . SHOP_TABLE . $where, '', $this->DB_WE);
 
 		$this->DB_WE->query('SELECT IntID as ID,IntOrderID as OrderID, IntArticleID as ArticleID, IntQuantity as Quantity, Price, strSerial FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
@@ -109,39 +110,29 @@ class we_shop_listviewOrderitem extends we_listview_base{
 			$strSerial = unserialize($this->DB_WE->Record['strSerial']);
 			unset($this->DB_WE->Record['strSerial']);
 			if(is_array($strSerial)){
-				if(isset($strSerial['OF_ID'])){//Object based Article
-					$this->DB_WE->Record['articleIsObject'] = 1;
+				$this->DB_WE->Record['articleIsObject'] = isset($strSerial['OF_ID']) ? 1 : 0;
+				if($this->DB_WE->Record['articleIsObject']){//Object based Article
 					foreach($strSerial as $key => &$value){
 						switch($key){
-							case 'we_sacf':
+							case WE_SHOP_ARTICLE_CUSTOM_FIELD:
 							case 'WE_VARIANT':
 								continue;
 							default:
 								if(strpos($key, 'we_WE') === false){
 									$this->DB_WE->Record[substr($key, 3)] = $value; //key without "we_" because of internal problems in shop modul backend view
 								}
-						}
-						if(is_array($value)){
-							$val = $value;
-						} elseif(substr($value, 0, 2) === 'a:'){
-							$val = unserialize($value);
-						}
-						$this->DB_WE->Record[$key] = (isset($val) && is_array($val) ? $val : $value);
-						unset($val);
-					}
 
-					unset($value);
-					foreach($strSerial['we_sacf'] as $key => &$value){
-						$this->DB_WE->Record[$key] = $value;
+								$this->DB_WE->Record[$key] = (is_array($value) ?
+										$value :
+										(substr($value, 0, 2) === 'a:' ?
+											unserialize($value) :
+											$value));
+						}
 					}
-					unset($value);
-					$this->DB_WE->Record['VARIANT'] = $strSerial['WE_VARIANT'];
-					$this->DB_WE->Record[WE_SHOP_VAT_FIELD_NAME] = $strSerial[WE_SHOP_VAT_FIELD_NAME];
 				} else {//Document based Article
-					$this->DB_WE->Record['articleIsObject'] = 0;
 					foreach($strSerial as $key => &$value){
 						switch($key){
-							case 'we_sacf':
+							case WE_SHOP_ARTICLE_CUSTOM_FIELD:
 							case 'Charset':
 							case 'WE_VARIANT':
 								continue;
@@ -151,16 +142,16 @@ class we_shop_listviewOrderitem extends we_listview_base{
 								}
 						}
 					}
-					unset($value);
 				}
-
-				foreach($strSerial['we_sacf'] as $key => &$value){
-					$this->DB_WE->Record[$key] = $value;
-				}
-				unset($value);
-				$this->DB_WE->Record['VARIANT'] = $strSerial['WE_VARIANT'];
-				$this->DB_WE->Record[WE_SHOP_VAT_FIELD_NAME] = $strSerial[WE_SHOP_VAT_FIELD_NAME];
 			}
+			unset($value);
+
+			foreach($strSerial[WE_SHOP_ARTICLE_CUSTOM_FIELD] as $key => &$value){
+				$this->DB_WE->Record[$key] = $value;
+			}
+			unset($value);
+			$this->DB_WE->Record['VARIANT'] = $strSerial['WE_VARIANT'];
+			$this->DB_WE->Record[WE_SHOP_VAT_FIELD_NAME] = $strSerial[WE_SHOP_VAT_FIELD_NAME];
 
 			$this->DB_WE->Record['wedoc_Path'] = $this->DB_WE->Record['WE_PATH'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'] . '&we_orderitemid=' . $this->DB_WE->Record['ID'];
 			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['ID'];

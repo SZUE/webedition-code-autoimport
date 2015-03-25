@@ -180,7 +180,7 @@ function we_tag_field($attribs){
 	}
 
 	$classid = ($classid ?
-					$classid :
+					:
 					(isset($GLOBALS['lv']) ? (($GLOBALS['lv'] instanceof we_object_tag) && method_exists($GLOBALS['lv'], 'getObject') && isset($GLOBALS['lv']->getObject()->classID) ? $GLOBALS['lv']->getObject()->classID :
 									(method_exists($GLOBALS['lv'], 'getObject') && isset($GLOBALS['lv']->getObject()->classID) ? $GLOBALS['lv']->getObject()->classID :
 											(isset($GLOBALS['lv']->classID) ? $GLOBALS['lv']->classID : ( ($GLOBALS['lv'] instanceof we_shop_shop) ? $GLOBALS['lv']->f('wedoc_TableID') : '')))) : //Fix #9223
@@ -552,7 +552,7 @@ function we_tag_field($attribs){
 			$GLOBALS['lv']->tid = $tid;
 		}
 
-		if(($GLOBALS['lv'] instanceof we_listview_search) && $GLOBALS['lv']->f('OID')){
+		if(($GLOBALS['lv'] instanceof we_listview_search) && $GLOBALS['lv']->f('ClassID')){
 			$tail = ($tid ? '&amp;we_objectTID=' . $tid : '');
 
 			$path_parts = pathinfo($_SERVER['SCRIPT_NAME']);
@@ -564,10 +564,7 @@ function we_tag_field($attribs){
 					$path_parts = pathinfo(id_to_path($objecttriggerid));
 				}
 			}
-			/* $pidstr = '';
-			  if($GLOBALS['lv']->f('WorkspaceID')){
-			  $pidstr = '?pid=' . intval($GLOBALS['lv']->f('WorkspaceID'));
-			  } */
+
 			$pidstr = '?pid=' . intval($GLOBALS['lv']->f('WorkspaceID'));
 			if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && isset($GLOBALS['lv']->hidedirindex) && $GLOBALS['lv']->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 				$_linkAttribs['href'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .

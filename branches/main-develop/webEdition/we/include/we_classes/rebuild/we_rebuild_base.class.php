@@ -395,6 +395,21 @@ abstract class we_rebuild_base{
 			($_doctype_query ? ' AND ' . $_doctype_query . ' ' : '') .
 			($_folders_query ? ' AND ' . $_folders_query . ' ' : '') .
 			($_template_query ? ' AND ' . $_template_query . ' ' : '');
+
+		if(!$categories && !$catAnd && !$doctypes && !$folders && !$templateID){
+			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsFolder=1 ' . ($folders ? 'AND ' . $_folders_query : '') . 'ORDER BY IsFolder DESC, LENGTH(Path)');
+			while($GLOBALS['DB_WE']->next_record()){
+				$data[] = array(
+					'id' => $GLOBALS['DB_WE']->f('ID'),
+					'type' => 'document',
+					'cn' => $GLOBALS['DB_WE']->f('ClassName'),
+					'mt' => 0,
+					'tt' => 0,
+					'path' => $GLOBALS['DB_WE']->f('Path'),
+					'it' => 0);
+			}
+		}
+
 		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsDynamic=0 AND Published>0 AND ContentType IN("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::CSS . '","' . we_base_ContentTypes::JS . '") ' . $query . ' ORDER BY LENGTH(Path)');
 
 		while($GLOBALS['DB_WE']->next_record()){

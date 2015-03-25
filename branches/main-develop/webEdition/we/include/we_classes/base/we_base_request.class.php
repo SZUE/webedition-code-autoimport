@@ -23,11 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_request{
-
 	private static $allTables = array();
 
 	/* converts an csv of ints to an array */
-
 	const INTLISTA = 'intListA';
 	const INT = 'int';
 	const FLOAT = 'float';
@@ -98,8 +96,8 @@ class we_base_request{
 				return;
 			case self::CMD:
 				$var = strpos($var, 'WECMDENC_') !== false ?
-						base64_decode(urldecode(substr($var, 9))) :
-						$var;
+					base64_decode(urldecode(substr($var, 9))) :
+					$var;
 				return;
 			case self::UNIT:
 				$regs = array(); //FIMXE: check for %d[em,ex,pt,%...]?
@@ -110,7 +108,7 @@ class we_base_request{
 				return;
 			case self::FLOAT:
 				//FIXME: check for country dependencies (eg. 1.3333,22)
-				$var = floatval(str_replace(',', '.', $var));
+				$var = ($var === '' ? $default : floatval(str_replace(',', '.', $var)));
 				return;
 			case self::BOOL:
 				if(is_bool($var)){
@@ -170,16 +168,16 @@ class we_base_request{
 				$var = explode(',', trim(strtr($var, array(
 					'../' => '',
 					'//' => ''
-								)), ','));
+						)), ','));
 				foreach($var as &$cur){
 					$cur = ($type == self::WEFILELIST || $type == self::WEFILELISTA ? $cur : filter_var($cur, FILTER_SANITIZE_URL));
-					if(strpos($cur, rtrim(WEBEDITION_DIR, '/')) === 0){//file-selector has propably access
+					if($cur === rtrim(WEBEDITION_DIR, '/') || strpos($cur, WEBEDITION_DIR) === 0){//file-selector has propably access
 						if(!(strstr($cur, SITE_DIR) || strstr($cur, TEMP_DIR))){//allow site/tmp dir
 							$cur = isset($GLOBALS['supportDebugging']) ? $cur : '-1';
 						}
 					}
 				}
-				$var = ($type == self::FILELIST || self::WEFILELIST ? implode(',', $var) : $var);
+				$var = ($type == self::FILELIST || $type == self::WEFILELIST ? implode(',', $var) : $var);
 				return;
 			case self::WEFILE:
 			case self::FILE:
@@ -198,10 +196,10 @@ class we_base_request{
 				return;
 			case self::STRINGC:
 			case self::STRING://strips tags
-				$var = filter_var($var, FILTER_SANITIZE_STRING);
+				$var = filter_var($var, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 				return;
 			case self::STRING_LIST:
-				$var = array_map('trim', explode(',', filter_var($var, FILTER_SANITIZE_STRING)));
+				$var = array_filter(array_map('trim', explode(',', filter_var($var, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES))));
 				return;
 			case self::HTML:
 				$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -219,11 +217,11 @@ class we_base_request{
 
 	public static function filterVar($var, $varType, $default = ''){
 		//FIXME: remove checker at release
-		$preVar = $var;
+		//$preVar = $var;
 		self::_weRequest($var, '', array($varType, $default));
-		if($varType != self::INTLIST && !is_bool($var) && !is_array($var) && $preVar != $var && $var != $default){
-			t_e('changed var/tag attribute', $preVar, $var);
-		}
+		/* 		if($varType != self::INTLIST && !is_bool($var) && !is_array($var) && $preVar != $var && $var != $default){
+		  t_e('changed var/tag attribute', $preVar, $var);
+		  } */
 		return $var;
 	}
 
@@ -268,7 +266,7 @@ class we_base_request{
 		} else {
 			$oldVar = $var;
 			self::_weRequest($var, '', array($type, $default));
-/*
+			/*
 			switch($type){
 				case self::URL:
 					$oldVar = urldecode($var);
@@ -346,8 +344,8 @@ class we_base_request{
 
 				t_e('changed values', $type, $args, $oldVar, $var);
 				//don't break we
-			}*/
-		}
+			  } */
+			}
 		return $var;
 	}
 

@@ -26,8 +26,10 @@ abstract class we_textContentDocument extends we_textDocument{
 	/* Doc-Type of the document */
 
 	public $DocType = '';
+
 	/* these fields are never read from temporary tables */
-	protected $primaryDBFiels = 'Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID,Language';
+
+	const primaryDBFiels = 'Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID,Language';
 
 	function __construct(){
 		parent::__construct();
@@ -208,7 +210,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				if($sessDat){
 					$sessDat = unserialize($sessDat);
 					$this->i_initSerializedDat($sessDat);
-					$this->i_getPersistentSlotsFromDB($this->primaryDBFiels);
+					$this->i_getPersistentSlotsFromDB(self::primaryDBFiels);
 					$this->OldPath = $this->Path;
 				} else {
 					$this->we_load(we_class::LOAD_MAID_DB);
@@ -222,7 +224,7 @@ abstract class we_textContentDocument extends we_textDocument{
 					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND Was=' . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
 					if($sessDat &&
 							$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
-						$this->i_getPersistentSlotsFromDB($this->primaryDBFiels);
+						$this->i_getPersistentSlotsFromDB(self::primaryDBFiels);
 						$this->OldPath = $this->Path;
 
 						break;

@@ -54,7 +54,6 @@ abstract class we_message_reporting{
 				return ($isJsMsg ? // message is build from scripts, just print it!
 						'alert(' . $message . ');' :
 						'alert("' . str_replace(array('\n', '\\', '"', '##NL##', '`'), array('##NL##', '\\\\', '\\"', '\n', '\"'), $message) . '");');
-				break;
 			default:
 				return ($isJsMsg ? // message is build from scripts, just print it!
 						($isOpener ? 'top.opener.' : '') . 'top.we_showMessage(' . $message . ', ' . $priority . ', window);' :

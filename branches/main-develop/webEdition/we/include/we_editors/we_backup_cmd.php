@@ -324,6 +324,7 @@ top.cmd.location = "about:blank";
 			(isset($_SESSION['weS']['weBackupVars']['files_to_delete']) && !empty($_SESSION['weS']['weBackupVars']['files_to_delete']))
 		){
 
+			we_backup_util::addLog('Issuing next request.');
 
 			echo we_html_element::jsElement('
 function run(){' . we_backup_util::getProgressJS(we_backup_util::getImportPercent(), $description, true) . '

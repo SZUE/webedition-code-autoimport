@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  *
  */
 abstract class we_listview_base{
-
 	var $DB_WE; /* Main DB Object */
 	var $name; /* name of listview */
 	var $rows = -1; /* Number of rows */
@@ -314,7 +312,7 @@ abstract class we_listview_base{
 			'pv_tid',
 			'bsuniquevid',
 			's'//password-form
-				), ($filter ? explode(',', $filter) : array()), array_keys($_COOKIE));
+			), ($filter ? explode(',', $filter) : array()), array_keys($_COOKIE));
 		if($queryString){
 			$foo = explode('&', $queryString);
 			$queryString = '';
@@ -485,86 +483,88 @@ abstract class we_listview_base{
 	}
 
 	protected function fetchCalendar(&$condition, &$calendar_select, &$calendar_where, $matrix = array()){
-		if($this->calendar_struct['calendar'] != ''){
-			$calendar = $this->calendar_struct['calendar'];
-			$day = date('j', $this->calendar_struct['defaultDate']);
-			$month = date('m', $this->calendar_struct['defaultDate']);
-			$year = date('Y', $this->calendar_struct['defaultDate']);
+		if(!$this->calendar_struct['calendar']){
+			return;
+		}
+		$calendar = $this->calendar_struct['calendar'];
+		$day = date('j', $this->calendar_struct['defaultDate']);
+		$month = date('m', $this->calendar_struct['defaultDate']);
+		$year = date('Y', $this->calendar_struct['defaultDate']);
 
-			switch($calendar){
-				case 'year':
-					$start_date = mktime(0, 0, 0, 1, $day, $year);
-					$end_date = mktime(23, 59, 59, 12, $day, $year);
-					$numofentries = 12;
-					break;
-				case 'day':
-					$start_date = mktime(0, 0, 0, $month, $day, $year);
-					$end_date = mktime(23, 59, 59, $month, $day, $year);
-					$numofentries = 24;
-					break;
-				default:
-					$numofentries = self::getNumberOfDays($month, $year);
-					$start_date = mktime(0, 0, 0, $month, 1, $year);
-					$end_date = mktime(23, 59, 59, $month, $numofentries, $year);
-			}
+		switch($calendar){
+			case 'year':
+				$start_date = mktime(0, 0, 0, 1, $day, $year);
+				$end_date = mktime(23, 59, 59, 12, $day, $year);
+				$numofentries = 12;
+				break;
+			case 'day':
+				$start_date = mktime(0, 0, 0, $month, $day, $year);
+				$end_date = mktime(23, 59, 59, $month, $day, $year);
+				$numofentries = 24;
+				break;
+			default:
+				$numofentries = self::getNumberOfDays($month, $year);
+				$start_date = mktime(0, 0, 0, $month, 1, $year);
+				$end_date = mktime(23, 59, 59, $month, $numofentries, $year);
+		}
 
-			$this->calendar_struct['date_human'] = date('Y-m-d', $this->calendar_struct['defaultDate']);
-			$this->calendar_struct['day_human'] = $day;
-			$this->calendar_struct['month_human'] = $month;
-			$this->calendar_struct['year_human'] = $year;
-			$this->calendar_struct['numofentries'] = $numofentries;
-			$this->calendar_struct['start_date'] = $start_date;
-			$this->calendar_struct['end_date'] = $end_date;
+		$this->calendar_struct['date_human'] = date('Y-m-d', $this->calendar_struct['defaultDate']);
+		$this->calendar_struct['day_human'] = $day;
+		$this->calendar_struct['month_human'] = $month;
+		$this->calendar_struct['year_human'] = $year;
+		$this->calendar_struct['numofentries'] = $numofentries;
+		$this->calendar_struct['start_date'] = $start_date;
+		$this->calendar_struct['end_date'] = $end_date;
 
 
-			if(!$this->calendar_struct['datefield'] || $this->calendar_struct['datefield'] === '###Published###'){
-				$this->calendar_struct['datefield'] = '###Published###';
-				$calendar_select = ',' . FILE_TABLE . '.Published AS Calendar ';
-				$calendar_where = ' AND (' . FILE_TABLE . '.Published>=' . $start_date . ' AND ' . FILE_TABLE . '.Published<=' . $end_date . ') ';
-			} else {
-				$field = (!empty($matrix) && in_array($this->calendar_struct['datefield'], array_keys($matrix))) ?
-						$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
-						CONTENT_TABLE . '.Dat';
+		if(!$this->calendar_struct['datefield'] || $this->calendar_struct['datefield'] === '###Published###'){
+			$this->calendar_struct['datefield'] = '###Published###';
+			$calendar_select = ',' . FILE_TABLE . '.Published AS Calendar ';
+			$calendar_where = ' AND (' . FILE_TABLE . '.Published>=' . $start_date . ' AND ' . FILE_TABLE . '.Published<=' . $end_date . ') ';
+		} else {
+			$field = ($matrix && in_array($this->calendar_struct['datefield'], array_keys($matrix))) ?
+				$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
+				CONTENT_TABLE . '.Dat';
 
-				$calendar_select = ',' . $field . ' AS Calendar ';
-				$condition = ($condition ? $condition . ' AND ' : '') . $this->calendar_struct['datefield'] . '>=' . $start_date . ' AND ' . $this->calendar_struct['datefield'] . '<=' . $end_date;
-			}
+			$calendar_select = ',' . $field . ' AS Calendar ';
+			$condition = ($condition ? $condition . ' AND ' : '') . $this->calendar_struct['datefield'] . '>=' . $start_date . ' AND ' . $this->calendar_struct['datefield'] . '<=' . $end_date;
 		}
 	}
 
 	function postFetchCalendar(){
-		if($this->calendar_struct['calendar'] != ''){
-			$start = 0;
-			if($this->calendar_struct['calendar'] === 'month_table'){
-				$start = (int) date('w', strtotime(date('Y', $this->calendar_struct['defaultDate']) . '-' . date('m', $this->calendar_struct['defaultDate']) . '-1'));
-				if($this->calendar_struct['weekstart'] != ''){
-					$start = $start - $this->calendar_struct['weekstart'];
-					if($start < 0){
-						$start = 7 + $start;
-					}
+		if(!$this->calendar_struct['calendar']){
+			return;
+		}
+		$start = 0;
+		if($this->calendar_struct['calendar'] === 'month_table'){
+			$start = (int) date('w', strtotime(date('Y', $this->calendar_struct['defaultDate']) . '-' . date('m', $this->calendar_struct['defaultDate']) . '-1'));
+			if($this->calendar_struct['weekstart'] != ''){
+				$start = $start - $this->calendar_struct['weekstart'];
+				if($start < 0){
+					$start = 7 + $start;
 				}
 			}
-			$this->anz = $this->calendar_struct['numofentries'] + $start;
-			$this->anz_all = $this->anz;
-
-			switch($this->calendar_struct['calendar']){
-				case 'day':
-					$this->calendar_struct['calendarCount'] = -1;
-					break;
-				case 'month_table':
-					$this->calendar_struct['calendarCount'] = 0 - $start;
-					$rest = $this->cols - ($this->anz % $this->cols);
-					if($rest < $this->cols){
-						$this->anz+=$rest;
-						$this->anz_all+=$rest;
-					}
-					break;
-				default:
-					$this->calendar_struct['calendarCount'] = 0;
-			}
-
-			$this->calendar_struct['date'] = -1;
 		}
+		$this->anz = $this->calendar_struct['numofentries'] + $start;
+		$this->anz_all = $this->anz;
+
+		switch($this->calendar_struct['calendar']){
+			case 'day':
+				$this->calendar_struct['calendarCount'] = -1;
+				break;
+			case 'month_table':
+				$this->calendar_struct['calendarCount'] = 0 - $start;
+				$rest = $this->cols - ($this->anz % $this->cols);
+				if($rest < $this->cols){
+					$this->anz+=$rest;
+					$this->anz_all+=$rest;
+				}
+				break;
+			default:
+				$this->calendar_struct['calendarCount'] = 0;
+		}
+
+		$this->calendar_struct['date'] = -1;
 	}
 
 	/**
@@ -585,11 +585,11 @@ abstract class we_listview_base{
 			case 8:
 			case 10:
 			case 12:
-				return '31';
+				return 31;
 			case 2:
-				return ($year % 4) == 0 ? '29' : '28';
+				return ($year % 4) == 0 ? 29 : 28;
 			default:
-				return '30';
+				return 30;
 		}
 	}
 

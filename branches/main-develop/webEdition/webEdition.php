@@ -192,9 +192,8 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 			fenster = window;
 		}
 		//  the actual position is the top-window, maybe the first window was closed
-		if (!fenster.top.opener || /*fenster.top.opener.win || FIXME: what is win??*/ fenster.top.opener.closed) {
+		if (!fenster.top.opener || fenster.top.opener.isLoginScreen || /*fenster.top.opener.win || FIXME: what is win??*/ fenster.top.opener.closed) {
 			top.weEditorFrameController.openDocument(table, id, ct);
-
 		} else {
 			//  If a include-file is edited and another link is chosen, it will appear on the main window. And the pop-up will be closed.
 <?php echo we_message_reporting::getShowMessageCall(g_l('SEEM', '[open_link_in_SEEM_edit_include]'), we_message_reporting::WE_MESSAGE_WARNING); ?>
@@ -1438,6 +1437,4 @@ if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!isset($SEEM_
 	session_write_close();
 // trigger scheduler
 	we_schedpro::trigger_schedule();
-	// make the we_backup dir writable for all, so users can copy backupfiles with ftp in it
-//	@chmod($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR, 0777);
 }

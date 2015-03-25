@@ -1647,7 +1647,7 @@ class we_document extends we_root{
 
 	private function getNavigationItems(){
 		if($this->Table == FILE_TABLE && $this->ID && $this->InWebEdition){
-			$this->DB_WE->query('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STPYE_DOCLINK . '") OR (IsFolder=1)) AND LinkID=' . intval($this->ID));
+			$this->DB_WE->query('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STPYE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . we_navigation_navigation::STPYE_DOCLINK . '")) AND LinkID=' . intval($this->ID));
 			return $this->DB_WE->getAll(true);
 		}
 		return array();
@@ -1669,6 +1669,20 @@ class we_document extends we_root{
 	 */
 	public function setEditorPersistent($name, $value){
 		$this->editorSaves[$name] = $value;
+	}
+
+	protected static function makeBlockName($block, $field){
+		$block = str_replace('[0-9]+', '####BLOCKNR####', $block);
+		$field = str_replace('[0-9]+', '####BLOCKNR####', $field);
+		$out = preg_quote($field . 'blk_' . $block . '__') . '[0-9]+';
+		return str_replace('####BLOCKNR####', '[0-9]+', $out);
+	}
+
+	protected static function makeLinklistName($block, $field){
+		$block = str_replace('[0-9]+', '####BLOCKNR####', $block);
+		$field = str_replace('[0-9]+', '####BLOCKNR####', $field);
+		$out = preg_quote($field . $block . '_TAGS_') . '[0-9]+';
+		return str_replace('####BLOCKNR####', '[0-9]+', $out);
 	}
 
 }

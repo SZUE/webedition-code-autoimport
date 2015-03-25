@@ -1,15 +1,15 @@
-###UPDATEDROPCOL(UserTable,###TBLPREFIX###UserTable)###
+###UPDATEDROPCOL(UserTable,###TBLPREFIX###tblNewsletterLog)###
 /* query separator */
-###UPDATEDROPCOL(expires,###TBLPREFIX###UserTable)###
+###UPDATEDROPCOL(expires,###TBLPREFIX###tblNewsletterLog)###
 /* query separator */
-###UPDATEDROPCOL(token,###TBLPREFIX###UserTable)###
+###UPDATEDROPCOL(token,###TBLPREFIX###tblNewsletterLog)###
 /* query separator */
-###UPDATEDROPCOL(password,###TBLPREFIX###UserTable)###
+###UPDATEDROPCOL(password,###TBLPREFIX###tblNewsletterLog)###
 /* query separator */
-###UPDATEDROPCOL(loginPage,###TBLPREFIX###UserTable)###
+###UPDATEDROPCOL(loginPage,###TBLPREFIX###tblNewsletterLog)###
 /* query separator */
 
-CREATE TABLE ###TBLPREFIX###UserTable (
+CREATE TABLE ###TBLPREFIX###tblNewsletterLog (
   ID bigint(20) unsigned NOT NULL auto_increment,
   NewsletterID int(11) unsigned NOT NULL default '0',
   stamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -23,4 +23,7 @@ CREATE TABLE ###TBLPREFIX###UserTable (
 ###ONCOL(LogTime,###TBLPREFIX###tblNewsletterLog) UPDATE ###TBLPREFIX###tblNewsletterLog SET stamp=FROM_UNIXTIME(LogTime);###
 
 /* query separator */
-###UPDATEDROPCOL(LogTime,###TBLPREFIX###UserTable)###
+###UPDATEDROPCOL(LogTime,###TBLPREFIX###tblNewsletterLog)###
+
+/* query separator */
+###UPDATEONLY###DROP TABLE IF EXISTS ###TBLPREFIX###UserTable;

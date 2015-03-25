@@ -43,7 +43,7 @@ abstract class we_updater{
 		}
 	}
 
-	private static function updateTables($DB_WE = null){
+	public static function updateTables($DB_WE = null){ // update6360.php
 		$db2 = new DB_WE();
 		$tables = $db2->table_names(TBL_PREFIX . 'tblOwner');
 		$DB_WE = $DB_WE ? : new DB_WE(); //old code calls without object
@@ -140,7 +140,7 @@ abstract class we_updater{
 		}
 	}
 
-	public static function updateUsers($DB_WE){ // from 6300/update6300.php
+	public static function updateUsers($DB_WE = null){ // from 6300/update6300.php
 		$DB_WE = $DB_WE? : new DB_WE();
 		self::fix_user($DB_WE);
 
@@ -380,9 +380,9 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 			while($db->next_record()){
 				$data = unserialize($db->f('Catfields'));
 				$udb->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
-							'Title' => $data['default']['Title'],
-							'Description' => $data['default']['Description'],
-						)) . ' WHERE ID=' . $db->f('ID'));
+						'Title' => $data['default']['Title'],
+						'Description' => $data['default']['Description'],
+					)) . ' WHERE ID=' . $db->f('ID'));
 			}
 			$db->delCol(CATEGORY_TABLE, 'Catfields');
 		}

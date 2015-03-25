@@ -42,11 +42,11 @@ class rpcCmd{
 	const STATUS_NO_SESSION = 7;
 	const STATUS_NO_VIEW = 8;
 
-	var $CmdShell;
-	var $ExtraViews = array();
-	var $Permissions = array();
-	var $Status = self::STATUS_OK;
-	var $Parameters = array();
+	protected $CmdShell;
+	protected $ExtraViews = array();
+	protected $Permissions = array();
+	protected $Status = self::STATUS_OK;
+	protected $Parameters = array();
 
 	function rpcCmd($shell){
 		$this->checkSession();
@@ -61,18 +61,7 @@ class rpcCmd{
 		$this->CmdShell = $shell;
 	}
 
-	function stripSlashes(&$arr){
-		foreach($arr as $n => $v){
-			if(is_array($v)){
-				rpcCmd::stripSlashes($arr[$n]);
-			} else {
-				$arr[$n] = stripslashes($v);
-			}
-		}
-	}
-
 	function execute(){
-
 		return new rpcResponse();
 	}
 
@@ -95,4 +84,7 @@ class rpcCmd{
 		return true;
 	}
 
+	public function getStatus(){
+		return $this->Status;
+	}
 }

@@ -70,7 +70,7 @@ class we_shop_vatRule{
 				// now check additional fields
 				foreach($this->conditionalRules as $rule){
 					$ret = $rule['returnValue'] === 'true' ? true : false;
-					$field = $customer[$rule['customerField']];
+					$field = $rule['customerField'] ? $customer[$rule['customerField']] : '';
 
 					if(in_array($state, $rule['states'])){
 						switch($rule['condition']){
@@ -87,7 +87,7 @@ class we_shop_vatRule{
 		return ($this->defaultValue === 'true' ? true : false);
 	}
 
-	public static function initByRequest(){//FIXME: this is unchecked
+	public static function initByRequest(){
 		return new self(
 			we_base_request::_(we_base_request::STRING, 'defaultValue'), we_base_request::_(we_base_request::STRING, 'stateField'), self::makeArrayFromReq(we_base_request::_(we_base_request::STRING, 'liableToVat')), self::makeArrayFromReq(we_base_request::_(we_base_request::STRING, 'notLiableToVat')), self::makeArrayFromConditionField(), we_base_request::_(we_base_request::STRING, 'stateFieldIsISO')
 		);

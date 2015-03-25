@@ -176,6 +176,9 @@ function we_cmd() {
 
 			')) . '
 		break;
+		case "move_abs":
+			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&cmd="+arguments[0]+"&pos="+arguments[1];
+		break;
 		case "move_up":
 		case "move_down":
 			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&cmd="+arguments[0];
@@ -539,7 +542,7 @@ function setStaticSelection(value){
 	if(value=="' . we_navigation_navigation::STPYE_CATEGORY . '"){
 		setVisible("dynUrl",true);
 		setVisible("dynamic_LinkSelectionDiv",true);
-		dynamic_setLinkSelection("intern");
+		dynamic_setLinkSelection("' . we_navigation_navigation::LSELECTION_INTERN . '");
 	} else {
 
 		setVisible("dynUrl",false);
@@ -564,10 +567,10 @@ function setStaticSelection(value){
 
 		if(value=="' . we_navigation_navigation::STYPE_URLLINK . '") {
 			setVisible("LinkSelectionDiv",false);
-			setLinkSelection("extern");
+			setLinkSelection("' . we_navigation_navigation::LSELECTION_EXTERN . '");
 		} else if(value=="' . we_navigation_navigation::STPYE_CATLINK . '") {
 			setVisible("LinkSelectionDiv",true);
-			setLinkSelection("intern");
+			setLinkSelection("' . we_navigation_navigation::LSELECTION_INTERN . '");
 		}
 
 	}
@@ -671,6 +674,13 @@ function submitForm() {
 	}
 	f.submit();
 }';
+	}
+
+	function getEditNaviPosition(){
+		$this->db->query('SELECT Ordn,Text FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . $this->Model->ParentID . ' ORDER BY Ordn');
+		$values = $this->db->getAllFirst(false);
+		$values[-1] = g_l('navigation','[end]');
+		return $values;
 	}
 
 	function processCommands(){
@@ -792,7 +802,7 @@ function submitForm() {
 					if($this->Model->hasDynChilds()){
 						$_old_items = $this->Model->depopulateGroup();
 						foreach($_old_items as $_id){
-							$js .= $this->topFrame . '.deleteEntry(' . $_id['id'] . ');';
+							$js .= $this->topFrame . '.deleteEntry(' . $_id['ID'] . ');';
 						}
 					}
 					$_items = $this->Model->populateGroup($_old_items);
@@ -805,7 +815,7 @@ function submitForm() {
 					if($this->Model->hasDynChilds()){
 						$_old_items = $this->Model->depopulateGroup();
 						foreach($_old_items as $_id){
-							$js .= $this->topFrame . '.deleteEntry(' . $_id['id'] . ');';
+							$js .= $this->topFrame . '.deleteEntry(' . $_id['ID'] . ');';
 						}
 					}
 				}
@@ -859,13 +869,17 @@ function submitForm() {
 			case 'switchPage':
 
 				break;
-			case 'move_up' :
-				if($this->Model->reorderUp()){
-					echo we_html_element::jsElement('
-								' .
+			case 'move_abs':
+				if($this->Model->reorderAbs(we_base_request::_(we_base_request::INT, 'pos'))){
+					$posVals = $this->getEditNaviPosition();
+					$posText = '';
+					foreach($posVals as $val => $text){
+						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
+					}
+
+					echo we_html_element::jsElement(
 						$this->editorBodyForm . '.Ordn.value=' . ($this->Model->Ordn + 1) . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
-
 								' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
 								' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
 
@@ -873,8 +887,30 @@ function submitForm() {
 									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "disabled");
 								} else {
 									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
-								}
-								'
+								}' .
+						$this->editorBodyForm . '.Position.innerHTML=\'' . $posText . '\';'
+					);
+				}
+				break;
+			case 'move_up' :
+				if($this->Model->reorderUp()){
+					$posVals = $this->getEditNaviPosition();
+					$posText = '';
+					foreach($posVals as $val => $text){
+						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
+					}
+					echo we_html_element::jsElement(
+						$this->editorBodyForm . '.Ordn.value=' . ($this->Model->Ordn + 1) . ';' .
+						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
+								' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
+								' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
+
+								if(' . $this->editorBodyForm . '.Ordn.value==1){
+									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "disabled");
+								} else {
+									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
+								}' .
+						$this->editorBodyForm . '.Position.innerHTML=\'' . $posText . '\';'
 					);
 				}
 				break;
@@ -882,8 +918,12 @@ function submitForm() {
 				if($this->Model->reorderDown()){
 					$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db);
 					$_num = f('SELECT MAX(Ordn) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), 'OrdCount', $this->db);
-					echo we_html_element::jsElement('
-									' .
+					$posVals = $this->getEditNaviPosition();
+					$posText = '';
+					foreach($posVals as $val => $text){
+						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
+					}
+					echo we_html_element::jsElement(
 						$this->editorBodyForm . '.Ordn.value=' . ($this->Model->Ordn + 1) . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
 									' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
@@ -892,8 +932,8 @@ function submitForm() {
 										' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "disabled");
 									} else {
 										' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
-									}
-									'
+								}' .
+						$this->editorBodyForm . '.Position.innerHTML=\'' . $posText . '\';'
 					);
 				}
 				break;
@@ -1094,7 +1134,6 @@ function submitForm() {
 		}
 
 		if($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){
-
 			if(($wid = we_base_request::_(we_base_request::INT, 'WorkspaceIDClass')) !== false){
 				$this->Model->WorkspaceID = $wid;
 			}
@@ -1111,8 +1150,9 @@ function submitForm() {
 			}
 		}
 
+
 		if($this->Model->IsFolder == 0){
-			$this->Model->Charset = $this->Model->findCharset($this->Model->ParentID | 0);
+			$this->Model->Charset = $this->Model->findCharset($this->Model->ParentID);
 		}
 
 		if(($code = we_base_request::_(we_base_request::RAW_CHECKED, 'previewCode'))){

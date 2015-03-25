@@ -93,34 +93,32 @@ class we_navigation_item{
 
 		$this->limitaccess = $limitaccess;
 		$this->customers = $customers;
-		$db = new DB_WE();
 		switch($this->table){
 			case FILE_TABLE:
-				list($__path) = explode((strpos($this->href, '#') !== false && strpos($this->href, '?') === false ? '#' : '?'), $this->href);
+				list($path) = explode((strpos($this->href, '#') !== false && strpos($this->href, '?') === false ? '#' : '?'), $this->href);
 
-				$__id = path_to_id($__path, FILE_TABLE);
-				if($__id){
-					$this->visible = (f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', '', $db));
+				$id = path_to_id($path, FILE_TABLE);
+				if($id){
+					$this->visible = (f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0'));
 				}
 				if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES){
 					$mypath = id_to_path($this->docid, FILE_TABLE);
 					$mypath_parts = pathinfo($mypath);
 					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->visible = ( f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', '', $db));
+						$this->visible = ( f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0'));
 					}
 				}
 				break;
 
 			// #6916
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				$__id = $this->docid;
-				$this->visible = (f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($__id) . ' AND Published>0', '', $db));
+				$this->visible = (f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0'));
 
 				if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES){
 					$mypath = id_to_path($this->docid, OBJECT_FILES_TABLE);
 					$mypath_parts = pathinfo($mypath);
 					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->visible = (f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0', '', $db));
+						$this->visible = (f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0'));
 					}
 				}
 				break;
@@ -168,10 +166,9 @@ class we_navigation_item{
 	}
 
 	function isCurrent(we_navigation_items $weNavigationItems){
-		$thishref = $this->href;
 		if(isset($_SERVER['REQUEST_URI']) && ($this->CurrentOnAnker || $this->CurrentOnUrlPar)){
 			$uri = parse_url(str_replace('&amp;', '&', $_SERVER['REQUEST_URI']));
-			$ref = parse_url(str_replace('&amp;', '&', $thishref));
+			$ref = parse_url(str_replace('&amp;', '&', $this->href));
 			if($uri['path'] == $ref['path']){
 				$allfound = true;
 				if($this->CurrentOnAnker || $this->CurrentOnUrlPar){
@@ -196,7 +193,7 @@ class we_navigation_item{
 				}
 				if($allfound){
 					$this->setCurrent($weNavigationItems);
-				} elseif($this->current == true){
+				} elseif($this->current){
 					$this->unsetCurrent($weNavigationItems);
 				}
 				return $allfound;
@@ -219,7 +216,7 @@ class we_navigation_item{
 			$this->setCurrent($weNavigationItems);
 			return true;
 		}
-		if($this->current == true){
+		if($this->current){
 			$this->unsetCurrent($weNavigationItems);
 		}
 		return false;
@@ -391,28 +388,28 @@ if (window.screen) {
 	}else{
 		we_winOpts=\'\';
 	};';
-		} elseif($this->attributes['popup_xposition'] != '' || $this->attributes['popup_yposition'] != ''){
+		} elseif($this->attributes['popup_xposition'] || $this->attributes['popup_yposition']){
 			if($this->attributes['popup_xposition'] != ''){
 				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $this->attributes['popup_xposition'] . '\';';
 			}
-			if($this->attributes['popup_yposition'] != ''){
+			if($this->attributes['popup_yposition']){
 				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $this->attributes['popup_yposition'] . '\';';
 			}
 		}
-		if(isset($this->attributes['popup_width']) && $this->attributes['popup_width'] != ''){
+		if(isset($this->attributes['popup_width']) && $this->attributes['popup_width']){
 			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $this->attributes['popup_width'] . '\';';
 		}
 
-		if(isset($this->attributes['popup_height']) && $this->attributes['popup_height'] != ''){
+		if(isset($this->attributes['popup_height']) && $this->attributes['popup_height']){
 			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $this->attributes['popup_height'] . '\';';
 		}
 
-		$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ((isset($this->attributes['popup_status']) && $this->attributes['popup_status'] != '') ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',scrollbars=' . ((isset($this->attributes['popup_scrollbars']) && $this->attributes['popup_scrollbars'] != '') ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',menubar=' . ((isset($this->attributes['popup_menubar']) && $this->attributes['popup_menubar'] != '') ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',resizable=' . ((isset($this->attributes['popup_resizable']) && $this->attributes['popup_resizable'] != '') ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',location=' . ((isset($this->attributes['popup_location']) && $this->attributes['popup_location'] != '') ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',toolbar=' . ((isset($this->attributes['popup_toolbar']) && $this->attributes['popup_toolbar'] != '') ? 'yes' : 'no') . '\';' .
+		$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ((isset($this->attributes['popup_status']) && $this->attributes['popup_status']) ? 'yes' : 'no') . '\';' .
+				'we_winOpts += \',scrollbars=' . ((isset($this->attributes['popup_scrollbars']) && $this->attributes['popup_scrollbars']) ? 'yes' : 'no') . '\';' .
+				'we_winOpts += \',menubar=' . ((isset($this->attributes['popup_menubar']) && $this->attributes['popup_menubar']) ? 'yes' : 'no') . '\';' .
+				'we_winOpts += \',resizable=' . ((isset($this->attributes['popup_resizable']) && $this->attributes['popup_resizable']) ? 'yes' : 'no') . '\';' .
+				'we_winOpts += \',location=' . ((isset($this->attributes['popup_location']) && $this->attributes['popup_location']) ? 'yes' : 'no') . '\';' .
+				'we_winOpts += \',toolbar=' . ((isset($this->attributes['popup_toolbar']) && $this->attributes['popup_toolbar']) ? 'yes' : 'no') . '\';' .
 				"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
 
 		$attributes = removeAttribs($attributes, array(

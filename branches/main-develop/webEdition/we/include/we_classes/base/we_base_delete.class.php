@@ -67,7 +67,10 @@ abstract class we_base_delete{
 
 		$DB_WE = ($DB_WE ? : new DB_WE());
 		$path = $path ? : f('SELECT Path FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), '', $DB_WE);
-
+		if(!$path){
+			return false;
+		}
+		
 		if($delR){ // recursive delete
 			$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id));
 			$toDeleteArray = array();
