@@ -47,6 +47,8 @@ class we_search_view{
 	var $searchclassExp;
 	private $searchMediaOptFieldIndex = 0;
 
+	private $view = 'list';
+
 	public function __construct($frameset = '', $topframe = 'top'){
 		$this->toolName = 'weSearch';
 		$this->db = new DB_WE();
@@ -1476,7 +1478,7 @@ weSearch.g_l = {
 		);
 	}
 
-	private function makeContent($_result, $view, $whichSearch){
+	private function makeContent($_result = array(), $view = self::VIEW_LIST, $whichSearch = self::SEARCH_DOCS){
 		$DB_WE = new DB_WE();
 
 		$content = array();
@@ -1509,7 +1511,7 @@ weSearch.g_l = {
 			$Icon = we_base_ContentTypes::getIcon($_result[$f]["ContentType"], we_base_ContentTypes::FILE_ICON, $ext);
 			$foundInVersions = isset($_result[$f]["foundInVersions"]) ? makeArrayFromCSV($_result[$f]["foundInVersions"]) : "";
 
-			if($view == 'list'){
+			if(!$view || $view == self::VIEW_LIST){
 				if(is_array($foundInVersions) && !empty($foundInVersions)){
 
 					rsort($foundInVersions);
@@ -1582,7 +1584,8 @@ weSearch.g_l = {
 						case we_base_ContentTypes::FLASH:
 						case we_base_ContentTypes::APPLICATION:
 							$actionCheckbox = '';
-							if(empty($usedMedia = $this->searchclass->getUsedMedia())){// FIXME: this is used, because usedMedia is not written to session
+							$usedMedia = $this->searchclass->getUsedMedia();
+							if(empty($usedMedia)){// FIXME: this is used, because usedMedia is not written to session
 								$this->searchclass->searchMediaLinks(0, FILE_TABLE, true);
 							}
 							if(($_result[$f]["ContentType"] !== we_base_ContentTypes::APPLICATION || $_result[$f]["Extension"] === '.pdf') && !in_array($_result[$f]["docID"], $this->searchclass->getUsedMedia())){
@@ -1594,7 +1597,7 @@ weSearch.g_l = {
 							$actionCheckbox = '';
 					}
 				}
-				
+
 				$iconHTML = $this->getHtmlIconThmubnail($_result[$f]);
 
 				$content[$f] = $whichSearch !== self::SEARCH_MEDIA ?
@@ -1732,10 +1735,10 @@ weSearch.g_l = {
 	}
 	
 	function getHtmlIconThmubnail($file, $smallSize = 64, $bigSize = 140){
-		$Icon = we_base_ContentTypes::getIcon($_result[$f]["ContentType"], we_base_ContentTypes::FILE_ICON, $ext);
+		$Icon = we_base_ContentTypes::inst()->getIcon($file["ContentType"], we_base_ContentTypes::FILE_ICON, $file['Extension']);
 		$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) : 0;
 		$filesize = we_base_file::getHumanFileSize($fs);
-		
+
 		if($file["ContentType"] == we_base_ContentTypes::IMAGE){
 
 			if($fs > 0){
@@ -1759,6 +1762,7 @@ weSearch.g_l = {
 				$imageViewPopup = "<img src='" . $thumbpath . "' border='0' />";
 			}
 		} else {
+			$Icon = we_base_ContentTypes::inst()->getIcon($file["ContentType"], we_base_ContentTypes::FILE_ICON, $file['Extension']);
 			$imagesize = array(0, 0);
 			$imageView = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
 			$imageViewPopup = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
@@ -2265,7 +2269,7 @@ weSearch.g_l = {
 
 	function tblList($content, $headline, $whichSearch){
 		$class = "middlefont";
-		$view = 0;
+		$view = self::VIEW_LIST;
 
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
@@ -2323,12 +2327,12 @@ weSearch.g_l = {
 		return $out;
 	}
 
-	public function tabListContent($view = "", $content = "", $class = "", $whichSearch = ""){
+	public function tabListContent($view = self::VIEW_LIST, $content = "", $class = "", $whichSearch = ""){
 		$x = count($content);
 		switch($view){
 			default:
 			case self::VIEW_LIST:
-				$out = '<table style="table-layout:fixed;white-space:nowrap;border:0px;width:100%;padding:0 0 0 0;margin:0 0 0 0;">'.
+				$out = '<table style="table-layout:fixed;white-space:nowrap;border:0px;width:100%;padding:0 0 0 0;margin:0 0 0 0;">';
 				$out .= $whichSearch !== self::SEARCH_MEDIA ? '
 <colgroup>
 <col style="width:30px;text-align:center;"/>

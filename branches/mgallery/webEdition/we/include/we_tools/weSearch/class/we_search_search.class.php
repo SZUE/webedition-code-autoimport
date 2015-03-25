@@ -713,7 +713,7 @@ class we_search_search extends we_search_base{
 		$fields = $holdAllLinks ? 'ID,DocumentTable,remObj' : 'DISTINCT remObj';
 		$_db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' WHERE type = "media" AND remTable = "' . stripTblPrefix(FILE_TABLE) . '" AND position = 0' );
 
-		$this->usedMediaLinks = array();
+		$this->usedMediaLinks = $IDs = array();
 		if($holdAllLinks){
 			while($_db->next_record()){
 				$rec = $_db->getRecord();
