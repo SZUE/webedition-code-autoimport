@@ -227,7 +227,7 @@ function doKeyDown() {
 
 		foreach($this->args as $k => $v){
 			if(!in_array($k, $this->changeableArgs)){
-				$hiddenArgs .= '<input type="hidden" name="we_dialog_args[' . $k . ']" value="' . oldHtmlspecialchars($v) . '" />';
+				$hiddenArgs .= we_html_element::htmlHidden('we_dialog_args[' . $k . ']', $v);
 			}
 		}
 		return $hiddenArgs;
@@ -354,7 +354,7 @@ self.focus();');
 	}
 
 	function getClassSelect(){
-		$clSelect = new we_html_select(array("name" => "we_dialog_args[cssclass]", "id" => "we_dialog_args[cssclass]", "size" => 1, "style" => "width: 300px;",'class'=>'defaultfont'));
+		$clSelect = new we_html_select(array("name" => "we_dialog_args[cssclass]", "id" => "we_dialog_args[cssclass]", "size" => 1, "style" => "width: 300px;", 'class' => 'defaultfont'));
 		$clSelect->addOption("", g_l('wysiwyg', '[none]'));
 		$classesCSV = trim($this->args["cssclasses"], ",");
 		if(!empty($classesCSV)){
@@ -366,7 +366,7 @@ self.focus();');
 			$clSelect->selectOption($this->args["cssclass"]);
 		}
 
-		return $clSelect->getHTML() . '<input type="hidden" name="we_dialog_args[cssclasses]" value="' . oldHtmlspecialchars($classesCSV) . '" />';
+		return $clSelect->getHTML() . we_html_element::htmlHidden("we_dialog_args[cssclasses]",$classesCSV);
 	}
 
 }

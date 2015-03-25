@@ -484,7 +484,7 @@ class we_folder extends we_root{
 						, true, 100, 22, "", "", !empty($_disabledNote));
 
 		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
-			$this->htmlHidden($idname, $this->CopyID) . $but . '</td></tr>
+			we_html_element::htmlHidden($idname, $this->CopyID) . $but . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(409, 2) . '</td><td></td></tr></table>';
 	}
 

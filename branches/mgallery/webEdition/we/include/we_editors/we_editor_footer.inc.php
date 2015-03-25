@@ -183,8 +183,8 @@ if(inWorkflow($we_doc)){
 <body id="footerBody" onload="we_footerLoaded();">
 	<form name="we_form" action=""<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onsubmit="sub();
 				return false;"<?php } ?>>
-		<input type="hidden" name="sel" value="<?php echo $we_doc->ID; ?>" />
 		<?php
+		echo we_html_element::htmlHidden('sel',$we_doc->ID);
 		$_SESSION['weS']['seemForOpenDelSelector']['ID'] = $we_doc->ID;
 		$_SESSION['weS']['seemForOpenDelSelector']['Table'] = $we_doc->Table;
 

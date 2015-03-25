@@ -92,7 +92,7 @@ class we_export_export extends weModelBase{
 		$new = array();
 		$db = new DB_WE();
 		foreach($idsarr as $id){
-			if(f('SELECT ' . $db->escape($idfield) . ' FROM ' . $db->escape($table) . ' WHERE ' . $db->escape($idfield) . '=\'' . (is_numeric($id) ? $id : $db->escape($id)) . '\';', $idfield, $db)){
+			if(f('SELECT ' . $db->escape($idfield) . ' FROM ' . $db->escape($table) . ' WHERE ' . $db->escape($idfield) . '=\'' . (is_numeric($id) ? $id : $db->escape($id)) . '\'', $idfield, $db)){
 				$new[] = $id;
 			}
 		}

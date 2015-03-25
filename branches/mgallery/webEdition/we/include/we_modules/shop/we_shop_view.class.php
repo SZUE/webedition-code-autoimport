@@ -39,11 +39,6 @@ class we_shop_view{
 		//$this->raw = new weShop();
 	}
 
-	//----------- Utility functions ------------------
-
-	function htmlHidden($name, $value = ''){
-		return we_html_element::htmlHidden(trim($name), oldHtmlspecialchars($value));
-	}
 
 	//-----------------Init -------------------------------
 
@@ -59,10 +54,12 @@ class we_shop_view{
 
 
 	function getCommonHiddens($cmds = array()){
-		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
-			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
-			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
-			$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : ''));
+		return we_html_element::htmlHiddens(array(
+				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
+				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
+				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : ''),
+				'tabnr' => (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')
+		));
 	}
 
 	function getJSTop_tmp(){//taken from old edit_shop_frameset.php

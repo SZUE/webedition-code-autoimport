@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_chooser_multiDirAndTemplate extends we_chooser_multiDir{
-
 	var $tmplcsv = "";
 	var $tmplSelectName = "";
 	var $mustTemplateIDs = "";
@@ -82,9 +81,8 @@ class we_chooser_multiDirAndTemplate extends we_chooser_multiDir{
 				if($this->isEditable()){
 					$tmplSelect = we_html_tools::htmlSelect($this->tmplSelectName . "_" . $this->nr, $this->tmplValsArr, 1, isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "", false, array("onchange" => 'if(_EditorFrame) {_EditorFrame.setEditorIsHot(true);}'));
 					return '<tr><td></td><td><span class="small"><b>' . g_l('weClass', '[template]') . ':</b></span><br/>' . $tmplSelect . '</td><td valign="bottom">' . $but . '</td></tr>';
-				} else {
-					return '<tr><td></td><td class="' . $this->css . '"><span class="small"><b>' . g_l('weClass', '[template]') . ':</b></span><br/>' . $path . '<input type="hidden" name="' . $this->tmplSelectName . "_" . $this->nr . '" value="' . (isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "") . '" /></td><td valign="bottom">' . $but . '</td></tr>';
 				}
+				return '<tr><td></td><td class="' . $this->css . '"><span class="small"><b>' . g_l('weClass', '[template]') . ':</b></span><br/>' . $path . we_html_element::htmlHidden($this->tmplSelectName . "_" . $this->nr, (isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "")) . '" /></td><td valign="bottom">' . $but . '</td></tr>';
 		}
 	}
 

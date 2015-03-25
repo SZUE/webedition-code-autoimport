@@ -155,7 +155,7 @@ class liveUpdateHttp{
 				return liveUpdateHttp::getCurlHttpResponse($server, $url, $parameters);
 			default:
 				return null; // return null otherwise php error
-				//'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
+			//'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
 		}
 	}
 
@@ -182,11 +182,12 @@ class liveUpdateHttp{
 	' . LIVEUPDATE_CSS . '
 <head>
 <body onload="document.getElementById(\'liveUpdateForm\').submit();">
-<form id="liveUpdateForm" action="https://' . LIVEUPDATE_SERVER . LIVEUPDATE_SERVER_SCRIPT . '" method="post">
-	<input type="hidden" name="update_cmd" value="startSession" /><br />
-	<input type="hidden" name="next_cmd" value="' . we_base_request::_(we_base_request::STRING, 'update_cmd') . '" />
-	<input type="hidden" name="detail" value="' . we_base_request::_(we_base_request::STRING, 'detail') . '" />
-	' . $params . '
+<form id="liveUpdateForm" action="https://' . LIVEUPDATE_SERVER . LIVEUPDATE_SERVER_SCRIPT . '" method="post">' .
+			we_html_element::htmlHiddens(array(
+				"update_cmd" => "startSession",
+				"next_cmd" => we_base_request::_(we_base_request::STRING, 'update_cmd'),
+				"detail" => we_base_request::_(we_base_request::STRING, 'detail')
+			)) . $params . '
 </form>
 </body>
 </html>';

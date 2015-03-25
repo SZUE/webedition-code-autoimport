@@ -362,7 +362,7 @@ function doUnload() {
 			foreach(array_keys($fields) as $name){
 				list($valpre, $valpost) = $this->_getIndexOfValues($values, $name);
 				$content[] = array(
-					array('dat' => oldHtmlspecialchars($name) . '<input type="hidden" name="fields[' . $i . '][name]" value="' . oldHtmlspecialchars($name) . '" />'),
+					array('dat' => oldHtmlspecialchars($name) . we_html_element::htmlHidden('fields[' . $i . '][name]', $name)),
 					array('dat' => '<textarea name="fields[' . $i . '][pre]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars($valpre) . '</textarea>'),
 					array('dat' => '<textarea name="fields[' . $i . '][post]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars($valpost) . '</textarea>'),
 				);
@@ -449,9 +449,10 @@ function doUnload() {
 
 		$bodyhtml = '<body class="weDialogBody">
 					<iframe style="position:absolute;top:-2000px;" src="about:blank" id="iloadframe" name="iloadframe" width="400" height="200"></iframe>
-					<form onsubmit="return false;" name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '" target="iloadframe">
-					<input type="hidden" name="we_cmd[0]" value="siteImportSaveWePageSettings" />
-					<input type="hidden" name="ok" value="1" />' . we_html_multiIconBox::getJS();
+					<form onsubmit="return false;" name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '" target="iloadframe">' .
+			we_html_element::htmlHiddens(array(
+				"we_cmd[0]" => "siteImportSaveWePageSettings",
+				"ok" => 1)) . we_html_multiIconBox::getJS();
 
 		$okbutton = we_html_button::create_button("ok", "javascript:if(checkForm()){document.we_form.submit();}");
 		$cancelbutton = we_html_button::create_button("cancel", "javascript:self.close()");

@@ -56,10 +56,12 @@ echo $headCal .
 			array("html" => "<div id='parametersTop'>" . doclistView::getSearchParameterTop($foundItems) . '</div>' . $view->tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . doclistView::getSearchParameterBottom($GLOBALS['we_doc']->Table,$foundItems) . "</div>"),
 		);
 
-		echo doclistView::getHTMLforDoclist($_parts);
+		echo doclistView::getHTMLforDoclist($_parts).
+			we_html_element::htmlHiddens(array(
+				"obj"=>1,
+				"we_complete_request"=>1
+			));
 		?>
-		<input type="hidden" name="obj" value="1"/>
-		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body>
 </html>

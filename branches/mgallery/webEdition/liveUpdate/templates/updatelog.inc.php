@@ -55,10 +55,11 @@ if($this->Data['allEntries']){ // entries exist
 	// there are entries available -> show them in table
 	$start = $this->Data['start'];
 	$content = '
-<form name="we_form">
-<input type="hidden" name="section" value="' . we_base_request::_(we_base_request::STRING, 'section') . '" />
-<input type="hidden" name="log_cmd" value="dummy" />
-<input type="hidden" name="start" value="' . $start . '" />
+<form name="we_form">' . we_html_element::htmlHiddens(array(
+			"section" => we_base_request::_(we_base_request::STRING, 'section'),
+			"log_cmd" => "dummy",
+			"start" => $start
+		)) . '
 <table class="defaultfont" width="100%">
 <tr>
 	<td>' . g_l('liveUpdate', '[updatelog][entriesTotal]') . ': ' . $this->Data['amountEntries'] . '</td>

@@ -46,7 +46,6 @@ class we_search_view{
 	var $searchclass;
 	var $searchclassExp;
 	private $searchMediaOptFieldIndex = 0;
-
 	private $view = 'list';
 
 	public function __construct($frameset = '', $topframe = 'top'){
@@ -1572,7 +1571,7 @@ weSearch.g_l = {
 										'PUBLISH') && f('SELECT 1 FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]["docID"]), '', $DB_WE)) ? we_html_forms::checkbox(
 											$_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_" . $whichSearch, "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '');
 							break;
-							default:
+						default:
 							$actionCheckbox = '';
 					}
 				} else {
@@ -1589,8 +1588,8 @@ weSearch.g_l = {
 								$this->searchclass->searchMediaLinks(0, FILE_TABLE, true);
 							}
 							if(($_result[$f]["ContentType"] !== we_base_ContentTypes::APPLICATION || $_result[$f]["Extension"] === '.pdf') && !in_array($_result[$f]["docID"], $this->searchclass->getUsedMedia())){
-								$actionCheckbox = permissionhandler::hasPerm('DELETE_DOCUMENT') && f('SELECT 1 FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]["docID"]), '', $DB_WE) ? 
-										we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "delete_docs_" . $whichSearch, "", false, "middlefont", "") : we_html_tools::getPixel(20, 10);
+								$actionCheckbox = permissionhandler::hasPerm('DELETE_DOCUMENT') && f('SELECT 1 FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]["docID"]), '', $DB_WE) ?
+									we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "delete_docs_" . $whichSearch, "", false, "middlefont", "") : we_html_tools::getPixel(20, 10);
 							}
 							break;
 						default:
@@ -1601,7 +1600,7 @@ weSearch.g_l = {
 				$iconHTML = $this->getHtmlIconThmubnail($_result[$f]);
 
 				$content[$f] = $whichSearch !== self::SEARCH_MEDIA ?
-				array(
+					array(
 					array("dat" => we_html_tools::getPixel(20, 1) . $actionCheckbox),
 					array("dat" => '<img src="' . TREE_ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
 					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '"><u>' . $_result[$f]["Text"]),
@@ -1609,34 +1608,34 @@ weSearch.g_l = {
 					array("dat" => isset($_result[$f]["VersionID"]) && $_result[$f]['VersionID'] ? "-" : ($_result[$f]["CreationDate"] ? date(
 									g_l('searchtool', '[date_format]'), $_result[$f]["CreationDate"]) : "-")),
 					array("dat" => ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-")),
-				) :
-				array(
+					) :
+					array(
 					array('elem' => 'td', 'attribs' => array(), 'dat' => we_html_tools::getPixel(20, 1) . $actionCheckbox),
 					array('elem' => 'td', 'attribs' => array(), 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '">' . $iconHTML['imageView']),
 					array('elem' => 'td', 'attribs' => array(), 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '"><u>' . $_result[$f]["Text"]),
 					array('elem' => 'td', 'attribs' => array(), 'dat' => array(
-						array('elem' => 'table', 'dat' => array(
-							array('elem' => 'row', 'dat' => array(
-								array('elem' => 'td', 'attribs' => array('style="width:36px"'), 'dat' => 'benutzt:'),
-								array('elem' => 'td', 'attribs' => array(), 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_' . (!in_array($_result[$f]["docID"], $this->searchclass->getUsedMedia()) ? 'grau' : 'blau') . '_2.gif">')
-							)),
-							array('elem' => 'row', 'dat' => array(
-								array('elem' => 'td', 'attribs' => array('style="colspan:2"'), 'dat' => 'dropdpown')
-							))
-						))
-					)),
+							array('elem' => 'table', 'dat' => array(
+									array('elem' => 'row', 'dat' => array(
+											array('elem' => 'td', 'attribs' => array('style="width:36px"'), 'dat' => 'benutzt:'),
+											array('elem' => 'td', 'attribs' => array(), 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_' . (!in_array($_result[$f]["docID"], $this->searchclass->getUsedMedia()) ? 'grau' : 'blau') . '_2.gif">')
+										)),
+									array('elem' => 'row', 'dat' => array(
+											array('elem' => 'td', 'attribs' => array('style="colspan:2"'), 'dat' => 'dropdpown')
+										))
+								))
+						)),
 					array('elem' => 'td', 'attribs' => array(), 'dat' => array(
-						array('elem' => 'table', 'dat' => array(
-							array('elem' => 'row', 'dat' => array(
-								array('elem' => 'td', 'dat' => 'alt:'),
-								array('elem' => 'td', 'attribs' => array('style="width:100px"'), 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_grau_2.gif">')
-							)),
-							array('elem' => 'row', 'dat' => array(
-								array('elem' => 'td', 'dat' => 'title:'),
-								array('elem' => 'td', 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_grau_2.gif">'),
-							))
-						))
-					)),
+							array('elem' => 'table', 'dat' => array(
+									array('elem' => 'row', 'dat' => array(
+											array('elem' => 'td', 'dat' => 'alt:'),
+											array('elem' => 'td', 'attribs' => array('style="width:100px"'), 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_grau_2.gif">')
+										)),
+									array('elem' => 'row', 'dat' => array(
+											array('elem' => 'td', 'dat' => 'title:'),
+											array('elem' => 'td', 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_grau_2.gif">'),
+										))
+								))
+						)),
 					array('elem' => 'td', 'attribs' => array(), 'dat' => $_result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $_result[$f]['CreationDate']) : '-'),
 					array('elem' => 'td', 'attribs' => array(), 'dat' => $_result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $_result[$f]['ModDate']) : '-'),
 				);
@@ -1708,7 +1707,7 @@ weSearch.g_l = {
 						}
 					}
 				}
-				
+
 				$content[$f] = array(
 					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageView . '</a>'),
 					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 17)),
@@ -1733,7 +1732,7 @@ weSearch.g_l = {
 
 		return $content;
 	}
-	
+
 	function getHtmlIconThmubnail($file, $smallSize = 64, $bigSize = 140){
 		$Icon = we_base_ContentTypes::inst()->getIcon($file["ContentType"], we_base_ContentTypes::FILE_ICON, $file['Extension']);
 		$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) : 0;
@@ -1767,7 +1766,7 @@ weSearch.g_l = {
 			$imageView = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
 			$imageViewPopup = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
 		}
-		
+
 		return array('imageView' => $imageView, 'imageViewPopup' => $imageViewPopup, 'sizeX' => $imagesize[0], 'sizeY' => $imagesize[1]);
 	}
 
@@ -1825,11 +1824,12 @@ weSearch.g_l = {
 
 		$values = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
-		return '
-<input type="hidden" name="' . $view . '" value="' . $_view . '" />
-<input type="hidden" name="position" />
-<input type="hidden" name="' . $order . '" value="' . $_order . '" />
-<input type="hidden" name="do" />
+		return we_html_element::htmlHiddens(array(
+				$view => $_view,
+				"position" => '',
+				$order => $_order,
+				"do" => ''
+			)) . '
 <table border="0" cellpadding="0" cellspacing="0">
 <tr>
  <td>' . we_html_tools::getPixel(30, 12) . '</td>
@@ -1856,7 +1856,7 @@ weSearch.g_l = {
 		} else {
 			$publishButton = $publishButtonCheckboxAll = "";
 		}
-		
+
 		switch($whichSearch){
 			case self::SEARCH_ADV:
 			case self::SEARCH_DOCS:
@@ -1874,7 +1874,7 @@ weSearch.g_l = {
 			default:
 				$actionButton = $actionButtonCheckboxAll = "";
 		}
-		
+
 
 		return '<table border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
 <tr>
@@ -2291,8 +2291,7 @@ weSearch.g_l = {
 
 		$anz = count($headline);
 		$out = '<table style="table-layout:fixed;white-space:nowrap;width:100%;padding:0 0 0 0;margin:0 0 0 0;background-color:#fff;border-bottom:1px solid #D1D1D1;" >' .
-
-($whichSearch !== self::SEARCH_MEDIA ? '<colgroup>
+			($whichSearch !== self::SEARCH_MEDIA ? '<colgroup>
 <col style="width:30px;text-align:center;"/>
 <col style="width:2%;text-align:left;"/>
 <col style="width:28%;text-align:left;"/>
@@ -2300,7 +2299,7 @@ weSearch.g_l = {
 <col style="width:15%;text-align:left;"/>
 <col style="width:18%;text-align:left;"/>
 </colgroup>' :
-'<colgroup>
+				'<colgroup>
 <col style="width:30px;text-align:center;"/>
 <col style="width:80px;text-align:left;"/>
 <col style="width:28%;text-align:left;"/>
@@ -2308,9 +2307,8 @@ weSearch.g_l = {
 <col style="width:15%;text-align:left;"/>
 <col style="width:18%;text-align:left;"/>
 </colgroup>'
-) .
-
-'<tr style="height:20px;">
+			) .
+			'<tr style="height:20px;">
      <td style="">&nbsp;</td>
      <td style="">&nbsp;</td>';
 
@@ -2350,12 +2348,12 @@ weSearch.g_l = {
 <col style="width:60px;text-align:left;"/>
 <col style="width:15%;text-align:left;"/>
 <col style="width:15%;text-align:left;"/>
-</colgroup>	
+</colgroup>
 ';
 
 				for($m = 0; $m < $x; $m++){
 					$out .= '<tr>' . ($whichSearch === 'doclist' ? we_search_view::tblListRow($content[$m]) :
-						($whichSearch === self::SEARCH_MEDIA ? $this->tblListRowMedia($content[$m]) : $this->tblListRow($content[$m]))) . '</tr>';
+							($whichSearch === self::SEARCH_MEDIA ? $this->tblListRowMedia($content[$m]) : $this->tblListRow($content[$m]))) . '</tr>';
 				}
 				$out .= '</tbody></table>';
 				return $out;
@@ -2477,19 +2475,19 @@ weSearch.g_l = {
 		for($i = 0; $i < count($content); $i++){
 			switch($content[$i]['elem']){
 				case 'td':
-					$out .= '<td '. ($content[$i]['attribs'] ? implode(' ', $content[$i]['attribs']) : '')  . ' ' . ($i < 2 ? '' : 'style="font-weight:bold;height:30px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;"') . '>' .
+					$out .= '<td ' . ($content[$i]['attribs'] ? implode(' ', $content[$i]['attribs']) : '') . ' ' . ($i < 2 ? '' : 'style="font-weight:bold;height:30px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;"') . '>' .
 						(!isset($content[$i]['dat']) || !$content[$i]['dat'] ? '&nbsp;' : (!is_array($content[$i]["dat"]) ? $content[$i]["dat"] : $this->tblListRowMedia($content[$i]["dat"]))) .
-					'</td>';
+						'</td>';
 					break;
 				case 'table':
-					$out .= !isset($content[$i]['dat']) || !is_array($content[$i]['dat']) ? '&nbsp;' : ('<table>' .
+					$out .=!isset($content[$i]['dat']) || !is_array($content[$i]['dat']) ? '&nbsp;' : ('<table>' .
 						$this->tblListRowMedia($content[$i]["dat"]) .
-					'</table>');
+						'</table>');
 					break;
 				case 'row':
 					$out .= '<tr>' .
 						(!isset($content[$i]['dat']) || !is_array($content[$i]['dat']) ? '<td>&nbsp;</td>' : $this->tblListRowMedia($content[$i]["dat"])) .
-					'</tr>';
+						'</tr>';
 					break;
 			}
 		}
@@ -2560,12 +2558,6 @@ weSearch.g_l = {
 			$yuiSuggest->getYuiJs();
 	}
 
-	//----------- Utility functions ------------------
-
-	function htmlHidden($name, $value = ''){
-		return we_html_element::htmlHidden(trim($name), oldHtmlspecialchars($value));
-	}
-
 	function setFramesetName($frameset){
 		$this->frameset = $frameset;
 	}
@@ -2579,13 +2571,15 @@ weSearch.g_l = {
 	}
 
 	function getCommonHiddens($cmds = array()){
-		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
-			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
-			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
-			$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')) .
-			$this->htmlHidden('vernr', (isset($cmds['vernr']) ? $cmds['vernr'] : 0)) .
-			$this->htmlHidden('delayCmd', (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : '')) .
-			$this->htmlHidden('delayParam', (isset($cmds['delayParam']) ? $cmds['delayParam'] : ''));
+		return we_html_element::htmlHiddens(array(
+				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
+				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
+				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : ''),
+				'tabnr' => (isset($cmds['tabnr']) ? $cmds['tabnr'] : ''),
+				'vernr' => (isset($cmds['vernr']) ? $cmds['vernr'] : 0),
+				'delayCmd' => (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : ''),
+				'delayParam' => (isset($cmds['delayParam']) ? $cmds['delayParam'] : '')
+		));
 	}
 
 	function getPropertyJSAdditional(){

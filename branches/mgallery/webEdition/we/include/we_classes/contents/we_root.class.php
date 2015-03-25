@@ -88,7 +88,6 @@ abstract class we_root extends we_class{
 	var $ModifierID = 0;
 	var $RestrictOwners = 0;
 	protected $LockUser = 0;
-
 	protected $FileLinks = array();
 
 	/* Constructor */
@@ -302,14 +301,13 @@ abstract class we_root extends we_class{
 		$idname = 'we_' . $this->Name . '_CreatorID';
 
 		$inputFeld = $this->htmlTextInput($textname, 24, $creator, '', ' readonly', '', $width);
-		$idfield = $this->htmlHidden($idname, $this->CreatorID);
-			$cmd1 = "document.we_form.elements['" . $idname . "'].value";
+		$idfield = we_html_element::htmlHidden($idname, $this->CreatorID);
+		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc5 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);");
-			$button = we_html_button::create_button('edit', "javascript:we_cmd('browse_users','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','user'," . $cmd1 . ",'" . $wecmdenc5 . "')");
+		$button = we_html_button::create_button('edit', "javascript:we_cmd('browse_users','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','user'," . $cmd1 . ",'" . $wecmdenc5 . "')");
 
 		return we_html_tools::htmlFormElementTable($inputFeld, g_l('weClass', '[maincreator]'), 'left', 'defaultfont', $idfield, we_html_tools::getPixel(20, 4), $button);
-
 	}
 
 	function formRestrictOwners($canChange){
@@ -347,7 +345,7 @@ abstract class we_root extends we_class{
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc5 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('users_add_owner',top.allIDs);");
 		$addbut = $canChange ?
-			$this->htmlHidden($idname, '') . $this->htmlHidden($textname, '') . we_html_button::create_button('add', "javascript:we_cmd('browse_users','document.we_form.elements[\'" . $idname . "\'].value','" . $wecmdenc2 . "','',document.we_form.elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);") : "";
+			we_html_element::htmlHiddens(array($idname => '', $textname => '')) . we_html_button::create_button('add', "javascript:we_cmd('browse_users','document.we_form.elements[\'" . $idname . "\'].value','" . $wecmdenc2 . "','',document.we_form.elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);") : "";
 
 		$content = '<table style="border-spacing: 0px;border-style:none;width:500px;" cellpadding="0">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
@@ -474,7 +472,7 @@ abstract class we_root extends we_class{
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector', " . $cmd1 . ",'" . $this->Table . "','" . we_base_request::encCmd($cmd1) . "','','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('copyDocument', currentID);") . "','','0','" . $this->ContentType . "',1);");
 
-		return $this->htmlHidden($idname, $this->CopyID) . $but;
+		return we_html_element::htmlHidden($idname, $this->CopyID) . $but;
 	}
 
 	# return html code for button and field to select user
@@ -1254,14 +1252,14 @@ abstract class we_root extends we_class{
 						}
 					}
 				default:
-					//
+				//
 			}
 		}
 
 		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" AND type="media"');
 
 		if(!empty($this->FileLinks)){
-			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO .'")';
+			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
 			$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->FileLinks)) . ') ' . $whereType);
 			$this->FileLinks = array();
 			while($this->DB_WE->next_record()){
@@ -1272,12 +1270,12 @@ abstract class we_root extends we_class{
 		if(!empty($this->FileLinks)){
 			foreach(array_unique($this->FileLinks) as $remObj){
 				$ret &= $this->DB_WE->query('INSERT INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'ID' => $this->ID,
-					'DocumentTable' => stripTblPrefix($this->Table),
-					'type' => 'media',// FIXME: change to "media"
-					'remObj' => $remObj,
-					'remTable' => stripTblPrefix(FILE_TABLE),
-					'position' => 0,
+						'ID' => $this->ID,
+						'DocumentTable' => stripTblPrefix($this->Table),
+						'type' => 'media', // FIXME: change to "media"
+						'remObj' => $remObj,
+						'remTable' => stripTblPrefix(FILE_TABLE),
+						'position' => 0,
 				)));
 			}
 		}

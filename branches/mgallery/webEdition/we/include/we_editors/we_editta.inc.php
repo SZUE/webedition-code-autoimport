@@ -69,7 +69,7 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element:
 $out = '<body onload="top.focus();" class="weDialogBody"><form name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '">' . we_html_tools::hidden('ok', 1);
 
 foreach($_REQUEST['we_cmd'] as $k => $v){
-	$out .= '<input type="hidden" name="we_cmd[' . $k . ']" value="' . $v . '" />';
+	$out .= we_html_element::htmlHidden('we_cmd[' . $k . ']' , $v);
 }
 
 // WYSIWYG && FORBIDHTML && FORBIDPHP

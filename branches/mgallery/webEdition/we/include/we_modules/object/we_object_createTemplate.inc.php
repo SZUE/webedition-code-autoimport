@@ -210,9 +210,11 @@ $buttons = we_html_button::position_yes_no_cancel(
 );
 
 
-echo we_html_tools::htmlDialogLayout($tmpl->formPath(), g_l('weClass', '[generateTemplate]'), $buttons) . '
-<input type="hidden" name="SID" value="' . $tmpl->Name . '" />
-<input type="hidden" name="we_cmd[3]" value="' . $cmd3 . '" />
-<input type="hidden" name="we_cmd[2]" value="' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) . '" />
+echo we_html_tools::htmlDialogLayout($tmpl->formPath(), g_l('weClass', '[generateTemplate]'), $buttons) .
+ we_html_element::htmlHiddens(array(
+	"SID" => $tmpl->Name,
+	"we_cmd[3]" => $cmd3,
+	"we_cmd[2]" => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2)
+)) . '
 </form>
 </body></html>';

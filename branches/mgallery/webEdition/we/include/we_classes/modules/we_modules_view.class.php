@@ -36,11 +36,6 @@ class we_modules_view implements we_modules_viewIF{//FIXME is this really a base
 		$this->setTopFrame($topframe);
 	}
 
-	//----------- Utility functions ------------------
-
-	function htmlHidden($name, $value = ''){
-		return we_html_element::htmlHidden(trim($name), oldHtmlspecialchars($value));
-	}
 
 	//-----------------Init -------------------------------
 
@@ -55,10 +50,12 @@ class we_modules_view implements we_modules_viewIF{//FIXME is this really a base
 	//------------------------------------------------
 
 	function getCommonHiddens($cmds = array()){
-		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
-			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
-			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
-			$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : ''));
+		return we_html_element::htmlHiddens(array(
+				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
+				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
+				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : ''),
+				'tabnr' => (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')
+		));
 	}
 
 	function getJSTop_tmp(){//taken from old edit_shop_frameset.php

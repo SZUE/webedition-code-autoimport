@@ -77,22 +77,23 @@ class we_newsletter_view extends we_modules_view{
 	}
 
 	function getHiddens($predefs = array()){
-		return $this->htmlHidden('ncmd', (isset($predefs['ncmd']) ? $predefs['ncmd'] : 'new_newsletter')) .
-			$this->htmlHidden('we_cmd[0]', 'show_newsletter') .
-			$this->htmlHidden('nid', (isset($predefs['nid']) ? $predefs['nid'] : $this->newsletter->ID)) .
-			$this->htmlHidden('pnt', (isset($predefs['pnt']) ? $predefs['pnt'] : we_base_request::_(we_base_request::RAW, 'pnt'))) .
-			$this->htmlHidden('page', (isset($predefs['page']) ? $predefs['page'] : $this->page)) .
-			$this->htmlHidden('gview', (isset($predefs['gview']) ? $predefs['gview'] : 0)) .
-			$this->htmlHidden('hm', (isset($predefs['hm']) ? $predefs['hm'] : 0)) .
-			$this->htmlHidden('ask', (isset($predefs['ask']) ? $predefs['ask'] : 1)) .
-			$this->htmlHidden('test', (isset($predefs['test']) ? $predefs['test'] : 0));
+		return we_html_element::htmlHiddens(array(
+				'ncmd' => (isset($predefs['ncmd']) ? $predefs['ncmd'] : 'new_newsletter'),
+				'we_cmd[0]' => 'show_newsletter',
+				'nid' => (isset($predefs['nid']) ? $predefs['nid'] : $this->newsletter->ID),
+				'pnt' => (isset($predefs['pnt']) ? $predefs['pnt'] : we_base_request::_(we_base_request::RAW, 'pnt')),
+				'page' => (isset($predefs['page']) ? $predefs['page'] : $this->page),
+				'gview' => (isset($predefs['gview']) ? $predefs['gview'] : 0),
+				'hm' => (isset($predefs['hm']) ? $predefs['hm'] : 0),
+				'ask' => (isset($predefs['ask']) ? $predefs['ask'] : 1),
+				'test' => (isset($predefs['test']) ? $predefs['test'] : 0)
+		));
 	}
 
 	function newsletterHiddens(){
 		$out = '';
 		foreach($this->hiddens as $val){
-			$out .= $this->htmlHidden($val, (isset($this->newsletter->persistents[$val]) ?
-					$this->newsletter->$val : $this->$val)
+			$out .= we_html_element::htmlHidden($val, (isset($this->newsletter->persistents[$val]) ? $this->newsletter->$val : $this->$val)
 			);
 		}
 
@@ -108,28 +109,32 @@ class we_newsletter_view extends we_modules_view{
 
 			foreach(array_keys($group->persistents) as $per){
 				$val = $group->$per;
-				$out .= $this->htmlHidden('group' . $counter . '_' . $per, $val);
+				$out .= we_html_element::htmlHidden('group' . $counter . '_' . $per, $val);
 			}
 
 			$counter++;
 		}
 
-		$out .= $this->htmlHidden('groups', $counter) .
-			$this->htmlHidden('Step', $this->newsletter->Step) .
-			$this->htmlHidden('Offset', $this->newsletter->Offset) .
-			$this->htmlHidden('IsFolder', $this->newsletter->IsFolder);
+		$out .= we_html_element::htmlHiddens(array(
+				'groups' => $counter,
+				'Step' => $this->newsletter->Step,
+				'Offset' => $this->newsletter->Offset,
+				'IsFolder' => $this->newsletter->IsFolder)
+		);
 		return $out;
 	}
 
 	function getHiddensPropertyPage(){
-		return $this->htmlHidden('Text', $this->newsletter->Text) .
-			$this->htmlHidden('Subject', $this->newsletter->Subject) .
-			$this->htmlHidden('ParentID', $this->newsletter->ParentID) .
-			$this->htmlHidden('Sender', $this->newsletter->Sender) .
-			$this->htmlHidden('Reply', $this->newsletter->Reply) .
-			$this->htmlHidden('Test', $this->newsletter->Test) .
-			$this->htmlHidden('Charset', $this->newsletter->Charset) .
-			$this->htmlHidden('isEmbedImages', $this->newsletter->isEmbedImages);
+		return we_html_element::htmlHiddens(array(
+				'Text' => $this->newsletter->Text,
+				'Subject' => $this->newsletter->Subject,
+				'ParentID' => $this->newsletter->ParentID,
+				'Sender' => $this->newsletter->Sender,
+				'Reply' => $this->newsletter->Reply,
+				'Test' => $this->newsletter->Test,
+				'Charset' => $this->newsletter->Charset,
+				'isEmbedImages' => $this->newsletter->isEmbedImages
+			));
 	}
 
 	function getHiddensMailingPage(){
@@ -139,12 +144,12 @@ class we_newsletter_view extends we_modules_view{
 		foreach($this->newsletter->groups as $g => $group){
 			$filter = $group->getFilter();
 			if($filter){
-				$out.=$this->htmlHidden('filter_' . $g, count($filter));
+				$out.=we_html_element::htmlHidden('filter_' . $g, count($filter));
 
 				foreach($filter as $k => $v){
 					foreach($fields_names as $field){
 						if(isset($v[$field])){
-							$out.=$this->htmlHidden('filter_' . $field . '_' . $g . '_' . $k, $v[$field]);
+							$out.=we_html_element::htmlHidden('filter_' . $field . '_' . $g . '_' . $k, $v[$field]);
 						}
 					}
 				}
@@ -161,13 +166,13 @@ class we_newsletter_view extends we_modules_view{
 		foreach($this->newsletter->blocks as $bk => $bv){
 
 			foreach(array_keys($this->newsletter->blocks[$bk]->persistents) as $per){
-				$out .= $this->htmlHidden('block' . $counter . '_' . $per, $bv->$per);
+				$out .= we_html_element::htmlHidden('block' . $counter . '_' . $per, $bv->$per);
 			}
 
 			$counter++;
 		}
 
-		$out .= $this->htmlHidden('blocks', $counter);
+		$out .= we_html_element::htmlHidden('blocks', $counter);
 
 		return $out;
 	}
@@ -182,7 +187,7 @@ class we_newsletter_view extends we_modules_view{
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
 
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', ' readonly', 'text', $width, 0), '', 'left', 'defaultfont', $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', ' readonly', 'text', $width, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
 	}
 
 	function getFields($id, $table){

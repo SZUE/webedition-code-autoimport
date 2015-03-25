@@ -833,14 +833,14 @@ if($ok && $cmd === "edit_link_at_class"){
 				<input type="hidden" name="linklist" value="<?php echo oldHtmlspecialchars($ll->getString()); ?>" />
 				<?php
 			}
-			?>
-			<input type="hidden" name="name" value="<?php echo $name; ?>" />
-			<input type="hidden" name="nr" value="<?php echo we_base_request::_(we_base_request::INT, "nr", $nr); ?>" />
-			<input type="hidden" name="ok" value="1" />
-			<input type="hidden" name="we_transaction" value="<?php echo $we_transaction; ?>" />
-			<input type="hidden" name="we_field" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3); ?>" />
-			<?php
-			echo we_html_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]')) .
+			echo we_html_element::htmlHiddens(array(
+				"name" => $name,
+				"nr" => we_base_request::_(we_base_request::INT, "nr", $nr),
+				"ok" => 1,
+				"we_transaction" => $we_transaction,
+				"we_field" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3)
+			)) .
+			we_html_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]')) .
 			$yuiSuggest->getYuiJs();
 			?>
 		</form>

@@ -57,9 +57,11 @@ class we_navigation_view extends we_modules_view{
 	function getCommonHiddens($cmds = array()){
 		return
 			parent::getCommonHiddens($cmds) .
-			$this->htmlHidden('vernr', (isset($cmds['vernr']) ? $cmds['vernr'] : 0)) .
-			$this->htmlHidden('delayCmd', (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : '')) .
-			$this->htmlHidden('delayParam', (isset($cmds['delayParam']) ? $cmds['delayParam'] : ''));
+			we_html_element::htmlHiddens(array(
+				'vernr' => (isset($cmds['vernr']) ? $cmds['vernr'] : 0),
+				'delayCmd' => (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : ''),
+				'delayParam' => (isset($cmds['delayParam']) ? $cmds['delayParam'] : '')
+		));
 	}
 
 	function getJSTop(){
@@ -646,7 +648,7 @@ function submitForm() {
 	function getEditNaviPosition(){
 		$this->db->query('SELECT Ordn,Text FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . $this->Model->ParentID . ' ORDER BY Ordn');
 		$values = $this->db->getAllFirst(false);
-		$values[-1] = g_l('navigation','[end]');
+		$values[-1] = g_l('navigation', '[end]');
 		return $values;
 	}
 

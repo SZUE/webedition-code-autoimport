@@ -51,9 +51,9 @@ echo STYLESHEET .
 				"html" => $GLOBALS['we_doc']->formMetaInfos() . $GLOBALS['we_doc']->formMetaData(),
 				"space" => 140
 			)
-			), 20);
+			), 20).
+			we_html_element::htmlHidden("we_complete_request",1);
 		?>
-		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body>
 

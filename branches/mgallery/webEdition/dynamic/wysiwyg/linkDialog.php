@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -78,16 +77,15 @@ function weDoLinkCmd($args){
 
 	return we_dialog_base::getTinyMceJS() .
 		we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js') .
-		'<form name="tiny_form">
-		<input type="hidden" name="href" value="' . $href . '">
-		<input type="hidden" name="target" value="' . $args["target"] . '">
-		<input type="hidden" name="class" value="' . $args["cssclass"] . '">
-		<input type="hidden" name="lang" value="' . $args["lang"] . '">
-		<input type="hidden" name="hreflang" value="' . $args["hreflang"] . '">
-		<input type="hidden" name="title" value="' . $args["title"] . '">
-		<input type="hidden" name="accesskey" value="' . $args["accesskey"] . '">
-		<input type="hidden" name="tabindex" value="' . $args["tabindex"] . '">
-		<input type="hidden" name="rel" value="' . $args["rel"] . '">
-		<input type="hidden" name="rev" value="' . $args["rev"] . '">
-		</form>';
+		'<form name="tiny_form">' . we_html_element::htmlHiddens(array(
+			"href" => $href,
+			"target" => $args["target"],
+			"class" => $args["cssclass"],
+			"lang" => $args["lang"],
+			"hreflang" => $args["hreflang"],
+			"title" => $args["title"],
+			"accesskey" => $args["accesskey"],
+			"tabindex" => $args["tabindex"],
+			"rel" => $args["rel"],
+			"rev" => $args["rev"])) . '</form>';
 }

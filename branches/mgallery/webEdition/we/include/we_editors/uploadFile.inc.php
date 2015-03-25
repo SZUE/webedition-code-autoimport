@@ -42,7 +42,7 @@ if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 
 switch($contentType){
 	case we_base_ContentTypes::IMAGE;
-		$allowedContentTypes = implode(',',we_base_ContentTypes::inst()->getRealContentTypes($contentType));
+		$allowedContentTypes = implode(',', we_base_ContentTypes::inst()->getRealContentTypes($contentType));
 		$allowedExtensions = we_base_imageEdit::IMAGE_EXTENSIONS;
 		break;
 	case we_base_ContentTypes::APPLICATION;
@@ -166,12 +166,13 @@ if($weFileupload->processFileRequest()){
 	</head>
 
 	<body class="weDialogBody" onload="self.focus();">
-		<center>
-			<form method="post" enctype="multipart/form-data">
-				<input type="hidden" name="we_transaction" value="<?php echo $we_transaction ?>" />
-				<?php echo we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_File_from_hd_title]'), $_buttons); ?>
-			</form>
-		</center>
+	<center>
+		<form method="post" enctype="multipart/form-data">
+			<?php echo we_html_element::htmlHidden("we_transaction", $we_transaction) .
+			we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_File_from_hd_title]'), $_buttons);
+			?>
+		</form>
+	</center>
 	</body>
 
 	</html>

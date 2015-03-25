@@ -258,7 +258,7 @@ class we_objectFile extends we_document{
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('copyDocument',currentID);");
 		$but = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['" . $idname . "'].value,'" . $this->Table . "','" . $wecmdenc2 . "','','" . $wecmdenc3 . "','','" . $rootDirId . "','" . $this->ContentType . "');");
-		return $this->htmlHidden($idname, $this->CopyID) . $but;
+		return we_html_element::htmlHidden($idname, $this->CopyID) . $but;
 	}
 
 	function formLanguage(){
@@ -954,7 +954,7 @@ class we_objectFile extends we_document{
 		$button = we_html_button::create_button_table($_buttons, 5);
 
 		return we_html_tools::htmlFormElementTable(
-				$this->htmlTextInput($textname, 30, $path, '', ' readonly', "text", $inputWidth, 0), '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]["required"] ? "*" : "") . '</span>' . ($npubl ? '' : ' <span style="color:red">' . g_l('modules_object', '[not_published]') . '</span>') . ( isset($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) && $this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription'] ? self::formatDescription($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) : we_html_element::htmlBr() ), "left", "defaultfont", $this->htmlHidden($idname, $myid), we_html_tools::getPixel(5, 4), $button) .
+				$this->htmlTextInput($textname, 30, $path, '', ' readonly', "text", $inputWidth, 0), '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]["required"] ? "*" : "") . '</span>' . ($npubl ? '' : ' <span style="color:red">' . g_l('modules_object', '[not_published]') . '</span>') . ( isset($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) && $this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription'] ? self::formatDescription($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) : we_html_element::htmlBr() ), "left", "defaultfont", we_html_element::htmlHidden($idname, $myid), we_html_tools::getPixel(5, 4), $button) .
 			$objectpreview;
 	}
 
@@ -1033,7 +1033,7 @@ class we_objectFile extends we_document{
 						$selectObject,
 						($myid ? $editObjectButton : $editObjectButtonDis),
 						($myid ? $openCloseButton : $openCloseButtonDis),
-						$this->htmlHidden($idname, $myid),
+						we_html_element::htmlHidden($idname, $myid),
 						((count($objects) < $max || $max == "" || $max == 0) ? $plusbut : $plusbutDis),
 						($f > 0 ? $upbut : $upbutDis ),
 						($f < count($objects) - 1 ? $downbut : $downbutDis),

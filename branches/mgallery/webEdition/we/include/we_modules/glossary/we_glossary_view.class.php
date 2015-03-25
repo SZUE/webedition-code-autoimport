@@ -93,7 +93,7 @@ class we_glossary_view extends we_modules_view{
 	function getCommonHiddens($cmds = array()){
 		return
 				parent::getCommonHiddens($cmds) .
-				$this->htmlHidden("IsFolder", (isset($this->Glossary->IsFolder) ? $this->Glossary->IsFolder : '0'));
+				we_html_element::htmlHidden("IsFolder", (isset($this->Glossary->IsFolder) ? $this->Glossary->IsFolder : '0'));
 	}
 
 	function getJSTop(){

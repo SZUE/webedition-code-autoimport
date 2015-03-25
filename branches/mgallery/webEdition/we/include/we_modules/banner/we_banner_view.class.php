@@ -25,7 +25,6 @@
 /* the parent class of storagable webEdition classes */
 
 class we_banner_view extends we_banner_base implements we_modules_viewIF{
-
 	// settings array; format settings[setting_name]=settings_value
 	var $settings = array();
 	//default banner
@@ -51,26 +50,24 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 	}
 
 	function getHiddens(){
-		$out = $this->htmlHidden("home", 0) .
-				$this->htmlHidden("ncmd", "new_banner") .
-				$this->htmlHidden("ncmdvalue", "") .
-				$this->htmlHidden("bid", $this->banner->ID) .
-				$this->htmlHidden("pnt", we_base_request::_(we_base_request::STRING, "pnt")) .
-				$this->htmlHidden("page", $this->page) .
-				$this->htmlHidden("bname", $this->uid) .
-				$this->htmlHidden("order", $this->Order) .
-				$this->htmlHidden($this->uid . "_IsFolder", $this->banner->IsFolder);
+		$out = we_html_element::htmlHiddens(array(
+				"home" => 0,
+				"ncmd" => "new_banner",
+				"ncmdvalue" => "",
+				"bid" => $this->banner->ID,
+				"pnt" => we_base_request::_(we_base_request::STRING, "pnt"),
+				"page" => $this->page,
+				"bname" => $this->uid,
+				"order" => $this->Order,
+				$this->uid . "_IsFolder" => $this->banner->IsFolder
+		));
 		foreach(array_keys($this->banner->persistents) as $p){
 			if(!in_array($p, $this->pageFields[$this->page])){
 				$v = $this->banner->{$p};
-				$out.=$this->htmlHidden($this->uid . "_$p", $v);
+				$out.=we_html_element::htmlHidden($this->uid . "_$p", $v);
 			}
 		}
 		return $out;
-	}
-
-	function htmlHidden($name, $value = "", $id = ""){
-		return '<input type="hidden" name="' . trim($name) . '" value="' . oldHtmlspecialchars($value) . '"' . ($id ? ' id="' . $id . '"' : '') . ' />';
 	}
 
 	function getProperties(){
@@ -90,15 +87,17 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				</head>
 				<body class="weEditorBody" onload="loaded=1;" onunload="doUnload()">
 				<form name="we_form" onsubmit="return false;">' .
-				$this->getHiddens();
+			$this->getHiddens();
 
 		$znr = -1;
 		$headline = $openText = $closeText = $wepos = $itsname = "";
 		switch($this->page){
 			case we_banner_banner::PAGE_PROPERTY:
-				$out .= $this->htmlHidden("UseFilter", $this->UseFilter) .
-						$this->htmlHidden("FilterDate", $this->FilterDate) .
-						$this->htmlHidden("FilterDateEnd", $this->FilterDateEnd);
+				$out .= we_html_element::htmlHiddens(array(
+						"UseFilter" => $this->UseFilter,
+						"FilterDate" => $this->FilterDate,
+						"FilterDateEnd" => $this->FilterDateEnd
+				));
 				$parts = array(
 					array(
 						"headline" => g_l('modules_banner', '[path]'),
@@ -133,9 +132,11 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				$wepos = weGetCookieVariable("but_weBannerProp");
 				break;
 			case we_banner_banner::PAGE_PLACEMENT:
-				$out .= $this->htmlHidden("UseFilter", $this->UseFilter) .
-						$this->htmlHidden("FilterDate", $this->FilterDate) .
-						$this->htmlHidden("FilterDateEnd", $this->FilterDateEnd);
+				$out .= we_html_element::htmlHiddens(array(
+						"UseFilter" => $this->UseFilter,
+						"FilterDate" => $this->FilterDate,
+						"FilterDateEnd" => $this->FilterDateEnd
+				));
 				$parts = array(
 					array(
 						"headline" => g_l('modules_banner', '[tagname]'),
@@ -183,10 +184,10 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 		}
 
 		$out.= we_html_multiIconBox::getJS() .
-				we_html_multiIconBox::getHTML($itsname, "100%", $parts, 30, "", $znr, $openText, $closeText, ($wepos === "down")) .
-				'</form>' .
-				$yuiSuggest->getYuiJs() .
-				'</body></html>';
+			we_html_multiIconBox::getHTML($itsname, "100%", $parts, 30, "", $znr, $openText, $closeText, ($wepos === "down")) .
+			'</form>' .
+			$yuiSuggest->getYuiJs() .
+			'</body></html>';
 
 		return $out;
 	}
@@ -228,7 +229,7 @@ var perms={
 	"NEW_BANNER":' . intval(permissionhandler::hasPerm("NEW_BANNER")) . '
 };
 ') .
-				we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_top.js');
+			we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_top.js');
 	}
 
 	function getJSFooterCode(){
@@ -459,7 +460,7 @@ var g_l={
 						return;
 					}
 					if(f('SELECT 1 FROM ' . BANNER_TABLE . " WHERE Text='" . $this->db->escape($this->banner->Text) . "' AND ParentID=" . intval($this->banner->ParentID) .
-									($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), '', $this->db)){
+							($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), '', $this->db)){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
 					}
@@ -490,11 +491,11 @@ var g_l={
 					$message = "";
 					$this->banner->save($message);
 					echo we_html_element::jsElement(
-							($newone ?
-									'top.content.makeNewEntry("' . $this->banner->Icon . '",' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",true,"' . ($this->banner->IsFolder ? 'folder' : 'file') . '","weBanner",1);' :
-									'top.content.updateEntry(' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",1);') .
-							$childs .
-							we_message_reporting::getShowMessageCall(g_l('modules_banner', ($this->banner->IsFolder ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE));
+						($newone ?
+							'top.content.makeNewEntry("' . $this->banner->Icon . '",' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",true,"' . ($this->banner->IsFolder ? 'folder' : 'file') . '","weBanner",1);' :
+							'top.content.updateEntry(' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",1);') .
+						$childs .
+						we_message_reporting::getShowMessageCall(g_l('modules_banner', ($this->banner->IsFolder ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE));
 				}
 				break;
 			case "delete_banner":
@@ -509,8 +510,8 @@ var g_l={
 					if($this->banner->delete()){
 						$this->banner = new we_banner_banner(0, $this->banner->IsFolder);
 						echo we_html_element::jsElement('top.content.deleteEntry(' . $bid . ',"' .
-								($this->banner->IsFolder ? 'folder' : 'file') . '");' .
-								we_message_reporting::getShowMessageCall(g_l('modules_banner', ($this->banner->IsFolder ? '[delete_group_ok]' : '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.content.we_cmd("new_banner");');
+							($this->banner->IsFolder ? 'folder' : 'file') . '");' .
+							we_message_reporting::getShowMessageCall(g_l('modules_banner', ($this->banner->IsFolder ? '[delete_group_ok]' : '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.content.we_cmd("new_banner");');
 					} else {
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', ($this->banner->IsFolder ? '[delete_group_nok]' : '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR));
 					}
@@ -571,9 +572,9 @@ var g_l={
 		$db = new DB_WE();
 		foreach($settings as $key => $value){
 			$db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'tool' => 'banner',
-						'pref_name' => $key,
-						'pref_value' => $value
+					'tool' => 'banner',
+					'pref_name' => $key,
+					'pref_value' => $value
 			)));
 		}
 	}
@@ -598,11 +599,11 @@ var g_l={
 		sort($tagnames);
 
 		$code = '<table border="0" cellpadding="0" cellspacing="0"><tr><td class="defaultfont">' .
-				we_html_tools::htmlTextInput($this->uid . "_TagName", 50, $this->banner->TagName, "", 'style="width:250px" onchange="top.content.setHot();"') .
-				'</td>
+			we_html_tools::htmlTextInput($this->uid . "_TagName", 50, $this->banner->TagName, "", 'style="width:250px" onchange="top.content.setHot();"') .
+			'</td>
 <td class="defaultfont">' . we_html_tools::getPixel(10, 2) . '</td>
 <td class="defaultfont"><select style="width:240px" class="weSelect" name="' . $this->uid . '_TagName_tmp" size="1" onchange="top.content.setHot(); this.form.elements[\'' . $this->uid . '_TagName\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0">' .
-				'<option value=""></option>';
+			'<option value=""></option>';
 		foreach($tagnames as $tagname){
 			$code .= '<option value="' . $tagname . '">' . $tagname . '</option>' . "\n";
 		}
@@ -712,10 +713,10 @@ var g_l={
 <table border="0" cellpadding="0" cellspacing="0">
 	<tr><td>' . $this->formBannerChooser(388, $this->uid . "_bannerID", $this->banner->bannerID, g_l('modules_banner', '[imagepath]'), "opener.we_cmd(\\'switchPage\\',\\'" . $this->page . "\\')") . '</td></tr>
 ' . ($this->banner->bannerID ?
-						'<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
+				'<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
 	<tr><td>' . $this->previewBanner() . '</td></tr>' : ''
-				) .
-				'	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
+			) .
+			'	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
 	<tr><td>' . $this->formBannerHref() . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
 	<tr><td>' . $this->formBannerNumbers() . '</td></tr>
@@ -768,9 +769,10 @@ var g_l={
 		$IDName = "ParentID";
 		$Pathname = "ParentPath";
 
-		return $this->htmlHidden($IDName, 0) .
-				$this->htmlHidden($Pathname, "") .
-				we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . BANNER_TABLE . "','document.we_form.elements[\\'" . $IDName . "\\'].value','document.we_form.elements[\\'" . $Pathname . "\\'].value','opener.we_cmd(\\'copy_banner\\');','','" . $rootDirID . "')");
+		return we_html_element::htmlHiddens(array(
+				$IDName => 0,
+				$Pathname => "")) .
+			we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . BANNER_TABLE . "','document.we_form.elements[\\'" . $IDName . "\\'].value','document.we_form.elements[\\'" . $Pathname . "\\'].value','opener.we_cmd(\\'copy_banner\\');','','" . $rootDirID . "')");
 	}
 
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */

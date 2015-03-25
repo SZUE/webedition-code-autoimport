@@ -54,10 +54,11 @@ if(we_base_request::_(we_base_request::BOOL, 'save')){
 	</head>
 	<body class="weDialogBody">
 		<form action="<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_search_advanced.php" name="search_adv" >
-			<input type="hidden" name="we_transaction" value="<?php echo we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'); ?>" />
-			<input type="hidden" name="save" value="1" />
-
 			<?php
+			echo we_html_element::htmlHiddens(array(
+				"we_transaction"=>we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'),
+				"save"=>1));
+
 			$table = '<table cellpadding="10" cellspacing="0" border="0">
 <tr>
     <td valign="top" class="defaultgray">' . g_l('modules_messaging', '[to_search_fields]') . '</td>

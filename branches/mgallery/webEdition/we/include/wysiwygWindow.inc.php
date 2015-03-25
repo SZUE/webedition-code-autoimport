@@ -138,13 +138,13 @@ top.close();');
 		we_html_element::jsScript(JS_DIR . 'windows.js');
 		?>
 	</head>
-<body class="weDialogBody" onload="top.focus();">
+	<body class="weDialogBody" onload="top.focus();">
 		<form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" name="we_form" method="post">
 			<input type="hidden" name="we_okpressed" value="1" />
 			<?php
 			$pos = 0;
 			foreach($fields as $v){
-				echo '<input type="hidden" name="we_cmd[' . ($pos++) . ']" value="' . $v . '" />';
+				echo we_html_element::htmlHidden('we_cmd[' . ($pos++) . ']', $v);
 			}
 
 			$e = new we_wysiwyg_editor(

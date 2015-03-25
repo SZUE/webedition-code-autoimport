@@ -249,7 +249,7 @@ abstract class we_html_element{
 		$attribs = array(
 			'type' => 'hidden',
 			'name' => $name,
-			'value' => $value
+			'value' => strpos($value, '"') !== false ? oldHtmlspecialchars($value) : $value
 		);
 		if($id){
 			$attribs['id'] = $id;
@@ -259,9 +259,13 @@ abstract class we_html_element{
 
 	public static function htmlHiddens(array $vals){
 		$ret = '';
-		foreach($vals as $key => $val){
+		foreach($vals as $key => $value){
 			if($key){
-				$ret.=we_html_baseElement::getHtmlCode(new we_html_baseElement('input', 'selfclose', array('name' => $key, 'value' => $val, 'type' => 'hidden')));
+				$ret.=we_html_baseElement::getHtmlCode(new we_html_baseElement('input', 'selfclose', array(
+						'name' => $key,
+						'value' => strpos($value, '"') !== false ? oldHtmlspecialchars($value) : $value,
+						'type' => 'hidden'
+					)));
 			}
 		}
 		return $ret;

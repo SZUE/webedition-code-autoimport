@@ -76,8 +76,8 @@ echo STYLESHEET;
 	if($cmd != 'ok'){
 		$all = array();
 		$wfDoc = ($we_doc->Table == FILE_TABLE ?
-						we_workflow_utility::getWorkflowDocumentForDoc($GLOBALS['DB_WE'], $we_doc->DocType, $we_doc->Category, $we_doc->ParentID, $all) :
-						we_workflow_utility::getWorkflowDocumentForObject($GLOBALS['DB_WE'], $we_doc->TableID, $we_doc->Category, $we_doc->ParentID, $all));
+				we_workflow_utility::getWorkflowDocumentForDoc($GLOBALS['DB_WE'], $we_doc->DocType, $we_doc->Category, $we_doc->ParentID, $all) :
+				we_workflow_utility::getWorkflowDocumentForObject($GLOBALS['DB_WE'], $we_doc->TableID, $we_doc->Category, $we_doc->ParentID, $all));
 		$wfID = $wfDoc->workflowID;
 		if($wfID){
 			?>
@@ -108,7 +108,7 @@ echo STYLESHEET;
 </tr>';
 				} else {
 					$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="left:10px;right:10px;height:190px"></textarea>';
-					$content .= '<input type="hidden" name="wf_select" value="' . $wfID . '" />';
+					$content .= we_html_element::htmlHidden("wf_select", $wfID);
 				}
 				$content .= '
 <tr>
@@ -120,18 +120,20 @@ echo STYLESHEET;
 </tr>
 </table>';
 
-				echo we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[in_workflow]'), we_html_button::position_yes_no_cancel($okbut, '', $cancelbut)) . '
-<input type="hidden" name="cmd" value="ok" />
-<input type="hidden" name="we_cmd[0]" value="' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '" />
-<input type="hidden" name="we_cmd[1]" value="' . $we_transaction . '" />
-<input type="hidden" name="we_cmd[2]" value="' . $cmd2 . '" />';
+				echo we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[in_workflow]'), we_html_button::position_yes_no_cancel($okbut, '', $cancelbut)) .
+				we_html_element::htmlHiddens(array(
+					"cmd" => "ok",
+					"we_cmd[0]" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+					"we_cmd[1]" => $we_transaction,
+					"we_cmd[2]" => $cmd2
+				));
 				?>
 			</form>
 			<?php
 		} else {
 			echo we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('modules_workflow', ($we_doc->Table == FILE_TABLE ? '[no_wf_defined]' : '[no_wf_defined_object]')), we_message_reporting::WE_MESSAGE_ERROR) .
-					'top.close();');
+				we_message_reporting::getShowMessageCall(g_l('modules_workflow', ($we_doc->Table == FILE_TABLE ? '[no_wf_defined]' : '[no_wf_defined_object]')), we_message_reporting::WE_MESSAGE_ERROR) .
+				'top.close();');
 		}
 	}
 	?>

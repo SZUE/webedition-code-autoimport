@@ -312,20 +312,20 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 	}
 
 	private static function getHTMLPreferences(&$Search, $Type, $Language){
-		global $we_transaction;
 
 		$button = we_html_button::create_button("search", "javascript:SubmitForm();");
 		$newButton = we_html_button::create_button("new_entry", "javascript:we_cmd('new_glossary_" . $Type . "','" . $Language . "');", true, 100, 22, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 
 		$_rows = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
-		return '
-		<input type="hidden" name="we_transaction" value="' . $we_transaction . '" />
-		<input type="hidden" name="Order" value="' . $Search->Order . '" />
-		<input type="hidden" name="Offset" value="' . $Search->Offset . '" />
-		<input type="hidden" name="Sort" value="' . $Search->Sort . '" />
-		<input type="hidden" name="selectAll" value="0" />
-		<input type="hidden" name="do" value="" />
+		return we_html_element::htmlHiddens(array(
+				"we_transaction" => $GLOBALS['we_transaction'],
+				"Order" => $Search->Order,
+				"Offset" => $Search->Offset,
+				"Sort" => $Search->Sort,
+				"selectAll" => 0,
+				"do" => ""
+			)) . '
 		<table width="637" border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<td width="80"></td>

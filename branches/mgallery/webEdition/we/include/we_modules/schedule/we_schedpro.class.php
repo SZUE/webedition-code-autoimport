@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -25,7 +24,6 @@
 we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER);
 
 class we_schedpro{
-
 	const SCHEDULE_FROM = 1; //publish
 	const SCHEDULE_TO = 2; //park
 	const DELETE = 3;
@@ -79,7 +77,7 @@ class we_schedpro{
 
 		for($i = 1; $i <= 12; $i++){
 			$months .= '<td>' . we_html_forms::checkbox(1, $this->months[$i - 1], "check_we_schedule_month" . $i . "_" . $this->nr, g_l('date', '[month][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_month" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
-				'<input type="hidden" name="we_schedule_month' . $i . '_' . $this->nr . '" value="' . $this->months[$i - 1] . '" /></td>';
+				we_html_element::htmlHidden('we_schedule_month' . $i . '_' . $this->nr, $this->months[$i - 1]) . '</td>';
 		}
 
 		$months .= '</tr></table>';
@@ -760,7 +758,7 @@ function checkFooter(){
 						'Wann' => $Wann,
 						'Was' => $s['task'],
 						'ClassName' => $object->ClassName,
-						'SerializedData' => ($serializedDoc ? sql_function('x\'' . bin2hex(gzcompress($serializedDoc, 9)) . '\''): ''),
+						'SerializedData' => ($serializedDoc ? sql_function('x\'' . bin2hex(gzcompress($serializedDoc, 9)) . '\'') : ''),
 						'Schedpro' => serialize($s),
 						'Type' => $s['type'],
 						'Active' => $s['active']

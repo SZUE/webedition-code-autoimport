@@ -40,9 +40,7 @@ function getContent(){
 							<tr><td>' . we_html_tools::htmlTextInput('newpasswd2', 20, '', 32, '', 'password', 200) . '</td></tr>
 						</table>', g_l('global', '[changePass]'), we_html_button::position_yes_no_cancel(
 							we_html_button::create_button('save', 'javascript:document.forms[0].submit();'), null, we_html_button::create_button('cancel', 'javascript:top.close();'))
-			) .
-			'	<input type="hidden" name="cmd" value="ok" />
-		</form>';
+			) .we_html_element::htmlHidden("cmd","ok").'</form>';
 }
 
 function getLoad(){

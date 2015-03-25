@@ -52,8 +52,10 @@ class we_voting_view extends we_modules_view{
 	function getCommonHiddens($cmds = array()){
 		return
 			parent::getCommonHiddens($cmds) .
-			$this->htmlHidden("vernr", (isset($cmds["vernr"]) ? $cmds["vernr"] : 0)) .
-			$this->htmlHidden("IsFolder", (isset($this->voting->IsFolder) ? $this->voting->IsFolder : '0'));
+			we_html_element::htmlHiddens(array(
+				"vernr" => (isset($cmds["vernr"]) ? $cmds["vernr"] : 0),
+				"IsFolder" => (isset($this->voting->IsFolder) ? $this->voting->IsFolder : '0')
+		));
 	}
 
 	function getJSTop(){
@@ -304,8 +306,6 @@ function we_cmd() {
 
 		');
 	}
-
-
 
 	/* use parent
 	  function getJSSubmitFunctionS($def_target = "edbody", $def_method = "post"){}
@@ -683,18 +683,18 @@ setTimeout(\'' . we_message_reporting::getShowMessageCall(g_l('modules_voting', 
 		$this->voting->QASet = $qaset;
 		$this->voting->QASetAdditions = $qaADDset;
 
-		/*FIXME: this doesn't work! multi_edit assumes the value is the same as the displayed item, so you get an image-tag & textual user here which is really not what we need. To fix this, multi_edit.js must distinguish between "label" & value!
+		/* FIXME: this doesn't work! multi_edit assumes the value is the same as the displayed item, so you get an image-tag & textual user here which is really not what we need. To fix this, multi_edit.js must distinguish between "label" & value!
 		 * if(($on = we_base_request::_(we_base_request::STRING, 'owners_name')) && ($oc = we_base_request::_(we_base_request::INT, 'owners_count'))){
-			$this->voting->Owners = array();
-			$an = $on . '_variant0_' . $on . '_item';
-			for($i = 0; $i < $oc; $i++){
-				if(($tmp = we_base_request::_(we_base_request::STRING, $an . $i))){
-					$up = str_replace(array(stripslashes($this->item_pattern), stripslashes($this->group_pattern)), '', $tmp);
-					$this->voting->Owners[] = path_to_id($up, USER_TABLE);
-				}
-			}
-			$this->voting->Owners = array_unique($this->voting->Owners);
-		}
+		  $this->voting->Owners = array();
+		  $an = $on . '_variant0_' . $on . '_item';
+		  for($i = 0; $i < $oc; $i++){
+		  if(($tmp = we_base_request::_(we_base_request::STRING, $an . $i))){
+		  $up = str_replace(array(stripslashes($this->item_pattern), stripslashes($this->group_pattern)), '', $tmp);
+		  $this->voting->Owners[] = path_to_id($up, USER_TABLE);
+		  }
+		  }
+		  $this->voting->Owners = array_unique($this->voting->Owners);
+		  }
 		 */
 
 		$ipset = array();

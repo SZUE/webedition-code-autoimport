@@ -53,15 +53,17 @@ class we_messaging_view extends we_modules_view{
 	function getCommonHiddens($cmds = array()){
 		return
 			parent::getCommonHiddens($cmds) .
-			$this->htmlHidden("vernr", (isset($cmds["vernr"]) ? $cmds["vernr"] : 0)) .
-			$this->htmlHidden("IsFolder", (isset($this->voting->IsFolder) ? $this->voting->IsFolder : 0));
+			we_html_element::htmlHiddens(array(
+				"vernr" => (isset($cmds["vernr"]) ? $cmds["vernr"] : 0),
+				"IsFolder" => (isset($this->voting->IsFolder) ? $this->voting->IsFolder : 0)
+		));
 	}
 
 	function getJSTop(){
 		//
 	}
 
-		function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
+	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
 		return '
 function submitForm() {
 	var f = self.document.we_form;
@@ -341,7 +343,7 @@ top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this
 if (top.content.editor.edbody.messaging_messages_overview) {
 	top.content.editor.edbody.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . "messaging_show_folder_content.php") . '";
 }' .
-						($blank ? 'top.content.editor.edbody.messaging_msg_view.location="about:blank";' : '')
+				($blank ? 'top.content.editor.edbody.messaging_msg_view.location="about:blank";' : '')
 		);
 	}
 

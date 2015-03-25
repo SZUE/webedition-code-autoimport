@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -53,18 +52,19 @@ function weDoImgCmd($args){
 	$attribs = we_base_request::_(we_base_request::BOOL, 'imgChangedCmd') && !we_base_request::_(we_base_request::BOOL, 'wasThumbnailChange') ? we_base_request::_(we_base_request::STRING, 'we_dialog_args') : $args;
 	return we_dialog_base::getTinyMceJS() .
 		we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_insert.js') .
-		'<form name="tiny_form">
-			<input type="hidden" name="src" value="' . $args["src"] . '">
-			<input type="hidden" name="width" value="' . $attribs["width"] . '">
-			<input type="hidden" name="height" value="' . $attribs["height"] . '">
-			<input type="hidden" name="hspace" value="' . $attribs["hspace"] . '">
-			<input type="hidden" name="vspace" value="' . $attribs["vspace"] . '">
-			<input type="hidden" name="border" value="' . $attribs["border"] . '">
-			<input type="hidden" name="alt" value="' . addslashes($attribs["alt"]) . '">
-			<input type="hidden" name="align" value="' . $attribs["align"] . '">
-			<input type="hidden" name="name" value="' . $attribs["name"] . '">
-			<input type="hidden" name="class" value="' . $attribs["cssclass"] . '">
-			<input type="hidden" name="title" value="' . addslashes($attribs["title"]) . '">
-			<input type="hidden" name="longdesc" value="' . (intval($attribs["longdescid"]) ? $attribs["longdescsrc"] . '?id=' . intval($attribs["longdescid"]) : '') . '">
-		</form>';
+		'<form name="tiny_form">' .
+		we_html_element::htmlHiddens(array(
+			"src" => $args["src"],
+			"width" => $attribs["width"],
+			"height" => $attribs["height"],
+			"hspace" => $attribs["hspace"],
+			"vspace" => $attribs["vspace"],
+			"border" => $attribs["border"],
+			"alt" => $attribs["alt"],
+			"align" => $attribs["align"],
+			"name" => $attribs["name"],
+			"class" => $attribs["cssclass"],
+			"title" => $attribs["title"],
+			"longdesc" => (intval($attribs["longdescid"]) ? $attribs["longdescsrc"] . '?id=' . intval($attribs["longdescid"]) : '')
+		)) . '</form>';
 }
