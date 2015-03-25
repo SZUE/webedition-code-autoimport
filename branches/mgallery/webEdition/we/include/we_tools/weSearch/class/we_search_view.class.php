@@ -1208,7 +1208,6 @@ weSearch.g_l = {
 								case 'IsUsed':
 									$where .= $this->searchclass->searchMediaLinks($searchString, $_table, $_view == 'list');
 									break;
-<<<<<<< .mine
 								case 'IsProtected':
 									switch($searchString){
 										case 1:
@@ -1219,10 +1218,7 @@ weSearch.g_l = {
 											break;
 									}
 									break;
-								default; 
-=======
-								default;
->>>>>>> .r9580
+								default:
 									$done = false;
 							}
 							if(substr($searchFields[$i], 0, 6) === 'meta__'){
@@ -2354,14 +2350,8 @@ weSearch.g_l = {
 ';
 
 				for($m = 0; $m < $x; $m++){
-<<<<<<< .mine
-					$out .= '<tr>' . ($whichSearch === "doclist" ? 	we_search_view::tblListRow($content[$m]) :
+					$out .= '<tr>' . ($whichSearch === 'doclist' ? we_search_view::tblListRow($content[$m]) :
 						($whichSearch === self::SEARCH_MEDIA ? $this->tblListRowMedia($content[$m]) : $this->tblListRow($content[$m]))) . '</tr>';
-=======
-					$out .= '<tr>' . ($whichSearch != "doclist" ?
-							$this->tblListRow($content[$m]) :
-							we_search_view::tblListRow($content[$m])) . '</tr>';
->>>>>>> .r9580
 				}
 				$out .= '</tbody></table>';
 				return $out;
