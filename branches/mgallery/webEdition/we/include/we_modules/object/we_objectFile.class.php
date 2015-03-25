@@ -76,7 +76,7 @@ class we_objectFile extends we_document{
 		}
 		if(!isset($GLOBALS['WE_IS_DYN'])){
 			$ac = we_users_util::getAllowedClasses($this->DB_WE);
-			$this->AllowedClasses = makeCSVFromArray($ac);
+			$this->AllowedClasses = implode(',', $ac);
 		}
 		if(isWE()){
 			if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER')){
@@ -326,7 +326,7 @@ class we_objectFile extends we_document{
 
 	function restoreWorkspaces(){
 		if(!$this->TableID){ // WORKARROUND for bug 4631
-			$ac = makeCSVFromArray(we_users_util::getAllowedClasses($this->DB_WE));
+			$ac = implode(',', we_users_util::getAllowedClasses($this->DB_WE));
 			$this->TableID = count($ac) ? $ac[0] : 0;
 		}
 		$foo = getHash('SELECT Workspaces,DefaultWorkspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
@@ -1590,8 +1590,6 @@ class we_objectFile extends we_document{
 					$ClassWs = ',' . $ClassWs;
 				}
 			}
-//$foo = pushChildsFromArr($foo,FILE_TABLE,1);
-//return makeCSVFromArray($foo);
 		} else {
 // alle UserWs, welche sich in einem der ClassWs befinden zur�ckgeben
 			$userWsArr = makeArrayFromCSV($userWs);
@@ -2523,45 +2521,44 @@ class we_objectFile extends we_document{
 			if(($def = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE))){
 				$vals = unserialize($def);
 				if(isset($vals["WE_CSS_FOR_CLASS"])){
-					$this->CSS = $vals["WE_CSS_FOR_CLASS"];
+					$this->CSS = $vals['WE_CSS_FOR_CLASS'];
 				}
 			}
-		} else if(isset($GLOBALS["we_EDITOR"]) && $GLOBALS["we_EDITOR"] && $this->DefaultInit == true && (!$this->ID)){
-			if(!$this->TableID){
-				$ac = we_users_util::getAllowedClasses($this->DB_WE);
-				$this->AllowedClasses = makeCSVFromArray($ac);
-				$this->TableID = $ac[0];
-			}
-			if($this->TableID){
+		} else if(isset($GLOBALS['we_EDITOR']) && $GLOBALS["we_EDITOR"] && (!$this->ID)){
+			if($this->DefaultInit == true){
+				if(!$this->TableID){
+					$ac = we_users_util::getAllowedClasses($this->DB_WE);
+					$this->AllowedClasses = implode(',', $ac);
+					$this->TableID = $ac[0];
+				}
+				if($this->TableID){
+					$this->setRootDirID();
+					if(!$makeSameNewFlag){
+						$this->resetParentID();
+					}
+					$this->restoreDefaults($makeSameNewFlag);
+				}
+			} else {
+				$_initWeDocumentCustomerFilter = ($this->ParentID ? false : true);
+
+				if(!$this->Charset && isset($this->DefArray['elements']['Charset'])){
+					$this->Charset = $this->DefArray['elements']['Charset']['dat'];
+				}
+
 				$this->setRootDirID();
-				if(!$makeSameNewFlag){
-					$this->resetParentID();
-				}
-				$this->restoreDefaults($makeSameNewFlag);
-			}
-		} else if(isset($GLOBALS["we_EDITOR"]) && $GLOBALS["we_EDITOR"] && (!$this->ID)){
-			$_initWeDocumentCustomerFilter = false;
-			if(!$this->ParentID){
-				$_initWeDocumentCustomerFilter = true;
-			}
-
-			if(!$this->Charset && isset($this->DefArray['elements']['Charset'])){
-				$this->Charset = $this->DefArray['elements']['Charset']['dat'];
-			}
-
-			$this->setRootDirID();
-			/*
-			  if(!isset($this->ParentID)) {
-			  $this->resetParentID();
-			  }
-			 */
-			$this->checkAndCorrectParent();
-			if($_initWeDocumentCustomerFilter){
+				/*
+				  if(!isset($this->ParentID)) {
+				  $this->resetParentID();
+				  }
+				 */
+				$this->checkAndCorrectParent();
+				if($_initWeDocumentCustomerFilter){
 // get customerFilter of parent Folder
-				$_tmpFolder = new we_class_folder();
-				$_tmpFolder->initByID($this->rootDirID, $this->Table);
-				$this->documentCustomerFilter = $_tmpFolder->documentCustomerFilter;
-				unset($_tmpFolder);
+					$_tmpFolder = new we_class_folder();
+					$_tmpFolder->initByID($this->rootDirID, $this->Table);
+					$this->documentCustomerFilter = $_tmpFolder->documentCustomerFilter;
+					unset($_tmpFolder);
+				}
 			}
 		}
 	}

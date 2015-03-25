@@ -172,7 +172,7 @@ $we_menu = array(
 		'text' => g_l('javaMenu_global', '[collection_directory]'),
 		'parent' => 1011000,
 		'cmd' => 'new_collection_folder',
-		'perm' => '',//NEW_COLLECTION',
+		'perm' => '', //NEW_COLLECTION',
 		'hide' => $seeMode
 	),
 	array(// separator
@@ -337,14 +337,14 @@ $we_menu = array(
 	array(// File > add to collection > documents
 		'text' => g_l('javaMenu_global', '[documents]'),
 		'parent' => 1095000,
-		'cmd' => 'add_documents_to_collection',// FIXME: g_l()
+		'cmd' => 'add_documents_to_collection', // FIXME: g_l()
 		'perm' => '',
 		'hide' => $seeMode,
 	),
 	array(/// File > add to collection > objects
 		'text' => g_l('javaMenu_object', '[objects]'),
 		'parent' => 1095000,
-		'cmd' => 'add_objectfiles_to_collection',// FIXME: g_l()
+		'cmd' => 'add_objectfiles_to_collection', // FIXME: g_l()
 		'perm' => '',
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
 	),
@@ -786,7 +786,7 @@ while($GLOBALS['DB_WE']->next_record()){
 
 if(defined('OBJECT_TABLE')){
 	// object from which class
-	$ac = makeCSVFromArray(we_users_util::getAllowedClasses($GLOBALS['DB_WE']));
+	$ac = implode(',', we_users_util::getAllowedClasses($GLOBALS['DB_WE']));
 	if($ac){
 		$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
 		$nr = 801;

@@ -632,7 +632,7 @@ abstract class we_rebuild_wizard{
 					$newFolders[] = $folder;
 				}
 			}
-			$folders = makeCSVFromArray($newFolders);
+			$folders = implode(',', $newFolders);
 		}
 
 		if($ws && strpos($ws, (',0,')) !== true && ($thumbsFolders == '' || $thumbsFolders == '0')){
@@ -700,7 +700,7 @@ abstract class we_rebuild_wizard{
 					$newFolders[] = $foldersArray[$i];
 				}
 			}
-			$folders = makeCSVFromArray($newFolders);
+			$folders = implode(',', $newFolders);
 		}
 
 		if($ws && strpos($ws, (',0,')) !== true && ($metaFolders == '' || $metaFolders == '0')){

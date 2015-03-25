@@ -167,9 +167,9 @@ class we_versions_search{
 								}
 							}
 							if($mtof){
-								$where .= ' AND ID IN (' . makeCSVFromArray($arr) . ') ';
+								$where .= ' AND ID IN (' . implode(',', $arr) . ') ';
 							} elseif(!empty($_ids[0])){
-								$where .= ' AND ID IN (' . makeCSVFromArray($_ids[0]) . ') ';
+								$where .= ' AND ID IN (' . implode(',', $_ids[0]) . ') ';
 							} else {
 								$where .= ' AND 0';
 							}

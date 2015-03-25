@@ -1083,7 +1083,7 @@ class we_versions_version{
 				if((defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL)){
 					if($status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
 						return;
-			}
+					}
 					break;
 				}
 				return;
@@ -1092,7 +1092,7 @@ class we_versions_version{
 			case we_base_ContentTypes::HTML:
 				if((defined('VERSIONS_CREATE') && VERSIONS_CREATE) && $status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
 					return;
-			}
+				}
 		}
 
 //look if there were made changes
@@ -1450,12 +1450,12 @@ class we_versions_version{
 		if($includepath != '' && file_exists($includepath)){
 			ob_start();
 			include($includepath);
-/*			ob_end_clean();
-			$_REQUEST = $requestBackup;
-			extract($GLOBALS, EXTR_SKIP); // globalen Namensraum herstellen.
+			/* 			ob_end_clean();
+			  $_REQUEST = $requestBackup;
+			  extract($GLOBALS, EXTR_SKIP); // globalen Namensraum herstellen.
 
-			ob_start();
-			include($includepath);*/
+			  ob_start();
+			  include($includepath); */
 			//the above won't work, since php-functions are included multiple times
 			$contents = ob_get_clean();
 		} else {
@@ -1970,7 +1970,7 @@ class we_versions_version{
 						}
 					}
 				}
-				return makeCSVFromArray($months, false, ', ');
+				return implode(', ', $months);
 			case 'days':
 				$days = array();
 				if(is_array($v) && !empty($v)){
@@ -1984,7 +1984,7 @@ class we_versions_version{
 						}
 					}
 				}
-				return makeCSVFromArray($days, false, ', ');
+				return implode(', ', $days);
 			case 'weekdays':
 				$weekdays = array();
 				if(is_array($v) && !empty($v)){
@@ -1995,7 +1995,7 @@ class we_versions_version{
 					}
 				}
 
-				return makeCSVFromArray($weekdays, false, ", ");
+				return implode(', ', $weekdays);
 			case 'time':
 				return date('d.m.y - H:i:s', $v);
 			case 'doctypeAll':
@@ -2158,7 +2158,7 @@ class we_versions_version{
 			}
 		}
 
-		return makeCSVFromArray($const);
+		return implode(',', $const);
 	}
 
 	public static function todo($data, $printIt = true){

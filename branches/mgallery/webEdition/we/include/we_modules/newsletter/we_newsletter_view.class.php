@@ -863,7 +863,7 @@ self.close();');
 				$emails[$nrid] = array($email, $htmlmail, $salutation, $title, $firstname, $lastname);
 				$emails_out = "";
 				foreach($emails as $email){
-					$emails_out.=makeCSVFromArray(array_slice($email, 0, 6)) . "\n";
+					$emails_out.=implode(',', array_slice($email, 0, 6)) . "\n";
 				}
 
 				if($csv_file){
@@ -881,7 +881,7 @@ self.close();');
 					array_splice($emails, $nrid, 1);
 					$emails_out = '';
 					foreach($emails as $email){
-						$emails_out.=makeCSVFromArray($email) . "\n";
+						$emails_out.=implode(',', $email) . "\n";
 					}
 
 					if($csv_file){

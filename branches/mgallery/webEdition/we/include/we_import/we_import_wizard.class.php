@@ -1264,7 +1264,7 @@ HTS;
 			'style' => 'width: 150px')
 		);
 		$optid = 0;
-		$ac = makeCSVFromArray(we_users_util::getAllowedClasses($DB_WE));
+		$ac = implode(',', we_users_util::getAllowedClasses($DB_WE));
 		if($ac){
 			$DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
 			while($DB_WE->next_record()){
@@ -1725,7 +1725,7 @@ function handle_event(evt) {
 				'space' => 120
 			);
 			if(!isset($v['dateFields'])){
-				$hdns .= we_html_element::htmlHidden('v[dateFields]', makeCSVFromArray($dateFields));
+				$hdns .= we_html_element::htmlHidden('v[dateFields]', implode(',', $dateFields));
 			}
 		}
 
@@ -2315,7 +2315,7 @@ HTS;
 				. "document.we_form.elements['v[obj_path_id]'].value=document.we_form.elements['v[classID]'].value.split('_')[1];",
 				"style" => "width: 150px")
 			);
-			$ac = makeCSVFromArray(we_users_util::getAllowedClasses($DB_WE));
+			$ac = implode(',', we_users_util::getAllowedClasses($DB_WE));
 			if($ac){
 				$DB_WE->query('SELECT o.ID,o.Text,f.ID AS FID FROM ' . OBJECT_TABLE . ' o LEFT JOIN ' . OBJECT_FILES_TABLE . ' f ON o.Text=f.Text WHERE ' . ($ac ? '  o.ID IN(' . $ac . ') AND ' : '') . ' f.IsFolder=1 AND f.ParentID=0 ORDER BY o.Text');
 				while($DB_WE->next_record()){
@@ -2693,7 +2693,7 @@ function handle_event(evt) {
 				"space" => 140
 			);
 			if(!isset($v["dateFields"])){
-				$hdns .= we_html_element::htmlHidden("v[dateFields]", makeCSVFromArray($dateFields));
+				$hdns .= we_html_element::htmlHidden("v[dateFields]", implode(',', $dateFields));
 			}
 		}
 
@@ -2731,7 +2731,7 @@ function handle_event(evt) {
 	private function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){
 		$Pathvalue = (empty($Pathvalue) ? f('SELECT Path FROM ' . escape_sql_query($table) . ' WHERE ID=' . intval($IDValue), '', new DB_WE()) : $Pathvalue);
 		$button = we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','document.we_form.elements[\\'" . $IDName . "\\'].value','document.we_form.elements[\\'" . $Pathname . "\\'].value','" . $cmd . "','','" . $rootDirID . "')");
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden($IDName,$IDValue), we_html_tools::getPixel(20, 4), $button);
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
 	}
 
 }

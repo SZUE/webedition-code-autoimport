@@ -176,7 +176,7 @@ abstract class we_object_listviewBase extends we_listview_base{
 				$order = ' ORDER BY RANDOM ';
 				break;
 			default:
-				$order = makeCSVFromArray($ordertmp);
+				$order = implode(',', $ordertmp);
 				if($order){
 					$order = ' ORDER BY ' . $order;
 				}

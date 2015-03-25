@@ -127,7 +127,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		if($we_doc->TemplateID == $cmd1){
 			$we_doc->TemplateID = ($foo ? $foo[0] : 0);
 		}
-		$we_doc->Templates = makeCSVFromArray($foo);
+		$we_doc->Templates = implode(',',$foo);
 		break;
 	case "dt_add_cat":
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);

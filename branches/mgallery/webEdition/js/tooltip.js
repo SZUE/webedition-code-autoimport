@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+
+//FIXME: check workflow where this is used & if we need this anymore
 function showtip(current, e, text) {
 	if (!document.layers) {
 		thetitle = text.split('<br>');

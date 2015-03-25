@@ -301,7 +301,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 										$newTemplateIDs[] = $id;
 									}
 								}
-								$dt->Templates = makeCSVFromArray($newTemplateIDs);
+								$dt->Templates = implode(',', $newTemplateIDs);
 								$dt->TemplateID = $GLOBALS['we_doc']->TemplateID;
 							}
 

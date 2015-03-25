@@ -59,7 +59,7 @@ class we_import_files{
 						$_cat :
 						path_to_id($_cat, CATEGORY_TABLE));
 			}
-			$_REQUEST['categories'] = makeCSVFromArray($_cats);
+			$_REQUEST['categories'] = implode(',', $_cats);
 		}
 
 		$this->categories = we_base_request::_(we_base_request::RAW, "categories", $this->categories);

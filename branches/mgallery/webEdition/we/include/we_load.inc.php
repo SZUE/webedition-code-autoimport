@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -33,7 +32,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 	$openDirs = array_flip(makeArrayFromCSV($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]));
 	we_base_util::new_array_splice($openDirs, $parentFolder, 1);
 	$openDirs = array_keys($openDirs);
-	$_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)] = makeCSVFromArray($openDirs);
+	$_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)] = implode(',', $openDirs);
 } else {
 	$GLOBALS["OBJECT_FILES_TREE_COUNT"] = defined('OBJECT_FILES_TREE_COUNT') ? OBJECT_FILES_TREE_COUNT : 20;
 
@@ -79,7 +78,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 			}
 		}
 
-		$prevoffset = max(0,$offset - $segment);
+		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$treeItems[] = array(
 				'icon' => 'arrowup.gif',
@@ -259,9 +258,9 @@ loadTreeData();');
 	}
 
 	echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(
-				we_html_tools::getHtmlInnerHead('File-Tree') .
-				$js
-			) . we_html_element::htmlBody(array("bgcolor" => "white"))
+			we_html_tools::getHtmlInnerHead('File-Tree') .
+			$js
+		) . we_html_element::htmlBody(array("bgcolor" => "white"))
 	);
 }
 we_users_user::writePrefs($_SESSION["prefs"]["userID"], $GLOBALS['DB_WE']);

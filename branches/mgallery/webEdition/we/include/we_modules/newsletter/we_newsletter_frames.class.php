@@ -1710,9 +1710,9 @@ self.focus();
 
 						if(!empty($row)){
 							if($this->View->settings["black_list"] === ''){
-								$this->View->settings["black_list"] = makeCSVFromArray($row);
+								$this->View->settings["black_list"] = implode(',', $row);
 							} else {
-								$this->View->settings["black_list"].="," . makeCSVFromArray($row);
+								$this->View->settings["black_list"].="," . implode(',', $row);
 							}
 						}
 					} else {

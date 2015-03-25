@@ -542,7 +542,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$newowners[] = $own;
 				}
 			}
-			$object->Owners = makeCSVFromArray($newowners);
+			$object->Owners = implode(',',$newowners);
 			if(isset($object->OwnersReadOnly)){
 				$readonly = unserialize($object->OwnersReadOnly);
 				$readonly_new = array();

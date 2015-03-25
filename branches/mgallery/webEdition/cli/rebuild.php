@@ -320,7 +320,7 @@ switch(($type = we_base_request(we_base_request::STRING, 'type'))){
 		foreach($_thumbNames as $_thumbName){
 			$_thumbIds[] = f('SELECT ID FROM ' . THUMBNAILS_TABLE . " WHERE NAME='" . $db->escape($_thumbName) . "'", '', $db);
 		}
-		$_thumbIds = makeCSVFromArray($_thumbIds);
+		$_thumbIds = implode(',', $_thumbIds);
 		$data = we_rebuild_base::getThumbnails($_thumbIds);
 		break;
 

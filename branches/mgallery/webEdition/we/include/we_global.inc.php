@@ -432,15 +432,6 @@ function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = '', we_database
 	}
 }
 
-function uniqueCSV($csv, $prePost = false){
-	$arr = array_unique(makeArrayFromCSV($csv));
-	$foo = array();
-	foreach($arr as $v){
-		$foo[] = $v;
-	}
-	return makeCSVFromArray($foo, $prePost);
-}
-
 function get_ws($table = FILE_TABLE, $prePostKomma = false){
 	if(isset($_SESSION) && isset($_SESSION['perms'])){
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -530,7 +521,7 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
 	}
 
 	$foo = f('SELECT workSpaceDef FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), '', new DB_WE());
-	$ws = makeCSVFromArray(makeArrayFromCSV($foo), $prePostKomma);
+	$ws = makeCSVFromArray(implode(',', $foo), $prePostKomma);
 
 	if(!$ws){
 		$wsA = makeArrayFromCSV(get_ws($table, $prePostKomma));

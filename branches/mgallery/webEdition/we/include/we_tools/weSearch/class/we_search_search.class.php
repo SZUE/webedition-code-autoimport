@@ -63,9 +63,7 @@ class we_search_search extends we_search_base{
 	 * @var array with fields to search for
 	 */
 	var $search = array();
-
 	private $collectionMetaSearches = array();
-	
 	private $usedMedia = array();
 	private $usedMediaLinks = array();
 
@@ -207,13 +205,13 @@ class we_search_search extends we_search_base{
 		return $tableFields;
 	}
 
-	function getFieldsMeta( $usePrefix = false, $getTypes = false){
+	function getFieldsMeta($usePrefix = false, $getTypes = false){
 		$_db = new DB_WE();
 		$_db->query('SELECT tag,type DocType FROM ' . METADATA_TABLE);
 		$ret = array(
-			($usePrefix ? 'meta__' : '') . 'Title' => ($getTypes ? 'text' : 'Metadaten: Titel'),// FIXME: G_L()
-			($usePrefix ? 'meta__' : '') . 'Description' => ($getTypes ? 'text' : 'Metadaten: Beschreibung'),// FIXME: G_L()
-			($usePrefix ? 'meta__' : '') . 'Keywords' => ($getTypes ? 'text' : 'Metadaten: Schlüsselwörter'),// FIXME: G_L()
+			($usePrefix ? 'meta__' : '') . 'Title' => ($getTypes ? 'text' : 'Metadaten: Titel'), // FIXME: G_L()
+			($usePrefix ? 'meta__' : '') . 'Description' => ($getTypes ? 'text' : 'Metadaten: Beschreibung'), // FIXME: G_L()
+			($usePrefix ? 'meta__' : '') . 'Keywords' => ($getTypes ? 'text' : 'Metadaten: Schlüsselwörter'), // FIXME: G_L()
 		);
 		while($_db->next_record()){
 			$ret[($usePrefix ? 'meta__' : '') . $_db->f('tag')] = $getTypes ? $_db->f('type') : 'Metadaten: ' . $_db->f('tag');
@@ -304,7 +302,7 @@ class we_search_search extends we_search_base{
 			}
 		}
 
-		return ($titles ? ' ' . $table . '.ID IN (' . makeCSVFromArray($titles) . ') ' : '');
+		return ($titles ? ' ' . $table . '.ID IN (' . implode(',', $titles) . ') ' : '');
 	}
 
 	function searchCategory($keyword, $table){
@@ -520,7 +518,7 @@ class we_search_search extends we_search_base{
 	}
 
 	function getStatusFiles($status, $table){//IMI: IMPORTANT: veröffentlichungsstatus grenzt die contenttypes auf djenigen ein, die solch einen status haben!!
-											// also kann auch beim verlinkungsstatus auf media-docs eingegremzt werden
+		// also kann auch beim verlinkungsstatus auf media-docs eingegremzt werden
 		switch($status){
 			case "jeder" :
 				return "AND (" . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::WEDOCUMENT . "' OR " . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::HTML . "' OR " . $this->db->escape($table) . ".ContentType='" . we_base_ContentTypes::OBJECT_FILE . "')";
@@ -607,9 +605,9 @@ class we_search_search extends we_search_base{
 						}
 					}
 					$where .= ' AND ' . ($mtof ?
-							$table . '.ID IN (' . makeCSVFromArray($arr) . ') ' :
+							$table . '.ID IN (' . implode(',', $arr) . ') ' :
 							($_ids[0] ?
-								$table . '.ID IN (' . makeCSVFromArray($_ids[0]) . ') ' :
+								$table . '.ID IN (' . implode(',', $_ids[0]) . ') ' :
 								' 0'));
 				}
 			}
@@ -707,29 +705,30 @@ class we_search_search extends we_search_base{
 	}
 
 	function searchMediaLinks($useState = 0, $table = '', $holdAllLinks = true){
-		$_db = new DB_WE();
+		$db = new DB_WE();
 		$useState = intval($useState);
 
 		$fields = $holdAllLinks ? 'ID,DocumentTable,remObj' : 'DISTINCT remObj';
-		$_db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' WHERE type = "media" AND remTable = "' . stripTblPrefix(FILE_TABLE) . '" AND position = 0' );
+		$db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' WHERE type="media" AND remTable="' . stripTblPrefix(FILE_TABLE) . '" AND position=0');
 
 		$this->usedMediaLinks = $IDs = array();
 		if($holdAllLinks){
-			while($_db->next_record()){
-				$rec = $_db->getRecord();
-				$this->usedMediaLinks['mediaID_' . $rec['remObj']][] = array('ID' => $rec['ID'], 'Table' => $rec['DocumentTable']);
+			while($db->next_record()){
+				$rec = $db->getRecord();
+				$this->usedMediaLinks['mediaID_' . $rec['remObj']][] = array(
+					'ID' => $rec['ID'],
+					'Table' => $rec['DocumentTable']
+				);
 				$IDs[] = $rec['remObj'];
 			}
 		}
-		$this->usedMedia = $IDs ? array_unique($IDs) : $_db->getAll(true);
+		$this->usedMedia = $IDs ? array_unique($IDs) : $db->getAll(true);
 
 		if(!$useState){
 			return;
 		}
 
-		if($useState !== 0){
-			return $this->usedMedia ? (' AND ' . FILE_TABLE . '.ID ' . ($useState === 2 ? 'NOT ' : ' ') . 'IN(' . implode(',', $this->usedMedia) . ')') : ($useState === 2 ? '' : ' AND 0');
-		}
+		return $this->usedMedia ? (' AND ' . FILE_TABLE . '.ID ' . ($useState === 2 ? 'NOT ' : ' ') . 'IN(' . implode(',', $this->usedMedia) . ')') : ($useState === 2 ? '' : ' AND 0');
 	}
 
 	function selectFromTempTable($searchstart, $anzahl, $order){
@@ -744,7 +743,7 @@ class we_search_search extends we_search_base{
 			return;
 		}
 
-		$this->db->query('SELECT *,ABS(' . $sortierung[0] . ') AS Nr, (' . $sortierung[0] . " REGEXP '^[0-9]') AS isNr  FROM SEARCH_TEMP_TABLE  ORDER BY IsFolder DESC, isNr " . $sortIsNr . ',Nr ' . $sortNr . ',' . $sortierung[0] . ' ' . $sortNr . ', ' . $order . '  LIMIT ' . $searchstart . ',' . $anzahl);
+		$this->db->query('SELECT *,ABS(' . $sortierung[0] . ') AS Nr, (' . $sortierung[0] . " REGEXP '^[0-9]') AS isNr FROM SEARCH_TEMP_TABLE  ORDER BY IsFolder DESC, isNr " . $sortIsNr . ',Nr ' . $sortNr . ',' . $sortierung[0] . ' ' . $sortNr . ', ' . $order . '  LIMIT ' . $searchstart . ',' . $anzahl);
 	}
 
 //FIXME path is only implemented for filetable
@@ -755,7 +754,7 @@ class we_search_search extends we_search_base{
 			return;
 		}
 
-		$this->where = ' WHERE ' . ($where ? : ($this->where ? : ' 1 '));
+		$this->where = ($where ? : ($this->where ? : '1 '));
 
 		switch($this->table){
 			case FILE_TABLE:
@@ -764,7 +763,7 @@ class we_search_search extends we_search_base{
 					$this->where .= ' AND Path LIKE "' . $this->db->escape($path) . '%" ';
 					$tmpTableWhere = ' AND DocumentID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%" )';
 				}
-				$this->db->query('INSERT INTO  SEARCH_TEMP_TABLE SELECT "",ID,"' . FILE_TABLE . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,"",CreationDate,CreatorID,ModDate,Published,Extension,"","" FROM `' . FILE_TABLE . '` ' . $this->where);
+				$this->db->query('INSERT INTO  SEARCH_TEMP_TABLE SELECT "",ID,"' . FILE_TABLE . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,"",CreationDate,CreatorID,ModDate,Published,Extension,"","" FROM `' . FILE_TABLE . '` WHERE ' . $this->where);
 
 				//first check published documents
 				$this->db->query('SELECT l.DID,c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.Name="Title" AND l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"');
@@ -790,7 +789,7 @@ class we_search_search extends we_search_base{
 			case VERSIONS_TABLE:
 				if($_SESSION['weS']['weSearch']['onlyDocs'] || $_SESSION['weS']['weSearch']['ObjectsAndDocs']){
 					$query = "INSERT INTO  SEARCH_TEMP_TABLE SELECT '',v.documentID,v.documentTable,v.Text,v.Path,v.ParentID,'','',v.TemplateID,v.ContentType,'',v.timestamp,v.modifierID,'','',v.Extension,v.TableID,v.ID " .
-						'FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . FILE_TABLE . ' f ON v.documentID=f.ID ' . $this->where . ' ' . $_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'];
+						'FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . FILE_TABLE . ' f ON v.documentID=f.ID WHERE ' . $this->where . ' ' . $_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'];
 					if(stristr($query, "v.status='deleted'")){
 						$query = str_replace(FILE_TABLE . ".", "v.", $query);
 					}
@@ -798,7 +797,7 @@ class we_search_search extends we_search_base{
 				}
 				if(defined('OBJECT_FILES_TABLE') && ($_SESSION['weS']['weSearch']['onlyObjects'] || $_SESSION['weS']['weSearch']['ObjectsAndDocs'])){
 					$query = "INSERT INTO SEARCH_TEMP_TABLE SELECT '',v.documentID,v.documentTable,v.Text,v.Path,v.ParentID,'','',v.TemplateID,v.ContentType,'',v.timestamp,v.modifierID,'','',v.Extension,v.TableID,v.ID "
-						. 'FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . OBJECT_FILES_TABLE . ' f ON v.documentID=f.ID ' . $this->where . " " . $_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'];
+						. 'FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . OBJECT_FILES_TABLE . ' f ON v.documentID=f.ID WHERE ' . $this->where . " " . $_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'];
 					if(stristr($query, "v.status='deleted'")){
 						$query = str_replace(OBJECT_FILES_TABLE . ".", "v.", $query);
 					}
@@ -808,15 +807,15 @@ class we_search_search extends we_search_base{
 				break;
 
 			case TEMPLATES_TABLE:
-				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE  SELECT '',ID,'" . TEMPLATES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,Path,CreationDate,CreatorID,ModDate,'',Extension,'','' FROM `" . TEMPLATES_TABLE . "` " . $this->where);
+				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE  SELECT '',ID,'" . TEMPLATES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,Path,CreationDate,CreatorID,ModDate,'',Extension,'','' FROM `" . TEMPLATES_TABLE . "` WHERE " . $this->where);
 				break;
 
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE SELECT '',ID,'" . OBJECT_FILES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,Published,'',TableID,'' FROM `" . OBJECT_FILES_TABLE . "` " . $this->where);
+				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE SELECT '',ID,'" . OBJECT_FILES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,Published,'',TableID,'' FROM `" . OBJECT_FILES_TABLE . "` WHERE " . $this->where);
 				break;
 
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE SELECT '',ID,'" . OBJECT_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,'','','','' FROM `" . OBJECT_TABLE . "` " . $this->where);
+				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE SELECT '',ID,'" . OBJECT_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,'','','','' FROM `" . OBJECT_TABLE . "` WHERE " . $this->where);
 				break;
 		}
 	}
@@ -1002,19 +1001,16 @@ UNIQUE KEY k (docID,docTable)
 		$childsOfFolderId = array();
 		//fix #2940
 		if(is_array($folderID)){
-			if($folderID){
-				foreach($folderID as $k){
-					$childsOfFolderId = self::getChildsOfParentId($k, $table, $DB_WE);
-					$ids = makeCSVFromArray($childsOfFolderId);
-				}
-				return ' AND ' . $table . '.ParentID IN (' . $ids . ')';
+			foreach($folderID as $k){
+				$childsOfFolderId = self::getChildsOfParentId($k, $table, $DB_WE);
+				$ids = implode(',', $childsOfFolderId);
 			}
-		} else {
-			$childsOfFolderId = self::getChildsOfParentId($folderID, $table, $DB_WE);
-			$ids = makeCSVFromArray($childsOfFolderId);
-
 			return ' AND ' . $table . '.ParentID IN (' . $ids . ')';
 		}
+		$childsOfFolderId = self::getChildsOfParentId($folderID, $table, $DB_WE);
+		$ids = implode(',', $childsOfFolderId);
+
+		return ' AND ' . $table . '.ParentID IN (' . $ids . ')';
 	}
 
 	private static function getChildsOfParentId($folderID, $table, we_database_base $DB_WE){

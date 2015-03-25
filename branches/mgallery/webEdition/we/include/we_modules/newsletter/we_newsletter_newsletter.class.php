@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_newsletter_newsletter extends we_newsletter_base{
-
 	const SAVE_PATH_NOK = -10;
 	const MALFORMED_SENDER = -1;
 	const MALFORMED_REPLY = -2;
@@ -167,7 +165,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 					array_splice($groups, $k);
 				}
 			}
-			$block->Groups = makeCSVFromArray($groups);
+			$block->Groups = implode(',', $groups);
 			$block->NewsletterID = $this->ID;
 			$block->save();
 			//#8199: thrown out all addslashes() and stripslashes() here!

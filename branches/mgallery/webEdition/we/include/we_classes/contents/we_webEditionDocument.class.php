@@ -115,7 +115,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$GLOBALS['we_document'][$formname]->Category = makeIDsFromPathCVS(is_array($cats) ? implode(',', $cats) : $cats, CATEGORY_TABLE);
 		}
 		if(($cats = we_base_request::_(we_base_request::STRING, 'we_ui_' . $formname . '_Category')) !== false){
-			$_REQUEST['we_ui_' . $formname . '_Category'] = makeCSVFromArray((is_array($cats) ? $cats : makeArrayFromCSV($cats)), true);
+			$_REQUEST['we_ui_' . $formname . '_Category'] = makeCSVFromArray((is_array($cats) ? $cats : implode(',', $cats)), true);
 		}
 		foreach($GLOBALS['we_document'][$formname]->persistent_slots as $slotname){
 			if($slotname != 'categories' && ($slot = we_base_request::_(we_base_request::STRING, 'we_ui_' . $formname . '_' . $slotname)) !== false){
@@ -336,7 +336,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			foreach($wsArray as $wid){
 				pushChilds($foo, $wid, TEMPLATES_TABLE, 0, $this->DB_WE);
 			}
-			$tlist = makeCSVFromArray($foo);
+			$tlist = implode(',', $foo);
 		}
 		if($this->TemplateID){
 			$tlist = $tlist ? ($tlist . ',' . $this->TemplateID) : $this->TemplateID;
@@ -459,9 +459,9 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	// for internal use
 	private function setTemplatePath(){
-		$path = $this->TemplatePath = $this->TemplateID ?f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($this->TemplateID), '', $this->DB_WE) :'';
-$this->TemplatePath = $path ?
-			TEMPLATES_PATH . $path :WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC;
+		$path = $this->TemplatePath = $this->TemplateID ? f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($this->TemplateID), '', $this->DB_WE) : '';
+		$this->TemplatePath = $path ?
+			TEMPLATES_PATH . $path : WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC;
 	}
 
 	function setTemplateID($templID){
@@ -613,7 +613,7 @@ $this->TemplatePath = $path ?
 		if(isset($allElements['textarea'])){
 			foreach($allElements['textarea'] as $name){
 				$value = $this->getElement($name);
-				$this->FileLinks = array_merge($this->FileLinks, we_wysiwyg_editor::reparseInternalLinks($value, true));//true: replace internal file paths
+				$this->FileLinks = array_merge($this->FileLinks, we_wysiwyg_editor::reparseInternalLinks($value, true)); //true: replace internal file paths
 				$this->setElement($name, $value);
 			}
 		}

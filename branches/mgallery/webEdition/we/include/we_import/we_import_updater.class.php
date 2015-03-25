@@ -134,7 +134,7 @@ class we_import_updater extends we_exim_XMLExIm{
 				}
 			}
 			if($newcats){
-				$object->Category = makeCSVFromArray($newcats);
+				$object->Category = implode(',', $newcats);
 			}
 		}
 
@@ -430,7 +430,7 @@ class we_import_updater extends we_exim_XMLExIm{
 					$_new_tids[] = $_ref->ID;
 				}
 			}
-			$object->Templates = makeCSVFromArray($_new_tids);
+			$object->Templates = implode(',', $_new_tids);
 		}
 	}
 

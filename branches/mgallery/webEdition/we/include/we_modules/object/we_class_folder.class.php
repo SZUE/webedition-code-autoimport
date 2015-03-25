@@ -261,28 +261,28 @@ class we_class_folder extends we_folder{
 				$content[] = array(
 					array(
 						"align" => "center",
-						"dat" => ((permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE")) && permissionhandler::checkIfRestrictUserIsAllowed($this->searchclass->f("OF_ID"), OBJECT_FILES_TABLE, $this->DB_WE) ?
+						'dat' => ((permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE")) && permissionhandler::checkIfRestrictUserIsAllowed($this->searchclass->f("OF_ID"), OBJECT_FILES_TABLE, $this->DB_WE) ?
 							'<input type="checkbox" name="weg[' . $this->searchclass->f("OF_ID") . ']" />' :
 							'<img src="' . TREE_IMAGE_DIR . 'check0_disabled.gif" />')),
 					array(
 						"align" => "center",
 						"height" => 35,
-						"dat" => ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok)) ?
+						'dat' => ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok)) ?
 							'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" />' :
 							'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" />')),
-					array("dat" => ($this->searchclass->f("OF_IsSearchable") ?
+					array('dat' => ($this->searchclass->f("OF_IsSearchable") ?
 							'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '" />' :
 							'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '" />')),
-					array("dat" => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>'),
-					array("dat" => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . we_util_Strings::shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>'),
-					array("dat" => $this->searchclass->getWorkspaces(makeArrayFromCSV($this->searchclass->f("OF_Workspaces")), $we_wsLength)),
-					array("dat" => $this->searchclass->getExtraWorkspace(makeArrayFromCSV($this->searchclass->f("OF_ExtraWorkspaces")), $we_extraWsLength, $this->TableID, $userWSArray)),
-					array("dat" => '<nobr>' . ($this->searchclass->f("OF_Published") ? date(g_l('date', '[format][default]'), $this->searchclass->f("OF_Published")) : "-") . '</nobr>'),
-					array("dat" => '<nobr>' . ($this->searchclass->f("ModDate") ? date(g_l('date', '[format][default]'), $this->searchclass->f("ModDate")) : "-") . '</nobr>'),
-					array("dat" => $this->searchclass->f("OF_Url")),
-					array("dat" => $this->searchclass->f("OF_TriggerID") ? id_to_path($this->searchclass->f("OF_TriggerID")) : ''),
-					array("dat" => $this->searchclass->f("OF_Charset")),
-					array("dat" => $this->searchclass->f("OF_Language")),
+					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>'),
+					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . we_util_Strings::shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>'),
+					array('dat' => $this->searchclass->getWorkspaces(makeArrayFromCSV($this->searchclass->f("OF_Workspaces")), $we_wsLength)),
+					array('dat' => $this->searchclass->getExtraWorkspace(makeArrayFromCSV($this->searchclass->f("OF_ExtraWorkspaces")), $we_extraWsLength, $this->TableID, $userWSArray)),
+					array('dat' => '<nobr>' . ($this->searchclass->f("OF_Published") ? date(g_l('date', '[format][default]'), $this->searchclass->f("OF_Published")) : "-") . '</nobr>'),
+					array('dat' => '<nobr>' . ($this->searchclass->f("ModDate") ? date(g_l('date', '[format][default]'), $this->searchclass->f("ModDate")) : "-") . '</nobr>'),
+					array('dat' => $this->searchclass->f("OF_Url")),
+					array('dat' => $this->searchclass->f("OF_TriggerID") ? id_to_path($this->searchclass->f("OF_TriggerID")) : ''),
+					array('dat' => $this->searchclass->f("OF_Charset")),
+					array('dat' => $this->searchclass->f("OF_Language")),
 				);
 
 				$javascriptAll .= "var flo=document.we_form.elements['weg[" . $this->searchclass->f("OF_ID") . "]'].checked=true;";
@@ -292,19 +292,19 @@ class we_class_folder extends we_folder{
 		}
 
 		$headline = array(
-			array("dat" => ""),
-			array("dat" => g_l('modules_objectClassfoldersearch', '[zeige]')),
-			array("dat" => ""),
-			array("dat" => '<a href="javascript:setOrder(\'OF_ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a> ' . $this->getSortImage('OF_ID')),
-			array("dat" => '<a href="javascript:setOrder(\'OF_Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a> ' . $this->getSortImage('OF_Path')),
-			array("dat" => g_l('modules_objectClassfoldersearch', '[Arbeitsbereiche]')),
-			array("dat" => g_l('modules_objectClassfoldersearch', '[xtraArbeitsbereiche]')),
-			array("dat" => '<a href="javascript:setOrder(\'OF_Published\');">' . g_l('modules_objectClassfoldersearch', '[Veroeffentlicht]') . '</a> ' . $this->getSortImage('OF_Published')),
-			array("dat" => '<a href="javascript:setOrder(\'ModDate\');">' . g_l('modules_objectClassfoldersearch', '[geaendert]') . '</a> ' . $this->getSortImage('ModDate')),
-			array("dat" => '<a href="javascript:setOrder(\'OF_Url\');">' . g_l('modules_objectClassfoldersearch', '[url]') . '</a> ' . $this->getSortImage('OF_Url')),
-			array("dat" => '<a href="javascript:setOrder(\'OF_TriggerID\');">' . g_l('modules_objectClassfoldersearch', '[triggerid]') . '</a> ' . $this->getSortImage('OF_TriggerID')),
-			array("dat" => g_l('modules_objectClassfoldersearch', '[charset]')),
-			array("dat" => g_l('modules_objectClassfoldersearch', '[language]')),
+			array('dat' => ""),
+			array('dat' => g_l('modules_objectClassfoldersearch', '[zeige]')),
+			array('dat' => ""),
+			array('dat' => '<a href="javascript:setOrder(\'OF_ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a> ' . $this->getSortImage('OF_ID')),
+			array('dat' => '<a href="javascript:setOrder(\'OF_Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a> ' . $this->getSortImage('OF_Path')),
+			array('dat' => g_l('modules_objectClassfoldersearch', '[Arbeitsbereiche]')),
+			array('dat' => g_l('modules_objectClassfoldersearch', '[xtraArbeitsbereiche]')),
+			array('dat' => '<a href="javascript:setOrder(\'OF_Published\');">' . g_l('modules_objectClassfoldersearch', '[Veroeffentlicht]') . '</a> ' . $this->getSortImage('OF_Published')),
+			array('dat' => '<a href="javascript:setOrder(\'ModDate\');">' . g_l('modules_objectClassfoldersearch', '[geaendert]') . '</a> ' . $this->getSortImage('ModDate')),
+			array('dat' => '<a href="javascript:setOrder(\'OF_Url\');">' . g_l('modules_objectClassfoldersearch', '[url]') . '</a> ' . $this->getSortImage('OF_Url')),
+			array('dat' => '<a href="javascript:setOrder(\'OF_TriggerID\');">' . g_l('modules_objectClassfoldersearch', '[triggerid]') . '</a> ' . $this->getSortImage('OF_TriggerID')),
+			array('dat' => g_l('modules_objectClassfoldersearch', '[charset]')),
+			array('dat' => g_l('modules_objectClassfoldersearch', '[language]')),
 		);
 
 		return $this->getSearchresult($content, $headline, $foundItems, $javascriptAll);
@@ -377,11 +377,11 @@ class we_class_folder extends we_folder{
 
 		$javascriptAll = "";
 		$headline = array(
-			array("dat" => ""),
-			array("dat" => '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . g_l('modules_objectClassfoldersearch', '[zeige]') . '</td><td></td></tr></table>'),
-			array("dat" => ''),
-			array("dat" => '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'OF_ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a></td><td> ' . $this->getSortImage('OF_ID') . '</td></tr></table>'),
-			array("dat" => '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'OF_Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a></td><td> ' . $this->getSortImage('OF_Path') . '</td></tr></table>'),
+			array('dat' => ""),
+			array('dat' => '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . g_l('modules_objectClassfoldersearch', '[zeige]') . '</td><td></td></tr></table>'),
+			array('dat' => ''),
+			array('dat' => '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'OF_ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a></td><td> ' . $this->getSortImage('OF_ID') . '</td></tr></table>'),
+			array('dat' => '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'OF_Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a></td><td> ' . $this->getSortImage('OF_Path') . '</td></tr></table>'),
 		);
 
 		if($foundItems){
@@ -401,20 +401,20 @@ class we_class_folder extends we_folder{
 							switch($regs[1]){
 								case "object":
 									$object[$i + 5] = $regs[2];
-									$headline[$i + 5]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . f("SELECT Text FROM " . OBJECT_TABLE . " WHERE ID='" . $regs[2] . "'", "Text", $this->DB_WE) . '</td><td></td></tr></table>';
+									$headline[$i + 5]['dat'] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . f("SELECT Text FROM " . OBJECT_TABLE . " WHERE ID='" . $regs[2] . "'", "Text", $this->DB_WE) . '</td><td></td></tr></table>';
 									$type[$i + 5] = $regs[1];
 									$i++;
 									break;
 								case we_objectFile::TYPE_MULTIOBJECT:
-									$headline[$i + 5]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . $regs[2] . '</td><td></td></tr></table>';
-									$head[$i + 5]["dat"] = $regs[2];
+									$headline[$i + 5]['dat'] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . $regs[2] . '</td><td></td></tr></table>';
+									$head[$i + 5]['dat'] = $regs[2];
 									$type[$i + 5] = $regs[1];
 									$i++;
 									break;
 								default:
 									if($regs[1] != "OF"){
-										$headline[$i + 5]["dat"] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'' . $key . '\');">' . $regs[2] . '</a></td><td> ' . $this->getSortImage($key) . '</td></tr></table>';
-										$head[$i + 5]["dat"] = $regs[2];
+										$headline[$i + 5]['dat'] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'' . $key . '\');">' . $regs[2] . '</a></td><td> ' . $this->getSortImage($key) . '</td></tr></table>';
+										$head[$i + 5]['dat'] = $regs[2];
 										$type[$i + 5] = $regs[1];
 										$i++;
 									}
@@ -430,29 +430,29 @@ class we_class_folder extends we_folder{
 					array(
 						"height" => 35,
 						"align" => "center",
-						"dat" => (permissionhandler::hasPerm("DELETE_OBJECTFILE") ?
+						'dat' => (permissionhandler::hasPerm("DELETE_OBJECTFILE") ?
 							'<input type="checkbox" name="weg[' . $this->searchclass->f("OF_ID") . ']" />' :
 							'<img src="' . TREE_IMAGE_DIR . 'check0_disabled.gif" />'
 						)),
 					array(
 						"align" => "center",
-						"dat" => '<img src="' . IMAGE_DIR . ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok)) ?
+						'dat' => '<img src="' . IMAGE_DIR . ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok)) ?
 							'we_boebbel_blau.gif' :
 							'we_boebbel_grau.gif'
 						) . '" width="16" height="18" />'
 					),
 					array(
-						"dat" => ($this->searchclass->f("OF_IsSearchable") ?
+						'dat' => ($this->searchclass->f("OF_IsSearchable") ?
 							'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '" />' :
 							'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '" />'
 						)),
-					array("dat" => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>'),
-					array("dat" => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="defaultfont" title="' . $this->searchclass->f("OF_Path") . '">' . we_util_Strings::shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>'),
+					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>'),
+					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="defaultfont" title="' . $this->searchclass->f("OF_Path") . '">' . we_util_Strings::shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>'),
 				);
 				for($i = 0; $i < $count; $i++){
 					switch($type[$i + 5]){
 						case "date":
-							$content[$f][$i + 5]["dat"] = date(g_l('date', '[format][default]'), $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"]));
+							$content[$f][$i + 5]['dat'] = date(g_l('date', '[format][default]'), $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]['dat']));
 							break;
 						case "object":
 							$tmp = f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $object[$i + 5] . " WHERE OF_ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", '', $this->DB_WE);
@@ -483,17 +483,17 @@ class we_class_folder extends we_folder{
 							$content[$f][$i + 5]['dat'] = g_l('global', ($text == '1' ? '[yes]' : '[no]'));
 							break;
 						case 'meta':
-							if($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']) != '' && isset($DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]["dat"]]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]["dat"])])){
-								$text = $DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]['dat']]['meta'][$this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]["dat"])];
-								$content[$f][$i + 5]["dat"] = (strlen($text) > $strlen) ? substr($text, 0, $strlen) . " ..." : $text;
+							if($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']) != '' && isset($DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]['dat']]["meta"][$this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]['dat'])])){
+								$text = $DefaultValues[$type[$i + 5] . '_' . $head[$i + 5]['dat']]['meta'][$this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat'])];
+								$content[$f][$i + 5]['dat'] = (strlen($text) > $strlen) ? substr($text, 0, $strlen) . " ..." : $text;
 							} else {
-								$content[$f][$i + 5]["dat"] = '&nbsp;';
+								$content[$f][$i + 5]['dat'] = '&nbsp;';
 							}
 							break;
 						case 'link':
 							$text = $this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']);
 							//FIXME: this is not php compliant getFieldByVal is a dynamic method - and must be
-							$content[$f][$i + 5]["dat"] = we_document::getFieldByVal($text, "link");
+							$content[$f][$i + 5]['dat'] = we_document::getFieldByVal($text, "link");
 							break;
 						case 'href':
 							$text = $this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']);
@@ -502,9 +502,9 @@ class we_class_folder extends we_folder{
 								$hrefArr = array();
 							}
 							//FIXME: this is not php compliant getHrefByArray is a dynamic method - and must be
-							$content[$f][$i + 5]["dat"] = we_document::getHrefByArray($hrefArr);
-							//$text = $DefaultValues[$type[$i+3]."_".$head[$i+3]["dat"]]["meta"][$this->searchclass->f($type[$i+3]."_".$head[$i+3]["dat"])];
-							//$content[$f][$i+3]["dat"] = "TEST";
+							$content[$f][$i + 5]['dat'] = we_document::getHrefByArray($hrefArr);
+							//$text = $DefaultValues[$type[$i+3]."_".$head[$i+3]['dat']]["meta"][$this->searchclass->f($type[$i+3]."_".$head[$i+3]['dat'])];
+							//$content[$f][$i+3]['dat'] = "TEST";
 							break;
 						default:
 							$text = strip_tags($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']));
@@ -642,182 +642,182 @@ class we_class_folder extends we_folder{
 
 		// JS einbinden
 		return $this->searchclass->getJSinWEsearchobj($this->Name) . '
-		<form name="we_form" method="post">
-		' . we_class::hiddenTrans() . '
-		<table border="0" cellpadding="0" cellspacing="0">
-		<tr>
-			<td class="defaultgray">' . g_l('modules_objectClassfoldersearch', '[Verzeichnis]') . '</td>
-			<td colspan="3">' . $this->formDirChooser(388, 0, FILE_TABLE, "WorkspacePath", "WorkspaceID", "opener.we_cmd('reload_editpage');", false) . '</td>
-		</tr>
-		<tr>
-			<td colspan="4">' . we_html_tools::getPixel(18, 12) . '</td>
-		</tr>
-		<tr>
-			<td class="defaultgray">' . g_l('modules_objectClassfoldersearch', '[Ansicht]') . '</td>
-			<td>' . we_html_tools::htmlSelect("Anzahl", $values, 1, $this->searchclass->anzahl, "", array('onchange' => 'this.form.elements.SearchStart.value=0;we_cmd(\'reload_editpage\');')) .
-			we_html_tools::hidden("Order", $this->searchclass->Order) .
-			we_html_tools::hidden("do", "") .
-			'</td>
-			<td>&nbsp;</td>
-			<td>' . we_html_forms::checkboxWithHidden($this->GreenOnly == 1 ? true : false, "we_" . $this->Name . "_GreenOnly", g_l('modules_objectClassfoldersearch', '[sicht]'), false, "defaultfont", "toggleShowVisible(document.getElementById('_we_" . $this->Name . "_GreenOnly'));") . '</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(128, 20) . '</td>
-			<td>' . we_html_tools::getPixel(40, 15) . '</td>
-			<td>' . we_html_tools::getPixel(10, 15) . '</td>
-			<td>' . we_html_tools::getPixel(350, 15) . '</td>
-		</tr>
-		</table>
-		<table border="0" cellpadding="0" cellspacing="0">
-		<tr>
-			<td class="defaultgray">' . (isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') . '</td>
-			<td align="right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(175, 12) . '</td>
-			<td>' . we_html_tools::getPixel(460, 12) . '</td>
-		</tr>
-		</table>' .
-			we_html_tools::htmlDialogBorder3(900, 0, $content, $headline) . '
-		<table border="0" cellpadding="0" cellspacing="0">
-		<tr>
-			<td>' . we_html_tools::getPixel(175, 12) . '</td>
-			<td>' . we_html_tools::getPixel(460, 12) . '</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(5, 1) . (permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("selectAllObjects", "javascript: " . $javascriptAll) : "") . '</td>
-			<td align="right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(175, 12) . '</td>
-			<td>' . we_html_tools::getPixel(460, 12) . '</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") ? we_html_button::create_button("image:btn_function_trash", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichloeschen]') . "'))document.we_form.elements.do.value='delete';we_cmd('reload_editpage');") . '</td>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[loesch]') : "") . '</td>
-				</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(175, 12) . '</td>
-			<td>' . we_html_tools::getPixel(460, 12) . '</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_publish", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichveroeffentlichen]') . "'))document.we_form.elements.do.value='publish';we_cmd('reload_editpage');") . '</td>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[veroeffentlichen]') : "") . '</td>
-				</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(175, 12) . '</td>
-			<td>' . we_html_tools::getPixel(460, 12) . '</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_unpublish", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichparken]') . "'))document.we_form.elements.do.value='unpublish';we_cmd('reload_editpage');") . '</td>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[parken]') : "") . '</td>
-				</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(175, 12) . '</td>
-			<td>' . we_html_tools::getPixel(460, 12) . '</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_searchable", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichsearchable]') . "'))document.we_form.elements.do.value='searchable';we_cmd('reload_editpage');") . '</td>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[searchable]') : "") . '</td>
-				</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(175, 12) . '</td>
-			<td>' . we_html_tools::getPixel(460, 12) . '</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_unsearchable", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichunsearchable]') . "'))document.we_form.elements.do.value='unsearchable';we_cmd('reload_editpage');") . '</td>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[unsearchable]') : "") . '</td>
-				</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(175, 12) . '</td>
-			<td>' . we_html_tools::getPixel(460, 12) . '</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopychar]') . "'))document.we_form.elements.do.value='copychar';we_cmd('reload_editpage');") . '</td>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[copychar]') : "") . '</td>
-				</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(175, 12) . '</td>
-			<td>' . we_html_tools::getPixel(460, 12) . '</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopyws]') . "'))document.we_form.elements.do.value='copyws';we_cmd('reload_editpage');") . '</td>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[copyws]') : "") . '</td>
-				</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(175, 12) . '</td>
-			<td>' . we_html_tools::getPixel(460, 12) . '</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopytid]') . "'))document.we_form.elements.do.value='copytid';we_cmd('reload_editpage');") . '</td>
-					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[copytid]') : "") . '</td>
-				</tr>
-				</table>
-			</td>
-		</tr>
-		</table>
-		</form>
+<form name="we_form" method="post">
+' . we_class::hiddenTrans() . '
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="defaultgray">' . g_l('modules_objectClassfoldersearch', '[Verzeichnis]') . '</td>
+		<td colspan="3">' . $this->formDirChooser(388, 0, FILE_TABLE, "WorkspacePath", "WorkspaceID", "opener.we_cmd('reload_editpage');", false) . '</td>
+	</tr>
+	<tr>
+		<td colspan="4">' . we_html_tools::getPixel(18, 12) . '</td>
+	</tr>
+	<tr>
+		<td class="defaultgray">' . g_l('modules_objectClassfoldersearch', '[Ansicht]') . '</td>
+		<td>' . we_html_tools::htmlSelect("Anzahl", $values, 1, $this->searchclass->anzahl, "", array('onchange' => 'this.form.elements.SearchStart.value=0;we_cmd(\'reload_editpage\');')) .
+		we_html_tools::hidden("Order", $this->searchclass->Order) .
+		we_html_tools::hidden("do", "") .
+		'</td>
+		<td>&nbsp;</td>
+		<td>' . we_html_forms::checkboxWithHidden($this->GreenOnly == 1 ? true : false, "we_" . $this->Name . "_GreenOnly", g_l('modules_objectClassfoldersearch', '[sicht]'), false, "defaultfont", "toggleShowVisible(document.getElementById('_we_" . $this->Name . "_GreenOnly'));") . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(128, 20) . '</td>
+		<td>' . we_html_tools::getPixel(40, 15) . '</td>
+		<td>' . we_html_tools::getPixel(10, 15) . '</td>
+		<td>' . we_html_tools::getPixel(350, 15) . '</td>
+	</tr>
+	</table>
+	<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="defaultgray">' . (isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') . '</td>
+		<td align="right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(175, 12) . '</td>
+		<td>' . we_html_tools::getPixel(460, 12) . '</td>
+	</tr>
+	</table>' .
+		we_html_tools::htmlDialogBorder3(900, 0, $content, $headline) . '
+	<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td>' . we_html_tools::getPixel(175, 12) . '</td>
+		<td>' . we_html_tools::getPixel(460, 12) . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(5, 1) . (permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("selectAllObjects", "javascript: " . $javascriptAll) : "") . '</td>
+		<td align="right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(175, 12) . '</td>
+		<td>' . we_html_tools::getPixel(460, 12) . '</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") ? we_html_button::create_button("image:btn_function_trash", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichloeschen]') . "'))document.we_form.elements.do.value='delete';we_cmd('reload_editpage');") . '</td>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[loesch]') : "") . '</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(175, 12) . '</td>
+		<td>' . we_html_tools::getPixel(460, 12) . '</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_publish", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichveroeffentlichen]') . "'))document.we_form.elements.do.value='publish';we_cmd('reload_editpage');") . '</td>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[veroeffentlichen]') : "") . '</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(175, 12) . '</td>
+		<td>' . we_html_tools::getPixel(460, 12) . '</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_unpublish", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichparken]') . "'))document.we_form.elements.do.value='unpublish';we_cmd('reload_editpage');") . '</td>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[parken]') : "") . '</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(175, 12) . '</td>
+		<td>' . we_html_tools::getPixel(460, 12) . '</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_searchable", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichsearchable]') . "'))document.we_form.elements.do.value='searchable';we_cmd('reload_editpage');") . '</td>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[searchable]') : "") . '</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(175, 12) . '</td>
+		<td>' . we_html_tools::getPixel(460, 12) . '</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_unsearchable", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichunsearchable]') . "'))document.we_form.elements.do.value='unsearchable';we_cmd('reload_editpage');") . '</td>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[unsearchable]') : "") . '</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(175, 12) . '</td>
+		<td>' . we_html_tools::getPixel(460, 12) . '</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopychar]') . "'))document.we_form.elements.do.value='copychar';we_cmd('reload_editpage');") . '</td>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[copychar]') : "") . '</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(175, 12) . '</td>
+		<td>' . we_html_tools::getPixel(460, 12) . '</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopyws]') . "'))document.we_form.elements.do.value='copyws';we_cmd('reload_editpage');") . '</td>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[copyws]') : "") . '</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(175, 12) . '</td>
+		<td>' . we_html_tools::getPixel(460, 12) . '</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopytid]') . "'))document.we_form.elements.do.value='copytid';we_cmd('reload_editpage');") . '</td>
+				<td>' . we_html_tools::getPixel(5, 1) . '</td>
+				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[copytid]') : "") . '</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</form>
 		' .
 			weSuggest::getYuiFiles() .
 			$yuiSuggest->getYuiJs();
@@ -998,7 +998,7 @@ for ( frameId in _usedEditors ) {
 	function copyCharsetfromClass(){
 		$this->setClassProp();
 		$fooo = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, '', $this->DB_WE));
-		$Charset = (isset($fooo["elements"]["Charset"]["dat"]) ? $fooo["elements"]["Charset"]["dat"] : DEFAULT_CHARSET );
+		$Charset = (isset($fooo["elements"]["Charset"]['dat']) ? $fooo["elements"]["Charset"]['dat'] : DEFAULT_CHARSET );
 
 		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
 

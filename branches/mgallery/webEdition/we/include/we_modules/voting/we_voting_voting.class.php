@@ -410,7 +410,7 @@ class we_voting_voting extends weModelBase{
 
 	function vote($answers, $addfields = NULL){
 		$votingsession = (isset($_SESSION['_we_voting_sessionID']) ? $_SESSION['_we_voting_sessionID'] : 0);
-		$answerID = makeCSVFromArray($answers);
+		$answerID = implode(',', $answers);
 		$answertext = '';
 		$successor = 0;
 		if(!is_array($answers) || !(count($answers) > 0)){
@@ -454,7 +454,7 @@ class we_voting_voting extends weModelBase{
 				$GLOBALS['_we_voting_SuccessorID'] = $mySuccessorID;
 			}
 		}
-		$answerID = makeCSVFromArray($answers);
+		$answerID = implode(',', $answers);
 		$this->saveField('Scores', true);
 		if($this->RevoteTime != 0){
 			if($this->RevoteControl == 1){

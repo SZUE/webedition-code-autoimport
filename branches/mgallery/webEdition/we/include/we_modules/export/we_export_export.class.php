@@ -76,18 +76,18 @@ class we_export_export extends weModelBase{
 			$this->load($exportID);
 		}
 		// clear expiered stuff
-		$this->selDocs = $this->clearExpiered($this->selDocs, FILE_TABLE);
-		$this->selTempl = $this->clearExpiered($this->selTempl, TEMPLATES_TABLE);
+		$this->selDocs = $this->clearExpired($this->selDocs, FILE_TABLE);
+		$this->selTempl = $this->clearExpired($this->selTempl, TEMPLATES_TABLE);
 		if(defined('OBJECT_TABLE')){
-			$this->selObjs = $this->clearExpiered($this->selObjs, OBJECT_FILES_TABLE);
-			$this->selClasses = $this->clearExpiered($this->selClasses, OBJECT_TABLE);
+			$this->selObjs = $this->clearExpired($this->selObjs, OBJECT_FILES_TABLE);
+			$this->selClasses = $this->clearExpired($this->selClasses, OBJECT_TABLE);
 		} else {
 			$this->selObjs = '';
 			$this->selClasses = '';
 		}
 	}
 
-	function clearExpiered($ids, $table, $idfield = 'ID'){
+	function clearExpired($ids, $table, $idfield = 'ID'){
 		$idsarr = makeArrayFromCSV($ids);
 		$new = array();
 		$db = new DB_WE();
@@ -96,7 +96,7 @@ class we_export_export extends weModelBase{
 				$new[] = $id;
 			}
 		}
-		return makeCSVFromArray($new);
+		return implode(',', $new);
 	}
 
 	function save($force_new = false){
