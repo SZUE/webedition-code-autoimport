@@ -1087,7 +1087,7 @@ class we_objectFile extends we_document{
 						)
 				);
 
-				$content .= "<div id=\"table_" . $uniq . "\" style=\"display:none; padding: 10px 0px 20px 30px;\">" .
+				$content .= '<div id="table_' . $uniq . '" style="display:none; padding: 10px 0px 20px 30px;">' .
 					$ob->getFieldsHTML(0, true) .
 					'</div>';
 			}
@@ -2299,7 +2299,7 @@ class we_objectFile extends we_document{
 			$version = new we_versions_version();
 			$version->save($this);
 		}
-		if(LANGLINK_SUPPORT && ($docid = we_base_request::_(we_base_request::INT, "we_" . $this->Name . "_LanguageDocID"))){
+		if(LANGLINK_SUPPORT && ($docid = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_LanguageDocID'))){
 			$this->setLanguageLink($docid, 'tblObjectFile', false, true);
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!

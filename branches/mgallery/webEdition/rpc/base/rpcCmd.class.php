@@ -60,18 +60,7 @@ class rpcCmd{
 		$this->CmdShell = $shell;
 	}
 
-	function stripSlashes(&$arr){
-		foreach($arr as $n => $v){
-			if(is_array($v)){
-				rpcCmd::stripSlashes($arr[$n]);
-			} else {
-				$arr[$n] = stripslashes($v);
-			}
-		}
-	}
-
 	function execute(){
-
 		return new rpcResponse();
 	}
 
@@ -94,4 +83,7 @@ class rpcCmd{
 		return true;
 	}
 
+	public function getStatus(){
+		return $this->Status;
+	}
 }
