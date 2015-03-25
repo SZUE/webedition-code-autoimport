@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev: 9498 $
- * $Author: andreaswitt $
- * $Date: 2015-03-09 23:23:42 +0100 (Mo, 09. Mär 2015) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
