@@ -350,7 +350,7 @@ weSearch = {
 			var elem = document.getElementById('filterTable' + this.conf.whichsearch),
 				//newID = elem.rows.length - 1,
 				h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
-				scrollContent = document.getElementById("scrollContent_' . $whichSearch . '"),
+				scrollContent = document.getElementById("scrollContent_' + whichSearch + '"),
 				heightDiv = this.conf.isIE ? 200 : 180;
 
 			if((h - heightDiv) > 0){
@@ -753,9 +753,9 @@ weSearch = {
 		*/
 	},
 
-	checkAllPubChecks: function(whichSearch) {
-		var checkAll = document.getElementsByName("publish_all_"+whichSearch);
-		var checkboxes = document.getElementsByName("publish_docs_"+whichSearch);
+	checkAllActionChecks: function() {
+		var checkAll = document.getElementsByName("action_all_" + this.conf.whichsearch);
+		var checkboxes = document.getElementsByName((this.conf.whichsearch == this.we_const.SEARCH_MEDIA ? 'delete_docs_MediaSearch' : 'publish_docs_DocSearch'));
 		var check = false;
 
 		if(checkAll[0].checked) {
@@ -789,6 +789,33 @@ weSearch = {
 			Check = confirm("' . g_l('searchtool', '[publish_docs]') . '");
 			if (Check == true) {
 				 this.publishDocsAjax(whichSearch);
+			}
+		}
+	},
+
+	deleteDocs: function(whichSearch) {
+		var checkAll = document.getElementsByName("action_all_"+whichSearch);
+		var checkboxes = document.getElementsByName("delete_docs_"+whichSearch);
+		var check = false;
+
+		for(var i = 0; i < checkboxes.length; i++) {
+			if(checkboxes[i].checked) {
+				check = true;
+				break;
+			}
+		}
+
+		if(checkboxes.length==0) {
+			check = false;
+		}
+
+		if(check==false) {//searchtool__notChecked
+			top.we_showMessage(this.g_l.searchtool__notChecked, this.we_const.WE_MESSAGE_NOTICE, window);
+		}
+		else {
+			Check = confirm("you really wand to delete them?\n=> coming soon...");
+			if (Check == true) {
+				this.publishDocsAjax(whichSearch);
 			}
 		}
 	},

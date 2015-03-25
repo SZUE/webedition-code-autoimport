@@ -517,6 +517,13 @@ class we_search_search extends we_search_base{
 		return $IDs ? 'AND ID ' . ($reverse ? 'NOT' : '') . ' IN (' . implode(',', $IDs) . ')' : 'AND 0';
 	}
 
+	/*
+	function searchIsAttributeNotEmpty($id, $attribute, $table = FILE_TABLE){
+		$_db->query('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.CID=' . intval($id) . ' AND l.Name="' . $attribute . '" AND l.DocumentTable="' . stripTblPrefix($table) . '"');
+		
+	}
+	*/
+
 	function getStatusFiles($status, $table){//IMI: IMPORTANT: veröffentlichungsstatus grenzt die contenttypes auf djenigen ein, die solch einen status haben!!
 		// also kann auch beim verlinkungsstatus auf media-docs eingegremzt werden
 		switch($status){
@@ -707,22 +714,31 @@ class we_search_search extends we_search_base{
 	function searchMediaLinks($useState = 0, $table = '', $holdAllLinks = true){
 		$db = new DB_WE();
 		$useState = intval($useState);
+		$this->usedMedia = $this->usedMediaLinks = $tmpMediaLInks = $groups = $paths = array();
 
 		$fields = $holdAllLinks ? 'ID,DocumentTable,remObj' : 'DISTINCT remObj';
 		$db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' WHERE type="media" AND remTable="' . stripTblPrefix(FILE_TABLE) . '" AND position=0');
 
-		$this->usedMediaLinks = $IDs = array();
 		if($holdAllLinks){
 			while($db->next_record()){
 				$rec = $db->getRecord();
-				$this->usedMediaLinks['mediaID_' . $rec['remObj']][] = array(
-					'ID' => $rec['ID'],
-					'Table' => $rec['DocumentTable']
-				);
-				$IDs[] = $rec['remObj'];
+				//$this->$tmpMediaLInks['mediaID_' . $rec['remObj']][] = array($rec['ID'] . '__' . $rec['DocumentTable'] => 'Filename ' . $rec['ID']);
+				$tmpMediaLInks[$rec['remObj']][] = array($rec['ID'],$rec['DocumentTable']);
+				$groups[$rec['DocumentTable']][] = $rec['ID'];
+				$this->usedMedia[] = $rec['remObj'];
 			}
+			foreach($groups as $k => $v){
+				$paths[$k] = id_to_path($v, addTblPrefix($k), null, false, true);
+			}
+			foreach($tmpMediaLInks as $m_id => $v){
+				foreach($v as $val){
+					$type = addTblPrefix($val[1]) === FILE_TABLE ? 'Dokument: ' : (addTblPrefix($val[1]) === OBJECT_FILES_TABLE ? 'Objekt: ' : 'Kategorie: ');
+					$this->usedMediaLinks['mediaID_' . $m_id][$val[0] . '__' . addTblPrefix($val[1])] = $type . $paths[$val[1]][$val[0]];
+				}
+			}
+		} else {
+			$this->usedMedia = $db->getAll(true);
 		}
-		$this->usedMedia = $IDs ? array_unique($IDs) : $db->getAll(true);
 
 		if(!$useState){
 			return;
