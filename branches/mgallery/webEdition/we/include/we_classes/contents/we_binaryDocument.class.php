@@ -358,6 +358,10 @@ class we_binaryDocument extends we_document{
 
 	}
 
+	function formIsProtected(){
+		return we_html_forms::checkboxWithHidden((bool) $this->IsProtected, 'we_' . $this->Name . '_IsProtected', g_l('weClass', '[IsProtected]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+	}
+
 	public function getPropertyPage(){
 		echo we_html_multiIconBox::getJS() .
 		we_html_multiIconBox::getHTML('weOtherDocProp', '100%', array(

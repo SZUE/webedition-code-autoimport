@@ -45,7 +45,8 @@ class we_imageDocument extends we_binaryDocument{
 	 */
 	function __construct(){
 		parent::__construct();
-		$this->persistent_slots[] = 'Thumbs';
+
+		array_push($this->persistent_slots, 'Thumbs', 'IsProtected');
 		$this->Icon = we_base_ContentTypes::IMAGE_ICON;
 		$this->ContentType = we_base_ContentTypes::IMAGE;
 		if(isWE()){
@@ -1017,15 +1018,15 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 	public function getPropertyPage(){
 		echo we_html_multiIconBox::getJS() .
- we_html_multiIconBox::getHTML("weImgProp", "100%", array(
-	array("icon" => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), "space" => 140),
-	array("icon" => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable(), "space" => 140),
-	array("icon" => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), "space" => 140),
-	array("icon" => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation(), "space" => 140),
-	array("icon" => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), "space" => 140),
-	array("icon" => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), "space" => 140),
-	array("icon" => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), "space" => 140),
-	), 20);
+			we_html_multiIconBox::getHTML("weImgProp", "100%", array(
+				array("icon" => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), "space" => 140),
+				array("icon" => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), "space" => 140),
+				array("icon" => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), "space" => 140),
+				array("icon" => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation(), "space" => 140),
+				array("icon" => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), "space" => 140),
+				array("icon" => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), "space" => 140),
+				array("icon" => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), "space" => 140),
+			), 20);
 
 	}
 }

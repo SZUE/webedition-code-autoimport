@@ -65,6 +65,9 @@ class we_search_search extends we_search_base{
 	var $search = array();
 
 	private $collectionMetaSearches = array();
+	
+	private $usedMedia = array();
+	private $usedMediaLinks = array();
 
 	/**
 	 * @abstract get data from fields, used in the doclistsearch
@@ -266,6 +269,14 @@ class we_search_search extends we_search_base{
 			case 'meta':
 				return array('IS' => g_l('searchtool', '[IS]'));
 		}
+	}
+
+	public function getUsedMedia(){
+		return $this->usedMedia;
+	}
+
+	public function getUsedMediaLinks(){
+		return $this->usedMediaLinks;
 	}
 
 	function getDoctypes(){
@@ -695,26 +706,29 @@ class we_search_search extends we_search_base{
 		return '';
 	}
 
-	function searchMediaLinks($useState = -1, $table = '', $holdAllLinks = true){
+	function searchMediaLinks($useState = 0, $table = '', $holdAllLinks = true){
 		$_db = new DB_WE();
 		$useState = intval($useState);
 
 		$fields = $holdAllLinks ? 'ID,DocumentTable,remObj' : 'DISTINCT remObj';
 		$_db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' WHERE type = "media" AND remTable = "' . stripTblPrefix(FILE_TABLE) . '" AND position = 0' );
 
-		$IDs = $MediaLinks = array();
+		$this->usedMediaLinks = array();
 		if($holdAllLinks){
 			while($_db->next_record()){
 				$rec = $_db->getRecord();
-				$MediaLinks['mediaID_' . $rec['remObj']][] = array('ID' => $rec['ID'], 'Table' => $rec['DocumentTable']);
-				// TODO: hold $Medialinks available in property or session
+				$this->usedMediaLinks['mediaID_' . $rec['remObj']][] = array('ID' => $rec['ID'], 'Table' => $rec['DocumentTable']);
 				$IDs[] = $rec['remObj'];
 			}
 		}
+		$this->usedMedia = $IDs ? array_unique($IDs) : $_db->getAll(true);
 
-		if($useState !== -1){
-			$IDs = $IDs ? array_unique($IDs) : $_db->getAll(true);
-			return $IDs ? (' AND ' . FILE_TABLE . '.ID ' . ($useState === 2 ? 'NOT ' : ' ') . 'IN(' . implode(',', $IDs) . ')') : '';
+		if(!$useState){
+			return;
+		}
+
+		if($useState !== 0){
+			return $this->usedMedia ? (' AND ' . FILE_TABLE . '.ID ' . ($useState === 2 ? 'NOT ' : ' ') . 'IN(' . implode(',', $this->usedMedia) . ')') : ($useState === 2 ? '' : ' AND 0');
 		}
 	}
 
