@@ -101,45 +101,6 @@ abstract class we_html_button{
 			$extrastyle . '"';
 	}
 
-	/*	 * ***********************************************************************
-	 * FUNCTIONS
-	 * *********************************************************************** */
-
-	/**
-	 * This function creates the JavaScript that switches the state of a button.
-	 *
-	 * @param      $standalone                             bool                (optional)
-	 * @deprecated: use weButton.js instead
-	 * @return     string
-	 */
-	static function create_state_changer($standalone = true){
-		// Build the main preload function
-		/**
-		 * This functions switches the state of a text(!!!) button.
-		 *
-		 * @param      element                                 string
-		 * @param      button                                  string
-		 * @param      state                                   string
-		 * @param      type                                    bool                (optional)
-		 *
-		 * @return     button                                  bool
-		 */
-		$_JavaScript_functions = '
-function switch_button_state(element, button, state, type) {
-	if (state == "enabled") {
-		weButton.enable(element);
-		return true;
-	} else if (state == "disabled") {
-		weButton.disable(element);
-	}
-
-	return false;
-}';
-
-		// Build string to be returned by the function
-
-		return ($standalone ? we_html_element::jsElement($_JavaScript_functions) : $_JavaScript_functions);
-	}
 
 	/**
 	 * This functions creates the button.

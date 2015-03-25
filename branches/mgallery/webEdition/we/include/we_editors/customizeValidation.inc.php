@@ -22,55 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop() . STYLESHEET;
+echo we_html_tools::getHtmlTop() . STYLESHEET .
+ we_html_element::jsScript(JS_DIR . 'customizeValidation.js');
 ?>
-<script type="text/javascript"><!--
-
-	function we_cmd() {
-
-		var args = "";
-		var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
-		for (var i = 0; i < arguments.length; i++) {
-			url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
-			if (i < (arguments.length - 1)) {
-				url += "&";
-			}
-		}
-
-		switch (arguments[0]) {
-
-			case "customValidationService":
-				self.we_submitForm(url);
-				we_cmd("reload_editpage");
-				break;
-			case "reload_editpage":
-				if (top.opener.top.weEditorFrameController.getActiveDocumentReference().frames[1].we_cmd) {
-					top.opener.top.weEditorFrameController.getActiveDocumentReference().frames[1].we_cmd("reload_editpage");
-				}
-				window.focus();
-				break;
-			case "close":
-				window.close();
-				break;
-			default :
-				for (var i = 0; i < arguments.length; i++) {
-					args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
-				}
-				eval('top.opener.we_cmd(' + args + ')');
-				break;
-		}
-	}
-
-	function we_submitForm(url) {
-		var f = self.document.we_form;
-
-		f.action = url;
-		f.method = "post";
-
-		f.submit();
-	}
-//-->
-</script>
 </head>
 <body class="weDialogBody" style="overflow:hidden;">
 	<?php
@@ -169,6 +123,5 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 	}
 
 	echo '<form name="we_form" onsubmit="return false;">' . we_html_multiIconBox::getHTML('weDocValidation', '100%', $parts, 30, we_html_button::position_yes_no_cancel(we_html_button::create_button('save', 'javascript:we_cmd(\'customValidationService\',\'saveService\');', true, 100, 22, '', '', (empty($services))), we_html_button::create_button('cancel', 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('validation', '[adjust_service]'))
-		. '</form>' .
-		'</body></html>';
-
+	. '</form>' .
+	'</body></html>';

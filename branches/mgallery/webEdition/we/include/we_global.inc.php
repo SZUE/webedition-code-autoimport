@@ -1167,16 +1167,6 @@ function getWEZendCache($lifetime = 1800){
 }
 
 /**
- * removes unneded js-open/close tags
- * @param string $js
- * @return string given param without duplicate js-open/close tags
- */
-function implodeJS($js){
-	list($pre, $post) = explode(';', we_html_element::jsElement(';'));
-	return preg_replace('|' . preg_quote($post, '|') . '[\n\t ]*' . preg_quote($pre, '|') . '|', "\n", $js);
-}
-
-/**
  *
  * @deprecated since version 6.3.0
  */

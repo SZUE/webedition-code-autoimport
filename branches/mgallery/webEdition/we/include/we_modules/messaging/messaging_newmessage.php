@@ -40,7 +40,7 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 ?>
 
 <script type="text/javascript"><!--
-	rcpt_sel = new Array();
+	rcpt_sel = [];
 
 	function update_rcpts() {
 		var rcpt_str = "";

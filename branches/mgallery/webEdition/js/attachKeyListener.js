@@ -30,7 +30,6 @@ function enableKeyboardShortCuts() {
 
 		if (document.addEventListener) {
 			document.addEventListener("keydown", top.dealWithKeyboardShortCut, true);
-
 		} else if (document.attachEvent) {
 			// important "onkeydown" IE will ignore ctrl klicks otherwise
 			// it is not possible to prevent F5 (reload) from bubbling :-(

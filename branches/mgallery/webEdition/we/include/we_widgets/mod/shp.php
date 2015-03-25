@@ -224,7 +224,7 @@ if($bAverageOrder){
 
 	//canceled volume
 	$shopDashboardTable->addRow();
-	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont","style"=>"color:red;"), g_l('cockpit', '[shop_dashboard][canceled]'));
+	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont", "style" => "color:red;"), g_l('cockpit', '[shop_dashboard][canceled]'));
 	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
 	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right", "style" => "color:red;"), we_util_Strings::formatNumber($canceled, $numberformat) . '&nbsp;' . $currency);
 	$i++;
@@ -233,7 +233,7 @@ if($bAverageOrder){
 	$shopDashboardTable->addRow();
 	$shopDashboardTable->setCol($i, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][revenue]')));
 	$shopDashboardTable->setCol($i, 1, array(), we_html_tools::getPixel(10, 1));
-	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(we_util_Strings::formatNumber(($total-$canceled), $numberformat) . '&nbsp;' . $currency));
+	$shopDashboardTable->setCol($i, 2, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(we_util_Strings::formatNumber(($total - $canceled), $numberformat) . '&nbsp;' . $currency));
 	$i++;
 
 	//payed volume
@@ -282,47 +282,45 @@ $shopDashboard = '<div style="width:60%;float:left;">' .
 	'</div><br style="clear:both;"/>';
 
 if($bTarget){
-	$shopDashboard .= "<script type='text/javascript' src='" . LIB_DIR . "additional/canvas/excanvas.js'></script>
-		<script type='text/javascript' src='" . LIB_DIR . "additional/gauge/gauge.min.js'></script>
-		<script type='text/javascript'>
-			// Helper to execute a function after the window is loaded
-			// see http://www.google.com/search?q=addLoadEvent
-			function addLoadEvent(func) {
-				var oldonload = window.onload;
-				if (typeof window.onload != 'function') {
-					window.onload = func;
-				} else {
-					window.onload = function() {
-						if (oldonload) {
-							oldonload();
-						}
-						func();
-					}
-				}
+	$shopDashboard .= we_html_element::jsScript(LIB_DIR . 'additional/canvas/excanvas.js') .
+		we_html_element::jsScript(LIB_DIR . 'additional/gauge/gauge.min.js') .
+		we_html_element::jsElement("
+// Helper to execute a function after the window is loaded
+// see http://www.google.com/search?q=addLoadEvent
+function addLoadEvent(func) {
+	var oldonload = window.onload;
+	if (typeof window.onload != 'function') {
+		window.onload = func;
+	} else {
+		window.onload = function() {
+			if (oldonload) {
+				oldonload();
 			}
+			func();
+		}
+	}
+}
 
-			addLoadEvent( function() {
-				var options;
-				var widgetDoc = window.widgetFrame !== undefined ? window.widgetFrame.document : " . ($isRefresh ? 'parent.document' : 'document') . ";
+addLoadEvent( function() {
+	var options;
+	var widgetDoc = window.widgetFrame !== undefined ? window.widgetFrame.document : " . ($isRefresh ? 'parent.document' : 'document') . ";
 
-				// Draw the gauge using custom settings
-				options = {
-					value: " . we_util_Strings::formatNumber(($total-$canceled)) . ",
-					label: 'Ziel in " . $currency . "',
-					unitsLabel: ' " . $currency . "',
-					min: 0,
-					max: " . ($sRevenueTarget * 2) . ",
-					minorTicks: 5, // small ticks inside each major tick
-					greenFrom: " . ($sRevenueTarget * 1.1) . ",
-					greenTo: " . ($sRevenueTarget * 2) . ",
-					yellowFrom: " . ($sRevenueTarget * 0.9) . ",
-					yellowTo: " . ($sRevenueTarget * 1.1) . ",
-					redFrom: 0,
-					redTo: " . ($sRevenueTarget * 0.9) . "
-				};
+	// Draw the gauge using custom settings
+	options = {
+		value: " . we_util_Strings::formatNumber(($total - $canceled)) . ",
+		label: 'Ziel in " . $currency . "',
+		unitsLabel: ' " . $currency . "',
+		min: 0,
+		max: " . ($sRevenueTarget * 2) . ",
+		minorTicks: 5, // small ticks inside each major tick
+		greenFrom: " . ($sRevenueTarget * 1.1) . ",
+		greenTo: " . ($sRevenueTarget * 2) . ",
+		yellowFrom: " . ($sRevenueTarget * 0.9) . ",
+		yellowTo: " . ($sRevenueTarget * 1.1) . ",
+		redFrom: 0,
+		redTo: " . ($sRevenueTarget * 0.9) . "
+	};
 
-				new Gauge(widgetDoc.getElementById('" . $newSCurrId . "_chart_div'), options );
-			});
-
-		</script>";
+	new Gauge(widgetDoc.getElementById('" . $newSCurrId . "_chart_div'), options );
+});");
 }

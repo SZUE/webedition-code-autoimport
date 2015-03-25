@@ -1478,6 +1478,7 @@ _multiEditorreload = true;";
 	function formPermissions($branch){
 		// Set output text
 		// Create a object of the class dynamicControls
+		//FIXME: change we_html_dynamicControls
 		$dynamic_controls = new we_html_dynamicControls();
 		// Now we create the overview of the user rights
 		$parentPerm = $this->ParentID ? self::getAllPermissions($this->ID, true) : false;
@@ -1754,6 +1755,7 @@ function delElement(elvalues,elem) {
 	}
 
 	function formPreferences($branch = ''){
+		//FIXME: change we_html_dynamicControls
 		$dynamic_controls = new we_html_dynamicControls();
 		$groups = array(
 			'glossary' => g_l('prefs', '[tab_glossary]'),

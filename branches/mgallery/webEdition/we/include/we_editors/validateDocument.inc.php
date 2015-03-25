@@ -108,88 +108,6 @@ if($services){
 	$_select = g_l('validation', '[no_services_available]');
 }
 
-//  css for webSite
-echo STYLESHEET;
-
-//  js-functions for the select-men�
-?>
-<script type="text/javascript"><!--
-
-	function we_submitForm(target, url) {
-		var f = self.document.we_form;
-		f.target = target;
-		f.action = url;
-		f.method = "post";
-
-		f.submit();
-	}
-
-	function we_cmd() {
-
-		var args = "";
-		var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
-
-		for (var i = 0; i < arguments.length; i++) {
-			url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
-			if (i < (arguments.length - 1)) {
-				url += "&";
-			}
-		}
-		switch (arguments[0]) {
-			case 'checkDocument':
-				if (top.weEditorFrameController.getActiveDocumentReference().frames[1].we_submitForm) {
-					top.weEditorFrameController.getActiveDocumentReference().frames[1].we_submitForm("validation", url);
-				}
-				break;
-			default:
-				for (var i = 0; i < arguments.length; i++) {
-					args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
-				}
-				eval('parent.we_cmd(' + args + ')');
-				break;
-		}
-	}
-
-	host = new Array();
-	path = new Array();
-	varname = new Array();
-	checkvia = new Array();
-	ctype = new Array();
-	s_method = new Array();
-	additionalVars = new Array();
-
-<?php echo $js; ?>
-
-	function switchPredefinedService(name) {
-
-		var f = self.document.we_form;
-
-		f.host.value = host[name];
-		f.path.value = path[name];
-		f.ctype.value = ctype[name];
-		f.varname.value = varname[name];
-		f.additionalVars.value = additionalVars[name];
-		f.checkvia.value = checkvia[name];
-		f.s_method.value = s_method[name];
-
-
-	}
-	function setIFrameSize() {
-		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-		var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
-		w = Math.max(w, 680);
-		var iframeWidth = w - 52;
-		var validiframe = document.getElementById("validation");
-		validiframe.style.width = iframeWidth + "px";
-		if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
-			validiframe.style.height = (h - 185) + "px";
-		}
-	}
-//-->
-</script>
-<?php
-echo '</head>';
-
 //  generate Body of page
 $parts = array(
 	array('html' => g_l('validation', '[description]'), 'space' => 0),
@@ -209,10 +127,20 @@ $parts = array(
 	array('html' => '<iframe name="validation" id="validation" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=checkDocument" width="680" height="400"></iframe>', 'space' => 5),
 );
 
-$body = '<form name="we_form">'
+//  css for webSite
+echo STYLESHEET . we_html_element::jsElement('
+	host = {};
+	path = {};
+	varname = {};
+	checkvia = {};
+	ctype = {};
+	s_method = {};
+	additionalVars = {};' .
+	$js) .
+ we_html_element::jsScript(JS_DIR . 'validateDocument.js') .
+ '</head>' .
+ we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'), '<form name="we_form">'
 	. we_html_tools::hidden('we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))
 	. we_html_multiIconBox::getHTML('weDocValidation', "100%", $parts, 20, '', -1, '', '', false) .
-	'</form>';
-
-echo we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'), $body) .
+	'</form>') .
  '</html>';

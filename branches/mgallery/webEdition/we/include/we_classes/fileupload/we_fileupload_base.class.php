@@ -210,7 +210,7 @@ abstract class we_fileupload_base{
 				binDocProperties : ' . json_encode($this->binDocProperties) . ',
 				disableUploadBtnOnInit : ' . ($this->disableUploadBtnOnInit ? 'true' : 'false') . '
 			});
-		') . ($this->externalProgress['create'] ? implodeJS($progressbar->getJS('', true)) : ''));
+		') . ($this->externalProgress['create'] ? $progressbar->getJS('', true) : ''));
 	}
 
 	protected function _getJsGl(){

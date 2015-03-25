@@ -115,7 +115,7 @@ foreach($vtab as $tab => $val){
 		}
 	}
 
-	var we_tabs = new Array(
+	var we_tabs = [
 <?php
 $tmp = array();
 $id = 0;
@@ -129,7 +129,7 @@ foreach($vtab as $tab => $val){
 }
 echo implode(',', $tmp);
 ?>
-	);
+	];
 
 //-->
 </script>

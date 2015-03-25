@@ -7,6 +7,7 @@ we_html_tools::protect($protect);
 echo we_html_tools::getHtmlTop();
 
 function saveSettings($default, $active, $langs = array()){
+	//FIXME: move to tblsettings
 	$_lang = '';
 
 	foreach($langs as $k => $v){

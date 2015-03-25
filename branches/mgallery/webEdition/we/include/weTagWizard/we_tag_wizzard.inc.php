@@ -37,13 +37,12 @@ if(!$weTag){
 // needed javascript for the individual tags
 // #1 - all attributes of this we:tag (ids of attributes)
 $_attributes = $weTag->getAllAttributes(true);
-$jsAllAttributes = 'var allAttributes = new Array(' . ($_attributes ? '"' . implode('", "', $_attributes) . '"' : '') . ');';
 
 // #2 all required attributes
 $_reqAttributes = $weTag->getRequiredAttributes();
-$jsReqAttributes = "var reqAttributes = new Object();";
+$jsReqAttributes = array();
 foreach($_reqAttributes as $_attribName){
-	$jsReqAttributes .= 'reqAttributes["' . $_attribName . '"] = 1;';
+	$jsReqAttributes[] = '"' . $_attribName . '": 1';
 }
 
 // #3 all neccessary stuff for typeAttribute
@@ -57,26 +56,26 @@ if(($typeAttribute = $weTag->getTypeAttribute())){
 
 	if($_typeOptions){
 		$typeAttributeJs .= '
-var typeAttributeAllows = new Object();
-var typeAttributeRequires = new Object();';
+var typeAttributeAllows = {};
+var typeAttributeRequires = {}';
 
 		foreach($_typeOptions as $option){
 			$_allowedAttribs = $option->getAllowedAttributes();
 			if(empty($_allowedAttribs)){
-				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array();';
+				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = [];';
 			} else {
-				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array("' .
+				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = ["' .
 					implode('","', $_allowedAttribs) .
-					'");';
+					'"];';
 			}
 
 			$_reqAttribs = $option->getRequiredAttributes($_attributes);
 			if(empty($_reqAttribs)){
-				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array();";
+				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = [];";
 			} else {
-				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"" .
+				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = [\"" .
 					implode('","', $_reqAttribs) .
-					"\");";
+					"\"];";
 			}
 		}
 
@@ -97,39 +96,20 @@ echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
  we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') . we_html_element::jsElement('
-
-
-function closeOnEscape() {
-	return true;
-}
-
-function applyOnEnter(evt) {
-	_elemName = "target";
-	if (evt.srcElement !== undefined ) { // IE
-		_elemName = "srcElement";
-	}
-
-	if (	!( evt[_elemName].tagName == "SELECT")) {
-		we_cmd("saveTag");
-		return true;
-	}
-
-
-}
-
-' . $jsAllAttributes .
-	$jsReqAttributes . '
+var allAttributes = [' . ($_attributes ? '"' . implode('", "', $_attributes) . '"' : '') . '];
+var reqAttributes = {' . implode(',', $jsReqAttributes) . '};
 
 weTagWizard = new weTagWizard("' . $weTag->getName() . '");
 weTagWizard.allAttributes = allAttributes;
 weTagWizard.reqAttributes = reqAttributes;
-' . ($weTag->needsEndTag() ? 'weTagWizard.needsEndTag = true;' : '') . '
+weTagWizard.needsEndTag = ' . ($weTag->needsEndTag() ? 'true' : 'false') . ';
 
 // information about the type-attribute
 ' . $typeAttributeJs . '
 function we_cmd(){
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "/webEdition/we_cmd.php?";
+	for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
 
 		case "switch_type":

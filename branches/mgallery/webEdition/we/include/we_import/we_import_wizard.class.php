@@ -620,7 +620,6 @@ handle_event("previous");');
 			$rootDirID = get_def_ws();
 			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[doc_dir_id]'].value");
 			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[doc_dir]'].value");
-			$wecmdenc3 = '';
 
 			$btnDocDir = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['v[doc_dir_id]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
 			$yuiSuggest = & weSuggest::getInstance();

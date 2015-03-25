@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_selector_file{
-
 	const FRAMESET = 0;
 	const HEADER = 1;
 	const FOOTER = 2;
@@ -120,8 +119,8 @@ abstract class we_selector_file{
 				$this->values = $this->db->getRecord();
 
 				$this->dir = ($this->values['IsFolder'] ?
-								$id :
-								$this->values['ParentID']);
+						$id :
+						$this->values['ParentID']);
 
 				$this->path = $this->values['Path'];
 				return;
@@ -162,8 +161,8 @@ abstract class we_selector_file{
 	function query(){
 		$wsQuery = $this->table == NAVIGATION_TABLE && get_ws($this->table) ? ' ' . getWsQueryForSelector($this->table) : '';
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
-				( ($this->filter ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
-				($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
+			( ($this->filter ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
+			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
@@ -261,14 +260,14 @@ var needIEEscape=' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKEN
 
 	protected function getFrameset(){
 		return
-				STYLESHEET.
-		we_html_element::cssLink(CSS_DIR.'selectors.css').
-				'<body class="selector">' .
-				we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '',false) .
-				we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '',true) .
-				we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '',false) .
-				we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '',false) .
-				'</body>
+			STYLESHEET .
+			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+			'<body class="selector">' .
+			we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
+			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
+			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false) .
+			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
+			'</body>
 </html>';
 	}
 
@@ -277,7 +276,7 @@ var needIEEscape=' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKEN
 		return we_html_element::jsElement('
 function exit_open(){' . ($this->JSIDName ? '
 	opener.' . $this->JSIDName . '=currentID;' : '') .
-						($this->JSTextName ? 'opener.' . $this->JSTextName . '= currentID ? currentPath : "";
+				($this->JSTextName ? 'opener.' . $this->JSTextName . '= currentID ? currentPath : "";
 	if((!!opener.parent) && (!!opener.parent.frames.editHeader) && (!!opener.parent.frames.editHeader.setPathGroup)) {
 			if(currentType!="")	{
 				switch(currentType){
@@ -294,9 +293,9 @@ function exit_open(){' . ($this->JSIDName ? '
 	}
 	if(!!opener.' . $frameRef . 'YAHOO && !!opener.' . $frameRef . 'YAHOO.autocoml) {  opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
 	' : '') .
-						($this->JSCommand ?
-								'	' . str_replace('WE_PLUS', '+', $this->JSCommand) . ';' : '') .
-						'	self.close();
+				($this->JSCommand ?
+					'	' . str_replace('WE_PLUS', '+', $this->JSCommand) . ';' : '') .
+				'	self.close();
 	}'
 		);
 	}
@@ -319,24 +318,24 @@ function queryString(what,id,o){
 		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
-						var body = '<table border="0" cellpadding="0" cellspacing="0">';
-						for (i = 0; i < entries.length; i++) {
-							var link = '<a title="' + entries[i].text + '" href="javascript://"';
-							if (entries[i].isFolder) {
-								link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-							}
-							link += ' onclick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
-							body += '<tr><td class="selector" align="center">' +
-											link + '<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a></td>' +
-											'<td class="selector" title="' + entries[i].text + '">' + link + cutText(entries[i].text, 70) + '</a></td></tr>' +
-											'<tr>' +
-											'<td width="25"></td>' +
-											'<td width="200"></td></tr>';
-						}
-						body += '</table>';
-						d.innerHTML = body;
+				var body = '<table border="0" cellpadding="0" cellspacing="0">';
+				for (i = 0; i < entries.length; i++) {
+					var link = '<a title="' + entries[i].text + '" href="javascript://"';
+					if (entries[i].isFolder) {
+						link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 					}
-					//-->
+					link += ' onclick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
+					body += '<tr><td class="selector" align="center">' +
+									link + '<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a></td>' +
+									'<td class="selector" title="' + entries[i].text + '">' + link + cutText(entries[i].text, 70) + '</a></td></tr>' +
+									'<tr>' +
+									'<td width="25"></td>' +
+									'<td width="200"></td></tr>';
+				}
+				body += '</table>';
+				d.innerHTML = body;
+			}
+			//-->
 		</script>
 		<?php
 		return ob_get_clean();
@@ -361,11 +360,11 @@ function queryString(what,id,o){
 	protected function printFramesetJSFunctions(){
 		$this->query();
 		return
-				$this->printFramesetJSFunctioWriteBody() .
-				$this->printFramesetJSFunctionQueryString() .
-				$this->printFramesetJSFunctionEntry() .
-				$this->printFramesetJSFunctionAddEntry() .
-				$this->printFramesetJSFunctionAddEntries();
+			$this->printFramesetJSFunctioWriteBody() .
+			$this->printFramesetJSFunctionQueryString() .
+			$this->printFramesetJSFunctionEntry() .
+			$this->printFramesetJSFunctionAddEntry() .
+			$this->printFramesetJSFunctionAddEntries();
 	}
 
 	protected function printBodyHTML(){
@@ -389,7 +388,7 @@ function queryString(what,id,o){
 		we_html_element::cssLink(CSS_DIR . 'selectors.css') .
 		we_html_element::jsScript(JS_DIR . 'images.js') .
 		we_html_element::jsElement(
-				$this->printHeaderJSDef() . '
+			$this->printHeaderJSDef() . '
 function disableRootDirButs(){
 	switch_button_state("root_dir", "root_dir_enabled", "disabled");
 	switch_button_state("btn_fs_back", "back_enabled", "disabled", "image");
@@ -451,8 +450,8 @@ function selectIt(){
 	<body class="selectorHeader">
 		<form name="we_form" method="post">' .
 		((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ?
-				$this->printHeaderTable() .
-				$this->printHeaderLine() : '') .
+			$this->printHeaderTable() .
+			$this->printHeaderLine() : '') .
 		$this->printHeaderHeadlines() .
 		$this->printHeaderLine() .
 		'		</form>
@@ -490,23 +489,23 @@ function selectIt(){
 	protected function printHeaderTable(){
 		return '
 <table border="0" cellpadding="0" cellspacing="0" width="100%">' .
-				$this->printHeaderTableSpaceRow() . '
+			$this->printHeaderTableSpaceRow() . '
 	<tr valign="middle">
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="70" class="defaultfont"><b>' . g_l('fileselector', '[lookin]') . '</b></td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td>
 		<select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' .
-				$this->printHeaderOptions() . '
+			$this->printHeaderOptions() . '
 		</select>
 		</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="40">' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>
 		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
 		<td width="40">' . we_html_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>' .
-				$this->printHeaderTableExtraCols() .
-				'<td width="10">' . we_html_tools::getPixel(10, 29) . '</td></tr>' .
-				$this->printHeaderTableSpaceRow() . '
+			$this->printHeaderTableExtraCols() .
+			'<td width="10">' . we_html_tools::getPixel(10, 29) . '</td></tr>' .
+			$this->printHeaderTableSpaceRow() . '
 </table>';
 	}
 
@@ -537,12 +536,12 @@ function selectIt(){
 	protected function printCmdHTML(){
 		echo we_html_element::jsElement('
 top.clearEntries();' .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				(($this->dir) == 0 ?
-						'top.fsheader.disableRootDirButs();' :
-						'top.fsheader.enableRootDirButs();') .
-				'top.currentPath = "' . $this->path . '";
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			(($this->dir) == 0 ?
+				'top.fsheader.disableRootDirButs();' :
+				'top.fsheader.enableRootDirButs();') .
+			'top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 ');
 	}
@@ -575,7 +574,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 top.writeBody(top.fsbody.document.body);
 top.fsheader.clearOptions();
 top.fsheader.addOption("/",0);' .
-				$out . '
+			$out . '
 top.fsheader.selectIt();';
 	}
 
@@ -583,15 +582,14 @@ top.fsheader.selectIt();';
 		echo we_html_tools::getHtmlTop() .
 		STYLESHEET .
 		we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-		implodeJS(
-				$this->printFooterJSDef() .
-				we_html_element::jsElement('
+		$this->printFooterJSDef() .
+		we_html_element::jsElement('
 function disableDelBut(){
 	switch_button_state("delete", "delete_enabled", "disabled");
 }
 function enableDelBut(){
 	switch_button_state("delete", "delete_enabled", "enabled");
-}')) . '
+}') . '
 </head>
 	<body class="selectorFooter">
 	<form name="we_form" target="fscmd">' .

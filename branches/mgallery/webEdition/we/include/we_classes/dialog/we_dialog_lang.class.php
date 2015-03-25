@@ -45,16 +45,6 @@ class we_dialog_lang extends we_dialog_base{
 			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welang/js/lang_init.js');
 	}
 
-	function getJs(){
-		return we_dialog_base::getJs() .
-			(defined('GLOSSARY_TABLE') && !$this->noInternals ?
-				we_html_element::jsElement('
-function weSaveToGlossaryFn() {
-	document.we_form.elements[\'weSaveToGlossary\'].value = 1;
-	document.we_form.submit();
-}') : '');
-	}
-
 	function getDialogContentHTML(){
 		return '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td>' . $this->getLangField("lang", g_l('wysiwyg', '[language]'), 260) . '</td></tr>

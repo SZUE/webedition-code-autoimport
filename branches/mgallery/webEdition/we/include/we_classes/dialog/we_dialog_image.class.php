@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_image extends we_dialog_base{
-
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array("type",
 		"extSrc",
@@ -85,7 +84,7 @@ class we_dialog_image extends we_dialog_base{
 					'|^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$|i',
 					'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
 					'|^' . WEBEDITION_DIR . '|',
-						), array('$1', '$1', ''), $this->args["src"]);
+					), array('$1', '$1', ''), $this->args["src"]);
 				$this->args["fileID"] = "";
 				$this->args["fileSrc"] = "";
 				$this->args["thumbnail"] = 0;
@@ -248,8 +247,8 @@ class we_dialog_image extends we_dialog_base{
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[extSrc]'].value");
 			$wecmdenc4 = we_base_request::encCmd("opener.document.we_form.elements['we_dialog_args[type]'][0].checked=true;opener.imageChanged();");
 			$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
-					we_html_button::create_button("select", "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.we_form.elements['we_dialog_args[extSrc]'].value,'" . $wecmdenc4 . "')"
-					) : "";
+				we_html_button::create_button("select", "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.we_form.elements['we_dialog_args[extSrc]'].value,'" . $wecmdenc4 . "')"
+				) : "";
 
 			$radioBut = we_html_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "we_dialog_args[type]", g_l('wysiwyg', '[external_image]'), true, "defaultfont", "imageChanged();"
 			);
@@ -286,7 +285,7 @@ class we_dialog_image extends we_dialog_base{
 
 			$thumbdata = (isset($this->args["thumbnail"]) ? $this->args["thumbnail"] : "");
 			$thumbnails = '<select name="we_dialog_args[thumbnail]" size="1" onchange="imageChanged(true);">' .
-					'<option value="0"' . (($thumbdata == 0) ? (' selected="selected"') : "") . '>' . g_l('wysiwyg', '[nothumb]') . '</option>';
+				'<option value="0"' . (($thumbdata == 0) ? (' selected="selected"') : "") . '>' . g_l('wysiwyg', '[nothumb]') . '</option>';
 			$this->db->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 			while($this->db->next_record()){
 				$thumbnails .= '<option value="' . $this->db->f("ID") . '"' . (($thumbdata == $this->db->f("ID")) ? (' selected="selected"') : "") . '>' . $this->db->f("Name") . '</option>';
@@ -360,12 +359,12 @@ class we_dialog_image extends we_dialog_base{
 		if($intSrc){
 			$srctable .= '	<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
 	<tr><td></td><td>' . $intSrc . '</td></tr>' .
-					($thumbnails ?
-							'	<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
+				($thumbnails ?
+					'	<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
 	<tr><td></td><td>' . $thumbnails . '</td></tr>' : '');
 		}
 		$srctable .=
-				'<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
+			'<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
 	</table>';
 
 		$classSelect = we_html_tools::htmlFormElementTable($this->getClassSelect(), g_l('wysiwyg', '[css_style]'));
@@ -437,10 +436,11 @@ if(top.document.we_form.tinyMCEInitRatioW !== undefined) top.document.we_form.ti
 
 	function getJs(){
 		$yuiSuggest = & weSuggest::getInstance();
-		return parent::getJs() . we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+		return parent::getJs() . we_html_element::jsElement('
 function we_cmd(){
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
+		for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
 		case "openDocselector":
 			case "openImgselector":
@@ -452,46 +452,9 @@ function we_cmd(){
 	}
 }
 
-function imageChanged(wasThumbnailChange){
-	if(wasThumbnailChange != null && wasThumbnailChange){
-		document.we_form.wasThumbnailChange.value="1";
-	}
-	if(top.opener.tinyMCECallRegisterDialog) {
-		top.opener.tinyMCECallRegisterDialog(null,"block");
-	}
-	//document.we_form.target = "we_weImageDialog_edit_area";
-	document.we_form.target = "we_we_dialog_image_cmd_frame";//TODO: send form to iFrame cmd for and for not reloading whole editor
-	document.we_form.we_what.value = "cmd";
-	document.we_form["we_cmd[0]"].value = "update_editor";
-	document.we_form.imgChangedCmd.value = "1";
-	document.we_form.submit();
-}
-
-function checkWidthHeight(field){
-	var ratioCheckBox = document.getElementById("check_we_dialog_args[ratio]");
-	if(ratioCheckBox.checked){
-		if(field.value.indexOf("%") == -1){
-			ratiow = ratiow ? ratiow :
-				(field.form.elements.tinyMCEInitRatioW.value ? field.form.elements.tinyMCEInitRatioW.value : 0);
-			ratioh = ratioh ? ratioh :
-				(field.form.elements.tinyMCEInitRatioH.value ? field.form.elements.tinyMCEInitRatioH.value : 0);
-			if(ratiow && ratioh){
-				if(field.name=="we_dialog_args[height]"){
-					field.form.elements["we_dialog_args[width]"].value = Math.round(field.value * ratioh);
-				}else{
-					field.form.elements["we_dialog_args[height]"].value = Math.round(field.value * ratiow);
-				}
-			}
-		}else{
-			ratioCheckBox.checked=false;
-		}
-	}
-	return true;
-}
-
 				function showclasss(name, val, onCh) {' .
-						(isset($this->args["cssClasses"]) && $this->args["cssClasses"] ?
-								'					var classCSV = "' . $this->args["cssClasses"] . '";
+				(isset($this->args["cssClasses"]) && $this->args["cssClasses"] ?
+					'					var classCSV = "' . $this->args["cssClasses"] . '";
 									classNames = classCSV.split(/,/);' : ('classNames = top.opener.weclassNames_tinyMce;')) . '
 					document.writeln(\'<select class="defaultfont" style="width:200px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onchange="\'+onCh+\'"\' : \'\')+\'>\');
 					document.writeln(\'<option value="">' . g_l('wysiwyg', '[none]') . '\');
@@ -509,10 +472,9 @@ function checkWidthHeight(field){
 var ratioh = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["width"] / $this->args["height"]) : 0) . ';
 var ratiow = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["height"] / $this->args["width"]) : 0) . ';
 
-function fsubmit(e) {
-	return false;
-}') .
-				weSuggest::getYuiFiles();
+') .
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_image.js') .
+			weSuggest::getYuiFiles();
 	}
 
 }

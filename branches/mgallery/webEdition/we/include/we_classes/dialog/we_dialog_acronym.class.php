@@ -52,22 +52,6 @@ class we_dialog_acronym extends we_dialog_base{
 			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weacronym/js/acronym_init.js');
 	}
 
-	function getJs(){
-
-		$js = we_dialog_base::getJs();
-
-		if(defined('GLOSSARY_TABLE') && !$this->noInternals){
-			$js .= we_html_element::jsElement('
-					function weSaveToGlossaryFn() {
-						document.we_form.elements[\'weSaveToGlossary\'].value = 1;
-
-						document.we_form.submit();
-					}');
-		}
-
-		return $js;
-	}
-
 	function getDialogContentHTML(){
 		$foo = we_html_tools::htmlTextInput("we_dialog_args[title]", 30, (isset($this->args["title"]) ? $this->args["title"] : ""), "", '', "text", 350);
 		$title = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', '[title]'));

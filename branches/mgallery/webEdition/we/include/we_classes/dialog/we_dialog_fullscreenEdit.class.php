@@ -52,8 +52,7 @@ var textareaFocus = false;
 ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
 
 function doKeyDown(e) {
-	var ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;' : 'key = event.keyCode;') . '
-
+	var key = (e.charCode === undefined ?event.keyCode:e.charCode);
 	switch (key) {
 		case 27:
 			top.close();
@@ -62,18 +61,17 @@ function doKeyDown(e) {
 }
 
 function weDoOk() {
-		WefullscreenDialog.writeback();
-		top.close();
+	WefullscreenDialog.writeback();
+	top.close();
 }
 
 function IsDigit(e) {
-	var ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
+	var key = (e.charCode === undefined ?event.keyCode:e.charCode);
 	return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
 }
 
 function IsDigitPercent(e) {
-	var ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
-
+	var key = (e.charCode === undefined ?event.keyCode:e.charCode);
 	return (((key >= 48) && (key <= 57)) || (key == 37) || (key == 0)  || (key == 13));
 }
 

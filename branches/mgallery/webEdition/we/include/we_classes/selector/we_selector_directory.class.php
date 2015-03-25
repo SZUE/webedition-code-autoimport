@@ -257,7 +257,6 @@ if(top.makeNewFolder ||  top.we_editDirID){
 		}
 		$ret.='top.fsheader.' . ($this->userCanMakeNewDir() ? 'enable' : 'disable') . 'NewFolderBut();';
 		return $ret;
-		return $ret;
 	}
 
 	function printHeaderHeadlines(){

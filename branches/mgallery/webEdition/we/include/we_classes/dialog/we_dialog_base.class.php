@@ -177,7 +177,7 @@ function doKeyDown() {
 				we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
 
 		return $this->getFormHTML() . $dialogContent .
-			we_html_element::htmlHidden("we_what","cmd"). $this->getHiddenArgs() . '</form>';
+			we_html_element::htmlHidden("we_what", "cmd") . $this->getHiddenArgs() . '</form>';
 	}
 
 	function getDialogHeight(){
@@ -257,13 +257,14 @@ function doKeyDown() {
 		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
 var textareaFocus = false;
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? '
-	document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
+if(document.addEventListener){
+	document.addEventListener("keyup",doKeyDown,true);
+	}else{
+	document.onkeydown = doKeyDown;
+	}
 
 function doKeyDown(e) {
-	var key;
-
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.keyCode;' : 'key = event.keyCode;') . '
+	var key = isGecko?e.keyCode:event.keyCode;
 
 	switch (key) {
 		case 27:
@@ -286,38 +287,8 @@ function weDoOk() {' .
 				'
 }
 
-function IsDigit(e) {
-	var key;
-
-	if (e.charCode == undefined) {
-		key = event.keyCode;
-	} else {
-		key = e.charCode;
-	}
-
-	return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13)  || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
-}
-
-function IsDigitPercent(e) {
-	var key;
-	if (e.charCode == undefined) {
-		key = event.keyCode;
-	} else {
-		key = e.charCode;
-	}
-
-	return (((key >= 48) && (key <= 57)) || (key == 37) || (key == 0) || (key == 46)  || (key == 101)  || (key == 109)  || (key == 13)  || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
-}
-
-function doUnload() {
-	if (jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
-}
-
-self.focus();');
+self.focus();') .
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js');
 	}
 
 	function formColor($size, $name, $value, $width = ""){
@@ -366,7 +337,7 @@ self.focus();');
 			$clSelect->selectOption($this->args["cssclass"]);
 		}
 
-		return $clSelect->getHTML() . we_html_element::htmlHidden("we_dialog_args[cssclasses]",$classesCSV);
+		return $clSelect->getHTML() . we_html_element::htmlHidden("we_dialog_args[cssclasses]", $classesCSV);
 	}
 
 }

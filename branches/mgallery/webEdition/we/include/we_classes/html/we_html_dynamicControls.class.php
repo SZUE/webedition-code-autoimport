@@ -23,6 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+//FIXME: remove this class, since only used in we_users
+
 /**
  * Class we_dynamicControls
  *
@@ -538,7 +540,7 @@ class we_html_dynamicControls{
 		}
 		//	sort the permission-groups alphabetically (perm_group_name)
 		ksort($_contentTable);
-		foreach($_contentTable as $key => $value){
+		foreach($_contentTable as $value){
 			$_content .= $value;
 		}
 		return $_content;
