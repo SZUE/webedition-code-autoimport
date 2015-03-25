@@ -155,9 +155,9 @@ $_install_dir = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR;
 $_install_dir = '<abbr title="' . $_install_dir . '">' . we_util_Strings::shortenPath($_install_dir, 35) . '</abbr>';
 
 $weVersion = WE_VERSION .
-		(defined('WE_SVNREV') && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined('WE_VERSION_BRANCH') && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
-		(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
-		(defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION ? WE_VERSION_SUPP_VERSION : '');
+	(defined('WE_SVNREV') && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined('WE_VERSION_BRANCH') && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
+	(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
+	(defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION ? WE_VERSION_SUPP_VERSION : '');
 
 // GD_VERSION is more precise but only available in PHP 5.2.4 or newer
 if(is_callable("gd_info")){
@@ -223,7 +223,7 @@ $_info = array(
 		g_l('sysinfo', '[we_max_upload_size]') => getUploadMaxFilesize()
 	),
 	'<a href="javascript:showPhpInfo();">PHP</a>' => array(
-		g_l('sysinfo', '[php_version]') => version_compare(PHP_VERSION, '5.3.8', '<') ? getWarning('>5.3.8', PHP_VERSION) : PHP_VERSION,
+		g_l('sysinfo', '[php_version]') => /* version_compare(PHP_VERSION, '5.3.8', '<') ? getWarning('>5.3.8', PHP_VERSION) : */ PHP_VERSION,
 		g_l('sysinfo', '[zendframework_version]') => (Zend_Version::VERSION != WE_ZFVERSION) ? getWarning(sprintf(g_l('sysinfo', '[zend_framework warning]'), WE_ZFVERSION), Zend_Version::VERSION) : Zend_Version::VERSION,
 		'register_globals' => (ini_get_bool('register_globals')) ? getWarning(g_l('sysinfo', '[register_globals warning]'), ini_get('register_globals')) : getOK('', ini_get_message('register_globals')),
 		'max_execution_time' => ini_get('max_execution_time'),
@@ -237,7 +237,7 @@ $_info = array(
 		'safe_mode_include_dir' => ini_get_message('safe_mode_include_dir'),
 		'upload_max_filesize' => we_convertIniSizes(ini_get('upload_max_filesize')),
 		'post_max_size' => we_convertIniSizes(ini_get('post_max_size')),
-		'max_input_vars' => version_compare(PHP_VERSION, '5.3.0', '>=') ? (ini_get('max_input_vars') < 2000 ? getWarning('<2000', ini_get('max_input_vars')) : getOK('>=2000', ini_get_message('max_input_vars'))) : '-',
+		'max_input_vars' => ini_get('max_input_vars') < 2000 ? getWarning('<2000', ini_get('max_input_vars')) : getOK('>=2000', ini_get_message('max_input_vars')),
 		'session.auto_start' => (ini_get_bool('session.auto_start')) ? getWarning(g_l('sysinfo', '[session.auto_start warning]'), ini_get('session.auto_start')) : getOK('', ini_get_message('session.auto_start')),
 		'Suhosin' => $SuhosinText,
 		'display_errors' => (ini_get_bool('display_errors')) ? getWarning(g_l('sysinfo', '[display_errors warning]'), 'on') : getOK('', ini_get_message('off')),
@@ -260,7 +260,7 @@ $_info = array(
 		g_l('sysinfo', '[crypt]') => (function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, '')) ? getOK() : getWarning(g_l('sysinfo', '[crypt_warning]'), '-'))
 	),
 	'Deprecated' => array(
-		'we:saveRegisteredUser register=' => (defined('CUSTOMER_TABLE') && f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="webadmin" AND pref_name="default_saveRegisteredUser_register"') === 'true' ? getWarning('Deprecated', 'true') : getOk('', defined('CUSTOMER_TABLE') ? 'false' : '?')),
+		'we:saveRegisteredUser register=' => (defined('CUSTOMER_TABLE') && f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="default_saveRegisteredUser_register"') === 'true' ? getWarning('Deprecated', 'true') : getOk('', defined('CUSTOMER_TABLE') ? 'false' : '?')),
 	),
 );
 
@@ -273,7 +273,7 @@ $_types = array(
 );
 
 $buttons = we_html_button::position_yes_no_cancel(
-				we_html_button::create_button("close", "javascript:self.close()"), '', ''
+		we_html_button::create_button("close", "javascript:self.close()"), '', ''
 );
 
 

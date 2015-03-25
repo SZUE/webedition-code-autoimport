@@ -32,9 +32,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 if(permissionhandler::hasPerm('ADMINISTRATOR')){
 	$suhosinMsg = (extension_loaded('suhosin') && !in_array(ini_get('suhosin.simulation'), array(1, 'on', 'yes', 'true', true))) ? 'suhosin=on\n' : '';
 
-	$maxInputMsg = (version_compare(PHP_VERSION, '5.3.0', '>=') ? !ini_get('max_input_vars') ? 'max_input_vars = 1000 (PHP default value)' :
-				(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : '') : '');
-	$maxInputMsg .= $maxInputMsg ? ': >= 2000 is recommended' : $maxInputMsg;
+	$maxInputMsg = (!ini_get('max_input_vars') ? 'max_input_vars = 1000 (PHP default value)' :
+			(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : ''));
+	$maxInputMsg .= $maxInputMsg ? ': >= 2000 is recommended' : '';
 
 	$criticalPhpMsg = trim($maxInputMsg . $suhosinMsg);
 	if($criticalPhpMsg){
@@ -334,11 +334,11 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	 * *************************************************************************** */
 
 	$_hidden_values = we_html_element::htmlHiddens(array(
-		'checkLogin' => session_id(),
+			'checkLogin' => session_id(),
 			'indexDate' => date('d.m.Y, H:i:s')));
 
 	if($ignore_browser){
-		$_hidden_values .= we_html_element::htmlHidden('ignore_browser','true');
+		$_hidden_values .= we_html_element::htmlHidden('ignore_browser', 'true');
 	}
 
 	/*	 * ***********************************************************************

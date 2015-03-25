@@ -571,12 +571,7 @@ function t_e($type = 'warning'){
 			break;
 		case 'deprecated':
 			$inc = true;
-			if(defined('E_USER_DEPRECATED')){ //not defined in php <5.3; write warning instead
-				$type = E_USER_DEPRECATED;
-			} else {
-				$data[] = 'DEPRECATED';
-				$type = E_USER_NOTICE;
-			}
+			$type = E_USER_DEPRECATED;
 			break;
 		case 'warning':
 			$inc = true;
@@ -940,7 +935,7 @@ function CheckAndConvertISObackend($utf8data){
 
 /* * internal function - do not call */
 
-function g_l_encodeArray($tmp){//FIXME: move to closure as of php 5.3
+function g_l_encodeArray($tmp){
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $GLOBALS['WE_BACKENDCHARSET']));
 	return (is_array($tmp) ?
 			array_map(__METHOD__, $tmp) :
