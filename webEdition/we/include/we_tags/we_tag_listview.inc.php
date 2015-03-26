@@ -179,13 +179,14 @@ function we_tag_listview($attribs){
 				default:
 					$we_lv_pagelanguage = $we_lv_pagelanguage === 'self' || $we_lv_pagelanguage === 'top' ? $we_lv_ownlanguage : we_getDocForTag($docAttr)->Language;
 
-					if($we_lv_langguagesdoc instanceof we_objectFile){
-						$we_lv_pageID = $we_lv_langguagesdoc->OF_ID;
-						$we_lv_linktype = 'tblObjectFile';
-					} else {
-						$we_lv_pageID = $we_lv_langguagesdoc->ID;
-						$we_lv_linktype = 'tblFile';
-					}
+					/**
+					* Fix #9694
+					* attention: we can not check $we_lv_langguagesdoc instanceof we_objectFile 
+					* $we_lv_langguagesdoc is always instance of webEditionDocument because
+					* we need an webEdition Document to show webEdition object detail pages
+					*/
+					$we_lv_pageID = !empty($we_lv_langguagesdoc->OF_ID) ? $we_lv_langguagesdoc->OF_ID : $we_lv_langguagesdoc->ID;
+					$we_lv_linktype = !empty($we_lv_langguagesdoc->OF_ID) ? 'tblObjectFile' : 'tblFile';
 			}
 			unset($we_lv_langguagesdoc);
 
