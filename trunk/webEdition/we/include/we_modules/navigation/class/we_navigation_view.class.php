@@ -1160,7 +1160,6 @@ function submitForm() {
 		}
 
 		if(($page = we_base_request::_(we_base_request::INT, "page")) !== false){
-
 			$this->page = ($this->Model->IsFolder && $page != 1 && $page != 3 ? 1 : $page);
 		}
 	}

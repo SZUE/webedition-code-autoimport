@@ -261,14 +261,14 @@ class we_navigation_navigation extends weModelBase{
 		$this->setPath();
 
 		if($order){
-			$_ord_count = f('SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID) . ';', 'OrdCount', $this->db);
+			$_ord_count = f('SELECT COUNT(ID) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 			if($this->ID == 0){
 				$this->Ordn = $_ord_count;
 			} else {
 				if($this->Ordn > ($_ord_count - 1)){
 					$this->Ordn = $_ord_count;
 				}
-				$_oldPid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $this->db);
+				$_oldPid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), '', $this->db);
 			}
 		}
 
@@ -641,19 +641,23 @@ class we_navigation_navigation extends weModelBase{
 			$this->Ordn = 99999;
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
-			$this->Ordn = f('SELECT Ordn FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), '', $this->db);
 		} else {
 			//check position
 			if($newPos < 0 || $newPos > $max = f('SELECT MAX(Ordn) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db)){
 				return false;
 			}
-			$inc = ($this->Ordn < $newPos ? -1 : 1);
-			$this->Ordn = ($inc < 0 ? $this->Ordn : $newPos);
-			t_e($newPos);
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=Ordn+' . $inc . ' WHERE Ordn>=' . $newPos . ' AND ParentID=' . $this->ParentID);
+
+			if($newPos < $this->Ordn){
+				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=Ordn+1 WHERE (Ordn BETWEEN ' . $newPos . ' AND ' . $this->Ordn . ') AND ParentID=' . $this->ParentID . ' AND ID!=' . $this->ID);
+			} else {//$newPos>Ordn
+				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=Ordn-1 WHERE (Ordn BETWEEN ' . $this->Ordn . ' AND ' . $newPos . ') AND ParentID=' . $this->ParentID . ' AND ID!=' . $this->ID);
+			}
+
+			$this->Ordn =$newPos;
 			$this->saveField('Ordn');
-			//$this->reorder($this->ParentID);
+			$this->reorder($this->ParentID);
 		}
+		$this->Ordn = f('SELECT Ordn FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), '', $this->db);
 		return true;
 	}
 
