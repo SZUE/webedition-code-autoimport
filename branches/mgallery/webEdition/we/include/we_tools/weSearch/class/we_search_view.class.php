@@ -559,7 +559,7 @@ weSearch.g_l = {
 			'border' => 0,
 			'cellpadding' => 2,
 			'cellspacing' => 0,
-			'width' => $whichSearch === self::SEARCH_MEDIA ? 590 : 500,
+			'width' => 500,
 			'height' => 50
 			), 5, 2);
 
@@ -574,27 +574,28 @@ weSearch.g_l = {
 				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentTmplSearch ? true : false, "searchForContentTmplSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 				break;
 			case self::SEARCH_MEDIA :
-				$_table->setCol(0, 0, array('style' => 'padding-top: 10px'), we_html_tools::htmlAlertAttentionBox('Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.', we_html_tools::TYPE_INFO, 440));
+				//$_table->setCol(0, 0, array('style' => 'padding-top: 10px'), we_html_tools::htmlAlertAttentionBox('Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.', we_html_tools::TYPE_INFO, 440));
 
 				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextMediaSearch ? true : false, "searchForTextMediaSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
 				$_table->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleMediaSearch ? true : false, "searchForTitleMediaSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
 				$_table->setCol(3, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForMetaMediaSearch ? true : false, "searchForMetaMediaSearch", 'In Metadaten', false, 'defaultfont', '')); //FIXME: G_L()
-				$_table->setCol(3, 1, array('align' => 'right'), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
+				//$_table->setCol(4, 1, array('align' => 'right'), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
 
 				return $_table->getHtml();
 		}
+		$_table->setCol(4, 0, array('style'=>'padding-right:20px;'), we_html_tools::getPixel(380, 10));
 		$_table->setCol(4, 1, array('align' => 'right'), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}
-
-	function getSearchDialogFilter($whichSearch){
+	
+	function getSearchDialogMediaType($whichSearch){
 		$_table = new we_html_table(
 			array(
 			'border' => 0,
 			'cellpadding' => 2,
 			'cellspacing' => 0,
-			'width' => 590,
+			'width' => 500,
 			'height' => 50
 			), 7, 3);
 
@@ -604,25 +605,51 @@ weSearch.g_l = {
 				 * FIXME: add meta tags using advsearch gui elements! (they are AND-connected)
 				 */
 				$n = 1;
-				$_table->setCol(0, 0, array(), 'Dateityp einschränken: ');
-				$_table->setCol(0, 1, array(), we_html_element::htmlHiddens(array(
+				$_table->setCol(0, 0, array(), we_html_element::htmlHiddens(array(
 						'searchFieldsMediaSearch[' . $n . ']' => 'ContentType',
 						'searchMediaSearch[' . $n . ']' => '',
 						'locationMediaSearch[' . $n++ . ']' => 'IN')) .
 					we_html_forms::checkboxWithHidden($this->Model->searchForImageMediaSearch ? true : false, "searchForImageMediaSearch", 'Bilder', false, 'defaultfont', ''));
-				$_table->setCol(0, 2, array(), we_html_forms::checkboxWithHidden($this->Model->searchForVideoMediaSearch ? true : false, "searchForVideoMediaSearch", 'Video', false, 'defaultfont', ''));
-				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($this->Model->searchForAudioMediaSearch ? true : false, "searchForAudioMediaSearch", 'Audio', false, 'defaultfont', ''));
-				$_table->setCol(1, 2, array(), we_html_forms::checkboxWithHidden($this->Model->searchForPdfMediaSearch ? true : false, "searchForPdfMediaSearch", 'PDF-Dateien', false, 'defaultfont', ''));
-				$_table->setCol(2, 0, array(), we_html_tools::getPixel(20, 10));
+				$_table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden($this->Model->searchForAudioMediaSearch ? true : false, "searchForAudioMediaSearch", 'Audio', false, 'defaultfont', ''));
+				$_table->setCol(0, 2, array(), we_html_tools::getPixel(100, 10));
+				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForPdfMediaSearch ? true : false, "searchForPdfMediaSearch", 'PDF-Dateien', false, 'defaultfont', ''));
+				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($this->Model->searchForVideoMediaSearch ? true : false, "searchForVideoMediaSearch", 'Video', false, 'defaultfont', ''));
+				$_table->setCol(1, 2, array(), we_html_tools::getPixel(100, 10));
+				$_table->setCol(2, 0, array('colspan'=>'3'), we_html_tools::getPixel(10, 10));
+
+				break;
+			default:
+				return;
+		}
+		
+		return $_table->getHtml();
+	}
+
+	function getSearchDialogFilter($whichSearch){
+		$_table = new we_html_table(
+			array(
+			'border' => 0,
+			'cellpadding' => 2,
+			'cellspacing' => 0,
+			'width' => 500,
+			'height' => 50
+			), 7, 4);
+
+		switch($whichSearch){
+			case self::SEARCH_MEDIA :
+				/*
+				 * FIXME: add meta tags using advsearch gui elements! (they are AND-connected)
+				 */
+				$n = 1;
 
 				$_table->setCol(3, 0, array(), 'Verwendungsstatus: ');
-				$_table->setCol(3, 1, array(), we_html_element::htmlHiddens(array(
+				$_table->setCol(3, 1, array('colspan'=>'2'), we_html_element::htmlHiddens(array(
 						'searchFieldsMediaSearch[' . $n . ']' => 'IsUsed',
 						'locationMediaSearch[' . $n . ']' => 'IS')) .
 					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array('0' => 'alle', '1' => 'nur benutzte Medien', '2' => 'nur unbenutzte Medien'), 1, $this->Model->searchMediaSearch[$n++], false, array(), 'value', 220));
 
 				$_table->setCol(4, 0, array(), 'Schutz: ');
-				$_table->setCol(4, 1, array(), we_html_element::htmlHiddens(array(
+				$_table->setCol(4, 1, array('colspan'=>'2'), we_html_element::htmlHiddens(array(
 						'searchFieldsMediaSearch[' . $n . ']' => 'IsProtected',
 						'locationMediaSearch[' . $n . ']' => 'IS')) .
 					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array('0' => 'alle', '1' => 'nur geschützte Medien', '2' => 'nur ungeschützte Medien'), 1, $this->Model->searchMediaSearch[$n++], false, array(), 'value', 220));
@@ -632,8 +659,9 @@ weSearch.g_l = {
 			default:
 				return;
 		}
-		$_table->setCol(5, 0, array('colspan' => 3), $this->getSearchDialogOptFields($whichSearch));
-		$_table->setCol(6, 2, array('align' => 'right'), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
+		$_table->setCol(5, 0, array('colspan' => 4), $this->getSearchDialogOptFields($whichSearch));
+		$_table->setCol(6, 0, array('colspan'=>'3','style'=>'padding-right:20px;'), we_html_tools::getPixel(380, 10));
+		$_table->setCol(6, 3, array(), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}
@@ -796,7 +824,7 @@ weSearch.g_l = {
 					$this->Model->search_tables_advSearch[VERSIONS_TABLE] ? true : false, 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
 		}
 
-		$_table->setCol(1, 2, array(
+		$_table->setCol(2, 2, array(
 			'align' => 'right'
 			), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
 
@@ -901,7 +929,7 @@ weSearch.g_l = {
 				}
 
 				$searchInput = we_html_element::htmlHidden($searchFieldName, 'keyword') .
-					we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchMediaSearch) && is_array($this->Model->searchMediaSearch) && isset($this->Model->searchMediaSearch[0]) ? $this->Model->searchMediaSearch[0] : ''), "", "", "search", 440);
+					we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchMediaSearch) && is_array($this->Model->searchMediaSearch) && isset($this->Model->searchMediaSearch[0]) ? $this->Model->searchMediaSearch[0] : ''), "", "", "search", 380);
 				break;
 		}
 
@@ -915,10 +943,15 @@ weSearch.g_l = {
  <td></td>
 </tr>
 <tr>
- <td>' . $searchInput . '</td>
+ <td style="padding-right:20px;">' . $searchInput . '</td>
+ <td>' . we_html_button::create_button("search", "javascript:weSearch.search(true);") . '</td>
  <td>' . we_html_tools::hidden($locationName, 'CONTAIN') . '</td>
  <td>' . we_html_tools::hidden($searchTables, 1) . '</td>
-</tr></tbody></table>';
+ <td></td>
+</tr>' . ( $whichSearch == self::SEARCH_MEDIA ? 
+	'<tr><td colspan="5">'. we_html_tools::htmlAlertAttentionBox("Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.", we_html_tools::TYPE_INFO, 380) .'</td></tr>' : 
+	'') . '
+</tbody></table>';
 	}
 
 	function searchProperties($whichSearch){
@@ -2510,7 +2543,7 @@ weSearch.g_l = {
 				$table = FILE_TABLE;
 				$pathID = $this->Model->folderIDMedia;
 				$ACname = "docu";
-				$yuiSuggest->setWidth(320);
+				$yuiSuggest->setWidth(380);
 				break;
 			case self::SEARCH_TMPL :
 				$folderID = "folderIDTmpl";

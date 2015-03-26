@@ -300,13 +300,13 @@ function setTab(tab) {
 
 		return array(
 			array(
-				'headline' => g_l('searchtool', '[suchenIn]'),
-				'html' => $_searchDirChooser_block,
+				'headline' => g_l('searchtool', '[text]'),
+				'html' => $_searchField_block,
 				'space' => $this->_space_size
 			),
 			array(
-				'headline' => g_l('searchtool', '[text]'),
-				'html' => $_searchField_block,
+				'headline' => g_l('searchtool', '[suchenIn]'),
+				'html' => $_searchDirChooser_block,
 				'space' => $this->_space_size
 			),
 			array(
@@ -336,13 +336,13 @@ function setTab(tab) {
 
 		return array(
 			array(
-				'headline' => g_l('searchtool', '[suchenIn]'),
-				'html' => $_searchDirChooser_block,
+				'headline' => g_l('searchtool', '[text]'),
+				'html' => $_searchField_block,
 				'space' => $this->_space_size
 			),
 			array(
-				'headline' => g_l('searchtool', '[text]'),
-				'html' => $_searchField_block,
+				'headline' => g_l('searchtool', '[suchenIn]'),
+				'html' => $_searchDirChooser_block,
 				'space' => $this->_space_size
 			),
 			array(
@@ -361,6 +361,7 @@ function setTab(tab) {
 		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
 		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
 		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogOptions($innerSearch) . '</div>';
+		$_searchCheckboxMediaTyp_block = '<div>' . $this->View->getSearchDialogMediaType($innerSearch) . '</div>';
 		$_searchFilter_block = '<div>' . $this->View->getSearchDialogFilter($innerSearch) . '</div>';
 
 		$content = $this->View->searchProperties($innerSearch);
@@ -375,13 +376,23 @@ function setTab(tab) {
 
 		return array(
 			array(
+				'headline' => g_l('searchtool', '[text]'),
+				'html' => $_searchField_block,
+				'space' => $this->_space_size
+			),
+			array(
 				'headline' => g_l('searchtool', '[suchenIn]'),
 				'html' => $_searchDirChooser_block,
 				'space' => $this->_space_size
 			),
 			array(
-				'headline' => g_l('searchtool', '[text]'),
-				'html' => $_searchField_block . $_searchCheckboxes_block,
+				'headline' => g_l('searchtool', '[optionen]'),
+				'html' => $_searchCheckboxes_block,
+				'space' => $this->_space_size
+			),
+			array(
+				'headline' => g_l('searchtool', '[anzeigen]'),
+				'html' => $_searchCheckboxMediaTyp_block,
 				'space' => $this->_space_size
 			),
 			array(
