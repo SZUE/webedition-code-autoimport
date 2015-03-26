@@ -607,13 +607,13 @@ weSearch.g_l = {
 				$n = 1;
 				$_table->setCol(0, 0, array(), we_html_element::htmlHiddens(array(
 						'searchFieldsMediaSearch[' . $n . ']' => 'ContentType',
-						'searchMediaSearch[' . $n . ']' => '',
+						'searchMediaSearch[' . $n . ']' => 1,
 						'locationMediaSearch[' . $n++ . ']' => 'IN')) .
 					we_html_forms::checkboxWithHidden($this->Model->searchForImageMediaSearch ? true : false, "searchForImageMediaSearch", 'Bilder', false, 'defaultfont', ''));
 				$_table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden($this->Model->searchForAudioMediaSearch ? true : false, "searchForAudioMediaSearch", 'Audio', false, 'defaultfont', ''));
 				$_table->setCol(0, 2, array(), we_html_tools::getPixel(100, 10));
-				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForPdfMediaSearch ? true : false, "searchForPdfMediaSearch", 'PDF-Dateien', false, 'defaultfont', ''));
 				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($this->Model->searchForVideoMediaSearch ? true : false, "searchForVideoMediaSearch", 'Video', false, 'defaultfont', ''));
+				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForPdfMediaSearch ? true : false, "searchForOtherMediaSearch", 'Sonstige Medien-Dateien', false, 'defaultfont', '', false));
 				$_table->setCol(1, 2, array(), we_html_tools::getPixel(100, 10));
 				$_table->setCol(2, 0, array('colspan'=>'3'), we_html_tools::getPixel(10, 10));
 
@@ -637,10 +637,7 @@ weSearch.g_l = {
 
 		switch($whichSearch){
 			case self::SEARCH_MEDIA :
-				/*
-				 * FIXME: add meta tags using advsearch gui elements! (they are AND-connected)
-				 */
-				$n = 1;
+				$n = 2;
 
 				$_table->setCol(3, 0, array(), 'Verwendungsstatus: ');
 				$_table->setCol(3, 1, array('colspan'=>'2'), we_html_element::htmlHiddens(array(
@@ -1035,8 +1032,10 @@ weSearch.g_l = {
 								case 'searchForAudioMediaSearch':
 									$searchForContentTypesMediaSearch .= "'" . we_base_ContentTypes::AUDIO . "',";
 									break;
-								case 'searchForPdfMediaSearch':
-									$searchForContentTypesMediaSearch .= "'#PDF#',";
+								//case 'searchForPdfMediaSearch':
+								case 'searchForOtherMediaSearch':
+									$searchForContentTypesMediaSearch .= "'" . we_base_ContentTypes::APPLICATION . "',";
+									//$searchForContentTypesMediaSearch .= "'#PDF#',";
 									break;
 							}
 						}
@@ -1045,7 +1044,7 @@ weSearch.g_l = {
 						switch($v){
 							case 'ContentType':
 								if(!$cts = trim($searchForContentTypesMediaSearch, ',')){
-									$cts = "'" . we_base_ContentTypes::IMAGE . "','" . we_base_ContentTypes::VIDEO . "','" . we_base_ContentTypes::QUICKTIME . "','" . we_base_ContentTypes::FLASH . "','" . we_base_ContentTypes::AUDIO . "','#PDF#'";
+									$cts = "'" . we_base_ContentTypes::IMAGE . "','" . we_base_ContentTypes::VIDEO . "','" . we_base_ContentTypes::QUICKTIME . "','" . we_base_ContentTypes::FLASH . "','" . we_base_ContentTypes::AUDIO . "','" . we_base_ContentTypes::APPLICATION . "'";//"','#PDF#'";
 								}
 								$_REQUEST['we_cmd']['search' . $whichSearch][$k] = $cts;
 								break;
@@ -1232,15 +1231,21 @@ weSearch.g_l = {
 									$where_OR .= ($where_OR ? 'OR ' : '') . $this->searchclass->searchInAllMetas($searchString);
 									break;
 								case 'ContentType':
+									/*
 									if(strpos($searchString, "'#PDF#'") !== false){
 										$searchString = str_replace(array("',#PDF'", "'#PDF#'"), '', $searchString);
 										$where .= ' AND (' . $_table . '.ContentType IN (' . trim($searchString, ',') . ') OR ' . $_table . '.Extension = ".pdf") ';
 									} else {
-										$where .= ' AND ' . $_table . '.ContentType IN (' . $searchString . ')';
+									 * 
+									 */
+									$where .= ' AND ' . $_table . '.ContentType IN (' . $searchString . ')';
+									/*
 									}
+									 * 
+									 */
 									break;
 								case 'IsUsed':
-									$where .= $this->searchclass->searchMediaLinks($searchString, $_table, $_view !== self::VIEW_ICONS);
+									$where .= $this->searchclass->searchMediaLinks($searchString, $_view !== self::VIEW_ICONS);
 									break;
 								case 'IsProtected':
 									switch($searchString){
@@ -1428,11 +1433,10 @@ weSearch.g_l = {
 
 					$this->searchclass->setwhere($whereQuery);
 					$this->searchclass->insertInTempTable($whereQuery, $_table);
-
-					/*
-					 * if(self::)
-					 */
+					
+					// when MediaSearch add attrib_alt, attrib_title, IsUsed to SEARCH_TEMP_TABLE
 					if(self::SEARCH_MEDIA){
+						$this->searchclass->insertMediaAttribsToTempTable();
 						//SELECT id,alt,title FROM SEARCH_TEMP_TABLE JOIN tblLink JOIN tblContent ON bla WHERE alt  OR title...
 					}
 				}
@@ -1517,9 +1521,9 @@ weSearch.g_l = {
 			array("dat" => '<a href="javascript:weSearch.setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span>')
 			) :
 			array(
-			array("dat" => '<a href="javascript:weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . '</a> <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span>
-					/ <a href="javascript:weSearch.setOrder(\'IsUsed\',\'' . $whichSearch . '\');">' . Verwendungsstatus . '</a> <span id="IsUsed_' . $whichSearch . '" >' . $this->getSortImage('IsUsed', $whichSearch) . '</span>'),
+			array("dat" => '<a href="javascript:weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . '</a> <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span>'),
 			array("dat" => '<a href="javascript:weSearch.setOrder(\'FileSize\',\'' . $whichSearch . '\');">Größe</a> <span id="FileSize_' . $whichSearch . '" >' . $this->getSortImage('fileSize', $whichSearch) . '</span>'),
+			array("dat" => '<a href="javascript:weSearch.setOrder(\'Status\',\'' . $whichSearch . '\');">Status</a> <span id="Status_' . $whichSearch . '" >' . $this->getSortImage('status', $whichSearch) . '</span>'),
 			array("dat" => '<a href="javascript:weSearch.setOrder(\'Alt\',\'' . $whichSearch . '\');">alt</a> <span id="Alt_' . $whichSearch . '" >' . $this->getSortImage('alt', $whichSearch) . '</span>'),
 			array("dat" => '<a href="javascript:weSearch.setOrder(\'Title\',\'' . $whichSearch . '\');">title</a> <span id="Title_' . $whichSearch . '" >' . $this->getSortImage('title', $whichSearch) . '</span>'),
 			array("dat" => '<a href="javascript:weSearch.setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . '</a> <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span>'),
@@ -1625,19 +1629,9 @@ weSearch.g_l = {
 						case we_base_ContentTypes::FLASH:
 						case we_base_ContentTypes::APPLICATION:
 							$actionCheckbox = '';
-							if(empty($this->searchclass->getUsedMedia()) || empty($this->searchclass->getUsedMediaLinks())){// FIXME: this is used, because usedMedia is not written to session
-								$this->searchclass->searchMediaLinks(0, FILE_TABLE, true); // FIXME: do this before iterating!
-							}
-							if(isset($usedMediaLinks['mediaID_' . $_result[$f]["docID"]])){
-								$linksArray = $usedMediaLinks['mediaID_' . $_result[$f]["docID"]];
-								$used = true;
-							} else {
-								$linksArray = array(0 => 'not used');
-								$used = false;
-							}
-							$usedMedia = $this->searchclass->getUsedMedia();
-							$usedMediaLinks = $this->searchclass->getUsedMediaLinks();
-							if(($_result[$f]["ContentType"] !== we_base_ContentTypes::APPLICATION || $_result[$f]["Extension"] === '.pdf') && !in_array($_result[$f]["docID"], $this->searchclass->getUsedMedia())){
+							if($_result[$f]["IsProtected"]){
+								$actionCheckbox = ' <img title="Dokument ist geschützt und kann nicht gelöscht werden!" src="' . IMAGE_DIR . 'alert_tiny.gif" border="0" />';
+							} else if(!in_array($_result[$f]["docID"], $this->searchclass->getUsedMedia())){
 								$actionCheckbox = permissionhandler::hasPerm('DELETE_DOCUMENT') && f('SELECT 1 FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]["docID"]), '', $DB_WE) ?
 									we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "delete_docs_" . $whichSearch, "", false, "middlefont", "") : we_html_tools::getPixel(20, 10);
 							}
@@ -1650,6 +1644,7 @@ weSearch.g_l = {
 				$_result[$f]['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
 				$_result[$f]['fileSize'] = we_base_file::getHumanFileSize($_result[$f]['size']);
 				$iconHTML = $this->getHtmlIconThmubnail($_result[$f]);
+				$standardStyle = 'height:12px;padding-top:6px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;';
 				$content[] = $whichSearch !== self::SEARCH_MEDIA ?
 					array(
 					array("dat" => we_html_tools::getPixel(20, 1) . $actionCheckbox),
@@ -1661,25 +1656,36 @@ weSearch.g_l = {
 					array("dat" => ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-")),
 					) :
 					array(
-					array('elem' => 'td', 'attribs' => array(), 'dat' => we_html_tools::getPixel(20, 1) . $actionCheckbox),
-					array('elem' => 'td', 'attribs' => array(), 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '">' . $iconHTML['imageView']),
-					array('elem' => 'td', 'attribs' => array(), 'dat' => array(
-							array('elem' => 'table', 'dat' => array(
+					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . '"', 'dat' => we_html_tools::getPixel(1, 1) . $actionCheckbox),
+					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '">' . $iconHTML['imageView']),
+					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => array(
+							array('elem' => 'table', '' => '', 'dat' => array(
 									array('elem' => 'row', 'dat' => array(
-											array('elem' => 'td', 'attribs' => array('colspan="2"'), 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '"><u>' . $_result[$f]["Text"]),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'font-weight:bold;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '"><u>' . $_result[$f]["Text"]),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:75px;text-align:left"', 'dat' => $_result[$f]['fileSize']),
+											array('elem' => 'td', 'attribs' => ($_result[$f]['IsUsed'] ? 'title="Dokument wird benutzt...: Click to open!" onclick="weSearch.showAdditional(' . $_result[$f]['docID'] . ')" style="cursor:pointer;width:45px;text-align:left;' . $standardStyle . 'height:auto;"' : 'title="Dokument wird nicht benutzt!" style="width:45px;text-align:left;' . $standardStyle . '"'), 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_' . ($_result[$f]['IsUsed'] ? 'green' : 'yellow') . '.gif">'),
+											array('elem' => 'td', 'attribs' => ($_result[$f]['IsAltSet'] ? 'title="Alt-Attribut gesetzt" ' : 'title="Alt-Attribut nicht gesetzt" ') . 'style="width:45px;text-align:left;' . $standardStyle . '"', 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_' . ($_result[$f]['IsAltSet'] ? 'green' : 'red') . '.gif">'),
+											array('elem' => 'td', 'attribs' => ($_result[$f]['IsTitleSet'] ? 'title="Title-Attribut gesetzt" ' : 'title="Title-Attribut nicht gesetzt" ') . 'style="width:45px;text-align:left;' . $standardStyle . '"', 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_' . ($_result[$f]['IsTitleSet'] ? 'green' : 'red') . '.gif">'),
+											array('elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $_result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $_result[$f]['CreationDate']) : '-'),
+											array('elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $_result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $_result[$f]['ModDate']) : '-'),
 										)),
-									array('elem' => 'row', 'dat' => array(
-											array('elem' => 'td', 'attribs' => array('style="width:20px;text-align:left"'), 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_' . (!in_array($_result[$f]["docID"], $usedMedia) ? 'grau' : 'blau') . '_2.gif">'),
-											array('elem' => 'td', 'attribs' => array('style="width:165px"'), 'dat' => we_html_tools::htmlSelect('selectused[' . $f . ']', $linksArray, 1, 0, false, $used ? array() : array("disabled" => "disabled"), '', 160)),
-											array('elem' => 'td', 'attribs' => array('style="width:20px;text-align:left"'), 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_grau_2.gif">'),
+								
+									array('elem' => 'row', 'attribs' => 'background-color:green', 'dat' => array(
+											array('elem' => 'td', 'attribs' => 'id="infoTable_' . $_result[$f]["docID"] . '" style="display:none;width:100%;text-align:left;' . $standardStyle . 'height:auto;overflow:visible;" colspan="5"', 'dat' => $this->makeAdditionalContentMedia($_result[$f])),
 										))
-								))
+									), 'colgroup' => '</colgroup>
+											<col style="text-align:left;"/>
+											<col style="width:75px;text-align:left;"/>
+											<col style="width:45px;text-align:left;"/>
+											<col style="width:45px;text-align:left;"/>
+											<col style="width:45px;text-align:left;"/>
+											<col style="width:90px;text-align:left;"/>
+											<col style="width:90px;text-align:left;"/>
+											</colgroup>'
+								)
 						)),
-					array('elem' => 'td', 'attribs' => array('style="text-align:left"'), 'dat' => $_result[$f]['fileSize']),
-					array('elem' => 'td', 'attribs' => array('style="text-align:left"'), 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_grau_2.gif">'),
-					array('elem' => 'td', 'attribs' => array('style="text-align:left"'), 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_grau_2.gif">'),
-					array('elem' => 'td', 'attribs' => array(), 'dat' => $_result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $_result[$f]['CreationDate']) : '-'),
-					array('elem' => 'td', 'attribs' => array(), 'dat' => $_result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $_result[$f]['ModDate']) : '-'),
+
+
 				);
 			} else {
 				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
@@ -1767,6 +1773,19 @@ weSearch.g_l = {
 		}
 
 		return $content;
+	}
+	
+	function makeAdditionalContentMedia($result){
+		$usedMediaLinks = $this->searchclass->getUsedMediaLinks();
+		if(isset($usedMediaLinks['mediaID_' . $result["docID"]]) && $usedMediaLinks['mediaID_' . $result["docID"]]){
+			$out = '<table style="font-weight:normal"><tr><td>noch komplett unformatiert und ohne Link und Button...:</td></tr>';
+			foreach($usedMediaLinks['mediaID_' . $result["docID"]] as $idTable => $path){
+				$out .= '<tr><td>' . $path . ' (' . $idTable .')</td></tr>';
+			}
+			$out .= '</table>';
+
+			return $out;
+		}
 	}
 
 	function getHtmlIconThmubnail($file, $smallSize = 64, $bigSize = 140){
@@ -2323,14 +2342,14 @@ weSearch.g_l = {
 </colgroup>' :
 				'<colgroup>
 <col style="width:30px;text-align:center;"/>
-<col style="width:80px;text-align:left;"/>
+<col style="width:80px;text-align:center;"/>
 <col style="text-align:left;"/>
 <col style="width:75px;text-align:left;"/>
 <col style="width:45px;text-align:left;"/>
 <col style="width:45px;text-align:left;"/>
-<col style="width:100px;text-align:left;"/>
-<col style="width:100px;text-align:left;"/>
-
+<col style="width:45px;text-align:left;"/>
+<col style="width:90px;text-align:left;"/>
+<col style="width:90px;text-align:left;"/>
 </colgroup>'
 			) .
 			'<tr style="height:20px;">
@@ -2369,11 +2388,6 @@ weSearch.g_l = {
 <col style="width:30px;text-align:center;"/>
 <col style="width:80px;text-align:left;"/>
 <col style="text-align:left;"/>
-<col style="width:75px;text-align:left;"/>
-<col style="width:45px;text-align:left;"/>
-<col style="width:45px;text-align:left;"/>
-<col style="width:100px;text-align:left;"/>
-<col style="width:100px;text-align:left;"/>
 </colgroup>
 ';
 
@@ -2495,17 +2509,19 @@ weSearch.g_l = {
 		for($i = 0; $i < count($content); $i++){
 			switch($content[$i]['elem']){
 				case 'td':
-					$out .= '<td ' . ($content[$i]['attribs'] ? implode(' ', $content[$i]['attribs']) : '') . ' ' . ($i < 2 ? '' : 'style="font-weight:bold;height:30px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;"') . '>' .
+					$out .= '<td ' . ($content[$i]['attribs'] ? $content[$i]['attribs'] : '') . '>' .
 						(!isset($content[$i]['dat']) || !$content[$i]['dat'] ? '&nbsp;' : (!is_array($content[$i]["dat"]) ? $content[$i]["dat"] : self::tblListRowMedia($content[$i]["dat"]))) .
 						'</td>';
 					break;
 				case 'table':
-					$out .=!isset($content[$i]['dat']) || !is_array($content[$i]['dat']) ? '&nbsp;' : ('<table>' .
+					// FIXME :this whole colgroup-stuff in dynamically built tables is absurde! throw out or generate dynamically too!
+					$out .=!isset($content[$i]['dat']) || !is_array($content[$i]['dat']) ? '&nbsp;' : ('<table style="table-layout:fixed;white-space:nowrap;width:100%;padding:0 0 0 0;margin:0 0 0 0;background-color:#fff;" >' .
+						(isset($content[$i]['colgroup']) && $content[$i]['colgroup'] ? $content[$i]['colgroup'] : '') .
 						self::tblListRowMedia($content[$i]["dat"]) .
 						'</table>');
 					break;
 				case 'row':
-					$out .= '<tr>' .
+					$out .= '<tr style="width:100%" ' . (isset($content[$i]['attribs']) ? $content[$i]['attribs'] : '') . '>' .
 						(!isset($content[$i]['dat']) || !is_array($content[$i]['dat']) ? '<td>&nbsp;</td>' : self::tblListRowMedia($content[$i]["dat"])) .
 						'</tr>';
 					break;

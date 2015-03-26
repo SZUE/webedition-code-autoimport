@@ -820,6 +820,14 @@ weSearch = {
 		}
 	},
 
+	showAdditional: function(id){
+		var elem = document.getElementById('infoTable_' + id);
+
+		if(elem){
+			elem.style.display = elem.style.display === 'block' ? 'none' : 'block';
+		}
+	},
+
 	ajaxCallbackPublishDocs: {
 		success: function(o) {
 
