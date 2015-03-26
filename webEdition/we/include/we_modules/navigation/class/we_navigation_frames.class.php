@@ -291,6 +291,8 @@ function setTab(tab) {
 					), 10, array(
 					'style' => 'margin-left: 15px'
 			)));
+		} else {
+			$_table->setColContent(0, 1, we_html_element::htmlHidden(array('name' => 'Ordn', 'value' => -1)));
 		}
 		// name and folder block
 		// icen selector block

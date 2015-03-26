@@ -648,10 +648,11 @@ class we_navigation_navigation extends weModelBase{
 				return false;
 			}
 			$inc = ($this->Ordn < $newPos ? -1 : 1);
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=Ordn+' . $inc . ' WHERE Ordn>' . ($inc < 0 ? $this->Ordn : $newPos) . ' AND ParentID=' . $this->ParentID);
-			$this->Ordn = $newPos;
+			$this->Ordn = ($inc < 0 ? $this->Ordn : $newPos);
+			t_e($newPos);
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=Ordn+' . $inc . ' WHERE Ordn>=' . $newPos . ' AND ParentID=' . $this->ParentID);
 			$this->saveField('Ordn');
-			$this->reorder($this->ParentID);
+			//$this->reorder($this->ParentID);
 		}
 		return true;
 	}
