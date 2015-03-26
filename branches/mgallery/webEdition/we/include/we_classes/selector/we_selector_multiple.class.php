@@ -138,7 +138,7 @@ function weonclick(e){
 											'<td class="selector" width="25" align="center">' +
 											'<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />' +
 											'</td>' +
-											'<td class="selector"  title="' + entries[i].text + '">' + cutText(entries[i].text, 80) + '</td>' +
+											'<td class="selector filename"  title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div></td>' +
 											'</tr>'
 						}
 						body += '<tr><td width="25"><?php echo we_html_tools::getPixel(25, 2) ?></td>' +

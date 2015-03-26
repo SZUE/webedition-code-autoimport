@@ -56,7 +56,6 @@ abstract class we_selector_file{
 	var $path = '/';
 	var $lastdir = '';
 	protected $table = FILE_TABLE;
-	var $tableSizer = '';
 	var $tableHeadlines = '';
 	var $JSCommand = '';
 	var $JSTextName;
@@ -327,7 +326,7 @@ function queryString(what,id,o){
 					link += ' onclick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
 					body += '<tr><td class="selector" align="center">' +
 									link + '<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a></td>' +
-									'<td class="selector" title="' + entries[i].text + '">' + link + cutText(entries[i].text, 70) + '</a></td></tr>' +
+									'<td class="selector filename" title="' + entries[i].text + '">' + link + '<div class="cutText">' + entries[i].text + '</div></a></td></tr>' +
 									'<tr>' +
 									'<td width="25"></td>' +
 									'<td width="200"></td></tr>';
@@ -648,25 +647,24 @@ function press_ok_button() {
 	}
 
 	private function setTableLayoutInfos(){
+		//FIXME: should we add a column for extension?
 		switch($this->table){
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 			case TEMPLATES_TABLE:
 				$this->col2js = "entries[i].ID";
-				$this->tableSizer = "<td>" . we_html_tools::getPixel(25, 1) . "</td><td>" . we_html_tools::getPixel(350, 1) . "</td><td>" . we_html_tools::getPixel(70, 1) . "</td><td>" . we_html_tools::getPixel(150, 1) . "</td>";
 				$this->tableHeadlines = "
-<td></td>
-<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"Text\");'>" . g_l('fileselector', '[filename]') . "</a></b></td>
-<td class='selector'>&nbsp;<b>ID</b></td>
-<td class='selector'>&nbsp;<b><a href='#' onclick='javascript:top.orderIt(\"ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></b></td>";
+<td class='treeIcon'></td>
+<td class='selector filename'><b><a href='#' onclick='javascript:top.orderIt(\"Text\");'>" . g_l('fileselector', '[filename]') . "</a></b></td>
+<td class='selector title'>&nbsp;<b>ID</b></td>
+<td class='selector modddate'>&nbsp;<b><a href='#' onclick='javascript:top.orderIt(\"ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></b></td>";
 				break;
 			default:
 				$this->col2js = "entries[i].title";
-				$this->tableSizer = "<td>" . we_html_tools::getPixel(25, 1) . "</td><td>" . we_html_tools::getPixel(200, 1) . "</td><td>" . we_html_tools::getPixel(220, 1) . "</td><td>" . we_html_tools::getPixel(150, 1) . "</td>";
 				$this->tableHeadlines = "
-<td></td>
-<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"Text\");'>" . g_l('fileselector', '[filename]') . "</a></b></td>
-<td class='selector'><b>" . g_l('fileselector', '[title]') . "</b></td>
-<td class='selector'><b><a href='#' onclick='javascript:top.orderIt(\"ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></b></td>";
+<td class='treeIcon'></td>
+<td class='selector filename'><b><a href='#' onclick='javascript:top.orderIt(\"Text\");'>" . g_l('fileselector', '[filename]') . "</a></b></td>
+<td class='selector title'><b>" . g_l('fileselector', '[title]') . "</b></td>
+<td class='selector moddate'><b><a href='#' onclick='javascript:top.orderIt(\"ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></b></td>";
 		}
 	}
 

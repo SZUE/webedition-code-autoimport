@@ -48,6 +48,10 @@ body.fspath{
 	padding-top: 0.5ex;
 }
 
+table.selector{
+	border-spacing: 0px;
+}
+
 div.imgDiv{
 	float: left;
 	width: 4em;
@@ -61,6 +65,13 @@ img.icon{
 	max-width:4em;
 	max-height:3em;
 }
+
+img.treeIcon{
+	width: 16px;
+	height:18px;
+	border: none;
+}
+
 div.imgText{
 	/*font-size: 16px;*/
 	text-overflow: ellipsis;
@@ -76,6 +87,39 @@ div.selected{
 	border: 1px solid grey;
 }
 
+div.cutText{
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	display:inline-block;
+	max-width:150px;
+}
+
+div.extension{
+	display:inline-block;
+	width:50px;
+}
+
+td.treeIcon{
+	width: 16px;
+	padding-right: 5px;
+}
+
+td.filename{
+	width:200px;
+}
+
+td.title{
+	width:220px;
+}
+
+td.title div.cutText{
+	max-width:220px;
+}
+
+td.moddate{
+	width:150px;
+}
 
 #fsheaderDiv{
 	position: fixed;
@@ -85,7 +129,7 @@ div.selected{
 	height:67px;
 }
 #fsheader.object{
-		height:16px;
+	height:16px;
 }
 
 #fsbodyDiv{

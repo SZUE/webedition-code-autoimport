@@ -66,14 +66,6 @@ function getEntry(id) {
 	return new entry(0, "", "/", 1, "/");
 }
 
-function cutText(text, l) {
-	if (text.length > l) {
-		return text.substring(0, l - 8) + "..." + text.substring(text.length - 5, text.length);
-	}
-	return text;
-
-}
-
 function clearEntries() {
 	entries = [];
 }

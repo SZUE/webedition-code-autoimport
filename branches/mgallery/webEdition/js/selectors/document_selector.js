@@ -112,7 +112,7 @@ function selectFile(id) {
 	}
 }
 
-function entry(ID, icon, text, isFolder, path, modDate, contentType, published, title) {
+function entry(ID, icon, text, extension, isFolder, path, modDate, contentType, published, title) {
 	this.ID = ID;
 	this.icon = icon;
 	this.text = text;
@@ -122,10 +122,11 @@ function entry(ID, icon, text, isFolder, path, modDate, contentType, published, 
 	this.contentType = contentType;
 	this.published = published;
 	this.title = title;
+	this.extension = extension;
 }
 
-function addEntry(ID, icon, text, isFolder, path, modDate, contentType, published, title) {
-	entries[entries.length] = new entry(ID, icon, text, isFolder, path, modDate, contentType, published, title);
+function addEntry(ID, icon, text, extension, isFolder, path, modDate, contentType, published, title) {
+	entries[entries.length] = new entry(ID, icon, text, extension, isFolder, path, modDate, contentType, published, title);
 }
 
 function setFilter(ct) {
@@ -139,10 +140,10 @@ function showPreview(id) {
 }
 
 function reloadDir() {
-	top.fscmd.location.replace(top.queryString(queryType.CMD,top.currentDir));
+	top.fscmd.location.replace(top.queryString(queryType.CMD, top.currentDir));
 }
 
 function newFile() {
-	url="we_fs_uploadFile.php?pid="+top.currentDir+"&tab="+top.table+"&ct="+currentType;
-	new jsWindow(url,"we_fsuploadFile",-1,-1,450,660,true,false,true);
+	url = "we_fs_uploadFile.php?pid=" + top.currentDir + "&tab=" + top.table + "&ct=" + currentType;
+	new jsWindow(url, "we_fsuploadFile", -1, -1, 450, 660, true, false, true);
 }

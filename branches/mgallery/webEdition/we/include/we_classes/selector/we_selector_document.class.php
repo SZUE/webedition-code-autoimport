@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_selector_document extends we_selector_directory{
-
 	protected $userCanMakeNewFile = true;
 	protected $open_doc = 0;
 	protected $titles = array();
@@ -45,7 +44,7 @@ class we_selector_document extends we_selector_directory{
 
 	public function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false, $startID = 0){
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter, $startID);
-		$this->fields.=',ModDate,RestrictOwners,Owners,OwnersReadOnly,CreatorID' . ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? ',Published' : '');
+		$this->fields.=',Filename,Extension,ModDate,RestrictOwners,Owners,OwnersReadOnly,CreatorID' . ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? ',Published' : '');
 		$this->canSelectDir = $canSelectDir;
 
 		$this->title = g_l('fileselector', '[docSelector][title]');
@@ -108,10 +107,10 @@ class we_selector_document extends we_selector_directory{
 				break;
 		}
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1 ' .
-				we_users_util::makeOwnersSql() . ')' .
-				$wsQuery . ')' .
-				$filterQuery . //$publ_q.
-				($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
+			we_users_util::makeOwnersSql() . ')' .
+			$wsQuery . ')' .
+			$filterQuery . //$publ_q.
+			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
 		);
 	}
 
@@ -131,18 +130,18 @@ class we_selector_document extends we_selector_directory{
 
 	protected function getExitOpen(){
 		$frameRef = $this->JSTextName && strpos($this->JSTextName, ".document.") > 0 ?
-				substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) :
-				'';
+			substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) :
+			'';
 		return we_html_element::jsElement('
 function exit_open() {
 	if(currentID) {' . ($this->JSIDName ?
-								'top.opener.' . $this->JSIDName . '= currentID ? currentID : "";' : '') .
-						($this->JSTextName ?
-								'top.opener.' . $this->JSTextName . '= currentID ? currentPath : "";
+					'top.opener.' . $this->JSIDName . '= currentID ? currentID : "";' : '') .
+				($this->JSTextName ?
+					'top.opener.' . $this->JSTextName . '= currentID ? currentPath : "";
 		if(!!top.opener.' . $frameRef . 'YAHOO && !!top.opener.' . $frameRef . 'YAHOO.autocoml) {  top.opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(top.opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
 		' : '') .
-						($this->JSCommand ?
-								$this->JSCommand . ';' : '') . '
+				($this->JSCommand ?
+					$this->JSCommand . ';' : '') . '
 	}
 	self.close();
 }');
@@ -207,53 +206,53 @@ function weonclick(e){
 }');
 	}
 
-	protected function printFramesetJSFunctioWriteBody(){
+	protected function printFramesetJSFunctioWriteBody(){//FIXME: extension is display some pixel below, due to overflow:hidden, move to a new col to get rid of this.
 		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
-						var body =
-										'<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">' +
-										(we_editDirID ?
-														'<input type="hidden" name="what" value="<?php echo self::DORENAMEFOLDER; ?>" />' +
-														'<input type="hidden" name="we_editDirID" value="' + top.we_editDirID + '" />' :
-														'<input type="hidden" name="what" value="<?php echo self::CREATEFOLDER; ?>" />'
-														) +
-										'<input type="hidden" name="order" value="' + top.order + '" />' +
-										'<input type="hidden" name="rootDirID" value="<?php echo $this->rootDirID; ?>" />' +
-										'<input type="hidden" name="table" value="<?php echo $this->table; ?>" />' +
-										'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
-										'<table border="0" cellpadding="0" cellspacing="0" width="100%">' +
-										(makeNewFolder ?
-														'<tr>' +
-														'<td align="center"><img src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0"></td>' +
-														'<td><input type="hidden" name="we_FolderText" value="<?php echo g_l('fileselector', '[new_folder_name]'); ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php echo g_l('fileselector', '[new_folder_name]') ?>" class="wetextinput" style="width:100%" /></td>' +
-														'<td class="selector"><?php echo g_l('contentTypes', '[folder]'); ?></td>' +
-														'<td class="selector"><?php echo date(g_l('date', '[format][default]')); ?></td>' +
-														'</tr>' :
-														'');
-						for (i = 0; i < entries.length; i++) {
-							var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true"';
-							var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-							body += '<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;cursor:pointer;"' : "") + ' id="line_' + entries[i].ID + '" style="cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
-											'<td class="selector" align="center"><img src="<?php echo TREE_ICON_DIR ?>' + entries[i].icon + '" width="16" height="18" border="0" /></td>' +
-											'<td class="selector"' + (entries[i].published == 0 && entries[i].isFolder == 0 ? ' style="color: red;"' : "") + ' title="' + entries[i].text + '">' +
-											(we_editDirID == entries[i].ID ?
-															'<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
-															cutText(entries[i].text, 25)
-															) +
-											'</td>' +
-											'<td class="selector" title="' +<?php echo $this->col2js; ?> + '">' + cutText(<?php echo $this->col2js; ?>, 30) + '</td>' +
-											'<td class="selector">' + entries[i].modDate + '</td>' +
-											'</tr><tr><td colspan="4"><?php echo we_html_tools::getPixel(2, 1); ?></td></tr>';
-						}
-						'<tr><?php echo str_replace("'", "\\'", $this->tableSizer); ?></tr></table></form>';
-						d.innerHTML = body;
-						if (makeNewFolder || top.we_editDirID) {
-							top.fsbody.document.we_form.we_FolderText_tmp.focus();
-							top.fsbody.document.we_form.we_FolderText_tmp.select();
-						}
-					}
-					//-->
+				var body =
+								'<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">' +
+								(we_editDirID ?
+												'<input type="hidden" name="what" value="<?php echo self::DORENAMEFOLDER; ?>" />' +
+												'<input type="hidden" name="we_editDirID" value="' + top.we_editDirID + '" />' :
+												'<input type="hidden" name="what" value="<?php echo self::CREATEFOLDER; ?>" />'
+												) +
+								'<input type="hidden" name="order" value="' + top.order + '" />' +
+								'<input type="hidden" name="rootDirID" value="<?php echo $this->rootDirID; ?>" />' +
+								'<input type="hidden" name="table" value="<?php echo $this->table; ?>" />' +
+								'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
+								'<table class="selector">' +
+								(makeNewFolder ?
+												'<tr>' +
+												'<td class="treeIcon"><img class="treeIcon" src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>"></td>' +
+												'<td class="filename"><input type="hidden" name="we_FolderText" value="<?php echo g_l('fileselector', '[new_folder_name]'); ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php echo g_l('fileselector', '[new_folder_name]') ?>" class="wetextinput" style="width:100%" /></td>' +
+												'<td class="selector title"><?php echo g_l('contentTypes', '[folder]'); ?></td>' +
+												'<td class="selector moddate"><?php echo date(g_l('date', '[format][default]')); ?></td>' +
+												'</tr>' :
+												'');
+				for (i = 0; i < entries.length; i++) {
+					var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true"';
+					var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+					body += '<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;cursor:pointer;"' : "") + ' id="line_' + entries[i].ID + '" style="cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
+									'<td class="selector treeIcon" align="center"><img class="treeIcon" src="<?php echo TREE_ICON_DIR ?>' + entries[i].icon + '" /></td>' +
+									'<td class="selector filename"' + (entries[i].published == 0 && entries[i].isFolder == 0 ? ' style="color: red;"' : "") + ' title="' + entries[i].text + '">' +
+									(we_editDirID == entries[i].ID ?
+													'<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
+													'<div class="cutText">' + entries[i].text + '</div><div class="extension">' + entries[i].extension + '</div>'
+													) +
+									'</td>' +
+									'<td class="selector title" title="' +<?php echo $this->col2js; ?> + '"><div class="cutText">' + <?php echo $this->col2js; ?> + '</div></td>' +
+									'<td class="selector moddate">' + entries[i].modDate + '</td>' +
+									'</tr>';
+				}
+				'</table></form>';
+				d.innerHTML = body;
+				if (makeNewFolder || top.we_editDirID) {
+					top.fsbody.document.we_form.we_FolderText_tmp.focus();
+					top.fsbody.document.we_form.we_FolderText_tmp.select();
+				}
+			}
+			//-->
 		</script>
 		<?php
 		return ob_get_clean();
@@ -266,9 +265,9 @@ function queryString(what,id,o,we_editDirID,filter){
 	if(!we_editDirID) we_editDirID="";
 	if(!filter) filter="' . $this->filter . '";
 	return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&rootDirID=' .
-						$this->rootDirID . (isset($this->open_doc) ?
-								"&open_doc=" . $this->open_doc : '') .
-						'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "")+(filter ? ("&filter="+filter) : "");
+				$this->rootDirID . (isset($this->open_doc) ?
+					"&open_doc=" . $this->open_doc : '') .
+				'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "")+(filter ? ("&filter="+filter) : "");
 }');
 	}
 
@@ -279,7 +278,7 @@ function queryString(what,id,o,we_editDirID,filter){
 				$title = strip_tags(strtr((isset($this->titles[$this->f('ID')]) ? $this->titles[$this->f('ID')] : '&nbsp;'), array('\\' => '\\\\', '"' => '\"', "\n" => ' ',)));
 				$title = $title === '&nbsp;' ? '-' : oldHtmlspecialchars($title);
 				$published = ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? $this->f("Published") : 1);
-				$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . addcslashes($title, '"') . '");';
+				$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Filename"), '"') . '","' . addcslashes($this->f("Extension"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . addcslashes($title, '"') . '");';
 			}
 		}
 		return we_html_element::jsElement($ret);
@@ -293,7 +292,7 @@ function queryString(what,id,o,we_editDirID,filter){
 			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), (isset($this->titles[$this->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->f("ID")]) : '-')));
 
 			$published = $this->table == FILE_TABLE ? $this->f("Published") : 1;
-			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . $title . '");';
+			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Filename") . '","' . $this->f("Extension") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . $title . '");';
 		}
 
 		switch($this->filter){
@@ -317,7 +316,6 @@ function queryString(what,id,o,we_editDirID,filter){
 		return '
 <table border="0" cellpadding="0" cellspacing="0">
 	<tr>' . $this->tableHeadlines . '</tr>
-	<tr>' . $this->tableSizer . '</tr>
 </table>';
 	}
 
@@ -332,12 +330,12 @@ function queryString(what,id,o,we_editDirID,filter){
 				return $ret;
 			default:
 				return $ret .
-						'<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
-						we_html_element::jsElement('newFileState=' . $newFileState . ';') .
-						($this->filter && isset($this->ctb[$this->filter]) ?
-								we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
-								we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
-						'</td>';
+					'<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
+					we_html_element::jsElement('newFileState=' . $newFileState . ';') .
+					($this->filter && isset($this->ctb[$this->filter]) ?
+						we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
+						we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
+					'</td>';
 		}
 	}
 
@@ -376,18 +374,18 @@ function enableNewFileBut() {
 				return false;
 			}
 		} elseif(!
-				(
-				permissionhandler::hasPerm("NEW_GRAFIK") ||
-				permissionhandler::hasPerm("NEW_QUICKTIME") ||
-				permissionhandler::hasPerm("NEW_HTML") ||
-				permissionhandler::hasPerm("NEW_JS") ||
-				permissionhandler::hasPerm("NEW_CSS") ||
-				permissionhandler::hasPerm("NEW_TEXT") ||
-				permissionhandler::hasPerm("NEW_HTACCESS") ||
-				permissionhandler::hasPerm("NEW_FLASH") ||
-				permissionhandler::hasPerm("NEW_SONSTIGE") ||
-				permissionhandler::hasPerm('FILE_IMPORT')
-				)
+			(
+			permissionhandler::hasPerm("NEW_GRAFIK") ||
+			permissionhandler::hasPerm("NEW_QUICKTIME") ||
+			permissionhandler::hasPerm("NEW_HTML") ||
+			permissionhandler::hasPerm("NEW_JS") ||
+			permissionhandler::hasPerm("NEW_CSS") ||
+			permissionhandler::hasPerm("NEW_TEXT") ||
+			permissionhandler::hasPerm("NEW_HTACCESS") ||
+			permissionhandler::hasPerm("NEW_FLASH") ||
+			permissionhandler::hasPerm("NEW_SONSTIGE") ||
+			permissionhandler::hasPerm('FILE_IMPORT')
+			)
 		){
 			return false;
 		}
@@ -402,8 +400,8 @@ function enableNewFileBut() {
 	function printSetDirHTML(){
 		echo we_html_element::jsElement('
 top.clearEntries();' .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() . '
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() . '
 top.fsheader.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
 top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";');
@@ -465,15 +463,15 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 	protected function getFrameset(){
 		$is_object = defined('OBJECT_TABLE') && $this->table === OBJECT_TABLE;
 		return STYLESHEET .
-				we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-				'<body class="selector">' .
-				we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false, $is_object ? 'object' : '') .
-				we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview'.($is_object ? ' object' : '')) .
-				we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false,($is_object ? 'object' : '')) .
-				we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path' . ($this->filter ? '' : ' filter')) .
-				we_html_element::htmlIFrame('fspath', HTML_DIR . 'gray2.html', '', '', '', false) .
-				we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
-				'</body>
+			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+			'<body class="selector">' .
+			we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false, $is_object ? 'object' : '') .
+			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview' . ($is_object ? ' object' : '')) .
+			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false, ($is_object ? 'object' : '')) .
+			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path' . ($this->filter ? '' : ' filter')) .
+			we_html_element::htmlIFrame('fspath', HTML_DIR . 'gray2.html', '', '', '', false) .
+			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
+			'</body>
 </html>';
 	}
 
@@ -485,9 +483,9 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db);
 		$path = $result ? $result['Path'] : '';
 		$out = we_html_tools::getHtmlTop() .
-				STYLESHEET .
-				we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .
-				we_html_element::jsElement('
+			STYLESHEET .
+			we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .
+			we_html_element::jsElement('
 	function setInfoSize() {
 		infoSize = document.body.clientHeight;
 		if(infoElem=document.getElementById("info")) {
@@ -581,11 +579,11 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 				} else {
 					$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 					$_thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
-								'id' => $this->id,
-								'size' => 150,
-								'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']),
-								'extension' => $result['Extension'],
-								'size2' => 200));
+							'id' => $this->id,
+							'size' => 150,
+							'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']),
+							'extension' => $result['Extension'],
+							'size2' => 200));
 					$_imagepreview = "<a href='" . $result['Path'] . "' target='_blank' align='center'><img src='" . $_thumbpath . "' border='0' id='previewpic'></a>";
 				}
 			}
@@ -601,12 +599,12 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 							"caption" => g_l('fileselector', '[name]'),
 							"content" => (
 							$showPreview ?
-									"<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='" . $result['Path'] . "' target='_blank' style='color:black'><img src='" . TREE_ICON_DIR . "browser.gif' border='0' vspace='0' hspace='0'></a></div>" :
-									""
+								"<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='" . $result['Path'] . "' target='_blank' style='color:black'><img src='" . TREE_ICON_DIR . "browser.gif' border='0' vspace='0' hspace='0'></a></div>" :
+								""
 							) . "<div style='margin-right:14px'>" .
 							($showPreview ?
-									"<a href='" . $result['Path'] . "' target='_blank' style='color:black'>" . $result['Text'] . "</a>" :
-									$result['Text']
+								"<a href='" . $result['Path'] . "' target='_blank' style='color:black'>" . $result['Text'] . "</a>" :
+								$result['Text']
 							) . "</div>"
 						),
 						array(

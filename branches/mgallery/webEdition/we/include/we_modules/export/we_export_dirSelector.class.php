@@ -139,7 +139,7 @@ top.unselectAllFiles();
 										'<input type="hidden" name="rootDirID" value="<?php echo $this->rootDirID; ?>" />' +
 										'<input type="hidden" name="table" value="<?php echo $this->table; ?>" />' +
 										'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
-										'<table border="0" cellpadding="0" cellspacing="0" width="100%">' +
+										'<table class="selector">' +
 										(makeNewFolder ?
 														'<tr style="background-color:#DFE9F5;">' +
 														'<td align="center"><img src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0" /></td>' +
@@ -155,15 +155,11 @@ top.unselectAllFiles();
 											'</td>' +
 											(we_editDirID == entries[i].ID ?
 															'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
-															'<td class="selector" style="" >' + cutText(entries[i].text, 24)
+															'<td class="selector filename" style="" ><div class="cutText">' + entries[i].text+"</div>"
 															) +
-											'</td>\n\
-				</tr><tr><td colspan="3"><?php echo we_html_tools::getPixel(2, 1); ?></td></tr>';
+											'</td></tr><tr><td colspan="3"><?php echo we_html_tools::getPixel(2, 1); ?></td></tr>';
 						}
-						body += '<tr><td width="25"><?php echo we_html_tools::getPixel(25, 2) ?></td>' +
-										'<td><?php echo we_html_tools::getPixel(200, 2) ?></td>' +
-										'</tr>' +
-										'</table></form>';
+						body += '</table></form>';
 						d.innerHTML = body;
 
 						if (makeNewFolder || top.we_editDirID) {

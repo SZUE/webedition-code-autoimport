@@ -39,7 +39,9 @@ var g_l={
 <body class="selectorFooter" onunload="doUnload();">
 	<form name="we_form" target="fscmd">
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
-			<tr><td colspan="5"><img src="<?php echo IMAGE_DIR ?>umr_h_small.gif" width="100%" height="2" border="0"></td></tr>
+			<tr><td colspan="5"><img src="<?php echo IMAGE_DIR;
+			//FIXME: 6.5 remove file umr_h_small.gif
+			?>umr_h_small.gif" width="100%" height="2" border="0"></td></tr>
 			<tr><td colspan="5"><?php echo we_html_tools::getPixel(5, 5); ?></td></tr>
 			<?php
 			if(we_base_request::_(we_base_request::BOOL, "ret")){
