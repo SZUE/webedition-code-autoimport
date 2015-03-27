@@ -213,7 +213,7 @@ abstract class we_users_util{
 
 	public static function getAllowedClasses(we_database_base $db = null){
 		if(!defined('OBJECT_FILES_TABLE')){
-			return '';
+			return array();
 		}
 		$db = ($db ? : new DB_WE());
 		$out = array();
