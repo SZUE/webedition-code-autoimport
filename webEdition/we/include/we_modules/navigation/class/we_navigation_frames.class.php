@@ -278,7 +278,7 @@ function setTab(tab) {
 		$_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('navigation', '[order]') . ':');
 		if($this->Model->ID){
 			$_table->setColContent(0, 1, //we_html_tools::htmlTextInput('Ordn', '', ($this->Model->Ordn + 1), '', 'disabled="true" readonly style="width: 35px"') .
-				we_html_element::htmlHidden(array('name' => 'Ordn', 'value' => ($this->Model->Ordn + 1))) .
+				we_html_element::htmlHidden(array('name' => 'Ordn', 'value' => $this->Model->Ordn)) .
 				we_html_tools::htmlSelect('Position', $this->View->getEditNaviPosition(), 1, $this->Model->Ordn, false, array('onchange' => $this->topFrame . '.we_cmd(\'move_abs\',this.value);'))
 			);
 
