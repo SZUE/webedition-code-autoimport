@@ -292,7 +292,7 @@ function we_tag_path_hasIndex($path, $indexArray){
 }
 
 function cutSimpleText($text, $len){
-	if($len <= strlen($text)){
+	if($len >= strlen($text)){
 		return $text;
 	}
 	$text = substr($text, 0, $len);
@@ -308,11 +308,12 @@ function cutSimpleText($text, $len){
 }
 
 function cutText($text, $max = 0, $striphtml = false){
+	$text = $striphtml ? strip_tags($text) : $text;
 	if((!$max) || (strlen($text) <= $max)){
 		return $text;
 	}
 	//no tags, simple cut off
-	if(strstr($text, '<') == FALSE){
+	if($striphtml || strstr($text, '<') === FALSE){
 		return cutSimpleText($text, $max) . ($striphtml ? ' ...' : ' &hellip;');
 	}
 
