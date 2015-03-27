@@ -81,3 +81,23 @@ function hideDictSelector() {
 	document.getElementById("selector").style.height = "320px";
 	setVisible("addButt", true);
 }
+
+function checkApplet() {
+	if (appletActiv && document.spellchecker.uploadFinished && document.spellchecker.uploadFinished()) {
+		if (document.spellchecker.packingFinished()) {
+			top.we_showMessage(g_l.dict_saved, WE_MESSAGE_NOTICE, window);
+		}
+		hideDictSelector();
+		appletActiv = false;
+		loadTable();
+		return;
+	}
+
+	setTimeout(checkApplet, 2000);
+}
+
+function deleteDict(name) {
+	if (confirm(sprintf(g_l.ask_dict_del, name))) {
+		hiddenCmd.dispatch("deleteDict", name);
+	}
+}

@@ -172,6 +172,10 @@ echo we_html_element::jsScript(JS_DIR . 'utils/lib.js');
 <script type="text/javascript"><!--
 	var activ_tab = 1;
 	var appletActiv = false;
+	var g_l = {
+		"dict_saved": "<?php echo we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[dict_saved]')); ?>",
+		"ask_dict_del": "<?php echo g_l('modules_spellchecker', '[ask_dict_del]'); ?>"
+	};
 
 	function setAppletCode() {
 		if (!appletActiv) {
@@ -197,52 +201,25 @@ echo we_html_element::jsScript(JS_DIR . 'utils/lib.js');
 		document.getElementById('appletPanel2').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code2), '\''); ?>';
 		setTimeout("selectDict(\"" + dict + "\")", 1000);
 	}
-
-
-	function checkApplet() {
-
-		if (appletActiv) {
-			if (document.spellchecker.uploadFinished) {
-				if (document.spellchecker.uploadFinished()) {
-					if (document.spellchecker.packingFinished()) {
-<?php echo we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[dict_saved]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
-					}
-					hideDictSelector();
-					appletActiv = false;
-					loadTable();
-					return;
-				}
-			}
-
-		}
-
-		setTimeout(checkApplet, 2000);
-	}
-
-	function deleteDict(name) {
-		if (confirm(sprintf("<?php echo g_l('modules_spellchecker', '[ask_dict_del]'); ?>", name))) {
-			hiddenCmd.dispatch("deleteDict", name);
-		}
-	}
-
 //-->
 </script>
-<?php echo $js .
+<?php
+echo $js .
  we_html_element::jsScript(JS_DIR . 'we_modules/spellchecker/weSpellcheckerAdmin.js');
 ?>
 </head>
 
 <body onload="loadTable()" class="weDialogBody">
 
-<?php echo $tabsBody; ?>
+	<?php echo $tabsBody; ?>
 
 	<div id="content" style="margin: 10px; width: 450px;">
 		<div id="tab1" style="display:block;">
-<?php echo $_tab_1 ?>
+			<?php echo $_tab_1 ?>
 
 		</div>
 		<div id="tab2" style="display:none;">
-<?php echo $_tab_2 ?>
+			<?php echo $_tab_2 ?>
 		</div>
 
 	</div>

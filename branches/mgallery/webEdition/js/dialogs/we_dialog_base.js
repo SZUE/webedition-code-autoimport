@@ -56,3 +56,29 @@ function weSaveToGlossaryFn() {
 	document.we_form.elements.weSaveToGlossary.value = 1;
 	document.we_form.submit();
 }
+
+function doKeyDown(e) {
+	var key = isGecko ? e.keyCode : event.keyCode;
+
+	switch (key) {
+		case 27:
+			top.close();
+			break;
+		case 13:
+			if (onEnterKey) {
+				if (!textareaFocus) {
+					weDoOk();
+				}
+			}
+			break;
+	}
+}
+
+
+function addKeyListener() {
+	if (document.addEventListener) {
+		document.addEventListener("keyup", doKeyDown, true);
+	} else {
+		document.onkeydown = doKeyDown;
+	}
+}

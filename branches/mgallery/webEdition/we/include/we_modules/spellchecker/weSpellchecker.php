@@ -58,177 +58,16 @@ if($editname !== false){
 	$_mode = 'tinyMce';
 }
 ?>
-
-<style type="text/css">
-	#mainPanel {
-		width: 100%;
-		height: 380px;
-	}
-
-	#previewPanel {
-		width: 450px;
-		height: 100px;
-		margin-bottom: 10px;
-	}
-
-	#spellcheckPanel{
-		width: 460px;
-		height: 150px;
-		padding: 5px;
-		margin-bottom: 5px;
-	}
-
-	#preview {
-		overflow: auto !important;
-		border: 1px solid #AAAAAA;
-		background: #EEEEEE;
-		width: 450px;
-		height: 120px;
-		margin-bottom: 5px;
-	}
-
-	#searchPanel {
-		float: left;
-		width: 340px;
-		height: 150px;
-	}
-
-	#search {
-		float: left;
-		width: 330px;
-	}
-
-	#suggestion {
-		width: 330px;
-		height: 100px;
-		border: 1px solid grey;
-		z-index: 3;
-	}
-
-	#buttonPanel {
-		float:right;
-	}
-
-	#appletPanel {
-		display: block;
-	}
-
-	#dictPanel {
-		width: 464px;
-		height: 40px;
-		padding: 3px;
-	}
-
-	#dictSelect {
-		width: 350px;
-	}
-
-	#spinner {
-		width: 500px;
-		height: 450px;
-		z-index: 1;
-		position: absolute;
-		left:0px;
-		top:0px;
-		background: white;
-		filter: alpha(opacity=80);
-		opacity: .8;
-	}
-
-	.highlight {
-		color:blue;
-		background-color:yellow;
-	}
-
-</style>
-
 <script type="text/javascript"><!--
 	var mode = "<?php echo $_mode; ?>";
-	var editname="<?php echo $editname;?>";
-	var orginal;
-	var editPanel;
-	var to;
-	var found;
-	var editorObj;
-	var rangeSelection = false;
-	var currentWord = "";
-	var retry = 0;
+	var editname = "<?php echo $editname; ?>";
+	var g_l = {
+		"checking": "<?php echo g_l('modules_spellchecker', '[checking]'); ?>",
+		"no_java": "<?php echo we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[no_java]')); ?>",
+		"finished": "<?php echo we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[finished]')); ?>"
+
+	};
 	var retryjava = 0;
-
-	function spellcheck() {
-		retry = 0;
-		if (document.spellchecker.isReady()) {
-			document.getElementById("statusText").innerHTML = "<?php echo g_l('modules_spellchecker', '[checking]'); ?>";
-			var text = getTextOnly(orginal);
-			document.spellchecker.check(text);
-			setTimeout(findNext, 2000);
-		} else {
-			if (retryjava < 5) {
-				setTimeout(spellcheck, 1000);
-				retryjava++;
-			} else {
-<?php echo we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[no_java]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-				self.close();
-			}
-		}
-	}
-
-
-	function findNext() {
-		if (document.spellchecker.isReady()) {
-			if (document.spellchecker.isReady()) {
-				if (document.spellchecker.nextSuggestion()) {
-
-					fadeout("spinner", 80, 10, 10);
-
-					document.we_form.search.value = document.spellchecker.getMisspelledWord();
-					currentWord = document.we_form.search.value;
-					markWord(document.we_form.search.value);
-					found = document.we_form.search.value;
-					var suggs = document.spellchecker.getSuggestions();
-					suggs = suggs + "";
-					var suggA = suggs.split("|");
-					document.we_form.suggestion.options.length = 0;
-					if (suggA.length > 1) {
-						for (var i = 0; i < suggA.length; i++) {
-							document.we_form.suggestion.options[document.we_form.suggestion.options.length] = new Option(suggA[i], suggA[i]);
-							if (i === 0) {
-								document.we_form.suggestion.options.selectedIndex = 0;
-								document.we_form.search.value = suggA[i];
-							}
-						}
-					}
-					enableButtons();
-				} else {
-					disableButtons();
-
-					if (document.spellchecker.isWorking()) {
-						clearTimeout(to);
-						to = setTimeout(findNext, 500);
-					} else {
-						removeHighlight();
-						if (document.getElementById("spinner").style.display != "none") {
-							fadeout("spinner", 80, 10, 10);
-						}
-						weButton.enable("check");
-<?php echo we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE); ?>
-					}
-				}
-			} else {
-				setTimeout(spellcheck, 500);
-			}
-		}
-	}
-
-	function add() {
-		if (document.spellchecker.isReady) {
-			document.spellchecker.addWord(currentWord);
-			hiddenCmd.dispatch("addWord", currentWord);
-			findNext();
-		} else {
-<?php echo we_message_reporting::getShowMessageCall("A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR); ?>
-		}
-	}
 
 	function setAppletCode() {
 		retryjava = 0;
@@ -239,10 +78,10 @@ if($editname !== false){
 //-->
 </script>
 <?php
-echo we_html_element::jsScript(JS_DIR . 'we_modules/spellchecker/weSpellchecker.js');
+echo we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
+ we_html_element::jsScript(JS_DIR . 'we_modules/spellchecker/weSpellchecker.js');
 ?>
 </head>
-
 <body class="weDialogBody" onload="setDialog()"><?php
 	$_preview = '<div id="preview" class="defaultfont"></div>';
 

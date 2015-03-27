@@ -24,6 +24,15 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
+var orginal;
+var editPanel;
+var to;
+var found;
+var editorObj;
+var rangeSelection = false;
+var currentWord = "";
+var retry = 0;
+
 
 function customAdapter() {
 	this.innerHTML;
@@ -199,4 +208,74 @@ function disableButtons() {
 	weButton.disable("change");
 	weButton.disable("add");
 	weButton.disable("check");
+}
+
+function spellcheck() {
+	retry = 0;
+	if (document.spellchecker.isReady()) {
+		document.getElementById("statusText").innerHTML = g_l.checking;
+		var text = getTextOnly(orginal);
+		document.spellchecker.check(text);
+		setTimeout(findNext, 2000);
+	} else if (retryjava < 5) {
+		setTimeout(spellcheck, 1000);
+		retryjava++;
+	} else {
+		top.we_showMessage(g_l.no_java, WE_MESSAGE_ERROR, window);
+		self.close();
+	}
+}
+
+function findNext() {
+	if (document.spellchecker.isReady()) {
+		if (document.spellchecker.isReady()) {
+			if (document.spellchecker.nextSuggestion()) {
+				fadeout("spinner", 80, 10, 10);
+				document.we_form.search.value = document.spellchecker.getMisspelledWord();
+				currentWord = document.we_form.search.value;
+				markWord(document.we_form.search.value);
+				found = document.we_form.search.value;
+				var suggs = document.spellchecker.getSuggestions();
+				suggs = suggs + "";
+				var suggA = suggs.split("|");
+				document.we_form.suggestion.options.length = 0;
+				if (suggA.length > 1) {
+					for (var i = 0; i < suggA.length; i++) {
+						document.we_form.suggestion.options[document.we_form.suggestion.options.length] = new Option(suggA[i], suggA[i]);
+						if (i === 0) {
+							document.we_form.suggestion.options.selectedIndex = 0;
+							document.we_form.search.value = suggA[i];
+						}
+					}
+				}
+				enableButtons();
+			} else {
+				disableButtons();
+				if (document.spellchecker.isWorking()) {
+					clearTimeout(to);
+					to = setTimeout(findNext, 500);
+				} else {
+					removeHighlight();
+					if (document.getElementById("spinner").style.display != "none") {
+						fadeout("spinner", 80, 10, 10);
+					}
+					weButton.enable("check");
+					top.we_showMessage(g_l.finished, WE_MESSAGE_NOTICE, window);
+				}
+			}
+		} else {
+			setTimeout(spellcheck, 500);
+		}
+	}
+}
+
+
+function add() {
+	if (document.spellchecker.isReady) {
+		document.spellchecker.addWord(currentWord);
+		hiddenCmd.dispatch("addWord", currentWord);
+		findNext();
+	} else {
+		top.we_showMessage("A fatal error occured", WE_MESSAGE_ERROR, window);
+	}
 }

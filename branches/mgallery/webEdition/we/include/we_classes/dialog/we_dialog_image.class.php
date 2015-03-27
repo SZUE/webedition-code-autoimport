@@ -436,39 +436,18 @@ if(top.document.we_form.tinyMCEInitRatioW !== undefined) top.document.we_form.ti
 
 	function getJs(){
 		$yuiSuggest = & weSuggest::getInstance();
+		$css = isset($this->args["cssClasses"]) && $this->args["cssClasses"] ? explode(',', $this->args["cssClasses"]) : array();
 		return parent::getJs() . we_html_element::jsElement('
-function we_cmd(){
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
-		for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	switch (arguments[0]){
-		case "openDocselector":
-			case "openImgselector":
-			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
-			break;
-		case "browse_server":
-			new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
-			break;
+var size = {
+	"docSelect": {
+	"width":' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',
+					"height":' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . '
 	}
-}
-
-				function showclasss(name, val, onCh) {' .
-				(isset($this->args["cssClasses"]) && $this->args["cssClasses"] ?
-					'					var classCSV = "' . $this->args["cssClasses"] . '";
-									classNames = classCSV.split(/,/);' : ('classNames = top.opener.weclassNames_tinyMce;')) . '
-					document.writeln(\'<select class="defaultfont" style="width:200px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onchange="\'+onCh+\'"\' : \'\')+\'>\');
-					document.writeln(\'<option value="">' . g_l('wysiwyg', '[none]') . '\');
-					if(classNames !== undefined){
-						for (var i = 0; i < classNames.length; i++) {
-							var foo = classNames[i].substring(0,1) == "." ?
-								classNames[i].substring(1,classNames[i].length) :
-								classNames[i];
-							document.writeln(\'<option value="\'+foo+\'"\'+((val==foo) ? \' selected\' : \'\')+\'>.\'+foo);
-						}
-					}
-					document.writeln(\'</select>\');
-				}
-
+};
+var classNames=' . ($css ? '["' . implode('","', $css) . '"]' : 'top.opener.weclassNames_tinyMce') . ' ;
+var g_l={
+	"wysiwyg_none":"' . g_l('wysiwyg', '[none]') . '"
+};
 var ratioh = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["width"] / $this->args["height"]) : 0) . ';
 var ratiow = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["height"] / $this->args["width"]) : 0) . ';
 

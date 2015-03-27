@@ -65,3 +65,37 @@ function checkWidthHeight(field) {
 function fsubmit(e) {
 	return false;
 }
+
+function we_cmd() {
+	var args = "";
+	var url = "/webEdition/we_cmd.php?";
+	for (var i = 0; i < arguments.length; i++) {
+		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+		if (i < (arguments.length - 1)) {
+			url += "&";
+		}
+	}
+	switch (arguments[0]) {
+		case "openDocselector":
+		case "openImgselector":
+			new jsWindow(url, "we_fileselector", -1, -1, docSelect.width, docSelect.height, true, true, true, true);
+			break;
+		case "browse_server":
+			new jsWindow(url, "browse_server", -1, -1, 840, 400, true, false, true);
+			break;
+	}
+}
+
+function showclasss(name, val, onCh) {
+	document.writeln('<select class="defaultfont" style="width:200px" name="' + name + '" id="' + name + '" size="1"' + (onCh ? ' onchange="' + onCh + '"' : '') + '>');
+	document.writeln('<option value="">' + g_l.wysiwyg_none + '</option>');
+	if (classNames !== undefined) {
+		for (var i = 0; i < classNames.length; i++) {
+			var foo = classNames[i].substring(0, 1) === "." ?
+							classNames[i].substring(1, classNames[i].length) :
+							classNames[i];
+			document.writeln('<option value="' + foo + '"' + ((val == foo) ? ' selected' : '') + '>.' + foo + '</option>');
+		}
+	}
+	document.writeln('</select>');
+}

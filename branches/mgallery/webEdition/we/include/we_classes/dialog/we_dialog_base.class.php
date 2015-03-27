@@ -210,7 +210,7 @@ function doKeyDown() {
 
 		//create some empty we_cmds to be filled by JS if needed
 		for($i = 0; $i < 4; $i++){
-			$hiddens .= isset($_REQUEST['we_cmd'][$i]) ? '' : "<input type=\"hidden\" name=\"we_cmd[$i]\" value=\"\" />";
+			$hiddens .= isset($_REQUEST['we_cmd'][$i]) ? '' : we_html_element::htmlHidden("we_cmd[$i]", '');
 		}
 
 		$target = (!$this->JsOnly ? ' target="we_' . $this->ClassName . '_cmd_frame"' : '');
@@ -257,27 +257,7 @@ function doKeyDown() {
 		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
 var textareaFocus = false;
-if(document.addEventListener){
-	document.addEventListener("keyup",doKeyDown,true);
-	}else{
-	document.onkeydown = doKeyDown;
-	}
-
-function doKeyDown(e) {
-	var key = isGecko?e.keyCode:event.keyCode;
-
-	switch (key) {
-		case 27:
-			top.close();
-			break;' .
-				($this->pageNr == $this->numPages && $this->JsOnly ? '
-				case 13:
-					if (!textareaFocus) {
-						weDoOk();
-					}
-					break;' : '') .
-				'	}
-}
+var onEnterKey=' . ($this->pageNr == $this->numPages && $this->JsOnly) . ';
 
 function weDoOk() {' .
 				($this->pageNr == $this->numPages && $this->JsOnly ? '
@@ -285,10 +265,8 @@ function weDoOk() {' .
 				' . $this->getOkJs() . '
 			}' : '') .
 				'
-}
-
-self.focus();') .
-			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js');
+}') .
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', array('onload' => 'addKeyListener();self.focus();'));
 	}
 
 	function formColor($size, $name, $value, $width = ""){
