@@ -129,7 +129,8 @@ if(($_userID && $_userID != $_SESSION['user']['ID']) || (we_base_request::_(we_b
 		we_html_tools::setHttpCode(404);
 
 		if(ERROR_DOCUMENT_NO_OBJECTFILE && ($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE))){
-			header('Location: ' . $path);
+			unset($_REQUEST);
+			include($_SERVER['DOCUMENT_ROOT'] . $path);
 		} else {
 			echo 'Sorry, we are unable to locate your requested Page.';
 		}
@@ -204,7 +205,8 @@ if(!$tid){
 	we_html_tools::setHttpCode(404);
 
 	if(ERROR_DOCUMENT_NO_OBJECTFILE && ($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE))){
-		header('Location: ' . $path);
+		unset($_REQUEST);
+		include($_SERVER['DOCUMENT_ROOT'] . $path);
 	} else {
 		echo 'Sorry, we are unable to locate your requested Page.';
 	}
