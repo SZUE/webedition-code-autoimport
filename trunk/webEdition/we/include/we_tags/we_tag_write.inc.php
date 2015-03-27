@@ -70,7 +70,12 @@ function we_tag_write($attribs){
 				break;
 			case 'object':
 				$parentid = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
-				$ok = we_objectFile::initObject(intval($classid), $name, $categories, intval($parentid), true);
+				if(f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid))){
+					$ok = we_objectFile::initObject(intval($classid), $name, $categories, intval($parentid), true);
+				} else {
+					t_e('Table ' . intval($classid) . ' does not exist!');
+					return;
+				}
 				break;
 		}
 

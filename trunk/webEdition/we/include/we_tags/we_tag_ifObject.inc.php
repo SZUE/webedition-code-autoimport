@@ -27,7 +27,7 @@ function we_tag_ifObject(){
 		case 'we_object_listview':
 			return true;
 		case 'we_listview_search':
-			return $GLOBALS['lv']->f('OID');
+			return $GLOBALS['lv']->f('ClassID');
 		default:
 			return false;
 	}
