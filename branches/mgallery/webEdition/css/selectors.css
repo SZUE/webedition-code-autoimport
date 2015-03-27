@@ -191,3 +191,20 @@ td.moddate{
 	display:none;
 }
 
+table.headerLines{
+	border-top: 1px solid #808080;
+	border-bottom: 1px solid #808080;
+	border-spacing: 0px;
+}
+
+table.headerLines td,
+table.footer td{
+	padding:0px;
+}
+
+table.footer{
+	border-top: 1px solid #808080;
+	border-spacing: 0px;
+	padding-top:5px;
+	width:100%;
+}

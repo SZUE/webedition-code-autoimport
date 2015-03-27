@@ -28,7 +28,8 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_header.js');
+ we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_header.js') .
+ we_html_element::cssLink(CSS_DIR . 'selectors.css');
 ?>
 </head>
 <body class="selectorHeader" onload="setLookin();
@@ -67,12 +68,7 @@ echo we_html_tools::getHtmlTop() .
 				<td width="10"><?php echo we_html_tools::getPixel(10, 29); ?></td>
 			</tr>
 		</table>
-		<table border="0" cellpadding="0" cellspacing="0" width="100%">
-			<tr>
-				<td><img src="<?php echo IMAGE_DIR ?>umr_h_small.gif" width="100%" height="2" border="0"></td>
-			</tr>
-		</table>
-		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		<table class="headerLines" style="width:100%">
 			<tr>
 				<td><?php echo we_html_tools::getPixel(25, 20) ?></td>
 				<td class="selector"><b><a href="#" onclick="reorder('name');"><?php echo g_l('fileselector', '[filename]') ?></a></b></td>
@@ -88,13 +84,6 @@ echo we_html_tools::getHtmlTop() .
 				<td><?php echo we_html_tools::getPixel(15, 1) ?></td>
 			</tr>
 		</table>
-
-		<table border="0" cellpadding="0" cellspacing="0" width="100%">
-			<tr>
-				<td><img src="<?php echo IMAGE_DIR ?>umr_h_small.gif" width="100%" height="2" border="0"></td>
-			</tr>
-		</table>
-
 	</form>
 </body>
 

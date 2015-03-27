@@ -312,7 +312,7 @@ top.selectFile(top.currentID);') .
 
 	function printHeaderHeadlines(){
 		return '
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<table class="headerLines" width="100%">
 	<tr>
 		<td width="35%" class="selector" style="padding-left:10px;"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', '[catname]') . '</a></b></td>
 		<td width="65%" class="selector" style="padding-left:10px;"><b>' . g_l('button', '[properties][value]') . '</b></td>
@@ -512,13 +512,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		$cancelbut = we_html_button::create_button('close', 'javascript:top.exit_close();');
 		$buttons = ($okBut ? we_html_button::position_yes_no_cancel($okBut, null, $cancelbut) : $cancelbut);
 		return '
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr>
-		<td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td>
-	</tr>
-	<tr>
-		<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
-	</tr>
+<table class="footer">
 	<tr>
 		<td></td>
 		<td class="defaultfont"><b>' . g_l('fileselector', '[catname]') . '</b></td>

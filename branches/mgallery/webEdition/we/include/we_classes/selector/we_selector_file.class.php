@@ -380,80 +380,21 @@ function queryString(what,id,o){
 
 	}
 
-	function printHeaderHTML(){
+	protected function printHeaderHTML(){
 		$this->setDirAndID();
 		echo we_html_tools::getHtmlTop() .
 		STYLESHEET .
 		we_html_element::cssLink(CSS_DIR . 'selectors.css') .
 		we_html_element::jsScript(JS_DIR . 'images.js') .
-		we_html_element::jsElement(
-			$this->printHeaderJSDef() . '
-function disableRootDirButs(){
-	switch_button_state("root_dir", "root_dir_enabled", "disabled");
-	switch_button_state("btn_fs_back", "back_enabled", "disabled", "image");
-	rootDirButsState = 0;
-}
-function enableRootDirButs(){
-	switch_button_state("root_dir", "root_dir_enabled", "enabled");
-	switch_button_state("btn_fs_back", "back_enabled", "enabled", "image");
-	rootDirButsState = 1;
-}
-function disableNewFolderBut(){
-	switch_button_state("btn_new_dir", "new_directory_enabled", "disabled", "image");
-	makefolderState = 0;
-}
-function enableNewFolderBut(){
-	switch_button_state("btn_new_dir", "new_directory_enabled", "enabled", "image");
-	makefolderState = 1;
-}
-function disableNewBut(){
-	switch_button_state("btn_new_dir", "new_directory_enabled", "disabled", "image");
-	switch_button_state("btn_add_cat", "newCategorie_enabled", "disabled", "image");
-}
-function disableDelBut(){
-	switch_button_state("btn_function_trash", "btn_function_trash_enabled", "disabled", "image");
-	changeCatState = 0;
-}
-
-function enableNewBut(){
-if(top.options.userCanEditCat){
-	switch_button_state("btn_new_dir", "new_directory_enabled", "enabled", "image");
-	switch_button_state("btn_add_cat", "newCategorie_enabled", "enabled", "image");
-	}
-}
-function enableDelBut(){
-if(top.options.userCanEditCat){
-	switch_button_state("btn_function_trash", "btn_function_trash_enabled", "enabled", "image");
-	changeCatState = 1;
-	}
-}
-
-function clearOptions(){
-	 var a=document.we_form.elements.lookin;
-	 for(var i=a.options.length-1;i >= 0;i--){
-		a.options[i] = null;
-	 }
-}
-function addOption(txt,id){
-		var a=document.we_form.elements.lookin;
-		a.options[a.options.length]=new Option(txt,id);
-		if(a.options.length>0) a.selectedIndex=a.options.length-1;
-		else a.selectedIndex=0;
-
-}
-function selectIt(){
-		var a=document.we_form.elements.lookin;
-		a.selectedIndex=a.options.length-1;
-}') . '
+		we_html_element::jsElement($this->printHeaderJSDef()).
+			we_html_element::jsScript(JS_DIR . 'selectors/header.js') . '
 </head>
 	<body class="selectorHeader">
 		<form name="we_form" method="post">' .
 		((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ?
-			$this->printHeaderTable() .
-			$this->printHeaderLine() : '') .
+			$this->printHeaderTable(): '') .
 		$this->printHeaderHeadlines() .
-		$this->printHeaderLine() .
-		'		</form>
+		'</form>
 	</body>
 </html>';
 	}
@@ -510,7 +451,7 @@ function selectIt(){
 
 	function printHeaderHeadlines(){
 		return '
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<table class="headerLines" width="100%">
 	<tr>
 		<td>' . we_html_tools::getPixel(25, 14) . '</td>
 		<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', '[filename]') . '</a></b></td>
@@ -519,12 +460,6 @@ function selectIt(){
 		<td width="25">' . we_html_tools::getPixel(25, 1) . '</td>
 		<td>' . we_html_tools::getPixel(200, 1) . '</td>
 	</tr>
-</table>';
-	}
-
-	private function printHeaderLine(){
-		return '<table border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr><td><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td></tr>
 </table>';
 	}
 
@@ -614,13 +549,7 @@ function press_ok_button() {
 		$yes_button = we_html_button::create_button("ok", "javascript:press_ok_button();");
 		$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 		return '
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr>
-		<td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td>
-	</tr>
-	<tr>
-		<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
-	</tr>
+<table class="footer">
 	<tr>
 		<td></td>
 		<td class="defaultfont">

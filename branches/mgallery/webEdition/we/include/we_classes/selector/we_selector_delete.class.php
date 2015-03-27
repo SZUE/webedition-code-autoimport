@@ -139,13 +139,7 @@ top.close();');
 		$buttons = ($okBut ? we_html_button::position_yes_no_cancel($okBut, null, $cancelbut) : $cancelbut);
 
 		return '
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr>
-		<td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td>
-	</tr>
-	<tr>
-		<td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td>
-	</tr>
+<table class="footer">
 	<tr>
 		<td></td>
 		<td class="defaultfont">

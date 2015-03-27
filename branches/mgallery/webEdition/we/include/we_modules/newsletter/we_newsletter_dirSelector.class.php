@@ -183,7 +183,7 @@ top.selectFile(top.currentID);
 
 	function printHeaderHeadlines(){
 		return '
-<table border="0" cellpadding="0" cellspacing="0" width="550">
+<table class="headerLines" width="550">
 	<tr>
 		<td>' . we_html_tools::getPixel(25, 14) . '</td>
 		<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', '[filename]') . '</a></b></td>

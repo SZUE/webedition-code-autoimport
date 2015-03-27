@@ -257,7 +257,7 @@ if(top.makeNewFolder ||  top.we_editDirID){
 
 	function printHeaderHeadlines(){
 		return '
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<table class="headerLines" width="100%">
 	<tr>
 		<td>' . we_html_tools::getPixel(25, 14) . '</td>
 		<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', '[filename]') . '</a></b></td>

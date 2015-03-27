@@ -314,7 +314,7 @@ function queryString(what,id,o,we_editDirID,filter){
 
 	function printHeaderHeadlines(){
 		return '
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="headerLines">
 	<tr>' . $this->tableHeadlines . '</tr>
 </table>';
 	}
@@ -410,9 +410,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 
 	protected function printFooterTable($more = ''){
 		$ret = '
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr><td colspan="5"><img src="' . IMAGE_DIR . 'umr_h_small.gif" width="100%" height="2" border="0" /></td></tr>
-	<tr><td colspan="5">' . we_html_tools::getPixel(5, 5) . '</td></tr>';
+<table class="footer">';
 		if(!$this->filter){
 			$ret.= '
 	<tr>
