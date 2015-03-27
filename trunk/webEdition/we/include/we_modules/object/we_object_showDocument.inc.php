@@ -129,6 +129,7 @@ if(($_userID && $_userID != $_SESSION['user']['ID']) || (we_base_request::_(we_b
 		we_html_tools::setHttpCode(404);
 
 		if(ERROR_DOCUMENT_NO_OBJECTFILE && ($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE))){
+			//if set, we show object again!
 			unset($_REQUEST);
 			include($_SERVER['DOCUMENT_ROOT'] . $path);
 		} else {
@@ -180,6 +181,8 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 				if($_errorDocId){
 					unset($_errorDocId);
 					we_html_tools::setHttpCode(401);
+					//if set, we show object again!
+					unset($_REQUEST);
 					include($_SERVER['DOCUMENT_ROOT'] . $_errorDocPath);
 					unset($_errorDocPath);
 				}
@@ -205,6 +208,7 @@ if(!$tid){
 	we_html_tools::setHttpCode(404);
 
 	if(ERROR_DOCUMENT_NO_OBJECTFILE && ($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE))){
+		//if set, we show object again!
 		unset($_REQUEST);
 		include($_SERVER['DOCUMENT_ROOT'] . $path);
 	} else {
