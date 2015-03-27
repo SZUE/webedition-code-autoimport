@@ -441,16 +441,16 @@ function uniqueCSV($csv, $prePost = false){
 	return makeCSVFromArray($foo, $prePost);
 }
 
-function get_ws($table = FILE_TABLE, $prePostKomma = false){
+function get_ws($table = FILE_TABLE, $prePostKomma = false, $asArray = false){
 	if(isset($_SESSION) && isset($_SESSION['perms'])){
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
-			return '';
+			return $asArray ? array() : '';
 		}
 		if($_SESSION['user']['workSpace'] && isset($_SESSION['user']['workSpace'][$table]) && $_SESSION['user']['workSpace'][$table] != ''){
-			return makeCSVFromArray($_SESSION['user']['workSpace'][$table], $prePostKomma);
+			return $asArray ? $_SESSION['user']['workSpace'][$table] : makeCSVFromArray($_SESSION['user']['workSpace'][$table], $prePostKomma);
 		}
 	}
-	return '';
+	return $asArray ? array() : '';
 }
 
 function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchvalue = 'folder', we_database_base $db = null){
