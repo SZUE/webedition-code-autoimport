@@ -679,7 +679,7 @@ function submitForm() {
 	function getEditNaviPosition(){
 		$this->db->query('SELECT Ordn,Text FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . $this->Model->ParentID . ' ORDER BY Ordn');
 		$values = $this->db->getAllFirst(false);
-		$values[-1] = g_l('navigation','[end]');
+		$values[-1] = g_l('navigation', '[end]');
 		return $values;
 	}
 
@@ -878,12 +878,12 @@ function submitForm() {
 					}
 
 					echo we_html_element::jsElement(
-						$this->editorBodyForm . '.Ordn.value=' . ($this->Model->Ordn + 1) . ';' .
+						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn  . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
 								' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
 								' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
 
-								if(' . $this->editorBodyForm . '.Ordn.value==1){
+								if(' . $this->editorBodyForm . '.Ordn.value==0){
 									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "disabled");
 								} else {
 									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
@@ -900,7 +900,7 @@ function submitForm() {
 						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
 					}
 					echo we_html_element::jsElement(
-						$this->editorBodyForm . '.Ordn.value=' . ($this->Model->Ordn + 1) . ';' .
+						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
 								' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
 								' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
@@ -924,7 +924,7 @@ function submitForm() {
 						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
 					}
 					echo we_html_element::jsElement(
-						$this->editorBodyForm . '.Ordn.value=' . ($this->Model->Ordn + 1) . ';' .
+						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
 									' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
 									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");

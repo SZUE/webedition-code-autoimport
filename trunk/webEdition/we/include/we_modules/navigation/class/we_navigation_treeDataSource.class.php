@@ -32,11 +32,7 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 		$db = new DB_WE();
 		$table = $this->SourceName;
 
-		$items = array();
-
-		$wsQuery = '';
-		$_aWsQuery = array();
-		$parentpaths = array();
+		$items = $_aWsQuery = $parentpaths = array();
 
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
@@ -47,10 +43,9 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 					$path = dirname($path);
 				}
 			}
-			$wsQuery = $_aWsQuery ? '(' . implode(' OR ', $_aWsQuery) . ') AND ' : '';
 		}
 
-		$prevoffset = max(0,$offset - $segment);
+		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$items[] = array(
 				'icon' => 'arrowup.gif',
@@ -68,11 +63,9 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 			);
 		}
 
-		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . " " . $addWhere;
+		$where = ($_aWsQuery ? '(' . implode(' OR ', $_aWsQuery) . ') AND ' : '') . ' ParentID=' . intval($ParentID) . ' ' . $addWhere;
 
-		$db->query(
-			"SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from $table $where ORDER BY Ordn, isNr DESC,Nr,Text " . ($segment ? "LIMIT $offset,$segment;" : ";"));
-		$now = time();
+		$db->query('SELECT ' . $elem . ', abs(text) as Nr, (text REGEXP "^[0-9]") AS isNr FROM ' . $table . ' WHERE ' . $where . ' ORDER BY Ordn, isNr DESC,Nr,Text ' . ($segment ? 'LIMIT ' . $offset . ',' . $segment : ''));
 
 		while($db->next_record()){
 
@@ -90,8 +83,9 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 			$fileds = array();
 
 			foreach($db->Record as $k => $v){
-				if(!is_numeric($k))
+				if(!is_numeric($k)){
 					$fileds[strtolower($k)] = $v;
+				}
 			}
 
 			if($db->f('IsFolder') == 0){
@@ -118,7 +112,7 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 			$items[] = array_merge($fileds, $typ);
 		}
 
-		$total = f('SELECT COUNT(1) as total FROM ' . $table . ' ' . $where, 'total', $db);
+		$total = f('SELECT COUNT(1) as total FROM ' . $table . ' WHERE ' . $where, 'total', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(
