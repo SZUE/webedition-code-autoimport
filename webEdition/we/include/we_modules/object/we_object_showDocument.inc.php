@@ -128,8 +128,7 @@ if(($_userID && $_userID != $_SESSION['user']['ID']) || (we_base_request::_(we_b
 	if(!$oid || !$GLOBALS['we_obj']->Published){
 		we_html_tools::setHttpCode(404);
 
-		$path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE);
-		if($path){
+		if(ERROR_DOCUMENT_NO_OBJECTFILE && ($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE))){
 			header('Location: ' . $path);
 		} else {
 			echo 'Sorry, we are unable to locate your requested Page.';
@@ -194,20 +193,17 @@ if(!isset($pid) || !($pid)){
 	$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($_SERVER['SCRIPT_NAME']) . '"');
 }
 
-if(!isset($tid) || !($tid)){
-	$tid = $GLOBALS['we_obj']->getTemplateID($pid);
-}
+$tid = (!isset($tid) || !($tid) ? $GLOBALS['we_obj']->getTemplateID($pid) : $tid);
 
 if(!$tid){
-	$tids = explode(',', f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($GLOBALS['we_obj']->TableID)));
-	if($tids){
+	if(($tids = explode(',', f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($GLOBALS['we_obj']->TableID))))){
 		$tid = $tids[0];
 	}
 }
-
 if(!$tid){
 	we_html_tools::setHttpCode(404);
-	if(($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE))){
+
+	if(ERROR_DOCUMENT_NO_OBJECTFILE && ($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE))){
 		header('Location: ' . $path);
 	} else {
 		echo 'Sorry, we are unable to locate your requested Page.';
