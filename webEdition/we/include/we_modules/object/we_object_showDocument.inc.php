@@ -209,6 +209,8 @@ if(!$tid){
 	we_html_tools::setHttpCode(404);
 	if(($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE))){
 		header('Location: ' . $path);
+	} else {
+		echo 'Sorry, we are unable to locate your requested Page.';
 	}
 	exit;
 }
