@@ -579,45 +579,38 @@ function setTab(tab) {
 	}
 
 	function getHTMLDynamic(){
-		$docTypes = array(
-			g_l('navigation', '[no_entry]')
-		);
 		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
-		while($this->db->next_record()){
-			$docTypes[$this->db->f("ID")] = $this->db->f('DocType');
-		}
+		$docTypes = array_merge(array(g_l('navigation', '[no_entry]')), $this->db->getAllFirst(false));
 
 		$classID2Name = $classID2Dir = $classDirs = $classDirsJS = $classHasSubDirsJS = $classPathsJS = array();
 		$allowedClasses = we_users_util::getAllowedClasses($this->db);
 
 		if(defined('OBJECT_TABLE')){
 			$_firstClass = 0;
-			$this->db->query('SELECT DISTINCT o.ID,o.Text,o.Path,of.ID AS classDirID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON (o.ID=of.TableID) WHERE of.IsClassFolder=1');
+			$this->db->query('SELECT DISTINCT o.ID,o.Text,o.Path,of.ID AS classDirID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON (o.ID=of.TableID) WHERE of.IsClassFolder=1 AND o.ID IN(' . implode(',', $allowedClasses) . ')');
 			while($this->db->next_record()){
-				if(in_array($this->db->f('ID'), $allowedClasses)){
-					if(!$_firstClass){
-						$_firstClass = $this->db->f('ID');
-					}
-					$classID2Name[$this->db->f('ID')] = $this->db->f('Text');
-					$classID2Dir[$this->db->f('classDirID')] = $this->db->f('ID');
-					$classDirs[] = $this->db->f('classDirID');
-					$classHasSubDirsJS[$this->db->f('ID')] = $this->db->f('ID') . ':false';
-					$classDirsJS[] = $this->db->f('ID') . ':' . $this->db->f('classDirID');
-					$classPathsJS[] = $this->db->f('ID') . ':"' . $this->db->f('Path') . '"';
+				if(!$_firstClass){
+					$_firstClass = $this->db->f('ID');
 				}
+				$classID2Name[$this->db->f('ID')] = $this->db->f('Text');
+				$classID2Dir[$this->db->f('classDirID')] = $this->db->f('ID');
+				$classDirs[] = $this->db->f('classDirID');
+				$classHasSubDirsJS[$this->db->f('ID')] = $this->db->f('ID') . ':false';
+				$classDirsJS[] = $this->db->f('ID') . ':' . $this->db->f('classDirID');
+				$classPathsJS[] = $this->db->f('ID') . ':"' . $this->db->f('Path') . '"';
 			}
 			if($classDirs){
-				$this->db->query('SELECT ID, ParentID FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID IN (' . implode(',', $classDirs) . ') AND IsFolder = 1');
+				$this->db->query('SELECT ID,ParentID FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID IN (' . implode(',', $allowedClasses) . ') AND IsFolder=1');
 				while($this->db->next_record()){
 					$classHasSubDirsJS[$classID2Dir[$this->db->f('ParentID')]] = $classID2Dir[$this->db->f('ParentID')] . ':true';
 				}
 			}
 		}
 
-		$_wsid = array();
-		if($this->Model->SelectionType == we_navigation_navigation::STPYE_OBJLINK && $this->Model->LinkID){
-			$_wsid = we_navigation_dynList::getWorkspacesForObject($this->Model->LinkID);
-		}
+		/* $_wsid = ($this->Model->SelectionType == we_navigation_navigation::STPYE_OBJLINK && $this->Model->LinkID ?
+		  we_navigation_dynList::getWorkspacesForObject($this->Model->LinkID) :
+		  array());
+		 */
 
 		$_sortVal = isset($this->Model->Sort[0]['field']) ? $this->Model->Sort[0]['field'] : "";
 		$_sortOrder = isset($this->Model->Sort[0]['order']) ? $this->Model->Sort[0]['order'] : "ASC";
