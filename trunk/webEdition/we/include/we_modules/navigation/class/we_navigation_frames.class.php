@@ -592,7 +592,7 @@ function setTab(tab) {
 
 		if(defined('OBJECT_TABLE')){
 			$_firstClass = 0;
-			$this->db->query('SELECT DISTINCT o.ID,o.Text,o.Path,of.ID AS classDirID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON (o.ID=of.TableID) WHERE of.IsClassFolder=1 AND ');
+			$this->db->query('SELECT DISTINCT o.ID,o.Text,o.Path,of.ID AS classDirID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON (o.ID=of.TableID) WHERE of.IsClassFolder=1');
 			while($this->db->next_record()){
 				if(in_array($this->db->f('ID'), $allowedClasses)){
 					if(!$_firstClass){
