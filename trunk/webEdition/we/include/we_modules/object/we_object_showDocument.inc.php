@@ -119,16 +119,20 @@ if(($_userID && $_userID != $_SESSION['user']['ID']) || (we_base_request::_(we_b
 } else { //	view with template
 	$tid = we_base_request::_(we_base_request::INT, 'we_cmd', (isset($we_objectTID) ? $we_objectTID : 0), 2);
 
-	$GLOBALS['we_obj'] = new we_objectFile();
-	$GLOBALS['we_obj']->initByID(we_base_request::_(we_base_request::INT, 'we_objectID', 0), OBJECT_FILES_TABLE);
-	$GLOBALS['we_obj']->setTitleAndDescription();
+	if(($oid = we_base_request::_(we_base_request::INT, 'we_objectID', 0))){
+		$GLOBALS['we_obj'] = new we_objectFile();
+		$GLOBALS['we_obj']->initByID($oid, OBJECT_FILES_TABLE);
+		$GLOBALS['we_obj']->setTitleAndDescription();
+	}
 
-	if(!$GLOBALS['we_obj']->Published){
+	if(!$oid || !$GLOBALS['we_obj']->Published){
 		we_html_tools::setHttpCode(404);
 
 		$path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE);
 		if($path){
 			header('Location: ' . $path);
+		} else {
+			echo 'Sorry, we are unable to locate your requested Page.';
 		}
 		exit;
 	}
@@ -195,7 +199,7 @@ if(!isset($tid) || !($tid)){
 }
 
 if(!$tid){
-	$tids = makeArrayFromCSV(f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($GLOBALS['we_obj']->TableID)));
+	$tids = explode(',', f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($GLOBALS['we_obj']->TableID)));
 	if($tids){
 		$tid = $tids[0];
 	}

@@ -1108,7 +1108,7 @@ class we_objectFile extends we_document{
 	}
 
 	private function getShopVatFieldHtml($name, $attribs, $we_editmode = true){
-		if($we_editmode){
+		if($we_editmode && defined('WE_SHOP_VAT_TABLE')){
 
 			$shopVats = we_shop_vats::getAllShopVATs();
 
