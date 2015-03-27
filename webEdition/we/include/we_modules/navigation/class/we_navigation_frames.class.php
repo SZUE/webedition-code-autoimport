@@ -587,17 +587,12 @@ function setTab(tab) {
 			$docTypes[$this->db->f("ID")] = $this->db->f('DocType');
 		}
 
-		$classID2Name = array();
-		$classID2Dir = array();
-		$classDirs = array();
-		$classDirsJS = array();
-		$classHasSubDirsJS = array();
-		$classPathsJS = array();
+		$classID2Name = $classID2Dir = $classDirs = $classDirsJS = $classHasSubDirsJS = $classPathsJS = array();
 		$allowedClasses = we_users_util::getAllowedClasses($this->db);
 
 		if(defined('OBJECT_TABLE')){
 			$_firstClass = 0;
-			$this->db->query('SELECT DISTINCT ' . OBJECT_TABLE . '.ID,' . OBJECT_TABLE . '.Text,' . OBJECT_TABLE . '.Path,' . OBJECT_FILES_TABLE . '.ID AS classDirID FROM ' . OBJECT_TABLE . ' LEFT JOIN ' . OBJECT_FILES_TABLE . ' ON (' . OBJECT_TABLE . '.Path=' . OBJECT_FILES_TABLE . '.Path)');
+			$this->db->query('SELECT DISTINCT o.ID,o.Text,o.Path,of.ID AS classDirID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON (o.ID=of.TableID) WHERE of.IsClassFolder=1 AND ');
 			while($this->db->next_record()){
 				if(in_array($this->db->f('ID'), $allowedClasses)){
 					if(!$_firstClass){
@@ -611,7 +606,7 @@ function setTab(tab) {
 					$classPathsJS[] = $this->db->f('ID') . ':"' . $this->db->f('Path') . '"';
 				}
 			}
-			if(!empty($classDirs)){
+			if($classDirs){
 				$this->db->query('SELECT ID, ParentID FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID IN (' . implode(',', $classDirs) . ') AND IsFolder = 1');
 				while($this->db->next_record()){
 					$classHasSubDirsJS[$classID2Dir[$this->db->f('ParentID')]] = $classID2Dir[$this->db->f('ParentID')] . ':true';
