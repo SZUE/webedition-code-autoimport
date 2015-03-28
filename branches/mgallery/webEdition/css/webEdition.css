@@ -718,3 +718,37 @@ table.error td pre{
 	background-image: url(/webEdition/images/messageConsole/errorActive.gif);
 }
 
+/*color chooser*/
+table.colorTable td{
+	width:15px;
+	height:15px;
+	border-top: 1px solid black;
+	border-left: 1px solid black;
+	border-bottom: 1px solid lightgrey;
+	border-right: 1px solid lightgrey;
+}
+
+/*exit multidoc*/
+#ulHotDocuments {
+	list-style-type		: none;
+	margin				: 0;
+	font-weight			: bold;
+	padding				: 0 0 1px 2px;
+
+}
+#ulHotDocuments li {
+	padding-top			: 3px;
+}
+#ulHotDocuments li ul {
+	margin				: 0;
+	padding				: 0 0 1px 10px;
+}
+#ulHotDocuments li ul li {
+	font-weight			: normal;
+}
+
+/*messaging*/
+.quote_lvl_0 {}
+.quote_lvl_1 {color:#ff0000}
+.quote_lvl_2 {color:#00ff00}
+.quote_lvl_3 {color:#0000ff}

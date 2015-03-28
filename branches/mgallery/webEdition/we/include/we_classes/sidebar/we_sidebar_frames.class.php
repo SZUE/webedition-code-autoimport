@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_sidebar_frames{
-
 	var $_frameset = '';
 
 	public function __construct(){
@@ -44,35 +43,22 @@ class we_sidebar_frames{
 	}
 
 	function getHTMLFrameset(){
+		echo we_html_element::cssLink(CSS_DIR . 'sidebar.css');
 		?>
-		<style type="text/css">
-			#Headline {
-				padding-left	: 5px;
-				line-height		: 20px;
-				vertical-align	: middle;
-				float			: left;
-				width			: 80%;
-			}
-			#CloseButton {
-				padding-top		: 3px;
-				padding-right	: 4px;
-				float			: right;
-			}
-		</style>
 		</head>
-		<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px;overflow:hidden;">
-			<div id="weSidebarHeader" name="weSidebarHeader" style="overflow: hidden;position:absolute;top:0px;left:0px;right:0px;height:22px;background-color: silver;font-family: Verdana, Arial, sans-serif;font-size: 10px;">
+		<body>
+			<div id="weSidebarHeader" name="weSidebarHeader">
 				<div id="Headline">
 					<?php echo g_l('sidebar', '[headline]'); ?>
 				</div>
 				<div id="CloseButton">
-					<img src="<?php echo IMAGE_DIR; ?>multiTabs/close.gif" border="0" vspace="0" hspace="0" onclick="top.weSidebar.close();" onmouseover="this.src = '<?php echo IMAGE_DIR; ?>multiTabs/closeOver.gif'" onmouseout="this.src = '<?php echo IMAGE_DIR; ?>multiTabs/close.gif'" />
+					<img src="<?php echo IMAGE_DIR; ?>multiTabs/close.gif" onclick="top.weSidebar.close();" onmouseover="this.src = '<?php echo IMAGE_DIR; ?>multiTabs/closeOver.gif'" onmouseout="this.src = '<?php echo IMAGE_DIR; ?>multiTabs/close.gif'" />
 				</div>
 			</div>
-			<div style="position:absolute;top:22px;left:0px;right:0px;bottom:40px;border-bottom: 1px solid black;border-top: 1px solid black;">
-				<iframe src="<?php echo $this->_frameset; ?>?pnt=content" style="border: 0px;background-color:white;width:100%;height:100%;overflow: auto;" name="weSidebarContent"></iframe>
+			<div id="weSidebarContentDiv">
+				<iframe id="weSidebarContent" src="<?php echo $this->_frameset; ?>?pnt=content" name="weSidebarContent"></iframe>
 			</div>
-			<div name="weSidebarFooter" id="weSidebarFooter" style="overflow: hidden;position:absolute;bottom:0px;left:0px;right:0px;height:40px;background-color:#f0f0f0;background-image: url('<?php echo IMAGE_DIR; ?>edit/editfooterback.gif'); ">
+			<div name="weSidebarFooter" id="weSidebarFooter">
 			</div>
 		</body>
 

@@ -52,6 +52,14 @@
 	height				: 420px ! important;
 }
 
+#versionsDiv {
+	background			: #fff;
+	overflow			: auto;
+	height				: 420px ! important;
+	margin				: 0px ! important;
+}
+
+
 .dialogButtonDiv {
 	left				: 0px;
 	height				: 40px;

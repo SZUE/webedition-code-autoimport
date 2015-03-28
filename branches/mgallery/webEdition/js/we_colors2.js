@@ -240,3 +240,12 @@ var we_color2 = {
 	"#FFCCFF": "#FFCCFF",
 	"#FFFFFF": "#FFFFFF"
 };
+
+function selectColor(c) {
+	document.we_form.colorvalue.value = c;
+}
+
+function init(color) {
+	top.focus();
+	document.we_form.colorvalue.value = color;
+}

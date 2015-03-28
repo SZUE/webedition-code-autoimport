@@ -35,99 +35,24 @@ if(!in_array($nextCmd, $allowedCmds)){
 }
 
 
-$ctLngs = '
-var ctLngs = new Object();';
+$ctLngs = array();
 
 foreach(g_l('contentTypes', '') as $key => $lng){
-	$ctLngs .= "
-	ctLngs[\"$key\"] = \"$lng\";";
+	$ctLngs [] = '"' . $key . '": "' . $lng . '"';
 }
 
+$ctLngs = implode(',', $ctLngs);
 $untitled = g_l('global', '[untitled]');
 
 print <<< EOFEOF
 <script type="text/javascript"><!--
-
-$ctLngs
-
-function yes_cmd_pressed() {
-
-	var allHotDocuments = top.opener.top.weEditorFrameController.getEditorsInUse();
-	for (frameId in allHotDocuments) {
-
-		if ( allHotDocuments[frameId].getEditorIsHot() ) {
-			allHotDocuments[frameId].setEditorIsHot(false);
-
-		}
-	}
-	top.opener.top.we_cmd("$nextCmd");
-	self.close();
-}
-
-function setHotDocuments() {
-
-	var allHotDocuments = top.opener.top.weEditorFrameController.getEditorsInUse();
-	var liStr = "";
-
-	var _hotDocumentsOfCt = new Object();
-
-	for (frameId in allHotDocuments) {
-
-		if ( allHotDocuments[frameId].getEditorIsHot() ) {
-
-			if ( !_hotDocumentsOfCt[allHotDocuments[frameId].getEditorContentType()] ) {
-				_hotDocumentsOfCt[allHotDocuments[frameId].getEditorContentType()] = new Array();
-
-			}
-			_hotDocumentsOfCt[allHotDocuments[frameId].getEditorContentType()].push( allHotDocuments[frameId] );
-		}
-	}
-
-	for ( ct in _hotDocumentsOfCt ) {
-
-		var liCtElem = document.createElement("li");
-		liCtElem.innerHTML = ctLngs[ct];
-
-		var ulCtElem = document.createElement("ul");
-		for (var i=0; i<_hotDocumentsOfCt[ct].length; i++) {
-
-			var liPathElem = document.createElement("li");
-
-			if ( _hotDocumentsOfCt[ct][i].getEditorDocumentText() ) {
-				liPathElem.innerHTML = _hotDocumentsOfCt[ct][i].getEditorDocumentPath();
-			} else {
-				liPathElem.innerHTML = "<em>$untitled</em>";
-			}
-
-			ulCtElem.appendChild(liPathElem);
-		}
-		liCtElem.appendChild( ulCtElem );
-		document.getElementById("ulHotDocuments").appendChild( liCtElem );
-	}
-}
+var ctLngs = {$ctLngs};
+var g_l={
+	"untitled":"$untitled"
+};
+var nextCmd="$nextCmd";
 	//-->
 </script>
-<style type="text/css">
-ul {
-	list-style-type		: none;
-	margin				: 0;
-}
-#ulHotDocuments {
-	font-weight			: bold;
-	padding				: 0 0 1px 2px;
-
-}
-#ulHotDocuments li {
-	padding-top			: 3px;
-}
-#ulHotDocuments li ul {
-	margin				: 0;
-	padding				: 0 0 1px 10px;
-}
-#ulHotDocuments li ul li {
-	font-weight			: normal;
-}
-</style>
 EOFEOF;
 
 $content = '
@@ -140,15 +65,13 @@ $content = '
 
 		</ul>
 	</div>
-</div>
-';
+</div>';
 
-echo STYLESHEET;
+echo STYLESHEET .
+ we_html_element::jsScript(JS_DIR . 'we_exit_multi_doc_question.js');
 ?>
 </head>
-
 <body class="weEditorBody" onload="setHotDocuments();" onBlur="self.focus();">
 	<?php echo we_html_tools::htmlYesNoCancelDialog($content, IMAGE_DIR . "alert.gif", true, false, true, $yesCmd, "", $cancelCmd); ?>
 </body>
-
 </html>

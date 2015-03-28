@@ -596,14 +596,12 @@ echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]')
 </script>
 <?php echo we_html_element::jsScript(JS_DIR . 'windows.js') . $js; ?>
 <style type="text/css" media="screen">
-	body {margin: 0;padding: 0;}
 	td {font-size:11px;vertical-align:top;	padding: 5px;}
 	#tab1 {position:absolute;overflow:auto; }
 	#topPrint {display: none;}
 </style>
 
 <style type="text/css" media="print">
-	body {margin: 0;padding: 0;}
 	td {font-size:9px;vertical-align:top;	padding: 5px;}
 	#tab1 {position:relative;overflow: visible;font-size:12px; }
 	#tab2 {display: none}
