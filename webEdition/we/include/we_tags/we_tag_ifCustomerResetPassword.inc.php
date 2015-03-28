@@ -19,8 +19,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_ifCustomerResetPassword($attribs, $content){
-	return '<?php if(!' . we_tag_tagParser::printTag('ifNotCustomerResetPassword', $attribs) . '){ ?>' . $content .
-			'<?php } ?>';
+	return '<?php if(!' . we_tag_tagParser::printTag('ifNotCustomerResetPassword', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
 function we_tag_ifCustomerResetPassword($attribs, $content){

@@ -18,9 +18,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function we_parse_tag_ifNotSeeMode($attribs, $content){
-	return '<?php if(!' . we_tag_tagParser::printTag('ifSeeMode', $attribs) . '){ ?>' . $content .			'<?php } ?>';
+	return '<?php if(!' . we_tag_tagParser::printTag('ifSeeMode', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
 function we_tag_ifNotSeeMode($attribs, $content){
