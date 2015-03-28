@@ -270,7 +270,8 @@ function resizeWidget(id) {
 }
 
 function initWidget(_id) {
-	if (gel(_id + '_type').value === "sct") {
+	var oNode = gel(_id + '_type');
+	if (oNode && oNode.value === "sct") {
 		var _width = "100%";
 		if (resizeIdx('get', _id) === "1") {
 			_width = "48%";

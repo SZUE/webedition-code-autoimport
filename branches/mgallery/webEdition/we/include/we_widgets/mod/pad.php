@@ -75,12 +75,7 @@ function getNoteList($_sql, $bDate, $bDisplay){
 			$dbf = $DB_WE->f($_fld);
 
 			$_fldValue = CheckAndConvertISObackend(str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), ($_fld === 'ValidUntil' && ($dbf === '3000-01-01' || $dbf === '0000-00-00' || !$dbf) ? '' : $dbf)));
-			$_notes .= we_html_element::htmlHidden(
-					array(
-						'id' => $_rcd . '_' . $_fld,
-						'style' => 'display:none;',
-						'value' => $_fldValue
-			));
+			$_notes .= we_html_element::htmlHidden($_rcd . '_' . $_fld, $_fldValue, $_rcd . '_' . $_fld);
 		}
 
 		$validity = $DB_WE->f("Valid");
