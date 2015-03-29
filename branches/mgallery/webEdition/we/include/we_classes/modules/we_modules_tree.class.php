@@ -26,9 +26,7 @@
 //If this is appropriate for other modules too, make a generic combination of both classes!
 
 class we_modules_tree extends weMainTree{
-
 	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
-
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 
 		$this->setStyles(array(
@@ -178,7 +176,7 @@ function addSort(object){
 								STYLESHEET .
 								$this->getStyles()
 						) .
-						we_html_element::htmlBody(array(), '<div id="treetable"></div>'
+						we_html_element::htmlBody(array('id' => 'treetable',), '<div id="treetable"></div>'
 						)
 		);
 	}

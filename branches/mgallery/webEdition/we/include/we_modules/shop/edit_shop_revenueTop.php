@@ -123,16 +123,6 @@ echo we_html_tools::getHtmlTop() .
 	}
 
 '). '
-<style type="text/css">
-	table.revenueTable {
-		border-collapse: collapse;
-	}
-	table.revenueTable th,
-	table.revenueTable td {
-		padding: 8px;
-		border: 1px solid #666666;
-	}
-</style>
 </head>
 <body class="weEditorBody" onload="self.focus(); setHeaderTitle();" onunload="">
 <form>';
@@ -195,8 +185,8 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 		// initialize all data saved for an article
 		$shopArticleObject = unserialize($DB_WE->f('strSerial'));
 		$orderData = (($serialOrder = $DB_WE->f('strSerialOrder')) ? unserialize($serialOrder) : array());
-		
-		
+
+
 		$netPrice = $orderData['we_shopPriceIsNet'] ? $DB_WE->f('Price') :  ($DB_WE->f('Price')/(1+(floatval($shopArticleObject['shopvat'])/100)));
 		$grosPrice = $orderData['we_shopPriceIsNet'] ? ($DB_WE->f('Price')*(1+(floatval($shopArticleObject['shopvat'])/100))) : $DB_WE->f('Price');
 
@@ -335,7 +325,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 				<td>' . we_util_Strings::formatNumber($payed) . $waehr . '</td>
 				<td class="npshopContentfontR">' . we_util_Strings::formatNumber($unpayed) . $waehr . '</td>
 				<td class="shopContentfontR">' . we_util_Strings::formatNumber($total) . $waehr . '</td>
-			</tr>' . "\n" . 
+			</tr>' . "\n" .
 			$vatTable . '</table>'. "\n",
 		'space' => 0
 	);

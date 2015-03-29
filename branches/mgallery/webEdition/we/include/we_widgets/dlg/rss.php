@@ -518,7 +518,6 @@ echo we_html_element::htmlDocType() .
 		we_html_element::htmlHead(
 			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[rss_feed]')) .
 			STYLESHEET .
-			we_html_element::cssElement('select{border:#AAAAAA solid 1px}') .
 			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 			we_html_element::jsElement($jsPrefs . $jsCode)
 		) .

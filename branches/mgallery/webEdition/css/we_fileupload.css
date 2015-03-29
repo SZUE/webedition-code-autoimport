@@ -35,6 +35,11 @@ div.we_file_drag{
 	border-radius: 4px;
 	box-shadow: 2px 2px 2px #555555;
 }
+div.we_file_drag_binDoc{
+	float:left;
+	margin: 1px 0 10px 0;
+	border: solid 2px #ededed;
+}
 div.we_file_drag_hover{
 	color: #00cc00;
 	border: 2px solid #00cc00;
@@ -61,4 +66,15 @@ div.we_fileInputWrapper{
 }
 .fileInputHidden {
 	opacity: 0;
+}
+div.dropzone_right{
+	display:table-cell;
+	height:116px;
+	width:120px;
+	vertical-align:middle;
+	text-align:center;
+}
+.dropzone_right img{
+	max-height: 100px;
+	max-width: 100px;
 }

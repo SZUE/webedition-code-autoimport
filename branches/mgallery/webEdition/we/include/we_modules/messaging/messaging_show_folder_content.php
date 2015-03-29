@@ -62,15 +62,15 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 		if (top.content.multi_select === false) {
 
 			//de-select all selected entries
-			for (j = 0; j < parent.parent.entries_selected.length; j++) {
-				highlight_TR(parent.parent.entries_selected[j], default_color, default_text_color);
+			for (j = 0; j < parent.entries_selected.length; j++) {
+				highlight_TR(parent.entries_selected[j], default_color, default_text_color);
 			}
 
-			parent.parent.entries_selected = new Array();
+			parent.entries_selected = new Array();
 			doSelectMessage(id);
 		} else {
 
-			if (array_search(id, parent.parent.entries_selected) != -1) {
+			if (array_search(id, parent.entries_selected) != -1) {
 				unSelectMessage(id);
 			} else {
 				doSelectMessage(id);
@@ -84,10 +84,10 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 		}
 		showContent(id);
 
-		if (parent.parent.entries_selected.length > 0) {
-			parent.parent.entries_selected.push(String(id));
+		if (parent.entries_selected.length > 0) {
+			parent.entries_selected.push(String(id));
 		} else {
-			parent.parent.entries_selected = [String(id)];
+			parent.entries_selected = [String(id)];
 		}
 
 		parent.parent.last_entry_selected = id;
@@ -128,13 +128,13 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 	function unSelectMessage(id, unsel_all) {
 		highlight_TR(id, default_color, default_text_color);
 
-		parent.parent.entries_selected = array_rm_elem(parent.parent.entries_selected, id, -1);
+		parent.entries_selected = array_rm_elem(parent.entries_selected, id, -1);
 		//document.images["img_" + id].src = check0_img.src;
 
-		if (parent.parent.entries_selected.length === 0) {
+		if (parent.entries_selected.length === 0) {
 			top.content.editor.edbody.messaging_msg_view.location = "about:blank";
 		} else {
-			showContent(parent.parent.entries_selected[parent.parent.entries_selected.length - 1]);
+			showContent(parent.entries_selected[parent.entries_selected.length - 1]);
 		}
 	}
 
@@ -185,12 +185,12 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
   <script type="text/javascript"><!--
 	var k;
 
-		for (k = 0; k < parent.parent.entries_selected.length; k++) {
-			highlight_TR(parent.parent.entries_selected[k], sel_color, sel_text_color);
+		for (k = 0; k < parent.entries_selected.length; k++) {
+			highlight_TR(parent.entries_selected[k], sel_color, sel_text_color);
 		}
 
-		if (parent.parent.entries_selected.length > 0)
-			showContent(parent.parent.entries_selected[parent.parent.entries_selected.length - 1]);
+		if (parent.entries_selected.length > 0)
+			showContent(parent.entries_selected[parent.entries_selected.length - 1]);
 
 <?php
 echo 'passed_dls = [String(' . implode('), String(', $passed_dls) . ')];';

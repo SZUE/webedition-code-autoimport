@@ -1408,17 +1408,7 @@ function changeFieldValue(val,valueField) {
 	submitForm();
 }');
 
-		$css = we_html_element::cssElement('
-	.markNotValid { background: #FFCCCC }
-	.markValid { background: #FFFFFF }
-') .
-			we_html_element::linkElement(
-				array(
-					"rel" => "stylesheet",
-					"type" => "text/css",
-					"href" => LIB_DIR . "additional/jscalendar/skins/aqua/theme.css",
-					"title" => "Aqua"
-		));
+		$css = we_html_element::cssLink(LIB_DIR . "additional/jscalendar/skins/aqua/theme.css");
 
 
 		$out = $this->View->getHiddens() .

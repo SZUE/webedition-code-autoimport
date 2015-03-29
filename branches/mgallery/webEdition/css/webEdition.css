@@ -30,9 +30,22 @@ body{
 	margin: 0px;
 	letter-spacing: normal ! important;
 }
+#loginScreen{
+	background-color:#386AAB;
+	height:100%;
+}
+/*login/info-screen*/
+img.multiIcon{
+	height:64px;
+	width:64px;
+}
 
 img{
 	border: none;
+}
+
+select,textarea{
+	border:#AAAAAA solid 1px;
 }
 
 body.radient,
@@ -393,12 +406,12 @@ a.notpublished,
 .tableHeader,
 .tableHeader a,
 .tableHeader a:visited {
-	color: white;
+	color: black;
 }
-
+/*
 .tableHeader a:active {
 	color: #FF0000;
-}
+}*/
 
 .defaultfontred {
 	color: #6CBFF9;
@@ -752,3 +765,44 @@ table.colorTable td{
 .quote_lvl_1 {color:#ff0000}
 .quote_lvl_2 {color:#00ff00}
 .quote_lvl_3 {color:#0000ff}
+
+/*shop*/
+table.revenueTable {
+	border-collapse: collapse;
+}
+table.revenueTable th,
+table.revenueTable td {
+	padding: 8px;
+	border: 1px solid #666666;
+}
+
+.logicFilterInput,
+.leftFilterInput,
+.middleFilterInput,
+.rightFilterInput{
+	border: #AAAAAA solid 1px;
+	margin-right: 5px;
+}
+
+.logicFilterInput{
+	width: 59px;
+}
+.leftFilterInput{
+	width: 160px;
+}
+
+.middleFilterInput{
+	width: 138px;
+}
+
+.rightFilterInput{
+	width: 160px;
+}
+
+/*newsletter*/
+.markNotValid {
+	background: #FFCCCC;
+}
+.markValid {
+	background: #FFFFFF;
+}

@@ -1159,7 +1159,7 @@ function doUnload() {
 			}
 		}
 
-		// url() in <style> tags
+		// url() in style tags
 		preg_match_all('/(<style[^>]*>)(.*)(<\/style>)/isU', $content, $regs, PREG_PATTERN_ORDER);
 		if($regs != null){
 			for($i = 0; $i < count($regs[2]); $i++){
@@ -1500,7 +1500,7 @@ function doUnload() {
 			}
 		}
 
-		// url() in <style> tags
+		// url() in style tags
 		preg_match_all('/(<style[^>]*>)(.*)(<\/style>)/isU', $content, $regs, PREG_PATTERN_ORDER);
 		if($regs != null){
 			for($i = 0; $i < count($regs[2]); $i++){

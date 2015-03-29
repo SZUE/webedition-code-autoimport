@@ -125,68 +125,6 @@ function getNoteList($_sql, $bDate, $bDisplay){
 	return $_notes;
 }
 
-function getCSS(){
-	return '
-body{
-	background-color:transparent;
-}
-.cl_notes{
-	background-color:#FFFFFF;
-}
-#notices{
-	position:relative;
-	top:0px;
-	display:block;
-	height:250px;
-	overflow:auto;
-}
-#props{
-	position:absolute;
-	bottom:0px;
-	display:none;
-}
-#view{
-	position:absolute;
-	bottom:0px;
-	display:block;
-	height:22px;
-}
-.wetextinput{
-	color:black;
-	border:#AAAAAA solid 1px;
-	height:18px;
-	vertical-align:middle;
-	' . (we_base_browserDetect::isIE() ? '' : 'line-height:normal;') . ';
-	font-size:' . ((we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11)) . 'px;
-}
-input.wetextinput:focus {
-	color:black;
-	border:#888888 solid 1px;
-	background-color:#DCE6F2;
-	height:18px;
-	' . (we_base_browserDetect::isIE() ? '' : 'line-height:normal;') . ';
-	font-size:' . ((we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11)) . 'px;
-}
-.wetextarea {
-	color:black;
-	border:#AAAAAA solid 1px;
-	height:80px;
-	' . (we_base_browserDetect::isIE() ? '' : 'line-height:normal;') . ';
-	font-size:' . ((we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11)) . 'px;
-}
-textarea.wetextarea:focus {
-	color:black;
-	border:#888888 solid 1px;
-	background-color:#DCE6F2;
-	height:80px;
-	' . (we_base_browserDetect::isIE() ? '' : 'line-height:normal;') . ';
-	font-size:' . ((we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11)) . 'px;
-}
-select{
-	border:#AAAAAA solid 1px;
-}';
-}
-
 we_html_tools::protect();
 /**
  * Table with the notes
@@ -404,14 +342,10 @@ $_notepad = $oPad->getHTML() .
 
 echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 	we_html_element::htmlHead(
-		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[notepad]')) . STYLESHEET . we_html_element::cssElement(
-			getCSS()) . we_html_element::linkElement(
-			array(
-				"rel" => "stylesheet",
-				"type" => "text/css",
-				"href" => LIB_DIR . "additional/jscalendar/skins/aqua/theme.css",
-				"title" => "Aqua"
-		)) . we_html_element::jsScript(LIB_DIR . "additional/jscalendar/calendar.js") .
+		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[notepad]')) . STYLESHEET .
+		we_html_element::cssLink(CSS_DIR . 'pad.css') .
+		we_html_element::cssLink(LIB_DIR . "additional/jscalendar/skins/aqua/theme.css") .
+		we_html_element::jsScript(LIB_DIR . "additional/jscalendar/calendar.js") .
 		we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
 		we_html_element::jsScript(LIB_DIR . "additional/jscalendar/calendar-setup.js") .
 		we_html_element::jsElement(

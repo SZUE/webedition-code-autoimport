@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -24,17 +23,6 @@
  */
 echo we_html_tools::getHtmlTop() .
  STYLESHEET .
- we_html_element::cssElement('
-div#rss,
-div#rss *{
-color:black;
-font-size:' . ((we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11)) . 'px;
-font-family:' . g_l('css', '[font_family]') . ';
-}
-body{
-	background-color:#F1F5FF;
-}
-') .
  '</head><body>';
 
 //Bug 6119: Keine Unterstützung für curl in der XML_RSS Klasse
@@ -56,10 +44,10 @@ $rss->parse();
 $rss_out = '<div id="rss">';
 foreach($rss->getItems() as $item){
 	$rss_out .= '<b>' . $item['title'] . '</b><p>' . $item['description'] . " " .
-			(isset($item['link']) && !empty($item['link']) ? "<a href=\"" . $item['link'] . "\" target=\"_blank\">" . g_l('cockpit', '[more]') . "</a>" : '') .
-			"</p>" .
-			we_html_tools::getPixel(1, 10) . we_html_element::htmlBr();
+		(isset($item['link']) && !empty($item['link']) ? "<a href=\"" . $item['link'] . "\" target=\"_blank\">" . g_l('cockpit', '[more]') . "</a>" : '') .
+		"</p>" .
+		we_html_tools::getPixel(1, 10) . we_html_element::htmlBr();
 }
 $rss_out .= '</div>';
 echo $rss_out .
-		'</body></html>';
+ '</body></html>';

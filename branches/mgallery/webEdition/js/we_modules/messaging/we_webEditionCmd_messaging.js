@@ -21,7 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_cmd_messaging(args,url) {
-	switch (args) {
+	switch (args[0]) {
 		case "messaging_start":
 		case "messaging_edit_ifthere":
 			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);

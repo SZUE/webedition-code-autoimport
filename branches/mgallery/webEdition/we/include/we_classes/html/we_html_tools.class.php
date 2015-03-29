@@ -440,10 +440,6 @@ this.selectedIndex = 0;' .
 		return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '"></span>';
 	}
 
-	static function pPixel($w, $h){
-		echo self::getPixel($w, $h);
-	}
-
 	static function hidden($name, $value, $attribs = null){
 		$attribute = '';
 		if(isset($attribs) && is_array($attribs)){

@@ -1156,7 +1156,9 @@ function EditorFrame(ref, elementId) {
 			var _theEditorFrame = this.getEditorFrameWindow();
 			if (this.getEditorReloadAllNeeded()) {
 				if (this.getEditorType() === "cockpit") {
-					_theEditorFrame.saveSettings();
+					if (_theEditorFrame.saveSettings !== undefined) {
+						_theEditorFrame.saveSettings();
+					}
 					var _href = _theEditorFrame.location.href;
 					if (_href.charAt(_href.length - 1) === "#") {
 						_href = _href.substr(0, _href.length - 1);

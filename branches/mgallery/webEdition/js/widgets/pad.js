@@ -101,10 +101,10 @@ function deleteNote() {
 function isHotNote() {
 	var fo = document.forms[0];
 	var _id = fo.elements.mark.value;
-	var q_init = (_id !== '' ?
-					getInitialQueryById(_id) :
-					{'Validity': 'always', 'ValidFrom': '', 'ValidUntil': '', 'Priority': 'low', 'Title': '', 'Text': ''}
-	);
+	if (_id === '') {
+		return false;
+	}
+	var q_init = getInitialQueryById(_id);
 
 	var q_curr = getCurrentQuery();
 	var idx = ['Title', 'Text', 'Priority', 'Validity', 'ValidFrom', 'ValidUntil'];

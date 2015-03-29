@@ -70,11 +70,6 @@ class weTree{
 			$this->init($frameset, $topFrame, $treeFrame, $cmdFrame);
 		}
 
-		$this->setStyles(array(
-			'.selected_item {background-color: #6070B6;}',
-			'.selected_group {background-color: #6070B6;}',
-		));
-
 		$this->setItemsCount(we_base_preferences::getUserPref('default_tree_count'));
 	}
 

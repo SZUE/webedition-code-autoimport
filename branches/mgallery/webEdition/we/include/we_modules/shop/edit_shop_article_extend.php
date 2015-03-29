@@ -104,17 +104,7 @@ echo we_html_tools::getHtmlTop() .
 	function we_submitDateform() {
 		elem = document.forms[0];
 		elem.submit();
-	}') .
- we_html_element::cssElement('
-	table.revenueTable {
-		border-collapse: collapse;
-	}
-	table.revenueTable th,
-	table.revenueTable td {
-		padding: 8px;
-		border: 1px solid #666666;
-	}
-') . '
+	}') .'
 </head>
 <body class="weEditorBody" onload="self.focus();" onunload="">
 <form>';
@@ -167,15 +157,15 @@ if(isset($daten)){
 	/*	 * ************ selectbox function ************** */
 
 	function array_select($arr_value, $select_name, $label){ // function for a selectbox for the purpose of selecting a class
-		$shopConfig = !empty($GLOBALS['feldnamen']) ? 
-			$GLOBALS['feldnamen'] : 
+		$shopConfig = !empty($GLOBALS['feldnamen']) ?
+			$GLOBALS['feldnamen'] :
 			explode("|", f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
-	
+
 		$fe = (isset($shopConfig[3]) ?
 				explode(",", $shopConfig[3]) : //determine more than just one class-ID
 				array(0));
-				
-		$selVal = we_base_request::_(we_base_request::STRING, $select_name);	
+
+		$selVal = we_base_request::_(we_base_request::STRING, $select_name);
 
 		$menu = '<label for="' . $select_name . '">' . $label . '</label>'."\n";
 		$menu .= '<select name="' . $select_name . '" onchange="document.location.href=\'' . $_SERVER['SCRIPT_NAME'] . '?typ=object&ViewClass=\' + this.options[this.selectedIndex].value ">'."\n";
@@ -188,7 +178,7 @@ if(isset($daten)){
 		}
 		$menu .= '</select>'."\n";
 		$menu .= '<input type="hidden" name="typ" value="object" />';
-		
+
 		return $menu;
 	}
 

@@ -62,13 +62,13 @@ echo we_html_tools::getHtmlTop('sideBar') .
 						$headline = sprintf($link, $text['headline']);
 					}
 					?>
-					<tr><td colspan="2"><?php we_html_tools::pPixel(1, 5); ?></td></tr>
+					<tr><td colspan="2"><?php echo we_html_tools::getPixel(1, 5); ?></td></tr>
 					<tr><?php
 						if(!$icon){
 							?>
 							<td class="defaultfont" valign="top" colspan="2">
 								<strong><?php echo $headline; ?></strong><br />
-								<?php we_html_tools::pPixel(1, 4); ?>
+								<?php echo we_html_tools::getPixel(1, 4); ?>
 								<br />
 								<?php echo $text['text']; ?>
 							</td>
@@ -78,7 +78,7 @@ echo we_html_tools::getHtmlTop('sideBar') .
 							<td class="defaultfont" valign="top" width="52"><?php echo $icon; ?></td>
 							<td class="defaultfont" valign="top">
 								<strong><?php echo $headline; ?></strong><br />
-								<?php we_html_tools::pPixel(1, 4); ?><br />
+								<?php echo we_html_tools::getPixel(1, 4); ?><br />
 								<?php echo $text['text']; ?>
 							</td>
 							<?php

@@ -127,36 +127,14 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 		return self::isFallback() || self::isLegacyMode() ? '' : we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::cssElement('
 div.we_file_drag{
 	width: 300px;
-	margin: 1em 0.2em 0 0.1em;
+	margin: 1em 0.2em 0px 0.1em;
 	height: 116px;
 	border: dotted 2px gray;
 	border-radius: 0px;
 	box-shadow: none;
 }
-div.we_file_drag_binDoc{
-	float:left;
-	margin: 1px 0 10px 0;
-	border: solid 2px #ededed;
-}
-div.we_file_drag_hover{
-	color: #00cc00;
-	border: 2px solid #00cc00;
-	box-shadow: inset 0 3px 4px #888;
-	background-color: rgb(243, 247, 255);
-}
-div.dropzone_right{
-	display:table-cell;
-	height:116px;
-	width:120px;
-	vertical-align:middle;
-	text-align:center;
-}
-.dropzone_right img{
-	max-height: 100px;
-	max-width: 100px;
-}
 .fileInputIE10{
-	left: 0;
+	left: 0px;
 }');
 	}
 

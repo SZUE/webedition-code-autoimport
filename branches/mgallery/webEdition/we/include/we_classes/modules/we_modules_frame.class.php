@@ -197,15 +197,7 @@ abstract class we_modules_frame{
 			);
 		}
 //FIXME make this a static document & use this at messaging_usel_browse_frameset.php as well
-		return $this->getHTMLDocument(we_html_element::htmlBody(), '
-<style type="text/css">
-body{
-	background-color:#F3F7FF;
-}
-a,a:visited,a:active{
-color:#000000;
-}
-</style>' .
+		return $this->getHTMLDocument(we_html_element::htmlBody(array('id' => 'treetable')),
 				we_html_element::cssLink(CSS_DIR . 'tree.css') .
 				we_html_tools::getJSErrorHandler() . we_html_element::jsElement('
 	clickCount=0;

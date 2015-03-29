@@ -164,7 +164,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	/**
 	 * adds CSS code to the page
 	 * Will be inserted into the header section of the page
-	 * using the <style> tag
+	 * using the style tag
 	 *
 	 * @param string $css CSS code to add
 	 * @return void

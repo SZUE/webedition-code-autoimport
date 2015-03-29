@@ -275,12 +275,7 @@ _EditorFrame.initEditorFrameData(
 	"EditorContentType":"cockpit",
 	"EditorEditCmd":"open_cockpit"
 }
-);') .
-	we_html_element::cssElement('
-html {
-	heigth: 90%;
-}
-') .
+);').
 	'</head>' .
 	we_html_element::htmlBody(
 		array(

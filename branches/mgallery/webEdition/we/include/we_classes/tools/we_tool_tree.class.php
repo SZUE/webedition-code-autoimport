@@ -180,7 +180,7 @@ function addSort(object){
 					STYLESHEET .
 					$this->getStyles()
 			) .
-			we_html_element::htmlBody(array('style' => 'height:100%'), '<div id="treetable" style="height:100%;border-right:1px solid black"></div>')
+			we_html_element::htmlBody(array('id' => 'treetable'), '<div id="treetable" style="height:100%;border-right:1px solid black"></div>')
 		);
 	}
 

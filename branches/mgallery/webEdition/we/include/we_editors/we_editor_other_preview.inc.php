@@ -48,7 +48,7 @@ echo we_html_tools::getHtmlTop() .
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 echo STYLESHEET . we_html_element::cssElement('
-	html,body,form,#previewDiv,iframe{
+	form,#previewDiv,iframe{
 	height:100%;
 	}
 	');

@@ -450,7 +450,8 @@ top.content.hloaded = 1;'));
 		$table->setCol(2, 0, array(), $select->getHtml());
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => ($mode ? '' : 'document.we_form.keyword.focus();')), we_html_element::linkElement(array('rel' => 'stylesheet', 'type' => 'text/css', 'href' => LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css', 'title' => 'Aqua')) .
+				we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => ($mode ? '' : 'document.we_form.keyword.focus();')),
+					we_html_element::cssLink(LIB_DIR . "additional/jscalendar/skins/aqua/theme.css") .
 					we_html_element::jsScript(JS_DIR . 'utils/weDate.js') .
 					we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
 					we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js') .
