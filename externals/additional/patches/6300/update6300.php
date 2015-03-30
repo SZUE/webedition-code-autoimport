@@ -12,8 +12,8 @@ if(!is_readable("../../we/include/conf/we_conf.inc.php")){
 include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 function up6300_updatePrefs(){
-	if(method_exists('we_users_user','readPrefs')||
-		method_exists('we_user','readPrefs')){
+	if(class_exists('we_users_user')&&method_exists('we_users_user','readPrefs')||
+         class_exists('we_user')&&method_exists('we_user','readPrefs')){
 		we_updater::updateUsers();
 	}else{
 		$db = new DB_WE();
