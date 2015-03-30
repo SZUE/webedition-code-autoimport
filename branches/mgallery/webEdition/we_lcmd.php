@@ -23,6 +23,12 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
+
+if(($cmd0 = we_base_request::_(we_base_request::STRING, 'wecmd0')) !== false){ // when calling from applet (we can not call directly we_cmd[0] with the applet =>  Safari OSX doesn't support live connect)
+	$_REQUEST['we_cmd'][0] = $cmd0;
+}
+$reqArr = we_base_request::_(we_base_request::STRING, 'we_cmd');
+
 echo we_html_tools::getHtmlTop('command-bridge', '', 5);
 ?>
 <script type="text/javascript"><!--
@@ -60,11 +66,6 @@ echo we_html_tools::getHtmlTop('command-bridge', '', 5);
 
 	//-->
 </script><?php
-if(($cmd0 = we_base_request::_(we_base_request::STRING, 'wecmd0')) !== false){ // when calling from applet (we can not call directly we_cmd[0] with the applet =>  Safari OSX doesn't support live connect)
-	$_REQUEST['we_cmd'][0] = $cmd0;
-}
-$reqArr = we_base_request::_(we_base_request::STRING, 'we_cmd');
-
 echo we_html_element::jsScript(JS_DIR . 'we_lcmd.js') .
  we_html_element::jsElement('
 we_lcmd("' . implode('","', $reqArr) . '");');
