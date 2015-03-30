@@ -124,11 +124,17 @@ function we_lcmd(par) {
 			top.we_cmd("new", OBJECT_FILES, "", contentTypes.OBJECT_FILE, par.replace(/^new_ClObjectFile_/, ""));
 			return;
 		case 'openDelSelector':
-			setTimeout(function () {
-				top.we_cmd('openDelSelector', '', openTable, '', '', '', '', '', '', 1);
-			}, 50);
+			//setTimeout(function () {
+			top.we_cmd('openDelSelector', '', openTable, '', '', '', '', '', '', 1);
+			//}, 50);
 			return;
 		default:
+			var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
+			}
+
+			top.we_cmd.apply(this, args);
 
 	}
 }

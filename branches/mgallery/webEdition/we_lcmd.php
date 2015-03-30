@@ -60,66 +60,13 @@ echo we_html_tools::getHtmlTop('command-bridge', '', 5);
 
 	//-->
 </script><?php
-echo we_html_element::jsScript(JS_DIR . 'we_lcmd.js');
-?>
-<script type="text/javascript"><!--
-<?php
-
-function getJSCommand($cmd0){
-	switch($cmd0){
-		case 'new_webEditionPage':
-		case 'new_image':
-		case 'new_html_page':
-		case 'new_flash_movie':
-		case 'trigger_publish_document':
-		case 'trigger_save_document':
-		case 'new_quicktime_movie':
-		case 'new_video_movie':
-		case 'new_audio_audio':
-		case 'new_javascript':
-		case 'new_text_plain':
-		case 'new_text_xml':
-		case 'new_text_htaccess':
-		case 'new_css_stylesheet':
-		case 'new_binary_document':
-		case 'new_template':
-		case 'new_document_folder':
-		case 'new_template_folder':
-		case 'new_collection_folder':
-		case 'new_collection':
-		case 'delete_documents':
-		case 'delete_templates':
-		case 'move_documents':
-		case 'move_templates':
-		case 'add_documents_to_collection':
-		case 'add_objectfiles_to_collection':
-		case (preg_match('/^new_dtPage_(.+)$/', $cmd0)):
-		case (preg_match('/^new_ClObjectFile_(.+)$/', $cmd0)):
-			case 'openDelSelector':
-			return 'we_lcmd("' . $cmd0 . '")';
-
-		/* case "export_documents":
-		  $_tbl = FILE_TABLE;
-		  case "export_templates":
-		  $_tbl = (isset($_tbl) ? $_tbl : TEMPLATES_TABLE);
-		  case "export_objects":
-		  $_tbl = (isset($_tbl) ? $_tbl : OBJECT_FILES_TABLE);
-		 */
-		default:
-			//FIXME: get rid of this & make everything here in JS
-			$arr = array();
-			foreach($_REQUEST['we_cmd'] as $cur){
-				$arr[] = '\'' . str_replace(array('\'', '"'), array('\\\'', '\\"'), preg_replace('/[^a-z0-9_-]/i', '', strip_tags($cur))) . '\'';
-			}
-			return 'setTimeout("top.we_cmd(' . implode(',', $arr) . ')",50);';
-	}
-}
-
 if(($cmd0 = we_base_request::_(we_base_request::STRING, 'wecmd0')) !== false){ // when calling from applet (we can not call directly we_cmd[0] with the applet =>  Safari OSX doesn't support live connect)
 	$_REQUEST['we_cmd'][0] = $cmd0;
 }
-echo getJSCommand(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0));
+$reqArr = we_base_request::_(we_base_request::STRING, 'we_cmd');
+
+echo we_html_element::jsScript(JS_DIR . 'we_lcmd.js') .
+ we_html_element::jsElement('
+we_lcmd("' . implode('","', $reqArr) . '");');
 ?>
-//-->
-</script>
 </head><body></body></html>
