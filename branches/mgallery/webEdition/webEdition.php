@@ -86,7 +86,7 @@ we_users_user::updateActiveUser();
 if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) != "edit_include_document"){
 	$GLOBALS['DB_WE']->query('DELETE FROM ' . LOCK_TABLE . ' WHERE lockTime<NOW()');
 }
-$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . '	SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ')');
+$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . '	SET Ping=NULL WHERE Ping<(NOW()-INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' second)');
 
 
 if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){

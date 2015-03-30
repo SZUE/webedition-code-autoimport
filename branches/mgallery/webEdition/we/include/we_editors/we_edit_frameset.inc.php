@@ -205,7 +205,7 @@ if(!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder){
 	//update already offline users
 
 	$_userID = $we_doc->isLockedByUser(); //	Check if file is locked.
-	$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET Ping=0 WHERE Ping<UNIX_TIMESTAMP(NOW()-' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ')');
+	$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET Ping=NULL WHERE Ping<(NOW()- INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND)');
 
 	$_filelocked = ($_userID != 0 && $_userID != $_SESSION['user']['ID']);
 

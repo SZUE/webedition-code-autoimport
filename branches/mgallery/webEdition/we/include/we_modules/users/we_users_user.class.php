@@ -313,9 +313,7 @@ class we_users_user{
 			}
 		}
 		$this->DB_WE->query(($this->ID ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($updt) . ($this->ID ? ' WHERE ID=' . intval($this->ID) : ''));
-		if(!$this->ID){
-			$this->ID = $this->DB_WE->getInsertId();
-		}
+		$this->ID = $this->ID ? : $this->DB_WE->getInsertId();
 	}
 
 	function createAccount(){
@@ -336,14 +334,22 @@ class we_users_user{
 	}
 
 	function getPersistentSlotsFromDB(){
-		$tableInfo = $this->DB_WE->metadata($this->Table);
-		$tmp = getHash('SELECT * FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ID), $this->DB_WE);
-		$fields = array_keys($this->persistent_slots);
-		foreach($tableInfo as $t){
-			$fieldName = $t['name'];
-			if(in_array($fieldName, $fields)){
-				$this->$fieldName = $tmp[$fieldName];
+		$slots = array();
+		foreach(array_keys($this->persistent_slots) as $slot){
+			switch($slot){
+				case 'altID':
+					break;
+				case 'Ping':
+					$slots[] = 'DATE_FORMAT(Ping,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS Ping';
+					break;
+				default:
+					$slots[] = $slot;
 			}
+		}
+
+		$tmp = getHash('SELECT ' . implode(',', $slots) . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ID), $this->DB_WE);
+		foreach($tmp as $fieldName => $val){
+			$this->$fieldName = $val;
 		}
 	}
 
@@ -1444,7 +1450,7 @@ _multiEditorreload = true;";
 			),
 			array(
 				array(array('style' => 'padding-bottom:10px;'), we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION["user"]["ID"] == $this->ID || !permissionhandler::hasPerm("ADMINISTRATOR")))),
-				array(array("class" => "defaultfont"), g_l('modules_users', '[lastPing]') . ' ' . (($this->Ping) ? date('d.m.Y H:i:s', $this->Ping) : '-'))
+				array(array("class" => "defaultfont"), g_l('modules_users', '[lastPing]') . ' ' . ($this->Ping ? : '-'))
 			),
 			array(
 				array(array("colspan" => 2, 'style' => 'padding-bottom:10px;'), we_html_tools::htmlFormElementTable($yuiSuggest->getHTML(), g_l('modules_users', '[group]')))

@@ -54,11 +54,11 @@ class we_users_online{
 		); //FIXME:add usefull colors
 		$i = -1;
 		$img = we_base_file::load($_SERVER['DOCUMENT_ROOT'] . IMAGE_DIR . 'pd/usr/user.svg');
-		$DB_WE->query('SELECT ID,username,Ping  FROM ' . USER_TABLE . ' WHERE Ping>UNIX_TIMESTAMP(DATE_SUB(NOW(),INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' second )) ORDER BY Ping DESC');
+		$DB_WE->query('SELECT ID,username FROM ' . USER_TABLE . ' WHERE Ping>(DATE_SUB(NOW(),INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND )) ORDER BY Ping DESC');
 		$colorCount = count($colors);
 		while($DB_WE->next_record()){
 			$this->num_uo++;
-			$_fontWeight = ($_SESSION["user"]["ID"] == $DB_WE->f('ID')) ? 'bold' : 'bold';
+			$_fontWeight = ($_SESSION['user']['ID'] == $DB_WE->f('ID')) ? 'bold' : 'bold';
 			if($i >= 0){
 				$_row .= '<tr><td height="8">' . we_html_tools::getPixel(1, 8) . '</td></tr>';
 			}
