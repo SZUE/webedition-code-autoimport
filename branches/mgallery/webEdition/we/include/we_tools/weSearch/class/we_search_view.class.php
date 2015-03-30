@@ -1529,7 +1529,8 @@ weSearch.g_l = {
 			array("dat" => '<a href="javascript:weSearch.setOrder(\'Alt\',\'' . $whichSearch . '\');">alt</a> <span id="Alt_' . $whichSearch . '" >' . $this->getSortImage('alt', $whichSearch) . '</span>'),
 			array("dat" => '<a href="javascript:weSearch.setOrder(\'Title\',\'' . $whichSearch . '\');">title</a> <span id="Title_' . $whichSearch . '" >' . $this->getSortImage('title', $whichSearch) . '</span>'),
 			array("dat" => '<a href="javascript:weSearch.setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . '</a> <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span>'),
-			array("dat" => '<a href="javascript:weSearch.setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span>')
+			array("dat" => '<a href="javascript:weSearch.setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span>'),
+			array("dat" => '')
 		);
 	}
 
@@ -1658,30 +1659,44 @@ weSearch.g_l = {
 					array("dat" => ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-")),
 					) :
 					array(
-					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . '"', 'dat' => we_html_tools::getPixel(1, 1) . $actionCheckbox),
+					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => array(
+							array('elem' => 'table', '' => '', 'dat' => array(
+									array('elem' => 'row', 'dat' => array(
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'padding-top:10px;"', 'dat' => we_html_tools::getPixel(1, 1) . $actionCheckbox),
+										)),
+									array('elem' => 'row', 'attribs' => '', 'dat' => array(
+											array('elem' => 'td', 'attribs' => '', 'dat' => '&nbsp;'),
+										))
+									)
+								)
+						)),
 					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '">' . $iconHTML['imageView']),
 					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => array(
 							array('elem' => 'table', '' => '', 'dat' => array(
 									array('elem' => 'row', 'dat' => array(
-											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'font-weight:bold;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '"><u>' . $_result[$f]["Text"]),
-											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:75px;text-align:left"', 'dat' => $_result[$f]['fileSize']),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'font-weight:bold;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '"><u>' . $_result[$f]["Text"] . '</u></a>'),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:75px;text-align:left"', 'dat' => we_html_button::create_button("image:btn_direction_right", "javascript:weSearch.toggleAdditionalContent(this, " . $_result[$f]['docID'] . ")", true, 21, 22, "", "", $_result[$f]['IsUsed'] ? false : true, false, '__' . $_result[$f]['docID'])),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:70px;text-align:left"', 'dat' => $_result[$f]['fileSize']),
 											array('elem' => 'td', 'attribs' => ($_result[$f]['IsUsed'] ? 'title="Dokument wird benutzt...: Click to open!" onclick="weSearch.showAdditional(' . $_result[$f]['docID'] . ')" style="cursor:pointer;width:45px;text-align:left;' . $standardStyle . 'height:auto;"' : 'title="Dokument wird nicht benutzt!" style="width:45px;text-align:left;' . $standardStyle . '"'), 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_' . ($_result[$f]['IsUsed'] ? 'green' : 'yellow') . '.gif">'),
 											array('elem' => 'td', 'attribs' => ($_result[$f]['IsAltSet'] ? 'title="Alt-Attribut gesetzt" ' : 'title="Alt-Attribut nicht gesetzt" ') . 'style="width:45px;text-align:left;' . $standardStyle . '"', 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_' . ($_result[$f]['IsAltSet'] ? 'green' : 'red') . '.gif">'),
 											array('elem' => 'td', 'attribs' => ($_result[$f]['IsTitleSet'] ? 'title="Title-Attribut gesetzt" ' : 'title="Title-Attribut nicht gesetzt" ') . 'style="width:45px;text-align:left;' . $standardStyle . '"', 'dat' => '<img align="bottom" src="' . IMAGE_DIR . 'we_boebbel_' . ($_result[$f]['IsTitleSet'] ? 'green' : 'red') . '.gif">'),
 											array('elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $_result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $_result[$f]['CreationDate']) : '-'),
 											array('elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $_result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $_result[$f]['ModDate']) : '-'),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:30px;text-align:left"', 'dat' => we_html_button::create_button("image:edit_edit", "javascript:weSearch.openToEdit('" . FILE_TABLE . "'," . $_result[$f]["docID"] . ",'" . $_result[$f]["ContentType"] . "');", true, 27, 22)),
 										)),
 									array('elem' => 'row', 'attribs' => 'background-color:green', 'dat' => array(
 											array('elem' => 'td', 'attribs' => 'id="infoTable_' . $_result[$f]["docID"] . '" style="display:none;width:100%;text-align:left;' . $standardStyle . 'height:auto;overflow:visible;" colspan="5"', 'dat' => $this->makeAdditionalContentMedia($_result[$f])),
 										))
 								), 'colgroup' => '</colgroup>
 											<col style="text-align:left;"/>
-											<col style="width:75px;text-align:left;"/>
+											<col style="width:30px;text-align:left;"/>
+											<col style="width:70px;text-align:left;"/>
 											<col style="width:45px;text-align:left;"/>
 											<col style="width:45px;text-align:left;"/>
 											<col style="width:45px;text-align:left;"/>
 											<col style="width:90px;text-align:left;"/>
 											<col style="width:90px;text-align:left;"/>
+											<col style="width:30px;text-align:left;"/>
 											</colgroup>'
 							)
 						)),
@@ -1776,10 +1791,16 @@ weSearch.g_l = {
 
 	function makeAdditionalContentMedia($result){
 		$usedMediaLinks = $this->searchclass->getUsedMediaLinks();
+
 		if(isset($usedMediaLinks['mediaID_' . $result["docID"]]) && $usedMediaLinks['mediaID_' . $result["docID"]]){
-			$out = '<table style="font-weight:normal"><tr><td>noch komplett unformatiert und ohne Link und Button...:</td></tr>';
-			foreach($usedMediaLinks['mediaID_' . $result["docID"]] as $idTable => $path){
-				$out .= '<tr><td>' . $path . ' (' . $idTable . ')</td></tr>';
+			$out = '<table style="font-weight:normal"><tr><td>Dieses Medien-Dokument wird an folgenden Stellen referenziert:</td></tr>';// FIXME: G_L()
+			foreach($usedMediaLinks['mediaID_' . $result["docID"]] as $type => $links){
+				$out .= '<tr><td><em>' . g_l('global', '[' . $type . ']') . ':</em></td></tr>';
+				foreach($links as $link){
+					$out .= '<tr><td style="padding-left:12px;">' .
+							we_html_button::create_button("image:edit_edit", "javascript:weSearch.openToEdit('" . FILE_TABLE . "'," . $_result[$f]["docID"] . ",'" . $_result[$f]["ContentType"] . "');", true, 27, 22) .
+							'<a href="javascript:weSearch.openToEdit(\'' . $link['table'] . '\',\'' . $link["id"] . '\',\'\')" title="' . $link['path'] . '"><u>' . $link['path'] . '</u></a></td></tr>';
+				}
 			}
 			$out .= '</table>';
 
@@ -2343,12 +2364,13 @@ weSearch.g_l = {
 <col style="width:30px;text-align:center;"/>
 <col style="width:80px;text-align:center;"/>
 <col style="text-align:left;"/>
-<col style="width:75px;text-align:left;"/>
+<col style="width:70px;text-align:left;"/>
 <col style="width:45px;text-align:left;"/>
 <col style="width:45px;text-align:left;"/>
 <col style="width:45px;text-align:left;"/>
 <col style="width:90px;text-align:left;"/>
 <col style="width:90px;text-align:left;"/>
+<col style="width:30px;text-align:left;"/>
 </colgroup>'
 			) .
 			'<tr style="height:20px;">

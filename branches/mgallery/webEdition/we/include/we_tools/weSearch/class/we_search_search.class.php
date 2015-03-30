@@ -720,6 +720,14 @@ class we_search_search extends we_search_base{
 		$db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' WHERE type="media" AND remTable="' . stripTblPrefix(FILE_TABLE) . '" ' . ($inIDs ? 'AND remObj IN (' . trim($db->escape($inIDs), ',') . ')' : '') . ' AND position=0');
 
 		if($holdAllLinks){
+			$types = array(
+				FILE_TABLE => 'documents',
+				TEMPLATES_TABLE => 'templates',
+				OBJECT_FILES_TABLE => 'objects',
+				OBJECT_TABLE => 'classes',
+				CATEGORY_TABLE => 'categorys'
+			);
+
 			while($db->next_record()){
 				$rec = $db->getRecord();
 				$tmpMediaLInks[$rec['remObj']][] = array($rec['ID'],$rec['DocumentTable']);
@@ -729,10 +737,10 @@ class we_search_search extends we_search_base{
 			foreach($groups as $k => $v){
 				$paths[$k] = id_to_path($v, addTblPrefix($k), null, false, true);
 			}
+
 			foreach($tmpMediaLInks as $m_id => $v){
 				foreach($v as $val){
-					$type = addTblPrefix($val[1]) === FILE_TABLE ? 'Dokument: ' : (addTblPrefix($val[1]) === OBJECT_FILES_TABLE ? 'Objekt: ' : 'Kategorie: ');
-					$this->usedMediaLinks['mediaID_' . $m_id][$val[0] . '__' . addTblPrefix($val[1])] = $type . $paths[$val[1]][$val[0]];
+					$this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][] = array('id' => $val[0], 'table' => addTblPrefix($val[1]), 'path' => $paths[$val[1]][$val[0]]);
 				}
 			}
 		} else {

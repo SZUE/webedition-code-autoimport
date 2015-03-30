@@ -820,12 +820,13 @@ weSearch = {
 		}
 	},
 
-	showAdditional: function(id){
+	toggleAdditionalContent: function(btn, id){
 		var elem = document.getElementById('infoTable_' + id);
 
 		if(elem){
 			elem.style.display = elem.style.display === 'block' ? 'none' : 'block';
 		}
+		btn.firstChild.src = this.we_const.IMAGE_DIR + 'button/icons/direction_' + (elem.style.display === 'block' ? 'down' : 'right') + '.gif';
 	},
 
 	ajaxCallbackPublishDocs: {
