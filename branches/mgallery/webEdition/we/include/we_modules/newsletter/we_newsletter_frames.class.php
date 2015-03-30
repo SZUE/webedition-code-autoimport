@@ -359,7 +359,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 		foreach($newsletterMailOrders as $key => $newsletterMailOrder){
 			$table = new we_html_table(array('cellpadding' => 3, 'cellspacing' => 0, 'border' => 0, 'class' => 'defaultfont', 'style' => 'width: 588px'), 1, 5);
-			$this->View->db->query('SELECT Log,COUNT(*) FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ' AND Log NOT IN (\'log_start_send\',\'log_end_send\') AND stamp BETWEEN "' . $newsletterMailOrder['start_send'] . '" AND "' . $newsletterMailOrder['end_send'] . '" GROUP BY Log');
+			$this->View->db->query('SELECT Log,COUNT(1) FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ' AND Log NOT IN (\'log_start_send\',\'log_end_send\') AND stamp BETWEEN "' . $newsletterMailOrder['start_send'] . '" AND "' . (isset($newsletterMailOrder['end_send']) ? $newsletterMailOrder['end_send'] : 'NOW()') . '" GROUP BY Log');
 
 			$results = array();
 			while($this->View->db->next_record(MYSQL_NUM)){
@@ -384,7 +384,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table->setCol(1, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'blacklist_total', 'style' => 'color:' . (($allBlockedByBlacklist > 0) ? 'red' : 'green') . ';'), $allBlockedByBlacklist));
 			$table->setCol(1, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (($allBlockedByBlacklist == 0) ? "valid.gif" : "invalid.gif"))));
 			//todo: statt show black list, sollte show_log begrenzt auf Log=email_is_black + $start_send + start_end
-			$table->setCol(1, 4, array('style' => 'width: 35px'), (($allBlockedByBlacklist == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('" . WEBEDITION_DIR . "we_lcmd.php?we_cmd[0]=black_list')"))));
+			$table->setCol(1, 4, array('style' => 'width: 35px'), (($allBlockedByBlacklist == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button("image:btn_function_view", "javascript:top.opener.top.we_cmd('black_list');"))));
 
 			/* process bar blocked by domain check */
 			$allBlockedByDomainCheck = (array_key_exists("domain_nok", $results) ? $results['domain_nok'] : 0);
@@ -401,7 +401,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table->setCol(2, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'domain_total', 'style' => 'color:' . (($allBlockedByDomainCheck > 0) ? 'red' : 'green') . ';'), $allBlockedByDomainCheck));
 			$table->setCol(2, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (($allBlockedByDomainCheck == 0) ? "valid.gif" : "invalid.gif"))));
 			//todo: statt domain, sollte show_log begrenzt auf Log=domain_nok + $start_send + start_end
-			$table->setCol(2, 4, array('style' => 'width: 35px'), (($allBlockedByDomainCheck == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('" . WEBEDITION_DIR . "we_lcmd.php?we_cmd[0]=domain_check')"))));
+			$table->setCol(2, 4, array('style' => 'width: 35px'), (($allBlockedByDomainCheck == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button("image:btn_function_view", "javascript:top.opener.top.we_cmd('domain_check');"))));
 
 			/* process bar all clear recipients */
 			$allClearRecipients = (array_key_exists("mail_sent", $results) ? $results['mail_sent'] : 0);
@@ -418,7 +418,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table->setCol(3, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'recipients_total', 'style' => 'color:' . (($allClearRecipients <= 0) ? 'red' : 'green') . ';'), $allClearRecipients));
 			$table->setCol(3, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . (($allClearRecipients == $allRecipients) ? "icons/valid.gif" : "alert_tiny.gif"), "title" => (($allClearRecipients < $allRecipients) ? g_l('modules_newsletter', '[reporting][mailing_advice_not_success]') : ''))));
 			//todo: statt show_log, sollte show_log begrenzt auf Log=email_sent + $start_send + start_end
-			$table->setCol(3, 4, array('style' => 'width: 35px'), we_html_button::position_yes_no_cancel(we_html_button::create_button("image:btn_function_view", "javascript:top.opener.top.load.location.replace('" . WEBEDITION_DIR . "we_lcmd.php?we_cmd[0]=show_log')")));
+			$table->setCol(3, 4, array('style' => 'width: 35px'), we_html_button::position_yes_no_cancel(we_html_button::create_button("image:btn_function_view", "javascript:top.opener.top.we_cmd('show_log')")));
 
 			/* total recipients */
 			$table->addRow();
@@ -1301,7 +1301,7 @@ window.onload=extraInit;');
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
-			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHidden('home', 0));
+			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getHiddens(array('ncmd' => 'home')) . we_html_element::htmlHidden('home', 0));
 			$GLOBALS['mod'] = 'newsletter';
 			ob_start();
 			include(WE_MODULES_PATH . 'home.inc.php');
@@ -1310,103 +1310,10 @@ window.onload=extraInit;');
 			return $out;
 		}
 
-		$js = $this->View->getJSProperty() .
+		$js = $this->View->getJSProperty(array('onload' => 'setFocus();')) .
 			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
 			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
-			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js') .
-			we_html_element::jsElement('
-if (top.content.get_focus) {
-	self.focus();
-} else {
-	top.content.get_focus=1;
-}
-
-var countSetTitle = 0;
-function setHeaderTitle() {
-	if(parent.edheader && parent.edheader.setTitlePath) {
-		if(preObj  = document.getElementById("yuiAcInputPathGroup")) {
-			parent.edheader.hasPathGroup = true;
-			parent.edheader.setPathGroup(preObj.value);
-		} else {
-			parent.edheader.hasPathGroup = false;
-		}
-
-		if(postObj = document.getElementById("yuiAcInputPathName")) {
-			parent.edheader.hasPathName = true;
-			parent.edheader.setPathName(postObj.value);
-		} else {
-			parent.edheader.hasPathName = false;
-		}
-		parent.edheader.setTitlePath();
-		countSetTitle = 0;
-	} else {
-		if(countSetTitle < 30) {
-			setTimeout(setHeaderTitle,100);
-			countSetTitle++;
-		/* @dd: code from version 5.0.0.7, generated on bugfix merge: */
-		/* please remove if not needed any more */
-		/*
-		var elem1 = document.getElementById("fieldPathGroup");
-		var elem2 = document.getElementById("fieldPathName");
-		if (elem1 && elem2) {
-			pre = document.getElementById("fieldPathGroup").value;
-			post = document.getElementById("fieldPathName").value;
-			if(parent.edheader && parent.edheader.setTitlePath) {
-				parent.edheader.hasPathGroup = true;
-				parent.edheader.setPathGroup(pre);
-				parent.edheader.hasPathName = true;
-				parent.edheader.setPathName(post);
-				parent.edheader.setTitlePath();
-				countSetTitle = 0;
-			} else {
-				if(countSetTitle < 30) {
-					setTimeout(setHeaderTitle,100);
-					countSetTitle++;
-				}
-			}
-		*/
-		}
-	}
-}
-
-function weShowMailsByStatus(status, group) {
-	var maillist = document.getElementById("we_recipient"+group).options;
-	switch(status) {
-		case "0":
-			for(var i=0; i<maillist.length; i++) {
-				maillist[i].style.display="";
-			}
-			break;
-		case "1":
-			for(var i=0; i<maillist.length; i++) {
-				if (maillist[i].className == "markValid") {
-					maillist[i].style.display="none";
-				}
-			}
-			break;
-		default :
-			//alert(status);
-	}
-}
-
-function calendarSetup(group, x){
-	for(i=0;i<=x;i++) {
-	 if(document.getElementById("date_picker_from_"+group+"_"+i+"") != null) {
-		Calendar.setup({inputField:"filter_fieldvalue_"+group+"_"+i+"",ifFormat:"%d.%m.%Y",button:"date_picker_from_"+group+"_"+i+"",align:"Tl",singleClick:true});
-	 }
-	}
- }
-
-function changeFieldValue(val,valueField) {
-	top.content.hot=1;
-	document.we_form.ncmd.value=arguments[0];
-	document.we_form.ngroup.value=arguments[1];
-
-	if(val=="MemberSince" || val=="LastLogin" || val=="LastAccess") {
-		document.getElementById(valueField).value = "";
-	}
-	submitForm();
-}');
+			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js');
 
 		$css = we_html_element::cssLink(LIB_DIR . "additional/jscalendar/skins/aqua/theme.css");
 

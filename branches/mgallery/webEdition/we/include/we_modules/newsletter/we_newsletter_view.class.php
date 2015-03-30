@@ -277,7 +277,7 @@ function submitForm() {
 }');
 	}
 
-	function getJSProperty(){
+	function getJSProperty($load){
 		$_mailCheck = (isset($this->settings['reject_save_malformed']) && $this->settings['reject_save_malformed'] ?
 				"we.validate.email(email);" :
 				"true");
@@ -329,7 +329,7 @@ function getStatusContol() {
 	return document.we_form.' . (isset($this->uid) ? $this->uid : "") . '_Status.value;
 }') .
 			we_html_element::jsScript(JS_DIR . 'utils/lib.js') .
-			we_html_element::jsScript(WE_JS_NEWSLETTER_MODULE_DIR . 'newsletter_property.js');
+			we_html_element::jsScript(WE_JS_NEWSLETTER_MODULE_DIR . 'newsletter_property.js',$load);
 	}
 
 	function processCommands(){

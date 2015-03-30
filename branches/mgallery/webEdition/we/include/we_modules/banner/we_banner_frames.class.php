@@ -141,7 +141,7 @@ var we_dir="' . WEBEDITION_DIR . '";'
 			');
 
 		//TODO: we have the following body in several modules!
-		$body = we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()','id' => 'eHeaderBody'), we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
+		$body = we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'id' => 'eHeaderBody'), we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
 							we_html_element::htmlB(str_replace(" ", "&nbsp;", $headline1) . ':&nbsp;') .
 							we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
 							)
@@ -169,14 +169,13 @@ var we_dir="' . WEBEDITION_DIR . '";'
 	}
 
 	function getHTMLCmd(){
-		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array(), $this->View->htmlHidden("ncmd", "") .
-						$this->View->htmlHidden("nopt", "")
+		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array(), we_html_element::htmlHiddens(array("ncmd" => "", "nopt" => ""))
 					)
 				), $this->View->getJSCmd());
 	}
 
 	function getHTMLDCheck(){
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('onload'=>'self.focus();'), $this->View->getHTMLDCheck()));
+		return $this->getHTMLDocument(we_html_element::htmlBody(array('onload' => 'self.focus();'), $this->View->getHTMLDCheck()));
 	}
 
 }

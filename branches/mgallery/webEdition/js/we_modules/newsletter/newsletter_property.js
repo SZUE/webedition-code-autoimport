@@ -624,5 +624,79 @@ function searchEmail(searchname) {
 function isValidEmail(email) {
 	email = email.toLowerCase();
 	return checkMail ? we.validate.email(email) : true;
-	//return (email.match(/^([[:space:]_:\+\.0-9a-z-]+[\<]{1})?[_\.0-9a-z-]+@([0-9a-z-]+\.)+[a-z]{2,6}(\>)?$/) ? true : false);
+}
+
+var countSetTitle = 0;
+function setHeaderTitle() {
+	if (parent.edheader && parent.edheader.setTitlePath) {
+		if (preObj = document.getElementById("yuiAcInputPathGroup")) {
+			parent.edheader.hasPathGroup = true;
+			parent.edheader.setPathGroup(preObj.value);
+		} else {
+			parent.edheader.hasPathGroup = false;
+		}
+
+		if (postObj = document.getElementById("yuiAcInputPathName")) {
+			parent.edheader.hasPathName = true;
+			parent.edheader.setPathName(postObj.value);
+		} else {
+			parent.edheader.hasPathName = false;
+		}
+		parent.edheader.setTitlePath();
+		countSetTitle = 0;
+	} else {
+		if (countSetTitle < 30) {
+			setTimeout(setHeaderTitle, 100);
+			countSetTitle++;
+		}
+	}
+}
+
+function weShowMailsByStatus(status, group) {
+	var maillist = document.getElementById("we_recipient" + group).options;
+	switch (status) {
+		case "0":
+			for (var i = 0; i < maillist.length; i++) {
+				maillist[i].style.display = "";
+			}
+			break;
+		case "1":
+			for (var i = 0; i < maillist.length; i++) {
+				if (maillist[i].className == "markValid") {
+					maillist[i].style.display = "none";
+				}
+			}
+			break;
+		default :
+			//alert(status);
+	}
+}
+
+function calendarSetup(group, x) {
+	for (i = 0; i <= x; i++) {
+		if (document.getElementById("date_picker_from_" + group + "_" + i + "") != null) {
+			Calendar.setup({inputField: "filter_fieldvalue_" + group + "_" + i + "", ifFormat: "%d.%m.%Y", button: "date_picker_from_" + group + "_" + i + "", align: "Tl", singleClick: true});
+		}
+	}
+}
+
+function changeFieldValue(val, valueField) {
+	top.content.hot = 1;
+	document.we_form.ncmd.value = arguments[0];
+	document.we_form.ngroup.value = arguments[1];
+
+	if (val == "MemberSince" || val == "LastLogin" || val == "LastAccess") {
+		document.getElementById(valueField).value = "";
+	}
+	submitForm();
+}
+
+function setFocus() {
+	if (top.content) {
+		if (top.content.get_focus) {
+			self.focus();
+		} else {
+			top.content.get_focus = 1;
+		}
+	}
 }

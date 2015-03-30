@@ -50,8 +50,7 @@ function we_cmd() {
 			break;
 		default :
 			var args = [];
-			for (var i = 0; i < arguments.length; i++)
-			{
+			for (var i = 0; i < arguments.length; i++) {
 				args.push(arguments[i]);
 			}
 			top.opener.we_cmd.apply(this, args);

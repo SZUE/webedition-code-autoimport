@@ -24,9 +24,9 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-if(($cmd0 = we_base_request::_(we_base_request::STRING, 'wecmd0')) !== false){ // when calling from applet (we can not call directly we_cmd[0] with the applet =>  Safari OSX doesn't support live connect)
-	$_REQUEST['we_cmd'][0] = $cmd0;
-}
+/* if(($cmd0 = we_base_request::_(we_base_request::STRING, 'wecmd0')) !== false){ // when calling from applet (we can not call directly we_cmd[0] with the applet =>  Safari OSX doesn't support live connect)
+  $_REQUEST['we_cmd'][0] = $cmd0;
+  } */
 $reqArr = we_base_request::_(we_base_request::STRING, 'we_cmd');
 
 echo we_html_tools::getHtmlTop('command-bridge', '', 5);
@@ -39,10 +39,10 @@ echo we_html_tools::getHtmlTop('command-bridge', '', 5);
 		"nothing_to_publish": "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_publish]')); ?>",
 	};
 	var tables = {
-		"FILE_TABLE": "<?php echo defined('FILE_TABLE') ? FILE_TABLE : 'f'; ?> ",
-		"TEMPLATES_TABLE": "<?php echo defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : 't'; ?> ",
-		"VFILE_TABLE": "<?php echo defined('VFILE_TABLE') ? VFILE_TABLE : 'v'; ?> ",
-		"OBJECT_FILES_TABLE": "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'o'; ?> "
+		"FILE_TABLE": "<?php echo defined('FILE_TABLE') ? FILE_TABLE : 'f'; ?>",
+		"TEMPLATES_TABLE": "<?php echo defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : 't'; ?>",
+		"VFILE_TABLE": "<?php echo defined('VFILE_TABLE') ? VFILE_TABLE : 'v'; ?>",
+		"OBJECT_FILES_TABLE": "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'o'; ?>"
 	};
 	var contentTypes = {
 		'TEMPLATE': '<?php echo we_base_ContentTypes::TEMPLATE; ?>',

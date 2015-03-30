@@ -71,7 +71,6 @@ function we_lcmd(par) {
 		case 'new_text_plain':
 			top.we_cmd("new", tables.FILE_TABLE, "", contentTypes.TEXT);
 			return;
-
 		case 'new_text_xml':
 			top.we_cmd("new", tables.FILE_TABLE, "", contentTypes.XML);
 			return;

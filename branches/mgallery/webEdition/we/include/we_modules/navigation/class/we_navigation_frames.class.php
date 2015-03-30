@@ -275,7 +275,7 @@ function setTab(tab) {
 					'style' => 'margin-left: 15px'
 			)));
 		} else {
-			$_table->setColContent(0, 1, we_html_element::htmlHidden(array('name' => 'Ordn', 'value' => -1)));
+			$_table->setColContent(0, 1, we_html_element::htmlHiddens(array('name' => 'Ordn', 'value' => -1)));
 		}
 		// name and folder block
 		// icen selector block
@@ -338,11 +338,12 @@ function setTab(tab) {
 			$_seltype[we_navigation_navigation::STPYE_CATLINK] = g_l('navigation', '[catLink]');
 		}
 
-		$_selection_block = $this->Model->Depended == 1 ? $this->getHTMLDependedProfile() : $this->View->htmlHidden(
-				'CategoriesControl', we_base_request::_(we_base_request::INT, 'CategoriesCount', 0)) . $this->View->htmlHidden(
-				'SortControl', we_base_request::_(we_base_request::INT, 'SortCount', 0)) . $this->View->htmlHidden(
-				'CategoriesCount', (isset($this->Model->Categories) ? count($this->Model->Categories) : 0)) . $this->View->htmlHidden(
-				'SortCount', (isset($this->Model->Sort) ? count($this->Model->Sort) : 0)) .
+		$_selection_block = $this->Model->Depended == 1 ? $this->getHTMLDependedProfile() :
+			we_html_element::htmlHiddens(array(
+				'CategoriesControl' => we_base_request::_(we_base_request::INT, 'CategoriesCount', 0),
+				'SortControl' => we_base_request::_(we_base_request::INT, 'SortCount', 0),
+				'CategoriesCount' => (isset($this->Model->Categories) ? count($this->Model->Categories) : 0),
+				'SortCount' => (isset($this->Model->Sort) ? count($this->Model->Sort) : 0))) .
 			'<div style="display: block;">' .
 			we_html_tools::htmlSelect('Selection', array(
 				we_navigation_navigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_selection]'),
@@ -497,10 +498,11 @@ function setTab(tab) {
 			'headline' => g_l('weClass', '[copyFolder]'),
 			'html' => we_html_element::jsElement("var selfNaviPath ='" . addslashes(
 					$this->Model->Path) . "';\nvar selfNaviId = '" . $this->Model->ID . "';") . "<div style='float:left; margin-right:20px'>" . we_html_tools::htmlAlertAttentionBox(
-				g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, ($this->_width_size - 120), true, 0) . "</div>" . "<div style='padding-top:{$_padding}px'>" . $_button_copyFolder . "</div>" . we_html_element::htmlHidden(
+				g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, ($this->_width_size - 120), true, 0) . "</div>" . "<div style='padding-top:{$_padding}px'>" . $_button_copyFolder . "</div>" . we_html_element::htmlHiddens(
 				array(
-					'name' => 'CopyFolderID', "value" => ''
-			)) . we_html_element::htmlHidden('CopyFolderPath', ''),
+					'name' => 'CopyFolderID',
+					"value" => '',
+					'CopyFolderPath' => '')),
 			'space' => $this->_space_size,
 			'noline' => 1
 		);
@@ -732,10 +734,11 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 
 		$_seltype[we_navigation_navigation::STPYE_CATEGORY] = g_l('navigation', '[categories]');
 
-		$_selection_block = $this->View->htmlHidden('CategoriesControl', we_base_request::_(we_base_request::INT, 'CategoriesCount', 0)) .
-			$this->View->htmlHidden('SortControl', we_base_request::_(we_base_request::INT, 'SortCount', 0)) .
-			$this->View->htmlHidden('CategoriesCount', (isset($this->Model->Categories) ? count($this->Model->Categories) : '0')) .
-			$this->View->htmlHidden('SortCount', (isset($this->Model->Sort) ? count($this->Model->Sort) : '0')) .
+		$_selection_block = we_html_element::htmlHiddens(array(
+				'CategoriesControl' => we_base_request::_(we_base_request::INT, 'CategoriesCount', 0),
+				'SortControl' => we_base_request::_(we_base_request::INT, 'SortCount', 0),
+				'CategoriesCount' => (isset($this->Model->Categories) ? count($this->Model->Categories) : '0'),
+				'SortCount' => (isset($this->Model->Sort) ? count($this->Model->Sort) : '0'))) .
 			'<div style="display: block;">
 				<div style="display:block;">
 				' . we_html_tools::htmlSelect(
@@ -1026,8 +1029,9 @@ function onSelectionClassChangeJS(value) {
 					'id' => 'tab1',
 					'style' => ($tabNr == 1 ? 'display: block;' : 'display: none')
 					), $this->View->getCommonHiddens($hiddens) .
-					$this->View->htmlHidden('IsFolder', (isset($this->Model->IsFolder) ? $this->Model->IsFolder : 0)) .
-					$this->View->htmlHidden('presetFolder', we_base_request::_(we_base_request::STRING, 'presetFolder', '')) .
+					we_html_element::htmlHiddens(array(
+						'IsFolder' => (isset($this->Model->IsFolder) ? $this->Model->IsFolder : 0),
+						'presetFolder' => we_base_request::_(we_base_request::STRING, 'presetFolder', ''))) .
 					we_html_multiIconBox::getHTML('', '100%', $this->getHTMLGeneral(), 30, '', -1, '', '', false, $preselect) .
 					($this->Model->IsFolder ?
 						we_html_multiIconBox::getHTML('', '100%', $this->getHTMLPropertiesGroup(), 30, '', -1, '', '', false, $preselect) :

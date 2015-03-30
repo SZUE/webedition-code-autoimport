@@ -197,7 +197,9 @@ function we_save() {
 	}
 
 	function getHTMLCmd(){
-		$form = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->htmlHidden("wcmd", "") . $this->View->htmlHidden("wopt", ""));
+		$form = we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
+			"wcmd"=> "",
+			"wopt"=> "")));
 		$body = we_html_element::htmlBody(array(), $form);
 
 		return $this->getHTMLDocument($body, $this->View->getCmdJS());
