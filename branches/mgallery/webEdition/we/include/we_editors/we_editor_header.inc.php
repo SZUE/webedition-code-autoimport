@@ -164,7 +164,7 @@ function we_setPath(path, text, id) {
 $_js_we_cmd = 'function we_cmd() {
 ' . ($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE ? 'parent.openedWithWE = 1;' : '') . "
 
-	var args = '';
+	//FIXME: do we need url???
 	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
 	for(var i = 0; i < arguments.length; i++){
 		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
@@ -172,15 +172,16 @@ $_js_we_cmd = 'function we_cmd() {
 			url += '&';
 		}
 	}
-	for(var i = 0; i < arguments.length; i++) {
-		args += 'arguments['+i+']' + ( (i < (arguments.length-1)) ? ',' : '');
-	}
+				var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
+			}
 
 	switch ( arguments[0] ) {
 
 		case 'switch_edit_page':
 			_EditorFrame.setEditorEditPageNr(arguments[1]);
-			eval('parent.we_cmd('+args+')');
+			parent.we_cmd.apply(this, args);
 		break;
 	}
 

@@ -133,10 +133,11 @@ function we_cmd() {
 			new jsWindow(dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=import", "import_customer", -1, -1, 640, 600, true, true, true, false);
 			break;
 		default:
+			var args = [];
 			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments[" + i + "]" + ((i < (arguments.length - 1)) ? "," : "");
+				args.push(arguments[i]);
 			}
-			eval("top.content.we_cmd(" + args + ")");
+			top.content.we_cmd.apply(this, args);
 	}
 }
 
@@ -160,6 +161,6 @@ var ajaxCallbackResetLogins = {
 	}
 };
 
-function resetLogins(id){
-	YAHOO.util.Connect.asyncRequest( "GET", dirs.WEBEDITION_DIR + "rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid="+id, ajaxCallbackResetLogins );
+function resetLogins(id) {
+	YAHOO.util.Connect.asyncRequest("GET", dirs.WEBEDITION_DIR + "rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=" + id, ajaxCallbackResetLogins);
 }

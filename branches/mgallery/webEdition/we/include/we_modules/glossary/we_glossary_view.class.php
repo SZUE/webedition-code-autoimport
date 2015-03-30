@@ -243,10 +243,12 @@ function we_cmd() {
 			break;
 
 		default:
+					var args = [];
 			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+				args.push(arguments[i]);
 			}
-			eval("top.opener.top.we_cmd(" + args + ")");
+			top.opener.top.we_cmd.apply(this, args);
+
 	}
 }');
 	}
@@ -274,10 +276,11 @@ function we_cmd() {
 			submitForm();
 			break;
 		default:
+					var args = [];
 			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+				args.push(arguments[i]);
 			}
-			eval("top.content.we_cmd("+args+")");
+			top.content.we_cmd.apply(this, args);
 	}
 }
 ' . $this->getJSSubmitFunction());

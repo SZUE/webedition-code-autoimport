@@ -178,7 +178,7 @@ function keyEditorListener(_successor) {
 		_editorType = "";
 
 		// check if an editor is open
-		if (top.weEditorFrameController !== undefined) {
+		if (top!==undefined && top.weEditorFrameController !== undefined) {
 			_activeEditorFrame = top.weEditorFrameController.getActiveEditorFrame();
 			if (top.weEditorFrameController.getActiveDocumentReference()) {
 				_editorType = _activeEditorFrame.getEditorType();

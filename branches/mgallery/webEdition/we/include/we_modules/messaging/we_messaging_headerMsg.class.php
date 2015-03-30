@@ -25,10 +25,6 @@
 class we_messaging_headerMsg{
 
 	static function pJS(){
-		echo we_html_element::jsScript(JS_DIR . 'header_msg.js');
-		?>
-		<script type="text/javascript"><!--
-		<?php
 		if(defined('MESSAGING_SYSTEM')){
 			$messaging = new we_messaging_messaging($_SESSION['weS']['we_data']['we_transaction']);
 			$messaging->set_login_data($_SESSION['user']['ID'], $_SESSION['user']['Username']);
@@ -36,13 +32,13 @@ class we_messaging_headerMsg{
 			$messaging->add_msgobj('we_todo', 1);
 
 			$newmsg_count = $messaging->used_msgobjs['we_message']->get_newmsg_count();
-			$newtodo_count =$messaging->used_msgobjs['we_todo']->get_newmsg_count();
-			echo 'header_msg_update(' . $newmsg_count . ', ' . $newtodo_count . ');';
+			$newtodo_count = $messaging->used_msgobjs['we_todo']->get_newmsg_count();
+			$load = 'header_msg_update(' . $newmsg_count . ', ' . $newtodo_count . ');';
+		} else {
+			$load = '';
 		}
-		?>
-			//-->
-		</script>
-		<?php
+
+		echo we_html_element::jsScript(JS_DIR . 'header_msg.js', array('onload' => $load));
 	}
 
 	static function pbody(){

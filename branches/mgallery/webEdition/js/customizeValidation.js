@@ -49,10 +49,12 @@ function we_cmd() {
 			window.close();
 			break;
 		default :
-			for (var i = 0; i < arguments.length; i++) {
-				args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
+			var args = [];
+			for (var i = 0; i < arguments.length; i++)
+			{
+				args.push(arguments[i]);
 			}
-			eval('top.opener.we_cmd(' + args + ')');
+			top.opener.we_cmd.apply(this, args);
 			break;
 	}
 }

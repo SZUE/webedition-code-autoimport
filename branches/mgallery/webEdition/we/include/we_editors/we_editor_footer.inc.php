@@ -124,7 +124,7 @@ function generatedSaveDoc(){
 
 if($we_doc->IsTextContentDoc && $haspermNew && //	$_js_permnew
 	($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)){ // not in SeeMode or in editmode
-$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
+	$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 	$_js_permnew = ($_ctrlElem ? //	changes for we:controlElement
 			'setTextDocument(true,' . ($_ctrlElem["checked"] ? "true" : "false") . ');' :
 			'setTextDocument(false);');
@@ -183,37 +183,39 @@ if(inWorkflow($we_doc)){
 <body id="footerBody" onload="we_footerLoaded();">
 	<form name="we_form" action=""<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onsubmit="sub();
 				return false;"<?php } ?>>
-		<?php
-		echo we_html_element::htmlHidden('sel',$we_doc->ID);
-		$_SESSION['weS']['seemForOpenDelSelector']['ID'] = $we_doc->ID;
-		$_SESSION['weS']['seemForOpenDelSelector']['Table'] = $we_doc->Table;
+					<?php
+					echo we_html_element::htmlHidden('sel', $we_doc->ID);
+					$_SESSION['weS']['seemForOpenDelSelector'] = array(
+						'ID' => $we_doc->ID,
+						'Table' => $we_doc->Table
+					);
 
-		if($we_doc->userCanSave()){
+					if($we_doc->userCanSave()){
 
-			switch($_SESSION['weS']['we_mode']){
-				default:
-				case we_base_constants::MODE_NORMAL: // open footer for NormalMode
-					we_editor_footer::normalMode($we_doc, $we_transaction, $haspermNew, $showPubl);
-					break;
-				case we_base_constants::MODE_SEE: // open footer for SeeMode
-					we_editor_footer::SEEMode($we_doc, $we_transaction, $haspermNew, $showPubl);
-					break;
-			}
-		} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
+						switch($_SESSION['weS']['we_mode']){
+							default:
+							case we_base_constants::MODE_NORMAL: // open footer for NormalMode
+								we_editor_footer::normalMode($we_doc, $we_transaction, $haspermNew, $showPubl);
+								break;
+							case we_base_constants::MODE_SEE: // open footer for SeeMode
+								we_editor_footer::SEEMode($we_doc, $we_transaction, $haspermNew, $showPubl);
+								break;
+						}
+					} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 
-			$_noPermTable = new we_html_table(array("cellpadding" => 0,
-				"cellspacing" => 0,
-				"border" => 0), 1, 4);
+						$_noPermTable = new we_html_table(array("cellpadding" => 0,
+							"cellspacing" => 0,
+							"border" => 0), 1, 4);
 
-			$_noPermTable->setColContent(0, 0, we_html_tools::getPixel(20, 2));
-			$_noPermTable->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
-			$_noPermTable->setColContent(0, 2, we_html_tools::getPixel(10, 2));
-			$_noPermTable->setColContent(0, 3, g_l('SEEM', '[no_permission_to_edit_document]'));
+						$_noPermTable->setColContent(0, 0, we_html_tools::getPixel(20, 2));
+						$_noPermTable->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
+						$_noPermTable->setColContent(0, 2, we_html_tools::getPixel(10, 2));
+						$_noPermTable->setColContent(0, 3, g_l('SEEM', '[no_permission_to_edit_document]'));
 
 
-			echo $_noPermTable->getHtml();
-		}
-		?>
+						echo $_noPermTable->getHtml();
+					}
+					?>
 	</form>
 </body>
 </html>

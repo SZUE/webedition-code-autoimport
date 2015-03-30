@@ -71,10 +71,11 @@ function we_cmd(){
 			new jsWindow(url,"we_cateditor",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		default:
-			for(var i = 0; i < arguments.length; i++){
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+					var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 			}
-			eval("opener.we_cmd("+args+")");
+			opener.we_cmd.apply(this, args);
 	}
 }
 var lastCFolder;

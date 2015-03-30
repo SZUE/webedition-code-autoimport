@@ -483,10 +483,12 @@ if($ok && $cmd === "edit_link_at_class"){
 					break;
 
 				default:
+					var args = [];
 					for (var i = 0; i < arguments.length; i++) {
-						args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
+						args.push(arguments[i]);
 					}
-					eval('opener.parent.we_cmd(' + args + ')');
+					opener.parent.we_cmd.apply(this, args);
+
 			}
 		}
 

@@ -74,7 +74,9 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function(){we_cmd("new_newsletter");}, 10);
+				setTimeout(function () {
+					we_cmd("new_newsletter");
+				}, 10);
 			}
 			break;
 
@@ -83,7 +85,9 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function(){we_cmd("new_newsletter_group");}, 10);
+				setTimeout(function () {
+					we_cmd("new_newsletter_group");
+				}, 10);
 			}
 			break;
 
@@ -215,9 +219,11 @@ function we_cmd() {
 			break;
 
 		default:
-			for (i = 0; i < arguments.length; i++) {
-				args += "arguments[" + i + "]" + ((i < (arguments.length - 1)) ? "," : "");
+			var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 			}
-			eval("top.opener.top.we_cmd(" + args + ")");
+			top.opener.top.we_cmd.apply(this, args);
+
 	}
 }

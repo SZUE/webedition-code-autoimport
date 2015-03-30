@@ -161,10 +161,12 @@ function we_cmd(){
 	        new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
 	        break;
 		default:
-			for(var i = 0; i < arguments.length; i++){
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+					var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 			}
-			eval("opener.top.we_cmd("+args+")");
+			opener.we_cmd.apply(this, args);
+
 			break;
 	 }
 }') . '

@@ -115,7 +115,7 @@ function r_tree_open(id) {
 }
 
 function update_messaging() {
-	if (!deleteMode && (mode == "show_folder_content") ) {
+	if (!deleteMode && (mode == "show_folder_content")) {
 		if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
 			ent_str = "&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
 		} else {
@@ -198,7 +198,7 @@ function we_cmd() {
 	switch (arguments[0]) {
 		case "messaging_exit":
 			if (hot != "1") {
-				eval('top.opener.top.we_cmd("exit_modules")');
+				top.opener.top.we_cmd("exit_modules");
 			}
 			break;
 		case "show_folder_content":
@@ -265,10 +265,12 @@ function we_cmd() {
 			top.content.cmd.location = we_frameset + "?pnt=cmd&we_transaction=" + we_transaction + "&mcmd=paste_msg";
 			break;
 		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments[" + i + "]" + ((i < (arguments.length - 1)) ? "," : "");
+			var args = [];
+			for (var i = 0; i < arguments.length; i++)
+			{
+				args.push(arguments[i]);
 			}
-			eval("top.opener.top.we_cmd(" + args + ")");
+			top.opener.top.we_cmd.apply(this, args);
 	}
 }
 

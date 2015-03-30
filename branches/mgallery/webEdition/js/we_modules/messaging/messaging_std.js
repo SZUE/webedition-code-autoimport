@@ -97,8 +97,8 @@ function get_sel_elems(sel_box) {
 function close_win(name) {
 	var i;
 	for (i = 0; i <= top.jsWindow_count; i++) {
-		if (eval("topjsWindow" + i + "Object.ref") == name) {
-			eval("topjsWindow" + i + "Object.close()");
+		if (eval("top.jsWindow" + i + "Object.ref") == name) {
+			eval("top.jsWindow" + i + "Object.close()");
 		}
 	}
 }

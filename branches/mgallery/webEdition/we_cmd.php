@@ -53,11 +53,14 @@ function findInclude($cmd){
 		case 'siteImport':
 		case 'updateSiteImportTable':
 			return 'we_siteimport.inc.php';
+		case 'openDelSelector':
+			if(isset($_SESSION['weS']['seemForOpenDelSelector']['Table'])){
+				unset($_SESSION['weS']['seemForOpenDelSelector']['Table']);
+			}
 		case 'openSelector':
 		case 'openDirselector':
 		case 'openDocselector':
 		case 'openCatselector':
-		case 'openDelSelector':
 		case 'openImgselector':
 			return 'we_fs.inc.php';
 		case 'open_tag_wizzard':

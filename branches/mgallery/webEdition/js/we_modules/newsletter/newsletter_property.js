@@ -495,10 +495,12 @@ function we_cmd() {
 			break;
 
 		default:
-			for (i = 0; i < arguments.length; i++) {
-				args += "arguments[" + i + "]" + ((i < (arguments.length - 1)) ? "," : "");
+			var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 			}
-			eval("top.content.we_cmd(" + args + ")");
+			top.content.we_cmd.apply(this, args);
+
 	}
 }
 

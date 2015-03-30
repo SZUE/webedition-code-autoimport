@@ -213,8 +213,11 @@ function addCat(paths){
 	");
 }
 
-$parts = array();
 $jsCode = "
+	var dirs={
+	'WE_INCLUDES_DIR':'".WE_INCLUDES_DIR."',
+	'WEBEDITION_DIR':'".WE_INCLUDES_DIR."'
+	};
 var _oCsv_;
 var _sCsv;
 var _sInitCsv_;
@@ -225,7 +228,7 @@ var table='" . $_selTable . "';
 
 function we_cmd(){
 	var args='';
-	var url='" . WEBEDITION_DIR . "we_cmd.php?';
+	var url=dirs.WEBEDITION_DIR +'we_cmd.php?';
 	for(var i=0;i<arguments.length;i++){
 		url+='we_cmd['+i+']='+encodeURI(arguments[i]);
 		if(i<(arguments.length-1)){
@@ -240,44 +243,15 @@ function we_cmd(){
 			new jsWindow(url,'we_catselector',-1,-1," . we_selector_file::WINDOW_CATSELECTOR_WIDTH . "," . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ",true,true,true,true);
 			break;
 		default:
-			for(var i=0;i<arguments.length;i++){
-				args+='arguments['+i+']'+((i<(arguments.length-1))?',':'');
+					var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 			}
-			eval('parent.we_cmd('+args+')');
+			parent.we_cmd.apply(this, args);
+
 	}
 }
 
-function we_submit(){
-	var bSelection=_fo.Selection.selectedIndex;
-	var bSelType=_fo.headerSwitch.selectedIndex;
-	_fo.action='" . WE_INCLUDES_DIR . "we_widgets/dlg/mdc.php?we_cmd[0]='+_sObjId+'&we_cmd[1]='+opener.base64_encode(_fo.title.value)+';'+
-		(bSelection?'1':'0')+(bSelType?'1':'0')+';'+(bSelection?getTreeSelected():'');
-	_fo.method='post';
-	_fo.submit();
-}
-
-function toggle(id){
-	var elem=document.getElementById(id);
-	if(elem){
-		if(elem.style.display=='none') elem.style.display='block';
-		else elem.style.display='none';
-	}
-}
-
-function setVisible(id,visible){
-	var elem=document.getElementById(id);
-	if(elem){
-		if(visible==true) elem.style.display='block';
-		else elem.style.display='none';
-	}
-}
-
-function setPresentation(type){" . "}
-
-function closeAllSelection(){
-	setVisible('dynamic',false);
-	setVisible('static',false);
-}
 
 function init(){
 	_fo=document.forms[0];
@@ -312,52 +286,6 @@ function save(){
 	_oCsv_.value=opener.base64_encode(sTitle)+';'+sSel+sSwitch+';'+sCsv;
 	" . we_message_reporting::getShowMessageCall(
 		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-	self.close();
-}
-
-function getCsv(bTbl){
-	var iFolderID=_fo.FolderID.value;
-	var sFolderPath=_fo.FolderPath.value;
-	var iDtOrCls=(bTbl)?_fo.classID.value:_fo.DocTypeID.value;
-	var sCats='';
-	for(var j=0;j<categories_edit.itemCount;j++){
-		sCats+=opener.base64_encode(categories_edit.form.elements[categories_edit.name+'_variant0_'+categories_edit.name+'_item'+j].value);
-		if(j<categories_edit.itemCount-1) sCats+=',';
-	}
-	var sCsv=iFolderID+','+sFolderPath+';'+iDtOrCls+';'+sCats;
-	return sCsv;
-}
-
-function getTreeSelected(){
-	var sCsvIds='';
-	var iTemsLen=SelectedItems[table].length;
-	for(var i=0;i<iTemsLen;i++){
-		sCsvIds+=SelectedItems[table][i];
-		if(i<iTemsLen-1&&SelectedItems[table][i]!=undefined&&SelectedItems[table][i]!='') sCsvIds+=',';
-	}
-	return sCsvIds;
-}
-
-function preview(){
-	var sTitle=_fo.title.value;
-	var sSel=(_fo.Selection.selectedIndex)?'1':'0';
-	var sSwitch=(_fo.headerSwitch.selectedIndex)?'1':'0';
-	var sCsv=(parseInt(sSel))?getTreeSelected():getCsv(parseInt(sSwitch));
-	previewPrefs();
-	opener.rpc(sSel+sSwitch,(sCsv)?sCsv:'','','',sTitle,_sObjId,_sMdcInc);
-}
-
-function exit_close(){
-	var sTitle=_fo.elements.title.value;
-	var sSel=(_fo.Selection.selectedIndex)?'1':'0';
-	var sSwitch=(_fo.headerSwitch.selectedIndex)?'1':'0';
-	var sCsv=(parseInt(sSel))?getTreeSelected():getCsv(parseInt(sSwitch));
-	var aInitCsv=_sInitCsv_.split(';');
-	var sInitTitle=opener.base64_decode(aInitCsv[0]);
-	if((sInitTitle!=''&&sInitTitle!=sTitle)||aInitCsv[1]!=sSel+sSwitch||aInitCsv[2]!=sCsv){
-		opener.rpc(aInitCsv[1],aInitCsv[2],'','',sInitTitle,_sObjId,_sMdcInc);
-	}
-	exitPrefs();
 	self.close();
 }
 ";
@@ -404,11 +332,13 @@ $divContent = we_html_element::htmlDiv(
 			we_html_tools::htmlTextInput(
 				$name = "title", $size = 55, $value = $_title, $maxlength = 255, $attribs = "", $type = "text", $width = 420, $height = 0), g_l('cockpit', '[title]'), "left", "defaultfont"));
 
-$parts[] = array(
-	"headline" => "", "html" => $divContent, "space" => 0
-);
-$parts[] = array(
-	"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
+$parts = array(
+	array(
+		"headline" => "", "html" => $divContent, "space" => 0
+	),
+	array(
+		"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
+	)
 );
 
 $save_button = we_html_button::create_button("save", "javascript:save();", false, 0, 0);
@@ -424,6 +354,7 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
 		we_html_element::jsScript(JS_DIR . "windows.js") .
 		we_html_element::jsElement($jsPrefs . $jsCode)) .
+	we_html_element::jsScript(JS_DIR . 'widgets/mdc.js') .
 	we_html_element::htmlBody(
 		array(
 		"class" => "weDialogBody", "onload" => "init();startInit();"

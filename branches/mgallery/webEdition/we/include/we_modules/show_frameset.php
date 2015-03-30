@@ -32,11 +32,11 @@ echo we_html_tools::getHtmlTop() .
 	var weModuleWindow = true;
 
 function we_cmd() {
-		args = "";
-		for(var i = 0; i < arguments.length; i++) {
-					args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-		}
-		eval("top.content.we_cmd("+args+")");
+			var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
+			}
+			top.content.we_cmd.apply(this, args);
 	}
 ') .
  we_html_element::jsScript(JS_DIR . "keyListener.js");

@@ -53,7 +53,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 			$we_show_response = 1;
 		} else {
 			$we_JavaScript = 'opener.top.makefocus = self;' .
-					we_main_headermenu::getMenuReloadCode();
+				we_main_headermenu::getMenuReloadCode();
 			if($we_doc->we_save()){
 				$we_responseText = sprintf(g_l('weClass', '[doctype_save_ok]'), $we_doc->DocType);
 				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
@@ -127,7 +127,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		if($we_doc->TemplateID == $cmd1){
 			$we_doc->TemplateID = ($foo ? $foo[0] : 0);
 		}
-		$we_doc->Templates = implode(',',$foo);
+		$we_doc->Templates = implode(',', $foo);
 		break;
 	case "dt_add_cat":
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
@@ -143,8 +143,8 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		break;
 	default:
 		$id = (($tmp = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)) ?
-						$tmp :
-						f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']) . ' LIMIT 1'));
+				$tmp :
+				f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']) . ' LIMIT 1'));
 
 		if($id){
 			$we_doc->initByID($id, DOC_TYPES_TABLE);
@@ -284,10 +284,12 @@ echo we_main_headermenu::getMenuReloadCode();
 			self.location = url;
 			break;
 		default:
+			var args = [];
 			for (var i = 0; i < arguments.length; i++) {
-				args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
+				args.push(arguments[i]);
 			}
-			eval('opener.top.we_cmd(' + args + ')');
+			opener.top.we_cmd.apply(this, args);
+
 	}
 }
 
@@ -381,8 +383,8 @@ function disableLangDefault(allnames, allvalues, deselect) {
 		$cancelbut = we_html_button::create_button("close", "javascript:self.close();if(top.opener.we_cmd){top.opener.we_cmd('switch_edit_page',0);}");
 
 		$buttons = ($we_doc->ID ?
-						we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:we_cmd('save_docType', '" . $we_transaction . "')"), "", $cancelbut) :
-						'<div align="right">' . $cancelbut . '</div>');
+				we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:we_cmd('save_docType', '" . $we_transaction . "')"), "", $cancelbut) :
+				'<div align="right">' . $cancelbut . '</div>');
 
 
 		echo we_html_multiIconBox::getJS() .

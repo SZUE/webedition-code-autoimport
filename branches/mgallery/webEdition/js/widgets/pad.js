@@ -240,3 +240,75 @@ function toggleTblValidity() {
 function init() {
 	parent.rpcHandleResponse(_sType, _sObjId, document.getElementById(_sType), _sTb);
 }
+
+// saves a note, using the function rpc() in home.inc.php (750)
+function saveNote() {
+	var fo = document.forms[0];
+	var _id = fo.elements.mark.value;
+	var q_init;
+	q_init = (_id != '' ?
+					getInitialQueryById(_id) :
+					{'Validity': 'always', 'ValidFrom': '', 'ValidUntil': '', 'Priority': 'low', 'Title': '', 'Text': ''});
+	var q_curr = getCurrentQuery();
+	var hot = false;
+	var idx = ['Title', 'Text', 'Priority', 'Validity', 'ValidFrom', 'ValidUntil'];
+	var csv = '';
+	var idx_len = idx.length;
+	for (var i = 0; i < idx_len; i++) {
+		if (q_init[idx[i]] != q_curr[idx[i]]) {
+			hot = true;
+		}
+		csv += (idx[i] == 'Title' || idx[i] == 'Text') ? parent.base64_encode(q_curr[idx[i]]) : q_curr[idx[i]];
+		if (i < idx_len - 1) {
+			csv += ';';
+		}
+	}
+
+	if (_id !== '') {
+		if (hot) {
+			// update note
+
+			if (q_curr['Validity'] == 'period') {
+				weValidFrom = q_curr['ValidFrom'].replace(/-/g, '');
+				weValidUntil = q_curr['ValidUntil'].replace(/-/g, '');
+				if (weValidFrom > weValidUntil) {
+					top.we_showMessage(g_l.until_befor_from, WE_MESSAGE_NOTICE, window);
+					return false;
+				}
+			}
+			if (q_curr['Title'] == '') {
+				top.we_showMessage(g_l.title_empty, WE_MESSAGE_NOTICE, window);
+				return false;
+			}
+			var q_ID = gel(_id + '_ID').value;
+			parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), (q_ID + ';' + encodeURI(csv)), 'update', '', _ttlB64Esc, _sObjId, 'pad/pad', escape(q_curr['Title']), escape(q_curr['Text']));
+		} else {
+			top.we_showMessage(g_l.note_not_modified, WE_MESSAGE_NOTICE, window);
+		}
+		return;
+	}
+	if (hot) {
+		// insert note
+		if (q_curr['Validity'] == 'period') {
+			weValidFrom = q_curr['ValidFrom'].replace(/-/g, '');
+			weValidUntil = q_curr['ValidUntil'].replace(/-/g, '');
+			if (weValidFrom > weValidUntil) {
+				top.we_showMessage(g_l.until_befor_from, WE_MESSAGE_NOTICE, window);
+				return false;
+			} else if (!weValidFrom || !weValidUntil) {
+				top.we_showMessage(g_l.date_empty, WE_MESSAGE_NOTICE, window);
+				return false;
+			}
+		} else if (q_curr['Validity'] == 'date' && !q_curr['ValidFrom']) {
+			top.we_showMessage(g_l.date_empty, WE_MESSAGE_NOTICE, window);
+			return false;
+		}
+		if (q_curr['Title'] == '') {
+			top.we_showMessage(g_l.title_empty, WE_MESSAGE_NOTICE, window);
+			return false;
+		}
+		parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), escape(csv), 'insert', '', _ttlB64Esc, _sObjId, 'pad/pad', escape(q_curr['Title']), escape(q_curr['Text']));
+	} else {
+		top.we_showMessage(g_l.title_empty, WE_MESSAGE_NOTICE, window);
+	}
+}

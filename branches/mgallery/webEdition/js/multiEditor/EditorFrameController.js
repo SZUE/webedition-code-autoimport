@@ -21,12 +21,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_cmd() {
-	var args = "";
-	for (var i = 0; i < arguments.length; i++) {
-		args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
-	}
+	var args = [];
+	for(var i = 0; i < arguments.length; i++)
+    {
+        args.push(arguments[i]);
+    }
 	if (top.we_cmd) {
-		eval('top.we_cmd(' + args + ')');
+		top.we_cmd.apply(this,args);
 	}
 }
 

@@ -39,7 +39,6 @@ class we_shop_view{
 		//$this->raw = new weShop();
 	}
 
-
 	//-----------------Init -------------------------------
 
 	function setFramesetName($frameset){
@@ -172,10 +171,12 @@ function we_cmd(){
 			break;
 
 		default:
+					var args = [];
 			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+				args.push(arguments[i]);
 			}
-			eval("top.opener.top.we_cmd("+args+")");
+			top.opener.top.we_cmd.apply(this, args);
+
 			break;
 	}
 }
@@ -260,10 +261,11 @@ function we_cmd() {
 			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
 		break;
 		default:
+					var args = [];
 			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+				args.push(arguments[i]);
 			}
-			eval("top.opener.top.we_cmd(" + args + ")");
+			top.opener.top.we_cmd.apply(this, args);
 	}
 }');
 	}
@@ -291,10 +293,11 @@ function we_cmd() {
 			submitForm();
 			break;
 		default:
+					var args = [];
 			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+				args.push(arguments[i]);
 			}
-			eval("top.content.we_cmd("+args+")");
+			top.content.we_cmd.apply(this, args);
 	}
 }
 ' . $this->getJSSubmitFunction());
@@ -895,75 +898,24 @@ function we_cmd() {
 			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
 			we_html_element::jsScript(JS_DIR . 'images.js') .
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css');
+			we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css') .
+			we_html_element::jsElement('
+var dirs = {
+		"WE_SHOP_MODULE_DIR": "' . WE_SHOP_MODULE_DIR . '",
+		"WE_MODULES_DIR": "' . WE_MODULES_DIR . '",
+		"SCRIPT_NAME": "' . $_SERVER['SCRIPT_NAME'] . '"
+};
+var bid =' . we_base_request::_(we_base_request::INT, 'bid', 0) . ';
+var cid =' . we_base_request::_(we_base_request::INT, 'cid', 0) . ';
+
+' . (isset($alertMessage) ?
+					we_message_reporting::getShowMessageCall($alertMessage, $alertType) : '')
+			) .
+			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js');
 			?>
-
-			<script type="text/javascript"><!--
-				function SendMail(was) {
-					document.location = "<?php echo $_SERVER['SCRIPT_NAME'] . '?pnt=edbody&bid=' . $_REQUEST['bid']; ?>&SendMail=" + was;
-				}
-				function doUnload() {
-					if (!!jsWindow_count) {
-						for (i = 0; i < jsWindow_count; i++) {
-							eval("jsWindow" + i + "Object.close()");
-						}
-					}
-				}
-
-				function we_cmd() {
-
-					var args = "";
-					var url = "<?php echo WE_SHOP_MODULE_DIR . 'edit_shop_properties.php'; ?>?";
-
-					for (var i = 0; i < arguments.length; i++) {
-						url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
-						if (i < (arguments.length - 1)) {
-							url += "&";
-						}
-					}
-
-					switch (arguments[0]) {
-
-						case "edit_shipping_cost":
-							var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST['bid']; ?>", "edit_shipping_cost", -1, -1, 545, 205, true, true, true, false);
-							break;
-
-						case "edit_shop_cart_custom_field":
-							var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST['bid']; ?>&cartfieldname=" + (arguments[1] ? arguments[1] : ''), "edit_shop_cart_custom_field", -1, -1, 545, 300, true, true, true, false);
-							break;
-
-						case "edit_order_customer":
-							var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST['bid']; ?>", "edit_order_customer", -1, -1, 545, 600, true, true, true, false);
-							break;
-						case "customer_edit":
-							top.document.location = '<?php echo WE_MODULES_DIR; ?>show_frameset.php?mod=customer&sid=<?php echo $_REQUEST['cid']; ?>';
-											break;
-										case "add_new_article":
-											var wind = new jsWindow(url + "&bid=<?php echo $_REQUEST['bid']; ?>", "add_new_article", -1, -1, 650, 600, true, false, true, false);
-											break;
-									}
-								}
-
-								function neuerartikel() {
-									we_cmd("add_new_article");
-								}
-
-								function deleteorder() {
-									top.content.editor.location = "<?php echo WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=<?php echo $_REQUEST["bid"]; ?>";
-											top.content.deleteEntry(<?php echo $_REQUEST["bid"]; ?>);
-										}
-
-										hot = 1;
-			<?php
-			if(isset($alertMessage)){
-				echo we_message_reporting::getShowMessageCall($alertMessage, $alertType);
-			}
-			?>
-										//->
-			</script>
 
 			</head>
-			<body class="weEditorBody" onunload="doUnload()">
+			<body class="weEditorBody" onload="hot = 1" onunload="doUnload()">
 
 				<?php
 				$parts = array(array(

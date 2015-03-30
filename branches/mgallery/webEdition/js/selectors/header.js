@@ -70,10 +70,9 @@ function clearOptions() {
 function addOption(txt, id) {
 	var a = document.we_form.elements.lookin;
 	a.options[a.options.length] = new Option(txt, id);
-	if (a.options.length > 0)
-		a.selectedIndex = a.options.length - 1;
-	else
-		a.selectedIndex = 0;
+	a.selectedIndex = (a.options.length > 0 ?
+					a.options.length - 1 :
+					0);
 
 }
 function selectIt() {

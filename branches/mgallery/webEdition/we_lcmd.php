@@ -28,81 +28,76 @@ echo we_html_tools::getHtmlTop('command-bridge', '', 5);
 <script type="text/javascript"><!--
 	// bugfix WE-356
 	self.focus();
+	var g_l = {
+		"nothing_to_save": "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_save]')); ?>",
+		"nothing_to_publish": "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_publish]')); ?>",
+	};
+	var tables = {
+		"FILE_TABLE": "<?php echo defined('FILE_TABLE') ? FILE_TABLE : 'f'; ?> ",
+		"TEMPLATES_TABLE": "<?php echo defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : 't'; ?> ",
+		"VFILE_TABLE": "<?php echo defined('VFILE_TABLE') ? VFILE_TABLE : 'v'; ?> ",
+		"OBJECT_FILES_TABLE": "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'o'; ?> "
+	};
+	var contentTypes = {
+		'TEMPLATE': '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
+		'WEDOCUMENT': '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>',
+		'OBJECT_FILE': '<?php echo we_base_ContentTypes::OBJECT_FILE; ?>',
+		'IMAGE': '<?php echo we_base_ContentTypes::IMAGE; ?>',
+		'HTML': '<?php echo we_base_ContentTypes::HTML; ?>',
+		'FLASH': '<?php echo we_base_ContentTypes::FLASH; ?>',
+		'QUICKTIME': '<?php echo we_base_ContentTypes::QUICKTIME; ?>',
+		'VIDEO': '<?php echo we_base_ContentTypes::VIDEO; ?>',
+		'AUDIO': '<?php echo we_base_ContentTypes::AUDIO; ?>',
+		'JS': '<?php echo we_base_ContentTypes::JS; ?>',
+		'TEXT': '<?php echo we_base_ContentTypes::TEXT; ?>',
+		'XML': '<?php echo we_base_ContentTypes::XML; ?>',
+		'HTACESS': '<?php echo we_base_ContentTypes::HTACESS; ?>',
+		'CSS': '<?php echo we_base_ContentTypes::CSS; ?>',
+		'APPLICATION': '<?php echo we_base_ContentTypes::APPLICATION; ?>',
+		'COLLECTION': '<?php echo we_base_ContentTypes::COLLECTION; ?>'
+	};
+	var openTable = '<?php echo (isset($_SESSION['weS']['seemForOpenDelSelector']['Table']) ? $_SESSION['weS']['seemForOpenDelSelector']['Table'] : FILE_TABLE); ?>';
+
+	//-->
+</script><?php
+echo we_html_element::jsScript(JS_DIR . 'we_lcmd.js');
+?>
+<script type="text/javascript"><!--
 <?php
 
 function getJSCommand($cmd0){
 	switch($cmd0){
-		case 'trigger_save_document':
-			return'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames.editFooter && top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.weCanSave){
-	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);
-	top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.we_save_document();
-}else{
-	' . we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-}
-';
-		case 'trigger_publish_document':
-			return 'if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames.editFooter && top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.weCanSave){
-	top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);
-	top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.we_save_document();
-}else{
-	' . we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_publish]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-}
-';
 		case 'new_webEditionPage':
-			return 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::WEDOCUMENT . '");';
 		case 'new_image':
-			return 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::IMAGE . '");';
 		case 'new_html_page':
-			return 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::HTML . '");';
 		case 'new_flash_movie':
-			return 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::FLASH . '");';
+		case 'trigger_publish_document':
+		case 'trigger_save_document':
 		case 'new_quicktime_movie':
-			return 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::QUICKTIME . '");';
 		case 'new_video_movie':
-			return 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::VIDEO . '");';
 		case 'new_audio_audio':
-			return 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::AUDIO . '");';
 		case 'new_javascript':
-			return 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::JS . '");';
 		case 'new_text_plain':
-			return 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::TEXT . '");';
 		case 'new_text_xml':
-			return 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::XML . '");';
 		case 'new_text_htaccess':
-			return 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::HTACESS . '");';
 		case 'new_css_stylesheet':
-			return 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::CSS . '");';
 		case 'new_binary_document':
-			return 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::APPLICATION . '");';
 		case 'new_template':
-			return 'top.we_cmd("new","' . TEMPLATES_TABLE . '","","' . we_base_ContentTypes::TEMPLATE . '");';
 		case 'new_document_folder':
-			return 'top.we_cmd("new","' . FILE_TABLE . '","","folder");';
 		case 'new_template_folder':
-			return 'top.we_cmd("new","' . TEMPLATES_TABLE . '","","folder");';
 		case 'new_collection_folder':
-			return 'top.we_cmd("new","' . VFILE_TABLE . '","","folder");';
 		case 'new_collection':
-			return 'top.we_cmd("new","' . VFILE_TABLE . '","","' . we_base_ContentTypes::COLLECTION . '");';
 		case 'delete_documents':
-			return 'top.we_cmd("del",1,"' . FILE_TABLE . '");';
 		case 'delete_templates':
-			return 'top.we_cmd("del",1,"' . TEMPLATES_TABLE . '");';
 		case 'move_documents':
-			return 'top.we_cmd("mv",1,"' . FILE_TABLE . '");';
 		case 'move_templates':
-			return 'top.we_cmd("mv",1,"' . TEMPLATES_TABLE . '");';
 		case 'add_documents_to_collection':
-			return 'top.we_cmd("tocollection",1,"' . FILE_TABLE . '");';
 		case 'add_objectfiles_to_collection':
-			return 'top.we_cmd("tocollection",1,"' . OBJECT_FILES_TABLE . '");';
-		case 'openDelSelector':
-			$openTable = FILE_TABLE;
-			if(isset($_SESSION['weS']['seemForOpenDelSelector']['Table'])){
-				$openTable = $_SESSION['weS']['seemForOpenDelSelector']['Table'];
-				unset($_SESSION['weS']['seemForOpenDelSelector']['Table']);
-			}
-			return "setTimeout(function(){top.we_cmd('openDelSelector','','" . $openTable . "','','','','','','',1);},50);";
+		case (preg_match('/^new_dtPage_(.+)$/', $cmd0)):
+		case (preg_match('/^new_ClObjectFile_(.+)$/', $cmd0)):
+			case 'openDelSelector':
+			return 'we_lcmd("' . $cmd0 . '")';
+
 		/* case "export_documents":
 		  $_tbl = FILE_TABLE;
 		  case "export_templates":
@@ -111,15 +106,7 @@ function getJSCommand($cmd0){
 		  $_tbl = (isset($_tbl) ? $_tbl : OBJECT_FILES_TABLE);
 		 */
 		default:
-			$regs = array();
-			if(preg_match('/^new_dtPage(.+)$/', $cmd0, $regs)){
-				$dt = $regs[1];
-				return 'top.we_cmd("new","' . FILE_TABLE . '","","' . we_base_ContentTypes::WEDOCUMENT . '","' . $dt . '");';
-			}
-			if(preg_match('/^new_ClObjectFile(.+)$/', $cmd0, $regs)){
-				$clID = $regs[1];
-				return 'top.we_cmd("new","' . OBJECT_FILES_TABLE . '","","' . we_base_ContentTypes::OBJECT_FILE . '","' . $clID . '");';
-			}
+			//FIXME: get rid of this & make everything here in JS
 			$arr = array();
 			foreach($_REQUEST['we_cmd'] as $cur){
 				$arr[] = '\'' . str_replace(array('\'', '"'), array('\\\'', '\\"'), preg_replace('/[^a-z0-9_-]/i', '', strip_tags($cur))) . '\'';
@@ -133,6 +120,6 @@ if(($cmd0 = we_base_request::_(we_base_request::STRING, 'wecmd0')) !== false){ /
 }
 echo getJSCommand(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0));
 ?>
-	//-->
+//-->
 </script>
 </head><body></body></html>

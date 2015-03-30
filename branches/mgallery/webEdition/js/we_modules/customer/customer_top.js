@@ -140,9 +140,10 @@ function we_cmd() {
 			topFrame.cmd.location = frameUrl + "?pnt=cmd&pid=" + arguments[1] + "&offset=" + arguments[2] + "&sort=" + arguments[3];
 			break;
 		default:
+			var args = [];
 			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments[" + i + "]" + ((i < (arguments.length - 1)) ? "," : "");
+				args.push(arguments[i]);
 			}
-			eval("top.opener.top.we_cmd(" + args + ")");
+			top.opener.top.we_cmd.apply(this, args);
 	}
 }

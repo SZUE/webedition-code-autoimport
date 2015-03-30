@@ -216,10 +216,12 @@ function we_cmd() {
 			}
 			break;
 		default:
-			for(var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+					var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 			}
-			eval("top.opener.top.we_cmd("+args+")");
+			top.opener.top.we_cmd.apply(this, args);
+
 	}
 }
 
@@ -257,10 +259,12 @@ function we_cmd() {
 			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
 		break;
 		default:
+					var args = [];
 			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+				args.push(arguments[i]);
 			}
-			eval("top.opener.top.we_cmd(" + args + ")");
+			top.opener.top.we_cmd.apply(this, args);
+
 	}
 }');
 	}
@@ -369,10 +373,11 @@ function we_cmd() {
 			new jsWindow(url, "we_navigation_dirselector", -1, -1, 600, 400, true, true, true);
 			break;
 		default:
+					var args = [];
 			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments[" + i + "]" + ((i < (arguments.length - 1)) ? "," : "");
+				args.push(arguments[i]);
 			}
-			eval("top.content.we_cmd(" + args + ")");
+			top.content.we_cmd.apply(this, args);
 			break;
 	}
 }

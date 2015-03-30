@@ -43,10 +43,12 @@ function we_cmd() {
 			new jsWindow(url, "we_bannerselector", -1, -1, 650, 400, true, true, true);
 			break;
 		default:
+			var args = [];
 			for (var i = 0; i < arguments.length; i++) {
-				args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
+				args.push(arguments[i]);
 			}
-			eval('top.content.we_cmd(' + args + ')');
+			top.content.we_cmd.apply(this, args);
+
 	}
 }
 

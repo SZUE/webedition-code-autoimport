@@ -31,8 +31,8 @@ echo we_html_tools::getHtmlTop() .
  STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'images.js') .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'messaging_hl.js') .
- we_html_element::jsScript(JS_DIR . 'messaging_std.js') .
+ we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_hl.js') .
+ we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
  we_html_element::jsElement('
 var table="' . USER_TABLE . '";
 var tree_icon_dir="' . TREE_ICON_DIR . '";
@@ -40,7 +40,7 @@ var tree_img_dir="' . TREE_IMAGE_DIR . '";
 var we_dir="' . WEBEDITION_DIR . '";'
 		. we_modules_frame::getTree_g_l()
 ) .
- we_html_element::jsScript(JS_DIR . 'messaging_usel_browse.js');
+ we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_usel_browse.js');
 
 //FIXME: make the js code equal to *_tree.js
 ?>
@@ -51,7 +51,7 @@ var we_dir="' . WEBEDITION_DIR . '";'
 		fr.open();
 		fr.writeln("<html><head>");
 		fr.writeln("<?php echo str_replace(array('script', '"'), array('scr"+"ipt', '\''), we_html_tools::getJSErrorHandler());?>");
-		fr.writeln("<script type=\"text/javascript\" src=\"<?php echo JS_DIR . 'messaging_std.js'; ?>\"></" + "script>");
+		fr.writeln("<script type=\"text/javascript\" src=\"<?php echo JS_DIR . 'we_modules/messaging/messaging_std.js'; ?>\"></" + "script>");
 		fr.writeln("<script type=\"text/javascript\">");
 		fr.writeln("var clickCount=0;");
 		fr.writeln("var wasdblclick=0;");

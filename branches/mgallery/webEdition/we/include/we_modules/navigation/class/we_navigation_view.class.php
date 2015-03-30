@@ -218,10 +218,12 @@ function we_cmd() {
 			}
 		break;
 		default:
+					var args = [];
 			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+				args.push(arguments[i]);
 			}
-			eval("top.opener.top.we_cmd(" + args + ")");
+			top.opener.top.we_cmd.apply(this, args);
+
 	}
 }
 
@@ -285,10 +287,12 @@ function we_cmd() {
 			//new jsWindow(\'' . WE_INCLUDES_PATH . 'we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=\',\'resave\',-1,-1,600,130,0,true);
 			break;
 		default:
+					var args = [];
 			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+				args.push(arguments[i]);
 			}
-			eval("' . $this->topFrame . '.we_cmd("+args+")");
+			' . $this->topFrame . '.we_cmd.apply(this, args);
+
 	}
 }
 

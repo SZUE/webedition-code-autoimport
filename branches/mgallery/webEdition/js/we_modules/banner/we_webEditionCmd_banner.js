@@ -59,6 +59,7 @@ function we_cmd_banner(args,url) {
 		case "delete_banner":
 			if (jsWindow_count) {
 				for (k = jsWindow_count - 1; k > -1; k--) {
+					//FIXME: remove evals, if jswindow has an array!
 					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
 					if (fo) {
 						break;

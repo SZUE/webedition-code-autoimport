@@ -143,7 +143,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 
 
 		_isHotTrf = false;
-		var _trf = new Array();
+		var _trf = {};
 	<?php
 	$iCurrRssFeed = 0;
 	foreach($aTrf as $aRssFeed){

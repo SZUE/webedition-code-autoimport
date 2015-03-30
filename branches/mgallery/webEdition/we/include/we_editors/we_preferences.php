@@ -2582,10 +2582,12 @@ new jsWindow(url,"we_colorChooser",-1,-1,430,370,true,true,true);
 break;
 
 default:
-for(var i = 0; i < arguments.length; i++){
-args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-}
-eval(\'parent.we_cmd(\'+args+\')\');
+			var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
+			}
+			parent.we_cmd.apply(this, args);
+
 }
 }
 

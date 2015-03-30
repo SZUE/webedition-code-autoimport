@@ -775,7 +775,7 @@ while($GLOBALS['DB_WE']->next_record()){
 	$we_menu[$nr++] = array(
 		'text' => str_replace(array(',', '"', '\'',), array(' ', ''), $GLOBALS['DB_WE']->f('DocType')),
 		'parent' => 1010100,
-		'cmd' => 'new_dtPage' . $GLOBALS['DB_WE']->f('ID'),
+		'cmd' => 'new_dtPage_' . $GLOBALS['DB_WE']->f('ID'),
 		'perm' => 'NEW_WEBEDITIONSITE',
 	);
 	if($nr == 197){
@@ -799,7 +799,7 @@ if(defined('OBJECT_TABLE')){
 			$we_menu[1010 . $nr] = array(
 				'text' => $foo,
 				'parent' => 1010200,
-				'cmd' => 'new_ClObjectFile' . $GLOBALS['DB_WE']->f('ID'),
+				'cmd' => 'new_ClObjectFile_' . $GLOBALS['DB_WE']->f('ID'),
 				'perm' => 'NEW_OBJECTFILE',
 			);
 			$nr++;

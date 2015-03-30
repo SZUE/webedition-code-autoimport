@@ -133,11 +133,14 @@ function we_cmd() {
 			top.we_cmd("object_obj_search", we_transaction, document.we_form.obj_search.value, document.we_form.obj_searchField[document.we_form.obj_searchField.selectedIndex].value);
 			return;
 	}
-	var args = '';
-	for (var i = 0; i < arguments.length; i++) {
-		args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
+	var args = [];
+	for (var i = 0; i < arguments.length; i++)
+	{
+		args.push(arguments[i]);
 	}
-	eval('top.we_cmd(' + args + ')');
+	if (top.we_cmd) {
+		top.we_cmd.apply(this, args);
+	}
 }
 
 

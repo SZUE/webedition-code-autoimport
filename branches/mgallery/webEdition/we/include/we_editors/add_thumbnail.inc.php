@@ -87,10 +87,11 @@ function we_cmd(){
 			new jsWindow(url, "thumbnails", -1, -1, 500, 550, true, true, true);
 			break;
 		default:
-			for(var i = 0; i < arguments.length; i++){
-				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
+					var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 			}
-			eval(\'parent.we_cmd(\'+args+\')\');
+			parent.we_cmd.apply(this, args);
 	}
 }');
 

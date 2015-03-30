@@ -913,10 +913,12 @@ abstract class we_rebuild_wizard{
 					document._errorMessage = "";
 					break;
 				default:
-					for(var i = 0; i < arguments.length; i++) {
-						args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-					}
-					eval("opener.top.we_cmd("+args+")");
+							var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
+			}
+			opener.top.we_cmd.apply(this, args);
+
 				}
 			}
 			function checkForError() {

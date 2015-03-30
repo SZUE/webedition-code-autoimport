@@ -84,4 +84,5 @@ function jsWindowClose() {
 		this.wind.close();
 }
 
+//FIXME use an Array to store these objects!
 jsWindow_count = 0;

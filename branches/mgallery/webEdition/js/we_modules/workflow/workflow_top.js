@@ -117,9 +117,11 @@ function we_cmd() {
 			new jsWindow(dirs.WE_WORKFLOW_MODULE_DIR + "edit_workflow_frameset.php?pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
 			break;
 		default:
+			var args = [];
 			for (var i = 0; i < arguments.length; i++) {
-				args += 'arguments[' + i + ']' + ((i < (arguments.length - 1)) ? ',' : '');
+				args.push(arguments[i]);
 			}
-			eval('top.opener.top.we_cmd(' + args + ')');
+			top.opener.top.we_cmd.apply(this, args);
+
 	}
 }

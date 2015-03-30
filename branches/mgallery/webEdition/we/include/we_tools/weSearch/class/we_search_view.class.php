@@ -112,10 +112,12 @@ class we_search_view{
      break;
      ' . $this->getTopJSAdditional() . '
      default:
-      for (var i = 0; i < arguments.length; i++) {
-       args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-      }
-      eval("top.opener.top.we_cmd(" + args + ")");
+		 			var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
+			}
+			top.opener.top.we_cmd.apply(this, args);
+
     }
    }
 
@@ -583,12 +585,12 @@ weSearch.g_l = {
 
 				return $_table->getHtml();
 		}
-		$_table->setCol(4, 0, array('style'=>'padding-right:20px;'), we_html_tools::getPixel(380, 10));
+		$_table->setCol(4, 0, array('style' => 'padding-right:20px;'), we_html_tools::getPixel(380, 10));
 		$_table->setCol(4, 1, array('align' => 'right'), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}
-	
+
 	function getSearchDialogMediaType($whichSearch){
 		$_table = new we_html_table(
 			array(
@@ -615,13 +617,13 @@ weSearch.g_l = {
 				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($this->Model->searchForVideoMediaSearch ? true : false, "searchForVideoMediaSearch", 'Video', false, 'defaultfont', ''));
 				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForPdfMediaSearch ? true : false, "searchForOtherMediaSearch", 'Sonstige Medien-Dateien', false, 'defaultfont', '', false));
 				$_table->setCol(1, 2, array(), we_html_tools::getPixel(100, 10));
-				$_table->setCol(2, 0, array('colspan'=>'3'), we_html_tools::getPixel(10, 10));
+				$_table->setCol(2, 0, array('colspan' => '3'), we_html_tools::getPixel(10, 10));
 
 				break;
 			default:
 				return;
 		}
-		
+
 		return $_table->getHtml();
 	}
 
@@ -640,13 +642,13 @@ weSearch.g_l = {
 				$n = 2;
 
 				$_table->setCol(3, 0, array(), 'Verwendungsstatus: ');
-				$_table->setCol(3, 1, array('colspan'=>'2'), we_html_element::htmlHiddens(array(
+				$_table->setCol(3, 1, array('colspan' => '2'), we_html_element::htmlHiddens(array(
 						'searchFieldsMediaSearch[' . $n . ']' => 'IsUsed',
 						'locationMediaSearch[' . $n . ']' => 'IS')) .
 					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array('0' => 'alle', '1' => 'nur benutzte Medien', '2' => 'nur unbenutzte Medien'), 1, $this->Model->searchMediaSearch[$n++], false, array(), 'value', 220));
 
 				$_table->setCol(4, 0, array(), 'Schutz: ');
-				$_table->setCol(4, 1, array('colspan'=>'2'), we_html_element::htmlHiddens(array(
+				$_table->setCol(4, 1, array('colspan' => '2'), we_html_element::htmlHiddens(array(
 						'searchFieldsMediaSearch[' . $n . ']' => 'IsProtected',
 						'locationMediaSearch[' . $n . ']' => 'IS')) .
 					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array('0' => 'alle', '1' => 'nur geschützte Medien', '2' => 'nur ungeschützte Medien'), 1, $this->Model->searchMediaSearch[$n++], false, array(), 'value', 220));
@@ -657,7 +659,7 @@ weSearch.g_l = {
 				return;
 		}
 		$_table->setCol(5, 0, array('colspan' => 4), $this->getSearchDialogOptFields($whichSearch));
-		$_table->setCol(6, 0, array('colspan'=>'3','style'=>'padding-right:20px;'), we_html_tools::getPixel(380, 10));
+		$_table->setCol(6, 0, array('colspan' => '3', 'style' => 'padding-right:20px;'), we_html_tools::getPixel(380, 10));
 		$_table->setCol(6, 3, array(), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
@@ -945,9 +947,9 @@ weSearch.g_l = {
  <td>' . we_html_tools::hidden($locationName, 'CONTAIN') . '</td>
  <td>' . we_html_tools::hidden($searchTables, 1) . '</td>
  <td></td>
-</tr>' . ( $whichSearch == self::SEARCH_MEDIA ? 
-	'<tr><td colspan="5">'. we_html_tools::htmlAlertAttentionBox("Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.", we_html_tools::TYPE_INFO, 380) .'</td></tr>' : 
-	'') . '
+</tr>' . ( $whichSearch == self::SEARCH_MEDIA ?
+				'<tr><td colspan="5">' . we_html_tools::htmlAlertAttentionBox("Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.", we_html_tools::TYPE_INFO, 380) . '</td></tr>' :
+				'') . '
 </tbody></table>';
 	}
 
@@ -1044,7 +1046,7 @@ weSearch.g_l = {
 						switch($v){
 							case 'ContentType':
 								if(!$cts = trim($searchForContentTypesMediaSearch, ',')){
-									$cts = "'" . we_base_ContentTypes::IMAGE . "','" . we_base_ContentTypes::VIDEO . "','" . we_base_ContentTypes::QUICKTIME . "','" . we_base_ContentTypes::FLASH . "','" . we_base_ContentTypes::AUDIO . "','" . we_base_ContentTypes::APPLICATION . "'";//"','#PDF#'";
+									$cts = "'" . we_base_ContentTypes::IMAGE . "','" . we_base_ContentTypes::VIDEO . "','" . we_base_ContentTypes::QUICKTIME . "','" . we_base_ContentTypes::FLASH . "','" . we_base_ContentTypes::AUDIO . "','" . we_base_ContentTypes::APPLICATION . "'"; //"','#PDF#'";
 								}
 								$_REQUEST['we_cmd']['search' . $whichSearch][$k] = $cts;
 								break;
@@ -1232,16 +1234,16 @@ weSearch.g_l = {
 									break;
 								case 'ContentType':
 									/*
-									if(strpos($searchString, "'#PDF#'") !== false){
-										$searchString = str_replace(array("',#PDF'", "'#PDF#'"), '', $searchString);
-										$where .= ' AND (' . $_table . '.ContentType IN (' . trim($searchString, ',') . ') OR ' . $_table . '.Extension = ".pdf") ';
-									} else {
-									 * 
+									  if(strpos($searchString, "'#PDF#'") !== false){
+									  $searchString = str_replace(array("',#PDF'", "'#PDF#'"), '', $searchString);
+									  $where .= ' AND (' . $_table . '.ContentType IN (' . trim($searchString, ',') . ') OR ' . $_table . '.Extension = ".pdf") ';
+									  } else {
+									 *
 									 */
 									$where .= ' AND ' . $_table . '.ContentType IN (' . $searchString . ')';
 									/*
-									}
-									 * 
+									  }
+									 *
 									 */
 									break;
 								case 'IsUsed':
@@ -1433,7 +1435,7 @@ weSearch.g_l = {
 
 					$this->searchclass->setwhere($whereQuery);
 					$this->searchclass->insertInTempTable($whereQuery, $_table);
-					
+
 					// when MediaSearch add attrib_alt, attrib_title, IsUsed to SEARCH_TEMP_TABLE
 					if(self::SEARCH_MEDIA){
 						$this->searchclass->insertMediaAttribsToTempTable();
@@ -1669,11 +1671,10 @@ weSearch.g_l = {
 											array('elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $_result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $_result[$f]['CreationDate']) : '-'),
 											array('elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $_result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $_result[$f]['ModDate']) : '-'),
 										)),
-								
 									array('elem' => 'row', 'attribs' => 'background-color:green', 'dat' => array(
 											array('elem' => 'td', 'attribs' => 'id="infoTable_' . $_result[$f]["docID"] . '" style="display:none;width:100%;text-align:left;' . $standardStyle . 'height:auto;overflow:visible;" colspan="5"', 'dat' => $this->makeAdditionalContentMedia($_result[$f])),
 										))
-									), 'colgroup' => '</colgroup>
+								), 'colgroup' => '</colgroup>
 											<col style="text-align:left;"/>
 											<col style="width:75px;text-align:left;"/>
 											<col style="width:45px;text-align:left;"/>
@@ -1682,10 +1683,8 @@ weSearch.g_l = {
 											<col style="width:90px;text-align:left;"/>
 											<col style="width:90px;text-align:left;"/>
 											</colgroup>'
-								)
+							)
 						)),
-
-
 				);
 			} else {
 				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
@@ -1774,13 +1773,13 @@ weSearch.g_l = {
 
 		return $content;
 	}
-	
+
 	function makeAdditionalContentMedia($result){
 		$usedMediaLinks = $this->searchclass->getUsedMediaLinks();
 		if(isset($usedMediaLinks['mediaID_' . $result["docID"]]) && $usedMediaLinks['mediaID_' . $result["docID"]]){
 			$out = '<table style="font-weight:normal"><tr><td>noch komplett unformatiert und ohne Link und Button...:</td></tr>';
 			foreach($usedMediaLinks['mediaID_' . $result["docID"]] as $idTable => $path){
-				$out .= '<tr><td>' . $path . ' (' . $idTable .')</td></tr>';
+				$out .= '<tr><td>' . $path . ' (' . $idTable . ')</td></tr>';
 			}
 			$out .= '</table>';
 
@@ -2652,10 +2651,11 @@ function we_cmd() {
 			break;
 			' . $this->getPropertyJSAdditional() . '
 		default:
+					var args = [];
 			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
+				args.push(arguments[i]);
 			}
-			eval("' . $this->topFrame . '.we_cmd("+args+")");
+			' . $this->topFrame . '.we_cmd.apply(this, args);
 	}
 }' .
 				$this->getJSSubmitFunction());

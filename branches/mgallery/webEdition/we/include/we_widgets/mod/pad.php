@@ -359,82 +359,17 @@ var _sObjId='m_" . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 5) . "'
 var _sTb='" . $title . "';
 var _sInitProps='" . $_sInitProps . "';") . "
 var _ttlB64Esc='';
-if(typeof parent.base64_encode=='function')_ttlB64Esc=escape(parent.base64_encode(_sTb));
+var g_l={
+	'until_befor_from': '".we_message_reporting::prepareMsgForJS(g_l('cockpit', '[until_befor_from]'))."',
+	'note_not_modified': '".we_message_reporting::prepareMsgForJS(g_l('cockpit', '[note_not_modified]'))."',
+	'title_empty': '".we_message_reporting::prepareMsgForJS(g_l('cockpit', '[title_empty]'))."',
+	'date_empty': '".we_message_reporting::prepareMsgForJS(g_l('cockpit', '[date_empty]'))."',
+};
+if(typeof parent.base64_encode=='function'){
+_ttlB64Esc=escape(parent.base64_encode(_sTb));
+}
 
-// saves a note, using the function rpc() in home.inc.php (750)
-function saveNote(){
-	var fo=document.forms[0];
-	var _id=fo.elements.mark.value;
-	var q_init;
-	if(_id!='') q_init=getInitialQueryById(_id);
-	else q_init={'Validity':'always','ValidFrom':'','ValidUntil':'','Priority':'low','Title':'','Text':''};
-	var q_curr=getCurrentQuery();
-	var hot=false;
-	var idx=['Title','Text','Priority','Validity','ValidFrom','ValidUntil'];
-	var csv='';
-	var idx_len=idx.length;
-	for(var i=0;i<idx_len;i++){
-		if(q_init[idx[i]]!=q_curr[idx[i]])hot=true;
-		csv+=(idx[i]=='Title'||idx[i]=='Text')?parent.base64_encode(q_curr[idx[i]]):q_curr[idx[i]];
-		if(i<idx_len-1)csv+=';';
-	}
-
-	if(_id!=''){
-		if(hot){
-			// update note
-
-			if(q_curr['Validity'] == 'period') {
-				weValidFrom = q_curr['ValidFrom'].replace(/-/g, '');
-				weValidUntil = q_curr['ValidUntil'].replace(/-/g, '');
-				if(weValidFrom>weValidUntil) {
-					" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[until_befor_from]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-					return false;
-				}
-			}
-			if(q_curr['Title']=='') {
-				" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-				return false;
-			}
-			var q_ID=gel(_id+'_ID').value;
-			parent.rpc(_ttlB64Esc.concat(','+_sInitProps),(q_ID+';'+encodeURI(csv)),'update','',_ttlB64Esc,_sObjId,'pad/pad',escape(q_curr['Title']),escape(q_curr['Text']));
-		}else{
-			" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[note_not_modified]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-		}
-	}else{
-		if(hot){
-			// insert note
-			if(q_curr['Validity'] == 'period') {
-				weValidFrom = q_curr['ValidFrom'].replace(/-/g, '');
-				weValidUntil = q_curr['ValidUntil'].replace(/-/g, '');
-				if(weValidFrom>weValidUntil) {
-					" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[until_befor_from]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-					return false;
-				} else if(!weValidFrom || !weValidUntil) {
-					" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[date_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-					return false;
-				}
-			} else if(q_curr['Validity'] == 'date' && !q_curr['ValidFrom']){
-					" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[date_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-					return false;
-			}
-			if(q_curr['Title']=='') {
-				" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-				return false;
-			}
-			parent.rpc(_ttlB64Esc.concat(','+_sInitProps),escape(csv),'insert','',_ttlB64Esc,_sObjId,'pad/pad',escape(q_curr['Title']),escape(q_curr['Text']));
-		}else{
-			" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-		}
-	}
-}") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js')) . we_html_element::htmlBody(
+") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js')) . we_html_element::htmlBody(
 		array(
 		"marginwidth" => 0,
 		"marginheight" => 0,

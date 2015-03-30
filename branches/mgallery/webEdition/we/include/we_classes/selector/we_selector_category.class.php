@@ -676,10 +676,12 @@ function we_cmd(){
 			new jsWindow(url,"we_selector",-1,-1,' . self::WINDOW_SELECTOR_WIDTH . ',' . self::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		default:
-			for(var i = 0; i < arguments.length; i++){
-				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
+					var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 			}
-			eval(\'parent.we_cmd(\'+args+\')\');
+			parent.we_cmd.apply(this, args);
+
 	}
 }
 function we_checkName() {

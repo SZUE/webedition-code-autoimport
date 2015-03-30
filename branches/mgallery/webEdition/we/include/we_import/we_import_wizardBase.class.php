@@ -191,10 +191,12 @@ function we_cmd() {
 		case 'reload_editpage':
 			break;
 		default:
-			for (var i=0; i < arguments.length; i++) {
-				args += 'arguments['+i+']' + ((i < (arguments.length-1))? ',' : '');
+					var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 			}
-			eval('top.opener.top.we_cmd('+args+')');
+			top.opener.top.we_cmd.apply(this, args);
+
 	}
 }" . $ajaxJS
 					) . STYLESHEET) .
